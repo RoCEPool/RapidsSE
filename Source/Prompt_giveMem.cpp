@@ -26,8 +26,8 @@ bool Prompt::bPrompt_giveMem(SePrompt* pPrompt)
 {
   while (gpAttachMap->m_pTakenBuffers) {
     
-    Buffer* pBuffer     = gpAttachMap->m_pTakenBuffers;
-    Buffer* pNextBuffer = *(Buffer**)pBuffer->aDataArea();
+    PoolBuffer* pBuffer     = gpAttachMap->m_pTakenBuffers;
+    PoolBuffer* pNextBuffer = *(PoolBuffer**)pBuffer->aDataArea();
 
     gpAttachMap->m_pTakenBuffers = pNextBuffer;
     

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntryBuffer_all.cpp -- working file to sort out the fun's of Entry Buffer  */
+/* EntryBuffer_all.cpp -- working file to sort out the fun's of Entry PoolBuffer  */
 /*============================================================================*/
 
 #include "DBobjects.h"
@@ -871,10 +871,10 @@ void EntryBuffer::vRestore(void)
   m_pIndex = nullptr;
   
   // get the original buffer address
-  Buffer* pOriginalBuffer = pBitAnd<Buffer*>(m_aHeadEntry,C_OBJECT_TO_BUFFER_MASK);
+  PoolBuffer* pOriginalBuffer = pBitAnd<PoolBuffer*>(m_aHeadEntry,C_OBJECT_TO_BUFFER_MASK);
   
   // get this buffer address
-  Buffer* pThisBuffer = pBitAnd<Buffer*>(this,C_OBJECT_TO_BUFFER_MASK);
+  PoolBuffer* pThisBuffer = pBitAnd<PoolBuffer*>(this,C_OBJECT_TO_BUFFER_MASK);
   
   // calculate offset for m_iaEntryOffsets and set it
   u8 uOffset = nSub(m_iaEntryOffsets, pOriginalBuffer);

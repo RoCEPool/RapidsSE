@@ -27,7 +27,7 @@ bool Prompt::bPrompt_sizes(SePrompt* pPrompt)
   vTrace("  sizeof(Footer) = %lu; \n"_Stz, sizeof(Footer));
 
   vTrace("\n"_Stz);
-  vTrace("  sizeof(Buffer) = %lu; \n"_Stz, sizeof(Buffer));
+  vTrace("  sizeof(PoolBuffer) = %lu; \n"_Stz, sizeof(PoolBuffer));
   
   vTrace("\n"_Stz);
   vTrace("  sizeof(BolVal) = %lu; \n"_Stz, sizeof(BolVal));

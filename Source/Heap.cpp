@@ -24,7 +24,7 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 void* Heap::operator new(size_t)
 {
-  Buffer* pBuffer = gpBufferPool->pAllocOtherBuffer();
+  PoolBuffer* pBuffer = gpBufferPool->pAllocOtherBuffer();
   
   return pPoolCheck<void*>(pBuffer);
 }
@@ -34,7 +34,7 @@ void* Heap::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void Heap::operator delete(void* pHeapAddress)
 {
-  Buffer* pBuffer = static_cast<Buffer*>(pHeapAddress);
+  PoolBuffer* pBuffer = static_cast<PoolBuffer*>(pHeapAddress);
   
   gpBufferPool->vFree(pBuffer);
 }
@@ -43,7 +43,7 @@ void Heap::operator delete(void* pHeapAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Heap::Heap(eCN eClassNo, i8 iObjectSize)
-: Buffer(eClassNo)
+: PoolBuffer(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   

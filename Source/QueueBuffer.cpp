@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* QueueBuffer.cpp -- Queue Buffer of Values                                  */
+/* QueueBuffer.cpp -- Queue PoolBuffer of Values                                  */
 /*============================================================================*/
 
 #include "Structures.h"
@@ -38,14 +38,14 @@ void QueueBuffer::operator delete(void* pQueueBufferAddress)
 {
   QueueBuffer* pQueueBuffer = static_cast<QueueBuffer*>(pQueueBufferAddress);
   
-  gpBufferPool->vFree((Buffer*)pQueueBuffer);
+  gpBufferPool->vFree((PoolBuffer*)pQueueBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 QueueBuffer::QueueBuffer(void)
-: Buffer(CN_QUEUEBUFFER)
+: PoolBuffer(CN_QUEUEBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
@@ -82,7 +82,7 @@ bool QueueBuffer::bAppend(Object* pObject)
   
   Stz* aFinalByteOfValue = aAdd<Stz*>(m_ppNextFree,nBytes-1);
   
-  if (aFinalByteOfValue > Buffer::aLastUsableByte())
+  if (aFinalByteOfValue > PoolBuffer::aLastUsableByte())
     return false;
   
   * m_ppNextFree = pObject;
@@ -107,7 +107,7 @@ bool QueueBuffer::bAppend(Object* pObject)
 //
 //  Stz* aFinalByteOfValue = aAdd<Stz*>(m_aNextFree,nBytes-1);
 //
-//  if (aFinalByteOfValue > Buffer::aLastUsableByte())
+//  if (aFinalByteOfValue > PoolBuffer::aLastUsableByte())
 //    return false;
 //
 //  MemLib::vCopy(m_aNextFree,aValue,nBytes,CN_QUEUEBUFFER);

@@ -26,7 +26,7 @@ void HeapMem::vInit(void)
   // set up the jumbo heap
   Transient.m_pJumbo->vFixedHeap(true);
   
-  Buffer* pJumbo = nullptr;
+  PoolBuffer* pJumbo = nullptr;
   while ( (pJumbo = gpBufferPool->pNextJumbo(pJumbo)) ) {
     
     pJumbo->vSetMagic();
@@ -205,7 +205,7 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
 /*----------------------------------------------------------------------------*/
 /* free a non-object buffer                                                   */
 /*----------------------------------------------------------------------------*/
-void HeapMem::vFree_NonObject(Buffer* pBuffer)
+void HeapMem::vFree_NonObject(PoolBuffer* pBuffer)
 {
   pBuffer->vSetMagic();
   

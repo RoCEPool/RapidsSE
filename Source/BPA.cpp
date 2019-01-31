@@ -9,7 +9,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* dump given buffer                                                          */
 /*----------------------------------------------------------------------------*/
-void BPA::vBufferDump(Buffer* pBuffer)
+void BPA::vBufferDump(PoolBuffer* pBuffer)
 {
   eCN eClass = pBuffer->eClass();
   
@@ -181,24 +181,24 @@ void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
 void BPA::vObjectList(void)
 {
   vTrace("\n"_Stz);
-  vTrace("%sObjects in Buffer Pool:\n"_Stz,Stz::aTab(1));
+  vTrace("%sObjects in PoolBuffer Pool:\n"_Stz,Stz::aTab(1));
   
-  Buffer* pSmallTransient  = nullptr;
-  Buffer* pMediumTransient = nullptr;
-  Buffer* pLargeTransient  = nullptr;
-  Buffer* pJumboTransient  = nullptr;
+  PoolBuffer* pSmallTransient  = nullptr;
+  PoolBuffer* pMediumTransient = nullptr;
+  PoolBuffer* pLargeTransient  = nullptr;
+  PoolBuffer* pJumboTransient  = nullptr;
   
-  Buffer* pSmallPersistent  = nullptr;
-  Buffer* pMediumPersistent = nullptr;
-  Buffer* pLargePersistent  = nullptr;
-  Buffer* pJumboPersistent  = nullptr;
+  PoolBuffer* pSmallPersistent  = nullptr;
+  PoolBuffer* pMediumPersistent = nullptr;
+  PoolBuffer* pLargePersistent  = nullptr;
+  PoolBuffer* pJumboPersistent  = nullptr;
   
   bn nBufferCount = gpBufferPool->m_nBuffers - 1;
   for (bn nBuffer = gpBufferPool->nBufferFirst();
        nBuffer <= nBufferCount;
        nBuffer++) {
     
-    Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
+    PoolBuffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
     
     if (CN_SMALLTRANSIENT == pBuffer->eClass())
       pSmallTransient = pBuffer;
@@ -268,7 +268,7 @@ void BPA::vObjectSummary(void)
        nBuffer <= nBufferCount;
        nBuffer++) {
     
-    Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
+    PoolBuffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
     iCountObjects[pBuffer->eClass()]++;
   }
   
@@ -398,7 +398,7 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
        nBuffer <= nBufferCount;
        nBuffer++) {
     
-    Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
+    PoolBuffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
     
     eCN eClass = pBuffer->eClass();
     
@@ -467,7 +467,7 @@ void BPA::vPoolAnalyze(void)
   
   vTrace("\n"_Stz);
   vTrace("****************************************************************\n"_Stz);
-  vTrace("* Buffer Pool Analysis                                         *\n"_Stz);
+  vTrace("* PoolBuffer Pool Analysis                                         *\n"_Stz);
   vTrace("****************************************************************\n"_Stz);
   
   vRegionSummary();
@@ -487,7 +487,7 @@ void BPA::vPoolDump(void)
   
   vTrace("\n"_Stz);
   vTrace("****************************************************************\n"_Stz);
-  vTrace("* Buffer Pool Dump                                             *\n"_Stz);
+  vTrace("* PoolBuffer Pool Dump                                             *\n"_Stz);
   vTrace("****************************************************************\n"_Stz);
   
   vRegionSummary();
@@ -538,7 +538,7 @@ void BPA::vReadBuffers(Stz* sFilePath)
   File* pFile = new File();
   pFile->bOpenRead(sFilePath);
   
-  Buffer* pBuffer = new Buffer(CN_HEAPBUFFER);
+  PoolBuffer* pBuffer = new PoolBuffer(CN_HEAPBUFFER);
   
   while (true) {
     i8 nBytes = pFile->nReadBytes(pBuffer, C_SIZE_POOL_BUFFER);
@@ -646,15 +646,15 @@ void BPA::vResourceSummary(void)
 /*----------------------------------------------------------------------------*/
 void BPA::vWordList(i8 iEpoch)
 {
-  Buffer* pMediumTransient = nullptr;
-  Buffer* pSmallTransient  = nullptr;
+  PoolBuffer* pMediumTransient = nullptr;
+  PoolBuffer* pSmallTransient  = nullptr;
   
   bn nBufferCount = gpBufferPool->m_nBuffers - 1;
   for (bn nBuffer = gpBufferPool->nBufferFirst();
        nBuffer <= nBufferCount;
        nBuffer++) {
     
-    Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
+    PoolBuffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
     
     if (CN_MEDIUMTRANSIENT == pBuffer->eClass())
     pMediumTransient = pBuffer;
@@ -686,7 +686,7 @@ void BPA::vWriteBuffers(Stz* sFilePath)
        nBuffer <= nBufferCount;
        nBuffer++) {
     
-    Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
+    PoolBuffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
     bool bResult = pFile->bWriteBytes((void*)pBuffer,C_SIZE_POOL_BUFFER);
     ASSERT(bResult);
     

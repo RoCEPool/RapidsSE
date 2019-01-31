@@ -30,7 +30,7 @@ namespace Pool
 
     static Object* pAllocate(eCN eClass, bool bPersistent=false);
     static void vFree(Object* pObject, bool bPersistent=false);
-    static void vFree_NonObject(Buffer* pBuffer);
+    static void vFree_NonObject(PoolBuffer* pBuffer);
     static void vReport(void);
     static void vSearchFree(void);
     static void vValidateEnums(void);

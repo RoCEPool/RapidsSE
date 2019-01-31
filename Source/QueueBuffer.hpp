@@ -5,7 +5,7 @@
 
 namespace Structures
 {
-  class QueueBuffer : public Buffer
+  class QueueBuffer : public PoolBuffer
   {
     friend class Queue;
     

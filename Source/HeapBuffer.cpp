@@ -33,14 +33,14 @@ void HeapBuffer::operator delete(void* pHeapBufferAddress)
 {
   HeapBuffer* pHeapBuffer = static_cast<HeapBuffer*>(pHeapBufferAddress);
   
-  gpBufferPool->vFree((Buffer*)pHeapBuffer);
+  gpBufferPool->vFree((PoolBuffer*)pHeapBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 HeapBuffer::HeapBuffer(void)
-: Buffer(CN_HEAPBUFFER)
+: PoolBuffer(CN_HEAPBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   

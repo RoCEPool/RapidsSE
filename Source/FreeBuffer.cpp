@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Buffer* FreeBuffer::_pFreeBuffer(void* aAddr)
+PoolBuffer* FreeBuffer::_pFreeBuffer(void* aAddr)
 {
-  Buffer* pBuffer = reinterpret_cast<Buffer*>(aAddr);
+  PoolBuffer* pBuffer = reinterpret_cast<PoolBuffer*>(aAddr);
   
   RASSERT_TYPE(pBuffer,CN_FREEBUFFER);
   
@@ -20,7 +20,7 @@ Buffer* FreeBuffer::_pFreeBuffer(void* aAddr)
 /* constructor -- never called                                                */
 /*----------------------------------------------------------------------------*/
 FreeBuffer::FreeBuffer(void)
-: Buffer(CN_FREEBUFFER) // correct
+: PoolBuffer(CN_FREEBUFFER) // correct
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEBUFFER,_FOOTER_);
   

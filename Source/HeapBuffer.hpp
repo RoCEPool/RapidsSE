@@ -5,7 +5,7 @@
 
 namespace Pool
 {
-  class HeapBuffer : public Buffer
+  class HeapBuffer : public PoolBuffer
   {
   private:
     HeapBuffer* m_pNextBuffer;  // next buffer in list

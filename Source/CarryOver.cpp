@@ -23,14 +23,14 @@ void CarryOver::operator delete(void* pCarryOverAddress)
 {
   CarryOver* pCarryOver = static_cast<CarryOver*>(pCarryOverAddress);
   
-  gpBufferPool->vFree((Buffer*)pCarryOver);
+  gpBufferPool->vFree((PoolBuffer*)pCarryOver);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 CarryOver::CarryOver(void)
-: Buffer(CN_CARRYOVER)
+: PoolBuffer(CN_CARRYOVER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARRYOVER);
   

@@ -23,7 +23,7 @@ RecordBuffer* DBobjects::_pRecordBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* RecordBuffer::operator new(size_t)
 {
-  Buffer* pBuffer = (Buffer*)HeapMem::pAllocate(CN_RECORDBUFFER);
+  PoolBuffer* pBuffer = (PoolBuffer*)HeapMem::pAllocate(CN_RECORDBUFFER);
   
   return pBuffer;
 }
@@ -41,7 +41,7 @@ void* RecordBuffer::operator new(size_t, void* aAddr)
 /*----------------------------------------------------------------------------*/
 void RecordBuffer::operator delete(void* pBufferAddress)
 {
-  Buffer* pBuffer = static_cast<Buffer*>(pBufferAddress);
+  PoolBuffer* pBuffer = static_cast<PoolBuffer*>(pBufferAddress);
   
   HeapMem::vFree_NonObject(pBuffer);
 }

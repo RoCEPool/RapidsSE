@@ -5,7 +5,7 @@
 
 namespace StorageEngine
 {
-  class AttachMap : public Buffer
+  class AttachMap : public PoolBuffer
   {
   public:
     i8    m_iPid;
@@ -56,7 +56,7 @@ namespace StorageEngine
     Statistics    m_oStatistics;
     StepTiming*   m_pStepTiming;
     i8            m_iStop;
-    Buffer*       m_pTakenBuffers;
+    PoolBuffer*   m_pTakenBuffers;
     i8            m_nTakenBytes;
     Word*         m_pTenants;
     Atomic        m_ixThreads;

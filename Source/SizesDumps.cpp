@@ -313,7 +313,7 @@ i8 giClassSize[]
   /*    */ sizeof(FetchBuffer),        // CN_FETCHBUFFER
   /* 39 */ sizeof(File),               // CN_FILE
   /* 40 */ sizeof(Formatters),         // CN_FORMATTERS
-  /* 41 */ sizeof(Buffer),             // CN_FREEBUFFER
+  /* 41 */ sizeof(PoolBuffer),         // CN_FREEBUFFER
   /* 42 */ sizeof(FreeChunk),          // CN_FREECHUNK
   /* 43 */ 0,                          // CN_FREEDNOT
   /* 44 */ 0,                          // CN_FREEENTRY

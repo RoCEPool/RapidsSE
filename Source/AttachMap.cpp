@@ -40,14 +40,14 @@ void AttachMap::operator delete(void* pAttachMapAddress)
 {
   AttachMap* pAttachMap = static_cast<AttachMap*>(pAttachMapAddress);
   
-  gpBufferPool->vFree((Buffer*)pAttachMap);
+  gpBufferPool->vFree((PoolBuffer*)pAttachMap);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 AttachMap::AttachMap(void)
-: Buffer(CN_ATTACHMAP)
+: PoolBuffer(CN_ATTACHMAP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP);
   

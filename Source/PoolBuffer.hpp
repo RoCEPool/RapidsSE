@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Buffer.hpp - header for buffers in buffer pool                             */
+/* PoolBuffer.hpp - header for buffers in buffer pool                         */
 /*============================================================================*/
 #pragma once
 
 namespace Pool
 {
-  class Buffer : public Object
+  class PoolBuffer : public Object
   {
   protected:
     bn   m_nBufferNo;        // this buffer number
@@ -17,10 +17,10 @@ namespace Pool
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Buffer(eCN eClass);
-    ~Buffer(void) noexcept(false);
+    PoolBuffer(eCN eClass);
+    ~PoolBuffer(void) noexcept(false);
   
-    static Buffer* pGetBuffer(Object* pObject);
+    static PoolBuffer* pGetPoolBuffer(Object* pObject);
   
     bn    nBufferNo(void);
     void  vBufferNo(bn nBufferNo);
@@ -32,7 +32,7 @@ namespace Pool
     Footer* aFooter(void);
   };
   
-  Buffer* _pBuffer(void* aAddr);
+  PoolBuffer* _pPoolBuffer(void* aAddr);
 }
 
 /*============================================================================*/

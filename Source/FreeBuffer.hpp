@@ -5,7 +5,7 @@
 
 namespace Pool
 {
-  class FreeBuffer : public Buffer
+  class FreeBuffer : public PoolBuffer
   {
   private:
     bn m_nNextFree;  // next buffer in free chain
@@ -21,7 +21,7 @@ namespace Pool
     void vZeroData(void);
     void vSetFooter(void);
     
-    Buffer* _pFreeBuffer(void* aAddr);
+    PoolBuffer* _pFreeBuffer(void* aAddr);
   };
 }
 

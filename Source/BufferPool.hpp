@@ -9,7 +9,7 @@ namespace Pool
   static const i8 C_MEMORY_PERCENT = 95;
   static const void* C_ADDR_POOL = (void*)0x204800000000;
 
-  class Buffer;
+  class PoolBuffer;
 
   class BufferPool : public Object
   {
@@ -17,9 +17,9 @@ namespace Pool
     
   private:
     i8      m_nBuffers;  // number of buffers in pool
-    Buffer* m_pBase;     // starting address of pool (large section)
-    Buffer* m_pJumbo;    // starting address of jumbo section
-    Buffer* m_pLimit;    // address after pool
+    PoolBuffer* m_pBase;     // starting address of pool (large section)
+    PoolBuffer* m_pJumbo;    // starting address of jumbo section
+    PoolBuffer* m_pLimit;    // address after pool
     bool    m_bDontFree; // dont actually free objects back to heap
     bool    m_bFreeRB;   // but actually free RowBuffers back to heap
 
@@ -49,11 +49,11 @@ namespace Pool
   
     static void vReport(void);
     
-    Buffer* pAllocAttachMapBuffer(void);
+    PoolBuffer* pAllocAttachMapBuffer(void);
     i8      nAllocCount(void);
-    Buffer* pAllocHeapBuffer(void);
-    Buffer* pAllocOtherBuffer(void);
-    Buffer* pBase(void);
+    PoolBuffer* pAllocHeapBuffer(void);
+    PoolBuffer* pAllocOtherBuffer(void);
+    PoolBuffer* pBase(void);
     i8   nBufferCount(void);
     bn   nBufferFirst(void);
     bn   nBufferLast(void);
@@ -63,21 +63,21 @@ namespace Pool
     void vCheckAddress(const void* aAddress);
     bool bDetachPool(void);
     bool bDontFree(void);
-    void vFree(Buffer* pBuffer);
+    void vFree(PoolBuffer* pBuffer);
     i8   nFreeCount(void);
     i8   iFreePercent(void);
     bool bFreeRB(void);
     i8   iFreeSpace(void);
     bool bHasDataSpace(void);
     void vInitialise(bool bTouch, bool bProgress);
-    Buffer* pLimit(void);
+    PoolBuffer* pLimit(void);
     bool bLowMemory(void);
     void vMonitorPortrait(s48K& sPortrait);
-    Buffer* pNextJumbo(Buffer* pPrev);
+    PoolBuffer* pNextJumbo(PoolBuffer* pPrev);
     void vPoolDump(void);
-    Buffer* pToBuffer(bn nBuffer);
+    PoolBuffer* pToBuffer(bn nBuffer);
     FreeBuffer* pToFreeBuffer(bn nBuffer);
-    FreeBuffer* pToFreeBuffer(Buffer* pBuffer);
+    FreeBuffer* pToFreeBuffer(PoolBuffer* pBuffer);
     bool bValidAddress(const void* aAddress);
     bool bVerifyBoundaries(void);
     void vVerifyPool(void);

@@ -5,7 +5,7 @@
 
 namespace StorageEngine
 {
-  class CarryOver : public Buffer
+  class CarryOver : public PoolBuffer
   {
   public:
     

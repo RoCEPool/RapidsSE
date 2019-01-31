@@ -41,9 +41,9 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
   m_nBuffers = DIV(iRegionSize,C_SIZE_POOL_BUFFER)
                  - iJumboTook;
   
-  m_pBase  = reinterpret_cast<Buffer*>(this);
-  m_pLimit = (Buffer*)aAdd<void*>(m_pBase,iRegionSize);
-  m_pJumbo = (Buffer*)aAdd<void*>(m_pLimit,-(iJumboTook * C_SIZE_POOL_BUFFER));
+  m_pBase  = reinterpret_cast<PoolBuffer*>(this);
+  m_pLimit = (PoolBuffer*)aAdd<void*>(m_pBase,iRegionSize);
+  m_pJumbo = (PoolBuffer*)aAdd<void*>(m_pLimit,-(iJumboTook * C_SIZE_POOL_BUFFER));
   m_bDontFree = bDontFree;
   m_bFreeRB = bFreeRB;
   
@@ -115,7 +115,7 @@ void BufferPool::vReport(void)
 /*----------------------------------------------------------------------------*/
 /* allocate the one attachMap buffer from free chain in pool                  */
 /*----------------------------------------------------------------------------*/
-Buffer* BufferPool::pAllocAttachMapBuffer(void)
+PoolBuffer* BufferPool::pAllocAttachMapBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
@@ -123,7 +123,7 @@ Buffer* BufferPool::pAllocAttachMapBuffer(void)
   
   ++m_ixOtherBuffers;
   
-  return _pBuffer(pAllocatedBuffer);
+  return _pPoolBuffer(pAllocatedBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -139,7 +139,7 @@ i8 BufferPool::nAllocCount(void)
 /*----------------------------------------------------------------------------*/
 /* allocate a buffer for a HeapBuffer from free chain in pool                 */
 /*----------------------------------------------------------------------------*/
-Buffer* BufferPool::pAllocHeapBuffer(void)
+PoolBuffer* BufferPool::pAllocHeapBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
@@ -147,13 +147,13 @@ Buffer* BufferPool::pAllocHeapBuffer(void)
   
   ++m_ixHeapBuffers;
   
-  return _pBuffer(pAllocatedBuffer);
+  return _pPoolBuffer(pAllocatedBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate a buffer from free chain in pool                                  */
 /*----------------------------------------------------------------------------*/
-Buffer* BufferPool::pAllocOtherBuffer(void)
+PoolBuffer* BufferPool::pAllocOtherBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
@@ -161,13 +161,13 @@ Buffer* BufferPool::pAllocOtherBuffer(void)
   
   ++m_ixOtherBuffers;
 
-  return _pBuffer(pAllocatedBuffer);
+  return _pPoolBuffer(pAllocatedBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get base address                                                           */
 /*----------------------------------------------------------------------------*/
-Buffer* BufferPool::pBase(void)
+PoolBuffer* BufferPool::pBase(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
@@ -292,7 +292,7 @@ bool BufferPool::bDontFree(void)
 /*----------------------------------------------------------------------------*/
 /* free buffer back into free chain                                           */
 /*----------------------------------------------------------------------------*/
-void BufferPool::vFree(Buffer* pBuffer)
+void BufferPool::vFree(PoolBuffer* pBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
@@ -454,7 +454,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
 /*----------------------------------------------------------------------------*/
 /* get limit address                                                          */
 /*----------------------------------------------------------------------------*/
-Buffer* BufferPool::pLimit(void)
+PoolBuffer* BufferPool::pLimit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
@@ -492,17 +492,17 @@ void BufferPool::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 /* next jumbo pointer                                                         */
 /*----------------------------------------------------------------------------*/
-Buffer* BufferPool::pNextJumbo(Buffer* pPrev)
+PoolBuffer* BufferPool::pNextJumbo(PoolBuffer* pPrev)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  Buffer* pJumbo;
+  PoolBuffer* pJumbo;
   
   if ( ! pPrev ) {
     pJumbo = m_pJumbo;
   }
   else {
-    pJumbo = (Buffer*)aAdd<void*>(pPrev,C_SIZE_POOL_BUFFER*C_JUMBO_RATIO);
+    pJumbo = (PoolBuffer*)aAdd<void*>(pPrev,C_SIZE_POOL_BUFFER*C_JUMBO_RATIO);
     if (pJumbo >= m_pLimit)
       pJumbo = nullptr;
   }
@@ -552,15 +552,15 @@ void BufferPool::vPoolDump(void)
 /*----------------------------------------------------------------------------*/
 /* transalate buffer number to allocated buffer                               */
 /*----------------------------------------------------------------------------*/
-Buffer* BufferPool::pToBuffer(bn nBuffer)
+PoolBuffer* BufferPool::pToBuffer(bn nBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   i8 iOffset = C_SIZE_POOL_BUFFER * *nBuffer;
   
-  Buffer* pBuffer = static_cast<Buffer*>(MemLib::pAddBytes(m_pBase,iOffset));
+  PoolBuffer* pBuffer = static_cast<PoolBuffer*>(MemLib::pAddBytes(m_pBase,iOffset));
   
-  return pPoolCheck<Buffer*>(pBuffer);
+  return pPoolCheck<PoolBuffer*>(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -578,7 +578,7 @@ FreeBuffer* BufferPool::pToFreeBuffer(bn nBuffer)
 /*----------------------------------------------------------------------------*/
 /* transalate buffer number to free buffer                                    */
 /*----------------------------------------------------------------------------*/
-FreeBuffer* BufferPool::pToFreeBuffer(Buffer* pBuffer)
+FreeBuffer* BufferPool::pToFreeBuffer(PoolBuffer* pBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   

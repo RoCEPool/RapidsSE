@@ -33,7 +33,7 @@ namespace Pool
     /*  9 */ "ENUMS"_Stz
   };
   
-  class Heap : public Buffer
+  class Heap : public PoolBuffer
   {
   friend class HeapMem;
   

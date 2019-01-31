@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* FetchBuffer.cpp -- Fetch Buffer                                            */
+/* FetchBuffer.cpp -- Fetch PoolBuffer                                            */
 /*============================================================================*/
 
 #include "DBobjects.h"
@@ -23,7 +23,7 @@ FetchBuffer* DBobjects::_pFetchBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* FetchBuffer::operator new(size_t)
 {
-  Buffer* pBuffer = (Buffer*)HeapMem::pAllocate(CN_FETCHBUFFER);
+  PoolBuffer* pBuffer = (PoolBuffer*)HeapMem::pAllocate(CN_FETCHBUFFER);
   
   return pBuffer;
 }
@@ -41,7 +41,7 @@ void* FetchBuffer::operator new(size_t, void* aAddr)
 /*----------------------------------------------------------------------------*/
 void FetchBuffer::operator delete(void* pBufferAddress)
 {
-  Buffer* pBuffer = static_cast<Buffer*>(pBufferAddress);
+  PoolBuffer* pBuffer = static_cast<PoolBuffer*>(pBufferAddress);
   
   HeapMem::vFree_NonObject(pBuffer);
 }

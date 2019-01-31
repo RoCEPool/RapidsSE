@@ -1,5 +1,5 @@
 /*============================================================================*/
-/*  Buffer.cpp - head portion of a buffer in buffer pool                      */
+/* PoolBuffer.cpp - head portion of a buffer in buffer pool                   */
 /*============================================================================*/
 
 #include "Pool.h"
@@ -13,9 +13,9 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Buffer* Pool::_pBuffer(void* aAddr)
+PoolBuffer* Pool::_pPoolBuffer(void* aAddr)
 {
-  Buffer* pBuffer = reinterpret_cast<Buffer*>(aAddr);
+  PoolBuffer* pBuffer = reinterpret_cast<PoolBuffer*>(aAddr);
   
   //RASSERT_TYPE(pTask,???);
   
@@ -25,10 +25,10 @@ Buffer* Pool::_pBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Buffer::operator new(size_t)
+void* PoolBuffer::operator new(size_t)
 {
   RASSERT(0);
-  Buffer* pBuffer = gpBufferPool->pAllocOtherBuffer();
+  PoolBuffer* pBuffer = gpBufferPool->pAllocOtherBuffer();
   
   return pBuffer;
 }
@@ -36,10 +36,10 @@ void* Buffer::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Buffer::operator delete(void* pBufferAddress)
+void PoolBuffer::operator delete(void* pBufferAddress)
 {
   RASSERT(0);
-  Buffer* pBuffer = static_cast<Buffer*>(pBufferAddress);
+  PoolBuffer* pBuffer = static_cast<PoolBuffer*>(pBufferAddress);
   
   gpBufferPool->vFree(pBuffer);
 }
@@ -47,7 +47,7 @@ void Buffer::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Buffer::Buffer(eCN eClassNo)
+PoolBuffer::PoolBuffer(eCN eClassNo)
 : Object(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -67,7 +67,7 @@ Buffer::Buffer(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Buffer::~Buffer(void) noexcept(false)
+PoolBuffer::~PoolBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -80,9 +80,10 @@ Buffer::~Buffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get buffer that an object is within                                        */
 /*----------------------------------------------------------------------------*/
-Buffer* Buffer::pGetBuffer(Object* pObject)
+PoolBuffer* PoolBuffer::pGetPoolBuffer(Object* pObject)
 {
-  Buffer* pBuffer = _pBuffer(pBitAnd<Buffer*>(pObject,C_OBJECT_TO_BUFFER_MASK));
+  PoolBuffer* pBuffer =
+    _pPoolBuffer(pBitAnd<PoolBuffer*>(pObject,C_OBJECT_TO_BUFFER_MASK));
   
   return pBuffer;
 }
@@ -90,7 +91,7 @@ Buffer* Buffer::pGetBuffer(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* get buffer number                                                          */
 /*----------------------------------------------------------------------------*/
-bn Buffer::nBufferNo(void)
+bn PoolBuffer::nBufferNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -100,7 +101,7 @@ bn Buffer::nBufferNo(void)
 /*----------------------------------------------------------------------------*/
 /* set buffer number                                                          */
 /*----------------------------------------------------------------------------*/
-void Buffer::vBufferNo(bn nBufferNo)
+void PoolBuffer::vBufferNo(bn nBufferNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -110,12 +111,12 @@ void Buffer::vBufferNo(bn nBufferNo)
 /*----------------------------------------------------------------------------*/
 /* get address of data area in buffer                                         */
 /*----------------------------------------------------------------------------*/
-void* Buffer::aDataArea(void)
+void* PoolBuffer::aDataArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   // last byte in buffer
-  void* aDataArea = aAdd<void*>((char*)this,sizeof(Buffer));
+  void* aDataArea = aAdd<void*>((char*)this,sizeof(PoolBuffer));
   
   return aDataArea;
 }
@@ -123,7 +124,7 @@ void* Buffer::aDataArea(void)
 /*----------------------------------------------------------------------------*/
 /* get address of last usable byte in buffer                                  */
 /*----------------------------------------------------------------------------*/
-Stz* Buffer::aLastUsableByte(void)
+Stz* PoolBuffer::aLastUsableByte(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
@@ -139,7 +140,7 @@ Stz* Buffer::aLastUsableByte(void)
 /*----------------------------------------------------------------------------*/
 /* get overflow buffer number                                                 */
 /*----------------------------------------------------------------------------*/
-bn Buffer::nOverflowBuffer(void)
+bn PoolBuffer::nOverflowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -149,7 +150,7 @@ bn Buffer::nOverflowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set overflow buffer number                                                 */
 /*----------------------------------------------------------------------------*/
-void Buffer::vOverflowBuffer(bn nOverflowBuffer)
+void PoolBuffer::vOverflowBuffer(bn nOverflowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -163,7 +164,7 @@ void Buffer::vOverflowBuffer(bn nOverflowBuffer)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Buffer::aFooter(void)
+Footer* PoolBuffer::aFooter(void)
 {
   // Note: cannot check _FOOTER_ here
   _precondition_(_ADDRESS_,_MAGIC_);

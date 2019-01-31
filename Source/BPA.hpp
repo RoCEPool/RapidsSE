@@ -11,7 +11,7 @@ namespace Pool
   {
   public:
     
-    static void vBufferDump(Buffer* pBuffer);
+    static void vBufferDump(PoolBuffer* pBuffer);
     static void vEpochDump(s48K& sPortrait);
     static void vEpochTake(void);
     static void vHeapDump(Heap* pBuffer);

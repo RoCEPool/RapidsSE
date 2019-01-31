@@ -432,7 +432,7 @@ void Axioms::vAddConstants(void)
   /*  8 */ vAddConstant("SIZEOF_ARGUMENTS"_Stz,    sizeof(Arguments));
   /*  9 */ vAddConstant("SIZEOF_ATOMIC"_Stz,       sizeof(Atomic));
   /* 10 */ vAddConstant("SIZEOF_ATTACHMAP"_Stz,    sizeof(AttachMap));
-  /* 11 */ vAddConstant("SIZEOF_BUFFER"_Stz,       sizeof(Buffer));
+  /* 11 */ vAddConstant("SIZEOF_POOLBUFFER"_Stz,   sizeof(PoolBuffer));
   /* 12 */ vAddConstant("SIZEOF_BUFFERPOOL"_Stz,   sizeof(BufferPool));
   /* 13 */ vAddConstant("SIZEOF_BPA"_Stz,          sizeof(BPA));
   /* 14 */ vAddConstant("SIZEOF_DIC"_Stz,          sizeof(Dic));
@@ -443,7 +443,6 @@ void Axioms::vAddConstants(void)
   /* 19 */ vAddConstant("SIZEOF_GRID"_Stz,         sizeof(Grid));
   /* 20 */ vAddConstant("SIZEOF_HEAPBUFFER"_Stz,   sizeof(HeapBuffer));
   /*    */ vAddConstant("SIZEOF_INDEX"_Stz,        sizeof(Index));
-  /* 21 */ //vAddConstant("SIZEOF_INDEXDEFN"_Stz,    sizeof(IndexDefn));
 
   /* 24 */ vAddConstant("SIZEOF_LOCK"_Stz,         sizeof(Lock));
   /* 25 */ vAddConstant("SIZEOF_MEDIUMHEAP"_Stz,   sizeof(Heap));
