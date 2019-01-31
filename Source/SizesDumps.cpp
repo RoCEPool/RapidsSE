@@ -332,7 +332,7 @@ i8 giClassSize[]
   /*    */ sizeof(IoChunk),            // CN_IOCHUNK
   /*    */ sizeof(IoCopy),             // CN_IOCOPY
   /* 57 */ sizeof(Item),               // CN_ITEM
-  /* 58 */ sizeof(ItemBuffer),         // CN_ITEMBUFFER
+  /* 58 */ sizeof(ItemHeap),         // CN_ITEMBUFFER
   
   /*    */ sizeof(Job__Begun),         // CN_JOB__BEGUN
   /*    */ sizeof(Job__Cancel),        // CN_JOB__CANCEL

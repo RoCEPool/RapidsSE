@@ -21,7 +21,7 @@ using namespace MiniHeaps;
 #include "FreeEntry.hpp"
 #include "Wilderness.hpp"
 
-#include "ItemBuffer.hpp"
+#include "ItemHeap.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
