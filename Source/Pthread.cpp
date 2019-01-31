@@ -738,7 +738,7 @@ void* Pthread::aStackBase(void)
   
   aAddress = pthread_get_stackaddr_np(tThread);
   
-#elif WITH_LINUX
+#elif defined(WITH_LINUX)
   
   size_t iStackSize;
   pthread_attr_t attr;
@@ -781,7 +781,7 @@ i8 Pthread::iStackSize(void)
   
   iSize = pthread_get_stacksize_np(tThread);
   
-#elif WITH_LINUX
+#elif defined(WITH_LINUX)
   
   pthread_attr_t attr;
   void* aAddress;

@@ -19,7 +19,7 @@ i8 Tsc::iTicks(void)
   i8 iTicks = tp.tv_sec * C_1G;
   iTicks += tp.tv_nsec;
   
-#elif WITH_LINUX
+#elif defined(WITH_LINUX)
   struct timeval iTimeval;
   
   if (gettimeofday(&iTimeval, NULL) < 0) {

@@ -58,7 +58,7 @@ u8 Atomic::uAtomicAdd(i8* pWord, i8 iValue)
 #ifdef WITH_APPLE
   u8 uResult = OSAtomicAdd64(iValue, pWord);
   
-#elif WITH_LINUX
+#elif defined(WITH_LINUX)
   u8 uResult = __sync_add_and_fetch((u8*)pWord, iValue);
   
 #else
@@ -76,7 +76,7 @@ u8 Atomic::uAtomicDec(i8* pWord)
 #ifdef WITH_APPLE
   u8 uResult = OSAtomicDecrement64(pWord);
   
-#elif WITH_LINUX
+#elif defined(WITH_LINUX)
   u8 uResult = __sync_sub_and_fetch((u8*)pWord, 1);
   
 #else
@@ -95,7 +95,7 @@ u8 Atomic::uAtomicInc(i8* pWord)
 #ifdef WITH_APPLE
   u8 uResult = OSAtomicIncrement64(pWord);
   
-#elif WITH_LINUX
+#elif defined(WITH_LINUX)
   u8 uResult = __sync_add_and_fetch((u8*)pWord, 1);
   
 #else
@@ -115,7 +115,7 @@ bool Atomic::bTestAndSet(u8* pWord, u8 uIf, u8 uThen)
 #ifdef WITH_APPLE
   u8 uResult = OSAtomicCompareAndSwap64((i8)uIf,(i8)uThen,(i8*)pWord);
   
-#elif WITH_LINUX
+#elif defined(WITH_LINUX)
   bool uResult = __sync_bool_compare_and_swap(pWord, uIf, uThen);
   
 #else
