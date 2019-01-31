@@ -145,7 +145,6 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:
     
-     void         vBuildOffsetL0(void);
     void         vBuildSkipList(void);
     void         vCompact(void);
     void         vCompactLeft2(void);

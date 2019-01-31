@@ -1115,20 +1115,6 @@ bool EntryBuffer::bVerify(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* build L0 of the skip list from the lazy chain                              */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vBuildOffsetL0(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  ASSERT(! aFirstEntry());
-  
-  Entry* aTailEntry = m_aHeadEntry;
-  while (Entry* aPoppedEntry = aPopLazyChain())
-    {;}
-}
-
-/*----------------------------------------------------------------------------*/
 /* build skip list from the lazy chain                                        */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vBuildSkipList(void)
