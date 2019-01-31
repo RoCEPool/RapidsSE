@@ -82,7 +82,7 @@ EntryBuffer::EntryBuffer(void)
   
   m_aHeadEntry  = nullptr;
   m_aLastEntry  = nullptr;
-  m_aFreeEntryList  = nullptr;
+  m_aFreeItemChain  = nullptr;
   
   m_aLazyChain  = nullptr;
   

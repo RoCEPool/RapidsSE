@@ -144,10 +144,10 @@ void ItemHeap::vFreeItem(Item* aItem)
   
   FreeItem* aFreeItem = FreeItem::aMorphFreeItem(aItem);
   
-  if (m_aFreeEntryList)
-    aFreeItem->vNextFree(m_aFreeEntryList);
+  if (m_aFreeItemChain)
+    aFreeItem->vNextFree(m_aFreeItemChain);
   
-  m_aFreeEntryList = aFreeItem;
+  m_aFreeItemChain = aFreeItem;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decement the number of items in buffer

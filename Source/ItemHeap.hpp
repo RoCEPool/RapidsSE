@@ -17,7 +17,7 @@ namespace MiniHeaps
     ItemHeap* m_pHigherBuffer; // higher level buffer that has entries
                                // that point to this buffer
 
-    FreeItem* m_aFreeEntryList; // head of free entry list
+    FreeItem* m_aFreeItemChain; // head of free item chain
 
     Wsp_t<C_WSP_ITEMHEAP> m_xWsp;
   

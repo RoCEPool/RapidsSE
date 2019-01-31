@@ -736,7 +736,7 @@ void EntryBuffer::vReset(void)
   
   m_aHeadEntry  = nullptr;
   m_aLastEntry  = nullptr;
-  m_aFreeEntryList  = nullptr;
+  m_aFreeItemChain  = nullptr;
   
   m_aLazyChain  = nullptr;
   
@@ -777,10 +777,10 @@ void EntryBuffer::vRestore(void)
     m_aLastEntry = pBitOr<Entry*>(pThisBuffer,uOffset);
   }
   
-  // calculate offset for m_aFreeEntryList and set it
-  if (m_aFreeEntryList) {
-    uOffset = nSub(m_aFreeEntryList, pOriginalBuffer);
-    m_aFreeEntryList = pBitOr<FreeItem*>(pThisBuffer,uOffset);
+  // calculate offset for m_aFreeItemChain and set it
+  if (m_aFreeItemChain) {
+    uOffset = nSub(m_aFreeItemChain, pOriginalBuffer);
+    m_aFreeItemChain = pBitOr<FreeItem*>(pThisBuffer,uOffset);
   }
   
   // calculate offset for m_aLazyChain and set it
@@ -848,7 +848,7 @@ void EntryBuffer::vShow(Entry* aMarkEntry)
          m_aHeadEntry,m_aHeadEntry ? m_aHeadEntry->iNEO(0) : 0,
          m_aHeadEntry ? m_aHeadEntry->iNEO(1) : 0,
          m_aHeadEntry ? m_aHeadEntry->iNEO(2) : 0,
-         m_aLastEntry,m_aFreeEntryList);
+         m_aLastEntry,m_aFreeItemChain);
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
@@ -1172,11 +1172,11 @@ void EntryBuffer::vCompact(void)
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   // we can only compact if there are free entries
-  if (! m_aFreeEntryList)
+  if (! m_aFreeItemChain)
     return;
   
   // loose the free list so vShow() works correctly
-  m_aFreeEntryList = nullptr;
+  m_aFreeItemChain = nullptr;
   
   // scan item is the working pointer
   Item* aScanItem = aFirstItem();
@@ -1536,7 +1536,7 @@ FreeItem* EntryBuffer::aFirstFree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  return m_aFreeEntryList;
+  return m_aFreeItemChain;
 }
 
 /*----------------------------------------------------------------------------*/
