@@ -24,7 +24,6 @@ using namespace Data;
 typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 
 #include "EntWrk.hpp"
-#include "EntWrkV2.hpp"
 #include "KeyWrk.hpp"
 #include "RightVec.hpp"
 #include "Key.hpp"
