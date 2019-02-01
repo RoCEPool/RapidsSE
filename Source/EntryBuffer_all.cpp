@@ -1250,7 +1250,7 @@ void EntryBuffer::vCompact(void)
     // now copy move entry left onto free entry
     
     // calculate the number of bytes to copy
-    i8 nCopyBytes = aMoveEntry->nSizeEntry() + aMoveEntry->iNEOsize();
+    i8 nCopyBytes = aMoveEntry->nSizeItem() + aMoveEntry->iNEOsize();
     
     // copy the move entry over the free entry
     MemLib::vMove(aFreeEntry, aMoveEntry, nCopyBytes, CN_ENTRYBUFFER);
@@ -1332,7 +1332,7 @@ void EntryBuffer::vCompactLeft2(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Item* aThisWilderness = aAdd<Item*>(m_aHeadEntry,
-                                      m_aHeadEntry->nSizeEntry() +
+                                      m_aHeadEntry->nSizeItem() +
                                       m_aHeadEntry->iNEOsize());
   
   vSetUsed(aThisWilderness);
@@ -2096,9 +2096,9 @@ FreeItem* EntryBuffer::aMakeFreeEntry(Entry* aEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  i8 nSizeEntry = aEntry->nSizeEntry();
+  i8 nSizeItem = aEntry->nSizeItem();
   i8 nSizeNEO   = aEntry->iNEOsize();
-  i8 nSizeFree  = nSizeEntry + nSizeNEO;
+  i8 nSizeFree  = nSizeItem + nSizeNEO;
   
   FreeItem* aFreeEntry = new(aEntry) FreeItem(nSizeFree);
   

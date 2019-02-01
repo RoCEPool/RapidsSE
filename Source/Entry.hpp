@@ -61,7 +61,6 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // entry proper
     EntryBuffer* pReferencedEntryBuffer(void);
-    i8   nSizeEntry(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // data area

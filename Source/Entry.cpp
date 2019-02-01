@@ -172,16 +172,6 @@ EntryBuffer* Entry::pReferencedEntryBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size in bytes of this entry occurence incl Object & Footer             */
-/*----------------------------------------------------------------------------*/
-i8 Entry::nSizeEntry(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
-  
-  return nSizeItem();
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Row Data ----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -365,7 +355,7 @@ void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
   vTrace("%lld: Entry: %p Size: %llu Offsets: %llu "_Stz,
          iOffset,
          this,
-         nSizeEntry(),
+         nSizeItem(),
          nOffsets()
          );
   
@@ -775,13 +765,13 @@ char* Entry::aAddressAfter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  i8 nEntryBytes = nSizeEntry();
+  i8 nItemBytes = nSizeItem();
   
-  i8 nSizeNEO = iNEOsize();
+  i8 nNEObytes = iNEOsize();
   
-  i8 nEntryPlusNEO = nEntryBytes + nSizeNEO;
+  i8 nItemPlusNEO = nItemBytes + nNEObytes;
   
-  char* aAfter = aAdd<char*>(this,nEntryPlusNEO);
+  char* aAfter = aAdd<char*>(this,nItemPlusNEO);
   
   return aAfter;
 }
