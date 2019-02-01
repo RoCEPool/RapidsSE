@@ -6,15 +6,6 @@
 #pragma pack(push)
 #pragma pack(1)
 
-
-//#define USE_LW_FOOTER
-
-#ifdef USE_LW_FOOTER
-  #define LW_FOOTER_CHECK() aFooter()->vAssertFooter();
-#else
-  #define LW_FOOTER_CHECK()
-#endif
-
 namespace DBobjects
 {
   class EntryBuffer;
@@ -109,7 +100,7 @@ namespace DBobjects
   /*--------------------------------------------------------------------------*/
   inline Key* Entry::aKey(void)
   {
-    _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+    _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
     
     Key* aKey = reinterpret_cast<Key*>(aEmbeddedData());
     

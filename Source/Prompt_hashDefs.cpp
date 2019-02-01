@@ -59,11 +59,7 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
 #ifdef WITH_ENTRY_EXIT
   vTrace("  WITH_ENTRY_EXIT\n"_Stz);
 #endif
-    
-#ifdef USE_LW_FOOTER
-  vTrace("  USE_LW_FOOTER\n"_Stz);
-#endif
-    
+        
 #ifdef WITH_MUNGED_SEN
   vTrace("  WITH_MUNGED_SEN\n"_Stz);
 #endif

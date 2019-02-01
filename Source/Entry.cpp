@@ -46,13 +46,9 @@ Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
   m_iEntryNo = -1;
 #endif
   
-#ifdef USE_LW_FOOTER
-  aFooter()->vSetFooter();
-#endif
-  
   _checkInitialised_(eClassNo);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +56,7 @@ Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
 /*----------------------------------------------------------------------------*/
 Entry::~Entry(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,15 +81,9 @@ i8 Entry::nBytesRequired(EntWrk& xEntWrk)
 i8 Entry::nBytesRequired(i8 nEmbeddedBytes)
 {
   //
-  // memory layout is:  Entry|EmbeddedObject|Footer
-  //
+  // memory layout is:  Entry|EmbeddedObject
   
-  i8 nEntryBytes = sizeof(Entry)
-                    + nEmbeddedBytes
-#ifdef USE_LW_FOOTER
-                    + sizeof(Footer)
-#endif
-  ;
+  i8 nEntryBytes = sizeof(Entry) + nEmbeddedBytes ;
   
   return nEntryBytes;
 }
@@ -111,9 +101,6 @@ i8 Entry::nBytesRequired(i8 nEmbeddedBytes, i8 nOffsets)
   
   i8 nTotalBytes = sizeof(Entry)
                     + nEmbeddedBytes
-#ifdef USE_LW_FOOTER
-                    + sizeof(Footer)
-#endif
                     + nOffsetBytes;
   
   return nTotalBytes;
@@ -128,7 +115,7 @@ i8 Entry::nBytesRequired(i8 nEmbeddedBytes, i8 nOffsets)
 /*----------------------------------------------------------------------------*/
 EntryBuffer* Entry::pReferencedEntryBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
   
   //EntryBuffer* pEntryBuffer = m_xId.pReferencedEntryBuffer();
   EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(m_xId);
@@ -145,7 +132,7 @@ EntryBuffer* Entry::pReferencedEntryBuffer(void)
 /*----------------------------------------------------------------------------*/
 Row* Entry::aRow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
   
   Row* aRow = reinterpret_cast<Row*>(aEmbeddedData());
   
@@ -157,7 +144,7 @@ Row* Entry::aRow(void)
 /*----------------------------------------------------------------------------*/
 char* Entry::aRowData(void)                   //! this function just seems wrong
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
   
   i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets());
 
@@ -173,7 +160,7 @@ char* Entry::aRowData(void)                   //! this function just seems wrong
 /*----------------------------------------------------------------------------*/
 i8 Entry::nRowSize(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
   
   //i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
   i8 iRowSize = nSizeItem() - (sizeof(Entry) + sizeof(Footer));
@@ -190,7 +177,7 @@ i8 Entry::nRowSize(void)
 /*----------------------------------------------------------------------------*/
 Entry* Entry::aDataEntry(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
 
   // get the referenced entry buffer of this entries Id
   EntryBuffer* pEntryBuffer = pReferencedEntryBuffer();
@@ -210,7 +197,7 @@ Entry* Entry::aDataEntry(void)
 /*----------------------------------------------------------------------------*/
 char* Entry::aEmbeddedData(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
   
   char* aData = aAdd<char*>(this,sizeof(Entry));
   
@@ -232,7 +219,7 @@ char* Entry::aEmbeddedData(void)
 /*----------------------------------------------------------------------------*/
 void Entry::vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
   
   ASSERT(nSizeItem());
   
@@ -253,7 +240,7 @@ void Entry::vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
   m_iIntKey = aKey()->iGetInt();
 #endif
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
 }
 
 /*----------------------------------------------------------------------------*/
@@ -261,7 +248,7 @@ void Entry::vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
 /*----------------------------------------------------------------------------*/
 void Entry::vSetEntry(KeyWrk& xKeyWrk)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
@@ -279,7 +266,7 @@ void Entry::vSetEntry(KeyWrk& xKeyWrk)
   
   MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENTRY);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
 }
 
 /*----------------------------------------------------------------------------*/
@@ -287,7 +274,7 @@ void Entry::vSetEntry(KeyWrk& xKeyWrk)
 /*----------------------------------------------------------------------------*/
 void Entry::vSetEntry(RowWrk& xRowWrk)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
@@ -305,7 +292,7 @@ void Entry::vSetEntry(RowWrk& xRowWrk)
  
   MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_ENTRY);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
 }
 
 /*----------------------------------------------------------------------------*/
@@ -313,7 +300,7 @@ void Entry::vSetEntry(RowWrk& xRowWrk)
 /*----------------------------------------------------------------------------*/
 void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
   
   Key* aKey = this->aKey();
   
@@ -364,7 +351,7 @@ void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
 /*----------------------------------------------------------------------------*/
 void Entry::vContentDump(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
     
   vTrace("Entry %p: ThisBytes %lld %p (%lld bytes) \n"_Stz,
          this,
@@ -380,7 +367,7 @@ void Entry::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
   
   GenVar xVariable;
   
@@ -494,7 +481,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 void Entry::vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
   
   w8 wColumnWord;
   
@@ -570,7 +557,7 @@ void Entry::vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 char* Entry::pExtractSortKey(char* aElement, IdxColVec* pIdxColVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
   
   w8 wColumnWord;
   
@@ -642,26 +629,6 @@ char* Entry::pExtractSortKey(char* aElement, IdxColVec* pIdxColVec)
   
   return aElement;
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get address of footer                                                      */
-/*----------------------------------------------------------------------------*/
-#ifdef USE_LW_FOOTER
-Footer* Entry::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  i8 iFooterOffset = nSizeItem() - sizeof(Footer);
-  
-  Footer* aFooter = pAdd<Footer*>(this,iFooterOffset);
-  
-  return aFooter;
-}
-#endif
 
 /*============================================================================*/
 /* end                                                                        */
