@@ -69,7 +69,6 @@ typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 #include "IndexTree.hpp"
 
 
-#include "FetchBuffer.hpp"
 
 #include "TablePtn.hpp"
 

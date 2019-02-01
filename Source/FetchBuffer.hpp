@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace Jobs
 {
   class FetchBuffer : public Object
   {
