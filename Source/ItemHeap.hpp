@@ -41,6 +41,7 @@ namespace MiniHeaps
     i8     nFreeBytes(void); //-> nAvailBytes()
     void   vFreeItem(Item* aItem);
     void   vGiveSpace(i8 nBytes);
+    bool   bHasSpace(i8 nBytes);
     void   vIsLast(bool bIsLast);
     bool   bIsLast(void);
     i8     nItems(void);

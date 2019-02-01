@@ -432,36 +432,6 @@ NEO* EntryBuffer::aAllotNEO(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does buffer have space for nBytes ?                                        */
-/*----------------------------------------------------------------------------*/
-bool EntryBuffer::bHasSpace(i8 nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  i8 nFree = m_xWsp.nFree() - sizeof(Wilderness);
-  
-  // we allow for only C_ENTRIES_L0 - 16 entries
-  if (nItems() >= C_ENTRIES_L0 - 16) {
-    return false;
-  }
-  
-  if (gpAttachMap->m_nIndexEntries > 0) {
-    // has space calculation based on no of entries
-    if (m_nItems >= gpAttachMap->m_nIndexEntries)
-      return false;
-    else
-      return true;
-  }
-  else {
-    // has space calculation based on free space
-    if (nFree < nBytes)
-      return false;
-    else
-      return true;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* set up the initial entry offset free chain                                 */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vInitFreeChain(void)

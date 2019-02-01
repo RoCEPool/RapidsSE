@@ -218,6 +218,34 @@ void ItemHeap::vGiveSpace(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does buffer have space for nBytes ?                                        */
+/*----------------------------------------------------------------------------*/
+bool ItemHeap::bHasSpace(i8 nBytes)
+{
+  i8 nFree = m_xWsp.nFree() - sizeof(Wilderness);
+  
+  // we allow for only C_ENTRIES_L0 - 16 entries
+  if (nItems() >= C_ENTRIES_L0 - 16) {
+    return false;
+  }
+  
+  if (gpAttachMap->m_nIndexEntries > 0) {
+    // has space calculation based on no of entries
+    if (m_nItems >= gpAttachMap->m_nIndexEntries)
+      return false;
+    else
+      return true;
+  }
+  else {
+    // has space calculation based on free space
+    if (nFree < nBytes)
+      return false;
+    else
+      return true;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* set buffer is last                                                         */
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vIsLast(bool bIsLast)

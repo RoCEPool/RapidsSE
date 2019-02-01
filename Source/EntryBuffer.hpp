@@ -85,7 +85,6 @@ namespace DBobjects
   private:
     Entry* aAllotEntry(i8 nBytes);
     NEO*   aAllotNEO(i8 nBytes);
-    bool   bHasSpace(i8 nBytes);
     void   vInitFreeChain(void);
 
   
