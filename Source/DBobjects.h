@@ -83,8 +83,6 @@ typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 #include "RowCursor.hpp"
 #include "RowOnce.hpp"
 
-#include "BndLib.hpp"
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
