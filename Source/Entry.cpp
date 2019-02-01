@@ -195,9 +195,12 @@ void Entry::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* extract an index key into KeyWrk from this row using given index columns   */
 /*----------------------------------------------------------------------------*/
-void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
+void Entry::vExtractIndexKey(Entry* aRowEntry, KeyWrk& xKeyWrk,
+                             IdxColVec* pIdxColVec)
 {
   GenVar xVariable;
+  
+  RASSERT(this == aRowEntry);
   
   Row* aThisRow = aRowData();
   

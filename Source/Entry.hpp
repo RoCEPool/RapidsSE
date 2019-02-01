@@ -42,7 +42,7 @@ namespace Data
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row
     void vContentDump(void);
-    void vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
+    void vExtractIndexKey(Entry* aRowEntry, KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
     };
   
   /*--------------------------------------------------------------------------*/
