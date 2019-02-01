@@ -552,24 +552,12 @@ Entry* EntryBuffer::aNextEntry(Entry* aCurrent, i8 i_Offset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  //#ifdef USE_EB_LAZY_CHAIN
-  //RASSERT( ! m_aLazyChain );
-  //#endif
-  
-#ifdef WITH_DEBUG_VERSION
-  aCurrent->vAssertEntry();
-#endif
-  
   i4 iOffset = aCurrent->iNEO(i_Offset);
   
   if (-1 == iOffset)
     return nullptr;
   
   char* aAddress = aAdd<char*>(aDataArea(), iOffset);
-  //Item* aItem = _pItem(aAddress);
-  
-  //if (CN_ENTRY != pItem->eClass())
-  //  vShow();
   
   Entry* aEntry = _aEntry(aAddress);
   

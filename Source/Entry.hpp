@@ -43,7 +43,6 @@ namespace DBobjects
     Entry(eCN eClassNo, i8 nThisBytes, i8 uOffsets);
     ~Entry(void) noexcept(false);
   
-    void vAssertEntry(void);
     bool bValidEntry(void);
   
     static i8 nBytesRequired(EntWrk& xEntWrk);
@@ -65,8 +64,8 @@ namespace DBobjects
     Entry* aDataEntry(void);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // embedded object area
-    char* aEmbeddedObject(void);
+    // embedded data area
+    char* aEmbeddedData(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key
@@ -113,7 +112,7 @@ namespace DBobjects
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
     
-    Key* aKey = reinterpret_cast<Key*>(aEmbeddedObject());
+    Key* aKey = reinterpret_cast<Key*>(aEmbeddedData());
     
     return aKey;
   }

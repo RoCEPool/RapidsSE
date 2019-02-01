@@ -64,14 +64,6 @@ Entry::~Entry(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert valid entry                                                         */
-/*----------------------------------------------------------------------------*/
-void Entry::vAssertEntry(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
-}
-
-/*----------------------------------------------------------------------------*/
 /* test for valid entry                                                       */
 /*----------------------------------------------------------------------------*/
 bool Entry::bValidEntry(void)
@@ -182,7 +174,7 @@ Row* Entry::aRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
-  Row* aRow = reinterpret_cast<Row*>(aEmbeddedObject());
+  Row* aRow = reinterpret_cast<Row*>(aEmbeddedData());
   
   return aRow;
 }
@@ -196,7 +188,7 @@ char* Entry::aRowData(void)                   //! this function just seems wrong
   
   i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets());
 
-  char* aKey = aAdd<char*>(aEmbeddedObject(),nOffsetBytes);
+  char* aKey = aAdd<char*>(aEmbeddedData(),nOffsetBytes);
   // assuming key is CT_INTEGER for hidden index
   char* aRow = aAdd<char*>(aKey, sizeof(i8));                        //ALKA-TODO
   
@@ -243,13 +235,13 @@ Entry* Entry::aDataEntry(void)
 /*----------------------------------------------------------------------------*/
 /* get address of embedded object                                             */
 /*----------------------------------------------------------------------------*/
-char* Entry::aEmbeddedObject(void)
+char* Entry::aEmbeddedData(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
-  char* aEmbObj = aAdd<char*>(this,sizeof(Entry));
+  char* aData = aAdd<char*>(this,sizeof(Entry));
   
-  return pPoolCheck<char*>(aEmbObj);
+  return pPoolCheck<char*>(aData);
 }
 
 
