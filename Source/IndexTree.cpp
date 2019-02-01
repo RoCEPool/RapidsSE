@@ -883,7 +883,7 @@ bool IndexTree::bInsertEntry(Entry* aRowEntry)
   m_okLock.vGrabWrite();
   
   KeyWrk xKeyWrk;
-  KeyWrk::vExtractKey(aRowEntry,xKeyWrk, m_pIndex->pIdxColVec());
+  xKeyWrk.vExtractKey(aRowEntry,xKeyWrk,m_pIndex->pIdxColVec());
   
   xKeyWrk.vId(aRowEntry->xId());
   
