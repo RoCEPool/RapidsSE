@@ -28,8 +28,8 @@ namespace MiniHeaps
   
     FreeItem* m_aFreeItemChain; // head of free item chain
 
-    i4* m_iaEntryOffsets;    // array of row entry offsets
-    i4  m_i_FreeOffsetChain; // head of free entry offset chain
+    i4* m_iaItemOffsets;     // array of offsets to items in m_xWsp
+    i4  m_i_FreeOffsetChain; // head of free item offset chain
 
 
     Wsp_t<C_WSP_ITEMHEAP> m_xWsp;
@@ -48,7 +48,7 @@ namespace MiniHeaps
     Item*  aFirstItem(void);
     i8     nFreeBytes(void); //-> nAvailBytes()
     void   vFreeItem(Item* aItem);
-    i4     iGetFreeRowEntry(void);
+    i4     iGetItemNo(void);
     void   vGiveSpace(i8 nBytes);
     bool   bHasSpace(i8 nBytes);
     void   vInitFreeChain(void);

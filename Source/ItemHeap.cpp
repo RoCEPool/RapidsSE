@@ -45,7 +45,7 @@ ItemHeap::ItemHeap(eCN eClassNo)
   m_aFreeItemChain  = nullptr;
 
   // entry offsets array
-  m_iaEntryOffsets    = nullptr;
+  m_iaItemOffsets    = nullptr;
   m_i_FreeOffsetChain = C_NO_MORE_ITEMS;
   
   
@@ -224,22 +224,22 @@ void ItemHeap::vFreeItem(Item* aItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a free entry (or C_NO_MORE_ITEMS if none)                              */
+/* get next free item number (or C_NO_MORE_ITEMS if none)                     */
 /*----------------------------------------------------------------------------*/
-i4 ItemHeap::iGetFreeRowEntry(void)
+i4 ItemHeap::iGetItemNo(void)
 {
   RASSERT( (m_i_FreeOffsetChain >= 0 && m_i_FreeOffsetChain < C_MAX_ITEMS) ||
-          (C_NO_MORE_ITEMS == m_i_FreeOffsetChain) );
+           (C_NO_MORE_ITEMS == m_i_FreeOffsetChain) );
   
   if (C_NO_MORE_ITEMS == m_i_FreeOffsetChain)
     return C_NO_MORE_ITEMS;
   
-  i4 i_FreeEntry = m_i_FreeOffsetChain;
+  i4 i_ItemNo = m_i_FreeOffsetChain;
   
-  RASSERT(i_FreeEntry < C_MAX_ITEMS);
-  m_i_FreeOffsetChain = - m_iaEntryOffsets[i_FreeEntry];
+  RASSERT(i_ItemNo < C_MAX_ITEMS);
+  m_i_FreeOffsetChain = - m_iaItemOffsets[i_ItemNo];
   
-  return i_FreeEntry;
+  return i_ItemNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -285,7 +285,7 @@ bool ItemHeap::bHasSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vInitFreeChain(void)
 {
-  m_iaEntryOffsets  =
+  m_iaItemOffsets  =
     reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_MAX_ITEMS));
   
   m_i_FreeOffsetChain = C_NO_MORE_ITEMS;
@@ -295,11 +295,11 @@ void ItemHeap::vInitFreeChain(void)
   
   for (i4 i_Item = 0; i_Item < (iMaxItems - 1); i_Item++) {
     RASSERT(i_Item >= 0 && i_Item < C_MAX_ITEMS);
-    m_iaEntryOffsets[i_Item] = - (i_Item + 1);
+    m_iaItemOffsets[i_Item] = - (i_Item + 1);
   }
   
   RASSERT((iMaxItems - 1) >= 0 && (iMaxItems - 1) < C_MAX_ITEMS);
-  m_iaEntryOffsets[iMaxItems - 1] = - C_NO_MORE_ITEMS;
+  m_iaItemOffsets[iMaxItems - 1] = - C_NO_MORE_ITEMS;
   
   m_i_FreeOffsetChain = 0;
 }

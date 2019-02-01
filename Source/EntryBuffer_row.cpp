@@ -58,7 +58,7 @@ Entry* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   
   bn nBufferNo = this->nPoolBufferNo();
   
-  i8 i_RowNo = iGetFreeRowEntry(); //nItems();
+  i8 i_RowNo = iGetItemNo(); //nItems();
   if (C_NO_MORE_ITEMS == i_RowNo) {
     vTrace("No free row entries\n"_Stz);
     return nullptr;
@@ -90,7 +90,7 @@ Entry* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   
   i4 iEntryOffset = iToOffset(aRowEntry);
   RASSERT(i_RowNo >= 0 && i_RowNo < C_MAX_ITEMS);
-  m_iaEntryOffsets[i_RowNo] = iEntryOffset;
+  m_iaItemOffsets[i_RowNo] = iEntryOffset;
   
   if (m_aLastEntry)
     m_aLastEntry->vNEO(0,iEntryOffset);

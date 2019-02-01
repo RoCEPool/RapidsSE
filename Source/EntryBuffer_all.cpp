@@ -310,7 +310,7 @@ Entry* EntryBuffer::aGetEntryRowNo(i8 i_RowNo)
     return nullptr;
   
   RASSERT(i_RowNo >= 0 && i_RowNo < C_MAX_ITEMS);
-  i4 iOffset = m_iaEntryOffsets[i_RowNo];
+  i4 iOffset = m_iaItemOffsets[i_RowNo];
   
   char* aAddress = aAdd<char*>(aDataArea(), iOffset);
   
@@ -714,7 +714,7 @@ void EntryBuffer::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  RASSERT(nullptr == m_iaEntryOffsets);
+  RASSERT(nullptr == m_iaItemOffsets);
   RASSERT(! m_pIndex->bIsHidden());
   RASSERT(1 == m_iLevelNo);
   
@@ -751,9 +751,9 @@ void EntryBuffer::vRestore(void)
   // get this buffer address
   PoolBuffer* pThisBuffer = pBitAnd<PoolBuffer*>(this,C_OBJECT_TO_BUFFER_MASK);
   
-  // calculate offset for m_iaEntryOffsets and set it
-  u8 uOffset = nSub(m_iaEntryOffsets, pOriginalBuffer);
-  m_iaEntryOffsets = aBitOr<i4*>(pThisBuffer,uOffset);
+  // calculate offset for m_iaItemOffsets and set it
+  u8 uOffset = nSub(m_iaItemOffsets, pOriginalBuffer);
+  m_iaItemOffsets = aBitOr<i4*>(pThisBuffer,uOffset);
   
   // calculate offset for m_aHeadEntry and set it
   uOffset = nSub(m_aHeadEntry, pOriginalBuffer);
@@ -830,7 +830,7 @@ void EntryBuffer::vShow(Entry* aMarkEntry)
          m_pIndex ? m_pIndex->aIndexName() : "NULL"_Stz,m_iPartitionNo,m_iLevelNo);
   
   vTrace("  entryOffset: %p freeOffsetHead: %lld\n"_Stz,
-         m_iaEntryOffsets,m_i_FreeOffsetChain);
+         m_iaItemOffsets,m_i_FreeOffsetChain);
   
   vTrace("  headEntry: %p[%d,%d,%d] lastEntry: %p firstFree: %p\n"_Stz,
          m_aHeadEntry,m_aHeadEntry ? m_aHeadEntry->iNEO(0) : 0,
@@ -3208,7 +3208,7 @@ bool EntryBuffer::bVerifyEntryOffset(void)
   for (i8 i_RowNo = 0; i_RowNo < gpAttachMap->m_nIndexEntries; i_RowNo++) {
     
     RASSERT(i_RowNo < C_MAX_ITEMS);
-    i8 i_RowOffset = m_iaEntryOffsets[i_RowNo];
+    i8 i_RowOffset = m_iaItemOffsets[i_RowNo];
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // validate free offset element
@@ -3220,7 +3220,7 @@ bool EntryBuffer::bVerifyEntryOffset(void)
         continue;
       
       // get the next offset in free chain
-      i8 i_NextRowEntryOffset = m_iaEntryOffsets[ - i_RowOffset ];
+      i8 i_NextRowEntryOffset = m_iaItemOffsets[ - i_RowOffset ];
       
       // next offset should be free (or end of free chain)
       if (i_NextRowEntryOffset >= 0) {
