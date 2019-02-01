@@ -19,6 +19,8 @@ using namespace Interface;
 
 //-----------------------------------------------------------------------------
 
+#include "RecordBuffer.hpp"
+
 #include "Session.hpp"
 #include "ApiMacros.hpp"
 

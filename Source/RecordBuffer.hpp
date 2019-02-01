@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace Interface
 {
   const int C_SIZEOF_RECORDSIZE = 4;
   

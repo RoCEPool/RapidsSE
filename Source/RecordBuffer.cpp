@@ -2,7 +2,7 @@
 /* RecordBuffer.cpp -- Record Buffer                                          */
 /*============================================================================*/
 
-#include "DBobjects.h"
+#include "Interface.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RecordBuffer* DBobjects::_pRecordBuffer(void* aAddr)
+RecordBuffer* Interface::_pRecordBuffer(void* aAddr)
 {
   RecordBuffer* pRecordBuffer = reinterpret_cast<RecordBuffer*>(aAddr);
   

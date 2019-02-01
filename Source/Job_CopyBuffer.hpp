@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+namespace Interface { class RecordBuffer; }
 namespace Jobs
 {
   class Job_SubInserter;
@@ -13,7 +14,7 @@ namespace Jobs
   {
   public:
     Job_SubInserter* m_pJob_SubInserter;
-    RecordBuffer*    m_pRecordBuffer;
+  Interface::RecordBuffer*    m_pRecordBuffer;
     
     // must be last
     Footer m_xFooter;
