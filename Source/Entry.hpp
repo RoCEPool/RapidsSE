@@ -43,8 +43,6 @@ namespace Data
     // row
     void vContentDump(void);
     void vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
-    void vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
-    char* pExtractSortKey(char *aElement, IdxColVec* pIdxColVec);
     };
   
   /*--------------------------------------------------------------------------*/
