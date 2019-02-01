@@ -19,7 +19,7 @@ namespace Data
     KeyWrk(void);
     ~KeyWrk(void) noexcept(false);
   
-    void vExtractKey(Entry* aRowEntry, KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
+    void vExtractKey(Entry* aRowEntry, IdxColVec* pIdxColVec);
 
     void vAddDatum(char* aDatum);
     void vAddDatum(GenVar& xVariable, Column* pCol);

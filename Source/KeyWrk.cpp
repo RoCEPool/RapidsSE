@@ -59,7 +59,7 @@ KeyWrk::~KeyWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* extract an index key into KeyWrk from this row using given index columns   */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vExtractKey(Entry* aRowEntry, KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
+void KeyWrk::vExtractKey(Entry* aRowEntry, IdxColVec* pIdxColVec)
 {
   GenVar xVariable;
   
@@ -164,7 +164,7 @@ void KeyWrk::vExtractKey(Entry* aRowEntry, KeyWrk& xKeyWrk, IdxColVec* pIdxColVe
     }
     
     // add the column value to the key
-    xKeyWrk.vAddDatum(xVariable, pColumn);
+    vAddDatum(xVariable, pColumn);
   }
   
 }
