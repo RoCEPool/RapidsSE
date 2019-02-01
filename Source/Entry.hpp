@@ -6,7 +6,7 @@
 #pragma pack(push)
 #pragma pack(1)
 
-namespace DBobjects
+namespace Data
 {
   class EntryBuffer;
   class EntWrk;

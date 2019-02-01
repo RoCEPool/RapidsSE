@@ -2,7 +2,7 @@
 /* Row.cpp -- Row                                                             */
 /*============================================================================*/
 
-#include "DBobjects.h"
+#include "Data.h"
 
 #include "StorageEngine.h"
 
@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Row* DBobjects::_pRow(void* aAddr)
+Row* Data::_pRow(void* aAddr)
 {
   Row* pRow = reinterpret_cast<Row*>(aAddr);
   

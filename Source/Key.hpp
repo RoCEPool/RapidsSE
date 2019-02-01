@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace Data
 {
   enum eJC // JuxtaPosition
   {

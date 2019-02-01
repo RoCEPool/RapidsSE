@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace Data
 {
   static const i8 C_HIGHER_LEVEL_ID = 0xFFFF;
   

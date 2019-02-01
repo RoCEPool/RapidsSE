@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace Data
 {
   class IndexTree;
   
@@ -35,7 +35,7 @@ namespace MetaData
     i8 m_nSubInsertersDone;      // number of subInserters which have completed
     i8 m_iParentJobId;           // parent jobid
     
-  DBobjects::IndexTreeVec* m_pIndexTreeVec; // vector of index trees
+  Data::IndexTreeVec* m_pIndexTreeVec; // vector of index trees
   
     // must be last
     Footer m_xFooter;
@@ -54,7 +54,7 @@ namespace MetaData
   
     void vAddLoadWriteBehindBuffers(i8 nBuffersLoadable);
     void vAddInsertWriteBehindBuffers(i8 nBuffersInsertable);
-    void vAddIndex(DBobjects::IndexTree* pIndexTree);
+    void vAddIndex(Data::IndexTree* pIndexTree);
     bool bAllBuffersWritten(eDS eDataSource);
     void vWriteBehindBuffers(i8 nWriteBehindBuffers);
     void vBuffersWritten(i8 m_nBuffersWritten);
@@ -64,10 +64,10 @@ namespace MetaData
     void vDropWrite();
     bool bGrabRead(void);
     bool bGrabWrite(void);
-    DBobjects::IndexTree* pHiddenIndexTree(void);
+    Data::IndexTree* pHiddenIndexTree(void);
     void vIncBuffersWritten(void);
-    DBobjects::IndexTree* pIndexTree(i8 iIndexNo);
-    DBobjects::IndexTreeVec* pIndexTreeVec(void);
+    Data::IndexTree* pIndexTree(i8 iIndexNo);
+    Data::IndexTreeVec* pIndexTreeVec(void);
     bool bIsLocked(void);
     void vParentJobId(i8 iJobId);
     i8   iParentJobId(void);

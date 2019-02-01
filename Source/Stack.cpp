@@ -925,7 +925,7 @@ void Stack::vPushCell(Cell* aCell)
 /*----------------------------------------------------------------------------*/
 /* push buffer entry onto value stack                                         */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushEntry(DBobjects::Entry* aEntry)
+void Stack::vPushEntry(Data::Entry* aEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

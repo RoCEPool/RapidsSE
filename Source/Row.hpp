@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace Data
 {
   static const i8 C_COLUMN_OFFSET_SIZE = 2;
   static const i8 C_MAX_RECORD = C_16KB;

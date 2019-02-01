@@ -2,7 +2,7 @@
 /* EntryBuffer.cpp -- Entry Buffer                                            */
 /*============================================================================*/
 
-#include "DBobjects.h"
+#include "Data.h"
 
 #include "StorageEngine.h"
 
@@ -18,7 +18,7 @@ bool mbWatch = false;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* DBobjects::_pEntryBuffer(void* aAddress)
+EntryBuffer* Data::_pEntryBuffer(void* aAddress)
 {
   EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>(aAddress);
   

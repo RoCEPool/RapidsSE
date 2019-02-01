@@ -2,7 +2,7 @@
 /* IndexTree.cpp - index data portion of table partition                      */
 /*============================================================================*/
 
-#include "DBobjects.h"
+#include "Data.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -77,7 +77,7 @@ IndexTree::~IndexTree(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IndexTree* DBobjects::_pIndexTree(void* pAddr)
+IndexTree* Data::_pIndexTree(void* pAddr)
 {
   IndexTree* pIndexTree = reinterpret_cast<IndexTree*>(pAddr);
   

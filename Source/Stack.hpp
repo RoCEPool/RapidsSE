@@ -6,7 +6,7 @@
 // forward declarations
 namespace Tasks { class Task; }
 namespace Steps { class Step; }
-namespace DBobjects { class Entry; }
+namespace Data { class Entry; }
 
 //------------------------------------------------------------------------------
 
@@ -94,7 +94,7 @@ namespace Forth
   
     void vPushBool(bool bBool);
     void vPushCell(Cell* aCell);
-    void vPushEntry(DBobjects::Entry* aEntry);
+    void vPushEntry(Data::Entry* aEntry);
     void vPushGenVar(GenVar* pGenVar);
     void vPushGenVar(GenVar& xGenVar);
     void vPushI8(i8 iInt);

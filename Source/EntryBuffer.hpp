@@ -7,7 +7,7 @@
 #define USE_EB_SINGLE_COLIDX
 //#define USE_EB_WATCH
 
-namespace DBobjects
+namespace Data
 {
   class EntryBuffer : public ItemHeap
   {

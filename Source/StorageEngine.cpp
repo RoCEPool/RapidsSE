@@ -28,7 +28,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Commands::vCheckAssumptions();
   Transactions::vCheckAssumptions();
   Forth::vCheckAssumptions();
-  DBobjects::vCheckAssumptions();
+  Data::vCheckAssumptions();
   Chunks::vCheckAssumptions();
   Plans::vCheckAssumptions();
   Jobs::vCheckAssumptions();

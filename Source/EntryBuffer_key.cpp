@@ -2,7 +2,7 @@
 /* EntryBuffer_key.cpp -- key related functions for Entry Buffer              */
 /*============================================================================*/
 
-#include "DBobjects.h"
+#include "Data.h"
 
 #include "StorageEngine.h"
 

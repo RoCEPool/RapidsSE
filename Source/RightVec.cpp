@@ -2,7 +2,7 @@
 /* RightVec.cpp -- Right vector (array of offsets)                            */
 /*============================================================================*/
 
-#include "DBobjects.h"
+#include "Data.h"
 
 #include "StorageEngine.h"
 
@@ -14,7 +14,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RightVec* DBobjects::_aRightVec(void* aAddr)
+RightVec* Data::_aRightVec(void* aAddr)
 {
   RightVec* aRightVec = reinterpret_cast<RightVec*>(aAddr);
   
