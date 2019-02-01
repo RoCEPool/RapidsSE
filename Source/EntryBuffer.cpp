@@ -235,7 +235,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
        aEntry = aNextEntry(aEntry, 0)) {
     
     // get the index buffer from the entry
-    pNextBuffer = aEntry->pReferencedEntryBuffer();
+    pNextBuffer = EntryBuffer::pRefdEntryBuffer(aEntry);
     
     ASSERT(pNextBuffer);
     ASSERT(pNextBuffer->eClass() == CN_ENTRYBUFFER);
@@ -342,7 +342,7 @@ void EntryBuffer::vTruncate(void)
          aEntry = aNextEntry(aEntry, 0)) {
       
       // get the index buffer from the entry
-      pNextBuffer = aEntry->pReferencedEntryBuffer();
+      pNextBuffer = EntryBuffer::pRefdEntryBuffer(aEntry);
       
       ASSERT(pNextBuffer);
       ASSERT(pNextBuffer->eClass() == CN_ENTRYBUFFER);

@@ -32,9 +32,6 @@ namespace DBobjects
     static i8 nBytesRequired(i8 nEmbeddedBytes);
     static i8 nBytesRequired(i8 nEmbeddedBytes, i8 nOffsets);
   
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // entry proper
-    EntryBuffer* pReferencedEntryBuffer(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // data area
@@ -45,7 +42,7 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // data entry
     Entry* aDataEntry(void);
-      
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key
     Key* aKey(void);

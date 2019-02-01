@@ -100,21 +100,6 @@ i8 Entry::nBytesRequired(i8 nEmbeddedBytes, i8 nOffsets)
   return nTotalBytes;
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- Entry Proper ------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get the entry buffer that this entry references                            */
-/*----------------------------------------------------------------------------*/
-EntryBuffer* Entry::pReferencedEntryBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
-  
-  EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(m_xId);
-
-  return pEntryBuffer;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Row Data ----------------------------------------------------------------*/
@@ -173,7 +158,7 @@ Entry* Entry::aDataEntry(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
 
   // get the referenced entry buffer of this entries Id
-  EntryBuffer* pEntryBuffer = pReferencedEntryBuffer();
+  EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(this);
   
   // get the row entry
   Entry* aRowEntry = pEntryBuffer->aGetEntryRowNo(m_xId.iItem());
