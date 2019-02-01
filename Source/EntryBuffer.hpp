@@ -30,7 +30,7 @@ namespace DBobjects
   
     ////////////////////////////////////////////////////////////////////////////
     // only used in index entry buffers
-    Entry* m_aHeadEntry; // head entry (not the first logical entry in buffer)
+    Entry* m_aHeadEntry; // skiplist head (not first logical entry in buffer)
     Entry* m_aLastEntry; // last entry (would append to this)
     Entry* m_aLazyChain; // first lazy entry
   
@@ -80,7 +80,6 @@ namespace DBobjects
   
   private:
     Entry* aAllotEntry(i8 nBytes);
-    NEO*   aAllotNEO(i8 nBytes);
     void   vInitFreeChain(void);
 
   

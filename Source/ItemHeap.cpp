@@ -104,6 +104,18 @@ Item* ItemHeap::aAllotItem(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allot an offset array in this buffer                                       */
+/*----------------------------------------------------------------------------*/
+NEO* ItemHeap::aAllotNEO(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  NEO* aNEO = reinterpret_cast<NEO*>(aAllotSpace(nBytes));
+  
+  return aNEO;
+}
+
+/*----------------------------------------------------------------------------*/
 /* allot space for nBytes in this buffer                                      */
 /*----------------------------------------------------------------------------*/
 char* ItemHeap::aAllotSpace(i8 nBytes)

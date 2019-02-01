@@ -418,20 +418,6 @@ Entry* EntryBuffer::aAllotEntry(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot an offset array in this buffer                                       */
-/*----------------------------------------------------------------------------*/
-NEO* EntryBuffer::aAllotNEO(i8 nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  NEO* aNEO = reinterpret_cast<NEO*>(aAllotSpace(nBytes));
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return aNEO;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set up the initial entry offset free chain                                 */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vInitFreeChain(void)
