@@ -65,6 +65,28 @@ ItemHeap::~ItemHeap(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get age of buffer in seconds                                               */
+/*----------------------------------------------------------------------------*/
+i8 ItemHeap::iAgeInSeconds(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  Since oSince;
+  oSince.vNow();
+  
+  Ivl wDiff;
+  
+  wDiff = oSince.wSubtract(m_oWhenNewed);
+  
+  i8 iAge = wDiff.iSecond();
+  
+  return iAge;
+}
+
+/*----------------------------------------------------------------------------*/
 /* allot an item of nBytes in this buffer                                     */
 /*----------------------------------------------------------------------------*/
 Item* ItemHeap::aAllotItem(i8 nBytes)
@@ -111,6 +133,21 @@ char* ItemHeap::aDataArea(void)
   return aStart;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get decile full of the buffer                                              */
+/*----------------------------------------------------------------------------*/
+i8 ItemHeap::iDecile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  i8 iDecile;
+  
+  if (gpAttachMap->m_nIndexEntries == 0)
+    iDecile = IntLib::iDecile(m_xWsp.nUsed(), C_SIZE_POOL_BUFFER);
+  else
+    iDecile = IntLib::iDecile(m_nItems, gpAttachMap->m_nIndexEntries);
+  
+  return iDecile;
+}
 /*----------------------------------------------------------------------------*/
 /* decrement number of items in buffer                                        */
 /*----------------------------------------------------------------------------*/
@@ -181,6 +218,25 @@ void ItemHeap::vGiveSpace(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set buffer is last                                                         */
+/*----------------------------------------------------------------------------*/
+void ItemHeap::vIsLast(bool bIsLast)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_bIsLast = bIsLast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get if buffer is last                                                      */
+/*----------------------------------------------------------------------------*/
+bool ItemHeap::bIsLast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  return m_bIsLast;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of items in the buffer                                          */
 /*----------------------------------------------------------------------------*/
 i8 ItemHeap::nItems(void)
@@ -201,6 +257,26 @@ void ItemHeap::vItems(i8 nItems)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set buffer level                                                           */
+/*----------------------------------------------------------------------------*/
+void ItemHeap::vLevelNo(i8 iLevelNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iLevelNo = iLevelNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the buffer level                                                       */
+/*----------------------------------------------------------------------------*/
+i8 ItemHeap::iLevelNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_iLevelNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next item                                                              */
 /*----------------------------------------------------------------------------*/
 Item* ItemHeap::aNextItem(Item* aItem)
@@ -215,6 +291,24 @@ Item* ItemHeap::aNextItem(Item* aItem)
     return nullptr;
     
   return aNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set partition no                                                           */
+/*----------------------------------------------------------------------------*/
+void ItemHeap::vPartitionNo(i8 iPartitionNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  m_iPartitionNo = iPartitionNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get partition no                                                           */
+/*----------------------------------------------------------------------------*/
+i8 ItemHeap::iPartitionNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  return m_iPartitionNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -269,112 +363,15 @@ i8 ItemHeap::nUsedBytes(void)
   return nBytes;
 }
 
-
-
-
-
-/*----------------------------------------------------------------------------*/
-/* get age of buffer in seconds                                               */
-/*----------------------------------------------------------------------------*/
-i8 ItemHeap::iAgeInSeconds(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  Since oSince;
-  oSince.vNow();
-  
-  Ivl wDiff;
-  
-  wDiff = oSince.wSubtract(m_oWhenNewed);
-  
-  i8 iAge = wDiff.iSecond();
-  
-  return iAge;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set buffer level                                                           */
-/*----------------------------------------------------------------------------*/
-void ItemHeap::vLevelNo(i8 iLevelNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_iLevelNo = iLevelNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the buffer level                                                       */
-/*----------------------------------------------------------------------------*/
-i8 ItemHeap::iLevelNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_iLevelNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get decile full of the buffer                                              */
-/*----------------------------------------------------------------------------*/
-i8 ItemHeap::iDecile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  i8 iDecile;
-  
-  if (gpAttachMap->m_nIndexEntries == 0)
-    iDecile = IntLib::iDecile(m_xWsp.nUsed(), C_SIZE_POOL_BUFFER);
-  else
-    iDecile = IntLib::iDecile(m_nItems, gpAttachMap->m_nIndexEntries);
-  
-  return iDecile;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set buffer is last                                                         */
-/*----------------------------------------------------------------------------*/
-void ItemHeap::vIsLast(bool bIsLast)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  m_bIsLast = bIsLast;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get if buffer is last                                                      */
-/*----------------------------------------------------------------------------*/
-bool ItemHeap::bIsLast(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  return m_bIsLast;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set partition no                                                           */
-/*----------------------------------------------------------------------------*/
-void ItemHeap::vPartitionNo(i8 iPartitionNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  m_iPartitionNo = iPartitionNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get partition no                                                           */
-/*----------------------------------------------------------------------------*/
-i8 ItemHeap::iPartitionNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  return m_iPartitionNo;
-}
-
 /*----------------------------------------------------------------------------*/
 /* when was this buffer newed?                                                */
 /*----------------------------------------------------------------------------*/
 Since& ItemHeap::oWhenNewed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-
+  
   return m_oWhenNewed;
 }
-
-
 
 
 /*----------------------------------------------------------------------------*/
