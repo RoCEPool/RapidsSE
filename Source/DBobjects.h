@@ -12,15 +12,9 @@ namespace DBobjects
 {
   void vCheckAssumptions(void);
 
-  static const i8 C_FLAT_LEVELS_MAX = 16;
-  static const i8 C_FLAT_OFFSETS_MAX = C_FLAT_LEVELS_MAX - 1;
-  
-  //static const i8 C_FLAT_LEVELS  = 3;                        // number of levels
-  //static const i8 C_FLAT_OFFSETS = C_FLAT_LEVELS - 1;        // number of offsets
-  
-
-  static const i8 C_FLAT_FREQ    = 2;
-  
+  static const i8 C_FLAT_LEVELS_MAX   = 16;
+  static const i8 C_FLAT_OFFSETS_MAX  = C_FLAT_LEVELS_MAX - 1;
+  static const i8 C_FLAT_FREQ         = 2;
   static const i8 C_MAX_INDEX_COLUMNS = 16;
   
   enum eDS // data source
@@ -46,13 +40,9 @@ using namespace DBobjects;
 
 //------------------------------------------------------------------------------
 
-#define USE_VLQ_DATUMS          // use vlq code for int and bcd datums
-
-
+#define USE_VLQ_DATUMS // use vlq code for int and bcd datums
 
 typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
-
-
 
 #include "EntWrk.hpp"
 #include "EntWrkV2.hpp"
@@ -68,14 +58,10 @@ typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 #include "IndexTree.hpp"
 
 
-
 #include "TablePtn.hpp"
-
 #include "Slots.hpp"
-
 #include "Table.hpp"
 #include "Index.hpp"
-
 
 /*============================================================================*/
 /* end                                                                        */
