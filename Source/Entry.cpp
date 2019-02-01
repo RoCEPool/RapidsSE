@@ -38,13 +38,7 @@ Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
   
-  //m_xId
-  //m_iTxId    = -1;
-  m_xId.vOffsets(nOffsets);
-  
-#ifdef WITH_DEBUG_VERSION
-  m_iEntryNo = -1;
-#endif
+   m_xId.vOffsets(nOffsets);
   
   _checkInitialised_(eClassNo);
   

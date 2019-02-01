@@ -17,14 +17,7 @@ namespace DBobjects
   {
   protected:
 
-#ifdef WITH_DEBUG_VERSION
-    i8  m_iIntKey;    // key debug hack
-#endif
-  
   public:
-#ifdef WITH_DEBUG_VERSION
-    i8  m_iEntryNo;   // verify of entry order
-#endif
     // ..embedded object..
 
   public:
