@@ -18,6 +18,7 @@ namespace MiniHeaps
     Item(eCN eClassNo, i8 nSizeItem);
     ~Item(void) noexcept(false);
   
+    i8   iBufferNo(void);
     bn   nBufferNo(void);
     Id&  xId(void);
     void vId(Id xId);

@@ -159,17 +159,6 @@ i8 Entry::nBytesRequired(i8 nEmbeddedBytes, i8 nOffsets)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get buffer no                                                              */
-/*----------------------------------------------------------------------------*/
-i8 Entry::iBufferNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
-  
-  return m_xId.iBuffer();
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* get the entry buffer that this entry references                            */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* Entry::pReferencedEntryBuffer(void)
