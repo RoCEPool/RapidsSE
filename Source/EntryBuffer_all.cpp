@@ -2254,42 +2254,6 @@ EntryBuffer* EntryBuffer::pNewNextBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next item in buffer (could be entry, free entry, wilderness)           */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aNextItem(Item* aCurrent)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  Item* aItemNext = nullptr;
-  
-  eCN eClass = aCurrent->eClass();
-  
-  switch (eClass) {
-    case CN_ENTRY: {
-      Entry* aEntryCurr = static_cast<Entry*>(aCurrent);
-      aItemNext = aEntryCurr->aItemAfter();
-      break;
-    }
-      
-    case CN_FREEENTRY: {
-      FreeItem* aFreeEntryCurr = static_cast<FreeItem*>(aCurrent);
-      aItemNext = reinterpret_cast<Item*>(aFreeEntryCurr->aAddressAfter());
-      break;
-    }
-      
-    case CN_WILDERNESS:
-      break;
-      
-    default:
-      vShow();
-      ASSERT(0);
-      break;
-  }
-  
-  return aItemNext;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop entry from lazy chain                                                  */
 /*----------------------------------------------------------------------------*/
 Entry* EntryBuffer::aPopLazyChain(void)

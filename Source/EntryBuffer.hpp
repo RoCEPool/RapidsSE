@@ -168,12 +168,11 @@ namespace DBobjects
                                    EntryBuffer** ppRootKeyBuffer);
     void         vItemCountRestore(void);
     bool         bKeyBeforeBuffer(Key* aKey);
-    FreeItem*   aMakeFreeEntry(Entry* aEntry);
+    FreeItem*    aMakeFreeEntry(Entry* aEntry);
     EntryBuffer* pNewHigherBuffer(void);
     EntryBuffer* pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
                                   EntryBuffer** ppRootKeyBuffer);
     EntryBuffer* pNewNextBuffer(void);
-    Item*        aNextItem(Item* aItem);
     Entry*       aPopLazyChain(void);
     EntryBuffer* pPositionPriorBuffer(Key* aFindKey);
     Entry*       pPositionPriorEntry(Key* aFindKey);
