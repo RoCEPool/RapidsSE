@@ -876,26 +876,16 @@ void IndexTree::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-bool IndexTree::bInsertEntry(Entry* aRow)
+bool IndexTree::bInsertEntry(Entry* aRowEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   m_okLock.vGrabWrite();
   
-  //static i8 nInserts = 0;
-  
-  //nInserts++;
-  
   KeyWrk xKeyWrk;
-  aRow->vExtractIndexKey(xKeyWrk, m_pIndex->pIdxColVec());
+  aRowEntry->vExtractIndexKey(xKeyWrk, m_pIndex->pIdxColVec());
   
-  xKeyWrk.vId(aRow->xId());
-  
-  //if (2947 == nInserts) {
-  //  xKeyWrk.vShow(m_pIndex->pIdxColVec());
-  //  m_pRootBuffer->vShowTree();
-  //  int iDebug = 1;
-  //}
+  xKeyWrk.vId(aRowEntry->xId());
   
   if ( ! m_pRootBuffer ) {
     m_pRootBuffer = new EntryBuffer;
@@ -903,23 +893,12 @@ bool IndexTree::bInsertEntry(Entry* aRow)
     m_pRootBuffer->vPartitionNo(m_iPartitionNo);
   }
   
-  //bool bInserted = bInsertEntry(m_pRootBuffer, xKeyWrk, pRow->xId(), 0);
-  
-  Entry* aKeyEntry =
-    EntryBuffer::aInsertKeyTree(xKeyWrk,
-                                &m_pRootBuffer);
+  Entry* aKeyEntry = EntryBuffer::aInsertKeyTree(xKeyWrk,&m_pRootBuffer);
   ASSERT(aKeyEntry);
   
   m_okLock.vDropWrite();
   
-  //if ( ! bVerify() ) {
-  //  vTrace("Inserting row that caused verify to fail:\n"_Stz);
-  //  pRow->vContentDump();
-  //  vDump();
-  //  NEVER_REACH;
-  //}
-  
-  return true;                                                    //ALKA
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
