@@ -111,20 +111,6 @@ Row* Entry::aRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get row data address                                                       */
-/*----------------------------------------------------------------------------*/
-char* Entry::aRowData(void)                   //! this function just seems wrong
-{
-  i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets());
-
-  char* aKey = aAdd<char*>(aDataArea(),nOffsetBytes);
-  // assuming key is CT_INTEGER for hidden index
-  char* aRow = aAdd<char*>(aKey, sizeof(i8));                        //ALKA-TODO
-  
-  return aRow;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get row data size                                                          */
 /*----------------------------------------------------------------------------*/
 i8 Entry::nRowSize(void)
@@ -272,7 +258,7 @@ void Entry::vContentDump(void)
          this,
          //m_iTxId,
          nSizeItem(),
-         aRowData(),
+         aRow(),
          nRowSize()
          );
 }
