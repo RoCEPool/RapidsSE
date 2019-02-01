@@ -53,6 +53,124 @@ KeyWrk::~KeyWrk(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* extract an index key into KeyWrk from this row using given index columns   */
+/*----------------------------------------------------------------------------*/
+void KeyWrk::vExtractKey(Entry* aRowEntry, KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
+{
+  GenVar xVariable;
+  
+  Row* aRowEntryData = aRowEntry->aRowData();
+  
+  i8 nCols = pIdxColVec->nItems();
+  for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
+    
+    // get the column from the index column vector
+    Column* pColumn = pIdxColVec->pGet(i_Column);
+    
+    // get the column number of the column
+    i8 iColumnNo = pColumn->iColumnNo();
+    
+    // get the column value from the row for the iColumnNo
+    
+    char* pDst = aRowEntryData->aColumnDatum(iColumnNo);
+    
+    switch(pColumn->eDatumType()) {
+        
+      case DM_BOL: {
+        Bol xBol = *((Bol*)pDst);
+        xVariable = xBol;
+        break;
+      }
+        
+      case DM_DTE: {
+        Dte xDte = *((Dte*)pDst);
+        xVariable = xDte;
+        break;
+      }
+        
+      case DM_BCD: {
+#ifdef USE_VLQ_DATUMS
+        i8 iInt = IntLib::iVlqToInt((byte*)pDst);
+        Bcd xBcd = *((Bcd*)&iInt);
+        xVariable = xBcd;
+        break;
+#else
+        Bcd xBcd = *((Bcd*)pDst);
+        xVariable = xBcd;
+        break;
+#endif
+      }
+        
+      case DM_FLT: {
+        Flt xFlt = *((Flt*)pDst);
+        xVariable = xFlt.dAsD8();
+        break;
+      }
+        
+      case DM_INT: {
+#ifdef USE_VLQ_DATUMS
+        i8 iInt = IntLib::iVlqToInt((byte*)pDst);
+        Int xInt = *((Int*)&iInt);
+        xVariable = xInt.iAsI8();
+        break;
+#else
+        Int xInt = *((Int*)pDst);
+        xVariable = xInt.iAsI8();
+        break;
+#endif
+        
+      }
+        
+      case DM_IVL: {
+        Ivl xIvl = *((Ivl*)pDst);
+        xVariable = xIvl;
+        break;
+      }
+        
+      case DM_TME: {
+        Tme xTme = *((Tme*)pDst);
+        //bool b = Tme::bExtract(pDst,&xTme,iLength,pColumn);
+        //ASSERT(b);
+        xVariable = xTme;
+        break;
+      }
+        
+      case DM_TSP: {
+        Tsp xTsp = *((Tsp*)pDst);
+        //bool b = Tsp::bExtract(pDst,&xTsp,iLength,pColumn);
+        //ASSERT(b);
+        xVariable = xTsp;
+        break;
+      }
+        
+      case DM_VBN: {
+        NEVER_REACH;
+        break;
+      }
+        
+      case DM_VCH: {
+        s17KB s;
+        s = (Stz*)pDst;
+        xVariable = s;
+        break;
+      }
+        
+      default:
+        NEVER_REACH;
+    }
+    
+    // add the column value to the key
+    xKeyWrk.vAddDatum(xVariable, pColumn);
+  }
+  
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
