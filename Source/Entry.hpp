@@ -38,9 +38,6 @@ namespace DBobjects
     Row*  aRow(void);
     char* aRowData(void);
     i8    nRowSize(void);
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // data entry
     Entry* aRefdRowEntry(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -62,12 +59,7 @@ namespace DBobjects
     void vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
     void vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
     char* pExtractSortKey(char *aElement, IdxColVec* pIdxColVec);
-  
-    Footer* aFooter(void);
-  
-  };
-  
-  //Entry* _pEntry(void* aAddr);
+    };
   
   /*--------------------------------------------------------------------------*/
   /* safe cast                                                                */
@@ -86,8 +78,6 @@ namespace DBobjects
   /*--------------------------------------------------------------------------*/
   inline Key* Entry::aKey(void)
   {
-    _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
-    
     Key* aKey = reinterpret_cast<Key*>(aDataArea());
     
     return aKey;

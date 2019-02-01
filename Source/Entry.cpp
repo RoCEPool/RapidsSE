@@ -36,13 +36,9 @@ void* Entry::operator new(size_t, Entry* aEntry)
 Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
 : Item(eClassNo, nThisBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
-  
    m_xId.vOffsets(nOffsets);
   
   _checkInitialised_(eClassNo);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,7 +46,6 @@ Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
 /*----------------------------------------------------------------------------*/
 Entry::~Entry(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
 }
 
 /*----------------------------------------------------------------------------*/
@@ -110,8 +105,6 @@ i8 Entry::nBytesRequired(i8 nEmbeddedBytes, i8 nOffsets)
 /*----------------------------------------------------------------------------*/
 Row* Entry::aRow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
-  
   Row* aRow = reinterpret_cast<Row*>(aDataArea());
   
   return aRow;
@@ -122,8 +115,6 @@ Row* Entry::aRow(void)
 /*----------------------------------------------------------------------------*/
 char* Entry::aRowData(void)                   //! this function just seems wrong
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
-  
   i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets());
 
   char* aKey = aAdd<char*>(aDataArea(),nOffsetBytes);
@@ -138,8 +129,6 @@ char* Entry::aRowData(void)                   //! this function just seems wrong
 /*----------------------------------------------------------------------------*/
 i8 Entry::nRowSize(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
-  
   //i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
   i8 iRowSize = nSizeItem() - (sizeof(Entry) + sizeof(Footer));
   
@@ -147,16 +136,10 @@ i8 Entry::nRowSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Data entry --------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /* get the dataRow entry matching entry from the tables hidden index          */
 /*----------------------------------------------------------------------------*/
 Entry* Entry::aRefdRowEntry(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
-
   // get the referenced entry buffer of this entries Id
   EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(this);
   
@@ -168,10 +151,6 @@ Entry* Entry::aRefdRowEntry(void)
 
 
 
-/*----------------------------------------------------------------------------*/
-/*-- Key ---------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Index -------------------------------------------------------------------*/
@@ -182,8 +161,6 @@ Entry* Entry::aRefdRowEntry(void)
 /*----------------------------------------------------------------------------*/
 void Entry::vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
-  
   ASSERT(nSizeItem());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -202,8 +179,6 @@ void Entry::vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
 #ifdef WITH_DEBUG_VERSION
   m_iIntKey = aKey()->iGetInt();
 #endif
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
 }
 
 /*----------------------------------------------------------------------------*/
@@ -211,13 +186,10 @@ void Entry::vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
 /*----------------------------------------------------------------------------*/
 void Entry::vSetEntry(KeyWrk& xKeyWrk)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
   
   m_xId = xKeyWrk.xId();
-  //m_iTxId = xKeyWrk.iTxId();
   vOffsets(xKeyWrk.nOffsets());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -228,8 +200,6 @@ void Entry::vSetEntry(KeyWrk& xKeyWrk)
   i8 nKeySize = xKeyWrk.nKeySize();
   
   MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENTRY);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
 }
 
 /*----------------------------------------------------------------------------*/
@@ -237,13 +207,10 @@ void Entry::vSetEntry(KeyWrk& xKeyWrk)
 /*----------------------------------------------------------------------------*/
 void Entry::vSetEntry(RowWrk& xRowWrk)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
   
   m_xId = xRowWrk.xId();
-  //m_iTxId = xRowWrk.iTxId();
   vOffsets(xRowWrk.nOffsets());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -254,8 +221,6 @@ void Entry::vSetEntry(RowWrk& xRowWrk)
   i8 nRowSize = xRowWrk.nRowSize();
  
   MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_ENTRY);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
 }
 
 /*----------------------------------------------------------------------------*/
@@ -263,8 +228,6 @@ void Entry::vSetEntry(RowWrk& xRowWrk)
 /*----------------------------------------------------------------------------*/
 void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
-  
   Key* aKey = this->aKey();
   
   vTrace("%lld: Entry: %p Size: %llu Offsets: %llu "_Stz,
@@ -314,8 +277,6 @@ void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
 /*----------------------------------------------------------------------------*/
 void Entry::vContentDump(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
-    
   vTrace("Entry %p: ThisBytes %lld %p (%lld bytes) \n"_Stz,
          this,
          //m_iTxId,
@@ -330,8 +291,6 @@ void Entry::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
-  
   GenVar xVariable;
   
   Row* aThisRow = aRow();
@@ -444,8 +403,6 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 void Entry::vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
-  
   w8 wColumnWord;
   
   Row* aThisRow = aRow();
@@ -520,8 +477,6 @@ void Entry::vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 char* Entry::pExtractSortKey(char* aElement, IdxColVec* pIdxColVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
-  
   w8 wColumnWord;
   
   Row* aThisRow = aRow();
