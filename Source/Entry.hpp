@@ -30,11 +30,6 @@ namespace Data
     // key data area
     Key* aKeyData(void);
   
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // index
-  
-    void vSetEntry(Entry* pEntry, KeyWrk& xKeyWrk);
-    void vSetEntry(Entry* pEntry, RowWrk& xRowWrk);
   
     void vShow(i8 iBase, Index* pIndex, bool bShowKey);
   

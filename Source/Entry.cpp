@@ -69,54 +69,6 @@ Row* Entry::aRowData(void)
 
 
 /*----------------------------------------------------------------------------*/
-/*-- Index -------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* set entry using given key working entry                                    */
-/*----------------------------------------------------------------------------*/
-void Entry::vSetEntry(Entry* pEntry, KeyWrk& xKeyWrk)
-{
-  RASSERT(this == pEntry);
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set id, transaction and offsets
-  
-  pEntry->vId(xKeyWrk.xId());
-  pEntry->vOffsets(xKeyWrk.nOffsets());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy key into this entry
-  
-  Key* aSrcKey = xKeyWrk.aKey();
-  Key* aDstKey = pEntry->aKeyData();
-  i8 nKeySize  = xKeyWrk.nKeySize();
-  
-  MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENTRY);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set entry using given row working entry                                    */
-/*----------------------------------------------------------------------------*/
-void Entry::vSetEntry(Entry* pEntry, RowWrk& xRowWrk)
-{
-  RASSERT(this == pEntry);
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set id, transaction and offsets
-  
-  pEntry->vId(xRowWrk.xId());
-  pEntry->vOffsets(xRowWrk.nOffsets());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy row into this entry
-  
-  Row* aSrcRow = xRowWrk.aRow();
-  Row* aDstRow = pEntry->aRowData();
-  i8 nRowSize  = xRowWrk.nRowSize();
- 
-  MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_ENTRY);
-}
-
-/*----------------------------------------------------------------------------*/
 /* show content                                                               */
 /*----------------------------------------------------------------------------*/
 void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
