@@ -362,7 +362,7 @@ void Step::vIndexExactKey(MP_Task mpTask)
     if (bSame) {
       
       // get the dataRow from the hidden index
-      Entry* aDataRowEntry = aEntry->aDataEntry();
+      Entry* aDataRowEntry = aEntry->aRefdRowEntry();
       Row* aRow = aDataRowEntry->aRow();
     
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -711,7 +711,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   while (aLowerEntry) {
     
     // get the dataRow from the hidden index
-    Entry* aDataRowEntry = aLowerEntry->aDataEntry();
+    Entry* aDataRowEntry = aLowerEntry->aRefdRowEntry();
     
     // insert row from entry in fetchBuffer
     if ( ! Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows)) {
@@ -1090,7 +1090,7 @@ void Step::vIndexRange(MP_Task mpTask)
     // if aLowerEntry is before aUpperEntry then append to result buffer
     if (bBefore) {
       // get the dataRow from the hidden index
-      Entry* aDataRowEntry = aLowerEntry->aDataEntry();
+      Entry* aDataRowEntry = aLowerEntry->aRefdRowEntry();
       
       // insert row from entry in tempEntryBuffer
       if ( ! Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows)) {
@@ -1634,7 +1634,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
     
     if (bBefore) {
       // get the dataRow from the hidden index
-      Entry* aDataRowEntry = aEntry->aDataEntry();
+      Entry* aDataRowEntry = aEntry->aRefdRowEntry();
       
       // insert row from entry in tempEntryBuffer
       if ( ! Task::bAppendRow(pFetchBuffer,aDataRowEntry, pJob_FetchRows)) {

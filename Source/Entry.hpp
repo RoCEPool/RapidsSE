@@ -41,7 +41,7 @@ namespace DBobjects
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // data entry
-    Entry* aDataEntry(void);
+    Entry* aRefdRowEntry(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key

@@ -153,7 +153,7 @@ i8 Entry::nRowSize(void)
 /*----------------------------------------------------------------------------*/
 /* get the dataRow entry matching entry from the tables hidden index          */
 /*----------------------------------------------------------------------------*/
-Entry* Entry::aDataEntry(void)
+Entry* Entry::aRefdRowEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
 
