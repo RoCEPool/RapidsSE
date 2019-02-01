@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBsuper
+namespace MetaData
 {  
   enum eCT // Column Type
   {

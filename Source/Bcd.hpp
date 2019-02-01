@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBsuper
+namespace MetaData
 {
   class Column;
 }
@@ -41,11 +41,11 @@ namespace Datums
     static void vCopy(void* aDst, void* aSrc);
 
     static bool bExtract(char** aaSrc, Stz* aDst,
-                         DBsuper::Column* pColumn, Formatters* pFormatters);
+                         MetaData::Column* pColumn, Formatters* pFormatters);
     static bool bExtractDefault(char** aaSrc, Stz* aDst,
-                         DBsuper::Column* pColumn, Formatters* pFormatters);
-    static void vSprint(Stz* aDst, Stz* aSrc, DBsuper::Column* pColumn);
-    static void vSprintVLQ(Stz* aDst, Stz* aSrc, DBsuper::Column* pColumn);
+                         MetaData::Column* pColumn, Formatters* pFormatters);
+    static void vSprint(Stz* aDst, Stz* aSrc, MetaData::Column* pColumn);
+    static void vSprintVLQ(Stz* aDst, Stz* aSrc, MetaData::Column* pColumn);
     static bool bIsValidSize(i8 iPrecision, i8 iScale);
     
     static bool bLessThan(char* aArgA, char* aArgB);

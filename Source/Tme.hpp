@@ -50,9 +50,9 @@ namespace Datums
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
     static bool bExtract(char** aaSrc, Stz* aStz,
-                         DBsuper::Column* pColumn, Formatters* pFormatters);
+                         MetaData::Column* pColumn, Formatters* pFormatters);
     static bool bExtractDefault(char** aaSrc, Stz* aStz,
-                         DBsuper::Column* pColumn, Formatters* pFormatters);
+                         MetaData::Column* pColumn, Formatters* pFormatters);
     static void vSprint(Stz* aDst, Stz* aSrc);
     static void vSprintEscaped(Stz* aDst, Stz* aSrc);
     

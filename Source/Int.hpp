@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBsuper
+namespace MetaData
 {
   class Column;
 }
@@ -47,9 +47,9 @@ namespace Datums
     static i8   nCopyVLQ(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
     static bool bExtract(char** aaSrc, Stz* aDst,
-                         DBsuper::Column* pColumn, Formatters* pFormatters);
+                         MetaData::Column* pColumn, Formatters* pFormatters);
     static bool bExtractDefault(char** aaSrc, Stz* aDst,
-                         DBsuper::Column* pColumn, Formatters* pFormatters);
+                         MetaData::Column* pColumn, Formatters* pFormatters);
     static void vSprint(Stz* aDst, Stz* aSrc);
     static void vSprintVLQ(Stz* aDst, Stz* aSrc);
     

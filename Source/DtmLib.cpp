@@ -82,7 +82,7 @@ i8 DtmLib::nCopyVLQ(eDM eDatum, void* pDst, void* pSrc)
 /* extract                                                                    */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
-                      DBsuper::Column* pColumn, bool bLastColumn,
+                      MetaData::Column* pColumn, bool bLastColumn,
                       Formatters* pFormatters)
 {
   bool b = false;
@@ -242,7 +242,7 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Stz* aScr)
 /* s-print                                                                    */
 /*----------------------------------------------------------------------------*/
 void DtmLib::vSprint(eDM eDatum, Stz* aDst, Stz* aSrc,
-                     DBsuper::Column* pColumn)
+                     MetaData::Column* pColumn)
 {
   switch (eDatum) {
     case DM_BCD: Bcd::vSprint(aDst,aSrc,pColumn); break;
@@ -265,7 +265,7 @@ void DtmLib::vSprint(eDM eDatum, Stz* aDst, Stz* aSrc,
 /* s-print                                                                    */
 /*----------------------------------------------------------------------------*/
 void DtmLib::vSprintVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
-                     DBsuper::Column* pColumn)
+                     MetaData::Column* pColumn)
 {
   switch (eDatum) {
     case DM_BCD: Bcd::vSprintVLQ(aDst,aSrc,pColumn); break;
@@ -288,7 +288,7 @@ void DtmLib::vSprintVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
 /* s-print                                                                    */
 /*----------------------------------------------------------------------------*/
 void DtmLib::vSprintQuotes(eDM eDatum, Stz* aDst, Stz* aSrc,
-                           DBsuper::Column* pColumn)
+                           MetaData::Column* pColumn)
 {
   switch (eDatum) {
     case DM_BCD: Bcd::vSprint(aDst,aSrc,pColumn); break;
@@ -311,7 +311,7 @@ void DtmLib::vSprintQuotes(eDM eDatum, Stz* aDst, Stz* aSrc,
 /* s-print                                                                    */
 /*----------------------------------------------------------------------------*/
 void DtmLib::vSprintQuotesVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
-                     DBsuper::Column* pColumn)
+                     MetaData::Column* pColumn)
 {
   switch (eDatum) {
     case DM_BCD: Bcd::vSprintVLQ(aDst,aSrc,pColumn); break;
@@ -335,7 +335,7 @@ void DtmLib::vSprintQuotesVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
 /* s-print escaped                                                            */
 /*----------------------------------------------------------------------------*/
 void DtmLib::vSprintEscaped(eDM eDatum, Stz* aDst, Stz* aSrc,
-                     DBsuper::Column* pColumn)
+                     MetaData::Column* pColumn)
 {
   switch (eDatum) {
     case DM_BCD: Bcd::vSprint(aDst,aSrc,pColumn); break;
@@ -358,7 +358,7 @@ void DtmLib::vSprintEscaped(eDM eDatum, Stz* aDst, Stz* aSrc,
 /* s-print escaped                                                            */
 /*----------------------------------------------------------------------------*/
 void DtmLib::vSprintEscapedVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
-                            DBsuper::Column* pColumn)
+                            MetaData::Column* pColumn)
 {
   switch (eDatum) {
     case DM_BCD: Bcd::vSprintVLQ(aDst,aSrc,pColumn); break;
@@ -654,7 +654,7 @@ bool DtmLib::bIsThereRecordData(char* aSrc, Formatters* pFormatters)
 /*----------------------------------------------------------------------------*/
 /* test for null token                                                        */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bTestForNull(char** aaSrc, DBsuper::Column* pColumn,
+bool DtmLib::bTestForNull(char** aaSrc, MetaData::Column* pColumn,
                           Formatters* pFormatters, bool& bValidNull,
                           bool bSkipTrailingSpaces)
 {
@@ -755,7 +755,7 @@ bool DtmLib::bTestForNull(char** aaSrc, DBsuper::Column* pColumn,
 /*----------------------------------------------------------------------------*/
 /* test for null token                                                        */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bTestForNullDefault(char** aaSrc, DBsuper::Column* pColumn,
+bool DtmLib::bTestForNullDefault(char** aaSrc, MetaData::Column* pColumn,
                                  Formatters* pFormatters, bool& bValidNull,
                                  bool bSkipTrailingSpaces)
 {
