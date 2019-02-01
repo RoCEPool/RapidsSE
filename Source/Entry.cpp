@@ -110,16 +110,6 @@ Row* Entry::aRow(void)
   return aRow;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get row data size                                                          */
-/*----------------------------------------------------------------------------*/
-i8 Entry::nRowSize(void)
-{
-  //i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
-  i8 iRowSize = nSizeItem() - (sizeof(Entry) + sizeof(Footer));
-  
-  return iRowSize;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get the dataRow entry matching entry from the tables hidden index          */
@@ -231,7 +221,7 @@ void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
     //char* pRow = aRowData();
     Row* aThisRow = aRow();
     vTrace("Row: "_Stz);
-    i8 iRowSize = nRowSize();
+    i8 iRowSize = nSizeItem();
     if (iRowSize > 0) {
       aThisRow->vShow(pIndex->pTable()->pColumnVec(), true);
     }
@@ -254,12 +244,11 @@ void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
 /*----------------------------------------------------------------------------*/
 void Entry::vContentDump(void)
 {
-  vTrace("Entry %p: ThisBytes %lld %p (%lld bytes) \n"_Stz,
+  vTrace("Entry %p: ThisBytes %lld %p\n"_Stz,
          this,
          //m_iTxId,
          nSizeItem(),
-         aRow(),
-         nRowSize()
+         aRow()
          );
 }
 

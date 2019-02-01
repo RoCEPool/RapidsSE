@@ -31,7 +31,6 @@ namespace Data
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // data area
     Row*  aRow(void);
-    i8    nRowSize(void);
     Entry* aRefdRowEntry(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
