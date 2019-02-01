@@ -13,7 +13,8 @@ namespace MiniHeaps
     static const i8 C_WSP_ITEMHEAP = C_SIZE_LARGE_OBJECT - C_1KB;
   
   protected:
-    i8 m_nItems; // number of items in this heap
+    i8 m_iBufferNo;    // this EntryBuffer's buffer number
+    i8 m_nItems;       // number of items in this heap
   
     ItemHeap* m_pNextBuffer;   // next buffer
     ItemHeap* m_pPrevBuffer;   // prev buffer
@@ -22,7 +23,7 @@ namespace MiniHeaps
 
     i2     m_iPartitionNo; // partition no this buffer belongs to
     i2     m_iLevelNo;     // level no in tree
-    i8     m_iBufferNo;    // this EntryBuffer's buffer number
+    
     Since  m_oWhenNewed;   // when was this buffer created?
     bool   m_bIsLast;      // is this the last buffer in sequence
   
