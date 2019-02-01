@@ -22,14 +22,6 @@ namespace DBobjects
   class Index;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class NEO // next entry offset
-  {
-  public:
-    i4 m_iOffset[1];  // offset where the entry is
-  };
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Entry : public Item
   {
   protected:
