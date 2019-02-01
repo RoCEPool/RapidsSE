@@ -788,7 +788,7 @@ void EntryBuffer::vRestore(void)
        aEntry != nullptr;
        aEntry = aNextEntry(aEntry, 0)) {
     
-    Id xId(*nBuffer, aEntry->iItemNo());
+    Id xId(*nBuffer, aEntry->iItemNo(), aEntry->nOffsets());
     aEntry->vId(xId);
   }
   
@@ -1643,10 +1643,10 @@ void EntryBuffer::vHandleLeftInsert(Entry* aInsertedKeyEntry,
   
   Key* aInsertKey = aInsertedKeyEntry->aKey();
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  Id xInsertId(*nPoolBufferNo(),0);
-  i8 iInsertKeyLen = aInsertKey->nKeySize(pIdxColVec);
+  i8 iInsertKeyLen  = aInsertKey->nKeySize(pIdxColVec);
   i8 nInsertOffsets = aInsertedKeyEntry->nOffsets();
   
+  Id xInsertId(*nPoolBufferNo(),0,nInsertOffsets);
   
   KeyWrk xKeyWrkIns;
   xKeyWrkIns.vId(xInsertId);
@@ -1697,23 +1697,15 @@ void EntryBuffer::vHeadEntryNew(void)
   
   m_aHeadEntry = reinterpret_cast<Entry*>(aAllotSpace(nEntryBytes));
   ASSERT(m_aHeadEntry);
-  //char* aData = aDataArea();                                //! RAY to look at
-  //char* aHead = pAdd<char *>(aData,sizeof(i4) * C_ENTRIES_0);
-  
-  //ASSERT((char*)m_aHeadEntry == aHead);
   
   new(m_aHeadEntry) Entry(CN_ENTRY,nEntryBytes,0);
   
-  m_aHeadEntry->vSetEntry(0,xHeadWrk.xId(),3,nullptr,0);
-  //m_aHeadEntry->vSetEntry(xHeadWrk);
+  m_aHeadEntry->vSetEntry(xHeadWrk.xId(),nullptr,0);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   m_aHeadEntry->vNEO(0,-1);
   m_aHeadEntry->vNEO(1,-1);
   m_aHeadEntry->vNEO(2,-1);
-  
-  //m_aHeadEntry->vNEOdump();
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2137,10 +2129,10 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   if ( ! pHigherBuffer->nItems() ) {
     Entry* aFirstKeyLeft  = pLeftBuffer->aFirstEntry();
     
-    Id xIdLeft(*pLeftBuffer->nPoolBufferNo(),0);
+    i8 nOffsetsLeft = aFirstKeyLeft->nOffsets();
+    Id xIdLeft(*pLeftBuffer->nPoolBufferNo(),0,nOffsetsLeft);
     Key* aKeyLeft = aFirstKeyLeft->aKey();
     i8 iKeyLenLeft = aKeyLeft->nKeySize(m_pIndex->pIdxColVec());
-    i8 nOffsetsLeft = aFirstKeyLeft->nOffsets();
     
     
     KeyWrk xKeyWrkLeft;
@@ -2159,10 +2151,11 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   
   Entry* aFirstKeyRight = pRightBuffer->aFirstEntry();
   
-  Id xIdRight(*pRightBuffer->nPoolBufferNo(),0);
   Key* aKeyRight = aFirstKeyRight->aKey();
   i8 iKeyLenRight = aKeyRight->nKeySize(m_pIndex->pIdxColVec());
   i8 nOffsetsRight = aFirstKeyRight->nOffsets();
+  
+  Id xIdRight(*pRightBuffer->nPoolBufferNo(),0,nOffsetsRight);
   
   
   KeyWrk xKeyWrkRight;

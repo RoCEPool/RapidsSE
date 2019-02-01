@@ -20,7 +20,7 @@ namespace MiniHeaps
     
     Id(void);
     Id(Id& xId);
-    Id(u8 uBuffer, u8 uItem);
+    Id(u8 uBuffer, u8 uItem, u8 uOffsets);
     ~Id(void) noexcept(false);
     
     void operator =(Id& xId); // assignment

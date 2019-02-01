@@ -66,7 +66,7 @@ Entry* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   
   RASSERT(i_RowNo >=0 and i_RowNo < C_MAX_ITEMS);
   
-  Id xRowId(*nBufferNo, i_RowNo);
+  Id xRowId(*nBufferNo, i_RowNo, 1);
   
   xRowWrk.vId(xRowId);
   

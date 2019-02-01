@@ -119,7 +119,9 @@ i8 EntWrk::nOffsets(void)
   
   //ASSERT(m_nOffsets >= 0 && m_nOffsets <= gpAttachMap->m_nIndexOffsets);
   
-  return m_nOffsets;
+  RASSERT(m_nOffsets == m_xId.nOffsets());
+  
+  return m_xId.nOffsets();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -133,7 +135,8 @@ i8 EntWrk::nOffsetSize(void)
   
   //vTrace("sizeof(i4) %d sizeof(long) %d\n"_Stz,sizeof(i4),sizeof(long));
   
-  i8 nBytes = sizeof(i4) * m_nOffsets;
+  RASSERT(m_nOffsets == m_xId.nOffsets());
+  i8 nBytes = sizeof(i4) * m_xId.nOffsets();
   
   return nBytes;
 }
@@ -146,6 +149,8 @@ void EntWrk::vOffsets(i8 nOffsets)
   _precondition_(_MAGIC_,_FOOTER_);
   
   m_nOffsets = nOffsets;
+  
+  m_xId.vOffsets(nOffsets);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -156,6 +161,7 @@ void EntWrk::vRandomOffsets(void)
   _precondition_(_MAGIC_,_FOOTER_);
   
   m_nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
+  m_xId.vOffsets(m_nOffsets);
 }
 
 /*----------------------------------------------------------------------------*/

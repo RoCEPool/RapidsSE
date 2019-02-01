@@ -8,10 +8,6 @@
 
 namespace Data
 {
-  class EntryBuffer;
-  class EntWrk;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Entry : public Item
   {
   protected:
@@ -46,7 +42,7 @@ namespace Data
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // index
   
-    void vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize);
+    void vSetEntry(Id xId, Stz* aData, i8 nDataSize);
     void vSetEntry(KeyWrk& xKeyWrk);
     void vSetEntry(RowWrk& xRowWrk);
   

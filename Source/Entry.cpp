@@ -159,15 +159,13 @@ Entry* Entry::aRefdRowEntry(void)
 /*----------------------------------------------------------------------------*/
 /* set entry given working entry                                              */
 /*----------------------------------------------------------------------------*/
-void Entry::vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
+void Entry::vSetEntry(Id xId, Stz* aData, i8 nDataSize)
 {
   ASSERT(nSizeItem());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
   m_xId = xId;
-  //m_iTxId = xTxId;
-  vOffsets(nOffsets);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy row
