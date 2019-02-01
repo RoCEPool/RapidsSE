@@ -139,7 +139,6 @@ namespace DBobjects
     Item*        aFirstItem(void);
     Entry*       aGetEntryOffset(i8 iOffset);
     Entry*       aGetEntrySplit(i8 iSplitEntryNo, Entry** aaPriorEntry);
-    i4           iGetFreeRowEntry(void);
     void         vHandleFirstInsert(Entry* aInsertedKeyEntry,
                                     Entry* aOriginalFirstEntry,
                                     EntryBuffer** ppRootKeyBuffer);

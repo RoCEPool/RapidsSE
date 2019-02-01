@@ -206,8 +206,8 @@ i8 ItemHeap::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vFreeItem(Item* aItem)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add item to head of free chain
   
@@ -221,6 +221,25 @@ void ItemHeap::vFreeItem(Item* aItem)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decement the number of items in buffer
   vDecItems();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a free entry (or C_NO_MORE_ITEMS if none)                              */
+/*----------------------------------------------------------------------------*/
+i4 ItemHeap::iGetFreeRowEntry(void)
+{
+  RASSERT( (m_i_FreeOffsetChain >= 0 && m_i_FreeOffsetChain < C_MAX_ITEMS) ||
+          (C_NO_MORE_ITEMS == m_i_FreeOffsetChain) );
+  
+  if (C_NO_MORE_ITEMS == m_i_FreeOffsetChain)
+    return C_NO_MORE_ITEMS;
+  
+  i4 i_FreeEntry = m_i_FreeOffsetChain;
+  
+  RASSERT(i_FreeEntry < C_MAX_ITEMS);
+  m_i_FreeOffsetChain = - m_iaEntryOffsets[i_FreeEntry];
+  
+  return i_FreeEntry;
 }
 
 /*----------------------------------------------------------------------------*/

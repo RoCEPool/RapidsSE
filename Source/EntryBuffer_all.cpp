@@ -1581,25 +1581,6 @@ Entry* EntryBuffer::aGetEntrySplit(i8 iSplitEntryNo,Entry** aaPriorEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a free entry (or C_NO_MORE_ITEMS if none)                                 */
-/*----------------------------------------------------------------------------*/
-i4 EntryBuffer::iGetFreeRowEntry(void)
-{
-  RASSERT( (m_i_FreeOffsetChain >= 0 && m_i_FreeOffsetChain < C_MAX_ITEMS) ||
-          (C_NO_MORE_ITEMS == m_i_FreeOffsetChain) );
-  
-  if (C_NO_MORE_ITEMS == m_i_FreeOffsetChain)
-    return C_NO_MORE_ITEMS;
-  
-  i4 i_FreeEntry = m_i_FreeOffsetChain;
-  
-  RASSERT(i_FreeEntry < C_MAX_ITEMS);
-  m_i_FreeOffsetChain = - m_iaEntryOffsets[i_FreeEntry];
-  
-  return i_FreeEntry;
-}
-
-/*----------------------------------------------------------------------------*/
 /* handle the insert of a first key                                           */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vHandleFirstInsert(Entry* aInsertedKeyEntry,
