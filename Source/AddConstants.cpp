@@ -241,7 +241,6 @@ void Axioms::vAddConstants(void)
   /* 46 */ vAddConstant("CN_QUEUEBUFFER"_Stz,  CN_QUEUEBUFFER);
   /*    */ vAddConstant("CN_QUEUES"_Stz,       CN_QUEUES);
   
-  /*    */ vAddConstant("CN_RBCURSOR"_Stz,     CN_RBCURSOR);
   /*    */ vAddConstant("CN_RECORDBUFFER"_Stz, CN_RECORDBUFFER);
   /* 51 */ vAddConstant("CN_ROWCURSOR"_Stz,    CN_ROWCURSOR);
   
@@ -452,7 +451,6 @@ void Axioms::vAddConstants(void)
   /* 29 */ vAddConstant("SIZEOF_PARTITION"_Stz,    sizeof(TablePtn));
   /* 33 */ vAddConstant("SIZEOF_QUEUE"_Stz,        sizeof(Queue));
   /* 34 */ vAddConstant("SIZEOF_QUEUEBUFFER"_Stz,  sizeof(QueueBuffer));
-  /*    */ vAddConstant("SIZEOF_RBCURSOR"_Stz,     sizeof(RbCursor));
   /* 36 */ vAddConstant("SIZEOF_ROW"_Stz,          sizeof(Entry));
   /* 37 */ vAddConstant("SIZEOF_ROWBUFFER"_Stz,    sizeof(EntryBuffer));
   /* 38 */ vAddConstant("SIZEOF_ROWCURSOR"_Stz,    (i8)0);

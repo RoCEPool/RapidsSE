@@ -205,7 +205,6 @@ pDUMPFUN *gpDump[]
   /* 96 */ &QueueBuffer::vDump,     // CN_QUEUEBUFFER
   /*    */ &Dump::vUndefined,       // CN_QUEUES
 
-  /* 97 */ &Dump::vUndefined,       // CN_RBCURSOR
   /*    */ &Dump::vUndefined,       // CN_RECORDBUFFER
   /*    */ &LocalSet::vDump,        // CN_RESOURCETRACKER
   /*102 */ &Dump::vUndefined,       // CN_ROWAGG
@@ -458,7 +457,6 @@ i8 giClassSize[]
   /* 96 */ sizeof(QueueBuffer),        // CN_QUEUEBUFFER
   /*    */ sizeof(Queues),             // CN_QUEUES
   
-  /* 97 */ sizeof(RbCursor),           // CN_RBCURSOR
   /*    */ sizeof(RecordBuffer),       // CN_RECORDBUFFER
   /*    */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER
   /*102 */ sizeof(RowAgg),             // CN_ROWAGG
@@ -711,7 +709,6 @@ eHT geWhichHeap[]
   /* 96 */ HT_INVALID,           // CN_QUEUEBUFFER
   /*    */ HT_TRANSIENT_SMALL,   // CN_QUEUES
   
-  /* 97 */ HT_TRANSIENT_SMALL,   // CN_RBCURSOR
   /*    */ HT_TRANSIENT_LARGE,   // CN_RECORDBUFFER
   /*    */ HT_TRANSIENT_SMALL,   // CN_RESOURCETRACKER
   /*102 */ HT_TRANSIENT_MEDIUM,  // CN_ROWAGG
