@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace DBsuper
 {
   enum eRO // Relational Op
   {
@@ -15,7 +15,8 @@ namespace DBobjects
     /*  4 */ RO_NOT_EQUAL,
     /*  5 */ RO_GREATER_EQUAL,
     /*  6 */ RO_GREATER_THAN,
-    /* 79 */ RO_ENUMS
+  
+    /*  7 */ RO_ENUMS
   };
   
   static Stz* aRO[]
@@ -31,7 +32,6 @@ namespace DBobjects
     
     /*  7 */ "ENUMS"_Stz
   };
-  
 }
 
 /*============================================================================*/

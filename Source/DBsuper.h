@@ -8,6 +8,12 @@
 
 //------------------------------------------------------------------------------
 
+namespace Jobs
+{
+  class Job_CreateTable;
+  class Job_CreateIndex;
+}
+
 namespace DBsuper
 {
   void vCheckAssumptions(void);
@@ -16,6 +22,10 @@ namespace DBsuper
 using namespace DBsuper;
 
 //------------------------------------------------------------------------------
+
+#include "RelationalOps.h"
+
+#include "Column.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

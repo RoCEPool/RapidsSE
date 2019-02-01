@@ -163,7 +163,7 @@ void Step::vIndexColumnType(MP_Task mpTask)
   
   ASSERT(iIndex < pIndex->pIdxColVec()->nItems());
   Column* pColumn = pIndex->pIdxColVec()->pGet(iIndex);
-  s32 sColumnType = DBobjects::aCT[pColumn->eColumnType()];
+  s32 sColumnType = aCT[pColumn->eColumnType()];
   
   mpTask->m_pDataStack->vPushS32(sColumnType);
   

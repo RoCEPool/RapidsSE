@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace DBsuper
 {  
   enum eCT // Column Type
   {

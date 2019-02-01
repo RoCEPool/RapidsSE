@@ -5,11 +5,6 @@
 
 #include "DBsuper.h"
 
-namespace Jobs
-{
-  class Job_CreateTable;
-  class Job_CreateIndex;
-}
 
 //------------------------------------------------------------------------------
 
@@ -53,9 +48,6 @@ using namespace DBobjects;
 
 #define USE_VLQ_DATUMS          // use vlq code for int and bcd datums
 
-#include "RelationalOps.h"
-
-#include "Column.hpp"
 
 
 typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;

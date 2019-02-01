@@ -361,39 +361,39 @@ void SchemaTest::vFormColumnType(i8 i_Col)
   
   switch (m_eColumns[i_Col]) {
       
-    case DBobjects::CT_BOOLEAN:
+    case CT_BOOLEAN:
       m_sColumnTy.vConcat("boolean"_Stz);
       break;
       
-    case DBobjects::CT_DATE:
+    case CT_DATE:
       m_sColumnTy.vConcat("date"_Stz);
       break;
       
-    case DBobjects::CT_DECIMAL:
+    case CT_DECIMAL:
       m_sColumnTy.vConcat("decimal"_Stz);
       break;
       
-    case DBobjects::CT_FLOAT:
+    case CT_FLOAT:
       m_sColumnTy.vConcat("float"_Stz);
       break;
       
-    case DBobjects::CT_INTEGER:
+    case CT_INTEGER:
       m_sColumnTy.vConcat("integer"_Stz);
       break;
       
-    case DBobjects::CT_INTERVAL:
+    case CT_INTERVAL:
       m_sColumnTy.vConcat("interval"_Stz);
       break;
       
-    case DBobjects::CT_TIME:
+    case CT_TIME:
       m_sColumnTy.vConcat("time"_Stz);
       break;
       
-    case DBobjects::CT_TIMESTAMP:
+    case CT_TIMESTAMP:
       m_sColumnTy.vConcat("timestamp"_Stz);
       break;
       
-    case DBobjects::CT_VARCHAR:
+    case CT_VARCHAR:
       m_sColumnTy.vConcat("varchar(32)"_Stz);
       break;
       
@@ -496,63 +496,63 @@ void SchemaTest::vFormRow(i8 i_Col)
   
   switch (m_eColumns[i_Col]) {
       
-    case DBobjects::CT_BOOLEAN:
+    case CT_BOOLEAN:
       if (! i_Col)
         m_sRow.vConcat("'BOOLEAN', 0, 0, true, true"_Stz);
       else
         m_sRow.vConcat("'BOOLEAN', 0, 0, true, false"_Stz);
       break;
       
-    case DBobjects::CT_DATE:
+    case CT_DATE:
       if (! i_Col)
         m_sRow.vConcat("'DATE', 0, 0, true, true"_Stz);
       else
         m_sRow.vConcat("'DATE', 0, 0, true, false"_Stz);
       break;
       
-    case DBobjects::CT_DECIMAL:
+    case CT_DECIMAL:
       if (! i_Col)
         m_sRow.vConcat("'DECIMAL', 19, 0, true, true"_Stz);
       else
         m_sRow.vConcat("'DECIMAL', 19, 0, true, false"_Stz);
       break;
       
-    case DBobjects::CT_FLOAT:
+    case CT_FLOAT:
       if (! i_Col)
         m_sRow.vConcat("'FLOAT', 19, 0, true, true"_Stz);
       else
         m_sRow.vConcat("'FLOAT', 19, 0, true, false"_Stz);
       break;
       
-    case DBobjects::CT_INTEGER:
+    case CT_INTEGER:
       if (! i_Col)
         m_sRow.vConcat("'INTEGER', 19, 0, true, true"_Stz);
       else
         m_sRow.vConcat("'INTEGER', 19, 0, true, false"_Stz);
       break;
       
-    case DBobjects::CT_INTERVAL:
+    case CT_INTERVAL:
       if (! i_Col)
         m_sRow.vConcat("'INTERVAL', 0, 0, true, true"_Stz);
       else
         m_sRow.vConcat("'INTERVAL', 0, 0, true, false"_Stz);
       break;
       
-    case DBobjects::CT_TIME:
+    case CT_TIME:
       if (! i_Col)
         m_sRow.vConcat("'TIME', 0, 0, true, true"_Stz);
       else
         m_sRow.vConcat("'TIME', 0, 0, true, false"_Stz);
       break;
       
-    case DBobjects::CT_TIMESTAMP:
+    case CT_TIMESTAMP:
       if (! i_Col)
         m_sRow.vConcat("'TIMESTAMP', 0, 0, true, true"_Stz);
       else
         m_sRow.vConcat("'TIMESTAMP', 0, 0, true, false"_Stz);
       break;
       
-    case DBobjects::CT_VARCHAR:
+    case CT_VARCHAR:
       if (! i_Col)
         m_sRow.vConcat("'VARCHAR', 32, 0, true, true"_Stz);
       else

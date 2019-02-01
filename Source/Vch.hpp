@@ -39,9 +39,9 @@ namespace Datums
     static bool bIsValidSize(i8 iSize);
     
     static bool bExtract(char** aaSrc, Stz* aDst,
-                          DBobjects::Column* pColumn, Formatters* pFormatters);
+                          DBsuper::Column* pColumn, Formatters* pFormatters);
     static bool bExtractDefault(char** aaSrc, Stz* aDst,
-                          DBobjects::Column* pColumn, Formatters* pFormatters);
+                          DBsuper::Column* pColumn, Formatters* pFormatters);
     static bool bLessThan(char* aArgA, char* aArgB);
     static bool bLessEqual(char* aArgA, char* aArgB);
     static bool bEqualTo(char* aArgA, char* aArgB);

@@ -315,7 +315,7 @@ void Step::vTableGetColumnsAsString(MP_Task mpTask)
     s.vConcat(pColVec->pGet(i_Column)->sColumnName());
     
     s.vConcat(" "_Stz);
-    s.vConcat(DBobjects::aCT[pColVec->pGet(i_Column)->eColumnType()]);
+    s.vConcat(aCT[pColVec->pGet(i_Column)->eColumnType()]);
   }
   
   mpTask->m_pDataStack->vPushS16KB(s);

@@ -127,7 +127,6 @@ namespace Steps
   
     static void vAddSteps_Scheduler(void);
     static void vAddSteps_Session(void);
-    static void vAddSteps_ServerScheduler(void);
     static void vAddSteps_Shell(void);
     static void vAddSteps_Slots(void);
     static void vAddSteps_Socket(void);

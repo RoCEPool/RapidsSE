@@ -189,7 +189,7 @@ void Bcd::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a decimal field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Bcd::bExtract(char** aaSrc, Stz* aDst, DBobjects::Column* pColumn, Formatters* pFormatters)
+bool Bcd::bExtract(char** aaSrc, Stz* aDst, DBsuper::Column* pColumn, Formatters* pFormatters)
 {
   Bcd* aBcd = (Bcd*)aDst;
   
@@ -235,7 +235,7 @@ bool Bcd::bExtract(char** aaSrc, Stz* aDst, DBobjects::Column* pColumn, Formatte
 /*----------------------------------------------------------------------------*/
 /* extract a decimal field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Bcd::bExtractDefault(char** aaSrc, Stz* aDst, DBobjects::Column* pColumn, Formatters* pFormatters)
+bool Bcd::bExtractDefault(char** aaSrc, Stz* aDst, DBsuper::Column* pColumn, Formatters* pFormatters)
 {
   Bcd* aBcd = (Bcd*)aDst;
   
@@ -277,7 +277,7 @@ bool Bcd::bExtractDefault(char** aaSrc, Stz* aDst, DBobjects::Column* pColumn, F
 /*----------------------------------------------------------------------------*/
 /* sprint bcd datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Bcd::vSprint(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn)
+void Bcd::vSprint(Stz* aDst, Stz* aSrc, DBsuper::Column* pColumn)
 {
   bool bNegative = false;
   Bcd* aBcd = (Bcd*)aSrc;
@@ -314,7 +314,7 @@ void Bcd::vSprint(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* sprint bcd datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Bcd::vSprintVLQ(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn)
+void Bcd::vSprintVLQ(Stz* aDst, Stz* aSrc, DBsuper::Column* pColumn)
 {
   
   i8 iInt = IntLib::iVlqToInt((byte*)aSrc);

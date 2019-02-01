@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace DBsuper
 {
   class Column;
 }
@@ -19,21 +19,21 @@ namespace Datums
     static i8   nCopyVLQ(eDM eDatum, void* pDst, void* pSrc);
     static void vCopy(eDM eDatum,  void* aDst, void* aSrc);
     static bool bExtract(eDM eDatum, Stz* aDst, char** aSrc,
-                         DBobjects::Column* pColumn, bool bLastColumn,
+                         DBsuper::Column* pColumn, bool bLastColumn,
                          Formatters* pFormatters);
     static void vHash(eDM eDatum, i8& iHash, Stz* aSrc);
     static void vSprint(eDM eDatum, Stz* aDst, Stz* aSrc,
-                        DBobjects::Column* pColumn);
+                        DBsuper::Column* pColumn);
     static void vSprintVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
-                        DBobjects::Column* pColumn);
+                        DBsuper::Column* pColumn);
     static void vSprintQuotes(eDM eDatum, Stz* aDst, Stz* aSrc,
-                        DBobjects::Column* pColumn);
+                        DBsuper::Column* pColumn);
     static void vSprintQuotesVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
-                              DBobjects::Column* pColumn);
+                              DBsuper::Column* pColumn);
     static void vSprintEscaped(eDM eDatum, Stz* aDst, Stz* aSrc,
-                               DBobjects::Column* pColumn);
+                               DBsuper::Column* pColumn);
     static void vSprintEscapedVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
-                               DBobjects::Column* pColumn);
+                               DBsuper::Column* pColumn);
     static bool bLessThan(eDM eDatum, char* aArgA, char* aArgB);
     static bool bLessEqual(eDM eDatum, char* aArgA, char* aArgB);
     static bool bEqualTo(eDM eDatum, char* aArgA, char* aArgB);
@@ -49,12 +49,12 @@ namespace Datums
     static bool bIsThereFieldData(char* aSrc, Formatters* pFormatters);
     static bool bIsThereRecordData(char* aSrc, Formatters* pFormatters);
     static bool bTestForNull(char** aaSrc,
-                             DBobjects::Column* pColumn,
+                             DBsuper::Column* pColumn,
                              Formatters* pFormatters,
                              bool& bValidNull,
                              bool bSkipTrailingSpaces=true);
     static bool bTestForNullDefault(char** aaSrc,
-                             DBobjects::Column* pColumn,
+                             DBsuper::Column* pColumn,
                              Formatters* pFormatters,
                                     bool& bValidNull,
                                     bool bSkipTrailingSpaces=true);
