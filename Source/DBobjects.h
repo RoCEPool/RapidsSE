@@ -5,9 +5,6 @@
 
 #include "MetaData.h"
 
-
-//------------------------------------------------------------------------------
-
 namespace DBobjects
 {
   void vCheckAssumptions(void);
@@ -16,7 +13,6 @@ namespace DBobjects
   static const i8 C_FLAT_OFFSETS_MAX  = C_FLAT_LEVELS_MAX - 1;
   static const i8 C_FLAT_FREQ         = 2;
   static const i8 C_MAX_INDEX_COLUMNS = 16;
-  
 }
 
 using namespace DBobjects;
@@ -38,8 +34,6 @@ typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 #include "Entry.hpp"
 #include "EntryBuffer.hpp"
 #include "IndexTree.hpp"
-
-
 
 /*============================================================================*/
 /* end                                                                        */
