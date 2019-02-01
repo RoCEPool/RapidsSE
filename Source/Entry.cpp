@@ -112,23 +112,6 @@ Row* Entry::aRow(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* get the dataRow entry matching entry from the tables hidden index          */
-/*----------------------------------------------------------------------------*/
-Entry* Entry::aRefdRowEntry(void)
-{
-  // get the referenced entry buffer of this entries Id
-  EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(this);
-  
-  // get the row entry
-  Entry* aRowEntry = pEntryBuffer->aGetEntry_Item(m_xId.iItem());
-  
-  return aRowEntry;
-}
-
-
-
-
-/*----------------------------------------------------------------------------*/
 /*-- Index -------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
