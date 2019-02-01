@@ -19,13 +19,14 @@ namespace Data
     KeyWrk(void);
     ~KeyWrk(void) noexcept(false);
   
-    void vExtractKey(Entry* aRowEntry, IdxColVec* pIdxColVec);
+    static void vSetEntry(Entry* pEntry, KeyWrk& xKeyWrk);
 
     void vAddDatum(char* aDatum);
     void vAddDatum(GenVar& xVariable, Column* pCol);
     void vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters);
     void vAddKey(Key* aKey, IdxColVec* pColVec);
     void vAddWord(w8 wWord);
+    void vExtractKey(Entry* aRowEntry, IdxColVec* pIdxColVec);
     Key* aKey(void);
     i8   nKeySize(void);
     void vKeySize(i8 nKeySize);
