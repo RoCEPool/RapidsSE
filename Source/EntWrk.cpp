@@ -77,7 +77,7 @@ i8 EntWrk::nEntrySize(void)
   
   i8 nEmbedded = nEmbeddedSize();
   
-  i8 nBytes = Entry::nBytesRequired(nEmbedded);
+  i8 nBytes = sizeof(Entry) + nEmbedded;
   
   return nBytes;
 }

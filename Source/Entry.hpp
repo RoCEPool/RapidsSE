@@ -21,9 +21,7 @@ namespace Data
   
     Entry(eCN eClassNo, i8 nThisBytes, i8 uOffsets);
     ~Entry(void) noexcept(false);
-  
-    static i8 nBytesRequired(i8 nEmbeddedBytes);
-  
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row data area
     Row* aRowData(void);
