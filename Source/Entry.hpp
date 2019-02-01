@@ -45,11 +45,7 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // data entry
     Entry* aDataEntry(void);
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // embedded data area
-    char* aEmbeddedData(void);
-  
+      
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key
     Key* aKey(void);
@@ -95,7 +91,7 @@ namespace DBobjects
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
     
-    Key* aKey = reinterpret_cast<Key*>(aEmbeddedData());
+    Key* aKey = reinterpret_cast<Key*>(aDataArea());
     
     return aKey;
   }

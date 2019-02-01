@@ -35,6 +35,7 @@ namespace MiniHeaps
   
     i8    iBufferNo(void);
     bn    nBufferNo(void);
+    char* aDataArea(void);
     Id&   xId(void);
     void  vId(Id xId);
     Item* aItemAfter(void);

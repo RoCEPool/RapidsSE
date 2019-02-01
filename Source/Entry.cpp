@@ -128,7 +128,7 @@ Row* Entry::aRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
   
-  Row* aRow = reinterpret_cast<Row*>(aEmbeddedData());
+  Row* aRow = reinterpret_cast<Row*>(aDataArea());
   
   return aRow;
 }
@@ -142,7 +142,7 @@ char* Entry::aRowData(void)                   //! this function just seems wrong
   
   i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets());
 
-  char* aKey = aAdd<char*>(aEmbeddedData(),nOffsetBytes);
+  char* aKey = aAdd<char*>(aDataArea(),nOffsetBytes);
   // assuming key is CT_INTEGER for hidden index
   char* aRow = aAdd<char*>(aKey, sizeof(i8));                        //ALKA-TODO
   
@@ -182,21 +182,6 @@ Entry* Entry::aDataEntry(void)
   return aRowEntry;
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- Embedded Object ---------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get address of embedded object                                             */
-/*----------------------------------------------------------------------------*/
-char* Entry::aEmbeddedData(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
-  
-  char* aData = aAdd<char*>(this,sizeof(Entry));
-  
-  return pPoolCheck<char*>(aData);
-}
 
 
 /*----------------------------------------------------------------------------*/
