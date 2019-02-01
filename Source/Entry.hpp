@@ -33,7 +33,6 @@ namespace Data
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // index
   
-    void vSetEntry(Entry* pEntry, Id xId);
     void vSetEntry(Entry* pEntry, KeyWrk& xKeyWrk);
     void vSetEntry(Entry* pEntry, RowWrk& xRowWrk);
   

@@ -73,24 +73,6 @@ Row* Entry::aRowData(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* set entry given working entry                                              */
-/*----------------------------------------------------------------------------*/
-void Entry::vSetEntry(Entry* pEntry, Id xId)
-{
-  RASSERT(this == pEntry);
-  ASSERT(nSizeItem());
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set id, transaction and offsets
-  m_xId = xId;
-  
-#ifdef WITH_DEBUG_VERSION
-  m_iIntKey = aKeyData()->iGetInt();
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* set entry using given key working entry                                    */
 /*----------------------------------------------------------------------------*/
 void Entry::vSetEntry(Entry* pEntry, KeyWrk& xKeyWrk)
@@ -99,15 +81,15 @@ void Entry::vSetEntry(Entry* pEntry, KeyWrk& xKeyWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
   
-  m_xId = xKeyWrk.xId();
-  vOffsets(xKeyWrk.nOffsets());
+  pEntry->vId(xKeyWrk.xId());
+  pEntry->vOffsets(xKeyWrk.nOffsets());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into this entry
   
   Key* aSrcKey = xKeyWrk.aKey();
-  Key* aDstKey = this->aKeyData();
-  i8 nKeySize = xKeyWrk.nKeySize();
+  Key* aDstKey = pEntry->aKeyData();
+  i8 nKeySize  = xKeyWrk.nKeySize();
   
   MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENTRY);
 }
@@ -121,15 +103,15 @@ void Entry::vSetEntry(Entry* pEntry, RowWrk& xRowWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
   
-  m_xId = xRowWrk.xId();
-  vOffsets(xRowWrk.nOffsets());
+  pEntry->vId(xRowWrk.xId());
+  pEntry->vOffsets(xRowWrk.nOffsets());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy row into this entry
   
   Row* aSrcRow = xRowWrk.aRow();
-  Row* aDstRow = this->aRowData();
-  i8 nRowSize = xRowWrk.nRowSize();
+  Row* aDstRow = pEntry->aRowData();
+  i8 nRowSize  = xRowWrk.nRowSize();
  
   MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_ENTRY);
 }
