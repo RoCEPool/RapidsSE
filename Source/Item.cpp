@@ -210,6 +210,20 @@ void Item::vOffsets(i8 nOffsets)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the dataRow entry matching entry from the tables hidden index          */
+/*----------------------------------------------------------------------------*/
+Item* Item::aRefdItem(void)
+{
+  // get the entry buffer referenced by this items Id
+  EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(this);
+  
+  // get the row entry
+  Item* aItem = pEntryBuffer->aGetEntry_Item(m_xId.iItem());
+  
+  return aItem;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get size in bytes of this item                                             */
 /*----------------------------------------------------------------------------*/
 i8 Item::nSizeItem(void)

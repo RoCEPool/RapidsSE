@@ -107,9 +107,9 @@ void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pRefdEntryBuffer(Entry* pEntry)
+EntryBuffer* EntryBuffer::pRefdEntryBuffer(Item* pItem)
 {
-  Id xId = pEntry->xId();
+  Id xId = pItem->xId();
   
   EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(xId);
     

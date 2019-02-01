@@ -46,6 +46,7 @@ namespace MiniHeaps
     i8    iNEOsize(void);
     i8    nOffsets(void);
     void  vOffsets(i8 nOffsets);
+    Item* aRefdItem(void);
     i8    nSizeItem(void);
     bool  bValidItem(void);
   };

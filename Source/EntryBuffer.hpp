@@ -35,7 +35,7 @@ namespace Data
     ~EntryBuffer(void) noexcept(false);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static EntryBuffer* pRefdEntryBuffer(Entry* pEntry);
+    static EntryBuffer* pRefdEntryBuffer(Item* pItem);
     static EntryBuffer* pRefdEntryBuffer(Id& xId);
 
   
@@ -90,7 +90,7 @@ namespace Data
     bool         bDeleteKey(Key* aDeleteKey, EntryBuffer* pToBuffer);
     void         vDump(void);
     EntryBuffer* pFirstChildBuffer(void);
-    Entry*       aGetEntryRowNo(i8 i_RowNo);
+    Entry*       aGetEntry_Item(i8 i_Item);
     Entry*       aInsertKeyAbs(KeyWrk& xKeyWrk);
     Entry*       aInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** aaPriorEntry);
     static Entry* aInsertKeyTree(KeyWrk& xKeyWrk,

@@ -296,7 +296,7 @@ EntryBuffer* EntryBuffer::pFirstChildBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get an entry by number                                                     */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::aGetEntryRowNo(i8 i_RowNo)
+Entry* EntryBuffer::aGetEntry_Item(i8 i_Item)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -306,11 +306,11 @@ Entry* EntryBuffer::aGetEntryRowNo(i8 i_RowNo)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (i_RowNo == C_NO_MORE_ITEMS)
+  if (i_Item == C_NO_MORE_ITEMS)
     return nullptr;
   
-  RASSERT(i_RowNo >= 0 && i_RowNo < C_MAX_ITEMS);
-  i4 iOffset = m_i4aItemOffsets[i_RowNo];
+  RASSERT(i_Item >= 0 && i_Item < C_MAX_ITEMS);
+  i4 iOffset = m_i4aItemOffsets[i_Item];
   
   char* aAddress = aAdd<char*>(aDataArea(), iOffset);
   
@@ -3553,8 +3553,8 @@ bool EntryBuffer::bVerifyRowRefs(void)
     }
     
     // get the row entry from referenced entry buffer
-    i8 i_Row = aEntry->iItemNo();
-    Entry* aRowEntry = pEntryBuffer->aGetEntryRowNo(i_Row);
+    i8 i_Item = aEntry->iItemNo();
+    Entry* aRowEntry = pEntryBuffer->aGetEntry_Item(i_Item);
     
     // validate the row entry                                          //# more?
     if (1 != aRowEntry->nOffsets()) {
