@@ -3,8 +3,10 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace MetaData
 {
+  class Table;
+  
   class Slots : public Object
   {
   private:

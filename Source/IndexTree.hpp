@@ -5,15 +5,9 @@
 
 namespace DBobjects
 {
-
   static const i8 C_HIGHER_LEVEL_ID = 0xFFFF;
   
-  class Table;
-  class TablePtn;
-  class Index;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
   class IndexTree : public Object
   {
     
@@ -81,11 +75,8 @@ namespace DBobjects
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // allow for maximum 1025 indexes per table
-  static const i8 C_INDEXES_PER_TABLE = 1025;
   
-  typedef VectorNL_t<CN_INDEXTREEVEC,IndexTree,CN_INDEXTREE,C_INDEXES_PER_TABLE,u8> IndexTreeVec;
-}
+ }
 
 /*============================================================================*/
 /* end                                                                        */

@@ -5,8 +5,18 @@
 
 namespace DBobjects
 {
+  class IndexTree;
+  
+  typedef VectorNL_t<CN_INDEXTREEVEC,
+                     IndexTree,
+                     CN_INDEXTREE,
+                     C_INDEXES_PER_TABLE,
+                     u8> IndexTreeVec;
+}
+
+namespace MetaData
+{
   class Index;
-  class EntWrk;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -25,7 +35,7 @@ namespace DBobjects
     i8 m_nSubInsertersDone;      // number of subInserters which have completed
     i8 m_iParentJobId;           // parent jobid
     
-    IndexTreeVec* m_pIndexTreeVec; // vector of index trees
+  DBobjects::IndexTreeVec* m_pIndexTreeVec; // vector of index trees
   
     // must be last
     Footer m_xFooter;
@@ -44,7 +54,7 @@ namespace DBobjects
   
     void vAddLoadWriteBehindBuffers(i8 nBuffersLoadable);
     void vAddInsertWriteBehindBuffers(i8 nBuffersInsertable);
-    void vAddIndex(IndexTree* pIndexTree);
+    void vAddIndex(DBobjects::IndexTree* pIndexTree);
     bool bAllBuffersWritten(eDS eDataSource);
     void vWriteBehindBuffers(i8 nWriteBehindBuffers);
     void vBuffersWritten(i8 m_nBuffersWritten);
@@ -54,10 +64,10 @@ namespace DBobjects
     void vDropWrite();
     bool bGrabRead(void);
     bool bGrabWrite(void);
-    IndexTree* pHiddenIndexTree(void);
+    DBobjects::IndexTree* pHiddenIndexTree(void);
     void vIncBuffersWritten(void);
-    IndexTree* pIndexTree(i8 iIndexNo);
-    IndexTreeVec* pIndexTreeVec(void);
+    DBobjects::IndexTree* pIndexTree(i8 iIndexNo);
+    DBobjects::IndexTreeVec* pIndexTreeVec(void);
     bool bIsLocked(void);
     void vParentJobId(i8 iJobId);
     i8   iParentJobId(void);

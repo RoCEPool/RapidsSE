@@ -2,8 +2,7 @@
 /* TablePtn.cpp -- Table Partition                                            */
 /*============================================================================*/
 
-#include "DBobjects.h"
-
+#include "MetaData.h"
 #include "StorageEngine.h"
 
 extern AttachMap*  gpAttachMap;
@@ -15,7 +14,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TablePtn* DBobjects::_pTablePtn(void* aAddr)
+TablePtn* MetaData::_pTablePtn(void* aAddr)
 {
   TablePtn* pTablePtn = reinterpret_cast<TablePtn*>(aAddr);
   

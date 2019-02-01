@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace MetaData
 {
   enum eIT // Index Type
   {

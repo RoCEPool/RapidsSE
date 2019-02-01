@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace MetaData
 {  
   enum eTT // Table Type
   {
@@ -60,7 +60,8 @@ namespace DBobjects
     void vLazyBuildIndexes(i8 iSlot);
     
     void vInsertRow(i8 iTxId, i8 iPartition, Stz* m_aRecord, i8 iRecordLength);
-    void vInsertEntries(i8 iTxId, i8 iPartition, EntryBuffer* pEntryBuffer);
+  void vInsertEntries(i8 iTxId, i8 iPartition,
+                      DBobjects::EntryBuffer* pEntryBuffer);
     ColumnVec* pColumnVec(void);
     void vContentDump(void);
     void vCreateColumnVec(s32& sName, s48K& sDefinition);
@@ -78,7 +79,7 @@ namespace DBobjects
     PtnColVec*  pPtnColVec(void);
     void vPublish(i8 iPartitionNo);
     bool bPurge(i8 iPartitionNo, i8 iOlderThanSeconds);
-    EntryBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
+    DBobjects::EntryBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
     i8   iRowPartition(Stz* pRow);
 
     void vShowColumnVec(void);
@@ -95,7 +96,7 @@ namespace DBobjects
    
     Footer* aFooter(void);
   
-    i8 nHiddenEntryCount(EntryBuffer* pFirstL0Buffer);
+    i8 nHiddenEntryCount(DBobjects::EntryBuffer* pFirstL0Buffer);
     
 //  void vNewIndexLoad(i8 iPartition, IndexTree* pIndexTree,
 //                     IndexTree* pHiddenIndexTree, i8 nHiddenEntries);

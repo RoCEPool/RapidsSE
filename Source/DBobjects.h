@@ -17,23 +17,6 @@ namespace DBobjects
   static const i8 C_FLAT_FREQ         = 2;
   static const i8 C_MAX_INDEX_COLUMNS = 16;
   
-  enum eDS // data source
-  {
-    /* 0 */ DS_NONE=0,
-    /* 1 */ DS_INGEST,
-    /* 2 */ DS_INSERT,
-    /* 3 */ DS_LOAD,
-    /* 3 */ DS_ENUMS
-  };
-  
-  static Stz* aDS[]
-  {
-    /* 0 */ "none"_Stz,
-    /* 1 */ "ingest"_Stz,
-    /* 2 */ "insert"_Stz,
-    /* 3 */ "load"_Stz,
-    /* 4 */ "enums"_Stz
-  };
 }
 
 using namespace DBobjects;
@@ -58,10 +41,6 @@ typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 #include "IndexTree.hpp"
 
 
-#include "TablePtn.hpp"
-#include "Slots.hpp"
-#include "Table.hpp"
-#include "Index.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

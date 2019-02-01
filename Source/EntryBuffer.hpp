@@ -9,11 +9,6 @@
 
 namespace DBobjects
 {
-  class Index;
-  class Table;
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class EntryBuffer : public ItemHeap
   {
   friend class IndexTree;

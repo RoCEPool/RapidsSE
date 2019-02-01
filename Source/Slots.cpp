@@ -2,7 +2,7 @@
 /* Slots.cpp - table partition slots                                          */
 /*============================================================================*/
 
-#include "DBobjects.h"
+#include "MetaData.h"
 
 #include "StorageEngine.h"
 
@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Slots* DBobjects::_pSlots(void* aAddr)
+Slots* MetaData::_pSlots(void* aAddr)
 {
   Slots* pSlots = reinterpret_cast<Slots*>(aAddr);
   

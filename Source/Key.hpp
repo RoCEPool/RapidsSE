@@ -5,10 +5,6 @@
 
 namespace DBobjects
 {
-  class Index;
-  
-  //-----------------------------------------------------------------------------
-  
   enum eJC // JuxtaPosition
   {
     /*  0 */ JC_NONE=0,

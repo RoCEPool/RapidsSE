@@ -2,9 +2,7 @@
 /* Table.cpp -- Table                                                         */
 /*============================================================================*/
 
-#include "DBobjects.h"
-
-//#include "Word.hpp"
+#include "MetaData.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -16,7 +14,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Table* DBobjects::_pTable(void* aAddr)
+Table* MetaData::_pTable(void* aAddr)
 {
   Table* pTable = reinterpret_cast<Table*>(aAddr);
   

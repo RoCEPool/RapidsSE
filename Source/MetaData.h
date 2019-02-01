@@ -6,17 +6,34 @@
 
 #include "Forth.h"
 
-//------------------------------------------------------------------------------
 
-namespace Jobs
-{
-  class Job_CreateTable;
-  class Job_CreateIndex;
-}
+namespace Jobs      { class Job_CreateTable; class Job_CreateIndex; }
+namespace DBobjects { class EntryBuffer; class IndexTree; }
 
 namespace MetaData
 {
+  // allow for maximum 1025 indexes per table
+  static const i8 C_INDEXES_PER_TABLE = 1025;
+
   void vCheckAssumptions(void);
+  
+  enum eDS // data source
+  {
+  /* 0 */ DS_NONE=0,
+  /* 1 */ DS_INGEST,
+  /* 2 */ DS_INSERT,
+  /* 3 */ DS_LOAD,
+  /* 3 */ DS_ENUMS
+  };
+  
+  static Stz* aDS[]
+  {
+  /* 0 */ "none"_Stz,
+  /* 1 */ "ingest"_Stz,
+  /* 2 */ "insert"_Stz,
+  /* 3 */ "load"_Stz,
+  /* 4 */ "enums"_Stz
+  };
 }
 
 using namespace MetaData;
@@ -26,6 +43,10 @@ using namespace MetaData;
 #include "RelationalOps.h"
 
 #include "Column.hpp"
+#include "TablePtn.hpp"
+#include "Slots.hpp"
+#include "Table.hpp"
+#include "Index.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

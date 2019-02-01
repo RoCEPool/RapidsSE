@@ -3,7 +3,7 @@
 /* Index.cpp - index portion of table partition                               */
 /*============================================================================*/
 
-#include "DBobjects.h"
+#include "MetaData.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Index* DBobjects::_pIndex(void* pAddr)
+Index* MetaData::_pIndex(void* pAddr)
 {
   Index* pIndex = reinterpret_cast<Index*>(pAddr);
   
