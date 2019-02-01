@@ -73,7 +73,7 @@ i8 Entry::nBytesRequired(i8 nEmbeddedBytes)
 /*----------------------------------------------------------------------------*/
 /* get row address                                                            */
 /*----------------------------------------------------------------------------*/
-Row* Entry::aRow(void)
+Row* Entry::aRowData(void)
 {
   Row* aRow = reinterpret_cast<Row*>(aDataArea());
   
@@ -137,7 +137,7 @@ void Entry::vSetEntry(RowWrk& xRowWrk)
   // copy row into this entry
   
   Row* aSrcRow = xRowWrk.aRow();
-  Row* aDstRow = this->aRow();
+  Row* aDstRow = this->aRowData();
   i8 nRowSize = xRowWrk.nRowSize();
  
   MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_ENTRY);
@@ -172,7 +172,7 @@ void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
   
   if (pIndex->bIsHidden()) {
     //char* pRow = aRowData();
-    Row* aThisRow = aRow();
+    Row* aThisRow = aRowData();
     vTrace("Row: "_Stz);
     i8 iRowSize = nSizeItem();
     if (iRowSize > 0) {
@@ -201,7 +201,7 @@ void Entry::vContentDump(void)
          this,
          //m_iTxId,
          nSizeItem(),
-         aRow()
+         aRowData()
          );
 }
 
@@ -212,7 +212,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 {
   GenVar xVariable;
   
-  Row* aThisRow = aRow();
+  Row* aThisRow = aRowData();
   i8 nCols = pIdxColVec->nItems();
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     
@@ -324,7 +324,7 @@ void Entry::vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 {
   w8 wColumnWord;
   
-  Row* aThisRow = aRow();
+  Row* aThisRow = aRowData();
   
   i8 nCols = pIdxColVec->nItems();
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
@@ -398,7 +398,7 @@ char* Entry::pExtractSortKey(char* aElement, IdxColVec* pIdxColVec)
 {
   w8 wColumnWord;
   
-  Row* aThisRow = aRow();
+  Row* aThisRow = aRowData();
   
   i8 nCols = pIdxColVec->nItems();
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {

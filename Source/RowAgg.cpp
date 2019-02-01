@@ -144,7 +144,7 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
        aEntry != nullptr;
        aEntry = pEntryBuffer->aNextEntry(aEntry, 0)) {
     
-    pRow = aEntry->aRow();
+    pRow = aEntry->aRowData();
     
     //pRow->vAsBinaryStringVLQ(sRowString, m_pTable->pColumnVec());
     //vTrace("row: (%s)\n"_Stz, sRowString.aChar());

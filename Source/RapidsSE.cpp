@@ -986,7 +986,7 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
         RASSERT(aEntry != nullptr);
         RASSERT(aEntry->eClass() == CN_ENTRY);
         *aaEntryBuffer = pEntryBuffer;
-        *aaRow = aEntry->aRow();
+        *aaRow = aEntry->aRowData();
         //vTrace("returning %p %p\n"_Stz, *aaEntryBuffer, *aaEntry);
       }
       
@@ -1029,7 +1029,7 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
     if (aEntry) {
       *aaEntryBuffer = pEntryBuffer;
       *aaEntry = aEntry;
-      *aaRow = aEntry->aRow();
+      *aaRow = aEntry->aRowData();
       //vTrace("Returning rowEntry %p\n"_Stz, aEntry);
     } else {
       *aaRow = nullptr;
