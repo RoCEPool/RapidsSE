@@ -2,7 +2,7 @@
 /* RowAgg.hpp -- Row Working Entry                                            */
 /*============================================================================*/
 
-#include "DBobjects.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
@@ -13,7 +13,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RowAgg* DBobjects::_pRowAgg(void* aAddr)
+RowAgg* Jobs::_pRowAgg(void* aAddr)
 {
   RowAgg* pRowAgg = reinterpret_cast<RowAgg*>(aAddr);
   

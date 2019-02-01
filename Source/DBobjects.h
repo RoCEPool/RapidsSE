@@ -60,7 +60,6 @@ typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 #include "RightVec.hpp"
 #include "Key.hpp"
 #include "Row.hpp"
-#include "RowAgg.hpp"
 #include "RowWrk.hpp"
 
 #include "Entry.hpp"

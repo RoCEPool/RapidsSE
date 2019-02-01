@@ -3,11 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace Jobs
 {
-  class Table;
-  class EntryBuffer;
-
   class RowAgg : public Object
   {
   static const i8 C_MAX_COLAGG = 16;

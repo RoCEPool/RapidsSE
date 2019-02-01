@@ -52,6 +52,7 @@ static Stz* aJL[]
 #include "JobRow.hpp"
 #include "Job.hpp"
 #include "JobWriteBehind.hpp"
+#include "RowAgg.hpp"
 #include "RowOnce.hpp"
 
 #include "Job__Begun.hpp"
