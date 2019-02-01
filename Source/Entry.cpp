@@ -53,18 +53,6 @@ Entry::~Entry(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get bytes required for an Entry based on given EntWrk incl Object & Footer */
-/*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequired(EntWrk& xEntWrk)
-{
-  i8 nEmbeddedBytes = xEntWrk.nEmbeddedSize();
-  
-  i8 nEntryBytes = Entry::nBytesRequired(nEmbeddedBytes);
-  
-  return nEntryBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get total bytes required for entry incl Object & Footer (no offsets)       */
 /*----------------------------------------------------------------------------*/
 i8 Entry::nBytesRequired(i8 nEmbeddedBytes)
@@ -75,24 +63,6 @@ i8 Entry::nBytesRequired(i8 nEmbeddedBytes)
   i8 nEntryBytes = sizeof(Entry) + nEmbeddedBytes ;
   
   return nEntryBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get total bytes required for entry incl Object, Footer & Offsets           */
-/*----------------------------------------------------------------------------*/
-i8 Entry::nBytesRequired(i8 nEmbeddedBytes, i8 nOffsets)
-{
-  //
-  // memory layout is:  Entry|EmbeddedObject|Offsets
-  //
-  
-  i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets);
-  
-  i8 nTotalBytes = sizeof(Entry)
-                    + nEmbeddedBytes
-                    + nOffsetBytes;
-  
-  return nTotalBytes;
 }
 
 
