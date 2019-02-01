@@ -88,7 +88,7 @@ i8 Entry::nBytesRequired(i8 nEmbeddedBytes)
 i8 Entry::nBytesRequired(i8 nEmbeddedBytes, i8 nOffsets)
 {
   //
-  // memory layout is:  Entry|EmbeddedObject|Footer|Offsets
+  // memory layout is:  Entry|EmbeddedObject|Offsets
   //
   
   i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets);
@@ -111,7 +111,6 @@ EntryBuffer* Entry::pReferencedEntryBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); 
   
-  //EntryBuffer* pEntryBuffer = m_xId.pReferencedEntryBuffer();
   EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(m_xId);
 
   return pEntryBuffer;

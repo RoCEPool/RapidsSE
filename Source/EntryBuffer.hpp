@@ -41,6 +41,7 @@ namespace DBobjects
     ~EntryBuffer(void) noexcept(false);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+    static EntryBuffer* pRefdEntryBuffer(Entry* pEntry);
     static EntryBuffer* pRefdEntryBuffer(Id& xId);
 
   
@@ -132,7 +133,6 @@ namespace DBobjects
     void         vDeleteUpwards(Key* aDeleteKey, EntryBuffer* pToBuffer,
                                 EntryBuffer** ppRootKeyBuffer);
     void         vDumpPriorVec(Entry* aPriorVec[]);
-    FreeItem*   aFirstFree(void);
     Item*        aFirstItem(void);
     Entry*       aGetEntryOffset(i8 iOffset);
     Entry*       aGetEntrySplit(i8 iSplitEntryNo, Entry** aaPriorEntry);

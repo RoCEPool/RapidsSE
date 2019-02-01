@@ -107,12 +107,24 @@ void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pRefdEntryBuffer(Entry* pEntry)
+{
+  Id xId = pEntry->xId();
+  
+  EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(xId);
+    
+  return pEntryBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the entry buffer that given id references                              */
+/*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pRefdEntryBuffer(Id& xId)
 {
   bn nBufferNo = xId.iBuffer();
   
   HeapBuffer* pHeapBuffer =
-    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));
+  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));
   
   EntryBuffer* pEntryBuffer =
   reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());

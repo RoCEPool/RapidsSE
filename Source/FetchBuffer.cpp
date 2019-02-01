@@ -138,13 +138,7 @@ Row** FetchBuffer::aaFirstRowPtr(void)
     return nullptr;
   
   Row** aaFirstRow = reinterpret_cast<Row**>(m_xWsp.aArea());
-  
-  // get the referenced buffer
-  //EntryBuffer* pEntryBuffer = xId.pReferencedEntryBuffer();
-  
-  // get the row entry
-  //Entry* aRowEntry = pEntryBuffer->pGetEntryRowNo(xId.iRow());
-  
+    
   return aaFirstRow;
 }
 

@@ -1514,16 +1514,6 @@ void EntryBuffer::vDumpPriorVec(Entry* aPriorVec[])
 }
 
 /*----------------------------------------------------------------------------*/
-/* get first free entry                                                       */
-/*----------------------------------------------------------------------------*/
-FreeItem* EntryBuffer::aFirstFree(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return m_aFreeItemChain;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get first item after head (could be entry, free entry or wilderness)       */
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::aFirstItem(void)
@@ -3298,7 +3288,7 @@ bool EntryBuffer::bVerifyFreeList(void)
    of FreeEntry's.  No other class is permited.
    */
   
-  for (FreeItem* aFreeEntry = aFirstFree();
+  for (FreeItem* aFreeEntry = m_aFreeItemChain;
        aFreeEntry != nullptr;
        aFreeEntry = aFreeEntry->aNextFree()) {
     
