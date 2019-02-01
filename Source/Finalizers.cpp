@@ -209,7 +209,6 @@ pFINALIZE *gpFinalize[]
   /*106 */ &Finalize::vUndefined,         // CN_ROWWRK
   
   /*    */ &Finalize::vUndefined,         // CN_SCHEMATEST
-  /*113 */ &SelCursor::vFinalize,         // CN_SELCURSOR
   /*115 */ &Finalize::vUndefined,         // CN_SEPROMPT
   /*    */ &Finalize::vUndefined,         // CN_SESSION
   /*    */ &Finalize::vUndefined,         // CN_SESSIONSTATE

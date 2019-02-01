@@ -246,7 +246,6 @@ void Axioms::vAddConstants(void)
   
   /* 57 */ vAddConstant("CN_SESSION"_Stz,      CN_SESSION);
   /* 57 */ vAddConstant("CN_SESSIONSTATE"_Stz, CN_SESSIONSTATE);
-  /*    */ vAddConstant("CN_SELCURSOR"_Stz,    CN_SELCURSOR);
   /* 60 */ vAddConstant("CN_SEPROMPT"_Stz,     CN_SEPROMPT);
   /* 61 */ vAddConstant("CN_SINCE"_Stz,        CN_SINCE);
   /* 63 */ vAddConstant("CN_SKIPLIST"_Stz,     CN_SKIPLIST);
@@ -457,7 +456,6 @@ void Axioms::vAddConstants(void)
 
   /* 43 */ vAddConstant("SIZEOF_SESSION"_Stz,      sizeof(Session));
 
-  /*    */ vAddConstant("SIZEOF_SELCURSOR"_Stz,    sizeof(SelCursor));
   /* 46 */ vAddConstant("SIZEOF_SEPROMPT"_Stz,     sizeof(SePrompt));
   /* 47 */ vAddConstant("SIZEOF_SINCE"_Stz,        sizeof(Since));
   /* 49 */ vAddConstant("SIZEOF_SKIPLIST"_Stz,     sizeof(SkipListNL));

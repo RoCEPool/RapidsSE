@@ -210,7 +210,6 @@ enum eCN : u2 // Class Number
   /* 177 0xB1    17472B Heap:I */ CN_ROWWRK,
   
   /* 178 0xB2    50208B Heap:L */ CN_SCHEMATEST,
-  /* 179 0xB3       56B Heap:S */ CN_SELCURSOR,
   /* 181 0xB5       72B Heap:L */ CN_SEPROMPT,
   /* 182 0xB6    48288B Heap:M */ CN_SESSION,
   /* 182 0xB6    48288B Heap:M */ CN_SESSIONSTATE,
@@ -458,7 +457,6 @@ static Stz* aCN[]
   /* 177 0xB1 */ "ROWWRK"_Stz,              // CN_ROWWRK
   
   /* 178 0xB2 */ "SCHEMATEST"_Stz,          // CN_SCHEMATEST
-  /* 179 0xB3 */ "SELCURSOR"_Stz,           // CN_SELCURSOR
   /* 181 0xB5 */ "SEPROMPT"_Stz,            // CN_SEPROMPT
   /* 182 0xB6 */ "SESSION"_Stz,             // CN_SESSION
   /* 182 0xB6 */ "SESSION"_Stz,             // CN_SESSIONSTATE
