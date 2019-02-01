@@ -2,19 +2,16 @@
 /* RightVec.cpp -- Right vector (array of offsets)                            */
 /*============================================================================*/
 
-#include "Data.h"
-
-#include "StorageEngine.h"
+#include "Structures.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RightVec* Data::_aRightVec(void* aAddr)
+RightVec* Structures::_aRightVec(void* aAddr)
 {
   RightVec* aRightVec = reinterpret_cast<RightVec*>(aAddr);
   
@@ -62,8 +59,6 @@ RightVec::~RightVec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 i8 RightVec::iOffset(i8 i_OffsetNo)
 {
-  ASSERT(i_OffsetNo >= 0 && i_OffsetNo < gpAttachMap->m_nIndexOffsets);
-  
   u8 uOffset = m_nOffset[i_OffsetNo];
   
   return uOffset;
@@ -74,25 +69,7 @@ i8 RightVec::iOffset(i8 i_OffsetNo)
 /*----------------------------------------------------------------------------*/
 void RightVec::vOffset(i8 i_OffsetNo, i8 iOffset)
 {
-  ASSERT(i_OffsetNo >= 0 && i_OffsetNo < gpAttachMap->m_nIndexOffsets);
-  
   m_nOffset[i_OffsetNo] = iOffset;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* calculate number of bytes required to hold n offsets                       */
-/*----------------------------------------------------------------------------*/
-i8 RightVec::nBytesRequired(i8 nOffsets)
-{
-  //ASSERT(nOffsets >= 0 && nOffsets < gpAttachMap->m_nIndexOffsets);
-  
-  i8 nBytes = nOffsets * sizeof(u8);
-  
-  return nBytes;
 }
 
 /*============================================================================*/

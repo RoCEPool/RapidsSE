@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data
+namespace Structures
 {
   class RightVec
   {
@@ -19,10 +19,8 @@ namespace Data
     RightVec(void);
     ~RightVec(void) noexcept(false);
 
-    i8 iOffset(i8 i_OffsetNo);
+    i8   iOffset(i8 i_OffsetNo);
     void vOffset(i8 i_OffsetNo, i8 iOffset);
-  
-    static i8 nBytesRequired(i8 nOffsets);
   };
   
   RightVec* _aRightVec(void* aAddr);
