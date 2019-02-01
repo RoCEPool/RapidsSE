@@ -204,7 +204,6 @@ pFINALIZE *gpFinalize[]
   /* 97 */ &Finalize::vUndefined,         // CN_RBCURSOR
   /*    */ &Finalize::vUndefined,         // CN_RECORDBUFFER
   /*    */ &Finalize::vUndefined,         // CN_RESOURCETRACKER
-  /*101 */ &Finalize::vUndefined,         // CN_RING
   /*102 */ &Finalize::vUndefined,         // CN_ROWAGG
   /*104 */ &Finalize::vUndefined,         // CN_ROWCURSOR
   /*105 */ &Finalize::vUndefined,         // CN_ROWONCE

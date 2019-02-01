@@ -243,7 +243,6 @@ void Axioms::vAddConstants(void)
   
   /*    */ vAddConstant("CN_RBCURSOR"_Stz,     CN_RBCURSOR);
   /*    */ vAddConstant("CN_RECORDBUFFER"_Stz, CN_RECORDBUFFER);
-  /* 48 */ vAddConstant("CN_RING"_Stz,         CN_RING);
   /* 51 */ vAddConstant("CN_ROWCURSOR"_Stz,    CN_ROWCURSOR);
   
   /* 57 */ vAddConstant("CN_SESSION"_Stz,      CN_SESSION);
@@ -454,7 +453,6 @@ void Axioms::vAddConstants(void)
   /* 33 */ vAddConstant("SIZEOF_QUEUE"_Stz,        sizeof(Queue));
   /* 34 */ vAddConstant("SIZEOF_QUEUEBUFFER"_Stz,  sizeof(QueueBuffer));
   /*    */ vAddConstant("SIZEOF_RBCURSOR"_Stz,     sizeof(RbCursor));
-  /* 35 */ vAddConstant("SIZEOF_RING"_Stz,         sizeof(Ring));
   /* 36 */ vAddConstant("SIZEOF_ROW"_Stz,          sizeof(Entry));
   /* 37 */ vAddConstant("SIZEOF_ROWBUFFER"_Stz,    sizeof(EntryBuffer));
   /* 38 */ vAddConstant("SIZEOF_ROWCURSOR"_Stz,    (i8)0);

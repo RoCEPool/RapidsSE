@@ -76,8 +76,6 @@ typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 
 #include "Slots.hpp"
 
-#include "Ring.hpp"
-
 #include "Table.hpp"
 #include "Index.hpp"
 
