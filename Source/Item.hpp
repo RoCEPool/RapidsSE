@@ -20,10 +20,10 @@ namespace MiniHeaps
     i4  m_nSizeItem; // size of this item
   
   public:
-#ifdef WITH_DEBUG_VERSION
+//#ifdef WITH_DEBUG_VERSION
   i8  m_iSkipNo;    // verify of order of skip items
   i8  m_iIntKey;    // key debug hack
-#endif
+//#endif
 
 
   public:
