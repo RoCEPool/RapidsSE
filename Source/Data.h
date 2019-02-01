@@ -25,7 +25,6 @@ typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 
 #include "EntWrk.hpp"
 #include "KeyWrk.hpp"
-#include "RightVec.hpp"
 #include "Key.hpp"
 #include "Row.hpp"
 #include "RowWrk.hpp"
