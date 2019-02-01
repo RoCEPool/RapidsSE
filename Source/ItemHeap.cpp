@@ -35,15 +35,19 @@ ItemHeap::ItemHeap(eCN eClassNo)
   m_pPrevBuffer   = nullptr;
   m_pHigherBuffer = nullptr;
 
-  m_aFreeItemChain  = nullptr;
-
   m_iPartitionNo  = -1;
-  m_iLevelNo  = 0;
+  m_iLevelNo      = 0;
   m_iBufferNo     = *nPoolBufferNo();
-  
   m_oWhenNewed.vNow();
   m_bIsLast       = false;
+  
+  // head of free item chain
+  m_aFreeItemChain  = nullptr;
 
+  // entry offsets array
+  m_iaEntryOffsets    = nullptr;
+  m_i_FreeOffsetChain = C_NO_MORE_ITEMS;
+  
   
 #ifdef WITH_PREPOST_CHECKING
   m_xWsp.vZero(eClassNo);
@@ -255,6 +259,30 @@ bool ItemHeap::bHasSpace(i8 nBytes)
     else
       return true;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* set up the initial entry offset free chain                                 */
+/*----------------------------------------------------------------------------*/
+void ItemHeap::vInitFreeChain(void)
+{
+  m_iaEntryOffsets  =
+    reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_MAX_ITEMS));
+  
+  m_i_FreeOffsetChain = C_NO_MORE_ITEMS;
+  
+  i8 iMaxItems =
+    gpAttachMap->m_nIndexEntries ? gpAttachMap->m_nIndexEntries : C_MAX_ITEMS;
+  
+  for (i4 i_Item = 0; i_Item < (iMaxItems - 1); i_Item++) {
+    RASSERT(i_Item >= 0 && i_Item < C_MAX_ITEMS);
+    m_iaEntryOffsets[i_Item] = - (i_Item + 1);
+  }
+  
+  RASSERT((iMaxItems - 1) >= 0 && (iMaxItems - 1) < C_MAX_ITEMS);
+  m_iaEntryOffsets[iMaxItems - 1] = - C_NO_MORE_ITEMS;
+  
+  m_i_FreeOffsetChain = 0;
 }
 
 /*----------------------------------------------------------------------------*/

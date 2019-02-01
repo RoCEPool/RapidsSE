@@ -25,8 +25,6 @@ namespace DBobjects
 
     ////////////////////////////////////////////////////////////////////////////
     // only used in row entry buffers
-    i4*    m_iaEntryOffsets;    // array of row entry offsets
-    i4     m_i_FreeOffsetChain; // head of free entry offset chain
   
     ////////////////////////////////////////////////////////////////////////////
     // only used in index entry buffers
@@ -80,7 +78,6 @@ namespace DBobjects
   
   private:
     Entry* aAllotEntry(i8 nBytes);
-    void   vInitFreeChain(void);
 
   
   
