@@ -3254,7 +3254,7 @@ bool EntryBuffer::bVerifyEntryOffset(void)
     // validate offset element which is the offset to an entry
     
     Entry* aEntry = aGetEntryOffset(i_RowEntryOffset);
-    if (! aEntry->bValidEntry())
+    if (! aEntry->bValidItem())
       return false;
   }
   
@@ -3359,7 +3359,7 @@ bool EntryBuffer::bVerifyItems(void)
         
       case CN_ENTRY: {
         Entry* aEntry = _aEntry(aItem);
-        if (! aEntry->bValidEntry()) {
+        if (! aEntry->bValidItem()) {
           vShow();
           vVerifyFault();
           return false;

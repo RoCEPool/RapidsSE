@@ -64,33 +64,6 @@ Entry::~Entry(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test for valid entry                                                       */
-/*----------------------------------------------------------------------------*/
-bool Entry::bValidEntry(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
-  
-  if (! bValidMagic()) {
-    vTrace("Not valid magic\n"_Stz);
-    return false;
-  }
-  
-  if (CN_ENTRY != eClass()) {
-    vTrace("Not valid class\n"_Stz);
-    return false;
-  }
-  
-#ifdef USE_LW_FOOOTER
-  if (! aFooter()->bValidFooter()) {
-    vTrace("Not valid footer\n"_Stz);
-    return false;
-  }
-#endif
-  
- return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

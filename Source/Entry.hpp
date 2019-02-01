@@ -43,7 +43,6 @@ namespace DBobjects
     Entry(eCN eClassNo, i8 nThisBytes, i8 uOffsets);
     ~Entry(void) noexcept(false);
   
-    bool bValidEntry(void);
   
     static i8 nBytesRequired(EntWrk& xEntWrk);
     static i8 nBytesRequired(i8 nEmbeddedBytes);

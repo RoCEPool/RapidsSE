@@ -202,6 +202,31 @@ i8 Item::nSizeItem(void)
   return (i8)m_nSizeItem;
 }
 
+/*----------------------------------------------------------------------------*/
+/* test for valid entry                                                       */
+/*----------------------------------------------------------------------------*/
+bool Item::bValidItem(void)
+{  
+  if (! bValidMagic()) {
+    vTrace("Not valid magic\n"_Stz);
+    return false;
+  }
+  
+  if (CN_ENTRY != eClass()) {
+    vTrace("Not valid class\n"_Stz);
+    return false;
+  }
+  
+#ifdef USE_LW_FOOOTER
+  if (! aFooter()->bValidFooter()) {
+    vTrace("Not valid footer\n"_Stz);
+    return false;
+  }
+#endif
+  
+  return true;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

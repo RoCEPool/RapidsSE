@@ -102,7 +102,7 @@ Entry* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   if (m_aHeadEntry->iNEO(0) == -1)
     m_aHeadEntry->vNEO(0, iEntryOffset);
   
-  RASSERT(aRowEntry->bValidEntry());
+  RASSERT(aRowEntry->bValidItem());
   
   return aRowEntry;
 }
