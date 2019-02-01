@@ -134,7 +134,6 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_Row();
   Step::vAddSteps_RowBuffer();
-  Step::vAddSteps_RowCursor();
   Step::vAddSteps_Rstack();
   
   Step::vAddSteps_Session();

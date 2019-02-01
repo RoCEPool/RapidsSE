@@ -121,7 +121,6 @@ namespace Steps
   
     static void vAddSteps_Row(void);
     static void vAddSteps_RowBuffer(void);
-    static void vAddSteps_RowCursor(void);
     static void vAddSteps_Rstack(void);
   
     static void vAddSteps_Scheduler(void);
