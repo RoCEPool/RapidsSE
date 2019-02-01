@@ -97,7 +97,7 @@ void Entry::vSetEntry(Id xId)
   m_xId = xId;
   
 #ifdef WITH_DEBUG_VERSION
-  m_iIntKey = aKey()->iGetInt();
+  m_iIntKey = aKeyData()->iGetInt();
 #endif
 }
 
@@ -116,7 +116,7 @@ void Entry::vSetEntry(KeyWrk& xKeyWrk)
   // copy key into this entry
   
   Key* aSrcKey = xKeyWrk.aKey();
-  Key* aDstKey = this->aKey();
+  Key* aDstKey = this->aKeyData();
   i8 nKeySize = xKeyWrk.nKeySize();
   
   MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENTRY);
@@ -148,7 +148,7 @@ void Entry::vSetEntry(RowWrk& xRowWrk)
 /*----------------------------------------------------------------------------*/
 void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
 {
-  Key* aKey = this->aKey();
+  Key* aKey = this->aKeyData();
   
   vTrace("%lld: Entry: %p Size: %llu Offsets: %llu "_Stz,
          iOffset,

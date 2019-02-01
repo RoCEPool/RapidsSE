@@ -356,7 +356,7 @@ void Step::vIndexExactKey(MP_Task mpTask)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check if entry matches key
     bool bIsEqual = false;
-    bool bSame = aEntry->aKey()->bJuxtaCompare(JC_SAME, xKeyWrk.aKey(),
+    bool bSame = aEntry->aKeyData()->bJuxtaCompare(JC_SAME, xKeyWrk.aKey(),
                                                pIndex->pIdxColVec(), 1, bIsEqual);
     
     if (bSame) {
@@ -1052,7 +1052,7 @@ void Step::vIndexRange(MP_Task mpTask)
     //aUpperEntry->vShow(0,pIndex,true);
     
     bool bIsEqual = false;
-    bool bBefore = aUpperEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
+    bool bBefore = aUpperEntry->aKeyData()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
                                                  pIndex->pIdxColVec(), 1,
                                                  bIsEqual, eUpperRelnOp);
     
@@ -1477,7 +1477,7 @@ void Step::vIndexUpper(MP_Task mpTask)
   
   eRO eRelnOp = pPlanner->eGetFirstUpperPredicateRO(i_Phrase);
   bool bIsEqual = false;
-  bool bBefore = aEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrk.aKey(),
+  bool bBefore = aEntry->aKeyData()->bJuxtaCompare(JC_BEFORE, xKeyWrk.aKey(),
                                                pIndex->pIdxColVec(), 1,
                                                bIsEqual, eRelnOp);
   mpTask->m_pDataStack->vPushI8(bBefore ? 1 : 0);
@@ -1602,7 +1602,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
     //aUpperEntry->vShow(0,pIndex,true);
     
     bIsEqual = false;
-    bBefore = aUpperEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
+    bBefore = aUpperEntry->aKeyData()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
                                                  pIdxColVec, 1,
                                                  bIsEqual, eUpperRelnOp);
     

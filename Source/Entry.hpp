@@ -25,12 +25,12 @@ namespace Data
     static i8 nBytesRequired(i8 nEmbeddedBytes);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // data area
+    // row data area
     Row* aRowData(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // key
-    Key* aKey(void);
+    // key data area
+    Key* aKeyData(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // index
@@ -64,7 +64,7 @@ namespace Data
   /*--------------------------------------------------------------------------*/
   /* get Key                                                                  */
   /*--------------------------------------------------------------------------*/
-  inline Key* Entry::aKey(void)
+  inline Key* Entry::aKeyData(void)
   {
     Key* aKey = reinterpret_cast<Key*>(aDataArea());
     
