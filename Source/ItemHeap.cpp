@@ -46,7 +46,7 @@ ItemHeap::ItemHeap(eCN eClassNo)
   m_aFreeItemChain  = nullptr;
 
   // entry offsets array
-  m_iaItemOffsets    = nullptr;
+  m_i4aItemOffsets    = nullptr;
   m_i_FreeOffsetChain = C_NO_MORE_ITEMS;
   
   
@@ -238,7 +238,7 @@ i4 ItemHeap::iGetItemNo(void)
   i4 i_ItemNo = m_i_FreeOffsetChain;
   
   RASSERT(i_ItemNo < C_MAX_ITEMS);
-  m_i_FreeOffsetChain = - m_iaItemOffsets[i_ItemNo];
+  m_i_FreeOffsetChain = - m_i4aItemOffsets[i_ItemNo];
   
   return i_ItemNo;
 }
@@ -286,7 +286,7 @@ bool ItemHeap::bHasSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vInitFreeChain(void)
 {
-  m_iaItemOffsets  =
+  m_i4aItemOffsets  =
     reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_MAX_ITEMS));
   
   m_i_FreeOffsetChain = C_NO_MORE_ITEMS;
@@ -296,11 +296,11 @@ void ItemHeap::vInitFreeChain(void)
   
   for (i4 i_Item = 0; i_Item < (iMaxItems - 1); i_Item++) {
     RASSERT(i_Item >= 0 && i_Item < C_MAX_ITEMS);
-    m_iaItemOffsets[i_Item] = - (i_Item + 1);
+    m_i4aItemOffsets[i_Item] = - (i_Item + 1);
   }
   
   RASSERT((iMaxItems - 1) >= 0 && (iMaxItems - 1) < C_MAX_ITEMS);
-  m_iaItemOffsets[iMaxItems - 1] = - C_NO_MORE_ITEMS;
+  m_i4aItemOffsets[iMaxItems - 1] = - C_NO_MORE_ITEMS;
   
   m_i_FreeOffsetChain = 0;
 }

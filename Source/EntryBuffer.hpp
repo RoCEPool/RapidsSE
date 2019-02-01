@@ -19,9 +19,8 @@ namespace DBobjects
   friend class IndexTree;
 
   protected:
-    Lock   m_okLock;       // lock
-  
-    Index* m_pIndex;       // index this buffer belongs to
+    Lock   m_okLock; // lock
+    Index* m_pIndex; // index this buffer belongs to
   
     ////////////////////////////////////////////////////////////////////////////
     // only used in index entry buffers

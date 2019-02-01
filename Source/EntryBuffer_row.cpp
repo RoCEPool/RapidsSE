@@ -90,7 +90,7 @@ Entry* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   
   i4 iEntryOffset = iToOffset(aRowEntry);
   RASSERT(i_RowNo >= 0 && i_RowNo < C_MAX_ITEMS);
-  m_iaItemOffsets[i_RowNo] = iEntryOffset;
+  m_i4aItemOffsets[i_RowNo] = iEntryOffset;
   
   if (m_aLastEntry)
     m_aLastEntry->vNEO(0,iEntryOffset);

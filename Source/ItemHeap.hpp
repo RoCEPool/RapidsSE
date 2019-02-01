@@ -13,10 +13,14 @@ namespace MiniHeaps
     static const i8 C_WSP_ITEMHEAP = C_SIZE_LARGE_OBJECT - C_1KB;
   
   protected:
-    i8 m_iBufferNo;    // this EntryBuffer's buffer number
-    i8 m_nItems;       // number of items in this heap
-  
-    ItemHeap* m_pNextBuffer;   // next buffer
+    // RDP Java layout ---------------------------------------------------------
+    i8 m_iBufferNo; // this EntryBuffer's buffer number
+    i8 m_nItems;    // number of items in this heap
+    ItemHeap* m_pNextBuffer; // next buffer
+    i4* m_i4aItemOffsets;    // array of offsets (i4) to items in m_xWsp
+    Wsp_t<C_WSP_ITEMHEAP> m_xWsp; // workspace
+    // End RDP Java layout -----------------------------------------------------
+
     ItemHeap* m_pPrevBuffer;   // prev buffer
     ItemHeap* m_pHigherBuffer; // higher level buffer that has entries
                                // that point to this buffer
@@ -29,11 +33,7 @@ namespace MiniHeaps
   
     FreeItem* m_aFreeItemChain; // head of free item chain
 
-    i4* m_iaItemOffsets;     // array of offsets to items in m_xWsp
     i4  m_i_FreeOffsetChain; // head of free item offset chain
-
-
-    Wsp_t<C_WSP_ITEMHEAP> m_xWsp;
   
   public:
     ItemHeap(eCN eClassNo);
