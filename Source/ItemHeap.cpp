@@ -29,6 +29,7 @@ ItemHeap::ItemHeap(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
+  m_iBufferNo     = *nPoolBufferNo();
   m_nItems = 0;
 
   m_pNextBuffer   = nullptr;
@@ -37,7 +38,7 @@ ItemHeap::ItemHeap(eCN eClassNo)
 
   m_iPartitionNo  = -1;
   m_iLevelNo      = 0;
-  m_iBufferNo     = *nPoolBufferNo();
+  
   m_oWhenNewed.vNow();
   m_bIsLast       = false;
   

@@ -780,6 +780,9 @@ void EntryBuffer::vRestore(void)
   // get the buffer no
   bn nBuffer = nPoolBufferNo();
   
+  // restore the bufferNo
+  m_iBufferNo = *nBuffer;
+  
   // now restore the row id's to point to this buffer no
   for (Entry* aEntry = aFirstEntry();
        aEntry != nullptr;
