@@ -88,12 +88,6 @@ namespace DBobjects
     void vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
     char* pExtractSortKey(char *aElement, IdxColVec* pIdxColVec);
   
-    NEO* aNEO(void);
-    i4   iNEO(i8 i_Offset);
-    void vNEO(i8 i_Offset, i4 iNEO);
-    void vNEOdump(void);
-    i8   iNEOsize(void);
-  
     char* aAddressAfter(void);
   
     Footer* aFooter(void);

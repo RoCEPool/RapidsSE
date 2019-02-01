@@ -93,6 +93,76 @@ i8 Item::iItemNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of next entry offset array                                     */
+/*----------------------------------------------------------------------------*/
+NEO* Item::aNEO(void)
+{
+  //Footer* aFooter = this->aFooter();
+  
+  //NEO* aNEO = pAdd<NEO*>(aFooter,sizeof(Footer));
+  
+  NEO* aNEO = aAdd<NEO*>(this, nSizeItem());
+  
+  return aNEO;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a next entry offset                                                    */
+/*----------------------------------------------------------------------------*/
+i4 Item::iNEO(i8 iOffset)
+{
+  ASSERT(iOffset >= 0 && iOffset < nOffsets());
+  
+  //NEO* aNEO = this->aNEO();
+  
+  //i4 iNEO = aNEO->m_iOffset[iOffset];
+  
+  i4 iNEO = *(aAdd<i4*>(this, nSizeItem() + sizeof(i4) * iOffset));
+  
+  return iNEO;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set a next entry offset                                                    */
+/*----------------------------------------------------------------------------*/
+void Item::vNEO(i8 iOffset, i4 iNEO)
+{
+  ASSERT(iOffset >= 0 && iOffset < nOffsets());
+  
+  //NEO* aNEO = this->aNEO();
+  
+  //aNEO->m_iOffset[iOffset] = iNEO;
+  
+  *(aAdd<i4*>(this, nSizeItem() + sizeof(i4) * iOffset)) = iNEO;
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump the NEO after this entry                                              */
+/*----------------------------------------------------------------------------*/
+void Item::vNEOdump(void)
+{
+  NEO* aNEO = this->aNEO();
+  vTrace("Entry %p offsets: %lld NEO: %p"_Stz,
+         this,nOffsets(),aNEO);
+  
+  for (i8 i_Offset = 0; i_Offset < nOffsets(); i_Offset++)
+    vTrace(" %lld: %d"_Stz,i_Offset,aNEO->m_iOffset[i_Offset]);
+  
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of the NEO after this entry                                       */
+/*----------------------------------------------------------------------------*/
+i8 Item::iNEOsize(void)
+{
+  i8 nBytes = sizeof(i4) * nOffsets();
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of offsets                                                      */
 /*----------------------------------------------------------------------------*/
 i8 Item::nOffsets(void)
