@@ -18,6 +18,8 @@ namespace MiniHeaps
   protected:
     Id  m_xId;       // item id
     i4  m_nSizeItem; // size of this item
+    // ..data bytes..
+    // ..neo..
   
   public:
 //#ifdef WITH_DEBUG_VERSION
