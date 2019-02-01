@@ -27,7 +27,6 @@ namespace MiniHeaps
   
     i8    iAsI8(void);
     void  vAssign(Id& xId);
-    void  vAssign(i8 iBuffer, i8 iItem);
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
     i8    iItem(void);
