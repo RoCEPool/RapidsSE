@@ -19,12 +19,11 @@ namespace Data
     RowWrk(void);
     ~RowWrk(void) noexcept(false);
   
-    static void vSetEntry(Entry* pEntry, RowWrk& xRowWrk);
-  
-    Row*   aRow(void);
-    i8     nRowSize(void);
-    void   vRowSize(i8 nRowSize);
-    void   vShow(ColumnVec* pColVec);
+    Row* aRow(void);
+    i8   nRowSize(void);
+    void vRowSize(i8 nRowSize);
+    void vSetEntry(Entry* pEntry);
+    void vShow(ColumnVec* pColVec);
   };
 }
 

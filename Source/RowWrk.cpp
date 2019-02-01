@@ -54,27 +54,6 @@ RowWrk::~RowWrk(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* set entry using given row working entry                                    */
-/*----------------------------------------------------------------------------*/
-void RowWrk::vSetEntry(Entry* pEntry, RowWrk& xRowWrk)
-{
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set id, transaction and offsets
-  
-  pEntry->vId(xRowWrk.xId());
-  pEntry->vOffsets(xRowWrk.nOffsets());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy row into this entry
-  
-  Row* aSrcRow = xRowWrk.aRow();
-  Row* aDstRow = pEntry->aRowData();
-  i8 nRowSize  = xRowWrk.nRowSize();
-  
-  MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_ENTRY);
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -109,6 +88,27 @@ void RowWrk::vRowSize(i8 nRowSize)
   _precondition_(_MAGIC_,CN_ROWWRK);
   
   vEmbeddedSize(nRowSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set row entry                                                              */
+/*----------------------------------------------------------------------------*/
+void RowWrk::vSetEntry(Entry* pEntry)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set id, transaction and offsets
+  
+  pEntry->vId(xId());
+  pEntry->vOffsets(nOffsets());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy row into this entry
+  
+  Row* aSrcRow = aRow();
+  Row* aDstRow = pEntry->aRowData();
+  i8 nRowSize  = this->nRowSize();
+  
+  MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_ENTRY);
 }
 
 /*----------------------------------------------------------------------------*/

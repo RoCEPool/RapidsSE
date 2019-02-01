@@ -81,7 +81,7 @@ Entry* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the buffer entry
-  RowWrk::vSetEntry(aRowEntry,xRowWrk);
+  xRowWrk.vSetEntry(aRowEntry);
   
   //pRowEntry->vShow(0, m_pIndex, false);
   
