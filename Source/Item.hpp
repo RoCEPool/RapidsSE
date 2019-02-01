@@ -25,7 +25,6 @@ namespace MiniHeaps
   i8  m_iIntKey;    // key debug hack
 //#endif
 
-
   public:
     void* operator new(size_t);
     void* operator new(size_t, Item*);
