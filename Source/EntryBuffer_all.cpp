@@ -2267,7 +2267,7 @@ Item* EntryBuffer::aNextItem(Item* aCurrent)
   switch (eClass) {
     case CN_ENTRY: {
       Entry* aEntryCurr = static_cast<Entry*>(aCurrent);
-      aItemNext = reinterpret_cast<Item*>(aEntryCurr->aAddressAfter());
+      aItemNext = aEntryCurr->aItemAfter();
       break;
     }
       

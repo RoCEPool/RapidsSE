@@ -679,24 +679,6 @@ char* Entry::pExtractSortKey(char* aElement, IdxColVec* pIdxColVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address after this entry                                               */
-/*----------------------------------------------------------------------------*/
-char* Entry::aAddressAfter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  i8 nItemBytes = nSizeItem();
-  
-  i8 nNEObytes = iNEOsize();
-  
-  i8 nItemPlusNEO = nItemBytes + nNEObytes;
-  
-  char* aAfter = aAdd<char*>(this,nItemPlusNEO);
-  
-  return aAfter;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

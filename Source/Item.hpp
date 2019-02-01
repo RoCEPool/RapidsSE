@@ -26,19 +26,20 @@ namespace MiniHeaps
     Item(eCN eClassNo, i8 nSizeItem);
     ~Item(void) noexcept(false);
   
-    i8   iBufferNo(void);
-    bn   nBufferNo(void);
-    Id&  xId(void);
-    void vId(Id xId);
-    i8   iItemNo(void);
-    NEO* aNEO(void);
-    i4   iNEO(i8 i_Offset);
-    void vNEO(i8 i_Offset, i4 iNEO);
-    void vNEOdump(void);
-    i8   iNEOsize(void);
-    i8   nOffsets(void);
-    void vOffsets(i8 nOffsets);
-    i8   nSizeItem(void);
+    i8    iBufferNo(void);
+    bn    nBufferNo(void);
+    Id&   xId(void);
+    void  vId(Id xId);
+    Item* aItemAfter(void);
+    i8    iItemNo(void);
+    NEO*  aNEO(void);
+    i4    iNEO(i8 i_Offset);
+    void  vNEO(i8 i_Offset, i4 iNEO);
+    void  vNEOdump(void);
+    i8    iNEOsize(void);
+    i8    nOffsets(void);
+    void  vOffsets(i8 nOffsets);
+    i8    nSizeItem(void);
   };
   
   /*--------------------------------------------------------------------------*/
