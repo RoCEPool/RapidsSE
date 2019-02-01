@@ -368,7 +368,7 @@ Entry* EntryBuffer::aInsertKeyAbs(KeyWrk& xKeyWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the key entry
   
-  aKeyEntry->vSetEntry(xKeyWrk);
+  aKeyEntry->vSetEntry(aKeyEntry,xKeyWrk);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the key entry into the skip list
@@ -420,7 +420,7 @@ Entry* EntryBuffer::aInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the key entry
   
-  aKeyEntry->vSetEntry(xKeyWrk);
+  aKeyEntry->vSetEntry(aKeyEntry,xKeyWrk);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append to prior entry at L0 only
@@ -1700,7 +1700,7 @@ void EntryBuffer::vHeadEntryNew(void)
   
   new(m_aHeadEntry) Entry(CN_ENTRY,nEntryBytes,0);
   
-  m_aHeadEntry->vSetEntry(xHeadWrk.xId());
+  m_aHeadEntry->vSetEntry(m_aHeadEntry,xHeadWrk.xId());
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   m_aHeadEntry->vNEO(0,-1);
@@ -1789,7 +1789,7 @@ Entry* EntryBuffer::aInsertKeyAbsLazy(KeyWrk& xKeyWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the key entry
   
-  aKeyEntry->vSetEntry(xKeyWrk);
+  aKeyEntry->vSetEntry(aKeyEntry,xKeyWrk);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form lazy chain

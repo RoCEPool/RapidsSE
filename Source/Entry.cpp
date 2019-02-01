@@ -75,9 +75,11 @@ Row* Entry::aRowData(void)
 /*----------------------------------------------------------------------------*/
 /* set entry given working entry                                              */
 /*----------------------------------------------------------------------------*/
-void Entry::vSetEntry(Id xId)
+void Entry::vSetEntry(Entry* pEntry, Id xId)
 {
+  RASSERT(this == pEntry);
   ASSERT(nSizeItem());
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
@@ -91,8 +93,9 @@ void Entry::vSetEntry(Id xId)
 /*----------------------------------------------------------------------------*/
 /* set entry using given key working entry                                    */
 /*----------------------------------------------------------------------------*/
-void Entry::vSetEntry(KeyWrk& xKeyWrk)
+void Entry::vSetEntry(Entry* pEntry, KeyWrk& xKeyWrk)
 {
+  RASSERT(this == pEntry);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
   
@@ -112,8 +115,9 @@ void Entry::vSetEntry(KeyWrk& xKeyWrk)
 /*----------------------------------------------------------------------------*/
 /* set entry using given row working entry                                    */
 /*----------------------------------------------------------------------------*/
-void Entry::vSetEntry(RowWrk& xRowWrk)
+void Entry::vSetEntry(Entry* pEntry, RowWrk& xRowWrk)
 {
+  RASSERT(this == pEntry);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
   

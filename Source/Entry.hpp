@@ -33,9 +33,9 @@ namespace Data
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // index
   
-    void vSetEntry(Id xId);
-    void vSetEntry(KeyWrk& xKeyWrk);
-    void vSetEntry(RowWrk& xRowWrk);
+    void vSetEntry(Entry* pEntry, Id xId);
+    void vSetEntry(Entry* pEntry, KeyWrk& xKeyWrk);
+    void vSetEntry(Entry* pEntry, RowWrk& xRowWrk);
   
     void vShow(i8 iBase, Index* pIndex, bool bShowKey);
   
