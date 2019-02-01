@@ -1700,7 +1700,7 @@ void EntryBuffer::vHeadEntryNew(void)
   
   new(m_aHeadEntry) Entry(CN_ENTRY,nEntryBytes,0);
   
-  m_aHeadEntry->vSetEntry(xHeadWrk.xId(),nullptr,0);
+  m_aHeadEntry->vSetEntry(xHeadWrk.xId());
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   m_aHeadEntry->vNEO(0,-1);

@@ -42,7 +42,7 @@ namespace Data
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // index
   
-    void vSetEntry(Id xId, Stz* aData, i8 nDataSize);
+    void vSetEntry(Id xId);
     void vSetEntry(KeyWrk& xKeyWrk);
     void vSetEntry(RowWrk& xRowWrk);
   

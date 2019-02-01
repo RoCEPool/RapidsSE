@@ -159,7 +159,7 @@ Entry* Entry::aRefdRowEntry(void)
 /*----------------------------------------------------------------------------*/
 /* set entry given working entry                                              */
 /*----------------------------------------------------------------------------*/
-void Entry::vSetEntry(Id xId, Stz* aData, i8 nDataSize)
+void Entry::vSetEntry(Id xId)
 {
   ASSERT(nSizeItem());
   
@@ -167,13 +167,6 @@ void Entry::vSetEntry(Id xId, Stz* aData, i8 nDataSize)
   // set id, transaction and offsets
   m_xId = xId;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy row
-  char* aEntryData = (char*)this->aRow();
-  
-  if (nDataSize)
-    MemLib::vCopy(aEntryData,aData,nDataSize,eClass());
-
 #ifdef WITH_DEBUG_VERSION
   m_iIntKey = aKey()->iGetInt();
 #endif
