@@ -69,7 +69,7 @@ EntryBuffer::EntryBuffer(void)
   m_pIndex        = nullptr;
   
   m_iaEntryOffsets = nullptr;
-  m_i_FreeOffsetChain = C_ENTRY_NONE;
+  m_i_FreeOffsetChain = C_NO_MORE_ITEMS;
   
   m_aHeadEntry  = nullptr;
   m_aLastEntry  = nullptr;
@@ -439,21 +439,21 @@ void EntryBuffer::vInitFreeChain(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_iaEntryOffsets  =
-    reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_L0));
+    reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_MAX_ITEMS));
   
-  m_i_FreeOffsetChain = C_ENTRY_NONE;
+  m_i_FreeOffsetChain = C_NO_MORE_ITEMS;
   
   i8 L_ENTRIES_0 = gpAttachMap->m_nIndexEntries ?
-    gpAttachMap->m_nIndexEntries : C_ENTRIES_L0;
+    gpAttachMap->m_nIndexEntries : C_MAX_ITEMS;
   
   // L0 free chain
   for (i4 i_RowNo = 0; i_RowNo < (L_ENTRIES_0 - 1); i_RowNo++) {
-    RASSERT(i_RowNo >= 0 && i_RowNo < C_ENTRIES_L0);
+    RASSERT(i_RowNo >= 0 && i_RowNo < C_MAX_ITEMS);
     m_iaEntryOffsets[i_RowNo] = - (i_RowNo+1);
   }
   
-  RASSERT((L_ENTRIES_0 - 1) >= 0 && (L_ENTRIES_0 - 1) < C_ENTRIES_L0);
-  m_iaEntryOffsets[L_ENTRIES_0 - 1] = - C_ENTRY_NONE;
+  RASSERT((L_ENTRIES_0 - 1) >= 0 && (L_ENTRIES_0 - 1) < C_MAX_ITEMS);
+  m_iaEntryOffsets[L_ENTRIES_0 - 1] = - C_NO_MORE_ITEMS;
   
   m_i_FreeOffsetChain = 0;
 }

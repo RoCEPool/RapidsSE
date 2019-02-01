@@ -11,10 +11,7 @@ namespace DBobjects
 {
   class Index;
   class Table;
-  class EntryBuffer;
   
-  static const i8 C_ENTRIES_L0 = C_8KB;
-  static const i4 C_ENTRY_NONE = C_16KB;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class EntryBuffer : public ItemHeap

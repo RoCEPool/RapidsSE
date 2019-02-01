@@ -46,12 +46,12 @@ Entry* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
     return nullptr;
   }
   
-  //  if (nItems() >= C_ENTRIES_L0 - 16) {
+  //  if (nItems() >= C_MAX_ITEMS - 16) {
   //    vTrace("Too many row entries %lld\n"_Stz,nItems());
   //    return nullptr;
   //  }
   
-  RASSERT(nItems() < C_ENTRIES_L0 - 16);
+  RASSERT(nItems() < C_MAX_ITEMS - 16);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the rowId
@@ -59,12 +59,12 @@ Entry* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   bn nBufferNo = this->nPoolBufferNo();
   
   i8 i_RowNo = iGetFreeRowEntry(); //nItems();
-  if (C_ENTRY_NONE == i_RowNo) {
+  if (C_NO_MORE_ITEMS == i_RowNo) {
     vTrace("No free row entries\n"_Stz);
     return nullptr;
   }
   
-  RASSERT(i_RowNo >=0 and i_RowNo < C_ENTRIES_L0);
+  RASSERT(i_RowNo >=0 and i_RowNo < C_MAX_ITEMS);
   
   Id xRowId(*nBufferNo, i_RowNo);
   
@@ -89,7 +89,7 @@ Entry* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   // set entry offsets
   
   i4 iEntryOffset = iToOffset(aRowEntry);
-  RASSERT(i_RowNo >= 0 && i_RowNo < C_ENTRIES_L0);
+  RASSERT(i_RowNo >= 0 && i_RowNo < C_MAX_ITEMS);
   m_iaEntryOffsets[i_RowNo] = iEntryOffset;
   
   if (m_aLastEntry)

@@ -5,6 +5,9 @@
 
 namespace MiniHeaps
 {
+  static const i8 C_MAX_ITEMS = C_8KB;
+  static const i4 C_NO_MORE_ITEMS = C_16KB;
+
   class ItemHeap : public Object
   {
     static const i8 C_WSP_ITEMHEAP = C_SIZE_LARGE_OBJECT - C_1KB;
