@@ -71,7 +71,7 @@ ItemHeap::~ItemHeap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get age of buffer in seconds                                               */
 /*----------------------------------------------------------------------------*/
-i8 ItemHeap::iAgeInSeconds(void)
+i8 ItemHeap::iAgeSsec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   Since oSince;

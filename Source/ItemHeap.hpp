@@ -31,7 +31,7 @@ namespace MiniHeaps
     ItemHeap(eCN eClassNo);
    ~ItemHeap(void) noexcept(false);
   
-    i8     iAgeInSeconds(void);
+    i8     iAgeSsec(void);
     Item*  aAllotItem(i8 nBytes);
     char*  aAllotSpace(i8 nBytes);
     char*  aDataArea(void);

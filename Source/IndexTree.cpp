@@ -1020,7 +1020,7 @@ bool IndexTree::bPurge(i8 iOlderThanSeconds)
   
   m_okLock.vGrabWrite();
   
-  i8 iAge = m_pRootBuffer->iAgeInSeconds();
+  i8 iAge = m_pRootBuffer->iAgeSsec();
   
 //  if (iAge <= 1) {
 //    vTrace("Purge: age is %llds\n"_Stz,iMaxAge);
