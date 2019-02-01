@@ -19,8 +19,6 @@ namespace Data
     KeyWrk(void);
     ~KeyWrk(void) noexcept(false);
   
-    static void vSetEntry(Entry* pEntry, KeyWrk& xKeyWrk);
-
     void vAddDatum(char* aDatum);
     void vAddDatum(GenVar& xVariable, Column* pCol);
     void vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters);
@@ -32,6 +30,7 @@ namespace Data
     void vKeySize(i8 nKeySize);
     EntryBuffer* pReferencedEntryBuffer(void);
     void vReset(void);
+    void vSetEntry(Entry* pEntry);
     void vShow(IdxColVec* pIdxColVec);
   };
 }

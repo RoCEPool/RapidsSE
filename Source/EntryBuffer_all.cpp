@@ -368,7 +368,7 @@ Entry* EntryBuffer::aInsertKeyAbs(KeyWrk& xKeyWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the key entry
   
-  KeyWrk::vSetEntry(aKeyEntry,xKeyWrk);
+  xKeyWrk.vSetEntry(aKeyEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the key entry into the skip list
@@ -420,7 +420,7 @@ Entry* EntryBuffer::aInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the key entry
   
-  KeyWrk::vSetEntry(aKeyEntry,xKeyWrk);
+  xKeyWrk.vSetEntry(aKeyEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append to prior entry at L0 only
@@ -1789,7 +1789,7 @@ Entry* EntryBuffer::aInsertKeyAbsLazy(KeyWrk& xKeyWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the key entry
   
-  KeyWrk::vSetEntry(aKeyEntry,xKeyWrk);
+  xKeyWrk.vSetEntry(aKeyEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form lazy chain

@@ -56,27 +56,6 @@ KeyWrk::~KeyWrk(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* set entry using given key working entry                                    */
-/*----------------------------------------------------------------------------*/
-void KeyWrk::vSetEntry(Entry* pEntry, KeyWrk& xKeyWrk)
-{
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set id, transaction and offsets
-  
-  pEntry->vId(xKeyWrk.xId());
-  pEntry->vOffsets(xKeyWrk.nOffsets());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy key into this entry
-  
-  Key* aSrcKey = xKeyWrk.aKey();
-  Key* aDstKey = pEntry->aKeyData();
-  i8 nKeySize  = xKeyWrk.nKeySize();
-  
-  MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENTRY);
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -408,6 +387,27 @@ void KeyWrk::vReset(void)
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
 
   vEmbeddedSize(0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set entry using given key working entry                                    */
+/*----------------------------------------------------------------------------*/
+void KeyWrk::vSetEntry(Entry* pEntry)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set id, transaction and offsets
+  
+  pEntry->vId(xId());
+  pEntry->vOffsets(nOffsets());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy key into this entry
+  
+  Key* aSrcKey = aKey();
+  Key* aDstKey = pEntry->aKeyData();
+  i8 nKeySize  = this->nKeySize();
+  
+  MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENTRY);
 }
 
 /*----------------------------------------------------------------------------*/
