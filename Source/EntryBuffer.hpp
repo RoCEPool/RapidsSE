@@ -15,7 +15,6 @@ namespace DBobjects
   
   static const i8 C_ENTRIES_L0 = C_8KB;
   static const i4 C_ENTRY_NONE = C_16KB;
-  static const EntryBuffer* C_ENTRYBUFFER_MARKER = (EntryBuffer*)0xFFFFFFFFFFFFFFFF;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class EntryBuffer : public ItemHeap
