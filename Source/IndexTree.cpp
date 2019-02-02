@@ -349,7 +349,7 @@ void IndexTree::vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pFirstL0)
   Entry* aFirstL0_Key = pFirstL0->aFirstEntry();
   
   Id xId = aFirstL0_Key->xId();
-  KeyData* aKey = aFirstL0_Key->aKeyData();
+  KeyData* aKey = _aKeyData(aFirstL0_Key->aDataArea());
   i8 nKeySize = aKey->nKeySize(pIdxColVec);
   i8 nOffsets = aFirstL0_Key->nOffsets();
   
@@ -417,7 +417,8 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     // get the elements of the right key
     
     Id xId = aRightL0_Key->xId();
-    KeyData* aKey = aRightL0_Key->aKeyData();
+    KeyData* aKey = _aKeyData(aRightL0_Key->aDataArea());
+    
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
     i8 nOffsets = aRightL0_Key->nOffsets();
     
@@ -547,7 +548,8 @@ void IndexTree::vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     // get the elements of the right key
     
     Id xId = aRightL0_Key->xId();
-    KeyData* aKey = aRightL0_Key->aKeyData();
+    KeyData* aKey = _aKeyData(aRightL0_Key->aDataArea());
+    
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
     i8 nOffsets = aRightL0_Key->nOffsets();
     

@@ -22,10 +22,6 @@ namespace Data
     Entry(eCN eClassNo, i8 nThisBytes, i8 uOffsets);
     ~Entry(void) noexcept(false);
     
- 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // key data area
-    KeyData* aKeyData(void);
   };
   
   /*--------------------------------------------------------------------------*/
@@ -40,16 +36,6 @@ namespace Data
     return aEntry;
   }
   
-  /*--------------------------------------------------------------------------*/
-  /* get KeyData                                                                  */
-  /*--------------------------------------------------------------------------*/
-  inline KeyData* Entry::aKeyData(void)
-  {
-    KeyData* aKey = reinterpret_cast<KeyData*>(aDataArea());
-    
-    return aKey;
-  }
-
 }
 #pragma pack(pop)
 

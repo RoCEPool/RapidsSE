@@ -404,7 +404,7 @@ void KeyWrk::vSetEntry(Entry* pEntry)
   // copy key into this entry
   
   KeyData* aSrcKey = aKey();
-  KeyData* aDstKey = pEntry->aKeyData();
+  KeyData* aDstKey = _aKeyData(pEntry->aDataArea());
   i8 nKeySize  = this->nKeySize();
   
   MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENTRY);

@@ -194,7 +194,7 @@ void EntryBuffer::vDeleteEntry(Entry** aaEntry)
   
   Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
   
-  KeyData* aKey = aEntry->aKeyData();
+  KeyData* aKey = _aKeyData(aEntry->aDataArea());
   
   vPositionPriorVecEntry(aKey, xPriorVec, aEntry);
   
@@ -233,7 +233,8 @@ bool EntryBuffer::bDeleteKey(KeyData* aDeleteKey, EntryBuffer* pToBuffer)
   //       *nPoolBufferNo(),
   //       pEntryToBeDeleted->aKey()->iGetInt());
   
-  KeyData* aDeleteEntryKey = aEntryToBeDeleted->aKeyData();
+  KeyData* aDeleteEntryKey = _aKeyData(aEntryToBeDeleted->aDataArea());
+  
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   //if (! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec))
   //  return;
@@ -624,9 +625,10 @@ Entry* EntryBuffer::aPositionQuery(KeyData* aGivenKey, eRO eRelnOp)
   if (aIndexEntry) {
     do {
       bool bIsEqual = false;
-      bAfter = aIndexEntry->aKeyData()->bJuxtaCompare(JC_AFTER, aGivenKey,
-                                                  m_pIndex->pIdxColVec(), 1,
-                                                  bIsEqual, eRelnOp);
+      bAfter = _aKeyData(aIndexEntry->aDataArea())
+                    ->bJuxtaCompare(JC_AFTER, aGivenKey,
+                                    m_pIndex->pIdxColVec(), 1,
+                                    bIsEqual, eRelnOp);
       if (! bAfter) {
         aIndexEntry = aNextEntry(aIndexEntry, iLevelNo());
       }
@@ -670,13 +672,13 @@ Entry* EntryBuffer::aPositionQuery(KeyData* aGivenKey,i8 nKeyCols, eJC eJuxtaCom
     Entry* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanOffset);
     while (aNextEntry_sl) {
       
-      KeyData* aNextKey = aNextEntry_sl->aKeyData();
+      KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
       
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aGivenKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       
-      bIsJuxta =
-      aGivenKey->bJuxtaCompare(JC_AFTER,aNextKey,pIdxColVec,nKeyCols,bIsEqual);
+      bIsJuxta = aGivenKey->bJuxtaCompare(JC_AFTER,aNextKey,pIdxColVec,
+                                          nKeyCols,bIsEqual);
       
       // have we found to key during a query?
       if (bIsEqual) {
@@ -880,7 +882,8 @@ void EntryBuffer::vShowShort(void)
   while (iOffset > -1) {
     Entry* aEntry = aGetEntryOffset(iOffset);
     
-    KeyData* aKey = aEntry->aKeyData();
+    KeyData* aKey = _aKeyData(aEntry->aDataArea())
+    ;
     i8 iVal = aKey->iGetInt();
     
     if (m_iLevelNo)
@@ -1223,7 +1226,8 @@ void EntryBuffer::vCompact(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the prior vector to the entry being moved
     
-    KeyData* aMoveKey = aMoveEntry->aKeyData();
+    KeyData* aMoveKey = _aKeyData(aMoveEntry->aDataArea());
+    
     //aKey->vShow(pIdxColVec);
     //vTrace("\n"_Stz);
     
@@ -1308,7 +1312,8 @@ void EntryBuffer::vCompactLeft2(void)
        aThisEntry = pThisBuffer->aNextEntry(aThisEntry, 0)) {
     
     Id xId = aThisEntry->xId();
-    KeyData* aKey = aThisEntry->aKeyData();
+    KeyData* aKey = _aKeyData(aThisEntry->aDataArea());
+    
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
     i8 nOffsets = aThisEntry->nOffsets();
     
@@ -1342,7 +1347,7 @@ void EntryBuffer::vCompactLeft2(void)
        aTempEntry = pTempBuffer->aNextEntry(aTempEntry, 0)) {
     
     Id xId = aTempEntry->xId();
-    KeyData* aKey = aTempEntry->aKeyData();
+    KeyData* aKey = _aKeyData(aTempEntry->aDataArea());
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
     i8 nOffsets = aTempEntry->nOffsets();
     
@@ -1417,7 +1422,8 @@ void EntryBuffer::vDeleteUpwards(KeyData* aDeleteKey,
   //         *nPoolBufferNo(),
   //         pEntryToBeDeleted->aKey()->iGetInt());
   
-  KeyData* aDeleteEntryKey = aEntryToBeDeleted->aKeyData();
+  KeyData* aDeleteEntryKey = _aKeyData(aEntryToBeDeleted->aDataArea());
+  
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   if ( ! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec) ) {
@@ -1475,7 +1481,7 @@ void EntryBuffer::vDeleteUpwards(KeyData* aDeleteKey, EntryBuffer* pToBuffer,
   //         *nPoolBufferNo(),
   //         pEntryToBeDeleted->aKey()->iGetInt());
   
-  KeyData* aDeleteEntryKey = aEntryToBeDeleted->aKeyData();
+  KeyData* aDeleteEntryKey = _aKeyData(aEntryToBeDeleted->aDataArea());
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   //if (! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec))
   //  return;
@@ -1586,8 +1592,9 @@ void EntryBuffer::vHandleFirstInsert(Entry* aInsertedKeyEntry,
     return;
   
   if (aOriginalFirstEntry) {
-    KeyData* aOriginalFirstKey = aOriginalFirstEntry->aKeyData();
-    KeyData* aInsertedFirstKey = aInsertedKeyEntry->aKeyData();
+    KeyData* aOriginalFirstKey = _aKeyData(aOriginalFirstEntry->aDataArea());
+    
+    KeyData* aInsertedFirstKey = _aKeyData(aInsertedKeyEntry->aDataArea());
     
     IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
     
@@ -1633,7 +1640,7 @@ void EntryBuffer::vHandleLeftInsert(Entry* aInsertedKeyEntry,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (aOriginalFirstEntry) {
-    KeyData* aDeleteKey = aOriginalFirstEntry->aKeyData();
+    KeyData* aDeleteKey = _aKeyData(aOriginalFirstEntry->aDataArea());
     EntryBuffer* pHigherBuffer = _pEntryBuffer(m_pHigherBuffer);
     pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
     //(*ppRootKeyBuffer)->vShowTree();
@@ -1641,7 +1648,7 @@ void EntryBuffer::vHandleLeftInsert(Entry* aInsertedKeyEntry,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  KeyData* aInsertKey = aInsertedKeyEntry->aKeyData();
+  KeyData* aInsertKey = _aKeyData(aInsertedKeyEntry->aDataArea());
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   i8 iInsertKeyLen  = aInsertKey->nKeySize(pIdxColVec);
   i8 nInsertOffsets = aInsertedKeyEntry->nOffsets();
@@ -1819,7 +1826,7 @@ void EntryBuffer::vInsertKeySkip(Entry* aKeyEntry)
   
   Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
   
-  KeyData* aKey = aKeyEntry->aKeyData();
+  KeyData* aKey = _aKeyData(aKeyEntry->aDataArea());
   
   if (0 == m_iLevelNo)
     vPositionPriorVecEntry(aKey, xPriorVec, nullptr);
@@ -2010,7 +2017,7 @@ bool EntryBuffer::bKeyBeforeBuffer(KeyData* aKeyTest)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   Entry* aFirstEntry = this->aFirstEntry();
-  KeyData* aFirstKey = aFirstEntry->aKeyData();
+  KeyData* aFirstKey = _aKeyData(aFirstEntry->aDataArea());
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   i8 nKeyCols = pIdxColVec->nItems();
   
@@ -2131,7 +2138,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyData* aInsKey, i8 nEntryPlusOffset
     
     i8 nOffsetsLeft = aFirstKeyLeft->nOffsets();
     Id xIdLeft(*pLeftBuffer->nPoolBufferNo(),0,nOffsetsLeft);
-    KeyData* aKeyLeft = aFirstKeyLeft->aKeyData();
+    KeyData* aKeyLeft = _aKeyData(aFirstKeyLeft->aDataArea());
     i8 iKeyLenLeft = aKeyLeft->nKeySize(m_pIndex->pIdxColVec());
     
     
@@ -2151,7 +2158,8 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyData* aInsKey, i8 nEntryPlusOffset
   
   Entry* aFirstKeyRight = pRightBuffer->aFirstEntry();
   
-  KeyData* aKeyRight = aFirstKeyRight->aKeyData();
+  KeyData* aKeyRight = _aKeyData(aFirstKeyRight->aDataArea());
+  
   i8 iKeyLenRight = aKeyRight->nKeySize(m_pIndex->pIdxColVec());
   i8 nOffsetsRight = aFirstKeyRight->nOffsets();
   
@@ -2304,7 +2312,7 @@ Entry* EntryBuffer::pPositionPriorEntry(KeyData* aFindKey)
     Entry* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanOffset);
     while (aNextEntry_sl) {
       
-      KeyData* aNextKey = aNextEntry_sl->aKeyData();
+      KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
       
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
@@ -2372,7 +2380,7 @@ void EntryBuffer::vPositionPriorVecEntry(KeyData* aFindKey, Entry* aPriorVec[],
       if (aFindEntry == aNextEntry_sl)
         break;
       
-      KeyData* aNextKey = aNextEntry_sl->aKeyData();
+      KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
       
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
@@ -2442,7 +2450,7 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Entry* aPriorVec[],
     Entry* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanOffset);
     while (aNextEntry_sl) {
       
-      KeyData* aNextKey = aNextEntry_sl->aKeyData();
+      KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
       
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
@@ -2511,7 +2519,7 @@ void EntryBuffer::vPositionPriorVecBuffer2(KeyData* aFindKey, Entry* aPriorVec[]
     Entry* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanOffset);
     while (aNextEntry_sl) {
       
-      KeyData* aNextKey = aNextEntry_sl->aKeyData();
+      KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
       
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
@@ -2571,7 +2579,7 @@ void EntryBuffer::vPositionPriorVecBuffer3(KeyData* aFindKey, Entry* aPriorVec[]
     Entry* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanOffset);
     while (aNextEntry_sl) {
       
-      KeyData* aNextKey = aNextEntry_sl->aKeyData();
+      KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
       
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
@@ -2655,7 +2663,8 @@ EntryBuffer* EntryBuffer::pSplit2(void)
     aNextEntry = this->aNextEntry(aCopyEntry,0);
     
     Id xId = aCopyEntry->xId();
-    KeyData* aKey = aCopyEntry->aKeyData();
+    KeyData* aKey = _aKeyData(aCopyEntry->aDataArea());
+    
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
     i8 nOffsets = aCopyEntry->nOffsets();
     
@@ -3259,8 +3268,8 @@ bool EntryBuffer::bVerifyFirstKeys(void)
     Entry* aChildFirstEntry = pChildEntryBuffer->aFirstEntry();
     
     // get keys of the two entries
-    KeyData* aKeyParent = aEntry->aKeyData();
-    KeyData* aKeyChild  = aChildFirstEntry->aKeyData();
+    KeyData* aKeyParent = _aKeyData(aEntry->aDataArea());
+    KeyData* aKeyChild  = _aKeyData(aChildFirstEntry->aDataArea());
     
     // the two keys should match
     bool bEqual = aKeyChild->bEqualTo(aKeyParent,pIdxColVec);
@@ -3437,8 +3446,8 @@ bool EntryBuffer::bVerifyKeyOrder(void)
       break;
     
     // get keys of the two entries
-    KeyData* aKeyA = aEntry->aKeyData();
-    KeyData* aKeyB = aNextEntry->aKeyData();
+    KeyData* aKeyA = _aKeyData(aEntry->aDataArea());
+    KeyData* aKeyB = _aKeyData(aNextEntry->aDataArea());
     
     // next keyB should be greater than or equal to keyA
     bool bGreaterEqual = aKeyB->bGreaterEqual(aKeyA,pIdxColVec);
@@ -3622,7 +3631,7 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
       }
       
       if (bShowKeys) {
-        KeyData* aTestKey = aTestEntry_sl->aKeyData();
+        KeyData* aTestKey = _aKeyData(aTestEntry_sl->aDataArea());
         vTrace("Test %p: "_Stz,aTestEntry_sl);
         aTestKey->vShow(pIdxColVec);
         vTrace("\n"_Stz);

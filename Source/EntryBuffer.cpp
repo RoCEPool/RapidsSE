@@ -405,7 +405,7 @@ Entry* EntryBuffer::aLastEntry(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vShowEntry(Entry* aEntry)
 {
-  KeyData* aKey = aEntry->aKeyData();
+  KeyData* aKey = _aKeyData(aEntry->aDataArea());
   i8 iOffset = iToOffset(aEntry);
   
   vTrace("%lld: Entry: %p Size: %llu Offsets: %llu "_Stz,

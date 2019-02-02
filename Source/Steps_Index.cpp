@@ -356,8 +356,9 @@ void Step::vIndexExactKey(MP_Task mpTask)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check if entry matches key
     bool bIsEqual = false;
-    bool bSame = aEntry->aKeyData()->bJuxtaCompare(JC_SAME, xKeyWrk.aKey(),
-                                               pIndex->pIdxColVec(), 1, bIsEqual);
+    bool bSame = _aKeyData(aEntry->aDataArea())
+                         ->bJuxtaCompare(JC_SAME, xKeyWrk.aKey(),
+                                         pIndex->pIdxColVec(), 1, bIsEqual);
     
     if (bSame) {
       
@@ -1052,9 +1053,10 @@ void Step::vIndexRange(MP_Task mpTask)
     //aUpperEntry->vShow(0,pIndex,true);
     
     bool bIsEqual = false;
-    bool bBefore = aUpperEntry->aKeyData()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
-                                                 pIndex->pIdxColVec(), 1,
-                                                 bIsEqual, eUpperRelnOp);
+    bool bBefore = _aKeyData(aUpperEntry->aDataArea())
+                         ->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
+                                         pIndex->pIdxColVec(), 1,
+                                         bIsEqual, eUpperRelnOp);
     
     if (! bBefore)
       break;
@@ -1477,9 +1479,10 @@ void Step::vIndexUpper(MP_Task mpTask)
   
   eRO eRelnOp = pPlanner->eGetFirstUpperPredicateRO(i_Phrase);
   bool bIsEqual = false;
-  bool bBefore = aEntry->aKeyData()->bJuxtaCompare(JC_BEFORE, xKeyWrk.aKey(),
-                                               pIndex->pIdxColVec(), 1,
-                                               bIsEqual, eRelnOp);
+  bool bBefore = _aKeyData(aEntry->aDataArea())
+                       ->bJuxtaCompare(JC_BEFORE, xKeyWrk.aKey(),
+                                       pIndex->pIdxColVec(), 1,
+                                       bIsEqual, eRelnOp);
   mpTask->m_pDataStack->vPushI8(bBefore ? 1 : 0);
   
   EXIT();
@@ -1602,9 +1605,10 @@ void Step::vIndexUpperBound(MP_Task mpTask)
     //aUpperEntry->vShow(0,pIndex,true);
     
     bIsEqual = false;
-    bBefore = aUpperEntry->aKeyData()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
-                                                 pIdxColVec, 1,
-                                                 bIsEqual, eUpperRelnOp);
+    bBefore = _aKeyData(aUpperEntry->aDataArea())
+                 ->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
+                                 pIdxColVec, 1,
+                                 bIsEqual, eUpperRelnOp);
     
     if (! bBefore) {
       break;
