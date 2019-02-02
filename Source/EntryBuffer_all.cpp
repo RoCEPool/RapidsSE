@@ -1705,7 +1705,7 @@ void EntryBuffer::vHeadEntryNew(void)
   m_aHeadEntry = reinterpret_cast<Entry*>(aAllotSpace(nEntryBytes));
   ASSERT(m_aHeadEntry);
   
-  new(m_aHeadEntry) Entry(CN_ENTRY,nEntryBytes,0);
+  new(m_aHeadEntry) Entry(CN_ENTRY,nEntryBytes);
   
   m_aHeadEntry->vId(xHeadWrk.xId());
   

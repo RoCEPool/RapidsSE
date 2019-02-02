@@ -33,11 +33,9 @@ void* Entry::operator new(size_t, Entry* aEntry)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
+Entry::Entry(eCN eClassNo, i8 nThisBytes)
 : Item(eClassNo, nThisBytes)
-{
-   m_xId.vOffsets(nOffsets);
-  
+{  
   _checkInitialised_(eClassNo);
 }
 

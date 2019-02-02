@@ -462,7 +462,7 @@ Entry* EntryBuffer::aAllotEntry(i8 nBytes)
   if ( ! aEntry )
     return nullptr;
   
-  new(aEntry) Entry(CN_ENTRY,nBytes,0);
+  new(aEntry) Entry(CN_ENTRY,nBytes);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   

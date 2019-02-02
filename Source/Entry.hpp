@@ -19,11 +19,11 @@ namespace Data
     void* operator new(size_t);
     void* operator new(size_t, Entry*);
   
-    Entry(eCN eClassNo, i8 nThisBytes, i8 uOffsets);
+    Entry(eCN eClassNo, i8 nThisBytes);
     ~Entry(void) noexcept(false);
     
   };
-    
+  
 }
 #pragma pack(pop)
 
