@@ -25,8 +25,6 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   
   ASSERT(iLevelNo() == 0);
   
-  Item* aRowEntry;
-  
   // rows only ever have one next offset
   xRowWrk.vOffsets(1);
   
@@ -35,22 +33,15 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   
   i8 nEntryBytes  = xRowWrk.nEntrySize();
   i8 nOffsetBytes = xRowWrk.nOffsetSize();
-  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-  
+  //i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  i8 nEntryPlusOffsets = xRowWrk.nItemSize();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has enough space
   
-  if (! bHasSpace(nEntryPlusOffsets)) {
-    //if (nItems() > 7260)
-    //vTrace("Row entries %lld\n"_Stz,nItems());
+  if (! bHasSpace(nEntryPlusOffsets))
     return nullptr;
-  }
-  
-  //  if (nItems() >= C_MAX_ITEMS - 16) {
-  //    vTrace("Too many row entries %lld\n"_Stz,nItems());
-  //    return nullptr;
-  //  }
-  
+    
   RASSERT(nItems() < C_MAX_ITEMS - 16);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -73,7 +64,7 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space in this buffer for the row and offsets
   
-  aRowEntry = aAllotEntry(nEntryBytes);
+  Item* aRowEntry = aAllotEntry(nEntryBytes);
   ASSERT(aRowEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
