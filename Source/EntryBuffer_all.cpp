@@ -1704,9 +1704,7 @@ void EntryBuffer::vHeadEntryNew(void)
   
   m_aHeadEntry = reinterpret_cast<Entry*>(aAllotItem(CN_ENTRY,nEntryBytes));
   ASSERT(m_aHeadEntry);
-  
-  new(m_aHeadEntry) Entry(CN_ENTRY,nEntryBytes);
-  
+    
   m_aHeadEntry->vId(xHeadWrk.xId());
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);

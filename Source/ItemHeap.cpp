@@ -98,10 +98,11 @@ Item* ItemHeap::aAllotItem(eCN eClassNo, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Item* aItem = reinterpret_cast<Item*>(aAllotSpace(nBytes));
-  
+  Item* aItem = reinterpret_cast<Item*>(aAllotSpace(nBytes));  
   if (! aItem)
     return nullptr;
+  
+  new(aItem) Item(eClassNo,nBytes);
   
   m_nItems++;
   
