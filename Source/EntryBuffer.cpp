@@ -403,21 +403,21 @@ Entry* EntryBuffer::aLastEntry(void)
 /*----------------------------------------------------------------------------*/
 /* show entry                                                                 */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vShowEntry(Entry* pEntry)
+void EntryBuffer::vShowEntry(Entry* aEntry)
 {
-  KeyData* aKey = pEntry->aKeyData();
-  i8 iOffset = iToOffset(pEntry);
+  KeyData* aKey = aEntry->aKeyData();
+  i8 iOffset = iToOffset(aEntry);
   
   vTrace("%lld: Entry: %p Size: %llu Offsets: %llu "_Stz,
          iOffset,
-         pEntry,
-         pEntry->nSizeItem(),
-         pEntry->nOffsets()
+         aEntry,
+         aEntry->nSizeItem(),
+         aEntry->nOffsets()
          );
   
   vTrace("Id: %3lli.%03lli "_Stz,
-         pEntry->iBufferNo(),
-         pEntry->iItemNo()
+         aEntry->iBufferNo(),
+         aEntry->iItemNo()
          );
   
   //vTrace("Tx: %lld.%03lld "_Stz,
@@ -429,10 +429,9 @@ void EntryBuffer::vShowEntry(Entry* pEntry)
     aKey->vShow(m_pIndex->pIdxColVec());
   
   if (m_pIndex->bIsHidden()) {
-    //char* pRow = aRowData();
-    RowData* aThisRow = pEntry->aRowData();
+    RowData* aThisRow = _aRowData(aEntry->aDataArea());
     vTrace("RowData: "_Stz);
-    i8 iRowSize = pEntry->nSizeItem();
+    i8 iRowSize = aEntry->nSizeItem();
     if (iRowSize > 0) {
       aThisRow->vShow(m_pIndex->pTable()->pColumnVec(), true);
     }
@@ -440,8 +439,8 @@ void EntryBuffer::vShowEntry(Entry* pEntry)
   
   
   vTrace(" offsets:"_Stz);
-  for (i8 i_Offset = 0; i_Offset < pEntry->nOffsets(); i_Offset++)
-    vTrace(" %d"_Stz,pEntry->aNEO()[i_Offset]);
+  for (i8 i_Offset = 0; i_Offset < aEntry->nOffsets(); i_Offset++)
+    vTrace(" %d"_Stz,aEntry->aNEO()[i_Offset]);
   
   vTrace("\n"_Stz);
 }

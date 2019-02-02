@@ -231,7 +231,7 @@ void KeyWrk::vExtractKey(Entry* aRowEntry, IdxColVec* pIdxColVec)
 {
   GenVar xVariable;
   
-  RowData* aRowEntryData = aRowEntry->aRowData();
+  RowData* aRowEntryData = _aRowData(aRowEntry->aDataArea());
   
   i8 nCols = pIdxColVec->nItems();
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {

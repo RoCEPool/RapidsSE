@@ -22,10 +22,7 @@ namespace Data
     Entry(eCN eClassNo, i8 nThisBytes, i8 uOffsets);
     ~Entry(void) noexcept(false);
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // row data area
-    RowData* aRowData(void);
-  
+ 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key data area
     KeyData* aKeyData(void);
