@@ -9,7 +9,7 @@ namespace Data
   static const i8 C_MAX_RECORD = C_16KB;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Row // is not a proper object
+  class RowData
   {
   protected:
   // ..data..   // variable data area
@@ -17,8 +17,8 @@ namespace Data
   public:
     void* operator new(size_t);
   
-    Row(void);
-    ~Row(void) noexcept(false);
+    RowData(void);
+    ~RowData(void) noexcept(false);
   
     void vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec);
     void vAsEscapedString(s48K& sDataString, ColumnVec* pColVec);
@@ -30,7 +30,7 @@ namespace Data
     u2 iColumnOffset(i8 iColumnNo);
   };
   
-  Row* _pRow(void* aAddr);
+  RowData* _aRowData(void* aAddr);
 }
 
 /*============================================================================*/

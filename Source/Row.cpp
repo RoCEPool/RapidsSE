@@ -15,9 +15,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Row* Data::_pRow(void* aAddr)
+RowData* Data::_aRowData(void* aAddr)
 {
-  Row* pRow = reinterpret_cast<Row*>(aAddr);
+  RowData* pRow = reinterpret_cast<RowData*>(aAddr);
   
   return pRow;
 }
@@ -25,9 +25,9 @@ Row* Data::_pRow(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Row::operator new(size_t)
+void* RowData::operator new(size_t)
 {
-  vFatal("fatal: Row class cannot be new'd\n"_Stz);
+  vFatal("fatal: RowData class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -35,14 +35,14 @@ void* Row::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Row::Row(void)
+RowData::RowData(void)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Row::~Row(void) noexcept(false)
+RowData::~RowData(void) noexcept(false)
 {
 }
 
@@ -57,7 +57,7 @@ Row::~Row(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert row to binary string                                               */
 /*----------------------------------------------------------------------------*/
-void Row::vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec)
+void RowData::vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec)
 {
   Stz* aData;
   s17KB sDst;
@@ -93,7 +93,7 @@ void Row::vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 /* convert row to escaped string                                              */
 /*----------------------------------------------------------------------------*/
-void Row::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec)
+void RowData::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec)
 {
   Stz* aData;
   s17KB sDst;
@@ -129,7 +129,7 @@ void Row::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 /* get address of a column datum                                              */
 /*----------------------------------------------------------------------------*/
-char* Row::aColumnDatum(i8 iColumnNo)
+char* RowData::aColumnDatum(i8 iColumnNo)
 {
   // get the column offset
   u2 iOffset = iColumnOffset(iColumnNo);
@@ -143,7 +143,7 @@ char* Row::aColumnDatum(i8 iColumnNo)
 /*----------------------------------------------------------------------------*/
 /* dump row                                                                   */
 /*----------------------------------------------------------------------------*/
-void Row::vDump(ColumnVec* pColVec)
+void RowData::vDump(ColumnVec* pColVec)
 {
   vTrace("RowData: "_Stz);
   
@@ -179,7 +179,7 @@ void Row::vDump(ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 /* show row                                                                   */
 /*----------------------------------------------------------------------------*/
-void Row::vShow(ColumnVec* pColVec, bool bCompressed)
+void RowData::vShow(ColumnVec* pColVec, bool bCompressed)
 {
   Stz* aData;
   
@@ -207,7 +207,7 @@ void Row::vShow(ColumnVec* pColVec, bool bCompressed)
 /*----------------------------------------------------------------------------*/
 /* get address of a column datum                                              */
 /*----------------------------------------------------------------------------*/
-u2 Row::iColumnOffset(i8 iColumnNo)
+u2 RowData::iColumnOffset(i8 iColumnNo)
 {
   // calculate the offset pointer for the column
   char* aOffset = (char*)(this) + iColumnNo*C_COLUMN_OFFSET_SIZE;

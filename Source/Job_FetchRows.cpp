@@ -462,12 +462,12 @@ void Jobs::vJob_FetchRows_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer)
 {
-  Row** aaRow = nullptr;
+  RowData** aaRow = nullptr;
   s48K sRowString;
   
   aaRow = pFetchBuffer->aaFirstRowPtr();
   while (aaRow) {
-    Row* pRow = *aaRow;
+    RowData* pRow = *aaRow;
     pRow->vAsBinaryStringVLQ(sRowString, pJob_FetchRows->m_pTable->pColumnVec());
     vTrace("row: (%s)\n"_Stz, sRowString.aChar());
     aaRow = pFetchBuffer->aaNextRowPtr(aaRow);

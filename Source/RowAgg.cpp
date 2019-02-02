@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowAgg.hpp -- Row Working Entry                                            */
+/* RowAgg.hpp -- RowData Working Entry                                            */
 /*============================================================================*/
 
 #include "Jobs.h"
@@ -131,7 +131,7 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
   byte* aSrc;
   Column* pAggColumn;
   i8 i_Col;
-  Row* pRow;
+  RowData* pRow;
   
   i8 nAggColumns = m_pAggColVec->nItems();
   

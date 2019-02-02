@@ -12,7 +12,8 @@ namespace Interface
 {
   void vCheckAssumptions(void);
   
-  static const i8 C_ROWS_PER_BUFFER = (C_SIZE_LARGE_OBJECT - C_1KB*4)/sizeof(Row*);
+  static const i8 C_ROWS_PER_BUFFER
+    = (C_SIZE_LARGE_OBJECT - C_1KB*4)/sizeof(RowData*);
 }
 
 using namespace Interface;

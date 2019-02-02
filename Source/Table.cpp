@@ -697,7 +697,7 @@ i8 Table::iRowPartition(Stz* pRow)
     i8 iColumnNo = pColumn->iColumnNo();
     
     // get the column value
-    Row* aRow = (Row*)pRow;
+    RowData* aRow = (RowData*)pRow;
     char* sCursor = aRow->aColumnDatum(iColumnNo);
     
 #ifdef USE_VLQ_DATUMS

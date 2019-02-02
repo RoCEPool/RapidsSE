@@ -24,7 +24,7 @@ namespace Data
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row data area
-    Row* aRowData(void);
+    RowData* aRowData(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key data area

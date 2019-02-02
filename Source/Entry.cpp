@@ -54,15 +54,15 @@ Entry::~Entry(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/*-- Row Data ----------------------------------------------------------------*/
+/*-- RowData Data ----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get row address                                                            */
 /*----------------------------------------------------------------------------*/
-Row* Entry::aRowData(void)
+RowData* Entry::aRowData(void)
 {
-  Row* aRow = reinterpret_cast<Row*>(aDataArea());
+  RowData* aRow = reinterpret_cast<RowData*>(aDataArea());
   
   return aRow;
 }
@@ -97,8 +97,8 @@ void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
   
   if (pIndex->bIsHidden()) {
     //char* pRow = aRowData();
-    Row* aThisRow = aRowData();
-    vTrace("Row: "_Stz);
+    RowData* aThisRow = aRowData();
+    vTrace("RowData: "_Stz);
     i8 iRowSize = nSizeItem();
     if (iRowSize > 0) {
       aThisRow->vShow(pIndex->pTable()->pColumnVec(), true);
@@ -114,7 +114,7 @@ void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Row ---------------------------------------------------------------------*/
+/*-- RowData ---------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/

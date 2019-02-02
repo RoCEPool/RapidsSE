@@ -19,7 +19,7 @@ namespace Data
     RowWrk(void);
     ~RowWrk(void) noexcept(false);
   
-    Row* aRow(void);
+    RowData* aRowData(void);
     i8   nRowSize(void);
     void vRowSize(i8 nRowSize);
     void vSetEntry(Entry* pEntry);

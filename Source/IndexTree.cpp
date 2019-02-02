@@ -973,7 +973,7 @@ void IndexTree::vPublish(void)
   for (Entry* aEntry = m_pCurrentBuffer->aFirstEntry();
        aEntry != nullptr;
        aEntry = m_pCurrentBuffer->aNextEntry(aEntry, 0)) {
-    Row* pRow = aEntry->aRowData();
+    RowData* pRow = aEntry->aRowData();
     pRow->vAsBinaryStringVLQ(sRowString, m_pIndex->pTable()->pColumnVec());
     vTrace("row: (%s)\n"_Stz, sRowString.aChar());
   }

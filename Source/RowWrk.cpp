@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowWrk.hpp -- Row Working Entry                                            */
+/* RowWrk.hpp -- RowData Working Entry                                            */
 /*============================================================================*/
 
 #include "Data.h"
@@ -62,11 +62,11 @@ RowWrk::~RowWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get row address                                                            */
 /*----------------------------------------------------------------------------*/
-Row* RowWrk::aRow(void)
+RowData* RowWrk::aRowData(void)
 {
   _precondition_(_MAGIC_,CN_ROWWRK);
   
-  Row* aThisRow = (Row*)aEmbedded();
+  RowData* aThisRow = (RowData*)aEmbedded();
   return aThisRow;
 }
 
@@ -104,8 +104,8 @@ void RowWrk::vSetEntry(Entry* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy row into this entry
   
-  Row* aSrcRow = aRow();
-  Row* aDstRow = pEntry->aRowData();
+  RowData* aSrcRow = aRowData();
+  RowData* aDstRow = pEntry->aRowData();
   i8 nRowSize  = this->nRowSize();
   
   MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_ENTRY);
@@ -118,7 +118,7 @@ void RowWrk::vShow(ColumnVec* pColVec)
 {
   _precondition_(_MAGIC_,CN_ROWWRK);
   
-  Row* aThisRow = aRow();
+  RowData* aThisRow = aRowData();
   aThisRow->vShow(pColVec, true);
   vTrace("\n"_Stz);
 }

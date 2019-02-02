@@ -363,7 +363,7 @@ void Step::vIndexExactKey(MP_Task mpTask)
       
       // get the dataRow from the hidden index
       Entry* aDataRowEntry = _aEntry(aEntry->aRefdItem());
-      Row* aRow = aDataRowEntry->aRowData();
+      RowData* aRow = aDataRowEntry->aRowData();
     
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // insert row from entry in tempEntryBuffer
@@ -1220,7 +1220,7 @@ void Step::vIndexScan(MP_Task mpTask)
   // iterate thru the buffer till no more entries
   while (aEntry) {
     
-    Row* aRow = aEntry->aRowData();
+    RowData* aRow = aEntry->aRowData();
     //aRow->vShow(pTable->pColumnVec(), true);
     //vTrace("\n"_Stz);
 
@@ -1753,11 +1753,11 @@ bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Entry* aEntry, Job_FetchRows* p
   
   if (pJob_FetchRows && pJob_FetchRows->bRowSeen(xId)) {
     // row already inserted
-    //vTrace("Row already inserted %p \n"_Stz, aEntry);
+    //vTrace("RowData already inserted %p \n"_Stz, aEntry);
     return true;
   }
   
-  Row* aRow = aEntry->aRowData();
+  RowData* aRow = aEntry->aRowData();
   
   if (pFetchBuffer->bAppendRow(aRow))
     return true;
