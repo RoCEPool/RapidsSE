@@ -69,53 +69,6 @@ RowData* Entry::aRowData(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* show content                                                               */
-/*----------------------------------------------------------------------------*/
-void Entry::vShowEntry(Entry* pEntry, i8 iOffset, Index* pIndex, bool bShowKey)
-{
-  RASSERT(this == pEntry);
-  
-  KeyData* aKey = this->aKeyData();
-  
-  vTrace("%lld: Entry: %p Size: %llu Offsets: %llu "_Stz,
-         iOffset,
-         this,
-         nSizeItem(),
-         nOffsets()
-         );
-  
-  vTrace("Id: %3lli.%03lli "_Stz,
-         m_xId.iBuffer(),
-         m_xId.iItem()
-         );
-  
-  //vTrace("Tx: %lld.%03lld "_Stz,
-  //       Tx::iTxNode(m_iTxId),
-  //       Tx::iTxNo(m_iTxId)
-  //       );
-  
-  if (bShowKey && ! pIndex->bIsHidden())
-    aKey->vShow(pIndex->pIdxColVec());
-  
-  if (pIndex->bIsHidden()) {
-    //char* pRow = aRowData();
-    RowData* aThisRow = aRowData();
-    vTrace("RowData: "_Stz);
-    i8 iRowSize = nSizeItem();
-    if (iRowSize > 0) {
-      aThisRow->vShow(pIndex->pTable()->pColumnVec(), true);
-    }
-  }
-  
-  
-  vTrace(" offsets:"_Stz);
-  for (i8 i_Offset = 0; i_Offset < nOffsets(); i_Offset++)
-    vTrace(" %d"_Stz,aNEO()[i_Offset]);
-
-  vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- RowData -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

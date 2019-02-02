@@ -852,7 +852,7 @@ void EntryBuffer::vShow(Entry* aMarkEntry)
   i8 iOffset = m_aHeadEntry->iNEO(0);
   while (iOffset > -1) {
     Entry* aEntry = aGetEntryOffset(iOffset);
-    aEntry->vShowEntry(aEntry,iOffset,m_pIndex,true);
+    vShowEntry(aEntry,iOffset,m_pIndex,true);
     if (aMarkEntry == aEntry)
       vTrace("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
              "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n"_Stz);
@@ -2836,7 +2836,7 @@ void EntryBuffer::vQuickVerify(Entry* aSeeEntry)
        aTestEntry = aNextEntry(aTestEntry,0)) {
     
     if (aSeeEntry)
-      aTestEntry->vShowEntry(aTestEntry,iToOffset(aTestEntry),m_pIndex,true);
+      vShowEntry(aTestEntry,iToOffset(aTestEntry),m_pIndex,true);
     
     if (aTestEntry == aSeeEntry)
       int iDebug = 1;
@@ -2894,8 +2894,8 @@ bool EntryBuffer::bQuickVerify(Entry* aNotSeeEntry)
         continue;
       
       if (aCheckEntry == aNotSeeEntry) {
-        aTestEntry->vShowEntry(aTestEntry,iToOffset(aTestEntry),m_pIndex,true);
-        aCheckEntry->vShowEntry(aCheckEntry,iToOffset(aCheckEntry),m_pIndex,true);
+        vShowEntry(aTestEntry, iToOffset(aTestEntry), m_pIndex, true);
+        vShowEntry(aCheckEntry,iToOffset(aCheckEntry),m_pIndex, true);
         return false;
       }
       

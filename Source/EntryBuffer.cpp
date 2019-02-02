@@ -135,6 +135,52 @@ EntryBuffer* EntryBuffer::pRefdEntryBuffer(Id& xId)
   return pEntryBuffer;
 }
 
+/*----------------------------------------------------------------------------*/
+/* show content                                                               */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vShowEntry(Entry* pEntry, i8 iOffset,
+                             Index* pIndex, bool bShowKey)
+{
+  KeyData* aKey = pEntry->aKeyData();
+  
+  vTrace("%lld: Entry: %p Size: %llu Offsets: %llu "_Stz,
+         iOffset,
+         pEntry,
+         pEntry->nSizeItem(),
+         pEntry->nOffsets()
+         );
+  
+  vTrace("Id: %3lli.%03lli "_Stz,
+         pEntry->iBufferNo(),
+         pEntry->iItemNo()
+         );
+  
+  //vTrace("Tx: %lld.%03lld "_Stz,
+  //       Tx::iTxNode(m_iTxId),
+  //       Tx::iTxNo(m_iTxId)
+  //       );
+  
+  if (bShowKey && ! pIndex->bIsHidden())
+    aKey->vShow(pIndex->pIdxColVec());
+  
+  if (pIndex->bIsHidden()) {
+    //char* pRow = aRowData();
+    RowData* aThisRow = pEntry->aRowData();
+    vTrace("RowData: "_Stz);
+    i8 iRowSize = pEntry->nSizeItem();
+    if (iRowSize > 0) {
+      aThisRow->vShow(pIndex->pTable()->pColumnVec(), true);
+    }
+  }
+  
+  
+  vTrace(" offsets:"_Stz);
+  for (i8 i_Offset = 0; i_Offset < pEntry->nOffsets(); i_Offset++)
+    vTrace(" %d"_Stz,pEntry->aNEO()[i_Offset]);
+  
+  vTrace("\n"_Stz);
+}
+
 
 
 /*----------------------------------------------------------------------------*/
