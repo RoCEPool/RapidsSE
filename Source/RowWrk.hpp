@@ -16,7 +16,6 @@ namespace Data
     RowWrk(void);
     ~RowWrk(void) noexcept(false);
   
-    i8   nItemSize(void);
     RowData* aRowData(void);
     i8   nRowSize(void);
     void vRowSize(i8 nRowSize);
