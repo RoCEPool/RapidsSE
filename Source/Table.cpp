@@ -356,12 +356,12 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, EntryBuffer* pEntryBuffer)
 //    // in pFirstBuffer and insert corresponding entries in other indexes
 //    while (pHiddenEntryBuffer) {
 //
-//      pNewIndexTree->vInsertEntriesFromBuffer(pHiddenEntryBuffer, aEntry);
+//      pNewIndexTree->vInsertEntriesFromBuffer(pHiddenEntryBuffer, aItem);
 //      pHiddenEntryBuffer = pHiddenEntryBuffer->pNextBuffer();
 //
 //      // get the next buffer and first entry in it
 //      if (pHiddenEntryBuffer)
-//        aEntry = pHiddenEntryBuffer->pFirstEntry();
+//        aItem = pHiddenEntryBuffer->pFirstEntry();
 //    }
   }
 }
@@ -384,7 +384,7 @@ void Table::vInsertRow(i8 iTxId, i8 iSlot, Stz* aRow, i8 iRowLength)
   TablePtn* pPartition = this->pPartition(iSlot);
   IndexTree* pHiddenIndexTree = pPartition->pHiddenIndexTree();
   
-  Item* aEntry = pHiddenIndexTree->pAppendRow(iTxId, aRow, iRowLength);
+  Item* aItem = pHiddenIndexTree->pAppendRow(iTxId, aRow, iRowLength);
   
   //----------------------------------------------------------------------------
   // (2) insert entry into all other indexes of the table
@@ -407,7 +407,7 @@ void Table::vInsertRow(i8 iTxId, i8 iSlot, Stz* aRow, i8 iRowLength)
     //pHiddenEntryBuffer->vDump();
     
     // insert entry into other indexes
-    bool bResult = pNewIndexTree->bInsertEntry(aEntry);
+    bool bResult = pNewIndexTree->bInsertEntry(aItem);
     RASSERT(bResult);
   }
 }

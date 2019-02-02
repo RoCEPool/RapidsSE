@@ -26,8 +26,8 @@ void Step::vRowEscapedString(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrRow) )
     THROW_INVALID_DSTACK("rows.asEscapedString"_Stz);
   
-  Item* aEntry = (Item*)_aItem(pPtrRow);
-  ASSERT(CN_ENTRY == aEntry->eClass());
+  Item* aItem = (Item*)_aItem(pPtrRow);
+  ASSERT(CN_ENTRY == aItem->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("rows.asEscapedString"_Stz);
@@ -36,7 +36,7 @@ void Step::vRowEscapedString(MP_Task mpTask)
   ASSERT(CN_TABLE == pTable->eClass());
   
   s48K sRow;
-  RowData* aEmbeddedRow = _aRowData(aEntry->aDataArea());
+  RowData* aEmbeddedRow = _aRowData(aItem->aDataArea());
   aEmbeddedRow->vAsEscapedString(sRow,pTable->pColumnVec());
 
   mpTask->m_pDataStack->vPushS48K(sRow);

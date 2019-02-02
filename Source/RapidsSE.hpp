@@ -34,7 +34,7 @@ extern "C" eEC  RapidsSE_InsertRow       (i8 iTrace, Session* pSession,
                                           Stz* pTable, Stz* sRecord);
 extern "C" eEC  RapidsSE_NextRow         (i8 iTrace, Session* pSession, void* aTable,
                                           i8 iPartition, i8* aiExpectedRows, void** aaEntryBuffer,
-                                          void** aaEntry, void** aaRow);
+                                          void** aaItem, void** aaRow);
 extern "C" eEC  RapidsSE_TranslateError  (i8 iTrace, Session* pSession,
                                           int iErrorCode, void** aaError);
 

@@ -93,19 +93,19 @@ void RowWrk::vRowSize(i8 nRowSize)
 /*----------------------------------------------------------------------------*/
 /* set row entry                                                              */
 /*----------------------------------------------------------------------------*/
-void RowWrk::vSetEntry(Item* aEntry)
+void RowWrk::vSetEntry(Item* aItem)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
   
-  aEntry->vId(xId());
-  aEntry->vOffsets(nOffsets());
+  aItem->vId(xId());
+  aItem->vOffsets(nOffsets());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy row into this entry
   
   RowData* aSrcRow = aRowData();
-  RowData* aDstRow = _aRowData(aEntry->aDataArea());
+  RowData* aDstRow = _aRowData(aItem->aDataArea());
   i8 nRowSize  = this->nRowSize();
   
   MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_ENTRY);

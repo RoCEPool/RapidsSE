@@ -451,14 +451,14 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
   
   while (pEntryBuffer) {
     
-//    while (aEntry) {
+//    while (aItem) {
 //
 //      // insert entry
-//      if ( ! pIndexTree->bInsertEntry(aEntry))
+//      if ( ! pIndexTree->bInsertEntry(aItem))
 //        return false;
 //
 //      // get next entry
-//      aEntry = pEntryBuffer->pNextEntry(aEntry, 0);
+//      aItem = pEntryBuffer->pNextEntry(aItem, 0);
 //    }
    
     pIndexTree->vInsertEntriesFromBuffer(pEntryBuffer);

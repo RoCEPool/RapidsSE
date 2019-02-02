@@ -133,10 +133,10 @@ bool SkipListNL::bDeleteAll(void)
   //
   //  while (true)
   //  {
-  //    Item* aEntry = (Item*)pPop(&bWasRemoved,2);
+  //    Item* aItem = (Item*)pPop(&bWasRemoved,2);
   //
   //
-  //    if (!aEntry)
+  //    if (!aItem)
   //      break;
   //
   //    if ( ! bWasRemoved )
@@ -144,9 +144,9 @@ bool SkipListNL::bDeleteAll(void)
   //
   //    //m_pKey->m_pDelObjFun(pObject);
   //    if (m_pKey->m_fDeleteObject)
-  //      m_pKey->m_fDeleteObject(aEntry);
+  //      m_pKey->m_fDeleteObject(aItem);
   //    else
-  //      tDelete(&aEntry);
+  //      tDelete(&aItem);
   //  }
   
   return true;

@@ -243,13 +243,13 @@ void Step::vEntryBufferNextEntry(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("entryBuffer.nextEntry"_Stz);
   
-  Item* aEntry = (Item*)_aItem(pPtrEntry);
+  Item* aItem = (Item*)_aItem(pPtrEntry);
   
   Item* aNextEntry;
   
   if ( pPtrEntry ) {
-    ASSERT(CN_ENTRY == aEntry->eClass());
-    aNextEntry = pIndexBuffer->aNextEntry(aEntry, 0);
+    ASSERT(CN_ENTRY == aItem->eClass());
+    aNextEntry = pIndexBuffer->aNextEntry(aItem, 0);
   }
   else {
     aNextEntry = pIndexBuffer->aFirstEntry();

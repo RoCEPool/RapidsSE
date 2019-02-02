@@ -863,11 +863,11 @@ void IndexTree::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer)
   
   //pEntryBuffer->vShow();
   
-  for ( Item* aEntry = pEntryBuffer->aFirstEntry() ;
-       aEntry;
-       aEntry = pEntryBuffer->aNextEntry(aEntry, 0)) {
+  for ( Item* aItem = pEntryBuffer->aFirstEntry() ;
+       aItem;
+       aItem = pEntryBuffer->aNextEntry(aItem, 0)) {
     
-    bool bInserted = bInsertEntry(aEntry);
+    bool bInserted = bInsertEntry(aItem);
     //bVerify();
     ASSERT(bInserted);
   }
@@ -972,10 +972,10 @@ void IndexTree::vPublish(void)
   s48K sRowString;
   
   // publish the current buffer (last buffer that was added)
-  for (Item* aEntry = m_pCurrentBuffer->aFirstEntry();
-       aEntry != nullptr;
-       aEntry = m_pCurrentBuffer->aNextEntry(aEntry, 0)) {
-    RowData* aRow = _aRowData(aEntry->aDataArea());
+  for (Item* aItem = m_pCurrentBuffer->aFirstEntry();
+       aItem != nullptr;
+       aItem = m_pCurrentBuffer->aNextEntry(aItem, 0)) {
+    RowData* aRow = _aRowData(aItem->aDataArea());
     aRow->vAsBinaryStringVLQ(sRowString, m_pIndex->pTable()->pColumnVec());
     vTrace("row: (%s)\n"_Stz, sRowString.aChar());
   }
@@ -1121,12 +1121,12 @@ void IndexTree::vDumpLevel(EntryBuffer* pEntryBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   // get the first entry
-  Item* aEntry = pEntryBuffer->aFirstEntry();
+  Item* aItem = pEntryBuffer->aFirstEntry();
   
-  while (aEntry) {
+  while (aItem) {
     
     // get the index buffer the first enetry poinst to
-    EntryBuffer* pEntryEntryBuffer = EntryBuffer::pRefdEntryBuffer(aEntry);
+    EntryBuffer* pEntryEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
     
     // print the decile of the buffer
     vTrace("%lld"_Stz, pEntryEntryBuffer->iDecile());
@@ -1142,7 +1142,7 @@ void IndexTree::vDumpLevel(EntryBuffer* pEntryBuffer)
     }
     
     // move to the next entry
-    aEntry = pEntryBuffer->aNextEntry(aEntry, 0);
+    aItem = pEntryBuffer->aNextEntry(aItem, 0);
   }
 }
 
@@ -1200,10 +1200,10 @@ void IndexTree::vVisualize(void)
       vTrace("\n"_Stz);
       
       // get the first entry of the buffer
-      Item* aEntry = pEntryBuffer->aFirstEntry();
+      Item* aItem = pEntryBuffer->aFirstEntry();
       
       // get the index buffer this entry points to
-      pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aEntry);
+      pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
     }
   }
   

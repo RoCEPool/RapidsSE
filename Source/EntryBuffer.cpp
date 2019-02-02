@@ -227,12 +227,12 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
   if (! m_iLevelNo)
     return;
     
-  for (Item* aEntry = aFirstEntry();
-       aEntry != nullptr;
-       aEntry = aNextEntry(aEntry, 0)) {
+  for (Item* aItem = aFirstEntry();
+       aItem != nullptr;
+       aItem = aNextEntry(aItem, 0)) {
     
     // get the index buffer from the entry
-    pNextBuffer = EntryBuffer::pRefdEntryBuffer(aEntry);
+    pNextBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
     
     ASSERT(pNextBuffer);
     ASSERT(pNextBuffer->eClass() == CN_ENTRYBUFFER);
@@ -334,12 +334,12 @@ void EntryBuffer::vTruncate(void)
   if (m_iLevelNo != 0) {
     
     // recursively delete the lower level buffers
-    for (Item* aEntry = aFirstEntry();
-         aEntry != nullptr;
-         aEntry = aNextEntry(aEntry, 0)) {
+    for (Item* aItem = aFirstEntry();
+         aItem != nullptr;
+         aItem = aNextEntry(aItem, 0)) {
       
       // get the index buffer from the entry
-      pNextBuffer = EntryBuffer::pRefdEntryBuffer(aEntry);
+      pNextBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
       
       ASSERT(pNextBuffer);
       ASSERT(pNextBuffer->eClass() == CN_ENTRYBUFFER);
@@ -403,21 +403,21 @@ Item* EntryBuffer::aLastEntry(void)
 /*----------------------------------------------------------------------------*/
 /* show entry                                                                 */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vShowEntry(Item* aEntry)
+void EntryBuffer::vShowEntry(Item* aItem)
 {
-  KeyData* aKey = _aKeyData(aEntry->aDataArea());
-  i8 iOffset = iToOffset(aEntry);
+  KeyData* aKey = _aKeyData(aItem->aDataArea());
+  i8 iOffset = iToOffset(aItem);
   
   vTrace("%lld: Item: %p Size: %llu Offsets: %llu "_Stz,
          iOffset,
-         aEntry,
-         aEntry->nSizeItem(),
-         aEntry->nOffsets()
+         aItem,
+         aItem->nSizeItem(),
+         aItem->nOffsets()
          );
   
   vTrace("Id: %3lli.%03lli "_Stz,
-         aEntry->iBufferNo(),
-         aEntry->iItemNo()
+         aItem->iBufferNo(),
+         aItem->iItemNo()
          );
   
   //vTrace("Tx: %lld.%03lld "_Stz,
@@ -429,9 +429,9 @@ void EntryBuffer::vShowEntry(Item* aEntry)
     aKey->vShow(m_pIndex->pIdxColVec());
   
   if (m_pIndex->bIsHidden()) {
-    RowData* aThisRow = _aRowData(aEntry->aDataArea());
+    RowData* aThisRow = _aRowData(aItem->aDataArea());
     vTrace("RowData: "_Stz);
-    i8 iRowSize = aEntry->nSizeItem();
+    i8 iRowSize = aItem->nSizeItem();
     if (iRowSize > 0) {
       aThisRow->vShow(m_pIndex->pTable()->pColumnVec(), true);
     }
@@ -439,8 +439,8 @@ void EntryBuffer::vShowEntry(Item* aEntry)
   
   
   vTrace(" offsets:"_Stz);
-  for (i8 i_Offset = 0; i_Offset < aEntry->nOffsets(); i_Offset++)
-    vTrace(" %d"_Stz,aEntry->aNEO()[i_Offset]);
+  for (i8 i_Offset = 0; i_Offset < aItem->nOffsets(); i_Offset++)
+    vTrace(" %d"_Stz,aItem->aNEO()[i_Offset]);
   
   vTrace("\n"_Stz);
 }
@@ -458,13 +458,13 @@ Item* EntryBuffer::aAllotEntry(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Item* aEntry = reinterpret_cast<Item*>(aAllotItem(CN_ENTRY,nBytes));
-  if ( ! aEntry )
+  Item* aItem = reinterpret_cast<Item*>(aAllotItem(CN_ENTRY,nBytes));
+  if ( ! aItem )
     return nullptr;
     
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  return aEntry;
+  return aItem;
 }
 
 

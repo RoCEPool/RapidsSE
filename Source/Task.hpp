@@ -177,7 +177,7 @@ namespace Tasks
     /*------------------------------------------------------------------------*/
 
   public:
-    static bool   bAppendRow(FetchBuffer* pFetchBuffer, Item* aEntry, Job_FetchRows* pJob_FetchRows);
+    static bool   bAppendRow(FetchBuffer* pFetchBuffer, Item* aItem, Job_FetchRows* pJob_FetchRows);
     
     /*------------------------------------------------------------------------*/
     

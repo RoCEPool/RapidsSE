@@ -93,7 +93,7 @@ namespace Forth
   
     void vPushBool(bool bBool);
     void vPushCell(Cell* aCell);
-    void vPushEntry(Item* aEntry);
+    void vPushEntry(Item* aItem);
     void vPushGenVar(GenVar* pGenVar);
     void vPushGenVar(GenVar& xGenVar);
     void vPushI8(i8 iInt);

@@ -198,29 +198,29 @@
 : printRows ( ^pIndex ^pIndexBuffer --  )
 
 /*
-  0 0 locals| nRowCount aEntry pIndexBuffer pIndex iPartitionNo |
+  0 0 locals| nRowCount aItem pIndexBuffer pIndex iPartitionNo |
 
   // get the partitionNo
   pIndexBuffer entryBuffer.partition@ to iPartitionNo
 
   // get the entry
-  pIndexBuffer entryBuffer.firstEntry to aEntry
+  pIndexBuffer entryBuffer.firstEntry to aItem
 
   begin
-    aEntry
+    aItem
     while
 
       display@ if
         args.metadata if
-          pIndex aEntry entry.embeddedRow
+          pIndex aItem entry.embeddedRow
           iPartitionNo grid::toPartition
           "row: (%v,%v)\n" str.format .put
         else
-          pIndex aEntry entry.embeddedRow "row: (%v)\n" str.format .put
+          pIndex aItem entry.embeddedRow "row: (%v)\n" str.format .put
         then
       then
       1 nRowCount + to nRowCount
-      aEntry pIndexBuffer entryBuffer.nextEntry to aEntry
+      aItem pIndexBuffer entryBuffer.nextEntry to aItem
 
     repeat
 

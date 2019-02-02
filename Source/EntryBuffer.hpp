@@ -86,7 +86,7 @@ namespace Data
   
     void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     void         vBuildSkipListSorted(void);
-    void         vDeleteEntry(Item** aaEntry);
+    void         vDeleteEntry(Item** aaItem);
     bool         bDeleteKey(KeyData* aDeleteKey, EntryBuffer* pToBuffer);
     void         vDump(void);
     EntryBuffer* pFirstChildBuffer(void);
@@ -98,7 +98,7 @@ namespace Data
     void         vLazyBuild(void);
     i8           iLengthList(void);
     i8           iLengthSubList(void);
-    Item*       aNextEntry(Item* aEntry, i8 i_Offset);
+    Item*       aNextEntry(Item* aItem, i8 i_Offset);
   
     Item*       aPositionQuery(KeyData* aGivenKey, eRO eRelOp);
     Item*       aPositionQuery(KeyData* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
@@ -121,7 +121,7 @@ namespace Data
     void         vBuildSkipList(void);
     void         vCompact(void);
     void         vCompactLeft2(void);
-    void         vCutEntry(Item* aEntry, Item* aPriorVec[]);
+    void         vCutEntry(Item* aItem, Item* aPriorVec[]);
     void         vDeleteUpwards(KeyData* aDeleteKey,
                                 EntryBuffer** ppRootKeyBuffer);
     void         vDeleteUpwards(KeyData* aDeleteKey, EntryBuffer* pToBuffer,
@@ -149,7 +149,7 @@ namespace Data
                                    EntryBuffer** ppRootKeyBuffer);
     void         vItemCountRestore(void);
     bool         bKeyBeforeBuffer(KeyData* aKey);
-    FreeItem*    aMakeFreeEntry(Item* aEntry);
+    FreeItem*    aMakeFreeEntry(Item* aItem);
     EntryBuffer* pNewHigherBuffer(void);
     EntryBuffer* pNewInsertBuffer(KeyData* aInsKey, i8 nEntryPlusOffsets,
                                   EntryBuffer** ppRootKeyBuffer);

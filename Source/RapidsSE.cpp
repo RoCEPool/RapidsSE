@@ -945,14 +945,14 @@ eEC RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
 eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
                      i8* aiExpectedRows,
                      void** aaEntryBuffer,
-                     void** aaEntry, void** aaRow
+                     void** aaItem, void** aaRow
                      )
 {
   API_SESSION_LEVEL();
   API_ENTER(AC_NextRow);
   API_NOTNULL(aiExpectedRows);
   API_NOTNULL(aaEntryBuffer);
-  API_NOTNULL(aaEntry);
+  API_NOTNULL(aaItem);
   API_NOTNULL(aaRow);
   API_BEGIN();
   
@@ -965,7 +965,7 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
     
     //*piExpectedRows = (i8)(pJob_FetchRows->m_pBufferQueue->iCount() * C_ROWS_PER_BUFFER);
     
-    Item* aEntry = nullptr;
+    Item* aItem = nullptr;
     EntryBuffer* pEntryBuffer = nullptr;
     API_LOC(330);
 
@@ -981,13 +981,13 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
         *aaRow = nullptr;
         
       } else {
-        aEntry = pEntryBuffer->aFirstEntry();
-        *aaEntry = aEntry;
-        RASSERT(aEntry != nullptr);
-        RASSERT(aEntry->eClass() == CN_ENTRY);
+        aItem = pEntryBuffer->aFirstEntry();
+        *aaItem = aItem;
+        RASSERT(aItem != nullptr);
+        RASSERT(aItem->eClass() == CN_ENTRY);
         *aaEntryBuffer = pEntryBuffer;
-        *aaRow = _aRowData(aEntry->aDataArea());
-        //vTrace("returning %p %p\n"_Stz, *aaEntryBuffer, *aaEntry);
+        *aaRow = _aRowData(aItem->aDataArea());
+        //vTrace("returning %p %p\n"_Stz, *aaEntryBuffer, *aaItem);
       }
       
       API_RETURN();
@@ -1001,36 +1001,36 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
     API_LOC(350);
 
     // we should have an entry
-    aEntry = *((Item**)(aaEntry));
-    RASSERT(aEntry != nullptr);
-    //vTrace("got %p %p\n"_Stz, pEntryBuffer, aEntry);
-    RASSERT(aEntry->eClass() == CN_ENTRY);
+    aItem = *((Item**)(aaItem));
+    RASSERT(aItem != nullptr);
+    //vTrace("got %p %p\n"_Stz, pEntryBuffer, aItem);
+    RASSERT(aItem->eClass() == CN_ENTRY);
     API_LOC(360);
 
     // get the next entry
-    aEntry = pEntryBuffer->aNextEntry(aEntry, 0);
+    aItem = pEntryBuffer->aNextEntry(aItem, 0);
     API_LOC(370);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // did we find an entry ?
-    if ( ! aEntry ) {
+    if ( ! aItem ) {
       //vTrace("didn't get next entry\n"_Stz);
       // get next buffer from the current indexBuffer
       pEntryBuffer = pEntryBuffer->pNextBuffer();
       
       if ( pEntryBuffer ) {
         //vTrace("got next buffer %p\n"_Stz, pEntryBuffer);
-        aEntry = pEntryBuffer->aFirstEntry();
+        aItem = pEntryBuffer->aFirstEntry();
 
       }
     }
     API_LOC(380);
 
-    if (aEntry) {
+    if (aItem) {
       *aaEntryBuffer = pEntryBuffer;
-      *aaEntry = aEntry;
-      *aaRow = _aRowData(aEntry->aDataArea());
-      //vTrace("Returning rowEntry %p\n"_Stz, aEntry);
+      *aaItem = aItem;
+      *aaRow = _aRowData(aItem->aDataArea());
+      //vTrace("Returning rowEntry %p\n"_Stz, aItem);
     } else {
       *aaRow = nullptr;
     }
