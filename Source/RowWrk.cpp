@@ -36,6 +36,8 @@ RowWrk::RowWrk(void)
 {
   _precondition_(_MAGIC_,CN_ROWWRK);
   
+  vOffsets(1);
+  
   _checkInitialisedSize_(sizeof(RowWrk));
   
   _postcondition_(_MAGIC_,CN_ROWWRK,_FOOTER_);

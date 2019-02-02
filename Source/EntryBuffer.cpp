@@ -467,6 +467,22 @@ Item* EntryBuffer::aAllotEntry(i8 nBytes)
   return aItem;
 }
 
+/*----------------------------------------------------------------------------*/
+/* allot a row entry in this buffer                                           */
+/*----------------------------------------------------------------------------*/
+Item* EntryBuffer::aAllotRow(RowWrk& xRowWrk)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 nItemSize = xRowWrk.nItemSize();
+
+  Item* aItem = aAllotEntry(nItemSize);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return aItem;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

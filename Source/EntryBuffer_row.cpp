@@ -26,7 +26,7 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   ASSERT(iLevelNo() == 0);
   
   // rows only ever have one next offset
-  xRowWrk.vOffsets(1);
+  RASSERT(1 == xRowWrk.nOffsets());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space for row and offset
