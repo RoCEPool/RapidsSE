@@ -346,7 +346,7 @@ void IndexTree::vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pFirstL0)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reinsert the first key of the first L0 buffer back into the L1 buffer
   
-  Item* aFirstL0_Key = pFirstL0->aFirstEntry();
+  Item* aFirstL0_Key = pFirstL0->aLeadEntry();
   
   Id xId = aFirstL0_Key->xId();
   KeyData* aKey = _aKeyData(aFirstL0_Key->aDataArea());
@@ -407,7 +407,7 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
 
   //pLeftL0->vShow();
   
-  for (Item* aRightL0_Key = pRightL0->aFirstEntry();
+  for (Item* aRightL0_Key = pRightL0->aLeadEntry();
        aRightL0_Key;
        aRightL0_Key = pRightL0->aNextEntry(aRightL0_Key,0)) {
     
@@ -538,7 +538,7 @@ void IndexTree::vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
   
   TRACE_COMPACT( pRightL0->vShow(); )
   
-  for (Item* aRightL0_Key = pRightL0->aFirstEntry();
+  for (Item* aRightL0_Key = pRightL0->aLeadEntry();
        aRightL0_Key;
        aRightL0_Key = pRightL0->aNextEntry(aRightL0_Key,0)) {
     
@@ -789,7 +789,7 @@ EntryBuffer* IndexTree::pFirstL1Buffer(void)
   
   while (pEntryBuffer) {
     
-    Item* aFirstEntry = pEntryBuffer->aFirstEntry();
+    Item* aFirstEntry = pEntryBuffer->aLeadEntry();
     pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aFirstEntry);
     
     if (pEntryBuffer->iLevelNo() == 1) {
@@ -817,7 +817,7 @@ EntryBuffer* IndexTree::pFirstL0Buffer(void)
   
   while (pEntryBuffer) {
     
-    Item* aFirstEntry = pEntryBuffer->aFirstEntry();
+    Item* aFirstEntry = pEntryBuffer->aLeadEntry();
     pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aFirstEntry);
     
     if (pEntryBuffer->iLevelNo() == 0) {
@@ -863,7 +863,7 @@ void IndexTree::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer)
   
   //pEntryBuffer->vShow();
   
-  for ( Item* aItem = pEntryBuffer->aFirstEntry() ;
+  for ( Item* aItem = pEntryBuffer->aLeadEntry() ;
        aItem;
        aItem = pEntryBuffer->aNextEntry(aItem, 0)) {
     
@@ -972,7 +972,7 @@ void IndexTree::vPublish(void)
   s48K sRowString;
   
   // publish the current buffer (last buffer that was added)
-  for (Item* aItem = m_pCurrentBuffer->aFirstEntry();
+  for (Item* aItem = m_pCurrentBuffer->aLeadEntry();
        aItem != nullptr;
        aItem = m_pCurrentBuffer->aNextEntry(aItem, 0)) {
     RowData* aRow = _aRowData(aItem->aDataArea());
@@ -1121,7 +1121,7 @@ void IndexTree::vDumpLevel(EntryBuffer* pEntryBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   // get the first entry
-  Item* aItem = pEntryBuffer->aFirstEntry();
+  Item* aItem = pEntryBuffer->aLeadEntry();
   
   while (aItem) {
     
@@ -1200,7 +1200,7 @@ void IndexTree::vVisualize(void)
       vTrace("\n"_Stz);
       
       // get the first entry of the buffer
-      Item* aItem = pEntryBuffer->aFirstEntry();
+      Item* aItem = pEntryBuffer->aLeadEntry();
       
       // get the index buffer this entry points to
       pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);

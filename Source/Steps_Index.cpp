@@ -395,7 +395,7 @@ void Step::vIndexExactKey(MP_Task mpTask)
       pIndexBuffer = pIndexBuffer->pNextBuffer();
       
       if ( pIndexBuffer )
-        aItem = pIndexBuffer->aFirstEntry();
+        aItem = pIndexBuffer->aLeadEntry();
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -740,7 +740,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
       aLowerEntryBuffer = aLowerEntryBuffer->pNextBuffer();
       
       if ( aLowerEntryBuffer )
-        aLowerEntry = aLowerEntryBuffer->aFirstEntry();
+        aLowerEntry = aLowerEntryBuffer->aLeadEntry();
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1069,7 +1069,7 @@ void Step::vIndexRange(MP_Task mpTask)
       aUpperEntryBuffer = aUpperEntryBuffer->pNextBuffer();
       
       if ( aUpperEntryBuffer )
-        aUpperEntry = aUpperEntryBuffer->aFirstEntry();
+        aUpperEntry = aUpperEntryBuffer->aLeadEntry();
     }
   }
   
@@ -1120,7 +1120,7 @@ void Step::vIndexRange(MP_Task mpTask)
         aLowerEntryBuffer = aLowerEntryBuffer->pNextBuffer();
         
         if ( aLowerEntryBuffer )
-          aLowerEntry = aLowerEntryBuffer->aFirstEntry();
+          aLowerEntry = aLowerEntryBuffer->aLeadEntry();
       }
       else {
         // check if session exiting
@@ -1216,7 +1216,7 @@ void Step::vIndexScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the first entry in the buffer
-  Item* aItem = pEntryBuffer->aFirstEntry();
+  Item* aItem = pEntryBuffer->aLeadEntry();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru the buffer till no more entries
@@ -1256,7 +1256,7 @@ void Step::vIndexScan(MP_Task mpTask)
       pEntryBuffer = pEntryBuffer->pNextBuffer();
       
       if ( pEntryBuffer )
-        aItem = pEntryBuffer->aFirstEntry();
+        aItem = pEntryBuffer->aLeadEntry();
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1568,7 +1568,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the first entry in the buffer
-  aItem = pEntryBuffer->aFirstEntry();
+  aItem = pEntryBuffer->aLeadEntry();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now position at a level 0 buffer for the upper key
@@ -1622,7 +1622,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
       aUpperEntryBuffer = aUpperEntryBuffer->pNextBuffer();
       
       if ( aUpperEntryBuffer )
-        aUpperEntry = aUpperEntryBuffer->aFirstEntry();
+        aUpperEntry = aUpperEntryBuffer->aLeadEntry();
     }
   }
   
@@ -1666,7 +1666,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
         pEntryBuffer = pEntryBuffer->pNextBuffer();
         
         if ( pEntryBuffer )
-          aItem = pEntryBuffer->aFirstEntry();
+          aItem = pEntryBuffer->aLeadEntry();
       }
     }
     else {

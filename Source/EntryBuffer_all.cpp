@@ -96,7 +96,8 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
   // recursively dump the lower level buffers
   if (m_iLevelNo != 0) {
     
-    for (Item* aItem = aFirstEntry(); aItem != nullptr;
+    for (Item* aItem = aLeadEntry();
+         aItem != nullptr;
          aItem = aNextEntry(aItem, 0)) {
       
       // get the index buffer from the entry
@@ -156,7 +157,7 @@ void EntryBuffer::vBuildSkipListSorted(void)
   // go through each entry in L0 order and
   //   correct the prior offset to that entry for each level
   
-  for (Item* aItem = aFirstEntry();
+  for (Item* aItem = aLeadEntry();
        aItem != nullptr;
        aItem = aNextEntry(aItem, 0)) {
     
@@ -259,7 +260,7 @@ void EntryBuffer::vDump(void)
   // recursively dump the lower level buffers
   if (m_iLevelNo != 0) {
     
-    for (Item* aItem = aFirstEntry();
+    for (Item* aItem = aLeadEntry();
          aItem != nullptr;
          aItem = aNextEntry(aItem, 0)) {
       
@@ -288,7 +289,7 @@ EntryBuffer* EntryBuffer::pFirstChildBuffer(void)
   //  vBuildSkipList();
 #endif
   
-  Item* aFirstEntry = this->aFirstEntry();
+  Item* aFirstEntry = this->aLeadEntry();
   EntryBuffer* pChildEntryBuffer = EntryBuffer::pRefdEntryBuffer(aFirstEntry);
   
   return pChildEntryBuffer;
@@ -786,7 +787,7 @@ void EntryBuffer::vRestore(void)
   m_iBufferNo = *nBuffer;
   
   // now restore the row id's to point to this buffer no
-  for (Item* aItem = aFirstEntry();
+  for (Item* aItem = aLeadEntry();
        aItem != nullptr;
        aItem = aNextEntry(aItem, 0)) {
     
@@ -964,7 +965,7 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
   if ( ! m_iLevelNo )
     return;
   
-  Item* aFirstEntry = this->aFirstEntry();
+  Item* aFirstEntry = this->aLeadEntry();
   if (! aFirstEntry)
     return;
   
@@ -1307,7 +1308,7 @@ void EntryBuffer::vCompactLeft2(void)
   
   Item* aPriorEntry = pTempBuffer->aHeadEntry();
   
-  for (Item* aThisEntry = pThisBuffer->aFirstEntry();
+  for (Item* aThisEntry = pThisBuffer->aLeadEntry();
        aThisEntry != nullptr;
        aThisEntry = pThisBuffer->aNextEntry(aThisEntry, 0)) {
     
@@ -1342,7 +1343,7 @@ void EntryBuffer::vCompactLeft2(void)
   
   aPriorEntry = pThisBuffer->aHeadEntry();
   
-  for (Item* aTempEntry = pTempBuffer->aFirstEntry();
+  for (Item* aTempEntry = pTempBuffer->aLeadEntry();
        aTempEntry != nullptr;
        aTempEntry = pTempBuffer->aNextEntry(aTempEntry, 0)) {
     
@@ -1444,7 +1445,7 @@ void EntryBuffer::vDeleteUpwards(KeyData* aDeleteKey,
   }
   //RASSERT(aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec));
   
-  Item* aFirstEntry = this->aFirstEntry();
+  Item* aFirstEntry = this->aLeadEntry();
   if (aEntryToBeDeleted == aFirstEntry && m_pHigherBuffer) {
     EntryBuffer* pHigherBuffer = _pEntryBuffer(m_pHigherBuffer);
     pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
@@ -1488,7 +1489,7 @@ void EntryBuffer::vDeleteUpwards(KeyData* aDeleteKey, EntryBuffer* pToBuffer,
   RASSERT(aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec));
   RASSERT(pToBuffer == EntryBuffer::pRefdEntryBuffer(aEntryToBeDeleted));
   
-  Item* aFirstEntry = this->aFirstEntry();
+  Item* aFirstEntry = this->aLeadEntry();
   if (aEntryToBeDeleted == aFirstEntry && m_pHigherBuffer) {
     EntryBuffer* pHigherBuffer = _pEntryBuffer(m_pHigherBuffer);
     pHigherBuffer->vDeleteUpwards(aDeleteKey,this,ppRootKeyBuffer);
@@ -1576,7 +1577,7 @@ void EntryBuffer::vHandleFirstInsert(Item* aInsertedKeyEntry,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  if (aFirstEntry() != aInsertedKeyEntry)
+  if (aLeadEntry() != aInsertedKeyEntry)
     return;
   
   if (aOriginalFirstEntry) {
@@ -1909,7 +1910,7 @@ Item* EntryBuffer::aInsertKeyBuffer(KeyWrk& xKeyWrk,
 #ifdef USE_EB_LAZY_CHAIN
   if (m_pIndex->pTable()->bIsLoading()) {
     if (m_iLevelNo) {
-      Item* aOriginalFirstEntry = aFirstEntry();
+      Item* aOriginalFirstEntry = aLeadEntry();
       aInsertedKeyEntry = aInsertKeyAbs(xKeyWrk);
       vHandleFirstInsert(aInsertedKeyEntry,aOriginalFirstEntry,ppRootKeyBuffer);
     }
@@ -1918,7 +1919,7 @@ Item* EntryBuffer::aInsertKeyBuffer(KeyWrk& xKeyWrk,
     }
   }
   else {
-    Item* aOriginalFirstEntry = aFirstEntry();
+    Item* aOriginalFirstEntry = aLeadEntry();
     aInsertedKeyEntry = aInsertKeyAbs(xKeyWrk);
     vHandleFirstInsert(aInsertedKeyEntry,aOriginalFirstEntry,ppRootKeyBuffer);
   }
@@ -1991,7 +1992,7 @@ void EntryBuffer::vItemCountRestore(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_nItems = 0;
-  for (Item* aItem = aFirstEntry(); aItem; aItem = aNextEntry(aItem, 0))
+  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem, 0))
     m_nItems++;
 }
 
@@ -2002,7 +2003,7 @@ bool EntryBuffer::bKeyBeforeBuffer(KeyData* aKeyTest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  Item* aFirstEntry = this->aFirstEntry();
+  Item* aFirstEntry = this->aLeadEntry();
   KeyData* aFirstKey = _aKeyData(aFirstEntry->aDataArea());
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   i8 nKeyCols = pIdxColVec->nItems();
@@ -2120,7 +2121,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyData* aInsKey, i8 nEntryPlusOffset
   // insert the first key of left buffer into higher buffer
   
   if ( ! pHigherBuffer->nItems() ) {
-    Item* aFirstKeyLeft  = pLeftBuffer->aFirstEntry();
+    Item* aFirstKeyLeft  = pLeftBuffer->aLeadEntry();
     
     i8 nOffsetsLeft = aFirstKeyLeft->nOffsets();
     Id xIdLeft(*pLeftBuffer->nPoolBufferNo(),0,nOffsetsLeft);
@@ -2142,7 +2143,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyData* aInsKey, i8 nEntryPlusOffset
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of right buffer into higher buffer
   
-  Item* aFirstKeyRight = pRightBuffer->aFirstEntry();
+  Item* aFirstKeyRight = pRightBuffer->aLeadEntry();
   
   KeyData* aKeyRight = _aKeyData(aFirstKeyRight->aDataArea());
   
@@ -2712,7 +2713,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
   
   Id xId;
   if (m_iLevelNo != 0)  {
-    for (Item* aMovedEntry = pNewRightBuffer->aFirstEntry();
+    for (Item* aMovedEntry = pNewRightBuffer->aLeadEntry();
          aMovedEntry;
          aMovedEntry = pNewRightBuffer->aNextEntry(aMovedEntry, 0)) {
       
@@ -3065,7 +3066,7 @@ bool EntryBuffer::bVerifyLnAny(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of child buffers
   
-  for (Item* aItem = aFirstEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     EntryBuffer* pRefEntBuf = EntryBuffer::pRefdEntryBuffer(aItem);
     if (pRefEntBuf->m_iLevelNo) {
@@ -3104,7 +3105,7 @@ bool EntryBuffer::bVerifyAdjacent(void)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  for (Item* aItem = aFirstEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     // get the buffer that this entry references
     EntryBuffer* pChildEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
@@ -3143,7 +3144,7 @@ bool EntryBuffer::bVerifyBufferRefs(void)
   
   RASSERT(m_iLevelNo >= 1);
   
-  for (Item* aItem = aFirstEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     EntryBuffer* pChildEntBuf = EntryBuffer::pRefdEntryBuffer(aItem);
     
@@ -3242,7 +3243,7 @@ bool EntryBuffer::bVerifyFirstKeys(void)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  for (Item* aItem = aFirstEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     // get the entry buffer that this entry references
     EntryBuffer* pChildEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
@@ -3251,7 +3252,7 @@ bool EntryBuffer::bVerifyFirstKeys(void)
     
     
     // get the first entry of the child buffer
-    Item* aChildFirstEntry = pChildEntryBuffer->aFirstEntry();
+    Item* aChildFirstEntry = pChildEntryBuffer->aLeadEntry();
     
     // get keys of the two entries
     KeyData* aKeyParent = _aKeyData(aItem->aDataArea());
@@ -3382,7 +3383,7 @@ bool EntryBuffer::bVerifyKeyBufferOrder(void)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  for (Item* aItem = aFirstEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     // get next entry
     Item* aNextEntry = this->aNextEntry(aItem,0);
@@ -3424,7 +3425,7 @@ bool EntryBuffer::bVerifyKeyOrder(void)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  for (Item* aItem = aFirstEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     // get next entry
     Item* aNextEntry = this->aNextEntry(aItem,0);
@@ -3509,7 +3510,7 @@ bool EntryBuffer::bVerifyRows(void)                        //# discuss with Alka
   RASSERT(0 == m_iLevelNo);
   RASSERT(m_pIndex->bIsHidden());
   
-  for (Item* aItem = aFirstEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
   }
   
   return true;
@@ -3530,7 +3531,7 @@ bool EntryBuffer::bVerifyRowRefs(void)
   RASSERT(0 == m_iLevelNo);
   RASSERT(! m_pIndex->bIsHidden());
   
-  for (Item* aItem = aFirstEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     // get the entry buffer that this L0 key leaf references
     EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);

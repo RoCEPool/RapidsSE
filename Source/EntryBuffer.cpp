@@ -227,7 +227,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
   if (! m_iLevelNo)
     return;
     
-  for (Item* aItem = aFirstEntry();
+  for (Item* aItem = aLeadEntry();
        aItem != nullptr;
        aItem = aNextEntry(aItem, 0)) {
     
@@ -334,7 +334,7 @@ void EntryBuffer::vTruncate(void)
   if (m_iLevelNo != 0) {
     
     // recursively delete the lower level buffers
-    for (Item* aItem = aFirstEntry();
+    for (Item* aItem = aLeadEntry();
          aItem != nullptr;
          aItem = aNextEntry(aItem, 0)) {
       
@@ -356,9 +356,9 @@ void EntryBuffer::vTruncate(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* get first entry                                                            */
+/* get lead entry (the entry after head entry                                 */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aFirstEntry(void)
+Item* EntryBuffer::aLeadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   

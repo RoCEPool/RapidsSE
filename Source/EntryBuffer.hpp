@@ -59,9 +59,9 @@ namespace Data
     ////////////////////////////////////////////////////////////////////////////
     // entry functions
   
-    Item* aFirstEntry(void);
+    Item* aLeadEntry(void);
     Item* aLastEntry(void);
-    void vShowEntry(Item* pEntry);
+    void  vShowEntry(Item* pEntry);
 
     ////////////////////////////////////////////////////////////////////////////
     // row functions
