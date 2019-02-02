@@ -403,9 +403,10 @@ Entry* EntryBuffer::aLastEntry(void)
 /*----------------------------------------------------------------------------*/
 /* show entry                                                                 */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vShowEntry(Entry* pEntry, i8 iOffset, bool bShowKey)
+void EntryBuffer::vShowEntry(Entry* pEntry)
 {
   KeyData* aKey = pEntry->aKeyData();
+  i8 iOffset = iToOffset(pEntry);
   
   vTrace("%lld: Entry: %p Size: %llu Offsets: %llu "_Stz,
          iOffset,
@@ -424,7 +425,7 @@ void EntryBuffer::vShowEntry(Entry* pEntry, i8 iOffset, bool bShowKey)
   //       Tx::iTxNo(m_iTxId)
   //       );
   
-  if (bShowKey && ! m_pIndex->bIsHidden())
+  if (! m_pIndex->bIsHidden())
     aKey->vShow(m_pIndex->pIdxColVec());
   
   if (m_pIndex->bIsHidden()) {

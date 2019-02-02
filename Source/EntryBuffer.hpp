@@ -61,7 +61,7 @@ namespace Data
   
     Entry* aFirstEntry(void);
     Entry* aLastEntry(void);
-    void vShowEntry(Entry* pEntry, i8 iOffset, bool bShowKey);
+    void vShowEntry(Entry* pEntry);
 
     ////////////////////////////////////////////////////////////////////////////
     // row functions
