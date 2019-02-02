@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* KeyWrk.hpp -- Key Working Entry                                            */
+/* KeyWrk.hpp -- KeyData Working Entry                                            */
 /*============================================================================*/
 #pragma once
 
 namespace Data
 {
   class EntryBuffer;
-  class Key;
+  class KeyData;
   
   class KeyWrk : public EntWrk
   {
@@ -22,10 +22,10 @@ namespace Data
     void vAddDatum(char* aDatum);
     void vAddDatum(GenVar& xVariable, Column* pCol);
     void vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters);
-    void vAddKey(Key* aKey, IdxColVec* pColVec);
+    void vAddKey(KeyData* aKey, IdxColVec* pColVec);
     void vAddWord(w8 wWord);
     void vExtractKey(Entry* aRowEntry, IdxColVec* pIdxColVec);
-    Key* aKey(void);
+    KeyData* aKey(void);
     i8   nKeySize(void);
     void vKeySize(i8 nKeySize);
     EntryBuffer* pReferencedEntryBuffer(void);

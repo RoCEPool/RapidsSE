@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* KeyWrk.cpp -- Key Working Entry                                            */
+/* KeyWrk.cpp -- KeyData Working Entry                                            */
 /*============================================================================*/
 
 #include "Data.h"
@@ -186,7 +186,7 @@ void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* add a key                                                                  */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddKey(Key* aKey, IdxColVec* pColVec)
+void KeyWrk::vAddKey(KeyData* aKey, IdxColVec* pColVec)
 {
   _precondition_(_MAGIC_,CN_KEYWRK);
   
@@ -340,11 +340,11 @@ void KeyWrk::vExtractKey(Entry* aRowEntry, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* get wsp area as key                                                        */
 /*----------------------------------------------------------------------------*/
-Key* KeyWrk::aKey(void)
+KeyData* KeyWrk::aKey(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  return reinterpret_cast<Key*>(aEmbedded());
+  return reinterpret_cast<KeyData*>(aEmbedded());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -403,8 +403,8 @@ void KeyWrk::vSetEntry(Entry* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into this entry
   
-  Key* aSrcKey = aKey();
-  Key* aDstKey = pEntry->aKeyData();
+  KeyData* aSrcKey = aKey();
+  KeyData* aDstKey = pEntry->aKeyData();
   i8 nKeySize  = this->nKeySize();
   
   MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENTRY);
@@ -417,7 +417,7 @@ void KeyWrk::vShow(IdxColVec* pIdxColVec)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  Key* aKey = this->aKey();
+  KeyData* aKey = this->aKey();
   aKey->vShow(pIdxColVec);
   vTrace("\n"_Stz);
 }

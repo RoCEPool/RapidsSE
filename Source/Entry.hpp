@@ -28,7 +28,7 @@ namespace Data
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key data area
-    Key* aKeyData(void);
+    KeyData* aKeyData(void);
   
   
     void vShow(i8 iBase, Index* pIndex, bool bShowKey);
@@ -51,11 +51,11 @@ namespace Data
   }
   
   /*--------------------------------------------------------------------------*/
-  /* get Key                                                                  */
+  /* get KeyData                                                                  */
   /*--------------------------------------------------------------------------*/
-  inline Key* Entry::aKeyData(void)
+  inline KeyData* Entry::aKeyData(void)
   {
-    Key* aKey = reinterpret_cast<Key*>(aDataArea());
+    KeyData* aKey = reinterpret_cast<KeyData*>(aDataArea());
     
     return aKey;
   }

@@ -87,7 +87,7 @@ namespace Data
     void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     void         vBuildSkipListSorted(void);
     void         vDeleteEntry(Entry** aaEntry);
-    bool         bDeleteKey(Key* aDeleteKey, EntryBuffer* pToBuffer);
+    bool         bDeleteKey(KeyData* aDeleteKey, EntryBuffer* pToBuffer);
     void         vDump(void);
     EntryBuffer* pFirstChildBuffer(void);
     Entry*       aGetEntry_Item(i8 i_Item);
@@ -100,9 +100,9 @@ namespace Data
     i8           iLengthSubList(void);
     Entry*       aNextEntry(Entry* aEntry, i8 i_Offset);
   
-    Entry*       aPositionQuery(Key* aGivenKey, eRO eRelOp);
-    Entry*       aPositionQuery(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
-    EntryBuffer* pPositionLevel(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
+    Entry*       aPositionQuery(KeyData* aGivenKey, eRO eRelOp);
+    Entry*       aPositionQuery(KeyData* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
+    EntryBuffer* pPositionLevel(KeyData* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
     
     void         vReset(void);
     void         vRestore(void);
@@ -122,9 +122,9 @@ namespace Data
     void         vCompact(void);
     void         vCompactLeft2(void);
     void         vCutEntry(Entry* aEntry, Entry* aPriorVec[]);
-    void         vDeleteUpwards(Key* aDeleteKey,
+    void         vDeleteUpwards(KeyData* aDeleteKey,
                                 EntryBuffer** ppRootKeyBuffer);
-    void         vDeleteUpwards(Key* aDeleteKey, EntryBuffer* pToBuffer,
+    void         vDeleteUpwards(KeyData* aDeleteKey, EntryBuffer* pToBuffer,
                                 EntryBuffer** ppRootKeyBuffer);
     void         vDumpPriorVec(Entry* aPriorVec[]);
     Item*        aFirstItem(void);
@@ -148,22 +148,22 @@ namespace Data
     Entry*       aInsertKeyUpwards(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
     void         vItemCountRestore(void);
-    bool         bKeyBeforeBuffer(Key* aKey);
+    bool         bKeyBeforeBuffer(KeyData* aKey);
     FreeItem*    aMakeFreeEntry(Entry* aEntry);
     EntryBuffer* pNewHigherBuffer(void);
-    EntryBuffer* pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
+    EntryBuffer* pNewInsertBuffer(KeyData* aInsKey, i8 nEntryPlusOffsets,
                                   EntryBuffer** ppRootKeyBuffer);
     EntryBuffer* pNewNextBuffer(void);
     Entry*       aPopLazyChain(void);
-    EntryBuffer* pPositionPriorBuffer(Key* aFindKey);
-    Entry*       pPositionPriorEntry(Key* aFindKey);
-    void         vPositionPriorVecEntry(Key* aFindKey, Entry** aaPriorVec,
+    EntryBuffer* pPositionPriorBuffer(KeyData* aFindKey);
+    Entry*       pPositionPriorEntry(KeyData* aFindKey);
+    void         vPositionPriorVecEntry(KeyData* aFindKey, Entry** aaPriorVec,
                                         Entry* aFindEntry);
-    void         vPositionPriorVecBuffer(Key* aFindKey, Entry** aaPriorVec,
+    void         vPositionPriorVecBuffer(KeyData* aFindKey, Entry** aaPriorVec,
                                          EntryBuffer* pToBuffer);
-    void         vPositionPriorVecBuffer2(Key* aFindKey, Entry** aaPriorVec,
+    void         vPositionPriorVecBuffer2(KeyData* aFindKey, Entry** aaPriorVec,
                                           EntryBuffer* pToBuffer);
-    void         vPositionPriorVecBuffer3(Key* aFindKey, Entry** aaPriorVec,
+    void         vPositionPriorVecBuffer3(KeyData* aFindKey, Entry** aaPriorVec,
                                           EntryBuffer* pToBuffer);
     EntryBuffer* pSplit2(void);
   

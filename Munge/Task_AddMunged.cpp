@@ -14351,7 +14351,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "\""
     "\\\"munged job_ListPartColumns.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
-    "/* job_ListPartColumns.sen -- Job list Partition Key Columns                  */\n"
+    "/* job_ListPartColumns.sen -- Job list Partition KeyData Columns                  */\n"
     "/*============================================================================*/\n"
     "\n"
     "\\\" job_ListPartColumns.sen\\\" .verbose\n"

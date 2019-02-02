@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Key.cpp -- key part of an index entry                                      */
+/* KeyData.cpp -- key part of an index entry                                      */
 /*============================================================================*/
 
 #include "Data.h"
@@ -11,9 +11,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Key* Data::_aKey(void* aAddr)
+KeyData* Data::_aKeyData(void* aAddr)
 {
-  Key* aKey = reinterpret_cast<Key*>(aAddr);
+  KeyData* aKey = reinterpret_cast<KeyData*>(aAddr);
   
   return aKey;
 }
@@ -21,9 +21,9 @@ Key* Data::_aKey(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Key::operator new(size_t)
+void* KeyData::operator new(size_t)
 {
-  vFatal("fatal: Key class cannot be new'd\n"_Stz);
+  vFatal("fatal: KeyData class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -31,7 +31,7 @@ void* Key::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Key::operator new(size_t, Key* aKey)
+void* KeyData::operator new(size_t, KeyData* aKey)
 {
   return aKey;
 }
@@ -39,7 +39,7 @@ void* Key::operator new(size_t, Key* aKey)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Key::Key(KeyWrk& xKeyWrk)
+KeyData::KeyData(KeyWrk& xKeyWrk)
 {
   vKey(xKeyWrk);
 }
@@ -47,7 +47,7 @@ Key::Key(KeyWrk& xKeyWrk)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Key::~Key(void) noexcept(false)
+KeyData::~KeyData(void) noexcept(false)
 {
 }
 
@@ -58,7 +58,7 @@ Key::~Key(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* operator <                                                                 */
 /*----------------------------------------------------------------------------*/
-bool Key::operator <(Key* aKeyArg)
+bool KeyData::operator <(KeyData* aKeyArg)
 {
   i8 iDatumA = *(i8*)aByteSequence();
   i8 iDatumB = *(i8*)aKeyArg->aByteSequence();
@@ -70,7 +70,7 @@ bool Key::operator <(Key* aKeyArg)
 /*----------------------------------------------------------------------------*/
 /* operator <=                                                                */
 /*----------------------------------------------------------------------------*/
-bool Key::operator <=(Key* aKeyArg)
+bool KeyData::operator <=(KeyData* aKeyArg)
 {
   i8 iDatumA = *(i8*)aByteSequence();
   i8 iDatumB = *(i8*)aKeyArg->aByteSequence();
@@ -83,7 +83,7 @@ bool Key::operator <=(Key* aKeyArg)
 /*----------------------------------------------------------------------------*/
 /* set key from given key workspace                                           */
 /*----------------------------------------------------------------------------*/
-void Key::vKey(KeyWrk& xKeyWrk)
+void KeyData::vKey(KeyWrk& xKeyWrk)
 {
   char* aDst = aByteSequence();
   char* aSrc = (char*)xKeyWrk.aKey();
@@ -95,7 +95,7 @@ void Key::vKey(KeyWrk& xKeyWrk)
 /*----------------------------------------------------------------------------*/
 /* get key size                                                               */
 /*----------------------------------------------------------------------------*/
-i8 Key::nKeySize(IdxColVec* pIdxColVec)
+i8 KeyData::nKeySize(IdxColVec* pIdxColVec)
 {
   i8 nCols = pIdxColVec->nItems();
   i8 nKeySize = 0;
@@ -116,7 +116,7 @@ i8 Key::nKeySize(IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* get next element from key                                                  */
 /*----------------------------------------------------------------------------*/
-char* Key::aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor)
+char* KeyData::aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor)
 {
   char* aEachDatum = pColumn->aValue(nBytes,aaCursor);
   
@@ -126,7 +126,7 @@ char* Key::aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor)
 /*----------------------------------------------------------------------------*/
 /* if this key less than given key?                                           */
 /*----------------------------------------------------------------------------*/
-bool Key::bLessThan(Key* aKeyThat, IdxColVec* pIdxColVec)
+bool KeyData::bLessThan(KeyData* aKeyThat, IdxColVec* pIdxColVec)
 {
   bool bLessThan = false;
   
@@ -155,7 +155,7 @@ bool Key::bLessThan(Key* aKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* if this key less than or equal to given key?                               */
 /*----------------------------------------------------------------------------*/
-bool Key::bLessEqual(Key* aKeyThat, IdxColVec* pIdxColVec)
+bool KeyData::bLessEqual(KeyData* aKeyThat, IdxColVec* pIdxColVec)
 {
   bool bLessEqual = false;
   
@@ -184,7 +184,7 @@ bool Key::bLessEqual(Key* aKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* if this key equal to given key?                                            */
 /*----------------------------------------------------------------------------*/
-bool Key::bEqualTo(Key* aKeyThat, IdxColVec* pIdxColVec)
+bool KeyData::bEqualTo(KeyData* aKeyThat, IdxColVec* pIdxColVec)
 {
   bool bEqualTo = false;
   
@@ -213,7 +213,7 @@ bool Key::bEqualTo(Key* aKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* if this key not equal to given key?                                        */
 /*----------------------------------------------------------------------------*/
-bool Key::bNotEqual(Key* aKeyThat, IdxColVec* pIdxColVec)
+bool KeyData::bNotEqual(KeyData* aKeyThat, IdxColVec* pIdxColVec)
 {
   bool bNotEqual = false;
   
@@ -241,7 +241,7 @@ bool Key::bNotEqual(Key* aKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* if this key greater than or equal to given key?                            */
 /*----------------------------------------------------------------------------*/
-bool Key::bGreaterEqual(Key* aKeyThat, IdxColVec* pIdxColVec)
+bool KeyData::bGreaterEqual(KeyData* aKeyThat, IdxColVec* pIdxColVec)
 {
   bool bGreaterEqual = false;
   
@@ -269,7 +269,7 @@ bool Key::bGreaterEqual(Key* aKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* is this key greater than or equal to given key?                            */
 /*----------------------------------------------------------------------------*/
-bool Key::bGreaterEqualSingle(Key* aKeyThat, Index* pIndex)
+bool KeyData::bGreaterEqualSingle(KeyData* aKeyThat, Index* pIndex)
 {
   char* aCursorThis = aByteSequence();
   char* aCursorThat = aKeyThat->aByteSequence();
@@ -282,7 +282,7 @@ bool Key::bGreaterEqualSingle(Key* aKeyThat, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* is this key greater than given key?                                        */
 /*----------------------------------------------------------------------------*/
-bool Key::bGreaterThanSingle(Key* aKeyThat, Index* pIndex)
+bool KeyData::bGreaterThanSingle(KeyData* aKeyThat, Index* pIndex)
 {
   char* aCursorThis = aByteSequence();
   char* aCursorThat = aKeyThat->aByteSequence();
@@ -295,7 +295,7 @@ bool Key::bGreaterThanSingle(Key* aKeyThat, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* if this key greater than given key?                                        */
 /*----------------------------------------------------------------------------*/
-bool Key::bGreaterThan(Key* aKeyThat, IdxColVec* pIdxColVec)
+bool KeyData::bGreaterThan(KeyData* aKeyThat, IdxColVec* pIdxColVec)
 {
   bool bGreaterThan = false;
   
@@ -324,7 +324,7 @@ bool Key::bGreaterThan(Key* aKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* if this key greater than given key?                                        */
 /*----------------------------------------------------------------------------*/
-i8 Key::iCmp(Key* aKeyThat, IdxColVec* pIdxColVec)
+i8 KeyData::iCmp(KeyData* aKeyThat, IdxColVec* pIdxColVec)
 {
   i8 iCmp = 0;
   
@@ -352,7 +352,7 @@ i8 Key::iCmp(Key* aKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* does this keyval match the given arguments                                 */
 /*----------------------------------------------------------------------------*/
-bool Key::bMatches(Key* aKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
+bool KeyData::bMatches(KeyData* aKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
 {
   char* aCursorThis = aByteSequence();
   char* aCursorThat = aKeyThat->aByteSequence();
@@ -385,7 +385,7 @@ bool Key::bMatches(Key* aKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
 /*----------------------------------------------------------------------------*/
 /* juxta-compare this key with given key                                      */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* aKeyThat,
+bool KeyData::bJuxtaCompare(eJC eJuxtaCompare, KeyData* aKeyThat,
                         IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                         bool& bIsEqual, eRO eRelnOp)
 {
@@ -415,7 +415,7 @@ bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* aKeyThat,
 /*----------------------------------------------------------------------------*/
 /* is this key juxta-before given search key?                                 */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaBefore(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+bool KeyData::bJuxtaBefore(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                        bool& bIsEqual,  eRO eRelnOp)
 {
   /*
@@ -493,7 +493,7 @@ bool Key::bJuxtaBefore(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols
 /*----------------------------------------------------------------------------*/
 /* is this key juxta-same as given search key?                                */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaSame(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+bool KeyData::bJuxtaSame(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                      bool& bIsEqual)
 {
   /*
@@ -545,7 +545,7 @@ bool Key::bJuxtaSame(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
 /*----------------------------------------------------------------------------*/
 /* is this key juxta-after given search key?                                  */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaAfter(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+bool KeyData::bJuxtaAfter(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                       bool& bIsEqual, eRO eRelnOp)
 {
   /*
@@ -624,7 +624,7 @@ bool Key::bJuxtaAfter(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
 /* show the contents of this key                                              */
 /*----------------------------------------------------------------------------*/
 #ifdef USE_VLQ_DATUMS
-void Key::vShow(IdxColVec* pIdxColVec)
+void KeyData::vShow(IdxColVec* pIdxColVec)
 {
   i8 nBytes;
   i8 iKey;
@@ -647,7 +647,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
   //vTrace("%s)\n"_Stz, sKeyString.aStz());
 }
 #else
-void Key::vShow(IdxColVec* pIdxColVec)
+void KeyData::vShow(IdxColVec* pIdxColVec)
 {
   i8 nBytes;
   i8 iKey;
@@ -675,7 +675,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
 /* sprint sort key into given string variable                                 */
 /*----------------------------------------------------------------------------*/
 #ifdef USE_VLQ_DATUMS
-void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
+void KeyData::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
 {
   i8 nBytes;
   char* aWspCursor = aByteSequence();
@@ -704,7 +704,7 @@ void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
   
 }
 #else
-void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
+void KeyData::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
 {
   i8 nBytes;
   char* aWspCursor = aByteSequence();
@@ -736,7 +736,7 @@ void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* get first datum (assuming int)                                             */
 /*----------------------------------------------------------------------------*/
-i8 Key::iGetInt(void)
+i8 KeyData::iGetInt(void)
 {
   i8 iVal = *(i8*)aByteSequence();
   

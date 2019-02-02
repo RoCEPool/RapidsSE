@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Key.hpp -- key part of an index entry                                      */
+/* KeyData.hpp -- key part of an index entry                                      */
 /*============================================================================*/
 #pragma once
 
@@ -23,52 +23,51 @@ namespace Data
     /*  4 */ "ENUMS"_Stz,
   };
   
-  class Key
+  class KeyData
   {
   private:
-  //i8  m_nSize;
-  //Wsp m_xWsp;
-    
+  // ..data..   // variable data area
+
   public:
     void* operator new(size_t);
-    void* operator new(size_t, Key*);
+    void* operator new(size_t, KeyData*);
   
-    Key(KeyWrk& xKeyWrk);
-    ~Key(void) noexcept(false);
+    KeyData(KeyWrk& xKeyWrk);
+    ~KeyData(void) noexcept(false);
   
-    bool operator <(Key* aKeyArg);
-    bool operator <=(Key* aKeyArg);
+    bool operator <(KeyData* aKeyArg);
+    bool operator <=(KeyData* aKeyArg);
     
     void  vShow(IdxColVec* pIdxColVec);
   
-    void  vKey(Key& xKey);
+    void  vKey(KeyData& xKey);
     void  vKey(KeyWrk& xKeyWrk);
   
     i8    nKeySize(IdxColVec* pIdxColVec);
     
     static char* aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor);
   
-    bool bLessThan(Key* aKey, IdxColVec* pIdxColVec);
-    bool bLessEqual(Key* aKey, IdxColVec* pIdxColVec);
-    bool bEqualTo(Key* aKey, IdxColVec* pIdxColVec);
-    bool bNotEqual(Key* aKey, IdxColVec* pIdxColVec);
-    bool bGreaterEqual(Key* aKey, IdxColVec* pIdxColVec);
-    bool bGreaterEqualSingle(Key* aKey, Index* pIndex);
-    bool bGreaterThan(Key* aKey, IdxColVec* pIdxColVec);
-    bool bGreaterThanSingle(Key* aKey, Index* pIndex);
+    bool bLessThan(KeyData* aKey, IdxColVec* pIdxColVec);
+    bool bLessEqual(KeyData* aKey, IdxColVec* pIdxColVec);
+    bool bEqualTo(KeyData* aKey, IdxColVec* pIdxColVec);
+    bool bNotEqual(KeyData* aKey, IdxColVec* pIdxColVec);
+    bool bGreaterEqual(KeyData* aKey, IdxColVec* pIdxColVec);
+    bool bGreaterEqualSingle(KeyData* aKey, Index* pIndex);
+    bool bGreaterThan(KeyData* aKey, IdxColVec* pIdxColVec);
+    bool bGreaterThanSingle(KeyData* aKey, Index* pIndex);
     
-    i8 iCmp(Key* aKey, IdxColVec* pIdxColVec);
+    i8 iCmp(KeyData* aKey, IdxColVec* pIdxColVec);
     
-    bool bMatches(Key* aKey, IdxColVec* pIdxColVec, RelOpAry* pOpAry);
+    bool bMatches(KeyData* aKey, IdxColVec* pIdxColVec, RelOpAry* pOpAry);
 
-    bool bJuxtaCompare(eJC eJuxtaCompare, Key* aKey,
+    bool bJuxtaCompare(eJC eJuxtaCompare, KeyData* aKey,
                        IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                        bool& bIsEqual, eRO eRelnOp=RO_NONE);
-    bool bJuxtaBefore(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+    bool bJuxtaBefore(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                       bool& bIsEqual, eRO eRelnOp=RO_NONE);
-    bool bJuxtaSame(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+    bool bJuxtaSame(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                     bool& bIsEqual);
-    bool bJuxtaAfter(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+    bool bJuxtaAfter(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                      bool& bIsEqual, eRO eRelnOp=RO_NONE);
   
     void vSprintSortKey(s48K& sBuff, IdxColVec* pIdxColVec);
@@ -85,7 +84,7 @@ namespace Data
     
   };
   
-  Key* _aKey(void* aAddr);
+  KeyData* _aKeyData(void* aAddr);
 }
 
 /*============================================================================*/

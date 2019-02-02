@@ -109,7 +109,7 @@ namespace MetaData
 //                        IndexTree* pIndexTree);
 //    void vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
 //                        IndexTree* pIndexTree);
-//    void vBuildKeyWrk(Key* aSortElm, IdxColVec* pIdxColVec, KeyWrk& xKeyWrk);
+//    void vBuildKeyWrk(KeyData* aSortElm, IdxColVec* pIdxColVec, KeyWrk& xKeyWrk);
   };
   
   Table* _pTable(void* aAddr);
