@@ -484,7 +484,9 @@ Item* EntryBuffer::aAllotRow(RowWrk& xRowWrk)
   
   RASSERT(nItems() < C_MAX_ITEMS - 16);
 
-  Item* aItem = aAllotEntry(nItemSize);
+  Item* aItem = aAllotEntry(nItemSize - 8);
+  
+  IGNORE_RETURN(aAllotNEO(8));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   

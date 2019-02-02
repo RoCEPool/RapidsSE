@@ -64,11 +64,13 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space in this buffer for the row and offsets
   
-  Item* aRowEntry = aAllotEntry(nEntryBytes);
-  ASSERT(aRowEntry);
+//  Item* aRowEntry = aAllotEntry(nEntryBytes);
+//  ASSERT(aRowEntry);
+//
+//  NEO* aNEO = aAllotNEO(nOffsetBytes);
+//  ASSERT(aNEO);
   
-  NEO* aNEO = aAllotNEO(nOffsetBytes);
-  ASSERT(aNEO);
+  Item* aRowEntry = aAllotRow(xRowWrk);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the buffer entry
