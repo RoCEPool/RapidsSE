@@ -14,7 +14,6 @@ namespace Data
   
   private:
     Id    m_xId;       // id of row, or referenced entry in another buffer
-    i8    m_nOffsets;  // number of offsets (0..3)
   
     char* m_aEmbedded; // address of embedded object. this may be different
                        // from m_xWsp.aArea() to allow for the object

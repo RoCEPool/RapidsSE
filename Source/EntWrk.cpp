@@ -19,9 +19,9 @@ EntWrk::EntWrk(eCN eClassNo)
   _precondition_(_MAGIC_);
 
   // check initialisation of rowid
-  ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iItem());
-  
-  m_nOffsets = -1;
+  ASSERT(0 == m_xId.iBuffer() &&
+         0 == m_xId.iItem()   &&
+         0 == m_xId.nOffsets());
   
   m_xWsp.vInit();
   
@@ -117,10 +117,6 @@ i8 EntWrk::nOffsets(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  //ASSERT(m_nOffsets >= 0 && m_nOffsets <= gpAttachMap->m_nIndexOffsets);
-  
-  RASSERT(m_nOffsets == m_xId.nOffsets());
-  
   return m_xId.nOffsets();
 }
 
@@ -131,11 +127,6 @@ i8 EntWrk::nOffsetSize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  //ASSERT(m_nOffsets >= 0 && m_nOffsets <= gpAttachMap->m_nIndexOffsets);
-  
-  //vTrace("sizeof(i4) %d sizeof(long) %d\n"_Stz,sizeof(i4),sizeof(long));
-  
-  RASSERT(m_nOffsets == m_xId.nOffsets());
   i8 nBytes = sizeof(i4) * m_xId.nOffsets();
   
   return nBytes;
@@ -148,8 +139,6 @@ void EntWrk::vOffsets(i8 nOffsets)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_nOffsets = nOffsets;
-  
   m_xId.vOffsets(nOffsets);
 }
 
@@ -160,8 +149,9 @@ void EntWrk::vRandomOffsets(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
-  m_xId.vOffsets(m_nOffsets);
+  i8 nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
+  
+  m_xId.vOffsets(nOffsets);
 }
 
 /*----------------------------------------------------------------------------*/
