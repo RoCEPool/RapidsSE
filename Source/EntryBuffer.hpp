@@ -127,7 +127,6 @@ namespace Data
     void         vDeleteUpwards(KeyData* aDeleteKey, EntryBuffer* pToBuffer,
                                 EntryBuffer** ppRootKeyBuffer);
     void         vDumpPriorVec(Item* aPriorVec[]);
-    Item*        aFirstItem(void);
     Item*       aGetEntryOffset(i8 iOffset);
     Item*       aGetEntrySplit(i8 iSplitEntryNo, Item** aaPriorEntry);
     void         vHandleFirstInsert(Item* aInsertedKeyEntry,

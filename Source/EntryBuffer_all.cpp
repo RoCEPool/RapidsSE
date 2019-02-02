@@ -1523,18 +1523,6 @@ void EntryBuffer::vDumpPriorVec(Item* aPriorVec[])
 }
 
 /*----------------------------------------------------------------------------*/
-/* get first item after head (could be entry, free entry or wilderness)       */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aFirstItem(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  Item* aFirstItem = aNextItem(m_aHeadEntry);
-  
-  return aFirstItem;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get an entry by offset                                                     */
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::aGetEntryOffset(i8 iOffset)
