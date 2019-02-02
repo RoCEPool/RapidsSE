@@ -364,11 +364,11 @@ void Step::vIndexExactKey(MP_Task mpTask)
       
       // get the dataRow from the hidden index
       Item* aDataRowEntry = (Item*)_aItem(aItem->aRefdItem());
-      RowData* aRow = _aRowData(aDataRowEntry->aDataArea());
+      RowData* aRowData = _aRowData(aDataRowEntry->aDataArea());
     
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // insert row from entry in tempEntryBuffer
-      if ( ! pFetchBuffer->bAppendRow(aRow)) {
+      if ( ! pFetchBuffer->bAppendRow(aRowData)) {
         
         // Buffer is Full
         // put this FetchBuffer in session bufferQueue
@@ -1222,13 +1222,13 @@ void Step::vIndexScan(MP_Task mpTask)
   // iterate thru the buffer till no more entries
   while (aItem) {
     
-    RowData* aRow = _aRowData(aItem->aDataArea());
-    //aRow->vShow(pTable->pColumnVec(), true);
+    RowData* aRowData = _aRowData(aItem->aDataArea());
+    //aRowData->vShow(pTable->pColumnVec(), true);
     //vTrace("\n"_Stz);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert row from entry in FetchBuffer
-    if ( ! pFetchBuffer->bAppendRow(aRow)) {
+    if ( ! pFetchBuffer->bAppendRow(aRowData)) {
       
       // Buffer is Full
       // put this FetchBuffer in session bufferQueue
@@ -1240,7 +1240,7 @@ void Step::vIndexScan(MP_Task mpTask)
       pFetchBuffer = new FetchBuffer(pTable, iSlot);
       
       // insert row from entry in new fetchBuffer
-      bool bResult = pFetchBuffer->bAppendRow(aRow);
+      bool bResult = pFetchBuffer->bAppendRow(aRowData);
       RASSERT(bResult);
     }
     
@@ -1761,9 +1761,9 @@ bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Item* aItem, Job_FetchRows* pJo
     return true;
   }
   
-  RowData* aRow = _aRowData(aItem->aDataArea());
+  RowData* aRowData = _aRowData(aItem->aDataArea());
   
-  if (pFetchBuffer->bAppendRow(aRow))
+  if (pFetchBuffer->bAppendRow(aRowData))
     return true;
   else
     return false;

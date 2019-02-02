@@ -183,7 +183,7 @@ void IndexTree::vAppendBuffer(EntryBuffer* pEntryBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer at given level           */
 /*----------------------------------------------------------------------------*/
-Item* IndexTree::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
+Item* IndexTree::pAppendRow(i8 iTxId, Stz* aRow_Data, i8 iRowLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
@@ -203,7 +203,7 @@ Item* IndexTree::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
   
   RowWrk xRowWrk;
   
-  xRowWrk.vEmbedded((char*)aRow);
+  xRowWrk.vEmbedded((char*)aRow_Data);
   xRowWrk.vRowSize(iRowLength);
   //xRowWrk.vShow(m_pIndex->pTable()->pColumnVec());
   
@@ -975,8 +975,8 @@ void IndexTree::vPublish(void)
   for (Item* aItem = m_pCurrentBuffer->aLeadEntry();
        aItem != nullptr;
        aItem = m_pCurrentBuffer->aNextEntry(aItem, 0)) {
-    RowData* aRow = _aRowData(aItem->aDataArea());
-    aRow->vAsBinaryStringVLQ(sRowString, m_pIndex->pTable()->pColumnVec());
+    RowData* aRowData = _aRowData(aItem->aDataArea());
+    aRowData->vAsBinaryStringVLQ(sRowString, m_pIndex->pTable()->pColumnVec());
     vTrace("row: (%s)\n"_Stz, sRowString.aChar());
   }
   vTrace("Partition%lld: published %lld rows\n"_Stz,m_iPartitionNo, m_pCurrentBuffer->nItems());

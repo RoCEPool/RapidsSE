@@ -369,7 +369,7 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, EntryBuffer* pEntryBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert a row into the table (hidden and other indexes)                     */
 /*----------------------------------------------------------------------------*/
-void Table::vInsertRow(i8 iTxId, i8 iSlot, Stz* aRow, i8 iRowLength)
+void Table::vInsertRow(i8 iTxId, i8 iSlot, Stz* aRow_Data, i8 iRowLength)
 { //# indexTuning
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -384,7 +384,7 @@ void Table::vInsertRow(i8 iTxId, i8 iSlot, Stz* aRow, i8 iRowLength)
   TablePtn* pPartition = this->pPartition(iSlot);
   IndexTree* pHiddenIndexTree = pPartition->pHiddenIndexTree();
   
-  Item* aItem = pHiddenIndexTree->pAppendRow(iTxId, aRow, iRowLength);
+  Item* aItem = pHiddenIndexTree->pAppendRow(iTxId, aRow_Data, iRowLength);
   
   //----------------------------------------------------------------------------
   // (2) insert entry into all other indexes of the table
@@ -680,7 +680,7 @@ EntryBuffer* Table::pRootBuffer(i8 i_Slot, i8 i_Index)
 /*----------------------------------------------------------------------------*/
 /* hash the first field of row return partition                               */
 /*----------------------------------------------------------------------------*/
-i8 Table::iRowPartition(Stz* pRow)
+i8 Table::iRowPartition(Stz* aRow_Data)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -697,8 +697,8 @@ i8 Table::iRowPartition(Stz* pRow)
     i8 iColumnNo = pColumn->iColumnNo();
     
     // get the column value
-    RowData* aRow = (RowData*)pRow;
-    char* sCursor = aRow->aColumnDatum(iColumnNo);
+    RowData* aRowData = (RowData*)aRow_Data;
+    char* sCursor = aRowData->aColumnDatum(iColumnNo);
     
 #ifdef USE_VLQ_DATUMS
     if (pColumn->eDatumType() == DM_INT ||

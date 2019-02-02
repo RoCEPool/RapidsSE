@@ -429,11 +429,11 @@ void EntryBuffer::vShowEntry(Item* aItem)
     aKey->vShow(m_pIndex->pIdxColVec());
   
   if (m_pIndex->bIsHidden()) {
-    RowData* aThisRow = _aRowData(aItem->aDataArea());
+    RowData* aRowData = _aRowData(aItem->aDataArea());
     vTrace("RowData: "_Stz);
     i8 iRowSize = aItem->nSizeItem();
     if (iRowSize > 0) {
-      aThisRow->vShow(m_pIndex->pTable()->pColumnVec(), true);
+      aRowData->vShow(m_pIndex->pTable()->pColumnVec(), true);
     }
   }
   
@@ -456,10 +456,10 @@ void EntryBuffer::vShowEntry(Item* aItem)
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::aAllotEntry(i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  Item* aItem = reinterpret_cast<Item*>(aAllotItem(CN_ENTRY,nBytes));
-  if ( ! aItem )
+  Item* aItem = aAllotItem(CN_ENTRY,nBytes);
+  if (! aItem)
     return nullptr;
     
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -481,10 +481,6 @@ Footer* EntryBuffer::aFooter(void)
   
   return &m_xFooter;
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Unit Tests --------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*============================================================================*/
 /* end                                                                        */
