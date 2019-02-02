@@ -310,9 +310,10 @@ void DtmLib::vSprintQuotes(eDM eDatum, Stz* aDst, Stz* aSrc,
 /*----------------------------------------------------------------------------*/
 /* s-print                                                                    */
 /*----------------------------------------------------------------------------*/
-void DtmLib::vSprintQuotesVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
-                     MetaData::Column* pColumn)
+void DtmLib::vSprintQuotesVLQ(Stz* aDst, Stz* aSrc, MetaData::Column* pColumn)
 {
+  eDM eDatum = pColumn->eDatumType();
+  
   switch (eDatum) {
     case DM_BCD: Bcd::vSprintVLQ(aDst,aSrc,pColumn); break;
     case DM_BOL: Bol::vSprint(aDst,aSrc); break;

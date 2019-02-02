@@ -28,8 +28,7 @@ namespace Datums
                         MetaData::Column* pColumn);
     static void vSprintQuotes(eDM eDatum, Stz* aDst, Stz* aSrc,
                         MetaData::Column* pColumn);
-    static void vSprintQuotesVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
-                              MetaData::Column* pColumn);
+    static void vSprintQuotesVLQ(Stz* aDst, Stz* aSrc, MetaData::Column* pColumn);
     static void vSprintEscaped(eDM eDatum, Stz* aDst, Stz* aSrc,
                                MetaData::Column* pColumn);
     static void vSprintEscapedVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,

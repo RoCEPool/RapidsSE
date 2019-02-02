@@ -79,7 +79,7 @@ void RowData::vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec)
     aData = (Stz*)aColumnDatum(i_Column);
     
     // copy the data for the column into aDst
-    DtmLib::vSprintQuotesVLQ(pColumn->eDatumType(), sDst, aData, pColumn);
+    DtmLib::vSprintQuotesVLQ(sDst, aData, pColumn);
     
     // now copy the data for the column from aDst to aDataString
     if (i_Column == 0)
