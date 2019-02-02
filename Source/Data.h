@@ -29,7 +29,6 @@ typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 #include "Row.hpp"
 #include "RowWrk.hpp"
 
-#include "Entry.hpp"
 #include "EntryBuffer.hpp"
 #include "IndexTree.hpp"
 

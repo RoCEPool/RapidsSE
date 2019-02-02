@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntryBuffer_row.cpp -- row related functions for Entry Buffer              */
+/* EntryBuffer_row.cpp -- row related functions for Item Buffer              */
 /*============================================================================*/
 
 #include "Data.h"
@@ -19,13 +19,13 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* append a row entry into this buffer                                        */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
+Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   ASSERT(iLevelNo() == 0);
   
-  Entry* aRowEntry;
+  Item* aRowEntry;
   
   // rows only ever have one next offset
   xRowWrk.vOffsets(1);

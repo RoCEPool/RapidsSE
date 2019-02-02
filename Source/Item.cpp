@@ -175,7 +175,7 @@ void Item::vNEO(i8 iOffset, i4 iNEO)
 void Item::vNEOdump(void)
 {
   NEO* aNEO = this->aNEO();
-  vTrace("Entry %p offsets: %lld NEO: %p"_Stz,
+  vTrace("Item %p offsets: %lld NEO: %p"_Stz,
          this,nOffsets(),aNEO);
   
   for (i8 i_Offset = 0; i_Offset < nOffsets(); i_Offset++)

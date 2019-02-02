@@ -965,7 +965,7 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
     
     //*piExpectedRows = (i8)(pJob_FetchRows->m_pBufferQueue->iCount() * C_ROWS_PER_BUFFER);
     
-    Entry* aEntry = nullptr;
+    Item* aEntry = nullptr;
     EntryBuffer* pEntryBuffer = nullptr;
     API_LOC(330);
 
@@ -1001,7 +1001,7 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
     API_LOC(350);
 
     // we should have an entry
-    aEntry = *((Entry**)(aaEntry));
+    aEntry = *((Item**)(aaEntry));
     RASSERT(aEntry != nullptr);
     //vTrace("got %p %p\n"_Stz, pEntryBuffer, aEntry);
     RASSERT(aEntry->eClass() == CN_ENTRY);

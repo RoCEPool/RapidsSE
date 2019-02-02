@@ -384,7 +384,7 @@ void Table::vInsertRow(i8 iTxId, i8 iSlot, Stz* aRow, i8 iRowLength)
   TablePtn* pPartition = this->pPartition(iSlot);
   IndexTree* pHiddenIndexTree = pPartition->pHiddenIndexTree();
   
-  Entry* aEntry = pHiddenIndexTree->pAppendRow(iTxId, aRow, iRowLength);
+  Item* aEntry = pHiddenIndexTree->pAppendRow(iTxId, aRow, iRowLength);
   
   //----------------------------------------------------------------------------
   // (2) insert entry into all other indexes of the table

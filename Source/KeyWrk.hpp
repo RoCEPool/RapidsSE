@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* KeyWrk.hpp -- KeyData Working Entry                                            */
+/* KeyWrk.hpp -- KeyData Working Item                                            */
 /*============================================================================*/
 #pragma once
 
@@ -24,13 +24,13 @@ namespace Data
     void vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters);
     void vAddKey(KeyData* aKey, IdxColVec* pColVec);
     void vAddWord(w8 wWord);
-    void vExtractKey(Entry* aRowEntry, IdxColVec* pIdxColVec);
+    void vExtractKey(Item* aRowEntry, IdxColVec* pIdxColVec);
     KeyData* aKey(void);
     i8   nKeySize(void);
     void vKeySize(i8 nKeySize);
     EntryBuffer* pReferencedEntryBuffer(void);
     void vReset(void);
-    void vSetEntry(Entry* pEntry);
+    void vSetEntry(Item* pEntry);
     void vShow(IdxColVec* pIdxColVec);
   };
 }

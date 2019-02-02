@@ -1,15 +1,12 @@
 /*============================================================================*/
-/* RowWrk.hpp -- Row Working Entry                                            */
+/* RowWrk.hpp -- Row Working Item                                            */
 /*============================================================================*/
 #pragma once
 
 namespace Data
 {
-  class Entry;
-  
   class RowWrk : public EntWrk
   {
-  
   private:
   
   public:
@@ -22,7 +19,7 @@ namespace Data
     RowData* aRowData(void);
     i8   nRowSize(void);
     void vRowSize(i8 nRowSize);
-    void vSetEntry(Entry* pEntry);
+    void vSetEntry(Item* pEntry);
     void vShow(ColumnVec* pColVec);
   };
 }

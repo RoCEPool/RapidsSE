@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* KeyWrk.cpp -- KeyData Working Entry                                            */
+/* KeyWrk.cpp -- KeyData Working Item                                            */
 /*============================================================================*/
 
 #include "Data.h"
@@ -227,7 +227,7 @@ void KeyWrk::vAddWord(w8 wWord)
 /*----------------------------------------------------------------------------*/
 /* extract an index key into KeyWrk from this row using given index columns   */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vExtractKey(Entry* aRowEntry, IdxColVec* pIdxColVec)
+void KeyWrk::vExtractKey(Item* aRowEntry, IdxColVec* pIdxColVec)
 {
   GenVar xVariable;
   
@@ -392,7 +392,7 @@ void KeyWrk::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* set entry using given key working entry                                    */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vSetEntry(Entry* pEntry)
+void KeyWrk::vSetEntry(Item* pEntry)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets

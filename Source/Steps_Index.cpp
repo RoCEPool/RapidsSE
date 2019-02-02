@@ -280,7 +280,7 @@ void Step::vIndexExactKey(MP_Task mpTask)
   ENTRY("vIndexExactKey"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Entry* aEntry     = nullptr;
+  Item* aEntry     = nullptr;
   
   GenVar xVariable;
   Session* pSession = mpTask->m_pSession;
@@ -363,7 +363,7 @@ void Step::vIndexExactKey(MP_Task mpTask)
     if (bSame) {
       
       // get the dataRow from the hidden index
-      Entry* aDataRowEntry = (Entry*)_aItem(aEntry->aRefdItem());
+      Item* aDataRowEntry = (Item*)_aItem(aEntry->aRefdItem());
       RowData* aRow = _aRowData(aDataRowEntry->aDataArea());
     
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -656,7 +656,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   
   EntryBuffer* aLowerEntryBuffer;
-  Entry* aLowerEntry = nullptr;
+  Item* aLowerEntry = nullptr;
   eRO eLowerRelnOp;
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
@@ -712,7 +712,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   while (aLowerEntry) {
     
     // get the dataRow from the hidden index
-    Entry* aDataRowEntry = (Entry*)_aItem(aLowerEntry->aRefdItem());
+    Item* aDataRowEntry = (Item*)_aItem(aLowerEntry->aRefdItem());
     
     // insert row from entry in fetchBuffer
     if ( ! Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows)) {
@@ -856,7 +856,7 @@ void Step::vIndexPosition(MP_Task mpTask)
 
   // position at key in the entry buffer
   eRO eRelnOp = pPlanner->eGetFirstLowerPredicateRO(i_Phrase);
-  Entry* aEntry = pIndexBuffer->aPositionQuery(xKeyWrk.aKey(), eRelnOp);
+  Item* aEntry = pIndexBuffer->aPositionQuery(xKeyWrk.aKey(), eRelnOp);
   
   mpTask->m_pDataStack->vPushEntry(aEntry);
   
@@ -935,8 +935,8 @@ void Step::vIndexRange(MP_Task mpTask)
   EntryBuffer* aLowerEntryBuffer;
   EntryBuffer* aUpperEntryBuffer;
   
-  Entry* aLowerEntry = nullptr;
-  Entry* aUpperEntry = nullptr;
+  Item* aLowerEntry = nullptr;
+  Item* aUpperEntry = nullptr;
   
   eRO eUpperRelnOp;
   eRO eLowerRelnOp;
@@ -1092,7 +1092,7 @@ void Step::vIndexRange(MP_Task mpTask)
     // if aLowerEntry is before aUpperEntry then append to result buffer
     if (bBefore) {
       // get the dataRow from the hidden index
-      Entry* aDataRowEntry = (Entry*)_aItem(aLowerEntry->aRefdItem());
+      Item* aDataRowEntry = (Item*)_aItem(aLowerEntry->aRefdItem());
       
       // insert row from entry in tempEntryBuffer
       if ( ! Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows)) {
@@ -1216,7 +1216,7 @@ void Step::vIndexScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the first entry in the buffer
-  Entry* aEntry = pEntryBuffer->aFirstEntry();
+  Item* aEntry = pEntryBuffer->aFirstEntry();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru the buffer till no more entries
@@ -1465,7 +1465,7 @@ void Step::vIndexUpper(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("index.upper"_Stz);
   
-  Entry* aEntry = (Entry*)_aItem(pPtrEntry);
+  Item* aEntry = (Item*)_aItem(pPtrEntry);
   ASSERT(CN_ENTRY == aEntry->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(xVariable) )
@@ -1522,8 +1522,8 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   EntryBuffer* pEntryBuffer;
   EntryBuffer* aUpperEntryBuffer;
   
-  Entry* aUpperEntry = nullptr;
-  Entry* aEntry      = nullptr;
+  Item* aUpperEntry = nullptr;
+  Item* aEntry      = nullptr;
   
   eRO eUpperRelnOp;
   bool bBefore;
@@ -1638,7 +1638,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
     
     if (bBefore) {
       // get the dataRow from the hidden index
-      Entry* aDataRowEntry = (Entry*)_aItem(aEntry->aRefdItem());
+      Item* aDataRowEntry = (Item*)_aItem(aEntry->aRefdItem());
       
       // insert row from entry in tempEntryBuffer
       if ( ! Task::bAppendRow(pFetchBuffer,aDataRowEntry, pJob_FetchRows)) {
@@ -1750,7 +1750,7 @@ void Step::vIndexVisualize(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* append a row to a working buffer                                           */
 /*----------------------------------------------------------------------------*/
-bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Entry* aEntry, Job_FetchRows* pJob_FetchRows)
+bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Item* aEntry, Job_FetchRows* pJob_FetchRows)
 {
   
   Id xId = aEntry->xId();

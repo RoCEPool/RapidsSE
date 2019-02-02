@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntryBuffer.cpp -- Entry Buffer                                            */
+/* EntryBuffer.cpp -- Item Buffer                                            */
 /*============================================================================*/
 
 #include "Data.h"
@@ -227,7 +227,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
   if (! m_iLevelNo)
     return;
     
-  for (Entry* aEntry = aFirstEntry();
+  for (Item* aEntry = aFirstEntry();
        aEntry != nullptr;
        aEntry = aNextEntry(aEntry, 0)) {
     
@@ -334,7 +334,7 @@ void EntryBuffer::vTruncate(void)
   if (m_iLevelNo != 0) {
     
     // recursively delete the lower level buffers
-    for (Entry* aEntry = aFirstEntry();
+    for (Item* aEntry = aFirstEntry();
          aEntry != nullptr;
          aEntry = aNextEntry(aEntry, 0)) {
       
@@ -358,7 +358,7 @@ void EntryBuffer::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 /* get first entry                                                            */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::aFirstEntry(void)
+Item* EntryBuffer::aFirstEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -369,7 +369,7 @@ Entry* EntryBuffer::aFirstEntry(void)
   //  vBuildSkipList();
 #endif
   
-  Entry* aFirst = aNextEntry(m_aHeadEntry,0);
+  Item* aFirst = aNextEntry(m_aHeadEntry,0);
   
   return aFirst;
 }
@@ -377,7 +377,7 @@ Entry* EntryBuffer::aFirstEntry(void)
 /*----------------------------------------------------------------------------*/
 /* get last entry                                                             */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::aLastEntry(void)
+Item* EntryBuffer::aLastEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -388,10 +388,10 @@ Entry* EntryBuffer::aLastEntry(void)
   //  vBuildSkipList();
 #endif
   
-  Entry* aLast = m_aHeadEntry;
+  Item* aLast = m_aHeadEntry;
   
   for (;;) {
-    Entry* aNext = aNextEntry(aLast,0);
+    Item* aNext = aNextEntry(aLast,0);
     if (! aNext)
       break;
     aLast = aNext;
@@ -403,12 +403,12 @@ Entry* EntryBuffer::aLastEntry(void)
 /*----------------------------------------------------------------------------*/
 /* show entry                                                                 */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vShowEntry(Entry* aEntry)
+void EntryBuffer::vShowEntry(Item* aEntry)
 {
   KeyData* aKey = _aKeyData(aEntry->aDataArea());
   i8 iOffset = iToOffset(aEntry);
   
-  vTrace("%lld: Entry: %p Size: %llu Offsets: %llu "_Stz,
+  vTrace("%lld: Item: %p Size: %llu Offsets: %llu "_Stz,
          iOffset,
          aEntry,
          aEntry->nSizeItem(),
@@ -454,11 +454,11 @@ void EntryBuffer::vShowEntry(Entry* aEntry)
 /*----------------------------------------------------------------------------*/
 /* allot an entry in this buffer                                              */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::aAllotEntry(i8 nBytes)
+Item* EntryBuffer::aAllotEntry(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Entry* aEntry = reinterpret_cast<Entry*>(aAllotItem(CN_ENTRY,nBytes));
+  Item* aEntry = reinterpret_cast<Item*>(aAllotItem(CN_ENTRY,nBytes));
   if ( ! aEntry )
     return nullptr;
     

@@ -136,7 +136,7 @@ eEC JobWriteBehind::eInsertRow(Stz* aRow, i8 nRowBytes)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert row into working buffer
     pEntryBuffer->vGrabWrite();
-    Entry* aEntry = pEntryBuffer->aAppendRow(xRowWrk);
+    Item* aEntry = pEntryBuffer->aAppendRow(xRowWrk);
     pEntryBuffer->vDropWrite();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

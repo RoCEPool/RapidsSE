@@ -93,7 +93,7 @@ void RowWrk::vRowSize(i8 nRowSize)
 /*----------------------------------------------------------------------------*/
 /* set row entry                                                              */
 /*----------------------------------------------------------------------------*/
-void RowWrk::vSetEntry(Entry* aEntry)
+void RowWrk::vSetEntry(Item* aEntry)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets

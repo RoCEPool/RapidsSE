@@ -303,7 +303,7 @@ i8 giClassSize[]
   /* 34 */ sizeof(DicStack),           // CN_DICSTACK
   /* 35 */ sizeof(Dir),                // CN_DIR
   
-  /* 36 */ sizeof(Entry),              // CN_ENTRY
+  /* 36 */ sizeof(Item),              // CN_ENTRY
   /* 37 */ sizeof(EntryBuffer),        // CN_ENTRYBUFFER
   
   /*    */ sizeof(FetchBuffer),        // CN_FETCHBUFFER

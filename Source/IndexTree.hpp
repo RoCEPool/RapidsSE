@@ -36,7 +36,7 @@ namespace Data
   
     Stz*         pAnalyze(void);
     
-    Entry*       pAppendRow(i8 iTxId,
+    Item*       pAppendRow(i8 iTxId,
                             Stz* aRow,
                             i8 iRowLength);
     void         vAppendBuffer(EntryBuffer* pEntryBuffer);
@@ -51,7 +51,7 @@ namespace Data
     Index*       pIndex(void);
     i8           nEntryBuffers(void);
     
-    bool         bInsertEntry(Entry* aRow);
+    bool         bInsertEntry(Item* aRow);
     void         vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer);
     void         vLazyBuild(void);
     EntryBuffer* pPopSubList(EntryBuffer** ppSubList);

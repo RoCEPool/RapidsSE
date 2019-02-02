@@ -69,7 +69,7 @@ void StorageEngine::vCheckAssumptions(void)
   }
   
   if (!bFoundEnum)
-    vFatal("Entry for CN_ENUM not found in aCN\n"_Stz);
+    vFatal("Item for CN_ENUM not found in aCN\n"_Stz);
     
   if (iEntriesECN != iEntriesPCN) {
     vFatal("\n!!!ALERT!!! No of entries in aCN (%lld) do not match the no in eCN (%lld)\n\n"_Stz,
@@ -87,7 +87,7 @@ void StorageEngine::vCheckAssumptions(void)
   }
   
   if (!bFoundEnum)
-    vFatal("Entry for CN_ENUM not found in gpDump\n"_Stz);
+    vFatal("Item for CN_ENUM not found in gpDump\n"_Stz);
     
   if (iEntriesECN != iEntriesGPDUMP) {
     vFatal("\n!!!ALERT!!! No of entries in gpDump (%lld) do not match the no in eCN (%lld)\n\n"_Stz,
@@ -105,7 +105,7 @@ void StorageEngine::vCheckAssumptions(void)
   }
   
   if (!bFoundEnum)
-    vFatal("Entry for CN_ENUM not found in giClassSize\n"_Stz);
+    vFatal("Item for CN_ENUM not found in giClassSize\n"_Stz);
   
   if (iEntriesECN != iEntriesGCLASSSIZE) {
     vFatal("\n!!!ALERT!!! No of entries in giClassSize (%lld) do not match the no in eCN (%lld)\n\n"_Stz,
@@ -123,7 +123,7 @@ void StorageEngine::vCheckAssumptions(void)
   }
   
   if (!bFoundEnum)
-    vFatal("Entry for CN_ENUM not found in gpDump\n"_Stz);
+    vFatal("Item for CN_ENUM not found in gpDump\n"_Stz);
   
   if (iEntriesECN != iEntriesGPDUMP) {
     vFatal("\n!!!ALERT!!! No of entries in gpDump (%lld) do not match the no in eCN (%lld)\n\n"_Stz,

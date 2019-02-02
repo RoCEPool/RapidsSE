@@ -449,7 +449,7 @@ void Axioms::vAddConstants(void)
   /* 29 */ vAddConstant("SIZEOF_PARTITION"_Stz,    sizeof(TablePtn));
   /* 33 */ vAddConstant("SIZEOF_QUEUE"_Stz,        sizeof(Queue));
   /* 34 */ vAddConstant("SIZEOF_QUEUEBUFFER"_Stz,  sizeof(QueueBuffer));
-  /* 36 */ vAddConstant("SIZEOF_ROW"_Stz,          sizeof(Entry));
+  /* 36 */ vAddConstant("SIZEOF_ROW"_Stz,          sizeof(Item));
   /* 37 */ vAddConstant("SIZEOF_ROWBUFFER"_Stz,    sizeof(EntryBuffer));
   /* 38 */ vAddConstant("SIZEOF_ROWCURSOR"_Stz,    (i8)0);
 
