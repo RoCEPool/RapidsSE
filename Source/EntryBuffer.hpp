@@ -37,8 +37,6 @@ namespace Data
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static EntryBuffer* pRefdEntryBuffer(Item* pItem);
     static EntryBuffer* pRefdEntryBuffer(Id& xId);
-    static void vShowEntry(Entry* pEntry, i8 iOffset,
-                           Index* pIndex, bool bShowKey);
   
     void    vDropWrite(void);
     void    vGrabWrite(void);
@@ -63,6 +61,7 @@ namespace Data
   
     Entry* aFirstEntry(void);
     Entry* aLastEntry(void);
+    void vShowEntry(Entry* pEntry, i8 iOffset, bool bShowKey);
 
     ////////////////////////////////////////////////////////////////////////////
     // row functions
