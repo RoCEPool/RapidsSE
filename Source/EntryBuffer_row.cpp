@@ -25,11 +25,6 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   
   ASSERT(iLevelNo() == 0);
   
-  Item* aRowEntry;
-  
-  // rows only ever have one next offset
-  xRowWrk.vOffsets(1);
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space for row and offset
   
@@ -70,10 +65,14 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   
   xRowWrk.vId(xRowId);
   
+  // rows only ever have one next offset
+  xRowWrk.vOffsets(1);
+  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space in this buffer for the row and offsets
   
-  aRowEntry = aAllotEntry(nEntryBytes);
+  Item* aRowEntry = aAllotEntry(nEntryBytes);
   ASSERT(aRowEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
@@ -83,10 +82,8 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   // set the buffer entry
   xRowWrk.vSetEntry(aRowEntry);
   
-  //pRowEntry->vShow(0, m_pIndex, false);
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set entry offsets
+  // set entry offset in item offset array
   
   i4 iEntryOffset = iToOffset(aRowEntry);
   RASSERT(i_RowNo >= 0 && i_RowNo < C_MAX_ITEMS);
@@ -98,12 +95,13 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   
   m_aLastEntry = aRowEntry;
   
-  // set head entry offset
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set head offset to this entry
   if (m_aHeadEntry->iNEO(0) == -1)
     m_aHeadEntry->vNEO(0, iEntryOffset);
   
-  RASSERT(aRowEntry->bValidItem());
   
+  RASSERT(aRowEntry->bValidItem());
   return aRowEntry;
 }
 
