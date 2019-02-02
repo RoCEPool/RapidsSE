@@ -474,7 +474,15 @@ Item* EntryBuffer::aAllotRow(RowWrk& xRowWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  // rows only ever have one next offset
+  RASSERT(1 == xRowWrk.nOffsets());
+
   i8 nItemSize = xRowWrk.nItemSize();
+
+  if (! bHasSpace(nItemSize))
+    return nullptr;
+  
+  RASSERT(nItems() < C_MAX_ITEMS - 16);
 
   Item* aItem = aAllotEntry(nItemSize);
   
