@@ -11,8 +11,9 @@ namespace Data
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class RowData
   {
-  protected:
-  // ..data..   // variable data area
+  private:
+  // u2 .._uOffsetVec[]
+  // y1 .._yByteVec[]
 
   public:
     void* operator new(size_t);
@@ -26,8 +27,10 @@ namespace Data
     void vDump(ColumnVec* pColVec);
     void vShow(ColumnVec* pColVec, bool bCompressed);
     
-  public:
-    u2 iColumnOffset(i8 iColumnNo);
+  private:
+    byte* yByteVec(void);
+    u2    iDatumOffset(i8 iColumnNo);
+    u2*   auOffsetVec(void);
   };
   
   RowData* _aRowData(void* aAddr);

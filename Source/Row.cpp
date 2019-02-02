@@ -47,10 +47,6 @@ RowData::~RowData(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -132,7 +128,7 @@ void RowData::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec)
 char* RowData::aColumnDatum(i8 iColumnNo)
 {
   // get the column offset
-  u2 iOffset = iColumnOffset(iColumnNo);
+  u2 iOffset = iDatumOffset(iColumnNo);
   
   // move to offset
   char* aCursor = ((char*)(this) + iOffset);
@@ -155,7 +151,7 @@ void RowData::vDump(ColumnVec* pColVec)
 
   // for each column except hidden column, dump the offsets
   for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
-    u2 iOffset = iColumnOffset(i_Column);
+    u2 iOffset = iDatumOffset(i_Column);
     vTrace("%lld|"_Stz, iOffset);
   }
 
@@ -204,18 +200,33 @@ void RowData::vShow(ColumnVec* pColVec, bool bCompressed)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
-/* get address of a column datum                                              */
+/* get address of the byte vector                                             */
 /*----------------------------------------------------------------------------*/
-u2 RowData::iColumnOffset(i8 iColumnNo)
+byte* RowData::yByteVec(void)
 {
-  // calculate the offset pointer for the column
-  char* aOffset = (char*)(this) + iColumnNo*C_COLUMN_OFFSET_SIZE;
+  byte* yByteVec = aAdd<byte*>(this,auOffsetVec()[0]);
   
-  // get the ogffset
-  u2 iOffset = *((u2*)aOffset);
+  return yByteVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get offset of a column datum                                               */
+/*----------------------------------------------------------------------------*/
+u2 RowData::iDatumOffset(i8 iColumnNo)
+{
+  u2 iDatumOffset = auOffsetVec()[iColumnNo];
   
-  return iOffset;
+  return iDatumOffset;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get offset of a column value                                               */
+/*----------------------------------------------------------------------------*/
+u2* RowData::auOffsetVec(void)
+{
+  return (u2*)this;
 }
 
 /*============================================================================*/
