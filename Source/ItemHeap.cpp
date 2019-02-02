@@ -94,7 +94,7 @@ i8 ItemHeap::iAgeSsec(void)
 /*----------------------------------------------------------------------------*/
 /* allot an item of nBytes in this buffer                                     */
 /*----------------------------------------------------------------------------*/
-Item* ItemHeap::aAllotItem(i8 nBytes)
+Item* ItemHeap::aAllotItem(eCN eClassNo, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   

@@ -40,7 +40,7 @@ namespace MiniHeaps
    ~ItemHeap(void) noexcept(false);
   
     i8     iAgeSsec(void);
-    Item*  aAllotItem(i8 nBytes);
+    Item*  aAllotItem(eCN eClassNo, i8 nBytes);
     NEO*   aAllotNEO(i8 nBytes);
     char*  aAllotSpace(i8 nBytes);
     char*  aDataArea(void);

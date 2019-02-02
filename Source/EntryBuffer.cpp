@@ -458,7 +458,7 @@ Entry* EntryBuffer::aAllotEntry(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Entry* aEntry = reinterpret_cast<Entry*>(aAllotItem(nBytes));
+  Entry* aEntry = reinterpret_cast<Entry*>(aAllotItem(CN_ENTRY,nBytes));
   if ( ! aEntry )
     return nullptr;
   
