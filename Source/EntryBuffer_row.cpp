@@ -41,7 +41,7 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   
   if (! bHasSpace(nEntryPlusOffsets))
     return nullptr;
-    
+  
   RASSERT(nItems() < C_MAX_ITEMS - 16);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -77,24 +77,27 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   //pRowEntry->vShow(0, m_pIndex, false);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set entry offsets
+  // set offset in itemoffsets[]
   
   i4 iEntryOffset = iToOffset(aRowEntry);
   RASSERT(i_RowNo >= 0 && i_RowNo < C_MAX_ITEMS);
   m_i4aItemOffsets[i_RowNo] = iEntryOffset;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // a last item should now link to this new item
   if (m_aLastEntry)
     m_aLastEntry->vNEO(0,iEntryOffset);
   aRowEntry->vNEO(0,-1);
   
   m_aLastEntry = aRowEntry;
   
-  // set head entry offset
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set neo in head entry for the first time
+  
   if (m_aHeadEntry->iNEO(0) == -1)
     m_aHeadEntry->vNEO(0, iEntryOffset);
   
   RASSERT(aRowEntry->bValidItem());
-  
   return aRowEntry;
 }
 
