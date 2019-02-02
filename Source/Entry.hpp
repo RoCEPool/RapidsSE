@@ -23,19 +23,7 @@ namespace Data
     ~Entry(void) noexcept(false);
     
   };
-  
-  /*--------------------------------------------------------------------------*/
-  /* safe cast                                                                */
-  /*--------------------------------------------------------------------------*/
-  inline Entry* _aEntry(void* aAddr)
-  {
-    Entry* aEntry = reinterpret_cast<Entry*>(aAddr);
     
-    //RASSERT_TYPE(aEntry,CN_ENTRY);
-    
-    return aEntry;
-  }
-  
 }
 #pragma pack(pop)
 

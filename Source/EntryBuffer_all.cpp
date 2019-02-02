@@ -560,7 +560,7 @@ Entry* EntryBuffer::aNextEntry(Entry* aCurrent, i8 i_Offset)
   
   char* aAddress = aAdd<char*>(aDataArea(), iOffset);
   
-  Entry* aEntry = _aEntry(aAddress);
+  Entry* aEntry = (Entry*)_aItem(aAddress);
   
   return aEntry;
 }
@@ -3335,7 +3335,7 @@ bool EntryBuffer::bVerifyItems(void)
     switch (eClass) {
         
       case CN_ENTRY: {
-        Entry* aEntry = _aEntry(aItem);
+        Entry* aEntry = (Entry*)aItem;
         if (! aEntry->bValidItem()) {
           vShow();
           vVerifyFault();

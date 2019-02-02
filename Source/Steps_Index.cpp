@@ -363,7 +363,7 @@ void Step::vIndexExactKey(MP_Task mpTask)
     if (bSame) {
       
       // get the dataRow from the hidden index
-      Entry* aDataRowEntry = _aEntry(aEntry->aRefdItem());
+      Entry* aDataRowEntry = (Entry*)_aItem(aEntry->aRefdItem());
       RowData* aRow = _aRowData(aDataRowEntry->aDataArea());
     
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -712,7 +712,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   while (aLowerEntry) {
     
     // get the dataRow from the hidden index
-    Entry* aDataRowEntry = _aEntry(aLowerEntry->aRefdItem());
+    Entry* aDataRowEntry = (Entry*)_aItem(aLowerEntry->aRefdItem());
     
     // insert row from entry in fetchBuffer
     if ( ! Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows)) {
@@ -1092,7 +1092,7 @@ void Step::vIndexRange(MP_Task mpTask)
     // if aLowerEntry is before aUpperEntry then append to result buffer
     if (bBefore) {
       // get the dataRow from the hidden index
-      Entry* aDataRowEntry = _aEntry(aLowerEntry->aRefdItem());
+      Entry* aDataRowEntry = (Entry*)_aItem(aLowerEntry->aRefdItem());
       
       // insert row from entry in tempEntryBuffer
       if ( ! Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows)) {
@@ -1465,7 +1465,7 @@ void Step::vIndexUpper(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("index.upper"_Stz);
   
-  Entry* aEntry = _aEntry(pPtrEntry);
+  Entry* aEntry = (Entry*)_aItem(pPtrEntry);
   ASSERT(CN_ENTRY == aEntry->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(xVariable) )
@@ -1638,7 +1638,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
     
     if (bBefore) {
       // get the dataRow from the hidden index
-      Entry* aDataRowEntry = _aEntry(aEntry->aRefdItem());
+      Entry* aDataRowEntry = (Entry*)_aItem(aEntry->aRefdItem());
       
       // insert row from entry in tempEntryBuffer
       if ( ! Task::bAppendRow(pFetchBuffer,aDataRowEntry, pJob_FetchRows)) {
