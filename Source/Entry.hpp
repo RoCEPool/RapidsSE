@@ -31,7 +31,7 @@ namespace Data
     KeyData* aKeyData(void);
   
   
-    void vShow(i8 iBase, Index* pIndex, bool bShowKey);
+    void vShowEntry(Entry* pEntry, i8 iOffset, Index* pIndex, bool bShowKey);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // row

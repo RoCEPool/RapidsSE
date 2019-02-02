@@ -71,8 +71,10 @@ RowData* Entry::aRowData(void)
 /*----------------------------------------------------------------------------*/
 /* show content                                                               */
 /*----------------------------------------------------------------------------*/
-void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
+void Entry::vShowEntry(Entry* pEntry, i8 iOffset, Index* pIndex, bool bShowKey)
 {
+  RASSERT(this == pEntry);
+  
   KeyData* aKey = this->aKeyData();
   
   vTrace("%lld: Entry: %p Size: %llu Offsets: %llu "_Stz,
