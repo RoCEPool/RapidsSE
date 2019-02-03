@@ -478,40 +478,19 @@ Item* EntryBuffer::aAllotRow(RowWrk& xRowWrk)
   RASSERT(1 == xRowWrk.nOffsets());
 
   i8 nItemSize = xRowWrk.nItemSize();
+
   if (! bHasSpace(nItemSize))
     return nullptr;
   
   RASSERT(nItems() < C_MAX_ITEMS - 16);
 
-  Item* aRowEntry = aAllotEntry(nItemSize - 8);
-  aRowEntry->vOffsets(1);
+  Item* aItem = aAllotEntry(nItemSize - 8);
   
   IGNORE_RETURN(aAllotNEO(8));
-  aRowEntry->vNEO(0,-1);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set offset in itemoffsets[]
-
-  i8 i_Item = xRowWrk.xId().iItem();
-  RASSERT(i_Item >= 0 && i_Item < C_MAX_ITEMS);
-
-  i4 iOffset = iToOffset(aRowEntry);
-  m_i4aItemOffsets[i_Item] = iOffset;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // a last item should now link to this new item
-  if (m_aLastEntry)
-    m_aLastEntry->vNEO(0,iOffset);
-  m_aLastEntry = aRowEntry;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set neo in head entry for the first time
-  
-  if (m_aHeadEntry->iNEO(0) == -1)
-    m_aHeadEntry->vNEO(0,iOffset);
-
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  return aRowEntry;
+  
+  return aItem;
 }
 
 
