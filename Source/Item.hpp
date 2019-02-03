@@ -41,7 +41,6 @@ namespace MiniHeaps
     void  vId(Id xId);
     Item* aItemAfter(void);
     i8    iItemNo(void);
-    NEO*  aNEO(void);
     i4    iNEO(i8 i_Offset);
     void  vNEO(i8 i_Offset, i4 iNEO);
     void  vNEOdump(void);
@@ -51,7 +50,10 @@ namespace MiniHeaps
     Item* aRefdItem(void);
     i8    nSizeItem_WithoutOffsets(void);
     bool  bValidItem(void);
-  };
+  
+  private:
+    NEO*  aNEO(void);
+ };
   
   /*--------------------------------------------------------------------------*/
   /* safe cast                                                                */

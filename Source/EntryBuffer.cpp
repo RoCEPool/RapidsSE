@@ -440,7 +440,7 @@ void EntryBuffer::vShowEntry(Item* aItem)
   
   vTrace(" offsets:"_Stz);
   for (i8 i_Offset = 0; i_Offset < aItem->nOffsets(); i_Offset++)
-    vTrace(" %d"_Stz,aItem->aNEO()[i_Offset]);
+    vTrace(" %d"_Stz,aItem->iNEO(i_Offset));
   
   vTrace("\n"_Stz);
 }
