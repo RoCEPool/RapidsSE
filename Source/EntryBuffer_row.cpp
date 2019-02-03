@@ -26,50 +26,36 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   
   ASSERT(iLevelNo() == 0);
   
-  // rows only ever have one next offset
-  RASSERT(1 == xRowWrk.nOffsets());
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if this buffer has enough space
+  // check if this buffer has enough space and has free item no's
   
   i8 nRowEntrySize = xRowWrk.nRowEntrySize();
   if (! bHasSpace(nRowEntrySize))
     return nullptr;
-  
-  RASSERT(nItems() < C_MAX_ITEMS - 16);
 
   if (! bHasFreeItem()) {
     vTrace("No free row entries\n"_Stz);
     return nullptr;
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form the rowId
-  
-  i8 i_RowNo = iGetItemNo(); //nItems();
-  RASSERT(C_NO_MORE_ITEMS != i_RowNo);
-  RASSERT(i_RowNo >= 0 and i_RowNo < C_MAX_ITEMS);
-  
-  bn nBufferNo = this->nPoolBufferNo();
-  Id xRowId(*nBufferNo, i_RowNo, 1);
-  xRowWrk.vId(xRowId);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allot row entry in this buffer
+
+  bn nBufferNo = this->nPoolBufferNo();
+  xRowWrk.vBufferNo(*nBufferNo);
   
   Item* aRowEntry = aAllotRow(xRowWrk);
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the buffer entry
+  i8 i_RowNo = xRowWrk.iItemNo();
   xRowWrk.vSetRowEntry(aRowEntry);
+  RASSERT(i_RowNo == xRowWrk.xId().iItem());
+  RASSERT(aRowEntry->bValidItem());
   //pRowEntry->vShow(0, m_pIndex, false);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set offset in itemoffsets[]
   
-  ASSERT(i_RowNo == xRowWrk.xId().iItem());
-  
-  RASSERT(aRowEntry->bValidItem());
   return aRowEntry;
 }
 

@@ -478,18 +478,23 @@ Item* EntryBuffer::aAllotRow(RowWrk& xRowWrk)
   RASSERT(1 == xRowWrk.nOffsets());
 
   i8 nRowEntrySize = xRowWrk.nRowEntrySize();
-
   if (! bHasSpace(nRowEntrySize))
     return nullptr;
-  
   RASSERT(nItems() < C_MAX_ITEMS - 16);
 
   Item* aItem = aAllotEntry(nRowEntrySize - 4);
+  if (! aItem)
+    return nullptr;
+  
   aItem->vOffsets(1);
   IGNORE_RETURN(aAllotNEO(4));
   
+  i8 i_RowNo = iGetItemNo(); //nItems();
+  RASSERT(C_NO_MORE_ITEMS != i_RowNo);
+  RASSERT(i_RowNo >= 0 and i_RowNo < C_MAX_ITEMS);
+  xRowWrk.vItemNo(i_RowNo);
+
   //ASSERT(i_RowNo == xRowWrk.xId().iItem());
-  i8 i_RowNo = xRowWrk.xId().iItem();
 
   i4 iEntryOffset = iToOffset(aItem);
   RASSERT(i_RowNo >= 0 && i_RowNo < C_MAX_ITEMS);
@@ -509,6 +514,7 @@ Item* EntryBuffer::aAllotRow(RowWrk& xRowWrk)
   if (m_aHeadEntry->iNEO(0) == -1)
     m_aHeadEntry->vNEO(0, iEntryOffset);
 
+  
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   

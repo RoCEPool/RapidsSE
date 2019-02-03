@@ -262,6 +262,8 @@ bool ItemHeap::bHasFreeItem(void)
   if (C_NO_MORE_ITEMS == m_i_FreeOffsetChain)
     return false;
   
+  RASSERT(nItems() < C_MAX_ITEMS - 16);
+
   return true;
 }
 
