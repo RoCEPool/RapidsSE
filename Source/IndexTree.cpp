@@ -204,7 +204,7 @@ Item* IndexTree::pAppendRow(i8 iTxId, Stz* aRow_Data, i8 iRowLength)
   RowWrk xRowWrk;
   
   xRowWrk.vEmbedded((char*)aRow_Data);
-  xRowWrk.vRowSize(iRowLength);
+  xRowWrk.vRowDataSize(iRowLength);
   //xRowWrk.vShow(m_pIndex->pTable()->pColumnVec());
   
   aNewEntry = m_pCurrentBuffer->aAppendRow(xRowWrk);

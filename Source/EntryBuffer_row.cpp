@@ -61,7 +61,7 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the buffer entry
-  xRowWrk.vSetEntry(aRowEntry);
+  xRowWrk.vSetRowEntry(aRowEntry);
   //pRowEntry->vShow(0, m_pIndex, false);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

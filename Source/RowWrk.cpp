@@ -82,9 +82,9 @@ RowData* RowWrk::aRowData(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get row size                                                               */
+/* get size of row data                                                       */
 /*----------------------------------------------------------------------------*/
-i8 RowWrk::nRowSize(void)
+i8 RowWrk::nRowDataSize(void)
 {
   _precondition_(_MAGIC_,CN_ROWWRK);
   
@@ -92,32 +92,32 @@ i8 RowWrk::nRowSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set row size                                                               */
+/* set row data size                                                          */
 /*----------------------------------------------------------------------------*/
-void RowWrk::vRowSize(i8 nRowSize)
+void RowWrk::vRowDataSize(i8 nRowDataSize)
 {
   _precondition_(_MAGIC_,CN_ROWWRK);
   
-  vEmbeddedSize(nRowSize);
+  vEmbeddedSize(nRowDataSize);
 }
 
 /*----------------------------------------------------------------------------*/
 /* set row entry                                                              */
 /*----------------------------------------------------------------------------*/
-void RowWrk::vSetEntry(Item* aItem)
+void RowWrk::vSetRowEntry(Item* aRowEntry)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
   
-  aItem->vId(xId());
-  aItem->vOffsets(nOffsets());
+  aRowEntry->vId(xId());
+  aRowEntry->vOffsets(nOffsets());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy row into this entry
   
   RowData* aSrcRow = aRowData();
-  RowData* aDstRow = _aRowData(aItem->aDataArea());
-  i8 nRowSize  = this->nRowSize();
+  RowData* aDstRow = _aRowData(aRowEntry->aDataArea());
+  i8 nRowSize  = this->nRowDataSize();
   
   MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_ENTRY);
 }

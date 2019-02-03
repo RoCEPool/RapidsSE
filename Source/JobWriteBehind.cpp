@@ -130,7 +130,7 @@ eEC JobWriteBehind::eInsertRow(Stz* aRow_Data, i8 nRowBytes)
     RowWrk xRowWrk;
     
     xRowWrk.vEmbedded(aRow_Data->aChar());
-    xRowWrk.vRowSize(nRowBytes);
+    xRowWrk.vRowDataSize(nRowBytes);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert row into working buffer

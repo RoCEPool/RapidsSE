@@ -18,9 +18,10 @@ namespace Data
   
     i8   nItemSize(void);
     RowData* aRowData(void);
-    i8   nRowSize(void);
-    void vRowSize(i8 nRowSize);
-    void vSetEntry(Item* pEntry);
+    i8   nRowDataSize(void);
+    void vRowDataSize(i8 nRowSize);
+    void vSetRowEntry(Item* aRowEntry);
+  
     void vShow(ColumnVec* pColVec);
   };
 }

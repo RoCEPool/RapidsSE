@@ -17,7 +17,7 @@ namespace MiniHeaps
   {
   protected:
     Id  m_xId;       // item id
-    i4  m_nSizeItem; // size of this item
+    i4  m_nSizeItem; // size of this item (not including offsets)
     // ..data bytes..
     // ..neo..
   
