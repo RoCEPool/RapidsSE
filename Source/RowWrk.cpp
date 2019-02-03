@@ -84,7 +84,7 @@ void RowWrk::vRowDataSize(i8 nRowDataSize)
 {
   _precondition_(_MAGIC_,CN_ROWWRK);
   
-  vEmbeddedSize(nRowDataSize);
+  vDataSize(nRowDataSize);
 }
 
 /*----------------------------------------------------------------------------*/

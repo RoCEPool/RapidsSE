@@ -29,11 +29,15 @@ namespace Data
      EntWrk(eCN eClass);
     ~EntWrk(void) noexcept(false);
   
+    i8     iBufferNo(void);
+    void   vBufferNo(i8 iBufferNo);
     char*  aEmbedded(void);
     void   vEmbedded(char* aEmbedded);
     i8     nEntrySize(void);
     Id&    xId(void);
     void   vId(Id& xId);
+    i8     iItemNo(void);
+    void   vItemNo(i8 iItemNo);
     char*  aLatter(void);
     i8     nOffsets(void);
     i8     nOffsetSize(void);
@@ -46,7 +50,7 @@ namespace Data
   
   protected:
     i8     nDataSize(void);
-    void   vEmbeddedSize(i8 iSize);
+    void   vDataSize(i8 nDataBytes);
   };
 }
 

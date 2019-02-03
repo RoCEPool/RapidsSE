@@ -364,7 +364,7 @@ void KeyWrk::vKeySize(i8 nKeySize)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  vEmbeddedSize(nKeySize);
+  vDataSize(nKeySize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -386,7 +386,7 @@ void KeyWrk::vReset(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
 
-  vEmbeddedSize(0);
+  vDataSize(0);
 }
 
 /*----------------------------------------------------------------------------*/

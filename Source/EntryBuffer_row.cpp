@@ -9,9 +9,10 @@ extern AttachMap* gpAttachMap;
 
 /*
  
-    +-----+-----+
-    | row | neo |
-    +-----+-----+
+    <---- row entry ---->
+    +------+------+-----+
+    | item | data | neo |
+    +------+------+-----+
  
  */
 
@@ -36,22 +37,21 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
     return nullptr;
   
   RASSERT(nItems() < C_MAX_ITEMS - 16);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form the rowId
-  
-  bn nBufferNo = this->nPoolBufferNo();
-  
-  i8 i_RowNo = iGetItemNo(); //nItems();
-  if (C_NO_MORE_ITEMS == i_RowNo) {
+
+  if (! bHasFreeItem()) {
     vTrace("No free row entries\n"_Stz);
     return nullptr;
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the rowId
   
-  RASSERT(i_RowNo >=0 and i_RowNo < C_MAX_ITEMS);
+  i8 i_RowNo = iGetItemNo(); //nItems();
+  RASSERT(C_NO_MORE_ITEMS != i_RowNo);
+  RASSERT(i_RowNo >= 0 and i_RowNo < C_MAX_ITEMS);
   
+  bn nBufferNo = this->nPoolBufferNo();
   Id xRowId(*nBufferNo, i_RowNo, 1);
-  
   xRowWrk.vId(xRowId);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -68,8 +68,6 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   // set offset in itemoffsets[]
   
   ASSERT(i_RowNo == xRowWrk.xId().iItem());
-
-  //aRowEntry->vNEO(0,-1);
   
   RASSERT(aRowEntry->bValidItem());
   return aRowEntry;
