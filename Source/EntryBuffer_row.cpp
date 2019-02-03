@@ -29,16 +29,9 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   RASSERT(1 == xRowWrk.nOffsets());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compute required entry space for row and offset
-  
-  i8 nEntryBytes  = xRowWrk.nEntrySize();
-  i8 nOffsetBytes = xRowWrk.nOffsetSize();
-  //i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-  i8 nEntryPlusOffsets = xRowWrk.nItemSize();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has enough space
   
+  i8 nEntryPlusOffsets = xRowWrk.nItemSize();
   if (! bHasSpace(nEntryPlusOffsets))
     return nullptr;
   
@@ -62,20 +55,13 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   xRowWrk.vId(xRowId);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allocate space in this buffer for the row and offsets
-  
-//  Item* aRowEntry = aAllotEntry(nEntryBytes);
-//  ASSERT(aRowEntry);
-//
-//  NEO* aNEO = aAllotNEO(nOffsetBytes);
-//  ASSERT(aNEO);
+  // allot row entry in this buffer
   
   Item* aRowEntry = aAllotRow(xRowWrk);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the buffer entry
   xRowWrk.vSetEntry(aRowEntry);
-  
   //pRowEntry->vShow(0, m_pIndex, false);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
