@@ -383,7 +383,7 @@ Item* ItemHeap::aNextItem(Item* aItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  i8 nBytes = aItem->nSizeItem();
+  i8 nBytes = aItem->nSizeItem_WithoutOffsets();      //! this doesnt seem right
   
   Item* aNext = aAdd<Item*>(aItem,nBytes);
   

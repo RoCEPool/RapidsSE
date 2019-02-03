@@ -36,7 +36,7 @@ void* Item::operator new(size_t, Item* aItem)
 Item::Item(eCN eClassNo, i8 nSizeItem)
 : Header(eClassNo)
 {
-  m_nSizeItem = static_cast<i4>(nSizeItem);
+  m_nSizeItem_WithoutOffsets = static_cast<i4>(nSizeItem);
   
 #ifdef WITH_DEBUG_VERSION
   m_iSkipNo = -1;
@@ -105,7 +105,7 @@ void Item::vId(Id xId)
 /*----------------------------------------------------------------------------*/
 Item* Item::aItemAfter(void)
 {
-  i8 nItemBytes = nSizeItem();
+  i8 nItemBytes = nSizeItem_WithoutOffsets();
   
   i8 nNEObytes = iNEOsize();
   
@@ -133,7 +133,7 @@ NEO* Item::aNEO(void)
   
   //NEO* aNEO = pAdd<NEO*>(aFooter,sizeof(Footer));
   
-  NEO* aNEO = aAdd<NEO*>(this, nSizeItem());
+  NEO* aNEO = aAdd<NEO*>(this, nSizeItem_WithoutOffsets());
   
   return aNEO;
 }
@@ -149,7 +149,7 @@ i4 Item::iNEO(i8 iOffset)
   
   //i4 iNEO = aNEO->m_iOffset[iOffset];
   
-  i4 iNEO = *(aAdd<i4*>(this, nSizeItem() + sizeof(i4) * iOffset));
+  i4 iNEO = *(aAdd<i4*>(this, nSizeItem_WithoutOffsets() + sizeof(i4) * iOffset));
   
   return iNEO;
 }
@@ -165,7 +165,7 @@ void Item::vNEO(i8 iOffset, i4 iNEO)
   
   //aNEO->m_iOffset[iOffset] = iNEO;
   
-  *(aAdd<i4*>(this, nSizeItem() + sizeof(i4) * iOffset)) = iNEO;
+  *(aAdd<i4*>(this, nSizeItem_WithoutOffsets() + sizeof(i4) * iOffset)) = iNEO;
   
 }
 
@@ -227,9 +227,9 @@ Item* Item::aRefdItem(void)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this item                                             */
 /*----------------------------------------------------------------------------*/
-i8 Item::nSizeItem(void)
+i8 Item::nSizeItem_WithoutOffsets(void)
 {
-  return (i8)m_nSizeItem;
+  return (i8)m_nSizeItem_WithoutOffsets;
 }
 
 /*----------------------------------------------------------------------------*/

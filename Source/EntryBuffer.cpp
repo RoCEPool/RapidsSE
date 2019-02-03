@@ -411,7 +411,7 @@ void EntryBuffer::vShowEntry(Item* aItem)
   vTrace("%lld: Item: %p Size: %llu Offsets: %llu "_Stz,
          iOffset,
          aItem,
-         aItem->nSizeItem(),
+         aItem->nSizeItem_WithoutOffsets(),
          aItem->nOffsets()
          );
   
@@ -431,7 +431,7 @@ void EntryBuffer::vShowEntry(Item* aItem)
   if (m_pIndex->bIsHidden()) {
     RowData* aRowData = _aRowData(aItem->aDataArea());
     vTrace("RowData: "_Stz);
-    i8 iRowSize = aItem->nSizeItem();
+    i8 iRowSize = aItem->nSizeItem_WithoutOffsets();
     if (iRowSize > 0) {
       aRowData->vShow(m_pIndex->pTable()->pColumnVec(), true);
     }
@@ -454,11 +454,11 @@ void EntryBuffer::vShowEntry(Item* aItem)
 /*----------------------------------------------------------------------------*/
 /* allot an entry in this buffer                                              */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aAllotEntry(i8 nBytes)
+Item* EntryBuffer::aAllotEntry(i8 nBytes_Without_Offsets)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  Item* aItem = aAllotItem(CN_ENTRY,nBytes);
+  Item* aItem = aAllotItem(CN_ENTRY,nBytes_Without_Offsets);
   if (! aItem)
     return nullptr;
     
@@ -477,14 +477,14 @@ Item* EntryBuffer::aAllotRow(RowWrk& xRowWrk)
   // rows only ever have one next offset
   RASSERT(1 == xRowWrk.nOffsets());
 
-  i8 nItemSize = xRowWrk.nItemSize();
+  i8 nRowEntrySize = xRowWrk.nRowEntrySize();
 
-  if (! bHasSpace(nItemSize))
+  if (! bHasSpace(nRowEntrySize))
     return nullptr;
   
   RASSERT(nItems() < C_MAX_ITEMS - 16);
 
-  Item* aItem = aAllotEntry(nItemSize - 4);
+  Item* aItem = aAllotEntry(nRowEntrySize - 4);
   aItem->vOffsets(1);
   IGNORE_RETURN(aAllotNEO(4));
   

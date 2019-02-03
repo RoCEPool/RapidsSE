@@ -57,20 +57,6 @@ RowWrk::~RowWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get item size                                                              */
-/*----------------------------------------------------------------------------*/
-i8 RowWrk::nItemSize(void)
-{
-  _precondition_(_MAGIC_,CN_ROWWRK);
-  
-  RASSERT(nOffsets() == 1);
-  
-  i8 nItemSize = nEntrySize() + nOffsetSize();
-  
-  return nItemSize;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get row address                                                            */
 /*----------------------------------------------------------------------------*/
 RowData* RowWrk::aRowData(void)
@@ -99,6 +85,20 @@ void RowWrk::vRowDataSize(i8 nRowDataSize)
   _precondition_(_MAGIC_,CN_ROWWRK);
   
   vEmbeddedSize(nRowDataSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of row entry                                                      */
+/*----------------------------------------------------------------------------*/
+i8 RowWrk::nRowEntrySize(void)
+{
+  _precondition_(_MAGIC_,CN_ROWWRK);
+  
+  RASSERT(nOffsets() == 1);
+  
+  i8 nItemSize = nEntrySize() + nOffsetSize();
+  
+  return nItemSize;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -31,8 +31,8 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has enough space
   
-  i8 nEntryPlusOffsets = xRowWrk.nItemSize();
-  if (! bHasSpace(nEntryPlusOffsets))
+  i8 nRowEntrySize = xRowWrk.nRowEntrySize();
+  if (! bHasSpace(nRowEntrySize))
     return nullptr;
   
   RASSERT(nItems() < C_MAX_ITEMS - 16);

@@ -83,7 +83,7 @@ FreeItem::~FreeItem(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 FreeItem* FreeItem::aMorphFreeItem(Item* aItem)
 {
-  i8 nSizeItem = aItem->nSizeItem();
+  i8 nSizeItem = aItem->nSizeItem_WithoutOffsets();
   
   FreeItem* aFreeItem = new(aItem) FreeItem(nSizeItem);
   
@@ -153,7 +153,7 @@ char* FreeItem::aAddressAfter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  i8 nFreeEntryBytes = nSizeItem();
+  i8 nFreeEntryBytes = nSizeItem_WithoutOffsets();
   
   char* aAfter = aAdd<char*>(this,nFreeEntryBytes);
   
@@ -171,7 +171,7 @@ Footer* FreeItem::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY);
   
-  i8 iFooterOffset = nSizeItem() - sizeof(Footer);
+  i8 iFooterOffset = nSizeItem_WithoutOffsets() - sizeof(Footer);
   
   Footer* aFooter = aAdd<Footer*>(this,iFooterOffset);
   

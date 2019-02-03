@@ -16,10 +16,10 @@ namespace Data
     RowWrk(void);
     ~RowWrk(void) noexcept(false);
   
-    i8   nItemSize(void);
     RowData* aRowData(void);
     i8   nRowDataSize(void);
     void vRowDataSize(i8 nRowSize);
+    i8   nRowEntrySize(void);
     void vSetRowEntry(Item* aRowEntry);
   
     void vShow(ColumnVec* pColVec);
