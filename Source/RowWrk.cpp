@@ -102,19 +102,10 @@ i8 RowWrk::nRowEntrySize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set row entry                                                              */
+/* copy the row data from row work into this row entry                        */
 /*----------------------------------------------------------------------------*/
-void RowWrk::vSetRowEntry(Item* aRowEntry)
+void RowWrk::vSetRowData(Item* aRowEntry)
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set id, transaction and offsets
-  
-  aRowEntry->vId(xId());
-  aRowEntry->vOffsets(nOffsets());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy row into this entry
-  
   RowData* aSrcRow = aRowData();
   RowData* aDstRow = _aRowData(aRowEntry->aDataArea());
   i8 nRowSize  = this->nRowDataSize();

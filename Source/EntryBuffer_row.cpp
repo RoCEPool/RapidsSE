@@ -34,7 +34,7 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
     return nullptr;
 
   if (! bHasFreeItem()) {
-    vTrace("No free row entries\n"_Stz);
+    vTrace("No free item no's\n"_Stz);
     return nullptr;
   }
   
@@ -47,15 +47,13 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   Item* aRowEntry = aAllotRow(xRowWrk);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the buffer entry
-  i8 i_RowNo = xRowWrk.iItemNo();
-  xRowWrk.vSetRowEntry(aRowEntry);
-  RASSERT(i_RowNo == xRowWrk.xId().iItem());
-  RASSERT(aRowEntry->bValidItem());
+  // copy row data into entry
+  xRowWrk.vSetRowData(aRowEntry);
   //pRowEntry->vShow(0, m_pIndex, false);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  RASSERT(aRowEntry->bValidItem());
   return aRowEntry;
 }
 

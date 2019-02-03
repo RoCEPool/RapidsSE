@@ -489,12 +489,15 @@ Item* EntryBuffer::aAllotRow(RowWrk& xRowWrk)
   aItem->vOffsets(1);
   IGNORE_RETURN(aAllotNEO(4));
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 i_RowNo = iGetItemNo(); //nItems();
   RASSERT(C_NO_MORE_ITEMS != i_RowNo);
   RASSERT(i_RowNo >= 0 and i_RowNo < C_MAX_ITEMS);
   xRowWrk.vItemNo(i_RowNo);
 
   //ASSERT(i_RowNo == xRowWrk.xId().iItem());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   i4 iEntryOffset = iToOffset(aItem);
   RASSERT(i_RowNo >= 0 && i_RowNo < C_MAX_ITEMS);
@@ -504,9 +507,10 @@ Item* EntryBuffer::aAllotRow(RowWrk& xRowWrk)
   // a last item should now link to this new item
   if (m_aLastEntry)
     m_aLastEntry->vNEO(0,iEntryOffset);
+  m_aLastEntry = aItem;
+
   aItem->vNEO(0,-1);
 
-  m_aLastEntry = aItem;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set neo in head entry for the first time
@@ -515,7 +519,8 @@ Item* EntryBuffer::aAllotRow(RowWrk& xRowWrk)
     m_aHeadEntry->vNEO(0, iEntryOffset);
 
   
-  
+  aItem->vId(xRowWrk.xId());
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   return aItem;
