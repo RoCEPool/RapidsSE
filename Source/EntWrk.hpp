@@ -45,7 +45,7 @@ namespace Data
     Footer* aFooter(void);
   
   protected:
-    i8     nEmbeddedSize(void);
+    i8     nDataSize(void);
     void   vEmbeddedSize(i8 iSize);
   };
 }

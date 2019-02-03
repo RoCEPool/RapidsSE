@@ -75,9 +75,9 @@ i8 EntWrk::nEntrySize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  i8 nEmbedded = nEmbeddedSize();
+  i8 nData = nDataSize();
   
-  i8 nBytes = sizeof(Item) + nEmbedded;
+  i8 nBytes = sizeof(Item) + nData;
   
   return nBytes;
 }
@@ -181,7 +181,7 @@ void EntWrk::vTake(i8 iSize)
 /*----------------------------------------------------------------------------*/
 /* get embedded object size                                                   */
 /*----------------------------------------------------------------------------*/
-i8 EntWrk::nEmbeddedSize(void)
+i8 EntWrk::nDataSize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   

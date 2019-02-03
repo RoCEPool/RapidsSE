@@ -354,7 +354,7 @@ i8 KeyWrk::nKeySize(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  return nEmbeddedSize();
+  return nDataSize();
 }
 
 /*----------------------------------------------------------------------------*/

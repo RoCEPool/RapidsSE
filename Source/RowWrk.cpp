@@ -74,7 +74,7 @@ i8 RowWrk::nRowDataSize(void)
 {
   _precondition_(_MAGIC_,CN_ROWWRK);
   
-  return nEmbeddedSize();
+  return nDataSize();
 }
 
 /*----------------------------------------------------------------------------*/
