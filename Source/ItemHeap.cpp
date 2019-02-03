@@ -255,6 +255,17 @@ void ItemHeap::vGiveSpace(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does buffer have a free item no in free chain ?                            */
+/*----------------------------------------------------------------------------*/
+bool ItemHeap::bHasFreeItem(void)
+{
+  if (C_NO_MORE_ITEMS == m_i_FreeOffsetChain)
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does buffer have space for nBytes ?                                        */
 /*----------------------------------------------------------------------------*/
 bool ItemHeap::bHasSpace(i8 nBytes)

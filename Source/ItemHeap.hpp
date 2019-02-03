@@ -51,6 +51,7 @@ namespace MiniHeaps
     void   vFreeItem(Item* aItem);
     i4     iGetItemNo(void);
     void   vGiveSpace(i8 nBytes);
+    bool   bHasFreeItem(void);
     bool   bHasSpace(i8 nBytes);
     void   vInitFreeChain(void);
     void   vIsLast(bool bIsLast);
