@@ -2050,9 +2050,9 @@ FreeItem* EntryBuffer::aMakeFreeEntry(Item* aItem)
   i8 nSizeNEO  = aItem->iNEOsize();
   i8 nSizeFree = nSizeItem + nSizeNEO;
   
-  FreeItem* aFreeEntry = new(aItem) FreeItem(nSizeFree);
+  FreeItem* aFreeItem = new(aItem) FreeItem(nSizeFree);
   
-  return aFreeEntry;
+  return aFreeItem;
 }
 
 /*----------------------------------------------------------------------------*/

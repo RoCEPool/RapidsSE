@@ -17,7 +17,7 @@ namespace MiniHeaps
   {
   protected:
     Id  m_xId;       // item id
-    i4  m_nSizeItem; // size of this item (not including offsets)
+    i4  m_nSizeItem_WithoutOffsets; // size of this item (not including offsets)
     // ..data bytes..
     // ..neo..
   
@@ -49,7 +49,7 @@ namespace MiniHeaps
     i8    nOffsets(void);
     void  vOffsets(i8 nOffsets);
     Item* aRefdItem(void);
-    i8    nSizeItem(void);
+    i8    nSizeItem_WithoutOffsets(void);
     bool  bValidItem(void);
   };
   
