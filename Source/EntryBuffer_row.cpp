@@ -62,42 +62,37 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   xRowWrk.vId(xRowId);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allocate space in this buffer for the row and offsets
-  
-//  Item* aRowEntry = aAllotEntry(nEntryBytes);
-//  ASSERT(aRowEntry);
-//
-//  NEO* aNEO = aAllotNEO(nOffsetBytes);
-//  ASSERT(aNEO);
-  
+  // allot a row entry in this buffer
   Item* aRowEntry = aAllotRow(xRowWrk);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the buffer entry
   xRowWrk.vSetEntry(aRowEntry);
   
+  //_aRowData(aRowEntry->aDataArea())->vShow(m_pIndex->pTable()->pColumnVec(),true);
+  
   //pRowEntry->vShow(0, m_pIndex, false);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set offset in itemoffsets[]
-  
-  i4 iEntryOffset = iToOffset(aRowEntry);
-  RASSERT(i_RowNo >= 0 && i_RowNo < C_MAX_ITEMS);
-  m_i4aItemOffsets[i_RowNo] = iEntryOffset;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // a last item should now link to this new item
-  if (m_aLastEntry)
-    m_aLastEntry->vNEO(0,iEntryOffset);
-  aRowEntry->vNEO(0,-1);
-  
-  m_aLastEntry = aRowEntry;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set neo in head entry for the first time
-  
-  if (m_aHeadEntry->iNEO(0) == -1)
-    m_aHeadEntry->vNEO(0, iEntryOffset);
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // set offset in itemoffsets[]
+//
+//  i4 iEntryOffset = iToOffset(aRowEntry);
+//  RASSERT(i_RowNo >= 0 && i_RowNo < C_MAX_ITEMS);
+//  m_i4aItemOffsets[i_RowNo] = iEntryOffset;
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // a last item should now link to this new item
+//  if (m_aLastEntry)
+//    m_aLastEntry->vNEO(0,iEntryOffset);
+//  aRowEntry->vNEO(0,-1);
+//
+//  m_aLastEntry = aRowEntry;
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // set neo in head entry for the first time
+//
+//  if (m_aHeadEntry->iNEO(0) == -1)
+//    m_aHeadEntry->vNEO(0, iEntryOffset);
   
   RASSERT(aRowEntry->bValidItem());
   return aRowEntry;
