@@ -326,13 +326,13 @@ void Job_WriteBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /* get partition being loaded                                                 */
 /*----------------------------------------------------------------------------*/
 void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
-                                                     Stz* sTableName,
-                                                     eDS eDataSource,
-                                                     EntryBuffer* pEntryBuffer,
-                                                     i8 iParentJobId,
-                                                     i8 iPartition,
-                                                     bool bFinal,
-                                                     i8 nWriteBehindBuffers)
+                                           Stz* sTableName,
+                                           eDS eDataSource,
+                                           EntryBuffer* pEntryBuffer,
+                                           i8 iParentJobId,
+                                           i8 iPartition,
+                                           bool bFinal,
+                                           i8 nWriteBehindBuffers)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a write buffer job

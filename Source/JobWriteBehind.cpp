@@ -80,10 +80,14 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // create a write buffer job for load
-    Job_WriteBuffer::vSpawnJobWriteBuffer(
-                                          m_pParentJob->m_pSession, m_pTable->aTableName(), m_eDataSource,
-                                          pEntryBuffer, m_pParentJob->iJobId(), iPartition,
-                                          true, nWriteBehindBuffers);
+    Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession,
+                                          m_pTable->aTableName(),
+                                          m_eDataSource,
+                                          pEntryBuffer,
+                                          m_pParentJob->iJobId(),
+                                          iPartition,
+                                          C_FINAL,
+                                          nWriteBehindBuffers);
   }
 }
 
@@ -100,10 +104,8 @@ eEC JobWriteBehind::eInsertRow(void)
 /*----------------------------------------------------------------------------*/
 eEC JobWriteBehind::eInsertRow(Stz* aRow_Data, i8 nRowBytes)
 {
-  eEC eErrorCode = EC_NONE;
-  
   // insert the row in a working buffer
-  while (true ) {
+  while (true) {
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // hash the record to a partition
@@ -118,9 +120,8 @@ eEC JobWriteBehind::eInsertRow(Stz* aRow_Data, i8 nRowBytes)
       
       if (! m_pEntryBuffer[iPartition]) {
         vTrace("EntryBuffer allocation failed\n"_Stz);
-        eErrorCode = EC_LOW_BUFFERS;
-        return eErrorCode;
-      }
+        return EC_LOW_BUFFERS;
+       }
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -141,18 +142,23 @@ eEC JobWriteBehind::eInsertRow(Stz* aRow_Data, i8 nRowBytes)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // appended ?
     if (aItem)
-      return eErrorCode;
+      return EC_NONE;
       
     m_pEntryBuffer[iPartition] = nullptr;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn a write buffer job 
-    Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession, m_pTable->aTableName(), m_eDataSource,
-                                          pEntryBuffer, m_pParentJob->iJobId(),
-                                          iPartition, false, 0);
+    Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession,
+                                          m_pTable->aTableName(),
+                                          m_eDataSource,
+                                          pEntryBuffer,
+                                          m_pParentJob->iJobId(),
+                                          iPartition,
+                                          C_NOT_FINAL,
+                                          0);
   }
   
-  return eErrorCode;
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
