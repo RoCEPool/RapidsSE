@@ -544,6 +544,7 @@ Item* EntryBuffer::aSkipRoots(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   return m_aHeadEntry;
+  //return &m_xSkipRoots;
 }
 
 /*----------------------------------------------------------------------------*/

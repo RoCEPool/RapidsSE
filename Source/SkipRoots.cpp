@@ -32,7 +32,7 @@ SkipRoots::SkipRoots(void)
 
   m_xId.vBuffer(*nBufferNo);
   vOffsets(3);
-  m_nSizeItem_WithoutOffsets = sizeof(SkipRoots);
+  m_nSizeItem_WithoutOffsets = sizeof(SkipRoots) - sizeof(m_iaNextOffset);
   
   m_iaNextOffset[0] = -1;
   m_iaNextOffset[1] = -1;
