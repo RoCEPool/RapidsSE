@@ -105,6 +105,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobReport();
   Step::vAddSteps_JobSelectTable();
   Step::vAddSteps_JobSink();
+  Step::vAddSteps_JobSubExport();
   Step::vAddSteps_JobSubIngester();
   Step::vAddSteps_JobSubLoader();
   Step::vAddSteps_JobSubPublish();
