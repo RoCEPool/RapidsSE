@@ -140,18 +140,6 @@ char* ItemHeap::aAllotSpace(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of data area                                                   */
-/*----------------------------------------------------------------------------*/
-char* ItemHeap::aDataArea(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  char* aStart = m_xWsp.aArea();
-  
-  return aStart;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get decile full of the buffer                                              */
 /*----------------------------------------------------------------------------*/
 i8 ItemHeap::iDecile(void)
@@ -339,6 +327,18 @@ bool ItemHeap::bIsLast(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of data area                                                   */
+/*----------------------------------------------------------------------------*/
+char* ItemHeap::aItemArea(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  char* aStart = m_xWsp.aArea();
+  
+  return aStart;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of items in the buffer                                          */
 /*----------------------------------------------------------------------------*/
 i8 ItemHeap::nItems(void)
@@ -432,7 +432,7 @@ void ItemHeap::vSetUsed(Item* aUptil)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  i8 nUsedBytes = nSub(aUptil,aDataArea());
+  i8 nUsedBytes = nSub(aUptil,aItemArea());
   
   m_xWsp.vUsed(nUsedBytes);
   

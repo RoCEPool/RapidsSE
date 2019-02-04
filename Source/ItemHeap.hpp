@@ -43,7 +43,6 @@ namespace MiniHeaps
     Item*  aAllotItem(eCN eClassNo, i8 nBytes);
     NEO*   aAllotNEO(i8 nBytes);
     char*  aAllotSpace(i8 nBytes);
-    char*  aDataArea(void);
     i8     iDecile(void);
     void   vDecItems(void);
     Item*  aFirstItem(void);
@@ -56,6 +55,7 @@ namespace MiniHeaps
     void   vInitFreeChain(void);
     void   vIsLast(bool bIsLast);
     bool   bIsLast(void);
+    char*  aItemArea(void);
     i8     nItems(void);
     void   vItems(i8 nItems);
     void   vLevelNo(i8 iLevelNo);
