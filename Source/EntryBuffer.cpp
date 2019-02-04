@@ -68,7 +68,6 @@ EntryBuffer::EntryBuffer(void)
   
   m_pIndex        = nullptr;
   
-  
   m_aHeadEntry  = nullptr;
   m_aLastEntry  = nullptr;
   
