@@ -146,6 +146,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_START
   /*    */ &Finalize::vUndefined,         // CN_JOB_STARTCLUSTER
   /*    */ &Finalize::vUndefined,         // CN_JOB_STATUS
+  /*    */ &Finalize::vUndefined,         // CN_JOB_SUBEXPORT
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBFETCH
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBINGESTER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBINSERTER

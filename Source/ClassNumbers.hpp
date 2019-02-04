@@ -149,6 +149,7 @@ enum eCN : u2 // Class Number
   /* 120 0x78    70728B Heap:L */ CN_JOB_START,
   /* 121 0x79    70728B Heap:L */ CN_JOB_STARTCLUSTER,
   /* 122 0x7A    70728B Heap:L */ CN_JOB_STATUS,
+  /*                           */ CN_JOB_SUBEXPORT,
   /* 123 0x7B    70768B Heap:L */ CN_JOB_SUBFETCH,
   /* 124 0x7C   151600B Heap:L */ CN_JOB_SUBINGESTER,
   /* 125 0x7D   151784B Heap:L */ CN_JOB_SUBINSERTER,
@@ -359,7 +360,7 @@ static Stz* aCN[]
   /*  84 0x54 */ "JOB_DUMPINDEX"_Stz,       // CN_JOB_DUMPINDEX
   /*  85 0x55 */ "JOB_EXPORT"_Stz,          // CN_JOB_EXPORT
   /*  86 0x56 */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
-  /*  87 0x57 */ "JOB_GENERATE"_Stz,         // CN_JOB_GENERATE
+  /*  87 0x57 */ "JOB_GENERATE"_Stz,        // CN_JOB_GENERATE
   /*  88 0x58 */ "JOB_INGEST"_Stz,          // CN_JOB_INGEST
   /*  89 0x59 */ "JOB_INSERTROW"_Stz,       // CN_JOB_INSERTROW
   /*  90 0x5A */ "JOB_INSERTTABLE"_Stz,     // CN_Job_INSERTTABLE
@@ -395,6 +396,7 @@ static Stz* aCN[]
   /* 120 0x78 */ "JOB_START"_Stz,           // CN_JOB_START
   /* 121 0x79 */ "JOB_STARTCLUSTER"_Stz,    // CN_JOB_STARTCLUSTER
   /* 122 0x7A */ "JOB_STATUS"_Stz,          // CN_JOB_STATUS
+  /*          */ "JOB_SUBEXPORT"_Stz,       // CN_JOB_SUBEXPORT
   /* 123 0x7B */ "JOB_SUBFETCH"_Stz,        // CN_JOB_SUBFETCH
   /* 124 0x7C */ "JOB_SUBINGESTER"_Stz,     // CN_JOB_SUBINGESTER
   /* 125 0x7D */ "JOB_SUBINSERTER"_Stz,     // CN_JOB_SUBINSERTER
