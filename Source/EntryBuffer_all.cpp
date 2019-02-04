@@ -1175,6 +1175,7 @@ void EntryBuffer::vCompact(void)
   
   // scan item is the working pointer
   Item* aScanItem = aFirstItem();
+  ASSERT(aScanItem->eClass() == CN_ENTRY);
   
   // loop while we can still reclaim more space
   for (;;) {
@@ -1280,9 +1281,10 @@ void EntryBuffer::vCompact(void)
     
   } // for
   
-  ASSERT(CN_FREEENTRY == aScanItem->eClass());
+  ASSERT( ! aScanItem || CN_FREEENTRY == aScanItem->eClass() );
   
-  vSetUsed(aScanItem);
+  if (aScanItem)
+    vSetUsed(aScanItem);
   
   //vShow();
 }
@@ -1695,6 +1697,10 @@ void EntryBuffer::vHeadEntryNew(void)
   
   //m_aHeadEntry = reinterpret_cast<Item*>(aAllotItem(CN_ENTRY,nEntryBytes));
   m_aHeadEntry = reinterpret_cast<Item*>(aAllotSpace(nEntryBytes));
+  new(m_aHeadEntry) Item(CN_ENTRY,nEntryBytes);
+  
+ // m_aHeadEntry->vSetClass(CN_ENTRY);
+  
   ASSERT(m_aHeadEntry);
     
   m_aHeadEntry->vId(xHeadWrk.xId());
