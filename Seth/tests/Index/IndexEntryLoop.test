@@ -24,7 +24,7 @@ affected: 0
 LOG 'Entries per buffer: 6';
 INCLUDE 'indexEntry';
 
-*/
+
 //------------------------------------------------------------------------------
 indexEntries 7;
 affected: 0
@@ -115,7 +115,7 @@ affected: 0
 
 LOG 'Entries per buffer: 19';
 INCLUDE 'indexEntry.test';
-
+*/
 //------------------------------------------------------------------------------
 indexEntries 20;
 affected: 0
