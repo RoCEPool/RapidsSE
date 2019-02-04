@@ -55,7 +55,7 @@ namespace MiniHeaps
     void   vInitFreeChain(void);
     void   vIsLast(bool bIsLast);
     bool   bIsLast(void);
-    char*  aItemArea(void);
+    Item*  aItemArea(void);
     i8     nItems(void);
     void   vItems(i8 nItems);
     void   vLevelNo(i8 iLevelNo);

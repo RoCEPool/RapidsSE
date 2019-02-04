@@ -329,13 +329,13 @@ bool ItemHeap::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
-char* ItemHeap::aItemArea(void)
+Item* ItemHeap::aItemArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  char* aStart = m_xWsp.aArea();
+  Item* aItemArea = (Item*)m_xWsp.aArea();
   
-  return aStart;
+  return aItemArea;
 }
 
 /*----------------------------------------------------------------------------*/
