@@ -1693,7 +1693,8 @@ void EntryBuffer::vHeadEntryNew(void)
   
   xHeadWrk.xId().vBuffer(*nPoolBufferNo());
   
-  m_aHeadEntry = reinterpret_cast<Item*>(aAllotItem(CN_ENTRY,nEntryBytes));
+  //m_aHeadEntry = reinterpret_cast<Item*>(aAllotItem(CN_ENTRY,nEntryBytes));
+  m_aHeadEntry = reinterpret_cast<Item*>(aAllotSpace(nEntryBytes));
   ASSERT(m_aHeadEntry);
     
   m_aHeadEntry->vId(xHeadWrk.xId());
