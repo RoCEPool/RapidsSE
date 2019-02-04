@@ -722,7 +722,7 @@ eEC  RapidsSE_FetchTable (i8 iTrace, Session* pSession, Stz* aTable,
     API_LOC(310);
     
     // get first entry buffer
-    TablePtn* pPartition = pTable->pPartition(iPartition);
+    TablePtn* pPartition = pTable->pPartition(TablePtn::iPartitionToSlot(iPartition));
     Index* pIndex = pTable->pHiddenIndex();
     IndexTree* pIndexTree = pPartition->pIndexTree(pIndex->iIndexNo());
     API_LOC(330);
