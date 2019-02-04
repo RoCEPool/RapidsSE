@@ -711,7 +711,7 @@ eEC  RapidsSE_FetchTable (i8 iTrace, Session* pSession, Stz* aTable,
   API_SESSION_LEVEL();
   API_ENTER(AC_FetchTable);
   API_NOTNULL(aaEntryBuffer);
-  API_NOTNULL(aiBufferNo);
+  //API_NOTNULL(aiBufferNo);
   API_NOTNULL(aiRowCount);
   API_BEGIN();
   
