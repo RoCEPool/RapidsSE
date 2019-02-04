@@ -26,6 +26,8 @@ namespace Data
     Item* m_aLastEntry; // last entry (would append to this)
     Item* m_aLazyChain; // first lazy entry
   
+    SkipRoots m_xSkipRoots;
+  
     // must be last
     Footer m_xFooter;
   
@@ -139,7 +141,7 @@ namespace Data
     void         vHandleLeftInsert(Item* aInsertedKeyEntry,
                                    Item* aOriginalFirstEntry,
                                    EntryBuffer** ppRootKeyBuffer);
-    Item*       aHeadEntry(void);
+    Item*        aSkipRoots(void);
     void         vHeadEntryNew(void);
     void         vHeadEntryRestore(void);
     EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,

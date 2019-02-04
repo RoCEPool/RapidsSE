@@ -699,7 +699,7 @@ Item* EntryBuffer::aPositionQuery(KeyData* aGivenKey,i8 nKeyCols, eJC eJuxtaComp
     //pPriorVec[*i_ScanOffset] = pScanEntry_sl;
   }
   
-  if (aScanEntry_sl == aHeadEntry()) {
+  if (aScanEntry_sl == aSkipRoots()) {
     aScanEntry_sl = aNextEntry(aScanEntry_sl, 0);
     // we currently think it should be null
     // RASSERT( ! pScanEntry_sl );
@@ -879,7 +879,7 @@ void EntryBuffer::vShowShort(void)
          *nPoolBufferNo(),
          pHigherBuffer() ? *pHigherBuffer()->nPoolBufferNo() : 0);
   
-  i8 iOffset = aHeadEntry()->iNEO(0);
+  i8 iOffset = aSkipRoots()->iNEO(0);
   while (iOffset > -1) {
     Item* aItem = aGetEntryOffset(iOffset);
     
@@ -1307,7 +1307,7 @@ void EntryBuffer::vCompactLeft2(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Item* aPriorEntry = pTempBuffer->aHeadEntry();
+  Item* aPriorEntry = pTempBuffer->aSkipRoots();
   
   for (Item* aThisEntry = pThisBuffer->aLeadEntry();
        aThisEntry != nullptr;
@@ -1343,7 +1343,7 @@ void EntryBuffer::vCompactLeft2(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  aPriorEntry = pThisBuffer->aHeadEntry();
+  aPriorEntry = pThisBuffer->aSkipRoots();
   
   for (Item* aTempEntry = pTempBuffer->aLeadEntry();
        aTempEntry != nullptr;
@@ -1654,16 +1654,6 @@ void EntryBuffer::vHandleLeftInsert(Item* aInsertedKeyEntry,
   
   EntryBuffer* pHigherBuffer = _pEntryBuffer(m_pHigherBuffer);
   pHigherBuffer->aInsertKeyBuffer(xKeyWrkIns,ppRootKeyBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get head entry                                                             */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aHeadEntry(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return m_aHeadEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2257,7 +2247,7 @@ EntryBuffer* EntryBuffer::pPositionPriorBuffer(KeyData* aFindKey)
     // get the entry before the given insert key
     Item* aEntryPrior = pEntryBuffer->pPositionPriorEntry(aFindKey);
     ASSERT(aEntryPrior);
-    if (aEntryPrior == pEntryBuffer->aHeadEntry())
+    if (aEntryPrior == pEntryBuffer->aSkipRoots())
       aEntryPrior = pEntryBuffer->aNextEntry(aEntryPrior,0);
     ASSERT(aEntryPrior);
     
@@ -2638,7 +2628,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
   Item* aCopyEntry;
   Item* aNextEntry;
   
-  Item* aLastEntryRight = pNewRightBuffer->aHeadEntry();
+  Item* aLastEntryRight = pNewRightBuffer->aSkipRoots();
   
   i8 nEntriesCopied = 0;
   for (aCopyEntry = aSplitEntry;
