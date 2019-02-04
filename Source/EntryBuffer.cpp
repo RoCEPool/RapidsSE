@@ -537,6 +537,15 @@ Item* EntryBuffer::aAllotRowEntry(RowWrk& xRowWrk)
   return aNewRowEntry;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get root of skip list (was aka head entry                                  */
+/*----------------------------------------------------------------------------*/
+Item* EntryBuffer::aSkipRoots(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return m_aHeadEntry;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
