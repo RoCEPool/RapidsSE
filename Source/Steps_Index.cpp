@@ -1201,7 +1201,7 @@ void Step::vIndexScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entryBuffer ?
-  if ( ! pEntryBuffer) {
+  if (! pEntryBuffer) {
     // mark this buffer as the last buffer
     pFetchBuffer->vIsLast(true);
     
@@ -1220,8 +1220,22 @@ void Step::vIndexScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru the buffer till no more entries
-  while (aItem) {
+  //while (aItem) {
+  while (pEntryBuffer) {
     
+    // handle empty buffers
+    if (! aItem) {
+      
+      // get next buffer from the current indexBuffer
+      pEntryBuffer = pEntryBuffer->pNextBuffer();
+      
+      if (pEntryBuffer)
+        aItem = pEntryBuffer->aLeadEntry();
+      
+      continue;
+    }
+
+
     RowData* aRowData = _aRowData(aItem->aDataArea());
     //aRowData->vShow(pTable->pColumnVec(), true);
     //vTrace("\n"_Stz);
@@ -1250,13 +1264,13 @@ void Step::vIndexScan(MP_Task mpTask)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // did we find an entry ?
-    if ( ! aItem ) {
-      
-      // get next buffer from the current indexBuffer
-      pEntryBuffer = pEntryBuffer->pNextBuffer();
-      
-      if ( pEntryBuffer )
-        aItem = pEntryBuffer->aLeadEntry();
+    if (! aItem) {
+      continue;
+//      // get next buffer from the current indexBuffer
+//      pEntryBuffer = pEntryBuffer->pNextBuffer();
+//
+//      if (pEntryBuffer)
+//        aItem = pEntryBuffer->aLeadEntry();
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
