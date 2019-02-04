@@ -703,6 +703,61 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
 }
 
 /*----------------------------------------------------------------------------*/
+/* fetch table                                                                */
+/*----------------------------------------------------------------------------*/
+eEC  RapidsSE_FetchTable (i8 iTrace, Session* pSession, Stz* aTable,
+                          i8 iPartition, void** aaEntryBuffer, i8* aiRowCount)
+{
+  API_SESSION_LEVEL();
+  API_ENTER(AC_FetchTable);
+  API_NOTNULL(aaEntryBuffer);
+  API_NOTNULL(aiBufferNo);
+  API_NOTNULL(aiRowCount);
+  API_BEGIN();
+  
+  try {
+    
+    // find the table in the session dictionary stack
+    Table* pTable = Table::pFindTable(pSession->pPathStack(), aTable);
+    API_LOC(310);
+    
+    // get first entry buffer
+    TablePtn* pPartition = pTable->pPartition(iPartition);
+    Index* pIndex = pTable->pHiddenIndex();
+    IndexTree* pIndexTree = pPartition->pIndexTree(pIndex->iIndexNo());
+    API_LOC(330);
+    
+    EntryBuffer* pEntryBuffer = pIndexTree->pFirstL0Buffer();
+    API_LOC(340);
+    
+    // return the first buffer
+    *aaEntryBuffer = pEntryBuffer;
+    
+    i8 iRowCount = 0;
+    while (pEntryBuffer) {
+      
+      iRowCount += pEntryBuffer->nItems();
+      
+      pEntryBuffer = pEntryBuffer->pNextBuffer();
+    }
+    
+    // return table row count
+    *aiRowCount = iRowCount;
+    
+    API_RETURN();
+    
+  }
+  catch (Error* pError) { API_CATCH(pError);
+    
+  }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError);
+    
+  }
+  
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get load result                                                            */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetLoadResult(i8 iTrace, Session* pSession, void* aJob,

@@ -1317,7 +1317,6 @@ void Step::vJobSignalConnector(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   RASSERT( _bIsValidJob(pJob->eClass()) );
   i8 i_State = pJob->m_i_State;
-  RASSERT(i_State >= 0 && i_State < 10);
   
   SessionState* pState = gpAttachMap->m_pApiState->pGetState(i_State);
   ApiState::vMarkSignalled(pState->m_pSession);

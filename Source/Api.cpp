@@ -159,9 +159,10 @@ void Api::vIncStatistics(eAC eApiCall)
     case AC_EndSubInserter:      gpAttachMap->m_oStatistics.Api.m_nEndSubInserter++;       break;
     case AC_ExecuteCommand:      gpAttachMap->m_oStatistics.Api.m_nExecuteCommand++;       break;
     case AC_FetchNextBuffer:     gpAttachMap->m_oStatistics.Api.m_nFetchNextBuffer++;      break;
+    case AC_FetchTable:          gpAttachMap->m_oStatistics.Api.m_nFetchTable++;           break;
     case AC_GetFirstBuffer:      gpAttachMap->m_oStatistics.Api.m_nGetFirstBuffer++;       break;
     case AC_GetLoadResult:       gpAttachMap->m_oStatistics.Api.m_nGetLoadResult++;        break;
-    case AC_GetNextBuffer:       gpAttachMap->m_oStatistics.Api.m_nGetNextBuffer++;       break;
+    case AC_GetNextBuffer:       gpAttachMap->m_oStatistics.Api.m_nGetNextBuffer++;        break;
     case AC_GetRecordBuffer:     gpAttachMap->m_oStatistics.Api.m_nGetRecordBuffer++;      break;
     case AC_GetRow:              gpAttachMap->m_oStatistics.Api.m_nGetRow++;               break;
     case AC_GetRowCount:         gpAttachMap->m_oStatistics.Api.m_nGetRowCount++;          break;
@@ -232,6 +233,10 @@ void Api::vMonitorPortrait(s48K& sPortrait)
   if (pStats->Api.m_nFetchNextBuffer) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("fetchNextBuffer %lld "_Stz,pStats->Api.m_nFetchNextBuffer);
+  }
+  if (pStats->Api.m_nFetchTable) {
+    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
+    s.vSprintCat("fetchTable %lld "_Stz,pStats->Api.m_nFetchTable);
   }
   if (pStats->Api.m_nGetFirstBuffer) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);

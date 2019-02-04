@@ -23,6 +23,7 @@ namespace Measurement
     i8 m_nEndSubInserter;
     i8 m_nExecuteCommand;
     i8 m_nFetchNextBuffer;
+    i8 m_nFetchTable;
     i8 m_nGetFirstBuffer;
     i8 m_nGetLoadResult;
     i8 m_nGetNextBuffer;

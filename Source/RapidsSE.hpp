@@ -49,6 +49,9 @@ extern "C" eEC  RapidsSE_EndInsert       (i8 iTrace, Session* pSession, void* aJ
 extern "C" eEC  RapidsSE_EndSubInserter  (i8 iTrace, Session* pSession, void* aJob);
 extern "C" eEC  RapidsSE_FetchNextBuffer (i8 iTrace, Session* pSession, void* aJob,
                                           void** aaFetchBuffer, i8* aiExepectedRows);
+extern "C" eEC  RapidsSE_FetchTable      (i8 iTrace, Session* pSession, Stz* aTable,
+                                          i8 iPartition, void** aaEntryBuffer, i8* aiRowCount);
+
 extern "C" eEC  RapidsSE_GetLoadResult   (i8 iTrace, Session* pSession, void* aJob,
                                           i8* aiValidRows, i8* aiInvalidRows, i8* aiSkippedRows);
 extern "C" eEC  RapidsSE_GetFirstBuffer  (i8 iTrace, Session* pSession, void* aTable,
