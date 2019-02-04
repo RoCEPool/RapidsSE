@@ -70,7 +70,7 @@ namespace Data
   
   private:
     Item* aAllotEntry(i8 nBytes_Without_Offsets);
-    Item* aAllotRow(RowWrk& xRowWrk);
+    Item* aAllotRowEntry(RowWrk& xRowWrk);
 
   
   

@@ -470,7 +470,7 @@ Item* EntryBuffer::aAllotEntry(i8 nBytes_Without_Offsets)
 /*----------------------------------------------------------------------------*/
 /* allot a row entry in this buffer                                           */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aAllotRow(RowWrk& xRowWrk)
+Item* EntryBuffer::aAllotRowEntry(RowWrk& xRowWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -478,52 +478,63 @@ Item* EntryBuffer::aAllotRow(RowWrk& xRowWrk)
   RASSERT(1 == xRowWrk.nOffsets());
 
   i8 nRowEntrySize = xRowWrk.nRowEntrySize();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if this buffer has enough space and has free item no's
+
   if (! bHasSpace(nRowEntrySize))
     return nullptr;
+  
+  if (! bHasFreeItem()) {
+    vTrace("No free item no's\n"_Stz);
+    return nullptr;
+  }
+
   RASSERT(nItems() < C_MAX_ITEMS - 16);
 
-  Item* aItem = aAllotEntry(nRowEntrySize - 4);
-  if (! aItem)
-    return nullptr;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allot an entry and its neo in this entry buffer
   
-  aItem->vOffsets(1);
+  Item* aNewRowEntry = aAllotEntry(nRowEntrySize - 4);
+  RASSERT(aNewRowEntry);
+  
   IGNORE_RETURN(aAllotNEO(4));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the item no for this row
+  
+  i8 i_RowItemNo = iGetItemNo();
+  RASSERT(C_NO_MORE_ITEMS != i_RowItemNo);
+  RASSERT(i_RowItemNo >= 0 and i_RowItemNo < C_MAX_ITEMS);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  i8 i_RowNo = iGetItemNo(); //nItems();
-  RASSERT(C_NO_MORE_ITEMS != i_RowNo);
-  RASSERT(i_RowNo >= 0 and i_RowNo < C_MAX_ITEMS);
-  xRowWrk.vItemNo(i_RowNo);
-
-  //ASSERT(i_RowNo == xRowWrk.xId().iItem());
+  // set the item id
+  
+  xRowWrk.vItemNo(i_RowItemNo);
+  aNewRowEntry->vId(xRowWrk.xId());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // record the offset for this row entry
+  
+  i4 iNewEntryOffset = iToOffset(aNewRowEntry);
+  RASSERT(i_RowItemNo >= 0 && i_RowItemNo < C_MAX_ITEMS);
+  m_i4aItemOffsets[i_RowItemNo] = iNewEntryOffset;
 
-  i4 iEntryOffset = iToOffset(aItem);
-  RASSERT(i_RowNo >= 0 && i_RowNo < C_MAX_ITEMS);
-  m_i4aItemOffsets[i_RowNo] = iEntryOffset;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set neo in head entry for the first time
+  
+  if (m_aHeadEntry->iNEO(0) == -1)
+    m_aHeadEntry->vNEO(0,iNewEntryOffset);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // a last item should now link to this new item
   if (m_aLastEntry)
-    m_aLastEntry->vNEO(0,iEntryOffset);
-  m_aLastEntry = aItem;
-
-  aItem->vNEO(0,-1);
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set neo in head entry for the first time
-
-  if (m_aHeadEntry->iNEO(0) == -1)
-    m_aHeadEntry->vNEO(0, iEntryOffset);
-
-  
-  aItem->vId(xRowWrk.xId());
+    m_aLastEntry->vNEO(0,iNewEntryOffset);
+  m_aLastEntry = aNewRowEntry;
+  aNewRowEntry->vNEO(0,-1);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return aItem;
+  return aNewRowEntry;
 }
 
 

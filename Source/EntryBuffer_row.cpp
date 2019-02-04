@@ -27,28 +27,19 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   ASSERT(iLevelNo() == 0);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if this buffer has enough space and has free item no's
-  
-  i8 nRowEntrySize = xRowWrk.nRowEntrySize();
-  if (! bHasSpace(nRowEntrySize))
-    return nullptr;
-
-  if (! bHasFreeItem()) {
-    vTrace("No free item no's\n"_Stz);
-    return nullptr;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allot row entry in this buffer
 
   bn nBufferNo = this->nPoolBufferNo();
   xRowWrk.vBufferNo(*nBufferNo);
   
-  Item* aRowEntry = aAllotRow(xRowWrk);
-
+  Item* aRowEntry = aAllotRowEntry(xRowWrk);
+  if (! aRowEntry)
+    return nullptr;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy row data into entry
-  xRowWrk.vSetRowData(aRowEntry);
+  // copy row data into row entry
+  
+  xRowWrk.vCopyRowData(aRowEntry);
   //pRowEntry->vShow(0, m_pIndex, false);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

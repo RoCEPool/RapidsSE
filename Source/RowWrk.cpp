@@ -57,6 +57,18 @@ RowWrk::~RowWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* copy the row data from row work into this row entry                        */
+/*----------------------------------------------------------------------------*/
+void RowWrk::vCopyRowData(Item* aRowEntry)
+{
+  RowData* aSrcRow = aRowData();
+  RowData* aDstRow = _aRowData(aRowEntry->aDataArea());
+  i8 nRowSize  = this->nRowDataSize();
+  
+  MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_ENTRY);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get row address                                                            */
 /*----------------------------------------------------------------------------*/
 RowData* RowWrk::aRowData(void)
@@ -99,18 +111,6 @@ i8 RowWrk::nRowEntrySize(void)
   i8 nItemSize = nEntrySize() + nOffsetSize();
   
   return nItemSize;
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy the row data from row work into this row entry                        */
-/*----------------------------------------------------------------------------*/
-void RowWrk::vSetRowData(Item* aRowEntry)
-{
-  RowData* aSrcRow = aRowData();
-  RowData* aDstRow = _aRowData(aRowEntry->aDataArea());
-  i8 nRowSize  = this->nRowDataSize();
-  
-  MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_ENTRY);
 }
 
 /*----------------------------------------------------------------------------*/
