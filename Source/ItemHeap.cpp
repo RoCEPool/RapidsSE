@@ -423,6 +423,8 @@ void ItemHeap::vResetUsed(void)
   m_xWsp.vUsed(0);
   
   m_nItems = 0;
+  
+  vSetWilderness();
 }
 
 /*----------------------------------------------------------------------------*/
