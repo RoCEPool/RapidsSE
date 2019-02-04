@@ -314,9 +314,7 @@ Item* EntryBuffer::aGetEntry_Item(i8 i_Item)
   RASSERT(i_Item >= 0 && i_Item < C_MAX_ITEMS);
   i4 iOffset = m_i4aItemOffsets[i_Item];
   
-  char* aAddress = aAdd<char*>(aItemArea(), iOffset);
-  
-  Item* aItem = reinterpret_cast<Item*>(aAddress);
+  Item* aItem = aAdd<Item*>(aItemArea(), iOffset);
   
   return aItem;
 }
@@ -561,9 +559,7 @@ Item* EntryBuffer::aNextEntry(Item* aCurrent, i8 i_Offset)
   if (-1 == iOffset)
     return nullptr;
   
-  char* aAddress = aAdd<char*>(aItemArea(), iOffset);
-  
-  Item* aItem = (Item*)_aItem(aAddress);
+  Item* aItem = aAdd<Item*>(aItemArea(), iOffset);
   
   RASSERT(! aItem || aItem->bValidItem());
 
@@ -1355,8 +1351,7 @@ void EntryBuffer::vCompactLeft2(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Item* aThisWilderness
-  = (Item*)aItemArea();
+  Item* aThisWilderness = aItemArea();
 //    = aAdd<Item*>(aSkipRoots(),
 //                  aSkipRoots()->nSizeItem_WithoutOffsets() +
 //                    aSkipRoots()->iNEOsize());
@@ -1559,8 +1554,7 @@ Item* EntryBuffer::aGetEntryOffset(i8 iOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  char* aAddress = aAdd<char*>(aItemArea(), iOffset);
-  Item* aItem = reinterpret_cast<Item*>(aAddress);
+  Item* aItem = aAdd<Item*>(aItemArea(), iOffset);
   
   return aItem;
 }
