@@ -19,14 +19,14 @@ namespace Data
   protected:
     Lock   m_okLock; // lock
     Index* m_pIndex; // index this buffer belongs to
-  
+ 
+    SkipRoots m_xSkipRoots;
+
     ////////////////////////////////////////////////////////////////////////////
     // only used in index entry buffers
-    Item* m_aHeadEntry; // skiplist head (not first logical entry in buffer)
+    //Item* m_aHeadEntry; // skiplist head (not first logical entry in buffer)
     Item* m_aLastEntry; // last entry (would append to this)
     Item* m_aLazyChain; // first lazy entry
-  
-    SkipRoots m_xSkipRoots;
   
     // must be last
     Footer m_xFooter;

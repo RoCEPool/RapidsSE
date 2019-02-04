@@ -54,15 +54,7 @@ void* FreeItem::operator new(size_t, FreeItem* aFreeEntry)
 FreeItem::FreeItem(i8 nSizeItem)
 : Item(CN_FREEENTRY,nSizeItem)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY);
-  
   m_aNextFree = nullptr;
-  
-  aFooter()->vSetFooter();
-  
-  _checkInitialisedSize_(nSizeItem);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +62,6 @@ FreeItem::FreeItem(i8 nSizeItem)
 /*----------------------------------------------------------------------------*/
 FreeItem::~FreeItem(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
 }
 
 
@@ -100,7 +91,6 @@ FreeItem* FreeItem::aMorphFreeItem(Item* aItem)
 /*----------------------------------------------------------------------------*/
 void FreeItem::vAssertFreeEntry(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,15 +98,11 @@ void FreeItem::vAssertFreeEntry(void)
 /*----------------------------------------------------------------------------*/
 bool FreeItem::bValidFreeEntry(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
   
   if (! bValidMagic())
     return false;
   
   if (CN_FREEENTRY != eClass())
-    return false;
-
-  if (! aFooter()->bValidFooter())
     return false;
 
   return true;
@@ -131,8 +117,6 @@ bool FreeItem::bValidFreeEntry(void)
 /*----------------------------------------------------------------------------*/
 FreeItem* FreeItem::aNextFree(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
-  
   return m_aNextFree;
 }
 
@@ -141,8 +125,6 @@ FreeItem* FreeItem::aNextFree(void)
 /*----------------------------------------------------------------------------*/
 void FreeItem::vNextFree(FreeItem* aNextFree)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
-  
   m_aNextFree = aNextFree;
 }
 
@@ -151,31 +133,11 @@ void FreeItem::vNextFree(FreeItem* aNextFree)
 /*----------------------------------------------------------------------------*/
 char* FreeItem::aAddressAfter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   i8 nFreeEntryBytes = nSizeItem_WithoutOffsets();
   
   char* aAfter = aAdd<char*>(this,nFreeEntryBytes);
   
   return aAfter;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get address of footer                                                      */
-/*----------------------------------------------------------------------------*/
-Footer* FreeItem::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY);
-  
-  i8 iFooterOffset = nSizeItem_WithoutOffsets() - sizeof(Footer);
-  
-  Footer* aFooter = aAdd<Footer*>(this,iFooterOffset);
-  
-  return aFooter;
 }
 
 /*============================================================================*/

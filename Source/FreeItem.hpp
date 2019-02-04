@@ -29,7 +29,7 @@ namespace MiniHeaps
   
     char* aAddressAfter(void);
   
-    Footer* aFooter(void);
+//    Footer* aFooter(void);
 };
   
   FreeItem* _aFreeItem(void* aAddr);

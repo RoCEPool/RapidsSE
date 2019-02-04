@@ -68,12 +68,12 @@ EntryBuffer::EntryBuffer(void)
   
   m_pIndex        = nullptr;
   
-  m_aHeadEntry  = nullptr;
+  //m_aHeadEntry  = nullptr;
   m_aLastEntry  = nullptr;
   
   m_aLazyChain  = nullptr;
   
-  vHeadEntryNew();
+  //vHeadEntryNew();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -368,7 +368,9 @@ Item* EntryBuffer::aLeadEntry(void)
   //  vBuildSkipList();
 #endif
   
-  Item* aFirst = aNextEntry(m_aHeadEntry,0);
+  Item* aFirst = aNextEntry(aSkipRoots(),0);
+  
+  RASSERT(! aFirst || aFirst->bValidItem());
   
   return aFirst;
 }
@@ -387,7 +389,7 @@ Item* EntryBuffer::aLastEntry(void)
   //  vBuildSkipList();
 #endif
   
-  Item* aLast = m_aHeadEntry;
+  Item* aLast = aSkipRoots();
   
   for (;;) {
     Item* aNext = aNextEntry(aLast,0);
@@ -522,8 +524,8 @@ Item* EntryBuffer::aAllotRowEntry(RowWrk& xRowWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set neo in head entry for the first time
   
-  if (m_aHeadEntry->iNEO(0) == -1)
-    m_aHeadEntry->vNEO(0,iNewEntryOffset);
+  if (aSkipRoots()->iNEO(0) == -1)
+    aSkipRoots()->vNEO(0,iNewEntryOffset);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // a last item should now link to this new item
@@ -543,8 +545,8 @@ Item* EntryBuffer::aSkipRoots(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  return m_aHeadEntry;
-  //return &m_xSkipRoots;
+  //return m_aHeadEntry;
+  return &m_xSkipRoots;
 }
 
 /*----------------------------------------------------------------------------*/
