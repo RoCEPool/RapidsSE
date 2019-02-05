@@ -39,6 +39,7 @@ namespace MiniHeaps
     ItemHeap(eCN eClassNo);
    ~ItemHeap(void) noexcept(false);
   
+    Item*  aAdjacentItem(Item* aItem);
     i8     iAgeSsec(void);
     Item*  aAllotItem(eCN eClassNo, i8 nBytes);
     NEO*   aAllotNEO(i8 nBytes);
@@ -60,7 +61,6 @@ namespace MiniHeaps
     void   vItems(i8 nItems);
     void   vLevelNo(i8 iLevelNo);
     i8     iLevelNo(void);
-    Item*  aNextItem(Item* aItem);
     void   vPartitionNo(i8 iPartitionNo);
     i8     iPartitionNo(void);
     void   vResetUsed(void);

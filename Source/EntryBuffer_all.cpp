@@ -296,30 +296,6 @@ EntryBuffer* EntryBuffer::pFirstChildBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get an entry by number                                                     */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aGetEntry_Item(i8 i_Item)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-#ifdef USE_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
-#endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (i_Item == C_NO_MORE_ITEMS)
-    return nullptr;
-  
-  RASSERT(i_Item >= 0 && i_Item < C_MAX_ITEMS);
-  i4 iOffset = m_i4aItemOffsets[i_Item];
-  
-  Item* aItem = aAdd<Item*>(aItemArea(), iOffset);
-  
-  return aItem;
-}
-
-/*----------------------------------------------------------------------------*/
 /* insert a key entry specifically into this buffer (should be enough space)  */
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::aInsertKeyAbs(KeyWrk& xKeyWrk)
@@ -1211,7 +1187,7 @@ void EntryBuffer::vCompact(void)
     aFreeEntry = nullptr;
     for (;
          aScanItem != nullptr;
-         aScanItem = aNextItem(aScanItem)) {
+         aScanItem = aAdjacentItem(aScanItem)) {
       
       eCN eClass = aScanItem->eClass();
       
@@ -1229,9 +1205,9 @@ void EntryBuffer::vCompact(void)
     // find the next entry in buffer after the free entry
     
     aMoveEntry = nullptr;
-    for (Item* aItem = aNextItem(aFreeEntry);
+    for (Item* aItem = aAdjacentItem(aFreeEntry);
          aItem != nullptr;
-         aItem = aNextItem(aItem)) {
+         aItem = aAdjacentItem(aItem)) {
       
       eCN eClass = aItem->eClass();
       
@@ -2846,7 +2822,7 @@ void EntryBuffer::vQuickVerify(Item* aSeeEntry)
   
   for (Item* aItem = aFirstItem();
        aItem != nullptr;
-       aItem = aNextItem(aItem))
+       aItem = aAdjacentItem(aItem))
     {;}
   
   for (Item* aTestEntry = aNextEntry(aSkipRoots(),0);
@@ -3335,7 +3311,7 @@ bool EntryBuffer::bVerifyItems(void)
   
   for (Item* aItem = aFirstItem();
        aItem != nullptr;
-       aItem = aNextItem(aItem)) {
+       aItem = aAdjacentItem(aItem)) {
     
     //vTrace("Verify item %p\n"_Stz,pItem);
     

@@ -355,6 +355,30 @@ void EntryBuffer::vTruncate(void)
 
 
 /*----------------------------------------------------------------------------*/
+/* get an entry by number                                                     */
+/*----------------------------------------------------------------------------*/
+Item* EntryBuffer::aGetEntry_Item(i8 i_Item)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+#ifdef USE_EB_LAZY_CHAIN
+  RASSERT( ! m_aLazyChain );
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (i_Item == C_NO_MORE_ITEMS)
+    return nullptr;
+  
+  RASSERT(i_Item >= 0 && i_Item < C_MAX_ITEMS);
+  i4 iOffset = m_i4aItemOffsets[i_Item];
+  
+  Item* aItem = aAdd<Item*>(aItemArea(), iOffset);
+  
+  return aItem;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get lead entry (the entry after head entry                                 */
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::aLeadEntry(void)

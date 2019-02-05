@@ -74,6 +74,23 @@ ItemHeap::~ItemHeap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get item which is memory-wise the next item in the item area               */
+/*----------------------------------------------------------------------------*/
+Item* ItemHeap::aAdjacentItem(Item* aItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 nItemBytes = aItem->nSizeItem_WithoutOffsets() + aItem->iNEOsize();
+  
+  Item* aAdjacent = aAdd<Item*>(aItem,nItemBytes);
+  
+  if ((char*)aAdjacent >= (char*)m_xWsp.aLatter())
+    return nullptr;
+  
+  return aAdjacent;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get age of buffer in seconds                                               */
 /*----------------------------------------------------------------------------*/
 i8 ItemHeap::iAgeSsec(void)
@@ -379,23 +396,6 @@ i8 ItemHeap::iLevelNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next item                                                              */
-/*----------------------------------------------------------------------------*/
-Item* ItemHeap::aNextItem(Item* aItem)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  i8 nBytes = aItem->nSizeItem_WithoutOffsets() + aItem->iNEOsize();      //! this doesnt seem right
-  
-  Item* aNext = aAdd<Item*>(aItem,nBytes);
-  
-  if ((char*)aNext >= (char*)m_xWsp.aLatter())
-    return nullptr;
-    
-  return aNext;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set partition no                                                           */
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vPartitionNo(i8 iPartitionNo)
@@ -428,7 +428,7 @@ void ItemHeap::vResetUsed(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset used space                                                           */
+/* set used space (typically after a compaction)                              */
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vSetUsed(Item* aUptil)
 {

@@ -64,6 +64,7 @@ namespace Data
     ////////////////////////////////////////////////////////////////////////////
     // entry functions
   
+    Item* aGetEntry_Item(i8 i_Item);
     Item* aLeadEntry(void);
     Item* aLastEntry(void);
     void  vShowEntry(Item* pEntry);
@@ -96,7 +97,6 @@ namespace Data
     bool         bDeleteKey(KeyData* aDeleteKey, EntryBuffer* pToBuffer);
     void         vDump(void);
     EntryBuffer* pFirstChildBuffer(void);
-    Item*       aGetEntry_Item(i8 i_Item);
     Item*       aInsertKeyAbs(KeyWrk& xKeyWrk);
     Item*       aInsertKeyAbsL0(KeyWrk& xKeyWrk, Item** aaPriorEntry);
     static Item* aInsertKeyTree(KeyWrk& xKeyWrk,
