@@ -158,6 +158,7 @@ static Stz* aJL[]
 
 #include "Job_WaitCluster.hpp"
 #include "Job_WriteBuffer.hpp"
+#include "Job_WriteRecord.hpp"
 #include "Job_WriteRow.hpp"
 
 #include "JobList.hpp"
