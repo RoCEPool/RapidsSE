@@ -5,9 +5,43 @@
 " job_Export.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* export on this participant node (same as originator)                       */
+/*----------------------------------------------------------------------------*/
+: export_export ( pJob_Export --  )
+
+  params| pJob_Export |
+
+  0 locals| sTableNm  |
+  0 locals| pTable    |
+
+  "export_export: export on this node" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // initialise
+
+  // set path
+  pJob_Export job.pushPath task::dicStack.set
+
+  // set table dictionary
+  pJob_Export job.objectName@ to sTableNm
+  sTableNm pushTable assert
+
+  // get table
+  sTableNm find execute to pTable
+  //pTable pJob_Export Job_Export.table!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+;
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+/*----------------------------------------------------------------------------*/
 /* check if word is a valid table folder                                      */
 /*----------------------------------------------------------------------------*/
-: export.checkTable ( "<tableNm>" -- true | errorCode false )
+: export.checkTable ( sTableNm -- true | errorCode false )
 
   params| sTableNm |
 
@@ -50,7 +84,7 @@
   task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if we can remove the table
+  // check if we can export the table
    pJob_Export job.objectName@ export.checkTable
    not if
      pJob_Export
@@ -90,8 +124,10 @@
   <<am <DONE_REQ>
 ;
 
+////////////////////////////////////////////////////////////////////////////////
+
 /*----------------------------------------------------------------------------*/
-/* begin job on participating node                                            */
+/* begin Job_Export on participating node                                     */
 /*----------------------------------------------------------------------------*/
 : export_beg ( -- )
 
@@ -109,7 +145,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_Export on each participating node                              */
+/* execute Job_Export on participating node                                   */
 /*----------------------------------------------------------------------------*/
 : export_exe ( pJob_Export -- )
 
@@ -128,7 +164,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* end Job_Export                                                             */
+/* end Job_Export on participating node                                       */
 /*----------------------------------------------------------------------------*/
 : export_end ( -- )
 
@@ -144,7 +180,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
+/* cancel Job_Export on participating node                                    */
 /*----------------------------------------------------------------------------*/
 : export_can ( -- )
 

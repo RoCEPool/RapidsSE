@@ -284,24 +284,30 @@ void Engine::vKillPrev(void)
   // an assumption is that regions will be /SE_<node>
   
   void* aRegion;
-  s32 sRegionName;
+  s32 sRegionNm;
   int iFD;
   bool b;
   
   for (i8 i_Index=0; i_Index < gxArguments.m_nNodes; i_Index++) {
     
-    sRegionName.vSprint("%s_%s"_Stz,
+    sRegionNm.vSprint("%s_%s"_Stz,
                         gxArguments.m_sRegionPrefix.aChar(),
                         gxArguments.m_xNodes[i_Index].m_sNodeName.aChar());
     
-    if ( ! Region::bTest(sRegionName) )
+    if (! Region::bTest(sRegionNm) )
       continue;
+
+    if (gxArguments.m_bVerbose)
+      vTrace("vKillPrev: region %s exists\n"_Stz,sRegionNm.aStz());
     
-    if ( ! (aRegion = Region::aOpen(sRegionName,gxArguments.m_aRegionAddr,iFD)) )
+    if (! (aRegion = Region::aOpen(sRegionNm,gxArguments.m_aRegionAddr,iFD)))
       continue;
     
     AttachMap* pAttachMap = (AttachMap*)ahAdd<AttachMap*>((Object*)aRegion,C_SIZE_POOL_BUFFER);
     
+    if (gxArguments.m_bVerbose)
+      vTrace("vKillPrev: prev pid %lld\n"_Stz,pAttachMap->m_iPid);
+
     if (pAttachMap->m_iPid &&
         pAttachMap->m_iPid != Process::iGetPid() &&
         Process::bTestPid(pAttachMap->m_iPid)) {
@@ -315,7 +321,7 @@ void Engine::vKillPrev(void)
     
     Region::vClose(aRegion,iFD);
     
-    Region::vUnlink(sRegionName);
+    Region::vUnlink(sRegionNm);
   }
 }
 

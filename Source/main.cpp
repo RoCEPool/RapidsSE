@@ -11,6 +11,8 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
+  printf("sizeof(AttachMap) %d\n",sizeof(AttachMap));
+  
   // parse the command line arguments
   if ( ! gxArguments.bParse(argc,(Stz**)argv) )
     exit(EXIT_FAILURE);
