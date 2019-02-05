@@ -107,11 +107,8 @@ Job_SubExport::Job_SubExport(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORT,_FOOTER_);
     
-  m_pBufferQueue   = nullptr;
-  m_pPlanner       = nullptr;
-  m_pJobExport     = nullptr;
-  m_iSlot          = -1;
-  m_iPhrase        = -1;
+  m_pJobExport  = nullptr;
+  m_iSlot       = -1;
   
   _checkInitialised_(CN_JOB_SUBEXPORT);
   

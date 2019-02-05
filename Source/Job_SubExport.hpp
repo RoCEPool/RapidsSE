@@ -10,10 +10,7 @@ namespace Jobs
   {
   public:
     Job_Export*  m_pJobExport;     // export job that spawned this sub export
-    Queue*       m_pBufferQueue;   // buffer queue into which to push fetch buffers
-    Planner*     m_pPlanner;       // planner
     i8           m_iSlot;          // slot this sub truncate truncates
-    i8           m_iPhrase;        // phrase this sub fetch is working on
     
     // must be last
     Footer m_xFooter;

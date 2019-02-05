@@ -5,7 +5,6 @@
 
 namespace Jobs
 {
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_WriteRecord : public Job
   {

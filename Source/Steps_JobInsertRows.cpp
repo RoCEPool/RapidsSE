@@ -21,7 +21,6 @@ void Step::vAddSteps_JobInsertRows(void)
   
   vAddStep("job_subInserter.begin"_Stz,            &Step::vJob_SubInserterBegin);
   vAddStep("job_subInserter.end"_Stz,              &Step::vJob_SubInserterEnd);
-  
 }
 
 /*----------------------------------------------------------------------------*/
