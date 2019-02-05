@@ -47,7 +47,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vTraceJob(CN_JOB_COPYBUFFER);
   nJobs++; JobClass::vTraceJob(CN_JOB_DOCOL);
   nJobs++; JobClass::vTraceJob(CN_JOB_DUMPINDEX);
-  nJobs++; JobClass::vTraceJob(CN_JOB_EXPORT);
   nJobs++; JobClass::vTraceJob(CN_JOB_FETCHROWS);
   nJobs++; JobClass::vTraceJob(CN_JOB_GENERATE);
   nJobs++; JobClass::vTraceJob(CN_JOB_INGEST);
@@ -97,6 +96,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vTraceJob(CN_JOB_DROPSCHEMA);
   nJobs++; JobClass::vTraceJob(CN_JOB_DROPTABLE);
   nJobs++; JobClass::vTraceJob(CN_JOB_DROPTENANT);
+  nJobs++; JobClass::vTraceJob(CN_JOB_EXPORT);
   nJobs++; JobClass::vTraceJob(CN_JOB_INSERTROW);
   nJobs++; JobClass::vTraceJob(CN_JOB_INSERTTABLE);
   nJobs++; JobClass::vTraceJob(CN_JOB_LOADTABLE);
@@ -116,6 +116,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vTraceJob(CN_JOB_WRITEBUFFER);
 
   // child
+  nJobs++; JobClass::vTraceJob(CN_JOB_SUBEXPORT);
   nJobs++; JobClass::vTraceJob(CN_JOB_SUBFETCH);
   nJobs++; JobClass::vTraceJob(CN_JOB_SUBINGESTER);
   nJobs++; JobClass::vTraceJob(CN_JOB_SUBLOADER);
@@ -132,7 +133,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   vTrace("\n"_Stz);
   
   if (nJobs != CN_JOB_WRITEROW - CN_JOB__BEGUN + 1)
-    vTrace("\nWarning: Missing Jobs (%lld v. %lld\n\n"_Stz,
+    vTrace("\nWarning: Missing Jobs (%lld v. %lld)\n\n"_Stz,
            nJobs, CN_JOB_WRITEROW - CN_JOB__BEGUN + 1);
   
   return true;
