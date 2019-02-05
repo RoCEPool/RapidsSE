@@ -5,13 +5,111 @@
 " job_Export.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* check if word is a valid table folder                                      */
+/*----------------------------------------------------------------------------*/
+: export.checkTable ( "<tableNm>" -- true | errorCode false )
+
+  params| sTableNm |
+
+  // check in tables folder
+  checkInTables not if false exit then
+
+  // check if tableNm is a word in tables folder
+  sTableNm checkIsWord not if EC_NO_SUCH_TABLE false exit then
+
+  // push table folder
+  sTableNm pushTable assert
+
+  sTableNm checkIsTable not if popTable false exit then
+
+  // pop table folder
+  popTable
+
+  // assert in tables
+  assertInTables
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* check resources                                                            */
+/*----------------------------------------------------------------------------*/
+: export.checkResources ( pJob_Export -- )
+
+  >>am <Check_Resources>
+
+  params| pJob_Export  |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set task's dictionary stack from path in job
+  pJob_Export job.pushPath
+  task::dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we can remove the table
+   pJob_Export job.objectName@ export.checkTable
+   not if
+     pJob_Export
+     <ERROR_JOB>
+     !!am exit
+  then
+
+  <<am <Resources_Checked>
+;
+
+/*----------------------------------------------------------------------------*/
+/* release resources                                                          */
+/*----------------------------------------------------------------------------*/
+: export.releaseResources ( pJob_Export -- )
+
+  >>am <Release_Resources>
+
+  params| pJob_Export  |
+
+  <<am <Resources_Released>
+;
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
 /* export command request                                                     */
 /*----------------------------------------------------------------------------*/
 : export_req ( -- <R> )
 
   >>am <SEED_REQ>
 
+  job::this locals| pJob_Export |
+
+  // pJob_Export job.distribute
+
   <<am <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_Export job on each node                                        */
+/*----------------------------------------------------------------------------*/
+: export_exe ( pJob_Export -- )
+
+  >>am <SEED_EXE>
+
+  job::this locals| pJob_Export |
+
+
+
+
+  pJob_Export job.notice
+
+  // delete_completed_job
+
+  pJob_Export send_job__executed
+
+  <<am <DONE_EXE>
 ;
 
 /*============================================================================*/
