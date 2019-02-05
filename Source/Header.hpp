@@ -5,7 +5,7 @@
 
 namespace Correctness
 {
-  static const u8 C_MAGIC   = 0x4B696A4D; // MjiK
+  static const u4 C_MAGIC   = 0x4B696A4D; // MjiK
                               //K i j M
   
   class Header
