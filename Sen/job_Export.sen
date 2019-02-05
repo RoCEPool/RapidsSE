@@ -74,11 +74,10 @@
 ;
 
 
-
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* export command request                                                     */
+/* export command request on originating node                                 */
 /*----------------------------------------------------------------------------*/
 : export_req ( -- <R> )
 
@@ -86,21 +85,37 @@
 
   job::this locals| pJob_Export |
 
-  // pJob_Export job.distribute
+  pJob_Export job.distribute
 
   <<am <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_Export job on each node                                        */
+/* begin job on participating node                                            */
+/*----------------------------------------------------------------------------*/
+: export_beg ( -- )
+
+  >>am <SEED_BEG>
+
+  job::this locals| pJob_Export |
+
+  pJob_Export job.beginParticipant
+
+  pJob_Export export.checkResources
+
+  job::participantBegun
+
+  <<am <DONE_BEG>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_Export on each participating node                              */
 /*----------------------------------------------------------------------------*/
 : export_exe ( pJob_Export -- )
 
   >>am <SEED_EXE>
 
   job::this locals| pJob_Export |
-
-
 
 
   pJob_Export job.notice
@@ -110,6 +125,38 @@
   pJob_Export send_job__executed
 
   <<am <DONE_EXE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* end Job_Export                                                             */
+/*----------------------------------------------------------------------------*/
+: export_end ( -- )
+
+  >>am <SEED_END>
+
+  job::this locals| pJob_Export |
+
+  pJob_Export export.releaseResources
+
+  job::participantEnded
+
+  <<am <DONE_END>
+;
+
+/*----------------------------------------------------------------------------*/
+/* cancel job                                                                 */
+/*----------------------------------------------------------------------------*/
+: export_can ( -- )
+
+  >>am <SEED_CAN>
+
+  job::this locals| pJob_Export |
+
+  pJob_Export export.releaseResources
+
+  job::participantCancelled
+
+  <<am <DONE_CAN>
 ;
 
 /*============================================================================*/

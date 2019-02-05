@@ -11,29 +11,29 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Export =
 {
-  "Job_Export"_Stz,       // name of the job class
-  CN_JOB_EXPORT,          // class enum
-  JK_DIST2PC,             // job kind
-  "export table"_Stz,     // comment about the job
-  "export"_Stz,           // the prompt command
-  nullptr,                // the second word
-  nullptr,                // the _run task seed
-  "export_req"_Stz,       // the _req task seed
-  nullptr,                // the _rcv task seed
-  nullptr,                // the _exe task seed
-  nullptr,                // the _end task seed
-  nullptr,                // the _can task seed
-  false,                  // check resources?
-  false,                  // detached job?
-  false,                  // buffer attached?
-  JT_NONE,                // job trace
-  pJob_Export_pre,        // prompt pre-process function
-  vJob_Export_post,       // prompt post-process function
-  pJob_Export_new,        // job new function
-  vJob_Export_delete,     // job delete function
-  vJob_send,              // job pre-send function
-  vJob_recv,              // job post-receive function
-  vJob_Export_show,       // job show function
+  "Job_Export"_Stz,     // name of the job class
+  CN_JOB_EXPORT,        // class enum
+  JK_DIST2PC,           // job kind
+  "export table"_Stz,   // comment about the job
+  "export"_Stz,         // the prompt command
+  nullptr,              // the second word
+  nullptr,              // the _run task seed
+  "export_req"_Stz,     // the _req task seed
+  "export_beg"_Stz,     // the _rcv task seed
+  "export_exe"_Stz,     // the _exe task seed
+  "export_end"_Stz,     // the _end task seed
+  "export_can"_Stz,     // the _can task seed
+  false,                // check resources?
+  false,                // detached job?
+  false,                // buffer attached?
+  JT_NONE,              // job trace
+  pJob_Export_pre,      // prompt pre-process function
+  vJob_Export_post,     // prompt post-process function
+  pJob_Export_new,      // job new function
+  vJob_Export_delete,   // job delete function
+  vJob_send,            // job pre-send function
+  vJob_recv,            // job post-receive function
+  vJob_Export_show,     // job show function
   
   // help and example
   true,
