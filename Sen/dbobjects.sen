@@ -4,6 +4,7 @@
 
 "-dbObjects.sen" .verbose
 
+"db_folder.sen" include
 "db_table.sen" include
 "db_partition.sen" include
 "db_index.sen" include
