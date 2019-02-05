@@ -31,8 +31,8 @@ JobClass xJobClass_Export =
   vJob_Export_post,       // prompt post-process function
   nullptr,                // job new function
   vJob_Export_delete,     // job delete function
-  nullptr,                // job pre-send function
-  nullptr,                // job post-receive function
+  vJob_send,              // job pre-send function
+  vJob_recv,              // job post-receive function
   vJob_Export_show,       // job show function
   
   // help and example
