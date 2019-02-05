@@ -75,6 +75,7 @@ namespace Steps
     static void vAddSteps_JobCat(void);
     static void vAddSteps_JobClass(void);
     static void vAddSteps_JobCreateIndex(void);
+    static void vAddSteps_JobExport(void);
     static void vAddSteps_JobFetchRows(void);
     static void vAddSteps_JobGenData(void);
     static void vAddSteps_JobGeneric(void);
@@ -98,6 +99,7 @@ namespace Steps
     static void vAddSteps_JobSubPurger(void);
     static void vAddSteps_JobTruncateTable(void);
     static void vAddSteps_JobWriteBuffer(void);
+    static void vAddSteps_JobWriteRecord(void);
     static void vAddSteps_JobWriteRow(void);
   
     static void vAddSteps_Locals(void);

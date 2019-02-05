@@ -10,6 +10,8 @@ namespace Jobs
                      public JobFilePath
   {
   public:
+  
+    File m_oCsvFile; // output csv file
     
     // must be last
     Footer m_xFooter;
