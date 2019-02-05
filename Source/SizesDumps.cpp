@@ -165,6 +165,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_VISUALIZEINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_WAITCLUSTER
   /*    */ &Dump::vDummy,           // CN_JOB_WRITEBUFFER
+  /*    */ &Dump::vDummy,           // CN_JOB_WRITERECORD
   /*    */ &Dump::vDummy,           // CN_JOB_WRITEROW
 
   /*    */ &JobList::vDump,            // CN_JOBLIST
@@ -304,7 +305,7 @@ i8 giClassSize[]
   /* 34 */ sizeof(DicStack),           // CN_DICSTACK
   /* 35 */ sizeof(Dir),                // CN_DIR
   
-  /* 36 */ sizeof(Item),              // CN_ENTRY
+  /* 36 */ sizeof(Item),               // CN_ENTRY
   /* 37 */ sizeof(EntryBuffer),        // CN_ENTRYBUFFER
   
   /*    */ sizeof(FetchBuffer),        // CN_FETCHBUFFER
@@ -329,7 +330,7 @@ i8 giClassSize[]
   /*    */ sizeof(IoChunk),            // CN_IOCHUNK
   /*    */ sizeof(IoCopy),             // CN_IOCOPY
   /* 57 */ sizeof(Item),               // CN_ITEM
-  /* 58 */ sizeof(ItemHeap),         // CN_ITEMBUFFER
+  /* 58 */ sizeof(ItemHeap),           // CN_ITEMHEAP
   
   /*    */ sizeof(Job__Begun),         // CN_JOB__BEGUN
   /*    */ sizeof(Job__Cancel),        // CN_JOB__CANCEL
@@ -401,7 +402,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Start),          // CN_JOB_START
   /*    */ sizeof(Job_StartCluster),   // CN_JOB_STARTCLUSTER
   /*    */ sizeof(Job_Status),         // CN_JOB_STATUS
-  /*    */ 0,       // CN_JOB_SUBEXPORT
+  /*    */ sizeof(Job_SubExport),      // CN_JOB_SUBEXPORT
   /*    */ sizeof(Job_SubFetch),       // CN_JOB_SUBFETCH
   /*    */ sizeof(Job_SubIngester),    // CN_JOB_SUBINGESTER
   /*    */ sizeof(Job_SubInserter),    // CN_JOB_SUBINSERTER
@@ -416,14 +417,15 @@ i8 giClassSize[]
   /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VISUALIZEINDEX
   /*    */ sizeof(Job_WaitCluster),    // CN_JOB_WAITCLUSTER
   /*    */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
+  /*    */ 0,                          // CN_JOB_WRITERECORD
   /*    */ sizeof(Job_WriteRow),       // CN_JOB_WRITEROW
   
-  /*    */ sizeof(JobList),               // CN_JOBLIST
+  /*    */ sizeof(JobList),            // CN_JOBLIST
   
   /* 59 */ sizeof(Heap), // correct    // CN_JUMBOPERSISTENT
   /* 60 */ sizeof(Heap), // correct    // CN_JUMBOTRANSIENT
   
-  /* 61 */ sizeof(KeyData),                // CN_KEY
+  /* 61 */ sizeof(KeyData),            // CN_KEY
   /* 64 */ sizeof(KeyWrk),             // CN_KEYWRK
   
   /* 65 */ sizeof(Heap), // correct    // CN_LARGEPERSISTENT
@@ -490,7 +492,7 @@ i8 giClassSize[]
   /*    */ sizeof(TaskList),           // CN_TASKLIST
   /*134 */ sizeof(TaskQueue),          // CN_TASKQUEUE
   /*137 */ sizeof(Thread),             // CN_THREAD
-  /*    */ sizeof(ThreadVec),       // CN_THREADVEC
+  /*    */ sizeof(ThreadVec),          // CN_THREADVEC
   /*141 */ sizeof(Time),               // CN_TIME
   /*142 */ sizeof(Timer),              // CN_TIMER
   /*143 */ sizeof(Token),              // CN_TOKEN
@@ -667,6 +669,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_VISUALIZEINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WAITCLUSTER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEBUFFER
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITERECORD
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEROW
   
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOBLIST

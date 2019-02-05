@@ -161,6 +161,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_VISUALIZEINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_WAITCLUSTER
   /*    */ &Finalize::vUndefined,         // CN_JOB_WRITEBUFFER
+  /*    */ &Finalize::vUndefined,         // CN_JOB_WRITERECORD
   /*    */ &Finalize::vUndefined,         // CN_JOB_WRITEROW
   
   /*    */ &Finalize::vUndefined,         // CN_JOBLIST

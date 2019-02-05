@@ -28,9 +28,10 @@
 
   // get table
   sTableNm find execute to pTable
-  //pTable pJob_Export Job_Export.table!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //pTable pJob_Export Job_Export.table!
 
 ;
 

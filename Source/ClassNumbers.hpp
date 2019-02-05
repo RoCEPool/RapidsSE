@@ -164,6 +164,7 @@ enum eCN : u2 // Class Number
   /* 134 0x86    70728B Heap:L */ CN_JOB_VISUALIZEINDEX,
   /* 135 0x87    70728B Heap:L */ CN_JOB_WAITCLUSTER,
   /* 136 0x88    70784B Heap:L */ CN_JOB_WRITEBUFFER,
+  /*                           */ CN_JOB_WRITERECORD,
   /* 137 0x89   118824B Heap:L */ CN_JOB_WRITEROW,
   /* 138 0x8A      168B Heap:S */ CN_JOBLIST,
   /* 139 0x8B      232B Heap:I */ CN_JUMBOPERSISTENT,
@@ -411,6 +412,7 @@ static Stz* aCN[]
   /* 134 0x86 */ "JOB_VISUALIZEINDEX"_Stz,  // CN_JOB_VISUALIZEINDEX
   /* 135 0x87 */ "JOB_WAITCLUSTER"_Stz,     // CN_JOB_WAITCLUSTER
   /* 136 0x88 */ "JOB_WRITEBUFFER"_Stz,     // CN_JOB_WRITEBUFFER
+  /*          */ "JOB_WRITERECORD"_Stz,     // CN_JOB_WRITERECORD
   /* 137 0x89 */ "JOB_WRITEROW"_Stz,        // CN_JOB_WRITEROW
   /* 138 0x8A */ "JOBS"_Stz,                // CN_JOBLIST
   /* 139 0x8B */ "JUMBOPERSISTENT"_Stz,     // CN_JUMBOPERSISTENT
