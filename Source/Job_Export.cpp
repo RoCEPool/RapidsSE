@@ -29,7 +29,7 @@ JobClass xJobClass_Export =
   JT_NONE,                // job trace
   pJob_Export_pre,        // prompt pre-process function
   vJob_Export_post,       // prompt post-process function
-  nullptr,                // job new function
+  pJob_Export_new,        // job new function
   vJob_Export_delete,     // job delete function
   vJob_send,              // job pre-send function
   vJob_recv,              // job post-receive function
@@ -146,6 +146,25 @@ bool Job_Export::bPopulateJob(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
   
+  i8 iNumTokens;
+  
+  ASSERT(pTokenVec->pGet(0)->bSame("export"_Stz));
+  
+  // get number of items in token vector
+  iNumTokens = pTokenVec->nItems();
+  
+  // there should be 3 tokens
+  if (iNumTokens != 3)
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // set the table name
+  m_sObjectName = pTokenVec->pGet(1)->aText();
+
+  // set the file name
+  m_sFilePath = pTokenVec->pGet(2)->aText();
+
   return true;
 }
 
@@ -182,6 +201,16 @@ Job* Jobs::pJob_Export_pre(Interface::Session* pSession)
 {
   Job_Export* pJob_Export = new Job_Export(pSession);
   
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+
+  bool bResult = pJob_Export->bPopulateJob(pTokenVec);
+
+  if ( !bResult) {
+    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_Export->m_bHasError = true;
+    pJob_Export->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+  }
+
   return pJob_Export;
 }
 
@@ -191,8 +220,16 @@ Job* Jobs::pJob_Export_pre(Interface::Session* pSession)
 void Jobs::vJob_Export_post(Interface::Session* pSession, Job* pJob)
 {
   //Job_Export* pJob_Export = _pJob_Export(pJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* job new function                                                           */
+/*----------------------------------------------------------------------------*/
+Job* Jobs::pJob_Export_new(Job* pArg)
+{
+  Job_Export* pJob_Export = new Job_Export(nullptr);
   
-  vTrace("Warning: export not yet supported\n"_Stz);
+  return pJob_Export;
 }
 
 /*----------------------------------------------------------------------------*/

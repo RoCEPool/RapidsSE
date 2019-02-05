@@ -631,6 +631,7 @@ Job* Jobs::pJob_CreateTable_pre(Interface::Session* pSession)
     pJob_CreateTable->m_bHasError = true;
     pJob_CreateTable->m_xNode[iNode].m_eErrorCode = eError;
   }
+  
   return pJob_CreateTable;
 }
 

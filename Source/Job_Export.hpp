@@ -6,7 +6,8 @@
 namespace Jobs
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_Export : public Job
+  class Job_Export : public Job,
+                     public JobFilePath
   {
   public:
     
@@ -37,6 +38,7 @@ namespace Jobs
   
   Job* pJob_Export_pre(Interface::Session* pSession);
   void vJob_Export_post(Interface::Session* pSession, Job* pJob);
+  Job* pJob_Export_new(Job* pArg);
   void vJob_Export_delete(Interface::Session* pSession, Job* pJob);
   void vJob_Export_show(Job* pJob);
   
