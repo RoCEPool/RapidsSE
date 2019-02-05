@@ -93,6 +93,19 @@ void MemLib::vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compare val1 to val2                                                       */
+/*----------------------------------------------------------------------------*/
+i8 MemLib::iCompare(const void* pVal1, const void* pVal2, i8 nBytes)
+{
+  i8 iCmp = memcmp(pVal1,pVal2,nBytes);
+  
+  if (gpAttachMap) {
+    gpAttachMap->m_oStatistics.Memory.m_iCompareTotal += nBytes;
+  }
+  
+  return iCmp;
+}
+/*----------------------------------------------------------------------------*/
 /* free a block of memory                                                     */
 /*----------------------------------------------------------------------------*/
 void MemLib::vFreeBlock(void* aBlock, i8 nBytes)
@@ -230,6 +243,7 @@ void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 void MemLib::vReset(void)
 {
   gpAttachMap->m_oStatistics.Memory.m_iCopyTotal = 0;
+  gpAttachMap->m_oStatistics.Memory.m_iCompareTotal = 0;
   gpAttachMap->m_oStatistics.Memory.m_iMoveTotal = 0;
   gpAttachMap->m_oStatistics.Memory.m_iScribbleTotal = 0;
   gpAttachMap->m_oStatistics.Memory.m_iSetTotal  = 0;
@@ -289,6 +303,9 @@ void MemLib::vStatistics(void)
       vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
     }
   }
+  
+  Magnitudes::vByteMag(gpAttachMap->m_oStatistics.Memory.m_iCompareTotal, sByteMag);
+  vTrace("MemLib::vCompare() total %s\n"_Stz,sByteMag.aStz());
   
   Magnitudes::vByteMag(gpAttachMap->m_oStatistics.Memory.m_iMoveTotal, sByteMag);
   vTrace("MemLib::vMove() total %s\n"_Stz,sByteMag.aStz());

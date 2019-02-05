@@ -76,6 +76,7 @@ namespace Measurement
     i8 m_iaZero[CN_ENUMS];
   
     i8 m_iCopyTotal;
+    i8 m_iCompareTotal;
     i8 m_iMoveTotal;
     i8 m_iScribbleTotal;
     i8 m_iSetTotal;
