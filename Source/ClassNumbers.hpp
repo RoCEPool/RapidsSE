@@ -461,7 +461,7 @@ static Stz* aCN[]
   /* 178 0xB2 */ "SCHEMATEST"_Stz,          // CN_SCHEMATEST
   /* 181 0xB5 */ "SEPROMPT"_Stz,            // CN_SEPROMPT
   /* 182 0xB6 */ "SESSION"_Stz,             // CN_SESSION
-  /* 182 0xB6 */ "SESSION"_Stz,             // CN_SESSIONSTATE
+  /* 182 0xB6 */ "SESSIONSTATE"_Stz,        // CN_SESSIONSTATE
   /* 183 0xB7 */ "SINCE"_Stz,               // CN_SINCE
   /* 184 0xB8 */ "SKIPLIST"_Stz,            // CN_SKIPLIST
   /* 185 0xB9 */ "SKIPNODE"_Stz,            // CN_SKIPNODE
