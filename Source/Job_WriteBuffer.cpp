@@ -52,7 +52,7 @@ JobClass xJobClass_WriteBuffer =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_WriteBuffer_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WriteRow_class;
+  *pNextFun = (pFUN*)pJob_WriteRecord_class;
   
   return &xJobClass_WriteBuffer;
 }

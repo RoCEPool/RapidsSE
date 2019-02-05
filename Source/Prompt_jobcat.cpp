@@ -125,6 +125,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vTraceJob(CN_JOB_SUBTRUNCATE);
   
   // grankid
+  nJobs++; JobClass::vTraceJob(CN_JOB_WRITERECORD);
   nJobs++; JobClass::vTraceJob(CN_JOB_WRITEROW);
 
   //other

@@ -46,7 +46,7 @@ JobClass xJobClass_WriteRecord =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_WriteRecord_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)nullptr;
+  *pNextFun = (pFUN*)pJob_WriteRow_class;
   
   return &xJobClass_WriteRecord;
 }

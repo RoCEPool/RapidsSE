@@ -168,7 +168,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_WRITERECORD
   /*    */ &Dump::vDummy,           // CN_JOB_WRITEROW
 
-  /*    */ &JobList::vDump,            // CN_JOBLIST
+  /*    */ &JobList::vDump,         // CN_JOBLIST
   
   /* 59 */ &Heap::vDump,            // CN_JUMBOPERSISTENT
   /* 60 */ &Heap::vDump,            // CN_JUMBOTRANSIENT
@@ -417,7 +417,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VISUALIZEINDEX
   /*    */ sizeof(Job_WaitCluster),    // CN_JOB_WAITCLUSTER
   /*    */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
-  /*    */ 0,                          // CN_JOB_WRITERECORD
+  /*    */ sizeof(Job_WriteRecord),    // CN_JOB_WRITERECORD
   /*    */ sizeof(Job_WriteRow),       // CN_JOB_WRITEROW
   
   /*    */ sizeof(JobList),            // CN_JOBLIST
