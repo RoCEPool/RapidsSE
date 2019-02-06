@@ -599,6 +599,7 @@
 
   // job SubExporter
   static void vJob_SubExporterSpawn(Tasks::MP_Task mpTask);
+  static void vJob_SubExporterExportJobFetch(Tasks::MP_Task mpTask);
 
   // job SubFetch
   static void vJob_SubFetchBufferQueueFetch(Tasks::MP_Task mpTask);

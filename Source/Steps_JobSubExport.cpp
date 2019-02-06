@@ -11,8 +11,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobSubExport(void)
 {
-  vAddStep("Job_subExporter::spawn"_Stz,  &Step::vJob_SubExporterSpawn);
+  vAddStep("Job_subExporter::spawn"_Stz,     &Step::vJob_SubExporterSpawn);
 
+  vAddStep("job_subExporter.exportJob@"_Stz, &Step::vJob_SubExporterExportJobFetch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,6 +50,24 @@ void Step::vJob_SubExporterSpawn(MP_Task mpTask)
   pJob_SubExport->vSeed(SS_SEED_RUN);
 
   IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubExport,SS_SEED_RUN));
+  
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* job_subExporter.exportJob@ -- get export job                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_SubExporterExportJobFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_SubExporterSpawn"_Stz);
+  
+  Object* pPtrJob_SubExport;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubExport) )
+    THROW_INVALID_DSTACK("Job_subExporter.exportJob@"_Stz);
+  Job_SubExport* pJob_SubExport = _pJob_SubExport(pPtrJob_SubExport);
+  
+  mpTask->m_pDataStack->vPushPointer(pJob_SubExport->m_pJobExport);
   
   EXIT();
 }
