@@ -24,8 +24,18 @@ PromptNote mPromptNote_activityMap (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_activityMap(SePrompt* pPrompt)
 {
-  ActivityMap::vWriteCsv();
+  TokenVec* pTokenVec = pPrompt->pTknVec();
+  i8 iNumTokens = pTokenVec->nItems();
   
+  if (iNumTokens > 1 && pTokenVec->pGet(1)->eToken() == TN_NAME) {
+    if (pTokenVec->pGet(1)->bSame("short"_Stz))
+      ActivityMap::vWriteCsv(true);
+    else
+      ActivityMap::vWriteCsv(false);
+  }
+  else
+    ActivityMap::vWriteCsv(false);
+
   return true;
 }
 

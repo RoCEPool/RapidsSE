@@ -406,13 +406,13 @@ void ActivityMap::vOpenBySE(bool bStarting)
 /*----------------------------------------------------------------------------*/
 /* write ActivityMap to csv file                                              */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vWriteCsv()
+void ActivityMap::vWriteCsv(bool bShortForm)
 {
 #ifdef WITH_ACTIVITY_MAP
   if (! gpActivityMap)
     return;
   
-  gpActivityMap->vWriteToFile();
+  gpActivityMap->vWriteToFile(bShortForm);
 #endif
 }
 
@@ -592,7 +592,7 @@ void ActivityMap::vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs)
 /*----------------------------------------------------------------------------*/
 /* write ActivityMap to a csv file                                            */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vWriteToFile(void)
+void ActivityMap::vWriteToFile(bool bShortForm)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
   
@@ -618,7 +618,7 @@ void ActivityMap::vWriteToFile(void)
   vFindRange_NL(i_MinMark,i_MaxMark);
   
   ActivityMark* pActivityMark = &m_oaMark[i_MinMark % m_nMarks];
-  pActivityMark->vDump(pActivityFile,
+  pActivityMark->vDump(pActivityFile, bShortForm,
                        0,nullptr,iTotalDelta);
   
   for (i8 i_Mark = i_MinMark + 1; i_Mark <= i_MaxMark; i_Mark++) {
@@ -628,7 +628,7 @@ void ActivityMap::vWriteToFile(void)
     if (-1 == pActivityMark->m_iMark)
       break;
     
-    pActivityMark->vDump(pActivityFile,
+    pActivityMark->vDump(pActivityFile, bShortForm,
                          i_Mark,
                          &m_oaMark[(i_Mark - 1) % m_nMarks],
                          iTotalDelta);

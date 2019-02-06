@@ -21,7 +21,7 @@ am "\n##########################################################################
 print "exporting nation.csv..." ;
 export nation "/tmp/nation_export.csv" ;
 
-activityMap;
+activityMap short;
 
 /*============================================================================*/
 /* end                                                                        */

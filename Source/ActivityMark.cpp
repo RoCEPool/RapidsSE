@@ -121,7 +121,7 @@ void ActivityMark::vWrite(i8 iJobId, char* aMark)
 /*----------------------------------------------------------------------------*/
 /* dump to csv file                                                           */
 /*----------------------------------------------------------------------------*/
-void ActivityMark::vDump(File* pFile,
+void ActivityMark::vDump(File* pFile, bool bShortForm,
                          i8 i_Mark, ActivityMark* pPrevMark, i8& iTotalDelta)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
@@ -136,15 +136,22 @@ void ActivityMark::vDump(File* pFile,
   if (StrLib::bSame(m_caMark,"delta reset"))
     iTotalDelta = 0;
   
-  pFile->vPrint("%lld,%lld,%lld,%lld,%s,%lld,%s\n"_Stz,
-                m_iMark,
-                m_iTick,
-                iDeltaUs,
-                iTotalDelta,
-                
-                m_caNode,
-                m_iJobId,
-                m_caMark);
+  if (bShortForm)
+    pFile->vPrint("%lld,%s,%03lld,%s\n"_Stz,
+                  m_iMark,
+                  m_caNode,
+                  m_iJobId,
+                  m_caMark);
+  else
+    pFile->vPrint("%lld,%lld,%lld,%lld,%s,%lld,%s\n"_Stz,
+                  m_iMark,
+                  m_iTick,
+                  iDeltaUs,
+                  iTotalDelta,
+                  
+                  m_caNode,
+                  m_iJobId,
+                  m_caMark);
   
 }
 

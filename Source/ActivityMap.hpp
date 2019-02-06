@@ -43,7 +43,7 @@ namespace Measurement
     static void vMonitorPortrait(s48K& sPortrait);
     static void vOpenByApi(void);
     static void vOpenBySE(bool bStarting);
-    static void vWriteCsv();
+    static void vWriteCsv(bool bShortForm);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -58,7 +58,7 @@ namespace Measurement
     i8   iSize(void);
     void vWriteMark(i8 iJobId, Stz* aFormat, ...);
     void vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs);
-    void vWriteToFile(void);
+    void vWriteToFile(bool bShortForm);
 
     Footer* aFooter(void);
   };
