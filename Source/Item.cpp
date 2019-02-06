@@ -213,6 +213,14 @@ Item* Item::aRefdItem(void)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this item                                             */
 /*----------------------------------------------------------------------------*/
+i8 Item::nSizeData(void)
+{
+  return (i8)(m_nSizeItem_WithoutOffsets - sizeof(Item));
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size in bytes of this item                                             */
+/*----------------------------------------------------------------------------*/
 i8 Item::nSizeItem_WithoutOffsets(void)
 {
   return (i8)m_nSizeItem_WithoutOffsets;
