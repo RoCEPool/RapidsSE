@@ -15,7 +15,7 @@ JobClass xJobClass_SubExport =
   CN_JOB_SUBEXPORT,          // class enum
   JK_CHILD,                  // job kind
   "sub-export rows"_Stz,     // comment about the job
-  nullptr,                   // the prompt command
+  "subExport"_Stz,           // the prompt command
   nullptr,                   // the second word
   "subExport_run"_Stz,       // the _run task seed
   nullptr,                   // the _req task seed
@@ -36,7 +36,7 @@ JobClass xJobClass_SubExport =
   vJob_SubExport_show,       // job show function
   
   // help and example
-  false,
+  true,
   "<none>"_Stz,
   "<none>"_Stz,
 
@@ -48,7 +48,7 @@ JobClass xJobClass_SubExport =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_SubExport_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_SubIngester_class;
+  *pNextFun = (pFUN*)pJob_SubFetch_class;
   
   return &xJobClass_SubExport;
 }

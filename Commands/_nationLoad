@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 markjob export on;
+markjob subExport on;
 markjob;
 
 markres file on;

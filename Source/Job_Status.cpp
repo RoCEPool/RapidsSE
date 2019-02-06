@@ -48,7 +48,7 @@ JobClass xJobClass_Status =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Status_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_SubFetch_class;
+  *pNextFun = (pFUN*)pJob_SubExport_class;
   
   return &xJobClass_Status;
 }
