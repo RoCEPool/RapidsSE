@@ -913,8 +913,9 @@ void Step::vJobPostRecv(MP_Task mpTask)
     (*pJobClass->m_fpRecv)(pJob);
   
   if (pJob->m_bMark)
-    ActivityMap::vMark(pJob->iJobId(),"PostRecv job: %s"_Stz,
-                       aCN[pJob->eClass()]);
+    ActivityMap::vMark(pJob->iJobId(),"PostRecv: %s %p"_Stz,
+                       aCN[pJob->eClass()],
+                       pJob);
   EXIT();
 }
 
@@ -936,8 +937,10 @@ void Step::vJobPreSend(MP_Task mpTask)
     (*pJobClass->m_fpSend)(pJob);
   
   if (pJob->m_bMark)
-    ActivityMap::vMark(pJob->iJobId(),"PreSend job: %s"_Stz,
-                       aCN[pJob->eClass()]);
+    ActivityMap::vMark(pJob->iJobId(),
+                       "PreSend: %s %p"_Stz,
+                       aCN[pJob->eClass()],
+                       pJob);
 
   EXIT();
 }
@@ -993,8 +996,10 @@ void Step::vJobRemoveOriginator(MP_Task mpTask)
   }
   
   if (pJob->m_bMark) {
-    ActivityMap::vMark(pJob->m_iJobId,"Removed %s from Originator List"_Stz,
-                       aCN[pJob->eClass()]);
+    ActivityMap::vMark(pJob->m_iJobId,
+                       "Removed from Originator List: %s %p"_Stz,
+                       aCN[pJob->eClass()],
+                       pJob);
     gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
   }
   
@@ -1029,8 +1034,9 @@ void Step::vJobRemoveParticipant(MP_Task mpTask)
   }
   
   if (pJob->m_bMark) {
-    ActivityMap::vMark(pJob->m_iJobId,"Removed %s from Participant List"_Stz,
-                       aCN[pJob->eClass()]);
+    ActivityMap::vMark(pJob->m_iJobId,"Removed from Participant List: "_Stz,
+                       aCN[pJob->eClass()],
+                       pJob);
     gpAttachMap->m_pParticipatingJobs->vMarkContents(pJob->m_iJobId);
   }
   

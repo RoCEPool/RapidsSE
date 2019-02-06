@@ -37,6 +37,33 @@ void Footer::vAssertFooter(void) const
 }
 
 /*----------------------------------------------------------------------------*/
+/* set footer                                                                 */
+/*----------------------------------------------------------------------------*/
+void Footer::vSetFooter(void)
+{
+  m_uFooter = C_FOOTER;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint the header into readable form                                       */
+/*----------------------------------------------------------------------------*/
+void Footer::vSprint(Stz* szHeader)
+{
+  StrLib::vSprint(szHeader,
+                  "Footer: %c%c%c%c%c%c%c%c (%s)"_Stz,
+                  m_caFooter[0],
+                  m_caFooter[1],
+                  m_caFooter[2],
+                  m_caFooter[3],
+                  m_caFooter[4],
+                  m_caFooter[5],
+                  m_caFooter[6],
+                  m_caFooter[7],
+                  bValidFooter() ? "valid footer" : "not-valid footer"
+                  );
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for valid footer                                                      */
 /*----------------------------------------------------------------------------*/
 bool Footer::bValidFooter(void)
@@ -45,14 +72,6 @@ bool Footer::bValidFooter(void)
     return true;
   else
     return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set footer                                                                 */
-/*----------------------------------------------------------------------------*/
-void Footer::vSetFooter(void)
-{
-  m_uFooter = C_FOOTER;
 }
 
 /*============================================================================*/

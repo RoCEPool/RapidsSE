@@ -23,6 +23,7 @@ namespace Correctness
    ~Header(void) noexcept(false);
 
     void vAssertHeader(void);
+    void vSprint(Stz* szHeader);
     bool bValidMagic(void);
     
   /*--------------------------------------------------------------------------*/

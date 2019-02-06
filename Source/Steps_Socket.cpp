@@ -273,6 +273,15 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     return;
   }
   
+  if (gpAttachMap->m_bMarkResource[SR_SOCKET] ||
+      gpAttachMap->m_bMarkResourceAll) {
+    s256 sHeader;
+    ((Header*)caObjectHeader)->vSprint(sHeader);
+    ActivityMap::vMark(-SR_SOCKET,
+                       "Recv header: %s"_Stz,
+                       sHeader.aStz());
+  }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the details about the received object
   
@@ -305,9 +314,20 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pJob,eClass,aCN[eClass],nObjectSize);
     
+    if (gpAttachMap->m_bMarkResource[SR_SOCKET] ||
+        gpAttachMap->m_bMarkResourceAll) {
+      s256 sFooter;
+      Footer* pFooter = aAdd<Footer*>(pJob,nObjectSize-sizeof(Footer));
+      pFooter->vSprint(sFooter);
+      ActivityMap::vMark(-SR_SOCKET,
+                         "Recv footer: %s"_Stz,
+                         sFooter.aStz());
+    }
     if (pJob->m_bMark)
-      ActivityMap::vMark(pJob->m_iJobId,"recv %s from socket %llx"_Stz,
-                         aCN[eClass],pSocket);
+      ActivityMap::vMark(pJob->m_iJobId,"Recv: %s %p socket %llx"_Stz,
+                         aCN[eClass],
+                         pJob,
+                         pSocket);
                          
     mpTask->m_pDataStack->vPushPointer(pJob);
     mpTask->m_pDataStack->vPushBool(true);
@@ -542,8 +562,10 @@ void Step::vSocketSendObject(MP_Task mpTask)
   if (_bIsValidJob(eClass)) {
     Job* pJob = _pJob(pObject);
     if (pJob->m_bMark)
-      ActivityMap::vMark(pJob->m_iJobId,"send %s to socket %llx"_Stz,
-                         aCN[eClass],pSocket);
+      ActivityMap::vMark(pJob->m_iJobId,"Send: %s %p socket %llx"_Stz,
+                         aCN[eClass],
+                         pJob,
+                         pSocket);
   }
 
   RASSERT(_bIsValidJob(eClass) || CN_ENTRYBUFFER == eClass);

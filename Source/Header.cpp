@@ -38,11 +38,28 @@ Header::~Header(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* ASSERT footer                                                              */
+/* ASSERT header                                                              */
 /*----------------------------------------------------------------------------*/
 void Header::vAssertHeader(void)
 {
   ASSERT(bValidMagic());
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint the header into readable form                                       */
+/*----------------------------------------------------------------------------*/
+void Header::vSprint(Stz* szHeader)
+{
+  StrLib::vSprint(szHeader,
+                  "Magic: %c%c%c%c Class %03d %s (%s)"_Stz,
+                  m_caMagic[0],
+                  m_caMagic[1],
+                  m_caMagic[2],
+                  m_caMagic[3],
+                  m_eClass,
+                  aCN[m_eClass],
+                  bValidMagic() ? "valid magic" : "not-valid magic"
+                  );
 }
 
 /*----------------------------------------------------------------------------*/

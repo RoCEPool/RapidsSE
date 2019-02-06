@@ -20,8 +20,9 @@ namespace Correctness
     ~Footer(void) noexcept(false);
     
     void vAssertFooter(void) const;
-    bool bValidFooter(void);
     void vSetFooter(void);
+    void vSprint(Stz* szHeader);
+    bool bValidFooter(void);
   };
 }
 
