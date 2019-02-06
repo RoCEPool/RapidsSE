@@ -256,10 +256,11 @@ void ActivityMap::vMarkJob(Jobs::Job* pJob,
   s4K szCombinedFormat;
   
   StrLib::vSprint(szCombinedFormat,
-                  "%s: %s %p %s"_Stz,
+                  "%s: %s.%03lld %p %s"_Stz,
                   szLeadingText,
                   
                   aCN[pJob->eClass()],
+                  pJob->iJobId(),
                   pJob,
                   
                   szFormat
