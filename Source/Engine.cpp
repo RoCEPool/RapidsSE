@@ -45,6 +45,10 @@ void Engine::vMainEntry(void)
   vKillPrev();
   
   vOpenPool();
+  
+  gpAttachMap->m_bMarkResource[SR_SOCKET] = true;
+  gpAttachMap->m_bMarkResource[SR_FILE] = true;
+  gpAttachMap->m_bMarkResource[SR_DIR] = true;
 
   vOpenTraceFile();
   

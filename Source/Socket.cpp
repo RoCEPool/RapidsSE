@@ -175,6 +175,10 @@ void Socket::vStatistics(void)
   vTrace("  nSocketSendBytes  %s\n"_Stz,sByteMag.aStz());
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//                              tcp/ip support                               //
+///////////////////////////////////////////////////////////////////////////////
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -255,6 +259,8 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
   }
   
   if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncSocketOpen();
+  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_SOCKET])
+    ActivityMap::vMark(-2,"SysRes: Socket accepted cient"_Stz);
 
   SysCall.vSuccess();
   return true;
@@ -286,6 +292,8 @@ bool Socket::bClose(SysCall& SysCall)
   m_iSocketId = -1;
   
   if (gpAttachMap) gpAttachMap->m_oResourceTracker.vDecSocketOpen();
+  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_SOCKET])
+    ActivityMap::vMark(-2,"SysRes: Socket closed"_Stz);
 
   SysCall.vSuccess();
   return true;
@@ -349,6 +357,9 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   }
   
   if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncSocketOpen();
+  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_SOCKET])
+    ActivityMap::vMark(-2,"SysRes: Socket connected to server %s %d"_Stz,
+                       sAddr,iPort);
 
   SysCall.vSuccess();
   return true;
@@ -407,6 +418,9 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
   }
   
   if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncSocketOpen();
+  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_SOCKET])
+    ActivityMap::vMark(-2,"SysRes: Socket created listening socket : %d"_Stz,
+                       iPort);
 
   SysCall.vSuccess();
   return true;
@@ -471,6 +485,9 @@ bool Socket::bRecvBytes(void* pWS, i8 nBytes, SysCall& SysCall)
     nSoFar += nRecvBytes;
     nMore -= nRecvBytes;
     gpAttachMap->m_oStatistics.Socket.m_nRecvBytes += nRecvBytes;
+    if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_SOCKET])
+      ActivityMap::vMark(-2,"SysRes: Socket received %lld bytes"_Stz,
+                         nRecvBytes);
 
     //vTrace("Bytes received: (%lld) %lld\n"_Stz, nBytes, nSoFar);
   }
@@ -496,6 +513,10 @@ bool Socket::bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall)
   }
   
   gpAttachMap->m_oStatistics.Socket.m_nSendBytes += nSentBytes;
+  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_SOCKET])
+    ActivityMap::vMark(-2,"SysRes: Socket set %lld bytes"_Stz,
+                      nSentBytes);
+
   if (nSentBytes == nBytes) {
     SysCall.vSuccess();
     return true;
@@ -589,6 +610,8 @@ bool Socket::bWriteVch(Stz* aChar, SysCall& SysCall)
   return true;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//                                udp support                                //
 ///////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/

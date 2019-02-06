@@ -92,6 +92,8 @@ Mutex::Mutex()
 
   if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncMutexOpen();
   gpAttachMap->m_oStatistics.Mutex.m_nInits++;
+  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
+    ActivityMap::vMark(-2,"SysRes: Mutex created : %p"_Stz,this);
 
   _checkInitialised_(CN_MUTEX);
 
@@ -119,6 +121,8 @@ Mutex::~Mutex(void) noexcept(false)
 
   if (gpAttachMap) gpAttachMap->m_oResourceTracker.vDecMutexOpen();
   gpAttachMap->m_oStatistics.Mutex.m_nDestroys++;
+  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
+    ActivityMap::vMark(-2,"SysRes: Mutex destroyed : %p"_Stz,this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,6 +188,8 @@ void Mutex::vCondSignal(void)
   i8 rCode = pthread_cond_signal(&m_xCond);
   
   gpAttachMap->m_oStatistics.Mutex.m_nSignals++;
+  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
+    ActivityMap::vMark(-2,"SysRes: Mutex signaled : %p"_Stz,this);
 
   if (0 == rCode)
     return;
@@ -214,10 +220,14 @@ void Mutex::vCondWait(void)
   m_bLocked = false;
   
   gpAttachMap->m_oStatistics.Mutex.m_nWaits++;
-  
+  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
+    ActivityMap::vMark(-2,"SysRes: Mutex wait : %p"_Stz,this);
+
   i8 rCode = pthread_cond_wait(&m_xCond,&m_xMutex);
   
   gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
+  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
+    ActivityMap::vMark(-2,"SysRes: Mutex unblocked : %p"_Stz,this);
 
   if (0 == rCode) {
     RASSERT(! m_bLocked);
@@ -253,19 +263,28 @@ void Mutex::vCondWait_Timed(i8 iMicroSeconds)
   m_bLocked = false;
   
   gpAttachMap->m_oStatistics.Mutex.m_nTimedWaits++;
-  
+  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
+    ActivityMap::vMark(-2,"SysRes: Mutex timedwait : %p %lldus"_Stz,
+                       this,iMicroSeconds);
+
   // this is a time limited blocking call
   i8 rCode = pthread_cond_timedwait(&m_xCond,&m_xMutex,&xTimeSpec);
   
   if (0 == rCode) {
     RASSERT(! m_bLocked);
     gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
+    if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
+      ActivityMap::vMark(-2,"SysRes: Mutex timed unblock : %p %lldus"_Stz,
+                         this,iMicroSeconds);
     m_bLocked = true;
     return;
   }
   if (ETIMEDOUT == rCode) {
     RASSERT(! m_bLocked);
     gpAttachMap->m_oStatistics.Mutex.m_nTimeOuts++;
+    if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
+      ActivityMap::vMark(-2,"SysRes: Mutex timeout : %p %lldus"_Stz,
+                         this,iMicroSeconds);
    m_bLocked = true;
     return;
   }
