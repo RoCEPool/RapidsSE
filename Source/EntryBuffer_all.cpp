@@ -2529,65 +2529,65 @@ void EntryBuffer::vPositionPriorVecBuffer2(KeyData* aFindKey, Item* aPriorVec[],
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPositionPriorVecBuffer3(KeyData* aFindKey, Item* aPriorVec[],
-                                           EntryBuffer* pToBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  ASSERT(0 != m_iLevelNo);
-  
-#ifdef USE_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
-#endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
-    aPriorVec[i_Offset] = aSkipRoots();
-  
-  if (nItems() == 0)
-    return;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  bool bNextKeyIsGreaterEqual;
-  Item* aScanEntry_sl = aSkipRoots();
-  
-  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
-       i_ScanOffset >= 0;
-       i_ScanOffset--) {
-    
-    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanOffset);
-    while (aNextEntry_sl) {
-      
-      KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
-      
-      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      
-      bNextKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
-      
-      if (0 == i_ScanOffset) {
-        bool bKeysAreEqual = aNextKey->bEqualTo(aFindKey,pIdxColVec);
-        if ( bKeysAreEqual &&
-            (pToBuffer == EntryBuffer::pRefdEntryBuffer(aNextEntry_sl)) )
-          break;
-      }
-      
-      if (bNextKeyIsGreaterEqual)
-        break;
-      
-      aScanEntry_sl = aNextEntry_sl;
-      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanOffset);
-    }
-    aPriorVec[i_ScanOffset] = aScanEntry_sl;
-  }
-  
-  Item* aToBeDelete = aNextEntry(aPriorVec[0],0);
-  
-  RASSERT(pToBuffer == EntryBuffer::pRefdEntryBuffer(aToBeDelete));
-}
+//void EntryBuffer::vPositionPriorVecBuffer3(KeyData* aFindKey, Item* aPriorVec[],
+//                                           EntryBuffer* pToBuffer)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+//  
+//  ASSERT(0 != m_iLevelNo);
+//  
+//#ifdef USE_EB_LAZY_CHAIN
+//  RASSERT( ! m_aLazyChain );
+//#endif
+//  
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  
+//  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
+//    aPriorVec[i_Offset] = aSkipRoots();
+//  
+//  if (nItems() == 0)
+//    return;
+//  
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  
+//  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+//  bool bNextKeyIsGreaterEqual;
+//  Item* aScanEntry_sl = aSkipRoots();
+//  
+//  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
+//       i_ScanOffset >= 0;
+//       i_ScanOffset--) {
+//    
+//    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanOffset);
+//    while (aNextEntry_sl) {
+//      
+//      KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
+//      
+//      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+//      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+//      
+//      bNextKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+//      
+//      if (0 == i_ScanOffset) {
+//        bool bKeysAreEqual = aNextKey->bEqualTo(aFindKey,pIdxColVec);
+//        if ( bKeysAreEqual &&
+//            (pToBuffer == EntryBuffer::pRefdEntryBuffer(aNextEntry_sl)) )
+//          break;
+//      }
+//      
+//      if (bNextKeyIsGreaterEqual)
+//        break;
+//      
+//      aScanEntry_sl = aNextEntry_sl;
+//      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanOffset);
+//    }
+//    aPriorVec[i_ScanOffset] = aScanEntry_sl;
+//  }
+//  
+//  Item* aToBeDelete = aNextEntry(aPriorVec[0],0);
+//  
+//  RASSERT(pToBuffer == EntryBuffer::pRefdEntryBuffer(aToBeDelete));
+//}
 
 /*----------------------------------------------------------------------------*/
 /* split this buffer into two: this original buffer and a new right buffer    */
