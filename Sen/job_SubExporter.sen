@@ -1,0 +1,42 @@
+/*============================================================================*/
+/* job_SubExporter.sen -- Job Table SubExporter                               */
+/*============================================================================*/
+
+" job_SubExported.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* read records from file, create working buffers, send to node               */
+/*----------------------------------------------------------------------------*/
+: subExporter.export ( pJob_SubExporter -- )
+
+  params| pJob_SubExporter |
+
+  pJob_SubExporter job_subExporter.begin not if exit then
+
+  begin pJob_SubExporter job_subExporter.chunk while repeat
+
+  pJob_SubExporter job_subExporter.end
+;
+
+/*----------------------------------------------------------------------------*/
+/* SubLoader seed                                                             */
+/*----------------------------------------------------------------------------*/
+: subExporter_run ( -- )
+
+  >>am <SEED_RUN>
+
+  task::this locals| pThisTask |
+  job::this  locals| pJob_SubExporter |
+
+  pJob_SubExporter subExporter.export
+
+  // null the job in the task and delete ended job
+  nullptr pThisTask task.job!
+  pJob_SubExporter job.delete
+
+  <DONE_RUN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

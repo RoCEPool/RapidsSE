@@ -11,13 +11,13 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubExport =
 {
-  "Job_SubExport"_Stz,       // name of the job class
+  "Job_SubExporter"_Stz,     // name of the job class
   CN_JOB_SUBEXPORT,          // class enum
   JK_CHILD,                  // job kind
   "sub-export rows"_Stz,     // comment about the job
-  "subExport"_Stz,           // the prompt command
+  "subExporter"_Stz,         // the prompt command
   nullptr,                   // the second word
-  "subExport_run"_Stz,       // the _run task seed
+  "subExporter_run"_Stz,     // the _run task seed
   nullptr,                   // the _req task seed
   nullptr,                   // the _rcv task seed
   nullptr,                   // the _exe task seed
