@@ -127,8 +127,9 @@ void Step::vJobAddOriginator(MP_Task mpTask)
   gpAttachMap->m_pOriginatingJobs->vDropLock();
 
   if (pJob->m_bMark) {
-    ActivityMap::vMark(pJob->m_iJobId,"Added %s to Originator List"_Stz,
-                       aCN[pJob->eClass()]);
+    ActivityMap::vMark(pJob->m_iJobId,"Added %s %p to Originator List"_Stz,
+                       aCN[pJob->eClass()],
+                       pJob);
     gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
   }
   
@@ -152,8 +153,8 @@ void Step::vJobAddParticipant(MP_Task mpTask)
   gpAttachMap->m_pParticipatingJobs->vDropLock();
   
   if (pJob->m_bMark) {
-    ActivityMap::vMark(pJob->m_iJobId,"Added %s to Participant List"_Stz,
-                       aCN[pJob->eClass()]);
+    ActivityMap::vMark(pJob->m_iJobId,"Added %s %p to Participant List"_Stz,
+                       aCN[pJob->eClass()],pJob);
     gpAttachMap->m_pParticipatingJobs->vMarkContents(pJob->m_iJobId);
   }
   

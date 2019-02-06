@@ -252,8 +252,11 @@ void Queues::vAddToExecutingSet_NL(Task* pTask)
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("vAddToExecutingSet()"_Stz);
-  
+    ActivityMap::vMark(pTask->pJob()->iJobId(),
+                       "Add to ExecutingSet: %s %p"_Stz,
+                       aCN[pTask->pJob()->eClass()],
+                       pTask->pJob());
+
   ASSERT(m_pExecutingSet->bIsLocked());
   m_pExecutingSet->vAddTask(pTask);
 }
@@ -272,8 +275,11 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("vAddToReadyQueue()"_Stz);
-  
+    ActivityMap::vMark(pTask->pJob()->iJobId(),
+                       "Add to ReadyQueue: %s %p"_Stz,
+                       aCN[pTask->pJob()->eClass()],
+                       pTask->pJob());
+
   ASSERT(m_pReadyQueue->bIsLocked());
   m_pReadyQueue->vAddTask(pTask);
 }
@@ -298,7 +304,10 @@ void Queues::vAddToReadySlotQueue_NL(Task* pTask)
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("vAddToReadySlotQueue()"_Stz);
+    ActivityMap::vMark(pTask->pJob()->iJobId(),
+                       "Add to ReadySlot: %s %p"_Stz,
+                       aCN[pTask->pJob()->eClass()],
+                       pTask->pJob());
 
   ASSERT(m_pReadySlotQueues[iSlot]->bIsLocked());
   m_pReadySlotQueues[iSlot]->vAddTask(pTask);
@@ -321,7 +330,10 @@ void Queues::vAddToSendQueue_NL(Task* pTask)
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("vAddToSendQueue()"_Stz);
+    ActivityMap::vMark(pTask->pJob()->iJobId(),
+                       "Add to SendQueue: %s %p"_Stz,
+                       aCN[pTask->pJob()->eClass()],
+                       pTask->pJob());
 
   ASSERT(m_pReadySendQueues[iSendNode]->bIsLocked());
   m_pReadySendQueues[iSendNode]->vAddTask(pTask);
@@ -339,8 +351,11 @@ void Queues::vAddToSleepingQueue_NL(Task* pTask)
   pTask->vQueue(QR_SLEEPING_QUEUE);
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("AddToSleepingQueue()"_Stz);
-  
+    ActivityMap::vMark(pTask->pJob()->iJobId(),
+                       "Add to SleepingQueue: %s %p"_Stz,
+                       aCN[pTask->pJob()->eClass()],
+                       pTask->pJob());
+
   ASSERT(m_pSleepingQueue->bIsLocked());
   
   i8 nPriorItems = m_pSleepingQueue->nTasks();
@@ -370,8 +385,11 @@ void Queues::vAddToWaitingSet_NL(Task* pTask)
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("vAddToWaitingSet()"_Stz);
-  
+    ActivityMap::vMark(pTask->pJob()->iJobId(),
+                       "Add to WaitingSet: %s %p"_Stz,
+                       aCN[pTask->pJob()->eClass()],
+                       pTask->pJob());
+
   // put task into the waiting queue
   ASSERT(m_pWaitingSet->bIsLocked());
   m_pWaitingSet->vAddTask(pTask);
@@ -1075,8 +1093,11 @@ void Queues::vScheduleReadyTask(Task* pTask)
   RASSERT(TK_READY == pTask->eState());
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("vScheduleReadyTask()"_Stz);
-  
+    ActivityMap::vMark(pTask->pJob()->iJobId(),
+                       "Schedule ready: %s %p"_Stz,
+                       aCN[pTask->pJob()->eClass()],
+                       pTask->pJob());
+
   Thread* pIdleThread = pFindIdleThread();
 
   if (pIdleThread) {
@@ -1100,8 +1121,11 @@ void Queues::vScheduleReadySlotTask(Task* pTask)
   RASSERT(TK_READY == pTask->eState());
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("vScheduleReadySlotTask()"_Stz);
-  
+    ActivityMap::vMark(pTask->pJob()->iJobId(),
+                       "Schedule ready slot: %s %p"_Stz,
+                       aCN[pTask->pJob()->eClass()],
+                       pTask->pJob());
+
   Thread* pIdleThread = pFindIdleThread();
   
   if (pIdleThread) {
@@ -1121,8 +1145,11 @@ void Queues::vScheduleSendTask(Task* pTask)
   RASSERT(TK_SEND == pTask->eState());
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("vScheduleSendTask()"_Stz);
-  
+    ActivityMap::vMark(pTask->pJob()->iJobId(),
+                       "Schedule send: %s %p"_Stz,
+                       aCN[pTask->pJob()->eClass()],
+                       pTask->pJob());
+
   // add task to send queue
   vAddToSendQueue(pTask);
 }
@@ -1137,8 +1164,11 @@ void Queues::vScheduleSleepingTask(Task* pTask)
   RASSERT(TK_SLEEPING == pTask->eState());
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("vScheduleSleepingTask()"_Stz);
-  
+    ActivityMap::vMark(pTask->pJob()->iJobId(),
+                       "Schedule sleeping: %s %p"_Stz,
+                       aCN[pTask->pJob()->eClass()],
+                       pTask->pJob());
+
   // is the task still actually sleeping
   if (! pTask->bWakeupNow()) {
     vAddToSleepingQueue(pTask);
@@ -1166,8 +1196,18 @@ void Queues::vScheduleSpawnedTask(Task* pTask)
   
   pTask->vState(TK_READY);
   
-  if (pTask->pJob()->m_bMark)
-    ActivityMap::vMark(pTask->pJob()->iJobId(),"vScheduleSpawnedTask()"_Stz);
+  if (pTask->pJob()->m_bMark) {
+    if (C_UNKNOWN == pTask->pJob()->iJobId())
+      ActivityMap::vMark(0,
+                         "Schedule spawned: %s %p"_Stz,
+                         aCN[pTask->pJob()->eClass()],
+                         pTask->pJob());
+    else
+      ActivityMap::vMark(pTask->pJob()->iJobId(),
+                         "Schedule spawned: %s %p"_Stz,
+                         aCN[pTask->pJob()->eClass()],
+                         pTask->pJob());
+  }
   
   eQR eQueue = pTask->eWhichQueue();
   RASSERT(eQueue >= QR_READY_QUEUE  || eQueue < gpAttachMap->m_pGrid->m_nSlotsPerNode);
@@ -1186,8 +1226,18 @@ void Queues::vScheduleWaitingTask(Task* pTask)
   
   RASSERT(TK_WAITING == pTask->eState());
   
-  if (pTask->pJob()->m_bMark)
-    ActivityMap::vMark(pTask->pJob()->iJobId(),"vScheduleWaitingTask()"_Stz);
+  if (pTask->pJob()->m_bMark) {
+    if (C_UNKNOWN == pTask->pJob()->iJobId())
+      ActivityMap::vMark(0,
+                         "Schedule waiting: %s %p"_Stz,
+                         aCN[pTask->pJob()->eClass()],
+                         pTask->pJob());
+    else
+      ActivityMap::vMark(pTask->pJob()->iJobId(),
+                         "Schedule waiting: %s %p"_Stz,
+                         aCN[pTask->pJob()->eClass()],
+                         pTask->pJob());
+ }
 
   vAddToWaitingSet(pTask);
 }
@@ -1201,8 +1251,18 @@ void Queues::vScheduleYieldedTask(Task* pTask)
   
   Thread* pCallingThread = Thread::pThisTLSThread();
   
-  if (pTask->pJob()->m_bMark)
-    ActivityMap::vMark(pTask->pJob()->iJobId(),"vScheduleYieldedTask()"_Stz);
+  if (pTask->pJob()->m_bMark) {
+    if (C_UNKNOWN == pTask->pJob()->iJobId())
+      ActivityMap::vMark(0,
+                         "Schedule yielded: %s %p"_Stz,
+                         aCN[pTask->pJob()->eClass()],
+                         pTask->pJob());
+    else
+      ActivityMap::vMark(pTask->pJob()->iJobId(),
+                         "Schedule yielded: %s %p"_Stz,
+                         aCN[pTask->pJob()->eClass()],
+                         pTask->pJob());
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // non-partitioned task yield

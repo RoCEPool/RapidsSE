@@ -46,6 +46,21 @@ static Stz* aSR[]
   "ENUMS"_Stz,
 };
 
+  static Stz* aSR_Short[]
+  {
+  "NONE"_Stz,
+  
+  "DIR"_Stz,
+  "FIL"_Stz,
+  "MEM"_Stz,
+  "MTX"_Stz,
+  "SHM"_Stz,
+  "SKT"_Stz,
+  "THD"_Stz,
+  
+  "ENUMS"_Stz,
+  };
+  
 }
 
 /*============================================================================*/

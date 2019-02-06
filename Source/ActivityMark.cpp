@@ -136,11 +136,31 @@ void ActivityMark::vDump(File* pFile, bool bShortForm,
   if (StrLib::bSame(m_caMark,"delta reset"))
     iTotalDelta = 0;
   
-  if (bShortForm)
-    pFile->vPrint("[%3lld %s %03lld] %s\n"_Stz,
+  if (bShortForm) {
+    if (m_iJobId < 0)
+      pFile->vPrint("[%3lld %s %s] %s\n"_Stz,
+                    m_iMark,
+                    m_caNode,
+                    aSR_Short[-m_iJobId],
+                    m_caMark);
+    else
+      pFile->vPrint("[%3lld %s %03lld] %s\n"_Stz,
+                    m_iMark,
+                    m_caNode,
+                    m_iJobId,
+                    m_caMark);
+    return;
+  }
+
+  if (m_iJobId < 0)
+    pFile->vPrint("%lld,%lld,%lld,%lld,%s,%s,%s\n"_Stz,
                   m_iMark,
+                  m_iTick,
+                  iDeltaUs,
+                  iTotalDelta,
+                  
                   m_caNode,
-                  m_iJobId,
+                  aSR_Short[-m_iJobId],
                   m_caMark);
   else
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,%lld,%s\n"_Stz,
@@ -152,7 +172,6 @@ void ActivityMark::vDump(File* pFile, bool bShortForm,
                   m_caNode,
                   m_iJobId,
                   m_caMark);
-  
 }
 
 /*----------------------------------------------------------------------------*/

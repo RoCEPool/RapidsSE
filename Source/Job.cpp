@@ -83,7 +83,7 @@ Job::Job(eCN eClassNo, Session* pSession)
   vInit();
   
   if (m_bMark)
-    ActivityMap::vMark(m_iJobId,"::Job %s"_Stz,aCN[eClass()]);
+    ActivityMap::vMark(0,"::Job %s"_Stz,aCN[eClass()]);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
