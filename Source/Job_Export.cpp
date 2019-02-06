@@ -140,6 +140,31 @@ void Job_Export::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* begin export job                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_Export::bBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
+  
+  if (! m_oCsvFile.bOpenWrite(m_sFilePath)) {
+    vTrace("Failed to open file: %s\n"_Stz,m_sFilePath.aStz());
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end export job                                                             */
+/*----------------------------------------------------------------------------*/
+void Job_Export::vEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
+
+  m_oCsvFile.vClose();
+}
+
+/*----------------------------------------------------------------------------*/
 /* populate the job                                                           */
 /*----------------------------------------------------------------------------*/
 bool Job_Export::bPopulateJob(TokenVec* pTokenVec)

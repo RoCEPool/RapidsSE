@@ -67,7 +67,7 @@ void Step::vJob_CatEnd(MP_Task mpTask)
   Job_Cat* pJob_Cat = _pJob_Cat(pPtrJob_Cat);
   
   pJob_Cat->vEnd();
-  
+
   EXIT();
 }
 

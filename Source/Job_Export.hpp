@@ -27,7 +27,10 @@ namespace Jobs
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
+    bool bBegin(void);
+    void vEnd(void);
     bool bPopulateJob(TokenVec* pTokenVec);
+  
     void vShow(void);
   
   public:
