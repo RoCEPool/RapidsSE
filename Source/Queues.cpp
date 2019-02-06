@@ -1167,7 +1167,7 @@ void Queues::vScheduleSpawnedTask(Task* pTask)
   pTask->vState(TK_READY);
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("vScheduleSpawnedTask()"_Stz);
+    ActivityMap::vMark(pTask->pJob()->iJobId(),"vScheduleSpawnedTask()"_Stz);
   
   eQR eQueue = pTask->eWhichQueue();
   RASSERT(eQueue >= QR_READY_QUEUE  || eQueue < gpAttachMap->m_pGrid->m_nSlotsPerNode);
@@ -1187,8 +1187,8 @@ void Queues::vScheduleWaitingTask(Task* pTask)
   RASSERT(TK_WAITING == pTask->eState());
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("vScheduleWaitingTask()"_Stz);
-  
+    ActivityMap::vMark(pTask->pJob()->iJobId(),"vScheduleWaitingTask()"_Stz);
+
   vAddToWaitingSet(pTask);
 }
 
@@ -1202,8 +1202,8 @@ void Queues::vScheduleYieldedTask(Task* pTask)
   Thread* pCallingThread = Thread::pThisTLSThread();
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("vScheduleYieldedTask()"_Stz);
-  
+    ActivityMap::vMark(pTask->pJob()->iJobId(),"vScheduleYieldedTask()"_Stz);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // non-partitioned task yield
   

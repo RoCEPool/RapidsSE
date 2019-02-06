@@ -41,7 +41,7 @@
   // delete the node info job
   pJob_NodeInfo job.delete
 
-  pAnsweredNode node.name "Answered node %v" str.format .am
+  //pAnsweredNode node.name "Answered node %v" str.format .am
 
   // return the answered node
   pAnsweredNode

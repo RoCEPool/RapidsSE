@@ -19,21 +19,22 @@ bool Handlers::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   
   Queues* pQueues = gpAttachMap->m_pQueues;
   
-  ActivityMap::vMark(0,"pTaskBeingAcked:%p pTaskAcking:%p "_Stz,
-                     pTaskBeingAcked,
-                     pTaskAcking
-                     );
-  
-  ActivityMap::vMark(0,"pJobAcking:%s "_Stz,
-                     aCN[pTaskAcking->pJob()->eClass()]
-                     );
-  
-//  ActivityMap::vMark(0,"pJobBeingAcked:%s "_Stz,
-//                     aCN[pTaskBeingAcked->pJob()->eClass()]
-//                     );
-  
   Job* pJobBeingAcked = pTaskBeingAcked->pJob();
   Job* pJobAcking = pTaskAcking->pJob();
+  
+  if (pJobAcking->m_bMark || pJobBeingAcked->m_bMark) {
+    ActivityMap::vMark(pJobBeingAcked->iJobId(),
+                       "pTaskBeingAcked:%p Job %s "_Stz,
+                       pTaskBeingAcked,
+                       aCN[pJobBeingAcked->eClass()]
+                      );
+    ActivityMap::vMark(pJobAcking->iJobId(),
+                       "pTaskAcking:%p Job %s "_Stz,
+                       pTaskAcking,
+                       aCN[pJobAcking->eClass()]
+                       );
+  }
+  
   
   bool bAmDecider = pTaskBeingAcked->bAckAndDecide();
   

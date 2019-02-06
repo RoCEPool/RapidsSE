@@ -106,7 +106,7 @@ void Magnitudes::vByteMag(i8 iValue, i8 nDecimals, Stz* psBuf)
 void Magnitudes::vHzMag(i8 iValue, Stz* psBuf)
 {
   d8 dValue = (d8)iValue;
-  int nPoints = 2;
+  int nPoints = 3;
   
        if (iValue < C_1K) psBuf->vSprint("%.*fhz"_Stz, nPoints,dValue);
   else if (iValue < C_1M) psBuf->vSprint("%.*fKhz"_Stz,nPoints,dValue/C_1K);

@@ -609,6 +609,9 @@ void ActivityMap::vWriteToFile(bool bShortForm)
     return;
   }
   
+  Now oNow;
+  ActivityMap::vMark(0,"Writing ActivityMap at: %s"_Stz,oNow.sFormatted());
+
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
   

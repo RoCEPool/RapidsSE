@@ -137,7 +137,7 @@ void ActivityMark::vDump(File* pFile, bool bShortForm,
     iTotalDelta = 0;
   
   if (bShortForm)
-    pFile->vPrint("%lld,%s,%03lld,%s\n"_Stz,
+    pFile->vPrint("[%3lld %s %03lld] %s\n"_Stz,
                   m_iMark,
                   m_caNode,
                   m_iJobId,

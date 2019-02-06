@@ -381,7 +381,9 @@ void SePrompt::vFreeSpace(void)
   i8 iFreeSpace = gpBufferPool->iFreeSpace();
   i8 iFreeSpaceInPool = BPA::iPoolFree();
 
-  ActivityMap::vMark(0,"Free space: %lld"_Stz,iFreeSpace + iFreeSpaceInPool);
+  s32 sFreeSpaceMag;
+  Magnitudes::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
+  ActivityMap::vMark(0,"Free space: %s"_Stz,sFreeSpaceMag.aStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -475,6 +477,10 @@ void SePrompt::vMarkCommand(void)
   s16KB sCommand;
 
   TokenVec* pTknVec = this->pTknVec();
+  
+  Token* pTkn0 = pTknVec->pGet(0);
+  if (pTkn0->bSame("am"_Stz))
+    return;
 
   pTknVec->vToString(sCommand);
   
