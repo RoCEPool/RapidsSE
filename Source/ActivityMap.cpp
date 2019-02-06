@@ -162,7 +162,7 @@ void ActivityMap::vMark(i8 iJobId, Stz* aFormat, ...)
   va_start(xArgs,aFormat);
   
   gpActivityMap->vWriteMark(iJobId,aFormat,xArgs);
-
+  
   va_end(xArgs);
 #endif
 }
@@ -248,6 +248,25 @@ void ActivityMap::vMarkApiExit(i8 eApiCall, i8 iJobId)
 }
 
 /*----------------------------------------------------------------------------*/
+/* write an Activity mark                                                     */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vMarkInfo(Stz* aFormat, ...)
+{
+#ifdef WITH_ACTIVITY_MAP
+  if ( ! gpActivityMap )
+    return;
+  
+  va_list xArgs;
+  
+  va_start(xArgs,aFormat);
+  
+  gpActivityMap->vWriteMark(0,aFormat,xArgs);
+  
+  va_end(xArgs);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* write an ActivityMark                                                      */
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vMarkJob(Jobs::Job* pJob,
@@ -267,6 +286,26 @@ void ActivityMap::vMarkJob(Jobs::Job* pJob,
                   );
   
   gpActivityMap->vWriteMark(pJob->iJobId(),
+                            szCombinedFormat,
+                            xArgs);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write an ActivityMark                                                      */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vMarkRes(eSR eSysRes,
+                           Stz* szLeadingText, Stz* szFormat, va_list xArgs)
+{
+  s4K szCombinedFormat;
+  
+  StrLib::vSprint(szCombinedFormat,
+                  "%s: %s"_Stz,
+                  szLeadingText,
+                  
+                  szFormat
+                  );
+  
+  gpActivityMap->vWriteMark(-eSysRes,
                             szCombinedFormat,
                             xArgs);
 }
@@ -357,10 +396,10 @@ void ActivityMap::vOpenByApi(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  ActivityMap::vMark(0,"Opened by API"_Stz);
+  ActivityMap::vMarkInfo("Opened by API"_Stz);
   
   Now oNow;
-  ActivityMap::vMark(0,"Time is: "_Stz,oNow.sFormatted());
+  ActivityMap::vMarkInfo("Time is: "_Stz,oNow.sFormatted());
 #endif
 }
 
@@ -406,10 +445,10 @@ void ActivityMap::vOpenBySE(bool bStarting)
   
   s256 sWelcome;
   Engine::vGetWelcome(sWelcome);
-  ActivityMap::vMark(0,sWelcome);
+  ActivityMap::vMarkInfo(sWelcome);
   
   Now oNow;
-  ActivityMap::vMark(0,"Time is: %s"_Stz,oNow.sFormatted());
+  ActivityMap::vMarkInfo("Time is: %s"_Stz,oNow.sFormatted());
 
   s32 sMem;
   Magnitudes::vByteMag(Hardware::iPhysicalMemory(),sMem);
@@ -417,7 +456,7 @@ void ActivityMap::vOpenBySE(bool bStarting)
   s32 sClock;
   Magnitudes::vHzMag(Hardware::iClockFrequency(),sClock);
   
-  ActivityMap::vMark(0,"hw: %lld cores; %s memory; %s clock frequency"_Stz,
+  ActivityMap::vMarkInfo("hw: %lld cores; %s memory; %s clock frequency"_Stz,
                      Hardware::iCoreCount(),
                      sMem.aStz(),
                      sClock.aStz()
@@ -634,7 +673,7 @@ void ActivityMap::vWriteToFile(bool bShortForm)
   }
   
   Now oNow;
-  ActivityMap::vMark(0,"Writing ActivityMap at: %s"_Stz,oNow.sFormatted());
+  ActivityMap::vMarkInfo("Writing ActivityMap at: %s"_Stz,oNow.sFormatted());
 
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();

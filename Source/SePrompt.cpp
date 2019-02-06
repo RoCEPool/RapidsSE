@@ -383,7 +383,7 @@ void SePrompt::vFreeSpace(void)
 
   s32 sFreeSpaceMag;
   Magnitudes::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
-  ActivityMap::vMark(0,"Free space: %s"_Stz,sFreeSpaceMag.aStz());
+  ActivityMap::vMarkInfo("Free space: %s"_Stz,sFreeSpaceMag.aStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -484,7 +484,7 @@ void SePrompt::vMarkCommand(void)
 
   pTknVec->vToString(sCommand);
   
-  ActivityMap::vMark(0,"Prompt command: %s"_Stz,sCommand.aStz());
+  ActivityMap::vMarkInfo("Prompt command: %s"_Stz,sCommand.aStz());
 }
 
 /*----------------------------------------------------------------------------*/

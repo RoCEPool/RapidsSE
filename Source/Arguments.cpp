@@ -176,7 +176,7 @@ void Arguments::vAddConstants(void)
 /*----------------------------------------------------------------------------*/
 void Arguments::vMark(void)
 {
-  ActivityMap::vMark(0,"Args:"_Stz);
+  ActivityMap::vMarkInfo("Args:"_Stz);
   
   s256 sArg;
   
@@ -189,7 +189,7 @@ void Arguments::vMark(void)
       StrLib::vConcat(sArg.aChar(),gi_argv[i_Arg ++]);
     }
     
-    ActivityMap::vMark(0,"  %s"_Stz,sArg.aChar());
+    ActivityMap::vMarkInfo("  %s"_Stz,sArg.aChar());
   }
 }
 

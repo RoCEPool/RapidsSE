@@ -41,7 +41,9 @@ namespace Measurement
     static void vMarkApiEntry(i8 eApiCall, i8 iJobId=-1);
     static void vMarkApiError(i8 eApiCall, i8 iError, i8 iJobId=-1);
     static void vMarkApiExit(i8 eApiCall, i8 iJobId=-1);
+    static void vMarkInfo(Stz* aFormat, ...);
     static void vMarkJob(Jobs::Job* pJob, Stz* szLeadingText, Stz* szFormat, va_list xArgs);
+    static void vMarkRes(eSR eSysRes, Stz* szLeadingText, Stz* szFormat, va_list xArgs);
     static void vMarkString(i8 iJobId, s48K& sString);
     static void vMonitorPortrait(s48K& sPortrait);
     static void vOpenByApi(void);

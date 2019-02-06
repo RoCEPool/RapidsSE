@@ -836,7 +836,7 @@ Task* Queues::pPopReadySendQueue(Thread* pCallingThread)
   RASSERT(pTask->pSendNode() != nullptr);
   
   if (pTask->pJob()->m_bMark)
-    ActivityMap::vMark(0,
+    ActivityMap::vMarkInfo(
                        "Popped ReadySend: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
@@ -888,7 +888,7 @@ Task* Queues::pPopReadySlotQueue(Thread* pCallingThread)
   RASSERT(pTask->bIsPartitioned());
   
   if (pTask->pJob()->m_bMark)
-    ActivityMap::vMark(0,
+    ActivityMap::vMarkInfo(
                        "Popped ReadySlot: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
@@ -952,7 +952,7 @@ Task* Queues::pPopSleepingQueue(Thread* pCallingThread)
   pTask->vWakeupTask();
   
   if (pTask->pJob()->m_bMark)
-    ActivityMap::vMark(0,
+    ActivityMap::vMarkInfo(
                        "Popped SleepingQueue: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
@@ -1216,7 +1216,7 @@ void Queues::vScheduleSpawnedTask(Task* pTask)
   
   if (pTask->pJob()->m_bMark) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
-      ActivityMap::vMark(0,
+      ActivityMap::vMarkInfo(
                          "Schedule spawned: %s %p"_Stz,
                          aCN[pTask->pJob()->eClass()],
                          pTask->pJob());
@@ -1246,7 +1246,7 @@ void Queues::vScheduleWaitingTask(Task* pTask)
   
   if (pTask->pJob()->m_bMark) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
-      ActivityMap::vMark(0,
+      ActivityMap::vMarkInfo(
                          "Schedule waiting: %s %p"_Stz,
                          aCN[pTask->pJob()->eClass()],
                          pTask->pJob());
@@ -1271,7 +1271,7 @@ void Queues::vScheduleYieldedTask(Task* pTask)
   
   if (pTask->pJob()->m_bMark) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
-      ActivityMap::vMark(0,
+      ActivityMap::vMarkInfo(
                          "Schedule yielded: %s %p"_Stz,
                          aCN[pTask->pJob()->eClass()],
                          pTask->pJob());
