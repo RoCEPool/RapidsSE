@@ -5,6 +5,10 @@
 markjob export on;
 markjob;
 
+markres file on;
+markres socket on;
+markres;
+
 startCluster;
 
 create table nation (
