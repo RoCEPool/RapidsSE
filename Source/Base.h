@@ -9,6 +9,7 @@
 #include "CompiledWith.h"
 #include "MachineTypes.h"
 #include "SystemIncludes.h"
+#include "SystemResources.h"
 
 //-----------------------------------------------------------------------------
 
