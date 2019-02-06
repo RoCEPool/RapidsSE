@@ -269,14 +269,13 @@ void ActivityMap::vMarkInfo(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* write an ActivityMark                                                      */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vMarkJob(Jobs::Job* pJob,
-                           Stz* szLeadingText, Stz* szFormat, va_list xArgs)
+void ActivityMap::vMarkJob(Jobs::Job* pJob, Stz* szFormat, va_list xArgs)
 {
   s4K szCombinedFormat;
   
   StrLib::vSprint(szCombinedFormat,
-                  "%s: %s.%03lld %p %s"_Stz,
-                  szLeadingText,
+                  "%s.%03lld %p" // job expansion
+                  " %s"_Stz,     // formatted args
                   
                   aCN[pJob->eClass()],
                   pJob->iJobId(),

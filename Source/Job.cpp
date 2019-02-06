@@ -160,7 +160,7 @@ void Job::vJobTrace(eJT eJobTrace)
 /*----------------------------------------------------------------------------*/
 /* write a mark about this task                                               */
 /*----------------------------------------------------------------------------*/
-void Job::vMarkJob(Stz* szLeadingText, Stz* szFormat, ...)
+void Job::vMarkJob(Stz* szFormat, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -172,7 +172,7 @@ void Job::vMarkJob(Stz* szLeadingText, Stz* szFormat, ...)
   
   va_start(xArgs,szFormat);
   
-  ActivityMap::vMarkJob(this,szLeadingText,szFormat,xArgs);
+  ActivityMap::vMarkJob(this,szFormat,xArgs);
   
   va_end(xArgs);
 #endif
