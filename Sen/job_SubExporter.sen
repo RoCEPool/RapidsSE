@@ -27,12 +27,17 @@
 
   task::this locals| pThisTask |
   job::this  locals| pJob_SubExporter |
+  pJob_SubExporter job_subExporter.exportJob@ locals| pJob_Export |
+  pJob_Export job.executingTask@ locals| pTask_Export |
 
   pJob_SubExporter subExporter.export
+
+  pTask_Export task.ack
 
   // null the job in the task and delete ended job
   nullptr pThisTask task.job!
   pJob_SubExporter job.delete
+
 
   <DONE_RUN>
 ;

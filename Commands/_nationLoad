@@ -2,14 +2,6 @@
 /* _nationLoad - create and load TPC-H Nation table for SF1                   */
 /*============================================================================*/
 
-markjob export on;
-markjob subExporter on;
-markjob;
-
-markres file on;
-markres socket on;
-markres;
-
 startCluster;
 
 create table nation (
@@ -22,8 +14,19 @@ create table nation (
 print "loading nation.csv..." ;
 ld nation "/tpch/SF1/nation.csv" ;
 
-am "\n##########################################################################################\n\n";
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+markjob export on;
+markjob subExporter on;
+markjob;
+
+markres file on;
+markres socket on;
+markres;
+
 print "exporting nation.csv..." ;
+am "\n##########################################################################################\n\n";
+
 export nation "/tmp/nation_export.csv" ;
 
 activityMap short;

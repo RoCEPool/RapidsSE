@@ -17,7 +17,7 @@
 
   grid::slots 0
   do
-    pJob_Export job_subExporter::spawn
+    I pJob_Export job_subExporter::spawn
   loop
 
   task::wait
@@ -52,7 +52,7 @@
 
   pJob_Export job_export.begin
 
-  //pJob_Export export.spawnSubExporters
+  pJob_Export export.spawnSubExporters
 
   pJob_Export job_export.end
 
