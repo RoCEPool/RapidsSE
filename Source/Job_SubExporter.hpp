@@ -24,8 +24,11 @@ namespace Jobs
     ~Job_SubExporter(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+  
+    bool bBegin(void);
+    bool bChunk(void);
+    void vEnd(void);
 
-  public:
     void vShow(void);
   
   public:

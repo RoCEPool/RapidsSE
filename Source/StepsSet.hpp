@@ -598,6 +598,9 @@
   static void vJob_SinkEnd(Tasks::MP_Task mpTask);
 
   // job SubExporter
+  static void vJob_SubExporterBegin(Tasks::MP_Task mpTask);
+  static void vJob_SubExporterChunk(Tasks::MP_Task mpTask);
+  static void vJob_SubExporterEnd(Tasks::MP_Task mpTask);
   static void vJob_SubExporterSpawn(Tasks::MP_Task mpTask);
   static void vJob_SubExporterExportJobFetch(Tasks::MP_Task mpTask);
 
