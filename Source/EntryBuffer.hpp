@@ -153,10 +153,10 @@ namespace Data
     Item*       aInsertKeyUpwards(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
     void         vItemCountRestore(void);
-    bool         bKeyBeforeBuffer(KeyData* aKey);
+    bool         bKeyBeforeBuffer(KeyWrk& xKey);
     FreeItem*    aMakeFreeEntry(Item* aItem);
     EntryBuffer* pNewHigherBuffer(void);
-    EntryBuffer* pNewInsertBuffer(KeyData* aInsKey, i8 nEntryPlusOffsets,
+    EntryBuffer* pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets,
                                   EntryBuffer** ppRootKeyBuffer);
     EntryBuffer* pNewNextBuffer(void);
     Item*       aPopLazyChain(void);

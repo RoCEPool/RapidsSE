@@ -1730,14 +1730,14 @@ EntryBuffer* EntryBuffer::pInsertableBuffer(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert key into this EntryBuffer if it has space or get a new one
   
-  KeyData* aInsKey = xKeyWrk.aKey();
+  //KeyData* aInsKey = xKeyWrk.aKey();
   
   EntryBuffer* pInsertIntoBuffer;
   if (bHasSpace(nEntryPlusOffsets))
     pInsertIntoBuffer = this;
   else {
     pInsertIntoBuffer =
-    pNewInsertBuffer(aInsKey,nEntryPlusOffsets,ppRootKeyBuffer);
+    pNewInsertBuffer(xKeyWrk,nEntryPlusOffsets,ppRootKeyBuffer);
     //(*ppRootKeyBuffer)->vShow();
   }
   
@@ -1997,19 +1997,18 @@ void EntryBuffer::vItemCountRestore(void)
 /*----------------------------------------------------------------------------*/
 /* is given key before the first key of this buffer                           */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bKeyBeforeBuffer(KeyData* aKeyTest)
+bool EntryBuffer::bKeyBeforeBuffer(KeyWrk& xKeyTest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   Item* aFirstEntry = this->aLeadEntry();
-  KeyData* aFirstKey = _aKeyData(aFirstEntry->aDataArea());
+
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   i8 nKeyCols = pIdxColVec->nItems();
   
-  bool bIsEqual;
   bool bIsJuxta =
-  //aKeyTest->bJuxtaCompare(JC_BEFORE,aFirstKey,pIdxColVec,nKeyCols,bIsEqual);
-  aKeyTest->bLessThan(aFirstKey,pIdxColVec);
+  //aKeyTest->bLessThan(aFirstKey,pIdxColVec);
+  KeyData::bLessThan(xKeyTest,aFirstEntry);
   
   return bIsJuxta;
 }
@@ -2073,7 +2072,7 @@ EntryBuffer* EntryBuffer::pNewHigherBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* create a new insert buffer (adjusting higher buffers accordingly)          */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyData* aInsKey, i8 nEntryPlusOffsets,
+EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets,
                                            EntryBuffer** ppRootKeyBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -2150,7 +2149,6 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyData* aInsKey, i8 nEntryPlusOffset
   
   Id xIdRight(*pRightBuffer->nPoolBufferNo(),0,nOffsetsRight);
   
-  
   KeyWrk xKeyWrkRight;
   xKeyWrkRight.vId(xIdRight);
   xKeyWrkRight.vEmbedded((char*)aKeyRight);
@@ -2161,12 +2159,11 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyData* aInsKey, i8 nEntryPlusOffset
   Item* aNewKeyRight =
   pHigherBuffer->aInsertKeyUpwards(xKeyWrkRight,ppRootKeyBuffer);
   
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   //ASSERT( (* ppRootKeyBuffer)->bVerify() );
   
-  if ( pRightBuffer->bKeyBeforeBuffer(aInsKey) )
+  if ( pRightBuffer->bKeyBeforeBuffer(xInsKey) )
     return pLeftBuffer;
   else
     return pRightBuffer;
