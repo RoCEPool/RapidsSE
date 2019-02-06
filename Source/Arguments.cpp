@@ -733,15 +733,15 @@ void Arguments::vPrintStartupInfo(void)
   vTrace("Args:\n"_Stz);
   
 #ifdef WITH_DEBUG_VERSION
-  if (m_bCommand)  vTrace("  --command\n"_Stz);
-  if (m_bHelp)     vTrace("  --help\n"_Stz);
-  if (m_bProgress) vTrace("  --progress\n"_Stz);
-  if (m_bPrompt)   vTrace("  --seprompt\n"_Stz);
-  if (m_bSethScript)   vTrace("  --script\n"_Stz);
-  if (m_bStart)    vTrace("  --start\n"_Stz);
-  if (m_bStatus)   vTrace("  --status\n"_Stz);
-  if (m_bStop)     vTrace("  --stop\n"_Stz);
-  if (m_bVerbose)  vTrace("  --verbose\n"_Stz);
+  if (m_bCommand)    vTrace("  --command\n"_Stz);
+  if (m_bHelp)       vTrace("  --help\n"_Stz);
+  if (m_bProgress)   vTrace("  --progress\n"_Stz);
+  if (m_bPrompt)     vTrace("  --seprompt\n"_Stz);
+  if (m_bSethScript) vTrace("  --script\n"_Stz);
+  if (m_bStart)      vTrace("  --start\n"_Stz);
+  if (m_bStatus)     vTrace("  --status\n"_Stz);
+  if (m_bStop)       vTrace("  --stop\n"_Stz);
+  if (m_bVerbose)    vTrace("  --verbose\n"_Stz);
 #endif
   
   vTrace("  --name %s\n"_Stz,m_sNodeName.aChar());
@@ -779,6 +779,8 @@ void Arguments::vPrintStartupInfo(void)
   vTrace("  --sen %s\n"_Stz,m_sSenDir.aChar());
   if (m_bMunged) vTrace("  --munged\n"_Stz);
 #endif
+  
+  if (m_bDeveloper) vTrace("  --developer\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

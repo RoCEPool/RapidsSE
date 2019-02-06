@@ -290,18 +290,17 @@ void Engine::vKillPrev(void)
   void* aRegion;
   s32 sRegionNm;
   int iFD;
-  bool b;
   
-  for (i8 i_Index=0; i_Index < gxArguments.m_nNodes; i_Index++) {
+  for (i8 i_Node = 0; i_Node < gxArguments.m_nNodes; i_Node++) {
     
     sRegionNm.vSprint("%s_%s"_Stz,
                         gxArguments.m_sRegionPrefix.aChar(),
-                        gxArguments.m_xNodes[i_Index].m_sNodeName.aChar());
+                        gxArguments.m_xNodes[i_Node].m_sNodeName.aChar());
     
     if (! Region::bTest(sRegionNm) )
       continue;
 
-    if (gxArguments.m_bVerbose)
+    if (gxArguments.m_bDeveloper)
       vTrace("vKillPrev: region %s exists\n"_Stz,sRegionNm.aStz());
     
     if (! (aRegion = Region::aOpen(sRegionNm,gxArguments.m_aRegionAddr,iFD)))
@@ -309,18 +308,20 @@ void Engine::vKillPrev(void)
     
     AttachMap* pAttachMap = (AttachMap*)ahAdd<AttachMap*>((Object*)aRegion,C_SIZE_POOL_BUFFER);
     
-    if (gxArguments.m_bVerbose)
+    if (gxArguments.m_bDeveloper)
       vTrace("vKillPrev: prev pid %lld\n"_Stz,pAttachMap->m_iPid);
 
     if (pAttachMap->m_iPid &&
         pAttachMap->m_iPid != Process::iGetPid() &&
         Process::bTestPid(pAttachMap->m_iPid)) {
       
-      b = Process::bKillPid(pAttachMap->m_iPid);
-      if ( b )
-        vTrace("vKillPrev: process %lld killed\n"_Stz,pAttachMap->m_iPid);
-      else
-        vTrace("vKillPrev: process %lld not killed\n"_Stz,pAttachMap->m_iPid);
+      bool bResult = Process::bKillPid(pAttachMap->m_iPid);
+      if (gxArguments.m_bDeveloper) {
+        if (bResult)
+          vTrace("vKillPrev: process %lld killed\n"_Stz,pAttachMap->m_iPid);
+        else
+          vTrace("vKillPrev: process %lld not killed\n"_Stz,pAttachMap->m_iPid);
+      }
     }
     
     Region::vClose(aRegion,iFD);
