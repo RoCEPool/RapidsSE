@@ -55,10 +55,6 @@ namespace Data
     bool bGreaterEqualSingle(KeyData* aKey, Index* pIndex);
     bool bGreaterThan(KeyData* aKey, IdxColVec* pIdxColVec);
     bool bGreaterThanSingle(KeyData* aKey, Index* pIndex);
-    
-    //i8 iCmp(KeyData* aKey, IdxColVec* pIdxColVec);
-    
-    bool bMatches(KeyData* aKey, IdxColVec* pIdxColVec, RelOpAry* pOpAry);
 
     bool bJuxtaCompare(eJC eJuxtaCompare, KeyData* aKey,
                        IdxColVec* pIdxColVec, i8 nSearchKeyCols,

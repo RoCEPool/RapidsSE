@@ -322,67 +322,6 @@ bool KeyData::bGreaterThan(KeyData* aKeyThat, IdxColVec* pIdxColVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* if this key greater than given key?                                        */
-/*----------------------------------------------------------------------------*/
-//i8 KeyData::iCmp(KeyData* aKeyThat, IdxColVec* pIdxColVec)
-//{
-//  i8 iCmp = 0;
-//
-//  char* aCursorThis = aByteSequence();
-//  char* aCursorThat = aKeyThat->aByteSequence();
-//
-//  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
-//
-//    Column* pColumn = pIdxColVec->pGet(i_Column);
-//
-//    i8 nBytesThis;
-//    i8 nBytesThat;
-//
-//    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
-//    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
-//    
-//    iCmp = pColumn->iCmp(aDatumThis,aDatumThat);
-//    if (iCmp)
-//      break;
-//  }
-//
-//  return iCmp;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* does this keyval match the given arguments                                 */
-/*----------------------------------------------------------------------------*/
-bool KeyData::bMatches(KeyData* aKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
-{
-  char* aCursorThis = aByteSequence();
-  char* aCursorThat = aKeyThat->aByteSequence();
-  
-  bool bCmp = false;
-  
-  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
-    
-    Column* pColumn = pIdxColVec->pGet(i_Column);
-    
-    i8 nBytesThis;
-    i8 nBytesThat;
-    
-    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
-    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
-    
-    eRO eRelOp = pRelOpAry->xGet(i_Column);
-    
-    bCmp = pColumn->bCmp(eRelOp,
-                         aDatumThis,
-                         aDatumThat);
-    
-    if ( ! bCmp )
-      break;
-  }
-  
-  return bCmp;
-}
-
-/*----------------------------------------------------------------------------*/
 /* juxta-compare this key with given key                                      */
 /*----------------------------------------------------------------------------*/
 bool KeyData::bJuxtaCompare(eJC eJuxtaCompare, KeyData* aKeyThat,
