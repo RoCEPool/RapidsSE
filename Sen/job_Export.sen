@@ -5,6 +5,25 @@
 " job_Export.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* spawn sub-exporters on particpating node                                   */
+/*----------------------------------------------------------------------------*/
+: export.spawnSubExporters ( pJob_Export -- )
+
+  params| pJob_Export |
+
+  task::this task.grabLock
+
+  grid::slots task::acks!
+
+  grid::slots 0
+  do
+    pJob_Export job_subExporter::spawn
+  loop
+
+  task::wait
+;
+
+/*----------------------------------------------------------------------------*/
 /* export on this participant node (same as originator)                       */
 /*----------------------------------------------------------------------------*/
 : export.export ( pJob_Export --  )
