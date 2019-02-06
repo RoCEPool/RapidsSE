@@ -124,6 +124,37 @@ char* KeyData::aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor)
 }
 
 /*----------------------------------------------------------------------------*/
+/* if key1 less than key2 ?                                                   */
+/*----------------------------------------------------------------------------*/
+bool KeyData::bLessThan(KeyWrk& xKeyItem1, Item* aKeyItem2)
+{
+  bool bLessThan = false;
+
+  i8 nKeySize1 = xKeyItem1.nKeySize();
+  i8 nKeySize2 = aKeyItem2->nSizeData();
+  
+  KeyData* aKey1 = xKeyItem1.aKey();
+  KeyData* aKey2 = _aKeyData(aKeyItem2->aDataArea());
+  
+  i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
+  
+  char* aCursorThis = aKey1->aByteSequence();
+  char* aCursorThat = aKey2->aByteSequence();
+    
+  i8 iCmp = MemLib::iCompare(aCursorThis, aCursorThat, iCmpBytes);
+    
+  if (iCmp < 0)
+    return true;
+ 
+  if (iCmp == 0) {
+    if (nKeySize1 < nKeySize2)
+      return true;
+  }
+    
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* if this key less than given key?                                           */
 /*----------------------------------------------------------------------------*/
 bool KeyData::bLessThan(KeyData* aKeyThat, IdxColVec* pIdxColVec)

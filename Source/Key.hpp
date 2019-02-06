@@ -46,7 +46,8 @@ namespace Data
     i8    nKeySize(IdxColVec* pIdxColVec);
     
     static char* aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor);
-  
+    static bool bLessThan(KeyWrk& xKeyItem1, Item* aKeyItem2);
+    
     bool bLessThan(KeyData* aKey, IdxColVec* pIdxColVec);
     bool bLessEqual(KeyData* aKey, IdxColVec* pIdxColVec);
     bool bEqualTo(KeyData* aKey, IdxColVec* pIdxColVec);
