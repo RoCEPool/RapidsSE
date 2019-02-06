@@ -324,30 +324,30 @@ bool KeyData::bGreaterThan(KeyData* aKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* if this key greater than given key?                                        */
 /*----------------------------------------------------------------------------*/
-i8 KeyData::iCmp(KeyData* aKeyThat, IdxColVec* pIdxColVec)
-{
-  i8 iCmp = 0;
-  
-  char* aCursorThis = aByteSequence();
-  char* aCursorThat = aKeyThat->aByteSequence();
-  
-  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
-    
-    Column* pColumn = pIdxColVec->pGet(i_Column);
-    
-    i8 nBytesThis;
-    i8 nBytesThat;
-    
-    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
-    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
-    
-    iCmp = pColumn->iCmp(aDatumThis,aDatumThat);
-    if (iCmp)
-      break;
-  }
-  
-  return iCmp;
-}
+//i8 KeyData::iCmp(KeyData* aKeyThat, IdxColVec* pIdxColVec)
+//{
+//  i8 iCmp = 0;
+//
+//  char* aCursorThis = aByteSequence();
+//  char* aCursorThat = aKeyThat->aByteSequence();
+//
+//  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
+//
+//    Column* pColumn = pIdxColVec->pGet(i_Column);
+//
+//    i8 nBytesThis;
+//    i8 nBytesThat;
+//
+//    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
+//    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
+//    
+//    iCmp = pColumn->iCmp(aDatumThis,aDatumThat);
+//    if (iCmp)
+//      break;
+//  }
+//
+//  return iCmp;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* does this keyval match the given arguments                                 */
