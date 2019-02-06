@@ -278,23 +278,23 @@ void JobList::vMarkContents(i8 iJobId)
   
   if (0 == m_pJobsSkipList->nObjects()) {
     vDropLock();
-    ActivityMap::vMark(iJobId,"%s JobList List is empty"_Stz,
+    ActivityMap::vMark(iJobId,"%s List is empty"_Stz,
                        aJL[m_eJobsList]);
     return;
   }
   
   SkipNode* pNode = m_pJobsSkipList->pFirst(iLevel);
   
-  ActivityMap::vMark(iJobId,"Contents of %s JobList List:"_Stz,
+  ActivityMap::vMark(iJobId,"Contents of %s List:"_Stz,
                      aJL[m_eJobsList]);
 
   while (pNode) {
     Job* pJob = _pJob(pNode->m_pObject);
-    ActivityMap::vMark(iJobId,"Job %p %s id %lld partNode %lld"_Stz,
-      pJob,
-      aCN[pJob->eClass()],
-      pJob->m_iJobId,
-      pJob->m_iParticipantNode);
+    ActivityMap::vMark(iJobId,"  %s %p id %lld partNode %lld"_Stz,
+                       aCN[pJob->eClass()],
+                       pJob,
+                       pJob->m_iJobId,
+                       pJob->m_iParticipantNode);
     
     pNode = m_pJobsSkipList->pNext(pNode, iLevel);
   }

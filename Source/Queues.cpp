@@ -836,8 +836,11 @@ Task* Queues::pPopReadySendQueue(Thread* pCallingThread)
   RASSERT(pTask->pSendNode() != nullptr);
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("pPopReadySendQueue()"_Stz);
-  
+    ActivityMap::vMark(0,
+                       "Popped ReadySend: %s %p"_Stz,
+                       aCN[pTask->pJob()->eClass()],
+                       pTask->pJob());
+
   // return the task popped from the send queue
   return pTask;
 }
@@ -885,8 +888,11 @@ Task* Queues::pPopReadySlotQueue(Thread* pCallingThread)
   RASSERT(pTask->bIsPartitioned());
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("pPopReadySlotQueue()"_Stz);
-  
+    ActivityMap::vMark(0,
+                       "Popped ReadySlot: %s %p"_Stz,
+                       aCN[pTask->pJob()->eClass()],
+                       pTask->pJob());
+
   // return the task popped from the slot queue
   return pTask;
 }
@@ -946,8 +952,11 @@ Task* Queues::pPopSleepingQueue(Thread* pCallingThread)
   pTask->vWakeupTask();
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("pPopSleepingQueue()"_Stz);
-  
+    ActivityMap::vMark(0,
+                       "Popped SleepingQueue: %s %p"_Stz,
+                       aCN[pTask->pJob()->eClass()],
+                       pTask->pJob());
+
   // return the task popped from the sleeping queue
   return pTask;
 }
@@ -1012,7 +1021,10 @@ void Queues::vRemoveFromExecutingSet(Task* pTask)
   pTask->vQueue(QR_NONE);
   
   if (pTask->pJob() && pTask->pJob()->m_bMark)
-    pTask->vWriteMark("vRemoveFromExecutingSet()"_Stz);
+    ActivityMap::vMark(pTask->pJob()->iJobId(),
+                       "Removed from ExecutingSet: %s %p"_Stz,
+                       aCN[pTask->pJob()->eClass()],
+                       pTask->pJob());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1030,7 +1042,10 @@ void Queues::vRemoveFromWaitingSet(Task* pTask)
   pTask->vQueue(QR_NONE);
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("vRemoveFromWaitingSet()"_Stz);
+    ActivityMap::vMark(pTask->pJob()->iJobId(),
+                       "Removed from WaitingSet: %s %p"_Stz,
+                       aCN[pTask->pJob()->eClass()],
+                       pTask->pJob());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1044,7 +1059,10 @@ void Queues::vScheduleAckedTask(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("vScheduleAckedTask()"_Stz);
+    ActivityMap::vMark(pTask->pJob()->iJobId(),
+                       "Scheduling acked: %s %p"_Stz,
+                       aCN[pTask->pJob()->eClass()],
+                       pTask->pJob());
 
   pTask->vGrabLock();
 

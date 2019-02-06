@@ -83,9 +83,9 @@ void Step::vTaskAcksStore(MP_Task mpTask)
   Job* pJob = pGivenTask->m_pJob;
   
   if (pJob && pJob->m_bMark) {
-    ActivityMap::vMark(pJob->m_iJobId,"Setting acks in task %p for job %s to %lld"_Stz,
-                       pGivenTask,
+    ActivityMap::vMark(pJob->m_iJobId,"Setting acks: %s %p to %lld"_Stz,
                        aCN[pJob->eClass()],
+                       pJob,
                        nAcksRequired);
     gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
   }
