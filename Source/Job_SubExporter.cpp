@@ -1,0 +1,218 @@
+/*============================================================================*/
+/* Job_SubExporter.cpp -- Sub Export Job                                        */
+/*============================================================================*/
+
+// Job Short: SubExport
+
+#include "Jobs.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
+
+JobClass xJobClass_SubExporter =
+{
+  "Job_SubExporter"_Stz,     // name of the job class
+  CN_JOB_SUBEXPORT,          // class enum
+  JK_CHILD,                  // job kind
+  "sub-export rows"_Stz,     // comment about the job
+  "subExporter"_Stz,         // the prompt command
+  nullptr,                   // the second word
+  "subExporter_run"_Stz,     // the _run task seed
+  nullptr,                   // the _req task seed
+  nullptr,                   // the _rcv task seed
+  nullptr,                   // the _exe task seed
+  nullptr,                   // the _end task seed
+  nullptr,                   // the _can task seed
+  false,                     // check resources?
+  false,                     // detached job?
+  false,                     // buffer attached?
+  JT_NONE,                   // job trace
+  pJob_SubExporter_pre,      // prompt pre-process function
+  vJob_SubExporter_post,     // prompt post-process function
+  nullptr,                   // job new function
+  vJob_SubExporter_delete,   // job delete function
+  nullptr,                   // job pre-send function
+  nullptr,                   // job post-receive function
+  vJob_SubExporter_show,     // job show function
+  
+  // help and example
+  true,
+  "<none>"_Stz,
+  "<none>"_Stz,
+
+  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass* Jobs::pJob_SubExporter_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_SubFetch_class;
+  
+  return &xJobClass_SubExporter;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Job_SubExporter* Jobs::_pJob_SubExporter(void* aAddress)
+{
+  Job_SubExporter* pJob_SubExporter = reinterpret_cast<Job_SubExporter*>(aAddress);
+  
+  RASSERT_TYPE(pJob_SubExporter,CN_JOB_SUBEXPORT);
+  
+  return pJob_SubExporter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a new entry buffer from heap                                      */
+/*----------------------------------------------------------------------------*/
+void* Job_SubExporter::operator new(size_t)
+{
+  Job_SubExporter* pJob_SubExporter =
+    static_cast<Job_SubExporter*>(HeapMem::pAllocate(CN_JOB_SUBEXPORT));
+  
+  return pJob_SubExporter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* perform new of entry buffer for given address                              */
+/*----------------------------------------------------------------------------*/
+void* Job_SubExporter::operator new(size_t, void* aAddress)
+{
+  return aAddress;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an entry buffer back to the heap                                      */
+/*----------------------------------------------------------------------------*/
+void Job_SubExporter::operator delete(void* aAddress)
+{
+  Job_SubExporter* pJob_SubExporter = static_cast<Job_SubExporter*>(aAddress);
+  
+  HeapMem::vFree(pJob_SubExporter);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
+: Job(CN_JOB_SUBEXPORT, pSession)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORT,_FOOTER_);
+    
+  m_pJobExport  = nullptr;
+  m_iSlot       = -1;
+  
+  _checkInitialised_(CN_JOB_SUBEXPORT);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORT,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Job_SubExporter::~Job_SubExporter(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORT,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_SubExporter::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pObject);
+
+  pJob_SubExporter->vShow();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Member Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_SubExporter::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORT,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Job_SubExporter::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORT);
+  
+  return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Catalog Functions -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+Job* Jobs::pJob_SubExporter_pre(Interface::Session* pSession)
+{
+  Job_SubExporter* pJob_SubExporter = new Job_SubExporter(pSession);
+  
+  return pJob_SubExporter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt post execute function                                               */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_SubExporter_post(Interface::Session* pSession, Job* pJob)
+{
+  Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pJob);
+  
+  if ( pJob_SubExporter->m_bHasError ) {
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_SubExporter->m_xNode[i_Node].m_eErrorCode]);
+    }
+    
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_SubExporter_delete(Interface::Session* pSession, Job* pJob)
+{
+  Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pJob);
+  
+  delete pJob_SubExporter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_SubExporter_show(Job* pJob)
+{
+  Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pJob);
+
+  pJob_SubExporter->vShow();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -37,19 +37,19 @@ void Step::vJob_SubExporterSpawn(MP_Task mpTask)
   Session* pSession = pJob_Export->m_pSession;
   
   //! this needs to be optimised
-  JobClass* pJobClass_SubExport = JobClass::pFind(CN_JOB_SUBEXPORT);
+  JobClass* pJobClass_SubExporter = JobClass::pFind(CN_JOB_SUBEXPORT);
   
-  Job_SubExport* pJob_SubExport =
-    static_cast<Job_SubExport*>(pJobClass_SubExport->pPreJob(pSession));
+  Job_SubExporter* pJob_SubExporter =
+    static_cast<Job_SubExporter*>(pJobClass_SubExporter->pPreJob(pSession));
   
-  pJob_SubExport->m_pJobExport = pJob_Export;
-  pJob_SubExport->m_iSlot = i_Slot;
+  pJob_SubExporter->m_pJobExport = pJob_Export;
+  pJob_SubExporter->m_iSlot = i_Slot;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pJob_SubExport->vSeed(SS_SEED_RUN);
+  pJob_SubExporter->vSeed(SS_SEED_RUN);
 
-  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubExport,SS_SEED_RUN));
+  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubExporter,SS_SEED_RUN));
   
   EXIT();
 }
@@ -62,12 +62,12 @@ void Step::vJob_SubExporterExportJobFetch(MP_Task mpTask)
 {
   ENTRY("vJob_SubExporterSpawn"_Stz);
   
-  Object* pPtrJob_SubExport;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubExport) )
+  Object* pPtrJob_SubExporter;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubExporter) )
     THROW_INVALID_DSTACK("Job_subExporter.exportJob@"_Stz);
-  Job_SubExport* pJob_SubExport = _pJob_SubExport(pPtrJob_SubExport);
+  Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pPtrJob_SubExporter);
   
-  mpTask->m_pDataStack->vPushPointer(pJob_SubExport->m_pJobExport);
+  mpTask->m_pDataStack->vPushPointer(pJob_SubExporter->m_pJobExport);
   
   EXIT();
 }

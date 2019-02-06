@@ -402,7 +402,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Start),          // CN_JOB_START
   /*    */ sizeof(Job_StartCluster),   // CN_JOB_STARTCLUSTER
   /*    */ sizeof(Job_Status),         // CN_JOB_STATUS
-  /*    */ sizeof(Job_SubExport),      // CN_JOB_SUBEXPORT
+  /*    */ sizeof(Job_SubExporter),    // CN_JOB_SUBEXPORT
   /*    */ sizeof(Job_SubFetch),       // CN_JOB_SUBFETCH
   /*    */ sizeof(Job_SubIngester),    // CN_JOB_SUBINGESTER
   /*    */ sizeof(Job_SubInserter),    // CN_JOB_SUBINSERTER
