@@ -12,7 +12,7 @@ extern AttachMap* gpAttachMap;
 JobClass xJobClass_SubExporter =
 {
   "Job_SubExporter"_Stz,     // name of the job class
-  CN_JOB_SUBEXPORT,          // class enum
+  CN_JOB_SUBEXPORTER,          // class enum
   JK_CHILD,                  // job kind
   "sub-export rows"_Stz,     // comment about the job
   "subExporter"_Stz,         // the prompt command
@@ -65,7 +65,7 @@ Job_SubExporter* Jobs::_pJob_SubExporter(void* aAddress)
 {
   Job_SubExporter* pJob_SubExporter = reinterpret_cast<Job_SubExporter*>(aAddress);
   
-  RASSERT_TYPE(pJob_SubExporter,CN_JOB_SUBEXPORT);
+  RASSERT_TYPE(pJob_SubExporter,CN_JOB_SUBEXPORTER);
   
   return pJob_SubExporter;
 }
@@ -76,7 +76,7 @@ Job_SubExporter* Jobs::_pJob_SubExporter(void* aAddress)
 void* Job_SubExporter::operator new(size_t)
 {
   Job_SubExporter* pJob_SubExporter =
-    static_cast<Job_SubExporter*>(HeapMem::pAllocate(CN_JOB_SUBEXPORT));
+    static_cast<Job_SubExporter*>(HeapMem::pAllocate(CN_JOB_SUBEXPORTER));
   
   return pJob_SubExporter;
 }
@@ -103,16 +103,16 @@ void Job_SubExporter::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
-: Job(CN_JOB_SUBEXPORT, pSession)
+: Job(CN_JOB_SUBEXPORTER, pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
     
   m_pJobExport  = nullptr;
   m_iSlot       = -1;
   
-  _checkInitialised_(CN_JOB_SUBEXPORT);
+  _checkInitialised_(CN_JOB_SUBEXPORTER);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORT,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,7 +120,7 @@ Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 Job_SubExporter::~Job_SubExporter(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -146,7 +146,7 @@ void Job_SubExporter::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Job_SubExporter::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,7 +158,7 @@ void Job_SubExporter::vShow(void)
 /*----------------------------------------------------------------------------*/
 Footer* Job_SubExporter::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORT);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER);
   
   return &m_xFooter;
 }

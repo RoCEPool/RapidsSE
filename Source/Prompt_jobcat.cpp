@@ -116,7 +116,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vTraceJob(CN_JOB_WRITEBUFFER);
 
   // child
-  nJobs++; JobClass::vTraceJob(CN_JOB_SUBEXPORT);
+  nJobs++; JobClass::vTraceJob(CN_JOB_SUBEXPORTER);
   nJobs++; JobClass::vTraceJob(CN_JOB_SUBFETCH);
   nJobs++; JobClass::vTraceJob(CN_JOB_SUBINGESTER);
   nJobs++; JobClass::vTraceJob(CN_JOB_SUBLOADER);

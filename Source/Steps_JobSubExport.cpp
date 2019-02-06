@@ -37,7 +37,7 @@ void Step::vJob_SubExporterSpawn(MP_Task mpTask)
   Session* pSession = pJob_Export->m_pSession;
   
   //! this needs to be optimised
-  JobClass* pJobClass_SubExporter = JobClass::pFind(CN_JOB_SUBEXPORT);
+  JobClass* pJobClass_SubExporter = JobClass::pFind(CN_JOB_SUBEXPORTER);
   
   Job_SubExporter* pJob_SubExporter =
     static_cast<Job_SubExporter*>(pJobClass_SubExporter->pPreJob(pSession));
