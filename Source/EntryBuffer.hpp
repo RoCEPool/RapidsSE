@@ -166,8 +166,8 @@ namespace Data
                                         Item* aFindEntry);
     void         vPositionPriorVecBuffer(KeyData* aFindKey, Item** aaPriorVec,
                                          EntryBuffer* pToBuffer);
-    void         vPositionPriorVecBuffer2(KeyData* aFindKey, Item** aaPriorVec,
-                                          EntryBuffer* pToBuffer);
+//    void         vPositionPriorVecBuffer2(KeyData* aFindKey, Item** aaPriorVec,
+//                                          EntryBuffer* pToBuffer);
 //    void         vPositionPriorVecBuffer3(KeyData* aFindKey, Item** aaPriorVec,
 //                                          EntryBuffer* pToBuffer);
     EntryBuffer* pSplit2(void);
