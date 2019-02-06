@@ -130,11 +130,11 @@ namespace Data
     void         vCutEntry(Item* aItem, Item* aPriorVec[]);
     void         vDeleteUpwards(KeyData* aDeleteKey,
                                 EntryBuffer** ppRootKeyBuffer);
-    void         vDeleteUpwards(KeyData* aDeleteKey, EntryBuffer* pToBuffer,
-                                EntryBuffer** ppRootKeyBuffer);
+//    void         vDeleteUpwards(KeyData* aDeleteKey, EntryBuffer* pToBuffer,
+//                                EntryBuffer** ppRootKeyBuffer);
     void         vDumpPriorVec(Item* aPriorVec[]);
-    Item*       aGetEntryOffset(i8 iOffset);
-    Item*       aGetEntrySplit(i8 iSplitEntryNo, Item** aaPriorEntry);
+    Item*        aGetEntryOffset(i8 iOffset);
+    Item*        aGetEntrySplit(i8 iSplitEntryNo, Item** aaPriorEntry);
     void         vHandleFirstInsert(Item* aInsertedKeyEntry,
                                     Item* aOriginalFirstEntry,
                                     EntryBuffer** ppRootKeyBuffer);
@@ -144,16 +144,16 @@ namespace Data
     Item*        aSkipRoots(void);
     void         vHeadEntryNew(void);
     void         vHeadEntryRestore(void);
-    EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,
+    EntryBuffer*  pInsertableBuffer(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
-    Item*       aInsertKeyAbsLazy(KeyWrk& xKeyWrk);
+    Item*        aInsertKeyAbsLazy(KeyWrk& xKeyWrk);
     void         vInsertKeySkip(Item* aKeyEntry);
-    Item*       aInsertKeyBuffer(KeyWrk& xKeyWrk,
+    Item*        aInsertKeyBuffer(KeyWrk& xKeyWrk,
                                   EntryBuffer** ppRootKeyBuffer);
-    Item*       aInsertKeyUpwards(KeyWrk& xKeyWrk,
+    Item*        aInsertKeyUpwards(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
-    void         vItemCountRestore(void);
-    bool         bKeyBeforeBuffer(KeyWrk& xKey);
+    void        vItemCountRestore(void);
+    bool        bKeyBeforeBuffer(KeyWrk& xKey);
     FreeItem*    aMakeFreeEntry(Item* aItem);
     EntryBuffer* pNewHigherBuffer(void);
     EntryBuffer* pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets,
