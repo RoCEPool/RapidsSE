@@ -227,7 +227,8 @@ void File::vClose(void)
   }
   
   if (gpAttachMap) gpAttachMap->m_oResourceTracker.vDecFileOpen();
-  
+  ActivityMap::vMark(-2,"SysRes: File closed %s"_Stz,m_sFilePath.aStz());
+
   m_aFile = nullptr;
 
   vReset();
@@ -398,6 +399,7 @@ bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
   }
   
   if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncFileOpen();
+  ActivityMap::vMark(-2,"SysRes: File opened %s %s"_Stz,aFilePath,aOpenMode);
 
   return true;
 }

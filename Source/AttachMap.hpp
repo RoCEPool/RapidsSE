@@ -44,6 +44,8 @@ namespace StorageEngine
     bool          m_bMarkApi[AC_ENUMS];
     bool          m_bMarkJobAll;
     bool          m_bMarkJob[CN_ENUMS];
+    bool          m_bMarkResourceAll;
+    bool          m_bMarkResource[SR_ENUMS];
     Atomic        m_ixMonitorTake;
     i8            m_nObjectsInPool[CN_ENUMS];
     JobList*      m_pOriginatingJobs;

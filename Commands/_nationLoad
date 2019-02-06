@@ -17,6 +17,7 @@ create table nation (
 print "loading nation.csv..." ;
 ld nation "/tpch/SF1/nation.csv" ;
 
+am "\n##########################################################################################\n\n";
 print "exporting nation.csv..." ;
 export nation "/tmp/nation_export.csv" ;
 
