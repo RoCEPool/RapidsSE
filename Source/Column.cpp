@@ -58,9 +58,6 @@ Column::Column(void)
   m_bIsNullable = true;
   m_bIsPartitionKey = false;
   
-  m_fGreaterEqual = nullptr;
-  m_fGreaterThan  = nullptr;
-  
   _checkInitialised_(CN_COLUMN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
@@ -82,9 +79,6 @@ Column::Column(Stz* aName)
   m_eDatumType  = DM_INT;
   m_bIsNullable = true;
   m_bIsPartitionKey = false;
-
-  m_fGreaterEqual = nullptr;
-  m_fGreaterThan  = nullptr;
   
   _checkInitialised_(CN_COLUMN);
   
@@ -107,9 +101,6 @@ Column::Column(Stz* aName, Stz* aDefinition)
   m_eDatumType  = DM_NONE;
   m_bIsNullable = true;
   m_bIsPartitionKey = false;
-
-  m_fGreaterEqual = nullptr;
-  m_fGreaterThan  = nullptr;
   
   vSet(aDefinition);
   
@@ -134,9 +125,6 @@ Column::Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo)
   m_eDatumType    = pJob->m_xColumns[iColumnNo].m_eDatumType;
   m_bIsNullable   = pJob->m_xColumns[iColumnNo].m_bIsNullable;
   m_bIsPartitionKey = pJob->m_xColumns[iColumnNo].m_bIsPartitionKey;
-  
-  m_fGreaterEqual = nullptr;
-  m_fGreaterThan  = nullptr;
   
   _checkInitialised_(CN_COLUMN);
   
