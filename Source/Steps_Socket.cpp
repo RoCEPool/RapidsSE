@@ -277,9 +277,9 @@ void Step::vSocketRecvObject(MP_Task mpTask)
       gpAttachMap->m_bMarkResourceAll) {
     s256 sHeader;
     ((Header*)caObjectHeader)->vSprint(sHeader);
-    ActivityMap::vMark(-SR_SOCKET,
-                       "Recv header: %s"_Stz,
-                       sHeader.aStz());
+    ActivityMap::vMarkRes(SR_SOCKET,
+                          "Recv header: %s"_Stz,
+                          sHeader.aStz());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -319,9 +319,9 @@ void Step::vSocketRecvObject(MP_Task mpTask)
       s256 sFooter;
       Footer* pFooter = aAdd<Footer*>(pJob,nObjectSize-sizeof(Footer));
       pFooter->vSprint(sFooter);
-      ActivityMap::vMark(-SR_SOCKET,
-                         "Recv footer: %s"_Stz,
-                         sFooter.aStz());
+      ActivityMap::vMarkRes(SR_SOCKET,
+                            "Recv footer: %s"_Stz,
+                            sFooter.aStz());
     }
     if (pJob->m_bMark)
       ActivityMap::vMark(pJob->m_iJobId,
@@ -363,9 +363,9 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     
     if (gpAttachMap->m_bMarkResource[SR_SOCKET] ||
         gpAttachMap->m_bMarkResourceAll) {
-      ActivityMap::vMark(-SR_SOCKET,
-                         "Recv EntryBuffer: %p"_Stz,
-                         pEntryBuffer);
+      ActivityMap::vMarkRes(SR_SOCKET,
+                            "Recv EntryBuffer: %p"_Stz,
+                            pEntryBuffer);
     }
 
     mpTask->m_pDataStack->vPushPointer(pEntryBuffer);

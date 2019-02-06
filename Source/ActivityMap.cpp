@@ -294,20 +294,25 @@ void ActivityMap::vMarkJob(Jobs::Job* pJob,
 /* write an ActivityMark                                                      */
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vMarkRes(eSR eSysRes,
-                           Stz* szLeadingText, Stz* szFormat, va_list xArgs)
+                           Stz* szFormat, ...)
 {
-  s4K szCombinedFormat;
+
+#ifdef WITH_ACTIVITY_MAP
+  if ( ! gpActivityMap )
+    return;
   
-  StrLib::vSprint(szCombinedFormat,
-                  "%s: %s"_Stz,
-                  szLeadingText,
-                  
-                  szFormat
-                  );
+  if ( ! gpAttachMap->m_bMarkResource[eSysRes] &&
+       ! gpAttachMap->m_bMarkResourceAll )
+    return;
   
-  gpActivityMap->vWriteMark(-eSysRes,
-                            szCombinedFormat,
-                            xArgs);
+  va_list xArgs;
+  
+  va_start(xArgs,szFormat);
+  
+  gpActivityMap->vWriteMark(-eSysRes,szFormat,xArgs);
+  
+  va_end(xArgs);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
