@@ -94,7 +94,7 @@ namespace Data
     void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     void         vBuildSkipListSorted(void);
     void         vDeleteEntry(Item** aaItem);
-    bool         bDeleteKey(KeyData* aDeleteKey, EntryBuffer* pToBuffer);
+    //bool         bDeleteKey(KeyData* aDeleteKey, EntryBuffer* pToBuffer);
     void         vDump(void);
     EntryBuffer* pFirstChildBuffer(void);
     Item*       aInsertKeyAbs(KeyWrk& xKeyWrk);

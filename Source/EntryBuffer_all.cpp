@@ -210,42 +210,42 @@ void EntryBuffer::vDeleteEntry(Item** aaItem)
 /*----------------------------------------------------------------------------*/
 /* delete key                                                                 */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bDeleteKey(KeyData* aDeleteKey, EntryBuffer* pToBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-#ifdef USE_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
-#endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Item* xPriorVec[gpAttachMap->m_nIndexOffsets];
-  
-  vPositionPriorVecBuffer3(aDeleteKey,xPriorVec,pToBuffer);
-  
-  Item* aPriorEntry = xPriorVec[0];
-  
-  Item* aEntryToBeDeleted = aNextEntry(aPriorEntry,0);
-  if (!aEntryToBeDeleted)
-    return false;
-  
-  //vTrace("[%lld] pDeleteEntry key %lld\n"_Stz,
-  //       *nPoolBufferNo(),
-  //       pEntryToBeDeleted->aKey()->iGetInt());
-  
-  KeyData* aDeleteEntryKey = _aKeyData(aEntryToBeDeleted->aDataArea());
-  
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  //if (! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec))
-  //  return;
-  RASSERT(aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec));
-  RASSERT(pToBuffer == EntryBuffer::pRefdEntryBuffer(aEntryToBeDeleted));
-  
-  vDeleteEntry(&aEntryToBeDeleted);
-  
-  return true;
-}
+//bool EntryBuffer::bDeleteKey(KeyData* aDeleteKey, EntryBuffer* pToBuffer)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+//  
+//#ifdef USE_EB_LAZY_CHAIN
+//  RASSERT( ! m_aLazyChain );
+//#endif
+//  
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  
+//  Item* xPriorVec[gpAttachMap->m_nIndexOffsets];
+//  
+//  vPositionPriorVecBuffer3(aDeleteKey,xPriorVec,pToBuffer);
+//  
+//  Item* aPriorEntry = xPriorVec[0];
+//  
+//  Item* aEntryToBeDeleted = aNextEntry(aPriorEntry,0);
+//  if (!aEntryToBeDeleted)
+//    return false;
+//  
+//  //vTrace("[%lld] pDeleteEntry key %lld\n"_Stz,
+//  //       *nPoolBufferNo(),
+//  //       pEntryToBeDeleted->aKey()->iGetInt());
+//  
+//  KeyData* aDeleteEntryKey = _aKeyData(aEntryToBeDeleted->aDataArea());
+//  
+//  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+//  //if (! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec))
+//  //  return;
+//  RASSERT(aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec));
+//  RASSERT(pToBuffer == EntryBuffer::pRefdEntryBuffer(aEntryToBeDeleted));
+//  
+//  vDeleteEntry(&aEntryToBeDeleted);
+//  
+//  return true;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
