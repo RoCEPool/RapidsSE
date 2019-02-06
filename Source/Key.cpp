@@ -124,16 +124,43 @@ char* KeyData::aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor)
 }
 
 /*----------------------------------------------------------------------------*/
-/* if key1 greater than key2 ?                                                */
+/* if key1 is equal to key2 ?                                                 */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bGreaterThan(KeyWrk& xKeyItem1, Item* aKeyItem2)
+bool KeyData::bEqualTo(Item* aKeyItem1, Item* aKeyItem2)
 {
   bool bLessThan = false;
   
-  i8 nKeySize1 = xKeyItem1.nKeySize();
+  i8 nKeySize1 = aKeyItem1->nSizeData();
   i8 nKeySize2 = aKeyItem2->nSizeData();
   
-  KeyData* aKey1 = xKeyItem1.aKey();
+  KeyData* aKey1 = _aKeyData(aKeyItem1->aDataArea());
+  KeyData* aKey2 = _aKeyData(aKeyItem2->aDataArea());
+  
+  if (nKeySize1 != nKeySize2)
+    return false;
+  
+  char* aCursorThis = aKey1->aByteSequence();
+  char* aCursorThat = aKey2->aByteSequence();
+  
+  i8 iCmp = MemLib::iCompare(aCursorThis, aCursorThat, nKeySize1);
+  
+  if (iCmp == 0)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* if key1 greater than key2 ?                                                */
+/*----------------------------------------------------------------------------*/
+bool KeyData::bGreaterThan(Item* aKeyItem1, Item* aKeyItem2)
+{
+  bool bLessThan = false;
+  
+  i8 nKeySize1 = aKeyItem1->nSizeData();
+  i8 nKeySize2 = aKeyItem2->nSizeData();
+  
+  KeyData* aKey1 = _aKeyData(aKeyItem1->aDataArea());
   KeyData* aKey2 = _aKeyData(aKeyItem2->aDataArea());
   
   i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;

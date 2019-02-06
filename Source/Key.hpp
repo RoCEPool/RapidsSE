@@ -47,7 +47,8 @@ namespace Data
     
     static char* aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor);
     
-    static bool bGreaterThan(KeyWrk& xKeyItem1, Item* aKeyItem2);
+    static bool bEqualTo(Item* aKeyItem1, Item* aKeyItem2);
+    static bool bGreaterThan(Item* aKeyItem1, Item* aKeyItem2);
     static bool bLessThan(KeyWrk& xKeyItem1, Item* aKeyItem2);
     
     bool bLessThan(KeyData* aKey, IdxColVec* pIdxColVec);
