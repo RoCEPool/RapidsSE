@@ -49,6 +49,7 @@ namespace MiniHeaps
     void  vOffsets(i8 nOffsets);
     Item* aRefdItem(void);
     i8    nSizeItem_WithoutOffsets(void);
+    i8    nSizeData(void);
     bool  bValidItem(void);
   
   private:
