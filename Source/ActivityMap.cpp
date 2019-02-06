@@ -248,6 +248,29 @@ void ActivityMap::vMarkApiExit(i8 eApiCall, i8 iJobId)
 }
 
 /*----------------------------------------------------------------------------*/
+/* write an ActivityMark                                                      */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vMarkJob(Jobs::Job* pJob,
+                           Stz* szLeadingText, Stz* szFormat, va_list xArgs)
+{
+  s4K szCombinedFormat;
+  
+  StrLib::vSprint(szCombinedFormat,
+                  "%s: %s %p %s"_Stz,
+                  szLeadingText,
+                  
+                  aCN[pJob->eClass()],
+                  pJob,
+                  
+                  szFormat
+                  );
+  
+  gpActivityMap->vWriteMark(pJob->iJobId(),
+                            szCombinedFormat,
+                            xArgs);
+}
+
+/*----------------------------------------------------------------------------*/
 /* write a multi-line string                                                  */
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vMarkString(i8 iJobId, s48K& sString)

@@ -6,7 +6,7 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
-
+extern ActivityMap* gpActivityMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -155,6 +155,28 @@ void Job::vJobTrace(eJT eJobTrace)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_eJobTrace = eJobTrace;
+}
+
+/*----------------------------------------------------------------------------*/
+/* write a mark about this task                                               */
+/*----------------------------------------------------------------------------*/
+void Job::vMarkJob(Stz* szLeadingText, Stz* szFormat, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+#ifdef WITH_ACTIVITY_MAP
+  if ( ! gpActivityMap )
+    return;
+  
+  va_list xArgs;
+  
+  va_start(xArgs,szFormat);
+  
+  ActivityMap::vMarkJob(this,szLeadingText,szFormat,xArgs);
+  
+  va_end(xArgs);
+#endif
+  
 }
 
 /*----------------------------------------------------------------------------*/

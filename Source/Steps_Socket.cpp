@@ -324,7 +324,8 @@ void Step::vSocketRecvObject(MP_Task mpTask)
                          sFooter.aStz());
     }
     if (pJob->m_bMark)
-      ActivityMap::vMark(pJob->m_iJobId,"Recv: %s %p socket %llx"_Stz,
+      ActivityMap::vMark(pJob->m_iJobId,
+                         "Recv: %s %p socket %llx"_Stz,
                          aCN[eClass],
                          pJob,
                          pSocket);
@@ -360,6 +361,13 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     // restore the entryBuffer pointets (m_pHeadEntry etc)
     pEntryBuffer->vRestore();
     
+    if (gpAttachMap->m_bMarkResource[SR_SOCKET] ||
+        gpAttachMap->m_bMarkResourceAll) {
+      ActivityMap::vMark(-SR_SOCKET,
+                         "Recv EntryBuffer: %p"_Stz,
+                         pEntryBuffer);
+    }
+
     mpTask->m_pDataStack->vPushPointer(pEntryBuffer);
     mpTask->m_pDataStack->vPushBool(true);
     EXIT();
