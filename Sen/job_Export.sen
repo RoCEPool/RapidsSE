@@ -36,7 +36,6 @@
   "export_export: export on this node" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // initialise
 
   // set path
   pJob_Export job.pushPath task::dicStack.set
@@ -45,8 +44,10 @@
   pJob_Export job.objectName@ to sTableNm
   sTableNm pushTable assert
 
-  // get table
-  sTableNm find execute to pTable
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // get table pointer
+  sTableNm table::find to pTable
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -55,9 +56,6 @@
   pJob_Export export.spawnSubExporters
 
   pJob_Export job_export.end
-
-  //pTable pJob_Export Job_Export.table!
-
 ;
 
 
