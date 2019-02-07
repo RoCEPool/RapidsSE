@@ -324,7 +324,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
                             sFooter.aStz());
     }
     if (pJob->m_bMark)
-      ActivityMap::vMark(pJob->m_iJobId,
+      ActivityMap::vMarkJob(pJob,
                          "Recv: %s %p socket %llx"_Stz,
                          aCN[eClass],
                          pJob,
@@ -570,7 +570,7 @@ void Step::vSocketSendObject(MP_Task mpTask)
   if (_bIsValidJob(eClass)) {
     Job* pJob = _pJob(pObject);
     if (pJob->m_bMark)
-      ActivityMap::vMark(pJob->m_iJobId,"Send: %s %p socket %llx"_Stz,
+      ActivityMap::vMarkJob(pJob,"Send: %s %p socket %llx"_Stz,
                          aCN[eClass],
                          pJob,
                          pSocket);
