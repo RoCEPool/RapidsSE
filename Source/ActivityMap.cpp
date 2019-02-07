@@ -260,26 +260,35 @@ void ActivityMap::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
   
   va_start(xArgs,szFormat);
   
-//  s4K szCombinedFormat;
-//
-//  StrLib::vSprint(szCombinedFormat,
-//                  "%s.%03lld %p" // job expansion
-//                  " %s"_Stz,     // formatted args
-//
-//                  aCN[pJob->eClass()],
-//                  pJob->iJobId(),
-//                  pJob,
-//
-//                  szFormat
-//                  );
-//
-//  gpActivityMap->vWriteMark(pJob->iJobId(),
-//                            szCombinedFormat,
-//                            xArgs);
+  s4K szCombinedFormat;
+
+  if (pJob->m_bWasReceived) {
+    
+    s32 sNodeNm;
+    sNodeNm = pJob->szNodeNm();
+    
+    StrLib::vSprint(szCombinedFormat,
+                  "%s (recv from %s)"_Stz,
+                  
+                  szFormat,
+                  sNodeNm.aStz()
+                  );
+  }
+  else {
+    StrLib::vSprint(szCombinedFormat,
+                    "%s"_Stz,
+                    
+                    szFormat
+                    );
+  }
   
   gpActivityMap->vWriteMark(pJob->iJobId(),
-                            szFormat,
+                            szCombinedFormat,
                             xArgs);
+  
+//  gpActivityMap->vWriteMark(pJob->iJobId(),
+//                            szFormat,
+//                            xArgs);
 
   
   va_end(xArgs);

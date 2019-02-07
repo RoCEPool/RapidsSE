@@ -383,7 +383,8 @@ void SePrompt::vFreeSpace(void)
 
   s32 sFreeSpaceMag;
   Magnitudes::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
-  ActivityMap::vMarkInfo("Free space: %s"_Stz,sFreeSpaceMag.aStz());
+  ActivityMap::vMarkInfo("Command completed (free space: %s)"_Stz,
+                         sFreeSpaceMag.aStz());
 }
 
 /*----------------------------------------------------------------------------*/

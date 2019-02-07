@@ -135,12 +135,13 @@ namespace Jobs
     void vJobId(i8 iJobId);
     eJT  eJobTrace(void);
     void vJobTrace(eJT eJobTrace);
-    i8   iOriginatorNode(void);
     void vMarkJob(Stz* szFormat, ...);
     void vMutexLock(void);
     void vMutexSignal(void);
     void vMutexUnlock(void);
     void vMutexWait(void);
+    Stz* szNodeNm(void);
+    i8   iOriginatorNode(void);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
     void vReport(void);

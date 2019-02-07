@@ -102,6 +102,24 @@ Job::~Job(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get the originator node no of this job from the job id                     */
+/*----------------------------------------------------------------------------*/
+i8 Job::iOriginatorNode(i8 iJobId)
+{
+  i8 iMaskOffLower48Bits = 0xFFFF000000000000;
+  
+  i8 iOriginatorNode = iJobId & iMaskOffLower48Bits;
+  iOriginatorNode >>= 48;
+  
+  return iOriginatorNode;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -240,6 +258,20 @@ void Job::vMutexWait(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get name of node this came from                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Job::szNodeNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 i_Node = iOriginatorNode();
+  
+  Stz* szNodeNm = gpAttachMap->m_pGrid->pGetNode(i_Node)->aNodeName();
+  
+  return szNodeNm;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the originator node no of this job from the job id                     */
 /*----------------------------------------------------------------------------*/
 i8 Job::iOriginatorNode(void)
@@ -249,19 +281,6 @@ i8 Job::iOriginatorNode(void)
   i8 iMaskOffLower48Bits = 0xFFFF000000000000;
   
   i8 iOriginatorNode = m_iJobId & iMaskOffLower48Bits;
-  iOriginatorNode >>= 48;
-  
-  return iOriginatorNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the originator node no of this job from the job id                     */
-/*----------------------------------------------------------------------------*/
-i8 Job::iOriginatorNode(i8 iJobId)
-{
-  i8 iMaskOffLower48Bits = 0xFFFF000000000000;
-  
-  i8 iOriginatorNode = iJobId & iMaskOffLower48Bits;
   iOriginatorNode >>= 48;
   
   return iOriginatorNode;
