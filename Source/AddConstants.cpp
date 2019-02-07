@@ -423,6 +423,18 @@ void Axioms::vAddConstants(void)
   /*  5 */ vAddConstant("JK_LOCAL"_Stz,    JK_LOCAL);
   /*  6 */ vAddConstant("JK_SYSTEM"_Stz,   JK_SYSTEM);
 
+  // JP_ : job phase
+  /*  0 */ vAddConstant("JP_NONE"_Stz,      JP_NONE);
+  /*  0 */ vAddConstant("JP_BEGINING"_Stz,  JP_BEGINING);
+  /*  0 */ vAddConstant("JP_BEGUN"_Stz,     JP_BEGUN);
+  /*  0 */ vAddConstant("JP_EXECUTING"_Stz, JP_EXECUTING);
+  /*  0 */ vAddConstant("JP_EXECUTED"_Stz,  JP_EXECUTED);
+  /*  0 */ vAddConstant("JP_ENDING"_Stz,    JP_ENDING);
+  /*  0 */ vAddConstant("JP_ENDED"_Stz,     JP_ENDED);
+  /*  0 */ vAddConstant("JP_CANCELING"_Stz, JP_CANCELING);
+  /*  0 */ vAddConstant("JP_CANCELED"_Stz,  JP_CANCELED);
+  /*  0 */ vAddConstant("JP_ENUMS"_Stz,     JP_ENUMS);
+
   // JT_ : job trace
   /*  0 */ vAddConstant("JT_NONE"_Stz,    JT_NONE);
   /*  1 */ vAddConstant("JT_ALL"_Stz,     JT_ALL);
