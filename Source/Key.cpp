@@ -652,7 +652,7 @@ bool KeyData::bJuxtaAfter(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearch
 /* show the contents of this key                                              */
 /*----------------------------------------------------------------------------*/
 #ifdef USE_VLQ_DATUMS
-void KeyData::vShow(IdxColVec* pIdxColVec)
+void KeyData::vShow(IdxColVec* pIdxColVec, bool bCompressed)
 {
   i8 nBytes;
   i8 iKey;
@@ -668,14 +668,17 @@ void KeyData::vShow(IdxColVec* pIdxColVec)
     char* aDatum = this->aEachDatum(pColumn,nBytes,&aCursor);
     
     eDM eDatum = pColumn->eDatumType();
-    DtmLib::vSprintVLQ(eDatum,(Stz*)caLiteral,(Stz*)aDatum,pColumn);
+    if (bCompressed)
+      DtmLib::vSprintVLQ(eDatum,(Stz*)caLiteral,(Stz*)aDatum,pColumn);
+    else
+      DtmLib::vSprint(eDatum,(Stz*)caLiteral,(Stz*)aDatum,pColumn);
     vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Column,nBytes,caLiteral);
   }
   
   //vTrace("%s)\n"_Stz, sKeyString.aStz());
 }
 #else
-void KeyData::vShow(IdxColVec* pIdxColVec)
+void KeyData::vShow(IdxColVec* pIdxColVec, bool bCompressed)
 {
   i8 nBytes;
   i8 iKey;

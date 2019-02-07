@@ -177,7 +177,6 @@ void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol)
   else
     aSrc = aAdd<char*>(xVariable.aNestedValue(),sizeof(Value));
   
-  
   nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,aSrc);
   
   vTake(nBytes);
@@ -413,12 +412,12 @@ void KeyWrk::vSetEntry(Item* pEntry)
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vShow(IdxColVec* pIdxColVec)
+void KeyWrk::vShow(IdxColVec* pIdxColVec, bool bCompressed)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
   KeyData* aKey = this->aKey();
-  aKey->vShow(pIdxColVec);
+  aKey->vShow(pIdxColVec, bCompressed);
   vTrace("\n"_Stz);
 }
 

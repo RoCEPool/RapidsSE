@@ -3615,7 +3615,7 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
       if (bShowKeys) {
         KeyData* aTestKey = _aKeyData(aTestEntry_sl->aDataArea());
         vTrace("Test %p: "_Stz,aTestEntry_sl);
-        aTestKey->vShow(pIdxColVec);
+        aTestKey->vShow(pIdxColVec, m_pIndex->bIsHidden() ? true : false);
         vTrace("\n"_Stz);
       }
       

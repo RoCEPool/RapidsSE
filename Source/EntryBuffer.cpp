@@ -451,7 +451,7 @@ void EntryBuffer::vShowEntry(Item* aItem)
   //       );
   
   if (! m_pIndex->bIsHidden())
-    aKey->vShow(m_pIndex->pIdxColVec());
+    aKey->vShow(m_pIndex->pIdxColVec(), false);
   
   if (m_pIndex->bIsHidden()) {
     RowData* aRowData = _aRowData(aItem->aDataArea());
