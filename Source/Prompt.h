@@ -54,7 +54,7 @@ using namespace Prompt;
 
 #include "Prompt_job.hpp"
 #include "Prompt_jobcat.hpp"
-#include "Prompt_jobclass.hpp"
+#include "Prompt_jobClass.hpp"
 
 #include "Prompt_locks.hpp"
 #include "Prompt_ls.hpp"
@@ -99,6 +99,8 @@ using namespace Prompt;
 #include "Prompt_threads.hpp"
 #include "Prompt_timerEnd.hpp"
 #include "Prompt_timerStart.hpp"
+
+#include "Prompt_uptime.hpp"
 
 #include "Prompt_version.hpp"
 
