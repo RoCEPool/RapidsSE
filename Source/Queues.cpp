@@ -1216,15 +1216,16 @@ void Queues::vScheduleSpawnedTask(Task* pTask)
   
   if (pTask->pJob()->m_bMark) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
-      ActivityMap::vMarkInfo(
-                         "Schedule spawned: %s %p"_Stz,
-                         aCN[pTask->pJob()->eClass()],
-                         pTask->pJob());
+      ActivityMap::vMarkInfo("Schedule spawned: %s %p slot[%lld]"_Stz,
+                             aCN[pTask->pJob()->eClass()],
+                             pTask->pJob(),
+                             pTask->pJob()->m_i_Slot);
     else
       ActivityMap::vMarkJob(pTask->pJob(),
-                         "Schedule spawned: %s %p"_Stz,
-                         aCN[pTask->pJob()->eClass()],
-                         pTask->pJob());
+                            "Schedule spawned: %s %p slot[%lld]"_Stz,
+                            aCN[pTask->pJob()->eClass()],
+                            pTask->pJob(),
+                            pTask->pJob()->m_i_Slot);
   }
   
   eQR eQueue = pTask->eWhichQueue();

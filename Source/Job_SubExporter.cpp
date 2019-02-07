@@ -108,7 +108,6 @@ Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
     
   m_pJobExport  = nullptr;
-  m_iSlot       = -1;
   
   _checkInitialised_(CN_JOB_SUBEXPORTER);
   

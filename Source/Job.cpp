@@ -363,27 +363,28 @@ void Job::vShow(s48K& s)
 /*----------------------------------------------------------------------------*/
 void Job::vInit(void)
 {
-  m_iJobId   = C_UNKNOWN;
-  m_i_State  = C_UNKNOWN;
-  m_eJobList = JL_NONE;
-  
-  m_pJobClass = nullptr;
+  m_iJobId    = C_UNKNOWN;
+  m_i_State   = C_UNKNOWN;
+  m_i_Slot    = C_UNKNOWN;
+  m_eJobPhase = JP_NONE;
+  m_eJobList  = JL_NONE;
+  m_eState    = JS_RUNNING;
+
   m_eSeed     = SS_ENUMS;
   m_eJobTrace = JT_NONE;
-  
   if (gpAttachMap->m_bMarkJobAll || gpAttachMap->m_bMarkJob[eClass()])
     m_bMark = true;
   else
     m_bMark = false;
   
-  m_pExecutingTask    = nullptr;
-  m_pOriginatingTask  = nullptr;
+  m_pJobClass        = nullptr;
+  m_pExecutingTask   = nullptr;
+  m_pOriginatingTask = nullptr;
   
   m_iParticipantNode  = C_UNKNOWN;
   m_oAcksRemaining.vCheckInit();
   m_pCurrentBuffer = nullptr;
   
-  m_eState = JS_RUNNING;
   m_bWasReceived = false;
   
   if (CN_JOB_NODEINFO == eClass())
