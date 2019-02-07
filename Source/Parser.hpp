@@ -10,8 +10,20 @@ namespace Commands
   class Parser : public Object
   {
   private:
-    enum eIS { IS_NONE=0, IS_FILE,  IS_STDIN, IS_STRING };
-    enum eCT { CT_NONE=0, CT_BLOCK, CT_LINE };
+    enum eIS // input source
+    {
+      IS_NONE=0,
+      IS_FILE,
+      IS_STDIN,
+      IS_STRING
+    };
+  
+    enum eCT // comment type
+    {
+      CT_NONE=0,
+      CT_BLOCK,
+      CT_LINE
+    };
     
   private:
     bool    m_bMalloc;   // is this object in malloc heap (or small heap)?

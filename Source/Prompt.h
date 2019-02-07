@@ -38,6 +38,7 @@ using namespace Prompt;
 
 #include "Prompt_date.hpp"
 
+#include "Prompt_enums.hpp"
 #include "Prompt_errno.hpp"
 #include "Prompt_executing.hpp"
 

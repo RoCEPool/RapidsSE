@@ -31,7 +31,7 @@ bool Prompt::bPrompt_classes(SePrompt* pPrompt)
   s256 sName;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // enum eCN
+  // eCN enum
   
   cGroup = '~';
   
