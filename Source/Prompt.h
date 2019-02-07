@@ -54,6 +54,7 @@ using namespace Prompt;
 
 #include "Prompt_job.hpp"
 #include "Prompt_jobcat.hpp"
+#include "Prompt_jobclass.hpp"
 
 #include "Prompt_locks.hpp"
 #include "Prompt_ls.hpp"
