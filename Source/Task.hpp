@@ -164,8 +164,7 @@ namespace Tasks
     Since& oWakeupTime(void);
     void vWakeupTask(void);
     eQR  eWhichQueue(void);
-    void vWriteMark(Stz* aPrefix);
-
+                                              
     /*------------------------------------------------------------------------*/
 
     void vAddBaseWords(void);

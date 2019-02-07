@@ -227,8 +227,8 @@ void Thread::vLoop(void)
     // call the task
     vTaskCall();
     if (m_pTask->pJob() && m_pTask->pJob()->m_bMark)
-      ActivityMap::vMark(m_pTask->pJob()->iJobId(),
-                         "Return from task call: %s %p"_Stz,
+      ActivityMap::vMarkJob(m_pTask->pJob(),
+                         "Returned from task call: %s %p"_Stz,
                          aCN[m_pTask->pJob()->eClass()],
                          m_pTask->pJob());
 

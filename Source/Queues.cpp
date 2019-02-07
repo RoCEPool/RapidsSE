@@ -787,7 +787,7 @@ Task* Queues::pPopReadyQueue(Thread* pCallingThread)
   RASSERT( ! pTask->bIsPartitioned());
   
   if (pTask->pJob()->m_bMark)
-    pTask->vWriteMark("pPopReadyQueue()"_Stz);
+    ActivityMap::vMarkJob(pTask->pJob(),"pPopReadyQueue()"_Stz);
   
   // return the task popped from the ready queue
   return pTask;

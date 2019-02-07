@@ -982,23 +982,6 @@ eQR Task::eWhichQueue(void)  //! RAY TO FINISH
 }
 
 /*----------------------------------------------------------------------------*/
-/* write a mark about this task                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vWriteMark(Stz* aPrefix)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  vRenderPortrait();
-  
-  //vTrace("MARK: %s %s\n"_Stz,aPrefix,m_sPortrait.aChar());
-  
-  ActivityMap::vMark(m_pJob->m_iJobId,
-                     "%s %s"_Stz,
-                     aPrefix,
-                     m_sPortrait.aChar());
-}
-
-/*----------------------------------------------------------------------------*/
 /* sprint of stack using given format string                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vSprint(s48K& sFormat, s48K& sString)

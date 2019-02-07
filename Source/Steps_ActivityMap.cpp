@@ -42,7 +42,7 @@ void Step::vActivityMapMark(MP_Task mpTask)
     THROW_INVALID_DSTACK("activityMap::mark"_Stz);
 
   i8 iJobId = mpTask->m_pJob->m_iJobId;
-  ActivityMap::vMark(iJobId,sMark);
+  ActivityMap::vMarkJob(mpTask->m_pJob,sMark);
   
   EXIT();
 }
@@ -62,9 +62,8 @@ void Step::vActivityMapMarkEntry(MP_Task mpTask)
   if (mpTask->m_pJob->eClass() == CN_JOB_EXPORT)
     int iDebug = 1;
   
-  i8 iJobId = mpTask->m_pJob->m_iJobId;
   if (mpTask->m_pJob->m_bMark)
-    ActivityMap::vMark(iJobId,sWordNm);
+    ActivityMap::vMarkJob(mpTask->m_pJob,sWordNm);
   
   EXIT();
 }
@@ -81,9 +80,8 @@ void Step::vActivityMapMarkExit(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("activityMap::markExit"_Stz);
   
-  i8 iJobId = mpTask->m_pJob->m_iJobId;
   if (mpTask->m_pJob->m_bMark)
-    ActivityMap::vMark(iJobId,sWordNm);
+    ActivityMap::vMarkJob(mpTask->m_pJob,sWordNm);
   
   EXIT();
 }
