@@ -269,24 +269,40 @@ void ActivityMap::vMarkInfo(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* write an ActivityMark                                                      */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vMarkJob(Jobs::Job* pJob, Stz* szFormat, va_list xArgs)
+void ActivityMap::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
 {
-  s4K szCombinedFormat;
+#ifdef WITH_ACTIVITY_MAP
+  if ( ! gpActivityMap )
+    return;
   
-  StrLib::vSprint(szCombinedFormat,
-                  "%s.%03lld %p" // job expansion
-                  " %s"_Stz,     // formatted args
-                  
-                  aCN[pJob->eClass()],
-                  pJob->iJobId(),
-                  pJob,
-                  
-                  szFormat
-                  );
+  va_list xArgs;
+  
+  va_start(xArgs,szFormat);
+  
+//  s4K szCombinedFormat;
+//
+//  StrLib::vSprint(szCombinedFormat,
+//                  "%s.%03lld %p" // job expansion
+//                  " %s"_Stz,     // formatted args
+//
+//                  aCN[pJob->eClass()],
+//                  pJob->iJobId(),
+//                  pJob,
+//
+//                  szFormat
+//                  );
+//
+//  gpActivityMap->vWriteMark(pJob->iJobId(),
+//                            szCombinedFormat,
+//                            xArgs);
   
   gpActivityMap->vWriteMark(pJob->iJobId(),
-                            szCombinedFormat,
+                            szFormat,
                             xArgs);
+
+  
+  va_end(xArgs);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

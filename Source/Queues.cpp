@@ -252,7 +252,7 @@ void Queues::vAddToExecutingSet_NL(Task* pTask)
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMark)
-    ActivityMap::vMark(pTask->pJob()->iJobId(),
+    ActivityMap::vMarkJob(pTask->pJob(),
                        "Add to ExecutingSet: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
@@ -275,7 +275,7 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMark)
-    ActivityMap::vMark(pTask->pJob()->iJobId(),
+    ActivityMap::vMarkJob(pTask->pJob(),
                        "Add to ReadyQueue: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
@@ -304,7 +304,7 @@ void Queues::vAddToReadySlotQueue_NL(Task* pTask)
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMark)
-    ActivityMap::vMark(pTask->pJob()->iJobId(),
+    ActivityMap::vMarkJob(pTask->pJob(),
                        "Add to ReadySlot: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
@@ -330,7 +330,7 @@ void Queues::vAddToSendQueue_NL(Task* pTask)
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMark)
-    ActivityMap::vMark(pTask->pJob()->iJobId(),
+    ActivityMap::vMarkJob(pTask->pJob(),
                        "Add to SendQueue: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
@@ -351,7 +351,7 @@ void Queues::vAddToSleepingQueue_NL(Task* pTask)
   pTask->vQueue(QR_SLEEPING_QUEUE);
   
   if (pTask->pJob()->m_bMark)
-    ActivityMap::vMark(pTask->pJob()->iJobId(),
+    ActivityMap::vMarkJob(pTask->pJob(),
                        "Add to SleepingQueue: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
@@ -385,7 +385,7 @@ void Queues::vAddToWaitingSet_NL(Task* pTask)
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMark)
-    ActivityMap::vMark(pTask->pJob()->iJobId(),
+    ActivityMap::vMarkJob(pTask->pJob(),
                        "Add to WaitingSet: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
@@ -1021,7 +1021,7 @@ void Queues::vRemoveFromExecutingSet(Task* pTask)
   pTask->vQueue(QR_NONE);
   
   if (pTask->pJob() && pTask->pJob()->m_bMark)
-    ActivityMap::vMark(pTask->pJob()->iJobId(),
+    ActivityMap::vMarkJob(pTask->pJob(),
                        "Removed from ExecutingSet: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
@@ -1042,7 +1042,7 @@ void Queues::vRemoveFromWaitingSet(Task* pTask)
   pTask->vQueue(QR_NONE);
   
   if (pTask->pJob()->m_bMark)
-    ActivityMap::vMark(pTask->pJob()->iJobId(),
+    ActivityMap::vMarkJob(pTask->pJob(),
                        "Removed from WaitingSet: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
@@ -1059,7 +1059,7 @@ void Queues::vScheduleAckedTask(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   if (pTask->pJob()->m_bMark)
-    ActivityMap::vMark(pTask->pJob()->iJobId(),
+    ActivityMap::vMarkJob(pTask->pJob(),
                        "Scheduling acked: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
@@ -1111,7 +1111,7 @@ void Queues::vScheduleReadyTask(Task* pTask)
   RASSERT(TK_READY == pTask->eState());
   
   if (pTask->pJob()->m_bMark)
-    ActivityMap::vMark(pTask->pJob()->iJobId(),
+    ActivityMap::vMarkJob(pTask->pJob(),
                        "Schedule ready: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
@@ -1139,7 +1139,7 @@ void Queues::vScheduleReadySlotTask(Task* pTask)
   RASSERT(TK_READY == pTask->eState());
   
   if (pTask->pJob()->m_bMark)
-    ActivityMap::vMark(pTask->pJob()->iJobId(),
+    ActivityMap::vMarkJob(pTask->pJob(),
                        "Schedule ready slot: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
@@ -1163,7 +1163,7 @@ void Queues::vScheduleSendTask(Task* pTask)
   RASSERT(TK_SEND == pTask->eState());
   
   if (pTask->pJob()->m_bMark)
-    ActivityMap::vMark(pTask->pJob()->iJobId(),
+    ActivityMap::vMarkJob(pTask->pJob(),
                        "Schedule send: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
@@ -1182,7 +1182,7 @@ void Queues::vScheduleSleepingTask(Task* pTask)
   RASSERT(TK_SLEEPING == pTask->eState());
   
   if (pTask->pJob()->m_bMark)
-    ActivityMap::vMark(pTask->pJob()->iJobId(),
+    ActivityMap::vMarkJob(pTask->pJob(),
                        "Schedule sleeping: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
@@ -1221,7 +1221,7 @@ void Queues::vScheduleSpawnedTask(Task* pTask)
                          aCN[pTask->pJob()->eClass()],
                          pTask->pJob());
     else
-      ActivityMap::vMark(pTask->pJob()->iJobId(),
+      ActivityMap::vMarkJob(pTask->pJob(),
                          "Schedule spawned: %s %p"_Stz,
                          aCN[pTask->pJob()->eClass()],
                          pTask->pJob());
@@ -1251,7 +1251,7 @@ void Queues::vScheduleWaitingTask(Task* pTask)
                          aCN[pTask->pJob()->eClass()],
                          pTask->pJob());
     else
-      ActivityMap::vMark(pTask->pJob()->iJobId(),
+      ActivityMap::vMarkJob(pTask->pJob(),
                          "Schedule waiting: %s %p"_Stz,
                          aCN[pTask->pJob()->eClass()],
                          pTask->pJob());
@@ -1276,7 +1276,7 @@ void Queues::vScheduleYieldedTask(Task* pTask)
                          aCN[pTask->pJob()->eClass()],
                          pTask->pJob());
     else
-      ActivityMap::vMark(pTask->pJob()->iJobId(),
+      ActivityMap::vMarkJob(pTask->pJob(),
                          "Schedule yielded: %s %p"_Stz,
                          aCN[pTask->pJob()->eClass()],
                          pTask->pJob());
