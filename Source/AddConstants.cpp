@@ -42,24 +42,26 @@ void Axioms::vAddConstants(void)
   if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] Adding constants...\n"_Stz);
   
-#ifdef WITH_DEBUG_VERSION
-  vAddConstant("WITH_DEBUG_VERSION"_Stz,1);
-#else
-  vAddConstant("WITH_DEBUG_VERSION"_Stz,(i8)0);
-#endif
-  
-  vAddConstant("version"_Stz,          (Stz*)RAPIDSSE_VERSION_STRING);
-  
-  vAddConstant("jumbobuffersize"_Stz,  C_SIZE_JUMBO_OBJECT);
-  vAddConstant("largebuffersize"_Stz,  C_SIZE_POOL_BUFFER);
-  vAddConstant("mediumbuffersize"_Stz, C_SIZE_MEDIUM_OBJECT);
-  vAddConstant("smallbuffersize"_Stz,  C_SIZE_SMALL_OBJECT);
-  vAddConstant("magic"_Stz,            C_MAGIC);
-  
   // true / flase
   vAddConstant("true"_Stz,    (i8)1);
   vAddConstant("false"_Stz,   (i8)0);
-
+  
+  vAddConstant("RAPIDSSE_VERSION_STRING"_Stz,  (Stz*)RAPIDSSE_VERSION_STRING);
+  
+#ifdef WITH_DEBUG_VERSION
+  vAddConstant("WITH_DEBUG_VERSION"_Stz,1);
+  vAddConstant("WITH_RELEASE_VERSION"_Stz,(i8)0);
+#else
+  vAddConstant("WITH_DEBUG_VERSION"_Stz,(i8)0);
+  vAddConstant("WITH_RELEASE_VERSION"_Stz,1);
+#endif
+  
+  vAddConstant("C_SIZE_JUMBO_OBJECT"_Stz,  C_SIZE_JUMBO_OBJECT);
+  vAddConstant("C_SIZE_POOL_BUFFER"_Stz,   C_SIZE_POOL_BUFFER);
+  vAddConstant("C_SIZE_MEDIUM_OBJECT"_Stz, C_SIZE_MEDIUM_OBJECT);
+  vAddConstant("C_SIZE_SMALL_OBJECT"_Stz,  C_SIZE_SMALL_OBJECT);
+  vAddConstant("C_MAGIC"_Stz,              C_MAGIC);
+  
   // useful numbers
   vAddConstant("C_1KB"_Stz,   C_1KB);
   vAddConstant("C_1MB"_Stz,   C_1MB);
@@ -90,6 +92,22 @@ void Axioms::vAddConstants(void)
   vAddConstant("C_MAX_RECORD"_Stz,        C_MAX_RECORD);
   vAddConstant("C_PATH_MAX"_Stz,          C_PATH_MAX);
   vAddConstant("C_SIZE_POOL_BUFFER"_Stz,  C_SIZE_POOL_BUFFER);
+  
+  // OPEN_ : file open argument
+  vAddConstant("OPEN_READ"_Stz,              C_OPEN_READ);
+  vAddConstant("OPEN_WRITE"_Stz,             C_OPEN_WRITE);
+  vAddConstant("OPEN_APPEND"_Stz,            C_OPEN_APPEND);
+  vAddConstant("OPEN_READ_WRITE_EXIST"_Stz,  C_OPEN_READ_WRITE_EXIST);
+  vAddConstant("OPEN_READ_WRITE_CREATE"_Stz, C_OPEN_READ_WRITE_CREATE);
+  vAddConstant("OPEN_READ_APPEND"_Stz,       C_OPEN_READ_APPEND);
+  
+  // hardware
+  vAddConstant("HW_CLOCK_FREQUENCY"_Stz, Tsc::iTickFrequency());
+  vAddConstant("HW_CORE_COUNT"_Stz,      Hardware::iCoreCount());
+  vAddConstant("HW_CPU_COUNT"_Stz,       Hardware::iCpuCount());
+  vAddConstant("HW_PHYSICAL_MEMORY"_Stz, Hardware::iPhysicalMemory());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // AT_ : fetch techniques
   /*  0 */ vAddConstant("AT_NONE"_Stz,  AT_NONE);
@@ -418,71 +436,6 @@ void Axioms::vAddConstants(void)
   /*  3 */ vAddConstant("TN_STRING"_Stz,  TN_STRING);
   /*  4 */ vAddConstant("TN_ENUMS"_Stz,   TN_ENUMS);
     
-  // SIZEOF_ : C++ class sizes
-  /*  1 */ vAddConstant("SIZEOF_INTVAL"_Stz, sizeof(IntVal));
-  /*  2 */ vAddConstant("SIZEOF_IPVAL"_Stz,  sizeof(FipVal));
-  /*  4 */ vAddConstant("SIZEOF_PTRVAL"_Stz, sizeof(PtrVal));
-  /*  5 */ vAddConstant("SIZEOF_STRVAL"_Stz, sizeof(StrVal));
-  /*  6 */ vAddConstant("SIZEOF_VALSET"_Stz, sizeof(GenVar)); // correct
-  /*  7 */ vAddConstant("SIZEOF_ValWrk"_Stz, sizeof(GenVar)); // correct
-  
-  /*  8 */ vAddConstant("SIZEOF_ARGUMENTS"_Stz,    sizeof(Arguments));
-  /*  9 */ vAddConstant("SIZEOF_ATOMIC"_Stz,       sizeof(Atomic));
-  /* 10 */ vAddConstant("SIZEOF_ATTACHMAP"_Stz,    sizeof(AttachMap));
-  /* 11 */ vAddConstant("SIZEOF_POOLBUFFER"_Stz,   sizeof(PoolBuffer));
-  /* 12 */ vAddConstant("SIZEOF_BUFFERPOOL"_Stz,   sizeof(BufferPool));
-  /* 13 */ vAddConstant("SIZEOF_BPA"_Stz,          sizeof(BPA));
-  /* 14 */ vAddConstant("SIZEOF_DIC"_Stz,          sizeof(Dic));
-  /* 15 */ vAddConstant("SIZEOF_DICSTACK"_Stz,     sizeof(DicStack));
-  /* 16 */ vAddConstant("SIZEOF_DIR"_Stz,          sizeof(Dir));
-  /* 17 */ vAddConstant("SIZEOF_FILE"_Stz,         sizeof(File));
-  /* 18 */ vAddConstant("SIZEOF_FREECHUNK"_Stz,    sizeof(FreeChunk));
-  /* 19 */ vAddConstant("SIZEOF_GRID"_Stz,         sizeof(Grid));
-  /* 20 */ vAddConstant("SIZEOF_HEAPBUFFER"_Stz,   sizeof(HeapBuffer));
-  /*    */ vAddConstant("SIZEOF_INDEX"_Stz,        sizeof(Index));
-
-  /* 24 */ vAddConstant("SIZEOF_LOCK"_Stz,         sizeof(Lock));
-  /* 25 */ vAddConstant("SIZEOF_MEDIUMHEAP"_Stz,   sizeof(Heap));
-  /*    */ vAddConstant("SIZEOF_MUTEX"_Stz,        sizeof(Mutex));
-  /* 26 */ vAddConstant("SIZEOF_NODE"_Stz,         sizeof(Node));
-
-  /* 28 */ vAddConstant("SIZEOF_PARSER"_Stz,       sizeof(Parser));
-  /* 29 */ vAddConstant("SIZEOF_PARTITION"_Stz,    sizeof(TablePtn));
-  /* 33 */ vAddConstant("SIZEOF_QUEUE"_Stz,        sizeof(Queue));
-  /* 34 */ vAddConstant("SIZEOF_QUEUEBUFFER"_Stz,  sizeof(QueueBuffer));
-  /* 36 */ vAddConstant("SIZEOF_ROW"_Stz,          sizeof(Item));
-  /* 37 */ vAddConstant("SIZEOF_ROWBUFFER"_Stz,    sizeof(EntryBuffer));
-  /* 38 */ vAddConstant("SIZEOF_ROWCURSOR"_Stz,    (i8)0);
-
-  /* 43 */ vAddConstant("SIZEOF_SESSION"_Stz,      sizeof(Session));
-
-  /* 46 */ vAddConstant("SIZEOF_SEPROMPT"_Stz,     sizeof(SePrompt));
-  /* 47 */ vAddConstant("SIZEOF_SINCE"_Stz,        sizeof(Since));
-  /* 49 */ vAddConstant("SIZEOF_SKIPLIST"_Stz,     sizeof(SkipListNL));
-  /* 50 */ vAddConstant("SIZEOF_SKIPNODE"_Stz,     sizeof(SkipNode));
-  /*    */ vAddConstant("SIZEOF_SLOTS"_Stz,        sizeof(Slots));
-  /* 51 */ vAddConstant("SIZEOF_SMALLHEAP"_Stz,    sizeof(Heap));
-  /* 52 */ vAddConstant("SIZEOF_SOCKET"_Stz,       sizeof(Socket));
-  /* 53 */ vAddConstant("SIZEOF_STACK"_Stz,        sizeof(Stack));
-  /* 54 */ vAddConstant("SIZEOF_STEPACCUM"_Stz,    sizeof(StepAccum));
-  /* 55 */ vAddConstant("SIZEOF_STEPTIMING"_Stz,   sizeof(StepTiming));
-  /* 56 */ vAddConstant("SIZEOF_SYSCALL"_Stz,      sizeof(SysCall));
-  /* 57 */ vAddConstant("SIZEOF_TABLE"_Stz,        sizeof(Table));
-  /* 58 */ vAddConstant("SIZEOF_TASK"_Stz,         sizeof(Task));
-
-  /*    */ vAddConstant("SIZEOF_TASKQUEUE"_Stz,    sizeof(TaskQueue));
-  /* 62 */ vAddConstant("SIZEOF_THREAD"_Stz,       sizeof(Thread));
-
-  /* 65 */ vAddConstant("SIZEOF_TIME"_Stz,         sizeof(Time));
-  /* 66 */ vAddConstant("SIZEOF_TIMER"_Stz,        sizeof(Timer));
-  /* 67 */ vAddConstant("SIZEOF_TOKENISER"_Stz,    sizeof(Tokeniser));
-  /* 68 */ vAddConstant("SIZEOF_TX"_Stz,           sizeof(Tx));
-  /* 74 */ vAddConstant("SIZEOF_WORD"_Stz,         sizeof(Word));
-
-  /*  0 */ vAddConstant("SIZEOF_S32"_Stz,          sizeof(s32));
-  /*  1 */ vAddConstant("SIZEOF_S256"_Stz,         sizeof(s256));
-  /*  2 */ vAddConstant("SIZEOF_S48K"_Stz,         sizeof(s48K));
-  
   // TK_ : task state
   /*  0 */ vAddConstant("TK_NONE"_Stz,       TK_NONE);
   /*  1 */ vAddConstant("TK_EXECUTING"_Stz,  TK_EXECUTING);
@@ -513,19 +466,72 @@ void Axioms::vAddConstants(void)
   /*  0 */ vAddConstant("WT_ROUTINE"_Stz,   WT_ROUTINE);
   /*  0 */ vAddConstant("WT_ENUMS"_Stz,     WT_ENUMS);
   
-  // OPEN_ : file open argument
-  /*  0 */ vAddConstant("OPEN_READ"_Stz,              C_OPEN_READ);
-  /*  1 */ vAddConstant("OPEN_WRITE"_Stz,             C_OPEN_WRITE);
-  /*  2 */ vAddConstant("OPEN_APPEND"_Stz,            C_OPEN_APPEND);
-  /*  3 */ vAddConstant("OPEN_READ_WRITE_EXIST"_Stz,  C_OPEN_READ_WRITE_EXIST);
-  /*  4 */ vAddConstant("OPEN_READ_WRITE_CREATE"_Stz, C_OPEN_READ_WRITE_CREATE);
-  /*  5 */ vAddConstant("OPEN_READ_APPEND"_Stz,       C_OPEN_READ_APPEND);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // miscellaneous
-  /*  0 */ vAddConstant("CLOCK_FREQUENCY"_Stz, Tsc::iTickFrequency());
-  /*  0 */ vAddConstant("CORE_COUNT"_Stz,      Hardware::iCoreCount());
-  /*  0 */ vAddConstant("CPU_COUNT"_Stz,       Hardware::iCpuCount());
-  /*  0 */ vAddConstant("PHYSICAL_MEMORY"_Stz, Hardware::iPhysicalMemory());
+  // SIZEOF_ : C++ class sizes
+  /*  1 */ vAddConstant("SIZEOF_INTVAL"_Stz, sizeof(IntVal));
+  /*  2 */ vAddConstant("SIZEOF_IPVAL"_Stz,  sizeof(FipVal));
+  /*  4 */ vAddConstant("SIZEOF_PTRVAL"_Stz, sizeof(PtrVal));
+  /*  5 */ vAddConstant("SIZEOF_STRVAL"_Stz, sizeof(StrVal));
+  /*  6 */ vAddConstant("SIZEOF_VALSET"_Stz, sizeof(GenVar)); // correct
+  /*  7 */ vAddConstant("SIZEOF_ValWrk"_Stz, sizeof(GenVar)); // correct
+  
+  /*  8 */ vAddConstant("SIZEOF_ARGUMENTS"_Stz,    sizeof(Arguments));
+  /*  9 */ vAddConstant("SIZEOF_ATOMIC"_Stz,       sizeof(Atomic));
+  /* 10 */ vAddConstant("SIZEOF_ATTACHMAP"_Stz,    sizeof(AttachMap));
+  /* 11 */ vAddConstant("SIZEOF_POOLBUFFER"_Stz,   sizeof(PoolBuffer));
+  /* 12 */ vAddConstant("SIZEOF_BUFFERPOOL"_Stz,   sizeof(BufferPool));
+  /* 13 */ vAddConstant("SIZEOF_BPA"_Stz,          sizeof(BPA));
+  /* 14 */ vAddConstant("SIZEOF_DIC"_Stz,          sizeof(Dic));
+  /* 15 */ vAddConstant("SIZEOF_DICSTACK"_Stz,     sizeof(DicStack));
+  /* 16 */ vAddConstant("SIZEOF_DIR"_Stz,          sizeof(Dir));
+  /* 17 */ vAddConstant("SIZEOF_FILE"_Stz,         sizeof(File));
+  /* 18 */ vAddConstant("SIZEOF_FREECHUNK"_Stz,    sizeof(FreeChunk));
+  /* 19 */ vAddConstant("SIZEOF_GRID"_Stz,         sizeof(Grid));
+  /* 20 */ vAddConstant("SIZEOF_HEAPBUFFER"_Stz,   sizeof(HeapBuffer));
+  /*    */ vAddConstant("SIZEOF_INDEX"_Stz,        sizeof(Index));
+  
+  /* 24 */ vAddConstant("SIZEOF_LOCK"_Stz,         sizeof(Lock));
+  /* 25 */ vAddConstant("SIZEOF_MEDIUMHEAP"_Stz,   sizeof(Heap));
+  /*    */ vAddConstant("SIZEOF_MUTEX"_Stz,        sizeof(Mutex));
+  /* 26 */ vAddConstant("SIZEOF_NODE"_Stz,         sizeof(Node));
+  
+  /* 28 */ vAddConstant("SIZEOF_PARSER"_Stz,       sizeof(Parser));
+  /* 29 */ vAddConstant("SIZEOF_PARTITION"_Stz,    sizeof(TablePtn));
+  /* 33 */ vAddConstant("SIZEOF_QUEUE"_Stz,        sizeof(Queue));
+  /* 34 */ vAddConstant("SIZEOF_QUEUEBUFFER"_Stz,  sizeof(QueueBuffer));
+  /* 36 */ vAddConstant("SIZEOF_ROW"_Stz,          sizeof(Item));
+  /* 37 */ vAddConstant("SIZEOF_ROWBUFFER"_Stz,    sizeof(EntryBuffer));
+  /* 38 */ vAddConstant("SIZEOF_ROWCURSOR"_Stz,    (i8)0);
+  
+  /* 43 */ vAddConstant("SIZEOF_SESSION"_Stz,      sizeof(Session));
+  
+  /* 46 */ vAddConstant("SIZEOF_SEPROMPT"_Stz,     sizeof(SePrompt));
+  /* 47 */ vAddConstant("SIZEOF_SINCE"_Stz,        sizeof(Since));
+  /* 49 */ vAddConstant("SIZEOF_SKIPLIST"_Stz,     sizeof(SkipListNL));
+  /* 50 */ vAddConstant("SIZEOF_SKIPNODE"_Stz,     sizeof(SkipNode));
+  /*    */ vAddConstant("SIZEOF_SLOTS"_Stz,        sizeof(Slots));
+  /* 51 */ vAddConstant("SIZEOF_SMALLHEAP"_Stz,    sizeof(Heap));
+  /* 52 */ vAddConstant("SIZEOF_SOCKET"_Stz,       sizeof(Socket));
+  /* 53 */ vAddConstant("SIZEOF_STACK"_Stz,        sizeof(Stack));
+  /* 54 */ vAddConstant("SIZEOF_STEPACCUM"_Stz,    sizeof(StepAccum));
+  /* 55 */ vAddConstant("SIZEOF_STEPTIMING"_Stz,   sizeof(StepTiming));
+  /* 56 */ vAddConstant("SIZEOF_SYSCALL"_Stz,      sizeof(SysCall));
+  /* 57 */ vAddConstant("SIZEOF_TABLE"_Stz,        sizeof(Table));
+  /* 58 */ vAddConstant("SIZEOF_TASK"_Stz,         sizeof(Task));
+  
+  /*    */ vAddConstant("SIZEOF_TASKQUEUE"_Stz,    sizeof(TaskQueue));
+  /* 62 */ vAddConstant("SIZEOF_THREAD"_Stz,       sizeof(Thread));
+  
+  /* 65 */ vAddConstant("SIZEOF_TIME"_Stz,         sizeof(Time));
+  /* 66 */ vAddConstant("SIZEOF_TIMER"_Stz,        sizeof(Timer));
+  /* 67 */ vAddConstant("SIZEOF_TOKENISER"_Stz,    sizeof(Tokeniser));
+  /* 68 */ vAddConstant("SIZEOF_TX"_Stz,           sizeof(Tx));
+  /* 74 */ vAddConstant("SIZEOF_WORD"_Stz,         sizeof(Word));
+  
+  /*  0 */ vAddConstant("SIZEOF_S32"_Stz,          sizeof(s32));
+  /*  1 */ vAddConstant("SIZEOF_S256"_Stz,         sizeof(s256));
+  /*  2 */ vAddConstant("SIZEOF_S48K"_Stz,         sizeof(s48K));
 }
 
 /*============================================================================*/
