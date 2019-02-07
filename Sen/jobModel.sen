@@ -5,6 +5,7 @@
 "-jobModel.sen" .verbose
 
 "jobWords.sen" include
+"jobMarkers.sen" include
 
 "job_Set.sen" include
 
