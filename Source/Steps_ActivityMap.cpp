@@ -58,12 +58,14 @@ void Step::vActivityMapMarkEntry(MP_Task mpTask)
   
   if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("activityMap::markEntry"_Stz);
-  
-  if (mpTask->m_pJob->eClass() == CN_JOB_EXPORT)
-    int iDebug = 1;
-  
+    
   if (mpTask->m_pJob->m_bMark)
-    ActivityMap::vMarkJob(mpTask->m_pJob,sWordNm);
+    ActivityMap::vMarkJob(mpTask->m_pJob,
+                          "%s %s %p"_Stz,
+                          sWordNm.aStz(),
+                          aCN[mpTask->pJob()->eClass()],
+                          mpTask->pJob()
+                          );
   
   EXIT();
 }
@@ -81,8 +83,13 @@ void Step::vActivityMapMarkExit(MP_Task mpTask)
     THROW_INVALID_DSTACK("activityMap::markExit"_Stz);
   
   if (mpTask->m_pJob->m_bMark)
-    ActivityMap::vMarkJob(mpTask->m_pJob,sWordNm);
-  
+    ActivityMap::vMarkJob(mpTask->m_pJob,
+                          "%s %s %p"_Stz,
+                          sWordNm.aStz(),
+                          aCN[mpTask->pJob()->eClass()],
+                          mpTask->pJob()
+                          );
+
   EXIT();
 }
 

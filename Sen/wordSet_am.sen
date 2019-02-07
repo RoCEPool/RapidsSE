@@ -18,6 +18,20 @@
   // encode call to markEntry
   POSTPONE ActivityMap::markEntry
 ;
+/*----------------------------------------------------------------------------*/
+//: >>am immediate
+//
+//  POSTPONE job::this
+//  POSTPONE job.class
+//  POSTPONE class::name
+//  ">>%v %v" ,
+//
+//  POSTPONE str.format
+//
+//  // encode call to markEntry
+//  POSTPONE ActivityMap::markEntry
+//;
+
 
 /*----------------------------------------------------------------------------*/
 /* word exit mark                                                             */
