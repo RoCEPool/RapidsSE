@@ -198,7 +198,8 @@
 /*----------------------------------------------------------------------------*/
 : table::find ( sTableNm -- pTable )
 
-  
+  dup "table::find %v" str.format .am
+
   find execute
 ;
 
