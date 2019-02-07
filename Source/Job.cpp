@@ -98,7 +98,7 @@ Job::~Job(void) noexcept(false)
   delete m_pMutex;
   
   if (m_bMark)
-    ActivityMap::vMark(m_iJobId,"~Job %s"_Stz,aCN[eClass()]);
+    ActivityMap::vMarkInfo("~Job %s"_Stz,aCN[eClass()]);
 }
 
 /*----------------------------------------------------------------------------*/

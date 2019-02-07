@@ -36,7 +36,6 @@ namespace Measurement
     static ActivityMap* pAttachExisting(void);
 
   public:
-    static void vMark(i8 iJobId, Stz* aFormat, ...);
     static void vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...);
     static void vMarkApiEntry(i8 eApiCall, i8 iJobId=-1);
     static void vMarkApiError(i8 eApiCall, i8 iError, i8 iJobId=-1);

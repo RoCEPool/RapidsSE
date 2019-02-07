@@ -144,6 +144,12 @@ void ActivityMark::vDump(File* pFile, bool bShortForm,
                     aSR_Short[-m_iJobId],
                     m_caMark);
     else
+    if (m_iJobId == 0)
+      pFile->vPrint("[%3lld %s inf] %s\n"_Stz,
+                    m_iMark,
+                    m_caNode,
+                    m_caMark);
+    else
       pFile->vPrint("[%3lld %s %03lld] %s\n"_Stz,
                     m_iMark,
                     m_caNode,
@@ -161,6 +167,16 @@ void ActivityMark::vDump(File* pFile, bool bShortForm,
                   
                   m_caNode,
                   aSR_Short[-m_iJobId],
+                  m_caMark);
+  else
+  if (m_iJobId == 0)
+    pFile->vPrint("%lld,%lld,%lld,%lld,%s,inf,%s\n"_Stz,
+                  m_iMark,
+                  m_iTick,
+                  iDeltaUs,
+                  iTotalDelta,
+                  
+                  m_caNode,
                   m_caMark);
   else
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,%lld,%s\n"_Stz,

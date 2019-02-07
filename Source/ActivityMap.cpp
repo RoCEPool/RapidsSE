@@ -149,25 +149,6 @@ ActivityMap* ActivityMap::pAttachExisting(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* write an Activity mark                                                     */
-/*----------------------------------------------------------------------------*/
-void ActivityMap::vMark(i8 iJobId, Stz* aFormat, ...)
-{
-#ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityMap )
-    return;
-  
-  va_list xArgs;
-  
-  va_start(xArgs,aFormat);
-  
-  gpActivityMap->vWriteMark(iJobId,aFormat,xArgs);
-  
-  va_end(xArgs);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* write an Activity mark for api call                                        */
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)

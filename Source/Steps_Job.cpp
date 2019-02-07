@@ -913,9 +913,10 @@ void Step::vJobPostRecv(MP_Task mpTask)
     (*pJobClass->m_fpRecv)(pJob);
   
   if (pJob->m_bMark)
-    ActivityMap::vMark(pJob->iJobId(),"PostRecv: %s %p"_Stz,
-                       aCN[pJob->eClass()],
-                       pJob);
+    ActivityMap::vMarkJob(pJob,
+                          "PostRecv: %s %p"_Stz,
+                          aCN[pJob->eClass()],
+                         pJob);
   EXIT();
 }
 
@@ -937,10 +938,10 @@ void Step::vJobPreSend(MP_Task mpTask)
     (*pJobClass->m_fpSend)(pJob);
   
   if (pJob->m_bMark)
-    ActivityMap::vMark(pJob->iJobId(),
-                       "PreSend: %s %p"_Stz,
-                       aCN[pJob->eClass()],
-                       pJob);
+    ActivityMap::vMarkJob(pJob,
+                          "PreSend: %s %p"_Stz,
+                          aCN[pJob->eClass()],
+                          pJob);
 
   EXIT();
 }

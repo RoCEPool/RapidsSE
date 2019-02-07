@@ -222,8 +222,11 @@ bool Job_WriteBuffer::bInsertRows(void)
     }
     
     if (m_bMark) {
-      ActivityMap::vMark(m_iJobId,"Setting m_nWriteBehindBuffers in partition %lld slot %lld to %lld"_Stz,
-                         m_iPartitionId, iSlot, m_nWriteBehindBuffers);
+      ActivityMap::vMarkJob(this,
+                            "Setting m_nWriteBehindBuffers in partition %lld slot %lld to %lld"_Stz,
+                            m_iPartitionId,
+                            iSlot,
+                            m_nWriteBehindBuffers);
     }
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -239,7 +242,9 @@ bool Job_WriteBuffer::bInsertRows(void)
   
   if (bAllBuffersWritten) {
     if (m_bMark) {
-      ActivityMap::vMark(m_iJobId,"All buffers written for partition %lld"_Stz, m_iPartitionId);
+      ActivityMap::vMarkJob(this,
+                            "All buffers written for partition %lld"_Stz,
+                            m_iPartitionId);
     }
   }
   
