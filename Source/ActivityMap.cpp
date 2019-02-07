@@ -688,6 +688,15 @@ void ActivityMap::vWriteToFile(bool bShortForm)
   s256 sWelcome;
   Engine::vGetWelcome(sWelcome);
   ActivityMap::vMarkInfo(sWelcome);
+  
+  Since oSince;
+  oSince.vNow();
+  
+  i8 iUpTimeSsec = oSince.iSeconds() - gpAttachMap->m_oSince.iSeconds();
+  ActivityMap::vMarkInfo("Uptime %llds Requests %lld"_Stz,
+                         iUpTimeSsec,
+                         C_UNKNOWN);
+
 
 
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
