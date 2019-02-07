@@ -456,6 +456,8 @@
   static void vJobOriginatorFetch(Tasks::MP_Task mpTask);
   static void vJobParticipantFetch(Tasks::MP_Task mpTask);
   static void vJobParticipantStore(Tasks::MP_Task mpTask);
+  static void vJobPhaseFetch(Tasks::MP_Task mpTask);
+  static void vJobPhaseStore(Tasks::MP_Task mpTask);
   static void vJobPostRecv(Tasks::MP_Task mpTask);
   static void vJobPreSend(Tasks::MP_Task mpTask);
   static void vJobRecv(Tasks::MP_Task mpTask);

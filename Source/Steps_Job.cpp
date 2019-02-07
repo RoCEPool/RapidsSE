@@ -17,30 +17,35 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
   vAddStep("job.addOriginator"_Stz,    &Step::vJobAddOriginator);
   vAddStep("job.addParticipant"_Stz,   &Step::vJobAddParticipant);
+  
   vAddStep("job.class"_Stz,            &Step::vJobClass);
   vAddStep("job.columnCount@"_Stz,     &Step::vJobColumnCountFetch);
   vAddStep("job.columnIsPartKey"_Stz,  &Step::vJobColumnIsPartKey);
   vAddStep("job.columnName@"_Stz,      &Step::vJobColumnNameFetch);
   vAddStep("job.columnType@"_Stz,      &Step::vJobColumnTypeFetch);
+  
   vAddStep("job.decAcksRemaining"_Stz, &Step::vJobDecAcksRemaining);
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
   vAddStep("job.dicPath"_Stz,          &Step::vJobDicPath);
   
+  vAddStep("job.entryBuffer@"_Stz,     &Step::vJobEntryBufferFetch);
+  vAddStep("job.entryBuffer!"_Stz,     &Step::vJobEntryBufferStore);
   vAddStep("job.error!"_Stz,           &Step::vJobErrorStore);
   vAddStep("job.error@"_Stz,           &Step::vJobErrorFetch);
   vAddStep("job.execute@"_Stz,         &Step::vJobExecuteFetch);
-  
   vAddStep("job.executingTask@"_Stz,   &Step::vJobExecutingTaskFetch);
   
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
   vAddStep("job.hasEntryBuffer"_Stz,   &Step::vJobHasEntryBuffer);
+  
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch);
   vAddStep("job.indexName@"_Stz,       &Step::vJobIndexNameFetch);
-  
   vAddStep("job.IsExecuting"_Stz,      &Step::vJobIsExecuting);
   
   vAddStep("job.jobClass"_Stz,         &Step::vJobJobClass);
+  
   vAddStep("job.metadata!"_Stz,        &Step::vJobMetadataStore);
+  
   vAddStep("job.newBegun"_Stz,         &Step::vJobNewBegun);
   vAddStep("job.newCancel"_Stz,        &Step::vJobNewCancel);
   vAddStep("job.newCancelled"_Stz,     &Step::vJobNewCancelled);
@@ -48,15 +53,20 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.newEnded"_Stz,         &Step::vJobNewEnded);
   vAddStep("job.newExecute"_Stz,       &Step::vJobNewExecute);
   vAddStep("job.newExecuted"_Stz,      &Step::vJobNewExecuted);
+
   vAddStep("job.objectName@"_Stz,      &Step::vJobObjectNameFetch);
   vAddStep("job.originatingTask@"_Stz, &Step::vJobOriginatingTaskFetch);
   vAddStep("job.originatingTask!"_Stz, &Step::vJobOriginatingTaskStore);
   vAddStep("job::originator@"_Stz,     &Step::vJobOriginatorFetch);
+
   vAddStep("job.participant@"_Stz,     &Step::vJobParticipantFetch);
   vAddStep("job.participant!"_Stz,     &Step::vJobParticipantStore);
   vAddStep("job.partitions@"_Stz,      &Step::vJobPartitionsFetch);
+  vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch);
+  vAddStep("job.phase!"_Stz,           &Step::vJobPhaseStore);
   vAddStep("job.postRecv"_Stz,         &Step::vJobPostRecv);
   vAddStep("job.preSend"_Stz,          &Step::vJobPreSend);
+
   vAddStep("job.recv"_Stz,             &Step::vJobRecv);
   vAddStep("job.regionSize@"_Stz,      &Step::vJobRegionSizeFetch);
   vAddStep("job.removeOriginator"_Stz, &Step::vJobRemoveOriginator);
@@ -69,16 +79,17 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.rowsProcessed!"_Stz,   &Step::vJobRowsProcessedStore);
   vAddStep("job.rowsSkipped@"_Stz,     &Step::vJobRowsSkippedFetch);
   vAddStep("job.rowsSkipped!"_Stz,     &Step::vJobRowsSkippedStore);
-  vAddStep("job.send"_Stz,             &Step::vJobRecv);
+
+  vAddStep("job.send"_Stz,             &Step::vJobSend);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
   vAddStep("job.signalConnector"_Stz,  &Step::vJobSignalConnector);
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
+  
   vAddStep("job::this"_Stz,            &Step::vJobThis);
   vAddStep("job.trace!"_Stz,           &Step::vJobTraceStore);
   vAddStep("job.trace@"_Stz,           &Step::vJobTraceFetch);
+
   vAddStep("job::waitParticipant"_Stz, &Step::vJobWaitParticipant);
-  vAddStep("job.entryBuffer@"_Stz,     &Step::vJobEntryBufferFetch);
-  vAddStep("job.entryBuffer!"_Stz,     &Step::vJobEntryBufferStore);
 }
 
 
@@ -885,6 +896,44 @@ void Step::vJobPartitionsFetch(MP_Task mpTask)
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJobPtr);
   
   mpTask->m_pDataStack->vPushI8(pJob_Sanity->m_iPartitions);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.phase@ -- fetch the job phase                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobPhaseFetch(MP_Task mpTask)
+{
+  ENTRY("vJobPhaseFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.phase@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushI8(pJob->m_eJobPhase);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.phase! -- store the job phase                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobPhaseStore(MP_Task mpTask)
+{
+  ENTRY("vJobPhaseStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.phase!"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  i8 iJobPhase;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iJobPhase) )
+    THROW_INVALID_DSTACK("job.phase!"_Stz);
+  
+  pJob->m_eJobPhase = (eJP)iJobPhase;
   
   EXIT();
 }
