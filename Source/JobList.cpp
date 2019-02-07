@@ -299,7 +299,7 @@ void JobList::vMarkContents(i8 iJobId)
                            pJob->m_i_Slot,
                            
                            aJP[pJob->m_eJobPhase],
-                           aJS[pJob->m_eState],
+                           aJS[pJob->m_eJobState],
                            pJob->m_iParticipantNode);
     
     pNode = m_pJobsSkipList->pNext(pNode, iLevel);

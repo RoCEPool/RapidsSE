@@ -347,7 +347,7 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
   ApiState::vMarkApiLoc(pSession,106);
   
   // set the job state to be locked
-  pJob->m_eState = JS_LOCKED;
+  pJob->m_eJobState = JS_LOCKED;
   
   // spawn the insertTable job
   IGNORE_RETURN(Api::bSpawnJob(pSession,pJob,SS_SEED_REQ));
@@ -357,7 +357,7 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
   // wait for condition & state
   
   // set the job state to be waiting
-  pJob->m_eState = JS_WAITING;
+  pJob->m_eJobState = JS_WAITING;
   
   // wait till signalled
   do {
@@ -379,7 +379,7 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
     RASSERT( _bIsValidJob(pJob->eClass()) );
     
     
-  } while (pJob->m_eState != JS_SIGNALLED);
+  } while (pJob->m_eJobState != JS_SIGNALLED);
   
   RASSERT( _bIsValidJob(pJob->eClass()) );
   
@@ -388,7 +388,7 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // set the job state back to running
-  pJob->m_eState = JS_RUNNING;
+  pJob->m_eJobState = JS_RUNNING;
   
   // unlock this job's mutex
   pJob->vMutexUnlock();

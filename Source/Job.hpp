@@ -132,24 +132,25 @@ namespace Jobs
     i8  m_i_State;    // which session state
     i8  m_i_Slot;     // slot this sub truncate truncates
     eJP m_eJobPhase;  // which phase the job is in
-    eJS m_eState;     // job state
+    eJS m_eJobState;  // job state
     eJL m_eJobList;   // which job list is job currently in?
-  
-    eSS  m_eSeed;     // task seed
-    eJT  m_eJobTrace; // job trace
-    bool m_bNoWait;   // no wait
-    bool m_bMark;     // write activity marks?
+
+    Decider m_oAcksRemaining;  // acks remaining
+
+    eSS  m_eSeed;        // task seed
+    eJT  m_eJobTrace;    // job trace
+    bool m_bNoWait;      // no wait
+    bool m_bMark;        // write activity marks?
+    bool m_bWasReceived; // job was received over a socket
 
     JobClass*    m_pJobClass;        // job class
     Tasks::Task* m_pExecutingTask;   // task executing the job
     Tasks::Task* m_pOriginatingTask; // originating task of the request
   
     i8  m_iParticipantNode;    // participant node no
-    Decider m_oAcksRemaining;  // acks remaining
   
     EntryBuffer* m_pCurrentBuffer; // entry buffer
   
-    bool m_bWasReceived; // job was received over a socket
   
     Mutex* m_pMutex;
   

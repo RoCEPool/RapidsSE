@@ -368,7 +368,7 @@ void Job::vInit(void)
   m_i_Slot    = C_UNKNOWN;
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
-  m_eState    = JS_RUNNING;
+  m_eJobState = JS_RUNNING;
 
   m_eSeed     = SS_ENUMS;
   m_eJobTrace = JT_NONE;
