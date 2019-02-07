@@ -526,18 +526,6 @@ void Axioms::vAddConstants(void)
   /*  0 */ vAddConstant("CORE_COUNT"_Stz,      Hardware::iCoreCount());
   /*  0 */ vAddConstant("CPU_COUNT"_Stz,       Hardware::iCpuCount());
   /*  0 */ vAddConstant("PHYSICAL_MEMORY"_Stz, Hardware::iPhysicalMemory());
-  
-  // debug
-  vAddConstant("answerDronePrint"_Stz,    (i8)0);
-  vAddConstant("connectorDronePrint"_Stz, (i8)0);
-  vAddConstant("listerDronePrint"_Stz,    (i8)0);
-  vAddConstant("monitorDronePrint"_Stz,   (i8)0);
-  vAddConstant("reclaimDronePrint"_Stz,   (i8)0);
-  vAddConstant("receiverDronePrint"_Stz,  (i8)0);
-  
-  vAddConstant("requestServerPrint"_Stz,  (i8)0);
-  
-  vAddConstant("senderWorkerPrint"_Stz,   (i8)0);
 }
 
 /*============================================================================*/
