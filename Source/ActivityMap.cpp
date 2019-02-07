@@ -684,6 +684,11 @@ void ActivityMap::vWriteToFile(bool bShortForm)
   
   Now oNow;
   ActivityMap::vMarkInfo("Writing ActivityMap at: %s"_Stz,oNow.sFormatted());
+  
+  s256 sWelcome;
+  Engine::vGetWelcome(sWelcome);
+  ActivityMap::vMarkInfo(sWelcome);
+
 
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
