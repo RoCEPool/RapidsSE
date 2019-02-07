@@ -308,7 +308,7 @@ void Step::vIndexExactKey(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
   Job_FetchRows* pJob_FetchRows = pJob_SubFetch->m_pJobFetchRows;
-  i8 iSlot = pJob_SubFetch->m_iSlot;
+  i8 iSlot = pJob_SubFetch->m_i_Slot;
   Planner* pPlanner = pJob_SubFetch->m_pPlanner;
   Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   i8 iPhrase = pJob_SubFetch->m_iPhrase;
@@ -650,7 +650,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
   Job_FetchRows* pJob_FetchRows = pJob_SubFetch->m_pJobFetchRows;
-  i8 iSlot = pJob_SubFetch->m_iSlot;
+  i8 iSlot = pJob_SubFetch->m_i_Slot;
   i8 iPhrase = pJob_SubFetch->m_iPhrase;
   Planner* pPlanner = pJob_SubFetch->m_pPlanner;
   Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
@@ -947,7 +947,7 @@ void Step::vIndexRange(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
   Job_FetchRows* pJob_FetchRows = pJob_SubFetch->m_pJobFetchRows;
-  i8 iSlot = pJob_SubFetch->m_iSlot;
+  i8 iSlot = pJob_SubFetch->m_i_Slot;
   i8 iPhrase = pJob_SubFetch->m_iPhrase;
   Planner* pPlanner = pJob_SubFetch->m_pPlanner;
   Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
@@ -1182,7 +1182,7 @@ void Step::vIndexScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
-  i8 iSlot = pJob_SubFetch->m_iSlot;
+  i8 iSlot = pJob_SubFetch->m_i_Slot;
   Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   
   i8 iIndexNo = pIndex->iIndexNo();
@@ -1546,7 +1546,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
   Job_FetchRows* pJob_FetchRows = pJob_SubFetch->m_pJobFetchRows;
-  i8 iSlot = pJob_SubFetch->m_iSlot;
+  i8 iSlot = pJob_SubFetch->m_i_Slot;
   i8 iPhrase = pJob_SubFetch->m_iPhrase;
   Planner* pPlanner = pJob_SubFetch->m_pPlanner;
   Queue* pQueue = pJob_SubFetch->m_pBufferQueue;

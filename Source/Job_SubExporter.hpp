@@ -10,7 +10,12 @@ namespace Jobs
   {
   public:
     Job_Export*  m_pJobExport;     // export job that spawned this sub export
-    i8           m_iSlot;          // slot this sub truncate truncates
+  
+    IndexTree*   m_pIndexTree;
+    i8           m_nEntryBuffers;
+    i8           m_iEntryBuffer;
+  
+    EntryBuffer* m_pEntryBuffer;
     
     // must be last
     Footer m_xFooter;

@@ -127,7 +127,7 @@ void Step::vJob_FetchRowsSpawnSub(MP_Task mpTask)
   pJob_SubFetch->m_sObjectName = pJob_FetchRows->m_sObjectName;
   pJob_SubFetch->m_pPlanner = pPlanner;
   pJob_SubFetch->m_iPhrase = iPhrase;
-  pJob_SubFetch->m_iSlot = iSlot;
+  pJob_SubFetch->m_i_Slot = iSlot;
   pJob_SubFetch->m_pBufferQueue = pJob_FetchRows->m_pBufferQueue;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -240,7 +240,7 @@ void Step::vJob_SubFetchSlotFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_subFetch.slot@"_Stz);
   Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
   
-  mpTask->m_pDataStack->vPushI8(pJob->m_iSlot);
+  mpTask->m_pDataStack->vPushI8(pJob->m_i_Slot);
   
   EXIT();
 }

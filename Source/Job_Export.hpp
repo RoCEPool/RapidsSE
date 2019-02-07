@@ -10,8 +10,8 @@ namespace Jobs
                      public JobFilePath
   {
   public:
-  
-    File m_oCsvFile; // output csv file
+    File   m_oCsvFile; // output csv file
+    Table* m_pTable;   // table being exported
     
     // must be last
     Footer m_xFooter;

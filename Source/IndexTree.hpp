@@ -12,7 +12,7 @@ namespace Data
   {
     
   private:
-    Lock         m_okLock;          // lock on the buffer tree
+    Lock         m_okLock;         // lock on the buffer tree
     Index*       m_pIndex;         // which index
     i8           m_iPartitionNo;   // which partition no
     TablePtn*    m_pPartition;     // which partition                     UNUSED

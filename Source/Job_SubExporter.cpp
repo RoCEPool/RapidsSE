@@ -107,9 +107,13 @@ Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
     
-  m_pJobExport  = nullptr;
-  m_iSlot       = -1;
+  m_pJobExport = nullptr;
+  m_pIndexTree = nullptr;
+  m_nEntryBuffers = C_UNKNOWN;
+  m_iEntryBuffer  = 0;
   
+  m_pEntryBuffer = nullptr;
+
   _checkInitialised_(CN_JOB_SUBEXPORTER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
@@ -148,6 +152,22 @@ bool Job_SubExporter::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
   
+  Table* pTable = m_pJobExport->m_pTable;
+  
+  i8 i_HiddenIndex  = pTable->pHiddenIndex()->iIndexNo();
+  TablePtn* pTblPtn = pTable->pPartition(m_i_Slot);
+  m_pIndexTree      = pTblPtn->pIndexTree(i_HiddenIndex);
+  
+  m_pEntryBuffer  = m_pIndexTree->pRoot();
+  m_nEntryBuffers = m_pEntryBuffer->iLengthList();
+  
+  if (m_bMark)
+    ActivityMap::vMarkJob(this,
+                          "IndexTree[%lld] for table %s has %lld buffers"_Stz,
+                          m_i_Slot,
+                          pTable->aTableName(),
+                          m_nEntryBuffers);
+  
   return true;
 }
 
@@ -158,7 +178,21 @@ bool Job_SubExporter::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
   
-  return false;
+  if (! m_pEntryBuffer)
+    return false;
+  
+  if (m_bMark)
+    ActivityMap::vMarkJob(this,
+                          "Exporting Table %s EntryBuffer[%lld/%lld] %p"_Stz,
+                          m_pJobExport->m_pTable->aTableName(),
+                          m_iEntryBuffer,
+                          m_nEntryBuffers,
+                          m_pEntryBuffer);
+  
+  m_iEntryBuffer++;
+  m_pEntryBuffer = m_pEntryBuffer->pNextBuffer();
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

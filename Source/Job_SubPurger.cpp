@@ -108,7 +108,6 @@ Job_SubPurger::Job_SubPurger(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPURGER,_FOOTER_);
     
   m_iPurgeJobId = -1;
-  m_iSlot       = -1;
   
   m_pJob_Purge  = nullptr;
   m_pTable      = nullptr;
@@ -126,7 +125,7 @@ Job_SubPurger::~Job_SubPurger(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPURGER,_FOOTER_);
   
-  vTrace("Sub_Purger %lld ~destructor\n"_Stz,m_iSlot);
+  //vTrace("Sub_Purger %lld ~destructor\n"_Stz,m_i_Slot);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -179,13 +178,13 @@ bool Job_SubPurger::bChunk(void)
   
   i8 iOlderThanSeconds = m_pJob_Purge->m_iOlderThanSeconds;
   
-  bool bPurged = m_pTable->bPurge(m_iSlot,iOlderThanSeconds);
+  bool bPurged = m_pTable->bPurge(m_i_Slot,iOlderThanSeconds);
   
   if (bPurged) {
     m_nPurgeCount++;
     if (0 == m_nPurgeCount % 250) {
       vTrace("SubPurger %lld: Purged %lld buffers from %s\n"_Stz,
-             m_iSlot,m_nPurgeCount,m_pTable->aTableName()->aChar());
+             m_i_Slot,m_nPurgeCount,m_pTable->aTableName()->aChar());
     }
   }
   
@@ -204,7 +203,7 @@ void Job_SubPurger::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPURGER,_FOOTER_);
   
-  vTrace("Sub_Purger %lld ends\n"_Stz,m_iSlot);
+  vTrace("Sub_Purger %lld ends\n"_Stz,m_i_Slot);
 }
 
 /*----------------------------------------------------------------------------*/

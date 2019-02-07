@@ -513,7 +513,7 @@
   // job Export
   static void vJob_ExportBegin(Tasks::MP_Task mpTask);
   static void vJob_ExportEnd(Tasks::MP_Task mpTask);
-
+  static void vJob_ExportTableStore(Tasks::MP_Task mpTask);
   // job FetchRows
   static void vJob_FetchRowsLastBuffersStore(Tasks::MP_Task mpTask);
   static void vJob_FetchRowsPartitionFetch(Tasks::MP_Task mpTask);

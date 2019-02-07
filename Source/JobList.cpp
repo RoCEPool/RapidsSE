@@ -290,10 +290,18 @@ void JobList::vMarkContents(i8 iJobId)
 
   while (pNode) {
     Job* pJob = _pJob(pNode->m_pObject);
-    ActivityMap::vMarkInfo("  %s %p id %lld partNode %lld"_Stz,
+    ActivityMap::vMarkInfo("  %s %p %03lld slot[%lld] "
+                           "phase %s state %s acksRmg %lld/%lld partNode %lld"_Stz,
+                           
                            aCN[pJob->eClass()],
                            pJob,
                            pJob->m_iJobId,
+                           pJob->m_i_Slot,
+                           
+                           aJP[pJob->m_eJobPhase],
+                           aJS[pJob->m_eJobState],
+                           pJob->m_oAcksRemaining.iPrintOnlyValue(),
+                           pJob->m_oAcksRemaining.nOriginalAcks(),
                            pJob->m_iParticipantNode);
     
     pNode = m_pJobsSkipList->pNext(pNode, iLevel);

@@ -108,7 +108,6 @@ Job_SubTruncate::Job_SubTruncate(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBTRUNCATE,_FOOTER_);
     
   m_iTruncateJobId  = -1;
-  m_iSlot           = -1;
   
   _checkInitialised_(CN_JOB_SUBTRUNCATE);
   

@@ -27,7 +27,8 @@ void Decider::operator delete(void* )
 Decider::Decider(void)
 : Object(CN_DECIDER)
 {
-  m_nAcksRemaining = 0;
+  m_nAcksOriginally = 0;
+  m_nAcksRemaining  = 0;
   
   _checkInitialised_(CN_DECIDER);
   
@@ -87,6 +88,16 @@ bool Decider::bIsSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get original number of acks **FOR PRINING ONLY**                           */
+/*----------------------------------------------------------------------------*/
+i8 Decider::nOriginalAcks(void)
+{
+  _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
+  
+  return m_nAcksRemaining;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current number of acks remaining **FOR PRINING ONLY**                  */
 /*----------------------------------------------------------------------------*/
 i8 Decider::iPrintOnlyValue(void)
@@ -107,7 +118,8 @@ void Decider::vSetRemaining(i8 nAcksRemaining)
   RASSERT(nAcksRemaining > 0);
   
   //vTrace("Setting m_nAcksRemaining to %lld\n"_Stz, nAcksRemaining);
-  m_nAcksRemaining = nAcksRemaining;
+  m_nAcksOriginally = nAcksRemaining;
+  m_nAcksRemaining  = nAcksRemaining;
 }
 
 /*----------------------------------------------------------------------------*/

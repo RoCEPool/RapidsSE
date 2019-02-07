@@ -406,14 +406,14 @@ void SePrompt::vJobLockMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  RASSERT(JS_RUNNING == m_pJob->m_eState);
+  RASSERT(JS_RUNNING == m_pJob->m_eJobState);
   
   m_pJob->vMutexLock();
 //  i8 rCode = pthread_mutex_lock(&m_pJob->m_xThreadMutex);
 //  if (0 != rCode)
 //    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
   
-  m_pJob->m_eState = JS_LOCKED;
+  m_pJob->m_eJobState = JS_LOCKED;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -424,11 +424,11 @@ void SePrompt::vJobUnlockMutex(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   // have to be locked, waiting or signalled
-  RASSERT(JS_RUNNING != m_pJob->m_eState);
+  RASSERT(JS_RUNNING != m_pJob->m_eJobState);
   
   m_pJob->vMutexUnlock();
   
-  m_pJob->m_eState = JS_RUNNING;
+  m_pJob->m_eJobState = JS_RUNNING;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -438,14 +438,14 @@ void SePrompt::vJobWaitCond(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  RASSERT(JS_LOCKED == m_pJob->m_eState);
-  m_pJob->m_eState = JS_WAITING;
+  RASSERT(JS_LOCKED == m_pJob->m_eJobState);
+  m_pJob->m_eJobState = JS_WAITING;
   
   do {
     
     m_pJob->vMutexWait();
     
-  } while (m_pJob->m_eState != JS_SIGNALLED);
+  } while (m_pJob->m_eJobState != JS_SIGNALLED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -528,7 +528,7 @@ void SePrompt::vPostJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  RASSERT(JS_RUNNING == m_pJob->m_eState);
+  RASSERT(JS_RUNNING == m_pJob->m_eJobState);
   
   //Command* pCommand = this->pCommand();
   
@@ -603,7 +603,7 @@ void SePrompt::vSpawnJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  RASSERT(JS_LOCKED == m_pJob->m_eState);
+  RASSERT(JS_LOCKED == m_pJob->m_eJobState);
   
   if (m_bNoWait)
     m_pJob->m_bNoWait = true;

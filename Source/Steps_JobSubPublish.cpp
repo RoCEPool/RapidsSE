@@ -110,7 +110,7 @@ void Step::vJob_SubPublishSlotFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_subPublish.slot@"_Stz);
   Job_SubPublish* pJob = _pJob_SubPublish(pJobPtr);
   
-  mpTask->m_pDataStack->vPushI8(pJob->m_iSlot);
+  mpTask->m_pDataStack->vPushI8(pJob->m_i_Slot);
   
   EXIT();
 }

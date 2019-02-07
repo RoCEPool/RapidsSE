@@ -118,7 +118,7 @@ void Step::vJob_SubPurgerSlotFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_subPurger.slot@"_Stz);
   Job_SubPurger* pJob = _pJob_SubPurger(pJobPtr);
   
-  mpTask->m_pDataStack->vPushI8(pJob->m_iSlot);
+  mpTask->m_pDataStack->vPushI8(pJob->m_i_Slot);
   
   EXIT();
 }

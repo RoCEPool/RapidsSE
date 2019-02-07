@@ -39,6 +39,34 @@ namespace Jobs
   /*  9 */ "OTHER"_Stz,
   };
   
+  enum eJP // job phase
+  {
+  /*  0 */ JP_NONE=0,
+  /*  1 */ JP_BEGINING,
+  /*  2 */ JP_BEGUN,
+  /*  3 */ JP_EXECUTING,
+  /*  4 */ JP_EXECUTED,
+  /*  5 */ JP_ENDING,
+  /*  6 */ JP_ENDED,
+  /*  7 */ JP_CANCELING,
+  /*  8 */ JP_CANCELED,
+  /*  9 */ JP_ENUMS
+  };
+  
+  static Stz* aJP[]
+  {
+  /*  0 */ "NONE"_Stz,
+  /*  1 */ "BEGINING"_Stz,
+  /*  2 */ "BEGUN"_Stz,
+  /*  3 */ "EXECUTING"_Stz,
+  /*  4 */ "EXECUTED"_Stz,
+  /*  5 */ "ENDING"_Stz,
+  /*  6 */ "ENDED"_Stz,
+  /*  7 */ "CANCELING"_Stz,
+  /*  8 */ "CANCELED"_Stz,
+  /*  9 */ "ENUMS"_Stz,
+  };
+  
   enum eJS // job state
   {
   /*  0 */ JS_RUNNING=0,
@@ -100,26 +128,29 @@ namespace Jobs
               public JobResult
   {
   public:
-    i8  m_iJobId;           // job id
-    i8  m_i_State;          // which session state
-    eJL m_eJobList;         // which job list is job currently in?
-  
-    JobClass* m_pJobClass;  // job class
-    eSS  m_eSeed;           // task seed
-    eJT  m_eJobTrace;       // job trace
-    bool m_bNoWait;         // no wait
-    bool m_bMark;           // write activity marks?
+    i8  m_iJobId;     // job id
+    i8  m_i_State;    // which session state
+    i8  m_i_Slot;     // slot this sub truncate truncates
+    eJP m_eJobPhase;  // which phase the job is in
+    eJS m_eJobState;  // job state
+    eJL m_eJobList;   // which job list is job currently in?
 
+    Decider m_oAcksRemaining;  // acks remaining
+
+    eSS  m_eSeed;        // task seed
+    eJT  m_eJobTrace;    // job trace
+    bool m_bNoWait;      // no wait
+    bool m_bMark;        // write activity marks?
+    bool m_bWasReceived; // job was received over a socket
+
+    JobClass*    m_pJobClass;        // job class
     Tasks::Task* m_pExecutingTask;   // task executing the job
     Tasks::Task* m_pOriginatingTask; // originating task of the request
   
     i8  m_iParticipantNode;    // participant node no
-    Decider m_oAcksRemaining;  // acks remaining
   
     EntryBuffer* m_pCurrentBuffer; // entry buffer
   
-    eJS m_eState; // job state
-    bool m_bWasReceived; // job was received over a socket
   
     Mutex* m_pMutex;
   
