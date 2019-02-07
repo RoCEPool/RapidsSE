@@ -30,10 +30,14 @@ bool Prompt::bPrompt_hw(SePrompt* pPrompt)
   s32 sClock;
   Magnitudes::vHzMag(Hardware::iClockFrequency(),sClock);
 
-  vTrace("hw: %lld cores; %s memory; %s clock frequency\n"_Stz,
+  unsigned int x = 0x1;
+  char *c = (char*) &x;
+  
+  vTrace("hw: %lld cores; %s memory; %s clock frequency; %s\n"_Stz,
          Hardware::iCoreCount(),
          sMem.aStz(),
-         sClock.aStz()
+         sClock.aStz(),
+         *c == 0x1 ? "little endian"_Stz : "big endian"_Stz
          );
   
   return true;
