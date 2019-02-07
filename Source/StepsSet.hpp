@@ -430,6 +430,11 @@
   static void vJobDecAcksRemaining(Tasks::MP_Task mpTask);
   static void vJobDelete(Tasks::MP_Task mpTask);
   static void vJobDicPath(Tasks::MP_Task mpTask);
+  static void vJobEntryBufferFetch(Tasks::MP_Task mpTask);
+  static void vJobEntryBufferStore(Tasks::MP_Task mpTask);
+  static void vJobErrorStore(Tasks::MP_Task mpTask);
+  static void vJobErrorFetch(Tasks::MP_Task mpTask);
+  static void vJobExecuteFetch(Tasks::MP_Task mpTask);
   static void vJobExecutingTaskFetch(Tasks::MP_Task mpTask);
   static void vJobFindOriginator(Tasks::MP_Task mpTask);
   static void vJobFindParticipant(Tasks::MP_Task mpTask);
@@ -438,9 +443,6 @@
   static void vJobIdFetch(Tasks::MP_Task mpTask);
   static void vJobIndexNameFetch(Tasks::MP_Task mpTask);
   static void vJobIsExecuting(Tasks::MP_Task mpTask);
-  static void vJobErrorStore(Tasks::MP_Task mpTask);
-  static void vJobErrorFetch(Tasks::MP_Task mpTask);
-  static void vJobExecuteFetch(Tasks::MP_Task mpTask);
   static void vJobJobClass(Tasks::MP_Task mpTask);
   static void vJobMetadataStore(Tasks::MP_Task mpTask);
   static void vJobNewBegun(Tasks::MP_Task mpTask);
@@ -481,8 +483,6 @@
   static void vJobTraceStore(Tasks::MP_Task mpTask);
   static void vJobTraceFetch(Tasks::MP_Task mpTask);
   static void vJobWaitParticipant(Tasks::MP_Task mpTask);
-  static void vJobEntryBufferFetch(Tasks::MP_Task mpTask);
-  static void vJobEntryBufferStore(Tasks::MP_Task mpTask);
 
   // job generic
   static void vJob__BegunErrorFetch(Tasks::MP_Task mpTask);
