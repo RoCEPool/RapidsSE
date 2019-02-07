@@ -49,6 +49,8 @@
   // get table pointer
   sTableNm table::find to pTable
 
+  pTable pJob_Export job_export.table!
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pJob_Export job_export.begin

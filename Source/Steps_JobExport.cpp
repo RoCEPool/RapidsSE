@@ -11,8 +11,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobExport(void)
 {
-  vAddStep("job_export.begin"_Stz,     &Step::vJob_ExportBegin);
-  vAddStep("job_export.end"_Stz,       &Step::vJob_ExportEnd);
+  vAddStep("job_export.begin"_Stz,  &Step::vJob_ExportBegin);
+  vAddStep("job_export.end"_Stz,    &Step::vJob_ExportEnd);
+  vAddStep("Job_export.table!"_Stz, &Step::vJob_ExportTableStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,6 +51,29 @@ void Step::vJob_ExportEnd(MP_Task mpTask)
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* Job_export.table! -- store table in the job                                */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_ExportTableStore(MP_Task mpTask)
+{
+  ENTRY("vJob_ExportTableStore"_Stz);
+  
+  Object* pPtrJobExport;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJobExport) )
+    THROW_INVALID_DSTACK("Job_export.table!"_Stz);
+  Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
+  
+  Object* pTablePtr;
+  if ( ! mpTask->m_pDataStack->bPop(pTablePtr) )
+    THROW_INVALID_DSTACK("Job_export.table!"_Stz);
+  Table* pTable = _pTable(pTablePtr);
+  
+  pJob_Export->m_pTable = pTable;
+  
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
