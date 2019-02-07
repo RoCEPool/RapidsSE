@@ -34,6 +34,7 @@ namespace System
     void vSetOSThreadId(void);
     bool bSpawnThread(void* pFun(void*), void* pArg);
     i8   iThreadCpu(void);
+    void vThreadEntry(void);
     void vThreadExit(void);
     i8   iThreadPriority(void);
     void vThreadBoost(i8 nPoints);

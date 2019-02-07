@@ -110,6 +110,8 @@ void* Thread::aEntryPoint(void* pArg)
 
   pThread->m_eThreadState = TD_IDLE;
   
+  pThread->m_pPthread->vThreadEntry();
+
   gpAttachMap->m_pQueues->vAddThread(pThread);
   
   if (gpAttachMap->m_bVerbose)
@@ -147,6 +149,8 @@ void* Thread::aEntryPoint(void* pArg)
   
   gpAttachMap->m_pQueues->vRemoveThread(pThread);
   
+  pThread->m_pPthread->vThreadExit();
+
   delete pThread;
   
   return nullptr;
@@ -160,6 +164,8 @@ void* Thread::aEntryPointDummy(void* pArg)
   Thread* pThread = static_cast<Thread*>(pArg);
   
   pThread->m_eThreadState = TD_IDLE;
+  
+  pThread->m_pPthread->vThreadEntry();
   
   if (gpAttachMap->m_bVerbose)
     vTrace("Thread::pDummyEntryPoint %p %lld\n"_Stz,
@@ -175,6 +181,8 @@ void* Thread::aEntryPointDummy(void* pArg)
     for (i8 i_Loop = 0; i_Loop < gpAttachMap->Arg.m_nDummyLoop; i_Loop++)
       iSum += Tsc::iRdTscp();
   }
+  
+  //pThread->m_pPthread->vThreadExit();
   
   //delete pThread;
   
