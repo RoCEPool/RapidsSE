@@ -25,7 +25,8 @@ markres socket on;
 markres;
 
 print "exporting nation.csv..." ;
-am "##########################################################################\n\n";
+//am "##########################################################################\n\n";
+amSection "EXPORT" ;
 
 export nation "/tmp/nation_export.csv" ;
 

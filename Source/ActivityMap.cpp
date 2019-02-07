@@ -321,6 +321,31 @@ void ActivityMap::vMarkRes(eSR eSysRes,
 }
 
 /*----------------------------------------------------------------------------*/
+/* write an ActivityMark                                                      */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vMarkSection(Stz* szSectionNm)
+{
+#ifdef WITH_ACTIVITY_MAP
+  if ( ! gpActivityMap )
+    return;
+
+  char caSection[256];
+  
+  i8 iSectNmLen = szSectionNm->iLength();
+    
+  StrLib::vPad(caSection,127-iSectNmLen-4,'#');
+    
+  StrLib::vConcat(caSection,' ');
+  StrLib::vConcat(caSection,szSectionNm->aChar());
+  StrLib::vConcat(caSection,' ');
+  StrLib::vConcat(caSection,'#');
+  StrLib::vConcat(caSection,'#');
+    
+  vMarkInfo((Stz*)caSection);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* write a multi-line string                                                  */
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vMarkString(i8 iJobId, s48K& sString)
@@ -653,6 +678,8 @@ void ActivityMap::vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs)
   char caMark[1024];
   
   vsnprintf(caMark,sizeof(caMark)-1,aFormat->aChar(),xArgs);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   ActivityMark* pActivityMark = pNewMark();
   

@@ -43,6 +43,7 @@ namespace Measurement
     static void vMarkInfo(Stz* aFormat, ...);
     static void vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...);
     static void vMarkRes(eSR eSysRes, Stz* szFormat, ...);
+    static void vMarkSection(Stz* szSectionNm);
     static void vMarkString(i8 iJobId, s48K& sString);
     static void vMonitorPortrait(s48K& sPortrait);
     static void vOpenByApi(void);

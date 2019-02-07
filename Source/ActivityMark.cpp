@@ -87,11 +87,11 @@ void ActivityMark::vInit(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
   
-  m_iMark    = -1;
-  m_iTick    = -1;
-  m_caNode[0] = '\0';
-  m_iJobId   = -1;
-  m_caMark[0] = '\0';
+  m_iMark      = -1;
+  m_iTick      = -1;
+  m_caNode[0]  = '\0';
+  m_iJobId     = -1;
+  m_caMark[0]  = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
