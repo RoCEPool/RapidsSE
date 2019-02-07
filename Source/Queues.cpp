@@ -1112,9 +1112,9 @@ void Queues::vScheduleReadyTask(Task* pTask)
   
   if (pTask->pJob()->m_bMark)
     ActivityMap::vMarkJob(pTask->pJob(),
-                       "Schedule ready: %s %p"_Stz,
-                       aCN[pTask->pJob()->eClass()],
-                       pTask->pJob());
+                          "Schedule ready: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
 
   Thread* pIdleThread = pFindIdleThread();
 
