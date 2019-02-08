@@ -363,7 +363,7 @@ void ActivityMap::vMarkString(i8 iJobId, s48K& sString)
   while (StrLib::bEachLine(&aCharAdr,sLine.aChar())) {
     //vTrace("Line: ]]%s[[\n"_Stz,sLine.aChar());
     ActivityMark* pActivityMark = gpActivityMap->pNewMark_NL();
-    pActivityMark->vWrite(iJobId,sLine.aChar());
+    pActivityMark->vWrite(_ER_NONE,iJobId,sLine.aChar());
   }
   
   gpActivityMap->vDropLock();
@@ -686,7 +686,7 @@ void ActivityMap::vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs)
   if (! pActivityMark)
     return;
   
-  pActivityMark->vWrite(iJobId,caMark);
+  pActivityMark->vWrite(_ER_NONE,iJobId,caMark);
 }
 
 /*----------------------------------------------------------------------------*/
