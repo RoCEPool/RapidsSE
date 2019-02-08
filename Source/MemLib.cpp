@@ -97,14 +97,38 @@ void MemLib::vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 i8 MemLib::iCompare(const void* pVal1, const void* pVal2, i8 nBytes)
 {
-  i8 iCmp = memcmp(pVal1,pVal2,nBytes);
+//  if (gpAttachMap) {
+//    gpAttachMap->m_oStatistics.Memory.m_iCompareTotal += nBytes;
+//  }
   
-  if (gpAttachMap) {
-    gpAttachMap->m_oStatistics.Memory.m_iCompareTotal += nBytes;
+  const char *s1 = (const char*)pVal1+nBytes-1;
+  const char *s2 = (const char*)pVal2+nBytes-1;
+  
+  while (nBytes-- > 0)
+  {
+    if (*s1-- != *s2--) {
+      return s1[1] < s2[1] ? -1 : 1;
+    }
   }
   
-  return iCmp;
+  return 0;
 }
+
+/*----------------------------------------------------------------------------*/
+/* compare val1 to val2                                                       */
+/*----------------------------------------------------------------------------*/
+i8 MemLib::iCompare2(const void* pVal1, const void* pVal2, i8 nBytes)
+{
+//  if (gpAttachMap) {
+//    gpAttachMap->m_oStatistics.Memory.m_iCompareTotal += nBytes;
+//  }
+  
+  const i8 *s1 = (const i8*)pVal1;
+  const i8 *s2 = (const i8*)pVal2;
+  
+  return (*s1 - *s2);
+}
+
 /*----------------------------------------------------------------------------*/
 /* free a block of memory                                                     */
 /*----------------------------------------------------------------------------*/

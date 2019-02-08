@@ -12,6 +12,7 @@ void vTest6(void);
 void vTest7(void);
 void vTest8(void);
 void vTest9(void);
+void vTest10(void);
 
 /*============================================================================*/
 /* end                                                                        */
