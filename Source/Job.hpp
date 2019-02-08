@@ -159,8 +159,9 @@ namespace Jobs
     Job(eCN eClassNo, Interface::Session* pSession);
     ~Job(void) noexcept(false);
     
-    static i8 iOriginatorNode(i8 iJobId);
-    
+    static bool bIsForeign(i8 iJobId);
+    static i8   iOriginatorNode(i8 iJobId);
+
     Stz* sJobSeed(void);
     i8   iJobId(void);
     void vJobId(i8 iJobId);

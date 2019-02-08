@@ -9,6 +9,8 @@ namespace Measurement
 {
   static const i8    C_ACTIVITY_MARKS  = C_1M * 10;
   static const char* C_ACTIVITY_REGION = "/SE_ActivityMap";
+  static const i8    C_JOB_GROUP = 0;
+  static const i8    C_INF_GROUP = -1;
 
   class ActivityMap : public Object
   {
@@ -31,7 +33,6 @@ namespace Measurement
     ~ActivityMap(void) noexcept(false);
 
   private:
-
     static ActivityMap* pAttachCreate(void);
     static ActivityMap* pAttachExisting(void);
 
@@ -61,8 +62,10 @@ namespace Measurement
     void vGrabLock(void);
     i8   iPercentFull_NL(void);
     i8   iSize(void);
-    void vWriteMark(i8 iJobId, Stz* aFormat, ...);
-    void vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs);
+    void vWriteMarkArg(i8 iEnumGroup, i8 iEnum, bool bForeign,
+                        Stz* aFormat, va_list xArgs);
+    void vWriteMarkVbl(i8 iEnumGroup, i8 iEnum, bool bForeign,
+                       Stz* aFormat, ...);
     void vWriteToFile(bool bShortForm);
 
     Footer* aFooter(void);

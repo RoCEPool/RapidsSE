@@ -100,6 +100,7 @@ static Stz* a_ER[]
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class EnumReg
   {
+  public:
     static Stz* szEnumText(i8 iEnumCategory, i8 i_Enum);
   };
 }

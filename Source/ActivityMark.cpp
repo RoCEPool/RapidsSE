@@ -98,7 +98,7 @@ void ActivityMark::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* write                                                                      */
 /*----------------------------------------------------------------------------*/
-void ActivityMark::vWrite(i8 iEnumGroup, i8 iJobId, char* aMark)
+void ActivityMark::vWrite(i8 iEnumGroup, i8 iEnum, bool bForeign, char* aText)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
   
@@ -107,15 +107,14 @@ void ActivityMark::vWrite(i8 iEnumGroup, i8 iJobId, char* aMark)
   StrLib::vCopyLen(m_caNode,
                    gpAttachMap->m_pGrid->m_pThisNode->aNodeName()->aChar(),
                    sizeof(m_caNode) - 1);
-  m_caNode[sizeof(m_caNode) - 1] = '\0';
   
   m_iEnumGroup = iEnumGroup;
-  m_iEnum = iJobId;
+  m_iEnum      = iEnum;
+  m_iForeign   = bForeign;
 
   StrLib::vCopyLen(m_caText,
-                   aMark,
+                   aText,
                    sizeof(m_caText) - 1);
-  m_caText[sizeof(m_caText) - 1] = '\0';
   
   _postcondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
 }
@@ -183,24 +182,31 @@ void ActivityMark::vDumpShort(File* pFile)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
   
-  if (m_iEnum < 0)
-    pFile->vPrint("[%3lld %s %s] %s\n"_Stz,
-                  m_iMark,
-                  m_caNode,
-                  aSR_Short[-m_iEnum],
-                  m_caText);
-  else
-  if (m_iEnum == 0)
+  // inf
+  if (m_iEnumGroup == -1) {
     pFile->vPrint("[%3lld %s inf] %s\n"_Stz,
                   m_iMark,
                   m_caNode,
                   m_caText);
-  else
+    return;
+  }
+  
+  // job
+  if (m_iEnumGroup  == 0) {
     pFile->vPrint("[%3lld %s %03lld] %s\n"_Stz,
                   m_iMark,
                   m_caNode,
                   m_iEnum,
                   m_caText);
+    return;
+  }
+  
+  // enum
+  pFile->vPrint("[%3lld %s %s] %s\n"_Stz,
+                m_iMark,
+                m_caNode,
+                EnumReg::szEnumText(m_iEnumGroup,m_iEnum),
+                m_caText);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -16,6 +16,7 @@ namespace Measurement
     char m_caNode[32];  // which node
     i8   m_iEnumGroup;  // enum group
     i8   m_iEnum;       // enum/jobid
+    i8   m_iForeign;    // foreign job
   
     char m_caText[C_MARK_TEXT]; // comment
   
@@ -33,7 +34,8 @@ namespace Measurement
     static i8 iAsMicroseconds(i8 iTickDelta);
   
     void vInit(void);
-    void vWrite(i8 iEnumCategory, i8 iEnum, char* aMark);
+    void vWrite(i8 iEnumGroup, i8 iEnum, bool bForeign, char* aText);
+  
     void vDump(File* pFile, bool bShortForm,
                ActivityMark* pPrevMark, i8& iTotalDelta);
   
