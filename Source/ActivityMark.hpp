@@ -34,7 +34,7 @@ namespace Measurement
     static i8 iAsMicroseconds(i8 iTickDelta);
   
     void vInit(void);
-    void vWrite(i8 iEnumGroup, i8 iEnum, bool bForeign, char* aText);
+    void vWrite(i8 iEnumGroup, i8 iEnum, i8 iForeign, char* aText);
   
     void vDump(File* pFile, bool bShortForm,
                ActivityMark* pPrevMark, i8& iTotalDelta);

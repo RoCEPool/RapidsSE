@@ -62,9 +62,9 @@ namespace Measurement
     void vGrabLock(void);
     i8   iPercentFull_NL(void);
     i8   iSize(void);
-    void vWriteMarkArg(i8 iEnumGroup, i8 iEnum, bool bForeign,
+    void vWriteMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                         Stz* aFormat, va_list xArgs);
-    void vWriteMarkVbl(i8 iEnumGroup, i8 iEnum, bool bForeign,
+    void vWriteMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                        Stz* aFormat, ...);
     void vWriteToFile(bool bShortForm);
 

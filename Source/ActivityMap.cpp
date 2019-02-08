@@ -165,7 +165,8 @@ void ActivityMap::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  gpActivityMap->vWriteMarkArg(C_JOB_GROUP,iJobId,false,aFormat,xArgs);
+  bool bForeign = Job::bIsForeign(iJobId);
+  gpActivityMap->vWriteMarkArg(C_JOB_GROUP,iJobId,bForeign,aFormat,xArgs);
   
   va_end(xArgs);
 #endif
@@ -186,7 +187,8 @@ void ActivityMap::vMarkApiEntry(i8 eApiCall, i8 iJobId)
   
   Stz* zApiName = aAC[eApiCall];
   
-  gpActivityMap->vWriteMarkVbl(C_JOB_GROUP,iJobId,false,">Api %s"_Stz,zApiName);
+  bool bForeign = Job::bIsForeign(iJobId);
+  gpActivityMap->vWriteMarkVbl(C_JOB_GROUP,iJobId,bForeign,">Api %s"_Stz,zApiName);
 #endif
 }
 
@@ -205,7 +207,8 @@ void ActivityMap::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
   
   Stz* zApiName = aAC[eApiCall];
   
-  gpActivityMap->vWriteMarkVbl(C_JOB_GROUP,iJobId,"!Api %s Error %lld"_Stz,zApiName,iError);
+  bool bForeign = Job::bIsForeign(iJobId);
+  gpActivityMap->vWriteMarkVbl(C_JOB_GROUP,iJobId,bForeign,"!Api %s Error %lld"_Stz,zApiName,iError);
 #endif
 }
 
@@ -224,7 +227,8 @@ void ActivityMap::vMarkApiExit(i8 eApiCall, i8 iJobId)
   
   Stz* zApiName = aAC[eApiCall];
   
-  gpActivityMap->vWriteMarkVbl(C_JOB_GROUP,iJobId,"<Api %s"_Stz,zApiName);
+  bool bForeign = Job::bIsForeign(iJobId);
+  gpActivityMap->vWriteMarkVbl(C_JOB_GROUP,iJobId,bForeign,"<Api %s"_Stz,zApiName);
 #endif
 }
 
@@ -282,7 +286,9 @@ void ActivityMap::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
                     );
   }
   
-  gpActivityMap->vWriteMarkArg(C_JOB_GROUP,pJob->iJobId(),false,
+  i8 iJobId = pJob->iJobId();
+  bool bForeign = Job::bIsForeign(iJobId);
+  gpActivityMap->vWriteMarkArg(C_JOB_GROUP,pJob->iJobId(),bForeign,
                                 szCombinedFormat,xArgs);
   
   va_end(xArgs);
@@ -350,13 +356,15 @@ void ActivityMap::vMarkString(i8 iJobId, s48K& sString)
   s4K sLine;
   char* aCharAdr = sString.aChar();
 
+  bool bForeign = Job::bIsForeign(iJobId);
+
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   gpActivityMap->vGrabLock();
   
   while (StrLib::bEachLine(&aCharAdr,sLine.aChar())) {
     //vTrace("Line: ]]%s[[\n"_Stz,sLine.aChar());
     ActivityMark* pActivityMark = gpActivityMap->pNewMark_NL();
-    pActivityMark->vWrite(C_JOB_GROUP,iJobId,false,sLine.aChar());
+    pActivityMark->vWrite(C_JOB_GROUP,iJobId,bForeign,sLine.aChar());
   }
   
   gpActivityMap->vDropLock();
@@ -650,7 +658,7 @@ i8 ActivityMap::iSize(void)
 /*----------------------------------------------------------------------------*/
 /* write an ActivityMark                                                      */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vWriteMarkVbl(i8 iEnumGroup, i8 iEnum, bool bForeign,
+void ActivityMap::vWriteMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                              Stz* aFormat, ...)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
@@ -658,14 +666,14 @@ void ActivityMap::vWriteMarkVbl(i8 iEnumGroup, i8 iEnum, bool bForeign,
   va_list xArgs;
   
   va_start(xArgs,aFormat);
-  vWriteMarkArg(iEnumGroup,iEnum,bForeign,aFormat,xArgs);
+  vWriteMarkArg(iEnumGroup,iEnum,iForeign,aFormat,xArgs);
   va_end(xArgs);
 }
 
 /*----------------------------------------------------------------------------*/
 /* write an ActivityMark                                                      */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vWriteMarkArg(i8 iEnumGroup, i8 iEnum, bool bForeign,
+void ActivityMap::vWriteMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                                  Stz* aFormat, va_list xArgs)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
@@ -681,7 +689,7 @@ void ActivityMap::vWriteMarkArg(i8 iEnumGroup, i8 iEnum, bool bForeign,
   if (! pActivityMark)
     return;
   
-  pActivityMark->vWrite(iEnumGroup,iEnum,bForeign,caMark);
+  pActivityMark->vWrite(iEnumGroup,iEnum,iForeign,caMark);
 }
 
 /*----------------------------------------------------------------------------*/

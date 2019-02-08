@@ -98,7 +98,7 @@ void ActivityMark::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* write                                                                      */
 /*----------------------------------------------------------------------------*/
-void ActivityMark::vWrite(i8 iEnumGroup, i8 iEnum, bool bForeign, char* aText)
+void ActivityMark::vWrite(i8 iEnumGroup, i8 iEnum, i8 iForeign, char* aText)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
   
@@ -110,7 +110,7 @@ void ActivityMark::vWrite(i8 iEnumGroup, i8 iEnum, bool bForeign, char* aText)
   
   m_iEnumGroup = iEnumGroup;
   m_iEnum      = iEnum;
-  m_iForeign   = bForeign;
+  m_iForeign   = iForeign;
 
   StrLib::vCopyLen(m_caText,
                    aText,
