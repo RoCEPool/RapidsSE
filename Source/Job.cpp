@@ -97,8 +97,10 @@ Job::~Job(void) noexcept(false)
   
   delete m_pMutex;
   
-  if (m_bMark)
+  if (m_bMark) {
     ActivityMap::vMarkInfo("~Job %s"_Stz,aCN[eClass()]);
+    Job::vMarkJob();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -176,7 +178,27 @@ void Job::vJobTrace(eJT eJobTrace)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write a mark about this task                                               */
+/* write an activity map string about this job                                */
+/*----------------------------------------------------------------------------*/
+void Job::vMarkJob(void)
+{
+  s48K sJobMark;
+  
+  sJobMark.vSprintCat("Job %03lld %s state %lld slot %lld\n"_Stz,
+                      m_iJobId,
+                      aCN[eClass()],
+                      m_i_State,
+                      m_i_Slot);
+  sJobMark.vSprintCat("  phase %s state %s list %s\n"_Stz,
+                      aJP[m_eJobPhase],
+                      aJS[m_eJobState],
+                      aJL[m_eJobList]);
+
+  ActivityMap::vMarkString(m_iJobId,sJobMark);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write a mark about this job                                                */
 /*----------------------------------------------------------------------------*/
 void Job::vMarkJob(Stz* szFormat, ...)
 {

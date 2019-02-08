@@ -166,6 +166,7 @@ namespace Jobs
     void vJobId(i8 iJobId);
     eJT  eJobTrace(void);
     void vJobTrace(eJT eJobTrace);
+    void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);
     void vMutexLock(void);
     void vMutexSignal(void);
