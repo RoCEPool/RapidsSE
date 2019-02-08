@@ -13,6 +13,7 @@ namespace Measurement
     i8   m_iMark;       // mark no
     i8   m_iTick;       // tick of mark
     char m_caNode[32];  // which node
+    i8   m_iCategory;   // category
     i8   m_iJobId;      // which job
     char m_caMark[128]; // comment
   
@@ -32,8 +33,10 @@ namespace Measurement
     void vInit(void);
     void vWrite(i8 iJobId, char* aMark);
     void vDump(File* pFile, bool bShortForm,
-               i8 i_Mark, ActivityMark* pPrevMark, i8& iTotalDelta);
+               ActivityMark* pPrevMark, i8& iTotalDelta);
   
+    void vDumpShort(File* pFile);
+
     Footer* aFooter(void);
   };
   

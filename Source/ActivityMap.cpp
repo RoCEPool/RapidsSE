@@ -724,8 +724,6 @@ void ActivityMap::vWriteToFile(bool bShortForm)
                          iUpTimeSsec,
                          C_UNKNOWN);
 
-
-
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
   
@@ -736,7 +734,7 @@ void ActivityMap::vWriteToFile(bool bShortForm)
   
   ActivityMark* pActivityMark = &m_oaMark[i_MinMark % m_nMarks];
   pActivityMark->vDump(pActivityFile, bShortForm,
-                       0,nullptr,iTotalDelta);
+                       nullptr,iTotalDelta);
   
   for (i8 i_Mark = i_MinMark + 1; i_Mark <= i_MaxMark; i_Mark++) {
     
@@ -746,7 +744,6 @@ void ActivityMap::vWriteToFile(bool bShortForm)
       break;
     
     pActivityMark->vDump(pActivityFile, bShortForm,
-                         i_Mark,
                          &m_oaMark[(i_Mark - 1) % m_nMarks],
                          iTotalDelta);
   }
