@@ -24,6 +24,7 @@ using namespace StorageEngine;
 #include "AttachMap.hpp"
 #include "SizesDumps.hpp"
 #include "Finalizers.hpp"
+#include "EnumRegistry.hpp"
 
 #include "Engine.hpp"
 

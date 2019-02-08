@@ -13,7 +13,7 @@ namespace Plans
   /* 4 */ AK_ENUMS
   };
   
-  static Stz* aAM[]
+  static Stz* aAK[]
   {
   /* 0 */ "none"_Stz,
   /* 1 */ "columnnm"_Stz,
