@@ -90,14 +90,15 @@ void ActivityMark::vInit(void)
   m_iMark      = -1;
   m_iTick      = -1;
   m_caNode[0]  = '\0';
-  m_iJobId     = -1;
-  m_caMark[0]  = '\0';
+  m_iEnumGroup = -1;
+  m_iEnum      = -1;
+  m_caText[0]  = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
 /* write                                                                      */
 /*----------------------------------------------------------------------------*/
-void ActivityMark::vWrite(i8 iJobId, char* aMark)
+void ActivityMark::vWrite(i8 iEnumGroup, i8 iEnum, i8 iForeign, char* aText)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
   
@@ -106,14 +107,14 @@ void ActivityMark::vWrite(i8 iJobId, char* aMark)
   StrLib::vCopyLen(m_caNode,
                    gpAttachMap->m_pGrid->m_pThisNode->aNodeName()->aChar(),
                    sizeof(m_caNode) - 1);
-  m_caNode[sizeof(m_caNode) - 1] = '\0';
   
-  m_iJobId = iJobId;
+  m_iEnumGroup = iEnumGroup;
+  m_iEnum      = iEnum;
+  m_iForeign   = iForeign;
 
-  StrLib::vCopyLen(m_caMark,
-                   aMark,
-                   sizeof(m_caMark) - 1);
-  m_caMark[sizeof(m_caMark) - 1] = '\0';
+  StrLib::vCopyLen(m_caText,
+                   aText,
+                   sizeof(m_caText) - 1);
   
   _postcondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
 }
@@ -122,9 +123,14 @@ void ActivityMark::vWrite(i8 iJobId, char* aMark)
 /* dump to csv file                                                           */
 /*----------------------------------------------------------------------------*/
 void ActivityMark::vDump(File* pFile, bool bShortForm,
-                         i8 i_Mark, ActivityMark* pPrevMark, i8& iTotalDelta)
+                         ActivityMark* pPrevMark, i8& iTotalDelta)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
+  
+  if (bShortForm) {
+    vDumpShort(pFile);
+    return;
+  }
   
   i8 iDeltaUs = 0;
   
@@ -133,32 +139,11 @@ void ActivityMark::vDump(File* pFile, bool bShortForm,
   
   iTotalDelta += iDeltaUs;
   
-  if (StrLib::bSame(m_caMark,"delta reset"))
+  if (StrLib::bSame(m_caText,"delta reset"))
     iTotalDelta = 0;
   
-  if (bShortForm) {
-    if (m_iJobId < 0)
-      pFile->vPrint("[%3lld %s %s] %s\n"_Stz,
-                    m_iMark,
-                    m_caNode,
-                    aSR_Short[-m_iJobId],
-                    m_caMark);
-    else
-    if (m_iJobId == 0)
-      pFile->vPrint("[%3lld %s inf] %s\n"_Stz,
-                    m_iMark,
-                    m_caNode,
-                    m_caMark);
-    else
-      pFile->vPrint("[%3lld %s %03lld] %s\n"_Stz,
-                    m_iMark,
-                    m_caNode,
-                    m_iJobId,
-                    m_caMark);
-    return;
-  }
 
-  if (m_iJobId < 0)
+  if (m_iEnum < 0)
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,%s,%s\n"_Stz,
                   m_iMark,
                   m_iTick,
@@ -166,10 +151,10 @@ void ActivityMark::vDump(File* pFile, bool bShortForm,
                   iTotalDelta,
                   
                   m_caNode,
-                  aSR_Short[-m_iJobId],
-                  m_caMark);
+                  aSR_Short[-m_iEnum],
+                  m_caText);
   else
-  if (m_iJobId == 0)
+  if (m_iEnum == 0)
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,inf,%s\n"_Stz,
                   m_iMark,
                   m_iTick,
@@ -177,7 +162,7 @@ void ActivityMark::vDump(File* pFile, bool bShortForm,
                   iTotalDelta,
                   
                   m_caNode,
-                  m_caMark);
+                  m_caText);
   else
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,%lld,%s\n"_Stz,
                   m_iMark,
@@ -186,8 +171,42 @@ void ActivityMark::vDump(File* pFile, bool bShortForm,
                   iTotalDelta,
                   
                   m_caNode,
-                  m_iJobId,
-                  m_caMark);
+                  m_iEnum,
+                  m_caText);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump to csv file                                                           */
+/*----------------------------------------------------------------------------*/
+void ActivityMark::vDumpShort(File* pFile)
+{
+  _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
+  
+  // inf
+  if (m_iEnumGroup == -1) {
+    pFile->vPrint("[%3lld %s inf] %s\n"_Stz,
+                  m_iMark,
+                  m_caNode,
+                  m_caText);
+    return;
+  }
+  
+  // job
+  if (m_iEnumGroup  == 0) {
+    pFile->vPrint("[%3lld %s %03lld] %s\n"_Stz,
+                  m_iMark,
+                  m_caNode,
+                  m_iEnum,
+                  m_caText);
+    return;
+  }
+  
+  // enum
+  pFile->vPrint("[%3lld %s %s] %s\n"_Stz,
+                m_iMark,
+                m_caNode,
+                EnumReg::szEnumText(m_iEnumGroup,m_iEnum),
+                m_caText);
 }
 
 /*----------------------------------------------------------------------------*/

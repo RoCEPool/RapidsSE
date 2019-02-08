@@ -108,6 +108,19 @@ Job::~Job(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* is this a foreign job?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Job::bIsForeign(i8 iJobId)
+{
+  i8 iOrigin = Job::iOriginatorNode(iJobId);
+  
+  bool bIsForeign =
+   iOrigin == gpAttachMap->m_pGrid->m_iThisNode ? false : true;
+  
+  return bIsForeign;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the originator node no of this job from the job id                     */
 /*----------------------------------------------------------------------------*/
 i8 Job::iOriginatorNode(i8 iJobId)

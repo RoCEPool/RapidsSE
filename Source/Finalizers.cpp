@@ -37,7 +37,7 @@ pFINALIZE *gpFinalize[]
   /* 29 */ &Finalize::vUndefined,         // CN_BPA
   /* 28 */ &Finalize::vUndefined,         // CN_BUFFERPOOL
   /*    */ &Finalize::vUndefined,         // CN_BYTERATE
-
+  
   /* 30 */ &Finalize::vUndefined,         // CN_CARRYOVER
   /* 31 */ &Finalize::vUndefined,         // CN_COLUMN
   /* 32 */ &Finalize::vUndefined,         // CN_COLUMNVEC
@@ -183,10 +183,10 @@ pFINALIZE *gpFinalize[]
   /* 73 */ &Finalize::vUndefined,         // CN_MEDIUMPERSISTENT
   /* 74 */ &Finalize::vUndefined,         // CN_MEDIUMTRANSIENT
   /*114 */ &Finalize::vUndefined,         // CN_MUTEX
-
+  
   /* 75 */ &Finalize::vUndefined,         // CN_NODE
   /*    */ &Finalize::vUndefined,         // CN_NOW
-
+  
   /* 77 */ &Finalize::vUndefined,         // CN_OP
   
   /* 78 */ &Finalize::vUndefined,         // CN_PARSER

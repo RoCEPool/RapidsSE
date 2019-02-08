@@ -46,6 +46,7 @@ namespace MiniHeaps
     char*  aAllotSpace(i8 nBytes);
     i8     iDecile(void);
     void   vDecItems(void);
+    void   vDumpItems(void);
     Item*  aFirstItem(void);
     i8     nFreeBytes(void); //-> nAvailBytes()
     void   vFreeItem(Item* aItem);

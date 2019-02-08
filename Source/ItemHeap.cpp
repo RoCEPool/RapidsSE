@@ -171,6 +171,7 @@ i8 ItemHeap::iDecile(void)
   
   return iDecile;
 }
+
 /*----------------------------------------------------------------------------*/
 /* decrement number of items in buffer                                        */
 /*----------------------------------------------------------------------------*/
@@ -179,6 +180,57 @@ void ItemHeap::vDecItems(void)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   m_nItems--;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump items in heap                                                         */
+/*----------------------------------------------------------------------------*/
+void ItemHeap::vDumpItems(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  i8 iItem = 0;
+
+  Item* aItem = aFirstItem();
+  if (m_i4aItemOffsets)
+    aItem = aAdd<Item*>(aItem,sizeof(i4) * C_MAX_ITEMS);
+
+  for (;
+       aItem;
+       aItem = aAdjacentItem(aItem)) {
+  
+    i8 iOffset = iToOffset(aItem);
+    eCN eClass = aItem->eClass();
+    switch (eClass) {
+    
+      case CN_ENTRY: {
+        Item* aEntry = _aItem(aItem);
+        vTrace("[%04lld:%06lld] CN_ENTRY: %lldB\n"_Stz,
+               iItem,iOffset,aEntry->nSizeData());
+        break;
+      }
+        
+      case CN_FREEENTRY: {
+        FreeItem* aFreeEntry = _aFreeItem(aItem);
+        vTrace("[%04lld:%06lld] CN_FREEENTRY: %lldB\n"_Stz,
+               iItem,iOffset,aFreeEntry->nSizeData());
+        break;
+      }
+        
+      case CN_WILDERNESS: {
+        Wilderness* aWilderness = _aWilderness(aItem);
+        vTrace("[%04lld:%06lld] CN_WILDERNESS: %lldB\n"_Stz,
+               iItem,iOffset,aWilderness->nSizeData());
+        break;
+      }
+    default:
+      vTrace("Unknown class in item heap\n"_Stz);
+      vTrace("Unknown class %lld\n"_Stz,eClass);
+    }
+    
+    iItem++;
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/

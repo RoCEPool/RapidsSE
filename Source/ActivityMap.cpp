@@ -165,7 +165,8 @@ void ActivityMap::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  gpActivityMap->vWriteMark(iJobId,aFormat,xArgs);
+  bool bForeign = Job::bIsForeign(iJobId);
+  gpActivityMap->vWriteMarkArg(C_JOB_GROUP,iJobId,bForeign,aFormat,xArgs);
   
   va_end(xArgs);
 #endif
@@ -186,7 +187,8 @@ void ActivityMap::vMarkApiEntry(i8 eApiCall, i8 iJobId)
   
   Stz* zApiName = aAC[eApiCall];
   
-  gpActivityMap->vWriteMark(iJobId,">Api %s"_Stz,zApiName);
+  bool bForeign = Job::bIsForeign(iJobId);
+  gpActivityMap->vWriteMarkVbl(C_JOB_GROUP,iJobId,bForeign,">Api %s"_Stz,zApiName);
 #endif
 }
 
@@ -205,7 +207,8 @@ void ActivityMap::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
   
   Stz* zApiName = aAC[eApiCall];
   
-  gpActivityMap->vWriteMark(iJobId,"!Api %s Error %lld"_Stz,zApiName,iError);
+  bool bForeign = Job::bIsForeign(iJobId);
+  gpActivityMap->vWriteMarkVbl(C_JOB_GROUP,iJobId,bForeign,"!Api %s Error %lld"_Stz,zApiName,iError);
 #endif
 }
 
@@ -224,7 +227,8 @@ void ActivityMap::vMarkApiExit(i8 eApiCall, i8 iJobId)
   
   Stz* zApiName = aAC[eApiCall];
   
-  gpActivityMap->vWriteMark(iJobId,"<Api %s"_Stz,zApiName);
+  bool bForeign = Job::bIsForeign(iJobId);
+  gpActivityMap->vWriteMarkVbl(C_JOB_GROUP,iJobId,bForeign,"<Api %s"_Stz,zApiName);
 #endif
 }
 
@@ -241,7 +245,7 @@ void ActivityMap::vMarkInfo(Stz* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  gpActivityMap->vWriteMark(0,aFormat,xArgs);
+  gpActivityMap->vWriteMarkArg(C_INF_GROUP,0,false,aFormat,xArgs);
   
   va_end(xArgs);
 #endif
@@ -282,14 +286,10 @@ void ActivityMap::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
                     );
   }
   
-  gpActivityMap->vWriteMark(pJob->iJobId(),
-                            szCombinedFormat,
-                            xArgs);
-  
-//  gpActivityMap->vWriteMark(pJob->iJobId(),
-//                            szFormat,
-//                            xArgs);
-
+  i8 iJobId = pJob->iJobId();
+  bool bForeign = Job::bIsForeign(iJobId);
+  gpActivityMap->vWriteMarkArg(C_JOB_GROUP,pJob->iJobId(),bForeign,
+                                szCombinedFormat,xArgs);
   
   va_end(xArgs);
 #endif
@@ -298,8 +298,7 @@ void ActivityMap::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* write an ActivityMark                                                      */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vMarkRes(eSR eSysRes,
-                           Stz* szFormat, ...)
+void ActivityMap::vMarkRes(eSR eSysRes,Stz* szFormat, ...)
 {
 
 #ifdef WITH_ACTIVITY_MAP
@@ -314,7 +313,7 @@ void ActivityMap::vMarkRes(eSR eSysRes,
   
   va_start(xArgs,szFormat);
   
-  gpActivityMap->vWriteMark(-eSysRes,szFormat,xArgs);
+  gpActivityMap->vWriteMarkArg(_ER_SR,eSysRes,false,szFormat,xArgs);
   
   va_end(xArgs);
 #endif
@@ -357,13 +356,15 @@ void ActivityMap::vMarkString(i8 iJobId, s48K& sString)
   s4K sLine;
   char* aCharAdr = sString.aChar();
 
+  bool bForeign = Job::bIsForeign(iJobId);
+
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   gpActivityMap->vGrabLock();
   
   while (StrLib::bEachLine(&aCharAdr,sLine.aChar())) {
     //vTrace("Line: ]]%s[[\n"_Stz,sLine.aChar());
     ActivityMark* pActivityMark = gpActivityMap->pNewMark_NL();
-    pActivityMark->vWrite(iJobId,sLine.aChar());
+    pActivityMark->vWrite(C_JOB_GROUP,iJobId,bForeign,sLine.aChar());
   }
   
   gpActivityMap->vDropLock();
@@ -657,21 +658,23 @@ i8 ActivityMap::iSize(void)
 /*----------------------------------------------------------------------------*/
 /* write an ActivityMark                                                      */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vWriteMark(i8 iJobId, Stz* aFormat, ...)
+void ActivityMap::vWriteMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
+                             Stz* aFormat, ...)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
   
   va_list xArgs;
   
   va_start(xArgs,aFormat);
-  vWriteMark(iJobId,aFormat,xArgs);
+  vWriteMarkArg(iEnumGroup,iEnum,iForeign,aFormat,xArgs);
   va_end(xArgs);
 }
 
 /*----------------------------------------------------------------------------*/
 /* write an ActivityMark                                                      */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs)
+void ActivityMap::vWriteMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
+                                 Stz* aFormat, va_list xArgs)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
   
@@ -686,7 +689,7 @@ void ActivityMap::vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs)
   if (! pActivityMark)
     return;
   
-  pActivityMark->vWrite(iJobId,caMark);
+  pActivityMark->vWrite(iEnumGroup,iEnum,iForeign,caMark);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -724,8 +727,6 @@ void ActivityMap::vWriteToFile(bool bShortForm)
                          iUpTimeSsec,
                          C_UNKNOWN);
 
-
-
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
   
@@ -736,7 +737,7 @@ void ActivityMap::vWriteToFile(bool bShortForm)
   
   ActivityMark* pActivityMark = &m_oaMark[i_MinMark % m_nMarks];
   pActivityMark->vDump(pActivityFile, bShortForm,
-                       0,nullptr,iTotalDelta);
+                       nullptr,iTotalDelta);
   
   for (i8 i_Mark = i_MinMark + 1; i_Mark <= i_MaxMark; i_Mark++) {
     
@@ -746,7 +747,6 @@ void ActivityMap::vWriteToFile(bool bShortForm)
       break;
     
     pActivityMark->vDump(pActivityFile, bShortForm,
-                         i_Mark,
                          &m_oaMark[(i_Mark - 1) % m_nMarks],
                          iTotalDelta);
   }

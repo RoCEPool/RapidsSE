@@ -18,7 +18,7 @@ namespace Transactions
     /* 8 */ TP_ENUMS
   };
   
-  static Stz* pTP[]
+  static Stz* aTP[]
   {
     /* 0 */ "NONE"_Stz,
     /* 1 */ "EXECUTING"_Stz,
