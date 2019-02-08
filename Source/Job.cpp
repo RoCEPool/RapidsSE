@@ -189,10 +189,15 @@ void Job::vMarkJob(void)
                       aCN[eClass()],
                       m_i_State,
                       m_i_Slot);
-  sJobMark.vSprintCat("  phase %s state %s list %s\n"_Stz,
+  sJobMark.vSprintCat("  phase %s state %s list %s"_Stz,
                       aJP[m_eJobPhase],
                       aJS[m_eJobState],
                       aJL[m_eJobList]);
+  if (m_bWasReceived)
+    sJobMark.vSprintCat(" (recv from %s)"_Stz,
+                        szNodeNm());
+
+  sJobMark.vConcat("\n"_Stz);
 
   ActivityMap::vMarkString(m_iJobId,sJobMark);
 }

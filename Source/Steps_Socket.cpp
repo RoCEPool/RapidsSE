@@ -323,12 +323,14 @@ void Step::vSocketRecvObject(MP_Task mpTask)
                             "Recv footer: %s"_Stz,
                             sFooter.aStz());
     }
-    if (pJob->m_bMark)
+    if (pJob->m_bMark) {
       ActivityMap::vMarkJob(pJob,
                          "Recv: %s %p socket %llx"_Stz,
                          aCN[eClass],
                          pJob,
                          pSocket);
+      pJob->vMarkJob();
+    }
                          
     mpTask->m_pDataStack->vPushPointer(pJob);
     mpTask->m_pDataStack->vPushBool(true);

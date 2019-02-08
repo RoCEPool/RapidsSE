@@ -961,11 +961,14 @@ void Step::vJobPostRecv(MP_Task mpTask)
   if (pJobClass->m_fpRecv)
     (*pJobClass->m_fpRecv)(pJob);
   
-  if (pJob->m_bMark)
+  if (pJob->m_bMark) {
     ActivityMap::vMarkJob(pJob,
                           "PostRecv: %s %p"_Stz,
                           aCN[pJob->eClass()],
-                         pJob);
+                          pJob);
+    pJob->vMarkJob();
+  }
+  
   EXIT();
 }
 
