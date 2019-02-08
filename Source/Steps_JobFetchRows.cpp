@@ -123,12 +123,13 @@ void Step::vJob_FetchRowsSpawnSub(MP_Task mpTask)
   
   pJob_SubFetch->vSeed(SS_SEED_RUN);
   
+  pJob_SubFetch->m_iParentId     = pJob_SubFetch->m_iJobId;
   pJob_SubFetch->m_pJobFetchRows = pJob_FetchRows;
-  pJob_SubFetch->m_sObjectName = pJob_FetchRows->m_sObjectName;
-  pJob_SubFetch->m_pPlanner = pPlanner;
-  pJob_SubFetch->m_iPhrase = iPhrase;
-  pJob_SubFetch->m_i_Slot = iSlot;
-  pJob_SubFetch->m_pBufferQueue = pJob_FetchRows->m_pBufferQueue;
+  pJob_SubFetch->m_sObjectName   = pJob_SubFetch->m_sObjectName;
+  pJob_SubFetch->m_pPlanner      = pPlanner;
+  pJob_SubFetch->m_iPhrase       = iPhrase;
+  pJob_SubFetch->m_i_Slot        = iSlot;
+  pJob_SubFetch->m_pBufferQueue  = pJob_FetchRows->m_pBufferQueue;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

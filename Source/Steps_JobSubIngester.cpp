@@ -41,6 +41,8 @@ void Step::vJob_SubIngesterSpawn(MP_Task mpTask)
   Job_SubIngester* pJob_SubIngester =
   static_cast<Job_SubIngester*>(pJobClass_SubIngester->pPreJob(pSession));
   
+  pJob_SubIngester->m_iParentId  = pJob_Ingest->m_iJobId;
+  
   pJob_SubIngester->vSeed(SS_SEED_RUN);
   
   pJob_SubIngester->vJob_Ingest(pJob_Ingest);
