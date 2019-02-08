@@ -112,6 +112,9 @@ Job::~Job(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool Job::bIsForeign(i8 iJobId)
 {
+  if (C_UNKNOWN == iJobId)
+    return false;
+  
   i8 iOrigin = Job::iOriginatorNode(iJobId);
   
   bool bIsForeign =

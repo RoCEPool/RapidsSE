@@ -11,7 +11,7 @@ namespace Measurement
   static const char* C_ACTIVITY_REGION = "/SE_ActivityMap";
   static const i8    C_JOB_GROUP = 0;
   static const i8    C_INF_GROUP = -1;
-
+  static const i8    C_MARGIN = 143;
   class ActivityMap : public Object
   {
   private:
