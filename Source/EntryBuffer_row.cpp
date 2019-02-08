@@ -44,6 +44,8 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  //vDumpItems();
+  
   RASSERT(aRowEntry->bValidItem());
   return aRowEntry;
 }
