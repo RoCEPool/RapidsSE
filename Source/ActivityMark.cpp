@@ -182,8 +182,13 @@ void ActivityMark::vDumpShort(File* pFile)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
   
+  if (m_iForeign) {
+    vDumpShortForeign(pFile);
+    return;
+  }
+  
   // inf
-  if (m_iEnumGroup == -1) {
+  if (C_INF_GROUP == m_iEnumGroup) {
     pFile->vPrint("[%3lld %s inf] %s\n"_Stz,
                   m_iMark,
                   m_caNode,
@@ -192,7 +197,7 @@ void ActivityMark::vDumpShort(File* pFile)
   }
   
   // job
-  if (m_iEnumGroup  == 0) {
+  if (C_JOB_GROUP == m_iEnumGroup) {
     pFile->vPrint("[%3lld %s %03lld] %s\n"_Stz,
                   m_iMark,
                   m_caNode,
@@ -207,6 +212,60 @@ void ActivityMark::vDumpShort(File* pFile)
                 m_caNode,
                 EnumReg::szEnumText(m_iEnumGroup,m_iEnum),
                 m_caText);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump to csv file                                                           */
+/*----------------------------------------------------------------------------*/
+void ActivityMark::vDumpShortForeign(File* pFile)
+{
+  _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
+  
+  char caText[C_MARGIN+1] = { '\0' };
+  char caRightAdj[C_MARGIN+1]  = { '\0' };
+  i8 iLen;
+  
+  // inf
+  if (C_INF_GROUP == m_iEnumGroup) {
+  
+    StrLib::vSprint(caText,"%s [inf %s %3lld]"_Stz,
+                    m_caText,
+                    m_caNode,
+                    m_iMark);
+    iLen = StrLib::iLength(caText);
+    StrLib::vPad(caRightAdj,C_MARGIN-iLen,' ');
+    StrLib::vConcat(caRightAdj,caText);
+    
+    pFile->vPrint("%s\n"_Stz,caRightAdj);
+    return;
+  }
+  
+  // job
+  if (C_JOB_GROUP == m_iEnumGroup) {
+    StrLib::vSprint(caText,"%s [%3lld %s %03lld]"_Stz,
+                    m_caText,
+                    m_iEnum,
+                    m_caNode,
+                    m_iMark);
+    iLen = StrLib::iLength(caText);
+    StrLib::vPad(caRightAdj,C_MARGIN-iLen,' ');
+    StrLib::vConcat(caRightAdj,caText);
+
+    pFile->vPrint("%s\n"_Stz,caRightAdj);
+    return;
+  }
+  
+  // enum
+  StrLib::vSprint(caText,"%s [%s %s %3lld]"_Stz,
+                  m_caText,
+                  EnumReg::szEnumText(m_iEnumGroup,m_iEnum),
+                  m_caNode,
+                  m_iMark);
+  iLen = StrLib::iLength(caText);
+  StrLib::vPad(caRightAdj,C_MARGIN-iLen,' ');
+  StrLib::vConcat(caRightAdj,caText);
+
+  pFile->vPrint("%s\n"_Stz,caRightAdj);
 }
 
 /*----------------------------------------------------------------------------*/

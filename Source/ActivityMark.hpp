@@ -40,6 +40,7 @@ namespace Measurement
                ActivityMark* pPrevMark, i8& iTotalDelta);
   
     void vDumpShort(File* pFile);
+    void vDumpShortForeign(File* pFile);
 
     Footer* aFooter(void);
   };

@@ -129,6 +129,7 @@ namespace Jobs
   {
   public:
     i8  m_iJobId;     // job id
+    i8  m_iParentId;  // job id of parent job which spawned this JK_CHILD job
     i8  m_i_State;    // which session state
     i8  m_i_Slot;     // slot this sub truncate truncates
     eJP m_eJobPhase;  // which phase the job is in
