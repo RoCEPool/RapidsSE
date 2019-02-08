@@ -2002,13 +2002,16 @@ bool EntryBuffer::bKeyBeforeBuffer(KeyWrk& xKeyTest)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   Item* aFirstEntry = this->aLeadEntry();
+  KeyData* aFirstKey = _aKeyData(aFirstEntry->aDataArea());
+
+  KeyData* aKeyTest = xKeyTest.aKey();
 
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   i8 nKeyCols = pIdxColVec->nItems();
   
   bool bIsJuxta =
-  //aKeyTest->bLessThan(aFirstKey,pIdxColVec);
-  KeyData::bLessThan(xKeyTest,aFirstEntry);
+  aKeyTest->bLessThan(aFirstKey,pIdxColVec);
+  //KeyData::bLessThan(xKeyTest,aFirstEntry);
   
   return bIsJuxta;
 }
