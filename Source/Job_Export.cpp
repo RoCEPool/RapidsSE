@@ -148,6 +148,8 @@ bool Job_Export::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
   
+  m_pTable->vMarkTable();
+  
   if (! m_oCsvFile.bOpenWrite(m_sFilePath)) {
     vTrace("Failed to open file: %s\n"_Stz,m_sFilePath.aStz());
     return false;

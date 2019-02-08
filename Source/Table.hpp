@@ -72,6 +72,7 @@ namespace MetaData
     void  vIsLoading(bool bIsLoading);
     bool  bIsLoading(void);
     bool  bIsValidIndexColumns(Jobs::Job_CreateIndex* pJob);
+    void  vMarkTable(void);
     TablePtn* pPartition(i8 iSlot);
     bool bPopulateIndex(i8 iIndexNo);
     void vRemoveIndex(Index* pIndex);

@@ -562,6 +562,40 @@ void Table::vIsLoading(bool bIsLoading)
 }
 
 /*----------------------------------------------------------------------------*/
+/* mark job to activity map                                                   */
+/*----------------------------------------------------------------------------*/
+void Table::vMarkTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+ 
+  s48K sTableMark;
+  
+  sTableMark.vSprintCat("Table %s\n"_Stz,
+                        m_sTableName.aStz());
+  
+  i8 nCols = m_pColumnVec->nItems();
+  
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    Column* pColumn = m_pColumnVec->pGet(i_Col);
+    sTableMark.vSprintCat("  Col %02lld %s %s(%lld,%lld) %s\n"_Stz,
+                          i_Col,
+                          pColumn->sColumnName().aStz(),
+                          
+                          aCT[pColumn->eColumnType()],
+                          pColumn->iColumnLength(),
+                          pColumn->iColumnScale(),
+                          
+                          pColumn->bIsNullable() ? "nullable" : "not-null",
+                          pColumn->bIsPartitionKey() ? "part-key" : ""
+                          );
+
+  }
+  
+  ActivityMap::vMarkString(-1,sTableMark);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get a partition                                                            */
 /*----------------------------------------------------------------------------*/
 TablePtn* Table::pPartition(i8 iSlot)
