@@ -407,6 +407,7 @@ void Job::vShow(s48K& s)
 void Job::vInit(void)
 {
   m_iJobId    = C_UNKNOWN;
+  m_iParentId = C_UNKNOWN;
   m_i_State   = C_UNKNOWN;
   m_i_Slot    = C_UNKNOWN;
   m_eJobPhase = JP_NONE;
