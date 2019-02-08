@@ -287,8 +287,8 @@ void ActivityMap::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
   }
   
   i8 iJobId = pJob->iJobId();
-  bool bForeign = Job::bIsForeign(iJobId);
-  gpActivityMap->vWriteMarkArg(C_JOB_GROUP,pJob->iJobId(),bForeign,
+  bool bForeign = pJob->m_bWasReceived;
+  gpActivityMap->vWriteMarkArg(C_JOB_GROUP,iJobId,bForeign,
                                 szCombinedFormat,xArgs);
   
   va_end(xArgs);
