@@ -30,6 +30,7 @@
 : test7 test::test7 ;
 : test8 test::test8 ;
 : test9 test::test9 ;
+: test10 test::test10 ;
 
 : llc test::test0 ;
 

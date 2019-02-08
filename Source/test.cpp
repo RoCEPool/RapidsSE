@@ -238,6 +238,32 @@ void vTest8(void)
 //  vTrace("Random     iPmc_GetLlcMisses %lld; iSum %lld\n"_Stz,iPmc_GetLlcMisses(),iSum);
 //}
 
+/*----------------------------------------------------------------------------*/
+/* test10                                                                      */
+/*----------------------------------------------------------------------------*/
+void vTest10(void)
+{
+  
+  i8 i1 = Random::iInteger(-999999,999999);
+  i8 i2 = Random::iInteger(-999999,999999);
+  
+  for (i8 i = 0; i < 10000000; i ++) {
+    //i8 i1 = Random::iInteger(-999999,999999);
+    //i8 i2 = Random::iInteger(-999999,999999);
+  
+    i8 iCmp = MemLib::iCompare(&i1, &i2, 8);
+    //i8 iCmp2 = MemLib::iCompare2(&i1, &i2, 8);
+  }
+  
+  
+//    if (iCmp > 0)
+//      vTrace("%lld > %lld\n"_Stz, i1, i2);
+//    else if (iCmp < 0)
+//      vTrace("%lld > %lld\n"_Stz, i2, i1);
+//    else
+//      vTrace("%lld == %lld\n"_Stz, i1, i2);
+  
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
