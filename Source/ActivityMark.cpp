@@ -210,7 +210,7 @@ void ActivityMark::vDumpShort(File* pFile)
   pFile->vPrint("[%3lld %s %s] %s\n"_Stz,
                 m_iMark,
                 m_caNode,
-                EnumReg::szEnumText(m_iEnumGroup,m_iEnum),
+                EnumGroup::szEnumText(m_iEnumGroup,m_iEnum),
                 m_caText);
 }
 
@@ -258,7 +258,7 @@ void ActivityMark::vDumpShortForeign(File* pFile)
   // enum
   StrLib::vSprint(caText,"%s [%s %s %3lld]"_Stz,
                   m_caText,
-                  EnumReg::szEnumText(m_iEnumGroup,m_iEnum),
+                  EnumGroup::szEnumText(m_iEnumGroup,m_iEnum),
                   m_caNode,
                   m_iMark);
   iLen = StrLib::iLength(caText);

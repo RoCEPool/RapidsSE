@@ -313,7 +313,7 @@ void ActivityMap::vMarkRes(eSR eSysRes,Stz* szFormat, ...)
   
   va_start(xArgs,szFormat);
   
-  gpActivityMap->vWriteMarkArg(_ER_SR,eSysRes,false,szFormat,xArgs);
+  gpActivityMap->vWriteMarkArg(_EG_SR,eSysRes,false,szFormat,xArgs);
   
   va_end(xArgs);
 #endif
