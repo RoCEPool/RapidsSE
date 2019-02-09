@@ -35,18 +35,18 @@ void ActionJournal::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ActionJournal::ActionJournal(void)
-: Object(CN_ACTIVITYMAP)
+: Object(CN_ACTIONJOURNAL)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIONJOURNAL,_FOOTER_);
   
   m_okLock.vInitLock(LK_ACTIVITY_MAP);
   
   m_i_Action = 0;
   m_nActions = C_ACTION_JOURNAL;
-    
-  _checkInitialised_(CN_ACTIVITYMAP);
   
-  _postcondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  _checkInitialised_(CN_ACTIONJOURNAL);
+  
+  _postcondition_(_MAGIC_,CN_ACTIONJOURNAL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,7 +54,7 @@ ActionJournal::ActionJournal(void)
 /*----------------------------------------------------------------------------*/
 ActionJournal::~ActionJournal(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIONJOURNAL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,7 +66,7 @@ ActionJournal::~ActionJournal(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Footer* ActionJournal::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP);
+  _precondition_(_MAGIC_,CN_ACTIONJOURNAL);
   
   return &m_xFooter;
 }
