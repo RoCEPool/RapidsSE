@@ -10,7 +10,7 @@ namespace Maps
   static const i8    C_ACTION_JOURNAL = C_1M * 10;
   static const char* C_ACTION_REGION  = "/SE_ActionJournal";
 
-  class ActionJournal : public Object
+  class ActionJournal : public Map
   {
   private:
     Lock m_okLock;

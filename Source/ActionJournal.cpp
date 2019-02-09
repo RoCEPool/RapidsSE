@@ -35,7 +35,7 @@ void ActionJournal::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ActionJournal::ActionJournal(void)
-: Object(CN_ACTIONJOURNAL)
+: Map(CN_ACTIONJOURNAL)
 {
   _precondition_(_MAGIC_,CN_ACTIONJOURNAL,_FOOTER_);
   
