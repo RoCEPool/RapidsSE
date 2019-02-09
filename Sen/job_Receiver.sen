@@ -46,6 +46,7 @@
   0 locals| pEntryBuffer |
   0 locals| pOtherNode |
   0 locals| pSocket |
+  0 locals| bRecvd |
 
   job::this locals| pJob_Receiver |
 
@@ -58,11 +59,15 @@
 
     assertStackDepthZero
 
-    pSocket socket.recvObject drop to pReceivedJob
+    pSocket socket.recvObject
 
-    pReceivedJob not if
-      ifAgain
+    not if
+      //ifAgain
+      "receiver exiting" .
+      exit
     then
+
+    to pReceivedJob
 
     pReceivedJob job.postRecv
 
@@ -83,6 +88,9 @@
 
   >>am <SEED_RUN>
 
+  task::this locals| pThisTask |
+  job::this  locals| pJob_Receiver |
+
   // initialise
   receiver_init
 
@@ -90,7 +98,11 @@
   receiver_loop
 
   // should never exit
-  hazard
+  //hazard
+
+  // null the job in the task and delete ended job
+  nullptr pThisTask task.job!
+  pJob_Receiver job.delete
 
   <DONE_RUN>
 ;
