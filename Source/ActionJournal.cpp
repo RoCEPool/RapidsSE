@@ -39,7 +39,7 @@ ActionJournal::ActionJournal(void)
 {
   _precondition_(_MAGIC_,CN_ACTIONJOURNAL,_FOOTER_);
   
-  m_okLock.vInitLock(LK_ACTIVITY_MAP);
+  m_okLock.vInitLock(LK_ACTION_JOURNAL);
   
   m_i_Action = 0;
   m_nActions = C_ACTION_JOURNAL;
