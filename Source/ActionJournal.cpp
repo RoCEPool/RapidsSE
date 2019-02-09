@@ -2,7 +2,7 @@
 /* ActionJournal.cpp - Activity Map                                           */
 /*============================================================================*/
 
-#include "Measurement.h"
+#include "Maps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
