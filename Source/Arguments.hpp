@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Commands      { class Command; class Parser; }
+namespace Commands      { class Command; class Parser; class Tokeniser; }
 namespace StorageEngine { class Engine; }
 
 namespace StorageEngine
@@ -13,6 +13,7 @@ namespace StorageEngine
     friend class      Commands::Command;
     friend class StorageEngine::Engine;
     friend class      Commands::Parser;
+  friend class        Commands::Tokeniser;
 
   private:
   

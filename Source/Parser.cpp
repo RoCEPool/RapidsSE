@@ -847,18 +847,24 @@ void Parser::vReadLineStdin(void)
   bool bLowMem = gpBufferPool->bLowMemory();
   
   if ( ! gxArguments.m_bSethScript ) {
-    vInfo("%s%s%s%s %s> "_Stz,
-          m_sPrompt.aChar(),
-          gpAttachMap->m_bBootError  ? " *BOOTERROR* " : "",
-          bLowMem                    ? " *LOWMEM* "    : "",
-#ifdef WITH_ENTRY_EXIT
-          gpAttachMap->m_pStepTiming ? " *STEPTIMING*" : "",
-#else
-          "",
-#endif
-          bHasStarted ? "has" : "not"
+    
+    if (! gxArguments.m_bDeveloper) {
+      vInfo("se> "_Stz);
+    }
+    else {
+      vInfo("%s%s%s%s %s> "_Stz,
+            m_sPrompt.aChar(),
+            gpAttachMap->m_bBootError  ? " *BOOTERROR* " : "",
+            bLowMem                    ? " *LOWMEM* "    : "",
+  #ifdef WITH_ENTRY_EXIT
+            gpAttachMap->m_pStepTiming ? " *STEPTIMING*" : "",
+  #else
+            "",
+  #endif
+            bHasStarted ? "has" : "not"
 
-          );
+            );
+    }
     fflush(stdin);
   }
   

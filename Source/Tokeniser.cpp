@@ -6,6 +6,7 @@
 #include "StorageEngine.h"
 
 extern AttachMap*  gpAttachMap;
+extern Arguments   gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -55,41 +56,47 @@ Tokeniser::Tokeniser(void)
   m_eToken  = TN_NONE;
   
   
-  i8 nNodes = gpAttachMap->m_pGrid->nNodes();
-  Node* pNode = gpAttachMap->m_pGrid->pThisNode();
-  i8  i_Node = pNode->iNodeNo();
-  //bool bHasStarted = gpAttachMap->m_pGrid->m_bHasStarted;
+  if (! gxArguments.m_bDeveloper) {
+    m_sPrompt.vSprint("se>"_Stz);
+  }
+  else {
   
-  m_sPrompt.vSprint("[N%lld/%lld %s %lld%s%s%s] se %s%c"_Stz,
-                    
-                    i_Node,
-                    nNodes,
-                    pNode->aNodeName(),
-                    Process::iGetPid(),
-#ifdef WITH_ACTIVITY_MAP
-                    gpAttachMap->Arg.m_bActivityMap? " AM+" : "AM",
-#else
-                    "",
-#endif
-#ifdef WITH_ENTRY_EXIT
-                    " EE+",
-#else
-                    "",
-#endif
-#ifdef WITH_TRACE_API
-                    " TA+",
-#else
-                    "",
-#endif
+    i8 nNodes = gpAttachMap->m_pGrid->nNodes();
+    Node* pNode = gpAttachMap->m_pGrid->pThisNode();
+    i8  i_Node = pNode->iNodeNo();
+    //bool bHasStarted = gpAttachMap->m_pGrid->m_bHasStarted;
+    
+    m_sPrompt.vSprint("[N%lld/%lld %s %lld%s%s%s] se %s%c"_Stz,
+                      
+                      i_Node,
+                      nNodes,
+                      pNode->aNodeName(),
+                      Process::iGetPid(),
+  #ifdef WITH_ACTIVITY_MAP
+                      gpAttachMap->Arg.m_bActivityMap? " AM+" : "AM",
+  #else
+                      "",
+  #endif
+  #ifdef WITH_ENTRY_EXIT
+                      " EE+",
+  #else
+                      "",
+  #endif
+  #ifdef WITH_TRACE_API
+                      " TA+",
+  #else
+                      "",
+  #endif
 
-                    RAPIDSSE_VERSION_STRING,
-#ifdef WITH_DEBUG_VERSION
-                    'd'
-#else
-                    'r'
-#endif
-                    );
-
+                      RAPIDSSE_VERSION_STRING,
+  #ifdef WITH_DEBUG_VERSION
+                      'd'
+  #else
+                      'r'
+  #endif
+                      );
+  }
+  
   m_sContinue = "  > "_Stz;
 
   _checkInitialised_(CN_TOKENISER);

@@ -59,7 +59,7 @@ Arguments::Arguments(void)
 
   // options
   m_bConfig      = true;
-  m_bDeveloper   = true;
+  m_bDeveloper   = false;
   m_bDontFree    = false;
   m_nEntries     = 0;
   m_bFreeRB      = false;
@@ -729,6 +729,9 @@ void Arguments::vPrint(void)
 void Arguments::vPrintStartupInfo(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  
+  if (! m_bDeveloper)
+    return;
   
   vTrace("Args:\n"_Stz);
   
