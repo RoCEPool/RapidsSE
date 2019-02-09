@@ -3,9 +3,10 @@
 /*============================================================================*/
 #pragma once
 
-namespace Measurement
+namespace Maps
 {
   static const i8 C_MARK_TEXT = 128;
+  
   class ActivityMark : public Object
   {
   friend class ActivityMap;

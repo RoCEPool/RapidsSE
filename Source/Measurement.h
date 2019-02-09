@@ -17,8 +17,6 @@ using namespace Measurement;
 
 #include "Timer.hpp"
 
-#include "ActivityMark.hpp"
-#include "ActivityMap.hpp"
 #include "ByteRate.hpp"
 #include "LockTracker.hpp"
 #include "Now.hpp"

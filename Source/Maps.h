@@ -17,6 +17,8 @@ using namespace Maps;
 
 #include "Action.hpp"
 #include "ActionJournal.hpp"
+#include "ActivityMark.hpp"
+#include "ActivityMap.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

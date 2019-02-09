@@ -14,7 +14,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ActivityMark* Measurement::_pActivityMark(void* aAddr)
+ActivityMark* Maps::_pActivityMark(void* aAddr)
 {
   ActivityMark* pActivityMark = reinterpret_cast<ActivityMark*>(aAddr);
   
