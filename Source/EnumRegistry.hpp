@@ -18,6 +18,7 @@ enum e_ER // enum registry
   
   _ER_AC,
   _ER_AK,
+  _ER_AN,
   _ER_AT,
   _ER_CN,
   _ER_CT,

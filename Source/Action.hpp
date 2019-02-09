@@ -5,6 +5,21 @@
 
 namespace Measurement
 {
+  enum eAN // action numbers
+  {
+  /*  0 */ AN_NONE=0,
+  
+  /*    */ AN_ENUMS,
+  };
+  
+  static Stz* aAN[]
+  {
+  /*  0 */ "NONE"_Stz,
+
+  /*    */ "ENUMS"_Stz,
+  };
+  
+
   class Action : public Object
   {
   private:

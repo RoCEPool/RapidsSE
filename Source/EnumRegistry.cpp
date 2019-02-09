@@ -7,12 +7,13 @@
 /*----------------------------------------------------------------------------*/
 /* dump enums                                                                 */
 /*----------------------------------------------------------------------------*/
-Stz* EnumReg::szEnumText(i8 iEnumCategory, i8 i_Enum)
+Stz* EnumReg::szEnumText(i8 iEnumGroup, i8 i_Enum)
 {
-  switch (iEnumCategory) {
+  switch (iEnumGroup) {
       
     case _ER_AC: return aAC[i_Enum];
     case _ER_AK: return aAK[i_Enum];
+    case _ER_AN: return aAN[i_Enum];
     case _ER_AT: return aAT[i_Enum];
     case _ER_CN: return aCN[i_Enum];
     case _ER_CT: return aCT[i_Enum];
@@ -47,7 +48,7 @@ Stz* EnumReg::szEnumText(i8 iEnumCategory, i8 i_Enum)
     case _ER_WT: return aWT[i_Enum];
       
     default:
-      vTrace("Unknown enum category %lld\n"_Stz, iEnumCategory);
+      vTrace("Unknown enum group %lld\n"_Stz, iEnumGroup);
       return nullptr;
   }
 }
