@@ -97,7 +97,7 @@ Tokeniser::Tokeniser(void)
                       );
   }
   
-  m_sContinue = "  > "_Stz;
+  m_sContinue = "  >"_Stz;
 
   _checkInitialised_(CN_TOKENISER);
   

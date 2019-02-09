@@ -849,7 +849,7 @@ void Parser::vReadLineStdin(void)
   if ( ! gxArguments.m_bSethScript ) {
     
     if (! gxArguments.m_bDeveloper) {
-      vInfo("se> "_Stz);
+      vInfo("%s "_Stz,m_sPrompt.aChar());
     }
     else {
       vInfo("%s%s%s%s %s> "_Stz,
