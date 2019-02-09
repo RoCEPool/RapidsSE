@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#define RAPIDSSE_VERSION_STRING "4.0.3"
+#define RAPIDSSE_VERSION_STRING "4.0.4"
 
 #define WITH_ACTIVITY_MAP        // code for ActivityMap compiled in
 #define WITH_ENTRY_EXIT          // code for ENTRY() & EXIT() macros compiled in
