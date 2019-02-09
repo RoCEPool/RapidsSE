@@ -30,7 +30,7 @@ enum eCN : u2 // Class Number
   
   /*  12 0x0C       80B Heap:M */ CN_ACCESSPATH,
   /*                           */ CN_ACTION,
-  /*                           */ CN_ACTIONJOURNAL,
+  /*                           */ CN_ACTIONSEQUENCE,
   /*  13 0x0D      200B Heap:I */ CN_ACTIVITYMAP,
   /*  14 0x0E      200B Heap:I */ CN_ACTIVITYMARK,
   /*  15 0x0F   213152B Heap:L */ CN_APISTATE,
@@ -280,7 +280,7 @@ static Stz* aCN[]
   
   /*  12 0x0C */ "ACCESSPATH"_Stz,          // CN_ACCESSPATH
   /*          */ "ACTION"_Stz,              // CN_ACTION
-  /*          */ "ACTIONJOURNAL"_Stz,       // CN_ACTIONJOURNAL
+  /*          */ "ACTIONJSEQUENCE"_Stz,     // CN_ACTIONSEQUENCE
   /*  13 0x0D */ "ACTIVITYMAP"_Stz,         // CN_ACTIVITYMAP
   /*  14 0x0E */ "ACTIVITYMARK"_Stz,        // CN_ACTIVITYMARK
   /*  15 0x0F */ "APISTATE"_Stz,            // CN_APISTATE

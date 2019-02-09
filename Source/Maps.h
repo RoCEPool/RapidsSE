@@ -18,7 +18,7 @@ using namespace Maps;
 #include "Map.hpp"
 
 #include "Action.hpp"
-#include "ActionJournal.hpp"
+#include "ActionSequence.hpp"
 #include "ActivityMark.hpp"
 #include "ActivityMap.hpp"
 
