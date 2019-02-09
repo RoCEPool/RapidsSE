@@ -18,7 +18,7 @@ Now::Now(void)
   
   m_oTime.vAppendLocal(&z);
 
-  _checkInitialised_(CN_SINCE);
+  _checkInitialised_(CN_NOW);
   
   _postcondition_(_MAGIC_,CN_NOW,_FOOTER_);
 }
