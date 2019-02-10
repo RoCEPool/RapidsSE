@@ -9,10 +9,15 @@ namespace Maps
   class Map : public Object
   {
   public:
+    void* operator new(size_t, Map* pMap);
+    void  operator delete(void*);
   
-  public:
     Map(eCN eClassNo);
     ~Map(void) noexcept(false);
+  
+  protected:
+    static void* aMapCreate(s32 sRegionNm, i8 nRegionSz);
+    static void* aMapExisting(s32 sRegionNm, i8 nRegionSz);
   };
 }
 
