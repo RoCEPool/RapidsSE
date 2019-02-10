@@ -85,6 +85,7 @@ Arguments::Arguments(void)
   m_bVerbose     = false;
   m_bWelcome     = true;
   m_bActivityMap = false;
+  m_bActionSequence = false;
 
   _checkInitialised_(CN_ARGUMENTS);
   
@@ -169,6 +170,7 @@ void Arguments::vAddConstants(void)
   vAddConstant("args.verbose"_Stz,           m_bVerbose);
   vAddConstant("args.welcome"_Stz,           m_bWelcome);
   vAddConstant("args.activityMap"_Stz,       m_bActivityMap);
+  vAddConstant("args.actionSequence"_Stz,    m_bActionSequence);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -631,6 +633,25 @@ bool Arguments::bParse(int argc, Stz* argv[])
 
     if (argv[i_Arg]->bSame("--noActivityMap"_Stz)) {
       m_bActivityMap = false;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+#ifdef WITH_ACTION_SEQUENCE
+    if (argv[i_Arg]->bSame("--actionSequence"_Stz)) {
+      m_bActionSequence = true;
+      continue;
+    }
+#else
+    if (argv[i_Arg]->bSame("--actionSequence"_Stz)) {
+      vWarn("arg --actionSequence ignored; not compiled WITH_ACTION_SEQUENCE"_Stz);
+      continue;
+    }
+#endif
+    
+    if (argv[i_Arg]->bSame("--noActionSequence"_Stz)) {
+      m_bActionSequence = false;
       continue;
     }
     

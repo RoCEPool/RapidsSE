@@ -176,7 +176,9 @@ void AttachMap::vPrintAttachMap(void)
 /*----------------------------------------------------------------------------*/
 /* record all the needed arguments                                            */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vRecordArguments(bool bActivityMap,
+void AttachMap::vRecordArguments(bool bActionSequence,
+                                 bool bActivityMap,
+                                 bool bDeveloper,
                                  i8   nDummyLoop,
                                  i8   nDummySleep,
                                  i8   nDummyThreads,
@@ -200,19 +202,21 @@ void AttachMap::vRecordArguments(bool bActivityMap,
   m_oTime.vSetUTC(&m_oSince);
   m_oTime.vUTC(m_sUTC);
   
-  Arg.m_bActivityMap  = bActivityMap;
-  Arg.m_nDummyLoop    = nDummyLoop;
-  Arg.m_nDummySleep   = nDummySleep;
-  Arg.m_nDummyThreads = nDummyThreads;
-  Arg.m_iJumboSize    = iJumboSize;
-  Arg.m_nNodes        = nNodes;
-  Arg.m_sRegionName   = aRegionName;
-  Arg.m_iRegionSize   = iRegionSize;
-  Arg.m_nSlotsPerNode = nSlotsPerNode;
-  Arg.m_nSubIngesters = nSubIngesters;
-  Arg.m_nSubInserters = 0;
-  Arg.m_nSubLoaders   = nSubLoaders;
-  Arg.m_nThreads      = nThreads;
+  Arg.m_bActionSequence  = bActionSequence;
+  Arg.m_bActivityMap     = bActivityMap;
+  Arg.m_bDeveloper       = bDeveloper;
+  Arg.m_nDummyLoop       = nDummyLoop;
+  Arg.m_nDummySleep      = nDummySleep;
+  Arg.m_nDummyThreads    = nDummyThreads;
+  Arg.m_iJumboSize       = iJumboSize;
+  Arg.m_nNodes           = nNodes;
+  Arg.m_sRegionName      = aRegionName;
+  Arg.m_iRegionSize      = iRegionSize;
+  Arg.m_nSlotsPerNode    = nSlotsPerNode;
+  Arg.m_nSubIngesters    = nSubIngesters;
+  Arg.m_nSubInserters    = 0;
+  Arg.m_nSubLoaders      = nSubLoaders;
+  Arg.m_nThreads         = nThreads;
 
   m_pBufferPool = gpBufferPool;
   

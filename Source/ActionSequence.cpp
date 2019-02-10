@@ -68,7 +68,7 @@ ActionSequence::~ActionSequence(void) noexcept(false)
 void ActionSequence::vOpenBySE(bool bStarting)
 {
 #ifdef WITH_ACTION_SEQUENCE
-  if (! gpAttachMap->Arg.m_bActivityMap)
+  if (! gpAttachMap->Arg.m_bActionSequence)
     return;
   
   if (gpActionSequence)

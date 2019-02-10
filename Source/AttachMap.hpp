@@ -14,7 +14,9 @@ namespace StorageEngine
     s32   m_sUTC;
   
     struct {
+      bool m_bActionSequence;
       bool m_bActivityMap;
+      bool m_bDeveloper;
       i8   m_nDummyLoop;    // loop count for dummy threads
       i8   m_nDummySleep;   // sleep period for dummy threads
       i8   m_nDummyThreads; // number of dummy threads
@@ -91,7 +93,9 @@ namespace StorageEngine
     void vGetGlobals(void);
     void vPrintAttachMap(void);
     void vRecordArguments(
+                          bool bActionSequence,
                           bool bActivityMap,
+                          bool bDeveloper,
                           i8   nDummyLoop,
                           i8   nDummySleep,
                           i8   nDummyThreads,

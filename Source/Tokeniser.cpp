@@ -66,14 +66,19 @@ Tokeniser::Tokeniser(void)
     i8  i_Node = pNode->iNodeNo();
     //bool bHasStarted = gpAttachMap->m_pGrid->m_bHasStarted;
     
-    m_sPrompt.vSprint("[N%lld/%lld %s %lld%s%s%s] se %s%c"_Stz,
+    m_sPrompt.vSprint("[N%lld/%lld %s %lld%s%s%s%s] se %s%c"_Stz,
                       
                       i_Node,
                       nNodes,
                       pNode->aNodeName(),
                       Process::iGetPid(),
+#ifdef WITH_ACTION_SEQUENCE
+                      gpAttachMap->Arg.m_bActionSequence? " AS+" : " AS",
+#else
+                      "",
+#endif
   #ifdef WITH_ACTIVITY_MAP
-                      gpAttachMap->Arg.m_bActivityMap? " AM+" : "AM",
+                      gpAttachMap->Arg.m_bActivityMap? " AM+" : " AM",
   #else
                       "",
   #endif
