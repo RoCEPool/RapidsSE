@@ -30,9 +30,9 @@ void Map::operator delete(void* aAddr)
 Map::Map(eCN eClassNo)
 : Object(eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _precondition_(_MAGIC_,eClassNo);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _postcondition_(_MAGIC_,eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,7 +40,7 @@ Map::Map(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 Map::~Map(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
 }
 
 /*----------------------------------------------------------------------------*/

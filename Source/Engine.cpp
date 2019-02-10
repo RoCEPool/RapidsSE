@@ -467,6 +467,18 @@ void Engine::vMonitorProfile(s48K& sPortrait)
 }
 
 /*----------------------------------------------------------------------------*/
+/* create or open the ActionSequence map                                      */
+/*----------------------------------------------------------------------------*/
+void Engine::vOpenActionSequence(void)
+{
+  bool bStarting = false;
+  if (0 == gpAttachMap->m_pGrid->m_iThisNode && gxArguments.m_bStart)
+    bStarting = true;
+  
+  ActionSequence::vOpenBySE(bStarting);
+}
+
+/*----------------------------------------------------------------------------*/
 /* create or open the ActivityMap                                             */
 /*----------------------------------------------------------------------------*/
 void Engine::vOpenActivityMap(void)
@@ -690,6 +702,7 @@ void Engine::vRunCmdLine(void)
     
     else if (gxArguments.m_bPrompt) {
       vOpenActivityMap();
+      vOpenActionSequence();
       vCallPrompt();
     }
     else if (gxArguments.m_bStatus)  vPrintStatus();
@@ -845,7 +858,8 @@ void Engine::vStartSystem(void)
   //----------------------------------------------------------------------------
 
   vOpenActivityMap();
-  
+  vOpenActionSequence();
+
   Step::vAddSteps();
   
   gxArguments.vAddConstants();
