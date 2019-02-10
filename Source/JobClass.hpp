@@ -44,13 +44,14 @@ namespace Jobs
       bool m_bSeedsSpawned[SS_ENUMS]; // which seeds have been spawned
   
     public:
-      Job* pNewJob(Job* pJob);
+      eEC  eCheckJob(Interface::Session* pSession);
       void vDeleteJob(Interface::Session* pSession, Job* pJob);
+      Job* pNewJob(Job* pJob);
       void vPostJob(Interface::Session* pSession, Job* pJob);
       Job* pPreJob(Interface::Session* pSession);
+      void vRecvJob(Job* pJob);
       Stz* sSeed(eSS eSeed);
       void vSendJob(Job* pJob);
-      void vRecvJob(Job* pJob);
       void vShowJob(Job* pJob);
   
       void vJobCat(void);

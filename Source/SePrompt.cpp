@@ -133,6 +133,9 @@ void SePrompt::vPromptLoop(void)
       continue;
     }
 
+    if (! bPassesCheck())
+      continue;
+    
     vPreJob();
     
     if (m_pJob->m_bHasError) {
@@ -518,6 +521,23 @@ bool SePrompt::bNoWait(void)
   if (! m_bNoWait)
     return false;
   
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* passes the pre-condition check function?                                   */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bPassesCheck(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  eEC eErrorCode = m_pJobClass->eCheckJob(m_pSession);
+  
+  if (EC_NONE != eErrorCode) {
+    vTrace("Error: %s\n"_Stz,aEC[eErrorCode]);
+    return false;
+  }
+
   return true;
 }
 

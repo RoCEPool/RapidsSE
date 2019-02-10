@@ -72,6 +72,7 @@ namespace Prompt
     bool bMarkJob(eCN eClass);
     void vMarkJob(eCN eClass, bool bMarkJob);
     bool bNoWait(void);
+    bool bPassesCheck(void);
     void vPostJob(void);
     void vPreJob(void);
     void vReportTime(void);

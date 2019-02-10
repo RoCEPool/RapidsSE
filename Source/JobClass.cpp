@@ -28,6 +28,20 @@ JobClass* Jobs::_pJobClass(void* aAddr)
   return pJobClass;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* post-receive fucntion                                                      */
+/*----------------------------------------------------------------------------*/
+eEC JobClass::eCheckJob(Interface::Session *pSession)
+{
+  if (! m_fpCheck)
+    return EC_NONE;
+  
+  eEC eErrorCode = (*m_fpCheck)(pSession);
+  
+  return eErrorCode;
+}
+
 /*----------------------------------------------------------------------------*/
 /* create a new job by running the new-function                               */
 /*----------------------------------------------------------------------------*/
