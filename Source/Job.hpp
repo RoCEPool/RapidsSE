@@ -195,6 +195,7 @@ namespace Jobs
   bool _bIsValidJob(eCN eClass);
 
   ////////////////////////////////////////////////////////////////////////////////
+  eEC  eJob_checkCluster(Job* pJob);
   void vJob_recv(Job* pJob);
   void vJob_send(Job* pJob);
 }

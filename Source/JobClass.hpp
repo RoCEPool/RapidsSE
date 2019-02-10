@@ -27,6 +27,7 @@ namespace Jobs
       bool m_bBuffer;    // buffer attached?
       eJT  m_eTrace;     // job trace?
   
+      //eEC  (*m_fpCheck)(Interface::Session* pSession);
       Job* (*m_fpPre)(Interface::Session* pSession);
       void (*m_fpPost)(Interface::Session* pSession, Job* pJob);
       Job* (*m_fpNew)(Job* pArg);
