@@ -5,6 +5,7 @@
 
 #define RAPIDSSE_VERSION_STRING "4.0.4"
 
+#define WITH_ACTION_SEQUENCE     // code for ActionSequence compiled in
 #define WITH_ACTIVITY_MAP        // code for ActivityMap compiled in
 #define WITH_ENTRY_EXIT          // code for ENTRY() & EXIT() macros compiled in
 #define WITH_TRACE_API           // code for tracing api's compiled in

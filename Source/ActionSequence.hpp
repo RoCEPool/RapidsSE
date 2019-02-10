@@ -27,6 +27,9 @@ namespace Maps
     ActionSequence(void);
     ~ActionSequence(void) noexcept(false);
 
+    static void vOpenByApi(void);
+    static void vOpenBySE(bool bStarting);
+
   private:
     Footer* aFooter(void);
   };

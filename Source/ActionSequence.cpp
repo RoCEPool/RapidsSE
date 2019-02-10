@@ -57,6 +57,53 @@ ActionSequence::~ActionSequence(void) noexcept(false)
   _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create or open ActivityMap (called by SE)                                  */
+/*----------------------------------------------------------------------------*/
+void ActionSequence::vOpenBySE(bool bStarting)
+{
+#ifdef WITH_ACTION_SEQUENCE
+  if (! gpAttachMap->Arg.m_bActivityMap)
+    return;
+  
+  if (gpActionSequence)
+    vFatal("ActivityMap::vOpenBySE() -- activity map already opened\n"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  s32 sMapNm("/SE_ActionSequence"_Stz);
+  i8 nMapSz = sizeof(ActionSequence);
+  
+  ActionSequence* pActionSequence = nullptr;
+  
+  if (bStarting) {
+    pActionSequence = (ActionSequence*)Map::aMapCreate(sMapNm,nMapSz);
+    if (gpAttachMap->m_bVerbose)
+      vTrace("ActionSequence: created new map %s %lldB\n"_Stz,
+             sMapNm.aStz(),
+             nMapSz);
+    gpActionSequence = new(pActionSequence) ActionSequence;
+    
+  }
+  else {
+    pActionSequence = (ActionSequence*)Map::aMapExisting(sMapNm,nMapSz);
+    if (gpAttachMap->m_bVerbose)
+      vTrace("ActionSequence: attached to existing map %s %lldB\n"_Stz,
+             sMapNm.aStz(),
+             nMapSz);
+
+    gpActionSequence = pActionSequence;
+  }
+  
+#endif
+}
+
+
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
