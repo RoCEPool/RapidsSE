@@ -106,6 +106,8 @@ void SePrompt::vPromptLoop(void)
   // we need to set the thread key to non-zero
   Pthread::vTlsSet(giTLS_ThreadKey,(void*)-1);
   
+  vVerifyJobSeeds();
+  
   while (bContinue()) {
     
     vReportTime();
@@ -671,6 +673,16 @@ void SePrompt::vUnknownCommand(void)
   
   vTrace("error: Unknown command '%s'\n"_Stz,
          pTkn->aText());
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the words for all job seeds are known                               */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vVerifyJobSeeds(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  JobClass::vVerifySeeds();
 }
 
 /*----------------------------------------------------------------------------*/

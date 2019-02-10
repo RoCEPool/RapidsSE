@@ -81,6 +81,7 @@ namespace Prompt
     void vSpawnJob(void);
     TokenVec* pTknVec(void);
     void vUnknownCommand(void);
+    void vVerifyJobSeeds(void);
 
   private:
 

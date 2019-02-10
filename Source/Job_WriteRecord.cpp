@@ -15,9 +15,9 @@ JobClass xJobClass_WriteRecord =
   "write record"_Stz,     // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word
-  "WriteRecord_run"_Stz,  // the _run task seed
+  nullptr,                // the _run task seed
   nullptr,                // the _req task seed
-  "WriteRecord_kid"_Stz,  // the _rcv task seed
+  nullptr,                // the _rcv task seed
   nullptr,                // the _exe task seed
   nullptr,                // the _end task seed
   nullptr,                // the _can task seed

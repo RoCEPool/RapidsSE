@@ -16,12 +16,14 @@ namespace Jobs
       Stz* m_aComment;   // comment about the job
       Stz* m_aCommand1;  // first word of prompt command
       Stz* m_aCommand2;  // optional second word of prompt command
+  
       Stz* m_aSeedRun;   // the _run task seed
       Stz* m_aSeedReq;   // the _req task seed
       Stz* m_aSeedRcv;   // the _rcv task seed
       Stz* m_aSeedExe;   // the _exe task seed
       Stz* m_aSeedEnd;   // the _end task seed
       Stz* m_aSeedCan;   // the _can task seed
+  
       bool m_bDetached;  // is this job detached?
       bool m_bResources; // check resources?
       bool m_bBuffer;    // buffer attached?
@@ -64,6 +66,7 @@ namespace Jobs
       static JobClass* pFind(eCN eClass);
       static JobClass* pFind(Stz* aCommand1, Stz* aCommand2);
       static void vTraceJob(eCN eClass);
+      static void vVerifySeeds(void);
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
