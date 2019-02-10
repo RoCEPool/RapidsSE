@@ -615,9 +615,12 @@ void Task::vSeedJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Stz* sSeed = m_pJob->sJobSeed();
+  Stz* szSeed = m_pJob->sJobSeed();
   
-  Word* pWord = gpAttachMap->m_oRootDic.pFindWord(sSeed);
+  Word* pWord = gpAttachMap->m_oRootDic.pFindWord(szSeed);
+  
+  if (! pWord)
+    vFatal("Unable to find seed word: %s\n"_Stz,szSeed);
   
   FIP.m_aCell = pWord->aFirstCell();
 }
