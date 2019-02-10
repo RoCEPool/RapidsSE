@@ -120,6 +120,7 @@ void JobClass::vJobCat(void)
 {
   s32 sFunctions(""_Stz);
   
+  sFunctions.vConcat(m_fpCheck  ? "c"_Stz : " "_Stz);
   sFunctions.vConcat(m_fpPre    ? "p"_Stz : " "_Stz);
   sFunctions.vConcat(m_fpPost   ? "P"_Stz : " "_Stz);
   sFunctions.vConcat(m_fpNew    ? "n"_Stz : " "_Stz);

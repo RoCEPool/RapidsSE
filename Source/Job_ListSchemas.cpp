@@ -28,7 +28,7 @@ JobClass xJobClass_ListSchemas =
   false,                  // buffer attached?
   JT_NONE,                // job trace
   
-  eJob_checkCluster,      // prompt check function
+  nullptr,                // prompt check function
   pJob_ListSchemas_pre,   // prompt pre-process function
   vJob_ListSchemas_post,  // prompt post-process function
   nullptr,                // job new function
