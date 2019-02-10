@@ -451,7 +451,7 @@ eEC Jobs::eJob_checkCluster(Interface::Session* pSession)
   if (gpAttachMap->m_pGrid->m_bHasStarted)
     return EC_NONE;
   else
-    return EC_CLUSTER_NOT_STARTED;
+    return EC_CLUSTER_NOT_CONNECTED;
 }
 
 /*----------------------------------------------------------------------------*/

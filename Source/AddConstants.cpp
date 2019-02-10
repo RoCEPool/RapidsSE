@@ -338,7 +338,7 @@ void Axioms::vAddConstants(void)
   /*  1 */ vAddConstant("EC_ASSERT"_Stz,             EC_ASSERT);
   
   /*    */ vAddConstant("EC_CATALOG_EXISTS"_Stz,     EC_CATALOG_EXISTS);
-  /*  4 */ vAddConstant("EC_CLUSTER_NOT_STARTED"_Stz,EC_CLUSTER_NOT_STARTED);
+  /*  4 */ vAddConstant("EC_CLUSTER_NOT_CONNECTED"_Stz,EC_CLUSTER_NOT_CONNECTED);
   /*  5 */ vAddConstant("EC_CLUSTER_PARTITIONS_MISMATCH"_Stz,EC_CLUSTER_PARTITIONS_MISMATCH);
   /*  6 */ vAddConstant("EC_CLUSTER_SIZE_MISMATCH"_Stz,      EC_CLUSTER_SIZE_MISMATCH);
   /*  7 */ vAddConstant("EC_DUPLICATE_COLUMN"_Stz,   EC_DUPLICATE_COLUMN);

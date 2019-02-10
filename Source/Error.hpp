@@ -14,7 +14,7 @@ namespace Debugging
   /*  2 */ EC_BLANKLINE,
 
   /*    */ EC_CATALOG_EXISTS,
-  /*  4 */ EC_CLUSTER_NOT_STARTED,
+  /*  4 */ EC_CLUSTER_NOT_CONNECTED,
   /*  5 */ EC_CLUSTER_PARTITIONS_MISMATCH,
   /*  6 */ EC_CLUSTER_SIZE_MISMATCH,
   
@@ -103,7 +103,7 @@ namespace Debugging
   /*  2 */ "blank line"_Stz,
   
   /*    */ "catalog exists"_Stz,
-  /*  4 */ "cluster not started"_Stz,
+  /*  4 */ "cluster not connected (use connectCluster command)"_Stz,
   /*  5 */ "cluster partitions per node mismatch"_Stz,
   /*  6 */ "cluster node size mismatch"_Stz,
   
