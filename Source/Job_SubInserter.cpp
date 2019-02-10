@@ -27,6 +27,8 @@ JobClass xJobClass_SubInserter =
   false,                    // detached job?
   false,                    // buffer attached?
   JT_NONE,                  // job trace
+  
+  eJob_checkCluster,        // prompt check function
   pJob_SubInserter_pre,     // prompt pre-process function
   vJob_SubInserter_post,    // prompt post-process function
   pJob_SubInserter_new,     // job new function

@@ -27,6 +27,8 @@ JobClass xJobClass_CreateSchema =
   false,                    // detached job?
   false,                    // buffer attached?
   JT_NONE,                  // job trace
+  
+  eJob_checkCluster,        // prompt check function
   pJob_CreateSchema_pre,    // prompt pre-process function
   vJob_CreateSchema_post,   // prompt post-process function
   nullptr,                  // job new function

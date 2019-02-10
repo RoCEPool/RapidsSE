@@ -31,6 +31,8 @@ JobClass xJobClass_WriteBuffer =
   false,                  // detached job?
   true,                   // buffer attached?
   JT_NONE,                // job trace
+  
+  nullptr,                // prompt check function
   pJob_WriteBuffer_pre,   // prompt pre-process function
   nullptr,                // prompt post-process function
   pJob_WriteBuffer_new,   // job new function

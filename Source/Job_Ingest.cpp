@@ -27,6 +27,8 @@ JobClass xJobClass_Ingest =
   false,                 // detached job?
   false,                 // buffer attached?
   JT_NONE,               // job trace
+  
+  eJob_checkCluster,     // prompt check function
   pJob_Ingest_pre,       // prompt pre-process function
   vJob_Ingest_post,      // prompt post-process function
   pJob_Ingest_new,       // job new function

@@ -27,6 +27,8 @@ JobClass xJobClass_Export =
   false,                // detached job?
   false,                // buffer attached?
   JT_NONE,              // job trace
+  
+  eJob_checkCluster,    // prompt check function
   pJob_Export_pre,      // prompt pre-process function
   vJob_Export_post,     // prompt post-process function
   pJob_Export_new,      // job new function

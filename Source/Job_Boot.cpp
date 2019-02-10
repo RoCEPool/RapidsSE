@@ -27,6 +27,8 @@ JobClass xJobClass_Boot =
   false,             // detached job?
   false,             // buffer attached?
   JT_NONE,           // job trace
+  
+  nullptr,           // prompt check function
   nullptr,           // prompt pre-process function
   nullptr,           // prompt post-process function
   pJob_Boot_new,     // job new function

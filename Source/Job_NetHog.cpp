@@ -27,6 +27,8 @@ JobClass xJobClass_NetHog =
   false,                 // detached job?
   false,                 // buffer attached?
   JT_NONE,               // job trace
+  
+  eJob_checkCluster,     // prompt check function
   pJob_NetHog_pre,       // prompt pre-process function
   vJob_NetHog_post,      // prompt post-process function
   pJob_NetHog_new,       // job new function

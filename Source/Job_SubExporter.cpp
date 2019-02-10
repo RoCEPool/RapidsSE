@@ -27,6 +27,8 @@ JobClass xJobClass_SubExporter =
   false,                     // detached job?
   false,                     // buffer attached?
   JT_NONE,                   // job trace
+  
+  nullptr,                   // prompt check function
   pJob_SubExporter_pre,      // prompt pre-process function
   vJob_SubExporter_post,     // prompt post-process function
   nullptr,                   // job new function

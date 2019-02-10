@@ -27,6 +27,8 @@ JobClass xJobClass_AnalyzeIndex =
   false,                     // detached job?
   false,                     // buffer attached?
   JT_NONE,                   // job trace
+  
+  eJob_checkCluster,         // prompt check function
   pJob_AnalyzeIndex_pre,     // prompt pre-process function
   vJob_AnalyzeIndex_post,    // prompt post-process function
   pJob_AnalyzeIndex_new,     // job new function

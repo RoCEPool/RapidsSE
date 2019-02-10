@@ -27,6 +27,8 @@ JobClass xJobClass_SubPurger =
   false,                  // detached job?
   false,                  // buffer attached?
   JT_NONE,                // job trace
+  
+  nullptr,                // prompt check function
   pJob_SubPurger_pre,     // prompt pre-process function
   vJob_SubPurger_post,    // prompt post-process function
   nullptr,                // job new function

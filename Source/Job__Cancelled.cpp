@@ -24,6 +24,8 @@ JobClass xJobClass__Cancelled =
   false,                   // detached job?
   false,                   // buffer attached?
   JT_NONE,                 // job trace
+  
+  nullptr,                 // prompt check function
   nullptr,                 // prompt pre-process function
   nullptr,                 // prompt post-process function
   nullptr,                 // job new function

@@ -33,6 +33,8 @@ JobClass xJobClass_EndInsert =
   false,                    // detached job?
   false,                    // buffer attached?
   JT_NONE,                  // job trace
+  
+  eJob_checkCluster,        // prompt check function
   pJob_InsertTable_pre,     // prompt pre-process function
   vJob_InsertTable_post,    // prompt post-process function
   pJob_InsertTable_new,     // job new function

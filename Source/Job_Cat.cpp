@@ -27,6 +27,8 @@ JobClass xJobClass_Cat =
   false,               // detached job?
   false,               // buffer attached?
   JT_NONE,             // job trace
+  
+  eJob_checkCluster,   // prompt check function
   pJob_Cat_pre,        // prompt pre-process function
   vJob_Cat_post,       // prompt post-process function
   pJob_Cat_new,        // job new function

@@ -25,6 +25,8 @@ JobClass xJobClass_WriteRecord =
   false,                  // detached job?
   true,                   // buffer attached?
   JT_NONE,                // job trace
+  
+  nullptr,                // prompt check function
   pJob_WriteRecord_pre,   // prompt pre-process function
   nullptr,                // prompt post-process function
   pJob_WriteRecord_new,   // job new function

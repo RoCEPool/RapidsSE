@@ -27,6 +27,8 @@ JobClass xJobClass_Answer =
   false,               // detached job?
   false,               // buffer attached?
   JT_NONE,             // job trace
+  
+  eJob_checkCluster,   // prompt check function
   nullptr,             // prompt pre-process function
   nullptr,             // prompt post-process function
   pJob_Answer_new,     // job new function

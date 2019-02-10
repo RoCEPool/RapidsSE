@@ -27,6 +27,8 @@ JobClass xJobClass_StartCluster =
   false,                   // detached job?
   false,                   // buffer attached?
   JT_NONE,                 // job trace
+  
+  nullptr,                 // prompt check function
   pJob_StartCluster_pre,   // prompt pre-process function
   vJob_StartCluster_post,  // prompt post-process function
   nullptr,                 // job new function

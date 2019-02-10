@@ -27,9 +27,11 @@ JobClass xJobClass_ListPartitions =
   false,                   // detached job?
   false,                   // buffer attached?
   JT_NONE,                 // job trace
-  pJob_ListPartitions_pre, // prompt pre-process function
-  vJob_ListPartitions_post,// prompt post-process function
-  nullptr,                 // job new function
+  
+  eJob_checkCluster,        // prompt check function
+  pJob_ListPartitions_pre,  // prompt pre-process function
+  vJob_ListPartitions_post, // prompt post-process function
+  nullptr,                  // job new function
   vJob_ListPartitions_delete, // job delete function
   vJob_send,                  // job pre-send function
   vJob_recv,                  // job post-receive function

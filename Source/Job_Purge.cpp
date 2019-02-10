@@ -27,6 +27,8 @@ JobClass xJobClass_Purge =
   false,                 // detached job?
   false,                 // buffer attached?
   JT_NONE,               // job trace
+  
+  eJob_checkCluster,     // prompt check function
   pJob_Purge_pre,        // prompt pre-process function
   vJob_Purge_post,       // prompt post-process function
   pJob_Purge_new,        // job new function

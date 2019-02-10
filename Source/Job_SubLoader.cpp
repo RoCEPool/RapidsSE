@@ -27,6 +27,8 @@ JobClass xJobClass_SubLoader =
   false,                  // detached job?
   false,                  // buffer attached?
   JT_NONE,                // job trace
+  
+  nullptr,                // prompt check function
   vJob_SubLoader_pre,     // prompt pre-process function
   nullptr,                // prompt post-process function
   pJob_SubLoader_new,     // job new function

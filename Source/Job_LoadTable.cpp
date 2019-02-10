@@ -33,6 +33,8 @@ JobClass xJobClass_LoadTable =
   false,                  // detached job?
   false,                  // buffer attached?
   JT_NONE,                // job trace
+  
+  eJob_checkCluster,      // prompt check function
   pJob_LoadTable_pre,     // prompt pre-process function
   vJob_LoadTable_post,    // prompt post-process function
   pJob_LoadTable_new,     // job new function

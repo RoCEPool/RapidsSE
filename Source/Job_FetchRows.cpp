@@ -27,6 +27,8 @@ JobClass xJobClass_FetchRows =
   false,                     // detached job?
   false,                     // buffer attached?
   JT_NONE,                   // job trace
+  
+  eJob_checkCluster,         // prompt check function
   pJob_FetchRows_pre,        // prompt pre-process function
   vJob_FetchRows_post,       // prompt post-process function
   nullptr,                   // job new function

@@ -446,7 +446,7 @@ void Job::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* check if the cluster has started                                           */
 /*----------------------------------------------------------------------------*/
-eEC Jobs::eJob_checkCluster(Job* pJob)
+eEC Jobs::eJob_checkCluster(Interface::Session* pSession)
 {
   if (gpAttachMap->m_pGrid->m_bHasStarted)
     return EC_NONE;

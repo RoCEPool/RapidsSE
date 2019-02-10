@@ -28,6 +28,8 @@ JobClass xJobClass_DropSchema =
   false,                  // detached job?
   false,                  // buffer attached?
   JT_NONE,                // job trace
+  
+  eJob_checkCluster,      // prompt check function
   pJob_DropSchema_pre,    // prompt pre-process function
   vJob_DropSchema_post,   // prompt post-process function
   nullptr,                // job new function

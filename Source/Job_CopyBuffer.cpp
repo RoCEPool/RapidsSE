@@ -27,6 +27,8 @@ JobClass xJobClass_CopyBuffer =
   false,                    // detached job?
   false,                    // buffer attached?
   JT_NONE,                  // job trace
+  
+  eJob_checkCluster,        // prompt check function
   pJob_CopyBuffer_pre,      // prompt pre-process function
   vJob_CopyBuffer_post,     // prompt post-process function
   pJob_CopyBuffer_new,      // job new function

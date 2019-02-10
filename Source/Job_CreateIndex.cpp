@@ -27,6 +27,8 @@ JobClass xJobClass_CreateIndex =
   false,                   // detached job?
   false,                   // buffer attached?
   JT_NONE,                 // job trace
+  
+  eJob_checkCluster,       // prompt check function
   pJob_CreateIndex_pre,    // prompt pre-process function
   vJob_CreateIndex_post,   // prompt post-process function
   nullptr,                 // job new function
@@ -61,6 +63,8 @@ JobClass xJobClass_CreateIndexUnique =
   false,                   // detached job?
   false,                   // buffer attached?
   JT_NONE,                 // job trace
+  
+  eJob_checkCluster,       // prompt check function
   pJob_CreateIndex_pre,    // prompt pre-process function
   vJob_CreateIndex_post,   // prompt post-process function
   nullptr,                 // job new function

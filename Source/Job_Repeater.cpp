@@ -27,6 +27,8 @@ JobClass xJobClass_Repeater =
   false,                 // detached job?
   false,                 // buffer attached?
   JT_NONE,               // job trace
+  
+  eJob_checkCluster,     // prompt check function
   pJob_Repeater_pre,     // prompt pre-process function
   vJob_Repeater_post,    // prompt post-process function
   pJob_Repeater_new,     // job new function

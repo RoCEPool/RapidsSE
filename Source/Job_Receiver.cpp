@@ -27,6 +27,8 @@ JobClass xJobClass_Receiver =
   false,                 // detached job?
   false,                 // buffer attached?
   JT_NONE,               // job trace
+  
+  eJob_checkCluster,     // prompt check function
   nullptr,               // prompt pre-process function
   nullptr,               // prompt post-process function
   pJob_Receiver_new,     // job new function

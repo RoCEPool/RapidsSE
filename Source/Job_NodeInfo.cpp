@@ -27,6 +27,8 @@ JobClass xJobClass_NodeInfo =
   false,             // detached job?
   false,             // buffer attached?
   JT_NONE,           // job trace
+  
+  nullptr,           // prompt check function
   nullptr,           // prompt pre-process function
   nullptr,           // prompt post-process function
   pJob_NodeInfo_new,     // job new function

@@ -27,6 +27,8 @@ JobClass xJobClass_Monitor =
   false,                // detached job?
   false,                // buffer attached?
   JT_NONE,              // job trace
+  
+  eJob_checkCluster,    // prompt check function
   pJob_Monitor_pre,     // prompt pre-process function
   vJob_Monitor_post,    // prompt post-process function
   pJob_Monitor_new,     // job new function
