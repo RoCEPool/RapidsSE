@@ -18,6 +18,8 @@ using namespace Structures;
 
 #include "ArrayNL_t.hpp"
 
+#include "Link_t.hpp"
+
 #include "ListNode_t.hpp"
 #include "List_t.hpp"
 #include "ListNL_t.hpp"
