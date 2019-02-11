@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Action.hpp - when did an action occur                                      */
+/* Action.cpp - when did an action occur and what happened                    */
 /*============================================================================*/
 
 #include "Maps.h"

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#define RAPIDSSE_VERSION_STRING "4.0.4"
+#define RAPIDSSE_VERSION_STRING "4.0.5"
 
 #define WITH_ACTION_SEQUENCE     // code for ActionSequence compiled in
 #define WITH_ACTIVITY_MAP        // code for ActivityMap compiled in

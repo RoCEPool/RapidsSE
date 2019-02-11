@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Action.hpp - when did an action occur                                      */
+/* Action.hpp - when did an action occur and what happened                    */
 /*============================================================================*/
 #pragma once
 
