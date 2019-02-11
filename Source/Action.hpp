@@ -29,7 +29,8 @@ namespace Maps
     i8 m_iAction;
     i8 m_iArg0;
     i8 m_iArg1;
-    i8 m_iLink;
+  
+    Link_t<i8> m_wLink;
   
     // must be last
     Footer m_xFooter;

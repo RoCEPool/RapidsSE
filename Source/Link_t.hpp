@@ -5,42 +5,51 @@
 
 namespace Structures
 {
-  template <class OBJECT>
+  template <class _CLASS>
   class Link_t
   {
   public:
-    OBJECT* m_pPointer;
-    
+  
+    ////////////////////////////////////////////////////////////////////////////
+    //                              member variables                          //
+    ////////////////////////////////////////////////////////////////////////////
+    _CLASS m_wLink;
+  
+
+    ////////////////////////////////////////////////////////////////////////////
+    //                              template functions                        //
+    ////////////////////////////////////////////////////////////////////////////
+  
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    Link_t<OBJECT>(void)
+    Link_t<_CLASS>(void)
     {
-      m_pPointer = nullptr;
+      m_wLink = (_CLASS)0;
     }
     
     /*------------------------------------------------------------------------*/
     /* dereference operator                                                   */
     /*------------------------------------------------------------------------*/
-    OBJECT* operator * (void)
+    _CLASS operator * (void)
     {
-      return m_pPointer;
+      return m_wLink;
     }
   
     /*------------------------------------------------------------------------*/
     /* test and set                                                           */
     /*------------------------------------------------------------------------*/
-    bool bSetNull(void)
+    void vReset(void)
     {
-      m_pPointer = nullptr;
+      m_wLink = (_CLASS)0;
     }
   
     /*------------------------------------------------------------------------*/
     /* test and set                                                           */
     /*------------------------------------------------------------------------*/
-    bool bTestAndSet(OBJECT* pIfObject, OBJECT* pSetObject)
+    bool bTestAndSet(_CLASS wIfValue, _CLASS wSetValue)
     {
-      bool bWasSet = Atomic::bTestAndSet(&m_pPointer,pIfObject,pSetObject);
+      bool bWasSet = Atomic::bTestAndSet(&m_wLink,wIfValue,wSetValue);
     
       return bWasSet;
     }
