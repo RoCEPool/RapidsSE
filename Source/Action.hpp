@@ -9,6 +9,9 @@ namespace Maps
   {
   /*  0 */ AN_NONE=0,
   
+  /*    */ AN_ORIGINATORADDED,
+  /*    */ AN_PARTICIPANTADDED,
+
   /*    */ AN_ENUMS,
   };
   
@@ -16,6 +19,9 @@ namespace Maps
   {
   /*  0 */ "NONE"_Stz,
 
+  /*    */ "ORIGINATORADDED"_Stz,
+  /*    */ "PARTICIPANTADDED"_Stz,
+  
   /*    */ "ENUMS"_Stz,
   };
   

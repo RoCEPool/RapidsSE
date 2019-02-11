@@ -24,9 +24,11 @@ extern AttachMap*    gpAttachMap;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_markAct(SePrompt* pPrompt)
 {
-  PromptHelper::vCommandFlags(gpAttachMap->m_oMarkAction,
-                              "Act"_Stz,
-                              pPrompt->pTknVec());
+  PromptHelper::vEnumFlags(gpAttachMap->m_oMarkAction,
+                           "Act"_Stz,
+                           aAN,
+                           AN_ENUMS,
+                           pPrompt->pTknVec());
   
 //  JobClass* pJobClass = nullptr;
 //  
