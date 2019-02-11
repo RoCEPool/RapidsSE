@@ -20,6 +20,7 @@ using namespace Prompt;
 #include "PromptFun.hpp"
 #include "PromptCatalog.hpp"
 #include "PromptNote.hpp"
+#include "PromptHelper.hpp"
 
 #include "Prompt_activityMap.hpp"
 #include "Prompt_am.hpp"

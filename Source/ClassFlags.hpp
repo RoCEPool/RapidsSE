@@ -9,7 +9,7 @@ namespace Measurement
   {
   private:
     bool m_bAll;
-    bool m_bClass[SR_ENUMS];
+    bool m_bEnum[256];
 
     // must be last
     Footer m_xFooter;
@@ -24,10 +24,10 @@ namespace Measurement
     bool bAll(void);
     void vAll(bool bAll);
   
-    bool bClass(eCN eClassNo);
-    void vClass(eCN eClassNo, bool bFlag);
+    bool bEnum(i8 i_Enum);
+    void vEnum(i8 i_Enum, bool bFlag);
   
-    bool bFlagged(eCN eClassNo);
+    bool bFlagged(i8 i_Enum);
   
     Footer* aFooter(void);
   };

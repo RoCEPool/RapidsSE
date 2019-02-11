@@ -87,31 +87,31 @@ void ClassFlags::vAll(bool bAll)
 /*----------------------------------------------------------------------------*/
 /* is a particular class set?                                                 */
 /*----------------------------------------------------------------------------*/
-bool ClassFlags::bClass(eCN eClassNo)
+bool ClassFlags::bEnum(i8 i_Enum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSFLAGS,_FOOTER_);
   
-  return m_bClass[eClassNo];
+  return m_bEnum[i_Enum];
 }
 
 /*----------------------------------------------------------------------------*/
 /* set a particular class                                                     */
 /*----------------------------------------------------------------------------*/
-void ClassFlags::vClass(eCN eClassNo, bool bFlag)
+void ClassFlags::vEnum(i8 i_Enum, bool bFlag)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSFLAGS,_FOOTER_);
   
-  m_bClass[eClassNo] = bFlag;
+  m_bEnum[i_Enum] = bFlag;
 }
 
 /*----------------------------------------------------------------------------*/
 /* is bAll or a particular class set?                                         */
 /*----------------------------------------------------------------------------*/
-bool ClassFlags::bFlagged(eCN eClassNo)
+bool ClassFlags::bFlagged(i8 i_Enum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSFLAGS,_FOOTER_);
   
-  if (m_bAll || m_bClass[eClassNo])
+  if (m_bAll || m_bEnum[i_Enum])
     return true;
   else
     return false;
