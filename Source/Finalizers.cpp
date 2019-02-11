@@ -41,8 +41,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_BYTERATE
   
   /* 30 */ &Finalize::vUndefined,         // CN_CARRYOVER
-  /*    */ &Finalize::vUndefined,         // CN_CLASSFLAGS
-  /* 31 */ &Finalize::vUndefined,         // CN_COLUMN
+   /* 31 */ &Finalize::vUndefined,         // CN_COLUMN
   /* 32 */ &Finalize::vUndefined,         // CN_COLUMNVEC
   /*    */ &Finalize::vUndefined,         // CN_COMMAND
   /*    */ &Finalize::vUndefined,         // CN_COMPILER
@@ -55,7 +54,8 @@ pFINALIZE *gpFinalize[]
   
   /* 36 */ &Finalize::vUndefined,         // CN_ENTRY
   /* 37 */ &Finalize::vUndefined,         // CN_ENTRYBUFFER
-  
+  /*    */ &Finalize::vUndefined,         // CN_ENUMFLAGS
+
   /*    */ &Finalize::vUndefined,         // CN_FETCHBUFFER
   /* 39 */ &Finalize::vUndefined,         // CN_FILE
   /* 40 */ &Finalize::vUndefined,         // CN_FORMATTERS

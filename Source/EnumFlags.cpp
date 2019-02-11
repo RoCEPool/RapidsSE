@@ -17,7 +17,7 @@ EnumFlags* Measurement::_pEnumFlags(void* aAddr)
 {
   EnumFlags* pEnumFlags = reinterpret_cast<EnumFlags*>(aAddr);
   
-  RASSERT_TYPE(pEnumFlags,CN_CLASSFLAGS);
+  RASSERT_TYPE(pEnumFlags,CN_ENUMFLAGS);
   
   return pEnumFlags;
 }
@@ -27,7 +27,7 @@ EnumFlags* Measurement::_pEnumFlags(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* EnumFlags::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_CLASSFLAGS);
+  void* pObject = HeapMem::pAllocate(CN_ENUMFLAGS);
   
   return pObject;
 }
@@ -43,13 +43,13 @@ void EnumFlags::operator delete(void*)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EnumFlags::EnumFlags(void)
-: Object(CN_CLASSFLAGS)
+: Object(CN_ENUMFLAGS)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSFLAGS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENUMFLAGS,_FOOTER_);
     
-  _checkInitialised_(CN_CLASSFLAGS);
+  _checkInitialised_(CN_ENUMFLAGS);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CLASSFLAGS,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENUMFLAGS,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ EnumFlags::EnumFlags(void)
 /*----------------------------------------------------------------------------*/
 EnumFlags::~EnumFlags(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSFLAGS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENUMFLAGS,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,7 +69,7 @@ EnumFlags::~EnumFlags(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool EnumFlags::bAll(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSFLAGS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENUMFLAGS,_FOOTER_);
   
   return m_bAll;
 }
@@ -79,7 +79,7 @@ bool EnumFlags::bAll(void)
 /*----------------------------------------------------------------------------*/
 void EnumFlags::vAll(bool bAll)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSFLAGS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENUMFLAGS,_FOOTER_);
   
   m_bAll = bAll;
 }
@@ -89,7 +89,7 @@ void EnumFlags::vAll(bool bAll)
 /*----------------------------------------------------------------------------*/
 bool EnumFlags::bEnum(i8 i_Enum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSFLAGS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENUMFLAGS,_FOOTER_);
   
   return m_bEnum[i_Enum];
 }
@@ -99,7 +99,7 @@ bool EnumFlags::bEnum(i8 i_Enum)
 /*----------------------------------------------------------------------------*/
 void EnumFlags::vEnum(i8 i_Enum, bool bFlag)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSFLAGS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENUMFLAGS,_FOOTER_);
   
   m_bEnum[i_Enum] = bFlag;
 }
@@ -109,7 +109,7 @@ void EnumFlags::vEnum(i8 i_Enum, bool bFlag)
 /*----------------------------------------------------------------------------*/
 bool EnumFlags::bFlagged(i8 i_Enum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSFLAGS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENUMFLAGS,_FOOTER_);
   
   if (m_bAll || m_bEnum[i_Enum])
     return true;
@@ -126,7 +126,7 @@ bool EnumFlags::bFlagged(i8 i_Enum)
 /*----------------------------------------------------------------------------*/
 Footer* EnumFlags::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CLASSFLAGS);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENUMFLAGS);
   
   return &m_xFooter;
 }

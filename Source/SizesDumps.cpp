@@ -44,7 +44,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vInvalid,         // CN_BYTERATE
 
   /* 30 */ &Dump::vDummy,           // CN_CARRYOVER
-  /* 30 */ &Dump::vDummy,           // CN_CLASSFLAGS
   /* 31 */ &Dump::vDummy,           // CN_COLUMN
   /* 32 */ &Dump::vDummy,           // CN_COLUMNVEC
   /*    */ &Dump::vDummy,           // CN_COMMAND
@@ -58,7 +57,8 @@ pDUMPFUN *gpDump[]
   
   /* 36 */ &Dump::vDummy,           // CN_ENTRY
   /* 37 */ &Dump::vDummy,           // CN_ENTRYBUFFER
-  
+  /*    */ &Dump::vDummy,           // CN_ENUMFLAGS
+
   /* 38 */ &Dump::vInvalid,         // CN_FETCHBUFFER
   /* 39 */ &Dump::vInvalid,         // CN_FILE
   /* 40 */ &Dump::vDummy,           // CN_FORMATTERS
@@ -299,7 +299,6 @@ i8 giClassSize[]
   /* 28 */ sizeof(ByteRate),           // CN_BYTERATE
 
   /* 30 */ sizeof(CarryOver),          // CN_CARRYOVER
-  /*    */ sizeof(EnumFlags),          // CN_CLASSFLAGS
   /* 31 */ sizeof(Column),             // CN_COLUMN
   /* 32 */ sizeof(ColumnVec),          // CN_COLUMNVEC
   /* 32 */ sizeof(Command),            // CN_COMMAND
@@ -313,7 +312,8 @@ i8 giClassSize[]
   
   /* 36 */ sizeof(Item),               // CN_ENTRY
   /* 37 */ sizeof(EntryBuffer),        // CN_ENTRYBUFFER
-  
+  /*    */ sizeof(EnumFlags),          // CN_ENUMFLAGS
+
   /*    */ sizeof(FetchBuffer),        // CN_FETCHBUFFER
   /* 39 */ sizeof(File),               // CN_FILE
   /* 40 */ sizeof(Formatters),         // CN_FORMATTERS
@@ -554,7 +554,6 @@ eHT geWhichHeap[]
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_BYTERATE
 
   /* 30 */ HT_INVALID,           // CN_CARRYOVER
-  /*    */ HT_TRANSIENT_SMALL,   // CN_CLASSFLAGS
   /* 31 */ HT_TRANSIENT_SMALL,   // CN_COLUMN
   /* 32 */ HT_TRANSIENT_MEDIUM,  // CN_COLUMNVEC
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_COMMAND
@@ -568,7 +567,8 @@ eHT geWhichHeap[]
 
   /* 36 */ HT_INVALID,           // CN_ENTRY
   /* 37 */ HT_TRANSIENT_LARGE,   // CN_ENTRYBUFFER
-  
+  /*    */ HT_TRANSIENT_SMALL,   // CN_ENUMFLAGS
+
   /* 38 */ HT_TRANSIENT_LARGE,   // CN_FETCHBUFFER
   /* 39 */ HT_TRANSIENT_SMALL,   // CN_FILE
   /* 40 */ HT_TRANSIENT_SMALL,   // CN_FORMATTERS
