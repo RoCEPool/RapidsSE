@@ -114,8 +114,11 @@ void SePrompt::vPromptLoop(void)
     
     vGetCommand();
        
-    if (bBlankLine())
+    if (bBlankLine()) {
+      if (gpAttachMap->Arg.m_bDeveloper)
+        vDumpTokenVec();
       continue;
+    }
     
     vCheckTimed();
     vCheckMarked();
