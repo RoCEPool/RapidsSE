@@ -9,13 +9,13 @@ namespace Prompt
   class PromptHelper
   {
   public:
-    static void vCommandFlags(ClassFlags& oClassFlags,
-                              Stz* szEnumNm,
+    static void vCommandFlags(EnumFlags& oFlags,
+                              Stz* szGroupNm,
                               TokenVec* pTknVec);
   
-    static void vEnumFlags(ClassFlags& oClassFlags,
-                           Stz* szEnumNm,
-                           Stz* szaEnumName[],
+    static void vEnumFlags(EnumFlags& oFlags,
+                           Stz* szGroupNm,
+                           Stz* szaEnumNm[],
                            i8   iEnumLimit,
                            TokenVec* pTknVec);
   };

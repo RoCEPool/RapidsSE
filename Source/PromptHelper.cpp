@@ -10,8 +10,8 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* process command flags                                                      */
 /*----------------------------------------------------------------------------*/
-void PromptHelper::vCommandFlags(ClassFlags& oFlags,
-                                 Stz* szEnumGroupNm,
+void PromptHelper::vCommandFlags(EnumFlags& oFlags,
+                                 Stz* szGroupNm,
                                  TokenVec* pTknVec)
 {
   JobClass* pJobClass = nullptr;
@@ -34,7 +34,7 @@ void PromptHelper::vCommandFlags(ClassFlags& oFlags,
                "on"_Stz);
     
     vTrace("Mark%sAll is currently : %s\n"_Stz,
-           szEnumGroupNm,
+           szGroupNm,
            oFlags.bAll() ? "on"_Stz : "off"_Stz);
     
     return;
@@ -57,7 +57,7 @@ void PromptHelper::vCommandFlags(ClassFlags& oFlags,
     
     if (aTkn1->bSame("all"_Stz)) {
       vTrace("Mark%sAll is currently : %s\n"_Stz,
-             szEnumGroupNm,
+             szGroupNm,
              oFlags.bAll() ? "on"_Stz : "off"_Stz);
       return;
     }
@@ -142,9 +142,9 @@ void PromptHelper::vCommandFlags(ClassFlags& oFlags,
 /*----------------------------------------------------------------------------*/
 /* process command flags                                                      */
 /*----------------------------------------------------------------------------*/
-void PromptHelper::vEnumFlags(ClassFlags& oFlags,
-                              Stz* szEnumNm,
-                              Stz* szaEnumName[],
+void PromptHelper::vEnumFlags(EnumFlags& oFlags,
+                              Stz* szGroupNm,
+                              Stz* szaEnumNm[],
                               i8   iEnumLimit,
                               TokenVec* pTknVec)
 {
@@ -161,11 +161,11 @@ void PromptHelper::vEnumFlags(ClassFlags& oFlags,
     for (i8 i_Enum = 0; i_Enum < iEnumLimit; i_Enum++)
       if (oFlags.bEnum((eCN)i_Enum))
         vTrace("%s : %s\n"_Stz,
-               szaEnumName[i_Enum],
+               szaEnumNm[i_Enum],
                "on"_Stz);
     
     vTrace("Mark%sAll is currently : %s\n"_Stz,
-           szEnumNm,
+           szGroupNm,
            oFlags.bAll() ? "on"_Stz : "off"_Stz);
     
     return;
@@ -181,21 +181,21 @@ void PromptHelper::vEnumFlags(ClassFlags& oFlags,
     
     if (aTkn1->bSame("?"_Stz)) {
       for (i8 i_Enum = 0; i_Enum < iEnumLimit; i_Enum++)
-          vTrace("  %s\n"_Stz,szaEnumName[i_Enum]);
+          vTrace("  %s\n"_Stz,szaEnumNm[i_Enum]);
       return;
     }
     
     if (aTkn1->bSame("all"_Stz)) {
       vTrace("Mark%sAll is currently : %s\n"_Stz,
-             szEnumNm,
+             szGroupNm,
              oFlags.bAll() ? "on"_Stz : "off"_Stz);
       return;
     }
     
     for (i8 i_Enum = 0; i_Enum < iEnumLimit; i_Enum++)
-      if (aTkn1->bSame(szaEnumName[i_Enum]))
+      if (aTkn1->bSame(szaEnumNm[i_Enum]))
         vTrace("%s : %s\n"_Stz,
-               szaEnumName[i_Enum],
+               szaEnumNm[i_Enum],
                "on"_Stz);
   }
   
@@ -220,14 +220,14 @@ void PromptHelper::vEnumFlags(ClassFlags& oFlags,
     
     if (aTkn2->bIsSomeTrue()) {
       for (i8 i_Enum = 0; i_Enum < iEnumLimit; i_Enum++)
-        if (aTkn1->bSame(szaEnumName[i_Enum]))
+        if (aTkn1->bSame(szaEnumNm[i_Enum]))
           oFlags.vEnum(i_Enum,true);
       return;
     }
     
     if (aTkn2->bIsSomeFalse()) {
       for (i8 i_Enum = 0; i_Enum < iEnumLimit; i_Enum++)
-        if (aTkn1->bSame(szaEnumName[i_Enum]))
+        if (aTkn1->bSame(szaEnumNm[i_Enum]))
           oFlags.vEnum(i_Enum,false);
       return;
     }

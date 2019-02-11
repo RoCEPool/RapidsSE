@@ -48,7 +48,7 @@ namespace StorageEngine
     bool          m_bMarkJob[CN_ENUMS];
     bool          m_bMarkResourceAll;
     bool          m_bMarkResource[SR_ENUMS];
-    ClassFlags    m_oMarkAction;
+    EnumFlags     m_oMarkAction;
     Atomic        m_ixMonitorTake;
     i8            m_nObjectsInPool[CN_ENUMS];
     JobList*      m_pOriginatingJobs;

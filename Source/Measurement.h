@@ -18,7 +18,7 @@ using namespace Measurement;
 #include "Timer.hpp"
 
 #include "ByteRate.hpp"
-#include "ClassFlags.hpp"
+#include "EnumFlags.hpp"
 #include "LockTracker.hpp"
 #include "Now.hpp"
 #include "ResourceTracker.hpp"

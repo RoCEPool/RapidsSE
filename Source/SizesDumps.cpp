@@ -299,7 +299,7 @@ i8 giClassSize[]
   /* 28 */ sizeof(ByteRate),           // CN_BYTERATE
 
   /* 30 */ sizeof(CarryOver),          // CN_CARRYOVER
-  /*    */ sizeof(ClassFlags),         // CN_CLASSFLAGS
+  /*    */ sizeof(EnumFlags),          // CN_CLASSFLAGS
   /* 31 */ sizeof(Column),             // CN_COLUMN
   /* 32 */ sizeof(ColumnVec),          // CN_COLUMNVEC
   /* 32 */ sizeof(Command),            // CN_COMMAND
