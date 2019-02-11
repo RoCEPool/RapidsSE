@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ActionSequence.cpp - Activity Map                                           */
+/* ActionSequence.cpp - Activity Map                                          */
 /*============================================================================*/
 
 #include "Maps.h"
@@ -43,6 +43,9 @@ ActionSequence::ActionSequence(void)
   
   m_i_Action = 0;
   m_nActions = C_ACTION_SEQUENCE;
+  
+  for (i8 i_Action = 0; i_Action < m_nActions; i_Action++)
+    m_oaAction[i_Action].vInit(i_Action);
   
   _checkInitialised_(CN_ACTIONSEQUENCE);
   
@@ -151,6 +154,19 @@ i8 ActionSequence::iBegin(i8 iJobId, i8 iAction, i8 iArg0, i8 iArg1)
 #endif
 }
 
+/*----------------------------------------------------------------------------*/
+/* write ActivityMap to csv file                                              */
+/*----------------------------------------------------------------------------*/
+void ActionSequence::vWriteCsv(void)
+{
+#ifdef WITH_ACTIVITY_MAP
+  if (! gpActionSequence)
+    return;
+  
+  gpActionSequence->vWriteToFile();
+#endif
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -186,6 +202,33 @@ void ActionSequence::vDropLock(void)
   _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
   
   m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* find active range                                                          */
+/*----------------------------------------------------------------------------*/
+void ActionSequence::vFindRange_NL(i8& i_Min, i8& i_Max)
+{
+  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  
+  RASSERT(m_okLock.bIsLocked());
+  
+  // should be a quicker way to do this
+  
+  i_Min = C_I8_MAX;
+  i_Max = C_I8_MIN;
+  
+  for (i8 i_Action = 0; i_Action < m_nActions; i_Action++) {
+    
+    if (-1 == m_oaAction[i_Action].m_i_Action)
+      return;
+    
+    if (m_oaAction[i_Action].m_i_Action < i_Min)
+      i_Min = m_oaAction[i_Action].m_i_Action;
+    
+    if (m_oaAction[i_Action].m_i_Action > i_Max)
+      i_Max = m_oaAction[i_Action].m_i_Action;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -245,6 +288,119 @@ Action* ActionSequence::pNewRoot(void)
   pRootAction->m_i_Root = pRootAction->m_i_Action;
   
   return pRootAction;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a new action (body)                                                    */
+/*----------------------------------------------------------------------------*/
+Action* ActionSequence::pNextAction(Action *pAction)
+{
+  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  
+  i8 i_NextAction = * pAction->m_wLink;
+  
+  if (i_NextAction == -1)
+    return nullptr;
+  
+  Action* pNextAction = &m_oaAction[i_NextAction % m_nActions];;
+  
+  return pNextAction;
+}
+
+/*----------------------------------------------------------------------------*/
+/* calculate how full the activity map is                                     */
+/*----------------------------------------------------------------------------*/
+i8 ActionSequence::iPercentFull_NL(void)
+{
+  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  
+  RASSERT(m_okLock.bIsLocked());
+  
+  i8 nInUse = 0;
+  i8 iPercent = 0;
+  
+  i8 i_Min;
+  i8 i_Max;
+  vFindRange_NL(i_Min,i_Max);
+  
+  if (i_Min < i_Max) {
+    //
+    // Example: 0 .. 25 __ [64]
+    //          i_MinMark is 0
+    //          i_Maxmark is 48
+    //          m_nMarks  is 64
+    // then only 0..25 is in use out of 64
+    //
+    nInUse = (i_Max - i_Min);
+  }
+  else {
+    //
+    // Example: .. 25 __ 48 .. [64]
+    //          i_MinMark is 48
+    //          i_Maxmark is 25
+    //          m_nMarks  is 64
+    // then 48 .. 63 + 0 ..25 is in use
+    //
+    nInUse = (m_nActions - i_Min) + (i_Max);
+  }
+  
+  iPercent = (nInUse * 100) / m_nActions;
+  
+  return iPercent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* write ActionSequence to a csv file                                         */
+/*----------------------------------------------------------------------------*/
+void ActionSequence::vWriteToFile(void)
+{
+  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  
+  s256 sAsPath("/tmp/ActionSequence.csv"_Stz);
+  
+  i8 iTotalDelta = 0;
+  
+  File* pActSeqFile = new File();
+  
+  bool bOpened = pActSeqFile->bOpenWrite(sAsPath);
+  if (! bOpened) {
+    vTrace("Unable to open action sequence file: %s\n"_Stz,sAsPath.aChar());
+    return;
+  }
+  
+  Now oNow;
+  ActivityMap::vMarkInfo("Writing ActionSequence at: %s"_Stz,oNow.sFormatted());
+  
+  
+  // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
+  vGrabLock();
+  
+  i8 i_MinMark;
+  i8 i_MaxMark;
+  
+  vFindRange_NL(i_MinMark,i_MaxMark);
+  
+  for (i8 i_Mark = i_MinMark + 1; i_Mark <= i_MaxMark; i_Mark++) {
+
+    Action* pAction = &m_oaAction[i_MinMark % m_nActions];
+    
+    if (! pAction->bIsRoot())
+      continue;
+
+    pAction->vWrite(pActSeqFile);
+    
+    while (pAction = pNextAction(pAction))
+      pAction->vWrite(pActSeqFile);
+  }
+  
+  vDropLock();
+  // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
+  
+  pActSeqFile->vClose();
+  
+  vTrace("ActionSequence written to: %s\n"_Stz,sAsPath.aChar());
+  
+  delete pActSeqFile;
 }
 
 

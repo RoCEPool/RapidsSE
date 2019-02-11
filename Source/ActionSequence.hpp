@@ -32,14 +32,19 @@ namespace Maps
   
     static i8 iAdd(i8 i_RootAct, i8 iJobId, i8 iAction=0, i8 iArg0=0, i8 iArg1=0);
     static i8 iBegin(i8 iJobId, i8 iAction=0, i8 iArg0=0, i8 iArg1=0);
+    static void vWriteCsv(void);
 
   private:
     Action* pAllotAction(void);
     void vDropLock(void);
+    void vFindRange_NL(i8& i_Min, i8& i_Max);
     void vGrabLock(void);
     void vLinkAction(Action* pRoot, Action* pAction);
     Action* pNewAction(Action *pRootAction);
     Action* pNewRoot(void);
+    Action* pNextAction(Action *pAction);
+    i8   iPercentFull_NL(void);
+    void vWriteToFile(void);
 
     Footer* aFooter(void);
   };

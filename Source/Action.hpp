@@ -49,8 +49,11 @@ namespace Maps
     Action();
     ~Action() noexcept(false);
   
-    void vReset();
-  
+    void vInit(i8 i_Action);
+    bool bIsRoot(void);
+    void vReset(void);
+    void vWrite(File* pFile);
+
     Footer* aFooter(void);
   };
   
