@@ -349,6 +349,8 @@ void Step::vIndexExactKey(MP_Task mpTask)
     goto LastBuffer;
   }
   
+  //vTrace("IndexBuffer: %p\n"_Stz, pIndexBuffer);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru the buffer till no more entries
   while (aItem) {
@@ -384,6 +386,10 @@ void Step::vIndexExactKey(MP_Task mpTask)
         RASSERT(bResult);
       }
     }
+    else {
+      // no exact match, break out
+      break;
+    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move to next entry in the buffer
@@ -393,6 +399,8 @@ void Step::vIndexExactKey(MP_Task mpTask)
     if ( ! aItem ) {
       // get next buffer from the current indexBuffer
       pIndexBuffer = pIndexBuffer->pNextBuffer();
+      
+      //vTrace("IndexBuffer: %p\n"_Stz, pIndexBuffer);
       
       if ( pIndexBuffer )
         aItem = pIndexBuffer->aLeadEntry();
