@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Link_t.cpp -- atomic test and set pointer                                  */
+/* Link_t.cpp -- non-locking atomic test and set pointer                      */
 /*============================================================================*/
 
 #include "Structures.h"
