@@ -63,36 +63,6 @@ ActionSequence::~ActionSequence(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get a new action (body)                                                    */
-/*----------------------------------------------------------------------------*/
-Action* ActionSequence::pNewBodyAction(Action *pHeadActio)
-{
-#ifdef WITH_ACTION_SEQUENCE
-  if (! gpActionSequence)
-    return nullptr;
-
-  return nullptr;
-#else
-  return nullptr;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* get a new action (head)                                                    */
-/*----------------------------------------------------------------------------*/
-Action* ActionSequence::pNewHeadAction(void)
-{
-#ifdef WITH_ACTION_SEQUENCE
-  if (! gpActionSequence)
-    return nullptr;
-  
-  return nullptr;
-#else
-  return nullptr;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* create or open ActivityMap (called by SE)                                  */
 /*----------------------------------------------------------------------------*/
 void ActionSequence::vOpenBySE(bool bStarting)
@@ -148,7 +118,9 @@ Action* ActionSequence::pAllotAction(void)
   
   Action* pAction = &m_oaAction[m_i_Action % m_nActions];
   
+  pAction->vReset();
   pAction->m_i_Action = m_i_Action;
+  pAction->m_iTick    = Tsc::iRdTscp();
   
   m_i_Action++;
   
@@ -182,13 +154,50 @@ void ActionSequence::vGrabLock(void)
 /*----------------------------------------------------------------------------*/
 /* link body into chain given by head                                         */
 /*----------------------------------------------------------------------------*/
-void ActionSequence::vLinkAction(Action* pHead, Action* pBody)
+void ActionSequence::vLinkAction(Action* pRoot, Action* pNewAction)
 {
-#ifdef WITH_ACTION_SEQUENCE
+  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
   
-  
-#endif
+  for (;;) {
+    
+    i8 iWhatRootLinksTo = * pRoot->m_wLink;
+    pNewAction->m_wLink.vSetWithoutTest(iWhatRootLinksTo);
+    
+    if (pRoot->m_wLink.bTestAndSet(iWhatRootLinksTo,pNewAction->m_i_Action))
+      break;
+  }
 }
+
+/*----------------------------------------------------------------------------*/
+/* get a new action (body)                                                    */
+/*----------------------------------------------------------------------------*/
+Action* ActionSequence::pNewAction(Action *pRootAction)
+{
+  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  
+  Action* pAction = pAllotAction();
+  
+  pAction->m_i_Root = pRootAction->m_i_Action;
+  
+  vLinkAction(pRootAction,pAction);
+
+  return pAction;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a new action (root)                                                    */
+/*----------------------------------------------------------------------------*/
+Action* ActionSequence::pNewRoot(void)
+{
+  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  
+  Action* pRootAction = pAllotAction();
+  
+  pRootAction->m_i_Root = pRootAction->m_i_Action;
+  
+  return pRootAction;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

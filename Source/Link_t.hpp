@@ -45,11 +45,19 @@ namespace Structures
     }
   
     /*------------------------------------------------------------------------*/
+    /* set (without testing)                                                  */
+    /*------------------------------------------------------------------------*/
+    void vSetWithoutTest(_CLASS wValue)
+    {
+      m_wLink = wValue;
+    }
+  
+    /*------------------------------------------------------------------------*/
     /* test and set                                                           */
     /*------------------------------------------------------------------------*/
     bool bTestAndSet(_CLASS wIfValue, _CLASS wSetValue)
     {
-      bool bWasSet = Atomic::bTestAndSet(&m_wLink,wIfValue,wSetValue);
+      bool bWasSet = Atomic::bTestAndSet((u8*)&m_wLink,wIfValue,wSetValue);
     
       return bWasSet;
     }

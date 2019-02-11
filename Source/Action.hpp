@@ -32,9 +32,10 @@ namespace Maps
   
   private:
     i8 m_i_Action;
+    i8 m_i_Root;
     i8 m_iTick;
-    i8 m_iRootId;
-    i8 m_iThisId;
+  
+    i8 m_iJobId;
     i8 m_iAction;
     i8 m_iArg0;
     i8 m_iArg1;
@@ -47,6 +48,8 @@ namespace Maps
   public:
     Action();
     ~Action() noexcept(false);
+  
+    void vReset();
   
     Footer* aFooter(void);
   };
