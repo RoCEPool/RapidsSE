@@ -132,6 +132,7 @@ void SePrompt::vPromptLoop(void)
     
     if (! bFindJobClass()) {
       vUnknownCommand();
+      vDumpTokenVec();
       continue;
     }
 
@@ -143,6 +144,7 @@ void SePrompt::vPromptLoop(void)
     if (m_pJob->m_bHasError) {
       //vTrace("job has error (maybe syntax error)\n"_Stz);
       vPostJob();
+      vDumpTokenVec();
       vDeleteJob();
       continue;
     }
@@ -164,6 +166,9 @@ void SePrompt::vPromptLoop(void)
     vJobUnlockMutex();
     
     vPostJob();
+    if (m_pJob->m_bHasError) {
+      vDumpTokenVec();
+    }
     
     vDeleteJob();
     
@@ -324,6 +329,20 @@ void SePrompt::vDeleteJob(void)
   
   // call the job delete function
   m_pJobClass->vDeleteJob(m_pSession,m_pJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump token vector                                                          */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vDumpTokenVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  s256 sCommand;
+  TokenVec* pTknVec = this->pTknVec();
+
+  pTknVec->vToString(sCommand);
+  vTrace("Command %lld tokens: %s\n"_Stz,pTknVec->nTokens(),sCommand.aStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -671,8 +690,7 @@ void SePrompt::vUnknownCommand(void)
   
   Token* pTkn = pTknVec()->pGet(0);
   
-  vTrace("error: Unknown command '%s'\n"_Stz,
-         pTkn->aText());
+  vTrace("error: Unknown command '%s'\n"_Stz,pTkn->aText());
 }
 
 /*----------------------------------------------------------------------------*/
