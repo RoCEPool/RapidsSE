@@ -105,7 +105,7 @@ u8 Lock::iLockDropRead(u8* pWord)
 #if defined(WITH_APPLE) || defined(WITH_LINUX)
   //u8 uResult = iDropRead(pWord);
   
-  bool b;
+  bool bWasSet;
   
   do {
     u8 uCurrent = *pWord;
@@ -115,9 +115,9 @@ u8 Lock::iLockDropRead(u8* pWord)
     
     u8 uRemoveReadLock = uCurrent - 1;
     
-    b = Atomic::bTestAndSet(pWord,uCurrent,uRemoveReadLock);
+    bWasSet = Atomic::bTestAndSet(pWord,uCurrent,uRemoveReadLock);
     
-  } while ( ! b );
+  } while ( ! bWasSet );
   
   u8 uResult = 1;
   
@@ -143,9 +143,9 @@ u8 Lock::iLockGrabRead(u8* pWord)
   
   u8 uAddReadLock = uCurrent + 1;
   
-  bool b = Atomic::bTestAndSet(pWord,uCurrent,uAddReadLock);
+  bool bWasSet = Atomic::bTestAndSet(pWord,uCurrent,uAddReadLock);
   
-  u8 uResult = b ? 1 : 0;
+  u8 uResult = bWasSet ? 1 : 0;
   
 #else
   u8 uResult = iGrabRead(pWord);
@@ -166,7 +166,7 @@ u8 Lock::iLockDropWrite(u8* pWord)
   
   assert (uCurrent == C_WRITELOCK);
   
-  bool b = Atomic::bTestAndSet(pWord,uCurrent,0);
+  bool bWasSet = Atomic::bTestAndSet(pWord,uCurrent,0);
   
   u8 uResult = 1;
 #else
@@ -191,8 +191,8 @@ u8 Lock::iLockGrabWrite(u8* pWord)
   
   u8 uAddWriteLock = uCurrent + C_WRITELOCK;
   
-  bool b = Atomic::bTestAndSet(pWord,uCurrent,uAddWriteLock);
-  if ( ! b )
+  bool bWasSet = Atomic::bTestAndSet(pWord,uCurrent,uAddWriteLock);
+  if ( ! bWasSet )
     return 0;
   
   uCurrent = C_WRITELOCK;
