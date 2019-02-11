@@ -51,22 +51,26 @@ Formatters::Formatters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
 
-  m_bDefault = true;
-  m_bAllowNonPrintable = false;
+  m_bDefault             = true;
+  m_bAllowNonPrintable   = false;
+
+  //
+  // these are the default values
+  //
+  
   m_cEnclosedBy_Leading  = '\0';
   m_cEnclosedBy_Trailing = m_cEnclosedBy_Leading;
   //m_cEnclosedBy_Leading  = '{';
   //m_cEnclosedBy_Trailing = '}';
+  m_cEscapeChar          = '\\';
+  m_cFieldDelimiter      = ',';
+  m_cRecordTerminator    = '\0';
+  m_eRecordEnd           = RE_NL;
   
-  m_cEscapeChar = '\\';
-  m_cFieldDelimiter = ',';
-  m_cRecordTerminator = '\0';
-  m_eRecordEnd = RE_NL;
-  
-  m_eDateComponent[0] = DC_YYYY;  // default is YYYY-MM-DD
-  m_eDateComponent[1] = DC_MM;
-  m_eDateComponent[2] = DC_DD;
-  m_cDateSeparator = '-';
+  m_eDateComponent[0]    = DC_YYYY;  // default is YYYY-MM-DD
+  m_eDateComponent[1]    = DC_MM;
+  m_eDateComponent[2]    = DC_DD;
+  m_cDateSeparator       = '-';
   
   _checkInitialised_(CN_FORMATTERS);
   
