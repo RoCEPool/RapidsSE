@@ -28,13 +28,13 @@ Action::Action(void)
 {
   _precondition_(_MAGIC_,CN_ACTION,_FOOTER_);
   
-  m_iTick   = 0;
-  m_iRootId = 0;
-  m_iThisId = 0;
-  m_iAction = 0;
-  m_iArg0   = 0;
-  m_iArg1   = 0;
-  
+  m_i_Action = 0;
+  m_iTick    = 0;
+  m_iRootId  = 0;
+  m_iThisId  = 0;
+  m_iAction  = 0;
+  m_iArg0    = 0;
+  m_iArg1    = 0;
   ASSERT(0 == *m_wLink);
 
  _checkInitialised_(CN_ACTION);

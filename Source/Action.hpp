@@ -22,7 +22,10 @@ namespace Maps
 
   class Action : public Object
   {
+  friend class ActionSequence;
+  
   private:
+    i8 m_i_Action;
     i8 m_iTick;
     i8 m_iRootId;
     i8 m_iThisId;

@@ -29,8 +29,15 @@ namespace Maps
 
     static void vOpenByApi(void);
     static void vOpenBySE(bool bStarting);
+    static Action* pNewBodyAction(Action *pHeadAction);
+    static Action* pNewHeadAction(void);
 
   private:
+    Action* pAllotAction(void);
+    void vDropLock(void);
+    void vGrabLock(void);
+    void vLinkAction(Action* pHead, Action* pBody);
+
     Footer* aFooter(void);
   };
   

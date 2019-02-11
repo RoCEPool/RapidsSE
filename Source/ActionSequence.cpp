@@ -63,6 +63,36 @@ ActionSequence::~ActionSequence(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get a new action (body)                                                    */
+/*----------------------------------------------------------------------------*/
+Action* ActionSequence::pNewBodyAction(Action *pHeadActio)
+{
+#ifdef WITH_ACTION_SEQUENCE
+  if (! gpActionSequence)
+    return nullptr;
+
+  return nullptr;
+#else
+  return nullptr;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a new action (head)                                                    */
+/*----------------------------------------------------------------------------*/
+Action* ActionSequence::pNewHeadAction(void)
+{
+#ifdef WITH_ACTION_SEQUENCE
+  if (! gpActionSequence)
+    return nullptr;
+  
+  return nullptr;
+#else
+  return nullptr;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* create or open ActivityMap (called by SE)                                  */
 /*----------------------------------------------------------------------------*/
 void ActionSequence::vOpenBySE(bool bStarting)
@@ -103,6 +133,62 @@ void ActionSequence::vOpenBySE(bool bStarting)
 #endif
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get a new mark in ActivityMap (non-locking)                                */
+/*----------------------------------------------------------------------------*/
+Action* ActionSequence::pAllotAction(void)
+{
+  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  
+  vGrabLock();
+  
+  Action* pAction = &m_oaAction[m_i_Action % m_nActions];
+  
+  pAction->m_i_Action = m_i_Action;
+  
+  m_i_Action++;
+  
+  vDropLock();
+  
+  return pAction;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop lock on ActionSequence                                                */
+/*----------------------------------------------------------------------------*/
+void ActionSequence::vDropLock(void)
+{
+  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock on ActionSequence                                                */
+/*----------------------------------------------------------------------------*/
+void ActionSequence::vGrabLock(void)
+{
+  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  
+  m_okLock.vGrabWrite();
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* link body into chain given by head                                         */
+/*----------------------------------------------------------------------------*/
+void ActionSequence::vLinkAction(Action* pHead, Action* pBody)
+{
+#ifdef WITH_ACTION_SEQUENCE
+  
+  
+#endif
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
