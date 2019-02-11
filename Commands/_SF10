@@ -1,6 +1,8 @@
 /*============================================================================*/
-/*  _SF1 - create and load TPC-H Lineitem table for SF1                       */
+/* _SF10 - create and load TPC-H Lineitem table for SF10                      */
 /*============================================================================*/
+
+startCluster;
 
 create table lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B
@@ -23,25 +25,26 @@ create table lineitem (
 );
 
 print "creating index on l_partkey...";
-CREATE INDEX idx ON lineitem(l_partkey);
+//CREATE INDEX idx ON lineitem(l_partkey);
 
 print "loading lineitem.csv..." ;
 
 timerStart;
-ld lineitem "/tpch/SF10/lineitem.csv" field_delimiter "|" record_ends "|" ;
+//ld lineitem "/tpch/SF10/lineitem.csv" field_delimiter "|" record_ends "|" ;
+ld lineitem "/tpch/SF10/lineitem.csv" ;
 timerEnd;
 
-anidx lineitem hidden;
-anidx lineitem idx;
-visidx lineitem idx;
+//anidx lineitem hidden;
+//anidx lineitem idx;
+//visidx lineitem idx;
 
-timerStart;
-compactidx lineitem idx;
-timerEnd;
+//timerStart;
+//compactidx lineitem idx;
+//timerEnd;
 
-anidx lineitem idx;
-visidx lineitem idx;
-space;
+//anidx lineitem idx;
+//visidx lineitem idx;
+//space;
 
 //                                              ----
 // 16 columns                                   174B

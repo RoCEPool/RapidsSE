@@ -63,7 +63,7 @@ Formatters::Formatters(void)
   m_cRecordTerminator = '\0';
   m_eRecordEnd = RE_NL;
   
-  m_eDateComponent[0] = DC_YYYY;  // default is YYYY=MM-DD
+  m_eDateComponent[0] = DC_YYYY;  // default is YYYY-MM-DD
   m_eDateComponent[1] = DC_MM;
   m_eDateComponent[2] = DC_DD;
   m_cDateSeparator = '-';
