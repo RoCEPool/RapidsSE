@@ -56,22 +56,6 @@ bool Jobs::_bIsValidJob(Base::eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(eCN eClassNo)
-: Object(eClassNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
-  
-  vInit();
-  
-  if (m_bMark)
-    vMarkJob("::Job"_Stz,""_Stz);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo, Session* pSession)
 : Object(eClassNo), JobDicPath(pSession)
 {
@@ -149,7 +133,7 @@ i8 Job::iNodeNo(i8 iJobId)
 /* get the originator node no of this job from the job id                     */
 /*----------------------------------------------------------------------------*/
 i8 Job::iOriginatorNode(i8 iJobId)
-{  
+{
   i8 iOriginatorNode = BitLib::uMaskOffLower48(iJobId);
   iOriginatorNode >>= 48;
   

@@ -157,7 +157,6 @@ namespace Jobs
     Mutex* m_pMutex;
   
   public:
-    Job(eCN eClassNo);
     Job(eCN eClassNo, Interface::Session* pSession);
     ~Job(void) noexcept(false);
     
