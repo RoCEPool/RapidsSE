@@ -251,7 +251,7 @@ void vTest10(void)
     //i8 i1 = Random::iInteger(-999999,999999);
     //i8 i2 = Random::iInteger(-999999,999999);
   
-    i8 iCmp = MemLib::iCompare(&i1, &i2, 8);
+    i8 iCmp = MemLib::iCompareWords(&i1, &i2, 8);
     //i8 iCmp2 = MemLib::iCompare2(&i1, &i2, 8);
   }
   

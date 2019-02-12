@@ -142,7 +142,7 @@ bool KeyData::bEqualTo(Item* aKeyItem1, Item* aKeyItem2)
   char* aCursorThis = aKey1->aByteSequence();
   char* aCursorThat = aKey2->aByteSequence();
   
-  i8 iCmp = MemLib::iCompare(aCursorThis, aCursorThat, nKeySize1);
+  i8 iCmp = MemLib::iCompareWords(aCursorThis, aCursorThat, nKeySize1);
   
   if (iCmp == 0)
     return true;
@@ -168,7 +168,7 @@ bool KeyData::bGreaterThan(Item* aKeyItem1, Item* aKeyItem2)
   char* aCursorThis = aKey1->aByteSequence();
   char* aCursorThat = aKey2->aByteSequence();
   
-  i8 iCmp = MemLib::iCompare(aCursorThis, aCursorThat, iCmpBytes);
+  i8 iCmp = MemLib::iCompareWords(aCursorThis, aCursorThat, iCmpBytes);
   
   if (iCmp > 0)
     return true;
@@ -199,7 +199,7 @@ bool KeyData::bLessThan(KeyWrk& xKeyItem1, Item* aKeyItem2)
   char* aCursorThis = aKey1->aByteSequence();
   char* aCursorThat = aKey2->aByteSequence();
     
-  i8 iCmp = MemLib::iCompare(aCursorThis, aCursorThat, iCmpBytes);
+  i8 iCmp = MemLib::iCompareWords(aCursorThis, aCursorThat, iCmpBytes);
     
   if (iCmp < 0)
     return true;

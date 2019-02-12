@@ -38,8 +38,7 @@ namespace Base
     static void  vCheckInitialised(void* aAddress, eCN eClass);
     static void  vCheckInitialised(void* aAddress, i8 nBytes);
     static void  vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo);
-    static i8    iCompare(const void* pVal1, const void* pVal2, i8 nBytes);
-    static i8    iCompare2(const void* pVal1, const void* pVal2, i8 nBytes);
+    static i8    iCompareWords(const void* pVal1, const void* pVal2, i8 nBytes);
     static void  vFreeBlock(void* aBlock, i8 nBytes);
     static i8    iGetTotalMemory(void);
     static void  vHexDump(void *aAddress, i8 nBytes);

@@ -95,7 +95,7 @@ void MemLib::vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* compare val1 to val2                                                       */
 /*----------------------------------------------------------------------------*/
-i8 MemLib::iCompare(const void* pVal1, const void* pVal2, i8 nBytes)
+i8 MemLib::iCompareWords(const void* pVal1, const void* pVal2, i8 nBytes)
 {
   //  if (gpAttachMap) {
   //    gpAttachMap->m_oStatistics.Memory.m_iCompareTotal += nBytes;
@@ -115,22 +115,6 @@ i8 MemLib::iCompare(const void* pVal1, const void* pVal2, i8 nBytes)
   }
   
   return 0;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* compare val1 to val2                                                       */
-/*----------------------------------------------------------------------------*/
-i8 MemLib::iCompare2(const void* pVal1, const void* pVal2, i8 nBytes)
-{
-//  if (gpAttachMap) {
-//    gpAttachMap->m_oStatistics.Memory.m_iCompareTotal += nBytes;
-//  }
-  
-  const i8 *s1 = (const i8*)pVal1;
-  const i8 *s2 = (const i8*)pVal2;
-  
-  return (*s1 - *s2);
 }
 
 /*----------------------------------------------------------------------------*/
