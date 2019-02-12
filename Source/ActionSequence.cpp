@@ -210,6 +210,8 @@ void ActionSequence::vBegin(Jobs::Job* pJob,
   
   Action* pRoot = gpActionSequence->pNewRootAction();
   
+  pJob->m_i_ActionRoot = pRoot->m_i_Action;
+  
   pRoot->m_iJobId   = pJob->m_iJobId;
   pRoot->m_eClassNo = pJob->eClass();
   pRoot->m_eAction  = eAction;

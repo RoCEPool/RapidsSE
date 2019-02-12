@@ -113,8 +113,8 @@ Job_Export::Job_Export(Interface::Session* pSession)
   
   _checkInitialised_(CN_JOB_EXPORT);
   
-  m_i_ActionRoot = ActionSequence::iBegin(m_iJobId,CN_JOB_EXPORT,AN_BEGIN);
-  ActionSequence::vAdd(m_i_ActionRoot,m_iJobId,CN_JOB_EXPORT,AN_CONSTRUCTOR);
+  ActionSequence::vBegin(this,AN_BEGIN);
+  ActionSequence::vAdd(this,AN_CONSTRUCTOR);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
 }
