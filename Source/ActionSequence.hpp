@@ -30,8 +30,10 @@ namespace Maps
     static void vOpenByApi(void);
     static void vOpenBySE(bool bStarting);
   
-    static i8 iAdd(i8 i_RootAct, i8 iJobId, i8 iAction=0, i8 iArg0=0, i8 iArg1=0);
-    static i8 iBegin(i8 iJobId, i8 iAction=0, i8 iArg0=0, i8 iArg1=0);
+    static void vAdd(i8 i_RootAct, i8 iJobId, eCN eClassNo,
+                     eAN eAction=AN_NONE, i8 iArg0=0, i8 iArg1=0);
+    static i8 iBegin(i8 iJobId,  eCN eClassNo,
+                     eAN eAction=AN_NONE, i8 iArg0=0, i8 iArg1=0);
     static void vWriteCsv(void);
 
   private:

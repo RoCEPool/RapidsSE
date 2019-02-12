@@ -9,8 +9,12 @@ namespace Maps
   {
   /*  0 */ AN_NONE=0,
   
-  /*    */ AN_ORIGINATORADDED,
-  /*    */ AN_PARTICIPANTADDED,
+  /*    */ AN_BEGIN,
+  /*    */ AN_CONSTRUCTOR,
+  /*    */ AN_DESTRUCTOR,
+
+  /*    */ AN_ADDDED_ORIGINATOR,
+  /*    */ AN_ADDED_PARTICIPANT,
 
   /*    */ AN_ENUMS,
   };
@@ -19,26 +23,30 @@ namespace Maps
   {
   /*  0 */ "NONE"_Stz,
 
-  /*    */ "ORIGINATORADDED"_Stz,
-  /*    */ "PARTICIPANTADDED"_Stz,
+  /*    */ "BEGIN"_Stz,
+  /*    */ "CONSTRUCTOR"_Stz,
+  /*    */ "DESTRUCTOR"_Stz,
+
+  /*    */ "ADDDED_ORIGINATOR"_Stz,
+  /*    */ "ADDED_PARTICIPANT"_Stz,
   
   /*    */ "ENUMS"_Stz,
   };
-  
 
   class Action : public Object
   {
   friend class ActionSequence;
   
   private:
-    i8 m_i_Action;
-    i8 m_i_Root;
-    i8 m_iTick;
+    i8  m_i_Action;
+    i8  m_i_Root;
+    i8  m_iTick;
   
-    i8 m_iJobId;
-    i8 m_iAction;
-    i8 m_iArg0;
-    i8 m_iArg1;
+    i8  m_iJobId;
+    eCN m_eClassNo;
+    eAN m_eAction;
+    i8  m_iArg0;
+    i8  m_iArg1;
   
     Link_t<i8> m_wLink;
   

@@ -422,7 +422,7 @@ void Job::vInit(void)
     m_bMark = true;
   else
     m_bMark = false;
-  m_i_Action = C_UNKNOWN;
+  m_i_ActionRoot = C_UNKNOWN;
   
   m_pJobClass        = nullptr;
   m_pExecutingTask   = nullptr;

@@ -110,43 +110,47 @@ void ActionSequence::vOpenBySE(bool bStarting)
 /*----------------------------------------------------------------------------*/
 /* add a new action to a sequence                                             */
 /*----------------------------------------------------------------------------*/
-i8 ActionSequence::iAdd(i8 i_RootAct, i8 iJobId, i8 iAction, i8 iArg0, i8 iArg1)
+void ActionSequence::vAdd(i8 i_RootAct, i8 iJobId, eCN eClassNo,
+                          eAN eAction, i8 iArg0, i8 iArg1)
 {
 #ifdef WITH_ACTION_SEQUENCE
   if (! gpActionSequence)
-    return -1;
+    return;
   
-  RASSERT(i_RootAct > -1);
+  if (C_UNKNOWN == i_RootAct)
+    return;
 
   Action* pRoot = &gpActionSequence->m_oaAction[i_RootAct];
   
   Action* pAdded = gpActionSequence->pNewAction(pRoot);
   
-  pAdded->m_iJobId  = iJobId;
-  pAdded->m_iAction = iAction;
-  pAdded->m_iArg0   = iArg0;
-  pAdded->m_iArg1   = iArg1;
+  pAdded->m_iJobId   = iJobId;
+  pAdded->m_eClassNo = eClassNo;
+  pAdded->m_eAction  = eAction;
+  pAdded->m_iArg0    = iArg0;
+  pAdded->m_iArg1    = iArg1;
   
-  return pAdded->m_i_Action;
 #else
-  return -1;
+
 #endif
 }
 
 /*----------------------------------------------------------------------------*/
 /* begin a new action sequence                                                */
 /*----------------------------------------------------------------------------*/
-i8 ActionSequence::iBegin(i8 iJobId, i8 iAction, i8 iArg0, i8 iArg1)
+i8 ActionSequence::iBegin(i8 iJobId, eCN eClassNo,
+                          eAN eAction, i8 iArg0, i8 iArg1)
 {
 #ifdef WITH_ACTION_SEQUENCE
   if (! gpActionSequence)
     return C_UNKNOWN;
   
   Action* pRoot = gpActionSequence->pNewRoot();
-  pRoot->m_iJobId  = iJobId;
-  pRoot->m_iAction = iAction;
-  pRoot->m_iArg0   = iArg0;
-  pRoot->m_iArg1   = iArg1;
+  pRoot->m_iJobId   = iJobId;
+  pRoot->m_eClassNo = eClassNo;
+  pRoot->m_eAction  = eAction;
+  pRoot->m_iArg0    = iArg0;
+  pRoot->m_iArg1    = iArg1;
 
   return pRoot->m_i_Action;
 #else

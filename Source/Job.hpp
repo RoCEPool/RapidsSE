@@ -143,7 +143,7 @@ namespace Jobs
 
     eJT  m_eJobTrace;    // job trace
     bool m_bMark;        // write activity marks?
-    i8   m_i_Action;     // action
+    i8   m_i_ActionRoot; // action
   
     JobClass*    m_pJobClass;        // job class
     Tasks::Task* m_pExecutingTask;   // task executing the job
