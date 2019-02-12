@@ -22,6 +22,7 @@ using namespace Prompt;
 #include "PromptNote.hpp"
 #include "PromptHelper.hpp"
 
+#include "Prompt_actionSequence.hpp"
 #include "Prompt_activityMap.hpp"
 #include "Prompt_am.hpp"
 #include "Prompt_amSection.hpp"
