@@ -454,11 +454,14 @@ Item* EntryBuffer::aInsertKeyTree(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // position on the initial buffer we will try to insert into
   
-  KeyData* aInsKey = xKeyWrk.aKey();
-  i8 iInsKeyLen = xKeyWrk.nKeySize();
+  //KeyData* aInsKey = xKeyWrk.aKey();
+  //i8 iInsKeyLen = xKeyWrk.nKeySize();
+  
+  //EntryBuffer* pPositionedBuffer =
+  //pRootKeyBuffer->pPositionPriorBuffer(aInsKey);
   
   EntryBuffer* pPositionedBuffer =
-  pRootKeyBuffer->pPositionPriorBuffer(aInsKey);
+  pRootKeyBuffer->pPositionPriorBuffer(xKeyWrk);
   
   ASSERT(0 == pPositionedBuffer->iLevelNo());
   //pPositionedBuffer->vShow();
@@ -2268,6 +2271,50 @@ EntryBuffer* EntryBuffer::pPositionPriorBuffer(KeyData* aFindKey)
 }
 
 /*----------------------------------------------------------------------------*/
+/* position at the L0 buffer into which key should be inserted                */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pPositionPriorBuffer(KeyWrk& xFindKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if ( ! nItems() ) {
+    ASSERT( 0 == iLevelNo());
+    return this;
+  }
+  
+  EntryBuffer* pEntryBuffer = this;
+  while (true) {
+    
+    // have we arrived at L0 ?
+    i8 iBufferLevel = pEntryBuffer->iLevelNo();
+    if (iBufferLevel == 0) {
+      break;
+    }
+    else {
+#ifdef USE_EB_LAZY_CHAIN
+      RASSERT( ! m_aLazyChain );
+#endif
+    }
+    
+    // get the entry before the given insert key
+    Item* aEntryPrior = pEntryBuffer->pPositionPriorEntry(xFindKey);
+    ASSERT(aEntryPrior);
+    if (aEntryPrior == pEntryBuffer->aSkipRoots())
+      aEntryPrior = pEntryBuffer->aNextEntry(aEntryPrior,0);
+    ASSERT(aEntryPrior);
+    
+    // get the index buffer of the entry
+    //pEntryBuffer->vShow();
+    ASSERT(pEntryBuffer != EntryBuffer::pRefdEntryBuffer(aEntryPrior));
+    pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aEntryPrior);
+    ASSERT(pEntryBuffer);
+    pEntryBuffer->vAssertEntryBuffer();
+  }
+  
+  return pEntryBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* scan thru skip list and return entry prior to key                          */
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::pPositionPriorEntry(KeyData* aFindKey)
@@ -2312,6 +2359,65 @@ Item* EntryBuffer::pPositionPriorEntry(KeyData* aFindKey)
 #else
       bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
 #endif
+      
+      if (bKeyIsGreaterEqual)
+        break;
+      
+      aScanEntry_sl = aNextEntry_sl;
+      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanOffset);
+    }
+  }
+  
+  return aScanEntry_sl;
+}
+
+/*----------------------------------------------------------------------------*/
+/* scan thru skip list and return entry prior to key                          */
+/*----------------------------------------------------------------------------*/
+Item* EntryBuffer::pPositionPriorEntry(KeyWrk& xFindKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+#ifdef USE_EB_LAZY_CHAIN
+  RASSERT( ! m_aLazyChain );
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (nItems() == 0)
+    return aSkipRoots();
+  
+  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  //i8 nKeyCols = pIdxColVec->nItems();
+  
+  Item* aScanEntry_sl = aSkipRoots();
+  
+  bool bKeyIsGreaterEqual;
+  
+  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
+       i_ScanOffset >= 0;
+       i_ScanOffset--) {
+    
+    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanOffset);
+    while (aNextEntry_sl) {
+      
+      KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
+      
+      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      
+      //#ifdef USE_EB_SINGLE_COLIDX
+      //      if (m_pIndex->bSingleColumn()) {
+      //        bKeyIsGreaterEqual = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
+      //        //RASSERT(bKeyIsGreaterEqual == aNextKey->bGreaterEqual(aFindKey,pIdxColVec));
+      //      }
+      //      else
+      //        bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+      //#else
+      //      bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+      //#endif
+      
+      bKeyIsGreaterEqual = KeyData::bGreaterEqual(aNextEntry_sl, xFindKey);
       
       if (bKeyIsGreaterEqual)
         break;

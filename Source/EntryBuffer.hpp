@@ -160,8 +160,14 @@ namespace Data
                                   EntryBuffer** ppRootKeyBuffer);
     EntryBuffer* pNewNextBuffer(void);
     Item*       aPopLazyChain(void);
+
+    //KEY_CMP:: TO GO
     EntryBuffer* pPositionPriorBuffer(KeyData* aFindKey);
     Item*       pPositionPriorEntry(KeyData* aFindKey);
+    
+    EntryBuffer* pPositionPriorBuffer(KeyWrk& xFindKey);
+    Item*       pPositionPriorEntry(KeyWrk& xFindKey);
+    
     void         vPositionPriorVecEntry(KeyData* aFindKey, Item** aaPriorVec,
                                         Item* aFindEntry);
     void         vPositionPriorVecBuffer(KeyData* aFindKey, Item** aaPriorVec,
