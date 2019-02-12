@@ -9,7 +9,7 @@ namespace Jobs
   {
   private:
     eJL  m_eJobsList;  // which job list
-    Lock m_okLock;      // lock
+    Lock m_okLock;     // lock
     i8   m_iNextJobId; // next job id
   
     SkipListNL* m_pJobsSkipList; // skip list of jobs (ordered by job id)

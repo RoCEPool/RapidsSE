@@ -50,6 +50,7 @@ namespace StorageEngine
     bool          m_bMarkResource[SR_ENUMS];
     EnumFlags     m_oMarkAction;
     Atomic        m_ixMonitorTake;
+    Atomic        m_ixNextJobId;
     i8            m_nObjectsInPool[CN_ENUMS];
     JobList*      m_pOriginatingJobs;
     JobList*      m_pParticipatingJobs;
