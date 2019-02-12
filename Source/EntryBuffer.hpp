@@ -170,7 +170,7 @@ namespace Data
     
     void         vPositionPriorVecEntry(KeyData* aFindKey, Item** aaPriorVec,
                                         Item* aFindEntry);
-    void         vPositionPriorVecBuffer(KeyData* aFindKey, Item** aaPriorVec,
+    void         vPositionPriorVecBuffer(Item* aFindKey, Item** aaPriorVec,
                                          EntryBuffer* pToBuffer);
 //    void         vPositionPriorVecBuffer2(KeyData* aFindKey, Item** aaPriorVec,
 //                                          EntryBuffer* pToBuffer);
