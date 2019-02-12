@@ -64,7 +64,7 @@ Job::Job(eCN eClassNo, Session* pSession)
   //vTrace("%s: CREATING JOB %p %s\n"_Stz,
   //       gpAttachMap->m_pGrid->pThisNode()->aNodeName(), this, aCN[eClass()]);
   
-  m_iJobId    = C_UNKNOWN;
+  m_iJobId    = ++gpAttachMap->m_ixNextJobId;
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
   m_i_State   = C_UNKNOWN;
