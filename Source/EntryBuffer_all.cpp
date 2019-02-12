@@ -195,9 +195,9 @@ void EntryBuffer::vDeleteEntry(Item** aaItem)
   
   Item* xPriorVec[gpAttachMap->m_nIndexOffsets];
   
-  KeyData* aKey = _aKeyData(aItem->aDataArea());
+  //KeyData* aKey = _aKeyData(aItem->aDataArea());
   
-  vPositionPriorVecEntry(aKey, xPriorVec, aItem);
+  vPositionPriorVecEntry(aItem, xPriorVec, aItem);
   
   vCutEntry(aItem,xPriorVec);
   
