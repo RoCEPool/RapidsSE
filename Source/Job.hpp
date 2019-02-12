@@ -162,6 +162,8 @@ namespace Jobs
     ~Job(void) noexcept(false);
     
     static bool bIsForeign(i8 iJobId);
+    static i8   iJobNo(i8 iJobId);
+    static i8   iNodeNo(i8 iJobId);
     static i8   iOriginatorNode(i8 iJobId);
     static i8   iAsNodeNo_Bits(i8 iNodeNo);
 
