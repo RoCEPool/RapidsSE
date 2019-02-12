@@ -163,6 +163,7 @@ namespace Jobs
     
     static bool bIsForeign(i8 iJobId);
     static i8   iOriginatorNode(i8 iJobId);
+    static i8   iAsNodeNo_Bits(i8 iNodeNo);
 
     Stz* sJobSeed(void);
     i8   iJobId(void);

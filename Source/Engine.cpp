@@ -842,14 +842,18 @@ void Engine::vStartSystem(void)
     vFatal("Cannot fine Node %s in the cluster"_Stz,
           gxArguments.m_sNodeName.aChar());
   
+  i8 iThisNodeNo = pThisNode->iNodeNo();
+  gpAttachMap->m_pGrid->vThisNode(iThisNodeNo);
+
+  gpAttachMap->m_ixNextJobId = Job::iAsNodeNo_Bits(iThisNodeNo);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   gpAttachMap->m_pApiState = new ApiState;
   
   // create the tx sets
   gpAttachMap->m_pTxSet = new TxSet(gpAttachMap->m_pGrid->iThisNode());
   
-  i8 iNodeNo = pThisNode->iNodeNo();
-  
-  gpAttachMap->m_pGrid->vThisNode(iNodeNo);
   
   // initialize the plan number
   gpAttachMap->m_ixPlanId = gpAttachMap->m_pGrid->iThisNode() << 48;
