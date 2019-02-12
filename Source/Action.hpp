@@ -13,8 +13,10 @@ namespace Maps
   /*    */ AN_CONSTRUCTOR,
   /*    */ AN_DESTRUCTOR,
 
-  /*    */ AN_ADDDED_ORIGINATOR,
+  /*    */ AN_ADDED_ORIGINATOR,
   /*    */ AN_ADDED_PARTICIPANT,
+  /*    */ AN_REMOVED_ORIGINATOR,
+  /*    */ AN_REMOVED_PARTICIPANT,
 
   /*    */ AN_ENUMS,
   };
@@ -27,8 +29,11 @@ namespace Maps
   /*    */ "CONSTRUCTOR"_Stz,
   /*    */ "DESTRUCTOR"_Stz,
 
-  /*    */ "ADDDED_ORIGINATOR"_Stz,
+  /*    */ "ADDED_ORIGINATOR"_Stz,
   /*    */ "ADDED_PARTICIPANT"_Stz,
+  
+  /*    */ "REMOVED_ORIGINATOR"_Stz,
+  /*    */ "REMOVED_PARTICIPANT"_Stz,
   
   /*    */ "ENUMS"_Stz,
   };
