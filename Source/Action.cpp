@@ -123,30 +123,30 @@ void Action::vWrite(File* pFile)
 {
   _precondition_(_MAGIC_,CN_ACTION);
   
-  pFile->vPrint(/* 0 */ "%03lld, %03lld, %lld, "
-                /* 1 */ "%03lld, %lld, %s, %03lld, %lls, "
-                /* 2 */ "%2lld, %s, "
-                /* 3 */ "%lld, %lld, "
-                /* 4 */ "%p, %lld\n"_Stz,
+  pFile->vPrint(/* 0 */ "[%03lld, %03lld, %lld] "
+                /* 1 */ "%16s"
+                /* 2 */ "[%14p, %03lld, %03lld, %1s] "
+                /* 3 */ "%20s"
+                /* 4 */ "(%2lld, %14p) "
+                /* 5 */ "<<%03lld>>\n"_Stz,
                 
                 /* 0 */ m_i_Action,
                         m_i_Root,
                         m_iTick,
                
-                /* 1 */ m_iJobId,
-                        (i8)m_eClassNo,
-                        aCN[m_eClassNo],
-                        m_iParentId,
-                        m_bWasRecv ? "RCVJOB" : "ntvjob",
+                /* 1 */ aCN[m_eClassNo],
                 
-                /* 2 */ (i8)m_eAction,
-                        aAN[m_eAction],
+                /* 2 */ m_aJob,
+                        m_iJobId,
+                        m_iParentId,
+                        m_bWasRecv ? "R" : "n",
 
-                /* 3 */ m_iArg0,
+                /* 3 */ aAN[m_eAction],
+
+                /* 4 */ m_iArg0,
                         m_iArg1,
                
-                /* 4 */ m_aJob,
-                        * m_wLink
+                /* 5 */ * m_wLink
                );
 }
 

@@ -241,12 +241,14 @@ Job* Jobs::pJob_Export_pre(Interface::Session* pSession)
 
   bool bResult = pJob_Export->bPopulateJob(pTokenVec);
 
-  if ( !bResult) {
+  if (! bResult) {
     i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
     pJob_Export->m_bHasError = true;
     pJob_Export->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
   }
 
+  ActionSequence::vAdd(pJob_Export,AN_PRE_PROMPT);
+  
   return pJob_Export;
 }
 
@@ -255,7 +257,9 @@ Job* Jobs::pJob_Export_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 void Jobs::vJob_Export_post(Interface::Session* pSession, Job* pJob)
 {
-  //Job_Export* pJob_Export = _pJob_Export(pJob);
+  Job_Export* pJob_Export = _pJob_Export(pJob);
+
+  ActionSequence::vAdd(pJob_Export,AN_POST_PROMPT,pJob_Export->m_bHasError);
 }
 
 /*----------------------------------------------------------------------------*/

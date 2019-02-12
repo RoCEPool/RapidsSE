@@ -90,7 +90,7 @@ void Step::vTaskAcksStore(MP_Task mpTask)
     gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
   }
   
-  ActionSequence::vAdd(pJob,AN_ACKS_REQUIRED,nAcksRequired);
+  ActionSequence::vAdd(pJob,AN_SET_ACKS_REQUIRED,nAcksRequired);
   
   pGivenTask->m_oAcksRemaining.vSetRemaining(nAcksRequired);
 
