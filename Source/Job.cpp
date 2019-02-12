@@ -128,9 +128,7 @@ bool Job::bIsForeign(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 i8 Job::iJobNo(i8 iJobId)
 {
-  i8 iMaskOffUpper16Bits = 0x0000FFFFFFFFFFFF;
-  
-  i8 iJobNo = iJobId & iMaskOffUpper16Bits;
+  i8 iJobNo = BitLib::uMaskOffUpper16(iJobId);
   
   return iJobNo;
 }
@@ -140,9 +138,8 @@ i8 Job::iJobNo(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 i8 Job::iNodeNo(i8 iJobId)
 {
-  i8 iMaskOffLower48Bits = 0xFFFF000000000000;
+  i8 iNodeNo = BitLib::uMaskOffLower48(iJobId);
   
-  i8 iNodeNo = iJobId & iMaskOffLower48Bits;
   iNodeNo >>= 48;
   
   return iNodeNo;
@@ -152,10 +149,8 @@ i8 Job::iNodeNo(i8 iJobId)
 /* get the originator node no of this job from the job id                     */
 /*----------------------------------------------------------------------------*/
 i8 Job::iOriginatorNode(i8 iJobId)
-{
-  i8 iMaskOffLower48Bits = 0xFFFF000000000000;
-  
-  i8 iOriginatorNode = iJobId & iMaskOffLower48Bits;
+{  
+  i8 iOriginatorNode = BitLib::uMaskOffLower48(iJobId);
   iOriginatorNode >>= 48;
   
   return iOriginatorNode;
