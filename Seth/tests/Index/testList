@@ -2,7 +2,7 @@ create.test
 createLoop.test
 createUnique.test
 emptyTable.test
-rangeQuery.test
+//rangeQuery.test
 indexEntry.test
 supplierEntry.test
 lineitemEntry.test
