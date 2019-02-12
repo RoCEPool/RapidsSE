@@ -32,8 +32,11 @@ Action::Action(void)
   m_i_Root   = 0;
   m_iTick    = 0;
   
+  m_aJob     = nullptr;
   m_iJobId   = 0;
   m_eClassNo = CN_NONE;
+  m_bWasRecv = false;
+  
   m_eAction  = AN_NONE;
   m_iArg0    = 0;
   m_iArg1    = 0;
@@ -68,7 +71,10 @@ void Action::vInit(i8 i_Action)
   m_i_Root   = C_UNKNOWN;
   m_iTick    = 0;
   
+  m_aJob     = nullptr;
   m_iJobId   = C_UNKNOWN;
+  m_bWasRecv = false;
+  
   m_eAction  = AN_NONE;
   m_iArg0    = 0;
   m_iArg1    = 0;
@@ -99,7 +105,10 @@ void Action::vReset(void)
   m_i_Root   = 0;
   m_iTick    = 0;
   
+  m_aJob     = nullptr;
   m_iJobId   = 0;
+  m_bWasRecv = false;
+  
   m_eAction  = AN_NONE;
   m_iArg0    = 0;
   m_iArg1    = 0;
@@ -114,27 +123,30 @@ void Action::vWrite(File* pFile)
 {
   _precondition_(_MAGIC_,CN_ACTION);
   
-  pFile->vPrint("%lld, %lld, %lld, "
-                "%lld, %lld, %s, "
-                "%lld, %s, "
-                "%lld, %lld, "
-                "%lld\n"_Stz,
+  pFile->vPrint(/* 0 */ "%03lld, %03lld, %lld, "
+                /* 1 */ "%03lld, %lld, %s, %03lld, %lls, "
+                /* 2 */ "%2lld, %s, "
+                /* 3 */ "%lld, %lld, "
+                /* 4 */ "%p, %lld\n"_Stz,
                 
-               m_i_Action,
-               m_i_Root,
-               m_iTick,
+                /* 0 */ m_i_Action,
+                        m_i_Root,
+                        m_iTick,
                
-               m_iJobId,
-               (i8)m_eClassNo,
-               aCN[m_eClassNo],
+                /* 1 */ m_iJobId,
+                        (i8)m_eClassNo,
+                        aCN[m_eClassNo],
+                        m_iParentId,
+                        m_bWasRecv ? "RCVJOB" : "ntvjob",
+                
+                /* 2 */ (i8)m_eAction,
+                        aAN[m_eAction],
 
-               (i8)m_eAction,
-               aAN[m_eAction],
-
-               m_iArg0,
-               m_iArg1,
+                /* 3 */ m_iArg0,
+                        m_iArg1,
                
-               * m_wLink
+                /* 4 */ m_aJob,
+                        * m_wLink
                );
 }
 

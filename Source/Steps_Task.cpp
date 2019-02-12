@@ -90,6 +90,8 @@ void Step::vTaskAcksStore(MP_Task mpTask)
     gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
   }
   
+  ActionSequence::vAdd(pJob,AN_ACKS_REQUIRED,nAcksRequired);
+  
   pGivenTask->m_oAcksRemaining.vSetRemaining(nAcksRequired);
 
   EXIT();
@@ -457,6 +459,8 @@ void Step::vTaskSleepUs(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(nMicroSeconds) )
     THROW_INVALID_DSTACK("task.sleepUs"_Stz);
   
+  ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
+  
   mpTask->vSleepUs(nMicroSeconds);
   mpTask->vState(TK_SLEEPING);
   
@@ -504,6 +508,9 @@ ENTRY("vTaskStateStore"_Stz);
     //RASSERT(pThatTask->bIsLocked());
   }
   
+  if (mpTask->m_pJob)                              //! why can there be no job??
+    ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_STATE_SET,iState);
+  
   pThatTask->m_eState = (eTK)iState;
   
   EXIT();
@@ -549,6 +556,8 @@ void Step::vTaskWait(MP_Task mpTask)
 {
   ENTRY("vTaskWait"_Stz);
   
+  ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_WAIT);
+  
   mpTask->vState(TK_WAITING);
 
   EXIT();
@@ -560,6 +569,8 @@ void Step::vTaskWait(MP_Task mpTask)
 void Step::vTaskYield(MP_Task mpTask)
 {
   ENTRY("vTaskYield"_Stz);
+  
+  ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_YIELD);
   
   mpTask->vState(TK_YIELDED);
   

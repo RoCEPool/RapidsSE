@@ -9,14 +9,24 @@ namespace Maps
   {
   /*  0 */ AN_NONE=0,
   
-  /*    */ AN_BEGIN,
-  /*    */ AN_CONSTRUCTOR,
-  /*    */ AN_DESTRUCTOR,
-
+  /*    */ AN_ACK_TASK,
+  /*    */ AN_ACKS_REQUIRED,
   /*    */ AN_ADDED_ORIGINATOR,
   /*    */ AN_ADDED_PARTICIPANT,
+  /*    */ AN_CONSTRUCTOR,
+  /*    */ AN_DESTRUCTOR,
+  /*    */ AN_RECV_JOB,
+  /*    */ AN_RECV_JOB_LOW_MEMORY,
   /*    */ AN_REMOVED_ORIGINATOR,
   /*    */ AN_REMOVED_PARTICIPANT,
+  /*    */ AN_ROOT,
+  /*    */ AN_SEND_JOB,
+  /*    */ AN_SET_ACKS,
+  /*    */ AN_TASK_SCHEDULE,
+  /*    */ AN_TASK_SLEEP,
+  /*    */ AN_TASK_STATE_SET,
+  /*    */ AN_TASK_WAIT,
+  /*    */ AN_TASK_YIELD,
 
   /*    */ AN_ENUMS,
   };
@@ -25,16 +35,25 @@ namespace Maps
   {
   /*  0 */ "NONE"_Stz,
 
-  /*    */ "BEGIN"_Stz,
-  /*    */ "CONSTRUCTOR"_Stz,
-  /*    */ "DESTRUCTOR"_Stz,
-
+  /*    */ "ACK_TASK"_Stz,
+  /*    */ "ACKS_REQUIRED"_Stz,
   /*    */ "ADDED_ORIGINATOR"_Stz,
   /*    */ "ADDED_PARTICIPANT"_Stz,
-  
+  /*    */ "CONSTRUCTOR"_Stz,
+  /*    */ "DESTRUCTOR"_Stz,
+  /*    */ "RECV_JOB"_Stz,
+  /*    */ "RECV_JOB_LOW_MEMORY"_Stz,
   /*    */ "REMOVED_ORIGINATOR"_Stz,
   /*    */ "REMOVED_PARTICIPANT"_Stz,
-  
+  /*    */ "ROOT"_Stz,
+  /*    */ "SEND_JOB"_Stz,
+  /*    */ "SET_ACKS"_Stz,
+  /*    */ "TASK_SCHEDULE"_Stz,
+  /*    */ "TASK_SLEEP"_Stz,
+  /*    */ "TASK_STATE_SET"_Stz,
+  /*    */ "TASK_WAIT"_Stz,
+  /*    */ "TASK_YIELD"_Stz,
+
   /*    */ "ENUMS"_Stz,
   };
 
@@ -47,12 +66,17 @@ namespace Maps
     i8  m_i_Root;
     i8  m_iTick;
   
-    i8  m_iJobId;
-    eCN m_eClassNo;
-    eAN m_eAction;
-    i8  m_iArg0;
-    i8  m_iArg1;
+    i8   m_iJobId;
+    eCN  m_eClassNo;
+    i8   m_iParentId;
+    bool m_bWasRecv;
+
+    eAN  m_eAction;
+    i8   m_iArg0;
+    i8   m_iArg1;
   
+    void* m_aJob;
+
     Link_t<i8> m_wLink;
   
     // must be last

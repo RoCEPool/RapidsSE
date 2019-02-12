@@ -185,11 +185,16 @@ void ActionSequence::vAdd(Jobs::Job* pJob,
   
   Action* pLinked = gpActionSequence->pNewLinkedAction(pRoot);
   
-  pLinked->m_iJobId   = pJob->m_iJobId;
-  pLinked->m_eClassNo = pJob->eClass();
+  pLinked->m_iJobId    = pJob->m_iJobId;
+  pLinked->m_eClassNo  = pJob->eClass();
+  pLinked->m_iParentId = pJob->m_iParentId;
+  pLinked->m_bWasRecv  = pJob->m_bWasReceived;
+  
   pLinked->m_eAction  = eAction;
   pLinked->m_iArg0    = iArg0;
   pLinked->m_iArg1    = iArg1;
+  
+  pLinked->m_aJob     = pJob;
 #else
   
 #endif
@@ -198,8 +203,8 @@ void ActionSequence::vAdd(Jobs::Job* pJob,
 /*----------------------------------------------------------------------------*/
 /* begin a new action sequence                                                */
 /*----------------------------------------------------------------------------*/
-void ActionSequence::vBegin(Jobs::Job* pJob,
-                            eAN eAction, i8 iArg0, i8 iArg1)
+void ActionSequence::vRoot(Jobs::Job* pJob,
+                           eAN eAction, i8 iArg0, i8 iArg1)
 {
 #ifdef WITH_ACTION_SEQUENCE
   if (! gpActionSequence)
@@ -212,11 +217,16 @@ void ActionSequence::vBegin(Jobs::Job* pJob,
   
   pJob->m_i_ActionRoot = pRoot->m_i_Action;
   
-  pRoot->m_iJobId   = pJob->m_iJobId;
-  pRoot->m_eClassNo = pJob->eClass();
+  pRoot->m_iJobId    = pJob->m_iJobId;
+  pRoot->m_eClassNo  = pJob->eClass();
+  pRoot->m_iParentId = pJob->m_iParentId;
+  pRoot->m_bWasRecv  = pJob->m_bWasReceived;
+  
   pRoot->m_eAction  = eAction;
   pRoot->m_iArg0    = iArg0;
   pRoot->m_iArg1    = iArg1;
+  
+  pRoot->m_aJob     = pJob;
 #else
 
 #endif

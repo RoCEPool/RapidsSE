@@ -40,8 +40,8 @@ namespace Maps
   
     static void vAdd(Jobs::Job* pJob,
                      eAN eAction=AN_NONE, i8 iArg0=0, i8 iArg1=0);
-    static void vBegin(Jobs::Job* pJob,
-                       eAN eAction=AN_NONE, i8 iArg0=0, i8 iArg1=0);
+    static void vRoot(Jobs::Job* pJob,
+                       eAN eAction=AN_ROOT, i8 iArg0=0, i8 iArg1=0);
   
     static void vWriteCsv(void);
 
