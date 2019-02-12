@@ -49,6 +49,7 @@ namespace Data
     
     static bool bEqualTo(Item* aKeyItem1, Item* aKeyItem2);
     static bool bGreaterThan(Item* aKeyItem1, Item* aKeyItem2);
+    static bool bGreaterEqual(Item* aKeyItem1, KeyWrk& xKeyItem2);
     static bool bLessThan(KeyWrk& xKeyItem1, Item* aKeyItem2);
     
     bool bLessThan(KeyData* aKey, IdxColVec* pIdxColVec);
