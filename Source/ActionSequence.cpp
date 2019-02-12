@@ -117,6 +117,9 @@ void ActionSequence::vAdd(i8 i_RootAct, i8 iJobId, eCN eClassNo,
   if (! gpActionSequence)
     return;
   
+  if (! gpAttachMap->m_oMarkAction.bFlagged(eClassNo))
+    return;
+  
   if (C_UNKNOWN == i_RootAct)
     return;
 
@@ -145,6 +148,9 @@ i8 ActionSequence::iBegin(i8 iJobId, eCN eClassNo,
   if (! gpActionSequence)
     return C_UNKNOWN;
   
+  if (! gpAttachMap->m_oMarkAction.bFlagged(eClassNo))
+    return C_UNKNOWN;
+
   Action* pRoot = gpActionSequence->pNewRoot();
   pRoot->m_iJobId   = iJobId;
   pRoot->m_eClassNo = eClassNo;

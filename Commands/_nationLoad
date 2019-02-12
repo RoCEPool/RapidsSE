@@ -20,12 +20,16 @@ markjob export on;
 markjob subExporter on;
 markjob;
 
+markact export on;
+markact subExporter on;
+markact;
+
 markres file on;
 markres socket on;
 markres;
 
 print "exporting nation.csv..." ;
-//am "##########################################################################\n\n";
+
 amSection "EXPORT" ;
 
 export nation "/tmp/nation_export.csv" ;
