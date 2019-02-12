@@ -64,8 +64,39 @@ Job::Job(eCN eClassNo, Session* pSession)
   //vTrace("%s: CREATING JOB %p %s\n"_Stz,
   //       gpAttachMap->m_pGrid->pThisNode()->aNodeName(), this, aCN[eClass()]);
   
-  vInit();
+  m_iJobId    = C_UNKNOWN;
+  m_iParentId = C_UNKNOWN;
+  m_eSeed     = SS_ENUMS;
+  m_i_State   = C_UNKNOWN;
+  m_i_Slot    = C_UNKNOWN;
+  m_eJobPhase = JP_NONE;
+  m_eJobList  = JL_NONE;
+  m_eJobState = JS_RUNNING;
+  m_bNoWait   = false;
+  m_bWasReceived = false;
   
+  m_eJobTrace = JT_NONE;
+  if (gpAttachMap->m_bMarkJobAll || gpAttachMap->m_bMarkJob[eClass()])
+    m_bMark = true;
+  else
+    m_bMark = false;
+  m_i_ActionRoot = C_UNKNOWN;
+  
+  m_pJobClass        = nullptr;
+  m_pExecutingTask   = nullptr;
+  m_pOriginatingTask = nullptr;
+  
+  m_iParticipantNode  = C_UNKNOWN;
+  m_oAcksRemaining.vCheckInit();
+  m_pCurrentBuffer = nullptr;
+  
+  
+  if (CN_JOB_NODEINFO == eClass())
+    m_pMutex = nullptr;
+  else
+    m_pMutex = new Mutex;
+  
+
   if (m_bMark)
     ActivityMap::vMarkInfo("::Job"_Stz,""_Stz);
 
@@ -414,45 +445,6 @@ void Job::vShow(s48K& s)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* initialize the job                                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vInit(void)
-{
-  m_iJobId    = C_UNKNOWN;
-  m_iParentId = C_UNKNOWN;
-  m_eSeed     = SS_ENUMS;
-  m_i_State   = C_UNKNOWN;
-  m_i_Slot    = C_UNKNOWN;
-  m_eJobPhase = JP_NONE;
-  m_eJobList  = JL_NONE;
-  m_eJobState = JS_RUNNING;
-  m_bNoWait   = false;
-  m_bWasReceived = false;
-
-  m_eJobTrace = JT_NONE;
-  if (gpAttachMap->m_bMarkJobAll || gpAttachMap->m_bMarkJob[eClass()])
-    m_bMark = true;
-  else
-    m_bMark = false;
-  m_i_ActionRoot = C_UNKNOWN;
-  
-  m_pJobClass        = nullptr;
-  m_pExecutingTask   = nullptr;
-  m_pOriginatingTask = nullptr;
-  
-  m_iParticipantNode  = C_UNKNOWN;
-  m_oAcksRemaining.vCheckInit();
-  m_pCurrentBuffer = nullptr;
-  
-  
-  if (CN_JOB_NODEINFO == eClass())
-    m_pMutex = nullptr;
-  else
-    m_pMutex = new Mutex;
-  
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

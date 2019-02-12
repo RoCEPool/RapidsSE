@@ -188,7 +188,6 @@ namespace Jobs
     void vShow(s48K& s);
   
   private:
-    void vInit(void);
   
   };
   
