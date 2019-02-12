@@ -10,7 +10,6 @@ namespace Jobs
   private:
     eJL  m_eJobsList;  // which job list
     Lock m_okLock;     // lock
-    i8   m_iNextJobId; // next job id
   
     SkipListNL* m_pJobsSkipList; // skip list of jobs (ordered by job id)
   
@@ -32,7 +31,6 @@ namespace Jobs
     void   vGrabLock(void);
     bool   bGrabLock(void);
     bool   bIsLocked(void);
-    i8     iNextJobId(void);
     bool   bRemoveJob(Job* pJob);
     i8     nJobs(void);
     

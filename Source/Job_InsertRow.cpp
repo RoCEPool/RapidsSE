@@ -243,8 +243,8 @@ Job* Jobs::pJob_InsertRow_pre(Interface::Session* pSession)
 //  }
   
   // get a jobId for the insertRow job
-  i8 iJobId = gpAttachMap->m_pOriginatingJobs->iNextJobId();
-  pJob_InsertRow->vJobId(iJobId);
+  //i8 iJobId = gpAttachMap->m_pOriginatingJobs->iNextJobId();
+  //pJob_InsertRow->vJobId(iJobId);
   //vTrace("InsertRow id %lld\n"_Stz, iJobId);
   
   return pJob_InsertRow;

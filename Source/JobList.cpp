@@ -51,7 +51,6 @@ JobList::JobList(CompareFp fpCompare, eJL eJobsList)
   
   m_eJobsList = eJobsList;
   m_okLock.vInitLock(LK_JOBS);
-  m_iNextJobId = gpAttachMap->m_pGrid->iThisNode() << 48;
   m_pJobsSkipList = new SkipListNL(C_UNQIUE_KEY, fpCompare);
   
   _checkInitialised_(CN_JOBLIST);
@@ -173,22 +172,6 @@ bool JobList::bIsLocked(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
   return m_okLock.bIsLocked();
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate next job id                                                       */
-/*----------------------------------------------------------------------------*/
-i8 JobList::iNextJobId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
-  
-  vGrabLock();
-  
-  i8 iJobId = m_iNextJobId++;
-  
-  vDropLock();
-  
-  return iJobId;
 }
 
 /*----------------------------------------------------------------------------*/
