@@ -168,8 +168,13 @@ namespace Data
     EntryBuffer* pPositionPriorBuffer(KeyWrk& xFindKey);
     Item*       pPositionPriorEntry(KeyWrk& xFindKey);
     
+    //KEY_CMP::TO GO
     void         vPositionPriorVecEntry(KeyData* aFindKey, Item** aaPriorVec,
                                         Item* aFindEntry);
+    
+    void         vPositionPriorVecEntry(Item* aFindKey, Item** aaPriorVec,
+                                        Item* aFindEntry);
+    
     void         vPositionPriorVecBuffer(Item* aFindKey, Item** aaPriorVec,
                                          EntryBuffer* pToBuffer);
 //    void         vPositionPriorVecBuffer2(KeyData* aFindKey, Item** aaPriorVec,
