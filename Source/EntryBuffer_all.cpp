@@ -1227,12 +1227,12 @@ void EntryBuffer::vCompact(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the prior vector to the entry being moved
     
-    KeyData* aMoveKey = _aKeyData(aMoveEntry->aDataArea());
+    //KeyData* aMoveKey = _aKeyData(aMoveEntry->aDataArea());
     
     //aKey->vShow(pIdxColVec);
     //vTrace("\n"_Stz);
     
-    vPositionPriorVecEntry(aMoveKey, xPriorVec, aMoveEntry);
+    vPositionPriorVecEntry(aMoveEntry, xPriorVec, aMoveEntry);
     
     if (m_iLevelNo) {
       //vDumpPriorVec(xPriorVec);
