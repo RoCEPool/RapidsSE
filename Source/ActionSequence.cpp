@@ -140,7 +140,7 @@ i8 ActionSequence::iBegin(i8 iJobId, i8 iAction, i8 iArg0, i8 iArg1)
 {
 #ifdef WITH_ACTION_SEQUENCE
   if (! gpActionSequence)
-    return -1;
+    return C_UNKNOWN;
   
   Action* pRoot = gpActionSequence->pNewRoot();
   pRoot->m_iJobId  = iJobId;
@@ -150,7 +150,7 @@ i8 ActionSequence::iBegin(i8 iJobId, i8 iAction, i8 iArg0, i8 iArg1)
 
   return pRoot->m_i_Action;
 #else
-  return -1;
+  return C_UNKNOWN;
 #endif
 }
 

@@ -130,20 +130,21 @@ namespace Jobs
   public:
     i8  m_iJobId;     // job id
     i8  m_iParentId;  // job id of parent job which spawned this JK_CHILD job
+    eSS m_eSeed;      // task seed
     i8  m_i_State;    // which session state
     i8  m_i_Slot;     // slot this sub truncate truncates
     eJP m_eJobPhase;  // which phase the job is in
     eJS m_eJobState;  // job state
     eJL m_eJobList;   // which job list is job currently in?
+    bool m_bNoWait;      // no wait
+    bool m_bWasReceived; // job was received over a socket
 
     Decider m_oAcksRemaining;  // acks remaining
 
-    eSS  m_eSeed;        // task seed
     eJT  m_eJobTrace;    // job trace
-    bool m_bNoWait;      // no wait
     bool m_bMark;        // write activity marks?
-    bool m_bWasReceived; // job was received over a socket
-
+    i8   m_i_Action;     // action
+  
     JobClass*    m_pJobClass;        // job class
     Tasks::Task* m_pExecutingTask;   // task executing the job
     Tasks::Task* m_pOriginatingTask; // originating task of the request

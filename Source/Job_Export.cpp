@@ -113,6 +113,8 @@ Job_Export::Job_Export(Interface::Session* pSession)
   
   _checkInitialised_(CN_JOB_EXPORT);
   
+  m_i_Action = ActionSequence::iBegin(0);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
 }
 
