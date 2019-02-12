@@ -1814,10 +1814,10 @@ void EntryBuffer::vInsertKeySkip(Item* aKeyEntry)
   
   Item* xPriorVec[gpAttachMap->m_nIndexOffsets];
   
-  KeyData* aKey = _aKeyData(aKeyEntry->aDataArea());
+  //KeyData* aKey = _aKeyData(aKeyEntry->aDataArea());
   
   if (0 == m_iLevelNo)
-    vPositionPriorVecEntry(aKey, xPriorVec, nullptr);
+    vPositionPriorVecEntry(aKeyEntry, xPriorVec, nullptr);
   else {
     EntryBuffer* pToBuffer = EntryBuffer::pRefdEntryBuffer(aKeyEntry);
     vPositionPriorVecBuffer(aKeyEntry, xPriorVec, pToBuffer);
@@ -2530,7 +2530,7 @@ void EntryBuffer::vPositionPriorVecEntry(Item* aFindKey, Item* aPriorVec[],
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   i8 iFindLevels = aFindEntry ? aFindEntry->nOffsets() - 1 : 2;
   
