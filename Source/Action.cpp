@@ -33,6 +33,7 @@ Action::Action(void)
   m_iTick    = 0;
   
   m_iJobId   = 0;
+  m_eClassNo = CN_NONE;
   m_eAction  = AN_NONE;
   m_iArg0    = 0;
   m_iArg1    = 0;
@@ -113,10 +114,10 @@ void Action::vWrite(File* pFile)
 {
   _precondition_(_MAGIC_,CN_ACTION);
   
-  pFile->vPrint("%lld, %lld, %lld "
-                "%lld, %lld,  %s "
-                "%lld, %s "
-                "%lld, %lld "
+  pFile->vPrint("%lld, %lld, %lld, "
+                "%lld, %lld, %s, "
+                "%lld, %s, "
+                "%lld, %lld, "
                 "%lld\n"_Stz,
                 
                m_i_Action,
@@ -124,10 +125,10 @@ void Action::vWrite(File* pFile)
                m_iTick,
                
                m_iJobId,
-               m_eClassNo,
+               (i8)m_eClassNo,
                aCN[m_eClassNo],
 
-               m_eAction,
+               (i8)m_eAction,
                aAN[m_eAction],
 
                m_iArg0,

@@ -157,6 +157,7 @@ i8 ActionSequence::iBegin(i8 iJobId, eCN eClassNo,
   pRoot->m_eAction  = eAction;
   pRoot->m_iArg0    = iArg0;
   pRoot->m_iArg1    = iArg1;
+  pRoot->m_wLink.vSetWithoutTest(C_UNKNOWN);
 
   return pRoot->m_i_Action;
 #else
@@ -219,7 +220,7 @@ void ActionSequence::vDropLock(void)
 /*----------------------------------------------------------------------------*/
 void ActionSequence::vFindRange_NL(i8& i_Min, i8& i_Max)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
   
   RASSERT(m_okLock.bIsLocked());
   
@@ -301,7 +302,7 @@ Action* ActionSequence::pNewRoot(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a new action (body)                                                    */
+/* get next action                                                            */
 /*----------------------------------------------------------------------------*/
 Action* ActionSequence::pNextAction(Action *pAction)
 {
@@ -309,7 +310,7 @@ Action* ActionSequence::pNextAction(Action *pAction)
   
   i8 i_NextAction = * pAction->m_wLink;
   
-  if (i_NextAction == -1)
+  if (i_NextAction == C_UNKNOWN)
     return nullptr;
   
   Action* pNextAction = &m_oaAction[i_NextAction % m_nActions];;
@@ -368,8 +369,6 @@ void ActionSequence::vWriteToFile(void)
   
   s256 sAsPath("/tmp/ActionSequence.csv"_Stz);
   
-  i8 iTotalDelta = 0;
-  
   File* pActSeqFile = new File();
   
   bool bOpened = pActSeqFile->bOpenWrite(sAsPath);
@@ -385,21 +384,21 @@ void ActionSequence::vWriteToFile(void)
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
   
-  i8 i_MinMark;
-  i8 i_MaxMark;
+  i8 i_Min;
+  i8 i_Max;
   
-  vFindRange_NL(i_MinMark,i_MaxMark);
+  vFindRange_NL(i_Min,i_Max);
   
-  for (i8 i_Mark = i_MinMark + 1; i_Mark <= i_MaxMark; i_Mark++) {
+  for (i8 i_Action = i_Min; i_Action <= i_Max; i_Action++) {
 
-    Action* pAction = &m_oaAction[i_MinMark % m_nActions];
+    Action* pAction = &m_oaAction[i_Action % m_nActions];
     
     if (! pAction->bIsRoot())
       continue;
 
     pAction->vWrite(pActSeqFile);
     
-    while (pAction = pNextAction(pAction))
+    while ( (pAction = pNextAction(pAction)) )
       pAction->vWrite(pActSeqFile);
   }
   
