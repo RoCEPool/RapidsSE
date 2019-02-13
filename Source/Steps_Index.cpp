@@ -357,12 +357,14 @@ void Step::vIndexExactKey(MP_Task mpTask)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check if entry matches key
-    bool bIsEqual = false;
-    bool bSame = _aKeyData(aItem->aDataArea())
-                         ->bJuxtaCompare(JC_SAME, xKeyWrk.aKey(),
-                                         pIndex->pIdxColVec(), 1, bIsEqual);
+//    bool bIsEqual = false;
+//    bool bSame = _aKeyData(aItem->aDataArea())
+//                         ->bJuxtaCompare(JC_SAME, xKeyWrk.aKey(),
+//                                         pIndex->pIdxColVec(), 1, bIsEqual);
     
-    if (bSame) {
+    eKC eCompare = KeyData::eCompare(aItem, xKeyWrk);
+
+    if (eCompare == KC_SAME) {
       
       // get the dataRow from the hidden index
       Item* aDataRowEntry = (Item*)_aItem(aItem->aRefdItem());

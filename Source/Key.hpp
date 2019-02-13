@@ -23,6 +23,24 @@ namespace Data
     /*  4 */ "ENUMS"_Stz,
   };
   
+  enum eKC // KeyCompare
+  {
+    /*  0 */ KC_NONE=0,
+    /*  1 */ KC_BEFORE,
+    /*  2 */ KC_SAME,
+    /*  3 */ KC_AFTER,
+    /*  4 */ KC_ENUMS
+  };
+  
+  static Stz* aKC[]
+  {
+    /*  0 */ "NONE"_Stz,
+    /*  1 */ "BEFORE"_Stz,
+    /*  2 */ "SAME"_Stz,
+    /*  3 */ "AFTER"_Stz,
+    /*  4 */ "ENUMS"_Stz,
+  };
+  
   class KeyData
   {
   private:
@@ -45,6 +63,8 @@ namespace Data
   
     i8    nKeySize(IdxColVec* pIdxColVec);
     
+    static eKC eCompare(Item* aKeyItem1, KeyWrk& xKeyItem2);
+    
     static char* aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor);
     
     static bool bEqualTo(Item* aKeyItem1, Item* aKeyItem2);
@@ -60,7 +80,7 @@ namespace Data
     //bool bNotEqual(KeyData* aKey, IdxColVec* pIdxColVec);
     //bool bGreaterEqual(KeyData* aKey, IdxColVec* pIdxColVec);
     //bool bGreaterEqualSingle(KeyData* aKey, Index* pIndex);
-    bool bGreaterThan(KeyData* aKey, IdxColVec* pIdxColVec);
+    //bool bGreaterThan(KeyData* aKey, IdxColVec* pIdxColVec);
     //bool bGreaterThanSingle(KeyData* aKey, Index* pIndex);
 
     bool bJuxtaCompare(eJC eJuxtaCompare, KeyData* aKey,

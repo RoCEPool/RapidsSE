@@ -112,6 +112,32 @@ i8 KeyData::nKeySize(IdxColVec* pIdxColVec)
   return nKeySize;
 }
 
+/*----------------------------------------------------------------------------*/
+/* compare key1 and key2                                                      */
+/*----------------------------------------------------------------------------*/
+eKC KeyData::eCompare(Item* aKeyItem1, KeyWrk& xKeyItem2)
+{  
+  i8 nKeySize1 = aKeyItem1->nSizeData();
+  i8 nKeySize2 = xKeyItem2.nKeySize();
+  
+  KeyData* aKey1 = _aKeyData(aKeyItem1->aDataArea());
+  KeyData* aKey2 = xKeyItem2.aKey();
+  
+  i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
+  
+  char* aCursorThis = aKey1->aByteSequence();
+  char* aCursorThat = aKey2->aByteSequence();
+  
+  i8 iCmp = MemLib::iCompareWords(aCursorThis, aCursorThat, iCmpBytes);
+  
+  if (iCmp == 0)
+    return KC_SAME;
+  
+  if (iCmp < 0)
+    return KC_BEFORE;
+  
+  return KC_AFTER;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get next element from key                                                  */
@@ -170,8 +196,7 @@ bool KeyData::bGreaterThan(Item* aKeyItem1, Item* aKeyItem2)
     return true;
   
   if (iCmp == 0) {
-    if (nKeySize1 > nKeySize2)
-      return true;
+    return true;
   }
   
   return false;
@@ -198,10 +223,8 @@ bool KeyData::bGreaterEqual(Item* aKeyItem1, KeyWrk& xKeyItem2)
   if (iCmp > 0)
     return true;
   
-  if (iCmp == 0) {
-    if (nKeySize1 >= nKeySize2)
-      return true;
-  }
+  if (iCmp == 0)
+    return true;
   
   return false;
 }
@@ -227,10 +250,8 @@ bool KeyData::bGreaterEqual(Item* aKeyItem1, Item* aKeyItem2)
   if (iCmp > 0)
     return true;
   
-  if (iCmp == 0) {
-    if (nKeySize1 >= nKeySize2)
-      return true;
-  }
+  if (iCmp == 0)
+    return true;
   
   return false;
 }
@@ -256,11 +277,9 @@ bool KeyData::bLessThan(KeyWrk& xKeyItem1, Item* aKeyItem2)
   if (iCmp < 0)
     return true;
  
-  if (iCmp == 0) {
-    if (nKeySize1 < nKeySize2)
-      return true;
-  }
-    
+  if (iCmp == 0)
+    return true;
+
   return false;
 }
 
@@ -461,31 +480,31 @@ bool KeyData::bNotEqual(Item* aKeyItem1, Item* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* if this key greater than given key?                                        */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bGreaterThan(KeyData* aKeyThat, IdxColVec* pIdxColVec)
-{
-  bool bGreaterThan = false;
-  
-  char* aCursorThis = aByteSequence();
-  char* aCursorThat = aKeyThat->aByteSequence();
-  
-  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
-    
-    Column* pColumn = pIdxColVec->pGet(i_Column);
-    
-    i8 nBytesThis;
-    i8 nBytesThat;
-    
-    char* aDatumThis = pColumn->aValue(nBytesThis,&aCursorThis);
-    char* aDatumThat = pColumn->aValue(nBytesThat,&aCursorThat);
-    
-    bGreaterThan = pColumn->bGreaterThan(aDatumThis,aDatumThat);
-    
-    if (!bGreaterThan)
-      break;
-  }
-  
-  return bGreaterThan;
-}
+//bool KeyData::bGreaterThan(KeyData* aKeyThat, IdxColVec* pIdxColVec)
+//{
+//  bool bGreaterThan = false;
+//
+//  char* aCursorThis = aByteSequence();
+//  char* aCursorThat = aKeyThat->aByteSequence();
+//
+//  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
+//
+//    Column* pColumn = pIdxColVec->pGet(i_Column);
+//
+//    i8 nBytesThis;
+//    i8 nBytesThat;
+//
+//    char* aDatumThis = pColumn->aValue(nBytesThis,&aCursorThis);
+//    char* aDatumThat = pColumn->aValue(nBytesThat,&aCursorThat);
+//
+//    bGreaterThan = pColumn->bGreaterThan(aDatumThis,aDatumThat);
+//
+//    if (!bGreaterThan)
+//      break;
+//  }
+//
+//  return bGreaterThan;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* juxta-compare this key with given key                                      */
