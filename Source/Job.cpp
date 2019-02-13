@@ -81,6 +81,12 @@ Job::Job(eCN eClassNo, Session* pSession)
   else
     m_bMark = false;
   m_i_Activity   = C_UNKNOWN;
+  
+  if ( gpAttachMap->m_oMarkAction.bAll() ||
+       gpAttachMap->m_oMarkAction.bFlagged(eClass()) )
+    m_bMarkAction  = true;
+  else
+    m_bMarkAction  = false;
   m_i_ActionRoot = C_UNKNOWN;
   
   m_pJobClass        = nullptr;
@@ -96,11 +102,10 @@ Job::Job(eCN eClassNo, Session* pSession)
     m_pMutex = nullptr;
   else
     m_pMutex = new Mutex;
-  
 
   if (m_bMark)
     ActivityMap::vMarkInfo("::Job"_Stz,""_Stz);
-
+  
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
 
@@ -110,6 +115,8 @@ Job::Job(eCN eClassNo, Session* pSession)
 Job::~Job(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+  
+  ActionSequence::vAdd(this,AN_DESTRUCTOR);
   
   delete m_pMutex;
   

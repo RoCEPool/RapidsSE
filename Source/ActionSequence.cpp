@@ -175,8 +175,8 @@ void ActionSequence::vAdd(Jobs::Job* pJob,
   if (! gpActionSequence)
     return;
   
-  if (! gpAttachMap->m_oMarkAction.bFlagged(pJob->eClass()))
-    return;
+  if (! (pJob->m_bMarkAction ||
+         gpAttachMap->m_oMarkAction.bFlagged(pJob->eClass())) )
 
   if (C_UNKNOWN == pJob->m_i_ActionRoot)
     return;
@@ -210,7 +210,8 @@ void ActionSequence::vRoot(Jobs::Job* pJob,
   if (! gpActionSequence)
     return;
 
-  if (! gpAttachMap->m_oMarkAction.bFlagged(pJob->eClass()))
+  if (! (pJob->m_bMarkAction ||
+         gpAttachMap->m_oMarkAction.bFlagged(pJob->eClass())) )
     return;
   
   Action* pRoot = gpActionSequence->pNewRootAction();
