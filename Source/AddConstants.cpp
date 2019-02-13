@@ -126,7 +126,12 @@ void Axioms::vAddConstants(void)
   /*  0 */ vAddConstant("AN_REMOVED_ORIGINATOR"_Stz, AN_REMOVED_ORIGINATOR);
   /*  0 */ vAddConstant("AN_REMOVED_PARTICIPANT"_Stz,AN_REMOVED_PARTICIPANT);
   /*  0 */ vAddConstant("AN_ROOT"_Stz,               AN_ROOT);
+  /*  0 */ vAddConstant("AN_SEED_CAN"_Stz,           AN_SEED_CAN);
+  /*  0 */ vAddConstant("AN_SEED_END"_Stz,           AN_SEED_END);
+  /*  0 */ vAddConstant("AN_SEED_EXE"_Stz,           AN_SEED_EXE);
   /*  0 */ vAddConstant("AN_SEED_RCV"_Stz,           AN_SEED_RCV);
+  /*  0 */ vAddConstant("AN_SEED_REQ"_Stz,           AN_SEED_REQ);
+  /*  0 */ vAddConstant("AN_SEED_RUN"_Stz,           AN_SEED_RUN);
   /*  0 */ vAddConstant("AN_SEND_JOB"_Stz,           AN_SEND_JOB);
   /*  0 */ vAddConstant("AN_SET_ACKS_REQUIRED"_Stz,  AN_SET_ACKS_REQUIRED);
   /*  0 */ vAddConstant("AN_TASK_LOCKED"_Stz,        AN_TASK_LOCKED);

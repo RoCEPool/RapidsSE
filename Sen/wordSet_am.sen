@@ -5,13 +5,73 @@
 " wordSet_am.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* mark receive seed action                                                   */
+/* mark cancel seed action                                                    */
 /*----------------------------------------------------------------------------*/
-: an_seed_rcv immediate
+: an::seed_can immediate
 
   word::this word.name ,
 
-  16 ,
+  POSTPONE AN_SEED_CAN
+
+  POSTPONE ActionSequence::markSeed
+;
+
+/*----------------------------------------------------------------------------*/
+/* mark end seed action                                                       */
+/*----------------------------------------------------------------------------*/
+: an::seed_end immediate
+
+  word::this word.name ,
+
+  POSTPONE AN_SEED_END
+
+  POSTPONE ActionSequence::markSeed
+;
+
+/*----------------------------------------------------------------------------*/
+/* mark exe seed action                                                       */
+/*----------------------------------------------------------------------------*/
+: an::seed_exe immediate
+
+  word::this word.name ,
+
+  POSTPONE AN_SEED_EXE
+
+  POSTPONE ActionSequence::markSeed
+;
+
+/*----------------------------------------------------------------------------*/
+/* mark receive seed action                                                   */
+/*----------------------------------------------------------------------------*/
+: an::seed_rcv immediate
+
+  word::this word.name ,
+
+  POSTPONE AN_SEED_RCV
+
+  POSTPONE ActionSequence::markSeed
+;
+
+/*----------------------------------------------------------------------------*/
+/* mark run seed action                                                       */
+/*----------------------------------------------------------------------------*/
+: an::seed_req immediate
+
+  word::this word.name ,
+
+  AN_SEED_REQ ,
+
+  POSTPONE ActionSequence::markSeed
+;
+
+/*----------------------------------------------------------------------------*/
+/* mark run seed action                                                       */
+/*----------------------------------------------------------------------------*/
+: an::seed_run immediate
+
+  word::this word.name ,
+
+  AN_SEED_RCV ,
 
   POSTPONE ActionSequence::markSeed
 ;

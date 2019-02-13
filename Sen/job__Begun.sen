@@ -58,7 +58,7 @@
 : Job__Begun_rcv ( -- )
 
   >>am <SEED_RCV>
-  an_seed_rcv
+  an::seed_rcv
 
   //
   // where:  On the originator node.
