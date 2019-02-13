@@ -9,8 +9,8 @@ namespace Maps
   {
   /*  0 */ AN_NONE=0,
   
-  /*    */ AN_ACK_NATIVE_TASK,
-  /*    */ AN_ACK_RECEIVED_TASK,
+  /*    */ AM_DECIDER,
+  /*    */ AN_ACK_TASK,
   /*    */ AN_ADDED_ORIGINATOR,
   /*    */ AN_ADDED_PARTICIPANT,
   /*    */ AN_CONSTRUCTOR,
@@ -26,8 +26,10 @@ namespace Maps
   /*    */ AN_ROOT,
   /*    */ AN_SEND_JOB,
   /*    */ AN_SET_ACKS_REQUIRED,
+  /*    */ AN_TASK_LOCKED,
   /*    */ AN_TASK_SCHEDULE,
   /*    */ AN_TASK_SLEEP,
+  /*    */ AN_TASK_STATE,
   /*    */ AN_TASK_STATE_SET,
   /*    */ AN_TASK_WAIT,
   /*    */ AN_TASK_YIELD,
@@ -39,8 +41,8 @@ namespace Maps
   {
   /*  0 */ "NONE"_Stz,
 
-  /*    */ "ACK_NATIVE_TASK"_Stz,
-  /*    */ "ACK_RECEIVED_TASK"_Stz,
+  /*    */ "AM_DECIDER"_Stz,
+  /*    */ "ACK_TASK"_Stz,
   /*    */ "ADDED_ORIGINATOR"_Stz,
   /*    */ "ADDED_PARTICIPANT"_Stz,
   /*    */ "CONSTRUCTOR"_Stz,
@@ -56,8 +58,10 @@ namespace Maps
   /*    */ "ROOT"_Stz,
   /*    */ "SEND_JOB"_Stz,
   /*    */ "SET_ACKS_REQUIRED"_Stz,
+  /*    */ "TASK_LOCKED"_Stz,
   /*    */ "TASK_SCHEDULE"_Stz,
   /*    */ "TASK_SLEEP"_Stz,
+  /*    */ "TASK_STATE"_Stz,
   /*    */ "TASK_STATE_SET"_Stz,
   /*    */ "TASK_WAIT"_Stz,
   /*    */ "TASK_YIELD"_Stz,
@@ -70,20 +74,27 @@ namespace Maps
   friend class ActionSequence;
   
   private:
-    i8  m_i_Action;
-    i8  m_i_Root;
-    i8  m_iTick;
-  
-    i8   m_iJobId;
-    eCN  m_eClassNo;
-    i8   m_iParentId;
-    bool m_bWasRecv;
-
-    eAN  m_eAction;
-    i8   m_iArg0;
-    i8   m_iArg1;
+    i8    m_i_Action;
+    i8    m_i_Root;
+    i8    m_iTick;
   
     void* m_aJob;
+    i8    m_iJobId;
+    eCN   m_eClassNo;
+    i8    m_iParentId;
+    bool  m_bWasRecv;
+    i8    m_i_Activity;
+
+    void* m_aJob_Arg;
+    i8    m_iJobId_Arg;
+    eCN   m_eClassNo_Arg;
+    i8    m_iParentId_Arg;
+    bool  m_bWasRecv_Arg;
+    i8    m_i_Activity_Arg;
+
+    eAN   m_eAction;
+    i8    m_iArg0;
+    i8    m_iArg1;
 
     Link_t<i8> m_wLink;
   
@@ -98,6 +109,7 @@ namespace Maps
     bool bIsRoot(void);
     void vReset(void);
     void vWrite(File* pFile);
+    void vWrite_Default(File* pFile);
 
     Footer* aFooter(void);
   };

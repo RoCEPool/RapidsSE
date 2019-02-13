@@ -175,6 +175,8 @@ void Step::vTaskGrabLock(MP_Task mpTask)
   Task* pThatTask = _pTask(pObject);
   
   pThatTask->vGrabLock();
+  ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_LOCKED);
+
   
   EXIT();
 }

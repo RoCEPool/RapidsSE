@@ -118,6 +118,8 @@ Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
 
   _checkInitialised_(CN_JOB_SUBEXPORTER);
   
+  ActionSequence::vAdd(this,AN_CONSTRUCTOR);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
 }
 
