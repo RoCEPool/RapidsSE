@@ -11,6 +11,8 @@
 
   word::this word.name ,
 
+  16 ,
+
   POSTPONE ActionSequence::markSeed
 ;
 

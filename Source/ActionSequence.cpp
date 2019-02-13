@@ -177,7 +177,8 @@ void ActionSequence::vAdd(Jobs::Job* pJob,
   
   if (! (pJob->m_bMarkAction ||
          gpAttachMap->m_oMarkAction.bFlagged(pJob->eClass())) )
-
+    return;
+  
   if (C_UNKNOWN == pJob->m_i_ActionRoot)
     return;
   

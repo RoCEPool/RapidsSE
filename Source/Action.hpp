@@ -57,7 +57,7 @@ namespace Maps
   /*    */ "REMOVED_ORIGINATOR"_Stz,
   /*    */ "REMOVED_PARTICIPANT"_Stz,
   /*    */ "ROOT"_Stz,
-  /*    */ "SEED"_Stz,
+  /*    */ "AN_SEED_RCV"_Stz,
   /*    */ "SEND_JOB"_Stz,
   /*    */ "SET_ACKS_REQUIRED"_Stz,
   /*    */ "TASK_LOCKED"_Stz,
