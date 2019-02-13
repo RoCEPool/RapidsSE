@@ -500,6 +500,14 @@
   static void vJob__ExecutedRowsSkippedFetch(Tasks::MP_Task mpTask);
   static void vJob__ExecutedRowsSkippedStore(Tasks::MP_Task mpTask);
 
+  static void vJob__BegunNew(Tasks::MP_Task mpTask);
+  static void vJob__CancelNew(Tasks::MP_Task mpTask);
+  static void vJob__CancelledNew(Tasks::MP_Task mpTask);
+  static void vJob__EndNew(Tasks::MP_Task mpTask);
+  static void vJob__EndedNew(Tasks::MP_Task mpTask);
+  static void vJob__ExecuteNew(Tasks::MP_Task mpTask);
+  static void vJob__ExecutedNew(Tasks::MP_Task mpTask);
+
   // job analyzeIndex
   static void vJob_AnalyzeIndexIsDetailed(Tasks::MP_Task mpTask);
   static void vJob_AnalyzeTableIsDetailed(Tasks::MP_Task mpTask);
