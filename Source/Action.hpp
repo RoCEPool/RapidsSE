@@ -9,10 +9,10 @@ namespace Maps
   {
   /*  0 */ AN_NONE=0,
   
-  /*    */ AM_DECIDER,
   /*    */ AN_ACK_TASK,
   /*    */ AN_ADDED_ORIGINATOR,
   /*    */ AN_ADDED_PARTICIPANT,
+  /*    */ AN_AM_DECIDER,
   /*    */ AN_CONSTRUCTOR,
   /*    */ AN_DESTRUCTOR,
   /*    */ AN_POST_PROMPT,
@@ -42,10 +42,10 @@ namespace Maps
   {
   /*  0 */ "NONE"_Stz,
 
-  /*    */ "AM_DECIDER"_Stz,
   /*    */ "ACK_TASK"_Stz,
   /*    */ "ADDED_ORIGINATOR"_Stz,
   /*    */ "ADDED_PARTICIPANT"_Stz,
+  /*    */ "AM_DECIDER"_Stz,
   /*    */ "CONSTRUCTOR"_Stz,
   /*    */ "DESTRUCTOR"_Stz,
   /*    */ "POST_PROMPT"_Stz,

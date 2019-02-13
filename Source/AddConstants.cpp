@@ -109,6 +109,35 @@ void Axioms::vAddConstants(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  // AN_ : action numbers
+  /*  0 */ vAddConstant("AN_NONE"_Stz,               AN_NONE);
+  /*  0 */ vAddConstant("AN_ACK_TASK"_Stz,           AN_ACK_TASK);
+  /*  0 */ vAddConstant("AN_ADDED_ORIGINATOR"_Stz,   AN_ADDED_ORIGINATOR);
+  /*  0 */ vAddConstant("AN_ADDED_PARTICIPANT"_Stz,  AN_ADDED_PARTICIPANT);
+  /*  0 */ vAddConstant("AN_AM_DECIDER"_Stz,         AN_AM_DECIDER);
+  /*  0 */ vAddConstant("AN_CONSTRUCTOR"_Stz,        AN_CONSTRUCTOR);
+  /*  0 */ vAddConstant("AN_DESTRUCTOR"_Stz,         AN_DESTRUCTOR);
+  /*  0 */ vAddConstant("AN_POST_PROMPT"_Stz,        AN_POST_PROMPT);
+  /*  0 */ vAddConstant("AN_POST_RECV"_Stz,          AN_POST_RECV);
+  /*  0 */ vAddConstant("AN_PRE_PROMPT"_Stz,         AN_PRE_PROMPT);
+  /*  0 */ vAddConstant("AN_PRE_SEND"_Stz,           AN_PRE_SEND);
+  /*  0 */ vAddConstant("AN_RECV_JOB"_Stz,           AN_RECV_JOB);
+  /*  0 */ vAddConstant("AN_RECV_JOB_LOW_MEMORY"_Stz,AN_RECV_JOB_LOW_MEMORY);
+  /*  0 */ vAddConstant("AN_REMOVED_ORIGINATOR"_Stz, AN_REMOVED_ORIGINATOR);
+  /*  0 */ vAddConstant("AN_REMOVED_PARTICIPANT"_Stz,AN_REMOVED_PARTICIPANT);
+  /*  0 */ vAddConstant("AN_ROOT"_Stz,               AN_ROOT);
+  /*  0 */ vAddConstant("AN_SEED_RCV"_Stz,           AN_SEED_RCV);
+  /*  0 */ vAddConstant("AN_SEND_JOB"_Stz,           AN_SEND_JOB);
+  /*  0 */ vAddConstant("AN_SET_ACKS_REQUIRED"_Stz,  AN_SET_ACKS_REQUIRED);
+  /*  0 */ vAddConstant("AN_TASK_LOCKED"_Stz,        AN_TASK_LOCKED);
+  /*  0 */ vAddConstant("AN_TASK_SCHEDULE"_Stz,      AN_TASK_SCHEDULE);
+  /*  0 */ vAddConstant("AN_TASK_SLEEP"_Stz,         AN_TASK_SLEEP);
+  /*  0 */ vAddConstant("AN_TASK_STATE"_Stz,         AN_TASK_STATE);
+  /*  0 */ vAddConstant("AN_TASK_STATE_SET"_Stz,     AN_TASK_STATE_SET);
+  /*  0 */ vAddConstant("AN_TASK_WAIT"_Stz,          AN_TASK_WAIT);
+  /*  0 */ vAddConstant("AN_TASK_YIELD"_Stz,         AN_TASK_YIELD);
+  /*  0 */ vAddConstant("AN_ENUMS"_Stz,              AN_TASK_YIELD);
+  
   // AT_ : fetch techniques
   /*  0 */ vAddConstant("AT_NONE"_Stz,  AT_NONE);
   /*  1 */ vAddConstant("AT_EXACT"_Stz, AT_EXACT);

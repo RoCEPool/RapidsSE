@@ -104,9 +104,9 @@ void Step::vActionSequenceMarkSeed(MP_Task mpTask)
 {
   ENTRY("vActionSequenceMarkSeed"_Stz);
   
-  s32 sMark;
+  s32 aWordNm;
   
-  if ( ! mpTask->m_pDataStack->bPop(sMark) )
+  if ( ! mpTask->m_pDataStack->bPop(aWordNm) )
     THROW_INVALID_DSTACK("actionSequence::markSeed"_Stz);
   
   i8 iSeed = AN_SEED_RCV;
