@@ -128,7 +128,7 @@ namespace Data
     void         vCompact(void);
     void         vCompactLeft2(void);
     void         vCutEntry(Item* aItem, Item* aPriorVec[]);
-    void         vDeleteUpwards(KeyData* aDeleteKey,
+    void         vDeleteUpwards(Item* aDeleteKey,
                                 EntryBuffer** ppRootKeyBuffer);
 //    void         vDeleteUpwards(KeyData* aDeleteKey, EntryBuffer* pToBuffer,
 //                                EntryBuffer** ppRootKeyBuffer);
@@ -162,11 +162,13 @@ namespace Data
     Item*       aPopLazyChain(void);
 
     //KEY_CMP:: TO GO
-    //EntryBuffer* pPositionPriorBuffer(KeyData* aFindKey);
-    Item*       pPositionPriorEntry(KeyData* aFindKey);
+    EntryBuffer* pPositionPriorBuffer(Item* aFindKey);
     
     EntryBuffer* pPositionPriorBuffer(KeyWrk& xFindKey);
+    
+    //KEY_CMP:: ONE OF THESE SHOULD GO
     Item*       pPositionPriorEntry(KeyWrk& xFindKey);
+    Item*       pPositionPriorEntry(Item* aFindKey);
     
     //KEY_CMP::TO GO
     void         vPositionPriorVecEntry(KeyData* aFindKey, Item** aaPriorVec,

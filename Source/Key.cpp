@@ -199,7 +199,7 @@ bool KeyData::bGreaterEqual(Item* aKeyItem1, KeyWrk& xKeyItem2)
     return true;
   
   if (iCmp == 0) {
-    if (nKeySize1 > nKeySize2)
+    if (nKeySize1 >= nKeySize2)
       return true;
   }
   
@@ -228,7 +228,7 @@ bool KeyData::bGreaterEqual(Item* aKeyItem1, Item* aKeyItem2)
     return true;
   
   if (iCmp == 0) {
-    if (nKeySize1 > nKeySize2)
+    if (nKeySize1 >= nKeySize2)
       return true;
   }
   

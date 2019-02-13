@@ -1395,7 +1395,7 @@ void EntryBuffer::vCutEntry(Item* aItem, Item* aPriorVec[])
 /*----------------------------------------------------------------------------*/
 /* delete upwards                                                             */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDeleteUpwards(KeyData* aDeleteKey,
+void EntryBuffer::vDeleteUpwards(Item* aDeleteKey,
                                  EntryBuffer** ppRootKeyBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -1433,10 +1433,10 @@ void EntryBuffer::vDeleteUpwards(KeyData* aDeleteKey,
   
   KeyData* aDeleteEntryKey = _aKeyData(aEntryToBeDeleted->aDataArea());
   
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  if ( ! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec) ) {
-    
+  //if ( ! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec) ) {
+  if ( ! KeyData::bEqualTo(aEntryToBeDeleted, aDeleteKey) ) {
     //vShow();
     
     //vShowTree();
@@ -1636,9 +1636,10 @@ void EntryBuffer::vHandleLeftInsert(Item* aInsertedKeyEntry,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (aOriginalFirstEntry) {
-    KeyData* aDeleteKey = _aKeyData(aOriginalFirstEntry->aDataArea());
+    //KeyData* aDeleteKey = _aKeyData(aOriginalFirstEntry->aDataArea());
     EntryBuffer* pHigherBuffer = _pEntryBuffer(m_pHigherBuffer);
-    pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
+    //pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
+    pHigherBuffer->vDeleteUpwards(aOriginalFirstEntry,ppRootKeyBuffer);
     //(*ppRootKeyBuffer)->vShowTree();
   }
   
@@ -2321,7 +2322,7 @@ EntryBuffer* EntryBuffer::pPositionPriorBuffer(KeyWrk& xFindKey)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and return entry prior to key                          */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::pPositionPriorEntry(KeyData* aFindKey)
+Item* EntryBuffer::pPositionPriorEntry(Item* aFindKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2348,21 +2349,23 @@ Item* EntryBuffer::pPositionPriorEntry(KeyData* aFindKey)
     Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanOffset);
     while (aNextEntry_sl) {
       
-      KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
+      //KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
       
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       
-#ifdef USE_EB_SINGLE_COLIDX
-      if (m_pIndex->bSingleColumn()) {
-        bKeyIsGreaterEqual = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
-        //RASSERT(bKeyIsGreaterEqual == aNextKey->bGreaterEqual(aFindKey,pIdxColVec));
-      }
-      else
-        bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
-#else
-      bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
-#endif
+//#ifdef USE_EB_SINGLE_COLIDX
+//      if (m_pIndex->bSingleColumn()) {
+//        bKeyIsGreaterEqual = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
+//        //RASSERT(bKeyIsGreaterEqual == aNextKey->bGreaterEqual(aFindKey,pIdxColVec));
+//      }
+//      else
+//        bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+//#else
+//      bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
+//#endif
+      
+      bKeyIsGreaterEqual = KeyData::bGreaterEqual(aNextEntry_sl, aFindKey);
       
       if (bKeyIsGreaterEqual)
         break;
