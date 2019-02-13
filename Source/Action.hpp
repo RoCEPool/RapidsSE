@@ -24,7 +24,7 @@ namespace Maps
   /*    */ AN_REMOVED_ORIGINATOR,
   /*    */ AN_REMOVED_PARTICIPANT,
   /*    */ AN_ROOT,
-  /*    */ AN_SEED,
+  /*    */ AN_SEED_RCV,
   /*    */ AN_SEND_JOB,
   /*    */ AN_SET_ACKS_REQUIRED,
   /*    */ AN_TASK_LOCKED,

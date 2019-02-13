@@ -54,7 +54,7 @@
 : Job__Execute_rcv ( -- )
 
   >>am <SEED_RCV>
-  an_seed
+  an_seed_rcv
 
  //
   // where: on the participating node

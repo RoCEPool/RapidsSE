@@ -5,9 +5,9 @@
 " wordSet_am.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* word entry mark                                                            */
+/* mark receive seed action                                                   */
 /*----------------------------------------------------------------------------*/
-: an_seed immediate
+: an_seed_rcv immediate
 
   word::this word.name ,
 

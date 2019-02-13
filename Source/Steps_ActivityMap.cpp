@@ -109,7 +109,8 @@ void Step::vActionSequenceMarkSeed(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sMark) )
     THROW_INVALID_DSTACK("actionSequence::markSeed"_Stz);
   
-  ActionSequence::vAdd(mpTask->m_pJob,AN_SEED);
+  i8 iSeed = AN_SEED_RCV;
+  ActionSequence::vAdd(mpTask->m_pJob,(eAN)iSeed);
   
   EXIT();
 }

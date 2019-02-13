@@ -60,7 +60,7 @@
 : Job__Cancelled_rcv ( -- )
 
   >>am <SEED_RCV>
-  an_seed
+  an_seed_rcv
 
   job::this locals| pJob__Cancelled |
   pJob__Cancelled job.id@ locals| iJobId |
