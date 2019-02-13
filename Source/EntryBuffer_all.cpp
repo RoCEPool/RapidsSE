@@ -1171,7 +1171,7 @@ void EntryBuffer::vCompact(void)
   
   // scan item is the working pointer
   Item* aScanItem = aFirstItem();
-  ASSERT(aScanItem->eClass() == CN_ENTRY);
+  //ASSERT(aScanItem->eClass() == CN_ENTRY);
   
   // loop while we can still reclaim more space
   for (;;) {
@@ -1210,6 +1210,11 @@ void EntryBuffer::vCompact(void)
          aItem = aAdjacentItem(aItem)) {
       
       eCN eClass = aItem->eClass();
+      
+      RASSERT ( (eClass == CN_ENTRY) ||
+               (eClass == CN_FREEENTRY) ||
+               (eClass == CN_WILDERNESS));
+      
       
       if (CN_ENTRY == eClass) {
         aMoveEntry = static_cast<Item*>(aItem);
@@ -1450,7 +1455,7 @@ void EntryBuffer::vDeleteUpwards(KeyData* aDeleteKey,
     EntryBuffer* pHigherBuffer = _pEntryBuffer(m_pHigherBuffer);
     pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
   }
-  
+
   vDeleteEntry(&aEntryToBeDeleted);
 }
 
@@ -2109,9 +2114,9 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets
   EntryBuffer* pHigherBuffer = this->pHigherBuffer();
   if (! pHigherBuffer) {
     pHigherBuffer = this->pNewHigherBuffer();
+    vTrace("Creating new higher buffer %p\n"_Stz, pHigherBuffer);
     *ppRootKeyBuffer = pHigherBuffer;
   }
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // split the left buffer to yield a right buffer
   
@@ -2665,7 +2670,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
     
     // make the moved entry in the left buffer to be a free entry
     FreeItem* aFreeEntry = aMakeFreeEntry(aCopyEntry);
-
+    
     // these can be commented
     ASSERT(! m_iLevelNo ||
            EntryBuffer::pRefdEntryBuffer(aNewEntry)->m_pHigherBuffer == pThisLeftBuffer);
