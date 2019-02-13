@@ -171,8 +171,8 @@ namespace Data
     Item*       pPositionPriorEntry(Item* aFindKey);
     
     //KEY_CMP::TO GO
-    void         vPositionPriorVecEntry(KeyData* aFindKey, Item** aaPriorVec,
-                                        Item* aFindEntry);
+//    void         vPositionPriorVecEntry(KeyData* aFindKey, Item** aaPriorVec,
+//                                        Item* aFindEntry);
     
     void         vPositionPriorVecEntry(Item* aFindKey, Item** aaPriorVec,
                                         Item* aFindEntry);
