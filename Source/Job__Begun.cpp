@@ -99,11 +99,14 @@ void Job__Begun::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job__Begun::Job__Begun(void)
+Job__Begun::Job__Begun(Job* pDistJob)
 : Job(CN_JOB__BEGUN,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__BEGUN,_FOOTER_);
   
+  m_iParentId = pDistJob->m_iJobId;
+  m_i_ActionRoot = pDistJob->m_i_ActionRoot;
+
   m_eErrorCode = EC_NONE;
   
   _checkInitialised_(CN_JOB__BEGUN);

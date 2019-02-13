@@ -99,11 +99,14 @@ void Job__Ended::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job__Ended::Job__Ended(void)
+Job__Ended::Job__Ended(Job* pDistJob)
 : Job(CN_JOB__ENDED,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__ENDED,_FOOTER_);
   
+  m_iParentId = pDistJob->m_iJobId;
+  m_i_ActionRoot = pDistJob->m_i_ActionRoot;
+
   _checkInitialised_(CN_JOB__ENDED);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__ENDED,_FOOTER_);

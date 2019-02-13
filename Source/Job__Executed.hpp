@@ -23,7 +23,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job__Executed(void);
+    Job__Executed(Job* pDadJob);
     ~Job__Executed(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

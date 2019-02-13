@@ -448,13 +448,6 @@
   static void vJobIsExecuting(Tasks::MP_Task mpTask);
   static void vJobJobClass(Tasks::MP_Task mpTask);
   static void vJobMetadataStore(Tasks::MP_Task mpTask);
-  static void vJobNewBegun(Tasks::MP_Task mpTask);
-  static void vJobNewCancel(Tasks::MP_Task mpTask);
-  static void vJobNewCancelled(Tasks::MP_Task mpTask);
-  static void vJobNewEnd(Tasks::MP_Task mpTask);
-  static void vJobNewEnded(Tasks::MP_Task mpTask);
-  static void vJobNewExecute(Tasks::MP_Task mpTask);
-  static void vJobNewExecuted(Tasks::MP_Task mpTask);
   static void vJobObjectNameFetch(Tasks::MP_Task mpTask);
   static void vJobOriginatingTaskFetch(Tasks::MP_Task mpTask);
   static void vJobOriginatingTaskStore(Tasks::MP_Task mpTask);

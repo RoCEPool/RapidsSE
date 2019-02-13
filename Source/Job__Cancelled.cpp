@@ -99,11 +99,14 @@ void Job__Cancelled::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job__Cancelled::Job__Cancelled(void)
+Job__Cancelled::Job__Cancelled(Job* pDistJob)
 : Job(CN_JOB__CANCELLED,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__CANCELLED,_FOOTER_);
   
+  m_iParentId = pDistJob->m_iJobId;
+  m_i_ActionRoot = pDistJob->m_i_ActionRoot;
+
   m_eErrorCode = EC_NONE;
   
   _checkInitialised_(CN_JOB__CANCELLED);
