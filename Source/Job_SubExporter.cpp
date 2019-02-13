@@ -118,6 +118,8 @@ Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
 
   _checkInitialised_(CN_JOB_SUBEXPORTER);
   
+  ActionSequence::vAdd(this,AN_CONSTRUCTOR);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
 }
 
@@ -127,6 +129,8 @@ Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
 Job_SubExporter::~Job_SubExporter(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+  
+  ActionSequence::vAdd(this,AN_DESTRUCTOR);
 }
 
 /*----------------------------------------------------------------------------*/

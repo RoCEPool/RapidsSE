@@ -80,6 +80,7 @@ Job::Job(eCN eClassNo, Session* pSession)
     m_bMark = true;
   else
     m_bMark = false;
+  m_i_Activity   = C_UNKNOWN;
   m_i_ActionRoot = C_UNKNOWN;
   
   m_pJobClass        = nullptr;
