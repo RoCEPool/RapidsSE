@@ -142,12 +142,12 @@ eKC KeyData::eCompare(Item* aKeyItem1, KeyWrk& xKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
 /*----------------------------------------------------------------------------*/
-eKC KeyData::eCompare(Item* aKeyItem1, Item* aKeyItem2)
+eKC KeyData::eCompare(KeyWrk& xKeyItem1, Item* aKeyItem2)
 {
-  i8 nKeySize1 = aKeyItem1->nSizeData();
+  i8 nKeySize1 = xKeyItem1.nKeySize();
   i8 nKeySize2 = aKeyItem2->nSizeData();
   
-  KeyData* aKey1 = _aKeyData(aKeyItem1->aDataArea());
+  KeyData* aKey1 = xKeyItem1.aKey();
   KeyData* aKey2 = _aKeyData(aKeyItem2->aDataArea());
   
   i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
