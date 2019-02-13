@@ -3433,7 +3433,7 @@ bool EntryBuffer::bVerifyFirstKeys(void)
   
   //vShow();
   
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
@@ -3447,11 +3447,12 @@ bool EntryBuffer::bVerifyFirstKeys(void)
     Item* aChildFirstEntry = pChildEntryBuffer->aLeadEntry();
     
     // get keys of the two entries
-    KeyData* aKeyParent = _aKeyData(aItem->aDataArea());
-    KeyData* aKeyChild  = _aKeyData(aChildFirstEntry->aDataArea());
+    //KeyData* aKeyParent = _aKeyData(aItem->aDataArea());
+    //KeyData* aKeyChild  = _aKeyData(aChildFirstEntry->aDataArea());
     
     // the two keys should match
-    bool bEqual = aKeyChild->bEqualTo(aKeyParent,pIdxColVec);
+    //bool bEqual = aKeyChild->bEqualTo(aKeyParent,pIdxColVec);
+    bool bEqual = KeyData::bEqualTo(aChildFirstEntry, aItem);
     if (! bEqual) {
       vVerifyFault();
       return false;

@@ -325,31 +325,31 @@ bool KeyData::bLessThan(KeyWrk& xKeyItem1, Item* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* if this key equal to given key?                                            */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bEqualTo(KeyData* aKeyThat, IdxColVec* pIdxColVec)
-{
-  bool bEqualTo = false;
-
-  char* aCursorThis = aByteSequence();
-  char* aCursorThat = aKeyThat->aByteSequence();
-
-  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
-
-    Column* pColumn = pIdxColVec->pGet(i_Column);
-
-    i8 nBytesThis;
-    i8 nBytesThat;
-
-    char* aDatumThis = pColumn->aValue(nBytesThis,&aCursorThis);
-    char* aDatumThat = pColumn->aValue(nBytesThat,&aCursorThat);
-
-    bEqualTo = pColumn->bEqualTo(aDatumThis,aDatumThat);
-
-    if (!bEqualTo)
-      break;
-  }
-
-  return bEqualTo;
-}
+//bool KeyData::bEqualTo(KeyData* aKeyThat, IdxColVec* pIdxColVec)
+//{
+//  bool bEqualTo = false;
+//
+//  char* aCursorThis = aByteSequence();
+//  char* aCursorThat = aKeyThat->aByteSequence();
+//
+//  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
+//
+//    Column* pColumn = pIdxColVec->pGet(i_Column);
+//
+//    i8 nBytesThis;
+//    i8 nBytesThat;
+//
+//    char* aDatumThis = pColumn->aValue(nBytesThis,&aCursorThis);
+//    char* aDatumThat = pColumn->aValue(nBytesThat,&aCursorThat);
+//
+//    bEqualTo = pColumn->bEqualTo(aDatumThis,aDatumThat);
+//
+//    if (!bEqualTo)
+//      break;
+//  }
+//
+//  return bEqualTo;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* if this key not equal to given key?                                        */

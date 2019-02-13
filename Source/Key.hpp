@@ -55,7 +55,7 @@ namespace Data
     
     //bool bLessThan(KeyData* aKey, IdxColVec* pIdxColVec);
     //bool bLessEqual(KeyData* aKey, IdxColVec* pIdxColVec);
-    bool bEqualTo(KeyData* aKey, IdxColVec* pIdxColVec);
+    //bool bEqualTo(KeyData* aKey, IdxColVec* pIdxColVec);
     bool bNotEqual(KeyData* aKey, IdxColVec* pIdxColVec);
     bool bGreaterEqual(KeyData* aKey, IdxColVec* pIdxColVec);
     bool bGreaterEqualSingle(KeyData* aKey, Index* pIndex);
