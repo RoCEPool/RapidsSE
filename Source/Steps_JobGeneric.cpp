@@ -309,19 +309,23 @@ void Step::vJob__ExecutedRowsSkippedStore(MP_Task mpTask)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* job.newBegun -- new a job__begun for this job                              */
+/* job_begun::new -- new a job__begun for this job                            */
 /*----------------------------------------------------------------------------*/
 void Step::vJob__BegunNew(MP_Task mpTask)
 {
   ENTRY("vJob__BegunNew"_Stz);
   
-  i8 iJobId;
-  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
-    THROW_INVALID_DSTACK("vJob__BegunNew"_Stz);
-  
+  Object* pJobDadPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobDadPtr) )
+    THROW_INVALID_DSTACK("vJob__BegunNew!"_Stz);
+  Job* pDadJob = _pJob(pJobDadPtr);
+
   Job* pJobBegun = new Job__Begun;
-  pJobBegun->m_iJobId = iJobId;
+  pJobBegun->m_iJobId = pDadJob->m_iJobId;
   pJobBegun->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+
+  pJobBegun->m_iParentId = pDadJob->m_iJobId;
+  pJobBegun->m_i_ActionRoot = pDadJob->m_i_ActionRoot;
   
   JobClass* pJobClass__Begun = JobClass::pFind(CN_JOB__BEGUN);
   pJobBegun->m_pJobClass = pJobClass__Begun;
@@ -332,19 +336,23 @@ void Step::vJob__BegunNew(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.newCancel -- new a job__cancel for this job                            */
+/* job__cancel::new -- new a job__cancel for this job                         */
 /*----------------------------------------------------------------------------*/
 void Step::vJob__CancelNew(MP_Task mpTask)
 {
   ENTRY("vJob__CancelNew"_Stz);
   
-  i8 iJobId;
-  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
-    THROW_INVALID_DSTACK("vJob__CancelNew"_Stz);
-  
+  Object* pJobDadPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobDadPtr) )
+    THROW_INVALID_DSTACK("job__cancel::new"_Stz);
+  Job* pDadJob = _pJob(pJobDadPtr);
+
   Job* pJobCancel = new Job__Cancel;
-  pJobCancel->m_iJobId = iJobId;
+  pJobCancel->m_iJobId = pDadJob->m_iJobId;
   pJobCancel->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  pJobCancel->m_iParentId = pDadJob->m_iJobId;
+  pJobCancel->m_i_ActionRoot = pDadJob->m_i_ActionRoot;
   
   JobClass* pJobClass__Cancel = JobClass::pFind(CN_JOB__CANCEL);
   pJobCancel->m_pJobClass = pJobClass__Cancel;
@@ -355,19 +363,23 @@ void Step::vJob__CancelNew(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.newCancelled -- new a job__cancelled for this job                      */
+/* job__cancelled::new -- new a job__cancelled for this job                   */
 /*----------------------------------------------------------------------------*/
 void Step::vJob__CancelledNew(MP_Task mpTask)
 {
   ENTRY("vJob__CancelledNew"_Stz);
   
-  i8 iJobId;
-  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
-    THROW_INVALID_DSTACK("vJob__CancelledNew"_Stz);
-  
+  Object* pJobDadPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobDadPtr) )
+    THROW_INVALID_DSTACK("job__cancelled::new"_Stz);
+  Job* pDadJob = _pJob(pJobDadPtr);
+
   Job* pJobCancelled = new Job__Cancelled;
-  pJobCancelled->m_iJobId = iJobId;
+  pJobCancelled->m_iJobId = pDadJob->m_iJobId;
   pJobCancelled->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  pJobCancelled->m_iParentId = pDadJob->m_iJobId;
+  pJobCancelled->m_i_ActionRoot = pDadJob->m_i_ActionRoot;
   
   JobClass* pJobClass__Cancelled = JobClass::pFind(CN_JOB__CANCELLED);
   pJobCancelled->m_pJobClass = pJobClass__Cancelled;
@@ -378,19 +390,23 @@ void Step::vJob__CancelledNew(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.newEnd - new a job__end for this job                                   */
+/* job__end::new - new a job__end for this job                                */
 /*----------------------------------------------------------------------------*/
 void Step::vJob__EndNew(MP_Task mpTask)
 {
   ENTRY("vJob__EndNew"_Stz);
   
-  i8 iJobId;
-  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
-    THROW_INVALID_DSTACK("vJob__EndNew"_Stz);
-  
+  Object* pJobDadPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobDadPtr) )
+    THROW_INVALID_DSTACK("job__end::new"_Stz);
+  Job* pDadJob = _pJob(pJobDadPtr);
+
   Job* pJobEnd = new Job__End;
-  pJobEnd->m_iJobId = iJobId;
+  pJobEnd->m_iJobId = pDadJob->m_iJobId;
   pJobEnd->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  pJobEnd->m_iParentId = pDadJob->m_iJobId;
+  pJobEnd->m_i_ActionRoot = pDadJob->m_i_ActionRoot;
   
   JobClass* pJobClass__End = JobClass::pFind(CN_JOB__END);
   pJobEnd->m_pJobClass = pJobClass__End;
@@ -401,19 +417,23 @@ void Step::vJob__EndNew(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.newEnded -- new a job__ended for this job                              */
+/* job__ended::new -- new a job__ended for this job                           */
 /*----------------------------------------------------------------------------*/
 void Step::vJob__EndedNew(MP_Task mpTask)
 {
   ENTRY("vJob__EndedNew"_Stz);
   
-  i8 iJobId;
-  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
-    THROW_INVALID_DSTACK("vJob__EndedNew"_Stz);
-  
+  Object* pJobDadPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobDadPtr) )
+    THROW_INVALID_DSTACK("job__ended::new"_Stz);
+  Job* pDadJob = _pJob(pJobDadPtr);
+
   Job* pJobEnded = new Job__Ended;
-  pJobEnded->m_iJobId = iJobId;
+  pJobEnded->m_iJobId = pDadJob->m_iJobId;
   pJobEnded->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  pJobEnded->m_iParentId = pDadJob->m_iJobId;
+  pJobEnded->m_i_ActionRoot = pDadJob->m_i_ActionRoot;
   
   JobClass* pJobClass__Ended = JobClass::pFind(CN_JOB__ENDED);
   pJobEnded->m_pJobClass = pJobClass__Ended;
@@ -424,19 +444,23 @@ void Step::vJob__EndedNew(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.newExecute -- new a job__execute for this job                          */
+/* job__execute::new -- new a job__execute for this job                       */
 /*----------------------------------------------------------------------------*/
 void Step::vJob__ExecuteNew(MP_Task mpTask)
 {
   ENTRY("vJob__ExecuteNew"_Stz);
   
-  i8 iJobId;
-  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
-    THROW_INVALID_DSTACK("vJob__ExecuteNew"_Stz);
-  
+  Object* pJobDadPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobDadPtr) )
+    THROW_INVALID_DSTACK("job__execute::new"_Stz);
+  Job* pDadJob = _pJob(pJobDadPtr);
+
   Job* pJobExecute = new Job__Execute;
-  pJobExecute->m_iJobId = iJobId;
+  pJobExecute->m_iJobId = pDadJob->m_iJobId;
   pJobExecute->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  pJobExecute->m_iParentId = pDadJob->m_iJobId;
+  pJobExecute->m_i_ActionRoot = pDadJob->m_i_ActionRoot;
   
   JobClass* pJobClass__Execute = JobClass::pFind(CN_JOB__EXECUTE);
   pJobExecute->m_pJobClass = pJobClass__Execute;
@@ -447,20 +471,23 @@ void Step::vJob__ExecuteNew(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.newExecuted -- new a job__executed for this job                        */
+/* job__executed::new -- new a job__executed for this job                     */
 /*----------------------------------------------------------------------------*/
 void Step::vJob__ExecutedNew(MP_Task mpTask)
 {
   ENTRY("vJob__ExecutedNew"_Stz);
   
-  i8 iJobId;
-  if ( ! mpTask->m_pDataStack->bPop(iJobId) )
-    THROW_INVALID_DSTACK("vJob__ExecutedNew"_Stz);
-  
+  Object* pJobDadPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobDadPtr) )
+    THROW_INVALID_DSTACK("job__executed::new"_Stz);
+  Job* pDadJob = _pJob(pJobDadPtr);
+
   Job* pJobExecuted = new Job__Executed;
-  pJobExecuted->m_iJobId = iJobId;
-  
+  pJobExecuted->m_iJobId = pDadJob->m_iJobId;
   pJobExecuted->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  pJobExecuted->m_iParentId = pDadJob->m_iJobId;
+  pJobExecuted->m_i_ActionRoot = pDadJob->m_i_ActionRoot;
   
   JobClass* pJobClass__Executed = JobClass::pFind(CN_JOB__EXECUTED);
   pJobExecuted->m_pJobClass = pJobClass__Executed;

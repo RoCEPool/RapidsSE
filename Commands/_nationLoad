@@ -22,6 +22,13 @@ markjob;
 
 markact job_export on;
 markact job_subExporter on;
+markact job__begun on;
+markact job__cancel on;
+markact job__cancelled on;
+markact job__end on;
+markact job__ended on;
+markact job__execute on;
+markact job__executed on;
 markact;
 
 markres file on;

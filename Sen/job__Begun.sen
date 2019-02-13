@@ -20,7 +20,7 @@
   0 0 locals| pJob__Begun error |
 
   // new a temporary Job__Executed
-  iJobId job.newBegun to pJob__Begun
+  pJobParticipant job_Begun::new to pJob__Begun
 
   // get error if any
   grid::thisNode@ pJobParticipant job.error@ to error
