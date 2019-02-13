@@ -945,7 +945,7 @@ EntryBuffer* IndexTree::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols,
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   if (m_pRootBuffer)
-    return m_pRootBuffer->pPositionLevel(xKeyWrk.aKey(),nKeyCols,eJuxtaCompare,iLevel);
+    return m_pRootBuffer->pPositionLevel(xKeyWrk,nKeyCols,eJuxtaCompare,iLevel);
   else
     return nullptr;
 }

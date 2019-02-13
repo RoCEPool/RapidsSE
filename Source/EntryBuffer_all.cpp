@@ -548,7 +548,7 @@ Item* EntryBuffer::aNextEntry(Item* aCurrent, i8 i_Offset)
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at given level starting from this buffer       */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pPositionLevel(KeyData* aGivenKey, i8 nKeyCols,
+EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xGivenKey, i8 nKeyCols,
                                          eJC eJuxtaCompare, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -572,7 +572,7 @@ EntryBuffer* EntryBuffer::pPositionLevel(KeyData* aGivenKey, i8 nKeyCols,
       break;
     
     // get the entry
-    aItem = pEntryBuffer->aPositionQuery(aGivenKey, nKeyCols, eJuxtaCompare);
+    aItem = pEntryBuffer->aPositionQuery(xGivenKey, nKeyCols, eJuxtaCompare);
     ASSERT(aItem);
     
     // get the index buffer of the entry
@@ -598,7 +598,6 @@ Item* EntryBuffer::aPositionQuery(KeyData* aGivenKey, eRO eRelnOp)
   //  vBuildSkipList();
 #endif
   
-  bool bIsEqual;
   Item* aIndexEntry = aPositionQuery(aGivenKey, 1, JC_AFTER);
   
   bool bAfter;
@@ -621,7 +620,7 @@ Item* EntryBuffer::aPositionQuery(KeyData* aGivenKey, eRO eRelnOp)
 /*----------------------------------------------------------------------------*/
 /* position at given key                                                      */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aPositionQuery(Item* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare)
+Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey,i8 nKeyCols, eJC eJuxtaCompare)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -641,11 +640,7 @@ Item* EntryBuffer::aPositionQuery(Item* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
   
   ASSERT(JC_SAME == eJuxtaCompare || JC_AFTER == eJuxtaCompare);
   
-  bool bIsJuxta;
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  
   Item* aScanEntry_sl = aSkipRoots();
-  bool bIsEqual;
   
   for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
     
@@ -659,7 +654,7 @@ Item* EntryBuffer::aPositionQuery(Item* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
       
       //bIsJuxta = aGivenKey->bJuxtaCompare(JC_AFTER,aNextKey,pIdxColVec,
       //                                    nKeyCols,bIsEqual);
-      eKC eCompare = KeyData::eCompare(aGivenKey,aNextEntry_sl);
+      eKC eCompare = KeyData::eCompare(xGivenKey,aNextEntry_sl);
       
       // have we found the key during a query?
       if (eCompare == KC_SAME) {
