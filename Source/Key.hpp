@@ -52,11 +52,12 @@ namespace Data
     static bool bGreaterEqual(Item* aKeyItem1, KeyWrk& xKeyItem2);
     static bool bGreaterEqual(Item* aKeyItem1, Item* aKeyItem2);
     static bool bLessThan(KeyWrk& xKeyItem1, Item* aKeyItem2);
+    static bool bNotEqual(Item* aKeyItem1, Item* aKeyItem2);
     
     //bool bLessThan(KeyData* aKey, IdxColVec* pIdxColVec);
     //bool bLessEqual(KeyData* aKey, IdxColVec* pIdxColVec);
     //bool bEqualTo(KeyData* aKey, IdxColVec* pIdxColVec);
-    bool bNotEqual(KeyData* aKey, IdxColVec* pIdxColVec);
+    //bool bNotEqual(KeyData* aKey, IdxColVec* pIdxColVec);
     bool bGreaterEqual(KeyData* aKey, IdxColVec* pIdxColVec);
     bool bGreaterEqualSingle(KeyData* aKey, Index* pIndex);
     bool bGreaterThan(KeyData* aKey, IdxColVec* pIdxColVec);

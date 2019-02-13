@@ -1579,8 +1579,8 @@ Item* EntryBuffer::aGetEntrySplit(i8 iSplitEntryNo,Item** aaPriorEntry)
 /* handle the insert of a first key                                           */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vHandleFirstInsert(Item* aInsertedKeyEntry,
-                                     Item* aOriginalFirstEntry,
-                                     EntryBuffer** ppRootKeyBuffer)
+                                    Item* aOriginalFirstEntry,
+                                    EntryBuffer** ppRootKeyBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1588,13 +1588,14 @@ void EntryBuffer::vHandleFirstInsert(Item* aInsertedKeyEntry,
     return;
   
   if (aOriginalFirstEntry) {
-    KeyData* aOriginalFirstKey = _aKeyData(aOriginalFirstEntry->aDataArea());
+    //KeyData* aOriginalFirstKey = _aKeyData(aOriginalFirstEntry->aDataArea());
     
-    KeyData* aInsertedFirstKey = _aKeyData(aInsertedKeyEntry->aDataArea());
+    //KeyData* aInsertedFirstKey = _aKeyData(aInsertedKeyEntry->aDataArea());
     
     IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
     
-    if (aInsertedFirstKey->bNotEqual(aOriginalFirstKey,pIdxColVec))
+    //if (aInsertedFirstKey->bNotEqual(aOriginalFirstKey,pIdxColVec))
+    if (KeyData::bNotEqual(aInsertedKeyEntry, aOriginalFirstEntry))
       vHandleLeftInsert(aInsertedKeyEntry,
                         aOriginalFirstEntry,
                         ppRootKeyBuffer);
