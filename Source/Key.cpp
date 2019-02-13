@@ -435,15 +435,15 @@ bool KeyData::bGreaterEqual(KeyData* aKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* is this key greater than or equal to given key?                            */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bGreaterEqualSingle(KeyData* aKeyThat, Index* pIndex)
-{
-  char* aCursorThis = aByteSequence();
-  char* aCursorThat = aKeyThat->aByteSequence();
-
-  bool bGreaterEqual = pIndex->bGreaterEqual(aCursorThis,aCursorThat);
-  
-  return bGreaterEqual;
-}
+//bool KeyData::bGreaterEqualSingle(KeyData* aKeyThat, Index* pIndex)
+//{
+//  char* aCursorThis = aByteSequence();
+//  char* aCursorThat = aKeyThat->aByteSequence();
+//
+//  bool bGreaterEqual = pIndex->bGreaterEqual(aCursorThis,aCursorThat);
+//  
+//  return bGreaterEqual;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* is this key greater than given key?                                        */
