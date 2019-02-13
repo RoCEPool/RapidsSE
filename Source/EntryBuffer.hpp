@@ -162,7 +162,7 @@ namespace Data
     Item*       aPopLazyChain(void);
 
     //KEY_CMP:: TO GO
-    EntryBuffer* pPositionPriorBuffer(KeyData* aFindKey);
+    //EntryBuffer* pPositionPriorBuffer(KeyData* aFindKey);
     Item*       pPositionPriorEntry(KeyData* aFindKey);
     
     EntryBuffer* pPositionPriorBuffer(KeyWrk& xFindKey);
