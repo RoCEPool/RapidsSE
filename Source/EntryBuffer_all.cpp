@@ -548,8 +548,7 @@ Item* EntryBuffer::aNextEntry(Item* aCurrent, i8 i_Offset)
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at given level starting from this buffer       */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xGivenKey, i8 nKeyCols,
-                                         eJC eJuxtaCompare, i8 iLevel)
+EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xGivenKey, i8 nKeyCols, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -572,7 +571,7 @@ EntryBuffer* EntryBuffer::pPositionLevel(KeyWrk& xGivenKey, i8 nKeyCols,
       break;
     
     // get the entry
-    aItem = pEntryBuffer->aPositionQuery(xGivenKey, nKeyCols, eJuxtaCompare);
+    aItem = pEntryBuffer->aPositionQuery(xGivenKey, nKeyCols);
     ASSERT(aItem);
     
     // get the index buffer of the entry
@@ -620,7 +619,7 @@ Item* EntryBuffer::aPositionQuery(KeyData* aGivenKey, eRO eRelnOp)
 /*----------------------------------------------------------------------------*/
 /* position at given key                                                      */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey,i8 nKeyCols, eJC eJuxtaCompare)
+Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey,i8 nKeyCols)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -630,15 +629,6 @@ Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey,i8 nKeyCols, eJC eJuxtaCompa
   //if (m_aLazyChain)
   //  vBuildSkipList();
 #endif
-  
-  /*
-   * positioning is based on eJuxtaCompare
-   *   JC_BEFORE: never called
-   *   JC_SAME:   scan for entry which is the same as given key
-   *   JC_AFTER:  scan for entry which the given key would be inserted after
-   */
-  
-  ASSERT(JC_SAME == eJuxtaCompare || JC_AFTER == eJuxtaCompare);
   
   Item* aScanEntry_sl = aSkipRoots();
   

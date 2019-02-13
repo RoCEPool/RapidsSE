@@ -333,7 +333,7 @@ void Step::vIndexExactKey(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // position at a level 0 buffer for given key
-  EntryBuffer* pIndexBuffer = pIndexTree->pPositionLevel(xKeyWrk, 1, JC_AFTER, 0);
+  EntryBuffer* pIndexBuffer = pIndexTree->pPositionLevel(xKeyWrk, 1, 0);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an index buffer ?
@@ -686,7 +686,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at a level 0 buffer with keyLower
-  aLowerEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkLower, 1, JC_AFTER, 0);
+  aLowerEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkLower, 1, 0);
   eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -998,7 +998,7 @@ void Step::vIndexRange(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at a level 0 buffer with keyLower
-  aLowerEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkLower, 1, JC_AFTER, 0);
+  aLowerEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkLower, 1, 0);
   eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1030,7 +1030,7 @@ void Step::vIndexRange(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now position at a level 0 buffer with keyUpper
-  aUpperEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkUpper, 1, JC_AFTER, 0);
+  aUpperEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkUpper, 1, 0);
   eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
   
   //aUpperEntryBuffer->vShow();
@@ -1596,7 +1596,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now position at a level 0 buffer for the upper key
-  aUpperEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkUpper, 1, JC_AFTER, 0);
+  aUpperEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkUpper, 1, 0);
   eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
