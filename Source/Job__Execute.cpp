@@ -109,6 +109,8 @@ Job__Execute::Job__Execute(Job* pDistJob)
 
   _checkInitialised_(CN_JOB__EXECUTE);
   
+  ActionSequence::vAdd(this,AN_CONSTRUCTOR);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__EXECUTE,_FOOTER_);
 }
 

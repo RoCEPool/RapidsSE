@@ -160,6 +160,8 @@ bool Job_Export::bBegin(void)
     return false;
   }
   
+  ActionSequence::vAdd(this,AN_OPEN_FILE);
+  
   return true;
 }
 
@@ -170,6 +172,8 @@ void Job_Export::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
 
+  ActionSequence::vAdd(this,AN_CLOSE_FILE);
+  
   m_oCsvFile.vClose();
 }
 

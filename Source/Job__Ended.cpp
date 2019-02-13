@@ -109,6 +109,8 @@ Job__Ended::Job__Ended(Job* pDistJob)
 
   _checkInitialised_(CN_JOB__ENDED);
   
+  ActionSequence::vAdd(this,AN_CONSTRUCTOR);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__ENDED,_FOOTER_);
 }
 

@@ -111,6 +111,8 @@ Job__Begun::Job__Begun(Job* pDistJob)
   
   _checkInitialised_(CN_JOB__BEGUN);
   
+  ActionSequence::vAdd(this,AN_CONSTRUCTOR);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__BEGUN,_FOOTER_);
 }
 

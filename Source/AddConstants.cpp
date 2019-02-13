@@ -115,8 +115,13 @@ void Axioms::vAddConstants(void)
   /*  0 */ vAddConstant("AN_ADDED_ORIGINATOR"_Stz,   AN_ADDED_ORIGINATOR);
   /*  0 */ vAddConstant("AN_ADDED_PARTICIPANT"_Stz,  AN_ADDED_PARTICIPANT);
   /*  0 */ vAddConstant("AN_AM_DECIDER"_Stz,         AN_AM_DECIDER);
+  /*  0 */ vAddConstant("AN_CLOSE_FILE"_Stz,         AN_CLOSE_FILE);
   /*  0 */ vAddConstant("AN_CONSTRUCTOR"_Stz,        AN_CONSTRUCTOR);
   /*  0 */ vAddConstant("AN_DESTRUCTOR"_Stz,         AN_DESTRUCTOR);
+  /*  0 */ vAddConstant("AN_DESTRUCTOR"_Stz,         AN_DESTRUCTOR);
+  /*  0 */ vAddConstant("AN_JOB_BEGIN"_Stz,          AN_JOB_BEGIN);
+  /*  0 */ vAddConstant("AN_JOB_CHUNK"_Stz,          AN_JOB_CHUNK);
+  /*  0 */ vAddConstant("AN_JOB_END"_Stz,            AN_JOB_END);
   /*  0 */ vAddConstant("AN_POST_PROMPT"_Stz,        AN_POST_PROMPT);
   /*  0 */ vAddConstant("AN_POST_RECV"_Stz,          AN_POST_RECV);
   /*  0 */ vAddConstant("AN_PRE_PROMPT"_Stz,         AN_PRE_PROMPT);
