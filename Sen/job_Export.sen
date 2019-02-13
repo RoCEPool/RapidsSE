@@ -142,6 +142,7 @@
 : export_req ( -- <R> )
 
   >>am <SEED_REQ>
+  an::seed_req
 
   job::this locals| pJob_Export |
 
@@ -158,6 +159,7 @@
 : export_beg ( -- )
 
   >>am <SEED_BEG>
+  an::seed_rcv
 
   job::this locals| pJob_Export |
 
@@ -176,6 +178,7 @@
 : export_exe ( pJob_Export -- )
 
   >>am <SEED_EXE>
+  an::seed_exe
 
   job::this locals| pJob_Export |
 
@@ -197,6 +200,7 @@
 : export_end ( -- )
 
   >>am <SEED_END>
+  an::seed_end
 
   job::this locals| pJob_Export |
 
@@ -213,6 +217,7 @@
 : export_can ( -- )
 
   >>am <SEED_CAN>
+  an::seed_can
 
   job::this locals| pJob_Export |
 
