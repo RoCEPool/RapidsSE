@@ -172,7 +172,7 @@ bool Job_SubExporter::bBegin(void)
                           pTable->aTableName(),
                           m_nEntryBuffers);
   
-  ActionSequence::vAdd(this,AN_JOB_BEGIN);
+  ActionSequence::vAdd(this,AN_JOB_BEGIN,m_nEntryBuffers);
   
   return true;
 }
@@ -195,7 +195,7 @@ bool Job_SubExporter::bChunk(void)
                           m_nEntryBuffers,
                           m_pEntryBuffer);
   
-  ActionSequence::vAdd(this,AN_JOB_CHUNK);
+  ActionSequence::vAdd(this,AN_JOB_CHUNK,m_iEntryBuffer);
 
   m_iEntryBuffer++;
   m_pEntryBuffer = m_pEntryBuffer->pNextBuffer();
@@ -210,7 +210,7 @@ void Job_SubExporter::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
 
-  ActionSequence::vAdd(this,AN_JOB_END);
+  ActionSequence::vAdd(this,AN_JOB_END,m_iEntryBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

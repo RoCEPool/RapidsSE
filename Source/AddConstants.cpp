@@ -117,9 +117,13 @@ void Axioms::vAddConstants(void)
   /*  0 */ vAddConstant("AN_AM_DECIDER"_Stz,         AN_AM_DECIDER);
   /*  0 */ vAddConstant("AN_CLOSE_FILE"_Stz,         AN_CLOSE_FILE);
   /*  0 */ vAddConstant("AN_CONSTRUCTOR"_Stz,        AN_CONSTRUCTOR);
+  /*  0 */ vAddConstant("AN_DDL_DROPPED_READ"_Stz,   AN_DDL_DROPPED_READ);
+  /*  0 */ vAddConstant("AN_DDL_DROPPED_WRITE"_Stz,  AN_DDL_DROPPED_WRITE);
+  /*  0 */ vAddConstant("AN_DDL_GRAB_READ"_Stz,      AN_DDL_GRAB_READ);
+  /*  0 */ vAddConstant("AN_DDL_GRAB_WRITE"_Stz,     AN_DDL_GRAB_WRITE);
+  /*  0 */ vAddConstant("AN_DDL_GRABBED_READ"_Stz,   AN_DDL_GRABBED_READ);
+  /*  0 */ vAddConstant("AN_DDL_GRABBED_WRITE"_Stz,  AN_DDL_GRABBED_WRITE);
   /*  0 */ vAddConstant("AN_DESTRUCTOR"_Stz,         AN_DESTRUCTOR);
-  /*  0 */ vAddConstant("AN_DESTRUCTOR"_Stz,         AN_DESTRUCTOR);
-  /*  0 */ vAddConstant("AN_JOB_BEGIN"_Stz,          AN_JOB_BEGIN);
   /*  0 */ vAddConstant("AN_JOB_CHUNK"_Stz,          AN_JOB_CHUNK);
   /*  0 */ vAddConstant("AN_JOB_END"_Stz,            AN_JOB_END);
   /*  0 */ vAddConstant("AN_POST_PROMPT"_Stz,        AN_POST_PROMPT);
@@ -139,6 +143,7 @@ void Axioms::vAddConstants(void)
   /*  0 */ vAddConstant("AN_SEED_RUN"_Stz,           AN_SEED_RUN);
   /*  0 */ vAddConstant("AN_SEND_JOB"_Stz,           AN_SEND_JOB);
   /*  0 */ vAddConstant("AN_SET_ACKS_REQUIRED"_Stz,  AN_SET_ACKS_REQUIRED);
+  /*  0 */ vAddConstant("AN_SPAWN_JOB"_Stz,          AN_SPAWN_JOB);
   /*  0 */ vAddConstant("AN_TASK_LOCKED"_Stz,        AN_TASK_LOCKED);
   /*  0 */ vAddConstant("AN_TASK_SCHEDULE"_Stz,      AN_TASK_SCHEDULE);
   /*  0 */ vAddConstant("AN_TASK_SLEEP"_Stz,         AN_TASK_SLEEP);
