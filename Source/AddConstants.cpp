@@ -144,6 +144,7 @@ void Axioms::vAddConstants(void)
   /*  0 */ vAddConstant("AN_SEND_JOB"_Stz,           AN_SEND_JOB);
   /*  0 */ vAddConstant("AN_SET_ACKS_REQUIRED"_Stz,  AN_SET_ACKS_REQUIRED);
   /*  0 */ vAddConstant("AN_SPAWN_JOB"_Stz,          AN_SPAWN_JOB);
+  /*  0 */ vAddConstant("AN_TABLE_USE"_Stz,          AN_TABLE_USE);
   /*  0 */ vAddConstant("AN_TASK_LOCKED"_Stz,        AN_TASK_LOCKED);
   /*  0 */ vAddConstant("AN_TASK_SCHEDULE"_Stz,      AN_TASK_SCHEDULE);
   /*  0 */ vAddConstant("AN_TASK_SLEEP"_Stz,         AN_TASK_SLEEP);
