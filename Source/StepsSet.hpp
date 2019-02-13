@@ -29,6 +29,9 @@
   static void vActivityMapMarkEntry(Tasks::MP_Task mpTask);
   static void vActivityMapMarkExit(Tasks::MP_Task mpTask);
 
+  // action sequence map
+  static void vActionSequenceMarkSeed(Tasks::MP_Task mpTask);
+
   // address
   static void vAddressEqual(Tasks::MP_Task mpTask);
   static void vAddressFetch(Tasks::MP_Task mpTask);
