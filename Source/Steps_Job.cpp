@@ -765,6 +765,8 @@ void Step::vJobPhaseStore(MP_Task mpTask)
   
   pJob->m_eJobPhase = (eJP)iJobPhase;
   
+  ActionSequence::vAdd(pJob,AN_JOB_PHASE,iJobPhase);
+  
   EXIT();
 }
 
