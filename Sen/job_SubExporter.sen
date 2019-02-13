@@ -24,6 +24,7 @@
 : subExporter_run ( -- )
 
   >>am <SEED_RUN>
+  an::seed_run
 
   task::this locals| pThisTask |
   job::this  locals| pJob_SubExporter |
@@ -37,7 +38,6 @@
   // null the job in the task and delete ended job
   nullptr pThisTask task.job!
   pJob_SubExporter job.delete
-
 
   <DONE_RUN>
 ;
