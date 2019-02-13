@@ -20,7 +20,7 @@
   0 locals| pJob__Ended |
 
   // new a temporary Job__Ended
-  iJobId job.newEnded to pJob__Ended
+  pJobParticipant job__Ended::new to pJob__Ended
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

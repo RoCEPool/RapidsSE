@@ -25,7 +25,7 @@
   grid::nodes pJobOriginator job.acksRemaining!
 
   // new a temporary Job__End
-  pJobOriginator job.id@ job.newEnd to pJob__End
+  pJobOriginator job__End::new to pJob__End
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

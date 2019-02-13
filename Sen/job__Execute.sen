@@ -25,7 +25,7 @@
   grid::nodes pJobOriginator job.acksRemaining!
 
   // create a new job__execute
-  pJobOriginator job.id@ job.newExecute to pJob__Execute
+  pJobOriginator job__Execute::new to pJob__Execute
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

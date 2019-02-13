@@ -28,13 +28,13 @@ void Step::vAddSteps_JobGeneric(void)
   vAddStep("jobExecuted.rowsSkipped@"_Stz,  &Step::vJob__ExecutedRowsSkippedFetch);
   vAddStep("jobExecuted.rowsSkipped!"_Stz,  &Step::vJob__ExecutedRowsSkippedStore);
   
-  vAddStep("job_Begun::new"_Stz,        &Step::vJob__BegunNew);
-  vAddStep("job_Cancel::new"_Stz,       &Step::vJob__CancelNew);
-  vAddStep("job_Cancelled::new"_Stz,    &Step::vJob__CancelledNew);
-  vAddStep("job_End::new"_Stz,          &Step::vJob__EndNew);
-  vAddStep("job_Ended::new"_Stz,        &Step::vJob__EndedNew);
-  vAddStep("job_Execute::new"_Stz,      &Step::vJob__ExecuteNew);
-  vAddStep("job_Executed::new"_Stz,     &Step::vJob__ExecutedNew);
+  vAddStep("job__Begun::new"_Stz,        &Step::vJob__BegunNew);
+  vAddStep("job__Cancel::new"_Stz,       &Step::vJob__CancelNew);
+  vAddStep("job__Cancelled::new"_Stz,    &Step::vJob__CancelledNew);
+  vAddStep("job__End::new"_Stz,          &Step::vJob__EndNew);
+  vAddStep("job__Ended::new"_Stz,        &Step::vJob__EndedNew);
+  vAddStep("job__Execute::new"_Stz,      &Step::vJob__ExecuteNew);
+  vAddStep("job__Executed::new"_Stz,     &Step::vJob__ExecutedNew);
 }
 
 /*----------------------------------------------------------------------------*/

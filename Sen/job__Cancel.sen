@@ -25,7 +25,7 @@
   grid::nodes pJobOriginator job.acksRemaining!
 
   // create a new Job__Cancel
-  pJobOriginator job.id@ job.newCancel to pJob__Cancel
+  pJobOriginator job__cancel::new to pJob__Cancel
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
