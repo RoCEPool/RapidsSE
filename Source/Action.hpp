@@ -84,6 +84,7 @@ namespace Maps
     i8   m_iArg1;
   
     void* m_aJob;
+    i8    m_i_Activity;
 
     Link_t<i8> m_wLink;
   

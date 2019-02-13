@@ -41,6 +41,7 @@ Action::Action(void)
   m_iArg0    = 0;
   m_iArg1    = 0;
   
+  m_i_Activity = C_UNKNOWN;
   ASSERT(0 == *m_wLink);
 
  _checkInitialised_(CN_ACTION);
@@ -79,6 +80,7 @@ void Action::vInit(i8 i_Action)
   m_iArg0    = 0;
   m_iArg1    = 0;
   
+  m_i_Activity = C_UNKNOWN;
   m_wLink.vReset();
 }
 /*----------------------------------------------------------------------------*/
@@ -113,6 +115,7 @@ void Action::vReset(void)
   m_iArg0    = 0;
   m_iArg1    = 0;
   
+  m_i_Activity = C_UNKNOWN;
   m_wLink.vReset();
 }
 
@@ -128,7 +131,7 @@ void Action::vWrite(File* pFile)
                 /* 2 */ "[%14p, %03lld, %03lld, %1s] "
                 /* 3 */ "%20s"
                 /* 4 */ "(%2lld, %14p) "
-                /* 5 */ "<<%03lld>>\n"_Stz,
+                /* 5 */ "<<%lld, %03lld>>\n"_Stz,
                 
                 /* 0 */ m_i_Action,
                         m_i_Root,
@@ -146,7 +149,8 @@ void Action::vWrite(File* pFile)
                 /* 4 */ m_iArg0,
                         m_iArg1,
                
-                /* 5 */ * m_wLink
+                /* 5 */ m_i_Activity,
+                        * m_wLink
                );
 }
 
