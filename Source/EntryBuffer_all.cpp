@@ -2114,7 +2114,6 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets
   EntryBuffer* pHigherBuffer = this->pHigherBuffer();
   if (! pHigherBuffer) {
     pHigherBuffer = this->pNewHigherBuffer();
-    vTrace("Creating new higher buffer %p\n"_Stz, pHigherBuffer);
     *ppRootKeyBuffer = pHigherBuffer;
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
