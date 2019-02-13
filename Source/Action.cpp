@@ -50,6 +50,8 @@ Action::Action(void)
   m_iArg0    = 0;
   m_iArg1    = 0;
   
+  m_caText[0] = '\0';
+  
   ASSERT(0 == *m_wLink);
 
  _checkInitialised_(CN_ACTION);
