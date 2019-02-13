@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+namespace Jobs { class Job; }
+
 namespace Maps
 {
   static const i8    C_ACTION_SEQUENCE = C_1M * 10;
@@ -32,8 +34,15 @@ namespace Maps
   
     static void vAdd(i8 i_RootAct, i8 iJobId, eCN eClassNo,
                      eAN eAction=AN_NONE, i8 iArg0=0, i8 iArg1=0);
+  
     static i8 iBegin(i8 iJobId,  eCN eClassNo,
                      eAN eAction=AN_NONE, i8 iArg0=0, i8 iArg1=0);
+  
+    static void vAdd(Jobs::Job* pJob,
+                     eAN eAction=AN_NONE, i8 iArg0=0, i8 iArg1=0);
+    static void vRoot(Jobs::Job* pJob,
+                       eAN eAction=AN_ROOT, i8 iArg0=0, i8 iArg1=0);
+  
     static void vWriteCsv(void);
 
   private:
@@ -42,8 +51,8 @@ namespace Maps
     void vFindRange_NL(i8& i_Min, i8& i_Max);
     void vGrabLock(void);
     void vLinkAction(Action* pRoot, Action* pAction);
-    Action* pNewAction(Action *pRootAction);
-    Action* pNewRoot(void);
+    Action* pNewLinkedAction(Action *pRootAction);
+    Action* pNewRootAction(void);
     Action* pNextAction(Action *pAction);
     i8   iPercentFull_NL(void);
     void vWriteToFile(void);

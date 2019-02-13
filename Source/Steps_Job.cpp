@@ -125,13 +125,7 @@ void Step::vJobAddOriginator(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.addOriginator"_Stz);
   Job* pJob = _pJob(pJobPtr);
-  
-  // does the job have an id ?
-  if (C_UNKNOWN == pJob->m_iJobId) {
-    i8 iJobId = gpAttachMap->m_pOriginatingJobs->iNextJobId();
-    pJob->m_iJobId = iJobId;
-  }
-  
+    
   // add the job to the originating jobs
   gpAttachMap->m_pOriginatingJobs->vGrabLock();
   gpAttachMap->m_pOriginatingJobs->vAddJob(pJob);
@@ -143,6 +137,9 @@ void Step::vJobAddOriginator(MP_Task mpTask)
                        pJob);
     gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
   }
+  
+  ActionSequence::vAdd(mpTask->m_pJob,
+                       AN_ADDED_ORIGINATOR);
   
   EXIT();
 }
@@ -169,6 +166,9 @@ void Step::vJobAddParticipant(MP_Task mpTask)
                        pJob);
     gpAttachMap->m_pParticipatingJobs->vMarkContents(pJob->m_iJobId);
   }
+  
+  ActionSequence::vAdd(mpTask->m_pJob,
+                       AN_ADDED_PARTICIPANT);
   
   EXIT();
 }
@@ -1056,6 +1056,9 @@ void Step::vJobRemoveOriginator(MP_Task mpTask)
     gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
   }
   
+  ActionSequence::vAdd(mpTask->m_pJob,
+                       AN_REMOVED_ORIGINATOR);
+  
   EXIT();
 }
 
@@ -1092,6 +1095,9 @@ void Step::vJobRemoveParticipant(MP_Task mpTask)
                        pJob);
     gpAttachMap->m_pParticipatingJobs->vMarkContents(pJob->m_iJobId);
   }
+  
+  ActionSequence::vAdd(mpTask->m_pJob,
+                       AN_REMOVED_PARTICIPANT);
   
   EXIT();
 }

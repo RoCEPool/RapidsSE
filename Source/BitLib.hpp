@@ -12,7 +12,7 @@
 #define BITWISE_SHIFT_RIGHT(word,nbits) ((word) >> nBits) // bitwise shift right
 
 const u8 C_BITS_PER_WORD = 64;
-const u8 C_ALL_BITS_ON   = 0XFFFFFFFFFFFFFFFFLL;
+const u8 C_ALL_BITS_ON   = 0xFFFFFFFFFFFFFFFFLL;
 
 const u1 C_1_BIT  = 1;
 const u1 C_2_BITS = 3;
@@ -32,6 +32,21 @@ const u8 C_BIT_5  = 32;
 const u8 C_BIT_6  = 64;
 const u8 C_BIT_7  = 128;
 
+//                              fedc    7654
+//                              ....ba98....3210
+const u8 C_MASKOFF_LOWER_56 = 0xFF00000000000000;
+const u8 C_MASKOFF_LOWER_48 = 0xFFFF000000000000;
+const u8 C_MASKOFF_LOWER_32 = 0xFFFFFFFF00000000;
+const u8 C_MASKOFF_LOWER_16 = 0xFFFFFFFFFFFF0000;
+const u8 C_MASKOFF_LOWER_08 = 0xFFFFFFFFFFFFFF00;
+
+//                              fedc    7654
+//                              ....ba98....3210
+const u8 C_MASKOFF_UPPER_56 = 0x00000000000000FF;
+const u8 C_MASKOFF_UPPER_48 = 0x000000000000FFFF;
+const u8 C_MASKOFF_UPPER_32 = 0x00000000FFFFFFFF;
+const u8 C_MASKOFF_UPPER_16 = 0x0000FFFFFFFFFFFF;
+const u8 C_MASKOFF_UPPER_08 = 0x00FFFFFFFFFFFFFF;
 
 /*----------------------------------------------------------------------------*/
 
@@ -51,6 +66,16 @@ namespace Base
     static i8   iHighestBit(u8 uBitMap);
     static bool bIsOff(u8 uBitMap, i8 iBit);
     static bool bIsOn(u8 uBitMap, i8 iBit);
+    static u8   uMaskOffLower56(u8 uBitMap);
+    static u8   uMaskOffLower48(u8 uBitMap);
+    static u8   uMaskOffLower32(u8 uBitMap);
+    static u8   uMaskOffLower16(u8 uBitMap);
+    static u8   uMaskOffLower08(u8 uBitMap);
+    static u8   uMaskOffUpper56(u8 uBitMap);
+    static u8   uMaskOffUpper48(u8 uBitMap);
+    static u8   uMaskOffUpper32(u8 uBitMap);
+    static u8   uMaskOffUpper16(u8 uBitMap);
+    static u8   uMaskOffUpper08(u8 uBitMap);
     static u8   uSetOff(u8 uBitMap, i8 iBit);
     static u8   uSetOn(u8 uBitMap, i8 iBit);
     static void vSetOff(u8& uBitMap, i8 iBit);

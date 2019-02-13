@@ -26,8 +26,8 @@ bool Prompt::bPrompt_markAct(SePrompt* pPrompt)
 {
   PromptHelper::vEnumFlags(gpAttachMap->m_oMarkAction,
                            "Act"_Stz,
-                           aAN,
-                           AN_ENUMS,
+                           aCN,
+                           CN_ENUMS,
                            pPrompt->pTknVec());
   
 //  JobClass* pJobClass = nullptr;

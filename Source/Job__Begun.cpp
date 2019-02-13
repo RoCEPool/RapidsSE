@@ -100,7 +100,7 @@ void Job__Begun::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job__Begun::Job__Begun(void)
-: Job(CN_JOB__BEGUN)
+: Job(CN_JOB__BEGUN,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__BEGUN,_FOOTER_);
   

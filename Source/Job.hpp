@@ -143,6 +143,8 @@ namespace Jobs
 
     eJT  m_eJobTrace;    // job trace
     bool m_bMark;        // write activity marks?
+    i8   m_i_Activity;   // action
+    bool m_bMarkAction;  // mark an actions
     i8   m_i_ActionRoot; // action
   
     JobClass*    m_pJobClass;        // job class
@@ -157,12 +159,14 @@ namespace Jobs
     Mutex* m_pMutex;
   
   public:
-    Job(eCN eClassNo);
     Job(eCN eClassNo, Interface::Session* pSession);
     ~Job(void) noexcept(false);
     
     static bool bIsForeign(i8 iJobId);
+    static i8   iJobNo(i8 iJobId);
+    static i8   iNodeNo(i8 iJobId);
     static i8   iOriginatorNode(i8 iJobId);
+    static i8   iAsNodeNo_Bits(i8 iNodeNo);
 
     Stz* sJobSeed(void);
     i8   iJobId(void);
@@ -186,7 +190,6 @@ namespace Jobs
     void vShow(s48K& s);
   
   private:
-    void vInit(void);
   
   };
   

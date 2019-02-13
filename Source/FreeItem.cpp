@@ -75,8 +75,10 @@ FreeItem::~FreeItem(void) noexcept(false)
 FreeItem* FreeItem::aMorphFreeItem(Item* aItem)
 {
   i8 nSizeItem = aItem->nSizeItem_WithoutOffsets();
+  i8 nSizeNEO  = aItem->iNEOsize();
+  i8 nSizeFree = nSizeItem + nSizeNEO;
   
-  FreeItem* aFreeItem = new(aItem) FreeItem(nSizeItem);
+  FreeItem* aFreeItem = new(aItem) FreeItem(nSizeFree);
   
   return aFreeItem;
 }

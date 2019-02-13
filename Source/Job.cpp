@@ -56,22 +56,6 @@ bool Jobs::_bIsValidJob(Base::eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(eCN eClassNo)
-: Object(eClassNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
-  
-  vInit();
-  
-  if (m_bMark)
-    vMarkJob("::Job"_Stz,""_Stz);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo, Session* pSession)
 : Object(eClassNo), JobDicPath(pSession)
 {
@@ -80,11 +64,48 @@ Job::Job(eCN eClassNo, Session* pSession)
   //vTrace("%s: CREATING JOB %p %s\n"_Stz,
   //       gpAttachMap->m_pGrid->pThisNode()->aNodeName(), this, aCN[eClass()]);
   
-  vInit();
+  m_iJobId    = ++gpAttachMap->m_ixNextJobId;
+  m_iParentId = C_UNKNOWN;
+  m_eSeed     = SS_ENUMS;
+  m_i_State   = C_UNKNOWN;
+  m_i_Slot    = C_UNKNOWN;
+  m_eJobPhase = JP_NONE;
+  m_eJobList  = JL_NONE;
+  m_eJobState = JS_RUNNING;
+  m_bNoWait   = false;
+  m_bWasReceived = false;
   
+  m_eJobTrace = JT_NONE;
+  if (gpAttachMap->m_bMarkJobAll || gpAttachMap->m_bMarkJob[eClass()])
+    m_bMark = true;
+  else
+    m_bMark = false;
+  m_i_Activity   = C_UNKNOWN;
+  
+  if ( gpAttachMap->m_oMarkAction.bAll() ||
+       gpAttachMap->m_oMarkAction.bFlagged(eClass()) )
+    m_bMarkAction  = true;
+  else
+    m_bMarkAction  = false;
+  m_i_ActionRoot = C_UNKNOWN;
+  
+  m_pJobClass        = nullptr;
+  m_pExecutingTask   = nullptr;
+  m_pOriginatingTask = nullptr;
+  
+  m_iParticipantNode  = C_UNKNOWN;
+  m_oAcksRemaining.vCheckInit();
+  m_pCurrentBuffer = nullptr;
+  
+  
+  if (CN_JOB_NODEINFO == eClass())
+    m_pMutex = nullptr;
+  else
+    m_pMutex = new Mutex;
+
   if (m_bMark)
     ActivityMap::vMarkInfo("::Job"_Stz,""_Stz);
-
+  
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
 
@@ -94,6 +115,8 @@ Job::Job(eCN eClassNo, Session* pSession)
 Job::~Job(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+  
+  ActionSequence::vAdd(this,AN_DESTRUCTOR);
   
   delete m_pMutex;
   
@@ -124,16 +147,46 @@ bool Job::bIsForeign(i8 iJobId)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the job no component this job                                          */
+/*----------------------------------------------------------------------------*/
+i8 Job::iJobNo(i8 iJobId)
+{
+  i8 iJobNo = BitLib::uMaskOffUpper16(iJobId);
+  
+  return iJobNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the originator node no of this job from the job id                     */
+/*----------------------------------------------------------------------------*/
+i8 Job::iNodeNo(i8 iJobId)
+{
+  i8 iNodeNo = BitLib::uMaskOffLower48(iJobId);
+  
+  iNodeNo >>= 48;
+  
+  return iNodeNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the originator node no of this job from the job id                     */
 /*----------------------------------------------------------------------------*/
 i8 Job::iOriginatorNode(i8 iJobId)
 {
-  i8 iMaskOffLower48Bits = 0xFFFF000000000000;
-  
-  i8 iOriginatorNode = iJobId & iMaskOffLower48Bits;
+  i8 iOriginatorNode = BitLib::uMaskOffLower48(iJobId);
   iOriginatorNode >>= 48;
   
   return iOriginatorNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the originator node no of this job from the job id                     */
+/*----------------------------------------------------------------------------*/
+i8 Job::iAsNodeNo_Bits(i8 iNodeNo)
+{
+  i8 NodeNo_Bits = iNodeNo << 48;
+  
+  return NodeNo_Bits;
 }
 
 
@@ -401,45 +454,6 @@ void Job::vShow(s48K& s)
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* initialize the job                                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vInit(void)
-{
-  m_iJobId    = C_UNKNOWN;
-  m_iParentId = C_UNKNOWN;
-  m_eSeed     = SS_ENUMS;
-  m_i_State   = C_UNKNOWN;
-  m_i_Slot    = C_UNKNOWN;
-  m_eJobPhase = JP_NONE;
-  m_eJobList  = JL_NONE;
-  m_eJobState = JS_RUNNING;
-  m_bNoWait   = false;
-  m_bWasReceived = false;
-
-  m_eJobTrace = JT_NONE;
-  if (gpAttachMap->m_bMarkJobAll || gpAttachMap->m_bMarkJob[eClass()])
-    m_bMark = true;
-  else
-    m_bMark = false;
-  m_i_ActionRoot = C_UNKNOWN;
-  
-  m_pJobClass        = nullptr;
-  m_pExecutingTask   = nullptr;
-  m_pOriginatingTask = nullptr;
-  
-  m_iParticipantNode  = C_UNKNOWN;
-  m_oAcksRemaining.vCheckInit();
-  m_pCurrentBuffer = nullptr;
-  
-  
-  if (CN_JOB_NODEINFO == eClass())
-    m_pMutex = nullptr;
-  else
-    m_pMutex = new Mutex;
-  
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -460,6 +474,7 @@ eEC Jobs::eJob_checkCluster(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 void Jobs::vJob_send(Job* pJob)
 {
+  ActionSequence::vAdd(pJob,AN_PRE_SEND);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -471,6 +486,8 @@ void Jobs::vJob_recv(Job* pJob)
   pJob->m_eJobList       = JL_NONE;
   pJob->m_pMutex         = nullptr;
   pJob->m_bWasReceived   = true;
+  
+  ActionSequence::vAdd(pJob,AN_POST_RECV);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -20,15 +20,21 @@ markjob export on;
 markjob subExporter on;
 markjob;
 
+markact job_export on;
+markact job_subExporter on;
+markact;
+
 markres file on;
 markres socket on;
 markres;
 
 print "exporting nation.csv..." ;
-//am "##########################################################################\n\n";
+
 amSection "EXPORT" ;
 
 export nation "/tmp/nation_export.csv" ;
+
+actionSequence;
 
 activityMap short;
 

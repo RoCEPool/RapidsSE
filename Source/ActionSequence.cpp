@@ -117,12 +117,15 @@ void ActionSequence::vAdd(i8 i_RootAct, i8 iJobId, eCN eClassNo,
   if (! gpActionSequence)
     return;
   
+  if (! gpAttachMap->m_oMarkAction.bFlagged(eClassNo))
+    return;
+  
   if (C_UNKNOWN == i_RootAct)
     return;
 
   Action* pRoot = &gpActionSequence->m_oaAction[i_RootAct];
   
-  Action* pAdded = gpActionSequence->pNewAction(pRoot);
+  Action* pAdded = gpActionSequence->pNewLinkedAction(pRoot);
   
   pAdded->m_iJobId   = iJobId;
   pAdded->m_eClassNo = eClassNo;
@@ -145,16 +148,88 @@ i8 ActionSequence::iBegin(i8 iJobId, eCN eClassNo,
   if (! gpActionSequence)
     return C_UNKNOWN;
   
-  Action* pRoot = gpActionSequence->pNewRoot();
+  if (! gpAttachMap->m_oMarkAction.bFlagged(eClassNo))
+    return C_UNKNOWN;
+
+  Action* pRoot = gpActionSequence->pNewRootAction();
   pRoot->m_iJobId   = iJobId;
   pRoot->m_eClassNo = eClassNo;
   pRoot->m_eAction  = eAction;
   pRoot->m_iArg0    = iArg0;
   pRoot->m_iArg1    = iArg1;
+  pRoot->m_wLink.vSetWithoutTest(C_UNKNOWN);
 
   return pRoot->m_i_Action;
 #else
   return C_UNKNOWN;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a new action to a sequence                                             */
+/*----------------------------------------------------------------------------*/
+void ActionSequence::vAdd(Jobs::Job* pJob,
+                          eAN eAction, i8 iArg0, i8 iArg1)
+{
+#ifdef WITH_ACTION_SEQUENCE
+  if (! gpActionSequence)
+    return;
+  
+  if (! (pJob->m_bMarkAction ||
+         gpAttachMap->m_oMarkAction.bFlagged(pJob->eClass())) )
+
+  if (C_UNKNOWN == pJob->m_i_ActionRoot)
+    return;
+  
+  Action* pRoot = &gpActionSequence->m_oaAction[pJob->m_i_ActionRoot];
+  
+  Action* pLinked = gpActionSequence->pNewLinkedAction(pRoot);
+  
+  pLinked->m_iJobId    = pJob->m_iJobId;
+  pLinked->m_eClassNo  = pJob->eClass();
+  pLinked->m_iParentId = pJob->m_iParentId;
+  pLinked->m_bWasRecv  = pJob->m_bWasReceived;
+  
+  pLinked->m_eAction  = eAction;
+  pLinked->m_iArg0    = iArg0;
+  pLinked->m_iArg1    = iArg1;
+  
+  pLinked->m_aJob     = pJob;
+#else
+  
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin a new action sequence                                                */
+/*----------------------------------------------------------------------------*/
+void ActionSequence::vRoot(Jobs::Job* pJob,
+                           eAN eAction, i8 iArg0, i8 iArg1)
+{
+#ifdef WITH_ACTION_SEQUENCE
+  if (! gpActionSequence)
+    return;
+
+  if (! (pJob->m_bMarkAction ||
+         gpAttachMap->m_oMarkAction.bFlagged(pJob->eClass())) )
+    return;
+  
+  Action* pRoot = gpActionSequence->pNewRootAction();
+  
+  pJob->m_i_ActionRoot = pRoot->m_i_Action;
+  
+  pRoot->m_iJobId    = pJob->m_iJobId;
+  pRoot->m_eClassNo  = pJob->eClass();
+  pRoot->m_iParentId = pJob->m_iParentId;
+  pRoot->m_bWasRecv  = pJob->m_bWasReceived;
+  
+  pRoot->m_eAction  = eAction;
+  pRoot->m_iArg0    = iArg0;
+  pRoot->m_iArg1    = iArg1;
+  
+  pRoot->m_aJob     = pJob;
+#else
+
 #endif
 }
 
@@ -213,7 +288,7 @@ void ActionSequence::vDropLock(void)
 /*----------------------------------------------------------------------------*/
 void ActionSequence::vFindRange_NL(i8& i_Min, i8& i_Max)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
   
   RASSERT(m_okLock.bIsLocked());
   
@@ -267,35 +342,36 @@ void ActionSequence::vLinkAction(Action* pRoot, Action* pNewAction)
 /*----------------------------------------------------------------------------*/
 /* get a new action (body)                                                    */
 /*----------------------------------------------------------------------------*/
-Action* ActionSequence::pNewAction(Action *pRootAction)
+Action* ActionSequence::pNewLinkedAction(Action *pRoot)
 {
   _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
   
-  Action* pAction = pAllotAction();
+  Action* pLinked = pAllotAction();
   
-  pAction->m_i_Root = pRootAction->m_i_Action;
+  pLinked->m_i_Root = pRoot->m_i_Action;
   
-  vLinkAction(pRootAction,pAction);
+  vLinkAction(pRoot,pLinked);
 
-  return pAction;
+  return pLinked;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get a new action (root)                                                    */
 /*----------------------------------------------------------------------------*/
-Action* ActionSequence::pNewRoot(void)
+Action* ActionSequence::pNewRootAction(void)
 {
   _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
   
-  Action* pRootAction = pAllotAction();
+  Action* pRoot = pAllotAction();
   
-  pRootAction->m_i_Root = pRootAction->m_i_Action;
-  
-  return pRootAction;
+  pRoot->m_i_Root = pRoot->m_i_Action;
+  pRoot->m_wLink.vSetWithoutTest(C_UNKNOWN);
+
+  return pRoot;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a new action (body)                                                    */
+/* get next action                                                            */
 /*----------------------------------------------------------------------------*/
 Action* ActionSequence::pNextAction(Action *pAction)
 {
@@ -303,7 +379,7 @@ Action* ActionSequence::pNextAction(Action *pAction)
   
   i8 i_NextAction = * pAction->m_wLink;
   
-  if (i_NextAction == -1)
+  if (i_NextAction == C_UNKNOWN)
     return nullptr;
   
   Action* pNextAction = &m_oaAction[i_NextAction % m_nActions];;
@@ -312,7 +388,7 @@ Action* ActionSequence::pNextAction(Action *pAction)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calculate how full the activity map is                                     */
+/* calculate how full the action sequence is                                  */
 /*----------------------------------------------------------------------------*/
 i8 ActionSequence::iPercentFull_NL(void)
 {
@@ -330,9 +406,9 @@ i8 ActionSequence::iPercentFull_NL(void)
   if (i_Min < i_Max) {
     //
     // Example: 0 .. 25 __ [64]
-    //          i_MinMark is 0
-    //          i_Maxmark is 48
-    //          m_nMarks  is 64
+    //          i_Min is 0
+    //          i_Max is 48
+    //          m_nActions  is 64
     // then only 0..25 is in use out of 64
     //
     nInUse = (i_Max - i_Min);
@@ -340,9 +416,9 @@ i8 ActionSequence::iPercentFull_NL(void)
   else {
     //
     // Example: .. 25 __ 48 .. [64]
-    //          i_MinMark is 48
-    //          i_Maxmark is 25
-    //          m_nMarks  is 64
+    //          i_Min is 48
+    //          i_Max is 25
+    //          m_nActions  is 64
     // then 48 .. 63 + 0 ..25 is in use
     //
     nInUse = (m_nActions - i_Min) + (i_Max);
@@ -362,8 +438,6 @@ void ActionSequence::vWriteToFile(void)
   
   s256 sAsPath("/tmp/ActionSequence.csv"_Stz);
   
-  i8 iTotalDelta = 0;
-  
   File* pActSeqFile = new File();
   
   bool bOpened = pActSeqFile->bOpenWrite(sAsPath);
@@ -379,21 +453,21 @@ void ActionSequence::vWriteToFile(void)
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
   
-  i8 i_MinMark;
-  i8 i_MaxMark;
+  i8 i_Min;
+  i8 i_Max;
   
-  vFindRange_NL(i_MinMark,i_MaxMark);
+  vFindRange_NL(i_Min,i_Max);
   
-  for (i8 i_Mark = i_MinMark + 1; i_Mark <= i_MaxMark; i_Mark++) {
+  for (i8 i_Action = i_Min; i_Action <= i_Max; i_Action++) {
 
-    Action* pAction = &m_oaAction[i_MinMark % m_nActions];
+    Action* pAction = &m_oaAction[i_Action % m_nActions];
     
     if (! pAction->bIsRoot())
       continue;
 
     pAction->vWrite(pActSeqFile);
     
-    while (pAction = pNextAction(pAction))
+    while ( (pAction = pNextAction(pAction)) )
       pAction->vWrite(pActSeqFile);
   }
   
