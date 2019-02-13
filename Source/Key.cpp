@@ -407,30 +407,30 @@ bool KeyData::bNotEqual(Item* aKeyItem1, Item* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* if this key greater than or equal to given key?                            */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bGreaterEqual(KeyData* aKeyThat, IdxColVec* pIdxColVec)
-{
-  bool bGreaterEqual = false;
-
-  char* aCursorThis = aByteSequence();
-  char* aCursorThat = aKeyThat->aByteSequence();
-
-  i8 nBytesThis;
-  i8 nBytesThat;
-
-  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
-
-    Column* pColumn = pIdxColVec->pGet(i_Column);
-
-    char* aDatumThis = pColumn->aValue(nBytesThis,&aCursorThis);
-    char* aDatumThat = pColumn->aValue(nBytesThat,&aCursorThat);
-
-    bGreaterEqual = pColumn->bGreaterEqual(aDatumThis,aDatumThat);
-    if (!bGreaterEqual)
-      break;
-  }
-
-  return bGreaterEqual;
-}
+//bool KeyData::bGreaterEqual(KeyData* aKeyThat, IdxColVec* pIdxColVec)
+//{
+//  bool bGreaterEqual = false;
+//
+//  char* aCursorThis = aByteSequence();
+//  char* aCursorThat = aKeyThat->aByteSequence();
+//
+//  i8 nBytesThis;
+//  i8 nBytesThat;
+//
+//  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
+//
+//    Column* pColumn = pIdxColVec->pGet(i_Column);
+//
+//    char* aDatumThis = pColumn->aValue(nBytesThis,&aCursorThis);
+//    char* aDatumThat = pColumn->aValue(nBytesThat,&aCursorThat);
+//
+//    bGreaterEqual = pColumn->bGreaterEqual(aDatumThis,aDatumThat);
+//    if (!bGreaterEqual)
+//      break;
+//  }
+//
+//  return bGreaterEqual;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* is this key greater than or equal to given key?                            */

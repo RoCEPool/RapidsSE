@@ -3627,11 +3627,12 @@ bool EntryBuffer::bVerifyKeyOrder(void)
       break;
     
     // get keys of the two entries
-    KeyData* aKeyA = _aKeyData(aItem->aDataArea());
-    KeyData* aKeyB = _aKeyData(aNextEntry->aDataArea());
+    //KeyData* aKeyA = _aKeyData(aItem->aDataArea());
+    //KeyData* aKeyB = _aKeyData(aNextEntry->aDataArea());
     
     // next keyB should be greater than or equal to keyA
-    bool bGreaterEqual = aKeyB->bGreaterEqual(aKeyA,pIdxColVec);
+    //bool bGreaterEqual = aKeyB->bGreaterEqual(aKeyA,pIdxColVec);
+    bool bGreaterEqual = KeyData::bGreaterEqual(aNextEntry, aItem);
     if (! bGreaterEqual) {
       vVerifyFault();
       return false;
