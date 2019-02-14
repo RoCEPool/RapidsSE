@@ -113,8 +113,8 @@ void Axioms::vAddConstants(void)
   /*  0 */ vAddConstant("AN_NONE"_Stz,               AN_NONE);
   /*  0 */ vAddConstant("AN_ACK_TASK"_Stz,           AN_ACK_TASK);
   /*  0 */ vAddConstant("AN_ACKS_REQUIRED"_Stz,      AN_ACKS_REQUIRED);
-  /*  0 */ vAddConstant("AN_ADDED_ORG"_Stz,          AN_ADDED_ORG);
-  /*  0 */ vAddConstant("AN_ADDED_PAR"_Stz,          AN_ADDED_PAR);
+  /*  0 */ vAddConstant("AN_ADDED_ORIGINATOR"_Stz,   AN_ADDED_ORIGINATOR);
+  /*  0 */ vAddConstant("AN_ADDED_PARTICIPANT"_Stz,  AN_ADDED_PARTICIPANT);
   /*  0 */ vAddConstant("AN_AM_DECIDER"_Stz,         AN_AM_DECIDER);
   /*  0 */ vAddConstant("AN_CLOSE_FILE"_Stz,         AN_CLOSE_FILE);
   /*  0 */ vAddConstant("AN_CONSTRUCTOR"_Stz,        AN_CONSTRUCTOR);
@@ -136,7 +136,7 @@ void Axioms::vAddConstants(void)
   /*  0 */ vAddConstant("AN_PRE_SEND"_Stz,           AN_PRE_SEND);
   /*  0 */ vAddConstant("AN_RECV_JOB"_Stz,           AN_RECV_JOB);
   /*  0 */ vAddConstant("AN_RECV_JOB_LOW_MEMORY"_Stz,AN_RECV_JOB_LOW_MEMORY);
-  /*  0 */ vAddConstant("AN_REMOVED_ORG"_Stz,        AN_REMOVED_ORG);
+  /*  0 */ vAddConstant("AN_REMOVED_ORIGINATOR"_Stz, AN_REMOVED_ORIGINATOR);
   /*  0 */ vAddConstant("AN_REMOVED_PARTICIPANT"_Stz,AN_REMOVED_PARTICIPANT);
   /*  0 */ vAddConstant("AN_RESOURCES_CHECKED"_Stz,  AN_RESOURCES_CHECKED);
   /*  0 */ vAddConstant("AN_RESOURCES_RELEASED"_Stz, AN_RESOURCES_RELEASED);

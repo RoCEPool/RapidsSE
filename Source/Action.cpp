@@ -164,8 +164,8 @@ void Action::vWrite(File* pFile)
   case AN_ADD_SLEEPING_QUEUE:
   case AN_ADD_SLOT_QUEUE:
   case AN_ADD_WAITING_SET:
-  case AN_ADDED_ORG:
-  case AN_ADDED_PAR:
+  case AN_ADDED_ORIGINATOR:
+  case AN_ADDED_PARTICIPANT:
   case AN_DDL_DROPPED_READ:
   case AN_DDL_DROPPED_WRITE:
   case AN_DDL_GRAB_READ:
@@ -173,7 +173,7 @@ void Action::vWrite(File* pFile)
   case AN_DDL_GRABBED_READ:
   case AN_DDL_GRABBED_WRITE:
   case AN_DESTRUCTOR:
-  case AN_REMOVED_ORG:
+  case AN_REMOVED_ORIGINATOR:
   case AN_REMOVED_PARTICIPANT:
   case AN_ROOT:
   case AN_TASK_ACKED:
