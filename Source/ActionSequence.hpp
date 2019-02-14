@@ -44,7 +44,8 @@ namespace Maps
                      Jobs::Job* pSystemJob,i8 iArg0=0, i8 iArg1=0);
     static void vAdd(Jobs::Job* pJob,eAN eAction, Stz* szText);
     static void vRoot(Jobs::Job* pJob);
-  
+    static void vEnd(Jobs::Job* pJob);
+
     static void vWriteCsv(void);
 
   private:

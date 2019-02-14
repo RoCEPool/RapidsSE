@@ -205,6 +205,7 @@ void Action::vWrite(File* pFile)
     vWrite_Pjob(pFile);
     break;
       
+  case AN_END:
   case AN_ROOT:
     vWrite_Proot(pFile);
     break;

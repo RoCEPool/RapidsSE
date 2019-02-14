@@ -330,6 +330,8 @@ void SePrompt::vDeleteJob(void)
   //Command* pCommand = this->pCommand();
   //JobClass* pJobClass = pCommand->pJobClass();
   
+  ActionSequence::vEnd(m_pJob);
+
   // call the job delete function
   m_pJobClass->vDeleteJob(m_pSession,m_pJob);
 }

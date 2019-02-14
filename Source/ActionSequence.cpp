@@ -156,7 +156,6 @@ void ActionSequence::vAdd(Jobs::Job* pJob,
     return;
   
   Action* pRoot = &gpActionSequence->m_oaAction[pJob->m_i_ActionRoot];
-  
   Action* pLinked = gpActionSequence->pNewLinkedAction(pRoot);
   
   pLinked->m_iJobId    = pJob->m_iJobId;
@@ -310,6 +309,43 @@ void ActionSequence::vRoot(Jobs::Job* pJob)
   pRoot->m_aJob     = pJob;
 #else
 
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin a new action sequence                                                */
+/*----------------------------------------------------------------------------*/
+void ActionSequence::vEnd(Jobs::Job* pJob)
+{
+#ifdef WITH_ACTION_SEQUENCE
+  if (! gpActionSequence)
+    return;
+  
+  if (! (pJob->m_bMarkAction ||
+         gpAttachMap->m_oMarkAction.bFlagged(pJob->eClass())) )
+    return;
+  
+  if (C_UNKNOWN == pJob->m_i_ActionRoot)
+    return;
+  
+  Action* pRoot = &gpActionSequence->m_oaAction[pJob->m_i_ActionRoot];
+  Action* pEnd = gpActionSequence->pNewLinkedAction(pRoot);
+  
+  pEnd->m_iJobId    = pJob->m_iJobId;
+  pEnd->m_eClassNo  = pJob->eClass();
+  pEnd->m_iParentId = pJob->m_iParentId;
+  pEnd->m_bWasRecv  = pJob->m_bWasReceived;
+  
+  Tsp wTspNow;
+  wTspNow.vSetAsNow();
+  
+  pEnd->m_eAction  = AN_END;
+  pEnd->m_iArg0    = wTspNow.iAsI8();
+  pEnd->m_iArg1    = 0;
+  
+  pEnd->m_aJob     = pJob;
+#else
+  
 #endif
 }
 
