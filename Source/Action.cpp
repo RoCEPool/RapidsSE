@@ -157,9 +157,149 @@ void Action::vWrite(File* pFile)
   
   switch (m_eAction) {
   
+  case AN_ADDED_ORIGINATOR:
+  case AN_ADDED_PARTICIPANT:
+  case AN_AM_DECIDER:
+  case AN_CLOSE_FILE:
+  case AN_DDL_DROPPED_READ:
+  case AN_DDL_DROPPED_WRITE:
+  case AN_DDL_GRAB_READ:
+  case AN_DDL_GRAB_WRITE:
+  case AN_DDL_GRABBED_READ:
+  case AN_DDL_GRABBED_WRITE:
+  case AN_DESTRUCTOR:
+  case AN_OPEN_FILE:
+  case AN_POST_RECV:
+  case AN_PRE_PROMPT:
+  case AN_PRE_SEND:
+  case AN_RECV_JOB:
+  case AN_REMOVED_ORIGINATOR:
+  case AN_REMOVED_PARTICIPANT:
+  case AN_ROOT:
+  case AN_SEED_CAN:
+  case AN_SEED_EXE:
+  case AN_SEED_END:
+  case AN_SEED_RCV:
+  case AN_SEED_REQ:
+  case AN_SEED_RUN:
+  case AN_SEND_JOB:
+  case AN_SPAWN_JOB:
+  case AN_TABLE_USE:
+  case AN_TASK_SCHEDULE:
+  case AN_TASK_LOCKED:
+  case AN_TASK_WAIT:
+    vWrite_P(pFile);
+    break;
+      
+  case AN_CONSTRUCTOR:
+  case AN_SET_ACKS_REQUIRED:
+  case AN_JOB_BEGIN:
+  case AN_JOB_CHUNK:
+  case AN_JOB_END:
+  case AN_JOB_PHASE:
+  case AN_POST_PROMPT:
+    vWrite_Pi8(pFile);
+    break;
+      
+  case AN_ACK_TASK:
+    vWrite_Pjob(pFile);
+    break;
+      
   default:
     vWrite_Default(pFile);
   }
+}
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* write action to file                                                       */
+/*----------------------------------------------------------------------------*/
+void Action::vWriteJob(File* pFile)
+{
+  _precondition_(_MAGIC_,CN_ACTION);
+  
+  pFile->vPrint("%16s[%1s%03lld,%03lld]"_Stz,
+                aCN[m_eClassNo],
+                m_bWasRecv ? "r" : "n",
+                m_iJobId,
+                m_iParentId
+                );
+}
+
+/*----------------------------------------------------------------------------*/
+/* write action to file                                                       */
+/*----------------------------------------------------------------------------*/
+void Action::vWriteLead(File* pFile)
+{
+  _precondition_(_MAGIC_,CN_ACTION);
+  
+  pFile->vPrint(/* 0 */ "[%03lld, %03lld, %lld] "_Stz,
+                
+                /* 0 */ m_i_Action,
+                        m_i_Root,
+                        m_iTick
+                );
+}
+
+/*----------------------------------------------------------------------------*/
+/* write action to file                                                       */
+/*----------------------------------------------------------------------------*/
+void Action::vWriteRefer(File* pFile)
+{
+  _precondition_(_MAGIC_,CN_ACTION);
+  
+  //pFile->vPrint("<<%lld, %03lld>>"_Stz,m_i_Activity,* m_wLink);
+  pFile->vPrint("<<%03lld>>"_Stz,m_i_Activity);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write action to file                                                       */
+/*----------------------------------------------------------------------------*/
+void Action::vWrite_P(File* pFile)
+{
+  _precondition_(_MAGIC_,CN_ACTION);
+
+  vWriteLead(pFile);
+  vWriteRefer(pFile);
+  vWriteJob(pFile);
+
+  pFile->vPrint(".%s() "_Stz,aAN[m_eAction]);
+  
+  pFile->vPrint("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write action to file                                                       */
+/*----------------------------------------------------------------------------*/
+void Action::vWrite_Pi8(File* pFile)
+{
+  _precondition_(_MAGIC_,CN_ACTION);
+  
+  vWriteLead(pFile);
+  vWriteRefer(pFile);
+  vWriteJob(pFile);
+
+  pFile->vPrint(".%s(%lld) "_Stz,aAN[m_eAction],m_iArg0);
+  
+  pFile->vPrint("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write action to file                                                       */
+/*----------------------------------------------------------------------------*/
+void Action::vWrite_Pjob(File* pFile)
+{
+  _precondition_(_MAGIC_,CN_ACTION);
+  
+  vWriteLead(pFile);
+  vWriteRefer(pFile);
+  vWriteJob(pFile);
+
+  pFile->vPrint(".%s(%03lld) "_Stz,aAN[m_eAction],m_iArg0);
+  
+  pFile->vPrint("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -153,7 +153,14 @@ namespace Maps
     bool bIsRoot(void);
     void vReset(void);
     void vWrite(File* pFile);
+    void vWriteJob(File* pFile);
+    void vWriteLead(File* pFile);
+    void vWriteRefer(File* pFile);
+  
+    void vWrite_P(File* pFile);
+    void vWrite_Pi8(File* pFile);
     void vWrite_Default(File* pFile);
+    void vWrite_Pjob(File* pFile);
 
     Footer* aFooter(void);
   };
