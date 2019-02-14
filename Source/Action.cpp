@@ -157,9 +157,8 @@ void Action::vWrite(File* pFile)
   
   switch (m_eAction) {
   
-  case AN_ADDED_ORIGINATOR:
-  case AN_ADDED_PARTICIPANT:
-  case AN_AM_DECIDER:
+  case AN_ADDED_ORG:
+  case AN_ADDED_PAR:
   case AN_CLOSE_FILE:
   case AN_DDL_DROPPED_READ:
   case AN_DDL_DROPPED_WRITE:
@@ -173,7 +172,7 @@ void Action::vWrite(File* pFile)
   case AN_PRE_PROMPT:
   case AN_PRE_SEND:
   case AN_RECV_JOB:
-  case AN_REMOVED_ORIGINATOR:
+  case AN_REMOVED_ORG:
   case AN_REMOVED_PARTICIPANT:
   case AN_ROOT:
   case AN_SEED_CAN:
@@ -191,8 +190,9 @@ void Action::vWrite(File* pFile)
     vWrite_P(pFile);
     break;
       
+  case AN_ACKS_REQUIRED:
+  case AN_AM_DECIDER:
   case AN_CONSTRUCTOR:
-  case AN_SET_ACKS_REQUIRED:
   case AN_JOB_BEGIN:
   case AN_JOB_CHUNK:
   case AN_JOB_END:

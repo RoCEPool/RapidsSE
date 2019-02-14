@@ -112,8 +112,9 @@ void Axioms::vAddConstants(void)
   // AN_ : action numbers
   /*  0 */ vAddConstant("AN_NONE"_Stz,               AN_NONE);
   /*  0 */ vAddConstant("AN_ACK_TASK"_Stz,           AN_ACK_TASK);
-  /*  0 */ vAddConstant("AN_ADDED_ORIGINATOR"_Stz,   AN_ADDED_ORIGINATOR);
-  /*  0 */ vAddConstant("AN_ADDED_PARTICIPANT"_Stz,  AN_ADDED_PARTICIPANT);
+  /*  0 */ vAddConstant("AN_ACKS_REQUIRED"_Stz,      AN_ACKS_REQUIRED);
+  /*  0 */ vAddConstant("AN_ADDED_ORG"_Stz,          AN_ADDED_ORG);
+  /*  0 */ vAddConstant("AN_ADDED_PAR"_Stz,          AN_ADDED_PAR);
   /*  0 */ vAddConstant("AN_AM_DECIDER"_Stz,         AN_AM_DECIDER);
   /*  0 */ vAddConstant("AN_CLOSE_FILE"_Stz,         AN_CLOSE_FILE);
   /*  0 */ vAddConstant("AN_CONSTRUCTOR"_Stz,        AN_CONSTRUCTOR);
@@ -135,7 +136,7 @@ void Axioms::vAddConstants(void)
   /*  0 */ vAddConstant("AN_PRE_SEND"_Stz,           AN_PRE_SEND);
   /*  0 */ vAddConstant("AN_RECV_JOB"_Stz,           AN_RECV_JOB);
   /*  0 */ vAddConstant("AN_RECV_JOB_LOW_MEMORY"_Stz,AN_RECV_JOB_LOW_MEMORY);
-  /*  0 */ vAddConstant("AN_REMOVED_ORIGINATOR"_Stz, AN_REMOVED_ORIGINATOR);
+  /*  0 */ vAddConstant("AN_REMOVED_ORG"_Stz,        AN_REMOVED_ORG);
   /*  0 */ vAddConstant("AN_REMOVED_PARTICIPANT"_Stz,AN_REMOVED_PARTICIPANT);
   /*  0 */ vAddConstant("AN_ROOT"_Stz,               AN_ROOT);
   /*  0 */ vAddConstant("AN_SEED_CAN"_Stz,           AN_SEED_CAN);
@@ -145,7 +146,6 @@ void Axioms::vAddConstants(void)
   /*  0 */ vAddConstant("AN_SEED_REQ"_Stz,           AN_SEED_REQ);
   /*  0 */ vAddConstant("AN_SEED_RUN"_Stz,           AN_SEED_RUN);
   /*  0 */ vAddConstant("AN_SEND_JOB"_Stz,           AN_SEND_JOB);
-  /*  0 */ vAddConstant("AN_SET_ACKS_REQUIRED"_Stz,  AN_SET_ACKS_REQUIRED);
   /*  0 */ vAddConstant("AN_SPAWN_JOB"_Stz,          AN_SPAWN_JOB);
   /*  0 */ vAddConstant("AN_TABLE_USE"_Stz,          AN_TABLE_USE);
   /*  0 */ vAddConstant("AN_TASK_LOCKED"_Stz,        AN_TASK_LOCKED);

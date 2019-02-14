@@ -131,7 +131,7 @@ void Step::vJobAddOriginator(MP_Task mpTask)
   }
   
   ActionSequence::vAdd(mpTask->m_pJob,
-                       AN_ADDED_ORIGINATOR);
+                       AN_ADDED_ORG);
   
   EXIT();
 }
@@ -160,7 +160,7 @@ void Step::vJobAddParticipant(MP_Task mpTask)
   }
   
   ActionSequence::vAdd(mpTask->m_pJob,
-                       AN_ADDED_PARTICIPANT);
+                       AN_ADDED_PAR);
   
   EXIT();
 }
@@ -891,7 +891,7 @@ void Step::vJobRemoveOriginator(MP_Task mpTask)
   }
   
   ActionSequence::vAdd(mpTask->m_pJob,
-                       AN_REMOVED_ORIGINATOR);
+                       AN_REMOVED_ORG);
   
   EXIT();
 }
