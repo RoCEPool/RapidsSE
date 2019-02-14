@@ -138,6 +138,8 @@ void Axioms::vAddConstants(void)
   /*  0 */ vAddConstant("AN_RECV_JOB_LOW_MEMORY"_Stz,AN_RECV_JOB_LOW_MEMORY);
   /*  0 */ vAddConstant("AN_REMOVED_ORG"_Stz,        AN_REMOVED_ORG);
   /*  0 */ vAddConstant("AN_REMOVED_PARTICIPANT"_Stz,AN_REMOVED_PARTICIPANT);
+  /*  0 */ vAddConstant("AN_RESOURCES_CHECKED"_Stz,  AN_RESOURCES_CHECKED);
+  /*  0 */ vAddConstant("AN_RESOURCES_RELEASED"_Stz, AN_RESOURCES_RELEASED);
   /*  0 */ vAddConstant("AN_ROOT"_Stz,               AN_ROOT);
   /*  0 */ vAddConstant("AN_SEED_CAN"_Stz,           AN_SEED_CAN);
   /*  0 */ vAddConstant("AN_SEED_END"_Stz,           AN_SEED_END);

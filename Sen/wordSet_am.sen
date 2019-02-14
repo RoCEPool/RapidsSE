@@ -76,6 +76,30 @@
   POSTPONE ActionSequence::markSeed
 ;
 
+/*----------------------------------------------------------------------------*/
+/* mark run seed action                                                       */
+/*----------------------------------------------------------------------------*/
+: an::resources_checked immediate
+
+  word::this word.name ,
+
+  AN_RESOURCES_CHECKED ,
+
+  POSTPONE ActionSequence::markWord
+;
+
+/*----------------------------------------------------------------------------*/
+/* mark run seed action                                                       */
+/*----------------------------------------------------------------------------*/
+: an::resources_released immediate
+
+  word::this word.name ,
+
+  AN_RESOURCES_RELEASED ,
+
+  POSTPONE ActionSequence::markWord
+;
+
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/

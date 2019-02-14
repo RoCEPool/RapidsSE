@@ -1076,7 +1076,7 @@ void Queues::vScheduleAckedTask(Task* pTask)
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
   
-  ActionSequence::vAdd(pTask->pJob(),AN_TASK_ACKED);
+  //ActionSequence::vAdd(pTask->pJob(),AN_TASK_ACKED);
 
   pTask->vGrabLock();
 

@@ -37,8 +37,7 @@ bool Handlers::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   
   ActionSequence::vAdd(pTaskAcking->pJob(),
                        AN_ACK_TASK,
-                       pTaskBeingAcked->pJob()->m_iJobId,
-                       (i8)pTaskBeingAcked->pJob());
+                       pTaskBeingAcked->pJob());
   
   bool bAmDecider = pTaskBeingAcked->bAckAndDecide();
   
@@ -62,7 +61,10 @@ bool Handlers::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   }
   
   if (bAmDecider) {
-    ActionSequence::vAdd(pTaskAcking->pJob(),AN_AM_DECIDER);
+    ActionSequence::vAdd(pTaskAcking->pJob(),
+                         AN_AM_DECIDER,
+                         pTaskBeingAcked->pJob());
+    
     pQueues->vScheduleAckedTask(pTaskBeingAcked);
   }
   

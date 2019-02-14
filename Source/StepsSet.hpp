@@ -30,6 +30,7 @@
   static void vActivityMapMarkExit(Tasks::MP_Task mpTask);
 
   // action sequence map
+  static void vActionSequenceMarkWord(Tasks::MP_Task mpTask);
   static void vActionSequenceMarkSeed(Tasks::MP_Task mpTask);
 
   // address

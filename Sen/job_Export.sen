@@ -119,6 +119,7 @@
   then
 
   <<am <Resources_Checked>
+  an::resources_checked
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -131,6 +132,7 @@
   params| pJob_Export  |
 
   <<am <Resources_Released>
+  an::resources_released
 ;
 
 

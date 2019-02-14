@@ -192,7 +192,6 @@ void Action::vWrite(File* pFile)
     break;
     
   case AN_ACKS_REQUIRED:
-  case AN_AM_DECIDER:
   case AN_JOB_BEGIN:
   case AN_JOB_CHUNK:
   case AN_JOB_END:
@@ -202,6 +201,7 @@ void Action::vWrite(File* pFile)
     break;
       
   case AN_ACK_TASK:
+  case AN_AM_DECIDER:
     vWrite_Pjob(pFile);
     break;
       
@@ -225,6 +225,8 @@ void Action::vWrite(File* pFile)
     vWrite_Ptxt(pFile);
     break;
 
+  case AN_RESOURCES_CHECKED:
+  case AN_RESOURCES_RELEASED:
   case AN_SEED_CAN:
   case AN_SEED_EXE:
   case AN_SEED_END:
@@ -394,7 +396,7 @@ void Action::vWrite_Pjob(File* pFile)
   vWriteRefer(pFile);
   vWriteJob(pFile);
 
-  pFile->vPrint(".%s(%03lld) "_Stz,aAN[m_eAction],m_iArg0);
+  pFile->vPrint(".%s(%s) "_Stz,aAN[m_eAction],aCN[m_eClassNo_Arg]);
   
   pFile->vPrint("\n"_Stz);
 }
@@ -477,7 +479,7 @@ void Action::vWrite_Pwrd(File* pFile)
   vWriteRefer(pFile);
   vWriteJob(pFile);
   
-  pFile->vPrint(".%s(:%s) "_Stz,aAN[m_eAction],m_caText);
+  pFile->vPrint(".%s(: %s) "_Stz,aAN[m_eAction],m_caText);
   
   pFile->vPrint("\n"_Stz);
 }
