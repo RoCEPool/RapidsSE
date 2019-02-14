@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Maps.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -175,12 +176,6 @@ void Action::vWrite(File* pFile)
   case AN_REMOVED_ORG:
   case AN_REMOVED_PARTICIPANT:
   case AN_ROOT:
-  case AN_SEED_CAN:
-  case AN_SEED_EXE:
-  case AN_SEED_END:
-  case AN_SEED_RCV:
-  case AN_SEED_REQ:
-  case AN_SEED_RUN:
   case AN_SEND_JOB:
   case AN_SPAWN_JOB:
   case AN_TABLE_USE:
@@ -196,7 +191,6 @@ void Action::vWrite(File* pFile)
   case AN_JOB_BEGIN:
   case AN_JOB_CHUNK:
   case AN_JOB_END:
-  case AN_JOB_PHASE:
   case AN_POST_PROMPT:
     vWrite_Pi8(pFile);
     break;
@@ -205,13 +199,25 @@ void Action::vWrite(File* pFile)
     vWrite_Pjob(pFile);
     break;
       
+  case AN_JOB_PHASE:
+    vWrite_Penum(pFile);
+    break;
+    
+  case AN_SEED_CAN:
+  case AN_SEED_EXE:
+  case AN_SEED_END:
+  case AN_SEED_RCV:
+  case AN_SEED_REQ:
+  case AN_SEED_RUN:
+    vWrite_Pwrd(pFile);
+    break;
+
   default:
     vWrite_Default(pFile);
   }
 }
 
-
-
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* write action to file                                                       */
@@ -254,6 +260,43 @@ void Action::vWriteRefer(File* pFile)
   pFile->vPrint("<<%03lld>>"_Stz,m_i_Activity);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* write action to file                                                       */
+/*----------------------------------------------------------------------------*/
+void Action::vWrite_Default(File* pFile)
+{
+  _precondition_(_MAGIC_,CN_ACTION);
+  
+  pFile->vPrint(/* 0 */ "[%03lld, %03lld, %lld] "
+                /* 1 */ "%16s"
+                /* 2 */ "[%14p, %03lld, %03lld, %1s] "
+                /* 3 */ "%20s"
+                /* 4 */ "(%2lld, %14p) "
+                /* 5 */ "<<%lld, %03lld>>\n"_Stz,
+                
+                /* 0 */ m_i_Action,
+                m_i_Root,
+                m_iTick,
+                
+                /* 1 */ aCN[m_eClassNo],
+                
+                /* 2 */ m_aJob,
+                m_iJobId,
+                m_iParentId,
+                m_bWasRecv ? "R" : "n",
+                
+                /* 3 */ aAN[m_eAction],
+                
+                /* 4 */ m_iArg0,
+                m_iArg1,
+                
+                /* 5 */ m_i_Activity,
+                * m_wLink
+                );
+}
+
 /*----------------------------------------------------------------------------*/
 /* write action to file                                                       */
 /*----------------------------------------------------------------------------*/
@@ -266,6 +309,22 @@ void Action::vWrite_P(File* pFile)
   vWriteJob(pFile);
 
   pFile->vPrint(".%s() "_Stz,aAN[m_eAction]);
+  
+  pFile->vPrint("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write action to file                                                       */
+/*----------------------------------------------------------------------------*/
+void Action::vWrite_Penum(File* pFile)
+{
+  _precondition_(_MAGIC_,CN_ACTION);
+  
+  vWriteLead(pFile);
+  vWriteRefer(pFile);
+  vWriteJob(pFile);
+  
+  pFile->vPrint(".%s(%s) "_Stz,aAN[m_eAction],EnumGroups::szEnumText(m_iArg1,m_iArg0));
   
   pFile->vPrint("\n"_Stz);
 }
@@ -305,36 +364,33 @@ void Action::vWrite_Pjob(File* pFile)
 /*----------------------------------------------------------------------------*/
 /* write action to file                                                       */
 /*----------------------------------------------------------------------------*/
-void Action::vWrite_Default(File* pFile)
+void Action::vWrite_Ptxt(File* pFile)
 {
   _precondition_(_MAGIC_,CN_ACTION);
   
-  pFile->vPrint(/* 0 */ "[%03lld, %03lld, %lld] "
-                /* 1 */ "%16s"
-                /* 2 */ "[%14p, %03lld, %03lld, %1s] "
-                /* 3 */ "%20s"
-                /* 4 */ "(%2lld, %14p) "
-                /* 5 */ "<<%lld, %03lld>>\n"_Stz,
-                
-                /* 0 */ m_i_Action,
-                        m_i_Root,
-                        m_iTick,
-               
-                /* 1 */ aCN[m_eClassNo],
-                
-                /* 2 */ m_aJob,
-                        m_iJobId,
-                        m_iParentId,
-                        m_bWasRecv ? "R" : "n",
+  vWriteLead(pFile);
+  vWriteRefer(pFile);
+  vWriteJob(pFile);
+  
+  pFile->vPrint(".%s(\"%s\") "_Stz,aAN[m_eAction],m_caText);
+  
+  pFile->vPrint("\n"_Stz);
+}
 
-                /* 3 */ aAN[m_eAction],
-
-                /* 4 */ m_iArg0,
-                        m_iArg1,
-               
-                /* 5 */ m_i_Activity,
-                        * m_wLink
-               );
+/*----------------------------------------------------------------------------*/
+/* write action to file                                                       */
+/*----------------------------------------------------------------------------*/
+void Action::vWrite_Pwrd(File* pFile)
+{
+  _precondition_(_MAGIC_,CN_ACTION);
+  
+  vWriteLead(pFile);
+  vWriteRefer(pFile);
+  vWriteJob(pFile);
+  
+  pFile->vPrint(".%s(:%s) "_Stz,aAN[m_eAction],m_caText);
+  
+  pFile->vPrint("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

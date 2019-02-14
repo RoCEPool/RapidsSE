@@ -202,6 +202,43 @@ void ActionSequence::vAdd(Jobs::Job* pJob,
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a new action to a sequence                                             */
+/*----------------------------------------------------------------------------*/
+void ActionSequence::vAdd(Jobs::Job* pJob,
+                          eAN eAction, Stz* szText)
+{
+#ifdef WITH_ACTION_SEQUENCE
+  if (! gpActionSequence)
+    return;
+  
+  if (! (pJob->m_bMarkAction ||
+         gpAttachMap->m_oMarkAction.bFlagged(pJob->eClass())) )
+    return;
+  
+  if (C_UNKNOWN == pJob->m_i_ActionRoot)
+    return;
+  
+  Action* pRoot = &gpActionSequence->m_oaAction[pJob->m_i_ActionRoot];
+  
+  Action* pLinked = gpActionSequence->pNewLinkedAction(pRoot);
+  
+  pLinked->m_iJobId    = pJob->m_iJobId;
+  pLinked->m_eClassNo  = pJob->eClass();
+  pLinked->m_iParentId = pJob->m_iParentId;
+  pLinked->m_bWasRecv  = pJob->m_bWasReceived;
+  
+  pLinked->m_eAction  = eAction;
+  StrLib::vCopyLen(pLinked->m_caText,
+                   szText->aChar(),
+                   sizeof(pLinked->m_caText) - 1);
+  
+  pLinked->m_aJob     = pJob;
+#else
+  
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* begin a new action sequence                                                */
 /*----------------------------------------------------------------------------*/
 void ActionSequence::vRoot(Jobs::Job* pJob,

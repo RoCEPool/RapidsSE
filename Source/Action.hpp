@@ -157,10 +157,13 @@ namespace Maps
     void vWriteLead(File* pFile);
     void vWriteRefer(File* pFile);
   
+    void vWrite_Default(File* pFile);
+    void vWrite_Penum(File* pFile);
     void vWrite_P(File* pFile);
     void vWrite_Pi8(File* pFile);
-    void vWrite_Default(File* pFile);
     void vWrite_Pjob(File* pFile);
+    void vWrite_Ptxt(File* pFile);
+    void vWrite_Pwrd(File* pFile);
 
     Footer* aFooter(void);
   };
