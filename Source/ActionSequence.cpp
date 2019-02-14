@@ -281,8 +281,7 @@ i8 ActionSequence::iBegin(i8 iJobId, eCN eClassNo,
 /*----------------------------------------------------------------------------*/
 /* begin a new action sequence                                                */
 /*----------------------------------------------------------------------------*/
-void ActionSequence::vRoot(Jobs::Job* pJob,
-                           eAN eAction, i8 iArg0, i8 iArg1)
+void ActionSequence::vRoot(Jobs::Job* pJob)
 {
 #ifdef WITH_ACTION_SEQUENCE
   if (! gpActionSequence)
@@ -301,9 +300,12 @@ void ActionSequence::vRoot(Jobs::Job* pJob,
   pRoot->m_iParentId = pJob->m_iParentId;
   pRoot->m_bWasRecv  = pJob->m_bWasReceived;
   
-  pRoot->m_eAction  = eAction;
-  pRoot->m_iArg0    = iArg0;
-  pRoot->m_iArg1    = iArg1;
+  Tsp wTspNow;
+  wTspNow.vSetAsNow();
+  
+  pRoot->m_eAction  = AN_ROOT;
+  pRoot->m_iArg0    = wTspNow.iAsI8();
+  pRoot->m_iArg1    = 0;
   
   pRoot->m_aJob     = pJob;
 #else

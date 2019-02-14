@@ -175,7 +175,6 @@ void Action::vWrite(File* pFile)
   case AN_DESTRUCTOR:
   case AN_REMOVED_ORIGINATOR:
   case AN_REMOVED_PARTICIPANT:
-  case AN_ROOT:
   case AN_TASK_ACKED:
   case AN_TASK_LOCKED:
   case AN_TASK_WAIT:
@@ -204,6 +203,10 @@ void Action::vWrite(File* pFile)
   case AN_AM_DECIDER:
   case AN_NEW_JOB:
     vWrite_Pjob(pFile);
+    break;
+      
+  case AN_ROOT:
+    vWrite_Proot(pFile);
     break;
       
   case AN_FIND_ORIGINATOR:
@@ -408,6 +411,29 @@ void Action::vWrite_Pjob(File* pFile)
   pFile->vPrint(".%s(%s[%03lld]) "_Stz,
                 aAN[m_eAction],
                 aCN[m_eClassNo_Arg],m_iJobId_Arg);
+  
+  pFile->vPrint("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write action to file                                                       */
+/*----------------------------------------------------------------------------*/
+void Action::vWrite_Proot(File* pFile)
+{
+  _precondition_(_MAGIC_,CN_ACTION);
+  
+  vWriteLead(pFile);
+  vWriteRefer(pFile);
+  vWriteJob(pFile);
+  
+  Tsp wTsp;
+  wTsp.vSet((Tsp*)&m_iArg0);
+  
+  s32 sTsp;
+  wTsp.vSprint(sTsp);
+  pFile->vPrint(".%s(%s) "_Stz,
+                aAN[m_eAction],
+                sTsp.aStz());
   
   pFile->vPrint("\n"_Stz);
 }

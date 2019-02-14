@@ -187,6 +187,7 @@ namespace Maps
     void vWrite_P(File* pFile);
     void vWrite_Pi8(File* pFile);
     void vWrite_Pjob(File* pFile);
+    void vWrite_Proot(File* pFile);
     void vWrite_Psysjob(File* pFile);
     void vWrite_Psysjob_enum(File* pFile);
     void vWrite_Psysjob_i8(File* pFile);

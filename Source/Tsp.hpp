@@ -43,10 +43,11 @@ namespace Datums
     void vInitZero(void);
     i8   iAsI8(void);
     bool bIsNull(void);
-    void vSet(Tsp wTspArg);
+    void vSet(Tsp* aTspArg);
     void vSetAsNow(void);
     void vSetNull(void);
-  
+    void vSprint(Stz* szDst);
+
     i8   iYear(void);
     i8   iMonth(void);
     i8   iDay(void);

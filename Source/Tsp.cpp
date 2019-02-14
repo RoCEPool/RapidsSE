@@ -191,9 +191,9 @@ i8 Tsp::iMicroseconds(void)
 /*----------------------------------------------------------------------------*/
 /* set from arg                                                               */
 /*----------------------------------------------------------------------------*/
-void Tsp::vSet(Tsp wTspArg)
+void Tsp::vSet(Tsp* aTspArg)
 {
-  m_iValue = wTspArg.m_iValue;
+  m_iValue = aTspArg->m_iValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -209,6 +209,7 @@ void Tsp::vSetAsNow(void)
   
   // convert current epoch time into LOCAL:date&time
   time_t xSeconds_t;
+  xSeconds_t = iSeconds;
   struct tm* aLocalDateTime = localtime(&xSeconds_t);
   
   if (! aLocalDateTime)
@@ -390,6 +391,30 @@ bool Tsp::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* 
     return false;
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint tsp datum                                                           */
+/*----------------------------------------------------------------------------*/
+void Tsp::vSprint(Stz* aDst)
+{
+  if (bIsNull()) {
+    StrLib::vSprint(aDst,"null%c"_Stz,'\0');
+    return;
+  }
+  
+  char caFraction[16];
+  StrLib::vFormatFraction(caFraction,x.m_uMicro,6);
+  
+  StrLib::vSprint(aDst,"%04lld-%02lld-%02lld %02lld:%02lld:%02lld.%s%c"_Stz,
+                  (i8)x.m_uYear,
+                  (i8)x.m_uMonth,
+                  (i8)x.m_uDay,
+                  (i8)x.m_uHour,
+                  (i8)x.m_uMinute,
+                  (i8)x.m_uSecond,
+                  caFraction,
+                  '\0');
 }
 
 /*----------------------------------------------------------------------------*/
