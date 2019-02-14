@@ -5,6 +5,7 @@
 // Job Short: _Executed
 
 #include "Jobs.h"
+#include "StorageEngine.h"
 
 JobClass xJobClass__Executed =
 {
@@ -115,7 +116,7 @@ Job__Executed::Job__Executed(Job* pDistJob)
   
   _checkInitialised_(CN_JOB__EXECUTED);
   
-  ActionSequence::vAdd(this,AN_CONSTRUCTOR);
+  ActionSequence::vAdd(this,AN_CONSTRUCTOR,CN_JOB__EXECUTED,_EG_CN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__EXECUTED,_FOOTER_);
 }

@@ -105,7 +105,9 @@ Task::Task(Job* pJob)
   _checkInitialised_(CN_TASK);
   
   //ActionSequence::vAdd(pJob,AN_CONSTRUCTOR,CN_TASK);
-  ActionSequence::vAdd(m_i_ActionRoot,0,CN_TASK,AN_CONSTRUCTOR,CN_TASK);
+  ActionSequence::vAdd(m_i_ActionRoot,0,
+                       CN_TASK,AN_CONSTRUCTOR,
+                       m_pJob->eClass(),_EG_CN);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }

@@ -170,26 +170,31 @@ void Action::vWrite(File* pFile)
   case AN_POST_RECV:
   case AN_PRE_PROMPT:
   case AN_PRE_SEND:
-  case AN_RECV_JOB:
   case AN_REMOVED_ORG:
   case AN_REMOVED_PARTICIPANT:
   case AN_ROOT:
-  case AN_SEND_JOB:
   case AN_SPAWN_JOB:
-  case AN_TABLE_USE:
   case AN_TASK_SCHEDULE:
   case AN_TASK_LOCKED:
   case AN_TASK_WAIT:
     vWrite_P(pFile);
     break;
       
+  case AN_CONSTRUCTOR:
+    vWrite_Penum(pFile);
+    break;
+  case AN_JOB_PHASE:
+    vWrite_Penum(pFile);
+    break;
+    
   case AN_ACKS_REQUIRED:
   case AN_AM_DECIDER:
-  case AN_CONSTRUCTOR:
   case AN_JOB_BEGIN:
   case AN_JOB_CHUNK:
   case AN_JOB_END:
   case AN_POST_PROMPT:
+  case AN_RECV_JOB:
+  case AN_SEND_JOB:
     vWrite_Pi8(pFile);
     break;
       
@@ -197,12 +202,9 @@ void Action::vWrite(File* pFile)
     vWrite_Pjob(pFile);
     break;
       
-  case AN_JOB_PHASE:
-    vWrite_Penum(pFile);
-    break;
-    
   case AN_CLOSE_FILE:
   case AN_OPEN_FILE:
+  case AN_TABLE_USE:
     vWrite_Ptxt(pFile);
     break;
 

@@ -5,6 +5,7 @@
 // Job Short: _Cancel
 
 #include "Jobs.h"
+#include "StorageEngine.h"
 
 JobClass xJobClass__Cancel =
 {
@@ -109,7 +110,7 @@ Job__Cancel::Job__Cancel(Job* pDistJob)
 
   _checkInitialised_(CN_JOB__EXECUTE);
   
-  ActionSequence::vAdd(this,AN_CONSTRUCTOR);
+  ActionSequence::vAdd(this,AN_CONSTRUCTOR,CN_JOB__CANCEL,_EG_CN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__CANCEL,_FOOTER_);
 }

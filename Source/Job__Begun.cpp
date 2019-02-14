@@ -5,6 +5,7 @@
 // Job Short: _Begun
 
 #include "Jobs.h"
+#include "StorageEngine.h"
 
 JobClass xJobClass__Begun =
 {
@@ -111,7 +112,7 @@ Job__Begun::Job__Begun(Job* pDistJob)
   
   _checkInitialised_(CN_JOB__BEGUN);
   
-  ActionSequence::vAdd(this,AN_CONSTRUCTOR);
+  ActionSequence::vAdd(this,AN_CONSTRUCTOR,CN_JOB__BEGUN,_EG_CN);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__BEGUN,_FOOTER_);
 }
