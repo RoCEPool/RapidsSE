@@ -87,6 +87,7 @@ Task::Task(Job* pJob)
   m_pCompiler    = (CN_JOB_BOOT == pJob->eClass()) ? new Compiler : nullptr;
   
   m_iTracing     = C_TRACE_NONE;
+  m_i_ActionRoot = pJob->m_i_ActionRoot;
   
   m_pSession     = nullptr;
   
@@ -103,6 +104,9 @@ Task::Task(Job* pJob)
 
   _checkInitialised_(CN_TASK);
   
+  //ActionSequence::vAdd(pJob,AN_CONSTRUCTOR,CN_TASK);
+  ActionSequence::vAdd(m_i_ActionRoot,0,CN_TASK,AN_CONSTRUCTOR,CN_TASK);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
 
@@ -130,6 +134,9 @@ Task::~Task(void) noexcept(false)
   
   RASSERT(! m_pJob);
   RASSERT(! m_iDdlLocked);
+  
+  ActionSequence::vAdd(m_i_ActionRoot,0,CN_TASK,AN_DESTRUCTOR,CN_TASK);
+
 }
 
 /*----------------------------------------------------------------------------*/

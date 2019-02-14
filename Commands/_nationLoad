@@ -29,6 +29,7 @@ markact job__end on;
 markact job__ended on;
 markact job__execute on;
 markact job__executed on;
+markact task on;
 markact;
 
 markres file on;

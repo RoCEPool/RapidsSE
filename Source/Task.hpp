@@ -74,6 +74,7 @@ namespace Tasks
     i8      m_iPartition;   // which partition if a partition task
     i8      m_iDdlLocked;   // ? has the ddl lock?
     i8      m_iTracing;     // tracing mask
+    i8      m_i_ActionRoot; // action root
 
     Grids::Node* m_pSendNode; // node to send to
 
