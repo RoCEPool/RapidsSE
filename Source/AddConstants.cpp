@@ -155,7 +155,8 @@ void Axioms::vAddConstants(void)
   /*  0 */ vAddConstant("AN_TASK_STATE_SET"_Stz,     AN_TASK_STATE_SET);
   /*  0 */ vAddConstant("AN_TASK_WAIT"_Stz,          AN_TASK_WAIT);
   /*  0 */ vAddConstant("AN_TASK_YIELD"_Stz,         AN_TASK_YIELD);
-  /*  0 */ vAddConstant("AN_ENUMS"_Stz,              AN_TASK_YIELD);
+  /*  0 */ vAddConstant("AN_THREAD_EXECUTE"_Stz,     AN_THREAD_EXECUTE);
+  /*  0 */ vAddConstant("AN_ENUMS"_Stz,              AN_ENUMS);
   
   // AT_ : fetch techniques
   /*  0 */ vAddConstant("AT_NONE"_Stz,  AT_NONE);

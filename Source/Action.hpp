@@ -11,6 +11,7 @@ namespace Maps
   
   /*    */ AN_ACK_TASK,
   /*    */ AN_ACKS_REQUIRED,
+  /*    */ AN_ADD_WAITING_SET,
   /*    */ AN_ADDED_ORG,
   /*    */ AN_ADDED_PAR,
   /*    */ AN_AM_DECIDER,
@@ -54,6 +55,7 @@ namespace Maps
   /*    */ AN_TASK_STATE_SET,
   /*    */ AN_TASK_WAIT,
   /*    */ AN_TASK_YIELD,
+  /*    */ AN_THREAD_EXECUTE,
 
   /*    */ AN_ENUMS,
   };
@@ -64,6 +66,7 @@ namespace Maps
 
   /*    */ "ACK_TASK"_Stz,
   /*    */ "ACKS_REQUIRED"_Stz,
+  /*    */ "ADD_WAITING_SET"_Stz,
   /*    */ "ADDED_ORG"_Stz,
   /*    */ "ADDED_PAR"_Stz,
   /*    */ "AM_DECIDER"_Stz,
@@ -107,6 +110,7 @@ namespace Maps
   /*    */ "TASK_STATE_SET"_Stz,
   /*    */ "TASK_WAIT"_Stz,
   /*    */ "TASK_YIELD"_Stz,
+  /*    */ "THREAD_EXECUTE"_Stz,
 
   /*    */ "ENUMS"_Stz,
   };

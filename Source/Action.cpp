@@ -158,6 +158,7 @@ void Action::vWrite(File* pFile)
   
   switch (m_eAction) {
   
+  case AN_ADD_WAITING_SET:
   case AN_ADDED_ORG:
   case AN_ADDED_PAR:
   case AN_DDL_DROPPED_READ:
@@ -193,6 +194,7 @@ void Action::vWrite(File* pFile)
   case AN_JOB_END:
   case AN_POST_PROMPT:
   case AN_SEND_JOB:
+  case AN_THREAD_EXECUTE:
     vWrite_Pi8(pFile);
     break;
       

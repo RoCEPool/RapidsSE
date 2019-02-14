@@ -1119,6 +1119,7 @@ void Queues::vScheduleReadyTask(Task* pTask)
   Thread* pIdleThread = pFindIdleThread();
 
   if (pIdleThread) {
+    ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
     pIdleThread->vExecuteTask(pTask);
   }
   else {
@@ -1258,6 +1259,7 @@ void Queues::vScheduleWaitingTask(Task* pTask)
                          pTask->pJob());
  }
 
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_WAITING_SET);
   vAddToWaitingSet(pTask);
 }
 
