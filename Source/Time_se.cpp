@@ -61,7 +61,7 @@ void Time::vAppendLocal(char** pz)
   char* z = *pz;
   
   i8 iYear  = m_iYearDelta + C_YEAR_BASE;
-  i8 iMilli = DIV(m_iMicro,C_1K);
+  //i8 iMilli = DIV(m_iMicro,C_1K);
   
   StrLib::vAppendDecimal(&z,iYear);
   StrLib::vAppendChar(&z,'-');
@@ -209,7 +209,7 @@ bool Time::bExtractUTC(char** ps)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vSet: set time using since                                                 */
+/* set time using since                                                       */
 /*----------------------------------------------------------------------------*/
 void Time::vSetLocal(Since* pSincePosixEpoch)
 {
@@ -218,18 +218,43 @@ void Time::vSetLocal(Since* pSincePosixEpoch)
   time_t iSecondsSincePosixEpoch = pSincePosixEpoch->iSeconds();
   
   // convert secondsSince into a tm structure for local time zone
-  struct tm* aCalendarDateTime_Local = localtime(&iSecondsSincePosixEpoch);
+  struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);
 
-  if ( ! aCalendarDateTime_Local )
+  if (! aLocalDateTime)
     vWarn("localtime_r() error; errno=%d"_Stz,errno);
   
-  m_iYearDelta = aCalendarDateTime_Local->tm_year;
-  m_iMonth     = aCalendarDateTime_Local->tm_mon + 1;
-  m_iDay       = aCalendarDateTime_Local->tm_mday;
-  m_iHour      = aCalendarDateTime_Local->tm_hour;
-  m_iMinute    = aCalendarDateTime_Local->tm_min;
-  m_iSecond    = aCalendarDateTime_Local->tm_sec;
+  m_iYearDelta = aLocalDateTime->tm_year;
+  m_iMonth     = aLocalDateTime->tm_mon + 1;
+  m_iDay       = aLocalDateTime->tm_mday;
+  m_iHour      = aLocalDateTime->tm_hour;
+  m_iMinute    = aLocalDateTime->tm_min;
+  m_iSecond    = aLocalDateTime->tm_sec;
   m_iMicro     = (int)pSincePosixEpoch->iMicroseconds();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set as current local time                                                  */
+/*----------------------------------------------------------------------------*/
+void Time::vSetLocalNow(void)
+{
+  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
+  
+  // get current epoch time
+  time_t iSecondsSincePosixEpoch = time(0);
+  
+  // convert current epoch time into LOCAL:date&time
+  struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);
+  
+  if ( ! aLocalDateTime )
+    vWarn("localtime() error; errno=%d"_Stz,errno);
+  
+  m_iYearDelta = aLocalDateTime->tm_year;
+  m_iMonth     = aLocalDateTime->tm_mon + 1;
+  m_iDay       = aLocalDateTime->tm_mday;
+  m_iHour      = aLocalDateTime->tm_hour;
+  m_iMinute    = aLocalDateTime->tm_min;
+  m_iSecond    = aLocalDateTime->tm_sec;
+  m_iMicro     = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -242,49 +267,24 @@ void Time::vSetUTC(Since* pSincePosixEpoch)
   time_t iSecondsSincePosixEpoch = pSincePosixEpoch->iSeconds();
   
   // convert secondsSince into a tm structure for UTC/GMT time zone
-  struct tm* aCalendarDateTime_UTC = gmtime(&iSecondsSincePosixEpoch);
+  struct tm* aUtcDateTime = gmtime(&iSecondsSincePosixEpoch);
 
-  if ( ! aCalendarDateTime_UTC )
+  if (! aUtcDateTime)
     vWarn("gmtime() error; errno=%d"_Stz,errno);
   
-  m_iYearDelta = aCalendarDateTime_UTC->tm_year;
-  m_iMonth     = aCalendarDateTime_UTC->tm_mon + 1;
-  m_iDay       = aCalendarDateTime_UTC->tm_mday;
-  m_iHour      = aCalendarDateTime_UTC->tm_hour;
-  m_iMinute    = aCalendarDateTime_UTC->tm_min;
-  m_iSecond    = aCalendarDateTime_UTC->tm_sec;
+  m_iYearDelta = aUtcDateTime->tm_year;
+  m_iMonth     = aUtcDateTime->tm_mon + 1;
+  m_iDay       = aUtcDateTime->tm_mday;
+  m_iHour      = aUtcDateTime->tm_hour;
+  m_iMinute    = aUtcDateTime->tm_min;
+  m_iSecond    = aUtcDateTime->tm_sec;
   m_iMicro     = (int)pSincePosixEpoch->iMicroseconds();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set as current local time                                                  */
-/*----------------------------------------------------------------------------*/
-void Time::vSetNowLocal(void)
-{
-  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
-  
-  // get current epoch time
-  time_t iSecondsSincePosixEpoch = time(0);
-  
-  // convert current epoch time into LOCAL:date&time
-  struct tm* aCalendarDateTime_Local = localtime(&iSecondsSincePosixEpoch);
-  
-  if ( ! aCalendarDateTime_Local )
-    vWarn("localtime() error; errno=%d"_Stz,errno);
-  
-  m_iYearDelta = aCalendarDateTime_Local->tm_year;
-  m_iMonth     = aCalendarDateTime_Local->tm_mon + 1;
-  m_iDay       = aCalendarDateTime_Local->tm_mday;
-  m_iHour      = aCalendarDateTime_Local->tm_hour;
-  m_iMinute    = aCalendarDateTime_Local->tm_min;
-  m_iSecond    = aCalendarDateTime_Local->tm_sec;
-  m_iMicro     = 0;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set as current UTC time                                                    */
 /*----------------------------------------------------------------------------*/
-void Time::vSetNowUTC(void)
+void Time::vSetUTCNow(void)
 {
   _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
   
@@ -292,17 +292,17 @@ void Time::vSetNowUTC(void)
   time_t iSecondsSincePosixEpoch = time(0);
   
   // convert current epoch time into UTC:date&time
-  struct tm* aCalendarDateTime_UTC = gmtime(&iSecondsSincePosixEpoch);
+  struct tm* aUtcDateTime = gmtime(&iSecondsSincePosixEpoch);
   
-  if ( ! aCalendarDateTime_UTC )
+  if (! aUtcDateTime)
     vWarn("gmtime() error; errno=%d"_Stz,errno);
   
-  m_iYearDelta = aCalendarDateTime_UTC->tm_year;
-  m_iMonth     = aCalendarDateTime_UTC->tm_mon + 1;
-  m_iDay       = aCalendarDateTime_UTC->tm_mday;
-  m_iHour      = aCalendarDateTime_UTC->tm_hour;
-  m_iMinute    = aCalendarDateTime_UTC->tm_min;
-  m_iSecond    = aCalendarDateTime_UTC->tm_sec;
+  m_iYearDelta = aUtcDateTime->tm_year;
+  m_iMonth     = aUtcDateTime->tm_mon + 1;
+  m_iDay       = aUtcDateTime->tm_mday;
+  m_iHour      = aUtcDateTime->tm_hour;
+  m_iMinute    = aUtcDateTime->tm_min;
+  m_iSecond    = aUtcDateTime->tm_sec;
   m_iMicro     = 0;
 }
 
