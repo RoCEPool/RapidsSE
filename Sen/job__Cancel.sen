@@ -64,7 +64,7 @@
 
   // find the job to be executed in the participating jobs
   pJob__Cancel job.id@ locals| iJobId |
-  pJob__Cancel iJobId job::findParticipant locals| pJobParticipant |
+  iJobId job::findParticipant locals| pJobParticipant |
 
   // execute the cancel seed of the job on this participating node
   pJobParticipant SEED_CAN job.spawn

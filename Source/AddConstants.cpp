@@ -126,6 +126,8 @@ void Axioms::vAddConstants(void)
   /*  0 */ vAddConstant("AN_DDL_GRABBED_WRITE"_Stz,  AN_DDL_GRABBED_WRITE);
   /*  0 */ vAddConstant("AN_DESTRUCTOR"_Stz,         AN_DESTRUCTOR);
   /*  0 */ vAddConstant("AN_ERROR_CODE"_Stz,         AN_ERROR_CODE);
+  /*  0 */ vAddConstant("AN_FIND_ORIGINATOR"_Stz,    AN_FIND_ORIGINATOR);
+  /*  0 */ vAddConstant("AN_FIND_PARTICIPANT"_Stz,   AN_FIND_PARTICIPANT);
   /*  0 */ vAddConstant("AN_JOB_BEGIN"_Stz,          AN_JOB_BEGIN);
   /*  0 */ vAddConstant("AN_JOB_CHUNK"_Stz,          AN_JOB_CHUNK);
   /*  0 */ vAddConstant("AN_JOB_END"_Stz,            AN_JOB_END);

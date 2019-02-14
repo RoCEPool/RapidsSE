@@ -206,6 +206,8 @@ void Action::vWrite(File* pFile)
     vWrite_Pjob(pFile);
     break;
       
+  case AN_FIND_ORIGINATOR:
+  case AN_FIND_PARTICIPANT:
   case AN_PRE_SEND:
   case AN_POST_RECV:
     vWrite_Psysjob(pFile);
@@ -251,10 +253,11 @@ void Action::vWriteJob(File* pFile)
 {
   _precondition_(_MAGIC_,CN_ACTION);
   
-  pFile->vPrint("%16s[%1s%03lld,%03lld]"_Stz,
-                aCN[m_eClassNo],
+  pFile->vPrint("%16s[%1s.%d.%03lld,%03lld]"_Stz,
+                CN_NONE == m_eClassNo ? "PROMPT"_Stz : aCN[m_eClassNo],
                 m_bWasRecv ? "r" : "n",
-                m_iJobId,
+                Job::iNodeNo(m_iJobId),
+                Job::iJobNo(m_iJobId),
                 m_iParentId
                 );
 }
@@ -292,10 +295,11 @@ void Action::vWriteSysJob(File* pFile)
 {
   _precondition_(_MAGIC_,CN_ACTION);
   
-  pFile->vPrint("%16s[%1s%03lld,%03lld]"_Stz,
-                aCN[m_eClassNo_Arg],
+  pFile->vPrint("%16s[%1s.%d.%03lld,%03lld]"_Stz,
+                CN_NONE == m_eClassNo_Arg ? "PROMPT"_Stz : aCN[m_eClassNo_Arg],
                 m_bWasRecv_Arg ? "r" : "n",
-                m_iJobId_Arg,
+                Job::iNodeNo(m_iJobId_Arg),
+                Job::iJobNo(m_iJobId_Arg),
                 m_iParentId_Arg
                 );
 }
@@ -323,9 +327,9 @@ void Action::vWrite_Default(File* pFile)
                 /* 1 */ aCN[m_eClassNo],
                 
                 /* 2 */ m_aJob,
-                m_iJobId,
-                m_iParentId,
-                m_bWasRecv ? "R" : "n",
+                        m_iJobId,
+                        m_iParentId,
+                        m_bWasRecv ? "R" : "n",
                 
                 /* 3 */ aAN[m_eAction],
                 
@@ -348,7 +352,8 @@ void Action::vWrite_P(File* pFile)
   vWriteRefer(pFile);
   vWriteJob(pFile);
 
-  pFile->vPrint(".%s() "_Stz,aAN[m_eAction]);
+  pFile->vPrint(".%s() "_Stz,
+                aAN[m_eAction]);
   
   pFile->vPrint("\n"_Stz);
 }
@@ -365,7 +370,8 @@ void Action::vWrite_Penum(File* pFile)
   vWriteJob(pFile);
   
   pFile->vPrint(".%s(%s)"_Stz,
-                aAN[m_eAction],EnumGroups::szEnumText(m_iArg1,m_iArg0));
+                aAN[m_eAction],
+                EnumGroups::szEnumText(m_iArg1,m_iArg0));
   
   pFile->vPrint("\n"_Stz);
 }
@@ -381,7 +387,9 @@ void Action::vWrite_Pi8(File* pFile)
   vWriteRefer(pFile);
   vWriteJob(pFile);
 
-  pFile->vPrint(".%s(%lld) "_Stz,aAN[m_eAction],m_iArg0);
+  pFile->vPrint(".%s(%lld) "_Stz,
+                aAN[m_eAction],
+                m_iArg0);
   
   pFile->vPrint("\n"_Stz);
 }
@@ -397,7 +405,9 @@ void Action::vWrite_Pjob(File* pFile)
   vWriteRefer(pFile);
   vWriteJob(pFile);
 
-  pFile->vPrint(".%s(%s) "_Stz,aAN[m_eAction],aCN[m_eClassNo_Arg]);
+  pFile->vPrint(".%s(%s[%03lld]) "_Stz,
+                aAN[m_eAction],
+                aCN[m_eClassNo_Arg],m_iJobId_Arg);
   
   pFile->vPrint("\n"_Stz);
 }
@@ -413,7 +423,9 @@ void Action::vWrite_Psysjob(File* pFile)
   vWriteRefer(pFile);
   vWriteSysJob(pFile);
   
-  pFile->vPrint(".%s(%s) "_Stz,aAN[m_eAction],aCN[m_eClassNo]);
+  pFile->vPrint(".%s(%s[%03lld]) "_Stz,
+                aAN[m_eAction],
+                aCN[m_eClassNo],m_iJobId);
   
   pFile->vPrint("\n"_Stz);
 }
@@ -429,9 +441,9 @@ void Action::vWrite_Psysjob_enum(File* pFile)
   vWriteRefer(pFile);
   vWriteSysJob(pFile);
   
-  pFile->vPrint(".%s(%s,%s) "_Stz,
+  pFile->vPrint(".%s(%s[%03lld],%s) "_Stz,
                 aAN[m_eAction],
-                aCN[m_eClassNo],
+                aCN[m_eClassNo],m_iJobId,
                 EnumGroups::szEnumText(m_iArg1,m_iArg0));
   
   pFile->vPrint("\n"_Stz);
@@ -448,7 +460,10 @@ void Action::vWrite_Psysjob_i8(File* pFile)
   vWriteRefer(pFile);
   vWriteSysJob(pFile);
   
-  pFile->vPrint(".%s(%s,%lld) "_Stz,aAN[m_eAction],aCN[m_eClassNo],m_iArg0);
+  pFile->vPrint(".%s(%s[%03lld],%lld) "_Stz,
+                aAN[m_eAction],
+                aCN[m_eClassNo],m_iJobId,
+                m_iArg0);
   
   pFile->vPrint("\n"_Stz);
 }
@@ -464,7 +479,9 @@ void Action::vWrite_Ptxt(File* pFile)
   vWriteRefer(pFile);
   vWriteJob(pFile);
   
-  pFile->vPrint(".%s(\"%s\") "_Stz,aAN[m_eAction],m_caText);
+  pFile->vPrint(".%s(\"%s\") "_Stz,
+                aAN[m_eAction],
+                m_caText);
   
   pFile->vPrint("\n"_Stz);
 }
@@ -480,7 +497,9 @@ void Action::vWrite_Pwrd(File* pFile)
   vWriteRefer(pFile);
   vWriteJob(pFile);
   
-  pFile->vPrint(".%s(: %s) "_Stz,aAN[m_eAction],m_caText);
+  pFile->vPrint(".%s(: %s) "_Stz,
+                aAN[m_eAction],
+                m_caText);
   
   pFile->vPrint("\n"_Stz);
 }

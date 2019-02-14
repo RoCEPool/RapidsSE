@@ -64,7 +64,7 @@
 
   // find the job to be executed in the participating jobs
   pJob__End job.id@ locals| iJobId |
-  pJob__End iJobId job::findParticipant locals| pJobParticipant |
+  iJobId job::findParticipant locals| pJobParticipant |
 
   // execute the end seed of the job on this participating node
   pJobParticipant SEED_END job.spawn
