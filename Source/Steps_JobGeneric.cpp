@@ -72,7 +72,9 @@ void Step::vJob__BegunErrorStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("jobBegun.error!"_Stz);
   
   pJob__Begun->m_eErrorCode = (eEC)iErrorCode;
-  
+ 
+  ActionSequence::vAdd(pJob__Begun,AN_ERROR_CODE,iErrorCode);
+
   EXIT();
 }
 
@@ -112,6 +114,8 @@ void Step::vJob__CancelledErrorStore(MP_Task mpTask)
   
   pJob__Cancelled->m_eErrorCode = (eEC)iErrorCode;
   
+  ActionSequence::vAdd(pJob__Cancelled,AN_ERROR_CODE,iErrorCode);
+
   EXIT();
 }
 
@@ -150,6 +154,8 @@ void Step::vJob__ExecutedErrorStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("jobExecuted.error!"_Stz);
   
   pJob__Executed->m_eErrorCode = (eEC)iErrorCode;
+  
+  ActionSequence::vAdd(pJob__Executed,AN_ERROR_CODE,iErrorCode);
   
   EXIT();
 }
