@@ -160,7 +160,6 @@ void Action::vWrite(File* pFile)
   
   case AN_ADDED_ORG:
   case AN_ADDED_PAR:
-  case AN_CLOSE_FILE:
   case AN_DDL_DROPPED_READ:
   case AN_DDL_DROPPED_WRITE:
   case AN_DDL_GRAB_READ:
@@ -168,7 +167,6 @@ void Action::vWrite(File* pFile)
   case AN_DDL_GRABBED_READ:
   case AN_DDL_GRABBED_WRITE:
   case AN_DESTRUCTOR:
-  case AN_OPEN_FILE:
   case AN_POST_RECV:
   case AN_PRE_PROMPT:
   case AN_PRE_SEND:
@@ -203,6 +201,11 @@ void Action::vWrite(File* pFile)
     vWrite_Penum(pFile);
     break;
     
+  case AN_CLOSE_FILE:
+  case AN_OPEN_FILE:
+    vWrite_Ptxt(pFile);
+    break;
+
   case AN_SEED_CAN:
   case AN_SEED_EXE:
   case AN_SEED_END:
