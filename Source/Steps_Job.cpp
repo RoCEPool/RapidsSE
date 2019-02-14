@@ -822,6 +822,7 @@ void Step::vJobPreSend(MP_Task mpTask)
   
   JobClass* pJobClass = pJob->m_pJobClass;
   
+  ActionSequence::vAdd(pJob,AN_PRE_SEND,mpTask->pJob());
   if (pJobClass->m_fpSend)
     (*pJobClass->m_fpSend)(pJob);
   

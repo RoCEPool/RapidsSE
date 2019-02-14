@@ -474,7 +474,7 @@ eEC Jobs::eJob_checkCluster(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 void Jobs::vJob_send(Job* pJob)
 {
-  ActionSequence::vAdd(pJob,AN_PRE_SEND);
+
 }
 
 /*----------------------------------------------------------------------------*/

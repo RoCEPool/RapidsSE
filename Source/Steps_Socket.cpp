@@ -583,7 +583,7 @@ void Step::vSocketSendObject(MP_Task mpTask)
                          pJob,
                          pSocket);
     
-    ActionSequence::vAdd(pJob,AN_SEND_JOB,nObjectSize);
+    ActionSequence::vAdd(pJob,AN_SEND_JOB,mpTask->pJob(),nObjectSize);
   }
 
   RASSERT(_bIsValidJob(eClass) || CN_ENTRYBUFFER == eClass);

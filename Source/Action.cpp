@@ -158,6 +158,11 @@ void Action::vWrite(File* pFile)
   
   switch (m_eAction) {
   
+  case AN_ADD_EXECUTING_SET:
+  case AN_ADD_READY_QUEUE:
+  case AN_ADD_SEND_QUEUE:
+  case AN_ADD_SLEEPING_QUEUE:
+  case AN_ADD_SLOT_QUEUE:
   case AN_ADD_WAITING_SET:
   case AN_ADDED_ORG:
   case AN_ADDED_PAR:
@@ -168,11 +173,10 @@ void Action::vWrite(File* pFile)
   case AN_DDL_GRABBED_READ:
   case AN_DDL_GRABBED_WRITE:
   case AN_DESTRUCTOR:
-  case AN_PRE_SEND:
   case AN_REMOVED_ORG:
   case AN_REMOVED_PARTICIPANT:
   case AN_ROOT:
-  case AN_TASK_SCHEDULE:
+  case AN_TASK_ACKED:
   case AN_TASK_LOCKED:
   case AN_TASK_WAIT:
     vWrite_P(pFile);
@@ -193,7 +197,6 @@ void Action::vWrite(File* pFile)
   case AN_JOB_CHUNK:
   case AN_JOB_END:
   case AN_POST_PROMPT:
-  case AN_SEND_JOB:
   case AN_THREAD_EXECUTE:
     vWrite_Pi8(pFile);
     break;
@@ -202,6 +205,7 @@ void Action::vWrite(File* pFile)
     vWrite_Pjob(pFile);
     break;
       
+  case AN_PRE_SEND:
   case AN_POST_RECV:
     vWrite_Psysjob(pFile);
     break;
@@ -211,6 +215,7 @@ void Action::vWrite(File* pFile)
     break;
     
   case AN_RECV_JOB:
+  case AN_SEND_JOB:
     vWrite_Psysjob_i8(pFile);
     break;
       
