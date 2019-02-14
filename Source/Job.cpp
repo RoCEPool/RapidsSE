@@ -486,8 +486,6 @@ void Jobs::vJob_recv(Job* pJob)
   pJob->m_eJobList       = JL_NONE;
   pJob->m_pMutex         = nullptr;
   pJob->m_bWasReceived   = true;
-  
-  ActionSequence::vAdd(pJob,AN_POST_RECV);
 }
 
 /*----------------------------------------------------------------------------*/

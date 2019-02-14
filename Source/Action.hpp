@@ -156,12 +156,16 @@ namespace Maps
     void vWriteJob(File* pFile);
     void vWriteLead(File* pFile);
     void vWriteRefer(File* pFile);
-  
+    void vWriteSysJob(File* pFile);
+
     void vWrite_Default(File* pFile);
     void vWrite_Penum(File* pFile);
     void vWrite_P(File* pFile);
     void vWrite_Pi8(File* pFile);
     void vWrite_Pjob(File* pFile);
+    void vWrite_Psysjob(File* pFile);
+    void vWrite_Psysjob_enum(File* pFile);
+    void vWrite_Psysjob_i8(File* pFile);
     void vWrite_Ptxt(File* pFile);
     void vWrite_Pwrd(File* pFile);
 

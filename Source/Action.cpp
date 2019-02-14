@@ -167,13 +167,10 @@ void Action::vWrite(File* pFile)
   case AN_DDL_GRABBED_READ:
   case AN_DDL_GRABBED_WRITE:
   case AN_DESTRUCTOR:
-  case AN_POST_RECV:
-  case AN_PRE_PROMPT:
   case AN_PRE_SEND:
   case AN_REMOVED_ORG:
   case AN_REMOVED_PARTICIPANT:
   case AN_ROOT:
-  case AN_SPAWN_JOB:
   case AN_TASK_SCHEDULE:
   case AN_TASK_LOCKED:
   case AN_TASK_WAIT:
@@ -183,7 +180,9 @@ void Action::vWrite(File* pFile)
   case AN_CONSTRUCTOR:
     vWrite_Penum(pFile);
     break;
+      
   case AN_JOB_PHASE:
+    case AN_PRE_PROMPT:
     vWrite_Penum(pFile);
     break;
     
@@ -193,13 +192,24 @@ void Action::vWrite(File* pFile)
   case AN_JOB_CHUNK:
   case AN_JOB_END:
   case AN_POST_PROMPT:
-  case AN_RECV_JOB:
   case AN_SEND_JOB:
     vWrite_Pi8(pFile);
     break;
       
   case AN_ACK_TASK:
     vWrite_Pjob(pFile);
+    break;
+      
+  case AN_POST_RECV:
+    vWrite_Psysjob(pFile);
+    break;
+    
+  case AN_SPAWN_JOB:
+    vWrite_Psysjob_enum(pFile);
+    break;
+    
+  case AN_RECV_JOB:
+    vWrite_Psysjob_i8(pFile);
     break;
       
   case AN_CLOSE_FILE:
@@ -263,6 +273,21 @@ void Action::vWriteRefer(File* pFile)
   
   //pFile->vPrint("<<%lld, %03lld>>"_Stz,m_i_Activity,* m_wLink);
   pFile->vPrint("<<%03lld>>"_Stz,m_i_Activity);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write action to file                                                       */
+/*----------------------------------------------------------------------------*/
+void Action::vWriteSysJob(File* pFile)
+{
+  _precondition_(_MAGIC_,CN_ACTION);
+  
+  pFile->vPrint("%16s[%1s%03lld,%03lld]"_Stz,
+                aCN[m_eClassNo_Arg],
+                m_bWasRecv_Arg ? "r" : "n",
+                m_iJobId_Arg,
+                m_iParentId_Arg
+                );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -329,7 +354,8 @@ void Action::vWrite_Penum(File* pFile)
   vWriteRefer(pFile);
   vWriteJob(pFile);
   
-  pFile->vPrint(".%s(%s) "_Stz,aAN[m_eAction],EnumGroups::szEnumText(m_iArg1,m_iArg0));
+  pFile->vPrint(".%s(%s)"_Stz,
+                aAN[m_eAction],EnumGroups::szEnumText(m_iArg1,m_iArg0));
   
   pFile->vPrint("\n"_Stz);
 }
@@ -362,6 +388,57 @@ void Action::vWrite_Pjob(File* pFile)
   vWriteJob(pFile);
 
   pFile->vPrint(".%s(%03lld) "_Stz,aAN[m_eAction],m_iArg0);
+  
+  pFile->vPrint("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write action to file                                                       */
+/*----------------------------------------------------------------------------*/
+void Action::vWrite_Psysjob(File* pFile)
+{
+  _precondition_(_MAGIC_,CN_ACTION);
+  
+  vWriteLead(pFile);
+  vWriteRefer(pFile);
+  vWriteSysJob(pFile);
+  
+  pFile->vPrint(".%s(%s) "_Stz,aAN[m_eAction],aCN[m_eClassNo]);
+  
+  pFile->vPrint("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write action to file                                                       */
+/*----------------------------------------------------------------------------*/
+void Action::vWrite_Psysjob_enum(File* pFile)
+{
+  _precondition_(_MAGIC_,CN_ACTION);
+  
+  vWriteLead(pFile);
+  vWriteRefer(pFile);
+  vWriteSysJob(pFile);
+  
+  pFile->vPrint(".%s(%s,%s) "_Stz,
+                aAN[m_eAction],
+                aCN[m_eClassNo],
+                EnumGroups::szEnumText(m_iArg1,m_iArg0));
+  
+  pFile->vPrint("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write action to file                                                       */
+/*----------------------------------------------------------------------------*/
+void Action::vWrite_Psysjob_i8(File* pFile)
+{
+  _precondition_(_MAGIC_,CN_ACTION);
+  
+  vWriteLead(pFile);
+  vWriteRefer(pFile);
+  vWriteSysJob(pFile);
+  
+  pFile->vPrint(".%s(%s,%lld) "_Stz,aAN[m_eAction],aCN[m_eClassNo],m_iArg0);
   
   pFile->vPrint("\n"_Stz);
 }

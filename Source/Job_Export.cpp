@@ -248,8 +248,6 @@ Job* Jobs::pJob_Export_pre(Interface::Session* pSession)
     pJob_Export->m_bHasError = true;
     pJob_Export->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
   }
-
-  ActionSequence::vAdd(pJob_Export,AN_PRE_PROMPT);
   
   return pJob_Export;
 }

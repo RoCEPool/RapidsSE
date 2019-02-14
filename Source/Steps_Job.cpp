@@ -803,6 +803,8 @@ void Step::vJobPostRecv(MP_Task mpTask)
     pJob->vMarkJob();
   }
   
+  ActionSequence::vAdd(pJob,AN_POST_RECV,mpTask->pJob());
+
   EXIT();
 }
 
@@ -1268,7 +1270,7 @@ void Step::vJobSpawn(MP_Task mpTask)
   
   IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob,(eSS)i_Seed));
   
-  ActionSequence::vAdd(mpTask->pJob(),AN_SPAWN_JOB);
+  ActionSequence::vAdd(pJob,AN_SPAWN_JOB,mpTask->pJob(),i_Seed,_EG_SS);
   
   EXIT();
 }

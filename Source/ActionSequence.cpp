@@ -139,33 +139,6 @@ void ActionSequence::vAdd(i8 i_RootAct, i8 iJobId, eCN eClassNo,
 }
 
 /*----------------------------------------------------------------------------*/
-/* begin a new action sequence                                                */
-/*----------------------------------------------------------------------------*/
-i8 ActionSequence::iBegin(i8 iJobId, eCN eClassNo,
-                          eAN eAction, i8 iArg0, i8 iArg1)
-{
-#ifdef WITH_ACTION_SEQUENCE
-  if (! gpActionSequence)
-    return C_UNKNOWN;
-  
-  if (! gpAttachMap->m_oMarkAction.bFlagged(eClassNo))
-    return C_UNKNOWN;
-
-  Action* pRoot = gpActionSequence->pNewRootAction();
-  pRoot->m_iJobId   = iJobId;
-  pRoot->m_eClassNo = eClassNo;
-  pRoot->m_eAction  = eAction;
-  pRoot->m_iArg0    = iArg0;
-  pRoot->m_iArg1    = iArg1;
-  pRoot->m_wLink.vSetWithoutTest(C_UNKNOWN);
-
-  return pRoot->m_i_Action;
-#else
-  return C_UNKNOWN;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a new action to a sequence                                             */
 /*----------------------------------------------------------------------------*/
 void ActionSequence::vAdd(Jobs::Job* pJob,
@@ -204,8 +177,7 @@ void ActionSequence::vAdd(Jobs::Job* pJob,
 /*----------------------------------------------------------------------------*/
 /* add a new action to a sequence                                             */
 /*----------------------------------------------------------------------------*/
-void ActionSequence::vAdd(Jobs::Job* pJob,
-                          eAN eAction, Stz* szText)
+void ActionSequence::vAdd(Jobs::Job* pJob, eAN eAction, Stz* szText)
 {
 #ifdef WITH_ACTION_SEQUENCE
   if (! gpActionSequence)
@@ -235,6 +207,74 @@ void ActionSequence::vAdd(Jobs::Job* pJob,
   pLinked->m_aJob     = pJob;
 #else
   
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a new action to a sequence                                             */
+/*----------------------------------------------------------------------------*/
+void ActionSequence::vAdd(Jobs::Job* pJob, eAN eAction,
+                          Jobs::Job* pSystemJob,i8 iArg0, i8 iArg1)
+{
+#ifdef WITH_ACTION_SEQUENCE
+  if (! gpActionSequence)
+    return;
+  
+  if (! (pJob->m_bMarkAction ||
+         gpAttachMap->m_oMarkAction.bFlagged(pJob->eClass())) )
+    return;
+  
+  if (C_UNKNOWN == pJob->m_i_ActionRoot)
+    return;
+  
+  Action* pRoot = &gpActionSequence->m_oaAction[pJob->m_i_ActionRoot];
+  
+  Action* pLinked = gpActionSequence->pNewLinkedAction(pRoot);
+  
+  pLinked->m_iJobId    = pJob->m_iJobId;
+  pLinked->m_eClassNo  = pJob->eClass();
+  pLinked->m_iParentId = pJob->m_iParentId;
+  pLinked->m_bWasRecv  = pJob->m_bWasReceived;
+  
+  pLinked->m_eAction   = eAction;
+  pLinked->m_iArg0     = iArg0;
+  pLinked->m_iArg1     = iArg1;
+
+  pLinked->m_iJobId_Arg    = pSystemJob->m_iJobId;
+  pLinked->m_eClassNo_Arg  = pSystemJob->eClass();
+  pLinked->m_iParentId_Arg = pSystemJob->m_iParentId;
+  pLinked->m_bWasRecv_Arg  = pSystemJob->m_bWasReceived;
+  
+  pLinked->m_aJob     = pJob;
+#else
+  
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin a new action sequence                                                */
+/*----------------------------------------------------------------------------*/
+i8 ActionSequence::iBegin(i8 iJobId, eCN eClassNo,
+                          eAN eAction, i8 iArg0, i8 iArg1)
+{
+#ifdef WITH_ACTION_SEQUENCE
+  if (! gpActionSequence)
+    return C_UNKNOWN;
+  
+  if (! gpAttachMap->m_oMarkAction.bFlagged(eClassNo))
+    return C_UNKNOWN;
+
+  Action* pRoot = gpActionSequence->pNewRootAction();
+  pRoot->m_iJobId   = iJobId;
+  pRoot->m_eClassNo = eClassNo;
+  pRoot->m_eAction  = eAction;
+  pRoot->m_iArg0    = iArg0;
+  pRoot->m_iArg1    = iArg1;
+  pRoot->m_wLink.vSetWithoutTest(C_UNKNOWN);
+
+  return pRoot->m_i_Action;
+#else
+  return C_UNKNOWN;
 #endif
 }
 
