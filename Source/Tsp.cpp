@@ -189,6 +189,41 @@ i8 Tsp::iMicroseconds(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set from arg                                                               */
+/*----------------------------------------------------------------------------*/
+void Tsp::vSet(Tsp wTspArg)
+{
+  m_iValue = wTspArg.m_iValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set as now                                                                 */
+/*----------------------------------------------------------------------------*/
+void Tsp::vSetAsNow(void)
+{
+  i8 iSeconds;
+  i8 iMicroseconds;
+  SysCall xSysCall;
+  
+  Since::vGetTimeOfDay(iSeconds,iMicroseconds,xSysCall);
+  
+  // convert current epoch time into LOCAL:date&time
+  time_t xSeconds_t;
+  struct tm* aLocalDateTime = localtime(&xSeconds_t);
+  
+  if (! aLocalDateTime)
+    vWarn("localtime() error; errno=%d"_Stz,errno);
+  
+  x.m_uYear   = aLocalDateTime->tm_year + 1900;
+  x.m_uMonth  = aLocalDateTime->tm_mon  + 1;
+  x.m_uDay    = aLocalDateTime->tm_mday;
+  x.m_uHour   = aLocalDateTime->tm_hour;
+  x.m_uMinute = aLocalDateTime->tm_min;
+  x.m_uSecond = aLocalDateTime->tm_sec;
+  x.m_uMicro  = iMicroseconds;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Null --------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
