@@ -130,6 +130,7 @@ void Axioms::vAddConstants(void)
   /*  0 */ vAddConstant("AN_JOB_CHUNK"_Stz,          AN_JOB_CHUNK);
   /*  0 */ vAddConstant("AN_JOB_END"_Stz,            AN_JOB_END);
   /*  0 */ vAddConstant("AN_JOB_PHASE"_Stz,          AN_JOB_PHASE);
+  /*  0 */ vAddConstant("AN_NEW_JOB"_Stz,            AN_NEW_JOB);
   /*  0 */ vAddConstant("AN_POST_PROMPT"_Stz,        AN_POST_PROMPT);
   /*  0 */ vAddConstant("AN_POST_RECV"_Stz,          AN_POST_RECV);
   /*  0 */ vAddConstant("AN_PRE_PROMPT"_Stz,         AN_PRE_PROMPT);

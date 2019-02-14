@@ -202,6 +202,7 @@ void Action::vWrite(File* pFile)
       
   case AN_ACK_TASK:
   case AN_AM_DECIDER:
+  case AN_NEW_JOB:
     vWrite_Pjob(pFile);
     break;
       
