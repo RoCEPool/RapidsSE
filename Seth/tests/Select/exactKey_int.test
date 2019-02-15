@@ -1,0 +1,96 @@
+/*----------------------------------------------------------------------------*/
+/* range query tests                                                          */
+/*----------------------------------------------------------------------------*/
+
+// (1) create table jCdt
+create table jCdt (
+  jA  INTEGER,
+  jB  INTEGER,
+  jC  INTEGER,
+  jD  INTEGER,
+  jE  VARCHAR(32)
+);
+success
+
+create index jCdt_idx1 on jCdt (jA);
+success
+
+create index jCdt_idx2 on jCdt (jB);
+success
+
+create index jCdt_idx3 on jCdt (jC);
+success
+
+create index jCdt_idx4 on jCdt (jD);
+success
+
+ld jCdt "/DATA/Select/range.csv";
+success
+
+//------------------------------------------------------------------------------
+// SCAN
+fetch jCdt;
+rows: 16
+
+//------------------------------------------------------------------------------
+// EXACT KEYS for index on jA
+fetch jCdt "jA 19 ==" ;
+rows:
+  (19,*,*,*,*)
+
+fetch jCdt "jA 18 ==" ;
+rows:
+  (18,28,*,*,*)
+  (18,18,*,*,*)
+
+fetch jCdt "jA 17 ==";
+rows:
+  (17,*,*,*,*)
+
+fetch jCdt "jA -9223372036854775807 ==";
+rows:
+  (-9223372036854775807,*,*,*,*)
+
+fetch jCdt "jA 9223372036854775807 ==";
+rows:
+  (9223372036854775807,*,*,*,*)
+
+fetch jCdt "jA 16 ==";
+rows:
+  (16,*,*,*,*)
+
+fetch jCdt "jA 15 ==";
+rows:
+  (15,*,*,*,*)
+
+fetch jCdt "jA 14 ==";
+rows:
+  (14,*,*,*,*)
+
+fetch jCdt "jA 13 ==";
+rows:
+  (13,*,*,*,*)
+
+fetch jCdt "jA 12 ==";
+rows:
+  (12,*,*,*,*)
+
+fetch jCdt "jA 11 ==";
+rows:
+  (11,*,*,*,'bb1')
+  (11,*,*,*,'bb2')
+  (11,*,*,*,'bb3')
+
+fetch jCdt "jA 10 ==";
+rows:
+  (10,*,*,*,*)
+
+CLEANUP {
+
+  drop table jCdt;
+  mute
+
+  bye;
+  mute
+}
+
