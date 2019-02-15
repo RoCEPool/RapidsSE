@@ -109,6 +109,9 @@ namespace Data
     Item*       aPositionQuery(KeyData* aGivenKey, eRO eRelOp);
     Item*       aPositionQuery(KeyData* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
     Item*       aPositionQuery(KeyWrk& xGivenKey, i8 nKeyCols);
+    
+    Item*       aPositionQuery(KeyWrk& xGivenKey, eRO eRelOp);
+    Item*       aPositionQuery(KeyWrk& xGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
     EntryBuffer* pPositionLevel(KeyWrk& xGivenKey, i8 nKeyCols, i8 iLevel);
     
     void         vReset(void);
