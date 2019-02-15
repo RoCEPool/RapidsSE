@@ -5,6 +5,7 @@
 // Job Short: _Ended
 
 #include "Jobs.h"
+#include "StorageEngine.h"
 
 JobClass xJobClass__Ended =
 {
@@ -99,12 +100,17 @@ void Job__Ended::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job__Ended::Job__Ended(void)
+Job__Ended::Job__Ended(Job* pDistJob)
 : Job(CN_JOB__ENDED,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__ENDED,_FOOTER_);
   
+  m_iParentId = pDistJob->m_iJobId;
+  m_i_ActionRoot = pDistJob->m_i_ActionRoot;
+
   _checkInitialised_(CN_JOB__ENDED);
+  
+  ActionSequence::vAdd(this,AN_CONSTRUCTOR,CN_JOB__ENDED,_EG_CN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__ENDED,_FOOTER_);
 }

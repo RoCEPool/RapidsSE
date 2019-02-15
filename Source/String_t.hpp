@@ -41,6 +41,7 @@ namespace Correctness
     void vMinValue(void);
     void vNullValue(void);
     bool bSame(Stz* aArg);
+    i8   nSize(void);
     void vSprint(Stz* aFormat, ...);
     void vSprintCat(Stz* aFormat, ...);
     Stz* aStz(void);
@@ -350,6 +351,17 @@ bool String_t<SIZE>::bSame(Stz* aArg)
   bool b = StrLib::bSame(m_caArea,(const char*)aArg);
   
   return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of str in data area                                               */
+/*----------------------------------------------------------------------------*/
+template <int SIZE>
+i8 String_t<SIZE>::nSize(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  return StrLib::iSize(aChar());
 }
 
 /*----------------------------------------------------------------------------*/

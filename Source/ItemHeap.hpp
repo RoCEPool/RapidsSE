@@ -26,7 +26,7 @@ namespace MiniHeaps
                                // that point to this buffer
 
     i2     m_iPartitionNo; // partition no this buffer belongs to
-    i2     m_iLevelNo;     // level no in tree
+    i2     m_iHeightNo;     // level no in tree
     
     Since  m_oWhenNewed;   // when was this buffer created?
     bool   m_bIsLast;      // is this the last buffer in sequence
@@ -60,8 +60,8 @@ namespace MiniHeaps
     Item*  aItemArea(void);
     i8     nItems(void);
     void   vItems(i8 nItems);
-    void   vLevelNo(i8 iLevelNo);
-    i8     iLevelNo(void);
+    void   vHeightNo(i8 iLevelNo);
+    i8     iHeightNo(void);
     void   vPartitionNo(i8 iPartitionNo);
     i8     iPartitionNo(void);
     void   vResetUsed(void);

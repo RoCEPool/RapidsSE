@@ -22,7 +22,7 @@ PromptNote mPromptNote_date (
 bool Prompt::bPrompt_date(SePrompt* pPrompt)
 {
   Time oTime;
-  oTime.vSetNowLocal();
+  oTime.vSetLocalNow();
   
   s32 sDate;
   char* z = sDate.aChar();

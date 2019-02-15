@@ -10,9 +10,16 @@ namespace Jobs
                      public JobFilePath
   {
   public:
-    File   m_oCsvFile; // output csv file
     Table* m_pTable;   // table being exported
-    
+  
+    Lock   m_okLock;   // lock over the following members
+
+    File   m_oCsvFile; // output csv file
+  
+    i8     m_nPartitionsComplete;
+    i8     m_nBuffersExpected;
+    i8     m_nBuffersWritten;
+  
     // must be last
     Footer m_xFooter;
   
@@ -29,6 +36,8 @@ namespace Jobs
   public:
     bool bBegin(void);
     void vEnd(void);
+    bool bFinishedWriting(void);
+    void vIncWritten(i8 nBuffersExpected);
     bool bPopulateJob(TokenVec* pTokenVec);
   
     void vShow(void);

@@ -36,7 +36,7 @@ RowWrk::RowWrk(void)
 {
   _precondition_(_MAGIC_,CN_ROWWRK);
   
-  vOffsets(1);
+  vLevels(1);
   
   _checkInitialisedSize_(sizeof(RowWrk));
   
@@ -106,7 +106,7 @@ i8 RowWrk::nRowEntrySize(void)
 {
   _precondition_(_MAGIC_,CN_ROWWRK);
   
-  RASSERT(nOffsets() == 1);
+  RASSERT(nLevels() == 1);
   
   i8 nItemSize = nEntrySize() + nOffsetSize();
   

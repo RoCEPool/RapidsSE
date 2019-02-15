@@ -292,7 +292,7 @@ void Table::vLazyBuildIndexes(i8 iSlot)
       continue;
     
     // get an L0 buffer
-    EntryBuffer *pIndexBuffer = pPartition->pIndexTree(pIndex->iIndexNo())->pFirstL0Buffer();
+    EntryBuffer *pIndexBuffer = pPartition->pIndexTree(pIndex->iIndexNo())->pFirstH0Buffer();
     
     // build skip list for all L0 buffers
     if (pIndexBuffer)
@@ -966,14 +966,14 @@ Footer* Table::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* compute the number of entries in the hidden index                          */
 /*----------------------------------------------------------------------------*/
-i8 Table::nHiddenEntryCount(EntryBuffer* pFirstL0Buffer)
+i8 Table::nHiddenEntryCount(EntryBuffer* pFirstH0Buffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  ASSERT(pFirstL0Buffer == nullptr || 0 == pFirstL0Buffer->iLevelNo());
+  ASSERT(pFirstH0Buffer == nullptr || 0 == pFirstH0Buffer->iHeightNo());
   
   i8 nEntries = 0;
-  for (EntryBuffer* pEB = pFirstL0Buffer; pEB; pEB = pEB->pNextBuffer())
+  for (EntryBuffer* pEB = pFirstH0Buffer; pEB; pEB = pEB->pNextBuffer())
     nEntries += pEB->nItems();
   
   return nEntries;

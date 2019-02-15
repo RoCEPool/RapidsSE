@@ -12,7 +12,7 @@ Now::Now(void)
 {
   _precondition_(_MAGIC_,CN_NOW,_FOOTER_);
   
-  m_oTime.vSetNowLocal();
+  m_oTime.vSetLocalNow();
   
   char* z = m_sFormatted.aChar();
   

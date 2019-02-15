@@ -111,10 +111,17 @@ Job_Export::Job_Export(Interface::Session* pSession)
   
   m_pTable = nullptr;
   
+  m_okLock.vInitLock(LK_EXPORT);
+  
+  //m_oCsvFile;
+  m_nPartitionsComplete = 0;
+  m_nBuffersExpected    = C_UNKNOWN;
+  m_nBuffersWritten     = 0;
+
   _checkInitialised_(CN_JOB_EXPORT);
   
   ActionSequence::vRoot(this);
-  ActionSequence::vAdd(this,AN_CONSTRUCTOR);
+  ActionSequence::vAdd(this,AN_CONSTRUCTOR,CN_JOB_EXPORT,_EG_CN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
 }
@@ -153,12 +160,16 @@ bool Job_Export::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
   
+  ActionSequence::vAdd(this,AN_JOB_BEGIN);
+
   m_pTable->vMarkTable();
   
   if (! m_oCsvFile.bOpenWrite(m_sFilePath)) {
     vTrace("Failed to open file: %s\n"_Stz,m_sFilePath.aStz());
     return false;
   }
+  
+  ActionSequence::vAdd(this,AN_OPEN_FILE,m_sFilePath.aStz());
   
   return true;
 }
@@ -170,7 +181,51 @@ void Job_Export::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
 
+  ActionSequence::vAdd(this,AN_JOB_END);
+  ActionSequence::vAdd(this,AN_CLOSE_FILE,m_sFilePath.aStz());
+  
   m_oCsvFile.vClose();
+}
+
+/*----------------------------------------------------------------------------*/
+/* finished writing                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_Export::bFinishedWriting(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
+
+  bool bFinished = false;
+  
+  m_okLock.vGrabWrite();
+  
+  if (m_nPartitionsComplete == gpAttachMap->m_pGrid->m_nPartitions &&
+      m_nBuffersExpected == m_nBuffersWritten)
+    bFinished = true;
+  
+  m_okLock.vDropWrite();
+  
+  return bFinished;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc no of buffers written                                                  */
+/*----------------------------------------------------------------------------*/
+void Job_Export::vIncWritten(i8 nBuffersExpected)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
+  
+  m_okLock.vGrabWrite();
+  
+  m_nBuffersWritten++;
+  
+  if (nBuffersExpected) {
+    if (C_UNKNOWN == m_nBuffersExpected)
+      m_nBuffersExpected = nBuffersExpected;
+    else
+      m_nBuffersExpected += nBuffersExpected;
+  }
+  
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -244,8 +299,6 @@ Job* Jobs::pJob_Export_pre(Interface::Session* pSession)
     pJob_Export->m_bHasError = true;
     pJob_Export->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
   }
-
-  ActionSequence::vAdd(pJob_Export,AN_PRE_PROMPT);
   
   return pJob_Export;
 }

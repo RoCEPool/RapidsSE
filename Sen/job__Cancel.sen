@@ -25,7 +25,7 @@
   grid::nodes pJobOriginator job.acksRemaining!
 
   // create a new Job__Cancel
-  pJobOriginator job.id@ job.newCancel to pJob__Cancel
+  pJobOriginator job__cancel::new to pJob__Cancel
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -54,6 +54,7 @@
 : Job__Cancel_rcv ( -- )
 
   >>am <SEED_RCV>
+  an::seed_rcv
 
   //
   // where: on the participating node
@@ -63,7 +64,7 @@
 
   // find the job to be executed in the participating jobs
   pJob__Cancel job.id@ locals| iJobId |
-  pJob__Cancel iJobId job::findParticipant locals| pJobParticipant |
+  iJobId job::findParticipant locals| pJobParticipant |
 
   // execute the cancel seed of the job on this participating node
   pJobParticipant SEED_CAN job.spawn

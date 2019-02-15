@@ -7,11 +7,13 @@ namespace Jobs { class Job; }
 
 namespace Maps
 {
-  static const i8    C_ACTION_SEQUENCE = C_1M * 10;
+  static const i8    C_ACTION_SEQUENCE = C_1M * 1;
   static const char* C_ACTION_REGION   = "/SE_ActionSequence";
 
   class ActionSequence : public Map
   {
+  friend class Action;
+  
   private:
     Lock m_okLock;
     i8   m_i_Action;  // current subscript
@@ -40,9 +42,12 @@ namespace Maps
   
     static void vAdd(Jobs::Job* pJob,
                      eAN eAction=AN_NONE, i8 iArg0=0, i8 iArg1=0);
-    static void vRoot(Jobs::Job* pJob,
-                       eAN eAction=AN_ROOT, i8 iArg0=0, i8 iArg1=0);
-  
+    static void vAdd(Jobs::Job* pJob,eAN eAction,
+                     Jobs::Job* pSystemJob,i8 iArg0=0, i8 iArg1=0);
+    static void vAdd(Jobs::Job* pJob,eAN eAction, Stz* szText);
+    static void vRoot(Jobs::Job* pJob);
+    static void vEnd(Jobs::Job* pJob);
+
     static void vWriteCsv(void);
 
   private:

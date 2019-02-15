@@ -332,7 +332,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
       pJob->vMarkJob();
     }
     
-    ActionSequence::vAdd(pJob,AN_RECV_JOB);
+    ActionSequence::vAdd(pJob,AN_RECV_JOB,mpTask->pJob(),nObjectSize);
 
                          
     mpTask->m_pDataStack->vPushPointer(pJob);
@@ -379,6 +379,47 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     return;
   }
   
+  //////////////////////////////////////////////////////////////////////////////
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive rest of other
+  
+  if (eClass == CN_EXPORTBUFFER) {
+    
+    ExportBuffer* pExportBuffer = new ExportBuffer();
+    
+    MemLib::vCopy(pExportBuffer,pObject,sizeof(Object),CN_EXPORTBUFFER);
+    
+    void* aBody = aAdd<void*>(pExportBuffer,sizeof(Object));
+    i8 nRemainingBytes = giClassSize[CN_EXPORTBUFFER] - sizeof(Object);
+    
+    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+    if (! bResult) {
+      mpTask->m_pDataStack->vPushBool(false);
+      EXIT();
+      return;
+    }
+    
+    //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+    //       pEntryBuffer,eClass,aCN[eClass],nObjectSize);
+    
+    // restore the entryBuffer pointets (m_pHeadEntry etc)
+    pExportBuffer->vRecvPostCorrection();
+    
+    if (gpAttachMap->m_bMarkResource[SR_SOCKET] ||
+        gpAttachMap->m_bMarkResourceAll) {
+      ActivityMap::vMarkRes(SR_SOCKET,
+                            "Recv ExportBuffer: %p"_Stz,
+                            pExportBuffer);
+    }
+    
+    mpTask->m_pDataStack->vPushPointer(pExportBuffer);
+    mpTask->m_pDataStack->vPushBool(true);
+    EXIT();
+    return;
+  }
+  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // unknown object
   
@@ -507,7 +548,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pJob,eClass,aCN[eClass],nObjectSize);
     
-    ActionSequence::vAdd(pJob,AN_RECV_JOB);
+    ActionSequence::vAdd(pJob,AN_RECV_JOB,mpTask->pJob(),nObjectSize);
     ActionSequence::vAdd(pJob,AN_RECV_JOB_LOW_MEMORY);
     
     mpTask->m_pDataStack->vPushPointer(pJob);
@@ -583,7 +624,7 @@ void Step::vSocketSendObject(MP_Task mpTask)
                          pJob,
                          pSocket);
     
-    ActionSequence::vAdd(pJob,AN_SEND_JOB);
+    ActionSequence::vAdd(pJob,AN_SEND_JOB,mpTask->pJob(),nObjectSize);
   }
 
   RASSERT(_bIsValidJob(eClass) || CN_ENTRYBUFFER == eClass);

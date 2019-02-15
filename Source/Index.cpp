@@ -209,7 +209,7 @@ void Index::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
 /*
-  IndexBuffer* pIndexBuffer = m_pIndexLevels->pFirstL0Buffer();
+  IndexBuffer* pIndexBuffer = m_pIndexLevels->pFirstH0Buffer();
 
   while (pIndexBuffer) {
     pIndexBuffer->vShow();

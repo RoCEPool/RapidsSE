@@ -5,6 +5,7 @@
 // Job Short: _Execute
 
 #include "Jobs.h"
+#include "StorageEngine.h"
 
 JobClass xJobClass__Execute =
 {
@@ -99,12 +100,17 @@ void Job__Execute::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job__Execute::Job__Execute(void)
+Job__Execute::Job__Execute(Job* pDistJob)
 : Job(CN_JOB__EXECUTE,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__EXECUTE,_FOOTER_);
   
+  m_iParentId = pDistJob->m_iJobId;
+  m_i_ActionRoot = pDistJob->m_i_ActionRoot;
+
   _checkInitialised_(CN_JOB__EXECUTE);
+  
+  ActionSequence::vAdd(this,AN_CONSTRUCTOR,CN_JOB__EXECUTE,_EG_CN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__EXECUTE,_FOOTER_);
 }

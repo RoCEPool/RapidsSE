@@ -58,6 +58,7 @@ pDUMPFUN *gpDump[]
   /* 36 */ &Dump::vDummy,           // CN_ENTRY
   /* 37 */ &Dump::vDummy,           // CN_ENTRYBUFFER
   /*    */ &Dump::vDummy,           // CN_ENUMFLAGS
+  /*    */ &Dump::vDummy,           // CN_EXPORTBUFFER
 
   /* 38 */ &Dump::vInvalid,         // CN_FETCHBUFFER
   /* 39 */ &Dump::vInvalid,         // CN_FILE
@@ -303,7 +304,7 @@ i8 giClassSize[]
   /* 32 */ sizeof(ColumnVec),          // CN_COLUMNVEC
   /* 32 */ sizeof(Command),            // CN_COMMAND
   /* 32 */ sizeof(Compiler),           // CN_COMPILER
-  
+
   /*    */ sizeof(Decider),            // CN_DECIDER
   /* 33 */ sizeof(Dic),                // CN_DIC
   /* 34 */ sizeof(DicPath),            // CN_DICPATH
@@ -313,6 +314,7 @@ i8 giClassSize[]
   /* 36 */ sizeof(Item),               // CN_ENTRY
   /* 37 */ sizeof(EntryBuffer),        // CN_ENTRYBUFFER
   /*    */ sizeof(EnumFlags),          // CN_ENUMFLAGS
+  /* 32 */ sizeof(ExportBuffer),       // CN_EXPORTBUFFER
 
   /*    */ sizeof(FetchBuffer),        // CN_FETCHBUFFER
   /* 39 */ sizeof(File),               // CN_FILE
@@ -423,7 +425,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VISUALIZEINDEX
   /*    */ sizeof(Job_WaitCluster),    // CN_JOB_WAITCLUSTER
   /*    */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
-  /*    */ sizeof(Job_WriteRecord),    // CN_JOB_WRITERECORD
+  /*    */ sizeof(Job_KidExport),    // CN_JOB_WRITERECORD
   /*    */ sizeof(Job_WriteRow),       // CN_JOB_WRITEROW
   
   /*    */ sizeof(JobList),            // CN_JOBLIST
@@ -568,6 +570,7 @@ eHT geWhichHeap[]
   /* 36 */ HT_INVALID,           // CN_ENTRY
   /* 37 */ HT_TRANSIENT_LARGE,   // CN_ENTRYBUFFER
   /*    */ HT_TRANSIENT_SMALL,   // CN_ENUMFLAGS
+  /*    */ HT_TRANSIENT_LARGE,   // CN_EXPORTBUFFER
 
   /* 38 */ HT_TRANSIENT_LARGE,   // CN_FETCHBUFFER
   /* 39 */ HT_TRANSIENT_SMALL,   // CN_FILE

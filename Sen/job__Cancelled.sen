@@ -20,7 +20,7 @@
   0 0 0 locals| pJob pJob__Cancelled error |
 
   // new a temporary Job__Cancelled
-  iJobId job.newCancelled to pJob__Cancelled
+  pJobParticipant job__Cancelled::new to pJob__Cancelled
 
   // get error if any
   grid::thisNode@ pJobParticipant job.error@ to error
@@ -60,6 +60,7 @@
 : Job__Cancelled_rcv ( -- )
 
   >>am <SEED_RCV>
+  an::seed_rcv
 
   job::this locals| pJob__Cancelled |
   pJob__Cancelled job.id@ locals| iJobId |

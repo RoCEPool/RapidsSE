@@ -1929,13 +1929,13 @@ void StrLib::vFormatFraction(char* sDst, u8 uFraction, i8 iDigits)
   sprintf(sDst,caFormat,uFraction);
   
   // strip off trailing zero's
-  char *z = sDst;
-  while (*z)
-    z++;
-  z--;
-  
-  while ('0' == *z)
-    *z-- = '\0';
+//  char *z = sDst;
+//  while (*z)
+//    z++;
+//  z--;
+//  
+//  while ('0' == *z)
+//    *z-- = '\0';
 }
 
 /*----------------------------------------------------------------------------*/

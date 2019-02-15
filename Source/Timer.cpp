@@ -132,7 +132,7 @@ i8 Timer::iNanoseconds(void)
   //ASSERT(m_iUpdate);
   
   i8 iTicks = (m_iUpdate - m_iStart);
-  i8 iTicksPerSecond = Tsc::iTickFrequency();
+  i8 iTicksPerSecond = Tsc::iTicksPerSecond();
   
   i8 iNano = iTicks * (C_1G / iTicksPerSecond);
   
@@ -150,7 +150,7 @@ i8 Timer::iMicroseconds(void)
   //ASSERT(m_iUpdate);
   
   i8 iTicks = (m_iUpdate - m_iStart);
-  i8 iTicksPerSecond = Tsc::iTickFrequency();
+  i8 iTicksPerSecond = Tsc::iTicksPerSecond();
   
   i8 iMicro = iTicks * C_1M / iTicksPerSecond;
   
@@ -168,7 +168,7 @@ i8 Timer::iMilliseconds(void)
   //ASSERT(m_iUpdate);
   
   i8 iTicks = (m_iUpdate - m_iStart);
-  i8 iTicksPerSecond = Tsc::iTickFrequency();
+  i8 iTicksPerSecond = Tsc::iTicksPerSecond();
   
   i8 iMilli = iTicks * C_1K / iTicksPerSecond;
   
@@ -186,7 +186,7 @@ i8 Timer::iSeconds(void)
   //ASSERT(m_iUpdate);
   
   i8 iTicks = (m_iUpdate - m_iStart);
-  i8 iTicksPerSecond = Tsc::iTickFrequency();
+  i8 iTicksPerSecond = Tsc::iTicksPerSecond();
   
   i8 iSeconds = iTicks / iTicksPerSecond;
   

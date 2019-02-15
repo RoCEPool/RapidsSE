@@ -189,6 +189,42 @@ i8 Tsp::iMicroseconds(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set from arg                                                               */
+/*----------------------------------------------------------------------------*/
+void Tsp::vSet(Tsp* aTspArg)
+{
+  m_iValue = aTspArg->m_iValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set as now                                                                 */
+/*----------------------------------------------------------------------------*/
+void Tsp::vSetAsNow(void)
+{
+  i8 iSeconds;
+  i8 iMicroseconds;
+  SysCall xSysCall;
+  
+  Since::vGetTimeOfDay(iSeconds,iMicroseconds,xSysCall);
+  
+  // convert current epoch time into LOCAL:date&time
+  time_t xSeconds_t;
+  xSeconds_t = iSeconds;
+  struct tm* aLocalDateTime = localtime(&xSeconds_t);
+  
+  if (! aLocalDateTime)
+    vWarn("localtime() error; errno=%d"_Stz,errno);
+  
+  x.m_uYear   = aLocalDateTime->tm_year + 1900;
+  x.m_uMonth  = aLocalDateTime->tm_mon  + 1;
+  x.m_uDay    = aLocalDateTime->tm_mday;
+  x.m_uHour   = aLocalDateTime->tm_hour;
+  x.m_uMinute = aLocalDateTime->tm_min;
+  x.m_uSecond = aLocalDateTime->tm_sec;
+  x.m_uMicro  = iMicroseconds;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Null --------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -355,6 +391,30 @@ bool Tsp::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* 
     return false;
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint tsp datum                                                           */
+/*----------------------------------------------------------------------------*/
+void Tsp::vSprint(Stz* aDst)
+{
+  if (bIsNull()) {
+    StrLib::vSprint(aDst,"null%c"_Stz,'\0');
+    return;
+  }
+  
+  char caFraction[16];
+  StrLib::vFormatFraction(caFraction,x.m_uMicro,6);
+  
+  StrLib::vSprint(aDst,"%04lld-%02lld-%02lld %02lld:%02lld:%02lld.%s%c"_Stz,
+                  (i8)x.m_uYear,
+                  (i8)x.m_uMonth,
+                  (i8)x.m_uDay,
+                  (i8)x.m_uHour,
+                  (i8)x.m_uMinute,
+                  (i8)x.m_uSecond,
+                  caFraction,
+                  '\0');
 }
 
 /*----------------------------------------------------------------------------*/

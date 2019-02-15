@@ -201,12 +201,12 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
   // hidden index ?
   
   if (m_pIndex->bIsHidden()) {
-    ASSERT(m_iLevelNo == 0);
+    ASSERT(m_iHeightNo == 0);
     pNextBuffer = this->pNextBuffer();
     nBuffers++;
     
     while (pNextBuffer) {
-      ASSERT(pNextBuffer->iLevelNo() == 0);
+      ASSERT(pNextBuffer->iHeightNo() == 0);
       
       //EntryBuffer* pThisBuffer = pNextBuffer;
       pNextBuffer = pNextBuffer->pNextBuffer();
@@ -223,7 +223,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
   nBuffers++;
   
   // recursively count the lower level buffers
-  if (! m_iLevelNo)
+  if (! m_iHeightNo)
     return;
     
   for (Item* aItem = aLeadEntry();
@@ -314,11 +314,11 @@ void EntryBuffer::vTruncate(void)
   // hidden index buffers are just one level
   
   if (m_pIndex->bIsHidden()) {
-    ASSERT(m_iLevelNo == 0);
+    ASSERT(m_iHeightNo == 0);
     pNextBuffer = this->pNextBuffer();
     
     while (pNextBuffer) {
-      ASSERT(pNextBuffer->iLevelNo() == 0);
+      ASSERT(pNextBuffer->iHeightNo() == 0);
       
       EntryBuffer* pThisBuffer = pNextBuffer;
       pNextBuffer = pNextBuffer->pNextBuffer();
@@ -330,7 +330,7 @@ void EntryBuffer::vTruncate(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // other index
-  if (m_iLevelNo != 0) {
+  if (m_iHeightNo != 0) {
     
     // recursively delete the lower level buffers
     for (Item* aItem = aLeadEntry();
@@ -433,11 +433,11 @@ void EntryBuffer::vShowEntry(Item* aItem)
   KeyData* aKey = _aKeyData(aItem->aDataArea());
   i8 iOffset = iToOffset(aItem);
   
-  vTrace("%lld: Item: %p Size: %llu Offsets: %llu "_Stz,
+  vTrace("%lld: Item: %p Size: %llu Levels: %llu "_Stz,
          iOffset,
          aItem,
          aItem->nSizeItem_WithoutOffsets(),
-         aItem->nOffsets()
+         aItem->nLevels()
          );
   
   vTrace("Id: %3lli.%03lli "_Stz,
@@ -464,8 +464,8 @@ void EntryBuffer::vShowEntry(Item* aItem)
   
   
   vTrace(" offsets:"_Stz);
-  for (i8 i_Offset = 0; i_Offset < aItem->nOffsets(); i_Offset++)
-    vTrace(" %d"_Stz,aItem->iNEO(i_Offset));
+  for (i8 i_Level = 0; i_Level < aItem->nLevels(); i_Level++)
+    vTrace(" %d"_Stz,aItem->iNEO(i_Level));
   
   vTrace("\n"_Stz);
 }
@@ -500,7 +500,7 @@ Item* EntryBuffer::aAllotRowEntry(RowWrk& xRowWrk)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // rows only ever have one next offset
-  RASSERT(1 == xRowWrk.nOffsets());
+  RASSERT(1 == xRowWrk.nLevels());
 
   i8 nRowEntrySize = xRowWrk.nRowEntrySize();
 

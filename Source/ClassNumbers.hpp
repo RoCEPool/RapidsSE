@@ -48,7 +48,7 @@ enum eCN : u2 // Class Number
   /*  25 0x19     8216B Heap:M */ CN_COLUMNVEC,
   /*  26 0x1A       24B Heap:M */ CN_COMMAND,
   /*  27 0x1B       64B Heap:M */ CN_COMPILER,
-  
+
   /*  28 0x1C       24B Heap:S */ CN_DECIDER,
   /*  29 0x1D      248B Heap:M */ CN_DIC,
   /*  30 0x1E      792B Heap:S */ CN_DICPATH,
@@ -58,6 +58,7 @@ enum eCN : u2 // Class Number
   /*  33 0x21       40B Heap:I */ CN_ENTRY,
   /*  34 0x22  1043848B Heap:L */ CN_ENTRYBUFFER,
   /*                           */ CN_ENUMFLAGS,
+  /*                           */ CN_EXPORTBUFFER,
 
   /*  35 0x23  1040440B Heap:L */ CN_FETCHBUFFER,
   /*  36 0x24      376B Heap:S */ CN_FILE,
@@ -299,7 +300,7 @@ static Stz* aCN[]
   /*  25 0x19 */ "COLUMNVEC"_Stz,           // CN_COLUMNVEC
   /*  26 0x1A */ "COMMAND"_Stz,             // CN_COMMAND
   /*  27 0x1B */ "COMPILER"_Stz,            // CN_COMPILER
-  
+
   /*  28 0x1C */ "DECIDER"_Stz,             // CN_DECIDER
   /*  29 0x1D */ "DIC"_Stz,                 // CN_DIC
   /*  30 0x1E */ "DICPATH"_Stz,             // CN_DICPATH
@@ -309,6 +310,7 @@ static Stz* aCN[]
   /*  33 0x21 */ "ENTRY"_Stz,               // CN_ENTRY
   /*  34 0x22 */ "ENTRYBUFFER"_Stz,         // CN_ENTRYBUFFER
   /*          */ "ENUMFLAGS"_Stz,           // CN_ENUMFLAGS
+  /*          */ "EXPORTBUFFER"_Stz,        // CN_EXPORTBUFFER
 
   /*  35 0x23 */ "FETCHBUFFER"_Stz,         // CN_FETCHBUFFER
   /*  36 0x24 */ "FILE"_Stz,                // CN_FILE

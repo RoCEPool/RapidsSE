@@ -25,7 +25,7 @@
   grid::nodes pJobOriginator job.acksRemaining!
 
   // new a temporary Job__End
-  pJobOriginator job.id@ job.newEnd to pJob__End
+  pJobOriginator job__End::new to pJob__End
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -54,6 +54,7 @@
 : Job__End_rcv ( -- )
 
   >>am <SEED_RCV>
+  an::seed_rcv
 
   //
   // where: on the participating node
@@ -63,7 +64,7 @@
 
   // find the job to be executed in the participating jobs
   pJob__End job.id@ locals| iJobId |
-  pJob__End iJobId job::findParticipant locals| pJobParticipant |
+  iJobId job::findParticipant locals| pJobParticipant |
 
   // execute the end seed of the job on this participating node
   pJobParticipant SEED_END job.spawn

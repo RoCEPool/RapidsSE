@@ -5,6 +5,7 @@
 // Job Short: _Cancelled
 
 #include "Jobs.h"
+#include "StorageEngine.h"
 
 JobClass xJobClass__Cancelled =
 {
@@ -99,14 +100,19 @@ void Job__Cancelled::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job__Cancelled::Job__Cancelled(void)
+Job__Cancelled::Job__Cancelled(Job* pDistJob)
 : Job(CN_JOB__CANCELLED,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__CANCELLED,_FOOTER_);
   
+  m_iParentId = pDistJob->m_iJobId;
+  m_i_ActionRoot = pDistJob->m_i_ActionRoot;
+
   m_eErrorCode = EC_NONE;
   
   _checkInitialised_(CN_JOB__CANCELLED);
+  
+  ActionSequence::vAdd(this,AN_CONSTRUCTOR,CN_JOB__CANCELLED,_EG_CN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__CANCELLED,_FOOTER_);
 }

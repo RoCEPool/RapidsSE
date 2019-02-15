@@ -95,8 +95,9 @@ Job::Job(eCN eClassNo, Session* pSession)
   
   m_iParticipantNode  = C_UNKNOWN;
   m_oAcksRemaining.vCheckInit();
-  m_pCurrentBuffer = nullptr;
   
+  m_pCurrentBuffer = nullptr;
+  m_pSendWith = nullptr;
   
   if (CN_JOB_NODEINFO == eClass())
     m_pMutex = nullptr;
@@ -474,7 +475,7 @@ eEC Jobs::eJob_checkCluster(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 void Jobs::vJob_send(Job* pJob)
 {
-  ActionSequence::vAdd(pJob,AN_PRE_SEND);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -486,8 +487,6 @@ void Jobs::vJob_recv(Job* pJob)
   pJob->m_eJobList       = JL_NONE;
   pJob->m_pMutex         = nullptr;
   pJob->m_bWasReceived   = true;
-  
-  ActionSequence::vAdd(pJob,AN_POST_RECV);
 }
 
 /*----------------------------------------------------------------------------*/

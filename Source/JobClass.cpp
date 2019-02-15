@@ -82,6 +82,9 @@ Job* JobClass::pPreJob(Interface::Session* pSession)
   pJob->m_eJobTrace = m_eTrace;
   pJob->m_i_State   = pSession ? pSession->m_pSessionState->m_i_State : -1;
   
+  ActionSequence::vAdd(pJob,AN_PRE_PROMPT,
+                       pJob->m_pJobClass->m_eKind,_EG_JK);
+  
   return pJob;
 }
 

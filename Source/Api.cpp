@@ -307,7 +307,7 @@ void Api::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
 {
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Before appending request for se, ensure that se is running
   // get the se pid from the attachmap
   i8 iPid = gpAttachMap->m_iPid;
@@ -319,8 +319,8 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
     return false;
   }
   
-  //----------------------------------------------------------------------------
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Task* pNewTask = new Task(pJob);
   
   // form the word to execute for the request

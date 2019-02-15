@@ -31,7 +31,7 @@ SkipRoots::SkipRoots(void)
   bn nBufferNo = pBuffer->nPoolBufferNo();
 
   m_xId.vBuffer(*nBufferNo);
-  vOffsets(3);
+  vLevels(3);
   m_nSizeItem_WithoutOffsets = sizeof(Item);//sizeof(SkipRoots) - sizeof(m_iaNextOffset);
   
   m_iaNextOffset[0] = -1;

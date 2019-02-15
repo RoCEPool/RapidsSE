@@ -16,6 +16,8 @@ namespace Jobs
     i8           m_iEntryBuffer;
   
     EntryBuffer* m_pEntryBuffer;
+  
+    ExportBuffer* m_pExportBuffer;
     
     // must be last
     Footer m_xFooter;
@@ -36,7 +38,9 @@ namespace Jobs
 
     void vShow(void);
   
-  public:
+  private:
+    void vSprintRows(void);
+  
     Footer* aFooter(void);
   
   };

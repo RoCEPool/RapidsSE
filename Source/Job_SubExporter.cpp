@@ -115,10 +115,11 @@ Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
   m_iEntryBuffer  = 0;
   
   m_pEntryBuffer = nullptr;
-
+  m_pExportBuffer = nullptr;
+  
   _checkInitialised_(CN_JOB_SUBEXPORTER);
   
-  ActionSequence::vAdd(this,AN_CONSTRUCTOR);
+  ActionSequence::vAdd(this,AN_CONSTRUCTOR,CN_JOB_SUBEXPORTER,_EG_CN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
 }
@@ -172,6 +173,8 @@ bool Job_SubExporter::bBegin(void)
                           pTable->aTableName(),
                           m_nEntryBuffers);
   
+  ActionSequence::vAdd(this,AN_JOB_BEGIN,m_nEntryBuffers);
+  
   return true;
 }
 
@@ -193,6 +196,11 @@ bool Job_SubExporter::bChunk(void)
                           m_nEntryBuffers,
                           m_pEntryBuffer);
   
+  ActionSequence::vAdd(this,AN_JOB_CHUNK,m_iEntryBuffer);
+
+  if (m_pEntryBuffer->nItems())
+    vSprintRows();
+  
   m_iEntryBuffer++;
   m_pEntryBuffer = m_pEntryBuffer->pNextBuffer();
 
@@ -205,6 +213,11 @@ bool Job_SubExporter::bChunk(void)
 void Job_SubExporter::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+
+  if (m_pExportBuffer)
+    {;}
+  
+  ActionSequence::vAdd(this,AN_JOB_END,m_iEntryBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -213,6 +226,39 @@ void Job_SubExporter::vEnd(void)
 void Job_SubExporter::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void Job_SubExporter::vSprintRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+  
+  s48K sRecord;
+  
+  ColumnVec* pColVec = m_pJobExport->m_pTable->pColumnVec();
+  
+  for (Item* aItem = m_pEntryBuffer->aLeadEntry();
+       aItem;
+       aItem = m_pEntryBuffer->aNextEntry(aItem,0)) {
+
+    RowData* aRow = _aRowData(aItem->aDataArea());
+    
+    aRow->vAsBinaryStringVLQ(sRecord,pColVec);
+    vTrace("]]%s[[\n"_Stz,sRecord.aStz());
+    
+    i8 nBytes = sRecord.nSize();
+    
+    if (! m_pExportBuffer)
+      m_pExportBuffer = new ExportBuffer;
+    
+    if (m_pExportBuffer->nFreeBytes() < nBytes)
+      m_pExportBuffer = new ExportBuffer;
+    
+    char* aRecord = m_pExportBuffer->aAllotRecord(nBytes);
+    StrLib::vCopy(aRecord,sRecord.aChar());
+  }
 }
 
 /*----------------------------------------------------------------------------*/

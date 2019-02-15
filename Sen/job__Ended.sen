@@ -20,7 +20,7 @@
   0 locals| pJob__Ended |
 
   // new a temporary Job__Ended
-  iJobId job.newEnded to pJob__Ended
+  pJobParticipant job__Ended::new to pJob__Ended
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -49,6 +49,7 @@
 : Job__Ended_rcv ( -- )
 
   >>am <SEED_RCV>
+  an::seed_rcv
 
   job::this locals| pJob__Ended |
   pJob__Ended job.id@ locals| iJobId |

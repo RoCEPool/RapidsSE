@@ -71,6 +71,8 @@ void Step::vJob_ExportTableStore(MP_Task mpTask)
   
   pJob_Export->m_pTable = pTable;
   
+  ActionSequence::vAdd(pJob_Export,AN_TABLE_USE,pTable->aTableName());
+  
   EXIT();
 }
 

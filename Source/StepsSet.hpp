@@ -29,6 +29,10 @@
   static void vActivityMapMarkEntry(Tasks::MP_Task mpTask);
   static void vActivityMapMarkExit(Tasks::MP_Task mpTask);
 
+  // action sequence map
+  static void vActionSequenceMarkWord(Tasks::MP_Task mpTask);
+  static void vActionSequenceMarkSeed(Tasks::MP_Task mpTask);
+
   // address
   static void vAddressEqual(Tasks::MP_Task mpTask);
   static void vAddressFetch(Tasks::MP_Task mpTask);
@@ -440,18 +444,12 @@
   static void vJobFindParticipant(Tasks::MP_Task mpTask);
   static void vJobHasError(Tasks::MP_Task mpTask);
   static void vJobHasEntryBuffer(Tasks::MP_Task mpTask);
+  static void vJobHasSendWith(Tasks::MP_Task mpTask);
   static void vJobIdFetch(Tasks::MP_Task mpTask);
   static void vJobIndexNameFetch(Tasks::MP_Task mpTask);
   static void vJobIsExecuting(Tasks::MP_Task mpTask);
   static void vJobJobClass(Tasks::MP_Task mpTask);
   static void vJobMetadataStore(Tasks::MP_Task mpTask);
-  static void vJobNewBegun(Tasks::MP_Task mpTask);
-  static void vJobNewCancel(Tasks::MP_Task mpTask);
-  static void vJobNewCancelled(Tasks::MP_Task mpTask);
-  static void vJobNewEnd(Tasks::MP_Task mpTask);
-  static void vJobNewEnded(Tasks::MP_Task mpTask);
-  static void vJobNewExecute(Tasks::MP_Task mpTask);
-  static void vJobNewExecuted(Tasks::MP_Task mpTask);
   static void vJobObjectNameFetch(Tasks::MP_Task mpTask);
   static void vJobOriginatingTaskFetch(Tasks::MP_Task mpTask);
   static void vJobOriginatingTaskStore(Tasks::MP_Task mpTask);
@@ -476,6 +474,8 @@
   static void vJobRowsSkippedFetch(Tasks::MP_Task mpTask);
   static void vJobRowsSkippedStore(Tasks::MP_Task mpTask);
   static void vJobSend(Tasks::MP_Task mpTask);
+  static void vJobSendWithFetch(Tasks::MP_Task mpTask);
+  static void vJobSendWithStore(Tasks::MP_Task mpTask);
   static void vJobShow(Tasks::MP_Task mpTask);
   static void vJobSignalConnector(Tasks::MP_Task mpTask);
   static void vJobSpawn(Tasks::MP_Task mpTask);
@@ -499,6 +499,14 @@
   static void vJob__ExecutedRowsProcessedStore(Tasks::MP_Task mpTask);
   static void vJob__ExecutedRowsSkippedFetch(Tasks::MP_Task mpTask);
   static void vJob__ExecutedRowsSkippedStore(Tasks::MP_Task mpTask);
+
+  static void vJob__BegunNew(Tasks::MP_Task mpTask);
+  static void vJob__CancelNew(Tasks::MP_Task mpTask);
+  static void vJob__CancelledNew(Tasks::MP_Task mpTask);
+  static void vJob__EndNew(Tasks::MP_Task mpTask);
+  static void vJob__EndedNew(Tasks::MP_Task mpTask);
+  static void vJob__ExecuteNew(Tasks::MP_Task mpTask);
+  static void vJob__ExecutedNew(Tasks::MP_Task mpTask);
 
   // job analyzeIndex
   static void vJob_AnalyzeIndexIsDetailed(Tasks::MP_Task mpTask);

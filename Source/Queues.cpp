@@ -259,6 +259,8 @@ void Queues::vAddToExecutingSet_NL(Task* pTask)
 
   ASSERT(m_pExecutingSet->bIsLocked());
   m_pExecutingSet->vAddTask(pTask);
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_EXECUTING_SET);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -282,6 +284,8 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
 
   ASSERT(m_pReadyQueue->bIsLocked());
   m_pReadyQueue->vAddTask(pTask);
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -311,6 +315,8 @@ void Queues::vAddToReadySlotQueue_NL(Task* pTask)
 
   ASSERT(m_pReadySlotQueues[iSlot]->bIsLocked());
   m_pReadySlotQueues[iSlot]->vAddTask(pTask);
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_SLOT_QUEUE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -337,6 +343,8 @@ void Queues::vAddToSendQueue_NL(Task* pTask)
 
   ASSERT(m_pReadySendQueues[iSendNode]->bIsLocked());
   m_pReadySendQueues[iSendNode]->vAddTask(pTask);
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_SEND_QUEUE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -362,6 +370,8 @@ void Queues::vAddToSleepingQueue_NL(Task* pTask)
   m_pSleepingQueue->vAssertItems(nPriorItems);
   m_pSleepingQueue->vAddTask(pTask);
   m_pSleepingQueue->vAssertItems(nPriorItems + 1);
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_SLEEPING_QUEUE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -394,6 +404,8 @@ void Queues::vAddToWaitingSet_NL(Task* pTask)
   ASSERT(m_pWaitingSet->bIsLocked());
   m_pWaitingSet->vAddTask(pTask);
   
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_WAITING_SET);
+
   // drop task lock
   pTask->vDropLock();
 }
@@ -1063,6 +1075,8 @@ void Queues::vScheduleAckedTask(Task* pTask)
                        "Scheduling acked: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
+  
+  //ActionSequence::vAdd(pTask->pJob(),AN_TASK_ACKED);
 
   pTask->vGrabLock();
 
@@ -1119,6 +1133,7 @@ void Queues::vScheduleReadyTask(Task* pTask)
   Thread* pIdleThread = pFindIdleThread();
 
   if (pIdleThread) {
+    ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
     pIdleThread->vExecuteTask(pTask);
   }
   else {

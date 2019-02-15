@@ -36,10 +36,10 @@ namespace System
     void vAppendLocal(char** pz);
     void vAppendUtc(char** pz);
     bool bExtractUTC(char** ps);
+    void vSetLocalNow(void);
     void vSetLocal(Since* pSince);
+    void vSetUTCNow(void);
     void vSetUTC(Since* pSince);
-    void vSetNowLocal(void);
-    void vSetNowUTC(void);  
     void vUTC(s32& sUTC);
     
     Footer* aFooter(void);

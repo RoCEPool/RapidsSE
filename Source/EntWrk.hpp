@@ -39,10 +39,10 @@ namespace Data
     i8     iItemNo(void);
     void   vItemNo(i8 iItemNo);
     char*  aLatter(void);
-    i8     nOffsets(void);
+    i8     nLevels(void);
     i8     nOffsetSize(void);
-    void   vOffsets(i8 nOffsets);
-    void   vRandomOffsets(void);
+    void   vLevels(i8 nLevels);
+    void   vRandomLevels(void);
     void   vReset(void);
     void   vTake(i8 iSize);
 

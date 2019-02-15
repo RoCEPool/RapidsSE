@@ -17,7 +17,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job__Cancel(void);
+    Job__Cancel(Job* pDadJob);
     ~Job__Cancel(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

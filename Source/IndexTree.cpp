@@ -332,8 +332,8 @@ void IndexTree::vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pFirstL0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  ASSERT(0 == pFirstL0->iLevelNo());
-  ASSERT(1 == pL1->iLevelNo());
+  ASSERT(0 == pFirstL0->iHeightNo());
+  ASSERT(1 == pL1->iHeightNo());
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
@@ -351,7 +351,7 @@ void IndexTree::vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pFirstL0)
   Id xId = aFirstL0_Key->xId();
   KeyData* aKey = _aKeyData(aFirstL0_Key->aDataArea());
   i8 nKeySize = aKey->nKeySize(pIdxColVec);
-  i8 nOffsets = aFirstL0_Key->nOffsets();
+  i8 nLevels = aFirstL0_Key->nLevels();
   
   i8 iFirstL0_BufferNo = pFirstL0->iPoolBufferNo();
   xId.vBuffer(iFirstL0_BufferNo);
@@ -361,7 +361,7 @@ void IndexTree::vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pFirstL0)
   xL1_FirstKey.vId(xId);
   xL1_FirstKey.vEmbedded((char*)aKey);
   xL1_FirstKey.vKeySize(nKeySize);
-  xL1_FirstKey.vOffsets(nOffsets);
+  xL1_FirstKey.vLevels(nLevels);
   
   Item* aFirstL1_Key = pL1->aInsertKeyAbs(xL1_FirstKey);
   
@@ -386,10 +386,10 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
   // assert the parameters are sensible
   
   EntryBuffer* pLeftL0 = *ppLeftL0;
-  ASSERT(0 == pLeftL0->iLevelNo());
-  ASSERT(0 == pRightL0->iLevelNo());
+  ASSERT(0 == pLeftL0->iHeightNo());
+  ASSERT(0 == pRightL0->iHeightNo());
   EntryBuffer* pL1 = pLeftL0->pHigherBuffer();
-  ASSERT(1 == pL1->iLevelNo());
+  ASSERT(1 == pL1->iHeightNo());
   ASSERT(pRightL0->pHigherBuffer() == pLeftL0->pHigherBuffer());
   
   //vTrace("IndexTree::vCopyLeft (left %lld right %lld)\n"_Stz,
@@ -420,7 +420,7 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     KeyData* aKey = _aKeyData(aRightL0_Key->aDataArea());
     
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nOffsets = aRightL0_Key->nOffsets();
+    i8 nLevels = aRightL0_Key->nLevels();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // form the working version of the left key
@@ -428,7 +428,7 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     xLeftKeyWrk.vId(xId);
     xLeftKeyWrk.vEmbedded((char*)aKey);
     xLeftKeyWrk.vKeySize(nKeySize);
-    xLeftKeyWrk.vOffsets(nOffsets);
+    xLeftKeyWrk.vLevels(nLevels);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // compute the size of the left key
@@ -524,10 +524,10 @@ void IndexTree::vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
   // assert the parameters are sensible
   
   EntryBuffer* pLeftL0 = *ppLeftL0;
-  ASSERT(0 == pLeftL0->iLevelNo());
-  ASSERT(0 == pRightL0->iLevelNo());
+  ASSERT(0 == pLeftL0->iHeightNo());
+  ASSERT(0 == pRightL0->iHeightNo());
   EntryBuffer* pL1 = pLeftL0->pHigherBuffer();
-  ASSERT(1 == pL1->iLevelNo());
+  ASSERT(1 == pL1->iHeightNo());
   ASSERT(pRightL0->pHigherBuffer() == pLeftL0->pHigherBuffer());
   
   //vTrace("IndexTree::vCopyLeft (left %lld right %lld)\n"_Stz,
@@ -551,7 +551,7 @@ void IndexTree::vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     KeyData* aKey = _aKeyData(aRightL0_Key->aDataArea());
     
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nOffsets = aRightL0_Key->nOffsets();
+    i8 nLevels = aRightL0_Key->nLevels();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // form the working version of the left key
@@ -559,7 +559,7 @@ void IndexTree::vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     xLeftKeyWrk.vId(xId);
     xLeftKeyWrk.vEmbedded((char*)aKey);
     xLeftKeyWrk.vKeySize(nKeySize);
-    xLeftKeyWrk.vOffsets(nOffsets);
+    xLeftKeyWrk.vLevels(nLevels);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // compute the size of the left key
@@ -649,10 +649,10 @@ void IndexTree::vCopyLeftV1(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
   KeyWrk xLeftKeyWrk;
   
   EntryBuffer* pLeftL0 = *ppLeftL0;
-  ASSERT(0 == pLeftL0->iLevelNo());
-  ASSERT(0 == pRightL0->iLevelNo());
+  ASSERT(0 == pLeftL0->iHeightNo());
+  ASSERT(0 == pRightL0->iHeightNo());
   EntryBuffer* pL1 = pLeftL0->pHigherBuffer();
-  ASSERT(1 == pL1->iLevelNo());
+  ASSERT(1 == pL1->iHeightNo());
   ASSERT(pRightL0->pHigherBuffer() == pLeftL0->pHigherBuffer());
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
@@ -750,11 +750,11 @@ void IndexTree::vCopyLeftV1(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
 /*----------------------------------------------------------------------------*/
 /* dump the index                                                             */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vDump(bool bSameLevel)
+void IndexTree::vDump(bool bSameHeight)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
 
-  if (bSameLevel) {
+  if (bSameHeight) {
     EntryBuffer* pEntryBuffer = m_pRootBuffer;
     
     while (pEntryBuffer) {
@@ -781,10 +781,10 @@ EntryBuffer* IndexTree::pFirstL1Buffer(void)
   if ( ! pEntryBuffer )
     return nullptr;
   
-  if (pEntryBuffer->iLevelNo() == 0)
+  if (pEntryBuffer->iHeightNo() == 0)
     return nullptr;
   
-  if (pEntryBuffer->iLevelNo() == 1)
+  if (pEntryBuffer->iHeightNo() == 1)
     return pEntryBuffer;
   
   while (pEntryBuffer) {
@@ -792,7 +792,7 @@ EntryBuffer* IndexTree::pFirstL1Buffer(void)
     Item* aFirstEntry = pEntryBuffer->aLeadEntry();
     pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aFirstEntry);
     
-    if (pEntryBuffer->iLevelNo() == 1) {
+    if (pEntryBuffer->iHeightNo() == 1) {
       return pEntryBuffer;
     }
   }
@@ -803,7 +803,7 @@ EntryBuffer* IndexTree::pFirstL1Buffer(void)
 /*----------------------------------------------------------------------------*/
 /* get the first L0 buffer                                                    */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* IndexTree::pFirstL0Buffer(void)
+EntryBuffer* IndexTree::pFirstH0Buffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
@@ -812,7 +812,7 @@ EntryBuffer* IndexTree::pFirstL0Buffer(void)
   if ( ! pEntryBuffer )
     return nullptr;
   
-  if (pEntryBuffer->iLevelNo() == 0)
+  if (pEntryBuffer->iHeightNo() == 0)
     return pEntryBuffer;
   
   while (pEntryBuffer) {
@@ -820,7 +820,7 @@ EntryBuffer* IndexTree::pFirstL0Buffer(void)
     Item* aFirstEntry = pEntryBuffer->aLeadEntry();
     pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aFirstEntry);
     
-    if (pEntryBuffer->iLevelNo() == 0) {
+    if (pEntryBuffer->iHeightNo() == 0) {
       return pEntryBuffer;
     }
   }
@@ -937,14 +937,14 @@ EntryBuffer* IndexTree::pPopSubList(EntryBuffer** ppSubList)
 }
 
 /*----------------------------------------------------------------------------*/
-/* position the IndexTree at a particular level of index buffer               */
+/* position the IndexTree at a particular height of index buffer              */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* IndexTree::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols,i8 iLevel)
+EntryBuffer* IndexTree::pPositionHeight(KeyWrk& xKeyWrk, i8 nKeyCols,i8 iHeight)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   if (m_pRootBuffer)
-    return m_pRootBuffer->pPositionLevel(xKeyWrk,nKeyCols,iLevel);
+    return m_pRootBuffer->pPositionHeight(xKeyWrk,nKeyCols,iHeight);
   else
     return nullptr;
 }
@@ -1131,7 +1131,7 @@ void IndexTree::vDumpLevel(EntryBuffer* pEntryBuffer)
     vTrace("%lld"_Stz, pEntryEntryBuffer->iDecile());
     
     // insert spaces for no of entries in buffer
-    if (pEntryEntryBuffer->iLevelNo() > 0) {
+    if (pEntryEntryBuffer->iHeightNo() > 0) {
       
       // exclude the head entry
       i8 iEntries = pEntryEntryBuffer->nItems() - 1;
@@ -1162,7 +1162,7 @@ void IndexTree::vVisualize(void)
   if (m_pIndex->bIsHidden()) {
     
     do {
-      ASSERT(pEntryBuffer->iLevelNo() == 0);
+      ASSERT(pEntryBuffer->iHeightNo() == 0);
       // print the decile of pNextBuffer
       vTrace("%lld"_Stz, pEntryBuffer->iDecile());
       
@@ -1177,10 +1177,10 @@ void IndexTree::vVisualize(void)
   // print the decile of the root buffer
   vTrace("%lld\n"_Stz, pEntryBuffer->iDecile());
   
-  i8 iBufferLevel = pEntryBuffer->iLevelNo();
+  i8 iBufferHeight = pEntryBuffer->iHeightNo();
   
   // if there is only one buffer i.e root is at level 0, we are done
-  if (iBufferLevel == 0) {
+  if (iBufferHeight == 0) {
     vTrace("\n"_Stz);
     return;
   }
@@ -1192,7 +1192,7 @@ void IndexTree::vVisualize(void)
     vDumpLevel(pEntryBuffer);
 
     // if we are at level 1, iterate thru next buffers
-    if (pEntryBuffer->iLevelNo() == 1) {
+    if (pEntryBuffer->iHeightNo() == 1) {
       pEntryBuffer = (EntryBuffer*)pEntryBuffer->pNextBuffer();
     }
     else {
