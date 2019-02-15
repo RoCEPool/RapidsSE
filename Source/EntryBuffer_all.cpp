@@ -147,9 +147,9 @@ void EntryBuffer::vBuildSkipListSorted(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Item* xPrevVec[gpAttachMap->m_nIndexOffsets];
+  Item* xPrevVec[gpAttachMap->m_nIndexLevels];
   
-  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
     xPrevVec[i_Offset] = aSkipRoots();
   
   
@@ -193,7 +193,7 @@ void EntryBuffer::vDeleteEntry(Item** aaItem)
   
   Item* aItem = *aaItem;
   
-  Item* xPriorVec[gpAttachMap->m_nIndexOffsets];
+  Item* xPriorVec[gpAttachMap->m_nIndexLevels];
   
   KeyData* aKey = _aKeyData(aItem->aDataArea());
   
@@ -220,7 +220,7 @@ void EntryBuffer::vDeleteEntry(Item** aaItem)
 //  
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  
-//  Item* xPriorVec[gpAttachMap->m_nIndexOffsets];
+//  Item* xPriorVec[gpAttachMap->m_nIndexLevels];
 //  
 //  vPositionPriorVecBuffer3(aDeleteKey,xPriorVec,pToBuffer);
 //  
@@ -1159,7 +1159,7 @@ void EntryBuffer::vCompact(void)
   
   FreeItem* aFreeEntry;
   Item*     aMoveEntry;
-  Item*     xPriorVec[gpAttachMap->m_nIndexOffsets];
+  Item*     xPriorVec[gpAttachMap->m_nIndexLevels];
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   // we can only compact if there are free entries
@@ -1341,7 +1341,7 @@ void EntryBuffer::vCompactLeft2(void)
   
   vItems(0);
   
-  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
     aSkipRoots()->vNEO(i_Offset,-1);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1473,7 +1473,7 @@ void EntryBuffer::vDeleteUpwards(KeyData* aDeleteKey,
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//  Item* xPriorVec[gpAttachMap->m_nIndexOffsets];
+//  Item* xPriorVec[gpAttachMap->m_nIndexLevels];
 //
 //  vPositionPriorVecBuffer(aDeleteKey,xPriorVec,pToBuffer);
 //
@@ -1814,7 +1814,7 @@ void EntryBuffer::vInsertKeySkip(Item* aKeyEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the entry after which the new entry will be inserted
   
-  Item* xPriorVec[gpAttachMap->m_nIndexOffsets];
+  Item* xPriorVec[gpAttachMap->m_nIndexLevels];
   
   KeyData* aKey = _aKeyData(aKeyEntry->aDataArea());
   
@@ -2294,7 +2294,7 @@ Item* EntryBuffer::pPositionPriorEntry(KeyData* aFindKey)
   
   bool bKeyIsGreaterEqual;
   
-  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
+  for (i8 i_ScanOffset = gpAttachMap->m_nIndexLevels - 1;
        i_ScanOffset >= 0;
        i_ScanOffset--) {
     
@@ -2345,7 +2345,7 @@ void EntryBuffer::vPositionPriorVecEntry(KeyData* aFindKey, Item* aPriorVec[],
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
     aPriorVec[i_Offset] = aSkipRoots();
   
   if (nItems() == 0)
@@ -2359,7 +2359,7 @@ void EntryBuffer::vPositionPriorVecEntry(KeyData* aFindKey, Item* aPriorVec[],
   
   bool bIsJuxta;
   Item* aScanEntry_sl = aSkipRoots();
-  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
+  for (i8 i_ScanOffset = gpAttachMap->m_nIndexLevels - 1;
        i_ScanOffset >= 0;
        i_ScanOffset--) {
     
@@ -2420,7 +2420,7 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
     aPriorVec[i_Offset] = aSkipRoots();
   
   if (nItems() == 0)
@@ -2432,7 +2432,7 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
   bool bNextKeyIsGreater;
   Item* aScanEntry_sl = aSkipRoots();
   
-  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
+  for (i8 i_ScanOffset = gpAttachMap->m_nIndexLevels - 1;
        i_ScanOffset >= 0;
        i_ScanOffset--) {
     
@@ -2489,7 +2489,7 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
 //  
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  
-//  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
+//  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
 //    aPriorVec[i_Offset] = aSkipRoots();
 //  
 //  if (nItems() == 0)
@@ -2501,7 +2501,7 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
 //  bool bNextKeyIsGreaterEqual;
 //  Item* aScanEntry_sl = aSkipRoots();
 //  
-//  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
+//  for (i8 i_ScanOffset = gpAttachMap->m_nIndexLevels - 1;
 //       i_ScanOffset >= 0;
 //       i_ScanOffset--) {
 //    
@@ -2549,7 +2549,7 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
 //  
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  
-//  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
+//  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
 //    aPriorVec[i_Offset] = aSkipRoots();
 //  
 //  if (nItems() == 0)
@@ -2561,7 +2561,7 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
 //  bool bNextKeyIsGreaterEqual;
 //  Item* aScanEntry_sl = aSkipRoots();
 //  
-//  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
+//  for (i8 i_ScanOffset = gpAttachMap->m_nIndexLevels - 1;
 //       i_ScanOffset >= 0;
 //       i_ScanOffset--) {
 //    
@@ -3582,7 +3582,7 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
   Item* aNextEntry1;
   Item* aNextEntry0;
   
-  for (i8 i_ScanLevel = gpAttachMap->m_nIndexOffsets - 1;
+  for (i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
        i_ScanLevel >= 0;
        i_ScanLevel--) {
     
