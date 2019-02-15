@@ -554,6 +554,10 @@
   static void vJob_SubInserterBegin(Tasks::MP_Task mpTask);
   static void vJob_SubInserterEnd(Tasks::MP_Task mpTask);
 
+  // job KidExport
+  static void vJob_KidExportExportOrigin(Tasks::MP_Task mpTask);
+  static void vJob_KidExportWriteKidBuffer(Tasks::MP_Task mpTask);
+
   // job LoadTable
   static void vJob_LoadTableBegin(Tasks::MP_Task mpTask);
   static void vJob_LoadTableChunk(Tasks::MP_Task mpTask);
