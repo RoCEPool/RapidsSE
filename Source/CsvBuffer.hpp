@@ -29,6 +29,7 @@ namespace Jobs
     void  vExpectBuffers(i8 nExpectBuffers);
     i8    nFreeBytes(void);
     i8    nRecords(void);
+    void  vRecvPostCorrection();
   
   private:
     Footer* aFooter(void);

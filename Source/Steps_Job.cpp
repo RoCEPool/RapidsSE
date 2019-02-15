@@ -37,7 +37,8 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
   vAddStep("job.hasEntryBuffer"_Stz,   &Step::vJobHasEntryBuffer);
-  
+  vAddStep("job.hasSendWith"_Stz,      &Step::vJobHasEntryBuffer);
+
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch);
   vAddStep("job.indexName@"_Stz,       &Step::vJobIndexNameFetch);
   vAddStep("job.IsExecuting"_Stz,      &Step::vJobIsExecuting);
@@ -73,6 +74,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.rowsSkipped!"_Stz,     &Step::vJobRowsSkippedStore);
 
   vAddStep("job.send"_Stz,             &Step::vJobSend);
+  vAddStep("job.sendWith@"_Stz,        &Step::vJobEntryBufferFetch);
+  vAddStep("job.sendWith!"_Stz,        &Step::vJobEntryBufferStore);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
   vAddStep("job.signalConnector"_Stz,  &Step::vJobSignalConnector);
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
@@ -326,6 +329,45 @@ void Step::vJobDicPath(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.entryBuffer@ -- fetch entry buffer from job                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJobEntryBufferFetch(MP_Task mpTask)
+{
+  ENTRY("vJobEntryBufferFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.entryBuffer@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushPointer(pJob->m_pCurrentBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.entryBuffer! -- store entry buffer in the job                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobEntryBufferStore(MP_Task mpTask)
+{
+  ENTRY("vJobEntryBufferStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.entryBuffer!"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  Object* pEntryBufferPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pEntryBufferPtr) )
+    THROW_INVALID_DSTACK("job.entryBuffer!"_Stz);
+  EntryBuffer* pEntryBuffer = _pEntryBuffer(pEntryBufferPtr);
+  
+  pJob->m_pCurrentBuffer = pEntryBuffer;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.error@ -- fetch the job error for the node                             */
 /*----------------------------------------------------------------------------*/
 void Step::vJobErrorFetch(MP_Task mpTask)
@@ -503,6 +545,25 @@ void Step::vJobHasEntryBuffer(MP_Task mpTask)
   i8 bHas = pJob->m_pCurrentBuffer ? true : false;
   if (pJob->m_pJobClass->m_eClass == CN_JOB_WRITEBUFFER)
     int iDebug = 1;
+  
+  mpTask->m_pDataStack->vPushI8(bHas);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.hasSendWith -- return true if job has a send with object               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobHasSendWith(MP_Task mpTask)
+{
+  ENTRY("vJobHasSendWith"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.hasSendWith"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  i8 bHas = pJob->m_pSendWith ? true : false;
   
   mpTask->m_pDataStack->vPushI8(bHas);
   
@@ -1162,6 +1223,45 @@ void Step::vJobSend(MP_Task mpTask)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* job.sendWith@ -- fetch send-with object from job                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobSendWithFetch(MP_Task mpTask)
+{
+  ENTRY("vJobSendWithFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.sendWith@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushPointer(pJob->m_pSendWith);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.sendWith! -- store send-with object in the job                         */
+/*----------------------------------------------------------------------------*/
+void Step::vJobSendWithStore(MP_Task mpTask)
+{
+  ENTRY("vJobSendWithStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.sendWith!!"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  Object* pObject;
+  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+    THROW_INVALID_DSTACK("job.sendWith!!"_Stz);
+  
+  pJob->m_pSendWith = pObject;
+  
+  EXIT();
+}
+
 /*----------------------------------------------------------------------------*/
 /* job.show -- show the job                                                   */
 /*----------------------------------------------------------------------------*/
@@ -1361,45 +1461,6 @@ void Step::vJobWaitParticipant(MP_Task mpTask)
 //  RASSERT(pJobFound);
   
   mpTask->m_pDataStack->vPushPointer(pJobFound);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.entryBuffer@ -- fetch entry buffer from job                            */
-/*----------------------------------------------------------------------------*/
-void Step::vJobEntryBufferFetch(MP_Task mpTask)
-{
-  ENTRY("vJobEntryBufferFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-  THROW_INVALID_DSTACK("job.entryBuffer@"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushPointer(pJob->m_pCurrentBuffer);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.entryBuffer! -- store entry buffer in the job                          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobEntryBufferStore(MP_Task mpTask)
-{
-  ENTRY("vJobEntryBufferStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.entryBuffer!"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  Object* pEntryBufferPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pEntryBufferPtr) )
-    THROW_INVALID_DSTACK("job.entryBuffer!"_Stz);
-  EntryBuffer* pEntryBuffer = _pEntryBuffer(pEntryBufferPtr);
-  
-  pJob->m_pCurrentBuffer = pEntryBuffer;
   
   EXIT();
 }
