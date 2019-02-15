@@ -47,7 +47,7 @@ namespace Data
   //void         vCopyLeftV1(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
     void         vDump(bool bSameLevel);
     EntryBuffer* pFirstL1Buffer(void);
-    EntryBuffer* pFirstL0Buffer(void);
+    EntryBuffer* pFirstH0Buffer(void);
     Index*       pIndex(void);
     i8           nEntryBuffers(void);
     

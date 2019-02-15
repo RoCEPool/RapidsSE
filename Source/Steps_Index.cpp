@@ -897,7 +897,7 @@ void Step::vIndexPositionFirst(MP_Task mpTask)
   TablePtn* pPartition = pTable->pPartition(iPartition);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
-  mpTask->m_pDataStack->vPushPointer(pIndexTree->pFirstL0Buffer());
+  mpTask->m_pDataStack->vPushPointer(pIndexTree->pFirstH0Buffer());
   
   EXIT();
 }
@@ -1205,7 +1205,7 @@ void Step::vIndexScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // position in the first index buffer
-  EntryBuffer* pEntryBuffer = pIndexTree->pFirstL0Buffer();
+  EntryBuffer* pEntryBuffer = pIndexTree->pFirstH0Buffer();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entryBuffer ?
@@ -1580,7 +1580,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at the first level 0 buffer
-  pEntryBuffer = pIndexTree->pFirstL0Buffer();
+  pEntryBuffer = pIndexTree->pFirstH0Buffer();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entryBuffer ?

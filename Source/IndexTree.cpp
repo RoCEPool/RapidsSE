@@ -803,7 +803,7 @@ EntryBuffer* IndexTree::pFirstL1Buffer(void)
 /*----------------------------------------------------------------------------*/
 /* get the first L0 buffer                                                    */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* IndexTree::pFirstL0Buffer(void)
+EntryBuffer* IndexTree::pFirstH0Buffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   

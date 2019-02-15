@@ -97,13 +97,13 @@ namespace MetaData
    
     Footer* aFooter(void);
   
-    i8 nHiddenEntryCount(Data::EntryBuffer* pFirstL0Buffer);
+    i8 nHiddenEntryCount(Data::EntryBuffer* pFirstH0Buffer);
     
 //  void vNewIndexLoad(i8 iPartition, IndexTree* pIndexTree,
 //                     IndexTree* pHiddenIndexTree, i8 nHiddenEntries);
     
 //    void vPopulateSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
-//                            IndexTree* pIndexTree, EntryBuffer* pFirstL0Buffer);
+//                            IndexTree* pIndexTree, EntryBuffer* pFirstH0Buffer);
 //    void vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
 //                       IndexTree* pIndexTree);
 //    void vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
