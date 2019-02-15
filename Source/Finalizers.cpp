@@ -186,6 +186,7 @@ pFINALIZE *gpFinalize[]
   
   /* 73 */ &Finalize::vUndefined,         // CN_MEDIUMPERSISTENT
   /* 74 */ &Finalize::vUndefined,         // CN_MEDIUMTRANSIENT
+  /*    */ &Finalize::vUndefined,         // CN_MEMTEST
   /*114 */ &Finalize::vUndefined,         // CN_MUTEX
   
   /* 75 */ &Finalize::vUndefined,         // CN_NODE

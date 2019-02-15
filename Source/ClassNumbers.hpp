@@ -187,6 +187,7 @@ enum eCN : u2 // Class Number
   
   /* 153 0x99      232B Heap:I */ CN_MEDIUMPERSISTENT,
   /* 154 0x9A      232B Heap:I */ CN_MEDIUMTRANSIENT,
+  /*                           */ CN_MEMTEST,
   /* 155 0x9B      160B Heap:S */ CN_MUTEX,
   
   /* 156 0x9C      168B Heap:S */ CN_NODE,
@@ -439,6 +440,7 @@ static Stz* aCN[]
   
   /* 153 0x99 */ "MEDIUMPERSISTENT"_Stz,    // CN_MEDIUMPERSISTENT
   /* 154 0x9A */ "MEDIUMTRANSIENT"_Stz,     // CN_MEDIUMTRANSIENT
+  /*          */ "MEMTEST"_Stz,             // CN_MEMTEST
   /* 155 0x9B */ "MUTEX"_Stz,               // CN_MUTEX
   
   /* 156 0x9C */ "NODE"_Stz,                // CN_NODE
