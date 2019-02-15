@@ -15,9 +15,9 @@ JobClass xJobClass_WriteRecord =
   "kid export"_Stz,       // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word
-  nullptr,                // the _run task seed
+  "kidExport_kid"_Stz,    // the _run task seed
   nullptr,                // the _req task seed
-  nullptr,                // the _rcv task seed
+  "kidExport_rcv"_Stz,    // the _rcv task seed
   nullptr,                // the _exe task seed
   nullptr,                // the _end task seed
   nullptr,                // the _can task seed
