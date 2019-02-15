@@ -24,9 +24,9 @@ namespace Jobs
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    static Job_KidExport* pNewJobWriteRecord(Interface::Session* pSession,
-                                               i8 iExportJobId);
-    
+    static void vSpawn(i8 iExportJobId,
+                       ExportBuffer* pExportBuffer);
+
   public:
     void vWriteRecords(void);
     void vShow(void);

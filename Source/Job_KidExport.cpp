@@ -9,10 +9,10 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_WriteRecord =
 {
-  "Job_KidExport"_Stz,  // name of the job class
-  CN_JOB_KIDEXPORT,     // class enum
+  "Job_KidExport"_Stz,    // name of the job class
+  CN_JOB_KIDEXPORT,       // class enum
   JK_GRANDKID,            // job kind
-  "write record"_Stz,     // comment about the job
+  "kid export"_Stz,       // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word
   nullptr,                // the _run task seed
@@ -27,13 +27,13 @@ JobClass xJobClass_WriteRecord =
   JT_NONE,                // job trace
   
   nullptr,                // prompt check function
-  pJob_KidExport_pre,   // prompt pre-process function
+  pJob_KidExport_pre,     // prompt pre-process function
   nullptr,                // prompt post-process function
-  pJob_KidExport_new,   // job new function
-  vJob_KidExport_delete,// job delete function
+  pJob_KidExport_new,     // job new function
+  vJob_KidExport_delete,  // job delete function
   vJob_send,              // job pre-send function
   vJob_recv,              // job post-receive function
-  vJob_KidExport_show,  // job show function
+  vJob_KidExport_show,    // job show function
   
   // help and example
   false,
@@ -150,23 +150,19 @@ void Job_KidExport::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a WriteRecord job                                                      */
+/* spawn a KidExport job                                                      */
 /*----------------------------------------------------------------------------*/
-Job_KidExport* Job_KidExport::pNewJobWriteRecord(Interface::Session* pSession,
-                                                     i8 iExportJobId)
+void Job_KidExport::vSpawn(i8 iExportJobId,
+                          ExportBuffer* pExportBuffer)
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a write buffer job
+  Job_KidExport* pJob_KidExport = new Job_KidExport(nullptr);
   
-  //! this needs to be optimised
-  JobClass* pJobClass_WriteRecord = JobClass::pFind(CN_JOB_KIDEXPORT);
-
-  Job_KidExport* pJob_KidExport =
-    _pJob_KidExport(pJobClass_WriteRecord->pPreJob(pSession));
-
+  pJob_KidExport->m_iExportJobId = iExportJobId;
+  pJob_KidExport->m_pSendWith = pExportBuffer;
+  
   pJob_KidExport->vSeed(SS_SEED_RUN);
-
-  return pJob_KidExport;
+  
+  IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob_KidExport,SS_SEED_RUN));
 }
 
 /*----------------------------------------------------------------------------*/
