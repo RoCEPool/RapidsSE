@@ -129,7 +129,7 @@ i8 Item::iItemNo(void)
 /*----------------------------------------------------------------------------*/
 i4 Item::iNEO(i8 iOffset)
 {
-  ASSERT(iOffset >= 0 && iOffset < nOffsets());
+  ASSERT(iOffset >= 0 && iOffset < nLevels());
   
   //NEO* aNEO = this->aNEO();
   
@@ -155,7 +155,7 @@ i8 Item::iNEOsize(void)
 /*----------------------------------------------------------------------------*/
 void Item::vNEO(i8 iOffset, i4 iNEO)
 {
-  ASSERT(iOffset >= 0 && iOffset < nOffsets());
+  ASSERT(iOffset >= 0 && iOffset < nLevels());
   
   //NEO* aNEO = this->aNEO();
   

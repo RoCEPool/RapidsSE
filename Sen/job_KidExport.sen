@@ -17,7 +17,7 @@
 
   job::this locals| pJob_KidExport |
 
-  0 locals| i_ExportNode |
+  pJob_KidExport job_kidExport.exportOrigin locals| i_ExportNode |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // send this kid to the export node
@@ -44,8 +44,13 @@
 
   job::this locals| pJob_KidExport  |
 
+  pJob_KindExport job_kidExport.exportJobId locals| i_ExportJobId |
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  i_ExportJobId job::findOriginator locals| pJob_Export |
+
+  pJob_Export pJob_KidExport job_kidExport.writeKidBuffer
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

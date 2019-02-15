@@ -28,7 +28,7 @@ namespace Jobs
                        ExportBuffer* pExportBuffer);
 
   public:
-    void vWriteRecords(void);
+    void vWriteBuffer(Job_Export* pJob_Export);
     void vShow(void);
     
   public:

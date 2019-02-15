@@ -11,8 +11,26 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobKidExport(void)
 {
+  vAddStep("job_kidExport.exportJobId"_Stz,    &Step::vJob_KidExportExportJobId);
   vAddStep("job_kidExport.exportOrigin"_Stz,   &Step::vJob_KidExportExportOrigin);
   vAddStep("job_kidExport.writeKidBuffer"_Stz, &Step::vJob_KidExportWriteKidBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_kidExport.exportJobId -- get the job id of the original export job     */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_KidExportExportJobId(MP_Task mpTask)
+{
+  ENTRY("vJob_KidExportExportJobId"_Stz);
+  
+  Object* pPtrJob_KidExport;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_KidExport) )
+    THROW_INVALID_DSTACK("job_kidExport.exportJobId"_Stz);
+  Job_KidExport* pJob_KidExport = _pJob_KidExport(pPtrJob_KidExport);
+    
+  mpTask->m_pDataStack->vPushI8(pJob_KidExport->m_iExportJobId);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,18 +53,24 @@ void Step::vJob_KidExportExportOrigin(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_kidExport.writeKidBuffer -- write buffer to export file                */
+/* job_kidExport.writeExportBuffer -- write buffer to export file             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_KidExportWriteKidBuffer(MP_Task mpTask)
+void Step::vJob_KidExportWriteExportBuffer(MP_Task mpTask)
 {
-  ENTRY("vJob_KidExportWriteKidBuffer"_Stz);
+  ENTRY("vJob_KidExportWriteExportBuffer"_Stz);
   
   Object* pPtrJob_KidExport;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob_KidExport) )
-    THROW_INVALID_DSTACK("job_kidExport.writeKidBuffer"_Stz);
+    THROW_INVALID_DSTACK("job_kidExport.writeExportBuffer"_Stz);
   Job_KidExport* pJob_KidExport = _pJob_KidExport(pPtrJob_KidExport);
   
+  Object* pPtrJob_Export;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_Export) )
+    THROW_INVALID_DSTACK("job_kidExport.writeExportBuffer"_Stz);
+  Job_Export* pJob_Export = _pJob_Export(pPtrJob_Export);
   
+  pJob_KidExport->vWriteBuffer(pJob_Export);
+
   EXIT();
 }
 

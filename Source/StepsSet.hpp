@@ -556,7 +556,8 @@
 
   // job KidExport
   static void vJob_KidExportExportOrigin(Tasks::MP_Task mpTask);
-  static void vJob_KidExportWriteKidBuffer(Tasks::MP_Task mpTask);
+  static void vJob_KidExportExportJobId(Tasks::MP_Task mpTask);
+  static void vJob_KidExportWriteExportBuffer(Tasks::MP_Task mpTask);
 
   // job LoadTable
   static void vJob_LoadTableBegin(Tasks::MP_Task mpTask);

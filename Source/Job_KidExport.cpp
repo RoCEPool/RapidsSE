@@ -127,15 +127,6 @@ Job_KidExport::~Job_KidExport(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert row into table                                                      */
-/*----------------------------------------------------------------------------*/
-void Job_KidExport::vWriteRecords(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Static Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -175,6 +166,18 @@ void Job_KidExport::vSpawn(i8 iExportJobId,
 void Job_KidExport::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_KidExport::vWriteBuffer(Job_Export* pJob_Export)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
+  
+  ExportBuffer* pExportBuffer = _pExportBuffer(m_pSendWith);
+
+  pJob_Export->vWriteBuffer(pExportBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

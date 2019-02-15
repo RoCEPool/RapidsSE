@@ -258,6 +258,15 @@ bool Job_Export::bPopulateJob(TokenVec* pTokenVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* populate the job                                                           */
+/*----------------------------------------------------------------------------*/
+void Job_Export::vWriteBuffer(ExportBuffer* pExportBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_Export::vShow(void)
