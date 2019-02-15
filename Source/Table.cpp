@@ -970,7 +970,7 @@ i8 Table::nHiddenEntryCount(EntryBuffer* pFirstL0Buffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  ASSERT(pFirstL0Buffer == nullptr || 0 == pFirstL0Buffer->iLevelNo());
+  ASSERT(pFirstL0Buffer == nullptr || 0 == pFirstL0Buffer->iHeightNo());
   
   i8 nEntries = 0;
   for (EntryBuffer* pEB = pFirstL0Buffer; pEB; pEB = pEB->pNextBuffer())
