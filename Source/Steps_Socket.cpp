@@ -386,11 +386,11 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   
   if (eClass == CN_CSVBUFFER) {
     
-    CsvBuffer* pCsvBuffer = new CsvBuffer();
+    ExportBuffer* pExportBuffer = new ExportBuffer();
     
-    MemLib::vCopy(pCsvBuffer,pObject,sizeof(Object),CN_CSVBUFFER);
+    MemLib::vCopy(pExportBuffer,pObject,sizeof(Object),CN_CSVBUFFER);
     
-    void* aBody = aAdd<void*>(pCsvBuffer,sizeof(Object));
+    void* aBody = aAdd<void*>(pExportBuffer,sizeof(Object));
     i8 nRemainingBytes = giClassSize[CN_CSVBUFFER] - sizeof(Object);
     
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
@@ -404,16 +404,16 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     //       pEntryBuffer,eClass,aCN[eClass],nObjectSize);
     
     // restore the entryBuffer pointets (m_pHeadEntry etc)
-    pCsvBuffer->vRecvPostCorrection();
+    pExportBuffer->vRecvPostCorrection();
     
     if (gpAttachMap->m_bMarkResource[SR_SOCKET] ||
         gpAttachMap->m_bMarkResourceAll) {
       ActivityMap::vMarkRes(SR_SOCKET,
-                            "Recv CsvBuffer: %p"_Stz,
-                            pCsvBuffer);
+                            "Recv ExportBuffer: %p"_Stz,
+                            pExportBuffer);
     }
     
-    mpTask->m_pDataStack->vPushPointer(pCsvBuffer);
+    mpTask->m_pDataStack->vPushPointer(pExportBuffer);
     mpTask->m_pDataStack->vPushBool(true);
     EXIT();
     return;

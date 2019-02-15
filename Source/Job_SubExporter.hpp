@@ -17,7 +17,7 @@ namespace Jobs
   
     EntryBuffer* m_pEntryBuffer;
   
-    CsvBuffer*   m_pCsvBuffer;
+    ExportBuffer* m_pExportBuffer;
     
     // must be last
     Footer m_xFooter;

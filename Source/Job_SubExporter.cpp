@@ -115,7 +115,7 @@ Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
   m_iEntryBuffer  = 0;
   
   m_pEntryBuffer = nullptr;
-  m_pCsvBuffer = nullptr;
+  m_pExportBuffer = nullptr;
   
   _checkInitialised_(CN_JOB_SUBEXPORTER);
   
@@ -214,7 +214,7 @@ void Job_SubExporter::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
 
-  if (m_pCsvBuffer)
+  if (m_pExportBuffer)
     {;}
   
   ActionSequence::vAdd(this,AN_JOB_END,m_iEntryBuffer);
@@ -250,13 +250,13 @@ void Job_SubExporter::vSprintRows(void)
     
     i8 nBytes = sRecord.nSize();
     
-    if (! m_pCsvBuffer)
-      m_pCsvBuffer = new CsvBuffer;
+    if (! m_pExportBuffer)
+      m_pExportBuffer = new ExportBuffer;
     
-    if (m_pCsvBuffer->nFreeBytes() < nBytes)
-      m_pCsvBuffer = new CsvBuffer;
+    if (m_pExportBuffer->nFreeBytes() < nBytes)
+      m_pExportBuffer = new ExportBuffer;
     
-    char* aRecord = m_pCsvBuffer->aAllotRecord(nBytes);
+    char* aRecord = m_pExportBuffer->aAllotRecord(nBytes);
     StrLib::vCopy(aRecord,sRecord.aChar());
   }
 }

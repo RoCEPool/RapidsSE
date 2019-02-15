@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* CsvBuffer.cpp -- Buffer of csv records                                     */
+/* ExportBuffer.cpp -- Buffer of csv records to be exported                   */
 /*============================================================================*/
 
 #include "Jobs.h"
@@ -11,38 +11,38 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-CsvBuffer* Jobs::_pCsvBuffer(void* aAddr)
+ExportBuffer* Jobs::_pExportBuffer(void* aAddr)
 {
-  CsvBuffer* pCsvBuffer = reinterpret_cast<CsvBuffer*>(aAddr);
+  ExportBuffer* pExportBuffer = reinterpret_cast<ExportBuffer*>(aAddr);
   
-  return pCsvBuffer;
+  return pExportBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* CsvBuffer::operator new(size_t)
+void* ExportBuffer::operator new(size_t)
 {
-  CsvBuffer* pCsvBuffer =
-    static_cast<CsvBuffer*>(HeapMem::pAllocate(CN_CSVBUFFER));
+  ExportBuffer* pExportBuffer =
+    static_cast<ExportBuffer*>(HeapMem::pAllocate(CN_CSVBUFFER));
   
-  return pCsvBuffer;
+  return pExportBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* free an entry buffer back to the heap                                      */
 /*----------------------------------------------------------------------------*/
-void CsvBuffer::operator delete(void* aAddr)
+void ExportBuffer::operator delete(void* aAddr)
 {
-  CsvBuffer* pCsvBuffer = static_cast<CsvBuffer*>(aAddr);
+  ExportBuffer* pExportBuffer = static_cast<ExportBuffer*>(aAddr);
   
-  HeapMem::vFree(pCsvBuffer);
+  HeapMem::vFree(pExportBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CsvBuffer::CsvBuffer(void)
+ExportBuffer::ExportBuffer(void)
 : Object(CN_CSVBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
@@ -56,7 +56,7 @@ CsvBuffer::CsvBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-CsvBuffer::~CsvBuffer(void) noexcept(false)
+ExportBuffer::~ExportBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
 }
@@ -68,7 +68,7 @@ CsvBuffer::~CsvBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* allot space for a record of given size                                     */
 /*----------------------------------------------------------------------------*/
-char* CsvBuffer::aAllotRecord(i8 nBytes)
+char* ExportBuffer::aAllotRecord(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
@@ -82,7 +82,7 @@ char* CsvBuffer::aAllotRecord(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get number of expected buffers (for partition)                             */
 /*----------------------------------------------------------------------------*/
-i8 CsvBuffer::nExpectBuffers(void)
+i8 ExportBuffer::nExpectBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
@@ -92,7 +92,7 @@ i8 CsvBuffer::nExpectBuffers(void)
 /*----------------------------------------------------------------------------*/
 /* get number of expected buffers (for partition)                             */
 /*----------------------------------------------------------------------------*/
-void CsvBuffer::vExpectBuffers(i8 nExpectBuffers)
+void ExportBuffer::vExpectBuffers(i8 nExpectBuffers)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
@@ -102,7 +102,7 @@ void CsvBuffer::vExpectBuffers(i8 nExpectBuffers)
 /*----------------------------------------------------------------------------*/
 /* get number of free bytes                                                   */
 /*----------------------------------------------------------------------------*/
-i8 CsvBuffer::nFreeBytes(void)
+i8 ExportBuffer::nFreeBytes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
@@ -114,7 +114,7 @@ i8 CsvBuffer::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 /* get number of records in buffer                                            */
 /*----------------------------------------------------------------------------*/
-i8 CsvBuffer::nRecords(void)
+i8 ExportBuffer::nRecords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
@@ -124,7 +124,7 @@ i8 CsvBuffer::nRecords(void)
 /*----------------------------------------------------------------------------*/
 /* correct this csv buffer after being received                               */
 /*----------------------------------------------------------------------------*/
-void CsvBuffer::vRecvPostCorrection(void)
+void ExportBuffer::vRecvPostCorrection(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
 }
@@ -137,7 +137,7 @@ void CsvBuffer::vRecvPostCorrection(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* CsvBuffer::aFooter(void)
+Footer* ExportBuffer::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER);
   

@@ -304,7 +304,7 @@ i8 giClassSize[]
   /* 32 */ sizeof(ColumnVec),          // CN_COLUMNVEC
   /* 32 */ sizeof(Command),            // CN_COMMAND
   /* 32 */ sizeof(Compiler),           // CN_COMPILER
-  /* 32 */ sizeof(CsvBuffer),          // CN_CSVBUFFER
+  /* 32 */ sizeof(ExportBuffer),          // CN_CSVBUFFER
 
   /*    */ sizeof(Decider),            // CN_DECIDER
   /* 33 */ sizeof(Dic),                // CN_DIC

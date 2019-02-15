@@ -1,18 +1,18 @@
 /*============================================================================*/
-/* CsvBuffer.hpp -- Buffer of csv records                                     */
+/* ExportBuffer.hpp -- Buffer of csv records to be exported                   */
 /*============================================================================*/
 #pragma once
 
 namespace Jobs
 {
-  static const i8 C_WSP_CSVBUFFER = C_SIZE_LARGE_OBJECT - C_4KB;
+  static const i8 C_WSP_EXPORTBUFFER = C_SIZE_LARGE_OBJECT - C_4KB;
   
-  class CsvBuffer : public Object
+  class ExportBuffer : public Object
   {
   private:
     i8 m_nRecords;
     i8 m_nExpectBuffers;
-    Wsp_t<C_WSP_CSVBUFFER> m_xWsp;
+    Wsp_t<C_WSP_EXPORTBUFFER> m_xWsp;
 
     // must be last
     Footer m_xFooter;
@@ -21,8 +21,8 @@ namespace Jobs
     void* operator new(size_t);
     void  operator delete(void*);
 
-    CsvBuffer(void);
-    ~CsvBuffer(void) noexcept(false);
+    ExportBuffer(void);
+    ~ExportBuffer(void) noexcept(false);
   
     char* aAllotRecord(i8 nBytes);
     i8    nExpectBuffers(void);
@@ -35,7 +35,7 @@ namespace Jobs
     Footer* aFooter(void);
   };
   
-  CsvBuffer* _pCsvBuffer(void* aAddr);
+  ExportBuffer* _pExportBuffer(void* aAddr);
 }
 
 /*============================================================================*/
