@@ -111,6 +111,8 @@ Job_Export::Job_Export(Interface::Session* pSession)
   
   m_pTable = nullptr;
   
+  m_okLock.vInitLock(LK_EXPORT);
+  
   //m_oCsvFile;
   m_nPartitionsComplete = 0;
   m_nBuffersExpected    = C_UNKNOWN;

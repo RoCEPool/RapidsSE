@@ -12,6 +12,8 @@ namespace Jobs
   public:
     Table* m_pTable;   // table being exported
   
+    Lock   m_okLock;   // lock over the following members
+
     File   m_oCsvFile; // output csv file
   
     i8     m_nPartitionsComplete;
