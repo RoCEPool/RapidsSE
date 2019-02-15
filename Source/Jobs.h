@@ -43,8 +43,8 @@ static Stz* aJL[]
 
 //------------------------------------------------------------------------------
 
-#include "CsvBuffer.hpp"
 #include "Decider.hpp"
+#include "ExportBuffer.hpp"
 #include "FetchBuffer.hpp"
 #include "JobDicPath.hpp"
 #include "JobFilePath.hpp"
@@ -103,6 +103,8 @@ static Stz* aJL[]
 #include "Job_InsertRow.hpp"
 #include "Job_InsertTable.hpp"
 
+#include "Job_KidExport.hpp"
+
 #include "Job_Lf.hpp"
 #include "Job_ListColumns.hpp"
 #include "Job_ListCatalogs.hpp"
@@ -160,7 +162,6 @@ static Stz* aJL[]
 
 #include "Job_WaitCluster.hpp"
 #include "Job_WriteBuffer.hpp"
-#include "Job_WriteRecord.hpp"
 #include "Job_WriteRow.hpp"
 
 #include "JobList.hpp"
