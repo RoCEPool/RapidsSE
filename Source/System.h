@@ -25,6 +25,7 @@ using namespace System;
 #include "Hardware.hpp"
 #include "HwCounters.hpp"
 #include "Lock.hpp"
+#include "MemTest.hpp"
 #include "Mutex.hpp"
 #include "OpSys.hpp"
 #include "Pipe.hpp"
