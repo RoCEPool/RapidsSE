@@ -727,7 +727,7 @@ eEC  RapidsSE_FetchTable (i8 iTrace, Session* pSession, Stz* aTable,
     IndexTree* pIndexTree = pPartition->pIndexTree(pIndex->iIndexNo());
     API_LOC(330);
     
-    EntryBuffer* pEntryBuffer = pIndexTree->pFirstL0Buffer();
+    EntryBuffer* pEntryBuffer = pIndexTree->pFirstH0Buffer();
     API_LOC(340);
     
     // return the first buffer
@@ -1030,7 +1030,7 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
       TablePtn* pPartition = pTable->pPartition(iPartition);
       Index* pIndex = pTable->pHiddenIndex();
       IndexTree* pIndexTree = pPartition->pIndexTree(pIndex->iIndexNo());
-      pEntryBuffer = pIndexTree->pFirstL0Buffer();
+      pEntryBuffer = pIndexTree->pFirstH0Buffer();
       //vTrace("Got first buffer %p\n"_Stz, pEntryBuffer);
       if ( ! pEntryBuffer) {
         *aaRow = nullptr;
@@ -1124,7 +1124,7 @@ eEC RapidsSE_GetFirstBuffer(i8 iTrace, Session* pSession, void* aTable,
     IndexTree* pIndexTree = pPartition->pIndexTree(pIndex->iIndexNo());
     API_LOC(330);
     
-    EntryBuffer* pEntryBuffer = pIndexTree->pFirstL0Buffer();
+    EntryBuffer* pEntryBuffer = pIndexTree->pFirstH0Buffer();
     API_LOC(340);
     
     // return the first buffer

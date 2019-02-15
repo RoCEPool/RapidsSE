@@ -201,12 +201,12 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
   // hidden index ?
   
   if (m_pIndex->bIsHidden()) {
-    ASSERT(m_iLevelNo == 0);
+    ASSERT(m_iHeightNo == 0);
     pNextBuffer = this->pNextBuffer();
     nBuffers++;
     
     while (pNextBuffer) {
-      ASSERT(pNextBuffer->iLevelNo() == 0);
+      ASSERT(pNextBuffer->iHeightNo() == 0);
       
       //EntryBuffer* pThisBuffer = pNextBuffer;
       pNextBuffer = pNextBuffer->pNextBuffer();
@@ -223,7 +223,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
   nBuffers++;
   
   // recursively count the lower level buffers
-  if (! m_iLevelNo)
+  if (! m_iHeightNo)
     return;
     
   for (Item* aItem = aLeadEntry();
@@ -314,11 +314,11 @@ void EntryBuffer::vTruncate(void)
   // hidden index buffers are just one level
   
   if (m_pIndex->bIsHidden()) {
-    ASSERT(m_iLevelNo == 0);
+    ASSERT(m_iHeightNo == 0);
     pNextBuffer = this->pNextBuffer();
     
     while (pNextBuffer) {
-      ASSERT(pNextBuffer->iLevelNo() == 0);
+      ASSERT(pNextBuffer->iHeightNo() == 0);
       
       EntryBuffer* pThisBuffer = pNextBuffer;
       pNextBuffer = pNextBuffer->pNextBuffer();
@@ -330,7 +330,7 @@ void EntryBuffer::vTruncate(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // other index
-  if (m_iLevelNo != 0) {
+  if (m_iHeightNo != 0) {
     
     // recursively delete the lower level buffers
     for (Item* aItem = aLeadEntry();

@@ -447,7 +447,7 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
   IndexTree* pHiddenIndexTree = this->pHiddenIndexTree();
   IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
   
-  EntryBuffer* pEntryBuffer = pHiddenIndexTree->pFirstL0Buffer();
+  EntryBuffer* pEntryBuffer = pHiddenIndexTree->pFirstH0Buffer();
   
   while (pEntryBuffer) {
     

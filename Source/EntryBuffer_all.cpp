@@ -59,11 +59,11 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
   
   if (m_pIndex->bIsHidden()) {
     
-    ASSERT(m_iLevelNo == 0);
+    ASSERT(m_iHeightNo == 0);
     EntryBuffer* pNextBuffer = this;
     
     do {
-      ASSERT(pNextBuffer->iLevelNo() == 0);
+      ASSERT(pNextBuffer->iHeightNo() == 0);
       
       iBuffers++;
       iEntries += (pNextBuffer->m_nItems);
@@ -73,7 +73,7 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
                              gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
                              pNextBuffer->m_iPartitionNo,
                              iBuffers,
-                             pNextBuffer->m_iLevelNo,
+                             pNextBuffer->m_iHeightNo,
                              pNextBuffer->m_nItems);
       
       pNextBuffer = pNextBuffer->pNextBuffer();
@@ -90,11 +90,11 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
                          gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
                          m_iPartitionNo,
                          iBuffers,
-                         m_iLevelNo,
+                         m_iHeightNo,
                          m_nItems);
   
   // recursively dump the lower level buffers
-  if (m_iLevelNo != 0) {
+  if (m_iHeightNo != 0) {
     
     for (Item* aItem = aLeadEntry();
          aItem != nullptr;
@@ -258,7 +258,7 @@ void EntryBuffer::vDump(void)
   vShow();
   
   // recursively dump the lower level buffers
-  if (m_iLevelNo != 0) {
+  if (m_iHeightNo != 0) {
     
     for (Item* aItem = aLeadEntry();
          aItem != nullptr;
@@ -306,7 +306,7 @@ Item* EntryBuffer::aInsertKeyAbs(KeyWrk& xKeyWrk)
   
 #ifdef USE_EB_LAZY_CHAIN
   if (m_pIndex->pTable()->bIsLoading()) {
-    if (! m_iLevelNo) {
+    if (! m_iHeightNo) {
       aKeyEntry = aInsertKeyAbsLazy(xKeyWrk);
       return aKeyEntry;
     }
@@ -351,7 +351,7 @@ Item* EntryBuffer::aInsertKeyAbs(KeyWrk& xKeyWrk)
   
   vInsertKeySkip(aKeyEntry);
   
-  //if (! m_pIndex->bIsHidden() && m_iLevelNo)
+  //if (! m_pIndex->bIsHidden() && m_iHeightNo)
   //  bVerifyAdjacent();
   
   //vShow();
@@ -460,7 +460,7 @@ Item* EntryBuffer::aInsertKeyTree(KeyWrk& xKeyWrk,
   EntryBuffer* pPositionedBuffer =
   pRootKeyBuffer->pPositionPriorBuffer(aInsKey);
   
-  ASSERT(0 == pPositionedBuffer->iLevelNo());
+  ASSERT(0 == pPositionedBuffer->iHeightNo());
   //pPositionedBuffer->vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -543,9 +543,9 @@ Item* EntryBuffer::aNextEntry(Item* aCurrent, i8 i_Offset)
 }
 
 /*----------------------------------------------------------------------------*/
-/* position at an index buffer at given level starting from this buffer       */
+/* position at an index buffer at given height starting from this buffer      */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pPositionLevel(KeyData* aGivenKey, i8 nKeyCols,
+EntryBuffer* EntryBuffer::pPositionHeight(KeyData* aGivenKey, i8 nKeyCols,
                                          eJC eJuxtaCompare, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -563,7 +563,7 @@ EntryBuffer* EntryBuffer::pPositionLevel(KeyData* aGivenKey, i8 nKeyCols,
   Item* aItem;
   
   while (true) {
-    iBufferLevel = pEntryBuffer->iLevelNo();
+    iBufferLevel = pEntryBuffer->iHeightNo();
     
     if (iBufferLevel == iLevel)
       break;
@@ -607,7 +607,7 @@ Item* EntryBuffer::aPositionQuery(KeyData* aGivenKey, eRO eRelnOp)
                                     m_pIndex->pIdxColVec(), 1,
                                     bIsEqual, eRelnOp);
       if (! bAfter) {
-        aIndexEntry = aNextEntry(aIndexEntry, iLevelNo());
+        aIndexEntry = aNextEntry(aIndexEntry, iHeightNo());
       }
     } while (aIndexEntry && ! bAfter);
   }
@@ -695,7 +695,7 @@ void EntryBuffer::vReset(void)
   
   RASSERT(nullptr == m_i4aItemOffsets);
   RASSERT(! m_pIndex->bIsHidden());
-  RASSERT(1 == m_iLevelNo);
+  RASSERT(1 == m_iHeightNo);
   
   vResetUsed();
   
@@ -813,7 +813,7 @@ void EntryBuffer::vShow(Item* aMarkEntry)
   
   s256 sHigherBuffer;
   if (m_pHigherBuffer)
-    StrLib::wToString((i8)((EntryBuffer*)m_pHigherBuffer)->m_iLevelNo,
+    StrLib::wToString((i8)((EntryBuffer*)m_pHigherBuffer)->m_iHeightNo,
                       sHigherBuffer.aChar());
   else
     sHigherBuffer = "..."_Stz;
@@ -829,7 +829,7 @@ void EntryBuffer::vShow(Item* aMarkEntry)
          m_pHigherBuffer,sHigherBuffer.aStz(),m_pPrevBuffer,m_pNextBuffer);
   
   vTrace("  index: %s partition: %lld level: %lld\n"_Stz,
-         m_pIndex ? m_pIndex->aIndexName() : "NULL"_Stz,m_iPartitionNo,m_iLevelNo);
+         m_pIndex ? m_pIndex->aIndexName() : "NULL"_Stz,m_iPartitionNo,m_iHeightNo);
   
   vTrace("  entryOffset: %p freeOffsetHead: %lld\n"_Stz,
          m_i4aItemOffsets,m_i_FreeOffsetChain);
@@ -883,7 +883,7 @@ void EntryBuffer::vShowShort(void)
     ;
     i8 iVal = aKey->iGetInt();
     
-    if (m_iLevelNo)
+    if (m_iHeightNo)
       vTrace("%lld(%lld)"_Stz,iVal,*EntryBuffer::pRefdEntryBuffer(aItem)->nPoolBufferNo());
     else
       vTrace("%lld|%lld|"_Stz,iVal,*EntryBuffer::pRefdEntryBuffer(aItem)->nPoolBufferNo());
@@ -935,9 +935,9 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   if (! m_pHigherBuffer )
-    vTrace("\nIndex Tree:\n"_Stz,m_iLevelNo);
+    vTrace("\nIndex Tree:\n"_Stz,m_iHeightNo);
   
-  vTrace("L%lld"_Stz,m_iLevelNo);
+  vTrace("L%lld"_Stz,m_iHeightNo);
   
   for (EntryBuffer* pBuffer = this;
        pBuffer;
@@ -958,7 +958,7 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
       pBuffer->vShow();
   }
   
-  if ( ! m_iLevelNo )
+  if ( ! m_iHeightNo )
     return;
   
   Item* aFirstEntry = this->aLeadEntry();
@@ -1012,7 +1012,7 @@ EntryBuffer* EntryBuffer::pUnlinkSubList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  ASSERT(0 == m_iLevelNo);
+  ASSERT(0 == m_iHeightNo);
   
   EntryBuffer* pThisL0 = this;
   EntryBuffer* pThisL1 = pThisL0->pHigherBuffer();
@@ -1080,7 +1080,7 @@ bool EntryBuffer::bVerify(void)
   
   bool bValid = false;
   
-  if (m_iLevelNo) {
+  if (m_iHeightNo) {
     bValid = bVerifyLnAny();
     return bValid;
   }
@@ -1176,7 +1176,7 @@ void EntryBuffer::vCompact(void)
   // loop while we can still reclaim more space
   for (;;) {
     
-    if (m_iLevelNo) {
+    if (m_iHeightNo) {
       //vShow();
       int iDebug = 1;
     }
@@ -1236,7 +1236,7 @@ void EntryBuffer::vCompact(void)
     
     vPositionPriorVecEntry(aMoveKey, xPriorVec, aMoveEntry);
     
-    if (m_iLevelNo) {
+    if (m_iHeightNo) {
       //vDumpPriorVec(xPriorVec);
       int iDebug = 1;
     }
@@ -1818,7 +1818,7 @@ void EntryBuffer::vInsertKeySkip(Item* aKeyEntry)
   
   KeyData* aKey = _aKeyData(aKeyEntry->aDataArea());
   
-  if (0 == m_iLevelNo)
+  if (0 == m_iHeightNo)
     vPositionPriorVecEntry(aKey, xPriorVec, nullptr);
   else {
     EntryBuffer* pToBuffer = EntryBuffer::pRefdEntryBuffer(aKeyEntry);
@@ -1879,7 +1879,7 @@ void EntryBuffer::vInsertKeySkip(Item* aKeyEntry)
  // handle the insert of a left most key
  
  #ifdef USE_EB_LAZY_CHAIN
- if (m_iLevelNo)
+ if (m_iHeightNo)
  vHandleFirstInsert(pInsertedKeyEntry,pOriginalFirstEntry,ppRootKeyBuffer);
  #else
  vHandleFirstInsert(pInsertedKeyEntry,pOriginalFirstEntry,ppRootKeyBuffer);
@@ -1912,7 +1912,7 @@ Item* EntryBuffer::aInsertKeyBuffer(KeyWrk& xKeyWrk,
   
 #ifdef USE_EB_LAZY_CHAIN
   if (m_pIndex->pTable()->bIsLoading()) {
-    if (m_iLevelNo) {
+    if (m_iHeightNo) {
       Item* aOriginalFirstEntry = aLeadEntry();
       aInsertedKeyEntry = aInsertKeyAbs(xKeyWrk);
       vHandleFirstInsert(aInsertedKeyEntry,aOriginalFirstEntry,ppRootKeyBuffer);
@@ -1967,7 +1967,7 @@ Item* EntryBuffer::aInsertKeyUpwards(KeyWrk& xKeyWrk,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (pInsertIntoBuffer->m_iLevelNo) {
+  if (pInsertIntoBuffer->m_iHeightNo) {
     Id xId = aInsertedKeyEntry->xId();
     i8 nBuffer = xId.iBuffer();
     
@@ -2032,7 +2032,7 @@ void EntryBuffer::vLazyBuild(void)
   
   while (pEntryBuffer) {
     
-    RASSERT(pEntryBuffer->iLevelNo() == 0);
+    RASSERT(pEntryBuffer->iHeightNo() == 0);
     
     //vTrace("Building skip list %p\n"_Stz, pEntryBuffer);
     
@@ -2069,7 +2069,7 @@ EntryBuffer* EntryBuffer::pNewHigherBuffer(void)
   EntryBuffer* pNewBuffer = new EntryBuffer();
   
   pNewBuffer->vIndex(m_pIndex);
-  pNewBuffer->vLevelNo(m_iLevelNo+1);
+  pNewBuffer->vHeightNo(m_iHeightNo+1);
   pNewBuffer->vPartitionNo(m_iPartitionNo);
   
   vHigherBuffer(pNewBuffer);
@@ -2187,7 +2187,7 @@ EntryBuffer* EntryBuffer::pNewNextBuffer(void)
   EntryBuffer* pNewBuffer = new EntryBuffer();
   
   pNewBuffer->vIndex(m_pIndex);
-  pNewBuffer->vLevelNo(m_iLevelNo);
+  pNewBuffer->vHeightNo(m_iHeightNo);
   pNewBuffer->vPartitionNo(m_iPartitionNo);
   
   pNewBuffer->vHigherBuffer(_pEntryBuffer(m_pHigherBuffer));
@@ -2235,7 +2235,7 @@ EntryBuffer* EntryBuffer::pPositionPriorBuffer(KeyData* aFindKey)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   if ( ! nItems() ) {
-    ASSERT( 0 == iLevelNo());
+    ASSERT( 0 == iHeightNo());
     return this;
   }
   
@@ -2243,7 +2243,7 @@ EntryBuffer* EntryBuffer::pPositionPriorBuffer(KeyData* aFindKey)
   while (true) {
     
     // have we arrived at L0 ?
-    i8 iBufferLevel = pEntryBuffer->iLevelNo();
+    i8 iBufferLevel = pEntryBuffer->iHeightNo();
     if (iBufferLevel == 0) {
       break;
     }
@@ -2337,7 +2337,7 @@ void EntryBuffer::vPositionPriorVecEntry(KeyData* aFindKey, Item* aPriorVec[],
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  //ASSERT(0 == m_iLevelNo);
+  //ASSERT(0 == m_iHeightNo);
   
 #ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
@@ -2412,7 +2412,7 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  ASSERT(0 != m_iLevelNo);
+  ASSERT(0 != m_iHeightNo);
   
 #ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
@@ -2481,7 +2481,7 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
 //  
-//  ASSERT(0 != m_iLevelNo);
+//  ASSERT(0 != m_iHeightNo);
 //  
 //#ifdef USE_EB_LAZY_CHAIN
 //  RASSERT( ! m_aLazyChain );
@@ -2541,7 +2541,7 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
 //  
-//  ASSERT(0 != m_iLevelNo);
+//  ASSERT(0 != m_iHeightNo);
 //  
 //#ifdef USE_EB_LAZY_CHAIN
 //  RASSERT( ! m_aLazyChain );
@@ -2645,7 +2645,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
        aCopyEntry;
        aCopyEntry = aNextEntry) {
 
-    ASSERT(! m_iLevelNo ||
+    ASSERT(! m_iHeightNo ||
            EntryBuffer::pRefdEntryBuffer(aCopyEntry)->m_pHigherBuffer == pThisLeftBuffer);
     
     nEntriesCopied++;
@@ -2671,7 +2671,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
     FreeItem* aFreeEntry = aMakeFreeEntry(aCopyEntry);
     
     // these can be commented
-    ASSERT(! m_iLevelNo ||
+    ASSERT(! m_iHeightNo ||
            EntryBuffer::pRefdEntryBuffer(aNewEntry)->m_pHigherBuffer == pThisLeftBuffer);
     
     i8 nBuffer = xId.iBuffer();
@@ -2714,7 +2714,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
   // corrected to the new right buffer
   
   Id xId;
-  if (m_iLevelNo != 0)  {
+  if (m_iHeightNo != 0)  {
     for (Item* aMovedEntry = pNewRightBuffer->aLeadEntry();
          aMovedEntry;
          aMovedEntry = pNewRightBuffer->aNextEntry(aMovedEntry, 0)) {
@@ -2914,11 +2914,11 @@ bool EntryBuffer::bVerifyL0Hidden(void)
   
   ASSERT(! m_aLazyChain);
   
-  RASSERT(0 == m_iLevelNo);
+  RASSERT(0 == m_iHeightNo);
   RASSERT(m_pIndex->bIsHidden());
   
   //  vTrace("VerifyL0 %s: bufno: %lld level %lld\n"_Stz,
-  //         m_pIndex->aIndexName(),m_iBufferNo,m_iLevelNo);
+  //         m_pIndex->aIndexName(),m_iBufferNo,m_iHeightNo);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of this L0 hidden index buffer buffer
@@ -2969,10 +2969,10 @@ bool EntryBuffer::bVerifyL0Other(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  RASSERT(0 == m_iLevelNo);
+  RASSERT(0 == m_iHeightNo);
   
   //  vTrace("VerifyL0 %s: bufno: %lld level %lld\n"_Stz,
-  //         m_pIndex->aIndexName(),m_iBufferNo,m_iLevelNo);
+  //         m_pIndex->aIndexName(),m_iBufferNo,m_iHeightNo);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of this L0 non-hidden index buffer
@@ -3013,10 +3013,10 @@ bool EntryBuffer::bVerifyLnAny(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  RASSERT(0 != m_iLevelNo);
+  RASSERT(0 != m_iHeightNo);
   
   //  vTrace("VerifyLn %s: bufno: %lld level %lld\n"_Stz,
-  //         m_pIndex->aIndexName(),m_iBufferNo,m_iLevelNo);
+  //         m_pIndex->aIndexName(),m_iBufferNo,m_iHeightNo);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of this buffer
@@ -3071,7 +3071,7 @@ bool EntryBuffer::bVerifyLnAny(void)
   for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     EntryBuffer* pRefEntBuf = EntryBuffer::pRefdEntryBuffer(aItem);
-    if (pRefEntBuf->m_iLevelNo) {
+    if (pRefEntBuf->m_iHeightNo) {
       bValid = pRefEntBuf->bVerifyLnAny();
     }
     else {
@@ -3103,7 +3103,7 @@ bool EntryBuffer::bVerifyAdjacent(void)
    count.
    */
   
-  RASSERT(m_iLevelNo >= 1);
+  RASSERT(m_iHeightNo >= 1);
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
@@ -3144,7 +3144,7 @@ bool EntryBuffer::bVerifyBufferRefs(void)
    the Ln-1 buffer should have its parent buffer be that Ln buffer
    */
   
-  RASSERT(m_iLevelNo >= 1);
+  RASSERT(m_iHeightNo >= 1);
   
   for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
@@ -3155,7 +3155,7 @@ bool EntryBuffer::bVerifyBufferRefs(void)
       return false;
     }
     
-    if (pChildEntBuf->iLevelNo() != m_iLevelNo - 1) {
+    if (pChildEntBuf->iHeightNo() != m_iHeightNo - 1) {
       vVerifyFault();
       return false;
     }
@@ -3185,7 +3185,7 @@ bool EntryBuffer::bVerifyEntryOffset(void)
    In all cases the hidden index is a list of L0 buffers.
    */
   
-  RASSERT(0 == m_iLevelNo);
+  RASSERT(0 == m_iHeightNo);
   RASSERT(m_pIndex->bIsHidden());
   
   //vShow();
@@ -3239,7 +3239,7 @@ bool EntryBuffer::bVerifyFirstKeys(void)
    Ln-1 buffer
    */
   
-  RASSERT(m_iLevelNo >= 1);
+  RASSERT(m_iHeightNo >= 1);
   
   //vShow();
   
@@ -3381,7 +3381,7 @@ bool EntryBuffer::bVerifyKeyBufferOrder(void)
    The entries in an Ln buffer should be in order of the child buffer list
    */
   
-  RASSERT(m_iLevelNo >= 1);
+  RASSERT(m_iHeightNo >= 1);
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
@@ -3469,7 +3469,7 @@ bool EntryBuffer::bVerifyNextPrev(void)
       vVerifyFault();
       return false;
     }
-    if (pPrevBuffer->iLevelNo() != m_iLevelNo) {
+    if (pPrevBuffer->iHeightNo() != m_iHeightNo) {
       vVerifyFault();
       return false;
     }
@@ -3483,7 +3483,7 @@ bool EntryBuffer::bVerifyNextPrev(void)
       vVerifyFault();
       return false;
     }
-    if (pNextBuffer->iLevelNo() != m_iLevelNo) {
+    if (pNextBuffer->iHeightNo() != m_iHeightNo) {
       vVerifyFault();
       return false;
     }
@@ -3493,7 +3493,7 @@ bool EntryBuffer::bVerifyNextPrev(void)
   
   if (m_pHigherBuffer) {
     EntryBuffer* pHigherBuffer = _pEntryBuffer(m_pHigherBuffer);
-    if (pHigherBuffer->iLevelNo() != m_iLevelNo + 1) {
+    if (pHigherBuffer->iHeightNo() != m_iHeightNo + 1) {
       vVerifyFault();
       return false;
     }
@@ -3509,7 +3509,7 @@ bool EntryBuffer::bVerifyRows(void)                        //# discuss with Alka
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  RASSERT(0 == m_iLevelNo);
+  RASSERT(0 == m_iHeightNo);
   RASSERT(m_pIndex->bIsHidden());
   
   for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
@@ -3530,7 +3530,7 @@ bool EntryBuffer::bVerifyRowRefs(void)
    valid row in an L0 hidden index buffer
    */
   
-  RASSERT(0 == m_iLevelNo);
+  RASSERT(0 == m_iHeightNo);
   RASSERT(! m_pIndex->bIsHidden());
   
   for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
@@ -3539,7 +3539,7 @@ bool EntryBuffer::bVerifyRowRefs(void)
     EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
     
     // that referenced entry buffer should be an L0 buffer
-    if (0 != pEntryBuffer->iLevelNo()) {
+    if (0 != pEntryBuffer->iHeightNo()) {
       vVerifyFault();
       return false;
     }

@@ -332,8 +332,8 @@ void Step::vIndexExactKey(MP_Task mpTask)
   //xKeyWrk.vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // position at a level 0 buffer for given key
-  EntryBuffer* pIndexBuffer = pIndexTree->pPositionLevel(xKeyWrk, 1, JC_AFTER, 0);
+  // position at a height 0 buffer for given key
+  EntryBuffer* pIndexBuffer = pIndexTree->pPositionHeight(xKeyWrk, 1, JC_AFTER, 0);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an index buffer ?
@@ -683,8 +683,8 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   //xKeyWrk.vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // first position at a level 0 buffer with keyLower
-  aLowerEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkLower, 1, JC_AFTER, 0);
+  // first position at a height 0 buffer with keyLower
+  aLowerEntryBuffer = pIndexTree->pPositionHeight(xKeyWrkLower, 1, JC_AFTER, 0);
   eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -897,7 +897,7 @@ void Step::vIndexPositionFirst(MP_Task mpTask)
   TablePtn* pPartition = pTable->pPartition(iPartition);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
-  mpTask->m_pDataStack->vPushPointer(pIndexTree->pFirstL0Buffer());
+  mpTask->m_pDataStack->vPushPointer(pIndexTree->pFirstH0Buffer());
   
   EXIT();
 }
@@ -995,8 +995,8 @@ void Step::vIndexRange(MP_Task mpTask)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // first position at a level 0 buffer with keyLower
-  aLowerEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkLower, 1, JC_AFTER, 0);
+  // first position at a height 0 buffer with keyLower
+  aLowerEntryBuffer = pIndexTree->pPositionHeight(xKeyWrkLower, 1, JC_AFTER, 0);
   eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1027,8 +1027,8 @@ void Step::vIndexRange(MP_Task mpTask)
     goto LastBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now position at a level 0 buffer with keyUpper
-  aUpperEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkUpper, 1, JC_AFTER, 0);
+  // now position at a height 0 buffer with keyUpper
+  aUpperEntryBuffer = pIndexTree->pPositionHeight(xKeyWrkUpper, 1, JC_AFTER, 0);
   eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
   
   //aUpperEntryBuffer->vShow();
@@ -1205,7 +1205,7 @@ void Step::vIndexScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // position in the first index buffer
-  EntryBuffer* pEntryBuffer = pIndexTree->pFirstL0Buffer();
+  EntryBuffer* pEntryBuffer = pIndexTree->pFirstH0Buffer();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entryBuffer ?
@@ -1580,7 +1580,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at the first level 0 buffer
-  pEntryBuffer = pIndexTree->pFirstL0Buffer();
+  pEntryBuffer = pIndexTree->pFirstH0Buffer();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entryBuffer ?
@@ -1593,8 +1593,8 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   aItem = pEntryBuffer->aLeadEntry();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now position at a level 0 buffer for the upper key
-  aUpperEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkUpper, 1, JC_AFTER, 0);
+  // now position at a height 0 buffer for the upper key
+  aUpperEntryBuffer = pIndexTree->pPositionHeight(xKeyWrkUpper, 1, JC_AFTER, 0);
   eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
