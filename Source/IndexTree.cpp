@@ -750,11 +750,11 @@ void IndexTree::vCopyLeftV1(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
 /*----------------------------------------------------------------------------*/
 /* dump the index                                                             */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vDump(bool bSameLevel)
+void IndexTree::vDump(bool bSameHeight)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
 
-  if (bSameLevel) {
+  if (bSameHeight) {
     EntryBuffer* pEntryBuffer = m_pRootBuffer;
     
     while (pEntryBuffer) {
@@ -940,12 +940,12 @@ EntryBuffer* IndexTree::pPopSubList(EntryBuffer** ppSubList)
 /* position the IndexTree at a particular height of index buffer              */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* IndexTree::pPositionHeight(KeyWrk& xKeyWrk, i8 nKeyCols,
-                                       eJC eJuxtaCompare, i8 iLevel)
+                                       eJC eJuxtaCompare, i8 iHeight)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   if (m_pRootBuffer)
-    return m_pRootBuffer->pPositionHeight(xKeyWrk.aKey(),nKeyCols,eJuxtaCompare,iLevel);
+    return m_pRootBuffer->pPositionHeight(xKeyWrk.aKey(),nKeyCols,eJuxtaCompare,iHeight);
   else
     return nullptr;
 }
@@ -1178,10 +1178,10 @@ void IndexTree::vVisualize(void)
   // print the decile of the root buffer
   vTrace("%lld\n"_Stz, pEntryBuffer->iDecile());
   
-  i8 iBufferLevel = pEntryBuffer->iHeightNo();
+  i8 iBufferHeight = pEntryBuffer->iHeightNo();
   
   // if there is only one buffer i.e root is at level 0, we are done
-  if (iBufferLevel == 0) {
+  if (iBufferHeight == 0) {
     vTrace("\n"_Stz);
     return;
   }
