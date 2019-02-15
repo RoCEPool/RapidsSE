@@ -111,6 +111,11 @@ Job_Export::Job_Export(Interface::Session* pSession)
   
   m_pTable = nullptr;
   
+  //m_oCsvFile;
+  m_nPartitionsComplete = 0;
+  m_nBuffersExpected    = C_UNKNOWN;
+  m_nBuffersWritten     = 0;
+
   _checkInitialised_(CN_JOB_EXPORT);
   
   ActionSequence::vRoot(this);
