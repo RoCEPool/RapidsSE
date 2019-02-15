@@ -119,7 +119,7 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("Epoch          : %lld \n"_Stz, gpAttachMap->m_iEpoch);
   vInfo("BootError      : %lld \n"_Stz, gpAttachMap->m_bBootError);
   vInfo("IndexEntries   : %lld \n"_Stz, gpAttachMap->m_nIndexEntries);
-  vInfo("IndexLevels    : %lld \n"_Stz, gpAttachMap->m_nIndexLevels);
+  vInfo("IndexHeight    : %lld \n"_Stz, gpAttachMap->m_nIndexHeight);
   vInfo("IndexOffsets   : %lld \n"_Stz, gpAttachMap->m_nIndexOffsets);
   
   vInfo("Verbose        : %s \n"_Stz, gpAttachMap->m_bVerbose ? "true"_Stz : "false"_Stz);
@@ -240,7 +240,7 @@ void AttachMap::vRecordArguments(bool bActionSequence,
 
   //ASSERT(m_pStepTiming);
     
-  m_nIndexLevels  = 3;
+  m_nIndexHeight  = 3;
   m_nIndexOffsets = 3;
   //m_nBuffersPending;
   
