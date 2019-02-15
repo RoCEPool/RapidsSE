@@ -16,6 +16,8 @@ namespace Jobs
     i8           m_iEntryBuffer;
   
     EntryBuffer* m_pEntryBuffer;
+  
+    CsvBuffer*   m_pCsvBuffer;
     
     // must be last
     Footer m_xFooter;

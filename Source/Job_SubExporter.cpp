@@ -115,7 +115,8 @@ Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
   m_iEntryBuffer  = 0;
   
   m_pEntryBuffer = nullptr;
-
+  m_pCsvBuffer = nullptr;
+  
   _checkInitialised_(CN_JOB_SUBEXPORTER);
   
   ActionSequence::vAdd(this,AN_CONSTRUCTOR,CN_JOB_SUBEXPORTER,_EG_CN);
