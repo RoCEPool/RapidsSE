@@ -379,6 +379,47 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     return;
   }
   
+  //////////////////////////////////////////////////////////////////////////////
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive rest of other
+  
+  if (eClass == CN_CSVBUFFER) {
+    
+    CsvBuffer* pCsvBuffer = new CsvBuffer();
+    
+    MemLib::vCopy(pCsvBuffer,pObject,sizeof(Object),CN_CSVBUFFER);
+    
+    void* aBody = aAdd<void*>(pCsvBuffer,sizeof(Object));
+    i8 nRemainingBytes = giClassSize[CN_CSVBUFFER] - sizeof(Object);
+    
+    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+    if (! bResult) {
+      mpTask->m_pDataStack->vPushBool(false);
+      EXIT();
+      return;
+    }
+    
+    //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+    //       pEntryBuffer,eClass,aCN[eClass],nObjectSize);
+    
+    // restore the entryBuffer pointets (m_pHeadEntry etc)
+    pCsvBuffer->vRecvPostCorrection();
+    
+    if (gpAttachMap->m_bMarkResource[SR_SOCKET] ||
+        gpAttachMap->m_bMarkResourceAll) {
+      ActivityMap::vMarkRes(SR_SOCKET,
+                            "Recv CsvBuffer: %p"_Stz,
+                            pCsvBuffer);
+    }
+    
+    mpTask->m_pDataStack->vPushPointer(pCsvBuffer);
+    mpTask->m_pDataStack->vPushBool(true);
+    EXIT();
+    return;
+  }
+  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // unknown object
   

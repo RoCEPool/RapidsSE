@@ -444,6 +444,7 @@
   static void vJobFindParticipant(Tasks::MP_Task mpTask);
   static void vJobHasError(Tasks::MP_Task mpTask);
   static void vJobHasEntryBuffer(Tasks::MP_Task mpTask);
+  static void vJobHasSendWith(Tasks::MP_Task mpTask);
   static void vJobIdFetch(Tasks::MP_Task mpTask);
   static void vJobIndexNameFetch(Tasks::MP_Task mpTask);
   static void vJobIsExecuting(Tasks::MP_Task mpTask);
@@ -473,6 +474,8 @@
   static void vJobRowsSkippedFetch(Tasks::MP_Task mpTask);
   static void vJobRowsSkippedStore(Tasks::MP_Task mpTask);
   static void vJobSend(Tasks::MP_Task mpTask);
+  static void vJobSendWithFetch(Tasks::MP_Task mpTask);
+  static void vJobSendWithStore(Tasks::MP_Task mpTask);
   static void vJobShow(Tasks::MP_Task mpTask);
   static void vJobSignalConnector(Tasks::MP_Task mpTask);
   static void vJobSpawn(Tasks::MP_Task mpTask);
