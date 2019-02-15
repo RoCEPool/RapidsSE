@@ -11,7 +11,7 @@ namespace MiniHeaps
     struct {
       u8 m_uBuffer : 45; // which buffer
       u8 m_uItem   : 16; // item in buffer
-      u8 m_uOffsets:  3; // number of offsets
+      u8 m_uLevels:  3;  // number of levels
     };            // 64
   
   public:
@@ -31,8 +31,8 @@ namespace MiniHeaps
     void  vBuffer(i8 iBuffer);
     i8    iItem(void);
     void  vItem(i8 iItem);
-    i8    nOffsets(void);
-    void  vOffsets(i8 nOffsets);
+    i8    nLevels(void);
+    void  vLevels(i8 nLevels);
   };
 }
 

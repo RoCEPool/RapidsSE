@@ -33,7 +33,7 @@ Id::Id(void)
 {
   m_uBuffer  = 0;
   m_uItem    = 0;
-  m_uOffsets = 0;
+  m_uLevels  = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,7 +51,7 @@ Id::Id(u8 uBuffer, u8 uItem, u8 uOffsets)
 {
   m_uBuffer  = uBuffer;
   m_uItem    = uItem;
-  m_uOffsets = uOffsets;
+  m_uLevels  = uOffsets;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,7 +93,7 @@ void Id::vAssign(Id& xId)
 {
   m_uBuffer  = xId.m_uBuffer;
   m_uItem    = xId.m_uItem;
-  m_uOffsets = xId.m_uOffsets;
+  m_uLevels  = xId.m_uLevels;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,19 +129,19 @@ void Id::vItem(i8 iItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of offsets                                                      */
+/* get number of levels                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Id::nOffsets(void)
+i8 Id::nLevels(void)
 {
-  return (i8)m_uOffsets;
+  return (i8)m_uLevels;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set number of offsets                                                      */
+/* set number of levels                                                       */
 /*----------------------------------------------------------------------------*/
-void Id::vOffsets(i8 nOffsets)
+void Id::vLevels(i8 nLevels)
 {
-  m_uOffsets = nOffsets;
+  m_uLevels = nLevels;
 }
 
 /*============================================================================*/

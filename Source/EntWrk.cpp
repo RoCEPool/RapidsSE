@@ -153,11 +153,11 @@ char* EntWrk::aLatter(void)
 /*----------------------------------------------------------------------------*/
 /* get nLevel                                                                 */
 /*----------------------------------------------------------------------------*/
-i8 EntWrk::nOffsets(void)
+i8 EntWrk::nLevels(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return m_xId.nOffsets();
+  return m_xId.nLevels();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,31 +167,31 @@ i8 EntWrk::nOffsetSize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  i8 nBytes = sizeof(i4) * m_xId.nOffsets();
+  i8 nBytes = sizeof(i4) * m_xId.nLevels();
   
   return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set number of offsets                                                      */
+/* set number of levels                                                       */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vOffsets(i8 nOffsets)
+void EntWrk::vLevels(i8 nLevels)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xId.vOffsets(nOffsets);
+  m_xId.vLevels(nLevels);
 }
 
 /*----------------------------------------------------------------------------*/
-/* set a random number of offsets                                             */
+/* set a random number of levels                                              */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vRandomOffsets(void)
+void EntWrk::vRandomLevels(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  i8 nOffsets = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
+  i8 nLevels = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
   
-  m_xId.vOffsets(nOffsets);
+  m_xId.vLevels(nLevels);
 }
 
 /*----------------------------------------------------------------------------*/
