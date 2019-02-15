@@ -48,7 +48,8 @@ enum eCN : u2 // Class Number
   /*  25 0x19     8216B Heap:M */ CN_COLUMNVEC,
   /*  26 0x1A       24B Heap:M */ CN_COMMAND,
   /*  27 0x1B       64B Heap:M */ CN_COMPILER,
-  
+  /*                           */ CN_CSVBUFFER,
+
   /*  28 0x1C       24B Heap:S */ CN_DECIDER,
   /*  29 0x1D      248B Heap:M */ CN_DIC,
   /*  30 0x1E      792B Heap:S */ CN_DICPATH,
@@ -299,7 +300,8 @@ static Stz* aCN[]
   /*  25 0x19 */ "COLUMNVEC"_Stz,           // CN_COLUMNVEC
   /*  26 0x1A */ "COMMAND"_Stz,             // CN_COMMAND
   /*  27 0x1B */ "COMPILER"_Stz,            // CN_COMPILER
-  
+  /*          */ "CSVBUFFER"_Stz,           // CN_CSVBUFFER
+
   /*  28 0x1C */ "DECIDER"_Stz,             // CN_DECIDER
   /*  29 0x1D */ "DIC"_Stz,                 // CN_DIC
   /*  30 0x1E */ "DICPATH"_Stz,             // CN_DICPATH

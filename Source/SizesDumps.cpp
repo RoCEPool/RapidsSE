@@ -48,6 +48,7 @@ pDUMPFUN *gpDump[]
   /* 32 */ &Dump::vDummy,           // CN_COLUMNVEC
   /*    */ &Dump::vDummy,           // CN_COMMAND
   /*    */ &Dump::vDummy,           // CN_COMPILER
+  /*    */ &Dump::vDummy,           // CN_CSVBUFFER
 
   /*    */ &Dump::vDummy,           // CN_DECIDER
   /* 33 */ &Dic::vDump,             // CN_DIC
@@ -303,7 +304,8 @@ i8 giClassSize[]
   /* 32 */ sizeof(ColumnVec),          // CN_COLUMNVEC
   /* 32 */ sizeof(Command),            // CN_COMMAND
   /* 32 */ sizeof(Compiler),           // CN_COMPILER
-  
+  /* 32 */ 0,                          // CN_CSVBUFFER
+
   /*    */ sizeof(Decider),            // CN_DECIDER
   /* 33 */ sizeof(Dic),                // CN_DIC
   /* 34 */ sizeof(DicPath),            // CN_DICPATH
@@ -558,6 +560,7 @@ eHT geWhichHeap[]
   /* 32 */ HT_TRANSIENT_MEDIUM,  // CN_COLUMNVEC
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_COMMAND
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_COMPILER
+  /*    */ HT_TRANSIENT_LARGE,   // CN_CSVBUFFER
 
   /*    */ HT_TRANSIENT_SMALL,   // CN_DECIDER
   /* 33 */ HT_TRANSIENT_MEDIUM,  // CN_DIC
