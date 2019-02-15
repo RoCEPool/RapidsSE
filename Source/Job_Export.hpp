@@ -36,6 +36,8 @@ namespace Jobs
   public:
     bool bBegin(void);
     void vEnd(void);
+    bool bFinishedWriting(void);
+    void vIncWritten(i8 nBuffersExpected);
     bool bPopulateJob(TokenVec* pTokenVec);
   
     void vShow(void);

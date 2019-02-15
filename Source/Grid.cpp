@@ -72,13 +72,13 @@ void Grid::vInit(i8 nNodes, i8 nSlotsPerNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  m_nNodes      = nNodes;
-  m_iThisNode   = C_UNKNOWN;
-  m_pThisNode   = nullptr;
-  m_iStartNode  = C_UNKNOWN;
-  m_bHasStarted = false;
-  m_nSlotsPerNode      = nSlotsPerNode;
-  m_nPartitions = m_nSlotsPerNode * m_nNodes;
+  m_nNodes        = nNodes;
+  m_iThisNode     = C_UNKNOWN;
+  m_pThisNode     = nullptr;
+  m_iStartNode    = C_UNKNOWN;
+  m_bHasStarted   = false;
+  m_nSlotsPerNode = nSlotsPerNode;
+  m_nPartitions   = m_nSlotsPerNode * m_nNodes;
     
   // initialize the partition array
   for (i8 i_Partition = 0; i_Partition < C_SLOTS_PER_NODE; i_Partition++) {

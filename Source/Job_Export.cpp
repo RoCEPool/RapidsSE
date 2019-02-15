@@ -188,6 +188,47 @@ void Job_Export::vEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* finished writing                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_Export::bFinishedWriting(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
+
+  bool bFinished = false;
+  
+  m_okLock.vGrabWrite();
+  
+  if (m_nPartitionsComplete == gpAttachMap->m_pGrid->m_nPartitions &&
+      m_nBuffersExpected == m_nBuffersWritten)
+    bFinished = true;
+  
+  m_okLock.vDropWrite();
+  
+  return bFinished;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc no of buffers written                                                  */
+/*----------------------------------------------------------------------------*/
+void Job_Export::vIncWritten(i8 nBuffersExpected)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
+  
+  m_okLock.vGrabWrite();
+  
+  m_nBuffersWritten++;
+  
+  if (nBuffersExpected) {
+    if (C_UNKNOWN == m_nBuffersExpected)
+      m_nBuffersExpected = nBuffersExpected;
+    else
+      m_nBuffersExpected += nBuffersExpected;
+  }
+  
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* populate the job                                                           */
 /*----------------------------------------------------------------------------*/
 bool Job_Export::bPopulateJob(TokenVec* pTokenVec)
