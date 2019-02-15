@@ -214,6 +214,9 @@ void Job_SubExporter::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
 
+  if (m_pCsvBuffer)
+    {;}
+  
   ActionSequence::vAdd(this,AN_JOB_END,m_iEntryBuffer);
 }
 
@@ -232,7 +235,7 @@ void Job_SubExporter::vSprintRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
   
-  s48K sRowString;
+  s48K sRecord;
   
   ColumnVec* pColVec = m_pJobExport->m_pTable->pColumnVec();
   
@@ -242,9 +245,19 @@ void Job_SubExporter::vSprintRows(void)
 
     RowData* aRow = _aRowData(aItem->aDataArea());
     
-    aRow->vAsBinaryStringVLQ(sRowString,pColVec);
+    aRow->vAsBinaryStringVLQ(sRecord,pColVec);
+    vTrace("]]%s[[\n"_Stz,sRecord.aStz());
     
-    vTrace("]]%s[[\n"_Stz,sRowString.aStz());
+    i8 nBytes = sRecord.nSize();
+    
+    if (! m_pCsvBuffer)
+      m_pCsvBuffer = new CsvBuffer;
+    
+    if (m_pCsvBuffer->nFreeBytes() < nBytes)
+      m_pCsvBuffer = new CsvBuffer;
+    
+    char* aRecord = m_pCsvBuffer->aAllotRecord(nBytes);
+    StrLib::vCopy(aRecord,sRecord.aChar());
   }
 }
 
