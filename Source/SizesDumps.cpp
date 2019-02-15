@@ -122,6 +122,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_INGEST
   /*    */ &Dump::vDummy,           // CN_JOB_INSERTROW
   /*    */ &Dump::vDummy,           // CN_JOB_INSERTTABLE
+  /*    */ &Dump::vDummy,           // CN_JOB_KIDEXPORT
   /*    */ &Dump::vDummy,           // CN_JOB_LF
   /*    */ &Dump::vDummy,           // CN_JOB_LISTCATALOGS
   /*    */ &Dump::vDummy,           // CN_JOB_LISTCOLUMNS
@@ -169,7 +170,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_VISUALIZEINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_WAITCLUSTER
   /*    */ &Dump::vDummy,           // CN_JOB_WRITEBUFFER
-  /*    */ &Dump::vDummy,           // CN_JOB_WRITERECORD
   /*    */ &Dump::vDummy,           // CN_JOB_WRITEROW
 
   /*    */ &JobList::vDump,         // CN_JOBLIST
@@ -378,6 +378,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Ingest),         // CN_JOB_INGEST
   /*    */ sizeof(Job_InsertRow),      // CN_JOB_INSERTROW
   /*    */ sizeof(Job_InsertTable),    // CN_JOB_INSERTTABLE
+  /*    */ sizeof(Job_KidExport),      // CN_JOB_KIDEXPORT
   /*    */ sizeof(Job_Lf),             // CN_JOB_LF
   /*    */ sizeof(Job_ListCatalogs),   // CN_JOB_LISTCATALOGS
   /*    */ sizeof(Job_ListColumns),    // CN_JOB_LISTCOLUMNS
@@ -425,8 +426,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VISUALIZEINDEX
   /*    */ sizeof(Job_WaitCluster),    // CN_JOB_WAITCLUSTER
   /*    */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
-  /*    */ sizeof(Job_KidExport),    // CN_JOB_WRITERECORD
-  /*    */ sizeof(Job_WriteRow),       // CN_JOB_WRITEROW
+   /*    */ sizeof(Job_WriteRow),       // CN_JOB_WRITEROW
   
   /*    */ sizeof(JobList),            // CN_JOBLIST
   
@@ -634,6 +634,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INGEST
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTROW
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTTABLE
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_KIDEXPORT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LF
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTCATALOGS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTCOLUMNS
@@ -681,7 +682,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_VISUALIZEINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WAITCLUSTER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEBUFFER
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITERECORD
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEROW
   
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOBLIST

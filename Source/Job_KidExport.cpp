@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 JobClass xJobClass_WriteRecord =
 {
   "Job_KidExport"_Stz,  // name of the job class
-  CN_JOB_WRITERECORD,     // class enum
+  CN_JOB_KIDEXPORT,     // class enum
   JK_GRANDKID,            // job kind
   "write record"_Stz,     // comment about the job
   nullptr,                // the prompt command
@@ -65,7 +65,7 @@ Job_KidExport* Jobs::_pJob_KidExport(void* aAddress)
 {
   Job_KidExport* pJob_KidExport = reinterpret_cast<Job_KidExport*>(aAddress);
   
-  RASSERT_TYPE(pJob_KidExport,CN_JOB_WRITERECORD);
+  RASSERT_TYPE(pJob_KidExport,CN_JOB_KIDEXPORT);
   
   return pJob_KidExport;
 }
@@ -76,7 +76,7 @@ Job_KidExport* Jobs::_pJob_KidExport(void* aAddress)
 void* Job_KidExport::operator new(size_t)
 {
   Job_KidExport* pJob_KidExport =
-    static_cast<Job_KidExport*>(HeapMem::pAllocate(CN_JOB_WRITERECORD));
+    static_cast<Job_KidExport*>(HeapMem::pAllocate(CN_JOB_KIDEXPORT));
   
   return pJob_KidExport;
 }
@@ -103,16 +103,16 @@ void Job_KidExport::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_KidExport::Job_KidExport(Interface::Session* pSession)
-: Job(CN_JOB_WRITERECORD, pSession)
+: Job(CN_JOB_KIDEXPORT, pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITERECORD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
   
   m_iExportJobId = C_UNKNOWN;
   
   
-  _checkInitialised_(CN_JOB_WRITERECORD);
+  _checkInitialised_(CN_JOB_KIDEXPORT);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITERECORD,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,7 +120,7 @@ Job_KidExport::Job_KidExport(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 Job_KidExport::~Job_KidExport(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITERECORD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
   
   delete m_pCurrentBuffer;
   m_pCurrentBuffer = nullptr;
@@ -131,7 +131,7 @@ Job_KidExport::~Job_KidExport(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Job_KidExport::vWriteRecords(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITERECORD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
   
 }
 
@@ -159,7 +159,7 @@ Job_KidExport* Job_KidExport::pNewJobWriteRecord(Interface::Session* pSession,
   // create a write buffer job
   
   //! this needs to be optimised
-  JobClass* pJobClass_WriteRecord = JobClass::pFind(CN_JOB_WRITERECORD);
+  JobClass* pJobClass_WriteRecord = JobClass::pFind(CN_JOB_KIDEXPORT);
 
   Job_KidExport* pJob_KidExport =
     _pJob_KidExport(pJobClass_WriteRecord->pPreJob(pSession));
@@ -178,7 +178,7 @@ Job_KidExport* Job_KidExport::pNewJobWriteRecord(Interface::Session* pSession,
 /*----------------------------------------------------------------------------*/
 void Job_KidExport::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITERECORD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -190,7 +190,7 @@ void Job_KidExport::vShow(void)
 /*----------------------------------------------------------------------------*/
 Footer* Job_KidExport::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITERECORD);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT);
   
   return &m_xFooter;
 }
