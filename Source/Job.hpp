@@ -155,6 +155,7 @@ namespace Jobs
   
     EntryBuffer* m_pCurrentBuffer; // entry buffer
   
+    Object* m_pSendWith; // object which is to be sent with this job
   
     Mutex* m_pMutex;
   

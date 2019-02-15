@@ -95,8 +95,9 @@ Job::Job(eCN eClassNo, Session* pSession)
   
   m_iParticipantNode  = C_UNKNOWN;
   m_oAcksRemaining.vCheckInit();
-  m_pCurrentBuffer = nullptr;
   
+  m_pCurrentBuffer = nullptr;
+  m_pSendWith = nullptr;
   
   if (CN_JOB_NODEINFO == eClass())
     m_pMutex = nullptr;
