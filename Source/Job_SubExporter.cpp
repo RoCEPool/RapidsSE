@@ -198,6 +198,9 @@ bool Job_SubExporter::bChunk(void)
   
   ActionSequence::vAdd(this,AN_JOB_CHUNK,m_iEntryBuffer);
 
+  if (m_pEntryBuffer->nItems())
+    vSprintRows();
+  
   m_iEntryBuffer++;
   m_pEntryBuffer = m_pEntryBuffer->pNextBuffer();
 
@@ -220,6 +223,29 @@ void Job_SubExporter::vEnd(void)
 void Job_SubExporter::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void Job_SubExporter::vSprintRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+  
+  s48K sRowString;
+  
+  ColumnVec* pColVec = m_pJobExport->m_pTable->pColumnVec();
+  
+  for (Item* aItem = m_pEntryBuffer->aLeadEntry();
+       aItem;
+       aItem = m_pEntryBuffer->aNextEntry(aItem,0)) {
+
+    RowData* aRow = _aRowData(aItem->aDataArea());
+    
+    aRow->vAsBinaryStringVLQ(sRowString,pColVec);
+    
+    vTrace("]]%s[[\n"_Stz,sRowString.aStz());
+  }
 }
 
 /*----------------------------------------------------------------------------*/

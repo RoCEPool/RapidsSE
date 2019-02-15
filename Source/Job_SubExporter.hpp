@@ -38,7 +38,9 @@ namespace Jobs
 
     void vShow(void);
   
-  public:
+  private:
+    void vSprintRows(void);
+  
     Footer* aFooter(void);
   
   };

@@ -35,7 +35,7 @@ namespace MetaData
     i8 m_nSubInsertersDone;      // number of subInserters which have completed
     i8 m_iParentJobId;           // parent jobid
     
-  Data::IndexTreeVec* m_pIndexTreeVec; // vector of index trees
+    Data::IndexTreeVec* m_pIndexTreeVec; // vector of index trees
   
     // must be last
     Footer m_xFooter;
