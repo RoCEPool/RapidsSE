@@ -66,6 +66,63 @@ CsvBuffer::~CsvBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* allot space for a record of given size                                     */
+/*----------------------------------------------------------------------------*/
+char* CsvBuffer::aAllotRecord(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  
+  char* aRecord = m_xWsp.aAllot(nBytes);
+  if (aRecord)
+    m_nRecords++;
+  
+  return aRecord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of expected buffers (for partition)                             */
+/*----------------------------------------------------------------------------*/
+i8 CsvBuffer::nExpectBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  
+  return m_nExpectBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of expected buffers (for partition)                             */
+/*----------------------------------------------------------------------------*/
+void CsvBuffer::vExpectBuffers(i8 nExpectBuffers)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  
+  m_nExpectBuffers = nExpectBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of free bytes                                                   */
+/*----------------------------------------------------------------------------*/
+i8 CsvBuffer::nFreeBytes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  
+  i8 nFree = m_xWsp.nFree();
+  
+  return nFree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of records in buffer                                            */
+/*----------------------------------------------------------------------------*/
+i8 CsvBuffer::nRecords(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  
+  return m_nRecords;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
