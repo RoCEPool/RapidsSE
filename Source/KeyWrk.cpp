@@ -397,7 +397,7 @@ void KeyWrk::vSetEntry(Item* pEntry)
   // set id, transaction and offsets
   
   pEntry->vId(xId());
-  pEntry->vOffsets(nOffsets());
+  pEntry->vLevels(nLevels());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into this entry

@@ -351,7 +351,7 @@ void IndexTree::vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pFirstL0)
   Id xId = aFirstL0_Key->xId();
   KeyData* aKey = _aKeyData(aFirstL0_Key->aDataArea());
   i8 nKeySize = aKey->nKeySize(pIdxColVec);
-  i8 nOffsets = aFirstL0_Key->nOffsets();
+  i8 nLevels = aFirstL0_Key->nLevels();
   
   i8 iFirstL0_BufferNo = pFirstL0->iPoolBufferNo();
   xId.vBuffer(iFirstL0_BufferNo);
@@ -361,7 +361,7 @@ void IndexTree::vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pFirstL0)
   xL1_FirstKey.vId(xId);
   xL1_FirstKey.vEmbedded((char*)aKey);
   xL1_FirstKey.vKeySize(nKeySize);
-  xL1_FirstKey.vOffsets(nOffsets);
+  xL1_FirstKey.vLevels(nLevels);
   
   Item* aFirstL1_Key = pL1->aInsertKeyAbs(xL1_FirstKey);
   
@@ -420,7 +420,7 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     KeyData* aKey = _aKeyData(aRightL0_Key->aDataArea());
     
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nOffsets = aRightL0_Key->nOffsets();
+    i8 nLevels = aRightL0_Key->nLevels();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // form the working version of the left key
@@ -428,7 +428,7 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     xLeftKeyWrk.vId(xId);
     xLeftKeyWrk.vEmbedded((char*)aKey);
     xLeftKeyWrk.vKeySize(nKeySize);
-    xLeftKeyWrk.vOffsets(nOffsets);
+    xLeftKeyWrk.vLevels(nLevels);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // compute the size of the left key
@@ -551,7 +551,7 @@ void IndexTree::vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     KeyData* aKey = _aKeyData(aRightL0_Key->aDataArea());
     
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nOffsets = aRightL0_Key->nOffsets();
+    i8 nLevels = aRightL0_Key->nLevels();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // form the working version of the left key
@@ -559,7 +559,7 @@ void IndexTree::vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     xLeftKeyWrk.vId(xId);
     xLeftKeyWrk.vEmbedded((char*)aKey);
     xLeftKeyWrk.vKeySize(nKeySize);
-    xLeftKeyWrk.vOffsets(nOffsets);
+    xLeftKeyWrk.vLevels(nLevels);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // compute the size of the left key

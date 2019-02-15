@@ -45,8 +45,8 @@ namespace MiniHeaps
     void  vNEO(i8 i_Offset, i4 iNEO);
     void  vNEOdump(void);
     i8    iNEOsize(void);
-    i8    nOffsets(void);
-    void  vOffsets(i8 nOffsets);
+    i8    nLevels(void);
+    void  vLevels(i8 nLevels);
     Item* aRefdItem(void);
     i8    nSizeItem_WithoutOffsets(void);
     i8    nSizeData(void);

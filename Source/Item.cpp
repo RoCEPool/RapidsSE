@@ -145,7 +145,7 @@ i4 Item::iNEO(i8 iOffset)
 /*----------------------------------------------------------------------------*/
 i8 Item::iNEOsize(void)
 {
-  i8 nBytes = sizeof(i4) * nOffsets();
+  i8 nBytes = sizeof(i4) * nLevels();
   
   return nBytes;
 }
@@ -171,29 +171,29 @@ void Item::vNEO(i8 iOffset, i4 iNEO)
 void Item::vNEOdump(void)
 {
   NEO* aNEO = this->aNEO();
-  vTrace("Item %p offsets: %lld NEO: %p"_Stz,
-         this,nOffsets(),aNEO);
+  vTrace("Item %p levels: %lld NEO: %p"_Stz,
+         this,nLevels(),aNEO);
   
-  for (i8 i_Offset = 0; i_Offset < nOffsets(); i_Offset++)
-    vTrace(" %lld: %d"_Stz,i_Offset,aNEO->m_iOffset[i_Offset]);
+  for (i8 i_Level = 0; i_Level < nLevels(); i_Level++)
+    vTrace(" %lld: %d"_Stz,i_Level,aNEO->m_iOffset[i_Level]);
   
   vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of offsets                                                      */
+/* get number of levels                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Item::nOffsets(void)
+i8 Item::nLevels(void)
 {
-  return m_xId.nOffsets();
+  return m_xId.nLevels();
 }
 
 /*----------------------------------------------------------------------------*/
-/* set number of offsets                                                      */
+/* set number of levels                                                       */
 /*----------------------------------------------------------------------------*/
-void Item::vOffsets(i8 nOffsets)
+void Item::vLevels(i8 nLevels)
 {
-  m_xId.vOffsets(nOffsets);
+  m_xId.vLevels(nLevels);
 }
 
 /*----------------------------------------------------------------------------*/

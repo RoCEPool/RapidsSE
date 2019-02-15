@@ -433,11 +433,11 @@ void EntryBuffer::vShowEntry(Item* aItem)
   KeyData* aKey = _aKeyData(aItem->aDataArea());
   i8 iOffset = iToOffset(aItem);
   
-  vTrace("%lld: Item: %p Size: %llu Offsets: %llu "_Stz,
+  vTrace("%lld: Item: %p Size: %llu Levels: %llu "_Stz,
          iOffset,
          aItem,
          aItem->nSizeItem_WithoutOffsets(),
-         aItem->nOffsets()
+         aItem->nLevels()
          );
   
   vTrace("Id: %3lli.%03lli "_Stz,
@@ -464,8 +464,8 @@ void EntryBuffer::vShowEntry(Item* aItem)
   
   
   vTrace(" offsets:"_Stz);
-  for (i8 i_Offset = 0; i_Offset < aItem->nOffsets(); i_Offset++)
-    vTrace(" %d"_Stz,aItem->iNEO(i_Offset));
+  for (i8 i_Level = 0; i_Level < aItem->nLevels(); i_Level++)
+    vTrace(" %d"_Stz,aItem->iNEO(i_Level));
   
   vTrace("\n"_Stz);
 }
@@ -500,7 +500,7 @@ Item* EntryBuffer::aAllotRowEntry(RowWrk& xRowWrk)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // rows only ever have one next offset
-  RASSERT(1 == xRowWrk.nOffsets());
+  RASSERT(1 == xRowWrk.nLevels());
 
   i8 nRowEntrySize = xRowWrk.nRowEntrySize();
 

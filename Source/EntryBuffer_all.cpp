@@ -147,9 +147,9 @@ void EntryBuffer::vBuildSkipListSorted(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Item* xPrevVec[gpAttachMap->m_nIndexOffsets];
+  Item* xPrevVec[gpAttachMap->m_nIndexLevels];
   
-  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
     xPrevVec[i_Offset] = aSkipRoots();
   
   
@@ -165,16 +165,16 @@ void EntryBuffer::vBuildSkipListSorted(void)
     i4 iEntryOffset = iToOffset(aItem);
     
     // get the number of offsets for this entry
-    i8 nOffsets = aItem->nOffsets();
+    i8 nLevels = aItem->nLevels();
     
     // connect the dots
-    for (i8 i_Offset = 1; i_Offset < nOffsets; i_Offset++) {
+    for (i8 i_Level = 1; i_Level < nLevels; i_Level++) {
       
       // set previous entry at this level to refer to this entry
-      xPrevVec[i_Offset]->vNEO(i_Offset,iEntryOffset);
+      xPrevVec[i_Level]->vNEO(i_Level,iEntryOffset);
       
       // the previous entry at this level now becomes this entry
-      xPrevVec[i_Offset] = aItem;
+      xPrevVec[i_Level] = aItem;
     }
   }
 }
@@ -193,7 +193,7 @@ void EntryBuffer::vDeleteEntry(Item** aaItem)
   
   Item* aItem = *aaItem;
   
-  Item* xPriorVec[gpAttachMap->m_nIndexOffsets];
+  Item* xPriorVec[gpAttachMap->m_nIndexLevels];
   
   KeyData* aKey = _aKeyData(aItem->aDataArea());
   
@@ -220,7 +220,7 @@ void EntryBuffer::vDeleteEntry(Item** aaItem)
 //  
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  
-//  Item* xPriorVec[gpAttachMap->m_nIndexOffsets];
+//  Item* xPriorVec[gpAttachMap->m_nIndexLevels];
 //  
 //  vPositionPriorVecBuffer3(aDeleteKey,xPriorVec,pToBuffer);
 //  
@@ -324,7 +324,7 @@ Item* EntryBuffer::aInsertKeyAbs(KeyWrk& xKeyWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  RASSERT(xKeyWrk.nOffsets());
+  RASSERT(xKeyWrk.nLevels());
   
   i8 nEntryBytes = xKeyWrk.nEntrySize();
   i8 nOffsetBytes = xKeyWrk.nOffsetSize();
@@ -376,7 +376,7 @@ Item* EntryBuffer::aInsertKeyAbsL0(KeyWrk& xKeyWrk, Item** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  RASSERT(xKeyWrk.nOffsets());
+  RASSERT(xKeyWrk.nLevels());
   
   i8 nEntryBytes = xKeyWrk.nEntrySize();
   i8 nOffsetBytes = xKeyWrk.nOffsetSize();
@@ -408,9 +408,9 @@ Item* EntryBuffer::aInsertKeyAbsL0(KeyWrk& xKeyWrk, Item** aaPriorEntry)
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   // for the moment we set L1 & L2 offsets in prior entry to -1
   
-  i8 nPriorOffsets = aKeyEntry->nOffsets();
-  for (i8 i_Offset = 0; i_Offset < nPriorOffsets; i_Offset++)
-    aKeyEntry->vNEO(i_Offset,-1);
+  i8 nPriorLevels = aKeyEntry->nLevels();
+  for (i8 i_Level = 0; i_Level < nPriorLevels; i_Level++)
+    aKeyEntry->vNEO(i_Level,-1);
   
   // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
   
@@ -449,7 +449,7 @@ Item* EntryBuffer::aInsertKeyTree(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set a random number offsets
   
-  xKeyWrk.vRandomOffsets();
+  xKeyWrk.vRandomLevels();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // position on the initial buffer we will try to insert into
@@ -524,13 +524,13 @@ i8 EntryBuffer::iLengthSubList(void)
 /*----------------------------------------------------------------------------*/
 /* get next entry                                                             */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aNextEntry(Item* aCurrent, i8 i_Offset)
+Item* EntryBuffer::aNextEntry(Item* aCurrent, i8 i_Level)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   RASSERT(aCurrent->bValidItem());
   
-  i4 iOffset = aCurrent->iNEO(i_Offset);
+  i4 iOffset = aCurrent->iNEO(i_Level);
   
   if (-1 == iOffset)
     return nullptr;
@@ -644,9 +644,9 @@ Item* EntryBuffer::aPositionQuery(KeyData* aGivenKey,i8 nKeyCols, eJC eJuxtaComp
   Item* aScanEntry_sl = aSkipRoots();
   bool bIsEqual;
   
-  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
+  for (i8 i_ScanLevel = 2; i_ScanLevel >= 0; i_ScanLevel--) {
     
-    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanOffset);
+    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
       
       KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
@@ -659,7 +659,7 @@ Item* EntryBuffer::aPositionQuery(KeyData* aGivenKey,i8 nKeyCols, eJC eJuxtaComp
       
       // have we found to key during a query?
       if (bIsEqual) {
-        if (0 == i_ScanOffset)
+        if (0 == i_ScanLevel)
           return aNextEntry_sl;
         else
           break;
@@ -670,9 +670,9 @@ Item* EntryBuffer::aPositionQuery(KeyData* aGivenKey,i8 nKeyCols, eJC eJuxtaComp
         break;
       
       aScanEntry_sl = aNextEntry_sl;
-      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanOffset);
+      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
     }
-    //pPriorVec[*i_ScanOffset] = pScanEntry_sl;
+    //pPriorVec[*i_ScanLevel] = pScanEntry_sl;
   }
   
   if (aScanEntry_sl == aSkipRoots()) {
@@ -787,7 +787,7 @@ void EntryBuffer::vRestore(void)
        aItem != nullptr;
        aItem = aNextEntry(aItem, 0)) {
     
-    Id xId(*nBuffer, aItem->iItemNo(), aItem->nOffsets());
+    Id xId(*nBuffer, aItem->iItemNo(), aItem->nLevels());
     aItem->vId(xId);
   }
   
@@ -1159,7 +1159,7 @@ void EntryBuffer::vCompact(void)
   
   FreeItem* aFreeEntry;
   Item*     aMoveEntry;
-  Item*     xPriorVec[gpAttachMap->m_nIndexOffsets];
+  Item*     xPriorVec[gpAttachMap->m_nIndexLevels];
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   // we can only compact if there are free entries
@@ -1320,12 +1320,12 @@ void EntryBuffer::vCompactLeft2(void)
     KeyData* aKey = _aKeyData(aThisEntry->aDataArea());
     
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nOffsets = aThisEntry->nOffsets();
+    i8 nLevels = aThisEntry->nLevels();
     
     xKeyWrk.vId(xId);
     xKeyWrk.vEmbedded((char*)aKey);
     xKeyWrk.vKeySize(nKeySize);
-    xKeyWrk.vOffsets(nOffsets);
+    xKeyWrk.vLevels(nLevels);
     
     pTempBuffer->aInsertKeyAbsL0(xKeyWrk,&aPriorEntry);
   }
@@ -1341,7 +1341,7 @@ void EntryBuffer::vCompactLeft2(void)
   
   vItems(0);
   
-  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
     aSkipRoots()->vNEO(i_Offset,-1);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1355,12 +1355,12 @@ void EntryBuffer::vCompactLeft2(void)
     Id xId = aTempEntry->xId();
     KeyData* aKey = _aKeyData(aTempEntry->aDataArea());
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nOffsets = aTempEntry->nOffsets();
+    i8 nLevels = aTempEntry->nLevels();
     
     xKeyWrk.vId(xId);
     xKeyWrk.vEmbedded((char*)aKey);
     xKeyWrk.vKeySize(nKeySize);
-    xKeyWrk.vOffsets(nOffsets);
+    xKeyWrk.vLevels(nLevels);
     
     pThisBuffer->aInsertKeyAbsL0(xKeyWrk,&aPriorEntry);
   }
@@ -1381,11 +1381,11 @@ void EntryBuffer::vCutEntry(Item* aItem, Item* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  i8 nOffsets = aItem->nOffsets();
+  i8 nLevels = aItem->nLevels();
   
-  for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
-    i4 iNEO = aItem->iNEO(i_Offset);
-    aPriorVec[i_Offset]->vNEO(i_Offset,iNEO);
+  for (i8 i_Level = 0; i_Level < nLevels; i_Level++) {
+    i4 iNEO = aItem->iNEO(i_Level);
+    aPriorVec[i_Level]->vNEO(i_Level,iNEO);
   }
 }
 
@@ -1473,7 +1473,7 @@ void EntryBuffer::vDeleteUpwards(KeyData* aDeleteKey,
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//  Item* xPriorVec[gpAttachMap->m_nIndexOffsets];
+//  Item* xPriorVec[gpAttachMap->m_nIndexLevels];
 //
 //  vPositionPriorVecBuffer(aDeleteKey,xPriorVec,pToBuffer);
 //
@@ -1517,13 +1517,13 @@ void EntryBuffer::vDumpPriorVec(Item* aPriorVec[])
   
   for (i8 i = 0; i < 3; i++) {
     Item* aItem = aPriorVec[i];
-    for (i8 i_Offset = 0; i_Offset < aItem->nOffsets(); i_Offset++) {
+    for (i8 i_Level = 0; i_Level < aItem->nLevels(); i_Level++) {
       vTrace("  i : %lld Item : %p i_Offset : %lld offset : %lld pointsTo : %p\n"_Stz,
              i,
              aItem,
-             i_Offset,
-             aItem->iNEO(i_Offset),
-             aGetEntryOffset(aItem->iNEO(i_Offset)));
+             i_Level,
+             aItem->iNEO(i_Level),
+             aGetEntryOffset(aItem->iNEO(i_Level)));
     }
   }
 }
@@ -1644,15 +1644,15 @@ void EntryBuffer::vHandleLeftInsert(Item* aInsertedKeyEntry,
   KeyData* aInsertKey = _aKeyData(aInsertedKeyEntry->aDataArea());
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   i8 iInsertKeyLen  = aInsertKey->nKeySize(pIdxColVec);
-  i8 nInsertOffsets = aInsertedKeyEntry->nOffsets();
+  i8 nInsertLevels = aInsertedKeyEntry->nLevels();
   
-  Id xInsertId(*nPoolBufferNo(),0,nInsertOffsets);
+  Id xInsertId(*nPoolBufferNo(),0,nInsertLevels);
   
   KeyWrk xKeyWrkIns;
   xKeyWrkIns.vId(xInsertId);
   xKeyWrkIns.vEmbedded((char*)aInsertKey);
   xKeyWrkIns.vKeySize(iInsertKeyLen);
-  xKeyWrkIns.vOffsets(nInsertOffsets);
+  xKeyWrkIns.vLevels(nInsertLevels);
   
   EntryBuffer* pHigherBuffer = _pEntryBuffer(m_pHigherBuffer);
   pHigherBuffer->aInsertKeyBuffer(xKeyWrkIns,ppRootKeyBuffer);
@@ -1726,7 +1726,7 @@ EntryBuffer* EntryBuffer::pInsertableBuffer(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  RASSERT(xKeyWrk.nOffsets());
+  RASSERT(xKeyWrk.nLevels());
   
   i8 nEntryBytes = xKeyWrk.nEntrySize();
   i8 nOffsetBytes = xKeyWrk.nOffsetSize();
@@ -1766,7 +1766,7 @@ Item* EntryBuffer::aInsertKeyAbsLazy(KeyWrk& xKeyWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  RASSERT(xKeyWrk.nOffsets());
+  RASSERT(xKeyWrk.nLevels());
   
   i8 nEntryBytes = xKeyWrk.nEntrySize();
   i8 nOffsetBytes = xKeyWrk.nOffsetSize();
@@ -1814,7 +1814,7 @@ void EntryBuffer::vInsertKeySkip(Item* aKeyEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the entry after which the new entry will be inserted
   
-  Item* xPriorVec[gpAttachMap->m_nIndexOffsets];
+  Item* xPriorVec[gpAttachMap->m_nIndexLevels];
   
   KeyData* aKey = _aKeyData(aKeyEntry->aDataArea());
   
@@ -1832,11 +1832,11 @@ void EntryBuffer::vInsertKeySkip(Item* aKeyEntry)
   
   i4 iKeyEntryOffset = iToOffset(aKeyEntry);
   
-  i8 nOffsets = aKeyEntry->nOffsets();
-  for (i8 iNextOffset = 0; iNextOffset < nOffsets; iNextOffset++) {
-    i4 iPriorOffset = xPriorVec[iNextOffset]->iNEO(iNextOffset);
-    aKeyEntry->vNEO(iNextOffset,iPriorOffset);
-    xPriorVec[iNextOffset]->vNEO(iNextOffset,iKeyEntryOffset);
+  i8 nLevels = aKeyEntry->nLevels();
+  for (i8 iNextLevel = 0; iNextLevel < nLevels; iNextLevel++) {
+    i4 iPriorOffset = xPriorVec[iNextLevel]->iNEO(iNextLevel);
+    aKeyEntry->vNEO(iNextLevel,iPriorOffset);
+    xPriorVec[iNextLevel]->vNEO(iNextLevel,iKeyEntryOffset);
   }
   
   //vShow();
@@ -2127,8 +2127,8 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets
   if ( ! pHigherBuffer->nItems() ) {
     Item* aFirstKeyLeft  = pLeftBuffer->aLeadEntry();
     
-    i8 nOffsetsLeft = aFirstKeyLeft->nOffsets();
-    Id xIdLeft(*pLeftBuffer->nPoolBufferNo(),0,nOffsetsLeft);
+    i8 nLevelsLeft = aFirstKeyLeft->nLevels();
+    Id xIdLeft(*pLeftBuffer->nPoolBufferNo(),0,nLevelsLeft);
     KeyData* aKeyLeft = _aKeyData(aFirstKeyLeft->aDataArea());
     i8 iKeyLenLeft = aKeyLeft->nKeySize(m_pIndex->pIdxColVec());
     
@@ -2137,7 +2137,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets
     xKeyWrkLeft.vId(xIdLeft);
     xKeyWrkLeft.vEmbedded((char*)aKeyLeft);
     xKeyWrkLeft.vKeySize(iKeyLenLeft);
-    xKeyWrkLeft.vOffsets(nOffsetsLeft);
+    xKeyWrkLeft.vLevels(nLevelsLeft);
     
     
     Item* aNewKeyLeft =
@@ -2152,15 +2152,15 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets
   KeyData* aKeyRight = _aKeyData(aFirstKeyRight->aDataArea());
   
   i8 iKeyLenRight = aKeyRight->nKeySize(m_pIndex->pIdxColVec());
-  i8 nOffsetsRight = aFirstKeyRight->nOffsets();
+  i8 nLevelsRight = aFirstKeyRight->nLevels();
   
-  Id xIdRight(*pRightBuffer->nPoolBufferNo(),0,nOffsetsRight);
+  Id xIdRight(*pRightBuffer->nPoolBufferNo(),0,nLevelsRight);
   
   KeyWrk xKeyWrkRight;
   xKeyWrkRight.vId(xIdRight);
   xKeyWrkRight.vEmbedded((char*)aKeyRight);
   xKeyWrkRight.vKeySize(iKeyLenRight);
-  xKeyWrkRight.vOffsets(nOffsetsRight);
+  xKeyWrkRight.vLevels(nLevelsRight);
   
   
   Item* aNewKeyRight =
@@ -2294,11 +2294,11 @@ Item* EntryBuffer::pPositionPriorEntry(KeyData* aFindKey)
   
   bool bKeyIsGreaterEqual;
   
-  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
-       i_ScanOffset >= 0;
-       i_ScanOffset--) {
+  for (i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
+       i_ScanLevel >= 0;
+       i_ScanLevel--) {
     
-    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanOffset);
+    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
       
       KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
@@ -2321,7 +2321,7 @@ Item* EntryBuffer::pPositionPriorEntry(KeyData* aFindKey)
         break;
       
       aScanEntry_sl = aNextEntry_sl;
-      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanOffset);
+      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
     }
   }
   
@@ -2345,7 +2345,7 @@ void EntryBuffer::vPositionPriorVecEntry(KeyData* aFindKey, Item* aPriorVec[],
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
     aPriorVec[i_Offset] = aSkipRoots();
   
   if (nItems() == 0)
@@ -2355,15 +2355,15 @@ void EntryBuffer::vPositionPriorVecEntry(KeyData* aFindKey, Item* aPriorVec[],
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  i8 iFindLevels = aFindEntry ? aFindEntry->nOffsets() - 1 : 2;
+  i8 iFindLevels = aFindEntry ? aFindEntry->nLevels() - 1 : 2;
   
   bool bIsJuxta;
   Item* aScanEntry_sl = aSkipRoots();
-  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
-       i_ScanOffset >= 0;
-       i_ScanOffset--) {
+  for (i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
+       i_ScanLevel >= 0;
+       i_ScanLevel--) {
     
-    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanOffset);
+    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
       
       if (aFindEntry == aNextEntry_sl)
@@ -2392,14 +2392,14 @@ void EntryBuffer::vPositionPriorVecEntry(KeyData* aFindKey, Item* aPriorVec[],
         if (! aFindEntry || aNextEntry_sl == aFindEntry)
           break;
         
-        if (i_ScanOffset > iFindLevels)
+        if (i_ScanLevel > iFindLevels)
           break;
       }
       
       aScanEntry_sl = aNextEntry_sl;
-      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanOffset);
+      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
     }
-    aPriorVec[i_ScanOffset] = aScanEntry_sl;
+    aPriorVec[i_ScanLevel] = aScanEntry_sl;
   }
 }
 
@@ -2420,7 +2420,7 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
     aPriorVec[i_Offset] = aSkipRoots();
   
   if (nItems() == 0)
@@ -2432,11 +2432,11 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
   bool bNextKeyIsGreater;
   Item* aScanEntry_sl = aSkipRoots();
   
-  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
-       i_ScanOffset >= 0;
-       i_ScanOffset--) {
+  for (i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
+       i_ScanLevel >= 0;
+       i_ScanLevel--) {
     
-    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanOffset);
+    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
       
       KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
@@ -2458,7 +2458,7 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
       if (bNextKeyIsGreater)
         break;
       
-      if (0 == i_ScanOffset) {
+      if (0 == i_ScanLevel) {
         bool bKeysAreEqual = aNextKey->bEqualTo(aFindKey,pIdxColVec);
         if (bKeysAreEqual &&
             (pToBuffer == EntryBuffer::pRefdEntryBuffer(aNextEntry_sl)->pPrevBuffer()))
@@ -2466,9 +2466,9 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
       }
       
       aScanEntry_sl = aNextEntry_sl;
-      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanOffset);
+      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
     }
-    aPriorVec[i_ScanOffset] = aScanEntry_sl;
+    aPriorVec[i_ScanLevel] = aScanEntry_sl;
   }
 }
 
@@ -2489,7 +2489,7 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
 //  
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  
-//  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
+//  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
 //    aPriorVec[i_Offset] = aSkipRoots();
 //  
 //  if (nItems() == 0)
@@ -2501,11 +2501,11 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
 //  bool bNextKeyIsGreaterEqual;
 //  Item* aScanEntry_sl = aSkipRoots();
 //  
-//  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
-//       i_ScanOffset >= 0;
-//       i_ScanOffset--) {
+//  for (i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
+//       i_ScanLevel >= 0;
+//       i_ScanLevel--) {
 //    
-//    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanOffset);
+//    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
 //    while (aNextEntry_sl) {
 //      
 //      KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
@@ -2518,7 +2518,7 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
 //      if (bNextKeyIsGreaterEqual)
 //        break;
 //      
-//      if (0 == i_ScanOffset) {
+//      if (0 == i_ScanLevel) {
 //        bool bKeysAreEqual = aNextKey->bEqualTo(aFindKey,pIdxColVec);
 //        if (bKeysAreEqual &&
 //            (pToBuffer == EntryBuffer::pRefdEntryBuffer(aNextEntry_sl)->pPrevBuffer()))
@@ -2526,9 +2526,9 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
 //      }
 //      
 //      aScanEntry_sl = aNextEntry_sl;
-//      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanOffset);
+//      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
 //    }
-//    aPriorVec[i_ScanOffset] = aScanEntry_sl;
+//    aPriorVec[i_ScanLevel] = aScanEntry_sl;
 //  }
 //}
 
@@ -2549,7 +2549,7 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
 //  
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  
-//  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
+//  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
 //    aPriorVec[i_Offset] = aSkipRoots();
 //  
 //  if (nItems() == 0)
@@ -2561,11 +2561,11 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
 //  bool bNextKeyIsGreaterEqual;
 //  Item* aScanEntry_sl = aSkipRoots();
 //  
-//  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
-//       i_ScanOffset >= 0;
-//       i_ScanOffset--) {
+//  for (i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
+//       i_ScanLevel >= 0;
+//       i_ScanLevel--) {
 //    
-//    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanOffset);
+//    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
 //    while (aNextEntry_sl) {
 //      
 //      KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
@@ -2575,7 +2575,7 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
 //      
 //      bNextKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
 //      
-//      if (0 == i_ScanOffset) {
+//      if (0 == i_ScanLevel) {
 //        bool bKeysAreEqual = aNextKey->bEqualTo(aFindKey,pIdxColVec);
 //        if ( bKeysAreEqual &&
 //            (pToBuffer == EntryBuffer::pRefdEntryBuffer(aNextEntry_sl)) )
@@ -2586,9 +2586,9 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
 //        break;
 //      
 //      aScanEntry_sl = aNextEntry_sl;
-//      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanOffset);
+//      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
 //    }
-//    aPriorVec[i_ScanOffset] = aScanEntry_sl;
+//    aPriorVec[i_ScanLevel] = aScanEntry_sl;
 //  }
 //  
 //  Item* aToBeDelete = aNextEntry(aPriorVec[0],0);
@@ -2656,12 +2656,12 @@ EntryBuffer* EntryBuffer::pSplit2(void)
     KeyData* aKey = _aKeyData(aCopyEntry->aDataArea());
     
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nOffsets = aCopyEntry->nOffsets();
+    i8 nLevels = aCopyEntry->nLevels();
     
     xKeyWrk.vId(xId);
     xKeyWrk.vEmbedded((char*)aKey);
     xKeyWrk.vKeySize(nKeySize);
-    xKeyWrk.vOffsets(nOffsets);
+    xKeyWrk.vLevels(nLevels);
     
     Item* aNewEntry = pNewRightBuffer->aInsertKeyAbsL0(xKeyWrk,&aLastEntryRight);
     
@@ -2839,8 +2839,8 @@ void EntryBuffer::vQuickVerify(Item* aSeeEntry)
     if (aTestEntry == aSeeEntry)
       int iDebug = 1;
     
-    for (i8 i_ScanOffset = aTestEntry->nOffsets()-1; i_ScanOffset >= 0; i_ScanOffset--) {
-      Item* aCheckEntry = aNextEntry(aTestEntry,i_ScanOffset);
+    for (i8 i_ScanLevel = aTestEntry->nLevels()-1; i_ScanLevel >= 0; i_ScanLevel--) {
+      Item* aCheckEntry = aNextEntry(aTestEntry,i_ScanLevel);
       if (! aCheckEntry)
         continue;
       
@@ -2851,15 +2851,15 @@ void EntryBuffer::vQuickVerify(Item* aSeeEntry)
     
   }
   
-  //  ln i_ScanOffset;
-  //  for (i_ScanOffset = 2; *i_ScanOffset >= 0; i_ScanOffset--) {
+  //  ln i_ScanLevel;
+  //  for (i_ScanLevel = 2; *i_ScanLevel >= 0; i_ScanLevel--) {
   //
-  //    for (Item* aTestEntry = aNextEntry(aSkipRoots(),*i_ScanOffset);
+  //    for (Item* aTestEntry = aNextEntry(aSkipRoots(),*i_ScanLevel);
   //         pTestEntry;
-  //         pTestEntry = aNextEntry(pTestEntry,*i_ScanOffset)) {
+  //         pTestEntry = aNextEntry(pTestEntry,*i_ScanLevel)) {
   //
   //      if (pSeeEntry) {
-  //        vTrace("|scan: %lld| "_Stz,*i_ScanOffset);
+  //        vTrace("|scan: %lld| "_Stz,*i_ScanLevel);
   //        pTestEntry->vShow(iToOffset(pTestEntry),m_pIndex,true);
   //      }
   //
@@ -2885,9 +2885,9 @@ bool EntryBuffer::bQuickVerify(Item* aNotSeeEntry)
        aTestEntry;
        aTestEntry = aNextEntry(aTestEntry,0)) {
     
-    for (i8 i_ScanOffset = aTestEntry->nOffsets()-1; i_ScanOffset >= 0; i_ScanOffset--) {
+    for (i8 i_ScanLevel = aTestEntry->nLevels()-1; i_ScanLevel >= 0; i_ScanLevel--) {
       
-      Item* aCheckEntry = aNextEntry(aTestEntry,i_ScanOffset);
+      Item* aCheckEntry = aNextEntry(aTestEntry,i_ScanLevel);
       if (! aCheckEntry)
         continue;
       
@@ -3555,7 +3555,7 @@ bool EntryBuffer::bVerifyRowRefs(void)
     Item* aRowEntry = pEntryBuffer->aGetEntry_Item(i_Item);
     
     // validate the row entry                                          //# more?
-    if (1 != aRowEntry->nOffsets()) {
+    if (1 != aRowEntry->nLevels()) {
       vVerifyFault();
       return false;
     }
@@ -3582,7 +3582,7 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
   Item* aNextEntry1;
   Item* aNextEntry0;
   
-  for (i8 i_ScanLevel = gpAttachMap->m_nIndexOffsets - 1;
+  for (i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
        i_ScanLevel >= 0;
        i_ScanLevel--) {
     
