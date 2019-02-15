@@ -546,7 +546,7 @@ Item* EntryBuffer::aNextEntry(Item* aCurrent, i8 i_Offset)
 /* position at an index buffer at given height starting from this buffer      */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pPositionHeight(KeyData* aGivenKey, i8 nKeyCols,
-                                         eJC eJuxtaCompare, i8 iLevel)
+                                         eJC eJuxtaCompare, i8 iHeight)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -559,13 +559,13 @@ EntryBuffer* EntryBuffer::pPositionHeight(KeyData* aGivenKey, i8 nKeyCols,
   
   EntryBuffer* pEntryBuffer = this;
   
-  i8 iBufferLevel;
+  i8 iBufferHeight;
   Item* aItem;
   
   while (true) {
-    iBufferLevel = pEntryBuffer->iHeightNo();
+    iBufferHeight = pEntryBuffer->iHeightNo();
     
-    if (iBufferLevel == iLevel)
+    if (iBufferHeight == iHeight)
       break;
     
     // get the entry
@@ -2243,8 +2243,8 @@ EntryBuffer* EntryBuffer::pPositionPriorBuffer(KeyData* aFindKey)
   while (true) {
     
     // have we arrived at L0 ?
-    i8 iBufferLevel = pEntryBuffer->iHeightNo();
-    if (iBufferLevel == 0) {
+    i8 iBufferiHeight = pEntryBuffer->iHeightNo();
+    if (iBufferiHeight == 0) {
       break;
     }
     else {

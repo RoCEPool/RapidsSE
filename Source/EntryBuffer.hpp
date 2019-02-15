@@ -54,7 +54,7 @@ namespace Data
   
     void         vBufferCount(i8& nBufferCount);
     EntryBuffer* pHigherBuffer(void);
-    void         vHigherBuffer(EntryBuffer* pHigherLevel);
+    void         vHigherBuffer(EntryBuffer* pHigherBuffer);
     EntryBuffer* pNextBuffer(void);
     void         vNextBuffer(EntryBuffer* pNextBuffer);
     EntryBuffer* pPrevBuffer(void);
@@ -108,7 +108,7 @@ namespace Data
   
     Item*       aPositionQuery(KeyData* aGivenKey, eRO eRelOp);
     Item*       aPositionQuery(KeyData* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
-    EntryBuffer* pPositionHeight(KeyData* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
+    EntryBuffer* pPositionHeight(KeyData* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, i8 iHeight);
     
     void         vReset(void);
     void         vRestore(void);

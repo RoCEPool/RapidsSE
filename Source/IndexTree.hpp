@@ -45,7 +45,7 @@ namespace Data
     void         vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
     void         vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
   //void         vCopyLeftV1(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
-    void         vDump(bool bSameLevel);
+    void         vDump(bool bSameHeight);
     EntryBuffer* pFirstL1Buffer(void);
     EntryBuffer* pFirstH0Buffer(void);
     Index*       pIndex(void);
@@ -55,7 +55,7 @@ namespace Data
     void         vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer);
     void         vLazyBuild(void);
     EntryBuffer* pPopSubList(EntryBuffer** ppSubList);
-    EntryBuffer* pPositionHeight(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
+    EntryBuffer* pPositionHeight(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iHeight);
     void         vPublish(void);
     bool         bPurge(i8 iOlderThanSeconds);
     EntryBuffer* pRoot(void);
