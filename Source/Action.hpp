@@ -175,8 +175,10 @@ namespace Maps
     Action();
     ~Action() noexcept(false);
   
+    i8   iDeltaNextUsec(void);
     void vInit(i8 i_Action);
     bool bIsRoot(void);
+    Action* pNext(void);
     void vReset(void);
     void vWrite(File* pFile);
     void vWriteJob(File* pFile);

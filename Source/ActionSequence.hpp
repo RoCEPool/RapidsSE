@@ -7,11 +7,13 @@ namespace Jobs { class Job; }
 
 namespace Maps
 {
-  static const i8    C_ACTION_SEQUENCE = C_1M * 10;
+  static const i8    C_ACTION_SEQUENCE = C_1M * 1;
   static const char* C_ACTION_REGION   = "/SE_ActionSequence";
 
   class ActionSequence : public Map
   {
+  friend class Action;
+  
   private:
     Lock m_okLock;
     i8   m_i_Action;  // current subscript

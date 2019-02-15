@@ -5,6 +5,8 @@
 #include "Maps.h"
 #include "StorageEngine.h"
 
+extern ActionSequence* gpActionSequence;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -75,6 +77,25 @@ Action::~Action(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
+i8 Action::iDeltaNextUsec(void)
+{
+  _precondition_(_MAGIC_,CN_ACTION);
+  
+  Action* pNext = this->pNext();
+  
+  if (! pNext)
+    return 0;
+  
+  i8 iTickDelta = m_iTick - pNext->m_iTick;
+  
+  i8 iDeltaUsec = Tsc::iToUsec(iTickDelta);
+  
+  return iDeltaUsec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* init                                                                       */
+/*----------------------------------------------------------------------------*/
 void Action::vInit(i8 i_Action)
 {
   _precondition_(_MAGIC_,CN_ACTION);
@@ -115,6 +136,23 @@ bool Action::bIsRoot(void)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset                                                                      */
+/*----------------------------------------------------------------------------*/
+Action* Action::pNext(void)
+{
+  _precondition_(_MAGIC_,CN_ACTION);
+  
+  i8 i_NextAction = * m_wLink;
+  
+  if (C_UNKNOWN == i_NextAction)
+    return nullptr;
+  
+  Action* pNext = &gpActionSequence->m_oaAction[i_NextAction];
+  
+  return pNext;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -273,11 +311,14 @@ void Action::vWriteLead(File* pFile)
 {
   _precondition_(_MAGIC_,CN_ACTION);
   
-  pFile->vPrint(/* 0 */ "[%03lld, %03lld, %lld] "_Stz,
+  i8 iDeltaUsec = iDeltaNextUsec();
+  
+  pFile->vPrint("[%03lld, %03lld, %lld (+%06lld)] "_Stz,
                 
-                /* 0 */ m_i_Action,
-                        m_i_Root,
-                        m_iTick
+                m_i_Action,
+                m_i_Root,
+                m_iTick,
+                iDeltaUsec
                 );
 }
 

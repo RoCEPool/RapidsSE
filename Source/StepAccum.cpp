@@ -80,7 +80,7 @@ void StepAccum::vPrint(File& oFile)
   if (0 == m_nInvoked)
     return;
   
-  i8 nCyclesPerGigaNanosecond = Tsc::iTickFrequency();
+  i8 nCyclesPerGigaNanosecond = Tsc::iTicksPerSecond();
   i8 nCyclesPerNanosecond = DIV(nCyclesPerGigaNanosecond,C_1G);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

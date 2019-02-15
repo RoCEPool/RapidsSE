@@ -102,7 +102,7 @@ void Axioms::vAddConstants(void)
   vAddConstant("OPEN_READ_APPEND"_Stz,       C_OPEN_READ_APPEND);
   
   // hardware
-  vAddConstant("HW_CLOCK_FREQUENCY"_Stz, Tsc::iTickFrequency());
+  vAddConstant("HW_CLOCK_FREQUENCY"_Stz, Tsc::iTicksPerSecond());
   vAddConstant("HW_CORE_COUNT"_Stz,      Hardware::iCoreCount());
   vAddConstant("HW_CPU_COUNT"_Stz,       Hardware::iCpuCount());
   vAddConstant("HW_PHYSICAL_MEMORY"_Stz, Hardware::iPhysicalMemory());

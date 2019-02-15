@@ -696,7 +696,7 @@ void BPA::vWriteBuffers(Stz* sFilePath)
   i8 iUpdate = Tsc::iTicks();
   
   i8 iTicks = (iUpdate - iStart);
-  i8 iTicksPerSecond = Tsc::iTickFrequency();
+  i8 iTicksPerSecond = Tsc::iTicksPerSecond();
   
   i8 iMilli = iTicks * C_1K / iTicksPerSecond;
   
