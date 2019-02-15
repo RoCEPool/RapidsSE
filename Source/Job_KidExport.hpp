@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Job_WriteRecord.hpp -- Write Record Job                                    */
+/* Job_KidExport.hpp -- Drag ExportBuffer to export node and write it         */
 /*============================================================================*/
 #pragma once
 
 namespace Jobs
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_WriteRecord : public Job
+  class Job_KidExport : public Job
   {
   public:
     i8 m_iExportJobId;  // job id of export job
@@ -19,12 +19,12 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_WriteRecord(Interface::Session* pSession);
-    ~Job_WriteRecord(void) noexcept(false);
+    Job_KidExport(Interface::Session* pSession);
+    ~Job_KidExport(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    static Job_WriteRecord* pNewJobWriteRecord(Interface::Session* pSession,
+    static Job_KidExport* pNewJobWriteRecord(Interface::Session* pSession,
                                                i8 iExportJobId);
     
   public:
@@ -36,14 +36,14 @@ namespace Jobs
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Job_WriteRecord* _pJob_WriteRecord(void* aAddr);
+  Job_KidExport* _pJob_KidExport(void* aAddr);
   
-  Job* pJob_WriteRecord_pre(Interface::Session* pSession);
-  Job* pJob_WriteRecord_new(Job* pArg);
-  void vJob_WriteRecord_delete(Interface::Session* pSession, Job* pJob);
-  void vJob_WriteRecord_show(Job* pJob);
+  Job* pJob_KidExport_pre(Interface::Session* pSession);
+  Job* pJob_KidExport_new(Job* pArg);
+  void vJob_KidExport_delete(Interface::Session* pSession, Job* pJob);
+  void vJob_KidExport_show(Job* pJob);
   
-  JobClass* pJob_WriteRecord_class(pFUN** aaFun);
+  JobClass* pJob_KidExport_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

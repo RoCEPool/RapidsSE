@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_WriteRecord.cpp -- write record job                                    */
+/* Job_KidExport.cpp -- Drag ExportBuffer to export node and write it         */
 /*============================================================================*/
 
 #include "Jobs.h"
@@ -9,7 +9,7 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_WriteRecord =
 {
-  "Job_WriteRecord"_Stz,  // name of the job class
+  "Job_KidExport"_Stz,  // name of the job class
   CN_JOB_WRITERECORD,     // class enum
   JK_GRANDKID,            // job kind
   "write record"_Stz,     // comment about the job
@@ -27,13 +27,13 @@ JobClass xJobClass_WriteRecord =
   JT_NONE,                // job trace
   
   nullptr,                // prompt check function
-  pJob_WriteRecord_pre,   // prompt pre-process function
+  pJob_KidExport_pre,   // prompt pre-process function
   nullptr,                // prompt post-process function
-  pJob_WriteRecord_new,   // job new function
-  vJob_WriteRecord_delete,// job delete function
+  pJob_KidExport_new,   // job new function
+  vJob_KidExport_delete,// job delete function
   vJob_send,              // job pre-send function
   vJob_recv,              // job post-receive function
-  vJob_WriteRecord_show,  // job show function
+  vJob_KidExport_show,  // job show function
   
   // help and example
   false,
@@ -46,7 +46,7 @@ JobClass xJobClass_WriteRecord =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* Jobs::pJob_WriteRecord_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_KidExport_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_WriteRow_class;
   
@@ -61,30 +61,30 @@ JobClass* Jobs::pJob_WriteRecord_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_WriteRecord* Jobs::_pJob_WriteRecord(void* aAddress)
+Job_KidExport* Jobs::_pJob_KidExport(void* aAddress)
 {
-  Job_WriteRecord* pJob_WriteRecord = reinterpret_cast<Job_WriteRecord*>(aAddress);
+  Job_KidExport* pJob_KidExport = reinterpret_cast<Job_KidExport*>(aAddress);
   
-  RASSERT_TYPE(pJob_WriteRecord,CN_JOB_WRITERECORD);
+  RASSERT_TYPE(pJob_KidExport,CN_JOB_WRITERECORD);
   
-  return pJob_WriteRecord;
+  return pJob_KidExport;
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_WriteRecord::operator new(size_t)
+void* Job_KidExport::operator new(size_t)
 {
-  Job_WriteRecord* pJob_WriteRecord =
-    static_cast<Job_WriteRecord*>(HeapMem::pAllocate(CN_JOB_WRITERECORD));
+  Job_KidExport* pJob_KidExport =
+    static_cast<Job_KidExport*>(HeapMem::pAllocate(CN_JOB_WRITERECORD));
   
-  return pJob_WriteRecord;
+  return pJob_KidExport;
 }
 
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_WriteRecord::operator new(size_t, void* aAddress)
+void* Job_KidExport::operator new(size_t, void* aAddress)
 {
   return aAddress;
 }
@@ -92,17 +92,17 @@ void* Job_WriteRecord::operator new(size_t, void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* free an entry buffer back to the heap                                      */
 /*----------------------------------------------------------------------------*/
-void Job_WriteRecord::operator delete(void* aAddress)
+void Job_KidExport::operator delete(void* aAddress)
 {
-  Job_WriteRecord* pJob_WriteRecord = static_cast<Job_WriteRecord*>(aAddress);
+  Job_KidExport* pJob_KidExport = static_cast<Job_KidExport*>(aAddress);
   //vTrace("DELETING INSERTBUFFER\n"_Stz);
-  HeapMem::vFree(pJob_WriteRecord);
+  HeapMem::vFree(pJob_KidExport);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_WriteRecord::Job_WriteRecord(Interface::Session* pSession)
+Job_KidExport::Job_KidExport(Interface::Session* pSession)
 : Job(CN_JOB_WRITERECORD, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITERECORD,_FOOTER_);
@@ -118,7 +118,7 @@ Job_WriteRecord::Job_WriteRecord(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_WriteRecord::~Job_WriteRecord(void) noexcept(false)
+Job_KidExport::~Job_KidExport(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITERECORD,_FOOTER_);
   
@@ -129,7 +129,7 @@ Job_WriteRecord::~Job_WriteRecord(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* insert row into table                                                      */
 /*----------------------------------------------------------------------------*/
-void Job_WriteRecord::vWriteRecords(void)
+void Job_KidExport::vWriteRecords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITERECORD,_FOOTER_);
   
@@ -142,17 +142,17 @@ void Job_WriteRecord::vWriteRecords(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_WriteRecord::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void Job_KidExport::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  Job_WriteRecord* pJob_WriteRecord = _pJob_WriteRecord(pObject);
+  Job_KidExport* pJob_KidExport = _pJob_KidExport(pObject);
 
-  pJob_WriteRecord->vShow();
+  pJob_KidExport->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
 /* new a WriteRecord job                                                      */
 /*----------------------------------------------------------------------------*/
-Job_WriteRecord* Job_WriteRecord::pNewJobWriteRecord(Interface::Session* pSession,
+Job_KidExport* Job_KidExport::pNewJobWriteRecord(Interface::Session* pSession,
                                                      i8 iExportJobId)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -161,12 +161,12 @@ Job_WriteRecord* Job_WriteRecord::pNewJobWriteRecord(Interface::Session* pSessio
   //! this needs to be optimised
   JobClass* pJobClass_WriteRecord = JobClass::pFind(CN_JOB_WRITERECORD);
 
-  Job_WriteRecord* pJob_WriteRecord =
-    _pJob_WriteRecord(pJobClass_WriteRecord->pPreJob(pSession));
+  Job_KidExport* pJob_KidExport =
+    _pJob_KidExport(pJobClass_WriteRecord->pPreJob(pSession));
 
-  pJob_WriteRecord->vSeed(SS_SEED_RUN);
+  pJob_KidExport->vSeed(SS_SEED_RUN);
 
-  return pJob_WriteRecord;
+  return pJob_KidExport;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -176,7 +176,7 @@ Job_WriteRecord* Job_WriteRecord::pNewJobWriteRecord(Interface::Session* pSessio
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_WriteRecord::vShow(void)
+void Job_KidExport::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITERECORD,_FOOTER_);
 }
@@ -188,7 +188,7 @@ void Job_WriteRecord::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Job_WriteRecord::aFooter(void)
+Footer* Job_KidExport::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITERECORD);
   
@@ -206,42 +206,42 @@ Footer* Job_WriteRecord::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteRecord_pre(Interface::Session* pSession)
+Job* Jobs::pJob_KidExport_pre(Interface::Session* pSession)
 {
-  Job_WriteRecord* pJob_WriteRecord = new Job_WriteRecord(pSession);
+  Job_KidExport* pJob_KidExport = new Job_KidExport(pSession);
   
-  return pJob_WriteRecord;
+  return pJob_KidExport;
 }
 
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteRecord_new(Job* pArg)
+Job* Jobs::pJob_KidExport_new(Job* pArg)
 {
-  Job_WriteRecord* pJob_WriteRecord = new Job_WriteRecord(nullptr);
+  Job_KidExport* pJob_KidExport = new Job_KidExport(nullptr);
   
-  return pJob_WriteRecord;
+  return pJob_KidExport;
 }
 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_WriteRecord_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_KidExport_delete(Interface::Session* pSession, Job* pJob)
 {
-  Job_WriteRecord* pJob_WriteRecord = _pJob_WriteRecord(pJob);
+  Job_KidExport* pJob_KidExport = _pJob_KidExport(pJob);
   
   //vTrace("DELETING INSERTBUFFER\n"_Stz);
-  delete pJob_WriteRecord;
+  delete pJob_KidExport;
 }
 
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_WriteRecord_show(Job* pJob)
+void Jobs::vJob_KidExport_show(Job* pJob)
 {
-  Job_WriteRecord* pJob_WriteRecord = _pJob_WriteRecord(pJob);
+  Job_KidExport* pJob_KidExport = _pJob_KidExport(pJob);
 
-  pJob_WriteRecord->vShow();
+  pJob_KidExport->vShow();
 }
 
 /*============================================================================*/
