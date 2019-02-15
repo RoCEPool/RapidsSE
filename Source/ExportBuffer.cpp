@@ -24,7 +24,7 @@ ExportBuffer* Jobs::_pExportBuffer(void* aAddr)
 void* ExportBuffer::operator new(size_t)
 {
   ExportBuffer* pExportBuffer =
-    static_cast<ExportBuffer*>(HeapMem::pAllocate(CN_CSVBUFFER));
+    static_cast<ExportBuffer*>(HeapMem::pAllocate(CN_EXPORTBUFFER));
   
   return pExportBuffer;
 }
@@ -43,14 +43,14 @@ void ExportBuffer::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ExportBuffer::ExportBuffer(void)
-: Object(CN_CSVBUFFER)
+: Object(CN_EXPORTBUFFER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPORTBUFFER,_FOOTER_);
   
   m_nRecords = 0;
   m_nExpectBuffers = C_UNKNOWN;
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_EXPORTBUFFER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,7 +58,7 @@ ExportBuffer::ExportBuffer(void)
 /*----------------------------------------------------------------------------*/
 ExportBuffer::~ExportBuffer(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPORTBUFFER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +70,7 @@ ExportBuffer::~ExportBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 char* ExportBuffer::aAllotRecord(i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPORTBUFFER,_FOOTER_);
   
   char* aRecord = m_xWsp.aAllot(nBytes);
   if (aRecord)
@@ -84,7 +84,7 @@ char* ExportBuffer::aAllotRecord(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 i8 ExportBuffer::nExpectBuffers(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPORTBUFFER,_FOOTER_);
   
   return m_nExpectBuffers;
 }
@@ -94,7 +94,7 @@ i8 ExportBuffer::nExpectBuffers(void)
 /*----------------------------------------------------------------------------*/
 void ExportBuffer::vExpectBuffers(i8 nExpectBuffers)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPORTBUFFER,_FOOTER_);
   
   m_nExpectBuffers = nExpectBuffers;
 }
@@ -104,7 +104,7 @@ void ExportBuffer::vExpectBuffers(i8 nExpectBuffers)
 /*----------------------------------------------------------------------------*/
 i8 ExportBuffer::nFreeBytes(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPORTBUFFER,_FOOTER_);
   
   i8 nFree = m_xWsp.nFree();
   
@@ -116,7 +116,7 @@ i8 ExportBuffer::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 i8 ExportBuffer::nRecords(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPORTBUFFER,_FOOTER_);
   
   return m_nRecords;
 }
@@ -126,7 +126,7 @@ i8 ExportBuffer::nRecords(void)
 /*----------------------------------------------------------------------------*/
 void ExportBuffer::vRecvPostCorrection(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPORTBUFFER,_FOOTER_);
 }
 
 
@@ -139,7 +139,7 @@ void ExportBuffer::vRecvPostCorrection(void)
 /*----------------------------------------------------------------------------*/
 Footer* ExportBuffer::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPORTBUFFER);
   
   return &m_xFooter;
 }

@@ -384,14 +384,14 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of other
   
-  if (eClass == CN_CSVBUFFER) {
+  if (eClass == CN_EXPORTBUFFER) {
     
     ExportBuffer* pExportBuffer = new ExportBuffer();
     
-    MemLib::vCopy(pExportBuffer,pObject,sizeof(Object),CN_CSVBUFFER);
+    MemLib::vCopy(pExportBuffer,pObject,sizeof(Object),CN_EXPORTBUFFER);
     
     void* aBody = aAdd<void*>(pExportBuffer,sizeof(Object));
-    i8 nRemainingBytes = giClassSize[CN_CSVBUFFER] - sizeof(Object);
+    i8 nRemainingBytes = giClassSize[CN_EXPORTBUFFER] - sizeof(Object);
     
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
