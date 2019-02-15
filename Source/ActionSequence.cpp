@@ -158,11 +158,12 @@ void ActionSequence::vAdd(Jobs::Job* pJob,
   Action* pRoot = &gpActionSequence->m_oaAction[pJob->m_i_ActionRoot];
   Action* pLinked = gpActionSequence->pNewLinkedAction(pRoot);
   
-  pLinked->m_iJobId    = pJob->m_iJobId;
-  pLinked->m_eClassNo  = pJob->eClass();
-  pLinked->m_iParentId = pJob->m_iParentId;
-  pLinked->m_bWasRecv  = pJob->m_bWasReceived;
-  
+  pLinked->m_iJobId     = pJob->m_iJobId;
+  pLinked->m_eClassNo   = pJob->eClass();
+  pLinked->m_iParentId  = pJob->m_iParentId;
+  pLinked->m_bWasRecv   = pJob->m_bWasReceived;
+  pLinked->m_i_Activity = pJob->m_i_Activity;
+
   pLinked->m_eAction  = eAction;
   pLinked->m_iArg0    = iArg0;
   pLinked->m_iArg1    = iArg1;
@@ -193,11 +194,12 @@ void ActionSequence::vAdd(Jobs::Job* pJob, eAN eAction, Stz* szText)
   
   Action* pLinked = gpActionSequence->pNewLinkedAction(pRoot);
   
-  pLinked->m_iJobId    = pJob->m_iJobId;
-  pLinked->m_eClassNo  = pJob->eClass();
-  pLinked->m_iParentId = pJob->m_iParentId;
-  pLinked->m_bWasRecv  = pJob->m_bWasReceived;
-  
+  pLinked->m_iJobId     = pJob->m_iJobId;
+  pLinked->m_eClassNo   = pJob->eClass();
+  pLinked->m_iParentId  = pJob->m_iParentId;
+  pLinked->m_bWasRecv   = pJob->m_bWasReceived;
+  pLinked->m_i_Activity = pJob->m_i_Activity;
+
   pLinked->m_eAction  = eAction;
   StrLib::vCopyLen(pLinked->m_caText,
                    szText->aChar(),
@@ -230,20 +232,22 @@ void ActionSequence::vAdd(Jobs::Job* pJob, eAN eAction,
   
   Action* pLinked = gpActionSequence->pNewLinkedAction(pRoot);
   
-  pLinked->m_iJobId    = pJob->m_iJobId;
-  pLinked->m_eClassNo  = pJob->eClass();
-  pLinked->m_iParentId = pJob->m_iParentId;
-  pLinked->m_bWasRecv  = pJob->m_bWasReceived;
-  
+  pLinked->m_iJobId     = pJob->m_iJobId;
+  pLinked->m_eClassNo   = pJob->eClass();
+  pLinked->m_iParentId  = pJob->m_iParentId;
+  pLinked->m_bWasRecv   = pJob->m_bWasReceived;
+  pLinked->m_i_Activity = pJob->m_i_Activity;
+
   pLinked->m_eAction   = eAction;
   pLinked->m_iArg0     = iArg0;
   pLinked->m_iArg1     = iArg1;
 
-  pLinked->m_iJobId_Arg    = pSystemJob->m_iJobId;
-  pLinked->m_eClassNo_Arg  = pSystemJob->eClass();
-  pLinked->m_iParentId_Arg = pSystemJob->m_iParentId;
-  pLinked->m_bWasRecv_Arg  = pSystemJob->m_bWasReceived;
-  
+  pLinked->m_iJobId_Arg     = pSystemJob->m_iJobId;
+  pLinked->m_eClassNo_Arg   = pSystemJob->eClass();
+  pLinked->m_iParentId_Arg  = pSystemJob->m_iParentId;
+  pLinked->m_bWasRecv_Arg   = pSystemJob->m_bWasReceived;
+  pLinked->m_i_Activity_Arg = pSystemJob->m_i_Activity;
+
   pLinked->m_aJob     = pJob;
 #else
   
@@ -294,10 +298,11 @@ void ActionSequence::vRoot(Jobs::Job* pJob)
   
   pJob->m_i_ActionRoot = pRoot->m_i_Action;
   
-  pRoot->m_iJobId    = pJob->m_iJobId;
-  pRoot->m_eClassNo  = pJob->eClass();
-  pRoot->m_iParentId = pJob->m_iParentId;
-  pRoot->m_bWasRecv  = pJob->m_bWasReceived;
+  pRoot->m_iJobId     = pJob->m_iJobId;
+  pRoot->m_eClassNo   = pJob->eClass();
+  pRoot->m_iParentId  = pJob->m_iParentId;
+  pRoot->m_bWasRecv   = pJob->m_bWasReceived;
+  pRoot->m_i_Activity = pJob->m_i_Activity;
   
   Tsp wTspNow;
   wTspNow.vSetAsNow();
@@ -331,11 +336,12 @@ void ActionSequence::vEnd(Jobs::Job* pJob)
   Action* pRoot = &gpActionSequence->m_oaAction[pJob->m_i_ActionRoot];
   Action* pEnd = gpActionSequence->pNewLinkedAction(pRoot);
   
-  pEnd->m_iJobId    = pJob->m_iJobId;
-  pEnd->m_eClassNo  = pJob->eClass();
-  pEnd->m_iParentId = pJob->m_iParentId;
-  pEnd->m_bWasRecv  = pJob->m_bWasReceived;
-  
+  pEnd->m_iJobId     = pJob->m_iJobId;
+  pEnd->m_eClassNo   = pJob->eClass();
+  pEnd->m_iParentId  = pJob->m_iParentId;
+  pEnd->m_bWasRecv   = pJob->m_bWasReceived;
+  pEnd->m_i_Activity = pJob->m_i_Activity;
+
   Tsp wTspNow;
   wTspNow.vSetAsNow();
   
