@@ -273,7 +273,7 @@ void Job_Export::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
   
-  vTrace("Job_Export %03lld: "
+  vTrace("  Job_Export %03lld: "
          "Table %s File %s "
          "PartitionsComplete %lld "
          "BuffersExpected %lld "

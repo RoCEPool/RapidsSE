@@ -198,8 +198,8 @@ bool Job_SubExporter::bChunk(void)
   
   ActionSequence::vAdd(this,AN_JOB_CHUNK,m_iEntryBuffer);
 
-  if (m_pEntryBuffer->nItems())
-    vSprintRows();
+//  if (m_pEntryBuffer->nItems())
+//    vSprintRows();
   
   m_iEntryBuffer++;
   m_pEntryBuffer = m_pEntryBuffer->pNextBuffer();
@@ -227,12 +227,10 @@ void Job_SubExporter::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
   
-  vTrace("  JobExport %p %03lld\n"
-         " i_Slot %lld Index: %s.%s partition %lld\n"_Stz,
+  vTrace("  Job_SubExport %p %03lld "
+         "i_Slot %lld\n"_Stz,
          m_pJobExport, m_pJobExport->m_iJobId,
-         m_i_Slot,
-         m_pIndexTree->pIndex()->pTable()->aTableName(),
-         m_pIndexTree->pIndex()->aIndexName()
+         m_i_Slot
          );
 }
 
