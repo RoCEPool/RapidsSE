@@ -141,12 +141,13 @@ namespace Jobs
 
     Decider m_oAcksRemaining;  // acks remaining
 
-    eJT  m_eJobTrace;    // job trace
+    eJT  m_eJobTrace;    // job trace (to be removed)
     bool m_bMark;        // write activity marks?
     i8   m_i_Activity;   // action
     bool m_bMarkAction;  // mark an actions
     i8   m_i_ActionRoot; // action
-  
+    bool m_bMarkTrace;   // mark version of trace
+
     JobClass*    m_pJobClass;        // job class
     Tasks::Task* m_pExecutingTask;   // task executing the job
     Tasks::Task* m_pOriginatingTask; // originating task of the request

@@ -88,7 +88,13 @@ Job::Job(eCN eClassNo, Session* pSession)
   else
     m_bMarkAction  = false;
   m_i_ActionRoot = C_UNKNOWN;
-  
+
+  if ( gpAttachMap->m_oMarkTrace.bAll() ||
+      gpAttachMap->m_oMarkTrace.bFlagged(eClass()) )
+    m_bMarkTrace  = true;
+  else
+    m_bMarkTrace  = false;
+
   m_pJobClass        = nullptr;
   m_pExecutingTask   = nullptr;
   m_pOriginatingTask = nullptr;
