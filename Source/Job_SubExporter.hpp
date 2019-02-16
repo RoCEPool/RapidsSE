@@ -39,6 +39,7 @@ namespace Jobs
     void vShow(void);
   
   private:
+    void vSpawnKidExport(void);
     void vSprintRows(void);
   
     Footer* aFooter(void);

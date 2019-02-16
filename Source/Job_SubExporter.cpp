@@ -198,8 +198,8 @@ bool Job_SubExporter::bChunk(void)
   
   ActionSequence::vAdd(this,AN_JOB_CHUNK,m_iEntryBuffer);
 
-//  if (m_pEntryBuffer->nItems())
-//    vSprintRows();
+  if (m_pEntryBuffer->nItems())
+    vSprintRows();
   
   m_iEntryBuffer++;
   m_pEntryBuffer = m_pEntryBuffer->pNextBuffer();
@@ -215,7 +215,7 @@ void Job_SubExporter::vEnd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
 
   if (m_pExportBuffer)
-    {;}
+    vSpawnKidExport();
   
   ActionSequence::vAdd(this,AN_JOB_END,m_iEntryBuffer);
 }
@@ -237,6 +237,29 @@ void Job_SubExporter::vShow(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* spawn kid-export to drag export buffer to export node and write            */
+/*----------------------------------------------------------------------------*/
+void Job_SubExporter::vSpawnKidExport(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+  
+  JobClass* pJobClass_KidExport = JobClass::pFind(CN_JOB_KIDEXPORT);
+  Job* pNewJob = pJobClass_KidExport->pNewJob(nullptr);
+  Job_KidExport* pJob_KidExport = _pJob_KidExport(pNewJob);
+  
+  pJob_KidExport->m_iExportJobId = m_pJobExport->m_iJobId;
+  pJob_KidExport->m_pSendWith    = m_pExportBuffer;
+
+  m_pExportBuffer = nullptr;
+  
+  IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob_KidExport,SS_SEED_RUN));
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint rows into export buffer                                             */
+/*----------------------------------------------------------------------------*/
 void Job_SubExporter::vSprintRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
@@ -252,15 +275,17 @@ void Job_SubExporter::vSprintRows(void)
     RowData* aRow = _aRowData(aItem->aDataArea());
     
     aRow->vAsBinaryStringVLQ(sRecord,pColVec);
-    vTrace("]]%s[[\n"_Stz,sRecord.aStz());
+    //vTrace("]]%s[[\n"_Stz,sRecord.aStz());
     
     i8 nBytes = sRecord.nSize();
     
     if (! m_pExportBuffer)
       m_pExportBuffer = new ExportBuffer;
     
-    if (m_pExportBuffer->nFreeBytes() < nBytes)
+    if (m_pExportBuffer->nFreeBytes() < nBytes) {
+      vSpawnKidExport();
       m_pExportBuffer = new ExportBuffer;
+    }
     
     char* aRecord = m_pExportBuffer->aAllotRecord(nBytes);
     StrLib::vCopy(aRecord,sRecord.aChar());
