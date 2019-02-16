@@ -164,6 +164,7 @@ namespace Maps
     i8    m_iArg0;
     i8    m_iArg1;
   
+    char  m_caName[32];
     char  m_caText[128];
 
     Link_t<i8> m_wLink;

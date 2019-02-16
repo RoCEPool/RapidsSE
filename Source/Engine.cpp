@@ -203,6 +203,11 @@ void Engine::vCreateAttachMap(void)
 {
   // create the attach map (which records global pointers)
   new AttachMap;
+
+  if (gxArguments.m_bVerbose)
+    vInfo("AttachMap created: sizeof(AttachMap)=%lldB\n"_Stz,
+          sizeof(AttachMap));
+
 }
 
 /*----------------------------------------------------------------------------*/

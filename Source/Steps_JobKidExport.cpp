@@ -11,9 +11,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobKidExport(void)
 {
-  vAddStep("job_kidExport.exportJobId"_Stz,    &Step::vJob_KidExportExportJobId);
-  vAddStep("job_kidExport.exportOrigin"_Stz,   &Step::vJob_KidExportExportOrigin);
-  vAddStep("job_kidExport.writeKidBuffer"_Stz, &Step::vJob_KidExportWriteKidBuffer);
+  vAddStep("job_kidExport.exportJobId"_Stz,       &Step::vJob_KidExportExportJobId);
+  vAddStep("job_kidExport.exportOrigin"_Stz,      &Step::vJob_KidExportExportOrigin);
+  vAddStep("job_kidExport.writeExportBuffer"_Stz, &Step::vJob_KidExportWriteExportBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
