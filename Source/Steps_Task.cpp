@@ -82,7 +82,7 @@ void Step::vTaskAcksStore(MP_Task mpTask)
   
   Job* pJob = pGivenTask->m_pJob;
   
-  if (pJob && pJob->m_bMark) {
+  if (pJob && pJob->m_bMarkActivity) {
     ActivityMap::vMarkJob(pJob,"Setting acks: %s %p to %lld"_Stz,
                        aCN[pJob->eClass()],
                        pJob,
@@ -196,7 +196,7 @@ void Step::vTaskIsAckSet(MP_Task mpTask)
   i8 iIsAckSet = pTaskBeingAcked->m_oAcksRemaining.bIsSet();
   Job* pJob = pTaskBeingAcked->m_pJob;
   
-  if (pJob && pJob->m_bMark) {
+  if (pJob && pJob->m_bMarkActivity) {
     ActivityMap::vMarkJob(pJob,"Task %p: IsAckSet %lld"_Stz,
                        pTaskBeingAcked,
                        iIsAckSet);

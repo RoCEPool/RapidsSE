@@ -141,25 +141,26 @@ namespace Jobs
 
     Decider m_oAcksRemaining;  // acks remaining
 
-    eJT  m_eJobTrace;    // job trace (to be removed)
-    bool m_bMark;        // write activity marks?
-    i8   m_i_Activity;   // action
-    bool m_bMarkAction;  // mark an actions
-    i8   m_i_ActionRoot; // action
-    bool m_bMarkTrace;   // mark version of trace
+    bool m_bMarkActivity; // mark activity
+    i8   m_i_Activity;    // activity
+    bool m_bMarkAction;   // mark actions
+    i8   m_i_ActionRoot;  // action
+    bool m_bMarkTrace;    // trace (mark version)
 
     JobClass*    m_pJobClass;        // job class
     Tasks::Task* m_pExecutingTask;   // task executing the job
     Tasks::Task* m_pOriginatingTask; // originating task of the request
   
-    i8  m_iParticipantNode;    // participant node no
+    i8  m_iParticipantNode;    // participant node no (FromNodeNo?)
   
     EntryBuffer* m_pCurrentBuffer; // entry buffer
   
     Object* m_pSendWith; // object which is to be sent with this job
   
     Mutex* m_pMutex;
-  
+
+    eJT  m_eJobTrace;     // job trace (to be removed)
+
   public:
     Job(eCN eClassNo, Interface::Session* pSession);
     ~Job(void) noexcept(false);

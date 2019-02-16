@@ -166,7 +166,7 @@ bool Job_SubExporter::bBegin(void)
   m_pEntryBuffer  = m_pIndexTree->pRoot();
   m_nEntryBuffers = m_pEntryBuffer->iLengthList();
   
-  if (m_bMark)
+  if (m_bMarkActivity)
     ActivityMap::vMarkJob(this,
                           "IndexTree[%lld] for table %s has %lld buffers"_Stz,
                           m_i_Slot,
@@ -188,7 +188,7 @@ bool Job_SubExporter::bChunk(void)
   if (! m_pEntryBuffer)
     return false;
   
-  if (m_bMark)
+  if (m_bMarkActivity)
     ActivityMap::vMarkJob(this,
                           "Exporting Table %s EntryBuffer[%lld/%lld] %p"_Stz,
                           m_pJobExport->m_pTable->aTableName(),

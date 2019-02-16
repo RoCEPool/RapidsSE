@@ -426,42 +426,60 @@
   static void vJobAcksRemaining(Tasks::MP_Task mpTask);
   static void vJobAddOriginator(Tasks::MP_Task mpTask);
   static void vJobAddParticipant(Tasks::MP_Task mpTask);
+
   static void vJobClass(Tasks::MP_Task mpTask);
   static void vJobColumnCountFetch(Tasks::MP_Task mpTask);
   static void vJobColumnNameFetch(Tasks::MP_Task mpTask);
   static void vJobColumnIsPartKey(Tasks::MP_Task mpTask);
   static void vJobColumnTypeFetch(Tasks::MP_Task mpTask);
+
   static void vJobDecAcksRemaining(Tasks::MP_Task mpTask);
   static void vJobDelete(Tasks::MP_Task mpTask);
   static void vJobDicPath(Tasks::MP_Task mpTask);
+
   static void vJobEntryBufferFetch(Tasks::MP_Task mpTask);
   static void vJobEntryBufferStore(Tasks::MP_Task mpTask);
   static void vJobErrorStore(Tasks::MP_Task mpTask);
   static void vJobErrorFetch(Tasks::MP_Task mpTask);
   static void vJobExecuteFetch(Tasks::MP_Task mpTask);
   static void vJobExecutingTaskFetch(Tasks::MP_Task mpTask);
+
   static void vJobFindOriginator(Tasks::MP_Task mpTask);
   static void vJobFindParticipant(Tasks::MP_Task mpTask);
+
   static void vJobHasError(Tasks::MP_Task mpTask);
   static void vJobHasEntryBuffer(Tasks::MP_Task mpTask);
   static void vJobHasSendWith(Tasks::MP_Task mpTask);
+
   static void vJobIdFetch(Tasks::MP_Task mpTask);
   static void vJobIndexNameFetch(Tasks::MP_Task mpTask);
   static void vJobIsExecuting(Tasks::MP_Task mpTask);
+
   static void vJobJobClass(Tasks::MP_Task mpTask);
+
+  static void vJobListFetch(Tasks::MP_Task mpTask);
+
+  static void vJobMarkActionFetch(Tasks::MP_Task mpTask);
+  static void vJobMarkTraceFetch(Tasks::MP_Task mpTask);
   static void vJobMetadataStore(Tasks::MP_Task mpTask);
+
+  static void vJobNoWaitFetch(Tasks::MP_Task mpTask);
+
   static void vJobObjectNameFetch(Tasks::MP_Task mpTask);
   static void vJobOriginatingTaskFetch(Tasks::MP_Task mpTask);
   static void vJobOriginatingTaskStore(Tasks::MP_Task mpTask);
   static void vJobOriginatorFetch(Tasks::MP_Task mpTask);
+
+  static void vJobParentIdFetch(Tasks::MP_Task mpTask);
   static void vJobParticipantFetch(Tasks::MP_Task mpTask);
   static void vJobParticipantStore(Tasks::MP_Task mpTask);
+  static void vJobPartitionsFetch(Tasks::MP_Task mpTask);
   static void vJobPhaseFetch(Tasks::MP_Task mpTask);
   static void vJobPhaseStore(Tasks::MP_Task mpTask);
   static void vJobPostRecv(Tasks::MP_Task mpTask);
   static void vJobPreSend(Tasks::MP_Task mpTask);
+
   static void vJobRecv(Tasks::MP_Task mpTask);
-  static void vJobPartitionsFetch(Tasks::MP_Task mpTask);
   static void vJobRegionSizeFetch(Tasks::MP_Task mpTask);
   static void vJobRemoveOriginator(Tasks::MP_Task mpTask);
   static void vJobRemoveParticipant(Tasks::MP_Task mpTask);
@@ -473,15 +491,21 @@
   static void vJobRowsProcessedStore(Tasks::MP_Task mpTask);
   static void vJobRowsSkippedFetch(Tasks::MP_Task mpTask);
   static void vJobRowsSkippedStore(Tasks::MP_Task mpTask);
+
+  static void vJobSeedFetch(Tasks::MP_Task mpTask);
   static void vJobSend(Tasks::MP_Task mpTask);
   static void vJobSendWithFetch(Tasks::MP_Task mpTask);
   static void vJobSendWithStore(Tasks::MP_Task mpTask);
+  static void vJobSessionStateFetch(Tasks::MP_Task mpTask);
   static void vJobShow(Tasks::MP_Task mpTask);
   static void vJobSignalConnector(Tasks::MP_Task mpTask);
+  static void vJobSlotFetch(Tasks::MP_Task mpTask);
   static void vJobSpawn(Tasks::MP_Task mpTask);
+
   static void vJobThis(Tasks::MP_Task mpTask);
   static void vJobTraceStore(Tasks::MP_Task mpTask);
   static void vJobTraceFetch(Tasks::MP_Task mpTask);
+
   static void vJobWaitParticipant(Tasks::MP_Task mpTask);
 
   // job generic

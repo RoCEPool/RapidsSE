@@ -11,9 +11,6 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Job(void)
 {
-  vAddStep("job::findOriginator"_Stz,  &Step::vJobFindOriginator);
-  vAddStep("job::findParticipant"_Stz, &Step::vJobFindParticipant);
-  
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
   vAddStep("job.addOriginator"_Stz,    &Step::vJobAddOriginator);
   vAddStep("job.addParticipant"_Stz,   &Step::vJobAddParticipant);
@@ -34,6 +31,9 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.error@"_Stz,           &Step::vJobErrorFetch);
   vAddStep("job.execute@"_Stz,         &Step::vJobExecuteFetch);
   vAddStep("job.executingTask@"_Stz,   &Step::vJobExecutingTaskFetch);
+  
+  vAddStep("job::findOriginator"_Stz,  &Step::vJobFindOriginator);
+  vAddStep("job::findParticipant"_Stz, &Step::vJobFindParticipant);
   
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
   vAddStep("job.hasEntryBuffer"_Stz,   &Step::vJobHasEntryBuffer);
@@ -126,7 +126,7 @@ void Step::vJobAddOriginator(MP_Task mpTask)
   gpAttachMap->m_pOriginatingJobs->vAddJob(pJob);
   gpAttachMap->m_pOriginatingJobs->vDropLock();
 
-  if (pJob->m_bMark) {
+  if (pJob->m_bMarkActivity) {
     ActivityMap::vMarkJob(pJob,"Added to Originator List: %s %p"_Stz,
                        aCN[pJob->eClass()],
                        pJob);
@@ -155,7 +155,7 @@ void Step::vJobAddParticipant(MP_Task mpTask)
   gpAttachMap->m_pParticipatingJobs->vAddJob(pJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();
   
-  if (pJob->m_bMark) {
+  if (pJob->m_bMarkActivity) {
     ActivityMap::vMarkJob(pJob,"Added to ParticipantList: %s %p "_Stz,
                        aCN[pJob->eClass()],
                        pJob);
@@ -853,7 +853,7 @@ void Step::vJobPostRecv(MP_Task mpTask)
   if (pJobClass->m_fpRecv)
     (*pJobClass->m_fpRecv)(pJob);
   
-  if (pJob->m_bMark) {
+  if (pJob->m_bMarkActivity) {
     ActivityMap::vMarkJob(pJob,
                           "PostRecv: %s %p"_Stz,
                           aCN[pJob->eClass()],
@@ -884,7 +884,7 @@ void Step::vJobPreSend(MP_Task mpTask)
   if (pJobClass->m_fpSend)
     (*pJobClass->m_fpSend)(pJob);
   
-  if (pJob->m_bMark)
+  if (pJob->m_bMarkActivity)
     ActivityMap::vMarkJob(pJob,
                           "PreSend: %s %p"_Stz,
                           aCN[pJob->eClass()],
@@ -943,7 +943,7 @@ void Step::vJobRemoveOriginator(MP_Task mpTask)
     gpAttachMap->m_pOriginatingJobs->vDropLock();
   }
   
-  if (pJob->m_bMark) {
+  if (pJob->m_bMarkActivity) {
     ActivityMap::vMarkJob(pJob,
                        "Removed from Originator List: %s %p"_Stz,
                        aCN[pJob->eClass()],
@@ -984,7 +984,7 @@ void Step::vJobRemoveParticipant(MP_Task mpTask)
     gpAttachMap->m_pParticipatingJobs->vDropLock();
   }
   
-  if (pJob->m_bMark) {
+  if (pJob->m_bMarkActivity) {
     ActivityMap::vMarkJob(pJob,"Removed from Participant List: "_Stz,
                        aCN[pJob->eClass()],
                        pJob);
@@ -1305,7 +1305,7 @@ void Step::vJobSignalConnector(MP_Task mpTask)
     return;
   }
   
-  if (pJob->m_bMark)
+  if (pJob->m_bMarkActivity)
     ActivityMap::vMarkJob(pJob,"Connector signalled by %s"_Stz,
                        aCN[pJob->eClass()]);
   

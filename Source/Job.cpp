@@ -77,9 +77,9 @@ Job::Job(eCN eClassNo, Session* pSession)
   
   m_eJobTrace = JT_NONE;
   if (gpAttachMap->m_bMarkJobAll || gpAttachMap->m_bMarkJob[eClass()])
-    m_bMark = true;
+    m_bMarkActivity = true;
   else
-    m_bMark = false;
+    m_bMarkActivity = false;
   m_i_Activity   = C_UNKNOWN;
   
   if ( gpAttachMap->m_oMarkAction.bAll() ||
@@ -110,7 +110,7 @@ Job::Job(eCN eClassNo, Session* pSession)
   else
     m_pMutex = new Mutex;
 
-  if (m_bMark)
+  if (m_bMarkActivity)
     ActivityMap::vMarkInfo("::Job"_Stz,""_Stz);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -127,7 +127,7 @@ Job::~Job(void) noexcept(false)
   
   delete m_pMutex;
   
-  if (m_bMark) {
+  if (m_bMarkActivity) {
     ActivityMap::vMarkInfo("~Job %s"_Stz,aCN[eClass()]);
     Job::vMarkJob();
   }
