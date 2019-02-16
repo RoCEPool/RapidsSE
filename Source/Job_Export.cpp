@@ -272,6 +272,17 @@ void Job_Export::vWriteBuffer(ExportBuffer* pExportBuffer)
 void Job_Export::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
+  
+  vTrace("  Table %s File %s\n"
+         "  PartitionsComplete %lld "
+         "  BuffersExpected %lld "
+         "  BuffersWritten %lld\n"_Stz,
+         m_sObjectName.aStz(),
+         m_sFilePath.aStz(),
+         m_nPartitionsComplete,
+         m_nBuffersExpected,
+         m_nBuffersWritten
+         );
 }
 
 /*----------------------------------------------------------------------------*/

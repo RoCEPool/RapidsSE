@@ -166,6 +166,8 @@ void Job_KidExport::vSpawn(i8 iExportJobId,
 void Job_KidExport::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
+  
+  vTrace("  ExportJobId %lld\n"_Stz,m_iExportJobId);
 }
 
 /*----------------------------------------------------------------------------*/

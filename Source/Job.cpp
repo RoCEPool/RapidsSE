@@ -447,14 +447,14 @@ void Job::vSeed(eSS eSeed)
 /*----------------------------------------------------------------------------*/
 /* set the job trace                                                          */
 /*----------------------------------------------------------------------------*/
-void Job::vShow(s48K& s)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  vTrace("%s: %s"_Stz,
-         m_pJobClass ? (Stz*)m_pJobClass->m_aName : "<no jobClass>"_Stz,
-         s.aStz());
-}
+//void Job::vShow(s48K& s)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_);
+//  
+//  vTrace("%s: %s"_Stz,
+//         m_pJobClass ? (Stz*)m_pJobClass->m_aName : "<no jobClass>"_Stz,
+//         s.aStz());
+//}
 
 
 /*----------------------------------------------------------------------------*/

@@ -226,6 +226,14 @@ void Job_SubExporter::vEnd(void)
 void Job_SubExporter::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+  
+  vTrace("  JobExport %p %03lld\n"
+         " i_Slot %lld Index: %s.%s partition %lld\n"_Stz,
+         m_pJobExport, m_pJobExport->m_iJobId,
+         m_i_Slot,
+         m_pIndexTree->pIndex()->pTable()->aTableName(),
+         m_pIndexTree->pIndex()->aIndexName()
+         );
 }
 
 /*----------------------------------------------------------------------------*/

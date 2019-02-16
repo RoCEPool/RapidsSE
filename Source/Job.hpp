@@ -190,7 +190,7 @@ namespace Jobs
     void vSeed(eSS eSeed);
 
   protected:
-    void vShow(s48K& s);
+    //void vShow(s48K& s);
   
   private:
   
