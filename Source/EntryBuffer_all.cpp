@@ -3676,7 +3676,6 @@ bool EntryBuffer::bVerifyItems(void)
     switch (eClass) {
         
       case CN_ENTRY: {
-        Item* aItem = (Item*)aItem;
         if (! aItem->bValidItem()) {
           vShow();
           vVerifyFault();
