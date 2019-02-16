@@ -455,6 +455,19 @@ void Job::vSeed(eSS eSeed)
 //         m_pJobClass ? (Stz*)m_pJobClass->m_aName : "<no jobClass>"_Stz,
 //         s.aStz());
 //}
+void Job::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  vTrace("%s %s parentId %03lld "
+         "i_State %03lld i_Slot %lld WasReceived %lld\n"_Stz,
+         aCN[eClass()],
+         m_pJobClass ? (Stz*)m_pJobClass->m_aName : "<no jobClass>"_Stz,
+         m_iParentId,
+         
+         m_i_State, m_i_Slot, (i8)m_bWasReceived
+         );
+}
 
 
 /*----------------------------------------------------------------------------*/

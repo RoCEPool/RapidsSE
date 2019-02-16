@@ -127,7 +127,10 @@ void JobClass::vRecvJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void JobClass::vShowJob(Job* pJob)
 {
-  (*m_fpShow)(pJob);
+  pJob->vShow();
+  
+  if (m_fpShow)
+    (*m_fpShow)(pJob);
 }
 
 /*----------------------------------------------------------------------------*/

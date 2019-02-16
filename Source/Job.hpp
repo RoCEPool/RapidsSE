@@ -188,6 +188,7 @@ namespace Jobs
     void vParticipantNode(i8 iNode);
     void vReport(void);
     void vSeed(eSS eSeed);
+    void vShow(void);
 
   protected:
     //void vShow(s48K& s);

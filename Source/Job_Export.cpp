@@ -273,10 +273,13 @@ void Job_Export::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
   
-  vTrace("  Table %s File %s\n"
-         "  PartitionsComplete %lld "
-         "  BuffersExpected %lld "
-         "  BuffersWritten %lld\n"_Stz,
+  vTrace("Job_Export %03lld: "
+         "Table %s File %s "
+         "PartitionsComplete %lld "
+         "BuffersExpected %lld "
+         "BuffersWritten %lld\n"_Stz,
+         
+         m_iJobId,
          m_sObjectName.aStz(),
          m_sFilePath.aStz(),
          m_nPartitionsComplete,
