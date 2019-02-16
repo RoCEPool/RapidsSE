@@ -456,11 +456,14 @@
   static void vJobIsExecuting(Tasks::MP_Task mpTask);
 
   static void vJobJobClass(Tasks::MP_Task mpTask);
-
-  static void vJobListFetch(Tasks::MP_Task mpTask);
+  static void vJobJobListFetch(Tasks::MP_Task mpTask);
 
   static void vJobMarkActionFetch(Tasks::MP_Task mpTask);
+  static void vJobMarkActionStore(Tasks::MP_Task mpTask);
+  static void vJobMarkActivityFetch(Tasks::MP_Task mpTask);
+  static void vJobMarkActivityStore(Tasks::MP_Task mpTask);
   static void vJobMarkTraceFetch(Tasks::MP_Task mpTask);
+  static void vJobMarkTraceStore(Tasks::MP_Task mpTask);
   static void vJobMetadataStore(Tasks::MP_Task mpTask);
 
   static void vJobNoWaitFetch(Tasks::MP_Task mpTask);
@@ -548,6 +551,7 @@
   static void vJob_ExportBegin(Tasks::MP_Task mpTask);
   static void vJob_ExportEnd(Tasks::MP_Task mpTask);
   static void vJob_ExportTableStore(Tasks::MP_Task mpTask);
+
   // job FetchRows
   static void vJob_FetchRowsLastBuffersStore(Tasks::MP_Task mpTask);
   static void vJob_FetchRowsPartitionFetch(Tasks::MP_Task mpTask);
