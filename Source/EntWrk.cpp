@@ -21,7 +21,7 @@ EntWrk::EntWrk(eCN eClassNo)
   // check initialisation of rowid
   ASSERT(0 == m_xId.iBuffer() &&
          0 == m_xId.iItem()   &&
-         0 == m_xId.nOffsets());
+         0 == m_xId.nLevels());
   
   m_xWsp.vInit();
   

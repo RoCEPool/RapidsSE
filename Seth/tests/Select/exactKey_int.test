@@ -24,7 +24,10 @@ success
 create index jCdt_idx4 on jCdt (jD);
 success
 
-ld jCdt "/DATA/Select/range.csv";
+ld jCdt "/DATA/Select/range2.csv";
+success
+
+vfyidx jCdt jCdt_idx1;
 success
 
 //------------------------------------------------------------------------------

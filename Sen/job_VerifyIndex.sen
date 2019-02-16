@@ -2,7 +2,7 @@
 /* job_VerifyIndex.sen -- Job Verify Index                                    */
 /*============================================================================*/
 
-" job_VisualizeIndex.sen" .verbose
+" job_VerifyIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* check if word is a valid table folder                                      */

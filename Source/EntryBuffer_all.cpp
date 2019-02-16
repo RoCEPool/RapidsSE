@@ -4014,7 +4014,7 @@ bool EntryBuffer::bVerifySkipListLevels(bool bShowKeys)
   while (aTestEntry_0) {
     
     // check if scan entry has more than one offset
-    i8 nOffsets = aTestEntry_0->nOffsets();
+    i8 nOffsets = aTestEntry_0->nLevels();
     if (1 == nOffsets) {
       aTestEntry_0 = aNextEntry(aTestEntry_0,0);
       continue;
