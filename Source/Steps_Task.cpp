@@ -29,7 +29,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.seed"_Stz,      &Step::vTaskSeed);
   vAddStep("task.session@"_Stz,  &Step::vTaskSessionFetch);
   vAddStep("task.session!"_Stz,  &Step::vTaskSessionStore);
-  vAddStep("task.sleepUs"_Stz,   &Step::vTaskSleepUs);
+  vAddStep("task.sleepUsec"_Stz, &Step::vTaskSleepUsec);
   vAddStep("task.send"_Stz,      &Step::vTaskSend);
   vAddStep("task.sendNode@"_Stz, &Step::vTaskSendNodeFetch);
   vAddStep("task.sendNode!"_Stz, &Step::vTaskSendNodeStore);
@@ -452,18 +452,18 @@ void Step::vTaskSendNodeStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task.sleepUs -- this task sleeps for given microseconds                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSleepUs(MP_Task mpTask)
+void Step::vTaskSleepUsec(MP_Task mpTask)
 {
-  ENTRY("vTaskSleepUs"_Stz);
+  ENTRY("vTaskSleepUsec"_Stz);
   
   i8 nMicroSeconds;
   
   if ( ! mpTask->m_pDataStack->bPop(nMicroSeconds) )
-    THROW_INVALID_DSTACK("task.sleepUs"_Stz);
+    THROW_INVALID_DSTACK("task.sleepUsec"_Stz);
   
   ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
   
-  mpTask->vSleepUs(nMicroSeconds);
+  mpTask->vSleepUsec(nMicroSeconds);
   mpTask->vState(TK_SLEEPING);
   
   EXIT();

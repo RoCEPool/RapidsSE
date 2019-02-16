@@ -470,7 +470,7 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuff
   aaRow = pFetchBuffer->aaFirstRowPtr();
   while (aaRow) {
     RowData* pRow = *aaRow;
-    pRow->vAsBinaryStringVLQ(sRowString, pJob_FetchRows->m_pTable->pColumnVec());
+    pRow->vAsBinaryStringVLQ(sRowString, pJob_FetchRows->m_pTable->pColumnVec(),false);
     vTrace("row: (%s)\n"_Stz, sRowString.aChar());
     aaRow = pFetchBuffer->aaNextRowPtr(aaRow);
   }

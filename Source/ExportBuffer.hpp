@@ -24,6 +24,7 @@ namespace Jobs
     ExportBuffer(void);
     ~ExportBuffer(void) noexcept(false);
   
+    char* aDataArea(void);
     char* aAllotRecord(i8 nBytes);
     i8    nExpectBuffers(void);
     void  vExpectBuffers(i8 nExpectBuffers);

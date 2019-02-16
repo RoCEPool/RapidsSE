@@ -102,7 +102,7 @@ void Step::vJob_SubIngesterChunk(MP_Task mpTask)
     }
     else {
       // sleep for 0.010 second
-      mpTask->vSleepUs(C_1K * 10);
+      mpTask->vSleepUsec(C_1K * 10);
       mpTask->vState(TK_SLEEPING);
       mpTask->m_pDataStack->vPushBool(true);
     }

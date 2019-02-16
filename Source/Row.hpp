@@ -21,8 +21,8 @@ namespace Data
     RowData(void);
     ~RowData(void) noexcept(false);
   
-    void vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec);
-    void vAsEscapedString(s48K& sDataString, ColumnVec* pColVec);
+    void vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec, bool bNewLine);
+    void vAsEscapedString(s48K& sDataString, ColumnVec* pColVec, bool bNewLine);
     char* aColumnDatum(i8 iColumnNo);
     void vDump(ColumnVec* pColVec);
     void vShow(ColumnVec* pColVec, bool bCompressed);

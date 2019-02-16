@@ -37,7 +37,7 @@ void Step::vRowEscapedString(MP_Task mpTask)
   
   s48K sRow;
   RowData* aEmbeddedRow = _aRowData(aItem->aDataArea());
-  aEmbeddedRow->vAsEscapedString(sRow,pTable->pColumnVec());
+  aEmbeddedRow->vAsEscapedString(sRow,pTable->pColumnVec(),false);
 
   mpTask->m_pDataStack->vPushS48K(sRow);
   

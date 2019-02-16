@@ -53,7 +53,8 @@ RowData::~RowData(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert row to binary string                                               */
 /*----------------------------------------------------------------------------*/
-void RowData::vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec)
+void RowData::vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec,
+                                 bool bNewLine)
 {
   Stz* aData;
   s17KB sDst;
@@ -84,12 +85,15 @@ void RowData::vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec)
       sDataString.vConcat(sDst);
   }
   
+  if (bNewLine)
+    sDataString.vAppend('\n');
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert row to escaped string                                              */
 /*----------------------------------------------------------------------------*/
-void RowData::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec)
+void RowData::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec,
+                               bool bNewLine)
 {
   Stz* aData;
   s17KB sDst;
@@ -120,6 +124,8 @@ void RowData::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec)
       sDataString.vConcat(sDst);
   }
   
+  if (bNewLine)
+    sDataString.vAppend('\n');
 }
 
 /*----------------------------------------------------------------------------*/

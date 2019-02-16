@@ -274,7 +274,7 @@ void Job_SubExporter::vSprintRows(void)
 
     RowData* aRow = _aRowData(aItem->aDataArea());
     
-    aRow->vAsBinaryStringVLQ(sRecord,pColVec);
+    aRow->vAsBinaryStringVLQ(sRecord,pColVec,true);
     //vTrace("]]%s[[\n"_Stz,sRecord.aStz());
     
     i8 nBytes = sRecord.nSize();

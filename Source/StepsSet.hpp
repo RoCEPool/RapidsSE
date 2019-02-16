@@ -1035,7 +1035,7 @@
   static void vTaskSend(Tasks::MP_Task mpTask);
   static void vTaskSendNodeFetch(Tasks::MP_Task mpTask);
   static void vTaskSendNodeStore(Tasks::MP_Task mpTask);
-  static void vTaskSleepUs(Tasks::MP_Task mpTask);
+  static void vTaskSleepUsec(Tasks::MP_Task mpTask);
   static void vTaskStateFetch(Tasks::MP_Task mpTask);
   static void vTaskStateStore(Tasks::MP_Task mpTask);
   static void vTaskThread(Tasks::MP_Task mpTask);

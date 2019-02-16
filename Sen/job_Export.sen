@@ -26,7 +26,39 @@
 /*----------------------------------------------------------------------------*/
 /* export on this participant node (same as originator)                       */
 /*----------------------------------------------------------------------------*/
-: export.export ( pJob_Export --  )
+: export.exportOriginator ( pJob_Export --  )
+
+  params| pJob_Export |
+
+  0 locals| sTableNm  |
+  0 locals| pTable    |
+
+  "export_export: export on this node" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // set path
+  pJob_Export job.pushPath task::dicStack.set
+
+  // set table dictionary
+  pJob_Export job.objectName@ to sTableNm
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // get table pointer
+  sTableNm table::find to pTable
+
+  pTable pJob_Export job_export.table!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pJob_Export job_export.begin
+;
+
+/*----------------------------------------------------------------------------*/
+/* export on this participant node (same as originator)                       */
+/*----------------------------------------------------------------------------*/
+: export.exportParticipant ( pJob_Export --  )
 
   params| pJob_Export |
 
@@ -53,11 +85,9 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob_Export job_export.begin
-
   pJob_Export export.spawnSubExporters
 
-  pJob_Export job_export.end
+  1000000000 task.sleepUsec
 ;
 
 
@@ -148,6 +178,8 @@
 
   job::this locals| pJob_Export |
 
+  pJob_Export export.exportOriginator
+
   pJob_Export job.distribute
 
   <<am <DONE_REQ>
@@ -185,7 +217,7 @@
   job::this locals| pJob_Export |
 
 
-  pJob_Export export.export
+  pJob_Export export.exportParticipant
 
   pJob_Export job.notice
 

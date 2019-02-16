@@ -66,6 +66,16 @@ ExportBuffer::~ExportBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get the recoords pointer                                                   */
+/*----------------------------------------------------------------------------*/
+char* ExportBuffer::aDataArea(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPORTBUFFER,_FOOTER_);
+  
+  return m_xWsp.aArea();
+}
+
+/*----------------------------------------------------------------------------*/
 /* allot space for a record of given size                                     */
 /*----------------------------------------------------------------------------*/
 char* ExportBuffer::aAllotRecord(i8 nBytes)

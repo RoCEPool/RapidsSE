@@ -184,7 +184,8 @@ void Job_Export::vEnd(void)
   ActionSequence::vAdd(this,AN_JOB_END);
   ActionSequence::vAdd(this,AN_CLOSE_FILE,m_sFilePath.aStz());
   
-  m_oCsvFile.vClose();
+  // m_oCsvFile.vClose();
+  vTrace("WARNING: NOT CLOSING EXPORT FILE\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -264,6 +265,10 @@ void Job_Export::vWriteBuffer(ExportBuffer* pExportBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
 
+  char* aData = pExportBuffer->aDataArea();
+  
+  m_oCsvFile.vPrint("%s"_Stz,aData);
+  m_oCsvFile.vFlush();
 }
 
 /*----------------------------------------------------------------------------*/
