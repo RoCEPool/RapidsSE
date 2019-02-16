@@ -171,6 +171,11 @@
        pJob job.entryBuffer@ pSocket socket.sendObject drop
     then
 
+    pJob job.hasSendWith if
+      "job.send: Job has send with" .
+      pJob job.sendWith@ pSocket socket.sendObject drop
+    then
+
   task::socketUnlock
 ;
 

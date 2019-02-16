@@ -37,7 +37,7 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
   vAddStep("job.hasEntryBuffer"_Stz,   &Step::vJobHasEntryBuffer);
-  vAddStep("job.hasSendWith"_Stz,      &Step::vJobHasEntryBuffer);
+  vAddStep("job.hasSendWith"_Stz,      &Step::vJobHasSendWith);
 
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch);
   vAddStep("job.indexName@"_Stz,       &Step::vJobIndexNameFetch);
