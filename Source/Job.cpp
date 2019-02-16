@@ -106,9 +106,9 @@ Job::Job(eCN eClassNo, Session* pSession)
   m_pSendWith = nullptr;
   
   if (CN_JOB_NODEINFO == eClass())
-    m_pMutex = nullptr;
+    m_pMutexJob = nullptr;
   else
-    m_pMutex = new Mutex;
+    m_pMutexJob = new Mutex;
 
   if (m_bMarkActivity)
     ActivityMap::vMarkInfo("::Job"_Stz,""_Stz);
@@ -125,7 +125,7 @@ Job::~Job(void) noexcept(false)
   
   ActionSequence::vAdd(this,AN_DESTRUCTOR);
   
-  delete m_pMutex;
+  delete m_pMutexJob;
   
   if (m_bMarkActivity) {
     ActivityMap::vMarkInfo("~Job %s"_Stz,aCN[eClass()]);
@@ -307,7 +307,7 @@ void Job::vMutexLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pMutex->vMutexLock();
+  m_pMutexJob->vMutexLock();
   
 //  i8 rCode = pthread_mutex_lock(&m_xThreadMutex);
 //
@@ -322,7 +322,7 @@ void Job::vMutexSignal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pMutex->vCondSignal();
+  m_pMutexJob->vCondSignal();
 
 //  i8 rCode = pthread_cond_signal(&m_xThreadCond);
 //
@@ -337,7 +337,7 @@ void Job::vMutexUnlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_pMutex->vMutexUnlock();
+  m_pMutexJob->vMutexUnlock();
 
 //  i8 rCode = pthread_mutex_unlock(&m_xThreadMutex);
 //
@@ -352,7 +352,7 @@ void Job::vMutexWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
  
-  m_pMutex->vCondWait();
+  m_pMutexJob->vCondWait();
   
 //  i8 rCode = pthread_cond_wait(&m_xThreadCond,&m_xThreadMutex);
 //
@@ -491,7 +491,7 @@ void Jobs::vJob_recv(Job* pJob)
 {
   pJob->m_pExecutingTask = nullptr;
   pJob->m_eJobList       = JL_NONE;
-  pJob->m_pMutex         = nullptr;
+  pJob->m_pMutexJob      = nullptr;
   pJob->m_bWasReceived   = true;
 }
 

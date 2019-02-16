@@ -73,7 +73,7 @@ Thread::Thread(void)
   m_eDedicated   = CN_NONE;
 
   m_pPthread = new Pthread;
-  m_pMutex       = new Mutex;
+  m_pMutexThread       = new Mutex;
   
   m_iLastQueueRR  = QR_SLEEPING_QUEUE - 1;
   m_iStartQueueRR = QR_NONE;
@@ -91,7 +91,7 @@ Thread::~Thread(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   delete m_pPthread;
-  delete m_pMutex;
+  delete m_pMutexThread;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -213,7 +213,7 @@ void Thread::vLoop(void)
   Pthread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
   
-  m_pMutex->vMutexLock();
+  m_pMutexThread->vMutexLock();
 
   ++gpAttachMap->m_ixThreads;
   
@@ -224,7 +224,7 @@ void Thread::vLoop(void)
       
       // wait upto 5ms to be given a signal
       m_eThreadState = TD_IDLE;
-      m_pMutex->vCondWait_Timed(5000); // while waiting the mutex is dropped
+      m_pMutexThread->vCondWait_Timed(5000); // while waiting the mutex is dropped
       m_eThreadState = TD_RUNNING;
 
       // attempt again if no task
@@ -327,8 +327,8 @@ void Thread::vExecuteTask(Task* pTask)
   // signal the thread
   //vSignalThread();
   
-  m_pMutex->vCondSignal();
-  m_pMutex->vMutexUnlock();
+  m_pMutexThread->vCondSignal();
+  m_pMutexThread->vMutexUnlock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -492,7 +492,7 @@ bool Thread::bGrabIfIdle(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   // attempt to lock threads mutex
-  if (! m_pMutex->bMutexLock())
+  if (! m_pMutexThread->bMutexLock())
     return false;
   
   // if this thread is idle return with mutex locked
@@ -502,7 +502,7 @@ bool Thread::bGrabIfIdle(void)
   }
   
   // thread is not idle, so unlock mutex
-  m_pMutex->vMutexUnlock();
+  m_pMutexThread->vMutexUnlock();
 
   return false;
 }

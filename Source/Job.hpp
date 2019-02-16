@@ -157,7 +157,7 @@ namespace Jobs
   
     Object* m_pSendWith; // object which is to be sent with this job
   
-    Mutex* m_pMutex;
+    Mutex* m_pMutexJob;
 
     eJT  m_eJobTrace;     // job trace (to be removed)
 

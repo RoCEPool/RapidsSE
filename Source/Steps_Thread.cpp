@@ -68,7 +68,7 @@ void Step::vThreadCondSignal(MP_Task mpTask)
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
   
-  pThread->m_pMutex->vCondSignal();
+  pThread->m_pMutexThread->vCondSignal();
   
   EXIT();
 }
@@ -87,7 +87,7 @@ void Step::vThreadCondWait(MP_Task mpTask)
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
   
-  pThread->m_pMutex->vCondWait();
+  pThread->m_pMutexThread->vCondWait();
   
   EXIT();
 }
@@ -235,7 +235,7 @@ ENTRY("vThreadoLockMutexLock"_Stz);
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
   
-  pThread->m_pMutex->vMutexLock();
+  pThread->m_pMutexThread->vMutexLock();
 
   EXIT();
 }
@@ -254,7 +254,7 @@ ENTRY("vThreadMutexUnlock"_Stz);
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
   
-  pThread->m_pMutex->vMutexUnlock();
+  pThread->m_pMutexThread->vMutexUnlock();
   
   EXIT();
 }
