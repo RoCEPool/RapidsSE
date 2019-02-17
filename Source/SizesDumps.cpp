@@ -450,7 +450,7 @@ i8 giClassSize[]
   
   /* 73 */ sizeof(Heap), // correct    // CN_MEDIUMPERSISTENT
   /* 74 */ sizeof(Heap), // correct    // CN_MEDIUMTRANSIENT
-  /*114 */ 0,                          // CN_MEMTEST
+  /*114 */ sizeof(MemTest),            // CN_MEMTEST
   /*114 */ sizeof(Mutex),              // CN_MUTEX
 
   /* 75 */ sizeof(Node),               // CN_NODE
@@ -501,7 +501,7 @@ i8 giClassSize[]
   /*130 */ sizeof(Table),              // CN_TABLE
   /*    */ sizeof(TablePtn),           // CN_TABLEPTN
   /*    */ sizeof(TablePtnVec),        // CN_TABLEPTNVEC
-  /*    */ 0,                          // CN_TAPPER
+  /*    */ sizeof(Tapper),             // CN_TAPPER
   /*131 */ sizeof(Task),               // CN_TASK
   /*    */ sizeof(TaskList),           // CN_TASKLIST
   /*134 */ sizeof(TaskQueue),          // CN_TASKQUEUE

@@ -16,7 +16,9 @@ namespace Jobs
 
     File   m_oCsvFile; // output csv file
   
-    Completer m_oCompleter;
+    Completer m_oCompleter; // recognise the completion of all export buffers
+  
+    Tapper m_oTapper; // handle the foward ack from Kid Export job
   
     // must be last
     Footer m_xFooter;
