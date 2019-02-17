@@ -31,7 +31,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.error@"_Stz,           &Step::vJobErrorFetch);
   vAddStep("job.execute@"_Stz,         &Step::vJobExecuteFetch);
   vAddStep("job.executingTask@"_Stz,   &Step::vJobExecutingTaskFetch);
-  
+  vAddStep("job.extraEndAcks@"_Stz,    &Step::vJobExtraEndAcksFetch);
+
   vAddStep("job::findOriginator"_Stz,  &Step::vJobFindOriginator);
   vAddStep("job::findParticipant"_Stz, &Step::vJobFindParticipant);
   
@@ -479,6 +480,26 @@ void Step::vJobExecutingTaskFetch(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pDataStack->vPushPointer(pJob->m_pExecutingTask);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.extraEndAcks@ -- fetch any extra end acks                              */
+/*----------------------------------------------------------------------------*/
+void Step::vJobExtraEndAcksFetch(MP_Task mpTask)
+{
+  ENTRY("vJobExtraEndAcksFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.extraEndAcks@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  RASSERT( (0 == pJob->m_nExtraEndAcks) ||
+           (1 == pJob->m_nExtraEndAcks && CN_JOB_EXPORT == pJob->eClass()));
+  
+  mpTask->m_pDataStack->vPushI8(pJob->m_nExtraEndAcks);
   
   EXIT();
 }

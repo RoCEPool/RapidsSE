@@ -87,7 +87,7 @@
 
   pJob_Export export.spawnSubExporters
 
-  1000000000 task.sleepUsec
+  //1000000000 task.sleepUsec
 ;
 
 
