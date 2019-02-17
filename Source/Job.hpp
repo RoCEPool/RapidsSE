@@ -140,7 +140,6 @@ namespace Jobs
     bool m_bWasReceived; // job was received over a socket
 
     Decider m_oAcksRemaining;  // acks remaining
-    i8  m_nExtraEndAcks;       // additional acks for job__end
 
     bool m_bMarkActivity; // mark activity
     i8   m_i_Activity;    // activity

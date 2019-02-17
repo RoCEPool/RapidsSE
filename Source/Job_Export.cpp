@@ -112,9 +112,7 @@ Job_Export::Job_Export(Interface::Session* pSession)
   m_pTable = nullptr;
   
   m_okLock.vInitLock(LK_EXPORT);
-  
-  m_nExtraEndAcks = 1;
-  
+    
   //m_oCsvFile;
   //m_oCompleter
 

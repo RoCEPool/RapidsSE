@@ -76,7 +76,6 @@ Job::Job(eCN eClassNo, Session* pSession)
   m_bWasReceived = false;
   
   //m_oAcksRemaining
-  m_nExtraEndAcks = 0;
   
   m_eJobTrace = JT_NONE;
   if (gpAttachMap->m_bMarkJobAll || gpAttachMap->m_bMarkJob[eClass()])

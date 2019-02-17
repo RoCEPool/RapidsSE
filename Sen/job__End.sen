@@ -22,8 +22,7 @@
   0 locals| pJob__End |
 
   // set the no of acks expected in originator job
-  pJobOriginator job.extraEndAcks@ grid::nodes +
-  pJobOriginator job.acksRemaining!
+  grid::nodes pJobOriginator job.acksRemaining!
 
   // new a temporary Job__End
   pJobOriginator job__End::new to pJob__End
