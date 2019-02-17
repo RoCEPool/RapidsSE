@@ -47,6 +47,12 @@
 
   pExportTask task.grabLock
 
+  pJob_Export job_export.twiddling@ if
+    "Export is twiddling" .
+  else
+    "Export is not twiddling" .
+  then
+
   pExportTask task.dropLock
 ;
 

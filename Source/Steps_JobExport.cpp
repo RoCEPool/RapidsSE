@@ -15,8 +15,8 @@ void Step::vAddSteps_JobExport(void)
   vAddStep("job_export.decTapper"_Stz,  &Step::vJob_ExportDecTapper);
   vAddStep("job_export.end"_Stz,        &Step::vJob_ExportEnd);
   vAddStep("Job_export.table!"_Stz,     &Step::vJob_ExportTableStore);
-  vAddStep("Job_export.twiddling@"_Stz, &Step::vJob_ExportTableStore);
-  vAddStep("Job_export.twiddling!"_Stz, &Step::vJob_ExportTableStore);
+  vAddStep("Job_export.twiddling@"_Stz, &Step::vJob_ExportTwiddlingFetch);
+  vAddStep("Job_export.twiddling!"_Stz, &Step::vJob_ExportTwiddlingStore);
 }
 
 /*----------------------------------------------------------------------------*/
