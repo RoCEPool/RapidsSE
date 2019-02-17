@@ -48,9 +48,9 @@ void Step::vJob_ExportDecTapper(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_export.decTapper"_Stz);
   Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
 
-  bool bAmDecider = pJob_Export->m_oTapper.bDecAndDecide();
+  bool bAmTapper = pJob_Export->m_oTapper.bDecAndDecide();
   
-  mpTask->m_pDataStack->vPushI8(bAmDecider);
+  mpTask->m_pDataStack->vPushI8(bAmTapper);
   
   EXIT();
 }

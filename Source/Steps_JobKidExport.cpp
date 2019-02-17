@@ -73,6 +73,8 @@ void Step::vJob_KidExportWriteExportBuffer(MP_Task mpTask)
   
   if (bHasCompleted)
     vTrace("COMPLETED\n"_Stz);
+  
+  mpTask->m_pDataStack->vPushI8(bHasCompleted);
 
   EXIT();
 }

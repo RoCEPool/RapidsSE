@@ -50,7 +50,11 @@
 
   i_ExportJobId job::findOriginator locals| pJob_Export |
 
-  pJob_Export pJob_KidExport job_kidExport.writeExportBuffer
+  pJob_Export pJob_KidExport job_kidExport.writeExportBuffer locals| bHasCompleted |
+
+  bHasCompleted if
+    "`KE is the completer" .
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
