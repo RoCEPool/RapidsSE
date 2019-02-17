@@ -242,6 +242,40 @@
   task::wait
 ;
 
+/*----------------------------------------------------------------------------*/
+/* distribute the job to all participating nodes and expect given nAcks       */
+/*----------------------------------------------------------------------------*/
+: job.distribute_nAcks ( nAcks pJob -- )
+
+  params| pJob |
+  params| nAcks |
+
+  // set originating task
+  task::this pJob job.originatingTask!
+
+  // add job to originator jobs
+  pJob job.addOriginator
+
+  // set the no of acks expected in originator job
+  nAcks pJob job.acksRemaining!
+
+  // grab this task's lock
+  task::this task.grabLock
+
+  // set acks for originator task
+  1 task::acks!
+
+  // send the job to each node in the grid
+  grid::nodes 0 do
+
+    I pJob job.forward
+
+  loop
+
+  // wait for all acks (maybe from deciding job__Ended)
+  task::wait
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
