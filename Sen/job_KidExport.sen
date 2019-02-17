@@ -35,6 +35,21 @@
 //                            on originator node                              //
 ////////////////////////////////////////////////////////////////////////////////
 
+
+/*----------------------------------------------------------------------------*/
+/* handle the tap of export job                                               */
+/*----------------------------------------------------------------------------*/
+: job_export.tap ( pJob_Export )
+
+  params| pJob_Export |
+
+  pJob_Export job.originatingTask@ locals| pExportTask |
+
+  pExportTask task.grabLock
+
+  pExportTask task.dropLock
+;
+
 /*----------------------------------------------------------------------------*/
 /* `KE seed on export node E                           [SE]-(E,SE,{`KE})-[SE] */
 /*----------------------------------------------------------------------------*/
@@ -54,6 +69,10 @@
 
   bHasCompleted if
     "`KE is the completer" .
+    pJob_Export job_export.decTapper if
+      "`KE is the tapper" .
+      pJob_Export job_export.tap
+    then
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

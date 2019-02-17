@@ -10,6 +10,8 @@ namespace Jobs
   private:
     i8 m_nTapsOriginally; // the number of original taps
     i8 m_nTapsRemaining;  // the number of taps remaining
+  
+    bool m_bTwiddling;    // job is twiddling, waiting to be acked
     
     // must be last
     Footer m_xFooter;
@@ -27,6 +29,8 @@ namespace Jobs
     i8   nOriginalTaps(void);
     i8   iPrintOnlyValue(void);
     void vSetRemaining(i8 nTapsRemaining);
+    bool bTwiddling(void);
+    void vTwiddling(bool bTwiddling);
 
     Footer* aFooter(void);
   };

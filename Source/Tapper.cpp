@@ -29,6 +29,7 @@ Tapper::Tapper(void)
 {
   m_nTapsOriginally = 0;
   m_nTapsRemaining  = 0;
+  m_bTwiddling      = false;
   
   _checkInitialised_(CN_TAPPER);
   
@@ -120,6 +121,26 @@ void Tapper::vSetRemaining(i8 nTapsRemaining)
   //vTrace("Setting m_nTapsRemaining to %lld\n"_Stz, nTapsRemaining);
   m_nTapsOriginally = nTapsRemaining;
   m_nTapsRemaining  = nTapsRemaining;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get twiddling                                                              */
+/*----------------------------------------------------------------------------*/
+bool Tapper::bTwiddling(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TAPPER,_FOOTER_);
+  
+  return m_bTwiddling;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set twiddling                                                              */
+/*----------------------------------------------------------------------------*/
+void Tapper::vTwiddling(bool bTwiddling)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TAPPER,_FOOTER_);
+  
+  m_bTwiddling = bTwiddling;
 }
 
 /*----------------------------------------------------------------------------*/
