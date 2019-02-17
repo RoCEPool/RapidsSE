@@ -11,9 +11,10 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobExport(void)
 {
-  vAddStep("job_export.begin"_Stz,  &Step::vJob_ExportBegin);
-  vAddStep("job_export.end"_Stz,    &Step::vJob_ExportEnd);
-  vAddStep("Job_export.table!"_Stz, &Step::vJob_ExportTableStore);
+  vAddStep("job_export.begin"_Stz,      &Step::vJob_ExportBegin);
+  vAddStep("job_export.decTapper"_Stz,  &Step::vJob_ExportDecTapper);
+  vAddStep("job_export.end"_Stz,        &Step::vJob_ExportEnd);
+  vAddStep("Job_export.table!"_Stz,     &Step::vJob_ExportTableStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -31,6 +32,25 @@ void Step::vJob_ExportBegin(MP_Task mpTask)
   bool bBegun = pJob_Export->bBegin();
   
   mpTask->m_pDataStack->vPushBool(bBegun);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_export.decTapper -- decrement taps remaining and return if decider     */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_ExportDecTapper(MP_Task mpTask)
+{
+  ENTRY("vJob_ExportDecTapper"_Stz);
+  
+  Object* pPtrJobExport;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJobExport) )
+    THROW_INVALID_DSTACK("job_export.decTapper"_Stz);
+  Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
+
+  bool bAmDecider = pJob_Export->m_oTapper.bDecAndDecide();
+  
+  mpTask->m_pDataStack->vPushI8(bAmDecider);
   
   EXIT();
 }

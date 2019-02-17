@@ -549,6 +549,7 @@
 
   // job Export
   static void vJob_ExportBegin(Tasks::MP_Task mpTask);
+  static void vJob_ExportDecTapper(Tasks::MP_Task mpTask);
   static void vJob_ExportEnd(Tasks::MP_Task mpTask);
   static void vJob_ExportTableStore(Tasks::MP_Task mpTask);
 
