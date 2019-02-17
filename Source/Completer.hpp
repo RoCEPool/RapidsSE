@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Completer.hpp -- multi-partition buffer completer                          */
+/* Completer.hpp -- multi-partition completer                                 */
 /*============================================================================*/
 #pragma once
 
@@ -8,9 +8,11 @@ namespace Jobs
   class Completer : public Object
   {
   private:
-    i8 m_nPartitionsComplete;
-    i8 m_nBuffersExpected;
-    i8 m_nBuffersProcessed;
+    Lock m_okLock; // lock over the following members
+  
+    i8   m_nPartitionsComplete; // number of partitions indicated completion
+    i8   m_nUnitsExpected;      // total number of work units expected
+    i8   m_nUnitsProcessed;     // total number of work units processed
 
     // must be last
     Footer m_xFooter;
@@ -21,6 +23,8 @@ namespace Jobs
     
     Completer(void);
     ~Completer(void) noexcept(false);
+  
+    bool IncProcessed(i8 m_nUnitsExpected);
   
     Footer* aFooter(void);
   };

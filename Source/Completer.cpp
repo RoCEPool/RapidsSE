@@ -1,8 +1,11 @@
 /*============================================================================*/
-/* Completer.cpp -- multi-partition buffer completer                          */
+/* Completer.cpp -- multi-partition completer                                 */
 /*============================================================================*/
 
 #include "Tasks.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
@@ -29,14 +32,15 @@ Completer::Completer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPLETER,_FOOTER_);
   
+  m_okLock.vInitLock(LK_COMPLETER);
+  
   m_nPartitionsComplete = 0;
-  m_nBuffersExpected    = C_UNKNOWN;
-  m_nBuffersProcessed   = 0;
+  m_nUnitsExpected  = C_UNKNOWN;
+  m_nUnitsProcessed = 0;
   
   _checkInitialised_(CN_COMPLETER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COMPLETER,_FOOTER_);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,6 +54,40 @@ Completer::~Completer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* inc units processed and determine if completed                             */
+/*----------------------------------------------------------------------------*/
+bool Completer::IncProcessed(i8 nUnitsExpected)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPLETER,_FOOTER_);
+  
+  bool bHasCompleted = false;
+  
+  m_okLock.vGrabWrite();
+  
+  m_nUnitsProcessed++;
+  
+  if (C_UNKNOWN != nUnitsExpected) {
+    if (C_UNKNOWN == m_nUnitsExpected)
+      m_nUnitsExpected = nUnitsExpected;
+    else
+      m_nUnitsExpected += nUnitsExpected;
+      
+    m_nPartitionsComplete++;
+  }
+
+  if (C_UNKNOWN != m_nUnitsExpected) {
+    if (m_nPartitionsComplete == gpAttachMap->m_pGrid->m_nPartitions &&
+        m_nUnitsProcessed == m_nUnitsExpected)
+      bHasCompleted = true;
+  }
+
+  m_okLock.vDropWrite();
+
+  return bHasCompleted;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
