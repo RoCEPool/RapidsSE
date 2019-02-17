@@ -11,12 +11,13 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobExport(void)
 {
-  vAddStep("job_export.begin"_Stz,      &Step::vJob_ExportBegin);
-  vAddStep("job_export.decTapper"_Stz,  &Step::vJob_ExportDecTapper);
-  vAddStep("job_export.end"_Stz,        &Step::vJob_ExportEnd);
-  vAddStep("Job_export.table!"_Stz,     &Step::vJob_ExportTableStore);
-  vAddStep("Job_export.twiddling@"_Stz, &Step::vJob_ExportTwiddlingFetch);
-  vAddStep("Job_export.twiddling!"_Stz, &Step::vJob_ExportTwiddlingStore);
+  vAddStep("job_export.begin"_Stz,          &Step::vJob_ExportBegin);
+  vAddStep("job_export.decTapper"_Stz,      &Step::vJob_ExportDecTapper);
+  vAddStep("job_export.end"_Stz,            &Step::vJob_ExportEnd);
+  vAddStep("Job_export.table!"_Stz,         &Step::vJob_ExportTableStore);
+  vAddStep("Job_export.tapsRemaining@"_Stz, &Step::vJob_ExportTapsRemainingFetch);
+  vAddStep("Job_export.twiddling@"_Stz,     &Step::vJob_ExportTwiddlingFetch);
+  vAddStep("Job_export.twiddling!"_Stz,     &Step::vJob_ExportTwiddlingStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,6 +95,25 @@ void Step::vJob_ExportTableStore(MP_Task mpTask)
   pJob_Export->m_pTable = pTable;
   
   ActionSequence::vAdd(pJob_Export,AN_TABLE_USE,pTable->aTableName());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_export.tapsRemaining@ -- fetch no of taps remaining                    */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_ExportTapsRemainingFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_ExportTapsRemainingFetch"_Stz);
+  
+  Object* pPtrJobExport;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJobExport) )
+    THROW_INVALID_DSTACK("Job_export.tapsRemaining@"_Stz);
+  Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
+  
+  i8 iTapsRemaining = pJob_Export->m_oTapper.iPrintOnlyValue();
+  
+  mpTask->m_pDataStack->vPushI8(iTapsRemaining);
   
   EXIT();
 }

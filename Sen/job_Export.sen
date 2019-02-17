@@ -24,6 +24,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* twiddle till kid exports are completed                                     */
+/*----------------------------------------------------------------------------*/
+: export.twiddle ( pJob_Export -- )
+
+  params| pJob_Export |
+
+  task::this task.grabLock
+
+  true pJob_export job_export.twiddling!
+
+  task::this task.dropLock
+;
+
+/*----------------------------------------------------------------------------*/
 /* export on this participant node (same as originator)                       */
 /*----------------------------------------------------------------------------*/
 : export.exportOriginator ( pJob_Export --  )
