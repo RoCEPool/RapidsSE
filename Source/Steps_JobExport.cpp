@@ -15,6 +15,8 @@ void Step::vAddSteps_JobExport(void)
   vAddStep("job_export.decTapper"_Stz,  &Step::vJob_ExportDecTapper);
   vAddStep("job_export.end"_Stz,        &Step::vJob_ExportEnd);
   vAddStep("Job_export.table!"_Stz,     &Step::vJob_ExportTableStore);
+  vAddStep("Job_export.twiddling@"_Stz, &Step::vJob_ExportTableStore);
+  vAddStep("Job_export.twiddling!"_Stz, &Step::vJob_ExportTableStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,6 +97,47 @@ void Step::vJob_ExportTableStore(MP_Task mpTask)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* Job_export.twiddling@ -- fetch tapper::twiddling                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_ExportTwiddlingFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_ExportTwiddlingFetch"_Stz);
+  
+  Object* pPtrJobExport;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJobExport) )
+    THROW_INVALID_DSTACK("Job_export.twiddling@"_Stz);
+  Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
+  
+  bool bTwiddling = pJob_Export->m_oTapper.bTwiddling();
+  
+  mpTask->m_pDataStack->vPushI8(bTwiddling);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_export.twiddling! -- store tapper::twiddling                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_ExportTwiddlingStore(MP_Task mpTask)
+{
+  ENTRY("vJob_ExportTwiddlingStore"_Stz);
+  
+  Object* pPtrJobExport;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJobExport) )
+    THROW_INVALID_DSTACK("Job_export.twiddling!"_Stz);
+  Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
+
+  i8 iTwiddling;
+  if ( ! mpTask->m_pDataStack->bPop(iTwiddling) )
+    THROW_INVALID_DSTACK("Job_export.twiddling!"_Stz);
+
+  pJob_Export->m_oTapper.vTwiddling(iTwiddling);
+  
+  EXIT();
+}
+
 
 
 /*============================================================================*/

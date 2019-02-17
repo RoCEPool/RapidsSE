@@ -552,6 +552,8 @@
   static void vJob_ExportDecTapper(Tasks::MP_Task mpTask);
   static void vJob_ExportEnd(Tasks::MP_Task mpTask);
   static void vJob_ExportTableStore(Tasks::MP_Task mpTask);
+  static void vJob_ExportTwiddlingFetch(Tasks::MP_Task mpTask);
+  static void vJob_ExportTwiddlingStore(Tasks::MP_Task mpTask);
 
   // job FetchRows
   static void vJob_FetchRowsLastBuffersStore(Tasks::MP_Task mpTask);
