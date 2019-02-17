@@ -266,6 +266,9 @@ void Job_SubExporter::vSprintRows(void)
   
   s48K sRecord;
   
+  char* aRecord = nullptr;
+  i8 nBytes = 0;
+  
   ColumnVec* pColVec = m_pJobExport->m_pTable->pColumnVec();
   
   for (Item* aItem = m_pEntryBuffer->aLeadEntry();
@@ -277,19 +280,22 @@ void Job_SubExporter::vSprintRows(void)
     aRow->vAsBinaryStringVLQ(sRecord,pColVec,true);
     //vTrace("]]%s[[\n"_Stz,sRecord.aStz());
     
-    i8 nBytes = sRecord.nSize();
+    nBytes = sRecord.nSize();
     
     if (! m_pExportBuffer)
       m_pExportBuffer = new ExportBuffer;
     
-    if (m_pExportBuffer->nFreeBytes() < nBytes) {
+    if (m_pExportBuffer->nFreeBytes() < nBytes + 1) {
       vSpawnKidExport();
       m_pExportBuffer = new ExportBuffer;
     }
     
-    char* aRecord = m_pExportBuffer->aAllotRecord(nBytes);
-    StrLib::vCopy(aRecord,sRecord.aChar());
+    aRecord = m_pExportBuffer->aAllotRecord(nBytes - 1);
+    StrLib::vCopyLen(aRecord,sRecord.aChar(),nBytes - 1);
   }
+
+  if (aRecord)
+    aRecord[nBytes-1] = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
