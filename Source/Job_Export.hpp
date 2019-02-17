@@ -16,9 +16,7 @@ namespace Jobs
 
     File   m_oCsvFile; // output csv file
   
-    i8     m_nPartitionsComplete;
-    i8     m_nBuffersExpected;
-    i8     m_nBuffersWritten;
+    Completer m_oCompleter;
   
     // must be last
     Footer m_xFooter;
@@ -36,10 +34,9 @@ namespace Jobs
   public:
     bool bBegin(void);
     void vEnd(void);
-    bool bFinishedWriting(void);
-    void vIncWritten(i8 nBuffersExpected);
+    bool bIncWritten(i8 nBuffersExpected);
     bool bPopulateJob(TokenVec* pTokenVec);
-    void vWriteBuffer(ExportBuffer* pExportBuffer);
+    void vWriteExportBuffer(ExportBuffer* pExportBuffer);
   
     void vShow(void);
   

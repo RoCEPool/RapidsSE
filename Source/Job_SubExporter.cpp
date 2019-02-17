@@ -115,6 +115,8 @@ Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
   m_iEntryBuffer  = 0;
   
   m_pEntryBuffer = nullptr;
+  
+  m_nExportBuffers = 0;
   m_pExportBuffer = nullptr;
   
   _checkInitialised_(CN_JOB_SUBEXPORTER);
@@ -215,7 +217,7 @@ void Job_SubExporter::vEnd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
 
   if (m_pExportBuffer)
-    vSpawnKidExport();
+    vSpawnKidExport(true);
   
   ActionSequence::vAdd(this,AN_JOB_END,m_iEntryBuffer);
 }
@@ -241,7 +243,7 @@ void Job_SubExporter::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* spawn kid-export to drag export buffer to export node and write            */
 /*----------------------------------------------------------------------------*/
-void Job_SubExporter::vSpawnKidExport(void)
+void Job_SubExporter::vSpawnKidExport(bool bLast)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
   
@@ -251,6 +253,11 @@ void Job_SubExporter::vSpawnKidExport(void)
   
   pJob_KidExport->m_iExportJobId = m_pJobExport->m_iJobId;
   pJob_KidExport->m_pSendWith    = m_pExportBuffer;
+  
+  if (bLast)
+    pJob_KidExport->m_nBuffersExpected = m_nExportBuffers;
+  else
+    pJob_KidExport->m_nBuffersExpected = C_UNKNOWN;
 
   m_pExportBuffer = nullptr;
   
@@ -282,12 +289,15 @@ void Job_SubExporter::vSprintRows(void)
     
     nBytes = sRecord.nSize();
     
-    if (! m_pExportBuffer)
+    if (! m_pExportBuffer) {
       m_pExportBuffer = new ExportBuffer;
+      m_nExportBuffers++;
+    }
     
     if (m_pExportBuffer->nFreeBytes() < nBytes + 1) {
-      vSpawnKidExport();
+      vSpawnKidExport(false);
       m_pExportBuffer = new ExportBuffer;
+      m_nExportBuffers++;
     }
     
     aRecord = m_pExportBuffer->aAllotRecord(nBytes - 1);

@@ -69,7 +69,10 @@ void Step::vJob_KidExportWriteExportBuffer(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_kidExport.writeExportBuffer"_Stz);
   Job_Export* pJob_Export = _pJob_Export(pPtrJob_Export);
   
-  pJob_KidExport->vWriteBuffer(pJob_Export);
+  bool bHasCompleted = pJob_KidExport->bWriteBuffer(pJob_Export);
+  
+  if (bHasCompleted)
+    vTrace("COMPLETED\n"_Stz);
 
   EXIT();
 }

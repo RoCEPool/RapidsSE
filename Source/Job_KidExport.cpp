@@ -108,7 +108,7 @@ Job_KidExport::Job_KidExport(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
   
   m_iExportJobId = C_UNKNOWN;
-  
+  m_nBuffersExpected = C_UNKNOWN;
   
   _checkInitialised_(CN_JOB_KIDEXPORT);
   
@@ -167,19 +167,23 @@ void Job_KidExport::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
   
-  vTrace("  ExportJobId %lld\n"_Stz,m_iExportJobId);
+  vTrace("  ExportJobId %lld BuffersExpected %lld\n"_Stz,m_iExportJobId,m_nBuffersExpected);
 }
 
 /*----------------------------------------------------------------------------*/
 /* write                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_KidExport::vWriteBuffer(Job_Export* pJob_Export)
+bool Job_KidExport::bWriteBuffer(Job_Export* pJob_Export)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
   
   ExportBuffer* pExportBuffer = _pExportBuffer(m_pSendWith);
 
-  pJob_Export->vWriteBuffer(pExportBuffer);
+  pJob_Export->vWriteExportBuffer(pExportBuffer);
+  
+  bool bHasCompleted = pJob_Export->bIncWritten(m_nBuffersExpected);
+  
+  return bHasCompleted;
 }
 
 /*----------------------------------------------------------------------------*/

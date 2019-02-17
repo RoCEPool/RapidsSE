@@ -24,7 +24,7 @@ namespace Jobs
     Completer(void);
     ~Completer(void) noexcept(false);
   
-    bool IncProcessed(i8 m_nUnitsExpected);
+    bool bIncProcessed(i8 m_nUnitsExpected);
   
     Footer* aFooter(void);
   };

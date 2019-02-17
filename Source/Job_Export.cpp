@@ -114,9 +114,7 @@ Job_Export::Job_Export(Interface::Session* pSession)
   m_okLock.vInitLock(LK_EXPORT);
   
   //m_oCsvFile;
-  m_nPartitionsComplete = 0;
-  m_nBuffersExpected    = C_UNKNOWN;
-  m_nBuffersWritten     = 0;
+  //m_oCompleter
 
   _checkInitialised_(CN_JOB_EXPORT);
   
@@ -189,44 +187,15 @@ void Job_Export::vEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* finished writing                                                           */
-/*----------------------------------------------------------------------------*/
-bool Job_Export::bFinishedWriting(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
-
-  bool bFinished = false;
-  
-  m_okLock.vGrabWrite();
-  
-  if (m_nPartitionsComplete == gpAttachMap->m_pGrid->m_nPartitions &&
-      m_nBuffersExpected == m_nBuffersWritten)
-    bFinished = true;
-  
-  m_okLock.vDropWrite();
-  
-  return bFinished;
-}
-
-/*----------------------------------------------------------------------------*/
 /* inc no of buffers written                                                  */
 /*----------------------------------------------------------------------------*/
-void Job_Export::vIncWritten(i8 nBuffersExpected)
+bool Job_Export::bIncWritten(i8 nBuffersExpected)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
+
+  bool bHasCompleted = m_oCompleter.bIncProcessed(nBuffersExpected);
   
-  m_okLock.vGrabWrite();
-  
-  m_nBuffersWritten++;
-  
-  if (nBuffersExpected) {
-    if (C_UNKNOWN == m_nBuffersExpected)
-      m_nBuffersExpected = nBuffersExpected;
-    else
-      m_nBuffersExpected += nBuffersExpected;
-  }
-  
-  m_okLock.vDropWrite();
+  return bHasCompleted;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -261,7 +230,7 @@ bool Job_Export::bPopulateJob(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* populate the job                                                           */
 /*----------------------------------------------------------------------------*/
-void Job_Export::vWriteBuffer(ExportBuffer* pExportBuffer)
+void Job_Export::vWriteExportBuffer(ExportBuffer* pExportBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
 
@@ -279,17 +248,11 @@ void Job_Export::vShow(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
   
   vTrace("  Job_Export %03lld: "
-         "Table %s File %s "
-         "PartitionsComplete %lld "
-         "BuffersExpected %lld "
-         "BuffersWritten %lld\n"_Stz,
+         "Table %s File %s \n"_Stz,
          
          m_iJobId,
          m_sObjectName.aStz(),
-         m_sFilePath.aStz(),
-         m_nPartitionsComplete,
-         m_nBuffersExpected,
-         m_nBuffersWritten
+         m_sFilePath.aStz()
          );
 }
 

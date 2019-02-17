@@ -58,7 +58,7 @@ Completer::~Completer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* inc units processed and determine if completed                             */
 /*----------------------------------------------------------------------------*/
-bool Completer::IncProcessed(i8 nUnitsExpected)
+bool Completer::bIncProcessed(i8 nUnitsExpected)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPLETER,_FOOTER_);
   

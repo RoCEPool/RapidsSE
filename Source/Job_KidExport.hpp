@@ -11,6 +11,8 @@ namespace Jobs
   public:
     i8 m_iExportJobId;  // job id of export job
   
+    i8 m_nBuffersExpected;
+  
     // must be last
     Footer m_xFooter;
   
@@ -28,7 +30,7 @@ namespace Jobs
                        ExportBuffer* pExportBuffer);
 
   public:
-    void vWriteBuffer(Job_Export* pJob_Export);
+    bool bWriteBuffer(Job_Export* pJob_Export);
     void vShow(void);
     
   public:
