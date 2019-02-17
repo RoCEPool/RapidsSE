@@ -188,8 +188,8 @@ void Job_Export::vEnd(void)
   ActionSequence::vAdd(this,AN_JOB_END);
   ActionSequence::vAdd(this,AN_CLOSE_FILE,m_sFilePath.aStz());
   
-  // m_oCsvFile.vClose();
-  vTrace("WARNING: NOT CLOSING EXPORT FILE\n"_Stz);
+  m_oCsvFile.vClose();
+  vTrace("CLOSING EXPORT FILE\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

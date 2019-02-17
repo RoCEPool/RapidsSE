@@ -37,9 +37,9 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* handle the tap of export job                                               */
+/* handle the tap of export job                        [SE]-(E,SE,{`KE})-[SE] */
 /*----------------------------------------------------------------------------*/
-: job_export.tap ( pJob_Export )
+: kidExport.tapExport ( pJob_Export )
 
   params| pJob_Export |
 
@@ -49,11 +49,13 @@
 
   pJob_Export job_export.twiddling@ if
     "Export is twiddling" .
+    pExportTask task.dropLock
+    pExportTask job.originatingTask@ task.ack
   else
     "Export is not twiddling" .
+    pExportTask task.dropLock
   then
 
-  pExportTask task.dropLock
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -77,7 +79,7 @@
     "`KE is the completer" .
     pJob_Export job_export.decTapper if
       "`KE is the tapper" .
-      pJob_Export job_export.tap
+      pJob_Export kidExport.tapExport
     then
   then
 

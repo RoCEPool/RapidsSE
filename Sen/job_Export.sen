@@ -32,9 +32,19 @@
 
   task::this task.grabLock
 
-  true pJob_export job_export.twiddling!
+  pJob_export job_export.tapsRemaining@ if
 
-  task::this task.dropLock
+    true pJob_export job_export.twiddling!
+    "Twiddling!!!" .
+    1 task::acks!
+    task::wait
+
+  else
+
+    "No need to twiddle" .
+    task::this task.dropLock
+
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -195,6 +205,10 @@
   pJob_Export export.exportOriginator
 
   pJob_Export job.distribute
+
+  pJob_Export export.twiddle
+
+  pJob_Export job_export.end
 
   <<am <DONE_REQ>
 ;
