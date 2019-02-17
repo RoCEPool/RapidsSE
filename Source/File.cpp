@@ -534,8 +534,8 @@ void File::vReset(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  if (m_aFile && ! bIsStdin() && ! bIsStdout())
-    vWarn("File::vReset: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
+  //if (m_aFile && ! bIsStdin() && ! bIsStdout())
+  //  vWarn("File::vReset: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
 
   m_oSysCall.vClear();
   

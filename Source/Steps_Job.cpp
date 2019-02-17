@@ -499,6 +499,8 @@ void Step::vJobExtraEndAcksFetch(MP_Task mpTask)
   RASSERT( (0 == pJob->m_nExtraEndAcks) ||
            (1 == pJob->m_nExtraEndAcks && CN_JOB_EXPORT == pJob->eClass()));
   
+  vTrace("Job %s nExtraEndAcks %lld\n"_Stz,
+         aCN[pJob->eClass()],pJob->m_nExtraEndAcks);
   mpTask->m_pDataStack->vPushI8(pJob->m_nExtraEndAcks);
   
   EXIT();

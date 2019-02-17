@@ -113,6 +113,8 @@ Job_Export::Job_Export(Interface::Session* pSession)
   
   m_okLock.vInitLock(LK_EXPORT);
   
+  m_nExtraEndAcks = 1;
+  
   //m_oCsvFile;
   //m_oCompleter
 
@@ -130,6 +132,9 @@ Job_Export::Job_Export(Interface::Session* pSession)
 Job_Export::~Job_Export(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
+  
+  if (m_bWasReceived)
+    m_oCsvFile.vReset();
 }
 
 
