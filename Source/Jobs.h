@@ -47,6 +47,8 @@ static Stz* aJL[]
 #include "Decider.hpp"
 #include "ExportBuffer.hpp"
 #include "FetchBuffer.hpp"
+#include "Tapper.hpp"
+
 #include "JobDicPath.hpp"
 #include "JobFilePath.hpp"
 #include "JobObjectName.hpp"
