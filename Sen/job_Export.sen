@@ -26,7 +26,7 @@
 /*----------------------------------------------------------------------------*/
 /* twiddle till kid exports are completed                                     */
 /*----------------------------------------------------------------------------*/
-: export.twiddle ( pJob_Export -- )
+: export.waitForAllKidExports ( pJob_Export -- )
 
   params| pJob_Export |
 
@@ -206,7 +206,7 @@
 
   pJob_Export job.distribute
 
-  pJob_Export export.twiddle
+  pJob_Export export.waitForAllKidExports
 
   pJob_Export job_export.end
 
