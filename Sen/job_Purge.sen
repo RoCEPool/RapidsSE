@@ -91,7 +91,7 @@
 
   pJob_purge job.notice
 
-  pJob_purge send_job__executed
+  pJob_purge job::participantExecuted
 
   <<am <DONE_REQ>
 ;
@@ -166,7 +166,7 @@
 
   job::this locals| pJob_Purge |
 
-  pJob_Purge job.beginParticipant
+  pJob_Purge job.becomeParticipant
 
   // check resources
   pJob_Purge purge.checkResources

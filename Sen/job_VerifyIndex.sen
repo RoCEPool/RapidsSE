@@ -129,7 +129,7 @@
 
   pJob_VerifyIndex job.notice
 
-  pJob_VerifyIndex send_job__executed
+  pJob_VerifyIndex job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -184,7 +184,7 @@
 
   job::this locals| pJob_VerifyIndex |
 
-  pJob_VerifyIndex job.beginParticipant
+  pJob_VerifyIndex job.becomeParticipant
 
   // check resources
   pJob_VerifyIndex verifyIndex.checkResources

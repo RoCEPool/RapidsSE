@@ -52,9 +52,9 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* begin a new job on participant node                                        */
+/* job becomes a participant on participant node                              */
 /*----------------------------------------------------------------------------*/
-: job.beginParticipant ( pJob -- )
+: job.becomeParticipant ( pJob -- )
 
   params| pJob |
 
@@ -131,7 +131,7 @@
 /*----------------------------------------------------------------------------*/
 /* call Job__Executed::send for the current job                               */
 /*----------------------------------------------------------------------------*/
-: send_job__executed ( pJobParticipant -- )
+: job::participantExecuted ( pJobParticipant -- )
 
   params| pJobParticipant  |
 

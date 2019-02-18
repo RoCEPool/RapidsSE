@@ -120,7 +120,7 @@
 
   pJob_CompactIndex job.notice
 
-  pJob_CompactIndex send_job__executed
+  pJob_CompactIndex job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -181,7 +181,7 @@
 
   job::this locals| pJob_compactIndex |
 
-  pJob_compactIndex job.beginParticipant
+  pJob_compactIndex job.becomeParticipant
 
   // check resources
   pJob_compactIndex compactIndex.checkResources

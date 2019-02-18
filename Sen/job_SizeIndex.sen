@@ -129,7 +129,7 @@
 
   pJob_SizeIndex job.notice
 
-  pJob_SizeIndex send_job__executed
+  pJob_SizeIndex job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -190,7 +190,7 @@
 
   job::this locals| pJob_sizeIndex |
 
-  pJob_sizeIndex job.beginParticipant
+  pJob_sizeIndex job.becomeParticipant
 
   // check resources
   pJob_sizeIndex sizeIndex.checkResources

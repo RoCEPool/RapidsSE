@@ -102,7 +102,7 @@
 
   pJob_CreateSchema job.notice
 
-  pJob_CreateSchema send_job__executed
+  pJob_CreateSchema job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -165,7 +165,7 @@
 
   job::this locals| pJob_createSchema |
 
-  pJob_createSchema job.beginParticipant
+  pJob_createSchema job.becomeParticipant
 
   // check resources
   pJob_createSchema createSchema.checkResources

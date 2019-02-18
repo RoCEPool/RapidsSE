@@ -92,7 +92,7 @@
 
   pJob_DropTenant job.notice
 
-  pJob_DropTenant send_job__executed
+  pJob_DropTenant job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -150,7 +150,7 @@
 
   job::this locals| pJob_dropTenant |
 
-  pJob_dropTenant job.beginParticipant
+  pJob_dropTenant job.becomeParticipant
 
   // check resources
   pJob_dropTenant dropTenant.checkResources

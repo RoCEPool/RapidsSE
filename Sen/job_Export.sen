@@ -48,18 +48,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* export on this originator node                                          E: */
+/* init request export job E on this originator node                       E: */
 /*----------------------------------------------------------------------------*/
-: export.initOriginator ( pJob_Export --  )
+: export.initRequest ( pJob_Export --  )
 
   params| pJob_Export |
 
   0 locals| sTableNm  |
   0 locals| pTable    |
 
-  "export_export: export on this node" .
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set path and table folder of E
 
   // set path
   pJob_Export job.pushPath task::dicStack.set
@@ -80,7 +79,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* export on this participant node                               [E](E`):(E`) */
+/* init participant export job E` on this participant node       [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
 : export.initParticipant ( pJob_Export --  )
 
@@ -88,8 +87,6 @@
 
   0 locals| sTableNm  |
   0 locals| pTable    |
-
-  "export_export: export on this node" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set path and table folder of (E`)
@@ -144,7 +141,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check resources                                                            */
+/* check resources for export job E` on participant node         [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
 : export.checkResources ( pJob_Export -- )
 
@@ -175,7 +172,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* release resources                                                          */
+/* release resources for export job E` on participant node       [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
 : export.releaseResources ( pJob_Export -- )
 
@@ -191,7 +188,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* export command request on originating node                                 */
+/* export command on request node                                          E: */
 /*----------------------------------------------------------------------------*/
 : export_req ( -- <R> )
 
@@ -200,12 +197,19 @@
 
   job::this locals| pJob_Export |
 
-  pJob_Export export.initOriginator
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pJob_Export export.initRequest
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute E' to all participants                    `KE[E](`E)SE:(`E)SE,KE
   pJob_Export job.distribute
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait for all 'KE to write                                              [E]:
   pJob_Export export.waitForAllKidExports
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // close the export file [E]::m_oCsvFile
   pJob_Export job_export.end
 
   <<am <DONE_REQ>
@@ -214,7 +218,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* begin Job_Export on participating node                                     */
+/* begin Job_Export E` on participating node                         [E]E`:E` */
 /*----------------------------------------------------------------------------*/
 : export_beg ( -- )
 
@@ -223,17 +227,20 @@
 
   job::this locals| pJob_Export |
 
-  pJob_Export job.beginParticipant
+  //                                                                [E](E`):(E`)
+  pJob_Export job.becomeParticipant
 
+  // check the table exists on this node
   pJob_Export export.checkResources
 
+  // send job__begin to [E]                                  __BEGUN[E](E`):(E`)
   job::participantBegun
 
   <<am <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_Export on participating node                                   */
+/* execute Job_Export on participating node                          [E]E`:E` */
 /*----------------------------------------------------------------------------*/
 : export_exe ( pJob_Export -- )
 
@@ -242,14 +249,10 @@
 
   job::this locals| pJob_Export |
 
-
   pJob_Export export.initParticipant
 
-  pJob_Export job.notice
-
-  // job::deleteThis
-
-  pJob_Export send_job__executed
+  // send job__executed to [E]                            __EXECUTED[E](E`):(E`)
+  pJob_Export job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -266,6 +269,7 @@
 
   pJob_Export export.releaseResources
 
+  // send job__ended to [E]                                  __ENDED[E](E`):(E`)
   job::participantEnded
 
   <<am <DONE_END>
@@ -283,6 +287,7 @@
 
   pJob_Export export.releaseResources
 
+  // send job__cancelled to [E]                          __CANCELLED[E](E`):(E`)
   job::participantCancelled
 
   <<am <DONE_CAN>
