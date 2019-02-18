@@ -527,18 +527,18 @@ i8 EntryBuffer::iLengthSubList(void)
 /*----------------------------------------------------------------------------*/
 /* get next entry                                                             */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aNextEntry(Item* aCurrent, i8 i_Level)
+Item* EntryBuffer::aNextEntry(Item* aCurrent, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   RASSERT(aCurrent->bValidItem());
   
-  i4 iOffset = aCurrent->iNEO(i_Level);
+  i4 i_Offset = aCurrent->iNEO(iLevel);
   
-  if (-1 == iOffset)
+  if (-1 == i_Offset)
     return nullptr;
   
-  Item* aItem = aAdd<Item*>(aItemArea(), iOffset);
+  Item* aItem = aAdd<Item*>(aItemArea(), i_Offset);
   
   RASSERT(! aItem || aItem->bValidItem());
 
@@ -579,6 +579,8 @@ EntryBuffer* EntryBuffer::pPositionHeight(KeyWrk& xGivenKey, i8 nKeyCols, i8 iHe
     pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
     ASSERT(pEntryBuffer);
     ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
+    
+    
   }
   
   return pEntryBuffer;
@@ -609,7 +611,7 @@ Item* EntryBuffer::aPositionQuery(KeyData* aGivenKey, eRO eRelnOp)
                                     m_pIndex->pIdxColVec(), 1,
                                     bIsEqual, eRelnOp);
       if (! bAfter) {
-        aIndexEntry = aNextEntry(aIndexEntry, iHeightNo());
+        aIndexEntry = aNextEntry(aIndexEntry, 0);
       }
     } while (aIndexEntry && ! bAfter);
   }
