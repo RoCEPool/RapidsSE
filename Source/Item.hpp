@@ -41,8 +41,8 @@ namespace MiniHeaps
     void  vId(Id xId);
     Item* aItemAfter(void);
     i8    iItemNo(void);
-    i4    iNEO(i8 i_Offset);
-    void  vNEO(i8 i_Offset, i4 iNEO);
+    i4    iNEO(i8 iLevel);
+    void  vNEO(i8 iLevel, i4 iNEO);
     void  vNEOdump(void);
     i8    iNEOsize(void);
     i8    nLevels(void);
