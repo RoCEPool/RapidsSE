@@ -249,7 +249,7 @@
 
   pJob_Export job.notice
 
-  // delete_completed_job
+  // job::deleteThis
 
   pJob_Export send_job__executed
 

@@ -95,7 +95,7 @@
 
   // if there are acks remaining just exit
   bAmDecider not if
-    delete_completed_job
+    job::deleteThis
     <DONE_RCV>
     exit                                                         // *EARLY EXIT*
   then
@@ -110,7 +110,7 @@
   pJobOriginator job.originatingTask@ task.ack
 
   // delete this completed __cancelled job
-  delete_completed_job
+  job::deleteThis
 
   <DONE_RCV>
 ;

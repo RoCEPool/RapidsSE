@@ -149,7 +149,7 @@
 
   pJob_CreateTable job.notice
 
-  // delete_completed_job
+  // job::deleteThis
 
   pJob_CreateTable send_job__executed
 

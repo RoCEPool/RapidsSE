@@ -111,7 +111,7 @@
 /*----------------------------------------------------------------------------*/
 /* delete this task's job (it's completed)                                    */
 /*----------------------------------------------------------------------------*/
-: delete_completed_job ( -- )
+: job::deleteThis ( -- )
 
   0 locals| pThisTask |
   0 locals| pThisJob  |
@@ -123,7 +123,7 @@
   // now delete the ended job
   nullptr pThisTask task.job!
 
-  //pThisJob job.id@ pThisJob "delete_completed_job %v %v" fmt.print
+  //pThisJob job.id@ pThisJob "job::deleteThis %v %v" fmt.print
 
   pThisJob job.delete
 ;

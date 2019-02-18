@@ -105,7 +105,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   <<am
-  delete_completed_job
+  job::deleteThis
 
   <DONE_KID>
 ;
@@ -147,7 +147,7 @@
   // simply forward this job to kid node
   pJob_WriteRow writeRow.forward
 
-  delete_completed_job
+  job::deleteThis
 
   <DONE_RUN>
 ;

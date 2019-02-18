@@ -108,7 +108,7 @@
   //----------------------------------------------------------------------------
   pJob_InsertTable job.notice
 
-  // delete_completed_job
+  // job::deleteThis
 
   pJob_InsertTable send_job__executed
 

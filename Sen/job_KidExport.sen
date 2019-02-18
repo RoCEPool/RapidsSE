@@ -25,7 +25,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete this KE kid on this participant node:         `KE[E](`E)SE:(`E)SE,xx
-  <<am delete_completed_job
+  <<am job::deleteThis
 
   <DONE_KID>
 ;
@@ -89,7 +89,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete this kid export `KE on this originator node:      xx[E](`E)SE:(`E)SE
-  delete_completed_job
+  job::deleteThis
 
   <DONE_RUN>
 ;
