@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* seed on kid node                                                           */
+/* run KE run seed on participant node                    [E](`E)SE:(`E)SE,KE */
 /*----------------------------------------------------------------------------*/
 : kidExport_kid ( -- )
 
@@ -20,13 +20,12 @@
   pJob_KidExport job_kidExport.exportOrigin locals| i_ExportNode |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // send this kid to the export node
+  // send a `KE kid to the export node:                   `KE[E](`E)SE:(`E)SE,KE
   i_ExportNode pJob_KidExport job.forward
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  <<am
-  delete_completed_job
+  // delete this KE kid on this participant node:         `KE[E](`E)SE:(`E)SE,xx
+  <<am delete_completed_job
 
   <DONE_KID>
 ;
@@ -59,7 +58,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* `KE seed on originating export node E               [SE]-(E,SE,{`KE})-[SE] */
+/* run `KE rcv seed on originating export node E          `KE[E](`E)SE:(`E)SE */
 /*----------------------------------------------------------------------------*/
 : kidExport_rcv (  -- )
 
@@ -67,24 +66,29 @@
 
   job::this locals| pJob_KidExport  |
 
-  pJob_KidExport job_kidExport.exportJobId locals| i_ExportJobId |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // kid export 'KE on originator node finds export job [E]
+  pJob_KidExport job_kidExport.exportJobId locals| i_ExportJobId |
   i_ExportJobId job::findOriginator locals| pJob_Export |
 
-  pJob_Export pJob_KidExport job_kidExport.writeExportBuffer locals| bHasCompleted |
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // kid export 'KE writes ExportBuffer to export job [E].m_oCsvFile
+  false locals| bLastWrite |
+  pJob_Export pJob_KidExport job_kidExport.writeExportBuffer to bLastWrite
 
-  bHasCompleted if
-    "`KE is the completer" .
+
+  // ? ? ?
+  bLastWrite if
+    "`KE last write" .
     pJob_Export job_export.decTapper if
       "`KE is the tapper" .
       pJob_Export kidExport.tapExport
     then
   then
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete this kid export `KE on this originator node:      xx[E](`E)SE:(`E)SE
   delete_completed_job
 
   <DONE_RUN>
