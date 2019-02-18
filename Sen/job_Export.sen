@@ -48,7 +48,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* init request export job E on this originator node                       E: */
+/* init request export job E on this originator node                 []()E:() */
 /*----------------------------------------------------------------------------*/
 : export.initRequest ( pJob_Export --  )
 
@@ -71,15 +71,19 @@
 
   // get table pointer
   sTableNm table::find to pTable
-
   pTable pJob_Export job_export.table!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // open file E::m_oCvsFile
+
   pJob_Export job_export.begin
 ;
 
+
+////////////////////////////////////////////////////////////////////////////////
+
 /*----------------------------------------------------------------------------*/
-/* init participant export job E` on this participant node       [E](E`):(E`) */
+/* init participant export job (E`) on this participant node     [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
 : export.initParticipant ( pJob_Export --  )
 
@@ -99,18 +103,13 @@
   sTableNm pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find and store table pointer into E::m_pTable
-
+  // find and store table pointer into (E`)::m_pTable
   sTableNm table::find to pTable
   pTable pJob_Export job_export.table!
 ;
 
-
-////////////////////////////////////////////////////////////////////////////////
-
-
 /*----------------------------------------------------------------------------*/
-/* check if word is a valid table folder                                      */
+/* check valid table folder for export job (E`) on ptp node      [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
 : export.checkTable ( sTableNm -- true | errorCode false )
 
@@ -137,7 +136,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check resources for export job E` on participant node         [E](E`):(E`) */
+/* check resources for export job (E`) on participant node       [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
 : export.checkResources ( pJob_Export -- )
 
@@ -168,7 +167,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* release resources for export job E` on participant node       [E](E`):(E`) */
+/* release resources for export job (E`) on participant node     [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
 : export.releaseResources ( pJob_Export -- )
 
@@ -184,7 +183,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* export command on request node                                          E: */
+/* perform command req seed for E on request node                    []()E:() */
 /*----------------------------------------------------------------------------*/
 : export_req ( -- <R> )
 
