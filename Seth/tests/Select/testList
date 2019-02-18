@@ -1,4 +1,7 @@
 exactKey_int.test
-exactKey_intLoop.test
+//rangeKey_int.test
+lowerBoundKey_int.test
+upperBoundKey_int.test
+//exactKey_intLoop.test
 //range.test
 //rangeCombo.test
