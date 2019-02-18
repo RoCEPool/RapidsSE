@@ -682,6 +682,7 @@ Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey,i8 nKeyCols)
       
       // have we found the key during a query?
       if (eCompare == KC_SAME) {
+        
         if (0 == i_ScanOffset)
           return aNextEntry_sl;
         else
@@ -4067,7 +4068,7 @@ void EntryBuffer::vVerifyFault(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   vTrace("VerifyFault\n"_Stz);
-  
+  RASSERT(0);
   return;
 }
 
