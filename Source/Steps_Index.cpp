@@ -1647,7 +1647,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
     eKC eCompare = KeyData::eCompare(aUpperEntry, xKeyWrkUpper);
     
     if (eCompare != KC_BEFORE)
-      break
+      break;
     
     // move to next entry in the buffer
     aUpperEntry = aUpperEntryBuffer->aNextEntry(aUpperEntry, 0);

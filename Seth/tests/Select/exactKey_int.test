@@ -36,7 +36,7 @@ success
 //------------------------------------------------------------------------------
 // SCAN
 fetch jCdt;
-rows: 25
+rows: 26
 
 //dumpidx jCdt jCdt_idx1;
 //success
@@ -96,8 +96,8 @@ success
 
 CLEANUP {
 
-  //drop table jCdt;
-  //mute
+  drop table jCdt;
+  mute
 
   bye;
   mute
