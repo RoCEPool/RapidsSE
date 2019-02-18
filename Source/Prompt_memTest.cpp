@@ -23,7 +23,7 @@ bool Prompt::bPrompt_memTest(SePrompt* pPrompt)
 {
   MemTest* pMemTest = new MemTest;
   
-  MemLib::vHexDump(pMemTest,sizeof(MemTest));
+  MemLib::vDumpWords(pMemTest,sizeof(MemTest));
   
   delete pMemTest;
   

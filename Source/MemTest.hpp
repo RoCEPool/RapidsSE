@@ -9,6 +9,9 @@ namespace System
   {
   public:
 
+    i8   m_iInt;
+    char m_caChar[8];
+  
     // must be last
     Footer m_xFooter;
   

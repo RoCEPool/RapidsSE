@@ -51,6 +51,9 @@ MemTest::MemTest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MEMTEST,_FOOTER_);
   
+  m_iInt = 73;
+  StrLib::vCopy(m_caChar,"AbCdEfG");
+  
   _checkInitialised_(CN_MEMTEST);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_MEMTEST,_FOOTER_);
