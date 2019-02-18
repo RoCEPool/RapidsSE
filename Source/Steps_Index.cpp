@@ -1635,14 +1635,19 @@ void Step::vIndexUpperBound(MP_Task mpTask)
     //aUpperEntry->vShow(0,pIndex,true);
     
     bIsEqual = false;
-    bBefore = _aKeyData(aUpperEntry->aDataArea())
-                 ->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
-                                 pIdxColVec, 1,
-                                 bIsEqual, eUpperRelnOp);
+//    bBefore = _aKeyData(aUpperEntry->aDataArea())
+//                 ->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
+//                                 pIdxColVec, 1,
+//                                 bIsEqual, eUpperRelnOp);
     
-    if (! bBefore) {
-      break;
-    }
+//    if (! bBefore) {
+//      break;
+//    }
+    
+    eKC eCompare = KeyData::eCompare(aUpperEntry, xKeyWrkUpper);
+    
+    if (eCompare != KC_BEFORE)
+      break
     
     // move to next entry in the buffer
     aUpperEntry = aUpperEntryBuffer->aNextEntry(aUpperEntry, 0);
