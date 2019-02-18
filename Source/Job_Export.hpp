@@ -16,7 +16,7 @@ namespace Jobs
 
     File   m_oCsvFile; // output csv file
   
-    Completer m_oCompleter; // recognise the completion of all export buffers
+    Completer m_oWritten; // track writing of all export buffers
   
     Tapper m_oTapper; // handle the foward ack from Kid Export job
   

@@ -199,9 +199,9 @@ bool Job_Export::bIncWritten(i8 nBuffersExpected)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
 
-  bool bHasCompleted = m_oCompleter.bIncProcessed(nBuffersExpected);
+  bool bLastWrite = m_oWritten.bIncProcessed(nBuffersExpected);
   
-  return bHasCompleted;
+  return bLastWrite;
 }
 
 /*----------------------------------------------------------------------------*/
