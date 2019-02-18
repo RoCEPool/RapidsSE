@@ -5,7 +5,7 @@
 " job_Export.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* spawn sub-exporters on particpating node                                   */
+/* spawn sub-exporters on particpating node                      [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
 : export.spawnSubExporters ( pJob_Export -- )
 
@@ -17,7 +17,7 @@
 
   grid::slots 0
   do
-    I pJob_Export job_subExporter::spawn
+    I pJob_Export job_subExporter::spawn                     // [E](E`)SE:(E`)SE
   loop
 
   task::wait
@@ -48,9 +48,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* export on this participant node (same as originator)                       */
+/* export on this originator node                                          E: */
 /*----------------------------------------------------------------------------*/
-: export.exportOriginator ( pJob_Export --  )
+: export.initOriginator ( pJob_Export --  )
 
   params| pJob_Export |
 
@@ -80,9 +80,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* export on this participant node (same as originator)                       */
+/* export on this participant node                               [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
-: export.exportParticipant ( pJob_Export --  )
+: export.initParticipant ( pJob_Export --  )
 
   params| pJob_Export |
 
@@ -92,26 +92,24 @@
   "export_export: export on this node" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set path and table folder of (E`)
 
   // set path
   pJob_Export job.pushPath task::dicStack.set
 
-  // set table dictionary
+  // set table folder
   pJob_Export job.objectName@ to sTableNm
   sTableNm pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find and store table pointer into E::m_pTable
 
-  // get table pointer
   sTableNm table::find to pTable
-
   pTable pJob_Export job_export.table!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // spawn the sub-exporters on this participant node           [E](E`)SE:(E`)SE
   pJob_Export export.spawnSubExporters
-
-  //1000000000 task.sleepUsec
 ;
 
 
@@ -202,7 +200,7 @@
 
   job::this locals| pJob_Export |
 
-  pJob_Export export.exportOriginator
+  pJob_Export export.initOriginator
 
   pJob_Export job.distribute
 
@@ -245,7 +243,7 @@
   job::this locals| pJob_Export |
 
 
-  pJob_Export export.exportParticipant
+  pJob_Export export.initParticipant
 
   pJob_Export job.notice
 
