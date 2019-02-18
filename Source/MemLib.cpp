@@ -130,6 +130,89 @@ i8 MemLib::iCompare2(const void* pVal1, const void* pVal2, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump given bytes of memory at given address                                */
+/*----------------------------------------------------------------------------*/
+void MemLib::vDumpWords(void *aAddress, i8 nBytes)
+{
+  i8 i_Byte = 0;
+  i8 i_Word = 0;
+  
+  // write header
+  vTrace("\n%18s %8s %49s %16s\n"_Stz,
+         "MemLib address"_Stz,
+         "Offset"_Stz,
+         "(0a is \\n ; 0d is \\r)                    Hex dump"_Stz,
+         "Context"_Stz);
+  
+  vTrace("%18s %8s %49s %16s\n"_Stz,
+         "------------------"_Stz,
+         "--------"_Stz,
+         "-------------------------------------------------"_Stz,
+         "----------------"_Stz);
+  
+  
+  // step thru each byte to be dumped
+  for (i_Byte = 0; i_Byte < nBytes; i_Byte++) {
+    
+    // at beginning of line, write address
+    if (i_Byte % C_BYTES_PER_WORD == 0) {
+      vTrace("0x%016x "_Stz,(i8)((u1*)aAddress + (i_Word * C_BYTES_PER_WORD)));
+      vTrace("0x%06x "_Stz,i_Word);
+    }
+    
+    // dump the hex version of the byte
+    vTrace("%02x "_Stz, (i8)(*((u1*)aAddress + i_Byte)));
+    
+    // end of hex portion for this line?
+    if (i_Byte % C_BYTES_PER_WORD != C_BYTES_PER_WORD - 1)
+      continue;
+    
+    // at end of line, write char version of bytes dumped on this line
+    for (u8 i_Char = 0; i_Char < C_BYTES_PER_WORD; i_Char++) {
+      
+      u1 cChar = *((u1*)aAddress + i_Word + i_Char);
+      
+      if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX)
+        vTrace("%c"_Stz, '.');
+      else
+        vTrace("%c"_Stz, cChar);
+    }
+    
+    // start a new line
+    i_Word++;
+    vTrace("\n"_Stz);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // end of dump and on a word boundary
+  if (i_Byte % C_BYTES_PER_WORD == 0 ||
+      i_Byte % C_BYTES_PER_WORD == C_BYTES_PER_WORD - 1) {
+    vTrace("\n"_Stz);
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // end of dump and not at 16-byte boundary
+  
+  i8 i_Remaining = C_BYTES_PER_WORD - i_Byte;
+  
+  // write an "__" filler for bytes not dumped
+  while (i_Remaining--)
+    vTrace("%s "_Stz, "__"_Stz);
+  
+  for (u8 i_Char = 0; i_Char < i_Byte % C_BYTES_PER_WORD; i_Char++) {
+    u1 cChar = *((u1*)aAddress + i_Word + i_Char);
+    if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX)
+      vTrace("%c"_Stz, '.');
+    else
+      vTrace("%c"_Stz, cChar);
+  }
+  
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* free a block of memory                                                     */
 /*----------------------------------------------------------------------------*/
 void MemLib::vFreeBlock(void* aBlock, i8 nBytes)
