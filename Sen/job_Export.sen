@@ -268,7 +268,7 @@
 
   pJob_Export export.releaseResources
 
-  // send job__ended to [E]                                  __ENDED[E](E`):(E`)
+  // send job__ended to [E]                                      __ENDED[E]():()
   job::participantEnded
 
   <<am <DONE_END>
@@ -286,7 +286,7 @@
 
   pJob_Export export.releaseResources
 
-  // send job__cancelled to [E]                          __CANCELLED[E](E`):(E`)
+  // send job__cancelled to [E]                              __CANCELLED[E]():()
   job::participantCancelled
 
   <<am <DONE_CAN>
