@@ -929,7 +929,7 @@ void Step::vIndexRange(MP_Task mpTask)
   
   Object* pPtrJob;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
-    THROW_INVALID_DSTACK("index.exactKey"_Stz);
+    THROW_INVALID_DSTACK("index.range"_Stz);
   
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
   ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
@@ -989,11 +989,13 @@ void Step::vIndexRange(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if upperKey > lowerKey
-  bIsEqual = false;
-  bBefore = xKeyWrkUpper.aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkLower.aKey(),
-                                               pIndex->pIdxColVec(), 1,
-                                               bIsEqual, RO_LESS_THAN);
-  if (bBefore) {
+//  bIsEqual = false;
+//  bBefore = xKeyWrkUpper.aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkLower.aKey(),
+//                                               pIndex->pIdxColVec(), 1,
+//                                               bIsEqual, RO_LESS_THAN);
+  eKC eCompare = KeyData::eCompare(xKeyWrkUpper, xKeyWrkLower);
+  
+  if (eCompare == KC_BEFORE) {
     goto LastBuffer;
   }
   
