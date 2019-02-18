@@ -142,6 +142,33 @@ eKC KeyData::eCompare(Item* aKeyItem1, KeyWrk& xKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
 /*----------------------------------------------------------------------------*/
+eKC KeyData::eCompare(KeyWrk& xKeyItem1, KeyWrk& xKeyItem2)
+{
+  i8 nKeySize1 = xKeyItem1.nKeySize();
+  i8 nKeySize2 = xKeyItem2.nKeySize();
+  
+  KeyData* aKey1 = xKeyItem1.aKey();
+  KeyData* aKey2 = xKeyItem2.aKey();
+  
+  i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
+  
+  char* aCursorThis = aKey1->aByteSequence();
+  char* aCursorThat = aKey2->aByteSequence();
+  
+  i8 iCmp = MemLib::iCompareWords(aCursorThis, aCursorThat, iCmpBytes);
+  
+  if (iCmp == 0)
+    return KC_SAME;
+  
+  if (iCmp < 0)
+    return KC_BEFORE;
+  
+  return KC_AFTER;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compare key1 and key2                                                      */
+/*----------------------------------------------------------------------------*/
 eKC KeyData::eCompare(KeyWrk& xKeyItem1, Item* aKeyItem2)
 {
   i8 nKeySize1 = xKeyItem1.nKeySize();

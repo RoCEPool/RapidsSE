@@ -1,0 +1,181 @@
+/*----------------------------------------------------------------------------*/
+/* lower bound query test                                                     */
+/*----------------------------------------------------------------------------*/
+
+// (1) create table jCdt
+create table jCdt (
+  jA  INTEGER,
+  jB  INTEGER,
+  jC  INTEGER,
+  jD  INTEGER,
+  jE  VARCHAR(32)
+);
+success
+
+create index jCdt_idx1 on jCdt (jA);
+success
+
+//create index jCdt_idx2 on jCdt (jB);
+//success
+
+//create index jCdt_idx3 on jCdt (jC);
+//success
+
+//create index jCdt_idx4 on jCdt (jD);
+//success
+
+ld jCdt "/DATA/Select/range2.csv";
+success
+
+vfyidx jCdt jCdt_idx1;
+success
+
+//------------------------------------------------------------------------------
+// SCAN
+fetch jCdt;
+rows: 26
+
+//dumpidx jCdt jCdt_idx1;
+//success
+
+//------------------------------------------------------------------------------
+// EXACT KEYS for index on jA
+
+fetch jCdt "jA 9223372036854775807 >";
+rows: 0
+
+fetch jCdt "jA 9223372036854775807 >=";
+rows: 1
+
+fetch jCdt "jA 19 >" ;
+rows: 5
+
+fetch jCdt "jA 19 >=" ;
+rows: 6
+
+fetch jCdt "jA 18 >" ;
+rows: 6
+
+fetch jCdt "jA 18 >=" ;
+rows: 7
+
+fetch jCdt "jA 17 >";
+rows: 7
+
+fetch jCdt "jA 17 >=";
+rows: 8
+
+fetch jCdt "jA 16 >";
+rows: 8
+
+fetch jCdt "jA 16 >=";
+rows: 9
+
+fetch jCdt "jA 15 >";
+rows: 9
+
+fetch jCdt "jA 15 >=";
+rows: 10
+
+fetch jCdt "jA 14 >";
+rows: 10
+
+fetch jCdt "jA 14 >=";
+rows: 11
+
+fetch jCdt "jA 13 >";
+rows: 11
+
+fetch jCdt "jA 13 >=";
+rows: 12
+
+fetch jCdt "jA 12 >";
+rows: 12
+
+fetch jCdt "jA 12 >=";
+rows: 13
+
+fetch jCdt "jA 11 >";
+rows: 13
+
+fetch jCdt "jA 11 >=";
+rows: 14
+
+fetch jCdt "jA 10 >";
+rows: 14
+
+fetch jCdt "jA 10 >=";
+rows: 15
+
+fetch jCdt "jA 9 >";
+rows: 15
+
+fetch jCdt "jA 9 >=";
+rows: 16
+
+fetch jCdt "jA 8 >";
+rows: 16
+
+fetch jCdt "jA 8 >=";
+rows: 17
+
+fetch jCdt "jA 7 >";
+rows: 17
+
+fetch jCdt "jA 7 >=";
+rows: 18
+
+fetch jCdt "jA 6 >";
+rows: 18
+
+fetch jCdt "jA 6 >=";
+rows: 19
+
+fetch jCdt "jA 5 >";
+rows: 19
+
+fetch jCdt "jA 5 >=";
+rows: 20
+
+fetch jCdt "jA 4 >";
+rows: 20
+
+fetch jCdt "jA 4 >=";
+rows: 21
+
+fetch jCdt "jA 3 >";
+rows: 21
+
+fetch jCdt "jA 3 >=";
+rows: 22
+
+fetch jCdt "jA 2 >";
+rows: 22
+
+fetch jCdt "jA 2 >=";
+rows: 23
+
+fetch jCdt "jA 1 >";
+rows: 23
+
+fetch jCdt "jA 1 >=";
+rows: 24
+
+fetch jCdt "jA -9223372036854775807 >";
+rows: 24
+
+fetch jCdt "jA -9223372036854775807 >=";
+rows: 25
+
+//drop table jCdt;
+//success
+
+CLEANUP {
+
+  //drop table jCdt;
+  //mute
+
+  bye;
+  mute
+}
+
