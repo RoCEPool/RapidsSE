@@ -103,10 +103,6 @@
 
   sTableNm table::find to pTable
   pTable pJob_Export job_export.table!
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn the sub-exporters on this participant node           [E](E`)SE:(E`)SE
-  pJob_Export export.spawnSubExporters
 ;
 
 
@@ -201,6 +197,10 @@
   pJob_Export export.initRequest
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn the sub-exporters on this participant node           [E](E`)SE:(E`)SE
+  pJob_Export export.spawnSubExporters
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute E' to all participants                    `KE[E](`E)SE:(`E)SE,KE
   pJob_Export job.distribute
 
@@ -227,10 +227,10 @@
 
   job::this locals| pJob_Export |
 
-  //                                                                [E](E`):(E`)
+  // this E` becomes (E`)                                           [E](E`):(E`)
   pJob_Export job.becomeParticipant
 
-  // check the table exists on this node
+  // check table being exported exists on this node
   pJob_Export export.checkResources
 
   // send job__begin to [E]                                  __BEGUN[E](E`):(E`)
@@ -240,7 +240,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_Export on participating node                          [E]E`:E` */
+/* execute Job_Export (E`) on participating node                 [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
 : export_exe ( pJob_Export -- )
 
@@ -258,7 +258,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* end Job_Export on participating node                                       */
+/* end Job_Export (E`) on participating node                     [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
 : export_end ( -- )
 
@@ -276,7 +276,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* cancel Job_Export on participating node                                    */
+/* cancel Job_Export (E`) on participating node                  [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
 : export_can ( -- )
 
