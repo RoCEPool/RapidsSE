@@ -634,16 +634,32 @@ Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey, eRO eRelnOp)
   
   eKC eCompare;
   if (aIndexEntry) {
-    do {
-
-      eCompare = KeyData::eCompare(aIndexEntry, xGivenKey);
-
-      if (eCompare != KC_AFTER) {
-        aIndexEntry = aNextEntry(aIndexEntry, 0);
-      }
-    } while (aIndexEntry && eCompare != KC_AFTER);
+    
+    
+    if (eRelnOp == RO_GREATER_EQUAL) {
+      do {
+        
+        eCompare = KeyData::eCompare(aIndexEntry, xGivenKey);
+        
+        if (eCompare != KC_AFTER) {
+          aIndexEntry = aNextEntry(aIndexEntry, 0);
+        }
+      } while (aIndexEntry && eCompare != KC_AFTER);
+      
+    }
+    else {
+      
+      do {
+        eCompare = KeyData::eCompare(aIndexEntry, xGivenKey);
+        
+        if (eCompare == KC_BEFORE) {
+          aIndexEntry = aNextEntry(aIndexEntry, 0);
+        }
+      } while (aIndexEntry && eCompare == KC_BEFORE);
+      
+    }
   }
-  
+
   return aIndexEntry;
 }
 

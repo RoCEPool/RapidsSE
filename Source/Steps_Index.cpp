@@ -1395,7 +1395,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   
   Object* pPtrJob;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
-    THROW_INVALID_DSTACK("index.exactKey"_Stz);
+    THROW_INVALID_DSTACK("index.upperBound"_Stz);
   
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
   ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
@@ -1423,7 +1423,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   Planner* pPlanner = pJob_SubFetch->m_pPlanner;
   Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   
-  IdxColVec* pIdxColVec = pIndex->pIdxColVec();
+  //IdxColVec* pIdxColVec = pIndex->pIdxColVec();
   
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
@@ -1465,7 +1465,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entry buffer ?
   if (aUpperEntryBuffer) {
-    aUpperEntry = aUpperEntryBuffer->aPositionQuery(xKeyWrkUpper.aKey(), eUpperRelnOp);
+    aUpperEntry = aUpperEntryBuffer->aPositionQuery(xKeyWrkUpper, eUpperRelnOp);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
