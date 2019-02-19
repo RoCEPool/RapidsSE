@@ -95,11 +95,29 @@ Queues::~Queues(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Queues::vStateDiagram(s256& sDiagram, eCN eJobClass)
 {
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  sDiagram = ""_Stz;
+  
   switch (eJobClass) {
-    case Base::CN_JOB_EXPORT:
-      sDiagram.vSprint("<Diagram for class %lld %s>"_Stz,
-                       eJobClass,aCN[eJobClass]);
+    case Base::CN_JOB_EXPORT: {
+//      sDiagram.vSprint("<Diagram for class %lld %s>"_Stz,
+//                       eJobClass,aCN[eJobClass]);
+      bool bKE_received   = true;
+      bool bE_originator  = true;
+      bool bE_participant = true;
+      bool bSE_neutral    = true;
+      
+      if (bKE_received)   sDiagram.vConcat("KE`"_Stz);
+      if (bE_originator)  sDiagram.vConcat("[E]"_Stz);
+      if (bE_participant) sDiagram.vConcat("(E`)"_Stz);
+      if (bSE_neutral)    sDiagram.vConcat("SE"_Stz);
+
+      sDiagram.vConcat(":"_Stz);
+      if (bE_participant) sDiagram.vConcat("(E`)"_Stz);
+      if (bSE_neutral)    sDiagram.vConcat("SE"_Stz);
+
       return;
+    }
       
     default:
       sDiagram.vSprint("Warning: No diagram for class %lld %s"_Stz,

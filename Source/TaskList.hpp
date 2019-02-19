@@ -31,6 +31,7 @@ namespace Tasks
     void   vDropLock(void);
     void   vGrabLock(void);
     bool   bGrabLock(void);
+    bool   bHasJob(eCN eJobClass);
     bool   bIsLocked(void);
     Task*  pPeekTask(void);
     Task*  pPopTask(void);

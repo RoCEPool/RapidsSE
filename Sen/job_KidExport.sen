@@ -59,7 +59,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* rcv seed for KE` on originating export node E          KE`[E](E`)SE:(E)`SE */
+/* rcv seed for KE` on originating export node E          KE`[E](E`)SE:(E`)SE */
 /*----------------------------------------------------------------------------*/
 : kidExport_rcv ( -- )
 
