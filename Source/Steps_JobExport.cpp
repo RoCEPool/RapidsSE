@@ -130,9 +130,9 @@ void Step::vJob_ExportTwiddlingFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_export.twiddling@"_Stz);
   Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
   
-  bool bTwiddling = pJob_Export->m_oAuxAck.bTwiddling();
+  bool bPassed = pJob_Export->m_oAuxAck.bPassed();
   
-  mpTask->m_pDataStack->vPushI8(bTwiddling);
+  mpTask->m_pDataStack->vPushI8(bPassed);
 
   EXIT();
 }
@@ -149,11 +149,11 @@ void Step::vJob_ExportTwiddlingStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_export.twiddling!"_Stz);
   Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
 
-  i8 iTwiddling;
-  if ( ! mpTask->m_pDataStack->bPop(iTwiddling) )
+  i8 iPassed;
+  if ( ! mpTask->m_pDataStack->bPop(iPassed) )
     THROW_INVALID_DSTACK("Job_export.twiddling!"_Stz);
 
-  pJob_Export->m_oAuxAck.vTwiddling(iTwiddling);
+  pJob_Export->m_oAuxAck.vPassed(iPassed);
   
   EXIT();
 }

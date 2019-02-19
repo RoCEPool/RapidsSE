@@ -26,25 +26,14 @@
 /*----------------------------------------------------------------------------*/
 /* twiddle till kid exports are completed                                     */
 /*----------------------------------------------------------------------------*/
-: E.waitAll_KE ( pJob_[E] -- )
+: E.waitAll_KE ( pJob_E -- )
 
-  params| pJob_[E] |
+  params| pJob_E |
 
   task::this task.grabLock
 
-  pJob_[E] job_export.tapsRemaining@ if
+  task::this task.dropLock
 
-    true pJob_[E] job_export.twiddling!
-    "Twiddling!!!" .
-    1 task::acks!
-    task::wait
-
-  else
-
-    "No need to twiddle" .
-    task::this task.dropLock
-
-  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -199,7 +188,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute E` to all participants                                  [E]E`:E`
-  pJob_E job.distribute                                                    // E:
+  pJob_E job.distribute
   pJob_E job.assertNeutral
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

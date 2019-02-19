@@ -11,7 +11,7 @@ namespace Jobs
     i8 m_nAcksOriginally; // the number of original taps
     i8 m_nAcksRemaining;  // the number of taps remaining
   
-    bool m_bTwiddling;    // job is twiddling, waiting to be acked
+    bool m_bPassed;       // has aux job passed the decision point?
     
     // must be last
     Footer m_xFooter;
@@ -29,8 +29,8 @@ namespace Jobs
     i8   nOriginalAcks(void);
     i8   iPrintOnlyValue(void);
     void vSetRemaining(i8 nAcksRemaining);
-    bool bTwiddling(void);
-    void vTwiddling(bool bTwiddling);
+    bool bPassed(void);
+    void vPassed(bool bTwiddling);
 
     Footer* aFooter(void);
   };

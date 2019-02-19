@@ -29,7 +29,7 @@ AuxAck::AuxAck(void)
 {
   m_nAcksOriginally = 0;
   m_nAcksRemaining  = 0;
-  m_bTwiddling      = false;
+  m_bPassed         = false;
   
   _checkInitialised_(CN_AUXACK);
   
@@ -124,23 +124,23 @@ void AuxAck::vSetRemaining(i8 nAcksRemaining)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get twiddling                                                              */
+/* get passed flag                                                            */
 /*----------------------------------------------------------------------------*/
-bool AuxAck::bTwiddling(void)
+bool AuxAck::bPassed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_AUXACK,_FOOTER_);
   
-  return m_bTwiddling;
+  return m_bPassed;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set twiddling                                                              */
+/* set passed flag                                                            */
 /*----------------------------------------------------------------------------*/
-void AuxAck::vTwiddling(bool bTwiddling)
+void AuxAck::vPassed(bool bPassed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_AUXACK,_FOOTER_);
   
-  m_bTwiddling = bTwiddling;
+  m_bPassed = bPassed;
 }
 
 /*----------------------------------------------------------------------------*/
