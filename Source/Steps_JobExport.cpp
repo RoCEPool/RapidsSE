@@ -51,7 +51,7 @@ void Step::vJob_ExportDecTapper(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_export.decTapper"_Stz);
   Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
 
-  bool bAmTapper = pJob_Export->m_oTapper.bDecAndDecide();
+  bool bAmTapper = pJob_Export->m_oAuxAck.bDecAndDecide();
   
   mpTask->m_pDataStack->vPushI8(bAmTapper);
   
@@ -111,7 +111,7 @@ void Step::vJob_ExportTapsRemainingFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_export.tapsRemaining@"_Stz);
   Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
   
-  i8 iTapsRemaining = pJob_Export->m_oTapper.iPrintOnlyValue();
+  i8 iTapsRemaining = pJob_Export->m_oAuxAck.iPrintOnlyValue();
   
   mpTask->m_pDataStack->vPushI8(iTapsRemaining);
   
@@ -130,7 +130,7 @@ void Step::vJob_ExportTwiddlingFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_export.twiddling@"_Stz);
   Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
   
-  bool bTwiddling = pJob_Export->m_oTapper.bTwiddling();
+  bool bTwiddling = pJob_Export->m_oAuxAck.bTwiddling();
   
   mpTask->m_pDataStack->vPushI8(bTwiddling);
 
@@ -153,7 +153,7 @@ void Step::vJob_ExportTwiddlingStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iTwiddling) )
     THROW_INVALID_DSTACK("Job_export.twiddling!"_Stz);
 
-  pJob_Export->m_oTapper.vTwiddling(iTwiddling);
+  pJob_Export->m_oAuxAck.vTwiddling(iTwiddling);
   
   EXIT();
 }

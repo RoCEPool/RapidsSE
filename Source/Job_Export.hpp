@@ -18,7 +18,7 @@ namespace Jobs
   
     Completer m_oWritten; // track writing of all export buffers
   
-    Tapper m_oTapper; // handle the foward ack from Kid Export job
+    Tapper m_oAuxAck; // handle the auxilary ack from Kid Export job
   
     // must be last
     Footer m_xFooter;
