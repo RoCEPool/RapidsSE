@@ -8,8 +8,8 @@ namespace Jobs
   class AuxAck : public Object
   {
   private:
-    i8 m_nTapsOriginally; // the number of original taps
-    i8 m_nTapsRemaining;  // the number of taps remaining
+    i8 m_nAcksOriginally; // the number of original taps
+    i8 m_nAcksRemaining;  // the number of taps remaining
   
     bool m_bTwiddling;    // job is twiddling, waiting to be acked
     
@@ -17,7 +17,7 @@ namespace Jobs
     Footer m_xFooter;
     
   public:
-    void* operator new(size_t, AuxAck* pTapper);
+    void* operator new(size_t, AuxAck* pAuxAck);
     void  operator delete(void* aAddress);
     
     AuxAck(void);
@@ -26,9 +26,9 @@ namespace Jobs
     void vCheckInit(void);
     bool bDecAndDecide(void);
     bool bIsSet(void);
-    i8   nOriginalTaps(void);
+    i8   nOriginalAcks(void);
     i8   iPrintOnlyValue(void);
-    void vSetRemaining(i8 nTapsRemaining);
+    void vSetRemaining(i8 nAcksRemaining);
     bool bTwiddling(void);
     void vTwiddling(bool bTwiddling);
 
