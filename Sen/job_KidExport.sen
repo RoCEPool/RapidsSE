@@ -15,13 +15,14 @@
 
   >>am <SEED_KID>
 
-  job::this locals| pJob_KidExport |
+  job::this locals| pJob_KE |
+  pJob_KE job.assertNeutral
 
-  pJob_KidExport job_kidExport.exportOrigin locals| i_ExportNode |
+  pJob_KE job_kidExport.exportOrigin locals| i_ExportNode |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // send KE` to the export node:                      KE`[E](E`)SE,KE:(E`)SE,KE
-  i_ExportNode pJob_KidExport job.forward
+  i_ExportNode pJob_KE job.forward
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete this KE on this participant node:          KE`[E](E`)SE,xx:(E`)SE,xx
@@ -60,30 +61,31 @@
 /*----------------------------------------------------------------------------*/
 /* rcv seed for KE` on originating export node E          KE`[E](E`)SE:(E)`SE */
 /*----------------------------------------------------------------------------*/
-: kidExport_rcv (  -- )
+: kidExport_rcv ( -- )
 
   >>am <SEED_RCV>
 
-  job::this locals| pJob_KidExport  |
+  job::this locals| pJob_KE`  |
+  pJob_KE` job.assertNeutral
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // KE` finds export job [E] on this originator node
-  pJob_KidExport job_kidExport.exportJobId locals| i_ExportJobId |
-  i_ExportJobId job::findOriginator locals| pJob_Export |
+  pJob_KE` job_kidExport.exportJobId locals| i_ExportJobId |
+  i_ExportJobId job::findOriginator locals| pJob_[E] |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // KE` writes its ExportBuffer to [E].m_oCsvFile
   false locals| bLastWrite |
-  pJob_Export pJob_KidExport job_kidExport.writeExportBuffer to bLastWrite
+  pJob_[E] pJob_KE` job_kidExport.writeExportBuffer to bLastWrite
 
 
 
   // ? ? ?
   bLastWrite if
     "`KE last write" .
-    pJob_Export job_export.decTapper if
+    pJob_[E] job_export.decTapper if
       "`KE is the tapper" .
-      pJob_Export kidExport.tapExport
+      pJob_[E] kidExport.tapExport
     then
   then
 
