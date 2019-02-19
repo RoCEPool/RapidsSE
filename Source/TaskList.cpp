@@ -113,7 +113,7 @@ bool TaskList::bGrabLock(void)
 /*----------------------------------------------------------------------------*/
 /* is there a task in the list with given job class?                          */
 /*----------------------------------------------------------------------------*/
-bool TaskList::bHasJob(eCN eJobClass)
+bool TaskList::bHasJobClass(eCN eJobClass)
 {
   //vDump(CN_TASKLIST, this, Stz::aTab(1));
   
