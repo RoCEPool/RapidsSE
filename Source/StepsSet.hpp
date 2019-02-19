@@ -430,6 +430,7 @@
   static void vJobAssertNeutral(Tasks::MP_Task mpTask);
   static void vJobAssertOriginator(Tasks::MP_Task mpTask);
   static void vJobAssertParticipant(Tasks::MP_Task mpTask);
+  static void vJobAssertReceived(Tasks::MP_Task mpTask);
 
   static void vJobClass(Tasks::MP_Task mpTask);
   static void vJobColumnCountFetch(Tasks::MP_Task mpTask);

@@ -67,6 +67,7 @@
 
   job::this locals| pJob_KE`  |
   pJob_KE` job.assertNeutral
+  pJob_KE` job.assertReceived
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // KE` finds export job [E] on this originator node

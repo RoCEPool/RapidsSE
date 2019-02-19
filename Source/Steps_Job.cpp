@@ -18,6 +18,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.assertNeutral"_Stz,    &Step::vJobAssertNeutral);
   vAddStep("job.assertOriginator"_Stz, &Step::vJobAssertOriginator);
   vAddStep("job.assertParticipant"_Stz,&Step::vJobAssertParticipant);
+  vAddStep("job.assertReceived"_Stz,   &Step::vJobAssertReceived);
 
   vAddStep("job.class"_Stz,            &Step::vJobClass);
   vAddStep("job.columnCount@"_Stz,     &Step::vJobColumnCountFetch);
@@ -343,6 +344,26 @@ void Step::vJobAssertParticipant(MP_Task mpTask)
            "Job not found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.assertReceived -- assert job was received                              */
+/*----------------------------------------------------------------------------*/
+void Step::vJobAssertReceived(MP_Task mpTask)
+{
+  ENTRY("vJobAssertReceived"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.assertReceived"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  if (! pJob->m_bWasReceived)
+    vFatal("job.assertReceived: "
+           "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
+           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+  
   EXIT();
 }
 
