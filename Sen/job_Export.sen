@@ -190,22 +190,22 @@
   >>am <SEED_REQ>
   an::seed_req
 
-  job::this locals| pJob_Export |
+  job::this locals| pJob_E |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pJob_Export E.initJob
+  pJob_E E.initJob
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute E' to all participants                                  [E]E`:E`
-  pJob_Export job.distribute
+  pJob_E job.distribute
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for all 'KE to write                            KE`[E](E`)SE:(E`)SE,KE
-  pJob_Export [E].waitAll_KE                                // [E]:
+  pJob_E [E].waitAll_KE                                // [E]:
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // close the export file [E]::m_oCsvFile
-  pJob_Export job_export.end
+  pJob_E job_export.end
 
   <<am <DONE_REQ>
 ;
@@ -220,17 +220,17 @@
   >>am <SEED_BEG>
   an::seed_rcv
 
-  job::this locals| pJob_Export |
+  job::this locals| pJob_(E`) |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // this E` becomes (E`)                                           [E](E`):(E`)
-  pJob_Export job.becomeParticipant
+  pJob_(E`) job.becomeParticipant
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // check table being exported exists on this node
-  pJob_Export (E`).checkResources
+  pJob_(E`) (E`).checkResources
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -248,17 +248,17 @@
   >>am <SEED_EXE>
   an::seed_exe
 
-  job::this locals| pJob_Export |
+  job::this locals| pJob_(E`) |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pJob_Export (E`).InitJob
+  pJob_(E`) (E`).InitJob
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn the sub-exporters on this participant node           [E](E`)SE:(E`)SE
-  pJob_Export (E`).spawn_SE
+  pJob_(E`) (E`).spawn_SE
 
   // send job__executed to [E]                            __EXECUTED[E](E`):(E`)
-  pJob_Export job::participantExecuted
+  pJob_(E`) job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -271,9 +271,9 @@
   >>am <SEED_END>
   an::seed_end
 
-  job::this locals| pJob_Export |
+  job::this locals| pJob_(E`) |
 
-  pJob_Export (E`).releaseResources
+  pJob_(E`) (E`).releaseResources
 
   // send job__ended to [E]                                      __ENDED[E]():()
   job::participantEnded
@@ -289,9 +289,9 @@
   >>am <SEED_CAN>
   an::seed_can
 
-  job::this locals| pJob_Export |
+  job::this locals| pJob_(E`) |
 
-  pJob_Export (E`).releaseResources
+  pJob_(E`) (E`).releaseResources
 
   // send job__cancelled to [E]                              __CANCELLED[E]():()
   job::participantCancelled
