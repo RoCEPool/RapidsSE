@@ -807,15 +807,6 @@ Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey,i8 nKeyCols)
   //  vBuildSkipList();
 #endif
   
-  /*
-   * positioning is based on eJuxtaCompare
-   *   JC_BEFORE: never called
-   *   JC_SAME:   scan for entry which is the same as given key
-   *   JC_AFTER:  scan for entry which the given key would be inserted after
-   */
-  
-  ASSERT(JC_SAME == eJuxtaCompare || JC_AFTER == eJuxtaCompare);
-  
   bool bIsJuxta;
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
