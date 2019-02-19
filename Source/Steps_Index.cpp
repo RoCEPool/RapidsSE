@@ -1477,7 +1477,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
       aUpperEntryBuffer = aUpperEntryBuffer->pNextBuffer();
       
       // position in the index buffer at the upper key
-      aUpperEntry = aUpperEntryBuffer->aPositionQuery(xKeyWrkUpper.aKey(), eUpperRelnOp);
+      aUpperEntry = aUpperEntryBuffer->aPositionQuery(xKeyWrkUpper, eUpperRelnOp);
     }
     else
       break;
