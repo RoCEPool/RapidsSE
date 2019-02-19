@@ -36,68 +36,50 @@ success
 //------------------------------------------------------------------------------
 // SCAN
 fetch jCdt;
-rows: 25
-
+rows: 26
 //dumpidx jCdt jCdt_idx1;
 //success
 
 //------------------------------------------------------------------------------
 // EXACT KEYS for index on jA
 
-fetch jCdt "jA 19 ==" ;
+fetch jCdt "jA 19 > jA 22 == and" ;
 rows: 1
 
-fetch jCdt "jA 18 ==" ;
-rows:
-  (18,18,*,*,*)
+fetch jCdt "jA 19 >= jA 22 == and" ;
+rows: 1
 
-fetch jCdt "jA 17 ==";
-rows:
-  (17,*,*,*,*)
+fetch jCdt "jA 10 > jA 19 < and" ;
+rows: 8
 
-fetch jCdt "jA -9223372036854775807 ==";
-rows:
-  (-9223372036854775807,*,*,*,*)
+fetch jCdt "jA 10 > jA 19 <= and" ;
+rows: 9
 
-fetch jCdt "jA 9223372036854775807 ==";
-rows:
-  (9223372036854775807,*,*,*,*)
+fetch jCdt "jA 10 >= jA 19 < and" ;
+rows: 9
 
-fetch jCdt "jA 16 ==";
-rows:
-  (16,*,*,*,*)
+fetch jCdt "jA 10 >= jA 19 <= and" ;
+rows: 10
 
-fetch jCdt "jA 15 ==";
-rows:
-  (15,*,*,*,*)
+fetch jCdt "jA 1 > jA 10 <= and" ;
+rows: 9
 
-fetch jCdt "jA 14 ==";
-rows:
-  (14,*,*,*,*)
+fetch jCdt "jA 1 >= jA 10 <= and" ;
+rows: 10
 
-fetch jCdt "jA 13 ==";
-rows:
-  (13,*,*,*,*)
+fetch jCdt "jA -9223372036854775807 > jA 0 < and";
+rows: 0
 
-fetch jCdt "jA 12 ==";
-rows:
-  (12,*,*,*,*)
-
-fetch jCdt "jA 11 ==";
-rows:
-  (11,*,*,*,'bb1')
-
-fetch jCdt "jA 10 ==";
-rows:
-  (10,*,*,*,*)
+fetch jCdt "jA -9223372036854775807 > jA 1 <= and";
+rows: 1
 
 drop table jCdt;
 success
 
 CLEANUP {
 
-  //drop table jCdt;
-  //mute
+  drop table jCdt;
+  mute
 
   bye;
   mute
