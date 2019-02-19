@@ -297,7 +297,7 @@ i8 giClassSize[]
   /* 23 */ sizeof(Arguments),          // CN_ARGUMENTS
   /* 24 */ sizeof(Atomic),             // CN_ATOMIC
   /* 25 */ sizeof(AttachMap),          // CN_ATTACHMAP
-  /*    */ sizeof(Tapper),             // CN_AUXACK
+  /*    */ sizeof(AuxAck),             // CN_AUXACK
 
   /* 29 */ sizeof(BPA),                // CN_BPA
   /* 28 */ sizeof(BufferPool),         // CN_BUFFERPOOL
