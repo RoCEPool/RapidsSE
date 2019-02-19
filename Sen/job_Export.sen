@@ -223,7 +223,7 @@
   an::seed_rcv
 
   job::this locals| pJob_E` |
-  //pJob_E` job.assertParticipant
+  //pJob_E` job.assertNeutral
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

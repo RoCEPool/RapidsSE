@@ -156,65 +156,6 @@ void Step::vJobAddOriginator(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.assertNeutral -- assert job is not in originator nor participant set   */
-/*----------------------------------------------------------------------------*/
-void Step::vJobAssertNeutral(MP_Task mpTask)
-{
-  ENTRY("vJobAssertNeutral"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("vJobAssertNeutral"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  RASSERT(JL_NONE == pJob->m_eJobList);
-  Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(pJob->m_iJobId);
-  RASSERT(! pJobFound);
-  pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pJob->m_iJobId);
-  RASSERT(! pJobFound);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.assertOriginator -- assert job is in originator job set                */
-/*----------------------------------------------------------------------------*/
-void Step::vJobAssertOriginator(MP_Task mpTask)
-{
-  ENTRY("vJobAssertOriginator"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.assertOriginator"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  RASSERT(JL_ORIGINATING == pJob->m_eJobList);
-  Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(pJob->m_iJobId);
-  RASSERT(pJobFound);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.assertParticipant -- assert job is in participant job set              */
-/*----------------------------------------------------------------------------*/
-void Step::vJobAssertParticipant(MP_Task mpTask)
-{
-  ENTRY("vJobAssertParticipant"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.assertParticipant"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  RASSERT(JL_PARTICIPATING == pJob->m_eJobList);
-  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pJob->m_iJobId);
-  RASSERT(pJobFound);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.addParticipant -- add job to participant job set                       */
 /*----------------------------------------------------------------------------*/
 void Step::vJobAddParticipant(MP_Task mpTask)
@@ -232,14 +173,98 @@ void Step::vJobAddParticipant(MP_Task mpTask)
   
   if (pJob->m_bMarkActivity) {
     ActivityMap::vMarkJob(pJob,"Added to ParticipantList: %s %p "_Stz,
-                       aCN[pJob->eClass()],
-                       pJob);
+                          aCN[pJob->eClass()],
+                          pJob);
     gpAttachMap->m_pParticipatingJobs->vMarkContents(pJob->m_iJobId);
   }
   
   ActionSequence::vAdd(mpTask->m_pJob,
                        AN_ADDED_PARTICIPANT);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.assertNeutral -- assert job is not in originator nor participant set   */
+/*----------------------------------------------------------------------------*/
+void Step::vJobAssertNeutral(MP_Task mpTask)
+{
+  ENTRY("vJobAssertNeutral"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("vJobAssertNeutral"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  if (JL_NONE != pJob->m_eJobList)
+    vFatal("job.assertNeutral: "
+           "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
+           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+  
+  Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(pJob->m_iJobId);
+  if (pJobFound)
+    vFatal("job.assertNeutral: "
+           "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
+           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+
+  pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pJob->m_iJobId);
+  if (pJobFound)
+    vFatal("job.assertNeutral: "
+           "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
+           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.assertOriginator -- assert job is in originator job set                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobAssertOriginator(MP_Task mpTask)
+{
+  ENTRY("vJobAssertOriginator"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.assertOriginator"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  if (JL_ORIGINATING != pJob->m_eJobList)
+    vFatal("job.assertOriginator: "
+           "Job::m_eJobList is not JL_ORIGINATING [Job %s on node %lld]\n"_Stz,
+           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+
+  Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(pJob->m_iJobId);
+  if (! pJobFound)
+    vFatal("job.assertOriginator: "
+           "Job not found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
+           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.assertParticipant -- assert job is in participant job set              */
+/*----------------------------------------------------------------------------*/
+void Step::vJobAssertParticipant(MP_Task mpTask)
+{
+  ENTRY("vJobAssertParticipant"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.assertParticipant"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  if (JL_PARTICIPATING != pJob->m_eJobList)
+    vFatal("job.assertParticipant: "
+           "Job::m_eJobList is not JL_PARTICIPATING [Job %s on node %lld]\n"_Stz,
+           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+  
+  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pJob->m_iJobId);
+  if (! pJobFound)
+    vFatal("job.assertParticipant: "
+           "Job not found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
+           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+
   EXIT();
 }
 
