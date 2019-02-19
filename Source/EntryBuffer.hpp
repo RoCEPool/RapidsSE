@@ -122,7 +122,7 @@ namespace Data
     void         vShowSubList(void);
     void         vShowTree(bool bDumpBuffer=false);
     void         vSpliceAfter(EntryBuffer* pSplicedBuffer);
-    EntryBuffer* pUnlinkSubList(void);
+    EntryBuffer*  pUnlinkSubList(void);
     bool         bVerify(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

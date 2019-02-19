@@ -66,6 +66,7 @@ namespace Data
     static eKC eCompare(Item* aKeyItem1, KeyWrk& xKeyItem2);
     static eKC eCompare(KeyWrk& xKeyItem1, KeyWrk& xKeyItem2);
     static eKC eCompare(KeyWrk& xKeyItem1, Item* aKeyItem2);
+    static eKC eCompare(Item* aKeyItem1, Item* aKeyItem2);
     
     static char* aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor);
     
