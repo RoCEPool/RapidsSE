@@ -85,15 +85,15 @@ namespace Data
     //bool bGreaterThan(KeyData* aKey, IdxColVec* pIdxColVec);
     //bool bGreaterThanSingle(KeyData* aKey, Index* pIndex);
 
-    bool bJuxtaCompare(eJC eJuxtaCompare, KeyData* aKey,
-                       IdxColVec* pIdxColVec, i8 nSearchKeyCols,
-                       bool& bIsEqual, eRO eRelnOp=RO_NONE);
-    bool bJuxtaBefore(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
-                      bool& bIsEqual, eRO eRelnOp=RO_NONE);
-    bool bJuxtaSame(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
-                    bool& bIsEqual);
-    bool bJuxtaAfter(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
-                     bool& bIsEqual, eRO eRelnOp=RO_NONE);
+//    bool bJuxtaCompare(eJC eJuxtaCompare, KeyData* aKey,
+//                       IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+//                       bool& bIsEqual, eRO eRelnOp=RO_NONE);
+//    bool bJuxtaBefore(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+//                      bool& bIsEqual, eRO eRelnOp=RO_NONE);
+//    bool bJuxtaSame(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+//                    bool& bIsEqual);
+//    bool bJuxtaAfter(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+//                     bool& bIsEqual, eRO eRelnOp=RO_NONE);
   
     void vSprintSortKey(s48K& sBuff, IdxColVec* pIdxColVec);
   

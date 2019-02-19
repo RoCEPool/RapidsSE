@@ -983,13 +983,21 @@ void Step::vIndexRange(MP_Task mpTask)
     
     //aUpperEntry->vShow(0,pIndex,true);
     
-    bool bIsEqual = false;
-    bool bBefore = _aKeyData(aUpperEntry->aDataArea())
-                         ->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
-                                         pIndex->pIdxColVec(), 1,
-                                         bIsEqual, eUpperRelnOp);
+//    bool bIsEqual = false;
+//    bool bBefore = _aKeyData(aUpperEntry->aDataArea())
+//                         ->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
+//                                         pIndex->pIdxColVec(), 1,
+//                                         bIsEqual, eUpperRelnOp);
+//
+//    if (! bBefore)
+//      break;
     
-    if (! bBefore)
+    eKC eCompare = KeyData::eCompare(aUpperEntry, xKeyWrkUpper);
+    
+    if (eCompare == KC_AFTER)
+      break;
+    
+    if (eCompare == KC_SAME && eUpperRelnOp == RO_LESS_THAN)
       break;
     
     // move to next entry in the buffer

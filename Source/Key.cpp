@@ -563,240 +563,240 @@ bool KeyData::bNotEqual(Item* aKeyItem1, Item* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* juxta-compare this key with given key                                      */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bJuxtaCompare(eJC eJuxtaCompare, KeyData* aKeyThat,
-                        IdxColVec* pIdxColVec, i8 nSearchKeyCols,
-                        bool& bIsEqual, eRO eRelnOp)
-{
-  bool bJuxtaResult = false;
-  
-  switch (eJuxtaCompare) {
-      
-    case JC_BEFORE:
-      bJuxtaResult = bJuxtaBefore(aKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual,eRelnOp);
-      break;
-      
-    case JC_SAME:
-      bJuxtaResult = bJuxtaSame(aKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual);
-      break;
-      
-    case JC_AFTER:
-      bJuxtaResult = bJuxtaAfter(aKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual,eRelnOp);
-      break;
-      
-    default:
-      NEVER_REACH;
-  }
-  
-  return bJuxtaResult;
-}
+//bool KeyData::bJuxtaCompare(eJC eJuxtaCompare, KeyData* aKeyThat,
+//                        IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+//                        bool& bIsEqual, eRO eRelnOp)
+//{
+//  bool bJuxtaResult = false;
+//
+//  switch (eJuxtaCompare) {
+//
+//    case JC_BEFORE:
+//      bJuxtaResult = bJuxtaBefore(aKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual,eRelnOp);
+//      break;
+//
+//    case JC_SAME:
+//      bJuxtaResult = bJuxtaSame(aKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual);
+//      break;
+//
+//    case JC_AFTER:
+//      bJuxtaResult = bJuxtaAfter(aKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual,eRelnOp);
+//      break;
+//
+//    default:
+//      NEVER_REACH;
+//  }
+//
+//  return bJuxtaResult;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* is this key juxta-before given search key?                                 */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bJuxtaBefore(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
-                       bool& bIsEqual,  eRO eRelnOp)
-{
-  /*
-   * a multi-part key is said to be juxta-before some other key if:
-   *
-   *  i) each element is equal to the corresponding element of the
-   *      the other key
-   *
-   *        e.g. (1) thisElement[0] == thatElement[0] &&
-   *                 thisElement[1] == thatElement[1] &&
-   *                 thisElement[2] == thatElement[2]
-   *
-   *  ii) the leading elements are equal to the corresponding elements of the
-   *      the other key and a next element is less than the corresponding
-   *      element of the other key
-   *
-   *        e.g. (2) thisElement[0] <  thatElement[0]
-   *
-   *        e.g. (3) thisElement[0] == thatElement[0] &&
-   *                 thisElement[1] <  thatElement[1]
-   *
-   *        e.g. (4) thisElement[0] == thatElement[0] &&
-   *                 thisElement[1] == thatElement[1] &&
-   *                 thisElement[2] <  thatElement[2]
-   *
-   *      the above three examples hold even if there are more elements
-   */
-  
-  bIsEqual = false;
-  
-  char* aCursorThis = aByteSequence();
-  char* aCursorThat = aSearchKey->aByteSequence();
-  
-  i8 iCmp = 0;
-  
-  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
-    
-    if (i_Column >= nSearchKeyCols)
-      break;
-    
-    Column* pColumn = pIdxColVec->pGet(i_Column);
-    
-    i8 nBytesThis;
-    i8 nBytesThat;
-    
-    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
-    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
-    
-    iCmp = pColumn->iCmp(aDatumThis,aDatumThat);
-    
-    // return true (is before) if this element is less than that element
-    // examples (2), (3), (4)
-    if (iCmp < 0)
-      return true;
-    
-    // return false (not before) if this element is greater than that element
-    if (iCmp > 0)
-      return false;
-    
-    // so far the elements are equal
-    
-    if (RO_LESS_THAN == eRelnOp)
-      return false;
-  }
-  
-  // all elements are the same
-  ASSERT(0 == iCmp);
-  bIsEqual = true;
-  
-  // return true (is before)
-  // example (1)
-  return true;
-}
+//bool KeyData::bJuxtaBefore(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+//                       bool& bIsEqual,  eRO eRelnOp)
+//{
+//  /*
+//   * a multi-part key is said to be juxta-before some other key if:
+//   *
+//   *  i) each element is equal to the corresponding element of the
+//   *      the other key
+//   *
+//   *        e.g. (1) thisElement[0] == thatElement[0] &&
+//   *                 thisElement[1] == thatElement[1] &&
+//   *                 thisElement[2] == thatElement[2]
+//   *
+//   *  ii) the leading elements are equal to the corresponding elements of the
+//   *      the other key and a next element is less than the corresponding
+//   *      element of the other key
+//   *
+//   *        e.g. (2) thisElement[0] <  thatElement[0]
+//   *
+//   *        e.g. (3) thisElement[0] == thatElement[0] &&
+//   *                 thisElement[1] <  thatElement[1]
+//   *
+//   *        e.g. (4) thisElement[0] == thatElement[0] &&
+//   *                 thisElement[1] == thatElement[1] &&
+//   *                 thisElement[2] <  thatElement[2]
+//   *
+//   *      the above three examples hold even if there are more elements
+//   */
+//
+//  bIsEqual = false;
+//
+//  char* aCursorThis = aByteSequence();
+//  char* aCursorThat = aSearchKey->aByteSequence();
+//
+//  i8 iCmp = 0;
+//
+//  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
+//
+//    if (i_Column >= nSearchKeyCols)
+//      break;
+//
+//    Column* pColumn = pIdxColVec->pGet(i_Column);
+//
+//    i8 nBytesThis;
+//    i8 nBytesThat;
+//
+//    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
+//    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
+//
+//    iCmp = pColumn->iCmp(aDatumThis,aDatumThat);
+//
+//    // return true (is before) if this element is less than that element
+//    // examples (2), (3), (4)
+//    if (iCmp < 0)
+//      return true;
+//
+//    // return false (not before) if this element is greater than that element
+//    if (iCmp > 0)
+//      return false;
+//
+//    // so far the elements are equal
+//
+//    if (RO_LESS_THAN == eRelnOp)
+//      return false;
+//  }
+//
+//  // all elements are the same
+//  ASSERT(0 == iCmp);
+//  bIsEqual = true;
+//
+//  // return true (is before)
+//  // example (1)
+//  return true;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* is this key juxta-same as given search key?                                */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bJuxtaSame(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
-                     bool& bIsEqual)
-{
-  /*
-   * a multi-part key is juxta-same as some other key if:
-   *
-   *  each element is equal to the corresponding element of the the other key
-   *    e.g. thisElement[0] == thatElement[0] &&
-   *         thisElement[1] == thatElement[1] &&
-   *         thisElement[2] == thatElement[2]
-   */
-  
-  bIsEqual = false;
-  
-  char* aCursorThis = aByteSequence();
-  char* aCursorThat = aSearchKey->aByteSequence();
-  
-  i8 iCmp = 0;
-  
-  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
-    
-    if (i_Column >= nSearchKeyCols)
-      break;
-    
-    Column* pColumn = pIdxColVec->pGet(i_Column);
-    
-    i8 nBytesThis;
-    i8 nBytesThat;
-    
-    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
-    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
-    
-    iCmp = pColumn->iCmp(aDatumThis,aDatumThat);
-    
-    // return false (not same) if this element is not equal to that element
-    if (iCmp)
-      return false;
-    
-    // so far the elements are equal
-  }
-  
-  // all elements are the same
-  ASSERT(0 == iCmp);
-  bIsEqual = true;
-  
-  // return true (is same)
-  return true;
-}
+//bool KeyData::bJuxtaSame(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+//                     bool& bIsEqual)
+//{
+//  /*
+//   * a multi-part key is juxta-same as some other key if:
+//   *
+//   *  each element is equal to the corresponding element of the the other key
+//   *    e.g. thisElement[0] == thatElement[0] &&
+//   *         thisElement[1] == thatElement[1] &&
+//   *         thisElement[2] == thatElement[2]
+//   */
+//
+//  bIsEqual = false;
+//
+//  char* aCursorThis = aByteSequence();
+//  char* aCursorThat = aSearchKey->aByteSequence();
+//
+//  i8 iCmp = 0;
+//
+//  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
+//
+//    if (i_Column >= nSearchKeyCols)
+//      break;
+//
+//    Column* pColumn = pIdxColVec->pGet(i_Column);
+//
+//    i8 nBytesThis;
+//    i8 nBytesThat;
+//
+//    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
+//    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
+//
+//    iCmp = pColumn->iCmp(aDatumThis,aDatumThat);
+//
+//    // return false (not same) if this element is not equal to that element
+//    if (iCmp)
+//      return false;
+//
+//    // so far the elements are equal
+//  }
+//
+//  // all elements are the same
+//  ASSERT(0 == iCmp);
+//  bIsEqual = true;
+//
+//  // return true (is same)
+//  return true;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* is this key juxta-after given search key?                                  */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bJuxtaAfter(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
-                      bool& bIsEqual, eRO eRelnOp)
-{
-  /*
-   * a multi-part key is said to be juxta-after some other key if:
-   *
-   *  i) each element is equal to the corresponding element of the
-   *      the other key
-   *
-   *        e.g. (1) thisElement[0] == thatElement[0] &&
-   *                 thisElement[1] == thatElement[1] &&
-   *                 thisElement[2] == thatElement[2]
-   *
-   *  ii) the leading elements are equal to the corresponding elements of the
-   *      the other key and a next element is greater than the corresponding
-   *      element of the other key
-   *
-   *        e.g. (2) thisElement[0] >  thatElement[0]
-   *
-   *        e.g. (3) thisElement[0] == thatElement[0] &&
-   *                 thisElement[1] >  thatElement[1]
-   *
-   *        e.g. (4) thisElement[0] == thatElement[0] &&
-   *                 thisElement[1] == thatElement[1] &&
-   *                 thisElement[2] >  thatElement[2]
-   *
-   *      the above three examples hold even if there are more elements
-   */
-  
-  bIsEqual = false;
-  
-  char* aCursorThis = aByteSequence();
-  char* aCursorThat = aSearchKey->aByteSequence();
-  
-  i8 iCmp = 0;
-  
-  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
-    
-    if (i_Column >= nSearchKeyCols)
-      break;
-    
-    Column* pColumn = pIdxColVec->pGet(i_Column);
-    
-    i8 nBytesThis;
-    i8 nBytesThat;
-    
-    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
-    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
-    
-    iCmp = pColumn->iCmp(aDatumThis,aDatumThat);
-
-    // return true (is after) if this element is greater than that element
-    // examples (2), (3), (4)
-    if (iCmp > 0)
-      return true;
-    
-    // return false (not after) if this element is less than that element
-    if (iCmp < 0)
-      return false;
-    
-    // so far the elements are equal
-    
-    if (RO_GREATER_THAN == eRelnOp)
-      return false;
-  }
-  
-  // all elements are the same
-  ASSERT(0 == iCmp);
-  bIsEqual = true;
-  
-  // return true (is after)
-  // example (1)
-  return true;
-}
+//bool KeyData::bJuxtaAfter(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+//                      bool& bIsEqual, eRO eRelnOp)
+//{
+//  /*
+//   * a multi-part key is said to be juxta-after some other key if:
+//   *
+//   *  i) each element is equal to the corresponding element of the
+//   *      the other key
+//   *
+//   *        e.g. (1) thisElement[0] == thatElement[0] &&
+//   *                 thisElement[1] == thatElement[1] &&
+//   *                 thisElement[2] == thatElement[2]
+//   *
+//   *  ii) the leading elements are equal to the corresponding elements of the
+//   *      the other key and a next element is greater than the corresponding
+//   *      element of the other key
+//   *
+//   *        e.g. (2) thisElement[0] >  thatElement[0]
+//   *
+//   *        e.g. (3) thisElement[0] == thatElement[0] &&
+//   *                 thisElement[1] >  thatElement[1]
+//   *
+//   *        e.g. (4) thisElement[0] == thatElement[0] &&
+//   *                 thisElement[1] == thatElement[1] &&
+//   *                 thisElement[2] >  thatElement[2]
+//   *
+//   *      the above three examples hold even if there are more elements
+//   */
+//  
+//  bIsEqual = false;
+//  
+//  char* aCursorThis = aByteSequence();
+//  char* aCursorThat = aSearchKey->aByteSequence();
+//  
+//  i8 iCmp = 0;
+//  
+//  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
+//    
+//    if (i_Column >= nSearchKeyCols)
+//      break;
+//    
+//    Column* pColumn = pIdxColVec->pGet(i_Column);
+//    
+//    i8 nBytesThis;
+//    i8 nBytesThat;
+//    
+//    char* aDatumThis = aEachDatum(pColumn,nBytesThis,&aCursorThis);
+//    char* aDatumThat = aEachDatum(pColumn,nBytesThat,&aCursorThat);
+//    
+//    iCmp = pColumn->iCmp(aDatumThis,aDatumThat);
+//
+//    // return true (is after) if this element is greater than that element
+//    // examples (2), (3), (4)
+//    if (iCmp > 0)
+//      return true;
+//    
+//    // return false (not after) if this element is less than that element
+//    if (iCmp < 0)
+//      return false;
+//    
+//    // so far the elements are equal
+//    
+//    if (RO_GREATER_THAN == eRelnOp)
+//      return false;
+//  }
+//  
+//  // all elements are the same
+//  ASSERT(0 == iCmp);
+//  bIsEqual = true;
+//  
+//  // return true (is after)
+//  // example (1)
+//  return true;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* show the contents of this key                                              */

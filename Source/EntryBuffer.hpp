@@ -106,8 +106,8 @@ namespace Data
     i8           iLengthSubList(void);
     Item*       aNextEntry(Item* aItem, i8 i_Offset);
   
-    Item*       aPositionQuery(KeyData* aGivenKey, eRO eRelOp);
-    Item*       aPositionQuery(KeyData* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
+    //Item*       aPositionQuery(KeyData* aGivenKey, eRO eRelOp);
+    //Item*       aPositionQuery(KeyData* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
     Item*       aPositionQuery(KeyWrk& xGivenKey, i8 nKeyCols);
     
     Item*       aPositionQuery(KeyWrk& xGivenKey, eRO eRelOp);
