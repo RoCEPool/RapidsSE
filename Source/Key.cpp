@@ -226,7 +226,6 @@ eKC KeyData::eCompare(Item* aKeyItem1, Item* aKeyItem2)
 char* KeyData::aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor)
 {
   char* aEachDatum = pColumn->aValue(nBytes,aaCursor);
-  
   return aEachDatum;
 }
 
@@ -236,7 +235,6 @@ char* KeyData::aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor)
 bool KeyData::bEqualTo(Item* aKeyItem1, Item* aKeyItem2)
 {
   eKC eCmp = eCompare(aKeyItem1, aKeyItem2);
-  
   return eCmp == KC_SAME ? true : false;
 }
 
@@ -246,7 +244,6 @@ bool KeyData::bEqualTo(Item* aKeyItem1, Item* aKeyItem2)
 bool KeyData::bGreaterThan(Item* aKeyItem1, Item* aKeyItem2)
 {
   eKC eCmp = eCompare(aKeyItem1, aKeyItem2);
-  
   return eCmp == KC_AFTER ? true : false;
 }
 
@@ -255,26 +252,8 @@ bool KeyData::bGreaterThan(Item* aKeyItem1, Item* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 bool KeyData::bGreaterEqual(Item* aKeyItem1, KeyWrk& xKeyItem2)
 {
-  i8 nKeySize1 = aKeyItem1->nSizeData();
-  i8 nKeySize2 = xKeyItem2.nKeySize();
-  
-  KeyData* aKey1 = _aKeyData(aKeyItem1->aDataArea());
-  KeyData* aKey2 = xKeyItem2.aKey();
-  
-  i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
-  
-  char* aCursorThis = aKey1->aByteSequence();
-  char* aCursorThat = aKey2->aByteSequence();
-  
-  i8 iCmp = MemLib::iCompareWords(aCursorThis, aCursorThat, iCmpBytes);
-  
-  if (iCmp > 0)
-    return true;
-  
-  if (iCmp == 0)
-    return true;
-  
-  return false;
+  eKC eCmp = eCompare(aKeyItem1, xKeyItem2);
+  return eCmp == KC_AFTER || eCmp == KC_SAME ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -282,26 +261,8 @@ bool KeyData::bGreaterEqual(Item* aKeyItem1, KeyWrk& xKeyItem2)
 /*----------------------------------------------------------------------------*/
 bool KeyData::bGreaterEqual(Item* aKeyItem1, Item* aKeyItem2)
 {
-  i8 nKeySize1 = aKeyItem1->nSizeData();
-  i8 nKeySize2 = aKeyItem2->nSizeData();
-  
-  KeyData* aKey1 = _aKeyData(aKeyItem1->aDataArea());
-  KeyData* aKey2 = _aKeyData(aKeyItem2->aDataArea());
-  
-  i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
-  
-  char* aCursorThis = aKey1->aByteSequence();
-  char* aCursorThat = aKey2->aByteSequence();
-  
-  i8 iCmp = MemLib::iCompareWords(aCursorThis, aCursorThat, iCmpBytes);
-  
-  if (iCmp > 0)
-    return true;
-  
-  if (iCmp == 0)
-    return true;
-  
-  return false;
+  eKC eCmp = eCompare(aKeyItem1, aKeyItem2);
+  return eCmp == KC_AFTER || eCmp == KC_SAME ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -309,26 +270,8 @@ bool KeyData::bGreaterEqual(Item* aKeyItem1, Item* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 bool KeyData::bLessThan(KeyWrk& xKeyItem1, Item* aKeyItem2)
 {
-  i8 nKeySize1 = xKeyItem1.nKeySize();
-  i8 nKeySize2 = aKeyItem2->nSizeData();
-  
-  KeyData* aKey1 = xKeyItem1.aKey();
-  KeyData* aKey2 = _aKeyData(aKeyItem2->aDataArea());
-  
-  i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
-  
-  char* aCursorThis = aKey1->aByteSequence();
-  char* aCursorThat = aKey2->aByteSequence();
-    
-  i8 iCmp = MemLib::iCompareWords(aCursorThis, aCursorThat, iCmpBytes);
-    
-  if (iCmp < 0)
-    return true;
- 
-  if (iCmp == 0)
-    return true;
-
-  return false;
+  eKC eCmp = eCompare(xKeyItem1, aKeyItem2);
+  return eCmp == KC_BEFORE ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -336,24 +279,8 @@ bool KeyData::bLessThan(KeyWrk& xKeyItem1, Item* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 bool KeyData::bNotEqual(Item* aKeyItem1, Item* aKeyItem2)
 {
-  i8 nKeySize1 = aKeyItem1->nSizeData();
-  i8 nKeySize2 = aKeyItem2->nSizeData();
-  
-  KeyData* aKey1 = _aKeyData(aKeyItem1->aDataArea());
-  KeyData* aKey2 = _aKeyData(aKeyItem2->aDataArea());
-  
-  if (nKeySize1 != nKeySize2)
-    return true;
-  
-  char* aCursorThis = aKey1->aByteSequence();
-  char* aCursorThat = aKey2->aByteSequence();
-  
-  i8 iCmp = MemLib::iCompareWords(aCursorThis, aCursorThat, nKeySize1);
-  
-  if (iCmp != 0)
-    return true;
-  
-  return false;
+  eKC eCmp = eCompare(aKeyItem1, aKeyItem2);
+  return eCmp != KC_SAME ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
