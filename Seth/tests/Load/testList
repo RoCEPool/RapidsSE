@@ -10,8 +10,8 @@ regressionData.test
 spaces_rev6.test
 terminator_cr.test
 terminatorLarge_cr.test
-//terminatorSmall_cr.test
-//terminatorSmallNull_cr.test
+terminatorSmall_cr.test
+terminatorSmallNull_cr.test
 tsp_formatter.test
 vch_default.test
 vch_enclosedBy.test

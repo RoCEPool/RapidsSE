@@ -457,9 +457,6 @@ Item* EntryBuffer::aInsertKeyTree(KeyWrk& xKeyWrk,
   //KeyData* aInsKey = xKeyWrk.aKey();
   //i8 iInsKeyLen = xKeyWrk.nKeySize();
   
-  //EntryBuffer* pPositionedBuffer =
-  //pRootKeyBuffer->pPositionPriorBuffer(aInsKey);
-  
   EntryBuffer* pPositionedBuffer =
   pRootKeyBuffer->pPositionPriorBuffer(xKeyWrk);
   
@@ -635,17 +632,17 @@ Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey, eRO eRelnOp)
   
   Item* aIndexEntry = aPositionQuery(xGivenKey, 1, JC_AFTER);
   
-//  bool bAfter;
-//  if (aIndexEntry) {
-//    do {
-//
-//      eKC eCompare = KeyData::eCompare(aIndexEntry, xGivenKey);
-//
-//      if (eCompare != KC_AFTER) {
-//        aIndexEntry = aNextEntry(aIndexEntry, iLevelNo());
-//      }
-//    } while (aIndexEntry && ! bAfter);
-//  }
+  eKC eCompare;
+  if (aIndexEntry) {
+    do {
+
+      eCompare = KeyData::eCompare(aIndexEntry, xGivenKey);
+
+      if (eCompare != KC_AFTER) {
+        aIndexEntry = aNextEntry(aIndexEntry, 0);
+      }
+    } while (aIndexEntry && eCompare != KC_AFTER);
+  }
   
   return aIndexEntry;
 }
@@ -653,7 +650,7 @@ Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey, eRO eRelnOp)
 /*----------------------------------------------------------------------------*/
 /* position at given key                                                      */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey,i8 nKeyCols)
+Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey,i8 nKeyCols, eJC eJuxtaCompare)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -784,7 +781,7 @@ Item* EntryBuffer::aPositionQuery(KeyData* aGivenKey,i8 nKeyCols, eJC eJuxtaComp
 /*----------------------------------------------------------------------------*/
 /* position at given key                                                      */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey,i8 nKeyCols, eJC eJuxtaCompare)
+Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey,i8 nKeyCols)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2397,21 +2394,21 @@ Item* EntryBuffer::aPopLazyChain(void)
 ///*----------------------------------------------------------------------------*/
 ///* position at the L0 buffer into which key should be inserted                */
 ///*----------------------------------------------------------------------------*/
-//EntryBuffer* EntryBuffer::pPositionPriorBuffer(KeyData* aFindKey)
+//EntryBuffer* EntryBuffer::pPositionPriorBuffer(Item* aFindKey)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-//  
+//
 //  if ( ! nItems() ) {
 //    ASSERT( 0 == iLevelNo());
 //    return this;
 //  }
-//  
+//
 //  EntryBuffer* pEntryBuffer = this;
 //  while (true) {
-//    
+//
 //    // have we arrived at L0 ?
-//    i8 iBufferLevel = pEntryBuffer->iLevelNo();
-//    if (iBufferLevel == 0) {
+//    i8 iBufferHeight = pEntryBuffer->iHeightNo();
+//    if (iBufferHeight == 0) {
 //      break;
 //    }
 //    else {
@@ -2419,14 +2416,14 @@ Item* EntryBuffer::aPopLazyChain(void)
 //      RASSERT( ! m_aLazyChain );
 //#endif
 //    }
-//    
+//
 //    // get the entry before the given insert key
 //    Item* aEntryPrior = pEntryBuffer->pPositionPriorEntry(aFindKey);
 //    ASSERT(aEntryPrior);
 //    if (aEntryPrior == pEntryBuffer->aSkipRoots())
 //      aEntryPrior = pEntryBuffer->aNextEntry(aEntryPrior,0);
 //    ASSERT(aEntryPrior);
-//    
+//
 //    // get the index buffer of the entry
 //    //pEntryBuffer->vShow();
 //    ASSERT(pEntryBuffer != EntryBuffer::pRefdEntryBuffer(aEntryPrior));
@@ -2434,7 +2431,7 @@ Item* EntryBuffer::aPopLazyChain(void)
 //    ASSERT(pEntryBuffer);
 //    pEntryBuffer->vAssertEntryBuffer();
 //  }
-//  
+//
 //  return pEntryBuffer;
 //}
 
@@ -3752,6 +3749,7 @@ bool EntryBuffer::bVerifyKeyBufferOrder(void)
     
     // child A should point to child B
     if (pChildBufferA->pNextBuffer() != pChildBufferB) {
+      vDump();
       vShow(aItem);
       vVerifyFault();
       return false;

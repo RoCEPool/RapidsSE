@@ -167,13 +167,13 @@ rows: 24
 fetch jCdt "jA -9223372036854775807 >=";
 rows: 25
 
-//drop table jCdt;
-//success
+drop table jCdt;
+success
 
 CLEANUP {
 
-  //drop table jCdt;
-  //mute
+  drop table jCdt;
+  mute
 
   bye;
   mute
