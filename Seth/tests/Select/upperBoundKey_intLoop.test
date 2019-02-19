@@ -1,0 +1,165 @@
+--------------------------------------------------------------------------------
+-- create index in a loop tests
+--------------------------------------------------------------------------------
+
+// Logging a message
+LOG 'Running exactKey_int test with varying indexEntries per buffer.';
+
+//------------------------------------------------------------------------------
+indexEntries 0;
+affected: 0
+
+LOG 'Entries per buffer: default';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 5;
+affected: 0
+
+LOG 'Entries per buffer: 5';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 6;
+affected: 0
+
+LOG 'Entries per buffer: 6';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 7;
+affected: 0
+
+LOG 'Entries per buffer: 7';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 8;
+affected: 0
+
+LOG 'Entries per buffer: 8';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 9;
+affected: 0
+
+LOG 'Entries per buffer: 9';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 10;
+affected: 0
+
+LOG 'Entries per buffer: 10';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 11;
+affected: 0
+
+LOG 'Entries per buffer: 11';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 12;
+affected: 0
+
+LOG 'Entries per buffer: 12';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 13;
+affected: 0
+
+LOG 'Entries per buffer: 13';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 14;
+affected: 0
+
+LOG 'Entries per buffer: 14';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 15;
+affected: 0
+
+LOG 'Entries per buffer: 15';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 16;
+affected: 0
+
+LOG 'Entries per buffer: 16';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 17;
+affected: 0
+
+LOG 'Entries per buffer: 17';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 18;
+affected: 0
+
+LOG 'Entries per buffer: 19';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 20;
+affected: 0
+
+LOG 'Entries per buffer: 20';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 21;
+affected: 0
+
+LOG 'Entries per buffer: 21';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 22;
+affected: 0
+
+LOG 'Entries per buffer: 22';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 23;
+affected: 0
+
+LOG 'Entries per buffer: 23';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 24;
+affected: 0
+
+LOG 'Entries per buffer: 24';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 25;
+affected: 0
+
+LOG 'Entries per buffer: 25';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 26;
+affected: 0
+
+LOG 'Entries per buffer: 26';
+INCLUDE 'upperBoundKey_int.test';
+
+//------------------------------------------------------------------------------
+indexEntries 0;
+affected: 0
+

@@ -159,4 +159,7 @@ affected: 0
 LOG 'Entries per buffer: 26';
 INCLUDE 'exactKey_int.test';
 
+//------------------------------------------------------------------------------
+indexEntries 0;
+affected: 0
 
