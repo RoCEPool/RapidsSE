@@ -14,6 +14,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
   vAddStep("job.addOriginator"_Stz,    &Step::vJobAddOriginator);
   vAddStep("job.addParticipant"_Stz,   &Step::vJobAddParticipant);
+  vAddStep("job.assertBegin"_Stz,      &Step::vJobAssertBegin);
   vAddStep("job.assertNeutral"_Stz,    &Step::vJobAssertNeutral);
   vAddStep("job.assertOriginator"_Stz, &Step::vJobAssertOriginator);
   vAddStep("job.assertParticipant"_Stz,&Step::vJobAssertParticipant);
@@ -185,6 +186,73 @@ void Step::vJobAddParticipant(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.assertBegin -- assert job is not in originator nor participant set     */
+/*----------------------------------------------------------------------------*/
+void Step::vJobAssertBegin(MP_Task mpTask)
+{
+  ENTRY("vJobAssertBegin"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.assertBegin"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  if (Job::iNodeNo(pJob->m_iJobId) == gpAttachMap->m_pGrid->m_iThisNode) {
+    
+    if (! pJob->m_bWasReceived)
+      vFatal("job.assertOriginator: "
+             "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
+             aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+    
+    if (JL_NONE != pJob->m_eJobList)
+      vFatal("job.assertBegin: "
+             "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
+             aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+    
+    Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(pJob->m_iJobId);
+    if (! pJobFound)
+      vFatal("job.assertBegin: "
+             "Job not found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
+             aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+    
+    pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pJob->m_iJobId);
+    if (pJobFound)
+      vFatal("job.assertBegin: "
+             "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
+             aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+    
+    EXIT();
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (! pJob->m_bWasReceived)
+    vFatal("job.assertOriginator: "
+           "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
+           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+  
+  if (JL_NONE != pJob->m_eJobList)
+    vFatal("job.assertBegin: "
+           "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
+           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+  
+  Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(pJob->m_iJobId);
+  if (pJobFound)
+    vFatal("job.assertBegin: "
+           "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
+           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+  
+  pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pJob->m_iJobId);
+  if (pJobFound)
+    vFatal("job.assertBegin: "
+           "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
+           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.assertNeutral -- assert job is not in originator nor participant set   */
 /*----------------------------------------------------------------------------*/
 void Step::vJobAssertNeutral(MP_Task mpTask)
@@ -193,7 +261,7 @@ void Step::vJobAssertNeutral(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("vJobAssertNeutral"_Stz);
+    THROW_INVALID_DSTACK("job.assertNeutral"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
   if (JL_NONE != pJob->m_eJobList)
@@ -233,6 +301,11 @@ void Step::vJobAssertOriginator(MP_Task mpTask)
            "Job::m_eJobList is not JL_ORIGINATING [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
 
+  if (pJob->m_bWasReceived)
+    vFatal("job.assertOriginator: "
+           "Job::m_bWasReceived is true [Job %s on node %lld]\n"_Stz,
+           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+  
   Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(pJob->m_iJobId);
   if (! pJobFound)
     vFatal("job.assertOriginator: "
@@ -257,6 +330,11 @@ void Step::vJobAssertParticipant(MP_Task mpTask)
   if (JL_PARTICIPATING != pJob->m_eJobList)
     vFatal("job.assertParticipant: "
            "Job::m_eJobList is not JL_PARTICIPATING [Job %s on node %lld]\n"_Stz,
+           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+  
+  if (! pJob->m_bWasReceived)
+    vFatal("job.assertOriginator: "
+           "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
   
   Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pJob->m_iJobId);

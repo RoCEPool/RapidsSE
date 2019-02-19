@@ -223,11 +223,11 @@
   an::seed_rcv
 
   job::this locals| pJob_E` |
-  //pJob_E` job.assertNeutral
+  pJob_E` job.assertBegin // check for either [E]E`: or :E`
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // this E` becomes (E`)                                           [E](E`):(E`)
+  // this E` becomes (E`) on this node                    [E]E`:E`->[E](E`):(E`)
   pJob_E` job.becomeParticipant
   pJob_E` locals| pJob_(E`) |
 
@@ -253,7 +253,7 @@
   an::seed_exe
 
   job::this locals| pJob_(E`) |
-  pJob_(E`) job.assertParticipant
+  pJob_(E`) job.assertParticipant 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   pJob_(E`) (E`).InitJob

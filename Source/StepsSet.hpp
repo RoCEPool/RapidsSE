@@ -426,6 +426,7 @@
   static void vJobAcksRemaining(Tasks::MP_Task mpTask);
   static void vJobAddOriginator(Tasks::MP_Task mpTask);
   static void vJobAddParticipant(Tasks::MP_Task mpTask);
+  static void vJobAssertBegin(Tasks::MP_Task mpTask);
   static void vJobAssertNeutral(Tasks::MP_Task mpTask);
   static void vJobAssertOriginator(Tasks::MP_Task mpTask);
   static void vJobAssertParticipant(Tasks::MP_Task mpTask);
