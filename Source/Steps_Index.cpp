@@ -41,7 +41,6 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.table@"_Stz,          &Step::vIndexTableFetch);
   vAddStep("index.table!"_Stz,          &Step::vIndexTableStore);
   vAddStep("index.truncate"_Stz,        &Step::vIndexTruncate);
-  vAddStep("index.upper"_Stz,           &Step::vIndexUpper);
   vAddStep("index.upperBound"_Stz,      &Step::vIndexUpperBound);
   vAddStep("index.verify"_Stz,          &Step::vIndexVerify);
   vAddStep("index.visualize"_Stz,       &Step::vIndexVisualize);
@@ -1371,65 +1370,6 @@ void Step::vIndexTruncate(MP_Task mpTask)
   
   for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->m_nSlotsPerNode; iSlot++)
     pTable->vTruncateIndex(iSlot, iIndexNo);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.upper -- check if entry is within upper bound for the index          */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexUpper(MP_Task mpTask)
-{
-  ENTRY("vIndexUpper"_Stz);
-  
-  Object* pPtrPlanner = nullptr;
-  Object* pPtrIndex = nullptr;
-  Object* pPtrEntry = nullptr;
-
-  GenVar xVariable;
-  i8 iPartition;
-  i8 i_Phrase;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("index.upper"_Stz);
-  
-  Planner* pPlanner = _pPlanner(pPtrPlanner);
-  ASSERT(CN_PLANNER == pPlanner->eClass());
-  
-  if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
-    THROW_INVALID_DSTACK("index.upper"_Stz);
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.upper"_Stz);
-  
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("index.upper"_Stz);
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("index.upper"_Stz);
-  
-  Item* aItem = (Item*)_aItem(pPtrEntry);
-  ASSERT(CN_ENTRY == aItem->eClass());
-  
-  if ( ! mpTask->m_pDataStack->bPop(xVariable) )
-    THROW_INVALID_DSTACK("index.upper"_Stz);
-  
-  // assuming non-complex key
-  //ASSERT(1 == pIndex->pIdxColVec()->nItems());
-  KeyWrk xKeyWrk;
-  Formatters* pFormatters = &gpAttachMap->m_oFormatters;
-  xKeyWrk.vAddDatum(xVariable, pIndex->pIdxColVec()->pGet(0),pFormatters);
-  
-  eRO eRelnOp = pPlanner->eGetFirstUpperPredicateRO(i_Phrase);
-  bool bIsEqual = false;
-  bool bBefore = _aKeyData(aItem->aDataArea())
-                       ->bJuxtaCompare(JC_BEFORE, xKeyWrk.aKey(),
-                                       pIndex->pIdxColVec(), 1,
-                                       bIsEqual, eRelnOp);
-  mpTask->m_pDataStack->vPushI8(bBefore ? 1 : 0);
   
   EXIT();
 }

@@ -373,7 +373,6 @@
   static void vIndexTableFetch(Tasks::MP_Task mpTask);
   static void vIndexTableStore(Tasks::MP_Task mpTask);
   static void vIndexTruncate(Tasks::MP_Task mpTask);
-  static void vIndexUpper(Tasks::MP_Task mpTask);
   static void vIndexUpperBound(Tasks::MP_Task mpTask);
   static void vIndexVerify(Tasks::MP_Task mpTask);
   static void vIndexVisualize(Tasks::MP_Task mpTask);
