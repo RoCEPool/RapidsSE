@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* KE run seed on participant node                        [E](`E)SE:(`E)SE,KE */
+/* run seed for KE on participant node                 [E](E`)SE,KE:(E`)SE,KE */
 /*----------------------------------------------------------------------------*/
 : kidExport_kid ( -- )
 
@@ -20,11 +20,11 @@
   pJob_KidExport job_kidExport.exportOrigin locals| i_ExportNode |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // send a `KE kid to the export node:                   `KE[E](`E)SE:(`E)SE,KE
+  // send KE` to the export node:                      KE`[E](E`)SE,KE:(E`)SE,KE
   i_ExportNode pJob_KidExport job.forward
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete this KE kid on this participant node:         `KE[E](`E)SE:(`E)SE,xx
+  // delete this KE on this participant node:          KE`[E](E`)SE,xx:(E`)SE,xx
   <<am job::deleteThis
 
   <DONE_KID>
@@ -58,7 +58,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* `KE rcv seed on originating export node E              `KE[E](`E)SE:(`E)SE */
+/* rcv seed for KE` on originating export node E          KE`[E](E`)SE:(E)`SE */
 /*----------------------------------------------------------------------------*/
 : kidExport_rcv (  -- )
 
@@ -67,14 +67,15 @@
   job::this locals| pJob_KidExport  |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // kid export 'KE on originator node finds export job [E]
+  // KE` finds export job [E] on this originator node
   pJob_KidExport job_kidExport.exportJobId locals| i_ExportJobId |
   i_ExportJobId job::findOriginator locals| pJob_Export |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // kid export 'KE writes ExportBuffer to export job [E].m_oCsvFile
+  // KE` writes its ExportBuffer to [E].m_oCsvFile
   false locals| bLastWrite |
   pJob_Export pJob_KidExport job_kidExport.writeExportBuffer to bLastWrite
+
 
 
   // ? ? ?
@@ -87,8 +88,9 @@
   then
 
 
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete this kid export `KE on this originator node:      xx[E](`E)SE:(`E)SE
+  // delete this KE` on this originator node:                 xx[E](E`)SE:(E`)SE
   job::deleteThis
 
   <DONE_RUN>
