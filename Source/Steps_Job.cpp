@@ -14,6 +14,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
   vAddStep("job.addOriginator"_Stz,    &Step::vJobAddOriginator);
   vAddStep("job.addParticipant"_Stz,   &Step::vJobAddParticipant);
+  vAddStep("job.assertNeutral"_Stz,    &Step::vJobAssertNeutral);
   vAddStep("job.assertOriginator"_Stz, &Step::vJobAssertOriginator);
   vAddStep("job.assertParticipant"_Stz,&Step::vJobAssertParticipant);
 
@@ -151,6 +152,27 @@ void Step::vJobAddOriginator(MP_Task mpTask)
   ActionSequence::vAdd(mpTask->m_pJob,
                        AN_ADDED_ORIGINATOR);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.assertNeutral -- assert job is not in originator nor participant set   */
+/*----------------------------------------------------------------------------*/
+void Step::vJobAssertNeutral(MP_Task mpTask)
+{
+  ENTRY("vJobAssertNeutral"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("vJobAssertNeutral"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  RASSERT(JL_NONE == pJob->m_eJobList);
+  Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(pJob->m_iJobId);
+  RASSERT(! pJobFound);
+  pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pJob->m_iJobId);
+  RASSERT(! pJobFound);
+
   EXIT();
 }
 
