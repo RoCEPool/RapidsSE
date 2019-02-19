@@ -93,7 +93,24 @@ Queues::~Queues(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* threads report                                                             */
 /*----------------------------------------------------------------------------*/
-void Queues::vThreadsReport()
+void Queues::vStateDiagram(s256& sDiagram, eCN eJobClass)
+{
+  switch (eJobClass) {
+    case Base::CN_JOB_EXPORT:
+      sDiagram.vSprint("<Diagram for class %lld %s>"_Stz,
+                       eJobClass,aCN[eJobClass]);
+      return;
+      
+    default:
+      sDiagram.vSprint("Warning: No diagram for class %lld %s"_Stz,
+                       eJobClass,aCN[eJobClass]);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* threads report                                                             */
+/*----------------------------------------------------------------------------*/
+void Queues::vThreadsReport(void)
 {
   i8 iUser;
   i8 iSystem;
