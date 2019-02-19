@@ -72,11 +72,6 @@
   // get table pointer
   sTableNm table::find to pTable
   pTable pJob_E job_export.table!
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // open file E::m_oCvsFile
-
-  pJob_E job_export.begin
 ;
 
 
@@ -193,14 +188,19 @@
   job::this locals| pJob_E |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // initialise this E export job
   pJob_E E.initJob
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute E' to all participants                                  [E]E`:E`
+  // open file E::m_oCvsFile(m_sFilePath) for writing
+  pJob_E job_export.begin
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute E` to all participants                                  [E]E`:E`
   pJob_E job.distribute                                                    // E:
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // wait for all KE' to write                                            KE',E:
+  // wait for all KE` to write                                            KE`,E:
   pJob_E E.waitAll_KE                                                      // E:
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
