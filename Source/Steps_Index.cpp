@@ -32,8 +32,6 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.lowerBound"_Stz,      &Step::vIndexLowerBound);
   vAddStep("index.name@"_Stz,           &Step::vIndexNameFetch);
   vAddStep("index.populate"_Stz,        &Step::vIndexPopulate);
-  vAddStep("index.position"_Stz,        &Step::vIndexPosition);
-  vAddStep("index.positionFirst"_Stz,   &Step::vIndexPositionFirst);
   vAddStep("index.range"_Stz,           &Step::vIndexRange);
   vAddStep("index.setSingleColumn"_Stz, &Step::vIndexSetSingleColumn);
   vAddStep("index.showColumnVec"_Stz,   &Step::vIndexShowColumnVec);
@@ -820,87 +818,6 @@ void Step::vIndexPopulate(MP_Task mpTask)
   bool bPopulated = pTable->bPopulateIndex(iIndexNo);
   
   mpTask->m_pDataStack->vPushI8(bPopulated ? 1 : 0);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.position -- position at key in an index buffer                       */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexPosition(MP_Task mpTask)
-{
-  ENTRY("vIndexPosition"_Stz);
-  Object* pPtrIndex = nullptr;
-  Object* pPtrPlanner = nullptr;
-  Object* pPtrIndexBuffer = nullptr;
-  GenVar xVariable;
-  i8 i_Phrase;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("index.position"_Stz);
-  
-  Planner* pPlanner = _pPlanner(pPtrPlanner);
-  ASSERT(CN_PLANNER == pPlanner->eClass());
-  
-  if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
-    THROW_INVALID_DSTACK("index.position"_Stz);
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.position"_Stz);
-  
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("index.position"_Stz);
-  
-  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
-  
-  if ( ! mpTask->m_pDataStack->bPop(xVariable) )
-    THROW_INVALID_DSTACK("index.position"_Stz);
-  
-  KeyWrk xKeyWrk;
-  Column* pColumn = pIndex->pIdxColVec()->pGet(0);
-  Formatters* pFormatters = &gpAttachMap->m_oFormatters;
-  xKeyWrk.vAddDatum(xVariable, pColumn, pFormatters);
-  //xKeyWrk.aKey()->vShow(pIndex->pIdxColVec());
-
-  // position at key in the entry buffer
-  eRO eRelnOp = pPlanner->eGetFirstLowerPredicateRO(i_Phrase);
-  Item* aItem = pIndexBuffer->aPositionQuery(xKeyWrk.aKey(), eRelnOp);
-  
-  mpTask->m_pDataStack->vPushEntry(aItem);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.positionFirst -- position at first index buffer                      */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexPositionFirst(MP_Task mpTask)
-{
-  ENTRY("vIndexFirst"_Stz);
-  
-  Object* pPtrIndex = nullptr;
-  GenVar xVariable;
-  i8 iPartition;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.positionFirst"_Stz);
-  
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("index.positionFirst"_Stz);
-  
-  i8 iIndexNo = pIndex->iIndexNo();
-  Table* pTable = pIndex->pTable();
-  
-  TablePtn* pPartition = pTable->pPartition(iPartition);
-  IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
-  
-  mpTask->m_pDataStack->vPushPointer(pIndexTree->pFirstH0Buffer());
   
   EXIT();
 }

@@ -364,8 +364,6 @@
   static void vIndexLowerBound(Tasks::MP_Task mpTask);
   static void vIndexNameFetch(Tasks::MP_Task mpTask);
   static void vIndexPopulate(Tasks::MP_Task mpTask);
-  static void vIndexPosition(Tasks::MP_Task mpTask);
-  static void vIndexPositionFirst(Tasks::MP_Task mpTask);
   static void vIndexRange(Tasks::MP_Task mpTask);
   static void vIndexScan(Tasks::MP_Task mpTask);
   static void vIndexSetSingleColumn(Tasks::MP_Task mpTask);
