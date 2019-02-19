@@ -69,6 +69,8 @@
   pJob_KE` job.assertNeutral
   pJob_KE` job.assertReceived
 
+  CN_JOB_EXPORT job::stateDiagram .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // KE` finds export job [E] on this originator node
   pJob_KE` job_kidExport.exportJobId locals| i_ExportJobId |

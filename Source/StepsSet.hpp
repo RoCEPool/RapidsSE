@@ -509,6 +509,7 @@
   static void vJobSignalConnector(Tasks::MP_Task mpTask);
   static void vJobSlotFetch(Tasks::MP_Task mpTask);
   static void vJobSpawn(Tasks::MP_Task mpTask);
+  static void vJobStateDiagram(Tasks::MP_Task mpTask);
 
   static void vJobThis(Tasks::MP_Task mpTask);
   static void vJobTraceStore(Tasks::MP_Task mpTask);
