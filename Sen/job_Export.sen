@@ -5,9 +5,9 @@
 " job_Export.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* spawn sub-exporters on particpating node                      [E](E`):(E`) */
+/* spawn sub-exporter jobs SE on particpating node               [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
-: export.spawnSubExporters ( pJob_Export -- )
+: (E`).spawn_SE ( pJob_Export -- )
 
   params| pJob_Export |
 
@@ -26,7 +26,7 @@
 /*----------------------------------------------------------------------------*/
 /* twiddle till kid exports are completed                                     */
 /*----------------------------------------------------------------------------*/
-: export.waitForAllKidExports ( pJob_Export -- )
+: [E].waitAll_KE ( pJob_Export -- )
 
   params| pJob_Export |
 
@@ -48,9 +48,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* init request export job E on this originator node                 []()E:() */
+/* init export job E on this originator node                         []()E:() */
 /*----------------------------------------------------------------------------*/
-: export.initRequest ( pJob_Export --  )
+: E.initJob ( pJob_Export --  )
 
   params| pJob_Export |
 
@@ -83,9 +83,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* init participant export job (E`) on this participant node     [E](E`):(E`) */
+/* init export job (E`) on this participant node                 [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
-: export.initParticipant ( pJob_Export --  )
+: (E`).InitJob ( pJob_Export --  )
 
   params| pJob_Export |
 
@@ -111,7 +111,7 @@
 /*----------------------------------------------------------------------------*/
 /* check valid table folder for export job (E`) on ptp node      [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
-: export.checkTable ( sTableNm -- true | errorCode false )
+: (E`).checkTable ( sTableNm -- true | errorCode false )
 
   params| sTableNm |
 
@@ -138,7 +138,7 @@
 /*----------------------------------------------------------------------------*/
 /* check resources for export job (E`) on participant node       [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
-: export.checkResources ( pJob_Export -- )
+: (E`).checkResources ( pJob_Export -- )
 
   >>am <Check_Resources>
 
@@ -155,7 +155,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can export the table
-   pJob_Export job.objectName@ export.checkTable
+   pJob_Export job.objectName@ (E`).checkTable
    not if
      pJob_Export
      <ERROR_JOB>
@@ -169,7 +169,7 @@
 /*----------------------------------------------------------------------------*/
 /* release resources for export job (E`) on participant node     [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
-: export.releaseResources ( pJob_Export -- )
+: (E`).releaseResources ( pJob_Export -- )
 
   >>am <Release_Resources>
 
@@ -183,7 +183,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* perform command req seed for E on request node                    []()E:() */
+/* request seed for E on request node                                []()E:() */
 /*----------------------------------------------------------------------------*/
 : export_req ( -- <R> )
 
@@ -193,19 +193,15 @@
   job::this locals| pJob_Export |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pJob_Export export.initRequest
+  pJob_Export E.initJob
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn the sub-exporters on this participant node           [E](E`)SE:(E`)SE
-  pJob_Export export.spawnSubExporters
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute E' to all participants                    `KE[E](`E)SE:(`E)SE,KE
+  // distribute E' to all participants                                  [E]E`:E`
   pJob_Export job.distribute
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // wait for all 'KE to write                                              [E]:
-  pJob_Export export.waitForAllKidExports
+  // wait for all 'KE to write                            KE`[E](E`)SE:(E`)SE,KE
+  pJob_Export [E].waitAll_KE                                // [E]:
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // close the export file [E]::m_oCsvFile
@@ -217,7 +213,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* begin Job_Export E` on participating node                         [E]E`:E` */
+/* begin seed for E` on participating node                           [E]E`:E` */
 /*----------------------------------------------------------------------------*/
 : export_beg ( -- )
 
@@ -226,11 +222,17 @@
 
   job::this locals| pJob_Export |
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // this E` becomes (E`)                                           [E](E`):(E`)
   pJob_Export job.becomeParticipant
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // check table being exported exists on this node
-  pJob_Export export.checkResources
+  pJob_Export (E`).checkResources
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // send job__begin to [E]                                  __BEGUN[E](E`):(E`)
   job::participantBegun
@@ -239,7 +241,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_Export (E`) on participating node                 [E](E`):(E`) */
+/* execute seed for (E`) on participating node                   [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
 : export_exe ( pJob_Export -- )
 
@@ -248,7 +250,12 @@
 
   job::this locals| pJob_Export |
 
-  pJob_Export export.initParticipant
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pJob_Export (E`).InitJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn the sub-exporters on this participant node           [E](E`)SE:(E`)SE
+  pJob_Export (E`).spawn_SE
 
   // send job__executed to [E]                            __EXECUTED[E](E`):(E`)
   pJob_Export job::participantExecuted
@@ -257,7 +264,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* end Job_Export (E`) on participating node                     [E](E`):(E`) */
+/* end seed for (E`) on participating node                       [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
 : export_end ( -- )
 
@@ -266,7 +273,7 @@
 
   job::this locals| pJob_Export |
 
-  pJob_Export export.releaseResources
+  pJob_Export (E`).releaseResources
 
   // send job__ended to [E]                                      __ENDED[E]():()
   job::participantEnded
@@ -275,7 +282,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* cancel Job_Export (E`) on participating node                  [E](E`):(E`) */
+/* cancel seed for (E`) on participating node                    [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
 : export_can ( -- )
 
@@ -284,7 +291,7 @@
 
   job::this locals| pJob_Export |
 
-  pJob_Export export.releaseResources
+  pJob_Export (E`).releaseResources
 
   // send job__cancelled to [E]                              __CANCELLED[E]():()
   job::participantCancelled
