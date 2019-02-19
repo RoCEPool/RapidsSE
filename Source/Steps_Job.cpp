@@ -14,7 +14,9 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
   vAddStep("job.addOriginator"_Stz,    &Step::vJobAddOriginator);
   vAddStep("job.addParticipant"_Stz,   &Step::vJobAddParticipant);
-  
+  vAddStep("job.assertOriginator"_Stz, &Step::vJobAssertOriginator);
+  vAddStep("job.assertParticipant"_Stz,&Step::vJobAssertParticipant);
+
   vAddStep("job.class"_Stz,            &Step::vJobClass);
   vAddStep("job.columnCount@"_Stz,     &Step::vJobColumnCountFetch);
   vAddStep("job.columnIsPartKey"_Stz,  &Step::vJobColumnIsPartKey);
@@ -149,6 +151,44 @@ void Step::vJobAddOriginator(MP_Task mpTask)
   ActionSequence::vAdd(mpTask->m_pJob,
                        AN_ADDED_ORIGINATOR);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.assertOriginator -- assert job is in originator job set                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobAssertOriginator(MP_Task mpTask)
+{
+  ENTRY("vJobAssertOriginator"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.assertOriginator"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  RASSERT(JL_ORIGINATING == pJob->m_eJobList);
+  Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(pJob->m_iJobId);
+  RASSERT(pJobFound);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.assertParticipant -- assert job is in participant job set              */
+/*----------------------------------------------------------------------------*/
+void Step::vJobAssertParticipant(MP_Task mpTask)
+{
+  ENTRY("vJobAssertParticipant"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.assertParticipant"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  RASSERT(JL_PARTICIPATING == pJob->m_eJobList);
+  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pJob->m_iJobId);
+  RASSERT(pJobFound);
+
   EXIT();
 }
 

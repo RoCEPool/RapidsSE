@@ -426,6 +426,8 @@
   static void vJobAcksRemaining(Tasks::MP_Task mpTask);
   static void vJobAddOriginator(Tasks::MP_Task mpTask);
   static void vJobAddParticipant(Tasks::MP_Task mpTask);
+  static void vJobAssertOriginator(Tasks::MP_Task mpTask);
+  static void vJobAssertParticipant(Tasks::MP_Task mpTask);
 
   static void vJobClass(Tasks::MP_Task mpTask);
   static void vJobColumnCountFetch(Tasks::MP_Task mpTask);
