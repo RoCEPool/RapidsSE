@@ -24,7 +24,7 @@ namespace Data
 
     ////////////////////////////////////////////////////////////////////////////
     // only used in index entry buffers
-    //Item* m_aHeadEntry; // skiplist head (not first logical entry in buffer)
+
     Item* m_aLastEntry; // last entry (would append to this)
     Item* m_aLazyChain; // first lazy entry
   
@@ -48,18 +48,17 @@ namespace Data
     void    vIndex(Index* pIndex);
     Index*  pIndex(void);
 
-
     ////////////////////////////////////////////////////////////////////////////
     // buffer functions
   
-    void         vBufferCount(i8& nBufferCount);
+    void        vBufferCount(i8& nBufferCount);
     EntryBuffer* pHigherBuffer(void);
-    void         vHigherBuffer(EntryBuffer* pHigherBuffer);
+    void        vHigherBuffer(EntryBuffer* pHigherBuffer);
     EntryBuffer* pNextBuffer(void);
-    void         vNextBuffer(EntryBuffer* pNextBuffer);
+    void        vNextBuffer(EntryBuffer* pNextBuffer);
     EntryBuffer* pPrevBuffer(void);
-    void         vPrevBuffer(EntryBuffer* pPrevBuffer);
-    void         vTruncate(void);
+    void        vPrevBuffer(EntryBuffer* pPrevBuffer);
+    void        vTruncate(void);
 
     ////////////////////////////////////////////////////////////////////////////
     // entry functions
@@ -78,8 +77,6 @@ namespace Data
     Item* aAllotEntry(i8 nBytes_Without_Offsets);
     Item* aAllotRowEntry(RowWrk& xRowWrk);
 
-  
-  
     ////////////////////////////////////////////////////////////////////////////
   
   
@@ -91,9 +88,9 @@ namespace Data
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
   
-    void       vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
-    void       vBuildSkipListSorted(void);
-    void       vDeleteEntry(Item** aaItem);
+    void        vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
+    void        vBuildSkipListSorted(void);
+    void        vDeleteEntry(Item** aaItem);
     //bool       bDeleteKey(KeyData* aDeleteKey, EntryBuffer* pToBuffer);
     void        vDump(void);
     EntryBuffer* pFirstChildBuffer(void);
@@ -101,9 +98,9 @@ namespace Data
     Item*       aInsertKeyAbsL0(KeyWrk& xKeyWrk, Item** aaPriorEntry);
     static Item* aInsertKeyTree(KeyWrk& xKeyWrk,
                                  EntryBuffer** ppRootKeyBuffer);
-    void         vLazyBuild(void);
-    i8           iLengthList(void);
-    i8           iLengthSubList(void);
+    void        vLazyBuild(void);
+    i8          iLengthList(void);
+    i8          iLengthSubList(void);
     Item*       aNextEntry(Item* aItem, i8 i_Offset);
   
     //Item*       aPositionQuery(KeyData* aGivenKey, eRO eRelOp);
@@ -114,50 +111,48 @@ namespace Data
     //Item*       aPositionQuery(KeyWrk& xGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
     EntryBuffer* pPositionHeight(KeyWrk& xGivenKey, i8 nKeyCols, i8 iHeight);
     
-    void         vReset(void);
-    void         vRestore(void);
-    void         vRestoreIndex(Index* pIndex);
-    void         vShow(Item* aMarkEntry = nullptr);
-    void         vShowShort(void);
-    void         vShowSubList(void);
-    void         vShowTree(bool bDumpBuffer=false);
-    void         vSpliceAfter(EntryBuffer* pSplicedBuffer);
-    EntryBuffer*  pUnlinkSubList(void);
-    bool         bVerify(void);
+    void        vReset(void);
+    void        vRestore(void);
+    void        vRestoreIndex(Index* pIndex);
+    void        vShow(Item* aMarkEntry = nullptr);
+    void        vShowShort(void);
+    void        vShowSubList(void);
+    void        vShowTree(bool bDumpBuffer=false);
+    void        vSpliceAfter(EntryBuffer* pSplicedBuffer);
+    EntryBuffer* pUnlinkSubList(void);
+    bool        bVerify(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:
     
-    void         vBuildSkipList(void);
-    void         vCompact(void);
-    void         vCompactLeft2(void);
-    void         vCutEntry(Item* aItem, Item* aPriorVec[]);
-    void         vDeleteUpwards(Item* aDeleteKey,
+    void        vBuildSkipList(void);
+    void        vCompact(void);
+    void        vCompactLeft2(void);
+    void        vCutEntry(Item* aItem, Item* aPriorVec[]);
+    void        vDeleteUpwards(Item* aDeleteKey,
                                 EntryBuffer** ppRootKeyBuffer);
-//    void         vDeleteUpwards(KeyData* aDeleteKey, EntryBuffer* pToBuffer,
-//                                EntryBuffer** ppRootKeyBuffer);
-    void         vDumpPriorVec(Item* aPriorVec[]);
-    Item*        aGetEntryOffset(i8 iOffset);
-    Item*        aGetEntrySplit(i8 iSplitEntryNo, Item** aaPriorEntry);
-    void         vHandleFirstInsert(Item* aInsertedKeyEntry,
-                                    Item* aOriginalFirstEntry,
-                                    EntryBuffer** ppRootKeyBuffer);
-    void         vHandleLeftInsert(Item* aInsertedKeyEntry,
+    void        vDumpPriorVec(Item* aPriorVec[]);
+    Item*       aGetEntryOffset(i8 iOffset);
+    Item*       aGetEntrySplit(i8 iSplitEntryNo, Item** aaPriorEntry);
+    void        vHandleFirstInsert(Item* aInsertedKeyEntry,
+                                   Item* aOriginalFirstEntry,
+                                  EntryBuffer** ppRootKeyBuffer);
+    void        vHandleLeftInsert(Item* aInsertedKeyEntry,
                                    Item* aOriginalFirstEntry,
                                    EntryBuffer** ppRootKeyBuffer);
-    Item*        aSkipRoots(void);
-    void         vHeadEntryNew(void);
-    void         vHeadEntryRestore(void);
-    EntryBuffer*  pInsertableBuffer(KeyWrk& xKeyWrk,
+    Item*       aSkipRoots(void);
+    void        vHeadEntryNew(void);
+    void        vHeadEntryRestore(void);
+    EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
-    Item*        aInsertKeyAbsLazy(KeyWrk& xKeyWrk);
-    void         vInsertKeySkip(Item* aKeyEntry);
-    Item*        aInsertKeyBuffer(KeyWrk& xKeyWrk,
+    Item*       aInsertKeyAbsLazy(KeyWrk& xKeyWrk);
+    void        vInsertKeySkip(Item* aKeyEntry);
+    Item*       aInsertKeyBuffer(KeyWrk& xKeyWrk,
                                   EntryBuffer** ppRootKeyBuffer);
-    Item*        aInsertKeyUpwards(KeyWrk& xKeyWrk,
+    Item*       aInsertKeyUpwards(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
-    void        vItemCountRestore(void);
-    bool        bKeyBeforeBuffer(KeyWrk& xKey);
+    void         vItemCountRestore(void);
+    bool         bKeyBeforeBuffer(KeyWrk& xKey);
     FreeItem*    aMakeFreeEntry(Item* aItem);
     EntryBuffer* pNewHigherBuffer(void);
     EntryBuffer* pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets,
