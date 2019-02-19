@@ -37,7 +37,7 @@ ItemHeap::ItemHeap(eCN eClassNo)
   m_pHigherBuffer = nullptr;
 
   m_iPartitionNo  = -1;
-  m_iHeightNo      = 0;
+  m_iBufferHeight = 0;
   
   m_oWhenNewed.vNow();
   m_bIsLast       = false;
@@ -430,21 +430,21 @@ void ItemHeap::vItems(i8 nItems)
 /*----------------------------------------------------------------------------*/
 /* set buffer level                                                           */
 /*----------------------------------------------------------------------------*/
-void ItemHeap::vHeightNo(i8 iHeightNo)
+void ItemHeap::vBufferHeight(i8 iBufferHeight)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_iHeightNo = iHeightNo;
+  m_iBufferHeight = iBufferHeight;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the buffer height                                                       */
 /*----------------------------------------------------------------------------*/
-i8 ItemHeap::iHeightNo(void)
+i8 ItemHeap::iBufferHeight(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_iHeightNo;
+  return m_iBufferHeight;
 }
 
 /*----------------------------------------------------------------------------*/

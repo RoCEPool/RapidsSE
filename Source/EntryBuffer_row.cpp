@@ -24,7 +24,7 @@ Item* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  ASSERT(iHeightNo() == 0);
+  ASSERT(iBufferHeight() == 0);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allot row entry in this buffer

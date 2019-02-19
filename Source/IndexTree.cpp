@@ -332,8 +332,8 @@ void IndexTree::vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pFirstL0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  ASSERT(0 == pFirstL0->iHeightNo());
-  ASSERT(1 == pL1->iHeightNo());
+  ASSERT(0 == pFirstL0->iBufferHeight());
+  ASSERT(1 == pL1->iBufferHeight());
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
@@ -386,10 +386,10 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
   // assert the parameters are sensible
   
   EntryBuffer* pLeftL0 = *ppLeftL0;
-  ASSERT(0 == pLeftL0->iHeightNo());
-  ASSERT(0 == pRightL0->iHeightNo());
+  ASSERT(0 == pLeftL0->iBufferHeight());
+  ASSERT(0 == pRightL0->iBufferHeight());
   EntryBuffer* pL1 = pLeftL0->pHigherBuffer();
-  ASSERT(1 == pL1->iHeightNo());
+  ASSERT(1 == pL1->iBufferHeight());
   ASSERT(pRightL0->pHigherBuffer() == pLeftL0->pHigherBuffer());
   
   //vTrace("IndexTree::vCopyLeft (left %lld right %lld)\n"_Stz,
@@ -524,10 +524,10 @@ void IndexTree::vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
   // assert the parameters are sensible
   
   EntryBuffer* pLeftL0 = *ppLeftL0;
-  ASSERT(0 == pLeftL0->iHeightNo());
-  ASSERT(0 == pRightL0->iHeightNo());
+  ASSERT(0 == pLeftL0->iBufferHeight());
+  ASSERT(0 == pRightL0->iBufferHeight());
   EntryBuffer* pL1 = pLeftL0->pHigherBuffer();
-  ASSERT(1 == pL1->iHeightNo());
+  ASSERT(1 == pL1->iBufferHeight());
   ASSERT(pRightL0->pHigherBuffer() == pLeftL0->pHigherBuffer());
   
   //vTrace("IndexTree::vCopyLeft (left %lld right %lld)\n"_Stz,
@@ -649,10 +649,10 @@ void IndexTree::vCopyLeftV1(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
   KeyWrk xLeftKeyWrk;
   
   EntryBuffer* pLeftL0 = *ppLeftL0;
-  ASSERT(0 == pLeftL0->iHeightNo());
-  ASSERT(0 == pRightL0->iHeightNo());
+  ASSERT(0 == pLeftL0->m_iBufferHeight());
+  ASSERT(0 == pRightL0->m_iBufferHeight());
   EntryBuffer* pL1 = pLeftL0->pHigherBuffer();
-  ASSERT(1 == pL1->iHeightNo());
+  ASSERT(1 == pL1->m_iBufferHeight());
   ASSERT(pRightL0->pHigherBuffer() == pLeftL0->pHigherBuffer());
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
@@ -781,10 +781,10 @@ EntryBuffer* IndexTree::pFirstL1Buffer(void)
   if ( ! pEntryBuffer )
     return nullptr;
   
-  if (pEntryBuffer->iHeightNo() == 0)
+  if (pEntryBuffer->iBufferHeight() == 0)
     return nullptr;
   
-  if (pEntryBuffer->iHeightNo() == 1)
+  if (pEntryBuffer->iBufferHeight() == 1)
     return pEntryBuffer;
   
   while (pEntryBuffer) {
@@ -792,7 +792,7 @@ EntryBuffer* IndexTree::pFirstL1Buffer(void)
     Item* aFirstEntry = pEntryBuffer->aLeadEntry();
     pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aFirstEntry);
     
-    if (pEntryBuffer->iHeightNo() == 1) {
+    if (pEntryBuffer->iBufferHeight() == 1) {
       return pEntryBuffer;
     }
   }
@@ -812,7 +812,7 @@ EntryBuffer* IndexTree::pFirstH0Buffer(void)
   if ( ! pEntryBuffer )
     return nullptr;
   
-  if (pEntryBuffer->iHeightNo() == 0)
+  if (pEntryBuffer->iBufferHeight() == 0)
     return pEntryBuffer;
   
   while (pEntryBuffer) {
@@ -820,7 +820,7 @@ EntryBuffer* IndexTree::pFirstH0Buffer(void)
     Item* aFirstEntry = pEntryBuffer->aLeadEntry();
     pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aFirstEntry);
     
-    if (pEntryBuffer->iHeightNo() == 0) {
+    if (pEntryBuffer->iBufferHeight() == 0) {
       return pEntryBuffer;
     }
   }
@@ -1131,7 +1131,7 @@ void IndexTree::vDumpLevel(EntryBuffer* pEntryBuffer)
     vTrace("%lld"_Stz, pEntryEntryBuffer->iDecile());
     
     // insert spaces for no of entries in buffer
-    if (pEntryEntryBuffer->iHeightNo() > 0) {
+    if (pEntryEntryBuffer->iBufferHeight() > 0) {
       
       // exclude the head entry
       i8 iEntries = pEntryEntryBuffer->nItems() - 1;
@@ -1162,7 +1162,7 @@ void IndexTree::vVisualize(void)
   if (m_pIndex->bIsHidden()) {
     
     do {
-      ASSERT(pEntryBuffer->iHeightNo() == 0);
+      ASSERT(pEntryBuffer->iBufferHeight() == 0);
       // print the decile of pNextBuffer
       vTrace("%lld"_Stz, pEntryBuffer->iDecile());
       
@@ -1177,7 +1177,7 @@ void IndexTree::vVisualize(void)
   // print the decile of the root buffer
   vTrace("%lld\n"_Stz, pEntryBuffer->iDecile());
   
-  i8 iBufferHeight = pEntryBuffer->iHeightNo();
+  i8 iBufferHeight = pEntryBuffer->iBufferHeight();
   
   // if there is only one buffer i.e root is at level 0, we are done
   if (iBufferHeight == 0) {
@@ -1192,7 +1192,7 @@ void IndexTree::vVisualize(void)
     vDumpLevel(pEntryBuffer);
 
     // if we are at level 1, iterate thru next buffers
-    if (pEntryBuffer->iHeightNo() == 1) {
+    if (pEntryBuffer->iBufferHeight() == 1) {
       pEntryBuffer = (EntryBuffer*)pEntryBuffer->pNextBuffer();
     }
     else {

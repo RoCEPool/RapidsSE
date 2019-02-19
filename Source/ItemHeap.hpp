@@ -25,15 +25,15 @@ namespace MiniHeaps
     ItemHeap* m_pHigherBuffer; // higher level buffer that has entries
                                // that point to this buffer
 
-    i2     m_iPartitionNo; // partition no this buffer belongs to
-    i2     m_iHeightNo;     // level no in tree
+    i2     m_iPartitionNo;      // partition no this buffer belongs to
+    i2     m_iBufferHeight;     // buffer height in the tree
     
-    Since  m_oWhenNewed;   // when was this buffer created?
-    bool   m_bIsLast;      // is this the last buffer in sequence
+    Since  m_oWhenNewed;        // when was this buffer created?
+    bool   m_bIsLast;            // is this the last buffer in sequence
   
-    FreeItem* m_aFreeItemChain; // head of free item chain
+    FreeItem* m_aFreeItemChain;  // head of free item chain
 
-    i4  m_i_FreeOffsetChain; // head of free item offset chain
+    i4  m_i_FreeOffsetChain;     // head of free item offset chain
   
   public:
     ItemHeap(eCN eClassNo);
@@ -60,8 +60,8 @@ namespace MiniHeaps
     Item*  aItemArea(void);
     i8     nItems(void);
     void   vItems(i8 nItems);
-    void   vHeightNo(i8 iLevelNo);
-    i8     iHeightNo(void);
+    void   vBufferHeight(i8 iBufferHeight);
+    i8     iBufferHeight(void);
     void   vPartitionNo(i8 iPartitionNo);
     i8     iPartitionNo(void);
     void   vResetUsed(void);
