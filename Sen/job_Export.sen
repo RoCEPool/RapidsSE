@@ -186,6 +186,7 @@
   an::seed_req
 
   job::this locals| pJob_E |
+  pJob_E job.assertNeutral
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initialise this E export job
@@ -198,6 +199,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute E` to all participants                                  [E]E`:E`
   pJob_E job.distribute                                                    // E:
+  pJob_E job.assertNeutral
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for all KE` to write                                            KE`,E:
@@ -220,12 +222,14 @@
   >>am <SEED_BEG>
   an::seed_rcv
 
-  job::this locals| pJob_(E`) |
+  job::this locals| pJob_E` |
+  //pJob_E` job.assertParticipant
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // this E` becomes (E`)                                           [E](E`):(E`)
-  pJob_(E`) job.becomeParticipant
+  pJob_E` job.becomeParticipant
+  pJob_E` locals| pJob_(E`) |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -243,12 +247,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute seed for (E`) on participating node                   [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
-: export_exe ( pJob_Export -- )
+: export_exe ( -- )
 
   >>am <SEED_EXE>
   an::seed_exe
 
   job::this locals| pJob_(E`) |
+  pJob_(E`) job.assertParticipant
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   pJob_(E`) (E`).InitJob
@@ -272,6 +277,7 @@
   an::seed_end
 
   job::this locals| pJob_(E`) |
+  pJob_(E`) job.assertParticipant
 
   pJob_(E`) (E`).releaseResources
 
@@ -290,6 +296,7 @@
   an::seed_can
 
   job::this locals| pJob_(E`) |
+  pJob_(E`) job.assertParticipant
 
   pJob_(E`) (E`).releaseResources
 
