@@ -635,8 +635,8 @@ Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey, eRO eRelnOp)
   eKC eCompare;
   if (aIndexEntry) {
     
-    
-    if (eRelnOp == RO_GREATER_EQUAL) {
+    if (eRelnOp == RO_GREATER_THAN) {
+      
       do {
         
         eCompare = KeyData::eCompare(aIndexEntry, xGivenKey);
@@ -648,7 +648,6 @@ Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey, eRO eRelnOp)
       
     }
     else {
-      
       do {
         eCompare = KeyData::eCompare(aIndexEntry, xGivenKey);
         

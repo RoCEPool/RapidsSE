@@ -691,7 +691,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   // did we get an entry buffer ?
   if (aLowerEntryBuffer) {
     // position in the index buffer at the lower key
-    aLowerEntry = aLowerEntryBuffer->aPositionQuery(xKeyWrkLower.aKey(), eLowerRelnOp);
+    aLowerEntry = aLowerEntryBuffer->aPositionQuery(xKeyWrkLower, eLowerRelnOp);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -703,7 +703,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
       aLowerEntryBuffer = aLowerEntryBuffer->pNextBuffer();
       
       // position in the index buffer at the lower key
-      aLowerEntry = aLowerEntryBuffer->aPositionQuery(xKeyWrkLower.aKey(), eLowerRelnOp);
+      aLowerEntry = aLowerEntryBuffer->aPositionQuery(xKeyWrkLower, eLowerRelnOp);
     }
     else
       break;
