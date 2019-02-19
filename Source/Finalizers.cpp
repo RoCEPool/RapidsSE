@@ -35,7 +35,8 @@ pFINALIZE *gpFinalize[]
   /* 23 */ &Finalize::vUndefined,         // CN_ARGUMENTS
   /* 24 */ &Finalize::vUndefined,         // CN_ATOMIC
   /* 25 */ &Finalize::vUndefined,         // CN_ATTACHMAP
-  
+  /*    */ &Finalize::vUndefined,         // CN_AUXACK
+
   /* 29 */ &Finalize::vUndefined,         // CN_BPA
   /* 28 */ &Finalize::vUndefined,         // CN_BUFFERPOOL
   /*    */ &Finalize::vUndefined,         // CN_BYTERATE
@@ -238,7 +239,6 @@ pFINALIZE *gpFinalize[]
   /*130 */ &Table::vFinalize,             // CN_TABLE
   /*    */ &Finalize::vUndefined,         // CN_TABLEPTN
   /*    */ &Finalize::vUndefined,         // CN_TABLEPTNVEC
-  /*    */ &Finalize::vUndefined,         // CN_TAPPER
   /*131 */ &Finalize::vUndefined,         // CN_TASK
   /*134 */ &Finalize::vUndefined,         // CN_TASKLIST
   /*    */ &Finalize::vUndefined,         // CN_TASKQUEUE

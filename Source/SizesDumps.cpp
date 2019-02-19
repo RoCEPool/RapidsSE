@@ -38,6 +38,7 @@ pDUMPFUN *gpDump[]
   /* 23 */ &Dump::vInvalid,         // CN_ARGUMENTS
   /* 24 */ &Dump::vInvalid,         // CN_ATOMIC
   /* 25 */ &AttachMap::vDump,       // CN_ATTACHMAP
+  /*    */ &Dump::vDummy,           // CN_AUXACK
 
   /* 29 */ &Dump::vInvalid,         // CN_BPA
   /* 28 */ &Dump::vInvalid,         // CN_BUFFERPOOL
@@ -242,7 +243,6 @@ pDUMPFUN *gpDump[]
   /*130 */ &Table::vDump,           // CN_TABLE
   /*    */ &TablePtn::vDump,        // CN_TABLEPTN
   /*    */ &Dump::vDummy,           // CN_TABLEPTNVEC
-  /*    */ &Dump::vDummy,           // CN_TAPPER
   /*131 */ &Task::vDump,            // CN_TASK
   /*    */ &Dump::vUndefined,       // CN_TASKLIST
   /*134 */ &Dump::vUndefined,       // CN_TASKQUEUE
@@ -297,7 +297,8 @@ i8 giClassSize[]
   /* 23 */ sizeof(Arguments),          // CN_ARGUMENTS
   /* 24 */ sizeof(Atomic),             // CN_ATOMIC
   /* 25 */ sizeof(AttachMap),          // CN_ATTACHMAP
-  
+  /*    */ sizeof(Tapper),             // CN_AUXACK
+
   /* 29 */ sizeof(BPA),                // CN_BPA
   /* 28 */ sizeof(BufferPool),         // CN_BUFFERPOOL
   /* 28 */ sizeof(ByteRate),           // CN_BYTERATE
@@ -501,7 +502,6 @@ i8 giClassSize[]
   /*130 */ sizeof(Table),              // CN_TABLE
   /*    */ sizeof(TablePtn),           // CN_TABLEPTN
   /*    */ sizeof(TablePtnVec),        // CN_TABLEPTNVEC
-  /*    */ sizeof(Tapper),             // CN_TAPPER
   /*131 */ sizeof(Task),               // CN_TASK
   /*    */ sizeof(TaskList),           // CN_TASKLIST
   /*134 */ sizeof(TaskQueue),          // CN_TASKQUEUE
@@ -556,7 +556,8 @@ eHT geWhichHeap[]
   /* 23 */ HT_INVALID,           // CN_ARGUMENTS
   /* 24 */ HT_INVALID,           // CN_ATOMIC
   /* 25 */ HT_INVALID,           // CN_ATTACHMAP
-  
+  /*    */ HT_TRANSIENT_SMALL,   // CN_AUXACK
+
   /* 29 */ HT_INVALID,           // CN_BPA
   /* 28 */ HT_INVALID,           // CN_BUFFERPOOL
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_BYTERATE
@@ -760,7 +761,6 @@ eHT geWhichHeap[]
   /*130 */ HT_INVALID,           // CN_TABLE
   /*    */ HT_TRANSIENT_SMALL,   // CN_TABLEPTN
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_TABLEPTNVEC
-  /*    */ HT_TRANSIENT_SMALL,   // CN_TAPPER
   /*131 */ HT_TRANSIENT_MEDIUM,  // CN_TASK
   /*    */ HT_TRANSIENT_SMALL,   // CN_TASKLIST
   /*134 */ HT_TRANSIENT_SMALL,   // CN_TASKQUEUE

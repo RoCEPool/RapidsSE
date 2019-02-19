@@ -25,15 +25,15 @@ void Tapper::operator delete(void* )
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Tapper::Tapper(void)
-: Object(CN_TAPPER)
+: Object(CN_AUXACK)
 {
   m_nTapsOriginally = 0;
   m_nTapsRemaining  = 0;
   m_bTwiddling      = false;
   
-  _checkInitialised_(CN_TAPPER);
+  _checkInitialised_(CN_AUXACK);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TAPPER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_AUXACK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,7 +41,7 @@ Tapper::Tapper(void)
 /*----------------------------------------------------------------------------*/
 Tapper::~Tapper(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TAPPER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_AUXACK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,7 +53,7 @@ Tapper::~Tapper(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Tapper::vCheckInit(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TAPPER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_AUXACK,_FOOTER_);
   
   ASSERT(0 == m_nTapsRemaining); // logic check
 }
@@ -63,7 +63,7 @@ void Tapper::vCheckInit(void)
 /*----------------------------------------------------------------------------*/
 bool Tapper::bDecAndDecide(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TAPPER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_AUXACK,_FOOTER_);
 
   if (m_nTapsRemaining < 1)
     vTrace("m_nTapsRemaining is %lld\n"_Stz, m_nTapsRemaining);
@@ -83,7 +83,7 @@ bool Tapper::bDecAndDecide(void)
 /*----------------------------------------------------------------------------*/
 bool Tapper::bIsSet(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TAPPER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_AUXACK,_FOOTER_);
   
   return m_nTapsRemaining ? true : false;
 }
@@ -93,7 +93,7 @@ bool Tapper::bIsSet(void)
 /*----------------------------------------------------------------------------*/
 i8 Tapper::nOriginalTaps(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TAPPER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_AUXACK,_FOOTER_);
   
   return m_nTapsRemaining;
 }
@@ -103,7 +103,7 @@ i8 Tapper::nOriginalTaps(void)
 /*----------------------------------------------------------------------------*/
 i8 Tapper::iPrintOnlyValue(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TAPPER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_AUXACK,_FOOTER_);
   
   return m_nTapsRemaining;
 }
@@ -113,7 +113,7 @@ i8 Tapper::iPrintOnlyValue(void)
 /*----------------------------------------------------------------------------*/
 void Tapper::vSetRemaining(i8 nTapsRemaining)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TAPPER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_AUXACK,_FOOTER_);
   
   RASSERT(0 == m_nTapsRemaining);
   RASSERT(nTapsRemaining > 0);
@@ -128,7 +128,7 @@ void Tapper::vSetRemaining(i8 nTapsRemaining)
 /*----------------------------------------------------------------------------*/
 bool Tapper::bTwiddling(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TAPPER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_AUXACK,_FOOTER_);
   
   return m_bTwiddling;
 }
@@ -138,7 +138,7 @@ bool Tapper::bTwiddling(void)
 /*----------------------------------------------------------------------------*/
 void Tapper::vTwiddling(bool bTwiddling)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TAPPER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_AUXACK,_FOOTER_);
   
   m_bTwiddling = bTwiddling;
 }
@@ -152,7 +152,7 @@ void Tapper::vTwiddling(bool bTwiddling)
 /*----------------------------------------------------------------------------*/
 Footer* Tapper::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TAPPER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_AUXACK);
   
   return &m_xFooter;
 }

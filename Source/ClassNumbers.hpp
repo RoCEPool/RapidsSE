@@ -38,7 +38,8 @@ enum eCN : u2 // Class Number
   /*  17 0x11     2808B Heap:I */ CN_ARGUMENTS,
   /*  18 0x12       24B Heap:I */ CN_ATOMIC,
   /*  19 0x13    19672B Heap:I */ CN_ATTACHMAP,
-  
+  /*                           */ CN_AUXACK,
+
   /*  20 0x14        1B Heap:I */ CN_BPA,
   /*  21 0x15      312B Heap:I */ CN_BUFFERPOOL,
   /*  22 0x16      120B Heap:S */ CN_BYTERATE,
@@ -239,7 +240,6 @@ enum eCN : u2 // Class Number
   /* 195 0xC3     3736B Heap:I */ CN_TABLE,
   /* 196 0xC4      208B Heap:S */ CN_TABLEPTN,
   /* 197 0xC5     1048B Heap:M */ CN_TABLEPTNVEC,
-  /*                           */ CN_TAPPER,
   /* 198 0xC6     1360B Heap:M */ CN_TASK,
   /* 199 0xC7      184B Heap:S */ CN_TASKLIST,
   /* 200 0xC8      160B Heap:S */ CN_TASKQUEUE,
@@ -293,7 +293,8 @@ static Stz* aCN[]
   /*  17 0x11 */ "ARGUMENTS"_Stz,           // CN_ARGUMENTS
   /*  18 0x12 */ "ATOMIC"_Stz,              // CN_ATOMIC
   /*  19 0x13 */ "ATTACHMAP"_Stz,           // CN_ATTACHMAP
-  
+  /*          */ "AUXACK"_Stz,              // CN_AUXACK
+
   /*  20 0x14 */ "BPA"_Stz,                 // CN_BPA
   /*  21 0x15 */ "BUFFERPOOL"_Stz,          // CN_BUFFERPOOL
   /*  22 0x16 */ "BYTERATE"_Stz,            // CN_BYTERATE
@@ -494,7 +495,6 @@ static Stz* aCN[]
   /* 195 0xC3 */ "TABLE"_Stz,               // CN_TABLE
   /* 196 0xC4 */ "TABLEPTN"_Stz,            // CN_TABLEPTN
   /* 197 0xC5 */ "TABLEPTNVEC"_Stz,         // CN_TABLEPTNVEC
-  /*          */ "TAPPER"_Stz,              // CN_TAPPER
   /* 198 0xC6 */ "TASK"_Stz,                // CN_TASK
   /* 199 0xC7 */ "TASKLIST"_Stz,            // CN_TASKLIST
   /* 200 0xC8 */ "TASKQUEUE"_Stz,           // CN_TASKQUEUE
