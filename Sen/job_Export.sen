@@ -195,6 +195,8 @@
   // open file E::m_oCvsFile(m_sFilePath) for writing
   pJob_E job_export.begin
 
+  CN_JOB_EXPORT job::stateDiagram .
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute E` to all participants                                  [E]E`:E`
   pJob_E job.distribute                                                    // E:
@@ -203,6 +205,8 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for all KE` to write                                            KE`,E:
   pJob_E E.waitAll_KE                                                      // E:
+
+  CN_JOB_EXPORT job::stateDiagram .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // close the export file E::m_oCsvFile
@@ -226,9 +230,13 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  CN_JOB_EXPORT job::stateDiagram .
+
   // this E` becomes (E`) on this node                    [E]E`:E`->[E](E`):(E`)
   pJob_E` job.becomeParticipant
   pJob_E` locals| pJob_(E`) |
+
+  CN_JOB_EXPORT job::stateDiagram .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -278,10 +286,14 @@
   job::this locals| pJob_(E`) |
   pJob_(E`) job.assertParticipant
 
+  CN_JOB_EXPORT job::stateDiagram .
+
   pJob_(E`) (E`).releaseResources
 
   // (E`) sends job__ended to [E]                                __ENDED[E]():()
   job::participantEnded
+
+  CN_JOB_EXPORT job::stateDiagram .
 
   <<am <DONE_END>
 ;

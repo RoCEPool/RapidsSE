@@ -198,6 +198,57 @@ i8 Job::iAsNodeNo_Bits(i8 iNodeNo)
   return NodeNo_Bits;
 }
 
+/*----------------------------------------------------------------------------*/
+/* state diagram                                                              */
+/*----------------------------------------------------------------------------*/
+void Job::vStateDiagram(s256& sDiagram, eCN eJobClass)
+{
+  TaskList* pExecuting     = gpAttachMap->m_pQueues->m_pExecutingSet;
+  JobList*  pOriginating   = gpAttachMap->m_pOriginatingJobs;
+  JobList*  pParticipating = gpAttachMap->m_pParticipatingJobs;
+
+  sDiagram = ""_Stz;
+  
+  switch (eJobClass) {
+     
+    // generate state diagram for export job
+    case Base::CN_JOB_EXPORT: {
+      
+      // whats in the system relevant to export?
+      bool bKE_received   = pExecuting->bHasJobClass(CN_JOB_KIDEXPORT,false);
+      bool bE_neutral     = pExecuting->bHasJobClass(CN_JOB_EXPORT,false);
+      bool bE_originator  = pOriginating->bHasJobClass(CN_JOB_EXPORT);
+      bool bE_participant = pParticipating->bHasJobClass(CN_JOB_EXPORT);
+      bool bE_received    = pExecuting->bHasJobClass(CN_JOB_EXPORT,true);
+      bool bSE_neutral    = pExecuting->bHasJobClass(CN_JOB_SUBEXPORTER,false);
+      
+      // form the state diagram
+      if (bKE_received)         { sDiagram.vConcat("KE`"_Stz);  }
+      if (bE_originator)        { sDiagram.vConcat("[E]"_Stz);  }
+      if (! bE_originator &&
+          bE_neutral)           { sDiagram.vConcat("E"_Stz);    }
+      if (bE_participant)       { sDiagram.vConcat("(E`)"_Stz); }
+      if (! bE_participant &&
+          bE_received)          { sDiagram.vConcat("E`"_Stz);   }
+
+      if (bSE_neutral)          { sDiagram.vConcat("SE"_Stz);   }
+      
+      sDiagram.vConcat(":"_Stz);
+      
+      if (bE_participant)       { sDiagram.vConcat("(E`)"_Stz); }
+      if (! bE_participant &&
+          bE_received)          { sDiagram.vConcat("E`"_Stz);   }
+      if (bSE_neutral)          { sDiagram.vConcat("SE"_Stz);   }
+      
+      return;
+    }
+      
+    default:
+      sDiagram.vSprint("Warning: No diagram for class %lld %s"_Stz,
+                       eJobClass,aCN[eJobClass]);
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

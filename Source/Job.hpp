@@ -170,6 +170,7 @@ namespace Jobs
     static i8   iNodeNo(i8 iJobId);
     static i8   iOriginatorNode(i8 iJobId);
     static i8   iAsNodeNo_Bits(i8 iNodeNo);
+    static void vStateDiagram(s256& sDiagram, eCN eJobClass);
 
     Stz* sJobSeed(void);
     i8   iJobId(void);

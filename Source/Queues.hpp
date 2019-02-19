@@ -58,7 +58,6 @@ namespace Threads
     Queues(void);
     ~Queues(void) noexcept(false);
   
-    static void vStateDiagram(s256& sDiagram, eCN eJobClass);
     static void vThreadsReport(void);
   
     void vAddThread(Thread* pThread);

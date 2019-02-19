@@ -17,7 +17,10 @@
 
   pJob_SE job_subExporter.begin not if exit then             // [E](E`)SE:(E`)SE
 
-  begin pJob_SE job_subExporter.chunk while repeat  // KE`[E](E`)SE,KE:(E`)SE,KE
+  begin                                             // KE`[E](E`)SE,KE:(E`)SE,KE
+    CN_JOB_EXPORT job::stateDiagram .
+    pJob_SE job_subExporter.chunk
+  while repeat
 
   pJob_SE job_subExporter.end
 ;
