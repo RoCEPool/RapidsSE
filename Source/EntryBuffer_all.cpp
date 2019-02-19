@@ -630,7 +630,7 @@ Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey, eRO eRelnOp)
   //  vBuildSkipList();
 #endif
   
-  Item* aIndexEntry = aPositionQuery(xGivenKey, 1, JC_AFTER);
+  Item* aIndexEntry = aPositionQuery(xGivenKey, 1);
   
   eKC eCompare;
   if (aIndexEntry) {
@@ -662,65 +662,65 @@ Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey, eRO eRelnOp)
   return aIndexEntry;
 }
 
-/*----------------------------------------------------------------------------*/
-/* position at given key                                                      */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey,i8 nKeyCols, eJC eJuxtaCompare)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-#ifdef USE_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
-  
-  //if (m_aLazyChain)
-  //  vBuildSkipList();
-#endif
-  
-  Item* aScanEntry_sl = aSkipRoots();
-  
-  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
-    
-    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanOffset);
-    while (aNextEntry_sl) {
-      
-      //KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
-      
-      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      //aGivenKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      
-      //bIsJuxta = aGivenKey->bJuxtaCompare(JC_AFTER,aNextKey,pIdxColVec,
-      //                                    nKeyCols,bIsEqual);
-      eKC eCompare = KeyData::eCompare(xGivenKey,aNextEntry_sl);
-      
-      // have we found the key during a query?
-      if (eCompare == KC_SAME) {
-        
-        if (0 == i_ScanOffset)
-          return aNextEntry_sl;
-        else
-          break;
-      }
-      
-      // if given key is not same/after next key then break to outer loop
-      if (eCompare != KC_AFTER)
-        break;
-      
-      aScanEntry_sl = aNextEntry_sl;
-      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanOffset);
-    }
-    //pPriorVec[*i_ScanOffset] = pScanEntry_sl;
-  }
-  
-  if (aScanEntry_sl == aSkipRoots()) {
-    aScanEntry_sl = aNextEntry(aScanEntry_sl, 0);
-    // we currently think it should be null
-    // RASSERT( ! pScanEntry_sl );
-  }
-  
-  // JC_SAME : return the entry which is same as given key
-  // JC_AFTER: return the entry which the given key would be inserted after
-  return aScanEntry_sl;
-}
+///*----------------------------------------------------------------------------*/
+///* position at given key                                                      */
+///*----------------------------------------------------------------------------*/
+//Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey,i8 nKeyCols, eJC eJuxtaCompare)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+//
+//#ifdef USE_EB_LAZY_CHAIN
+//  RASSERT( ! m_aLazyChain );
+//
+//  //if (m_aLazyChain)
+//  //  vBuildSkipList();
+//#endif
+//
+//  Item* aScanEntry_sl = aSkipRoots();
+//
+//  for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
+//
+//    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanOffset);
+//    while (aNextEntry_sl) {
+//
+//      //KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
+//
+//      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+//      //aGivenKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+//
+//      //bIsJuxta = aGivenKey->bJuxtaCompare(JC_AFTER,aNextKey,pIdxColVec,
+//      //                                    nKeyCols,bIsEqual);
+//      eKC eCompare = KeyData::eCompare(xGivenKey,aNextEntry_sl);
+//
+//      // have we found the key during a query?
+//      if (eCompare == KC_SAME) {
+//
+//        if (0 == i_ScanOffset)
+//          return aNextEntry_sl;
+//        else
+//          break;
+//      }
+//
+//      // if given key is not same/after next key then break to outer loop
+//      if (eCompare != KC_AFTER)
+//        break;
+//
+//      aScanEntry_sl = aNextEntry_sl;
+//      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanOffset);
+//    }
+//    //pPriorVec[*i_ScanOffset] = pScanEntry_sl;
+//  }
+//
+//  if (aScanEntry_sl == aSkipRoots()) {
+//    aScanEntry_sl = aNextEntry(aScanEntry_sl, 0);
+//    // we currently think it should be null
+//    // RASSERT( ! pScanEntry_sl );
+//  }
+//
+//  // JC_SAME : return the entry which is same as given key
+//  // JC_AFTER: return the entry which the given key would be inserted after
+//  return aScanEntry_sl;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* position at given key                                                      */

@@ -91,11 +91,11 @@ namespace Data
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
   
-    void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
-    void         vBuildSkipListSorted(void);
-    void         vDeleteEntry(Item** aaItem);
-    //bool         bDeleteKey(KeyData* aDeleteKey, EntryBuffer* pToBuffer);
-    void         vDump(void);
+    void       vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
+    void       vBuildSkipListSorted(void);
+    void       vDeleteEntry(Item** aaItem);
+    //bool       bDeleteKey(KeyData* aDeleteKey, EntryBuffer* pToBuffer);
+    void        vDump(void);
     EntryBuffer* pFirstChildBuffer(void);
     Item*       aInsertKeyAbs(KeyWrk& xKeyWrk);
     Item*       aInsertKeyAbsL0(KeyWrk& xKeyWrk, Item** aaPriorEntry);
@@ -111,7 +111,7 @@ namespace Data
     Item*       aPositionQuery(KeyWrk& xGivenKey, i8 nKeyCols);
     
     Item*       aPositionQuery(KeyWrk& xGivenKey, eRO eRelOp);
-    Item*       aPositionQuery(KeyWrk& xGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
+    //Item*       aPositionQuery(KeyWrk& xGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
     EntryBuffer* pPositionHeight(KeyWrk& xGivenKey, i8 nKeyCols, i8 iHeight);
     
     void         vReset(void);
