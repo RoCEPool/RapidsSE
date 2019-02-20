@@ -124,7 +124,7 @@ void AuxAck::vSetRemaining(i8 nAcksRemaining)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get passed flag                                                            */
+/* get passed decision point flag                                             */
 /*----------------------------------------------------------------------------*/
 bool AuxAck::bPassed(void)
 {
@@ -134,7 +134,7 @@ bool AuxAck::bPassed(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set passed flag                                                            */
+/* set passed decision point flag                                             */
 /*----------------------------------------------------------------------------*/
 void AuxAck::vPassed(bool bPassed)
 {

@@ -37,14 +37,15 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* handle the tap of export job                        [SE]-(E,SE,{`KE})-[SE] */
+/* handle aux ack of export job                        [SE]-(E,SE,{`KE})-[SE] */
 /*----------------------------------------------------------------------------*/
-: kidExport.tapExport ( pJob_Export )
+: kidExport.auxAckExport ( pJob_Export )
 
   params| pJob_Export |
 
   pJob_Export job.originatingTask@ locals| pExportTask |
 
+/*
   pExportTask task.grabLock
 
   pJob_Export job_export.twiddling@ if
@@ -55,7 +56,7 @@
     "Export is not twiddling" .
     pExportTask task.dropLock
   then
-
+*/
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -86,9 +87,11 @@
   // ? ? ?
   bLastWrite if
     "`KE last write" .
-    pJob_[E] job_export.decTapper if
-      "`KE is the tapper" .
-      pJob_[E] kidExport.tapExport
+    pJob_[E] job_export.decAuxAck if
+      "`KE will auxack the export job" .
+      pJob_[E] kidExport.auxAckExport
+    else
+      "`KE will not auxack the export job" .
     then
   then
 
