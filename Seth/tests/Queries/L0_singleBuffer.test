@@ -1,0 +1,160 @@
+/*----------------------------------------------------------------------------*/
+/* L0 single buffer tests                                                     */
+/*----------------------------------------------------------------------------*/
+
+//startCluster;
+//mute
+
+IndexEntries 5;
+success
+
+// (1) create table Q1
+create table Q1 (
+  jA  INTEGER,
+  jB  INTEGER,
+  jC  INTEGER,
+  jD  INTEGER,
+  jE  VARCHAR(32)
+);
+success
+
+create index idx on Q1 (jA);
+success
+
+ld Q1 "/DATA/Queries/L0_SingleBuffer.csv";
+success
+
+dumpidx Q1 idx;
+success
+
+vfyidx Q1 idx;
+success
+
+//------------------------------------------------------------------------------
+// SCAN
+fetch Q1;
+rows: 5
+
+//------------------------------------------------------------------------------
+// EXACT KEYS for index on jA
+
+fetch Q1 "jA -2 ==" ;
+rows:
+  (-2,*,*,*,*)
+
+fetch Q1 "jA 1 ==" ;
+rows:
+  (1,*,*,*,*)
+
+fetch Q1 "jA 2 ==" ;
+rows:
+  (2,*,*,*,*)
+
+fetch Q1 "jA 3 ==";
+rows:
+  (3,*,*,*,*)
+
+//------------------------------------------------------------------------------
+// UPPER BOUND KEYS with < for index on jA
+
+fetch Q1 "jA -2 <" ;
+rows:
+ (null,*,*,*,*)
+
+fetch Q1 "jA 1 <" ;
+rows:
+(null,*,*,*,*)
+ (-2,*,*,*,*)
+
+fetch Q1 "jA 2 <" ;
+rows:
+ (null,*,*,*,*)
+(-2,*,*,*,*)
+ (1,*,*,*,*)
+
+fetch Q1 "jA 3 <";
+rows:
+ (null,*,*,*,*)
+ (-2,*,*,*,*)
+ (1,*,*,*,*)
+ (2,*,*,*,*)
+
+
+//------------------------------------------------------------------------------
+// UPPER BOUND KEYS with <= for index on jA
+
+fetch Q1 "jA -2 <=" ;
+rows: 2
+
+fetch Q1 "jA 1 <=" ;
+rows: 3
+
+fetch Q1 "jA 2 <=" ;
+rows: 4
+
+fetch Q1 "jA 3 <=";
+rows: 5
+
+
+//------------------------------------------------------------------------------
+// LOWER BOUND KEYS with > for index on jA
+
+fetch Q1 "jA -2 >" ;
+rows: 3
+
+fetch Q1 "jA 1 >" ;
+rows: 2
+
+fetch Q1 "jA 2 >" ;
+rows: 1
+
+fetch Q1 "jA 3 >";
+rows: 0
+
+
+//------------------------------------------------------------------------------
+// LOWER BOUND KEYS with >= for index on jA
+
+fetch Q1 "jA -2 >=";
+rows: 4
+
+fetch Q1 "jA 1 >=" ;
+rows: 3
+
+fetch Q1 "jA 2 >=" ;
+rows: 2
+
+fetch Q1 "jA 3 >=";
+rows: 1
+
+
+//------------------------------------------------------------------------------
+// RANGE for index on jA
+
+fetch Q1 "jA -2 > jA 3 < and";
+rows: 2
+
+fetch Q1 "jA -2 > jA 3 <= and" ;
+rows: 3
+
+fetch Q1 "jA 2 >= jA 1 < and" ;
+rows: 0
+
+//drop table Q1;
+//success
+
+//indexEntries 0;
+//mute;
+
+CLEANUP {
+
+  //drop table Q1;
+  //mute
+
+  //indexEntries 0;
+  //mute;
+
+  bye;
+  mute
+}
+
