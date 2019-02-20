@@ -556,9 +556,7 @@
   // job Export
   static void vJob_ExportAuxAckDecidedFetch(Tasks::MP_Task mpTask);
   static void vJob_ExportAuxAckDecidedStore(Tasks::MP_Task mpTask);
-  static void vJob_ExportAuxRemainingFetch(Tasks::MP_Task mpTask);
   static void vJob_ExportBegin(Tasks::MP_Task mpTask);
-  static void vJob_ExportDecAuxAck(Tasks::MP_Task mpTask);
   static void vJob_ExportEnd(Tasks::MP_Task mpTask);
   static void vJob_ExportTableStore(Tasks::MP_Task mpTask);
 

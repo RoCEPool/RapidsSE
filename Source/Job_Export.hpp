@@ -14,11 +14,11 @@ namespace Jobs
   
     Lock   m_okLock;   // lock over the following members
 
-    File   m_oCsvFile; // output csv file
+    File   m_oCsvFile;     // output csv file
+
+    Completer m_oWritten;  // track writing of all export buffers
   
-    Completer m_oWritten; // track writing of all export buffers
-  
-    AuxAck m_oAuxAck; // handle the auxilary ack from Kid Export job
+    bool m_bAuxAckDecided; // handle the auxilary ack from Kid Export job
   
     // must be last
     Footer m_xFooter;

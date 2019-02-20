@@ -115,9 +115,7 @@ Job_Export::Job_Export(Interface::Session* pSession)
     
   //m_oCsvFile;
   //m_oCompleter
-  
-  // export requires to be tapped once by the completing Kid Export job
-  m_oAuxAck.vSetRemaining(1);
+  m_bAuxAckDecided = false;
 
   _checkInitialised_(CN_JOB_EXPORT);
   
