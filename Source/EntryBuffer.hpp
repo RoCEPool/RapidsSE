@@ -83,11 +83,19 @@ namespace Data
     void vAssertEntryBuffer(void);
     bool bValidEntryBuffer(void);
     
-    //KEY_CMP:: ONE OF THESE SHOULD GO
+    ////////////////////////////////////////////////////////////////////////////
+    // key positioning functions
+    
+    Item*       pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
+    Item*       pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
+    Item*       pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
+    Item*       pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
+    
     Item*       pPositionPriorEntry(KeyWrk& xFindKey);
     Item*       pPositionPriorEntry(Item* aFindKey);
  
-    Item*       pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk);
+    
+    ////////////////////////////////////////////////////////////////////////////
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
