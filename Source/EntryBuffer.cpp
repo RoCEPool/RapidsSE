@@ -313,6 +313,155 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compact this buffer                                                        */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vCompact(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+#ifdef USE_EB_LAZY_CHAIN
+  //RASSERT( ! m_aLazyChain );
+  
+  if (m_aLazyChain)
+    vBuildSkipList();
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  FreeItem* aFreeEntry;
+  Item*     aMoveEntry;
+  Item*     xPriorVec[gpAttachMap->m_nIndexLevels];
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+  // we can only compact if there are free entries
+  if (! m_aFreeItemChain)
+    return;
+  
+  // loose the free list so vShow() works correctly
+  m_aFreeItemChain = nullptr;
+  
+  // scan item is the working pointer
+  Item* aScanItem = aFirstItem();
+  //ASSERT(aScanItem->eClass() == CN_ENTRY);
+  
+  // loop while we can still reclaim more space
+  for (;;) {
+    
+    if (m_iHeightNo) {
+      //vShow();
+      int iDebug = 1;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // find the next free entry in buffer
+    
+    aFreeEntry = nullptr;
+    for (;
+         aScanItem != nullptr;
+         aScanItem = aAdjacentItem(aScanItem)) {
+      
+      eCN eClass = aScanItem->eClass();
+      
+      if (CN_FREEENTRY == eClass) {
+        aFreeEntry = _aFreeItem(aScanItem);
+        break;
+      }
+    }
+    
+    // return if no more free entries
+    if (! aFreeEntry)
+      break;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // find the next entry in buffer after the free entry
+    
+    aMoveEntry = nullptr;
+    for (Item* aItem = aAdjacentItem(aFreeEntry);
+         aItem != nullptr;
+         aItem = aAdjacentItem(aItem)) {
+      
+      eCN eClass = aItem->eClass();
+      
+      RASSERT ( (eClass == CN_ENTRY) ||
+               (eClass == CN_FREEENTRY) ||
+               (eClass == CN_WILDERNESS));
+      
+      
+      if (CN_ENTRY == eClass) {
+        aMoveEntry = static_cast<Item*>(aItem);
+        break;
+      }
+    }
+    
+    // return if no more entries after the free entry
+    if (! aMoveEntry)
+      break;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the prior vector to the entry being moved
+    
+    KeyData* aMoveKey = _aKeyData(aMoveEntry->aDataArea());
+    
+    //aKey->vShow(pIdxColVec);
+    //vTrace("\n"_Stz);
+    
+    vPositionPriorVecEntry(aMoveKey, xPriorVec, aMoveEntry);
+    
+    if (m_iHeightNo) {
+      //vDumpPriorVec(xPriorVec);
+      int iDebug = 1;
+    }
+    
+    i4 iWasOffset = iToOffset(aMoveEntry);
+    i4 iNowOffset = iToOffset(aFreeEntry);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // now copy move entry left onto free entry
+    
+    // calculate the number of bytes to copy
+    i8 nCopyBytes = aMoveEntry->nSizeItem_WithoutOffsets()
+    + aMoveEntry->iNEOsize();
+    
+    // copy the move entry over the free entry
+    MemLib::vMove(aFreeEntry, aMoveEntry, nCopyBytes, CN_ENTRYBUFFER);
+    
+    // give the reclaimed space back to the buffer
+    i8 nReclaimedBytes = nSub(aMoveEntry,aFreeEntry);
+    //vGiveSpace(nReclaimedBytes);
+    
+    // convert the moved entry to a free entry
+    FreeItem* aOpenedFreeEntry = aAdd<FreeItem*>(aFreeEntry,nCopyBytes);
+    new(aOpenedFreeEntry) FreeItem(nReclaimedBytes);
+    
+    Item* aCheckEntry = reinterpret_cast<Item*>(aFreeEntry);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the prior vector to the entry being moved
+    
+    //vDumpPriorVec(xPriorVec);
+    for (i8 i_Offset = 0; i_Offset < 3; i_Offset++) {
+      Item* aPriorEntry = xPriorVec[i_Offset];
+      i4 iPriorOffset = aPriorEntry->iNEO(i_Offset);
+      if (iWasOffset == iPriorOffset)
+        aPriorEntry->vNEO(i_Offset,iNowOffset);
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // move scan
+    
+    aScanItem = aFreeEntry;
+    
+  } // for
+  
+  ASSERT( ! aScanItem || CN_FREEENTRY == aScanItem->eClass() );
+  
+  if (aScanItem)
+    vSetUsed(aScanItem);
+  
+  //vShow();
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vDump(void)
@@ -826,6 +975,26 @@ void EntryBuffer::vDeleteEntry(Item** aaItem)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get first child buffer                                                     */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pFirstChildBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+#ifdef USE_EB_LAZY_CHAIN
+  RASSERT( ! m_aLazyChain );
+  
+  //if (m_aLazyChain)
+  //  vBuildSkipList();
+#endif
+  
+  Item* aFirstEntry = this->aLeadEntry();
+  EntryBuffer* pChildEntryBuffer = EntryBuffer::pRefdEntryBuffer(aFirstEntry);
+  
+  return pChildEntryBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get an entry by number                                                     */
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::aGetEntry_Item(i8 i_Item)
@@ -1054,6 +1223,99 @@ void EntryBuffer::vShowEntry(Item* aItem)
     vTrace(" %d"_Stz,aItem->iNEO(i_Level));
   
   vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* splice the given buffer after this buffer                                  */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vSpliceAfter(EntryBuffer* pSplicedBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  EntryBuffer* pThisBuffer = this;
+  EntryBuffer* pNextBuffer = pThisBuffer->pNextBuffer();
+  
+  // the spliced buffer is always inserted after this buffer
+  pThisBuffer->vNextBuffer(pSplicedBuffer);
+  pSplicedBuffer->vNextBuffer(pNextBuffer);
+  pSplicedBuffer->vPrevBuffer(pThisBuffer);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // circumstance (a), no next buffer
+  
+  if (! pNextBuffer)
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // circumstance (b), next buffer
+  
+  pNextBuffer->vPrevBuffer(pSplicedBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* unlink the sublist of EB's following this L0 EB within this L1             */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pUnlinkSubList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  ASSERT(0 == m_iHeightNo);
+  
+  EntryBuffer* pThisL0 = this;
+  EntryBuffer* pThisL1 = pThisL0->pHigherBuffer();
+  EntryBuffer* pNextL0 = pThisL0->pNextBuffer();
+  EntryBuffer* pNextL1 = pThisL1->pNextBuffer();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // circumstance (a) no more L0
+  
+  if (! pNextL0)
+    return nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // circumstance (b) only one L0 under L1
+  
+  if (pNextL0->pHigherBuffer() != pHigherBuffer())
+    return nullptr;
+  
+  //----------------------------------------------------------------------------
+  //
+  // - there is a sublist
+  //
+  //----------------------------------------------------------------------------
+  
+  EntryBuffer* pThisL0SubList = pNextL0;
+  
+  // the sublist no longer points back to this L0
+  pThisL0SubList->vPrevBuffer(nullptr);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // circumstance (c) last L1, there is a sublist
+  
+  if (! pNextL1) {
+    
+    // last L1, therefore the next chain terminates here
+    pThisL0->vNextBuffer(nullptr);
+    
+    return pThisL0SubList;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // circumstance (d) middle L1, there is a sublist
+  
+  EntryBuffer* pFirstL0ofNextL1 = pNextL1->pFirstChildBuffer();
+  EntryBuffer* pLastL0ofThisL1 = pFirstL0ofNextL1->pPrevBuffer();
+  
+  // the next chain points to first L0 buffer of next L1
+  pThisL0->vNextBuffer(pFirstL0ofNextL1);
+  
+  // the prev chain of first L0 of next L1 is this L0
+  pFirstL0ofNextL1->vPrevBuffer(pThisL0);
+  
+  // the prev chain of last L0 of sublist terminates
+  pLastL0ofThisL1->vNextBuffer(nullptr);
+  
+  return pThisL0SubList;
 }
 
 
