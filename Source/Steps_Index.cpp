@@ -337,8 +337,8 @@ void Step::vIndexExactKey(MP_Task mpTask)
   // did we get an index buffer ?
   if (pIndexBuffer) {
     // position in the index buffer at the key
-    eRO eRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
-    aItem = pIndexBuffer->aPositionQuery(xKeyWrk, eRelnOp);
+    aItem = pIndexBuffer->pPositionPriorEntry(xKeyWrk);
+    aItem =  pIndexBuffer->pMoveToExactEntry(aItem, xKeyWrk);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

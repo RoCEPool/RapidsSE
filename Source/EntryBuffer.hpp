@@ -79,7 +79,6 @@ namespace Data
 
     ////////////////////////////////////////////////////////////////////////////
   
-  
   public:
     void vAssertEntryBuffer(void);
     bool bValidEntryBuffer(void);
@@ -88,6 +87,8 @@ namespace Data
     Item*       pPositionPriorEntry(KeyWrk& xFindKey);
     Item*       pPositionPriorEntry(Item* aFindKey);
  
+    Item*       pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk);
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
   
@@ -159,24 +160,13 @@ namespace Data
     EntryBuffer* pNewNextBuffer(void);
     Item*       aPopLazyChain(void);
 
-    //KEY_CMP:: TO GO
-    //EntryBuffer* pPositionPriorBuffer(Item* aFindKey);
-    
     EntryBuffer* pPositionPriorBuffer(KeyWrk& xFindKey);
-    
-    //KEY_CMP::TO GO
-//    void         vPositionPriorVecEntry(KeyData* aFindKey, Item** aaPriorVec,
-//                                        Item* aFindEntry);
-    
     void         vPositionPriorVecEntry(Item* aFindKey, Item** aaPriorVec,
                                         Item* aFindEntry);
     
     void         vPositionPriorVecBuffer(Item* aFindKey, Item** aaPriorVec,
                                          EntryBuffer* pToBuffer);
-//    void         vPositionPriorVecBuffer2(KeyData* aFindKey, Item** aaPriorVec,
-//                                          EntryBuffer* pToBuffer);
-//    void         vPositionPriorVecBuffer3(KeyData* aFindKey, Item** aaPriorVec,
-//                                          EntryBuffer* pToBuffer);
+
     EntryBuffer* pSplit2(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -2226,6 +2226,34 @@ EntryBuffer* EntryBuffer::pPositionPriorBuffer(KeyWrk& xFindKey)
 }
 
 /*----------------------------------------------------------------------------*/
+/* move to matching key entry                                                 */
+/*----------------------------------------------------------------------------*/
+Item* EntryBuffer::pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if (aItem == aSkipRoots())
+    aItem = aNextEntry(aItem,0);
+  
+  while (aItem) {
+    eKC eCompare = KeyData::eCompare(aItem, xKeyWrk);
+    
+    // have we reached the key?
+    if (eCompare == KC_SAME)
+      break;
+    
+    // have we moved beyond ?
+    if (eCompare == KC_AFTER)
+      return nullptr;
+    
+    aItem = aNextEntry(aItem,0);
+  }
+  
+  return aItem;
+  
+}
+  
+/*----------------------------------------------------------------------------*/
 /* scan thru skip list and return entry prior to key                          */
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::pPositionPriorEntry(Item* aFindKey)
