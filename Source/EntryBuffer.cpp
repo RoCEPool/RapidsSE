@@ -198,6 +198,70 @@ Index* EntryBuffer::pIndex(void)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* analyze this buffer                                                        */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
+                           i8& iBuffers, i8& iEntries)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if (m_pIndex->bIsHidden()) {
+    
+    ASSERT(m_iHeightNo == 0);
+    EntryBuffer* pNextBuffer = this;
+    
+    do {
+      ASSERT(pNextBuffer->iHeightNo() == 0);
+      
+      iBuffers++;
+      iEntries += (pNextBuffer->m_nItems);
+      
+      if (bDetailed)
+        sAnalysis.vCatSprint("row: (%s, %lld, %5lld, 'L%lld', %lld )\n"_Stz,
+                             gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
+                             pNextBuffer->m_iPartitionNo,
+                             iBuffers,
+                             pNextBuffer->m_iHeightNo,
+                             pNextBuffer->m_nItems);
+      
+      pNextBuffer = pNextBuffer->pNextBuffer();
+    } while (pNextBuffer);
+    
+    return;
+  }
+  
+  iBuffers++;
+  iEntries += m_nItems;
+  
+  if (bDetailed)
+    sAnalysis.vCatSprint(" row: (%s, %lld, %5lld,' L%lld', %lld)\n"_Stz,
+                         gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
+                         m_iPartitionNo,
+                         iBuffers,
+                         m_iHeightNo,
+                         m_nItems);
+  
+  // recursively dump the lower level buffers
+  if (m_iHeightNo != 0) {
+    
+    for (Item* aItem = aLeadEntry();
+         aItem != nullptr;
+         aItem = aNextEntry(aItem, 0)) {
+      
+      // get the index buffer from the entry
+      EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
+      
+      ASSERT(pEntryBuffer);
+      ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
+      
+      pEntryBuffer->vAnalyze(sAnalysis, bDetailed, iBuffers, iEntries);
+      
+    }
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* return number of index buffers under this buffer                           */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vBufferCount(i8& nBuffers)
@@ -249,6 +313,34 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // show this buffer
+  vShow();
+  
+  // recursively dump the lower level buffers
+  if (m_iHeightNo != 0) {
+    
+    for (Item* aItem = aLeadEntry();
+         aItem != nullptr;
+         aItem = aNextEntry(aItem, 0)) {
+      
+      // get the index buffer from the entry
+      EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
+      
+      ASSERT(pEntryBuffer);
+      ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
+      
+      pEntryBuffer->vDump();
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the higher level index buffer                                          */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pHigherBuffer(void)
@@ -289,6 +381,43 @@ void EntryBuffer::vNextBuffer(EntryBuffer* pNextBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get length of list of buffers                                               */
+/*----------------------------------------------------------------------------*/
+i8 EntryBuffer::iLengthList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 iLength = 0;
+  for (EntryBuffer* pLn = this; pLn; pLn = pLn->pNextBuffer())
+    iLength++;
+  
+  return iLength;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get length of sublist of buffers                                           */
+/*----------------------------------------------------------------------------*/
+i8 EntryBuffer::iLengthSubList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 iLength = 0;
+  
+  EntryBuffer* pThisL0 = this;
+  EntryBuffer* pThisL1 = pThisL0->pHigherBuffer();
+  
+  EntryBuffer* pL0;
+  for (pL0 = pThisL0;
+       pL0 && pL0->pHigherBuffer() == pThisL1;
+       pL0 = pL0->pNextBuffer()) {
+    
+    iLength++;
+  }
+  
+  return iLength;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get prev buffer                                                            */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pPrevBuffer(void)
@@ -306,6 +435,298 @@ void EntryBuffer::vPrevBuffer(EntryBuffer* pPrevBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_pPrevBuffer = pPrevBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset/empty the buffer                                                     */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  RASSERT(nullptr == m_i4aItemOffsets);
+  RASSERT(! m_pIndex->bIsHidden());
+  RASSERT(1 == m_iHeightNo);
+  
+  vResetUsed();
+  
+  m_xSkipRoots.m_iaNextOffset[0] = -1;
+  m_xSkipRoots.m_iaNextOffset[1] = -1;
+  m_xSkipRoots.m_iaNextOffset[2] = -1;
+  
+  m_i_FreeOffsetChain = C_NO_MORE_ITEMS;
+  
+  //m_aHeadEntry  = nullptr;
+  m_aLastEntry  = nullptr;
+  m_aFreeItemChain  = nullptr;
+  
+  m_aLazyChain  = nullptr;
+  
+  //vHeadEntryNew();
+}
+
+/*----------------------------------------------------------------------------*/
+/* restore the buffer after being received over a socket                      */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vRestore(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  RASSERT( ! m_pHigherBuffer );
+  RASSERT( ! m_pNextBuffer );
+  RASSERT( ! m_pPrevBuffer );
+  
+  // set the index to nullptr (this pointer is not valid any more)
+  m_pIndex = nullptr;
+  
+  
+  // get the original buffer address
+  //  nb: the given address has to be an address in the orginal buffer
+  PoolBuffer* pOriginalBuffer =
+  pBitAnd<PoolBuffer*>(m_i4aItemOffsets,C_OBJECT_TO_BUFFER_MASK);
+  
+  
+  
+  // get this buffer address
+  PoolBuffer* pThisBuffer =
+  pBitAnd<PoolBuffer*>(this,C_OBJECT_TO_BUFFER_MASK);
+  
+  // calculate offset for m_i4aItemOffsets and set it
+  if (m_i4aItemOffsets) {
+    PoolBuffer* pOriginalBuffer =
+    pBitAnd<PoolBuffer*>(m_i4aItemOffsets,C_OBJECT_TO_BUFFER_MASK);
+    u8 uOffset = nSub(m_i4aItemOffsets, pOriginalBuffer);
+    m_i4aItemOffsets = aBitOr<i4*>(pThisBuffer,uOffset);
+  }
+  
+  // calculate offset for m_aHeadEntry and set it
+  //uOffset = nSub(m_aHeadEntry, pOriginalBuffer);
+  //m_aHeadEntry = pBitOr<Item*>(pThisBuffer,uOffset);
+  
+  // calculate offset for m_aLastEntry and set it
+  if (m_aLastEntry) {
+    PoolBuffer* pOriginalBuffer =
+    pBitAnd<PoolBuffer*>(m_aLastEntry,C_OBJECT_TO_BUFFER_MASK);
+    u8 uOffset = nSub(m_aLastEntry, pOriginalBuffer);
+    m_aLastEntry = pBitOr<Item*>(pThisBuffer,uOffset);
+  }
+  
+  // calculate offset for m_aFreeItemChain and set it
+  if (m_aFreeItemChain) {
+    PoolBuffer* pOriginalBuffer =
+    pBitAnd<PoolBuffer*>(m_aFreeItemChain,C_OBJECT_TO_BUFFER_MASK);
+    u8 uOffset = nSub(m_aFreeItemChain, pOriginalBuffer);
+    m_aFreeItemChain = pBitOr<FreeItem*>(pThisBuffer,uOffset);
+  }
+  
+  // calculate offset for m_aLazyChain and set it
+  if (m_aLazyChain) {
+    PoolBuffer* pOriginalBuffer =
+    pBitAnd<PoolBuffer*>(m_aLazyChain,C_OBJECT_TO_BUFFER_MASK);
+    u8 uOffset = nSub(m_aLazyChain, pOriginalBuffer);
+    m_aLazyChain = pBitOr<Item*>(pThisBuffer,uOffset);
+  }
+  
+  // get the buffer no
+  bn nBuffer = nPoolBufferNo();
+  
+  // restore the bufferNo
+  m_iBufferNo = *nBuffer;
+  
+  // now restore the row id's to point to this buffer no
+  for (Item* aItem = aLeadEntry();
+       aItem != nullptr;
+       aItem = aNextEntry(aItem, 0)) {
+    
+    Id xId(*nBuffer, aItem->iItemNo(), aItem->nLevels());
+    aItem->vId(xId);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* restore the index of the index buffer                                      */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vRestoreIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  RASSERT( ! m_pIndex );
+  m_pIndex = pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show contents of buffer                                                    */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vShow(Item* aMarkEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  s256 sHigherBuffer;
+  if (m_pHigherBuffer)
+    StrLib::wToString((i8)((EntryBuffer*)m_pHigherBuffer)->m_iHeightNo,
+                      sHigherBuffer.aChar());
+  else
+    sHigherBuffer = "..."_Stz;
+  
+  vTrace("\n"_Stz);
+  vTrace("--------------------------------------------------"
+         "--------------------------------------------------\n"_Stz);
+  
+  vTrace("EntryBuffer: %p (buffer %lld): items: %lld used: %lld freespace %lld\n"_Stz,
+         this,*nPoolBufferNo(),nItems(),nUsedBytes(),nFreeBytes());
+  
+  vTrace("  higherBuffer %p (L%s) prevBuffer %p nextBuffer %p\n"_Stz,
+         m_pHigherBuffer,sHigherBuffer.aStz(),m_pPrevBuffer,m_pNextBuffer);
+  
+  vTrace("  index: %s partition: %lld level: %lld\n"_Stz,
+         m_pIndex ? m_pIndex->aIndexName() : "NULL"_Stz,m_iPartitionNo,m_iHeightNo);
+  
+  vTrace("  entryOffset: %p freeOffsetHead: %lld\n"_Stz,
+         m_i4aItemOffsets,m_i_FreeOffsetChain);
+  
+  vTrace("  headEntry: %p[%d,%d,%d] lastEntry: %p firstFree: %p\n"_Stz,
+         aSkipRoots(),aSkipRoots() ? aSkipRoots()->iNEO(0) : 0,
+         aSkipRoots() ? aSkipRoots()->iNEO(1) : 0,
+         aSkipRoots() ? aSkipRoots()->iNEO(2) : 0,
+         m_aLastEntry,m_aFreeItemChain);
+  
+  vTrace("--------------------------------------------------"
+         "--------------------------------------------------\n"_Stz);
+  
+  ASSERT(aSkipRoots());
+  
+  vTrace("\n"_Stz);
+  vTrace("Entries (by headEntry vector[0]):\n"_Stz);
+  
+  i8 iOffset = aSkipRoots()->iNEO(0);
+  while (iOffset > -1) {
+    Item* aItem = aGetEntryOffset(iOffset);
+    vShowEntry(aItem);
+    if (aMarkEntry == aItem)
+      vTrace("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+             "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n"_Stz);
+    
+    iOffset = aItem->iNEO(0);
+  }
+  
+  vTrace("\n"_Stz);
+  vTrace("=================================================="
+         "==================================================\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* show short form of buffer                                                  */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vShowShort(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  vTrace("[t%lld h%lld: "_Stz,
+         *nPoolBufferNo(),
+         pHigherBuffer() ? *pHigherBuffer()->nPoolBufferNo() : 0);
+  
+  i8 iOffset = aSkipRoots()->iNEO(0);
+  while (iOffset > -1) {
+    Item* aItem = aGetEntryOffset(iOffset);
+    
+    KeyData* aKey = _aKeyData(aItem->aDataArea())
+    ;
+    i8 iVal = aKey->iGetInt();
+    
+    if (m_iHeightNo)
+      vTrace("%lld(%lld)"_Stz,iVal,*EntryBuffer::pRefdEntryBuffer(aItem)->nPoolBufferNo());
+    else
+      vTrace("%lld|%lld|"_Stz,iVal,*EntryBuffer::pRefdEntryBuffer(aItem)->nPoolBufferNo());
+    
+    iOffset = aItem->iNEO(0);
+    if (iOffset > -1)
+      vTrace(","_Stz);
+  }
+  vTrace("]"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* show sublist of buffers                                                    */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vShowSubList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  EntryBuffer* pThisL0 = this;
+  EntryBuffer* pThisL1 = pThisL0->pHigherBuffer();
+  
+  vTrace("{"_Stz);
+  
+  if (pThisL0->pPrevBuffer())
+    vTrace("<-"_Stz);
+  
+  EntryBuffer* pL0;
+  for (pL0 = pThisL0;
+       pL0 && pL0->pHigherBuffer() == pThisL1;
+       pL0 = pL0->pNextBuffer()) {
+    
+    if (pL0 != pThisL0)
+      vTrace(","_Stz);
+    
+    vTrace("%lld"_Stz,pL0->iPoolBufferNo());
+  }
+  
+  if (pL0)
+    vTrace("->"_Stz);
+  
+  vTrace("}\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* show contents of all buffers in index tree                                 */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vShowTree(bool bDumpBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if (! m_pHigherBuffer )
+    vTrace("\nIndex Tree:\n"_Stz,m_iHeightNo);
+  
+  vTrace("L%lld"_Stz,m_iHeightNo);
+  
+  for (EntryBuffer* pBuffer = this;
+       pBuffer;
+       pBuffer = pBuffer->pNextBuffer()) {
+    
+    pBuffer->vShowShort();
+    
+    ASSERT(! pBuffer->pPrevBuffer() || pBuffer == pBuffer->pPrevBuffer()->pNextBuffer());
+    ASSERT(! pBuffer->pNextBuffer() || pBuffer == pBuffer->pNextBuffer()->pPrevBuffer());
+  }
+  
+  vTrace("\n"_Stz);
+  
+  if (bDumpBuffer) {
+    for (EntryBuffer* pBuffer = this;
+         pBuffer;
+         pBuffer = pBuffer->pNextBuffer())
+      pBuffer->vShow();
+  }
+  
+  if ( ! m_iHeightNo )
+    return;
+  
+  Item* aFirstEntry = this->aLeadEntry();
+  if (! aFirstEntry)
+    return;
+  
+  Id xId;
+  xId = aFirstEntry->xId();
+  bn nBuffer = xId.iBuffer();
+  
+  HeapBuffer* pHeapBuffer =
+  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBuffer));
+  
+  EntryBuffer* pChildBuffer =
+  reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
+  
+  pChildBuffer->vShowTree(bDumpBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
