@@ -84,17 +84,33 @@
 
 
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  false locals| bAuxAck |
+
   // ? ? ?
   bLastWrite if
-    "`KE last write" .
-    pJob_[E] job_export.decAuxAck if
-      "`KE will auxack the export job" .
-      pJob_[E] kidExport.auxAckExport
+    "KE` last write" .
+
+    pJob_[E] job.originatingTask@ task.grabLock
+
+    pJob_[E] job_export.passed@ if
+      "KE` will NOT auxack the export job" .
     else
-      "`KE will not auxack the export job" .
+      "KE` will auxack the export job" .
+      // pJob_[E] kidExport.auxAckExport
+      true pJob_[E] job_export.passed!
+      true to bAuxAck
     then
+
+    pJob_[E] job.originatingTask@ task.dropLock
+
   then
 
+  bAuxAck if
+   "KE` auxacks the export job here" .
+
+  then
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

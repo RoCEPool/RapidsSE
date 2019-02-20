@@ -34,11 +34,16 @@
 
   pJob_E job_export.passed@ if
     "AuxAck decision point PASSED" .
+    task::this task.dropLock
   else
     "AuxAck decision point NOT-PASSED" .
+    true pJob_E job_export.passed!
+
+    // set ack to 1 and wait
+    //
+    task::this task.dropLock
   then
 
-  task::this task.dropLock
 ;
 
 /*----------------------------------------------------------------------------*/
