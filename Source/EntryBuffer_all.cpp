@@ -2295,13 +2295,9 @@ Item* EntryBuffer::pPositionPriorEntry(KeyWrk& xFindKey)
   RASSERT( ! m_aLazyChain );
 #endif
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
   if (nItems() == 0)
     return aSkipRoots();
-  
-  //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  //i8 nKeyCols = pIdxColVec->nItems();
   
   Item* aScanEntry_sl = aSkipRoots();
   
@@ -2313,22 +2309,6 @@ Item* EntryBuffer::pPositionPriorEntry(KeyWrk& xFindKey)
     
     Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
-      
-      KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
-      
-      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      
-      //#ifdef USE_EB_SINGLE_COLIDX
-      //      if (m_pIndex->bSingleColumn()) {
-      //        bKeyIsGreaterEqual = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
-      //        //RASSERT(bKeyIsGreaterEqual == aNextKey->bGreaterEqual(aFindKey,pIdxColVec));
-      //      }
-      //      else
-      //        bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
-      //#else
-      //      bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
-      //#endif
       
       bKeyIsGreaterEqual = KeyData::bGreaterEqual(aNextEntry_sl, xFindKey);
       
@@ -2342,81 +2322,6 @@ Item* EntryBuffer::pPositionPriorEntry(KeyWrk& xFindKey)
   
   return aScanEntry_sl;
 }
-
-/*----------------------------------------------------------------------------*/
-/* compute prior vector for find key, such that next of priorVec[0] is        */
-/* specifically the given find entry                                          */
-/*----------------------------------------------------------------------------*/
-//void EntryBuffer::vPositionPriorVecEntry(KeyData* aFindKey, Item* aPriorVec[],
-//                                         Item* aFindEntry)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-//
-//  //ASSERT(0 == m_iLevelNo);
-//
-//#ifdef USE_EB_LAZY_CHAIN
-//  RASSERT( ! m_aLazyChain );
-//#endif
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
-//    aPriorVec[i_Offset] = aSkipRoots();
-//
-//  if (nItems() == 0)
-//    return;
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-//
-//  i8 iFindLevels = aFindEntry ? aFindEntry->nOffsets() - 1 : 2;
-//
-//  bool bIsJuxta;
-//  Item* aScanEntry_sl = aSkipRoots();
-//  for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
-//       i_ScanOffset >= 0;
-//       i_ScanOffset--) {
-//
-//    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanOffset);
-//    while (aNextEntry_sl) {
-//
-//      if (aFindEntry == aNextEntry_sl)
-//        break;
-//
-//      KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
-//
-//      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-//      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-//
-//#ifdef USE_EB_SINGLE_COLIDX
-//      if (m_pIndex->bSingleColumn()) {
-//        bIsJuxta = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
-//        //        if (bIsJuxta != aNextKey->bGreaterEqual(aFindKey,pIdxColVec)) {
-//        //          aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
-//        //          aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
-//        //        }
-//      }
-//      else
-//        bIsJuxta = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
-//#else
-//      bIsJuxta = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
-//#endif
-//
-//      if (bIsJuxta) {
-//        if (! aFindEntry || aNextEntry_sl == aFindEntry)
-//          break;
-//
-//        if (i_ScanOffset > iFindLevels)
-//          break;
-//      }
-//
-//      aScanEntry_sl = aNextEntry_sl;
-//      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanOffset);
-//    }
-//    aPriorVec[i_ScanOffset] = aScanEntry_sl;
-//  }
-//}
 
 /*----------------------------------------------------------------------------*/
 /* compute prior vector for find key, such that next of priorVec[0] is        */
