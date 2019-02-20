@@ -26,25 +26,28 @@
 /*----------------------------------------------------------------------------*/
 /* optional wait till all kid exports are completed                           */
 /*----------------------------------------------------------------------------*/
-: E.waitAll_KE ( pJob_E -- )
+: E.waitAll_KE` ( pJob_E -- )
 
   params| pJob_E |
 
-  task::this task.grabLock
+  task::this locals| pTask_[E] |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pTask_[E] task.grabLock
 
   pJob_E job_export.auxAckDecided@ if
-    "AuxAck decision point PASSED" .
-    task::this task.dropLock
-  else
-    "AuxAck decision point NOT-PASSED" .
-    true pJob_E job_export.auxAckDecided!
-
-    // set ack to 1 and wait
-    //1 task::acks!
-    //task::wait
-    task::this task.dropLock
+    "AuxAck decision point PASSED. E does not wait" .
+    pTask_[E] task.dropLock
+    exit
   then
 
+  "AuxAck decision point NOT-PASSED.  E waits" .
+  true pJob_E job_export.auxAckDecided!
+
+  // wait for final aux ack from last KE`
+  1 pTask_[E] task.acks!
+  pTask_[E] task.wait
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -204,7 +207,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for all KE` to write                                            KE`,E:
-  pJob_E E.waitAll_KE                                                      // E:
+  pJob_E E.waitAll_KE`                                                      // E:
 
   CN_JOB_EXPORT job::stateDiagram .
 

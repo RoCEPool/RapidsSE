@@ -82,7 +82,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all __ended jobs have been received, so this job is the decider
 
-  // remove the job from the originator jobs
+  // remove the originating job from the originator jobs
   pJobOriginator job.removeOriginator
 
   // notify the originating task

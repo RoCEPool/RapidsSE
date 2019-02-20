@@ -37,26 +37,50 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* handle aux ack of export job                        [SE]-(E,SE,{`KE})-[SE] */
+/* handle aux ack of export job                           KE`[E](E`)SE:(E`)SE */
 /*----------------------------------------------------------------------------*/
-: kidExport.auxAckExport ( pJob_Export )
+: KE`.auxAckExport ( pJob_[E] )
 
-  params| pJob_Export |
+  params| pJob_[E] |
 
-  pJob_Export job.originatingTask@ locals| pExportTask |
+  pJob_[E] job.originatingTask@ locals| pTask_[E] |
 
-/*
-  pExportTask task.grabLock
+  false locals| bAuxAck |
 
-  pJob_Export job_export.twiddling@ if
-    "Export is twiddling" .
-    pExportTask task.dropLock
-    pExportTask job.originatingTask@ task.ack
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  "KE` last write" .
+
+  pTask_[E] task.grabLock
+
+  pJob_[E] job_export.auxAckDecided@ if
+    "KE`: [E] has been ended-acked by all E`; KE` WILL auxack [E]" .
+    CN_JOB_EXPORT job::stateDiagram .
+    true to bAuxAck
   else
-    "Export is not twiddling" .
-    pExportTask task.dropLock
+    "KE`: [E] not been ended-acked by all E`; KE` will NOT auxack [E]" .
+    CN_JOB_EXPORT job::stateDiagram .
+    false to bAuxAck
+    true pJob_[E] job_export.auxAckDecided!
   then
-*/
+
+  pTask_[E] task.dropLock
+
+  bAuxAck not if
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  "KE` auxacks the export job here" .
+
+  pTask_[E] task.state@ TK_WAITING if
+    "pTask_[E] is waiting" .
+  else
+    "pTask_[E] is not waiting" .
+  then
+
+  // final aux ack from last KE`
+  pTask_[E] task.ack
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -82,35 +106,11 @@
   false locals| bLastWrite |
   pJob_[E] pJob_KE` job_kidExport.writeExportBuffer to bLastWrite
 
-
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  false locals| bAuxAck |
-
-  // ? ? ?
   bLastWrite if
-    "KE` last write" .
-
-    pJob_[E] job.originatingTask@ task.grabLock
-
-    pJob_[E] job_export.auxAckDecided@ if
-      "KE` will auxack the export job" .
-      // pJob_[E] kidExport.auxAckExport
-      true to bAuxAck
-    else
-      "KE` will NOT auxack the export job" .
-      true pJob_[E] job_export.auxAckDecided!
-    then
-
-    pJob_[E] job.originatingTask@ task.dropLock
-
+    pJob_[E] KE`.auxAckExport
   then
-
-  bAuxAck if
-   "KE` auxacks the export job here" .
-  then
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete this KE` on this originator node:                 xx[E](E`)SE:(E`)SE
