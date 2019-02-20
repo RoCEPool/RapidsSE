@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntryBuffer_all.cpp -- working file to sort out the fun's of Item PoolBuffer  */
+/* EntryBuffer_all.cpp -- working file to sort out the fun's of Entry Buffer  */
 /*============================================================================*/
 
 #include "Data.h"
@@ -75,34 +75,6 @@ void EntryBuffer::vBuildSkipListSorted(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete the given entry                                                     */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vDeleteEntry(Item** aaItem)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // currently we only delete from non-hidden indexes
-  ASSERT(! m_pIndex->bIsHidden());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Item* aItem = *aaItem;
-  
-  Item* xPriorVec[gpAttachMap->m_nIndexLevels];
-  
-  KeyData* aKey = _aKeyData(aItem->aDataArea());
-  
-  vPositionPriorVecEntry(aKey, xPriorVec, aItem);
-  
-  vCutEntry(aItem,xPriorVec);
-  
-  vFreeItem(aItem);
-  
-  // entry no longer exists, set the pointer to be null
-  *aaItem = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get first child buffer                                                     */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pFirstChildBuffer(void)
@@ -120,27 +92,6 @@ EntryBuffer* EntryBuffer::pFirstChildBuffer(void)
   EntryBuffer* pChildEntryBuffer = EntryBuffer::pRefdEntryBuffer(aFirstEntry);
   
   return pChildEntryBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next entry                                                             */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aNextEntry(Item* aCurrent, i8 i_Level)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  RASSERT(aCurrent->bValidItem());
-  
-  i4 iOffset = aCurrent->iNEO(i_Level);
-  
-  if (-1 == iOffset)
-    return nullptr;
-  
-  Item* aItem = aAdd<Item*>(aItemArea(), iOffset);
-  
-  RASSERT(! aItem || aItem->bValidItem());
-
-  return aItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -510,21 +461,6 @@ void EntryBuffer::vCompactLeft2(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cut entry from skip list                                                   */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vCutEntry(Item* aItem, Item* aPriorVec[])
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  i8 nLevels = aItem->nLevels();
-  
-  for (i8 i_Level = 0; i_Level < nLevels; i_Level++) {
-    i4 iNEO = aItem->iNEO(i_Level);
-    aPriorVec[i_Level]->vNEO(i_Level,iNEO);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* delete upwards                                                             */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vDeleteUpwards(KeyData* aDeleteKey,
@@ -596,109 +532,6 @@ void EntryBuffer::vDeleteUpwards(KeyData* aDeleteKey,
 
 
 /*----------------------------------------------------------------------------*/
-/* dump the given prior vector                                                */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vDumpPriorVec(Item* aPriorVec[])
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  vTrace("Prior Vector\n"_Stz);
-  
-  vTrace("  0:%p 1:%p 2:%p\n"_Stz,
-         aPriorVec[0],aPriorVec[1],aPriorVec[2]);
-  
-  for (i8 i = 0; i < 3; i++) {
-    Item* aItem = aPriorVec[i];
-    for (i8 i_Level = 0; i_Level < aItem->nLevels(); i_Level++) {
-      vTrace("  i : %lld Item : %p i_Offset : %lld offset : %lld pointsTo : %p\n"_Stz,
-             i,
-             aItem,
-             i_Level,
-             aItem->iNEO(i_Level),
-             aGetEntryOffset(aItem->iNEO(i_Level)));
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get an entry by offset                                                     */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aGetEntryOffset(i8 iOffset)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  Item* aItem = aAdd<Item*>(aItemArea(), iOffset);
-  
-  return aItem;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get split entry by split number                                            */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aGetEntrySplit(i8 iSplitEntryNo,Item** aaPriorEntry)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  ASSERT(aSkipRoots());
-  
-#ifdef USE_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
-#endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  *aaPriorEntry = nullptr;
-  
-  i8 iEntryNo = 0;
-  for (Item* aSplitEntry = aNextEntry(aSkipRoots(),0);
-       aSplitEntry;
-       aSplitEntry = aNextEntry(aSplitEntry,0)) {
-    
-    // found split point?
-    if (iEntryNo++ == iSplitEntryNo)
-      return aSplitEntry;
-    
-    *aaPriorEntry = aSplitEntry;
-  }
-  
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* restore item count                                                         */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vItemCountRestore(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_nItems = 0;
-  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem, 0))
-    m_nItems++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is given key before the first key of this buffer                           */
-/*----------------------------------------------------------------------------*/
-bool EntryBuffer::bKeyBeforeBuffer(KeyWrk& xKeyTest)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  Item* aFirstEntry = this->aLeadEntry();
-  KeyData* aFirstKey = _aKeyData(aFirstEntry->aDataArea());
-
-  KeyData* aKeyTest = xKeyTest.aKey();
-
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  i8 nKeyCols = pIdxColVec->nItems();
-  
-  bool bIsJuxta =
-  aKeyTest->bLessThan(aFirstKey,pIdxColVec);
-  //KeyData::bLessThan(xKeyTest,aFirstEntry);
-  
-  return bIsJuxta;
-}
-
-/*----------------------------------------------------------------------------*/
 /* build skip lists from the lazy chain of all L0 buffers                     */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vLazyBuild(void)
@@ -720,22 +553,6 @@ void EntryBuffer::vLazyBuild(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert given entry into free entry                                        */
-/*----------------------------------------------------------------------------*/
-FreeItem* EntryBuffer::aMakeFreeEntry(Item* aItem)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  i8 nSizeItem = aItem->nSizeItem_WithoutOffsets();
-  i8 nSizeNEO  = aItem->iNEOsize();
-  i8 nSizeFree = nSizeItem + nSizeNEO;
-  
-  FreeItem* aFreeItem = new(aItem) FreeItem(nSizeFree);
-  
-  return aFreeItem;
-}
-
-/*----------------------------------------------------------------------------*/
 /* create a new higher buffer                                                 */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pNewHigherBuffer(void)
@@ -752,105 +569,6 @@ EntryBuffer* EntryBuffer::pNewHigherBuffer(void)
   vHigherBuffer(pNewBuffer);
   
   return pNewBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a new insert buffer (adjusting higher buffers accordingly)          */
-/*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets,
-                                           EntryBuffer** ppRootKeyBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compact this buffer and check if it has enough space
-  
-  this->vCompact();
-  
-  if (this->bHasSpace(nEntryPlusOffsets) )
-    return this;
-  
-  EntryBuffer* pLeftBuffer = this;
-  
-  
-  // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
-  // experiment to see if building the skip list (sorted) works
-  
-  /*
-   vShow();
-   vBuildSkipListSorted();
-   vShow();
-   */
-  
-  // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the higher buffer, creating one if it doesnt exist
-  
-  EntryBuffer* pHigherBuffer = this->pHigherBuffer();
-  if (! pHigherBuffer) {
-    pHigherBuffer = this->pNewHigherBuffer();
-    *ppRootKeyBuffer = pHigherBuffer;
-  }
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // split the left buffer to yield a right buffer
-  
-  EntryBuffer* pRightBuffer = pLeftBuffer->pSplit2();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert the first key of left buffer into higher buffer
-  
-  if ( ! pHigherBuffer->nItems() ) {
-    Item* aFirstKeyLeft  = pLeftBuffer->aLeadEntry();
-    
-    i8 nLevelsLeft = aFirstKeyLeft->nLevels();
-    Id xIdLeft(*pLeftBuffer->nPoolBufferNo(),0,nLevelsLeft);
-    KeyData* aKeyLeft = _aKeyData(aFirstKeyLeft->aDataArea());
-    i8 iKeyLenLeft = aKeyLeft->nKeySize(m_pIndex->pIdxColVec());
-    
-    
-    KeyWrk xKeyWrkLeft;
-    xKeyWrkLeft.vId(xIdLeft);
-    xKeyWrkLeft.vEmbedded((char*)aKeyLeft);
-    xKeyWrkLeft.vKeySize(iKeyLenLeft);
-    xKeyWrkLeft.vLevels(nLevelsLeft);
-    
-    
-    Item* aNewKeyLeft =
-    pHigherBuffer->aInsertKeyUpwards(xKeyWrkLeft,ppRootKeyBuffer);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert the first key of right buffer into higher buffer
-  
-  Item* aFirstKeyRight = pRightBuffer->aLeadEntry();
-  
-  KeyData* aKeyRight = _aKeyData(aFirstKeyRight->aDataArea());
-  
-  i8 iKeyLenRight = aKeyRight->nKeySize(m_pIndex->pIdxColVec());
-  i8 nLevelsRight = aFirstKeyRight->nLevels();
-  
-  Id xIdRight(*pRightBuffer->nPoolBufferNo(),0,nLevelsRight);
-  
-  KeyWrk xKeyWrkRight;
-  xKeyWrkRight.vId(xIdRight);
-  xKeyWrkRight.vEmbedded((char*)aKeyRight);
-  xKeyWrkRight.vKeySize(iKeyLenRight);
-  xKeyWrkRight.vLevels(nLevelsRight);
-  
-  
-  Item* aNewKeyRight =
-  pHigherBuffer->aInsertKeyUpwards(xKeyWrkRight,ppRootKeyBuffer);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  //ASSERT( (* ppRootKeyBuffer)->bVerify() );
-  
-  if ( pRightBuffer->bKeyBeforeBuffer(xInsKey) )
-    return pLeftBuffer;
-  else
-    return pRightBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -880,28 +598,6 @@ EntryBuffer* EntryBuffer::pNewNextBuffer(void)
   ASSERT(this == pNewBuffer->pPrevBuffer());
   
   return pNewBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop entry from lazy chain                                                  */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aPopLazyChain(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  if (! m_aLazyChain )
-    return nullptr;
-  
-  Item* aPoppedLazyEntry = m_aLazyChain;
-  
-  i8 iNextLazyOffset = aPoppedLazyEntry->iNEO(0);
-  
-  if (-1 == iNextLazyOffset)
-    m_aLazyChain = nullptr;
-  else
-    m_aLazyChain = aGetEntryOffset(iNextLazyOffset);
-  
-  return aPoppedLazyEntry;
 }
 
 /*----------------------------------------------------------------------------*/

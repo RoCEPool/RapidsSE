@@ -509,6 +509,128 @@ Item* EntryBuffer::aInsertKeyUpwards(KeyWrk& xKeyWrk,
   return aInsertedKeyEntry;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is given key before the first key of this buffer                           */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bKeyBeforeBuffer(KeyWrk& xKeyTest)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  Item* aFirstEntry = this->aLeadEntry();
+  KeyData* aFirstKey = _aKeyData(aFirstEntry->aDataArea());
+  
+  KeyData* aKeyTest = xKeyTest.aKey();
+  
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  i8 nKeyCols = pIdxColVec->nItems();
+  
+  bool bIsJuxta =
+  aKeyTest->bLessThan(aFirstKey,pIdxColVec);
+  //KeyData::bLessThan(xKeyTest,aFirstEntry);
+  
+  return bIsJuxta;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new insert buffer (adjusting higher buffers accordingly)          */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets,
+                                           EntryBuffer** ppRootKeyBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compact this buffer and check if it has enough space
+  
+  this->vCompact();
+  
+  if (this->bHasSpace(nEntryPlusOffsets) )
+    return this;
+  
+  EntryBuffer* pLeftBuffer = this;
+  
+  
+  // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+  // experiment to see if building the skip list (sorted) works
+  
+  /*
+   vShow();
+   vBuildSkipListSorted();
+   vShow();
+   */
+  
+  // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the higher buffer, creating one if it doesnt exist
+  
+  EntryBuffer* pHigherBuffer = this->pHigherBuffer();
+  if (! pHigherBuffer) {
+    pHigherBuffer = this->pNewHigherBuffer();
+    *ppRootKeyBuffer = pHigherBuffer;
+  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // split the left buffer to yield a right buffer
+  
+  EntryBuffer* pRightBuffer = pLeftBuffer->pSplit2();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert the first key of left buffer into higher buffer
+  
+  if ( ! pHigherBuffer->nItems() ) {
+    Item* aFirstKeyLeft  = pLeftBuffer->aLeadEntry();
+    
+    i8 nLevelsLeft = aFirstKeyLeft->nLevels();
+    Id xIdLeft(*pLeftBuffer->nPoolBufferNo(),0,nLevelsLeft);
+    KeyData* aKeyLeft = _aKeyData(aFirstKeyLeft->aDataArea());
+    i8 iKeyLenLeft = aKeyLeft->nKeySize(m_pIndex->pIdxColVec());
+    
+    
+    KeyWrk xKeyWrkLeft;
+    xKeyWrkLeft.vId(xIdLeft);
+    xKeyWrkLeft.vEmbedded((char*)aKeyLeft);
+    xKeyWrkLeft.vKeySize(iKeyLenLeft);
+    xKeyWrkLeft.vLevels(nLevelsLeft);
+    
+    
+    Item* aNewKeyLeft =
+    pHigherBuffer->aInsertKeyUpwards(xKeyWrkLeft,ppRootKeyBuffer);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert the first key of right buffer into higher buffer
+  
+  Item* aFirstKeyRight = pRightBuffer->aLeadEntry();
+  
+  KeyData* aKeyRight = _aKeyData(aFirstKeyRight->aDataArea());
+  
+  i8 iKeyLenRight = aKeyRight->nKeySize(m_pIndex->pIdxColVec());
+  i8 nLevelsRight = aFirstKeyRight->nLevels();
+  
+  Id xIdRight(*pRightBuffer->nPoolBufferNo(),0,nLevelsRight);
+  
+  KeyWrk xKeyWrkRight;
+  xKeyWrkRight.vId(xIdRight);
+  xKeyWrkRight.vEmbedded((char*)aKeyRight);
+  xKeyWrkRight.vKeySize(iKeyLenRight);
+  xKeyWrkRight.vLevels(nLevelsRight);
+  
+  
+  Item* aNewKeyRight =
+  pHigherBuffer->aInsertKeyUpwards(xKeyWrkRight,ppRootKeyBuffer);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  //ASSERT( (* ppRootKeyBuffer)->bVerify() );
+  
+  if ( pRightBuffer->bKeyBeforeBuffer(xInsKey) )
+    return pLeftBuffer;
+  else
+    return pRightBuffer;
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */

@@ -783,6 +783,49 @@ void EntryBuffer::vTruncate(void)
 
 
 /*----------------------------------------------------------------------------*/
+/* cut entry from skip list                                                   */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vCutEntry(Item* aItem, Item* aPriorVec[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 nLevels = aItem->nLevels();
+  
+  for (i8 i_Level = 0; i_Level < nLevels; i_Level++) {
+    i4 iNEO = aItem->iNEO(i_Level);
+    aPriorVec[i_Level]->vNEO(i_Level,iNEO);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete the given entry                                                     */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vDeleteEntry(Item** aaItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // currently we only delete from non-hidden indexes
+  ASSERT(! m_pIndex->bIsHidden());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Item* aItem = *aaItem;
+  
+  Item* xPriorVec[gpAttachMap->m_nIndexLevels];
+  
+  KeyData* aKey = _aKeyData(aItem->aDataArea());
+  
+  vPositionPriorVecEntry(aKey, xPriorVec, aItem);
+  
+  vCutEntry(aItem,xPriorVec);
+  
+  vFreeItem(aItem);
+  
+  // entry no longer exists, set the pointer to be null
+  *aaItem = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get an entry by number                                                     */
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::aGetEntry_Item(i8 i_Item)
@@ -804,6 +847,62 @@ Item* EntryBuffer::aGetEntry_Item(i8 i_Item)
   Item* aItem = aAdd<Item*>(aItemArea(), iOffset);
   
   return aItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get an entry by offset                                                     */
+/*----------------------------------------------------------------------------*/
+Item* EntryBuffer::aGetEntryOffset(i8 iOffset)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  Item* aItem = aAdd<Item*>(aItemArea(), iOffset);
+  
+  return aItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get split entry by split number                                            */
+/*----------------------------------------------------------------------------*/
+Item* EntryBuffer::aGetEntrySplit(i8 iSplitEntryNo,Item** aaPriorEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  ASSERT(aSkipRoots());
+  
+#ifdef USE_EB_LAZY_CHAIN
+  RASSERT( ! m_aLazyChain );
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  *aaPriorEntry = nullptr;
+  
+  i8 iEntryNo = 0;
+  for (Item* aSplitEntry = aNextEntry(aSkipRoots(),0);
+       aSplitEntry;
+       aSplitEntry = aNextEntry(aSplitEntry,0)) {
+    
+    // found split point?
+    if (iEntryNo++ == iSplitEntryNo)
+      return aSplitEntry;
+    
+    *aaPriorEntry = aSplitEntry;
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* restore item count                                                         */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vItemCountRestore(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_nItems = 0;
+  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem, 0))
+    m_nItems++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -851,6 +950,65 @@ Item* EntryBuffer::aLastEntry(void)
   }
   
   return aLast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert given entry into free entry                                        */
+/*----------------------------------------------------------------------------*/
+FreeItem* EntryBuffer::aMakeFreeEntry(Item* aItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 nSizeItem = aItem->nSizeItem_WithoutOffsets();
+  i8 nSizeNEO  = aItem->iNEOsize();
+  i8 nSizeFree = nSizeItem + nSizeNEO;
+  
+  FreeItem* aFreeItem = new(aItem) FreeItem(nSizeFree);
+  
+  return aFreeItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next entry                                                             */
+/*----------------------------------------------------------------------------*/
+Item* EntryBuffer::aNextEntry(Item* aCurrent, i8 i_Level)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  RASSERT(aCurrent->bValidItem());
+  
+  i4 iOffset = aCurrent->iNEO(i_Level);
+  
+  if (-1 == iOffset)
+    return nullptr;
+  
+  Item* aItem = aAdd<Item*>(aItemArea(), iOffset);
+  
+  RASSERT(! aItem || aItem->bValidItem());
+  
+  return aItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop entry from lazy chain                                                  */
+/*----------------------------------------------------------------------------*/
+Item* EntryBuffer::aPopLazyChain(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if (! m_aLazyChain )
+    return nullptr;
+  
+  Item* aPoppedLazyEntry = m_aLazyChain;
+  
+  i8 iNextLazyOffset = aPoppedLazyEntry->iNEO(0);
+  
+  if (-1 == iNextLazyOffset)
+    m_aLazyChain = nullptr;
+  else
+    m_aLazyChain = aGetEntryOffset(iNextLazyOffset);
+  
+  return aPoppedLazyEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1000,6 +1158,32 @@ Item* EntryBuffer::aSkipRoots(void)
   //return m_aHeadEntry;
   return &m_xSkipRoots;
 }
+
+/*----------------------------------------------------------------------------*/
+/* dump the given prior vector                                                */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vDumpPriorVec(Item* aPriorVec[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  vTrace("Prior Vector\n"_Stz);
+  
+  vTrace("  0:%p 1:%p 2:%p\n"_Stz,
+         aPriorVec[0],aPriorVec[1],aPriorVec[2]);
+  
+  for (i8 i = 0; i < 3; i++) {
+    Item* aItem = aPriorVec[i];
+    for (i8 i_Level = 0; i_Level < aItem->nLevels(); i_Level++) {
+      vTrace("  i : %lld Item : %p i_Offset : %lld offset : %lld pointsTo : %p\n"_Stz,
+             i,
+             aItem,
+             i_Level,
+             aItem->iNEO(i_Level),
+             aGetEntryOffset(aItem->iNEO(i_Level)));
+    }
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
