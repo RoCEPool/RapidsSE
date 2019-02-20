@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntryBuffer_all.cpp -- working file to sort out the fun's of Item PoolBuffer  */
+/* EntryBuffer_verify.cpp -- working file for verify functions                */
 /*============================================================================*/
 
 #include "Data.h"
