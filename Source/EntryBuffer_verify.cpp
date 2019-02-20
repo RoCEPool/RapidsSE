@@ -12,6 +12,66 @@ extern AttachMap* gpAttachMap;
 /*-- Verify ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*----------------------------------------------------------------------------*/
+/* verify the structure of this buffer (and its children)                     */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bVerify(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  bool bValid = false;
+  
+  if (m_iHeightNo) {
+    bValid = bVerifyLnAny();
+    return bValid;
+  }
+  
+  if (! m_pIndex->bIsHidden()) {
+    bValid = bVerifyL0Other();
+    return bValid;
+  }
+  
+  for (EntryBuffer* EBhiddenL0 = this;
+       EBhiddenL0;
+       EBhiddenL0 = EBhiddenL0->pNextBuffer()) {
+    bValid = EBhiddenL0->bVerifyL0Hidden();
+    if (! bValid)
+      return false;
+  }
+  
+  return true;
+}
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* test for valid entry buffer                                                */
+/*----------------------------------------------------------------------------*/
+bool EntryBuffer::bValidEntryBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  if (! bValidMagic()) {
+    vTrace("Not valid magic\n"_Stz);
+    return false;
+  }
+  
+  if (CN_ENTRYBUFFER != eClass()) {
+    vTrace("Not valid class\n"_Stz);
+    return false;
+  }
+  
+  if (! aFooter()->bValidFooter()) {
+    vTrace("Not valid footer\n"_Stz);
+    return false;
+  }
+  
+  return true;
+}
+
 /*----------------------------------------------------------------------------*/
 /* check prior vec ordering                                                   */
 /*----------------------------------------------------------------------------*/
