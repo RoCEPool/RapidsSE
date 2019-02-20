@@ -24,7 +24,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* optionall wait till all kid exports are completed                          */
+/* optional wait till all kid exports are completed                           */
 /*----------------------------------------------------------------------------*/
 : E.waitAll_KE ( pJob_E -- )
 
@@ -32,15 +32,16 @@
 
   task::this task.grabLock
 
-  pJob_E job_export.passed@ if
+  pJob_E job_export.auxAckDecided@ if
     "AuxAck decision point PASSED" .
     task::this task.dropLock
   else
     "AuxAck decision point NOT-PASSED" .
-    true pJob_E job_export.passed!
+    true pJob_E job_export.auxAckDecided!
 
     // set ack to 1 and wait
-    //
+    //1 task::acks!
+    //task::wait
     task::this task.dropLock
   then
 

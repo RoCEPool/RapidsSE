@@ -554,12 +554,12 @@
   static void vJob_CreateIndexIsUniqueFetch(Tasks::MP_Task mpTask);
 
   // job Export
+  static void vJob_ExportAuxAckDecidedFetch(Tasks::MP_Task mpTask);
+  static void vJob_ExportAuxAckDecidedStore(Tasks::MP_Task mpTask);
   static void vJob_ExportAuxRemainingFetch(Tasks::MP_Task mpTask);
   static void vJob_ExportBegin(Tasks::MP_Task mpTask);
   static void vJob_ExportDecAuxAck(Tasks::MP_Task mpTask);
   static void vJob_ExportEnd(Tasks::MP_Task mpTask);
-  static void vJob_ExportPassedFetch(Tasks::MP_Task mpTask);
-  static void vJob_ExportPassedStore(Tasks::MP_Task mpTask);
   static void vJob_ExportTableStore(Tasks::MP_Task mpTask);
 
   // job FetchRows

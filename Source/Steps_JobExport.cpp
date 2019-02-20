@@ -11,13 +11,53 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobExport(void)
 {
+  vAddStep("Job_export.auxAckDecided@"_Stz, &Step::vJob_ExportAuxAckDecidedFetch);
+  vAddStep("Job_export.auxAckDecided!"_Stz, &Step::vJob_ExportAuxAckDecidedStore);
   vAddStep("Job_export.auxRemaining@"_Stz,  &Step::vJob_ExportAuxRemainingFetch);
   vAddStep("job_export.begin"_Stz,          &Step::vJob_ExportBegin);
   vAddStep("job_export.decAuxAck"_Stz,      &Step::vJob_ExportDecAuxAck);
   vAddStep("job_export.end"_Stz,            &Step::vJob_ExportEnd);
-  vAddStep("Job_export.passed@"_Stz,        &Step::vJob_ExportPassedFetch);
-  vAddStep("Job_export.passed!"_Stz,        &Step::vJob_ExportPassedStore);
   vAddStep("Job_export.table!"_Stz,         &Step::vJob_ExportTableStore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_export.auxAckDecided@ -- fetch if aux ack decided                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_ExportAuxAckDecidedFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_ExportAuxAckDecidedFetch"_Stz);
+  
+  Object* pPtrJobExport;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJobExport) )
+    THROW_INVALID_DSTACK("Job_export.auxAckDecided@"_Stz);
+  Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
+  
+  bool bPassed = pJob_Export->m_oAuxAck.bPassed();
+  
+  mpTask->m_pDataStack->vPushI8(bPassed);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_export.auxAckDecided! -- store if aux ack decided                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_ExportAuxAckDecidedStore(MP_Task mpTask)
+{
+  ENTRY("vJob_ExportAuxAckDecidedStore"_Stz);
+  
+  Object* pPtrJobExport;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJobExport) )
+    THROW_INVALID_DSTACK("Job_export.auxAckDecided!"_Stz);
+  Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
+  
+  i8 iPassed;
+  if ( ! mpTask->m_pDataStack->bPop(iPassed) )
+    THROW_INVALID_DSTACK("Job_export.passed!"_Stz);
+  
+  pJob_Export->m_oAuxAck.vPassed(iPassed);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,46 +131,6 @@ void Step::vJob_ExportEnd(MP_Task mpTask)
   
   pJob_Export->vEnd();
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Job_export.passed@ -- fetch if past decision point                         */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_ExportPassedFetch(MP_Task mpTask)
-{
-  ENTRY("vJob_ExportPassedFetch"_Stz);
-  
-  Object* pPtrJobExport;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJobExport) )
-    THROW_INVALID_DSTACK("Job_export.passed@"_Stz);
-  Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
-  
-  bool bPassed = pJob_Export->m_oAuxAck.bPassed();
-  
-  mpTask->m_pDataStack->vPushI8(bPassed);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Job_export.passed! -- store if past decision point                         */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_ExportPassedStore(MP_Task mpTask)
-{
-  ENTRY("vJob_ExportPassedStore"_Stz);
-  
-  Object* pPtrJobExport;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJobExport) )
-    THROW_INVALID_DSTACK("Job_export.passed!"_Stz);
-  Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
-
-  i8 iPassed;
-  if ( ! mpTask->m_pDataStack->bPop(iPassed) )
-    THROW_INVALID_DSTACK("Job_export.passed!"_Stz);
-
-  pJob_Export->m_oAuxAck.vPassed(iPassed);
-  
   EXIT();
 }
 

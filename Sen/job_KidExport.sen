@@ -94,13 +94,13 @@
 
     pJob_[E] job.originatingTask@ task.grabLock
 
-    pJob_[E] job_export.passed@ if
-      "KE` will NOT auxack the export job" .
-    else
+    pJob_[E] job_export.auxAckDecided@ if
       "KE` will auxack the export job" .
       // pJob_[E] kidExport.auxAckExport
-      true pJob_[E] job_export.passed!
       true to bAuxAck
+    else
+      "KE` will NOT auxack the export job" .
+      true pJob_[E] job_export.auxAckDecided!
     then
 
     pJob_[E] job.originatingTask@ task.dropLock
@@ -109,7 +109,6 @@
 
   bAuxAck if
    "KE` auxacks the export job here" .
-
   then
 
 
