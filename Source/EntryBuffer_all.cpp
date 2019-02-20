@@ -430,22 +430,6 @@ Item* EntryBuffer::aInsertKeyTree(KeyWrk& xKeyWrk,
   
   EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
   
-#ifdef USE_EB_WATCH
-  static i8 nInserts = 0;
-  nInserts++;
-  
-  if (2947 == nInserts)
-    mbWatch = true;
-  
-  if (mbWatch) {
-    IdxColVec* pIdxColVec = pRootKeyBuffer->pIndex()->pIdxColVec();
-    vTrace("\n[ ] pInsertKeyTree: "_Stz);
-    xKeyWrk.vShow(pIdxColVec);
-    pRootKeyBuffer->vShowTree();
-    int iDebug = 1;
-  }
-#endif
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set a random number offsets
   
@@ -471,15 +455,6 @@ Item* EntryBuffer::aInsertKeyTree(KeyWrk& xKeyWrk,
   pPositionedBuffer->aInsertKeyUpwards(xKeyWrk,ppRootKeyBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef USE_EB_WATCH
-  if (mbWatch) {
-    IdxColVec* pIdxColVec = pRootKeyBuffer->pIndex()->pIdxColVec();
-    vTrace("\n[ ] pInsertKeyTree: "_Stz);
-    xKeyWrk.vShow(pIdxColVec);
-    pRootKeyBuffer->vShowTree();
-    int iDebug = 1;
-  }
-#endif
   
   return aInsertedKeyEntry;
 }
@@ -1397,20 +1372,7 @@ void EntryBuffer::vDeleteUpwards(Item* aDeleteKey,
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef USE_EB_WATCH
-  if (mbWatch) {
-    EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
-    IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-    vTrace("\n[%lld] vDeleteUpwards: "_Stz,m_iBufferNo);
-    aDeleteKey->vShow(pIdxColVec);
-    vTrace("\n"_Stz);
-    pRootKeyBuffer->vShowTree();
-    int iDebug = 1;
-  }
-#endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   Item* aPriorEntry = pPositionPriorEntry(aDeleteKey);
   if (!aPriorEntry)
     return;
@@ -1610,21 +1572,6 @@ void EntryBuffer::vHandleLeftInsert(Item* aInsertedKeyEntry,
   
   if (! m_pHigherBuffer)
     return;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef USE_EB_WATCH
-  if (mbWatch) {
-    EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
-    IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-    vTrace("\n[%lld] vHandleLeftInsert: Inserted "_Stz,m_iBufferNo);
-    pInsertedKeyEntry->aKey()->vShow(pIdxColVec);
-    vTrace(" Orginial "_Stz);
-    pOriginalFirstEntry->aKey()->vShow(pIdxColVec);
-    vTrace("\n"_Stz);
-    pRootKeyBuffer->vShowTree();
-    int iDebug = 1;
-  }
-#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1849,18 +1796,6 @@ void EntryBuffer::vInsertKeySkip(Item* aKeyEntry)
  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
  
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- #ifdef USE_EB_WATCH
- if (mbWatch) {
- EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
- IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
- vTrace("\n[%lld] pInsertKeyBuffer: "_Stz,m_iBufferNo);
- xKeyWrk.vShow(pIdxColVec);
- pRootKeyBuffer->vShowTree();
- int iDebug = 1;
- }
- #endif
- 
- // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // record orginal first entry incase we insert a new first entry
  
  Item* aOriginalFirstEntry = aFirstEntry();
@@ -1894,16 +1829,6 @@ Item* EntryBuffer::aInsertKeyBuffer(KeyWrk& xKeyWrk,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef USE_EB_WATCH
-  if (mbWatch) {
-    EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
-    IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-    vTrace("\n[%lld] pInsertKeyBuffer: "_Stz,m_iBufferNo);
-    xKeyWrk.vShow(pIdxColVec);
-    pRootKeyBuffer->vShowTree();
-    int iDebug = 1;
-  }
-#endif
   
   Item* aInsertedKeyEntry;
   
@@ -1939,18 +1864,6 @@ Item* EntryBuffer::aInsertKeyUpwards(KeyWrk& xKeyWrk,
                                       EntryBuffer** ppRootKeyBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef USE_EB_WATCH
-  if (mbWatch) {
-    EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
-    IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-    vTrace("\n[%lld] pInsertKeyUpwards: "_Stz,m_iBufferNo);
-    xKeyWrk.vShow(pIdxColVec);
-    pRootKeyBuffer->vShowTree();
-    int iDebug = 1;
-  }
-#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
