@@ -2241,9 +2241,6 @@ Item* EntryBuffer::pPositionPriorEntry(Item* aFindKey)
   if (nItems() == 0)
     return aSkipRoots();
   
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  i8 nKeyCols = pIdxColVec->nItems();
-  
   Item* aScanEntry_sl = aSkipRoots();
   
   bool bKeyIsGreaterEqual;
@@ -2254,22 +2251,6 @@ Item* EntryBuffer::pPositionPriorEntry(Item* aFindKey)
     
     Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
-      
-      //KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
-      
-      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      
-//#ifdef USE_EB_SINGLE_COLIDX
-//      if (m_pIndex->bSingleColumn()) {
-//        bKeyIsGreaterEqual = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
-//        //RASSERT(bKeyIsGreaterEqual == aNextKey->bGreaterEqual(aFindKey,pIdxColVec));
-//      }
-//      else
-//        bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
-//#else
-//      bKeyIsGreaterEqual = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
-//#endif
       
       bKeyIsGreaterEqual = KeyData::bGreaterEqual(aNextEntry_sl, aFindKey);
       
@@ -2295,7 +2276,7 @@ Item* EntryBuffer::pPositionPriorEntry(KeyWrk& xFindKey)
   RASSERT( ! m_aLazyChain );
 #endif
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (nItems() == 0)
     return aSkipRoots();
   
