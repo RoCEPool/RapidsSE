@@ -5,24 +5,6 @@
 
 namespace Data
 {
-  enum eJC // JuxtaPosition
-  {
-    /*  0 */ JC_NONE=0,
-    /*  1 */ JC_BEFORE,
-    /*  2 */ JC_SAME,
-    /*  3 */ JC_AFTER,
-    /*  4 */ JC_ENUMS
-  };
-  
-  static Stz* aJC[]
-  {
-    /*  0 */ "NONE"_Stz,
-    /*  1 */ "BEFORE"_Stz,
-    /*  2 */ "SAME"_Stz,
-    /*  3 */ "AFTER"_Stz,
-    /*  4 */ "ENUMS"_Stz,
-  };
-  
   enum eKC // KeyCompare
   {
     /*  0 */ KC_NONE=0,
@@ -76,25 +58,6 @@ namespace Data
     static bool bGreaterEqual(Item* aKeyItem1, Item* aKeyItem2);
     static bool bLessThan(KeyWrk& xKeyItem1, Item* aKeyItem2);
     static bool bNotEqual(Item* aKeyItem1, Item* aKeyItem2);
-    
-    //bool bLessThan(KeyData* aKey, IdxColVec* pIdxColVec);
-    //bool bLessEqual(KeyData* aKey, IdxColVec* pIdxColVec);
-    //bool bEqualTo(KeyData* aKey, IdxColVec* pIdxColVec);
-    //bool bNotEqual(KeyData* aKey, IdxColVec* pIdxColVec);
-    //bool bGreaterEqual(KeyData* aKey, IdxColVec* pIdxColVec);
-    //bool bGreaterEqualSingle(KeyData* aKey, Index* pIndex);
-    //bool bGreaterThan(KeyData* aKey, IdxColVec* pIdxColVec);
-    //bool bGreaterThanSingle(KeyData* aKey, Index* pIndex);
-
-//    bool bJuxtaCompare(eJC eJuxtaCompare, KeyData* aKey,
-//                       IdxColVec* pIdxColVec, i8 nSearchKeyCols,
-//                       bool& bIsEqual, eRO eRelnOp=RO_NONE);
-//    bool bJuxtaBefore(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
-//                      bool& bIsEqual, eRO eRelnOp=RO_NONE);
-//    bool bJuxtaSame(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
-//                    bool& bIsEqual);
-//    bool bJuxtaAfter(KeyData* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
-//                     bool& bIsEqual, eRO eRelnOp=RO_NONE);
   
     void vSprintSortKey(s48K& sBuff, IdxColVec* pIdxColVec);
   
