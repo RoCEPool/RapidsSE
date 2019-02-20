@@ -546,7 +546,7 @@ Item* EntryBuffer::aNextEntry(Item* aCurrent, i8 iLevel)
 /* position at an index buffer at given height starting from this buffer      */
 /*----------------------------------------------------------------------------*/
 
-EntryBuffer* EntryBuffer::pPositionHeight(KeyWrk& xGivenKey, i8 nKeyCols, i8 iHeight)
+EntryBuffer* EntryBuffer::pPositionHeight(KeyWrk& xGivenKey, i8 iHeight)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   

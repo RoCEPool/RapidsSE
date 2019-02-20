@@ -105,7 +105,7 @@ namespace Data
   
     Item*       aPositionQuery(KeyWrk& xGivenKey);
     Item*       aPositionQuery(KeyWrk& xGivenKey, eRO eRelOp);
-    EntryBuffer* pPositionHeight(KeyWrk& xGivenKey, i8 nKeyCols, i8 iHeight);
+    EntryBuffer* pPositionHeight(KeyWrk& xGivenKey, i8 iHeight);
     
     void        vReset(void);
     void        vRestore(void);
