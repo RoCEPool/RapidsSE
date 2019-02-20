@@ -1,3 +1,4 @@
+sethRel.sh -f tests/Queries/testList
 sethRel.sh -f tests/Datums/testList
 sethRel.sh -f tests/Examples/testList
 sethRel.sh -f tests/Misc/testList

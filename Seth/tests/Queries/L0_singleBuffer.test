@@ -140,19 +140,19 @@ rows: 3
 fetch Q1 "jA 2 >= jA 1 < and" ;
 rows: 0
 
-//drop table Q1;
-//success
+drop table Q1;
+success
 
-//indexEntries 0;
-//mute;
+indexEntries 0;
+mute;
 
 CLEANUP {
 
-  //drop table Q1;
-  //mute
+  drop table Q1;
+  mute
 
-  //indexEntries 0;
-  //mute;
+  indexEntries 0;
+  mute;
 
   bye;
   mute

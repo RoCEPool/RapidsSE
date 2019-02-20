@@ -1,3 +1,4 @@
+seth.sh -f tests/Queries/testList
 seth.sh -f tests/Datums/testList
 seth.sh -f tests/Examples/testList
 seth.sh -f tests/Misc/testList
