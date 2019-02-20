@@ -83,7 +83,10 @@ namespace Data
   public:
     void vAssertEntryBuffer(void);
     bool bValidEntryBuffer(void);
-  
+    
+    //KEY_CMP:: ONE OF THESE SHOULD GO
+    Item*       pPositionPriorEntry(KeyWrk& xFindKey);
+    Item*       pPositionPriorEntry(Item* aFindKey);
  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
@@ -160,10 +163,6 @@ namespace Data
     //EntryBuffer* pPositionPriorBuffer(Item* aFindKey);
     
     EntryBuffer* pPositionPriorBuffer(KeyWrk& xFindKey);
-    
-    //KEY_CMP:: ONE OF THESE SHOULD GO
-    Item*       pPositionPriorEntry(KeyWrk& xFindKey);
-    Item*       pPositionPriorEntry(Item* aFindKey);
     
     //KEY_CMP::TO GO
 //    void         vPositionPriorVecEntry(KeyData* aFindKey, Item** aaPriorVec,
