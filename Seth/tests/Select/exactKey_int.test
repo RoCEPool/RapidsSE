@@ -2,6 +2,9 @@
 /* range query tests                                                          */
 /*----------------------------------------------------------------------------*/
 
+//IndexEntries 5;
+//success
+
 // (1) create table jCdt
 create table jCdt (
   jA  INTEGER,
