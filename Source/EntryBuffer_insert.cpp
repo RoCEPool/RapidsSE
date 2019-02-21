@@ -653,8 +653,11 @@ Item* EntryBuffer::aInsertKeyTree(KeyWrk& xKeyWrk,
   //KeyData* aInsKey = xKeyWrk.aKey();
   //i8 iInsKeyLen = xKeyWrk.nKeySize();
   
+  //EntryBuffer* pPositionedBuffer =
+  //pRootKeyBuffer->pPositionPriorBuffer(xKeyWrk);
+  
   EntryBuffer* pPositionedBuffer =
-  pRootKeyBuffer->pPositionPriorBuffer(xKeyWrk);
+    pRootKeyBuffer->pPositionH0Buffer(xKeyWrk);
   
   ASSERT(0 == pPositionedBuffer->iBufferHeight());
   //pPositionedBuffer->vShow();
