@@ -35,7 +35,7 @@ EntryBuffer* EntryBuffer::pPositionHeight(KeyData* aGivenKey, i8 nKeyCols,
       break;
     
     // get the entry
-    aItem = pEntryBuffer->aPositionQuery(aGivenKey, nKeyCols, eJuxtaCompare);
+    aItem = pEntryBuffer->aPositionQuery(aGivenKey, nKeyCols);
     ASSERT(aItem);
     
     // get the index buffer of the entry
@@ -62,7 +62,7 @@ Item* EntryBuffer::aPositionQuery(KeyData* aGivenKey, eRO eRelnOp)
 #endif
   
   bool bIsEqual;
-  Item* aIndexEntry = aPositionQuery(aGivenKey, 1, JC_AFTER);
+  Item* aIndexEntry = aPositionQuery(aGivenKey, 1);
   
   bool bAfter;
   if (aIndexEntry) {
@@ -329,7 +329,7 @@ void EntryBuffer::vPositionPriorVecBuffer(KeyData* aFindKey, Item* aPriorVec[],
 /*----------------------------------------------------------------------------*/
 /* position at given key                                                      */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aPositionQuery(KeyData* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare)
+Item* EntryBuffer::aPositionQuery(KeyData* aGivenKey,i8 nKeyCols)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -347,7 +347,7 @@ Item* EntryBuffer::aPositionQuery(KeyData* aGivenKey,i8 nKeyCols, eJC eJuxtaComp
    *   JC_AFTER:  scan for entry which the given key would be inserted after
    */
   
-  ASSERT(JC_SAME == eJuxtaCompare || JC_AFTER == eJuxtaCompare);
+  //ASSERT(JC_SAME == eJuxtaCompare || JC_AFTER == eJuxtaCompare);
   
   bool bIsJuxta;
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
