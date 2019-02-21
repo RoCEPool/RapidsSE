@@ -22,14 +22,28 @@ EntryBuffer* EntryBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
   //  vBuildSkipList();
 #endif
   
+  /*
+   
+     return the leaf buffer which has the key closest before given key
+   
+     9?
+   
+     [1,9]
+     [1,3,6]              [9,12]
+     [0,1,2][3,4,5][6,7,9][9,10,11][12,13,14]
+                      ^
+   
+   */
+  
+  
   EntryBuffer* pEntryBuffer = this;
   
   i8 iBufferHeight;
   Item* aItem;
   
   while (true) {
-    iBufferHeight = pEntryBuffer->iBufferHeight();
     
+    iBufferHeight = pEntryBuffer->iBufferHeight();
     if (iBufferHeight == 0)
       break;
     
@@ -39,6 +53,7 @@ EntryBuffer* EntryBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
     
     aItem = pEntryBuffer->pPositionPriorEntry(xGivenKey);
     ASSERT(aItem);
+    
     aItem = pEntryBuffer->pMoveToLessEqualEntry(aItem, xGivenKey, &pEntryBuffer);
     ASSERT(aItem);
     
@@ -46,8 +61,6 @@ EntryBuffer* EntryBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
     pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
     ASSERT(pEntryBuffer);
     ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
-    
-    
   }
   
   return pEntryBuffer;
@@ -224,6 +237,23 @@ void EntryBuffer::vPositionPriorVecBuffer(Item* aFindKey, Item* aPriorVec[],
   RASSERT( ! m_aLazyChain );
 #endif
   
+  /*
+
+   nb. duplicates are fully qualified by their ref'd buffer
+   
+   
+   when this function is called (findKey,toBuffer) is about to be inserted
+   into this buffer
+   
+   the (findKey,toBuffer) doesnt yet exist in this buffer
+   
+   
+   x2?  [a2 y2]           ->  [a2 x2 y2]
+        [2]a [2]x [2]y        [2]a [2]x [2]y
+   
+   */
+  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
