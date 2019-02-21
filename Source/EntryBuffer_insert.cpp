@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntryBuffer_key.cpp -- key related functions for Item Buffer              */
+/* EntryBuffer_key.cpp -- insert related functions for Entry Buffer           */
 /*============================================================================*/
 
 #include "Data.h"
