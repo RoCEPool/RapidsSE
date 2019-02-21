@@ -935,23 +935,33 @@ void Step::vIndexRange(MP_Task mpTask)
   // did we get an entry buffer ?
   if (aLowerEntryBuffer) {
     // position in the index buffer at the lower key
-    aLowerEntry = aLowerEntryBuffer->aPositionQuery(xKeyWrkLower, eLowerRelnOp);
+    //aLowerEntry = aLowerEntryBuffer->aPositionQuery(xKeyWrkLower, eLowerRelnOp);
+    aLowerEntry = aLowerEntryBuffer->pPositionPriorEntry(xKeyWrkLower);
+    
+    if (eLowerRelnOp == RO_GREATER_THAN) {
+      aLowerEntry = aLowerEntryBuffer->pMoveToGreaterThanEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
+    }
+    else {
+      RASSERT (eLowerRelnOp == RO_GREATER_EQUAL)
+      aLowerEntry = aLowerEntryBuffer->pMoveToGreaterEqualEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
+    }
+    
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // loop till we get an entry
-  while ( ! aLowerEntry) {
-    if (aLowerEntryBuffer && aLowerEntryBuffer->pNextBuffer()) {
-      
-      // move to the next buffer
-      aLowerEntryBuffer = aLowerEntryBuffer->pNextBuffer();
-      
-      // position in the index buffer at the lower key
-      aLowerEntry = aLowerEntryBuffer->aPositionQuery(xKeyWrkLower, eLowerRelnOp);
-    }
-    else
-      break;
-  }
+//  while ( ! aLowerEntry) {
+//    if (aLowerEntryBuffer && aLowerEntryBuffer->pNextBuffer()) {
+//
+//      // move to the next buffer
+//      aLowerEntryBuffer = aLowerEntryBuffer->pNextBuffer();
+//
+//      // position in the index buffer at the lower key
+//      aLowerEntry = aLowerEntryBuffer->aPositionQuery(xKeyWrkLower, eLowerRelnOp);
+//    }
+//    else
+//      break;
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we find a lower entry ?
@@ -969,9 +979,15 @@ void Step::vIndexRange(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entry buffer ?
   if (aUpperEntryBuffer) {
-    aUpperEntry = aUpperEntryBuffer->aPositionQuery(xKeyWrkUpper, eUpperRelnOp);
+    //aUpperEntry = aUpperEntryBuffer->aPositionQuery(xKeyWrkUpper, eUpperRelnOp);
+    aUpperEntry = aUpperEntryBuffer->pPositionPriorEntry(xKeyWrkUpper);
+    aUpperEntry = aUpperEntryBuffer->pMoveToNextEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
+    
+    if (eUpperRelnOp == RO_LESS_EQUAL) {
+      aUpperEntry = aUpperEntryBuffer->pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
+    }
   }
-  
+ /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // loop till we get an upper entry
   while ( ! aUpperEntry) {
@@ -1023,7 +1039,7 @@ void Step::vIndexRange(MP_Task mpTask)
   }
   
   //aUpperEntry->vShow(0,pIndex,true);
-
+*/
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru the buffers till no more entries starting from
   while (aLowerEntry) {
