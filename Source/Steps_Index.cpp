@@ -983,7 +983,7 @@ void Step::vIndexRange(MP_Task mpTask)
     aUpperEntry = aUpperEntryBuffer->pPositionPriorEntry(xKeyWrkUpper);
     aUpperEntry = aUpperEntryBuffer->pMoveToNextEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
     
-    if (eUpperRelnOp == RO_LESS_EQUAL) {
+    if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
       aUpperEntry = aUpperEntryBuffer->pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
     }
   }
@@ -1501,7 +1501,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
     aUpperEntry = aUpperEntryBuffer->pPositionPriorEntry(xKeyWrkUpper);
     aUpperEntry = aUpperEntryBuffer->pMoveToNextEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
     
-    if (eUpperRelnOp == RO_LESS_EQUAL) {
+    if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
       aUpperEntry = aUpperEntryBuffer->pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
     }
   }
