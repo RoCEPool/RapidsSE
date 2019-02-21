@@ -26,7 +26,6 @@ EntryBuffer* EntryBuffer::pPositionHeight(KeyWrk& xGivenKey, i8 iHeight)
   
   i8 iBufferHeight;
   Item* aItem;
-  Item* aItem1;
   
   while (true) {
     iBufferHeight = pEntryBuffer->iBufferHeight();
@@ -35,23 +34,13 @@ EntryBuffer* EntryBuffer::pPositionHeight(KeyWrk& xGivenKey, i8 iHeight)
       break;
     
     // get the entry
-    aItem1 = pEntryBuffer->aPositionQuery(xGivenKey);
-    ASSERT(aItem1);
+    //aItem1 = pEntryBuffer->aPositionQuery(xGivenKey);
+    //ASSERT(aItem1);
     
     aItem = pEntryBuffer->pPositionPriorEntry(xGivenKey);
     ASSERT(aItem);
     aItem = pEntryBuffer->pMoveToLessEqualEntry(aItem, xGivenKey, &pEntryBuffer);
     ASSERT(aItem);
-//    if (aItem != aItem1) {
-//      int debug = 1;
-//      aItem1 = pEntryBuffer->aPositionQuery(xGivenKey);
-//      ASSERT(aItem1);
-//
-//      aItem = pEntryBuffer->pPositionPriorEntry(xGivenKey);
-//      ASSERT(aItem);
-//      aItem = pEntryBuffer->pMoveToLessEqualEntry(aItem, xGivenKey, &pEntryBuffer);
-//      ASSERT(aItem);
-//    }
     
     // get the index buffer of the entry
     pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
@@ -338,108 +327,6 @@ void EntryBuffer::vPositionPriorVecBuffer(Item* aFindKey, Item* aPriorVec[],
     aPriorVec[i_ScanLevel] = aScanEntry_sl;
   }
 }
-
-
-/*----------------------------------------------------------------------------*/
-/* position at key as per relational operator                                 */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey, eRO eRelnOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-#ifdef USE_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
-  
-  //if (m_aLazyChain)
-  //  vBuildSkipList();
-#endif
-  
-  Item* aIndexEntry = aPositionQuery(xGivenKey);
-  
-  eKC eCompare;
-  if (aIndexEntry) {
-    
-    if (eRelnOp == RO_GREATER_THAN) {
-      
-      do {
-        
-        eCompare = KeyData::eCompare(aIndexEntry, xGivenKey);
-        
-        if (eCompare != KC_AFTER) {
-          aIndexEntry = aNextEntry(aIndexEntry, 0);
-        }
-      } while (aIndexEntry && eCompare != KC_AFTER);
-      
-    }
-    else {
-      do {
-        eCompare = KeyData::eCompare(aIndexEntry, xGivenKey);
-        
-        if (eCompare == KC_BEFORE) {
-          aIndexEntry = aNextEntry(aIndexEntry, 0);
-        }
-      } while (aIndexEntry && eCompare == KC_BEFORE);
-      
-    }
-  }
-  
-  return aIndexEntry;
-}
-
-/*----------------------------------------------------------------------------*/
-/* position at given key                                                      */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aPositionQuery(KeyWrk& xGivenKey)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-#ifdef USE_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
-  
-  //if (m_aLazyChain)
-  //  vBuildSkipList();
-#endif
-  
-  Item* aScanEntry_sl = aSkipRoots();
-  
-  for (i8 i_ScanLevel = 2; i_ScanLevel >= 0; i_ScanLevel--) {
-    
-    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
-    while (aNextEntry_sl) {
-      
-      //KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
-      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      //aGivenKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      
-      eKC eCompare = KeyData::eCompare(xGivenKey, aNextEntry_sl);
-      
-      // have we found the key during a query?
-      if (eCompare == KC_SAME) {
-        if (0 == i_ScanLevel)
-          return aNextEntry_sl;
-        else
-          break;
-      }
-      
-      // if given key is not same/after next key then break to outer loop
-      if (eCompare != KC_AFTER)
-        break;
-      
-      aScanEntry_sl = aNextEntry_sl;
-      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
-    }
-    //pPriorVec[*i_ScanLevel] = pScanEntry_sl;
-  }
-  
-  if (aScanEntry_sl == aSkipRoots()) {
-    aScanEntry_sl = aNextEntry(aScanEntry_sl, 0);
-    // we currently think it should be null
-    // RASSERT( ! pScanEntry_sl );
-  }
-  
-  return aScanEntry_sl;
-}
-
 
 
 /*============================================================================*/

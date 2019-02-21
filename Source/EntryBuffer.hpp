@@ -116,8 +116,6 @@ namespace Data
     i8          iLengthSubList(void);
     Item*       aNextEntry(Item* aItem, i8 i_Offset);
   
-    Item*       aPositionQuery(KeyWrk& xGivenKey);
-    Item*       aPositionQuery(KeyWrk& xGivenKey, eRO eRelOp);
     EntryBuffer* pPositionHeight(KeyWrk& xGivenKey, i8 iHeight);
     
     void        vReset(void);
