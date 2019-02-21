@@ -107,8 +107,8 @@ namespace Data
     Item*       aNextEntry(Item* aItem, i8 i_Offset);
   
     Item*       aPositionQuery(KeyData* aGivenKey, eRO eRelOp);
-    Item*       aPositionQuery(KeyData* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
-    EntryBuffer* pPositionHeight(KeyData* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, i8 iHeight);
+    Item*       aPositionQuery(KeyData* aGivenKey, i8 nKeyCols);
+    EntryBuffer* pPositionHeight(KeyData* aGivenKey, i8 nKeyCols, i8 iHeight);
     
     void         vReset(void);
     void         vRestore(void);
