@@ -199,6 +199,52 @@ void EntryBuffer::vHeadEntryRestore(void)
  }
  */
 
+///*----------------------------------------------------------------------------*/
+///* position at the L0 buffer into which key should be inserted                */
+///*----------------------------------------------------------------------------*/
+//EntryBuffer* EntryBuffer::pPositionPriorBuffer(Item* aFindKey)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+//
+//  if ( ! nItems() ) {
+//    ASSERT( 0 == iLevelNo());
+//    return this;
+//  }
+//
+//  EntryBuffer* pEntryBuffer = this;
+//  while (true) {
+//
+//    // have we arrived at L0 ?
+//    i8 iBufferHeight = pEntryBuffer->m_iBufferHeight();
+//    if (iBufferHeight == 0) {
+//      break;
+//    }
+//    else {
+//#ifdef USE_EB_LAZY_CHAIN
+//      RASSERT( ! m_aLazyChain );
+//#endif
+//    }
+//
+//    // get the entry before the given insert key
+//    Item* aEntryPrior = pEntryBuffer->pPositionPriorEntry(aFindKey);
+//    ASSERT(aEntryPrior);
+//    if (aEntryPrior == pEntryBuffer->aSkipRoots())
+//      aEntryPrior = pEntryBuffer->aNextEntry(aEntryPrior,0);
+//    ASSERT(aEntryPrior);
+//
+//    // get the index buffer of the entry
+//    //pEntryBuffer->vShow();
+//    ASSERT(pEntryBuffer != EntryBuffer::pRefdEntryBuffer(aEntryPrior));
+//    pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aEntryPrior);
+//    ASSERT(pEntryBuffer);
+//    pEntryBuffer->vAssertEntryBuffer();
+//  }
+//
+//  return pEntryBuffer;
+//}
+
+
+
 /*----------------------------------------------------------------------------*/
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
