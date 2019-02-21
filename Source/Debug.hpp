@@ -7,7 +7,6 @@ namespace Debugging
 {
   static const i8 C_STACK_BACKTRACE = 10;
 
-  void vAssertCalled(void);
   void vAssertDebug(void);
   void vAssertRelease(void);
   void vAssertTrap(void);
@@ -43,15 +42,6 @@ namespace Debugging
   #else
     #define ASSERT(condition)
   #endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  #define BEEN_CALLED(_condition) \
-  { \
-    if ( !(_condition) ) { \
-      printf("BEEN_CALLED in %s at %d\n",__FILE__,__LINE__); \
-    Debugging::vAssertCalled(); \
-    } \
-  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   #define RASSERT(condition) \

@@ -939,12 +939,13 @@ EntryBuffer* IndexTree::pPopSubList(EntryBuffer** ppSubList)
 /*----------------------------------------------------------------------------*/
 /* position the IndexTree at a particular height of index buffer              */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* IndexTree::pPositionHeight(KeyWrk& xKeyWrk, i8 nKeyCols, i8 iHeight)
+EntryBuffer* IndexTree::pPositionHeight(KeyWrk& xKeyWrk, i8 nKeyCols,
+                                       eJC eJuxtaCompare, i8 iHeight)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   if (m_pRootBuffer)
-    return m_pRootBuffer->pPositionHeight(xKeyWrk.aKey(),nKeyCols,iHeight);
+    return m_pRootBuffer->pPositionHeight(xKeyWrk.aKey(),nKeyCols,eJuxtaCompare,iHeight);
   else
     return nullptr;
 }
