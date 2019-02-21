@@ -84,13 +84,16 @@ namespace Data
     bool bValidEntryBuffer(void);
     
     ////////////////////////////////////////////////////////////////////////////
-    // key positioning functions
+    // static move functions
     
-    Item*        pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
-    Item*        pMoveToLessEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
-    Item*        pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
-    Item*        pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
-    Item*        pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
+    static Item* pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
+    static Item* pMoveToLessEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
+    static Item* pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
+    static Item* pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
+    static Item* pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
+    
+    ////////////////////////////////////////////////////////////////////////////
+    // key positioning functions
     
     EntryBuffer* pPositionH0Buffer(KeyWrk& xGivenKey);
     Item*        pPositionPriorEntry(KeyWrk& xFindKey);

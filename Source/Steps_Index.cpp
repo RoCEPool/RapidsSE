@@ -338,7 +338,7 @@ void Step::vIndexExactKey(MP_Task mpTask)
   if (pIndexBuffer) {
     // position in the index buffer at the key
     aItem = pIndexBuffer->pPositionPriorEntry(xKeyWrk);
-    aItem =  pIndexBuffer->pMoveToExactEntry(aItem, xKeyWrk, &pIndexBuffer);
+    aItem = EntryBuffer::pMoveToExactEntry(aItem, xKeyWrk, &pIndexBuffer);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -696,11 +696,11 @@ void Step::vIndexLowerBound(MP_Task mpTask)
     aLowerEntry = aLowerEntryBuffer->pPositionPriorEntry(xKeyWrkLower);
     
     if (eLowerRelnOp == RO_GREATER_THAN) {
-      aLowerEntry = aLowerEntryBuffer->pMoveToGreaterThanEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
+      aLowerEntry = EntryBuffer::pMoveToGreaterThanEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
     }
     else {
       RASSERT (eLowerRelnOp == RO_GREATER_EQUAL)
-      aLowerEntry = aLowerEntryBuffer->pMoveToGreaterEqualEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
+      aLowerEntry = EntryBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
     }
   }
   
@@ -939,11 +939,11 @@ void Step::vIndexRange(MP_Task mpTask)
     aLowerEntry = aLowerEntryBuffer->pPositionPriorEntry(xKeyWrkLower);
     
     if (eLowerRelnOp == RO_GREATER_THAN) {
-      aLowerEntry = aLowerEntryBuffer->pMoveToGreaterThanEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
+      aLowerEntry = EntryBuffer::pMoveToGreaterThanEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
     }
     else {
       RASSERT (eLowerRelnOp == RO_GREATER_EQUAL)
-      aLowerEntry = aLowerEntryBuffer->pMoveToGreaterEqualEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
+      aLowerEntry = EntryBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
     }
     
   }
@@ -981,10 +981,10 @@ void Step::vIndexRange(MP_Task mpTask)
   if (aUpperEntryBuffer) {
     //aUpperEntry = aUpperEntryBuffer->aPositionQuery(xKeyWrkUpper, eUpperRelnOp);
     aUpperEntry = aUpperEntryBuffer->pPositionPriorEntry(xKeyWrkUpper);
-    aUpperEntry = aUpperEntryBuffer->pMoveToNextEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
+    aUpperEntry = EntryBuffer::pMoveToNextEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
     
     if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
-      aUpperEntry = aUpperEntryBuffer->pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
+      aUpperEntry = EntryBuffer::pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
     }
   }
  /*
@@ -1499,10 +1499,10 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   if (aUpperEntryBuffer) {
   
     aUpperEntry = aUpperEntryBuffer->pPositionPriorEntry(xKeyWrkUpper);
-    aUpperEntry = aUpperEntryBuffer->pMoveToNextEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
+    aUpperEntry = EntryBuffer::pMoveToNextEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
     
     if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
-      aUpperEntry = aUpperEntryBuffer->pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
+      aUpperEntry = EntryBuffer::pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
     }
   }
 /*

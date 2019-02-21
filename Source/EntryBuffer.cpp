@@ -714,10 +714,10 @@ FreeItem* EntryBuffer::aMakeFreeEntry(Item* aItem)
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** paEntryBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  EntryBuffer* pEntryBuffer = *paEntryBuffer;
   
-  if (aItem == aSkipRoots())
-    aItem = aNextEntry(aItem,0);
+  if (aItem == pEntryBuffer->aSkipRoots())
+    aItem = pEntryBuffer->aNextEntry(aItem,0);
   
   eKC eCompare = KeyData::eCompare(aItem, xKeyWrk);
   
@@ -729,19 +729,18 @@ Item* EntryBuffer::pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer**
   if (eCompare == KC_AFTER)
     return nullptr;
   
-  aItem = aNextEntry(aItem,0);
+  aItem = pEntryBuffer->aNextEntry(aItem,0);
   
   if ( ! aItem ) {
     
     // move to the next buffer
-    *paEntryBuffer = pNextBuffer();
+    *paEntryBuffer = pEntryBuffer->pNextBuffer();
     
     if (*paEntryBuffer) {
-      return (*paEntryBuffer)->pMoveToExactEntry((*paEntryBuffer)->aSkipRoots(), xKeyWrk, paEntryBuffer);
+      return pMoveToExactEntry((*paEntryBuffer)->aSkipRoots(), xKeyWrk, paEntryBuffer);
     }
     
   }
-  
   
   return aItem;
 }
@@ -751,12 +750,10 @@ Item* EntryBuffer::pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer**
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::pMoveToLessEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** paEntryBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  EntryBuffer* pEntryBuffer = *paEntryBuffer;
   
-  EntryBuffer* pNextBuffer;
-  
-  if (aItem == aSkipRoots())
-    aItem = aNextEntry(aItem,0);
+  if (aItem == pEntryBuffer->aSkipRoots())
+    aItem = pEntryBuffer->aNextEntry(aItem,0);
   
   Item* aItemPrev = aItem;
   
@@ -772,20 +769,8 @@ Item* EntryBuffer::pMoveToLessEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuff
       return aItemPrev;
     
     aItemPrev = aItem;
-    aItem = aNextEntry(aItem,0);
+    aItem = pEntryBuffer->aNextEntry(aItem,0);
     
-    //    if (!aItem) {
-    //
-    //      // move to the next buffer
-    //      pNextBuffer = this->pNextBuffer();
-    //
-    //      if (pNextBuffer) {
-    //        *paEntryBuffer = pNextBuffer;
-    //        return (*paEntryBuffer)->pMoveToLessEqualEntry((*paEntryBuffer)->aSkipRoots(), xKeyWrk, paEntryBuffer);
-    //      }
-    //    }
-    //    else
-    //      break;
     if ( ! aItem )
       return aItemPrev;
   }
@@ -798,10 +783,10 @@ Item* EntryBuffer::pMoveToLessEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuff
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** paEntryBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  EntryBuffer* pEntryBuffer = *paEntryBuffer;
   
-  if (aItem == aSkipRoots())
-    aItem = aNextEntry(aItem,0);
+  if (aItem == pEntryBuffer->aSkipRoots())
+    aItem = pEntryBuffer->aNextEntry(aItem,0);
   
   while (aItem) {
     eKC eCompare = KeyData::eCompare(aItem, xKeyWrk);
@@ -810,12 +795,12 @@ Item* EntryBuffer::pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBu
     if (eCompare == KC_AFTER)
       break;
     
-    aItem = aNextEntry(aItem,0);
+    aItem = pEntryBuffer->aNextEntry(aItem,0);
     
     if ( ! aItem) {
       
       // move to the next buffer
-      *paEntryBuffer = pNextBuffer();
+      *paEntryBuffer = pEntryBuffer->pNextBuffer();
       
       if (*paEntryBuffer) {
         return (*paEntryBuffer)->pMoveToGreaterThanEntry((*paEntryBuffer)->aSkipRoots(), xKeyWrk, paEntryBuffer);
@@ -833,10 +818,10 @@ Item* EntryBuffer::pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBu
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** paEntryBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  EntryBuffer* pEntryBuffer = *paEntryBuffer;
   
-  if (aItem == aSkipRoots())
-    aItem = aNextEntry(aItem,0);
+  if (aItem == pEntryBuffer->aSkipRoots())
+    aItem = pEntryBuffer->aNextEntry(aItem,0);
   
   while (aItem) {
     eKC eCompare = KeyData::eCompare(aItem, xKeyWrk);
@@ -849,15 +834,15 @@ Item* EntryBuffer::pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryB
     if (eCompare == KC_AFTER)
       break;
     
-    aItem = aNextEntry(aItem,0);
+    aItem = pEntryBuffer->aNextEntry(aItem,0);
     
     if (!aItem) {
       
       // move to the next buffer
-      *paEntryBuffer = pNextBuffer();
+      *paEntryBuffer = pEntryBuffer->pNextBuffer();
       
       if (*paEntryBuffer) {
-        return (*paEntryBuffer)->pMoveToGreaterEqualEntry((*paEntryBuffer)->aSkipRoots(), xKeyWrk, paEntryBuffer);
+        return pMoveToGreaterEqualEntry((*paEntryBuffer)->aSkipRoots(), xKeyWrk, paEntryBuffer);
       }
     }
     else
@@ -872,9 +857,9 @@ Item* EntryBuffer::pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryB
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** paEntryBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  EntryBuffer* pEntryBuffer = *paEntryBuffer;
   
-  aItem = aNextEntry(aItem,0);
+  aItem = pEntryBuffer->aNextEntry(aItem,0);
   
   if (aItem)
     return aItem;
@@ -882,10 +867,10 @@ Item* EntryBuffer::pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** 
   while( ! aItem) {
     
     // move to the next buffer
-    *paEntryBuffer = pNextBuffer();
+    *paEntryBuffer = pEntryBuffer->pNextBuffer();
     
     if (*paEntryBuffer) {
-      return (*paEntryBuffer)->pMoveToNextEntry((*paEntryBuffer)->aSkipRoots(), xKeyWrk, paEntryBuffer);
+      return pMoveToNextEntry((*paEntryBuffer)->aSkipRoots(), xKeyWrk, paEntryBuffer);
     }
     else
       break;
