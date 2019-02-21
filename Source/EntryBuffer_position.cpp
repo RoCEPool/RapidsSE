@@ -12,7 +12,7 @@ extern AttachMap* gpAttachMap;
 /* position at an index buffer at given height starting from this buffer      */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pPositionHeight(KeyData* aGivenKey, i8 nKeyCols,
-                                          eJC eJuxtaCompare, i8 iHeight)
+                                          i8 iHeight)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   

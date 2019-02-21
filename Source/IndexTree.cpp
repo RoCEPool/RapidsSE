@@ -945,7 +945,7 @@ EntryBuffer* IndexTree::pPositionHeight(KeyWrk& xKeyWrk, i8 nKeyCols,
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   if (m_pRootBuffer)
-    return m_pRootBuffer->pPositionHeight(xKeyWrk.aKey(),nKeyCols,eJuxtaCompare,iHeight);
+    return m_pRootBuffer->pPositionHeight(xKeyWrk.aKey(),nKeyCols,iHeight);
   else
     return nullptr;
 }
