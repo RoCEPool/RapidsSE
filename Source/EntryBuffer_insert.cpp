@@ -780,11 +780,10 @@ bool EntryBuffer::bKeyBeforeBuffer(KeyWrk& xKeyTest)
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   i8 nKeyCols = pIdxColVec->nItems();
   
-  bool bIsJuxta =
-  aKeyTest->bLessThan(aFirstKey,pIdxColVec);
+  bool bIsBefore = aKeyTest->bLessThan(aFirstKey,pIdxColVec);
   //KeyData::bLessThan(xKeyTest,aFirstEntry);
   
-  return bIsJuxta;
+  return bIsBefore;
 }
 
 /*----------------------------------------------------------------------------*/
