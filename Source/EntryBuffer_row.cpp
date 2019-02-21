@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntryBuffer_row.cpp -- row related functions for Item Buffer              */
+/* EntryBuffer_row.cpp -- row related functions for Entry Buffer              */
 /*============================================================================*/
 
 #include "Data.h"
