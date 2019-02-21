@@ -139,56 +139,91 @@ EntryBuffer* EntryBuffer::pRefdEntryBuffer(Id& xId)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
 /*----------------------------------------------------------------------------*/
-/* drop lock for write                                                        */
+/* allot an entry in this buffer                                              */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDropWrite(void)
+Item* EntryBuffer::aAllotEntry(i8 nBytes_Without_Offsets)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  m_okLock.vDropWrite();
+  Item* aItem = aAllotItem(CN_ENTRY,nBytes_Without_Offsets);
+  if (! aItem)
+    return nullptr;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return aItem;
 }
 
 /*----------------------------------------------------------------------------*/
-/* grab lock for write                                                        */
+/* allot a row entry in this buffer                                           */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vGrabWrite(void)
+Item* EntryBuffer::aAllotRowEntry(RowWrk& xRowWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  m_okLock.vGrabWrite();
+  // rows only ever have one next offset
+  RASSERT(1 == xRowWrk.nLevels());
+  
+  i8 nRowEntrySize = xRowWrk.nRowEntrySize();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if this buffer has enough space and has free item no's
+  
+  if (! bHasSpace(nRowEntrySize))
+    return nullptr;
+  
+  if (! bHasFreeItem()) {
+    vTrace("No free item no's\n"_Stz);
+    return nullptr;
+  }
+  
+  RASSERT(nItems() < C_MAX_ITEMS - 16);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allot an entry and its neo in this entry buffer
+  
+  Item* aNewRowEntry = aAllotEntry(nRowEntrySize - 4);
+  RASSERT(aNewRowEntry);
+  
+  IGNORE_RETURN(aAllotNEO(4));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the item no for this row
+  
+  i8 i_RowItemNo = iGetItemNo();
+  RASSERT(C_NO_MORE_ITEMS != i_RowItemNo);
+  RASSERT(i_RowItemNo >= 0 and i_RowItemNo < C_MAX_ITEMS);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the item id
+  
+  xRowWrk.vItemNo(i_RowItemNo);
+  aNewRowEntry->vId(xRowWrk.xId());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // record the offset for this row entry
+  
+  i4 iNewEntryOffset = iToOffset(aNewRowEntry);
+  RASSERT(i_RowItemNo >= 0 && i_RowItemNo < C_MAX_ITEMS);
+  m_i4aItemOffsets[i_RowItemNo] = iNewEntryOffset;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set neo in head entry for the first time
+  
+  if (aSkipRoots()->iNEO(0) == -1)
+    aSkipRoots()->vNEO(0,iNewEntryOffset);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // a last item should now link to this new item
+  if (m_aLastEntry)
+    m_aLastEntry->vNEO(0,iNewEntryOffset);
+  m_aLastEntry = aNewRowEntry;
+  aNewRowEntry->vNEO(0,-1);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  return aNewRowEntry;
 }
-
-/*----------------------------------------------------------------------------*/
-/* set the index of the index buffer                                          */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vIndex(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_pIndex = pIndex;
-  
-  if (! m_pIndex->bIsHidden())
-    return;
-  
-  vInitFreeChain();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the index of the index buffer                                          */
-/*----------------------------------------------------------------------------*/
-Index* EntryBuffer::pIndex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return m_pIndex;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-//                             buffer functions                               //
-////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* return number of index buffers under this buffer                           */
@@ -225,7 +260,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
   // recursively count the lower level buffers
   if (! m_iBufferHeight)
     return;
-    
+  
   for (Item* aItem = aLeadEntry();
        aItem != nullptr;
        aItem = aNextEntry(aItem, 0)) {
@@ -239,6 +274,50 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
     pNextBuffer->vBufferCount(nBuffers);
     
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop lock for write                                                        */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vDropWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get an entry by number                                                     */
+/*----------------------------------------------------------------------------*/
+Item* EntryBuffer::aGetEntry_Item(i8 i_Item)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+#ifdef USE_EB_LAZY_CHAIN
+  RASSERT( ! m_aLazyChain );
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (i_Item == C_NO_MORE_ITEMS)
+    return nullptr;
+  
+  RASSERT(i_Item >= 0 && i_Item < C_MAX_ITEMS);
+  i4 iOffset = m_i4aItemOffsets[i_Item];
+  
+  Item* aItem = aAdd<Item*>(aItemArea(), iOffset);
+  
+  return aItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock for write                                                        */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vGrabWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_okLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -259,6 +338,78 @@ void EntryBuffer::vHigherBuffer(EntryBuffer* pHigherBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_pHigherBuffer = pHigherBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the index of the index buffer                                          */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_pIndex = pIndex;
+  
+  if (! m_pIndex->bIsHidden())
+    return;
+  
+  vInitFreeChain();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the index of the index buffer                                          */
+/*----------------------------------------------------------------------------*/
+Index* EntryBuffer::pIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return m_pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get last entry                                                             */
+/*----------------------------------------------------------------------------*/
+Item* EntryBuffer::aLastEntry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+#ifdef USE_EB_LAZY_CHAIN
+  RASSERT( ! m_aLazyChain );
+  
+  //if (m_aLazyChain)
+  //  vBuildSkipList();
+#endif
+  
+  Item* aLast = aSkipRoots();
+  
+  for (;;) {
+    Item* aNext = aNextEntry(aLast,0);
+    if (! aNext)
+      break;
+    aLast = aNext;
+  }
+  
+  return aLast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get lead entry (the entry after head entry                                 */
+/*----------------------------------------------------------------------------*/
+Item* EntryBuffer::aLeadEntry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+#ifdef USE_EB_LAZY_CHAIN
+  RASSERT( ! m_aLazyChain );
+  
+  //if (m_aLazyChain)
+  //  vBuildSkipList();
+#endif
+  
+  Item* aFirst = aNextEntry(aSkipRoots(),0);
+  
+  RASSERT(! aFirst || aFirst->bValidItem());
+  
+  return aFirst;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -299,6 +450,62 @@ void EntryBuffer::vPrevBuffer(EntryBuffer* pPrevBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_pPrevBuffer = pPrevBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show entry                                                                 */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vShowEntry(Item* aItem)
+{
+  KeyData* aKey = _aKeyData(aItem->aDataArea());
+  i8 iOffset = iToOffset(aItem);
+  
+  vTrace("%lld: Item: %p Size: %llu Levels: %llu "_Stz,
+         iOffset,
+         aItem,
+         aItem->nSizeItem_WithoutOffsets(),
+         aItem->nLevels()
+         );
+  
+  vTrace("Id: %3lli.%03lli "_Stz,
+         aItem->iBufferNo(),
+         aItem->iItemNo()
+         );
+  
+  //vTrace("Tx: %lld.%03lld "_Stz,
+  //       Tx::iTxNode(m_iTxId),
+  //       Tx::iTxNo(m_iTxId)
+  //       );
+  
+  if (! m_pIndex->bIsHidden())
+    aKey->vShow(m_pIndex->pIdxColVec(), false);
+  
+  if (m_pIndex->bIsHidden()) {
+    RowData* aRowData = _aRowData(aItem->aDataArea());
+    vTrace("RowData: "_Stz);
+    i8 iRowSize = aItem->nSizeItem_WithoutOffsets();
+    if (iRowSize > 0) {
+      aRowData->vShow(m_pIndex->pTable()->pColumnVec(), true);
+    }
+  }
+  
+  
+  vTrace(" offsets:"_Stz);
+  for (i8 i_Level = 0; i_Level < aItem->nLevels(); i_Level++)
+    vTrace(" %d"_Stz,aItem->iNEO(i_Level));
+  
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get root of skip list (was aka head entry                                  */
+/*----------------------------------------------------------------------------*/
+Item* EntryBuffer::aSkipRoots(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  //return m_aHeadEntry;
+  return &m_xSkipRoots;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -349,229 +556,6 @@ void EntryBuffer::vTruncate(void)
   delete this;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-//                             entry functions                                //
-////////////////////////////////////////////////////////////////////////////////
-
-
-/*----------------------------------------------------------------------------*/
-/* get an entry by number                                                     */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aGetEntry_Item(i8 i_Item)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-#ifdef USE_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
-#endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (i_Item == C_NO_MORE_ITEMS)
-    return nullptr;
-  
-  RASSERT(i_Item >= 0 && i_Item < C_MAX_ITEMS);
-  i4 iOffset = m_i4aItemOffsets[i_Item];
-  
-  Item* aItem = aAdd<Item*>(aItemArea(), iOffset);
-  
-  return aItem;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get lead entry (the entry after head entry                                 */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aLeadEntry(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-#ifdef USE_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
-  
-  //if (m_aLazyChain)
-  //  vBuildSkipList();
-#endif
-  
-  Item* aFirst = aNextEntry(aSkipRoots(),0);
-  
-  RASSERT(! aFirst || aFirst->bValidItem());
-  
-  return aFirst;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get last entry                                                             */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aLastEntry(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-#ifdef USE_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
-  
-  //if (m_aLazyChain)
-  //  vBuildSkipList();
-#endif
-  
-  Item* aLast = aSkipRoots();
-  
-  for (;;) {
-    Item* aNext = aNextEntry(aLast,0);
-    if (! aNext)
-      break;
-    aLast = aNext;
-  }
-  
-  return aLast;
-}
-
-/*----------------------------------------------------------------------------*/
-/* show entry                                                                 */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vShowEntry(Item* aItem)
-{
-  KeyData* aKey = _aKeyData(aItem->aDataArea());
-  i8 iOffset = iToOffset(aItem);
-  
-  vTrace("%lld: Item: %p Size: %llu Levels: %llu "_Stz,
-         iOffset,
-         aItem,
-         aItem->nSizeItem_WithoutOffsets(),
-         aItem->nLevels()
-         );
-  
-  vTrace("Id: %3lli.%03lli "_Stz,
-         aItem->iBufferNo(),
-         aItem->iItemNo()
-         );
-  
-  //vTrace("Tx: %lld.%03lld "_Stz,
-  //       Tx::iTxNode(m_iTxId),
-  //       Tx::iTxNo(m_iTxId)
-  //       );
-  
-  if (! m_pIndex->bIsHidden())
-    aKey->vShow(m_pIndex->pIdxColVec(), false);
-  
-  if (m_pIndex->bIsHidden()) {
-    RowData* aRowData = _aRowData(aItem->aDataArea());
-    vTrace("RowData: "_Stz);
-    i8 iRowSize = aItem->nSizeItem_WithoutOffsets();
-    if (iRowSize > 0) {
-      aRowData->vShow(m_pIndex->pTable()->pColumnVec(), true);
-    }
-  }
-  
-  
-  vTrace(" offsets:"_Stz);
-  for (i8 i_Level = 0; i_Level < aItem->nLevels(); i_Level++)
-    vTrace(" %d"_Stz,aItem->iNEO(i_Level));
-  
-  vTrace("\n"_Stz);
-}
-
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* allot an entry in this buffer                                              */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aAllotEntry(i8 nBytes_Without_Offsets)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  Item* aItem = aAllotItem(CN_ENTRY,nBytes_Without_Offsets);
-  if (! aItem)
-    return nullptr;
-    
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return aItem;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot a row entry in this buffer                                           */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aAllotRowEntry(RowWrk& xRowWrk)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // rows only ever have one next offset
-  RASSERT(1 == xRowWrk.nLevels());
-
-  i8 nRowEntrySize = xRowWrk.nRowEntrySize();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if this buffer has enough space and has free item no's
-
-  if (! bHasSpace(nRowEntrySize))
-    return nullptr;
-  
-  if (! bHasFreeItem()) {
-    vTrace("No free item no's\n"_Stz);
-    return nullptr;
-  }
-
-  RASSERT(nItems() < C_MAX_ITEMS - 16);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allot an entry and its neo in this entry buffer
-  
-  Item* aNewRowEntry = aAllotEntry(nRowEntrySize - 4);
-  RASSERT(aNewRowEntry);
-  
-  IGNORE_RETURN(aAllotNEO(4));
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the item no for this row
-  
-  i8 i_RowItemNo = iGetItemNo();
-  RASSERT(C_NO_MORE_ITEMS != i_RowItemNo);
-  RASSERT(i_RowItemNo >= 0 and i_RowItemNo < C_MAX_ITEMS);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the item id
-  
-  xRowWrk.vItemNo(i_RowItemNo);
-  aNewRowEntry->vId(xRowWrk.xId());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // record the offset for this row entry
-  
-  i4 iNewEntryOffset = iToOffset(aNewRowEntry);
-  RASSERT(i_RowItemNo >= 0 && i_RowItemNo < C_MAX_ITEMS);
-  m_i4aItemOffsets[i_RowItemNo] = iNewEntryOffset;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set neo in head entry for the first time
-  
-  if (aSkipRoots()->iNEO(0) == -1)
-    aSkipRoots()->vNEO(0,iNewEntryOffset);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // a last item should now link to this new item
-  if (m_aLastEntry)
-    m_aLastEntry->vNEO(0,iNewEntryOffset);
-  m_aLastEntry = aNewRowEntry;
-  aNewRowEntry->vNEO(0,-1);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  return aNewRowEntry;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get root of skip list (was aka head entry                                  */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aSkipRoots(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  //return m_aHeadEntry;
-  return &m_xSkipRoots;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
