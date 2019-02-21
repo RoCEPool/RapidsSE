@@ -26,6 +26,7 @@ EntryBuffer* EntryBuffer::pPositionHeight(KeyWrk& xGivenKey, i8 iHeight)
   
   i8 iBufferHeight;
   Item* aItem;
+  Item* aItem1;
   
   while (true) {
     iBufferHeight = pEntryBuffer->iBufferHeight();
@@ -34,8 +35,23 @@ EntryBuffer* EntryBuffer::pPositionHeight(KeyWrk& xGivenKey, i8 iHeight)
       break;
     
     // get the entry
-    aItem = pEntryBuffer->aPositionQuery(xGivenKey);
+    aItem1 = pEntryBuffer->aPositionQuery(xGivenKey);
+    ASSERT(aItem1);
+    
+    aItem = pEntryBuffer->pPositionPriorEntry(xGivenKey);
     ASSERT(aItem);
+    aItem = pEntryBuffer->pMoveToLessEqualEntry(aItem, xGivenKey, &pEntryBuffer);
+    ASSERT(aItem);
+//    if (aItem != aItem1) {
+//      int debug = 1;
+//      aItem1 = pEntryBuffer->aPositionQuery(xGivenKey);
+//      ASSERT(aItem1);
+//
+//      aItem = pEntryBuffer->pPositionPriorEntry(xGivenKey);
+//      ASSERT(aItem);
+//      aItem = pEntryBuffer->pMoveToLessEqualEntry(aItem, xGivenKey, &pEntryBuffer);
+//      ASSERT(aItem);
+//    }
     
     // get the index buffer of the entry
     pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);

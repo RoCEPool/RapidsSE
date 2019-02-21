@@ -1766,6 +1766,53 @@ Item* EntryBuffer::pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryB
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
+Item* EntryBuffer::pMoveToLessEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** paEntryBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  EntryBuffer* pNextBuffer;
+  
+  if (aItem == aSkipRoots())
+    aItem = aNextEntry(aItem,0);
+  
+  Item* aItemPrev = aItem;
+  
+  while (aItem) {
+    eKC eCompare = KeyData::eCompare(aItem, xKeyWrk);
+    
+    // have we reached the key?
+    if (eCompare == KC_SAME)
+      break;
+    
+    // have we moved beyond ?
+    if (eCompare == KC_AFTER)
+      return aItemPrev;
+    
+    aItemPrev = aItem;
+    aItem = aNextEntry(aItem,0);
+    
+//    if (!aItem) {
+//
+//      // move to the next buffer
+//      pNextBuffer = this->pNextBuffer();
+//
+//      if (pNextBuffer) {
+//        *paEntryBuffer = pNextBuffer;
+//        return (*paEntryBuffer)->pMoveToLessEqualEntry((*paEntryBuffer)->aSkipRoots(), xKeyWrk, paEntryBuffer);
+//      }
+//    }
+//    else
+//      break;
+    if ( ! aItem )
+      return aItemPrev;
+  }
+  
+  return aItemPrev;
+}
+
+/*----------------------------------------------------------------------------*/
+/* move to next key entry                                                     */
+/*----------------------------------------------------------------------------*/
 Item* EntryBuffer::pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** paEntryBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);

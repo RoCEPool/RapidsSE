@@ -87,6 +87,7 @@ namespace Data
     // key positioning functions
     
     Item*       pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
+    Item*       pMoveToLessEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
     Item*       pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
     Item*       pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
     Item*       pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
