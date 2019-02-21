@@ -55,7 +55,7 @@ namespace Data
     void         vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer);
     void         vLazyBuild(void);
     EntryBuffer* pPopSubList(EntryBuffer** ppSubList);
-    EntryBuffer* pPositionHeight(KeyWrk& xKeyWrk, i8 iHeight);
+    EntryBuffer* pPositionH0Buffer(KeyWrk& xKeyWrk);
     void         vPublish(void);
     bool         bPurge(i8 iOlderThanSeconds);
     EntryBuffer* pRoot(void);

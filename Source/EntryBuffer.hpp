@@ -86,15 +86,21 @@ namespace Data
     ////////////////////////////////////////////////////////////////////////////
     // key positioning functions
     
-    Item*       pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
-    Item*       pMoveToLessEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
-    Item*       pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
-    Item*       pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
-    Item*       pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
+    Item*        pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
+    Item*        pMoveToLessEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
+    Item*        pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
+    Item*        pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
+    Item*        pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
     
-    Item*       pPositionPriorEntry(KeyWrk& xFindKey);
-    Item*       pPositionPriorEntry(Item* aFindKey);
- 
+    EntryBuffer* pPositionH0Buffer(KeyWrk& xGivenKey);
+    EntryBuffer* pPositionPriorBuffer(KeyWrk& xFindKey);
+    Item*        pPositionPriorEntry(KeyWrk& xFindKey);
+    Item*        pPositionPriorEntry(Item* aFindKey);
+    void         vPositionPriorVecEntry(Item* aFindKey, Item** aaPriorVec,
+                                        Item* aFindEntry);
+    
+    void         vPositionPriorVecBuffer(Item* aFindKey, Item** aaPriorVec,
+                                         EntryBuffer* pToBuffer);
     
     ////////////////////////////////////////////////////////////////////////////
     
@@ -115,8 +121,6 @@ namespace Data
     i8          iLengthList(void);
     i8          iLengthSubList(void);
     Item*       aNextEntry(Item* aItem, i8 i_Offset);
-  
-    EntryBuffer* pPositionHeight(KeyWrk& xGivenKey, i8 iHeight);
     
     void        vReset(void);
     void        vRestore(void);
@@ -166,13 +170,6 @@ namespace Data
                                   EntryBuffer** ppRootKeyBuffer);
     EntryBuffer* pNewNextBuffer(void);
     Item*       aPopLazyChain(void);
-
-    EntryBuffer* pPositionPriorBuffer(KeyWrk& xFindKey);
-    void         vPositionPriorVecEntry(Item* aFindKey, Item** aaPriorVec,
-                                        Item* aFindEntry);
-    
-    void         vPositionPriorVecBuffer(Item* aFindKey, Item** aaPriorVec,
-                                         EntryBuffer* pToBuffer);
 
     EntryBuffer* pSplit2(void);
   

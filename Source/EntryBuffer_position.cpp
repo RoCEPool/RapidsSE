@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at given height starting from this buffer      */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pPositionHeight(KeyWrk& xGivenKey, i8 iHeight)
+EntryBuffer* EntryBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -30,7 +30,7 @@ EntryBuffer* EntryBuffer::pPositionHeight(KeyWrk& xGivenKey, i8 iHeight)
   while (true) {
     iBufferHeight = pEntryBuffer->iBufferHeight();
     
-    if (iBufferHeight == iHeight)
+    if (iBufferHeight == 0)
       break;
     
     // get the entry
