@@ -93,7 +93,6 @@ namespace Data
     Item*        pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** pAEntryBuffer);
     
     EntryBuffer* pPositionH0Buffer(KeyWrk& xGivenKey);
-    EntryBuffer* pPositionPriorBuffer(KeyWrk& xFindKey);
     Item*        pPositionPriorEntry(KeyWrk& xFindKey);
     Item*        pPositionPriorEntry(Item* aFindKey);
     void         vPositionPriorVecEntry(Item* aFindKey, Item** aaPriorVec,
