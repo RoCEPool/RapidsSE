@@ -93,7 +93,7 @@ void KeyData::vKey(KeyWrk& xKeyWrk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get key size                                                               */
+/* get key size     :: TO BE REVIEWED                                         */
 /*----------------------------------------------------------------------------*/
 i8 KeyData::nKeySize(IdxColVec* pIdxColVec)
 {

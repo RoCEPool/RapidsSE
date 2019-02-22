@@ -173,7 +173,7 @@ namespace Data
     EntryBuffer* pNewNextBuffer(void);
     Item*       aPopLazyChain(void);
 
-    EntryBuffer* pSplit2(void);
+    EntryBuffer* pSplitBuffer(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify functions

@@ -488,19 +488,17 @@ EntryBuffer* EntryBuffer::pInsertableBuffer(KeyWrk& xKeyWrk,
   
   i8 nEntryBytes = xKeyWrk.nEntrySize();
   i8 nOffsetBytes = xKeyWrk.nOffsetSize();
-  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  i8 nEntryPlusOffsetsBytes = nEntryBytes+nOffsetBytes;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert key into this EntryBuffer if it has space or get a new one
   
-  //KeyData* aInsKey = xKeyWrk.aKey();
-  
   EntryBuffer* pInsertIntoBuffer;
-  if (bHasSpace(nEntryPlusOffsets))
+  if (bHasSpace(nEntryPlusOffsetsBytes))
     pInsertIntoBuffer = this;
   else {
     pInsertIntoBuffer =
-    pNewInsertBuffer(xKeyWrk,nEntryPlusOffsets,ppRootKeyBuffer);
+      pNewInsertBuffer(xKeyWrk,nEntryPlusOffsetsBytes,ppRootKeyBuffer);
     //(*ppRootKeyBuffer)->vShow();
   }
   
@@ -806,12 +804,12 @@ Item* EntryBuffer::aInsertKeyUpwards(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   EntryBuffer* pInsertIntoBuffer =
-  pInsertableBuffer(xKeyWrk,ppRootKeyBuffer);
+    pInsertableBuffer(xKeyWrk,ppRootKeyBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Item* aInsertedKeyEntry =
-  pInsertIntoBuffer->aInsertKeyBuffer(xKeyWrk,ppRootKeyBuffer);
+    pInsertIntoBuffer->aInsertKeyBuffer(xKeyWrk,ppRootKeyBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -843,18 +841,10 @@ bool EntryBuffer::bKeyBeforeBuffer(KeyWrk& xKeyTest)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   Item* aFirstEntry = this->aLeadEntry();
-  //KeyData* aFirstKey = _aKeyData(aFirstEntry->aDataArea());
   
-  KeyData* aKeyTest = xKeyTest.aKey();
+  bool bLessThan = KeyData::bLessThan(xKeyTest,aFirstEntry);
   
-  //  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  
-  //  bool bIsJuxta =
-  //  aKeyTest->bLessThan(aFirstKey,pIdxColVec);
-  
-  bool bIsJuxta = KeyData::bLessThan(xKeyTest,aFirstEntry);
-  
-  return bIsJuxta;
+  return bLessThan;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -906,27 +896,17 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compact this buffer and check if it has enough space
+  // compact this buffer
   
   this->vCompact();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // now check if it has enough space
   
   if (this->bHasSpace(nEntryPlusOffsets) )
     return this;
   
   EntryBuffer* pLeftBuffer = this;
-  
-  
-  // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
-  // experiment to see if building the skip list (sorted) works
-  
-  /*
-   vShow();
-   vBuildSkipListSorted();
-   vShow();
-   */
-  
-  // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
-  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the higher buffer, creating one if it doesnt exist
@@ -936,55 +916,41 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets
     pHigherBuffer = this->pNewHigherBuffer();
     *ppRootKeyBuffer = pHigherBuffer;
   }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // split the left buffer to yield a right buffer
   
-  EntryBuffer* pRightBuffer = pLeftBuffer->pSplit2();
+  EntryBuffer* pRightBuffer = pLeftBuffer->pSplitBuffer();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert the first key of left buffer into higher buffer
+  // insert the first key of left buffer into higher buffer if higher buffer
+  // was just created
+  
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   if ( ! pHigherBuffer->nItems() ) {
-    Item* aFirstKeyLeft  = pLeftBuffer->aLeadEntry();
-    
-    i8 nLevelsLeft = aFirstKeyLeft->nLevels();
-    Id xIdLeft(*pLeftBuffer->nPoolBufferNo(),0,nLevelsLeft);
-    KeyData* aKeyLeft = _aKeyData(aFirstKeyLeft->aDataArea());
-    i8 iKeyLenLeft = aKeyLeft->nKeySize(m_pIndex->pIdxColVec());
-    
     
     KeyWrk xKeyWrkLeft;
-    xKeyWrkLeft.vId(xIdLeft);
-    xKeyWrkLeft.vEmbedded((char*)aKeyLeft);
-    xKeyWrkLeft.vKeySize(iKeyLenLeft);
-    xKeyWrkLeft.vLevels(nLevelsLeft);
-    
+    Item* aFirstKeyLeft  = pLeftBuffer->aLeadEntry();
+
+    // initialize the keyWrk from the first left key
+    xKeyWrkLeft.vSetKey(aFirstKeyLeft, pLeftBuffer->nPoolBufferNo(), pIdxColVec);
     
     Item* aNewKeyLeft =
-    pHigherBuffer->aInsertKeyUpwards(xKeyWrkLeft,ppRootKeyBuffer);
+      pHigherBuffer->aInsertKeyUpwards(xKeyWrkLeft,ppRootKeyBuffer);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of right buffer into higher buffer
   
+  KeyWrk xKeyWrkRight;
   Item* aFirstKeyRight = pRightBuffer->aLeadEntry();
   
-  KeyData* aKeyRight = _aKeyData(aFirstKeyRight->aDataArea());
-  
-  i8 iKeyLenRight = aKeyRight->nKeySize(m_pIndex->pIdxColVec());
-  i8 nLevelsRight = aFirstKeyRight->nLevels();
-  
-  Id xIdRight(*pRightBuffer->nPoolBufferNo(),0,nLevelsRight);
-  
-  KeyWrk xKeyWrkRight;
-  xKeyWrkRight.vId(xIdRight);
-  xKeyWrkRight.vEmbedded((char*)aKeyRight);
-  xKeyWrkRight.vKeySize(iKeyLenRight);
-  xKeyWrkRight.vLevels(nLevelsRight);
-  
+  // initialize the keyWrk from the first left key
+  xKeyWrkRight.vSetKey(aFirstKeyRight, pRightBuffer->nPoolBufferNo(), pIdxColVec);
   
   Item* aNewKeyRight =
-  pHigherBuffer->aInsertKeyUpwards(xKeyWrkRight,ppRootKeyBuffer);
+    pHigherBuffer->aInsertKeyUpwards(xKeyWrkRight,ppRootKeyBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1029,14 +995,14 @@ EntryBuffer* EntryBuffer::pNewNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* split this buffer into two: this original buffer and a new right buffer    */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pSplit2(void)
+EntryBuffer* EntryBuffer::pSplitBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   i8 iSplitRatio = 50;
   
   static i8 nSplit = 0;
-  //vTrace("pSplit2 %lld (%lld items)\n"_Stz,++nSplit,nItems());
+  //vTrace("pSplitBuffer %lld (%lld items)\n"_Stz,++nSplit,nItems());
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   

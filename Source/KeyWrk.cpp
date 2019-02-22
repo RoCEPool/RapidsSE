@@ -410,6 +410,30 @@ void KeyWrk::vSetEntry(Item* pEntry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set key using given working entry                                          */
+/*----------------------------------------------------------------------------*/
+void KeyWrk::vSetKey(Item* pEntry, bn nBufferNo, IdxColVec* pIdxColVec)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set id, transaction and offsets
+  
+  i8 nOffsets = pEntry->nLevels();
+  vLevels(nOffsets);
+  
+  Id xId(*nBufferNo,0,nOffsets);
+  vId(xId);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy key into this entry
+  
+  KeyData* aKeyData = _aKeyData(pEntry->aDataArea());
+  i8 iKeySize = aKeyData->nKeySize(pIdxColVec);
+  
+  vEmbedded((char*)aKeyData);
+  vKeySize(iKeySize);
+}
+
+/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void KeyWrk::vShow(IdxColVec* pIdxColVec, bool bCompressed)
