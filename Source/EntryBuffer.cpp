@@ -748,39 +748,6 @@ Item* EntryBuffer::pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer**
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::pMoveToLessEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** paEntryBuffer)
-{
-  EntryBuffer* pEntryBuffer = *paEntryBuffer;
-  
-  if (aItem == pEntryBuffer->aSkipRoots())
-    aItem = pEntryBuffer->aNextEntry(aItem,0);
-  
-  Item* aItemPrev = aItem;
-  
-  while (aItem) {
-    eKC eCompare = KeyData::eCompare(aItem, xKeyWrk);
-    
-    // have we reached the key?
-    if (eCompare == KC_SAME)
-      break;
-    
-    // have we moved beyond ?
-    if (eCompare == KC_AFTER)
-      return aItemPrev;
-    
-    aItemPrev = aItem;
-    aItem = pEntryBuffer->aNextEntry(aItem,0);
-    
-    if ( ! aItem )
-      return aItemPrev;
-  }
-  
-  return aItemPrev;
-}
-
-/*----------------------------------------------------------------------------*/
-/* move to next key entry                                                     */
-/*----------------------------------------------------------------------------*/
 Item* EntryBuffer::pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** paEntryBuffer)
 {
   EntryBuffer* pEntryBuffer = *paEntryBuffer;
@@ -877,6 +844,39 @@ Item* EntryBuffer::pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** 
   }
   
   return aItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* move to next key entry                                                     */
+/*----------------------------------------------------------------------------*/
+Item* EntryBuffer::pMoveToPrevEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** paEntryBuffer)
+{
+  EntryBuffer* pEntryBuffer = *paEntryBuffer;
+  
+  if (aItem == pEntryBuffer->aSkipRoots())
+    aItem = pEntryBuffer->aNextEntry(aItem,0);
+  
+  Item* aItemPrev = aItem;
+  
+  while (aItem) {
+    eKC eCompare = KeyData::eCompare(aItem, xKeyWrk);
+    
+    // have we reached the key?
+    if (eCompare == KC_SAME)
+      break;
+    
+    // have we moved beyond ?
+    if (eCompare == KC_AFTER)
+      return aItemPrev;
+    
+    aItemPrev = aItem;
+    aItem = pEntryBuffer->aNextEntry(aItem,0);
+    
+    if ( ! aItem )
+      return aItemPrev;
+  }
+  
+  return aItemPrev;
 }
 
 /*----------------------------------------------------------------------------*/

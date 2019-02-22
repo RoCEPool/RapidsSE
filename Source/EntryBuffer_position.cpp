@@ -54,7 +54,7 @@ EntryBuffer* EntryBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
     aItem = pEntryBuffer->pPositionPriorEntry(xGivenKey);
     ASSERT(aItem);
     
-    aItem = pEntryBuffer->pMoveToLessEqualEntry(aItem, xGivenKey, &pEntryBuffer);
+    aItem = pEntryBuffer->pMoveToPrevEntry(aItem, xGivenKey, &pEntryBuffer);
     ASSERT(aItem);
     
     // get the index buffer of the entry
