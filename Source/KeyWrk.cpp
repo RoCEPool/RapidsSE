@@ -412,7 +412,7 @@ void KeyWrk::vSetEntry(Item* pEntry)
 /*----------------------------------------------------------------------------*/
 /* set key using given working entry                                          */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vSetKey(Item* pEntry, bn nBufferNo, IdxColVec* pIdxColVec)
+void KeyWrk::vSetKey(Item* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
@@ -420,7 +420,7 @@ void KeyWrk::vSetKey(Item* pEntry, bn nBufferNo, IdxColVec* pIdxColVec)
   i8 nOffsets = pEntry->nLevels();
   vLevels(nOffsets);
   
-  Id xId(*nBufferNo,0,nOffsets);
+  Id xId(iBufferNo,iItem,nOffsets);
   vId(xId);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

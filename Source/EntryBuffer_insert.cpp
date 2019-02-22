@@ -656,7 +656,7 @@ Item* EntryBuffer::aInsertKeyTree(KeyWrk& xKeyWrk,
   // insert into the tree
 
   Item* aInsertedKeyEntry =
-  pPositionedBuffer->aInsertKeyUpwards(xKeyWrk,ppRootKeyBuffer);
+    pPositionedBuffer->aInsertKeyUpwards(xKeyWrk,ppRootKeyBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -824,6 +824,7 @@ Item* EntryBuffer::aInsertKeyUpwards(KeyWrk& xKeyWrk,
     reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
     
     if (pChildBuffer->m_pHigherBuffer != pInsertIntoBuffer) {
+      
       //(*ppRootKeyBuffer)->vShowTree();
       pChildBuffer->m_pHigherBuffer = pInsertIntoBuffer;
       //(*ppRootKeyBuffer)->vShowTree();
@@ -934,7 +935,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets
     Item* aFirstKeyLeft  = pLeftBuffer->aLeadEntry();
 
     // initialize the keyWrk from the first left key
-    xKeyWrkLeft.vSetKey(aFirstKeyLeft, pLeftBuffer->nPoolBufferNo(), pIdxColVec);
+    xKeyWrkLeft.vSetKey(aFirstKeyLeft, *pLeftBuffer->nPoolBufferNo(), 0, pIdxColVec);
     
     Item* aNewKeyLeft =
       pHigherBuffer->aInsertKeyUpwards(xKeyWrkLeft,ppRootKeyBuffer);
@@ -947,7 +948,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets
   Item* aFirstKeyRight = pRightBuffer->aLeadEntry();
   
   // initialize the keyWrk from the first left key
-  xKeyWrkRight.vSetKey(aFirstKeyRight, pRightBuffer->nPoolBufferNo(), pIdxColVec);
+  xKeyWrkRight.vSetKey(aFirstKeyRight, *pRightBuffer->nPoolBufferNo(), 0, pIdxColVec);
   
   Item* aNewKeyRight =
     pHigherBuffer->aInsertKeyUpwards(xKeyWrkRight,ppRootKeyBuffer);
@@ -1048,16 +1049,9 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
     
     aNextEntry = this->aNextEntry(aCopyEntry,0);
     
+    // form the key
     Id xId = aCopyEntry->xId();
-    KeyData* aKey = _aKeyData(aCopyEntry->aDataArea());
-    
-    i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nLevels = aCopyEntry->nLevels();
-    
-    xKeyWrk.vId(xId);
-    xKeyWrk.vEmbedded((char*)aKey);
-    xKeyWrk.vKeySize(nKeySize);
-    xKeyWrk.vLevels(nLevels);
+    xKeyWrk.vSetKey(aCopyEntry, xId.iBuffer(), xId.iItem(), pIdxColVec);
     
     Item* aNewEntry = pNewRightBuffer->aInsertKeyAbsL0(xKeyWrk,&aLastEntryRight);
     

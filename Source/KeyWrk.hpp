@@ -31,7 +31,7 @@ namespace Data
     EntryBuffer* pReferencedEntryBuffer(void);
     void vReset(void);
     void vSetEntry(Item* pEntry);
-    void vSetKey(Item* pEntry, bn nBufferNo, IdxColVec* pIdxColVec);
+    void vSetKey(Item* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec);
     void vShow(IdxColVec* pIdxColVec, bool bCompressed);
   };
 }
