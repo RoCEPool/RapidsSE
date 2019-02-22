@@ -266,6 +266,15 @@ bool KeyData::bGreaterEqual(Item* aKeyItem1, Item* aKeyItem2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* if key1 less than eqiual to key2 ?                                         */
+/*----------------------------------------------------------------------------*/
+bool KeyData::bLessEqual(KeyWrk& xKeyItem1, Item* aKeyItem2)
+{
+  eKC eCmp = eCompare(xKeyItem1, aKeyItem2);
+  return eCmp == KC_BEFORE || eCmp == KC_SAME ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* if key1 less than key2 ?                                                   */
 /*----------------------------------------------------------------------------*/
 bool KeyData::bLessThan(KeyWrk& xKeyItem1, Item* aKeyItem2)

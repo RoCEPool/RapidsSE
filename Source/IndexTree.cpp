@@ -887,6 +887,7 @@ bool IndexTree::bInsertEntry(Item* aRowEntry)
   KeyWrk xKeyWrk;
   xKeyWrk.vExtractKey(aRowEntry,m_pIndex->pIdxColVec());
   xKeyWrk.vId(aRowEntry->xId());
+  //xKeyWrk.vShow(m_pIndex->pIdxColVec(), false);
   
   if ( ! m_pRootBuffer ) {
     m_pRootBuffer = new EntryBuffer;

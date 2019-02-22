@@ -286,15 +286,6 @@ void EntryBuffer::vCompactLeft(void)
        aThisEntry = pThisBuffer->aNextEntry(aThisEntry, 0)) {
     
     Id xId = aThisEntry->xId();
-//    KeyData* aKey = _aKeyData(aThisEntry->aDataArea());
-//
-//    i8 nKeySize = aKey->nKeySize(pIdxColVec);
-//    i8 nLevels = aThisEntry->nLevels();
-//
-//    xKeyWrk.vId(xId);
-//    xKeyWrk.vEmbedded((char*)aKey);
-//    xKeyWrk.vKeySize(nKeySize);
-//    xKeyWrk.vLevels(nLevels);
     
     xKeyWrk.vSetKey(aThisEntry, xId.iBuffer(), xId.iItem(), pIdxColVec);
     pTempBuffer->aInsertKeyAbsL0(xKeyWrk,&aPriorEntry);
@@ -303,10 +294,6 @@ void EntryBuffer::vCompactLeft(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Item* aThisWilderness = aItemArea();
-  //    = aAdd<Item*>(aSkipRoots(),
-  //                  aSkipRoots()->nSizeItem_WithoutOffsets() +
-  //                    aSkipRoots()->iNEOsize());
-  
   vSetUsed(aThisWilderness);
   
   vItems(0);
@@ -323,14 +310,6 @@ void EntryBuffer::vCompactLeft(void)
        aTempEntry = pTempBuffer->aNextEntry(aTempEntry, 0)) {
     
     Id xId = aTempEntry->xId();
-//    KeyData* aKey = _aKeyData(aTempEntry->aDataArea());
-//    i8 nKeySize = aKey->nKeySize(pIdxColVec);
-//    i8 nLevels = aTempEntry->nLevels();
-//
-//    xKeyWrk.vId(xId);
-//    xKeyWrk.vEmbedded((char*)aKey);
-//    xKeyWrk.vKeySize(nKeySize);
-//    xKeyWrk.vLevels(nLevels);
     
     xKeyWrk.vSetKey(aTempEntry, xId.iBuffer(), xId.iItem(), pIdxColVec);
     pThisBuffer->aInsertKeyAbsL0(xKeyWrk,&aPriorEntry);
@@ -458,18 +437,10 @@ void EntryBuffer::vHandleLeftInsert(Item* aInsertedKeyEntry,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  KeyData* aInsertKey = _aKeyData(aInsertedKeyEntry->aDataArea());
+  //KeyData* aInsertKey = _aKeyData(aInsertedKeyEntry->aDataArea());
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  i8 iInsertKeyLen  = aInsertKey->nKeySize(pIdxColVec);
-  i8 nInsertLevels = aInsertedKeyEntry->nLevels();
-  
-  Id xInsertId(*nPoolBufferNo(),0,nInsertLevels);
-  
   KeyWrk xKeyWrkIns;
-  xKeyWrkIns.vId(xInsertId);
-  xKeyWrkIns.vEmbedded((char*)aInsertKey);
-  xKeyWrkIns.vKeySize(iInsertKeyLen);
-  xKeyWrkIns.vLevels(nInsertLevels);
+  xKeyWrkIns.vSetKey(aInsertedKeyEntry, *nPoolBufferNo(), 0, pIdxColVec);
   
   EntryBuffer* pHigherBuffer = _pEntryBuffer(m_pHigherBuffer);
   pHigherBuffer->aInsertKeyBuffer(xKeyWrkIns,ppRootKeyBuffer);
@@ -643,7 +614,6 @@ Item* EntryBuffer::aInsertKeyTree(KeyWrk& xKeyWrk,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set a random number offsets
-  
   xKeyWrk.vRandomLevels();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1003,9 +973,6 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   i8 iSplitRatio = 50;
-  
-  static i8 nSplit = 0;
-  //vTrace("pSplitBuffer %lld (%lld items)\n"_Stz,++nSplit,nItems());
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
