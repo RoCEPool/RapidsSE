@@ -638,8 +638,7 @@ Item* EntryBuffer::aInsertKeyTree(KeyWrk& xKeyWrk,
                                   EntryBuffer** ppRootKeyBuffer)
 {
   // ** note: this is a static function **
-  
-  
+
   EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -648,24 +647,16 @@ Item* EntryBuffer::aInsertKeyTree(KeyWrk& xKeyWrk,
   xKeyWrk.vRandomLevels();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // position on the initial buffer we will try to insert into
-  
-  //KeyData* aInsKey = xKeyWrk.aKey();
-  //i8 iInsKeyLen = xKeyWrk.nKeySize();
-  
-  //EntryBuffer* pPositionedBuffer =
-  //pRootKeyBuffer->pPositionPriorBuffer(xKeyWrk);
+  // position on an H0 buffer which we will try and insert into
   
   EntryBuffer* pPositionedBuffer =
     pRootKeyBuffer->pPositionH0Buffer(xKeyWrk);
   
   ASSERT(0 == pPositionedBuffer->iBufferHeight());
-  //pPositionedBuffer->vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert into the tree
-  
-  
+
   Item* aInsertedKeyEntry =
   pPositionedBuffer->aInsertKeyUpwards(xKeyWrk,ppRootKeyBuffer);
   
