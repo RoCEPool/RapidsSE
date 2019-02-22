@@ -114,7 +114,8 @@ void Queues::vThreadsReport()
     vTrace("  Thread %2lld %p"
            " base %llx size %lld"
            " user %lld system %lld use %lld sleep %lld"
-           " %7s %s\n"_Stz,
+           " %7s %s"
+           " (%lld,%lld) assigned %lld popped %lld\n"_Stz,
            pThread->m_iThreadNo,
            pThread,
            
@@ -127,7 +128,12 @@ void Queues::vThreadsReport()
            iSleep,
            
            aTD[pThread->m_eThreadState],
-           pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->aChar() : ""
+           pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->aChar() : "",
+           
+           pThread->m_iLastQueueRR,
+           pThread->m_iStartQueueRR,
+           pThread->m_nAssignedTasks,
+           pThread->m_nPoppedTasks
            );
   }
   
@@ -706,6 +712,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  static i8 nTimes = 0;
   Task* pPoppedTask;
   
   // set popped task to be null to start with
@@ -719,6 +726,12 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
   // round robin thru the queues
   while (pCallingThread->bRRnext()) {
     
+//    if (32 == pCallingThread->m_iThreadNo)
+//      vTrace("[32:%lld] %lld,%lld\n"_Stz,
+//             nTimes++,
+//             pCallingThread->m_iStartQueueRR,
+//             pCallingThread->m_iLastQueueRR);
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inspect the queues
     
@@ -730,8 +743,14 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     }
     
     if (pQueues->bIsReadyQueue(pCallingThread->m_iLastQueueRR)) {
-      if ( ! (pPoppedTask = pPopReadyQueue(pCallingThread)) )
+      if ( ! (pPoppedTask = pPopReadyQueue(pCallingThread)) ) {
+//        if (32 == pCallingThread->m_iThreadNo)
+//          vTrace("[32:%lld] Nothing Ready %lld,%lld\n"_Stz,
+//                 nTimes++,
+//                 pCallingThread->m_iStartQueueRR,
+//                 pCallingThread->m_iLastQueueRR);
         continue;
+      }
       *ppPoppedTask = pPoppedTask;
       return true;
     }
@@ -779,6 +798,8 @@ Task* Queues::pPopReadyQueue(Thread* pCallingThread)
     // so move on to the next queue
     return nullptr;
   }
+  
+  //m_pReadyQueue->vGrabLock();
   
   // pop task off the general queue
   pTask = m_pReadyQueue->pPopTask();

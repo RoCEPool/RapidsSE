@@ -77,6 +77,9 @@ Thread::Thread(void)
   
   m_iLastQueueRR  = QR_SLEEPING_QUEUE - 1;
   m_iStartQueueRR = QR_NONE;
+  
+  m_nAssignedTasks = 0;
+  m_nPoppedTasks   = 0;
     
   _checkInitialised_(CN_THREAD);
   
@@ -213,6 +216,8 @@ void Thread::vLoop(void)
   Pthread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
   
+  i8 iWaitDelta = 0;
+  
   m_pMutex->vMutexLock();
 
   ++gpAttachMap->m_ixThreads;
@@ -224,13 +229,18 @@ void Thread::vLoop(void)
       
       // wait upto 5ms to be given a signal
       m_eThreadState = TD_IDLE;
-      m_pMutex->vCondWait_Timed(5000); // while waiting the mutex is dropped
+      iWaitDelta = Random::iInteger(0,C_10K);
+      m_pMutex->vCondWait_Timed(1000+iWaitDelta); // while waiting the mutex is dropped
       m_eThreadState = TD_RUNNING;
 
       // attempt again if no task
       if (! m_pTask)
         continue;
     }
+    
+//    if (0 == m_nPoppedTasks) {
+//      vTrace("[%lld] popped is zero\n"_Stz,m_iThreadNo);
+//    }
     
     // call the task
     vTaskCall();
@@ -321,6 +331,7 @@ void Thread::vExecuteTask(Task* pTask)
   
   // set task to be executed
   m_pTask = pTask;
+  m_nAssignedTasks++;
   
   //m_eThreadState = TD_RUNNING;
   
@@ -341,15 +352,19 @@ bool Thread::bQueuePeek(void)
   Task* pPoppedTask;
   bool bPopped = gpAttachMap->m_pQueues->bPopQueuedTask(&pPoppedTask,this);
   
-  if (! bPopped)
+  if (! bPopped) {
     return false;
-
+    RASSERT(! m_pTask);
+  }
+  
   if (TK_READY != pPoppedTask->eState())
     pPoppedTask->vState(TK_READY);
   
   m_pTask = pPoppedTask;
+  m_nPoppedTasks++;
+  RASSERT(m_nPoppedTasks);
 
-  return bPopped;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

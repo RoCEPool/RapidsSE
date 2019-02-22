@@ -41,6 +41,9 @@ namespace Threads
                               // had popped a task from
     i8       m_iStartQueueRR; // last RR queue we started with
   
+    i8       m_nAssignedTasks;// number of tasks assigned by
+    i8       m_nPoppedTasks;  // number of tasks popped from a queue
+  
     // must be last
     Footer m_xFooter;
     
