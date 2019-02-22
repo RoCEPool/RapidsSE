@@ -140,7 +140,7 @@ namespace Data
     
     void        vBuildSkipList(void);
     void        vCompact(void);
-    void        vCompactLeft2(void);
+    void        vCompactLeft(void);
     void        vCutEntry(Item* aItem, Item* aPriorVec[]);
     void        vDeleteUpwards(Item* aDeleteKey,
                                 EntryBuffer** ppRootKeyBuffer);

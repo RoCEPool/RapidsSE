@@ -262,7 +262,7 @@ void EntryBuffer::vCompact(void)
 /*----------------------------------------------------------------------------*/
 /* compact this buffer                                                        */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vCompactLeft2(void)
+void EntryBuffer::vCompactLeft(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -286,16 +286,17 @@ void EntryBuffer::vCompactLeft2(void)
        aThisEntry = pThisBuffer->aNextEntry(aThisEntry, 0)) {
     
     Id xId = aThisEntry->xId();
-    KeyData* aKey = _aKeyData(aThisEntry->aDataArea());
+//    KeyData* aKey = _aKeyData(aThisEntry->aDataArea());
+//
+//    i8 nKeySize = aKey->nKeySize(pIdxColVec);
+//    i8 nLevels = aThisEntry->nLevels();
+//
+//    xKeyWrk.vId(xId);
+//    xKeyWrk.vEmbedded((char*)aKey);
+//    xKeyWrk.vKeySize(nKeySize);
+//    xKeyWrk.vLevels(nLevels);
     
-    i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nLevels = aThisEntry->nLevels();
-    
-    xKeyWrk.vId(xId);
-    xKeyWrk.vEmbedded((char*)aKey);
-    xKeyWrk.vKeySize(nKeySize);
-    xKeyWrk.vLevels(nLevels);
-    
+    xKeyWrk.vSetKey(aThisEntry, xId.iBuffer(), xId.iItem(), pIdxColVec);
     pTempBuffer->aInsertKeyAbsL0(xKeyWrk,&aPriorEntry);
   }
   
@@ -322,15 +323,16 @@ void EntryBuffer::vCompactLeft2(void)
        aTempEntry = pTempBuffer->aNextEntry(aTempEntry, 0)) {
     
     Id xId = aTempEntry->xId();
-    KeyData* aKey = _aKeyData(aTempEntry->aDataArea());
-    i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nLevels = aTempEntry->nLevels();
+//    KeyData* aKey = _aKeyData(aTempEntry->aDataArea());
+//    i8 nKeySize = aKey->nKeySize(pIdxColVec);
+//    i8 nLevels = aTempEntry->nLevels();
+//
+//    xKeyWrk.vId(xId);
+//    xKeyWrk.vEmbedded((char*)aKey);
+//    xKeyWrk.vKeySize(nKeySize);
+//    xKeyWrk.vLevels(nLevels);
     
-    xKeyWrk.vId(xId);
-    xKeyWrk.vEmbedded((char*)aKey);
-    xKeyWrk.vKeySize(nKeySize);
-    xKeyWrk.vLevels(nLevels);
-    
+    xKeyWrk.vSetKey(aTempEntry, xId.iBuffer(), xId.iItem(), pIdxColVec);
     pThisBuffer->aInsertKeyAbsL0(xKeyWrk,&aPriorEntry);
   }
   
@@ -1097,7 +1099,7 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact the left buffer and rebuild SkipListNL
   
-  pThisLeftBuffer->vCompactLeft2();
+  pThisLeftBuffer->vCompactLeft();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // the child buffer of any moved entry needs to have its higher buffer
