@@ -190,6 +190,7 @@ pDUMPFUN *gpDump[]
   
   /* 73 */ &Heap::vDump,            // CN_MEDIUMPERSISTENT
   /* 74 */ &Heap::vDump,            // CN_MEDIUMTRANSIENT
+  /*    */ &Dump::vUndefined,       // CN_MEMTEST
   /*114 */ &Dump::vUndefined,       // CN_MUTEX
 
   /* 75 */ &Node::vDump,            // CN_NODE
@@ -446,6 +447,7 @@ i8 giClassSize[]
   
   /* 73 */ sizeof(Heap), // correct    // CN_MEDIUMPERSISTENT
   /* 74 */ sizeof(Heap), // correct    // CN_MEDIUMTRANSIENT
+  /*    */ sizeof(MemTest),            // CN_MEMTEST
   /*114 */ sizeof(Mutex),              // CN_MUTEX
 
   /* 75 */ sizeof(Node),               // CN_NODE
@@ -702,6 +704,7 @@ eHT geWhichHeap[]
   
   /* 73 */ HT_INVALID,           // CN_MEDIUMPERSISTENT
   /* 74 */ HT_INVALID,           // CN_MEDIUMTRANSIENT
+  /*    */ HT_TRANSIENT_SMALL,   // CN_MEMTEST
   /*114 */ HT_TRANSIENT_SMALL,   // CN_MUTEX
 
   /* 75 */ HT_TRANSIENT_SMALL,   // CN_NODE

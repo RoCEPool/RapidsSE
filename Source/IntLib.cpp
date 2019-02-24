@@ -29,6 +29,28 @@ i8 IntLib::iDecile(i8 iValue, i8 iMax)
 }
 
 /*----------------------------------------------------------------------------*/
+/* flip the endian of given i8 arg                                            */
+/*----------------------------------------------------------------------------*/
+i8 IntLib::iFlipEndian(i8 iArg)
+{
+  wordAsBytes xArg;
+  wordAsBytes xResult;
+  
+  xArg.m_iAsI8 = iArg;
+  
+  xResult.m_caByte[7] = xArg.m_caByte[0];
+  xResult.m_caByte[6] = xArg.m_caByte[1];
+  xResult.m_caByte[5] = xArg.m_caByte[2];
+  xResult.m_caByte[4] = xArg.m_caByte[3];
+  xResult.m_caByte[3] = xArg.m_caByte[4];
+  xResult.m_caByte[2] = xArg.m_caByte[5];
+  xResult.m_caByte[1] = xArg.m_caByte[6];
+  xResult.m_caByte[0] = xArg.m_caByte[7];
+
+  return xResult.m_iAsI8;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert i8 to vlq (varying length quantity)                                */
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iIntToVlq(i8 iInt, byte yVlqVec[16])

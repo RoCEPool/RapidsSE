@@ -69,6 +69,7 @@ using namespace Prompt;
 #include "Prompt_markRes.hpp"
 #include "Prompt_masks.hpp"
 #include "Prompt_memory.hpp"
+#include "Prompt_memTest.hpp"
 #include "Prompt_mkpipe.hpp"
 #include "Prompt_mon.hpp"
 

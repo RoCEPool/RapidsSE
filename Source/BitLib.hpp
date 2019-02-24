@@ -11,6 +11,7 @@
 #define BITWISE_SHIFT_LEFT(word,nbits)  ((word) << nBits) // bitwise shift left
 #define BITWISE_SHIFT_RIGHT(word,nbits) ((word) >> nBits) // bitwise shift right
 
+const u8 C_BYTES_PER_WORD = 8;
 const u8 C_BITS_PER_WORD = 64;
 const u8 C_ALL_BITS_ON   = 0xFFFFFFFFFFFFFFFFLL;
 

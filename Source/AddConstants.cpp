@@ -303,7 +303,8 @@ void Axioms::vAddConstants(void)
   
   /*    */ vAddConstant("CN_MEDIUMPERSISTENT"_Stz, CN_MEDIUMPERSISTENT);
   /*    */ vAddConstant("CN_MEDIUMTRANSIENT"_Stz,  CN_MEDIUMTRANSIENT);
-  /* 60 */ vAddConstant("CN_MUTEX"_Stz,    CN_MUTEX);
+  /*    */ vAddConstant("CN_MEMTEST"_Stz,      CN_MEMTEST);
+  /* 60 */ vAddConstant("CN_MUTEX"_Stz,        CN_MUTEX);
 
   /* 38 */ vAddConstant("CN_NODE"_Stz,         CN_NODE);
   /*    */ vAddConstant("CN_NOW"_Stz,          CN_NOW);
