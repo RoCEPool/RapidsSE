@@ -2,6 +2,7 @@
 /* _ordersLoad - create and load TPC-H Orders table for SF1                   */
 /*============================================================================*/
 
+
 create table orders (
 	 O_ORDERKEY        INTEGER NOT NULL,
 	 O_CUSTKEY         INTEGER NOT NULL,
@@ -13,10 +14,10 @@ create table orders (
 	 O_SHIPPRIORITY    INTEGER NOT NULL,
 	 O_COMMENT         VARCHAR(79) NOT NULL
 );
-CREATE INDEX orders_idx1 ON orders(o_orderdate);
+//CREATE INDEX orders_idx1 ON orders(o_orderdate);
 
 print "loading orders.csv..." ;
-ld orders   "/tpch/SF1/orders.csv" ;
+ld orders   "/tpch/SF10/orders.csv" ;
 
 pwf ;
 lf ;

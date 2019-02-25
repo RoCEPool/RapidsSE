@@ -24,7 +24,7 @@ namespace Base
   static const u8 C_MEMORY_MARKERF   = 0x070605040302010f;
 
   static const i8 C_BYTES_PER_LINE   = 16;
-
+  
   class MemLib
   {
   private:
@@ -50,6 +50,7 @@ namespace Base
     static void  vSet(void* pDst, char bByte, i8 iTimes, eCN eClassNo);
     static void  vStatistics(void);
     static void  vWordDump(void *aAddress, i8 iSize, i8 iHighlightWord=-1);
+    static void  vWordFlip(w8* aWord);
     static void  vZero(void* pDst, i8 iBytes, eCN eClassNo);
   
     static void  vMemoryMap(void);

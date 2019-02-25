@@ -581,6 +581,32 @@ void MemLib::vWordDump(void *aAddress, i8 iBytes, i8 iHighlightWord)
 }
 
 /*----------------------------------------------------------------------------*/
+/* flip the bytes in given word                                               */
+/*----------------------------------------------------------------------------*/
+void MemLib::vWordFlip(w8* aWord)
+{
+  wordAsBytes* aAsBytes = (wordAsBytes*)aWord;
+  
+  y1 yByte;
+  
+  yByte = aAsBytes->m_caByte[0];
+  aAsBytes->m_caByte[0] = aAsBytes->m_caByte[7];
+  aAsBytes->m_caByte[7] = yByte;
+  
+  yByte = aAsBytes->m_caByte[0];
+  aAsBytes->m_caByte[1] = aAsBytes->m_caByte[6];
+  aAsBytes->m_caByte[6] = yByte;
+  
+  yByte = aAsBytes->m_caByte[0];
+  aAsBytes->m_caByte[2] = aAsBytes->m_caByte[5];
+  aAsBytes->m_caByte[5] = yByte;
+  
+  yByte = aAsBytes->m_caByte[0];
+  aAsBytes->m_caByte[3] = aAsBytes->m_caByte[4];
+  aAsBytes->m_caByte[4] = yByte;
+}
+
+/*----------------------------------------------------------------------------*/
 /* zero dst                                                                   */
 /*----------------------------------------------------------------------------*/
 void MemLib::vZero(void* pDst, i8 nBytes, eCN eClassNo)

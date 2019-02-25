@@ -2683,6 +2683,33 @@ bool StrLib::bValidateMonth(i8 iDay, i8 iMonth, i8 iYear)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* flip the bytes in each word of src string into dst                         */
+/*----------------------------------------------------------------------------*/
+void StrLib::vWordFlip(char* aDst, char* aSrc)
+{
+  i8 iLenSrc  = iLength(aSrc);
+  
+  i8 iRoundUp = 0;
+  i8 iRemainder = iLenSrc % C_BYTES_PER_WORD;
+  if (iRemainder)
+    iRoundUp = C_BYTES_PER_WORD - iRemainder;
+  
+  i8 iDstSize = iLenSrc + iRoundUp;
+  ASSERT(0 == iDstSize % C_BYTES_PER_WORD);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  MemLib::vZero(aDst,iDstSize,CN_KEY);
+  MemLib::vCopy(aDst, aSrc, iDstSize, CN_KEY);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  w8* aWrd = (w8*)aDst;
+  for (i8 nWords = iDstSize / C_BYTES_PER_WORD; nWords; nWords--)
+    MemLib::vWordFlip(aWrd++);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -193,6 +193,8 @@ namespace Base
     static char* zTerminator(char* s);
   
     static bool  bValidateMonth(i8 iDay, i8 iMonth, i8 iYear);
+
+    static void  vWordFlip(char* aDst, char* aSrc);
   };
   
 }
