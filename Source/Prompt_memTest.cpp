@@ -25,6 +25,11 @@ bool Prompt::bPrompt_memTest(SePrompt* pPrompt)
   
   MemLib::vDumpWords(pMemTest,sizeof(MemTest));
   
+  i8 iCmp = MemLib::iCompareWords(pMemTest->m_caCharLowerFlipped,
+                                  pMemTest->m_caCharUpperFlipped,16);
+  
+  vTrace("%lld\n"_Stz,iCmp);
+  
   delete pMemTest;
   
   return true;
