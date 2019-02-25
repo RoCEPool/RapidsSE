@@ -17,13 +17,11 @@ namespace System
     char m_caCharB[8];
     char m_caCharC[8];
 
-    char m_caCharUpper16[16];
-    i8   m_iCharUpperFlipA;
-    i8 m_iCharUpperFlipB;
+    char m_caCharUpper[16];
+    char m_caCharUpperFlipped[16];
 
-    char m_caCharLower16[16];
-    i8   m_iCharLowerFlipA;
-    i8 m_iCharLowerFlipB;
+    char m_caCharLower[16];
+    char m_caCharLowerFlipped[16];
   
     // must be last
     Footer m_xFooter;

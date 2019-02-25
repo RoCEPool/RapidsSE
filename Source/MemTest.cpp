@@ -59,14 +59,12 @@ MemTest::MemTest(void)
   StrLib::vCopy(m_caCharB,"aBcDeFg");
   StrLib::vCopy(m_caCharC,"aBc");
 
-  StrLib::vCopy(m_caCharUpper16,"AbCdEfGhIjKlMnO");
-  m_iCharUpperFlipA = 0x4162436445664768;
-  m_iCharUpperFlipB = 0x496a4b6c4d6e4f00;
+  StrLib::vCopy(m_caCharUpper,"AbCdEfGhIjKlMnO");
+  StrLib::vWordFlip(m_caCharUpperFlipped, m_caCharUpper);
   
-  StrLib::vCopy(m_caCharLower16,"aBcDeFgHiJkLmNo");
-  m_iCharLowerFlipA = 0x6142634465466748;
-  m_iCharLowerFlipB = 0x694a6b4c6d4e6f00;
-
+  StrLib::vCopy(m_caCharLower,"aBcDeFgHiJkLmNo");
+  StrLib::vWordFlip(m_caCharLowerFlipped, m_caCharLower);
+ 
   _checkInitialised_(CN_MEMTEST);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_MEMTEST,_FOOTER_);

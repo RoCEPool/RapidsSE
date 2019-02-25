@@ -593,15 +593,15 @@ void MemLib::vWordFlip(w8* aWord)
   aAsBytes->m_caByte[0] = aAsBytes->m_caByte[7];
   aAsBytes->m_caByte[7] = yByte;
   
-  yByte = aAsBytes->m_caByte[0];
+  yByte = aAsBytes->m_caByte[1];
   aAsBytes->m_caByte[1] = aAsBytes->m_caByte[6];
   aAsBytes->m_caByte[6] = yByte;
   
-  yByte = aAsBytes->m_caByte[0];
+  yByte = aAsBytes->m_caByte[2];
   aAsBytes->m_caByte[2] = aAsBytes->m_caByte[5];
   aAsBytes->m_caByte[5] = yByte;
   
-  yByte = aAsBytes->m_caByte[0];
+  yByte = aAsBytes->m_caByte[3];
   aAsBytes->m_caByte[3] = aAsBytes->m_caByte[4];
   aAsBytes->m_caByte[4] = yByte;
 }
