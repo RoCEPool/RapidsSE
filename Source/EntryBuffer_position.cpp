@@ -226,103 +226,9 @@ void EntryBuffer::vPositionPriorVecEntry(Item* aFindKey, Item* aPriorVec[],
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
-                                          Item* aPriorVec[],
-                                          EntryBuffer* pRefdChildBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  ASSERT(0 != m_iBufferHeight);
-  
-#ifdef USE_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
-#endif
-  
-  /*
-
-   nb. duplicates are fully qualified by their ref'd buffer
-   
-   
-   when this function is called (findKey,toBuffer) is about to be inserted
-   into this buffer
-   
-   the (findKey,toBuffer) doesnt yet exist in this buffer
-   
-   
-   x2?  [a2 y2]           ->  [a2 x2 y2]
-        [2]a [2]x [2]y        [2]a [2]x [2]y
-   
-   
-   
-   +--+         +--+              +--+   ~   +--+
-   |sr|     L2  |z2|              |0 |   ~   |sr|
-   +--+         +--+        +--+  +--+   ~   +--+
-   |sr|     L1  |y2|        |z2|  |0 |   ~   |sr|
-   +--+         +--+  +--+  +--+  +--+   ~   +--+
-   |sr|     L0  |a2|  |y2|  |z2|  |0 |   ~   |y2|
-   +--+         +--+  +--+  +--+  +--+   ~   +--+
-    pv           sr    a2  ^ y2    z2    ~    pv
-                          x2
-   
-   */
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  for (i8 i_Level = 0; i_Level < gpAttachMap->m_nIndexLevels; i_Level++)
-    aPriorVec[i_Level] = aSkipRoots();
-  
-  // first entry
-  if (nItems() == 0)
-    return;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
-  Item* aPriorEntry_sl = aSkipRoots();
-  
-  for (; i_ScanLevel >= 0; i_ScanLevel--) {
-    
-    while (Item* aNextEntry_sl = aNextEntry(aPriorEntry_sl,i_ScanLevel)) {
-
-      // - key testing
-      
-      bool bNextKeyIsGreater = KeyData::bGreaterThan(aNextEntry_sl,aInsertingEntry);
-      if (bNextKeyIsGreater) {
-        // nextEntry[sl] > aInsertingEntry, insert at this level after prior entry
-        aPriorVec[i_ScanLevel] = aPriorEntry_sl;
-        // go down one level, same enty
-        break;
-      }
-
-      bool bKeysAreEqual = KeyData::bEqualTo(aNextEntry_sl,aInsertingEntry);
-      if (! bKeysAreEqual) {
-        // haven't found key at this level yet, go right at this level
-        aPriorEntry_sl = aNextEntry_sl;
-        continue;
-      }
-      
-      // - keys are equal
-      
-      if (pRefdChildBuffer != pRefdEntryBuffer(aNextEntry_sl)->pPrevBuffer()) {
-        // found key but haven't reached buffer, go right at this level
-        aPriorEntry_sl = aNextEntry_sl;
-        continue;
-      }
-
-      // reached key & buffer at this level, insert at this level after prior entry
-      aPriorVec[i_ScanLevel] = aPriorEntry_sl;
-      // go down one level, same entry
-      break;
-      
-    } // while next entry
-    
-  } // for scan levels
-  
-}
-
-/*----------------------------------------------------------------------------*/
-//void EntryBuffer::vPositionPriorVecBuffer(Item* aFindKey, Item* aPriorVec[],
-//                                          EntryBuffer* pToBuffer)
+//void EntryBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
+//                                          Item* aPriorVec[],
+//                                          EntryBuffer* pRefdChildBuffer)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
 //
@@ -344,68 +250,162 @@ void EntryBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
 //
 //
 //   x2?  [a2 y2]           ->  [a2 x2 y2]
-//   [2]a [2]x [2]y        [2]a [2]x [2]y
+//        [2]a [2]x [2]y        [2]a [2]x [2]y
+//
+//
+//
+//   +--+         +--+              +--+   ~   +--+
+//   |sr|     L2  |z2|              |0 |   ~   |sr|
+//   +--+         +--+        +--+  +--+   ~   +--+
+//   |sr|     L1  |y2|        |z2|  |0 |   ~   |sr|
+//   +--+         +--+  +--+  +--+  +--+   ~   +--+
+//   |sr|     L0  |a2|  |y2|  |z2|  |0 |   ~   |y2|
+//   +--+         +--+  +--+  +--+  +--+   ~   +--+
+//    pv           sr    a2  ^ y2    z2    ~    pv
+//                          x2
 //
 //   */
 //
-//
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
-//    aPriorVec[i_Offset] = aSkipRoots();
+//  for (i8 i_Level = 0; i_Level < gpAttachMap->m_nIndexLevels; i_Level++)
+//    aPriorVec[i_Level] = aSkipRoots();
 //
+//  // first entry
 //  if (nItems() == 0)
 //    return;
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-//  bool bNextKeyIsGreater;
-//  Item* aScanEntry_sl = aSkipRoots();
+//  i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
+//  Item* aPriorEntry_sl = aSkipRoots();
 //
-//  for (i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
-//       i_ScanLevel >= 0;
-//       i_ScanLevel--) {
+//  for (; i_ScanLevel >= 0; i_ScanLevel--) {
 //
-//    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
-//    while (aNextEntry_sl) {
+//    while (Item* aNextEntry_sl = aNextEntry(aPriorEntry_sl,i_ScanLevel)) {
 //
-//      //KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
+//      // - key testing
 //
-//      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-//      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-//
-//      //#ifdef USE_EB_SINGLE_COLIDX
-//      //      if (m_pIndex->bSingleColumn()) {
-//      //        bNextKeyIsGreater = aNextKey->bGreaterThanSingle(aFindKey,m_pIndex);
-//      //        RASSERT(bNextKeyIsGreater == aNextKey->bGreaterThan(aFindKey,pIdxColVec));
-//      //      }
-//      //      else
-//      //        bNextKeyIsGreater = aNextKey->bGreaterThan(aFindKey,pIdxColVec);
-//      //#else
-//      //      bNextKeyIsGreater = aNextKey->bGreaterThan(aFindKey,pIdxColVec);
-//      //#endif
-//
-//      bNextKeyIsGreater = KeyData::bGreaterThan(aNextEntry_sl, aFindKey);
-//
-//      if (bNextKeyIsGreater)
+//      bool bNextKeyIsGreater = KeyData::bGreaterThan(aNextEntry_sl,aInsertingEntry);
+//      if (bNextKeyIsGreater) {
+//        // nextEntry[sl] > aInsertingEntry, insert at this level after prior entry
+//        aPriorVec[i_ScanLevel] = aPriorEntry_sl;
+//        // go down one level, same enty
 //        break;
-//
-//      if (0 == i_ScanLevel) {
-//        //bool bKeysAreEqual = aNextKey->bEqualTo(aFindKey,pIdxColVec);
-//        bool bKeysAreEqual = KeyData::bEqualTo(aNextEntry_sl, aFindKey);
-//
-//        if (bKeysAreEqual &&
-//            (pToBuffer == EntryBuffer::pRefdEntryBuffer(aNextEntry_sl)->pPrevBuffer()))
-//          break;
 //      }
 //
-//      aScanEntry_sl = aNextEntry_sl;
-//      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
-//    }
-//    aPriorVec[i_ScanLevel] = aScanEntry_sl;
-//  }
+//      bool bKeysAreEqual = KeyData::bEqualTo(aNextEntry_sl,aInsertingEntry);
+//      if (! bKeysAreEqual) {
+//        // haven't found key at this level yet, go right at this level
+//        aPriorEntry_sl = aNextEntry_sl;
+//        continue;
+//      }
+//
+//      // - keys are equal
+//
+//      if (pRefdChildBuffer != pRefdEntryBuffer(aNextEntry_sl)->pPrevBuffer()) {
+//        // found key but haven't reached buffer, go right at this level
+//        aPriorEntry_sl = aNextEntry_sl;
+//        continue;
+//      }
+//
+//      // reached key & buffer at this level, insert at this level after prior entry
+//      aPriorVec[i_ScanLevel] = aPriorEntry_sl;
+//      // go down one level, same entry
+//      break;
+//
+//    } // while next entry
+//
+//  } // for scan levels
+//
 //}
+
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vPositionPriorVecBuffer(Item* aFindKey, Item* aPriorVec[],
+                                          EntryBuffer* pToBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+
+  ASSERT(0 != m_iBufferHeight);
+
+#ifdef USE_EB_LAZY_CHAIN
+  RASSERT( ! m_aLazyChain );
+#endif
+
+  /*
+
+   nb. duplicates are fully qualified by their ref'd buffer
+
+
+   when this function is called (findKey,toBuffer) is about to be inserted
+   into this buffer
+
+   the (findKey,toBuffer) doesnt yet exist in this buffer
+
+
+   x2?  [a2 y2]           ->  [a2 x2 y2]
+   [2]a [2]x [2]y        [2]a [2]x [2]y
+
+   */
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
+    aPriorVec[i_Offset] = aSkipRoots();
+
+  if (nItems() == 0)
+    return;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  bool bNextKeyIsGreater;
+  Item* aScanEntry_sl = aSkipRoots();
+
+  for (i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
+       i_ScanLevel >= 0;
+       i_ScanLevel--) {
+
+    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
+    while (aNextEntry_sl) {
+
+      //KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
+
+      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
+
+      //#ifdef USE_EB_SINGLE_COLIDX
+      //      if (m_pIndex->bSingleColumn()) {
+      //        bNextKeyIsGreater = aNextKey->bGreaterThanSingle(aFindKey,m_pIndex);
+      //        RASSERT(bNextKeyIsGreater == aNextKey->bGreaterThan(aFindKey,pIdxColVec));
+      //      }
+      //      else
+      //        bNextKeyIsGreater = aNextKey->bGreaterThan(aFindKey,pIdxColVec);
+      //#else
+      //      bNextKeyIsGreater = aNextKey->bGreaterThan(aFindKey,pIdxColVec);
+      //#endif
+
+      bNextKeyIsGreater = KeyData::bGreaterThan(aNextEntry_sl, aFindKey);
+
+      if (bNextKeyIsGreater)
+        break;
+
+      if (0 == i_ScanLevel) {
+        //bool bKeysAreEqual = aNextKey->bEqualTo(aFindKey,pIdxColVec);
+        bool bKeysAreEqual = KeyData::bEqualTo(aNextEntry_sl, aFindKey);
+
+        if (bKeysAreEqual &&
+            (pToBuffer == EntryBuffer::pRefdEntryBuffer(aNextEntry_sl)->pPrevBuffer()))
+          break;
+      }
+
+      aScanEntry_sl = aNextEntry_sl;
+      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
+    }
+    aPriorVec[i_ScanLevel] = aScanEntry_sl;
+  }
+}
 
 /*============================================================================*/
 /* end                                                                        */

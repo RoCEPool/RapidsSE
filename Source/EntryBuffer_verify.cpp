@@ -757,6 +757,7 @@ bool EntryBuffer::bVerifyKeyOrder(void)
     //bool bGreaterEqual = aKeyB->bGreaterEqual(aKeyA,pIdxColVec);
     bool bGreaterEqual = KeyData::bGreaterEqual(aNextEntry, aItem);
     if (! bGreaterEqual) {
+      vDump();
       vVerifyFault();
       return false;
     }
