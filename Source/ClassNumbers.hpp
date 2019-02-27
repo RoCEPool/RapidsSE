@@ -71,6 +71,8 @@ enum eCN : u2 // Class Number
   /*  42 0x2A    64024B Heap:I */ CN_GENVAR,
   /*  43 0x2B     1224B Heap:L */ CN_GRID,
   
+  /*                           */ CN_HASHBUFFER,
+  /*                           */ CN_HASHMAP,
   /*  44 0x2C       48B Heap:I */ CN_HEAPBUFFER,
   
   /*  45 0x2D      368B Heap:I */ CN_INDEX,
@@ -324,6 +326,8 @@ static Stz* aCN[]
   /*  42 0x2A */ "GENVAR"_Stz,              // CN_GENVAR
   /*  43 0x2B */ "GRID"_Stz,                // CN_GRID
   
+  /*          */ "HASHBUFFER"_Stz,          // CN_HASHBUFFER
+  /*          */ "HASHMAP"_Stz,             // CN_HASHMAP
   /*  44 0x2C */ "HEAPBUFFER"_Stz,          // CN_HEAPBUFFER
   
   /*  45 0x2D */ "INDEX"_Stz,               // CN_INDEX

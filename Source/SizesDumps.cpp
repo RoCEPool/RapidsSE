@@ -71,6 +71,8 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vInvalid,         // CN_GENVAR
   /* 48 */ &Grid::vDump,            // CN_GRID
 
+  /*    */ &Dump::vDummy,           // CN_HASHBUFFER
+  /*    */ &Dump::vDummy,           // CN_HASHMAP
   /* 50 */ &HeapBuffer::vDump,      // CN_HEAPBUFFER
   
   /* 51 */ &Dump::vDummy,           // CN_INDEX
@@ -328,6 +330,8 @@ i8 giClassSize[]
   /*    */ sizeof(GenVar),             // CN_GENVAR
   /* 48 */ sizeof(Grid),               // CN_GRID
   
+  /*    */ sizeof(HashBuffer),         // CN_HASHBUFFER
+  /*    */ sizeof(HashMap),            // CN_HASHMAP
   /* 50 */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
   
   /* 51 */ sizeof(Index),              // CN_INDEX
@@ -585,6 +589,8 @@ eHT geWhichHeap[]
   /*    */ HT_INVALID,           // CN_GENVAR
   /* 48 */ HT_TRANSIENT_LARGE,   // CN_GRID
 
+  /*    */ HT_TRANSIENT_LARGE,   // CN_HASHBUFFER
+  /*    */ HT_TRANSIENT_SMALL,   // CN_HASHMAP
   /* 50 */ HT_INVALID,           // CN_HEAPBUFFER
   
   /* 51 */ HT_INVALID,           // CN_INDEX

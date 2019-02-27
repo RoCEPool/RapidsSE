@@ -68,6 +68,8 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_GENVAR
   /* 48 */ &Finalize::vUndefined,         // CN_GRID
   
+  /*    */ &Finalize::vUndefined,         // CN_HASHBUFFER
+  /*    */ &Finalize::vUndefined,         // CN_HASHMAP
   /* 50 */ &Finalize::vUndefined,         // CN_HEAPBUFFER
   
   /* 51 */ &Index::vFinalize,             // CN_INDEX
