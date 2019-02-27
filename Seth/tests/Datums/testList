@@ -3,4 +3,4 @@ decimal.test
 float.test
 integer.test
 timestamp.test
-//varchar.test
+varchar.test
