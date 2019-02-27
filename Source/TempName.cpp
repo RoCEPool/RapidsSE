@@ -14,6 +14,10 @@ TempName::TempName(void)
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   
+  m_oSince.vNow();
+  
+  m_sClicker = "aaaaaaaa"_Stz;
+  
   _checkInitialised_(CN_SINCE);
   
   _postcondition_(_MAGIC_,CN_SINCE,_FOOTER_);
@@ -30,6 +34,18 @@ TempName::~TempName(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* generate next name                                                         */
+/*----------------------------------------------------------------------------*/
+void TempName::vNextName(s32& sName)
+{
+  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+  
+  sName.vSprint("%x_%s"_Stz,
+                m_oSince.iSeconds(),
+                m_sClicker.aStz());
+}
 
 
 /*----------------------------------------------------------------------------*/
