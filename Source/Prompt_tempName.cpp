@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Prompt_tempName.cpp -- show tempName                                             */
+/* Prompt_tempName.cpp -- show tempName                                       */
 /*============================================================================*/
 
 #include "Prompt.h"
@@ -26,10 +26,11 @@ bool Prompt::bPrompt_tempName(SePrompt* pPrompt)
 {
   s32 sName;
   
-  gpAttachMap->m_oTempName.vNextName(sName);
+  for (i8 n = 0; n < 1000; n++) {
+    gpAttachMap->m_oTempName.vNextName(sName);
+    vTrace("%s\n"_Stz,sName.aStz());
+  }
   
-  vTrace("%s\n"_Stz,sName.aStz());
-
   return true;
 }
 

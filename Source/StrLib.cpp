@@ -144,6 +144,27 @@ bool StrLib::bBackward(const char** ps, char* pBegin, const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* click arg                                                                  */
+/*----------------------------------------------------------------------------*/
+void StrLib::vClick(char* aArg)
+{
+  char* aChar = sLast(aArg);
+  
+  for (;;) {
+    
+    if ('z' == *aChar) {
+      *aChar = 'a';
+      aChar--;
+      continue;
+    }
+    
+    *aChar += 1;
+    break;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* iCompare: standard compare of the two args                                 */
 /*----------------------------------------------------------------------------*/
 i8 StrLib::iCompare(const char* pArg1, const char* pArg2)
