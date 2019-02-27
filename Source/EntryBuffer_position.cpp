@@ -253,7 +253,7 @@ void EntryBuffer::vPositionPriorVecEntry(Item* aFindKey, Item* aPriorVec[],
 //        [2]a [2]x [2]y        [2]a [2]x [2]y
 //
 //
-//
+//   Hn Buffer:
 //   +--+         +--+              +--+   ~   +--+
 //   |sr|     L2  |z2|              |0 |   ~   |sr|
 //   +--+         +--+        +--+  +--+   ~   +--+
@@ -261,7 +261,7 @@ void EntryBuffer::vPositionPriorVecEntry(Item* aFindKey, Item* aPriorVec[],
 //   +--+         +--+  +--+  +--+  +--+   ~   +--+
 //   |sr|     L0  |a2|  |y2|  |z2|  |0 |   ~   |y2|
 //   +--+         +--+  +--+  +--+  +--+   ~   +--+
-//    pv           sr    a2  ^ y2    z2    ~    pv
+//    pv           sr    a2  ^ y2    z2  ^ ~    pv
 //                          x2
 //
 //   */
@@ -297,6 +297,7 @@ void EntryBuffer::vPositionPriorVecEntry(Item* aFindKey, Item* aPriorVec[],
 //      bool bKeysAreEqual = KeyData::bEqualTo(aNextEntry_sl,aInsertingEntry);
 //      if (! bKeysAreEqual) {
 //        // haven't found key at this level yet, go right at this level
+//        aPriorVec[i_ScanLevel] = aPriorEntry_sl;
 //        aPriorEntry_sl = aNextEntry_sl;
 //        continue;
 //      }
@@ -305,13 +306,14 @@ void EntryBuffer::vPositionPriorVecEntry(Item* aFindKey, Item* aPriorVec[],
 //
 //      if (pRefdChildBuffer != pRefdEntryBuffer(aNextEntry_sl)->pPrevBuffer()) {
 //        // found key but haven't reached buffer, go right at this level
+//        aPriorVec[i_ScanLevel] = aPriorEntry_sl;
 //        aPriorEntry_sl = aNextEntry_sl;
 //        continue;
 //      }
 //
 //      // reached key & buffer at this level, insert at this level after prior entry
-//      aPriorVec[i_ScanLevel] = aPriorEntry_sl;
 //      // go down one level, same entry
+//      aPriorVec[i_ScanLevel] = aPriorEntry_sl;
 //      break;
 //
 //    } // while next entry
