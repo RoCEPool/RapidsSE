@@ -2686,9 +2686,10 @@ bool StrLib::bValidateMonth(i8 iDay, i8 iMonth, i8 iYear)
 /*----------------------------------------------------------------------------*/
 /* flip the bytes in each word of src string into dst                         */
 /*----------------------------------------------------------------------------*/
-void StrLib::vWordFlip(char* aDst, char* aSrc)
+i8 StrLib::iWordFlip(char* aDst, char* aSrc)
 {
   i8 iLenSrc  = iLength(aSrc);
+  //vTrace("Flipping %s\n"_Stz, aSrc);
   
   i8 iRoundUp = 0;
   i8 iRemainder = iLenSrc % C_BYTES_PER_WORD;
@@ -2700,14 +2701,58 @@ void StrLib::vWordFlip(char* aDst, char* aSrc)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  i8 iSrcLen = StrLib::iSize(aSrc);
+  MemLib::vZero(aDst,iDstSize,CN_KEY);
+  MemLib::vCopy(aDst, aSrc, iSrcLen, CN_KEY);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  w8* aWrd = (w8*)aDst;
+  for (i8 nWords = iDstSize / C_BYTES_PER_WORD; nWords; nWords--)
+    MemLib::vWordFlip(aWrd++);
+  
+  if (iLenSrc == iDstSize) {
+     MemLib::vZero(aWrd,8,CN_KEY);
+    iDstSize += C_BYTES_PER_WORD;
+  }
+  
+  //MemLib::vDumpWords(aDst, iDstSize);
+  
+  return iDstSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* flip the bytes in each word of src string into dst                         */
+/*----------------------------------------------------------------------------*/
+i8 StrLib::iWordFlipBack(char* aDst, char* aSrc)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //vTrace("WORDFLIPBACK\n"_Stz);
+  //MemLib::vDumpWords(aSrc, 16);
+  
+  i8 iLenSrc = StrLib::iSize(aSrc);
+  i8 iDstLen = 0;
+  
+  i8 iRoundUp = 0;
+  i8 iRemainder = iLenSrc % C_BYTES_PER_WORD;
+  if (iRemainder)
+    iRoundUp = C_BYTES_PER_WORD - iRemainder;
+  
+  i8 iDstSize = iLenSrc + iRoundUp;
+  ASSERT(0 == iDstSize % C_BYTES_PER_WORD);
+  
   MemLib::vZero(aDst,iDstSize,CN_KEY);
   MemLib::vCopy(aDst, aSrc, iDstSize, CN_KEY);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   w8* aWrd = (w8*)aDst;
   for (i8 nWords = iDstSize / C_BYTES_PER_WORD; nWords; nWords--)
     MemLib::vWordFlip(aWrd++);
+  
+  
+  //vTrace("AFTER BACK : %s\n"_Stz, aDst);
+  //MemLib::vDumpWords(aDst, iDstSize);
+  
+  return iDstLen;
 }
 
 /*============================================================================*/

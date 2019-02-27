@@ -194,7 +194,8 @@ namespace Base
   
     static bool  bValidateMonth(i8 iDay, i8 iMonth, i8 iYear);
 
-    static void  vWordFlip(char* aDst, char* aSrc);
+    static i8    iWordFlip(char* aDst, char* aSrc);
+    static i8    iWordFlipBack(char* aDst, char* aSrc);
   };
   
 }
