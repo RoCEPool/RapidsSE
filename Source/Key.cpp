@@ -130,8 +130,16 @@ eKC KeyData::eCompare(Item* aKeyItem1, KeyWrk& xKeyItem2)
   
   i8 iCmp = MemLib::iCompareWords(aCursorThis, aCursorThat, iCmpBytes);
   
-  if (iCmp == 0)
-    return KC_SAME;
+  if (iCmp == 0) {
+    if (nKeySize1 == nKeySize2)
+      return KC_SAME;
+    
+    if (nKeySize1 < nKeySize2)
+      return KC_BEFORE;
+    
+    if (nKeySize1 > nKeySize2)
+      return KC_AFTER;
+  }
   
   if (iCmp < 0)
     return KC_BEFORE;
@@ -302,7 +310,7 @@ void KeyData::vShow(IdxColVec* pIdxColVec, bool bCompressed)
   
   char* aCursor = aByteSequence();
   
-  char caLiteral[64];
+  char caLiteral[128];
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
@@ -311,7 +319,11 @@ void KeyData::vShow(IdxColVec* pIdxColVec, bool bCompressed)
     char* aDatum = this->aEachDatum(pColumn,nBytes,&aCursor);
     
     eDM eDatum = pColumn->eDatumType();
-    if (bCompressed)
+    
+    if (eDatum == DM_VCH) {
+      nBytes = StrLib::iWordFlipBack(caLiteral, aDatum);
+    }
+    else if (bCompressed)
       DtmLib::vSprintVLQ(eDatum,(Stz*)caLiteral,(Stz*)aDatum,pColumn);
     else
       DtmLib::vSprint(eDatum,(Stz*)caLiteral,(Stz*)aDatum,pColumn);

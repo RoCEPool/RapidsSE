@@ -149,7 +149,8 @@ void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters)
     }
       
     case DM_VCH:
-      nBytes = Vch::nCopy(pDst,pSrc);
+      //nBytes = Vch::nCopy(pDst,pSrc);
+      nBytes = StrLib::iWordFlip(pDst, pSrc);
       break;
       
     default:
@@ -172,12 +173,14 @@ void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol)
   char* aDst = aLatter();
   char* aSrc;
   
-  if (DM_VCH == pCol->eDatumType())
+  if (DM_VCH == pCol->eDatumType()) {
     aSrc = (char*)(_aStrVal(xVariable.aNestedValue())->aStz());
-  else
+    nBytes = StrLib::iWordFlip(aDst, aSrc);
+  }
+  else {
     aSrc = aAdd<char*>(xVariable.aNestedValue(),sizeof(Value));
-  
-  nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,aSrc);
+    nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,aSrc);
+  }
   
   vTake(nBytes);
 }
