@@ -343,11 +343,11 @@ void SePrompt::vDumpTokenVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  s256 sCommand;
-  TokenVec* pTknVec = this->pTknVec();
-
-  pTknVec->vToString(sCommand);
-  vTrace("Command %lld tokens: %s\n"_Stz,pTknVec->nTokens(),sCommand.aStz());
+//  s256 sCommand;
+//  TokenVec* pTknVec = this->pTknVec();
+//
+//  pTknVec->vToString(sCommand);
+//  vTrace("Command %lld tokens: %s\n"_Stz,pTknVec->nTokens(),sCommand.aStz());
 }
 
 /*----------------------------------------------------------------------------*/
