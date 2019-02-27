@@ -203,6 +203,8 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("CN_GENVAR"_Stz,       CN_GENVAR);
   /* 26 */ vAddConstant("CN_GRID"_Stz,         CN_GRID);
   
+  /* 27 */ vAddConstant("CN_HASHBUFFER"_Stz,   CN_HASHBUFFER);
+  /* 27 */ vAddConstant("CN_HASHMAP"_Stz,      CN_HASHMAP);
   /* 27 */ vAddConstant("CN_HEAPBUFFER"_Stz,   CN_HEAPBUFFER);
   
   /* 28 */ vAddConstant("CN_INDEX"_Stz,        CN_INDEX);
@@ -340,6 +342,7 @@ void Axioms::vAddConstants(void)
   /* 72 */ vAddConstant("CN_TASK"_Stz,         CN_TASK);
   /*    */ vAddConstant("CN_TASKLIST"_Stz,     CN_TASKLIST);
   /*    */ vAddConstant("CN_TASKQUEUE"_Stz,    CN_TASKQUEUE);
+  /*    */ vAddConstant("CN_TEMPNAME"_Stz,     CN_TEMPNAME);
   /* 76 */ vAddConstant("CN_THREAD"_Stz,       CN_THREAD);
   /* 79 */ vAddConstant("CN_TIME"_Stz,         CN_TIME);
   /* 80 */ vAddConstant("CN_TIMER"_Stz,        CN_TIMER);

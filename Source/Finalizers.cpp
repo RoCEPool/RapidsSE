@@ -242,6 +242,7 @@ pFINALIZE *gpFinalize[]
   /*131 */ &Finalize::vUndefined,         // CN_TASK
   /*134 */ &Finalize::vUndefined,         // CN_TASKLIST
   /*    */ &Finalize::vUndefined,         // CN_TASKQUEUE
+  /*    */ &Finalize::vUndefined,         // CN_TEMPNAME
   /*137 */ &Finalize::vUndefined,         // CN_THREAD
   /*    */ &Finalize::vUndefined,         // CN_THREADVEC
   /*141 */ &Finalize::vUndefined,         // CN_TIME
