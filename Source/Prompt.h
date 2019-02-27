@@ -92,6 +92,7 @@ using namespace Prompt;
 
 #include "Prompt_se.hpp"
 #include "Prompt_shell.hpp"
+#include "Prompt_since.hpp"
 #include "Prompt_sizes.hpp"
 #include "Prompt_sleep.hpp"
 #include "Prompt_sleepers.hpp"
