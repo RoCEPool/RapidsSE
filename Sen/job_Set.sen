@@ -102,6 +102,7 @@
 "job_VisualizeIndex.sen" include
 
 "job_WaitCluster.sen" include
+"job_Walk.sen" include
 "job_WriteBuffer.sen" include
 "job_WriteRow.sen" include
 

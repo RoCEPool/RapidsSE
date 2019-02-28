@@ -1,0 +1,204 @@
+/*============================================================================*/
+/* job_Walk.sen -- Job Walk                                                   */
+/*============================================================================*/
+
+" job_Walk.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* walk table request (on originating node)                                   */
+/*----------------------------------------------------------------------------*/
+: walk_req ( -- <R> )
+
+  >>am <SEED_REQ>
+
+  0 0 locals| pJob pTask |
+
+  tp: walk
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pJob job.distribute
+
+  <<am <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_Walk job on a node                                    */
+/*----------------------------------------------------------------------------*/
+: walk_exe ( Job_Walk -- )
+
+  >>am <SEED_EXE>
+
+  //params| pJob_Walk |
+  job::this locals| pJob_Walk |
+
+  0 0 locals| sTableNm pThisTask |
+
+  tp: walk_exe
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_TRUNCATETABLE pJob_Walk object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pThisTask
+  //pJob_Walk pThisTask "walk_exe task: %v Job_Walk %v" fmt.print
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set task's dictionary stack from path in job
+  pJob_Walk job.pushPath
+  task::dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab this task's lock
+  pThisTask task.grabLock
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the acks
+  grid::slots task::acks!
+
+  grid::slots 0
+  do
+    //I "Creating Job_SubTruncate %v" fmt.print
+    I pJob_Walk job_walk.spawnSub
+  loop
+
+  //"walk ack waiting" .
+  task::wait
+  //"walk acked" .
+
+  pJob_Walk job.notice
+
+  pJob_Walk send_job__executed
+
+  <<am <DONE_EXE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_Walk job check resources                              */
+/*----------------------------------------------------------------------------*/
+: walk.checkResources ( Job_Walk -- )
+
+  >>am <Check_Resources>
+
+  params| pJob_Walk  |
+  0 locals| sTableNm |
+
+  tp: walk.checkResources
+  //checkResources received" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set task's dictionary stack from path in job
+  pJob_Walk job.pushPath
+  task::dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the tables folder
+  checkInTables not if pJob_Walk <ERROR_JOB> !!am exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // there should be a table folder
+  pJob_Walk job.objectName@ to sTableNm
+  sTableNm checkIsTableFolder not if pJob_Walk <ERROR_JOB> !!am exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check it is a table
+  sTableNm checkIsTable not if popTable pJob_Walk <ERROR_JOB> !!am exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table dictionary
+  popTable
+
+  <<am <Resources_Checked>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_walk job release resources                            */
+/*----------------------------------------------------------------------------*/
+: walk.releaseResources ( Job_Walk -- )
+
+  >>am <Release_Resources>
+
+  params| pJob_Walk  |
+
+  tp: walk.releaseResources
+  //releaseResources received" .
+
+  <<am <Resources_Released>
+;
+
+/*----------------------------------------------------------------------------*/
+/* begin job                                                                  */
+/*----------------------------------------------------------------------------*/
+: walk_beg ( -- )
+
+  >>am <SEED_BEG>
+
+  job::this locals| pJob_walk |
+
+  pJob_walk job.beginParticipant
+
+  // check resources
+  pJob_walk walk.checkResources
+
+  job::participantBegun
+
+  <<am <DONE_BEG>
+;
+
+/*----------------------------------------------------------------------------*/
+/* end job                                                                    */
+/*----------------------------------------------------------------------------*/
+: walk_end ( -- )
+
+  >>am <SEED_END>
+
+  job::this locals| pJob_walk |
+
+  pJob_walk walk.releaseResources
+
+  job::participantEnded
+
+  <<am <DONE_END>
+;
+
+/*----------------------------------------------------------------------------*/
+/* cancel job                                                                 */
+/*----------------------------------------------------------------------------*/
+: walk_can ( -- )
+
+  >>am <SEED_CAN>
+
+  job::this locals| pJob_walk |
+
+  pJob_walk walk.releaseResources
+
+  job::participantCancelled
+
+  <<am <DONE_CAN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
