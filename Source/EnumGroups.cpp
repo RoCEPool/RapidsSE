@@ -18,6 +18,7 @@ Stz* EnumGroups::szEnumText(i8 iEnumGroup, i8 i_Enum)
     case _EG_CN: return aCN[i_Enum];
     case _EG_CT: return aCT[i_Enum];
     case _EG_DC: return aDC[i_Enum];
+    case _EG_DL: return aDL[i_Enum];
     case _EG_DM: return aDM[i_Enum];
     case _EG_DS: return aDS[i_Enum];
     case _EG_EC: return aEC[i_Enum];
