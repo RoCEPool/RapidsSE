@@ -64,6 +64,50 @@ void JobClass::vDeleteJob(Interface::Session* pSession, Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop ddl lock                                                              */
+/*----------------------------------------------------------------------------*/
+void JobClass::vDropDdlLock(void)
+{
+  switch (m_eDdlLock) {
+    case DL_NONE:
+      vFatal("No ddl lock specified for job class: %s\n"_Stz,aCN[m_eClass]);
+      
+    case DL_GRAB_READ:
+      gpAttachMap->m_okDdlLock.vDropRead();
+      break;
+      
+    case DL_GRAB_WRITE:
+      gpAttachMap->m_okDdlLock.vDropWrite();
+      break;
+      
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab ddl lock                                                              */
+/*----------------------------------------------------------------------------*/
+void JobClass::vGrabDdlLock(void)
+{
+  switch (m_eDdlLock) {
+    case DL_NONE:
+      vFatal("No ddl lock specified for job class: %s\n"_Stz,aCN[m_eClass]);
+      
+    case DL_GRAB_READ:
+      gpAttachMap->m_okDdlLock.vGrabRead();
+      break;
+      
+    case DL_GRAB_WRITE:
+      gpAttachMap->m_okDdlLock.vGrabWrite();
+      break;
+      
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* end the job by running the post-function                                   */
 /*----------------------------------------------------------------------------*/
 void JobClass::vPostJob(Interface::Session* pSession, Job* pJob)

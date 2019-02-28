@@ -64,6 +64,8 @@ namespace Jobs
     public:
       eEC  eCheckJob(Interface::Session* pSession);
       void vDeleteJob(Interface::Session* pSession, Job* pJob);
+      void vDropDdlLock(void);
+      void vGrabDdlLock(void);
       Job* pNewJob(Job* pJob);
       void vPostJob(Interface::Session* pSession, Job* pJob);
       Job* pPreJob(Interface::Session* pSession);
