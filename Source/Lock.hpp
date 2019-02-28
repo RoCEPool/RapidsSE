@@ -38,11 +38,12 @@ namespace System
   /* 23 */ LK_TASK,
   /* 24 */ LK_TASK_QUEUE,
   /* 25 */ LK_TASK_SET,
-  /* 26 */ LK_THREAD_VECTOR,
-  /* 27 */ LK_TRACE,
-  /* 28 */ LK_TX_SET,
-  /* 29 */ LK_UNKNOWN,
-  /* 30 */ LK_ENUMS
+  /* 26 */ LK_TEMP_NAME,
+  /* 27 */ LK_THREAD_VECTOR,
+  /* 28 */ LK_TRACE,
+  /* 29 */ LK_TX_SET,
+  /* 30 */ LK_UNKNOWN,
+  /* 31 */ LK_ENUMS
   };
   
   static Stz* aLK[]
@@ -73,11 +74,12 @@ namespace System
   /* 23 */ "TASK"_Stz,
   /* 24 */ "TASK_QUEUE"_Stz,
   /* 25 */ "TASK_SET"_Stz,
-  /* 26 */ "THREAD_VECTOR"_Stz,
-  /* 27 */ "TRACE"_Stz,
-  /* 28 */ "TX_SET"_Stz,
-  /* 29 */ "UNKNOWN"_Stz,
-  /* 30 */ "ENUMS"_Stz
+  /* 26 */ "TEMP_NAME"_Stz,
+  /* 27 */ "THREAD_VECTOR"_Stz,
+  /* 28 */ "TRACE"_Stz,
+  /* 29 */ "TX_SET"_Stz,
+  /* 30 */ "UNKNOWN"_Stz,
+  /* 31 */ "ENUMS"_Stz
   };
 
   class Lock : public Object

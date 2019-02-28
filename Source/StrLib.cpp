@@ -157,7 +157,12 @@ void StrLib::vClick(char* aArg)
       aChar--;
       continue;
     }
-    
+    if ('Z' == *aChar) {
+      *aChar = 'A';
+      aChar--;
+      continue;
+    }
+
     *aChar += 1;
     break;
   }

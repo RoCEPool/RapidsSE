@@ -8,6 +8,7 @@ namespace System
   class TempName : public Object
   {
   public:
+    Lock  m_okLock;
     Since m_oSince;
     s32   m_sClicker;
   

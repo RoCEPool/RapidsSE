@@ -14,6 +14,8 @@ TempName::TempName(void)
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   
+  m_okLock.vInitLock(LK_TEMP_NAME);
+  
   m_oSince.vNow();
   
   m_sClicker = "aaaaaaaa"_Stz;
@@ -42,11 +44,15 @@ void TempName::vNextName(s32& sName)
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   
-  sName.vSprint("%x_%s"_Stz,
-                m_oSince.iSeconds(),
-                m_sClicker.aStz());
+  m_okLock.vGrabWrite();
+  
+  sName.vSprint("%s_%x"_Stz,
+                m_sClicker.aStz(),
+                m_oSince.iSeconds());
   
   StrLib::vClick(m_sClicker.aChar());
+  
+  m_okLock.vDropWrite();
 }
 
 
