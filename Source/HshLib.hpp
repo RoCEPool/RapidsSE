@@ -3,12 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-namespace Structures
+namespace Datums
 {
   class HshLib
   {
   public:
-    i8 iHash(void* aAddr, i8 nBytes);
+    static i8 iHash(void* aAddr, i8 nBytes);
   };
 }
 

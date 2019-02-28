@@ -170,19 +170,19 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Stz* aScr)
       
     case DM_BOL: {
       Bol xBol = *((Bol*)aScr);
-      iHash += XXH32(&xBol,sizeof(Bol),0);
+      iHash += HshLib::iHash(&xBol,sizeof(Bol));
       break;
     }
       
     case DM_DTE: {
       Dte xDte = *((Dte*)aScr);
-      iHash += XXH32(&xDte,sizeof(Dte),0);
+      iHash += HshLib::iHash(&xDte,sizeof(Dte));
       break;
     }
       
     case DM_BCD: {
       Bcd xBcd = *((Bcd*)aScr);;
-      iHash += XXH32(&xBcd,sizeof(Bcd),0);
+      iHash += HshLib::iHash(&xBcd,sizeof(Bcd));
       break;
     }
       
@@ -190,31 +190,31 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Stz* aScr)
       Flt xFlt = *((Flt*)aScr);
       //bool b = Flt::bExtract((char*)aScr,&xFlt,iLength,pColumn);
       //ASSERT(b);
-      iHash += XXH32(&xFlt,sizeof(Flt),0);
+      iHash += HshLib::iHash(&xFlt,sizeof(Flt));
       break;
     }
       
     case DM_INT: {
       Int xInt = *((Int*)aScr);
-      iHash += XXH32(&xInt,sizeof(Int),0);
+      iHash += HshLib::iHash(&xInt,sizeof(Int));
       break;
     }
       
     case DM_IVL: {
       Ivl xIvl = *((Ivl*)aScr);
-      iHash += XXH32(&xIvl,sizeof(Ivl),0);
+      iHash += HshLib::iHash(&xIvl,sizeof(Ivl));
       break;
     }
       
     case DM_TME: {
       Tme xTme = *((Tme*)aScr);
-      iHash += XXH32(&xTme,sizeof(Tme),0);
+      iHash += HshLib::iHash(&xTme,sizeof(Tme));
       break;
     }
       
     case DM_TSP: {
       Tsp xTsp = *((Tsp*)aScr);
-      iHash += XXH32(&xTsp,sizeof(Tsp),0);
+      iHash += HshLib::iHash(&xTsp,sizeof(Tsp));
       break;
     }
       
@@ -224,7 +224,7 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Stz* aScr)
     }
       
     case DM_VCH: {
-      iHash += XXH32((char*)aScr,StrLib::iSize((char*)aScr),0);
+      iHash += HshLib::iHash((char*)aScr,StrLib::iSize((char*)aScr));
       break;
     }
       
