@@ -135,8 +135,13 @@ void JobClass::vShowJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void JobClass::vJobCat(void)
 {
-  s32 sFunctions(""_Stz);
+  s32 sDdlLock("-"_Stz);
   
+  if (DL_NONE != m_eDdlLock)
+    sDdlLock = aDL[m_eDdlLock];
+  
+  s32 sFunctions(""_Stz);
+
   sFunctions.vConcat(m_fpCheck  ? "c"_Stz : " "_Stz);
   sFunctions.vConcat(m_fpPre    ? "p"_Stz : " "_Stz);
   sFunctions.vConcat(m_fpPost   ? "P"_Stz : " "_Stz);
@@ -164,13 +169,14 @@ void JobClass::vJobCat(void)
   s32 sSeedCan(m_aSeedCan ? m_aSeedCan : "-"_Stz);
   sSeedCan.vConcat(m_bSeedsSpawned[SS_SEED_CAN] ? "+"_Stz : " "_Stz);
   
-  vTrace("%20s %10lld %20s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
+  vTrace("%20s %10lld %20s %10s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
          
          aCN[m_eClass],
          giClassSize[m_eClass],
          m_aName,
          sFunctions.aStz(),
          aJK[m_eKind],
+         sDdlLock.aStz(),
          m_aComment,
          
          m_bResources ? "chk/rel"_Stz : "-"_Stz,
@@ -190,13 +196,14 @@ void JobClass::vJobCat(void)
 /*----------------------------------------------------------------------------*/
 void JobClass::vJobCatHeader(void)
 {
-  vTrace("%20s %10s %20s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
+  vTrace("%20s %10s %20s %10s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
          
          "eClass"_Stz,
          "SizeOf"_Stz,
          "Job Name"_Stz,
          "Functions"_Stz,
          "Kind"_Stz,
+         "Ddl Lock"_Stz,
          "Comment"_Stz,
          
          "Resources"_Stz,
@@ -211,13 +218,13 @@ void JobClass::vJobCatHeader(void)
   s32 sBar10 = "----------"_Stz;
   s32 sBar20 = "--------------------"_Stz;
   
-  vTrace("%20s %10s %20s %10s %10s %20s : "
+  vTrace("%20s %10s %20s %10s %10s %10s %20s : "
          "%10s %20s %20s %20s %20s %20s %20s\n"_Stz,
          
          sBar20.aStz(),sBar10.aStz(),sBar20.aStz(),sBar10.aStz(),
-         sBar10.aStz(),sBar20.aStz(),sBar10.aStz(),
+         sBar10.aStz(),sBar10.aStz(),sBar20.aStz(),
          
-         sBar20.aStz(),sBar20.aStz(),sBar20.aStz(),
+         sBar10.aStz(),sBar20.aStz(),sBar20.aStz(),sBar20.aStz(),
          sBar20.aStz(),sBar20.aStz(),sBar20.aStz()
          );
   
