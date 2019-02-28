@@ -25,6 +25,7 @@ namespace Data
     void vAddKey(KeyData* aKey, IdxColVec* pColVec);
     void vAddWord(w8 wWord);
     void vExtractKey(Item* aRowEntry, IdxColVec* pIdxColVec);
+    i8   iHashKey(void);
     KeyData* aKey(void);
     i8   nKeySize(void);
     void vKeySize(i8 nKeySize);

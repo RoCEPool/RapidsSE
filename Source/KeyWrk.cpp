@@ -340,6 +340,18 @@ void KeyWrk::vExtractKey(Item* aRowEntry, IdxColVec* pIdxColVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compute hash of key                                                        */
+/*----------------------------------------------------------------------------*/
+i8 KeyWrk::iHashKey(void)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  
+  i8 iHash = HshLib::iHash(aKey(),nKeySize());
+  
+  return iHash;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get wsp area as key                                                        */
 /*----------------------------------------------------------------------------*/
 KeyData* KeyWrk::aKey(void)
