@@ -14,7 +14,7 @@ JobClass xJobClass_SubWalker =
   "Job_SubWalker"_Stz,       // name of the job class
   CN_JOB_SUBWALKER,          // class enum
   JK_CHILD,                  // job kind
-  "table sub-truncate"_Stz,  // comment about the job
+  "sub-walker"_Stz,          // comment about the job
   nullptr,                   // the prompt command
   nullptr,                   // the second word
   "subTruncate_run"_Stz,     // the _run task seed

@@ -12,9 +12,9 @@ extern AttachMap* gpAttachMap;
 JobClass xJobClass_Walk =
 {
   "Job_Walk"_Stz,            // name of the job class
-  CN_JOB_WALK,      // class enum
+  CN_JOB_WALK,               // class enum
   JK_DIST2PC,                // job kind
-  "truncate table"_Stz,      // comment about the job
+  "walk"_Stz,                // comment about the job
   "tr"_Stz,                  // the prompt command
   nullptr,                   // the second word
   nullptr,                   // the _run task seed
@@ -51,7 +51,7 @@ JobClass xJobClass_Walk =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Walk_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_UseSchema_class;
+  *pNextFun = (pFUN*)pJob_WriteBuffer_class;
   
   return &xJobClass_Walk;
 }

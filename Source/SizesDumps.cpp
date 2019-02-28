@@ -426,14 +426,14 @@ i8 giClassSize[]
   /*    */ sizeof(Job_SubPublish),     // CN_JOB_SUBPUBLISH
   /*    */ sizeof(Job_SubPurger),      // CN_JOB_SUBPURGER
   /*    */ sizeof(Job_SubTruncate),    // CN_JOB_SUBTRUNCATE
-  /*    */ 0,    // CN_JOB_SUBWALKER
+  /*    */ sizeof(Job_SubWalker),      // CN_JOB_SUBWALKER
   /*    */ sizeof(Job_TableSizes),     // CN_JOB_TABLESIZES
   /*    */ sizeof(Job_TruncateTable),  // CN_JOB_TRUNCATETABLE
   /*    */ sizeof(Job_UseSchema),      // CN_JOB_USESCHEMA
   /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VERIFYINDEX
   /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VISUALIZEINDEX
   /*    */ sizeof(Job_WaitCluster),    // CN_JOB_WAITCLUSTER
-  /*    */ 0,    // CN_JOB_WALK
+  /*    */ sizeof(Job_Walk),           // CN_JOB_WALK
   /*    */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
   /*    */ sizeof(Job_KidExport),      // CN_JOB_WRITERECORD
   /*    */ sizeof(Job_WriteRow),       // CN_JOB_WRITEROW
@@ -510,7 +510,7 @@ i8 giClassSize[]
   /*131 */ sizeof(Task),               // CN_TASK
   /*    */ sizeof(TaskList),           // CN_TASKLIST
   /*134 */ sizeof(TaskQueue),          // CN_TASKQUEUE
-  /*134 */ 0,          // CN_TEMPNAME
+  /*134 */ sizeof(TempName),           // CN_TEMPNAME
   /*137 */ sizeof(Thread),             // CN_THREAD
   /*    */ sizeof(ThreadVec),          // CN_THREADVEC
   /*141 */ sizeof(Time),               // CN_TIME

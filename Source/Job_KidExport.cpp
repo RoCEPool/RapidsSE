@@ -49,7 +49,7 @@ JobClass xJobClass_WriteRecord =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_KidExport_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WriteRow_class;
+  *pNextFun = (pFUN*)pJob_Lf_class;
   
   return &xJobClass_WriteRecord;
 }

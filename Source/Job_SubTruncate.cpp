@@ -51,7 +51,7 @@ JobClass xJobClass_SubTruncate =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_SubTruncate_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_TableSizes_class;
+  *pNextFun = (pFUN*)pJob_SubWalker_class;
   
   return &xJobClass_SubTruncate;
 }
