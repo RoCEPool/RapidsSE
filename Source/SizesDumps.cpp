@@ -164,12 +164,14 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_SUBPUBLISH
   /*    */ &Dump::vDummy,           // CN_JOB_SUBPURGER
   /*    */ &Dump::vDummy,           // CN_JOB_SUBTRUNCATE
+  /*    */ &Dump::vDummy,           // CN_JOB_SUBWALKER
   /*    */ &Dump::vDummy,           // CN_JOB_TABLESIZES
   /*    */ &Dump::vDummy,           // CN_JOB_TRUNCATETABLE
   /*    */ &Dump::vDummy,           // CN_JOB_USESCHEMA
   /*    */ &Dump::vDummy,           // CN_JOB_VERIFYINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_VISUALIZEINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_WAITCLUSTER
+  /*    */ &Dump::vDummy,           // CN_JOB_WALK
   /*    */ &Dump::vDummy,           // CN_JOB_WRITEBUFFER
   /*    */ &Dump::vDummy,           // CN_JOB_WRITERECORD
   /*    */ &Dump::vDummy,           // CN_JOB_WRITEROW
@@ -424,14 +426,16 @@ i8 giClassSize[]
   /*    */ sizeof(Job_SubPublish),     // CN_JOB_SUBPUBLISH
   /*    */ sizeof(Job_SubPurger),      // CN_JOB_SUBPURGER
   /*    */ sizeof(Job_SubTruncate),    // CN_JOB_SUBTRUNCATE
+  /*    */ 0,    // CN_JOB_SUBWALKER
   /*    */ sizeof(Job_TableSizes),     // CN_JOB_TABLESIZES
   /*    */ sizeof(Job_TruncateTable),  // CN_JOB_TRUNCATETABLE
   /*    */ sizeof(Job_UseSchema),      // CN_JOB_USESCHEMA
   /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VERIFYINDEX
   /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VISUALIZEINDEX
   /*    */ sizeof(Job_WaitCluster),    // CN_JOB_WAITCLUSTER
+  /*    */ 0,    // CN_JOB_WALK
   /*    */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
-  /*    */ sizeof(Job_KidExport),    // CN_JOB_WRITERECORD
+  /*    */ sizeof(Job_KidExport),      // CN_JOB_WRITERECORD
   /*    */ sizeof(Job_WriteRow),       // CN_JOB_WRITEROW
   
   /*    */ sizeof(JobList),            // CN_JOBLIST
@@ -684,12 +688,14 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBPUBLISH
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBPURGER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBTRUNCATE
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBWALKER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_TABLESIZES
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_TRUNCATETABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_USESCHEMA
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_VERIFYINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_VISUALIZEINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WAITCLUSTER
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WALK
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEBUFFER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITERECORD
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEROW

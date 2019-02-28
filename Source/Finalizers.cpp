@@ -160,12 +160,14 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBPUBLISH
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBPURGER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBTRUNCATE
+  /*    */ &Finalize::vUndefined,         // CN_JOB_SUBWALKER
   /*    */ &Finalize::vUndefined,         // CN_JOB_TABLESIZES
   /*    */ &Finalize::vUndefined,         // CN_JOB_TRUNCATETABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_USESCHEMA
   /*    */ &Finalize::vUndefined,         // CN_JOB_VERIFYINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_VISUALIZEINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_WAITCLUSTER
+  /*    */ &Finalize::vUndefined,         // CN_JOB_WALK
   /*    */ &Finalize::vUndefined,         // CN_JOB_WRITEBUFFER
   /*    */ &Finalize::vUndefined,         // CN_JOB_WRITERECORD
   /*    */ &Finalize::vUndefined,         // CN_JOB_WRITEROW
