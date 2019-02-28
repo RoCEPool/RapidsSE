@@ -1055,7 +1055,7 @@ void EntryBuffer::vRestoreIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  RASSERT( ! m_pIndex );
+  //RASSERT( ! m_pIndex );
   m_pIndex = pIndex;
 }
 
