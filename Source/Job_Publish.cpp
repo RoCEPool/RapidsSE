@@ -27,7 +27,7 @@ JobClass xJobClass_Publish =
   false,                 // detached job?
   false,                 // buffer attached?
   JT_NONE,               // job trace
-  DL_NONE,               // ddl lock model
+  DL_GRAB_READ,          // ddl lock model
 
   eJob_checkCluster,     // prompt check function
   pJob_Publish_pre,      // prompt pre-process function

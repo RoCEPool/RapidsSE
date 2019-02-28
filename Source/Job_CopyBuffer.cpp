@@ -12,9 +12,9 @@ extern AttachMap* gpAttachMap;
 JobClass xJobClass_CopyBuffer =
 {
   "Job_CopyBuffer"_Stz,     // name of the job class
-  CN_JOB_COPYBUFFER,       // class enum
+  CN_JOB_COPYBUFFER,        // class enum
   JK_LOCAL,                 // job kind
-  "copy recordBuffer"_Stz,  // comment about the job
+  "copy buffer"_Stz,        // comment about the job
   ""_Stz,                   // the prompt command
   ""_Stz,                   // the second word
   nullptr,                  // the _run task seed

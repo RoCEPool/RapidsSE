@@ -27,7 +27,7 @@ JobClass xJobClass_UseSchema =
   false,                 // detached job?
   false,                 // buffer attached?
   JT_NONE,               // job trace
-  DL_NONE,               // ddl lock model
+  DL_GRAB_READ,          // ddl lock model
 
   nullptr,               // prompt check function
   pJob_UseSchema_pre,    // prompt pre-process function

@@ -33,7 +33,7 @@ JobClass xJobClass_LoadTable =
   false,                  // detached job?
   false,                  // buffer attached?
   JT_NONE,                // job trace
-  DL_NONE,                // ddl lock model
+  DL_GRAB_READ,           // ddl lock model
 
   eJob_checkCluster,      // prompt check function
   pJob_LoadTable_pre,     // prompt pre-process function

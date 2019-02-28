@@ -27,7 +27,7 @@ void Step::vDdlLockDropRead(MP_Task mpTask)
   
   ASSERT(C_HAVE_READ_LOCK == mpTask->m_iDdlLocked);
   
-  //RASSERT(DL_NONE != mpTask->pJob()->m_pJobClass->m_eDdlLock);
+  RASSERT(DL_NONE != mpTask->pJob()->m_pJobClass->m_eDdlLock);
 
   gpAttachMap->m_okDdlLock.vDropRead();
   
@@ -67,7 +67,7 @@ void Step::vDdlLockGrabRead(MP_Task mpTask)
   
   ASSERT(! mpTask->m_iDdlLocked);
   
-  //RASSERT(DL_NONE != mpTask->pJob()->m_pJobClass->m_eDdlLock);
+  RASSERT(DL_NONE != mpTask->pJob()->m_pJobClass->m_eDdlLock);
 
   ActionSequence::vAdd(mpTask->pJob(),AN_DDL_GRAB_READ);
   gpAttachMap->m_okDdlLock.vGrabRead();
