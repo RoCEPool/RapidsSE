@@ -27,7 +27,7 @@ JobClass xJobClass_CreateTable =
   false,                  // detached job?
   false,                  // buffer attached?
   JT_NONE,                // job trace
-  DL_NONE,                // ddl lock model
+  DL_GRAB_WRITE,          // ddl lock model
 
   eJob_checkCluster,      // prompt check function
   pJob_CreateTable_pre,   // prompt pre-process function
