@@ -27,7 +27,8 @@ JobClass xJobClass_CreateIndex =
   false,                   // detached job?
   false,                   // buffer attached?
   JT_NONE,                 // job trace
-  
+  DL_NONE,                 // ddl lock model
+
   eJob_checkCluster,       // prompt check function
   pJob_CreateIndex_pre,    // prompt pre-process function
   vJob_CreateIndex_post,   // prompt post-process function
@@ -63,7 +64,8 @@ JobClass xJobClass_CreateIndexUnique =
   false,                   // detached job?
   false,                   // buffer attached?
   JT_NONE,                 // job trace
-  
+  DL_NONE,                 // ddl lock model
+
   eJob_checkCluster,       // prompt check function
   pJob_CreateIndex_pre,    // prompt pre-process function
   vJob_CreateIndex_post,   // prompt post-process function

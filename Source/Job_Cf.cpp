@@ -27,7 +27,8 @@ JobClass xJobClass_Cf =
   false,               // detached job?
   false,               // buffer attached?
   JT_NONE,             // job trace
-  
+  DL_NONE,             // ddl lock model
+
   eJob_checkCluster,   // prompt check function
   pJob_Cf_pre,         // prompt pre-process function
   vJob_Cf_post,        // prompt post-process function

@@ -27,7 +27,8 @@ JobClass xJobClass_SubTruncate =
   false,                     // detached job?
   false,                     // buffer attached?
   JT_NONE,                   // job trace
-  
+  DL_NONE,                   // ddl lock model
+
   nullptr,                   // prompt check function
   pJob_SubTruncate_pre,      // prompt pre-process function
   vJob_SubTruncate_post,     // prompt post-process function

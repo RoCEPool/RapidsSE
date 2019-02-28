@@ -25,15 +25,16 @@ JobClass xJobClass_WriteRecord =
   false,                  // detached job?
   true,                   // buffer attached?
   JT_NONE,                // job trace
-  
+  DL_NONE,                // ddl lock model
+
   nullptr,                // prompt check function
-  pJob_KidExport_pre,   // prompt pre-process function
+  pJob_KidExport_pre,     // prompt pre-process function
   nullptr,                // prompt post-process function
-  pJob_KidExport_new,   // job new function
-  vJob_KidExport_delete,// job delete function
+  pJob_KidExport_new,     // job new function
+  vJob_KidExport_delete,  // job delete function
   vJob_send,              // job pre-send function
   vJob_recv,              // job post-receive function
-  vJob_KidExport_show,  // job show function
+  vJob_KidExport_show,    // job show function
   
   // help and example
   false,

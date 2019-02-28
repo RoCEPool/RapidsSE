@@ -27,7 +27,8 @@ JobClass xJobClass_Periodic =
   false,                 // detached job?
   false,                 // buffer attached?
   JT_NONE,               // job trace
-  
+  DL_NONE,               // ddl lock model
+
   eJob_checkCluster,     // prompt check function
   nullptr,               // prompt pre-process function
   nullptr,               // prompt post-process function

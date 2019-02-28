@@ -7,17 +7,17 @@ namespace Jobs
 {
   enum eDL // ddl lock
   {
-  /* 0 */ DL_DDL_NONE=0,
-  /* 1 */ DL_DDL_READ,
-  /* 2 */ DL_DDL_WRITE,
-  /* 3 */ DL_DDL_ENUMS
+  /* 0 */ DL_NONE=0,
+  /* 1 */ DL_GRAB_READ,
+  /* 2 */ DL_GRAB_WRITE,
+  /* 3 */ DL_ENUMS
   };
   
   static Stz* aDL[]
   {
-  /* 0 */ "ddl_none"_Stz,
-  /* 1 */ "ddl_read"_Stz,
-  /* 2 */ "ddl_write"_Stz,
+  /* 0 */ "none"_Stz,
+  /* 1 */ "grab_read"_Stz,
+  /* 2 */ "grab_write"_Stz,
   /* 3 */ "enums"_Stz
   };
 
@@ -43,6 +43,7 @@ namespace Jobs
       bool m_bResources; // check resources?
       bool m_bBuffer;    // buffer attached?
       eJT  m_eTrace;     // job trace?
+      eDL  m_eDdlLock;   // ddl lock model
   
       eEC  (*m_fpCheck)(Interface::Session* pSession);
       Job* (*m_fpPre)(Interface::Session* pSession);

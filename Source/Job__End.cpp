@@ -25,7 +25,8 @@ JobClass xJobClass__End =
   false,                   // detached job?
   false,                   // buffer attached?
   JT_NONE,                 // job trace
-  
+  DL_NONE,                 // ddl lock model
+
   nullptr,                 // prompt check function
   nullptr,                 // prompt pre-process function
   nullptr,                 // prompt post-process function

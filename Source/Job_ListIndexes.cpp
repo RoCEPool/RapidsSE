@@ -27,7 +27,8 @@ JobClass xJobClass_ListIndexes =
   false,                  // detached job?
   false,                  // buffer attached?
   JT_NONE,                // job trace
-  
+  DL_NONE,                // ddl lock model
+
   eJob_checkCluster,      // prompt check function
   pJob_ListIndexes_pre,   // prompt pre-process function
   vJob_ListIndexes_post,  // prompt post-process function

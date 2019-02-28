@@ -31,7 +31,8 @@ JobClass xJobClass_WriteRow =
   false,               // detached job?
   true,                // buffer attached?
   JT_NONE,             // job trace
-  
+  DL_NONE,             // ddl lock model
+
   nullptr,             // prompt check function
   pJob_WriteRow_pre,   // prompt pre-process function
   nullptr,             // prompt post-process function

@@ -27,7 +27,8 @@ JobClass xJobClass_Pwf =
   false,                 // detached job?
   false,                 // buffer attached?
   JT_NONE,               // job trace
-  
+  DL_NONE,               // ddl lock model
+
   nullptr,               // prompt check function
   pJob_Pwf_pre,          // prompt pre-process function
   vJob_Pwf_post,         // prompt post-process function

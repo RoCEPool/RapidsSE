@@ -27,7 +27,8 @@ JobClass xJobClass_SubPublish =
   false,                  // detached job?
   false,                  // buffer attached?
   JT_NONE,                // job trace
-  
+  DL_NONE,                // ddl lock model
+
   nullptr,                // prompt check function
   pJob_SubPublish_pre,    // prompt pre-process function
   vJob_SubPublish_post,   // prompt post-process function

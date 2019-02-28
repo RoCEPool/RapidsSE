@@ -27,7 +27,8 @@ JobClass xJobClass_SizeTable =
   false,                 // detached job?
   false,                 // buffer attached?
   JT_NONE,               // job trace
-  
+  DL_NONE,               // ddl lock model
+
   eJob_checkCluster,     // prompt check function
   pJob_SizeTable_pre,    // prompt pre-process function
   vJob_SizeTable_post,   // prompt post-process function

@@ -27,7 +27,8 @@ JobClass xJobClass_ConnectCluster =
   false,                     // detached job?
   false,                     // buffer attached?
   JT_NONE,                   // job trace
-  
+  DL_NONE,                   // ddl lock model
+
   nullptr,                   // prompt check function
   pJob_ConnectCluster_pre,   // prompt pre-process function
   vJob_ConnectCluster_post,  // prompt post-process function
