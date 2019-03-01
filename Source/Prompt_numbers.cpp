@@ -33,9 +33,9 @@ bool Prompt::bPrompt_numbers(SePrompt* pPrompt)
   vTrace("  C_SCRIBBLE_PATTERN = 0x%llx\n"_Stz,C_SCRIBBLE_PATTERN);
   vTrace("\n"_Stz);
   
-  vTrace("  C_NULL_FLT = %e\n"_Stz,  C_NULL_FLT);
   vTrace("  C_DATUM_NULL = %lld\n"_Stz,C_DATUM_NULL);
-  vTrace("  C_NULL_VCH = %lld\n"_Stz,C_NULL_VCH);
+  vTrace("  C_MINUS_INFINITY = %lld\n"_Stz,C_MINUS_INFINITY);
+  vTrace("  C_PLUS_INFINITY = %lld\n"_Stz,C_PLUS_INFINITY);
   vTrace("\n"_Stz);
   
   vTrace("  C_I8_MIN %&lld = %lld\n"_Stz,C_I8_MIN);
