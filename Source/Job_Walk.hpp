@@ -9,7 +9,8 @@ namespace Jobs
   class Job_Walk : public Job
   {
   public:
-    
+    Table* m_pTable;   // table being exported
+  
     // must be last
     Footer m_xFooter;
   
@@ -24,6 +25,8 @@ namespace Jobs
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
+    bool bBegin(void);
+    void vEnd(void);
     bool bPopulateJob(TokenVec* pTokenVec);
     void vShow(void);
   

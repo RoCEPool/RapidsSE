@@ -110,6 +110,8 @@ Job_Walk::Job_Walk(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WALK,_FOOTER_);
   
+  m_pTable = nullptr;
+  
   _checkInitialised_(CN_JOB_WALK);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_WALK,_FOOTER_);
@@ -140,6 +142,31 @@ void Job_Walk::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* begin walk job                                                             */
+/*----------------------------------------------------------------------------*/
+bool Job_Walk::bBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
+  
+  ActionSequence::vAdd(this,AN_JOB_BEGIN);
+  
+  m_pTable->vMarkTable();
+  
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end walk job                                                               */
+/*----------------------------------------------------------------------------*/
+void Job_Walk::vEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
+  
+  ActionSequence::vAdd(this,AN_JOB_END);
+}
 
 /*----------------------------------------------------------------------------*/
 /* populate the job                                                           */

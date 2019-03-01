@@ -521,6 +521,7 @@
   static void vJob_ExportBegin(Tasks::MP_Task mpTask);
   static void vJob_ExportEnd(Tasks::MP_Task mpTask);
   static void vJob_ExportTableStore(Tasks::MP_Task mpTask);
+
   // job FetchRows
   static void vJob_FetchRowsLastBuffersStore(Tasks::MP_Task mpTask);
   static void vJob_FetchRowsPartitionFetch(Tasks::MP_Task mpTask);
@@ -659,6 +660,11 @@
 
   // Job Truncate
   static void vJob_TruncateTableSpawnSub(Tasks::MP_Task mpTask);
+
+  // job Walk
+  static void vJob_WalkBegin(Tasks::MP_Task mpTask);
+  static void vJob_WalkEnd(Tasks::MP_Task mpTask);
+  static void vJob_WalkTableStore(Tasks::MP_Task mpTask);
 
   // Job WriteBuffer
   static void vJob_WriteBufferIndexStore(Tasks::MP_Task mpTask);

@@ -99,6 +99,7 @@ namespace Steps
     static void vAddSteps_JobSubPurger(void);
     static void vAddSteps_JobSubWalker(void);
     static void vAddSteps_JobTruncateTable(void);
+    static void vAddSteps_JobWalk(void);
     static void vAddSteps_JobWriteBuffer(void);
     static void vAddSteps_JobWriteRecord(void);
     static void vAddSteps_JobWriteRow(void);
