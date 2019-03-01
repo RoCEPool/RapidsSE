@@ -179,6 +179,11 @@ bool Job_SubWalker::bChunk(void)
   if (! m_pEntryBuffer)
     return false;
 
+  for (Item* aItem = m_pEntryBuffer->aFirstItem();
+       aItem;
+       aItem = m_pEntryBuffer->aAdjacentItem(aItem))
+    {;}
+  
   //vTrace("SubWalker[%lld]: %p\n"_Stz,m_i_Slot,m_pEntryBuffer);
   
   m_pEntryBuffer = m_pEntryBuffer->pNextBuffer();
