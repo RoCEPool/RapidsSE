@@ -35,6 +35,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* start supervisor                                                           */
+/*----------------------------------------------------------------------------*/
+: start_supervisor ( -- )
+
+  "start_supervisor" .verbose
+
+  spawn_Supervisor
+;
+
+/*----------------------------------------------------------------------------*/
 /* start system                                                               */
 /*----------------------------------------------------------------------------*/
 : start_run ( -- <R> )
@@ -46,6 +56,7 @@
 
   "start_run" .verbose
 
+  snooze start_supervisor
   snooze start_sockets
   //snooze start_periodic
   //snooze start_alarm

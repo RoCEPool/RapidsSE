@@ -81,7 +81,6 @@
 "Job_SizeIndex.sen" include
 "Job_SizeTable.sen" include
 "job_Space.sen" include
-"job_Start.sen" include
 "job_StartCluster.sen" include
 "job_Status.sen" include
 "job_SubExporter.sen" include
@@ -107,6 +106,11 @@
 "job_Walk.sen" include
 "job_WriteBuffer.sen" include
 "job_WriteRow.sen" include
+
+
+
+"job_Start.sen" include
+
 
 /*============================================================================*/
 /* end                                                                        */

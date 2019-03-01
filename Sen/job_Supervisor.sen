@@ -37,6 +37,9 @@
 
   "Supervisor Job Started" .
 
+  CN_JOB_SUPERVISOR task::this task.thread thread.dedicated!
+
+
   begin
 
     args.supervisorSleep thread.sleep_ms
