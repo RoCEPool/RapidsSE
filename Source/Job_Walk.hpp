@@ -9,7 +9,8 @@ namespace Jobs
   class Job_Walk : public Job
   {
   public:
-    Table* m_pTable;   // table being exported
+    Table* m_pTable;   // table being walked
+    Index* m_pIndex;   // index being walked
   
     // must be last
     Footer m_xFooter;

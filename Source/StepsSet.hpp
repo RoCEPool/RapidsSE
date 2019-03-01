@@ -664,6 +664,7 @@
   // job Walk
   static void vJob_WalkBegin(Tasks::MP_Task mpTask);
   static void vJob_WalkEnd(Tasks::MP_Task mpTask);
+  static void vJob_WalkIndexStore(Tasks::MP_Task mpTask);
   static void vJob_WalkTableStore(Tasks::MP_Task mpTask);
 
   // Job WriteBuffer

@@ -13,6 +13,7 @@ void Step::vAddSteps_JobWalk(void)
 {
   vAddStep("job_walk.begin"_Stz,  &Step::vJob_WalkBegin);
   vAddStep("job_walk.end"_Stz,    &Step::vJob_WalkEnd);
+  vAddStep("job_walk.index!"_Stz, &Step::vJob_WalkIndexStore);
   vAddStep("job_walk.table!"_Stz, &Step::vJob_WalkTableStore);
 }
 
@@ -53,7 +54,31 @@ void Step::vJob_WalkEnd(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_export.table! -- store table in the job                                */
+/* Job_walk.index! -- store index in the job                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_WalkIndexStore(MP_Task mpTask)
+{
+  ENTRY("vJob_WalkIndexStore"_Stz);
+  
+  Object* pPtrJobWalk;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJobWalk) )
+    THROW_INVALID_DSTACK("Job_walk.index"_Stz);
+  Job_Walk* pJob_Walk = _pJob_Walk(pPtrJobWalk);
+  
+  Object* pIndexPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pIndexPtr) )
+    THROW_INVALID_DSTACK("Job_walk.index!"_Stz);
+  Index* pIndex = _pIndex(pIndexPtr);
+  
+  pJob_Walk->m_pIndex = pIndex;
+  
+  //ActionSequence::vAdd(pJob_Walk,AN_INDEX_USE,pIndex->aIndexName());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_walk.table! -- store table in the job                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WalkTableStore(MP_Task mpTask)
 {
@@ -61,12 +86,12 @@ void Step::vJob_WalkTableStore(MP_Task mpTask)
   
   Object* pPtrJobWalk;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJobWalk) )
-    THROW_INVALID_DSTACK("Job_export.table!"_Stz);
+    THROW_INVALID_DSTACK("Job_walk.table!"_Stz);
   Job_Walk* pJob_Walk = _pJob_Walk(pPtrJobWalk);
   
   Object* pTablePtr;
   if ( ! mpTask->m_pDataStack->bPop(pTablePtr) )
-    THROW_INVALID_DSTACK("Job_export.table!"_Stz);
+    THROW_INVALID_DSTACK("Job_walk.table!"_Stz);
   Table* pTable = _pTable(pTablePtr);
   
   pJob_Walk->m_pTable = pTable;

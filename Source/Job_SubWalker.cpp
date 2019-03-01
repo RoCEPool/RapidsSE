@@ -110,7 +110,9 @@ Job_SubWalker::Job_SubWalker(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBWALKER,_FOOTER_);
     
-  m_pJobWalk  = nullptr;
+  m_pJobWalk     = nullptr;
+  m_pIndexTree   = nullptr;
+  m_pEntryBuffer = nullptr;
   
   _checkInitialised_(CN_JOB_SUBWALKER);
   
@@ -158,6 +160,12 @@ bool Job_SubWalker::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBWALKER,_FOOTER_);
   
+  TablePtn* pTablePtn = m_pJobWalk->m_pTable->pSlots()->pPartition(m_i_Slot);
+  
+  m_pIndexTree = pTablePtn->pIndexTree(m_pJobWalk->m_pIndex->iIndexNo());
+  
+  m_pEntryBuffer = m_pIndexTree->pFirstH0Buffer();
+  
   return true;
 }
 
@@ -168,7 +176,14 @@ bool Job_SubWalker::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBWALKER,_FOOTER_);
   
-  return false;
+  if (! m_pEntryBuffer)
+    return false;
+
+  //vTrace("SubWalker[%lld]: %p\n"_Stz,m_i_Slot,m_pEntryBuffer);
+  
+  m_pEntryBuffer = m_pEntryBuffer->pNextBuffer();
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

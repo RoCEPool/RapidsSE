@@ -33,6 +33,9 @@
   0 locals| sTableNm  |
   0 locals| pTable    |
 
+  0 locals| sIndexNm  |
+  0 locals| pIndex    |
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -47,8 +50,12 @@
 
   // get table pointer
   sTableNm table::find to pTable
-
   pTable pJob_Walk job_walk.table!
+
+  pJob_Walk job.indexName@ to sIndexNm
+  pushIndexes assert
+  sIndexNm find execute to pIndex
+  pIndex pJob_Walk job_walk.index!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

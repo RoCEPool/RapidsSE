@@ -111,7 +111,8 @@ Job_Walk::Job_Walk(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WALK,_FOOTER_);
   
   m_pTable = nullptr;
-  
+  m_pIndex = nullptr;
+
   m_sIndexName = "hidden"_Stz;
   
   _checkInitialised_(CN_JOB_WALK);
