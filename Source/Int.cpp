@@ -190,7 +190,7 @@ i8 Int::iAsI8(void)
 /*----------------------------------------------------------------------------*/
 bool Int::bIsNull(void)
 {
-  if (C_NULL_INT == m_iInt)
+  if (C_DATUM_NULL == m_iInt)
     return true;
   else
     return false;
@@ -201,7 +201,7 @@ bool Int::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Int::vSetNull(void)
 {
-  m_iInt = C_NULL_INT;
+  m_iInt = C_DATUM_NULL;
 }
 
 /*----------------------------------------------------------------------------*/
