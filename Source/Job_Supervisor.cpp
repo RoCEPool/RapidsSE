@@ -52,7 +52,7 @@ JobClass xJobClass_Supervisor =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Supervisor_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Ping_class;
+  *pNextFun = (pFUN*)pJob_TableSizes_class;
   
   return &xJobClass_Supervisor;
 }

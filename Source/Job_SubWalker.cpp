@@ -52,7 +52,7 @@ JobClass xJobClass_SubWalker =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_SubWalker_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_TableSizes_class;
+  *pNextFun = (pFUN*)pJob_Supervisor_class;
   
   return &xJobClass_SubWalker;
 }
