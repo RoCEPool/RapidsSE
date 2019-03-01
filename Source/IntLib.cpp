@@ -57,7 +57,7 @@ i8 IntLib::iIntToVlq(i8 iInt, byte yVlqVec[16])
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // explicitly handle null
-  if (C_NULL_INT == iInt) {
+  if (C_DATUM_NULL == iInt) {
     u8 yByte;
     BitLib::vSetOn(yByte,C_VLQ_NULL_BIT);
     yVlqVec[0] = yByte;
@@ -129,7 +129,7 @@ i8 IntLib::iIntToVlq(i8 iInt, byte yVlqVec[16])
     return 1;
   }
   
-  if (C_NULL_INT == iInt) {
+  if (C_DATUM_NULL == iInt) {
     yVlqVec[0] = C_VLQ_NULL_BIT;          // set null flag
     return 1;
   }
@@ -180,7 +180,7 @@ i8 IntLib::iVlqToInt(byte yVlqVec[])
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // explicity handle null
   if (BitLib::bIsOn(yVlqVec[0],C_VLQ_NULL_BIT))
-    return C_NULL_INT;
+    return C_DATUM_NULL;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // explicity handle 0
@@ -233,7 +233,7 @@ i8 IntLib::iVlqToInt(byte yVlqVec[])
     return 0;
   
   if (C_VLQ_NULL_BIT == yVlqVec[0])
-    return C_NULL_INT;
+    return C_DATUM_NULL;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle all other cases generally

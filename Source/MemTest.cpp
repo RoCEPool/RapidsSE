@@ -53,7 +53,7 @@ MemTest::MemTest(void)
   
   m_iInt = 73;
   m_iIntFlipped = IntLib::iFlipEndian(m_iInt);
-  m_iNull = C_NULL_INT;
+  m_iNull = C_DATUM_NULL;
   m_iNullFlipped = IntLib::iFlipEndian(m_iNull);
   StrLib::vCopy(m_caCharA,"AbCdEfG");
   StrLib::vCopy(m_caCharB,"aBcDeFg");

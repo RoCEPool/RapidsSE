@@ -34,7 +34,7 @@ bool Prompt::bPrompt_numbers(SePrompt* pPrompt)
   vTrace("\n"_Stz);
   
   vTrace("  C_NULL_FLT = %e\n"_Stz,  C_NULL_FLT);
-  vTrace("  C_NULL_INT = %lld\n"_Stz,C_NULL_INT);
+  vTrace("  C_DATUM_NULL = %lld\n"_Stz,C_DATUM_NULL);
   vTrace("  C_NULL_VCH = %lld\n"_Stz,C_NULL_VCH);
   vTrace("\n"_Stz);
   

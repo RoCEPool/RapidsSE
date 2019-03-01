@@ -62,9 +62,9 @@ void vTest3(void)
 {
   byte xVlq[16];
   
-  i8 nBytes = IntLib::iIntToVlq(C_NULL_INT,xVlq);
+  i8 nBytes = IntLib::iIntToVlq(C_DATUM_NULL,xVlq);
   i8 i = IntLib::iVlqToInt(xVlq);
-  assert(C_NULL_INT == i);
+  assert(C_DATUM_NULL == i);
   
   nBytes = IntLib::iIntToVlq(0,xVlq);
   i = IntLib::iVlqToInt(xVlq);

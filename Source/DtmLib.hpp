@@ -10,10 +10,6 @@ namespace MetaData
 
 namespace Datums
 {
-  const i8 C_DATUM_NULL     = LLONG_MIN + 1;
-  const i8 C_MINUS_INFINITY = LLONG_MIN;
-  const i8 C_PLUS_INFINITY  = LLONG_MAX;
-  
   class DtmLib
   {
   private:

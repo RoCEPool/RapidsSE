@@ -193,7 +193,7 @@ void MemLib::vDumpWords(void *aAddress, i8 nBytes)
     else if (aFooter->bValidFooter()) {
       vTrace(" [Footer]"_Stz);
     }
-    else if (C_NULL_INT == iVal) {
+    else if (C_DATUM_NULL == iVal) {
       vTrace(" is null"_Stz);
     }
     else {
