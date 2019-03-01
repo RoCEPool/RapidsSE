@@ -93,6 +93,7 @@
 "job_SubLoader.sen" include
 "job_SubTruncate.sen" include
 "job_SubWalker.sen" include
+"job_Supervisor.sen" include
 
 "job_TableSizes.sen" include
 "job_TruncateTable.sen" include

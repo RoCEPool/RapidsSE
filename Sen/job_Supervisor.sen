@@ -1,0 +1,56 @@
+/*============================================================================*/
+/* job_Supervisor.sen -- supervisor job                                       */
+/*============================================================================*/
+
+" job_Supervisor.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* spawn the supervisor job                                                   */
+/*----------------------------------------------------------------------------*/
+: spawn_Supervisor ( -- )
+
+  0 locals| pJobClass_Supervisor |
+  0 locals| pJob_Supervisor |
+
+  CN_JOB_SUPERVISOR jobClass::find to pJobClass_Supervisor
+
+  nullptr pJobClass_Supervisor jobClass.new to pJob_Supervisor
+
+  pJob_Supervisor SEED_RUN job.spawn
+;
+
+/*----------------------------------------------------------------------------*/
+/* add peridiodic activity here                                               */
+/*----------------------------------------------------------------------------*/
+: supervisor_activity ( -- )
+
+  "Supervisor Activity" .
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* supervisor loop:                                                           */
+/*----------------------------------------------------------------------------*/
+: supervisor_run ( -- )
+
+  >>am <SEED_RUN>
+
+  "Supervisor Job Started" .
+
+  begin
+
+    //args.supervisorSleep thread.sleep_s
+
+  again
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // should never exit
+  hazard
+
+  <DONE_RUN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
