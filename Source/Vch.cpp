@@ -184,7 +184,7 @@ bool Vch::bIsNull(void)
 {  
   //vTrace("%lld\n"_Stz,*((i8*)this));
   
-  if (C_NULL_VCH == *(i8*)this)
+  if (C_DATUM_NULL == *(i8*)this)
     return true;
   else
     return false;
@@ -195,7 +195,7 @@ bool Vch::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Vch::vSetNull(void)
 {
-  *(i8*)this = C_NULL_VCH;
+  *(i8*)this = C_DATUM_NULL;
   //vTrace("%lld\n"_Stz,*((i8*)this));
 }
 
