@@ -17,7 +17,6 @@ namespace Base
   
   const i8 C_I8_MIN = LLONG_MIN + 2;
   const i8 C_I8_MAX = LLONG_MAX - 1;
-  const i8 C_NULL_INT = LLONG_MIN;
   
   struct wordAsBytes {
     union {
