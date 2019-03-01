@@ -152,6 +152,7 @@ static Stz* aJL[]
 #include "Job_SubPurger.hpp"
 #include "Job_SubTruncate.hpp"
 #include "Job_SubWalker.hpp"
+#include "Job_Supervisor.hpp"
 
 #include "Job_TableSizes.hpp"
 #include "Job_TruncateTable.hpp"
