@@ -28,6 +28,8 @@ JobClass xJobClass_SubWalker =
   false,                     // buffer attached?
   JT_NONE,                   // job trace
   DL_NONE,                   // ddl lock model
+  PY_NORMAL,                 // priority
+  JF_NONE,                   // flags
 
   nullptr,                   // prompt check function
   pJob_SubWalker_pre,        // prompt pre-process function

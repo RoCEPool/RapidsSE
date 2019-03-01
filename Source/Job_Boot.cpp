@@ -28,6 +28,8 @@ JobClass xJobClass_Boot =
   false,             // buffer attached?
   JT_NONE,           // job trace
   DL_NONE,           // ddl lock model
+  PY_NORMAL,         // priority
+  JF_NONE,           // flags
 
   nullptr,           // prompt check function
   nullptr,           // prompt pre-process function

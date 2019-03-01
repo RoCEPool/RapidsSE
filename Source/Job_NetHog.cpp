@@ -28,6 +28,8 @@ JobClass xJobClass_NetHog =
   false,                 // buffer attached?
   JT_NONE,               // job trace
   DL_NONE,               // ddl lock model
+  PY_NORMAL,             // priority
+  JF_NONE,               // flags
 
   eJob_checkCluster,     // prompt check function
   pJob_NetHog_pre,       // prompt pre-process function

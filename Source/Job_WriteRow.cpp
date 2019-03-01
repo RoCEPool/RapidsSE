@@ -32,6 +32,8 @@ JobClass xJobClass_WriteRow =
   true,                // buffer attached?
   JT_NONE,             // job trace
   DL_NONE,             // ddl lock model
+  PY_NORMAL,           // priority
+  JF_NONE,             // flags
 
   nullptr,             // prompt check function
   pJob_WriteRow_pre,   // prompt pre-process function

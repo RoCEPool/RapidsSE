@@ -28,6 +28,8 @@ JobClass xJobClass_WaitCluster =
   false,                  // buffer attached?
   JT_NONE,                // job trace
   DL_NONE,                // ddl lock model
+  PY_NORMAL,              // priority
+  JF_NONE,                // flags
 
   eJob_checkCluster,      // prompt check function
   pJob_WaitCluster_pre,   // prompt pre-process function

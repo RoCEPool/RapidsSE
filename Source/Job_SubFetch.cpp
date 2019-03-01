@@ -28,6 +28,8 @@ JobClass xJobClass_SubFetch =
   false,                     // buffer attached?
   JT_NONE,                   // job trace
   DL_GRAB_READ,              // ddl lock model
+  PY_NORMAL,                 // priority
+  JF_NONE,                   // flags
 
   nullptr,                   // prompt check function
   pJob_SubFetch_pre,         // prompt pre-process function

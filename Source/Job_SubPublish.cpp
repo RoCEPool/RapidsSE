@@ -28,6 +28,8 @@ JobClass xJobClass_SubPublish =
   false,                  // buffer attached?
   JT_NONE,                // job trace
   DL_NONE,                // ddl lock model
+  PY_NORMAL,              // priority
+  JF_NONE,                // flags
 
   nullptr,                // prompt check function
   pJob_SubPublish_pre,    // prompt pre-process function

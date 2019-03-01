@@ -28,6 +28,8 @@ JobClass xJobClass_CreateCatalog =
   false,                    // buffer attached?
   JT_NONE,                  // job trace
   DL_GRAB_WRITE,            // ddl lock model
+  PY_NORMAL,                // priority
+  JF_NONE,                  // flags
 
   eJob_checkCluster,        // prompt check function
   pJob_CreateCatalog_pre,   // prompt pre-process function
