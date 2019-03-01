@@ -46,7 +46,8 @@
       // now get excat key rows from index
       iSlot pTable tablePtnGrabRead  //! partitionLock
       iPhrase pPlanner Planner.key@
-      pJob_SubFetch pIndex index.exactKey
+      iPhrase pPlanner Planner.key@
+      pJob_SubFetch pIndex index.range
       iSlot pTable tablePtnDropRead
     endof
 

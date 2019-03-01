@@ -925,11 +925,17 @@ void Step::vIndexRange(MP_Task mpTask)
     goto LastBuffer;
   }
   
+  eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
+  if (eLowerRelnOp == RO_EQUAL_TO) {
+    eLowerRelnOp = RO_GREATER_EQUAL;
+    eUpperRelnOp = RO_LESS_EQUAL;
+  }
+  else
+    eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at a level 0 buffer with keyLower
   aLowerEntryBuffer = pIndexTree->pPositionH0Buffer(xKeyWrkLower);
-
-  eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entry buffer ?
@@ -971,8 +977,6 @@ void Step::vIndexRange(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now position at a level 0 buffer with keyUpper
   aUpperEntryBuffer = pIndexTree->pPositionH0Buffer(xKeyWrkUpper);
-
-  eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
   
   //aUpperEntryBuffer->vShow();
   
