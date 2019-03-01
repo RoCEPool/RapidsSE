@@ -120,7 +120,7 @@ eEC JobWriteBehind::eInsertRow(Stz* aRow_Data, i8 nRowBytes)
       
       if (! m_pEntryBuffer[iPartition]) {
         vTrace("EntryBuffer allocation failed\n"_Stz);
-        return EC_LOW_BUFFERS;
+        return EC_LOW_MEMORY;
        }
     }
     

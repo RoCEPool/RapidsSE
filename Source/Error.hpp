@@ -40,7 +40,7 @@ namespace Debugging
   /* 21 */ EC_INVALID_SYNTAX,
   /* 22 */ EC_INVALID_VALUE,
   
-  /* 23 */ EC_LOW_BUFFERS,
+  /* 23 */ EC_LOW_MEMORY,
   
   /* 24 */ EC_MAX_INDEXES,
   /*    */ EC_MAX_COLUMNS,
@@ -129,7 +129,7 @@ namespace Debugging
   /* 21 */ "invalid syntax"_Stz,
   /* 22 */ "invalid value"_Stz,
   
-  /* 23 */ "low buffers"_Stz,
+  /* 23 */ "low memory"_Stz,
   
   /* 24 */ "max allowed indexes already created"_Stz,
   /*    */ "max 150 columns supported in a table"_Stz,

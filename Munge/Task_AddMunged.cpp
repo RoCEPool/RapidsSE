@@ -1021,7 +1021,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "  bp::freeBuffers C_LOW_BUFFERS > if\n"
     "    true\n"
     "  else\n"
-    "    EC_LOW_BUFFERS\n"
+    "    EC_LOW_MEMORY\n"
     "    false\n"
     "  then\n"
     " ;\n"

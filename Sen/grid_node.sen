@@ -31,7 +31,7 @@
   bp::freeBuffers C_LOW_BUFFERS > if
     true
   else
-    EC_LOW_BUFFERS
+    EC_LOW_MEMORY
     false
   then
 ;
