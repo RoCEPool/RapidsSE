@@ -160,7 +160,7 @@ void Ivl::vSet(u8 uSecond, u8 uMilli)
 /*----------------------------------------------------------------------------*/
 bool Ivl::bIsNull(void)
 {
-  if (C_NULL_INT == m_iValue)
+  if (C_DATUM_NULL == m_iValue)
     return true;
   else
     return false;
@@ -171,7 +171,7 @@ bool Ivl::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Ivl::vSetNull(void)
 {
-  m_iValue = C_NULL_INT;
+  m_iValue = C_DATUM_NULL;
 }
 
 /*----------------------------------------------------------------------------*/

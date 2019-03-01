@@ -233,7 +233,7 @@ void Tsp::vSetAsNow(void)
 /*----------------------------------------------------------------------------*/
 bool Tsp::bIsNull(void)
 {
-  if (C_NULL_INT == m_iValue)
+  if (C_DATUM_NULL == m_iValue)
     return true;
   else
     return false;
@@ -244,7 +244,7 @@ bool Tsp::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Tsp::vSetNull(void)
 {
-  m_iValue = C_NULL_INT;
+  m_iValue = C_DATUM_NULL;
 }
 
 /*----------------------------------------------------------------------------*/

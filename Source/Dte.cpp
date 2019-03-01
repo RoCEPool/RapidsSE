@@ -161,7 +161,7 @@ i8 Dte::iDay(void)
 /*----------------------------------------------------------------------------*/
 bool Dte::bIsNull(void)
 {
-  if (C_NULL_INT == m_iValue)
+  if (C_DATUM_NULL == m_iValue)
     return true;
   else
     return false;
@@ -172,7 +172,7 @@ bool Dte::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Dte::vSetNull(void)
 {
-  m_iValue = C_NULL_INT;
+  m_iValue = C_DATUM_NULL;
 }
 
 /*----------------------------------------------------------------------------*/

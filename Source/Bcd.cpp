@@ -134,7 +134,7 @@ void Bcd::vInitZero(void)
 /*----------------------------------------------------------------------------*/
 bool Bcd::bIsNull(void)
 {
-  if (C_NULL_INT == m_iBcd)
+  if (C_DATUM_NULL == m_iBcd)
     return true;
   else
     return false;
@@ -145,7 +145,7 @@ bool Bcd::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Bcd::vSetNull(void)
 {
-  m_iBcd = C_NULL_INT;
+  m_iBcd = C_DATUM_NULL;
 }
 
 /*----------------------------------------------------------------------------*/

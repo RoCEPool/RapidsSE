@@ -170,7 +170,7 @@ i8 Tme::iMicroseconds(void)
 /*----------------------------------------------------------------------------*/
 bool Tme::bIsNull(void)
 {
-  if (C_NULL_INT == m_iValue)
+  if (C_DATUM_NULL == m_iValue)
     return true;
   else
     return false;
@@ -181,7 +181,7 @@ bool Tme::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Tme::vSetNull(void)
 {
-  m_iValue = C_NULL_INT;
+  m_iValue = C_DATUM_NULL;
 }
 
 /*----------------------------------------------------------------------------*/

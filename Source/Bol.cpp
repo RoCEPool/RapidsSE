@@ -182,7 +182,7 @@ i8 Bol::iAsI8(void)
 /*----------------------------------------------------------------------------*/
 bool Bol::bIsNull(void)
 {
-  if (C_NULL_INT == m_bBol)
+  if (C_DATUM_NULL == m_bBol)
     return true;
   else
     return false;
@@ -193,7 +193,7 @@ bool Bol::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Bol::vSetNull(void)
 {
-  m_bBol = C_NULL_INT;
+  m_bBol = C_DATUM_NULL;
 }
 
 /*----------------------------------------------------------------------------*/
