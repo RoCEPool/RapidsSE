@@ -15,28 +15,28 @@ JobClass xJobClass_Walk =
   CN_JOB_WALK,               // class enum
   JK_DIST2PC,                // job kind
   "walk"_Stz,                // comment about the job
-  "tr"_Stz,                  // the prompt command
+  "walk"_Stz,                // the prompt command
   nullptr,                   // the second word
   nullptr,                   // the _run task seed
-  "truncateTable_req"_Stz,   // the _req task seed
-  "truncateTable_beg"_Stz,   // the _rcv task seed
-  "truncateTable_exe"_Stz,   // the _exe task seed
-  "truncateTable_end"_Stz,   // the _end task seed
-  "truncateTable_can"_Stz,   // the _can task seed
+  "walk_req"_Stz,            // the _req task seed
+  "walk_beg"_Stz,            // the _rcv task seed
+  "walk_exe"_Stz,            // the _exe task seed
+  "walk_end"_Stz,            // the _end task seed
+  "walk_can"_Stz,            // the _can task seed
   true,                      // check resources?
   false,                     // detached job?
   false,                     // buffer attached?
   JT_NONE,                   // job trace
-  DL_GRAB_WRITE,             // ddl lock model
+  DL_GRAB_READ,              // ddl lock model
 
   eJob_checkCluster,         // prompt check function
-  pJob_Walk_pre,    // prompt pre-process function
-  vJob_Walk_post,   // prompt post-process function
+  pJob_Walk_pre,             // prompt pre-process function
+  vJob_Walk_post,            // prompt post-process function
   nullptr,                   // job new function
-  vJob_Walk_delete, // job delete function
+  vJob_Walk_delete,          // job delete function
   vJob_send,                 // job pre-send function
   vJob_recv,                 // job post-receive function
-  vJob_Walk_show,   // job show function
+  vJob_Walk_show,            // job show function
   
   // help and example
   true,
@@ -154,7 +154,6 @@ bool Job_Walk::bBegin(void)
   
   m_pTable->vMarkTable();
   
-  
   return true;
 }
 
@@ -184,12 +183,17 @@ bool Job_Walk::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 2 tokens
-  if (iNumTokens != 2)
+  if (iNumTokens < 2)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
   m_sObjectName = pTokenVec->pGet(1)->aText();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // set the index name
+  if (iNumTokens == 3)
+    m_sIndexName = pTokenVec->pGet(2)->aText();
   
   return true;
 }

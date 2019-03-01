@@ -26,14 +26,13 @@
 /*----------------------------------------------------------------------------*/
 /* export on this participant node (same as originator)                       */
 /*----------------------------------------------------------------------------*/
-: walk.export ( pJob_Walk --  )
+: walk.walk ( pJob_Walk --  )
 
   params| pJob_Walk |
 
   0 locals| sTableNm  |
   0 locals| pTable    |
 
-  "walk_export: export on this node" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -185,7 +184,7 @@
   job::this locals| pJob_Walk |
 
 
-  pJob_Walk walk.export
+  pJob_Walk walk.walk
 
   pJob_Walk job.notice
 

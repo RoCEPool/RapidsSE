@@ -41,7 +41,7 @@ void Step::vJob_SubWalkerSpawn(MP_Task mpTask)
   Session* pSession = pJob_Walk->m_pSession;
   
   //! this needs to be optimised
-  JobClass* pJobClass_SubWalker = JobClass::pFind(CN_JOB_SUBEXPORTER);
+  JobClass* pJobClass_SubWalker = JobClass::pFind(CN_JOB_SUBWALKER);
   
   Job_SubWalker* pJob_SubWalker =
     static_cast<Job_SubWalker*>(pJobClass_SubWalker->pPreJob(pSession));
