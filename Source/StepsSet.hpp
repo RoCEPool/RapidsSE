@@ -352,7 +352,6 @@
   static void vIndexCreateColumnVecHidden(Tasks::MP_Task mpTask);
   static void vIndexCreateColumnVec(Tasks::MP_Task mpTask);
   static void vIndexDump(Tasks::MP_Task mpTask);
-  static void vIndexExactKey(Tasks::MP_Task mpTask);
   static void vIndexInit(Tasks::MP_Task mpTask);
   static void vIndexIsHiddenFetch(Tasks::MP_Task mpTask);
   static void vIndexIsHiddenStore(Tasks::MP_Task mpTask);
