@@ -11,7 +11,6 @@ extern AttachMap*      gpAttachMap;
 
 JobClass xJobClass_Sanity =
 {
-  "Job_Sanity"_Stz,  // name of the job class
   CN_JOB_SANITY,     // class enum
   JK_DIST2PC,        // job kind
   "sanity check"_Stz,// comment about the job

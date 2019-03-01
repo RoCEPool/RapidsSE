@@ -15,7 +15,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_WriteBuffer =
 {
-  "Job_WriteBuffer"_Stz,  // name of the job class
   CN_JOB_WRITEBUFFER,     // class enum
   JK_GRANDKID,            // job kind
   "write buffer"_Stz,     // comment about the job

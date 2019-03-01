@@ -76,7 +76,7 @@ void Step::vJobClassName(MP_Task mpTask)
     THROW_INVALID_DSTACK("jobClass.name"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
-  s256 sName((Stz*)&pJobClass->m_aName);
+  s256 sName(aCN[pJobClass->m_eClass]);
   
   mpTask->m_pDataStack->vPushS256(sName);
   

@@ -9,7 +9,6 @@
 
 JobClass xJobClass__Ended =
 {
-  "Job__Ended"_Stz,        // name of the job class
   CN_JOB__ENDED,           // class enum
   JK_GENERIC,              // job kind
   "job was ended"_Stz,     // comment about the job

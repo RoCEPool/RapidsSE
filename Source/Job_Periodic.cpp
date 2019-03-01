@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Periodic =
 {
-  "Job_Periodic"_Stz,    // name of the job class
   CN_JOB_PERIODIC,            // class enum
   JK_SYSTEM,             // job kind
   "periodic"_Stz,        // comment about the job

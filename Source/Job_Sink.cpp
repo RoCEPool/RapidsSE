@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Sink =
 {
-  "Job_Sink"_Stz,      // name of the job class
   CN_JOB_SINK,         // class enum
   JK_LOCAL,            // job kind
   "sink data"_Stz,     // comment about the job

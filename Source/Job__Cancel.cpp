@@ -9,7 +9,6 @@
 
 JobClass xJobClass__Cancel =
 {
-  "Job__Cancel"_Stz,       // name of the job class
   CN_JOB__CANCEL,          // class enum
   JK_GENERIC,              // job kind
   "job to cancel"_Stz,     // comment about the job

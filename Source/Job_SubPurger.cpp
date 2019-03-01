@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubPurger =
 {
-  "Job_SubPurger"_Stz,    // name of the job class
   CN_JOB_SUBPURGER,       // class enum
   JK_CHILD,               // job kind
   "table sub-purger"_Stz, // comment about the job

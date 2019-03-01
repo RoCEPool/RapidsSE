@@ -15,7 +15,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_WriteRow =
 {
-  "Job_WriteRow"_Stz,  // name of the job class
   CN_JOB_WRITEROW,     // class enum
   JK_GRANDKID,         // job kind
   "write row"_Stz,     // comment about the job

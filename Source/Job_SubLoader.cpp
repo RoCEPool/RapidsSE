@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubLoader =
 {
-  "Job_SubLoader"_Stz,    // name of the job class
   CN_JOB_SUBLOADER,       // class enum
   JK_CHILD,               // job kind
   "table sub-loader"_Stz, // comment about the job

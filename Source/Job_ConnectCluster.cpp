@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_ConnectCluster =
 {
-  "Job_ConnectCluster"_Stz,  // name of the job class
   CN_JOB_CONNECTCLUSTER,     // class enum
   JK_DIST2PC,                // job kind
   "connect cluster"_Stz,     // comment about the job

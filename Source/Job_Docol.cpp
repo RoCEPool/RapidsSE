@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Docol =
 {
-  "Job_Docol"_Stz,   // name of the job class
   CN_JOB_DOCOL,      // class enum
   JK_LOCAL,          // job kind
   "execute word"_Stz,// comment about the job

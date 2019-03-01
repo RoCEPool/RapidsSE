@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Alarm =
 {
-  "Job_Alarm"_Stz,       // name of the job class
   CN_JOB_ALARM,          // class enum
   JK_SYSTEM,             // job kind
   "alarm"_Stz,           // comment about the job

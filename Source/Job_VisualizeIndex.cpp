@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_VisualizeIndex =
 {
-  "Job_VisualizeIndex"_Stz,   // name of the job class
   CN_JOB_VISUALIZEINDEX,      // class enum
   JK_LOCAL,                   // job kind
   "visualize index"_Stz,      // comment about the job

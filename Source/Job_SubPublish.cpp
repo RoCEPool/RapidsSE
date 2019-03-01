@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubPublish =
 {
-  "Job_SubPublish"_Stz,   // name of the job class
   CN_JOB_SUBPUBLISH,      // class enum
   JK_CHILD,               // job kind
   "table sub-publish"_Stz,// comment about the job

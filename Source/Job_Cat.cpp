@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Cat =
 {
-  "Job_Cat"_Stz,      // name of the job class
   CN_JOB_CAT,         // class enum
   JK_LOCAL,           // job kind
   "cat data"_Stz,     // comment about the job

@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubIngester =
 {
-  "Job_SubIngester"_Stz,    // name of the job class
   CN_JOB_SUBINGESTER,       // class enum
   JK_CHILD,                 // job kind
   "table sub-ingester"_Stz, // comment about the job

@@ -9,7 +9,6 @@
 
 JobClass xJobClass__Executed =
 {
-  "Job__Executed"_Stz,     // name of the job class
   CN_JOB__EXECUTED,        // class enum
   JK_GENERIC,              // job kind
   "job was executed"_Stz,  // comment about the job

@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Pwf =
 {
-  "Job_Pwf"_Stz,         // name of the job class
   CN_JOB_PWF,            // class enum
   JK_LOCAL,              // job kind
   "working folder"_Stz,  // comment about the job

@@ -11,7 +11,6 @@ extern AttachMap*      gpAttachMap;
 
 JobClass xJobClass_WaitCluster =
 {
-  "Job_WaitCluster"_Stz,  // name of the job class
   CN_JOB_WAITCLUSTER,     // class enum
   JK_DIST2PC,             // job kind
   "wait cluster"_Stz,     // comment about the job

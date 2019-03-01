@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_ListCatalogs =
 {
-  "Job_ListCatalogs"_Stz,  // name of the job class
   CN_JOB_LISTCATALOGS,     // class enum
   JK_LOCAL,                // job kind
   "list catalogs"_Stz,     // comment about the job

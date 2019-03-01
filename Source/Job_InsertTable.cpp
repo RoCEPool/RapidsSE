@@ -17,7 +17,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_EndInsert =
 {
-  "Job_InsertTable"_Stz,    // name of the job class
   CN_JOB_INSERTTABLE,       // class enum
   JK_DIST2PC,               // job kind
   "insert table"_Stz,       // comment about the job

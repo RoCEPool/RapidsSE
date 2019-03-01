@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Status =
 {
-  "Job_Status"_Stz,  // name of the job class
   CN_JOB_STATUS,     // class enum
   JK_DIST2PC,        // job kind
   "status"_Stz,      // comment about the job

@@ -53,9 +53,9 @@ bool Handlers::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   if ( (pJobBeingAcked && JT_NONE != pJobBeingAcked->eJobTrace()) ||
        (pJobAcking && JT_NONE != pJobAcking->eJobTrace())  ) {
     vTrace("Ack of %s task %p by %s task %p ; %s\n"_Stz,
-           pJobBeingAcked ? (Stz*)pJobBeingAcked->m_pJobClass->m_aName : "<no job>"_Stz,
+           pJobBeingAcked ? aCN[pJobBeingAcked->m_pJobClass->m_eClass] : "<no job>"_Stz,
            pTaskBeingAcked,
-           pJobAcking ? (Stz*)pJobAcking->m_pJobClass->m_aName : "<no job>"_Stz,
+           pJobAcking ? aCN[pJobAcking->m_pJobClass->m_eClass] : "<no job>"_Stz,
            pJobAcking,
            bAmDecider ? "decider" : "not decider");
   }

@@ -213,11 +213,10 @@ void JobClass::vJobCat(void)
   s32 sSeedCan(m_aSeedCan ? m_aSeedCan : "-"_Stz);
   sSeedCan.vConcat(m_bSeedsSpawned[SS_SEED_CAN] ? "+"_Stz : " "_Stz);
   
-  vTrace("%20s %10lld %20s %10s %10s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
+  vTrace("%20s %10lld %10s %10s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
          
          aCN[m_eClass],
          giClassSize[m_eClass],
-         m_aName,
          sFunctions.aStz(),
          aJK[m_eKind],
          sDdlLock.aStz(),
@@ -240,11 +239,10 @@ void JobClass::vJobCat(void)
 /*----------------------------------------------------------------------------*/
 void JobClass::vJobCatHeader(void)
 {
-  vTrace("%20s %10s %20s %10s %10s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
+  vTrace("%20s %10s %10s %10s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
          
          "eClass"_Stz,
          "SizeOf"_Stz,
-         "Job Name"_Stz,
          "Functions"_Stz,
          "Kind"_Stz,
          "Ddl Lock"_Stz,
@@ -263,10 +261,10 @@ void JobClass::vJobCatHeader(void)
   s32 sBar10 = "----------"_Stz;
   s32 sBar20 = "--------------------"_Stz;
   
-  vTrace("%20s %10s %20s %10s %10s %10s %10s %20s : "
+  vTrace("%20s %10s %10s %10s %10s %10s %20s : "
          "%10s %20s %20s %20s %20s %20s %20s\n"_Stz,
          
-         sBar20.aStz(),sBar10.aStz(),sBar20.aStz(),sBar10.aStz(),
+         sBar20.aStz(),sBar10.aStz(),sBar10.aStz(),
          sBar10.aStz(),sBar10.aStz(),sBar10.aStz(),sBar20.aStz(),
          
          sBar10.aStz(),sBar20.aStz(),sBar20.aStz(),sBar20.aStz(),
@@ -377,32 +375,32 @@ void JobClass::vVerifySeeds(void)
     if (pJobClass->m_aSeedRun &&
         ! gpAttachMap->m_oRootDic.pFindWord(pJobClass->m_aSeedRun))
       vFatal("Cannot find class %s run seed %s\n"_Stz,
-             pJobClass->m_aName,pJobClass->m_aSeedRun);
+             aCN[pJobClass->m_eClass],pJobClass->m_aSeedRun);
 
     if (pJobClass->m_aSeedReq &&
         ! gpAttachMap->m_oRootDic.pFindWord(pJobClass->m_aSeedReq))
       vFatal("Cannot find class %s req seed %s\n"_Stz,
-             pJobClass->m_aName,pJobClass->m_aSeedReq);
+             aCN[pJobClass->m_eClass],pJobClass->m_aSeedReq);
     
     if (pJobClass->m_aSeedRcv &&
         ! gpAttachMap->m_oRootDic.pFindWord(pJobClass->m_aSeedRcv))
       vFatal("Cannot find class %s rcv seed %s\n"_Stz,
-             pJobClass->m_aName,pJobClass->m_aSeedRcv);
+             aCN[pJobClass->m_eClass],pJobClass->m_aSeedRcv);
     
     if (pJobClass->m_aSeedExe &&
         ! gpAttachMap->m_oRootDic.pFindWord(pJobClass->m_aSeedExe))
       vFatal("Cannot find class %s exe seed %s\n"_Stz,
-             pJobClass->m_aName,pJobClass->m_aSeedExe);
+             aCN[pJobClass->m_eClass],pJobClass->m_aSeedExe);
     
     if (pJobClass->m_aSeedEnd &&
         ! gpAttachMap->m_oRootDic.pFindWord(pJobClass->m_aSeedEnd))
       vFatal("Cannot find class %s end seed %s\n"_Stz,
-             pJobClass->m_aName,pJobClass->m_aSeedEnd);
+             aCN[pJobClass->m_eClass],pJobClass->m_aSeedEnd);
     
     if (pJobClass->m_aSeedCan &&
         ! gpAttachMap->m_oRootDic.pFindWord(pJobClass->m_aSeedCan))
       vFatal("Cannot find class %s can seed %s\n"_Stz,
-             pJobClass->m_aName,pJobClass->m_aSeedCan);
+             aCN[pJobClass->m_eClass],pJobClass->m_aSeedCan);
     
   }
 }

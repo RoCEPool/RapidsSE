@@ -9,7 +9,6 @@
 
 JobClass xJobClass__Begun =
 {
-  "Job__Begun"_Stz,        // name of the job class
   CN_JOB__BEGUN,           // class enum
   JK_GENERIC,              // job kind
   "job was begun"_Stz,     // comment about the job

@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_NodeInfo =
 {
-  "Job_NodeInfo"_Stz,// name of the job class
   CN_JOB_NODEINFO,   // class enum
   JK_INFO,           // job kind
   "node info"_Stz,   // comment about the job

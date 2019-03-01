@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_VerifyIndex =
 {
-  "Job_VerifyIndex"_Stz,      // name of the job class
   CN_JOB_VERIFYINDEX,         // class enum
   JK_DIST2PC,                 // job kind
   "verify index"_Stz,         // comment about the job

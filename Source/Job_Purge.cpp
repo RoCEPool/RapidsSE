@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Purge =
 {
-  "Job_Purge"_Stz,       // name of the job class
   CN_JOB_PURGE,          // class enum
   JK_DIST2PC,            // job kind
   "purge table"_Stz,     // comment about the job

@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_ListIdxColumns =
 {
-  "Job_ListIdxColumns"_Stz,  // name of the job class
   CN_JOB_LISTIDXCOLUMNS,     // class enum
   JK_LOCAL,                  // job kind
   "list index columns"_Stz,  // comment about the job

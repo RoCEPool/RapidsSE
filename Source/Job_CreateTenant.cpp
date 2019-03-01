@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_CreateTenant =
 {
-  "Job_CreateTenant"_Stz,    // name of the job class
   CN_JOB_CREATETENANT,       // class enum
   JK_DIST2PC,                // job kind
   "create tenant"_Stz,       // comment about the job

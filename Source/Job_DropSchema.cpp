@@ -12,7 +12,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_DropSchema =
 {
-  "Job_DropSchema"_Stz,   // name of the job class
   CN_JOB_DROPSCHEMA,      // class enum
   JK_DIST2PC,             // job kind
   "drop schema"_Stz,      // comment about the job

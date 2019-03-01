@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_TableSizes =
 {
-  "Job_TableSizes"_Stz,  // name of the job class
   CN_JOB_TABLESIZES,     // class enum
   JK_DIST2PC,            // job kind
   "table sizes"_Stz,     // comment about the job

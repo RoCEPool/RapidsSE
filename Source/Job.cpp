@@ -446,7 +446,7 @@ void Job::vShow(s48K& s)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   vTrace("%s: %s"_Stz,
-         m_pJobClass ? (Stz*)m_pJobClass->m_aName : "<no jobClass>"_Stz,
+         m_pJobClass ? aCN[m_pJobClass->m_eClass] : "<no jobClass>"_Stz,
          s.aStz());
 }
 

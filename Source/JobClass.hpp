@@ -25,8 +25,7 @@ namespace Jobs
   struct JobClass
   {
     public:
-      Stz* m_aName;     // name of the job class
-      eCN  m_eClass;     // enum of the class
+       eCN  m_eClass;     // enum of the class
       eJK  m_eKind;      // job kind
       Stz* m_aComment;   // comment about the job
       Stz* m_aCommand1;  // first word of prompt command

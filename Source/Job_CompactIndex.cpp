@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_CompactIndex =
 {
-  "Job_CompactIndex"_Stz, // name of the job class
   CN_JOB_COMPACTINDEX,    // class enum
   JK_DIST2PC,             // job kind
   "compact index"_Stz,    // comment about the job

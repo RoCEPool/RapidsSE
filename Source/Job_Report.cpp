@@ -11,8 +11,7 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Report =
 {
-  "Job_Report"_Stz,   // name of the job class
-  CN_JOB_REPORT,         // class enum
+  CN_JOB_REPORT,      // class enum
   JK_LOCAL,           // job kind
   "report"_Stz,       // comment about the job
   "report"_Stz,       // the prompt command

@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Export =
 {
-  "Job_Export"_Stz,     // name of the job class
   CN_JOB_EXPORT,        // class enum
   JK_DIST2PC,           // job kind
   "export table"_Stz,   // comment about the job

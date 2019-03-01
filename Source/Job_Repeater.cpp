@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Repeater =
 {
-  "Job_Repeater"_Stz,    // name of the job class
   CN_JOB_REPEATER,       // class enum
   JK_LOCAL,              // job kind
   "repeat data"_Stz,     // comment about the job

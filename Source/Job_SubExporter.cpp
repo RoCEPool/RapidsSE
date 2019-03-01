@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubExporter =
 {
-  "Job_SubExporter"_Stz,     // name of the job class
   CN_JOB_SUBEXPORTER,          // class enum
   JK_CHILD,                  // job kind
   "sub-export rows"_Stz,     // comment about the job

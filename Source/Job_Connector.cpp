@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Connector =
 {
-  "Job_Connector"_Stz,    // name of the job class
   CN_JOB_CONNECTOR,       // class enum
   JK_SYSTEM,              // job kind
   "socket connector"_Stz, // comment about the job

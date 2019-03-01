@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_FetchRows =
 {
-  "Job_FetchRows"_Stz,       // name of the job class
   CN_JOB_FETCHROWS,          // class enum
   JK_LOCAL,                  // job kind
   "fetch rows"_Stz,          // comment about the job

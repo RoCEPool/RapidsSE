@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_TruncateTable =
 {
-  "Job_TruncateTable"_Stz,   // name of the job class
   CN_JOB_TRUNCATETABLE,      // class enum
   JK_DIST2PC,                // job kind
   "truncate table"_Stz,      // comment about the job

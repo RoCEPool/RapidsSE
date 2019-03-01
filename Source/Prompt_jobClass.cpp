@@ -33,7 +33,7 @@ bool Prompt::bPrompt_jobClass(SePrompt* pPrompt)
     
     vTrace("  %02lld %-20s %s\n"_Stz,
            i_JobClass,
-           pJobClass->m_aName,
+           aCN[pJobClass->m_eClass],
            aJK[pJobClass->m_eKind]
            );
     

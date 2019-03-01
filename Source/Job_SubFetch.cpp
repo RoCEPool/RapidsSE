@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubFetch =
 {
-  "Job_SubFetch"_Stz,        // name of the job class
   CN_JOB_SUBFETCH,           // class enum
   JK_CHILD,                  // job kind
   "sub-fetch rows"_Stz,      // comment about the job

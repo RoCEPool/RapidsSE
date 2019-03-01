@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_UseSchema =
 {
-  "Job_UseSchema"_Stz,   // name of the job class
   CN_JOB_USESCHEMA,      // class enum
   JK_LOCAL,              // job kind
   "use schema"_Stz,      // comment about the job

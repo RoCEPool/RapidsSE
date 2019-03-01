@@ -9,7 +9,6 @@
 
 JobClass xJobClass__Cancelled =
 {
-  "Job__Cancelled"_Stz,    // name of the job class
   CN_JOB__CANCELLED,       // class enum
   JK_GENERIC,              // job kind
   "job was cancelled"_Stz, // comment about the job

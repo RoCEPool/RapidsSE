@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_StartCluster =
 {
-  "Job_StartCluster"_Stz,  // name of the job class
   CN_JOB_STARTCLUSTER,     // class enum
   JK_DIST2PC,              // job kind
   "start cluster"_Stz,     // comment about the job

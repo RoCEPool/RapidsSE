@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_CreateIndex =
 {
-  "Job_CreateIndex"_Stz,   // name of the job class
   CN_JOB_CREATEINDEX,      // class enum
   JK_DIST2PC,              // job kind
   "create index"_Stz,      // comment about the job
@@ -50,7 +49,6 @@ JobClass xJobClass_CreateIndex =
 
 JobClass xJobClass_CreateIndexUnique =
 {
-  "Job_CreateIndex"_Stz,   // name of the job class
   CN_JOB_CREATEINDEX,      // class enum
   JK_DIST2PC,              // job kind
   "create unique index"_Stz, // comment about the job

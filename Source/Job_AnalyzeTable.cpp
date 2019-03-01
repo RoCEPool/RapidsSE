@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_AnalyzeTable =
 {
-  "Job_AnalyzeTable"_Stz,    // name of the job class
   CN_JOB_ANALYZETABLE,       // class enum
   JK_DIST2PC,                // job kind
   "analyze table"_Stz,       // comment about the job

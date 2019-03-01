@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubTruncate =
 {
-  "Job_SubTruncate"_Stz,     // name of the job class
   CN_JOB_SUBTRUNCATE,        // class enum
   JK_CHILD,                  // job kind
   "table sub-truncate"_Stz,  // comment about the job
