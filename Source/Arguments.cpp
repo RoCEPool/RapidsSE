@@ -79,6 +79,7 @@ Arguments::Arguments(void)
   m_nDummySleep  = 10;
   m_nDummyLoop   = 0;
   m_nPeriodicSleep = 10;
+  m_nSupervisorSleep = 10;
   m_bTouch       = false;
   m_bTracepoint  = false;
   m_bTracing     = false;
@@ -162,6 +163,7 @@ void Arguments::vAddConstants(void)
   vAddConstant("args.stop"_Stz,              m_bStop);
   vAddConstant("args.subIngesters"_Stz,      m_nSubIngesters);
   vAddConstant("args.subLoaders"_Stz,        m_nSubLoaders);
+  vAddConstant("args.supervisorSleep"_Stz,   m_nSupervisorSleep);
   vAddConstant("args.threads"_Stz,           m_nThreads);
   vAddConstant("args.touch"_Stz,             m_bTouch);
   vAddConstant("args.tracepoint"_Stz,        m_bTracepoint);
@@ -316,6 +318,12 @@ bool Arguments::bParse(int argc, Stz* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--periodicSleep"_Stz)) {
       m_nPeriodicSleep = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--supervisorSleep"_Stz)) {
+      m_nSupervisorSleep = argv[++i_Arg]->iToI8();
       continue;
     }
     

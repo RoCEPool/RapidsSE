@@ -39,7 +39,7 @@
 
   begin
 
-    //args.supervisorSleep thread.sleep_s
+    args.supervisorSleep thread.sleep_ms
 
   again
 
