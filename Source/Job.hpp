@@ -11,6 +11,18 @@ namespace Jobs
   
   static const i8 C_MAX_COLUMNS = 150;
   
+  enum eJF // job flags
+  {
+  /*  0 */ JF_NONE   = 0x0,
+  /*  1 */ JF_LOWMEM = 0x1,  // low memory sensistive
+  };
+  
+  static Stz* aJF[]
+  {
+  /*  0 */ "NONE"_Stz,
+  /*  1 */ "LOWMEM"_Stz,
+  };
+
   enum eJK // job kind
   {
   /*  0 */ JK_NONE=0,
