@@ -41,10 +41,10 @@ rows: 26
 //------------------------------------------------------------------------------
 // EXACT KEYS for index on jA
 
-fetch jCdt "jA 9223372036854775807 >";
+fetch jCdt "jA 9223372036854775806 >";
 rows: 0
 
-fetch jCdt "jA 9223372036854775807 >=";
+fetch jCdt "jA 9223372036854775806 >=";
 rows: 1
 
 fetch jCdt "jA 19 >" ;
@@ -161,10 +161,10 @@ rows: 23
 fetch jCdt "jA 1 >=";
 rows: 24
 
-fetch jCdt "jA -9223372036854775807 >";
+fetch jCdt "jA -9223372036854775806 >";
 rows: 24
 
-fetch jCdt "jA -9223372036854775807 >=";
+fetch jCdt "jA -9223372036854775806 >=";
 rows: 25
 
 drop table jCdt;

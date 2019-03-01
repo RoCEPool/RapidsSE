@@ -67,10 +67,10 @@ rows: 9
 fetch jCdt "jA 1 >= jA 10 <= and" ;
 rows: 10
 
-fetch jCdt "jA -9223372036854775807 > jA 0 < and";
+fetch jCdt "jA -9223372036854775806 > jA 0 < and";
 rows: 0
 
-fetch jCdt "jA -9223372036854775807 > jA 1 <= and";
+fetch jCdt "jA -9223372036854775806 > jA 1 <= and";
 rows: 1
 
 drop table jCdt;
