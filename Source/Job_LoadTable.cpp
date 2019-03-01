@@ -35,7 +35,7 @@ JobClass xJobClass_LoadTable =
   JT_NONE,                // job trace
   DL_GRAB_READ,           // ddl lock model
   PY_NORMAL,              // priority
-  JF_NONE,                // flags
+  JF_LOWMEM,              // flags
 
   eJob_checkCluster,      // prompt check function
   pJob_LoadTable_pre,     // prompt pre-process function

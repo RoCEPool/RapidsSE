@@ -29,7 +29,7 @@ JobClass xJobClass_CreateTable =
   JT_NONE,                // job trace
   DL_GRAB_WRITE,          // ddl lock model
   PY_NORMAL,              // priority
-  JF_NONE,                // flags
+  JF_LOWMEM,              // flags
 
   eJob_checkCluster,      // prompt check function
   pJob_CreateTable_pre,   // prompt pre-process function
