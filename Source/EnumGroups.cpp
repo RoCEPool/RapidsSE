@@ -34,6 +34,7 @@ Stz* EnumGroups::szEnumText(i8 iEnumGroup, i8 i_Enum)
     case _EG_KC: return aKC[i_Enum];
     case _EG_LK: return aLK[i_Enum];
     case _EG_PK: return aPK[i_Enum];
+    case _EG_PY: return aPY[i_Enum];
     case _EG_QK: return aQK[i_Enum];
       //case _EG_QR: return aQR[i_Enum];
     case _EG_RE: return aRE[i_Enum];
