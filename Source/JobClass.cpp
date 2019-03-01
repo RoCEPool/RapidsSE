@@ -213,7 +213,7 @@ void JobClass::vJobCat(void)
   s32 sSeedCan(m_aSeedCan ? m_aSeedCan : "-"_Stz);
   sSeedCan.vConcat(m_bSeedsSpawned[SS_SEED_CAN] ? "+"_Stz : " "_Stz);
   
-  vTrace("%20s %10lld %20s %10s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
+  vTrace("%20s %10lld %20s %10s %10s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
          
          aCN[m_eClass],
          giClassSize[m_eClass],
@@ -221,10 +221,10 @@ void JobClass::vJobCat(void)
          sFunctions.aStz(),
          aJK[m_eKind],
          sDdlLock.aStz(),
+         aPY[m_ePrority],
          m_aComment,
          
          m_bResources ? "chk/rel"_Stz : "-"_Stz,
-         
          sSeedRun.aStz(),
          sSeedReq.aStz(),
          sSeedRcv.aStz(),
@@ -240,7 +240,7 @@ void JobClass::vJobCat(void)
 /*----------------------------------------------------------------------------*/
 void JobClass::vJobCatHeader(void)
 {
-  vTrace("%20s %10s %20s %10s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
+  vTrace("%20s %10s %20s %10s %10s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
          
          "eClass"_Stz,
          "SizeOf"_Stz,
@@ -248,6 +248,7 @@ void JobClass::vJobCatHeader(void)
          "Functions"_Stz,
          "Kind"_Stz,
          "Ddl Lock"_Stz,
+         "Priority"_Stz,
          "Comment"_Stz,
          
          "Resources"_Stz,
@@ -262,11 +263,11 @@ void JobClass::vJobCatHeader(void)
   s32 sBar10 = "----------"_Stz;
   s32 sBar20 = "--------------------"_Stz;
   
-  vTrace("%20s %10s %20s %10s %10s %10s %20s : "
+  vTrace("%20s %10s %20s %10s %10s %10s %10s %20s : "
          "%10s %20s %20s %20s %20s %20s %20s\n"_Stz,
          
          sBar20.aStz(),sBar10.aStz(),sBar20.aStz(),sBar10.aStz(),
-         sBar10.aStz(),sBar10.aStz(),sBar20.aStz(),
+         sBar10.aStz(),sBar10.aStz(),sBar10.aStz(),sBar20.aStz(),
          
          sBar10.aStz(),sBar20.aStz(),sBar20.aStz(),sBar20.aStz(),
          sBar20.aStz(),sBar20.aStz(),sBar20.aStz()
