@@ -139,6 +139,9 @@ void SePrompt::vPromptLoop(void)
       continue;
     }
 
+    if (! bPassesLowMem())
+      continue;
+    
     if (! bPassesCheck())
       continue;
     
@@ -565,6 +568,29 @@ bool SePrompt::bPassesCheck(void)
   }
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* passes the low-memory condition?                                           */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bPassesLowMem(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  if (m_pJobClass->m_eFlags != JF_LOWMEM)
+    return true;
+  
+  if (gpBufferPool->nFreeCount() > C_LOW_BUFFERS)
+    return true;
+  
+  if (m_pJobClass->m_aCommand2)
+    vTrace("Error: unable to run %s %s under low memory conditions\n"_Stz,
+           m_pJobClass->m_aCommand1,m_pJobClass->m_aCommand2);
+  else
+    vTrace("Error: unable to run %s under low memory conditions\n"_Stz,
+           m_pJobClass->m_aCommand1);
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
