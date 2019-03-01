@@ -5,90 +5,38 @@
 " job_SubWalker.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* SubWalker (on each node)                                                   */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-: SubWalker_run ( -- <R> )
+: subWalker.export ( pJob_SubWalker -- )
+
+  params| pJob_SubWalker |
+
+  pJob_SubWalker job_subWalker.begin not if exit then
+
+  begin pJob_SubWalker job_subWalker.chunk while repeat
+
+  pJob_SubWalker job_subWalker.end
+;
+
+/*----------------------------------------------------------------------------*/
+/* SubWalker seed                                                             */
+/*----------------------------------------------------------------------------*/
+: subWalker_run ( -- )
 
   >>am <SEED_RUN>
+  an::seed_run
 
-  0 0 locals| pJob_SubWalker pTask |
-  0 0 0 locals| iSlot pTable sTableNm |
-  0 0 locals| iTrucateJobId pJob_TruncateTable |
+  task::this locals| pThisTask |
+  job::this  locals| pJob_SubWalker |
+  pJob_SubWalker job_subWalker.walkJob@ locals| pJob_Walk |
+  pJob_Walk job.executingTask@ locals| pTask_Walk |
 
-  tp: SubWalker
-  //"SubWalker_run" .
+  pJob_SubWalker subWalker.export
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the task
-  task::this to pTask
+  pTask_Walk task.ack
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the job from the task
-  pTask task.job@ to pJob_SubWalker
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  //ddlLock::grabWrite
-
-  // get truncate job
-  pJob_SubWalker job_SubWalker.truncateJobId@ to iTrucateJobId
-  pJob_SubWalker iTrucateJobId job::waitParticipant to pJob_TruncateTable
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // first check if the job is executing SS_SEED_EXE
-  // then get the task that is executing it
-  begin
-    pJob_TruncateTable job.IsExecuting
-  not while
-    1 thread.sleep_ms
-  repeat
-
-  pJob_TruncateTable job.executingTask@ locals| pTask_TruncateTable |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // wait for acks to be set in the truncate task
-  begin
-    pTask_TruncateTable task.IsAckSet
-  not while
-    1 thread.sleep_ms
-  repeat
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job from truncate (sub has no session)
-  pTask_TruncateTable task.job@ job.pushPath
-  task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push table
-  pJob_SubWalker job.objectName@ to sTableNm
-  sTableNm pushTable assert
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the table
-  sTableNm find execute to pTable
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the slot this sub truncate is supposed to work on
-  pJob_SubWalker job_subTruncate.slot@ to iSlot
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // truncate table for iSlot
-  iSlot pTable table.truncate
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pop table
-  popTable
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // notify the truncate job
-  pTask_TruncateTable task.grabLock
-  pTask_TruncateTable task.dropLock
-  pTask_TruncateTable task.ack
-
-  // null the job in the task
-  nullptr pTask task.job!
-
-  // now delete the ended job
+  // null the job in the task and delete ended job
+  nullptr pThisTask task.job!
   pJob_SubWalker job.delete
 
   <DONE_RUN>
