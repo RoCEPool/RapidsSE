@@ -110,7 +110,7 @@ Job_SubWalker::Job_SubWalker(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBWALKER,_FOOTER_);
     
-  m_iTruncateJobId  = -1;
+  m_pJobWalk  = nullptr;
   
   _checkInitialised_(CN_JOB_SUBWALKER);
   
@@ -150,6 +150,35 @@ void Job_SubWalker::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBWALKER,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/* begin sub purger                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_SubWalker::bBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBWALKER,_FOOTER_);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to purge oldest buffer                                             */
+/*----------------------------------------------------------------------------*/
+bool Job_SubWalker::bChunk(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBWALKER,_FOOTER_);
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end sub purger                                                             */
+/*----------------------------------------------------------------------------*/
+void Job_SubWalker::vEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBWALKER,_FOOTER_);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

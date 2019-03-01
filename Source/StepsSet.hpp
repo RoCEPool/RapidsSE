@@ -650,6 +650,13 @@
   static void vJob_SubTruncateSlotFetch(Tasks::MP_Task mpTask);
   static void vJob_SubTruncateTruncateJobIdFetch(Tasks::MP_Task mpTask);
 
+  // job SubWalker
+  static void vJob_SubWalkerBegin(Tasks::MP_Task mpTask);
+  static void vJob_SubWalkerChunk(Tasks::MP_Task mpTask);
+  static void vJob_SubWalkerEnd(Tasks::MP_Task mpTask);
+  static void vJob_SubWalkerWalkJobFetch(Tasks::MP_Task mpTask);
+  static void vJob_SubWalkerSpawn(Tasks::MP_Task mpTask);
+
   // Job Truncate
   static void vJob_TruncateTableSpawnSub(Tasks::MP_Task mpTask);
 

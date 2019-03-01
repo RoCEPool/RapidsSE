@@ -5,12 +5,14 @@
 
 namespace Jobs
 {
+  class Job_Walk;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_SubWalker : public Job
   {
   public:
    
-    i8 m_iTruncateJobId; //job id of the truncate job that spawned this sub truncate
+    Job_Walk* m_pJobWalk;
     
     // must be last
     Footer m_xFooter;
@@ -28,6 +30,10 @@ namespace Jobs
   public:
     void vShow(void);
   
+    bool bBegin(void);
+    bool bChunk(void);
+    void vEnd(void);
+
   public:
     Footer* aFooter(void);
   

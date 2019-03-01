@@ -97,6 +97,7 @@ namespace Steps
     static void vAddSteps_JobSubLoader(void);
     static void vAddSteps_JobSubPublish(void);
     static void vAddSteps_JobSubPurger(void);
+    static void vAddSteps_JobSubWalker(void);
     static void vAddSteps_JobTruncateTable(void);
     static void vAddSteps_JobWriteBuffer(void);
     static void vAddSteps_JobWriteRecord(void);
@@ -124,7 +125,7 @@ namespace Steps
     static void vAddSteps_Row(void);
     static void vAddSteps_Rstack(void);
   
-     static void vAddSteps_Session(void);
+    static void vAddSteps_Session(void);
     static void vAddSteps_Shell(void);
     static void vAddSteps_Slots(void);
     static void vAddSteps_Socket(void);
