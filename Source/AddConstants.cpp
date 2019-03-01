@@ -286,6 +286,7 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_SUBPURGER"_Stz,      CN_JOB_SUBPURGER);
   /*    */ vAddConstant("CN_JOB_SUBTRUNCATE"_Stz,    CN_JOB_SUBTRUNCATE);
   /*    */ vAddConstant("CN_JOB_SUBWALKER"_Stz,      CN_JOB_SUBWALKER);
+  /*    */ vAddConstant("CN_JOB_SUPERVISOR"_Stz,     CN_JOB_SUPERVISOR);
   /*    */ vAddConstant("CN_JOB_TABLESIZES"_Stz,     CN_JOB_TABLESIZES);
   /*    */ vAddConstant("CN_JOB_TRUNCATETABLE"_Stz,  CN_JOB_TRUNCATETABLE);
   /*    */ vAddConstant("CN_JOB_USESCHEMA"_Stz,      CN_JOB_USESCHEMA);
