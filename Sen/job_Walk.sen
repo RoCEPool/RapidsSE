@@ -109,12 +109,23 @@
   task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if we can export the table
+  // check if we can walk the table
   pJob_Walk job.objectName@ walk.checkTable
   not if
-  pJob_Walk
-  <ERROR_JOB>
-  !!am exit
+    pJob_Walk <ERROR_JOB>
+    !!am exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get index and table name
+  0 0 locals| sIndexNm sTableNm |
+  pJob_Walk job.indexName@ to sIndexNm
+  pJob_Walk job.objectName@ to sTableNm
+
+  sTableNm sIndexNm checkSizeIndex
+  not if
+    pJob_Walk <ERROR_JOB>
+    !!am exit
   then
 
   <<am <Resources_Checked>
