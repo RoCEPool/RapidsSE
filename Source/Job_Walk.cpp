@@ -152,7 +152,7 @@ void Job_Walk::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 bool Job_Walk::bBegin(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WALK,_FOOTER_);
   
   ActionSequence::vAdd(this,AN_JOB_BEGIN);
   
@@ -166,7 +166,7 @@ bool Job_Walk::bBegin(void)
 /*----------------------------------------------------------------------------*/
 void Job_Walk::vEnd(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WALK,_FOOTER_);
   
   ActionSequence::vAdd(this,AN_JOB_END);
 }
@@ -180,7 +180,7 @@ bool Job_Walk::bPopulateJob(TokenVec* pTokenVec)
   
   i8 iNumTokens;
   
-  ASSERT(pTokenVec->pGet(0)->bSame("tr"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("walk"_Stz));
   
   // get number of items in token vector
   iNumTokens = pTokenVec->nItems();

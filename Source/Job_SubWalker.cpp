@@ -161,11 +161,11 @@ bool Job_SubWalker::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBWALKER,_FOOTER_);
   
-  TablePtn* pTablePtn = m_pJobWalk->m_pTable->pSlots()->pPartition(m_i_Slot);
-  
-  m_pIndexTree = pTablePtn->pIndexTree(m_pJobWalk->m_pIndex->iIndexNo());
-  
-  m_pEntryBuffer = m_pIndexTree->pFirstH0Buffer();
+//  TablePtn* pTablePtn = m_pJobWalk->m_pTable->pSlots()->pPartition(m_i_Slot);
+//
+//  m_pIndexTree = pTablePtn->pIndexTree(m_pJobWalk->m_pIndex->iIndexNo());
+//
+//  m_pEntryBuffer = m_pIndexTree->pFirstH0Buffer();
   
   return true;
 }
@@ -177,19 +177,33 @@ bool Job_SubWalker::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBWALKER,_FOOTER_);
   
-  if (! m_pEntryBuffer)
-    return false;
-
-  for (Item* aItem = m_pEntryBuffer->aFirstItem();
-       aItem;
-       aItem = m_pEntryBuffer->aAdjacentItem(aItem))
-    {;}
+//  if (! m_pEntryBuffer)
+//    return false;
+//
+//  for (Item* aItem = m_pEntryBuffer->aFirstItem();
+//       aItem;
+//       aItem = m_pEntryBuffer->aAdjacentItem(aItem))
+//    {;}
+//
+//  //vTrace("SubWalker[%lld]: %p\n"_Stz,m_i_Slot,m_pEntryBuffer);
+//
+//  m_pEntryBuffer = m_pEntryBuffer->pNextBuffer();
+//
+//  return true;
   
-  //vTrace("SubWalker[%lld]: %p\n"_Stz,m_i_Slot,m_pEntryBuffer);
+  i8 iSum = 0;
+  i8 nLines = 0;
   
-  m_pEntryBuffer = m_pEntryBuffer->pNextBuffer();
+  for (i8* piVal = (i8*)gpAttachMap; nLines < C_1M * 38; nLines++) {
+    iSum += *(piVal+2);
+    //piVal = (i8*)gpAttachMap + Random::iInteger(C_1M * 38);
+    piVal += 8;
+  }
   
-  return true;
+  //if (iSum == 1)
+    vTrace("nLines %lld sum %lld\n"_Stz,nLines,iSum);
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
