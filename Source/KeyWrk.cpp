@@ -213,6 +213,36 @@ void KeyWrk::vAddKey(KeyData* aKey, IdxColVec* pColVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add min lower value to key                                                 */
+/*----------------------------------------------------------------------------*/
+void KeyWrk::vAddMinusInfinity(void)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  
+  char* aDst = aLatter();
+  
+  i8 iInt = C_DATUM_MINUS_INFINITY;
+  Int::nCopy(aDst,(void*)&iInt);
+  
+  vTake(C_BYTES_PER_WORD);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add max upper value to key                                                 */
+/*----------------------------------------------------------------------------*/
+void KeyWrk::vAddPlusInfinity(void)
+{
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  
+  char* aDst = aLatter();
+  
+  i8 iInt = C_DATUM_PLUS_INFINITY;
+  Int::nCopy(aDst,(void*)&iInt);
+  
+  vTake(C_BYTES_PER_WORD);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add word to key workspace                                                  */
 /*----------------------------------------------------------------------------*/
 void KeyWrk::vAddWord(w8 wWord)

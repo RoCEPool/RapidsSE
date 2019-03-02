@@ -517,10 +517,17 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   pFetchBuffer = new FetchBuffer(pTable, iSlot);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get no of columns in the index
+  i8 nIdxCols = pIndex->pIdxColVec()->nItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   KeyWrk xKeyWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
   xKeyWrkLower.vAddDatum(xVariable,pColumn0,pFormatters);
+  for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
+    xKeyWrkLower.vAddMinusInfinity();
+  }
   //xKeyWrk.vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -740,11 +747,18 @@ void Step::vIndexRange(MP_Task mpTask)
   pFetchBuffer = new FetchBuffer(pTable, iSlot);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get no of columns in the index
+  i8 nIdxCols = pIndex->pIdxColVec()->nItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the lower key
   KeyWrk xKeyWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
   xKeyWrkLower.vAddDatum(xValWrkLwr,pColumn0,pFormatters);
+  for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
+    xKeyWrkLower.vAddMinusInfinity();
+  }
   //xKeyWrkLower.vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -752,6 +766,9 @@ void Step::vIndexRange(MP_Task mpTask)
   KeyWrk xKeyWrkUpper;
   pColumn0 = pIndex->pIdxColVec()->pGet(0);
   xKeyWrkUpper.vAddDatum(xValWrkUpr,pColumn0,pFormatters);
+  for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
+    xKeyWrkUpper.vAddPlusInfinity();
+  }
   //xKeyWrkUpper.vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1314,11 +1331,18 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   pFetchBuffer = new FetchBuffer(pTable, iSlot);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get no of columns in the index
+  i8 nIdxCols = pIndex->pIdxColVec()->nItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the upper key
   KeyWrk xKeyWrkUpper;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
   xKeyWrkUpper.vAddDatum(xVariable,pColumn0,pFormatters);
+  for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
+    xKeyWrkUpper.vAddPlusInfinity();
+  }
   //xKeyWrkUpper.vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

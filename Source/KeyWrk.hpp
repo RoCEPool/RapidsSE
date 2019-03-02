@@ -23,6 +23,8 @@ namespace Data
     void vAddDatum(GenVar& xVariable, Column* pCol);
     void vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters);
     void vAddKey(KeyData* aKey, IdxColVec* pColVec);
+    void vAddMinusInfinity(void);
+    void vAddPlusInfinity(void);
     void vAddWord(w8 wWord);
     void vExtractKey(Item* aRowEntry, IdxColVec* pIdxColVec);
     i8   iHashKey(void);

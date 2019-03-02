@@ -6,4 +6,4 @@ exactKey_intLoop.test
 lowerBoundKey_intLoop.test
 upperBoundKey_intLoop.test
 range.test
-//rangeCombo.test
+rangeCombo.test
