@@ -21,6 +21,11 @@ namespace Assembler
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   extern "C" void vPrefetch(void*);
+  extern "C" void vPrefetchT0(void*);
+  extern "C" void vPrefetchT1(void*);
+  extern "C" void vPrefetchT2(void*);
+  extern "C" void vPrefetchNta(void*);
+
   extern "C" u8 iTestPrefetch(void);
 }
 

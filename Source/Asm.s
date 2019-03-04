@@ -505,6 +505,115 @@ vPrefetch:
 
 ret
 
+
+#------------------------------------------------------------------------------#
+# _vPrefetchT0: prefetch data into all levels of the cache hierarchy           #
+#------------------------------------------------------------------------------#
+
+#ifdef __APPLE__
+
+.globl _vPrefetchT0
+.intel_syntax noprefix
+
+_vPrefetchT0:
+
+#else
+
+.globl vPrefetchT0
+.intel_syntax noprefix
+
+vPrefetchT0:
+
+#endif
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
+  prefetcht0 [rdi]
+
+ret
+
+
+#------------------------------------------------------------------------------#
+# _vPrefetchT1: prefetch data into level 2 cache and higher                    #
+#------------------------------------------------------------------------------#
+
+#ifdef __APPLE__
+
+.globl _vPrefetchT1
+.intel_syntax noprefix
+
+_vPrefetchT1:
+
+#else
+
+.globl vPrefetchT1
+.intel_syntax noprefix
+
+vPrefetchT1:
+
+#endif
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
+  prefetcht1 [rdi]
+
+ret
+
+
+#------------------------------------------------------------------------------#
+# _vPrefetchT2: prefetch data into level 3 cache and higher                    #
+#------------------------------------------------------------------------------#
+
+#ifdef __APPLE__
+
+.globl _vPrefetchT2
+.intel_syntax noprefix
+
+_vPrefetchT2:
+
+#else
+
+.globl vPrefetchT2
+.intel_syntax noprefix
+
+vPrefetchT2:
+
+#endif
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
+  prefetcht2 [rdi]
+
+ret
+
+
+#------------------------------------------------------------------------------#
+# _vPrefetchNta: prefetch data into non-temporal cache structure               #
+#------------------------------------------------------------------------------#
+
+#ifdef __APPLE__
+
+.globl _vPrefetchNta
+.intel_syntax noprefix
+
+_vPrefetchNta:
+
+#else
+
+.globl vPrefetchNta
+.intel_syntax noprefix
+
+vPrefetchNta:
+
+#endif
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
+  prefetchnta [rdi]
+
+ret
+
+
 #------------------------------------------------------------------------------#
 # _iTestPrefetch: test for prefetch                                            #
 #------------------------------------------------------------------------------#

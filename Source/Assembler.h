@@ -20,6 +20,8 @@ using namespace Assembler;
   #include "Asm.h"
 #endif
 
+#include "Asm.h"
+
 #include "PmcUse.h"
 
 /*============================================================================*/
