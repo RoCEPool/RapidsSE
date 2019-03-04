@@ -1,0 +1,53 @@
+/*============================================================================*/
+/* _nw walk nation test                                                       */
+/*============================================================================*/
+
+startCluster;
+
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+
+print "loading nation.csv..." ;
+ld nation "/tpch/SF1/nation.csv" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+markjob export on;
+markjob subExporter on;
+markjob;
+
+markact job_export on;
+markact job_subExporter on;
+markact job__begun on;
+markact job__cancel on;
+markact job__cancelled on;
+markact job__end on;
+markact job__ended on;
+markact job__execute on;
+markact job__executed on;
+markact task on;
+markact;
+
+markres file on;
+markres socket on;
+markres;
+
+print "exporting nation.csv..." ;
+
+amSection "EXPORT" ;
+
+export nation "/tmp/nation_export.csv" ;
+
+actionSequence;
+
+activityMap short;
+
+walk nation;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

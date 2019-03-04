@@ -170,7 +170,7 @@ bool Job_SubWalker::bBegin(void)
   return true;
 }
 
-#define C_LINES (C_1M * 38)
+#define C_LINES (C_1M * 10)
 
 i8* apiCacheRnd[C_LINES+2048];
 i8* apiCacheSeq[C_LINES+2048];
@@ -196,14 +196,13 @@ bool Job_SubWalker::bChunk(void)
 //
 //  return true;
   
-  i8 i = 0;
+  i8 i_CacheLine = 0;
   i8 iSum = 0;
-  i8 nLine = 0;
   Timer oTimer;
 
-  for (i8 i_CacheLine = 0; i_CacheLine < C_LINES+2048; i_CacheLine++) {
+  for (i_CacheLine = 0; i_CacheLine < C_LINES+2048; i_CacheLine++) {
     apiCacheRnd[i_CacheLine] = (i8*)gpAttachMap + Random::iInteger(C_LINES) * 8;
-    apiCacheSeq[i_CacheLine] = (i8*)gpAttachMap + i * 8;
+    apiCacheSeq[i_CacheLine] = (i8*)gpAttachMap + i_CacheLine * 8;
     //vTrace("%p\n"_Stz,apiCacheRnd[i_CacheLine]);
   }
   
@@ -212,41 +211,57 @@ bool Job_SubWalker::bChunk(void)
   // prefetch T0
   vTrace("-- prefetch T0 ----------------------------------------------\n"_Stz);
   
-  for (i8 i_Dist = 1; i_Dist < 2048; i_Dist *= 2) {
+  const i8 C_DIST  = 2048;
+  const i8 C_AHEAD = 2048;
+  const i8 C_PRINT = 0;
+  const i8 C_PRE   = 0;
+  
+  for (i8 i_Dist = 2; i_Dist < C_DIST; i_Dist *= 2) {
 
-    for (i8 f = 0; f < i_Dist; f++) {
-      i8 i_Prefetch = 0 + 0 + f;
-      //vTrace("i_Prefetch %lld\n"_Stz,i_Prefetch);
-      i8* piPre = apiCacheRnd[i_Prefetch];
-      iSum += (i8)piPre;
-      vPrefetchT0(piPre);
-    }
-    iCpuid(0,0);
-
-    i = 0;
-    oTimer.vStart();
-    
-    for (i8 i_CacheLine = 0; i_CacheLine < C_LINES; i_CacheLine++) {
+    for (i8 nAhead = 1; nAhead < C_AHEAD; nAhead *= 2) {
       
-      if (0 == i_CacheLine % i_Dist) {
-        //iCpuid(0,0);
-        for (i8 f = 0; f < i_Dist; f++) {
-          i8 i_Prefetch = i_CacheLine + 2 * i_Dist + f;
-          //vTrace("i_Prefetch %lld\n"_Stz,i_Prefetch);
+      if (C_PRE) {
+        for (i8 nfetch = 0; nfetch < i_Dist*nAhead; nfetch++) {
+          i8 i_Prefetch = 0 + 0 + nfetch;
           i8* piPre = apiCacheRnd[i_Prefetch];
           iSum += (i8)piPre;
-          vPrefetchT0(piPre);
+          vPrefetchT2(piPre);
+          if (C_PRINT)
+            vTrace("i_Prefetch %lld %p\n"_Stz,i_Prefetch,piPre);
         }
+        iCpuid(0,0);
+      }
+
+      oTimer.vStart();
+      
+      for (i_CacheLine = 0; i_CacheLine < C_LINES; i_CacheLine++) {
+        
+        if (C_PRE) {
+          if (0 == i_CacheLine % i_Dist) {
+            //iCpuid(0,0);
+            for (i8 nFetch = 0; nFetch < i_Dist; nFetch++) {
+              i8 i_Prefetch = i_CacheLine + i_Dist*nAhead + nFetch;
+              i8* piPre = apiCacheRnd[i_Prefetch];
+              iSum += (i8)piPre;
+              vPrefetchT2(piPre);
+              if (C_PRINT)
+                vTrace("i_Prefetch %lld %p\n"_Stz,i_Prefetch,piPre);
+            }
+          }
+        }
+        
+        i8* piCacheLine = apiCacheSeq[i_CacheLine];
+        iSum += *piCacheLine;
+        if (C_PRINT)
+          vTrace("i_Cache %lld %p\n"_Stz,i_CacheLine,piCacheLine);
       }
       
-      //vTrace("i_Cache %lld\n"_Stz,i_CacheLine);
-      i8* piCacheLine = apiCacheRnd[i_CacheLine];
-      iSum += *piCacheLine;
+      oTimer.vUpdate();
+      vTrace("i_Dist %lld Ahead %lld Time %lld "
+             ": Lines %lld sum %lld (%lldns/f)\n"_Stz,
+             i_Dist,nAhead,oTimer.iMilliseconds(),
+             C_LINES,iSum,oTimer.iNanoseconds()/C_LINES);
     }
-    
-    oTimer.vUpdate();
-    vTrace("i_Dist %lld Time %lld : nLines %lld sum %lld (%lldns/f)\n"_Stz,
-           i_Dist,oTimer.iMilliseconds(),nLine,iSum,oTimer.iNanoseconds()/C_LINES);
   }
   
 
@@ -255,18 +270,16 @@ bool Job_SubWalker::bChunk(void)
   vTrace("-- sequential -----------------------------------------------\n"_Stz);
   for (i8 i_Dist = 1; i_Dist < 2048; i_Dist *= 2) {
     oTimer.vStart();
-    i = 0;
-    for (nLine = 0; nLine < C_LINES; nLine++) {
-      i8* piPre = apiCacheRnd[i + i_Dist];
+    for (i_CacheLine = 0; i_CacheLine < C_LINES; i_CacheLine++) {
+      i8* piPre = apiCacheRnd[i_CacheLine + i_Dist];
       iSum += (i8)piPre;
       //vPrefetchT0(piPre);
-      i8* piCacheLine = apiCacheSeq[i];
+      i8* piCacheLine = apiCacheSeq[i_CacheLine];
       iSum += *piCacheLine;
-      i++;
     }
     oTimer.vUpdate();
-    vTrace("i_Dist %lld Time %lld : nLines %lld sum %lld (%lldns/f)\n"_Stz,
-           i_Dist,oTimer.iMilliseconds(),nLine,iSum,oTimer.iNanoseconds()/C_LINES);
+    vTrace("i_Dist %lld Time %lld : i_CacheLines %lld sum %lld (%lldns/f)\n"_Stz,
+           i_Dist,oTimer.iMilliseconds(),i_CacheLine,iSum,oTimer.iNanoseconds()/C_LINES);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -274,18 +287,16 @@ bool Job_SubWalker::bChunk(void)
   vTrace("-- no prefetch ----------------------------------------------\n"_Stz);
   for (i8 i_Dist = 1; i_Dist < 2048; i_Dist *= 2) {
     oTimer.vStart();
-    i = 0;
-    for (nLine = 0; nLine < C_LINES; nLine++) {
-      i8* piPre = apiCacheRnd[i + i_Dist];
+    for (i_CacheLine = 0; i_CacheLine < C_LINES; i_CacheLine++) {
+      i8* piPre = apiCacheRnd[i_CacheLine + i_Dist];
       iSum += (i8)piPre;
       //vPrefetchT0(piPre);
-      i8* piCacheLine = apiCacheRnd[i];
+      i8* piCacheLine = apiCacheRnd[i_CacheLine];
       iSum += *piCacheLine;
-      i++;
     }
     oTimer.vUpdate();
-    vTrace("i_Dist %lld Time %lld : nLines %lld sum %lld (%lldns/f)\n"_Stz,
-           i_Dist,oTimer.iMilliseconds(),nLine,iSum,oTimer.iNanoseconds()/C_LINES);
+    vTrace("i_Dist %lld Time %lld : i_CacheLines %lld sum %lld (%lldns/f)\n"_Stz,
+           i_Dist,oTimer.iMilliseconds(),i_CacheLine,iSum,oTimer.iNanoseconds()/C_LINES);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -293,18 +304,16 @@ bool Job_SubWalker::bChunk(void)
   vTrace("-- prefetch T0 ----------------------------------------------\n"_Stz);
   for (i8 i_Dist = 1; i_Dist < 2048; i_Dist *= 2) {
     oTimer.vStart();
-    i = 0;
-    for (nLine = 0; nLine < C_LINES; nLine++) {
-      i8* piPre = apiCacheRnd[i + i_Dist];
+    for (i_CacheLine = 0; i_CacheLine < C_LINES; i_CacheLine++) {
+      i8* piPre = apiCacheRnd[i_CacheLine + i_Dist];
       iSum += (i8)piPre;
       vPrefetchT0(piPre);
-      i8* piCacheLine = apiCacheRnd[i];
+      i8* piCacheLine = apiCacheRnd[i_CacheLine];
       iSum += *piCacheLine;
-      i++;
     }
     oTimer.vUpdate();
-    vTrace("i_Dist %lld Time %lld : nLines %lld sum %lld (%lldns/f)\n"_Stz,
-           i_Dist,oTimer.iMilliseconds(),nLine,iSum,oTimer.iNanoseconds()/C_LINES);
+    vTrace("i_Dist %lld Time %lld : i_CacheLines %lld sum %lld (%lldns/f)\n"_Stz,
+           i_Dist,oTimer.iMilliseconds(),i_CacheLine,iSum,oTimer.iNanoseconds()/C_LINES);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -312,18 +321,16 @@ bool Job_SubWalker::bChunk(void)
   vTrace("-- prefetch T1 ----------------------------------------------\n"_Stz);
   for (i8 i_Dist = 1; i_Dist < 2048; i_Dist *= 2) {
     oTimer.vStart();
-    i = 0;
-    for (nLine = 0; nLine < C_LINES; nLine++) {
-      i8* piPre = apiCacheRnd[i + i_Dist];
+    for (i_CacheLine = 0; i_CacheLine < C_LINES; i_CacheLine++) {
+      i8* piPre = apiCacheRnd[i_CacheLine + i_Dist];
       iSum += (i8)piPre;
       vPrefetchT1(piPre);
-      i8* piCacheLine = apiCacheRnd[i];
+      i8* piCacheLine = apiCacheRnd[i_CacheLine];
       iSum += *piCacheLine;
-      i++;
     }
     oTimer.vUpdate();
-    vTrace("i_Dist %lld Time %lld : nLines %lld sum %lld (%lldns/f)\n"_Stz,
-           i_Dist,oTimer.iMilliseconds(),nLine,iSum,oTimer.iNanoseconds()/C_LINES);
+    vTrace("i_Dist %lld Time %lld : i_CacheLines %lld sum %lld (%lldns/f)\n"_Stz,
+           i_Dist,oTimer.iMilliseconds(),i_CacheLine,iSum,oTimer.iNanoseconds()/C_LINES);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -331,18 +338,16 @@ bool Job_SubWalker::bChunk(void)
   vTrace("-- prefetch T2 ----------------------------------------------\n"_Stz);
   for (i8 i_Dist = 1; i_Dist < 2048; i_Dist *= 2) {
     oTimer.vStart();
-    i = 0;
-    for (nLine = 0; nLine < C_LINES; nLine++) {
-      i8* piPre = apiCacheRnd[i + i_Dist];
+    for (i_CacheLine = 0; i_CacheLine < C_LINES; i_CacheLine++) {
+      i8* piPre = apiCacheRnd[i_CacheLine + i_Dist];
       iSum += (i8)piPre;
       vPrefetchT2(piPre);
-      i8* piCacheLine = apiCacheRnd[i];
+      i8* piCacheLine = apiCacheRnd[i_CacheLine];
       iSum += *piCacheLine;
-      i++;
     }
     oTimer.vUpdate();
-    vTrace("i_Dist %lld Time %lld : nLines %lld sum %lld (%lldns/f)\n"_Stz,
-           i_Dist,oTimer.iMilliseconds(),nLine,iSum,oTimer.iNanoseconds()/C_LINES);
+    vTrace("i_Dist %lld Time %lld : i_CacheLines %lld sum %lld (%lldns/f)\n"_Stz,
+           i_Dist,oTimer.iMilliseconds(),i_CacheLine,iSum,oTimer.iNanoseconds()/C_LINES);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -350,18 +355,16 @@ bool Job_SubWalker::bChunk(void)
   vTrace("-- prefetch NTA ---------------------------------------------\n"_Stz);
   for (i8 i_Dist = 1; i_Dist < 2048; i_Dist *= 2) {
     oTimer.vStart();
-    i = 0;
-    for (nLine = 0; nLine < C_LINES; nLine++) {
-      i8* piPre = apiCacheRnd[i + i_Dist];
+    for (i_CacheLine = 0; i_CacheLine < C_LINES; i_CacheLine++) {
+      i8* piPre = apiCacheRnd[i_CacheLine + i_Dist];
       iSum += (i8)piPre;
       vPrefetchNta(piPre);
-      i8* piCacheLine = apiCacheRnd[i];
+      i8* piCacheLine = apiCacheRnd[i_CacheLine];
       iSum += *piCacheLine;
-      i++;
     }
     oTimer.vUpdate();
-    vTrace("i_Dist %lld Time %lld : nLines %lld sum %lld (%lldns/f)\n"_Stz,
-           i_Dist,oTimer.iMilliseconds(),nLine,iSum,oTimer.iNanoseconds()/C_LINES);
+    vTrace("i_Dist %lld Time %lld : i_CacheLines %lld sum %lld (%lldns/f)\n"_Stz,
+           i_Dist,oTimer.iMilliseconds(),i_CacheLine,iSum,oTimer.iNanoseconds()/C_LINES);
   }
   
   
@@ -369,7 +372,7 @@ bool Job_SubWalker::bChunk(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   //if (iSum == 1)
-    vTrace("nLines %lld sum %lld\n"_Stz,nLine,iSum);
+    vTrace("i_CacheLines %lld sum %lld\n"_Stz,i_CacheLine,iSum);
   
   return false;
 }
