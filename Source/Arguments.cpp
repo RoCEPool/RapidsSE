@@ -49,44 +49,45 @@ Arguments::Arguments(void)
   
   // commands
   m_bCommand    = false;
-  m_bHelp   = false;
-  m_bPrompt = false;
+  m_bHelp       = false;
+  m_bPrompt     = false;
   m_bSethScript = false;
-  m_bStart  = false;
-  m_bStatus = false;
-  m_bStop   = false;
-  m_bUnlink = false;
+  m_bStart      = false;
+  m_bStatus     = false;
+  m_bStop       = false;
+  m_bUnlink     = false;
 
   // options
-  m_bConfig      = true;
-  m_bDeveloper   = false;
-  m_bDontFree    = false;
-  m_nEntries     = 0;
-  m_bFreeRB      = false;
-  m_bLock        = false;
-  m_bHugePages   = false;
-  m_bKillPrev    = false;
-  m_bMetadata    = false;
-  m_bMunged      = false;
-  m_bProgress    = false;
-  m_bReload      = false;
-  m_bRestart     = true;
-  m_nSubIngesters = 4;
-  m_nSubLoaders  = 4;
-  m_iThisNode    = -1;
-  m_nThreads     = 12;
-  m_nDummyThreads = 0;
-  m_nDummySleep  = 10;
-  m_nDummyLoop   = 0;
-  m_nPeriodicSleep = 10;
+  m_bConfig          = true;
+  m_bDeveloper       = false;
+  m_bDontFree        = false;
+  m_nEntries         = 0;
+  m_bFreeRB          = false;
+  m_bLock            = false;
+  m_bHugePages       = false;
+  m_bKillPrev        = false;
+  m_nMaxLoadErrors   = 0;
+  m_bMetadata        = false;
+  m_bMunged          = false;
+  m_bProgress        = false;
+  m_bReload          = false;
+  m_bRestart         = true;
+  m_nSubIngesters    = 4;
+  m_nSubLoaders      = 4;
+  m_iThisNode        = -1;
+  m_nThreads         = 12;
+  m_nDummyThreads    = 0;
+  m_nDummySleep      = 10;
+  m_nDummyLoop       = 0;
+  m_nPeriodicSleep   = 10;
   m_nSupervisorSleep = 10;
-  m_bTouch       = false;
-  m_bTracepoint  = false;
-  m_bTracing     = false;
-  m_bVerbose     = false;
-  m_bWelcome     = true;
-  m_bActivityMap = false;
-  m_bActionSequence = false;
+  m_bTouch           = false;
+  m_bTracepoint      = false;
+  m_bTracing         = false;
+  m_bVerbose         = false;
+  m_bWelcome         = true;
+  m_bActivityMap     = false;
+  m_bActionSequence  = false;
 
   _checkInitialised_(CN_ARGUMENTS);
   
@@ -584,6 +585,11 @@ bool Arguments::bParse(int argc, Stz* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    if (argv[i_Arg]->bSame("--maxLoadErrors"_Stz)) {
+      m_nMaxLoadErrors = argv[++i_Arg]->iToI8();
+      continue;
+    }
     
     if (argv[i_Arg]->bSame("--metadata"_Stz)) {
       m_bMetadata = true;
