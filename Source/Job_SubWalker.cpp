@@ -250,7 +250,7 @@ bool Job_SubWalker::bChunk(void)
           }
         }
         
-        i8* piCacheLine = apiCacheSeq[i_CacheLine];
+        i8* piCacheLine = apiCacheRnd[i_CacheLine];
         iSum += *piCacheLine;
         if (C_PRINT)
           vTrace("i_Cache %lld %p\n"_Stz,i_CacheLine,piCacheLine);
@@ -271,8 +271,8 @@ bool Job_SubWalker::bChunk(void)
   for (i8 i_Dist = 1; i_Dist < 2048; i_Dist *= 2) {
     oTimer.vStart();
     for (i_CacheLine = 0; i_CacheLine < C_LINES; i_CacheLine++) {
-      i8* piPre = apiCacheRnd[i_CacheLine + i_Dist];
-      iSum += (i8)piPre;
+      //i8* piPre = apiCacheRnd[i_CacheLine + i_Dist];
+      //iSum += (i8)piPre;
       //vPrefetchT0(piPre);
       i8* piCacheLine = apiCacheSeq[i_CacheLine];
       iSum += *piCacheLine;
