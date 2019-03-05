@@ -48,7 +48,7 @@ create table lineitem (
 
 space;
 timerStart;
-ld lineitem "/tpch/SF10/lineitem.csv" ;
+ld lineitem "/tpch/SF10/lineitem.csv" max_errors 100;
 timerEnd;
 
 space;
