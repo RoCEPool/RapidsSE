@@ -11,11 +11,12 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobSubLoader(void)
 {
-  vAddStep("Job_subLoader::spawn"_Stz,  &Step::vJob_SubLoaderSpawn);
+  vAddStep("Job_subLoader::spawn"_Stz,    &Step::vJob_SubLoaderSpawn);
   
-  vAddStep("job_subLoader.begin"_Stz,   &Step::vJob_SubLoaderBegin);
-  vAddStep("Job_subLoader.chunk"_Stz,   &Step::vJob_SubLoaderChunk);
-  vAddStep("job_subLoader.end"_Stz,     &Step::vJob_SubLoaderEnd);
+  vAddStep("job_subLoader.begin"_Stz,     &Step::vJob_SubLoaderBegin);
+  vAddStep("Job_subLoader.chunk"_Stz,     &Step::vJob_SubLoaderChunk);
+  vAddStep("job_subLoader.end"_Stz,       &Step::vJob_SubLoaderEnd);
+  vAddStep("job_subLoader.terminate"_Stz, &Step::vJob_SubLoaderTerminate);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -65,7 +66,7 @@ void Step::vJob_SubLoaderSpawn(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubLoaderBegin(MP_Task mpTask)
 {
-  ENTRY("vSubLoaderBegin"_Stz);
+  ENTRY("vJob_SubLoaderBegin"_Stz);
   
   Object* pPtrJob_SubLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
@@ -103,7 +104,7 @@ void Step::vJob_SubLoaderChunk(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubLoaderEnd(MP_Task mpTask)
 {
-  ENTRY("vSubLoaderEnd"_Stz);
+  ENTRY("vJob_SubLoaderEnd"_Stz);
   
   Object* pPtrJob_SubLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
@@ -111,6 +112,25 @@ void Step::vJob_SubLoaderEnd(MP_Task mpTask)
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
   
   pJob_SubLoader->vEnd();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subLoader.terminate -- test early termination                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_SubLoaderTerminate(MP_Task mpTask)
+{
+  ENTRY("vJob_SubLoaderTerminate"_Stz);
+  
+  Object* pPtrJob_SubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
+    THROW_INVALID_DSTACK("subLoader.end"_Stz);
+  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
+  
+  i8 iTerminate = pJob_SubLoader->bTerminate();
+  
+  mpTask->m_pDataStack->vPushI8(iTerminate);
   
   EXIT();
 }

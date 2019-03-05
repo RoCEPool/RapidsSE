@@ -629,6 +629,7 @@
   static void vJob_SubLoaderChunk(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderEnd(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderSpawn(Tasks::MP_Task mpTask);
+  static void vJob_SubLoaderTerminate(Tasks::MP_Task mpTask);
 
   // job SubPublish
   static void vJob_SubPublishBegin(Tasks::MP_Task mpTask);

@@ -34,7 +34,8 @@ namespace Jobs
     bool bBegin(void);
     bool bChunk(void);
     void vEnd(void);
-  
+    bool bTerminate(void);
+
     void vShow(void);
     Footer* aFooter(void);
 

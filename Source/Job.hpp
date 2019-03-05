@@ -187,6 +187,8 @@ namespace Jobs
   
     Mutex* m_pMutex;
   
+    Atomic m_ixErrors;
+  
   public:
     Job(eCN eClassNo, Interface::Session* pSession);
     ~Job(void) noexcept(false);
