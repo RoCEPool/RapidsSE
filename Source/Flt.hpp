@@ -10,6 +10,10 @@ namespace Datums
   const d8 C_NULL_FLT = -DBL_MAX;
   const i8 C_MAX_PRECISION_FLT = 19;
   
+  const i8 C_FLOAT_NULL     = -DBL_MAX;
+  const i8 C_FLOAT_MINUS_INFINITY = -DBL_MAX;
+  const i8 C_FLOAT_PLUS_INFINITY  = -DBL_MAX;
+  
   class Flt
   {
   friend class DtmLib;
