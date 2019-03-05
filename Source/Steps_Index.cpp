@@ -526,7 +526,10 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
   xKeyWrkLower.vAddDatum(xVariable,pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-    xKeyWrkLower.vAddMinusInfinity();
+    if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
+      xKeyWrkLower.vAddMinusInfinity_Flt();
+    else
+      xKeyWrkLower.vAddMinusInfinity();
   }
   //xKeyWrk.vShow();
   
@@ -757,7 +760,10 @@ void Step::vIndexRange(MP_Task mpTask)
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
   xKeyWrkLower.vAddDatum(xValWrkLwr,pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-    xKeyWrkLower.vAddMinusInfinity();
+    if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
+      xKeyWrkLower.vAddMinusInfinity_Flt();
+    else
+      xKeyWrkLower.vAddMinusInfinity();
   }
   //xKeyWrkLower.vShow();
   
@@ -767,7 +773,10 @@ void Step::vIndexRange(MP_Task mpTask)
   pColumn0 = pIndex->pIdxColVec()->pGet(0);
   xKeyWrkUpper.vAddDatum(xValWrkUpr,pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-    xKeyWrkUpper.vAddPlusInfinity();
+    if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
+      xKeyWrkUpper.vAddPlusInfinity_Flt();
+    else
+      xKeyWrkUpper.vAddPlusInfinity();
   }
   //xKeyWrkUpper.vShow();
   
@@ -1341,7 +1350,10 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
   xKeyWrkUpper.vAddDatum(xVariable,pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-    xKeyWrkUpper.vAddPlusInfinity();
+    if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
+      xKeyWrkUpper.vAddPlusInfinity_Flt();
+    else
+      xKeyWrkUpper.vAddPlusInfinity();
   }
   //xKeyWrkUpper.vShow();
   
