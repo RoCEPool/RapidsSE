@@ -21,6 +21,7 @@ namespace StorageEngine
       i8   m_nDummySleep;   // sleep period for dummy threads
       i8   m_nDummyThreads; // number of dummy threads
       i8   m_iJumboSize;
+      i8   m_nMaxLoadErrors;
       i8   m_nNodes;
       s32  m_sRegionName;
       i8   m_iRegionSize;
@@ -103,6 +104,7 @@ namespace StorageEngine
                           i8   nDummySleep,
                           i8   nDummyThreads,
                           i8   iJumboSize,
+                          i8   nMaxLoadErrors,
                           i8   nNodes,
                           Stz* sRegionName,
                           i8   iRegionSize,

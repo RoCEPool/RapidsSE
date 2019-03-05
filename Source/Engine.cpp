@@ -809,6 +809,7 @@ void Engine::vStartSystem(void)
                                 gxArguments.m_nDummySleep,
                                 gxArguments.m_nDummyThreads,
                                 gxArguments.m_iJumboSize,
+                                gxArguments.m_nMaxLoadErrors,
                                 gxArguments.m_nNodes,
                                 gxArguments.m_sRegionName,
                                 gxArguments.m_iRegionSize,

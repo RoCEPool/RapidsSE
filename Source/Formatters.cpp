@@ -110,6 +110,7 @@ void Formatters::vReset(void)
   m_eDateComponent[2] = gpAttachMap->m_oFormatters.m_eDateComponent[2];
   
   m_cDateSeparator    = gpAttachMap->m_oFormatters.m_cDateSeparator;
+  m_nMaxErrors        = gpAttachMap->m_oFormatters.m_nMaxErrors;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,6 +136,7 @@ void Formatters::vSet(Formatters* pFormatters)
   m_eDateComponent[2] = pFormatters->m_eDateComponent[2];
   
   m_cDateSeparator    = pFormatters->m_cDateSeparator;
+  m_nMaxErrors        = pFormatters->m_nMaxErrors;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -157,6 +159,8 @@ void Formatters::vShow(void)
   vTrace("date component 2 %s\n"_Stz, aDC[m_eDateComponent[2]]);
   
   vTrace("date_separator %c\n"_Stz, m_cDateSeparator ? m_cDateSeparator : '0');
+  
+  vTrace("max_errors %lld\n"_Stz, m_nMaxErrors);
 }
 
 /*----------------------------------------------------------------------------*/
