@@ -40,7 +40,7 @@ Item::Item(eCN eClassNo, i8 nSizeItem)
   
 #ifdef WITH_DEBUG_VERSION
   m_iSkipNo = -1;
-  m_iIntKey = -1;
+  //m_iIntKey = -1;
 #endif
 }
 

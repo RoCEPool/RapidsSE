@@ -24,7 +24,7 @@ namespace MiniHeaps
   public:
 //#ifdef WITH_DEBUG_VERSION
   i8  m_iSkipNo;    // verify of order of skip items
-  i8  m_iIntKey;    // key debug hack
+  //i8  m_iIntKey;    // key debug hack
 //#endif
 
   public:
