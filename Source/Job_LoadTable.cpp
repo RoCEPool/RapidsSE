@@ -359,6 +359,18 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
       
       m_oFormatters.m_bDefault = false;
     }
+    
+    // - - - - - - - - - - - - - - - - - - - - -
+    // C_MAX_ERRORS
+    else if (pTokenVec->pGet(i_Token)->bSame(C_MAX_ERRORS)) {
+      
+      m_oFormatters.m_nMaxErrors = pTokenVec->pGet(++i_Token)->sText().iToI8();
+      
+      m_oFormatters.m_bDefault = false;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - -
+    // unknown option
     else {
       return false;
     }
