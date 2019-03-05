@@ -290,11 +290,17 @@ bool Job_SubLoader::bTerminate(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
   if (m_oFormatters.m_nMaxErrors &&
-      *m_pJob_LoadTable->m_ixErrors >= m_oFormatters.m_nMaxErrors)
+      *m_pJob_LoadTable->m_ixErrors >= m_oFormatters.m_nMaxErrors) {
+    vTrace("Job_SubLoader[%lld] -- terminating with max errors %lld %lld\n"_Stz,
+           m_i_Slot,*m_pJob_LoadTable->m_ixErrors,m_oFormatters.m_nMaxErrors);
     return true;
+  }
   
-  if (gpBufferPool->bLowMemory())
+  if (gpBufferPool->bLowMemory()) {
+    vTrace("Job_SubLoader[%lld] -- terminating with low memory\n"_Stz,
+           m_i_Slot);
     return true;
+  }
 
   return false;
 }
