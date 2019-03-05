@@ -580,7 +580,7 @@ bool SePrompt::bPassesLowMem(void)
   if (m_pJobClass->m_eFlags != JF_LOWMEM)
     return true;
   
-  if (gpBufferPool->nFreeCount() > C_LOW_BUFFERS)
+  if (! gpBufferPool->bLowMemory())
     return true;
   
   if (m_pJobClass->m_aCommand2)

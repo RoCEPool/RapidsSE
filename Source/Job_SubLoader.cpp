@@ -241,11 +241,13 @@ bool Job_SubLoader::bChunk(void)
 
     if (EC_INVALID_VALUE == eError) {
       m_xNode[i_Node].m_ixRowsInvalid.iInc();
+      ++m_pJob_LoadTable->m_ixErrors;
       continue;
     }
     
     if (EC_MAX_ROW_LENGTH == eError) {
       m_xNode[i_Node].m_ixRowsInvalid.iInc();
+      ++m_pJob_LoadTable->m_ixErrors;
       continue;
     }
     
@@ -287,6 +289,13 @@ bool Job_SubLoader::bTerminate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
+  if (m_oFormatters.m_nMaxErrors &&
+      *m_pJob_LoadTable->m_ixErrors >= m_oFormatters.m_nMaxErrors)
+    return true;
+  
+  if (gpBufferPool->bLowMemory())
+    return true;
+
   return false;
 }
 
