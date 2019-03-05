@@ -72,6 +72,8 @@ Formatters::Formatters(void)
   m_eDateComponent[2]    = DC_DD;
   m_cDateSeparator       = '-';
   
+  m_nMaxErrors           = 0;
+  
   _checkInitialised_(CN_FORMATTERS);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS,_FOOTER_);

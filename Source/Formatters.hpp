@@ -34,6 +34,8 @@ namespace Datums
     eDC  m_eDateComponent[3];    // date component order
     char m_cDateSeparator;       // date separater
   
+    i8   m_nMaxErrors;           // maximum number of allowable errors
+  
     // must be last
     Footer m_xFooter;
     
