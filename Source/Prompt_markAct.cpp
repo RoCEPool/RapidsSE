@@ -6,7 +6,7 @@
 #include "StorageEngine.h"
 
 PromptNote mPromptNote_markAct (
-  PF_NONE,                     // prompt function
+  PF_MARKACT,           // prompt function
   "Prompt_markAct"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the functopm
   "markAct"_Stz,        // the prompt command

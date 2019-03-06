@@ -6,7 +6,7 @@
 #include "StorageEngine.h"
 
 PromptNote mPromptNote_args (
-  PF_NONE,                     // prompt function
+  PF_ARGS,           // prompt function
   "Prompt_args"_Stz, // name of the prompt function
   "comment"_Stz,     // comment about the functopm
   "args"_Stz,        // the prompt command

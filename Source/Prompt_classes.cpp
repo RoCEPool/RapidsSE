@@ -6,7 +6,7 @@
 #include "StorageEngine.h"
 
 PromptNote mPromptNote_classes (
-  PF_NONE,                     // prompt function
+  PF_CLASSES,           // prompt function
   "Prompt_classes"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the functopm
   "classes"_Stz,        // the prompt command

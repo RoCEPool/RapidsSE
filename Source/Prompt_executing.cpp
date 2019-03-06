@@ -6,7 +6,7 @@
 #include "StorageEngine.h"
 
 PromptNote mPromptNote_executing (
-  PF_NONE,                     // prompt function
+  PF_EXECUTING,           // prompt function
   "Prompt_executing"_Stz, // name of the prompt function
   "comment"_Stz,          // comment about the functopm
   "executing"_Stz,        // the prompt command

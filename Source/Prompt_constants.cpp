@@ -6,7 +6,7 @@
 #include "StorageEngine.h"
 
 PromptNote mPromptNote_constants (
-  PF_NONE,                     // prompt function
+  PF_CONSTANTS,            // prompt function
   "Prompt_constants"_Stz,  // name of the prompt function
   "comment"_Stz,           // comment about the functopm
   "constants"_Stz,         // the prompt command

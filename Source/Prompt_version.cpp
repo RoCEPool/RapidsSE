@@ -8,7 +8,7 @@
 extern AttachMap* gpAttachMap;
 
 PromptNote mPromptNote_version (
-  PF_NONE,                     // prompt function
+  PF_VERSION,           // prompt function
   "Prompt_version"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the functopm
   "version"_Stz,        // the prompt command

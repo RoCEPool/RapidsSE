@@ -8,7 +8,7 @@
 extern AttachMap*   gpAttachMap;
 
 PromptNote mPromptNote_tempName (
-  PF_NONE,                     // prompt function
+  PF_TEMPNAME,                     // prompt function
   "Prompt_tempName"_Stz, // name of the prompt function
   "comment"_Stz,         // comment about the functopm
   "tempName"_Stz,        // the prompt command

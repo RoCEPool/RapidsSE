@@ -6,7 +6,7 @@
 #include "StorageEngine.h"
 
 PromptNote mPromptNote_taskQueues (
-  PF_NONE,                     // prompt function
+  PF_TASKQUEUES,            // prompt function
   "bPrompt_taskQueues"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the functopm
   "taskQueues"_Stz,     // the prompt command

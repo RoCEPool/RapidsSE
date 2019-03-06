@@ -6,7 +6,7 @@
 #include "StorageEngine.h"
 
 PromptNote mPromptNote_locks (
-  PF_NONE,                     // prompt function
+  PF_LOCKS,             // prompt function
   "Prompt_locks"_Stz,   // name of the prompt function
   "comment"_Stz,        // comment about the functopm
   "locks"_Stz,          // the prompt command

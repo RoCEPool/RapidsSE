@@ -8,7 +8,7 @@
 extern AttachMap* gpAttachMap;
 
 PromptNote mPromptNote_resources (
-  PF_NONE,                     // prompt function
+  PF_RESOURCES,          // prompt function
   "Prompt_resources"_Stz,// name of the prompt function
   "comment"_Stz,         // comment about the functopm
   "resources"_Stz,       // the prompt command

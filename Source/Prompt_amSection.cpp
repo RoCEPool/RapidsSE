@@ -5,7 +5,7 @@
 #include "Prompt.h"
 
 PromptNote mPromptNote_amSection (
-  PF_NONE,                     // prompt function
+  PF_AMSECTION,           // prompt function
   "Prompt_amSection"_Stz, // name of the prompt function
   "comment"_Stz,          // comment about the functopm
   "amSection"_Stz,        // the prompt command

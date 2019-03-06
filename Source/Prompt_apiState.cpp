@@ -8,7 +8,7 @@
 extern AttachMap* gpAttachMap;
 
 PromptNote mPromptNote_apiState (
-  PF_NONE,                     // prompt function
+  PF_APISTATE,            // prompt function
   "Prompt_apiState"_Stz,  // name of the prompt function
   "comment"_Stz,          // comment about the functopm
   "apiState"_Stz,         // the prompt command

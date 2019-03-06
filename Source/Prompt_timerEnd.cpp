@@ -5,7 +5,7 @@
 #include "Prompt.h"
 
 PromptNote mPromptNote_timerEnd (
-  PF_NONE,                     // prompt function
+  PF_TIMEREND,                     // prompt function
   "Prompt_timerEnd"_Stz, // name of the prompt function
   "comment"_Stz,         // comment about the functopm
   "timerEnd"_Stz,        // the prompt command

@@ -5,7 +5,7 @@
 #include "Prompt.h"
 
 PromptNote mPromptNote_enums (
-  PF_NONE,                     // prompt function
+  PF_ENUMS,             // prompt function
   "Prompt_enums"_Stz,   // name of the prompt function
   "comment"_Stz,        // comment about the functopm
   "enums"_Stz,          // the prompt command

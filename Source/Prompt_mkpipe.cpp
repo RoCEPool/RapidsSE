@@ -5,7 +5,7 @@
 #include "Prompt.h"
 
 PromptNote mPromptNote_mkpipe (
-  PF_NONE,                     // prompt function
+  PF_MKPIPE,             // prompt function
   "Prompt_mkpipe"_Stz,   // name of the prompt function
   "comment"_Stz,         // comment about the functopm
   "mkpipe"_Stz,          // the prompt command
