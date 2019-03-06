@@ -84,7 +84,7 @@ namespace Jobs
   
       static JobClass* pFind(eCN eClass);
       static JobClass* pFind(Stz* aCommand1, Stz* aCommand2);
-      static void vTraceJob(eCN eClass);
+      static void vJobCat(eCN eClass);
       static void vVerifySeeds(void);
   };
   

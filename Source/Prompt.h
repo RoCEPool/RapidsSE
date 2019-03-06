@@ -35,6 +35,7 @@ using namespace Prompt;
 
 #include "Prompt_cd.hpp"
 #include "Prompt_classes.hpp"
+#include "Prompt_cmds.hpp"
 #include "Prompt_config.hpp"
 #include "Prompt_constants.hpp"
 
