@@ -21,6 +21,7 @@ namespace Prompt
                bool bVisible,
                Stz* aHelp
               );
+  
   };
 }
 

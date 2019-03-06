@@ -5,6 +5,8 @@
 
 namespace Prompt
 {
+  class PromptNote;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class PromptCatalog
   {
@@ -14,6 +16,7 @@ namespace Prompt
   
   public:
     PromptFun* pFindFun(Stz* aCommand1, Stz* aCommand2);
+    void vFuns(PromptNote* aPromptNote);
   };
 }
 

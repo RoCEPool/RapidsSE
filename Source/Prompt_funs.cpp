@@ -18,12 +18,14 @@ PromptNote mPromptNote_funs (
 
 extern PromptCatalog gxPromptCatalog;
 
+extern PromptNote mPromptNote_actionSequence;
+
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_funs(SePrompt* pPrompt)
 {
-
+  
   return true;
 }
 
