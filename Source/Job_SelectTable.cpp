@@ -41,7 +41,7 @@ JobClass xJobClass_SelectTable =
   
   // help and example
   true,
-  "select <tableName> P#"_Stz,
+  "select <tableNm> <partitionNo>"_Stz,
   "fetch supplier 1;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

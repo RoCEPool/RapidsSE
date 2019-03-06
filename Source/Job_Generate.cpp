@@ -41,7 +41,7 @@ JobClass xJobClass_GenData =
   
   // help and example
   true,
-  "gendata <tableNm>"_Stz,
+  "generate <tableNm>"_Stz,
   "gendata X0_T1_Z0;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

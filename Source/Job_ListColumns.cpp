@@ -41,7 +41,7 @@ JobClass xJobClass_ListColumns =
   
   // help and example
   true,
-  "lscol <tableName>"_Stz,
+  "lscol <tableNm>"_Stz,
   "lscol SUPPLIER;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

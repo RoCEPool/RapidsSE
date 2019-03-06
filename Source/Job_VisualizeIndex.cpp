@@ -41,7 +41,7 @@ JobClass xJobClass_VisualizeIndex =
   
   // help and example
   true,
-  "visidx <tableName> <indexName>"_Stz,
+  "visidx <tableNm> <indexNm>"_Stz,
   "visidx SUPPLIER idx1"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

@@ -41,7 +41,7 @@ JobClass xJobClass_DumpIndex =
   
   // help and example
   true,
-  "dumpidx <tableName> <indexName>"_Stz,
+  "dumpidx <tableNm> <indexNm>"_Stz,
   "dumpidx supplier idx1;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

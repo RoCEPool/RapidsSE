@@ -41,7 +41,7 @@ JobClass xJobClass_ListIndexes =
   
   // help and example
   true,
-  "lsidx <tableName>"_Stz,
+  "lsidx <tableNm>"_Stz,
   "lsidx supplier;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

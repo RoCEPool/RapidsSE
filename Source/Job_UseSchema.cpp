@@ -41,7 +41,7 @@ JobClass xJobClass_UseSchema =
   
   // help and example
   true,
-  "use schema <schemaName>"_Stz,
+  "use schema <schemaNm>"_Stz,
   "use schema tpchSchema;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

@@ -41,7 +41,7 @@ JobClass xJobClass_ListIdxColumns =
   
   // help and example
   true,
-  "lsidxcol <tableName> <indexName>"_Stz,
+  "lsidxcol <tableNm> <indexNm>"_Stz,
   "lsidxcol supplier idx1;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

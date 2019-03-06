@@ -41,7 +41,7 @@ JobClass xJobClass_Report =
   
   // help and example
   true,
-  "[report <tableNm> <inPipeNm> [<outPipeNm>]"_Stz,
+  "report <tableNm> <inPipeNm> [<outPipeNm>]"_Stz,
   "report sensorEvents\"/rapids/SensorPipe\" \"/rapids/Stage1Pipe\";"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

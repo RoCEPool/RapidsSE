@@ -41,7 +41,7 @@ JobClass xJobClass_Docol =
   
   // help and example
   true,
-  "<help>"_Stz,
+  "docol <wordNm>"_Stz,
   "<example>"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

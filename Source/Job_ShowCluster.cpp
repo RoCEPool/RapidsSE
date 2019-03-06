@@ -30,7 +30,7 @@ JobClass xJobClass_ShowCluster =
   PY_NORMAL,             // priority
   JF_NONE,               // flags
 
-  eJob_checkCluster,     // prompt check function
+  nullptr,               // prompt check function
   pJob_ShowCluster_pre,  // prompt pre-process function
   vJob_ShowCluster_post, // prompt post-process function
   nullptr,               // job new function

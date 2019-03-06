@@ -41,7 +41,7 @@ JobClass xJobClass_ListPartColumns =
   
   // help and example
   true,
-  "lspartcol <tableName>"_Stz,
+  "lspartcol <tableNm>"_Stz,
   "lspartcol SUPPLIER;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

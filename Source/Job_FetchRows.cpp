@@ -41,7 +41,7 @@ JobClass xJobClass_FetchRows =
   
   // help and example
   true,
-  "fetch <tableName> [\"<where>\"]"_Stz,
+  "fetch <tableNm> [\"<where>\"] [displayOff]"_Stz,
   "fetch supplier \"S_SUPPKEY 22 ==\";"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
