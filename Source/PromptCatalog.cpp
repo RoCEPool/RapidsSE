@@ -39,10 +39,18 @@ PromptFun* PromptCatalog::pFindFun(Stz* aCommand1, Stz* aCommand2)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-void PromptCatalog::vFuns(PromptNote* aPromptNote)
+void PromptCatalog::vFuns(ePF ePromptFun)
 {
-}
+  for (i8 i_Fun = 0; i_Fun < m_nFunctions; i_Fun++) {
+    
+    if (m_xPromptFun[i_Fun].m_ePromptFun != ePromptFun)
+      continue;
 
+    if (m_xPromptFun[i_Fun].m_aHelp)
+    vTrace("%s\n"_Stz,m_xPromptFun[i_Fun].m_aHelp);
+  }
+
+}
 
 
 /*============================================================================*/
