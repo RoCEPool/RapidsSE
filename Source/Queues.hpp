@@ -28,6 +28,8 @@ namespace Threads
     TaskList*  m_pReadyQueue;      //  set of queued tasks ready to be executed
     // QR_READY_QUEUE              // (ordered by arrival)
   
+    TaskList*  m_pReadyQueueLP;    //  set of low priority queued tasks ready to run
+    
     TaskList* m_pReadySlotQueues[C_SLOTS_PER_NODE];
     // QR_READY_QUEUE + 1 ..       // tasks queued for partitioned execution
     //   gxArguments.m_nSlotsPerNode - 1  // (ordered by arrival)
@@ -64,6 +66,7 @@ namespace Threads
     
     void vAddToExecutingSet(Task* pTask);
     void vAddToReadyQueue(Task* pTask);
+    void vAddToReadyQueueLP(Task* pTask);
     void vAddToReadySlotQueue(Task* pTask);
     void vAddToSendQueue(Task* pTask);
     void vAddToSleepingQueue(Task* pTask);
@@ -71,6 +74,7 @@ namespace Threads
   
     void vAddToExecutingSet_NL(Task* pTask);
     void vAddToReadyQueue_NL(Task* pTask);
+    void vAddToReadyQueueLP_NL(Task* pTask);
     void vAddToReadySlotQueue_NL(Task* pTask);
     void vAddToSendQueue_NL(Task* pTask);
     void vAddToSleepingQueue_NL(Task* pTask);
@@ -78,6 +82,7 @@ namespace Threads
   
     void vDumpExecutingSet(void);
     void vDumpReadyQueue(void);
+    void vDumpReadyQueueLP(void);
     void vDumpReadySendQueues(void);
     void vDumpReadySlotQueues(void);
     void vDumpSleepingQueue(void);
@@ -86,6 +91,7 @@ namespace Threads
     Thread* pFindIdleThread(void);
 
     bool bIsReadyQueue(i8 i_QueueRR);
+    bool bIsReadyQueueLP(i8 i_QueueRR);
     bool bIsReadySendQueue(i8 i_QueueRR);
     bool bIsReadySlotQueue(i8 i_QueueRR);
     bool bIsSleepingQueue(i8 i_QueueRR);
@@ -96,6 +102,7 @@ namespace Threads
     bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
 
     Task* pPopReadyQueue(Thread* pCallingThread);
+    Task* pPopReadyQueueLP(Thread* pCallingThread);
     Task* pPopReadySendQueue(Thread* pCallingThread);
     Task* pPopReadySlotQueue(Thread* pCallingThread);
     Task* pPopSleepingQueue(Thread* pCallingThread);
@@ -120,6 +127,7 @@ namespace Threads
  
     i8 nTasksExecuting(void);
     i8 nTasksReady(void);
+    i8 nTasksReadyLP(void);
     i8 nTasksReadySlot(i8 iSlot);
     i8 nTasksSleeping(void);
     i8 nTasksWaiting(void);

@@ -58,6 +58,7 @@ Queues::Queues(void)
                                    bTaskCompareWakeupTime);
   
   m_pReadyQueue    = new TaskList(QK_READY_QUEUE);
+  m_pReadyQueueLP  = new TaskList(QK_READY_QUEUE_LP);
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
     m_pReadySlotQueues[i_Slot] = nullptr;
@@ -186,6 +187,18 @@ void Queues::vAddToReadyQueue(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add task to low priority ready queue                                       */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToReadyQueueLP(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pReadyQueueLP->vGrabLock();
+  vAddToReadyQueueLP_NL(pTask);
+  m_pReadyQueueLP->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* add task to a slot queue                                                   */
 /*----------------------------------------------------------------------------*/
 void Queues::vAddToReadySlotQueue(Task* pTask)
@@ -292,6 +305,31 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   m_pReadyQueue->vAddTask(pTask);
   
   ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to low priority ready queue                                       */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToReadyQueueLP_NL(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  RASSERT(TK_READY == pTask->eState());
+  RASSERT( ! pTask->bIsPartitioned());
+  
+  pTask->vQueue(QR_READY_QUEUE_LP);
+  pTask->vQueueOrder(++m_ixQueueOrder);
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Add to ReadyQueueLP: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+  ASSERT(m_pReadyQueueLP->bIsLocked());
+  m_pReadyQueueLP->vAddTask(pTask);
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE_LP);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -456,6 +494,24 @@ void Queues::vDumpReadyQueue(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump the low priority ready queue                                          */
+/*----------------------------------------------------------------------------*/
+void Queues::vDumpReadyQueueLP(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  vTrace("------------------------------------\n"_Stz);
+  vTrace("Ready Queue: %p\n"_Stz, m_pReadyQueueLP);
+  vTrace("------------------------------------\n"_Stz);
+  m_pReadyQueueLP->vGrabLock();
+  m_pReadyQueueLP->vContentDump();
+  m_pReadyQueueLP->vDropLock();
+  vTrace("====================================\n"_Stz);
+  vTrace("\n"_Stz);
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump the ready send queues                                                 */
 /*----------------------------------------------------------------------------*/
 void Queues::vDumpReadySendQueues(void)
@@ -585,6 +641,19 @@ bool Queues::bIsReadyQueue(i8 i_QueueRR)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is iQueueRR refering to the low priority ready queue ?                     */
+/*----------------------------------------------------------------------------*/
+bool Queues::bIsReadyQueueLP(i8 i_QueueRR)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  if (i_QueueRR == QR_READY_QUEUE_LP)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is iQueueRR refering to a ready send queue ?                               */
 /*----------------------------------------------------------------------------*/
 bool Queues::bIsReadySendQueue(i8 i_QueueRR)
@@ -654,6 +723,9 @@ void Queues::vMonitorPortrait(s48K& sPortrait)
   sPortrait.vConcat(sTasksPortrait);
   
   m_pReadyQueue->vPortrait(sTasksPortrait);
+  sPortrait.vConcat(sTasksPortrait);
+  
+  m_pReadyQueueLP->vPortrait(sTasksPortrait);
   sPortrait.vConcat(sTasksPortrait);
   
   m_pWaitingSet->vPortrait(sTasksPortrait);
@@ -755,6 +827,19 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
       return true;
     }
     
+    if (pQueues->bIsReadyQueueLP(pCallingThread->m_iLastQueueRR)) {
+      if ( ! (pPoppedTask = pPopReadyQueueLP(pCallingThread)) ) {
+        //        if (32 == pCallingThread->m_iThreadNo)
+        //          vTrace("[32:%lld] Nothing Ready %lld,%lld\n"_Stz,
+        //                 nTimes++,
+        //                 pCallingThread->m_iStartQueueRR,
+        //                 pCallingThread->m_iLastQueueRR);
+        continue;
+      }
+      *ppPoppedTask = pPoppedTask;
+      return true;
+    }
+    
     if (pQueues->bIsReadySlotQueue(pCallingThread->m_iLastQueueRR)) {
       if ( ! (pPoppedTask = pPopReadySlotQueue(pCallingThread)) )
         continue;
@@ -821,6 +906,52 @@ Task* Queues::pPopReadyQueue(Thread* pCallingThread)
   
   if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),"pPopReadyQueue()"_Stz);
+  
+  // return the task popped from the ready queue
+  return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop task from the low priority ready queue                                 */
+/*----------------------------------------------------------------------------*/
+Task* Queues::pPopReadyQueueLP(Thread* pCallingThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  Task* pTask;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // lock queue and check for task
+  
+  // attempt to grab a write lock on the general queue
+  if (! m_pReadyQueueLP->bGrabLock()) {
+    // unable to lock queue (another thread must be processing it)
+    // so move on to the next queue
+    return nullptr;
+  }
+  
+  //m_pReadyQueue->vGrabLock();
+  
+  // pop task off the general queue
+  pTask = m_pReadyQueueLP->pPopTask();
+  
+  // task no longer in any queue/set
+  if (pTask)
+    pTask->vQueue(QR_NONE);
+  
+  // drop the lock
+  m_pReadyQueueLP->vDropLock();
+  
+  // is there a task to run?
+  if (! pTask)
+    return nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  RASSERT( ! pTask->bIsPartitioned());
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),"pPopReadyQueueLP()"_Stz);
   
   // return the task popped from the ready queue
   return pTask;
@@ -1412,6 +1543,16 @@ i8 Queues::nTasksReady(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   return m_pReadyQueue->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the low priority ready queue                            */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nTasksReadyLP(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pReadyQueueLP->nTasks();
 }
 
 /*----------------------------------------------------------------------------*/

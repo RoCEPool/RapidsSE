@@ -205,6 +205,7 @@ void Action::vWrite(File* pFile)
   
   case AN_ADD_EXECUTING_SET:
   case AN_ADD_READY_QUEUE:
+  case AN_ADD_READY_QUEUE_LP:
   case AN_ADD_SEND_QUEUE:
   case AN_ADD_SLEEPING_QUEUE:
   case AN_ADD_SLOT_QUEUE:
