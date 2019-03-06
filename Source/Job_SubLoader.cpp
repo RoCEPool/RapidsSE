@@ -223,6 +223,9 @@ bool Job_SubLoader::bChunk(void)
   // process the records in the chunk
   for (;;) {
     
+    if (bTerminate())
+      return false;
+    
     // fetch next record from current chunk
     bool bHaveRecord = m_pLoadChunk->bGetRecord(&aRecord,nRecordBytes);
     if (! bHaveRecord)
@@ -291,14 +294,14 @@ bool Job_SubLoader::bTerminate(void)
   
   if (m_oFormatters.m_nMaxErrors &&
       *m_pJob_LoadTable->m_ixErrors >= m_oFormatters.m_nMaxErrors) {
-    vTrace("Job_SubLoader[%lld] -- terminating with max errors %lld %lld\n"_Stz,
-           m_i_Slot,*m_pJob_LoadTable->m_ixErrors,m_oFormatters.m_nMaxErrors);
+    vTrace("Job_SubLoader #%lld -- terminating with max errors %lld %lld\n"_Stz,
+           m_iJobId,*m_pJob_LoadTable->m_ixErrors,m_oFormatters.m_nMaxErrors);
     return true;
   }
   
   if (gpBufferPool->bLowMemory()) {
-    vTrace("Job_SubLoader[%lld] -- terminating with low memory\n"_Stz,
-           m_i_Slot);
+    vTrace("Job_SubLoader #%lld -- terminating with low memory\n"_Stz,
+           m_iJobId);
     return true;
   }
 

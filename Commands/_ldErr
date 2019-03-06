@@ -5,6 +5,8 @@
 startCluster;
 
 create table lineitem (
+
+
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
   L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
   L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
@@ -19,6 +21,7 @@ create table lineitem (
   L_COMMITDATE    TIMESTAMP NOT NULL,       // 11)  8B   8B
   L_RECEIPTDATE   TIMESTAMP NOT NULL,       // 12)  8B   8B
   L_SHIPINSTRUCT  CHAR(25) NOT NULL,        // 13) 26B  13B
+  // !! NB. L_SHIPMODE is not out of sequence !!
   L_SHIPMODE      CHAR(10) NOT NULL,        // 14) 11B   5B
   L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
   //                                              ---- ----
@@ -32,9 +35,14 @@ create table lineitem (
 
 space;
 
-time ld lineitem "/tpch/SF0/lineitem100k.csv" max_errors 100;
+takeMem 100;
+
+//time ld lineitem "/tpch/SF0/lineitem100k.csv" max_errors 100;
+time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 
 space;
+
+fetch lineItem displayOff;
 
 /*============================================================================*/
 /* end                                                                        */
