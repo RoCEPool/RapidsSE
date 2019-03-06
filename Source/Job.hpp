@@ -26,17 +26,15 @@ namespace Jobs
   enum ePY // priority
   {
     /*  0 */ PY_NONE=0,
-    /*  1 */ PY_HIGH,
-    /*  2 */ PY_LOW,
-    /*  3 */ PY_NORMAL
+    /*  1 */ PY_LOW,
+    /*  2 */ PY_NORMAL
   };
   
   static Stz* aPY[]
   {
     /*  0 */ "NONE"_Stz,
-    /*  1 */ "HIGH"_Stz,
-    /*  2 */ "LOW"_Stz,
-    /*  3 */ "NORMAL"_Stz
+    /*  1 */ "LOW"_Stz,
+    /*  2 */ "NORMAL"_Stz
   };
 
   enum eJK // job kind
