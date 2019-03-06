@@ -35,7 +35,7 @@ pFINALIZE *gpFinalize[]
   /* 23 */ &Finalize::vUndefined,         // CN_ARGUMENTS
   /* 24 */ &Finalize::vUndefined,         // CN_ATOMIC
   /* 25 */ &Finalize::vUndefined,         // CN_ATTACHMAP
-  
+
   /* 29 */ &Finalize::vUndefined,         // CN_BPA
   /* 28 */ &Finalize::vUndefined,         // CN_BUFFERPOOL
   /*    */ &Finalize::vUndefined,         // CN_BYTERATE
@@ -45,6 +45,7 @@ pFINALIZE *gpFinalize[]
   /* 32 */ &Finalize::vUndefined,         // CN_COLUMNVEC
   /*    */ &Finalize::vUndefined,         // CN_COMMAND
   /*    */ &Finalize::vUndefined,         // CN_COMPILER
+  /*    */ &Finalize::vUndefined,         // CN_COMPLETER
 
   /*    */ &Finalize::vUndefined,         // CN_DECIDER
   /* 33 */ &Dic::vFinalize,               // CN_DIC
@@ -120,6 +121,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_INGEST
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTROW
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTTABLE
+  /*    */ &Finalize::vUndefined,         // CN_JOB_KIDEXPORT
   /*    */ &Finalize::vUndefined,         // CN_JOB_LF
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTCATALOGS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTCOLUMNS
@@ -170,7 +172,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_WAITCLUSTER
   /*    */ &Finalize::vUndefined,         // CN_JOB_WALK
   /*    */ &Finalize::vUndefined,         // CN_JOB_WRITEBUFFER
-  /*    */ &Finalize::vUndefined,         // CN_JOB_WRITERECORD
   /*    */ &Finalize::vUndefined,         // CN_JOB_WRITEROW
   
   /*    */ &Finalize::vUndefined,         // CN_JOBLIST

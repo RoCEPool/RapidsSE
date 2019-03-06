@@ -66,7 +66,7 @@
 
   pJob_Space job.notice
 
-  pJob_Space send_job__executed
+  pJob_Space job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -80,7 +80,7 @@
 
   job::this locals| pJob_space |
 
-  pJob_space job.beginParticipant
+  pJob_space job.becomeParticipant
 
   job::participantBegun
 

@@ -332,9 +332,9 @@ bool ItemHeap::bHasSpace(i8 nBytes)
   i8 nFree = m_xWsp.nFree() - sizeof(Wilderness);
   
   // we allow for only C_MAX_ITEMS - 16 entries
-  if (nItems() >= C_MAX_ITEMS - 16) {
-    return false;
-  }
+//  if (nItems() >= C_MAX_ITEMS - 16) {
+//    return false;
+//  }
   
   if (gpAttachMap->m_nIndexEntries > 0) {
     // has space calculation based on no of entries

@@ -82,7 +82,7 @@
 
   pJob_TruncateTable job.notice
 
-  pJob_TruncateTable send_job__executed
+  pJob_TruncateTable job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -157,7 +157,7 @@
 
   job::this locals| pJob_truncateTable |
 
-  pJob_truncateTable job.beginParticipant
+  pJob_truncateTable job.becomeParticipant
 
   // check resources
   pJob_truncateTable truncateTable.checkResources

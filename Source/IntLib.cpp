@@ -13,11 +13,11 @@ const u1 C_VLQ_NULL_BIT = 6;
 const u1 C_VLQ_SIGN_BIT = 5;
 
 /*----------------------------------------------------------------------------*/
-/* return the decile of value given its maximum                               */
+/* return the decile of arg given its maximum                                 */
 /*----------------------------------------------------------------------------*/
-i8 IntLib::iDecile(i8 iValue, i8 iMax)
+i8 IntLib::iDecile(i8 iArg, i8 iMax)
 {
-  double dPercent = (iValue * 100) / iMax;
+  double dPercent = (iArg * 100) / iMax;
   double dDecile = dPercent / 10;
   
   i8 iDecile = (i8)round(dDecile);
@@ -159,6 +159,32 @@ i8 IntLib::iIntToVlq(i8 iInt, byte yVlqVec[16])
   return nBytes;
 }
 */
+
+/*----------------------------------------------------------------------------*/
+/* is the arg a deca-cycle?                                                   */
+/*----------------------------------------------------------------------------*/
+bool IntLib::bIsDecaCycle(i8 iArg)
+{
+  if (iArg >= C_100T) { if (0 == iArg % C_100T) return true; else return false; }
+  if (iArg >= C_10T ) { if (0 == iArg % C_10T ) return true; else return false; }
+  if (iArg >= C_1T  ) { if (0 == iArg % C_1T  ) return true; else return false; }
+  
+  if (iArg >= C_100G) { if (0 == iArg % C_100G) return true; else return false; }
+  if (iArg >= C_10G ) { if (0 == iArg % C_10G ) return true; else return false; }
+  if (iArg >= C_1G  ) { if (0 == iArg % C_1G  ) return true; else return false; }
+  
+  if (iArg >= C_100M) { if (0 == iArg % C_100M) return true; else return false; }
+  if (iArg >= C_10M ) { if (0 == iArg % C_10M ) return true; else return false; }
+  if (iArg >= C_1M  ) { if (0 == iArg % C_1M  ) return true; else return false; }
+  
+  if (iArg >= C_100K) { if (0 == iArg % C_100K) return true; else return false; }
+  if (iArg >= C_10K ) { if (0 == iArg % C_10K ) return true; else return false; }
+  if (iArg >= C_1K  ) { if (0 == iArg % C_1K  ) return true; else return false; }
+
+  if (iArg >= 100   ) { if (0 == iArg % 100)    return true; else return false; }
+  if (iArg >= 10    ) { if (0 == iArg %  10)    return true; else return false; }
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* return the decile of value given its maximum                               */

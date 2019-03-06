@@ -127,7 +127,7 @@
 
   // if there are acks remaining just exit
   bAmDecider not if
-    delete_completed_job
+    job::deleteThis
     <DONE_RCV>
     exit                                                         // *EARLY EXIT*
   then
@@ -139,7 +139,7 @@
   pJobOriginator Job__End::distribute
 
   // delete this completed __executed job
-  delete_completed_job
+  job::deleteThis
 
   <DONE_RCV>
 ;

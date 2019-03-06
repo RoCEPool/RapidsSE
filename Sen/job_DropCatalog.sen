@@ -92,7 +92,7 @@
 
   pJob_DropCatalog job.notice
 
-  pJob_DropCatalog send_job__executed
+  pJob_DropCatalog job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -150,7 +150,7 @@
 
   job::this locals| pJob_dropCatalog |
 
-  pJob_dropCatalog job.beginParticipant
+  pJob_dropCatalog job.becomeParticipant
 
   // check resources
   pJob_dropCatalog dropCatalog.checkResources

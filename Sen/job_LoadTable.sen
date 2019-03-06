@@ -126,7 +126,7 @@
     LoadTable_waitOnly
   then
 
-  pJob_LoadTable send_job__executed
+  pJob_LoadTable job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -224,7 +224,7 @@
 
   job::this locals| pJob_LoadTable |
 
-  pJob_LoadTable job.beginParticipant
+  pJob_LoadTable job.becomeParticipant
 
   pJob_LoadTable loadTable.checkResources
 

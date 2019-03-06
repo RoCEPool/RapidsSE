@@ -63,9 +63,9 @@ void Step::vJob_SubPurgerChunk(MP_Task mpTask)
   if (! bCallAgain) {
     i8 iOlderThanSeconds = pJob_SubPurger->m_pJob_Purge->m_iOlderThanSeconds;
     if (iOlderThanSeconds < 10)
-      mpTask->vSleepUs(C_1M);
+      mpTask->vSleepUsec(C_1M);
     else
-      mpTask->vSleepUs(C_1M * 10);
+      mpTask->vSleepUsec(C_1M * 10);
     mpTask->vState(TK_SLEEPING);
   }
     

@@ -52,9 +52,9 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* begin a new job on participant node                                        */
+/* job becomes a participant on participant node                              */
 /*----------------------------------------------------------------------------*/
-: job.beginParticipant ( pJob -- )
+: job.becomeParticipant ( pJob -- )
 
   params| pJob |
 
@@ -111,7 +111,7 @@
 /*----------------------------------------------------------------------------*/
 /* delete this task's job (it's completed)                                    */
 /*----------------------------------------------------------------------------*/
-: delete_completed_job ( -- )
+: job::deleteThis ( -- )
 
   0 locals| pThisTask |
   0 locals| pThisJob  |
@@ -123,7 +123,7 @@
   // now delete the ended job
   nullptr pThisTask task.job!
 
-  //pThisJob job.id@ pThisJob "delete_completed_job %v %v" fmt.print
+  //pThisJob job.id@ pThisJob "job::deleteThis %v %v" fmt.print
 
   pThisJob job.delete
 ;
@@ -131,7 +131,7 @@
 /*----------------------------------------------------------------------------*/
 /* call Job__Executed::send for the current job                               */
 /*----------------------------------------------------------------------------*/
-: send_job__executed ( pJobParticipant -- )
+: job::participantExecuted ( pJobParticipant -- )
 
   params| pJobParticipant  |
 
@@ -169,6 +169,11 @@
     pJob job.hasEntryBuffer if
       //"job.send: Job has entry buffer" .
        pJob job.entryBuffer@ pSocket socket.sendObject drop
+    then
+
+    pJob job.hasSendWith if
+      "job.send: Job has send with" .
+      pJob job.sendWith@ pSocket socket.sendObject drop
     then
 
   task::socketUnlock

@@ -625,6 +625,9 @@ void SePrompt::vPreJob(void)
   //pCommand->vPreJob(m_pSession);
   
   m_pJob = m_pJobClass->pPreJob(m_pSession);
+  
+//  if (m_pJob && m_pJob->m_bMarkTrace)
+//    m_pJob->m_pJobClass->vShowJob(m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -665,7 +668,7 @@ void SePrompt::vSetJob(void)
     m_pJob->m_eJobTrace = JT_ALL;
 
   if (m_bMarked)
-    m_pJob->m_bMark = true;
+    m_pJob->m_bMarkActivity = true;
 }
 
 /*----------------------------------------------------------------------------*/

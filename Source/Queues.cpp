@@ -93,7 +93,7 @@ Queues::~Queues(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* threads report                                                             */
 /*----------------------------------------------------------------------------*/
-void Queues::vThreadsReport()
+void Queues::vThreadsReport(void)
 {
   i8 iUser;
   i8 iSystem;
@@ -257,7 +257,7 @@ void Queues::vAddToExecutingSet_NL(Task* pTask)
   pTask->vQueue(QR_EXECUTING_QUEUE);
   pTask->vQueueOrder(++m_ixQueueOrder);
   
-  if (pTask->pJob()->m_bMark)
+  if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
                        "Add to ExecutingSet: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
@@ -282,7 +282,7 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   pTask->vQueue(QR_READY_QUEUE);
   pTask->vQueueOrder(++m_ixQueueOrder);
   
-  if (pTask->pJob()->m_bMark)
+  if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
                        "Add to ReadyQueue: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
@@ -313,7 +313,7 @@ void Queues::vAddToReadySlotQueue_NL(Task* pTask)
   pTask->vQueue((eQR)iSlot);
   pTask->vQueueOrder(++m_ixQueueOrder);
   
-  if (pTask->pJob()->m_bMark)
+  if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
                        "Add to ReadySlot: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
@@ -341,7 +341,7 @@ void Queues::vAddToSendQueue_NL(Task* pTask)
   pTask->vQueue((eQR)(C_SLOTS_PER_NODE + iSendNode));
   pTask->vQueueOrder(++m_ixQueueOrder);
   
-  if (pTask->pJob()->m_bMark)
+  if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
                        "Add to SendQueue: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
@@ -364,7 +364,7 @@ void Queues::vAddToSleepingQueue_NL(Task* pTask)
   
   pTask->vQueue(QR_SLEEPING_QUEUE);
   
-  if (pTask->pJob()->m_bMark)
+  if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
                        "Add to SleepingQueue: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
@@ -400,7 +400,7 @@ void Queues::vAddToWaitingSet_NL(Task* pTask)
   pTask->vQueue(QR_WAITING_QUEUE);
   pTask->vQueueOrder(++m_ixQueueOrder);
   
-  if (pTask->pJob()->m_bMark)
+  if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
                        "Add to WaitingSet: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
@@ -819,7 +819,7 @@ Task* Queues::pPopReadyQueue(Thread* pCallingThread)
   
   RASSERT( ! pTask->bIsPartitioned());
   
-  if (pTask->pJob()->m_bMark)
+  if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),"pPopReadyQueue()"_Stz);
   
   // return the task popped from the ready queue
@@ -868,7 +868,7 @@ Task* Queues::pPopReadySendQueue(Thread* pCallingThread)
   
   RASSERT(pTask->pSendNode() != nullptr);
   
-  if (pTask->pJob()->m_bMark)
+  if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkInfo(
                        "Popped ReadySend: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
@@ -920,7 +920,7 @@ Task* Queues::pPopReadySlotQueue(Thread* pCallingThread)
   
   RASSERT(pTask->bIsPartitioned());
   
-  if (pTask->pJob()->m_bMark)
+  if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkInfo(
                        "Popped ReadySlot: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
@@ -984,7 +984,7 @@ Task* Queues::pPopSleepingQueue(Thread* pCallingThread)
   // clear wakeup time of the task
   pTask->vWakeupTask();
   
-  if (pTask->pJob()->m_bMark)
+  if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkInfo(
                        "Popped SleepingQueue: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
@@ -1053,7 +1053,7 @@ void Queues::vRemoveFromExecutingSet(Task* pTask)
   // task no longer in any queue/set
   pTask->vQueue(QR_NONE);
   
-  if (pTask->pJob() && pTask->pJob()->m_bMark)
+  if (pTask->pJob() && pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
                        "Removed from ExecutingSet: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
@@ -1074,7 +1074,7 @@ void Queues::vRemoveFromWaitingSet(Task* pTask)
   // task no longer in any queue/set
   pTask->vQueue(QR_NONE);
   
-  if (pTask->pJob()->m_bMark)
+  if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
                        "Removed from WaitingSet: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
@@ -1091,7 +1091,7 @@ void Queues::vScheduleAckedTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  if (pTask->pJob()->m_bMark)
+  if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
                        "Scheduling acked: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
@@ -1145,7 +1145,7 @@ void Queues::vScheduleReadyTask(Task* pTask)
   
   RASSERT(TK_READY == pTask->eState());
   
-  if (pTask->pJob()->m_bMark)
+  if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
                           "Schedule ready: %s %p"_Stz,
                           aCN[pTask->pJob()->eClass()],
@@ -1174,7 +1174,7 @@ void Queues::vScheduleReadySlotTask(Task* pTask)
   
   RASSERT(TK_READY == pTask->eState());
   
-  if (pTask->pJob()->m_bMark)
+  if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
                        "Schedule ready slot: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
@@ -1198,7 +1198,7 @@ void Queues::vScheduleSendTask(Task* pTask)
   
   RASSERT(TK_SEND == pTask->eState());
   
-  if (pTask->pJob()->m_bMark)
+  if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
                        "Schedule send: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
@@ -1217,7 +1217,7 @@ void Queues::vScheduleSleepingTask(Task* pTask)
   
   RASSERT(TK_SLEEPING == pTask->eState());
   
-  if (pTask->pJob()->m_bMark)
+  if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
                        "Schedule sleeping: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
@@ -1250,7 +1250,7 @@ void Queues::vScheduleSpawnedTask(Task* pTask)
   
   pTask->vState(TK_READY);
   
-  if (pTask->pJob()->m_bMark) {
+  if (pTask->pJob()->m_bMarkActivity) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
       ActivityMap::vMarkInfo("Schedule spawned: %s %p slot[%lld]"_Stz,
                              aCN[pTask->pJob()->eClass()],
@@ -1281,7 +1281,7 @@ void Queues::vScheduleWaitingTask(Task* pTask)
   
   RASSERT(TK_WAITING == pTask->eState());
   
-  if (pTask->pJob()->m_bMark) {
+  if (pTask->pJob()->m_bMarkActivity) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
       ActivityMap::vMarkInfo(
                          "Schedule waiting: %s %p"_Stz,
@@ -1306,7 +1306,7 @@ void Queues::vScheduleYieldedTask(Task* pTask)
   
   Thread* pCallingThread = Thread::pThisTLSThread();
   
-  if (pTask->pJob()->m_bMark) {
+  if (pTask->pJob()->m_bMarkActivity) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
       ActivityMap::vMarkInfo(
                          "Schedule yielded: %s %p"_Stz,

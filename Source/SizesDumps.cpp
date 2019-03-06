@@ -48,6 +48,7 @@ pDUMPFUN *gpDump[]
   /* 32 */ &Dump::vDummy,           // CN_COLUMNVEC
   /*    */ &Dump::vDummy,           // CN_COMMAND
   /*    */ &Dump::vDummy,           // CN_COMPILER
+  /*    */ &Dump::vDummy,           // CN_COMPLETER
 
   /*    */ &Dump::vDummy,           // CN_DECIDER
   /* 33 */ &Dic::vDump,             // CN_DIC
@@ -70,9 +71,10 @@ pDUMPFUN *gpDump[]
   
   /*    */ &Dump::vInvalid,         // CN_GENVAR
   /* 48 */ &Grid::vDump,            // CN_GRID
-
+  
   /*    */ &Dump::vDummy,           // CN_HASHBUFFER
   /*    */ &Dump::vDummy,           // CN_HASHMAP
+
   /* 50 */ &HeapBuffer::vDump,      // CN_HEAPBUFFER
   
   /* 51 */ &Dump::vDummy,           // CN_INDEX
@@ -124,6 +126,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_INGEST
   /*    */ &Dump::vDummy,           // CN_JOB_INSERTROW
   /*    */ &Dump::vDummy,           // CN_JOB_INSERTTABLE
+  /*    */ &Dump::vDummy,           // CN_JOB_KIDEXPORT
   /*    */ &Dump::vDummy,           // CN_JOB_LF
   /*    */ &Dump::vDummy,           // CN_JOB_LISTCATALOGS
   /*    */ &Dump::vDummy,           // CN_JOB_LISTCOLUMNS
@@ -174,7 +177,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_WAITCLUSTER
   /*    */ &Dump::vDummy,           // CN_JOB_WALK
   /*    */ &Dump::vDummy,           // CN_JOB_WRITEBUFFER
-  /*    */ &Dump::vDummy,           // CN_JOB_WRITERECORD
   /*    */ &Dump::vDummy,           // CN_JOB_WRITEROW
 
   /*    */ &JobList::vDump,         // CN_JOBLIST
@@ -301,7 +303,7 @@ i8 giClassSize[]
   /* 23 */ sizeof(Arguments),          // CN_ARGUMENTS
   /* 24 */ sizeof(Atomic),             // CN_ATOMIC
   /* 25 */ sizeof(AttachMap),          // CN_ATTACHMAP
-  
+
   /* 29 */ sizeof(BPA),                // CN_BPA
   /* 28 */ sizeof(BufferPool),         // CN_BUFFERPOOL
   /* 28 */ sizeof(ByteRate),           // CN_BYTERATE
@@ -311,6 +313,7 @@ i8 giClassSize[]
   /* 32 */ sizeof(ColumnVec),          // CN_COLUMNVEC
   /* 32 */ sizeof(Command),            // CN_COMMAND
   /* 32 */ sizeof(Compiler),           // CN_COMPILER
+  /* 32 */ sizeof(Completer),          // CN_COMPLETER
 
   /*    */ sizeof(Decider),            // CN_DECIDER
   /* 33 */ sizeof(Dic),                // CN_DIC
@@ -387,6 +390,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Ingest),         // CN_JOB_INGEST
   /*    */ sizeof(Job_InsertRow),      // CN_JOB_INSERTROW
   /*    */ sizeof(Job_InsertTable),    // CN_JOB_INSERTTABLE
+  /*    */ sizeof(Job_KidExport),      // CN_JOB_KIDEXPORT
   /*    */ sizeof(Job_Lf),             // CN_JOB_LF
   /*    */ sizeof(Job_ListCatalogs),   // CN_JOB_LISTCATALOGS
   /*    */ sizeof(Job_ListColumns),    // CN_JOB_LISTCOLUMNS
@@ -437,7 +441,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_WaitCluster),    // CN_JOB_WAITCLUSTER
   /*    */ sizeof(Job_Walk),           // CN_JOB_WALK
   /*    */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
-  /*    */ sizeof(Job_KidExport),      // CN_JOB_WRITERECORD
   /*    */ sizeof(Job_WriteRow),       // CN_JOB_WRITEROW
   
   /*    */ sizeof(JobList),            // CN_JOBLIST
@@ -458,7 +461,7 @@ i8 giClassSize[]
   
   /* 73 */ sizeof(Heap), // correct    // CN_MEDIUMPERSISTENT
   /* 74 */ sizeof(Heap), // correct    // CN_MEDIUMTRANSIENT
-  /*    */ sizeof(MemTest),            // CN_MEMTEST
+  /*114 */ sizeof(MemTest),            // CN_MEMTEST
   /*114 */ sizeof(Mutex),              // CN_MUTEX
 
   /* 75 */ sizeof(Node),               // CN_NODE
@@ -564,7 +567,7 @@ eHT geWhichHeap[]
   /* 23 */ HT_INVALID,           // CN_ARGUMENTS
   /* 24 */ HT_INVALID,           // CN_ATOMIC
   /* 25 */ HT_INVALID,           // CN_ATTACHMAP
-  
+
   /* 29 */ HT_INVALID,           // CN_BPA
   /* 28 */ HT_INVALID,           // CN_BUFFERPOOL
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_BYTERATE
@@ -574,6 +577,7 @@ eHT geWhichHeap[]
   /* 32 */ HT_TRANSIENT_MEDIUM,  // CN_COLUMNVEC
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_COMMAND
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_COMPILER
+  /*    */ HT_TRANSIENT_SMALL,   // CN_COMPLETER
 
   /*    */ HT_TRANSIENT_SMALL,   // CN_DECIDER
   /* 33 */ HT_TRANSIENT_MEDIUM,  // CN_DIC
@@ -650,6 +654,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INGEST
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTROW
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTTABLE
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_KIDEXPORT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LF
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTCATALOGS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTCOLUMNS
@@ -700,7 +705,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WAITCLUSTER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WALK
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEBUFFER
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITERECORD
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEROW
   
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOBLIST

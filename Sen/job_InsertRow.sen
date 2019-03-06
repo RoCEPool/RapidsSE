@@ -104,7 +104,7 @@
 
   pJob_InsertRow job.notice
 
-  pJob_InsertRow send_job__executed
+  pJob_InsertRow job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -181,7 +181,7 @@
 
   job::this locals| pJob_InsertRow |
 
-  pJob_InsertRow job.beginParticipant
+  pJob_InsertRow job.becomeParticipant
 
   // check resources
   pJob_InsertRow insertRow.checkResources

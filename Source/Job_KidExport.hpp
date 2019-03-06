@@ -11,6 +11,8 @@ namespace Jobs
   public:
     i8 m_iExportJobId;  // job id of export job
   
+    i8 m_nBuffersExpected;
+  
     // must be last
     Footer m_xFooter;
   
@@ -24,11 +26,11 @@ namespace Jobs
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    static Job_KidExport* pNewJobWriteRecord(Interface::Session* pSession,
-                                               i8 iExportJobId);
-    
+    static void vSpawn(i8 iExportJobId,
+                       ExportBuffer* pExportBuffer);
+
   public:
-    void vWriteRecords(void);
+    bool bWriteBuffer(Job_Export* pJob_Export);
     void vShow(void);
     
   public:

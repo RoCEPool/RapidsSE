@@ -307,6 +307,8 @@ void Api::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
 {
+  ASSERT(pJob->m_pJobClass);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Before appending request for se, ensure that se is running
   // get the se pid from the attachmap
@@ -327,6 +329,9 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
   pJob->vSeed(eSeed);
   
   pNewTask->vSession(pSession);
+  
+  if (pJob->m_bMarkTrace)
+    pJob->m_pJobClass->vShowJob(pJob);
   
   Handlers::vSpawnedTask(pNewTask);
   

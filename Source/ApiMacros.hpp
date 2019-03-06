@@ -60,6 +60,20 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
 }
 
 /*----------------------------------------------------------------------------*/
+/* catch an error in an API function                                          */
+/*----------------------------------------------------------------------------*/
+#define API_CATCH_NO_SESSION(pError) \
+{ \
+  eEC eErrorCode = pError ? pError->eErrorCode() : EC_SE_UNKNOWN_ERROR; \
+  \
+  Engine::vErrorHandler(pError); \
+  \
+  TRACE_API_ERROR("catch"_Stz,eErrorCode); \
+  \
+  return eErrorCode; \
+}
+
+/*----------------------------------------------------------------------------*/
 /* enter an API function                                                      */
 /*----------------------------------------------------------------------------*/
 // not using braces { }, as that would hide the variables
@@ -151,6 +165,16 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
   ApiState::vMarkApiLoc(pSession,880); \
   ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
   \
+  TRACE_API_ERROR("return error"_Stz,eErrorCode); \
+  \
+  return eErrorCode; \
+}
+
+/*----------------------------------------------------------------------------*/
+/* return from an API function with an error code                             */
+/*----------------------------------------------------------------------------*/
+#define API_RETURN_ERROR_NO_SESSION(eErrorCode) \
+{ \
   TRACE_API_ERROR("return error"_Stz,eErrorCode); \
   \
   return eErrorCode; \

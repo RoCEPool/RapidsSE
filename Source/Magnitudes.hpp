@@ -77,22 +77,29 @@ const i8 C_128PB  = C_1PB * 128;  // 128 petabytes =
 const i8 C_256PB  = C_1PB * 256;  // 256 petabytes =
 const i8 C_512PB  = C_1PB * 512;  // 512 petabytes =
 
-// the 1000^n magnitudes
+// the 10^n magnitudes
 const i8 C_1K   = 1000LL;         // 1 thousand    = 1,000
-const i8 C_1M   = C_1K * C_1K;    // 1 million     = 1,000,000
-const i8 C_1G   = C_1M * C_1K;    // 1 billion     = 1,000,000,000
-const i8 C_1T   = C_1G * C_1K;    // 1 trillion    = 1,000,000,000,000
-const i8 C_1P   = C_1T * C_1K;    // 1 quadrillion = 1,000,000,000,000,000
+const i8 C_10K  = C_1K   * 10;    // 10 thousand   = 10,000
+const i8 C_100K = C_10K  * 10;    // 100 thousand  = 100,000
+const i8 C_1M   = C_100K * 10;    // 1 million     = 1,000,000
+const i8 C_10M  = C_1M   * 10;    // 10 million    = 10,000,000
+const i8 C_100M = C_10M  * 10;    // 100 million   = 100,000,000
+const i8 C_1G   = C_100M * 10;    // 1 billion     = 1,000,000,000
+const i8 C_10G  = C_1G   * 10;    // 10 billion    = 10,000,000,000
+const i8 C_100G = C_10G  * 10;    // 100 billion   = 100,000,000,000
+const i8 C_1T   = C_100G * 10;    // 1 trillion    = 1,000,000,000,000
+const i8 C_10T  = C_1T   * 10;    // 10 trillion   = 10,000,000,000,000
+const i8 C_100T = C_10T  * 10;    // 100 trillion  = 100,000,000,000,000
+const i8 C_1P   = C_100T * 10;    // 1 quadrillion = 1,000,000,000,000,000
 
 const i8 C_2K   = C_1K * 2;       // 2 thousand    = 2,000
 const i8 C_4K   = C_1K * 4;       // 4 thousand    = 4,000
 const i8 C_8K   = C_1K * 8;       // 8 thousand    = 8,000
-const i8 C_10K  = C_1K * 10;      // 10 thousand   = 10,000
 const i8 C_16K  = C_1K * 16;      // 16 thousand   = 16,000
 const i8 C_32K  = C_1K * 32;      // 32 thousand   = 32,000
 const i8 C_48K  = C_1K * 48;      // 48 thousand   = 48,000
 const i8 C_64K  = C_1K * 64;      // 64 thousand   = 64,000
-const i8 C_100K = C_1K * 100;     // 100 thousand  = 100,000
+const i8 C_96K  = C_1K * 96;      // 64 thousand   = 64,000
 const i8 C_128K = C_1K * 128;     // 128 thousand  = 128,000
 const i8 C_256K = C_1K * 256;     // 256 thousand  = 256,000
 const i8 C_512K = C_1K * 512;     // 512 thousand  = 512,000

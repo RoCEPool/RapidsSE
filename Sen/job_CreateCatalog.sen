@@ -105,7 +105,7 @@
 
   pJob_CreateCatalog job.notice
 
-  pJob_CreateCatalog send_job__executed
+  pJob_CreateCatalog job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -168,7 +168,7 @@
 
   job::this locals| pJob_createCatalog |
 
-  pJob_createCatalog job.beginParticipant
+  pJob_createCatalog job.becomeParticipant
 
   // check resources
   pJob_createCatalog createCatalog.checkResources

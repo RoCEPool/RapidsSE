@@ -74,7 +74,7 @@
 
   // if there are acks remaining just exit
   bAmDecider not if
-    delete_completed_job
+    job::deleteThis
     <DONE_RCV>
     exit                                                         // *EARLY EXIT*
   then
@@ -82,14 +82,14 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all __ended jobs have been received, so this job is the decider
 
-  // remove the job from the originator jobs
+  // remove the originating job from the originator jobs
   pJobOriginator job.removeOriginator
 
   // notify the originating task
   pJobOriginator job.originatingTask@ task.ack
 
   // delete this completed __ended job
-  delete_completed_job
+  job::deleteThis
 
   <DONE_RCV>
 ;

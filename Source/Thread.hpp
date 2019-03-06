@@ -35,7 +35,7 @@ namespace Threads
     eCN      m_eDedicated;    // thread is dedicated to one specific job?
 
     Pthread* m_pPthread;      // its posix structure
-    Mutex*   m_pMutex;        // this threads mutex
+    Mutex*   m_pMutexThread;        // this threads mutex
   
     i8       m_iLastQueueRR;  // last round robin queue this thread
                               // had popped a task from

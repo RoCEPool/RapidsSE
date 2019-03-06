@@ -203,6 +203,11 @@ void Engine::vCreateAttachMap(void)
 {
   // create the attach map (which records global pointers)
   new AttachMap;
+
+  if (gxArguments.m_bVerbose)
+    vInfo("AttachMap created: sizeof(AttachMap)=%lldB\n"_Stz,
+          sizeof(AttachMap));
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -508,7 +513,7 @@ void Engine::vOpenPool(void)
   if (gxArguments.m_bStart) {
     
     if (! gxArguments.m_bRestart && Region::bTest(gxArguments.m_sRegionName)) {
-      vFatal("Error: Engine instance %s already started\n"_Stz,gxArguments.m_sRegionName.aChar());
+      vTrace("Error: Instance %s already started\n"_Stz,gxArguments.m_sRegionName.aChar());
       exit(EXIT_FAILURE);
       return;
     }
@@ -541,7 +546,7 @@ void Engine::vOpenPool(void)
   
   if (gxArguments.m_bStop) {
     if (! Region::bTest(gxArguments.m_sRegionName)) {
-      vFatal("Error: Engine instance %s was not started\n"_Stz,
+      vTrace("Error: Instance %s was not started\n"_Stz,
              gxArguments.m_sRegionName.aChar());
       exit(EXIT_FAILURE);
       return;
@@ -558,7 +563,7 @@ void Engine::vOpenPool(void)
   
   if (gxArguments.m_bPrompt || gxArguments.m_bSethScript) {
     if (! Region::bTest(gxArguments.m_sRegionName)) {
-      vFatal("Error: Engine instance %s was not started\n"_Stz,gxArguments.m_sRegionName.aChar());
+      vTrace("Error: Instance %s was not started\n"_Stz,gxArguments.m_sRegionName.aChar());
       exit(EXIT_FAILURE);
       return;
     }
@@ -568,7 +573,7 @@ void Engine::vOpenPool(void)
                               gxArguments.m_bVerbose,
                               gxArguments.m_aRegionAddr);
     if ( ! bResult ) {
-      vFatal("Error: Unable to attach to Engine instance %s\n"_Stz,gxArguments.m_sRegionName.aChar());
+      vTrace("Error: Unable to attach to instance %s\n"_Stz,gxArguments.m_sRegionName.aChar());
       exit(EXIT_FAILURE);
       return;
       

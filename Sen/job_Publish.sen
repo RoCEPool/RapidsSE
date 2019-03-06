@@ -93,7 +93,7 @@
 
   pJob_publish job.notice
 
-  pJob_publish send_job__executed
+  pJob_publish job::participantExecuted
 
   <<am <DONE_REQ>
 ;
@@ -168,7 +168,7 @@
 
   job::this locals| pJob_publish |
 
-  pJob_publish job.beginParticipant
+  pJob_publish job.becomeParticipant
 
   // check resources
   pJob_publish publish.checkResources

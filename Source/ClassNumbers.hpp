@@ -38,7 +38,7 @@ enum eCN : u2 // Class Number
   /*  17 0x11     2808B Heap:I */ CN_ARGUMENTS,
   /*  18 0x12       24B Heap:I */ CN_ATOMIC,
   /*  19 0x13    19672B Heap:I */ CN_ATTACHMAP,
-  
+
   /*  20 0x14        1B Heap:I */ CN_BPA,
   /*  21 0x15      312B Heap:I */ CN_BUFFERPOOL,
   /*  22 0x16      120B Heap:S */ CN_BYTERATE,
@@ -48,6 +48,7 @@ enum eCN : u2 // Class Number
   /*  25 0x19     8216B Heap:M */ CN_COLUMNVEC,
   /*  26 0x1A       24B Heap:M */ CN_COMMAND,
   /*  27 0x1B       64B Heap:M */ CN_COMPILER,
+  /*                           */ CN_COMPLETER,
 
   /*  28 0x1C       24B Heap:S */ CN_DECIDER,
   /*  29 0x1D      248B Heap:M */ CN_DIC,
@@ -123,6 +124,7 @@ enum eCN : u2 // Class Number
   /*  89 0x59    71456B Heap:L */ CN_JOB_INGEST,
   /*  90 0x5A   118632B Heap:L */ CN_JOB_INSERTROW,
   /*  91 0x5B    70608B Heap:L */ CN_JOB_INSERTTABLE,
+  /* 139 0x8B        0B Heap:L */ CN_JOB_KIDEXPORT,
   /*  92 0x5C    70592B Heap:L */ CN_JOB_LF,
   /*  93 0x5D    70592B Heap:L */ CN_JOB_LISTCATALOGS,
   /*  94 0x5E    70592B Heap:L */ CN_JOB_LISTCOLUMNS,
@@ -173,7 +175,6 @@ enum eCN : u2 // Class Number
   /* 137 0x89    70592B Heap:L */ CN_JOB_WAITCLUSTER,
   /*                           */ CN_JOB_WALK,
   /* 138 0x8A    70648B Heap:L */ CN_JOB_WRITEBUFFER,
-  /* 139 0x8B        0B Heap:L */ CN_JOB_WRITERECORD,
   /* 140 0x8C   118688B Heap:L */ CN_JOB_WRITEROW,
   /* 141 0x8D      168B Heap:S */ CN_JOBLIST,
   /* 142 0x8E      232B Heap:I */ CN_JUMBOPERSISTENT,
@@ -297,7 +298,7 @@ static Stz* aCN[]
   /*  17 0x11 */ "ARGUMENTS"_Stz,           // CN_ARGUMENTS
   /*  18 0x12 */ "ATOMIC"_Stz,              // CN_ATOMIC
   /*  19 0x13 */ "ATTACHMAP"_Stz,           // CN_ATTACHMAP
-  
+
   /*  20 0x14 */ "BPA"_Stz,                 // CN_BPA
   /*  21 0x15 */ "BUFFERPOOL"_Stz,          // CN_BUFFERPOOL
   /*  22 0x16 */ "BYTERATE"_Stz,            // CN_BYTERATE
@@ -307,6 +308,7 @@ static Stz* aCN[]
   /*  25 0x19 */ "COLUMNVEC"_Stz,           // CN_COLUMNVEC
   /*  26 0x1A */ "COMMAND"_Stz,             // CN_COMMAND
   /*  27 0x1B */ "COMPILER"_Stz,            // CN_COMPILER
+  /*          */ "COMPLETER"_Stz,           // CN_COMPLETER
 
   /*  28 0x1C */ "DECIDER"_Stz,             // CN_DECIDER
   /*  29 0x1D */ "DIC"_Stz,                 // CN_DIC
@@ -382,6 +384,7 @@ static Stz* aCN[]
   /*  89 0x59 */ "JOB_INGEST"_Stz,          // CN_JOB_INGEST
   /*  90 0x5A */ "JOB_INSERTROW"_Stz,       // CN_JOB_INSERTROW
   /*  91 0x5B */ "JOB_INSERTTABLE"_Stz,     // CN_JOB_INSERTTABLE
+  /* 139 0x8B */ "JOB_KIDEXPORT"_Stz,       // CN_JOB_KIDEXPORT
   /*  92 0x5C */ "JOB_LF"_Stz,              // CN_JOB_LF
   /*  93 0x5D */ "JOB_LISTCATALOGS"_Stz,    // CN_JOB_LISTCATALOGS
   /*  94 0x5E */ "JOB_LISTCOLUMNS"_Stz,     // CN_JOB_LISTCOLUMNS
@@ -432,7 +435,6 @@ static Stz* aCN[]
   /* 137 0x89 */ "JOB_WAITCLUSTER"_Stz,     // CN_JOB_WAITCLUSTER
   /* 137 0x89 */ "JOB_WALK"_Stz,            // CN_JOB_WALK
   /* 138 0x8A */ "JOB_WRITEBUFFER"_Stz,     // CN_JOB_WRITEBUFFER
-  /* 139 0x8B */ "JOB_WRITERECORD"_Stz,     // CN_JOB_WRITERECORD
   /* 140 0x8C */ "JOB_WRITEROW"_Stz,        // CN_JOB_WRITEROW
   /* 141 0x8D */ "JOBLIST"_Stz,             // CN_JOBLIST
   /* 142 0x8E */ "JUMBOPERSISTENT"_Stz,     // CN_JUMBOPERSISTENT

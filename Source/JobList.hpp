@@ -30,6 +30,7 @@ namespace Jobs
     Job*   pFindJob(Job* pJob__Find);
     void   vGrabLock(void);
     bool   bGrabLock(void);
+    bool   bHasJobClass(eCN eJobClass);
     bool   bIsLocked(void);
     bool   bRemoveJob(Job* pJob);
     i8     nJobs(void);

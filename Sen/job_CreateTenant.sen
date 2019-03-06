@@ -101,7 +101,7 @@
 
   pJob_CreateTenant job.notice
 
-  pJob_CreateTenant send_job__executed
+  pJob_CreateTenant job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -163,7 +163,7 @@
 
   job::this locals| pJob_createTenant |
 
-  pJob_createTenant job.beginParticipant
+  pJob_createTenant job.becomeParticipant
 
   // check resources
   pJob_createTenant createTenant.checkResources

@@ -124,7 +124,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   <<am
-  delete_completed_job
+  job::deleteThis
 
   <DONE_KID>
 ;
@@ -149,7 +149,20 @@
   //i_Partition i_ForwardNode "WriteBuffer.forward : Node %v Partition %v" fmt.print
 
   // send this job to the forward node
-  i_ForwardNode pJob_WriteBuffer job.forward
+  //i_ForwardNode pJob_WriteBuffer job.forward
+
+  i_ForwardNode grid::thisNode@ == if
+    //"not forwarding" .
+    // on same node, just spawn job
+    pJob_WriteBuffer SEED_RCV job.spawn
+    false
+  else
+    // send this job to the forward node
+    //"forwarding" .
+    i_ForwardNode pJob_WriteBuffer job.forward
+    true
+  then
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -166,7 +179,11 @@
   // simply forward this job to kid node
   pJob_WriteBuffer writeBuffer.forward
 
-  delete_completed_job
+  true == if
+    job::deleteThis
+  else
+    nullptr task::this task.job!
+  then
 
   <DONE_RUN>
 ;

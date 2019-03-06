@@ -118,7 +118,7 @@
 
   pJob_AnalyzeTable job.notice
 
-  pJob_AnalyzeTable send_job__executed
+  pJob_AnalyzeTable job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -176,7 +176,7 @@
 
   job::this locals| pJob_analyzeTable |
 
-  pJob_analyzeTable job.beginParticipant
+  pJob_analyzeTable job.becomeParticipant
 
   // check resources
   pJob_analyzeTable analyzeTable.checkResources

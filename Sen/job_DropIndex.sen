@@ -131,7 +131,7 @@
 
   pJob_DropIndex job.notice
 
-  pJob_DropIndex send_job__executed
+  pJob_DropIndex job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -214,7 +214,7 @@
 
   job::this locals| pJob_dropIndex |
 
-  pJob_dropIndex job.beginParticipant
+  pJob_dropIndex job.becomeParticipant
 
   // check resources
   pJob_dropIndex dropIndex.checkResources

@@ -208,7 +208,7 @@
 
   pJob_CreateIndex job.notice
 
-  pJob_CreateIndex send_job__executed
+  pJob_CreateIndex job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -270,7 +270,7 @@
 
   job::this locals| pJob_createIndex |
 
-  pJob_createIndex job.beginParticipant
+  pJob_createIndex job.becomeParticipant
 
   pJob_createIndex createIndex.checkResources
 

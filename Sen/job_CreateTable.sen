@@ -149,9 +149,9 @@
 
   pJob_CreateTable job.notice
 
-  // delete_completed_job
+  // job::deleteThis
 
-  pJob_CreateTable send_job__executed
+  pJob_CreateTable job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -216,7 +216,7 @@
   //">> createTable_beg <<" .
 
   // add this job to the participants list
-  pJob_CreateTable job.beginParticipant
+  pJob_CreateTable job.becomeParticipant
 
   // check resources
   pJob_CreateTable createTable.checkResources

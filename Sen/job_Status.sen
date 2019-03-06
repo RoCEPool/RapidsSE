@@ -64,7 +64,7 @@
 
   pJob_Status job.notice
 
-  pJob_Status send_job__executed
+  pJob_Status job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -78,7 +78,7 @@
 
   job::this locals| pJob_status |
 
-  pJob_status job.beginParticipant
+  pJob_status job.becomeParticipant
 
   job::participantBegun
 
