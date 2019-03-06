@@ -42,7 +42,7 @@ i8 Tsc::iTicksPerSecond(void)
 #if defined(WITH_APPLE) || defined(WITH_LINUX)
   i8 iFrequency = C_1G;
 #else
-  i8 iFrequency = System::iClockFrequency();
+  i8 iFrequency = Hardware::iClockFrequency();
 #endif
   
   return iFrequency;
