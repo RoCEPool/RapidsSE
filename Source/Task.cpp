@@ -976,8 +976,12 @@ eQR Task::eWhichQueue(void)  //! RAY TO FINISH
     case TK_YIELDED:
       if (bIsPartitioned())
         return (eQR)iSlot();
-      else
-        return QR_READY_QUEUE;
+      else {
+        if (m_pJob->m_pJobClass->m_ePriority == PY_NORMAL)
+          return QR_READY_QUEUE;
+        else
+          return QR_READY_QUEUE_LP;
+      }
       
     case TK_SLEEPING:
       return QR_SLEEPING_QUEUE;

@@ -1290,7 +1290,7 @@ void Queues::vScheduleReadyTask(Task* pTask)
   }
   else {
     if (pTask->bIsNonPartitioned()) {
-      if (pTask->pJob()->m_pJobClass->m_ePrority == PY_NORMAL)
+      if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
         vAddToReadyQueue(pTask);
       else
         vAddToReadyQueueLP(pTask);
@@ -1472,7 +1472,7 @@ void Queues::vScheduleYieldedTask(Task* pTask)
     }
     else {
       pTask->vState(TK_READY);
-      if (pTask->pJob()->m_pJobClass->m_ePrority == PY_NORMAL)
+      if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
         vAddToReadyQueue_NL(pTask);
       else
         vAddToReadyQueueLP_NL(pTask);

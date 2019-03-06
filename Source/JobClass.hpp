@@ -43,7 +43,7 @@ namespace Jobs
       bool m_bBuffer;    // buffer attached?
       eJT  m_eTrace;     // job trace?
       eDL  m_eDdlLock;   // ddl lock model
-      ePY  m_ePrority;   // job priority
+      ePY  m_ePriority;  // job priority
       eJF  m_eFlags;     // job flags
   
       eEC  (*m_fpCheck)(Interface::Session* pSession);

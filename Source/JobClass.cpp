@@ -228,7 +228,7 @@ void JobClass::vJobCat(void)
          sFunctions.aStz(),
          aJK[m_eKind],
          sDdlLock.aStz(),
-         aPY[m_ePrority],
+         aPY[m_ePriority],
          sFlags.aStz(),
          m_aComment,
          
