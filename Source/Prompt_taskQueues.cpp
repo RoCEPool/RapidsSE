@@ -27,6 +27,7 @@ bool Prompt::bPrompt_taskQueues(SePrompt* pPrompt)
   Queues* pQueues = gpAttachMap->m_pQueues;
   pQueues->vDumpExecutingSet();
   pQueues->vDumpReadyQueue();
+  pQueues->vDumpReadyQueueLP();
   pQueues->vDumpReadySendQueues();
   pQueues->vDumpReadySlotQueues();
   pQueues->vDumpSleepingQueue();

@@ -302,6 +302,12 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
                        pTask->pJob());
 
   ASSERT(m_pReadyQueue->bIsLocked());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // stall if ready queue is building up
+  while (gpAttachMap->m_pQueues->m_pReadyQueue->nTasks() > 1000)
+    Pthread::vSleepMilli(1,pTask->pJob()->eClass());
+  
   m_pReadyQueue->vAddTask(pTask);
   
   ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE);
@@ -327,6 +333,7 @@ void Queues::vAddToReadyQueueLP_NL(Task* pTask)
                           pTask->pJob());
   
   ASSERT(m_pReadyQueueLP->bIsLocked());
+  
   m_pReadyQueueLP->vAddTask(pTask);
   
   ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE_LP);
@@ -483,7 +490,7 @@ void Queues::vDumpReadyQueue(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Ready Queue: %p\n"_Stz, m_pReadyQueue);
+  vTrace("Ready Queue (normal priority): %p\n"_Stz, m_pReadyQueue);
   vTrace("------------------------------------\n"_Stz);
   m_pReadyQueue->vGrabLock();
   m_pReadyQueue->vContentDump();
@@ -501,7 +508,7 @@ void Queues::vDumpReadyQueueLP(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Ready Queue: %p\n"_Stz, m_pReadyQueueLP);
+  vTrace("Ready Queue (low Priority): %p\n"_Stz, m_pReadyQueueLP);
   vTrace("------------------------------------\n"_Stz);
   m_pReadyQueueLP->vGrabLock();
   m_pReadyQueueLP->vContentDump();
@@ -1147,7 +1154,7 @@ i8 Queues::i_QueueLast(void)
   
   i8 i_Last = gpAttachMap->m_pGrid->m_nSlotsPerNode
                + gpAttachMap->m_pGrid->m_nNodes
-               - 1;
+               -1;
   
   return i_Last;
 }

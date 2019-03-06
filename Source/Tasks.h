@@ -7,11 +7,11 @@
 
 enum eQR // queue round robin
 {
-  /* -6 */ QR_NONE=-5,
-  /* -5 */ QR_READY_QUEUE_LP,
-  /* -4 */ QR_EXECUTING_QUEUE,
-  /* -3 */ QR_WAITING_QUEUE,
-  /* -2 */ QR_SLEEPING_QUEUE,
+  /* -6 */ QR_NONE=-6,
+  /* -5 */ QR_EXECUTING_QUEUE,
+  /* -4 */ QR_WAITING_QUEUE,
+  /* -3 */ QR_SLEEPING_QUEUE,
+  /* -2 */ QR_READY_QUEUE_LP,
   /* -1 */ QR_READY_QUEUE,
 };
 

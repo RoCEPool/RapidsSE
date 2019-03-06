@@ -147,11 +147,6 @@ eEC JobWriteBehind::eInsertRow(Stz* aRow_Data, i8 nRowBytes)
     m_pEntryBuffer[iPartition] = nullptr;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // stall if ready queue is building up
-    while (gpAttachMap->m_pQueues->m_pReadyQueue->nTasks() > 1000)
-      Pthread::vSleepMilli(1,CN_JOB_WRITEBUFFER);
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn a write buffer job 
     Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession,
                                           m_pTable->aTableName(),
