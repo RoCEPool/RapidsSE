@@ -251,8 +251,8 @@ void KeyWrk::vAddPlusInfinity(void)
   
   char* aDst = aLatter();
   
-  d8 fFlt = C_DATUM_PLUS_INFINITY;
-  Flt::nCopy(aDst,(void*)&fFlt);
+  i8 iInt = C_DATUM_PLUS_INFINITY;
+  Flt::nCopy(aDst,(void*)&iInt);
   
   vTake(C_BYTES_PER_WORD);
 }
@@ -266,8 +266,8 @@ void KeyWrk::vAddPlusInfinity_Flt(void)
   
   char* aDst = aLatter();
   
-  i8 iInt = C_FLOAT_PLUS_INFINITY;
-  Int::nCopy(aDst,(void*)&iInt);
+  d8 fFlt = C_FLOAT_PLUS_INFINITY;
+  Int::nCopy(aDst,(void*)&fFlt);
   
   vTake(C_BYTES_PER_WORD);
 }
