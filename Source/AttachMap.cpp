@@ -224,6 +224,8 @@ void AttachMap::vRecordArguments(bool bActionSequence,
   
   m_iEpoch      = 0;
   
+  m_oFormatters.m_nMaxErrors = Arg.m_nMaxLoadErrors;
+  
   ASSERT(m_xHeapMem.Transient.m_pJumbo);
   ASSERT(m_xHeapMem.Transient.m_pMedium);
   ASSERT(m_xHeapMem.Transient.m_pLarge);
