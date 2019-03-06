@@ -15,7 +15,8 @@ PromptNote mPromptNote_locks (
   true,                 // enabled
 
   true,                 // visible
-  "locks"_Stz           // help
+  "locks"_Stz,           // help
+                              ""_Stz                       // description
 );
 
 extern AttachMap*  gpAttachMap;

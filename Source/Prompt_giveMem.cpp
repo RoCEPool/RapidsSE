@@ -17,7 +17,8 @@ PromptNote mPromptNote_giveMem (
   true,                 // enabled
 
   true,                 // visible
-  "giveMem"_Stz         // help
+  "giveMem"_Stz,         // help
+                                ""_Stz                       // description
 );
 
 /*----------------------------------------------------------------------------*/

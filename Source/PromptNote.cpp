@@ -21,7 +21,8 @@ PromptNote::PromptNote(ePF  ePromptFun,
                        bool bEnabled,
                        
                        bool bVisible,
-                       Stz* aHelp)
+                       Stz* aHelp,
+                       Stz* aDesc)
 {
   //vTrace("PromptNote: %s %s %s\n"_Stz,
   //       aName, aComment, aCommand1);
@@ -40,6 +41,7 @@ PromptNote::PromptNote(ePF  ePromptFun,
   gxPromptCatalog.m_xPromptFun[i_Prompt].m_bVisible    = bVisible;
 
   gxPromptCatalog.m_xPromptFun[i_Prompt].m_aHelp       = aHelp;
+  gxPromptCatalog.m_xPromptFun[i_Prompt].m_aDesc       = aDesc;
 
   // we have one more class in the prompt catalog
   gxPromptCatalog.m_nFunctions++;

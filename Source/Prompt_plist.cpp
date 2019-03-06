@@ -15,7 +15,8 @@ PromptNote mPromptNote_plist (
   true,                 // enabled
 
   true,                 // visible
-  "plist"_Stz           // help
+  "plist"_Stz,           // help
+                              ""_Stz                       // description
 );
 
 extern AttachMap*  gpAttachMap;

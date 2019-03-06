@@ -17,7 +17,8 @@ PromptNote mPromptNote_apiState (
   true,                   // enabled
 
   true,                   // visible
-  "apiState"_Stz          // help
+  "apiState"_Stz,          // help
+                                 ""_Stz                       // description
 );
 
 /*----------------------------------------------------------------------------*/

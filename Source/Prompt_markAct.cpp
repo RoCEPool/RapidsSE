@@ -15,7 +15,8 @@ PromptNote mPromptNote_markAct (
   true,                 // enabled
 
   true,                 // visible
-  "markAct"_Stz         // help
+  "markAct"_Stz,         // help
+                                ""_Stz                       // description
 );
 
 extern AttachMap*    gpAttachMap;

@@ -15,7 +15,8 @@ PromptNote mPromptNote_markApi (
   true,              // enabled
 
   true,              // visible
-  "markApi"_Stz      // help
+  "markApi"_Stz,      // help
+                                ""_Stz                       // description
 );
 
 extern PromptCatalog gxPromptCatalog;

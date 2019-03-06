@@ -15,7 +15,8 @@ PromptNote mPromptNote_executing (
   true,                   // enabled
 
   true,                   // visible
-  "executing"_Stz         // help
+  "executing"_Stz,         // help
+                                  ""_Stz                       // description
 );
 
 extern AttachMap*  gpAttachMap;

@@ -17,7 +17,8 @@ PromptNote mPromptNote_version (
   true,                 // enabled
 
   true,                 // visible
-  "version"_Stz         // help
+  "version"_Stz,         // help
+                                ""_Stz                       // description
 );
 
 /*----------------------------------------------------------------------------*/

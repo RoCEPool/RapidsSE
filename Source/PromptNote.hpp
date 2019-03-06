@@ -20,7 +20,8 @@ namespace Prompt
                bool bEnabled,
                
                bool bVisible,
-               Stz* aHelp
+               Stz* aHelp,
+               Stz* aDescription
               );
   
   };

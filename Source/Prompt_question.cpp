@@ -14,7 +14,8 @@ PromptNote mPromptNote_question (
   true,                  // enabled
 
   true,                  // visible
-  "?"_Stz                // help
+  "?"_Stz,                // help
+                                 ""_Stz                       // description
 );
 
 /*----------------------------------------------------------------------------*/

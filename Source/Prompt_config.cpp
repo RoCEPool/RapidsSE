@@ -15,7 +15,8 @@ PromptNote mPromptNote_config (
   true,                 // enabled
 
   true,                 // visible
-  "config"_Stz          // help
+  "config"_Stz,          // help
+                               ""_Stz                       // description
 );
 
 extern AttachMap*  gpAttachMap;

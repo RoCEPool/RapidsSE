@@ -14,7 +14,8 @@ PromptNote mPromptNote_date (
   true,              // enabled
 
   true,              // visible
-  "date"_Stz         // help
+  "date"_Stz,         // help
+                             ""_Stz                       // description
 );
 
 /*----------------------------------------------------------------------------*/

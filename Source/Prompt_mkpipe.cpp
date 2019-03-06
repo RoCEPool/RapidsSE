@@ -14,7 +14,8 @@ PromptNote mPromptNote_mkpipe (
   true,                  // enabled
 
   true,                  // visible
-  "mkpipe"_Stz           // help
+  "mkpipe"_Stz,           // help
+                               ""_Stz                       // description
 );
 
 /*----------------------------------------------------------------------------*/

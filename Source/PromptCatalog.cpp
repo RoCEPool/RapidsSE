@@ -47,7 +47,9 @@ void PromptCatalog::vFuns(ePF ePromptFun)
       continue;
 
     if (m_xPromptFun[i_Fun].m_aHelp)
-    vTrace("%s\n"_Stz,m_xPromptFun[i_Fun].m_aHelp);
+      vTrace("%s %s\n"_Stz,
+             m_xPromptFun[i_Fun].m_aHelp,
+             m_xPromptFun[i_Fun].m_aDesc);
   }
 
 }
