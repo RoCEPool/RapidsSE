@@ -22,7 +22,7 @@ bool Handlers::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   Job* pJobBeingAcked = pTaskBeingAcked->pJob();
   Job* pJobAcking = pTaskAcking->pJob();
   
-  if (pJobAcking->m_bMark || pJobBeingAcked->m_bMark) {
+  if (pJobAcking->m_bMarkActivity || pJobBeingAcked->m_bMarkActivity) {
     ActivityMap::vMarkJob(pJobBeingAcked,
                        "pTaskBeingAcked:%p Job %s "_Stz,
                        pTaskBeingAcked,
@@ -42,7 +42,7 @@ bool Handlers::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   bool bAmDecider = pTaskBeingAcked->bAckAndDecide();
   
   if (bAmDecider) {
-    if (pJobBeingAcked->m_bMark || pJobAcking->m_bMark)
+    if (pJobBeingAcked->m_bMarkActivity || pJobAcking->m_bMarkActivity)
       ActivityMap::vMarkJob(pJobAcking,
                             "Decider %s acks %s"_Stz,
                             aCN[pJobAcking->eClass()],

@@ -171,7 +171,10 @@ void JobClass::vRecvJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void JobClass::vShowJob(Job* pJob)
 {
-  (*m_fpShow)(pJob);
+  pJob->vShow();
+  
+  if (m_fpShow)
+    (*m_fpShow)(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,6 +301,7 @@ JobClass* JobClass::pFind(eCN eClass)
   for (pJOBCLASSFUN pfJobClass = (pJOBCLASSFUN)pJob__Begun_class; pfJobClass; ) {
     
     pJobClass = pfJobClass((pFUN**)&pfJobClass);
+    //vTrace("class: %s\n"_Stz,aCN[ pJobClass->m_eClass]);
     
     if (pJobClass->m_eClass == eClass)
       return pJobClass;
@@ -370,6 +374,8 @@ void JobClass::vVerifySeeds(void)
     
     pJobClass = pfJobClass((pFUN**)&pfJobClass);
 
+    //vTrace("Job: %s\n"_Stz, aCN[pJobClass->m_eClass]);
+    
 //    vTrace("%s\n"_Stz,pJobClass->m_aName);
 //
 //    if (pJobClass->m_aSeedRun) vTrace("  %s\n"_Stz,pJobClass->m_aSeedRun);

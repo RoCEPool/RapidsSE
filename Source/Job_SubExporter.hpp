@@ -17,6 +17,7 @@ namespace Jobs
   
     EntryBuffer* m_pEntryBuffer;
   
+    i8 m_nExportBuffers;
     ExportBuffer* m_pExportBuffer;
     
     // must be last
@@ -39,6 +40,7 @@ namespace Jobs
     void vShow(void);
   
   private:
+    void vSpawnKidExport(bool bLast);
     void vSprintRows(void);
   
     Footer* aFooter(void);

@@ -155,7 +155,7 @@
 
   pJob_DropTable job.notice
 
-  pJob_DropTable send_job__executed
+  pJob_DropTable job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -213,7 +213,7 @@
 
   job::this locals| pJob_dropTable |
 
-  pJob_dropTable job.beginParticipant
+  pJob_dropTable job.becomeParticipant
 
   // check resources
   pJob_dropTable dropTable.checkResources

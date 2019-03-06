@@ -53,6 +53,7 @@ Action::Action(void)
   m_iArg0    = 0;
   m_iArg1    = 0;
   
+  m_caName[0] = '\0';
   m_caText[0] = '\0';
   
   ASSERT(0 == *m_wLink);
@@ -122,6 +123,9 @@ void Action::vInit(i8 i_Action)
   m_iArg0    = 0;
   m_iArg1    = 0;
   
+  m_caName[0] = '\0';
+  m_caText[0] = '\0';
+  
   m_wLink.vReset();
 }
 
@@ -183,6 +187,9 @@ void Action::vReset(void)
   m_eAction  = AN_NONE;
   m_iArg0    = 0;
   m_iArg1    = 0;
+  
+  m_caName[0] = '\0';
+  m_caText[0] = '\0';
   
   m_wLink.vReset();
 }

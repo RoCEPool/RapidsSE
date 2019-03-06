@@ -34,7 +34,7 @@
   JP_CANCELED job::this job.phase!
 
   // delete the job
-  job::this "delete_completed_job" find execute
+  job::this "job::deleteThis" find execute
 
   ::task_exit
 ;
@@ -47,7 +47,7 @@
   JP_ENDED job::this job.phase!
 
   // delete the job
-  job::this "delete_completed_job" find execute
+  job::this "job::deleteThis" find execute
 
   ::task_exit
 ;

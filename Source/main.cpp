@@ -11,6 +11,10 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
+//  for (i8 i = 0; i < C_1P; i++)
+//    if (IntLib::bIsDecaCycle(i))
+//      printf("%lld\n",i);
+  
   //printf("sizeof(AttachMap) %d\n",sizeof(AttachMap));
   
   // parse the command line arguments

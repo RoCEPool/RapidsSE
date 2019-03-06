@@ -31,11 +31,11 @@ eEC RapidsSE_CheckVersion(i8 iTrace, Stz* sVersion)
       vTrace(">RapidsSE_CheckLibraryVersion: RDP (%s) does not match Engine (%s)"_Stz,
              sVersion, RAPIDSSE_VERSION_STRING);
       
-      API_RETURN_ERROR(EC_VERSION_MISMATCH);
+      API_RETURN_ERROR_NO_SESSION(EC_VERSION_MISMATCH);
     }
   }
-  catch (Error* pError) { API_CATCH(pError); }
-  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  catch (Error* pError) { API_CATCH_NO_SESSION(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH_NO_SESSION(pError); }
   
   API_RETURN();
 }

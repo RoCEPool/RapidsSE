@@ -1,0 +1,1686 @@
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_LoadTable.cpp -o Job_LoadTable.o
+Job_LoadTable.cpp:144:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_LoadTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_LoadTable.cpp:144:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_LoadTable.cpp:599:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_LoadTable_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_LoadTable.cpp:634:6: warning: unused parameter ‘pArg’ [-Wunused-parameter]
+ Job* JobsModel::pJob_LoadTable_new(Job* pArg)
+      ^
+Job_LoadTable.cpp:644:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_LoadTable_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_WaitCluster.cpp -o Job_WaitCluster.o
+Job_WaitCluster.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_WaitCluster::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_WaitCluster.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_WaitCluster.cpp:204:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_WaitCluster_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_WaitCluster.cpp:204:6: warning: unused parameter ‘pJob’ [-Wunused-parameter]
+Job_WaitCluster.cpp:211:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_WaitCluster_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_takeMem.cpp -o Prompt_takeMem.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Index.cpp -o Steps_Index.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_Lf.cpp -o Job_Lf.o
+Job_Lf.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_Lf::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_Lf.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_Lf.cpp:215:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Lf_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_Lf.cpp:238:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Lf_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  StepAccum.cpp -o StepAccum.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Now.cpp -o Now.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  PromptFun.cpp -o PromptFun.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_job.cpp -o Prompt_job.o
+Prompt_job.cpp: In function ‘bool Prompt::bPrompt_job(Prompt::SePrompt*)’:
+Prompt_job.cpp:27:10: warning: variable ‘pArg0’ set but not used [-Wunused-but-set-variable]
+   Token* pArg0 = nullptr;
+          ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  IpVal.cpp -o IpVal.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_resources.cpp -o Prompt_resources.o
+Prompt_resources.cpp:24:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_resources(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  DicPath.cpp -o DicPath.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  SchemaTest.cpp -o SchemaTest.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Debug.cpp -o Steps_Debug.o
+Steps_Debug.cpp:24:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vDebugTrap(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  LockTracker.cpp -o LockTracker.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_ActivityMap.cpp -o Steps_ActivityMap.o
+Steps_ActivityMap.cpp:23:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vActivityMapDump(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_ListSchemas.cpp -o Job_ListSchemas.o
+Job_ListSchemas.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_ListSchemas::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_ListSchemas.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_ListSchemas.cpp:215:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ListSchemas_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_ListSchemas.cpp:240:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ListSchemas_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Decider.cpp -o Decider.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_ListTables.cpp -o Job_ListTables.o
+Job_ListTables.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_ListTables::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_ListTables.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_ListTables.cpp:215:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ListTables_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_ListTables.cpp:243:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ListTables_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Shm.cpp -o Shm.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  JobDicPath.cpp -o JobDicPath.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Session.cpp -o Steps_Session.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  ApiState.cpp -o ApiState.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_sleep.cpp -o Prompt_sleep.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Semaphore.cpp -o Steps_Semaphore.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  PromptNote.cpp -o PromptNote.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  RegFrame.cpp -o RegFrame.o
+RegFrame.cpp:69:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void RegFrame::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+RegFrame.cpp:69:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Debug.cpp -o Debug.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Jobs.cpp -o Jobs.o
+Jobs.cpp:220:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Jobs::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Jobs.cpp:220:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  ActivityMap.cpp -o ActivityMap.o
+ActivityMap.cpp: In constructor ‘Measurement::ActivityMap::ActivityMap()’:
+ActivityMap.cpp:284:6: warning: variable ‘iResult’ set but not used [-Wunused-but-set-variable]
+   i8 iResult = pthread_mutexattr_init(&m_xMutexAttr);
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_TruncateTable.cpp -o Job_TruncateTable.o
+Job_TruncateTable.cpp:130:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_TruncateTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_TruncateTable.cpp:130:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_TruncateTable.cpp:216:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_TruncateTable_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_TruncateTable.cpp:235:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_TruncateTable_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_TxSet.cpp -o Steps_TxSet.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  IvlVal.cpp -o IvlVal.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_SubLoader.cpp -o Job_SubLoader.o
+Job_SubLoader.cpp:148:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_SubLoader::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_SubLoader.cpp:148:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_SubLoader.cpp:457:6: warning: unused parameter ‘pArg’ [-Wunused-parameter]
+ Job* JobsModel::pJob_SubLoader_new(Job* pArg)
+      ^
+Job_SubLoader.cpp:467:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_SubLoader_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  SysCall.cpp -o SysCall.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  DtmLib.cpp -o DtmLib.o
+DtmLib.cpp:625:6: warning: unused parameter ‘pFormatters’ [-Wunused-parameter]
+ bool DtmLib::bIsThereRecordData(char* aSrc, Formatters* pFormatters)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Addressing.cpp -o Addressing.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Threads.cpp -o Threads.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Since.cpp -o Since.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_JobGeneric.cpp -o Steps_JobGeneric.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  JobResult.cpp -o JobResult.o
+JobResult.cpp:24:6: warning: unused parameter ‘aAddress’ [-Wunused-parameter]
+ void JobResult::operator delete(void* aAddress)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_am.cpp -o Prompt_am.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_ConnectCluster.cpp -o Job_ConnectCluster.o
+Job_ConnectCluster.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_ConnectCluster::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_ConnectCluster.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_ConnectCluster.cpp:213:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ConnectCluster_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_ConnectCluster.cpp:213:6: warning: unused parameter ‘pJob’ [-Wunused-parameter]
+Job_ConnectCluster.cpp:220:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ConnectCluster_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  BufferPool.cpp -o BufferPool.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Queues.cpp -o Queues.o
+Queues.cpp:41:6: warning: unused parameter ‘aAddr’ [-Wunused-parameter]
+ void Queues::operator delete(void* aAddr)
+      ^
+Queues.cpp:544:7: warning: unused parameter ‘pCallingThread’ [-Wunused-parameter]
+ Task* Queues::pInspectReadyQueue(Thread* pCallingThread)
+       ^
+Queues.cpp:674:7: warning: unused parameter ‘pCallingThread’ [-Wunused-parameter]
+ Task* Queues::pInspectSleepingQueue(Thread* pCallingThread)
+       ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Array.cpp -o Array.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_VisualizeIndex.cpp -o Job_VisualizeIndex.o
+Job_VisualizeIndex.cpp:130:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_VisualizeIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_VisualizeIndex.cpp:130:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_VisualizeIndex.cpp:220:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_VisualizeIndex_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_VisualizeIndex.cpp:236:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_VisualizeIndex_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_print.cpp -o Prompt_print.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Parser.cpp -o Parser.o
+Parser.cpp:90:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Parser::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Parser.cpp:90:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Bol.cpp -o Bol.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Tme.cpp -o Tme.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  OpSys.cpp -o OpSys.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  PredicateVec.cpp -o PredicateVec.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Args.cpp -o Steps_Args.o
+Steps_Args.cpp:25:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vArgsOscillate(MP_Task mpTask)
+      ^
+Steps_Args.cpp:35:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vArgsPrint(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_Connector.cpp -o Job_Connector.o
+Job_Connector.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_Connector::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_Connector.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_Connector.cpp:171:6: warning: unused parameter ‘pArg’ [-Wunused-parameter]
+ Job* JobsModel::pJob_Connector_new(Job* pArg)
+      ^
+Job_Connector.cpp:181:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Connector_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_To.cpp -o Steps_To.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Column.cpp -o Column.o
+Column.cpp: In member function ‘void DBobjects::Column::vSet(Base::Stz*)’:
+Column.cpp:336:8: warning: variable ‘b’ set but not used [-Wunused-but-set-variable]
+   bool b;
+        ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_Cf.cpp -o Job_Cf.o
+Job_Cf.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_Cf::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_Cf.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_Cf.cpp:214:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Cf_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_Cf.cpp:230:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Cf_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_UseSchema.cpp -o Job_UseSchema.o
+Job_UseSchema.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_UseSchema::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_UseSchema.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_UseSchema.cpp:221:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_UseSchema_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_UseSchema.cpp:238:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_UseSchema_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Token.cpp -o Token.o
+Token.cpp:65:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Token.cpp:65:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  TmeVal.cpp -o TmeVal.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Buffer.cpp -o Buffer.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Job.cpp -o Steps_Job.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_Space.cpp -o Job_Space.o
+Job_Space.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_Space::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_Space.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_Space.cpp:214:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Space_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_Space.cpp:241:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Space_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  TaskQueue.cpp -o TaskQueue.o
+TaskQueue.cpp: In member function ‘void Tasks::TaskQueue::vRemoveTask(Tasks::Task*)’:
+TaskQueue.cpp:175:8: warning: variable ‘bRemoved’ set but not used [-Wunused-but-set-variable]
+   bool bRemoved;
+        ^
+TaskQueue.cpp: At global scope:
+TaskQueue.cpp:205:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void TaskQueue::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+TaskQueue.cpp:205:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  IntLib.cpp -o IntLib.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  WspVbl.cpp -o WspVbl.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_pwd.cpp -o Prompt_pwd.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Env.cpp -o Env.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Footer.cpp -o Footer.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  TxSet.cpp -o TxSet.o
+TxSet.cpp: In member function ‘void Transactions::TxSet::vRemoveTx(Transactions::Tx*)’:
+TxSet.cpp:215:8: warning: variable ‘bRemoved’ set but not used [-Wunused-but-set-variable]
+   bool bRemoved;
+        ^
+TxSet.cpp: In member function ‘void Transactions::TxSet::vRemoveTx_NL(Transactions::Tx*)’:
+TxSet.cpp:263:8: warning: variable ‘bRemoved’ set but not used [-Wunused-but-set-variable]
+   bool bRemoved;
+        ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_activityMap.cpp -o Prompt_activityMap.o
+Prompt_activityMap.cpp:25:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_activityMap(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Planner.cpp -o Planner.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Zero.cpp -o Steps_Zero.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Measurement.cpp -o Measurement.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  CarryOver.cpp -o CarryOver.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Cell.cpp -o Cell.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Logic.cpp -o Steps_Logic.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Rstack.cpp -o Steps_Rstack.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_JobFetchRows.cpp -o Steps_JobFetchRows.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_SizeIndex.cpp -o Job_SizeIndex.o
+Job_SizeIndex.cpp:130:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_SizeIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_SizeIndex.cpp:130:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_SizeIndex.cpp:220:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_SizeIndex_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_SizeIndex.cpp:249:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_SizeIndex_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Magnitudes.cpp -o Magnitudes.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Op.cpp -o Op.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  NP.cpp -o NP.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  MP.cpp -o MP.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Pool.cpp -o Pool.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  MemLib.cpp -o MemLib.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Api.cpp -o Api.o
+Api.cpp:223:6: warning: unused parameter ‘bFromPrompt’ [-Wunused-parameter]
+ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool bFromPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Bcd.cpp -o Bcd.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Thread.cpp -o Steps_Thread.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_cd.cpp -o Prompt_cd.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  JobsModel.cpp -o JobsModel.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  BinVal.cpp -o BinVal.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_giveMem.cpp -o Prompt_giveMem.o
+Prompt_giveMem.cpp:24:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_giveMem(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Process.cpp -o Process.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Dictionaries.cpp -o Dictionaries.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_timerStart.cpp -o Prompt_timerStart.o
+Prompt_timerStart.cpp:24:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_timerStart(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Shell.cpp -o Shell.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  SkipNode.cpp -o SkipNode.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  DicStack.cpp -o DicStack.o
+DicStack.cpp:113:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void DicStack::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Session.cpp -o Session.o
+Session.cpp:170:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Session::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Session.cpp:170:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Compiler.cpp -o Compiler.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Error.cpp -o Steps_Error.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_CompactIndex.cpp -o Job_CompactIndex.o
+Job_CompactIndex.cpp:130:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_CompactIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_CompactIndex.cpp:130:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_CompactIndex.cpp:220:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_CompactIndex_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_CompactIndex.cpp:239:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_CompactIndex_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  ValWrk.cpp -o ValWrk.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  SizesDumps.cpp -o SizesDumps.o
+SizesDumps.cpp:785:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Dump::vDummy(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+SizesDumps.cpp:785:6: warning: unused parameter ‘pObject’ [-Wunused-parameter]
+SizesDumps.cpp:785:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+SizesDumps.cpp:798:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Dump::vEnums(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+SizesDumps.cpp:798:6: warning: unused parameter ‘pObject’ [-Wunused-parameter]
+SizesDumps.cpp:798:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+SizesDumps.cpp:809:6: warning: unused parameter ‘pObject’ [-Wunused-parameter]
+ void Dump::vInvalid(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+SizesDumps.cpp:820:6: warning: unused parameter ‘pObject’ [-Wunused-parameter]
+ void Dump::vUndefined(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  bn.cpp -o bn.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_CoreWords.cpp -o Steps_CoreWords.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_WorkingBuffer.cpp -o Steps_WorkingBuffer.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Values.cpp -o Values.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Word.cpp -o Steps_Word.o
+Steps_Word.cpp:849:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vWord(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_ListPartitions.cpp -o Job_ListPartitions.o
+Job_ListPartitions.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_ListPartitions::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_ListPartitions.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_ListPartitions.cpp:215:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ListPartitions_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_ListPartitions.cpp:238:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ListPartitions_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_Sanity.cpp -o Job_Sanity.o
+Job_Sanity.cpp:134:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_Sanity::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_Sanity.cpp:134:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_Sanity.cpp:217:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Sanity_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_Sanity.cpp:244:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Sanity_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  LoadMap.cpp -o LoadMap.o
+LoadMap.cpp:79:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void LoadMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+LoadMap.cpp:79:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Exit.cpp -o Steps_Exit.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_Answer.cpp -o Job_Answer.o
+Job_Answer.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_Answer::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_Answer.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_Answer.cpp:171:6: warning: unused parameter ‘pArg’ [-Wunused-parameter]
+ Job* JobsModel::pJob_Answer_new(Job* pArg)
+      ^
+Job_Answer.cpp:181:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Answer_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_Pwf.cpp -o Job_Pwf.o
+Job_Pwf.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_Pwf::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_Pwf.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_Pwf.cpp:215:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Pwf_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_Pwf.cpp:238:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Pwf_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_JobClass.cpp -o Steps_JobClass.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  WorkingRow.cpp -o WorkingRow.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_DropTable.cpp -o Job_DropTable.o
+Job_DropTable.cpp:130:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_DropTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_DropTable.cpp:130:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_DropTable.cpp:216:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_DropTable_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_DropTable.cpp:235:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_DropTable_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Object.cpp -o Object.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_SelCursor.cpp -o Steps_SelCursor.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Process.cpp -o Steps_Process.o
+Steps_Process.cpp:40:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vProcessQuit(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  KeyTest.cpp -o KeyTest.o
+KeyTest.cpp: In static member function ‘static void DBobjects::KeyTest::vTest()’:
+KeyTest.cpp:60:11: warning: variable ‘pKeyValA’ set but not used [-Wunused-but-set-variable]
+   KeyVal* pKeyValA = pKeyVec->pGet(0);
+           ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  StrLib.cpp -o StrLib.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_RowBuffer.cpp -o Steps_RowBuffer.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  TspVal.cpp -o TspVal.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_apiState.cpp -o Prompt_apiState.o
+Prompt_apiState.cpp: In function ‘bool Prompt::bPrompt_apiState(Prompt::SePrompt*)’:
+Prompt_apiState.cpp:27:10: warning: variable ‘pArg’ set but not used [-Wunused-but-set-variable]
+   Token* pArg = nullptr;
+          ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Table.cpp -o Table.o
+Table.cpp:123:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Table::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Table.cpp:123:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Table.cpp:135:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Table::vFinalize(eCN eClass, Object* pObject)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_config.cpp -o Prompt_config.o
+Prompt_config.cpp:26:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_config(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  BcdVal.cpp -o BcdVal.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Accum.cpp -o Accum.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_LoadBuffer.cpp -o Job_LoadBuffer.o
+Job_LoadBuffer.cpp:143:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_LoadBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_LoadBuffer.cpp:143:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_LoadBuffer.cpp:481:6: warning: unused parameter ‘pArg’ [-Wunused-parameter]
+ Job* JobsModel::pJob_LoadBuffer_new(Job* pArg)
+      ^
+Job_LoadBuffer.cpp:491:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_LoadBuffer_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  ResourceTracker.cpp -o ResourceTracker.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Random.cpp -o Random.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_opsys.cpp -o Prompt_opsys.o
+Prompt_opsys.cpp:22:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_opsys(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Row.cpp -o Row.o
+Row.cpp:57:6: warning: unused parameter ‘iRawLength’ [-Wunused-parameter]
+ bool Row::bFormatRow(ColumnVec* pColVec,
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_locks.cpp -o Prompt_locks.o
+Prompt_locks.cpp:26:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_locks(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_StartCluster.cpp -o Job_StartCluster.o
+Job_StartCluster.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_StartCluster::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_StartCluster.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_StartCluster.cpp:213:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_StartCluster_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_StartCluster.cpp:213:6: warning: unused parameter ‘pJob’ [-Wunused-parameter]
+Job_StartCluster.cpp:220:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_StartCluster_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Queues.cpp -o Steps_Queues.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_heapMem.cpp -o Prompt_heapMem.o
+Prompt_heapMem.cpp:22:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_heapMem(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  StrVar.cpp -o StrVar.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Object.cpp -o Steps_Object.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_JobCreateIndex.cpp -o Steps_JobCreateIndex.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  CorrectnessAlgebra.cpp -o CorrectnessAlgebra.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_SubTruncate.cpp -o Job_SubTruncate.o
+Job_SubTruncate.cpp:133:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_SubTruncate::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_SubTruncate.cpp:133:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_SubTruncate.cpp:183:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_SubTruncate_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_SubTruncate.cpp:199:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_SubTruncate_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_EntryBuffer.cpp -o Steps_EntryBuffer.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_CreateTable.cpp -o Job_CreateTable.o
+Job_CreateTable.cpp:155:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_CreateTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_CreateTable.cpp:155:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_CreateTable.cpp:640:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_CreateTable_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_CreateTable.cpp:659:6: warning: unused parameter ‘pArg’ [-Wunused-parameter]
+ Job* JobsModel::pJob_CreateTable_new(Job* pArg)
+      ^
+Job_CreateTable.cpp:669:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_CreateTable_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Wilderness.cpp -o Wilderness.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  RowOnce.cpp -o RowOnce.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job__Ended.cpp -o Job__Ended.o
+Job__Ended.cpp:126:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job__Ended::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job__Ended.cpp:126:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job__Ended.cpp:166:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob__Ended_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  StepTracker.cpp -o StepTracker.o
+StepTracker.cpp:78:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void StepTracker::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_ssn.cpp -o Prompt_ssn.o
+Prompt_ssn.cpp: In function ‘bool Prompt::bPrompt_ssn(Prompt::SePrompt*)’:
+Prompt_ssn.cpp:27:10: warning: variable ‘pArg0’ set but not used [-Wunused-but-set-variable]
+   Token* pArg0 = nullptr;
+          ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Timer.cpp -o Timer.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Locals.cpp -o Steps_Locals.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  SlabAllocator.cpp -o SlabAllocator.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Dir.cpp -o Steps_Dir.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Socket.cpp -o Socket.o
+Socket.cpp:102:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Socket::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Socket.cpp:102:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_args.cpp -o Prompt_args.o
+Prompt_args.cpp:25:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_args(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  ActivityMark.cpp -o ActivityMark.o
+ActivityMark.cpp:122:6: warning: unused parameter ‘i_Mark’ [-Wunused-parameter]
+ void ActivityMark::vDump(File* pFile,
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Trace.cpp -o Steps_Trace.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  FreeChunk.cpp -o FreeChunk.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  GridModel.cpp -o GridModel.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Index.cpp -o Index.o
+Index.cpp:28:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Index::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Index.cpp:28:6: warning: unused parameter ‘pObject’ [-Wunused-parameter]
+Index.cpp:28:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Index.cpp:35:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Index::vFinalize(eCN eClass, Object* pObject)
+      ^
+Index.cpp:121:6: warning: unused parameter ‘sColumnDefn’ [-Wunused-parameter]
+ void Index::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_SubFetch.cpp -o Job_SubFetch.o
+Job_SubFetch.cpp:136:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_SubFetch::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_SubFetch.cpp:136:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_SubFetch.cpp:186:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_SubFetch_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_SubFetch.cpp:202:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_SubFetch_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Datums.cpp -o Datums.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Comment.cpp -o Steps_Comment.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  WspFx2.cpp -o WspFx2.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Tasks.cpp -o Tasks.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Arguments.cpp -o Arguments.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Parsing.cpp -o Parsing.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_EndInsert.cpp -o Job_EndInsert.o
+Job_EndInsert.cpp:139:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_EndInsert::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_EndInsert.cpp:139:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_EndInsert.cpp:203:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_EndInsert_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_EndInsert.cpp:219:6: warning: unused parameter ‘pArg’ [-Wunused-parameter]
+ Job* JobsModel::pJob_EndInsert_new(Job* pArg)
+      ^
+Job_EndInsert.cpp:229:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_EndInsert_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Time_se.cpp -o Time_se.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prefetch.cpp -o Prefetch.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Env.cpp -o Steps_Env.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job__Execute.cpp -o Job__Execute.o
+Job__Execute.cpp:126:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job__Execute::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job__Execute.cpp:126:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job__Execute.cpp:166:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob__Execute_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Memory.cpp -o Steps_Memory.o
+Steps_Memory.cpp:49:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vMemoryReset(MP_Task mpTask)
+      ^
+Steps_Memory.cpp:73:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vMemoryList(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_TableSizes.cpp -o Job_TableSizes.o
+Job_TableSizes.cpp:130:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_TableSizes::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_TableSizes.cpp:130:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_TableSizes.cpp:212:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_TableSizes_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_TableSizes.cpp:241:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_TableSizes_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  TaskList.cpp -o TaskList.o
+TaskList.cpp:217:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void TaskList::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+TaskList.cpp:217:6: warning: unused parameter ‘pObject’ [-Wunused-parameter]
+TaskList.cpp:217:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Int.cpp -o Int.o
+Int.cpp:206:6: warning: unused parameter ‘aVq’ [-Wunused-parameter]
+ void Int::vIntToVlq(char* aVq)
+      ^
+Int.cpp:213:6: warning: unused parameter ‘aVq’ [-Wunused-parameter]
+ void Int::vVlqToInt(char* aVq)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Step.cpp -o Step.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_DropCatalog.cpp -o Job_DropCatalog.o
+Job_DropCatalog.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_DropCatalog::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_DropCatalog.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_DropCatalog.cpp:219:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_DropCatalog_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_DropCatalog.cpp:238:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_DropCatalog_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  TokenVec.cpp -o TokenVec.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_indexEntries.cpp -o Prompt_indexEntries.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Region.cpp -o Region.o
+Region.cpp: In static member function ‘static void StorageEngine::Region::vClose(void*, int)’:
+Region.cpp:258:8: warning: variable ‘bResult’ set but not used [-Wunused-but-set-variable]
+   bool bResult;
+        ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Flt.cpp -o Flt.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_ListIndexes.cpp -o Job_ListIndexes.o
+Job_ListIndexes.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_ListIndexes::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_ListIndexes.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_ListIndexes.cpp:219:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ListIndexes_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_ListIndexes.cpp:246:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ListIndexes_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_JobNodeInfo.cpp -o Steps_JobNodeInfo.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_masks.cpp -o Prompt_masks.o
+Prompt_masks.cpp:26:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_masks(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  WorkingBuffer.cpp -o WorkingBuffer.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_LockTracker.cpp -o Steps_LockTracker.o
+Steps_LockTracker.cpp:25:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vLockTrackerList(MP_Task mpTask)
+      ^
+Steps_LockTracker.cpp:42:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vLockTrackerReset(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_attachMap.cpp -o Prompt_attachMap.o
+Prompt_attachMap.cpp:25:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_attachMap(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Finalizers.cpp -o Finalizers.o
+Finalizers.cpp:267:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Finalize::vEnums(eCN eClass, Object* pObject)
+      ^
+Finalizers.cpp:267:6: warning: unused parameter ‘pObject’ [-Wunused-parameter]
+Finalizers.cpp:277:6: warning: unused parameter ‘pObject’ [-Wunused-parameter]
+ void Finalize::vUndefined(eCN eClass, Object* pObject)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_bye.cpp -o Prompt_bye.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  FreeEntry.cpp -o FreeEntry.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job__Executed.cpp -o Job__Executed.o
+Job__Executed.cpp:132:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job__Executed::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job__Executed.cpp:132:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job__Executed.cpp:172:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob__Executed_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  SelCursor.cpp -o SelCursor.o
+SelCursor.cpp:78:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void SelCursor::vFinalize(eCN eClass, Object* pObject)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Vch.cpp -o Vch.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_DdlLock.cpp -o Steps_DdlLock.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Tabs.cpp -o Tabs.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Table.cpp -o Steps_Table.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Stz.cpp -o Stz.o
+Stz.cpp:252:6: warning: unused parameter ‘nSize’ [-Wunused-parameter]
+ Stz* Base::operator "" _Stz(const char* aArg, size_t nSize)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Vector.cpp -o Steps_Vector.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_JobInsertRow.cpp -o Steps_JobInsertRow.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Plan.cpp -o Plan.o
+Plan.cpp:119:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Plan::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Plan.cpp:119:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  GraphCursor.cpp -o GraphCursor.o
+GraphCursor.cpp:71:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void GraphCursor::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+GraphCursor.cpp:71:6: warning: unused parameter ‘pObject’ [-Wunused-parameter]
+GraphCursor.cpp:71:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Slots.cpp -o Steps_Slots.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job__Find.cpp -o Job__Find.o
+Job__Find.cpp:83:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job__Find::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job__Find.cpp:83:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job__Cancel.cpp -o Job__Cancel.o
+Job__Cancel.cpp:126:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job__Cancel::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job__Cancel.cpp:126:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job__Cancel.cpp:166:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob__Cancel_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Assert.cpp -o Steps_Assert.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  DBobjects.cpp -o DBobjects.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Astack.cpp -o Steps_Astack.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  ByteLiterals.cpp -o ByteLiterals.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_RbCursor.cpp -o Steps_RbCursor.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Vector.cpp -o Vector.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_Alarm.cpp -o Job_Alarm.o
+Job_Alarm.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_Alarm::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_Alarm.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_Alarm.cpp:172:6: warning: unused parameter ‘pArg’ [-Wunused-parameter]
+ Job* JobsModel::pJob_Alarm_new(Job* pArg)
+      ^
+Job_Alarm.cpp:182:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Alarm_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Id.cpp -o Id.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Persistence.cpp -o Steps_Persistence.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Value.cpp -o Value.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Heap.cpp -o Heap.o
+Heap.cpp: In static member function ‘static void Pool::Heap::vDump(Base::eCN, CorrectnessAlgebra::Object*, Base::Stz*)’:
+Heap.cpp:102:6: warning: variable ‘iCountObjects’ set but not used [-Wunused-but-set-variable]
+   i8 iCountObjects[CN_ENUMS];
+      ^
+Heap.cpp: At global scope:
+Heap.cpp:80:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+ void Heap::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Heap.cpp:153:9: warning: unused parameter ‘eAllocClass’ [-Wunused-parameter]
+ Object* Heap::pAllocObject(eCN eAllocClass)
+         ^
+Heap.cpp:196:9: warning: unused parameter ‘iMaxSize’ [-Wunused-parameter]
+ Object* Heap::pAllocObject(eCN eAllocClass, i8 iMaxSize)
+         ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  ValSet.cpp -o ValSet.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Timer.cpp -o Steps_Timer.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Entry.cpp -o Entry.o
+Entry.cpp:340:6: warning: unused parameter ‘xTxId’ [-Wunused-parameter]
+ void Entry::vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
+      ^
+Entry.cpp:781:6: warning: unused parameter ‘iTxId’ [-Wunused-parameter]
+ void Entry::vTxId(i8 iTxId)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  DteVal.cpp -o DteVal.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  WspFxd.cpp -o WspFxd.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_bp.cpp -o Prompt_bp.o
+Prompt_bp.cpp:22:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_bp(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_OpFrame.cpp -o Steps_OpFrame.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_classes.cpp -o Prompt_classes.o
+Prompt_classes.cpp:26:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_classes(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  FetchBuffer.cpp -o FetchBuffer.o
+FetchBuffer.cpp:209:6: warning: unused parameter ‘bCompressed’ [-Wunused-parameter]
+ void FetchBuffer::vShow(bool bCompressed)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_DicStack.cpp -o Steps_DicStack.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Tokeniser.cpp -o Tokeniser.o
+Tokeniser.cpp:125:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Tokeniser::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Tokeniser.cpp:125:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Error.cpp -o Error.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_Start.cpp -o Job_Start.o
+Job_Start.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_Start::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_Start.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_Start.cpp:171:6: warning: unused parameter ‘pArg’ [-Wunused-parameter]
+ Job* JobsModel::pJob_Start_new(Job* pArg)
+      ^
+Job_Start.cpp:181:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Start_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_AnalyzeTable.cpp -o Job_AnalyzeTable.o
+Job_AnalyzeTable.cpp:132:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_AnalyzeTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_AnalyzeTable.cpp:132:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_AnalyzeTable.cpp:220:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_AnalyzeTable_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_AnalyzeTable.cpp:250:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_AnalyzeTable_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_JobAnalyzeIndex.cpp -o Steps_JobAnalyzeIndex.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  StorageEngine.cpp -o StorageEngine.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  IntVal.cpp -o IntVal.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  GroupBy.cpp -o GroupBy.o
+GroupBy.cpp:75:6: warning: unused parameter ‘pIndexEntry’ [-Wunused-parameter]
+ void GroupBy::vApplyIndex(Entry* pIndexEntry)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  ShmUtility.cpp -o ShmUtility.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job__End.cpp -o Job__End.o
+Job__End.cpp:126:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job__End::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job__End.cpp:126:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job__End.cpp:166:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob__End_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_threads.cpp -o Prompt_threads.o
+Prompt_threads.cpp:26:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_threads(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Int.cpp -o Steps_Int.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Synch.cpp -o Synch.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  ObjVal.cpp -o ObjVal.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_JobReceiver.cpp -o Steps_JobReceiver.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  RowWrk.cpp -o RowWrk.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Queue.cpp -o Steps_Queue.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Plans.cpp -o Plans.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_GroupBy.cpp -o Steps_GroupBy.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_DicLock.cpp -o Steps_DicLock.o
+Steps_DicLock.cpp:25:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vDicLockDropWrite(MP_Task mpTask)
+      ^
+Steps_DicLock.cpp:38:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vDicLockGrabWrite(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  JobClass.cpp -o JobClass.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  BitLib.cpp -o BitLib.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  JobObjectName.cpp -o JobObjectName.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Grid.cpp -o Grid.o
+Grid.cpp:101:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Grid::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Grid.cpp:101:6: warning: unused parameter ‘pObject’ [-Wunused-parameter]
+Grid.cpp:101:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_DropSchema.cpp -o Job_DropSchema.o
+Job_DropSchema.cpp:132:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_DropSchema::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_DropSchema.cpp:132:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_DropSchema.cpp:220:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_DropSchema_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_DropSchema.cpp:239:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_DropSchema_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  StrVal.cpp -o StrVal.o
+StrVal.cpp:69:1: warning: unused parameter ‘pThis’ [-Wunused-parameter]
+ StrVal::StrVal(StrVal* pThis)
+ ^
+StrVal.cpp:82:1: warning: unused parameter ‘pThis’ [-Wunused-parameter]
+ StrVal::StrVal(StrVal* pThis, i8 nBytes)
+ ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  System.cpp -o System.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Utilities.cpp -o Utilities.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_markApi.cpp -o Prompt_markApi.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Dot.cpp -o Steps_Dot.o
+Steps_Dot.cpp:71:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vDotNewline(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Task_boot.cpp -o Task_boot.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  IndexTree.cpp -o IndexTree.o
+IndexTree.cpp:38:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void IndexTree::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+IndexTree.cpp:38:6: warning: unused parameter ‘pObject’ [-Wunused-parameter]
+IndexTree.cpp:38:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+IndexTree.cpp:45:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void IndexTree::vFinalize(eCN eClass, Object* pObject)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Common.cpp -o Steps_Common.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_ls.cpp -o Prompt_ls.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_FetchRows.cpp -o Job_FetchRows.o
+Job_FetchRows.cpp:155:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_FetchRows::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_FetchRows.cpp:155:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_FetchRows.cpp:395:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_FetchRows.cpp:447:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_FetchRows_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Tx.cpp -o Tx.o
+Tx.cpp:328:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Tx.cpp:328:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  PtrVal.cpp -o PtrVal.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_date.cpp -o Prompt_date.o
+Prompt_date.cpp:22:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_date(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Queue.cpp -o Queue.o
+Queue.cpp:133:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Queue::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Queue.cpp:133:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Queue.cpp:175:6: warning: unused parameter ‘aName’ [-Wunused-parameter]
+ void Queue::vLockName(Stz* aName)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_SizeTable.cpp -o Job_SizeTable.o
+Job_SizeTable.cpp:130:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_SizeTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_SizeTable.cpp:130:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_SizeTable.cpp:215:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_SizeTable_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_SizeTable.cpp:244:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_SizeTable_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  EntryBuffer.cpp -o EntryBuffer.o
+EntryBuffer.cpp:146:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+EntryBuffer.cpp:146:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+EntryBuffer.cpp:1144:8: warning: unused parameter ‘eJuxtaCompare’ [-Wunused-parameter]
+ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare)
+        ^
+EntryBuffer.cpp: In static member function ‘static void DBobjects::EntryBuffer::vUnitTest_c(DBobjects::Table*)’:
+EntryBuffer.cpp:4716:8: warning: variable ‘bFormatted’ set but not used [-Wunused-but-set-variable]
+   bool bFormatted;
+        ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_Periodic.cpp -o Job_Periodic.o
+Job_Periodic.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_Periodic::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_Periodic.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_Periodic.cpp:172:6: warning: unused parameter ‘pArg’ [-Wunused-parameter]
+ Job* JobsModel::pJob_Periodic_new(Job* pArg)
+      ^
+Job_Periodic.cpp:182:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Periodic_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Hardware.cpp -o Hardware.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_DicPath.cpp -o Steps_DicPath.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  AttachMap.cpp -o AttachMap.o
+AttachMap.cpp:258:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void AttachMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+AttachMap.cpp:258:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  RbCursor.cpp -o RbCursor.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Str.cpp -o Steps_Str.o
+Steps_Str.cpp:66:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vStrAlgebra(MP_Task mpTask)
+      ^
+In file included from Values.h:37:0,
+                 from System.h:6,
+                 from Pool.h:6,
+                 from Structures.h:6,
+                 from Measurement.h:6,
+                 from Parsing.h:6,
+                 from Transactions.h:6,
+                 from Dictionaries.h:6,
+                 from DBobjects.h:7,
+                 from Loader.h:6,
+                 from Plans.h:6,
+                 from JobsModel.h:6,
+                 from MockEE.h:6,
+                 from Utilities.h:6,
+                 from Tasks.h:6,
+                 from Threads.h:6,
+                 from GridModel.h:7,
+                 from Interface.h:7,
+                 from Prompt.h:6,
+                 from StorageEngine.h:7,
+                 from Steps_Str.cpp:5:
+StrVar.hpp: In instantiation of ‘Values::StrVar<SIZE>::StrVar(Values::StrVar<SIZE>*) [with int SIZE = 256]’:
+Steps_Str.cpp:56:24:   required from here
+StrVar.hpp:81:1: warning: unused parameter ‘pThis’ [-Wunused-parameter]
+ StrVar<SIZE>::StrVar(StrVar* pThis)
+ ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  HeapMem.cpp -o HeapMem.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  PerformanceEntry.cpp -o PerformanceEntry.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  PosixThread.cpp -o PosixThread.o
+PosixThread.cpp:80:6: warning: unused parameter ‘iCpu’ [-Wunused-parameter]
+ bool PosixThread::bBindThread(i8 iCpu)
+      ^
+PosixThread.cpp:252:6: warning: unused parameter ‘nPoints’ [-Wunused-parameter]
+ void PosixThread::vThreadBoost(i8 nPoints)
+      ^
+PosixThread.cpp:278:6: warning: unused parameter ‘iPriority’ [-Wunused-parameter]
+ void PosixThread::vThreadPriority(i8 iPriority)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_CreateIndex.cpp -o Job_CreateIndex.o
+Job_CreateIndex.cpp:182:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_CreateIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_CreateIndex.cpp:182:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_CreateIndex.cpp:360:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_CreateIndex_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_CreateIndex.cpp:379:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_CreateIndex_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Task.cpp -o Task.o
+Task.cpp:258:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Task.cpp:258:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_jobcat.cpp -o Prompt_jobcat.o
+Prompt_jobcat.cpp:24:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_hw.cpp -o Prompt_hw.o
+Prompt_hw.cpp:25:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_hw(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  BolVal.cpp -o BolVal.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Interface.cpp -o Interface.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_shell.cpp -o Prompt_shell.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Semaphore.cpp -o Semaphore.o
+Semaphore.cpp: In constructor ‘System::Semaphore::Semaphore()’:
+Semaphore.cpp:67:6: warning: variable ‘iResult’ set but not used [-Wunused-but-set-variable]
+   i8 iResult = pthread_mutexattr_init(&m_xMutexAttr);
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  BndLib.cpp -o BndLib.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_InsertRow.cpp -o Job_InsertRow.o
+Job_InsertRow.cpp:142:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_InsertRow::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_InsertRow.cpp:142:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_InsertRow.cpp:296:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_InsertRow_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_InsertRow.cpp:312:6: warning: unused parameter ‘pArg’ [-Wunused-parameter]
+ Job* JobsModel::pJob_InsertRow_new(Job* pArg)
+      ^
+Job_InsertRow.cpp:322:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_InsertRow_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_AttachMap.cpp -o Steps_AttachMap.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  BitMap.cpp -o BitMap.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Formatters.cpp -o Formatters.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_plist.cpp -o Prompt_plist.o
+Prompt_plist.cpp:26:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_plist(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Report.cpp -o Report.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_CreateCatalog.cpp -o Job_CreateCatalog.o
+Job_CreateCatalog.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_CreateCatalog::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_CreateCatalog.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_CreateCatalog.cpp:217:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_CreateCatalog_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_CreateCatalog.cpp:236:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_CreateCatalog_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Lock.cpp -o Lock.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  TablePtn.cpp -o TablePtn.o
+TablePtn.cpp:30:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+TablePtn.cpp:30:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  SePrompt.cpp -o SePrompt.o
+SePrompt.cpp:84:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void SePrompt::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+SePrompt.cpp:84:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Node.cpp -o Node.o
+Node.cpp:104:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Node::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Node.cpp:104:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  AccessPath.cpp -o AccessPath.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Key.cpp -o Key.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_ShowCluster.cpp -o Job_ShowCluster.o
+Job_ShowCluster.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_ShowCluster::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_ShowCluster.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_ShowCluster.cpp:205:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ShowCluster_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_ShowCluster.cpp:205:6: warning: unused parameter ‘pJob’ [-Wunused-parameter]
+Job_ShowCluster.cpp:214:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ShowCluster_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Input.cpp -o Steps_Input.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  PlanList.cpp -o PlanList.o
+PlanList.cpp:86:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void PlanList::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+PlanList.cpp:86:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  PromptCatalog.cpp -o PromptCatalog.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Dic.cpp -o Dic.o
+Dic.cpp:126:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Dic::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Dic.cpp:126:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Dic.cpp:142:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Dic::vFinalize(eCN eClass, Object* pObject)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_PlanList.cpp -o Steps_PlanList.o
+Steps_PlanList.cpp:90:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vPlanListShow(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Transactions.cpp -o Transactions.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Wsp.cpp -o Wsp.o
+Wsp.cpp:17:7: warning: unused parameter ‘nBytes’ [-Wunused-parameter]
+ char* Wsp::aAllot(i8 nBytes)
+       ^
+Wsp.cpp:27:6: warning: unused parameter ‘aSrc’ [-Wunused-parameter]
+ void Wsp::vAppend(void* aSrc, i8 nBytes)
+      ^
+Wsp.cpp:27:6: warning: unused parameter ‘nBytes’ [-Wunused-parameter]
+Wsp.cpp:36:6: warning: unused parameter ‘cByte’ [-Wunused-parameter]
+ void Wsp::vFill(char cByte)
+      ^
+Wsp.cpp:102:6: warning: unused parameter ‘nBytes’ [-Wunused-parameter]
+ void Wsp::vTake(i8 nBytes)
+      ^
+Wsp.cpp:120:6: warning: unused parameter ‘nBytes’ [-Wunused-parameter]
+ void Wsp::vUsed(i8 nBytes)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_olist.cpp -o Prompt_olist.o
+Prompt_olist.cpp:26:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_olist(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_Docol.cpp -o Job_Docol.o
+Job_Docol.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_Docol::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_Docol.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_Docol.cpp:218:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Docol_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_Docol.cpp:231:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Docol_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_JobLoadBuffer.cpp -o Steps_JobLoadBuffer.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Tsp.cpp -o Tsp.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Item.cpp -o Item.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Magnitude.cpp -o Steps_Magnitude.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Lock.cpp -o Steps_Lock.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Node.cpp -o Steps_Node.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_Status.cpp -o Job_Status.o
+Job_Status.cpp:130:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_Status::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_Status.cpp:130:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_Status.cpp:213:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Status_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_Status.cpp:237:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Status_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Dir.cpp -o Dir.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Ring.cpp -o Ring.o
+Ring.cpp:20:6: warning: unused parameter ‘pBufferAddress’ [-Wunused-parameter]
+ void Ring::operator delete(void* pBufferAddress)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_timerEnd.cpp -o Prompt_timerEnd.o
+Prompt_timerEnd.cpp:24:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_timerEnd(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  QueueBuffer.cpp -o QueueBuffer.o
+QueueBuffer.cpp:116:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void QueueBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+QueueBuffer.cpp:116:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Mersenne.cpp -o Mersenne.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_JobLoadTable.cpp -o Steps_JobLoadTable.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  FreeBuffer.cpp -o FreeBuffer.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_CreateSchema.cpp -o Job_CreateSchema.o
+Job_CreateSchema.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_CreateSchema::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_CreateSchema.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_CreateSchema.cpp:218:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_CreateSchema_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_CreateSchema.cpp:237:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_CreateSchema_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job__Begun.cpp -o Job__Begun.o
+Job__Begun.cpp:128:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job__Begun::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job__Begun.cpp:128:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job__Begun.cpp:168:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob__Begun_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  LineItem.cpp -o LineItem.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Dstack.cpp -o Steps_Dstack.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Handler.cpp -o Steps_Handler.o
+Steps_Handler.cpp:24:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vHandlerServiceSleepQueue(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Grid.cpp -o Steps_Grid.o
+Steps_Grid.cpp:99:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vGridShow(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Dte.cpp -o Dte.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Thread.cpp -o Thread.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  RowCursor.cpp -o RowCursor.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_NodeInfo.cpp -o Job_NodeInfo.o
+Job_NodeInfo.cpp:133:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_NodeInfo::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_NodeInfo.cpp:133:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_NodeInfo.cpp:173:6: warning: unused parameter ‘pArg’ [-Wunused-parameter]
+ Job* JobsModel::pJob_NodeInfo_new(Job* pArg)
+      ^
+Job_NodeInfo.cpp:183:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_NodeInfo_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  User.cpp -o User.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_TablePtn.cpp -o Steps_TablePtn.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Slots.cpp -o Slots.o
+Slots.cpp:30:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Slots::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Slots.cpp:30:6: warning: unused parameter ‘pObject’ [-Wunused-parameter]
+Slots.cpp:30:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Slots.cpp:37:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Slots::vFinalize(eCN eClass, Object* pObject)
+      ^
+Slots.cpp: In member function ‘void DBobjects::Slots::vCreateColumnVec(s32&, s48K&)’:
+Slots.cpp:122:8: warning: variable ‘bFound’ set but not used [-Wunused-but-set-variable]
+   bool bFound = false;
+        ^
+Slots.cpp: At global scope:
+Slots.cpp:113:6: warning: unused parameter ‘sColumnDefn’ [-Wunused-parameter]
+ void Slots::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Shell.cpp -o Steps_Shell.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_taskQueues.cpp -o Prompt_taskQueues.o
+Prompt_taskQueues.cpp:26:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_taskQueues(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  TlsKeys.cpp -o TlsKeys.o
+TlsKeys.cpp: In static member function ‘static void Threads::TlsKeys::vInit()’:
+TlsKeys.cpp:15:8: warning: variable ‘b’ set but not used [-Wunused-but-set-variable]
+   bool b = PosixThread::bTlsCreate(&giTLS_ThreadKey);
+        ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_JobSubLoader.cpp -o Steps_JobSubLoader.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_ListPartColumns.cpp -o Job_ListPartColumns.o
+Job_ListPartColumns.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_ListPartColumns::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_ListPartColumns.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_ListPartColumns.cpp:219:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ListPartColumns_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_ListPartColumns.cpp:246:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ListPartColumns_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_VerifyIndex.cpp -o Job_VerifyIndex.o
+Job_VerifyIndex.cpp:130:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_VerifyIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_VerifyIndex.cpp:130:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_VerifyIndex.cpp:220:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_VerifyIndex_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_VerifyIndex.cpp:245:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_VerifyIndex_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  ScanBuffer.cpp -o ScanBuffer.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Enter.cpp -o Steps_Enter.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_DropTenant.cpp -o Job_DropTenant.o
+Job_DropTenant.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_DropTenant::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_DropTenant.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_DropTenant.cpp:219:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_DropTenant_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_DropTenant.cpp:238:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_DropTenant_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  PerformanceTrace.cpp -o PerformanceTrace.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Graph.cpp -o Graph.o
+Graph.cpp:71:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Graph::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Graph.cpp:71:6: warning: unused parameter ‘pObject’ [-Wunused-parameter]
+Graph.cpp:71:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Slab.cpp -o Slab.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Utility.cpp -o Steps_Utility.o
+Steps_Utility.cpp:24:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vUtilityPrefetch(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Encode.cpp -o Steps_Encode.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_version.cpp -o Prompt_version.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  ValLib.cpp -o ValLib.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  KeyVal.cpp -o KeyVal.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Ivl.cpp -o Ivl.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  EntWrk.cpp -o EntWrk.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_help.cpp -o Prompt_help.o
+Prompt_help.cpp:51:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_helpJobs(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_Boot.cpp -o Job_Boot.o
+Job_Boot.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_Boot::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_Boot.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_Boot.cpp:171:6: warning: unused parameter ‘pArg’ [-Wunused-parameter]
+ Job* JobsModel::pJob_Boot_new(Job* pArg)
+      ^
+Job_Boot.cpp:181:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Boot_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Steps.cpp -o Steps_Steps.o
+Steps_Steps.cpp:25:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vStepsList(MP_Task mpTask)
+      ^
+Steps_Steps.cpp:42:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vStepsReset(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Column.cpp -o Steps_Column.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  ItemBuffer.cpp -o ItemBuffer.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Handlers.cpp -o Handlers.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_AccessPath.cpp -o Steps_AccessPath.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  LoadChunk.cpp -o LoadChunk.o
+LoadChunk.cpp:74:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void LoadChunk::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+LoadChunk.cpp:74:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Cursor.cpp -o Steps_Cursor.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_ListCatalogs.cpp -o Job_ListCatalogs.o
+Job_ListCatalogs.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_ListCatalogs::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_ListCatalogs.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_ListCatalogs.cpp:215:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ListCatalogs_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_ListCatalogs.cpp:244:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ListCatalogs_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_se.cpp -o Prompt_se.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Arg.cpp -o Arg.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Flow.cpp -o Steps_Flow.o
+Steps_Flow.cpp:80:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vFlowHazard(MP_Task mpTask)
+      ^
+Steps_Flow.cpp:208:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vFlowNop(MP_Task mpTask)
+      ^
+Steps_Flow.cpp:246:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vFlowThrow(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  JobFileName.cpp -o JobFileName.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_hashDefs.cpp -o Prompt_hashDefs.o
+Prompt_hashDefs.cpp:26:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Base.cpp -o Base.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_CreateTenant.cpp -o Job_CreateTenant.o
+Job_CreateTenant.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_CreateTenant::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_CreateTenant.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_CreateTenant.cpp:217:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_CreateTenant_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_CreateTenant.cpp:236:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_CreateTenant_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Cpu.cpp -o Steps_Cpu.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Accum.cpp -o Steps_Accum.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_JobTruncateTable.cpp -o Steps_JobTruncateTable.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job.cpp -o Job.o
+Job.cpp: In member function ‘void JobsModel::Job::vInit()’:
+Job.cpp:164:6: warning: variable ‘iResult’ set but not used [-Wunused-but-set-variable]
+   i8 iResult = pthread_mutexattr_init(&m_xThreadMutexAttr);
+      ^
+Job.cpp: At global scope:
+Job.cpp:335:6: warning: unused parameter ‘pJob’ [-Wunused-parameter]
+ void JobsModel::vJob_send(Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Scratch.cpp -o Scratch.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Socket.cpp -o Steps_Socket.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Planner.cpp -o Steps_Planner.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  CommandProcessor.cpp -o CommandProcessor.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_constants.cpp -o Prompt_constants.o
+Prompt_constants.cpp:26:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_constants(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Object2.cpp -o Object2.o
+Object2.cpp:12:1: warning: unused parameter ‘eClassNo’ [-Wunused-parameter]
+ Object2::Object2(eCN eClassNo)
+ ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  IndexColumn.cpp -o IndexColumn.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Predicate.cpp -o Predicate.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_Receiver.cpp -o Job_Receiver.o
+Job_Receiver.cpp:133:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_Receiver::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_Receiver.cpp:133:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_Receiver.cpp:213:6: warning: unused parameter ‘pArg’ [-Wunused-parameter]
+ Job* JobsModel::pJob_Receiver_new(Job* pArg)
+      ^
+Job_Receiver.cpp:223:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Receiver_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Tx.cpp -o Steps_Tx.o
+Steps_Tx.cpp:213:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vTxDumpAll(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  ThreadVector.cpp -o ThreadVector.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_DropIndex.cpp -o Job_DropIndex.o
+Job_DropIndex.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_DropIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_DropIndex.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_DropIndex.cpp:228:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_DropIndex_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_DropIndex.cpp:247:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_DropIndex_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_numbers.cpp -o Prompt_numbers.o
+Prompt_numbers.cpp:26:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_numbers(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  File.cpp -o File.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  MockEE.cpp -o MockEE.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_ListIdxColumns.cpp -o Job_ListIdxColumns.o
+Job_ListIdxColumns.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_ListIdxColumns::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_ListIdxColumns.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_ListIdxColumns.cpp:223:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ListIdxColumns_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_ListIdxColumns.cpp:250:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ListIdxColumns_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Loader.cpp -o Loader.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  SkipCursor.cpp -o SkipCursor.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_InsertBuffer.cpp -o Job_InsertBuffer.o
+Job_InsertBuffer.cpp:143:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_InsertBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_InsertBuffer.cpp:143:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_InsertBuffer.cpp:197:6: warning: unused parameter ‘pArg’ [-Wunused-parameter]
+ Job* JobsModel::pJob_InsertBuffer_new(Job* pArg)
+      ^
+Job_InsertBuffer.cpp:207:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_InsertBuffer_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  test.cpp -o test.o
+test.cpp: In function ‘void vTest3()’:
+test.cpp:93:6: warning: variable ‘nBytes’ set but not used [-Wunused-but-set-variable]
+   i8 nBytes = IntLib::iIntToVlq(C_NULL_INT,xVlq);
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  PerformanceBuffer.cpp -o PerformanceBuffer.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Atomic.cpp -o Atomic.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Debugging.cpp -o Debugging.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Bp.cpp -o Steps_Bp.o
+Steps_Bp.cpp:44:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vBpAnalyze(MP_Task mpTask)
+      ^
+Steps_Bp.cpp:60:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vBpDump(MP_Task mpTask)
+      ^
+Steps_Bp.cpp:75:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vBpEpochDump(MP_Task mpTask)
+      ^
+Steps_Bp.cpp:112:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vBpEpochTake(MP_Task mpTask)
+      ^
+Steps_Bp.cpp:130:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vBpReadBufferPool(MP_Task mpTask)
+      ^
+Steps_Bp.cpp:146:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vBpWriteBufferPool(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_ListTenants.cpp -o Job_ListTenants.o
+Job_ListTenants.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_ListTenants::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_ListTenants.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_ListTenants.cpp:215:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ListTenants_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_ListTenants.cpp:239:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ListTenants_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_question.cpp -o Prompt_question.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  HeapBuffer.cpp -o HeapBuffer.o
+HeapBuffer.cpp:93:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void HeapBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+HeapBuffer.cpp:93:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  KeyWrk.cpp -o KeyWrk.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Task.cpp -o Steps_Task.o
+Steps_Task.cpp:93:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vTaskBreakPoint(MP_Task mpTask)
+      ^
+Steps_Task.cpp:559:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vTaskWait(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Address.cpp -o Steps_Address.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Class.cpp -o Steps_Class.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  BitArray.cpp -o BitArray.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Stack.cpp -o Stack.o
+Stack.cpp:78:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Stack::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Stack.cpp:78:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_Ping.cpp -o Job_Ping.o
+Job_Ping.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_Ping::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_Ping.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_Ping.cpp:215:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Ping_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_Ping.cpp:238:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_Ping_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  GraphNode.cpp -o GraphNode.o
+GraphNode.cpp:76:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void GraphNode::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+GraphNode.cpp:76:6: warning: unused parameter ‘pObject’ [-Wunused-parameter]
+GraphNode.cpp:76:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Docol.cpp -o Steps_Docol.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  FltVal.cpp -o FltVal.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_DumpIndex.cpp -o Job_DumpIndex.o
+Job_DumpIndex.cpp:130:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_DumpIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_DumpIndex.cpp:130:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_DumpIndex.cpp:220:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_DumpIndex_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_DumpIndex.cpp:237:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_DumpIndex_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_sizes.cpp -o Prompt_sizes.o
+Prompt_sizes.cpp:23:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_sizes(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_AnalyzeIndex.cpp -o Job_AnalyzeIndex.o
+Job_AnalyzeIndex.cpp:132:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_AnalyzeIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_AnalyzeIndex.cpp:132:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_AnalyzeIndex.cpp:224:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_AnalyzeIndex_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_AnalyzeIndex.cpp:255:6: warning: unused parameter ‘pArg’ [-Wunused-parameter]
+ Job* JobsModel::pJob_AnalyzeIndex_new(Job* pArg)
+      ^
+Job_AnalyzeIndex.cpp:265:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_AnalyzeIndex_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Word.cpp -o Word.o
+Word.cpp:362:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Word.cpp:548:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+ void Word::vObjectDump(Stz* aTab)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  RightVec.cpp -o RightVec.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  BPA.cpp -o BPA.o
+BPA.cpp: In member function ‘void Pool::BPA::vWriteHeap(Pool::Heap*, System::File*)’:
+BPA.cpp:746:8: warning: variable ‘bResult’ set but not used [-Wunused-but-set-variable]
+   bool bResult = pFile->bWriteBytes(pHeap,C_SIZE_POOL_BUFFER);
+        ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  SkipList.cpp -o SkipList.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job__Cancelled.cpp -o Job__Cancelled.o
+Job__Cancelled.cpp:128:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job__Cancelled::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job__Cancelled.cpp:128:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job__Cancelled.cpp:168:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob__Cancelled_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_File.cpp -o Steps_File.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Structures.cpp -o Structures.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Dic.cpp -o Steps_Dic.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Plan.cpp -o Steps_Plan.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Cast.cpp -o Steps_Cast.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_markJob.cpp -o Prompt_markJob.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Job_ListColumns.cpp -o Job_ListColumns.o
+Job_ListColumns.cpp:131:6: warning: unused parameter ‘eClass’ [-Wunused-parameter]
+ void Job_ListColumns::vDump(eCN eClass, Object* pObject, Stz* aTab)
+      ^
+Job_ListColumns.cpp:131:6: warning: unused parameter ‘aTab’ [-Wunused-parameter]
+Job_ListColumns.cpp:219:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ListColumns_post(Interface::Session* pSession, Job* pJob)
+      ^
+Job_ListColumns.cpp:259:6: warning: unused parameter ‘pSession’ [-Wunused-parameter]
+ void JobsModel::vJob_ListColumns_delete(Interface::Session* pSession, Job* pJob)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Prompt_rassert.cpp -o Prompt_rassert.o
+Prompt_rassert.cpp:22:6: warning: unused parameter ‘pPrompt’ [-Wunused-parameter]
+ bool Prompt::bPrompt_rassert(SePrompt* pPrompt)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_RowCursor.cpp -o Steps_RowCursor.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  i3.cpp -o i3.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  ValReg.cpp -o ValReg.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  RapidsSE.cpp -o RapidsSE.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Push.cpp -o Steps_Push.o
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  Steps_Row.cpp -o Steps_Row.o
+Steps_Row.cpp:25:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vRowString(MP_Task mpTask)
+      ^
+g++ -c -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3 -fPIC -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash  ../Munge/Task_AddMunged.cpp -o ../Munge/Task_AddMunged.o
+../Munge/Task_AddMunged.cpp:6:6: warning: unused parameter ‘mpTask’ [-Wunused-parameter]
+ void Task::vAddMunged(MP_Task mpTask)
+      ^
+

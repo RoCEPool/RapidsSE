@@ -73,14 +73,14 @@ Thread::Thread(void)
   m_eDedicated   = CN_NONE;
 
   m_pPthread = new Pthread;
-  m_pMutex       = new Mutex;
+  m_pMutexThread       = new Mutex;
   
   m_iLastQueueRR  = QR_SLEEPING_QUEUE - 1;
   m_iStartQueueRR = QR_NONE;
   
   m_nAssignedTasks = 0;
   m_nPoppedTasks   = 0;
-    
+
   _checkInitialised_(CN_THREAD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
@@ -94,7 +94,7 @@ Thread::~Thread(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   delete m_pPthread;
-  delete m_pMutex;
+  delete m_pMutexThread;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -217,8 +217,8 @@ void Thread::vLoop(void)
   ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
   
   i8 iWaitDelta = 0;
-  
-  m_pMutex->vMutexLock();
+
+  m_pMutexThread->vMutexLock();
 
   ++gpAttachMap->m_ixThreads;
   
@@ -230,7 +230,8 @@ void Thread::vLoop(void)
       // wait upto 5ms to be given a signal
       m_eThreadState = TD_IDLE;
       iWaitDelta = Random::iInteger(0,C_10K);
-      m_pMutex->vCondWait_Timed(1000+iWaitDelta); // while waiting the mutex is dropped
+      m_pMutexThread->vCondWait_Timed(1000+iWaitDelta); // while waiting the mutex is dropped
+
       m_eThreadState = TD_RUNNING;
 
       // attempt again if no task
@@ -238,13 +239,9 @@ void Thread::vLoop(void)
         continue;
     }
     
-//    if (0 == m_nPoppedTasks) {
-//      vTrace("[%lld] popped is zero\n"_Stz,m_iThreadNo);
-//    }
-    
     // call the task
     vTaskCall();
-    if (m_pTask->pJob() && m_pTask->pJob()->m_bMark)
+    if (m_pTask->pJob() && m_pTask->pJob()->m_bMarkActivity)
       ActivityMap::vMarkJob(m_pTask->pJob(),
                          "Returned from task call: %s %p"_Stz,
                          aCN[m_pTask->pJob()->eClass()],
@@ -331,15 +328,14 @@ void Thread::vExecuteTask(Task* pTask)
   
   // set task to be executed
   m_pTask = pTask;
-  m_nAssignedTasks++;
   
   //m_eThreadState = TD_RUNNING;
   
   // signal the thread
   //vSignalThread();
   
-  m_pMutex->vCondSignal();
-  m_pMutex->vMutexUnlock();
+  m_pMutexThread->vCondSignal();
+  m_pMutexThread->vMutexUnlock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -352,19 +348,15 @@ bool Thread::bQueuePeek(void)
   Task* pPoppedTask;
   bool bPopped = gpAttachMap->m_pQueues->bPopQueuedTask(&pPoppedTask,this);
   
-  if (! bPopped) {
+  if (! bPopped)
     return false;
-    RASSERT(! m_pTask);
-  }
-  
+
   if (TK_READY != pPoppedTask->eState())
     pPoppedTask->vState(TK_READY);
   
   m_pTask = pPoppedTask;
-  m_nPoppedTasks++;
-  RASSERT(m_nPoppedTasks);
 
-  return true;
+  return bPopped;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -507,7 +499,7 @@ bool Thread::bGrabIfIdle(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   // attempt to lock threads mutex
-  if (! m_pMutex->bMutexLock())
+  if (! m_pMutexThread->bMutexLock())
     return false;
   
   // if this thread is idle return with mutex locked
@@ -517,7 +509,7 @@ bool Thread::bGrabIfIdle(void)
   }
   
   // thread is not idle, so unlock mutex
-  m_pMutex->vMutexUnlock();
+  m_pMutexThread->vMutexUnlock();
 
   return false;
 }

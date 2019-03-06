@@ -49,7 +49,7 @@ namespace Debugging
   { \
     if ( !(_condition) ) { \
       printf("BEEN_CALLED in %s at %d\n",__FILE__,__LINE__); \
-      Debugging::vAssertRelease(); \
+    Debugging::vAssertCalled(); \
     } \
   }
   

@@ -13,14 +13,30 @@ namespace Jobs
   
   enum eJF // job flags
   {
-  /*  0 */ JF_NONE   = 0x0,
-  /*  1 */ JF_LOWMEM = 0x1,  // low memory sensistive
+    /*  0 */ JF_NONE   = 0x0,
+    /*  1 */ JF_LOWMEM = 0x1,  // low memory sensistive
   };
   
   static Stz* aJF[]
   {
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "LOWMEM"_Stz,
+    /*  0 */ "NONE"_Stz,
+    /*  1 */ "LOWMEM"_Stz,
+  };
+  
+  enum ePY // priority
+  {
+    /*  0 */ PY_NONE=0,
+    /*  1 */ PY_HIGH,
+    /*  2 */ PY_LOW,
+    /*  3 */ PY_NORMAL
+  };
+  
+  static Stz* aPY[]
+  {
+    /*  0 */ "NONE"_Stz,
+    /*  1 */ "HIGH"_Stz,
+    /*  2 */ "LOW"_Stz,
+    /*  3 */ "NORMAL"_Stz
   };
 
   enum eJK // job kind
@@ -111,22 +127,6 @@ namespace Jobs
   /*  3 */ "TASK"_Stz
   };
   
-  enum ePY // priority
-  {
-  /*  0 */ PY_NONE=0,
-  /*  1 */ PY_HIGH,
-  /*  2 */ PY_LOW,
-  /*  3 */ PY_NORMAL
-  };
-  
-  static Stz* aPY[]
-  {
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "HIGH"_Stz,
-  /*  2 */ "LOW"_Stz,
-  /*  3 */ "NORMAL"_Stz
-  };
-  
   enum eSS // seed string
   {
   /*  0 */ SS_SEED_RUN=0,
@@ -169,26 +169,28 @@ namespace Jobs
 
     Decider m_oAcksRemaining;  // acks remaining
 
-    eJT  m_eJobTrace;    // job trace
-    bool m_bMark;        // write activity marks?
-    i8   m_i_Activity;   // action
-    bool m_bMarkAction;  // mark an actions
-    i8   m_i_ActionRoot; // action
-  
+    bool m_bMarkActivity; // mark activity
+    i8   m_i_Activity;    // activity
+    bool m_bMarkAction;   // mark actions
+    i8   m_i_ActionRoot;  // action
+    bool m_bMarkTrace;    // trace (mark version)
+
     JobClass*    m_pJobClass;        // job class
     Tasks::Task* m_pExecutingTask;   // task executing the job
     Tasks::Task* m_pOriginatingTask; // originating task of the request
   
-    i8  m_iParticipantNode;    // participant node no
+    i8  m_iParticipantNode;    // participant node no (FromNodeNo?)
   
     EntryBuffer* m_pCurrentBuffer; // entry buffer
   
     Object* m_pSendWith; // object which is to be sent with this job
   
-    Mutex* m_pMutex;
-  
     Atomic m_ixErrors;
-  
+
+    Mutex* m_pMutexJob;
+
+    eJT  m_eJobTrace;     // job trace (to be removed)
+
   public:
     Job(eCN eClassNo, Interface::Session* pSession);
     ~Job(void) noexcept(false);
@@ -198,6 +200,7 @@ namespace Jobs
     static i8   iNodeNo(i8 iJobId);
     static i8   iOriginatorNode(i8 iJobId);
     static i8   iAsNodeNo_Bits(i8 iNodeNo);
+    static void vStateDiagram(s256& sDiagram, eCN eJobClass);
 
     Stz* sJobSeed(void);
     i8   iJobId(void);
@@ -216,9 +219,10 @@ namespace Jobs
     void vParticipantNode(i8 iNode);
     void vReport(void);
     void vSeed(eSS eSeed);
+    void vShow(void);
 
   protected:
-    void vShow(s48K& s);
+    //void vShow(s48K& s);
   
   private:
   

@@ -9,14 +9,14 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_WriteRecord =
 {
-  CN_JOB_WRITERECORD,     // class enum
+  CN_JOB_KIDEXPORT,       // class enum
   JK_GRANDKID,            // job kind
-  "write record"_Stz,     // comment about the job
+  "kid export"_Stz,       // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word
-  nullptr,                // the _run task seed
+  "kidExport_kid"_Stz,    // the _run task seed
   nullptr,                // the _req task seed
-  nullptr,                // the _rcv task seed
+  "kidExport_rcv"_Stz,    // the _rcv task seed
   nullptr,                // the _exe task seed
   nullptr,                // the _end task seed
   nullptr,                // the _can task seed
@@ -27,7 +27,7 @@ JobClass xJobClass_WriteRecord =
   DL_NONE,                // ddl lock model
   PY_NORMAL,              // priority
   JF_NONE,                // flags
-
+  
   nullptr,                // prompt check function
   pJob_KidExport_pre,     // prompt pre-process function
   nullptr,                // prompt post-process function
@@ -67,7 +67,7 @@ Job_KidExport* Jobs::_pJob_KidExport(void* aAddress)
 {
   Job_KidExport* pJob_KidExport = reinterpret_cast<Job_KidExport*>(aAddress);
   
-  RASSERT_TYPE(pJob_KidExport,CN_JOB_WRITERECORD);
+  RASSERT_TYPE(pJob_KidExport,CN_JOB_KIDEXPORT);
   
   return pJob_KidExport;
 }
@@ -78,7 +78,7 @@ Job_KidExport* Jobs::_pJob_KidExport(void* aAddress)
 void* Job_KidExport::operator new(size_t)
 {
   Job_KidExport* pJob_KidExport =
-    static_cast<Job_KidExport*>(HeapMem::pAllocate(CN_JOB_WRITERECORD));
+    static_cast<Job_KidExport*>(HeapMem::pAllocate(CN_JOB_KIDEXPORT));
   
   return pJob_KidExport;
 }
@@ -105,16 +105,16 @@ void Job_KidExport::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_KidExport::Job_KidExport(Interface::Session* pSession)
-: Job(CN_JOB_WRITERECORD, pSession)
+: Job(CN_JOB_KIDEXPORT, pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITERECORD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
   
   m_iExportJobId = C_UNKNOWN;
+  m_nBuffersExpected = C_UNKNOWN;
   
+  _checkInitialised_(CN_JOB_KIDEXPORT);
   
-  _checkInitialised_(CN_JOB_WRITERECORD);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITERECORD,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,19 +122,10 @@ Job_KidExport::Job_KidExport(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 Job_KidExport::~Job_KidExport(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITERECORD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
   
   delete m_pCurrentBuffer;
   m_pCurrentBuffer = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert row into table                                                      */
-/*----------------------------------------------------------------------------*/
-void Job_KidExport::vWriteRecords(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITERECORD,_FOOTER_);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,23 +143,19 @@ void Job_KidExport::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a WriteRecord job                                                      */
+/* spawn a KidExport job                                                      */
 /*----------------------------------------------------------------------------*/
-Job_KidExport* Job_KidExport::pNewJobWriteRecord(Interface::Session* pSession,
-                                                     i8 iExportJobId)
+void Job_KidExport::vSpawn(i8 iExportJobId,
+                          ExportBuffer* pExportBuffer)
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a write buffer job
+  Job_KidExport* pJob_KidExport = new Job_KidExport(nullptr);
   
-  //! this needs to be optimised
-  JobClass* pJobClass_WriteRecord = JobClass::pFind(CN_JOB_WRITERECORD);
-
-  Job_KidExport* pJob_KidExport =
-    _pJob_KidExport(pJobClass_WriteRecord->pPreJob(pSession));
-
+  pJob_KidExport->m_iExportJobId = iExportJobId;
+  pJob_KidExport->m_pSendWith = pExportBuffer;
+  
   pJob_KidExport->vSeed(SS_SEED_RUN);
-
-  return pJob_KidExport;
+  
+  IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob_KidExport,SS_SEED_RUN));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -180,7 +167,25 @@ Job_KidExport* Job_KidExport::pNewJobWriteRecord(Interface::Session* pSession,
 /*----------------------------------------------------------------------------*/
 void Job_KidExport::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITERECORD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
+  
+  vTrace("  ExportJobId %lld BuffersExpected %lld\n"_Stz,m_iExportJobId,m_nBuffersExpected);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write                                                                       */
+/*----------------------------------------------------------------------------*/
+bool Job_KidExport::bWriteBuffer(Job_Export* pJob_Export)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
+  
+  ExportBuffer* pExportBuffer = _pExportBuffer(m_pSendWith);
+
+  pJob_Export->vWriteExportBuffer(pExportBuffer);
+  
+  bool bHasCompleted = pJob_Export->bIncWritten(m_nBuffersExpected);
+  
+  return bHasCompleted;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -192,7 +197,7 @@ void Job_KidExport::vShow(void)
 /*----------------------------------------------------------------------------*/
 Footer* Job_KidExport::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITERECORD);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT);
   
   return &m_xFooter;
 }

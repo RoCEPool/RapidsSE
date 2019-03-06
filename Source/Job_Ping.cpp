@@ -29,8 +29,8 @@ JobClass xJobClass_Ping =
   DL_NONE,           // ddl lock model
   PY_NORMAL,         // priority
   JF_NONE,           // flags
-
-  eJob_checkCluster, // prompt check function
+  
+  nullptr,           // prompt check function
   pJob_Ping_pre,     // prompt pre-process function
   vJob_Ping_post,    // prompt post-process function
   nullptr,           // job new function

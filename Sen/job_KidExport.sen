@@ -1,0 +1,124 @@
+/*============================================================================*/
+/* job_KidExport.sen -- Kid Export Job                                        */
+/*============================================================================*/
+
+" job_KidExport.sen" .verbose
+
+////////////////////////////////////////////////////////////////////////////////
+//                            on participant node                             //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* run seed for KE on participant node                 [E](E`)SE,KE:(E`)SE,KE */
+/*----------------------------------------------------------------------------*/
+: kidExport_kid ( -- )
+
+  >>am <SEED_KID>
+
+  job::this locals| pJob_KE |
+  pJob_KE job.assertNeutral
+
+  pJob_KE job_kidExport.exportOrigin locals| i_ExportNode |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // send KE` to the export node:                      KE`[E](E`)SE,KE:(E`)SE,KE
+  i_ExportNode pJob_KE job.forward
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete this KE on this participant node:          KE`[E](E`)SE,xx:(E`)SE,xx
+  <<am job::deleteThis
+
+  <DONE_KID>
+;
+
+////////////////////////////////////////////////////////////////////////////////
+//                            on originator node                              //
+////////////////////////////////////////////////////////////////////////////////
+
+
+/*----------------------------------------------------------------------------*/
+/* handle aux ack of export job                           KE`[E](E`)SE:(E`)SE */
+/*----------------------------------------------------------------------------*/
+: KE`.auxAckExport ( pJob_[E] )
+
+  params| pJob_[E] |
+
+  pJob_[E] job.originatingTask@ locals| pTask_[E] |
+
+  false locals| bAuxAck |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  "KE` last write" .
+
+  pTask_[E] task.grabLock
+
+  pJob_[E] job_export.auxAckDecided@ if
+    "KE`: [E] has been ended-acked by all E`; KE` WILL auxack [E]" .
+    CN_JOB_EXPORT job::stateDiagram .
+    true to bAuxAck
+  else
+    "KE`: [E] not been ended-acked by all E`; KE` will NOT auxack [E]" .
+    CN_JOB_EXPORT job::stateDiagram .
+    false to bAuxAck
+    true pJob_[E] job_export.auxAckDecided!
+  then
+
+  pTask_[E] task.dropLock
+
+  bAuxAck not if
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  "KE` auxacks the export job here" .
+
+  pTask_[E] task.state@ TK_WAITING if
+    "pTask_[E] is waiting" .
+  else
+    "pTask_[E] is not waiting" .
+  then
+
+  // final aux ack from last KE`
+  pTask_[E] task.ack
+;
+
+/*----------------------------------------------------------------------------*/
+/* rcv seed for KE` on originating export node E          KE`[E](E`)SE:(E`)SE */
+/*----------------------------------------------------------------------------*/
+: kidExport_rcv ( -- )
+
+  >>am <SEED_RCV>
+
+  job::this locals| pJob_KE`  |
+  pJob_KE` job.assertNeutral
+  pJob_KE` job.assertReceived
+
+  CN_JOB_EXPORT job::stateDiagram .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // KE` finds export job [E] on this originator node
+  pJob_KE` job_kidExport.exportJobId locals| i_ExportJobId |
+  i_ExportJobId job::findOriginator locals| pJob_[E] |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // KE` writes its ExportBuffer to [E].m_oCsvFile
+  false locals| bLastWrite |
+  pJob_[E] pJob_KE` job_kidExport.writeExportBuffer to bLastWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bLastWrite if
+    pJob_[E] KE`.auxAckExport
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete this KE` on this originator node:                 xx[E](E`)SE:(E`)SE
+  job::deleteThis
+
+  <DONE_RUN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

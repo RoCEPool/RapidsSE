@@ -11,9 +11,49 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobExport(void)
 {
-  vAddStep("job_export.begin"_Stz,  &Step::vJob_ExportBegin);
-  vAddStep("job_export.end"_Stz,    &Step::vJob_ExportEnd);
-  vAddStep("Job_export.table!"_Stz, &Step::vJob_ExportTableStore);
+  vAddStep("Job_export.auxAckDecided@"_Stz, &Step::vJob_ExportAuxAckDecidedFetch);
+  vAddStep("Job_export.auxAckDecided!"_Stz, &Step::vJob_ExportAuxAckDecidedStore);
+  vAddStep("job_export.begin"_Stz,          &Step::vJob_ExportBegin);
+  vAddStep("job_export.end"_Stz,            &Step::vJob_ExportEnd);
+  vAddStep("Job_export.table!"_Stz,         &Step::vJob_ExportTableStore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_export.auxAckDecided@ -- fetch if aux ack decided                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_ExportAuxAckDecidedFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_ExportAuxAckDecidedFetch"_Stz);
+  
+  Object* pPtrJobExport;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJobExport) )
+    THROW_INVALID_DSTACK("Job_export.auxAckDecided@"_Stz);
+  Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
+  
+  mpTask->m_pDataStack->vPushI8(pJob_Export->m_bAuxAckDecided);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_export.auxAckDecided! -- store if aux ack decided                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_ExportAuxAckDecidedStore(MP_Task mpTask)
+{
+  ENTRY("vJob_ExportAuxAckDecidedStore"_Stz);
+  
+  Object* pPtrJobExport;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJobExport) )
+    THROW_INVALID_DSTACK("Job_export.auxAckDecided!"_Stz);
+  Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
+  
+  i8 iAuxAckDecided;
+  if ( ! mpTask->m_pDataStack->bPop(iAuxAckDecided) )
+    THROW_INVALID_DSTACK("Job_export.auxAckDecided!"_Stz);
+  
+  pJob_Export->m_bAuxAckDecided = (bool)iAuxAckDecided;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +115,6 @@ void Step::vJob_ExportTableStore(MP_Task mpTask)
   
   EXIT();
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

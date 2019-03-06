@@ -5,11 +5,11 @@
 " job_Export.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* spawn sub-exporters on particpating node                                   */
+/* spawn sub-exporter jobs SE on particpating nodes              [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
-: export.spawnSubExporters ( pJob_Export -- )
+: (E`).spawn_SE ( pJob_(E`) -- )
 
-  params| pJob_Export |
+  params|  pJob_(E`) |
 
   task::this task.grabLock
 
@@ -17,57 +17,99 @@
 
   grid::slots 0
   do
-    I pJob_Export job_subExporter::spawn
+    I  pJob_(E`) job_subExporter::spawn                      // [E](E`)SE:(E`)SE
   loop
 
   task::wait
 ;
 
 /*----------------------------------------------------------------------------*/
-/* export on this participant node (same as originator)                       */
+/* optional wait till all kid exports are completed                           */
 /*----------------------------------------------------------------------------*/
-: export.export ( pJob_Export --  )
+: E.waitAll_KE` ( pJob_E -- )
 
-  params| pJob_Export |
+  params| pJob_E |
+
+  task::this locals| pTask_[E] |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pTask_[E] task.grabLock
+
+  pJob_E job_export.auxAckDecided@ if
+    "AuxAck decision point PASSED. E does not wait" .
+    pTask_[E] task.dropLock
+    exit
+  then
+
+  "AuxAck decision point NOT-PASSED.  E waits" .
+  true pJob_E job_export.auxAckDecided!
+
+  // wait for final aux ack from last KE`
+  1 pTask_[E] task.acks!
+  pTask_[E] task.wait
+;
+
+/*----------------------------------------------------------------------------*/
+/* init export job E on this originator node                         []()E:() */
+/*----------------------------------------------------------------------------*/
+: E.initJob ( pJob_E --  )
+
+  params| pJob_E |
 
   0 locals| sTableNm  |
   0 locals| pTable    |
 
-  "export_export: export on this node" .
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set path and table folder of E
 
   // set path
-  pJob_Export job.pushPath task::dicStack.set
+  pJob_E job.pushPath task::dicStack.set
 
   // set table dictionary
-  pJob_Export job.objectName@ to sTableNm
+  pJob_E job.objectName@ to sTableNm
   sTableNm pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // get table pointer
   sTableNm table::find to pTable
-
-  pTable pJob_Export job_export.table!
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pJob_Export job_export.begin
-
-  pJob_Export export.spawnSubExporters
-
-  pJob_Export job_export.end
+  pTable pJob_E job_export.table!
 ;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
+/*----------------------------------------------------------------------------*/
+/* init export job (E`) on this participant node                 [E](E`):(E`) */
+/*----------------------------------------------------------------------------*/
+: (E`).InitJob ( pJob_(E`) --  )
+
+  params| pJob_(E`) |
+
+  0 locals| sTableNm  |
+  0 locals| pTable    |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set path and table folder of (E`)
+
+  // set path
+  pJob_(E`) job.pushPath task::dicStack.set
+
+  // set table folder
+  pJob_(E`) job.objectName@ to sTableNm
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find and store table pointer into (E`)::m_pTable
+  sTableNm table::find to pTable
+  pTable pJob_(E`) job_export.table!
+;
 
 /*----------------------------------------------------------------------------*/
-/* check if word is a valid table folder                                      */
+/* check valid table folder for export job (E`) on ptp node      [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
-: export.checkTable ( sTableNm -- true | errorCode false )
+: (E`).checkTable ( sTableNm -- true | errorCode false )
 
   params| sTableNm |
 
@@ -92,13 +134,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* check resources                                                            */
+/* check resources for export job (E`) on participant node       [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
-: export.checkResources ( pJob_Export -- )
+: (E`).checkResources ( pJob_(E`) -- )
 
   >>am <Check_Resources>
 
-  params| pJob_Export  |
+  params| pJob_(E`)  |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
@@ -106,15 +148,14 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_Export job.pushPath
+  pJob_(E`) job.pushPath
   task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can export the table
-   pJob_Export job.objectName@ export.checkTable
+   pJob_(E`) job.objectName@ (E`).checkTable
    not if
-     pJob_Export
-     <ERROR_JOB>
+     pJob_(E`) <ERROR_JOB>
      !!am exit
   then
 
@@ -123,9 +164,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* release resources                                                          */
+/* release resources for export job (E`) on participant node     [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
-: export.releaseResources ( pJob_Export -- )
+: (E`).releaseResources ( pJob_Export -- )
 
   >>am <Release_Resources>
 
@@ -139,16 +180,40 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* export command request on originating node                                 */
+/* request seed for E on request node                                []()E:() */
 /*----------------------------------------------------------------------------*/
 : export_req ( -- <R> )
 
   >>am <SEED_REQ>
   an::seed_req
 
-  job::this locals| pJob_Export |
+  job::this locals| pJob_E |
+  pJob_E job.assertNeutral
 
-  pJob_Export job.distribute
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // initialise this E export job
+  pJob_E E.initJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // open file E::m_oCvsFile(m_sFilePath) for writing
+  pJob_E job_export.begin
+
+  CN_JOB_EXPORT job::stateDiagram .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute E` to all participants                                  [E]E`:E`
+  pJob_E job.distribute
+  pJob_E job.assertNeutral
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait for all KE` to write                                            KE`,E:
+  pJob_E E.waitAll_KE`                                                      // E:
+
+  CN_JOB_EXPORT job::stateDiagram .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // close the export file E::m_oCsvFile
+  pJob_E job_export.end
 
   <<am <DONE_REQ>
 ;
@@ -156,75 +221,100 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* begin Job_Export on participating node                                     */
+/* begin seed for E` on participating node                           [E]E`:E` */
 /*----------------------------------------------------------------------------*/
 : export_beg ( -- )
 
   >>am <SEED_BEG>
   an::seed_rcv
 
-  job::this locals| pJob_Export |
+  job::this locals| pJob_E` |
+  pJob_E` job.assertBegin // check for either [E]E`: or :E`
 
-  pJob_Export job.beginParticipant
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob_Export export.checkResources
+  CN_JOB_EXPORT job::stateDiagram .
 
+  // this E` becomes (E`) on this node                    [E]E`:E`->[E](E`):(E`)
+  pJob_E` job.becomeParticipant
+  pJob_E` locals| pJob_(E`) |
+
+  CN_JOB_EXPORT job::stateDiagram .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // check table being exported exists on this node
+  pJob_(E`) (E`).checkResources
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // send job__begin to [E]                                  __BEGUN[E](E`):(E`)
   job::participantBegun
 
   <<am <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_Export on participating node                                   */
+/* execute seed for (E`) on participating node                   [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
-: export_exe ( pJob_Export -- )
+: export_exe ( -- )
 
   >>am <SEED_EXE>
   an::seed_exe
 
-  job::this locals| pJob_Export |
+  job::this locals| pJob_(E`) |
+  pJob_(E`) job.assertParticipant 
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pJob_(E`) (E`).InitJob
 
-  pJob_Export export.export
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn the sub-exporters on this participant node           [E](E`)SE:(E`)SE
+  pJob_(E`) (E`).spawn_SE
 
-  pJob_Export job.notice
-
-  // delete_completed_job
-
-  pJob_Export send_job__executed
+  // (E`) sends job__executed to [E]                      __EXECUTED[E](E`):(E`)
+  pJob_(E`) job::participantExecuted
 
   <<am <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* end Job_Export on participating node                                       */
+/* end seed for (E`) on participating node                       [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
 : export_end ( -- )
 
   >>am <SEED_END>
   an::seed_end
 
-  job::this locals| pJob_Export |
+  job::this locals| pJob_(E`) |
+  pJob_(E`) job.assertParticipant
 
-  pJob_Export export.releaseResources
+  CN_JOB_EXPORT job::stateDiagram .
 
+  pJob_(E`) (E`).releaseResources
+
+  // (E`) sends job__ended to [E]                                __ENDED[E]():()
   job::participantEnded
+
+  CN_JOB_EXPORT job::stateDiagram .
 
   <<am <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* cancel Job_Export on participating node                                    */
+/* cancel seed for (E`) on participating node                    [E](E`):(E`) */
 /*----------------------------------------------------------------------------*/
 : export_can ( -- )
 
   >>am <SEED_CAN>
   an::seed_can
 
-  job::this locals| pJob_Export |
+  job::this locals| pJob_(E`) |
+  pJob_(E`) job.assertParticipant
 
-  pJob_Export export.releaseResources
+  pJob_(E`) (E`).releaseResources
 
+  // (E`) sends job__cancelled to [E]                        __CANCELLED[E]():()
   job::participantCancelled
 
   <<am <DONE_CAN>

@@ -116,7 +116,7 @@
 
   pJob_SizeTable job.notice
 
-  pJob_SizeTable send_job__executed
+  pJob_SizeTable job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -174,7 +174,7 @@
 
  job::this locals| pJob_sizeTable |
 
-  pJob_sizeTable job.beginParticipant
+  pJob_sizeTable job.becomeParticipant
 
   pJob_sizeTable sizeTable.checkResources
 

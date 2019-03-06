@@ -182,7 +182,7 @@
 
   job::this locals| pJob_Walk |
 
-  pJob_Walk job.beginParticipant
+  pJob_Walk job::participantBegun
 
   pJob_Walk walk.checkResources
 
@@ -208,7 +208,7 @@
 
   // delete_completed_job
 
-  pJob_Walk send_job__executed
+pJob_Walk job::participantExecuted
 
   <<am <DONE_EXE>
 ;

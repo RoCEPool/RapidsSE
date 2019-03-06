@@ -50,7 +50,7 @@
   // wait till all nodes connected
   grid::wait
 
-  pJob_WaitCluster send_job__executed
+  pJob_WaitCluster job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -64,7 +64,7 @@
 
   job::this locals| pJob_WaitCluster |
 
-  pJob_WaitCluster job.beginParticipant
+  pJob_WaitCluster job.becomeParticipant
 
   job::participantBegun
 

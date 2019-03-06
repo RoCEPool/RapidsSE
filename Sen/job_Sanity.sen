@@ -90,7 +90,7 @@
 
   pJob_Sanity job.notice
 
-  pJob_Sanity send_job__executed
+  pJob_Sanity job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -104,7 +104,7 @@
 
   job::this locals| pJob_sanity |
 
-  pJob_sanity job.beginParticipant
+  pJob_sanity job.becomeParticipant
 
   job::participantBegun
 

@@ -84,6 +84,8 @@ void RowData::vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec)
       sDataString.vConcat(sDst);
   }
   
+//  if (bNewLine)
+//    sDataString.vAppend('\n');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,6 +122,8 @@ void RowData::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec)
       sDataString.vConcat(sDst);
   }
   
+//  if (bNewLine)
+//    sDataString.vAppend('\n');
 }
 
 /*----------------------------------------------------------------------------*/

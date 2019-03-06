@@ -289,7 +289,9 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   eCN eClass = pObject->eClass();
   i8 nObjectSize = giClassSize[eClass];
 
-  RASSERT(_bIsValidJob(eClass) || CN_ENTRYBUFFER == eClass);
+  RASSERT(_bIsValidJob(eClass) ||
+          CN_ENTRYBUFFER  == eClass ||
+          CN_EXPORTBUFFER == eClass);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of job
@@ -323,7 +325,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
                             "Recv footer: %s"_Stz,
                             sFooter.aStz());
     }
-    if (pJob->m_bMark) {
+    if (pJob->m_bMarkActivity) {
       ActivityMap::vMarkJob(pJob,
                          "Recv: %s %p socket %llx"_Stz,
                          aCN[eClass],
@@ -618,7 +620,7 @@ void Step::vSocketSendObject(MP_Task mpTask)
   
   if (_bIsValidJob(eClass)) {
     Job* pJob = _pJob(pObject);
-    if (pJob->m_bMark)
+    if (pJob->m_bMarkActivity)
       ActivityMap::vMarkJob(pJob,"Send: %s %p socket %llx"_Stz,
                          aCN[eClass],
                          pJob,
@@ -627,7 +629,9 @@ void Step::vSocketSendObject(MP_Task mpTask)
     ActionSequence::vAdd(pJob,AN_SEND_JOB,mpTask->pJob(),nObjectSize);
   }
 
-  RASSERT(_bIsValidJob(eClass) || CN_ENTRYBUFFER == eClass);
+  RASSERT(_bIsValidJob(eClass) ||
+          CN_ENTRYBUFFER  == eClass ||
+          CN_EXPORTBUFFER == eClass);
     
   SysCall oSysCall;
   bool bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);

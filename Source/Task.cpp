@@ -667,7 +667,7 @@ void Task::vSession(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* sleep for microseconds                                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vSleepUs(i8 iMicroseconds)
+void Task::vSleepUsec(i8 iMicroseconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

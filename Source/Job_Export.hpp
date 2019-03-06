@@ -14,11 +14,11 @@ namespace Jobs
   
     Lock   m_okLock;   // lock over the following members
 
-    File   m_oCsvFile; // output csv file
+    File   m_oCsvFile;     // output csv file
+
+    Completer m_oWritten;  // track writing of all export buffers
   
-    i8     m_nPartitionsComplete;
-    i8     m_nBuffersExpected;
-    i8     m_nBuffersWritten;
+    bool m_bAuxAckDecided; // handle the auxilary ack from Kid Export job
   
     // must be last
     Footer m_xFooter;
@@ -36,9 +36,9 @@ namespace Jobs
   public:
     bool bBegin(void);
     void vEnd(void);
-    bool bFinishedWriting(void);
-    void vIncWritten(i8 nBuffersExpected);
+    bool bIncWritten(i8 nBuffersExpected);
     bool bPopulateJob(TokenVec* pTokenVec);
+    void vWriteExportBuffer(ExportBuffer* pExportBuffer);
   
     void vShow(void);
   

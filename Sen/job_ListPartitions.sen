@@ -64,7 +64,7 @@
 
   pJob_ListPartitions job.notice
 
-  pJob_ListPartitions send_job__executed
+  pJob_ListPartitions job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -78,7 +78,7 @@
 
   job::this locals| pJob_ListPartitions |
 
-  pJob_ListPartitions job.beginParticipant
+  pJob_ListPartitions job.becomeParticipant
 
   job::participantBegun
 

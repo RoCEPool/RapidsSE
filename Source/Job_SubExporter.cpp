@@ -117,6 +117,8 @@ Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
   m_iEntryBuffer  = 0;
   
   m_pEntryBuffer = nullptr;
+  
+  m_nExportBuffers = 0;
   m_pExportBuffer = nullptr;
   
   _checkInitialised_(CN_JOB_SUBEXPORTER);
@@ -168,7 +170,7 @@ bool Job_SubExporter::bBegin(void)
   m_pEntryBuffer  = m_pIndexTree->pRoot();
   m_nEntryBuffers = m_pEntryBuffer->iLengthList();
   
-  if (m_bMark)
+  if (m_bMarkActivity)
     ActivityMap::vMarkJob(this,
                           "IndexTree[%lld] for table %s has %lld buffers"_Stz,
                           m_i_Slot,
@@ -190,7 +192,7 @@ bool Job_SubExporter::bChunk(void)
   if (! m_pEntryBuffer)
     return false;
   
-  if (m_bMark)
+  if (m_bMarkActivity)
     ActivityMap::vMarkJob(this,
                           "Exporting Table %s EntryBuffer[%lld/%lld] %p"_Stz,
                           m_pJobExport->m_pTable->aTableName(),
@@ -217,7 +219,7 @@ void Job_SubExporter::vEnd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
 
   if (m_pExportBuffer)
-    {;}
+    vSpawnKidExport(true);
   
   ActionSequence::vAdd(this,AN_JOB_END,m_iEntryBuffer);
 }
@@ -228,16 +230,53 @@ void Job_SubExporter::vEnd(void)
 void Job_SubExporter::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+  
+  vTrace("  Job_SubExport %p %03lld "
+         "i_Slot %lld\n"_Stz,
+         m_pJobExport, m_pJobExport->m_iJobId,
+         m_i_Slot
+         );
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* spawn kid-export to drag export buffer to export node and write            */
+/*----------------------------------------------------------------------------*/
+void Job_SubExporter::vSpawnKidExport(bool bLast)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
+  
+  JobClass* pJobClass_KidExport = JobClass::pFind(CN_JOB_KIDEXPORT);
+  Job* pNewJob = pJobClass_KidExport->pNewJob(nullptr);
+  Job_KidExport* pJob_KidExport = _pJob_KidExport(pNewJob);
+  
+  pJob_KidExport->m_iExportJobId = m_pJobExport->m_iJobId;
+  pJob_KidExport->m_pSendWith    = m_pExportBuffer;
+  
+  if (bLast)
+    pJob_KidExport->m_nBuffersExpected = m_nExportBuffers;
+  else
+    pJob_KidExport->m_nBuffersExpected = C_UNKNOWN;
+
+  m_pExportBuffer = nullptr;
+  
+  IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob_KidExport,SS_SEED_RUN));
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint rows into export buffer                                             */
 /*----------------------------------------------------------------------------*/
 void Job_SubExporter::vSprintRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
   
   s48K sRecord;
+  
+  char* aRecord = nullptr;
+  i8 nBytes = 0;
   
   ColumnVec* pColVec = m_pJobExport->m_pTable->pColumnVec();
   
@@ -248,19 +287,27 @@ void Job_SubExporter::vSprintRows(void)
     RowData* aRow = _aRowData(aItem->aDataArea());
     
     aRow->vAsBinaryStringVLQ(sRecord,pColVec);
-    vTrace("]]%s[[\n"_Stz,sRecord.aStz());
+    //vTrace("]]%s[[\n"_Stz,sRecord.aStz());
     
-    i8 nBytes = sRecord.nSize();
+    nBytes = sRecord.nSize();
     
-    if (! m_pExportBuffer)
+    if (! m_pExportBuffer) {
       m_pExportBuffer = new ExportBuffer;
+      m_nExportBuffers++;
+    }
     
-    if (m_pExportBuffer->nFreeBytes() < nBytes)
+    if (m_pExportBuffer->nFreeBytes() < nBytes + 1) {
+      vSpawnKidExport(false);
       m_pExportBuffer = new ExportBuffer;
+      m_nExportBuffers++;
+    }
     
-    char* aRecord = m_pExportBuffer->aAllotRecord(nBytes);
-    StrLib::vCopy(aRecord,sRecord.aChar());
+    aRecord = m_pExportBuffer->aAllotRecord(nBytes - 1);
+    StrLib::vCopyLen(aRecord,sRecord.aChar(),nBytes - 1);
   }
+
+  if (aRecord)
+    aRecord[nBytes-1] = '\0';
 }
 
 /*----------------------------------------------------------------------------*/

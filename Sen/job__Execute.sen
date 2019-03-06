@@ -71,7 +71,7 @@
   // execute the job on this participating node
   pJobParticipant SEED_EXE job.spawn
 
-  delete_completed_job
+  job::deleteThis
 
   <DONE_RCV>
 ;

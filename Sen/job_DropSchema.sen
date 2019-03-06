@@ -92,7 +92,7 @@
 
   pJob_DropSchema job.notice
 
-  pJob_DropSchema send_job__executed
+  pJob_DropSchema job::participantExecuted
 
   <<am <DONE_EXE>
 ;
@@ -150,7 +150,7 @@
 
   job::this locals| pJob_dropSchema |
 
-  pJob_dropSchema job.beginParticipant
+  pJob_dropSchema job.becomeParticipant
 
   // check resources
   pJob_dropSchema dropSchema.checkResources

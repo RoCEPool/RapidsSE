@@ -8,7 +8,7 @@
 extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
-/* assert for called                                                           */
+/* assert for been called                                                     */
 /*----------------------------------------------------------------------------*/
 void Debugging::vAssertCalled(void)
 {

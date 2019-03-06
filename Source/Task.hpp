@@ -148,7 +148,7 @@ namespace Tasks
     Grids::Node* pSendNode(void);
     Interface::Session* pSession(void);
     void vSession(Interface::Session* pSession);
-    void vSleepUs(i8 iMicroSeconds);
+    void vSleepUsec(i8 iMicroSeconds);
     i8   iSlot(void);
     void vSprint(s48K& sFormat, s48K& sString);
     void vStackContents(Stack* pStack, s48K& sStackContents);

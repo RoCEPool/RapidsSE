@@ -4,40 +4,57 @@
 
 " job_SubExported.sen" .verbose
 
+////////////////////////////////////////////////////////////////////////////////
+//                            on participant node                             //
+////////////////////////////////////////////////////////////////////////////////
+
 /*----------------------------------------------------------------------------*/
-/* read records from file, create working buffers, send to node               */
+/* sprint rows from table partition into export buffers, KE` drags to origin  */
 /*----------------------------------------------------------------------------*/
-: subExporter.export ( pJob_SubExporter -- )
+: SE.export ( pJob_SE -- )
 
-  params| pJob_SubExporter |
+  params| pJob_SE |
 
-  pJob_SubExporter job_subExporter.begin not if exit then
+  pJob_SE job_subExporter.begin not if exit then             // [E](E`)SE:(E`)SE
 
-  begin pJob_SubExporter job_subExporter.chunk while repeat
+  begin                                             // KE`[E](E`)SE,KE:(E`)SE,KE
+    CN_JOB_EXPORT job::stateDiagram .
+    pJob_SE job_subExporter.chunk
+  while repeat
 
-  pJob_SubExporter job_subExporter.end
+  pJob_SE job_subExporter.end
 ;
 
 /*----------------------------------------------------------------------------*/
-/* SubExporter seed                                                           */
+/* run seed for SE sub-exporter on participant node          [E](E`)SE:(E`)SE */
 /*----------------------------------------------------------------------------*/
 : subExporter_run ( -- )
 
   >>am <SEED_RUN>
   an::seed_run
 
-  task::this locals| pThisTask |
-  job::this  locals| pJob_SubExporter |
-  pJob_SubExporter job_subExporter.exportJob@ locals| pJob_Export |
-  pJob_Export job.executingTask@ locals| pTask_Export |
+  job::this locals| pJob_SE |
+  pJob_SE job.assertNeutral
 
-  pJob_SubExporter subExporter.export
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // perform SE.export
 
-  pTask_Export task.ack
+  pJob_SE job_subExporter.exportJob@ locals| pJob_(E`)  |
+  pJob_(E`) job.assertParticipant
 
+  pJob_SE SE.export
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ack the (E`) on this node                  // KE`[E](E`)<-SE,KE:(E`)<-SE,KE
+
+  pJob_(E`) job.executingTask@ locals| pTask_(E`) |
+  pTask_(E`) task.ack
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null the job in the task and delete ended job
-  nullptr pThisTask task.job!
-  pJob_SubExporter job.delete
+
+  nullptr task::this task.job!
+  pJob_SE job.delete                                      // KE`[E](E`)KE:(E`)KE
 
   <DONE_RUN>
 ;

@@ -165,6 +165,34 @@ bool JobList::bGrabLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is there a job in the list with given job class?                            */
+/*----------------------------------------------------------------------------*/
+bool JobList::bHasJobClass(eCN eJobClass)
+{
+  i8 iLevel = 0;
+  bool bHasJobClass = false;
+  
+  vGrabLock();
+  
+  SkipNode* pNode = m_pJobsSkipList->pFirst(iLevel);
+  
+  while (pNode) {
+    
+    Job* pJob = _pJob(pNode->m_pObject);
+    if (eJobClass == pJob->eClass()) {
+      bHasJobClass = true;
+      break;
+    }
+    
+    pNode = m_pJobsSkipList->pNext(pNode, iLevel);
+  }
+  
+  vDropLock();
+  
+  return bHasJobClass;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is locked ?                                                                */
 /*----------------------------------------------------------------------------*/
 bool JobList::bIsLocked(void)
