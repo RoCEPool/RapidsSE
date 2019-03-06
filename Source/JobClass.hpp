@@ -64,6 +64,7 @@ namespace Jobs
   
     public:
       eEC  eCheckJob(Interface::Session* pSession);
+      void vCmds(void);
       void vDeleteJob(Interface::Session* pSession, Job* pJob);
       void vDropDdlLock(void);
       void vGrabDdlLock(void);
@@ -82,6 +83,7 @@ namespace Jobs
   
       static pJOBCLASSFUN pFirstFun(void);
   
+      static void vCmds(eCN eClass);
       static JobClass* pFind(eCN eClass);
       static JobClass* pFind(Stz* aCommand1, Stz* aCommand2);
       static void vJobCat(eCN eClass);

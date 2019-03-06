@@ -43,6 +43,15 @@ eEC JobClass::eCheckJob(Interface::Session *pSession)
 }
 
 /*----------------------------------------------------------------------------*/
+/* vtrace the job class for the jobcat prompt function                        */
+/*----------------------------------------------------------------------------*/
+void JobClass::vCmds(void)
+{
+  if (m_aHelp)
+    vTrace("%s\n"_Stz,m_aHelp);
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new job by running the new-function                               */
 /*----------------------------------------------------------------------------*/
 Job* JobClass::pNewJob(Job* pArg)
@@ -289,6 +298,22 @@ void JobClass::vJobCatHeader(void)
 pJOBCLASSFUN JobClass::pFirstFun(void)
 {
   return (pJOBCLASSFUN)pJob__Begun_class;
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace the job for the given class                                          */
+/*----------------------------------------------------------------------------*/
+void JobClass::vCmds(eCN eClass)
+{
+  JobClass* pJobClass = nullptr;
+  
+  for (pJOBCLASSFUN pfJobClass = pFirstFun(); pfJobClass; ) {
+    
+    pJobClass = pfJobClass((pFUN**)&pfJobClass);
+    
+    if (pJobClass->m_eClass == eClass)
+    pJobClass->vCmds();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
