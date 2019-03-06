@@ -1,5 +1,5 @@
 /*============================================================================*/
-/*  _lineitemRJH - create TPC-H Lineitem table                                */
+/* _lineitemRJH - create and load TPC-H Lineitem table                        */
 /*============================================================================*/
 
 startCluster;
@@ -31,9 +31,8 @@ create table lineitem (
 //nowait monitor 3;
 
 space;
-timerStart;
-ld lineitem "/tpch/SF0/lineitem100k.csv" max_errors 100;
-timerEnd;
+
+time ld lineitem "/tpch/SF0/lineitem100k.csv" max_errors 100;
 
 space;
 

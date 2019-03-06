@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* _ldErr -- test load errors using TPC-H Lineitem table                      */
+/*============================================================================*/
+
+startCluster;
+
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    CHAR(1) NOT NULL,         //  8)  2B   2B
+  L_LINESTATUS    CHAR(1) NOT NULL,         //  9)  2B   2B
+  L_SHIPDATE      TIMESTAMP NOT NULL,       // 10)  8B   8B
+  L_COMMITDATE    TIMESTAMP NOT NULL,       // 11)  8B   8B
+  L_RECEIPTDATE   TIMESTAMP NOT NULL,       // 12)  8B   8B
+  L_SHIPINSTRUCT  CHAR(25) NOT NULL,        // 13) 26B  13B
+  L_SHIPMODE      CHAR(10) NOT NULL,        // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+  //                                              ---- ----
+  // 16 columns                                   174B  91B
+  //
+);
+
+//CREATE INDEX lineitem_idx1 ON lineitem(L_ORDERKEY);
+
+//nowait monitor 3;
+
+space;
+
+time ld lineitem "/tpch/SF0/lineitem100k.csv" max_errors 100;
+
+space;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
