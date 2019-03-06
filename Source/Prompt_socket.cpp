@@ -5,6 +5,7 @@
 #include "Prompt.h"
 
 PromptNote mPromptNote_socket (
+  PF_NONE,                     // prompt function
   "Prompt_socket"_Stz, // name of the prompt function
   "comment"_Stz,       // comment about the functopm
   "socket"_Stz,        // the prompt command

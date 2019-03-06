@@ -5,6 +5,7 @@
 #include "Prompt.h"
 
 PromptNote mPromptNote_rassert (
+  PF_NONE,                     // prompt function
   "Prompt_rassert"_Stz,// name of the prompt function
   "comment"_Stz,       // comment about the functopm
   "rassert"_Stz,       // the prompt command

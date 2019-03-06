@@ -6,6 +6,7 @@
 #include "StorageEngine.h"
 
 PromptNote mPromptNote_hashDefs (
+  PF_NONE,                     // prompt function
   "Prompt_numbers"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the functopm
   "hashDefs"_Stz,       // the prompt command

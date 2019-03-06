@@ -6,6 +6,7 @@
 #include "StorageEngine.h"
 
 PromptNote mPromptNote_markTrc (
+  PF_NONE,                     // prompt function
   "Prompt_markTrc"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the functopm
   "markTrc"_Stz,        // the prompt command

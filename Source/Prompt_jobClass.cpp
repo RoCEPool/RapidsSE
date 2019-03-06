@@ -5,6 +5,7 @@
 #include "Prompt.h"
 
 PromptNote mPromptNote_jobClass (
+  PF_NONE,                     // prompt function
   "Prompt_jobClass"_Stz, // name of the prompt function
   "comment"_Stz,         // comment about the functopm
   "jobClass"_Stz,        // the prompt command

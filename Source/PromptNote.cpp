@@ -12,7 +12,8 @@ extern PromptCatalog gxPromptCatalog;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PromptNote::PromptNote(Stz* aName,
+PromptNote::PromptNote(ePF  ePromptFun,
+                       Stz* aName,
                        Stz* aComment,
                        Stz* aCommand1,
                        Stz* aCommand2,

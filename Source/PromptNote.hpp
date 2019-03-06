@@ -11,7 +11,8 @@ namespace Prompt
   public:
 
   public:
-    PromptNote(Stz* aName,
+    PromptNote(ePF  ePromptFun,
+               Stz* aName,
                Stz* aComment,
                Stz* aCommand1,
                Stz* aCommand2,

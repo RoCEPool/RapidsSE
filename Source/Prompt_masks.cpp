@@ -6,6 +6,7 @@
 #include "StorageEngine.h"
 
 PromptNote mPromptNote_masks (
+  PF_NONE,                     // prompt function
   "Prompt_masks"_Stz,   // name of the prompt function
   "comment"_Stz,        // comment about the functopm
   "masks"_Stz,          // the prompt command

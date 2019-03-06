@@ -6,6 +6,7 @@
 #include "StorageEngine.h"
 
 PromptNote mPromptNote_numbers (
+  PF_NONE,                     // prompt function
   "Prompt_numbers"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the functopm
   "numbers"_Stz,        // the prompt command

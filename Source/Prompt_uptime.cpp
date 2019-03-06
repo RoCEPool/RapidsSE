@@ -6,6 +6,7 @@
 #include "StorageEngine.h"
 
 PromptNote mPromptNote_uptime (
+  PF_NONE,                     // prompt function
   "Prompt_uptime"_Stz,   // name of the prompt function
   "comment"_Stz,         // comment about the functopm
   "uptime"_Stz,          // the prompt command

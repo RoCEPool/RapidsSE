@@ -5,6 +5,7 @@
 #include "Prompt.h"
 
 PromptNote mPromptNote_errno (
+  PF_NONE,                     // prompt function
   "Prompt_errno"_Stz,   // name of the prompt function
   "comment"_Stz,        // comment about the functopm
   "errno"_Stz,          // the prompt command

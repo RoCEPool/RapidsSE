@@ -6,6 +6,7 @@
 #include "StorageEngine.h"
 
 PromptNote mPromptNote_sizes (
+  PF_NONE,                     // prompt function
   "Prompt_sizes"_Stz,   // name of the prompt function
   "comment"_Stz,        // comment about the functopm
   "sizes"_Stz,          // the prompt command

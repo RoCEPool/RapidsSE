@@ -5,6 +5,7 @@
 #include "Prompt.h"
 
 PromptNote mPromptNote_pwd (
+  PF_NONE,                     // prompt function
   "Prompt_pwd"_Stz,   // name of the prompt function
   "comment"_Stz,      // comment about the functopm
   "pwd"_Stz,          // the prompt command

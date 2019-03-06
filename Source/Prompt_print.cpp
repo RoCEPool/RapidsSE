@@ -5,6 +5,7 @@
 #include "Prompt.h"
 
 PromptNote mPromptNote_print (
+  PF_NONE,                     // prompt function
   "Prompt_print"_Stz,// name of the prompt function
   "comment"_Stz,     // comment about the functopm
   "print"_Stz,       // the prompt command

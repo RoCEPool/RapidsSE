@@ -6,6 +6,7 @@
 #include "StorageEngine.h"
 
 PromptNote mPromptNote_waiting (
+  PF_NONE,                     // prompt function
   "Prompt_waiting"_Stz,   // name of the prompt function
   "comment"_Stz,          // comment about the functopm
   "waiting"_Stz,          // the prompt command

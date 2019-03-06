@@ -5,6 +5,7 @@
 #include "Prompt.h"
 
 PromptNote mPromptNote_markJob (
+  PF_NONE,                     // prompt function
   "Prompt_markJob"_Stz, // name of the prompt function
   "comment"_Stz,     // comment about the functopm
   "markJob"_Stz,     // the prompt command

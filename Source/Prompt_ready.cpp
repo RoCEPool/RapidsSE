@@ -6,6 +6,7 @@
 #include "StorageEngine.h"
 
 PromptNote mPromptNote_ready (
+  PF_NONE,                     // prompt function
   "Prompt_ready"_Stz,     // name of the prompt function
   "comment"_Stz,          // comment about the functopm
   "ready"_Stz,            // the prompt command

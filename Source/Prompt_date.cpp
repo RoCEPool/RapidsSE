@@ -5,6 +5,7 @@
 #include "Prompt.h"
 
 PromptNote mPromptNote_date (
+  PF_NONE,                     // prompt function
   "Prompt_date"_Stz, // name of the prompt function
   "comment"_Stz,     // comment about the functopm
   "date"_Stz,        // the prompt command

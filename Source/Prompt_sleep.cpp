@@ -5,6 +5,7 @@
 #include "Prompt.h"
 
 PromptNote mPromptNote_sleep (
+  PF_NONE,                     // prompt function
   "Prompt_sleep"_Stz, // name of the prompt function
   "comment"_Stz,      // comment about the functopm
   "sleep"_Stz,        // the prompt command

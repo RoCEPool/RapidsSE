@@ -8,7 +8,8 @@
 extern AttachMap* gpAttachMap;
 
 PromptNote mPromptNote_indexEntries (
-  " Prompt_indexEntries"_Stz, // name of the prompt function
+  PF_NONE,                     // prompt function
+  "Prompt_indexEntries"_Stz, // name of the prompt function
   "comment"_Stz,              // comment about the functopm
   "indexEntries"_Stz,         // the prompt command
   nullptr,                    // the second word

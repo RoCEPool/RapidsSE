@@ -6,6 +6,7 @@
 #include "StorageEngine.h"
 
 PromptNote mPromptNote_plist (
+  PF_NONE,                     // prompt function
   "Prompt_plist"_Stz,   // name of the prompt function
   "comment"_Stz,        // comment about the functopm
   "plist"_Stz,          // the prompt command

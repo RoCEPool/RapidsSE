@@ -6,6 +6,7 @@
 #include "StorageEngine.h"
 
 PromptNote mPromptNote_markApi (
+  PF_NONE,                     // prompt function
   "Prompt_markApi"_Stz, // name of the prompt function
   "comment"_Stz,     // comment about the functopm
   "markApi"_Stz,     // the prompt command
