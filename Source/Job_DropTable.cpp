@@ -41,7 +41,7 @@ JobClass xJobClass_DropTable =
   
   // help and example
   true,
-  "<help>"_Stz,
+  "drop table <tableNm>"_Stz,
   "<example>"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

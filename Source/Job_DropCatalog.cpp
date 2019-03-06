@@ -41,7 +41,7 @@ JobClass xJobClass_DropCatalog =
   
   // help and example
   true,
-  "drop catalog <catalogName>"_Stz,
+  "drop catalog <catalogNm>"_Stz,
   "drop catalog tpchCatalog;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

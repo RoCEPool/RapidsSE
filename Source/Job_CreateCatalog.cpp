@@ -41,7 +41,7 @@ JobClass xJobClass_CreateCatalog =
   
   // help and example
   true,
- "create catalog <catalogNm>"_Stz,
+  "create catalog <catalogNm>"_Stz,
   "create catalog tpchCatalog ;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

@@ -41,7 +41,7 @@ JobClass xJobClass_Walk =
   
   // help and example
   true,
-  "tr <tableName>"_Stz,
+  "walk <tableNm>"_Stz,
   "tr SUPPLIER;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

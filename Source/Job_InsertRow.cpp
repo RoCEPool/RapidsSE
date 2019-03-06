@@ -41,7 +41,7 @@ JobClass xJobClass_InsertRow =
   
   // help and example
   true,
-  "insert into tableName values (<values>);"_Stz,
+  "insert into <tableNm> values ( <values> );"_Stz,
   "insert into t1 values (10,'aaa');"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

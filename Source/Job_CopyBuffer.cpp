@@ -41,7 +41,7 @@ JobClass xJobClass_CopyBuffer =
   
   // help and example
   true,
-  "CopyBuffer???"_Stz,
+  "?? Job_CopyBuffer"_Stz,
   ""_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

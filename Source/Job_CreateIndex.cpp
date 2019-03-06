@@ -41,7 +41,7 @@ JobClass xJobClass_CreateIndex =
   
   // help and example
   true,
-  "create index <indexNm> on <tableNamem> ( <columnList> )"_Stz,
+  "create index <indexNm> on <tableNm> ( <columnList> )"_Stz,
   "create index idx1 on supplier (S_SUPPKEY);"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
@@ -79,7 +79,7 @@ JobClass xJobClass_CreateIndexUnique =
   
   // help
   true,
-  "create unique index <indexNamem> on <tableNaem> ( <columnList> )"_Stz,
+  "create unique index <indexNm> on <tableNm> ( <columnList> )"_Stz,
   "create unique index idx1 on supplier (S_SUPPKEY);"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

@@ -47,7 +47,7 @@ JobClass xJobClass_LoadTable =
   
   // help and example
   true,
-  "ld <tableName> \"<fileName>\""_Stz,
+  "ld <tableNm> \"<fileNm>\""_Stz,
   "ld supplier \"/tpch/supplier.tbl\" ;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

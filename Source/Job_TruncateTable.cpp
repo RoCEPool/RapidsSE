@@ -41,7 +41,7 @@ JobClass xJobClass_TruncateTable =
   
   // help and example
   true,
-  "tr <tableName>"_Stz,
+  "tr <tableNm>"_Stz,
   "tr SUPPLIER;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

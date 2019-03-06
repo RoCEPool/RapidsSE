@@ -41,7 +41,7 @@ JobClass xJobClass_CreateTenant =
   
   // help and example
   true,
-  "create tenant <tenantName>"_Stz,
+  "create tenant <tenantNm>"_Stz,
   "create tenant boray;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

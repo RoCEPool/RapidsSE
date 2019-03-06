@@ -41,7 +41,7 @@ JobClass xJobClass_SubInserter =
   
   // help and example
   true,
-  "SubInserter???"_Stz,
+  "?? Job_SubInserter"_Stz,
   "insert rows \"1,abcdef\";"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

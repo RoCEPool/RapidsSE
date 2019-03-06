@@ -41,7 +41,7 @@ JobClass xJobClass_Export =
   
   // help and example
   true,
-  "export <tableName> <fileName>"_Stz,
+  "export <tableNm> \"<fileNm>\""_Stz,
   "export SUPPLIER /tmp/supplier.csv;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

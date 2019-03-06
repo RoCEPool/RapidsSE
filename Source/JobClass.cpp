@@ -48,7 +48,7 @@ eEC JobClass::eCheckJob(Interface::Session *pSession)
 void JobClass::vCmds(void)
 {
   if (m_aHelp)
-    vTrace("%s\n"_Stz,m_aHelp);
+    vTrace("%7s %s\n"_Stz,aJK[m_eKind],m_aHelp);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -41,7 +41,7 @@ JobClass xJobClass_CreateSchema =
   
   // help and example
   true,
-  "create schema <schemaName>"_Stz,
+  "create schema <schemaNm>"_Stz,
   "create schema tpchSchema;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

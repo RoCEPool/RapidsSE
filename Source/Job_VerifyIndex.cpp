@@ -41,7 +41,7 @@ JobClass xJobClass_VerifyIndex =
   
   // help and example
   true,
-  "vfyidx <tableName> <indexName>"_Stz,
+  "vfyidx <tableNm> <indexNm>"_Stz,
   "vfyidx SUPPPLIER idx1;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

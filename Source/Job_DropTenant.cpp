@@ -41,7 +41,7 @@ JobClass xJobClass_DropTenant =
   
   // help and example
   true,
-  "drop tenant <tenantName>"_Stz,
+  "drop tenant <tenantNm>"_Stz,
   "drop tenant boray;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

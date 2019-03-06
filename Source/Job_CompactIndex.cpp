@@ -41,7 +41,7 @@ JobClass xJobClass_CompactIndex =
   
   // help
   true,
-  "<help>"_Stz,
+  "compactidx <tableNm> <indexNm>"_Stz,
   "<example>"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
@@ -162,12 +162,12 @@ bool Job_CompactIndex::bPopulateJob(TokenVec* pTokenVec)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - -
-  // set the index name
-  m_sIndexName = pTokenVec->pGet(2)->aText();
-  
-  // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
   m_sObjectName = pTokenVec->pGet(1)->aText();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // set the index name
+  m_sIndexName = pTokenVec->pGet(2)->aText();
   
   return true;
 }

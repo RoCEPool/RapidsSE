@@ -41,7 +41,7 @@ JobClass xJobClass_CreateTable =
   
   // help
   true,
-  "create table <tableName> ( <columnList> )"_Stz,
+  "create table <tableNm> ( <columnList> )"_Stz,
   
   "create table supplier (\n"
   "  S_SUPPKEY   INTEGER NOT NULL,\n"

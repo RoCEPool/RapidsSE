@@ -41,7 +41,7 @@ JobClass xJobClass_DropIndex =
   
   // true
   true,
-  "drop index <tableName> . <indexName>"_Stz,
+  "drop index <tableNm> . <indexNm>"_Stz,
   "drop index supplier.idx1;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

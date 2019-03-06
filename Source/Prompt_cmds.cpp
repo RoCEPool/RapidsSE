@@ -54,7 +54,42 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_USESCHEMA);
   JobClass::vCmds(CN_JOB_VISUALIZEINDEX);
   
+  // dist2pc
+  JobClass::vCmds(CN_JOB_ANALYZEINDEX);
+  JobClass::vCmds(CN_JOB_ANALYZETABLE);
+  JobClass::vCmds(CN_JOB_COMPACTINDEX);
+  JobClass::vCmds(CN_JOB_CONNECTCLUSTER);
+  JobClass::vCmds(CN_JOB_CREATECATALOG);
+  JobClass::vCmds(CN_JOB_CREATEINDEX);
+  JobClass::vCmds(CN_JOB_CREATESCHEMA);
+  JobClass::vCmds(CN_JOB_CREATETABLE);
+  JobClass::vCmds(CN_JOB_CREATETENANT);
+  JobClass::vCmds(CN_JOB_DROPCATALOG);
+  JobClass::vCmds(CN_JOB_DROPINDEX);
+  JobClass::vCmds(CN_JOB_DROPSCHEMA);
+  JobClass::vCmds(CN_JOB_DROPTABLE);
+  JobClass::vCmds(CN_JOB_DROPTENANT);
+  JobClass::vCmds(CN_JOB_EXPORT);
+  JobClass::vCmds(CN_JOB_INSERTROW);
+  JobClass::vCmds(CN_JOB_INSERTTABLE);
+  JobClass::vCmds(CN_JOB_LOADTABLE);
+  JobClass::vCmds(CN_JOB_LISTPARTITIONS);
+  JobClass::vCmds(CN_JOB_PUBLISH);
+  JobClass::vCmds(CN_JOB_PURGE);
+  JobClass::vCmds(CN_JOB_SANITY);
+  JobClass::vCmds(CN_JOB_SIZEINDEX);
+  JobClass::vCmds(CN_JOB_SIZETABLE);
+  JobClass::vCmds(CN_JOB_SPACE);
+  JobClass::vCmds(CN_JOB_STARTCLUSTER);
+  JobClass::vCmds(CN_JOB_STATUS);
+  JobClass::vCmds(CN_JOB_TABLESIZES);
+  JobClass::vCmds(CN_JOB_TRUNCATETABLE);
+  JobClass::vCmds(CN_JOB_VERIFYINDEX);
+  JobClass::vCmds(CN_JOB_WAITCLUSTER);
+  JobClass::vCmds(CN_JOB_WALK);
+  
 
+  
   return true;
 }
 

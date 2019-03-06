@@ -47,7 +47,7 @@ JobClass xJobClass_EndInsert =
   
   // help and example
   false,
-  "<none>"_Stz,
+  "?? Job_InsertTable"_Stz,
   "<none>"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

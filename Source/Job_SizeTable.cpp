@@ -41,7 +41,7 @@ JobClass xJobClass_SizeTable =
   
   // help and example
   true,
-  "sz <tableName>"_Stz,
+  "sz <tableNm>"_Stz,
   "sz SUPPLIER;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

@@ -41,7 +41,7 @@ JobClass xJobClass_SizeIndex =
   
   // help and example
   true,
-  "szidx <tableNam> <indexName>"_Stz,
+  "szidx <tableNm> <indexNm>"_Stz,
   "szidx supplier idx1;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned

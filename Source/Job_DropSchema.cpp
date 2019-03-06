@@ -42,7 +42,7 @@ JobClass xJobClass_DropSchema =
   
   // help and example
   true,
-  "drop schema <schemaName>"_Stz,
+  "drop schema <schemaNm>"_Stz,
   "create schema tpchSchema;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
