@@ -46,6 +46,7 @@ using namespace Prompt;
 #include "Prompt_executing.hpp"
 
 #include "Prompt_file.hpp"
+#include "Prompt_funs.hpp"
 
 #include "Prompt_giveMem.hpp"
 
