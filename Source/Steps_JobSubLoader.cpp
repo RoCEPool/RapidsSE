@@ -92,6 +92,15 @@ void Step::vJob_SubLoaderChunk(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_subLoader.chunk"_Stz);
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // stall if ready queue LP is building up (to discuss with Ray)
+  if (gpAttachMap->m_pQueues->m_pReadyQueueLP->nTasks() > 1000) {
+    mpTask->vSleepUsec(1000);
+    mpTask->vState(TK_SLEEPING);
+    mpTask->m_pDataStack->vPushBool(true);
+    EXIT();
+  }
+  
   bool bCallAgain = pJob_SubLoader->bChunk();
   
   mpTask->m_pDataStack->vPushBool(bCallAgain);
@@ -125,7 +134,7 @@ void Step::vJob_SubLoaderTerminate(MP_Task mpTask)
   
   Object* pPtrJob_SubLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
-    THROW_INVALID_DSTACK("subLoader.end"_Stz);
+    THROW_INVALID_DSTACK("job_subLoader.terminate"_Stz);
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
   
   i8 iTerminate = pJob_SubLoader->bTerminate();
