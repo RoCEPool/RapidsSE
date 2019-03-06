@@ -182,6 +182,7 @@ bool Job_SubWalker::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBWALKER,_FOOTER_);
   
+#ifdef __APPLE__
 //  if (! m_pEntryBuffer)
 //    return false;
 //
@@ -423,8 +424,10 @@ bool Job_SubWalker::bChunk(void)
   //if (iSum == 1)
     vTrace("i_CacheLines %lld sum %lld\n"_Stz,i_CacheLine,iSum);
   */
-  
   return false;
+#else
+  return false;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
