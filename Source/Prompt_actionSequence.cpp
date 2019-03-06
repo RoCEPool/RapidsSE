@@ -17,7 +17,7 @@ PromptNote mPromptNote_actionSequence (
   true,                        // enabled
 
   true,                        // visible
-  "fun help"_Stz               // help
+  "actionSequence"_Stz         // help
 );
 
 /*----------------------------------------------------------------------------*/

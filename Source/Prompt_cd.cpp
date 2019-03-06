@@ -14,7 +14,7 @@ PromptNote mPromptNote_cd (
   true,              // enabled
 
   true,              // visible
-  "fun help"_Stz     // help
+  "cd"_Stz           // help
 );
 
 /*----------------------------------------------------------------------------*/

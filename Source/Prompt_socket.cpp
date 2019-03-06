@@ -14,7 +14,7 @@ PromptNote mPromptNote_socket (
   true,                // enabled
 
   true,                // visible
-  "fun help"_Stz       // help
+  "socket"_Stz         // help
 );
 
 /*----------------------------------------------------------------------------*/

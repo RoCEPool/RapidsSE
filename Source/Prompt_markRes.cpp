@@ -15,7 +15,7 @@ PromptNote mPromptNote_markRes (
   true,              // enabled
 
   true,              // visible
-  "fun help"_Stz     // help
+  "markRes"_Stz      // help
 );
 
 extern AttachMap* gpAttachMap;

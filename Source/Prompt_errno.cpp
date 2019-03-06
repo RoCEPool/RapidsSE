@@ -14,7 +14,7 @@ PromptNote mPromptNote_errno (
   true,                 // enabled
 
   true,                 // visible
-  "fun help"_Stz        // help
+  "errno"_Stz           // help
 );
 
 /*----------------------------------------------------------------------------*/

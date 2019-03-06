@@ -15,7 +15,7 @@ PromptNote mPromptNote_sizes (
   true,                 // enabled
 
   true,                 // visible
-  "fun help"_Stz        // help
+  "sizes"_Stz           // help
 );
 
 /*----------------------------------------------------------------------------*/

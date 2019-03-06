@@ -14,7 +14,7 @@ PromptNote mPromptNote_rassert (
   true,                // enabled
 
   true,                // visible
-  "fun help"_Stz       // help
+  "rassert"_Stz        // help
 );
 
 /*----------------------------------------------------------------------------*/

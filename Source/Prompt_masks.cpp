@@ -15,7 +15,7 @@ PromptNote mPromptNote_masks (
   true,                 // enabled
 
   true,                 // visible
-  "fun help"_Stz        // help
+  "masks"_Stz           // help
 );
 
 extern AttachMap*  gpAttachMap;

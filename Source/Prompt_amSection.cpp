@@ -14,7 +14,7 @@ PromptNote mPromptNote_amSection (
   true,                   // enabled
 
   true,                   // visible
-  "fun help"_Stz          // help
+  "amSection"_Stz         // help
 );
 
 /*----------------------------------------------------------------------------*/

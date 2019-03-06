@@ -14,7 +14,7 @@ PromptNote mPromptNote_timerStart (
   true,                    // enabled
 
   true,                    // visible
-  "fun help"_Stz           // help
+  "timerStart"_Stz         // help
 );
 
 Timer gxPromptTimer;  // the timer

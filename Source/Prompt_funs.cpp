@@ -14,7 +14,7 @@ PromptNote mPromptNote_funs (
   true,                  // enabled
 
   true,                  // visible
-  "fun help"_Stz         // help
+  "funs"_Stz             // help
 );
 
 extern PromptCatalog gxPromptCatalog;

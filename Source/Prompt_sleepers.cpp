@@ -14,7 +14,7 @@ PromptNote mPromptNote_sleepers (
   true,                  // enabled
 
   true,                  // visible
-  "fun help"_Stz         // help
+  "sleepers"_Stz         // help
 );
 
 /*----------------------------------------------------------------------------*/

@@ -17,7 +17,7 @@ PromptNote mPromptNote_hw (
   true,                 // enabled
 
   true,                 // visible
-  "fun help"_Stz        // help
+  "hw"_Stz              // help
 );
 
 /*----------------------------------------------------------------------------*/

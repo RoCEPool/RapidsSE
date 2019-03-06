@@ -14,7 +14,7 @@ PromptNote mPromptNote_jobClass (
   true,                  // enabled
 
   true,                  // visible
-  "fun help"_Stz         // help
+  "jobClass"_Stz         // help
 );
 
 extern PromptCatalog gxPromptCatalog;

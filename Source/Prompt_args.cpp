@@ -14,8 +14,8 @@ PromptNote mPromptNote_args (
   bPrompt_args,      // prompt function
   true,              // enabled
 
-  true,               // visible
-  "fun help"_Stz      // help
+  true,              // visible
+  "args"_Stz         // help
 );
 
 extern Arguments gxArguments;

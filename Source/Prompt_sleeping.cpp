@@ -15,7 +15,7 @@ PromptNote mPromptNote_sleeping (
   true,                   // enabled
 
   true,                   // visible
-  "fun help"_Stz          // help
+  "sleeping"_Stz          // help
 );
 
 extern AttachMap*  gpAttachMap;

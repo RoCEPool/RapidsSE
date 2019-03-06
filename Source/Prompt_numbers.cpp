@@ -15,7 +15,7 @@ PromptNote mPromptNote_numbers (
   true,                 // enabled
 
   true,                 // visible
-  "fun help"_Stz        // help
+  "numbers"_Stz         // help
 );
 
 extern AttachMap*  gpAttachMap;

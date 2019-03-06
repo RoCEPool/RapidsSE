@@ -14,7 +14,7 @@ PromptNote mPromptNote_jobcat (
   true,                // enabled
 
   true,                // visible
-  "fun help"_Stz       // help
+  "jobcat"_Stz         // help
 );
 
 extern PromptCatalog gxPromptCatalog;

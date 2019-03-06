@@ -14,7 +14,7 @@ PromptNote mPromptNote_markJob (
   true,              // enabled
 
   true,              // visible
-  "fun help"_Stz     // help
+  "markJob"_Stz      // help
 );
 
 extern PromptCatalog gxPromptCatalog;

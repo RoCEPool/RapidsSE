@@ -15,7 +15,7 @@ PromptNote mPromptNote_classes (
   true,                 // enabled
 
   true,                 // visible
-  "fun help"_Stz        // help
+  "classes"_Stz         // help
 );
 
 extern AttachMap*  gpAttachMap;

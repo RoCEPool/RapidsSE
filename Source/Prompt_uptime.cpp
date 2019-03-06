@@ -15,7 +15,7 @@ PromptNote mPromptNote_uptime (
   true,                  // enabled
 
   true,                  // visible
-  "fun help"_Stz         // help
+  "uptime"_Stz           // help
 );
 
 extern AttachMap* gpAttachMap;

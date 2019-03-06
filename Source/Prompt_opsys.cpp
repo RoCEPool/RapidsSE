@@ -14,7 +14,7 @@ PromptNote mPromptNote_opsys (
   true,               // enabled
 
   true,               // visible
-  "fun help"_Stz      // help
+  "opsys"_Stz         // help
 );
 
 /*----------------------------------------------------------------------------*/

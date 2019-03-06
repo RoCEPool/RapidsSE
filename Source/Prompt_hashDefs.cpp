@@ -15,7 +15,7 @@ PromptNote mPromptNote_hashDefs (
   true,                 // enabled
 
   true,                 // visible
-  "fun help"_Stz        // help
+  "hashDefs"_Stz        // help
 );
 
 extern AttachMap*  gpAttachMap;

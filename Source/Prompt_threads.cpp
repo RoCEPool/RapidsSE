@@ -15,7 +15,7 @@ PromptNote mPromptNote_threads (
   true,                 // enabled
 
   true,                 // visible
-  "fun help"_Stz        // help
+  "threads"_Stz         // help
 );
 
 extern AttachMap*  gpAttachMap;

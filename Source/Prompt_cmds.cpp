@@ -14,7 +14,7 @@ PromptNote mPromptNote_cmds (
   true,                  // enabled
 
   true,                  // visible
-  "fun help"_Stz         // help
+  "cmds"_Stz             // help
 );
 
 extern PromptCatalog gxPromptCatalog;

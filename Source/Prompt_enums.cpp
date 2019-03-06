@@ -14,7 +14,7 @@ PromptNote mPromptNote_enums (
   true,                 // enabled
 
   true,                 // visible
-  "fun help"_Stz        // help
+  "enums"_Stz           // help
 );
 
 /*----------------------------------------------------------------------------*/

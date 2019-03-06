@@ -17,7 +17,7 @@ PromptNote mPromptNote_tempName (
   true,                  // enabled
 
   true,                  // visible
-  "fun help"_Stz         // help
+  "tempName"_Stz         // help
 );
 
 /*----------------------------------------------------------------------------*/

@@ -14,7 +14,7 @@ PromptNote mPromptNote_since (
   true,               // enabled
 
   true,               // visible
-  "fun help"_Stz      // help
+  "since"_Stz         // help
 );
 
 /*----------------------------------------------------------------------------*/

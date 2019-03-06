@@ -17,7 +17,7 @@ PromptNote mPromptNote_activityMap (
   true,                     // enabled
 
   true,                     // visible
-  "fun help"_Stz            // help
+  "activityMap"_Stz         // help
 );
 
 /*----------------------------------------------------------------------------*/

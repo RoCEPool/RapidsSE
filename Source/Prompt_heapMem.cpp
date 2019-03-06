@@ -14,7 +14,7 @@ PromptNote mPromptNote_heapMem (
   true,                 // enabled
 
   true,                 // visible
-  "fun help"_Stz        // help
+  "heapMem"_Stz         // help
 );
 
 /*----------------------------------------------------------------------------*/

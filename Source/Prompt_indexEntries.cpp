@@ -17,7 +17,7 @@ PromptNote mPromptNote_indexEntries (
   true,                       // enabled
 
   true,                       // visible
-  "fun help"_Stz              // help
+  "indexEntries"_Stz          // help
 );
 
 /*----------------------------------------------------------------------------*/
