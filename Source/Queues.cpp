@@ -303,11 +303,6 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
 
   ASSERT(m_pReadyQueue->bIsLocked());
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // stall if ready queue is building up
-  while (gpAttachMap->m_pQueues->m_pReadyQueue->nTasks() > 1000)
-    Pthread::vSleepMilli(1,pTask->pJob()->eClass());
-  
   m_pReadyQueue->vAddTask(pTask);
   
   ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE);
