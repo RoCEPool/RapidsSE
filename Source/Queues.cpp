@@ -1289,8 +1289,12 @@ void Queues::vScheduleReadyTask(Task* pTask)
     pIdleThread->vExecuteTask(pTask);
   }
   else {
-    if (pTask->bIsNonPartitioned())
-      vAddToReadyQueue(pTask);
+    if (pTask->bIsNonPartitioned()) {
+      if (pTask->pJob()->m_pJobClass->m_ePrority == PY_NORMAL)
+        vAddToReadyQueue(pTask);
+      else
+        vAddToReadyQueueLP(pTask);
+    }
     else
       vAddToReadySlotQueue(pTask);
   }
@@ -1468,7 +1472,10 @@ void Queues::vScheduleYieldedTask(Task* pTask)
     }
     else {
       pTask->vState(TK_READY);
-      vAddToReadyQueue_NL(pTask);
+      if (pTask->pJob()->m_pJobClass->m_ePrority == PY_NORMAL)
+        vAddToReadyQueue_NL(pTask);
+      else
+        vAddToReadyQueueLP_NL(pTask);
       m_pReadyQueue->vDropLock();
     }
 
