@@ -7,27 +7,27 @@ refresh;
 success
 
 -- create a table with an index
-create table rapidsse.public.T1000 (
-  T1000_key   INTEGER ,
-  T1000_name  VARCHAR(32),
-  T1000_100   INTEGER,
-  T1000_10    INTEGER
+create table rapidsse.public.G1000 (
+  G1000_key   INTEGER ,
+  G1000_name  VARCHAR(32),
+  G1000_100   INTEGER,
+  G1000_10    INTEGER
 );
 success
 
--- insert data into T1000
-insert into rapidsse.public.T1000 values(0,'zero',0,0);
+-- insert data into G1000
+insert into rapidsse.public.G1000 values(0,'zero',0,0);
 success
 
-//insert into rapidsse.public.T1000 values(1,'one',1,null);
+//insert into rapidsse.public.G1000 values(1,'one',1,null);
 //mute
 //CHECK_RESULT
 //success;
  
-insert into rapidsse.public.T1000 values(2,'two',2,2);
+insert into rapidsse.public.G1000 values(2,'two',2,2);
 success
 
-insert into rapidsse.public.T1000 values(3,'three',3,3);
+insert into rapidsse.public.G1000 values(3,'three',3,3);
 success
 
 
@@ -47,7 +47,7 @@ rows:
 Loop 100 {
   
 -- insert-select
-insert into rapidsse.public.R1000 select * from rapidsse.public.T1000;
+insert into rapidsse.public.R1000 select * from rapidsse.public.G1000;
 success
 
 }
@@ -57,7 +57,7 @@ select * from rapidsse.public.R1000;
 rows: 300
 
 CLEANUP {
-  drop table rapidsse.public.T1000;
+  drop table rapidsse.public.G1000;
   mute
   drop table rapidsse.public.R1000;
   mute
