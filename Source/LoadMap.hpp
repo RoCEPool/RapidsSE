@@ -22,9 +22,10 @@ namespace Chunks
   
     Lock m_okLock;        // lock over the following map information
     struct {
-      i8   iaEndLoc[C_LOADMAP_ENTRIES]; // array of chunk end file locations
-      i8   nEntries;     // logical limit of iaEndLoc[]
-      i8   i_Entry;      // which read-chunk to be taken by next subLoader
+      i8 iaEndLoc[C_LOADMAP_ENTRIES]; // array of chunk end file locations
+      i8 nEntries;     // logical limit of iaEndLoc[]
+      i8 i_Entry;      // which read-chunk to be taken by next subLoader
+      i8 iProgress;    // progress
     } m_xMap;
   
     Footer m_xFooter;

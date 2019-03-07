@@ -53,8 +53,8 @@ print "loading lineitem.csv..." ;
 
 space;
 timerStart;
-ld lineitem "/tpch/SF1/lineitem.csv" ;
-//ld lineitem "/tpch/SF10/lineitem.csv" ;
+//ld lineitem "/tpch/SF1/lineitem.csv" ;
+ld lineitem "/tpch/SF10/lineitem.csv" ;
 timerEnd;
 
 

@@ -58,6 +58,7 @@ LoadMap::LoadMap(void)
     m_xMap.iaEndLoc[i_Entry] = -1;
   m_xMap.nEntries = 0;
   m_xMap.i_Entry = 0;
+  m_xMap.iProgress = 0;
 
   _checkInitialised_(CN_LOADMAP);
   
@@ -285,8 +286,18 @@ bool LoadMap::bGetNextMapping(i8& iSeek, i8& nBytes, i8& i_Entry)
   // which chunk is it
   i_Entry = m_xMap.i_Entry++;
   
+  bool bProgressPrint = false;
+  i8 iPercent = IntLib::iPercent(i_Entry, m_xMap.nEntries);
+  if (iPercent > m_xMap.iProgress) {
+    bProgressPrint = true;
+    m_xMap.iProgress = iPercent;
+  }
+  
   // ok to drop the lock
   m_okLock.vDropWrite();
+  
+  if (bProgressPrint)
+    vTrace("Load Progress: %lld%%\n"_Stz,iPercent);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
