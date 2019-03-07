@@ -98,13 +98,12 @@ void Step::vJob_SubLoaderChunk(MP_Task mpTask)
     mpTask->vSleepUsec(1000);
     mpTask->vState(TK_SLEEPING);
     mpTask->m_pDataStack->vPushBool(true);
-    EXIT();
+  }
+  else {
+    bool bCallAgain = pJob_SubLoader->bChunk();
+    mpTask->m_pDataStack->vPushBool(bCallAgain);
   }
   
-  bool bCallAgain = pJob_SubLoader->bChunk();
-  
-  mpTask->m_pDataStack->vPushBool(bCallAgain);
-
   EXIT();
 }
 
