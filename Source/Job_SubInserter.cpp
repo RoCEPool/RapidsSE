@@ -12,7 +12,7 @@ extern AttachMap* gpAttachMap;
 JobClass xJobClass_SubInserter =
 {
   CN_JOB_SUBINSERTER,       // class enum
-  JK_LOCAL,                 // job kind
+  JK_CHILD,                 // job kind
   "insert into table"_Stz,  // comment about the job
   "insert"_Stz,             // the prompt command
   "rows"_Stz,               // the second word
