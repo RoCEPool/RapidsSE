@@ -97,6 +97,9 @@ void KeyData::vKey(KeyWrk& xKeyWrk)
 /*----------------------------------------------------------------------------*/
 i8 KeyData::nKeySize(IdxColVec* pIdxColVec)
 {
+  
+  // we should NEVER be calling this
+  RASSERT(0);
   i8 nCols = pIdxColVec->nItems();
   i8 nKeySize = 0;
   i8 nBytes;
