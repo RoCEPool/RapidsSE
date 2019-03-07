@@ -319,8 +319,21 @@ bool ItemHeap::bHasFreeItem(void)
   if (C_NO_MORE_ITEMS == m_i_FreeOffsetChain)
     return false;
   
-  RASSERT(nItems() < C_MAX_ITEMS - 16);
+  //RASSERT(nItems() < C_MAX_ITEMS - 16);
 
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does buffer have a free item no in free chain ?                            */
+/*----------------------------------------------------------------------------*/
+bool ItemHeap::bHasFreeItemHidden(void)
+{
+  // we allow for only C_MAX_ITEMS - 16 entries in hidden index
+  if (nItems() >= C_MAX_ITEMS - 16) {
+    return false;
+  }
+  
   return true;
 }
 
