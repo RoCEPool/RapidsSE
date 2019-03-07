@@ -12,7 +12,7 @@ extern AttachMap* gpAttachMap;
 JobClass xJobClass_CopyBuffer =
 {
   CN_JOB_COPYBUFFER,        // class enum
-  JK_LOCAL,                 // job kind
+  JK_GRANDKID,              // job kind
   "copy buffer"_Stz,        // comment about the job
   ""_Stz,                   // the prompt command
   ""_Stz,                   // the second word
