@@ -1466,21 +1466,25 @@ void Queues::vScheduleYieldedTask(Task* pTask)
     //     continue to execute the yield task.
     //   Otherwise we add the task to the ready queue
     
-    m_pReadyQueue->vGrabLock();
-    i8 iLengthReadyQueue = nTasksReady();
-    if (0 == iLengthReadyQueue) {
-      m_pReadyQueue->vDropLock();
-      pCallingThread->vReExecuteTask(pTask);
+    if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
+      m_pReadyQueue->vGrabLock();
+      i8 iLengthReadyQueue = nTasksReady();
+      if (0 == iLengthReadyQueue) {
+        m_pReadyQueue->vDropLock();
+        pCallingThread->vReExecuteTask(pTask);
+      }
+      else {
+        pTask->vState(TK_READY);
+        vAddToReadyQueue_NL(pTask);
+        m_pReadyQueue->vDropLock();
+      }
     }
     else {
+      m_pReadyQueueLP->vGrabLock();
       pTask->vState(TK_READY);
-      if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
-        vAddToReadyQueue_NL(pTask);
-      else
-        vAddToReadyQueueLP_NL(pTask);
-      m_pReadyQueue->vDropLock();
+      vAddToReadyQueueLP_NL(pTask);
+      m_pReadyQueueLP->vDropLock();
     }
-
     return;
   }
 
