@@ -7,7 +7,7 @@
 PromptNote mPromptNote_timerEnd (
   PF_TIMEREND,           // prompt function
   "Prompt_timerEnd"_Stz, // name of the prompt function
-  "comment"_Stz,         // comment about the functopm
+  "comment"_Stz,         // comment about the function
   "timerEnd"_Stz,        // the prompt command
   nullptr,               // the second word
   bPrompt_timerEnd,      // prompt function

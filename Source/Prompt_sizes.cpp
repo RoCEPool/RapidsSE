@@ -8,7 +8,7 @@
 PromptNote mPromptNote_sizes (
   PF_SIZES,             // prompt function
   "Prompt_sizes"_Stz,   // name of the prompt function
-  "comment"_Stz,        // comment about the functopm
+  "comment"_Stz,        // comment about the function
   "sizes"_Stz,          // the prompt command
   nullptr,              // the second word
   bPrompt_sizes,        // prompt function

@@ -7,7 +7,7 @@
 PromptNote mPromptNote_file (
   PF_FILE,           // prompt function
   "Prompt_file"_Stz, // name of the prompt function
-  "comment"_Stz,     // comment about the functopm
+  "comment"_Stz,     // comment about the function
   "file"_Stz,        // the prompt command
   nullptr,           // the second word
   bPrompt_file,      // prompt function

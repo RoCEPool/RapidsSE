@@ -7,7 +7,7 @@
 PromptNote mPromptNote_heapMem (
   PF_HEAPMEM,           // prompt function
   "Prompt_heapMem"_Stz, // name of the prompt function
-  "comment"_Stz,        // comment about the functopm
+  "comment"_Stz,        // comment about the function
   "heapMem"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_heapMem,      // prompt function

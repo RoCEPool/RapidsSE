@@ -8,7 +8,7 @@
 PromptNote mPromptNote_uptime (
   PF_UPTIME,             // prompt function
   "Prompt_uptime"_Stz,   // name of the prompt function
-  "comment"_Stz,         // comment about the functopm
+  "comment"_Stz,         // comment about the function
   "uptime"_Stz,          // the prompt command
   nullptr,               // the second word
   bPrompt_uptime,        // prompt function

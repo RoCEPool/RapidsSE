@@ -7,7 +7,7 @@
 PromptNote mPromptNote_sleepers (
   PF_SLEEPERS,           // prompt function
   "Prompt_sleepers"_Stz, // name of the prompt function
-  "comment"_Stz,         // comment about the functopm
+  "comment"_Stz,         // comment about the function
   "sleepers"_Stz,        // the prompt command
   nullptr,               // the second word
   bPrompt_sleepers,      // prompt function

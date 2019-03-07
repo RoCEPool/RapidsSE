@@ -8,7 +8,7 @@
 PromptNote mPromptNote_pmc (
   PF_PMC,               // prompt function
   "Prompt_pmc"_Stz,     // name of the prompt function
-  "comment"_Stz,        // comment about the functopm
+  "comment"_Stz,        // comment about the function
   "pmc"_Stz,            // the prompt command
   nullptr,              // the second word
   bPrompt_pmc,          // prompt function

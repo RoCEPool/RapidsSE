@@ -8,7 +8,7 @@
 PromptNote mPromptNote_markRes (
   PF_MARKRES,           // prompt function
   "Prompt_markRes"_Stz, // name of the prompt function
-  "comment"_Stz,     // comment about the functopm
+  "comment"_Stz,     // comment about the function
   "markRes"_Stz,     // the prompt command
   nullptr,           // the second word
   bPrompt_markRes,   // prompt function

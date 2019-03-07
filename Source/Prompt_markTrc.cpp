@@ -8,7 +8,7 @@
 PromptNote mPromptNote_markTrc (
   PF_MARKTRC,           // prompt function
   "Prompt_markTrc"_Stz, // name of the prompt function
-  "comment"_Stz,        // comment about the functopm
+  "comment"_Stz,        // comment about the function
   "markTrc"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_markTrc,      // prompt function

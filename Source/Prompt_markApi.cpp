@@ -8,7 +8,7 @@
 PromptNote mPromptNote_markApi (
   PF_MARKAPI,           // prompt function
   "Prompt_markApi"_Stz, // name of the prompt function
-  "comment"_Stz,     // comment about the functopm
+  "comment"_Stz,     // comment about the function
   "markApi"_Stz,     // the prompt command
   nullptr,           // the second word
   bPrompt_markApi,   // prompt function

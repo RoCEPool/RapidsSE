@@ -7,7 +7,7 @@
 PromptNote mPromptNote_enums (
   PF_ENUMS,             // prompt function
   "Prompt_enums"_Stz,   // name of the prompt function
-  "comment"_Stz,        // comment about the functopm
+  "comment"_Stz,        // comment about the function
   "enums"_Stz,          // the prompt command
   nullptr,              // the second word
   bPrompt_enums,        // prompt function

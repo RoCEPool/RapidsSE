@@ -7,7 +7,7 @@
 PromptNote mPromptNote_hexdump (
   PF_HEXDUMP,           // prompt function
   "Prompt_hexdump"_Stz, // name of the prompt function
-  "comment"_Stz,        // comment about the functopm
+  "comment"_Stz,        // comment about the function
   "hexdump"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_hexdump,      // prompt function

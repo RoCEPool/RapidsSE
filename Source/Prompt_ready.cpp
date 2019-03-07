@@ -8,7 +8,7 @@
 PromptNote mPromptNote_ready (
   PF_READY,               // prompt function
   "Prompt_ready"_Stz,     // name of the prompt function
-  "comment"_Stz,          // comment about the functopm
+  "comment"_Stz,          // comment about the function
   "ready"_Stz,            // the prompt command
   nullptr,                // the second word
   bPrompt_ready,          // prompt function

@@ -8,7 +8,7 @@
 PromptNote mPromptNote_executing (
   PF_EXECUTING,           // prompt function
   "Prompt_executing"_Stz, // name of the prompt function
-  "comment"_Stz,          // comment about the functopm
+  "comment"_Stz,          // comment about the function
   "executing"_Stz,        // the prompt command
   nullptr,                // the second word
   bPrompt_executing,      // prompt function

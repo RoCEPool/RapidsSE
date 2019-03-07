@@ -7,7 +7,7 @@
 PromptNote mPromptNote_cd (
   PF_CD,             // prompt function
   "Prompt_cd"_Stz,   // name of the prompt function
-  "comment"_Stz,     // comment about the functopm
+  "comment"_Stz,     // comment about the function
   "cd"_Stz,          // the prompt command
   nullptr,           // the second word
   bPrompt_cd,        // prompt function

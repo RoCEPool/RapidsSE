@@ -8,7 +8,7 @@
 PromptNote mPromptNote_classes (
   PF_CLASSES,           // prompt function
   "Prompt_classes"_Stz, // name of the prompt function
-  "comment"_Stz,        // comment about the functopm
+  "comment"_Stz,        // comment about the function
   "classes"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_classes,      // prompt function

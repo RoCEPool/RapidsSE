@@ -7,7 +7,7 @@
 PromptNote mPromptNote_am (
   PF_AM,             // prompt function
   "Prompt_am"_Stz,   // name of the prompt function
-  "comment"_Stz,     // comment about the functopm
+  "comment"_Stz,     // comment about the function
   "am"_Stz,          // the prompt command
   nullptr,           // the second word
   bPrompt_am,        // prompt function

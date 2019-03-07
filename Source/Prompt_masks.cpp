@@ -8,7 +8,7 @@
 PromptNote mPromptNote_masks (
   PF_MASKS,             // prompt function
   "Prompt_masks"_Stz,   // name of the prompt function
-  "comment"_Stz,        // comment about the functopm
+  "comment"_Stz,        // comment about the function
   "masks"_Stz,          // the prompt command
   nullptr,              // the second word
   bPrompt_masks,        // prompt function

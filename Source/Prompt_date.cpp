@@ -7,7 +7,7 @@
 PromptNote mPromptNote_date (
   PF_DATE,           // prompt function
   "Prompt_date"_Stz, // name of the prompt function
-  "comment"_Stz,     // comment about the functopm
+  "comment"_Stz,     // comment about the function
   "date"_Stz,        // the prompt command
   nullptr,           // the second word
   bPrompt_date,      // prompt function

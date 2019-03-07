@@ -7,7 +7,7 @@
 PromptNote mPromptNote_se (
   PF_SE,           // prompt function
   "Prompt_se"_Stz, // name of the prompt function
-  "comment"_Stz,   // comment about the functopm
+  "comment"_Stz,   // comment about the function
   "se"_Stz,        // the prompt command
   nullptr,         // the second word
   bPrompt_se,      // prompt function

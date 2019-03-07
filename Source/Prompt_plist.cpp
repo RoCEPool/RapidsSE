@@ -8,7 +8,7 @@
 PromptNote mPromptNote_plist (
   PF_PLIST,             // prompt function
   "Prompt_plist"_Stz,   // name of the prompt function
-  "comment"_Stz,        // comment about the functopm
+  "comment"_Stz,        // comment about the function
   "plist"_Stz,          // the prompt command
   nullptr,              // the second word
   bPrompt_plist,        // prompt function

@@ -7,7 +7,7 @@
 PromptNote mPromptNote_since (
   PF_SINCE,           // prompt function
   "Prompt_since"_Stz, // name of the prompt function
-  "comment"_Stz,      // comment about the functopm
+  "comment"_Stz,      // comment about the function
   "since"_Stz,        // the prompt command
   nullptr,            // the second word
   bPrompt_since,      // prompt function

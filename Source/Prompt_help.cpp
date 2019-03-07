@@ -7,7 +7,7 @@
 PromptNote mPromptNote_help (
   PF_HELP,           // prompt function
   "Prompt_help"_Stz, // name of the prompt function
-  "comment"_Stz,     // comment about the functopm
+  "comment"_Stz,     // comment about the function
   "man"_Stz,         // the prompt command
   nullptr,           // the second word
   bPrompt_help,      // prompt function

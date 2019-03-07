@@ -7,7 +7,7 @@
 PromptNote mPromptNote_errno (
   PF_ERRNO,             // prompt function
   "Prompt_errno"_Stz,   // name of the prompt function
-  "comment"_Stz,        // comment about the functopm
+  "comment"_Stz,        // comment about the function
   "errno"_Stz,          // the prompt command
   nullptr,              // the second word
   bPrompt_errno,        // prompt function

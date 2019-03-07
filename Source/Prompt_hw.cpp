@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 PromptNote mPromptNote_hw (
   PF_HW,                // prompt function
   "Prompt_hw"_Stz,      // name of the prompt function
-  "comment"_Stz,        // comment about the functopm
+  "comment"_Stz,        // comment about the function
   "hw"_Stz,             // the prompt command
   nullptr,              // the second word
   bPrompt_hw,           // prompt function

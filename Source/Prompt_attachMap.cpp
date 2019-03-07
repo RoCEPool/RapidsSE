@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 PromptNote mPromptNote_attachMap (
   PF_ATTACHMAP,           // prompt function
   "Prompt_attachMap"_Stz, // name of the prompt function
-  "comment"_Stz,          // comment about the functopm
+  "comment"_Stz,          // comment about the function
   "attachMap"_Stz,        // the prompt command
   nullptr,                // the second word
   bPrompt_attachMap,      // prompt function

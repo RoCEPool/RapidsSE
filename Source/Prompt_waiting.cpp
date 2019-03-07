@@ -8,7 +8,7 @@
 PromptNote mPromptNote_waiting (
   PF_WAITING,             // prompt function
   "Prompt_waiting"_Stz,   // name of the prompt function
-  "comment"_Stz,          // comment about the functopm
+  "comment"_Stz,          // comment about the function
   "waiting"_Stz,          // the prompt command
   nullptr,                // the second word
   bPrompt_waiting,        // prompt function

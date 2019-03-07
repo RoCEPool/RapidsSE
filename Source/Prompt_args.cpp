@@ -8,7 +8,7 @@
 PromptNote mPromptNote_args (
   PF_ARGS,           // prompt function
   "Prompt_args"_Stz, // name of the prompt function
-  "comment"_Stz,     // comment about the functopm
+  "comment"_Stz,     // comment about the function
   "args"_Stz,        // the prompt command
   nullptr,           // the second word
   bPrompt_args,      // prompt function

@@ -8,7 +8,7 @@
 PromptNote mPromptNote_markAct (
   PF_MARKACT,           // prompt function
   "Prompt_markAct"_Stz, // name of the prompt function
-  "comment"_Stz,        // comment about the functopm
+  "comment"_Stz,        // comment about the function
   "markAct"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_markAct,      // prompt function

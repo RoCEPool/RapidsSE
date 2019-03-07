@@ -8,7 +8,7 @@
 PromptNote mPromptNote_taskQueues (
   PF_TASKQUEUES,            // prompt function
   "bPrompt_taskQueues"_Stz, // name of the prompt function
-  "comment"_Stz,        // comment about the functopm
+  "comment"_Stz,        // comment about the function
   "taskQueues"_Stz,     // the prompt command
   nullptr,              // the second word
   bPrompt_taskQueues,   // prompt function

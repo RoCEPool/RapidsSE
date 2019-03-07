@@ -7,7 +7,7 @@
 PromptNote mPromptNote_question (
   PF_QUESTION,           // prompt function
   "Prompt_question"_Stz, // name of the prompt function
-  "comment"_Stz,         // comment about the functopm
+  "comment"_Stz,         // comment about the function
   "?"_Stz,               // the prompt command
   nullptr,               // the second word
   bPrompt_question,      // prompt function

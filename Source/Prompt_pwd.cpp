@@ -7,7 +7,7 @@
 PromptNote mPromptNote_pwd (
   PF_PWD,             // prompt function
   "Prompt_pwd"_Stz,   // name of the prompt function
-  "comment"_Stz,      // comment about the functopm
+  "comment"_Stz,      // comment about the function
   "pwd"_Stz,          // the prompt command
   nullptr,            // the second word
   bPrompt_pwd,        // prompt function

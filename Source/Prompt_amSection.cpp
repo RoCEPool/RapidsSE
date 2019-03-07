@@ -7,7 +7,7 @@
 PromptNote mPromptNote_amSection (
   PF_AMSECTION,           // prompt function
   "Prompt_amSection"_Stz, // name of the prompt function
-  "comment"_Stz,          // comment about the functopm
+  "comment"_Stz,          // comment about the function
   "amSection"_Stz,        // the prompt command
   nullptr,                // the second word
   bPrompt_amSection,      // prompt function

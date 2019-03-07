@@ -7,7 +7,7 @@
 PromptNote mPromptNote_opsys (
   PF_OPSYS,           // prompt function
   "Prompt_opsys"_Stz, // name of the prompt function
-  "comment"_Stz,      // comment about the functopm
+  "comment"_Stz,      // comment about the function
   "opsys"_Stz,        // the prompt command
   nullptr,            // the second word
   bPrompt_opsys,      // prompt function

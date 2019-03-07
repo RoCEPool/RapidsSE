@@ -8,7 +8,7 @@
 PromptNote mPromptNote_hashDefs (
   PF_HASHDEFS,          // prompt function
   "Prompt_numbers"_Stz, // name of the prompt function
-  "comment"_Stz,        // comment about the functopm
+  "comment"_Stz,        // comment about the function
   "hashDefs"_Stz,       // the prompt command
   nullptr,              // the second word
   bPrompt_hashDefs,     // prompt function

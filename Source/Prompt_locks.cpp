@@ -8,7 +8,7 @@
 PromptNote mPromptNote_locks (
   PF_LOCKS,             // prompt function
   "Prompt_locks"_Stz,   // name of the prompt function
-  "comment"_Stz,        // comment about the functopm
+  "comment"_Stz,        // comment about the function
   "locks"_Stz,          // the prompt command
   nullptr,              // the second word
   bPrompt_locks,        // prompt function

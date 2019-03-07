@@ -7,7 +7,7 @@
 PromptNote mPromptNote_bye (
   PF_BYE,            // prompt function
   "Prompt_bye"_Stz,  // name of the prompt function
-  "comment"_Stz,     // comment about the functopm
+  "comment"_Stz,     // comment about the function
   "bye"_Stz,         // the prompt command
   nullptr,           // the second word
   bPrompt_bye,       // prompt function

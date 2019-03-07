@@ -8,7 +8,7 @@
 PromptNote mPromptNote_olist (
   PF_OLIST,             // prompt function
   "Prompt_olist"_Stz,   // name of the prompt function
-  "comment"_Stz,        // comment about the functopm
+  "comment"_Stz,        // comment about the function
   "olist"_Stz,          // the prompt command
   nullptr,              // the second word
   bPrompt_olist,        // prompt function

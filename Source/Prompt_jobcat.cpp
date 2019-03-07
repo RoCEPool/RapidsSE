@@ -7,7 +7,7 @@
 PromptNote mPromptNote_jobcat (
   PF_JOBCAT,           // prompt function
   "Prompt_jobcat"_Stz, // name of the prompt function
-  "comment"_Stz,       // comment about the functopm
+  "comment"_Stz,       // comment about the function
   "jobcat"_Stz,        // the prompt command
   nullptr,             // the second word
   bPrompt_jobcat,      // prompt function

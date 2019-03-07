@@ -8,7 +8,7 @@
 PromptNote mPromptNote_sleeping (
   PF_SLEEPING,            // prompt function
   "Prompt_sleeping"_Stz,  // name of the prompt function
-  "comment"_Stz,          // comment about the functopm
+  "comment"_Stz,          // comment about the function
   "sleeping"_Stz,         // the prompt command
   nullptr,                // the second word
   bPrompt_sleeping,       // prompt function

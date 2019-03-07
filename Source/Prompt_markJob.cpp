@@ -7,7 +7,7 @@
 PromptNote mPromptNote_markJob (
   PF_MARKJOB,           // prompt function
   "Prompt_markJob"_Stz, // name of the prompt function
-  "comment"_Stz,     // comment about the functopm
+  "comment"_Stz,     // comment about the function
   "markJob"_Stz,     // the prompt command
   nullptr,           // the second word
   bPrompt_markJob,   // prompt function

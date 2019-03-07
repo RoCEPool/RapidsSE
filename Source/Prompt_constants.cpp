@@ -8,7 +8,7 @@
 PromptNote mPromptNote_constants (
   PF_CONSTANTS,            // prompt function
   "Prompt_constants"_Stz,  // name of the prompt function
-  "comment"_Stz,           // comment about the functopm
+  "comment"_Stz,           // comment about the function
   "constants"_Stz,         // the prompt command
   nullptr,                 // the second word
   bPrompt_constants,       // prompt function

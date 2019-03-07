@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 PromptNote mPromptNote_ssn (
   PF_SSN,                 // prompt function
   "Prompt_ssn"_Stz,       // name of the prompt function
-  "comment"_Stz,          // comment about the functopm
+  "comment"_Stz,          // comment about the function
   "ssn"_Stz,              // the prompt command
   nullptr,                // the second word
   bPrompt_ssn,            // prompt function

@@ -7,7 +7,7 @@
 PromptNote mPromptNote_memory (
   PF_MEMORY,           // prompt function
   "Prompt_memory"_Stz, // name of the prompt function
-  "comment"_Stz,       // comment about the functopm
+  "comment"_Stz,       // comment about the function
   "memory"_Stz,        // the prompt command
   nullptr,             // the second word
   bPrompt_memory,      // prompt function

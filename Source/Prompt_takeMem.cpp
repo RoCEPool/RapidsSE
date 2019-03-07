@@ -10,7 +10,7 @@ extern AttachMap*   gpAttachMap;
 PromptNote mPromptNote_takeMem (
   PF_TAKEMEM,           // prompt function
   "Prompt_takeMem"_Stz, // name of the prompt function
-  "comment"_Stz,        // comment about the functopm
+  "comment"_Stz,        // comment about the function
   "takeMem"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_takeMem,      // prompt function

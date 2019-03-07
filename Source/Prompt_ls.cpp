@@ -7,7 +7,7 @@
 PromptNote mPromptNote_ls (
   PF_LS,             // prompt function
   "Prompt_ls"_Stz,   // name of the prompt function
-  "comment"_Stz,     // comment about the functopm
+  "comment"_Stz,     // comment about the function
   "ls"_Stz,          // the prompt command
   nullptr,           // the second word
   bPrompt_ls,        // prompt function

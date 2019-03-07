@@ -8,7 +8,7 @@
 PromptNote mPromptNote_config (
   PF_CONFIG,            // prompt function
   "Prompt_config"_Stz,  // name of the prompt function
-  "comment"_Stz,        // comment about the functopm
+  "comment"_Stz,        // comment about the function
   "config"_Stz,         // the prompt command
   nullptr,              // the second word
   bPrompt_config,       // prompt function
