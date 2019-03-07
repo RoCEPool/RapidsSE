@@ -180,17 +180,24 @@ bool Job_WriteBuffer::bInsertRows(void)
   i8 iTxId = 0;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert the working buffer
-  m_pTable->vInsertEntries(iTxId, iSlot, m_pCurrentBuffer);
+  // insert entries
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null the current buffer as its been appended to the table
-  m_pCurrentBuffer = nullptr;
+  if (! gpBufferPool->bLowMemory()) {
+    // insert the working buffer
+    m_pTable->vInsertEntries(iTxId, iSlot, m_pCurrentBuffer);
+
+    // null the current buffer as its been appended to the table
+    m_pCurrentBuffer = nullptr;
+  }
+  else {
+    delete m_pCurrentBuffer;
+    m_pCurrentBuffer = nullptr;
+  }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we inserted one additional buffer
   pPartition->vIncBuffersWritten();
 
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Loading ?
   if (m_eDataSource == DS_LOAD) {
