@@ -46,6 +46,7 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_ERRNO);
   gxPromptCatalog.vFuns(PF_EXECUTING);
   gxPromptCatalog.vFuns(PF_FILE);
+  gxPromptCatalog.vFuns(PF_FLOATS);
   gxPromptCatalog.vFuns(PF_FUNS);
   gxPromptCatalog.vFuns(PF_GIVEMEM);
   gxPromptCatalog.vFuns(PF_HASHDEFS);
