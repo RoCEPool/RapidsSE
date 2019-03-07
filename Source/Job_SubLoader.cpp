@@ -267,6 +267,9 @@ void Job_SubLoader::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
+  if (gpBufferPool->bLowMemory())
+    vTrace("Job_SubLoader #%lld -- ending with low memory\n"_Stz,
+           m_iJobId);
 
   // handle any dangling buffers
   vHandleDanglingBuffers();
