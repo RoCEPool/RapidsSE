@@ -14,8 +14,8 @@ PromptNote mPromptNote_bye (
   true,              // enabled
 
   true,              // visible
-  "bye"_Stz,          // help
-                            ""_Stz                       // description
+  "bye"_Stz,         // help
+  ""_Stz             // description
 );
 
 /*----------------------------------------------------------------------------*/

@@ -15,8 +15,8 @@ PromptNote mPromptNote_markTrc (
   true,                 // enabled
 
   true,                 // visible
-  "markTrc"_Stz,         // help
-                                ""_Stz                       // description
+  "markTrc"_Stz,        // help
+  ""_Stz                // description
 );
 
 extern AttachMap*    gpAttachMap;

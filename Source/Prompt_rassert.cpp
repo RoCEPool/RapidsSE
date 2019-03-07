@@ -14,8 +14,8 @@ PromptNote mPromptNote_rassert (
   true,                // enabled
 
   true,                // visible
-  "rassert"_Stz,        // help
-                                ""_Stz                       // description
+  "rassert"_Stz,       // help
+  ""_Stz               // description
 );
 
 /*----------------------------------------------------------------------------*/

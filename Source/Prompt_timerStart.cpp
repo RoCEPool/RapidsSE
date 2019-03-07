@@ -5,7 +5,7 @@
 #include "Prompt.h"
 
 PromptNote mPromptNote_timerStart (
-  PF_TIMERSTART,                     // prompt function
+  PF_TIMERSTART,           // prompt function
   "Prompt_timerStart"_Stz, // name of the prompt function
   "comment"_Stz,           // comment about the functopm
   "timerStart"_Stz,        // the prompt command
@@ -14,8 +14,8 @@ PromptNote mPromptNote_timerStart (
   true,                    // enabled
 
   true,                    // visible
-  "timerStart"_Stz,         // help
-                                   ""_Stz                       // description
+  "timerStart"_Stz,        // help
+  ""_Stz                   // description
 );
 
 Timer gxPromptTimer;  // the timer

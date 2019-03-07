@@ -17,8 +17,8 @@ PromptNote mPromptNote_resources (
   true,                  // enabled
 
   true,                  // visible
-  "resources"_Stz,        // help
-                                  ""_Stz                       // description
+  "resources"_Stz,       // help
+  ""_Stz                 // description
 );
 
 /*----------------------------------------------------------------------------*/

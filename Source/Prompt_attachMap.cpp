@@ -17,8 +17,8 @@ PromptNote mPromptNote_attachMap (
   true,                   // enabled
 
   true,                   // visible
-  "attachMap"_Stz,         // help
-                                  ""_Stz                       // description
+  "attachMap"_Stz,        // help
+  ""_Stz                  // description
 );
 
 /*----------------------------------------------------------------------------*/

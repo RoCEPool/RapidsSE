@@ -15,8 +15,8 @@ PromptNote mPromptNote_pmc (
   true,                 // enabled
 
   true,                 // visible
-  "pmc"_Stz,             // help
-                            ""_Stz                       // description
+  "pmc"_Stz,            // help
+  ""_Stz                // description
 );
 
 extern AttachMap*  gpAttachMap;

@@ -15,8 +15,8 @@ PromptNote mPromptNote_constants (
   true,                    // enabled
 
   true,                    // visible
-  "constants"_Stz,          // help
-                                  ""_Stz                       // description
+  "constants"_Stz,         // help
+  ""_Stz                   // description
 );
 
 extern AttachMap*  gpAttachMap;

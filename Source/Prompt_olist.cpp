@@ -15,8 +15,8 @@ PromptNote mPromptNote_olist (
   true,                 // enabled
 
   true,                 // visible
-  "olist"_Stz,           // help
-                              ""_Stz                       // description
+  "olist"_Stz,          // help
+  ""_Stz                // description
 );
 
 extern AttachMap*  gpAttachMap;

@@ -14,8 +14,8 @@ PromptNote mPromptNote_sleep (
   true,               // enabled
 
   true,               // visible
-  "sleep"_Stz,         // help
-                              ""_Stz                       // description
+  "sleep"_Stz,        // help
+  ""_Stz              // description
 );
 
 /*----------------------------------------------------------------------------*/

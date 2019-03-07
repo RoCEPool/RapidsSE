@@ -14,8 +14,8 @@ PromptNote mPromptNote_hexdump (
   true,                 // enabled
 
   true,                 // visible
-  "hexdump"_Stz,         // help
-                                ""_Stz                       // description
+  "hexdump"_Stz,        // help
+  ""_Stz                // description
 );
 
 /*----------------------------------------------------------------------------*/

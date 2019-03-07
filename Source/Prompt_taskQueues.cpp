@@ -15,8 +15,8 @@ PromptNote mPromptNote_taskQueues (
   true,                 // enabled
 
   true,                 // visible
-  "taskQueues"_Stz,      // help
-                                   ""_Stz                       // description
+  "taskQueues"_Stz,     // help
+  ""_Stz                // description
 );
 
 extern AttachMap*  gpAttachMap;

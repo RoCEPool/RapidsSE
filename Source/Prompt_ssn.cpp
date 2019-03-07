@@ -17,8 +17,8 @@ PromptNote mPromptNote_ssn (
   true,                   // enabled
 
   true,                   // visible
-  "ssn"_Stz,               // help
-                            ""_Stz                       // description
+  "ssn"_Stz,              // help
+  ""_Stz                  // description
 );
 
 /*----------------------------------------------------------------------------*/

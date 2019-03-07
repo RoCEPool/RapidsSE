@@ -14,8 +14,8 @@ PromptNote mPromptNote_memTest (
   true,                 // enabled
 
   true,                 // visible
-  "memTest"_Stz,         // help
-                                ""_Stz                       // description
+  "memTest"_Stz,        // help
+  ""_Stz                // description
 );
 
 /*----------------------------------------------------------------------------*/

@@ -14,8 +14,8 @@ PromptNote mPromptNote_rmpipe (
   true,                  // enabled
 
   true,                  // visible
-  "rmpipe"_Stz,           // help
-                               ""_Stz                       // description
+  "rmpipe"_Stz,          // help
+  ""_Stz                 // description
 );
 
 /*----------------------------------------------------------------------------*/

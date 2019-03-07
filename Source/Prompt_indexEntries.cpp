@@ -17,8 +17,8 @@ PromptNote mPromptNote_indexEntries (
   true,                       // enabled
 
   true,                       // visible
-  "indexEntries"_Stz,          // help
-                                     ""_Stz                       // description
+  "indexEntries"_Stz,         // help
+  ""_Stz                      // description
 );
 
 /*----------------------------------------------------------------------------*/

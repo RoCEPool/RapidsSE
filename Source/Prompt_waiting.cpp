@@ -15,8 +15,8 @@ PromptNote mPromptNote_waiting (
   true,                   // enabled
 
   true,                   // visible
-  "waiting"_Stz,           // help
-                                ""_Stz                       // description
+  "waiting"_Stz,          // help
+  ""_Stz                  // description
 );
 
 extern AttachMap*  gpAttachMap;
