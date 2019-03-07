@@ -3,7 +3,7 @@
 //----------------------------------------------------------------------------//
 
 // create a table with a boolean column
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
   id      integer,
   status  boolean
 );
@@ -12,7 +12,7 @@ success
 // table should have gotten created
 select table_name from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
-  ('T1')
+  ('G1')
 
 // there should be no indexes on it
 select * from rapids.system.indexes;
@@ -20,12 +20,12 @@ rows: 0
 
 // check metadata
 select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
-  table_name = 'T1' and column_name = 'STATUS';
+  table_name = 'G1' and column_name = 'STATUS';
 rows:
   ('BOOLEAN', false, true, null, null)
 
 // check partition key is first column
-select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
+select column_name from rapids.system.columns where table_name = 'G1' and is_partition_key = true;
 mute
 //CHECK_REULT
 /*
@@ -34,34 +34,34 @@ mute
  */
 
 // insert rows in the table
-insert into rapidsse.public.T1 values (10,true);
+insert into rapidsse.public.G1 values (10,true);
 success
 
-insert into rapidsse.public.T1 values (20,TRUE);
+insert into rapidsse.public.G1 values (20,TRUE);
 success
 
-insert into rapidsse.public.T1 values (30,10);
+insert into rapidsse.public.G1 values (30,10);
 mute
 //CHECK_RESULT
 //success
 
-insert into rapidsse.public.T1 values (40,false);
+insert into rapidsse.public.G1 values (40,false);
 success
 
-insert into rapidsse.public.T1 values (50,FALSE);
+insert into rapidsse.public.G1 values (50,FALSE);
 success
 
-insert into rapidsse.public.T1 values (60,0);
+insert into rapidsse.public.G1 values (60,0);
 mute
 //CHECK_RESULT
 //success
 
 // null
-insert into rapidsse.public.T1 (id) values (70);
+insert into rapidsse.public.G1 (id) values (70);
 success
 
 // select from T1
-select * from rapidsse.public.T1;
+select * from rapidsse.public.G1;
 mute
 //CHECK_RESULT
 /*
@@ -75,11 +75,11 @@ mute
   (70,null)
 */
 // drop table
-drop table rapidsse.public.T1;
+drop table rapidsse.public.G1;
 success
 
 // create a table , no size in varchar
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
   id      integer,
   status  boolean NOT NULL
 ) partition by (status);
@@ -88,7 +88,7 @@ success
 // table should have gotten created
 select table_name from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
-  ('T1')
+  ('G1')
 
 // there should be no indexes on it
 select * from rapids.system.indexes;
@@ -96,7 +96,7 @@ select * from rapids.system.indexes;
 
 // check metadata
 select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
-table_name = 'T1'  and column_name = 'STATUS';
+table_name = 'G1'  and column_name = 'STATUS';
 mute
 //CHECK_RESULT
 /*
@@ -104,42 +104,42 @@ mute
   ('BOOLEAN', true, false, 0, null)
 */
 // insert rows in the table
-insert into rapidsse.public.T1 values (10,true);
+insert into rapidsse.public.G1 values (10,true);
 success
 
-insert into rapidsse.public.T1 values (20,TRUE);
+insert into rapidsse.public.G1 values (20,TRUE);
 success
 
-insert into rapidsse.public.T1 values (30,10);
+insert into rapidsse.public.G1 values (30,10);
 mute
 //CHECK_RESULT
 //success
 
-insert into rapidsse.public.T1 values (40,false);
+insert into rapidsse.public.G1 values (40,false);
 success
 
-insert into rapidsse.public.T1 values (50,FALSE);
+insert into rapidsse.public.G1 values (50,FALSE);
 success
 
-insert into rapidsse.public.T1 values (60,0);
+insert into rapidsse.public.G1 values (60,0);
 mute
 //CHECK_RESULT
 //success
 
 // null
-insert into rapidsse.public.T1 (id) values (70);
+insert into rapidsse.public.G1 (id) values (70);
 failure
 
 // insert invalid boolean values
-insert into rapidsse.public.T1 values (120,'TR');
+insert into rapidsse.public.G1 values (120,'TR');
 failure
 
 // insert invalid boolean values
-insert into rapidsse.public.T1 values (110,'XY');
+insert into rapidsse.public.G1 values (110,'XY');
 failure
 
 // select from T1
-select * from rapidsse.public.T1;
+select * from rapidsse.public.G1;
 mute
 //CHECK_RESULT
 /*
@@ -153,10 +153,10 @@ mute
 */
 
 // drop table
-drop table rapidsse.public.T1;
+drop table rapidsse.public.G1;
 success
 
 CLEANUP {
-  drop table rapidsse.public.T1;
+  drop table rapidsse.public.G1;
   mute
 }

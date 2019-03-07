@@ -3,14 +3,14 @@
 //----------------------------------------------------------------------------//
 
 // create a table , size in varchar > 64K
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
   id      integer,
   name    varchar(65540)
 );
 failure
 
 // create a table , size in varchar = 64K
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
   id      integer,
   name    varchar(65536)
 );
@@ -19,7 +19,7 @@ success
 // table should have gotten created
 select table_name from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
-('T1')
+('G1')
 
 // there should be no indexes on it
 select * from rapids.system.indexes;
@@ -27,7 +27,7 @@ rows: 0
 
 // check metadata
 select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
-table_name = 'T1' and column_name = 'NAME';
+table_name = 'G1' and column_name = 'NAME';
 mute
 //CHECK_REULT
 /*
@@ -36,11 +36,11 @@ rows:
 */
 
 // drop the table
-drop table rapidsse.public.T1;
+drop table rapidsse.public.G1;
 success
 
 // create a table , no size in varchar
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
   id      integer,
   name    varchar
 );
@@ -49,7 +49,7 @@ success
 // table should have gotten created
 select table_name from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
-  ('T1')
+  ('G1')
 
 // there should be no indexes on it
 select * from rapids.system.indexes;
@@ -57,7 +57,7 @@ rows: 0
 
 // check metadata
 select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
-  table_name = 'T1' and column_name = 'NAME';
+  table_name = 'G1' and column_name = 'NAME';
 mute
 //CHECK_REULT
 /*
@@ -66,7 +66,7 @@ rows:
 */
 
 // check partition key is first column
-select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
+select column_name from rapids.system.columns where table_name = 'G1' and is_partition_key = true;
 mute
 //CHECK_REULT
 /*
@@ -75,26 +75,26 @@ rows:
 */
 
 // insert rows in the table
-insert into rapidsse.public.T1 values (10, 'abcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.G1 values (10, 'abcdefghijklmnopqrstuvwxyz');
 success
 
-insert into rapidsse.public.T1 values (20, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.G1 values (20, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
 success
 
-insert into rapidsse.public.T1 values (30, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.G1 values (30, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
 success
 
-insert into rapidsse.public.T1 values (40, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.G1 values (40, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
 success
 
-insert into rapidsse.public.T1 values (50, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.G1 values (50, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
 success
 
-insert into rapidsse.public.T1 (id) values (60);
+insert into rapidsse.public.G1 (id) values (60);
 success
 
 // select from T1
-select * from rapidsse.public.T1;
+select * from rapidsse.public.G1;
 rows:
   (10, 'abcdefghijklmnopqrstuvwxyz')
   (20, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz')
@@ -104,11 +104,11 @@ rows:
   (60, null)
 
 // drop table
-drop table rapidsse.public.T1;
+drop table rapidsse.public.G1;
 success
 
 // create a table , no size in varchar
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
   id      integer,
   name    varchar(32) NOT NULL
 );
@@ -117,7 +117,7 @@ success
 // table should have gotten created
 select table_name from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
-  ('T1')
+  ('G1')
 
 // there should be no indexes on it
 select * from rapids.system.indexes;
@@ -125,7 +125,7 @@ select * from rapids.system.indexes;
 
 // check metadata
 select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
-table_name = 'T1'  and column_name = 'NAME';
+table_name = 'G1'  and column_name = 'NAME';
 mute
 //CHECK_REULT
 /*
@@ -134,26 +134,26 @@ rows:
 */
 
 // insert rows in the table
-insert into rapidsse.public.T1 values (10, 'abcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.G1 values (10, 'abcdefghijklmnopqrstuvwxyz');
 success
 
-insert into rapidsse.public.T1 values (20, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.G1 values (20, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
 success
 
-insert into rapidsse.public.T1 values (30, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.G1 values (30, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
 success
 
-insert into rapidsse.public.T1 values (40, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.G1 values (40, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
 success
 
-insert into rapidsse.public.T1 values (50, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.G1 values (50, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
 success
 
-insert into rapidsse.public.T1 (id) values (60);
+insert into rapidsse.public.G1 (id) values (60);
 failure contains: 'invalid value'
 
 // select from T1
-select * from rapidsse.public.T1;
+select * from rapidsse.public.G1;
 rows:
 (10, 'abcdefghijklmnopqrstuvwxyz')
 (20, 'abcdefghijklmnopqrstuvwxyzabcdef')
@@ -162,11 +162,11 @@ rows:
 (50, 'abcdefghijklmnopqrstuvwxyzabcdef')
 
 // drop table
-drop table rapidsse.public.T1;
+drop table rapidsse.public.G1;
 success
 
 // create a table , no size in varchar
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
 id      integer,
 name    varchar
 ) partition by (name);
@@ -175,7 +175,7 @@ success
 // table should have gotten created
 select table_name from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
-('T1')
+('G1')
 
 // there should be no indexes on it
 select * from rapids.system.indexes;
@@ -183,7 +183,7 @@ rows: 0
 
 // check metadata
 select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
-table_name = 'T1' and column_name = 'NAME';
+table_name = 'G1' and column_name = 'NAME';
 mute
 //CHECK_RESULT
 /*
@@ -192,23 +192,23 @@ rows:
 */
 
 // insert rows in the table
-insert into rapidsse.public.T1 values (10, 'a');
+insert into rapidsse.public.G1 values (10, 'a');
 success
 
-insert into rapidsse.public.T1 values (20, 'b');
+insert into rapidsse.public.G1 values (20, 'b');
 success
 
-insert into rapidsse.public.T1 values (30, 'c');
+insert into rapidsse.public.G1 values (30, 'c');
 success
 
-insert into rapidsse.public.T1 values (40, 'd');
+insert into rapidsse.public.G1 values (40, 'd');
 success
 
-insert into rapidsse.public.T1 values (50, 'e');
+insert into rapidsse.public.G1 values (50, 'e');
 success
 
 // select from T1
-select * from rapidsse.public.T1;
+select * from rapidsse.public.G1;
 rows:
 (10, 'a')
 (20, 'b')
@@ -217,10 +217,10 @@ rows:
 (50, 'e')
 
 // drop table
-drop table rapidsse.public.T1;
+drop table rapidsse.public.G1;
 success
 
 CLEANUP {
-  drop table rapidsse.public.T1;
+  drop table rapidsse.public.G1;
   mute
 }

@@ -3,7 +3,7 @@
 //----------------------------------------------------------------------------//
 
 // create a table , no size in varchar
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
   name    varchar,
   id      integer
 );
@@ -12,7 +12,7 @@ success
 // table should have gotten created
 select table_name from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
-  ('T1')
+  ('G1')
 
 // there should be no indexes on it
 select * from rapids.system.indexes;
@@ -20,7 +20,7 @@ rows: 0
 
 // check metadata
 select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
-  table_name = 'T1' and column_name = 'ID';
+  table_name = 'G1' and column_name = 'ID';
 mute
 //CHECK_RESULT
 /*
@@ -29,7 +29,7 @@ rows:
 */
 
 // check partition key is first column
-select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
+select column_name from rapids.system.columns where table_name = 'G1' and is_partition_key = true;
 mute
 //CHECK_RESULT
 /*
@@ -38,57 +38,57 @@ rows:
 */
 
 // insert rows in the table
-insert into rapidsse.public.T1 values ('abc',10);
+insert into rapidsse.public.G1 values ('abc',10);
 success
 
-insert into rapidsse.public.T1 values ('abc',-20);
+insert into rapidsse.public.G1 values ('abc',-20);
 success
 
-insert into rapidsse.public.T1 values ('abc',0);
+insert into rapidsse.public.G1 values ('abc',0);
 success
 
 //max
-insert into rapidsse.public.T1 values ('abc',+9223372036854775807);
+insert into rapidsse.public.G1 values ('abc',+9223372036854775806);
 mute
 //CHECK_RESULT
 //success
 
 // min
-insert into rapidsse.public.T1 values ('abc',-9223372036854775807);
+insert into rapidsse.public.G1 values ('abc',-9223372036854775806);
 success
 
 // null
-insert into rapidsse.public.T1 (name) values ('abc');
+insert into rapidsse.public.G1 (name) values ('abc');
 success
 
 // insert larger than max integer
-insert into rapidsse.public.T1 values ('abc',9223372036854775808);
+insert into rapidsse.public.G1 values ('abc',9223372036854775808);
 failure
 
 // insert smaller than min integer
-insert into rapidsse.public.T1 values ('abc',-9223372036854775808);
+insert into rapidsse.public.G1 values ('abc',-9223372036854775808);
 failure
 
 // select from T1
-select * from rapidsse.public.T1;
+select * from rapidsse.public.G1;
 mute
 //CHECK_RESULT
 /*
 rows:
   ('abc',null)
-  ('abc',-9223372036854775807)
+  ('abc',-9223372036854775806)
   ('abc',-20)
   ('abc',0)
   ('abc',10)
-  ('abc',+9223372036854775807)
+  ('abc',+9223372036854775806)
 */
 
 // drop table
-drop table rapidsse.public.T1;
+drop table rapidsse.public.G1;
 success
 
 // create a table , no size in varchar
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
   name    varchar,
   id      integer(10) NOT NULL
 ) partition by (id);
@@ -97,7 +97,7 @@ success
 // table should have gotten created
 select table_name from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
-  ('T1')
+  ('G1')
 
 // there should be no indexes on it
 select * from rapids.system.indexes;
@@ -105,7 +105,7 @@ select * from rapids.system.indexes;
 
 // check metadata
 select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
-table_name = 'T1'  and column_name = 'ID';
+table_name = 'G1'  and column_name = 'ID';
 mute
 //CHECK_RESULT
 /*
@@ -114,59 +114,59 @@ mute
 */
 
 // insert rows in the table
-insert into rapidsse.public.T1 values ('abc',10);
+insert into rapidsse.public.G1 values ('abc',10);
 success
 
-insert into rapidsse.public.T1 values ('abc',-20);
+insert into rapidsse.public.G1 values ('abc',-20);
 success
 
-insert into rapidsse.public.T1 values ('abc',0);
+insert into rapidsse.public.G1 values ('abc',0);
 success
 
 //max
-insert into rapidsse.public.T1 values ('abc',+9223372036854775807);
+insert into rapidsse.public.G1 values ('abc',+9223372036854775806);
 mute
 //CHECK_RESULT
 //success
 
-insert into rapidsse.public.T1 values ('abc',+922);
+insert into rapidsse.public.G1 values ('abc',+922);
 mute
 
 // min
-insert into rapidsse.public.T1 values ('abc',-9223372036854775807);
+insert into rapidsse.public.G1 values ('abc',-9223372036854775806);
 success
 
 // null
-insert into rapidsse.public.T1 (name) values ('abc');
+insert into rapidsse.public.G1 (name) values ('abc');
 failure
 
 // insert larger than max integer
-insert into rapidsse.public.T1 values ('abc',9223372036854775808);
+insert into rapidsse.public.G1 values ('abc',9223372036854775808);
 failure
 
 // insert smaller than min integer
-insert into rapidsse.public.T1 values ('abc',-9223372036854775808);
+insert into rapidsse.public.G1 values ('abc',-9223372036854775808);
 failure
 
 // select from T1
-select * from rapidsse.public.T1;
+select * from rapidsse.public.G1;
 mute
 //CHECK_RESULT
 /*
 rows:
 ('abc',+922)
-('abc',-9223372036854775807)
+('abc',-9223372036854775806)
 ('abc',-20)
 ('abc',0)
 ('abc',10)
-('abc',+9223372036854775807)
+('abc',+9223372036854775806)
 */
 
 // drop table
-drop table rapidsse.public.T1;
+drop table rapidsse.public.G1;
 success
 
 CLEANUP {
-  drop table rapidsse.public.T1;
+  drop table rapidsse.public.G1;
   mute
 }

@@ -3,28 +3,28 @@
 //----------------------------------------------------------------------------//
 
 // create a table , precision > 19
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
   id      integer,
   val   decimal(20,10)
 );
 failure
 
 // create a table , scale > precision
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
   id      integer,
   val   decimal(3,10)
 );
 failure
 
 // create a table , scale > 19
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
   id      integer,
   val   decimal(19,20)
 );
 failure
 
 // create a table , no size in varchar
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
   id      integer,
   val     decimal
 );
@@ -33,7 +33,7 @@ success
 // table should have gotten created
 select table_name from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
-  ('T1')
+  ('G1')
 
 // there should be no indexes on it
 select * from rapids.system.indexes;
@@ -41,12 +41,15 @@ rows: 0
 
 // check metadata
 select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
-  table_name = 'T1' and column_name = 'VAL';
+  table_name = 'G1' and column_name = 'VAL';
 rows:
+  ('DECIMAL', false, true, 17, 2)
+//CHECK_REULT
+/*
   ('DECIMAL', false, true, 19, 0)
-
+*/
 // check partition key is first column
-select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
+select column_name from rapids.system.columns where table_name = 'G1' and is_partition_key = true;
 mute
 //CHECK_REULT
 /*
@@ -55,27 +58,27 @@ mute
 */
 
 // insert rows in the table
-insert into rapidsse.public.T1 values (10, 12.78);
+insert into rapidsse.public.G1 values (10, 12.78);
 mute
 //CHECK_RESULT
 //success
 
-insert into rapidsse.public.T1 values (20, 13.0);
+insert into rapidsse.public.G1 values (20, 13.0);
 mute
 //CHECK_RESULT
 //success
 
-insert into rapidsse.public.T1 values (30,16);
+insert into rapidsse.public.G1 values (30,16);
 mute
 //CHECK_RESULT
 //success
 
 // null
-insert into rapidsse.public.T1 (id) values (40);
+insert into rapidsse.public.G1 (id) values (40);
 success
 
 // select from T1
-select * from rapidsse.public.T1;
+select * from rapidsse.public.G1;
 mute
 //CHECK_RESULT
 /*
@@ -87,11 +90,11 @@ mute
 */
 
 // drop table
-drop table rapidsse.public.T1;
+drop table rapidsse.public.G1;
 success
 
 // create a table , no size in varchar
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
   id      integer,
   val   decimal(10,2) NOT NULL
 ) partition by (val);
@@ -100,7 +103,7 @@ success
 // table should have gotten created
 select table_name from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
-  ('T1')
+  ('G1')
 
 // there should be no indexes on it
 select * from rapids.system.indexes;
@@ -108,7 +111,7 @@ select * from rapids.system.indexes;
 
 // check metadata
 select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
-table_name = 'T1'  and column_name = 'VAL';
+table_name = 'G1'  and column_name = 'VAL';
 mute
 //CHECK_RESULT
 /*
@@ -117,35 +120,35 @@ mute
 */
 
 // insert rows in the table
-insert into rapidsse.public.T1 values (10, 12.788);
+insert into rapidsse.public.G1 values (10, 12.788);
 mute
 //CHECK_RESULT
 //success
 
-insert into rapidsse.public.T1 values (20, 13.02);
+insert into rapidsse.public.G1 values (20, 13.02);
 mute
 //CHECK_RESULT
 //success
 
-insert into rapidsse.public.T1 values (30,16.4);
+insert into rapidsse.public.G1 values (30,16.4);
 mute
 //CHECK_RESULT
 //success
 
 // null
-insert into rapidsse.public.T1 (name) values ('abc');
+insert into rapidsse.public.G1 (name) values ('abc');
 failure
 
 // insert larger than max integer
-insert into rapidsse.public.T1 values (60,9223372036854775808.34);
+insert into rapidsse.public.G1 values (60,9223372036854775808.34);
 failure
 
 // insert smaller than min integer
-insert into rapidsse.public.T1 values (60,-9223372036854775808.0);
+insert into rapidsse.public.G1 values (60,-9223372036854775808.0);
 failure
 
 // select from T1
-select * from rapidsse.public.T1;
+select * from rapidsse.public.G1;
 mute
 //CHECK_RESULT
 /*
@@ -156,10 +159,10 @@ rows:
 */
 
 // drop table
-drop table rapidsse.public.T1;
+drop table rapidsse.public.G1;
 success
 
 CLEANUP {
-  drop table rapidsse.public.T1;
+  drop table rapidsse.public.G1;
   mute
 }

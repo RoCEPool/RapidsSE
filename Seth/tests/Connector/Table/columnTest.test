@@ -3,7 +3,7 @@
 //----------------------------------------------------------------------------//
 
 // create table with 150 columns
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
 c0 boolean NOT NULL,
 c1 boolean NOT NULL,
 c2 boolean NOT NULL,
@@ -158,11 +158,11 @@ c149 boolean NOT NULL
 success
 
 // (10) drop table
-drop table rapidsse.public.T1 ;
+drop table rapidsse.public.G1 ;
 success
 
 // create table with 151 columns
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
 c0 boolean NOT NULL,
 c1 boolean NOT NULL,
 c2 boolean NOT NULL,
@@ -318,6 +318,6 @@ c150 boolean NOT NULL
 failure
 
 CLEANUP {
-  drop table rapidsse.public.T1;
+  drop table rapidsse.public.G1;
   mute
 }

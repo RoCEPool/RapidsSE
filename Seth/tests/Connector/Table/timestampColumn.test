@@ -3,7 +3,7 @@
 //----------------------------------------------------------------------------//
 
 // create a table
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
   id    integer,
   tsp   timestamp
 );
@@ -12,7 +12,7 @@ success
 // table should have gotten created
 select table_name from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
-  ('T1')
+  ('G1')
 
 // there should be no indexes on it
 select * from rapids.system.indexes;
@@ -20,12 +20,12 @@ rows: 0
 
 // check metadata
 select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
-  table_name = 'T1' and column_name = 'TSP';
+  table_name = 'G1' and column_name = 'TSP';
 rows:
   ('TIMESTAMP', false, true, null, null)
 
 // check partition key is first column
-select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
+select column_name from rapids.system.columns where table_name = 'G1' and is_partition_key = true;
 mute
 //CHECK_REULT
 /*
@@ -34,27 +34,27 @@ mute
  */
 
 // insert rows in the table
-insert into rapidsse.public.T1 values (10, TIMESTAMP '1900-10-08 10:30:30.555');
+insert into rapidsse.public.G1 values (10, TIMESTAMP '1900-10-08 10:30:30.555');
 mute
 //CHECK_REULT
 //success
 
-insert into rapidsse.public.T1 values (20, TIMESTAMP '1901-10-08 10:30:30');
+insert into rapidsse.public.G1 values (20, TIMESTAMP '1901-10-08 10:30:30');
 mute
 //CHECK_REULT
 //success
 
-insert into rapidsse.public.T1 values (30, TIMESTAMP '1908-12-31 10:59:59.999');
+insert into rapidsse.public.G1 values (30, TIMESTAMP '1908-12-31 10:59:59.999');
 mute
 //CHECK_REULT
 //success
 
 // null
-insert into rapidsse.public.T1 (id) values (40);
+insert into rapidsse.public.G1 (id) values (40);
 success
 
 // select from T1
-select * from rapidsse.public.T1;
+select * from rapidsse.public.G1;
 mute
 //CHECK_REULT
 /*
@@ -66,12 +66,12 @@ rows:
 */
 
 // drop table
-drop table rapidsse.public.T1;
+drop table rapidsse.public.G1;
 success
 
 //------------------------------------------------------------------------------
 // create a table
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
   id    integer,
   tsp   timestamp NOT NULL
 ) partition by (tsp);
@@ -80,7 +80,7 @@ success
 // table should have gotten created
 select table_name from rapids.system.tables where catalog_name = 'rapidsse';
 rows:
-('T1')
+('G1')
 
 // there should be no indexes on it
 select * from rapids.system.indexes;
@@ -88,12 +88,12 @@ rows: 0
 
 // check metadata
 //select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
-//table_name = 'T1' and column_name = 'TSP';
+//table_name = 'G1' and column_name = 'TSP';
 //rows:
 //('TIMESTAMP', true, false, 0, 0)
 
 // check partition key is first column
-select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
+select column_name from rapids.system.columns where table_name = 'G1' and is_partition_key = true;
 mute
 //CHECK_REULT
 /*
@@ -101,33 +101,33 @@ rows:
 ('TSP')
 */
 
-insert into rapidsse.public.T1 values (10, TIMESTAMP '1907-03-31 10:58:06.99999');
+insert into rapidsse.public.G1 values (10, TIMESTAMP '1907-03-31 10:58:06.99999');
 mute
 //CHECK_REULT
 //success
 
 // insert rows in the table
-insert into rapidsse.public.T1 values (20, TIMESTAMP '1900-10-31 10:30:30.000');
+insert into rapidsse.public.G1 values (20, TIMESTAMP '1900-10-31 10:30:30.000');
 mute
 //CHECK_REULT
 //success
 
-insert into rapidsse.public.T1 values (30, TIMESTAMP '1908-02-29 00:00:00');
+insert into rapidsse.public.G1 values (30, TIMESTAMP '1908-02-29 00:00:00');
 mute
 //CHECK_REULT
 //success
 
-insert into rapidsse.public.T1 values (40, TIMESTAMP '2018-12-31 10:59:59.230');
+insert into rapidsse.public.G1 values (40, TIMESTAMP '2018-12-31 10:59:59.230');
 mute
 //CHECK_REULT
 //success
 
 // null
-insert into rapidsse.public.T1 (id) values (40);
+insert into rapidsse.public.G1 (id) values (40);
 failure
 
 // select from T1
-select * from rapidsse.public.T1;
+select * from rapidsse.public.G1;
 mute
 //CHECK_REULT
 /*
@@ -139,6 +139,6 @@ rows:
 */
 
 CLEANUP {
-  drop table rapidsse.public.T1;
+  drop table rapidsse.public.G1;
   mute
 }
