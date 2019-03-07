@@ -26,16 +26,17 @@ create table lineitem (
   //
 );
 
-//CREATE INDEX lineitem_idx1 ON lineitem(L_ORDERKEY);
+CREATE INDEX lineitem_idx1 ON lineitem(L_ORDERKEY);
+CREATE INDEX lineitem_idx2 ON lineitem(L_SHIPDATE);
+CREATE INDEX lineitem_idx3 ON lineitem(L_SUPPKEY);
 
 //nowait monitor 3;
 
 space;
-
-time ld lineitem "/tpch/SF0/lineitem100k.csv" max_errors 100;
-
+time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 space;
 
+/*
 time fetch lineitem
   "l_orderKey 2341987 > l_orderKey 443873129 < and"
   displayoff;
@@ -43,6 +44,7 @@ time fetch lineitem
 time fetch lineitem
   "l_shipdate '1998-09-01 00:00:00' >= l_shipdate '1998-12-01 00:00:00' <= and"
   displayOff;
+*/
 
 /*============================================================================*/
 /* end                                                                        */
