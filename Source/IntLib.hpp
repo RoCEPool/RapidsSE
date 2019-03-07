@@ -35,6 +35,7 @@ namespace Base
     static i8 iIntToVlq(i8 iInt, byte yVlqVec[16]);
     static bool bIsDecaCycle(i8 iArg);
     static i8 iPercent(i8 iNumerator, i8 iDenominator);
+    static i8 iQuartile(i8 iNumerator, i8 iDenominator);
     static i8 iVlqToInt(byte yVlqVec[16]);
   
     static char* sAsText(i8 iValue);

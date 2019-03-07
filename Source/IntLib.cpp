@@ -197,6 +197,22 @@ i8 IntLib::iPercent(i8 iNumerator, i8 iDenominator)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return the quartile of value given its maximum                             */
+/*----------------------------------------------------------------------------*/
+i8 IntLib::iQuartile(i8 iNumerator, i8 iDenominator)
+{
+  double dPercent  = (iNumerator * 100) / iDenominator;
+  double dQuartile = dPercent / 4;
+  
+  i8 iQuartile = (i8)round(dQuartile);
+  
+  if (iQuartile == 4)
+  iQuartile = 3;
+  
+  return iQuartile;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert vlq (varying length quantity) to i8                                */
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iVlqToInt(byte yVlqVec[])
