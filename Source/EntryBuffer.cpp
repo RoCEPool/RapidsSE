@@ -184,7 +184,7 @@ Item* EntryBuffer::aAllotRowEntry(RowWrk& xRowWrk)
   // hidden index has another limit (offsets) for no of entries
   if (m_pIndex->bIsHidden()) {
     if (! bHasFreeItemHidden()) {
-      vTrace("No free item no's\n"_Stz);
+      //vTrace("No free item no's\n"_Stz);
       return nullptr;
     }
     RASSERT(nItems() < C_MAX_ITEMS - 16);
