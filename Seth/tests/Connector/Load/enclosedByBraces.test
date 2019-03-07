@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // create the table
-create table rapidsse.public.T1 (
+create table rapidsse.public.G1 (
     col0  INTEGER        NOT NULL,
     col1  INTEGER        NOT NULL,
     col2  INTEGER        NOT NULL,
@@ -19,10 +19,10 @@ create table rapidsse.public.T1 (
 success
 
 // load data into the table with enclosed_by as 3 characters
-ESCAPE CONNECTOR se 'load rapidsse.public.T1' WITH file = '/DATA/Load/enclosedByBraces.csv', enclosed_by = '{}' , node = 'node1' ;
+ESCAPE CONNECTOR se 'load rapidsse.public.G1' WITH file = '/DATA/Load/enclosedByBraces.csv', enclosed_by = '{}' , node = 'node1' ;
 failure contains : 'Success'
 
-Select * from rapidsse.public.T1;
+Select * from rapidsse.public.G1;
 rows:
   (0,217,260,'grey',TIMESTAMP '2015-10-31 00:00:00.0',73.44,5.34,8,-152,81,'lll')
   (1,278,45,'PINK',TIMESTAMP '2015-01-16 00:00:00.0',97.85,74.59,4,39,895,'qqq')
@@ -31,12 +31,12 @@ rows:
   (4,234,124,'black',TIMESTAMP '2015-01-07 00:00:00.0',213.04,96.49,3,-167,144,'mmm')
   (5,164,438,'PINK',TIMESTAMP '2015-01-30 00:00:00.0',222.66,117.29,12,-46,449,'uuu')
 
-drop table rapidsse.public.T1;
+drop table rapidsse.public.G1;
 success
 
 CLEANUP {
   
-  drop table rapidsse.public.T1;
+  drop table rapidsse.public.G1;
   mute
 
   bye;
