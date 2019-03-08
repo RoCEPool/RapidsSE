@@ -482,8 +482,8 @@ void Axioms::vAddConstants(void)
 
   // GO_ : go (aka proceed)
   /*  0 */ vAddConstant("GO_NONE"_Stz,     GO_NONE);
-  /*  1 */ vAddConstant("GO_END"_Stz,      GO_END);
-  /*  2 */ vAddConstant("GO_PROCEED"_Stz,  GO_PROCEED);
+  /*  1 */ vAddConstant("GO_CONTINUE"_Stz, GO_CONTINUE);
+  /*  2 */ vAddConstant("GO_END"_Stz,      GO_END);
   /*  3 */ vAddConstant("GO_STALL"_Stz,    GO_STALL);
   /*  4 */ vAddConstant("GO_YIELD"_Stz,    GO_YIELD);
   
