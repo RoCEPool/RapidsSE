@@ -480,7 +480,14 @@ void Axioms::vAddConstants(void)
   /* 60 */ vAddConstant("EC_VERSION_MISMATCH"_Stz,   EC_VERSION_MISMATCH);
   /* 61 */ vAddConstant("EC_ENUMS"_Stz,              EC_ENUMS);
 
-  // JK_ : job kind
+  // GO_ : go (aka proceed)
+  /*  0 */ vAddConstant("GO_NONE"_Stz,     GO_NONE);
+  /*  1 */ vAddConstant("GO_PROCEED"_Stz,  GO_PROCEED);
+  /*  2 */ vAddConstant("GO_STALL"_Stz,    GO_STALL);
+  /*  3 */ vAddConstant("GO_STOP"_Stz,     GO_STOP);
+  /*  4 */ vAddConstant("GO_YIELD"_Stz,    GO_YIELD);
+  
+ // JK_ : job kind
   /*  0 */ vAddConstant("JK_NONE"_Stz,     JK_NONE);
   /*  1 */ vAddConstant("JK_CHILD"_Stz,    JK_CHILD);
   /*  2 */ vAddConstant("JK_DIST2PC"_Stz,  JK_DIST2PC);

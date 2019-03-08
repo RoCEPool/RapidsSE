@@ -28,6 +28,7 @@ enum e_EG // enum groups
   _EG_DS,
   _EG_EC,
   _EG_HT,
+  _EG_GO,
   _EG_IF,
   _EG_IS,
   _EG_IT,
