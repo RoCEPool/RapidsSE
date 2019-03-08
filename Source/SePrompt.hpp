@@ -65,6 +65,7 @@ namespace Prompt
     bool bFindJobClass(void);
     void vFreeSpace(void);
     void vGetCommand(void);
+    bool bIsPromptWord(void);
     void vJobLockMutex(void);
     void vJobUnlockMutex(void);
     void vJobWaitCond(void);

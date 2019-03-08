@@ -134,9 +134,12 @@ void SePrompt::vPromptLoop(void)
       continue;
     
     if (! bFindJobClass()) {
-      vUnknownCommand();
-      vDumpTokenVec();
-      continue;
+      
+      if (! bIsPromptWord() ) {
+        vUnknownCommand();
+        vDumpTokenVec();
+        continue;
+      }
     }
 
     if (! bPassesLowMem())
@@ -429,6 +432,38 @@ void SePrompt::vGetCommand(void)
   Command* pCommand = this->pCommand();
   
   pCommand->vGetCommand();
+}
+
+/*----------------------------------------------------------------------------*/
+/* is a prompt word?                                                          */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bIsPromptWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  TokenVec* pTknVec = this->pTknVec();
+  
+  Token* pTkn0 = pTknVec->pGet(0);
+
+  s32 sWordNm;
+  sWordNm = pTkn0->aText();
+  
+  Dic* pDic = &gpAttachMap->m_oRootDic;
+  
+  Word* pWord = pDic->pFindWord(sWordNm);
+  
+  if ( ! (pWord && pWord->bPrompt()) )
+    return false;
+
+  pTknVec->vReset();
+  pTknVec->vAddToken("docol"_Stz);
+  pTknVec->vAddToken(sWordNm);
+  pTknVec->vSetTokens();
+  
+  if (! bFindJobClass())
+    return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
