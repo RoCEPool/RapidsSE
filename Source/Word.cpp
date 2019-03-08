@@ -80,6 +80,7 @@ Word::Word(Stz* sName)
   m_bImmediate    = false;
   m_iParams       = 0;
   m_pPrevWord     = nullptr;
+  m_bPrompt       = false;
   m_iLocalNo      = 0;
 
   m_xRoutine.vZero(CN_WORD);
@@ -615,6 +616,26 @@ void Word::vPrevWord(Word* pPrevWord)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   m_pPrevWord = pPrevWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get prompt flag                                                            */
+/*----------------------------------------------------------------------------*/
+bool Word::bPrompt(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_bPrompt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set prompt flag                                                            */
+/*----------------------------------------------------------------------------*/
+void Word::vPrompt(bool bPrompt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_bPrompt = bPrompt;
 }
 
 /*----------------------------------------------------------------------------*/

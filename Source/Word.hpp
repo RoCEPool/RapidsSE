@@ -47,6 +47,7 @@ namespace Forth
     bool     m_bImmediate;   // immediate execution during compile?
     i8       m_iParams;      // number of parameters
     Word*    m_pPrevWord;    // previous word in dictionary
+    bool     m_bPrompt;      // can be executed by prompt?
     i8       m_iLocalNo;     // local number (for a local variable)
     StepFp   m_fpEntryStep;  // entry step function ∫for this word
     Cell*    m_aEntryCell;   // the cell to start executing from
@@ -97,8 +98,8 @@ namespace Forth
     Cell* aFirstCell(void);
     bool  bHasCell(Cell* aCell);
     bool  bImmediate(void);
-    bool  bIsName(s32& sName);
     void  vImmediate(bool bImmediate);
+    bool  bIsName(s32& sName);
     Word* pKind(void);
     void  vKind(Word* pKind);
     Cell* aLastCell(void);
@@ -110,6 +111,8 @@ namespace Forth
     i8    iParams(void);
     Word* pPrevWord(void);
     void  vPrevWord(Word* pPrevWord);
+    bool  bPrompt(void);
+    void  vPrompt(bool bImmediate);
     void  vReset(void);
     i8    iSize(void);
     eWT   eWordType(void);
