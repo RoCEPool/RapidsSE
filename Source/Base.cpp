@@ -36,6 +36,10 @@ void Base::vTraceWith(void)
   vTrace("  WITH_ASSERT_MACRO\n"_Stz);
 #endif
   
+#ifdef WITH_CHECK_INITIALISED
+  vTrace("  WITH_CHECK_INITIALISED\n"_Stz);
+#endif
+  
 #ifdef WITH_CORECTNESS_ALGEBRA
   vTrace("  WITH_CORECTNESS_ALGEBRA\n"_Stz);
 #endif
