@@ -184,6 +184,7 @@ void AttachMap::vRecordArguments(bool bActionSequence,
                                  i8   nDummyThreads,
                                  i8   iJumboSize,
                                  i8   nMaxLoadErrors,
+                                 i8   nMaxReadyLP,
                                  i8   nNodes,
                                  Stz* aRegionName,
                                  i8   iRegionSize,
@@ -211,6 +212,7 @@ void AttachMap::vRecordArguments(bool bActionSequence,
   Arg.m_nDummyThreads    = nDummyThreads;
   Arg.m_iJumboSize       = iJumboSize;
   Arg.m_nMaxLoadErrors   = nMaxLoadErrors;
+  Arg.m_nMaxReadyLP      = nMaxReadyLP;
   Arg.m_nNodes           = nNodes;
   Arg.m_sRegionName      = aRegionName;
   Arg.m_iRegionSize      = iRegionSize;

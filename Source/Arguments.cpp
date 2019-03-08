@@ -67,6 +67,7 @@ Arguments::Arguments(void)
   m_bHugePages       = false;
   m_bKillPrev        = false;
   m_nMaxLoadErrors   = 0;
+  m_nMaxReadyLP      = 1000;
   m_bMetadata        = false;
   m_bMunged          = false;
   m_bProgress        = false;
@@ -143,6 +144,8 @@ void Arguments::vAddConstants(void)
   vAddConstant("args.jumboTook"_Stz,         m_nJumboTook);
   vAddConstant("args.killPrev"_Stz,          m_bKillPrev);
   vAddConstant("args.lock"_Stz,              m_bLock);
+  vAddConstant("args.maxLoadErrors"_Stz,     m_nMaxLoadErrors);
+  vAddConstant("args.maxReadyLP"_Stz,        m_nMaxReadyLP);
   vAddConstant("args.metadata"_Stz,          m_bMetadata);
   vAddConstant("args.munged"_Stz,            m_bMunged);
   vAddConstant("args.nodeName"_Stz,          m_sNodeName);
@@ -153,8 +156,7 @@ void Arguments::vAddConstants(void)
   vAddConstant("args.prompt"_Stz,            m_bPrompt);
   vAddConstant("args.regionPrefix"_Stz,      m_sRegionPrefix);
   vAddConstant("args.regionName"_Stz,        m_sRegionName);
-  vAddConstant("args.regionSize"_Stz,        m_iRegionSize
-                                               - m_iJumboSize);
+  vAddConstant("args.regionSize"_Stz,        m_iRegionSize - m_iJumboSize);
   vAddConstant("args.reload"_Stz,            m_bReload);
   vAddConstant("args.restart"_Stz,           m_bRestart);
   vAddConstant("args.senDir"_Stz,            m_sSenDir);
@@ -588,6 +590,11 @@ bool Arguments::bParse(int argc, Stz* argv[])
     
     if (argv[i_Arg]->bSame("--maxLoadErrors"_Stz)) {
       m_nMaxLoadErrors = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    if (argv[i_Arg]->bSame("--maxReadyLP"_Stz)) {
+      m_nMaxReadyLP = argv[++i_Arg]->iToI8();
       continue;
     }
     
