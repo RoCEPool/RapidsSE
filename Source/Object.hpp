@@ -28,7 +28,7 @@ namespace Correctness
 }
 
 /*--------------------------------------------------------------------------*/
-/* pre, post condition and check initialised                                */
+/* pre and post condition                                                   */
 /*--------------------------------------------------------------------------*/
 #define _ADDRESS_ 1
 #define _MAGIC_   2
@@ -89,14 +89,6 @@ namespace Correctness
     _checkCondition_(checkValue3); \
     _checkCondition_(checkValue4);
 
-  // check initialized
-  #define _checkInitialised_(eClass) \
-    MemLib::vCheckInitialised(this,eClass);
-
-  // check initialized
-  #define _checkInitialisedSize_(iSize) \
-    MemLib::vCheckInitialised(this,iSize);
-
 #else
 
   #define _precondition1_(checkValue1)
@@ -111,7 +103,21 @@ namespace Correctness
 
   #define _checkCondition_(checkValue)
 
-  // check initialized
+#endif
+
+/*--------------------------------------------------------------------------*/
+/* check initialised                                                        */
+/*--------------------------------------------------------------------------*/
+#ifdef WITH_CHECK_INITIALISED
+
+  #define _checkInitialised_(eClass) \
+    MemLib::vCheckInitialised(this,eClass);
+
+  #define _checkInitialisedSize_(iSize) \
+    MemLib::vCheckInitialised(this,iSize);
+
+#else
+
   #define _checkInitialised_(eClass)
   #define _checkInitialisedSize_(iSize)
 
