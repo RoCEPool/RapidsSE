@@ -1191,6 +1191,7 @@
   static void vImmediate(Tasks::MP_Task mpTask);
   static void vLocate(Tasks::MP_Task mpTask);
   static void vPostpone(Tasks::MP_Task mpTask);
+  static void vPrompt(Tasks::MP_Task mpTask);
   static void vSee(Tasks::MP_Task mpTask);
   static void vSemicolon(Tasks::MP_Task mpTask);
   static void vSubDic(Tasks::MP_Task mpTask);

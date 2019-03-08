@@ -187,7 +187,7 @@
 /*----------------------------------------------------------------------------*/
 /* munge all .sen files                                                       */
 /*----------------------------------------------------------------------------*/
-: munge
+: munge prompt
 
   // create a directory accessor
   file::new dir::new "" locals| origDir pSenDir pCppFile |

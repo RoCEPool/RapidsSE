@@ -33,6 +33,7 @@ void Step::vAddSteps_Word(void)
   vAddStep("locate"_Stz,          &Step::vLocate);
 
   vAddStep("postpone"_Stz,        &Step::vPostpone,         true );
+  vAddStep("prompt"_Stz,          &Step::vPrompt,           true );
   vAddStep("see"_Stz,             &Step::vSee);
   vAddStep(";"_Stz,               &Step::vSemicolon,        true );
   vAddStep("subDic"_Stz,          &Step::vSubDic,           true );
@@ -491,6 +492,20 @@ void Step::vPostpone(MP_Task mpTask)
     else
       pCurrentWord->vEncode("encodeCallRoutine"_Stz);
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* promot -- make the most recent definition a prompt word                    */
+/*----------------------------------------------------------------------------*/
+void Step::vPrompt(MP_Task mpTask)
+{
+  ENTRY("vImmediate"_Stz);
+  
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
+  
+  pCurrentWord->vPrompt(true);
   
   EXIT();
 }
