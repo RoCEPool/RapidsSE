@@ -482,9 +482,9 @@ void Axioms::vAddConstants(void)
 
   // GO_ : go (aka proceed)
   /*  0 */ vAddConstant("GO_NONE"_Stz,     GO_NONE);
-  /*  1 */ vAddConstant("GO_PROCEED"_Stz,  GO_PROCEED);
-  /*  2 */ vAddConstant("GO_STALL"_Stz,    GO_STALL);
-  /*  3 */ vAddConstant("GO_STOP"_Stz,     GO_STOP);
+  /*  1 */ vAddConstant("GO_END"_Stz,      GO_END);
+  /*  2 */ vAddConstant("GO_PROCEED"_Stz,  GO_PROCEED);
+  /*  3 */ vAddConstant("GO_STALL"_Stz,    GO_STALL);
   /*  4 */ vAddConstant("GO_YIELD"_Stz,    GO_YIELD);
   
  // JK_ : job kind
