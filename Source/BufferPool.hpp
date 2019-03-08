@@ -64,6 +64,7 @@ namespace Pool
     bool bDetachPool(void);
     bool bDontFree(void);
     void vFree(PoolBuffer* pBuffer);
+    void vFreeHeapBuffer(PoolBuffer* pBuffer);
     i8   nFreeCount(void);
     i8   iFreePercent(void);
     bool bFreeRB(void);

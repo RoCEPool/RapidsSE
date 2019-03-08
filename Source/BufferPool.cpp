@@ -335,6 +335,18 @@ i8 BufferPool::nFreeCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* free buffer back into free chain                                           */
+/*----------------------------------------------------------------------------*/
+void BufferPool::vFreeHeapBuffer(PoolBuffer* pBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  vFree(pBuffer);
+  
+  --m_ixHeapBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return free space percentage                                               */
 /*----------------------------------------------------------------------------*/
 i8 BufferPool::iFreePercent(void)
