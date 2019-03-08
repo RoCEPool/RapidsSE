@@ -300,7 +300,7 @@ void BufferPool::vFree(PoolBuffer* pBuffer)
   
   m_oFreeLock.vGrabWrite();
   
-  //vVerifyPool();
+  vVerifyPool();
   
   // test for existing free list
   if (bn::nNil() != m_nFreeHead) {
@@ -319,7 +319,7 @@ void BufferPool::vFree(PoolBuffer* pBuffer)
   m_nFreeCount++;
   m_nAllocCount--;
   
-  //vVerifyPool();
+  vVerifyPool();
   
   m_oFreeLock.vDropWrite();
 }

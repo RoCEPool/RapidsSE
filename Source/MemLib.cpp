@@ -50,6 +50,8 @@ void MemLib::vCheckInitialised(void* aAddress, eCN eClass)
   for (i8 i_Word = 0; i_Word < nWords; i_Word++) {
     
     if (C_SCRIBBLE_PATTERN == *pMchWord) {
+      vTrace("Initialisation problem: class %s at word %lld\n"_Stz,
+             aCN[eClass],i_Word);
       MemLib::vWordDump(aAddress,nBytes,i_Word);
       vDebugTrap();
     }

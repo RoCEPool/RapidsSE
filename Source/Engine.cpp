@@ -27,6 +27,8 @@ void Engine::vMainEntry(void)
   
   vPrintWelcome();
   
+  Base::vTraceWith();
+  
   vSetSignalHandlers();
   
   // init the tls keys

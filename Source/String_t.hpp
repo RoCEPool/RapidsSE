@@ -83,6 +83,10 @@ String_t<SIZE>::String_t(Stz* aArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
+#ifdef WITH_PREPOST_CHECKING
+  MemLib::vZero(m_caArea,SIZE,CN_STRING_T);
+#endif
+  
   StrLib::vCopyLen(m_caArea,aArg->aChar(),SIZE-1);
   
   _checkInitialisedSize_(SIZE);

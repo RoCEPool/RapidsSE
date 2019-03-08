@@ -16,23 +16,23 @@ namespace Pool
     friend class BPA;
     
   private:
-    i8      m_nBuffers;  // number of buffers in pool
-    PoolBuffer* m_pBase;     // starting address of pool (large section)
-    PoolBuffer* m_pJumbo;    // starting address of jumbo section
-    PoolBuffer* m_pLimit;    // address after pool
-    bool    m_bDontFree; // dont actually free objects back to heap
-    bool    m_bFreeRB;   // but actually free RowBuffers back to heap
+    i8      m_nBuffers;   // number of buffers in pool
+    PoolBuffer* m_pBase;  // starting address of pool (large section)
+    PoolBuffer* m_pJumbo; // starting address of jumbo section
+    PoolBuffer* m_pLimit; // address after pool
+    bool    m_bDontFree;  // dont actually free objects back to heap
+    bool    m_bFreeRB;    // but actually free RowBuffers back to heap
 
-    s32  m_sShmName;    // shared memory region name
-    int  m_iShmFD;      // shared memory file descriptor
+    s32  m_sShmName;      // shared memory region name
+    int  m_iShmFD;        // shared memory file descriptor
     
     // free chain
-    Lock m_oFreeLock;    // lock over free chain
-    i8   m_nAllocCount;  //   number of buffers currently in use
-    i8   m_nFreeCount;   //   number of buffers in free chain
-    bn   m_nFreeHead;    //   head of free chain
+    Lock m_oFreeLock;     // lock over free chain
+    i8   m_nAllocCount;   //   number of buffers currently in use
+    i8   m_nFreeCount;    //   number of buffers in free chain
+    bn   m_nFreeHead;     //   head of free chain
 
-    Atomic  m_ixHeapBuffers; //
+    Atomic  m_ixHeapBuffers;  //
     Atomic  m_ixOtherBuffers; //
 
     // must be last
@@ -64,7 +64,7 @@ namespace Pool
     bool bDetachPool(void);
     bool bDontFree(void);
     void vFree(PoolBuffer* pBuffer);
-    void vFreeHeapBuffer(PoolBuffer* pBuffer);
+    void vFreeHeapBuffer(PoolBuffer* pPoolBuffer);
     i8   nFreeCount(void);
     i8   iFreePercent(void);
     bool bFreeRB(void);

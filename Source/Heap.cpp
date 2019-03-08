@@ -285,6 +285,19 @@ void Heap::vFreeObject(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
+//  if (CN_LARGETRANSIENT == eClass()) {
+//    
+//    if (m_iFreeCount > 10) {
+//      PoolBuffer* pPoolBuffer = PoolBuffer::pGetPoolBuffer(pObject);
+//      
+//      HeapBuffer* pHeapBuffer = _pHeapBuffer(pPoolBuffer);
+//      vRemoveBuffer(pHeapBuffer);
+//      
+//      gpBufferPool->vFreeHeapBuffer(pPoolBuffer);
+//      return;
+//    }
+//  }
+  
   m_okLock.vGrabWrite();
   
   vPushFree(reinterpret_cast<FreeChunk*>(pObject),pObject->eClass());
@@ -303,7 +316,7 @@ void Heap::vGrabLock()
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  ASSERT(!m_okLock.bIsLocked());
+  //ASSERT(!m_okLock.bIsLocked());
   m_okLock.vGrabWrite();
   
 }
@@ -441,6 +454,27 @@ void Heap::vPushFree(FreeChunk* aFreeChunk, eCN eWasClass)
   m_pFreeHead = aFreeChunk;
   
   m_iFreeCount++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push free chunk onto free chain                                            */
+/*----------------------------------------------------------------------------*/
+void Heap::vRemoveBuffer(HeapBuffer* pHeapBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vGrabLock();
+  
+  if (pHeapBuffer == m_pFirstBuffer)
+    m_pFirstBuffer = pHeapBuffer->pNextBuffer();
+  
+  if (pHeapBuffer == m_pLastBuffer)
+    m_pLastBuffer = pHeapBuffer->pPrevBuffer();
+
+  // we have one less buffer
+  m_iBufferCount--;
+
+  vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/

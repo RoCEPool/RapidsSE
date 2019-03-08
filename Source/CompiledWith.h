@@ -15,17 +15,23 @@
 
 #ifdef _DEBUG
 
+#define WITH_DEBUG_VERSION      // compile as debug version
+
 #define WITH_ADDRESS_CHECKING   // check that address is in pool
 #define WITH_ASSERT_MACRO       // Assert() macro
-#define WITH_DEBUG_VERSION      // compile as debug version
 #define WITH_CORECTNESS_ALGEBRA // known class, magic, footer
 #define WITH_PREPOST_CHECKING   // _pre/postCondition_(), _checkInitialised_()
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// RELEASE behaviours
+// release behaviours
 
 #else
+
 #define WITH_RELEASE_VERSION    // compile as release version
+
+//#define WITH_CORECTNESS_ALGEBRA // known class, magic, footer
+//#define WITH_PREPOST_CHECKING   // _pre/postCondition_(), _checkInitialised_()
+
 #endif
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
