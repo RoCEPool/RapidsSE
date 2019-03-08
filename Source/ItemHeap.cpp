@@ -50,7 +50,7 @@ ItemHeap::ItemHeap(eCN eClassNo)
   m_i_FreeOffsetChain = C_NO_MORE_ITEMS;
   
   
-#ifdef WITH_PREPOST_CHECKING
+#ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(eClassNo);
 #endif
   

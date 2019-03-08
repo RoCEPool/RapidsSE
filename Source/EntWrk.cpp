@@ -23,7 +23,7 @@ EntWrk::EntWrk(eCN eClassNo)
          0 == m_xId.iItem()   &&
          0 == m_xId.nLevels());
   
-#ifdef WITH_PREPOST_CHECKING
+#ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(eClassNo);
 #endif
   

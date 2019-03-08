@@ -65,7 +65,7 @@ String_t<SIZE>::String_t(void)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
-#ifdef WITH_PREPOST_CHECKING
+#ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caArea,SIZE,CN_STRING_T);
 #else
   m_caArea[0] = '\0';
@@ -83,7 +83,7 @@ String_t<SIZE>::String_t(Stz* aArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
-#ifdef WITH_PREPOST_CHECKING
+#ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caArea,SIZE,CN_STRING_T);
 #endif
   

@@ -60,7 +60,7 @@ Stack::Stack(void)
   m_aRetryTop    = aStackBase();
   m_nRetryValues = 0;
   
-#ifdef WITH_PREPOST_CHECKING
+#ifdef WITH_CHECK_INITIALISED
   m_xWsp.vFill(0x00,CN_STACK);
 #endif
   

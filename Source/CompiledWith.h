@@ -43,11 +43,11 @@
 
 #define WITH_ACTION_SEQUENCE    // code for ActionSequence compiled in
 #define WITH_ACTIVITY_MAP       // code for ActivityMap compiled in
-//#define WITH_CHECK_INITIALISED  // _checkInitialised_()
-//#define WITH_CORECTNESS_ALGEBRA // known class, magic, footer
-#define WITH_ENTRY_EXIT          // code for ENTRY() & EXIT() macros compiled in
-//#define WITH_PREPOST_CHECKING   // _pre/postCondition_()
-#define WITH_TRACE_API           // code for tracing api's compiled in
+#define WITH_CHECK_INITIALISED  // _checkInitialised_()
+#define WITH_CORECTNESS_ALGEBRA // known class, magic, footer
+#define WITH_ENTRY_EXIT         // code for ENTRY() & EXIT() macros compiled in
+#define WITH_PREPOST_CHECKING   // _pre/postCondition_()
+#define WITH_TRACE_API          // code for tracing api's compiled in
 
 #endif
 
