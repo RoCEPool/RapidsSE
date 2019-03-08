@@ -23,7 +23,10 @@ PromptNote mPromptNote_prefixes (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_prefixes(SePrompt* pPrompt)
 {
-  
+  vTrace("time\n"_Stz);
+  vTrace("mark\n"_Stz);
+  vTrace("nowait\n"_Stz);
+
   return true;
 }
 
