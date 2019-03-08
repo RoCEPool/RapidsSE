@@ -19,6 +19,7 @@ using namespace Correctness;
 #include "Footer.hpp"
 #include "Header.hpp"
 #include "Object.hpp"
+#include "SeeMe.hpp"
 #include "Wsp_t.hpp"
 
 #include "Addressing.hpp"

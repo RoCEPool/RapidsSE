@@ -676,7 +676,28 @@ void MemLib::vWordDump(void *aAddress, i8 nBytes, i8 iHighlightWord)
       vTrace(" <<==== MARKER E"_Stz);
     if ((u8)(*((i8*)aAddress + i_Word)) == C_MEMORY_MARKERF)
       vTrace(" <<==== MARKER F"_Stz);
+
+    if ((u8)(*((i8*)aAddress + i_Word)) == C_SEEME)
+      vTrace(" <<==== SEE ME"_Stz);
     
+    
+    Header* aHeader = aAdd<Header*>(aAddress,(i_Word * C_BYTES_PER_WORD));
+    Footer* aFooter = aAdd<Footer*>(aAddress,(i_Word * C_BYTES_PER_WORD));
+    i8 iVal = *aAdd<i8*>(aAddress,(i_Word * C_BYTES_PER_WORD));
+    
+    if (aHeader->bValidMagic()) {
+      vTrace(" [Header: Class %lld %s]"_Stz,
+             aHeader->eClass(),
+             aCN[aHeader->eClass()]);
+    }
+    else if (aFooter->bValidFooter()) {
+      vTrace(" [Footer]"_Stz);
+    }
+    else if (C_DATUM_NULL == iVal) {
+      vTrace(" [Is Null]"_Stz);
+    }
+
+
     iWord = 0;
     iOffset += C_SIZEOF_WORD;
     vTrace("\n"_Stz);

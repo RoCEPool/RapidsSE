@@ -5,7 +5,7 @@
 
 namespace Correctness
 {
-  static const u8 C_FOOTER = 0x245245544F4F4624; // $C_FOOTER$
+  static const u8 C_FOOTER = 0x245245544F4F4624; // $FOOTER$
 
   class Footer
   {

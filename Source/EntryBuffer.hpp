@@ -28,6 +28,8 @@ namespace Data
     Item* m_aLastEntry; // last entry (would append to this)
     Item* m_aLazyChain; // first lazy entry
   
+    SeeMe m_xSeeMe;
+  
     // must be last
     Footer m_xFooter;
   

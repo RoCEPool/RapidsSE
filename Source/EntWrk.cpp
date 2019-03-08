@@ -23,6 +23,10 @@ EntWrk::EntWrk(eCN eClassNo)
          0 == m_xId.iItem()   &&
          0 == m_xId.nLevels());
   
+#ifdef WITH_PREPOST_CHECKING
+  m_xWsp.vZero(eClassNo);
+#endif
+  
   m_xWsp.vInit();
   
   m_aEmbedded = m_xWsp.aArea();

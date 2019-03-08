@@ -221,6 +221,7 @@ pFINALIZE *gpFinalize[]
   /*106 */ &Finalize::vUndefined,         // CN_ROWWRK
   
   /*    */ &Finalize::vUndefined,         // CN_SCHEMATEST
+  /*    */ &Finalize::vUndefined,         // CN_SEEME
   /*115 */ &Finalize::vUndefined,         // CN_SEPROMPT
   /*    */ &Finalize::vUndefined,         // CN_SESSION
   /*    */ &Finalize::vUndefined,         // CN_SESSIONSTATE
