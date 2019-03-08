@@ -133,6 +133,13 @@ bool LoadMap::bMapChunk(void)
   // less than maximum chunk size
   if (i_FinalBlockLoc > m_i_EofLoc) {
     vAddEntry(m_i_EofLoc - 1);
+
+    s32 sFileSize;
+    Magnitudes::vByteMag(m_i_EofLoc, 3, sFileSize);
+    vTrace("Loading %s %s in %lld chunks by %lld subLoaders\n"_Stz,
+           m_oFile.sFilePath().aStz(),sFileSize.aStz(),
+           m_xMap.nEntries,
+           gpAttachMap->Arg.m_nSubLoaders);
     vMappingDone(true);
     return false;
   }
