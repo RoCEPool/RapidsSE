@@ -136,10 +136,12 @@ bool LoadMap::bMapChunk(void)
 
     s32 sFileSize;
     Magnitudes::vByteMag(m_i_EofLoc, 3, sFileSize);
-    vTrace("Loading %s %s in %lld chunks by %lld subLoaders\n"_Stz,
+    vTrace("Loading %s %s in %lld chunks by %lld subLoaders %lld nodes %lld partitions\n"_Stz,
            m_oFile.sFilePath().aStz(),sFileSize.aStz(),
            m_xMap.nEntries,
-           gpAttachMap->Arg.m_nSubLoaders);
+           gpAttachMap->Arg.m_nSubLoaders,
+           gpAttachMap->m_pGrid->nNodes(),
+           gpAttachMap->m_pGrid->m_nPartitions);
     vMappingDone(true);
     return false;
   }
