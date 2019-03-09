@@ -28,6 +28,7 @@ using namespace Prompt;
 #include "Prompt_amSection.hpp"
 #include "Prompt_apiState.hpp"
 #include "Prompt_args.hpp"
+#include "Prompt_ascii.hpp"
 #include "Prompt_attachMap.hpp"
 
 #include "Prompt_bp.hpp"
