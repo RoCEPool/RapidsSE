@@ -304,8 +304,15 @@ bool LoadMap::bGetNextMapping(i8& iSeek, i8& nBytes, i8& i_Entry)
   m_okLock.vDropWrite();
   
   if (bProgressPrint) {
+    
     i8 iPercentFree = gpAttachMap->m_pBufferPool->iFreePercent();
-    vTrace("Load Progress: %lld%% (free %lld%%)\n"_Stz,iPercent,iPercentFree);
+    vTrace("Load Progress: %lld%% (free %lld%%)"_Stz,iPercent,iPercentFree);
+    
+    if (gpAttachMap->Arg.m_bDeveloper)
+      vTrace(" (ReadyLP %lld tasks)"_Stz,
+             gpAttachMap->m_pQueues->m_pReadyQueueLP->nTasks());
+
+    vTrace("\n"_Stz);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
