@@ -303,8 +303,10 @@ bool LoadMap::bGetNextMapping(i8& iSeek, i8& nBytes, i8& i_Entry)
   // ok to drop the lock
   m_okLock.vDropWrite();
   
-  if (bProgressPrint)
-    vTrace("Load Progress: %lld%%\n"_Stz,iPercent);
+  if (bProgressPrint) {
+    i8 iPercentFree = gpAttachMap->m_pBufferPool->iFreePercent();
+    vTrace("Load Progress: %lld%% (free %lld%%)\n"_Stz,iPercent,iPercentFree);
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
