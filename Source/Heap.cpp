@@ -285,18 +285,18 @@ void Heap::vFreeObject(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-//  if (CN_LARGETRANSIENT == eClass()) {
-//    
-//    if (m_iFreeCount > 10) {
-//      PoolBuffer* pPoolBuffer = PoolBuffer::pGetPoolBuffer(pObject);
-//      
-//      HeapBuffer* pHeapBuffer = _pHeapBuffer(pPoolBuffer);
-//      vRemoveBuffer(pHeapBuffer);
-//      
-//      gpBufferPool->vFreeHeapBuffer(pPoolBuffer);
-//      return;
-//    }
-//  }
+  if (CN_LARGETRANSIENT == eClass()) {
+    
+    if (m_iFreeCount > 10) {
+      PoolBuffer* pPoolBuffer = PoolBuffer::pGetPoolBuffer(pObject);
+      
+      HeapBuffer* pHeapBuffer = _pHeapBuffer(pPoolBuffer);
+      vRemoveBuffer(pHeapBuffer);
+      
+      gpBufferPool->vFreeHeapBuffer(pPoolBuffer);
+      return;
+    }
+  }
   
   m_okLock.vGrabWrite();
   
@@ -470,6 +470,12 @@ void Heap::vRemoveBuffer(HeapBuffer* pHeapBuffer)
   
   if (pHeapBuffer == m_pLastBuffer)
     m_pLastBuffer = pHeapBuffer->pPrevBuffer();
+  
+  if (pHeapBuffer->pPrevBuffer())
+    pHeapBuffer->pPrevBuffer()->vNextBuffer(pHeapBuffer->pNextBuffer());
+
+  if (pHeapBuffer->pNextBuffer())
+    pHeapBuffer->pNextBuffer()->vPrevBuffer(pHeapBuffer->pPrevBuffer());
 
   // we have one less buffer
   m_iBufferCount--;

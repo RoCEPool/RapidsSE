@@ -300,7 +300,7 @@ void BufferPool::vFree(PoolBuffer* pBuffer)
   
   m_oFreeLock.vGrabWrite();
   
-  vVerifyPool();
+  //vVerifyPool();
   
   // test for existing free list
   if (bn::nNil() != m_nFreeHead) {
@@ -319,7 +319,7 @@ void BufferPool::vFree(PoolBuffer* pBuffer)
   m_nFreeCount++;
   m_nAllocCount--;
   
-  vVerifyPool();
+  //vVerifyPool();
   
   m_oFreeLock.vDropWrite();
 }
@@ -632,16 +632,19 @@ bool BufferPool::bVerifyBoundaries(void)
 /*----------------------------------------------------------------------------*/
 void BufferPool::vVerifyPool(void)
 {
-  bn nBuffer = m_nFreeHead;
+  bn iBufferNo = m_nFreeHead;
   
-  while (bn::nNil() != nBuffer) {
+  RASSERT(*iBufferNo < m_nBuffers);
+  
+  while (bn::nNil() != iBufferNo) {
     
-    FreeBuffer* pBufferVerify = pToFreeBuffer(nBuffer);
+    FreeBuffer* pBufferVerify = pToFreeBuffer(iBufferNo);
     
     RASSERT(pBufferVerify->bValidMagic());
     RASSERT(CN_FREEBUFFER == pBufferVerify->eClass());
     
-    nBuffer = pBufferVerify->nNextFree();
+    iBufferNo = pBufferVerify->nNextFree();
+    RASSERT(*iBufferNo < m_nBuffers);
   }
 
 }
@@ -655,6 +658,8 @@ FreeBuffer* BufferPool::pPopFreeBuffer(void)
   
   m_oFreeLock.vGrabWrite();
 
+  //vVerifyPool();
+  
   // test for empty free chain
   if (bn::nNil() == m_nFreeHead) {
     ASSERT( ! m_nFreeCount );
@@ -672,9 +677,9 @@ FreeBuffer* BufferPool::pPopFreeBuffer(void)
   m_nFreeCount--;
   m_nAllocCount++;
   
-  m_oFreeLock.vDropWrite();
-
   //vVerifyPool();
+  
+  m_oFreeLock.vDropWrite();
   
   return pPoolCheck<FreeBuffer*>(pAllocatedBuffer);
 }

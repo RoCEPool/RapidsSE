@@ -49,6 +49,11 @@ namespace Correctness
   #define _setFooter_()
 #endif
 
+#ifdef WITH_CHECK_INITIALISED
+  #undef _setFooter_
+  #define _setFooter_() aFooter()->vSetFooter();
+#endif
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
