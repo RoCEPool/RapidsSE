@@ -31,13 +31,11 @@ bool Prompt::bPrompt_ascii(SePrompt* pPrompt)
   i8 iNumTokens = pTokenVec->nItems();
 
   if (1 == iNumTokens) {
-
+    
     for (i4 i_Char = 0; i_Char < 128; i_Char++) {
-      if (isprint(i_Char))
-        vTrace("%02x %c  "_Stz,i_Char,i_Char);
-      else
-        vTrace("%02x .  "_Stz,i_Char,i_Char);
-      
+      if (0 == i_Char % 8)
+        vTrace("| "_Stz);
+      vTrace("%02x %-3s | "_Stz,i_Char,StrLib::azAscii(i_Char));
       if (i_Char && 0 == (i_Char+1) % 8)
         vTrace("\n"_Stz);
     }

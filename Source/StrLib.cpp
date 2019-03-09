@@ -116,6 +116,14 @@ void StrLib::vAppendString(char** pz, const char* pString)
 }
 
 /*----------------------------------------------------------------------------*/
+/* azAscii: get 3-letter ascii abbreviation for char                          */
+/*----------------------------------------------------------------------------*/
+char* StrLib::azAscii(i8 i_Char)
+{
+  return (char*)szaAscii[i_Char];
+}
+
+/*----------------------------------------------------------------------------*/
 /* bBackward: scan backwards to find given character                          */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bBackward(const char** ps, char* pBegin, const char c)

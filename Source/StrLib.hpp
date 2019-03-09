@@ -37,6 +37,27 @@ namespace Base
   
   static const char C_COMMA = ',';
   
+  static Stz* szaAscii[128] = {
+    "NUL"_Stz,"SOH"_Stz,"STX"_Stz,"ETX"_Stz,"EOT"_Stz,"ENQ"_Stz,"ACK"_Stz,"BEL"_Stz,
+     "BS"_Stz, "HT"_Stz, "LF"_Stz, "VT"_Stz, "FF"_Stz, "CR"_Stz, "SO"_Stz, "SI"_Stz,
+    "DLE"_Stz,"DC1"_Stz,"DC2"_Stz,"DC3"_Stz,"DC4"_Stz,"NAK"_Stz,"SYN"_Stz,"ETB"_Stz,
+    "CAN"_Stz, "EM"_Stz,"SUB"_Stz,"ESC"_Stz, "FS"_Stz, "GS"_Stz, "RS"_Stz, "US"_Stz,
+      " "_Stz,  "!"_Stz, "\""_Stz,  "#"_Stz,  "$"_Stz,  "%"_Stz,  "&"_Stz,  "'"_Stz,
+      "("_Stz,  ")"_Stz,  "*"_Stz,  "+"_Stz,  ","_Stz,  "-"_Stz,  "."_Stz,  "/"_Stz,
+      "0"_Stz,  "1"_Stz,  "2"_Stz,  "3"_Stz,  "4"_Stz,  "5"_Stz,  "6"_Stz,  "7"_Stz,
+      "8"_Stz,  "9"_Stz,  ":"_Stz,  ";"_Stz,  "<"_Stz,  "="_Stz,  ">"_Stz,  "?"_Stz,
+      "@"_Stz,  "A"_Stz,  "B"_Stz,  "C"_Stz,  "D"_Stz,  "E"_Stz,  "F"_Stz,  "G"_Stz,
+      "H"_Stz,  "I"_Stz,  "J"_Stz,  "K"_Stz,  "L"_Stz,  "M"_Stz,  "N"_Stz,  "O"_Stz,
+      "P"_Stz,  "Q"_Stz,  "R"_Stz,  "S"_Stz,  "T"_Stz,  "U"_Stz,  "V"_Stz,  "W"_Stz,
+      "X"_Stz,  "Y"_Stz,  "Z"_Stz,  "["_Stz,  "\\"_Stz, "]"_Stz,  "^"_Stz,  "_"_Stz,
+      "`"_Stz,  "a"_Stz,  "b"_Stz,  "c"_Stz,  "d"_Stz,  "e"_Stz,  "f"_Stz,  "g"_Stz,
+      "h"_Stz,  "i"_Stz,  "j"_Stz,  "k"_Stz,  "l"_Stz,  "m"_Stz,  "n"_Stz,  "o"_Stz,
+      "p"_Stz,  "q"_Stz,  "r"_Stz,  "s"_Stz,  "t"_Stz,  "u"_Stz,  "v"_Stz,  "w"_Stz,
+      "x"_Stz,  "y"_Stz,  "z"_Stz,  "{"_Stz,  "|"_Stz,  "}"_Stz,  "~"_Stz,"DEL"_Stz
+  };
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   class StrLib
   {
   private:
@@ -50,6 +71,7 @@ namespace Base
     static void  vAppendHex(char** pz, i8 i);
     static void  vAppendNull(char** pz);
     static void  vAppendString(char** pz, const char* s);
+    static char* azAscii(i8 i_Char);
     
     static bool  bBackward(const char** ps, char* pBegin, const char c);
 
