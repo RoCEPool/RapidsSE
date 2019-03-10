@@ -34,9 +34,14 @@ SkipRoots::SkipRoots(void)
   vLevels(3);
   m_nSizeItem_WithoutOffsets = sizeof(Item);//sizeof(SkipRoots) - sizeof(m_iaNextOffset);
   
-  m_iaNextOffset[0] = -1;
-  m_iaNextOffset[1] = -1;
-  m_iaNextOffset[2] = -1;
+  m_iPadding[0] = -1;
+  m_iPadding[1] = -1;
+  m_iPadding[2] = -1;
+  m_iPadding[3] = -1;
+  
+  vNEO(0,-1);
+  vNEO(1,-1);
+  vNEO(2,-1);
 }
 
 /*----------------------------------------------------------------------------*/

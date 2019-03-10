@@ -7,16 +7,14 @@ namespace Data
 {
   class SkipRoots : public Item
   {
-    friend class EntryBuffer;
-  
   private:
-    i4 m_iaNextOffset[3];
+    i8 m_iPadding[4];
  
   public:
     SkipRoots(void);
     ~SkipRoots(void) noexcept(false);
   };
-  
+
   SkipRoots* _aSkipRoots(void* aAddr);
 }
 

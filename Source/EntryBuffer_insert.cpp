@@ -719,10 +719,10 @@ void EntryBuffer::vInsertKeySkip(Item* aKeyEntry)
   i4 iKeyEntryOffset = iToOffset(aKeyEntry);
   
   i8 nLevels = aKeyEntry->nLevels();
-  for (i8 iNextLevel = 0; iNextLevel < nLevels; iNextLevel++) {
-    i4 iPriorOffset = xPriorVec[iNextLevel]->iNEO(iNextLevel);
-    aKeyEntry->vNEO(iNextLevel,iPriorOffset);
-    xPriorVec[iNextLevel]->vNEO(iNextLevel,iKeyEntryOffset);
+  for (i8 i_Level = 0; i_Level < nLevels; i_Level++) {
+    i4 iNextOffset = xPriorVec[i_Level]->iNEO(i_Level);
+    aKeyEntry->vNEO(i_Level,iNextOffset);
+    xPriorVec[i_Level]->vNEO(i_Level,iKeyEntryOffset);
   }
   
   //vShow();

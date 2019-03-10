@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void MiniHeaps::vCheckAssumptions(void)
 {
-  //RASSERT(sizeof(FreeItem) <= sizeof(Item));
+  RASSERT(sizeof(FreeItem) <= sizeof(Item));
 }
 
 /*============================================================================*/

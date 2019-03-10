@@ -30,6 +30,7 @@ bool EntryBuffer::bCheckPriorVec(Item* aPriorVec[])
   Item* aNextEntry_0  = aNextEntry(aPriorEntry_0,0);
   Item* aNextEntry_1  = aNextEntry(aPriorEntry_1,1);
   Item* aNextEntry_2  = aNextEntry(aPriorEntry_2,2);
+ 
   
   if (aNextEntry_0 && aNextEntry_1) {
     if (aNextEntry_0->m_iSkipNo > aNextEntry_1->m_iSkipNo) {
@@ -37,20 +38,21 @@ bool EntryBuffer::bCheckPriorVec(Item* aPriorVec[])
       return false;
     }
   }
-  
+
   if (aNextEntry_1 && aNextEntry_2) {
     if (aNextEntry_1->m_iSkipNo > aNextEntry_2->m_iSkipNo) {
       vVerifyFault();
       return false;
     }
   }
-  
+
   if (aNextEntry_0 && aNextEntry_2) {
     if (aNextEntry_0->m_iSkipNo > aNextEntry_2->m_iSkipNo) {
       vVerifyFault();
       return false;
     }
   }
+
   
   return true;
 }
@@ -71,7 +73,7 @@ void EntryBuffer::vNumberEntries(void)
   for (Item* aTestEntry_0 = aNextEntry(aSkipRoots(),0);
        aTestEntry_0;
        aTestEntry_0 = aNextEntry(aTestEntry_0,0))
-    
+
     aTestEntry_0->m_iSkipNo = iEntryNo++;
   
 }
@@ -598,15 +600,15 @@ bool EntryBuffer::bVerifyFreeList(void)
    of FreeEntry's.  No other class is permited.
    */
   
-  for (FreeItem* aFreeEntry = m_aFreeItemChain;
-       aFreeEntry != nullptr;
-       aFreeEntry = aFreeEntry->aNextFree()) {
-    
-    if (! aFreeEntry->bValidFreeEntry()) {
-      vVerifyFault();
-      return false;
-    }
-  }
+//  for (FreeItem* aFreeEntry = m_aFreeItemChain;
+//       aFreeEntry != nullptr;
+//       aFreeEntry = aFreeEntry->aNextFree()) {
+//    
+//    if (! aFreeEntry->bValidFreeEntry()) {
+//      vVerifyFault();
+//      return false;
+//    }
+//  }
   
   return true;
 }

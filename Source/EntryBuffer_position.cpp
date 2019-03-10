@@ -180,6 +180,7 @@ void EntryBuffer::vPositionPriorVecEntry(Item* aFindKey, Item* aPriorVec[],
        i_ScanLevel >= 0;
        i_ScanLevel--) {
     
+    i8 iItemAtScanLevel = 0;
     Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
       
@@ -215,8 +216,10 @@ void EntryBuffer::vPositionPriorVecEntry(Item* aFindKey, Item* aPriorVec[],
           break;
       }
       
+      Item* aPriorEntry_sl = aScanEntry_sl;
       aScanEntry_sl = aNextEntry_sl;
       aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
+      iItemAtScanLevel++;
     }
     aPriorVec[i_ScanLevel] = aScanEntry_sl;
   }

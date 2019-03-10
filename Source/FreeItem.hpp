@@ -8,7 +8,7 @@ namespace MiniHeaps
   class FreeItem : public Item
   {
   protected:
-    FreeItem* m_aNextFree;  // next free
+    //FreeItem* m_aNextFree;  // next free
  
   public:
     void* operator new(size_t);
@@ -23,8 +23,8 @@ namespace MiniHeaps
     void vAssertFreeEntry(void);
     bool bValidFreeEntry(void);
   
-    FreeItem* aNextFree(void);
-    void      vNextFree(FreeItem* aNextFree);
+    //FreeItem* aNextFree(void);
+    //void      vNextFree(FreeItem* aNextFree);
   
     char* aAddressAfter(void);
   

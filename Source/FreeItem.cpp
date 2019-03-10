@@ -54,7 +54,7 @@ void* FreeItem::operator new(size_t, FreeItem* aFreeEntry)
 FreeItem::FreeItem(i8 nSizeItem)
 : Item(CN_FREEENTRY,nSizeItem)
 {
-  m_aNextFree = nullptr;
+  //m_aNextFree = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,18 +117,18 @@ bool FreeItem::bValidFreeEntry(void)
 /*----------------------------------------------------------------------------*/
 /* get next free entry                                                        */
 /*----------------------------------------------------------------------------*/
-FreeItem* FreeItem::aNextFree(void)
-{
-  return m_aNextFree;
-}
+//FreeItem* FreeItem::aNextFree(void)
+//{
+//  return m_aNextFree;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* set next free entry                                                        */
 /*----------------------------------------------------------------------------*/
-void FreeItem::vNextFree(FreeItem* aNextFree)
-{
-  m_aNextFree = aNextFree;
-}
+//void FreeItem::vNextFree(FreeItem* aNextFree)
+//{
+//  m_aNextFree = aNextFree;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get address after this freeEntry                                           */

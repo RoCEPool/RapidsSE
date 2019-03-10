@@ -985,10 +985,14 @@ void EntryBuffer::vReset(void)
   
   vResetUsed();
   
-  m_xSkipRoots.m_iaNextOffset[0] = -1;
-  m_xSkipRoots.m_iaNextOffset[1] = -1;
-  m_xSkipRoots.m_iaNextOffset[2] = -1;
-  
+//  m_xSkipRoots.m_iaNextOffset[0] = -1;
+//  m_xSkipRoots.m_iaNextOffset[1] = -1;
+//  m_xSkipRoots.m_iaNextOffset[2] = -1;
+
+  m_xSkipRoots.vNEO(0,-1);
+  m_xSkipRoots.vNEO(1,-1);
+  m_xSkipRoots.vNEO(2,-1);
+
   m_i_FreeOffsetChain = C_NO_MORE_ITEMS;
   
   //m_aHeadEntry  = nullptr;
@@ -1163,8 +1167,9 @@ void EntryBuffer::vShow(Item* aMarkEntry)
   vTrace("  entryOffset: %p freeOffsetHead: %lld\n"_Stz,
          m_i4aItemOffsets,m_i_FreeOffsetChain);
   
-  vTrace("  headEntry: %p[%d,%d,%d] lastEntry: %p firstFree: %p\n"_Stz,
-         aSkipRoots(),aSkipRoots() ? aSkipRoots()->iNEO(0) : 0,
+  vTrace("  skipRoots: %p[%d,%d,%d] lastEntry: %p firstFree: %p\n"_Stz,
+         aSkipRoots(),
+         aSkipRoots() ? aSkipRoots()->iNEO(0) : 0,
          aSkipRoots() ? aSkipRoots()->iNEO(1) : 0,
          aSkipRoots() ? aSkipRoots()->iNEO(2) : 0,
          m_aLastEntry,m_aFreeItemChain);

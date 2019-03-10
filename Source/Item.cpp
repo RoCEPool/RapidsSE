@@ -38,10 +38,10 @@ Item::Item(eCN eClassNo, i8 nSizeItem)
 {
   m_nSizeItem_WithoutOffsets = static_cast<i4>(nSizeItem);
   
-//#ifdef WITH_DEBUG_VERSION
+#ifdef WITH_DEBUG_VERSION
   m_iSkipNo = -1;
   //m_iIntKey = -1;
-//#endif
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
