@@ -20,16 +20,19 @@ void StorageEngine::vCheckAllAssumptions(void)
   Correctness::vCheckAssumptions();
   Datums::vCheckAssumptions();
   Values::vCheckAssumptions();
-  Values::vCheckAssumptions();
   Assembler::vCheckAssumptions();
   Pool::vCheckAssumptions();
+  Persistence::vCheckAssumptions();
   Structures::vCheckAssumptions();
-  Measurement::vCheckAssumptions();
-  Commands::vCheckAssumptions();
-  Transactions::vCheckAssumptions();
-  Forth::vCheckAssumptions();
-  Data::vCheckAssumptions();
+  MiniHeaps::vCheckAssumptions();
   Chunks::vCheckAssumptions();
+  Measurement::vCheckAssumptions();
+  Maps::vCheckAssumptions();
+  Transactions::vCheckAssumptions();
+  Commands::vCheckAssumptions();
+  Forth::vCheckAssumptions();
+  MetaData::vCheckAssumptions();
+  Data::vCheckAssumptions();
   Plans::vCheckAssumptions();
   Jobs::vCheckAssumptions();
   Utilities::vCheckAssumptions();
@@ -39,6 +42,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Grids::vCheckAssumptions();
   Interface::vCheckAssumptions();
   Prompt::vCheckAssumptions();
+  Axioms::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
 }
 

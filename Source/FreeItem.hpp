@@ -26,7 +26,6 @@ namespace MiniHeaps
     FreeItem* aNextFree(void);
     void      vNextFree(FreeItem* aNextFree);
   
-  
     char* aAddressAfter(void);
   
 //    Footer* aFooter(void);
