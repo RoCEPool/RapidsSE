@@ -115,6 +115,7 @@ namespace Tasks
     ~Task(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+    static Task* pExecutingTask(void);
     static void vMonitorProfile_stats(s48K& sPortrait);
   
     bool bAckAndDecide(void);

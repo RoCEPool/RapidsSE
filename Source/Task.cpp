@@ -230,6 +230,18 @@ void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+Task* Task::pExecutingTask(void)
+{
+  Thread* pThread = Thread::pThisTLSThread();
+  
+  Task* pTask = pThread->pTask();
+
+  return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
 /* monitor profile (for statistics)                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vMonitorProfile_stats(s48K& sPortrait)
