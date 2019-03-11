@@ -38,7 +38,8 @@ void Step::vJob_WriteBufferIndexStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_WriteBuffer.index!"_Stz);
   Index* pHiddenIndex = _pIndex(pIndexPtr);
   
-  pJob_WriteBuffer->m_pCurrentBuffer->vRestoreIndex(pHiddenIndex);
+  if (pJob_WriteBuffer->m_pCurrentBuffer)
+    pJob_WriteBuffer->m_pCurrentBuffer->vRestoreIndex(pHiddenIndex);
   
   EXIT();
 }
