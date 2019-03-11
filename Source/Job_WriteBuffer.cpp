@@ -311,11 +311,23 @@ bool Job_WriteBuffer::bInsertRows_LowMem(void)
   // we wrote one additional buffer
   pPartition->vIncBuffersWritten();
   
-  // does this job have information about the number of buffers loadable
-  // from a subloader for this partition?
-  if (C_UNKNOWN != m_nWriteBehindBuffers)
-    pPartition->vAddLoadWriteBehindBuffers(m_nWriteBehindBuffers);
-  
+  if (m_eDataSource == DS_LOAD) {
+    // does this job have information about the number of buffers loadable
+    // from a subloader for this partition?
+    if (C_UNKNOWN != m_nWriteBehindBuffers)
+      pPartition->vAddLoadWriteBehindBuffers(m_nWriteBehindBuffers);
+  }
+  else if (m_eDataSource == DS_INSERT) {
+    if (C_UNKNOWN != m_nWriteBehindBuffers) {
+      pPartition->vAddInsertWriteBehindBuffers(m_nWriteBehindBuffers);
+    }
+  }
+  else {
+    RASSERT(m_eDataSource == DS_INGEST);
+    
+    // this runs forever
+    return false;
+  }
   // have all buffers been loaded?
   bool bAllBuffersWritten = pPartition->bAllBuffersWritten(DS_LOAD);
   //if (bAllBuffersLoaded)
