@@ -67,7 +67,7 @@ namespace Tasks
     eTK     m_eState;       // state (running, sleeping, ...)
     eQR     m_eQueue;       // which queue the task is in
     i8      m_iQueueOrder;  // queue ordering number
-    Lock    m_okLock;        // lock for this task
+    Lock    m_okLock;       // lock for this task
     Decider m_oAcksRemaining; // number of acks still waiting for
     Since   m_oWakeupTime;  // wakeup time
 
@@ -75,6 +75,7 @@ namespace Tasks
     i8      m_iDdlLocked;   // ? has the ddl lock?
     i8      m_iTracing;     // tracing mask
     i8      m_i_ActionRoot; // action root
+    i8      m_i_NextRnd;    // which next repeatable random nummber?
 
     Grids::Node* m_pSendNode; // node to send to
 
@@ -134,6 +135,7 @@ namespace Tasks
     void vLocalsPush(void);
     void vMonitorPortrait(s48K& sPortrait);
     void vNewStacks(void);
+    i8&  i_NextRnd(void);
     i8   iPartition(void);
     s256& sPortrait(void);
     eQR  eQueue(void);

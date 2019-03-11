@@ -193,8 +193,13 @@ void EntWrk::vRandomLevels(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  i8 nLevels = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
+  i8 nLevels;
   
+  if (gpAttachMap->Arg.m_bDeveloper)
+    nLevels = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
+  else
+    nLevels = Random::iLogLevel(3,C_FLAT_FREQ + 1) + 1;
+
   m_xId.vLevels(nLevels);
 }
 

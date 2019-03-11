@@ -88,6 +88,7 @@ Task::Task(Job* pJob)
   
   m_iTracing     = C_TRACE_NONE;
   m_i_ActionRoot = pJob->m_i_ActionRoot;
+  m_i_NextRnd    = C_UNKNOWN;
   
   m_pSession     = nullptr;
   
@@ -477,6 +478,14 @@ void Task::vNewStacks(void)
   m_pDataStack   = new Stack;
   m_pReturnStack = new Stack;
   m_pAuxStack    = new Stack;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next repeatable random number subscript                                */
+/*----------------------------------------------------------------------------*/
+i8& Task::i_NextRnd(void)
+{
+  return m_i_NextRnd;
 }
 
 /*----------------------------------------------------------------------------*/
