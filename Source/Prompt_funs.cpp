@@ -61,6 +61,7 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_JOBCLASS);
   gxPromptCatalog.vFuns(PF_LOCKS);
   gxPromptCatalog.vFuns(PF_LS);
+  gxPromptCatalog.vFuns(PF_LVL);
   gxPromptCatalog.vFuns(PF_MARKACT);
   gxPromptCatalog.vFuns(PF_MARKAPI);
   gxPromptCatalog.vFuns(PF_MARKJOB);

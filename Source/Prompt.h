@@ -66,6 +66,7 @@ using namespace Prompt;
 
 #include "Prompt_locks.hpp"
 #include "Prompt_ls.hpp"
+#include "Prompt_lvl.hpp"
 
 #include "Prompt_markAct.hpp"
 #include "Prompt_markApi.hpp"

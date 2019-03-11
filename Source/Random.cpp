@@ -116,7 +116,12 @@ i8 Random::iLogLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd)
     
     // if all bits used from the random bit pattern, generate a new pattern
     if (0 == nSubsetsLeft) {
-      uRandomPattern = Random::uInteger();
+      
+      if (C_UNKNOWN == i_NextRnd)
+        uRandomPattern = Random::uInteger();
+      else
+        uRandomPattern = Random::uRepeatable(i_NextRnd);
+
       nSubsetsLeft = nLevels / iFrequency;
     }
 
