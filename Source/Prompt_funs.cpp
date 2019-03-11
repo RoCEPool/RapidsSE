@@ -84,6 +84,7 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_READY);
   gxPromptCatalog.vFuns(PF_RESOURCES);
   gxPromptCatalog.vFuns(PF_RMPIPE);
+  gxPromptCatalog.vFuns(PF_RND);
   gxPromptCatalog.vFuns(PF_SE);
   gxPromptCatalog.vFuns(PF_SHELL);
   gxPromptCatalog.vFuns(PF_SINCE);

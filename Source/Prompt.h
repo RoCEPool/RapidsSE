@@ -95,6 +95,7 @@ using namespace Prompt;
 #include "Prompt_ready.hpp"
 #include "Prompt_resources.hpp"
 #include "Prompt_rmpipe.hpp"
+#include "Prompt_rnd.hpp"
 
 #include "Prompt_se.hpp"
 #include "Prompt_shell.hpp"
