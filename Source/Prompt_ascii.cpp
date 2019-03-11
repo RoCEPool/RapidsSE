@@ -40,6 +40,10 @@ bool Prompt::bPrompt_ascii(SePrompt* pPrompt)
         vTrace("\n"_Stz);
     }
     
+    for (i4 i_Char = 0; i_Char < 32; i_Char++)
+      vTrace("%s"_Stz,aOC[i_Char]);
+    vTrace("\n"_Stz);
+
     return true;
   }
   
