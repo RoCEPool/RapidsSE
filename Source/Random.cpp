@@ -81,7 +81,7 @@ u8 Random::uInteger(u8 uLow, u8 uHigh)
 /*----------------------------------------------------------------------------*/
 /* choose a random logarithemic level (up to n levels, at given frequency)    */
 /*----------------------------------------------------------------------------*/
-i8 Random::iLogLevel(i8 nLevels, i8 iFrequency)
+i8 Random::iLogLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd)
 {
   //
   // This function generates a number between 0 and nLevels - 1.

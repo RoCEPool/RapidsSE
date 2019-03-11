@@ -88,7 +88,7 @@ Task::Task(Job* pJob)
   
   m_iTracing     = C_TRACE_NONE;
   m_i_ActionRoot = pJob->m_i_ActionRoot;
-  m_i_NextRnd    = C_UNKNOWN;
+  m_i_NextRnd    = gpAttachMap->Arg.m_bDeveloper ? 0 : C_UNKNOWN;
   
   m_pSession     = nullptr;
   
