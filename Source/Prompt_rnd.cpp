@@ -22,19 +22,22 @@ PromptNote mPromptNote_rnd (
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_rnd(SePrompt* pPrompt)
-{
-  TokenVec* pTokenVec = pPrompt->pTknVec();
-
-  ASSERT((*pTokenVec)[0]->bSame("rnd"_Stz));
-  
+{  
   ThirdParty::init_genrand64(0);
   
-  for (i8 i = 0; i < 128; i++) {
-    vTrace("%6lld "_Stz,Random::iInteger(C_1M));
-    if (0 == (i+1) % 8)
+//  for (i8 i = 0; i < 1024; i++) {
+//    vTrace("/* %4lld */ %20lluull, "_Stz,i,Random::uInteger());
+//    if (0 == (i+1) % 1)
+//      vTrace("\n"_Stz);
+//  }
+
+  i8 i_Next = 0;
+  for (i8 i = 0; i < 32; i++) {
+    vTrace("/* %4lld */ %20lluull, "_Stz,i,Random::uRepeatable(i_Next));
+    if (0 == (i+1) % 1)
       vTrace("\n"_Stz);
   }
-  
+
   return true;
 }
 

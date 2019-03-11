@@ -19,6 +19,8 @@ namespace System
     static i8 iLogLevel(i8 nLevels, i8 iFrequency);
   
     static void vString(s256& sStr, i8 iLength);
+
+    static u8 uRepeatable(i8& i_Next);
   };
 }
 
