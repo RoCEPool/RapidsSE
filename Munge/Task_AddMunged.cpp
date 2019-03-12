@@ -901,6 +901,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "  \\\" --partitionsPerNode \\\" str.cat args.partitionsPerNode >str str.cat\n"
     "  \\\" --name  \\\" str.cat nodeName str.cat\n"
     "  \\\" --subLoaders \\\" str.cat args.subLoaders >str str.cat\n"
+    "  \\\" --maxReadyLP \\\" str.cat args.maxReadyLP >str str.cat\n"
     "\n"
     "  //\\\" --partitionsPerNode \\\" str.cat grid::slots >str str.cat\n"
     "\n"
