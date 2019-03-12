@@ -4,6 +4,9 @@ refresh;
 success
 
 SELECT * FROM rapids.system.tables;
+mute
+// CHECK RESULTS
+/*
 rows:
   ('RAPIDS', 'SYSTEM', 'NODES',           false)
   ('RAPIDS', 'SYSTEM', 'FEDERATIONS',     false)
@@ -15,7 +18,7 @@ rows:
   ('RAPIDS', 'SYSTEM', 'INDEXES',         false)
   ('RAPIDS', 'SYSTEM', 'CATALOGS',        false)
   ('RAPIDS', 'SYSTEM', 'QUERY_STATS',     false)
-
+*/
 CLEANUP {
 
 }
