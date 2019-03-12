@@ -193,9 +193,9 @@ void EntWrk::vRandomLevels(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  i8 i_Next = -1;
+  Task* pTask = Task::pExecutingTask();
   
-  i8 nLevels = Random::iLogLevel(3,C_FLAT_FREQ + 1,i_Next) + 1;
+  i8 nLevels = Random::iLogLevel(3,C_FLAT_FREQ + 1,pTask->i_NextRnd()) + 1;
 
   m_xId.vLevels(nLevels);
 }
