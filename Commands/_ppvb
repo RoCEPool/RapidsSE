@@ -3,25 +3,28 @@
 /*============================================================================*/
 startCluster;
 
-IndexEntries 8;
+IndexEntries 5;
 
-create table jCdt (
-jA  INTEGER,
-jB  INTEGER,
-jC  INTEGER,
-jD  INTEGER,
-jE  VARCHAR(32)
+create table supplier (
+S_SUPPKEY       INTEGER NOT NULL,
+S_NAME          VARCHAR(25) NOT NULL,
+S_ADDRESS       VARCHAR(40) NOT NULL,
+S_NATIONKEY     INTEGER NOT NULL,
+S_PHONE         VARCHAR(15) NOT NULL,
+S_ACCTBAL       DECIMAL(15,2) NOT NULL,
+S_COMMENT       VARCHAR(101) NOT NULL
 );
 
-create index jCdt_idx1 on jCdt (jA);
+create index idx on supplier (S_NATIONKEY);
 
-ld jCdt "/DATA/Select/range2.csv";
+// load the table
+ld supplier "/TPCH/SF1/supplier.tbl" field_delimiter "|";
 
 //dumpidx jCdt jCdt_idx1;
 
-vfyidx jCdt jCdt_idx1;
+vfyidx supplier idx;
 
-
+fetch supplier "s_nationkey 10 ==";
 //*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
