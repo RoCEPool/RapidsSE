@@ -271,10 +271,10 @@ void EntryBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (1 == m_iBufferHeight) {
-    int iDebug = 1;
-    vShow();
-  }
+//  if (1 == m_iBufferHeight) {
+//    int iDebug = 1;
+//    vShow();
+//  }
   
   for (i8 i_Level = 0; i_Level < gpAttachMap->m_nIndexLevels; i_Level++)
     aPriorVec[i_Level] = aSkipRoots();
@@ -294,11 +294,11 @@ void EntryBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
 
       // - key testing
 
-      if (1 == m_iBufferHeight) {
-        vTrace("-- bGreaterThan ----------\n"_Stz);
-        vShowEntry(aNextEntry_sl);
-        vShowEntry(aInsertingEntry);
-       }
+//      if (1 == m_iBufferHeight) {
+//        vTrace("-- bGreaterThan ----------\n"_Stz);
+//        vShowEntry(aNextEntry_sl);
+//        vShowEntry(aInsertingEntry);
+//       }
       
       bool bNextKeyIsGreater = KeyData::bGreaterThan(aNextEntry_sl,aInsertingEntry);
       if (bNextKeyIsGreater) {
