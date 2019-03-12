@@ -77,6 +77,7 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_OPSYS);
   gxPromptCatalog.vFuns(PF_PLIST);
   gxPromptCatalog.vFuns(PF_PMC);
+  gxPromptCatalog.vFuns(PF_POW2);
   gxPromptCatalog.vFuns(PF_PREFIXES);
   gxPromptCatalog.vFuns(PF_PRINT);
   gxPromptCatalog.vFuns(PF_PWD);

@@ -86,6 +86,7 @@ using namespace Prompt;
 
 #include "Prompt_plist.hpp"
 #include "Prompt_pmc.hpp"
+#include "Prompt_pow2.hpp"
 #include "Prompt_prefixes.hpp"
 #include "Prompt_print.hpp"
 #include "Prompt_pwd.hpp"
