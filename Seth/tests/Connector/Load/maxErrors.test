@@ -19,7 +19,7 @@ ESCAPE CONNECTOR se 'load rapidsse.public.G1' WITH file = '/DATA/Datums/boolean.
 failure contains: '15 records in error'
 
 select * from rapidsse.public.G1;
-rows: 0;
+rows: 100
 
 ESCAPE CONNECTOR se 'load rapidsse.public.G1' WITH file = '/DATA/Datums/boolean.csv',node = 'node1', max_errors = 30;
 failure contains: '19 records in error'
