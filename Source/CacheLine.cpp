@@ -29,11 +29,16 @@ CacheLine::~CacheLine(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return 1 byte at offset as w8                                              */
 /*----------------------------------------------------------------------------*/
-w8 CacheLine:: w8_1B(i8 i_Offset)
+w8 CacheLine::w8_1B(i8 i_Offset)
 {
-  w8 wVal = 0;
+  WordView xWord;
   
-  return wVal;
+  byte* aByte = ((byte*)this) + i_Offset;
+  
+  xWord.m_iI8 = 0;
+  xWord.m_yaByte[0] = *aByte;
+  
+  return xWord.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -44,6 +49,12 @@ w8 CacheLine:: w8_1B(i8 i_Offset)
 /*----------------------------------------------------------------------------*/
 void CacheLine::v1B(i8 i_Offset, w8 wArg)
 {
+  WordView xWord;
+
+  xWord.m_wWord = wArg;
+  
+  byte* aByte = ((byte*)this) + i_Offset;
+  *aByte = xWord.m_yaByte[0];
 }
 
 /*============================================================================*/

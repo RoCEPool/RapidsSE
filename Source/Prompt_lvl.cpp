@@ -14,7 +14,7 @@ PromptNote mPromptNote_lvl (
   true,             // enabled
 
   true,             // visible
-  "rnd"_Stz,        // help
+  "lvl"_Stz,        // help
   ""_Stz            // description
 );
 

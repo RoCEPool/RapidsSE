@@ -37,6 +37,7 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_ATTACHMAP);
   gxPromptCatalog.vFuns(PF_BP);
   gxPromptCatalog.vFuns(PF_BYE);
+  gxPromptCatalog.vFuns(PF_CACHE);
   gxPromptCatalog.vFuns(PF_CD);
   gxPromptCatalog.vFuns(PF_CLASSES);
   gxPromptCatalog.vFuns(PF_CMDS);
