@@ -1,4 +1,5 @@
 basic.test
+maxErrors.test
 enclosedBy.test
 enclosedByBraces.test
 //part_curlyBraces.test
