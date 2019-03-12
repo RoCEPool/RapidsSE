@@ -11,6 +11,7 @@
 #include "bzlib.h"
 #include "lz4.h"
 #include "Mersenne.hpp"
+#include "shoco.h"
 #include "xxhash.hpp"
 
 //#pragma GCC diagnostic warning "-Wunused-variable"

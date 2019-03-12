@@ -269,6 +269,15 @@ bool Vch::bExtract(char** aaSrc, Stz* aDst,
                                   pFormatters->m_bAllowNonPrintable
                                  ) )
     return false;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // shoco test
+  
+//  char caCompressed[1024];
+//  i8 iLen = StrLib::iLength((char*)aVch);
+//  i8 iLenCompressed = shoco_compress((char*)aVch, iLen,
+//                                     caCompressed, sizeof(caCompressed));
+//  vTrace("%2lld -> %2lld: %s\n"_Stz,iLen,iLenCompressed,(char*)aVch);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
