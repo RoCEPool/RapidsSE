@@ -33,6 +33,7 @@ using namespace Base;
 #include "MemLib.hpp"
 #include "Stz.hpp"
 #include "StrLib.hpp"
+#include "WordView.hpp"
 
 const i8 C_UNKNOWN = -1;
 

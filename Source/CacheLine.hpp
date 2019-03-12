@@ -8,7 +8,7 @@ namespace Base
   class CacheLine
   {
   public:
-    byte m_cyByte[C_BYTES_PER_CACHE_LINE];
+    byte m_yaByte[C_BYTES_PER_CACHE_LINE];
   
   public:
     CacheLine(void);
