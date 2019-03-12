@@ -312,6 +312,8 @@ void EntryBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
       if (! bKeysAreEqual) {
         // haven't found key at this level yet, go right at this level
         aPriorVec[i_ScanLevel] = aNextEntry_sl;//aPriorEntry_sl;
+        if (! aNextEntry(aNextEntry_sl,i_ScanLevel) )
+          break;
         aPriorEntry_sl = aNextEntry_sl;
         continue;
       }
@@ -321,6 +323,8 @@ void EntryBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
       if (pRefdChildBuffer != pRefdEntryBuffer(aNextEntry_sl)->pPrevBuffer()) {
         // found key but haven't reached buffer, go right at this level
         aPriorVec[i_ScanLevel] = aNextEntry_sl;//aPriorEntry_sl;
+        if (! aNextEntry(aNextEntry_sl,i_ScanLevel) )
+          break;
         aPriorEntry_sl = aNextEntry_sl;
         continue;
       }

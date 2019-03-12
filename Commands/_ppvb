@@ -17,7 +17,7 @@ create index jCdt_idx1 on jCdt (jA);
 
 ld jCdt "/DATA/Select/range2.csv";
 
-dumpidx jCdt jCdt_idx1;
+//dumpidx jCdt jCdt_idx1;
 
 vfyidx jCdt jCdt_idx1;
 
