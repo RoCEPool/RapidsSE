@@ -3,24 +3,23 @@
 /*============================================================================*/
 startCluster;
 
-IndexEntries 5;
+IndexEntries 8;
 
-// (1) create table Q1
-create table Q1 (
+create table jCdt (
 jA  INTEGER,
-jB  INTEGER, 
+jB  INTEGER,
 jC  INTEGER,
 jD  INTEGER,
 jE  VARCHAR(32)
 );
 
-create index idx on Q1 (jA);
+create index jCdt_idx1 on jCdt (jA);
 
-ld Q1 "/DATA/Queries/L1_SingleBuffer.csv";
+ld jCdt "/DATA/Select/range2.csv";
 
-dumpidx Q1 idx;
+dumpidx jCdt jCdt_idx1;
 
-vfyidx Q1 idx;
+vfyidx jCdt jCdt_idx1;
 
 
 //*============================================================================*/
