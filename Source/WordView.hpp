@@ -10,6 +10,12 @@ namespace Base
   public:
     union {
       byte m_yaByte[C_BYTES_PER_WORD];
+      
+      i1   m_iaI1[8];
+      i2   m_iaI2[4];
+      i4   m_iaI4[2];
+      i8   m_iI8;
+      
       w8   m_wWord;
     };
   
