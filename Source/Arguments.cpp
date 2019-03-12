@@ -67,7 +67,7 @@ Arguments::Arguments(void)
   m_bHugePages       = false;
   m_bKillPrev        = false;
   m_nMaxLoadErrors   = 0;
-  m_nMaxReadyLP      = 1000;
+  m_nMaxReadyLP      = 32;
   m_bMetadata        = false;
   m_bMunged          = false;
   m_bProgress        = false;
