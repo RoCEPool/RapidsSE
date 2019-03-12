@@ -23,6 +23,18 @@ PromptNote mPromptNote_cache (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_cache(SePrompt* pPrompt)
 {
+  CacheLine xCacheLine;
+  
+  MemLib::vSet(&xCacheLine, 0xFF, sizeof(xCacheLine), CN_NONE);
+  
+  w8 wVal = 1;
+  
+  for (i8 i_Offset = 0; i_Offset < C_BYTES_PER_CACHE_LINE; i_Offset++) {
+    xCacheLine.v1B(i_Offset,wVal);
+    vTrace("\n"_Stz);
+    vTrace("%2lld: \n"_Stz,i_Offset);
+    MemLib::vWordDump(&xCacheLine,sizeof(xCacheLine));
+  }
   
   return true;
 }
