@@ -26,86 +26,94 @@ bool Prompt::bPrompt_cache(SePrompt* pPrompt)
   CacheLine xCacheLine;
   
   
-  w8 wVal = 1;
+  w8 wVal = 0;
   
+  xCacheLine.vSetAll(0xFF);
   vTrace("Ones\n"_Stz);
   wVal = 0x01;
-  xCacheLine.vSetAll(0xFF);
-  for (i8 i_Offset = 0; i_Offset < C_BYTES_PER_CACHE_LINE-0; i_Offset += 1) {
-    xCacheLine.v1B(i_Offset,wVal);
+  for (u8 u_Offset = 0; u_Offset < C_BYTES_PER_CACHE_LINE-0; u_Offset += 1) {
+    xCacheLine.v1B(u_Offset,wVal);
     vTrace("\n"_Stz);
-    vTrace("%2lld: \n"_Stz,i_Offset);
+    vTrace("%2lld: \n"_Stz,u_Offset);
     MemLib::vWordDump(&xCacheLine,sizeof(xCacheLine));
+    RASSERT(wVal == xCacheLine.w8_1B(u_Offset));
   }
   
+  xCacheLine.vSetAll(0xFF);
   vTrace("Twos\n"_Stz);
   wVal = 0x0201;
-  xCacheLine.vSetAll(0xFF);
-  for (i8 i_Offset = 0; i_Offset < C_BYTES_PER_CACHE_LINE-1; i_Offset += 2) {
-    xCacheLine.v2B(i_Offset,wVal);
+  for (u8 u_Offset = 0; u_Offset < C_BYTES_PER_CACHE_LINE-1; u_Offset += 2) {
+    xCacheLine.v2B(u_Offset,wVal);
     vTrace("\n"_Stz);
-    vTrace("%2lld: \n"_Stz,i_Offset);
+    vTrace("%2lld: \n"_Stz,u_Offset);
     MemLib::vWordDump(&xCacheLine,sizeof(xCacheLine));
+    RASSERT(wVal == xCacheLine.w8_2B(u_Offset));
   }
   
+  xCacheLine.vSetAll(0xFF);
   vTrace("Threes\n"_Stz);
   wVal = 0x030201;
-  xCacheLine.vSetAll(0xFF);
-  for (i8 i_Offset = 0; i_Offset < C_BYTES_PER_CACHE_LINE-2; i_Offset += 3) {
-    xCacheLine.v3B(i_Offset,wVal);
+  for (u8 u_Offset = 0; u_Offset < C_BYTES_PER_CACHE_LINE-2; u_Offset += 3) {
+    xCacheLine.v3B(u_Offset,wVal);
     vTrace("\n"_Stz);
-    vTrace("%2lld: \n"_Stz,i_Offset);
+    vTrace("%2lld: \n"_Stz,u_Offset);
     MemLib::vWordDump(&xCacheLine,sizeof(xCacheLine));
+    RASSERT(wVal == xCacheLine.w8_3B(u_Offset));
   }
   
+  xCacheLine.vSetAll(0xFF);
   vTrace("Fours\n"_Stz);
   wVal = 0x04030201;
-  xCacheLine.vSetAll(0xFF);
-  for (i8 i_Offset = 0; i_Offset < C_BYTES_PER_CACHE_LINE-3; i_Offset += 4) {
-    xCacheLine.v4B(i_Offset,wVal);
+  for (u8 u_Offset = 0; u_Offset < C_BYTES_PER_CACHE_LINE-3; u_Offset += 4) {
+    xCacheLine.v4B(u_Offset,wVal);
     vTrace("\n"_Stz);
-    vTrace("%2lld: \n"_Stz,i_Offset);
+    vTrace("%2lld: \n"_Stz,u_Offset);
     MemLib::vWordDump(&xCacheLine,sizeof(xCacheLine));
+    RASSERT(wVal == xCacheLine.w8_4B(u_Offset));
   }
   
+  xCacheLine.vSetAll(0xFF);
   vTrace("Fives\n"_Stz);
   wVal = 0x0504030201;
-  xCacheLine.vSetAll(0xFF);
-  for (i8 i_Offset = 0; i_Offset < C_BYTES_PER_CACHE_LINE-4; i_Offset += 5) {
-    xCacheLine.v5B(i_Offset,wVal);
+  for (u8 u_Offset = 0; u_Offset < C_BYTES_PER_CACHE_LINE-4; u_Offset += 5) {
+    xCacheLine.v5B(u_Offset,wVal);
     vTrace("\n"_Stz);
-    vTrace("%2lld: \n"_Stz,i_Offset);
+    vTrace("%2lld: \n"_Stz,u_Offset);
     MemLib::vWordDump(&xCacheLine,sizeof(xCacheLine));
+    RASSERT(wVal == xCacheLine.w8_5B(u_Offset));
   }
   
+  xCacheLine.vSetAll(0xFF);
   vTrace("Sixes\n"_Stz);
   wVal = 0x060504030201;
-  xCacheLine.vSetAll(0xFF);
-  for (i8 i_Offset = 0; i_Offset < C_BYTES_PER_CACHE_LINE-5; i_Offset += 6) {
-    xCacheLine.v6B(i_Offset,wVal);
+  for (u8 u_Offset = 0; u_Offset < C_BYTES_PER_CACHE_LINE-5; u_Offset += 6) {
+    xCacheLine.v6B(u_Offset,wVal);
     vTrace("\n"_Stz);
-    vTrace("%2lld: \n"_Stz,i_Offset);
+    vTrace("%2lld: \n"_Stz,u_Offset);
     MemLib::vWordDump(&xCacheLine,sizeof(xCacheLine));
+    RASSERT(wVal == xCacheLine.w8_6B(u_Offset));
   }
   
+  xCacheLine.vSetAll(0xFF);
   vTrace("Sevens\n"_Stz);
   wVal = 0x07060504030201;
-  xCacheLine.vSetAll(0xFF);
-  for (i8 i_Offset = 0; i_Offset < C_BYTES_PER_CACHE_LINE-6; i_Offset += 7) {
-    xCacheLine.v7B(i_Offset,wVal);
+  for (u8 u_Offset = 0; u_Offset < C_BYTES_PER_CACHE_LINE-6; u_Offset += 7) {
+    xCacheLine.v7B(u_Offset,wVal);
     vTrace("\n"_Stz);
-    vTrace("%2lld: \n"_Stz,i_Offset);
+    vTrace("%2lld: \n"_Stz,u_Offset);
     MemLib::vWordDump(&xCacheLine,sizeof(xCacheLine));
+    RASSERT(wVal == xCacheLine.w8_7B(u_Offset));
   }
   
+  xCacheLine.vSetAll(0xFF);
   vTrace("Eights\n"_Stz);
   wVal = 0x0807060504030201;
-  xCacheLine.vSetAll(0xFF);
-  for (i8 i_Offset = 0; i_Offset < C_BYTES_PER_CACHE_LINE-7; i_Offset += 8) {
-    xCacheLine.v8B(i_Offset,wVal);
+  for (u8 u_Offset = 0; u_Offset < C_BYTES_PER_CACHE_LINE-7; u_Offset += 8) {
+    xCacheLine.v8B(u_Offset,wVal);
     vTrace("\n"_Stz);
-    vTrace("%2lld: \n"_Stz,i_Offset);
+    vTrace("%2lld: \n"_Stz,u_Offset);
     MemLib::vWordDump(&xCacheLine,sizeof(xCacheLine));
+    RASSERT(wVal == xCacheLine.w8_8B(u_Offset));
   }
   
   return true;
