@@ -134,6 +134,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_WRITEROW);
 
   //other
+  nJobs++; JobClass::vJobCat(CN_JOB_HEALTH);
   nJobs++; JobClass::vJobCat(CN_JOB_NETHOG);
 
   vTrace("\n"_Stz);

@@ -52,7 +52,7 @@ JobClass xJobClass_GenData =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Generate_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Ingest_class;
+  *pNextFun = (pFUN*)pJob_Health_class;
   
   return &xJobClass_GenData;
 }
