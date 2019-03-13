@@ -118,6 +118,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_EXPORT
   /*    */ &Finalize::vUndefined,         // CN_JOB_FETCHROWS
   /*    */ &Finalize::vUndefined,         // CN_JOB_GENERATE
+  /*    */ &Finalize::vUndefined,         // CN_JOB_HEALTH
   /*    */ &Finalize::vUndefined,         // CN_JOB_INGEST
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTROW
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTTABLE
