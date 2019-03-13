@@ -68,6 +68,46 @@ bool Prompt::bPrompt_cache(SePrompt* pPrompt)
     MemLib::vWordDump(&xCacheLine,sizeof(xCacheLine));
   }
   
+  vTrace("Fives\n"_Stz);
+  wVal = 0x0504030201;
+  xCacheLine.vSetAll(0xFF);
+  for (i8 i_Offset = 0; i_Offset < C_BYTES_PER_CACHE_LINE-4; i_Offset += 5) {
+    xCacheLine.v5B(i_Offset,wVal);
+    vTrace("\n"_Stz);
+    vTrace("%2lld: \n"_Stz,i_Offset);
+    MemLib::vWordDump(&xCacheLine,sizeof(xCacheLine));
+  }
+  
+  vTrace("Sixes\n"_Stz);
+  wVal = 0x060504030201;
+  xCacheLine.vSetAll(0xFF);
+  for (i8 i_Offset = 0; i_Offset < C_BYTES_PER_CACHE_LINE-5; i_Offset += 6) {
+    xCacheLine.v6B(i_Offset,wVal);
+    vTrace("\n"_Stz);
+    vTrace("%2lld: \n"_Stz,i_Offset);
+    MemLib::vWordDump(&xCacheLine,sizeof(xCacheLine));
+  }
+  
+  vTrace("Sevens\n"_Stz);
+  wVal = 0x07060504030201;
+  xCacheLine.vSetAll(0xFF);
+  for (i8 i_Offset = 0; i_Offset < C_BYTES_PER_CACHE_LINE-6; i_Offset += 7) {
+    xCacheLine.v7B(i_Offset,wVal);
+    vTrace("\n"_Stz);
+    vTrace("%2lld: \n"_Stz,i_Offset);
+    MemLib::vWordDump(&xCacheLine,sizeof(xCacheLine));
+  }
+  
+  vTrace("Eights\n"_Stz);
+  wVal = 0x0807060504030201;
+  xCacheLine.vSetAll(0xFF);
+  for (i8 i_Offset = 0; i_Offset < C_BYTES_PER_CACHE_LINE-7; i_Offset += 8) {
+    xCacheLine.v8B(i_Offset,wVal);
+    vTrace("\n"_Stz);
+    vTrace("%2lld: \n"_Stz,i_Offset);
+    MemLib::vWordDump(&xCacheLine,sizeof(xCacheLine));
+  }
+  
   return true;
 }
 
