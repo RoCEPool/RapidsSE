@@ -24,8 +24,8 @@ namespace Base
   typedef unsigned long      b4;   // 4 byte boolean
   typedef unsigned long long b8;   // 8 byte boolean
   
-  typedef long long          w4;   // 4 byte word
-  typedef long long          w8;   // 8 byte word
+  typedef unsigned long      w4;   // 4 byte word
+  typedef unsigned long long w8;   // 8 byte word
 
   typedef unsigned char      byte; // a byte
   typedef unsigned char      y1;   // 1 byte
@@ -34,6 +34,7 @@ namespace Base
   typedef unsigned long long y8;   // 8 byte
   
   const u8 C_BYTES_PER_WORD = 8;
+  const u8 C_WORDS_PER_CACHE_LINE = 8;
   const u8 C_BYTES_PER_CACHE_LINE = 64;
 }
 
