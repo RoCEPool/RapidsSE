@@ -27,6 +27,14 @@ CacheLine::~CacheLine(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* set to all bytes to yVal                                                   */
+/*----------------------------------------------------------------------------*/
+void CacheLine::vSetAll(byte yVal)
+{
+  MemLib::vSet(this, yVal, sizeof(CacheLine), CN_NONE);
+}
+
+/*----------------------------------------------------------------------------*/
 /* return 1 byte at offset as w8                                              */
 /*----------------------------------------------------------------------------*/
 w8 CacheLine::w8_1B(i8 i_Offset)
@@ -55,6 +63,51 @@ void CacheLine::v1B(i8 i_Offset, w8 wArg)
   
   byte* aByte = ((byte*)this) + i_Offset;
   *aByte = xWord.m_yaByte[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* store w8 as 2 byte at offset                                               */
+/*----------------------------------------------------------------------------*/
+void CacheLine::v2B(i8 i_Offset, w8 wArg)
+{
+  WordView xWord;
+  
+  xWord.m_wWord = wArg;
+  
+  byte* aByte = ((byte*)this) + i_Offset;
+  *aByte++ = xWord.m_yaByte[0];
+  *aByte   = xWord.m_yaByte[1];
+}
+
+/*----------------------------------------------------------------------------*/
+/* store w8 as 3 byte at offset                                               */
+/*----------------------------------------------------------------------------*/
+void CacheLine::v3B(i8 i_Offset, w8 wArg)
+{
+  WordView xWord;
+  
+  xWord.m_wWord = wArg;
+  
+  byte* aByte = ((byte*)this) + i_Offset;
+  *aByte++ = xWord.m_yaByte[0];
+  *aByte++ = xWord.m_yaByte[1];
+  *aByte   = xWord.m_yaByte[2];
+}
+
+/*----------------------------------------------------------------------------*/
+/* store w8 as 4 byte at offset                                               */
+/*----------------------------------------------------------------------------*/
+void CacheLine::v4B(i8 i_Offset, w8 wArg)
+{
+  WordView xWord;
+  
+  xWord.m_wWord = wArg;
+  
+  byte* aByte = ((byte*)this) + i_Offset;
+  *aByte++ = xWord.m_yaByte[0];
+  *aByte++ = xWord.m_yaByte[1];
+  *aByte++ = xWord.m_yaByte[2];
+  *aByte   = xWord.m_yaByte[3];
 }
 
 /*============================================================================*/
