@@ -196,7 +196,13 @@ void MemLib::vDumpWords(void *aAddress, i8 nBytes)
       vTrace(" [Footer]"_Stz);
     }
     else if (C_DATUM_NULL == iVal) {
-      vTrace(" is null"_Stz);
+      vTrace(" [Is Null]"_Stz);
+    }
+    else if (C_DATUM_MINUS_INFINITY == iVal) {
+      vTrace(" [Minus Infinity]"_Stz);
+    }
+    else if (C_DATUM_PLUS_INFINITY == iVal) {
+      vTrace(" [Plus Infinity]"_Stz);
     }
     else {
       vTrace(" i8 = %lld"_Stz,iVal);
@@ -695,6 +701,12 @@ void MemLib::vWordDump(void *aAddress, i8 nBytes, i8 iHighlightWord)
     }
     else if (C_DATUM_NULL == iVal) {
       vTrace(" [Is Null]"_Stz);
+    }
+    else if (C_DATUM_MINUS_INFINITY == iVal) {
+      vTrace(" [Minus Infinity]"_Stz);
+    }
+    else if (C_DATUM_PLUS_INFINITY == iVal) {
+      vTrace(" [Plus Infinity]"_Stz);
     }
 
 
