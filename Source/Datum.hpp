@@ -8,18 +8,10 @@ namespace Datums
   class Datum
   {
   public:
-    union {
-      Bcd m_wBcd;
-      Bol m_wBol;
-      Dte m_wDte;
-      Flt m_wFlt;
-      Int m_wInt;
-      Ivl m_wIvl;
-      Tme m_wTme;
-      Tsp m_wTsp;
-      Vch m_wVch;
-    };
-  
+    static void vBegin(void);
+    static void vEncode(i8 i_Column, eDM eDatum, byte* aDatum);
+    static void vEnd(void);
+
   public:
   };
 }

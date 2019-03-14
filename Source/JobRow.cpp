@@ -129,6 +129,18 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, Stz* aDstRow, i8 &nDstRowBytes,
       return false;
     }
     
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    
+    if (eDatumType == DM_INT ||
+        eDatumType == DM_BCD) {
+      Datum::vEncode(i_Column, eDatumType, (byte*)&iInt);
+    }
+    else {
+      Datum::vEncode(i_Column, eDatumType, (byte*)aDst);
+    }
+
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
     // save offset
     *((u2*)pOffset->aChar()) = nDstRowBytes;
     
