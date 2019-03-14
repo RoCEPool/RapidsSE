@@ -56,9 +56,9 @@ JobWriteBehind::~JobWriteBehind(void) noexcept(false)
 {
   // Assert we don't have any dangling buffers
 #ifdef WITH_ROWBUFFER
-  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
-    RASSERT( ! m_pRowBuffer[iPartition] );
-  }
+//  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
+//    RASSERT( ! m_pRowBuffer[iPartition] );
+//  }
 #else
   for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
     RASSERT( ! m_pEntryBuffer[iPartition] );
@@ -319,6 +319,7 @@ void JobWriteBehind::vNewEntryBuffer( i8 iPartition)
   
   m_pRowBuffer[iPartition]->vIndex(m_pTable->pHiddenIndex());
   m_pRowBuffer[iPartition]->vPartitionNo(iPartition);
+  m_pRowBuffer[iPartition]->vDump();
   
 #else
   m_pEntryBuffer[iPartition] = new EntryBuffer();

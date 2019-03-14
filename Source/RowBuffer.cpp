@@ -71,9 +71,12 @@ RowBuffer::RowBuffer(void)
   m_pNextBuffer   = nullptr;
   m_pPrevBuffer   = nullptr;
   
+  for (i8 iIndex = 0 ; iIndex < C_MAX_ROWS; iIndex++)
+    m_xRow[iIndex].vSetAll(0);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  _checkInitialised_(CN_ENTRYBUFFER);
+  _checkInitialised_(CN_ROWBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,14 +155,15 @@ CacheLine* RowBuffer::aAllotRow(RowWrk& xRowWrk)
     return nullptr;
   
   i8 iRowNo = m_iNextFree++;
+  m_nRows++;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the item id
   
   xRowWrk.vItemNo(iRowNo);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  return &xRow[iRowNo];
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  return &m_xRow[iRowNo];
 }
 
 /*----------------------------------------------------------------------------*/

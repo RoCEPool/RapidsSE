@@ -21,12 +21,13 @@ namespace Data
     Index* m_pIndex;               // index this buffer belongs to
     i8     m_iPartitionNo;         // partition no this buffer belongs to
     
-    CacheLine xRow[C_MAX_ROWS];    // cache line aligned rows
     i8        m_nRows;             // no of rows
     i8        m_iNextFree;         // next free entry in the cacheLine
     
     RowBuffer* m_pNextBuffer;      // next buffer
     RowBuffer* m_pPrevBuffer;      // previous buffer
+    
+    CacheLine  m_xRow[C_MAX_ROWS];    // cache line aligned rows
     
     SeeMe m_xSeeMe;
   
