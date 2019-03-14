@@ -35,10 +35,17 @@ JobWriteBehind::JobWriteBehind(eDS eDataSource)
   m_pParentJob = nullptr;
   m_eDataSource = eDataSource;
   
+#ifdef WITH_ROWBUFFER
+  for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
+    m_pRowBuffer[i_Partition]   = nullptr;
+    m_nWriteBehindBuffers[i_Partition] = 0;
+  }
+#else
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
     m_pEntryBuffer[i_Partition]   = nullptr;
     m_nWriteBehindBuffers[i_Partition] = 0;
   }
+#endif
   
 }
 
@@ -48,10 +55,15 @@ JobWriteBehind::JobWriteBehind(eDS eDataSource)
 JobWriteBehind::~JobWriteBehind(void) noexcept(false)
 {
   // Assert we don't have any dangling buffers
+#ifdef WITH_ROWBUFFER
+  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
+    RASSERT( ! m_pRowBuffer[iPartition] );
+  }
+#else
   for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
     RASSERT( ! m_pEntryBuffer[iPartition] );
   }
-  
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -65,6 +77,34 @@ JobWriteBehind::~JobWriteBehind(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* handle dangling buffers                                                    */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_ROWBUFFER
+void JobWriteBehind::vHandleDanglingBuffers(void)
+{
+//  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
+//
+//    if ( ! m_pEntryBuffer[iPartition] )
+//      vNewEntryBuffer(iPartition);
+//
+//    // get the entry buffer
+//    EntryBuffer* pEntryBuffer = m_pEntryBuffer[iPartition];
+//    m_pEntryBuffer[iPartition] = nullptr;
+//
+//    i8 nWriteBehindBuffers = m_nWriteBehindBuffers[iPartition];
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    // create a write buffer job for load
+//    Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession,
+//                                          m_pTable->aTableName(),
+//                                          m_eDataSource,
+//                                          pEntryBuffer,
+//                                          m_pParentJob->iJobId(),
+//                                          iPartition,
+//                                          C_FINAL,
+//                                          nWriteBehindBuffers);
+//  }
+}
+
+#else
 void JobWriteBehind::vHandleDanglingBuffers(void)
 {
   for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
@@ -90,6 +130,7 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
                                           nWriteBehindBuffers);
   }
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
@@ -102,6 +143,71 @@ eEC JobWriteBehind::eInsertRow(void)
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_ROWBUFFER
+
+eEC JobWriteBehind::eInsertRow(Stz* aRow_Data, i8 nRowBytes)
+{
+  // insert the row in a working buffer
+  while (true) {
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // hash the record to a partition
+    i8 iPartition = m_pTable->iRowPartition(aRow_Data);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // check for working buffer
+    if (! m_pRowBuffer[iPartition]) {
+      
+      // create a new working buffer for this partition
+      vNewEntryBuffer(iPartition);
+      
+      if (! m_pRowBuffer[iPartition]) {
+        vTrace("RowBuffer allocation failed\n"_Stz);
+        return EC_LOW_MEMORY;
+      }
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the entry buffer for the partition
+    RowBuffer* pRowBuffer = m_pRowBuffer[iPartition];
+    
+    RowWrk xRowWrk;
+    
+    xRowWrk.vEmbedded(aRow_Data->aChar());
+    xRowWrk.vRowDataSize(nRowBytes);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // insert row into working buffer
+    pRowBuffer->vGrabWrite();
+    CacheLine* pRow = pRowBuffer->aAppendRow(xRowWrk);
+    pRowBuffer->vDropWrite();
+    
+    pRowBuffer->vDump();
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // appended ?
+    if (pRow)
+      return EC_NONE;
+    
+    m_pRowBuffer[iPartition] = nullptr;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // spawn a write buffer job
+//    Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession,
+//                                          m_pTable->aTableName(),
+//                                          m_eDataSource,
+//                                          pEntryBuffer,
+//                                          m_pParentJob->iJobId(),
+//                                          iPartition,
+//                                          C_NOT_FINAL,
+//                                          0);
+  }
+  
+  return EC_NONE;
+}
+
+#else
+
 eEC JobWriteBehind::eInsertRow(Stz* aRow_Data, i8 nRowBytes)
 {
   // insert the row in a working buffer
@@ -160,6 +266,7 @@ eEC JobWriteBehind::eInsertRow(Stz* aRow_Data, i8 nRowBytes)
   
   return EC_NONE;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* process record                                                             */
@@ -207,12 +314,20 @@ eEC JobWriteBehind::eProcessRecord(Stz* aRecord,
 /*----------------------------------------------------------------------------*/
 void JobWriteBehind::vNewEntryBuffer( i8 iPartition)
 {
+#ifdef WITH_ROWBUFFER
+  m_pRowBuffer[iPartition] = new RowBuffer();
+  
+  m_pRowBuffer[iPartition]->vIndex(m_pTable->pHiddenIndex());
+  m_pRowBuffer[iPartition]->vPartitionNo(iPartition);
+  
+#else
   m_pEntryBuffer[iPartition] = new EntryBuffer();
   
   m_pEntryBuffer[iPartition]->vIndex(m_pTable->pHiddenIndex());
   m_pEntryBuffer[iPartition]->vBufferHeight(0);
   m_pEntryBuffer[iPartition]->vPartitionNo(iPartition);
-
+#endif
+  
   m_nWriteBehindBuffers[iPartition]++;
 }
 
