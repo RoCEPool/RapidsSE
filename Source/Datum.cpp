@@ -18,6 +18,9 @@ i8 i_CurrentCacheLine = -1;
 void Datum::vBegin(void)
 {
   i_CurrentCacheLine++;
+  
+  CacheLine* aCacheLine = &xaCacheLine[i_CurrentCacheLine];
+  aCacheLine->vSetAll(0xFF);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,6 +33,13 @@ void Datum::vEncode(i8 i_Column, eDM eDatum, byte* aDatum)
     return;
   
   CacheLine* aCacheLine = &xaCacheLine[i_CurrentCacheLine];
+  
+  if (DM_INT == eDatum) {
+    MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    aCacheLine->v1N(i_Column,8);
+    MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    int iDebug = 0;
+  }
   
 }
 

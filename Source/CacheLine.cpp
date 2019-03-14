@@ -349,11 +349,11 @@ void CacheLine::v1N(i8 i_Nibble, w8 wArg)
 
   if (0 == i_Nibble % 2) {
     // left nibble
-    iByte = iByte | (wArg << 4);
+    iByte = iByte & ((wArg << 4) | 0xF);
   }
   else {
     // right nibble
-    iByte = iByte | wArg;
+    iByte = iByte & (0xF0 | wArg);
   }
 
   v1B(i_Nibble/2,iByte);
