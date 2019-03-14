@@ -17,6 +17,7 @@ namespace Data
     ~RowWrk(void) noexcept(false);
   
     void vCopyRowData(Item* aRowEntry);
+    void vCopyRowData(CacheLine* aRow);
     RowData* aRowData(void);
     i8   nRowDataSize(void);
     void vRowDataSize(i8 nRowSize);

@@ -136,6 +136,62 @@ void RowBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
 }
 
 /*----------------------------------------------------------------------------*/
+/* allot a row in this buffer                                                 */
+/*----------------------------------------------------------------------------*/
+CacheLine* RowBuffer::aAllotRow(RowWrk& xRowWrk)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  // rows only ever have one next offset
+  RASSERT(1 == xRowWrk.nLevels());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if this buffer has cacheLine's for rows
+  
+  if (m_iNextFree == C_MAX_ROWS)
+    return nullptr;
+  
+  i8 iRowNo = m_iNextFree++;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the item id
+  
+  xRowWrk.vItemNo(iRowNo);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  return &xRow[iRowNo];
+}
+
+/*----------------------------------------------------------------------------*/
+/* append a row entry into this buffer                                        */
+/*----------------------------------------------------------------------------*/
+CacheLine* RowBuffer::aAppendRow(RowWrk& xRowWrk)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allot row entry in this buffer
+  
+  bn nBufferNo = this->nPoolBufferNo();
+
+  
+  CacheLine* pRow = aAllotRow(xRowWrk);
+  if (! pRow)
+    return nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy row data into row entry
+  
+  xRowWrk.vCopyRowData(pRow);
+  //pRowEntry->vShow(0, m_pIndex, false);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  //vDumpItems();
+  return pRow;
+}
+
+/*----------------------------------------------------------------------------*/
 /* assert valid row buffer                                                    */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vAssertRowBuffer(void)

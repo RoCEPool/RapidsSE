@@ -55,8 +55,8 @@ namespace Data
     RowBuffer*  pNextBuffer(void);
     void        vNextBuffer(RowBuffer* pNextBuffer);
     void        vPartitionNo(i8 iPartitionNo);
-    i8           iPartitionNo(void);
-    RowBuffer* pPrevBuffer(void);
+    i8          iPartitionNo(void);
+    RowBuffer*  pPrevBuffer(void);
     void        vPrevBuffer(RowBuffer* pPrevBuffer);
     void        vTruncate(void);
 
@@ -67,12 +67,10 @@ namespace Data
 
     ////////////////////////////////////////////////////////////////////////////
     // row functions
-  
-    Item* aAppendRow(RowWrk& xRowWrk);
+    CacheLine* aAppendRow(RowWrk& xRowWrk);
   
   private:
-    Item* aAllotEntry(i8 nBytes_Without_Offsets);
-    Item* aAllotRowEntry(RowWrk& xRowWrk);
+    CacheLine* aAllotRow(RowWrk& xRowWrk);
 
     ////////////////////////////////////////////////////////////////////////////
   

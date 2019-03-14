@@ -69,6 +69,18 @@ void RowWrk::vCopyRowData(Item* aRowEntry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy the row data from row work into this row cacheline                    */
+/*----------------------------------------------------------------------------*/
+void RowWrk::vCopyRowData(CacheLine* aRow)
+{
+  RowData* aSrcRow = aRowData();
+  RowData* aDstRow = _aRowData(aRow);
+  i8 nRowSize  = this->nRowDataSize();
+  
+  MemLib::vCopy(aDstRow,aSrcRow,nRowSize,CN_ENTRY);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get row address                                                            */
 /*----------------------------------------------------------------------------*/
 RowData* RowWrk::aRowData(void)
