@@ -33,6 +33,7 @@ typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 
 #include "SkipRoots.hpp"
 #include "EntryBuffer.hpp"
+#include "RowBuffer.hpp"
 #include "IndexTree.hpp"
 
 /*============================================================================*/

@@ -219,6 +219,7 @@ enum eCN : u2 // Class Number
   /* 171 0xAB  1043496B Heap:L */ CN_RECORDBUFFER,
   /* 172 0xAC      184B Heap:S */ CN_RESOURCETRACKER,
   /* 173 0xAD      896B Heap:M */ CN_ROWAGG,
+  /*                    Heap:L */ CN_ROWBUFFER,
   /* 174 0xAE      152B Heap:S */ CN_ROWONCE,
   /* 175 0xAF    17448B Heap:I */ CN_ROWWRK,
   
@@ -481,6 +482,7 @@ static Stz* aCN[]
   /* 171 0xAB */ "RECORDBUFFER"_Stz,        // CN_RECORDBUFFER
   /* 172 0xAC */ "RESOURCETRACKER"_Stz,     // CN_RESOURCETRACKER
   /* 173 0xAD */ "ROWAGG"_Stz,              // CN_ROWAGG
+  /*          */ "ROWBUFFER"_Stz,           // CN_ROWBUFFER
   /* 174 0xAE */ "ROWONCE"_Stz,             // CN_ROWONCE
   /* 175 0xAF */ "ROWWRK"_Stz,              // CN_ROWWRK
   

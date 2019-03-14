@@ -322,6 +322,7 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("CN_QUEUES"_Stz,       CN_QUEUES);
   
   /*    */ vAddConstant("CN_RECORDBUFFER"_Stz, CN_RECORDBUFFER);
+  /*    */ vAddConstant("CN_ROWBUFFER"_Stz,    CN_ROWBUFFER);
   
   /* 57 */ vAddConstant("CN_SESSION"_Stz,      CN_SESSION);
   /* 57 */ vAddConstant("CN_SESSIONSTATE"_Stz, CN_SESSIONSTATE);

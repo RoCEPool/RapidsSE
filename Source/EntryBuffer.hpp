@@ -4,7 +4,6 @@
 #pragma once
 
 #define USE_EB_LAZY_CHAIN
-#define USE_EB_SINGLE_COLIDX
 //#define USE_EB_WATCH
 
 namespace Data
