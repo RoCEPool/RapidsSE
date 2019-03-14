@@ -65,6 +65,7 @@ using namespace Datums;
 
 #include "DtmLib.hpp"
 #include "Datum.hpp"
+#include "DatumUnion.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
