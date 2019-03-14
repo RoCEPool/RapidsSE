@@ -11,7 +11,7 @@
 
 namespace Base
 {
-  const i8 C_DATUM_NULL     = LLONG_MIN + 1;
+  const i8 C_DATUM_NULL           = LLONG_MIN + 1;
   const i8 C_DATUM_MINUS_INFINITY = LLONG_MIN;
   const i8 C_DATUM_PLUS_INFINITY  = LLONG_MAX;
   
