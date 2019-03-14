@@ -815,9 +815,9 @@ bool EntryBuffer::bKeyBeforeBuffer(KeyWrk& xKeyTest)
   
   Item* aFirstEntry = this->aLeadEntry();
   
-  bool bLessThan = KeyData::bLessThan(xKeyTest,aFirstEntry);
+  bool bLessEqual = KeyData::bLessEqual(xKeyTest,aFirstEntry);
   
-  return bLessThan;
+  return bLessEqual;
 }
 
 /*----------------------------------------------------------------------------*/
