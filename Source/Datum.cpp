@@ -24,31 +24,89 @@ void Datum::vBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode given datum into cache line                                         */
+/* set given datum in cache line                                              */
 /*----------------------------------------------------------------------------*/
-void Datum::vEncode(i8 i_Column, eDM eDatum, byte* aDatum)
+void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum)
 {
   // don't encode columns 16+
   if (i_Column >= 16)
     return;
 
   w8 wVal;
+  i8 iEncoding;
 
   CacheLine* aCacheLine = &xaCacheLine[i_CurrentCacheLine];
   
   if (DM_INT == eDatum) {
-    MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
-    aCacheLine->v1N(i_Column,8);
-    MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    iEncoding = iEncode(eDatum,aDatum);
+    
+    aCacheLine->v1N(i_Column,iEncoding);
+    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
 
     wVal = *(i8*)aDatum;
-    aCacheLine->v8B(8 + i_Column * 8,wVal);
+    //aCacheLine->v8B(8 + i_Column * 8,wVal);
+    vPut(8 + i_Column * 8,aDatum,iEncoding);
+
     MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
     int iDebug = 0;
   }
   
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* encode given datum before setting in cache line                            */
+/*----------------------------------------------------------------------------*/
+i8 Datum::iEncode(eDM eDatum, byte* aDatum)
+{
+  w8 wVal = *(i8*)aDatum;
+
+  switch (eDatum) {
+
+    case DM_INT:
+      if (wVal < 256) return 1;
+      if (wVal < 65536) return 2;
+      if (wVal < 16777216) return 3;
+      if (wVal < 4294967296) return 4;
+      if (wVal < 1099511627776) return 5;
+      if (wVal < 281474976710656) return 6;
+      if (wVal < 72057594037927936) return 7;
+      return 8;
+      
+    default:
+      NEVER_REACH;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* put encoded datam into cache line                                          */
+/*----------------------------------------------------------------------------*/
+void Datum::vPut(i8 i_Offset, byte* aDatum, i8 iEncoding)
+{
+  w8 wVal = *(i8*)aDatum;
+  CacheLine* aCacheLine = &xaCacheLine[i_CurrentCacheLine];
+
+  switch (iEncoding) {
+      
+    case 1: aCacheLine->v1B(i_Offset,wVal); return;
+    case 2: aCacheLine->v2B(i_Offset,wVal); return;
+    case 3: aCacheLine->v3B(i_Offset,wVal); return;
+    case 4: aCacheLine->v4B(i_Offset,wVal); return;
+    case 5: aCacheLine->v5B(i_Offset,wVal); return;
+    case 6: aCacheLine->v6B(i_Offset,wVal); return;
+    case 7: aCacheLine->v7B(i_Offset,wVal); return;
+    case 8: aCacheLine->v8B(i_Offset,wVal); return;
+
+    default:
+      NEVER_REACH;
+  }
 }
 
 /*============================================================================*/

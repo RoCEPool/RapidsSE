@@ -137,10 +137,10 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, Stz* aDstRow, i8 &nDstRowBytes,
     
     if (eDatumType == DM_INT ||
         eDatumType == DM_BCD) {
-      Datum::vEncode(i_Column, eDatumType, (byte*)&iInt);
+      Datum::vSet(i_Column, eDatumType, (byte*)&iInt);
     }
     else {
-      Datum::vEncode(i_Column, eDatumType, (byte*)aDst);
+      Datum::vSet(i_Column, eDatumType, (byte*)aDst);
     }
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
