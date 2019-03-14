@@ -373,12 +373,9 @@ void RowBuffer::vShowRow(i8 iRowNo)
          iRowNo
          );
 
-//  RowData* aRowData = _aRowData(aItem->aDataArea());
+  RowData* aRowData = (RowData*)&m_xRow[iRowNo];
   vTrace("RowData: "_Stz);
-//  i8 iRowSize = aItem->nSizeItem_WithoutOffsets();
-//  if (iRowSize > 0) {
-//    aRowData->vShow(m_pIndex->pTable()->pColumnVec(), true);
-//  }
+  aRowData->vShow(m_pIndex->pTable()->pColumnVec(), true);
   
   vTrace("\n"_Stz);
 }
@@ -390,8 +387,8 @@ void RowBuffer::vShow(Item* aMarkEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  vTrace("RowBuffer: %p (buffer %lld): rows: %lld\n"_Stz,
-         this,*nPoolBufferNo(),m_nRows);
+  vTrace("RowBuffer: %p (buffer %lld): rows: %lld nextFree: %lld\n"_Stz,
+         this,m_iBufferNo,m_nRows,m_iNextFree);
   
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
          m_pPrevBuffer,m_pNextBuffer);
@@ -405,16 +402,8 @@ void RowBuffer::vShow(Item* aMarkEntry)
   vTrace("\n"_Stz);
   vTrace("Rows (by cacheLine[0]):\n"_Stz);
   
-//  i8 iOffset = aSkipRoots()->iNEO(0);
-//  while (iOffset > -1) {
-//    Item* aItem = aGetEntryOffset(iOffset);
-//    vShowEntry(aItem);
-//    if (aMarkEntry == aItem)
-//      vTrace("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
-//             "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n"_Stz);
-//
-//    iOffset = aItem->iNEO(0);
-//  }
+  for (i8 iIndex = 0; iIndex < m_nRows; iIndex++)
+    vShowRow(iIndex);
   
   vTrace("\n"_Stz);
   vTrace("=================================================="
