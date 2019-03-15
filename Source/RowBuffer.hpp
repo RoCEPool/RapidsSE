@@ -73,6 +73,7 @@ namespace Data
   
   private:
     CacheLine* aAllotRow(RowWrk& xRowWrk);
+    bool       bHasSpace(i8 nBytes);
 
     ////////////////////////////////////////////////////////////////////////////
   

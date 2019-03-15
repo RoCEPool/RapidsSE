@@ -67,7 +67,8 @@ RowBuffer::RowBuffer(void)
   m_pIndex        = nullptr;
   m_iPartitionNo  = -1;
   m_nRows         = 0;
-  m_iNextFree     = 0;
+  m_iForwardFree  = 0;
+  m_iBackwardFree = C_MAX_ROWS - 1;
   m_pNextBuffer   = nullptr;
   m_pPrevBuffer   = nullptr;
   
@@ -151,10 +152,11 @@ CacheLine* RowBuffer::aAllotRow(RowWrk& xRowWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has cacheLine's for rows
   
-  if (m_iNextFree == C_MAX_ROWS)
+  // NOTE:: Assuming each row fits in a cacheline
+  if ( ! bHasSpace(C_BYTES_PER_CACHE_LINE))
     return nullptr;
   
-  i8 iRowNo = m_iNextFree++;
+  i8 iRowNo = m_iForwardFree++;
   m_nRows++;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -232,6 +234,32 @@ void RowBuffer::vGrabWrite(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   m_okLock.vGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* does buffer have space for nBytes ?                                        */
+/*----------------------------------------------------------------------------*/
+bool RowBuffer::bHasSpace(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  i8 nFreeCacheLines = (C_MAX_ROWS - m_iForwardFree) + (C_MAX_ROWS - m_iBackwardFree - 1);
+  i8 nFreeBytes = nFreeCacheLines * C_BYTES_PER_CACHE_LINE;
+  
+  if (gpAttachMap->m_nIndexEntries > 0) {
+    // has space calculation based on no of entries
+    if (m_nRows >= gpAttachMap->m_nIndexEntries)
+      return false;
+    else
+      return true;
+  }
+  else {
+    // has space calculation based on free space
+    if (nFreeBytes < nBytes)
+      return false;
+    else
+      return true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -387,8 +415,9 @@ void RowBuffer::vShow(Item* aMarkEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  vTrace("RowBuffer: %p (buffer %lld): rows: %lld nextFree: %lld\n"_Stz,
-         this,m_iBufferNo,m_nRows,m_iNextFree);
+  vTrace("RowBuffer: %p (buffer %lld): rows: %lld forwardFree: %lld backwardFree: %lld free: %lld\n"_Stz,
+         this,m_iBufferNo,m_nRows,m_iForwardFree,m_iBackwardFree,
+         (C_MAX_ROWS - m_iForwardFree) + (C_MAX_ROWS - m_iBackwardFree - 1));
   
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
          m_pPrevBuffer,m_pNextBuffer);
