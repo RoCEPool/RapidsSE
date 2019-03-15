@@ -29,7 +29,13 @@ namespace Jobs
   public:
     void vHandleDanglingBuffers(void);
     eEC  eInsertRow(void);
+    
+#ifdef WITH_ROWBUFFER
+    eEC  eInsertRow(CacheLine* aRow_Data, i8 nRowBytes);
+#else
     eEC  eInsertRow(Stz* aRow_Data, i8 nRowBytes);
+#endif
+    
     eEC  eProcessRecord(Stz* aRecord,  i8 nBytes);
   
   private:

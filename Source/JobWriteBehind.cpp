@@ -137,7 +137,11 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
 /*----------------------------------------------------------------------------*/
 eEC JobWriteBehind::eInsertRow(void)
 {
+#ifdef WITH_ROWBUFFER
+  return eInsertRow(&m_xRow, m_nRowBytes);
+#else
   return eInsertRow(m_aRow, m_nRowBytes);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -145,14 +149,14 @@ eEC JobWriteBehind::eInsertRow(void)
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_ROWBUFFER
 
-eEC JobWriteBehind::eInsertRow(Stz* aRow_Data, i8 nRowBytes)
+eEC JobWriteBehind::eInsertRow(CacheLine* aRow_Data, i8 nRowBytes)
 {
   // insert the row in a working buffer
   while (true) {
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // hash the record to a partition
-    i8 iPartition = m_pTable->iRowPartition(aRow_Data);
+    i8 iPartition = 0; //m_pTable->iRowPartition(aRow_Data);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check for working buffer
@@ -171,15 +175,15 @@ eEC JobWriteBehind::eInsertRow(Stz* aRow_Data, i8 nRowBytes)
     // get the entry buffer for the partition
     RowBuffer* pRowBuffer = m_pRowBuffer[iPartition];
     
-    RowWrk xRowWrk;
+    //RowWrk xRowWrk;
     
-    xRowWrk.vEmbedded(aRow_Data->aChar());
-    xRowWrk.vRowDataSize(nRowBytes);
+    //xRowWrk.vEmbedded(aRow_Data->aChar());
+    //xRowWrk.vRowDataSize(nRowBytes);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert row into working buffer
     pRowBuffer->vGrabWrite();
-    CacheLine* pRow = pRowBuffer->aAppendRow(xRowWrk);
+    CacheLine* pRow = pRowBuffer->aAppendRow(aRow_Data);
     pRowBuffer->vDropWrite();
     
     pRowBuffer->vDump();

@@ -69,10 +69,10 @@ namespace Data
 
     ////////////////////////////////////////////////////////////////////////////
     // row functions
-    CacheLine* aAppendRow(RowWrk& xRowWrk);
+    CacheLine* aAppendRow(CacheLine* aRowData);
   
   private:
-    CacheLine* aAllotRow(RowWrk& xRowWrk);
+    CacheLine* aAllotRow(i8 nBytes);
     bool       bHasSpace(i8 nBytes);
 
     ////////////////////////////////////////////////////////////////////////////

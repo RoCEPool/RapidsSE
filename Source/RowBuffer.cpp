@@ -142,27 +142,18 @@ void RowBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
 /*----------------------------------------------------------------------------*/
 /* allot a row in this buffer                                                 */
 /*----------------------------------------------------------------------------*/
-CacheLine* RowBuffer::aAllotRow(RowWrk& xRowWrk)
+CacheLine* RowBuffer::aAllotRow(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  // rows only ever have one next offset
-  RASSERT(1 == xRowWrk.nLevels());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has cacheLine's for rows
   
-  // NOTE:: Assuming each row fits in a cacheline
-  if ( ! bHasSpace(C_BYTES_PER_CACHE_LINE))
+  if ( ! bHasSpace(nBytes))
     return nullptr;
   
   i8 iRowNo = m_iForwardFree++;
   m_nRows++;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the item id
-  
-  xRowWrk.vItemNo(iRowNo);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   return &m_xRow[iRowNo];
@@ -171,7 +162,7 @@ CacheLine* RowBuffer::aAllotRow(RowWrk& xRowWrk)
 /*----------------------------------------------------------------------------*/
 /* append a row entry into this buffer                                        */
 /*----------------------------------------------------------------------------*/
-CacheLine* RowBuffer::aAppendRow(RowWrk& xRowWrk)
+CacheLine* RowBuffer::aAppendRow(CacheLine* aRowData)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
@@ -180,15 +171,15 @@ CacheLine* RowBuffer::aAppendRow(RowWrk& xRowWrk)
   
   bn nBufferNo = this->nPoolBufferNo();
 
-  
-  CacheLine* pRow = aAllotRow(xRowWrk);
+  // NOTE:: Assuming each row fits in a cacheline
+  CacheLine* pRow = aAllotRow(C_BYTES_PER_CACHE_LINE);
   if (! pRow)
     return nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy row data into row entry
   
-  xRowWrk.vCopyRowData(pRow);
+  MemLib::vCopy(pRow,aRowData,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
   //pRowEntry->vShow(0, m_pIndex, false);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -401,10 +392,17 @@ void RowBuffer::vShowRow(i8 iRowNo)
          iRowNo
          );
 
-  RowData* aRowData = (RowData*)&m_xRow[iRowNo];
   vTrace("RowData: "_Stz);
-  aRowData->vShow(m_pIndex->pTable()->pColumnVec(), true);
   
+  ColumnVec* pColumnVec = m_pIndex->pTable()->pColumnVec();
+  
+#ifdef WITH_ROWBUFFER
+  for (i8 iCol = 0; iCol < pColumnVec->nItems() - 1; iCol++) {
+    CacheLine* aRowCacheLine = &m_xRow[iRowNo];
+    w8 wVal = Datum::wGet(iCol, pColumnVec->pGet(iCol)->eDatumType(), aRowCacheLine);
+    vTrace("%lld "_Stz, wVal);
+  }
+#endif
   vTrace("\n"_Stz);
 }
 
@@ -429,7 +427,7 @@ void RowBuffer::vShow(Item* aMarkEntry)
          "--------------------------------------------------\n"_Stz);
   
   vTrace("\n"_Stz);
-  vTrace("Rows (by cacheLine[0]):\n"_Stz);
+  vTrace("Rows (by cacheLine):\n"_Stz);
   
   for (i8 iIndex = 0; iIndex < m_nRows; iIndex++)
     vShowRow(iIndex);
