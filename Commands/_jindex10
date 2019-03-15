@@ -117,9 +117,9 @@ anidx j10 idx1;
 dumpidx j10 idx1;
 szidx j10 idx1;
 
-drop table j10;
+//drop table j10;
 
-docol epochDump;
+//docol epochDump;
 
 /*
 create index idx2 on j10 (j10_name);
