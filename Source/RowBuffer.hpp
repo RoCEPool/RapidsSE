@@ -21,8 +21,9 @@ namespace Data
     Index* m_pIndex;               // index this buffer belongs to
     i8     m_iPartitionNo;         // partition no this buffer belongs to
     
-    i8        m_nRows;             // no of rows
-    i8        m_iNextFree;         // next free entry in the cacheLine
+    i8     m_nRows;                // no of rows
+    i8     m_iForwardFree;         // next forward free entry in the cacheLine
+    i8     m_iBackwardFree;        // next backward free entry in the cacheLine
     
     RowBuffer* m_pNextBuffer;      // next buffer
     RowBuffer* m_pPrevBuffer;      // previous buffer
@@ -72,6 +73,7 @@ namespace Data
   
   private:
     CacheLine* aAllotRow(RowWrk& xRowWrk);
+    bool       bHasSpace(i8 nBytes);
 
     ////////////////////////////////////////////////////////////////////////////
   
