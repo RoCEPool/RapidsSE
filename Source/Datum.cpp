@@ -37,13 +37,14 @@ void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum)
 
   w8 wVal;
   i8 iEncoding;
-
+  WordView wEncoded;
+  
   CacheLine* aCacheLine = &xaCacheLine[i_CurrentCacheLine];
   
   if (DM_BCD == eDatum) {
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
-    iEncoding = iEncode(eDatum,aDatum);
+    iEncoding = iEncode(eDatum,aDatum,wEncoded);
     
     // set 4bit meta data for column value
     aCacheLine->v1N(i_Column,iEncoding);
@@ -67,7 +68,7 @@ void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum)
   if (DM_INT == eDatum) {
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
-    iEncoding = iEncode(eDatum,aDatum);
+    iEncoding = iEncode(eDatum,aDatum,wEncoded);
     
     // set 4bit meta data for column value
     aCacheLine->v1N(i_Column,iEncoding);
@@ -91,7 +92,7 @@ void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum)
   if (DM_TSP == eDatum) {
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
-    iEncoding = iEncode(eDatum,aDatum);
+    iEncoding = iEncode(eDatum,aDatum,wEncoded);
     
     // set 4bit meta data for column value
     aCacheLine->v1N(i_Column,iEncoding);
@@ -101,7 +102,7 @@ void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum)
     //aCacheLine->v8B(8 + i_Column * 8,wVal);
     
     // set n-byte data for column value
-    vPut(i_CacheOffset,aDatum,iEncoding);
+    vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
     MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
     i_CacheOffset += iEncoding;
@@ -114,7 +115,7 @@ void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum)
   
   if (DM_VCH == eDatum) {
     
-    iEncoding = iEncode(eDatum,aDatum);
+    iEncoding = iEncode(eDatum,aDatum,wEncoded);
 
     // set 4bit meta data for column value
     aCacheLine->v1N(i_Column,iEncoding);
@@ -145,7 +146,7 @@ void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum)
 /*----------------------------------------------------------------------------*/
 /* encode given datum before setting in cache line                            */
 /*----------------------------------------------------------------------------*/
-i8 Datum::iEncode(eDM eDatum, byte* aDatum)
+i8 Datum::iEncode(eDM eDatum, byte* aDatum, WordView& wEncoded)
 {
   w8 wVal = *(i8*)aDatum;
 
@@ -170,8 +171,10 @@ i8 Datum::iEncode(eDM eDatum, byte* aDatum)
     case DM_TSP:
       if (wVal == (u8)C_DATUM_NULL)
         iEncoding = 0;
-      else
-        iEncoding = IntLib::iByteMagnitude(wVal);
+      else {
+        wEncoded.m_iI8 = wVal;
+        iEncoding = iTspEncoding(wEncoded);
+      }
       break;
       
     case DM_VCH: {
@@ -344,6 +347,29 @@ void Datum::vPut(i8 i_Offset, byte* aDatum, i8 iEncoding, CacheLine* aCacheLine)
   }
 }
 #endif
+
+/*----------------------------------------------------------------------------*/
+/* get encoded datum from cache line                                          */
+/*----------------------------------------------------------------------------*/
+i8 Datum::iTspEncoding(WordView& wTspView)
+{
+  bool bSawNonZero = true;
+  while (! wTspView.m_yaByte[0]) {
+    bSawNonZero = false;
+    for (i8 i_Byte = 0; i_Byte < 7; i_Byte++)
+      if ( (wTspView.m_yaByte[i_Byte] = wTspView.m_yaByte[i_Byte+1]) )
+        bSawNonZero = true;
+    wTspView.m_yaByte[7] = 0;
+    
+    if (! bSawNonZero)
+      break;
+  }
+  
+  i8 iEncoding = IntLib::iByteMagnitude(wTspView.m_iI8);
+  
+  return iEncoding;
+
+}
 
 /*============================================================================*/
 /* end                                                                        */
