@@ -44,11 +44,14 @@ void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum)
     
     iEncoding = iEncode(eDatum,aDatum);
     
+    // set 4bit meta data for column value
     aCacheLine->v1N(i_Column,iEncoding);
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
 
     wVal = *(i8*)aDatum;
     //aCacheLine->v8B(8 + i_Column * 8,wVal);
+
+    // set n-byte data for column value
     vPut(i_CacheOffset,aDatum,iEncoding);
 
     MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
@@ -56,6 +59,9 @@ void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum)
     i_CacheOffset += iEncoding;
     
     int iDebug = 0;
+    
+    w8 wGot = wGet(i_Column,eDatum);
+    vTrace("i_Column %lld got %lld\n"_Stz,i_Column,wGot);
   }
   
 }
@@ -71,25 +77,69 @@ i8 Datum::iEncode(eDM eDatum, byte* aDatum)
 {
   w8 wVal = *(i8*)aDatum;
 
+  i8 iEncoding = -1;
+  
   switch (eDatum) {
 
     case DM_INT:
-      if (wVal == (u8)C_DATUM_NULL) return 0;
       
-      if (wVal < 256) return 1; // (2^8)^1
-      if (wVal < 65536) return 2; // (2^8)^2
-      if (wVal < 16777216) return 3; // (2^8)^3
-      if (wVal < 4294967296) return 4; // (2^8)^4
-      if (wVal < 1099511627776) return 5; // (2^8)^5
-      if (wVal < 281474976710656) return 6; // (2^8)^6
-      if (wVal < 72057594037927936) return 7; // (2^8)^7
-      
-      return 8; // (2^8)^8
+//      if (wVal < 256) return 1; // (2^8)^1
+//      if (wVal < 65536) return 2; // (2^8)^2
+//      if (wVal < 16777216) return 3; // (2^8)^3
+//      if (wVal < 4294967296) return 4; // (2^8)^4
+//      if (wVal < 1099511627776) return 5; // (2^8)^5
+//      if (wVal < 281474976710656) return 6; // (2^8)^6
+//      if (wVal < 72057594037927936) return 7; // (2^8)^7
+//
+//      return 8; // (2^8)^8
+      if (wVal == (u8)C_DATUM_NULL)
+        iEncoding = 0;
+      else
+        iEncoding = IntLib::iByteMagnitude(wVal);
+      break;
       
     default:
       NEVER_REACH;
   }
   
+  return iEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get encoded datum from cache line                                          */
+/*----------------------------------------------------------------------------*/
+w8 Datum::wGet(i8 i_Column, eDM eDatum)
+{
+  CacheLine* aCacheLine = &xaCacheLine[i_CurrentCacheLine];
+
+  i8 i_Offset = 8;
+  for (i8 i_Nibble = 0; i_Nibble < i_Column; i_Nibble++) {
+    i8 nDataBytes = aCacheLine->w8_1N(i_Nibble);
+    i_Offset += nDataBytes;
+  }
+  
+  i8 iEncoding = aCacheLine->w8_1N(i_Column);
+
+  w8 wVal = C_UNKNOWN;
+  
+  switch (iEncoding) {
+      
+    case 0: wVal = C_DATUM_NULL;                break;
+    case 1: wVal = aCacheLine->w8_1B(i_Offset); break;
+    case 2: wVal = aCacheLine->w8_2B(i_Offset); break;
+    case 3: wVal = aCacheLine->w8_3B(i_Offset); break;
+    case 4: wVal = aCacheLine->w8_4B(i_Offset); break;
+    case 5: wVal = aCacheLine->w8_5B(i_Offset); break;
+    case 6: wVal = aCacheLine->w8_6B(i_Offset); break;
+    case 7: wVal = aCacheLine->w8_7B(i_Offset); break;
+    case 8: wVal = aCacheLine->w8_8B(i_Offset); break;
+      
+    default:
+      NEVER_REACH;
+  }
+
+  
+  return wVal;
 }
 
 /*----------------------------------------------------------------------------*/
