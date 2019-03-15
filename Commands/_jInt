@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* _j10 -- jtest creation and load etc                                        */
+/*============================================================================*/
+
+startCluster;
+
+//docol epochTake;
+//ping ;
+
+create table jInt (
+  j10_col0  INTEGER NOT NULL,
+  j10_col1  INTEGER,
+  j10_col2  INTEGER,
+  j10_col3  INTEGER,
+  j10_col4  INTEGER
+);
+
+print "loading jInt.csv..." ;
+ld jInt "../JTEST/jInt.csv" ;
+
+dumpidx jInt hidden;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
