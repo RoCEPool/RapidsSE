@@ -11,6 +11,7 @@ static const i8 C_CACHELINES = C_64KB;
 CacheLine xaCacheLine[C_CACHELINES];
 
 i8 i_CurrentCacheLine = -1;
+i8 i_CacheOffset = -1;
 
 /*----------------------------------------------------------------------------*/
 /* begin encoding into new cache line                                         */
@@ -18,7 +19,8 @@ i8 i_CurrentCacheLine = -1;
 void Datum::vBegin(void)
 {
   i_CurrentCacheLine++;
-  
+  i_CacheOffset = 8;
+
   CacheLine* aCacheLine = &xaCacheLine[i_CurrentCacheLine];
   aCacheLine->vSetAll(0xFF);
 }
@@ -47,9 +49,11 @@ void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum)
 
     wVal = *(i8*)aDatum;
     //aCacheLine->v8B(8 + i_Column * 8,wVal);
-    vPut(8 + i_Column * 8,aDatum,iEncoding);
+    vPut(i_CacheOffset,aDatum,iEncoding);
 
     MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    
+    i_CacheOffset += iEncoding;
     
     int iDebug = 0;
   }
@@ -70,6 +74,8 @@ i8 Datum::iEncode(eDM eDatum, byte* aDatum)
   switch (eDatum) {
 
     case DM_INT:
+      if (wVal == (u8)C_DATUM_NULL) return 0;
+      
       if (wVal < 256) return 1;
       if (wVal < 65536) return 2;
       if (wVal < 16777216) return 3;
@@ -77,6 +83,7 @@ i8 Datum::iEncode(eDM eDatum, byte* aDatum)
       if (wVal < 1099511627776) return 5;
       if (wVal < 281474976710656) return 6;
       if (wVal < 72057594037927936) return 7;
+      
       return 8;
       
     default:
