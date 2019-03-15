@@ -76,15 +76,15 @@ i8 Datum::iEncode(eDM eDatum, byte* aDatum)
     case DM_INT:
       if (wVal == (u8)C_DATUM_NULL) return 0;
       
-      if (wVal < 256) return 1;
-      if (wVal < 65536) return 2;
-      if (wVal < 16777216) return 3;
-      if (wVal < 4294967296) return 4;
-      if (wVal < 1099511627776) return 5;
-      if (wVal < 281474976710656) return 6;
-      if (wVal < 72057594037927936) return 7;
+      if (wVal < 256) return 1; // (2^8)^1
+      if (wVal < 65536) return 2; // (2^8)^2
+      if (wVal < 16777216) return 3; // (2^8)^3
+      if (wVal < 4294967296) return 4; // (2^8)^4
+      if (wVal < 1099511627776) return 5; // (2^8)^5
+      if (wVal < 281474976710656) return 6; // (2^8)^6
+      if (wVal < 72057594037927936) return 7; // (2^8)^7
       
-      return 8;
+      return 8; // (2^8)^8
       
     default:
       NEVER_REACH;

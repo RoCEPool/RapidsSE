@@ -30,6 +30,7 @@ namespace Base
   private:
   
   public:
+    static i8 iByteMagnitude(u8 uArg);
     static i8 iDecile(i8 iArg, i8 iMax);
     static i8 iFlipEndian(i8 iArg);
     static i8 iIntToVlq(i8 iInt, byte yVlqVec[16]);
