@@ -18,9 +18,9 @@ create table lineitem (
   L_SHIPDATE      TIMESTAMP NOT NULL,       // 10)  8B   8B
   L_COMMITDATE    TIMESTAMP NOT NULL,       // 11)  8B   8B
   L_RECEIPTDATE   TIMESTAMP NOT NULL,       // 12)  8B   8B
-  L_SHIPINSTRUCT  CHAR(25) NOT NULL,        // 13) 26B  13B
-  L_SHIPMODE      CHAR(10) NOT NULL,        // 14) 11B   5B
-  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+  L_SHIPINSTRUCT  CHAR(2) NOT NULL,         // 13) 26B  13B   CHAR(25)
+  L_SHIPMODE      CHAR(5) NOT NULL,         // 14) 11B   5B   CHAR(10)
+  L_COMMENT       VARCHAR(8) NOT NULL       // 15) 45B  23B   VARCHAR(44)
   //                                              ---- ----
   // 16 columns                                   174B  91B
   //

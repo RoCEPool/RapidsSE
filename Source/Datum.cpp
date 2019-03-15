@@ -53,17 +53,31 @@ void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum)
 
     // set n-byte data for column value
     vPut(i_CacheOffset,aDatum,iEncoding);
-
     MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
     i_CacheOffset += iEncoding;
-    
-    int iDebug = 0;
-    
+        
     w8 wGot = wGet(i_Column,eDatum);
     vTrace("i_Column %lld got %lld\n"_Stz,i_Column,wGot);
+    
+    return;
   }
   
+  if (DM_VCH == eDatum) {
+    
+    iEncoding = iEncode(eDatum,aDatum);
+
+    // set 4bit meta data for column value
+    aCacheLine->v1N(i_Column,iEncoding);
+    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    
+    vPut(i_CacheOffset,aDatum,iEncoding);
+    MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+
+    i_CacheOffset += iEncoding;
+    
+    return;
+  }
 }
 
 
@@ -97,6 +111,13 @@ i8 Datum::iEncode(eDM eDatum, byte* aDatum)
       else
         iEncoding = IntLib::iByteMagnitude(wVal);
       break;
+      
+    case DM_VCH: {
+      i8 iLen = StrLib::iLength((char*)aDatum);
+      RASSERT(iLen <= 8);
+      iEncoding = iLen;
+      break;
+    }
       
     default:
       NEVER_REACH;
