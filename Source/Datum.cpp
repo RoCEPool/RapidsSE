@@ -40,6 +40,30 @@ void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum)
 
   CacheLine* aCacheLine = &xaCacheLine[i_CurrentCacheLine];
   
+  if (DM_BCD == eDatum) {
+    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    
+    iEncoding = iEncode(eDatum,aDatum);
+    
+    // set 4bit meta data for column value
+    aCacheLine->v1N(i_Column,iEncoding);
+    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    
+    wVal = *(i8*)aDatum;
+    //aCacheLine->v8B(8 + i_Column * 8,wVal);
+    
+    // set n-byte data for column value
+    vPut(i_CacheOffset,aDatum,iEncoding);
+    MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    
+    i_CacheOffset += iEncoding;
+    
+    w8 wGot = wGet(i_Column,eDatum);
+    vTrace("i_Column %lld got: %lld\n"_Stz,i_Column,wGot);
+    
+    return;
+  }
+  
   if (DM_INT == eDatum) {
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
@@ -105,17 +129,14 @@ i8 Datum::iEncode(eDM eDatum, byte* aDatum)
   
   switch (eDatum) {
 
+    case DM_BCD:
+      if (wVal == (u8)C_DATUM_NULL)
+        iEncoding = 0;
+      else
+        iEncoding = IntLib::iByteMagnitude(wVal);
+      break;
+
     case DM_INT:
-      
-//      if (wVal < 256) return 1; // (2^8)^1
-//      if (wVal < 65536) return 2; // (2^8)^2
-//      if (wVal < 16777216) return 3; // (2^8)^3
-//      if (wVal < 4294967296) return 4; // (2^8)^4
-//      if (wVal < 1099511627776) return 5; // (2^8)^5
-//      if (wVal < 281474976710656) return 6; // (2^8)^6
-//      if (wVal < 72057594037927936) return 7; // (2^8)^7
-//
-//      return 8; // (2^8)^8
       if (wVal == (u8)C_DATUM_NULL)
         iEncoding = 0;
       else
