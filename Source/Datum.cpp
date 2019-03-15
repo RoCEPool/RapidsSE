@@ -23,6 +23,7 @@ void Datum::vBegin(void)
 
   CacheLine* aCacheLine = &xaCacheLine[i_CurrentCacheLine];
   aCacheLine->vSetAll(0xFF);
+  aCacheLine->v8B(0,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,7 +59,7 @@ void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum)
     i_CacheOffset += iEncoding;
         
     w8 wGot = wGet(i_Column,eDatum);
-    vTrace("i_Column %lld got %lld\n"_Stz,i_Column,wGot);
+    vTrace("i_Column %lld got: %lld\n"_Stz,i_Column,wGot);
     
     return;
   }
@@ -76,6 +77,16 @@ void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum)
 
     i_CacheOffset += iEncoding;
     
+    w8 wGot = wGet(i_Column,eDatum);
+    vTrace("i_Column %lld got: "_Stz,i_Column);
+    
+    WordView wView;
+    wView.m_iI8 = wGot;
+    
+    for (i8 i_Char = 0; i_Char < iEncoding; i_Char++)
+      vTrace("%c"_Stz,wView.m_yaByte[i_Char]);
+    vTrace("\n"_Stz);
+
     return;
   }
 }
