@@ -195,23 +195,23 @@ i8 Datum::iEncode(eDM eDatum, byte* aDatum, WordView& wEncoded)
 
     case DM_BOL:
       if (wVal == (u8)C_DATUM_NULL)
-        iEncoding = 0;
+        iEncoding = MN_NULL;
       else if (wVal)
-        iEncoding = 0b1111;
+        iEncoding = MN_TRUE;
       else
-        iEncoding = 0b1110;
+        iEncoding = MN_FALSE;
       break;
       
     case DM_BCD:
       if (wVal == (u8)C_DATUM_NULL)
-        iEncoding = 0;
+        iEncoding = MN_NULL;
       else
         iEncoding = IntLib::iByteMagnitude(wVal);
       break;
 
     case DM_DTE:
       if (wVal == (u8)C_DATUM_NULL)
-        iEncoding = 0;
+        iEncoding = MN_NULL;
       else {
         wEncoded.m_iI8 = wVal;
         iEncoding = iTspEncoding(wEncoded);
@@ -220,14 +220,14 @@ i8 Datum::iEncode(eDM eDatum, byte* aDatum, WordView& wEncoded)
       
     case DM_INT:
       if (wVal == (u8)C_DATUM_NULL)
-        iEncoding = 0;
+        iEncoding = MN_NULL;
       else
         iEncoding = IntLib::iByteMagnitude(wVal);
       break;
       
     case DM_TSP:
       if (wVal == (u8)C_DATUM_NULL)
-        iEncoding = 0;
+        iEncoding = MN_NULL;
       else {
         wEncoded.m_iI8 = wVal;
         iEncoding = iTspEncoding(wEncoded);

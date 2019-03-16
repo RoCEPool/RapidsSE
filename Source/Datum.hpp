@@ -27,16 +27,16 @@ namespace Datums
     MN_ZERO      = 0b1110,     // 0 datum (no bytes in data words)
     MN_PLUS_ONE  = 0b1111,     // 1 datum (no bytes in data words)
   
-    DF_DIFF_4B   = 0b1100,     // 4B in data words indicating difference
-    DF_DIFF_3B   = 0b1101,     // 3B in data words datum indicating difference
-    DF_DIFF_2B   = 0b1110,     // 2B in data words datum indicating difference
-    DF_DIFF_1B   = 0b1111,     // 1B in data words datum indicating difference
+    MN_DIFF_4B   = 0b1100,     // 4B in data words indicating difference
+    MN_DIFF_3B   = 0b1101,     // 3B in data words datum indicating difference
+    MN_DIFF_2B   = 0b1110,     // 2B in data words datum indicating difference
+    MN_DIFF_1B   = 0b1111,     // 1B in data words datum indicating difference
   
-    DF_COL_ARRAY   = 0b1011,   // 1B in data words subscript into col array
-    DF_SHOCOL_CL   = 0b1100,   // len+shoco in data words
-    DF_SHOCOL_2B   = 0b1100,   // 2B in data words indicating shoco overflow
-    DF_LOCAL_HMAP  = 0b1100,   // 2B in data words indicating local hashmap
-    DF_GLOBAL_HMAP = 0b1100,   // 2B in data words indicating global hashmap
+    MN_COL_ARRAY   = 0b1011,   // 1B in data words subscript into col array
+    MN_SHOCOL_CL   = 0b1100,   // len+shoco in data words
+    MN_SHOCOL_2B   = 0b1100,   // 2B in data words indicating shoco overflow
+    MN_LOCAL_HMAP  = 0b1100,   // 2B in data words indicating local hashmap
+    MN_GLOBAL_HMAP = 0b1100,   // 2B in data words indicating global hashmap
   };
   
   class Datum
