@@ -265,6 +265,16 @@ w8 Datum::wGet(i8 i_Column, eDM eDatum)
 
   w8 wVal = C_UNKNOWN;
   
+  if (DM_BOL == eDatum) {
+    switch (iEncoding) {
+      case MN_FALSE: wVal = false; break;
+      case MN_TRUE : wVal = true;  break;
+      default:
+        NEVER_REACH;
+    }
+    return wVal;
+  }
+  
   switch (iEncoding) {
       
     case 0: wVal = C_DATUM_NULL;                break;
@@ -277,6 +287,9 @@ w8 Datum::wGet(i8 i_Column, eDM eDatum)
     case 7: wVal = aCacheLine->w8_7B(i_Offset); break;
     case 8: wVal = aCacheLine->w8_8B(i_Offset); break;
       
+    case MN_FALSE: wVal = FALSE;                break;
+    case MN_TRUE : wVal = FALSE;                break;
+
     default:
       NEVER_REACH;
   }
