@@ -16,7 +16,9 @@ create table EachType (
   vch varchar
 );
 
-//ld NATION "/DATA/Load/nation.csv" record_ends "\r\n";
+ld EachType "/DATA/Datums/eachType.csv";
+
+fetch EachType;
 
 //*============================================================================*/
 /* end                                                                        */
