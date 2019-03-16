@@ -65,6 +65,21 @@ void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum)
     return;
   }
   
+  if (DM_BOL == eDatum) {
+    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    
+    iEncoding = iEncode(eDatum,aDatum,wEncoded);
+    
+    // set 4bit meta data for column value
+    aCacheLine->v1N(i_Column,iEncoding);
+    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+        
+    w8 wGot = wGet(i_Column,eDatum);
+    vTrace("i_Column %lld got: %lld\n"_Stz,i_Column,wGot);
+    
+    return;
+  }
+  
   if (DM_DTE == eDatum) {
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
@@ -178,6 +193,15 @@ i8 Datum::iEncode(eDM eDatum, byte* aDatum, WordView& wEncoded)
   
   switch (eDatum) {
 
+    case DM_BOL:
+      if (wVal == (u8)C_DATUM_NULL)
+        iEncoding = 0;
+      else if (wVal)
+        iEncoding = 0b1111;
+      else
+        iEncoding = 0b1110;
+      break;
+      
     case DM_BCD:
       if (wVal == (u8)C_DATUM_NULL)
         iEncoding = 0;
