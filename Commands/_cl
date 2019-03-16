@@ -1,0 +1,23 @@
+/*============================================================================*/
+/* _cl -- cache line test                                                     */
+/*============================================================================*/
+
+startCluster;
+
+create table EachType (
+  bcd decimal,
+  bol boolean,
+  dte date,
+  flt float,
+  int integer,
+  ivl interval,
+  tme time,
+  tsp timestamp,
+  vch varchar
+);
+
+//ld NATION "/DATA/Load/nation.csv" record_ends "\r\n";
+
+//*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
