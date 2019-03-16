@@ -104,6 +104,30 @@ void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum)
     return;
   }
   
+  if (DM_FLT == eDatum) {
+    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    
+    iEncoding = iEncode(eDatum,aDatum,wEncoded);
+    
+    // set 4bit meta data for column value
+    aCacheLine->v1N(i_Column,iEncoding);
+    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    
+    wVal = *(i8*)aDatum;
+    //aCacheLine->v8B(8 + i_Column * 8,wVal);
+    
+    // set n-byte data for column value
+    vPut(i_CacheOffset,aDatum,iEncoding);
+    MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    
+    i_CacheOffset += iEncoding;
+    
+    w8 wGot = wGet(i_Column,eDatum);
+    vTrace("i_Column %lld got: %lld\n"_Stz,i_Column,wGot);
+    
+    return;
+  }
+  
   if (DM_INT == eDatum) {
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
@@ -128,6 +152,53 @@ void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum)
     return;
   }
   
+  if (DM_IVL == eDatum) {
+    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    
+    iEncoding = iEncode(eDatum,aDatum,wEncoded);
+    
+    // set 4bit meta data for column value
+    aCacheLine->v1N(i_Column,iEncoding);
+    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    
+    wVal = *(i8*)aDatum;
+    //aCacheLine->v8B(8 + i_Column * 8,wVal);
+    
+    // set n-byte data for column value
+    vPut(i_CacheOffset,aDatum,iEncoding);
+    MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    
+    i_CacheOffset += iEncoding;
+    
+    w8 wGot = wGet(i_Column,eDatum);
+    vTrace("i_Column %lld got: %lld\n"_Stz,i_Column,wGot);
+    
+    return;
+  }
+  
+  if (DM_TME == eDatum) {
+    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    
+    iEncoding = iEncode(eDatum,aDatum,wEncoded);
+    
+    // set 4bit meta data for column value
+    aCacheLine->v1N(i_Column,iEncoding);
+    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    
+    wVal = *(i8*)aDatum;
+    //aCacheLine->v8B(8 + i_Column * 8,wVal);
+    
+    // set n-byte data for column value
+    vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+    MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    
+    i_CacheOffset += iEncoding;
+    
+    w8 wGot = wGet(i_Column,eDatum);
+    vTrace("i_Column %lld got: %lld\n"_Stz,i_Column,wGot);
+    
+    return;
+  }
   if (DM_TSP == eDatum) {
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
@@ -218,11 +289,34 @@ i8 Datum::iEncode(eDM eDatum, byte* aDatum, WordView& wEncoded)
       }
       break;
       
-    case DM_INT:
+    case DM_FLT:
       if (wVal == (u8)C_DATUM_NULL)
         iEncoding = MN_NULL;
       else
         iEncoding = IntLib::iByteMagnitude(wVal);
+      break;
+      
+   case DM_INT:
+      if (wVal == (u8)C_DATUM_NULL)
+        iEncoding = MN_NULL;
+      else
+        iEncoding = IntLib::iByteMagnitude(wVal);
+      break;
+      
+    case DM_IVL:
+      if (wVal == (u8)C_DATUM_NULL)
+        iEncoding = MN_NULL;
+      else
+        iEncoding = IntLib::iByteMagnitude(wVal);
+      break;
+      
+    case DM_TME:
+      if (wVal == (u8)C_DATUM_NULL)
+        iEncoding = MN_NULL;
+      else {
+        wEncoded.m_iI8 = wVal;
+        iEncoding = iTspEncoding(wEncoded);
+      }
       break;
       
     case DM_TSP:
