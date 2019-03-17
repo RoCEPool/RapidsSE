@@ -15,6 +15,7 @@ namespace Data
     static i8 iEncodeDte(Column* pColumn,byte* aDatum, WordView& wEncoded);
     static i8 iEncodeFlt(Column* pColumn,byte* aDatum, WordView& wEncoded);
     static i8 iEncodeInt(Column* pColumn,byte* aDatum, WordView& wEncoded);
+    static i8 iEncodeIvl(Column* pColumn,byte* aDatum, WordView& wEncoded);
     static i8 iEncodeTme(Column* pColumn,byte* aDatum, WordView& wEncoded);
     static i8 iEncodeTsp(Column* pColumn,byte* aDatum, WordView& wEncoded);
     static i8 iEncodeVch(Column* pColumn,byte* aDatum, WordView& wEncoded);
