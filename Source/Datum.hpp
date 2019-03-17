@@ -62,7 +62,7 @@ namespace Datums
 #endif
   
     static i8 iTspEncoding(WordView& wTspView);
-    
+      
   public:
   };
 }
