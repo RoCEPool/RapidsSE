@@ -7,6 +7,10 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* encode decimal                                                             */
 /*----------------------------------------------------------------------------*/
 i8 RowEncoding::iEncodeBcd(Column* pColumn,byte* aDatum, WordView& wEncoded)
@@ -55,7 +59,7 @@ i8 RowEncoding::iEncodeDte(Column* pColumn,byte* aDatum, WordView& wEncoded)
     iEncoding = MN_NULL;
   else {
     wEncoded.m_iI8 = wVal;
-    iEncoding = Datum::iTspEncoding(wEncoded);
+    iEncoding = RowEncoding::iTspEncoding(wEncoded);
   }
 
   return iEncoding;
@@ -125,7 +129,7 @@ i8 RowEncoding::iEncodeTme(Column* pColumn,byte* aDatum, WordView& wEncoded)
     iEncoding = MN_NULL;
   else {
     wEncoded.m_iI8 = wVal;
-    iEncoding = Datum::iTspEncoding(wEncoded);
+    iEncoding = RowEncoding::iTspEncoding(wEncoded);
   }
   
   return iEncoding;
@@ -144,7 +148,7 @@ i8 RowEncoding::iEncodeTsp(Column* pColumn,byte* aDatum, WordView& wEncoded)
     iEncoding = MN_NULL;
   else {
     wEncoded.m_iI8 = wVal;
-    iEncoding = Datum::iTspEncoding(wEncoded);
+    iEncoding = RowEncoding::iTspEncoding(wEncoded);
   }
   
   return iEncoding;
@@ -154,7 +158,7 @@ i8 RowEncoding::iEncodeTsp(Column* pColumn,byte* aDatum, WordView& wEncoded)
 /* encode varchar                                                             */
 /*----------------------------------------------------------------------------*/
 i8 RowEncoding::iEncodeVch(Column* pColumn,byte* aDatum, WordView& wEncoded)
-{ 
+{
   i8 iEncoding = C_UNKNOWN;
   
   i8 iLen = StrLib::iLength((char*)aDatum);
@@ -163,6 +167,37 @@ i8 RowEncoding::iEncodeVch(Column* pColumn,byte* aDatum, WordView& wEncoded)
   iEncoding = iLen;
   
   return iEncoding;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get encoded datum from cache line                                          */
+/*----------------------------------------------------------------------------*/
+i8 RowEncoding::iTspEncoding(WordView& wTspView)
+{
+  bool bSawNonZero = true;
+  
+  while (! wTspView.m_yaByte[0]) {
+    
+    bSawNonZero = false;
+    
+    for (i8 i_Byte = 0; i_Byte < 7; i_Byte++)
+      if ( (wTspView.m_yaByte[i_Byte] = wTspView.m_yaByte[i_Byte+1]) )
+        bSawNonZero = true;
+    wTspView.m_yaByte[7] = 0;
+    
+    if (! bSawNonZero)
+      break;
+  }
+  
+  i8 iEncoding = IntLib::iByteMagnitude(wTspView.m_iI8);
+  
+  return iEncoding;
+  
 }
 
 /*============================================================================*/
