@@ -21,16 +21,20 @@ void RowEncoding::vDecodeBcd(Column* pColumn, CacheLine* aCacheLine, WordView& w
 
   switch (iEncoding) {
       
-    case 0: wDecoded.m_iI8 = C_DATUM_NULL;                break;
-    case 1: wDecoded.m_iI8 = aCacheLine->w8_1B(i_Offset); break;
-    case 2: wDecoded.m_iI8 = aCacheLine->w8_2B(i_Offset); break;
-    case 3: wDecoded.m_iI8 = aCacheLine->w8_3B(i_Offset); break;
-    case 4: wDecoded.m_iI8 = aCacheLine->w8_4B(i_Offset); break;
-    case 5: wDecoded.m_iI8 = aCacheLine->w8_5B(i_Offset); break;
-    case 6: wDecoded.m_iI8 = aCacheLine->w8_6B(i_Offset); break;
-    case 7: wDecoded.m_iI8 = aCacheLine->w8_7B(i_Offset); break;
-    case 8: wDecoded.m_iI8 = aCacheLine->w8_8B(i_Offset); break;
-      
+    case MN_NULL: wDecoded.m_iI8 = C_DATUM_NULL;                break;
+    case MN_1B:   wDecoded.m_iI8 = aCacheLine->w8_1B(i_Offset); break;
+    case MN_2B:   wDecoded.m_iI8 = aCacheLine->w8_2B(i_Offset); break;
+    case MN_3B:   wDecoded.m_iI8 = aCacheLine->w8_3B(i_Offset); break;
+    case MN_4B:   wDecoded.m_iI8 = aCacheLine->w8_4B(i_Offset); break;
+    case MN_5B:   wDecoded.m_iI8 = aCacheLine->w8_5B(i_Offset); break;
+    case MN_6B:   wDecoded.m_iI8 = aCacheLine->w8_6B(i_Offset); break;
+    case MN_7B:   wDecoded.m_iI8 = aCacheLine->w8_7B(i_Offset); break;
+    case MN_8B:   wDecoded.m_iI8 = aCacheLine->w8_8B(i_Offset); break;
+  
+    case MN_MINUS_ONE: wDecoded.m_iI8 = -1; break;
+    case MN_ZERO:      wDecoded.m_iI8 = 0;  break;
+    case MN_PLUS_ONE:  wDecoded.m_iI8 = 1;  break;
+
     default:
       NEVER_REACH;
   }
@@ -48,16 +52,10 @@ void RowEncoding::vDecodeBol(Column* pColumn, CacheLine* aCacheLine, WordView& w
   
   switch (iEncoding) {
       
-    case 0: wDecoded.m_iI8 = C_DATUM_NULL;                break;
-    case 1: wDecoded.m_iI8 = aCacheLine->w8_1B(i_Offset); break;
-    case 2: wDecoded.m_iI8 = aCacheLine->w8_2B(i_Offset); break;
-    case 3: wDecoded.m_iI8 = aCacheLine->w8_3B(i_Offset); break;
-    case 4: wDecoded.m_iI8 = aCacheLine->w8_4B(i_Offset); break;
-    case 5: wDecoded.m_iI8 = aCacheLine->w8_5B(i_Offset); break;
-    case 6: wDecoded.m_iI8 = aCacheLine->w8_6B(i_Offset); break;
-    case 7: wDecoded.m_iI8 = aCacheLine->w8_7B(i_Offset); break;
-    case 8: wDecoded.m_iI8 = aCacheLine->w8_8B(i_Offset); break;
-      
+    case MN_NULL:  wDecoded.m_iI8 = C_DATUM_NULL; break;
+    case MN_FALSE: wDecoded.m_iI8 = 0;            break;
+    case MN_TRUE:  wDecoded.m_iI8 = 1;            break;
+
     default:
       NEVER_REACH;
   }
@@ -75,15 +73,15 @@ void RowEncoding::vDecodeDte(Column* pColumn, CacheLine* aCacheLine, WordView& w
   
   switch (iEncoding) {
       
-    case 0: wDecoded.m_iI8 = C_DATUM_NULL;                break;
-    case 1: wDecoded.m_iI8 = aCacheLine->w8_1B(i_Offset); break;
-    case 2: wDecoded.m_iI8 = aCacheLine->w8_2B(i_Offset); break;
-    case 3: wDecoded.m_iI8 = aCacheLine->w8_3B(i_Offset); break;
-    case 4: wDecoded.m_iI8 = aCacheLine->w8_4B(i_Offset); break;
-    case 5: wDecoded.m_iI8 = aCacheLine->w8_5B(i_Offset); break;
-    case 6: wDecoded.m_iI8 = aCacheLine->w8_6B(i_Offset); break;
-    case 7: wDecoded.m_iI8 = aCacheLine->w8_7B(i_Offset); break;
-    case 8: wDecoded.m_iI8 = aCacheLine->w8_8B(i_Offset); break;
+    case MN_NULL: wDecoded.m_iI8 = C_DATUM_NULL;                break;
+    case MN_1B:   wDecoded.m_iI8 = aCacheLine->w8_1B(i_Offset); break;
+    case MN_2B:   wDecoded.m_iI8 = aCacheLine->w8_2B(i_Offset); break;
+    case MN_3B:   wDecoded.m_iI8 = aCacheLine->w8_3B(i_Offset); break;
+    case MN_4B:   wDecoded.m_iI8 = aCacheLine->w8_4B(i_Offset); break;
+    case MN_5B:   wDecoded.m_iI8 = aCacheLine->w8_5B(i_Offset); break;
+    case MN_6B:   wDecoded.m_iI8 = aCacheLine->w8_6B(i_Offset); break;
+    case MN_7B:   wDecoded.m_iI8 = aCacheLine->w8_7B(i_Offset); break;
+    case MN_8B:   wDecoded.m_iI8 = aCacheLine->w8_8B(i_Offset); break;
       
     default:
       NEVER_REACH;
@@ -102,16 +100,16 @@ void RowEncoding::vDecodeFlt(Column* pColumn, CacheLine* aCacheLine, WordView& w
   
   switch (iEncoding) {
       
-    case 0: wDecoded.m_iI8 = C_DATUM_NULL;                break;
-    case 1: wDecoded.m_iI8 = aCacheLine->w8_1B(i_Offset); break;
-    case 2: wDecoded.m_iI8 = aCacheLine->w8_2B(i_Offset); break;
-    case 3: wDecoded.m_iI8 = aCacheLine->w8_3B(i_Offset); break;
-    case 4: wDecoded.m_iI8 = aCacheLine->w8_4B(i_Offset); break;
-    case 5: wDecoded.m_iI8 = aCacheLine->w8_5B(i_Offset); break;
-    case 6: wDecoded.m_iI8 = aCacheLine->w8_6B(i_Offset); break;
-    case 7: wDecoded.m_iI8 = aCacheLine->w8_7B(i_Offset); break;
-    case 8: wDecoded.m_iI8 = aCacheLine->w8_8B(i_Offset); break;
-      
+    case MN_NULL: wDecoded.m_iI8 = C_DATUM_NULL;                break;
+    case MN_1B:   wDecoded.m_iI8 = aCacheLine->w8_1B(i_Offset); break;
+    case MN_2B:   wDecoded.m_iI8 = aCacheLine->w8_2B(i_Offset); break;
+    case MN_3B:   wDecoded.m_iI8 = aCacheLine->w8_3B(i_Offset); break;
+    case MN_4B:   wDecoded.m_iI8 = aCacheLine->w8_4B(i_Offset); break;
+    case MN_5B:   wDecoded.m_iI8 = aCacheLine->w8_5B(i_Offset); break;
+    case MN_6B:   wDecoded.m_iI8 = aCacheLine->w8_6B(i_Offset); break;
+    case MN_7B:   wDecoded.m_iI8 = aCacheLine->w8_7B(i_Offset); break;
+    case MN_8B:   wDecoded.m_iI8 = aCacheLine->w8_8B(i_Offset); break;
+
     default:
       NEVER_REACH;
   }
@@ -129,15 +127,19 @@ void RowEncoding::vDecodeInt(Column* pColumn, CacheLine* aCacheLine, WordView& w
   
   switch (iEncoding) {
       
-    case 0: wDecoded.m_iI8 = C_DATUM_NULL;                break;
-    case 1: wDecoded.m_iI8 = aCacheLine->w8_1B(i_Offset); break;
-    case 2: wDecoded.m_iI8 = aCacheLine->w8_2B(i_Offset); break;
-    case 3: wDecoded.m_iI8 = aCacheLine->w8_3B(i_Offset); break;
-    case 4: wDecoded.m_iI8 = aCacheLine->w8_4B(i_Offset); break;
-    case 5: wDecoded.m_iI8 = aCacheLine->w8_5B(i_Offset); break;
-    case 6: wDecoded.m_iI8 = aCacheLine->w8_6B(i_Offset); break;
-    case 7: wDecoded.m_iI8 = aCacheLine->w8_7B(i_Offset); break;
-    case 8: wDecoded.m_iI8 = aCacheLine->w8_8B(i_Offset); break;
+    case MN_NULL: wDecoded.m_iI8 = C_DATUM_NULL;                break;
+    case MN_1B:   wDecoded.m_iI8 = aCacheLine->w8_1B(i_Offset); break;
+    case MN_2B:   wDecoded.m_iI8 = aCacheLine->w8_2B(i_Offset); break;
+    case MN_3B:   wDecoded.m_iI8 = aCacheLine->w8_3B(i_Offset); break;
+    case MN_4B:   wDecoded.m_iI8 = aCacheLine->w8_4B(i_Offset); break;
+    case MN_5B:   wDecoded.m_iI8 = aCacheLine->w8_5B(i_Offset); break;
+    case MN_6B:   wDecoded.m_iI8 = aCacheLine->w8_6B(i_Offset); break;
+    case MN_7B:   wDecoded.m_iI8 = aCacheLine->w8_7B(i_Offset); break;
+    case MN_8B:   wDecoded.m_iI8 = aCacheLine->w8_8B(i_Offset); break;
+
+    case MN_MINUS_ONE: wDecoded.m_iI8 = -1; break;
+    case MN_ZERO:      wDecoded.m_iI8 = 0;  break;
+    case MN_PLUS_ONE:  wDecoded.m_iI8 = 1;  break;
       
     default:
       NEVER_REACH;
@@ -156,16 +158,16 @@ void RowEncoding::vDecodeIvl(Column* pColumn, CacheLine* aCacheLine, WordView& w
   
   switch (iEncoding) {
       
-    case 0: wDecoded.m_iI8 = C_DATUM_NULL;                break;
-    case 1: wDecoded.m_iI8 = aCacheLine->w8_1B(i_Offset); break;
-    case 2: wDecoded.m_iI8 = aCacheLine->w8_2B(i_Offset); break;
-    case 3: wDecoded.m_iI8 = aCacheLine->w8_3B(i_Offset); break;
-    case 4: wDecoded.m_iI8 = aCacheLine->w8_4B(i_Offset); break;
-    case 5: wDecoded.m_iI8 = aCacheLine->w8_5B(i_Offset); break;
-    case 6: wDecoded.m_iI8 = aCacheLine->w8_6B(i_Offset); break;
-    case 7: wDecoded.m_iI8 = aCacheLine->w8_7B(i_Offset); break;
-    case 8: wDecoded.m_iI8 = aCacheLine->w8_8B(i_Offset); break;
-      
+    case MN_NULL: wDecoded.m_iI8 = C_DATUM_NULL;                break;
+    case MN_1B:   wDecoded.m_iI8 = aCacheLine->w8_1B(i_Offset); break;
+    case MN_2B:   wDecoded.m_iI8 = aCacheLine->w8_2B(i_Offset); break;
+    case MN_3B:   wDecoded.m_iI8 = aCacheLine->w8_3B(i_Offset); break;
+    case MN_4B:   wDecoded.m_iI8 = aCacheLine->w8_4B(i_Offset); break;
+    case MN_5B:   wDecoded.m_iI8 = aCacheLine->w8_5B(i_Offset); break;
+    case MN_6B:   wDecoded.m_iI8 = aCacheLine->w8_6B(i_Offset); break;
+    case MN_7B:   wDecoded.m_iI8 = aCacheLine->w8_7B(i_Offset); break;
+    case MN_8B:   wDecoded.m_iI8 = aCacheLine->w8_8B(i_Offset); break;
+
     default:
       NEVER_REACH;
   }
@@ -183,16 +185,16 @@ void RowEncoding::vDecodeTme(Column* pColumn, CacheLine* aCacheLine, WordView& w
   
   switch (iEncoding) {
       
-    case 0: wDecoded.m_iI8 = C_DATUM_NULL;                break;
-    case 1: wDecoded.m_iI8 = aCacheLine->w8_1B(i_Offset); break;
-    case 2: wDecoded.m_iI8 = aCacheLine->w8_2B(i_Offset); break;
-    case 3: wDecoded.m_iI8 = aCacheLine->w8_3B(i_Offset); break;
-    case 4: wDecoded.m_iI8 = aCacheLine->w8_4B(i_Offset); break;
-    case 5: wDecoded.m_iI8 = aCacheLine->w8_5B(i_Offset); break;
-    case 6: wDecoded.m_iI8 = aCacheLine->w8_6B(i_Offset); break;
-    case 7: wDecoded.m_iI8 = aCacheLine->w8_7B(i_Offset); break;
-    case 8: wDecoded.m_iI8 = aCacheLine->w8_8B(i_Offset); break;
-      
+    case MN_NULL: wDecoded.m_iI8 = C_DATUM_NULL;                break;
+    case MN_1B:   wDecoded.m_iI8 = aCacheLine->w8_1B(i_Offset); break;
+    case MN_2B:   wDecoded.m_iI8 = aCacheLine->w8_2B(i_Offset); break;
+    case MN_3B:   wDecoded.m_iI8 = aCacheLine->w8_3B(i_Offset); break;
+    case MN_4B:   wDecoded.m_iI8 = aCacheLine->w8_4B(i_Offset); break;
+    case MN_5B:   wDecoded.m_iI8 = aCacheLine->w8_5B(i_Offset); break;
+    case MN_6B:   wDecoded.m_iI8 = aCacheLine->w8_6B(i_Offset); break;
+    case MN_7B:   wDecoded.m_iI8 = aCacheLine->w8_7B(i_Offset); break;
+    case MN_8B:   wDecoded.m_iI8 = aCacheLine->w8_8B(i_Offset); break;
+
     default:
       NEVER_REACH;
   }
@@ -210,16 +212,16 @@ void RowEncoding::vDecodeTsp(Column* pColumn, CacheLine* aCacheLine, WordView& w
   
   switch (iEncoding) {
       
-    case 0: wDecoded.m_iI8 = C_DATUM_NULL;                break;
-    case 1: wDecoded.m_iI8 = aCacheLine->w8_1B(i_Offset); break;
-    case 2: wDecoded.m_iI8 = aCacheLine->w8_2B(i_Offset); break;
-    case 3: wDecoded.m_iI8 = aCacheLine->w8_3B(i_Offset); break;
-    case 4: wDecoded.m_iI8 = aCacheLine->w8_4B(i_Offset); break;
-    case 5: wDecoded.m_iI8 = aCacheLine->w8_5B(i_Offset); break;
-    case 6: wDecoded.m_iI8 = aCacheLine->w8_6B(i_Offset); break;
-    case 7: wDecoded.m_iI8 = aCacheLine->w8_7B(i_Offset); break;
-    case 8: wDecoded.m_iI8 = aCacheLine->w8_8B(i_Offset); break;
-      
+    case MN_NULL: wDecoded.m_iI8 = C_DATUM_NULL;                break;
+    case MN_1B:   wDecoded.m_iI8 = aCacheLine->w8_1B(i_Offset); break;
+    case MN_2B:   wDecoded.m_iI8 = aCacheLine->w8_2B(i_Offset); break;
+    case MN_3B:   wDecoded.m_iI8 = aCacheLine->w8_3B(i_Offset); break;
+    case MN_4B:   wDecoded.m_iI8 = aCacheLine->w8_4B(i_Offset); break;
+    case MN_5B:   wDecoded.m_iI8 = aCacheLine->w8_5B(i_Offset); break;
+    case MN_6B:   wDecoded.m_iI8 = aCacheLine->w8_6B(i_Offset); break;
+    case MN_7B:   wDecoded.m_iI8 = aCacheLine->w8_7B(i_Offset); break;
+    case MN_8B:   wDecoded.m_iI8 = aCacheLine->w8_8B(i_Offset); break;
+
     default:
       NEVER_REACH;
   }
@@ -237,16 +239,16 @@ void RowEncoding::vDecodeVch(Column* pColumn, CacheLine* aCacheLine, WordView& w
   
   switch (iEncoding) {
       
-    case 0: wDecoded.m_iI8 = C_DATUM_NULL;                break;
-    case 1: wDecoded.m_iI8 = aCacheLine->w8_1B(i_Offset); break;
-    case 2: wDecoded.m_iI8 = aCacheLine->w8_2B(i_Offset); break;
-    case 3: wDecoded.m_iI8 = aCacheLine->w8_3B(i_Offset); break;
-    case 4: wDecoded.m_iI8 = aCacheLine->w8_4B(i_Offset); break;
-    case 5: wDecoded.m_iI8 = aCacheLine->w8_5B(i_Offset); break;
-    case 6: wDecoded.m_iI8 = aCacheLine->w8_6B(i_Offset); break;
-    case 7: wDecoded.m_iI8 = aCacheLine->w8_7B(i_Offset); break;
-    case 8: wDecoded.m_iI8 = aCacheLine->w8_8B(i_Offset); break;
-      
+    case MN_NULL: wDecoded.m_iI8 = C_DATUM_NULL;                break;
+    case MN_1B:   wDecoded.m_iI8 = aCacheLine->w8_1B(i_Offset); break;
+    case MN_2B:   wDecoded.m_iI8 = aCacheLine->w8_2B(i_Offset); break;
+    case MN_3B:   wDecoded.m_iI8 = aCacheLine->w8_3B(i_Offset); break;
+    case MN_4B:   wDecoded.m_iI8 = aCacheLine->w8_4B(i_Offset); break;
+    case MN_5B:   wDecoded.m_iI8 = aCacheLine->w8_5B(i_Offset); break;
+    case MN_6B:   wDecoded.m_iI8 = aCacheLine->w8_6B(i_Offset); break;
+    case MN_7B:   wDecoded.m_iI8 = aCacheLine->w8_7B(i_Offset); break;
+    case MN_8B:   wDecoded.m_iI8 = aCacheLine->w8_8B(i_Offset); break;
+
     default:
       NEVER_REACH;
   }
