@@ -57,7 +57,7 @@ void Datum::vSet(Column* pColumn, byte* aDatum)
     //aCacheLine->v8B(8 + i_Column * 8,wVal);
     
     // set n-byte data for column value
-    vPut(i_CacheOffset,aDatum,iEncoding);
+    aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
     MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
     i_CacheOffset += iEncoding;
@@ -107,7 +107,7 @@ void Datum::vSet(Column* pColumn, byte* aDatum)
     //aCacheLine->v8B(8 + i_Column * 8,wVal);
     
     // set n-byte data for column value
-    vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+    aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
     MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
     i_CacheOffset += iEncoding;
@@ -143,7 +143,7 @@ void Datum::vSet(Column* pColumn, byte* aDatum)
     //aCacheLine->v8B(8 + i_Column * 8,wVal);
     
     // set n-byte data for column value
-    vPut(i_CacheOffset,aDatum,iEncoding);
+    aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
     MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
     i_CacheOffset += iEncoding;
@@ -172,7 +172,7 @@ void Datum::vSet(Column* pColumn, byte* aDatum)
     //aCacheLine->v8B(8 + i_Column * 8,wVal);
 
     // set n-byte data for column value
-    vPut(i_CacheOffset,aDatum,iEncoding);
+    aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
     MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
     i_CacheOffset += iEncoding;
@@ -198,7 +198,7 @@ void Datum::vSet(Column* pColumn, byte* aDatum)
     //aCacheLine->v8B(8 + i_Column * 8,wVal);
     
     // set n-byte data for column value
-    vPut(i_CacheOffset,aDatum,iEncoding);
+    aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
     MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
     i_CacheOffset += iEncoding;
@@ -227,7 +227,7 @@ void Datum::vSet(Column* pColumn, byte* aDatum)
     //aCacheLine->v8B(8 + i_Column * 8,wVal);
     
     // set n-byte data for column value
-    vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+    aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
     MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
     i_CacheOffset += iEncoding;
@@ -261,7 +261,7 @@ void Datum::vSet(Column* pColumn, byte* aDatum)
     //aCacheLine->v8B(8 + i_Column * 8,wVal);
     
     // set n-byte data for column value
-    vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+    aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
     MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
     i_CacheOffset += iEncoding;
@@ -291,7 +291,7 @@ void Datum::vSet(Column* pColumn, byte* aDatum)
     aCacheLine->v1N(i_Column,iEncoding);
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
-    vPut(i_CacheOffset,aDatum,iEncoding);
+    aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
     MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
 
     i_CacheOffset += iEncoding;
@@ -373,31 +373,6 @@ w8 Datum::wGet(i8 i_Column, eDM eDatum)
 /*----------------------------------------------------------------------------*/
 /* put encoded datam into cache line                                          */
 /*----------------------------------------------------------------------------*/
-void Datum::vPut(i8 i_Offset, byte* aDatum, i8 iEncoding)
-{
-  w8 wVal = *(i8*)aDatum;
-  CacheLine* aCacheLine = &xaCacheLine[i_CurrentCacheLine];
-
-  switch (iEncoding) {
-    
-    case 0: return;
-    case 1: aCacheLine->v1B(i_Offset,wVal); return;
-    case 2: aCacheLine->v2B(i_Offset,wVal); return;
-    case 3: aCacheLine->v3B(i_Offset,wVal); return;
-    case 4: aCacheLine->v4B(i_Offset,wVal); return;
-    case 5: aCacheLine->v5B(i_Offset,wVal); return;
-    case 6: aCacheLine->v6B(i_Offset,wVal); return;
-    case 7: aCacheLine->v7B(i_Offset,wVal); return;
-    case 8: aCacheLine->v8B(i_Offset,wVal); return;
-
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* put encoded datam into cache line                                          */
-/*----------------------------------------------------------------------------*/
 #ifdef WITH_ROWBUFFER
 //ALKA's versions
 
@@ -423,7 +398,7 @@ void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum, CacheLine* aCacheLine, i
     
     wVal = *(i8*)aDatum;
     //aCacheLine->v8B(8 + i_Column * 8,wVal);
-    vPut(i_CacheOffset,aDatum,iEncoding, aCacheLine);
+    aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding, aCacheLine);
     
     MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     

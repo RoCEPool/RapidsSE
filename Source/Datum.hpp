@@ -53,9 +53,7 @@ namespace Datums
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     static w8 wGet(i8 i_Column, eDM eDatum);
-  
-    static void vPut(i8 i_Offset, byte* aDatum, i8 iEncoding);
-    
+      
 #ifdef WITH_ROWBUFFER
     static w8 wGet(i8 i_Column, eDM eDatum,  CacheLine* aCacheLine);
     static void vPut(i8 i_Offset, byte* aDatum, i8 iEncoding, CacheLine* aCacheLine);
