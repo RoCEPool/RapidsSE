@@ -52,7 +52,6 @@ namespace Datums
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-    static i8 iEncode(eDM eDatum, byte* aDatum, WordView& wEncoded);
     static w8 wGet(i8 i_Column, eDM eDatum);
   
     static void vPut(i8 i_Offset, byte* aDatum, i8 iEncoding);

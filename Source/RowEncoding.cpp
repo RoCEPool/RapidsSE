@@ -266,6 +266,97 @@ void RowEncoding::vDecodeVch(Column* pColumn, CacheLine* aCacheLine, WordView& w
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* encode given datum before setting in cache line                            */
+/*----------------------------------------------------------------------------*/
+i8 RowEncoding::iEncode(Column* pColumn, byte* aDatum, WordView& wEncoded)
+{
+  eDM eDatum = pColumn->eDatumType();
+  
+  w8 wVal = *(i8*)aDatum;
+  
+  i8 iEncoding = -1;
+  
+  switch (eDatum) {
+      
+    case DM_BCD:
+      if (wVal == (u8)C_DATUM_NULL)
+        iEncoding = MN_NULL;
+      else
+        iEncoding = IntLib::iByteMagnitude(wVal);
+      break;
+      
+    case DM_BOL:
+      if (wVal == (u8)C_DATUM_NULL)
+        iEncoding = MN_NULL;
+      else if (wVal)
+        iEncoding = MN_TRUE;
+      else
+        iEncoding = MN_FALSE;
+      break;
+      
+    case DM_DTE:
+      if (wVal == (u8)C_DATUM_NULL)
+        iEncoding = MN_NULL;
+      else {
+        wEncoded.m_iI8 = wVal;
+        iEncoding = iTspEncoding(wEncoded);
+      }
+      break;
+      
+    case DM_FLT:
+      if (wVal == (u8)C_DATUM_NULL)
+        iEncoding = MN_NULL;
+      else
+        iEncoding = IntLib::iByteMagnitude(wVal);
+      break;
+      
+    case DM_INT:
+      if (wVal == (u8)C_DATUM_NULL)
+        iEncoding = MN_NULL;
+      else
+        iEncoding = IntLib::iByteMagnitude(wVal);
+      break;
+      
+    case DM_IVL:
+      if (wVal == (u8)C_DATUM_NULL)
+        iEncoding = MN_NULL;
+      else
+        iEncoding = IntLib::iByteMagnitude(wVal);
+      break;
+      
+    case DM_TME:
+      if (wVal == (u8)C_DATUM_NULL)
+        iEncoding = MN_NULL;
+      else {
+        wEncoded.m_iI8 = wVal;
+        iEncoding = iTspEncoding(wEncoded);
+      }
+      break;
+      
+    case DM_TSP:
+      if (wVal == (u8)C_DATUM_NULL)
+        iEncoding = MN_NULL;
+      else {
+        wEncoded.m_iI8 = wVal;
+        iEncoding = iTspEncoding(wEncoded);
+      }
+      break;
+      
+    case DM_VCH: {
+      i8 iLen = StrLib::iLength((char*)aDatum);
+      RASSERT(iLen <= 8);
+      iEncoding = iLen;
+      break;
+    }
+      
+    default:
+      NEVER_REACH;
+  }
+  
+  return iEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
 /* encode decimal                                                             */
 /*----------------------------------------------------------------------------*/
 i8 RowEncoding::iEncodeBcd(Column* pColumn,byte* aDatum, WordView& wEncoded)

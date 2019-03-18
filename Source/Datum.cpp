@@ -44,7 +44,7 @@ void Datum::vSet(Column* pColumn, i8 i_Column, eDM eDatum, byte* aDatum)
   if (DM_BCD == eDatum) {
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
-    iEncoding = iEncode(eDatum,aDatum,wEncoded);
+    iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
     
     // set 4bit meta data for column value
     aCacheLine->v1N(i_Column,iEncoding);
@@ -73,7 +73,7 @@ void Datum::vSet(Column* pColumn, i8 i_Column, eDM eDatum, byte* aDatum)
   if (DM_BOL == eDatum) {
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
-    iEncoding = iEncode(eDatum,aDatum,wEncoded);
+    iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
     
     // set 4bit meta data for column value
     aCacheLine->v1N(i_Column,iEncoding);
@@ -94,7 +94,7 @@ void Datum::vSet(Column* pColumn, i8 i_Column, eDM eDatum, byte* aDatum)
   if (DM_DTE == eDatum) {
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
-    iEncoding = iEncode(eDatum,aDatum,wEncoded);
+    iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
     
     // set 4bit meta data for column value
     aCacheLine->v1N(i_Column,iEncoding);
@@ -130,7 +130,7 @@ void Datum::vSet(Column* pColumn, i8 i_Column, eDM eDatum, byte* aDatum)
   if (DM_FLT == eDatum) {
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
-    iEncoding = iEncode(eDatum,aDatum,wEncoded);
+    iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
     
     // set 4bit meta data for column value
     aCacheLine->v1N(i_Column,iEncoding);
@@ -159,7 +159,7 @@ void Datum::vSet(Column* pColumn, i8 i_Column, eDM eDatum, byte* aDatum)
   if (DM_INT == eDatum) {
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
-    iEncoding = iEncode(eDatum,aDatum,wEncoded);
+    iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
     
     // set 4bit meta data for column value
     aCacheLine->v1N(i_Column,iEncoding);
@@ -185,7 +185,7 @@ void Datum::vSet(Column* pColumn, i8 i_Column, eDM eDatum, byte* aDatum)
   if (DM_IVL == eDatum) {
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
-    iEncoding = iEncode(eDatum,aDatum,wEncoded);
+    iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
     
     // set 4bit meta data for column value
     aCacheLine->v1N(i_Column,iEncoding);
@@ -214,7 +214,7 @@ void Datum::vSet(Column* pColumn, i8 i_Column, eDM eDatum, byte* aDatum)
   if (DM_TME == eDatum) {
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
-    iEncoding = iEncode(eDatum,aDatum,wEncoded);
+    iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
     
     // set 4bit meta data for column value
     aCacheLine->v1N(i_Column,iEncoding);
@@ -248,7 +248,7 @@ void Datum::vSet(Column* pColumn, i8 i_Column, eDM eDatum, byte* aDatum)
   if (DM_TSP == eDatum) {
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
-    iEncoding = iEncode(eDatum,aDatum,wEncoded);
+    iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
     
     // set 4bit meta data for column value
     aCacheLine->v1N(i_Column,iEncoding);
@@ -282,7 +282,7 @@ void Datum::vSet(Column* pColumn, i8 i_Column, eDM eDatum, byte* aDatum)
   
   if (DM_VCH == eDatum) {
     
-    iEncoding = iEncode(eDatum,aDatum,wEncoded);
+    iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
 
     // set 4bit meta data for column value
     aCacheLine->v1N(i_Column,iEncoding);
@@ -316,95 +316,6 @@ void Datum::vSet(Column* pColumn, i8 i_Column, eDM eDatum, byte* aDatum)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* encode given datum before setting in cache line                            */
-/*----------------------------------------------------------------------------*/
-i8 Datum::iEncode(eDM eDatum, byte* aDatum, WordView& wEncoded)
-{
-  w8 wVal = *(i8*)aDatum;
-
-  i8 iEncoding = -1;
-  
-  switch (eDatum) {
-
-    case DM_BOL:
-      if (wVal == (u8)C_DATUM_NULL)
-        iEncoding = MN_NULL;
-      else if (wVal)
-        iEncoding = MN_TRUE;
-      else
-        iEncoding = MN_FALSE;
-      break;
-      
-    case DM_BCD:
-      if (wVal == (u8)C_DATUM_NULL)
-        iEncoding = MN_NULL;
-      else
-        iEncoding = IntLib::iByteMagnitude(wVal);
-      break;
-
-    case DM_DTE:
-      if (wVal == (u8)C_DATUM_NULL)
-        iEncoding = MN_NULL;
-      else {
-        wEncoded.m_iI8 = wVal;
-        iEncoding = iTspEncoding(wEncoded);
-      }
-      break;
-      
-    case DM_FLT:
-      if (wVal == (u8)C_DATUM_NULL)
-        iEncoding = MN_NULL;
-      else
-        iEncoding = IntLib::iByteMagnitude(wVal);
-      break;
-      
-   case DM_INT:
-      if (wVal == (u8)C_DATUM_NULL)
-        iEncoding = MN_NULL;
-      else
-        iEncoding = IntLib::iByteMagnitude(wVal);
-      break;
-      
-    case DM_IVL:
-      if (wVal == (u8)C_DATUM_NULL)
-        iEncoding = MN_NULL;
-      else
-        iEncoding = IntLib::iByteMagnitude(wVal);
-      break;
-      
-    case DM_TME:
-      if (wVal == (u8)C_DATUM_NULL)
-        iEncoding = MN_NULL;
-      else {
-        wEncoded.m_iI8 = wVal;
-        iEncoding = iTspEncoding(wEncoded);
-      }
-      break;
-      
-    case DM_TSP:
-      if (wVal == (u8)C_DATUM_NULL)
-        iEncoding = MN_NULL;
-      else {
-        wEncoded.m_iI8 = wVal;
-        iEncoding = iTspEncoding(wEncoded);
-      }
-      break;
-      
-    case DM_VCH: {
-      i8 iLen = StrLib::iLength((char*)aDatum);
-      RASSERT(iLen <= 8);
-      iEncoding = iLen;
-      break;
-    }
-      
-    default:
-      NEVER_REACH;
-  }
-  
-  return iEncoding;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get encoded datum from cache line                                          */
@@ -502,7 +413,7 @@ void Datum::vSet(i8 i_Column, eDM eDatum, byte* aDatum, CacheLine* aCacheLine, i
   if (DM_INT == eDatum) {
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
-    iEncoding = iEncode(eDatum,aDatum);
+    iEncoding = RowEncoding::iEncode(pColumn,aDatum);
     
     aCacheLine->v1N(i_Column,iEncoding);
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
