@@ -226,6 +226,9 @@ void RowEncoding::vDecodeTsp(Column* pColumn, CacheLine* aCacheLine, WordView& w
       NEVER_REACH;
   }
   
+  if (iEncoding == MN_5B)
+    wDecoded.m_iI8 = iTspDecoding(wDecoded,iEncoding);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -421,6 +424,17 @@ i8 RowEncoding::iEncodeVch(Column* pColumn,byte* aDatum, WordView& wEncoded)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* encoding of tsp                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowEncoding::iTspDecoding(WordView& wTspView, i8 iEncoding)
+{
+  i8 iDecoded = wTspView.m_iI8;
+  iDecoded <<= 24;
+  
+  return iDecoded;
+}
 
 /*----------------------------------------------------------------------------*/
 /* encoding of tsp                                                            */
