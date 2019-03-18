@@ -201,6 +201,8 @@ void RowEncoding::vDecodeTme(Column* pColumn, CacheLine* aCacheLine, WordView& w
       NEVER_REACH;
   }
   
+  wDecoded.m_iI8 = iTmeDecoding(wDecoded,iEncoding);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -431,6 +433,17 @@ i8 RowEncoding::iEncodeVch(Column* pColumn,byte* aDatum, WordView& wEncoded)
 /* decoding of dte                                                            */
 /*----------------------------------------------------------------------------*/
 i8 RowEncoding::iDteDecoding(WordView& wTspView, i8 iEncoding)
+{
+  i8 iDecoded = wTspView.m_iI8;
+  iDecoded <<= 40;
+  
+  return iDecoded;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decoding of tme                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowEncoding::iTmeDecoding(WordView& wTspView, i8 iEncoding)
 {
   i8 iDecoded = wTspView.m_iI8;
   iDecoded <<= 40;

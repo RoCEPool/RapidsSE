@@ -32,6 +32,7 @@ namespace Data
   
   private:
     static i8 iDteDecoding(WordView& wTspView, i8 iEncoding);
+    static i8 iTmeDecoding(WordView& wTspView, i8 iEncoding);
     static i8 iTspDecoding(WordView& wTspView, i8 iEncoding);
     static i8 iTspEncoding(WordView& wTspView);
 

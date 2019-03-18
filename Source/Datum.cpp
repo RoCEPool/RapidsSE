@@ -232,6 +232,16 @@ void Datum::vSet(Column* pColumn, i8 i_Column, eDM eDatum, byte* aDatum)
     w8 wGot = wGet(i_Column,eDatum);
     vTrace("i_Column %lld got: %lld\n"_Stz,i_Column,wGot);
     
+    WordView wDecoded;
+    RowEncoding::vDecodeTme(pColumn,aCacheLine,wDecoded);
+    Tme wTme;
+    wTme.vAsI8(wDecoded.m_iI8);
+    
+    s32 sTme;
+    wTme.vSprint(sTme.aStz());
+    
+    vTrace("i_Column %lld Tme got: %s\n"_Stz,i_Column,sTme.aStz());
+    RASSERT(wVal == wDecoded.m_iI8);
     return;
   }
   
