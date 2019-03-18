@@ -62,9 +62,6 @@ void Datum::vSet(Column* pColumn, byte* aDatum)
     
     i_CacheOffset += iEncoding;
     
-    w8 wGot = wGet(i_Column,eDatum);
-    vTrace("i_Column %lld got: %lld\n"_Stz,i_Column,wGot);
-    
     WordView wDecoded;
     RowEncoding::vDecodeBcd(pColumn,aCacheLine,wDecoded);
     vTrace("i_Column %lld Bcd got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
@@ -82,9 +79,6 @@ void Datum::vSet(Column* pColumn, byte* aDatum)
     aCacheLine->v1N(i_Column,iEncoding);
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     wVal = *(i8*)aDatum;
-
-    w8 wGot = wGet(i_Column,eDatum);
-    vTrace("i_Column %lld got: %lld\n"_Stz,i_Column,wGot);
     
     WordView wDecoded;
     RowEncoding::vDecodeBol(pColumn,aCacheLine,wDecoded);
@@ -111,9 +105,6 @@ void Datum::vSet(Column* pColumn, byte* aDatum)
     MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
     i_CacheOffset += iEncoding;
-    
-    w8 wGot = wGet(i_Column,eDatum);
-    vTrace("i_Column %lld got: %lld\n"_Stz,i_Column,wGot);
     
     WordView wDecoded;
     RowEncoding::vDecodeDte(pColumn,aCacheLine,wDecoded);
@@ -147,9 +138,6 @@ void Datum::vSet(Column* pColumn, byte* aDatum)
     MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
     i_CacheOffset += iEncoding;
-    
-    w8 wGot = wGet(i_Column,eDatum);
-    vTrace("i_Column %lld got: %lld\n"_Stz,i_Column,wGot);
     
     WordView wDecoded;
     RowEncoding::vDecodeFlt(pColumn,aCacheLine,wDecoded);
@@ -203,9 +191,6 @@ void Datum::vSet(Column* pColumn, byte* aDatum)
     
     i_CacheOffset += iEncoding;
     
-    w8 wGot = wGet(i_Column,eDatum);
-    vTrace("i_Column %lld got: %lld\n"_Stz,i_Column,wGot);
-    
     WordView wDecoded;
     RowEncoding::vDecodeIvl(pColumn,aCacheLine,wDecoded);
     vTrace("i_Column %lld Ivl got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
@@ -231,9 +216,6 @@ void Datum::vSet(Column* pColumn, byte* aDatum)
     MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
     i_CacheOffset += iEncoding;
-    
-    w8 wGot = wGet(i_Column,eDatum);
-    vTrace("i_Column %lld got: %lld\n"_Stz,i_Column,wGot);
     
     WordView wDecoded;
     RowEncoding::vDecodeTme(pColumn,aCacheLine,wDecoded);
@@ -266,9 +248,6 @@ void Datum::vSet(Column* pColumn, byte* aDatum)
     
     i_CacheOffset += iEncoding;
     
-    w8 wGot = wGet(i_Column,eDatum);
-    vTrace("i_Column %lld Tsp got: %lld\n"_Stz,i_Column,wGot);
-    
     WordView wDecoded;
     RowEncoding::vDecodeTsp(pColumn,aCacheLine,wDecoded);
     Tsp wTsp;
@@ -296,16 +275,6 @@ void Datum::vSet(Column* pColumn, byte* aDatum)
 
     i_CacheOffset += iEncoding;
     
-    w8 wGot = wGet(i_Column,eDatum);
-    vTrace("i_Column %lld got: "_Stz,i_Column);
-    
-    WordView wView;
-    wView.m_iI8 = wGot;
-    
-    for (i8 i_Char = 0; i_Char < iEncoding; i_Char++)
-      vTrace("%c"_Stz,wView.m_yaByte[i_Char]);
-    vTrace("\n"_Stz);
-
     WordView wDecoded;
     RowEncoding::vDecodeVch(pColumn,aCacheLine,wDecoded);
     vTrace("i_Column %lld Vch got: "_Stz,i_Column);
@@ -323,10 +292,8 @@ void Datum::vSet(Column* pColumn, byte* aDatum)
 /*----------------------------------------------------------------------------*/
 /* get encoded datum from cache line                                          */
 /*----------------------------------------------------------------------------*/
-w8 Datum::wGet(i8 i_Column, eDM eDatum)
+w8 Datum::wGet(CacheLine* aCacheLine, i8 i_Column, eDM eDatum)
 {
-  CacheLine* aCacheLine = &xaCacheLine[i_CurrentCacheLine];
-
   i8 i_Offset = 8;
   for (i8 i_Nibble = 0; i_Nibble < i_Column; i_Nibble++) {
     i8 nDataBytes = aCacheLine->w8_1N(i_Nibble);

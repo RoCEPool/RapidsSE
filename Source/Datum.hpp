@@ -52,7 +52,7 @@ namespace Datums
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-    static w8 wGet(i8 i_Column, eDM eDatum);
+    static w8 wGet(CacheLine* aCacheLine, i8 i_Column, eDM eDatum);
       
 #ifdef WITH_ROWBUFFER
     static w8 wGet(i8 i_Column, eDM eDatum,  CacheLine* aCacheLine);
