@@ -457,7 +457,8 @@ i8 RowEncoding::iGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset)
   
   for (i8 i_Nibble = 0; i_Nibble < i_Column; i_Nibble++) {
     i8 nDataBytes = aCacheLine->w8_1N(i_Nibble);
-    i_Offset += nDataBytes;
+    if (nDataBytes <= MN_8B)
+      i_Offset += nDataBytes;
   }
   
   i8 iEncoding = aCacheLine->w8_1N(i_Column);

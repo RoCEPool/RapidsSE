@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+namespace MetaData { class Column; }
+
 namespace Datums
 {
   enum eMN // metadata nibbles
@@ -43,7 +45,7 @@ namespace Datums
   {
   public:
     static void vBegin(void);
-    static void vSet(i8 i_Column, eDM eDatum, byte* aDatum);
+    static void vSet(MetaData::Column* pColumn, i8 i_Column, eDM eDatum, byte* aDatum);
     
 
     static void vEnd(void);

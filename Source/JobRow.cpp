@@ -165,6 +165,9 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, Stz* aDstRow, i8 &nDstRowBytes,
 {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   Datum::vBegin();
+  char caRow[1024];
+  StrLib::vCopyLen(caRow,aRecord->aChar(),nBytes);
+  vTrace("Row: %s\n"_Stz,caRow);
   
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   char* aSrc = aRecord->aChar();
@@ -237,10 +240,10 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, Stz* aDstRow, i8 &nDstRowBytes,
     
     if (eDatumType == DM_INT ||
         eDatumType == DM_BCD) {
-      Datum::vSet(i_Column, eDatumType, (byte*)&iInt);
+      Datum::vSet(pColumn, i_Column, eDatumType, (byte*)&iInt);
     }
     else {
-      Datum::vSet(i_Column, eDatumType, (byte*)aDst);
+      Datum::vSet(pColumn, i_Column, eDatumType, (byte*)aDst);
     }
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

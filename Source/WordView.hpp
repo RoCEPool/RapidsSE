@@ -11,6 +11,8 @@ namespace Base
     union {
       byte m_yaByte[C_BYTES_PER_WORD];
       
+      d8   m_dF8;
+      
       i1   m_iaI1[8];
       i2   m_iaI2[4];
       i4   m_iaI4[2];
