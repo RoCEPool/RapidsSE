@@ -87,6 +87,8 @@ void RowEncoding::vDecodeDte(Column* pColumn, CacheLine* aCacheLine, WordView& w
       NEVER_REACH;
   }
   
+  //if (iEncoding == MN_5B)
+    wDecoded.m_iI8 = iDteDecoding(wDecoded,iEncoding);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -426,7 +428,18 @@ i8 RowEncoding::iEncodeVch(Column* pColumn,byte* aDatum, WordView& wEncoded)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* encoding of tsp                                                            */
+/* decoding of dte                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowEncoding::iDteDecoding(WordView& wTspView, i8 iEncoding)
+{
+  i8 iDecoded = wTspView.m_iI8;
+  iDecoded <<= 40;
+  
+  return iDecoded;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decoding of tsp                                                            */
 /*----------------------------------------------------------------------------*/
 i8 RowEncoding::iTspDecoding(WordView& wTspView, i8 iEncoding)
 {

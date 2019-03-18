@@ -31,6 +31,7 @@ namespace Data
     static i8 iEncodeVch(Column* pColumn, byte* aDatum, WordView& wEncoded);
   
   private:
+    static i8 iDteDecoding(WordView& wTspView, i8 iEncoding);
     static i8 iTspDecoding(WordView& wTspView, i8 iEncoding);
     static i8 iTspEncoding(WordView& wTspView);
 

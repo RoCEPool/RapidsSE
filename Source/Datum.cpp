@@ -112,6 +112,18 @@ void Datum::vSet(Column* pColumn, i8 i_Column, eDM eDatum, byte* aDatum)
     w8 wGot = wGet(i_Column,eDatum);
     vTrace("i_Column %lld got: %lld\n"_Stz,i_Column,wGot);
     
+    WordView wDecoded;
+    RowEncoding::vDecodeDte(pColumn,aCacheLine,wDecoded);
+    Dte wDte;
+    wDte.vAsI8(wDecoded.m_iI8);
+    
+    s32 sDte;
+    wDte.vSprint(sDte.aStz());
+    
+    vTrace("i_Column %lld Dte got: %s\n"_Stz,i_Column,sDte.aStz());
+    RASSERT(wVal == wDecoded.m_iI8);
+
+    
     return;
   }
   
@@ -222,6 +234,7 @@ void Datum::vSet(Column* pColumn, i8 i_Column, eDM eDatum, byte* aDatum)
     
     return;
   }
+  
   if (DM_TSP == eDatum) {
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     
