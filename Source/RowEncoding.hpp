@@ -10,6 +10,7 @@ namespace Data
   public:
   
   public:
+    static w8 wDecode(Column* pColumn, CacheLine* aCacheLine);
     static void vDecodeBcd(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
     static void vDecodeBol(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
     static void vDecodeDte(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);

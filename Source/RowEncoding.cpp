@@ -11,6 +11,57 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get encoded datum from cache line                                          */
+/*----------------------------------------------------------------------------*/
+w8 RowEncoding::wDecode(Column* pColumn, CacheLine* aCacheLine)
+{
+  i8 i_Column = pColumn->iColumnNo();
+  eDM eDatum  = pColumn->eDatumType();
+  
+  i8 i_Offset = 8;
+  for (i8 i_Nibble = 0; i_Nibble < i_Column; i_Nibble++) {
+    i8 nDataBytes = aCacheLine->w8_1N(i_Nibble);
+    i_Offset += nDataBytes;
+  }
+  
+  i8 iEncoding = aCacheLine->w8_1N(i_Column);
+  
+  w8 wVal = C_UNKNOWN;
+  
+  if (DM_BOL == eDatum) {
+    switch (iEncoding) {
+      case MN_FALSE: wVal = false; break;
+      case MN_TRUE : wVal = true;  break;
+      default:
+        NEVER_REACH;
+    }
+    return wVal;
+  }
+  
+  switch (iEncoding) {
+      
+    case 0: wVal = C_DATUM_NULL;                break;
+    case 1: wVal = aCacheLine->w8_1B(i_Offset); break;
+    case 2: wVal = aCacheLine->w8_2B(i_Offset); break;
+    case 3: wVal = aCacheLine->w8_3B(i_Offset); break;
+    case 4: wVal = aCacheLine->w8_4B(i_Offset); break;
+    case 5: wVal = aCacheLine->w8_5B(i_Offset); break;
+    case 6: wVal = aCacheLine->w8_6B(i_Offset); break;
+    case 7: wVal = aCacheLine->w8_7B(i_Offset); break;
+    case 8: wVal = aCacheLine->w8_8B(i_Offset); break;
+      
+    case MN_FALSE: wVal = FALSE;                break;
+    case MN_TRUE : wVal = FALSE;                break;
+      
+    default:
+      NEVER_REACH;
+  }
+  
+  
+  return wVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* decode decimal                                                             */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vDecodeBcd(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded)
