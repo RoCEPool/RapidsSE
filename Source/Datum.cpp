@@ -29,8 +29,11 @@ void Datum::vBegin(void)
 /*----------------------------------------------------------------------------*/
 /* set given datum in cache line                                              */
 /*----------------------------------------------------------------------------*/
-void Datum::vSet(Column* pColumn, i8 i_Column, eDM eDatum, byte* aDatum)
+void Datum::vSet(Column* pColumn, byte* aDatum)
 {
+  i8 i_Column = pColumn->iColumnNo();
+  eDM eDatum  = pColumn->eDatumType();
+  
   // don't encode columns 16+
   if (i_Column >= 16)
     return;
@@ -486,29 +489,6 @@ void Datum::vPut(i8 i_Offset, byte* aDatum, i8 iEncoding, CacheLine* aCacheLine)
   }
 }
 #endif
-
-/*----------------------------------------------------------------------------*/
-/* get encoded datum from cache line                                          */
-/*----------------------------------------------------------------------------*/
-i8 Datum::iTspEncoding(WordView& wTspView)
-{
-  bool bSawNonZero = true;
-  while (! wTspView.m_yaByte[0]) {
-    bSawNonZero = false;
-    for (i8 i_Byte = 0; i_Byte < 7; i_Byte++)
-      if ( (wTspView.m_yaByte[i_Byte] = wTspView.m_yaByte[i_Byte+1]) )
-        bSawNonZero = true;
-    wTspView.m_yaByte[7] = 0;
-    
-    if (! bSawNonZero)
-      break;
-  }
-  
-  i8 iEncoding = IntLib::iByteMagnitude(wTspView.m_iI8);
-  
-  return iEncoding;
-
-}
 
 /*============================================================================*/
 /* end                                                                        */

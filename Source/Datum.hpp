@@ -45,7 +45,7 @@ namespace Datums
   {
   public:
     static void vBegin(void);
-    static void vSet(MetaData::Column* pColumn, i8 i_Column, eDM eDatum, byte* aDatum);
+    static void vSet(MetaData::Column* pColumn, byte* aDatum);
     
 
     static void vEnd(void);
@@ -62,8 +62,7 @@ namespace Datums
     static void vSet(i8 i_Column, eDM eDatum, byte* aDatum, CacheLine* aCacheLine, i8& i_CacheOffset);
 #endif
   
-    static i8 iTspEncoding(WordView& wTspView);
-      
+       
   public:
   };
 }
