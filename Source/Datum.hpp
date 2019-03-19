@@ -36,9 +36,9 @@ namespace Datums
   
     MN_COL_ARRAY   = 0b1011,   // 1B in data words subscript into col array
     MN_SHOCOL_CL   = 0b1100,   // len+shoco in data words
-    MN_SHOCOL_2B   = 0b1100,   // 2B in data words indicating shoco overflow
-    MN_LOCAL_HMAP  = 0b1100,   // 2B in data words indicating local hashmap
-    MN_GLOBAL_HMAP = 0b1100,   // 2B in data words indicating global hashmap
+    MN_SHOCOL_2B   = 0b1101,   // 2B in data words indicating shoco overflow
+    MN_LOCAL_HMAP  = 0b1110,   // 2B in data words indicating local hashmap
+    MN_GLOBAL_HMAP = 0b1111,   // 2B in data words indicating global hashmap
   };
   
   class Datum
@@ -46,8 +46,6 @@ namespace Datums
   public:
     static void vBegin(void);
     static void vSet(MetaData::Column* pColumn, byte* aDatum);
-    
-
     static void vEnd(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -60,7 +58,6 @@ namespace Datums
     static void vSet(i8 i_Column, eDM eDatum, byte* aDatum, CacheLine* aCacheLine, i8& i_CacheOffset);
 #endif
   
-       
   public:
   };
 }

@@ -340,249 +340,262 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
   if (i_Column >= 16)
     return;
   
-  w8 wVal;
-  i8 iEncoding;
-  WordView wEncoded;
-  
-  if (DM_BCD == eDatum) {
-    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
-    
-    // set 4bit meta data for column value
-    aCacheLine->v1N(i_Column,iEncoding);
-    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    wVal = *(i8*)aDatum;
-    //aCacheLine->v8B(8 + i_Column * 8,wVal);
-    
-    // set n-byte data for column value
-    aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
-    MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    i_CacheOffset += iEncoding;
-    
-    WordView wDecoded;
-    RowEncoding::vDecodeBcd(pColumn,aCacheLine,wDecoded);
-    vTrace("i_Column %lld Bcd got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
-    RASSERT(wVal == wDecoded.m_iI8);
-    
-    return;
-  }
-  
-  if (DM_BOL == eDatum) {
-    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
-    
-    // set 4bit meta data for column value
-    aCacheLine->v1N(i_Column,iEncoding);
-    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    wVal = *(i8*)aDatum;
-    
-    WordView wDecoded;
-    RowEncoding::vDecodeBol(pColumn,aCacheLine,wDecoded);
-    vTrace("i_Column %lld Bol got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
-    RASSERT(wVal == wDecoded.m_iI8);
-    
-    return;
-  }
-  
-  if (DM_DTE == eDatum) {
-    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
-    
-    // set 4bit meta data for column value
-    aCacheLine->v1N(i_Column,iEncoding);
-    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    wVal = *(i8*)aDatum;
-    //aCacheLine->v8B(8 + i_Column * 8,wVal);
-    
-    // set n-byte data for column value
-    aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
-    MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    i_CacheOffset += iEncoding;
-    
-    WordView wDecoded;
-    RowEncoding::vDecodeDte(pColumn,aCacheLine,wDecoded);
-    Dte wDte;
-    wDte.vAsI8(wDecoded.m_iI8);
-    
-    s32 sDte;
-    wDte.vSprint(sDte.aStz());
-    
-    vTrace("i_Column %lld Dte got: %s\n"_Stz,i_Column,sDte.aStz());
-    RASSERT(wVal == wDecoded.m_iI8);
-    
-    
-    return;
-  }
-  
-  if (DM_FLT == eDatum) {
-    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
-    
-    // set 4bit meta data for column value
-    aCacheLine->v1N(i_Column,iEncoding);
-    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    wVal = *(i8*)aDatum;
-    //aCacheLine->v8B(8 + i_Column * 8,wVal);
-    
-    // set n-byte data for column value
-    aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
-    MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    i_CacheOffset += iEncoding;
-    
-    WordView wDecoded;
-    RowEncoding::vDecodeFlt(pColumn,aCacheLine,wDecoded);
-    vTrace("i_Column %lld Flt got: %llf\n"_Stz,i_Column,wDecoded.m_dF8);
-    RASSERT(wVal == wDecoded.m_iI8);
-    
-    return;
-  }
-  
-  if (DM_INT == eDatum) {
-    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
-    
-    // set 4bit meta data for column value
-    aCacheLine->v1N(i_Column,iEncoding);
-    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    wVal = *(i8*)aDatum;
-    //aCacheLine->v8B(8 + i_Column * 8,wVal);
-    
-    // set n-byte data for column value
-    aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
-    MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    i_CacheOffset += iEncoding;
-    
-    WordView wDecoded;
-    RowEncoding::vDecodeInt(pColumn,aCacheLine,wDecoded);
-    vTrace("i_Column %lld Int got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
-    RASSERT(wVal == wDecoded.m_iI8);
-    
-    return;
-  }
-  
-  if (DM_IVL == eDatum) {
-    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
-    
-    // set 4bit meta data for column value
-    aCacheLine->v1N(i_Column,iEncoding);
-    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    wVal = *(i8*)aDatum;
-    //aCacheLine->v8B(8 + i_Column * 8,wVal);
-    
-    // set n-byte data for column value
-    aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
-    MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    i_CacheOffset += iEncoding;
-    
-    WordView wDecoded;
-    RowEncoding::vDecodeIvl(pColumn,aCacheLine,wDecoded);
-    vTrace("i_Column %lld Ivl got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
-    RASSERT(wVal == wDecoded.m_iI8);
-    
-    return;
-  }
-  
-  if (DM_TME == eDatum) {
-    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
-    
-    // set 4bit meta data for column value
-    aCacheLine->v1N(i_Column,iEncoding);
-    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    wVal = *(i8*)aDatum;
-    //aCacheLine->v8B(8 + i_Column * 8,wVal);
-    
-    // set n-byte data for column value
-    aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
-    MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    i_CacheOffset += iEncoding;
-    
-    WordView wDecoded;
-    RowEncoding::vDecodeTme(pColumn,aCacheLine,wDecoded);
-    Tme wTme;
-    wTme.vAsI8(wDecoded.m_iI8);
-    
-    s32 sTme;
-    wTme.vSprint(sTme.aStz());
-    
-    vTrace("i_Column %lld Tme got: %s\n"_Stz,i_Column,sTme.aStz());
-    RASSERT(wVal == wDecoded.m_iI8);
-    return;
-  }
-  
-  if (DM_TSP == eDatum) {
-    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
-    
-    // set 4bit meta data for column value
-    aCacheLine->v1N(i_Column,iEncoding);
-    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    wVal = *(i8*)aDatum;
-    //aCacheLine->v8B(8 + i_Column * 8,wVal);
-    
-    // set n-byte data for column value
-    aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
-    MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    i_CacheOffset += iEncoding;
-    
-    WordView wDecoded;
-    RowEncoding::vDecodeTsp(pColumn,aCacheLine,wDecoded);
-    Tsp wTsp;
-    wTsp.vAsI8(wDecoded.m_iI8);
-    
-    s32 sTsp;
-    wTsp.vSprint(sTsp.aStz());
-    
-    vTrace("i_Column %lld Tsp got: %s\n"_Stz,i_Column,sTsp.aStz());
-    RASSERT(wVal == wDecoded.m_iI8);
-    
-    return;
-  }
-  
-  if (DM_VCH == eDatum) {
-    
-    iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
-    
-    // set 4bit meta data for column value
-    aCacheLine->v1N(i_Column,iEncoding);
-    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
-    MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-    
-    i_CacheOffset += iEncoding;
-    
-    WordView wDecoded;
-    RowEncoding::vDecodeVch(pColumn,aCacheLine,wDecoded);
-    vTrace("i_Column %lld Vch got: "_Stz,i_Column);
-    for (i8 i_Char = 0; i_Char < iEncoding; i_Char++)
-      vTrace("%c"_Stz,wDecoded.m_yaByte[i_Char]);
-    vTrace("\n"_Stz);
-    
-    return;
+  switch (eDatum) {
+      
+    case DM_BCD: {
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      WordView wEncoded;
+      i8 iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
+      
+      // set 4bit meta data for column value
+      aCacheLine->v1N(i_Column,iEncoding);
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      w8 wVal = *(i8*)aDatum;
+      //aCacheLine->v8B(8 + i_Column * 8,wVal);
+      
+      // set n-byte data for column value
+      aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      i_CacheOffset += iEncoding;
+      
+      WordView wDecoded;
+      RowEncoding::vDecodeBcd(pColumn,aCacheLine,wDecoded);
+      vTrace("i_Column %lld Bcd got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
+      RASSERT(wVal == wDecoded.m_iI8);
+      
+      return;
+    }
+      
+    case DM_BOL: {
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      WordView wEncoded;
+      i8 iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
+      
+      // set 4bit meta data for column value
+      aCacheLine->v1N(i_Column,iEncoding);
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      w8 wVal = *(i8*)aDatum;
+      
+      WordView wDecoded;
+      RowEncoding::vDecodeBol(pColumn,aCacheLine,wDecoded);
+      vTrace("i_Column %lld Bol got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
+      RASSERT(wVal == wDecoded.m_iI8);
+      
+      return;
+    }
+      
+    case DM_DTE: {
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      WordView wEncoded;
+      i8 iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
+      
+      // set 4bit meta data for column value
+      aCacheLine->v1N(i_Column,iEncoding);
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      w8 wVal = *(i8*)aDatum;
+      //aCacheLine->v8B(8 + i_Column * 8,wVal);
+      
+      // set n-byte data for column value
+      aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      i_CacheOffset += iEncoding;
+      
+      WordView wDecoded;
+      RowEncoding::vDecodeDte(pColumn,aCacheLine,wDecoded);
+      Dte wDte;
+      wDte.vAsI8(wDecoded.m_iI8);
+      
+      s32 sDte;
+      wDte.vSprint(sDte.aStz());
+      
+      vTrace("i_Column %lld Dte got: %s\n"_Stz,i_Column,sDte.aStz());
+      RASSERT(wVal == wDecoded.m_iI8);
+      
+      
+      return;
+    }
+      
+    case DM_FLT: {
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      WordView wEncoded;
+      i8 iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
+      
+      // set 4bit meta data for column value
+      aCacheLine->v1N(i_Column,iEncoding);
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      w8 wVal = *(i8*)aDatum;
+      //aCacheLine->v8B(8 + i_Column * 8,wVal);
+      
+      // set n-byte data for column value
+      aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      i_CacheOffset += iEncoding;
+      
+      WordView wDecoded;
+      RowEncoding::vDecodeFlt(pColumn,aCacheLine,wDecoded);
+      vTrace("i_Column %lld Flt got: %llf\n"_Stz,i_Column,wDecoded.m_dF8);
+      RASSERT(wVal == wDecoded.m_iI8);
+      
+      return;
+    }
+      
+    case DM_INT: {
+      
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      WordView wEncoded;
+      i8 iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
+      
+      // set 4bit meta data for column value
+      aCacheLine->v1N(i_Column,iEncoding);
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      w8 wVal = *(i8*)aDatum;
+      //aCacheLine->v8B(8 + i_Column * 8,wVal);
+      
+      // set n-byte data for column value
+      aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      i_CacheOffset += iEncoding;
+      
+      WordView wDecoded;
+      RowEncoding::vDecodeInt(pColumn,aCacheLine,wDecoded);
+      vTrace("i_Column %lld Int got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
+      RASSERT(wVal == wDecoded.m_iI8);
+      
+      return;
+    }
+      
+    case DM_IVL: {
+      
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      WordView wEncoded;
+      i8 iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
+      
+      // set 4bit meta data for column value
+      aCacheLine->v1N(i_Column,iEncoding);
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      w8 wVal = *(i8*)aDatum;
+      //aCacheLine->v8B(8 + i_Column * 8,wVal);
+      
+      // set n-byte data for column value
+      aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      i_CacheOffset += iEncoding;
+      
+      WordView wDecoded;
+      RowEncoding::vDecodeIvl(pColumn,aCacheLine,wDecoded);
+      vTrace("i_Column %lld Ivl got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
+      RASSERT(wVal == wDecoded.m_iI8);
+      
+      return;
+    }
+      
+    case DM_TME: {
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      WordView wEncoded;
+      i8 iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
+      
+      // set 4bit meta data for column value
+      aCacheLine->v1N(i_Column,iEncoding);
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      w8 wVal = *(i8*)aDatum;
+      //aCacheLine->v8B(8 + i_Column * 8,wVal);
+      
+      // set n-byte data for column value
+      aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      i_CacheOffset += iEncoding;
+      
+      WordView wDecoded;
+      RowEncoding::vDecodeTme(pColumn,aCacheLine,wDecoded);
+      Tme wTme;
+      wTme.vAsI8(wDecoded.m_iI8);
+      
+      s32 sTme;
+      wTme.vSprint(sTme.aStz());
+      
+      vTrace("i_Column %lld Tme got: %s\n"_Stz,i_Column,sTme.aStz());
+      RASSERT(wVal == wDecoded.m_iI8);
+      return;
+    }
+      
+    case DM_TSP: {
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      WordView wEncoded;
+      i8 iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
+      
+      // set 4bit meta data for column value
+      aCacheLine->v1N(i_Column,iEncoding);
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      w8 wVal = *(i8*)aDatum;
+      //aCacheLine->v8B(8 + i_Column * 8,wVal);
+      
+      // set n-byte data for column value
+      aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      i_CacheOffset += iEncoding;
+      
+      WordView wDecoded;
+      RowEncoding::vDecodeTsp(pColumn,aCacheLine,wDecoded);
+      Tsp wTsp;
+      wTsp.vAsI8(wDecoded.m_iI8);
+      
+      s32 sTsp;
+      wTsp.vSprint(sTsp.aStz());
+      
+      vTrace("i_Column %lld Tsp got: %s\n"_Stz,i_Column,sTsp.aStz());
+      RASSERT(wVal == wDecoded.m_iI8);
+      
+      return;
+    }
+      
+    case DM_VCH: {
+    
+      WordView wEncoded;
+      i8 iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
+      
+      // set 4bit meta data for column value
+      aCacheLine->v1N(i_Column,iEncoding);
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      
+      i_CacheOffset += iEncoding;
+      
+      WordView wDecoded;
+      RowEncoding::vDecodeVch(pColumn,aCacheLine,wDecoded);
+      vTrace("i_Column %lld Vch got: "_Stz,i_Column);
+      for (i8 i_Char = 0; i_Char < iEncoding; i_Char++)
+        vTrace("%c"_Stz,wDecoded.m_yaByte[i_Char]);
+      vTrace("\n"_Stz);
+      
+      return;
+    }
+      
+    default:
+      NEVER_REACH;
   }
 }
 
@@ -968,6 +981,120 @@ i8 RowEncoding::iGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset)
   i8 iEncoding = aCacheLine->w8_1N(i_Column);
 
   return iEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return number of bytes of encoding                                         */
+/*----------------------------------------------------------------------------*/
+i8 RowEncoding::nEncodedBytes(i8 iEncoding, eDM eDatum)
+{
+  if (iEncoding <= MN_8B)
+    return iEncoding;
+  
+  if (MN_OVERFLOW == iEncoding)
+    return 0;
+  
+  switch (eDatum) {
+      
+    case DM_BCD:
+      switch (iEncoding) {
+        case MN_MINUS_ONE: return 0;
+        case MN_ZERO:      return 0;
+        case MN_PLUS_ONE:  return 0;
+        default:
+          NEVER_REACH;
+      }
+     break;
+      
+    case DM_BOL:
+      switch (iEncoding) {
+        case MN_FALSE: return 0;
+        case MN_TRUE:  return 0;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_DTE:
+      switch (iEncoding) {
+        case MN_DIFF_1B: return 1;
+        case MN_DIFF_2B: return 2;
+        case MN_DIFF_3B: return 3;
+        case MN_DIFF_4B: return 4;
+        default:
+          NEVER_REACH;
+      }
+      break;
+
+    case DM_FLT:
+      switch (iEncoding) {
+        case MN_MINUS_ONE: return 0;
+        case MN_ZERO:      return 0;
+        case MN_PLUS_ONE:  return 0;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_INT:
+      switch (iEncoding) {
+        case MN_MINUS_ONE: return 0;
+        case MN_ZERO:      return 0;
+        case MN_PLUS_ONE:  return 0;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_IVL:
+      switch (iEncoding) {
+        case MN_DIFF_1B: return 1;
+        case MN_DIFF_2B: return 2;
+        case MN_DIFF_3B: return 3;
+        case MN_DIFF_4B: return 4;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_TME:
+      switch (iEncoding) {
+        case MN_DIFF_1B: return 1;
+        case MN_DIFF_2B: return 2;
+        case MN_DIFF_3B: return 3;
+        case MN_DIFF_4B: return 4;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_TSP:
+      switch (iEncoding) {
+        case MN_DIFF_1B: return 1;
+        case MN_DIFF_2B: return 2;
+        case MN_DIFF_3B: return 3;
+        case MN_DIFF_4B: return 4;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_VCH:
+      switch (iEncoding) {
+        case MN_COL_ARRAY:   NEVER_REACH; return 0;
+        case MN_SHOCOL_CL:   NEVER_REACH; return 0;
+        case MN_SHOCOL_2B:   NEVER_REACH; return 0;
+        case MN_LOCAL_HMAP:  NEVER_REACH; return 0;
+        case MN_GLOBAL_HMAP: NEVER_REACH; return 0;
+       default:
+          NEVER_REACH;
+      }
+      break;
+      
+    default:
+      NEVER_REACH;
+  }
+  
 }
 
 /*============================================================================*/

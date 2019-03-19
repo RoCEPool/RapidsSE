@@ -45,6 +45,8 @@ namespace Data
     static i8 iTspEncoding(WordView& wTspView);
 
     static i8 iGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
+  
+    static i8 nEncodedBytes(i8 iEncoding, eDM eDatum);
  };
 }
 
