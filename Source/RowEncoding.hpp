@@ -11,15 +11,15 @@ namespace Data
   
   public:
     static w8 wDecode(Column* pColumn, CacheLine* aCacheLine);
-    static void vDecodeBcd(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
-    static void vDecodeBol(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
-    static void vDecodeDte(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
-    static void vDecodeFlt(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
-    static void vDecodeInt(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
-    static void vDecodeIvl(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
-    static void vDecodeTme(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
-    static void vDecodeTsp(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
-    static void vDecodeVch(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
+    static w8 wDecodeBcd(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
+    static w8 wDecodeBol(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
+    static w8 wDecodeDte(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
+    static w8 wDecodeFlt(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
+    static w8 wDecodeInt(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
+    static w8 wDecodeIvl(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
+    static w8 wDecodeTme(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
+    static w8 wDecodeTsp(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
+    static w8 wDecodeVch(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
   
     static void vEncodeBegin(CacheLine* aCacheLine, i8& i_CacheOffset);
     static void vEncode(Column* pColumn, byte* aDatum,
