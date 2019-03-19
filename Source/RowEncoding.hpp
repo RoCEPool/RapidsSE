@@ -21,6 +21,7 @@ namespace Data
     static void vDecodeTsp(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
     static void vDecodeVch(Column* pColumn, CacheLine* aCacheLine, WordView& wDecoded);
   
+    static void vEncodeBegin(CacheLine* aCacheLine, i8& i_CacheOffset);
     static void vEncode(Column* pColumn, byte* aDatum,
                         CacheLine* aCacheLine, i8& i_CacheOffset);
     static i8 iEncode(Column* pColumn, byte* aDatum, WordView& wEncoded);

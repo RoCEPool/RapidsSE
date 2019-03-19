@@ -317,6 +317,17 @@ void RowEncoding::vDecodeVch(Column* pColumn, CacheLine* aCacheLine, WordView& w
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* begin encoding row into new cache line                                     */
+/*----------------------------------------------------------------------------*/
+void RowEncoding::vEncodeBegin(CacheLine* aCacheLine, i8& i_CacheOffset)
+{
+  aCacheLine->vSetAll(0xFF);
+  aCacheLine->v8B(0,0);
+
+  i_CacheOffset = 8;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set given datum in cache line                                              */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
