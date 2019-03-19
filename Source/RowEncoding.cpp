@@ -366,7 +366,8 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       WordView wDecoded;
       wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
-      vTrace("i_Column %lld Bcd got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
+      //vTrace("i_Column %lld Bcd got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
+      vPrint(pColumn,wDecoded);
       RASSERT(wVal == wDecoded.m_iI8);
       
       return;
@@ -380,12 +381,13 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
-      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       w8 wVal = *(i8*)aDatum;
       
       WordView wDecoded;
       wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
-      vTrace("i_Column %lld Bol got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
+      //vTrace("i_Column %lld Bol got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
+      vPrint(pColumn,wDecoded);
       RASSERT(wVal == wDecoded.m_iI8);
       
       return;
@@ -418,7 +420,8 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       s32 sDte;
       wDte.vSprint(sDte.aStz());
       
-      vTrace("i_Column %lld Dte got: %s\n"_Stz,i_Column,sDte.aStz());
+      //vTrace("i_Column %lld Dte got: %s\n"_Stz,i_Column,sDte.aStz());
+      vPrint(pColumn,wDecoded);
       RASSERT(wVal == wDecoded.m_iI8);
       
       
@@ -446,7 +449,8 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       WordView wDecoded;
       wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
-      vTrace("i_Column %lld Flt got: %llf\n"_Stz,i_Column,wDecoded.m_dF8);
+      //vTrace("i_Column %lld Flt got: %llf\n"_Stz,i_Column,wDecoded.m_dF8);
+      vPrint(pColumn,wDecoded);
       RASSERT(wVal == wDecoded.m_iI8);
       
       return;
@@ -474,7 +478,8 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       WordView wDecoded;
       wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
-      vTrace("i_Column %lld Int got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
+      //vTrace("i_Column %lld Int got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
+      vPrint(pColumn,wDecoded);
       RASSERT(wVal == wDecoded.m_iI8);
       
       return;
@@ -502,7 +507,8 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       WordView wDecoded;
       wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
-      vTrace("i_Column %lld Ivl got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
+      //vTrace("i_Column %lld Ivl got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
+      vPrint(pColumn,wDecoded);
       RASSERT(wVal == wDecoded.m_iI8);
       
       return;
@@ -535,7 +541,8 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       s32 sTme;
       wTme.vSprint(sTme.aStz());
       
-      vTrace("i_Column %lld Tme got: %s\n"_Stz,i_Column,sTme.aStz());
+      //vTrace("i_Column %lld Tme got: %s\n"_Stz,i_Column,sTme.aStz());
+      vPrint(pColumn,wDecoded);
       RASSERT(wVal == wDecoded.m_iI8);
       return;
     }
@@ -567,7 +574,8 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       s32 sTsp;
       wTsp.vSprint(sTsp.aStz());
       
-      vTrace("i_Column %lld Tsp got: %s\n"_Stz,i_Column,sTsp.aStz());
+      //vTrace("i_Column %lld Tsp got: %s\n"_Stz,i_Column,sTsp.aStz());
+      vPrint(pColumn,wDecoded);
       RASSERT(wVal == wDecoded.m_iI8);
       
       return;
@@ -589,11 +597,12 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       WordView wDecoded;
       wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
-      vTrace("i_Column %lld Vch got: "_Stz,i_Column);
-      for (i8 i_Char = 0; i_Char < iEncoding; i_Char++)
-        vTrace("%c"_Stz,wDecoded.m_yaByte[i_Char]);
-      vTrace("\n"_Stz);
+//      vTrace("i_Column %lld Vch got: "_Stz,i_Column);
+//      for (i8 i_Char = 0; i_Char < iEncoding; i_Char++)
+//        vTrace("%c"_Stz,wDecoded.m_yaByte[i_Char]);
+//      vTrace("\n"_Stz);
       
+      vPrint(pColumn,wDecoded);
       return;
     }
       
@@ -864,12 +873,12 @@ void RowEncoding::vPrint(Column* pColumn, WordView& wDatum)
   
   switch (eDatum) {
     case DM_BCD: {
-      vTrace("Column[%lld] %s Bcd : %lld\n"_Stz,
+      vTrace("Column[%lld %s] Bcd : %lld\n"_Stz,
              pColumn->iColumnNo(),pColumn->sColumnName().aStz(),wDatum.m_iI8);
       break;
     }
     case DM_BOL: {
-      vTrace("Column[%lld] %s Bol : %lld\n"_Stz,
+      vTrace("Column[%lld %s] Bol : %lld\n"_Stz,
              pColumn->iColumnNo(),pColumn->sColumnName().aStz(),wDatum.m_iI8);
       break;
     }
@@ -878,22 +887,22 @@ void RowEncoding::vPrint(Column* pColumn, WordView& wDatum)
       wDte.vAsI8(wDatum.m_iI8);
       s32 sDte;
       wDte.vSprint(sDte.aStz());
-      vTrace("Column[%lld] %s Dte : %s\n"_Stz,
+      vTrace("Column[%lld %s] Dte : %s\n"_Stz,
              pColumn->iColumnNo(),pColumn->sColumnName().aStz(),sDte.aStz());
       break;
     }
     case DM_FLT: {
-      vTrace("Column[%lld] %s Bcd : %llf\n"_Stz,
+      vTrace("Column[%lld %s] Bcd : %llf\n"_Stz,
              pColumn->iColumnNo(),pColumn->sColumnName().aStz(),wDatum.m_dF8);
       break;
     }
     case DM_INT: {
-      vTrace("Column[%lld] %s Int : %lld\n"_Stz,
+      vTrace("Column[%lld %s] Int : %lld\n"_Stz,
              pColumn->iColumnNo(),pColumn->sColumnName().aStz(),wDatum.m_iI8);
       break;
     }
     case DM_IVL: {
-      vTrace("Column[%lld] %s Ivl : %lld\n"_Stz,
+      vTrace("Column[%lld %s] Ivl : %lld\n"_Stz,
              pColumn->iColumnNo(),pColumn->sColumnName().aStz(),wDatum.m_iI8);
       break;
     }
@@ -902,7 +911,7 @@ void RowEncoding::vPrint(Column* pColumn, WordView& wDatum)
       wTme.vAsI8(wDatum.m_iI8);
       s32 sTme;
       wTme.vSprint(sTme.aStz());
-      vTrace("Column[%lld] %s Tme : %s\n"_Stz,
+      vTrace("Column[%lld %s] Tme : %s\n"_Stz,
              pColumn->iColumnNo(),pColumn->sColumnName().aStz(),sTme.aStz());
       break;
     }
@@ -911,12 +920,12 @@ void RowEncoding::vPrint(Column* pColumn, WordView& wDatum)
       wTsp.vAsI8(wDatum.m_iI8);
       s32 sTsp;
       wTsp.vSprint(sTsp.aStz());
-      vTrace("Column[%lld] %s Tsp : %a\n"_Stz,
+      vTrace("Column[%lld %s] Tsp : %s\n"_Stz,
              pColumn->iColumnNo(),pColumn->sColumnName().aStz(),sTsp.aStz());
       break;
     }
     case DM_VCH: {
-      vTrace("Column[%lld] %s Vch : "_Stz,
+      vTrace("Column[%lld %s] Vch : "_Stz,
              pColumn->iColumnNo(),pColumn->sColumnName().aStz());
       for (i8 i_Char = 0; i_Char < 8; i_Char++) {
         if (! wDatum.m_yaByte[i_Char])
