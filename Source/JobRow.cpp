@@ -164,7 +164,11 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, CacheLine* aCacheLine, i8 &nDst
 bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, Stz* aDstRow, i8 &nDstRowBytes, bool &bBlankLine)
 {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  Datum::vBegin();
+  CacheLine xCacheLine;
+  i8 i_CacheOffset = C_UNKNOWN;
+  
+  //Datum::vBegin();
+  RowEncoding::vEncodeBegin(&xCacheLine,i_CacheOffset);
   char caRow[1024];
   StrLib::vCopyLen(caRow,aRecord->aChar(),nBytes);
   vTrace("Row: %s\n"_Stz,caRow);
@@ -240,10 +244,14 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, Stz* aDstRow, i8 &nDstRowBytes,
     
     if (eDatumType == DM_INT ||
         eDatumType == DM_BCD) {
-      Datum::vSet(pColumn, (byte*)&iInt);
+      //Datum::vSet(pColumn, (byte*)&iInt);
+      
+      RowEncoding::vEncode(pColumn,(byte*)&iInt,&xCacheLine,i_CacheOffset);
     }
     else {
-      Datum::vSet(pColumn, (byte*)aDst);
+      //Datum::vSet(pColumn, (byte*)aDst);
+      
+      RowEncoding::vEncode(pColumn,(byte*)aDst,&xCacheLine,i_CacheOffset);
     }
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
