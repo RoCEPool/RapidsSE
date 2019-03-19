@@ -35,6 +35,7 @@ namespace Data
     static i8 iEncodeTsp(Column* pColumn, byte* aDatum, WordView& wEncoded);
     static i8 iEncodeVch(Column* pColumn, byte* aDatum, WordView& wEncoded);
   
+    static void vPrint(Column* pColumn, CacheLine* aCacheLine);
     static void vPrint(Column* pColumn, WordView& wDatum);
   
   private:

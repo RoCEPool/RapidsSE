@@ -360,14 +360,14 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       // set n-byte data for column value
       aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
-      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       i_CacheOffset += iEncoding;
       
       WordView wDecoded;
       wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
       //vTrace("i_Column %lld Bcd got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
-      vPrint(pColumn,wDecoded);
+      //vPrint(pColumn,wDecoded);
       RASSERT(wVal == wDecoded.m_iI8);
       
       return;
@@ -381,13 +381,13 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
-      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       w8 wVal = *(i8*)aDatum;
       
       WordView wDecoded;
       wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
       //vTrace("i_Column %lld Bol got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
-      vPrint(pColumn,wDecoded);
+      //vPrint(pColumn,wDecoded);
       RASSERT(wVal == wDecoded.m_iI8);
       
       return;
@@ -408,7 +408,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       // set n-byte data for column value
       aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
-      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       i_CacheOffset += iEncoding;
       
@@ -421,7 +421,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       wDte.vSprint(sDte.aStz());
       
       //vTrace("i_Column %lld Dte got: %s\n"_Stz,i_Column,sDte.aStz());
-      vPrint(pColumn,wDecoded);
+      //vPrint(pColumn,wDecoded);
       RASSERT(wVal == wDecoded.m_iI8);
       
       
@@ -443,14 +443,14 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       // set n-byte data for column value
       aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
-      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       i_CacheOffset += iEncoding;
       
       WordView wDecoded;
       wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
       //vTrace("i_Column %lld Flt got: %llf\n"_Stz,i_Column,wDecoded.m_dF8);
-      vPrint(pColumn,wDecoded);
+      //vPrint(pColumn,wDecoded);
       RASSERT(wVal == wDecoded.m_iI8);
       
       return;
@@ -472,14 +472,14 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       // set n-byte data for column value
       aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
-      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       i_CacheOffset += iEncoding;
       
       WordView wDecoded;
       wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
       //vTrace("i_Column %lld Int got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
-      vPrint(pColumn,wDecoded);
+      //vPrint(pColumn,wDecoded);
       RASSERT(wVal == wDecoded.m_iI8);
       
       return;
@@ -501,14 +501,14 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       // set n-byte data for column value
       aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
-      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       i_CacheOffset += iEncoding;
       
       WordView wDecoded;
       wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
       //vTrace("i_Column %lld Ivl got: %lld\n"_Stz,i_Column,wDecoded.m_iI8);
-      vPrint(pColumn,wDecoded);
+      //vPrint(pColumn,wDecoded);
       RASSERT(wVal == wDecoded.m_iI8);
       
       return;
@@ -529,7 +529,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       // set n-byte data for column value
       aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
-      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       i_CacheOffset += iEncoding;
       
@@ -542,7 +542,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       wTme.vSprint(sTme.aStz());
       
       //vTrace("i_Column %lld Tme got: %s\n"_Stz,i_Column,sTme.aStz());
-      vPrint(pColumn,wDecoded);
+      //vPrint(pColumn,wDecoded);
       RASSERT(wVal == wDecoded.m_iI8);
       return;
     }
@@ -562,7 +562,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       // set n-byte data for column value
       aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
-      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       i_CacheOffset += iEncoding;
       
@@ -575,7 +575,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       wTsp.vSprint(sTsp.aStz());
       
       //vTrace("i_Column %lld Tsp got: %s\n"_Stz,i_Column,sTsp.aStz());
-      vPrint(pColumn,wDecoded);
+      //vPrint(pColumn,wDecoded);
       RASSERT(wVal == wDecoded.m_iI8);
       
       return;
@@ -591,7 +591,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
-      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       i_CacheOffset += iEncoding;
       
@@ -602,7 +602,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
 //        vTrace("%c"_Stz,wDecoded.m_yaByte[i_Char]);
 //      vTrace("\n"_Stz);
       
-      vPrint(pColumn,wDecoded);
+      //vPrint(pColumn,wDecoded);
       return;
     }
       
@@ -863,6 +863,17 @@ i8 RowEncoding::iEncodeVch(Column* pColumn,byte* aDatum, WordView& wEncoded)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* print decoded datum from cache line                                        */
+/*----------------------------------------------------------------------------*/
+void RowEncoding::vPrint(Column* pColumn, CacheLine* aCacheLine)
+{
+  WordView wDatum;
+  
+  wDatum.m_wWord = wDecode(pColumn,aCacheLine);
+  vPrint(pColumn,wDatum);
+}
 
 /*----------------------------------------------------------------------------*/
 /* print decoded datum from cache line                                        */
