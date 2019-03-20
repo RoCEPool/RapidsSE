@@ -159,7 +159,7 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, CacheLine* aCacheLine, i8 &nDst
     }
     else {
       //Datum::vSet(pColumn, (byte*)aDst);
-      RowEncoding::vEncode(pColumn,(byte*)&aDst,aCacheLine,i_CacheOffset);
+      RowEncoding::vEncode(pColumn,(byte*)aDst.aChar(),aCacheLine,i_CacheOffset);
       MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       RowEncoding::vPrint(pColumn,aCacheLine);
     }
