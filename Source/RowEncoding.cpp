@@ -611,8 +611,12 @@ w8 RowEncoding::wEncodeBcd(Column* pColumn,byte* aDatum, i8& iEncoding,
 
   i_CacheOffset += iEncoding;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-check
   
-  
+  WordView wDecoded;
+  wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
+  RASSERT(wVal == wDecoded.m_iI8);
 
   return wEncoded.m_wWord;
 }
@@ -640,6 +644,13 @@ w8 RowEncoding::wEncodeBol(Column* pColumn,byte* aDatum, i8& iEncoding,
   aCacheLine->v1N(i_Column,iEncoding);
   
   i_CacheOffset += 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-check
+  
+  WordView wDecoded;
+  wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
+  RASSERT(wVal == wDecoded.m_iI8);
   
 
   
@@ -675,6 +686,13 @@ w8 RowEncoding::wEncodeDte(Column* pColumn,byte* aDatum, i8& iEncoding,
 
   i_CacheOffset += iEncoding;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-check
+  
+  WordView wDecoded;
+  wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
+  RASSERT(wVal == wDecoded.m_iI8);
+  
 
   
   
@@ -705,6 +723,13 @@ w8 RowEncoding::wEncodeFlt(Column* pColumn,byte* aDatum, i8& iEncoding,
   aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
 
   i_CacheOffset += iEncoding;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-check
+  
+  WordView wDecoded;
+  wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
+  RASSERT(wVal == wDecoded.m_iI8);
   
 
   
@@ -737,6 +762,13 @@ w8 RowEncoding::wEncodeInt(Column* pColumn,byte* aDatum, i8& iEncoding,
 
   i_CacheOffset += iEncoding;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-check
+  
+  WordView wDecoded;
+  wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
+  RASSERT(wVal == wDecoded.m_iI8);
+  
 
   
   
@@ -767,6 +799,13 @@ w8 RowEncoding::wEncodeIvl(Column* pColumn,byte* aDatum, i8& iEncoding,
   aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
 
   i_CacheOffset += iEncoding;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-check
+  
+  WordView wDecoded;
+  wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
+  RASSERT(wVal == wDecoded.m_iI8);
   
 
   
@@ -803,6 +842,13 @@ w8 RowEncoding::wEncodeTme(Column* pColumn,byte* aDatum, i8& iEncoding,
 
   i_CacheOffset += iEncoding;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-check
+  
+  WordView wDecoded;
+  wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
+  RASSERT(wVal == wDecoded.m_iI8);
+  
 
   
   
@@ -838,6 +884,13 @@ w8 RowEncoding::wEncodeTsp(Column* pColumn,byte* aDatum, i8& iEncoding,
 
   i_CacheOffset += iEncoding;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-check
+  
+  WordView wDecoded;
+  wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
+  RASSERT(wVal == wDecoded.m_iI8);
+  
 
   
   
@@ -870,6 +923,9 @@ w8 RowEncoding::wEncodeVch(Column* pColumn,byte* aDatum, i8& iEncoding,
   aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
 
   i_CacheOffset += iEncoding;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-check
   
 
   
