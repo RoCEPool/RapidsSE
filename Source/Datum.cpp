@@ -6,13 +6,6 @@
 
 #include "StorageEngine.h"
 
-static const i8 C_CACHELINES = C_64KB;
-
-CacheLine xaCacheLine[C_CACHELINES];
-
-i8 i_CurrentCacheLine = -1;
-i8 i_CacheOffset = -1;
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

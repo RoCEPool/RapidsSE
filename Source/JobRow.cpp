@@ -33,9 +33,11 @@ JobRow::JobRow(void)
   //m_oFormatters;
   
 #ifdef WITH_ROWBUFFER
-  m_xRow.vSetAll(0xFF);
-  m_xRow.v8B(0,0);
-
+  for (i8 i_CacheLine = 0; i_CacheLine < C_CACHELINES; i_CacheLine++) {
+    m_xaRow[i_CacheLine].vSetAll(0xFF);
+    m_xaRow[i_CacheLine].v8B(0,0);
+  }
+  
 #endif
 }
 
@@ -62,7 +64,7 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 {
   // format into subInserters m_aRow
 #ifdef WITH_ROWBUFFER
-  return bFormatRow(aRecord, nBytes, &m_xRow, m_nRowBytes, bBlankLine);
+  return bFormatRow(aRecord, nBytes, &m_xaRow[0], m_nRowBytes, bBlankLine);
 #else
   return bFormatRow(aRecord, nBytes, m_aRow, m_nRowBytes, bBlankLine);
 #endif
@@ -72,7 +74,9 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 /* Format the row                                                             */
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_ROWBUFFER
-bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, CacheLine* aCacheLine, i8 &nDstRowBytes, bool &bBlankLine)
+bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes,
+                        CacheLine* aCacheLine, i8 &nDstRowBytes,
+                        bool &bBlankLine)
 {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

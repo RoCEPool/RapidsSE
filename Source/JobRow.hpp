@@ -5,13 +5,15 @@
 
 namespace Jobs
 {
+  static const i8 C_CACHELINES = 256;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class JobRow
   {
   public:
     Table*      m_pTable;       // table pointer
 #ifdef WITH_ROWBUFFER
-    CacheLine   m_xRow;
+    CacheLine   m_xaRow[C_CACHELINES];
 #else
     s48K        m_aRow;         // formatted row
 #endif
