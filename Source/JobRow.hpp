@@ -28,16 +28,17 @@ namespace Jobs
    ~JobRow(void) noexcept(false);
     
   public:
+    bool bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine);
+
+  private:
 #ifdef WITH_ROWBUFFER
-    bool bFormatRow(Stz* aRecord, i8 nBytes,
+    bool bFormRow(Stz* aRecord, i8 nBytes,
                     CacheLine aCacheLine[], i8& nLinesUsed,
                     i8 &nDstRowBytes, bool &bBlankLine);
 #else
-    bool bFormatRow(Stz* aRecord, i8 nBytes,
+    bool bFormRow(Stz* aRecord, i8 nBytes,
                     Stz* aDstRow, i8 &nDstRowBytes, bool &bBlankLine);
 #endif
-  
-    bool bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine);
   };
 }
 

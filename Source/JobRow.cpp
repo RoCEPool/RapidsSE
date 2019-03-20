@@ -50,11 +50,7 @@ JobRow::~JobRow(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Static Functions --------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Member Functions --------------------------------------------------------*/
+/*-- Public Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 #ifdef USE_VLQ_DATUMS
@@ -65,21 +61,26 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 {
   // format into subInserters m_aRow
 #ifdef WITH_ROWBUFFER
-  return bFormatRow(aRecord, nBytes,
-                    m_xaRow, m_nLinesUsed,
-                    m_nRowBytes, bBlankLine);
+  return bFormRow(aRecord, nBytes,
+                  m_xaRow, m_nLinesUsed,
+                  m_nRowBytes, bBlankLine);
 #else
-  return bFormatRow(aRecord, nBytes, m_aRow, m_nRowBytes, bBlankLine);
+  return bFormRow(aRecord, nBytes, m_aRow, m_nRowBytes, bBlankLine);
 #endif
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private Functions -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* Format the row                                                             */
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_ROWBUFFER
-bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes,
-                        CacheLine* aCacheLine, i8& nLinesUsed,
-                        i8 &nDstRowBytes, bool &bBlankLine)
+bool JobRow::bFormRow(Stz* aRecord, i8 nBytes,
+                      CacheLine* aCacheLine, i8& nLinesUsed,
+                      i8 &nDstRowBytes, bool &bBlankLine)
 {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
@@ -180,7 +181,8 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes,
 }
 
 #else
-bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, Stz* aDstRow, i8 &nDstRowBytes, bool &bBlankLine)
+bool JobRow::bFormRow(Stz* aRecord, i8 nBytes,
+                      Stz* aDstRow, i8 &nDstRowBytes, bool &bBlankLine)
 {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   CacheLine xCacheLine;
