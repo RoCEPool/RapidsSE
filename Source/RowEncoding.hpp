@@ -10,9 +10,19 @@ namespace Data
   public:
   
   public:
-    static void vAsString(s48K& sDataString, ColumnVec* pColumnVec, CacheLine* aCacheLine);
+    static void vAsString(s48K& sDataString,
+                          ColumnVec* pColumnVec, CacheLine* aCacheLine);
     
     static w8 wDecode(Column* pColumn, CacheLine* aCacheLine);
+  
+    static void vEncodeBegin(CacheLine* aCacheLine, i8& i_CacheOffset);
+    static void vEncode(Column* pColumn, byte* aDatum,
+                        CacheLine* aCacheLine, i8& i_CacheOffset);
+  
+    static void vPrint(Column* pColumn, CacheLine* aCacheLine);
+    static void vPrint(Column* pColumn, WordView& wDatum);
+  
+  private:
     static w8 wDecodeBcd(Column* pColumn, CacheLine* aCacheLine);
     static w8 wDecodeBol(Column* pColumn, CacheLine* aCacheLine);
     static w8 wDecodeDte(Column* pColumn, CacheLine* aCacheLine);
@@ -23,9 +33,6 @@ namespace Data
     static w8 wDecodeTsp(Column* pColumn, CacheLine* aCacheLine);
     static w8 wDecodeVch(Column* pColumn, CacheLine* aCacheLine);
   
-    static void vEncodeBegin(CacheLine* aCacheLine, i8& i_CacheOffset);
-    static void vEncode(Column* pColumn, byte* aDatum,
-                        CacheLine* aCacheLine, i8& i_CacheOffset);
     static void vEncodeBcd(Column* pColumn, byte* aDatum,
                            CacheLine* aCacheLine, i8& i_CacheOffset);
     static void vEncodeBol(Column* pColumn, byte* aDatum,
@@ -45,11 +52,6 @@ namespace Data
     static void vEncodeVch(Column* pColumn, byte* aDatum,
                            CacheLine* aCacheLine, i8& i_CacheOffset);
   
-    
-    static void vPrint(Column* pColumn, CacheLine* aCacheLine);
-    static void vPrint(Column* pColumn, WordView& wDatum);
-  
-  private:
     static i8 iDteDecoding(WordView& wTspView, i8 iEncoding);
     static i8 iTmeDecoding(WordView& wTspView, i8 iEncoding);
     static i8 iTspDecoding(WordView& wTspView, i8 iEncoding);
