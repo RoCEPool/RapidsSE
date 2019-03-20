@@ -38,6 +38,7 @@ JobRow::JobRow(void)
     m_xaRow[i_CacheLine].v8B(0,0);
   }
   
+  m_nLinesUsed = 0;
 #endif
 }
 
@@ -64,7 +65,9 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 {
   // format into subInserters m_aRow
 #ifdef WITH_ROWBUFFER
-  return bFormatRow(aRecord, nBytes, m_xaRow, m_nRowBytes, bBlankLine);
+  return bFormatRow(aRecord, nBytes,
+                    m_xaRow, m_nLinesUsed,
+                    m_nRowBytes, bBlankLine);
 #else
   return bFormatRow(aRecord, nBytes, m_aRow, m_nRowBytes, bBlankLine);
 #endif
@@ -75,8 +78,8 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_ROWBUFFER
 bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes,
-                        CacheLine* aCacheLine, i8 &nDstRowBytes,
-                        bool &bBlankLine)
+                        CacheLine* aCacheLine, i8& nLinesUsed,
+                        i8 &nDstRowBytes, bool &bBlankLine)
 {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

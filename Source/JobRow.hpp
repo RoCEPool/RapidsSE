@@ -14,6 +14,7 @@ namespace Jobs
     Table*      m_pTable;       // table pointer
 #ifdef WITH_ROWBUFFER
     CacheLine   m_xaRow[C_CACHELINES];
+    i8          m_nLinesUsed;   // number of lines used
 #else
     s48K        m_aRow;         // formatted row
 #endif
@@ -29,7 +30,8 @@ namespace Jobs
   public:
 #ifdef WITH_ROWBUFFER
     bool bFormatRow(Stz* aRecord, i8 nBytes,
-                    CacheLine aCacheLine[], i8 &nDstRowBytes, bool &bBlankLine);
+                    CacheLine aCacheLine[], i8& nLinesUsed,
+                    i8 &nDstRowBytes, bool &bBlankLine);
 #else
     bool bFormatRow(Stz* aRecord, i8 nBytes,
                     Stz* aDstRow, i8 &nDstRowBytes, bool &bBlankLine);
