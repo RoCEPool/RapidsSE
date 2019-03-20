@@ -8,7 +8,7 @@
 
 
 namespace Jobs      { class Job_CreateTable; class Job_CreateIndex; }
-namespace Data { class EntryBuffer; class IndexTree; }
+namespace Data { class EntryBuffer; class IndexTree; class RowBuffer; }
 
 namespace MetaData
 {
