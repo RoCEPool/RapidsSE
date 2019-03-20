@@ -344,70 +344,15 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
     return;
   
   switch (eDatum) {
-      
-    case DM_BCD: {
-      WordView wEncoded;
-      i8 iEncoding;
-      wEncoded.m_iI8 = RowEncoding::wEncodeBcd(pColumn,aDatum,iEncoding,aCacheLine,i_CacheOffset);
-      return;
-    }
-      
-    case DM_BOL: {
-      WordView wEncoded;
-      i8 iEncoding;
-      wEncoded.m_iI8 = RowEncoding::wEncodeBol(pColumn,aDatum,iEncoding,aCacheLine,i_CacheOffset);
-      return;
-    }
-      
-    case DM_DTE: {
-      WordView wEncoded;
-      i8 iEncoding;
-      wEncoded.m_iI8 = RowEncoding::wEncodeDte(pColumn,aDatum,iEncoding,aCacheLine,i_CacheOffset);
-      return;
-    }
-      
-    case DM_FLT: {
-      WordView wEncoded;
-      i8 iEncoding;
-      wEncoded.m_iI8 = RowEncoding::wEncodeFlt(pColumn,aDatum,iEncoding,aCacheLine,i_CacheOffset);
-      return;
-    }
-      
-    case DM_INT: {
-      WordView wEncoded;
-      i8 iEncoding;
-      wEncoded.m_iI8 = RowEncoding::wEncodeInt(pColumn,aDatum,iEncoding,aCacheLine,i_CacheOffset);
-      return;
-    }
-      
-    case DM_IVL: {
-      WordView wEncoded;
-      i8 iEncoding;
-      wEncoded.m_iI8 = RowEncoding::wEncodeIvl(pColumn,aDatum,iEncoding,aCacheLine,i_CacheOffset);
-      return;
-    }
-      
-    case DM_TME: {
-      WordView wEncoded;
-      i8 iEncoding;
-      wEncoded.m_iI8 = RowEncoding::wEncodeTme(pColumn,aDatum,iEncoding,aCacheLine,i_CacheOffset);
-      return;
-    }
-      
-    case DM_TSP: {
-      WordView wEncoded;
-      i8 iEncoding;
-      wEncoded.m_iI8 = RowEncoding::wEncodeTsp(pColumn,aDatum,iEncoding,aCacheLine,i_CacheOffset);
-       return;
-    }
-      
-    case DM_VCH: {
-      WordView wEncoded;
-      i8 iEncoding;
-      wEncoded.m_iI8 = RowEncoding::wEncodeVch(pColumn,aDatum,iEncoding,aCacheLine,i_CacheOffset);
-      return;
-    }
-      
+    case DM_BCD: vEncodeBcd(pColumn,aDatum,aCacheLine,i_CacheOffset); return;
+    case DM_BOL: vEncodeBol(pColumn,aDatum,aCacheLine,i_CacheOffset); return;
+    case DM_DTE: vEncodeDte(pColumn,aDatum,aCacheLine,i_CacheOffset); return;
+    case DM_FLT: vEncodeFlt(pColumn,aDatum,aCacheLine,i_CacheOffset); return;
+    case DM_INT: vEncodeInt(pColumn,aDatum,aCacheLine,i_CacheOffset); return;
+    case DM_IVL: vEncodeIvl(pColumn,aDatum,aCacheLine,i_CacheOffset); return;
+    case DM_TME: vEncodeTme(pColumn,aDatum,aCacheLine,i_CacheOffset); return;
+    case DM_TSP: vEncodeTsp(pColumn,aDatum,aCacheLine,i_CacheOffset); return;
+    case DM_VCH: vEncodeVch(pColumn,aDatum,aCacheLine,i_CacheOffset); return;
     default:
       NEVER_REACH;
   }
@@ -416,8 +361,8 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
 /*----------------------------------------------------------------------------*/
 /* encode decimal                                                             */
 /*----------------------------------------------------------------------------*/
-w8 RowEncoding::wEncodeBcd(Column* pColumn,byte* aDatum, i8& iEncoding,
-                           CacheLine* aCacheLine, i8& i_CacheOffset)
+void RowEncoding::vEncodeBcd(Column* pColumn,byte* aDatum,
+                             CacheLine* aCacheLine, i8& i_CacheOffset)
 {
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)aDatum;
@@ -425,6 +370,7 @@ w8 RowEncoding::wEncodeBcd(Column* pColumn,byte* aDatum, i8& iEncoding,
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
 
+  i8 iEncoding;
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
   else
@@ -444,15 +390,13 @@ w8 RowEncoding::wEncodeBcd(Column* pColumn,byte* aDatum, i8& iEncoding,
   WordView wDecoded;
   wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
   RASSERT(wVal == wDecoded.m_iI8);
-
-  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode boolean                                                             */
 /*----------------------------------------------------------------------------*/
-w8 RowEncoding::wEncodeBol(Column* pColumn,byte* aDatum, i8& iEncoding,
-                           CacheLine* aCacheLine, i8& i_CacheOffset)
+void RowEncoding::vEncodeBol(Column* pColumn,byte* aDatum,
+                             CacheLine* aCacheLine, i8& i_CacheOffset)
 {
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)aDatum;
@@ -460,6 +404,7 @@ w8 RowEncoding::wEncodeBol(Column* pColumn,byte* aDatum, i8& iEncoding,
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
+  i8 iEncoding;
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
   else if (wVal)
@@ -478,19 +423,13 @@ w8 RowEncoding::wEncodeBol(Column* pColumn,byte* aDatum, i8& iEncoding,
   WordView wDecoded;
   wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
   RASSERT(wVal == wDecoded.m_iI8);
-  
-
-  
-  
-  
-  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode date                                                                */
 /*----------------------------------------------------------------------------*/
-w8 RowEncoding::wEncodeDte(Column* pColumn,byte* aDatum, i8& iEncoding,
-                           CacheLine* aCacheLine, i8& i_CacheOffset)
+void RowEncoding::vEncodeDte(Column* pColumn,byte* aDatum,
+                             CacheLine* aCacheLine, i8& i_CacheOffset)
 {
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)aDatum;
@@ -498,6 +437,7 @@ w8 RowEncoding::wEncodeDte(Column* pColumn,byte* aDatum, i8& iEncoding,
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
 
+  i8 iEncoding;
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
   else {
@@ -519,18 +459,13 @@ w8 RowEncoding::wEncodeDte(Column* pColumn,byte* aDatum, i8& iEncoding,
   WordView wDecoded;
   wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
   RASSERT(wVal == wDecoded.m_iI8);
-  
-
-  
-  
-  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode float                                                               */
 /*----------------------------------------------------------------------------*/
-w8 RowEncoding::wEncodeFlt(Column* pColumn,byte* aDatum, i8& iEncoding,
-                           CacheLine* aCacheLine, i8& i_CacheOffset)
+void RowEncoding::vEncodeFlt(Column* pColumn,byte* aDatum,
+                             CacheLine* aCacheLine, i8& i_CacheOffset)
 {
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)aDatum;
@@ -538,6 +473,7 @@ w8 RowEncoding::wEncodeFlt(Column* pColumn,byte* aDatum, i8& iEncoding,
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
+  i8 iEncoding;
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
   else
@@ -557,18 +493,13 @@ w8 RowEncoding::wEncodeFlt(Column* pColumn,byte* aDatum, i8& iEncoding,
   WordView wDecoded;
   wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
   RASSERT(wVal == wDecoded.m_iI8);
-  
-
-  
-  
-  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode integer                                                             */
 /*----------------------------------------------------------------------------*/
-w8 RowEncoding::wEncodeInt(Column* pColumn,byte* aDatum, i8& iEncoding,
-                           CacheLine* aCacheLine, i8& i_CacheOffset)
+void RowEncoding::vEncodeInt(Column* pColumn,byte* aDatum,
+                             CacheLine* aCacheLine, i8& i_CacheOffset)
 {
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)aDatum;
@@ -576,6 +507,7 @@ w8 RowEncoding::wEncodeInt(Column* pColumn,byte* aDatum, i8& iEncoding,
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
+  i8 iEncoding;
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
   else
@@ -595,18 +527,13 @@ w8 RowEncoding::wEncodeInt(Column* pColumn,byte* aDatum, i8& iEncoding,
   WordView wDecoded;
   wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
   RASSERT(wVal == wDecoded.m_iI8);
-  
-
-  
-  
-  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode interval                                                            */
 /*----------------------------------------------------------------------------*/
-w8 RowEncoding::wEncodeIvl(Column* pColumn,byte* aDatum, i8& iEncoding,
-                           CacheLine* aCacheLine, i8& i_CacheOffset)
+void RowEncoding::vEncodeIvl(Column* pColumn,byte* aDatum,
+                             CacheLine* aCacheLine, i8& i_CacheOffset)
 {
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)aDatum;
@@ -614,6 +541,7 @@ w8 RowEncoding::wEncodeIvl(Column* pColumn,byte* aDatum, i8& iEncoding,
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
 
+  i8 iEncoding;
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
   else
@@ -633,27 +561,21 @@ w8 RowEncoding::wEncodeIvl(Column* pColumn,byte* aDatum, i8& iEncoding,
   WordView wDecoded;
   wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
   RASSERT(wVal == wDecoded.m_iI8);
-  
-
-  
-  
-  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode time                                                                */
 /*----------------------------------------------------------------------------*/
-w8 RowEncoding::wEncodeTme(Column* pColumn,byte* aDatum, i8& iEncoding,
-                           CacheLine* aCacheLine, i8& i_CacheOffset)
+void RowEncoding::vEncodeTme(Column* pColumn,byte* aDatum,
+                             CacheLine* aCacheLine, i8& i_CacheOffset)
 {
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)aDatum;
   
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
-
-  iEncoding = C_UNKNOWN;
   
+  i8 iEncoding;
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
   else {
@@ -675,18 +597,13 @@ w8 RowEncoding::wEncodeTme(Column* pColumn,byte* aDatum, i8& iEncoding,
   WordView wDecoded;
   wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
   RASSERT(wVal == wDecoded.m_iI8);
-  
-
-  
-  
-  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode timestamp                                                           */
 /*----------------------------------------------------------------------------*/
-w8 RowEncoding::wEncodeTsp(Column* pColumn,byte* aDatum, i8& iEncoding,
-                           CacheLine* aCacheLine, i8& i_CacheOffset)
+void RowEncoding::vEncodeTsp(Column* pColumn,byte* aDatum,
+                             CacheLine* aCacheLine, i8& i_CacheOffset)
 {
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)aDatum;
@@ -694,8 +611,7 @@ w8 RowEncoding::wEncodeTsp(Column* pColumn,byte* aDatum, i8& iEncoding,
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
 
-  iEncoding = C_UNKNOWN;
-  
+  i8 iEncoding;
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
   else {
@@ -717,18 +633,13 @@ w8 RowEncoding::wEncodeTsp(Column* pColumn,byte* aDatum, i8& iEncoding,
   WordView wDecoded;
   wDecoded.m_wWord = RowEncoding::wDecode(pColumn,aCacheLine);
   RASSERT(wVal == wDecoded.m_iI8);
-  
-
-  
-  
-  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode varchar                                                             */
 /*----------------------------------------------------------------------------*/
-w8 RowEncoding::wEncodeVch(Column* pColumn,byte* aDatum, i8& iEncoding,
-                           CacheLine* aCacheLine, i8& i_CacheOffset)
+void RowEncoding::vEncodeVch(Column* pColumn,byte* aDatum,
+                             CacheLine* aCacheLine, i8& i_CacheOffset)
 {
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)aDatum;
@@ -736,6 +647,7 @@ w8 RowEncoding::wEncodeVch(Column* pColumn,byte* aDatum, i8& iEncoding,
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
+  i8 iEncoding;
   iEncoding = C_UNKNOWN;
   
   i8 iLen = StrLib::iLength((char*)aDatum);
@@ -754,10 +666,6 @@ w8 RowEncoding::wEncodeVch(Column* pColumn,byte* aDatum, i8& iEncoding,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-
-  
-  
-  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/

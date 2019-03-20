@@ -151,14 +151,11 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, CacheLine* aCacheLine, i8 &nDst
     
     if (eDatumType == DM_INT ||
         eDatumType == DM_BCD) {
-      //Datum::vSet(pColumn, (byte*)&iInt);
-      
       RowEncoding::vEncode(pColumn,(byte*)&iInt,aCacheLine,i_CacheOffset);
       MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       RowEncoding::vPrint(pColumn,aCacheLine);
     }
     else {
-      //Datum::vSet(pColumn, (byte*)aDst);
       RowEncoding::vEncode(pColumn,(byte*)&aDst,aCacheLine,i_CacheOffset);
       MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       RowEncoding::vPrint(pColumn,aCacheLine);
