@@ -32,12 +32,10 @@ namespace Jobs
 
   private:
 #ifdef WITH_ROWBUFFER
-    bool bFormRow(Stz* aRecord, i8 nBytes,
-                    CacheLine aCacheLine[], i8& nLinesUsed,
-                    i8 &nDstRowBytes, bool &bBlankLine);
+    bool bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine);
 #else
     bool bFormRow(Stz* aRecord, i8 nBytes,
-                    Stz* aDstRow, i8 &nDstRowBytes, bool &bBlankLine);
+                  Stz* aDstRow, i8 &nDstRowBytes, bool &bBlankLine);
 #endif
   };
 }

@@ -61,12 +61,12 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 {
   // format into subInserters m_aRow
 #ifdef WITH_ROWBUFFER
-  return bFormRow(aRecord, nBytes,
-                  m_xaRow, m_nLinesUsed,
-                  m_nRowBytes, bBlankLine);
+  bool bFormatted = bFormRow(aRecord, nBytes, bBlankLine);
 #else
-  return bFormRow(aRecord, nBytes, m_aRow, m_nRowBytes, bBlankLine);
+  bool bFormatted = bFormRow(aRecord, nBytes, m_aRow, m_nRowBytes, bBlankLine);
 #endif
+  
+  return bFormatted;
 }
 
 
@@ -78,9 +78,7 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 /* Format the row                                                             */
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_ROWBUFFER
-bool JobRow::bFormRow(Stz* aRecord, i8 nBytes,
-                      CacheLine* aCacheLine, i8& nLinesUsed,
-                      i8 &nDstRowBytes, bool &bBlankLine)
+bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
@@ -92,8 +90,8 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes,
   ColumnVec* pColVec = m_pTable->pColumnVec();
   i8 nColumns = m_pTable->pColumnVec()->nItems() - 1;
   
-  aCacheLine->vSetAll(0xFF);
-  aCacheLine->v8B(0,0);
+  m_xaRow[0].vSetAll(0xFF);
+  m_xaRow[0].v8B(0,0);
   
 //  RowEncoding::vEncodeBegin(aCacheLine,i_CacheOffset);
 //  char caRow[1024];
@@ -164,12 +162,12 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes,
     
     if (eDatumType == DM_INT ||
         eDatumType == DM_BCD) {
-      RowEncoding::vEncode(pColumn,(byte*)&iInt,aCacheLine,i_CacheOffset);
+      RowEncoding::vEncode(pColumn,(byte*)&iInt,&m_xaRow[0],i_CacheOffset);
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       //RowEncoding::vPrint(pColumn,aCacheLine);
     }
     else {
-      RowEncoding::vEncode(pColumn,(byte*)aDst.aChar(),aCacheLine,i_CacheOffset);
+      RowEncoding::vEncode(pColumn,(byte*)aDst.aChar(),&m_xaRow[0],i_CacheOffset);
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       //RowEncoding::vPrint(pColumn,aCacheLine);
     }
