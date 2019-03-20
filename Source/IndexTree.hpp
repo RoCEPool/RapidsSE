@@ -67,13 +67,12 @@ namespace Data
     Index*       pIndex(void);
     i8           nEntryBuffers(void);
     
-    bool         bInsertEntry(Item* aRowItem);
-    
-#ifdef WITH_ROWBUFFER
+    bool         bInsertEntry(CacheLine* aRowData, Id& xId);
     void         vInsertEntriesFromBuffer(RowBuffer* pRowBuffer);
-#else
+
+    // ALKA: these shold go !!!
+    bool         bInsertEntry(Item* aRowItem);
     void         vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer);
-#endif
     
     void         vLazyBuild(void);
     EntryBuffer* pPopSubList(EntryBuffer** ppSubList);

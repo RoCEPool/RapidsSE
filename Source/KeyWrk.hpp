@@ -28,7 +28,12 @@ namespace Data
     void vAddPlusInfinity(void);
     void vAddPlusInfinity_Flt(void);
     void vAddWord(w8 wWord);
+
+    void vExtractKey(CacheLine* aRowData, IdxColVec* pIdxColVec);
+
+    //ALKA: this should go
     void vExtractKey(Item* aRowEntry, IdxColVec* pIdxColVec);
+    
     i8   iHashKey(void);
     KeyData* aKey(void);
     i8   nKeySize(void);

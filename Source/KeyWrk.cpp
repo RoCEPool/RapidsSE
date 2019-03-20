@@ -289,6 +289,29 @@ void KeyWrk::vAddWord(w8 wWord)
 /*----------------------------------------------------------------------------*/
 /* extract an index key into KeyWrk from this row using given index columns   */
 /*----------------------------------------------------------------------------*/
+void KeyWrk::vExtractKey(CacheLine* aRowData, IdxColVec* pIdxColVec)
+{
+  GenVar xVariable;
+  
+  i8 nCols = pIdxColVec->nItems();
+  for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
+    
+    // get the column from the index column vector
+    Column* pColumn = pIdxColVec->pGet(i_Column);
+    
+    // get the column value from the row for the iColumnNo
+    w8 wVal = RowEncoding::wDecode(pColumn, aRowData);
+    xVariable = (i8)wVal;
+    
+    // add the column value to the key
+    vAddDatum(xVariable, pColumn);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract an index key into KeyWrk from this row using given index columns   */
+/*----------------------------------------------------------------------------*/
 void KeyWrk::vExtractKey(Item* aRowEntry, IdxColVec* pIdxColVec)
 {
   GenVar xVariable;

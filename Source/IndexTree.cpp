@@ -904,30 +904,68 @@ i8 IndexTree::nEntryBuffers(void)
 /*----------------------------------------------------------------------------*/
 /* insert entries from entryBuffer into this index at level 0                 */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_ROWBUFFER
-
 void IndexTree::vInsertEntriesFromBuffer(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-//  //m_okLock.vGrabWrite();
-//
-//  //pEntryBuffer->vShow();
-//
-//  for ( Item* aItem = pEntryBuffer->aLeadEntry() ;
-//       aItem;
-//       aItem = pEntryBuffer->aNextEntry(aItem, 0)) {
-//
-//    bool bInserted = bInsertEntry(aItem);
-//    //bVerify();
-//    ASSERT(bInserted);
-//  }
+  //m_okLock.vGrabWrite();
+
+  //pEntryBuffer->vShow();
+
+  Id xId;
+  xId.vBuffer(*pRowBuffer->nPoolBufferNo());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate thru the buffer till no more entries
+  for (i8 iRow = 0; iRow < pRowBuffer->nRowCount(); iRow++) {
+
+    // get the row from the buffer
+    CacheLine* aRowData = pRowBuffer->pRow(iRow);
+    xId.vItem(iRow);
+    
+    bool bInserted = bInsertEntry(aRowData, xId);
+    
+    //bVerify();
+    ASSERT(bInserted);
+  }
   
   //m_okLock.vDropWrite();
 }
 
-#else
+/*----------------------------------------------------------------------------*/
+/* insert an entry for given row into this index at level 0                   */
+/*----------------------------------------------------------------------------*/
+bool IndexTree::bInsertEntry(CacheLine* aRowData, Id& xId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  m_okLock.vGrabWrite();
+  
+  KeyWrk xKeyWrk;
+  xKeyWrk.vExtractKey(aRowData,m_pIndex->pIdxColVec());
+  xKeyWrk.vId(xId);
+  
+  xKeyWrk.vShow(m_pIndex->pIdxColVec(), false);
+  
+  if ( ! m_pRootBuffer ) {
+    m_pRootBuffer = new EntryBuffer;
+    m_pRootBuffer->vIndex(m_pIndex);
+    m_pRootBuffer->vPartitionNo(m_iPartitionNo);
+  }
+  
+  Item* aKeyEntry = EntryBuffer::aInsertKeyTree(xKeyWrk,&m_pRootBuffer);
+  ASSERT(aKeyEntry);
+  
+  //m_pRootBuffer->bVerify();
+  
+  m_okLock.vDropWrite();
+  
+  return true;
+}
 
+/*----------------------------------------------------------------------------*/
+/* insert entries from entryBuffer into this index at level 0                 */
+/*----------------------------------------------------------------------------*/
 void IndexTree::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
@@ -947,7 +985,6 @@ void IndexTree::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer)
   
   //m_okLock.vDropWrite();
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
