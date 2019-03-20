@@ -87,9 +87,6 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   i8 iInt = 0;
   
   char* aSrc = aRecord->aChar();
-  ColumnVec* pColVec = m_pTable->pColumnVec();
-  i8 nColumns = m_pTable->pColumnVec()->nItems() - 1;
-  
   //  char caRow[1024];
   //  StrLib::vCopyLen(caRow,aRecord->aChar(),nBytes);
   //  vTrace("Row: %s\n"_Stz,caRow);
@@ -102,13 +99,16 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   else
     StrLib::vSkipSpaces(&aSrc);
   
-  // skip blank lines
+  // ignore blank lines
   if (! DtmLib::bIsThereRecordData(aSrc,&m_oFormatters) ) {
     bBlankLine = true;
     return false;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  ColumnVec* pColVec = m_pTable->pColumnVec();
+  i8 nColumns = m_pTable->pColumnVec()->nItems() - 1;
 
   // begin encoding
   i8 i_CacheOffset = C_UNKNOWN;
@@ -123,16 +123,14 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     s256 sDst;
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-    // extract datum
+    // extract datum from record
     
     if (eDatum == DM_INT || eDatum == DM_BCD)
       bValidDatum = DtmLib::bExtract(eDatum, (Stz*)&iInt, &aSrc,
-                                pColumn, bLastColumn,
-                                &m_oFormatters);
+                                     pColumn, bLastColumn, &m_oFormatters);
     else
       bValidDatum = DtmLib::bExtract(eDatum, sDst, &aSrc,
-                                pColumn, bLastColumn,
-                                &m_oFormatters);
+                                     pColumn, bLastColumn, &m_oFormatters);
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // is the datum valid ?
@@ -158,8 +156,9 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     //RowEncoding::vPrint(pColumn,aCacheLine);
 
-  }
+  } // for each column
   
+  // we used one cache line
   m_nLinesUsed = 1;
   
   return true;
