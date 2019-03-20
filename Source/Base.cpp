@@ -68,6 +68,10 @@ void Base::vTraceWith(void)
   vTrace("  WITH_RELEASE_VERSION\n"_Stz);
 #endif
   
+#ifdef WITH_ROWBUFFER
+  vTrace("  WITH_ROWBUFFER\n"_Stz);
+#endif
+
 #ifdef WITH_TRACE_API
   vTrace("  WITH_TRACE_API\n"_Stz);
 #endif
