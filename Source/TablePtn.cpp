@@ -447,6 +447,29 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
   IndexTree* pHiddenIndexTree = this->pHiddenIndexTree();
   IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
   
+#ifdef WITH_ROWBUFFER
+  RowBuffer* pRowBuffer = pHiddenIndexTree->pFirstHiddenBuffer();
+  
+  while (pRowBuffer) {
+    
+    //    while (aItem) {
+    //
+    //      // insert entry
+    //      if ( ! pIndexTree->bInsertEntry(aItem))
+    //        return false;
+    //
+    //      // get next entry
+    //      aItem = pEntryBuffer->pNextEntry(aItem, 0);
+    //    }
+    
+    
+    pIndexTree->vInsertEntriesFromBuffer(pRowBuffer);
+    
+    pIndexTree->vInsertEntriesFromBuffer(pRowBuffer);
+    pRowBuffer = pRowBuffer->pNextBuffer();
+  }
+#else
+  
   EntryBuffer* pEntryBuffer = pHiddenIndexTree->pFirstH0Buffer();
   
   while (pEntryBuffer) {
@@ -460,11 +483,14 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
 //      // get next entry
 //      aItem = pEntryBuffer->pNextEntry(aItem, 0);
 //    }
-   
+
+
     pIndexTree->vInsertEntriesFromBuffer(pEntryBuffer);
-    
     pEntryBuffer = pEntryBuffer->pNextBuffer();
   }
+#endif
+    
+
   
   return true;
 }

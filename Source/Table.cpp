@@ -304,68 +304,68 @@ void Table::vLazyBuildIndexes(i8 iSlot)
 /* insert entries from a row buffer into the table (hidden and other indexes) */
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_ROWBUFFER
+
 void Table::vInsertEntries(i8 iTxId, i8 iSlot, RowBuffer* pRowBuffer)
 { //# indexTuning
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  RASSERT(0);
-//  //----------------------------------------------------------------------------
-//  // This function is invoked when we insert rows into a table via a
-//  // begin/insert/end and via the API's insert-select
-//
-//  ASSERT(iSlot < gpAttachMap->m_pGrid->m_nSlotsPerNode);
-//
-//  // if buffer has 0 entries (only head) then should be last buffer
-//  if (pEntryBuffer->nItems() == 0) {
-//    delete pEntryBuffer;
-//    return;
-//  }
-//
-//  //----------------------------------------------------------------------------
-//  // (1) append the buffer entries into the hidden index
-//  TablePtn* pPartition = this->pPartition(iSlot);
-//  IndexTree* pHiddenIndexTree = pPartition->pHiddenIndexTree();
-//
-//  //----------------------------------------------------------------------------
-//  // append the buffer to the hidden index tree
-//  pHiddenIndexTree->vAppendBuffer(pEntryBuffer);
-//
-//  //----------------------------------------------------------------------------
-//  // (2) insert entries from hidden index pFirstBuffer starting at pFirstEntry
-//  // into all other indexes of the table
-//
-//  // get no of indexes of the table
-//  IndexTreeVec* pIndexTreeVec = pPartition->pIndexTreeVec();
-//  i8 nIndexes = pIndexTreeVec->nItems();
-//
-//  // iterate all indexes of the table
-//  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-//
-//    // get index
-//    IndexTree* pNewIndexTree = pIndexTreeVec->pGet(i_Index);
-//
-//    // skip the hidden index
-//    Index* pIndex = pNewIndexTree->pIndex();
-//    if (pIndex->bIsHidden())
-//      continue;
-//
-//    //pHiddenEntryBuffer->vDump();
-//
-//    // insert entries from EntryBuffer into the index
-//    pNewIndexTree->vInsertEntriesFromBuffer(pEntryBuffer);
-//
-//    //    // iterate through all the buffers of the hidden index starting from pFirstEntry
-//    //    // in pFirstBuffer and insert corresponding entries in other indexes
-//    //    while (pHiddenEntryBuffer) {
-//    //
-//    //      pNewIndexTree->vInsertEntriesFromBuffer(pHiddenEntryBuffer, aItem);
-//    //      pHiddenEntryBuffer = pHiddenEntryBuffer->pNextBuffer();
-//    //
-//    //      // get the next buffer and first entry in it
-//    //      if (pHiddenEntryBuffer)
-//    //        aItem = pHiddenEntryBuffer->pFirstEntry();
-//    //    }
-//  }
+  //----------------------------------------------------------------------------
+  // This function is invoked when we insert rows into a table via a
+  // begin/insert/end and via the API's insert-select
+
+  ASSERT(iSlot < gpAttachMap->m_pGrid->m_nSlotsPerNode);
+
+  // if buffer has 0 entries (only head) then should be last buffer
+  if (pRowBuffer->nRowCount() == 0) {
+    delete pRowBuffer;
+    return;
+  }
+
+  //----------------------------------------------------------------------------
+  // (1) append the buffer entries into the hidden index
+  TablePtn* pPartition = this->pPartition(iSlot);
+  IndexTree* pHiddenIndexTree = pPartition->pHiddenIndexTree();
+
+  //----------------------------------------------------------------------------
+  // append the buffer to the hidden index tree
+  pHiddenIndexTree->vAppendBuffer(pRowBuffer);
+
+  //----------------------------------------------------------------------------
+  // (2) insert entries from hidden index pFirstBuffer starting at pFirstEntry
+  // into all other indexes of the table
+
+  // get no of indexes of the table
+  IndexTreeVec* pIndexTreeVec = pPartition->pIndexTreeVec();
+  i8 nIndexes = pIndexTreeVec->nItems();
+
+  // iterate all indexes of the table
+  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+
+    // get index
+    IndexTree* pNewIndexTree = pIndexTreeVec->pGet(i_Index);
+
+    // skip the hidden index
+    Index* pIndex = pNewIndexTree->pIndex();
+    if (pIndex->bIsHidden())
+      continue;
+
+    //pHiddenEntryBuffer->vDump();
+
+    // insert entries from EntryBuffer into the index
+    pNewIndexTree->vInsertEntriesFromBuffer(pRowBuffer);
+
+    //    // iterate through all the buffers of the hidden index starting from pFirstEntry
+    //    // in pFirstBuffer and insert corresponding entries in other indexes
+    //    while (pHiddenEntryBuffer) {
+    //
+    //      pNewIndexTree->vInsertEntriesFromBuffer(pHiddenEntryBuffer, aItem);
+    //      pHiddenEntryBuffer = pHiddenEntryBuffer->pNextBuffer();
+    //
+    //      // get the next buffer and first entry in it
+    //      if (pHiddenEntryBuffer)
+    //        aItem = pHiddenEntryBuffer->pFirstEntry();
+    //    }
+  }
 }
 #else
 void Table::vInsertEntries(i8 iTxId, i8 iSlot, EntryBuffer* pEntryBuffer)

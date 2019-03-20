@@ -83,7 +83,6 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, CacheLine* aCacheLine, i8 &nDst
   bBlankLine = false;
   ColumnVec* pColVec = m_pTable->pColumnVec();
   i8 nColumns = m_pTable->pColumnVec()->nItems() - 1;
-  s256 aDst;
   
   aCacheLine->vSetAll(0xFF);
   aCacheLine->v8B(0,0);
@@ -115,6 +114,7 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, CacheLine* aCacheLine, i8 &nDst
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     Column* pColumn = pColVec->pGet(i_Column);
+    s256 aDst;
     
     // extract datum type
     eDM eDatumType = pColumn->eDatumType();
@@ -156,7 +156,7 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, CacheLine* aCacheLine, i8 &nDst
       RowEncoding::vPrint(pColumn,aCacheLine);
     }
     else {
-      RowEncoding::vEncode(pColumn,(byte*)&aDst,aCacheLine,i_CacheOffset);
+      RowEncoding::vEncode(pColumn,(byte*)aDst.aChar(),aCacheLine,i_CacheOffset);
       MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       RowEncoding::vPrint(pColumn,aCacheLine);
     }
