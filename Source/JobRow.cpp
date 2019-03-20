@@ -83,6 +83,7 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, CacheLine* aCacheLine, i8 &nDst
   bBlankLine = false;
   ColumnVec* pColVec = m_pTable->pColumnVec();
   i8 nColumns = m_pTable->pColumnVec()->nItems() - 1;
+  s256 aDst;
   
   aCacheLine->vSetAll(0xFF);
   aCacheLine->v8B(0,0);
@@ -129,7 +130,9 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, CacheLine* aCacheLine, i8 &nDst
                                 &m_oFormatters);
     }
     else {
-      RASSERT(0);
+      bValid = DtmLib::bExtract(eDatumType, aDst, &aSrc,
+                                pColumn, bLastColumn,
+                                &m_oFormatters);
     }
     
     // is the datum valid ?
@@ -148,12 +151,19 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, CacheLine* aCacheLine, i8 &nDst
     
     if (eDatumType == DM_INT ||
         eDatumType == DM_BCD) {
-      Datum::vSet(i_Column, eDatumType, (byte*)&iInt, aCacheLine, i_CacheOffset);
+      //Datum::vSet(pColumn, (byte*)&iInt);
+      
+      RowEncoding::vEncode(pColumn,(byte*)&iInt,aCacheLine,i_CacheOffset);
+      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      RowEncoding::vPrint(pColumn,aCacheLine);
     }
     else {
-      RASSERT(0);
+      //Datum::vSet(pColumn, (byte*)aDst);
+      RowEncoding::vEncode(pColumn,(byte*)&aDst,aCacheLine,i_CacheOffset);
+      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      RowEncoding::vPrint(pColumn,aCacheLine);
     }
-    
+
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   }
   
