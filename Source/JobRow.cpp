@@ -80,35 +80,27 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 #ifdef WITH_ROWBUFFER
 bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 {
-  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  
-  i8 i_CacheOffset = 8;
-  
-  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  char* aSrc = aRecord->aChar();
   bBlankLine = false;
+  m_nLinesUsed = 0;
+  
+  bool bValidDatum;
+  i8 iInt = 0;
+  
+  char* aSrc = aRecord->aChar();
   ColumnVec* pColVec = m_pTable->pColumnVec();
   i8 nColumns = m_pTable->pColumnVec()->nItems() - 1;
   
-  m_xaRow[0].vSetAll(0xFF);
-  m_xaRow[0].v8B(0,0);
+  //  char caRow[1024];
+  //  StrLib::vCopyLen(caRow,aRecord->aChar(),nBytes);
+  //  vTrace("Row: %s\n"_Stz,caRow);
   
-//  RowEncoding::vEncodeBegin(aCacheLine,i_CacheOffset);
-//  char caRow[1024];
-//  StrLib::vCopyLen(caRow,aRecord->aChar(),nBytes);
-  //vTrace("Row: %s\n"_Stz,caRow);
-  
-  //vTrace("aCacheLine %p\n"_Stz, aCacheLine);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // skip leading spaces
-  if (m_oFormatters.m_cRecordTerminator) {
-    //while (' ' == *aSrc || C_NL == *aSrc || C_CR == *aSrc)
-    //  aSrc++;
+  if (m_oFormatters.m_cRecordTerminator)
     StrLib::vSkipWhite(&aSrc);
-  }
-  else {
+  else
     StrLib::vSkipSpaces(&aSrc);
-  }
   
   // skip blank lines
   if (! DtmLib::bIsThereRecordData(aSrc,&m_oFormatters) ) {
@@ -116,39 +108,37 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     return false;
   }
   
-  // reset back to start
-  //aSrc = aStart;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // begin encoding
+  i8 i_CacheOffset = C_UNKNOWN;
+  RowEncoding::vEncodeBegin(&m_xaRow[0],i_CacheOffset);
   
-  //vTrace("RawData: ]%256s[\n"_Stz,aRawData);
-  
-  //MemLib::vHexDump(aRawData,256);
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     Column* pColumn = pColVec->pGet(i_Column);
-    s256 aDst;
-    
-    // extract datum type
-    eDM eDatumType = pColumn->eDatumType();
+    eDM eDatum = pColumn->eDatumType();
     bool bLastColumn = (i_Column + 1 == nColumns) ? true : false;
-    bool bValid;
-    i8 iInt=0;
+
+    s256 sDst;
     
-    if (eDatumType == DM_INT ||
-        eDatumType == DM_BCD) {
-      
-      bValid = DtmLib::bExtract(eDatumType, (Stz*)&iInt, &aSrc,
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    // extract datum
+    
+    if (eDatum == DM_INT || eDatum == DM_BCD)
+      bValidDatum = DtmLib::bExtract(eDatum, (Stz*)&iInt, &aSrc,
                                 pColumn, bLastColumn,
                                 &m_oFormatters);
-    }
-    else {
-      bValid = DtmLib::bExtract(eDatumType, aDst, &aSrc,
+    else
+      bValidDatum = DtmLib::bExtract(eDatum, sDst, &aSrc,
                                 pColumn, bLastColumn,
                                 &m_oFormatters);
-    }
     
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // is the datum valid ?
-    if ( ! bValid ) {
-      if ( ! gpAttachMap->m_bMetadata ) {
+    
+    if (! bValidDatum) {
+      if (! gpAttachMap->m_bMetadata) {
         vWarn("Skipping row - invalid field %s in record: "_Stz,
               pColumn->sColumnName().aChar());
         for (char* a = (char*)aRecord; *a && '\n' != *a && '\r' != *a; a++)
@@ -159,26 +149,24 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     }
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    // encode datum into cache line
     
-    if (eDatumType == DM_INT ||
-        eDatumType == DM_BCD) {
+    if (eDatum == DM_INT || eDatum == DM_BCD)
       RowEncoding::vEncode(pColumn,(byte*)&iInt,&m_xaRow[0],i_CacheOffset);
-      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-      //RowEncoding::vPrint(pColumn,aCacheLine);
-    }
-    else {
-      RowEncoding::vEncode(pColumn,(byte*)aDst.aChar(),&m_xaRow[0],i_CacheOffset);
-      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-      //RowEncoding::vPrint(pColumn,aCacheLine);
-    }
+    else
+      RowEncoding::vEncode(pColumn,(byte*)sDst.aChar(),&m_xaRow[0],i_CacheOffset);
+    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    //RowEncoding::vPrint(pColumn,aCacheLine);
 
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   }
+  
+  m_nLinesUsed = 1;
   
   return true;
 }
 
 #else
+/*----------------------------------------------------------------------------*/
 bool JobRow::bFormRow(Stz* aRecord, i8 nBytes,
                       Stz* aDstRow, i8 &nDstRowBytes, bool &bBlankLine)
 {
