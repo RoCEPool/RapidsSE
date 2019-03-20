@@ -20,7 +20,6 @@ namespace Data
                         CacheLine* aCacheLine, i8& i_CacheOffset);
   
     static void vPrint(Column* pColumn, CacheLine* aCacheLine);
-    static void vPrint(Column* pColumn, WordView& wDatum);
   
   private:
     static w8 wDecodeBcd(Column* pColumn, CacheLine* aCacheLine);
@@ -63,7 +62,9 @@ namespace Data
     static i8 iGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
   
     static i8 nEncodedBytes(i8 iEncoding, eDM eDatum);
- };
+ 
+    static void vPrint(Column* pColumn, WordView& wDatum);
+};
 }
 
 /*============================================================================*/
