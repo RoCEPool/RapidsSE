@@ -715,28 +715,34 @@ w8 RowEncoding::wEncode(Column* pColumn, byte* aDatum, i8& iEncoding)
 /*----------------------------------------------------------------------------*/
 /* encode decimal                                                             */
 /*----------------------------------------------------------------------------*/
-i8 RowEncoding::iEncodeBcd(Column* pColumn,byte* aDatum, WordView& wEncoded)
+w8 RowEncoding::wEncodeBcd(Column* pColumn,byte* aDatum, i8& iEncoding)
 {
   w8 wVal = *(i8*)aDatum;
   
-  i8 iEncoding = C_UNKNOWN;
+  WordView wEncoded;
+  wEncoded.m_wWord = wVal;
+
+  iEncoding = C_UNKNOWN;
   
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
   else
     iEncoding = IntLib::iByteMagnitude(wVal);
 
-  return iEncoding;
+  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode boolean                                                             */
 /*----------------------------------------------------------------------------*/
-i8 RowEncoding::iEncodeBol(Column* pColumn,byte* aDatum, WordView& wEncoded)
+w8 RowEncoding::wEncodeBol(Column* pColumn,byte* aDatum, i8& iEncoding)
 {
   w8 wVal = *(i8*)aDatum;
   
-  i8 iEncoding = C_UNKNOWN;
+  WordView wEncoded;
+  wEncoded.m_wWord = wVal;
+
+  iEncoding = C_UNKNOWN;
   
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
@@ -745,17 +751,20 @@ i8 RowEncoding::iEncodeBol(Column* pColumn,byte* aDatum, WordView& wEncoded)
   else
     iEncoding = MN_FALSE;
   
-  return iEncoding;
+  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode date                                                                */
 /*----------------------------------------------------------------------------*/
-i8 RowEncoding::iEncodeDte(Column* pColumn,byte* aDatum, WordView& wEncoded)
+w8 RowEncoding::wEncodeDte(Column* pColumn,byte* aDatum, i8& iEncoding)
 {
   w8 wVal = *(i8*)aDatum;
   
-  i8 iEncoding = C_UNKNOWN;
+  WordView wEncoded;
+  wEncoded.m_wWord = wVal;
+
+  iEncoding = C_UNKNOWN;
 
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
@@ -764,68 +773,80 @@ i8 RowEncoding::iEncodeDte(Column* pColumn,byte* aDatum, WordView& wEncoded)
     iEncoding = RowEncoding::iDteEncoding(wEncoded);
   }
 
-  return iEncoding;
+  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode float                                                               */
 /*----------------------------------------------------------------------------*/
-i8 RowEncoding::iEncodeFlt(Column* pColumn,byte* aDatum, WordView& wEncoded)
+w8 RowEncoding::wEncodeFlt(Column* pColumn,byte* aDatum, i8& iEncoding)
 {
   w8 wVal = *(i8*)aDatum;
   
-  i8 iEncoding = C_UNKNOWN;
+  WordView wEncoded;
+  wEncoded.m_wWord = wVal;
+
+  iEncoding = C_UNKNOWN;
   
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
   else
     iEncoding = IntLib::iByteMagnitude(wVal);
   
-  return iEncoding;
+  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode integer                                                             */
 /*----------------------------------------------------------------------------*/
-i8 RowEncoding::iEncodeInt(Column* pColumn,byte* aDatum, WordView& wEncoded)
+w8 RowEncoding::wEncodeInt(Column* pColumn,byte* aDatum, i8& iEncoding)
 {
   w8 wVal = *(i8*)aDatum;
   
-  i8 iEncoding = C_UNKNOWN;
+  WordView wEncoded;
+  wEncoded.m_wWord = wVal;
+
+  iEncoding = C_UNKNOWN;
   
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
   else
     iEncoding = IntLib::iByteMagnitude(wVal);
 
-  return iEncoding;
+  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode interval                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowEncoding::iEncodeIvl(Column* pColumn,byte* aDatum, WordView& wEncoded)
+w8 RowEncoding::wEncodeIvl(Column* pColumn,byte* aDatum, i8& iEncoding)
 {
   w8 wVal = *(i8*)aDatum;
   
-  i8 iEncoding = C_UNKNOWN;
+  WordView wEncoded;
+  wEncoded.m_wWord = wVal;
+
+  iEncoding = C_UNKNOWN;
   
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
   else
     iEncoding = IntLib::iByteMagnitude(wVal);
   
-  return iEncoding;
+  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode time                                                                */
 /*----------------------------------------------------------------------------*/
-i8 RowEncoding::iEncodeTme(Column* pColumn,byte* aDatum, WordView& wEncoded)
+w8 RowEncoding::wEncodeTme(Column* pColumn,byte* aDatum, i8& iEncoding)
 {
   w8 wVal = *(i8*)aDatum;
   
-  i8 iEncoding = C_UNKNOWN;
+  WordView wEncoded;
+  wEncoded.m_wWord = wVal;
+
+  iEncoding = C_UNKNOWN;
   
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
@@ -834,17 +855,20 @@ i8 RowEncoding::iEncodeTme(Column* pColumn,byte* aDatum, WordView& wEncoded)
     iEncoding = RowEncoding::iTmeEncoding(wEncoded);
   }
   
-  return iEncoding;
+  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode timestamp                                                           */
 /*----------------------------------------------------------------------------*/
-i8 RowEncoding::iEncodeTsp(Column* pColumn,byte* aDatum, WordView& wEncoded)
+w8 RowEncoding::wEncodeTsp(Column* pColumn,byte* aDatum, i8& iEncoding)
 {
   w8 wVal = *(i8*)aDatum;
   
-  i8 iEncoding = C_UNKNOWN;
+  WordView wEncoded;
+  wEncoded.m_wWord = wVal;
+
+  iEncoding = C_UNKNOWN;
   
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
@@ -853,22 +877,27 @@ i8 RowEncoding::iEncodeTsp(Column* pColumn,byte* aDatum, WordView& wEncoded)
     iEncoding = RowEncoding::iTspEncoding(wEncoded);
   }
   
-  return iEncoding;
+  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode varchar                                                             */
 /*----------------------------------------------------------------------------*/
-i8 RowEncoding::iEncodeVch(Column* pColumn,byte* aDatum, WordView& wEncoded)
+w8 RowEncoding::wEncodeVch(Column* pColumn,byte* aDatum, i8& iEncoding)
 {
-  i8 iEncoding = C_UNKNOWN;
+  w8 wVal = *(i8*)aDatum;
+  
+  WordView wEncoded;
+  wEncoded.m_wWord = wVal;
+  
+  iEncoding = C_UNKNOWN;
   
   i8 iLen = StrLib::iLength((char*)aDatum);
   RASSERT(iLen <= 8);
   
   iEncoding = iLen;
   
-  return iEncoding;
+  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -27,15 +27,15 @@ namespace Data
   
     static w8 wEncode(Column* pColumn, byte* aDatum, i8& iEncoding);
 
-    static i8 iEncodeBcd(Column* pColumn, byte* aDatum, WordView& wEncoded);
-    static i8 iEncodeBol(Column* pColumn, byte* aDatum, WordView& wEncoded);
-    static i8 iEncodeDte(Column* pColumn, byte* aDatum, WordView& wEncoded);
-    static i8 iEncodeFlt(Column* pColumn, byte* aDatum, WordView& wEncoded);
-    static i8 iEncodeInt(Column* pColumn, byte* aDatum, WordView& wEncoded);
-    static i8 iEncodeIvl(Column* pColumn, byte* aDatum, WordView& wEncoded);
-    static i8 iEncodeTme(Column* pColumn, byte* aDatum, WordView& wEncoded);
-    static i8 iEncodeTsp(Column* pColumn, byte* aDatum, WordView& wEncoded);
-    static i8 iEncodeVch(Column* pColumn, byte* aDatum, WordView& wEncoded);
+    static w8 wEncodeBcd(Column* pColumn, byte* aDatum, i8& iEncoding);
+    static w8 wEncodeBol(Column* pColumn, byte* aDatum, i8& iEncoding);
+    static w8 wEncodeDte(Column* pColumn, byte* aDatum, i8& iEncoding);
+    static w8 wEncodeFlt(Column* pColumn, byte* aDatum, i8& iEncoding);
+    static w8 wEncodeInt(Column* pColumn, byte* aDatum, i8& iEncoding);
+    static w8 wEncodeIvl(Column* pColumn, byte* aDatum, i8& iEncoding);
+    static w8 wEncodeTme(Column* pColumn, byte* aDatum, i8& iEncoding);
+    static w8 wEncodeTsp(Column* pColumn, byte* aDatum, i8& iEncoding);
+    static w8 wEncodeVch(Column* pColumn, byte* aDatum, i8& iEncoding);
   
     static void vPrint(Column* pColumn, CacheLine* aCacheLine);
     static void vPrint(Column* pColumn, WordView& wDatum);
