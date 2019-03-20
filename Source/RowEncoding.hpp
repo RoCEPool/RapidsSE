@@ -25,17 +25,24 @@ namespace Data
     static void vEncode(Column* pColumn, byte* aDatum,
                         CacheLine* aCacheLine, i8& i_CacheOffset);
   
-    static w8 wEncode(Column* pColumn, byte* aDatum, i8& iEncoding);
-
-    static w8 wEncodeBcd(Column* pColumn, byte* aDatum, i8& iEncoding);
-    static w8 wEncodeBol(Column* pColumn, byte* aDatum, i8& iEncoding);
-    static w8 wEncodeDte(Column* pColumn, byte* aDatum, i8& iEncoding);
-    static w8 wEncodeFlt(Column* pColumn, byte* aDatum, i8& iEncoding);
-    static w8 wEncodeInt(Column* pColumn, byte* aDatum, i8& iEncoding);
-    static w8 wEncodeIvl(Column* pColumn, byte* aDatum, i8& iEncoding);
-    static w8 wEncodeTme(Column* pColumn, byte* aDatum, i8& iEncoding);
-    static w8 wEncodeTsp(Column* pColumn, byte* aDatum, i8& iEncoding);
-    static w8 wEncodeVch(Column* pColumn, byte* aDatum, i8& iEncoding);
+    static w8 wEncodeBcd(Column* pColumn, byte* aDatum, i8& iEncoding,
+                         CacheLine* aCacheLine, i8& i_CacheOffset);
+    static w8 wEncodeBol(Column* pColumn, byte* aDatum, i8& iEncoding,
+                         CacheLine* aCacheLine, i8& i_CacheOffset);
+    static w8 wEncodeDte(Column* pColumn, byte* aDatum, i8& iEncoding,
+                         CacheLine* aCacheLine, i8& i_CacheOffset);
+    static w8 wEncodeFlt(Column* pColumn, byte* aDatum, i8& iEncoding,
+                         CacheLine* aCacheLine, i8& i_CacheOffset);
+    static w8 wEncodeInt(Column* pColumn, byte* aDatum, i8& iEncoding,
+                         CacheLine* aCacheLine, i8& i_CacheOffset);
+    static w8 wEncodeIvl(Column* pColumn, byte* aDatum, i8& iEncoding,
+                         CacheLine* aCacheLine, i8& i_CacheOffset);
+    static w8 wEncodeTme(Column* pColumn, byte* aDatum, i8& iEncoding,
+                         CacheLine* aCacheLine, i8& i_CacheOffset);
+    static w8 wEncodeTsp(Column* pColumn, byte* aDatum, i8& iEncoding,
+                         CacheLine* aCacheLine, i8& i_CacheOffset);
+    static w8 wEncodeVch(Column* pColumn, byte* aDatum, i8& iEncoding,
+                         CacheLine* aCacheLine, i8& i_CacheOffset);
   
     static void vPrint(Column* pColumn, CacheLine* aCacheLine);
     static void vPrint(Column* pColumn, WordView& wDatum);
