@@ -67,6 +67,7 @@ namespace Data
     // row functions
 
     void  vShowRow(i8 iRowNo);
+    CacheLine* pRow(i8 iRow);
 
     ////////////////////////////////////////////////////////////////////////////
     // row functions

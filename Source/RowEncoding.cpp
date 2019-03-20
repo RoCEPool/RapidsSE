@@ -672,6 +672,90 @@ void RowEncoding::vEncodeVch(Column* pColumn,byte* aDatum,
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* print row decoded datum from cache line                                    */
+/*----------------------------------------------------------------------------*/
+void RowEncoding::vAsString(s48K& sDataString, ColumnVec* pColumnVec, CacheLine* aCacheLine)
+{
+  WordView wDatum;
+  
+  // get no of columns
+  i8 nColumns = pColumnVec->nItems();
+  
+  // for each column
+  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
+    
+    // get the column at index
+    Column* pColumn = pColumnVec->pGet(i_Column);
+    
+    // not the first column
+    if (i_Column == 0)
+      sDataString.vConcat(""_Stz);
+    else
+      sDataString.vConcat(","_Stz);
+    
+    // copy the data for the column into aDst
+    eDM eDatum = pColumn->eDatumType();
+    wDatum.m_wWord = wDecode(pColumn,aCacheLine);
+    
+    switch (eDatum) {
+      case DM_BCD: {
+        sDataString.vCatSprint("%lld"_Stz, wDatum.m_iI8);
+        break;
+      }
+      case DM_BOL: {
+        sDataString.vConcat(wDatum.m_iI8 == 1 ? "true"_Stz : "false"_Stz);
+        break;
+      }
+      case DM_DTE: {
+        Dte wDte;
+        wDte.vAsI8(wDatum.m_iI8);
+        s32 sDte;
+        wDte.vSprint(sDte.aStz());
+        sDataString.vConcat(sDte.aStz());
+        break;
+      }
+      case DM_FLT: {
+        sDataString.vCatSprint("%g"_Stz, wDatum.m_dF8);
+        break;
+      }
+      case DM_INT: {
+        sDataString.vCatSprint("%lld"_Stz, wDatum.m_iI8);
+        break;
+      }
+      case DM_IVL: {
+        sDataString.vCatSprint("%lld"_Stz, wDatum.m_iI8);
+        break;
+      }
+      case DM_TME: {
+        Tme wTme;
+        wTme.vAsI8(wDatum.m_iI8);
+        s32 sTme;
+        wTme.vSprint(sTme.aStz());
+        sDataString.vConcat(sTme.aStz());
+        break;
+      }
+      case DM_TSP: {
+        Tsp wTsp;
+        wTsp.vAsI8(wDatum.m_iI8);
+        s32 sTsp;
+        wTsp.vSprint(sTsp.aStz());
+        sDataString.vConcat(sTsp.aStz());
+        break;
+      }
+      case DM_VCH: {
+        s256 sStr;
+        Vch::vSprintQuotes(sStr, (Stz*)&wDatum);
+        sDataString.vConcat(sStr.aStz());
+        break;
+      }
+      default:
+        NEVER_REACH;
+    }
+    
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* print decoded datum from cache line                                        */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vPrint(Column* pColumn, CacheLine* aCacheLine)

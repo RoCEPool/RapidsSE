@@ -992,6 +992,118 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 /* index.scan -- scan the index                                               */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_ROWBUFFER
+
+void Step::vIndexScan(MP_Task mpTask)
+{
+  ENTRY("vIndexScan"_Stz);
+  
+  Session* pSession = mpTask->m_pSession;
+  Object* pPtrIndex = nullptr;
+  FetchBuffer* pFetchBuffer;
+  GenVar xVariable;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get parameters for the primitive
+  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
+    THROW_INVALID_DSTACK("index.scan"_Stz);
+  
+  Index* pIndex = _pIndex(pPtrIndex);
+  ASSERT(CN_INDEX == pIndex->eClass());
+  
+  Object* pPtrJob;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
+    THROW_INVALID_DSTACK("index.scan"_Stz);
+  
+  Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
+  ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get members from subFetch
+  i8 iSlot = pJob_SubFetch->m_i_Slot;
+  Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
+  
+  i8 iIndexNo = pIndex->iIndexNo();
+  Table* pTable = pIndex->pTable();
+  
+  TablePtn* pPartition = pTable->pPartition(iSlot);
+  IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a result buffer for the results
+  pFetchBuffer = new FetchBuffer(pTable, iSlot);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // position in the first row buffer
+  RowBuffer* pRowBuffer = pIndexTree->pFirstHiddenBuffer();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // did we get an entryBuffer ?
+  if (! pRowBuffer) {
+    // mark this buffer as the last buffer
+    pFetchBuffer->vIsLast(true);
+    
+    // put the buffer in the session bufferQueue
+    //Q: xVariable = (Object*)pFetchBuffer;
+    //Q: pQueue->bAppend(xVariable.aNestedValue());
+    pQueue->vAppend(pFetchBuffer);
+    
+    EXIT();
+    return;
+  }
+  
+  
+  while (pRowBuffer) {
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // iterate thru the buffer till no more entries
+    for (i8 iRow = 0; iRow < pRowBuffer->nRowCount(); iRow++) {
+      
+      // get the row from the buffer
+      CacheLine* aRowData = pRowBuffer->pRow(iRow);
+    
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // insert row from entry in FetchBuffer
+      if ( ! pFetchBuffer->bAppendRow(aRowData)) {
+        
+        // Buffer is Full
+        // put this FetchBuffer in session bufferQueue
+        //Q: xVariable = (Object*)pFetchBuffer;
+        //Q: pQueue->bAppend(xVariable.aNestedValue());
+        pQueue->vAppend(pFetchBuffer);
+        
+        // create another FetchBuffer for the results
+        pFetchBuffer = new FetchBuffer(pTable, iSlot);
+        
+        // insert row from entry in new fetchBuffer
+        bool bResult = pFetchBuffer->bAppendRow(aRowData);
+        RASSERT(bResult);
+      }
+    
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // check if session exiting
+      if (pSession->m_bSessionExiting)
+        pRowBuffer = nullptr;
+    }
+  
+    // get next buffer from the current indexBuffer
+    pRowBuffer = pRowBuffer->pNextBuffer();
+    
+  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // mark this buffer as the last buffer
+  pFetchBuffer->vIsLast(true);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // put the buffer in the session bufferQueue
+  //Q: xVariable = (Object*)pFetchBuffer;
+  //Q: pQueue->bAppend(xVariable.aNestedValue());
+  pQueue->vAppend(pFetchBuffer);
+  
+  EXIT();
+}
+
+#else
 void Step::vIndexScan(MP_Task mpTask)
 {
   ENTRY("vIndexScan"_Stz);
@@ -1127,6 +1239,8 @@ void Step::vIndexScan(MP_Task mpTask)
 
   EXIT();
 }
+
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* index.setSingleColumn -- set if single column index                        */
@@ -1575,11 +1689,16 @@ bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Item* aItem, Job_FetchRows* pJo
   }
   
   RowData* aRowData = _aRowData(aItem->aDataArea());
-  
+#ifdef WITH_ROWBUFFER
+  RASSERT(0);
+  return false;
+#else
   if (pFetchBuffer->bAppendRow(aRowData))
     return true;
   else
     return false;
+#endif
+  
 }
 
 /*============================================================================*/

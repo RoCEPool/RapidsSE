@@ -333,6 +333,16 @@ void RowBuffer::vPrevBuffer(RowBuffer* pPrevBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get row                                                                    */
+/*----------------------------------------------------------------------------*/
+CacheLine* RowBuffer::pRow(i8 iRowNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  return &m_xRow[iRowNo];
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the no of rows in the buffer                                           */
 /*----------------------------------------------------------------------------*/
 i8 RowBuffer::nRowCount(void)

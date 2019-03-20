@@ -10,6 +10,8 @@ namespace Data
   public:
   
   public:
+    static void vAsString(s48K& sDataString, ColumnVec* pColumnVec, CacheLine* aCacheLine);
+    
     static w8 wDecode(Column* pColumn, CacheLine* aCacheLine);
     static w8 wDecodeBcd(Column* pColumn, CacheLine* aCacheLine);
     static w8 wDecodeBol(Column* pColumn, CacheLine* aCacheLine);
@@ -43,6 +45,7 @@ namespace Data
     static void vEncodeVch(Column* pColumn, byte* aDatum,
                            CacheLine* aCacheLine, i8& i_CacheOffset);
   
+    
     static void vPrint(Column* pColumn, CacheLine* aCacheLine);
     static void vPrint(Column* pColumn, WordView& wDatum);
   

@@ -186,7 +186,7 @@ eEC JobWriteBehind::eInsertRow(CacheLine* aRow_Data, i8 nRowBytes)
     CacheLine* pRow = pRowBuffer->aAppendRow(aRow_Data);
     pRowBuffer->vDropWrite();
     
-    pRowBuffer->vDump();
+    //pRowBuffer->vDump();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // appended ?
@@ -197,14 +197,14 @@ eEC JobWriteBehind::eInsertRow(CacheLine* aRow_Data, i8 nRowBytes)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn a write buffer job
-//    Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession,
-//                                          m_pTable->aTableName(),
-//                                          m_eDataSource,
-//                                          pEntryBuffer,
-//                                          m_pParentJob->iJobId(),
-//                                          iPartition,
-//                                          C_NOT_FINAL,
-//                                          0);
+    Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession,
+                                          m_pTable->aTableName(),
+                                          m_eDataSource,
+                                          pRowBuffer,
+                                          m_pParentJob->iJobId(),
+                                          iPartition,
+                                          C_NOT_FINAL,
+                                          0);
   }
   
   return EC_NONE;
@@ -323,7 +323,7 @@ void JobWriteBehind::vNewEntryBuffer( i8 iPartition)
   
   m_pRowBuffer[iPartition]->vIndex(m_pTable->pHiddenIndex());
   m_pRowBuffer[iPartition]->vPartitionNo(iPartition);
-  m_pRowBuffer[iPartition]->vDump();
+  //m_pRowBuffer[iPartition]->vDump();
   
 #else
   m_pEntryBuffer[iPartition] = new EntryBuffer();

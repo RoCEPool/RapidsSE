@@ -466,16 +466,28 @@ void Jobs::vJob_FetchRows_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer)
 {
-  RowData** aaRow = nullptr;
-  s48K sRowString;
+ 
+#ifdef WITH_ROWBUFFER
   
+  ColumnVec* pColumnVec = pJob_FetchRows->m_pTable->pColumnVec();
+  CacheLine** aaCacheLine = nullptr;
+  aaCacheLine = pFetchBuffer->aaFirstRowPtr();
+  while (aaCacheLine) {
+    s48K sRowString;
+    RowEncoding::vAsString(sRowString, pColumnVec,*aaCacheLine);vTrace("row: (%s)\n"_Stz, sRowString.aChar());
+    aaCacheLine = pFetchBuffer->aaNextRowPtr(aaCacheLine);
+  }
+#else
+  RowData** aaRow = nullptr;
   aaRow = pFetchBuffer->aaFirstRowPtr();
   while (aaRow) {
     RowData* pRow = *aaRow;
+    s48K sRowString;
     pRow->vAsBinaryStringVLQ(sRowString, pJob_FetchRows->m_pTable->pColumnVec());
     vTrace("row: (%s)\n"_Stz, sRowString.aChar());
     aaRow = pFetchBuffer->aaNextRowPtr(aaRow);
   }
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

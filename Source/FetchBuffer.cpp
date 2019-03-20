@@ -82,6 +82,31 @@ FetchBuffer::~FetchBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append row                                                                 */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_ROWBUFFER
+bool FetchBuffer::bAppendRow(CacheLine* pRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
+  
+  i8 iCacheLineSize = sizeof(CacheLine*);
+  
+  // do we have enough space for this row ?
+  i8 nFreeSpace = nFreeBytes();
+  if (nFreeSpace < iCacheLineSize)
+    return false;
+  
+  // allocate row
+  CacheLine** ppFetchRow = (CacheLine**)aaAllotRowPtr(iCacheLineSize);
+  
+  // copy the cacheLine pointer
+  *ppFetchRow = pRow;
+  
+  //pRow->vShow(m_pTable->pColumnVec(), true);
+  //vTrace(" %p \n"_Stz, pRow);
+  
+  return true;
+}
+
+#else
 bool FetchBuffer::bAppendRow(RowData* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
@@ -104,6 +129,7 @@ bool FetchBuffer::bAppendRow(RowData* pRow)
   
   return true;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
@@ -125,21 +151,6 @@ i8 FetchBuffer::nFetchedRows(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
   return m_nFetchedRows;
-}
-
-/*----------------------------------------------------------------------------*/
-/* first item                                                                 */
-/*----------------------------------------------------------------------------*/
-RowData** FetchBuffer::aaFirstRowPtr(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
-  
-  if (nUsedBytes() == 0)
-    return nullptr;
-  
-  RowData** aaFirstRow = reinterpret_cast<RowData**>(m_xWsp.aArea());
-    
-  return aaFirstRow;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,6 +176,57 @@ bool FetchBuffer::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 /* get next item                                                              */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_ROWBUFFER
+/*----------------------------------------------------------------------------*/
+/* first item                                                                 */
+/*----------------------------------------------------------------------------*/
+CacheLine** FetchBuffer::aaFirstRowPtr(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
+  
+  if (nUsedBytes() == 0)
+    return nullptr;
+  
+  CacheLine** aaFirstRow = reinterpret_cast<CacheLine**>(m_xWsp.aArea());
+  
+  return aaFirstRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next item                                                              */
+/*----------------------------------------------------------------------------*/
+CacheLine** FetchBuffer::aaNextRowPtr(CacheLine** ppCurrentRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
+  
+  CacheLine** aaNextRow = aAdd<CacheLine**>(ppCurrentRow,sizeof(CacheLine*));
+  
+  if ((char**)aaNextRow >= (char**)m_xWsp.aLatter())
+    return nullptr;
+  
+  return aaNextRow;
+}
+
+#else
+
+/*----------------------------------------------------------------------------*/
+/* first item                                                                 */
+/*----------------------------------------------------------------------------*/
+RowData** FetchBuffer::aaFirstRowPtr(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
+  
+  if (nUsedBytes() == 0)
+    return nullptr;
+  
+  RowData** aaFirstRow = reinterpret_cast<RowData**>(m_xWsp.aArea());
+  
+  return aaFirstRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next item                                                              */
+/*----------------------------------------------------------------------------*/
 RowData** FetchBuffer::aaNextRowPtr(RowData** ppCurrentRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
@@ -176,6 +238,8 @@ RowData** FetchBuffer::aaNextRowPtr(RowData** ppCurrentRow)
   
   return aaNextRow;
 }
+
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get the partition                                                          */
@@ -204,13 +268,13 @@ void FetchBuffer::vShow(bool bCompressed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
 
-  for (RowData** aaRow = aaFirstRowPtr();
-       aaRow;
-       aaRow = aaNextRowPtr(aaRow)) {
-    
-    (*aaRow)->vShow(m_pTable->pColumnVec(),true);
-    vTrace("\n"_Stz);
-  }
+//  for (RowData** aaRow = aaFirstRowPtr();
+//       aaRow;
+//       aaRow = aaNextRowPtr(aaRow)) {
+//
+//    (*aaRow)->vShow(m_pTable->pColumnVec(),true);
+//    vTrace("\n"_Stz);
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -267,9 +331,9 @@ void FetchBuffer::vItemCountRestore(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
 
-  m_nFetchedRows = 0;
-  for (RowData** aaRow = aaFirstRowPtr(); aaRow; aaRow =aaNextRowPtr(aaRow))
-    m_nFetchedRows++;
+//  m_nFetchedRows = 0;
+//  for (RowData** aaRow = aaFirstRowPtr(); aaRow; aaRow =aaNextRowPtr(aaRow))
+//    m_nFetchedRows++;
 
 }
 

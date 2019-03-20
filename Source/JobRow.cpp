@@ -87,7 +87,12 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, CacheLine* aCacheLine, i8 &nDst
   aCacheLine->vSetAll(0xFF);
   aCacheLine->v8B(0,0);
   
-  vTrace("aCacheLine %p\n"_Stz, aCacheLine);
+//  RowEncoding::vEncodeBegin(aCacheLine,i_CacheOffset);
+//  char caRow[1024];
+//  StrLib::vCopyLen(caRow,aRecord->aChar(),nBytes);
+  //vTrace("Row: %s\n"_Stz,caRow);
+  
+  //vTrace("aCacheLine %p\n"_Stz, aCacheLine);
   
   // skip leading spaces
   if (m_oFormatters.m_cRecordTerminator) {
@@ -152,13 +157,13 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, CacheLine* aCacheLine, i8 &nDst
     if (eDatumType == DM_INT ||
         eDatumType == DM_BCD) {
       RowEncoding::vEncode(pColumn,(byte*)&iInt,aCacheLine,i_CacheOffset);
-      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-      RowEncoding::vPrint(pColumn,aCacheLine);
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      //RowEncoding::vPrint(pColumn,aCacheLine);
     }
     else {
       RowEncoding::vEncode(pColumn,(byte*)aDst.aChar(),aCacheLine,i_CacheOffset);
-      MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
-      RowEncoding::vPrint(pColumn,aCacheLine);
+      //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+      //RowEncoding::vPrint(pColumn,aCacheLine);
     }
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -176,9 +181,9 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, Stz* aDstRow, i8 &nDstRowBytes,
   
   //Datum::vBegin();
   RowEncoding::vEncodeBegin(&xCacheLine,i_CacheOffset);
-  char caRow[1024];
-  StrLib::vCopyLen(caRow,aRecord->aChar(),nBytes);
-  vTrace("Row: %s\n"_Stz,caRow);
+//  char caRow[1024];
+//  StrLib::vCopyLen(caRow,aRecord->aChar(),nBytes);
+//  vTrace("Row: %s\n"_Stz,caRow);
   
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   char* aSrc = aRecord->aChar();
