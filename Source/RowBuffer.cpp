@@ -399,8 +399,9 @@ void RowBuffer::vShowRow(i8 iRowNo)
 #ifdef WITH_ROWBUFFER
   for (i8 iCol = 0; iCol < pColumnVec->nItems() - 1; iCol++) {
     CacheLine* aRowCacheLine = &m_xRow[iRowNo];
-    w8 wVal = RowEncoding::wDecode(pColumnVec->pGet(iCol), aRowCacheLine);
-    vTrace("%lld "_Stz, wVal);
+    //w8 wVal = RowEncoding::wDecode(pColumnVec->pGet(iCol), aRowCacheLine);
+    //vTrace("%lld "_Stz, wVal);
+    RowEncoding::vPrint(pColumnVec->pGet(iCol),aRowCacheLine);
   }
 #endif
   vTrace("\n"_Stz);
