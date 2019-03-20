@@ -138,7 +138,7 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
 eEC JobWriteBehind::eInsertRow(void)
 {
 #ifdef WITH_ROWBUFFER
-  return eInsertRow(&m_xaRow[0], m_nRowBytes);
+  return eInsertRow(m_xaRow, m_nRowBytes);
 #else
   return eInsertRow(m_aRow, m_nRowBytes);
 #endif

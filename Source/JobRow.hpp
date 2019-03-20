@@ -28,10 +28,13 @@ namespace Jobs
     
   public:
 #ifdef WITH_ROWBUFFER
-    bool bFormatRow(Stz* aRecord, i8 nBytes, CacheLine* aCacheLine, i8 &nDstRowBytes, bool &bBlankLine);
+    bool bFormatRow(Stz* aRecord, i8 nBytes,
+                    CacheLine aCacheLine[], i8 &nDstRowBytes, bool &bBlankLine);
 #else
-    bool bFormatRow(Stz* aRecord, i8 nBytes, Stz* aDstRow, i8 &nDstRowBytes, bool &bBlankLine);
+    bool bFormatRow(Stz* aRecord, i8 nBytes,
+                    Stz* aDstRow, i8 &nDstRowBytes, bool &bBlankLine);
 #endif
+  
     bool bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine);
   };
 }

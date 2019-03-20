@@ -64,7 +64,7 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 {
   // format into subInserters m_aRow
 #ifdef WITH_ROWBUFFER
-  return bFormatRow(aRecord, nBytes, &m_xaRow[0], m_nRowBytes, bBlankLine);
+  return bFormatRow(aRecord, nBytes, m_xaRow, m_nRowBytes, bBlankLine);
 #else
   return bFormatRow(aRecord, nBytes, m_aRow, m_nRowBytes, bBlankLine);
 #endif
