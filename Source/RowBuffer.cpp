@@ -333,6 +333,16 @@ void RowBuffer::vPrevBuffer(RowBuffer* pPrevBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the no of rows in the buffer                                           */
+/*----------------------------------------------------------------------------*/
+i8 RowBuffer::nRowCount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  return m_nRows;
+}
+
+/*----------------------------------------------------------------------------*/
 /* restore the buffer after being received over a socket                      */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vRestore(void)

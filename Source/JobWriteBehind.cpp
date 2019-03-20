@@ -80,28 +80,28 @@ JobWriteBehind::~JobWriteBehind(void) noexcept(false)
 #ifdef WITH_ROWBUFFER
 void JobWriteBehind::vHandleDanglingBuffers(void)
 {
-//  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
-//
-//    if ( ! m_pEntryBuffer[iPartition] )
-//      vNewEntryBuffer(iPartition);
-//
-//    // get the entry buffer
-//    EntryBuffer* pEntryBuffer = m_pEntryBuffer[iPartition];
-//    m_pEntryBuffer[iPartition] = nullptr;
-//
-//    i8 nWriteBehindBuffers = m_nWriteBehindBuffers[iPartition];
-//
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // create a write buffer job for load
-//    Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession,
-//                                          m_pTable->aTableName(),
-//                                          m_eDataSource,
-//                                          pEntryBuffer,
-//                                          m_pParentJob->iJobId(),
-//                                          iPartition,
-//                                          C_FINAL,
-//                                          nWriteBehindBuffers);
-//  }
+  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
+
+    if ( ! m_pRowBuffer[iPartition] )
+      vNewEntryBuffer(iPartition);
+
+    // get the entry buffer
+    RowBuffer* pRowBuffer = m_pRowBuffer[iPartition];
+    m_pRowBuffer[iPartition] = nullptr;
+
+    i8 nWriteBehindBuffers = m_nWriteBehindBuffers[iPartition];
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // create a write buffer job for load
+    Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession,
+                                          m_pTable->aTableName(),
+                                          m_eDataSource,
+                                          pRowBuffer,
+                                          m_pParentJob->iJobId(),
+                                          iPartition,
+                                          C_FINAL,
+                                          nWriteBehindBuffers);
+  }
 }
 
 #else

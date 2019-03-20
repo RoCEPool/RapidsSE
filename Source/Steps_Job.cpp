@@ -557,6 +557,17 @@ void Step::vJobEntryBufferStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.entryBuffer!"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
+#ifdef WITH_ROWBUFFER
+  
+  Object* pRowBufferPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pRowBufferPtr) )
+    THROW_INVALID_DSTACK("job.entryBuffer!"_Stz);
+  RowBuffer* pRowBuffer = _pRowBuffer(pRowBufferPtr);
+  
+  pJob->m_pCurrentBuffer = pRowBuffer;
+  
+#else
+  
   Object* pEntryBufferPtr;
   if ( ! mpTask->m_pDataStack->bPop(pEntryBufferPtr) )
     THROW_INVALID_DSTACK("job.entryBuffer!"_Stz);
@@ -564,10 +575,11 @@ void Step::vJobEntryBufferStore(MP_Task mpTask)
   
   pJob->m_pCurrentBuffer = pEntryBuffer;
   
+#endif
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
 /* job.error@ -- fetch the job error for the node                             */
 /*----------------------------------------------------------------------------*/
 void Step::vJobErrorFetch(MP_Task mpTask)

@@ -49,6 +49,7 @@ namespace Data
     void    vGrabWrite(void);
     void    vIndex(Index* pIndex);
     Index*  pIndex(void);
+    i8      nRowCount(void);
 
     ////////////////////////////////////////////////////////////////////////////
     // buffer functions
