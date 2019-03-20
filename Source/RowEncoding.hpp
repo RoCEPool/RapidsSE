@@ -24,7 +24,9 @@ namespace Data
     static void vEncodeBegin(CacheLine* aCacheLine, i8& i_CacheOffset);
     static void vEncode(Column* pColumn, byte* aDatum,
                         CacheLine* aCacheLine, i8& i_CacheOffset);
-    static i8 iEncode(Column* pColumn, byte* aDatum, WordView& wEncoded);
+  
+    static i8 iEncode(Column* pColumn, byte* aDatum, WordView& wEncoded, i8& iEncoding);
+
     static i8 iEncodeBcd(Column* pColumn, byte* aDatum, WordView& wEncoded);
     static i8 iEncodeBol(Column* pColumn, byte* aDatum, WordView& wEncoded);
     static i8 iEncodeDte(Column* pColumn, byte* aDatum, WordView& wEncoded);

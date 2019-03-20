@@ -349,7 +349,8 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       WordView wEncoded;
-      i8 iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
+      i8 iEncoding;
+      RowEncoding::iEncode(pColumn,aDatum,wEncoded,iEncoding);
       
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
@@ -377,8 +378,9 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       WordView wEncoded;
-      i8 iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
-      
+      i8 iEncoding;
+      RowEncoding::iEncode(pColumn,aDatum,wEncoded,iEncoding);
+
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
@@ -397,8 +399,9 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       WordView wEncoded;
-      i8 iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
-      
+      i8 iEncoding;
+      RowEncoding::iEncode(pColumn,aDatum,wEncoded,iEncoding);
+
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
@@ -432,8 +435,9 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       WordView wEncoded;
-      i8 iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
-      
+      i8 iEncoding;
+      RowEncoding::iEncode(pColumn,aDatum,wEncoded,iEncoding);
+
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
@@ -461,8 +465,9 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       WordView wEncoded;
-      i8 iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
-      
+      i8 iEncoding;
+      RowEncoding::iEncode(pColumn,aDatum,wEncoded,iEncoding);
+
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
@@ -490,8 +495,9 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       WordView wEncoded;
-      i8 iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
-      
+      i8 iEncoding;
+      RowEncoding::iEncode(pColumn,aDatum,wEncoded,iEncoding);
+
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
@@ -518,8 +524,9 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       WordView wEncoded;
-      i8 iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
-      
+      i8 iEncoding;
+      RowEncoding::iEncode(pColumn,aDatum,wEncoded,iEncoding);
+
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
@@ -551,8 +558,9 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       WordView wEncoded;
-      i8 iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
-      
+      i8 iEncoding;
+      RowEncoding::iEncode(pColumn,aDatum,wEncoded,iEncoding);
+
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
@@ -584,8 +592,9 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
     case DM_VCH: {
     
       WordView wEncoded;
-      i8 iEncoding = RowEncoding::iEncode(pColumn,aDatum,wEncoded);
-      
+      i8 iEncoding;
+      RowEncoding::iEncode(pColumn,aDatum,wEncoded,iEncoding);
+
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
@@ -614,13 +623,11 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
 /*----------------------------------------------------------------------------*/
 /* encode given datum before setting in cache line                            */
 /*----------------------------------------------------------------------------*/
-i8 RowEncoding::iEncode(Column* pColumn, byte* aDatum, WordView& wEncoded)
+i8 RowEncoding::iEncode(Column* pColumn, byte* aDatum, WordView& wEncoded, i8& iEncoding)
 {
   eDM eDatum = pColumn->eDatumType();
   
   w8 wVal = *(i8*)aDatum;
-  
-  i8 iEncoding = -1;
   
   switch (eDatum) {
       
