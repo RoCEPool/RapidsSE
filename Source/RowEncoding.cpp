@@ -356,7 +356,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       //aCacheLine->v8B(8 + i_Column * 8,wVal);
       
       // set n-byte data for column value
-      aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+      //aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       i_CacheOffset += iEncoding;
@@ -399,7 +399,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       //aCacheLine->v8B(8 + i_Column * 8,wVal);
       
       // set n-byte data for column value
-      aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+      //aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       i_CacheOffset += iEncoding;
@@ -432,7 +432,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       //aCacheLine->v8B(8 + i_Column * 8,wVal);
       
       // set n-byte data for column value
-      aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+      //aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       i_CacheOffset += iEncoding;
@@ -458,7 +458,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       //aCacheLine->v8B(8 + i_Column * 8,wVal);
       
       // set n-byte data for column value
-      aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+      //aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       i_CacheOffset += iEncoding;
@@ -484,7 +484,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       //aCacheLine->v8B(8 + i_Column * 8,wVal);
       
       // set n-byte data for column value
-      aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+      //aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       i_CacheOffset += iEncoding;
@@ -509,7 +509,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       //aCacheLine->v8B(8 + i_Column * 8,wVal);
       
       // set n-byte data for column value
-      aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+      //aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       i_CacheOffset += iEncoding;
@@ -539,7 +539,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       //aCacheLine->v8B(8 + i_Column * 8,wVal);
       
       // set n-byte data for column value
-      aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+      //aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       i_CacheOffset += iEncoding;
@@ -565,7 +565,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       i8 iEncoding;
       wEncoded.m_iI8 = RowEncoding::wEncodeVch(pColumn,aDatum,iEncoding,aCacheLine,i_CacheOffset);
 
-      aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+      //aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
       //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
       
       i_CacheOffset += iEncoding;
@@ -606,7 +606,9 @@ w8 RowEncoding::wEncodeBcd(Column* pColumn,byte* aDatum, i8& iEncoding,
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
 
-  
+  // set n-byte data for column value
+  aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+
   
   
 
@@ -664,7 +666,9 @@ w8 RowEncoding::wEncodeDte(Column* pColumn,byte* aDatum, i8& iEncoding,
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
-  
+  // set n-byte data for column value
+  aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+
   
   
   
@@ -691,7 +695,9 @@ w8 RowEncoding::wEncodeFlt(Column* pColumn,byte* aDatum, i8& iEncoding,
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
-  
+  // set n-byte data for column value
+  aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+
   
   
   
@@ -718,7 +724,9 @@ w8 RowEncoding::wEncodeInt(Column* pColumn,byte* aDatum, i8& iEncoding,
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
-  
+  // set n-byte data for column value
+  aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+
   
   
   
@@ -745,7 +753,9 @@ w8 RowEncoding::wEncodeIvl(Column* pColumn,byte* aDatum, i8& iEncoding,
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
-  
+  // set n-byte data for column value
+  aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+
   
   
   
@@ -776,7 +786,9 @@ w8 RowEncoding::wEncodeTme(Column* pColumn,byte* aDatum, i8& iEncoding,
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
-  
+  // set n-byte data for column value
+  aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+
   
   
   
@@ -807,7 +819,9 @@ w8 RowEncoding::wEncodeTsp(Column* pColumn,byte* aDatum, i8& iEncoding,
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
-  
+  // set n-byte data for column value
+  aCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+
   
   
   
@@ -836,7 +850,9 @@ w8 RowEncoding::wEncodeVch(Column* pColumn,byte* aDatum, i8& iEncoding,
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
-  
+  // set n-byte data for column value
+  aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+
   
   
   
