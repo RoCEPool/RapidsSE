@@ -350,7 +350,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       WordView wEncoded;
       i8 iEncoding;
-      RowEncoding::iEncode(pColumn,aDatum,wEncoded,iEncoding);
+      wEncoded.m_iI8 = RowEncoding::wEncode(pColumn,aDatum,iEncoding);
       
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
@@ -379,7 +379,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       WordView wEncoded;
       i8 iEncoding;
-      RowEncoding::iEncode(pColumn,aDatum,wEncoded,iEncoding);
+      wEncoded.m_iI8 = RowEncoding::wEncode(pColumn,aDatum,iEncoding);
 
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
@@ -400,7 +400,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       WordView wEncoded;
       i8 iEncoding;
-      RowEncoding::iEncode(pColumn,aDatum,wEncoded,iEncoding);
+      wEncoded.m_iI8 = RowEncoding::wEncode(pColumn,aDatum,iEncoding);
 
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
@@ -436,7 +436,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       WordView wEncoded;
       i8 iEncoding;
-      RowEncoding::iEncode(pColumn,aDatum,wEncoded,iEncoding);
+      wEncoded.m_iI8 = RowEncoding::wEncode(pColumn,aDatum,iEncoding);
 
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
@@ -466,7 +466,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       WordView wEncoded;
       i8 iEncoding;
-      RowEncoding::iEncode(pColumn,aDatum,wEncoded,iEncoding);
+      wEncoded.m_iI8 = RowEncoding::wEncode(pColumn,aDatum,iEncoding);
 
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
@@ -496,7 +496,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       WordView wEncoded;
       i8 iEncoding;
-      RowEncoding::iEncode(pColumn,aDatum,wEncoded,iEncoding);
+      wEncoded.m_iI8 = RowEncoding::wEncode(pColumn,aDatum,iEncoding);
 
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
@@ -525,7 +525,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       WordView wEncoded;
       i8 iEncoding;
-      RowEncoding::iEncode(pColumn,aDatum,wEncoded,iEncoding);
+      wEncoded.m_iI8 = RowEncoding::wEncode(pColumn,aDatum,iEncoding);
 
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
@@ -559,7 +559,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
       
       WordView wEncoded;
       i8 iEncoding;
-      RowEncoding::iEncode(pColumn,aDatum,wEncoded,iEncoding);
+      wEncoded.m_iI8 = RowEncoding::wEncode(pColumn,aDatum,iEncoding);
 
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
@@ -593,7 +593,7 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
     
       WordView wEncoded;
       i8 iEncoding;
-      RowEncoding::iEncode(pColumn,aDatum,wEncoded,iEncoding);
+      wEncoded.m_iI8 = RowEncoding::wEncode(pColumn,aDatum,iEncoding);
 
       // set 4bit meta data for column value
       aCacheLine->v1N(i_Column,iEncoding);
@@ -623,11 +623,14 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
 /*----------------------------------------------------------------------------*/
 /* encode given datum before setting in cache line                            */
 /*----------------------------------------------------------------------------*/
-i8 RowEncoding::iEncode(Column* pColumn, byte* aDatum, WordView& wEncoded, i8& iEncoding)
+w8 RowEncoding::wEncode(Column* pColumn, byte* aDatum, i8& iEncoding)
 {
   eDM eDatum = pColumn->eDatumType();
   
   w8 wVal = *(i8*)aDatum;
+  
+  WordView wEncoded;
+  wEncoded.m_wWord = wVal;
   
   switch (eDatum) {
       
@@ -706,7 +709,7 @@ i8 RowEncoding::iEncode(Column* pColumn, byte* aDatum, WordView& wEncoded, i8& i
       NEVER_REACH;
   }
   
-  return iEncoding;
+  return wEncoded.m_wWord;
 }
 
 /*----------------------------------------------------------------------------*/
