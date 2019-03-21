@@ -21,11 +21,7 @@ namespace Data
     Index* m_pIndex;               // index this buffer belongs to
     i8     m_iPartitionNo;         // partition no this buffer belongs to
   
-    //! create a class for these 4
-    i8     m_nRows;                // no of rows
-    i8     m_iForwardFree;         // next forward free entry in the cacheLine
-    i8     m_iBackwardFree;        // next backward free entry in the cacheLine
-    CacheLine  m_xRow[C_MAX_ROWS];    // cache line aligned rows
+    TrayNL_t<CN_NONE,CacheLine,C_MAX_ROWS> m_xRowTray;  // tray of rows
   
     RowBuffer* m_pNextBuffer;      // next buffer
     RowBuffer* m_pPrevBuffer;      // previous buffer

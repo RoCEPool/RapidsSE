@@ -66,14 +66,12 @@ RowBuffer::RowBuffer(void)
   m_iBufferNo     = *nPoolBufferNo();
   m_pIndex        = nullptr;
   m_iPartitionNo  = -1;
-  m_nRows         = 0;
-  m_iForwardFree  = 0;
-  m_iBackwardFree = C_MAX_ROWS - 1;
+  //m_xCacheLine;
   m_pNextBuffer   = nullptr;
   m_pPrevBuffer   = nullptr;
   
   for (i8 iIndex = 0 ; iIndex < C_MAX_ROWS; iIndex++)
-    m_xRow[iIndex].vSetAll(0);
+    m_xRowTray.aGet(iIndex)->vSetAll(0);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
@@ -122,14 +120,14 @@ void RowBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
     do {
       
       iBuffers++;
-      iRows += (pNextBuffer->m_nRows);
+      iRows += (pNextBuffer->nRowCount());
       
       if (bDetailed)
         sAnalysis.vCatSprint("row: (%s, %lld, %5lld, %lld )\n"_Stz,
                              gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
                              pNextBuffer->m_iPartitionNo,
                              iBuffers,
-                             pNextBuffer->m_nRows);
+                             pNextBuffer->nRowCount());
       
       pNextBuffer = pNextBuffer->pNextBuffer();
     } while (pNextBuffer);
@@ -152,11 +150,11 @@ CacheLine* RowBuffer::aAllotRow(i8 nBytes)
   if ( ! bHasSpace(nBytes))
     return nullptr;
   
-  i8 iRowNo = m_iForwardFree++;
-  m_nRows++;
+  i8 iCacheLine = m_xRowTray.iAllotHead();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  return &m_xRow[iRowNo];
+  
+  return m_xRowTray.aGet(iCacheLine);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -211,9 +209,6 @@ void RowBuffer::vBufferCount(i8& nBuffers)
   nBuffers++;
   
   while (pNextBuffer) {
-    ASSERT(pNextBuffer->iBufferHeight() == 0);
-    
-    //EntryBuffer* pThisBuffer = pNextBuffer;
     pNextBuffer = pNextBuffer->pNextBuffer();
     nBuffers++;
   }
@@ -257,12 +252,12 @@ bool RowBuffer::bHasSpace(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  i8 nFreeCacheLines = (C_MAX_ROWS - m_iForwardFree) + (C_MAX_ROWS - m_iBackwardFree - 1);
+  i8 nFreeCacheLines = m_xRowTray.nFree();
   i8 nFreeBytes = nFreeCacheLines * C_BYTES_PER_CACHE_LINE;
   
   if (gpAttachMap->m_nIndexEntries > 0) {
     // has space calculation based on no of entries
-    if (m_nRows >= gpAttachMap->m_nIndexEntries)
+    if (nRowCount() >= gpAttachMap->m_nIndexEntries)
       return false;
     else
       return true;
@@ -381,7 +376,7 @@ CacheLine* RowBuffer::pRow(i8 iRowNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  return &m_xRow[iRowNo];
+  return m_xRowTray.aGet(iRowNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -391,7 +386,7 @@ i8 RowBuffer::nRowCount(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  return m_nRows;
+  return m_xRowTray.nHeads();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -460,7 +455,7 @@ void RowBuffer::vShowRow(i8 iRowNo)
   
 #ifdef WITH_ROWBUFFER
   for (i8 iCol = 0; iCol < pColumnVec->nItems() - 1; iCol++) {
-    CacheLine* aRowCacheLine = &m_xRow[iRowNo];
+    CacheLine* aRowCacheLine = m_xRowTray.aGet(iRowNo);
     //w8 wVal = RowEncoding::wDecode(pColumnVec->pGet(iCol), aRowCacheLine);
     //vTrace("%lld "_Stz, wVal);
     RowEncoding::vPrint(pColumnVec->pGet(iCol),aRowCacheLine);
@@ -476,9 +471,11 @@ void RowBuffer::vShow(Item* aMarkEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  vTrace("RowBuffer: %p (buffer %lld): rows: %lld forwardFree: %lld backwardFree: %lld free: %lld\n"_Stz,
-         this,m_iBufferNo,m_nRows,m_iForwardFree,m_iBackwardFree,
-         (C_MAX_ROWS - m_iForwardFree) + (C_MAX_ROWS - m_iBackwardFree - 1));
+  i8 nRows = nRowCount();
+  
+  vTrace("RowBuffer: %p (buffer %lld): rows: %lld headItems: %lld tailItems: %lld free: %lld\n"_Stz,
+         this,m_iBufferNo,nRows,m_xRowTray.nHeads(),m_xRowTray.nTails(),
+         m_xRowTray.nFree());
   
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
          m_pPrevBuffer,m_pNextBuffer);
@@ -492,7 +489,7 @@ void RowBuffer::vShow(Item* aMarkEntry)
   vTrace("\n"_Stz);
   vTrace("Rows (by cacheLine):\n"_Stz);
   
-  for (i8 iIndex = 0; iIndex < m_nRows; iIndex++)
+  for (i8 iIndex = 0; iIndex < nRows; iIndex++)
     vShowRow(iIndex);
   
   vTrace("\n"_Stz);
