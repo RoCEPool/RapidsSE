@@ -149,15 +149,33 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
     return;
   
   switch (eDatum) {
-    case DM_BCD: vEncodeBcd(pColumn,aDatum,aCacheLine,i_CacheOffset); return;
-    case DM_BOL: vEncodeBol(pColumn,aDatum,aCacheLine,i_CacheOffset); return;
-    case DM_DTE: vEncodeDte(pColumn,aDatum,aCacheLine,i_CacheOffset); return;
-    case DM_FLT: vEncodeFlt(pColumn,aDatum,aCacheLine,i_CacheOffset); return;
-    case DM_INT: vEncodeInt(pColumn,aDatum,aCacheLine,i_CacheOffset); return;
-    case DM_IVL: vEncodeIvl(pColumn,aDatum,aCacheLine,i_CacheOffset); return;
-    case DM_TME: vEncodeTme(pColumn,aDatum,aCacheLine,i_CacheOffset); return;
-    case DM_TSP: vEncodeTsp(pColumn,aDatum,aCacheLine,i_CacheOffset); return;
-    case DM_VCH: vEncodeVch(pColumn,aDatum,aCacheLine,i_CacheOffset); return;
+    case DM_BCD:
+      vEncodeBcd(pColumn,aDatum,aCacheLine,i_CacheOffset,nLinesUsed);
+      return;
+    case DM_BOL:
+      vEncodeBol(pColumn,aDatum,aCacheLine,i_CacheOffset,nLinesUsed);
+      return;
+    case DM_DTE:
+      vEncodeDte(pColumn,aDatum,aCacheLine,i_CacheOffset,nLinesUsed);
+      return;
+    case DM_FLT:
+      vEncodeFlt(pColumn,aDatum,aCacheLine,i_CacheOffset,nLinesUsed);
+      return;
+    case DM_INT:
+      vEncodeInt(pColumn,aDatum,aCacheLine,i_CacheOffset,nLinesUsed);
+      return;
+    case DM_IVL:
+      vEncodeIvl(pColumn,aDatum,aCacheLine,i_CacheOffset,nLinesUsed);
+      return;
+    case DM_TME:
+      vEncodeTme(pColumn,aDatum,aCacheLine,i_CacheOffset,nLinesUsed);
+      return;
+    case DM_TSP:
+      vEncodeTsp(pColumn,aDatum,aCacheLine,i_CacheOffset,nLinesUsed);
+      return;
+    case DM_VCH:
+      vEncodeVch(pColumn,aDatum,aCacheLine,i_CacheOffset,nLinesUsed);
+      return;
     default:
       NEVER_REACH;
   }
@@ -466,7 +484,7 @@ w8 RowEncoding::wDecodeVch(Column* pColumn, CacheLine* aCacheLine)
 /* encode decimal                                                             */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vEncodeBcd(Column* pColumn,byte* aDatum,
-                             CacheLine* aCacheLine, i8& i_CacheOffset)
+                             CacheLine* aCacheLine, i8& i_CacheOffset, i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)aDatum;
@@ -500,7 +518,7 @@ void RowEncoding::vEncodeBcd(Column* pColumn,byte* aDatum,
 /* encode boolean                                                             */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vEncodeBol(Column* pColumn,byte* aDatum,
-                             CacheLine* aCacheLine, i8& i_CacheOffset)
+                             CacheLine* aCacheLine, i8& i_CacheOffset, i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)aDatum;
@@ -533,7 +551,7 @@ void RowEncoding::vEncodeBol(Column* pColumn,byte* aDatum,
 /* encode date                                                                */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vEncodeDte(Column* pColumn,byte* aDatum,
-                             CacheLine* aCacheLine, i8& i_CacheOffset)
+                             CacheLine* aCacheLine, i8& i_CacheOffset, i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)aDatum;
@@ -569,7 +587,7 @@ void RowEncoding::vEncodeDte(Column* pColumn,byte* aDatum,
 /* encode float                                                               */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vEncodeFlt(Column* pColumn,byte* aDatum,
-                             CacheLine* aCacheLine, i8& i_CacheOffset)
+                             CacheLine* aCacheLine, i8& i_CacheOffset, i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)aDatum;
@@ -603,7 +621,7 @@ void RowEncoding::vEncodeFlt(Column* pColumn,byte* aDatum,
 /* encode integer                                                             */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vEncodeInt(Column* pColumn,byte* aDatum,
-                             CacheLine* aCacheLine, i8& i_CacheOffset)
+                             CacheLine* aCacheLine, i8& i_CacheOffset, i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)aDatum;
@@ -637,7 +655,7 @@ void RowEncoding::vEncodeInt(Column* pColumn,byte* aDatum,
 /* encode interval                                                            */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vEncodeIvl(Column* pColumn,byte* aDatum,
-                             CacheLine* aCacheLine, i8& i_CacheOffset)
+                             CacheLine* aCacheLine, i8& i_CacheOffset, i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)aDatum;
@@ -671,7 +689,7 @@ void RowEncoding::vEncodeIvl(Column* pColumn,byte* aDatum,
 /* encode time                                                                */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vEncodeTme(Column* pColumn,byte* aDatum,
-                             CacheLine* aCacheLine, i8& i_CacheOffset)
+                             CacheLine* aCacheLine, i8& i_CacheOffset, i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)aDatum;
@@ -707,7 +725,7 @@ void RowEncoding::vEncodeTme(Column* pColumn,byte* aDatum,
 /* encode timestamp                                                           */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vEncodeTsp(Column* pColumn,byte* aDatum,
-                             CacheLine* aCacheLine, i8& i_CacheOffset)
+                             CacheLine* aCacheLine, i8& i_CacheOffset, i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)aDatum;
@@ -743,7 +761,7 @@ void RowEncoding::vEncodeTsp(Column* pColumn,byte* aDatum,
 /* encode varchar                                                             */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vEncodeVch(Column* pColumn,byte* aDatum,
-                             CacheLine* aCacheLine, i8& i_CacheOffset)
+                             CacheLine* aCacheLine, i8& i_CacheOffset, i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)aDatum;
