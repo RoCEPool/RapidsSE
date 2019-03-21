@@ -22,7 +22,7 @@ namespace Data
     static void vEncodeBegin(RowParts& oRowParts, i8& i_CacheOffset);
   
     static void vEncodeDatum(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                             i8& i_CacheOffset, i8& nLinesUsed);
+                             i8& i_CacheOffset);
   
     static void vPrint(Column* pColumn, CacheLine* aCacheLine);
   
@@ -38,23 +38,23 @@ namespace Data
     static w8 wDecodeVch(Column* pColumn, CacheLine* aCacheLine);
   
     static void vEncodeBcd(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                           i8& i_CacheOffset, i8& nLinesUsed);
+                           i8& i_CacheOffset);
     static void vEncodeBol(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                           i8& i_CacheOffset, i8& nLinesUsed);
+                           i8& i_CacheOffset);
     static void vEncodeDte(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                           i8& i_CacheOffset, i8& nLinesUsed);
+                           i8& i_CacheOffset);
     static void vEncodeFlt(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                           i8& i_CacheOffset, i8& nLinesUsed);
+                           i8& i_CacheOffset);
     static void vEncodeInt(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                           i8& i_CacheOffset, i8& nLinesUsed);
+                           i8& i_CacheOffset);
     static void vEncodeIvl(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                           i8& i_CacheOffset, i8& nLinesUsed);
+                           i8& i_CacheOffset);
     static void vEncodeTme(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                           i8& i_CacheOffset, i8& nLinesUsed);
+                           i8& i_CacheOffset);
     static void vEncodeTsp(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                           i8& i_CacheOffset, i8& nLinesUsed);
+                           i8& i_CacheOffset);
     static void vEncodeVch(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                           i8& i_CacheOffset, i8& nLinesUsed);
+                           i8& i_CacheOffset);
   
     static i8 iDteDecoding(WordView& wTspView, i8 iEncoding);
     static i8 iTmeDecoding(WordView& wTspView, i8 iEncoding);

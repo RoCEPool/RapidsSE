@@ -34,7 +34,6 @@ JobRow::JobRow(void)
   
 #ifdef WITH_ROWBUFFER
   //m_oRowParts;
-  m_nLinesUsed = 0;
 #endif
 }
 
@@ -77,7 +76,6 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 {
   bBlankLine = false;
-  m_nLinesUsed = 0;
   
   bool bValidDatum;
   i8 iInt = 0;
@@ -110,9 +108,6 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   i8 i_CacheOffset = C_UNKNOWN;
   RowEncoding::vEncodeBegin(m_oRowParts,i_CacheOffset);
   
-  // use at least one cache line
-  m_nLinesUsed = 1;
-
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     Column* pColumn = pColVec->pGet(i_Column);
@@ -150,10 +145,10 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     
     if (eDatum == DM_INT || eDatum == DM_BCD)
       RowEncoding::vEncodeDatum(pColumn,(byte*)&iInt,m_oRowParts,
-                                i_CacheOffset,m_nLinesUsed);
+                                i_CacheOffset);
     else
       RowEncoding::vEncodeDatum(pColumn,(byte*)sDst.aChar(),m_oRowParts,
-                                i_CacheOffset,m_nLinesUsed);
+                                i_CacheOffset);
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     //RowEncoding::vPrint(pColumn,aCacheLine);
 

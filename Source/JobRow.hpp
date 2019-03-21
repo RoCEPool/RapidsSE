@@ -10,9 +10,7 @@ namespace Jobs
   {
   public:
     Table*      m_pTable;       // table pointer
-#ifdef WITH_ROWBUFFER
-    i8          m_nLinesUsed;   // number of lines used
-  
+#ifdef WITH_ROWBUFFER  
     RowParts    m_oRowParts;    // tray of row parts
 #else
     s48K        m_aRow;         // formatted row
