@@ -37,7 +37,7 @@ using namespace Structures;
 #include "SkipListNL.hpp"
 
 #include "VectorNL_t.hpp"
-
+#include "VecDblNL_t.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
