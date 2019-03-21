@@ -569,10 +569,10 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   while (aLowerEntry) {
     
     // get the dataRow from the hidden index
-    Item* aDataRowEntry = (Item*)_aItem(aLowerEntry->aRefdItem());
+    //Item* aDataRowEntry = (Item*)_aItem(aLowerEntry->aRefdItem());
     
     // insert row from entry in fetchBuffer
-    if ( ! Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows)) {
+    if ( ! Task::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows)) {
       
       // Buffer is Full;
       // put this tempEntryBuffer in session bufferQueue
@@ -582,7 +582,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
       pFetchBuffer = new FetchBuffer(pTable, iSlot);
       
       // insert row from entry in fetchBuffer
-      bool bResult = Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows);
+      bool bResult = Task::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows);
       RASSERT(bResult);
     }
     
