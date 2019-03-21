@@ -556,21 +556,6 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // loop till we get an entry
-//  while ( ! aLowerEntry) {
-//    if (aLowerEntryBuffer && aLowerEntryBuffer->pNextBuffer()) {
-//
-//      // move to the next buffer
-//      aLowerEntryBuffer = aLowerEntryBuffer->pNextBuffer();
-//
-//      // position in the index buffer at the lower key
-//      aLowerEntry = aLowerEntryBuffer->aPositionQuery(xKeyWrkLower, eLowerRelnOp);
-//    }
-//    else
-//      break;
-//  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get a lower entry ?
   if ( ! aLowerEntry) {
     goto LastBuffer;
@@ -588,8 +573,6 @@ void Step::vIndexLowerBound(MP_Task mpTask)
       
       // Buffer is Full;
       // put this tempEntryBuffer in session bufferQueue
-      //Q: xVariable = (Object*)pFetchBuffer;
-      //Q: pQueue->bAppend(xVariable.aNestedValue());
       pQueue->vAppend(pFetchBuffer);
 
       // create another fetchBuffer for the results
@@ -626,8 +609,6 @@ LastBuffer:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
-  //Q: xVariable = (Object*)pFetchBuffer;
-  //Q: pQueue->bAppend(xVariable.aNestedValue());
   pQueue->vAppend(pFetchBuffer);
 
   EXIT();
@@ -782,10 +763,6 @@ void Step::vIndexRange(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if upperKey > lowerKey
-//  bIsEqual = false;
-//  bBefore = xKeyWrkUpper.aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkLower.aKey(),
-//                                               pIndex->pIdxColVec(), 1,
-//                                               bIsEqual, RO_LESS_THAN);
   eKC eCompare = KeyData::eCompare(xKeyWrkUpper, xKeyWrkLower);
   
   if (eCompare == KC_BEFORE) {
@@ -808,7 +785,6 @@ void Step::vIndexRange(MP_Task mpTask)
   // did we get an entry buffer ?
   if (aLowerEntryBuffer) {
     // position in the index buffer at the lower key
-    //aLowerEntry = aLowerEntryBuffer->aPositionQuery(xKeyWrkLower, eLowerRelnOp);
     aLowerEntry = aLowerEntryBuffer->pPositionPriorEntry(xKeyWrkLower);
     
     if (eLowerRelnOp == RO_GREATER_THAN) {
@@ -820,21 +796,6 @@ void Step::vIndexRange(MP_Task mpTask)
     }
     
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // loop till we get an entry
-//  while ( ! aLowerEntry) {
-//    if (aLowerEntryBuffer && aLowerEntryBuffer->pNextBuffer()) {
-//
-//      // move to the next buffer
-//      aLowerEntryBuffer = aLowerEntryBuffer->pNextBuffer();
-//
-//      // position in the index buffer at the lower key
-//      aLowerEntry = aLowerEntryBuffer->aPositionQuery(xKeyWrkLower, eLowerRelnOp);
-//    }
-//    else
-//      break;
-//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we find a lower entry ?
@@ -858,59 +819,7 @@ void Step::vIndexRange(MP_Task mpTask)
       aUpperEntry = EntryBuffer::pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
     }
   }
- /*
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // loop till we get an upper entry
-  while ( ! aUpperEntry) {
-    if ( aUpperEntryBuffer && aUpperEntryBuffer->pNextBuffer() ) {
-      
-      // move to the next buffer
-      aUpperEntryBuffer = aUpperEntryBuffer->pNextBuffer();
-      
-      // position in the index buffer at the upper key
-      aUpperEntry = aUpperEntryBuffer->aPositionQuery(xKeyWrkUpper, eUpperRelnOp);
-    }
-    else
-      break;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now find the correct upper entry
-  while (aUpperEntry) {
-    
-    //aUpperEntry->vShow(0,pIndex,true);
-    
-//    bool bIsEqual = false;
-//    bool bBefore = _aKeyData(aUpperEntry->aDataArea())
-//                         ->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
-//                                         pIndex->pIdxColVec(), 1,
-//                                         bIsEqual, eUpperRelnOp);
-//
-//    if (! bBefore)
-//      break;
-    
-    eKC eCompare = KeyData::eCompare(aUpperEntry, xKeyWrkUpper);
-    
-    if (eCompare == KC_AFTER)
-      break;
-    
-    if (eCompare == KC_SAME && eUpperRelnOp == RO_LESS_THAN)
-      break;
-    
-    // move to next entry in the buffer
-    aUpperEntry = aUpperEntryBuffer->aNextEntry(aUpperEntry, 0);
-    
-    if ( ! aUpperEntry ) {
-      // get next buffer from the current indexBuffer
-      aUpperEntryBuffer = aUpperEntryBuffer->pNextBuffer();
-      
-      if ( aUpperEntryBuffer )
-        aUpperEntry = aUpperEntryBuffer->aLeadEntry();
-    }
-  }
-  
-  //aUpperEntry->vShow(0,pIndex,true);
-*/
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru the buffers till no more entries starting from
   while (aLowerEntry) {
@@ -935,8 +844,6 @@ void Step::vIndexRange(MP_Task mpTask)
         
         // Buffer is Full
         // put this fetchBuffer in session bufferQueue
-        //Q: xVariable = (Object*)pFetchBuffer;
-        //Q: pQueue->bAppend(xVariable.aNestedValue());
         pQueue->vAppend(pFetchBuffer);
 
         // create another fetchBbuffer for the results
@@ -982,8 +889,6 @@ LastBuffer:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
-  //Q: xVariable = (Object*)pFetchBuffer;
-  //Q: pQueue->bAppend(xVariable.aNestedValue());
   pQueue->vAppend(pFetchBuffer);
 
   EXIT();
@@ -1044,8 +949,6 @@ void Step::vIndexScan(MP_Task mpTask)
     pFetchBuffer->vIsLast(true);
     
     // put the buffer in the session bufferQueue
-    //Q: xVariable = (Object*)pFetchBuffer;
-    //Q: pQueue->bAppend(xVariable.aNestedValue());
     pQueue->vAppend(pFetchBuffer);
     
     EXIT();
@@ -1068,8 +971,6 @@ void Step::vIndexScan(MP_Task mpTask)
         
         // Buffer is Full
         // put this FetchBuffer in session bufferQueue
-        //Q: xVariable = (Object*)pFetchBuffer;
-        //Q: pQueue->bAppend(xVariable.aNestedValue());
         pQueue->vAppend(pFetchBuffer);
         
         // create another FetchBuffer for the results
@@ -1096,8 +997,6 @@ void Step::vIndexScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
-  //Q: xVariable = (Object*)pFetchBuffer;
-  //Q: pQueue->bAppend(xVariable.aNestedValue());
   pQueue->vAppend(pFetchBuffer);
   
   EXIT();
@@ -1154,8 +1053,6 @@ void Step::vIndexScan(MP_Task mpTask)
     pFetchBuffer->vIsLast(true);
     
     // put the buffer in the session bufferQueue
-    //Q: xVariable = (Object*)pFetchBuffer;
-    //Q: pQueue->bAppend(xVariable.aNestedValue());
     pQueue->vAppend(pFetchBuffer);
 
     EXIT();
@@ -1194,8 +1091,6 @@ void Step::vIndexScan(MP_Task mpTask)
       
       // Buffer is Full
       // put this FetchBuffer in session bufferQueue
-      //Q: xVariable = (Object*)pFetchBuffer;
-      //Q: pQueue->bAppend(xVariable.aNestedValue());
       pQueue->vAppend(pFetchBuffer);
 
       // create another FetchBuffer for the results
@@ -1214,11 +1109,6 @@ void Step::vIndexScan(MP_Task mpTask)
     // did we find an entry ?
     if (! aItem) {
       continue;
-//      // get next buffer from the current indexBuffer
-//      pEntryBuffer = pEntryBuffer->pNextBuffer();
-//
-//      if (pEntryBuffer)
-//        aItem = pEntryBuffer->aLeadEntry();
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1233,8 +1123,6 @@ void Step::vIndexScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
-  //Q: xVariable = (Object*)pFetchBuffer;
-  //Q: pQueue->bAppend(xVariable.aNestedValue());
   pQueue->vAppend(pFetchBuffer);
 
   EXIT();
@@ -1500,58 +1388,6 @@ void Step::vIndexUpperBound(MP_Task mpTask)
       aUpperEntry = EntryBuffer::pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
     }
   }
-/*
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // did we get an entry buffer ?
-  if (aUpperEntryBuffer) {
-    aUpperEntry = aUpperEntryBuffer->aPositionQuery(xKeyWrkUpper, eUpperRelnOp);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // loop till we get an upper entry
-  while ( ! aUpperEntry) {
-    if ( aUpperEntryBuffer && aUpperEntryBuffer->pNextBuffer() ) {
-      
-      // move to the next buffer
-      aUpperEntryBuffer = aUpperEntryBuffer->pNextBuffer();
-      
-      // position in the index buffer at the upper key
-      aUpperEntry = aUpperEntryBuffer->aPositionQuery(xKeyWrkUpper, eUpperRelnOp);
-    }
-    else
-      break;
-  }
-  
-  //aUpperEntryBuffer->vShow();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now find the correct upper entry
-  while (aUpperEntry) {
-    
-    //aUpperEntry->vShow(0,pIndex,true);
-    
-    bIsEqual = false;
-    
-    eKC eCompare = KeyData::eCompare(aUpperEntry, xKeyWrkUpper);
-    
-    if (eUpperRelnOp == RO_LESS_THAN && eCompare != KC_BEFORE)
-      break;
-    
-    if (eUpperRelnOp == RO_LESS_EQUAL && eCompare == KC_AFTER)
-      break;
-    
-    // move to next entry in the buffer
-    aUpperEntry = aUpperEntryBuffer->aNextEntry(aUpperEntry, 0);
-    
-    if ( ! aUpperEntry ) {
-      // get next buffer from the current indexBuffer
-      aUpperEntryBuffer = aUpperEntryBuffer->pNextBuffer();
-      
-      if ( aUpperEntryBuffer )
-        aUpperEntry = aUpperEntryBuffer->aLeadEntry();
-    }
-  }
-  */
   
   //aUpperEntry->vShow(0,pIndex,true);
   
@@ -1572,8 +1408,6 @@ void Step::vIndexUpperBound(MP_Task mpTask)
         
         // Buffer is full
         // put this tempEntryBuffer in session bufferQueue
-        //Q: xVariable = (Object*)pFetchBuffer;
-        //Q: pQueue->bAppend(xVariable.aNestedValue());
         pQueue->vAppend(pFetchBuffer);
 
         // create another result buffer for the results
@@ -1614,8 +1448,6 @@ LastBuffer:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
-  //Q: xVariable = (Object*)pFetchBuffer;
-  //Q: pQueue->bAppend(xVariable.aNestedValue());
   pQueue->vAppend(pFetchBuffer);
 
   EXIT();
