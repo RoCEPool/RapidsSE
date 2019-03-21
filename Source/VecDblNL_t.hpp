@@ -9,9 +9,10 @@ namespace Structures
   class VecDblNL_t : public Object
   {
   protected:
-    u8     m_nItems;           // number of items currently in the vector
-    ITEM*  m_pItem[MAX_ITEMS]; // vector of items (proper objects)
-  
+    u8     m_nHeadItems;       // number of items in vec from the front
+    ITEM*  m_pItem[MAX_ITEMS]; // vector of items 
+    u8     m_nTailItems;       // number of items currently in the vector
+
     // must be last
     Footer m_xFooter;
 
@@ -94,7 +95,7 @@ VecDblNL_t<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::VecDblNL_t(void)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
-  m_nItems = 0;
+  m_nHeadItems = 0;
   
   SUB nItemNo;
   for (nItemNo = (i8)0; nItemNo < MAX_ITEMS; nItemNo++)
@@ -119,7 +120,7 @@ VecDblNL_t<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::~VecDblNL_t(void) noexcept(false)
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
   SUB nItemNo;
-  for (nItemNo = (i8)0; (i8)nItemNo < (i8)m_nItems; nItemNo++) {
+  for (nItemNo = (i8)0; (i8)nItemNo < (i8)m_nHeadItems; nItemNo++) {
     ITEM* pItem = m_pItem[nItemNo];
     delete pItem;
   }
@@ -151,12 +152,12 @@ void VecDblNL_t<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vAdd(ITEM* pItem)
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
   // check we have a free slot
-  ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS);
+  ASSERT(m_nHeadItems >= 0 && m_nHeadItems < MAX_ITEMS);
   
   // get item number
-  SUB nItemNo = m_nItems++;
+  SUB nItemNo = m_nHeadItems++;
   
-  ASSERT(m_nItems > 0 && m_nItems <= MAX_ITEMS);
+  ASSERT(m_nHeadItems > 0 && m_nHeadItems <= MAX_ITEMS);
   
   // there shouldnt already be a item
   ASSERT( ! m_pItem[nItemNo] );
@@ -173,10 +174,10 @@ void VecDblNL_t<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vClear(void)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
-  for (SUB nItemNo = 0; nItemNo < m_nItems; nItemNo++)
+  for (SUB nItemNo = 0; nItemNo < m_nHeadItems; nItemNo++)
     m_pItem[nItemNo] = nullptr;
   
-  m_nItems = 0;
+  m_nHeadItems = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -189,7 +190,7 @@ bool VecDblNL_t<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::bContains(ITEM* pItem)
   
   SUB nItemNo;
   
-  for (nItemNo = 0; nItemNo < m_nItems; nItemNo++)
+  for (nItemNo = 0; nItemNo < m_nHeadItems; nItemNo++)
     if (m_pItem[nItemNo] == pItem)
       return true;
 
@@ -205,11 +206,11 @@ void VecDblNL_t<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vInsert(ITEM* pItem)
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
   // check we have a free slot
-  ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS - 1);
+  ASSERT(m_nHeadItems >= 0 && m_nHeadItems < MAX_ITEMS - 1);
   
   // get item number
-  SUB nItemNo = m_nItems++;
-  ASSERT(m_nItems > 0 && m_nItems < MAX_ITEMS);
+  SUB nItemNo = m_nHeadItems++;
+  ASSERT(m_nHeadItems > 0 && m_nHeadItems < MAX_ITEMS);
   
   // there shouldnt already be a item
   ASSERT( ! m_pItem[nItemNo] );
@@ -236,9 +237,9 @@ i8 VecDblNL_t<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::nItems(void)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
-  ASSERT(m_nItems >= 0 && m_nItems <= MAX_ITEMS);
+  ASSERT(m_nHeadItems >= 0 && m_nHeadItems <= MAX_ITEMS);
   
-  return m_nItems;
+  return m_nHeadItems;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -249,7 +250,7 @@ ITEM* VecDblNL_t<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::pGet(SUB nItemNo)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
-  ASSERT(nItemNo >= 0 && nItemNo < m_nItems);
+  ASSERT(nItemNo >= 0 && nItemNo < m_nHeadItems);
   
   ITEM* pItem = m_pItem[nItemNo];
   
@@ -265,12 +266,12 @@ void VecDblNL_t<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vRemove(ITEM* pItem)
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
   // check we have items
-  ASSERT(m_nItems >= 0);
+  ASSERT(m_nHeadItems >= 0);
   
   // find the item
   SUB nItemNo;
   
-  for (nItemNo = 0; nItemNo < m_nItems; nItemNo++) {
+  for (nItemNo = 0; nItemNo < m_nHeadItems; nItemNo++) {
     if (m_pItem[nItemNo] == pItem)
       break;
   }
@@ -279,24 +280,24 @@ void VecDblNL_t<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vRemove(ITEM* pItem)
   ASSERT(pItem == m_pItem[nItemNo] );
   
   // reduce no of items
-  m_nItems--;
+  m_nHeadItems--;
   
   m_pItem[nItemNo] = nullptr;
   
   // last item removed, nothing to do
-  if (nItemNo == m_nItems)
+  if (nItemNo == m_nHeadItems)
     return;
   
   // move array up
   char* aSrc = reinterpret_cast<char*>(&m_pItem[nItemNo+1]);
   char* aDst = reinterpret_cast<char*>(&m_pItem[nItemNo]);
-  char* aLst = aAdd<char*>(&m_pItem[m_nItems-1],sizeof(ITEM*));
+  char* aLst = aAdd<char*>(&m_pItem[m_nHeadItems-1],sizeof(ITEM*));
   i8 nBytes = nSub(aLst,aDst);
   
   MemLib::vMove(aDst,aSrc,nBytes,VEC_CN);
   
   // clear the last item
-  m_pItem[m_nItems] = nullptr;
+  m_pItem[m_nHeadItems] = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

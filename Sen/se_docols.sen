@@ -20,17 +20,17 @@
   "J" utility::schemaTest
 ;
 
-: test0 test::test0 ;
-: test1 test::test1 ;
-: test2 test::test2 ;
-: test3 test::test3 ;
-: test4 test::test4 ;
-: test5 test::test5 ;
-: test6 test::test6 ;
-: test7 test::test7 ;
-: test8 test::test8 ;
-: test9 test::test9 ;
-: test10 test::test10 ;
+: test0 prompt test::test0 ;
+: test1 prompt test::test1 ;
+: test2 prompt test::test2 ;
+: test3 prompt test::test3 ;
+: test4 prompt test::test4 ;
+: test5 prompt test::test5 ;
+: test6 prompt test::test6 ;
+: test7 prompt test::test7 ;
+: test8 prompt test::test8 ;
+: test9 prompt test::test9 ;
+: test10 prompt test::test10 ;
 
 : llc test::test0 ;
 
