@@ -754,17 +754,25 @@ void RowEncoding::vEncodeVch(Column* pColumn,byte* aDatum,
   iEncoding = C_UNKNOWN;
   
   i8 iLen = StrLib::iLength((char*)aDatum);
-  RASSERT(iLen <= 8);
+  //RASSERT(iLen <= 8);
   
-  iEncoding = iLen;
+  if (iLen <= 8)
+    iEncoding = iLen;
+  else
+    iEncoding = MN_SHOCOL_2B;
   
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
   // set n-byte data for column value
-  aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
-  
-  i_CacheOffset += iEncoding;
+  if (iEncoding <= 8) {
+    aCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+    i_CacheOffset += iEncoding;
+  }
+  else {
+    // we would encode the shoco version of the string into a cache line
+    RASSERT(0);
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
