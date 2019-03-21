@@ -251,21 +251,21 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes,
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     
-    if (eDatumType == DM_INT ||
-        eDatumType == DM_BCD) {
-      //Datum::vSet(pColumn, (byte*)&iInt);
-      
-      RowEncoding::vEncode(pColumn,(byte*)&iInt,&xCacheLine,i_CacheOffset);
-      MemLib::vWordDump(&xCacheLine,sizeof(CacheLine));
-      RowEncoding::vPrint(pColumn,&xCacheLine);
-    }
-    else {
-      //Datum::vSet(pColumn, (byte*)aDst);
-      
-      RowEncoding::vEncode(pColumn,(byte*)aDst,&xCacheLine,i_CacheOffset);
-      MemLib::vWordDump(&xCacheLine,sizeof(CacheLine));
-      RowEncoding::vPrint(pColumn,&xCacheLine);
-    }
+//    if (eDatumType == DM_INT ||
+//        eDatumType == DM_BCD) {
+//      //Datum::vSet(pColumn, (byte*)&iInt);
+//      
+//      RowEncoding::vEncode(pColumn,(byte*)&iInt,&xCacheLine,i_CacheOffset);
+//      MemLib::vWordDump(&xCacheLine,sizeof(CacheLine));
+//      RowEncoding::vPrint(pColumn,&xCacheLine);
+//    }
+//    else {
+//      //Datum::vSet(pColumn, (byte*)aDst);
+//      
+//      RowEncoding::vEncode(pColumn,(byte*)aDst,&xCacheLine,i_CacheOffset);
+//      MemLib::vWordDump(&xCacheLine,sizeof(CacheLine));
+//      RowEncoding::vPrint(pColumn,&xCacheLine);
+//    }
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
