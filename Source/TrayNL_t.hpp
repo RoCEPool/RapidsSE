@@ -26,6 +26,7 @@ namespace Structures
 
     i8    iAllotHead(void);
     i8    iAllotTail(void);
+    i8    nFree(void);
     i8    nHeads(void);
     i8    nItems(void);
     ITEM* aGet(i8 i_Item);
@@ -150,6 +151,30 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::iAllotTail(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get total number of free items                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
+i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::nFree(void)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  i8 nFree = MAX_ITEMS - ( m_nHeadItems + m_nTailItems);
+  
+  return nFree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total number of head items                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
+i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::nHeads(void)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  return m_nHeadItems;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get total number of actual items                                           */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
@@ -190,7 +215,16 @@ void TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::vReset(void)
   MemLib::vZero(m_xItem,sizeof(m_xItem),TRAY_CN);
 }
 
-
+/*----------------------------------------------------------------------------*/
+/* get total number of tail items                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
+i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::nTails(void)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  return m_nTailItems;
+}
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
