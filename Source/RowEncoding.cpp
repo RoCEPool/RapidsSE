@@ -126,8 +126,11 @@ w8 RowEncoding::wDecode(Column* pColumn, CacheLine* aCacheLine)
 /*----------------------------------------------------------------------------*/
 /* begin encoding row into new cache line                                     */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeBegin(CacheLine* aCacheLine, i8& i_CacheOffset)
+void RowEncoding::vEncodeBegin(RowParts& oRowParts, i8& i_CacheOffset)
 {
+  i8 i_Head = oRowParts.iAllotHead();
+  CacheLine* aCacheLine = oRowParts.aGet(i_Head);
+  
   aCacheLine->vSetAll(0xFF);
   aCacheLine->v8B(0,0);
 

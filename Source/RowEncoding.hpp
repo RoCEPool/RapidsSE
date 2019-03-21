@@ -19,7 +19,7 @@ namespace Data
     
     static w8 wDecode(Column* pColumn, CacheLine* aCacheLine);
   
-    static void vEncodeBegin(CacheLine* aCacheLine, i8& i_CacheOffset);
+    static void vEncodeBegin(RowParts& oRowParts, i8& i_CacheOffset);
   
     static void vEncodeDatum(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                         CacheLine* xaCacheLine, i8& i_CacheOffset,
