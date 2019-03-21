@@ -197,6 +197,29 @@ void RowBuffer::vAssertRowBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return number of row buffers under this buffer                             */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vBufferCount(i8& nBuffers)
+{
+  RowBuffer* pNextBuffer = nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // hidden index ?
+  
+  RASSERT(m_pIndex->bIsHidden());
+  pNextBuffer = this->pNextBuffer();
+  nBuffers++;
+  
+  while (pNextBuffer) {
+    ASSERT(pNextBuffer->iBufferHeight() == 0);
+    
+    //EntryBuffer* pThisBuffer = pNextBuffer;
+    pNextBuffer = pNextBuffer->pNextBuffer();
+    nBuffers++;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop lock for write                                                        */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vDropWrite(void)

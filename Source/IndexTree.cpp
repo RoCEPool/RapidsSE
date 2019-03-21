@@ -890,6 +890,27 @@ Index* IndexTree::pIndex(void)
 /*----------------------------------------------------------------------------*/
 /* get the index buffers used                                                 */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_ROWBUFFER
+
+i8 IndexTree::nEntryBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  i8 nBufferCount = 0;
+  if (m_pIndex->bIsHidden()) {
+    if (m_pHiddenRootBuffer)
+      m_pHiddenRootBuffer->vBufferCount(nBufferCount);
+  }
+  else {
+    if (m_pRootBuffer)
+      m_pRootBuffer->vBufferCount(nBufferCount);
+  }
+  
+  return nBufferCount;
+}
+
+#else
+
 i8 IndexTree::nEntryBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
@@ -901,6 +922,7 @@ i8 IndexTree::nEntryBuffers(void)
   return nBufferCount;
 }
 
+#endif
 /*----------------------------------------------------------------------------*/
 /* insert entries from entryBuffer into this index at level 0                 */
 /*----------------------------------------------------------------------------*/
