@@ -24,13 +24,11 @@ namespace Structures
     TrayNL_t(void);
     ~TrayNL_t(void) noexcept(false);
 
-    ITEM*& operator [](i8 nItemNo);
-
     i8    iAllotHead(void);
     i8    iAllotTail(void);
     i8    nHeads(void);
     i8    nItems(void);
-    ITEM* aGet(i8 nItemNo);
+    ITEM* aGet(i8 i_Item);
     void  vReset(void);
     i8    nTails(void);
 
@@ -120,27 +118,44 @@ TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::~TrayNL_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* [] operator                                                                */
+/* allot head item                                                            */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
-ITEM*& TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::operator [](i8 nItemNo)
+i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::iAllotHead(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  //ASSERT(nItemNo >= 0 and nItemNo < MAX_ITEMS);
+  if (nItems() >= MAX_ITEMS)
+    return C_UNKNOWN;
   
-  return &m_xItem[nItemNo];
+  i8 i_Item = m_nHeadItems++;
+  
+  return i_Item;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of actual items                                                 */
+/* allot tail item                                                            */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
+i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::iAllotTail(void)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  if (nItems() >= MAX_ITEMS)
+    return C_UNKNOWN;
+
+  i8 i_Item = MAX_ITEMS - 1 - m_nTailItems++;
+  
+  return i_Item;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total number of actual items                                           */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
 i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::nItems(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
-  
-  ASSERT(m_nHeadItems >= 0 && m_nHeadItems <= MAX_ITEMS);
   
   i8 nItems = m_nHeadItems + m_nTailItems;
   
@@ -151,13 +166,13 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::nItems(void)
 /* get a specific item                                                        */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
-ITEM* TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::aGet(i8 nItemNo)
+ITEM* TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::aGet(i8 i_Item)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  ASSERT(nItemNo >= 0 && nItemNo < m_nHeadItems);
+  ASSERT(i_Item >= 0 && i_Item < MAX_ITEMS);
   
-  ITEM* aItem = &m_xItem[nItemNo];
+  ITEM* aItem = &m_xItem[i_Item];
   
   return aItem;
 }
