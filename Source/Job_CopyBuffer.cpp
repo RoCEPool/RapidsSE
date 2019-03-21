@@ -190,10 +190,7 @@ void Job_CopyBuffer::vCopy(void)
     bool bBlankLine;
     Stz* aData = aAdd<Stz*>(aRecord, 4);
     
-    bool bValid = m_pJob_SubInserter->bFormatRow(aData, uRecordLength,
-                                                 m_aRow,
-                                                 m_nRowBytes,
-                                                 bBlankLine);
+    bool bValid = bFormatRow(aData, uRecordLength, bBlankLine);
     
     // is the record invalid ?
     if (! bValid) {
