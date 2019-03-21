@@ -9,9 +9,9 @@ namespace Structures
   class TrayNL_t : public Object
   {
   protected:
-    u8     m_nHeadItems;       // number of items in vec from the front
-    u8     m_nTailItems;       // number of items currently in the vector
-    ITEM*  m_pItem[MAX_ITEMS]; // vector of items
+    u8 m_nHeadItems; // number of items from the head
+    u8 m_nTailItems; // number of items from the tail
+    ITEM m_xItem[MAX_ITEMS]; // set of items
 
     // must be last
     Footer m_xFooter;
@@ -28,8 +28,6 @@ namespace Structures
 
     i8    iAllotHead(void);
     i8    iAllotTail(void);
-
-    void  vClear(void);
     i8    nHeads(void);
     i8    nItems(void);
     ITEM* aGet(i8 nItemNo);
@@ -72,21 +70,21 @@ TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>* Structures::_pTrayNL(void* aAddr)
 template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
 void* TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(TRAY_CN);
+  void* pTray = HeapMem::pAllocate(TRAY_CN);
   
-  return pObject;
+  return pTray;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
-void TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::operator delete(void* pVectorAddress)
+void TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::operator delete(void* pAddr)
 {
-  TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>* pVector =
-    _pTrayNL<TRAY_CN,ITEM,MAX_ITEMS>(pVectorAddress);
+  TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>* pTray =
+    _pTrayNL<TRAY_CN,ITEM,MAX_ITEMS>(pAddr);
   
-  HeapMem::vFree(pVector);
+  HeapMem::vFree(pTray);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,17 +96,11 @@ TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::TrayNL_t(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  m_nHeadItems = 0;
-  
-  i8 nItemNo;
-  for (nItemNo = (i8)0; nItemNo < MAX_ITEMS; nItemNo++)
-    m_pItem[(i8)nItemNo] = nullptr;
+  vReset();
   
   _setFooter_();
   
-  // compute size of this vector proper (in case it is inherited)
   i8 nBytes = sizeof(TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>);
-  
   _checkInitialisedSize_(nBytes);
   
   _postcondition_(_MAGIC_,TRAY_CN,_FOOTER_);
@@ -121,12 +113,6 @@ template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::~TrayNL_t(void) noexcept(false)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
-  
-  i8 nItemNo;
-  for (nItemNo = (i8)0; (i8)nItemNo < (i8)m_nHeadItems; nItemNo++) {
-    ITEM* pItem = m_pItem[nItemNo];
-    delete pItem;
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,21 +129,7 @@ ITEM*& TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::operator [](i8 nItemNo)
   
   //ASSERT(nItemNo >= 0 and nItemNo < MAX_ITEMS);
   
-  return m_pItem[nItemNo];
-}
-
-/*----------------------------------------------------------------------------*/
-/* clear all items                                                            */
-/*----------------------------------------------------------------------------*/
-template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
-void TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::vClear(void)
-{
-  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
-  
-  for (i8 nItemNo = 0; nItemNo < m_nHeadItems; nItemNo++)
-    m_pItem[nItemNo] = nullptr;
-  
-  m_nHeadItems = 0;
+  return &m_xItem[nItemNo];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -170,7 +142,9 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::nItems(void)
   
   ASSERT(m_nHeadItems >= 0 && m_nHeadItems <= MAX_ITEMS);
   
-  return m_nHeadItems;
+  i8 nItems = m_nHeadItems + m_nTailItems;
+  
+  return nItems;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -183,10 +157,24 @@ ITEM* TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::aGet(i8 nItemNo)
   
   ASSERT(nItemNo >= 0 && nItemNo < m_nHeadItems);
   
-  ITEM* pItem = m_pItem[nItemNo];
+  ITEM* aItem = &m_xItem[nItemNo];
   
-  return pItem;
+  return aItem;
 }
+
+/*----------------------------------------------------------------------------*/
+/* reset all items                                                            */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
+void TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::vReset(void)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  m_nHeadItems = 0;
+  m_nTailItems = 0;
+  MemLib::vZero(m_xItem,sizeof(m_xItem),TRAY_CN);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
