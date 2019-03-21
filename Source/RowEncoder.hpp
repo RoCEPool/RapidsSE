@@ -13,6 +13,9 @@ namespace Data
   {
   public:
   
+  // must be last
+  Footer m_xFooter;
+
   public:
     void* operator new(size_t);
     void  operator delete(void*);
@@ -26,10 +29,10 @@ namespace Data
     
     static w8 wDecode(Column* pColumn, CacheLine* aCacheLine);
   
-    static void vEncodeBegin(RowParts& oRowParts, i8& i_CacheOffset);
+    void vEncodeBegin(RowParts& oRowParts, i8& i_CacheOffset);
   
-    static void vEncodeDatum(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                             i8& i_CacheOffset);
+    void vEncodeDatum(Column* pColumn, byte* aDatum, RowParts& oRowParts,
+                      i8& i_CacheOffset);
   
     static void vPrint(Column* pColumn, CacheLine* aCacheLine);
   
@@ -44,23 +47,23 @@ namespace Data
     static w8 wDecodeTsp(Column* pColumn, CacheLine* aCacheLine);
     static w8 wDecodeVch(Column* pColumn, CacheLine* aCacheLine);
   
-    static void vEncodeBcd(Column* pColumn, byte* aDatum, RowParts& oRowParts,
+    void vEncodeBcd(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                            i8& i_CacheOffset);
-    static void vEncodeBol(Column* pColumn, byte* aDatum, RowParts& oRowParts,
+    void vEncodeBol(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                            i8& i_CacheOffset);
-    static void vEncodeDte(Column* pColumn, byte* aDatum, RowParts& oRowParts,
+    void vEncodeDte(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                            i8& i_CacheOffset);
-    static void vEncodeFlt(Column* pColumn, byte* aDatum, RowParts& oRowParts,
+    void vEncodeFlt(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                            i8& i_CacheOffset);
-    static void vEncodeInt(Column* pColumn, byte* aDatum, RowParts& oRowParts,
+    void vEncodeInt(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                            i8& i_CacheOffset);
-    static void vEncodeIvl(Column* pColumn, byte* aDatum, RowParts& oRowParts,
+    void vEncodeIvl(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                            i8& i_CacheOffset);
-    static void vEncodeTme(Column* pColumn, byte* aDatum, RowParts& oRowParts,
+    void vEncodeTme(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                            i8& i_CacheOffset);
-    static void vEncodeTsp(Column* pColumn, byte* aDatum, RowParts& oRowParts,
+    void vEncodeTsp(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                            i8& i_CacheOffset);
-    static void vEncodeVch(Column* pColumn, byte* aDatum, RowParts& oRowParts,
+    void vEncodeVch(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                            i8& i_CacheOffset);
   
     static i8 iDteDecoding(WordView& wTspView, i8 iEncoding);
@@ -76,7 +79,9 @@ namespace Data
     static i8 nEncodedBytes(i8 iEncoding, eDM eDatum);
  
     static void vPrint(Column* pColumn, WordView& wDatum);
-};
+  
+    Footer*      aFooter(void);
+  };
 }
 
 /*============================================================================*/

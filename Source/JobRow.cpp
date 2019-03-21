@@ -101,12 +101,14 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  RowEncoder* pRowEncoder = new RowEncoder;
+  
   ColumnVec* pColVec = m_pTable->pColumnVec();
   i8 nColumns = m_pTable->pColumnVec()->nItems() - 1;
 
   // begin encoding
   i8 i_CacheOffset = C_UNKNOWN;
-  RowEncoder::vEncodeBegin(m_oRowParts,i_CacheOffset);
+  pRowEncoder->vEncodeBegin(m_oRowParts,i_CacheOffset);
   
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
@@ -137,6 +139,7 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
           vTrace("%c"_Stz,*a);
         vTrace("\n"_Stz);
       }
+      delete pRowEncoder;
       return false;
     }
     
@@ -144,17 +147,18 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     // encode datum into cache line
     
     if (eDatum == DM_INT || eDatum == DM_BCD)
-      RowEncoder::vEncodeDatum(pColumn,(byte*)&iInt,m_oRowParts,
+      pRowEncoder->vEncodeDatum(pColumn,(byte*)&iInt,m_oRowParts,
                                 i_CacheOffset);
     else
-      RowEncoder::vEncodeDatum(pColumn,(byte*)sDst.aChar(),m_oRowParts,
+      pRowEncoder->vEncodeDatum(pColumn,(byte*)sDst.aChar(),m_oRowParts,
                                 i_CacheOffset);
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     //RowEncoder::vPrint(pColumn,aCacheLine);
 
   } // for each column
   
-  
+  delete pRowEncoder;
+
   return true;
 }
 
