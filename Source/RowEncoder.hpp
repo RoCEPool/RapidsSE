@@ -9,11 +9,18 @@ namespace Data
   
   typedef TrayNL_t<CN_ROWTRAY,CacheLine,C_CACHELINES> RowParts;
   
-  class RowEncoder
+  class RowEncoder : public Object
   {
   public:
   
   public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
+    RowEncoder(void);
+    ~RowEncoder(void) noexcept(false);
+
+  
     static void vAsString(s48K& sDataString,
                           ColumnVec* pColumnVec, CacheLine* aCacheLine);
     

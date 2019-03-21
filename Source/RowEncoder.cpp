@@ -7,6 +7,48 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* RowEncoder::operator new(size_t)
+{
+  void* pObject = HeapMem::pAllocate(CN_ROWENCODER);
+  
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void RowEncoder::operator delete(void* pAddr)
+{
+  RowEncoder* pRowEncoder = reinterpret_cast<RowEncoder*>(pAddr);
+  
+  HeapMem::vFree(pRowEncoder);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+RowEncoder::RowEncoder(void)
+: Object(CN_ROWENCODER)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODER,_FOOTER_);
+  
+  _checkInitialised_(CN_ROWENCODER);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+RowEncoder::~RowEncoder(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODER,_FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
