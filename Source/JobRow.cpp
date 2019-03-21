@@ -114,6 +114,9 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   i8 i_CacheOffset = C_UNKNOWN;
   RowEncoding::vEncodeBegin(&m_xaRow[0],i_CacheOffset);
   
+  // use at least one cache line
+  m_nLinesUsed = 1;
+
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     Column* pColumn = pColVec->pGet(i_Column);
@@ -150,16 +153,16 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     // encode datum into cache line
     
     if (eDatum == DM_INT || eDatum == DM_BCD)
-      RowEncoding::vEncode(pColumn,(byte*)&iInt,&m_xaRow[0],i_CacheOffset);
+      RowEncoding::vEncode(pColumn,(byte*)&iInt,
+                           &m_xaRow[0],i_CacheOffset,m_nLinesUsed);
     else
-      RowEncoding::vEncode(pColumn,(byte*)sDst.aChar(),&m_xaRow[0],i_CacheOffset);
+      RowEncoding::vEncode(pColumn,(byte*)sDst.aChar(),
+                           &m_xaRow[0],i_CacheOffset,m_nLinesUsed);
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     //RowEncoding::vPrint(pColumn,aCacheLine);
 
   } // for each column
   
-  // we used one cache line
-  m_nLinesUsed = 1;
   
   return true;
 }

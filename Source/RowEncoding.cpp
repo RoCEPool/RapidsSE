@@ -138,7 +138,8 @@ void RowEncoding::vEncodeBegin(CacheLine* aCacheLine, i8& i_CacheOffset)
 /* set given datum in cache line                                              */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
-                          CacheLine* aCacheLine, i8& i_CacheOffset)
+                          CacheLine* aCacheLine, i8& i_CacheOffset,
+                          i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();
   eDM eDatum  = pColumn->eDatumType();

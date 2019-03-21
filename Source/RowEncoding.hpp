@@ -17,7 +17,8 @@ namespace Data
   
     static void vEncodeBegin(CacheLine* aCacheLine, i8& i_CacheOffset);
     static void vEncode(Column* pColumn, byte* aDatum,
-                        CacheLine* aCacheLine, i8& i_CacheOffset);
+                        CacheLine* aCacheLine, i8& i_CacheOffset,
+                        i8& nLinesUsed);
   
     static void vPrint(Column* pColumn, CacheLine* aCacheLine);
   
