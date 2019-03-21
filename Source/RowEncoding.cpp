@@ -137,7 +137,7 @@ void RowEncoding::vEncodeBegin(CacheLine* aCacheLine, i8& i_CacheOffset)
 /*----------------------------------------------------------------------------*/
 /* set given datum in cache line                                              */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
+void RowEncoding::vEncodeDatum(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                           CacheLine* xaCacheLine, i8& i_CacheOffset,
                           i8& nLinesUsed)
 {
@@ -150,31 +150,31 @@ void RowEncoding::vEncode(Column* pColumn, byte* aDatum,
   
   switch (eDatum) {
     case DM_BCD:
-      vEncodeBcd(pColumn,aDatum,xaCacheLine,i_CacheOffset,nLinesUsed);
+      vEncodeBcd(pColumn,aDatum,oRowParts,xaCacheLine,i_CacheOffset,nLinesUsed);
       return;
     case DM_BOL:
-      vEncodeBol(pColumn,aDatum,xaCacheLine,i_CacheOffset,nLinesUsed);
+      vEncodeBol(pColumn,aDatum,oRowParts,xaCacheLine,i_CacheOffset,nLinesUsed);
       return;
     case DM_DTE:
-      vEncodeDte(pColumn,aDatum,xaCacheLine,i_CacheOffset,nLinesUsed);
+      vEncodeDte(pColumn,aDatum,oRowParts,xaCacheLine,i_CacheOffset,nLinesUsed);
       return;
     case DM_FLT:
-      vEncodeFlt(pColumn,aDatum,xaCacheLine,i_CacheOffset,nLinesUsed);
+      vEncodeFlt(pColumn,aDatum,oRowParts,xaCacheLine,i_CacheOffset,nLinesUsed);
       return;
     case DM_INT:
-      vEncodeInt(pColumn,aDatum,xaCacheLine,i_CacheOffset,nLinesUsed);
+      vEncodeInt(pColumn,aDatum,oRowParts,xaCacheLine,i_CacheOffset,nLinesUsed);
       return;
     case DM_IVL:
-      vEncodeIvl(pColumn,aDatum,xaCacheLine,i_CacheOffset,nLinesUsed);
+      vEncodeIvl(pColumn,aDatum,oRowParts,xaCacheLine,i_CacheOffset,nLinesUsed);
       return;
     case DM_TME:
-      vEncodeTme(pColumn,aDatum,xaCacheLine,i_CacheOffset,nLinesUsed);
+      vEncodeTme(pColumn,aDatum,oRowParts,xaCacheLine,i_CacheOffset,nLinesUsed);
       return;
     case DM_TSP:
-      vEncodeTsp(pColumn,aDatum,xaCacheLine,i_CacheOffset,nLinesUsed);
+      vEncodeTsp(pColumn,aDatum,oRowParts,xaCacheLine,i_CacheOffset,nLinesUsed);
       return;
     case DM_VCH:
-      vEncodeVch(pColumn,aDatum,xaCacheLine,i_CacheOffset,nLinesUsed);
+      vEncodeVch(pColumn,aDatum,oRowParts,xaCacheLine,i_CacheOffset,nLinesUsed);
       return;
     default:
       NEVER_REACH;
@@ -483,7 +483,7 @@ w8 RowEncoding::wDecodeVch(Column* pColumn, CacheLine* aCacheLine)
 /*----------------------------------------------------------------------------*/
 /* encode decimal                                                             */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeBcd(Column* pColumn,byte* aDatum,
+void RowEncoding::vEncodeBcd(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                              CacheLine* xaCacheLine, i8& i_CacheOffset, i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();
@@ -517,7 +517,7 @@ void RowEncoding::vEncodeBcd(Column* pColumn,byte* aDatum,
 /*----------------------------------------------------------------------------*/
 /* encode boolean                                                             */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeBol(Column* pColumn,byte* aDatum,
+void RowEncoding::vEncodeBol(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                              CacheLine* xaCacheLine, i8& i_CacheOffset, i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();
@@ -550,7 +550,7 @@ void RowEncoding::vEncodeBol(Column* pColumn,byte* aDatum,
 /*----------------------------------------------------------------------------*/
 /* encode date                                                                */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeDte(Column* pColumn,byte* aDatum,
+void RowEncoding::vEncodeDte(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                              CacheLine* xaCacheLine, i8& i_CacheOffset, i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();
@@ -586,7 +586,7 @@ void RowEncoding::vEncodeDte(Column* pColumn,byte* aDatum,
 /*----------------------------------------------------------------------------*/
 /* encode float                                                               */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeFlt(Column* pColumn,byte* aDatum,
+void RowEncoding::vEncodeFlt(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                              CacheLine* xaCacheLine, i8& i_CacheOffset, i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();
@@ -620,7 +620,7 @@ void RowEncoding::vEncodeFlt(Column* pColumn,byte* aDatum,
 /*----------------------------------------------------------------------------*/
 /* encode integer                                                             */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeInt(Column* pColumn,byte* aDatum,
+void RowEncoding::vEncodeInt(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                              CacheLine* xaCacheLine, i8& i_CacheOffset, i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();
@@ -654,7 +654,7 @@ void RowEncoding::vEncodeInt(Column* pColumn,byte* aDatum,
 /*----------------------------------------------------------------------------*/
 /* encode interval                                                            */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeIvl(Column* pColumn,byte* aDatum,
+void RowEncoding::vEncodeIvl(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                              CacheLine* xaCacheLine, i8& i_CacheOffset, i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();
@@ -688,7 +688,7 @@ void RowEncoding::vEncodeIvl(Column* pColumn,byte* aDatum,
 /*----------------------------------------------------------------------------*/
 /* encode time                                                                */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeTme(Column* pColumn,byte* aDatum,
+void RowEncoding::vEncodeTme(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                              CacheLine* xaCacheLine, i8& i_CacheOffset, i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();
@@ -724,7 +724,7 @@ void RowEncoding::vEncodeTme(Column* pColumn,byte* aDatum,
 /*----------------------------------------------------------------------------*/
 /* encode timestamp                                                           */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeTsp(Column* pColumn,byte* aDatum,
+void RowEncoding::vEncodeTsp(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                              CacheLine* xaCacheLine, i8& i_CacheOffset, i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();
@@ -760,7 +760,7 @@ void RowEncoding::vEncodeTsp(Column* pColumn,byte* aDatum,
 /*----------------------------------------------------------------------------*/
 /* encode varchar                                                             */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeVch(Column* pColumn,byte* aDatum,
+void RowEncoding::vEncodeVch(Column* pColumn, byte* aDatum, RowParts& oRowParts,
                              CacheLine* xaCacheLine, i8& i_CacheOffset, i8& nLinesUsed)
 {
   i8 i_Column = pColumn->iColumnNo();

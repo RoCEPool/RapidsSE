@@ -5,8 +5,6 @@
 
 namespace Jobs
 {
-  static const i8 C_CACHELINES = 256;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class JobRow
   {
@@ -15,6 +13,8 @@ namespace Jobs
 #ifdef WITH_ROWBUFFER
     CacheLine   m_xaRow[C_CACHELINES];
     i8          m_nLinesUsed;   // number of lines used
+  
+    RowParts    m_oRowParts;    // tray of row parts
 #else
     s48K        m_aRow;         // formatted row
 #endif

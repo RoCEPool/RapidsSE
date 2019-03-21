@@ -153,10 +153,10 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     // encode datum into cache line
     
     if (eDatum == DM_INT || eDatum == DM_BCD)
-      RowEncoding::vEncode(pColumn,(byte*)&iInt,
+      RowEncoding::vEncodeDatum(pColumn,(byte*)&iInt,m_oRowParts,
                            m_xaRow,i_CacheOffset,m_nLinesUsed);
     else
-      RowEncoding::vEncode(pColumn,(byte*)sDst.aChar(),
+      RowEncoding::vEncodeDatum(pColumn,(byte*)sDst.aChar(),m_oRowParts,
                            m_xaRow,i_CacheOffset,m_nLinesUsed);
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     //RowEncoding::vPrint(pColumn,aCacheLine);
