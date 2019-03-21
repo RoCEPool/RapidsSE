@@ -3,13 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-//#define USE_EB_LAZY_CHAIN
-//#define USE_EB_WATCH
-
 namespace Data
 {
-  
-  
   
   class RowBuffer : public Object
   {
@@ -63,7 +58,7 @@ namespace Data
 
     ////////////////////////////////////////////////////////////////////////////
     // row functions
-
+    void  vShow(void);
     void  vShowRow(i8 iRowNo);
     CacheLine* pRow(i8 iRow);
 
@@ -79,7 +74,7 @@ namespace Data
   
   public:
     void vAssertRowBuffer(void);
-    bool bValidEntryBuffer(void);
+    bool bValidRowBuffer(void);
   
     
     ////////////////////////////////////////////////////////////////////////////
@@ -89,13 +84,8 @@ namespace Data
   
     void        vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iRows);
     void        vDump(void);
-    Item*       aNextEntry(Item* aItem, i8 i_Offset);
     void        vRestore(void);
     void        vRestoreIndex(Index* pIndex);
-    void        vShow(Item* aMarkEntry = nullptr);
-    void        vShowShort(void);
-    void        vShowSubList(void);
-    void        vShowTree(bool bDumpBuffer=false);
     bool        bVerify(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -103,8 +93,6 @@ namespace Data
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify functions
-  
-    void         vNumberEntries(void);
   
     void         vQuickVerify(Item* aSeeEntry=nullptr);
     bool         bQuickVerify(Item* aNotSeeEntry);
@@ -117,7 +105,6 @@ namespace Data
     bool         bVerifyRows(void);
     void         vVerifyFault(void);
 
-  
     public:
     Footer* aFooter(void);
 

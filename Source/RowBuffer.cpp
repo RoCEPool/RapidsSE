@@ -66,12 +66,13 @@ RowBuffer::RowBuffer(void)
   m_iBufferNo     = *nPoolBufferNo();
   m_pIndex        = nullptr;
   m_iPartitionNo  = -1;
-  //m_xCacheLine;
-  m_pNextBuffer   = nullptr;
-  m_pPrevBuffer   = nullptr;
   
+  // zero all the cachelines in the row tray
   for (i8 iIndex = 0 ; iIndex < C_MAX_ROWS; iIndex++)
     m_xRowTray.aGet(iIndex)->vSetAll(0);
+  
+  m_pNextBuffer   = nullptr;
+  m_pPrevBuffer   = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
@@ -102,6 +103,25 @@ void RowBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the entry buffer that given id references                              */
+/*----------------------------------------------------------------------------*/
+RowBuffer* RowBuffer::pRefdRowBuffer(Id& xId)
+{
+  bn nBufferNo = xId.iBuffer();
+  
+  HeapBuffer* pHeapBuffer =
+  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));
+  
+  RowBuffer* pRowBuffer =
+  reinterpret_cast<RowBuffer*>(pHeapBuffer->aFirstChunk());
+  
+  ASSERT(pRowBuffer);
+  ASSERT(pRowBuffer->eClass() == CN_ROWBUFFER);
+  
+  return pRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -112,28 +132,24 @@ void RowBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
                            i8& iBuffers, i8& iRows)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+    
+  RowBuffer* pNextBuffer = this;
   
-  if (m_pIndex->bIsHidden()) {
+  do {
     
-    RowBuffer* pNextBuffer = this;
+    iBuffers++;
+    iRows += (pNextBuffer->nRowCount());
     
-    do {
-      
-      iBuffers++;
-      iRows += (pNextBuffer->nRowCount());
-      
-      if (bDetailed)
-        sAnalysis.vCatSprint("row: (%s, %lld, %5lld, %lld )\n"_Stz,
-                             gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
-                             pNextBuffer->m_iPartitionNo,
-                             iBuffers,
-                             pNextBuffer->nRowCount());
-      
-      pNextBuffer = pNextBuffer->pNextBuffer();
-    } while (pNextBuffer);
+    if (bDetailed)
+      sAnalysis.vCatSprint("row: (%s, %lld, %5lld, %lld )\n"_Stz,
+                           gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
+                           pNextBuffer->m_iPartitionNo,
+                           iBuffers,
+                           pNextBuffer->nRowCount());
     
-    return;
-  }
+    pNextBuffer = pNextBuffer->pNextBuffer();
+    
+  } while (pNextBuffer);
   
 }
 
@@ -145,14 +161,12 @@ CacheLine* RowBuffer::aAllotRow(i8 nBytes)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if this buffer has cacheLine's for rows
+  // check if this buffer has space
   
   if ( ! bHasSpace(nBytes))
     return nullptr;
   
   i8 iCacheLine = m_xRowTray.iAllotHead();
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   return m_xRowTray.aGet(iCacheLine);
 }
@@ -171,6 +185,7 @@ CacheLine* RowBuffer::aAppendRow(CacheLine* aRowData)
 
   // NOTE:: Assuming each row fits in a cacheline
   CacheLine* pRow = aAllotRow(C_BYTES_PER_CACHE_LINE);
+  
   if (! pRow)
     return nullptr;
   
@@ -180,9 +195,6 @@ CacheLine* RowBuffer::aAppendRow(CacheLine* aRowData)
   MemLib::vCopy(pRow,aRowData,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
   //pRowEntry->vShow(0, m_pIndex, false);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  //vDumpItems();
   return pRow;
 }
 
@@ -205,6 +217,7 @@ void RowBuffer::vBufferCount(i8& nBuffers)
   // hidden index ?
   
   RASSERT(m_pIndex->bIsHidden());
+  
   pNextBuffer = this->pNextBuffer();
   nBuffers++;
   
@@ -351,25 +364,6 @@ void RowBuffer::vPrevBuffer(RowBuffer* pPrevBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the entry buffer that given id references                              */
-/*----------------------------------------------------------------------------*/
-RowBuffer* RowBuffer::pRefdRowBuffer(Id& xId)
-{
-  bn nBufferNo = xId.iBuffer();
-  
-  HeapBuffer* pHeapBuffer =
-  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));
-  
-  RowBuffer* pRowBuffer =
-  reinterpret_cast<RowBuffer*>(pHeapBuffer->aFirstChunk());
-  
-  ASSERT(pRowBuffer);
-  ASSERT(pRowBuffer->eClass() == CN_ROWBUFFER);
-  
-  return pRowBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get row                                                                    */
 /*----------------------------------------------------------------------------*/
 CacheLine* RowBuffer::pRow(i8 iRowNo)
@@ -402,30 +396,11 @@ void RowBuffer::vRestore(void)
   // set the index to nullptr (this pointer is not valid any more)
   m_pIndex = nullptr;
   
-  // get the original buffer address
-  //  nb: the given address has to be an address in the orginal buffer
-  //PoolBuffer* pOriginalBuffer =
-  //pBitAnd<PoolBuffer*>(m_i4aItemOffsets,C_OBJECT_TO_BUFFER_MASK);
-  
-  // get this buffer address
-  PoolBuffer* pThisBuffer =
-  pBitAnd<PoolBuffer*>(this,C_OBJECT_TO_BUFFER_MASK);
-  
   // get the buffer no
   bn nBuffer = nPoolBufferNo();
   
   // restore the bufferNo
   m_iBufferNo = *nBuffer;
-  
-  // now restore the row id's to point to this buffer no
-//  for (Item* aItem = aLeadEntry();
-//       aItem != nullptr;
-//       aItem = aNextEntry(aItem, 0)) {
-//
-//    Id xId(*nBuffer, aItem->iItemNo(), aItem->nLevels());
-//    aItem->vId(xId);
-//  }
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -453,21 +428,18 @@ void RowBuffer::vShowRow(i8 iRowNo)
   
   ColumnVec* pColumnVec = m_pIndex->pTable()->pColumnVec();
   
-#ifdef WITH_ROWBUFFER
   for (i8 iCol = 0; iCol < pColumnVec->nItems() - 1; iCol++) {
     CacheLine* aRowCacheLine = m_xRowTray.aGet(iRowNo);
-    //w8 wVal = RowEncoding::wDecode(pColumnVec->pGet(iCol), aRowCacheLine);
-    //vTrace("%lld "_Stz, wVal);
     RowEncoding::vPrint(pColumnVec->pGet(iCol),aRowCacheLine);
   }
-#endif
+
   vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vShow(Item* aMarkEntry)
+void RowBuffer::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
@@ -498,36 +470,6 @@ void RowBuffer::vShow(Item* aMarkEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* show short form of buffer                                                  */
-/*----------------------------------------------------------------------------*/
-void RowBuffer::vShowShort(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  vTrace("[t%lld: "_Stz, *nPoolBufferNo());
-  
-//  i8 iOffset = aSkipRoots()->iNEO(0);
-//  while (iOffset > -1) {
-//    Item* aItem = aGetEntryOffset(iOffset);
-//
-//    KeyData* aKey = _aKeyData(aItem->aDataArea())
-//    ;
-//    i8 iVal = aKey->iGetInt();
-//
-//    if (m_iBufferHeight)
-//      vTrace("%lld(%lld)"_Stz,iVal,*EntryBuffer::pRefdEntryBuffer(aItem)->nPoolBufferNo());
-//    else
-//      vTrace("%lld|%lld|"_Stz,iVal,*EntryBuffer::pRefdEntryBuffer(aItem)->nPoolBufferNo());
-//
-//    iOffset = aItem->iNEO(0);
-//    if (iOffset > -1)
-//      vTrace(","_Stz);
-//  }
-  vTrace("]"_Stz);
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* truncate this buffer by removing all entries                               */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vTruncate(void)
@@ -549,6 +491,30 @@ void RowBuffer::vTruncate(void)
   
 }
 
+/*----------------------------------------------------------------------------*/
+/* test for valid row buffer                                                  */
+/*----------------------------------------------------------------------------*/
+bool RowBuffer::bValidRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  if (! bValidMagic()) {
+    vTrace("Not valid magic\n"_Stz);
+    return false;
+  }
+  
+  if (CN_ROWBUFFER != eClass()) {
+    vTrace("Not valid class\n"_Stz);
+    return false;
+  }
+  
+  if (! aFooter()->bValidFooter()) {
+    vTrace("Not valid footer\n"_Stz);
+    return false;
+  }
+  
+  return true;
+}
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
