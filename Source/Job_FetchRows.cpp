@@ -474,7 +474,7 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuff
   aaCacheLine = pFetchBuffer->aaFirstRowPtr();
   while (aaCacheLine) {
     s48K sRowString;
-    RowEncoding::vAsString(sRowString, pColumnVec,*aaCacheLine);vTrace("row: (%s)\n"_Stz, sRowString.aChar());
+    RowEncoder::vAsString(sRowString, pColumnVec,*aaCacheLine);vTrace("row: (%s)\n"_Stz, sRowString.aChar());
     aaCacheLine = pFetchBuffer->aaNextRowPtr(aaCacheLine);
   }
 #else

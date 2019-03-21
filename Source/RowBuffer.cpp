@@ -430,7 +430,7 @@ void RowBuffer::vShowRow(i8 iRowNo)
   
   for (i8 iCol = 0; iCol < pColumnVec->nItems() - 1; iCol++) {
     CacheLine* aRowCacheLine = m_xRowTray.aGet(iRowNo);
-    RowEncoding::vPrint(pColumnVec->pGet(iCol),aRowCacheLine);
+    RowEncoder::vPrint(pColumnVec->pGet(iCol),aRowCacheLine);
   }
 
   vTrace("\n"_Stz);
