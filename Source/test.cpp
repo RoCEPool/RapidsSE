@@ -113,7 +113,7 @@ void vTest3(void)
 /*----------------------------------------------------------------------------*/
 void vTest4(void)
 {
-  VecDblNL_t<CN_NONE,CacheLine,CN_NONE,16,i8> xVecLines;
+  TrayNL_t<CN_NONE,CacheLine,CN_NONE,16,i8> xVecLines;
   
   vTrace("vTest4\n"_Stz);
 }

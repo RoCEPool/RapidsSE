@@ -36,8 +36,9 @@ using namespace Structures;
 #include "SkipNode.hpp"
 #include "SkipListNL.hpp"
 
+#include "TrayNL_t.hpp"
+
 #include "VectorNL_t.hpp"
-#include "VecDblNL_t.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
