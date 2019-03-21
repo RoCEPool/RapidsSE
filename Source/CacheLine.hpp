@@ -40,6 +40,16 @@ namespace Base
 
     void v1N(i8 i_Nibble, w8 wArg);
   };
+  
+  /*--------------------------------------------------------------------------*/
+  /* safe cast                                                                */
+  /*--------------------------------------------------------------------------*/
+  inline CacheLine* _aCacheLine(void* aAddr)
+  {
+    CacheLine* aCacheLine = reinterpret_cast<CacheLine*>(aAddr);
+    
+    return aCacheLine;
+  }
 }
 
 /*============================================================================*/

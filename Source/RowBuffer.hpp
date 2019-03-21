@@ -45,7 +45,8 @@ namespace Data
     ~RowBuffer(void) noexcept(false);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-  
+    static RowBuffer*  pRefdRowBuffer(Id& xId);
+    
     void    vDropWrite(void);
     void    vGrabWrite(void);
     void    vIndex(Index* pIndex);

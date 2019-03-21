@@ -180,8 +180,12 @@ namespace Tasks
     /*------------------------------------------------------------------------*/
 
   public:
+#ifdef WITH_ROWBUFFER
     static bool   bAppendRow(FetchBuffer* pFetchBuffer, Item* aItem, Job_FetchRows* pJob_FetchRows);
-    
+#else    
+    //ALKA: This should go
+    static bool   bAppendRow(FetchBuffer* pFetchBuffer, Item* aItem, Job_FetchRows* pJob_FetchRows);
+#endif
     /*------------------------------------------------------------------------*/
     
   private:

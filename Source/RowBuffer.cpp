@@ -356,6 +356,25 @@ void RowBuffer::vPrevBuffer(RowBuffer* pPrevBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the entry buffer that given id references                              */
+/*----------------------------------------------------------------------------*/
+RowBuffer* RowBuffer::pRefdRowBuffer(Id& xId)
+{
+  bn nBufferNo = xId.iBuffer();
+  
+  HeapBuffer* pHeapBuffer =
+  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));
+  
+  RowBuffer* pRowBuffer =
+  reinterpret_cast<RowBuffer*>(pHeapBuffer->aFirstChunk());
+  
+  ASSERT(pRowBuffer);
+  ASSERT(pRowBuffer->eClass() == CN_ROWBUFFER);
+  
+  return pRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get row                                                                    */
 /*----------------------------------------------------------------------------*/
 CacheLine* RowBuffer::pRow(i8 iRowNo)

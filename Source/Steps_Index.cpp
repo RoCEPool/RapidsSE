@@ -1789,11 +1789,9 @@ void Step::vIndexUpperBound(MP_Task mpTask)
     bBefore = (aItem == aUpperEntry) ? false : true;
     
     if (bBefore) {
-      // get the dataRow from the hidden index
-      Item* aDataRowEntry = (Item*)_aItem(aItem->aRefdItem());
       
       // insert row from entry in tempEntryBuffer
-      if ( ! Task::bAppendRow(pFetchBuffer,aDataRowEntry, pJob_FetchRows)) {
+      if ( ! Task::bAppendRow(pFetchBuffer,aItem, pJob_FetchRows)) {
         
         // Buffer is full
         // put this tempEntryBuffer in session bufferQueue
@@ -1803,7 +1801,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
         pFetchBuffer = new FetchBuffer(pTable, iSlot);
         
         // insert row from entry in temporary buffer
-        bool bResult = Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows);
+        bool bResult = Task::bAppendRow(pFetchBuffer, aItem, pJob_FetchRows);
         RASSERT(bResult);
       }
       
@@ -2065,6 +2063,32 @@ void Step::vIndexVisualize(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /*    PRIVATE                                                                 */
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* append a row to a working buffer                                           */
+/*----------------------------------------------------------------------------*/
+#ifdef WITH_ROWBUFFER
+bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Item* aItem, Job_FetchRows* pJob_FetchRows)
+{
+  
+  Id xId = aItem->xId();
+  
+  if (pJob_FetchRows && pJob_FetchRows->bRowSeen(xId)) {
+    // row already inserted
+    //vTrace("RowData already inserted %p \n"_Stz, aItem);
+    return true;
+  }
+  
+  // get the dataRow from the hidden index
+  CacheLine* aRowData = _aCacheLine(aItem->aRefdRow());
+  
+  if (pFetchBuffer->bAppendRow(aRowData))
+    return true;
+  else
+    return false;
+  
+}
+
+#else
 
 /*----------------------------------------------------------------------------*/
 /* append a row to a working buffer                                           */
@@ -2081,18 +2105,14 @@ bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Item* aItem, Job_FetchRows* pJo
   }
   
   RowData* aRowData = _aRowData(aItem->aDataArea());
-#ifdef WITH_ROWBUFFER
-  RASSERT(0);
-  return false;
-#else
+
   if (pFetchBuffer->bAppendRow(aRowData))
     return true;
   else
     return false;
-#endif
   
 }
-
+#endif
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
