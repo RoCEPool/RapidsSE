@@ -9,7 +9,7 @@
 namespace Data
 {
   
-  static const i8 C_MAX_ROWS = (C_SIZE_LARGE_OBJECT - C_1KB) / C_BYTES_PER_CACHE_LINE;
+  
   
   class RowBuffer : public Object
   {
@@ -21,7 +21,7 @@ namespace Data
     Index* m_pIndex;               // index this buffer belongs to
     i8     m_iPartitionNo;         // partition no this buffer belongs to
   
-    TrayNL_t<CN_NONE,CacheLine,C_MAX_ROWS> m_xRowTray;  // tray of rows
+    RowTray m_xRowTray;            // tray of rows
   
     RowBuffer* m_pNextBuffer;      // next buffer
     RowBuffer* m_pPrevBuffer;      // previous buffer
