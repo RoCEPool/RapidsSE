@@ -517,20 +517,17 @@ void RowEncoder::vEncodeBcd(Column* pColumn, byte* aDatum)
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
-  i8 iEncoding;
-  if (wVal == (u8)C_DATUM_NULL)
-    iEncoding = MN_NULL;
-  else
-    iEncoding = IntLib::iByteMagnitude(wVal);
+  i8 iEncoding = iBcdEncoding(wEncoded);
   
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
   // set n-byte data for column value
-  if (nEncodedBytes(iEncoding,DM_BCD))
+  i8 nBytesEncoded = nEncodedBytes(iEncoding,DM_BCD);
+  if (nBytesEncoded)
     aCacheLine->vPut(m_i_CacheOffset,aDatum,iEncoding);
   
-  m_i_CacheOffset += iEncoding;
+  m_i_CacheOffset += nBytesEncoded;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -553,7 +550,7 @@ void RowEncoder::vEncodeBol(Column* pColumn, byte* aDatum)
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
-  i8 iEncoding = iBcdEncoding(wEncoded);
+  i8 iEncoding = iBolEncoding(wEncoded);
   
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
@@ -844,10 +841,8 @@ i8 RowEncoder::iBcdEncoding(WordView& wBcdView)
   
   if (wBcdView.m_iI8 == C_DATUM_NULL)
     iEncoding = MN_NULL;
-  else if (wBcdView.m_iI8)
-    iEncoding = MN_TRUE;
   else
-    iEncoding = MN_FALSE;
+    iEncoding = IntLib::iByteMagnitude(wBcdView.m_iI8);
 
   return iEncoding;
 }
@@ -861,9 +856,11 @@ i8 RowEncoder::iBolEncoding(WordView& wBolView)
   
   if (wBolView.m_iI8 == C_DATUM_NULL)
     iEncoding = MN_NULL;
+  else if (wBolView.m_iI8)
+    iEncoding = MN_TRUE;
   else
-    iEncoding = IntLib::iByteMagnitude(wBolView.m_iI8);
-  
+    iEncoding = MN_FALSE;
+
   return iEncoding;
 }
 
