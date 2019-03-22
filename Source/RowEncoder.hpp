@@ -12,7 +12,8 @@ namespace Data
   class RowEncoder : public Object
   {
   public:
-    i8 m_i_CacheOffset;
+    RowParts* m_pRowParts;
+    i8        m_i_CacheOffset;
   
   // must be last
   Footer m_xFooter;
@@ -21,7 +22,7 @@ namespace Data
     void* operator new(size_t);
     void  operator delete(void*);
   
-    RowEncoder(void);
+    RowEncoder(RowParts* pRowParts);
     ~RowEncoder(void) noexcept(false);
 
   
@@ -32,7 +33,7 @@ namespace Data
   
     void vEncodeBegin(RowParts& oRowParts);
   
-    void vEncodeDatum(Column* pColumn, byte* aDatum, RowParts& oRowParts);
+    void vEncodeDatum(Column* pColumn, byte* aDatum);
   
     static void vPrint(Column* pColumn, CacheLine* aCacheLine);
   
@@ -47,15 +48,15 @@ namespace Data
     static w8 wDecodeTsp(Column* pColumn, CacheLine* aCacheLine);
     static w8 wDecodeVch(Column* pColumn, CacheLine* aCacheLine);
   
-    void vEncodeBcd(Column* pColumn, byte* aDatum, RowParts& oRowParts);
-    void vEncodeBol(Column* pColumn, byte* aDatum, RowParts& oRowParts);
-    void vEncodeDte(Column* pColumn, byte* aDatum, RowParts& oRowParts);
-    void vEncodeFlt(Column* pColumn, byte* aDatum, RowParts& oRowParts);
-    void vEncodeInt(Column* pColumn, byte* aDatum, RowParts& oRowParts);
-    void vEncodeIvl(Column* pColumn, byte* aDatum, RowParts& oRowParts);
-    void vEncodeTme(Column* pColumn, byte* aDatum, RowParts& oRowParts);
-    void vEncodeTsp(Column* pColumn, byte* aDatum, RowParts& oRowParts);
-    void vEncodeVch(Column* pColumn, byte* aDatum, RowParts& oRowParts);
+    void vEncodeBcd(Column* pColumn, byte* aDatum);
+    void vEncodeBol(Column* pColumn, byte* aDatum);
+    void vEncodeDte(Column* pColumn, byte* aDatum);
+    void vEncodeFlt(Column* pColumn, byte* aDatum);
+    void vEncodeInt(Column* pColumn, byte* aDatum);
+    void vEncodeIvl(Column* pColumn, byte* aDatum);
+    void vEncodeTme(Column* pColumn, byte* aDatum);
+    void vEncodeTsp(Column* pColumn, byte* aDatum);
+    void vEncodeVch(Column* pColumn, byte* aDatum);
   
     static i8 iDteDecoding(WordView& wTspView, i8 iEncoding);
     static i8 iTmeDecoding(WordView& wTspView, i8 iEncoding);
