@@ -33,6 +33,11 @@ namespace MetaData
     i8 m_nSubInsertersDone;      // number of subInserters which have completed
     i8 m_iParentJobId;           // parent jobid
     
+#ifdef WITH_ROWBUFFER
+    RowBuffer* m_pDataRootBuffer;      // the data root buffer
+    RowBuffer* m_pDataCurrentBuffer;   // the data current buffer for insert
+#endif
+    
     Data::IndexTreeVec* m_pIndexTreeVec; // vector of index trees
   
     // must be last
@@ -54,6 +59,7 @@ namespace MetaData
     void vAddInsertWriteBehindBuffers(i8 nBuffersInsertable);
     void vAddIndex(Data::IndexTree* pIndexTree);
     bool bAllBuffersWritten(eDS eDataSource);
+    void vAppendBuffer(RowBuffer* pRowBuffer);
     void vWriteBehindBuffers(i8 nWriteBehindBuffers);
     void vBuffersWritten(i8 m_nBuffersWritten);
     i8   nWriteBehindBuffers(void);

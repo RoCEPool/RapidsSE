@@ -109,6 +109,11 @@ TablePtn::TablePtn(void)
   
   m_iParentJobId = C_UNKNOWN;
   
+#ifdef WITH_ROWBUFFER
+  m_pDataRootBuffer  = nullptr;
+  m_pDataCurrentBuffer = nullptr;
+#endif
+  
   m_pIndexTreeVec = new IndexTreeVec;
   
   _checkInitialised_(CN_TABLEPTN);
@@ -248,6 +253,34 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
   
   return bAllDone;
 }
+
+/*----------------------------------------------------------------------------*/
+/* append a buffer into the IndexTree (should be hidden index IndexTree)      */
+/*----------------------------------------------------------------------------*/
+#ifdef WITH_ROWBUFFER
+void TablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
+  
+  m_okLock.vGrabWrite();
+  
+  if (m_pDataRootBuffer == nullptr) {
+    ASSERT( ! m_pDataCurrentBuffer )
+    m_pDataRootBuffer = pRowBuffer;
+  }
+  else {
+    pRowBuffer->vNextBuffer(m_pDataCurrentBuffer->pNextBuffer());
+    pRowBuffer->vPrevBuffer(m_pDataCurrentBuffer);
+    m_pDataCurrentBuffer->vNextBuffer(pRowBuffer);
+  }
+  
+  m_pDataCurrentBuffer = pRowBuffer;
+  
+  m_okLock.vDropWrite();
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* have all buffers been loaded?                                              */
