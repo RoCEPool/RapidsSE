@@ -519,12 +519,12 @@ void RowEncoder::vEncodeBcd(Column* pColumn, byte* aDatum)
   
   i8 nBytesEncoded;
   i8 iEncoding = iBcdEncoding(wEncoded,nBytesEncoded);
-  
+  RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_BCD));
+
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
   // set n-byte data for column value
-  nBytesEncoded = nEncodedBytes(iEncoding,DM_BCD);
   if (nBytesEncoded)
     aCacheLine->vPut(m_i_CacheOffset,aDatum,iEncoding);
   
@@ -553,7 +553,8 @@ void RowEncoder::vEncodeBol(Column* pColumn, byte* aDatum)
   
   i8 nBytesEncoded;
   i8 iEncoding = iBolEncoding(wEncoded,nBytesEncoded);
-  
+  RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_BOL));
+
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
@@ -582,12 +583,13 @@ void RowEncoder::vEncodeDte(Column* pColumn, byte* aDatum)
   
   i8 nBytesEncoded;
   i8 iEncoding = RowEncoder::iDteEncoding(wEncoded,nBytesEncoded);
-  
+  RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_DTE));
+
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
   // set n-byte data for column value
-  if (nEncodedBytes(iEncoding,DM_DTE))
+  if (nBytesEncoded)
     aCacheLine->vPut(m_i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
   
   m_i_CacheOffset += iEncoding;
@@ -615,12 +617,13 @@ void RowEncoder::vEncodeFlt(Column* pColumn, byte* aDatum)
   
   i8 nBytesEncoded;
   i8 iEncoding = iFltEncoding(wEncoded,nBytesEncoded);
+  RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_FLT));
 
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
   // set n-byte data for column value
-  if (nEncodedBytes(iEncoding,DM_FLT))
+  if (nBytesEncoded)
     aCacheLine->vPut(m_i_CacheOffset,aDatum,iEncoding);
   
   m_i_CacheOffset += iEncoding;
@@ -648,12 +651,13 @@ void RowEncoder::vEncodeInt(Column* pColumn, byte* aDatum)
   
   i8 nBytesEncoded;
   i8 iEncoding = iIntEncoding(wEncoded,nBytesEncoded);
-  
+  RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_INT));
+
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
   // set n-byte data for column value
-  if (nEncodedBytes(iEncoding,DM_INT))
+  if (nBytesEncoded)
     aCacheLine->vPut(m_i_CacheOffset,aDatum,iEncoding);
   
   m_i_CacheOffset += iEncoding;
@@ -681,12 +685,13 @@ void RowEncoder::vEncodeIvl(Column* pColumn, byte* aDatum)
   
   i8 nBytesEncoded;
   i8 iEncoding = iIvlEncoding(wEncoded,nBytesEncoded);
+  RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_IVL));
 
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
   // set n-byte data for column value
-  if (nEncodedBytes(iEncoding,DM_IVL))
+  if (nBytesEncoded)
     aCacheLine->vPut(m_i_CacheOffset,aDatum,iEncoding);
   
   m_i_CacheOffset += iEncoding;
@@ -714,12 +719,13 @@ void RowEncoder::vEncodeTme(Column* pColumn, byte* aDatum)
   
   i8 nBytesEncoded;
   i8 iEncoding = iTmeEncoding(wEncoded,nBytesEncoded);
-  
+  RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_TME));
+
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
   // set n-byte data for column value
-  if (nEncodedBytes(iEncoding,DM_TME))
+  if (nBytesEncoded)
     aCacheLine->vPut(m_i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
   
   m_i_CacheOffset += iEncoding;
@@ -747,12 +753,13 @@ void RowEncoder::vEncodeTsp(Column* pColumn, byte* aDatum)
   
   i8 nBytesEncoded;
   i8 iEncoding = iTspEncoding(wEncoded,nBytesEncoded);
-  
+  RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_TSP));
+
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
   // set n-byte data for column value
-  if (nEncodedBytes(iEncoding,DM_TSP))
+  if (nBytesEncoded)
     aCacheLine->vPut(m_i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
   
   m_i_CacheOffset += iEncoding;
@@ -998,6 +1005,8 @@ i8 RowEncoder::iTmeEncoding(WordView& wTmeView, i8& nBytesEncoded)
   
   iEncoding = IntLib::iByteMagnitude(wTmeView.m_iI8);
   
+  nBytesEncoded = iEncoding;
+
   return iEncoding;
 }
 
@@ -1029,6 +1038,8 @@ i8 RowEncoder::iTspEncoding(WordView& wTspView, i8& nBytesEncoded)
   }
   
   iEncoding = IntLib::iByteMagnitude(wTspView.m_iI8);
+  
+  nBytesEncoded = iEncoding;
   
   return iEncoding;
 }
