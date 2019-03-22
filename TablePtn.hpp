@@ -34,8 +34,8 @@ namespace MetaData
     i8 m_iParentJobId;           // parent jobid
     
 #ifdef WITH_ROWBUFFER
-    RowBuffer* m_pDataRootBuffer;      // the data root buffer
-    RowBuffer* m_pDataCurrentBuffer;   // the data current buffer for insert
+    RowBuffer* m_pRootRowBuffer;      // the data root buffer
+    RowBuffer* m_pCurrentRowBuffer;   // the data current buffer for insert
 #endif
     
     Data::IndexTreeVec* m_pIndexTreeVec; // vector of index trees
@@ -66,6 +66,7 @@ namespace MetaData
     i8   nBuffersWritten(void);
     void vDropRead(void);
     void vDropWrite();
+    RowBuffer* pFirstRowBuffer(void);
     bool bGrabRead(void);
     bool bGrabWrite(void);
     Data::IndexTree* pHiddenIndexTree(void);

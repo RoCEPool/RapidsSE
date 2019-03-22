@@ -110,8 +110,8 @@ TablePtn::TablePtn(void)
   m_iParentJobId = C_UNKNOWN;
   
 #ifdef WITH_ROWBUFFER
-  m_pDataRootBuffer  = nullptr;
-  m_pDataCurrentBuffer = nullptr;
+  m_pRootRowBuffer  = nullptr;
+  m_pCurrentRowBuffer = nullptr;
 #endif
   
   m_pIndexTreeVec = new IndexTreeVec;
@@ -255,28 +255,28 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append a buffer into the IndexTree (should be hidden index IndexTree)      */
+/* append a row buffer into the TablePtn                                      */
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_ROWBUFFER
 void TablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
   
   m_okLock.vGrabWrite();
   
-  if (m_pDataRootBuffer == nullptr) {
-    ASSERT( ! m_pDataCurrentBuffer )
-    m_pDataRootBuffer = pRowBuffer;
+  if (m_pRootRowBuffer == nullptr) {
+    ASSERT( ! m_pCurrentRowBuffer )
+    m_pRootRowBuffer = pRowBuffer;
   }
   else {
-    pRowBuffer->vNextBuffer(m_pDataCurrentBuffer->pNextBuffer());
-    pRowBuffer->vPrevBuffer(m_pDataCurrentBuffer);
-    m_pDataCurrentBuffer->vNextBuffer(pRowBuffer);
+    pRowBuffer->vNextBuffer(m_pCurrentRowBuffer->pNextBuffer());
+    pRowBuffer->vPrevBuffer(m_pCurrentRowBuffer);
+    m_pCurrentRowBuffer->vNextBuffer(pRowBuffer);
   }
   
-  m_pDataCurrentBuffer = pRowBuffer;
+  m_pCurrentRowBuffer = pRowBuffer;
   
   m_okLock.vDropWrite();
 }
@@ -345,6 +345,18 @@ void TablePtn::vDropWrite(void)
   ASSERT(m_okLock.bIsLocked());
   m_okLock.vDropWrite();
 }
+
+/*----------------------------------------------------------------------------*/
+/* get the first row buffer                                                   */
+/*----------------------------------------------------------------------------*/
+#ifdef WITH_ROWBUFFER
+RowBuffer* TablePtn::pFirstRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  return m_pRootRowBuffer;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* set endInsert jobid                                                        */
