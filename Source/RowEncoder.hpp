@@ -60,9 +60,15 @@ namespace Data
     static i8 iTmeDecoding(WordView& wTspView, i8 iEncoding);
     static i8 iTspDecoding(WordView& wTspView, i8 iEncoding);
   
+    static i8 iBcdEncoding(WordView& wBcdView);
+    static i8 iBolEncoding(WordView& wBolView);
     static i8 iDteEncoding(WordView& wTspView);
-    static i8 iTmeEncoding(WordView& wTspView);
+    static i8 iFltEncoding(WordView& wFltView);
+    static i8 iIntEncoding(WordView& wIntView);
+    static i8 iIvlEncoding(WordView& wIntView);
+    static i8 iTmeEncoding(WordView& wTmeView);
     static i8 iTspEncoding(WordView& wTspView);
+    static i8 iVchEncoding(WordView& wVchView);
 
     static i8 iGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
   

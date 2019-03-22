@@ -628,9 +628,11 @@ void RowEncoder::vEncodeFlt(Column* pColumn, byte* aDatum)
   i8 iEncoding;
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
-  else
-    iEncoding = IntLib::iByteMagnitude(wVal);
-  
+  else {
+    iEncoding = iIntEncoding(wEncoded);
+    RASSERT(iEncoding == IntLib::iByteMagnitude(wVal));
+  }
+
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
@@ -664,8 +666,10 @@ void RowEncoder::vEncodeInt(Column* pColumn, byte* aDatum)
   i8 iEncoding;
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
-  else
-    iEncoding = IntLib::iByteMagnitude(wVal);
+  else {
+    iEncoding = iIntEncoding(wEncoded);
+    RASSERT(iEncoding == IntLib::iByteMagnitude(wVal));
+  }
   
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
@@ -700,9 +704,11 @@ void RowEncoder::vEncodeIvl(Column* pColumn, byte* aDatum)
   i8 iEncoding;
   if (wVal == (u8)C_DATUM_NULL)
     iEncoding = MN_NULL;
-  else
-    iEncoding = IntLib::iByteMagnitude(wVal);
-  
+  else {
+    iEncoding = iIntEncoding(wEncoded);
+    RASSERT(iEncoding == IntLib::iByteMagnitude(wVal));
+  }
+
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
@@ -872,6 +878,26 @@ i8 RowEncoder::iTspDecoding(WordView& wTspView, i8 iEncoding)
 }
 
 /*----------------------------------------------------------------------------*/
+/* encoding of bcd                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowEncoder::iBcdEncoding(WordView& wBcdView)
+{
+  i8 iEncoding = IntLib::iByteMagnitude(wBcdView.m_iI8);
+  
+  return iEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* encoding of bol                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowEncoder::iBolEncoding(WordView& wBolView)
+{
+  i8 iEncoding = IntLib::iByteMagnitude(wBolView.m_iI8);
+  
+  return iEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
 /* encoding of dte                                                            */
 /*----------------------------------------------------------------------------*/
 i8 RowEncoder::iDteEncoding(WordView& wTspView)
@@ -895,6 +921,36 @@ i8 RowEncoder::iDteEncoding(WordView& wTspView)
   
   return iEncoding;
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* encoding of flt                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowEncoder::iFltEncoding(WordView& wFltView)
+{
+  i8 iEncoding = IntLib::iByteMagnitude(wFltView.m_iI8);
+  
+  return iEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* encoding of int                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowEncoder::iIntEncoding(WordView& wIntView)
+{
+  i8 iEncoding = IntLib::iByteMagnitude(wIntView.m_iI8);
+  
+  return iEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* encoding of ivl                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowEncoder::iIvlEncoding(WordView& wIvlView)
+{
+  i8 iEncoding = IntLib::iByteMagnitude(wIvlView.m_iI8);
+  
+  return iEncoding;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -947,6 +1003,16 @@ i8 RowEncoder::iTspEncoding(WordView& wTspView)
   
   return iEncoding;
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* encoding of vch                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowEncoder::iVchEncoding(WordView& wVchView)
+{
+  i8 iEncoding = IntLib::iByteMagnitude(wVchView.m_iI8);
+  
+  return iEncoding;
 }
 
 /*----------------------------------------------------------------------------*/
