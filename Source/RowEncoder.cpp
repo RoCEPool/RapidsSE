@@ -38,8 +38,17 @@ RowEncoder::RowEncoder(RowParts* pRowParts)
   
   m_pRowParts = pRowParts;
   
+  m_pRowParts->vReset();
+  
   _checkInitialised_(CN_ROWENCODER);
   
+  i8 i_Head = m_pRowParts->iAllotHead();
+  RASSERT(0 == i_Head);
+  
+  CacheLine* aCacheLine = m_pRowParts->aGet(i_Head);
+  aCacheLine->vSetAll(0xFF);
+  aCacheLine->v8B(0,0);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODER,_FOOTER_);
 }
 
@@ -170,25 +179,10 @@ w8 RowEncoder::wDecode(Column* pColumn, CacheLine* aCacheLine)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* begin encoding row into new cache line                                     */
-/*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeBegin(RowParts& oRowParts)
-{
-  i8 i_Head = oRowParts.iAllotHead();
-  CacheLine* aCacheLine = oRowParts.aGet(i_Head);
-  
-  aCacheLine->vSetAll(0xFF);
-  aCacheLine->v8B(0,0);
-}
-
-/*----------------------------------------------------------------------------*/
 /* encode given datum into cache line                                         */
 /*----------------------------------------------------------------------------*/
 void RowEncoder::vEncodeDatum(Column* pColumn, byte* aDatum)
 {
-  
-  CacheLine* aCacheLine = m_pRowParts->aGet(0);
-  
   i8 i_Column = pColumn->iColumnNo();
   eDM eDatum  = pColumn->eDatumType();
   
@@ -197,33 +191,15 @@ void RowEncoder::vEncodeDatum(Column* pColumn, byte* aDatum)
     return;
   
   switch (eDatum) {
-    case DM_BCD:
-      vEncodeBcd(pColumn,aDatum);
-      return;
-    case DM_BOL:
-      vEncodeBol(pColumn,aDatum);
-      return;
-    case DM_DTE:
-      vEncodeDte(pColumn,aDatum);
-      return;
-    case DM_FLT:
-      vEncodeFlt(pColumn,aDatum);
-      return;
-    case DM_INT:
-      vEncodeInt(pColumn,aDatum);
-      return;
-    case DM_IVL:
-      vEncodeIvl(pColumn,aDatum);
-      return;
-    case DM_TME:
-      vEncodeTme(pColumn,aDatum);
-      return;
-    case DM_TSP:
-      vEncodeTsp(pColumn,aDatum);
-      return;
-    case DM_VCH:
-      vEncodeVch(pColumn,aDatum);
-      return;
+    case DM_BCD: vEncodeBcd(pColumn,aDatum); return;
+    case DM_BOL: vEncodeBol(pColumn,aDatum); return;
+    case DM_DTE: vEncodeDte(pColumn,aDatum); return;
+    case DM_FLT: vEncodeFlt(pColumn,aDatum); return;
+    case DM_INT: vEncodeInt(pColumn,aDatum); return;
+    case DM_IVL: vEncodeIvl(pColumn,aDatum); return;
+    case DM_TME: vEncodeTme(pColumn,aDatum); return;
+    case DM_TSP: vEncodeTsp(pColumn,aDatum); return;
+    case DM_VCH: vEncodeVch(pColumn,aDatum); return;
     default:
       NEVER_REACH;
   }

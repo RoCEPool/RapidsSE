@@ -31,8 +31,6 @@ namespace Data
     
     static w8 wDecode(Column* pColumn, CacheLine* aCacheLine);
   
-    void vEncodeBegin(RowParts& oRowParts);
-  
     void vEncodeDatum(Column* pColumn, byte* aDatum);
   
     static void vPrint(Column* pColumn, CacheLine* aCacheLine);

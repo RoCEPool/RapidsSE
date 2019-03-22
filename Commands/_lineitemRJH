@@ -37,7 +37,7 @@ create table lineitem (
 //nowait monitor 3;
 
 space;
-time ld lineitem "/tpch/SF0/lineitem1.csv" max_errors 100;
+time ld lineitem "/tpch/SF0/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 space;
