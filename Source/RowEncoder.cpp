@@ -34,6 +34,8 @@ RowEncoder::RowEncoder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODER,_FOOTER_);
   
+  m_i_CacheOffset = 8;
+  
   _checkInitialised_(CN_ROWENCODER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODER,_FOOTER_);
@@ -168,22 +170,19 @@ w8 RowEncoder::wDecode(Column* pColumn, CacheLine* aCacheLine)
 /*----------------------------------------------------------------------------*/
 /* begin encoding row into new cache line                                     */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeBegin(RowParts& oRowParts, i8& i_CacheOffset)
+void RowEncoder::vEncodeBegin(RowParts& oRowParts)
 {
   i8 i_Head = oRowParts.iAllotHead();
   CacheLine* aCacheLine = oRowParts.aGet(i_Head);
   
   aCacheLine->vSetAll(0xFF);
   aCacheLine->v8B(0,0);
-
-  i_CacheOffset = 8;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode given datum into cache line                                         */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeDatum(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                               i8& i_CacheOffset)
+void RowEncoder::vEncodeDatum(Column* pColumn, byte* aDatum, RowParts& oRowParts)
 {
   
   CacheLine* xaCacheLine = oRowParts.aGet(0);
@@ -197,31 +196,31 @@ void RowEncoder::vEncodeDatum(Column* pColumn, byte* aDatum, RowParts& oRowParts
   
   switch (eDatum) {
     case DM_BCD:
-      vEncodeBcd(pColumn,aDatum,oRowParts,i_CacheOffset);
+      vEncodeBcd(pColumn,aDatum,oRowParts);
       return;
     case DM_BOL:
-      vEncodeBol(pColumn,aDatum,oRowParts,i_CacheOffset);
+      vEncodeBol(pColumn,aDatum,oRowParts);
       return;
     case DM_DTE:
-      vEncodeDte(pColumn,aDatum,oRowParts,i_CacheOffset);
+      vEncodeDte(pColumn,aDatum,oRowParts);
       return;
     case DM_FLT:
-      vEncodeFlt(pColumn,aDatum,oRowParts,i_CacheOffset);
+      vEncodeFlt(pColumn,aDatum,oRowParts);
       return;
     case DM_INT:
-      vEncodeInt(pColumn,aDatum,oRowParts,i_CacheOffset);
+      vEncodeInt(pColumn,aDatum,oRowParts);
       return;
     case DM_IVL:
-      vEncodeIvl(pColumn,aDatum,oRowParts,i_CacheOffset);
+      vEncodeIvl(pColumn,aDatum,oRowParts);
       return;
     case DM_TME:
-      vEncodeTme(pColumn,aDatum,oRowParts,i_CacheOffset);
+      vEncodeTme(pColumn,aDatum,oRowParts);
       return;
     case DM_TSP:
-      vEncodeTsp(pColumn,aDatum,oRowParts,i_CacheOffset);
+      vEncodeTsp(pColumn,aDatum,oRowParts);
       return;
     case DM_VCH:
-      vEncodeVch(pColumn,aDatum,oRowParts,i_CacheOffset);
+      vEncodeVch(pColumn,aDatum,oRowParts);
       return;
     default:
       NEVER_REACH;
@@ -530,8 +529,7 @@ w8 RowEncoder::wDecodeVch(Column* pColumn, CacheLine* aCacheLine)
 /*----------------------------------------------------------------------------*/
 /* encode decimal                                                             */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeBcd(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                             i8& i_CacheOffset)
+void RowEncoder::vEncodeBcd(Column* pColumn, byte* aDatum, RowParts& oRowParts)
 {
   CacheLine* xaCacheLine = oRowParts.aGet(0);
   
@@ -551,9 +549,9 @@ void RowEncoder::vEncodeBcd(Column* pColumn, byte* aDatum, RowParts& oRowParts,
   xaCacheLine->v1N(i_Column,iEncoding);
   
   // set n-byte data for column value
-  xaCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+  xaCacheLine->vPut(m_i_CacheOffset,aDatum,iEncoding);
   
-  i_CacheOffset += iEncoding;
+  m_i_CacheOffset += iEncoding;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -566,8 +564,7 @@ void RowEncoder::vEncodeBcd(Column* pColumn, byte* aDatum, RowParts& oRowParts,
 /*----------------------------------------------------------------------------*/
 /* encode boolean                                                             */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeBol(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                             i8& i_CacheOffset)
+void RowEncoder::vEncodeBol(Column* pColumn, byte* aDatum, RowParts& oRowParts)
 {
   CacheLine* xaCacheLine = oRowParts.aGet(0);
   
@@ -588,7 +585,7 @@ void RowEncoder::vEncodeBol(Column* pColumn, byte* aDatum, RowParts& oRowParts,
   // set 4bit meta data for column value
   xaCacheLine->v1N(i_Column,iEncoding);
   
-  i_CacheOffset += 0;
+  m_i_CacheOffset += 0;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -601,8 +598,7 @@ void RowEncoder::vEncodeBol(Column* pColumn, byte* aDatum, RowParts& oRowParts,
 /*----------------------------------------------------------------------------*/
 /* encode date                                                                */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeDte(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                             i8& i_CacheOffset)
+void RowEncoder::vEncodeDte(Column* pColumn, byte* aDatum, RowParts& oRowParts)
 {
   CacheLine* xaCacheLine = oRowParts.aGet(0);
   
@@ -624,9 +620,9 @@ void RowEncoder::vEncodeDte(Column* pColumn, byte* aDatum, RowParts& oRowParts,
   xaCacheLine->v1N(i_Column,iEncoding);
   
   // set n-byte data for column value
-  xaCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+  xaCacheLine->vPut(m_i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
   
-  i_CacheOffset += iEncoding;
+  m_i_CacheOffset += iEncoding;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -639,8 +635,7 @@ void RowEncoder::vEncodeDte(Column* pColumn, byte* aDatum, RowParts& oRowParts,
 /*----------------------------------------------------------------------------*/
 /* encode float                                                               */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeFlt(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                             i8& i_CacheOffset)
+void RowEncoder::vEncodeFlt(Column* pColumn, byte* aDatum, RowParts& oRowParts)
 {
   CacheLine* xaCacheLine = oRowParts.aGet(0);
   
@@ -660,9 +655,9 @@ void RowEncoder::vEncodeFlt(Column* pColumn, byte* aDatum, RowParts& oRowParts,
   xaCacheLine->v1N(i_Column,iEncoding);
   
   // set n-byte data for column value
-  xaCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+  xaCacheLine->vPut(m_i_CacheOffset,aDatum,iEncoding);
   
-  i_CacheOffset += iEncoding;
+  m_i_CacheOffset += iEncoding;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -675,8 +670,7 @@ void RowEncoder::vEncodeFlt(Column* pColumn, byte* aDatum, RowParts& oRowParts,
 /*----------------------------------------------------------------------------*/
 /* encode integer                                                             */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeInt(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                             i8& i_CacheOffset)
+void RowEncoder::vEncodeInt(Column* pColumn, byte* aDatum, RowParts& oRowParts)
 {
   CacheLine* xaCacheLine = oRowParts.aGet(0);
   
@@ -696,9 +690,9 @@ void RowEncoder::vEncodeInt(Column* pColumn, byte* aDatum, RowParts& oRowParts,
   xaCacheLine->v1N(i_Column,iEncoding);
   
   // set n-byte data for column value
-  xaCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+  xaCacheLine->vPut(m_i_CacheOffset,aDatum,iEncoding);
   
-  i_CacheOffset += iEncoding;
+  m_i_CacheOffset += iEncoding;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -711,8 +705,7 @@ void RowEncoder::vEncodeInt(Column* pColumn, byte* aDatum, RowParts& oRowParts,
 /*----------------------------------------------------------------------------*/
 /* encode interval                                                            */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeIvl(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                             i8& i_CacheOffset)
+void RowEncoder::vEncodeIvl(Column* pColumn, byte* aDatum, RowParts& oRowParts)
 {
   CacheLine* xaCacheLine = oRowParts.aGet(0);
   
@@ -732,9 +725,9 @@ void RowEncoder::vEncodeIvl(Column* pColumn, byte* aDatum, RowParts& oRowParts,
   xaCacheLine->v1N(i_Column,iEncoding);
   
   // set n-byte data for column value
-  xaCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
+  xaCacheLine->vPut(m_i_CacheOffset,aDatum,iEncoding);
   
-  i_CacheOffset += iEncoding;
+  m_i_CacheOffset += iEncoding;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -747,8 +740,7 @@ void RowEncoder::vEncodeIvl(Column* pColumn, byte* aDatum, RowParts& oRowParts,
 /*----------------------------------------------------------------------------*/
 /* encode time                                                                */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeTme(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                             i8& i_CacheOffset)
+void RowEncoder::vEncodeTme(Column* pColumn, byte* aDatum, RowParts& oRowParts)
 {
   CacheLine* xaCacheLine = oRowParts.aGet(0);
   
@@ -770,9 +762,9 @@ void RowEncoder::vEncodeTme(Column* pColumn, byte* aDatum, RowParts& oRowParts,
   xaCacheLine->v1N(i_Column,iEncoding);
   
   // set n-byte data for column value
-  xaCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+  xaCacheLine->vPut(m_i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
   
-  i_CacheOffset += iEncoding;
+  m_i_CacheOffset += iEncoding;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -785,8 +777,7 @@ void RowEncoder::vEncodeTme(Column* pColumn, byte* aDatum, RowParts& oRowParts,
 /*----------------------------------------------------------------------------*/
 /* encode timestamp                                                           */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeTsp(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                             i8& i_CacheOffset)
+void RowEncoder::vEncodeTsp(Column* pColumn, byte* aDatum, RowParts& oRowParts)
 {
   CacheLine* xaCacheLine = oRowParts.aGet(0);
   
@@ -808,9 +799,9 @@ void RowEncoder::vEncodeTsp(Column* pColumn, byte* aDatum, RowParts& oRowParts,
   xaCacheLine->v1N(i_Column,iEncoding);
   
   // set n-byte data for column value
-  xaCacheLine->vPut(i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+  xaCacheLine->vPut(m_i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
   
-  i_CacheOffset += iEncoding;
+  m_i_CacheOffset += iEncoding;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -823,8 +814,7 @@ void RowEncoder::vEncodeTsp(Column* pColumn, byte* aDatum, RowParts& oRowParts,
 /*----------------------------------------------------------------------------*/
 /* encode varchar                                                             */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeVch(Column* pColumn, byte* aDatum, RowParts& oRowParts,
-                             i8& i_CacheOffset)
+void RowEncoder::vEncodeVch(Column* pColumn, byte* aDatum, RowParts& oRowParts)
 {
   CacheLine* xaCacheLine = oRowParts.aGet(0);
   
@@ -850,8 +840,8 @@ void RowEncoder::vEncodeVch(Column* pColumn, byte* aDatum, RowParts& oRowParts,
   
   // set n-byte data for column value
   if (iEncoding <= 8) {
-    xaCacheLine->vPut(i_CacheOffset,aDatum,iEncoding);
-    i_CacheOffset += iEncoding;
+    xaCacheLine->vPut(m_i_CacheOffset,aDatum,iEncoding);
+    m_i_CacheOffset += iEncoding;
   }
   else {
     // we would encode the shoco version of the string into a cache line

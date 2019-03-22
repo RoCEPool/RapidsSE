@@ -107,8 +107,7 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   i8 nColumns = m_pTable->pColumnVec()->nItems() - 1;
 
   // begin encoding
-  i8 i_CacheOffset = C_UNKNOWN;
-  pRowEncoder->vEncodeBegin(m_oRowParts,i_CacheOffset);
+  pRowEncoder->vEncodeBegin(m_oRowParts);
   
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
@@ -147,11 +146,9 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     // encode datum into cache line
     
     if (eDatum == DM_INT || eDatum == DM_BCD)
-      pRowEncoder->vEncodeDatum(pColumn,(byte*)&iInt,m_oRowParts,
-                                i_CacheOffset);
+      pRowEncoder->vEncodeDatum(pColumn,(byte*)&iInt,m_oRowParts);
     else
-      pRowEncoder->vEncodeDatum(pColumn,(byte*)sDst.aChar(),m_oRowParts,
-                                i_CacheOffset);
+      pRowEncoder->vEncodeDatum(pColumn,(byte*)sDst.aChar(),m_oRowParts);
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     //RowEncoder::vPrint(pColumn,aCacheLine);
 
