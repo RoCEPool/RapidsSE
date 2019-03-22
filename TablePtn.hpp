@@ -5,7 +5,6 @@
 
 namespace Data
 {
-  class IndexTree;
   
   typedef VectorNL_t<CN_INDEXTREEVEC,
                      IndexTree,
@@ -16,7 +15,6 @@ namespace Data
 
 namespace MetaData
 {
-  class Index;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -84,10 +82,6 @@ namespace MetaData
   
   TablePtn* _pTablePtn(void* aAddr);
 
-  /*--------------------------------------------------------------------------*/
-  /* TablePtnVec -- Table Partition Vector                                    */
-  /*--------------------------------------------------------------------------*/
-  typedef VectorNL_t<CN_TABLEPTNVEC,TablePtn,CN_TABLEPTN,C_SLOTS_PER_NODE,u8> TablePtnVec;
 }
 
 /*============================================================================*/

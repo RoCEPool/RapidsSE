@@ -43,7 +43,6 @@ using namespace MetaData;
 #include "RelationalOps.h"
 
 #include "Column.hpp"
-#include "TablePtn.hpp"
 #include "Slots.hpp"
 #include "Table.hpp"
 #include "Index.hpp"

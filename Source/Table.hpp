@@ -4,7 +4,9 @@
 #pragma once
 
 namespace MetaData
-{  
+{
+  class Index;
+  
   enum eTT // Table Type
   {
     /* 0 */ TT_NONE=0,
