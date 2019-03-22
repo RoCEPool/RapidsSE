@@ -257,7 +257,6 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
 /*----------------------------------------------------------------------------*/
 /* append a row buffer into the TablePtn                                      */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_ROWBUFFER
 void TablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
@@ -280,7 +279,6 @@ void TablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
   
   m_okLock.vDropWrite();
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* have all buffers been loaded?                                              */
@@ -349,14 +347,12 @@ void TablePtn::vDropWrite(void)
 /*----------------------------------------------------------------------------*/
 /* get the first row buffer                                                   */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_ROWBUFFER
 RowBuffer* TablePtn::pFirstRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   return m_pRootRowBuffer;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* set endInsert jobid                                                        */
@@ -554,6 +550,21 @@ void TablePtn::vResetWrite(void)
   m_iParentJobId        = -1;
   
   m_bLowMemLoad = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the row buffers used                                                   */
+/*----------------------------------------------------------------------------*/
+i8 TablePtn::nRowBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  i8 nBufferCount = 0;
+  
+  if (m_pRootRowBuffer)
+    m_pRootRowBuffer->vBufferCount(nBufferCount);
+  
+  return nBufferCount;
 }
 
 /*----------------------------------------------------------------------------*/

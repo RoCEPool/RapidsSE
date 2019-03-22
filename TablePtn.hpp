@@ -80,6 +80,7 @@ namespace MetaData
     void vPartitionId(i8 iPartitionId);
     bool bPopulateIndex(i8 iIndexNo);
     void vResetWrite(void);
+    i8   nRowBuffers(void);
     void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);
     
