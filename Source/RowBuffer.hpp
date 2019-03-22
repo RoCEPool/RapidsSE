@@ -92,15 +92,8 @@ namespace Data
     private:
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // verify functions
-  
-    void         vQuickVerify(Item* aSeeEntry=nullptr);
-    bool         bQuickVerify(Item* aNotSeeEntry);
-  
-    bool         bVerifyLnAny(void);
-
-    bool         bVerifyAdjacent(void);
-    bool         bVerifyItems(void);
+    // verify functions        
+    bool         bVerifyRowBuffer(void);
     bool         bVerifyNextPrev(void);
     bool         bVerifyRows(void);
     void         vVerifyFault(void);

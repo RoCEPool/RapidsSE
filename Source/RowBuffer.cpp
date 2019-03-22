@@ -515,6 +515,94 @@ bool RowBuffer::bValidRowBuffer(void)
   
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* verify has detected a fault                                                */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vVerifyFault(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  vTrace("VerifyFault\n"_Stz);
+  RASSERT(0);
+  return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the rows of this buffer                                             */
+/*----------------------------------------------------------------------------*/
+bool RowBuffer::bVerifyRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  i8 nRows = nRowCount();
+  
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    CacheLine* aRowCacheLine = m_xRowTray.aGet(i_Row);
+    RASSERT(aRowCacheLine);
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the next, previous pointers                                         */
+/*----------------------------------------------------------------------------*/
+bool RowBuffer::bVerifyNextPrev(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  /*
+   Any buffer should have a next whose prev point back to it; any prev should
+   point forward to it; a child buffer should point back to its parent
+   */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (m_pPrevBuffer) {
+    RowBuffer* pPrevBuffer = _pRowBuffer(m_pPrevBuffer);
+    if (pPrevBuffer->pNextBuffer() != this) {
+      vVerifyFault();
+      return false;
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (m_pNextBuffer) {
+    RowBuffer* pNextBuffer = _pRowBuffer(m_pNextBuffer);
+    if (pNextBuffer->pPrevBuffer() != this) {
+      vVerifyFault();
+      return false;
+    }
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the structure of this row buffer                                    */
+/*----------------------------------------------------------------------------*/
+bool RowBuffer::bVerifyRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify the contents of this buffer
+  
+  bool bValid;
+  
+  bValid = bVerifyNextPrev();
+  if (! bValid)
+    return false;
+  
+  bValid = bVerifyRows();
+  if (! bValid)
+    return false;
+  
+  return true;
+}
+
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
