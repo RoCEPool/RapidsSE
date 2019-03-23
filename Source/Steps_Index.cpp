@@ -1319,15 +1319,25 @@ void Step::vIndexScan(MP_Task mpTask)
   Table* pTable = pIndex->pTable();
   
   TablePtn* pPartition = pTable->pPartition(iSlot);
+  
+#ifdef WITH_NO_HIDDEN
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // position in the first row buffer
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
+  RowBuffer* pRowBuffer = pPartition->pFirstRowBuffer();
+  
+#else
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // position in the first row buffer
+  IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
+  RowBuffer* pRowBuffer = pIndexTree->pFirstHiddenBuffer();
+  
+#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a result buffer for the results
   pFetchBuffer = new FetchBuffer(pTable, iSlot);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // position in the first row buffer
-  RowBuffer* pRowBuffer = pIndexTree->pFirstHiddenBuffer();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entryBuffer ?
