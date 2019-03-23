@@ -263,7 +263,8 @@ void TablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
   
   gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
   
-  m_okLock.vGrabWrite();
+  RASSERT(m_okLock.bIsLocked());
+  //m_okLock.vGrabWrite();
   
   if (m_pRootRowBuffer == nullptr) {
     ASSERT( ! m_pCurrentRowBuffer )
@@ -277,7 +278,7 @@ void TablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
   
   m_pCurrentRowBuffer = pRowBuffer;
   
-  m_okLock.vDropWrite();
+  //m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
