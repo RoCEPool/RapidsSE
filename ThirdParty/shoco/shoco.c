@@ -77,7 +77,8 @@ static inline int find_best_encoding(const int16_t * shoco_restrict indices, uns
   return -1;
 }
 
-size_t shoco_compress(const char * const shoco_restrict original, size_t strlen, char * const shoco_restrict out, size_t bufsize) {
+size_t shoco_compress(const char * const shoco_restrict original, size_t strlen,
+                      char * const shoco_restrict out, size_t bufsize) {
   char *o = out;
   char * const out_end = out + bufsize;
   const char *in = original;
@@ -161,7 +162,8 @@ last_resort:
   return o - out;
 }
 
-size_t shoco_decompress(const char * const shoco_restrict original, size_t complen, char * const shoco_restrict out, size_t bufsize) {
+size_t shoco_decompress(const char * const shoco_restrict original, size_t complen,
+                        char * const shoco_restrict out, size_t bufsize) {
   char *o = out;
   char * const out_end = out + bufsize;
   const char *in = original;

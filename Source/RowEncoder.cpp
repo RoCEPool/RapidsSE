@@ -805,14 +805,21 @@ void RowEncoder::vEncodeVch(Column* pColumn, byte* aDatum)
     
     // compress varchar into tail shoco cache line
     i8 iLenCompressed =
-      shoco_compress((char*)aDatum, nBytesEncoded,
-                     ((char*)aShocoLine)+8, C_WORDS_PER_CACHE_LINE-8);
+      Compress::iIntoShoco(((byte*)aShocoLine)+8, C_BYTES_PER_CACHE_LINE-8,
+                           (char*)aDatum, nBytesEncoded);
 
     // set length of the compressed string encoded into tail shoco cache line
     aShocoLine->v1N(0,iLenCompressed);
     
-    //MemLib::vWordDump(aShocoLine,sizeof(CacheLine));
+    MemLib::vWordDump(aShocoLine,sizeof(CacheLine));
     m_i_CacheOffset += 2;
+
+//    s256 sDecomp;
+//    i8 iLenDecompressed =
+//      Compress::iFromShoco(sDecomp.aChar(), 255,
+//                           ((byte*)aShocoLine)+8, C_BYTES_PER_CACHE_LINE-8);
+//    sDecomp.aChar()[iLenDecompressed] = '\0';
+//    vTrace("Decomp: %s\n"_Stz,sDecomp.aChar());
   }
   else {
     aCacheLine->vPut(m_i_CacheOffset,aDatum,nBytesEncoded);
