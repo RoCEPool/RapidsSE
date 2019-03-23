@@ -554,11 +554,21 @@ void TablePtn::vResetWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the root row buffer                                                    */
+/*----------------------------------------------------------------------------*/
+RowBuffer* TablePtn::pRootRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  return m_pRootRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the row buffers used                                                   */
 /*----------------------------------------------------------------------------*/
 i8 TablePtn::nRowBuffers(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   i8 nBufferCount = 0;
   
@@ -567,6 +577,7 @@ i8 TablePtn::nRowBuffers(void)
   
   return nBufferCount;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* tidy up                                                                    */
