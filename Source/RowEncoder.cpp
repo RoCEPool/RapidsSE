@@ -799,21 +799,26 @@ void RowEncoder::vEncodeVch(Column* pColumn, byte* aDatum)
     // allot a tail cache line
     i8 i_Tail = m_pRowParts->iAllotTail();
     CacheLine* aShocoLine = m_pRowParts->aGet(i_Tail);
+
+    // set data for column value as the index of the shoco cache line
+    aCacheLine->vPut(m_i_CacheOffset,(byte*)&i_Tail,MN_2B);
     
-    // compress into tail shoco cache line
-    i8 iLenCompressed = shoco_compress((char*)aDatum, nBytesEncoded,
-                                       ((char*)aShocoLine)+8, 56);
+    // compress varchar into tail shoco cache line
+    i8 iLenCompressed =
+      shoco_compress((char*)aDatum, nBytesEncoded,
+                     ((char*)aShocoLine)+8, C_WORDS_PER_CACHE_LINE-8);
 
     // set length of the compressed string encoded into tail shoco cache line
     aShocoLine->v1N(0,iLenCompressed);
     
     //MemLib::vWordDump(aShocoLine,sizeof(CacheLine));
+    m_i_CacheOffset += 2;
   }
   else {
     aCacheLine->vPut(m_i_CacheOffset,aDatum,nBytesEncoded);
+    m_i_CacheOffset += nBytesEncoded;
   }
 
-  m_i_CacheOffset += nBytesEncoded;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
