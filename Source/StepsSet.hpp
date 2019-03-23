@@ -1017,6 +1017,7 @@
   static void vTableRemoveIndex(Tasks::MP_Task mpTask);
   static void vTableShowColumnVec(Tasks::MP_Task mpTask);
   static void vTableSlots(Tasks::MP_Task mpTask);
+  static void vTableSpace(Tasks::MP_Task mpTask);
   static void vTableSubDic(Tasks::MP_Task mpTask);
   static void vTableSubLoaders(Tasks::MP_Task mpTask);
   static void vTableTruncate(Tasks::MP_Task mpTask);

@@ -90,6 +90,7 @@ namespace MetaData
     Data::EntryBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
     i8   iRowPartition(Stz* pRow);
 
+    i8   nRowBuffers(void);
     void vShowColumnVec(void);
     Dic* pSubDic(void);
     void vSubLoaders(i8 iSubLoaders);

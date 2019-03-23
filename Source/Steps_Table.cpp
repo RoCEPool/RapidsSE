@@ -35,6 +35,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.removeIndex"_Stz,        &Step::vTableRemoveIndex);
   vAddStep("table.showColumnVec"_Stz,      &Step::vTableShowColumnVec);
   vAddStep("table.slots"_Stz,              &Step::vTableSlots);
+  vAddStep("table.space"_Stz,              &Step::vTableSpace);
   vAddStep("table.subDic"_Stz,             &Step::vTableSubDic);
   vAddStep("table.subLoaders"_Stz,         &Step::vTableSubLoaders);
   vAddStep("table.truncate"_Stz,           &Step::vTableTruncate);
@@ -647,6 +648,27 @@ void Step::vTableSlots(MP_Task mpTask)
   ASSERT(CN_TABLE == pTable->eClass());
   
   mpTask->m_pDataStack->vPushPointer(pTable->pSlots());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.space -- push space used by table                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vTableSpace(MP_Task mpTask)
+{
+  ENTRY("vTableSpace"_Stz);
+  
+  Object* pPtrTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.space"_Stz);
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  i8 iBuffers = pTable->nRowBuffers();
+  i8 iSpace = iBuffers * C_SIZE_POOL_BUFFER;
+  mpTask->m_pDataStack->vPushI8(iSpace);
   
   EXIT();
 }

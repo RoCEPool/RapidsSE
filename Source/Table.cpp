@@ -880,6 +880,22 @@ i8 Table::iRowPartition(Stz* pRow)
 */
 
 /*----------------------------------------------------------------------------*/
+/* get number of row buffers in this table                                    */
+/*----------------------------------------------------------------------------*/
+i8 Table::nRowBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  i8 iBuffers = 0;
+  
+  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nSlotsPerNode; iPartition++) {
+    iBuffers += pPartition(iPartition)->nRowBuffers();
+  }
+  
+  return iBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show column vector                                                         */
 /*----------------------------------------------------------------------------*/
 void Table::vShowColumnVec(void)
