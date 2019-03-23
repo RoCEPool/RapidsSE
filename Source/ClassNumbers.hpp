@@ -220,6 +220,7 @@ enum eCN : u2 // Class Number
   /* 172 0xAC      184B Heap:S */ CN_RESOURCETRACKER,
   /* 173 0xAD      896B Heap:M */ CN_ROWAGG,
   /*                    Heap:L */ CN_ROWBUFFER,
+  /*                    Heap:L */ CN_ROWDECODER,
   /*                    Heap:L */ CN_ROWENCODER,
   /* 174 0xAE      152B Heap:S */ CN_ROWONCE,
   /*                           */ CN_ROWTRAY,
@@ -485,7 +486,8 @@ static Stz* aCN[]
   /* 172 0xAC */ "RESOURCETRACKER"_Stz,     // CN_RESOURCETRACKER
   /* 173 0xAD */ "ROWAGG"_Stz,              // CN_ROWAGG
   /*          */ "ROWBUFFER"_Stz,           // CN_ROWBUFFER
-  /*          */ "ROWBUFFER"_Stz,           // CN_ROWENCODER
+  /*          */ "ROWDECODER"_Stz,          // CN_ROWDECODER
+  /*          */ "ROWENCODER"_Stz,          // CN_ROWENCODER
   /* 174 0xAE */ "ROWONCE"_Stz,             // CN_ROWONCE
   /*          */ "ROWTRAY"_Stz,             // CN_ROWTRAY
   /* 175 0xAF */ "ROWWRK"_Stz,              // CN_ROWWRK
