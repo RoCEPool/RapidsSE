@@ -558,8 +558,8 @@ void RowEncoder::vEncodeBol(Column* pColumn, byte* aDatum)
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
-  m_i_CacheOffset += 0;
-  
+  m_i_CacheOffset += nBytesEncoded;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
@@ -592,8 +592,8 @@ void RowEncoder::vEncodeDte(Column* pColumn, byte* aDatum)
   if (nBytesEncoded)
     aCacheLine->vPut(m_i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
   
-  m_i_CacheOffset += iEncoding;
-  
+  m_i_CacheOffset += nBytesEncoded;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
@@ -626,8 +626,8 @@ void RowEncoder::vEncodeFlt(Column* pColumn, byte* aDatum)
   if (nBytesEncoded)
     aCacheLine->vPut(m_i_CacheOffset,aDatum,iEncoding);
   
-  m_i_CacheOffset += iEncoding;
-  
+  m_i_CacheOffset += nBytesEncoded;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
@@ -660,8 +660,8 @@ void RowEncoder::vEncodeInt(Column* pColumn, byte* aDatum)
   if (nBytesEncoded)
     aCacheLine->vPut(m_i_CacheOffset,aDatum,iEncoding);
   
-  m_i_CacheOffset += iEncoding;
-  
+  m_i_CacheOffset += nBytesEncoded;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
@@ -694,8 +694,8 @@ void RowEncoder::vEncodeIvl(Column* pColumn, byte* aDatum)
   if (nBytesEncoded)
     aCacheLine->vPut(m_i_CacheOffset,aDatum,iEncoding);
   
-  m_i_CacheOffset += iEncoding;
-  
+  m_i_CacheOffset += nBytesEncoded;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
@@ -728,8 +728,8 @@ void RowEncoder::vEncodeTme(Column* pColumn, byte* aDatum)
   if (nBytesEncoded)
     aCacheLine->vPut(m_i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
   
-  m_i_CacheOffset += iEncoding;
-  
+  m_i_CacheOffset += nBytesEncoded;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
@@ -762,8 +762,8 @@ void RowEncoder::vEncodeTsp(Column* pColumn, byte* aDatum)
   if (nBytesEncoded)
     aCacheLine->vPut(m_i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
   
-  m_i_CacheOffset += iEncoding;
-  
+  m_i_CacheOffset += nBytesEncoded;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
@@ -780,35 +780,41 @@ void RowEncoder::vEncodeVch(Column* pColumn, byte* aDatum)
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wVal = *(i8*)aDatum;
+  w8 wVal = (w8)aDatum;
   
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
-  i8 iEncoding;
-  iEncoding = C_UNKNOWN;
-  
-  i8 iLen = StrLib::iLength((char*)aDatum);
-  //RASSERT(iLen <= 8);
-  
-  if (iLen <= 8)
-    iEncoding = iLen;
-  else
-    iEncoding = MN_SHOCOL_2B;
+  i8 nBytesEncoded;
+  i8 iEncoding = iVchEncoding(wEncoded,nBytesEncoded);
+  //RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_TSP));
   
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
   
   // set n-byte data for column value
-  if (iEncoding <= 8) {
-    aCacheLine->vPut(m_i_CacheOffset,aDatum,iEncoding);
-    m_i_CacheOffset += iEncoding;
+  if (iEncoding == MN_SHOCOL_2B) {
+    // we would encode the shoco version of the string into a cache line
+    
+    // allot a tail cache line
+    i8 i_Tail = m_pRowParts->iAllotTail();
+    CacheLine* aShocoLine = m_pRowParts->aGet(i_Tail);
+    
+    // compress into tail shoco cache line
+    i8 iLenCompressed = shoco_compress((char*)aDatum, nBytesEncoded,
+                                       ((char*)aShocoLine)+8, 56);
+
+    // set length of the compressed string encoded into tail shoco cache line
+    aShocoLine->v1N(0,iLenCompressed);
+    
+    //MemLib::vWordDump(aShocoLine,sizeof(CacheLine));
   }
   else {
-    // we would encode the shoco version of the string into a cache line
-    RASSERT(0);
+    aCacheLine->vPut(m_i_CacheOffset,aDatum,nBytesEncoded);
   }
-  
+
+  m_i_CacheOffset += nBytesEncoded;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
@@ -1051,9 +1057,18 @@ i8 RowEncoder::iVchEncoding(WordView& wVchView, i8& nBytesEncoded)
 {
   i8 iEncoding;
   
-  iEncoding = IntLib::iByteMagnitude(wVchView.m_iI8);
-  nBytesEncoded = iEncoding;
+  i8 iLen = StrLib::iLength((char*)wVchView.m_wWord);
+  //RASSERT(iLen <= 8);
   
+  if (iLen <= 8) {
+    iEncoding = iLen;
+    nBytesEncoded = iLen;
+  }
+  else {
+    iEncoding = MN_SHOCOL_2B;
+    nBytesEncoded = iLen;
+  }
+
   return iEncoding;
 }
 

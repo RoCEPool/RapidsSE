@@ -9,20 +9,24 @@ namespace Base
   {
   public:
     union {
-      byte m_yaByte[C_BYTES_PER_WORD];
+      byte  m_yaByte[C_BYTES_PER_WORD];
       
-      d8   m_dF8;
+      char* m_aChar;
       
-      i1   m_iaI1[8];
-      i2   m_iaI2[4];
-      i4   m_iaI4[2];
-      i8   m_iI8;
+      d8    m_dF8;
       
-      w8   m_wWord;
+      i1    m_iaI1[8];
+      i2    m_iaI2[4];
+      i4    m_iaI4[2];
+      i8    m_iI8;
+      
+      w8    m_wWord;
     };
   
   public:
     WordView(void);
+    WordView(i8 iArg);
+    WordView(w8 wArg);
     ~WordView(void) noexcept(false);
   };
 }

@@ -16,7 +16,8 @@ create table EachType (
   vch varchar
 );
 
-ld EachType "/DATA/Datums/eachType.csv";
+//ld EachType "/DATA/Datums/eachType.csv";
+ld EachType "/DATA/Datums/eachTypeLong.csv";
 
 fetch EachType;
 
