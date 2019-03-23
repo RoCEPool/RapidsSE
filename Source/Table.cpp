@@ -324,12 +324,18 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, RowBuffer* pRowBuffer)
   //----------------------------------------------------------------------------
   // (1) append the buffer entries into the hidden index
   TablePtn* pPartition = this->pPartition(iSlot);
-  IndexTree* pHiddenIndexTree = pPartition->pHiddenIndexTree();
-
+  
+#ifdef WITH_NO_HIDDEN
+  //----------------------------------------------------------------------------
+  // append the buffer to the data row buffers
+  pPartition->vAppendBuffer(pRowBuffer);
+  
+#else
   //----------------------------------------------------------------------------
   // append the buffer to the hidden index tree
+  IndexTree* pHiddenIndexTree = pPartition->pHiddenIndexTree();
   pHiddenIndexTree->vAppendBuffer(pRowBuffer);
-
+#endif
   //----------------------------------------------------------------------------
   // (2) insert entries from hidden index pFirstBuffer starting at pFirstEntry
   // into all other indexes of the table
@@ -387,11 +393,19 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, EntryBuffer* pEntryBuffer)
   //----------------------------------------------------------------------------
   // (1) append the buffer entries into the hidden index
   TablePtn* pPartition = this->pPartition(iSlot);
-  IndexTree* pHiddenIndexTree = pPartition->pHiddenIndexTree();
   
+
+#ifdef WITH_NO_HIDDEN
+  //----------------------------------------------------------------------------
+  // append the buffer to the data row buffers
+  pPartition->vAppendBuffer(pRowBuffer);
+  
+#else
   //----------------------------------------------------------------------------
   // append the buffer to the hidden index tree
+  IndexTree* pHiddenIndexTree = pPartition->pHiddenIndexTree();
   pHiddenIndexTree->vAppendBuffer(pEntryBuffer);
+#endif
   
   //----------------------------------------------------------------------------
   // (2) insert entries from hidden index pFirstBuffer starting at pFirstEntry

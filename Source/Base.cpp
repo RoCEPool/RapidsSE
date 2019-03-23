@@ -72,6 +72,10 @@ void Base::vTraceWith(void)
   vTrace("  WITH_ROWBUFFER\n"_Stz);
 #endif
 
+#ifdef WITH_NO_HIDDEN
+  vTrace("  WITH_NO_HIDDEN\n"_Stz);
+#endif
+  
 #ifdef WITH_TRACE_API
   vTrace("  WITH_TRACE_API\n"_Stz);
 #endif
