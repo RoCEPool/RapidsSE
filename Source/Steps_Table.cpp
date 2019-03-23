@@ -87,10 +87,19 @@ void Step::vTableAnalyze(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iDetailed) )
     THROW_INVALID_DSTACK("table.analyze"_Stz);
   
+#ifdef WITH_NO_HIDDEN
+  
+  s48K sAnalysis;
+  i8 nRows;
+  sAnalysis = (Stz*)pTable->pAnalyzeTable(iDetailed == 1 ? true : false, nRows);
+#else
+  
   s48K sAnalysis;
   i8 nRows;
   sAnalysis = (Stz*)pTable->pAnalyzeIndex(pTable->pHiddenIndex(),
                                           iDetailed == 1 ? true : false, nRows);
+#endif
+  
 
   mpTask->m_pDataStack->vPushS48K(sAnalysis);
     

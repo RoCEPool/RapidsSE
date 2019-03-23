@@ -58,6 +58,7 @@ namespace MetaData
     
     void vAddIndex(Index* pIndex);
     Stz* pAnalyzeIndex(Index* pIndex, bool bDetailed, i8& nRows);
+    Stz* pAnalyzeTable(bool bDetailed, i8& nRows);
     void vCompactIndex(Index* pIndex);
     void vLazyBuildIndexes(i8 iSlot);
     
