@@ -33,6 +33,7 @@ typedef TrayNL_t<CN_ROWTRAY,CacheLine,C_MAX_ROWS> RowTray;
 #include "Row.hpp"
 #include "Row2.hpp"
 #include "RowEncoder.hpp"
+#include "RowDecoder.hpp"
 #include "RowWrk.hpp"
 
 #include "SkipRoots.hpp"
