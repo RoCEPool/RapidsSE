@@ -145,26 +145,21 @@ void RowDecoder::vAsString(s48K& sDataString, ColumnVec* pColumnVec)
 /*----------------------------------------------------------------------------*/
 w8 RowDecoder::wDecode(Column* pColumn)
 {
-  i8 i_Column = pColumn->iColumnNo();
   eDM eDatum  = pColumn->eDatumType();
   
-  CacheLine* aCacheLine = m_pRowTray->aGet(0);
-  
-  i8 i_Offset  = C_UNKNOWN;
-  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
   
   WordView wDecoded;
   
   switch (eDatum) {
-    case DM_BCD: wDecoded = wDecodeBcd(pColumn,iEncoding,i_Offset); break;
-    case DM_BOL: wDecoded = wDecodeBol(pColumn,iEncoding,i_Offset); break;
-    case DM_DTE: wDecoded = wDecodeDte(pColumn,iEncoding,i_Offset); break;
-    case DM_FLT: wDecoded = wDecodeFlt(pColumn,iEncoding,i_Offset); break;
-    case DM_INT: wDecoded = wDecodeInt(pColumn,iEncoding,i_Offset); break;
-    case DM_IVL: wDecoded = wDecodeIvl(pColumn,iEncoding,i_Offset); break;
-    case DM_TME: wDecoded = wDecodeTme(pColumn,iEncoding,i_Offset); break;
-    case DM_TSP: wDecoded = wDecodeTsp(pColumn,iEncoding,i_Offset); break;
-    case DM_VCH: wDecoded = wDecodeVch(pColumn,iEncoding,i_Offset); break;
+    case DM_BCD: wDecoded = wDecodeBcd(pColumn); break;
+    case DM_BOL: wDecoded = wDecodeBol(pColumn); break;
+    case DM_DTE: wDecoded = wDecodeDte(pColumn); break;
+    case DM_FLT: wDecoded = wDecodeFlt(pColumn); break;
+    case DM_INT: wDecoded = wDecodeInt(pColumn); break;
+    case DM_IVL: wDecoded = wDecodeIvl(pColumn); break;
+    case DM_TME: wDecoded = wDecodeTme(pColumn); break;
+    case DM_TSP: wDecoded = wDecodeTsp(pColumn); break;
+    case DM_VCH: wDecoded = wDecodeVch(pColumn); break;
     default:
       NEVER_REACH;
   }
@@ -191,12 +186,16 @@ void RowDecoder::vPrint(Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* decode decimal from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecodeBcd(Column* pColumn, i8 iEncoding, i8 i_Offset)
+w8 RowDecoder::wDecodeBcd(Column* pColumn)
 {
   WordView wDecoded;
   
   CacheLine* aCacheLine = m_pRowTray->aGet(0);
   
+  i8 i_Offset  = C_UNKNOWN;
+  i8 i_Column  = pColumn->iColumnNo();
+  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
+
   switch (iEncoding) {
       
     case MN_NULL: wDecoded.m_iI8 = C_DATUM_NULL;                break;
@@ -223,9 +222,15 @@ w8 RowDecoder::wDecodeBcd(Column* pColumn, i8 iEncoding, i8 i_Offset)
 /*----------------------------------------------------------------------------*/
 /* decode boolean from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecodeBol(Column* pColumn, i8 iEncoding, i8 i_Offset)
+w8 RowDecoder::wDecodeBol(Column* pColumn)
 {
   WordView wDecoded;
+  
+  CacheLine* aCacheLine = m_pRowTray->aGet(0);
+  
+  i8 i_Offset  = C_UNKNOWN;
+  i8 i_Column  = pColumn->iColumnNo();
+  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
   
   switch (iEncoding) {
       
@@ -243,11 +248,15 @@ w8 RowDecoder::wDecodeBol(Column* pColumn, i8 iEncoding, i8 i_Offset)
 /*----------------------------------------------------------------------------*/
 /* decode date from given cache line                                          */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecodeDte(Column* pColumn, i8 iEncoding, i8 i_Offset)
+w8 RowDecoder::wDecodeDte(Column* pColumn)
 {
   WordView wDecoded;
   
   CacheLine* aCacheLine = m_pRowTray->aGet(0);
+  
+  i8 i_Offset  = C_UNKNOWN;
+  i8 i_Column  = pColumn->iColumnNo();
+  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
   
   switch (iEncoding) {
       
@@ -274,11 +283,15 @@ w8 RowDecoder::wDecodeDte(Column* pColumn, i8 iEncoding, i8 i_Offset)
 /*----------------------------------------------------------------------------*/
 /* decode float from given cache line                                         */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecodeFlt(Column* pColumn, i8 iEncoding, i8 i_Offset)
+w8 RowDecoder::wDecodeFlt(Column* pColumn)
 {
   WordView wDecoded;
   
   CacheLine* aCacheLine = m_pRowTray->aGet(0);
+  
+  i8 i_Offset  = C_UNKNOWN;
+  i8 i_Column  = pColumn->iColumnNo();
+  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
   
   switch (iEncoding) {
       
@@ -302,11 +315,15 @@ w8 RowDecoder::wDecodeFlt(Column* pColumn, i8 iEncoding, i8 i_Offset)
 /*----------------------------------------------------------------------------*/
 /* decode integer from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecodeInt(Column* pColumn, i8 iEncoding, i8 i_Offset)
+w8 RowDecoder::wDecodeInt(Column* pColumn)
 {
   WordView wDecoded;
   
   CacheLine* aCacheLine = m_pRowTray->aGet(0);
+  
+  i8 i_Offset  = C_UNKNOWN;
+  i8 i_Column  = pColumn->iColumnNo();
+  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
   
   switch (iEncoding) {
       
@@ -334,11 +351,15 @@ w8 RowDecoder::wDecodeInt(Column* pColumn, i8 iEncoding, i8 i_Offset)
 /*----------------------------------------------------------------------------*/
 /* decode interval from given cache line                                      */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecodeIvl(Column* pColumn, i8 iEncoding, i8 i_Offset)
+w8 RowDecoder::wDecodeIvl(Column* pColumn)
 {
   WordView wDecoded;
   
   CacheLine* aCacheLine = m_pRowTray->aGet(0);
+  
+  i8 i_Offset  = C_UNKNOWN;
+  i8 i_Column  = pColumn->iColumnNo();
+  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
   
   switch (iEncoding) {
       
@@ -362,11 +383,15 @@ w8 RowDecoder::wDecodeIvl(Column* pColumn, i8 iEncoding, i8 i_Offset)
 /*----------------------------------------------------------------------------*/
 /* decode time from given cache line                                          */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecodeTme(Column* pColumn, i8 iEncoding, i8 i_Offset)
+w8 RowDecoder::wDecodeTme(Column* pColumn)
 {
   WordView wDecoded;
   
   CacheLine* aCacheLine = m_pRowTray->aGet(0);
+  
+  i8 i_Offset  = C_UNKNOWN;
+  i8 i_Column  = pColumn->iColumnNo();
+  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
   
   switch (iEncoding) {
       
@@ -392,11 +417,15 @@ w8 RowDecoder::wDecodeTme(Column* pColumn, i8 iEncoding, i8 i_Offset)
 /*----------------------------------------------------------------------------*/
 /* decode timestamp from given cache line                                     */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecodeTsp(Column* pColumn, i8 iEncoding, i8 i_Offset)
+w8 RowDecoder::wDecodeTsp(Column* pColumn)
 {
   WordView wDecoded;
   
   CacheLine* aCacheLine = m_pRowTray->aGet(0);
+  
+  i8 i_Offset  = C_UNKNOWN;
+  i8 i_Column  = pColumn->iColumnNo();
+  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
   
   switch (iEncoding) {
       
@@ -423,11 +452,15 @@ w8 RowDecoder::wDecodeTsp(Column* pColumn, i8 iEncoding, i8 i_Offset)
 /*----------------------------------------------------------------------------*/
 /* decode varchar from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecodeVch(Column* pColumn, i8 iEncoding, i8 i_Offset)
+w8 RowDecoder::wDecodeVch(Column* pColumn)
 {
   WordView wDecoded;
   
   CacheLine* aCacheLine = m_pRowTray->aGet(0);
+  
+  i8 i_Offset  = C_UNKNOWN;
+  i8 i_Column  = pColumn->iColumnNo();
+  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
   
   switch (iEncoding) {
       

@@ -23,22 +23,22 @@ namespace Data
     void vAsString(s48K& sDataString, ColumnVec* pColumnVec);
     
     w8 wDecode(Column* pColumn);
-    
+  
     void vPrint(Column* pColumn);
   
   private:
-    w8 wDecodeBcd(Column* pColumn, i8 iEncoding, i8 i_Offset);
-    w8 wDecodeBol(Column* pColumn, i8 iEncoding, i8 i_Offset);
-    w8 wDecodeDte(Column* pColumn, i8 iEncoding, i8 i_Offset);
-    w8 wDecodeFlt(Column* pColumn, i8 iEncoding, i8 i_Offset);
-    w8 wDecodeInt(Column* pColumn, i8 iEncoding, i8 i_Offset);
-    w8 wDecodeIvl(Column* pColumn, i8 iEncoding, i8 i_Offset);
-    w8 wDecodeTme(Column* pColumn, i8 iEncoding, i8 i_Offset);
-    w8 wDecodeTsp(Column* pColumn, i8 iEncoding, i8 i_Offset);
-    w8 wDecodeVch(Column* pColumn, i8 iEncoding, i8 i_Offset);
+    w8 wDecodeBcd(Column* pColumn);
+    w8 wDecodeBol(Column* pColumn);
+    w8 wDecodeDte(Column* pColumn);
+    w8 wDecodeFlt(Column* pColumn);
+    w8 wDecodeInt(Column* pColumn);
+    w8 wDecodeIvl(Column* pColumn);
+    w8 wDecodeTme(Column* pColumn);
+    w8 wDecodeTsp(Column* pColumn);
+    w8 wDecodeVch(Column* pColumn);
   
-    static i8 iDteDecoding(WordView& wTspView, i8 iEncoding);
-    static i8 iTmeDecoding(WordView& wTspView, i8 iEncoding);
+    static i8 iDteDecoding(WordView& wDteView, i8 iEncoding);
+    static i8 iTmeDecoding(WordView& wTmeView, i8 iEncoding);
     static i8 iTspDecoding(WordView& wTspView, i8 iEncoding);
   
     static i8 iGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
