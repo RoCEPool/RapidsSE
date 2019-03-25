@@ -2,6 +2,8 @@
 /* _jindex10 -- index entry testing                                           */
 /*============================================================================*/
 
+startCluster;
+
 docol epochTake;
 
 create table j10 (
@@ -116,6 +118,12 @@ fetch j10 "j10_key 6 <";
 anidx j10 idx1;
 dumpidx j10 idx1;
 szidx j10 idx1;
+
+dumptbl j10;
+
+tableSizes;
+
+sztbl j10;
 
 //drop table j10;
 

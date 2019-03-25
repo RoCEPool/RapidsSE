@@ -75,7 +75,7 @@
   //params| pJob_SizeTable |
   job::this locals| pJob_SizeTable |
 
-  0 0 0 locals| sTableNm pIndex iSize |
+  0 0 0 locals| sTableNm pTable iSize |
 
   tp: sizeTable_exe
 
@@ -97,18 +97,16 @@
   pJob_SizeTable job.objectName@ to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push table and indexes folder
+  // push table folder
   sTableNm pushTable assert
-  pushIndexes assert
 
-  "hidden" find execute to pIndex
-  pIndex index.space 0 swap number.magnitude to iSize
+  sTableNm find execute to pTable
+  pTable table.space 0 swap number.magnitude to iSize
 
-  iSize grid::thisNodeName@ "row: ( %v %v )" str.format
+  iSize grid::thisNodeName@ "row: ( %v, %v )" str.format
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pop indexes and table folder
-  popIndexes
+  // pop table folder
   popTable
 
   grid::thisNode@ pJob_SizeTable job.response!

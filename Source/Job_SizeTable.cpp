@@ -14,7 +14,7 @@ JobClass xJobClass_SizeTable =
   CN_JOB_SIZETABLE,      // class enum
   JK_DIST2PC,            // job kind
   "size of table"_Stz,   // comment about the job
-  "sz"_Stz,              // the prompt command
+  "szTbl"_Stz,           // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
   "sizeTable_req"_Stz,   // the _req task seed
@@ -151,7 +151,7 @@ bool Job_SizeTable::bPopulateJob(TokenVec* pTokenVec)
   
   i8 iNumTokens;
   
-  ASSERT(pTokenVec->pGet(0)->bSame("sz"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("sztbl"_Stz));
   
   // get number of items in token vector
   iNumTokens = pTokenVec->nItems();
