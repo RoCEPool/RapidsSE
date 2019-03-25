@@ -94,6 +94,7 @@ static Stz* aJL[]
 #include "Job_DropTable.hpp"
 #include "Job_DropTenant.hpp"
 #include "Job_DumpIndex.hpp"
+#include "Job_DumpTable.hpp"
 
 #include "Job_Export.hpp"
 

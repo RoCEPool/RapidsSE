@@ -31,6 +31,7 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_CF);
   JobClass::vCmds(CN_JOB_DOCOL);
   JobClass::vCmds(CN_JOB_DUMPINDEX);
+  JobClass::vCmds(CN_JOB_DUMPTABLE);
   JobClass::vCmds(CN_JOB_FETCHROWS);
   JobClass::vCmds(CN_JOB_GENERATE);
   JobClass::vCmds(CN_JOB_INGEST);
