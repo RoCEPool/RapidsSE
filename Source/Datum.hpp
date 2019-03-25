@@ -35,8 +35,8 @@ namespace Datums
     MN_DIFF_1B   = 0b1111,     // 1B in data words datum indicating difference
   
     MN_COL_ARRAY   = 0b1011,   // 1B in data words subscript into col array
-    MN_SHOCOL_CL   = 0b1100,   // len+shoco in data words
-    MN_SHOCOL_2B   = 0b1101,   // 2B in data words indicating shoco overflow
+    MN_SHOCO_CL    = 0b1100,   // len+shoco in data words
+    MN_SHOCO_2B    = 0b1101,   // 2B in data words indicating shoco overflow
     MN_LOCAL_HMAP  = 0b1110,   // 2B in data words indicating local hashmap
     MN_GLOBAL_HMAP = 0b1111,   // 2B in data words indicating global hashmap
   };

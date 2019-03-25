@@ -793,7 +793,7 @@ void RowEncoder::vEncodeVch(Column* pColumn, byte* aDatum)
   aCacheLine->v1N(i_Column,iEncoding);
   
   // set n-byte data for column value
-  if (iEncoding == MN_SHOCOL_2B) {
+  if (iEncoding == MN_SHOCO_2B) {
     // we would encode the shoco version of the string into a cache line
     
     // allot a tail cache line
@@ -1077,7 +1077,7 @@ i8 RowEncoder::iVchEncoding(WordView& wVchView, i8& nBytesEncoded)
     nBytesEncoded = iLen;
   }
   else {
-    iEncoding = MN_SHOCOL_2B;
+    iEncoding = MN_SHOCO_2B;
     nBytesEncoded = iLen;
   }
 
@@ -1204,8 +1204,8 @@ i8 RowEncoder::nEncodedBytes(i8 iEncoding, eDM eDatum)
     case DM_VCH:
       switch (iEncoding) {
         case MN_COL_ARRAY:   NEVER_REACH; return 0;
-        case MN_SHOCOL_CL:   NEVER_REACH; return 0;
-        case MN_SHOCOL_2B:   NEVER_REACH; return 0;
+        case MN_SHOCO_CL:    NEVER_REACH; return 0;
+        case MN_SHOCO_2B:    NEVER_REACH; return 0;
         case MN_LOCAL_HMAP:  NEVER_REACH; return 0;
         case MN_GLOBAL_HMAP: NEVER_REACH; return 0;
        default:

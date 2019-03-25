@@ -23,9 +23,7 @@ namespace Data
     void vAsString(s48K& sDataString, ColumnVec* pColumnVec);
     
     w8 wDecode(Column* pColumn);
-  
-    static w8 wDecode(Column* pColumn, CacheLine* aCacheLine);
-  
+    
     void vPrint(Column* pColumn);
   
   private:

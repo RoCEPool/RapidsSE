@@ -156,15 +156,15 @@ w8 RowDecoder::wDecode(Column* pColumn)
   WordView wDecoded;
   
   switch (eDatum) {
-    case DM_BCD: wDecoded.m_wWord = wDecodeBcd(pColumn,iEncoding,i_Offset); break;
-    case DM_BOL: wDecoded.m_wWord = wDecodeBol(pColumn,iEncoding,i_Offset); break;
-    case DM_DTE: wDecoded.m_wWord = wDecodeDte(pColumn,iEncoding,i_Offset); break;
-    case DM_FLT: wDecoded.m_wWord = wDecodeFlt(pColumn,iEncoding,i_Offset); break;
-    case DM_INT: wDecoded.m_wWord = wDecodeInt(pColumn,iEncoding,i_Offset); break;
-    case DM_IVL: wDecoded.m_wWord = wDecodeIvl(pColumn,iEncoding,i_Offset); break;
-    case DM_TME: wDecoded.m_wWord = wDecodeTme(pColumn,iEncoding,i_Offset); break;
-    case DM_TSP: wDecoded.m_wWord = wDecodeTsp(pColumn,iEncoding,i_Offset); break;
-    case DM_VCH: wDecoded.m_wWord = wDecodeVch(pColumn,iEncoding,i_Offset); break;
+    case DM_BCD: wDecoded = wDecodeBcd(pColumn,iEncoding,i_Offset); break;
+    case DM_BOL: wDecoded = wDecodeBol(pColumn,iEncoding,i_Offset); break;
+    case DM_DTE: wDecoded = wDecodeDte(pColumn,iEncoding,i_Offset); break;
+    case DM_FLT: wDecoded = wDecodeFlt(pColumn,iEncoding,i_Offset); break;
+    case DM_INT: wDecoded = wDecodeInt(pColumn,iEncoding,i_Offset); break;
+    case DM_IVL: wDecoded = wDecodeIvl(pColumn,iEncoding,i_Offset); break;
+    case DM_TME: wDecoded = wDecodeTme(pColumn,iEncoding,i_Offset); break;
+    case DM_TSP: wDecoded = wDecodeTsp(pColumn,iEncoding,i_Offset); break;
+    case DM_VCH: wDecoded = wDecodeVch(pColumn,iEncoding,i_Offset); break;
     default:
       NEVER_REACH;
   }
@@ -440,6 +440,22 @@ w8 RowDecoder::wDecodeVch(Column* pColumn, i8 iEncoding, i8 i_Offset)
     case MN_6B:   wDecoded.m_iI8 = aCacheLine->w8_6B(i_Offset); break;
     case MN_7B:   wDecoded.m_iI8 = aCacheLine->w8_7B(i_Offset); break;
     case MN_8B:   wDecoded.m_iI8 = aCacheLine->w8_8B(i_Offset); break;
+      
+    case MN_SHOCO_2B: {
+      i8 i_Shoco = aCacheLine->w8_2B(i_Offset);
+      CacheLine* aShocoLine = m_pRowTray->aGet(i_Shoco);
+
+      i8 iLenCompressed = aShocoLine->w8_1N(0);
+      
+      s256 sDecomp;
+      i8 iLenDecompressed =
+        Compress::iFromShoco(sDecomp.aChar(), 255,
+                             ((byte*)aShocoLine)+8, iLenCompressed);
+      sDecomp.aChar()[iLenDecompressed] = '\0';
+      vTrace("Decomp: %s\n"_Stz,sDecomp.aChar());
+
+      break;
+    }
       
     default:
       NEVER_REACH;

@@ -28,6 +28,9 @@ namespace Base
     WordView(i8 iArg);
     WordView(w8 wArg);
     ~WordView(void) noexcept(false);
+  
+    void operator =(i8 iArg);
+    void operator =(w8 wArg);
   };
 }
 
