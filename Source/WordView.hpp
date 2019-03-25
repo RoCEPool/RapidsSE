@@ -31,6 +31,8 @@ namespace Base
   
     void operator =(i8 iArg);
     void operator =(w8 wArg);
+  
+    operator w8(void) { return m_wWord; }
   };
 }
 
