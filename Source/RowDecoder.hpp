@@ -20,26 +20,24 @@ namespace Data
     RowDecoder(RowTray* pRowTray);
     ~RowDecoder(void) noexcept(false);
 
-  
-    static void vAsString(s48K& sDataString,
-                          ColumnVec* pColumnVec, CacheLine* aCacheLine);
+    void vAsString(s48K& sDataString, ColumnVec* pColumnVec);
     
-    static w8 wDecode(Column* pColumn);
+    w8 wDecode(Column* pColumn);
   
     static w8 wDecode(Column* pColumn, CacheLine* aCacheLine);
   
-    static void vPrint(Column* pColumn, CacheLine* aCacheLine);
+    void vPrint(Column* pColumn);
   
   private:
-    static w8 wDecodeBcd(Column* pColumn, CacheLine* aCacheLine);
-    static w8 wDecodeBol(Column* pColumn, CacheLine* aCacheLine);
-    static w8 wDecodeDte(Column* pColumn, CacheLine* aCacheLine);
-    static w8 wDecodeFlt(Column* pColumn, CacheLine* aCacheLine);
-    static w8 wDecodeInt(Column* pColumn, CacheLine* aCacheLine);
-    static w8 wDecodeIvl(Column* pColumn, CacheLine* aCacheLine);
-    static w8 wDecodeTme(Column* pColumn, CacheLine* aCacheLine);
-    static w8 wDecodeTsp(Column* pColumn, CacheLine* aCacheLine);
-    static w8 wDecodeVch(Column* pColumn, CacheLine* aCacheLine);
+    w8 wDecodeBcd(Column* pColumn, i8 iEncoding, i8 i_Offset);
+    w8 wDecodeBol(Column* pColumn, i8 iEncoding, i8 i_Offset);
+    w8 wDecodeDte(Column* pColumn, i8 iEncoding, i8 i_Offset);
+    w8 wDecodeFlt(Column* pColumn, i8 iEncoding, i8 i_Offset);
+    w8 wDecodeInt(Column* pColumn, i8 iEncoding, i8 i_Offset);
+    w8 wDecodeIvl(Column* pColumn, i8 iEncoding, i8 i_Offset);
+    w8 wDecodeTme(Column* pColumn, i8 iEncoding, i8 i_Offset);
+    w8 wDecodeTsp(Column* pColumn, i8 iEncoding, i8 i_Offset);
+    w8 wDecodeVch(Column* pColumn, i8 iEncoding, i8 i_Offset);
   
     static i8 iDteDecoding(WordView& wTspView, i8 iEncoding);
     static i8 iTmeDecoding(WordView& wTspView, i8 iEncoding);
