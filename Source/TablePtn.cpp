@@ -109,10 +109,10 @@ TablePtn::TablePtn(void)
   
   m_iParentJobId = C_UNKNOWN;
   
-#ifdef WITH_ROWBUFFER
+//#ifdef WITH_ROWBUFFER
   m_pRootRowBuffer  = nullptr;
   m_pCurrentRowBuffer = nullptr;
-#endif
+//#endif
   
   m_pIndexTreeVec = new IndexTreeVec;
   
@@ -265,7 +265,7 @@ void TablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
   
   RASSERT(m_okLock.bIsLocked());
   //m_okLock.vGrabWrite();
-  
+#ifdef WITH_ROWBUFFER
   if (m_pRootRowBuffer == nullptr) {
     ASSERT( ! m_pCurrentRowBuffer )
     m_pRootRowBuffer = pRowBuffer;
@@ -277,6 +277,7 @@ void TablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
   }
   
   m_pCurrentRowBuffer = pRowBuffer;
+#endif
   
   //m_okLock.vDropWrite();
 }

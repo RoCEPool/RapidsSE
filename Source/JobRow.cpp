@@ -166,7 +166,7 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes,
   i8 i_CacheOffset = C_UNKNOWN;
   
   //Datum::vBegin();
-  RowEncoder::vEncodeBegin(&xCacheLine,i_CacheOffset);
+//  RowEncoder::vEncodeBegin(&xCacheLine,i_CacheOffset);
 //  char caRow[1024];
 //  StrLib::vCopyLen(caRow,aRecord->aChar(),nBytes);
 //  vTrace("Row: %s\n"_Stz,caRow);

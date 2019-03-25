@@ -448,8 +448,7 @@ void RowBuffer::vShow(void)
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
          m_pPrevBuffer,m_pNextBuffer);
   
-  vTrace("  index: %s partition: %lld \n"_Stz,
-         m_pIndex ? m_pIndex->aIndexName() : "NULL"_Stz,m_iPartitionNo);
+  vTrace("  partition: %lld \n"_Stz, m_iPartitionNo);
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
