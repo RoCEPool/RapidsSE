@@ -175,7 +175,9 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_TRUNCATETABLE
   /*    */ &Dump::vDummy,           // CN_JOB_USESCHEMA
   /*    */ &Dump::vDummy,           // CN_JOB_VERIFYINDEX
+  /*    */ &Dump::vDummy,           // CN_JOB_VERIFYTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_VISUALIZEINDEX
+  /*    */ &Dump::vDummy,           // CN_JOB_VISUALIZETABLE
   /*    */ &Dump::vDummy,           // CN_JOB_WAITCLUSTER
   /*    */ &Dump::vDummy,           // CN_JOB_WALK
   /*    */ &Dump::vDummy,           // CN_JOB_WRITEBUFFER
@@ -445,8 +447,10 @@ i8 giClassSize[]
   /*    */ sizeof(Job_TableSizes),     // CN_JOB_TABLESIZES
   /*    */ sizeof(Job_TruncateTable),  // CN_JOB_TRUNCATETABLE
   /*    */ sizeof(Job_UseSchema),      // CN_JOB_USESCHEMA
-  /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VERIFYINDEX
+  /*    */ sizeof(Job_VerifyIndex),    // CN_JOB_VERIFYINDEX
+  /*    */ sizeof(Job_VerifyTable),    // CN_JOB_VERIFYTABLE
   /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VISUALIZEINDEX
+  /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VISUALIZETABLE
   /*    */ sizeof(Job_WaitCluster),    // CN_JOB_WAITCLUSTER
   /*    */ sizeof(Job_Walk),           // CN_JOB_WALK
   /*    */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
@@ -717,7 +721,9 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_TRUNCATETABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_USESCHEMA
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_VERIFYINDEX
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_VERIFYTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_VISUALIZEINDEX
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_VISUALIZETABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WAITCLUSTER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WALK
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEBUFFER

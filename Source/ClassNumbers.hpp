@@ -173,7 +173,9 @@ enum eCN : u2 // Class Number
   /* 133 0x85    70592B Heap:L */ CN_JOB_TRUNCATETABLE,
   /* 134 0x86    70592B Heap:L */ CN_JOB_USESCHEMA,
   /* 135 0x87    70592B Heap:L */ CN_JOB_VERIFYINDEX,
+  /*                           */ CN_JOB_VERIFYTABLE,
   /* 136 0x88    70592B Heap:L */ CN_JOB_VISUALIZEINDEX,
+  /*                           */ CN_JOB_VISUALIZETABLE,
   /* 137 0x89    70592B Heap:L */ CN_JOB_WAITCLUSTER,
   /*                           */ CN_JOB_WALK,
   /* 138 0x8A    70648B Heap:L */ CN_JOB_WRITEBUFFER,
@@ -440,7 +442,9 @@ static Stz* aCN[]
   /* 133 0x85 */ "JOB_TRUNCATETABLE"_Stz,   // CN_JOB_TRUNCATETABLE
   /* 134 0x86 */ "JOB_USESCHEMA"_Stz,       // CN_JOB_USESCHEMA
   /* 135 0x87 */ "JOB_VERIFYINDEX"_Stz,     // CN_JOB_VERIFYINDEX
+  /*          */ "JOB_VERIFYTABLE"_Stz,     // CN_JOB_VERIFYTABLE
   /* 136 0x88 */ "JOB_VISUALIZEINDEX"_Stz,  // CN_JOB_VISUALIZEINDEX
+  /*          */ "JOB_VISUALIZETABLE"_Stz,  // CN_JOB_VISUALIZETABLE
   /* 137 0x89 */ "JOB_WAITCLUSTER"_Stz,     // CN_JOB_WAITCLUSTER
   /* 137 0x89 */ "JOB_WALK"_Stz,            // CN_JOB_WALK
   /* 138 0x8A */ "JOB_WRITEBUFFER"_Stz,     // CN_JOB_WRITEBUFFER

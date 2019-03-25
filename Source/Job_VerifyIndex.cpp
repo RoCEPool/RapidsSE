@@ -52,7 +52,7 @@ JobClass xJobClass_VerifyIndex =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_VerifyIndex_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_VisualizeIndex_class;
+  *pNextFun = (pFUN*)pJob_VerifyTable_class;
   
   return &xJobClass_VerifyIndex;
 }

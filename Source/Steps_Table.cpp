@@ -39,6 +39,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.subDic"_Stz,             &Step::vTableSubDic);
   vAddStep("table.subLoaders"_Stz,         &Step::vTableSubLoaders);
   vAddStep("table.truncate"_Stz,           &Step::vTableTruncate);
+  vAddStep("table.verify"_Stz,             &Step::vTableVerify);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -706,6 +707,29 @@ void Step::vTableTruncate(MP_Task mpTask)
     THROW_INVALID_DSTACK("table.truncate"_Stz);
   
   pTable->vTruncate(iSlot);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.verify -- verify the table                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vTableVerify(MP_Task mpTask)
+{
+  ENTRY("vTableVerify"_Stz);
+  
+  Object* pPtrTable;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.verify"_Stz);
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  //bool bVerified = pTable->vVerify();
+  s256 s = "true"_Stz; //bVerified ? "Valid"_Stz : "Invalid"_Stz;
+  
+  mpTask->m_pDataStack->vPushS256(s);
   
   EXIT();
 }

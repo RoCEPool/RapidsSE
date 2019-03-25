@@ -165,6 +165,7 @@ static Stz* aJL[]
 #include "Job_UseSchema.hpp"
 
 #include "Job_VerifyIndex.hpp"
+#include "Job_VerifyTable.hpp"
 #include "Job_VisualizeIndex.hpp"
 
 #include "Job_WaitCluster.hpp"

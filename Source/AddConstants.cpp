@@ -292,7 +292,9 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_TRUNCATETABLE"_Stz,  CN_JOB_TRUNCATETABLE);
   /*    */ vAddConstant("CN_JOB_USESCHEMA"_Stz,      CN_JOB_USESCHEMA);
   /*    */ vAddConstant("CN_JOB_VERIFYINDEX"_Stz,    CN_JOB_VERIFYINDEX);
+  /*    */ vAddConstant("CN_JOB_VERIFYTABLE"_Stz,    CN_JOB_VERIFYTABLE);
   /*    */ vAddConstant("CN_JOB_VISUALIZEINDEX"_Stz, CN_JOB_VISUALIZEINDEX);
+  /*    */ vAddConstant("CN_JOB_VISUALIZETABLE"_Stz, CN_JOB_VISUALIZETABLE);
   /*    */ vAddConstant("CN_JOB_WAITCLUSTER"_Stz,    CN_JOB_WAITCLUSTER);
   /*    */ vAddConstant("CN_JOB_WALK"_Stz,           CN_JOB_WALK);
 

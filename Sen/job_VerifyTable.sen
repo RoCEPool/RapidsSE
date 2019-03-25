@@ -1,0 +1,217 @@
+/*============================================================================*/
+/* job_VerifyTable.sen -- Job Verify Table                                    */
+/*============================================================================*/
+
+" job_VerifyTable.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a valid table folder                                      */
+/*----------------------------------------------------------------------------*/
+: checkverifyTable ( "<tableNm>" -- true | errorCode false )
+
+  >>am <SEED_REQ>
+
+  params| sTableNm |
+
+  // check in tables folder
+  checkInTables not if false exit then
+
+  // check if tableNm is a word in tables folder
+  sTableNm checkIsWord not if EC_NO_SUCH_TABLE false exit then
+
+  // push table folder
+  sTableNm pushTable assert
+
+  sTableNm checkIsTable not if popTable false exit then
+  //sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table folder
+  popTable
+
+  // assert in tables
+  assertInTables
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* verify table request (on originating node)                                 */
+/*----------------------------------------------------------------------------*/
+: verifyTable_req ( -- <R> )
+
+  0 0 locals| pJob pTask |
+
+  tp: verifyTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set metadata string in the job
+  args.metadata if
+    "(nodeName VARCHAR, tableName VARCHAR, isValid VARCHAR)"
+    pJob job.metadata!
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pJob job.distribute
+
+  pJob <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/* verify table request on a node                                             */
+/*----------------------------------------------------------------------------*/
+: verifyTable_exe ( job_VerifyTable )
+
+  >>am <SEED_EXE>
+
+  //params| pjob_VerifyTable |
+  job::this locals| pjob_VerifyTable |
+
+  0 0 0 locals| pTask sTableNm sIndexNm  |
+
+  tp: verifyTable_exe
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_job_VerifyTable pjob_VerifyTable object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set task's dictionary stack from path in job
+  pjob_VerifyTable job.pushPath
+  task::dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the tablen ame
+  pjob_VerifyTable job.objectName@ to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table folder
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify the table
+  sTableNm find execute table.verify
+  sTableNm grid::thisNodeName@
+  "row: ('%v', '%v', '%v')\n" str.format
+  grid::thisNode@ pjob_VerifyTable job.response!
+  1 grid::thisNode@ pjob_VerifyTable job.rowsProcessed!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table folder
+  popIndexes
+  popTable
+
+  pjob_VerifyTable job.notice
+
+  pjob_VerifyTable job::participantExecuted
+
+  <<am <DONE_EXE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute job_VerifyTable job check resources                                */
+/*----------------------------------------------------------------------------*/
+: verifyTable.checkResources ( job_VerifyTable -- )
+
+  params| pjob_VerifyTable  |
+  0 0 locals| sIndexNm sTableNm |
+
+  tp: verifyTable.checkResources
+  //checkResources received" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set task's dictionary stack from path in job
+  pjob_VerifyTable job.pushPath
+  task::dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get table name
+  pjob_VerifyTable job.objectName@ to sTableNm
+
+  sTableNm checkverifyTable not if pjob_VerifyTable <ERROR_JOB> !!am exit then
+
+  ddlLock::dropRead
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_VisualizeIndexTable job release resources                      */
+/*----------------------------------------------------------------------------*/
+: verifyTable.releaseResources ( job_VerifyTable -- )
+
+  params| pjob_VerifyTable  |
+
+  tp: verifyTable.releaseResources
+  //releaseResources received" .
+;
+
+/*----------------------------------------------------------------------------*/
+/* begin job                                                                  */
+/*----------------------------------------------------------------------------*/
+: verifyTable_beg ( -- )
+
+  >>am <SEED_BEG>
+
+  job::this locals| pjob_VerifyTable |
+
+  pjob_VerifyTable job.becomeParticipant
+
+  // check resources
+  pjob_VerifyTable verifyTable.checkResources
+
+  job::participantBegun
+
+  <<am <DONE_BEG>
+;
+
+/*----------------------------------------------------------------------------*/
+/* end job                                                                    */
+/*----------------------------------------------------------------------------*/
+: verifyTable_end ( -- )
+
+  >>am <SEED_END>
+
+  job::this locals| pjob_VerifyTable |
+
+  pjob_VerifyTable verifyTable.releaseResources
+
+  job::participantEnded
+
+  <<am <DONE_END>
+;
+
+/*----------------------------------------------------------------------------*/
+/* cancel job                                                                 */
+/*----------------------------------------------------------------------------*/
+: verifyTable_can ( -- )
+
+  >>am <SEED_CAN>
+
+  job::this locals| pjob_VerifyTable |
+
+  pjob_VerifyTable verifyTable.releaseResources
+
+  job::participantCancelled
+
+  <<am <DONE_CAN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

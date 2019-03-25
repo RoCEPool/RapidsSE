@@ -1022,6 +1022,7 @@
   static void vTableSubLoaders(Tasks::MP_Task mpTask);
   static void vTableTruncate(Tasks::MP_Task mpTask);
   static void vTableIsValidIndexColumns(Tasks::MP_Task mpTask);
+  static void vTableVerify(Tasks::MP_Task mpTask);
 
   // table partition
   static void vTablePtnAttemptGrabRead(Tasks::MP_Task mpTask);

@@ -104,6 +104,7 @@
 
 "job_VerifyIndex.sen" include
 "job_VisualizeIndex.sen" include
+"job_VerifyTable.sen" include
 
 "job_WaitCluster.sen" include
 "job_Walk.sen" include
