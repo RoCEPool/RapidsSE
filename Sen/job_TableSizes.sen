@@ -87,16 +87,10 @@
     // check it is a table
     sTableNm checkIsTable not if drop pJob_TableSizes <ERROR_JOB> !!am exit then
 
-    // push indexes folder
-    pushIndexes assert
-
-    //get size of hidden index
-    "hidden" find execute index.space 0 swap number.magnitude to iSize
+    // get size ofthe table
+    sTableNm find execute table.space 0 swap number.magnitude to iSize
     iSize >str
     str.cat
-
-    // pop indexes folder
-    popIndexes
 
     // pop table folder
     popTable
