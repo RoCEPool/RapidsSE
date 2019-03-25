@@ -52,7 +52,7 @@ JobClass xJobClass_DumpIndex =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_DumpIndex_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Export_class;
+  *pNextFun = (pFUN*)pJob_DumpTable_class;
   
   return &xJobClass_DumpIndex;
 }

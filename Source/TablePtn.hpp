@@ -60,6 +60,7 @@ namespace MetaData
     void vAddIndex(Data::IndexTree* pIndexTree);
     bool bAllBuffersWritten(eDS eDataSource);
     void vAppendBuffer(RowBuffer* pRowBuffer);
+    void vDump(void);
     void vWriteBehindBuffers(i8 nWriteBehindBuffers);
     void vBuffersWritten(i8 m_nBuffersWritten);
     i8   nWriteBehindBuffers(void);

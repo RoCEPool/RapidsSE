@@ -38,6 +38,7 @@
 "job_DropTable.sen" include
 "job_DropTenant.sen" include
 "job_DumpIndex.sen" include
+"job_DumpTable.sen" include
 
 "job_Export.sen" include
 

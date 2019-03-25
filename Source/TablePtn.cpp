@@ -346,6 +346,22 @@ void TablePtn::vDropWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump the table                                                             */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  RowBuffer* pRowBuffer = m_pRootRowBuffer;
+    
+  while (pRowBuffer) {
+    pRowBuffer->vShow();
+    pRowBuffer = pRowBuffer->pNextBuffer();
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the first row buffer                                                   */
 /*----------------------------------------------------------------------------*/
 RowBuffer* TablePtn::pFirstRowBuffer(void)

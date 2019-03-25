@@ -151,19 +151,15 @@ bool Job_DumpTable::bPopulateJob(TokenVec* pTokenVec)
   
   i8 iNumTokens;
   
-  ASSERT(pTokenVec->pGet(0)->bSame("dumpidx"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("dumptbl"_Stz));
   
   // get number of items in token vector
   iNumTokens = pTokenVec->nItems();
   
   // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 3 tokens
-  if (iNumTokens != 3)
+  // there should be 2 tokens
+  if (iNumTokens != 2)
     return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - -
-  // set the index name
-  m_sIndexName = pTokenVec->pGet(2)->aText();
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name

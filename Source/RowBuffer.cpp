@@ -423,17 +423,13 @@ void RowBuffer::vShowRow(i8 iRowNo)
          m_iBufferNo,
          iRowNo
          );
-
-  vTrace("RowData: "_Stz);
   
   ColumnVec* pColumnVec = m_pIndex->pTable()->pColumnVec();
   
-  for (i8 iCol = 0; iCol < pColumnVec->nItems() - 1; iCol++) {
-    CacheLine* aRowCacheLine = m_xRowTray.aGet(iRowNo);
-    RowEncoder::vPrint(pColumnVec->pGet(iCol),aRowCacheLine);
-  }
-
-  vTrace("\n"_Stz);
+  s48K sRowString;
+  CacheLine* aRowCacheLine = m_xRowTray.aGet(iRowNo);
+  RowEncoder::vAsString(sRowString, pColumnVec,aRowCacheLine);
+  vTrace("row: (%s)\n"_Stz, sRowString.aChar());
 }
 
 /*----------------------------------------------------------------------------*/
