@@ -91,6 +91,16 @@ void RowEncoder::vAsString(s48K& sDataString, ColumnVec* pColumnVec, CacheLine* 
     eDM eDatum = pColumn->eDatumType();
     wDatum.m_wWord = wDecode(pColumn,aCacheLine);
     
+    // check for nulls
+    if (wDatum.m_iI8 == C_DATUM_NULL) {
+      
+      // NULL Floats ?
+      RASSERT(eDatum != DM_FLT);
+      
+      sDataString.vCatSprint("null"_Stz);
+      return;
+    }
+    
     switch (eDatum) {
       case DM_BCD: {
         sDataString.vCatSprint("%lld"_Stz, wDatum.m_iI8);
