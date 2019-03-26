@@ -125,9 +125,11 @@ tableSizes;
 
 sztbl j10;
 
-//drop table j10;
+vfytbl j10;
 
-//docol epochDump;
+drop table j10;
+
+docol epochDump;
 
 /*
 create index idx2 on j10 (j10_name);

@@ -60,7 +60,7 @@
   pIndex pIndex index.table@ table.removeIndex
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tidy up the index abd orget it
+  // tidy up the index and forget it
   sIndexNm indexTidyUp
   sIndexNm :forget
 
