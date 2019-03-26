@@ -76,16 +76,16 @@ void RowEncoder::vAsString(s48K& sDataString, ColumnVec* pColumnVec, CacheLine* 
   i8 nColumns = pColumnVec->nItems();
   
   // for each column
-  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     // get the column at index
     Column* pColumn = pColumnVec->pGet(i_Column);
     
     // not the first column
     if (i_Column == 0)
-    sDataString.vConcat(""_Stz);
+      sDataString.vConcat(""_Stz);
     else
-    sDataString.vConcat(","_Stz);
+      sDataString.vConcat(","_Stz);
     
     // copy the data for the column into aDst
     eDM eDatum = pColumn->eDatumType();
@@ -93,10 +93,10 @@ void RowEncoder::vAsString(s48K& sDataString, ColumnVec* pColumnVec, CacheLine* 
     
     // check for nulls
     if (wDatum.m_iI8 == C_DATUM_NULL) {
-      
+
       // NULL Floats ?
       RASSERT(eDatum != DM_FLT);
-      
+
       sDataString.vCatSprint("null"_Stz);
       return;
     }

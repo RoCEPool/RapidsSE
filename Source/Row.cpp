@@ -62,7 +62,7 @@ void RowData::vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec)
   i8 nColumns = pColVec->nItems();
   
   // for each column
-  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     // get the column at index
     Column* pColumn = pColVec->pGet(i_Column);
@@ -100,7 +100,7 @@ void RowData::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec)
   i8 nColumns = pColVec->nItems();
   
   // for each column
-  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     // get the column at index
     Column* pColumn = pColVec->pGet(i_Column);
@@ -154,13 +154,13 @@ void RowData::vDump(ColumnVec* pColVec)
   i8 nColumns = pColVec->nItems();
 
   // for each column except hidden column, dump the offsets
-  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     u2 iOffset = iDatumOffset(i_Column);
     vTrace("%lld|"_Stz, iOffset);
   }
 
   // for each column except hidden column, dump the column data
-  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
 
     // get the column
     Column* pColumn = pColVec->pGet(i_Column);

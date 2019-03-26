@@ -121,7 +121,7 @@ void RowDecoder::vString(i8 i_Row, ColumnVec* pColVec, s48K& sStr)
   i8 nColumns = pColVec->nItems();
   
   // for each column
-  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     // get the column at index
     Column* pCol = pColVec->pGet(i_Column);
