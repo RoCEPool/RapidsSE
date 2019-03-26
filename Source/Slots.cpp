@@ -312,13 +312,23 @@ void Slots::vTruncate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tuncate partition                                                          */
+/* tuncate partition for the index                                            */
 /*----------------------------------------------------------------------------*/
 void Slots::vTruncateIndex(i8 iPartitionNO, i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   m_pTablePtnVec->pGet(iPartitionNO)->pIndexTree(iIndexNo)->vTruncate();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tuncate table data                                                         */
+/*----------------------------------------------------------------------------*/
+void Slots::vTruncateTable(i8 iPartitionNO)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+  
+  m_pTablePtnVec->pGet(iPartitionNO)->vTruncate();
 }
 
 /*----------------------------------------------------------------------------*/
