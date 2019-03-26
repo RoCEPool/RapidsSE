@@ -13,7 +13,7 @@ namespace Data
   protected:
     Lock   m_okLock;               // lock
     i8     m_iBufferNo;            // this RowBuffer's buffer number
-    Index* m_pIndex;               // index this buffer belongs to
+    Table* m_pTable;               // table this buffer belongs to
     i8     m_iPartitionNo;         // partition no this buffer belongs to
   
     RowTray m_xRowTray;            // tray of rows
@@ -40,8 +40,8 @@ namespace Data
     
     void    vDropWrite(void);
     void    vGrabWrite(void);
-    void    vIndex(Index* pIndex);
-    Index*  pIndex(void);
+    void    vTable(Table* pTable);
+    Table*  pTable(void);
     i8      nRowCount(void);
 
     ////////////////////////////////////////////////////////////////////////////
@@ -85,7 +85,7 @@ namespace Data
     void        vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iRows);
     void        vDump(void);
     void        vRestore(void);
-    void        vRestoreIndex(Index* pIndex);
+    void        vRestoreTable(Table* pTable);
     bool        bVerify(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

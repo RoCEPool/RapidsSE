@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobWriteBuffer(void)
 {
-  vAddStep("job_WriteBuffer.index!"_Stz,        &Step::vJob_WriteBufferIndexStore);
   vAddStep("job_WriteBuffer.parentJobId@"_Stz,  &Step::vJob_WriteBufferParentJobIdFetch);
   vAddStep("job_WriteBuffer.insertRows"_Stz,    &Step::vJob_WriteBufferInsertRows);
   vAddStep("job_WriteBuffer.isIngesting"_Stz,   &Step::vJob_WriteBufferIsIngesting);
@@ -19,29 +18,6 @@ void Step::vAddSteps_JobWriteBuffer(void)
   vAddStep("job_WriteBuffer.isLoading"_Stz,     &Step::vJob_WriteBufferIsLoading);
   vAddStep("job_WriteBuffer.partition@"_Stz,    &Step::vJob_WriteBufferPartitionFetch);
   vAddStep("job_WriteBuffer.table!"_Stz,        &Step::vJob_WriteBufferTableStore);
-}
-
-/*----------------------------------------------------------------------------*/
-/* job_WriteBuffer.index! -- store hidden index in entryBuffer                */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_WriteBufferIndexStore(MP_Task mpTask)
-{
-  ENTRY("vJob_WriteBufferIndexStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_WriteBuffer.index!"_Stz);
-  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
-  
-  Object* pIndexPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pIndexPtr) )
-    THROW_INVALID_DSTACK("job_WriteBuffer.index!"_Stz);
-  Index* pHiddenIndex = _pIndex(pIndexPtr);
-  
-  if (pJob_WriteBuffer->m_pCurrentBuffer)
-    pJob_WriteBuffer->m_pCurrentBuffer->vRestoreIndex(pHiddenIndex);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,6 +153,9 @@ void Step::vJob_WriteBufferTableStore(MP_Task mpTask)
   Table* pTable = _pTable(pTablePtr);
   
   pJob_WriteBuffer->m_pTable = pTable;
+  
+  if (pJob_WriteBuffer->m_pCurrentBuffer)
+    pJob_WriteBuffer->m_pCurrentBuffer->vRestoreTable(pTable);
   
   EXIT();
 }

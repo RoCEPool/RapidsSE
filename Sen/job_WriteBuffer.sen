@@ -39,10 +39,10 @@
 
   // use table name find and set target table
   sTableNm find execute locals| pTable |
-  pTable pJob_WriteBuffer Job_WriteBuffer.table!
 
-  // set the index in the entryBuffer of writeBuffer
-  pTable table.hiddenIndex@ pJob_WriteBuffer Job_WriteBuffer.Index!
+  // set the table in the writeBuffer and its rowBuffer
+// ALKA: should these be two steps ?
+  pTable pJob_WriteBuffer Job_WriteBuffer.Table!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the parent job (participant node)

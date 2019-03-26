@@ -17,12 +17,10 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.columnName"_Stz,      &Step::vIndexColumnName);
   vAddStep("index.columnType"_Stz,      &Step::vIndexColumnType);
   vAddStep("index.compact"_Stz,         &Step::vIndexCompact);
-  vAddStep("index.createColumnVecHidden"_Stz, &Step::vIndexCreateColumnVecHidden);
   vAddStep("index.createColumnVec"_Stz, &Step::vIndexCreateColumnVec);
   vAddStep("index.dump"_Stz,            &Step::vIndexDump);
   vAddStep("index.init"_Stz,            &Step::vIndexInit);
   vAddStep("index.isHidden@"_Stz,       &Step::vIndexIsHiddenFetch);
-  vAddStep("index.isHidden!"_Stz,       &Step::vIndexIsHiddenStore);
   vAddStep("index.isPrimaryKey@"_Stz,   &Step::vIndexIsPrimaryKeyFetch);
   vAddStep("index.isPrimaryKey!"_Stz,   &Step::vIndexIsPrimaryKeyStore);
   vAddStep("index.isUnique@"_Stz,       &Step::vIndexIsUniqueFetch);
@@ -188,32 +186,6 @@ void Step::vIndexCompact(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.createColumnVecHidden -- create column vector for hidden index       */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexCreateColumnVecHidden(MP_Task mpTask)
-{
-  ENTRY("vIndexCreateColumnVecHidden"_Stz);
-  
-  Object* pPtrIndex;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.createColumnVec"_Stz);
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  s32 sColumnNm;
-  if ( ! mpTask->m_pDataStack->bPop(sColumnNm) )
-    THROW_INVALID_DSTACK("index.createColumnVec"_Stz);
-  
-  s48K sColumnDef;
-  if ( ! mpTask->m_pDataStack->bPop(sColumnDef) )
-    THROW_INVALID_DSTACK("index.createColumnVec"_Stz);
-  
-  pIndex->vCreateColumnVec(sColumnNm,sColumnDef);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* index.createColumnVecR -- create column vector from job_createIndex        */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexCreateColumnVec(MP_Task mpTask)
@@ -309,29 +281,6 @@ void Step::vIndexIsHiddenFetch(MP_Task mpTask)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* index.isHidden! -- store isHidden into index                               */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexIsHiddenStore(MP_Task mpTask)
-{
-  ENTRY("vIndexIsHiddenStore"_Stz);
-  
-  Object* pPtrIndex = nullptr;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.isHidden!"_Stz);
-  
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  i8 iIsHidden;
-  if ( ! mpTask->m_pDataStack->bPop(iIsHidden) )
-    THROW_INVALID_DSTACK("index.isHidden!"_Stz);
-  
-  pIndex->vIsHidden(iIsHidden ? true : false);
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* index.isPrimaryKey@ -- fetch isPrimaryKey from index                       */

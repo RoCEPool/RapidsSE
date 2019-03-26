@@ -349,12 +349,10 @@
   static void vIndexColumnName(Tasks::MP_Task mpTask);
   static void vIndexColumnType(Tasks::MP_Task mpTask);
   static void vIndexCompact(Tasks::MP_Task mpTask);
-  static void vIndexCreateColumnVecHidden(Tasks::MP_Task mpTask);
   static void vIndexCreateColumnVec(Tasks::MP_Task mpTask);
   static void vIndexDump(Tasks::MP_Task mpTask);
   static void vIndexInit(Tasks::MP_Task mpTask);
   static void vIndexIsHiddenFetch(Tasks::MP_Task mpTask);
-  static void vIndexIsHiddenStore(Tasks::MP_Task mpTask);
   static void vIndexIsPrimaryKeyFetch(Tasks::MP_Task mpTask);
   static void vIndexIsPrimaryKeyStore(Tasks::MP_Task mpTask);
   static void vIndexIsUniqueFetch(Tasks::MP_Task mpTask);
@@ -708,7 +706,6 @@
   static void vJob_WalkTableStore(Tasks::MP_Task mpTask);
 
   // Job WriteBuffer
-  static void vJob_WriteBufferIndexStore(Tasks::MP_Task mpTask);
   static void vJob_WriteBufferParentJobIdFetch(Tasks::MP_Task mpTask);
   static void vJob_WriteBufferInsertRows(Tasks::MP_Task mpTask);
   static void vJob_WriteBufferIsIngesting(Tasks::MP_Task mpTask);
@@ -1003,8 +1000,6 @@
   static void vTableGetColumnsAsString(Tasks::MP_Task mpTask);
   static void vTableColumnFetch(Tasks::MP_Task mpTask);
   static void vTableGetPtn(Tasks::MP_Task mpTask);
-  static void vTableHiddenIndexFetch(Tasks::MP_Task mpTask);
-  static void vTableHiddenIndexStore(Tasks::MP_Task mpTask);
   static void vTableIndexCount(Tasks::MP_Task mpTask);
   static void vTableInit(Tasks::MP_Task mpTask);
   static void vTableInsert(Tasks::MP_Task mpTask);

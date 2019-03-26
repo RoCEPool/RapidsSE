@@ -78,10 +78,10 @@ Table::Table(void)
   m_pColumnVec = new ColumnVec;
   
   // create the hidden column for the hidden index here
-  Column* pColumn = new Column("hidden_column"_Stz);
-  pColumn->vColumnNo(-1);
-  pColumn->vColumnType(CT_INTEGER);
-  m_pColumnVec->vAdd(pColumn);
+//  Column* pColumn = new Column("hidden_column"_Stz);
+//  pColumn->vColumnNo(-1);
+//  pColumn->vColumnType(CT_INTEGER);
+//  m_pColumnVec->vAdd(pColumn);
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
     m_ixSubLoaders[i_Slot] = 0;
@@ -610,8 +610,8 @@ void Table::vCreateColumnVec(Jobs::Job_CreateTable* pJob)
   // NOTE: we will move creation of hidden column here after
   // old tasking model is removed
   // For now we will remove the hidden column and add it back in
-  Column* pHiddenColumn = m_pColumnVec->pGet(0);
-  m_pColumnVec->vClear();
+  //Column* pHiddenColumn = m_pColumnVec->pGet(0);
+  //m_pColumnVec->vClear();
   
   for (i8 i= 0; i < pJob->m_iColumns; i++) {
   
@@ -619,7 +619,7 @@ void Table::vCreateColumnVec(Jobs::Job_CreateTable* pJob)
     m_pColumnVec->vAdd(pColumn);
   }
   
-  m_pColumnVec->vAdd(pHiddenColumn);
+  //m_pColumnVec->vAdd(pHiddenColumn);
 }
 
 /*----------------------------------------------------------------------------*/

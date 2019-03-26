@@ -21,8 +21,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.genData"_Stz,            &Step::vTableGenData);
   vAddStep("table.getColumnsAsString"_Stz, &Step::vTableGetColumnsAsString);
   vAddStep("table.getPtn"_Stz,             &Step::vTableGetPtn);
-  vAddStep("table.hiddenIndex@"_Stz,       &Step::vTableHiddenIndexFetch);
-  vAddStep("table.hiddenIndex!"_Stz,       &Step::vTableHiddenIndexStore);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.init"_Stz,               &Step::vTableInit);
   vAddStep("table.insert"_Stz,             &Step::vTableInsert);
@@ -359,53 +357,6 @@ void Step::vTableGetPtn(MP_Task mpTask)
   TablePtn* pTablePtn = pTable->pPartition(i_Slot);
 
   mpTask->m_pDataStack->vPushPointer(pTablePtn);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.hiddenIndex@ -- fetch the hidden index from the table                */
-/*----------------------------------------------------------------------------*/
-void Step::vTableHiddenIndexFetch(MP_Task mpTask)
-{
-  ENTRY("vTableHiddenIndexFetch"_Stz);
-  
-  Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.hiddenIndex@"_Stz);
-  
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  Index* pHiddenIndex = pTable->pHiddenIndex();
-  
-  mpTask->m_pDataStack->vPushPointer(pHiddenIndex);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.hiddenIndex! -- store the hidden index in the table                  */
-/*----------------------------------------------------------------------------*/
-void Step::vTableHiddenIndexStore(MP_Task mpTask)
-{
-  ENTRY("vTableHiddenIndexStore"_Stz);
-  
-  Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.hiddenIndex!"_Stz);
-  
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  Object* pPtrIndex;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("table.hiddenIndex!"_Stz);
-  
-  Index* pHiddenIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pHiddenIndex->eClass());
-  
-  pTable->vHiddenIndex(pHiddenIndex);
   
   EXIT();
 }

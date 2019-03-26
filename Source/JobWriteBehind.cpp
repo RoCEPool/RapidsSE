@@ -321,7 +321,7 @@ void JobWriteBehind::vNewEntryBuffer( i8 iPartition)
 #ifdef WITH_ROWBUFFER
   m_pRowBuffer[iPartition] = new RowBuffer();
   
-  m_pRowBuffer[iPartition]->vIndex(m_pTable->pHiddenIndex());
+  m_pRowBuffer[iPartition]->vTable(m_pTable);
   m_pRowBuffer[iPartition]->vPartitionNo(iPartition);
   //m_pRowBuffer[iPartition]->vDump();
   

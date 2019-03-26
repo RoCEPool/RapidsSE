@@ -239,7 +239,7 @@ void Jobs::vJob_ListColumns_post(Interface::Session* pSession, Job* pJob)
     
     ColumnVec* pColumnVec = pTable->pColumnVec();
     i8 iColumns = pColumnVec->nItems();
-    for (i8 iColumn = 0; iColumn < iColumns - 1; iColumn++) {
+    for (i8 iColumn = 0; iColumn < iColumns; iColumn++) {
       Column* pColumn = pColumnVec->pGet(iColumn);
       vTrace("row: (%lld, '%s', '%s', %lld, %lld, %s, %s)\n"_Stz,
              pColumn->iColumnNo(),
@@ -252,7 +252,7 @@ void Jobs::vJob_ListColumns_post(Interface::Session* pSession, Job* pJob)
       );
       
     }
-    iRowsProcessed = iColumns - 1;
+    iRowsProcessed = iColumns;
     vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
   }
 }

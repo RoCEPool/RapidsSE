@@ -64,7 +64,7 @@ RowBuffer::RowBuffer(void)
   m_okLock.vInitLock(LK_ROWBUFFER);
   
   m_iBufferNo     = *nPoolBufferNo();
-  m_pIndex        = nullptr;
+  m_pTable        = nullptr;
   m_iPartitionNo  = -1;
   
   // zero all the cachelines in the row tray
@@ -214,9 +214,9 @@ void RowBuffer::vBufferCount(i8& nBuffers)
   RowBuffer* pNextBuffer = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // hidden index ?
+  // table ?
   
-  RASSERT(m_pIndex->bIsHidden());
+  RASSERT(m_pTable);
   
   pNextBuffer = this->pNextBuffer();
   nBuffers++;
@@ -285,24 +285,24 @@ bool RowBuffer::bHasSpace(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the index of the index buffer                                          */
+/* set the table of the row buffer                                            */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vIndex(Index* pIndex)
+void RowBuffer::vTable(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  RASSERT(pIndex->bIsHidden());
-  m_pIndex = pIndex;
+  RASSERT(pTable);
+  m_pTable = pTable;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the index of the index buffer                                          */
+/* get the table of the index buffer                                          */
 /*----------------------------------------------------------------------------*/
-Index* RowBuffer::pIndex(void)
+Table* RowBuffer::pTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  return m_pIndex;
+  return m_pTable;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -393,8 +393,8 @@ void RowBuffer::vRestore(void)
   RASSERT( ! m_pNextBuffer );
   RASSERT( ! m_pPrevBuffer );
   
-  // set the index to nullptr (this pointer is not valid any more)
-  m_pIndex = nullptr;
+  // set the table to nullptr (this pointer is not valid any more)
+  m_pTable = nullptr;
   
   // get the buffer no
   bn nBuffer = nPoolBufferNo();
@@ -404,14 +404,14 @@ void RowBuffer::vRestore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* restore the index of the index buffer                                      */
+/* restore the table of the row buffer                                        */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vRestoreIndex(Index* pIndex)
+void RowBuffer::vRestoreTable(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  //RASSERT( ! m_pIndex );
-  m_pIndex = pIndex;
+  //RASSERT( ! m_pTable );
+  m_pTable = pTable;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -424,7 +424,7 @@ void RowBuffer::vShowRow(i8 iRowNo)
          iRowNo
          );
   
-  ColumnVec* pColumnVec = m_pIndex->pTable()->pColumnVec();
+  ColumnVec* pColumnVec = m_pTable->pColumnVec();
   
   s48K sRowString;
   CacheLine* aRowCacheLine = m_xRowTray.aGet(iRowNo);
