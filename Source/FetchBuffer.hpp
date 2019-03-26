@@ -31,12 +31,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public:
     
-#ifdef WITH_ROWBUFFER
     bool  bAppendRow(CacheLine* pRow);
-#else
-    bool  bAppendRow(RowData* pRow);
-#endif
-    
     RowData** aaAllotRowPtr(i8 nBytes);
     char* aDataArea(void);
     i8    nFetchedRows(void);
@@ -44,14 +39,8 @@ namespace Jobs
     void  vIsLast(bool bIsLast);
     bool  bIsLast(void);
     
-    
-#ifdef WITH_ROWBUFFER
     CacheLine** aaFirstRowPtr(void);
     CacheLine** aaNextRowPtr(CacheLine** ppRow);
-#else
-    RowData** aaFirstRowPtr(void);
-    RowData** aaNextRowPtr(RowData** ppRow);
-#endif
     
     i8    nPartitionNo(void);
     void  vRestore(void);
