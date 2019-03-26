@@ -185,13 +185,11 @@ namespace Data
     void         vQuickVerify(Item* aSeeEntry=nullptr);
     bool         bQuickVerify(Item* aNotSeeEntry);
   
-    bool         bVerifyL0Hidden(void);
     bool         bVerifyL0Other(void);
     bool         bVerifyLnAny(void);
 
     bool         bVerifyAdjacent(void);
     bool         bVerifyBufferRefs(void);
-    bool         bVerifyEntryOffset(void);
     bool         bVerifyFirstKeys(void);
     bool         bVerifyFreeList(void);
     bool         bVerifyItems(void);
@@ -204,7 +202,6 @@ namespace Data
     bool         bVerifySkipListLevels(bool bShowKeys = false);
     void         vVerifyFault(void);
 
-  
     public:
     Footer* aFooter(void);
   

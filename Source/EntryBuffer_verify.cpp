@@ -206,76 +206,8 @@ bool EntryBuffer::bVerify(void)
     return bValid;
   }
   
-  if (! m_pIndex->bIsHidden()) {
-    bValid = bVerifyL0Other();
-    return bValid;
-  }
-  
-  for (EntryBuffer* EBhiddenL0 = this;
-       EBhiddenL0;
-       EBhiddenL0 = EBhiddenL0->pNextBuffer()) {
-    bValid = EBhiddenL0->bVerifyL0Hidden();
-    if (! bValid)
-      return false;
-  }
-  
-  return true;
-}
-/*----------------------------------------------------------------------------*/
-/* verify the structure of this L0 buffer (hidden index)                      */
-/*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifyL0Hidden(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  ASSERT(! m_aLazyChain);
-  
-  RASSERT(0 == m_iBufferHeight);
-  RASSERT(m_pIndex->bIsHidden());
-  
-  //  vTrace("VerifyL0 %s: bufno: %lld level %lld\n"_Stz,
-  //         m_pIndex->aIndexName(),m_iBufferNo,m_iBufferHeight);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // verify the contents of this L0 hidden index buffer buffer
-  
-  bool bValid;
-  
-  bValid = bVerifyNextPrev();
-  if (! bValid)
-    return false;
-  
-  bValid = bVerifyItems();
-  if (! bValid) {
-    return false;
-  }
-  
-  bValid = bVerifyFreeList();
-  if (! bValid) {
-    return false;
-  }
-  
-  bValid = bVerifyEntryOffset();
-  if (! bValid) {
-    return false;
-  }
-  
-  bValid = bVerifyRows();
-  if (! bValid) {
-    return false;
-  }
-  
-  bValid = bVerifySkipListEntry();
-  if (! bValid)
-    return false;
-  
-#ifdef WITH_DEBUG_VERSION
-  bValid = bVerifySkipListLevels();
-  if (! bValid)
-    return false;
-#endif
-  
-  return true;
+  bValid = bVerifyL0Other();
+  return bValid;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -391,10 +323,7 @@ bool EntryBuffer::bVerifyLnAny(void)
       bValid = pRefEntBuf->bVerifyLnAny();
     }
     else {
-      if (m_pIndex->bIsHidden())
-        bValid = pRefEntBuf->bVerifyL0Hidden();
-      else
-        bValid = pRefEntBuf->bVerifyL0Other();
+      bValid = pRefEntBuf->bVerifyL0Other();
     }
     if (! bValid)
       return false;
@@ -480,64 +409,6 @@ bool EntryBuffer::bVerifyBufferRefs(void)
       vVerifyFault();
       return false;
     }
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* verify the entry offset array of this L0 hidden index buffer               */
-/*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifyEntryOffset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  /*
-   For the hidden index each buffer has an offset array which indicates
-   where the row is located in the buffer.
-   
-   Entries are only maintained for entries 0..gpAttachMap->m_nIndexEntries-1.
-   
-   In all cases the hidden index is a list of L0 buffers.
-   */
-  
-  RASSERT(0 == m_iBufferHeight);
-  RASSERT(m_pIndex->bIsHidden());
-  
-  //vShow();
-  
-  for (i8 i_RowNo = 0; i_RowNo < gpAttachMap->m_nIndexEntries; i_RowNo++) {
-    
-    RASSERT(i_RowNo < C_MAX_ITEMS);
-    i8 i_RowOffset = m_i4aItemOffsets[i_RowNo];
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // validate free offset element
-    
-    if (i_RowOffset < 0) {
-      
-      // last offset in free chain
-      if (C_NO_MORE_ITEMS == - i_RowOffset)
-        continue;
-      
-      // get the next offset in free chain
-      i8 i_NextRowEntryOffset = m_i4aItemOffsets[ - i_RowOffset ];
-      
-      // next offset should be free (or end of free chain)
-      if (i_NextRowEntryOffset >= 0) {
-        vVerifyFault();
-        return false;
-      }
-      
-      continue;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // validate offset element which is the offset to an entry
-    
-    Item* aItem = aGetEntryOffset(i_RowOffset);
-    if (! aItem->bValidItem())
-      return false;
   }
   
   return true;
@@ -822,26 +693,8 @@ bool EntryBuffer::bVerifyNextPrev(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* verify the rows of this buffer                                             */
-/*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifyRows(void)                        //# discuss with Alka
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  RASSERT(0 == m_iBufferHeight);
-  RASSERT(m_pIndex->bIsHidden());
-  
-  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* verify the row references in this L0 non-hidden index buffer               */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_ROWBUFFER
-
 bool EntryBuffer::bVerifyRowRefs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -852,7 +705,6 @@ bool EntryBuffer::bVerifyRowRefs(void)
    */
   
   RASSERT(0 == m_iBufferHeight);
-  RASSERT(! m_pIndex->bIsHidden());
   
   for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
@@ -872,53 +724,6 @@ bool EntryBuffer::bVerifyRowRefs(void)
   
   return true;
 }
-
-#else
-
-bool EntryBuffer::bVerifyRowRefs(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  /*
-   For this L0 non-hidden index verify that its key entries referen a
-   valid row in an L0 hidden index buffer
-   */
-  
-  RASSERT(0 == m_iBufferHeight);
-  RASSERT(! m_pIndex->bIsHidden());
-  
-  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
-    
-    // get the entry buffer that this L0 key leaf references
-    EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
-    
-    // that referenced entry buffer should be an L0 buffer
-    if (0 != pEntryBuffer->iBufferHeight()) {
-      vVerifyFault();
-      return false;
-    }
-    
-    // that referenced entry buffer should be for a hidden index
-    if (! pEntryBuffer->pIndex()->bIsHidden()) {
-      vVerifyFault();
-      return false;
-    }
-    
-    // get the row entry from referenced entry buffer
-    i8 i_Item = aItem->iItemNo();
-    Item* aRowEntry = pEntryBuffer->aGetEntry_Item(i_Item);
-    
-    // validate the row entry                                          //# more?
-    if (1 != aRowEntry->nLevels()) {
-      vVerifyFault();
-      return false;
-    }
-  }
-  
-  return true;
-}
-
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* verify the skip list only contains only entries                            */
@@ -978,7 +783,7 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
       if (bShowKeys) {
         KeyData* aTestKey = _aKeyData(aTestEntry_sl->aDataArea());
         vTrace("Test %p: "_Stz,aTestEntry_sl);
-        aTestKey->vShow(pIdxColVec, m_pIndex->bIsHidden() ? true : false);
+        aTestKey->vShow(pIdxColVec, false);
         vTrace("\n"_Stz);
       }
       
