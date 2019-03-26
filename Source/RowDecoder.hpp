@@ -23,9 +23,21 @@ namespace Data
     w8 wDecode(i8 i_Row, Column* pCol, Stz* szBuf);
     void vPrint(i8 i_Row, Column* pCol);
     void vString(i8 i_Row, ColumnVec* pColVec, s48K& sStr);
- 
+
   private:
   
+    void vAppend(i8 i_Row, Column* pCol, s48K& sStr);
+    void vAppendBcd(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+    void vAppendBol(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+    void vAppendDte(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+    void vAppendFlt(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+    void vAppendInt(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+    void vAppendIvl(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+    void vAppendTme(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+    void vAppendTsp(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+    void vAppendVch(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+  
+    //! probably indirectly return the w8...
     w8 wDecodeBcd(i8 i_Row, Column* pCol, Stz* szBuf);
     w8 wDecodeBol(i8 i_Row, Column* pCol, Stz* szBuf);
     w8 wDecodeDte(i8 i_Row, Column* pCol, Stz* szBuf);
@@ -38,17 +50,7 @@ namespace Data
 
     i8 iGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
   
-    void vString(i8 i_Row, Column* pCol, s48K& sStr);
-    void vStringBcd(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
-    void vStringBol(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
-    void vStringDte(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
-    void vStringFlt(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
-    void vStringInt(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
-    void vStringIvl(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
-    void vStringTme(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
-    void vStringTsp(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
-    void vStringVch(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
-
+    //! more work here...
     static i8 iDteDecoding(WordView& wDteView, i8 iEncoding);
     static i8 iTmeDecoding(WordView& wTmeView, i8 iEncoding);
     static i8 iTspDecoding(WordView& wTspView, i8 iEncoding);
