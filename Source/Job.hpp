@@ -197,11 +197,7 @@ namespace Jobs
   
     i8  m_iParticipantNode;    // participant node no (FromNodeNo?)
   
-#ifdef WITH_ROWBUFFER
     RowBuffer* m_pCurrentBuffer;   // row buffer
-#else
-    EntryBuffer* m_pCurrentBuffer; // entry buffer
-#endif
   
     Object* m_pSendWith; // object which is to be sent with this job
   

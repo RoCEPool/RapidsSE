@@ -10,11 +10,7 @@ namespace Jobs
   {
   public:
     Table*      m_pTable;       // table pointer
-#ifdef WITH_ROWBUFFER  
     RowParts    m_oRowParts;    // tray of row parts
-#else
-    s48K        m_aRow;         // formatted row
-#endif
     i8          m_nRowBytes;    // length of formatted row
     Formatters  m_oFormatters;  // formatters
     
@@ -28,12 +24,7 @@ namespace Jobs
     bool bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine);
 
   private:
-#ifdef WITH_ROWBUFFER
     bool bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine);
-#else
-    bool bFormRow(Stz* aRecord, i8 nBytes,
-                  Stz* aDstRow, i8 &nDstRowBytes, bool &bBlankLine);
-#endif
   };
 }
 
