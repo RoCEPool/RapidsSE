@@ -457,26 +457,6 @@ void Index::vTidyUp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a hidden index                                                     */
-/*----------------------------------------------------------------------------*/
-bool Index::bIsHidden(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-  
-  return m_bIsHidden;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set index as a hidden index                                                */
-/*----------------------------------------------------------------------------*/
-void Index::vIsHidden(bool bHidden)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-  
-  m_bIsHidden = bHidden;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a primary key  index                                               */
 /*----------------------------------------------------------------------------*/
 bool Index::bIsPrimaryKey(void)

@@ -50,7 +50,6 @@ namespace MetaData
     Table*       m_pTable;        //
     Dic          m_xSubDic;       // sub dictionary for this index
     IdxColVec*   m_pIdxColVec;    //
-    bool         m_bIsHidden;
   
     bool         m_bSingleColumn; // is this index only over a signle column
     bool         (*m_fGreaterEqual)(char* aArgA, char* aArgB);
@@ -84,8 +83,6 @@ namespace MetaData
     s32    sIndexName(void);
     void   vIndexNo(i8 iIndexNo);
     i8     iIndexNo(void);
-    bool   bIsHidden(void);
-    void   vIsHidden(bool bHidden);
     bool   bIsPrimaryKey(void);
     void   vIsPrimaryKey(bool bUnique);
     bool   bIsUnique(void);
