@@ -211,23 +211,6 @@ Item* Item::aRefdItem(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the dataRow entry matching entry from the tables hidden index          */
-/*----------------------------------------------------------------------------*/
-#ifdef WITH_ROWBUFFER
-CacheLine* Item::aRefdRow(void)
-{
-  
-  // get the entry buffer referenced by this items Id
-  RowBuffer* pRowBuffer = RowBuffer::pRefdRowBuffer(m_xId);
-  
-  // get the row entry
-  CacheLine* aRow = pRowBuffer->pRow(m_xId.iItem());
-  
-  return aRow;
-}
-#endif
-
-/*----------------------------------------------------------------------------*/
 /* get size in bytes of this item                                             */
 /*----------------------------------------------------------------------------*/
 i8 Item::nSizeData(void)

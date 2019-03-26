@@ -506,9 +506,6 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
   RowBuffer* pRowBuffer = m_pRootRowBuffer;
   
   while (pRowBuffer) {
-  
-    pIndexTree->vInsertEntriesFromBuffer(pRowBuffer);
-    
     pIndexTree->vInsertEntriesFromBuffer(pRowBuffer);
     pRowBuffer = pRowBuffer->pNextBuffer();
   }

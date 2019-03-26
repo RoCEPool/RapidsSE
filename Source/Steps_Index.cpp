@@ -1199,9 +1199,12 @@ bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Item* aItem, Job_FetchRows* pJo
     return true;
   }
   
-  // get the dataRow from the hidden index
-  CacheLine* aRowData = _aCacheLine(aItem->aRefdRow());
+  // get the rowBuffer
+  RowBuffer* pRowBuffer = RowBuffer::pRefdRowBuffer(xId);
   
+  // get the dataRow
+  CacheLine* aRowData = pRowBuffer->pRow(xId.iItem());
+
   if (pFetchBuffer->bAppendRow(aRowData))
     return true;
   else
