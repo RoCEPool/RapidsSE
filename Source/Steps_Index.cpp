@@ -231,10 +231,7 @@ void Step::vIndexDump(MP_Task mpTask)
     IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
     vTrace("Partition %lld\n"_Stz, iPartition);
     
-    if (pIndex->bIsHidden())
-      pIndexTree->vDump(true);
-    else
-      pIndexTree->vDump(false);
+    pIndexTree->vDump(false);
   }
   
   EXIT();
