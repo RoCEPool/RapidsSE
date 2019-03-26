@@ -263,7 +263,7 @@ void TablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
   
   RASSERT(m_okLock.bIsLocked());
   //m_okLock.vGrabWrite();
-#ifdef WITH_ROWBUFFER
+
   if (m_pRootRowBuffer == nullptr) {
     ASSERT( ! m_pCurrentRowBuffer )
     m_pRootRowBuffer = pRowBuffer;
@@ -275,7 +275,6 @@ void TablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
   }
   
   m_pCurrentRowBuffer = pRowBuffer;
-#endif
   
   //m_okLock.vDropWrite();
 }
