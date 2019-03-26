@@ -22,22 +22,21 @@ namespace Data
 
     void vDecode(i8 i_Row, Column* pCol, w8& wDatum, Stz* szBuf);
     void vPrint(i8 i_Row, Column* pCol);
-    void vString(i8 i_Row, ColumnVec* pColVec, s48K& sStr);
+    void vString(s48K& sStr, i8 i_Row, ColumnVec* pColVec);
 
   private:
   
-    void vAppend(i8 i_Row, Column* pCol, s48K& sStr);
-    void vAppendBcd(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
-    void vAppendBol(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
-    void vAppendDte(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
-    void vAppendFlt(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
-    void vAppendInt(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
-    void vAppendIvl(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
-    void vAppendTme(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
-    void vAppendTsp(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
-    void vAppendVch(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+    void vAppend(s48K& sStr, i8 i_Row, Column* pCol);
+    void vAppendBcd(s48K& sStr, Column* pCol, w8 wDatum, Stz* szBuf);
+    void vAppendBol(s48K& sStr, Column* pCol, w8 wDatum, Stz* szBuf);
+    void vAppendDte(s48K& sStr, Column* pCol, w8 wDatum, Stz* szBuf);
+    void vAppendFlt(s48K& sStr, Column* pCol, w8 wDatum, Stz* szBuf);
+    void vAppendInt(s48K& sStr, Column* pCol, w8 wDatum, Stz* szBuf);
+    void vAppendIvl(s48K& sStr, Column* pCol, w8 wDatum, Stz* szBuf);
+    void vAppendTme(s48K& sStr, Column* pCol, w8 wDatum, Stz* szBuf);
+    void vAppendTsp(s48K& sStr, Column* pCol, w8 wDatum, Stz* szBuf);
+    void vAppendVch(s48K& sStr, Column* pCol, w8 wDatum, Stz* szBuf);
   
-    //! probably indirectly return the w8...
     void vDecodeBcd(i8 i_Row, Column* pCol, w8& wDatum, Stz* szBuf);
     void vDecodeBol(i8 i_Row, Column* pCol, w8& wDatum, Stz* szBuf);
     void vDecodeDte(i8 i_Row, Column* pCol, w8& wDatum, Stz* szBuf);
