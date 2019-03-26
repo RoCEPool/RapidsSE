@@ -840,6 +840,41 @@ bool EntryBuffer::bVerifyRows(void)                        //# discuss with Alka
 /*----------------------------------------------------------------------------*/
 /* verify the row references in this L0 non-hidden index buffer               */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_ROWBUFFER
+
+bool EntryBuffer::bVerifyRowRefs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  /*
+   For this L0 non-hidden index verify that its key entries referen a
+   valid row in an L0 hidden index buffer
+   */
+  
+  RASSERT(0 == m_iBufferHeight);
+  RASSERT(! m_pIndex->bIsHidden());
+  
+  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+    
+    // get the row buffer that this L0 key leaf references
+    Id xId = aItem->xId();
+    RowBuffer* pRowBuffer = RowBuffer::pRefdRowBuffer(xId);
+    
+    // get the row entry from referenced entry buffer
+    i8 i_Item = aItem->iItemNo();
+    CacheLine* aRowData = pRowBuffer->pRow(i_Item);
+    
+    if (! aRowData ) {
+      vVerifyFault();
+      return false;
+    }
+  }
+  
+  return true;
+}
+
+#else
+
 bool EntryBuffer::bVerifyRowRefs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -882,6 +917,8 @@ bool EntryBuffer::bVerifyRowRefs(void)
   
   return true;
 }
+
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* verify the skip list only contains only entries                            */
