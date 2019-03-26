@@ -181,15 +181,6 @@ Item* EntryBuffer::aAllotRowEntry(RowWrk& xRowWrk)
     return nullptr;
   }
   
-  // hidden index has another limit (offsets) for no of entries
-  if (m_pIndex->bIsHidden()) {
-    if (! bHasFreeItemHidden()) {
-      //vTrace("No free item no's\n"_Stz);
-      return nullptr;
-    }
-    RASSERT(nItems() < C_MAX_ITEMS - 16);
-  }
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allot an entry and its neo in this entry buffer
   
