@@ -20,32 +20,40 @@ namespace Data
     RowDecoder(RowTray* pRowTray);
     ~RowDecoder(void) noexcept(false);
 
-    void vAsString(s48K& sDataString, ColumnVec* pColumnVec);
-    
-    w8 wDecode(Column* pColumn, Stz* szBuf);
-  
-    void vPrint(Column* pColumn);
-  
+    w8 wDecode(i8 i_Row, Column* pCol, Stz* szBuf);
+    void vPrint(i8 i_Row, Column* pCol);
+    void vString(i8 i_Row, ColumnVec* pColVec, s48K& sStr);
+ 
   private:
-    w8 wDecodeBcd(Column* pColumn, Stz* szBuf);
-    w8 wDecodeBol(Column* pColumn, Stz* szBuf);
-    w8 wDecodeDte(Column* pColumn, Stz* szBuf);
-    w8 wDecodeFlt(Column* pColumn, Stz* szBuf);
-    w8 wDecodeInt(Column* pColumn, Stz* szBuf);
-    w8 wDecodeIvl(Column* pColumn, Stz* szBuf);
-    w8 wDecodeTme(Column* pColumn, Stz* szBuf);
-    w8 wDecodeTsp(Column* pColumn, Stz* szBuf);
-    w8 wDecodeVch(Column* pColumn, Stz* szBuf);
-  
+    w8 wDecodeBcd(i8 i_Row, Column* pCol, Stz* szBuf);
+    w8 wDecodeBol(i8 i_Row, Column* pCol, Stz* szBuf);
+    w8 wDecodeDte(i8 i_Row, Column* pCol, Stz* szBuf);
+    w8 wDecodeFlt(i8 i_Row, Column* pCol, Stz* szBuf);
+    w8 wDecodeInt(i8 i_Row, Column* pCol, Stz* szBuf);
+    w8 wDecodeIvl(i8 i_Row, Column* pCol, Stz* szBuf);
+    w8 wDecodeTme(i8 i_Row, Column* pCol, Stz* szBuf);
+    w8 wDecodeTsp(i8 i_Row, Column* pCol, Stz* szBuf);
+    w8 wDecodeVch(i8 i_Row, Column* pCol, Stz* szBuf);
+
+    void vStringBcd(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+    void vStringBol(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+    void vStringDte(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+    void vStringFlt(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+    void vStringInt(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+    void vStringIvl(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+    void vStringTme(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+    void vStringTsp(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+    void vStringVch(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
+
     static i8 iDteDecoding(WordView& wDteView, i8 iEncoding);
     static i8 iTmeDecoding(WordView& wTmeView, i8 iEncoding);
     static i8 iTspDecoding(WordView& wTspView, i8 iEncoding);
   
     static i8 iGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
    
-    static void vPrint(Column* pColumn, WordView& wDatum);
+    static void vPrint(Column* pCol, WordView& wDatum);
   
-    Footer*      aFooter(void);
+    Footer* aFooter(void);
   };
 }
 

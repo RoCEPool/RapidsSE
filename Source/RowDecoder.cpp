@@ -55,128 +55,83 @@ RowDecoder::~RowDecoder(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* print row decoded datum from cache line                                    */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vAsString(s48K& sDataString, ColumnVec* pColumnVec)
-{
-  WordView wDatum;
-  s256 sBuf;
-  
-  CacheLine* aCacheLine = m_pRowTray->aGet(0);
-  
-  // get no of columns
-  i8 nColumns = pColumnVec->nItems();
-  
-  // for each column
-  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
-    
-    // get the column at index
-    Column* pColumn = pColumnVec->pGet(i_Column);
-    
-    // not the first column
-    if (i_Column == 0)
-      sDataString.vConcat(""_Stz);
-    else
-      sDataString.vConcat(","_Stz);
-    
-    // copy the data for the column into aDst
-    eDM eDatum = pColumn->eDatumType();
-    wDatum.m_wWord = wDecode(pColumn,sBuf.aStz());
-    
-    switch (eDatum) {
-      case DM_BCD: {
-        sDataString.vCatSprint("%lld"_Stz, wDatum.m_iI8);
-        break;
-      }
-      case DM_BOL: {
-        sDataString.vConcat(wDatum.m_iI8 == 1 ? "true"_Stz : "false"_Stz);
-        break;
-      }
-      case DM_DTE: {
-        Dte wDte;
-        wDte.vAsI8(wDatum.m_iI8);
-        s32 sDte;
-        wDte.vSprint(sDte.aStz());
-        sDataString.vConcat(sDte.aStz());
-        break;
-      }
-      case DM_FLT: {
-        sDataString.vCatSprint("%g"_Stz, wDatum.m_dF8);
-        break;
-      }
-      case DM_INT: {
-        sDataString.vCatSprint("%lld"_Stz, wDatum.m_iI8);
-        break;
-      }
-      case DM_IVL: {
-        sDataString.vCatSprint("%lld"_Stz, wDatum.m_iI8);
-        break;
-      }
-      case DM_TME: {
-        Tme wTme;
-        wTme.vAsI8(wDatum.m_iI8);
-        s32 sTme;
-        wTme.vSprint(sTme.aStz());
-        sDataString.vConcat(sTme.aStz());
-        break;
-      }
-      case DM_TSP: {
-        Tsp wTsp;
-        wTsp.vAsI8(wDatum.m_iI8);
-        s32 sTsp;
-        wTsp.vSprint(sTsp.aStz());
-        sDataString.vConcat(sTsp.aStz());
-        break;
-      }
-      case DM_VCH: {
-        s256 sStr;
-        Vch::vSprintQuotes(sStr, (Stz*)&wDatum);
-        sDataString.vConcat(sStr.aStz());
-        break;
-      }
-      default:
-      NEVER_REACH;
-    }
-    
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* get encoded datum from cache line                                          */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecode(Column* pColumn, Stz* szBuf)
+w8 RowDecoder::wDecode(i8 i_Row, Column* pCol, Stz* szBuf)
 {
-  eDM eDatum = pColumn->eDatumType();
+  eDM eDatum = pCol->eDatumType();
   
   WordView wDecoded;
   
   switch (eDatum) {
-    case DM_BCD: wDecoded = wDecodeBcd(pColumn,szBuf); break;
-    case DM_BOL: wDecoded = wDecodeBol(pColumn,szBuf); break;
-    case DM_DTE: wDecoded = wDecodeDte(pColumn,szBuf); break;
-    case DM_FLT: wDecoded = wDecodeFlt(pColumn,szBuf); break;
-    case DM_INT: wDecoded = wDecodeInt(pColumn,szBuf); break;
-    case DM_IVL: wDecoded = wDecodeIvl(pColumn,szBuf); break;
-    case DM_TME: wDecoded = wDecodeTme(pColumn,szBuf); break;
-    case DM_TSP: wDecoded = wDecodeTsp(pColumn,szBuf); break;
-    case DM_VCH: wDecoded = wDecodeVch(pColumn,szBuf); break;
+    case DM_BCD: wDecoded = wDecodeBcd(i_Row,pCol,szBuf); break;
+    case DM_BOL: wDecoded = wDecodeBol(i_Row,pCol,szBuf); break;
+    case DM_DTE: wDecoded = wDecodeDte(i_Row,pCol,szBuf); break;
+    case DM_FLT: wDecoded = wDecodeFlt(i_Row,pCol,szBuf); break;
+    case DM_INT: wDecoded = wDecodeInt(i_Row,pCol,szBuf); break;
+    case DM_IVL: wDecoded = wDecodeIvl(i_Row,pCol,szBuf); break;
+    case DM_TME: wDecoded = wDecodeTme(i_Row,pCol,szBuf); break;
+    case DM_TSP: wDecoded = wDecodeTsp(i_Row,pCol,szBuf); break;
+    case DM_VCH: wDecoded = wDecodeVch(i_Row,pCol,szBuf); break;
     default:
       NEVER_REACH;
   }
 
-  return wDecoded.m_wWord;
+  return wDecoded;
 }
 
 /*----------------------------------------------------------------------------*/
 /* print decoded datum from cache line                                        */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vPrint(Column* pColumn)
+void RowDecoder::vPrint(i8 i_Row, Column* pCol)
 {
   WordView wDatum;
   s256 sBuf;
   
-  wDatum.m_wWord = wDecode(pColumn,sBuf);
-  vPrint(pColumn,wDatum);
+  wDatum.m_wWord = wDecode(i_Row,pCol,sBuf);
+  
+  vPrint(pCol,wDatum);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print row decoded datum from cache line                                    */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vString(i8 i_Row, ColumnVec* pColVec, s48K& sStr)
+{
+  WordView wDatum;
+  s256 sBuf;
+  
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+  
+  // for each column
+  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
+    
+    // get the column at index
+    Column* pCol = pColVec->pGet(i_Column);
+    
+    // comma sepate column values
+    if (i_Column)
+      sStr.vConcat(","_Stz);
+    
+    eDM eDatum = pCol->eDatumType();
+    wDatum = wDecode(i_Row,pCol,sBuf.aStz());
+    
+    switch (eDatum) {
+      case DM_BCD: vStringBcd(pCol,wDatum,sBuf,sStr); break;
+      case DM_BOL: vStringBol(pCol,wDatum,sBuf,sStr); break;
+      case DM_DTE: vStringDte(pCol,wDatum,sBuf,sStr); break;
+      case DM_FLT: vStringFlt(pCol,wDatum,sBuf,sStr); break;
+      case DM_INT: vStringInt(pCol,wDatum,sBuf,sStr); break;
+      case DM_IVL: vStringIvl(pCol,wDatum,sBuf,sStr); break;
+      case DM_TME: vStringTme(pCol,wDatum,sBuf,sStr); break;
+      case DM_TSP: vStringTsp(pCol,wDatum,sBuf,sStr); break;
+      case DM_VCH: vStringVch(pCol,wDatum,sBuf,sStr); break;
+      default:
+        NEVER_REACH;
+    }
+    
+  }
 }
 
 
@@ -187,14 +142,14 @@ void RowDecoder::vPrint(Column* pColumn)
 /*----------------------------------------------------------------------------*/
 /* decode decimal from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecodeBcd(Column* pColumn, Stz* szBuf)
+w8 RowDecoder::wDecodeBcd(i8 i_Row, Column* pCol, Stz* szBuf)
 {
   WordView wDecoded;
   
   CacheLine* aCacheLine = m_pRowTray->aGet(0);
   
   i8 i_Offset  = C_UNKNOWN;
-  i8 i_Column  = pColumn->iColumnNo();
+  i8 i_Column  = pCol->iColumnNo();
   i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
 
   switch (iEncoding) {
@@ -223,14 +178,14 @@ w8 RowDecoder::wDecodeBcd(Column* pColumn, Stz* szBuf)
 /*----------------------------------------------------------------------------*/
 /* decode boolean from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecodeBol(Column* pColumn, Stz* szBuf)
+w8 RowDecoder::wDecodeBol(i8 i_Row, Column* pCol, Stz* szBuf)
 {
   WordView wDecoded;
   
-  CacheLine* aCacheLine = m_pRowTray->aGet(0);
+  CacheLine* aCacheLine = m_pRowTray->aGet(i_Row);
   
   i8 i_Offset  = C_UNKNOWN;
-  i8 i_Column  = pColumn->iColumnNo();
+  i8 i_Column  = pCol->iColumnNo();
   i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
   
   switch (iEncoding) {
@@ -249,14 +204,14 @@ w8 RowDecoder::wDecodeBol(Column* pColumn, Stz* szBuf)
 /*----------------------------------------------------------------------------*/
 /* decode date from given cache line                                          */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecodeDte(Column* pColumn, Stz* szBuf)
+w8 RowDecoder::wDecodeDte(i8 i_Row, Column* pCol, Stz* szBuf)
 {
   WordView wDecoded;
   
-  CacheLine* aCacheLine = m_pRowTray->aGet(0);
+  CacheLine* aCacheLine = m_pRowTray->aGet(i_Row);
   
   i8 i_Offset  = C_UNKNOWN;
-  i8 i_Column  = pColumn->iColumnNo();
+  i8 i_Column  = pCol->iColumnNo();
   i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
   
   switch (iEncoding) {
@@ -284,14 +239,14 @@ w8 RowDecoder::wDecodeDte(Column* pColumn, Stz* szBuf)
 /*----------------------------------------------------------------------------*/
 /* decode float from given cache line                                         */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecodeFlt(Column* pColumn, Stz* szBuf)
+w8 RowDecoder::wDecodeFlt(i8 i_Row, Column* pCol, Stz* szBuf)
 {
   WordView wDecoded;
   
-  CacheLine* aCacheLine = m_pRowTray->aGet(0);
+  CacheLine* aCacheLine = m_pRowTray->aGet(i_Row);
   
   i8 i_Offset  = C_UNKNOWN;
-  i8 i_Column  = pColumn->iColumnNo();
+  i8 i_Column  = pCol->iColumnNo();
   i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
   
   switch (iEncoding) {
@@ -316,14 +271,14 @@ w8 RowDecoder::wDecodeFlt(Column* pColumn, Stz* szBuf)
 /*----------------------------------------------------------------------------*/
 /* decode integer from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecodeInt(Column* pColumn, Stz* szBuf)
+w8 RowDecoder::wDecodeInt(i8 i_Row, Column* pCol, Stz* szBuf)
 {
   WordView wDecoded;
   
-  CacheLine* aCacheLine = m_pRowTray->aGet(0);
+  CacheLine* aCacheLine = m_pRowTray->aGet(i_Row);
   
   i8 i_Offset  = C_UNKNOWN;
-  i8 i_Column  = pColumn->iColumnNo();
+  i8 i_Column  = pCol->iColumnNo();
   i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
   
   switch (iEncoding) {
@@ -352,14 +307,14 @@ w8 RowDecoder::wDecodeInt(Column* pColumn, Stz* szBuf)
 /*----------------------------------------------------------------------------*/
 /* decode interval from given cache line                                      */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecodeIvl(Column* pColumn, Stz* szBuf)
+w8 RowDecoder::wDecodeIvl(i8 i_Row, Column* pCol, Stz* szBuf)
 {
   WordView wDecoded;
   
-  CacheLine* aCacheLine = m_pRowTray->aGet(0);
+  CacheLine* aCacheLine = m_pRowTray->aGet(i_Row);
   
   i8 i_Offset  = C_UNKNOWN;
-  i8 i_Column  = pColumn->iColumnNo();
+  i8 i_Column  = pCol->iColumnNo();
   i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
   
   switch (iEncoding) {
@@ -384,14 +339,14 @@ w8 RowDecoder::wDecodeIvl(Column* pColumn, Stz* szBuf)
 /*----------------------------------------------------------------------------*/
 /* decode time from given cache line                                          */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecodeTme(Column* pColumn, Stz* szBuf)
+w8 RowDecoder::wDecodeTme(i8 i_Row, Column* pCol, Stz* szBuf)
 {
   WordView wDecoded;
   
-  CacheLine* aCacheLine = m_pRowTray->aGet(0);
+  CacheLine* aCacheLine = m_pRowTray->aGet(i_Row);
   
   i8 i_Offset  = C_UNKNOWN;
-  i8 i_Column  = pColumn->iColumnNo();
+  i8 i_Column  = pCol->iColumnNo();
   i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
   
   switch (iEncoding) {
@@ -418,14 +373,14 @@ w8 RowDecoder::wDecodeTme(Column* pColumn, Stz* szBuf)
 /*----------------------------------------------------------------------------*/
 /* decode timestamp from given cache line                                     */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecodeTsp(Column* pColumn, Stz* szBuf)
+w8 RowDecoder::wDecodeTsp(i8 i_Row, Column* pCol, Stz* szBuf)
 {
   WordView wDecoded;
   
-  CacheLine* aCacheLine = m_pRowTray->aGet(0);
+  CacheLine* aCacheLine = m_pRowTray->aGet(i_Row);
   
   i8 i_Offset  = C_UNKNOWN;
-  i8 i_Column  = pColumn->iColumnNo();
+  i8 i_Column  = pCol->iColumnNo();
   i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
   
   switch (iEncoding) {
@@ -453,14 +408,14 @@ w8 RowDecoder::wDecodeTsp(Column* pColumn, Stz* szBuf)
 /*----------------------------------------------------------------------------*/
 /* decode varchar from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-w8 RowDecoder::wDecodeVch(Column* pColumn, Stz* szBuf)
+w8 RowDecoder::wDecodeVch(i8 i_Row, Column* pCol, Stz* szBuf)
 {
   WordView wDecoded;
   
-  CacheLine* aCacheLine = m_pRowTray->aGet(0);
+  CacheLine* aCacheLine = m_pRowTray->aGet(i_Row);
   
   i8 i_Offset  = C_UNKNOWN;
-  i8 i_Column  = pColumn->iColumnNo();
+  i8 i_Column  = pCol->iColumnNo();
   i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
   
   switch (iEncoding) {
@@ -496,6 +451,113 @@ w8 RowDecoder::wDecodeVch(Column* pColumn, Stz* szBuf)
   }
   
   return wDecoded;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* append decimal datum to string                                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vStringBcd(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
+{
+  WordView wView(wDatum);
+  sStr.vCatSprint("%lld"_Stz,wView.m_iI8);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append decimal datum to string                                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vStringBol(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
+{
+  WordView wView(wDatum);
+  sStr.vConcat(wView.m_iI8 == 1 ? "true"_Stz : "false"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append decimal datum to string                                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vStringDte(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
+{
+  WordView wView(wDatum);
+  
+  Dte wDte;
+  wDte.vAsI8(wView.m_iI8);
+  
+  s32 sDte;
+  wDte.vSprint(sDte.aStz());
+  
+  sStr.vConcat(sDte.aStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* append decimal datum to string                                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vStringFlt(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
+{
+  WordView wView(wDatum);
+  sStr.vCatSprint("%g"_Stz,wView.m_dF8);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append decimal datum to string                                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vStringInt(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
+{
+  WordView wView(wDatum);
+  sStr.vCatSprint("%lld"_Stz,wView.m_iI8);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append decimal datum to string                                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vStringIvl(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
+{
+  WordView wView(wDatum);
+  sStr.vCatSprint("%lld"_Stz,wView.m_iI8);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append decimal datum to string                                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vStringTme(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
+{
+  WordView wView(wDatum);
+  
+  Tme wTme;
+  wTme.vAsI8(wView.m_iI8);
+  
+  s32 sTme;
+  wTme.vSprint(sTme.aStz());
+  
+  sStr.vConcat(sTme.aStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* append decimal datum to string                                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vStringTsp(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
+{
+  WordView wView(wDatum);
+  
+  Tsp wTsp;
+  wTsp.vAsI8(wView.m_iI8);
+  
+  s32 sTsp;
+  wTsp.vSprint(sTsp.aStz());
+  
+  sStr.vConcat(sTsp.aStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* append decimal datum to string                                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vStringVch(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
+{
+  s256 sBuf;
+  
+  Vch::vSprintQuotes(sBuf,(Stz*)&wDatum);
+  sStr.vConcat(sBuf.aStz());
 }
 
 
@@ -556,19 +618,19 @@ i8 RowDecoder::iGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset)
 /*----------------------------------------------------------------------------*/
 /* print decoded datum from cache line                                        */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vPrint(Column* pColumn, WordView& wDatum)
+void RowDecoder::vPrint(Column* pCol, WordView& wDatum)
 {
-  eDM eDatum = pColumn->eDatumType();
+  eDM eDatum = pCol->eDatumType();
   
   switch (eDatum) {
     case DM_BCD: {
       vTrace("Column[%lld %s] Bcd : %lld\n"_Stz,
-             pColumn->iColumnNo(),pColumn->sColumnName().aStz(),wDatum.m_iI8);
+             pCol->iColumnNo(),pCol->sColumnName().aStz(),wDatum.m_iI8);
       break;
     }
     case DM_BOL: {
       vTrace("Column[%lld %s] Bol : %lld\n"_Stz,
-             pColumn->iColumnNo(),pColumn->sColumnName().aStz(),wDatum.m_iI8);
+             pCol->iColumnNo(),pCol->sColumnName().aStz(),wDatum.m_iI8);
       break;
     }
     case DM_DTE: {
@@ -577,22 +639,22 @@ void RowDecoder::vPrint(Column* pColumn, WordView& wDatum)
       s32 sDte;
       wDte.vSprint(sDte.aStz());
       vTrace("Column[%lld %s] Dte : %s\n"_Stz,
-             pColumn->iColumnNo(),pColumn->sColumnName().aStz(),sDte.aStz());
+             pCol->iColumnNo(),pCol->sColumnName().aStz(),sDte.aStz());
       break;
     }
     case DM_FLT: {
       vTrace("Column[%lld %s] Bcd : %llf\n"_Stz,
-             pColumn->iColumnNo(),pColumn->sColumnName().aStz(),wDatum.m_dF8);
+             pCol->iColumnNo(),pCol->sColumnName().aStz(),wDatum.m_dF8);
       break;
     }
     case DM_INT: {
       vTrace("Column[%lld %s] Int : %lld\n"_Stz,
-             pColumn->iColumnNo(),pColumn->sColumnName().aStz(),wDatum.m_iI8);
+             pCol->iColumnNo(),pCol->sColumnName().aStz(),wDatum.m_iI8);
       break;
     }
     case DM_IVL: {
       vTrace("Column[%lld %s] Ivl : %lld\n"_Stz,
-             pColumn->iColumnNo(),pColumn->sColumnName().aStz(),wDatum.m_iI8);
+             pCol->iColumnNo(),pCol->sColumnName().aStz(),wDatum.m_iI8);
       break;
     }
     case DM_TME: {
@@ -601,7 +663,7 @@ void RowDecoder::vPrint(Column* pColumn, WordView& wDatum)
       s32 sTme;
       wTme.vSprint(sTme.aStz());
       vTrace("Column[%lld %s] Tme : %s\n"_Stz,
-             pColumn->iColumnNo(),pColumn->sColumnName().aStz(),sTme.aStz());
+             pCol->iColumnNo(),pCol->sColumnName().aStz(),sTme.aStz());
       break;
     }
     case DM_TSP: {
@@ -610,12 +672,12 @@ void RowDecoder::vPrint(Column* pColumn, WordView& wDatum)
       s32 sTsp;
       wTsp.vSprint(sTsp.aStz());
       vTrace("Column[%lld %s] Tsp : %s\n"_Stz,
-             pColumn->iColumnNo(),pColumn->sColumnName().aStz(),sTsp.aStz());
+             pCol->iColumnNo(),pCol->sColumnName().aStz(),sTsp.aStz());
       break;
     }
     case DM_VCH: {
       vTrace("Column[%lld %s] Vch : "_Stz,
-             pColumn->iColumnNo(),pColumn->sColumnName().aStz());
+             pCol->iColumnNo(),pCol->sColumnName().aStz());
       for (i8 i_Char = 0; i_Char < 8; i_Char++) {
         if (! wDatum.m_yaByte[i_Char])
         break;
