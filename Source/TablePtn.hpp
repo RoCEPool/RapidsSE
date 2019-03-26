@@ -33,10 +33,8 @@ namespace MetaData
     i8 m_nSubInsertersDone;      // number of subInserters which have completed
     i8 m_iParentJobId;           // parent jobid
     
-//#ifdef WITH_ROWBUFFER
     RowBuffer* m_pRootRowBuffer;      // the data root buffer
     RowBuffer* m_pCurrentRowBuffer;   // the data current buffer for insert
-//#endif
     
     Data::IndexTreeVec* m_pIndexTreeVec; // vector of index trees
   

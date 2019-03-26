@@ -55,11 +55,6 @@ IndexTree::IndexTree(Index* pIndex, i8 iPartitionNo)
   m_pRootBuffer  = nullptr;
   m_pCurrentBuffer = nullptr;
   
-#ifdef WITH_ROWBUFFER
-  m_pHiddenRootBuffer  = nullptr;
-  m_pHiddenCurrentBuffer = nullptr;
-#endif
-  
   _checkInitialised_(CN_INDEXTREE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
@@ -143,15 +138,10 @@ Stz* IndexTree::pAnalyze(void)
   i8 nStrandsTotal = 0;
   s48K sAnalysis;
   
-  if (m_pIndex->bIsHidden())
-      sAnalysis.vCatSprint("N%lld: Analysis of table %s\n"_Stz,
-                           gpAttachMap->m_pGrid->iThisNode(),
-                           m_pIndex->pTable()->aTableName());
-  else
-    sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Stz,
-                         gpAttachMap->m_pGrid->iThisNode(),
-                         m_pIndex->aIndexName()->aChar(),
-                         m_pIndex->pTable()->aTableName());
+  sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Stz,
+                        gpAttachMap->m_pGrid->iThisNode(),
+                        m_pIndex->aIndexName()->aChar(),
+                        m_pIndex->pTable()->aTableName());
   
   return sAnalysis;
 }
@@ -159,34 +149,6 @@ Stz* IndexTree::pAnalyze(void)
 /*----------------------------------------------------------------------------*/
 /* append a buffer into the IndexTree (should be hidden index IndexTree)      */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_ROWBUFFER
-void IndexTree::vAppendBuffer(RowBuffer* pRowBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
-  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
-  
-  // we should be appending buffers only for hidden index
-  ASSERT(m_pIndex->bIsHidden());
-  
-  m_okLock.vGrabWrite();
-  
-  if (m_pHiddenRootBuffer == nullptr) {
-    ASSERT( ! m_pHiddenCurrentBuffer )
-    m_pHiddenRootBuffer = pRowBuffer;
-  }
-  else {
-    pRowBuffer->vNextBuffer(m_pHiddenCurrentBuffer->pNextBuffer());
-    pRowBuffer->vPrevBuffer(m_pHiddenCurrentBuffer);
-    m_pHiddenCurrentBuffer->vNextBuffer(pRowBuffer);
-  }
-  
-  m_pHiddenCurrentBuffer = pRowBuffer;
-  
-  m_okLock.vDropWrite();
-}
-
-#else
 void IndexTree::vAppendBuffer(EntryBuffer* pEntryBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
@@ -212,7 +174,6 @@ void IndexTree::vAppendBuffer(EntryBuffer* pEntryBuffer)
   
   m_okLock.vDropWrite();
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer at given level           */
@@ -840,18 +801,6 @@ EntryBuffer* IndexTree::pFirstL1Buffer(void)
 /*----------------------------------------------------------------------------*/
 /* get the first L0 buffer                                                    */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_ROWBUFFER
-RowBuffer* IndexTree::pFirstHiddenBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
-  return m_pHiddenRootBuffer;
-}
-#endif
-
-/*----------------------------------------------------------------------------*/
-/* get the first L0 buffer                                                    */
-/*----------------------------------------------------------------------------*/
 EntryBuffer* IndexTree::pFirstH0Buffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
@@ -890,27 +839,6 @@ Index* IndexTree::pIndex(void)
 /*----------------------------------------------------------------------------*/
 /* get the index buffers used                                                 */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_ROWBUFFER
-
-i8 IndexTree::nEntryBuffers(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
-  i8 nBufferCount = 0;
-  if (m_pIndex->bIsHidden()) {
-    if (m_pHiddenRootBuffer)
-      m_pHiddenRootBuffer->vBufferCount(nBufferCount);
-  }
-  else {
-    if (m_pRootBuffer)
-      m_pRootBuffer->vBufferCount(nBufferCount);
-  }
-  
-  return nBufferCount;
-}
-
-#else
-
 i8 IndexTree::nEntryBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
@@ -922,7 +850,6 @@ i8 IndexTree::nEntryBuffers(void)
   return nBufferCount;
 }
 
-#endif
 /*----------------------------------------------------------------------------*/
 /* insert entries from entryBuffer into this index at level 0                 */
 /*----------------------------------------------------------------------------*/

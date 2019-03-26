@@ -728,9 +728,6 @@ void Step::vIndexPopulate(MP_Task mpTask)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  // not to poulate hidden index
-  ASSERT( ! pIndex->bIsHidden())
-  
   bool bPopulated = pTable->bPopulateIndex(iIndexNo);
   
   mpTask->m_pDataStack->vPushI8(bPopulated ? 1 : 0);

@@ -17,11 +17,6 @@ namespace Data
     i8           m_iPartitionNo;   // which partition no
     TablePtn*    m_pPartition;     // which partition                     UNUSED
     
-#ifdef WITH_ROWBUFFER
-    RowBuffer* m_pHiddenRootBuffer;      // the root buffer
-    RowBuffer* m_pHiddenCurrentBuffer;   // current buffer for insert hidden index
-#endif
-    
     EntryBuffer* m_pRootBuffer;    // the root buffer
     EntryBuffer* m_pCurrentBuffer; // current buffer for insert hidden index
 
@@ -45,11 +40,7 @@ namespace Data
     Item*       pAppendRow(i8 iTxId,
                             Stz* aRow_Data,
                             i8 iRowLength);
-#ifdef WITH_ROWBUFFER
-    void         vAppendBuffer(RowBuffer* pRowBuffer);
-#else
     void         vAppendBuffer(EntryBuffer* pEntryBuffer);
-#endif
     void         vCompact(void);
     void         vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pLeftL0);
     void         vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
@@ -57,10 +48,6 @@ namespace Data
   //void         vCopyLeftV1(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
     void         vDump(bool bSameHeight);
     EntryBuffer* pFirstL1Buffer(void);
-    
-#ifdef WITH_ROWBUFFER
-    RowBuffer*   pFirstHiddenBuffer(void);
-#endif
     
     EntryBuffer* pFirstH0Buffer(void);
 
