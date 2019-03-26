@@ -25,6 +25,7 @@ namespace Data
     void vString(i8 i_Row, ColumnVec* pColVec, s48K& sStr);
  
   private:
+  
     w8 wDecodeBcd(i8 i_Row, Column* pCol, Stz* szBuf);
     w8 wDecodeBol(i8 i_Row, Column* pCol, Stz* szBuf);
     w8 wDecodeDte(i8 i_Row, Column* pCol, Stz* szBuf);
@@ -35,6 +36,9 @@ namespace Data
     w8 wDecodeTsp(i8 i_Row, Column* pCol, Stz* szBuf);
     w8 wDecodeVch(i8 i_Row, Column* pCol, Stz* szBuf);
 
+    i8 iGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
+  
+    void vString(i8 i_Row, Column* pCol, s48K& sStr);
     void vStringBcd(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
     void vStringBol(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
     void vStringDte(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
@@ -48,10 +52,6 @@ namespace Data
     static i8 iDteDecoding(WordView& wDteView, i8 iEncoding);
     static i8 iTmeDecoding(WordView& wTmeView, i8 iEncoding);
     static i8 iTspDecoding(WordView& wTspView, i8 iEncoding);
-  
-    static i8 iGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
-   
-    static void vPrint(Column* pCol, WordView& wDatum);
   
     Footer* aFooter(void);
   };
