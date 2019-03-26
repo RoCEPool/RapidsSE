@@ -990,7 +990,7 @@ void IndexTree::vPublish(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   // only allowing publishing of hidden index
-  RASSERT(m_pIndex->bIsHidden());
+  //RASSERT(m_pIndex->bIsHidden());
   
   if ( ! m_pRootBuffer)
     return;
@@ -1026,7 +1026,7 @@ bool IndexTree::bPurge(i8 iOlderThanSeconds)
   static i8 nMaxBuffers = 0;
   
   // only allowing purging of hidden index
-  RASSERT(m_pIndex->bIsHidden());
+  //RASSERT(m_pIndex->bIsHidden());
   
   if (! m_pRootBuffer)
     return false;
@@ -1192,20 +1192,20 @@ void IndexTree::vVisualize(void)
     return;
   
   // hidden index has all level 0 buffers
-  if (m_pIndex->bIsHidden()) {
-    
-    do {
-      ASSERT(pEntryBuffer->iBufferHeight() == 0);
-      // print the decile of pNextBuffer
-      vTrace("%lld"_Stz, pEntryBuffer->iDecile());
-      
-      pEntryBuffer = pEntryBuffer->pNextBuffer();
-      
-    } while (pEntryBuffer);
-    
-    vTrace("\n"_Stz);
-    return;
-  }
+//  if (m_pIndex->bIsHidden()) {
+//
+//    do {
+//      ASSERT(pEntryBuffer->iBufferHeight() == 0);
+//      // print the decile of pNextBuffer
+//      vTrace("%lld"_Stz, pEntryBuffer->iDecile());
+//
+//      pEntryBuffer = pEntryBuffer->pNextBuffer();
+//
+//    } while (pEntryBuffer);
+//
+//    vTrace("\n"_Stz);
+//    return;
+//  }
 
   // print the decile of the root buffer
   vTrace("%lld\n"_Stz, pEntryBuffer->iDecile());
