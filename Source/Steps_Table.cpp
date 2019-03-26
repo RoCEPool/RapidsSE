@@ -31,6 +31,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.publish"_Stz,            &Step::vTablePublish);
   vAddStep("table.purge"_Stz,              &Step::vTablePurge);
   vAddStep("table.removeIndex"_Stz,        &Step::vTableRemoveIndex);
+  vAddStep("table.scan"_Stz,               &Step::vTableScan);
   vAddStep("table.showColumnVec"_Stz,      &Step::vTableShowColumnVec);
   vAddStep("table.slots"_Stz,              &Step::vTableSlots);
   vAddStep("table.space"_Stz,              &Step::vTableSpace);
@@ -532,6 +533,108 @@ void Step::vTableRemoveIndex(MP_Task mpTask)
   Index* pIndex = _pIndex(pPtrIndex);
 
   pTable->vRemoveIndex(pIndex);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.scan -- scan the table                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vTableScan(MP_Task mpTask)
+{
+  ENTRY("vTableScan"_Stz);
+  
+  Session* pSession = mpTask->m_pSession;
+  Object* pPtrTable = nullptr;
+  FetchBuffer* pFetchBuffer;
+  GenVar xVariable;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get parameters for the primitive
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.scan"_Stz);
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  Object* pPtrJob;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
+    THROW_INVALID_DSTACK("table.scan"_Stz);
+  
+  Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
+  ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get members from subFetch
+  i8 iSlot = pJob_SubFetch->m_i_Slot;
+  Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
+  
+  TablePtn* pPartition = pTable->pPartition(iSlot);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // position in the first row buffer
+  RowBuffer* pRowBuffer = pPartition->pFirstRowBuffer();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a result buffer for the results
+  pFetchBuffer = new FetchBuffer(pTable, iSlot);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // did we get an entryBuffer ?
+  if (! pRowBuffer) {
+    // mark this buffer as the last buffer
+    pFetchBuffer->vIsLast(true);
+    
+    // put the buffer in the session bufferQueue
+    pQueue->vAppend(pFetchBuffer);
+    
+    EXIT();
+    return;
+  }
+  
+  
+  while (pRowBuffer) {
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // iterate thru the buffer till no more entries
+    for (i8 iRow = 0; iRow < pRowBuffer->nRowCount(); iRow++) {
+      
+      // get the row from the buffer
+      CacheLine* aRowData = pRowBuffer->pRow(iRow);
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // insert row from entry in FetchBuffer
+      if ( ! pFetchBuffer->bAppendRow(aRowData)) {
+        
+        // Buffer is Full
+        // put this FetchBuffer in session bufferQueue
+        pQueue->vAppend(pFetchBuffer);
+        
+        // create another FetchBuffer for the results
+        pFetchBuffer = new FetchBuffer(pTable, iSlot);
+        
+        // insert row from entry in new fetchBuffer
+        bool bResult = pFetchBuffer->bAppendRow(aRowData);
+        RASSERT(bResult);
+      }
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // check if session exiting
+      if (pSession->m_bSessionExiting)
+        pRowBuffer = nullptr;
+    }
+    
+    // get next buffer from the current indexBuffer
+    pRowBuffer = pRowBuffer->pNextBuffer();
+    
+  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // mark this buffer as the last buffer
+  pFetchBuffer->vIsLast(true);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // put the buffer in the session bufferQueue
+  pQueue->vAppend(pFetchBuffer);
   
   EXIT();
 }

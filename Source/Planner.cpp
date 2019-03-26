@@ -159,38 +159,27 @@ void Planner::vGenPaths(void)
     m_pPathVec[0] = new PathVec;
     m_nPhrases = 1;
     
-    // search for hidden index
-    for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
-      
-      Index* mpIndex = pIdxVec->pGet(i_Idx);
-      if ( ! mpIndex->sIndexName().bSame("hidden"_Stz))
-        continue;
-      
-      AccessPath* mpAccessPath = new AccessPath(AT_SCAN);
-      mpAccessPath->vIndex(mpIndex);
-      mpAccessPath->vIsCandidate(true);
-      m_pPathVec[0]->vAdd(mpAccessPath);
-      break;
-    }
+    // add a AT_SCAN for table scan
+    AccessPath* mpAccessPath = new AccessPath(AT_SCAN);
+    mpAccessPath->vIsCandidate(true);
+    m_pPathVec[0]->vAdd(mpAccessPath);
     
     return;
   }
+  
   
   for (i8 i_Phrase = 0; i_Phrase < m_nPhrases; i_Phrase++) {
     
     m_pPathVec[i_Phrase] = new PathVec;
     
+    // add a table scan access path
+    AccessPath* mpAccessPath = new AccessPath(AT_SCAN);
+    mpAccessPath->vIsCandidate(true);
+    m_pPathVec[i_Phrase]->vAdd(mpAccessPath);
+    
     for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
       
       Index* mpIndex = pIdxVec->pGet(i_Idx);
-      
-      if (mpIndex->sIndexName().bSame("hidden"_Stz)) {
-        AccessPath* mpAccessPath = new AccessPath(AT_SCAN);
-        mpAccessPath->vIndex(mpIndex);
-        mpAccessPath->vIsCandidate(true);
-        m_pPathVec[i_Phrase]->vAdd(mpAccessPath);
-        continue;
-      }
       
       vGenPaths(i_Phrase,mpIndex,AT_EXACT);
       vGenPaths(i_Phrase,mpIndex,AT_LOWER);

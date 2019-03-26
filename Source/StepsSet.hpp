@@ -361,7 +361,6 @@
   static void vIndexNameFetch(Tasks::MP_Task mpTask);
   static void vIndexPopulate(Tasks::MP_Task mpTask);
   static void vIndexRange(Tasks::MP_Task mpTask);
-  static void vIndexScan(Tasks::MP_Task mpTask);
   static void vIndexSetSingleColumn(Tasks::MP_Task mpTask);
   static void vIndexShowColumnVec(Tasks::MP_Task mpTask);
   static void vIndexSpace(Tasks::MP_Task mpTask);
@@ -1009,6 +1008,7 @@
   static void vTablePublish(Tasks::MP_Task mpTask);
   static void vTablePurge(Tasks::MP_Task mpTask);
   static void vTableRemoveIndex(Tasks::MP_Task mpTask);
+  static void vTableScan(Tasks::MP_Task mpTask);
   static void vTableShowColumnVec(Tasks::MP_Task mpTask);
   static void vTableSlots(Tasks::MP_Task mpTask);
   static void vTableSpace(Tasks::MP_Task mpTask);

@@ -99,12 +99,10 @@
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // full scan (no index)
     AT_SCAN of
-      // find the index
-      "hidden" find execute to pIndex
 
-      // now scan the index
+      // now scan the table
       iSlot pTable tablePtnGrabRead  //! partitionLock
-      pJob_SubFetch pIndex index.scan
+      pJob_SubFetch pTable table.scan
       iSlot pTable tablePtnDropRead
     endof
 
