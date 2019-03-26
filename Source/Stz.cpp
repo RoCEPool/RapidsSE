@@ -119,6 +119,20 @@ void Stz::operator =(void* aArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* formatted concatenated sprint                                              */
+/*----------------------------------------------------------------------------*/
+void Stz::vCatSprint(Stz* aFormat, ...)
+{
+  va_list args;
+  
+  char* aEnd = aChar() + iLength();
+
+  va_start(args,aFormat);
+  vsprintf(aEnd,aFormat->aChar(),args);
+  va_end(args);
+}
+
+//*----------------------------------------------------------------------------*/
 /* concat argument                                                            */
 /*----------------------------------------------------------------------------*/
 void Stz::vConcat(Stz* aArg)
