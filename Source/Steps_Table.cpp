@@ -318,7 +318,7 @@ void Step::vTableGetColumnsAsString(MP_Task mpTask)
   i8 nColumns = pColVec->nItems();
   
   s16KB s;
-  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     if (i_Column != 0)
     s.vConcat(","_Stz);
