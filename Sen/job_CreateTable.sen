@@ -109,24 +109,22 @@
   // make table
   pJob_CreateTable job.objectName@ to sTableNm
   sTableNm makeTable to pTable
-"t1" .
+
   //----------------------------------------------------------------------------
   // add table columns
   pJob_CreateTable pTable table.createColumnVec
-"t2" .
+
   //----------------------------------------------------------------------------
   // add partition columns
   pTable table.slots slots.createColumnVec
-"t3" .
+
   //----------------------------------------------------------------------------
   // move back to tables
   popTable
-"t4" .
 
   //----------------------------------------------------------------------------
   // should be in tables
   assertInTables
-"t5" .
   pJob_CreateTable job.notice
 
   // job::deleteThis
