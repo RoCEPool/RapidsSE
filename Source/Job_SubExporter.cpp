@@ -112,11 +112,10 @@ Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
     
   m_pJobExport = nullptr;
-  m_pIndexTree = nullptr;
-  m_nEntryBuffers = C_UNKNOWN;
-  m_iEntryBuffer  = 0;
+  m_nRowBuffers = C_UNKNOWN;
+  m_iRowBuffer  = 0;
   
-  m_pEntryBuffer = nullptr;
+  m_pRowBuffer = nullptr;
   
   m_nExportBuffers = 0;
   m_pExportBuffer = nullptr;
@@ -162,22 +161,19 @@ bool Job_SubExporter::bBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
   
   Table* pTable = m_pJobExport->m_pTable;
-  
-  i8 i_HiddenIndex  = pTable->pHiddenIndex()->iIndexNo();
   TablePtn* pTblPtn = pTable->pPartition(m_i_Slot);
-  m_pIndexTree      = pTblPtn->pIndexTree(i_HiddenIndex);
   
-  m_pEntryBuffer  = m_pIndexTree->pRoot();
-  m_nEntryBuffers = m_pEntryBuffer->iLengthList();
+  m_pRowBuffer = pTblPtn->pRootRowBuffer();
+  m_nRowBuffers = pTblPtn->nRowBuffers();
   
   if (m_bMarkActivity)
     ActivityMap::vMarkJob(this,
-                          "IndexTree[%lld] for table %s has %lld buffers"_Stz,
+                          "TableTpn[%lld] for table %s has %lld buffers"_Stz,
                           m_i_Slot,
                           pTable->aTableName(),
-                          m_nEntryBuffers);
+                          m_nRowBuffers);
   
-  ActionSequence::vAdd(this,AN_JOB_BEGIN,m_nEntryBuffers);
+  ActionSequence::vAdd(this,AN_JOB_BEGIN,m_nRowBuffers);
   
   return true;
 }
@@ -189,24 +185,24 @@ bool Job_SubExporter::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
   
-  if (! m_pEntryBuffer)
+  if (! m_pRowBuffer)
     return false;
   
   if (m_bMarkActivity)
     ActivityMap::vMarkJob(this,
-                          "Exporting Table %s EntryBuffer[%lld/%lld] %p"_Stz,
+                          "Exporting Table %s RowBuffer[%lld/%lld] %p"_Stz,
                           m_pJobExport->m_pTable->aTableName(),
-                          m_iEntryBuffer,
-                          m_nEntryBuffers,
-                          m_pEntryBuffer);
+                          m_iRowBuffer,
+                          m_nRowBuffers,
+                          m_pRowBuffer);
   
-  ActionSequence::vAdd(this,AN_JOB_CHUNK,m_iEntryBuffer);
+  ActionSequence::vAdd(this,AN_JOB_CHUNK,m_iRowBuffer);
 
-  if (m_pEntryBuffer->nItems())
+  if (m_pRowBuffer->nRowCount())
     vSprintRows();
   
-  m_iEntryBuffer++;
-  m_pEntryBuffer = m_pEntryBuffer->pNextBuffer();
+  m_iRowBuffer++;
+  m_pRowBuffer = m_pRowBuffer->pNextBuffer();
 
   return true;
 }
@@ -221,7 +217,7 @@ void Job_SubExporter::vEnd(void)
   if (m_pExportBuffer)
     vSpawnKidExport(true);
   
-  ActionSequence::vAdd(this,AN_JOB_END,m_iEntryBuffer);
+  ActionSequence::vAdd(this,AN_JOB_END,m_iRowBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -279,14 +275,14 @@ void Job_SubExporter::vSprintRows(void)
   i8 nBytes = 0;
   
   ColumnVec* pColVec = m_pJobExport->m_pTable->pColumnVec();
+  i8 nRowCount = m_pRowBuffer->nRowCount();
   
-  for (Item* aItem = m_pEntryBuffer->aLeadEntry();
-       aItem;
-       aItem = m_pEntryBuffer->aNextEntry(aItem,0)) {
+  for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
 
-    RowData* aRow = _aRowData(aItem->aDataArea());
+    CacheLine* aRow = m_pRowBuffer->pRow(i_Row);
     
-    aRow->vAsBinaryStringVLQ(sRecord,pColVec);
+    RowEncoder::vAsString(sRecord, pColVec,aRow);
+    StrLib::vConcat(sRecord.aChar(),'\n');
     //vTrace("]]%s[[\n"_Stz,sRecord.aStz());
     
     nBytes = sRecord.nSize();
