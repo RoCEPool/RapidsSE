@@ -497,7 +497,7 @@ i8 giClassSize[]
   /* 96 */ sizeof(QueueBuffer),        // CN_QUEUEBUFFER
   /*    */ sizeof(Queues),             // CN_QUEUES
   
-  /*    */ 0,                          // CN_RECORD
+  /*    */ sizeof(Record),             // CN_RECORD
   /*    */ sizeof(RecordBuffer),       // CN_RECORDBUFFER
   /*    */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER
   /*102 */ sizeof(RowAgg),             // CN_ROWAGG
