@@ -181,8 +181,7 @@ void RowDecoder::vAppendBcd(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
-  WordView wView(wDatum);
-  sStr.vCatSprint("%lld"_Stz,wView.m_iI8);
+  sStr.vCatSprint("%lld"_Stz,(i8)wDatum);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -192,8 +191,7 @@ void RowDecoder::vAppendBol(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
-  WordView wView(wDatum);
-  sStr.vConcat(wView.m_iI8 == 1 ? "true"_Stz : "false"_Stz);
+  sStr.vConcat(wDatum ? "true"_Stz : "false"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -203,10 +201,8 @@ void RowDecoder::vAppendDte(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
-  WordView wView(wDatum);
-  
   Dte wDte;
-  wDte.vAsI8(wView.m_iI8);
+  wDte.vAsI8(wDatum);
   
   s32 sDte;
   wDte.vSprint(sDte.aStz());
@@ -221,8 +217,7 @@ void RowDecoder::vAppendFlt(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
-  WordView wView(wDatum);
-  sStr.vCatSprint("%g"_Stz,wView.m_dF8);
+  sStr.vCatSprint("%g"_Stz,(d8)wDatum);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -232,8 +227,7 @@ void RowDecoder::vAppendInt(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
-  WordView wView(wDatum);
-  sStr.vCatSprint("%lld"_Stz,wView.m_iI8);
+  sStr.vCatSprint("%lld"_Stz,(i8)wDatum);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -243,8 +237,7 @@ void RowDecoder::vAppendIvl(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
-  WordView wView(wDatum);
-  sStr.vCatSprint("%lld"_Stz,wView.m_iI8);
+  sStr.vCatSprint("%lld"_Stz,(i8)wDatum);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -254,10 +247,8 @@ void RowDecoder::vAppendTme(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
-  WordView wView(wDatum);
-  
   Tme wTme;
-  wTme.vAsI8(wView.m_iI8);
+  wTme.vAsI8((i8)wDatum);
   
   s32 sTme;
   wTme.vSprint(sTme.aStz());
@@ -271,11 +262,9 @@ void RowDecoder::vAppendTme(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
 void RowDecoder::vAppendTsp(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
-  
-  WordView wView(wDatum);
-  
+    
   Tsp wTsp;
-  wTsp.vAsI8(wView.m_iI8);
+  wTsp.vAsI8((i8)wDatum);
   
   s32 sTsp;
   wTsp.vSprint(sTsp.aStz());
@@ -397,7 +386,7 @@ w8 RowDecoder::wDecodeDte(i8 i_Row, Column* pCol, Stz* szBuf)
       NEVER_REACH;
   }
   
-  wDte = iRezeroDte(wDte,iEncoding);
+  wDte = wRestoreDte(wDte,iEncoding);
   
   return wDte;
 }
@@ -539,7 +528,7 @@ w8 RowDecoder::wDecodeTme(i8 i_Row, Column* pCol, Stz* szBuf)
       NEVER_REACH;
   }
   
-  wTme = iRezeroTme(wTme,iEncoding);
+  wTme = wRestoreTme(wTme,iEncoding);
   
   return wTme;
 }
@@ -576,7 +565,7 @@ w8 RowDecoder::wDecodeTsp(i8 i_Row, Column* pCol, Stz* szBuf)
   }
   
   if (iEncoding == MN_5B)
-    wTsp = iRezeroTsp(wTsp,iEncoding);
+    wTsp = wRestoreTsp(wTsp,iEncoding);
   
   return wTsp;
 }
@@ -660,42 +649,42 @@ i8 RowDecoder::iGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* decoding of dte                                                            */
+/* restore zero stripped dte                                                  */
 /*----------------------------------------------------------------------------*/
-i8 RowDecoder::iRezeroDte(WordView& wDteView, i8 iEncoding)
+w8 RowDecoder::wRestoreDte(w8 wDteStripped, i8 iEncoding)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
-  i8 iDecoded = wDteView.m_iI8;
-  iDecoded <<= 40;
+  w8 wDte = wDteStripped;
+  wDte <<= 40;
   
-  return iDecoded;
+  return wDte;
 }
 
 /*----------------------------------------------------------------------------*/
-/* decoding of tme                                                            */
+/* restore zero stripped tme                                                  */
 /*----------------------------------------------------------------------------*/
-i8 RowDecoder::iRezeroTme(WordView& wTmeView, i8 iEncoding)
+w8 RowDecoder::wRestoreTme(w8 wTmeStripped, i8 iEncoding)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
-  i8 iDecoded = wTmeView.m_iI8;
-  iDecoded <<= 40;
+  w8 wTme = wTmeStripped;
+  wTme <<= 40;
   
-  return iDecoded;
+  return wTme;
 }
 
 /*----------------------------------------------------------------------------*/
-/* decoding of tsp                                                            */
+/* restore zero stripped tsp                                                  */
 /*----------------------------------------------------------------------------*/
-i8 RowDecoder::iRezeroTsp(WordView& wTspView, i8 iEncoding)
+w8 RowDecoder::wRestoreTsp(w8 wTspStripped, i8 iEncoding)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
-  i8 iDecoded = wTspView.m_iI8;
-  iDecoded <<= 24;
+  w8 wTsp = wTspStripped;
+  wTsp <<= 24;
   
-  return iDecoded;
+  return wTsp;
 }
 
 /*----------------------------------------------------------------------------*/

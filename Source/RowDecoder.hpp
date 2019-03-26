@@ -51,9 +51,9 @@ namespace Data
     i8 iGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
   
     //! more work here...
-    i8 iRezeroDte(WordView& wDteView, i8 iEncoding);
-    i8 iRezeroTme(WordView& wTmeView, i8 iEncoding);
-    i8 iRezeroTsp(WordView& wTspView, i8 iEncoding);
+    w8 wRestoreDte(w8 wDteStripped, i8 iEncoding);
+    w8 wRestoreTme(w8 wTmeStripped, i8 iEncoding);
+    w8 wRestoreTsp(w8 wTspStripped, i8 iEncoding);
   
     Footer* aFooter(void);
   };
