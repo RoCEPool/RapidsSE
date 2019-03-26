@@ -622,6 +622,26 @@ void TablePtn::vTidyUpIndex(i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* verify the table data of this partition                                    */
+/*----------------------------------------------------------------------------*/
+bool TablePtn::bVerifyTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  RowBuffer* pRowBuffer = m_pRootRowBuffer;
+  bool bVerify = true;
+  
+  while (pRowBuffer) {
+    bVerify = pRowBuffer->bVerify();
+    if (! bVerify )
+      break;
+    pRowBuffer = pRowBuffer->pNextBuffer();
+  }
+  
+  return bVerify;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

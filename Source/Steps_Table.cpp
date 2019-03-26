@@ -726,8 +726,8 @@ void Step::vTableVerify(MP_Task mpTask)
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  //bool bVerified = pTable->vVerify();
-  s256 s = "true"_Stz; //bVerified ? "Valid"_Stz : "Invalid"_Stz;
+  bool bVerified = pTable->bVerifyTable();
+  s256 s = bVerified ? "Valid"_Stz : "Invalid"_Stz;
   
   mpTask->m_pDataStack->vPushS256(s);
   

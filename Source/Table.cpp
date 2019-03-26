@@ -1076,6 +1076,10 @@ bool Table::bVerifyIndexes(void)
 
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     IndexTree* pIndexTree = pIdxTreeVec->pGet(i_Index);
+#ifdef WITH_ROWBUFFER
+    if (pIndexTree->pIndex()->bIsHidden())
+      continue;
+#endif
     bool bValid = pIndexTree->bVerifyIndex();
     if (! bValid)
       return false;
@@ -1094,8 +1098,6 @@ bool Table::bVerifyIndex(Index* pIndex)
   for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->m_nSlotsPerNode; iSlot++) {
     
     bool bVerify = true;
-
-    i8 iPartition = TablePtn::iSlotToPartition(iSlot);
     
     EntryBuffer *pIndexBuffer =
       pPartition(iSlot)->pIndexTree(pIndex->iIndexNo())->pRoot();
@@ -1105,6 +1107,30 @@ bool Table::bVerifyIndex(Index* pIndex)
     if ( ! bVerify )
       break;
   }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify table                                                               */
+/*----------------------------------------------------------------------------*/
+bool Table::bVerifyTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  // verify all the row buffers with the r ow data
+  for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->m_nSlotsPerNode; iSlot++) {
+    
+    bool bVerify = true;
+    
+    bVerify = pPartition(iSlot)->bVerifyTable();
+    
+    if ( ! bVerify )
+      return bVerify;
+  }
+  
+  // now verify the indexes
+  return bVerifyIndexes();
   
   return true;
 }

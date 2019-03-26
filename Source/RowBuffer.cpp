@@ -512,6 +512,29 @@ bool RowBuffer::bValidRowBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* verify the structure of this row buffer                                    */
+/*----------------------------------------------------------------------------*/
+bool RowBuffer::bVerify(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify the contents of this buffer
+  
+  bool bValid;
+  
+  bValid = bVerifyNextPrev();
+  if (! bValid)
+    return false;
+  
+  bValid = bVerifyRows();
+  if (! bValid)
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* verify has detected a fault                                                */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vVerifyFault(void)
@@ -545,7 +568,7 @@ bool RowBuffer::bVerifyRows(void)
 /*----------------------------------------------------------------------------*/
 bool RowBuffer::bVerifyNextPrev(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   /*
    Any buffer should have a next whose prev point back to it; any prev should
@@ -571,29 +594,6 @@ bool RowBuffer::bVerifyNextPrev(void)
       return false;
     }
   }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* verify the structure of this row buffer                                    */
-/*----------------------------------------------------------------------------*/
-bool RowBuffer::bVerifyRowBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // verify the contents of this buffer
-  
-  bool bValid;
-  
-  bValid = bVerifyNextPrev();
-  if (! bValid)
-    return false;
-  
-  bValid = bVerifyRows();
-  if (! bValid)
-    return false;
   
   return true;
 }

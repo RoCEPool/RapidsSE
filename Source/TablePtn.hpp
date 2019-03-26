@@ -85,6 +85,7 @@ namespace MetaData
     i8   nRowBuffers(void);
     void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);
+    bool bVerifyTable(void);
     
   private:
     Footer* aFooter(void);

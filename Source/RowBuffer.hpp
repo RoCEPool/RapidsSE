@@ -93,7 +93,6 @@ namespace Data
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify functions        
-    bool         bVerifyRowBuffer(void);
     bool         bVerifyNextPrev(void);
     bool         bVerifyRows(void);
     void         vVerifyFault(void);

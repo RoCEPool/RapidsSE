@@ -101,6 +101,7 @@ namespace MetaData
     void vTidyUpIndex(i8 iIndexNo);
     void vTruncate(i8 iPartitionNo);
     void vTruncateIndex(i8 iPartitionNo, i8 iIndexNo);
+    bool bVerifyTable(void);
     bool bVerifyIndexes(void);
     bool bVerifyIndex(Index* pIndex);
    
