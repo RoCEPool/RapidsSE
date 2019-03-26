@@ -85,6 +85,7 @@ namespace MetaData
     i8   nRowBuffers(void);
     void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);
+    void vTruncate(void);
     bool bVerifyTable(void);
     
   private:

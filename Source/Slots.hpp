@@ -48,6 +48,7 @@ namespace MetaData
     void       vTidyUpIndex(i8 iIndexNo);
     void       vTruncate(void);
     void       vTruncateIndex(i8 iPartitionNo, i8 iIndexNo);
+    void       vTruncateTable(i8 iPartitionNo);
     
     Footer*    aFooter(void);
   };

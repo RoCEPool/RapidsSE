@@ -622,6 +622,20 @@ void TablePtn::vTidyUpIndex(i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* truncate the table data                                                    */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vTruncate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  if (m_pRootRowBuffer)
+    m_pRootRowBuffer->vTruncate();
+  
+  m_pRootRowBuffer    = nullptr;
+  m_pCurrentRowBuffer = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* verify the table data of this partition                                    */
 /*----------------------------------------------------------------------------*/
 bool TablePtn::bVerifyTable(void)
