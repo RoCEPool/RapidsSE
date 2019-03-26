@@ -147,35 +147,6 @@ Stz* IndexTree::pAnalyze(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append a buffer into the IndexTree (should be hidden index IndexTree)      */
-/*----------------------------------------------------------------------------*/
-void IndexTree::vAppendBuffer(EntryBuffer* pEntryBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
-  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
-  
-  // we should be appending buffers only for hidden index
-  ASSERT(m_pIndex->bIsHidden());
-  
-  m_okLock.vGrabWrite();
-  
-  if (m_pRootBuffer == nullptr) {
-    ASSERT( ! m_pCurrentBuffer )
-    m_pRootBuffer = pEntryBuffer;
-  }
-  else {
-    pEntryBuffer->vNextBuffer(m_pCurrentBuffer->pNextBuffer());
-    pEntryBuffer->vPrevBuffer(m_pCurrentBuffer);
-    m_pCurrentBuffer->vNextBuffer(pEntryBuffer);
-  }
-  
-  m_pCurrentBuffer = pEntryBuffer;
-  
-  m_okLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
 /* insert an entry for {key,id} into an index buffer at given level           */
 /*----------------------------------------------------------------------------*/
 Item* IndexTree::pAppendRow(i8 iTxId, Stz* aRow_Data, i8 iRowLength)

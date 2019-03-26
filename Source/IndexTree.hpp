@@ -40,7 +40,6 @@ namespace Data
     Item*       pAppendRow(i8 iTxId,
                             Stz* aRow_Data,
                             i8 iRowLength);
-    void         vAppendBuffer(EntryBuffer* pEntryBuffer);
     void         vCompact(void);
     void         vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pLeftL0);
     void         vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
