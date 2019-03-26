@@ -169,12 +169,7 @@ bool Job_WriteBuffer::bInsertRows(void)
 
   TablePtn* pPartition = m_pTable->pPartition(iSlot);
   RASSERT_TYPE(pPartition,CN_TABLEPTN);
-
-#ifdef WITH_ROWBUFFER
   RASSERT_TYPE(m_pCurrentBuffer,CN_ROWBUFFER);
-#else
-  RASSERT_TYPE(m_pCurrentBuffer,CN_ENTRYBUFFER);
-#endif
 
 //  if (gpAttachMap->m_bVerbose)
 //    vTrace("Job_WriteBuffer %lld %lld %s\n"_Stz,
@@ -188,11 +183,7 @@ bool Job_WriteBuffer::bInsertRows(void)
   
   if (! gpBufferPool->bLowMemory()) {
     // insert the working buffer
-#ifdef WITH_ROWBUFFER
     m_pTable->vInsertEntries(iTxId, iSlot, m_pCurrentBuffer);
-#else
-    m_pTable->vInsertEntries(iTxId, iSlot, m_pCurrentBuffer);
-#endif
     // null the current buffer as its been appended to the table
     m_pCurrentBuffer = nullptr;
   }
@@ -360,7 +351,6 @@ void Job_WriteBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get partition being loaded                                                 */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_ROWBUFFER
 void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
                                            Stz* sTableName,
                                            eDS eDataSource,
@@ -402,50 +392,6 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   
   IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_WriteBuffer,SS_SEED_RUN));
 }
-
-#else
-void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
-                                           Stz* sTableName,
-                                           eDS eDataSource,
-                                           EntryBuffer* pEntryBuffer,
-                                           i8 iParentJobId,
-                                           i8 iPartition,
-                                           bool bFinal,
-                                           i8 nWriteBehindBuffers)
-{
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a write buffer job
-  
-  //! this needs to be optimised
-  JobClass* pJobClass_WriteBuffer = JobClass::pFind(CN_JOB_WRITEBUFFER);
-  
-  Job_WriteBuffer* pJob_WriteBuffer =
-  static_cast<Job_WriteBuffer*>(pJobClass_WriteBuffer->pPreJob(pSession));
-  
-  pJob_WriteBuffer->vSeed(SS_SEED_RUN);
-  
-  pJob_WriteBuffer->m_eDataSource  = eDataSource;
-  
-  // DS_INSERT/DS_LOAD should have a known parent job id
-  RASSERT(DS_INGEST == eDataSource || C_UNKNOWN != iParentJobId);
-  
-  pJob_WriteBuffer->m_iParentJobId  = iParentJobId;
-  pJob_WriteBuffer->m_sObjectName   = sTableName;
-  pJob_WriteBuffer->m_iPartitionId  = iPartition;
-  pJob_WriteBuffer->m_pCurrentBuffer = pEntryBuffer;
-  pJob_WriteBuffer->m_nRows = pEntryBuffer->nItems();
-  
-  if (bFinal) {
-    ASSERT(C_UNKNOWN != nWriteBehindBuffers);
-    pJob_WriteBuffer->m_nWriteBehindBuffers = nWriteBehindBuffers;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn the write buffer job
-  
-  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_WriteBuffer,SS_SEED_RUN));
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/

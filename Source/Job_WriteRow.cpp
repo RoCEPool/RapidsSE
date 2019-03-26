@@ -143,8 +143,6 @@ Job_WriteRow::~Job_WriteRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* insert row into table                                                      */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_ROWBUFFER
-
 void Job_WriteRow::vInsertRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEROW,_FOOTER_);
@@ -158,21 +156,6 @@ void Job_WriteRow::vInsertRow(void)
   //m_pTable->vInsertRow(iTxId, iSlot, &m_xRow, m_nRowBytes);
 }
 
-#else
-
-void Job_WriteRow::vInsertRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEROW,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // convert partition to node slot
-  i8 iSlot = TablePtn::iPartitionToSlot(m_iPartitionId);
-
-  i8 iTxId = 0;
-
-  m_pTable->vInsertRow(iTxId, iSlot, m_aRow, m_nRowBytes);
-}
-#endif
 /*----------------------------------------------------------------------------*/
 /*-- Static Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

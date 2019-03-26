@@ -31,7 +31,6 @@ namespace Jobs
     ~Job_WriteBuffer(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-#ifdef WITH_ROWBUFFER
     static void vSpawnJobWriteBuffer(Interface::Session* pSession,
                                      Stz* sTableName, eDS eDataSource,
                                      RowBuffer* pRowBuffer,
@@ -39,15 +38,6 @@ namespace Jobs
                                      i8 iPartition,
                                      bool bFinal,
                                      i8 nWriteBehindBuffers);
-#else
-    static void vSpawnJobWriteBuffer(Interface::Session* pSession,
-                                              Stz* sTableName, eDS eDataSource,
-                                              EntryBuffer* pEntryBuffer,
-                                              i8 iParentJobId,
-                                              i8 iPartition,
-                                              bool bFinal,
-                                              i8 nWriteBehindBuffers);
-#endif
     
   public:
     bool bInsertRows(void);
