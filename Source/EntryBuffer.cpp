@@ -234,31 +234,6 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  if (m_pIndex->bIsHidden()) {
-    
-    ASSERT(m_iBufferHeight == 0);
-    EntryBuffer* pNextBuffer = this;
-    
-    do {
-      ASSERT(pNextBuffer->iBufferHeight() == 0);
-      
-      iBuffers++;
-      iEntries += (pNextBuffer->m_nItems);
-      
-      if (bDetailed)
-        sAnalysis.vCatSprint("row: (%s, %lld, %5lld, 'L%lld', %lld )\n"_Stz,
-                             gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
-                             pNextBuffer->m_iPartitionNo,
-                             iBuffers,
-                             pNextBuffer->m_iBufferHeight,
-                             pNextBuffer->m_nItems);
-      
-      pNextBuffer = pNextBuffer->pNextBuffer();
-    } while (pNextBuffer);
-    
-    return;
-  }
-  
   iBuffers++;
   iEntries += m_nItems;
   
@@ -306,25 +281,6 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
   EntryBuffer* pNextBuffer = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // hidden index ?
-  
-  if (m_pIndex->bIsHidden()) {
-    ASSERT(m_iBufferHeight == 0);
-    pNextBuffer = this->pNextBuffer();
-    nBuffers++;
-    
-    while (pNextBuffer) {
-      ASSERT(pNextBuffer->iBufferHeight() == 0);
-      
-      //EntryBuffer* pThisBuffer = pNextBuffer;
-      pNextBuffer = pNextBuffer->pNextBuffer();
-      nBuffers++;
-    }
-    
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // other index
   
   // count this buffer
@@ -370,9 +326,6 @@ void EntryBuffer::vCutEntry(Item* aItem, Item* aPriorVec[])
 void EntryBuffer::vDeleteEntry(Item** aaItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // currently we only delete from non-hidden indexes
-  ASSERT(! m_pIndex->bIsHidden());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -582,10 +535,10 @@ void EntryBuffer::vIndex(Index* pIndex)
   
   m_pIndex = pIndex;
   
-  if (! m_pIndex->bIsHidden())
-    return;
+  //if (! m_pIndex->bIsHidden())
+  //  return;
   
-  vInitFreeChain();
+  //vInitFreeChain();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -971,7 +924,6 @@ void EntryBuffer::vReset(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   RASSERT(nullptr == m_i4aItemOffsets);
-  RASSERT(! m_pIndex->bIsHidden());
   RASSERT(1 == m_iBufferHeight);
   
   vResetUsed();
@@ -1108,18 +1060,7 @@ void EntryBuffer::vShowEntry(Item* aItem)
   //       Tx::iTxNo(m_iTxId)
   //       );
   
-  if (! m_pIndex->bIsHidden())
-    aKey->vShow(m_pIndex->pIdxColVec(), false);
-  
-  if (m_pIndex->bIsHidden()) {
-    RowData* aRowData = _aRowData(aItem->aDataArea());
-    vTrace("RowData: "_Stz);
-    i8 iRowSize = aItem->nSizeItem_WithoutOffsets();
-    if (iRowSize > 0) {
-      aRowData->vShow(m_pIndex->pTable()->pColumnVec(), true);
-    }
-  }
-  
+  aKey->vShow(m_pIndex->pIdxColVec(), false);
   
   vTrace(" offsets:"_Stz);
   for (i8 i_Level = 0; i_Level < aItem->nLevels(); i_Level++)
@@ -1349,26 +1290,6 @@ void EntryBuffer::vTruncate(void)
   
   EntryBuffer* pNextBuffer;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // hidden index buffers are just one level
-  
-  if (m_pIndex->bIsHidden()) {
-    ASSERT(m_iBufferHeight == 0);
-    pNextBuffer = this->pNextBuffer();
-    
-    while (pNextBuffer) {
-      ASSERT(pNextBuffer->iBufferHeight() == 0);
-      
-      EntryBuffer* pThisBuffer = pNextBuffer;
-      pNextBuffer = pNextBuffer->pNextBuffer();
-      delete pThisBuffer;
-    }
-    delete this;
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // other index
   if (m_iBufferHeight != 0) {
     
     // recursively delete the lower level buffers

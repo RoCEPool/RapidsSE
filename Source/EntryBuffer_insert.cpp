@@ -534,9 +534,6 @@ Item* EntryBuffer::aInsertKeyAbs(KeyWrk& xKeyWrk)
   
   vInsertKeySkip(aKeyEntry);
   
-  //if (! m_pIndex->bIsHidden() && m_iBufferHeight)
-  //  bVerifyAdjacent();
-  
   //vShow();
   
   return aKeyEntry;
