@@ -104,11 +104,6 @@
   tick index ( ^word ^word )
   eql ( bool )
   if
-    //indexPtr execute index.isHidden@ if
-    //  EC_NO_SUCH_INDEX false ( errorCode false )
-    //  exit
-    //then
-
     true ( true )
     exit
   then

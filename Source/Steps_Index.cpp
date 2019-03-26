@@ -20,7 +20,6 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.createColumnVec"_Stz, &Step::vIndexCreateColumnVec);
   vAddStep("index.dump"_Stz,            &Step::vIndexDump);
   vAddStep("index.init"_Stz,            &Step::vIndexInit);
-  vAddStep("index.isHidden@"_Stz,       &Step::vIndexIsHiddenFetch);
   vAddStep("index.isPrimaryKey@"_Stz,   &Step::vIndexIsPrimaryKeyFetch);
   vAddStep("index.isPrimaryKey!"_Stz,   &Step::vIndexIsPrimaryKeyStore);
   vAddStep("index.isUnique@"_Stz,       &Step::vIndexIsUniqueFetch);
@@ -255,29 +254,6 @@ void Step::vIndexInit(MP_Task mpTask)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* index.isHidden@ -- fetch isHidden from index                               */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexIsHiddenFetch(MP_Task mpTask)
-{
-  ENTRY("vIndexIsHiddenFetch"_Stz);
-  
-  Object* pPtrIndex = nullptr;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.isHidden@"_Stz);
-  
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  bool bIsHidden = pIndex->bIsHidden();
-  
-  mpTask->m_pDataStack->vPushI8(bIsHidden);
-  
-  EXIT();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* index.isPrimaryKey@ -- fetch isPrimaryKey from index                       */

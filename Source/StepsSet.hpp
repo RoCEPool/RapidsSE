@@ -352,7 +352,6 @@
   static void vIndexCreateColumnVec(Tasks::MP_Task mpTask);
   static void vIndexDump(Tasks::MP_Task mpTask);
   static void vIndexInit(Tasks::MP_Task mpTask);
-  static void vIndexIsHiddenFetch(Tasks::MP_Task mpTask);
   static void vIndexIsPrimaryKeyFetch(Tasks::MP_Task mpTask);
   static void vIndexIsPrimaryKeyStore(Tasks::MP_Task mpTask);
   static void vIndexIsUniqueFetch(Tasks::MP_Task mpTask);
