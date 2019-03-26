@@ -30,8 +30,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
   vAddStep("job.dicPath"_Stz,          &Step::vJobDicPath);
   
-  vAddStep("job.entryBuffer@"_Stz,     &Step::vJobEntryBufferFetch);
-  vAddStep("job.entryBuffer!"_Stz,     &Step::vJobEntryBufferStore);
   vAddStep("job.error!"_Stz,           &Step::vJobErrorStore);
   vAddStep("job.error@"_Stz,           &Step::vJobErrorFetch);
   vAddStep("job.execute@"_Stz,         &Step::vJobExecuteFetch);
@@ -81,6 +79,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
   vAddStep("job.response@"_Stz,        &Step::vJobResponseFetch);
   vAddStep("job.response!"_Stz,        &Step::vJobResponseStore);
+  vAddStep("job.RowBuffer@"_Stz,       &Step::vJobRowBufferFetch);
+  vAddStep("job.RowBuffer!"_Stz,       &Step::vJobRowBufferStore);
   vAddStep("job.rowsInvalid@"_Stz,     &Step::vJobRowsInvalidFetch);
   vAddStep("job.rowsInvalid!"_Stz,     &Step::vJobRowsInvalidStore);
   vAddStep("job.rowsProcessed@"_Stz,   &Step::vJobRowsProcessedFetch);
@@ -525,57 +525,6 @@ void Step::vJobDicPath(MP_Task mpTask)
 
   mpTask->m_pDataStack->vPushPointer(&pJob->m_oDicPath);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.entryBuffer@ -- fetch entry buffer from job                            */
-/*----------------------------------------------------------------------------*/
-void Step::vJobEntryBufferFetch(MP_Task mpTask)
-{
-  ENTRY("vJobEntryBufferFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.entryBuffer@"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushPointer(pJob->m_pCurrentBuffer);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.entryBuffer! -- store entry buffer in the job                          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobEntryBufferStore(MP_Task mpTask)
-{
-  ENTRY("vJobEntryBufferStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.entryBuffer!"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-#ifdef WITH_ROWBUFFER
-  
-  Object* pRowBufferPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pRowBufferPtr) )
-    THROW_INVALID_DSTACK("job.entryBuffer!"_Stz);
-  RowBuffer* pRowBuffer = _pRowBuffer(pRowBufferPtr);
-  
-  pJob->m_pCurrentBuffer = pRowBuffer;
-  
-#else
-  
-  Object* pEntryBufferPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pEntryBufferPtr) )
-    THROW_INVALID_DSTACK("job.entryBuffer!"_Stz);
-  EntryBuffer* pEntryBuffer = _pEntryBuffer(pEntryBufferPtr);
-  
-  pJob->m_pCurrentBuffer = pEntryBuffer;
-  
-#endif
   EXIT();
 }
 
@@ -1435,6 +1384,45 @@ void Step::vJobResponseStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.response!"_Stz);
   
   pJob->m_xNode[iNode].m_sResponse = sResponse;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.rowBuffer@ -- fetch row buffer from job                                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobRowBufferFetch(MP_Task mpTask)
+{
+  ENTRY("vJobRowBufferFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.rowBuffer@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushPointer(pJob->m_pCurrentBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.rowBuffer! -- store row buffer in the job                              */
+/*----------------------------------------------------------------------------*/
+void Step::vJobRowBufferStore(MP_Task mpTask)
+{
+  ENTRY("vJobRowBufferStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.rowBuffer!"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  Object* pRowBufferPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pRowBufferPtr) )
+    THROW_INVALID_DSTACK("job.rowBuffer!"_Stz);
+  RowBuffer* pRowBuffer = _pRowBuffer(pRowBufferPtr);
+  
+  pJob->m_pCurrentBuffer = pRowBuffer;
   
   EXIT();
 }

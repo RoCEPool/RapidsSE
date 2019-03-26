@@ -434,8 +434,6 @@
   static void vJobDelete(Tasks::MP_Task mpTask);
   static void vJobDicPath(Tasks::MP_Task mpTask);
 
-  static void vJobEntryBufferFetch(Tasks::MP_Task mpTask);
-  static void vJobEntryBufferStore(Tasks::MP_Task mpTask);
   static void vJobErrorStore(Tasks::MP_Task mpTask);
   static void vJobErrorFetch(Tasks::MP_Task mpTask);
   static void vJobExecuteFetch(Tasks::MP_Task mpTask);
@@ -485,6 +483,8 @@
   static void vJobRemoveParticipant(Tasks::MP_Task mpTask);
   static void vJobResponseStore(Tasks::MP_Task mpTask);
   static void vJobResponseFetch(Tasks::MP_Task mpTask);
+  static void vJobRowBufferFetch(Tasks::MP_Task mpTask);
+  static void vJobRowBufferStore(Tasks::MP_Task mpTask);
   static void vJobRowsInvalidFetch(Tasks::MP_Task mpTask);
   static void vJobRowsInvalidStore(Tasks::MP_Task mpTask);
   static void vJobRowsProcessedFetch(Tasks::MP_Task mpTask);
