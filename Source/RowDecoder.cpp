@@ -55,7 +55,7 @@ RowDecoder::~RowDecoder(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get encoded datum from cache line                                          */
+/* get decoded datum from cache line                                          */
 /*----------------------------------------------------------------------------*/
 w8 RowDecoder::wDecode(i8 i_Row, Column* pCol, Stz* szBuf)
 {
@@ -92,15 +92,15 @@ void RowDecoder::vPrint(i8 i_Row, Column* pCol)
   
   eDM eDatum = pCol->eDatumType();
   switch (eDatum) {
-    case DM_BCD: vStringBcd(pCol,wDatum,sBuf,sStr); break;
-    case DM_BOL: vStringBol(pCol,wDatum,sBuf,sStr); break;
-    case DM_DTE: vStringDte(pCol,wDatum,sBuf,sStr); break;
-    case DM_FLT: vStringFlt(pCol,wDatum,sBuf,sStr); break;
-    case DM_INT: vStringInt(pCol,wDatum,sBuf,sStr); break;
-    case DM_IVL: vStringIvl(pCol,wDatum,sBuf,sStr); break;
-    case DM_TME: vStringTme(pCol,wDatum,sBuf,sStr); break;
-    case DM_TSP: vStringTsp(pCol,wDatum,sBuf,sStr); break;
-    case DM_VCH: vStringVch(pCol,wDatum,sBuf,sStr); break;
+    case DM_BCD: vAppendBcd(pCol,wDatum,sBuf,sStr); break;
+    case DM_BOL: vAppendBol(pCol,wDatum,sBuf,sStr); break;
+    case DM_DTE: vAppendDte(pCol,wDatum,sBuf,sStr); break;
+    case DM_FLT: vAppendFlt(pCol,wDatum,sBuf,sStr); break;
+    case DM_INT: vAppendInt(pCol,wDatum,sBuf,sStr); break;
+    case DM_IVL: vAppendIvl(pCol,wDatum,sBuf,sStr); break;
+    case DM_TME: vAppendTme(pCol,wDatum,sBuf,sStr); break;
+    case DM_TSP: vAppendTsp(pCol,wDatum,sBuf,sStr); break;
+    case DM_VCH: vAppendVch(pCol,wDatum,sBuf,sStr); break;
     default:
       NEVER_REACH;
   }
@@ -113,7 +113,7 @@ void RowDecoder::vPrint(i8 i_Row, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print row decoded datum from cache line                                    */
+/* sprint decode row from cache line into string                              */
 /*----------------------------------------------------------------------------*/
 void RowDecoder::vString(i8 i_Row, ColumnVec* pColVec, s48K& sStr)
 {
@@ -131,13 +131,147 @@ void RowDecoder::vString(i8 i_Row, ColumnVec* pColVec, s48K& sStr)
       sStr.vConcat(","_Stz);
     
     // append column value
-    vString(i_Row,pCol,sStr);
+    vAppend(i_Row,pCol,sStr);
   }
 }
 
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* decode and append column datum from cache line                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vAppend(i8 i_Row, Column* pCol, s48K& sStr)
+{
+  WordView wDatum;
+  s256 sBuf;
+  
+  wDatum = wDecode(i_Row,pCol,sBuf.aStz());
+  
+  eDM eDatum = pCol->eDatumType();
+  switch (eDatum) {
+    case DM_BCD: vAppendBcd(pCol,wDatum,sBuf,sStr); break;
+    case DM_BOL: vAppendBol(pCol,wDatum,sBuf,sStr); break;
+    case DM_DTE: vAppendDte(pCol,wDatum,sBuf,sStr); break;
+    case DM_FLT: vAppendFlt(pCol,wDatum,sBuf,sStr); break;
+    case DM_INT: vAppendInt(pCol,wDatum,sBuf,sStr); break;
+    case DM_IVL: vAppendIvl(pCol,wDatum,sBuf,sStr); break;
+    case DM_TME: vAppendTme(pCol,wDatum,sBuf,sStr); break;
+    case DM_TSP: vAppendTsp(pCol,wDatum,sBuf,sStr); break;
+    case DM_VCH: vAppendVch(pCol,wDatum,sBuf,sStr); break;
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append decimal datum to string                                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vAppendBcd(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
+{
+  WordView wView(wDatum);
+  sStr.vCatSprint("%lld"_Stz,wView.m_iI8);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append decimal datum to string                                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vAppendBol(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
+{
+  WordView wView(wDatum);
+  sStr.vConcat(wView.m_iI8 == 1 ? "true"_Stz : "false"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append decimal datum to string                                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vAppendDte(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
+{
+  WordView wView(wDatum);
+  
+  Dte wDte;
+  wDte.vAsI8(wView.m_iI8);
+  
+  s32 sDte;
+  wDte.vSprint(sDte.aStz());
+  
+  sStr.vConcat(sDte.aStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* append decimal datum to string                                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vAppendFlt(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
+{
+  WordView wView(wDatum);
+  sStr.vCatSprint("%g"_Stz,wView.m_dF8);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append decimal datum to string                                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vAppendInt(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
+{
+  WordView wView(wDatum);
+  sStr.vCatSprint("%lld"_Stz,wView.m_iI8);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append decimal datum to string                                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vAppendIvl(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
+{
+  WordView wView(wDatum);
+  sStr.vCatSprint("%lld"_Stz,wView.m_iI8);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append decimal datum to string                                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vAppendTme(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
+{
+  WordView wView(wDatum);
+  
+  Tme wTme;
+  wTme.vAsI8(wView.m_iI8);
+  
+  s32 sTme;
+  wTme.vSprint(sTme.aStz());
+  
+  sStr.vConcat(sTme.aStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* append decimal datum to string                                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vAppendTsp(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
+{
+  WordView wView(wDatum);
+  
+  Tsp wTsp;
+  wTsp.vAsI8(wView.m_iI8);
+  
+  s32 sTsp;
+  wTsp.vSprint(sTsp.aStz());
+  
+  sStr.vConcat(sTsp.aStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* append decimal datum to string                                             */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vAppendVch(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
+{
+  s256 sBuf;
+  
+  Vch::vSprintQuotes(sBuf,(Stz*)&wDatum);
+  sStr.vConcat(sBuf.aStz());
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -473,140 +607,6 @@ i8 RowDecoder::iGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset)
   i8 iEncoding = aCacheLine->w8_1N(i_Column);
   
   return iEncoding;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print row decoded datum from cache line                                    */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vString(i8 i_Row, Column* pCol, s48K& sStr)
-{
-  WordView wDatum;
-  s256 sBuf;
-  
-  wDatum = wDecode(i_Row,pCol,sBuf.aStz());
-    
-  eDM eDatum = pCol->eDatumType();
-  switch (eDatum) {
-    case DM_BCD: vStringBcd(pCol,wDatum,sBuf,sStr); break;
-    case DM_BOL: vStringBol(pCol,wDatum,sBuf,sStr); break;
-    case DM_DTE: vStringDte(pCol,wDatum,sBuf,sStr); break;
-    case DM_FLT: vStringFlt(pCol,wDatum,sBuf,sStr); break;
-    case DM_INT: vStringInt(pCol,wDatum,sBuf,sStr); break;
-    case DM_IVL: vStringIvl(pCol,wDatum,sBuf,sStr); break;
-    case DM_TME: vStringTme(pCol,wDatum,sBuf,sStr); break;
-    case DM_TSP: vStringTsp(pCol,wDatum,sBuf,sStr); break;
-    case DM_VCH: vStringVch(pCol,wDatum,sBuf,sStr); break;
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vStringBcd(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
-{
-  WordView wView(wDatum);
-  sStr.vCatSprint("%lld"_Stz,wView.m_iI8);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vStringBol(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
-{
-  WordView wView(wDatum);
-  sStr.vConcat(wView.m_iI8 == 1 ? "true"_Stz : "false"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vStringDte(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
-{
-  WordView wView(wDatum);
-  
-  Dte wDte;
-  wDte.vAsI8(wView.m_iI8);
-  
-  s32 sDte;
-  wDte.vSprint(sDte.aStz());
-  
-  sStr.vConcat(sDte.aStz());
-}
-
-/*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vStringFlt(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
-{
-  WordView wView(wDatum);
-  sStr.vCatSprint("%g"_Stz,wView.m_dF8);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vStringInt(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
-{
-  WordView wView(wDatum);
-  sStr.vCatSprint("%lld"_Stz,wView.m_iI8);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vStringIvl(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
-{
-  WordView wView(wDatum);
-  sStr.vCatSprint("%lld"_Stz,wView.m_iI8);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vStringTme(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
-{
-  WordView wView(wDatum);
-  
-  Tme wTme;
-  wTme.vAsI8(wView.m_iI8);
-  
-  s32 sTme;
-  wTme.vSprint(sTme.aStz());
-  
-  sStr.vConcat(sTme.aStz());
-}
-
-/*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vStringTsp(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
-{
-  WordView wView(wDatum);
-  
-  Tsp wTsp;
-  wTsp.vAsI8(wView.m_iI8);
-  
-  s32 sTsp;
-  wTsp.vSprint(sTsp.aStz());
-  
-  sStr.vConcat(sTsp.aStz());
-}
-
-/*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vStringVch(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr)
-{
-  s256 sBuf;
-  
-  Vch::vSprintQuotes(sBuf,(Stz*)&wDatum);
-  sStr.vConcat(sBuf.aStz());
 }
 
 
