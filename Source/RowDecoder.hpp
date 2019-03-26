@@ -20,7 +20,7 @@ namespace Data
     RowDecoder(RowTray* pRowTray);
     ~RowDecoder(void) noexcept(false);
 
-    w8 wDecode(i8 i_Row, Column* pCol, Stz* szBuf);
+    void vDecode(i8 i_Row, Column* pCol, w8& wDatum, Stz* szBuf);
     void vPrint(i8 i_Row, Column* pCol);
     void vString(i8 i_Row, ColumnVec* pColVec, s48K& sStr);
 
@@ -38,15 +38,15 @@ namespace Data
     void vAppendVch(Column* pCol, w8 wDatum, Stz* szBuf, s48K& sStr);
   
     //! probably indirectly return the w8...
-    w8 wDecodeBcd(i8 i_Row, Column* pCol, Stz* szBuf);
-    w8 wDecodeBol(i8 i_Row, Column* pCol, Stz* szBuf);
-    w8 wDecodeDte(i8 i_Row, Column* pCol, Stz* szBuf);
-    w8 wDecodeFlt(i8 i_Row, Column* pCol, Stz* szBuf);
-    w8 wDecodeInt(i8 i_Row, Column* pCol, Stz* szBuf);
-    w8 wDecodeIvl(i8 i_Row, Column* pCol, Stz* szBuf);
-    w8 wDecodeTme(i8 i_Row, Column* pCol, Stz* szBuf);
-    w8 wDecodeTsp(i8 i_Row, Column* pCol, Stz* szBuf);
-    w8 wDecodeVch(i8 i_Row, Column* pCol, Stz* szBuf);
+    void vDecodeBcd(i8 i_Row, Column* pCol, w8& wDatum, Stz* szBuf);
+    void vDecodeBol(i8 i_Row, Column* pCol, w8& wDatum, Stz* szBuf);
+    void vDecodeDte(i8 i_Row, Column* pCol, w8& wDatum, Stz* szBuf);
+    void vDecodeFlt(i8 i_Row, Column* pCol, w8& wDatum, Stz* szBuf);
+    void vDecodeInt(i8 i_Row, Column* pCol, w8& wDatum, Stz* szBuf);
+    void vDecodeIvl(i8 i_Row, Column* pCol, w8& wDatum, Stz* szBuf);
+    void vDecodeTme(i8 i_Row, Column* pCol, w8& wDatum, Stz* szBuf);
+    void vDecodeTsp(i8 i_Row, Column* pCol, w8& wDatum, Stz* szBuf);
+    void vDecodeVch(i8 i_Row, Column* pCol, w8& wDatum, Stz* szBuf);
 
     i8 iGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
   
