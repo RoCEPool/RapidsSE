@@ -1060,7 +1060,7 @@ void EntryBuffer::vShowEntry(Item* aItem)
   //       Tx::iTxNo(m_iTxId)
   //       );
   
-  aKey->vShow(m_pIndex->pIdxColVec(), false);
+  aKey->vShow(m_pIndex->pIdxColVec());
   
   vTrace(" offsets:"_Stz);
   for (i8 i_Level = 0; i_Level < aItem->nLevels(); i_Level++)

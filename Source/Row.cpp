@@ -179,7 +179,7 @@ void RowData::vDump(ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 /* show row                                                                   */
 /*----------------------------------------------------------------------------*/
-void RowData::vShow(ColumnVec* pColVec, bool bCompressed)
+void RowData::vShow(ColumnVec* pColVec)
 {
   Stz* aData;
   

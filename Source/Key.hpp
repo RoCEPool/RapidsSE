@@ -38,7 +38,7 @@ namespace Data
     bool operator <(KeyData* aKeyArg);
     bool operator <=(KeyData* aKeyArg);
     
-    void  vShow(IdxColVec* pIdxColVec, bool bCompressed);
+    void  vShow(IdxColVec* pIdxColVec);
   
     void  vKey(KeyData& xKey);
     void  vKey(KeyWrk& xKeyWrk);

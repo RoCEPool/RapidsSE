@@ -783,7 +783,7 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
       if (bShowKeys) {
         KeyData* aTestKey = _aKeyData(aTestEntry_sl->aDataArea());
         vTrace("Test %p: "_Stz,aTestEntry_sl);
-        aTestKey->vShow(pIdxColVec, false);
+        aTestKey->vShow(pIdxColVec);
         vTrace("\n"_Stz);
       }
       
