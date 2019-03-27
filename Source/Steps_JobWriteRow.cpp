@@ -67,14 +67,9 @@ void Step::vJob_WriteRowHashRow(MP_Task mpTask)
   else {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // hash the record to a partition
-#ifdef WITH_ROWBUFFER
-    // ALKA: TODO
-    pJob_WriteRow->m_iPartitionId = 0;
-    pJob_InsertRow->m_iPartitionId = 0 ;
-#else
-    pJob_WriteRow->m_iPartitionId = pJob_WriteRow->m_pTable->iRowPartition(pJob_WriteRow->m_aRow);
+    pJob_WriteRow->m_iPartitionId = pJob_WriteRow->m_pTable->iRowPartition(pJob_WriteRow->m_iHash);
     pJob_InsertRow->m_iPartitionId  = pJob_WriteRow->m_iPartitionId ;
-#endif
+
     mpTask->m_pDataStack->vPushI8(1);
   }
   EXIT();
