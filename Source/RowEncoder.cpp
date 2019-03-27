@@ -191,7 +191,7 @@ w8 RowEncoder::wDecode(Column* pColumn, CacheLine* aCacheLine)
 /*----------------------------------------------------------------------------*/
 /* encode given datum into cache line                                         */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncode(Column* pColumn, Datum* pDatum)
+void RowEncoder::vEncode(Column* pColumn, Datum* pDatum, i8& iHash)
 {
   i8 i_Column = pColumn->iColumnNo();
   eDM eDatum  = pColumn->eDatumType();
@@ -201,15 +201,15 @@ void RowEncoder::vEncode(Column* pColumn, Datum* pDatum)
     return;
   
   switch (eDatum) {
-    case DM_BCD: vEncodeBcd(pColumn,pDatum); return;
-    case DM_BOL: vEncodeBol(pColumn,pDatum); return;
-    case DM_DTE: vEncodeDte(pColumn,pDatum); return;
-    case DM_FLT: vEncodeFlt(pColumn,pDatum); return;
-    case DM_INT: vEncodeInt(pColumn,pDatum); return;
-    case DM_IVL: vEncodeIvl(pColumn,pDatum); return;
-    case DM_TME: vEncodeTme(pColumn,pDatum); return;
-    case DM_TSP: vEncodeTsp(pColumn,pDatum); return;
-    case DM_VCH: vEncodeVch(pColumn,pDatum); return;
+    case DM_BCD: vEncodeBcd(pColumn,pDatum,iHash); return;
+    case DM_BOL: vEncodeBol(pColumn,pDatum,iHash); return;
+    case DM_DTE: vEncodeDte(pColumn,pDatum,iHash); return;
+    case DM_FLT: vEncodeFlt(pColumn,pDatum,iHash); return;
+    case DM_INT: vEncodeInt(pColumn,pDatum,iHash); return;
+    case DM_IVL: vEncodeIvl(pColumn,pDatum,iHash); return;
+    case DM_TME: vEncodeTme(pColumn,pDatum,iHash); return;
+    case DM_TSP: vEncodeTsp(pColumn,pDatum,iHash); return;
+    case DM_VCH: vEncodeVch(pColumn,pDatum,iHash); return;
     default:
       NEVER_REACH;
   }
@@ -517,7 +517,7 @@ w8 RowEncoder::wDecodeVch(Column* pColumn, CacheLine* aCacheLine)
 /*----------------------------------------------------------------------------*/
 /* encode decimal                                                             */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeBcd(Column* pColumn, Datum* pDatum)
+void RowEncoder::vEncodeBcd(Column* pColumn, Datum* pDatum, i8& iHash)
 {
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   
@@ -551,7 +551,7 @@ void RowEncoder::vEncodeBcd(Column* pColumn, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encode boolean                                                             */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeBol(Column* pColumn, Datum* pDatum)
+void RowEncoder::vEncodeBol(Column* pColumn, Datum* pDatum, i8& iHash)
 {
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   
@@ -581,7 +581,7 @@ void RowEncoder::vEncodeBol(Column* pColumn, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encode date                                                                */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeDte(Column* pColumn, Datum* pDatum)
+void RowEncoder::vEncodeDte(Column* pColumn, Datum* pDatum, i8& iHash)
 {
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   
@@ -615,7 +615,7 @@ void RowEncoder::vEncodeDte(Column* pColumn, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encode float                                                               */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeFlt(Column* pColumn, Datum* pDatum)
+void RowEncoder::vEncodeFlt(Column* pColumn, Datum* pDatum, i8& iHash)
 {
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   
@@ -649,7 +649,7 @@ void RowEncoder::vEncodeFlt(Column* pColumn, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encode integer                                                             */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeInt(Column* pColumn, Datum* pDatum)
+void RowEncoder::vEncodeInt(Column* pColumn, Datum* pDatum, i8& iHash)
 {
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   
@@ -683,7 +683,7 @@ void RowEncoder::vEncodeInt(Column* pColumn, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encode interval                                                            */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeIvl(Column* pColumn, Datum* pDatum)
+void RowEncoder::vEncodeIvl(Column* pColumn, Datum* pDatum, i8& iHash)
 {
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   
@@ -717,7 +717,7 @@ void RowEncoder::vEncodeIvl(Column* pColumn, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encode time                                                                */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeTme(Column* pColumn, Datum* pDatum)
+void RowEncoder::vEncodeTme(Column* pColumn, Datum* pDatum, i8& iHash)
 {
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   
@@ -751,7 +751,7 @@ void RowEncoder::vEncodeTme(Column* pColumn, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encode timestamp                                                           */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeTsp(Column* pColumn, Datum* pDatum)
+void RowEncoder::vEncodeTsp(Column* pColumn, Datum* pDatum, i8& iHash)
 {
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   
@@ -785,7 +785,7 @@ void RowEncoder::vEncodeTsp(Column* pColumn, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encode varchar                                                             */
 /*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeVch(Column* pColumn, Datum* pDatum)
+void RowEncoder::vEncodeVch(Column* pColumn, Datum* pDatum, i8& iHash)
 {
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   

@@ -30,6 +30,7 @@ JobRow::JobRow(void)
   
   //m_aRecord;
   m_nRowBytes = 0;
+  m_iHash     = 0;
   //m_oFormatters;
   //m_oRowParts;
 
@@ -101,7 +102,6 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     Column* pColumn = pColVec->pGet(i_Column);
-    eDM eDatum = pColumn->eDatumType();
     bool bLastColumn = (i_Column + 1 == nColumns) ? true : false;
 
     s256 sDst;
@@ -129,7 +129,7 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // encode datum into cache line
     pDatum->vDatum((byte*)sDst.aChar());
-    pRowEncoder->vEncode(pColumn,pDatum);
+    pRowEncoder->vEncode(pColumn,pDatum,m_iHash);
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     //RowEncoder::vPrint(pColumn,aCacheLine);
 
