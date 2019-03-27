@@ -39,6 +39,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.subLoaders"_Stz,         &Step::vTableSubLoaders);
   vAddStep("table.truncate"_Stz,           &Step::vTableTruncate);
   vAddStep("table.verify"_Stz,             &Step::vTableVerify);
+  vAddStep("table.visualize"_Stz,          &Step::vTableVisualize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -777,6 +778,31 @@ void Step::vTableVerify(MP_Task mpTask)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* table.visualize -- visualize the table                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vTableVisualize(MP_Task mpTask)
+{
+  ENTRY("vTableVisualize"_Stz);
+  
+  Object* pPtrTable;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.visualize"_Stz);
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nSlotsPerNode; iPartition++) {
+    TablePtn* pPartition = pTable->pPartition(iPartition);
+    vTrace("Table Partition %lld\n"_Stz, iPartition);
+    pPartition->vVisualizeTable();
+  }
+  
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

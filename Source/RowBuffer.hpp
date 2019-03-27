@@ -48,6 +48,7 @@ namespace Data
     // buffer functions
   
     void        vBufferCount(i8& nBufferCount);
+    i8          iDecile(void);
     RowBuffer*  pNextBuffer(void);
     void        vNextBuffer(RowBuffer* pNextBuffer);
     void        vPartitionNo(i8 iPartitionNo);

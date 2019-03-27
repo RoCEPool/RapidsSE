@@ -612,6 +612,23 @@ bool TablePtn::bVerifyTable(void)
   
   return bVerify;
 }
+/*----------------------------------------------------------------------------*/
+/* visualize the table data of this partition                                 */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vVisualizeTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  RowBuffer* pRowBuffer = m_pRootRowBuffer;
+  bool bVerify = true;
+  
+  while (pRowBuffer) {
+    // print the decile of the this buffer
+    vTrace("%lld"_Stz, pRowBuffer->iDecile());
+    pRowBuffer = pRowBuffer->pNextBuffer();
+  }
+  vTrace("\n"_Stz);
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

@@ -79,7 +79,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // visualize 
-  //sTableNm find execute table.visualize
+  sTableNm find execute table.visualize
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table folder
