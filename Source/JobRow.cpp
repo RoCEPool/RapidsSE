@@ -53,6 +53,7 @@ JobRow::~JobRow(void) noexcept(false)
 bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 {
   // format into subInserters m_aRow
+  m_iHash = 0;
   bool bFormatted = bFormRow(aRecord, nBytes, bBlankLine);
   
   return bFormatted;
