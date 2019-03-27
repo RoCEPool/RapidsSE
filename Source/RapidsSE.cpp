@@ -717,6 +717,8 @@ eEC  RapidsSE_FetchTable (i8 iTrace, Session* pSession, Stz* aTable,
   API_NOTNULL(aiRowCount);
   API_BEGIN();
   
+  RASSERT(0);
+  
   /*
   try {
     
@@ -1015,6 +1017,8 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
   API_NOTNULL(aaRow);
   API_BEGIN();
   
+  RASSERT(0);
+  
   /*
   try {
 
@@ -1116,6 +1120,8 @@ eEC RapidsSE_GetFirstBuffer(i8 iTrace, Session* pSession, void* aTable,
   API_NOTNULL(aiBufferNo);
   API_NOTNULL(aiRowCount);
   API_BEGIN();
+  
+  RASSERT(0);
   
  /*
   try {
