@@ -33,8 +33,6 @@
 #define WITH_ENTRY_EXIT         // code for ENTRY() & EXIT() macros compiled in
 #define WITH_PREPOST_CHECKING   // _pre/postCondition_()
 #define WITH_TRACE_API          // code for tracing api's compiled in
-#define WITH_ROWBUFFER          // code for using Row Buffers compiled in
-#define WITH_NO_HIDDEN          // code for using no hidden index compiled in
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // release behaviours
@@ -50,8 +48,6 @@
 #define WITH_ENTRY_EXIT         // code for ENTRY() & EXIT() macros compiled in
 #define WITH_PREPOST_CHECKING   // _pre/postCondition_()
 #define WITH_TRACE_API          // code for tracing api's compiled in
-#define WITH_ROWBUFFER          // code for using Row Buffers compiled in
-#define WITH_NO_HIDDEN          // code for using no hidden index compiled in
 
 #endif
 
