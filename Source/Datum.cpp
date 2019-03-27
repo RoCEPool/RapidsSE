@@ -54,7 +54,8 @@ Datum::Datum(void)
   m_eDatum = DM_NONE;
   m_wDatum = C_UNKNOWN;
   //m_sDatum;
-  
+  m_ayDatum = nullptr;
+
   _checkInitialised_(CN_DATUM);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DATUM,_FOOTER_);
@@ -149,6 +150,26 @@ void Datum::vDatum(Stz* szDatum)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DATUM);
   
   m_sDatum = szDatum;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ayDatum                                                                */
+/*----------------------------------------------------------------------------*/
+byte* Datum::ayDatum(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DATUM);
+  
+  return m_ayDatum;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set szDatum                                                                */
+/*----------------------------------------------------------------------------*/
+void Datum::vDatum(byte* ayDatum)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DATUM);
+  
+  m_ayDatum = ayDatum;
 }
 
 /*----------------------------------------------------------------------------*/

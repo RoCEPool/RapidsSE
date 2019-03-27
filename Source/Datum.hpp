@@ -13,6 +13,8 @@ namespace Data
     eDM m_eDatum;
     w8  m_wDatum;
     s4K m_sDatum;
+
+    byte* m_ayDatum; //! temporary
   
     // must be last
     Footer m_xFooter;
@@ -35,6 +37,9 @@ namespace Data
 
     Stz* szDatum(void);
     void vDatum(Stz* szDatum);
+
+    byte* ayDatum(void);
+    void vDatum(byte* ayDatum);
 
   private:
     Footer* aFooter(void);
