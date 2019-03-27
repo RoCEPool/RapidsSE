@@ -267,8 +267,6 @@
   static void vEntryToDataRow(Tasks::MP_Task mpTask);
 
   // entry buffer
-  static void vEntryBufferCreate(Tasks::MP_Task mpTask);
-  static void vEntryBufferDelete(Tasks::MP_Task mpTask);
   static void vEntryBufferDump(Tasks::MP_Task mpTask);
   static void vEntryBufferFirstEntry(Tasks::MP_Task mpTask);
   static void vEntryBufferIndexFetch(Tasks::MP_Task mpTask);

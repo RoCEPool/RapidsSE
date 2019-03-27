@@ -11,8 +11,6 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_EntryBuffer(void)
 {
-  vAddStep("entryBuffer::create"_Stz,     &Step::vEntryBufferCreate);
-  vAddStep("entryBuffer.delete"_Stz,      &Step::vEntryBufferDelete);
   vAddStep("entryBuffer.dump"_Stz,        &Step::vEntryBufferDump);
   vAddStep("entryBuffer.firstEntry"_Stz,  &Step::vEntryBufferFirstEntry);
   vAddStep("entryBuffer.index@"_Stz,      &Step::vEntryBufferIndexFetch);
@@ -24,53 +22,6 @@ void Step::vAddSteps_EntryBuffer(void)
   vAddStep("entryBuffer.partition@"_Stz,  &Step::vEntryBufferPartitionFetch);
   vAddStep("entryBuffer.partition!"_Stz,  &Step::vEntryBufferPartitionStore);
   vAddStep("entryBuffer::toEntryBuffer"_Stz,&Step::vEntryBufferToEntryBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* entryBuffer::create -- create a new index buffer                           */
-/*----------------------------------------------------------------------------*/
-void Step::vEntryBufferCreate(MP_Task mpTask)
-{
-  ENTRY("vEntryBufferCreate"_Stz);
-  
-  Object* pPtrIndex = nullptr;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("entryBuffer::create"_Stz);
-  
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  i8 nPartitionNo;
-  if ( ! mpTask->m_pDataStack->bPop(nPartitionNo) )
-    THROW_INVALID_DSTACK("entryBuffer::create"_Stz);
-  
-  EntryBuffer* pEntryBuffer = new EntryBuffer;
-  pEntryBuffer->vIndex(pIndex->pTable()->pHiddenIndex());
-  pEntryBuffer->vPartitionNo(nPartitionNo);
-  
-  mpTask->m_pDataStack->vPushPointer(pEntryBuffer);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* entryBuffer.delete -- delete the index buffer                              */
-/*----------------------------------------------------------------------------*/
-void Step::vEntryBufferDelete(MP_Task mpTask)
-{
-  ENTRY("vEntryBufferDelete"_Stz);
-  
-  Object* pPtrIndexBuffer = nullptr;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.delete"_Stz);
-  
-  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
-  
-  delete pIndexBuffer;
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

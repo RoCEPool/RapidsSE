@@ -709,6 +709,7 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
 eEC  RapidsSE_FetchTable (i8 iTrace, Session* pSession, Stz* aTable,
                           i8 iPartition, void** aaEntryBuffer, i8* aiRowCount)
 {
+
   API_SESSION_LEVEL();
   API_ENTER(AC_FetchTable);
   API_NOTNULL(aaEntryBuffer);
@@ -716,6 +717,7 @@ eEC  RapidsSE_FetchTable (i8 iTrace, Session* pSession, Stz* aTable,
   API_NOTNULL(aiRowCount);
   API_BEGIN();
   
+  /*
   try {
     
     // find the table in the session dictionary stack
@@ -754,8 +756,9 @@ eEC  RapidsSE_FetchTable (i8 iTrace, Session* pSession, Stz* aTable,
   catch (...) { Error* pError = nullptr; API_CATCH(pError);
     
   }
-  
+ */
   API_RETURN();
+   
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1012,6 +1015,7 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
   API_NOTNULL(aaRow);
   API_BEGIN();
   
+  /*
   try {
 
     // get the table
@@ -1094,6 +1098,7 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
   }
   catch (Error* pError) { API_CATCH(pError); }
   catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  */
   
   API_RETURN();
 }
@@ -1112,6 +1117,7 @@ eEC RapidsSE_GetFirstBuffer(i8 iTrace, Session* pSession, void* aTable,
   API_NOTNULL(aiRowCount);
   API_BEGIN();
   
+ /*
   try {
     
     // get the table
@@ -1146,6 +1152,7 @@ eEC RapidsSE_GetFirstBuffer(i8 iTrace, Session* pSession, void* aTable,
   }
   catch (Error* pError) { API_CATCH(pError); }
   catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  */
   
   API_RETURN();
 }

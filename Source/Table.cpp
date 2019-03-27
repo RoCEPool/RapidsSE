@@ -71,7 +71,6 @@ Table::Table(void)
   m_xSlots.vTable(this);
   
   m_ixIndexNo.vCheckInit();
-  m_pHiddenIndex = nullptr;
   
   m_pIdxVec = new IdxVec;
   
@@ -489,26 +488,6 @@ void Table::vCreateColumnVec(Jobs::Job_CreateTable* pJob)
   }
   
   //m_pColumnVec->vAdd(pHiddenColumn);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the hidden index from the table                                        */
-/*----------------------------------------------------------------------------*/
-Index* Table::pHiddenIndex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  return m_pHiddenIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the hidden index in the table                                          */
-/*----------------------------------------------------------------------------*/
-void Table::vHiddenIndex(Index* pHiddenIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  m_pHiddenIndex = pHiddenIndex;
 }
 
 /*----------------------------------------------------------------------------*/

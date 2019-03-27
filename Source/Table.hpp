@@ -32,7 +32,6 @@ namespace MetaData
     Dic    m_xSubDic;      // sub dictionary for this table
     Slots  m_xSlots;       // slots
     Atomic m_ixIndexNo;    // index no
-    Index* m_pHiddenIndex; // hidden index
     
     IdxVec*    m_pIdxVec;    // index vector
     ColumnVec* m_pColumnVec; // column vector
@@ -69,8 +68,6 @@ namespace MetaData
     void vContentDump(void);
     void vCreateColumnVec(s32& sName, s48K& sDefinition);
     void vCreateColumnVec(Jobs::Job_CreateTable* pJob);
-    Index* pHiddenIndex(void);
-    void vHiddenIndex(Index* pHiddenIndex);
     IdxVec* pIdxVec(void);
     void  vIsLoading(bool bIsLoading);
     bool  bIsLoading(void);
