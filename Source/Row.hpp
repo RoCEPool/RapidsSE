@@ -20,7 +20,7 @@ namespace Data
     RowData(void);
     ~RowData(void) noexcept(false);
   
-    void vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec);
+    void vAsBinaryString(s48K& sDataString, ColumnVec* pColVec);
     void vAsEscapedString(s48K& sDataString, ColumnVec* pColVec);
     char* aColumnDatum(i8 iColumnNo);
     void vDump(ColumnVec* pColVec);

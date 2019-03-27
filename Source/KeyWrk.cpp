@@ -346,16 +346,9 @@ void KeyWrk::vExtractKey(Item* aRowEntry, IdxColVec* pIdxColVec)
       }
         
       case DM_BCD: {
-#ifdef USE_VLQ_DATUMS
-        i8 iInt = IntLib::iVlqToInt((byte*)pDst);
-        Bcd xBcd = *((Bcd*)&iInt);
-        xVariable = xBcd;
-        break;
-#else
         Bcd xBcd = *((Bcd*)pDst);
         xVariable = xBcd;
         break;
-#endif
       }
         
       case DM_FLT: {
@@ -365,17 +358,9 @@ void KeyWrk::vExtractKey(Item* aRowEntry, IdxColVec* pIdxColVec)
       }
         
       case DM_INT: {
-#ifdef USE_VLQ_DATUMS
-        i8 iInt = IntLib::iVlqToInt((byte*)pDst);
-        Int xInt = *((Int*)&iInt);
-        xVariable = xInt.iAsI8();
-        break;
-#else
         Int xInt = *((Int*)pDst);
         xVariable = xInt.iAsI8();
-        break;
-#endif
-        
+        break;        
       }
         
       case DM_IVL: {

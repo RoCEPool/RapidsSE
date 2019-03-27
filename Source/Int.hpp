@@ -39,19 +39,15 @@ namespace Datums
   
     bool bIsNull(void);
     void vSetNull(void);
-  
-    void vIntToVlq(char* aVlq);
-    void vVlqToInt(char* aVlq);
  
     static i8   nCopy(void* aDst, void* aSrc);
-    static i8   nCopyVLQ(void* aDst, void* aSrc);
+
     static void vCopy(void* aDst, void* aSrc);
     static bool bExtract(char** aaSrc, Stz* aDst,
                          MetaData::Column* pColumn, Formatters* pFormatters);
     static bool bExtractDefault(char** aaSrc, Stz* aDst,
                          MetaData::Column* pColumn, Formatters* pFormatters);
     static void vSprint(Stz* aDst, Stz* aSrc);
-    static void vSprintVLQ(Stz* aDst, Stz* aSrc);
     
     static bool bLessThan(char* aArgA, char* aArgB);
     static bool bLessEqual(char* aArgA, char* aArgB);
