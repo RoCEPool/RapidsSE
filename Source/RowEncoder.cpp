@@ -527,6 +527,11 @@ void RowEncoder::vEncodeBcd(Column* pColumn, Datum* pDatum, i8& iHash)
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
+  // hash the column value if part of partition key
+  if (pColumn->bIsPartitionKey()) {
+    iHash += HshLib::iHash(&wEncoded.m_wWord,sizeof(w8));
+  }
+  
   i8 nBytesEncoded;
   i8 iEncoding = iBcdEncoding(wEncoded,nBytesEncoded);
   RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_BCD));
@@ -561,6 +566,11 @@ void RowEncoder::vEncodeBol(Column* pColumn, Datum* pDatum, i8& iHash)
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
+  // hash the column value if part of partition key
+  if (pColumn->bIsPartitionKey()) {
+    iHash += HshLib::iHash(&wEncoded.m_wWord,sizeof(w8));
+  }
+  
   i8 nBytesEncoded;
   i8 iEncoding = iBolEncoding(wEncoded,nBytesEncoded);
   RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_BOL));
@@ -588,6 +598,11 @@ void RowEncoder::vEncodeDte(Column* pColumn, Datum* pDatum, i8& iHash)
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)pDatum->ayDatum();
 
+  // hash the column value if part of partition key
+  if (pColumn->bIsPartitionKey()) {
+    iHash += HshLib::iHash(&wEncoded.m_wWord,sizeof(w8));
+  }
+  
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
@@ -625,6 +640,11 @@ void RowEncoder::vEncodeFlt(Column* pColumn, Datum* pDatum, i8& iHash)
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
+  // hash the column value if part of partition key
+  if (pColumn->bIsPartitionKey()) {
+    iHash += HshLib::iHash(&wEncoded.m_wWord,sizeof(w8));
+  }
+  
   i8 nBytesEncoded;
   i8 iEncoding = iFltEncoding(wEncoded,nBytesEncoded);
   RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_FLT));
@@ -656,6 +676,11 @@ void RowEncoder::vEncodeInt(Column* pColumn, Datum* pDatum, i8& iHash)
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)pDatum->ayDatum();
 
+  // hash the column value if part of partition key
+  if (pColumn->bIsPartitionKey()) {
+    iHash += HshLib::iHash(&wEncoded.m_wWord,sizeof(w8));
+  }
+  
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
@@ -690,6 +715,11 @@ void RowEncoder::vEncodeIvl(Column* pColumn, Datum* pDatum, i8& iHash)
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)pDatum->ayDatum();
 
+  // hash the column value if part of partition key
+  if (pColumn->bIsPartitionKey()) {
+    iHash += HshLib::iHash(&wEncoded.m_wWord,sizeof(w8));
+  }
+  
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
@@ -723,9 +753,14 @@ void RowEncoder::vEncodeTme(Column* pColumn, Datum* pDatum, i8& iHash)
   
   i8 i_Column = pColumn->iColumnNo();
   w8 wVal = *(i8*)pDatum->ayDatum();
-
+  
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
+  
+  // hash the column value if part of partition key
+  if (pColumn->bIsPartitionKey()) {
+    iHash += HshLib::iHash(&wEncoded.m_wWord,sizeof(w8));
+  }
   
   i8 nBytesEncoded;
   i8 iEncoding = iTmeEncoding(wEncoded,nBytesEncoded);
@@ -761,6 +796,11 @@ void RowEncoder::vEncodeTsp(Column* pColumn, Datum* pDatum, i8& iHash)
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
+  // hash the column value if part of partition key
+  if (pColumn->bIsPartitionKey()) {
+    iHash += HshLib::iHash(&wEncoded.m_wWord,sizeof(w8));
+  }
+  
   i8 nBytesEncoded;
   i8 iEncoding = iTspEncoding(wEncoded,nBytesEncoded);
   RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_TSP));
@@ -794,6 +834,11 @@ void RowEncoder::vEncodeVch(Column* pColumn, Datum* pDatum, i8& iHash)
 
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
+  
+  // hash the column value if part of partition key
+  if (pColumn->bIsPartitionKey()) {
+    iHash += HshLib::iHash(&wEncoded.m_wWord,sizeof(w8));
+  }
   
   i8 nBytesEncoded;
   i8 iEncoding = iVchEncoding(wEncoded,nBytesEncoded);
