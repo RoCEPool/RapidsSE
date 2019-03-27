@@ -57,21 +57,21 @@ RowDecoder::~RowDecoder(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get decoded datum from cache line                                          */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecode(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum)
+void RowDecoder::vDecode(i8 i_Row, Column* pCol, Datum* pDatum, w8& wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
   eDM eDatum = pCol->eDatumType();
   switch (eDatum) {
-    case DM_BCD: vDecodeBcd(i_Row,pCol,wDatum,szDatum); break;
-    case DM_BOL: vDecodeBol(i_Row,pCol,wDatum,szDatum); break;
-    case DM_DTE: vDecodeDte(i_Row,pCol,wDatum,szDatum); break;
-    case DM_FLT: vDecodeFlt(i_Row,pCol,wDatum,szDatum); break;
-    case DM_INT: vDecodeInt(i_Row,pCol,wDatum,szDatum); break;
-    case DM_IVL: vDecodeIvl(i_Row,pCol,wDatum,szDatum); break;
-    case DM_TME: vDecodeTme(i_Row,pCol,wDatum,szDatum); break;
-    case DM_TSP: vDecodeTsp(i_Row,pCol,wDatum,szDatum); break;
-    case DM_VCH: vDecodeVch(i_Row,pCol,wDatum,szDatum); break;
+    case DM_BCD: vDecodeBcd(i_Row,pCol,pDatum,wDatum,szDatum); break;
+    case DM_BOL: vDecodeBol(i_Row,pCol,pDatum,wDatum,szDatum); break;
+    case DM_DTE: vDecodeDte(i_Row,pCol,pDatum,wDatum,szDatum); break;
+    case DM_FLT: vDecodeFlt(i_Row,pCol,pDatum,wDatum,szDatum); break;
+    case DM_INT: vDecodeInt(i_Row,pCol,pDatum,wDatum,szDatum); break;
+    case DM_IVL: vDecodeIvl(i_Row,pCol,pDatum,wDatum,szDatum); break;
+    case DM_TME: vDecodeTme(i_Row,pCol,pDatum,wDatum,szDatum); break;
+    case DM_TSP: vDecodeTsp(i_Row,pCol,pDatum,wDatum,szDatum); break;
+    case DM_VCH: vDecodeVch(i_Row,pCol,pDatum,wDatum,szDatum); break;
     default:
       NEVER_REACH;
   }
@@ -86,22 +86,23 @@ void RowDecoder::vPrint(i8 i_Row, Column* pCol)
   
   w8 wDatum;
   s256 sDatum;
-  
+
+  Datum* pDatum = new Datum;
   Record* pRec = new Record;
-  
-  vDecode(i_Row,pCol,wDatum,sDatum);
+
+  vDecode(i_Row,pCol,pDatum,wDatum,sDatum);
   
   eDM eDatum = pCol->eDatumType();
   switch (eDatum) {
-    case DM_BCD: pRec->vAppendBcd(pCol,wDatum,sDatum); break;
-    case DM_BOL: pRec->vAppendBol(pCol,wDatum,sDatum); break;
-    case DM_DTE: pRec->vAppendDte(pCol,wDatum,sDatum); break;
-    case DM_FLT: pRec->vAppendFlt(pCol,wDatum,sDatum); break;
-    case DM_INT: pRec->vAppendInt(pCol,wDatum,sDatum); break;
-    case DM_IVL: pRec->vAppendIvl(pCol,wDatum,sDatum); break;
-    case DM_TME: pRec->vAppendTme(pCol,wDatum,sDatum); break;
-    case DM_TSP: pRec->vAppendTsp(pCol,wDatum,sDatum); break;
-    case DM_VCH: pRec->vAppendVch(pCol,wDatum,sDatum); break;
+    case DM_BCD: pRec->vAppendBcd(pCol,pDatum,wDatum,sDatum); break;
+    case DM_BOL: pRec->vAppendBol(pCol,pDatum,wDatum,sDatum); break;
+    case DM_DTE: pRec->vAppendDte(pCol,pDatum,wDatum,sDatum); break;
+    case DM_FLT: pRec->vAppendFlt(pCol,pDatum,wDatum,sDatum); break;
+    case DM_INT: pRec->vAppendInt(pCol,pDatum,wDatum,sDatum); break;
+    case DM_IVL: pRec->vAppendIvl(pCol,pDatum,wDatum,sDatum); break;
+    case DM_TME: pRec->vAppendTme(pCol,pDatum,wDatum,sDatum); break;
+    case DM_TSP: pRec->vAppendTsp(pCol,pDatum,wDatum,sDatum); break;
+    case DM_VCH: pRec->vAppendVch(pCol,pDatum,wDatum,sDatum); break;
     default:
       NEVER_REACH;
   }
@@ -113,6 +114,7 @@ void RowDecoder::vPrint(i8 i_Row, Column* pCol)
          pRec->szRecStr());
   
   delete pRec;
+  delete pDatum;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -155,22 +157,26 @@ void RowDecoder::vAppend(Record* pRec, i8 i_Row, Column* pCol)
   w8 wDatum;
   s256 sDatum;
   
-  vDecode(i_Row,pCol,wDatum,sDatum);
+  Datum* pDatum = new Datum;
+  
+  vDecode(i_Row,pCol,pDatum,wDatum,sDatum);
   
   eDM eDatum = pCol->eDatumType();
   switch (eDatum) {
-    case DM_BCD: pRec->vAppendBcd(pCol,wDatum,sDatum); break;
-    case DM_BOL: pRec->vAppendBol(pCol,wDatum,sDatum); break;
-    case DM_DTE: pRec->vAppendDte(pCol,wDatum,sDatum); break;
-    case DM_FLT: pRec->vAppendFlt(pCol,wDatum,sDatum); break;
-    case DM_INT: pRec->vAppendInt(pCol,wDatum,sDatum); break;
-    case DM_IVL: pRec->vAppendIvl(pCol,wDatum,sDatum); break;
-    case DM_TME: pRec->vAppendTme(pCol,wDatum,sDatum); break;
-    case DM_TSP: pRec->vAppendTsp(pCol,wDatum,sDatum); break;
-    case DM_VCH: pRec->vAppendVch(pCol,wDatum,sDatum); break;
+    case DM_BCD: pRec->vAppendBcd(pCol,pDatum,wDatum,sDatum); break;
+    case DM_BOL: pRec->vAppendBol(pCol,pDatum,wDatum,sDatum); break;
+    case DM_DTE: pRec->vAppendDte(pCol,pDatum,wDatum,sDatum); break;
+    case DM_FLT: pRec->vAppendFlt(pCol,pDatum,wDatum,sDatum); break;
+    case DM_INT: pRec->vAppendInt(pCol,pDatum,wDatum,sDatum); break;
+    case DM_IVL: pRec->vAppendIvl(pCol,pDatum,wDatum,sDatum); break;
+    case DM_TME: pRec->vAppendTme(pCol,pDatum,wDatum,sDatum); break;
+    case DM_TSP: pRec->vAppendTsp(pCol,pDatum,wDatum,sDatum); break;
+    case DM_VCH: pRec->vAppendVch(pCol,pDatum,wDatum,sDatum); break;
     default:
       NEVER_REACH;
   }
+  
+  delete pDatum;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -179,7 +185,7 @@ void RowDecoder::vAppend(Record* pRec, i8 i_Row, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* decode decimal from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeBcd(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum)
+void RowDecoder::vDecodeBcd(i8 i_Row, Column* pCol, Datum* pDatum, w8& wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
@@ -213,7 +219,7 @@ void RowDecoder::vDecodeBcd(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* decode boolean from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeBol(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum)
+void RowDecoder::vDecodeBol(i8 i_Row, Column* pCol, Datum* pDatum, w8& wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
@@ -237,7 +243,7 @@ void RowDecoder::vDecodeBol(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* decode date from given cache line                                          */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeDte(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum)
+void RowDecoder::vDecodeDte(i8 i_Row, Column* pCol, Datum* pDatum, w8& wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
@@ -269,7 +275,7 @@ void RowDecoder::vDecodeDte(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* decode float from given cache line                                         */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeFlt(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum)
+void RowDecoder::vDecodeFlt(i8 i_Row, Column* pCol, Datum* pDatum, w8& wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
@@ -299,7 +305,7 @@ void RowDecoder::vDecodeFlt(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* decode integer from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeInt(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum)
+void RowDecoder::vDecodeInt(i8 i_Row, Column* pCol, Datum* pDatum, w8& wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
@@ -333,7 +339,7 @@ void RowDecoder::vDecodeInt(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* decode interval from given cache line                                      */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeIvl(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum)
+void RowDecoder::vDecodeIvl(i8 i_Row, Column* pCol, Datum* pDatum, w8& wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
@@ -363,7 +369,7 @@ void RowDecoder::vDecodeIvl(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* decode time from given cache line                                          */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeTme(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum)
+void RowDecoder::vDecodeTme(i8 i_Row, Column* pCol, Datum* pDatum, w8& wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
@@ -395,7 +401,7 @@ void RowDecoder::vDecodeTme(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* decode timestamp from given cache line                                     */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeTsp(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum)
+void RowDecoder::vDecodeTsp(i8 i_Row, Column* pCol, Datum* pDatum, w8& wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
@@ -428,7 +434,7 @@ void RowDecoder::vDecodeTsp(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* decode varchar from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeVch(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum)
+void RowDecoder::vDecodeVch(i8 i_Row, Column* pCol, Datum* pDatum, w8& wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   

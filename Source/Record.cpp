@@ -70,7 +70,7 @@ Record::~Record(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append decimal datum to string                                             */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendBcd(Column* pCol, w8 wDatum, Stz* szDatum)
+void Record::vAppendBcd(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
@@ -80,7 +80,7 @@ void Record::vAppendBcd(Column* pCol, w8 wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* append boolean datum to string                                             */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendBol(Column* pCol, w8 wDatum, Stz* szDatum)
+void Record::vAppendBol(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
@@ -90,7 +90,7 @@ void Record::vAppendBol(Column* pCol, w8 wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* append date datum to string                                                */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendDte(Column* pCol, w8 wDatum, Stz* szDatum)
+void Record::vAppendDte(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
@@ -106,7 +106,7 @@ void Record::vAppendDte(Column* pCol, w8 wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* append float datum to string                                               */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendFlt(Column* pCol, w8 wDatum, Stz* szDatum)
+void Record::vAppendFlt(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
@@ -116,7 +116,7 @@ void Record::vAppendFlt(Column* pCol, w8 wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* append integer datum to string                                             */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendInt(Column* pCol, w8 wDatum, Stz* szDatum)
+void Record::vAppendInt(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
@@ -126,7 +126,7 @@ void Record::vAppendInt(Column* pCol, w8 wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* append interval datum to string                                            */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendIvl(Column* pCol, w8 wDatum, Stz* szDatum)
+void Record::vAppendIvl(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
@@ -136,7 +136,7 @@ void Record::vAppendIvl(Column* pCol, w8 wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* append time datum to string                                                */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendTme(Column* pCol, w8 wDatum, Stz* szDatum)
+void Record::vAppendTme(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
@@ -152,7 +152,7 @@ void Record::vAppendTme(Column* pCol, w8 wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* append timestamp datum to string                                           */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendTsp(Column* pCol, w8 wDatum, Stz* szDatum)
+void Record::vAppendTsp(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
@@ -168,7 +168,7 @@ void Record::vAppendTsp(Column* pCol, w8 wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* append varchar datum to string                                             */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendVch(Column* pCol, w8 wDatum, Stz* szDatum)
+void Record::vAppendVch(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
