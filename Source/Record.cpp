@@ -27,7 +27,7 @@ Record* Data::_pRecord(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Record::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_INDEXTREE);
+  void* pObject = HeapMem::pAllocate(CN_RECORD);
   
   return pObject;
 }

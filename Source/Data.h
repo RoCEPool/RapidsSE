@@ -62,6 +62,7 @@ using namespace Data;
 typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 typedef TrayNL_t<CN_ROWTRAY,CacheLine,C_MAX_ROWS> RowTray;
 
+#include "Datum.hpp"
 #include "EntWrk.hpp"
 #include "KeyWrk.hpp"
 #include "Key.hpp"
