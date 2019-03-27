@@ -54,6 +54,7 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_SINK);
   JobClass::vCmds(CN_JOB_USESCHEMA);
   JobClass::vCmds(CN_JOB_VISUALIZEINDEX);
+  JobClass::vCmds(CN_JOB_VISUALIZETABLE);
   
   // dist2pc
   JobClass::vCmds(CN_JOB_ANALYZEINDEX);

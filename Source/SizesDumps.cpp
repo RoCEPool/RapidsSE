@@ -453,7 +453,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_VerifyIndex),    // CN_JOB_VERIFYINDEX
   /*    */ sizeof(Job_VerifyTable),    // CN_JOB_VERIFYTABLE
   /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VISUALIZEINDEX
-  /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VISUALIZETABLE
+  /*    */ sizeof(Job_VisualizeTable), // CN_JOB_VISUALIZETABLE
   /*    */ sizeof(Job_WaitCluster),    // CN_JOB_WAITCLUSTER
   /*    */ sizeof(Job_Walk),           // CN_JOB_WALK
   /*    */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER

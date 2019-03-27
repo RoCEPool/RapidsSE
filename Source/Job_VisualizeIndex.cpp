@@ -52,7 +52,7 @@ JobClass xJobClass_VisualizeIndex =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_VisualizeIndex_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_class;
+  *pNextFun = (pFUN*)pJob_VisualizeTable_class;
   
   return &xJobClass_VisualizeIndex;
 }
