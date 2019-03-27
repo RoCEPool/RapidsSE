@@ -241,7 +241,7 @@ w8 RowEncoder::wDecodeBcd(Column* pColumn, CacheLine* aCacheLine)
 {
   i8 i_Column  = pColumn->iColumnNo();
   i8 i_Offset  = C_UNKNOWN;
-  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
+  i8 iEncoding = RowCoder::eGetEncoding(i_Column,aCacheLine,i_Offset);
   
   WordView wDecoded;
   
@@ -275,7 +275,7 @@ w8 RowEncoder::wDecodeBol(Column* pColumn, CacheLine* aCacheLine)
 {
   i8 i_Column  = pColumn->iColumnNo();
   i8 i_Offset  = C_UNKNOWN;
-  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
+  i8 iEncoding = RowCoder::eGetEncoding(i_Column,aCacheLine,i_Offset);
   
   WordView wDecoded;
   
@@ -299,7 +299,7 @@ w8 RowEncoder::wDecodeDte(Column* pColumn, CacheLine* aCacheLine)
 {
   i8 i_Column  = pColumn->iColumnNo();
   i8 i_Offset  = C_UNKNOWN;
-  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
+  i8 iEncoding = RowCoder::eGetEncoding(i_Column,aCacheLine,i_Offset);
   
   WordView wDecoded;
   
@@ -320,7 +320,7 @@ w8 RowEncoder::wDecodeDte(Column* pColumn, CacheLine* aCacheLine)
   }
   
   //if (iEncoding == MN_5B)
-  wDecoded.m_iI8 = iDteDecoding(wDecoded,iEncoding);
+  wDecoded.m_iI8 = RowCoder::iDteDecoding(wDecoded,iEncoding);
   
   return wDecoded.m_wWord;
 }
@@ -332,7 +332,7 @@ w8 RowEncoder::wDecodeFlt(Column* pColumn, CacheLine* aCacheLine)
 {
   i8 i_Column  = pColumn->iColumnNo();
   i8 i_Offset  = C_UNKNOWN;
-  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
+  i8 iEncoding = RowCoder::eGetEncoding(i_Column,aCacheLine,i_Offset);
   
   WordView wDecoded;
   
@@ -362,7 +362,7 @@ w8 RowEncoder::wDecodeInt(Column* pColumn, CacheLine* aCacheLine)
 {
   i8 i_Column  = pColumn->iColumnNo();
   i8 i_Offset  = C_UNKNOWN;
-  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
+  i8 iEncoding = RowCoder::eGetEncoding(i_Column,aCacheLine,i_Offset);
   
   WordView wDecoded;
   
@@ -396,7 +396,7 @@ w8 RowEncoder::wDecodeIvl(Column* pColumn, CacheLine* aCacheLine)
 {
   i8 i_Column  = pColumn->iColumnNo();
   i8 i_Offset  = C_UNKNOWN;
-  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
+  i8 iEncoding = RowCoder::eGetEncoding(i_Column,aCacheLine,i_Offset);
   
   WordView wDecoded;
   
@@ -426,7 +426,7 @@ w8 RowEncoder::wDecodeTme(Column* pColumn, CacheLine* aCacheLine)
 {
   i8 i_Column  = pColumn->iColumnNo();
   i8 i_Offset  = C_UNKNOWN;
-  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
+  i8 iEncoding = RowCoder::eGetEncoding(i_Column,aCacheLine,i_Offset);
   
   WordView wDecoded;
   
@@ -446,7 +446,7 @@ w8 RowEncoder::wDecodeTme(Column* pColumn, CacheLine* aCacheLine)
     NEVER_REACH;
   }
   
-  wDecoded.m_iI8 = iTmeDecoding(wDecoded,iEncoding);
+  wDecoded.m_iI8 = RowCoder::iTmeDecoding(wDecoded,iEncoding);
   
   return wDecoded.m_wWord;
 }
@@ -458,7 +458,7 @@ w8 RowEncoder::wDecodeTsp(Column* pColumn, CacheLine* aCacheLine)
 {
   i8 i_Column  = pColumn->iColumnNo();
   i8 i_Offset  = C_UNKNOWN;
-  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
+  i8 iEncoding = RowCoder::eGetEncoding(i_Column,aCacheLine,i_Offset);
   
   WordView wDecoded;
   
@@ -479,7 +479,7 @@ w8 RowEncoder::wDecodeTsp(Column* pColumn, CacheLine* aCacheLine)
   }
   
   if (iEncoding == MN_5B)
-  wDecoded.m_iI8 = iTspDecoding(wDecoded,iEncoding);
+  wDecoded.m_iI8 = RowCoder::iTspDecoding(wDecoded,iEncoding);
   
   return wDecoded.m_wWord;
 }
@@ -491,7 +491,7 @@ w8 RowEncoder::wDecodeVch(Column* pColumn, CacheLine* aCacheLine)
 {
   i8 i_Column  = pColumn->iColumnNo();
   i8 i_Offset  = C_UNKNOWN;
-  i8 iEncoding = iGetEncoding(i_Column,aCacheLine,i_Offset);
+  i8 iEncoding = RowCoder::eGetEncoding(i_Column,aCacheLine,i_Offset);
   
   WordView wDecoded;
   
@@ -534,7 +534,7 @@ void RowEncoder::vEncodeBcd(Column* pColumn, Datum* pDatum, i8& iHash)
   
   i8 nBytesEncoded;
   i8 iEncoding = iBcdEncoding(wEncoded,nBytesEncoded);
-  RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_BCD));
+  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_BCD));
 
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
@@ -573,7 +573,7 @@ void RowEncoder::vEncodeBol(Column* pColumn, Datum* pDatum, i8& iHash)
   
   i8 nBytesEncoded;
   i8 iEncoding = iBolEncoding(wEncoded,nBytesEncoded);
-  RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_BOL));
+  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_BOL));
 
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
@@ -608,7 +608,7 @@ void RowEncoder::vEncodeDte(Column* pColumn, Datum* pDatum, i8& iHash)
   
   i8 nBytesEncoded;
   i8 iEncoding = RowEncoder::iDteEncoding(wEncoded,nBytesEncoded);
-  RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_DTE));
+  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_DTE));
 
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
@@ -647,7 +647,7 @@ void RowEncoder::vEncodeFlt(Column* pColumn, Datum* pDatum, i8& iHash)
   
   i8 nBytesEncoded;
   i8 iEncoding = iFltEncoding(wEncoded,nBytesEncoded);
-  RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_FLT));
+  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_FLT));
 
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
@@ -686,7 +686,7 @@ void RowEncoder::vEncodeInt(Column* pColumn, Datum* pDatum, i8& iHash)
   
   i8 nBytesEncoded;
   i8 iEncoding = iIntEncoding(wEncoded,nBytesEncoded);
-  RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_INT));
+  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_INT));
 
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
@@ -725,7 +725,7 @@ void RowEncoder::vEncodeIvl(Column* pColumn, Datum* pDatum, i8& iHash)
   
   i8 nBytesEncoded;
   i8 iEncoding = iIvlEncoding(wEncoded,nBytesEncoded);
-  RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_IVL));
+  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_IVL));
 
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
@@ -764,7 +764,7 @@ void RowEncoder::vEncodeTme(Column* pColumn, Datum* pDatum, i8& iHash)
   
   i8 nBytesEncoded;
   i8 iEncoding = iTmeEncoding(wEncoded,nBytesEncoded);
-  RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_TME));
+  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_TME));
 
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
@@ -803,7 +803,7 @@ void RowEncoder::vEncodeTsp(Column* pColumn, Datum* pDatum, i8& iHash)
   
   i8 nBytesEncoded;
   i8 iEncoding = iTspEncoding(wEncoded,nBytesEncoded);
-  RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_TSP));
+  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_TSP));
 
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,iEncoding);
@@ -885,39 +885,6 @@ void RowEncoder::vEncodeVch(Column* pColumn, Datum* pDatum, i8& iHash)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* decoding of dte                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowEncoder::iDteDecoding(WordView& wTspView, i8 iEncoding)
-{
-  i8 iDecoded = wTspView.m_iI8;
-  iDecoded <<= 40;
-  
-  return iDecoded;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decoding of tme                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowEncoder::iTmeDecoding(WordView& wTspView, i8 iEncoding)
-{
-  i8 iDecoded = wTspView.m_iI8;
-  iDecoded <<= 40;
-  
-  return iDecoded;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decoding of tsp                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowEncoder::iTspDecoding(WordView& wTspView, i8 iEncoding)
-{
-  i8 iDecoded = wTspView.m_iI8;
-  iDecoded <<= 24;
-  
-  return iDecoded;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1137,141 +1104,6 @@ i8 RowEncoder::iVchEncoding(WordView& wVchView, i8& nBytesEncoded)
   }
 
   return iEncoding;
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of tsp                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowEncoder::iGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset)
-{
-  i_Offset = 8;
-  
-  for (i8 i_Nibble = 0; i_Nibble < i_Column; i_Nibble++) {
-    i8 nDataBytes = aCacheLine->w8_1N(i_Nibble);
-    if (nDataBytes <= MN_8B)
-      i_Offset += nDataBytes;
-  }
-  
-  i8 iEncoding = aCacheLine->w8_1N(i_Column);
-
-  return iEncoding;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return number of bytes of encoding                                         */
-/*----------------------------------------------------------------------------*/
-i8 RowEncoder::nEncodedBytes(i8 iEncoding, eDM eDatum)
-{
-  if (iEncoding == MN_NULL)
-    return 0;
-  
-  if (iEncoding <= MN_8B)
-    return iEncoding;
-  
-  if (MN_OVERFLOW == iEncoding)
-    return 0;
-  
-  switch (eDatum) {
-      
-    case DM_BCD:
-      switch (iEncoding) {
-        case MN_MINUS_ONE: return 0;
-        case MN_ZERO:      return 0;
-        case MN_PLUS_ONE:  return 0;
-        default:
-          NEVER_REACH;
-      }
-     break;
-      
-    case DM_BOL:
-      switch (iEncoding) {
-        case MN_FALSE: return 0;
-        case MN_TRUE:  return 0;
-        default:
-          NEVER_REACH;
-      }
-      break;
-      
-    case DM_DTE:
-      switch (iEncoding) {
-        case MN_DIFF_1B: return 1;
-        case MN_DIFF_2B: return 2;
-        case MN_DIFF_3B: return 3;
-        case MN_DIFF_4B: return 4;
-        default:
-          NEVER_REACH;
-      }
-      break;
-
-    case DM_FLT:
-      switch (iEncoding) {
-        case MN_MINUS_ONE: return 0;
-        case MN_ZERO:      return 0;
-        case MN_PLUS_ONE:  return 0;
-        default:
-          NEVER_REACH;
-      }
-      break;
-      
-    case DM_INT:
-      switch (iEncoding) {
-        case MN_MINUS_ONE: return 0;
-        case MN_ZERO:      return 0;
-        case MN_PLUS_ONE:  return 0;
-        default:
-          NEVER_REACH;
-      }
-      break;
-      
-    case DM_IVL:
-      switch (iEncoding) {
-        case MN_DIFF_1B: return 1;
-        case MN_DIFF_2B: return 2;
-        case MN_DIFF_3B: return 3;
-        case MN_DIFF_4B: return 4;
-        default:
-          NEVER_REACH;
-      }
-      break;
-      
-    case DM_TME:
-      switch (iEncoding) {
-        case MN_DIFF_1B: return 1;
-        case MN_DIFF_2B: return 2;
-        case MN_DIFF_3B: return 3;
-        case MN_DIFF_4B: return 4;
-        default:
-          NEVER_REACH;
-      }
-      break;
-      
-    case DM_TSP:
-      switch (iEncoding) {
-        case MN_DIFF_1B: return 1;
-        case MN_DIFF_2B: return 2;
-        case MN_DIFF_3B: return 3;
-        case MN_DIFF_4B: return 4;
-        default:
-          NEVER_REACH;
-      }
-      break;
-      
-    case DM_VCH:
-      switch (iEncoding) {
-        case MN_COL_ARRAY:   NEVER_REACH; return 0;
-        case MN_SHOCO_CL:    NEVER_REACH; return 0;
-        case MN_SHOCO_2B:    NEVER_REACH; return 0;
-        case MN_LOCAL_HMAP:  NEVER_REACH; return 0;
-        case MN_GLOBAL_HMAP: NEVER_REACH; return 0;
-       default:
-          NEVER_REACH;
-      }
-      break;
-      
-    default:
-      NEVER_REACH;
-  }
-  
 }
 
 /*----------------------------------------------------------------------------*/

@@ -56,10 +56,6 @@ namespace Data
     void vEncodeTsp(Column* pColumn, Datum* pDatum, i8& iHash);
     void vEncodeVch(Column* pColumn, Datum* pDatum, i8& iHash);
   
-    static i8 iDteDecoding(WordView& wTspView, i8 iEncoding);
-    static i8 iTmeDecoding(WordView& wTspView, i8 iEncoding);
-    static i8 iTspDecoding(WordView& wTspView, i8 iEncoding);
-  
     static i8 iBcdEncoding(WordView& wBcdView, i8& nBytesEncoded);
     static i8 iBolEncoding(WordView& wBolView, i8& nBytesEncoded);
     static i8 iDteEncoding(WordView& wTspView, i8& nBytesEncoded);
@@ -69,11 +65,7 @@ namespace Data
     static i8 iTmeEncoding(WordView& wTmeView, i8& nBytesEncoded);
     static i8 iTspEncoding(WordView& wTspView, i8& nBytesEncoded);
     static i8 iVchEncoding(WordView& wVchView, i8& nBytesEncoded);
-
-    static i8 iGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
   
-    static i8 nEncodedBytes(i8 iEncoding, eDM eDatum);
- 
     static void vPrint(Column* pColumn, WordView& wDatum);
   
     Footer*      aFooter(void);

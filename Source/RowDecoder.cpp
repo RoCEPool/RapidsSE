@@ -192,7 +192,7 @@ void RowDecoder::vDecodeBcd(i8 i_Row, Column* pCol, Datum* pDatum)
   i8 i_Offset  = C_UNKNOWN;
   i8 i_Column  = pCol->iColumnNo();
   
-  eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
+  eMN eEncoding = RowCoder::eGetEncoding(i_Column,aCacheLine,i_Offset);
   switch (eEncoding) {
       
     case MN_NULL: wDatum = C_DATUM_NULL;                break;
@@ -229,7 +229,7 @@ void RowDecoder::vDecodeBol(i8 i_Row, Column* pCol, Datum* pDatum)
   i8 i_Offset  = C_UNKNOWN;
   i8 i_Column  = pCol->iColumnNo();
   
-  eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
+  eMN eEncoding = RowCoder::eGetEncoding(i_Column,aCacheLine,i_Offset);
   switch (eEncoding) {
       
     case MN_NULL:  wDatum = C_DATUM_NULL; break;
@@ -255,7 +255,7 @@ void RowDecoder::vDecodeDte(i8 i_Row, Column* pCol, Datum* pDatum)
   i8 i_Offset  = C_UNKNOWN;
   i8 i_Column  = pCol->iColumnNo();
   
-  eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
+  eMN eEncoding = RowCoder::eGetEncoding(i_Column,aCacheLine,i_Offset);
   switch (eEncoding) {
       
     case MN_NULL: wDatum = C_DATUM_NULL;                break;
@@ -272,7 +272,7 @@ void RowDecoder::vDecodeDte(i8 i_Row, Column* pCol, Datum* pDatum)
       NEVER_REACH;
   }
   
-  wDatum = wRestoreDte(wDatum,eEncoding);
+  wDatum = RowCoder::wRestoreDte(wDatum,eEncoding);
   pDatum->vDatum(wDatum);
 }
 
@@ -289,7 +289,7 @@ void RowDecoder::vDecodeFlt(i8 i_Row, Column* pCol, Datum* pDatum)
   i8 i_Offset  = C_UNKNOWN;
   i8 i_Column  = pCol->iColumnNo();
   
-  eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
+  eMN eEncoding = RowCoder::eGetEncoding(i_Column,aCacheLine,i_Offset);
   switch (eEncoding) {
       
     case MN_NULL: wDatum = C_DATUM_NULL;                break;
@@ -321,7 +321,7 @@ void RowDecoder::vDecodeInt(i8 i_Row, Column* pCol, Datum* pDatum)
   i8 i_Offset  = C_UNKNOWN;
   i8 i_Column  = pCol->iColumnNo();
   
-  eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
+  eMN eEncoding = RowCoder::eGetEncoding(i_Column,aCacheLine,i_Offset);
   switch (eEncoding) {
       
     case MN_NULL: wDatum = C_DATUM_NULL;                break;
@@ -357,7 +357,7 @@ void RowDecoder::vDecodeIvl(i8 i_Row, Column* pCol, Datum* pDatum)
   i8 i_Offset  = C_UNKNOWN;
   i8 i_Column  = pCol->iColumnNo();
   
-  eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
+  eMN eEncoding = RowCoder::eGetEncoding(i_Column,aCacheLine,i_Offset);
   switch (eEncoding) {
       
     case MN_NULL: wDatum = C_DATUM_NULL;                break;
@@ -389,7 +389,7 @@ void RowDecoder::vDecodeTme(i8 i_Row, Column* pCol, Datum* pDatum)
   i8 i_Offset  = C_UNKNOWN;
   i8 i_Column  = pCol->iColumnNo();
   
-  eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
+  eMN eEncoding = RowCoder::eGetEncoding(i_Column,aCacheLine,i_Offset);
   switch (eEncoding) {
       
     case MN_NULL: wDatum = C_DATUM_NULL;                break;
@@ -406,7 +406,7 @@ void RowDecoder::vDecodeTme(i8 i_Row, Column* pCol, Datum* pDatum)
       NEVER_REACH;
   }
   
-  wDatum = wRestoreTme(wDatum,eEncoding);
+  wDatum = RowCoder::wRestoreTme(wDatum,eEncoding);
   pDatum->vDatum(wDatum);
 }
 
@@ -423,7 +423,7 @@ void RowDecoder::vDecodeTsp(i8 i_Row, Column* pCol, Datum* pDatum)
   i8 i_Offset  = C_UNKNOWN;
   i8 i_Column  = pCol->iColumnNo();
   
-  eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
+  eMN eEncoding = RowCoder::eGetEncoding(i_Column,aCacheLine,i_Offset);
   switch (eEncoding) {
       
     case MN_NULL: wDatum = C_DATUM_NULL;                break;
@@ -441,7 +441,7 @@ void RowDecoder::vDecodeTsp(i8 i_Row, Column* pCol, Datum* pDatum)
   }
   
   if (eEncoding == MN_5B)
-    wDatum = wRestoreTsp(wDatum,eEncoding);
+    wDatum = RowCoder::wRestoreTsp(wDatum,eEncoding);
   pDatum->vDatum(wDatum);
 }
 
@@ -459,7 +459,7 @@ void RowDecoder::vDecodeVch(i8 i_Row, Column* pCol, Datum* pDatum)
   i8 i_Column  = pCol->iColumnNo();
   
   //! needs more work
-  eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
+  eMN eEncoding = RowCoder::eGetEncoding(i_Column,aCacheLine,i_Offset);
   switch (eEncoding) {
       
     case MN_NULL: wDatum = C_DATUM_NULL;                break;
@@ -495,69 +495,6 @@ void RowDecoder::vDecodeVch(i8 i_Row, Column* pCol, Datum* pDatum)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get the encoding of of a column from given cache line                      */
-/*----------------------------------------------------------------------------*/
-eMN RowDecoder::eGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
-  
-  i_Offset = 8;
-  
-  for (i8 i_Nibble = 0; i_Nibble < i_Column; i_Nibble++) {
-    i8 nDataBytes = aCacheLine->w8_1N(i_Nibble);
-    if (nDataBytes <= MN_8B)
-      i_Offset += nDataBytes;
-  }
-  
-  eMN eEncoding = (eMN)aCacheLine->w8_1N(i_Column);
-  
-  return eEncoding;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* restore zero stripped dte                                                  */
-/*----------------------------------------------------------------------------*/
-w8 RowDecoder::wRestoreDte(w8 wDteStripped, eMN eEncoding)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
-  
-  w8 wDte = wDteStripped;
-  wDte <<= 40;
-  
-  return wDte;
-}
-
-/*----------------------------------------------------------------------------*/
-/* restore zero stripped tme                                                  */
-/*----------------------------------------------------------------------------*/
-w8 RowDecoder::wRestoreTme(w8 wTmeStripped, eMN eEncoding)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
-  
-  w8 wTme = wTmeStripped;
-  wTme <<= 40;
-  
-  return wTme;
-}
-
-/*----------------------------------------------------------------------------*/
-/* restore zero stripped tsp                                                  */
-/*----------------------------------------------------------------------------*/
-w8 RowDecoder::wRestoreTsp(w8 wTspStripped, eMN eEncoding)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
-  
-  w8 wTsp = wTspStripped;
-  wTsp <<= 24;
-  
-  return wTsp;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

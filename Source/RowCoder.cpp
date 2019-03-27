@@ -314,8 +314,121 @@ void RowCoder::vDecodeVch(CacheLine xaCacheLine[], i8 i_Row,
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
+/* return number of bytes of encoding                                         */
 /*----------------------------------------------------------------------------*/
+i8 RowCoder::nEncodedBytes(i8 iEncoding, eDM eDatum)
+{
+  if (iEncoding == MN_NULL)
+    return 0;
+  
+  if (iEncoding <= MN_8B)
+    return iEncoding;
+  
+  if (MN_OVERFLOW == iEncoding)
+    return 0;
+  
+  switch (eDatum) {
+      
+    case DM_BCD:
+      switch (iEncoding) {
+        case MN_MINUS_ONE: return 0;
+        case MN_ZERO:      return 0;
+        case MN_PLUS_ONE:  return 0;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_BOL:
+      switch (iEncoding) {
+        case MN_FALSE: return 0;
+        case MN_TRUE:  return 0;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_DTE:
+      switch (iEncoding) {
+        case MN_DIFF_1B: return 1;
+        case MN_DIFF_2B: return 2;
+        case MN_DIFF_3B: return 3;
+        case MN_DIFF_4B: return 4;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_FLT:
+      switch (iEncoding) {
+        case MN_MINUS_ONE: return 0;
+        case MN_ZERO:      return 0;
+        case MN_PLUS_ONE:  return 0;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_INT:
+      switch (iEncoding) {
+        case MN_MINUS_ONE: return 0;
+        case MN_ZERO:      return 0;
+        case MN_PLUS_ONE:  return 0;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_IVL:
+      switch (iEncoding) {
+        case MN_DIFF_1B: return 1;
+        case MN_DIFF_2B: return 2;
+        case MN_DIFF_3B: return 3;
+        case MN_DIFF_4B: return 4;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_TME:
+      switch (iEncoding) {
+        case MN_DIFF_1B: return 1;
+        case MN_DIFF_2B: return 2;
+        case MN_DIFF_3B: return 3;
+        case MN_DIFF_4B: return 4;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_TSP:
+      switch (iEncoding) {
+        case MN_DIFF_1B: return 1;
+        case MN_DIFF_2B: return 2;
+        case MN_DIFF_3B: return 3;
+        case MN_DIFF_4B: return 4;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_VCH:
+      switch (iEncoding) {
+        case MN_COL_ARRAY:   NEVER_REACH; return 0;
+        case MN_SHOCO_CL:    NEVER_REACH; return 0;
+        case MN_SHOCO_2B:    NEVER_REACH; return 0;
+        case MN_LOCAL_HMAP:  NEVER_REACH; return 0;
+        case MN_GLOBAL_HMAP: NEVER_REACH; return 0;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    default:
+      NEVER_REACH;
+  }
+  
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the encoding of of a column from given cache line                      */
@@ -371,6 +484,43 @@ w8 RowCoder::wRestoreTsp(w8 wTspStripped, eMN eEncoding)
   return wTsp;
 }
 
+/*----------------------------------------------------------------------------*/
+/* decoding of dte                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iDteDecoding(WordView& wTspView, i8 iEncoding)
+{
+  i8 iDecoded = wTspView.m_iI8;
+  iDecoded <<= 40;
+  
+  return iDecoded;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decoding of tme                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iTmeDecoding(WordView& wTspView, i8 iEncoding)
+{
+  i8 iDecoded = wTspView.m_iI8;
+  iDecoded <<= 40;
+  
+  return iDecoded;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decoding of tsp                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iTspDecoding(WordView& wTspView, i8 iEncoding)
+{
+  i8 iDecoded = wTspView.m_iI8;
+  iDecoded <<= 24;
+  
+  return iDecoded;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 
 /*============================================================================*/

@@ -36,12 +36,6 @@ namespace Data
     void vDecodeTme(i8 i_Row, Column* pCol, Datum* pDatum);
     void vDecodeTsp(i8 i_Row, Column* pCol, Datum* pDatum);
     void vDecodeVch(i8 i_Row, Column* pCol, Datum* pDatum);
-
-    eMN eGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
-  
-    w8 wRestoreDte(w8 wDteStripped, eMN eEncoding);
-    w8 wRestoreTme(w8 wTmeStripped, eMN eEncoding);
-    w8 wRestoreTsp(w8 wTspStripped, eMN eEncoding);
   
     Footer* aFooter(void);
   };

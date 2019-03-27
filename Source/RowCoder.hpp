@@ -27,12 +27,20 @@ namespace Data
     static void vDecodeVch(CacheLine xaCacheLine[], i8 i_Row,
                            Column* pCol, Datum* pDatum);
 
-  private:
+    static i8 nEncodedBytes(i8 iEncoding, eDM eDatum);
+
     static eMN eGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
 
     static w8 wRestoreDte(w8 wDteStripped, eMN eEncoding);
     static w8 wRestoreTme(w8 wTmeStripped, eMN eEncoding);
     static w8 wRestoreTsp(w8 wTspStripped, eMN eEncoding);
+  
+    static i8 iDteDecoding(WordView& wTspView, i8 iEncoding);
+    static i8 iTmeDecoding(WordView& wTspView, i8 iEncoding);
+    static i8 iTspDecoding(WordView& wTspView, i8 iEncoding);
+  
+
+  private:
   };
 }
 
