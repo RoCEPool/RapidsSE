@@ -522,7 +522,7 @@ void RowEncoder::vEncodeBcd(Column* pColumn, Datum* pDatum, byte* aDatum)
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wVal = *(i8*)aDatum;
+  w8 wVal = *(i8*)pDatum->ayDatum();
   
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
@@ -556,8 +556,8 @@ void RowEncoder::vEncodeBol(Column* pColumn, Datum* pDatum, byte* aDatum)
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wVal = *(i8*)aDatum;
-  
+  w8 wVal = *(i8*)pDatum->ayDatum();
+
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
@@ -586,8 +586,8 @@ void RowEncoder::vEncodeDte(Column* pColumn, Datum* pDatum, byte* aDatum)
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wVal = *(i8*)aDatum;
-  
+  w8 wVal = *(i8*)pDatum->ayDatum();
+
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
@@ -620,8 +620,8 @@ void RowEncoder::vEncodeFlt(Column* pColumn, Datum* pDatum, byte* aDatum)
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wVal = *(i8*)aDatum;
-  
+  w8 wVal = *(i8*)pDatum->ayDatum();
+
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
@@ -654,8 +654,8 @@ void RowEncoder::vEncodeInt(Column* pColumn, Datum* pDatum, byte* aDatum)
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wVal = *(i8*)aDatum;
-  
+  w8 wVal = *(i8*)pDatum->ayDatum();
+
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
@@ -688,8 +688,8 @@ void RowEncoder::vEncodeIvl(Column* pColumn, Datum* pDatum, byte* aDatum)
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wVal = *(i8*)aDatum;
-  
+  w8 wVal = *(i8*)pDatum->ayDatum();
+
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
@@ -722,8 +722,8 @@ void RowEncoder::vEncodeTme(Column* pColumn, Datum* pDatum, byte* aDatum)
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wVal = *(i8*)aDatum;
-  
+  w8 wVal = *(i8*)pDatum->ayDatum();
+
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
@@ -756,8 +756,8 @@ void RowEncoder::vEncodeTsp(Column* pColumn, Datum* pDatum, byte* aDatum)
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wVal = *(i8*)aDatum;
-  
+  w8 wVal = *(i8*)pDatum->ayDatum();
+
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
@@ -790,8 +790,8 @@ void RowEncoder::vEncodeVch(Column* pColumn, Datum* pDatum, byte* aDatum)
   CacheLine* aCacheLine = m_pRowParts->aGet(0);
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wVal = (w8)aDatum;
-  
+  w8 wVal = (w8)pDatum->ayDatum();
+
   WordView wEncoded;
   wEncoded.m_wWord = wVal;
   
