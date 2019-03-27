@@ -536,7 +536,7 @@ void RowEncoder::vEncodeBcd(Column* pColumn, Datum* pDatum, byte* aDatum)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(m_i_CacheOffset,aDatum,iEncoding);
+    aCacheLine->vPut(m_i_CacheOffset,wVal,iEncoding);
   
   m_i_CacheOffset += nBytesEncoded;
   
@@ -600,7 +600,7 @@ void RowEncoder::vEncodeDte(Column* pColumn, Datum* pDatum, byte* aDatum)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(m_i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+    aCacheLine->vPut(m_i_CacheOffset,wEncoded.m_iI8,iEncoding);
   
   m_i_CacheOffset += nBytesEncoded;
 
@@ -634,7 +634,7 @@ void RowEncoder::vEncodeFlt(Column* pColumn, Datum* pDatum, byte* aDatum)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(m_i_CacheOffset,aDatum,iEncoding);
+    aCacheLine->vPut(m_i_CacheOffset,wVal,iEncoding);
   
   m_i_CacheOffset += nBytesEncoded;
 
@@ -668,7 +668,7 @@ void RowEncoder::vEncodeInt(Column* pColumn, Datum* pDatum, byte* aDatum)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(m_i_CacheOffset,aDatum,iEncoding);
+    aCacheLine->vPut(m_i_CacheOffset,wVal,iEncoding);
   
   m_i_CacheOffset += nBytesEncoded;
 
@@ -702,7 +702,7 @@ void RowEncoder::vEncodeIvl(Column* pColumn, Datum* pDatum, byte* aDatum)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(m_i_CacheOffset,aDatum,iEncoding);
+    aCacheLine->vPut(m_i_CacheOffset,wVal,iEncoding);
   
   m_i_CacheOffset += nBytesEncoded;
 
@@ -736,7 +736,7 @@ void RowEncoder::vEncodeTme(Column* pColumn, Datum* pDatum, byte* aDatum)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(m_i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+    aCacheLine->vPut(m_i_CacheOffset,wEncoded.m_iI8,iEncoding);
   
   m_i_CacheOffset += nBytesEncoded;
 
@@ -770,7 +770,7 @@ void RowEncoder::vEncodeTsp(Column* pColumn, Datum* pDatum, byte* aDatum)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(m_i_CacheOffset,(byte*)&wEncoded.m_iI8,iEncoding);
+    aCacheLine->vPut(m_i_CacheOffset,wEncoded.m_iI8,iEncoding);
   
   m_i_CacheOffset += nBytesEncoded;
 
@@ -811,12 +811,12 @@ void RowEncoder::vEncodeVch(Column* pColumn, Datum* pDatum, byte* aDatum)
     CacheLine* aShocoLine = m_pRowParts->aGet(i_Tail);
 
     // set data for column value as the index of the shoco cache line
-    aCacheLine->vPut(m_i_CacheOffset,(byte*)&i_Tail,MN_2B);
+    aCacheLine->vPut(m_i_CacheOffset,i_Tail,MN_2B);
     
     // compress varchar into tail shoco cache line
     i8 iLenCompressed =
       Compress::iIntoShoco(((byte*)aShocoLine)+8, C_BYTES_PER_CACHE_LINE-8,
-                           (char*)aDatum, nBytesEncoded);
+                           (char*)wVal, nBytesEncoded);
 
     // set length of the compressed string encoded into tail shoco cache line
     aShocoLine->v1N(0,iLenCompressed);
@@ -832,7 +832,7 @@ void RowEncoder::vEncodeVch(Column* pColumn, Datum* pDatum, byte* aDatum)
 //    vTrace("Decomp: %s\n"_Stz,sDecomp.aChar());
   }
   else {
-    aCacheLine->vPut(m_i_CacheOffset,aDatum,nBytesEncoded);
+    aCacheLine->vPut(m_i_CacheOffset,wVal,nBytesEncoded);
     m_i_CacheOffset += nBytesEncoded;
   }
 

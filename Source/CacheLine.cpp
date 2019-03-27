@@ -30,21 +30,18 @@ CacheLine::~CacheLine(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* put encoded datam into cache line                                          */
 /*----------------------------------------------------------------------------*/
-void CacheLine::vPut(i8 i_Offset, byte* aDatum, i8 iEncoding)
+void CacheLine::vPut(i8 i_Offset, w8 wWord, i8 iEncoding)
 {
-  w8 wVal = *(i8*)aDatum;
-  
   switch (iEncoding) {
-      
     case 0: return;
-    case 1: v1B(i_Offset,wVal); return;
-    case 2: v2B(i_Offset,wVal); return;
-    case 3: v3B(i_Offset,wVal); return;
-    case 4: v4B(i_Offset,wVal); return;
-    case 5: v5B(i_Offset,wVal); return;
-    case 6: v6B(i_Offset,wVal); return;
-    case 7: v7B(i_Offset,wVal); return;
-    case 8: v8B(i_Offset,wVal); return;
+    case 1: v1B(i_Offset,wWord); return;
+    case 2: v2B(i_Offset,wWord); return;
+    case 3: v3B(i_Offset,wWord); return;
+    case 4: v4B(i_Offset,wWord); return;
+    case 5: v5B(i_Offset,wWord); return;
+    case 6: v6B(i_Offset,wWord); return;
+    case 7: v7B(i_Offset,wWord); return;
+    case 8: v8B(i_Offset,wWord); return;
       
     default:
       NEVER_REACH;

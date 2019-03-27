@@ -14,7 +14,7 @@ namespace Base
     CacheLine(void);
     ~CacheLine(void) noexcept(false);
   
-    void vPut(i8 i_Offset, byte* aDatum, i8 iEncoding);
+    void vPut(i8 i_Offset, w8 wWord, i8 iEncoding);
   
     void vSetAll(byte yVal);
   
