@@ -1,5 +1,4 @@
 /*============================================================================*/
-/* Record.hpp -- Record                                                       */
 /*============================================================================*/
 #pragma once
 
@@ -23,15 +22,15 @@ namespace Data
     Record(void);
     ~Record(void) noexcept(false);
   
-    void vAppendBcd(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum);
-    void vAppendBol(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum);
-    void vAppendDte(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum);
-    void vAppendFlt(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum);
-    void vAppendInt(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum);
-    void vAppendIvl(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum);
-    void vAppendTme(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum);
-    void vAppendTsp(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum);
-    void vAppendVch(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum);
+    void vAppendBcd(Column* pCol, Datum* pDatum);
+    void vAppendBol(Column* pCol, Datum* pDatum);
+    void vAppendDte(Column* pCol, Datum* pDatum);
+    void vAppendFlt(Column* pCol, Datum* pDatum);
+    void vAppendInt(Column* pCol, Datum* pDatum);
+    void vAppendIvl(Column* pCol, Datum* pDatum);
+    void vAppendTme(Column* pCol, Datum* pDatum);
+    void vAppendTsp(Column* pCol, Datum* pDatum);
+    void vAppendVch(Column* pCol, Datum* pDatum);
 
     Stz* szRecStr(void);
   

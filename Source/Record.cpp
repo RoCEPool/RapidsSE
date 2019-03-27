@@ -70,32 +70,32 @@ Record::~Record(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append decimal datum to string                                             */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendBcd(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
+void Record::vAppendBcd(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
-  m_sRecStr.vCatSprint("%lld"_Stz,(i8)wDatum);
+  m_sRecStr.vCatSprint("%lld"_Stz,(i8)pDatum->wDatum());
 }
 
 /*----------------------------------------------------------------------------*/
 /* append boolean datum to string                                             */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendBol(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
+void Record::vAppendBol(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
-  m_sRecStr.vConcat(wDatum ? "true"_Stz : "false"_Stz);
+  m_sRecStr.vConcat(pDatum->wDatum() ? "true"_Stz : "false"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append date datum to string                                                */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendDte(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
+void Record::vAppendDte(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
   Dte wDte;
-  wDte.vAsI8(wDatum);
+  wDte.vAsI8(pDatum->wDatum());
   
   s32 sDte;
   wDte.vSprint(sDte.aStz());
@@ -106,42 +106,42 @@ void Record::vAppendDte(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* append float datum to string                                               */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendFlt(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
+void Record::vAppendFlt(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
-  m_sRecStr.vCatSprint("%g"_Stz,(d8)wDatum);
+  m_sRecStr.vCatSprint("%g"_Stz,(d8)pDatum->wDatum());
 }
 
 /*----------------------------------------------------------------------------*/
 /* append integer datum to string                                             */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendInt(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
+void Record::vAppendInt(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
-  m_sRecStr.vCatSprint("%lld"_Stz,(i8)wDatum);
+  m_sRecStr.vCatSprint("%lld"_Stz,(i8)pDatum->wDatum());
 }
 
 /*----------------------------------------------------------------------------*/
 /* append interval datum to string                                            */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendIvl(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
+void Record::vAppendIvl(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
-  m_sRecStr.vCatSprint("%lld"_Stz,(i8)wDatum);
+  m_sRecStr.vCatSprint("%lld"_Stz,(i8)pDatum->wDatum());
 }
 
 /*----------------------------------------------------------------------------*/
 /* append time datum to string                                                */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendTme(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
+void Record::vAppendTme(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
   Tme wTme;
-  wTme.vAsI8((i8)wDatum);
+  wTme.vAsI8((i8)pDatum->wDatum());
   
   s32 sTme;
   wTme.vSprint(sTme.aStz());
@@ -152,12 +152,12 @@ void Record::vAppendTme(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* append timestamp datum to string                                           */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendTsp(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
+void Record::vAppendTsp(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
   Tsp wTsp;
-  wTsp.vAsI8((i8)wDatum);
+  wTsp.vAsI8((i8)pDatum->wDatum());
   
   s32 sTsp;
   wTsp.vSprint(sTsp.aStz());
@@ -168,13 +168,13 @@ void Record::vAppendTsp(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
 /*----------------------------------------------------------------------------*/
 /* append varchar datum to string                                             */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendVch(Column* pCol, Datum* pDatum, w8 wDatum, Stz* szDatum)
+void Record::vAppendVch(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
   
   s256 sBuf;
   
-  Vch::vSprintQuotes(sBuf,szDatum);
+  Vch::vSprintQuotes(sBuf,pDatum->szDatum());
   m_sRecStr.vConcat(sBuf.aStz());
 }
 
