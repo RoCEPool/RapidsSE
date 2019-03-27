@@ -98,7 +98,7 @@ void RowEncoder::vAsString(s48K& sDataString, ColumnVec* pColumnVec, CacheLine* 
       RASSERT(eDatum != DM_FLT);
 
       sDataString.vCatSprint("null"_Stz);
-      return;
+      continue;
     }
     
     switch (eDatum) {
