@@ -25,17 +25,7 @@ namespace Data
     void vRecord(Record* pRec, i8 i_Row, ColumnVec* pColVec);
 
   private:
-  
     void vAppend(Record* pRec, i8 i_Row, Column* pCol);
-    void vAppendBcd(Record* pRec, Column* pCol, w8 wDatum, Stz* szDatum);
-    void vAppendBol(Record* pRec, Column* pCol, w8 wDatum, Stz* szDatum);
-    void vAppendDte(Record* pRec, Column* pCol, w8 wDatum, Stz* szDatum);
-    void vAppendFlt(Record* pRec, Column* pCol, w8 wDatum, Stz* szDatum);
-    void vAppendInt(Record* pRec, Column* pCol, w8 wDatum, Stz* szDatum);
-    void vAppendIvl(Record* pRec, Column* pCol, w8 wDatum, Stz* szDatum);
-    void vAppendTme(Record* pRec, Column* pCol, w8 wDatum, Stz* szDatum);
-    void vAppendTsp(Record* pRec, Column* pCol, w8 wDatum, Stz* szDatum);
-    void vAppendVch(Record* pRec, Column* pCol, w8 wDatum, Stz* szDatum);
   
     void vDecodeBcd(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum);
     void vDecodeBol(i8 i_Row, Column* pCol, w8& wDatum, Stz* szDatum);

@@ -87,21 +87,21 @@ void RowDecoder::vPrint(i8 i_Row, Column* pCol)
   w8 wDatum;
   s256 sDatum;
   
-  Record* pRecord = new Record;
+  Record* pRec = new Record;
   
   vDecode(i_Row,pCol,wDatum,sDatum);
   
   eDM eDatum = pCol->eDatumType();
   switch (eDatum) {
-    case DM_BCD: vAppendBcd(pRecord,pCol,wDatum,sDatum); break;
-    case DM_BOL: vAppendBol(pRecord,pCol,wDatum,sDatum); break;
-    case DM_DTE: vAppendDte(pRecord,pCol,wDatum,sDatum); break;
-    case DM_FLT: vAppendFlt(pRecord,pCol,wDatum,sDatum); break;
-    case DM_INT: vAppendInt(pRecord,pCol,wDatum,sDatum); break;
-    case DM_IVL: vAppendIvl(pRecord,pCol,wDatum,sDatum); break;
-    case DM_TME: vAppendTme(pRecord,pCol,wDatum,sDatum); break;
-    case DM_TSP: vAppendTsp(pRecord,pCol,wDatum,sDatum); break;
-    case DM_VCH: vAppendVch(pRecord,pCol,wDatum,sDatum); break;
+    case DM_BCD: pRec->vAppendBcd(pCol,wDatum,sDatum); break;
+    case DM_BOL: pRec->vAppendBol(pCol,wDatum,sDatum); break;
+    case DM_DTE: pRec->vAppendDte(pCol,wDatum,sDatum); break;
+    case DM_FLT: pRec->vAppendFlt(pCol,wDatum,sDatum); break;
+    case DM_INT: pRec->vAppendInt(pCol,wDatum,sDatum); break;
+    case DM_IVL: pRec->vAppendIvl(pCol,wDatum,sDatum); break;
+    case DM_TME: pRec->vAppendTme(pCol,wDatum,sDatum); break;
+    case DM_TSP: pRec->vAppendTsp(pCol,wDatum,sDatum); break;
+    case DM_VCH: pRec->vAppendVch(pCol,wDatum,sDatum); break;
     default:
       NEVER_REACH;
   }
@@ -110,9 +110,9 @@ void RowDecoder::vPrint(i8 i_Row, Column* pCol)
          pCol->iColumnNo(),
          pCol->sColumnName().aStz(),
          aDM[pCol->eDatumType()],
-         pRecord->szRecStr());
+         pRec->szRecStr());
   
-  delete pRecord;
+  delete pRec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,131 +159,19 @@ void RowDecoder::vAppend(Record* pRec, i8 i_Row, Column* pCol)
   
   eDM eDatum = pCol->eDatumType();
   switch (eDatum) {
-    case DM_BCD: vAppendBcd(pRec,pCol,wDatum,sDatum); break;
-    case DM_BOL: vAppendBol(pRec,pCol,wDatum,sDatum); break;
-    case DM_DTE: vAppendDte(pRec,pCol,wDatum,sDatum); break;
-    case DM_FLT: vAppendFlt(pRec,pCol,wDatum,sDatum); break;
-    case DM_INT: vAppendInt(pRec,pCol,wDatum,sDatum); break;
-    case DM_IVL: vAppendIvl(pRec,pCol,wDatum,sDatum); break;
-    case DM_TME: vAppendTme(pRec,pCol,wDatum,sDatum); break;
-    case DM_TSP: vAppendTsp(pRec,pCol,wDatum,sDatum); break;
-    case DM_VCH: vAppendVch(pRec,pCol,wDatum,sDatum); break;
+    case DM_BCD: pRec->vAppendBcd(pCol,wDatum,sDatum); break;
+    case DM_BOL: pRec->vAppendBol(pCol,wDatum,sDatum); break;
+    case DM_DTE: pRec->vAppendDte(pCol,wDatum,sDatum); break;
+    case DM_FLT: pRec->vAppendFlt(pCol,wDatum,sDatum); break;
+    case DM_INT: pRec->vAppendInt(pCol,wDatum,sDatum); break;
+    case DM_IVL: pRec->vAppendIvl(pCol,wDatum,sDatum); break;
+    case DM_TME: pRec->vAppendTme(pCol,wDatum,sDatum); break;
+    case DM_TSP: pRec->vAppendTsp(pCol,wDatum,sDatum); break;
+    case DM_VCH: pRec->vAppendVch(pCol,wDatum,sDatum); break;
     default:
       NEVER_REACH;
   }
 }
-
-/*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vAppendBcd(Record* pRec, Column* pCol, w8 wDatum, Stz* szDatum)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
-  
-  pRec->szRecStr()->vCatSprint("%lld"_Stz,(i8)wDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vAppendBol(Record* pRec, Column* pCol, w8 wDatum, Stz* szDatum)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
-  
-  pRec->szRecStr()->vConcat(wDatum ? "true"_Stz : "false"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vAppendDte(Record* pRec, Column* pCol, w8 wDatum, Stz* szDatum)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
-  
-  Dte wDte;
-  wDte.vAsI8(wDatum);
-  
-  s32 sDte;
-  wDte.vSprint(sDte.aStz());
-  
-  pRec->szRecStr()->vConcat(sDte.aStz());
-}
-
-/*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vAppendFlt(Record* pRec, Column* pCol, w8 wDatum, Stz* szDatum)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
-  
-  pRec->szRecStr()->vCatSprint("%g"_Stz,(d8)wDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vAppendInt(Record* pRec, Column* pCol, w8 wDatum, Stz* szDatum)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
-  
-  pRec->szRecStr()->vCatSprint("%lld"_Stz,(i8)wDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vAppendIvl(Record* pRec, Column* pCol, w8 wDatum, Stz* szDatum)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
-  
-  pRec->szRecStr()->vCatSprint("%lld"_Stz,(i8)wDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vAppendTme(Record* pRec, Column* pCol, w8 wDatum, Stz* szDatum)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
-  
-  Tme wTme;
-  wTme.vAsI8((i8)wDatum);
-  
-  s32 sTme;
-  wTme.vSprint(sTme.aStz());
-  
-  pRec->szRecStr()->vConcat(sTme.aStz());
-}
-
-/*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vAppendTsp(Record* pRec, Column* pCol, w8 wDatum, Stz* szDatum)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
-  
-  Tsp wTsp;
-  wTsp.vAsI8((i8)wDatum);
-  
-  s32 sTsp;
-  wTsp.vSprint(sTsp.aStz());
-  
-  pRec->szRecStr()->vConcat(sTsp.aStz());
-}
-
-/*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vAppendVch(Record* pRec, Column* pCol, w8 wDatum, Stz* szDatum)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
-  
-  s256 sBuf;
-  
-  Vch::vSprintQuotes(sBuf,szDatum);
-  pRec->szRecStr()->vConcat(sBuf.aStz());
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
