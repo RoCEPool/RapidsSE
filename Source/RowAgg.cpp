@@ -150,7 +150,8 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
     //vTrace("row: (%s)\n"_Stz, sRowString.aChar());
     
     aSrc = (byte*)aRowData->aColumnDatum(m_pKeyColumn->iColumnNo());
-    xKey = IntLib::iVlqToInt(aSrc);
+    //xKey = IntLib::iVlqToInt(aSrc);
+    xKey = *((i8*)aSrc);
 
     for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
       
@@ -158,7 +159,8 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
       i_Col = pAggColumn->iColumnNo();
       
       aSrc = (byte*)aRowData->aColumnDatum(i_Col);
-      xVal = IntLib::iVlqToInt(aSrc);
+      //xVal = IntLib::iVlqToInt(aSrc);
+      xVal = *((i8*)aSrc);
     
       if (xVal.iAsI8() < m_iaMinVal[i_AggCol]) {
         m_iaMinVal[i_AggCol] = xVal.iAsI8();

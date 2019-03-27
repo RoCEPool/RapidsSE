@@ -57,8 +57,6 @@ using namespace Data;
 
 //------------------------------------------------------------------------------
 
-#define USE_VLQ_DATUMS // use vlq code for int and bcd datums
-
 typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 typedef TrayNL_t<CN_ROWTRAY,CacheLine,C_MAX_ROWS> RowTray;
 

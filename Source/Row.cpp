@@ -53,7 +53,7 @@ RowData::~RowData(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert row to binary string                                               */
 /*----------------------------------------------------------------------------*/
-void RowData::vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec)
+void RowData::vAsBinaryString(s48K& sDataString, ColumnVec* pColVec)
 {
   Stz* aData;
   s17KB sDst;
@@ -75,7 +75,7 @@ void RowData::vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec)
     aData = (Stz*)aColumnDatum(i_Column);
     
     // copy the data for the column into aDst
-    DtmLib::vSprintQuotesVLQ(sDst, aData, pColumn);
+    DtmLib::vSprintQuotes(pColumn->eDatumType(), sDst, aData, pColumn);
     
     // now copy the data for the column from aDst to aDataString
     if (i_Column == 0)
@@ -113,7 +113,7 @@ void RowData::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec)
     aData = (Stz*)aColumnDatum(i_Column);
     
     // copy the data for the column into aDst
-    DtmLib::vSprintEscapedVLQ(pColumn->eDatumType(), sDst, aData, pColumn);
+    DtmLib::vSprintEscaped(pColumn->eDatumType(), sDst, aData, pColumn);
     
     // now copy the data for the column from aDst to aDataString
     if (i_Column == 0)
@@ -169,7 +169,7 @@ void RowData::vDump(ColumnVec* pColVec)
     aData = (Stz*)aColumnDatum(i_Column);
 
     // dump the column value
-    DtmLib::vSprintVLQ(pColumn->eDatumType(), sDst, aData, pColumn);
+    DtmLib::vSprint(pColumn->eDatumType(), sDst, aData, pColumn);
     vTrace("%s|"_Stz, sDst.aChar());
   }
 
@@ -193,10 +193,7 @@ void RowData::vShow(ColumnVec* pColVec, bool bCompressed)
     aData = (Stz*)aColumnDatum(i_Column);
     
     s17KB s;
-    if (bCompressed)
-      DtmLib::vSprintVLQ(pColumn->eDatumType(), s, aData, pColumn);
-    else
-      DtmLib::vSprint(pColumn->eDatumType(), s, aData, pColumn);
+    DtmLib::vSprint(pColumn->eDatumType(), s, aData, pColumn);
     vTrace("%s "_Stz, s.aChar());
   }
   

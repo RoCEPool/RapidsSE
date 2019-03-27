@@ -51,30 +51,6 @@ void DtmLib::vCopy(eDM eDatum, void* aDst, void* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy datum (return the number of bytes copied)                             */
-/*----------------------------------------------------------------------------*/
-i8 DtmLib::nCopyVLQ(eDM eDatum, void* pDst, void* pSrc)
-{
-  switch (eDatum) {
-      
-    case DM_BCD: return Bcd::nCopyVLQ(pDst,pSrc);
-    case DM_BOL: return Bol::nCopy(pDst,pSrc);
-    case DM_DTE: return Dte::nCopy(pDst,pSrc);
-    case DM_FLT: return Flt::nCopy(pDst,pSrc);
-    case DM_INT: return Int::nCopyVLQ(pDst,pSrc);
-    case DM_IVL: return Ivl::nCopy(pDst,pSrc);
-    case DM_TME: return Tme::nCopy(pDst,pSrc);
-    case DM_TSP: return Tsp::nCopy(pDst,pSrc);
-    case DM_VCH: return Vch::nCopy(pDst,pSrc);
-      
-    default:
-      vFatal("ValLib::vCopyDatum: Invalid copy: eDatum %lld\n"_Stz,
-             eDatum);
-      return -1;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Extract -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -264,29 +240,6 @@ void DtmLib::vSprint(eDM eDatum, Stz* aDst, Stz* aSrc,
 /*----------------------------------------------------------------------------*/
 /* s-print                                                                    */
 /*----------------------------------------------------------------------------*/
-void DtmLib::vSprintVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
-                     MetaData::Column* pColumn)
-{
-  switch (eDatum) {
-    case DM_BCD: Bcd::vSprintVLQ(aDst,aSrc,pColumn); break;
-    case DM_BOL: Bol::vSprint(aDst,aSrc); break;
-    case DM_CHR: Vch::vSprint(aDst,aSrc); break;
-    case DM_DTE: Dte::vSprint(aDst,aSrc); break;
-    case DM_FLT: Flt::vSprint(aDst,aSrc); break;
-    case DM_INT: Int::vSprintVLQ(aDst,aSrc); break;
-    case DM_IVL: Ivl::vSprint(aDst,aSrc); break;
-    case DM_TME: Tme::vSprint(aDst,aSrc); break;
-    case DM_TSP: Tsp::vSprint(aDst,aSrc); break;
-    case DM_VCH: Vch::vSprint(aDst,aSrc); break;
-    default:
-      vFatal("DtmLib::vSprint: Invalid aDatum argument: %lld\n"_Stz,
-             eDatum);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* s-print                                                                    */
-/*----------------------------------------------------------------------------*/
 void DtmLib::vSprintQuotes(eDM eDatum, Stz* aDst, Stz* aSrc,
                            MetaData::Column* pColumn)
 {
@@ -308,31 +261,6 @@ void DtmLib::vSprintQuotes(eDM eDatum, Stz* aDst, Stz* aSrc,
 }
 
 /*----------------------------------------------------------------------------*/
-/* s-print                                                                    */
-/*----------------------------------------------------------------------------*/
-void DtmLib::vSprintQuotesVLQ(Stz* aDst, Stz* aSrc, MetaData::Column* pColumn)
-{
-  eDM eDatum = pColumn->eDatumType();
-  
-  switch (eDatum) {
-    case DM_BCD: Bcd::vSprintVLQ(aDst,aSrc,pColumn); break;
-    case DM_BOL: Bol::vSprint(aDst,aSrc); break;
-    case DM_CHR: Vch::vSprint(aDst,aSrc); break;
-    case DM_DTE: Dte::vSprint(aDst,aSrc); break;
-    case DM_FLT: Flt::vSprint(aDst,aSrc); break;
-    case DM_INT: Int::vSprintVLQ(aDst,aSrc); break;
-    case DM_IVL: Ivl::vSprint(aDst,aSrc); break;
-    case DM_TME: Tme::vSprint(aDst,aSrc); break;
-    case DM_TSP: Tsp::vSprint(aDst,aSrc); break;
-    case DM_VCH: Vch::vSprintQuotes(aDst,aSrc); break;
-    default:
-      vFatal("DtmLib::vSprint: Invalid aDatum argument: %lld\n"_Stz,
-             eDatum);
-  }
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* s-print escaped                                                            */
 /*----------------------------------------------------------------------------*/
 void DtmLib::vSprintEscaped(eDM eDatum, Stz* aDst, Stz* aSrc,
@@ -345,29 +273,6 @@ void DtmLib::vSprintEscaped(eDM eDatum, Stz* aDst, Stz* aSrc,
     case DM_DTE: Dte::vSprintEscaped(aDst,aSrc);  break;
     case DM_FLT: Flt::vSprint(aDst,aSrc);         break;
     case DM_INT: Int::vSprint(aDst,aSrc);         break;
-    case DM_IVL: Ivl::vSprint(aDst,aSrc);         break;
-    case DM_TME: Tme::vSprintEscaped(aDst,aSrc);  break;
-    case DM_TSP: Tsp::vSprintEscaped(aDst,aSrc);  break;
-    case DM_VCH: Vch::vSprintEscaped(aDst,aSrc);  break;
-    default:
-      vFatal("DtmLib::vSprint: Invalid aDatum argument: %lld\n"_Stz,
-             eDatum);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* s-print escaped                                                            */
-/*----------------------------------------------------------------------------*/
-void DtmLib::vSprintEscapedVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
-                            MetaData::Column* pColumn)
-{
-  switch (eDatum) {
-    case DM_BCD: Bcd::vSprintVLQ(aDst,aSrc,pColumn); break;
-    case DM_BOL: Bol::vSprint(aDst,aSrc);         break;
-    case DM_CHR: Vch::vSprint(aDst,aSrc);         break;
-    case DM_DTE: Dte::vSprintEscaped(aDst,aSrc);  break;
-    case DM_FLT: Flt::vSprint(aDst,aSrc);         break;
-    case DM_INT: Int::vSprintVLQ(aDst,aSrc);         break;
     case DM_IVL: Ivl::vSprint(aDst,aSrc);         break;
     case DM_TME: Tme::vSprintEscaped(aDst,aSrc);  break;
     case DM_TSP: Tsp::vSprintEscaped(aDst,aSrc);  break;

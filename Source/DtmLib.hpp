@@ -16,7 +16,6 @@ namespace Datums
   
   public:
     static i8   nCopy(eDM eDatum, void* pDst, void* pSrc);
-    static i8   nCopyVLQ(eDM eDatum, void* pDst, void* pSrc);
     static void vCopy(eDM eDatum,  void* aDst, void* aSrc);
     static bool bExtract(eDM eDatum, Stz* aDst, char** aSrc,
                          MetaData::Column* pColumn, bool bLastColumn,
@@ -24,14 +23,9 @@ namespace Datums
     static void vHash(eDM eDatum, i8& iHash, Stz* aSrc);
     static void vSprint(eDM eDatum, Stz* aDst, Stz* aSrc,
                         MetaData::Column* pColumn);
-    static void vSprintVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
-                        MetaData::Column* pColumn);
     static void vSprintQuotes(eDM eDatum, Stz* aDst, Stz* aSrc,
                         MetaData::Column* pColumn);
-    static void vSprintQuotesVLQ(Stz* aDst, Stz* aSrc, MetaData::Column* pColumn);
     static void vSprintEscaped(eDM eDatum, Stz* aDst, Stz* aSrc,
-                               MetaData::Column* pColumn);
-    static void vSprintEscapedVLQ(eDM eDatum, Stz* aDst, Stz* aSrc,
                                MetaData::Column* pColumn);
     static bool bLessThan(eDM eDatum, char* aArgA, char* aArgB);
     static bool bLessEqual(eDM eDatum, char* aArgA, char* aArgB);
