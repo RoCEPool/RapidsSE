@@ -31,7 +31,7 @@ namespace Data
     
     static w8 wDecode(Column* pColumn, CacheLine* aCacheLine);
   
-    void vEncodeDatum(Column* pColumn, byte* aDatum);
+    void vEncode(Column* pColumn, Datum* pDatum, byte* aDatum);
   
     static void vPrint(Column* pColumn, CacheLine* aCacheLine);
   
@@ -46,15 +46,15 @@ namespace Data
     static w8 wDecodeTsp(Column* pColumn, CacheLine* aCacheLine);
     static w8 wDecodeVch(Column* pColumn, CacheLine* aCacheLine);
   
-    void vEncodeBcd(Column* pColumn, byte* aDatum);
-    void vEncodeBol(Column* pColumn, byte* aDatum);
-    void vEncodeDte(Column* pColumn, byte* aDatum);
-    void vEncodeFlt(Column* pColumn, byte* aDatum);
-    void vEncodeInt(Column* pColumn, byte* aDatum);
-    void vEncodeIvl(Column* pColumn, byte* aDatum);
-    void vEncodeTme(Column* pColumn, byte* aDatum);
-    void vEncodeTsp(Column* pColumn, byte* aDatum);
-    void vEncodeVch(Column* pColumn, byte* aDatum);
+    void vEncodeBcd(Column* pColumn, Datum* pDatum, byte* aDatum);
+    void vEncodeBol(Column* pColumn, Datum* pDatum, byte* aDatum);
+    void vEncodeDte(Column* pColumn, Datum* pDatum, byte* aDatum);
+    void vEncodeFlt(Column* pColumn, Datum* pDatum, byte* aDatum);
+    void vEncodeInt(Column* pColumn, Datum* pDatum, byte* aDatum);
+    void vEncodeIvl(Column* pColumn, Datum* pDatum, byte* aDatum);
+    void vEncodeTme(Column* pColumn, Datum* pDatum, byte* aDatum);
+    void vEncodeTsp(Column* pColumn, Datum* pDatum, byte* aDatum);
+    void vEncodeVch(Column* pColumn, Datum* pDatum, byte* aDatum);
   
     static i8 iDteDecoding(WordView& wTspView, i8 iEncoding);
     static i8 iTmeDecoding(WordView& wTspView, i8 iEncoding);

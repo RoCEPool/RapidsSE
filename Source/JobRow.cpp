@@ -94,6 +94,7 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  Datum* pDatum = new Datum;
   RowEncoder* pRowEncoder = new RowEncoder(&m_oRowParts);
   
   ColumnVec* pColVec = m_pTable->pColumnVec();
@@ -136,15 +137,16 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     // encode datum into cache line
     
     if (eDatum == DM_INT || eDatum == DM_BCD)
-      pRowEncoder->vEncodeDatum(pColumn,(byte*)&iInt);
+      pRowEncoder->vEncode(pColumn,pDatum,(byte*)&iInt);
     else
-      pRowEncoder->vEncodeDatum(pColumn,(byte*)sDst.aChar());
+      pRowEncoder->vEncode(pColumn,pDatum,(byte*)sDst.aChar());
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     //RowEncoder::vPrint(pColumn,aCacheLine);
 
   } // for each column
   
   delete pRowEncoder;
+  delete pDatum;
 
   return true;
 }

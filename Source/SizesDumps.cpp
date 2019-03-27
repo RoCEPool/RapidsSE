@@ -326,7 +326,7 @@ i8 giClassSize[]
   /* 32 */ sizeof(Compiler),           // CN_COMPILER
   /* 32 */ sizeof(Completer),          // CN_COMPLETER
 
-  /*    */ 0,            // CN_DATUM
+  /*    */ sizeof(Datum),              // CN_DATUM
   /*    */ sizeof(Decider),            // CN_DECIDER
   /* 33 */ sizeof(Dic),                // CN_DIC
   /* 34 */ sizeof(DicPath),            // CN_DICPATH
@@ -400,7 +400,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Export),         // CN_JOB_EXPORT
   /*    */ sizeof(Job_FetchRows),      // CN_JOB_FETCHROWS
   /*    */ sizeof(Job_Generate),       // CN_JOB_GENERATE
-  /*    */ 0,       // CN_JOB_HEALTH
+  /*    */ sizeof(Job_Health),         // CN_JOB_HEALTH
   /*    */ sizeof(Job_Ingest),         // CN_JOB_INGEST
   /*    */ sizeof(Job_InsertRow),      // CN_JOB_INSERTROW
   /*    */ sizeof(Job_InsertTable),    // CN_JOB_INSERTTABLE
