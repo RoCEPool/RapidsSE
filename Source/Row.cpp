@@ -75,7 +75,7 @@ void RowData::vAsBinaryString(s48K& sDataString, ColumnVec* pColVec)
     aData = (Stz*)aColumnDatum(i_Column);
     
     // copy the data for the column into aDst
-    DtmLib::vSprintQuotes(pColumn->eDatumType(), sDst, aData, pColumn);
+    DtmLib::vSprintQuotes(pColumn, sDst, aData);
     
     // now copy the data for the column from aDst to aDataString
     if (i_Column == 0)
@@ -113,7 +113,7 @@ void RowData::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec)
     aData = (Stz*)aColumnDatum(i_Column);
     
     // copy the data for the column into aDst
-    DtmLib::vSprintEscaped(pColumn->eDatumType(), sDst, aData, pColumn);
+    DtmLib::vSprintEscaped(pColumn, sDst, aData);
     
     // now copy the data for the column from aDst to aDataString
     if (i_Column == 0)
@@ -169,7 +169,7 @@ void RowData::vDump(ColumnVec* pColVec)
     aData = (Stz*)aColumnDatum(i_Column);
 
     // dump the column value
-    DtmLib::vSprint(pColumn->eDatumType(), sDst, aData, pColumn);
+    DtmLib::vSprint(pColumn, sDst, aData);
     vTrace("%s|"_Stz, sDst.aChar());
   }
 
@@ -193,7 +193,7 @@ void RowData::vShow(ColumnVec* pColVec)
     aData = (Stz*)aColumnDatum(i_Column);
     
     s17KB s;
-    DtmLib::vSprint(pColumn->eDatumType(), s, aData, pColumn);
+    DtmLib::vSprint(pColumn, s, aData);
     vTrace("%s "_Stz, s.aChar());
   }
   
