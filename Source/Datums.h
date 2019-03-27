@@ -64,7 +64,6 @@ using namespace Datums;
 #include "Vch.hpp"
 
 #include "DtmLib.hpp"
-#include "Datum.hpp"
 #include "DatumUnion.hpp"
 
 /*============================================================================*/
