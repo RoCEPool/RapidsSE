@@ -1034,11 +1034,18 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
     HeapBuffer* pHeapBuffer =
     reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBuffer));
     
-    EntryBuffer* pChildBuffer =
-    reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
-    
-    ASSERT(pChildBuffer->m_pHigherBuffer ==
-           EntryBuffer::pRefdEntryBuffer(aNewEntry)->m_pHigherBuffer);
+    if (m_iBufferHeight) {
+      EntryBuffer* pChildBuffer =
+      reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
+      
+      ASSERT(pChildBuffer->m_pHigherBuffer ==
+             EntryBuffer::pRefdEntryBuffer(aNewEntry)->m_pHigherBuffer);
+    }
+    else {
+      RowBuffer* pChildBuffer =
+      reinterpret_cast<RowBuffer*>(pHeapBuffer->aFirstChunk());
+      RASSERT(pChildBuffer);
+    }
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
