@@ -155,9 +155,6 @@ void Job_CopyBuffer::vCopy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_COPYBUFFER,_FOOTER_);
   
-  // ALKA: get this working with new RowBuffers
-  RASSERT(0);
- /*
   //m_pRecordBuffer->vShow();
   //MemLib::vHexDump(m_pRecordBuffer, 500);
   
@@ -197,13 +194,12 @@ void Job_CopyBuffer::vCopy(void)
     
     // insert row into a working buffer in job InsertRow
     m_pJob_SubInserter->vGrabWrite();
-    eEC eErrorCode = m_pJob_SubInserter->eInsertRow(m_aRow, m_nRowBytes);
+    eEC eErrorCode = m_pJob_SubInserter->eInsertRow(m_oRowParts.aGet(0), m_nRowBytes);
     RASSERT(eErrorCode == EC_NONE);
     m_pJob_SubInserter->vDropWrite();
   }
   
   ++m_pJob_SubInserter->m_ixCopiedBuffers;
-  */
 }
 
 /*----------------------------------------------------------------------------*/

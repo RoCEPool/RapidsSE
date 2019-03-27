@@ -13,8 +13,8 @@ namespace Jobs
                          public JobRow
   {
   public:
-    Job_SubInserter* m_pJob_SubInserter;
-  Interface::RecordBuffer*    m_pRecordBuffer;
+    Job_SubInserter*         m_pJob_SubInserter;
+    Interface::RecordBuffer* m_pRecordBuffer;
     
     // must be last
     Footer m_xFooter;
