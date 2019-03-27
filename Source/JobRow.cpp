@@ -70,9 +70,8 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   bBlankLine = false;
   
   bool bValidDatum;
-  i8 iInt = 0;
-  
   char* aSrc = aRecord->aChar();
+  
   //  char caRow[1024];
   //  StrLib::vCopyLen(caRow,aRecord->aChar(),nBytes);
   //  vTrace("Row: %s\n"_Stz,caRow);
@@ -109,13 +108,8 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // extract datum from record
-    
-    if (eDatum == DM_INT || eDatum == DM_BCD)
-      bValidDatum = DtmLib::bExtract(pColumn, (Stz*)&iInt, &aSrc,
-                                     bLastColumn, &m_oFormatters);
-    else
-      bValidDatum = DtmLib::bExtract(pColumn, sDst, &aSrc,
-                                     bLastColumn, &m_oFormatters);
+    bValidDatum = DtmLib::bExtract(pColumn, sDst, &aSrc,
+                                   bLastColumn, &m_oFormatters);
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // is the datum valid ?
@@ -134,11 +128,7 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // encode datum into cache line
-    
-    if (eDatum == DM_INT || eDatum == DM_BCD)
-      pDatum->vDatum((byte*)&iInt);
-    else
-      pDatum->vDatum((byte*)sDst.aChar());
+    pDatum->vDatum((byte*)sDst.aChar());
     pRowEncoder->vEncode(pColumn,pDatum);
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     //RowEncoder::vPrint(pColumn,aCacheLine);
