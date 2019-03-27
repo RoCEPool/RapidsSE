@@ -57,12 +57,13 @@ void DtmLib::vCopy(eDM eDatum, void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract                                                                    */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
-                      MetaData::Column* pColumn, bool bLastColumn,
+bool DtmLib::bExtract(MetaData::Column* pColumn,  Stz* aDst, char** aaSrc,
+                      bool bLastColumn,
                       Formatters* pFormatters)
 {
   bool b = false;
-
+  eDM eDatum = pColumn->eDatumType();
+  
   if (pFormatters->m_bDefault) {
     switch (eDatum) {
       case DM_BCD: b = Bcd::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
@@ -217,9 +218,10 @@ void DtmLib::vHash(eDM eDatum, i8& iHash, Stz* aScr)
 /*----------------------------------------------------------------------------*/
 /* s-print                                                                    */
 /*----------------------------------------------------------------------------*/
-void DtmLib::vSprint(eDM eDatum, Stz* aDst, Stz* aSrc,
-                     MetaData::Column* pColumn)
+void DtmLib::vSprint(MetaData::Column* pColumn, Stz* aDst, Stz* aSrc)
 {
+  eDM eDatum = pColumn->eDatumType();
+  
   switch (eDatum) {
     case DM_BCD: Bcd::vSprint(aDst,aSrc,pColumn); break;
     case DM_BOL: Bol::vSprint(aDst,aSrc); break;
@@ -240,9 +242,10 @@ void DtmLib::vSprint(eDM eDatum, Stz* aDst, Stz* aSrc,
 /*----------------------------------------------------------------------------*/
 /* s-print                                                                    */
 /*----------------------------------------------------------------------------*/
-void DtmLib::vSprintQuotes(eDM eDatum, Stz* aDst, Stz* aSrc,
-                           MetaData::Column* pColumn)
+void DtmLib::vSprintQuotes(MetaData::Column* pColumn, Stz* aDst, Stz* aSrc)
 {
+  eDM eDatum = pColumn->eDatumType();
+  
   switch (eDatum) {
     case DM_BCD: Bcd::vSprint(aDst,aSrc,pColumn); break;
     case DM_BOL: Bol::vSprint(aDst,aSrc); break;
@@ -263,9 +266,10 @@ void DtmLib::vSprintQuotes(eDM eDatum, Stz* aDst, Stz* aSrc,
 /*----------------------------------------------------------------------------*/
 /* s-print escaped                                                            */
 /*----------------------------------------------------------------------------*/
-void DtmLib::vSprintEscaped(eDM eDatum, Stz* aDst, Stz* aSrc,
-                     MetaData::Column* pColumn)
+void DtmLib::vSprintEscaped(MetaData::Column* pColumn, Stz* aDst, Stz* aSrc)
 {
+  eDM eDatum = pColumn->eDatumType();
+  
   switch (eDatum) {
     case DM_BCD: Bcd::vSprint(aDst,aSrc,pColumn); break;
     case DM_BOL: Bol::vSprint(aDst,aSrc);         break;
@@ -560,8 +564,9 @@ bool DtmLib::bIsThereRecordData(char* aSrc, Formatters* pFormatters)
 /*----------------------------------------------------------------------------*/
 /* test for null token                                                        */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bTestForNull(char** aaSrc, MetaData::Column* pColumn,
-                          Formatters* pFormatters, bool& bValidNull,
+bool DtmLib::bTestForNull(MetaData::Column* pColumn, char** aaSrc,
+                          Formatters* pFormatters,
+                          bool& bValidNull,
                           bool bSkipTrailingSpaces)
 {
   /*
@@ -661,7 +666,7 @@ bool DtmLib::bTestForNull(char** aaSrc, MetaData::Column* pColumn,
 /*----------------------------------------------------------------------------*/
 /* test for null token                                                        */
 /*----------------------------------------------------------------------------*/
-bool DtmLib::bTestForNullDefault(char** aaSrc, MetaData::Column* pColumn,
+bool DtmLib::bTestForNullDefault(MetaData::Column* pColumn, char** aaSrc,
                                  Formatters* pFormatters, bool& bValidNull,
                                  bool bSkipTrailingSpaces)
 {

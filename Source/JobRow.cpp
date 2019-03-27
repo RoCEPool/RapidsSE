@@ -111,11 +111,11 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     // extract datum from record
     
     if (eDatum == DM_INT || eDatum == DM_BCD)
-      bValidDatum = DtmLib::bExtract(eDatum, (Stz*)&iInt, &aSrc,
-                                     pColumn, bLastColumn, &m_oFormatters);
+      bValidDatum = DtmLib::bExtract(pColumn, (Stz*)&iInt, &aSrc,
+                                     bLastColumn, &m_oFormatters);
     else
-      bValidDatum = DtmLib::bExtract(eDatum, sDst, &aSrc,
-                                     pColumn, bLastColumn, &m_oFormatters);
+      bValidDatum = DtmLib::bExtract(pColumn, sDst, &aSrc,
+                                     bLastColumn, &m_oFormatters);
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // is the datum valid ?

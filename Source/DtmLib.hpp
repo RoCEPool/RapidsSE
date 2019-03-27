@@ -17,16 +17,12 @@ namespace Datums
   public:
     static i8   nCopy(eDM eDatum, void* pDst, void* pSrc);
     static void vCopy(eDM eDatum,  void* aDst, void* aSrc);
-    static bool bExtract(eDM eDatum, Stz* aDst, char** aSrc,
-                         MetaData::Column* pColumn, bool bLastColumn,
-                         Formatters* pFormatters);
+    static bool bExtract(MetaData::Column* pColumn, Stz* aDst, char** aSrc,
+                         bool bLastColumn, Formatters* pFormatters);
     static void vHash(eDM eDatum, i8& iHash, Stz* aSrc);
-    static void vSprint(eDM eDatum, Stz* aDst, Stz* aSrc,
-                        MetaData::Column* pColumn);
-    static void vSprintQuotes(eDM eDatum, Stz* aDst, Stz* aSrc,
-                        MetaData::Column* pColumn);
-    static void vSprintEscaped(eDM eDatum, Stz* aDst, Stz* aSrc,
-                               MetaData::Column* pColumn);
+    static void vSprint(MetaData::Column* pColumn, Stz* aDst, Stz* aSrc);
+    static void vSprintQuotes(MetaData::Column* pColumn, Stz* aDst, Stz* aSrc);
+    static void vSprintEscaped(MetaData::Column* pColumn, Stz* aDst, Stz* aSrc);
     static bool bLessThan(eDM eDatum, char* aArgA, char* aArgB);
     static bool bLessEqual(eDM eDatum, char* aArgA, char* aArgB);
     static bool bEqualTo(eDM eDatum, char* aArgA, char* aArgB);
@@ -41,14 +37,14 @@ namespace Datums
     static bool bIsEnclosed(char** aaSrc, Formatters* pFormatters);
     static bool bIsThereFieldData(char* aSrc, Formatters* pFormatters);
     static bool bIsThereRecordData(char* aSrc, Formatters* pFormatters);
-    static bool bTestForNull(char** aaSrc,
-                             MetaData::Column* pColumn,
+    static bool bTestForNull(MetaData::Column* pColumn,
+                             char** aaSrc,
                              Formatters* pFormatters,
                              bool& bValidNull,
                              bool bSkipTrailingSpaces=true);
-    static bool bTestForNullDefault(char** aaSrc,
-                             MetaData::Column* pColumn,
-                             Formatters* pFormatters,
+    static bool bTestForNullDefault(MetaData::Column* pColumn,
+                                    char** aaSrc,
+                                    Formatters* pFormatters,
                                     bool& bValidNull,
                                     bool bSkipTrailingSpaces=true);
     static bool bValidFieldEnd(char* aSrc, Formatters* pFormatters);

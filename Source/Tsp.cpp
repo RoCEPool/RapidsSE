@@ -296,7 +296,7 @@ bool Tsp::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormat
   // null processing
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
+  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     aTsp->vSetNull();
@@ -357,7 +357,7 @@ bool Tsp::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* 
   // null processing
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNullDefault(aaSrc,pColumn,pFormatters,bValidNull)) {
+  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     aTsp->vSetNull();
