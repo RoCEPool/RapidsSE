@@ -727,6 +727,19 @@ EntryBuffer* Table::pRootBuffer(i8 i_Slot, i8 i_Index)
 /*----------------------------------------------------------------------------*/
 /* hash the first field of row return partition                               */
 /*----------------------------------------------------------------------------*/
+i8 Table::iRowPartition(i8 iHash)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  // modulo to get partition number
+  i8 iPartition =
+  iHash
+  % (gpAttachMap->m_pGrid->m_nSlotsPerNode * gpAttachMap->m_pGrid->nNodes());
+  
+  return iPartition;  
+}
+
+/*
 i8 Table::iRowPartition(Stz* aRow_Data)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -757,45 +770,6 @@ i8 Table::iRowPartition(Stz* aRow_Data)
          % (gpAttachMap->m_pGrid->m_nSlotsPerNode * gpAttachMap->m_pGrid->nNodes());
   //vTrace("Hashed to Partition: %lld\n"_Stz,iPartition);
   
-  return iPartition;
-}
-/*
-i8 Table::iRowPartition(Stz* pRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  i8 nCols = m_xSlots.pPtnColVec()->nItems();
-  GenVar xVariable;
-  s256 s;
-  i8 iHash = 0;
-  
-  for (i8 iColumn = 0; iColumn < nCols; iColumn++) {
-    
-    // get the column from the index column vector
-    Column* pColumn = m_xSlots.pPtnColVec()->pGet(iColumn);
-    
-    // get the column number of the column
-    i8 iColumnNo = pColumn->iColumnNo();
-    
-    char* pDst = s.aChar();
-    char* aCursor = reinterpret_cast<char*>(pRow->aChar());
-    
-    // get the column value from the row for the iColumnNo
-    i8 iCol = -1;
-    do {
-      bool bFindPipe = StrLib::bExtractItem(&aCursor, pDst, ',');
-      ASSERT(bFindPipe);
-      iCol++;
-      aCursor++;
-    } while (iColumnNo != iCol);
-    
-    DtmLib::vHash(pColumn->eDatumType(),iHash,(Stz*)pDst,pColumn);
-  }
-  
-  // modulo to get partition number
-  i8 iPartition = iHash % (gpAttachMap->m_pGrid;->m_nSlotsPerNode * gpAttachMap->m_pGrid;->iNodes());
-  
-  //vTrace("Partition: %lld\n"_Stz,m_iPartition);
   return iPartition;
 }
 */

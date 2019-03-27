@@ -107,7 +107,7 @@ eEC JobWriteBehind::eInsertRow(CacheLine* aRow_Data, i8 nRowBytes)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // hash the record to a partition
-    i8 iPartition = 0; //m_pTable->iRowPartition(aRow_Data);
+    i8 iPartition = m_pTable->iRowPartition(m_iHash);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check for row buffer

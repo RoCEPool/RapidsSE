@@ -84,7 +84,7 @@ namespace MetaData
     void vPublish(i8 iPartitionNo);
     bool bPurge(i8 iPartitionNo, i8 iOlderThanSeconds);
     Data::EntryBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
-    i8   iRowPartition(Stz* pRow);
+    i8   iRowPartition(i8 iHash);
 
     i8   nRowBuffers(void);
     void vShowColumnVec(void);
