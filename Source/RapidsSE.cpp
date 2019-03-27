@@ -981,7 +981,7 @@ eEC RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
   ColumnVec* pColumnVec = pTable->pColumnVec();
   API_LOC(330);
 
-  pJob_ListColumns->m_xNode[iNode].m_ixRowsProcessed = pColumnVec->nItems() - 1;
+  pJob_ListColumns->m_xNode[iNode].m_ixRowsProcessed = pColumnVec->nItems();
   API_LOC(340);
 
   *aiRowCount = *(pJob_ListColumns->m_xNode[iNode].m_ixRowsProcessed);
