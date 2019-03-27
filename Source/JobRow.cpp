@@ -109,8 +109,13 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // extract datum from record
-    bValidDatum = DtmLib::bExtract(pColumn, sDst, &aSrc,
-                                   bLastColumn, &m_oFormatters);
+    
+    if (eDatum == DM_INT || eDatum == DM_BCD)
+      bValidDatum = DtmLib::bExtract(pColumn, (Stz*)&iInt, &aSrc,
+                                     bLastColumn, &m_oFormatters);
+    else
+      bValidDatum = DtmLib::bExtract(pColumn, sDst, &aSrc,
+                                     bLastColumn, &m_oFormatters);
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // is the datum valid ?
@@ -129,7 +134,11 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // encode datum into cache line
-    pDatum->vDatum((byte*)sDst.aChar());
+    
+    if (eDatum == DM_INT || eDatum == DM_BCD)
+      pDatum->vDatum((byte*)&iInt);
+    else
+      pDatum->vDatum((byte*)sDst.aChar());
     pRowEncoder->vEncode(pColumn,pDatum);
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     //RowEncoder::vPrint(pColumn,aCacheLine);
