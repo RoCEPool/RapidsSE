@@ -1126,7 +1126,10 @@ bool IndexTree::bVerify(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  return m_pRootBuffer->bVerify();
+  if (m_pRootBuffer)
+    return m_pRootBuffer->bVerify();
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1136,9 +1139,10 @@ bool IndexTree::bVerifyIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  bool bValid = m_pRootBuffer->bVerify();
+  if (m_pRootBuffer)
+    return m_pRootBuffer->bVerify();
   
-  return bValid;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
