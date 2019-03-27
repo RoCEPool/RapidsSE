@@ -23,6 +23,16 @@ namespace Data
     Record(void);
     ~Record(void) noexcept(false);
   
+    void vAppendBcd(Column* pCol, w8 wDatum, Stz* szDatum);
+    void vAppendBol(Column* pCol, w8 wDatum, Stz* szDatum);
+    void vAppendDte(Column* pCol, w8 wDatum, Stz* szDatum);
+    void vAppendFlt(Column* pCol, w8 wDatum, Stz* szDatum);
+    void vAppendInt(Column* pCol, w8 wDatum, Stz* szDatum);
+    void vAppendIvl(Column* pCol, w8 wDatum, Stz* szDatum);
+    void vAppendTme(Column* pCol, w8 wDatum, Stz* szDatum);
+    void vAppendTsp(Column* pCol, w8 wDatum, Stz* szDatum);
+    void vAppendVch(Column* pCol, w8 wDatum, Stz* szDatum);
+
     Stz* szRecStr(void);
   
   private:
