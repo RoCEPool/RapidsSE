@@ -521,12 +521,12 @@ void KeyWrk::vSetKey(Item* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vShow(IdxColVec* pIdxColVec, bool bCompressed)
+void KeyWrk::vShow(IdxColVec* pIdxColVec)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
   KeyData* aKey = this->aKey();
-  aKey->vShow(pIdxColVec, bCompressed);
+  aKey->vShow(pIdxColVec);
   vTrace("\n"_Stz);
 }
 

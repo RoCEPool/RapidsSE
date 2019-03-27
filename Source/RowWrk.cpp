@@ -133,7 +133,7 @@ void RowWrk::vShow(ColumnVec* pColVec)
   _precondition_(_MAGIC_,CN_ROWWRK);
   
   RowData* aThisRow = aRowData();
-  aThisRow->vShow(pColVec, true);
+  aThisRow->vShow(pColVec);
   vTrace("\n"_Stz);
 }
 

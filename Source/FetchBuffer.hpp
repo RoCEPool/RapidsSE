@@ -44,7 +44,7 @@ namespace Jobs
     
     i8    nPartitionNo(void);
     void  vRestore(void);
-    void  vShow(bool bCompressed);
+    void  vShow(void);
     i8    nUsedBytes(void);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

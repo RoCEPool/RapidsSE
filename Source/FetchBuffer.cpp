@@ -204,7 +204,7 @@ void FetchBuffer::vRestore(void)
 /*----------------------------------------------------------------------------*/
 /* show the contents of the buffer                                            */
 /*----------------------------------------------------------------------------*/
-void FetchBuffer::vShow(bool bCompressed)
+void FetchBuffer::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
 

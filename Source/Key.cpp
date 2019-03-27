@@ -306,7 +306,7 @@ bool KeyData::bNotEqual(Item* aKeyItem1, Item* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* show the contents of this key                                              */
 /*----------------------------------------------------------------------------*/
-void KeyData::vShow(IdxColVec* pIdxColVec, bool bCompressed)
+void KeyData::vShow(IdxColVec* pIdxColVec)
 {
   i8 nBytes;
   

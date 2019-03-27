@@ -24,7 +24,7 @@ namespace Data
     void vAsEscapedString(s48K& sDataString, ColumnVec* pColVec);
     char* aColumnDatum(i8 iColumnNo);
     void vDump(ColumnVec* pColVec);
-    void vShow(ColumnVec* pColVec, bool bCompressed);
+    void vShow(ColumnVec* pColVec);
     
   private:
     byte* yByteVec(void);

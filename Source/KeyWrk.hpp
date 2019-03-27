@@ -42,7 +42,7 @@ namespace Data
     void vReset(void);
     void vSetEntry(Item* pEntry);
     void vSetKey(Item* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec);
-    void vShow(IdxColVec* pIdxColVec, bool bCompressed);
+    void vShow(IdxColVec* pIdxColVec);
   };
 }
 
