@@ -98,7 +98,7 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   RowEncoder* pRowEncoder = new RowEncoder(&m_oRowParts);
   
   ColumnVec* pColVec = m_pTable->pColumnVec();
-  i8 nColumns = m_pTable->pColumnVec()->nItems() - 1;
+  i8 nColumns = m_pTable->pColumnVec()->nItems();
   
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
