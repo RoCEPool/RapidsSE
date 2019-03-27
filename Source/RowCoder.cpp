@@ -517,6 +517,225 @@ i8 RowCoder::iTspDecoding(WordView& wTspView, i8 iEncoding)
   return iDecoded;
 }
 
+/*----------------------------------------------------------------------------*/
+/* encoding of bcd                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iBcdEncoding(WordView& wBcdView, i8& nBytesEncoded)
+{
+  i8 iEncoding;
+  
+  if (wBcdView.m_iI8 == C_DATUM_NULL) {
+    iEncoding = MN_NULL;
+    nBytesEncoded = 0;
+  }
+  else {
+    iEncoding = IntLib::iByteMagnitude(wBcdView.m_iI8);
+    nBytesEncoded = iEncoding;
+  }
+  
+  return iEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* encoding of bol                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iBolEncoding(WordView& wBolView, i8& nBytesEncoded)
+{
+  i8 iEncoding;
+  
+  if (wBolView.m_iI8 == C_DATUM_NULL)
+    iEncoding = MN_NULL;
+  else if (wBolView.m_iI8)
+    iEncoding = MN_TRUE;
+  else
+    iEncoding = MN_FALSE;
+  
+  nBytesEncoded = 0;
+  
+  return iEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* encoding of dte                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iDteEncoding(WordView& wDteView, i8& nBytesEncoded)
+{
+  i8 iEncoding;
+  
+  if (wDteView.m_iI8 == C_DATUM_NULL) {
+    nBytesEncoded = 0;
+    return MN_NULL;
+  }
+  
+  bool bSawNonZero = true;
+  
+  while (! wDteView.m_yaByte[0]) {
+    
+    bSawNonZero = false;
+    
+    for (i8 i_Byte = 0; i_Byte < 7; i_Byte++)
+      if ( (wDteView.m_yaByte[i_Byte] = wDteView.m_yaByte[i_Byte+1]) )
+        bSawNonZero = true;
+    wDteView.m_yaByte[7] = 0;
+    
+    if (! bSawNonZero)
+      break;
+  }
+  
+  iEncoding = IntLib::iByteMagnitude(wDteView.m_iI8);
+  
+  nBytesEncoded = iEncoding;
+  
+  return iEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* encoding of flt                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iFltEncoding(WordView& wFltView, i8& nBytesEncoded)
+{
+  i8 iEncoding;
+  
+  if (wFltView.m_iI8 == C_DATUM_NULL) {
+    iEncoding = MN_NULL;
+    nBytesEncoded = 0;
+  }
+  else {
+    iEncoding = IntLib::iByteMagnitude(wFltView.m_iI8);
+    nBytesEncoded = iEncoding;
+  }
+  
+  return iEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* encoding of int                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iIntEncoding(WordView& wIntView, i8& nBytesEncoded)
+{
+  i8 iEncoding;
+  
+  if (wIntView.m_iI8 == C_DATUM_NULL) {
+    iEncoding = MN_NULL;
+    nBytesEncoded = 0;
+  }
+  else {
+    iEncoding = IntLib::iByteMagnitude(wIntView.m_iI8);
+    nBytesEncoded = iEncoding;
+  }
+  
+  return iEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* encoding of ivl                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iIvlEncoding(WordView& wIvlView, i8& nBytesEncoded)
+{
+  i8 iEncoding;
+  
+  if (wIvlView  .m_iI8 == C_DATUM_NULL) {
+    iEncoding = MN_NULL;
+    nBytesEncoded = 0;
+  }
+  else {
+    iEncoding = IntLib::iByteMagnitude(wIvlView.m_iI8);
+    nBytesEncoded = iEncoding;
+  }
+  
+  return iEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* encoding of tme                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iTmeEncoding(WordView& wTmeView, i8& nBytesEncoded)
+{
+  if (wTmeView.m_iI8 == C_DATUM_NULL) {
+    nBytesEncoded = 0;
+    return MN_NULL;
+  }
+  
+  i8 iEncoding;
+  
+  bool bSawNonZero = true;
+  
+  while (! wTmeView.m_yaByte[0]) {
+    
+    bSawNonZero = false;
+    
+    for (i8 i_Byte = 0; i_Byte < 7; i_Byte++)
+      if ( (wTmeView.m_yaByte[i_Byte] = wTmeView.m_yaByte[i_Byte+1]) )
+        bSawNonZero = true;
+    wTmeView.m_yaByte[7] = 0;
+    
+    if (! bSawNonZero)
+      break;
+  }
+  
+  iEncoding = IntLib::iByteMagnitude(wTmeView.m_iI8);
+  
+  nBytesEncoded = iEncoding;
+  
+  return iEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* encoding of tsp                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iTspEncoding(WordView& wTspView, i8& nBytesEncoded)
+{
+  if (wTspView.m_iI8 == C_DATUM_NULL) {
+    nBytesEncoded = 0;
+    return MN_NULL;
+  }
+  
+  i8 iEncoding;
+  
+  bool bSawNonZero = true;
+  
+  while (! wTspView.m_yaByte[0]) {
+    
+    bSawNonZero = false;
+    
+    for (i8 i_Byte = 0; i_Byte < 7; i_Byte++)
+      if ( (wTspView.m_yaByte[i_Byte] = wTspView.m_yaByte[i_Byte+1]) )
+        bSawNonZero = true;
+    wTspView.m_yaByte[7] = 0;
+    
+    if (! bSawNonZero)
+      break;
+  }
+  
+  iEncoding = IntLib::iByteMagnitude(wTspView.m_iI8);
+  
+  nBytesEncoded = iEncoding;
+  
+  return iEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* encoding of vch                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iVchEncoding(WordView& wVchView, i8& nBytesEncoded)
+{
+  i8 iEncoding;
+  
+  i8 iLen = StrLib::iLength((char*)wVchView.m_wWord);
+  //RASSERT(iLen <= 8);
+  
+  if (iLen <= 8) {
+    iEncoding = iLen;
+    nBytesEncoded = iLen;
+  }
+  else {
+    iEncoding = MN_SHOCO_2B;
+    nBytesEncoded = iLen;
+  }
+  
+  return iEncoding;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

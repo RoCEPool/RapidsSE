@@ -533,7 +533,7 @@ void RowEncoder::vEncodeBcd(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = iBcdEncoding(wEncoded,nBytesEncoded);
+  i8 iEncoding = RowCoder::iBcdEncoding(wEncoded,nBytesEncoded);
   RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_BCD));
 
   // set 4bit meta data for column value
@@ -572,7 +572,7 @@ void RowEncoder::vEncodeBol(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = iBolEncoding(wEncoded,nBytesEncoded);
+  i8 iEncoding = RowCoder::iBolEncoding(wEncoded,nBytesEncoded);
   RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_BOL));
 
   // set 4bit meta data for column value
@@ -607,7 +607,7 @@ void RowEncoder::vEncodeDte(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowEncoder::iDteEncoding(wEncoded,nBytesEncoded);
+  i8 iEncoding = RowCoder::iDteEncoding(wEncoded,nBytesEncoded);
   RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_DTE));
 
   // set 4bit meta data for column value
@@ -646,7 +646,7 @@ void RowEncoder::vEncodeFlt(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = iFltEncoding(wEncoded,nBytesEncoded);
+  i8 iEncoding = RowCoder::iFltEncoding(wEncoded,nBytesEncoded);
   RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_FLT));
 
   // set 4bit meta data for column value
@@ -685,7 +685,7 @@ void RowEncoder::vEncodeInt(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = iIntEncoding(wEncoded,nBytesEncoded);
+  i8 iEncoding = RowCoder::iIntEncoding(wEncoded,nBytesEncoded);
   RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_INT));
 
   // set 4bit meta data for column value
@@ -724,7 +724,7 @@ void RowEncoder::vEncodeIvl(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = iIvlEncoding(wEncoded,nBytesEncoded);
+  i8 iEncoding = RowCoder::iIvlEncoding(wEncoded,nBytesEncoded);
   RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_IVL));
 
   // set 4bit meta data for column value
@@ -763,7 +763,7 @@ void RowEncoder::vEncodeTme(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = iTmeEncoding(wEncoded,nBytesEncoded);
+  i8 iEncoding = RowCoder::iTmeEncoding(wEncoded,nBytesEncoded);
   RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_TME));
 
   // set 4bit meta data for column value
@@ -802,7 +802,7 @@ void RowEncoder::vEncodeTsp(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = iTspEncoding(wEncoded,nBytesEncoded);
+  i8 iEncoding = RowCoder::iTspEncoding(wEncoded,nBytesEncoded);
   RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_TSP));
 
   // set 4bit meta data for column value
@@ -841,7 +841,7 @@ void RowEncoder::vEncodeVch(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = iVchEncoding(wEncoded,nBytesEncoded);
+  i8 iEncoding = RowCoder::iVchEncoding(wEncoded,nBytesEncoded);
   //RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_TSP));
   
   // set 4bit meta data for column value
@@ -885,225 +885,6 @@ void RowEncoder::vEncodeVch(Column* pColumn, Datum* pDatum, i8& iHash)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of bcd                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowEncoder::iBcdEncoding(WordView& wBcdView, i8& nBytesEncoded)
-{
-  i8 iEncoding;
-  
-  if (wBcdView.m_iI8 == C_DATUM_NULL) {
-    iEncoding = MN_NULL;
-    nBytesEncoded = 0;
-  }
-  else {
-    iEncoding = IntLib::iByteMagnitude(wBcdView.m_iI8);
-    nBytesEncoded = iEncoding;
-  }
-  
-  return iEncoding;
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of bol                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowEncoder::iBolEncoding(WordView& wBolView, i8& nBytesEncoded)
-{
-  i8 iEncoding;
-  
-  if (wBolView.m_iI8 == C_DATUM_NULL)
-    iEncoding = MN_NULL;
-  else if (wBolView.m_iI8)
-    iEncoding = MN_TRUE;
-  else
-    iEncoding = MN_FALSE;
-
-  nBytesEncoded = 0;
-  
-  return iEncoding;
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of dte                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowEncoder::iDteEncoding(WordView& wDteView, i8& nBytesEncoded)
-{
-  i8 iEncoding;
-  
-  if (wDteView.m_iI8 == C_DATUM_NULL) {
-    nBytesEncoded = 0;
-    return MN_NULL;
-  }
-  
-  bool bSawNonZero = true;
-  
-  while (! wDteView.m_yaByte[0]) {
-    
-    bSawNonZero = false;
-    
-    for (i8 i_Byte = 0; i_Byte < 7; i_Byte++)
-      if ( (wDteView.m_yaByte[i_Byte] = wDteView.m_yaByte[i_Byte+1]) )
-        bSawNonZero = true;
-    wDteView.m_yaByte[7] = 0;
-    
-    if (! bSawNonZero)
-      break;
-  }
-  
-  iEncoding = IntLib::iByteMagnitude(wDteView.m_iI8);
-  
-  nBytesEncoded = iEncoding;
-  
-  return iEncoding;
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of flt                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowEncoder::iFltEncoding(WordView& wFltView, i8& nBytesEncoded)
-{
-  i8 iEncoding;
- 
-  if (wFltView.m_iI8 == C_DATUM_NULL) {
-    iEncoding = MN_NULL;
-    nBytesEncoded = 0;
-  }
-  else {
-    iEncoding = IntLib::iByteMagnitude(wFltView.m_iI8);
-    nBytesEncoded = iEncoding;
-  }
-  
-  return iEncoding;
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of int                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowEncoder::iIntEncoding(WordView& wIntView, i8& nBytesEncoded)
-{
-  i8 iEncoding;
-  
-  if (wIntView.m_iI8 == C_DATUM_NULL) {
-    iEncoding = MN_NULL;
-    nBytesEncoded = 0;
-  }
-  else {
-    iEncoding = IntLib::iByteMagnitude(wIntView.m_iI8);
-    nBytesEncoded = iEncoding;
-  }
-  
-  return iEncoding;
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of ivl                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowEncoder::iIvlEncoding(WordView& wIvlView, i8& nBytesEncoded)
-{
-  i8 iEncoding;
-
-  if (wIvlView  .m_iI8 == C_DATUM_NULL) {
-    iEncoding = MN_NULL;
-    nBytesEncoded = 0;
-  }
-  else {
-    iEncoding = IntLib::iByteMagnitude(wIvlView.m_iI8);
-    nBytesEncoded = iEncoding;
-  }
-  
-  return iEncoding;
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of tme                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowEncoder::iTmeEncoding(WordView& wTmeView, i8& nBytesEncoded)
-{
-  if (wTmeView.m_iI8 == C_DATUM_NULL) {
-    nBytesEncoded = 0;
-    return MN_NULL;
-  }
-  
-  i8 iEncoding;
-  
-  bool bSawNonZero = true;
-  
-  while (! wTmeView.m_yaByte[0]) {
-    
-    bSawNonZero = false;
-    
-    for (i8 i_Byte = 0; i_Byte < 7; i_Byte++)
-      if ( (wTmeView.m_yaByte[i_Byte] = wTmeView.m_yaByte[i_Byte+1]) )
-        bSawNonZero = true;
-    wTmeView.m_yaByte[7] = 0;
-    
-    if (! bSawNonZero)
-      break;
-  }
-  
-  iEncoding = IntLib::iByteMagnitude(wTmeView.m_iI8);
-  
-  nBytesEncoded = iEncoding;
-
-  return iEncoding;
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of tsp                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowEncoder::iTspEncoding(WordView& wTspView, i8& nBytesEncoded)
-{
-  if (wTspView.m_iI8 == C_DATUM_NULL) {
-    nBytesEncoded = 0;
-    return MN_NULL;
-  }
-  
-  i8 iEncoding;
-  
-  bool bSawNonZero = true;
-  
-  while (! wTspView.m_yaByte[0]) {
-    
-    bSawNonZero = false;
-    
-    for (i8 i_Byte = 0; i_Byte < 7; i_Byte++)
-      if ( (wTspView.m_yaByte[i_Byte] = wTspView.m_yaByte[i_Byte+1]) )
-        bSawNonZero = true;
-    wTspView.m_yaByte[7] = 0;
-    
-    if (! bSawNonZero)
-      break;
-  }
-  
-  iEncoding = IntLib::iByteMagnitude(wTspView.m_iI8);
-  
-  nBytesEncoded = iEncoding;
-  
-  return iEncoding;
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of vch                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowEncoder::iVchEncoding(WordView& wVchView, i8& nBytesEncoded)
-{
-  i8 iEncoding;
-  
-  i8 iLen = StrLib::iLength((char*)wVchView.m_wWord);
-  //RASSERT(iLen <= 8);
-  
-  if (iLen <= 8) {
-    iEncoding = iLen;
-    nBytesEncoded = iLen;
-  }
-  else {
-    iEncoding = MN_SHOCO_2B;
-    nBytesEncoded = iLen;
-  }
-
-  return iEncoding;
 }
 
 /*----------------------------------------------------------------------------*/

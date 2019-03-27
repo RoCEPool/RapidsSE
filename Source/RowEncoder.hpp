@@ -25,7 +25,6 @@ namespace Data
     RowEncoder(RowParts* pRowParts);
     ~RowEncoder(void) noexcept(false);
 
-  
     static void vAsString(s48K& sDataString,
                           ColumnVec* pColumnVec, CacheLine* aCacheLine);
     
@@ -56,19 +55,9 @@ namespace Data
     void vEncodeTsp(Column* pColumn, Datum* pDatum, i8& iHash);
     void vEncodeVch(Column* pColumn, Datum* pDatum, i8& iHash);
   
-    static i8 iBcdEncoding(WordView& wBcdView, i8& nBytesEncoded);
-    static i8 iBolEncoding(WordView& wBolView, i8& nBytesEncoded);
-    static i8 iDteEncoding(WordView& wTspView, i8& nBytesEncoded);
-    static i8 iFltEncoding(WordView& wFltView, i8& nBytesEncoded);
-    static i8 iIntEncoding(WordView& wIntView, i8& nBytesEncoded);
-    static i8 iIvlEncoding(WordView& wIntView, i8& nBytesEncoded);
-    static i8 iTmeEncoding(WordView& wTmeView, i8& nBytesEncoded);
-    static i8 iTspEncoding(WordView& wTspView, i8& nBytesEncoded);
-    static i8 iVchEncoding(WordView& wVchView, i8& nBytesEncoded);
-  
     static void vPrint(Column* pColumn, WordView& wDatum);
   
-    Footer*      aFooter(void);
+    Footer* aFooter(void);
   };
 }
 
