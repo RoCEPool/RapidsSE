@@ -37,9 +37,9 @@ namespace Data
     static w8 wRestoreTme(w8 wTmeStripped, eMN eEncoding);
     static w8 wRestoreTsp(w8 wTspStripped, eMN eEncoding);
   
-    static i8 iDteDecoding(WordView& wTspView, i8 iEncoding);
-    static i8 iTmeDecoding(WordView& wTspView, i8 iEncoding);
-    static i8 iTspDecoding(WordView& wTspView, i8 iEncoding);
+    static i8 iStripDte(WordView& wTspView, i8 iEncoding);
+    static i8 iStripTme(WordView& wTspView, i8 iEncoding);
+    static i8 iStripTsp(WordView& wTspView, i8 iEncoding);
   
     static i8 iBcdEncoding(Datum* pDatum, i8& nBytesEncoded);
     static i8 iBolEncoding(Datum* pDatum, i8& nBytesEncoded);
@@ -51,16 +51,16 @@ namespace Data
     static i8 iTspEncoding(Datum* pDatum, i8& nBytesEncoded);
     static i8 iVchEncoding(Datum* pDatum, i8& nBytesEncoded);
   
-    static w8 wDecode(Column* pColumn, CacheLine* aCacheLine);
-    static w8 wDecodeBcd(Column* pColumn, CacheLine* aCacheLine);
-    static w8 wDecodeBol(Column* pColumn, CacheLine* aCacheLine);
-    static w8 wDecodeDte(Column* pColumn, CacheLine* aCacheLine);
-    static w8 wDecodeFlt(Column* pColumn, CacheLine* aCacheLine);
-    static w8 wDecodeInt(Column* pColumn, CacheLine* aCacheLine);
-    static w8 wDecodeIvl(Column* pColumn, CacheLine* aCacheLine);
-    static w8 wDecodeTme(Column* pColumn, CacheLine* aCacheLine);
-    static w8 wDecodeTsp(Column* pColumn, CacheLine* aCacheLine);
-    static w8 wDecodeVch(Column* pColumn, CacheLine* aCacheLine);
+    static w8 wDecode(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
+    static w8 wDecodeBcd(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
+    static w8 wDecodeBol(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
+    static w8 wDecodeDte(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
+    static w8 wDecodeFlt(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
+    static w8 wDecodeInt(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
+    static w8 wDecodeIvl(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
+    static w8 wDecodeTme(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
+    static w8 wDecodeTsp(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
+    static w8 wDecodeVch(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
 
     static void vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine);
   

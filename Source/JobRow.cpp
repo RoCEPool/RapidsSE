@@ -104,12 +104,11 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     
     Column* pColumn = pColVec->pGet(i_Column);
     bool bLastColumn = (i_Column + 1 == nColumns) ? true : false;
-
-    s256 sDst;
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // extract datum from record
-    bValidDatum = Record::bExtract(pColumn, sDst, &aSrc,
+    
+    bValidDatum = Record::bExtract(pColumn, pDatum, &aSrc,
                                    bLastColumn, &m_oFormatters);
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -129,7 +128,8 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // encode datum into cache line
-    pDatum->vDatum((byte*)sDst.aChar());
+    
+    //pDatum->vDatum((byte*)sDst.aChar());
     pRowEncoder->vEncode(pColumn,pDatum,m_iHash);
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     //RowEncoder::vPrint(pColumn,aCacheLine);
