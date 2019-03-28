@@ -11,7 +11,7 @@ namespace Data
   
   class RowEncoder : public Object
   {
-  public:
+  private:
     RowParts* m_pRowParts;
     i8        m_i_CacheOffset;
   
@@ -26,6 +26,7 @@ namespace Data
     ~RowEncoder(void) noexcept(false);
 
     void vEncode(Column* pColumn, Datum* pDatum, i8& iHash);
+    RowParts* pRowParts(void);
   
   private:
     void vEncodeBcd(Column* pColumn, Datum* pDatum, i8& iHash);
