@@ -22,6 +22,9 @@ namespace Data
     Record(void);
     ~Record(void) noexcept(false);
   
+    static bool bExtract(Column* pColumn, Stz* aDst, char** aSrc,
+                         bool bLastColumn, Formatters* pFormatters);
+
     void vAppendBcd(Column* pCol, Datum* pDatum);
     void vAppendBol(Column* pCol, Datum* pDatum);
     void vAppendDte(Column* pCol, Datum* pDatum);

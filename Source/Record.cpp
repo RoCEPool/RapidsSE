@@ -64,6 +64,87 @@ Record::~Record(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* extract                                                                    */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtract(Column* pColumn, Stz* aDst, char** aaSrc,
+                      bool bLastColumn, Formatters* pFormatters)
+{
+  bool b = false;
+  eDM eDatum = pColumn->eDatumType();
+  
+  if (pFormatters->m_bDefault) {
+    switch (eDatum) {
+      case DM_BCD: b = Bcd::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_BOL: b = Bol::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_CHR: b = Vch::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_DTE: b = Dte::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_FLT: b = Flt::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_INT: b = Int::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_IVL: b = Ivl::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_TME: b = Tme::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_TSP: b = Tsp::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_VCH: b = Vch::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
+      default:
+        vFatal("Record::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
+    }
+  }
+  else {
+    switch (eDatum) {
+      case DM_BCD: b = Bcd::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_BOL: b = Bol::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_CHR: b = Vch::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_DTE: b = Dte::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_FLT: b = Flt::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_INT: b = Int::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_IVL: b = Ivl::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_TME: b = Tme::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_TSP: b = Tsp::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_VCH: b = Vch::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+      default:
+        vFatal("Record::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
+    }
+  }
+  
+  
+  // move past the field delimiter
+  //   (but not past the record terminator or record ends)
+  
+  if (bLastColumn) {
+    // do not expect to see a field delimiter
+    if ( pFormatters->m_cFieldDelimiter &&
+        pFormatters->m_cRecordTerminator &&
+        pFormatters->m_cFieldDelimiter != pFormatters->m_cRecordTerminator &&
+        *(*aaSrc) == pFormatters->m_cFieldDelimiter ) {
+      // saw a field delimiter after last field (incorrect)
+      b = false;
+    }
+    /*
+     // did not see a field delimiter (correct)
+     if ( pFormatters->m_cFieldDelimiter &&
+     *(*aaSrc) == pFormatters->m_cFieldDelimiter )
+     (*aaSrc)++;
+     */
+  }
+  else {
+    // expect to see a field delimiter
+    if ( pFormatters->m_cFieldDelimiter &&
+        *(*aaSrc) == pFormatters->m_cFieldDelimiter )
+      // saw a field delimiter after non-last field (correct)
+      (*aaSrc)++;
+    else
+      // did not see a field delimiter after non-last field (incorrect)
+      b = false;
+  }
+  
+  return b;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

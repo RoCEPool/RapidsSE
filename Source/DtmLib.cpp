@@ -57,6 +57,8 @@ void DtmLib::vCopy(eDM eDatum, void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract                                                                    */
 /*----------------------------------------------------------------------------*/
+
+//! TO BE DELETED (ray)
 bool DtmLib::bExtract(MetaData::Column* pColumn,  Stz* aDst, char** aaSrc,
                       bool bLastColumn,
                       Formatters* pFormatters)
