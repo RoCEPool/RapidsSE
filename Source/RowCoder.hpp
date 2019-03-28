@@ -42,14 +42,14 @@ namespace Data
     static i8 iTspDecoding(WordView& wTspView, i8 iEncoding);
   
     static i8 iBcdEncoding(Datum* pDatum, i8& nBytesEncoded);
-    static i8 iBolEncoding(WordView& wBolView, i8& nBytesEncoded);
-    static i8 iDteEncoding(WordView& wTspView, i8& nBytesEncoded);
-    static i8 iFltEncoding(WordView& wFltView, i8& nBytesEncoded);
-    static i8 iIntEncoding(WordView& wIntView, i8& nBytesEncoded);
-    static i8 iIvlEncoding(WordView& wIntView, i8& nBytesEncoded);
-    static i8 iTmeEncoding(WordView& wTmeView, i8& nBytesEncoded);
-    static i8 iTspEncoding(WordView& wTspView, i8& nBytesEncoded);
-    static i8 iVchEncoding(WordView& wVchView, i8& nBytesEncoded);
+    static i8 iBolEncoding(Datum* pDatum, i8& nBytesEncoded);
+    static i8 iDteEncoding(Datum* pDatum, i8& nBytesEncoded);
+    static i8 iFltEncoding(Datum* pDatum, i8& nBytesEncoded);
+    static i8 iIntEncoding(Datum* pDatum, i8& nBytesEncoded);
+    static i8 iIvlEncoding(Datum* pDatum, i8& nBytesEncoded);
+    static i8 iTmeEncoding(Datum* pDatum, i8& nBytesEncoded);
+    static i8 iTspEncoding(Datum* pDatum, i8& nBytesEncoded);
+    static i8 iVchEncoding(Datum* pDatum, WordView& wVchView, i8& nBytesEncoded);
   
     static w8 wDecode(Column* pColumn, CacheLine* aCacheLine);
     static w8 wDecodeBcd(Column* pColumn, CacheLine* aCacheLine);
