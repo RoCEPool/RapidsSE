@@ -132,16 +132,15 @@ void RowEncoder::vEncodeBcd(Column* pColumn, Datum* pDatum, i8& iHash)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(m_i_CacheOffset,wOriginal,iEncoding);
+    aCacheLine->vPut(m_i_CacheOffset,pDatum->m_iDatum,iEncoding);
   
   m_i_CacheOffset += nBytesEncoded;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-  WordView wDecoded;
-  wDecoded.m_wWord = RowCoder::wDecode(pColumn,aCacheLine,pDatum);
-  RASSERT(wOriginal == wDecoded.m_iI8);
+  RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
+  RASSERT(wOriginal == pDatum->m_iDatum);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,9 +176,8 @@ void RowEncoder::vEncodeBol(Column* pColumn, Datum* pDatum, i8& iHash)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-  WordView wDecoded;
-  wDecoded.m_wWord = RowCoder::wDecode(pColumn,aCacheLine,pDatum);
-  RASSERT(wOriginal == wDecoded.m_iI8);
+  RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
+  RASSERT(wOriginal == pDatum->m_iDatum);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,9 +217,8 @@ void RowEncoder::vEncodeDte(Column* pColumn, Datum* pDatum, i8& iHash)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-  WordView wDecoded;
-  wDecoded.m_wWord = RowCoder::wDecode(pColumn,aCacheLine,pDatum);
-  RASSERT(wOriginal == wDecoded.m_iI8);
+  RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
+  RASSERT(wOriginal == pDatum->m_iDatum);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -261,9 +258,8 @@ void RowEncoder::vEncodeFlt(Column* pColumn, Datum* pDatum, i8& iHash)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-  WordView wDecoded;
-  wDecoded.m_wWord = RowCoder::wDecode(pColumn,aCacheLine,pDatum);
-  RASSERT(wOriginal == wDecoded.m_iI8);
+  RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
+  RASSERT(wOriginal == pDatum->m_iDatum);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -303,9 +299,8 @@ void RowEncoder::vEncodeInt(Column* pColumn, Datum* pDatum, i8& iHash)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-  WordView wDecoded;
-  wDecoded.m_wWord = RowCoder::wDecode(pColumn,aCacheLine,pDatum);
-  RASSERT(wOriginal == wDecoded.m_iI8);
+  RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
+  RASSERT(wOriginal == pDatum->m_iDatum);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -345,9 +340,8 @@ void RowEncoder::vEncodeIvl(Column* pColumn, Datum* pDatum, i8& iHash)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-  WordView wDecoded;
-  wDecoded.m_wWord = RowCoder::wDecode(pColumn,aCacheLine,pDatum);
-  RASSERT(wOriginal == wDecoded.m_iI8);
+  RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
+  RASSERT(wOriginal == pDatum->m_iDatum);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -387,9 +381,8 @@ void RowEncoder::vEncodeTme(Column* pColumn, Datum* pDatum, i8& iHash)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-  WordView wDecoded;
-  wDecoded.m_wWord = RowCoder::wDecode(pColumn,aCacheLine,pDatum);
-  RASSERT(wOriginal == wDecoded.m_iI8);
+  RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
+  RASSERT(wOriginal == pDatum->m_iDatum);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -429,9 +422,8 @@ void RowEncoder::vEncodeTsp(Column* pColumn, Datum* pDatum, i8& iHash)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-  WordView wDecoded;
-  wDecoded.m_wWord = RowCoder::wDecode(pColumn,aCacheLine,pDatum);
-  RASSERT(wOriginal == wDecoded.m_iI8);
+  RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
+  RASSERT(wOriginal == pDatum->m_iDatum);
 }
 
 /*----------------------------------------------------------------------------*/
