@@ -15,8 +15,8 @@ namespace Data
     RowParts* m_pRowParts;
     i8        m_i_CacheOffset;
   
-  // must be last
-  Footer m_xFooter;
+    // must be last
+    Footer m_xFooter;
 
   public:
     void* operator new(size_t);

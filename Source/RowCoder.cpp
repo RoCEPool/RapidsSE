@@ -9,6 +9,18 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* initialise given cache line                                                */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vCacheLineInit(CacheLine* aCacheLine)
+{
+  // set all bytes in the entire cache line to xFF
+  aCacheLine->vSetAll(0xFF);
+  
+  // set all bits in first word of cache line to zero
+  aCacheLine->v8B(0,0);
+}
+
+/*----------------------------------------------------------------------------*/
 /* decode decimal from given cache line                                       */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeBcd(CacheLine xaCacheLine[], i8 i_Row,

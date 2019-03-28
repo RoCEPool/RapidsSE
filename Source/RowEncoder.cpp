@@ -44,8 +44,8 @@ RowEncoder::RowEncoder(RowParts* pRowParts)
   RASSERT(0 == i_Head);
   
   CacheLine* aCacheLine = m_pRowParts->aGet(i_Head);
-  aCacheLine->vSetAll(0xFF);
-  aCacheLine->v8B(0,0);
+  
+  RowCoder::vCacheLineInit(aCacheLine);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODER,_FOOTER_);
 }
@@ -69,12 +69,12 @@ RowEncoder::~RowEncoder(void) noexcept(false)
 void RowEncoder::vEncode(Column* pColumn, Datum* pDatum, i8& iHash)
 {
   i8 i_Column = pColumn->iColumnNo();
-  eDM eDatum  = pColumn->eDatumType();
   
-  // don't encode columns 16+
+  //! don't encode columns 16+                                             (fix)
   if (i_Column >= 16)
     return;
   
+  eDM eDatum = pColumn->eDatumType();
   switch (eDatum) {
     case DM_BCD: vEncodeBcd(pColumn,pDatum,iHash); return;
     case DM_BOL: vEncodeBol(pColumn,pDatum,iHash); return;
