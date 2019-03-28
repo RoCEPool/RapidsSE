@@ -14,6 +14,7 @@ namespace Jobs
     Table*       m_pTable;              // table rows being fetched from
     i8           m_iPartition;          // partition this fetch task to fetch from
     bool         m_bDisplay;            // display on
+    bool         m_bPrint;              // print on
     Planner*     m_pPlanner;            // fetch planner
     Queue*       m_pBufferQueue;        // buffer queue where fetch buffers are pushed
     FetchBuffer* m_pFetchBuffer;        // fetch buffer
@@ -52,7 +53,8 @@ namespace Jobs
   Job* pJob_FetchRows_pre(Interface::Session* pSession);
   void vJob_FetchRows_post(Interface::Session* pSession, Job* pJob);
   void vJob_FetchRows_delete(Interface::Session* pSession, Job* pJob);
-  void vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer);
+  void vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer,
+                      bool bPrint);
   void vJob_FetchRows_show(Job* pJob);
   
   JobClass* pJob_FetchRows_class(pFUN** aaFun);

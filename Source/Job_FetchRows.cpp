@@ -41,7 +41,7 @@ JobClass xJobClass_FetchRows =
   
   // help and example
   true,
-  "fetch <tableNm> [\"<where>\"] [displayOff]"_Stz,
+  "fetch <tableNm> [\"<where>\"] [displayOff | noPrint]"_Stz,
   "fetch supplier \"S_SUPPKEY 22 ==\";"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
@@ -230,7 +230,7 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   // 3 tokens
   //fetch j10 "where";
   //fetch j10 1;
-  //fetch j10 displayOff;
+  //fetch j10 displayOff|noPrint;
   if (iNumTokens == 3) {
     if (pTokenVec->pGet(2)->eToken() == TN_STRING) {
       m_sWhere = pTokenVec->pGet(2)->aText();
@@ -244,11 +244,17 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
     
     if (pTokenVec->pGet(2)->eToken() == TN_NAME) {
     
-      if ( ! pTokenVec->pGet(2)->aText()->bSame("displayOff"_Stz) )
+      if ( ! pTokenVec->pGet(2)->aText()->bSame("displayOff"_Stz) &&
+           ! pTokenVec->pGet(2)->aText()->bSame("noPrint"_Stz))
         return false;
     
       // set display off
-      m_bDisplay = false;
+      if (pTokenVec->pGet(2)->aText()->bSame("displayOff"_Stz))
+        m_bDisplay = false;
+      else {
+        ASSERT(pTokenVec->pGet(2)->aText()->bSame("noPrint"_Stz));
+        m_bPrint = false;
+      }
       return true;
     }
     
@@ -258,8 +264,8 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   // - - - - - - - - - - - - - - - - - - - - -
   // 4 tokens
   //fetch j10 "where" 1;
-  //fetch j10 1 displayOff;
-  //fetch j10 "where" displayOff;
+  //fetch j10 1 displayOff|noPrint;
+  //fetch j10 "where" displayOff|noPrint;
   if (iNumTokens == 4) {
     if (pTokenVec->pGet(2)->eToken() == TN_STRING) {
       
@@ -273,10 +279,16 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
       if (pTokenVec->pGet(3)->eToken() != TN_NAME)
         return false;
       
-      if ( ! pTokenVec->pGet(3)->aText()->bSame("displayOff"_Stz) )
+      if ( ! pTokenVec->pGet(3)->aText()->bSame("displayOff"_Stz) &&
+          ! pTokenVec->pGet(3)->aText()->bSame("noPrint"_Stz))
         return false;
       
-      m_bDisplay = false;
+      if (pTokenVec->pGet(3)->aText()->bSame("displayOff"_Stz))
+        m_bDisplay = false;
+      else {
+        ASSERT(pTokenVec->pGet(3)->aText()->bSame("noPrint"_Stz));
+        m_bPrint = false;
+      }
       return true;
     }
     
@@ -287,11 +299,16 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
       if (pTokenVec->pGet(3)->eToken() != TN_NAME)
         return false;
       
-      if ( ! pTokenVec->pGet(3)->aText()->bSame("displayOff"_Stz) )
+      if ( ! pTokenVec->pGet(3)->aText()->bSame("displayOff"_Stz) &&
+          ! pTokenVec->pGet(3)->aText()->bSame("noPrint"_Stz))
         return false;
       
-      // set display off
-      m_bDisplay = false;
+      if (pTokenVec->pGet(3)->aText()->bSame("displayOff"_Stz))
+        m_bDisplay = false;
+      else {
+        ASSERT(pTokenVec->pGet(3)->aText()->bSame("noPrint"_Stz));
+        m_bPrint = false;
+      }
       return true;
     }
     
@@ -301,7 +318,7 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // 5 tokens
-  //fetch j10 "where" 1 displayOff;
+  //fetch j10 "where" 1 displayOff|noPrint;
   if (iNumTokens == 5) {
     
     // get where
@@ -323,6 +340,11 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
       if ( pTokenVec->pGet(4)->aText()->bSame("displayOff"_Stz) ) {
         // set display off
         m_bDisplay = false;
+        return true;
+      }
+      if ( pTokenVec->pGet(4)->aText()->bSame("noPrint"_Stz) ) {
+        // set print off
+        m_bPrint = false;
         return true;
       }
     }
@@ -436,7 +458,7 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
     }
     
     if (pJob_FetchRows->m_bDisplay) {
-      vIterateBuffer(pJob_FetchRows, pFetchBuffer);      
+      vIterateBuffer(pJob_FetchRows, pFetchBuffer, pJob_FetchRows->m_bPrint);
     }
     
     nRowsProcessed += pFetchBuffer->nFetchedRows();
@@ -464,7 +486,7 @@ void Jobs::vJob_FetchRows_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer)
+void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer, bool bPrint)
 {
   ColumnVec* pColumnVec = pJob_FetchRows->m_pTable->pColumnVec();
   CacheLine** aaCacheLine = nullptr;
@@ -472,7 +494,8 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuff
   while (aaCacheLine) {
     s48K sRowString;
     RowEncoder::vAsString(sRowString, pColumnVec,*aaCacheLine);
-    vTrace("row: (%s)\n"_Stz, sRowString.aChar());
+    if (bPrint)
+      vTrace("row: (%s)\n"_Stz, sRowString.aChar());
     aaCacheLine = pFetchBuffer->aaNextRowPtr(aaCacheLine);
   }
 }
