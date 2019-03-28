@@ -30,7 +30,6 @@ namespace Data
     
     void vEncode(Column* pColumn, Datum* pDatum, i8& iHash);
   
-    static void vPrint(Column* pColumn, CacheLine* aCacheLine);
   
   private:
     void vEncodeBcd(Column* pColumn, Datum* pDatum, i8& iHash);
@@ -42,8 +41,6 @@ namespace Data
     void vEncodeTme(Column* pColumn, Datum* pDatum, i8& iHash);
     void vEncodeTsp(Column* pColumn, Datum* pDatum, i8& iHash);
     void vEncodeVch(Column* pColumn, Datum* pDatum, i8& iHash);
-  
-    static void vPrint(Column* pColumn, WordView& wDatum);
   
     Footer* aFooter(void);
   };
