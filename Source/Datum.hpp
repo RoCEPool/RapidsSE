@@ -8,10 +8,15 @@ namespace Data
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Datum : public Object
   {
-  private:
+  public:
   
     eDM m_eDatum;
-    w8  m_wDatum;
+  
+    union {
+      w8   m_wDatum;
+      byte m_yaByte[C_BYTES_PER_WORD];
+    };
+  
     s4K m_sDatum;
 
     byte* m_ayDatum; //! temporary
