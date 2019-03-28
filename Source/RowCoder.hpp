@@ -48,6 +48,17 @@ namespace Data
     static i8 iTmeEncoding(WordView& wTmeView, i8& nBytesEncoded);
     static i8 iTspEncoding(WordView& wTspView, i8& nBytesEncoded);
     static i8 iVchEncoding(WordView& wVchView, i8& nBytesEncoded);
+  
+    static w8 wDecode(Column* pColumn, CacheLine* aCacheLine);
+    static w8 wDecodeBcd(Column* pColumn, CacheLine* aCacheLine);
+    static w8 wDecodeBol(Column* pColumn, CacheLine* aCacheLine);
+    static w8 wDecodeDte(Column* pColumn, CacheLine* aCacheLine);
+    static w8 wDecodeFlt(Column* pColumn, CacheLine* aCacheLine);
+    static w8 wDecodeInt(Column* pColumn, CacheLine* aCacheLine);
+    static w8 wDecodeIvl(Column* pColumn, CacheLine* aCacheLine);
+    static w8 wDecodeTme(Column* pColumn, CacheLine* aCacheLine);
+    static w8 wDecodeTsp(Column* pColumn, CacheLine* aCacheLine);
+    static w8 wDecodeVch(Column* pColumn, CacheLine* aCacheLine);
 
   private:
   };

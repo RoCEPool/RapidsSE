@@ -300,7 +300,7 @@ void KeyWrk::vExtractKey(CacheLine* aRowData, IdxColVec* pIdxColVec)
     Column* pColumn = pIdxColVec->pGet(i_Column);
     
     // get the column value from the row for the iColumnNo
-    w8 wVal = RowEncoder::wDecode(pColumn, aRowData);
+    w8 wVal = RowCoder::wDecode(pColumn, aRowData);
     xVariable = (i8)wVal;
     
     // add the column value to the key
