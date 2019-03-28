@@ -532,16 +532,16 @@ i8 RowCoder::iTspDecoding(WordView& wTspView, i8 iEncoding)
 /*----------------------------------------------------------------------------*/
 /* encoding of bcd                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iBcdEncoding(WordView& wBcdView, i8& nBytesEncoded)
+i8 RowCoder::iBcdEncoding(Datum* pDatum, i8& nBytesEncoded)
 {
   i8 iEncoding;
   
-  if (wBcdView.m_iI8 == C_DATUM_NULL) {
+  if (pDatum->m_iDatum == C_DATUM_NULL) {
     iEncoding = MN_NULL;
     nBytesEncoded = 0;
   }
   else {
-    iEncoding = IntLib::iByteMagnitude(wBcdView.m_iI8);
+    iEncoding = IntLib::iByteMagnitude(pDatum->m_iDatum);
     nBytesEncoded = iEncoding;
   }
   

@@ -15,6 +15,7 @@ namespace Data
     union {
       w8   m_wDatum;
       byte m_yaByte[C_BYTES_PER_WORD];
+      i8   m_iDatum;
     };
   
     s4K m_sDatum;

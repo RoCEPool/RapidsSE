@@ -121,7 +121,7 @@ void RowEncoder::vEncodeBcd(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iBcdEncoding(wEncoded,nBytesEncoded);
+  i8 iEncoding = RowCoder::iBcdEncoding(pDatum,nBytesEncoded);
   RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_BCD));
 
   // set 4bit meta data for column value

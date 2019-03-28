@@ -41,7 +41,7 @@ namespace Data
     static i8 iTmeDecoding(WordView& wTspView, i8 iEncoding);
     static i8 iTspDecoding(WordView& wTspView, i8 iEncoding);
   
-    static i8 iBcdEncoding(WordView& wBcdView, i8& nBytesEncoded);
+    static i8 iBcdEncoding(Datum* pDatum, i8& nBytesEncoded);
     static i8 iBolEncoding(WordView& wBolView, i8& nBytesEncoded);
     static i8 iDteEncoding(WordView& wTspView, i8& nBytesEncoded);
     static i8 iFltEncoding(WordView& wFltView, i8& nBytesEncoded);
