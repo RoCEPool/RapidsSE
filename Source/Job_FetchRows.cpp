@@ -491,11 +491,14 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuff
   ColumnVec* pColumnVec = pJob_FetchRows->m_pTable->pColumnVec();
   CacheLine** aaCacheLine = nullptr;
   aaCacheLine = pFetchBuffer->aaFirstRowPtr();
+  
   while (aaCacheLine) {
+    
     s48K sRowString;
-    RowEncoder::vAsString(sRowString, pColumnVec,*aaCacheLine);
+    RowCoder::vString(sRowString, pColumnVec,*aaCacheLine);
     if (bPrint)
       vTrace("row: (%s)\n"_Stz, sRowString.aChar());
+    
     aaCacheLine = pFetchBuffer->aaNextRowPtr(aaCacheLine);
   }
 }

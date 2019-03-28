@@ -25,11 +25,7 @@ namespace Data
     RowEncoder(RowParts* pRowParts);
     ~RowEncoder(void) noexcept(false);
 
-    static void vAsString(s48K& sDataString,
-                          ColumnVec* pColumnVec, CacheLine* aCacheLine);
-    
     void vEncode(Column* pColumn, Datum* pDatum, i8& iHash);
-  
   
   private:
     void vEncodeBcd(Column* pColumn, Datum* pDatum, i8& iHash);

@@ -1042,6 +1042,100 @@ w8 RowCoder::wDecodeVch(Column* pColumn, CacheLine* aCacheLine)
   return wDecoded.m_wWord;
 }
 
+/*----------------------------------------------------------------------------*/
+/* print row decoded datum from cache line                                    */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine)
+{
+  WordView wDatum;
+  
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+  
+  // for each column
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
+    
+    // get the column at index
+    Column* pColumn = pColVec->pGet(i_Column);
+    
+    // not the first column
+    if (i_Column == 0)
+      sString.vConcat(""_Stz);
+    else
+      sString.vConcat(","_Stz);
+    
+    // copy the data for the column into aDst
+    eDM eDatum = pColumn->eDatumType();
+    wDatum.m_wWord = RowCoder::wDecode(pColumn,aCacheLine);
+    
+    // check for nulls
+    if (wDatum.m_iI8 == C_DATUM_NULL) {
+      
+      // NULL Floats ?
+      RASSERT(eDatum != DM_FLT);
+      
+      sString.vCatSprint("null"_Stz);
+      continue;
+    }
+    
+    switch (eDatum) {
+      case DM_BCD: {
+        sString.vCatSprint("%lld"_Stz, wDatum.m_iI8);
+        break;
+      }
+      case DM_BOL: {
+        sString.vConcat(wDatum.m_iI8 == 1 ? "true"_Stz : "false"_Stz);
+        break;
+      }
+      case DM_DTE: {
+        Dte wDte;
+        wDte.vAsI8(wDatum.m_iI8);
+        s32 sDte;
+        wDte.vSprint(sDte.aStz());
+        sString.vConcat(sDte.aStz());
+        break;
+      }
+      case DM_FLT: {
+        sString.vCatSprint("%g"_Stz, wDatum.m_dF8);
+        break;
+      }
+      case DM_INT: {
+        sString.vCatSprint("%lld"_Stz, wDatum.m_iI8);
+        break;
+      }
+      case DM_IVL: {
+        sString.vCatSprint("%lld"_Stz, wDatum.m_iI8);
+        break;
+      }
+      case DM_TME: {
+        Tme wTme;
+        wTme.vAsI8(wDatum.m_iI8);
+        s32 sTme;
+        wTme.vSprint(sTme.aStz());
+        sString.vConcat(sTme.aStz());
+        break;
+      }
+      case DM_TSP: {
+        Tsp wTsp;
+        wTsp.vAsI8(wDatum.m_iI8);
+        s32 sTsp;
+        wTsp.vSprint(sTsp.aStz());
+        sString.vConcat(sTsp.aStz());
+        break;
+      }
+      case DM_VCH: {
+        s256 sStr;
+        Vch::vSprintQuotes(sStr, (Stz*)&wDatum);
+        sString.vConcat(sStr.aStz());
+        break;
+      }
+      default:
+        NEVER_REACH;
+    }
+    
+  }
+}
+
 
 
 /*----------------------------------------------------------------------------*/

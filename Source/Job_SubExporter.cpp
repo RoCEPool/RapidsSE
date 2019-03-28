@@ -281,7 +281,7 @@ void Job_SubExporter::vSprintRows(void)
 
     CacheLine* aRow = m_pRowBuffer->pRow(i_Row);
     
-    RowEncoder::vAsString(sRecord, pColVec,aRow);
+    RowCoder::vString(sRecord,pColVec,aRow);
     StrLib::vConcat(sRecord.aChar(),'\n');
     //vTrace("]]%s[[\n"_Stz,sRecord.aStz());
     

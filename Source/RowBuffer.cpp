@@ -443,7 +443,7 @@ void RowBuffer::vShowRow(i8 iRowNo)
   
   s48K sRowString;
   CacheLine* aRowCacheLine = m_xRowTray.aGet(iRowNo);
-  RowEncoder::vAsString(sRowString, pColumnVec,aRowCacheLine);
+  RowCoder::vString(sRowString, pColumnVec,aRowCacheLine);
   vTrace("row: (%s)\n"_Stz, sRowString.aChar());
 }
 

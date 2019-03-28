@@ -60,6 +60,9 @@ namespace Data
     static w8 wDecodeTsp(Column* pColumn, CacheLine* aCacheLine);
     static w8 wDecodeVch(Column* pColumn, CacheLine* aCacheLine);
 
+    static void vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine);
+  
+
   private:
   };
 }
