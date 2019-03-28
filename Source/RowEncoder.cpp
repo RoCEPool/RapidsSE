@@ -453,7 +453,7 @@ void RowEncoder::vEncodeVch(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iVchEncoding(pDatum,wEncoded,nBytesEncoded);
+  i8 iEncoding = RowCoder::iVchEncoding(pDatum,nBytesEncoded);
   //RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_TSP));
   
   // set 4bit meta data for column value
@@ -473,7 +473,7 @@ void RowEncoder::vEncodeVch(Column* pColumn, Datum* pDatum, i8& iHash)
     // compress varchar into tail shoco cache line
     i8 iLenCompressed =
       Compress::iIntoShoco(((byte*)aShocoLine)+8, C_BYTES_PER_CACHE_LINE-8,
-                           (char*)wVal, nBytesEncoded);
+                           (char*)pDatum->ayDatum(), nBytesEncoded);
 
     // set length of the compressed string encoded into tail shoco cache line
     aShocoLine->v1N(0,iLenCompressed);
@@ -489,7 +489,7 @@ void RowEncoder::vEncodeVch(Column* pColumn, Datum* pDatum, i8& iHash)
 //    vTrace("Decomp: %s\n"_Stz,sDecomp.aChar());
   }
   else {
-    aCacheLine->vPut(m_i_CacheOffset,wVal,nBytesEncoded);
+    aCacheLine->vPut(m_i_CacheOffset,(w8)pDatum->ayDatum(),nBytesEncoded);
     m_i_CacheOffset += nBytesEncoded;
   }
 

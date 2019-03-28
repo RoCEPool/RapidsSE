@@ -49,7 +49,7 @@ namespace Data
     static i8 iIvlEncoding(Datum* pDatum, i8& nBytesEncoded);
     static i8 iTmeEncoding(Datum* pDatum, i8& nBytesEncoded);
     static i8 iTspEncoding(Datum* pDatum, i8& nBytesEncoded);
-    static i8 iVchEncoding(Datum* pDatum, WordView& wVchView, i8& nBytesEncoded);
+    static i8 iVchEncoding(Datum* pDatum, i8& nBytesEncoded);
   
     static w8 wDecode(Column* pColumn, CacheLine* aCacheLine);
     static w8 wDecodeBcd(Column* pColumn, CacheLine* aCacheLine);

@@ -729,11 +729,11 @@ i8 RowCoder::iTspEncoding(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 /* encoding of vch                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iVchEncoding(Datum* pDatum, WordView& wVchView, i8& nBytesEncoded)
+i8 RowCoder::iVchEncoding(Datum* pDatum, i8& nBytesEncoded)
 {
   i8 iEncoding;
   
-  i8 iLen = StrLib::iLength((char*)wVchView.m_wWord);
+  i8 iLen = StrLib::iLength((char*)pDatum->m_ayDatum);
   //RASSERT(iLen <= 8);
   
   if (iLen <= 8) {
