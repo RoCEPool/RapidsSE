@@ -223,7 +223,7 @@ void RowCoder::vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine)
       }
       case DM_VCH: {
         s256 sStr;
-        Vch::vSprintQuotes(sStr, pDatum->m_sDatum);
+        Vch::vSprintQuotes(sStr, pDatum->m_sStr);
         sString.vConcat(sStr.aStz());
         break;
       }
@@ -661,7 +661,7 @@ void RowCoder::vDecodeVch(CacheLine xaCacheLine[], i8 i_Row,
       
       s256 sDecomp;
       i8 iLenDecompressed =
-      Compress::iFromShoco(pDatum->m_sDatum.aChar(), 255,
+      Compress::iFromShoco(pDatum->m_sStr.aChar(), 255,
                            ((byte*)aShocoLine)+8, iLenCompressed);
       sDecomp.aChar()[iLenDecompressed] = '\0';
       vTrace("Decomp: %s\n"_Stz,sDecomp.aChar());
@@ -683,7 +683,7 @@ void RowCoder::vEncodeBcd(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->m_sDatum.aChar();
+  w8 wOriginal = *(i8*)pDatum->m_sStr.aChar();
   
   //! temp
   pDatum->m_iInt = wOriginal;

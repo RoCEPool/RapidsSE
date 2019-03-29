@@ -27,7 +27,7 @@ namespace Data
       byte m_yaByte[C_BYTES_PER_WORD];
     };
   
-    s4K m_sDatum;
+    s4K m_sStr;
 
     byte* m_ayDatum; //! temporary
   
