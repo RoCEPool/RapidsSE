@@ -1194,22 +1194,6 @@ void IndexTree::vVisualize(void)
   
   if ( ! pEntryBuffer)
     return;
-  
-  // hidden index has all level 0 buffers
-//  if (m_pIndex->bIsHidden()) {
-//
-//    do {
-//      ASSERT(pEntryBuffer->iBufferHeight() == 0);
-//      // print the decile of pNextBuffer
-//      vTrace("%lld"_Stz, pEntryBuffer->iDecile());
-//
-//      pEntryBuffer = pEntryBuffer->pNextBuffer();
-//
-//    } while (pEntryBuffer);
-//
-//    vTrace("\n"_Stz);
-//    return;
-//  }
 
   // print the decile of the root buffer
   vTrace("%lld\n"_Stz, pEntryBuffer->iDecile());

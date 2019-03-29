@@ -469,19 +469,11 @@ void Table::vCreateColumnVec(Jobs::Job_CreateTable* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  // NOTE: we will move creation of hidden column here after
-  // old tasking model is removed
-  // For now we will remove the hidden column and add it back in
-  //Column* pHiddenColumn = m_pColumnVec->pGet(0);
-  //m_pColumnVec->vClear();
-  
   for (i8 i= 0; i < pJob->m_iColumns; i++) {
   
     Column* pColumn = new Column(pJob, i);
     m_pColumnVec->vAdd(pColumn);
   }
-  
-  //m_pColumnVec->vAdd(pHiddenColumn);
 }
 
 /*----------------------------------------------------------------------------*/

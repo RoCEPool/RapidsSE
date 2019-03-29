@@ -211,7 +211,7 @@ bool EntryBuffer::bVerify(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* verify the structure of this L0 buffer (non-hidden index)                  */
+/* verify the structure of this L0 buffer                                     */
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerifyL0Other(void)
 {
@@ -223,7 +223,7 @@ bool EntryBuffer::bVerifyL0Other(void)
   //         m_pIndex->aIndexName(),m_iBufferNo,m_iBufferHeight);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // verify the contents of this L0 non-hidden index buffer
+  // verify the contents of this L0 index buffer
   
   bool bValid;
   
@@ -609,7 +609,7 @@ bool EntryBuffer::bVerifyKeyOrder(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   /*
-   Any Ln buffer or non-hidden L0 buffer should have its keys in ascending
+   Any Ln buffer or L0 buffer should have its keys in ascending
    order.
    */
   
@@ -693,15 +693,15 @@ bool EntryBuffer::bVerifyNextPrev(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* verify the row references in this L0 non-hidden index buffer               */
+/* verify the row references in this L0 index buffer                          */
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerifyRowRefs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   /*
-   For this L0 non-hidden index verify that its key entries referen a
-   valid row in an L0 hidden index buffer
+   For this L0 index verify that its key entries referen a
+   valid row in a row buffer
    */
   
   RASSERT(0 == m_iBufferHeight);
