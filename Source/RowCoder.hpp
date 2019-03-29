@@ -19,6 +19,8 @@ namespace Data
   private:
     static void vAppend(Record* pRec, CacheLine xaCacheLine[], i8 i_Row, Column* pCol);
   
+    static i8 nDataBytes(eMN eEncoding, eDM eDatum);
+  
     static void vDecodeBcd(CacheLine xaCacheLine[], i8 i_Row,
                            Column* pCol, Datum* pDatum);
     static void vDecodeBol(CacheLine xaCacheLine[], i8 i_Row,
@@ -57,17 +59,15 @@ namespace Data
     static void vEncodeVch(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
                            Column* pColumn, Datum* pDatum, i8& iHash);
   
-    static i8 nEncodedBytes(i8 iEncoding, eDM eDatum);
-  
-    static i8 iEncodingBcd(Datum* pDatum, i8& nBytesEncoded);
-    static i8 iEncodingBol(Datum* pDatum, i8& nBytesEncoded);
-    static i8 iEncodingDte(Datum* pDatum, i8& nBytesEncoded);
-    static i8 iEncodingFlt(Datum* pDatum, i8& nBytesEncoded);
-    static i8 iEncodingInt(Datum* pDatum, i8& nBytesEncoded);
-    static i8 iEncodingIvl(Datum* pDatum, i8& nBytesEncoded);
-    static i8 iEncodingTme(Datum* pDatum, i8& nBytesEncoded);
-    static i8 iEncodingTsp(Datum* pDatum, i8& nBytesEncoded);
-    static i8 iEncodingVch(Datum* pDatum, i8& nBytesEncoded);
+    static eMN eEncodingBcd(Datum* pDatum, i8& nBytesEncoded);
+    static eMN eEncodingBol(Datum* pDatum, i8& nBytesEncoded);
+    static eMN eEncodingDte(Datum* pDatum, i8& nBytesEncoded);
+    static eMN eEncodingFlt(Datum* pDatum, i8& nBytesEncoded);
+    static eMN eEncodingInt(Datum* pDatum, i8& nBytesEncoded);
+    static eMN eEncodingIvl(Datum* pDatum, i8& nBytesEncoded);
+    static eMN eEncodingTme(Datum* pDatum, i8& nBytesEncoded);
+    static eMN eEncodingTsp(Datum* pDatum, i8& nBytesEncoded);
+    static eMN eEncodingVch(Datum* pDatum, i8& nBytesEncoded);
   
     static eMN eGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
   
@@ -77,9 +77,9 @@ namespace Data
     static void vRestoreTme(Datum* pDatum, eMN eEncoding);
     static void vRestoreTsp(Datum* pDatum, eMN eEncoding);
   
-    static i8 iStripDte(WordView& wTspView, i8 iEncoding);
-    static i8 iStripTme(WordView& wTspView, i8 iEncoding);
-    static i8 iStripTsp(WordView& wTspView, i8 iEncoding);
+    static i8 iStripDte(WordView& wTspView, eMN eEncoding);
+    static i8 iStripTme(WordView& wTspView, eMN eEncoding);
+    static i8 iStripTsp(WordView& wTspView, eMN eEncoding);
   };
 }
 

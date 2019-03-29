@@ -271,6 +271,123 @@ void RowCoder::vAppend(Record* pRec, CacheLine xaCacheLine[], i8 i_Row, Column* 
 }
 
 /*----------------------------------------------------------------------------*/
+/* return number of data bytes of encoding                                    */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::nDataBytes(eMN eEncoding, eDM eDatum)
+{
+  if (eEncoding == MN_NULL)
+    return 0;
+  
+  if (eEncoding <= MN_8B)
+    return eEncoding;
+  
+  if (MN_OVERFLOW == eEncoding)
+    return 0;
+  
+  switch (eDatum) {
+      
+    case DM_BCD:
+      switch (eEncoding) {
+        case MN_MINUS_ONE: return 0;
+        case MN_ZERO:      return 0;
+        case MN_PLUS_ONE:  return 0;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_BOL:
+      switch (eEncoding) {
+        case MN_FALSE: return 0;
+        case MN_TRUE:  return 0;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_DTE:
+      switch (eEncoding) {
+        case MN_DIFF_1B: return 1;
+        case MN_DIFF_2B: return 2;
+        case MN_DIFF_3B: return 3;
+        case MN_DIFF_4B: return 4;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_FLT:
+      switch (eEncoding) {
+        case MN_MINUS_ONE: return 0;
+        case MN_ZERO:      return 0;
+        case MN_PLUS_ONE:  return 0;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_INT:
+      switch (eEncoding) {
+        case MN_MINUS_ONE: return 0;
+        case MN_ZERO:      return 0;
+        case MN_PLUS_ONE:  return 0;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_IVL:
+      switch (eEncoding) {
+        case MN_DIFF_1B: return 1;
+        case MN_DIFF_2B: return 2;
+        case MN_DIFF_3B: return 3;
+        case MN_DIFF_4B: return 4;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_TME:
+      switch (eEncoding) {
+        case MN_DIFF_1B: return 1;
+        case MN_DIFF_2B: return 2;
+        case MN_DIFF_3B: return 3;
+        case MN_DIFF_4B: return 4;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_TSP:
+      switch (eEncoding) {
+        case MN_DIFF_1B: return 1;
+        case MN_DIFF_2B: return 2;
+        case MN_DIFF_3B: return 3;
+        case MN_DIFF_4B: return 4;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_VCH:
+      switch (eEncoding) {
+        case MN_COL_ARRAY:   NEVER_REACH; return 0;
+        case MN_SHOCO_CL:    NEVER_REACH; return 0;
+        case MN_SHOCO_2B:    NEVER_REACH; return 0;
+        case MN_LOCAL_HMAP:  NEVER_REACH; return 0;
+        case MN_GLOBAL_HMAP: NEVER_REACH; return 0;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    default:
+      NEVER_REACH;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* decode decimal from given cache line                                       */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeBcd(CacheLine xaCacheLine[], i8 i_Row,
@@ -580,15 +697,15 @@ void RowCoder::vEncodeBcd(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iEncodingBcd(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_BCD));
+  eMN eEncoding = RowCoder::eEncodingBcd(pDatum,nBytesEncoded);
+  RASSERT(nBytesEncoded == RowCoder::nDataBytes(eEncoding,DM_BCD));
   
   // set 4bit meta data for column value
-  aCacheLine->v1N(i_Column,iEncoding);
+  aCacheLine->v1N(i_Column,eEncoding);
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,iEncoding);
+    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,eEncoding);
   
   i_Offset += nBytesEncoded;
   
@@ -622,11 +739,11 @@ void RowCoder::vEncodeBol(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iEncodingBol(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_BOL));
+  eMN eEncoding = RowCoder::eEncodingBol(pDatum,nBytesEncoded);
+  RASSERT(nBytesEncoded == RowCoder::nDataBytes(eEncoding,DM_BOL));
   
   // set 4bit meta data for column value
-  aCacheLine->v1N(i_Column,iEncoding);
+  aCacheLine->v1N(i_Column,eEncoding);
   
   i_Offset += nBytesEncoded;
   
@@ -660,15 +777,15 @@ void RowCoder::vEncodeDte(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iEncodingDte(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_DTE));
+  eMN eEncoding = RowCoder::eEncodingDte(pDatum,nBytesEncoded);
+  RASSERT(nBytesEncoded == RowCoder::nDataBytes(eEncoding,DM_DTE));
   
   // set 4bit meta data for column value
-  aCacheLine->v1N(i_Column,iEncoding);
+  aCacheLine->v1N(i_Column,eEncoding);
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,iEncoding);
+    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,eEncoding);
   
   i_Offset += nBytesEncoded;
   
@@ -702,15 +819,15 @@ void RowCoder::vEncodeFlt(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iEncodingFlt(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_FLT));
+  eMN eEncoding = RowCoder::eEncodingFlt(pDatum,nBytesEncoded);
+  RASSERT(nBytesEncoded == RowCoder::nDataBytes(eEncoding,DM_FLT));
   
   // set 4bit meta data for column value
-  aCacheLine->v1N(i_Column,iEncoding);
+  aCacheLine->v1N(i_Column,eEncoding);
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,iEncoding);
+    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,eEncoding);
   
   i_Offset += nBytesEncoded;
   
@@ -744,15 +861,15 @@ void RowCoder::vEncodeInt(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iEncodingInt(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_INT));
+  eMN eEncoding = RowCoder::eEncodingInt(pDatum,nBytesEncoded);
+  RASSERT(nBytesEncoded == RowCoder::nDataBytes(eEncoding,DM_INT));
   
   // set 4bit meta data for column value
-  aCacheLine->v1N(i_Column,iEncoding);
+  aCacheLine->v1N(i_Column,eEncoding);
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,iEncoding);
+    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,eEncoding);
   
   i_Offset += nBytesEncoded;
   
@@ -786,15 +903,15 @@ void RowCoder::vEncodeIvl(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iEncodingIvl(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_IVL));
+  eMN eEncoding = RowCoder::eEncodingIvl(pDatum,nBytesEncoded);
+  RASSERT(nBytesEncoded == RowCoder::nDataBytes(eEncoding,DM_IVL));
   
   // set 4bit meta data for column value
-  aCacheLine->v1N(i_Column,iEncoding);
+  aCacheLine->v1N(i_Column,eEncoding);
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,iEncoding);
+    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,eEncoding);
   
   i_Offset += nBytesEncoded;
   
@@ -828,15 +945,15 @@ void RowCoder::vEncodeTme(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iEncodingTme(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_TME));
+  eMN eEncoding = RowCoder::eEncodingTme(pDatum,nBytesEncoded);
+  RASSERT(nBytesEncoded == RowCoder::nDataBytes(eEncoding,DM_TME));
   
   // set 4bit meta data for column value
-  aCacheLine->v1N(i_Column,iEncoding);
+  aCacheLine->v1N(i_Column,eEncoding);
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,iEncoding);
+    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,eEncoding);
   
   i_Offset += nBytesEncoded;
   
@@ -870,15 +987,15 @@ void RowCoder::vEncodeTsp(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iEncodingTsp(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_TSP));
+  eMN eEncoding = RowCoder::eEncodingTsp(pDatum,nBytesEncoded);
+  RASSERT(nBytesEncoded == RowCoder::nDataBytes(eEncoding,DM_TSP));
   
   // set 4bit meta data for column value
-  aCacheLine->v1N(i_Column,iEncoding);
+  aCacheLine->v1N(i_Column,eEncoding);
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,iEncoding);
+    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,eEncoding);
   
   i_Offset += nBytesEncoded;
   
@@ -909,14 +1026,14 @@ void RowCoder::vEncodeVch(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iEncodingVch(pDatum,nBytesEncoded);
-  //RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_TSP));
+  eMN eEncoding = RowCoder::eEncodingVch(pDatum,nBytesEncoded);
+  //RASSERT(nBytesEncoded == nEncodedBytes(eEncoding,DM_TSP));
   
   // set 4bit meta data for column value
-  aCacheLine->v1N(i_Column,iEncoding);
+  aCacheLine->v1N(i_Column,eEncoding);
   
   // set n-byte data for column value
-  if (iEncoding == MN_SHOCO_2B) {
+  if (eEncoding == MN_SHOCO_2B) {
     // we would encode the shoco version of the string into a cache line
     
     // allot a tail cache line
@@ -956,166 +1073,49 @@ void RowCoder::vEncodeVch(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
 }
 
 /*----------------------------------------------------------------------------*/
-/* return number of bytes of encoding                                         */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::nEncodedBytes(i8 iEncoding, eDM eDatum)
-{
-  if (iEncoding == MN_NULL)
-    return 0;
-  
-  if (iEncoding <= MN_8B)
-    return iEncoding;
-  
-  if (MN_OVERFLOW == iEncoding)
-    return 0;
-  
-  switch (eDatum) {
-      
-    case DM_BCD:
-      switch (iEncoding) {
-        case MN_MINUS_ONE: return 0;
-        case MN_ZERO:      return 0;
-        case MN_PLUS_ONE:  return 0;
-        default:
-          NEVER_REACH;
-      }
-      break;
-      
-    case DM_BOL:
-      switch (iEncoding) {
-        case MN_FALSE: return 0;
-        case MN_TRUE:  return 0;
-        default:
-          NEVER_REACH;
-      }
-      break;
-      
-    case DM_DTE:
-      switch (iEncoding) {
-        case MN_DIFF_1B: return 1;
-        case MN_DIFF_2B: return 2;
-        case MN_DIFF_3B: return 3;
-        case MN_DIFF_4B: return 4;
-        default:
-          NEVER_REACH;
-      }
-      break;
-      
-    case DM_FLT:
-      switch (iEncoding) {
-        case MN_MINUS_ONE: return 0;
-        case MN_ZERO:      return 0;
-        case MN_PLUS_ONE:  return 0;
-        default:
-          NEVER_REACH;
-      }
-      break;
-      
-    case DM_INT:
-      switch (iEncoding) {
-        case MN_MINUS_ONE: return 0;
-        case MN_ZERO:      return 0;
-        case MN_PLUS_ONE:  return 0;
-        default:
-          NEVER_REACH;
-      }
-      break;
-      
-    case DM_IVL:
-      switch (iEncoding) {
-        case MN_DIFF_1B: return 1;
-        case MN_DIFF_2B: return 2;
-        case MN_DIFF_3B: return 3;
-        case MN_DIFF_4B: return 4;
-        default:
-          NEVER_REACH;
-      }
-      break;
-      
-    case DM_TME:
-      switch (iEncoding) {
-        case MN_DIFF_1B: return 1;
-        case MN_DIFF_2B: return 2;
-        case MN_DIFF_3B: return 3;
-        case MN_DIFF_4B: return 4;
-        default:
-          NEVER_REACH;
-      }
-      break;
-      
-    case DM_TSP:
-      switch (iEncoding) {
-        case MN_DIFF_1B: return 1;
-        case MN_DIFF_2B: return 2;
-        case MN_DIFF_3B: return 3;
-        case MN_DIFF_4B: return 4;
-        default:
-          NEVER_REACH;
-      }
-      break;
-      
-    case DM_VCH:
-      switch (iEncoding) {
-        case MN_COL_ARRAY:   NEVER_REACH; return 0;
-        case MN_SHOCO_CL:    NEVER_REACH; return 0;
-        case MN_SHOCO_2B:    NEVER_REACH; return 0;
-        case MN_LOCAL_HMAP:  NEVER_REACH; return 0;
-        case MN_GLOBAL_HMAP: NEVER_REACH; return 0;
-        default:
-          NEVER_REACH;
-      }
-      break;
-      
-    default:
-      NEVER_REACH;
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* encoding of bcd                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iEncodingBcd(Datum* pDatum, i8& nBytesEncoded)
+eMN RowCoder::eEncodingBcd(Datum* pDatum, i8& nBytesEncoded)
 {
-  i8 iEncoding;
+  eMN eEncoding;
   
   if (pDatum->m_iDatum == C_DATUM_NULL) {
-    iEncoding = MN_NULL;
+    eEncoding = MN_NULL;
     nBytesEncoded = 0;
   }
   else {
-    iEncoding = IntLib::iByteMagnitude(pDatum->m_iDatum);
-    nBytesEncoded = iEncoding;
+    eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iDatum);
+    nBytesEncoded = eEncoding;
   }
   
-  return iEncoding;
+  return eEncoding;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encoding of bol                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iEncodingBol(Datum* pDatum, i8& nBytesEncoded)
+eMN RowCoder::eEncodingBol(Datum* pDatum, i8& nBytesEncoded)
 {
-  i8 iEncoding;
+  eMN eEncoding;
   
   if (pDatum->m_iDatum == C_DATUM_NULL)
-    iEncoding = MN_NULL;
+    eEncoding = MN_NULL;
   else if (pDatum->m_iDatum)
-    iEncoding = MN_TRUE;
+    eEncoding = MN_TRUE;
   else
-    iEncoding = MN_FALSE;
+    eEncoding = MN_FALSE;
   
   nBytesEncoded = 0;
   
-  return iEncoding;
+  return eEncoding;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encoding of dte                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iEncodingDte(Datum* pDatum, i8& nBytesEncoded)
+eMN RowCoder::eEncodingDte(Datum* pDatum, i8& nBytesEncoded)
 {
-  i8 iEncoding;
+  eMN eEncoding;
   
   if (pDatum->m_iDatum == C_DATUM_NULL) {
     nBytesEncoded = 0;
@@ -1137,81 +1137,81 @@ i8 RowCoder::iEncodingDte(Datum* pDatum, i8& nBytesEncoded)
       break;
   }
   
-  iEncoding = IntLib::iByteMagnitude(pDatum->m_iDatum);
+  eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iDatum);
   
-  nBytesEncoded = iEncoding;
+  nBytesEncoded = eEncoding;
   
-  return iEncoding;
+  return eEncoding;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encoding of flt                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iEncodingFlt(Datum* pDatum, i8& nBytesEncoded)
+eMN RowCoder::eEncodingFlt(Datum* pDatum, i8& nBytesEncoded)
 {
-  i8 iEncoding;
+  eMN eEncoding;
   
   if (pDatum->m_iDatum == C_DATUM_NULL) {
-    iEncoding = MN_NULL;
+    eEncoding = MN_NULL;
     nBytesEncoded = 0;
   }
   else {
-    iEncoding = IntLib::iByteMagnitude(pDatum->m_iDatum);
-    nBytesEncoded = iEncoding;
+    eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iDatum);
+    nBytesEncoded = eEncoding;
   }
   
-  return iEncoding;
+  return eEncoding;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encoding of int                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iEncodingInt(Datum* pDatum, i8& nBytesEncoded)
+eMN RowCoder::eEncodingInt(Datum* pDatum, i8& nBytesEncoded)
 {
-  i8 iEncoding;
+  eMN eEncoding;
   
   if (pDatum->m_iDatum == C_DATUM_NULL) {
-    iEncoding = MN_NULL;
+    eEncoding = MN_NULL;
     nBytesEncoded = 0;
   }
   else {
-    iEncoding = IntLib::iByteMagnitude(pDatum->m_iDatum);
-    nBytesEncoded = iEncoding;
+    eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iDatum);
+    nBytesEncoded = eEncoding;
   }
   
-  return iEncoding;
+  return eEncoding;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encoding of ivl                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iEncodingIvl(Datum* pDatum, i8& nBytesEncoded)
+eMN RowCoder::eEncodingIvl(Datum* pDatum, i8& nBytesEncoded)
 {
-  i8 iEncoding;
+  eMN eEncoding;
   
   if (pDatum->m_iDatum == C_DATUM_NULL) {
-    iEncoding = MN_NULL;
+    eEncoding = MN_NULL;
     nBytesEncoded = 0;
   }
   else {
-    iEncoding = IntLib::iByteMagnitude(pDatum->m_iDatum);
-    nBytesEncoded = iEncoding;
+    eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iDatum);
+    nBytesEncoded = eEncoding;
   }
   
-  return iEncoding;
+  return eEncoding;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encoding of tme                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iEncodingTme(Datum* pDatum, i8& nBytesEncoded)
+eMN RowCoder::eEncodingTme(Datum* pDatum, i8& nBytesEncoded)
 {
   if (pDatum->m_iDatum == C_DATUM_NULL) {
     nBytesEncoded = 0;
     return MN_NULL;
   }
   
-  i8 iEncoding;
+  eMN eEncoding;
   
   bool bSawNonZero = true;
   
@@ -1228,24 +1228,24 @@ i8 RowCoder::iEncodingTme(Datum* pDatum, i8& nBytesEncoded)
       break;
   }
   
-  iEncoding = IntLib::iByteMagnitude(pDatum->m_iDatum);
+  eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iDatum);
   
-  nBytesEncoded = iEncoding;
+  nBytesEncoded = eEncoding;
   
-  return iEncoding;
+  return eEncoding;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encoding of tsp                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iEncodingTsp(Datum* pDatum, i8& nBytesEncoded)
+eMN RowCoder::eEncodingTsp(Datum* pDatum, i8& nBytesEncoded)
 {
   if (pDatum->m_iDatum == C_DATUM_NULL) {
     nBytesEncoded = 0;
     return MN_NULL;
   }
   
-  i8 iEncoding;
+  eMN eEncoding;
   
   bool bSawNonZero = true;
   
@@ -1262,33 +1262,33 @@ i8 RowCoder::iEncodingTsp(Datum* pDatum, i8& nBytesEncoded)
       break;
   }
   
-  iEncoding = IntLib::iByteMagnitude(pDatum->m_iDatum);
+  eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iDatum);
   
-  nBytesEncoded = iEncoding;
+  nBytesEncoded = eEncoding;
   
-  return iEncoding;
+  return eEncoding;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encoding of vch                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iEncodingVch(Datum* pDatum, i8& nBytesEncoded)
+eMN RowCoder::eEncodingVch(Datum* pDatum, i8& nBytesEncoded)
 {
-  i8 iEncoding;
+  eMN eEncoding;
   
   i8 iLen = StrLib::iLength((char*)pDatum->m_ayDatum);
   //RASSERT(iLen <= 8);
   
   if (iLen <= 8) {
-    iEncoding = iLen;
+    eEncoding = (eMN)iLen;
     nBytesEncoded = iLen;
   }
   else {
-    iEncoding = MN_SHOCO_2B;
+    eEncoding = MN_SHOCO_2B;
     nBytesEncoded = iLen;
   }
   
-  return iEncoding;
+  return eEncoding;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1348,7 +1348,7 @@ void RowCoder::vRestoreTsp(Datum* pDatum, eMN eEncoding)
 /*----------------------------------------------------------------------------*/
 /* decoding of dte                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iStripDte(WordView& wTspView, i8 iEncoding)
+i8 RowCoder::iStripDte(WordView& wTspView, eMN eEncoding)
 {
   i8 iDecoded = wTspView.m_iI8;
   iDecoded <<= 40;
@@ -1359,7 +1359,7 @@ i8 RowCoder::iStripDte(WordView& wTspView, i8 iEncoding)
 /*----------------------------------------------------------------------------*/
 /* decoding of tme                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iStripTme(WordView& wTspView, i8 iEncoding)
+i8 RowCoder::iStripTme(WordView& wTspView, eMN eEncoding)
 {
   i8 iDecoded = wTspView.m_iI8;
   iDecoded <<= 40;
@@ -1370,7 +1370,7 @@ i8 RowCoder::iStripTme(WordView& wTspView, i8 iEncoding)
 /*----------------------------------------------------------------------------*/
 /* decoding of tsp                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iStripTsp(WordView& wTspView, i8 iEncoding)
+i8 RowCoder::iStripTsp(WordView& wTspView, eMN eEncoding)
 {
   i8 iDecoded = wTspView.m_iI8;
   iDecoded <<= 24;
