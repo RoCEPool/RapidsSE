@@ -25,6 +25,9 @@ namespace Data
 
       w8   m_wWord;
       byte m_yaByte[C_BYTES_PER_WORD];
+      
+      void*   m_aAdr;
+      Object* m_pObj;
     };
   
     s4K m_sStr;
