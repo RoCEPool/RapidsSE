@@ -600,12 +600,13 @@ void Table::vPublish(i8 iPartition)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   vTrace("Publishing table %s\n"_Stz, m_sTableName.aChar());
+  m_xSlots.vPublishTable(iPartition);
   
-  // purge all other indices
-  for (i8 iIndexNo = 0; iIndexNo < m_pIdxVec->nItems(); iIndexNo++) {
-    Index* pIndex = m_pIdxVec->pGet(iIndexNo);
-    m_xSlots.vPublishIndex(iPartition, pIndex->iIndexNo());
-  }
+  // publish all other indices
+//  for (i8 iIndexNo = 0; iIndexNo < m_pIdxVec->nItems(); iIndexNo++) {
+//    Index* pIndex = m_pIdxVec->pGet(iIndexNo);
+//    m_xSlots.vPublishIndex(iPartition, pIndex->iIndexNo());
+//  }
 }
 
 /*----------------------------------------------------------------------------*/

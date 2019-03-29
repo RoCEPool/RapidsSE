@@ -141,6 +141,7 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
   
   // aggregate the buffer
   i8 nRowCount = pRowBuffer->nRowCount();
+  Datum* pDatum = new Datum;
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
     aRowData = pRowBuffer->pRow(i_Row);
@@ -149,10 +150,9 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
     //vTrace("row: (%s)\n"_Stz, sRowString.aChar());
     
     //aSrc = (byte*)aRowData->aColumnDatum(m_pKeyColumn->iColumnNo());
-
-    Datum xDatum;
-    RowCoder::vDecode(aRowData,0,m_pKeyColumn,&xDatum);
-    xKey = *((i8*)xDatum.m_iDatum);
+    
+    RowCoder::vDecode(aRowData,0,m_pKeyColumn,pDatum);
+    xKey = pDatum->m_iDatum;
 
     for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
       
@@ -160,8 +160,8 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
       i_Col = pAggColumn->iColumnNo();
       
       //aSrc = (byte*)aRowData->aColumnDatum(i_Col);
-      RowCoder::vDecode(aRowData,0,pAggColumn,&xDatum);
-      xVal = *((i8*)xDatum.m_iDatum);
+      RowCoder::vDecode(aRowData,0,pAggColumn,pDatum);
+      xVal = pDatum->m_iDatum;
     
       if (xVal.iAsI8() < m_iaMinVal[i_AggCol]) {
         m_iaMinVal[i_AggCol] = xVal.iAsI8();
@@ -177,6 +177,7 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
     m_nRows++;
     
   }
+  delete pDatum;
   
   // compute average
   for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++)

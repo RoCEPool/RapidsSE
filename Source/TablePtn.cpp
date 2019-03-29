@@ -556,6 +556,37 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* publish the index buffers                                                  */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vPublish(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  if ( ! m_pRootRowBuffer)
+    return;
+  
+  m_okLock.vGrabWrite();
+  
+  // is there a current buffer ?
+  if ( ! m_pCurrentRowBuffer)
+    return;
+  
+  s48K sRowString;
+  
+  // publish the current buffer (last buffer that was added)
+  i8 nRowCount = m_pCurrentRowBuffer->nRowCount();
+  for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
+    
+    CacheLine* aRowData = m_pCurrentRowBuffer->pRow(i_Row);
+    RowCoder::vString(sRowString,m_pCurrentRowBuffer->pTable()->pColumnVec(), aRowData);
+    vTrace("row: (%s)\n"_Stz, sRowString.aChar());
+  }
+  vTrace("Partition%lld: published %lld rows\n"_Stz,m_iPartitionId,
+         m_pCurrentRowBuffer->nRowCount());
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset the buffer write members                                             */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vResetWrite(void)

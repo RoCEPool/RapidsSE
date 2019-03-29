@@ -75,6 +75,7 @@ namespace Data
     i8   iPartitionId(void);
     void vPartitionId(i8 iPartitionId);
     bool bPopulateIndex(i8 iIndexNo);
+    void vPublish(void);
     void vResetWrite(void);
     RowBuffer* pRootRowBuffer(void);
     i8   nRowBuffers(void);
