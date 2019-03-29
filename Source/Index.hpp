@@ -37,7 +37,6 @@ namespace MetaData
   };
   
   class Table;
-  class TablePtn;
   
   class Index : public Object
   {

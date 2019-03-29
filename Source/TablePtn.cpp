@@ -14,7 +14,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TablePtn* MetaData::_pTablePtn(void* aAddr)
+TablePtn* Data::_pTablePtn(void* aAddr)
 {
   TablePtn* pTablePtn = reinterpret_cast<TablePtn*>(aAddr);
   
