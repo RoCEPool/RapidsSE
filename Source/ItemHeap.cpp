@@ -325,19 +325,6 @@ bool ItemHeap::bHasFreeItem(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does buffer have a free item no in free chain ?                            */
-/*----------------------------------------------------------------------------*/
-bool ItemHeap::bHasFreeItemHidden(void)
-{
-  // we allow for only C_MAX_ITEMS - 16 entries in hidden index
-  if (nItems() >= C_MAX_ITEMS - 16) {
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* does buffer have space for nBytes ?                                        */
 /*----------------------------------------------------------------------------*/
 bool ItemHeap::bHasSpace(i8 nBytes)
