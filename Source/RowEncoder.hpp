@@ -13,7 +13,7 @@ namespace Data
   {
   private:
     RowParts* m_pRowParts;
-    i8        m_i_CacheOffset;
+    i8        m_i_Offset;
   
     // must be last
     Footer m_xFooter;
@@ -29,15 +29,6 @@ namespace Data
     RowParts* pRowParts(void);
   
   private:
-    void vEncodeBcd(Column* pColumn, Datum* pDatum, i8& iHash);
-    void vEncodeBol(Column* pColumn, Datum* pDatum, i8& iHash);
-    void vEncodeDte(Column* pColumn, Datum* pDatum, i8& iHash);
-    void vEncodeFlt(Column* pColumn, Datum* pDatum, i8& iHash);
-    void vEncodeInt(Column* pColumn, Datum* pDatum, i8& iHash);
-    void vEncodeIvl(Column* pColumn, Datum* pDatum, i8& iHash);
-    void vEncodeTme(Column* pColumn, Datum* pDatum, i8& iHash);
-    void vEncodeTsp(Column* pColumn, Datum* pDatum, i8& iHash);
-    void vEncodeVch(Column* pColumn, Datum* pDatum, i8& iHash);
   
     Footer* aFooter(void);
   };

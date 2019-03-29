@@ -31,6 +31,25 @@ namespace Data
     static void vDecodeVch(CacheLine xaCacheLine[], i8 i_Row,
                            Column* pCol, Datum* pDatum);
 
+    static void vEncodeBcd(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                           Column* pColumn, Datum* pDatum, i8& iHash);
+    static void vEncodeBol(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                           Column* pColumn, Datum* pDatum, i8& iHash);
+    static void vEncodeDte(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                           Column* pColumn, Datum* pDatum, i8& iHash);
+    static void vEncodeFlt(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                           Column* pColumn, Datum* pDatum, i8& iHash);
+    static void vEncodeInt(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                           Column* pColumn, Datum* pDatum, i8& iHash);
+    static void vEncodeIvl(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                           Column* pColumn, Datum* pDatum, i8& iHash);
+    static void vEncodeTme(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                           Column* pColumn, Datum* pDatum, i8& iHash);
+    static void vEncodeTsp(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                           Column* pColumn, Datum* pDatum, i8& iHash);
+    static void vEncodeVch(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                           Column* pColumn, Datum* pDatum, i8& iHash);
+  
     static i8 nEncodedBytes(i8 iEncoding, eDM eDatum);
 
     static i8 iEncodingBcd(Datum* pDatum, i8& nBytesEncoded);
@@ -61,7 +80,6 @@ namespace Data
   
   //private:
     static void vAppend(Record* pRec, CacheLine xaCacheLine[], i8 i_Row, Column* pCol);
-
   };
 }
 

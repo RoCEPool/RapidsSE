@@ -35,7 +35,7 @@ RowEncoder::RowEncoder(RowParts* pRowParts)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODER,_FOOTER_);
   
   m_pRowParts = pRowParts;
-  m_i_CacheOffset = 8;
+  m_i_Offset = 8;
   
   _checkInitialised_(CN_ROWENCODER);
   
@@ -74,17 +74,31 @@ void RowEncoder::vEncode(Column* pColumn, Datum* pDatum, i8& iHash)
   if (i_Column >= 16)
     return;
   
+  CacheLine* aCacheLine = m_pRowParts->aGet(0);
+  
+  i8 i_Tail = C_CACHELINES - 1;
+
   eDM eDatum = pColumn->eDatumType();
   switch (eDatum) {
-    case DM_BCD: vEncodeBcd(pColumn,pDatum,iHash); return;
-    case DM_BOL: vEncodeBol(pColumn,pDatum,iHash); return;
-    case DM_DTE: vEncodeDte(pColumn,pDatum,iHash); return;
-    case DM_FLT: vEncodeFlt(pColumn,pDatum,iHash); return;
-    case DM_INT: vEncodeInt(pColumn,pDatum,iHash); return;
-    case DM_IVL: vEncodeIvl(pColumn,pDatum,iHash); return;
-    case DM_TME: vEncodeTme(pColumn,pDatum,iHash); return;
-    case DM_TSP: vEncodeTsp(pColumn,pDatum,iHash); return;
-    case DM_VCH: vEncodeVch(pColumn,pDatum,iHash); return;
+    case DM_BCD:
+      RowCoder::vEncodeBcd(aCacheLine,i_Tail,m_i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_BOL: RowCoder::vEncodeBol(aCacheLine,i_Tail,m_i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_DTE: RowCoder::vEncodeDte(aCacheLine,i_Tail,m_i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_FLT: RowCoder::vEncodeFlt(aCacheLine,i_Tail,m_i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_INT: RowCoder::vEncodeInt(aCacheLine,i_Tail,m_i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_IVL: RowCoder::vEncodeIvl(aCacheLine,i_Tail,m_i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_TME: RowCoder::vEncodeTme(aCacheLine,i_Tail,m_i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_TSP: RowCoder::vEncodeTsp(aCacheLine,i_Tail,m_i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_VCH: RowCoder::vEncodeVch(aCacheLine,i_Tail,m_i_Offset,pColumn,pDatum,iHash);
+      return;
     default:
       NEVER_REACH;
   }
@@ -96,399 +110,6 @@ void RowEncoder::vEncode(Column* pColumn, Datum* pDatum, i8& iHash)
 RowParts* RowEncoder::pRowParts(void)
 {
   return m_pRowParts;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* encode decimal                                                             */
-/*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeBcd(Column* pColumn, Datum* pDatum, i8& iHash)
-{
-  CacheLine* aCacheLine = m_pRowParts->aGet(0);
-  
-  i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->ayDatum();
-  
-  //! temp
-  pDatum->m_iDatum = wOriginal;
-  
-  WordView wEncoded;
-  wEncoded.m_wWord = wOriginal;
-  
-  // hash the column value if part of partition key
-  if (pColumn->bIsPartitionKey()) {
-    iHash += HshLib::iHash(&wEncoded.m_wWord,sizeof(w8));
-  }
-  
-  i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iEncodingBcd(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_BCD));
-
-  // set 4bit meta data for column value
-  aCacheLine->v1N(i_Column,iEncoding);
-  
-  // set n-byte data for column value
-  if (nBytesEncoded)
-    aCacheLine->vPut(m_i_CacheOffset,pDatum->m_iDatum,iEncoding);
-  
-  m_i_CacheOffset += nBytesEncoded;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-  
-  RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
-  RASSERT(wOriginal == pDatum->m_iDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode boolean                                                             */
-/*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeBol(Column* pColumn, Datum* pDatum, i8& iHash)
-{
-  CacheLine* aCacheLine = m_pRowParts->aGet(0);
-  
-  i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->ayDatum();
-
-  //! temp
-  pDatum->m_iDatum = wOriginal;
-  
-  WordView wEncoded;
-  wEncoded.m_wWord = wOriginal;
-  
-  // hash the column value if part of partition key
-  if (pColumn->bIsPartitionKey()) {
-    iHash += HshLib::iHash(&wEncoded.m_wWord,sizeof(w8));
-  }
-  
-  i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iEncodingBol(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_BOL));
-
-  // set 4bit meta data for column value
-  aCacheLine->v1N(i_Column,iEncoding);
-  
-  m_i_CacheOffset += nBytesEncoded;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-  
-  RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
-  RASSERT(wOriginal == pDatum->m_iDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode date                                                                */
-/*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeDte(Column* pColumn, Datum* pDatum, i8& iHash)
-{
-  CacheLine* aCacheLine = m_pRowParts->aGet(0);
-  
-  i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->ayDatum();
-  
-  //! temp
-  pDatum->m_iDatum = wOriginal;
-  
-  WordView wEncoded;
-  wEncoded.m_wWord = wOriginal;
-  
-  // hash the column value if part of partition key
-  if (pColumn->bIsPartitionKey()) {
-    iHash += HshLib::iHash(&wEncoded.m_wWord,sizeof(w8));
-  }
-  
-  i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iEncodingDte(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_DTE));
-
-  // set 4bit meta data for column value
-  aCacheLine->v1N(i_Column,iEncoding);
-  
-  // set n-byte data for column value
-  if (nBytesEncoded)
-    aCacheLine->vPut(m_i_CacheOffset,pDatum->m_iDatum,iEncoding);
-  
-  m_i_CacheOffset += nBytesEncoded;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-  
-  RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
-  RASSERT(wOriginal == pDatum->m_iDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode float                                                               */
-/*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeFlt(Column* pColumn, Datum* pDatum, i8& iHash)
-{
-  CacheLine* aCacheLine = m_pRowParts->aGet(0);
-  
-  i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->ayDatum();
-
-  //! temp
-  pDatum->m_iDatum = wOriginal;
-  
-  WordView wEncoded;
-  wEncoded.m_wWord = wOriginal;
-  
-  // hash the column value if part of partition key
-  if (pColumn->bIsPartitionKey()) {
-    iHash += HshLib::iHash(&wEncoded.m_wWord,sizeof(w8));
-  }
-  
-  i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iEncodingFlt(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_FLT));
-
-  // set 4bit meta data for column value
-  aCacheLine->v1N(i_Column,iEncoding);
-  
-  // set n-byte data for column value
-  if (nBytesEncoded)
-    aCacheLine->vPut(m_i_CacheOffset,pDatum->m_iDatum,iEncoding);
-  
-  m_i_CacheOffset += nBytesEncoded;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-  
-  RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
-  RASSERT(wOriginal == pDatum->m_iDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode integer                                                             */
-/*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeInt(Column* pColumn, Datum* pDatum, i8& iHash)
-{
-  CacheLine* aCacheLine = m_pRowParts->aGet(0);
-  
-  i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->ayDatum();
-  
-  //! temp
-  pDatum->m_iDatum = wOriginal;
-  
-  WordView wEncoded;
-  wEncoded.m_wWord = wOriginal;
-  
-  // hash the column value if part of partition key
-  if (pColumn->bIsPartitionKey()) {
-    iHash += HshLib::iHash(&wEncoded.m_wWord,sizeof(w8));
-  }
-  
-  i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iEncodingInt(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_INT));
-
-  // set 4bit meta data for column value
-  aCacheLine->v1N(i_Column,iEncoding);
-  
-  // set n-byte data for column value
-  if (nBytesEncoded)
-    aCacheLine->vPut(m_i_CacheOffset,pDatum->m_iDatum,iEncoding);
-  
-  m_i_CacheOffset += nBytesEncoded;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-  
-  RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
-  RASSERT(wOriginal == pDatum->m_iDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode interval                                                            */
-/*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeIvl(Column* pColumn, Datum* pDatum, i8& iHash)
-{
-  CacheLine* aCacheLine = m_pRowParts->aGet(0);
-  
-  i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->ayDatum();
-  
-  //! temp
-  pDatum->m_iDatum = wOriginal;
-  
-  WordView wEncoded;
-  wEncoded.m_wWord = wOriginal;
-  
-  // hash the column value if part of partition key
-  if (pColumn->bIsPartitionKey()) {
-    iHash += HshLib::iHash(&wEncoded.m_wWord,sizeof(w8));
-  }
-  
-  i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iEncodingIvl(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_IVL));
-
-  // set 4bit meta data for column value
-  aCacheLine->v1N(i_Column,iEncoding);
-  
-  // set n-byte data for column value
-  if (nBytesEncoded)
-    aCacheLine->vPut(m_i_CacheOffset,pDatum->m_iDatum,iEncoding);
-  
-  m_i_CacheOffset += nBytesEncoded;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-  
-  RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
-  RASSERT(wOriginal == pDatum->m_iDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode time                                                                */
-/*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeTme(Column* pColumn, Datum* pDatum, i8& iHash)
-{
-  CacheLine* aCacheLine = m_pRowParts->aGet(0);
-  
-  i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->ayDatum();
-  
-  //! temp
-  pDatum->m_iDatum = wOriginal;
-  
-  WordView wEncoded;
-  wEncoded.m_wWord = wOriginal;
-  
-  // hash the column value if part of partition key
-  if (pColumn->bIsPartitionKey()) {
-    iHash += HshLib::iHash(&wEncoded.m_wWord,sizeof(w8));
-  }
-  
-  i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iEncodingTme(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_TME));
-
-  // set 4bit meta data for column value
-  aCacheLine->v1N(i_Column,iEncoding);
-  
-  // set n-byte data for column value
-  if (nBytesEncoded)
-    aCacheLine->vPut(m_i_CacheOffset,pDatum->m_iDatum,iEncoding);
-  
-  m_i_CacheOffset += nBytesEncoded;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-  
-  RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
-  RASSERT(wOriginal == pDatum->m_iDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode timestamp                                                           */
-/*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeTsp(Column* pColumn, Datum* pDatum, i8& iHash)
-{
-  CacheLine* aCacheLine = m_pRowParts->aGet(0);
-  
-  i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->ayDatum();
-
-  //! temp
-  pDatum->m_iDatum = wOriginal;
-  
-  WordView wEncoded;
-  wEncoded.m_wWord = wOriginal;
-  
-  // hash the column value if part of partition key
-  if (pColumn->bIsPartitionKey()) {
-    iHash += HshLib::iHash(&wEncoded.m_wWord,sizeof(w8));
-  }
-  
-  i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iEncodingTsp(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_TSP));
-
-  // set 4bit meta data for column value
-  aCacheLine->v1N(i_Column,iEncoding);
-  
-  // set n-byte data for column value
-  if (nBytesEncoded)
-    aCacheLine->vPut(m_i_CacheOffset,pDatum->m_iDatum,iEncoding);
-  
-  m_i_CacheOffset += nBytesEncoded;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-  
-  RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
-  RASSERT(wOriginal == pDatum->m_iDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode varchar                                                             */
-/*----------------------------------------------------------------------------*/
-void RowEncoder::vEncodeVch(Column* pColumn, Datum* pDatum, i8& iHash)
-{
-  CacheLine* aCacheLine = m_pRowParts->aGet(0);
-  
-  i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = (w8)pDatum->ayDatum();
-
-  WordView wEncoded;
-  wEncoded.m_wWord = wOriginal;
-  
-  // hash the column value if part of partition key
-  if (pColumn->bIsPartitionKey()) {
-    iHash += HshLib::iHash(&wEncoded.m_wWord,sizeof(w8));
-  }
-  
-  i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iEncodingVch(pDatum,nBytesEncoded);
-  //RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_TSP));
-  
-  // set 4bit meta data for column value
-  aCacheLine->v1N(i_Column,iEncoding);
-  
-  // set n-byte data for column value
-  if (iEncoding == MN_SHOCO_2B) {
-    // we would encode the shoco version of the string into a cache line
-    
-    // allot a tail cache line
-    i8 i_Tail = m_pRowParts->iAllotTail();
-    CacheLine* aShocoLine = m_pRowParts->aGet(i_Tail);
-
-    // set data for column value as the index of the shoco cache line
-    aCacheLine->vPut(m_i_CacheOffset,i_Tail,MN_2B);
-    
-    // compress varchar into tail shoco cache line
-    i8 iLenCompressed =
-      Compress::iIntoShoco(((byte*)aShocoLine)+8, C_BYTES_PER_CACHE_LINE-8,
-                           (char*)pDatum->ayDatum(), nBytesEncoded);
-
-    // set length of the compressed string encoded into tail shoco cache line
-    aShocoLine->v1N(0,iLenCompressed);
-    
-    //MemLib::vWordDump(aShocoLine,sizeof(CacheLine));
-    m_i_CacheOffset += 2;
-
-//    s256 sDecomp;
-//    i8 iLenDecompressed =
-//      Compress::iFromShoco(sDecomp.aChar(), 255,
-//                           ((byte*)aShocoLine)+8, C_BYTES_PER_CACHE_LINE-8);
-//    sDecomp.aChar()[iLenDecompressed] = '\0';
-//    vTrace("Decomp: %s\n"_Stz,sDecomp.aChar());
-  }
-  else {
-    aCacheLine->vPut(m_i_CacheOffset,(w8)pDatum->ayDatum(),nBytesEncoded);
-    m_i_CacheOffset += nBytesEncoded;
-  }
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-  
 }
 
 /*----------------------------------------------------------------------------*/
