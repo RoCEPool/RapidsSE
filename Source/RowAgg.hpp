@@ -37,7 +37,7 @@ namespace Jobs
     ~RowAgg(void) noexcept(false);
   
     void vAdd(RowAgg* pAggArg);
-    void vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer);
+    void vAggregate(i8 i_Slot, RowBuffer* pRowBuffer);
     void vPrintOut(File& oOutputFile);
     void vReadIn(File& oInFile);
     void vReset(void);

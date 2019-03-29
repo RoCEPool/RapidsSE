@@ -119,7 +119,7 @@ void RowAgg::vAdd(RowAgg* pAggArg)
 /*----------------------------------------------------------------------------*/
 /* aggregate an entry buffer                                                  */
 /*----------------------------------------------------------------------------*/
-void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
+void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
   
@@ -131,36 +131,37 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
   byte* aSrc;
   Column* pAggColumn;
   i8 i_Col;
-  RowData* aRowData;
+  CacheLine* aRowData;
   
   i8 nAggColumns = m_pAggColVec->nItems();
   
   vReset();
   
-  m_oSince = pEntryBuffer->oWhenNewed();
+  m_oSince = pRowBuffer->oWhenNewed();
   
   // aggregate the buffer
-  for (Item* aItem = pEntryBuffer->aLeadEntry();
-       aItem != nullptr;
-       aItem = pEntryBuffer->aNextEntry(aItem, 0)) {
+  i8 nRowCount = pRowBuffer->nRowCount();
+  for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
-    aRowData = _aRowData(aItem->aDataArea());
+    aRowData = pRowBuffer->pRow(i_Row);
     
     //pRow->vAsBinaryStringVLQ(sRowString, m_pTable->pColumnVec());
     //vTrace("row: (%s)\n"_Stz, sRowString.aChar());
     
-    aSrc = (byte*)aRowData->aColumnDatum(m_pKeyColumn->iColumnNo());
-    //xKey = IntLib::iVlqToInt(aSrc);
-    xKey = *((i8*)aSrc);
+    //aSrc = (byte*)aRowData->aColumnDatum(m_pKeyColumn->iColumnNo());
+
+    Datum xDatum;
+    RowCoder::vDecode(aRowData,0,m_pKeyColumn,&xDatum);
+    xKey = *((i8*)xDatum.m_iDatum);
 
     for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
       
       pAggColumn = m_pAggColVec->pGet(i_AggCol);
       i_Col = pAggColumn->iColumnNo();
       
-      aSrc = (byte*)aRowData->aColumnDatum(i_Col);
-      //xVal = IntLib::iVlqToInt(aSrc);
-      xVal = *((i8*)aSrc);
+      //aSrc = (byte*)aRowData->aColumnDatum(i_Col);
+      RowCoder::vDecode(aRowData,0,pAggColumn,&xDatum);
+      xVal = *((i8*)xDatum.m_iDatum);
     
       if (xVal.iAsI8() < m_iaMinVal[i_AggCol]) {
         m_iaMinVal[i_AggCol] = xVal.iAsI8();
