@@ -300,18 +300,6 @@ void Slots::vTidyUpIndex(i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tuncate all partitions                                                     */
-/*----------------------------------------------------------------------------*/
-void Slots::vTruncate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-
-  i8 i_Partn;
-  for (i_Partn = 0; i_Partn < gpAttachMap->m_pGrid->nSlotsPerNode(); i_Partn++)
-    m_pTablePtnVec->pGet(i_Partn)->pHiddenIndexTree()->vTruncate();
-}
-
-/*----------------------------------------------------------------------------*/
 /* tuncate partition for the index                                            */
 /*----------------------------------------------------------------------------*/
 void Slots::vTruncateIndex(i8 iPartitionNO, i8 iIndexNo)

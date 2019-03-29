@@ -534,11 +534,6 @@ void EntryBuffer::vIndex(Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_pIndex = pIndex;
-  
-  //if (! m_pIndex->bIsHidden())
-  //  return;
-  
-  //vInitFreeChain();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -153,13 +153,13 @@ void RowData::vDump(ColumnVec* pColVec)
   // get no of columns
   i8 nColumns = pColVec->nItems();
 
-  // for each column except hidden column, dump the offsets
+  // for each column dump the offsets
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     u2 iOffset = iDatumOffset(i_Column);
     vTrace("%lld|"_Stz, iOffset);
   }
 
-  // for each column except hidden column, dump the column data
+  // for each column dump the column data
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
 
     // get the column

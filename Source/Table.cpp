@@ -76,12 +76,6 @@ Table::Table(void)
   
   m_pColumnVec = new ColumnVec;
   
-  // create the hidden column for the hidden index here
-//  Column* pColumn = new Column("hidden_column"_Stz);
-//  pColumn->vColumnNo(-1);
-//  pColumn->vColumnType(CT_INTEGER);
-//  m_pColumnVec->vAdd(pColumn);
-  
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
     m_ixSubLoaders[i_Slot] = 0;
   
