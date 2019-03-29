@@ -98,8 +98,8 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Datum* pDatum = new Datum;
-  RowEncoder* pRowEncoder = new RowEncoder(&m_oRowParts);
-  
+  m_oRowParts.vReset();
+
   ColumnVec* pColVec = m_pTable->pColumnVec();
   i8 nColumns = m_pTable->pColumnVec()->nItems();
   
@@ -125,7 +125,8 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
           vTrace("%c"_Stz,*a);
         vTrace("\n"_Stz);
       }
-      delete pRowEncoder;
+      //delete pRowEncoder;
+      delete pDatum;
       return false;
     }
     
@@ -142,7 +143,6 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   
   //MemLib::vWordDump(m_oRowParts.aGet(0),sizeof(CacheLine));
 
-  delete pRowEncoder;
   delete pDatum;
 
   return true;
