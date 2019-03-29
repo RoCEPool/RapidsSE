@@ -117,31 +117,6 @@ void RowDecoder::vPrint(i8 i_Row, Column* pCol)
   delete pDatum;
 }
 
-/*----------------------------------------------------------------------------*/
-/* sprint decode row from cache line into string                              */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vRecord(Record* pRec, i8 i_Row, ColumnVec* pColVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
-  
-  // get no of columns
-  i8 nColumns = pColVec->nItems();
-  
-  // for each column
-  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
-    
-    // get the column at index
-    Column* pCol = pColVec->pGet(i_Column);
-    
-    // comma separate column values
-    if (i_Column)
-      pRec->szRecStr()->vConcat(","_Stz);
-    
-    // append column value
-    RowCoder::vAppend(pRec,m_pRowTray->aGet(0),i_Row,pCol);
-  }
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

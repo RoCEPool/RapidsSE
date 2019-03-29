@@ -685,6 +685,30 @@ eMN RowCoder::eGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint decode row from cache line into string                              */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecord(Record* pRec,
+                      CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec)
+{
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+  
+  // for each column
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
+    
+    // get the column at index
+    Column* pCol = pColVec->pGet(i_Column);
+    
+    // comma separate column values
+    if (i_Column)
+      pRec->szRecStr()->vConcat(","_Stz);
+    
+    // append column value
+    RowCoder::vAppend(pRec,xaCacheLine,i_Row,pCol);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* restore zero stripped dte                                                  */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRestoreDte(Datum* pDatum, eMN eEncoding)

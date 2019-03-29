@@ -22,7 +22,6 @@ namespace Data
 
     void vDecode(i8 i_Row, Column* pCol, Datum* pDatum);
     void vPrint(i8 i_Row, Column* pCol);
-    void vRecord(Record* pRec, i8 i_Row, ColumnVec* pColVec);
 
   private:
   
