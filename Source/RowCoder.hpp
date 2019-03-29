@@ -8,10 +8,19 @@ namespace Data
   class RowCoder
   {
   public:
-    static void vCacheLineInit(CacheLine* aCacheLine);
-  
     static void vDecode(CacheLine xaCacheLine[], i8 i_Row,
                         Column* pCol, Datum* pDatum);
+    static void vEncode(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                        Column* pColumn, Datum* pDatum, i8& iHash);
+    static void vPrint(CacheLine xaCacheLine[], i8 i_Row, Column* pCol);
+    static void vRecord(Record* pRec, CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec);
+    static void vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine);
+  
+  private:
+    static void vAppend(Record* pRec, CacheLine xaCacheLine[], i8 i_Row, Column* pCol);
+  
+    static void vCacheLineInit(CacheLine* aCacheLine);
+  
     static void vDecodeBcd(CacheLine xaCacheLine[], i8 i_Row,
                            Column* pCol, Datum* pDatum);
     static void vDecodeBol(CacheLine xaCacheLine[], i8 i_Row,
@@ -30,9 +39,7 @@ namespace Data
                            Column* pCol, Datum* pDatum);
     static void vDecodeVch(CacheLine xaCacheLine[], i8 i_Row,
                            Column* pCol, Datum* pDatum);
-
-    static void vEncode(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
-                        Column* pColumn, Datum* pDatum, i8& iHash);
+  
     static void vEncodeBcd(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
                            Column* pColumn, Datum* pDatum, i8& iHash);
     static void vEncodeBol(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
@@ -53,7 +60,7 @@ namespace Data
                            Column* pColumn, Datum* pDatum, i8& iHash);
   
     static i8 nEncodedBytes(i8 iEncoding, eDM eDatum);
-
+  
     static i8 iEncodingBcd(Datum* pDatum, i8& nBytesEncoded);
     static i8 iEncodingBol(Datum* pDatum, i8& nBytesEncoded);
     static i8 iEncodingDte(Datum* pDatum, i8& nBytesEncoded);
@@ -65,10 +72,6 @@ namespace Data
     static i8 iEncodingVch(Datum* pDatum, i8& nBytesEncoded);
   
     static eMN eGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
-
-    static void vPrint(CacheLine xaCacheLine[], i8 i_Row, Column* pCol);
-  
-    static void vRecord(Record* pRec, CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec);
   
     static void vRestoreDte(Datum* pDatum, eMN eEncoding);
     static void vRestoreTme(Datum* pDatum, eMN eEncoding);
@@ -77,11 +80,6 @@ namespace Data
     static i8 iStripDte(WordView& wTspView, i8 iEncoding);
     static i8 iStripTme(WordView& wTspView, i8 iEncoding);
     static i8 iStripTsp(WordView& wTspView, i8 iEncoding);
-  
-    static void vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine);
-  
-  //private:
-    static void vAppend(Record* pRec, CacheLine xaCacheLine[], i8 i_Row, Column* pCol);
   };
 }
 
