@@ -25,7 +25,6 @@ namespace Data
     RowEncoder(RowParts* pRowParts);
     ~RowEncoder(void) noexcept(false);
 
-    void vEncode(Column* pColumn, Datum* pDatum, i8& iHash);
     RowParts* pRowParts(void);
   
   private:

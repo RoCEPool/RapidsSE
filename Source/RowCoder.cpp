@@ -331,6 +331,56 @@ void RowCoder::vDecodeVch(CacheLine xaCacheLine[], i8 i_Row,
 }
 
 /*----------------------------------------------------------------------------*/
+/* encode given datum into cache line                                         */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vEncode(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                       Column* pColumn, Datum* pDatum, i8& iHash)
+{
+  i8 i_Column = pColumn->iColumnNo();
+  
+  //! don't encode columns 16+                                             (fix)
+  if (i_Column >= 16)
+    return;
+  
+  CacheLine* aCacheLine = &xaCacheLine[0];
+  
+  //i8 i_Tail = C_CACHELINES - 1;
+  
+  eDM eDatum = pColumn->eDatumType();
+  switch (eDatum) {
+    case DM_BCD:
+      vEncodeBcd(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_BOL:
+      vEncodeBol(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_DTE:
+      vEncodeDte(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_FLT:
+      vEncodeFlt(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_INT:
+      vEncodeInt(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_IVL:
+      vEncodeIvl(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_TME:
+      vEncodeTme(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_TSP:
+      vEncodeTsp(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_VCH:
+      vEncodeVch(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
+      return;
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* encode decimal                                                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeBcd(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,

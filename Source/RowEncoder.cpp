@@ -64,47 +64,6 @@ RowEncoder::~RowEncoder(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* encode given datum into cache line                                         */
-/*----------------------------------------------------------------------------*/
-void RowEncoder::vEncode(Column* pColumn, Datum* pDatum, i8& iHash)
-{
-  i8 i_Column = pColumn->iColumnNo();
-  
-  //! don't encode columns 16+                                             (fix)
-  if (i_Column >= 16)
-    return;
-  
-  CacheLine* aCacheLine = m_pRowParts->aGet(0);
-  
-  i8 i_Tail = C_CACHELINES - 1;
-
-  eDM eDatum = pColumn->eDatumType();
-  switch (eDatum) {
-    case DM_BCD:
-      RowCoder::vEncodeBcd(aCacheLine,i_Tail,m_i_Offset,pColumn,pDatum,iHash);
-      return;
-    case DM_BOL: RowCoder::vEncodeBol(aCacheLine,i_Tail,m_i_Offset,pColumn,pDatum,iHash);
-      return;
-    case DM_DTE: RowCoder::vEncodeDte(aCacheLine,i_Tail,m_i_Offset,pColumn,pDatum,iHash);
-      return;
-    case DM_FLT: RowCoder::vEncodeFlt(aCacheLine,i_Tail,m_i_Offset,pColumn,pDatum,iHash);
-      return;
-    case DM_INT: RowCoder::vEncodeInt(aCacheLine,i_Tail,m_i_Offset,pColumn,pDatum,iHash);
-      return;
-    case DM_IVL: RowCoder::vEncodeIvl(aCacheLine,i_Tail,m_i_Offset,pColumn,pDatum,iHash);
-      return;
-    case DM_TME: RowCoder::vEncodeTme(aCacheLine,i_Tail,m_i_Offset,pColumn,pDatum,iHash);
-      return;
-    case DM_TSP: RowCoder::vEncodeTsp(aCacheLine,i_Tail,m_i_Offset,pColumn,pDatum,iHash);
-      return;
-    case DM_VCH: RowCoder::vEncodeVch(aCacheLine,i_Tail,m_i_Offset,pColumn,pDatum,iHash);
-      return;
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* return the row parts tray                                                  */
 /*----------------------------------------------------------------------------*/
 RowParts* RowEncoder::pRowParts(void)

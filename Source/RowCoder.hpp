@@ -31,6 +31,8 @@ namespace Data
     static void vDecodeVch(CacheLine xaCacheLine[], i8 i_Row,
                            Column* pCol, Datum* pDatum);
 
+    static void vEncode(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                        Column* pColumn, Datum* pDatum, i8& iHash);
     static void vEncodeBcd(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
                            Column* pColumn, Datum* pDatum, i8& iHash);
     static void vEncodeBol(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
