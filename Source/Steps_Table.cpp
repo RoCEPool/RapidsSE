@@ -23,7 +23,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.getPtn"_Stz,             &Step::vTableGetPtn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.init"_Stz,               &Step::vTableInit);
-  vAddStep("table.insert"_Stz,             &Step::vTableInsert);
   vAddStep("table.isLoading!"_Stz,         &Step::vTableIsLoadingStore);
   vAddStep("table.isValidIndexColumns"_Stz,&Step::vTableIsValidIndexColumns);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
@@ -387,45 +386,6 @@ ENTRY("vTableInit"_Stz);
   ASSERT(CN_TABLE == pTable->eClass());
   
   new(pTable) Table;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.insert -- insert row into table on data stack                        */
-/*----------------------------------------------------------------------------*/
-void Step::vTableInsert(MP_Task mpTask)
-{
-ENTRY("vTableInsert"_Stz);
- 
-  Object* pPtrTable;
-  Object* pPtrTx;
-  GenVar xRow;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.insert"_Stz);
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
-    THROW_INVALID_DSTACK("table.insert"_Stz);
-  if ( ! mpTask->m_pDataStack->bPop(xRow) )
-    THROW_INVALID_DSTACK("table.insert"_Stz);
-
-  i8 iPartition;
-  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("table.insert"_Stz);
-  
-  Table* pTable = _pTable(pPtrTable);
-
-  Tx* pTx = _pTx(pPtrTx);
-  
-  // invoked by copy...
-  NEVER_REACH;
-  
-  /*
-  pTable->vInsertRow(iPartition,
-                     pTx,
-                     _pStrVal(&xRow)->aStz(),
-                     _pStrVal(&xRow)->nAreaSize());
-   */
   
   EXIT();
 }

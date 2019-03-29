@@ -998,7 +998,6 @@
   static void vTableGetPtn(Tasks::MP_Task mpTask);
   static void vTableIndexCount(Tasks::MP_Task mpTask);
   static void vTableInit(Tasks::MP_Task mpTask);
-  static void vTableInsert(Tasks::MP_Task mpTask);
   static void vTableIsLoadingStore(Tasks::MP_Task mpTask);
   static void vTableLazyBuildIndexes(Tasks::MP_Task mpTask);
   static void vTableList(Tasks::MP_Task mpTask);
