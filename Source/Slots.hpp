@@ -3,15 +3,19 @@
 /*============================================================================*/
 #pragma once
 
+namespace Data
+{
+  class TablePtn;
+}
+
 namespace MetaData
 {
   class Table;
-  class TablePtn;
   
   /*--------------------------------------------------------------------------*/
   /* TablePtnVec -- Table Partition Vector                                    */
   /*--------------------------------------------------------------------------*/
-  typedef VectorNL_t<CN_TABLEPTNVEC,TablePtn,CN_TABLEPTN,C_SLOTS_PER_NODE,u8> TablePtnVec;
+  typedef VectorNL_t<CN_TABLEPTNVEC,Data::TablePtn,CN_TABLEPTN,C_SLOTS_PER_NODE,u8> TablePtnVec;
   
   class Slots : public Object
   {
@@ -36,7 +40,7 @@ namespace MetaData
     
     void       vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn);
     void       vCreateColumnVec(void);
-    TablePtn*  pPartition(i8 iSlot);
+    Data::TablePtn*  pPartition(i8 iSlot);
     bool       bPopulateIndex(i8 iIndexNo);
     PtnColVec* pPtnColVec(void);
     void       vPublishIndex(i8 iPartitionNo, i8 iIndexNo);

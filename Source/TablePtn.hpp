@@ -13,7 +13,7 @@ namespace Data
                      u8> IndexTreeVec;
 }
 
-namespace MetaData
+namespace Data
 {
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
