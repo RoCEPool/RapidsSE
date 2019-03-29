@@ -304,7 +304,7 @@ void KeyWrk::vExtractKey(CacheLine* aRowData, IdxColVec* pIdxColVec)
     
     // get the column value from the row for the iColumnNo
     RowCoder::vDecode(aRowData,0,pColumn,pDatum);
-    xVariable = (i8)pDatum->m_iDatum;
+    xVariable = (i8)pDatum->m_iInt;
     
     // add the column value to the key
     vAddDatum(xVariable, pColumn);

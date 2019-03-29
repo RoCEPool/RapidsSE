@@ -167,7 +167,7 @@ void RowCoder::vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine)
     RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
     
     // check for nulls
-    if (pDatum->m_iDatum == C_DATUM_NULL) {
+    if (pDatum->m_iInt == C_DATUM_NULL) {
       
       // NULL Floats ?
       RASSERT(eDatum != DM_FLT);
@@ -178,36 +178,36 @@ void RowCoder::vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine)
     
     switch (eDatum) {
       case DM_BCD: {
-        sString.vCatSprint("%lld"_Stz, pDatum->m_iDatum);
+        sString.vCatSprint("%lld"_Stz, pDatum->m_iInt);
         break;
       }
       case DM_BOL: {
-        sString.vConcat(pDatum->m_iDatum ? "true"_Stz : "false"_Stz);
+        sString.vConcat(pDatum->m_iInt ? "true"_Stz : "false"_Stz);
         break;
       }
       case DM_DTE: {
         Dte wDte;
-        wDte.vAsI8(pDatum->m_iDatum);
+        wDte.vAsI8(pDatum->m_iInt);
         s32 sDte;
         wDte.vSprint(sDte.aStz());
         sString.vConcat(sDte.aStz());
         break;
       }
       case DM_FLT: {
-        sString.vCatSprint("%g"_Stz, pDatum->m_dDatum);
+        sString.vCatSprint("%g"_Stz, pDatum->m_dFlt);
         break;
       }
       case DM_INT: {
-        sString.vCatSprint("%lld"_Stz, pDatum->m_iDatum);
+        sString.vCatSprint("%lld"_Stz, pDatum->m_iInt);
         break;
       }
       case DM_IVL: {
-        sString.vCatSprint("%lld"_Stz, pDatum->m_iDatum);
+        sString.vCatSprint("%lld"_Stz, pDatum->m_iInt);
         break;
       }
       case DM_TME: {
         Tme wTme;
-        wTme.vAsI8(pDatum->m_iDatum);
+        wTme.vAsI8(pDatum->m_iInt);
         s32 sTme;
         wTme.vSprint(sTme.aStz());
         sString.vConcat(sTme.aStz());
@@ -215,7 +215,7 @@ void RowCoder::vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine)
       }
       case DM_TSP: {
         Tsp wTsp;
-        wTsp.vAsI8(pDatum->m_iDatum);
+        wTsp.vAsI8(pDatum->m_iInt);
         s32 sTsp;
         wTsp.vSprint(sTsp.aStz());
         sString.vConcat(sTsp.aStz());
@@ -401,19 +401,19 @@ void RowCoder::vDecodeBcd(CacheLine xaCacheLine[], i8 i_Row,
   eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
   switch (eEncoding) {
       
-    case MN_NULL: pDatum->m_iDatum = C_DATUM_NULL;                break;
-    case MN_1B:   pDatum->m_iDatum = aCacheLine->w8_1B(i_Offset); break;
-    case MN_2B:   pDatum->m_iDatum = aCacheLine->w8_2B(i_Offset); break;
-    case MN_3B:   pDatum->m_iDatum = aCacheLine->w8_3B(i_Offset); break;
-    case MN_4B:   pDatum->m_iDatum = aCacheLine->w8_4B(i_Offset); break;
-    case MN_5B:   pDatum->m_iDatum = aCacheLine->w8_5B(i_Offset); break;
-    case MN_6B:   pDatum->m_iDatum = aCacheLine->w8_6B(i_Offset); break;
-    case MN_7B:   pDatum->m_iDatum = aCacheLine->w8_7B(i_Offset); break;
-    case MN_8B:   pDatum->m_iDatum = aCacheLine->w8_8B(i_Offset); break;
+    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
+    case MN_1B:   pDatum->m_iInt = aCacheLine->w8_1B(i_Offset); break;
+    case MN_2B:   pDatum->m_iInt = aCacheLine->w8_2B(i_Offset); break;
+    case MN_3B:   pDatum->m_iInt = aCacheLine->w8_3B(i_Offset); break;
+    case MN_4B:   pDatum->m_iInt = aCacheLine->w8_4B(i_Offset); break;
+    case MN_5B:   pDatum->m_iInt = aCacheLine->w8_5B(i_Offset); break;
+    case MN_6B:   pDatum->m_iInt = aCacheLine->w8_6B(i_Offset); break;
+    case MN_7B:   pDatum->m_iInt = aCacheLine->w8_7B(i_Offset); break;
+    case MN_8B:   pDatum->m_iInt = aCacheLine->w8_8B(i_Offset); break;
       
-    case MN_MINUS_ONE: pDatum->m_iDatum = (i8)-1; break;
-    case MN_ZERO:      pDatum->m_iDatum = (i8)0;  break;
-    case MN_PLUS_ONE:  pDatum->m_iDatum = (i8)1;  break;
+    case MN_MINUS_ONE: pDatum->m_iInt = (i8)-1; break;
+    case MN_ZERO:      pDatum->m_iInt = (i8)0;  break;
+    case MN_PLUS_ONE:  pDatum->m_iInt = (i8)1;  break;
       
     default:
       NEVER_REACH;
@@ -434,9 +434,9 @@ void RowCoder::vDecodeBol(CacheLine xaCacheLine[], i8 i_Row,
   eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
   switch (eEncoding) {
       
-    case MN_NULL:  pDatum->m_iDatum = C_DATUM_NULL; break;
-    case MN_FALSE: pDatum->m_iDatum = (i8)0;        break;
-    case MN_TRUE:  pDatum->m_iDatum = (i8)1;        break;
+    case MN_NULL:  pDatum->m_iInt = C_DATUM_NULL; break;
+    case MN_FALSE: pDatum->m_iInt = (i8)0;        break;
+    case MN_TRUE:  pDatum->m_iInt = (i8)1;        break;
       
     default:
       NEVER_REACH;
@@ -457,15 +457,15 @@ void RowCoder::vDecodeDte(CacheLine xaCacheLine[], i8 i_Row,
   eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
   switch (eEncoding) {
       
-    case MN_NULL: pDatum->m_iDatum = C_DATUM_NULL;                break;
-    case MN_1B:   pDatum->m_iDatum = aCacheLine->w8_1B(i_Offset); break;
-    case MN_2B:   pDatum->m_iDatum = aCacheLine->w8_2B(i_Offset); break;
-    case MN_3B:   pDatum->m_iDatum = aCacheLine->w8_3B(i_Offset); break;
-    case MN_4B:   pDatum->m_iDatum = aCacheLine->w8_4B(i_Offset); break;
-    case MN_5B:   pDatum->m_iDatum = aCacheLine->w8_5B(i_Offset); break;
-    case MN_6B:   pDatum->m_iDatum = aCacheLine->w8_6B(i_Offset); break;
-    case MN_7B:   pDatum->m_iDatum = aCacheLine->w8_7B(i_Offset); break;
-    case MN_8B:   pDatum->m_iDatum = aCacheLine->w8_8B(i_Offset); break;
+    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
+    case MN_1B:   pDatum->m_iInt = aCacheLine->w8_1B(i_Offset); break;
+    case MN_2B:   pDatum->m_iInt = aCacheLine->w8_2B(i_Offset); break;
+    case MN_3B:   pDatum->m_iInt = aCacheLine->w8_3B(i_Offset); break;
+    case MN_4B:   pDatum->m_iInt = aCacheLine->w8_4B(i_Offset); break;
+    case MN_5B:   pDatum->m_iInt = aCacheLine->w8_5B(i_Offset); break;
+    case MN_6B:   pDatum->m_iInt = aCacheLine->w8_6B(i_Offset); break;
+    case MN_7B:   pDatum->m_iInt = aCacheLine->w8_7B(i_Offset); break;
+    case MN_8B:   pDatum->m_iInt = aCacheLine->w8_8B(i_Offset); break;
       
     default:
       NEVER_REACH;
@@ -488,15 +488,15 @@ void RowCoder::vDecodeFlt(CacheLine xaCacheLine[], i8 i_Row,
   eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
   switch (eEncoding) {
       
-    case MN_NULL: pDatum->m_iDatum = C_DATUM_NULL;                break;
-    case MN_1B:   pDatum->m_iDatum = aCacheLine->w8_1B(i_Offset); break;
-    case MN_2B:   pDatum->m_iDatum = aCacheLine->w8_2B(i_Offset); break;
-    case MN_3B:   pDatum->m_iDatum = aCacheLine->w8_3B(i_Offset); break;
-    case MN_4B:   pDatum->m_iDatum = aCacheLine->w8_4B(i_Offset); break;
-    case MN_5B:   pDatum->m_iDatum = aCacheLine->w8_5B(i_Offset); break;
-    case MN_6B:   pDatum->m_iDatum = aCacheLine->w8_6B(i_Offset); break;
-    case MN_7B:   pDatum->m_iDatum = aCacheLine->w8_7B(i_Offset); break;
-    case MN_8B:   pDatum->m_iDatum = aCacheLine->w8_8B(i_Offset); break;
+    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
+    case MN_1B:   pDatum->m_iInt = aCacheLine->w8_1B(i_Offset); break;
+    case MN_2B:   pDatum->m_iInt = aCacheLine->w8_2B(i_Offset); break;
+    case MN_3B:   pDatum->m_iInt = aCacheLine->w8_3B(i_Offset); break;
+    case MN_4B:   pDatum->m_iInt = aCacheLine->w8_4B(i_Offset); break;
+    case MN_5B:   pDatum->m_iInt = aCacheLine->w8_5B(i_Offset); break;
+    case MN_6B:   pDatum->m_iInt = aCacheLine->w8_6B(i_Offset); break;
+    case MN_7B:   pDatum->m_iInt = aCacheLine->w8_7B(i_Offset); break;
+    case MN_8B:   pDatum->m_iInt = aCacheLine->w8_8B(i_Offset); break;
       
     default:
       NEVER_REACH;
@@ -517,19 +517,19 @@ void RowCoder::vDecodeInt(CacheLine xaCacheLine[], i8 i_Row,
   eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
   switch (eEncoding) {
       
-    case MN_NULL: pDatum->m_iDatum = C_DATUM_NULL;                break;
-    case MN_1B:   pDatum->m_iDatum = aCacheLine->w8_1B(i_Offset); break;
-    case MN_2B:   pDatum->m_iDatum = aCacheLine->w8_2B(i_Offset); break;
-    case MN_3B:   pDatum->m_iDatum = aCacheLine->w8_3B(i_Offset); break;
-    case MN_4B:   pDatum->m_iDatum = aCacheLine->w8_4B(i_Offset); break;
-    case MN_5B:   pDatum->m_iDatum = aCacheLine->w8_5B(i_Offset); break;
-    case MN_6B:   pDatum->m_iDatum = aCacheLine->w8_6B(i_Offset); break;
-    case MN_7B:   pDatum->m_iDatum = aCacheLine->w8_7B(i_Offset); break;
-    case MN_8B:   pDatum->m_iDatum = aCacheLine->w8_8B(i_Offset); break;
+    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
+    case MN_1B:   pDatum->m_iInt = aCacheLine->w8_1B(i_Offset); break;
+    case MN_2B:   pDatum->m_iInt = aCacheLine->w8_2B(i_Offset); break;
+    case MN_3B:   pDatum->m_iInt = aCacheLine->w8_3B(i_Offset); break;
+    case MN_4B:   pDatum->m_iInt = aCacheLine->w8_4B(i_Offset); break;
+    case MN_5B:   pDatum->m_iInt = aCacheLine->w8_5B(i_Offset); break;
+    case MN_6B:   pDatum->m_iInt = aCacheLine->w8_6B(i_Offset); break;
+    case MN_7B:   pDatum->m_iInt = aCacheLine->w8_7B(i_Offset); break;
+    case MN_8B:   pDatum->m_iInt = aCacheLine->w8_8B(i_Offset); break;
       
-    case MN_MINUS_ONE: pDatum->m_iDatum = (i8)-1; break;
-    case MN_ZERO:      pDatum->m_iDatum = (i8)0;  break;
-    case MN_PLUS_ONE:  pDatum->m_iDatum = (i8)1;  break;
+    case MN_MINUS_ONE: pDatum->m_iInt = (i8)-1; break;
+    case MN_ZERO:      pDatum->m_iInt = (i8)0;  break;
+    case MN_PLUS_ONE:  pDatum->m_iInt = (i8)1;  break;
       
     default:
       NEVER_REACH;
@@ -550,15 +550,15 @@ void RowCoder::vDecodeIvl(CacheLine xaCacheLine[], i8 i_Row,
   eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
   switch (eEncoding) {
       
-    case MN_NULL: pDatum->m_iDatum = C_DATUM_NULL;                break;
-    case MN_1B:   pDatum->m_iDatum = aCacheLine->w8_1B(i_Offset); break;
-    case MN_2B:   pDatum->m_iDatum = aCacheLine->w8_2B(i_Offset); break;
-    case MN_3B:   pDatum->m_iDatum = aCacheLine->w8_3B(i_Offset); break;
-    case MN_4B:   pDatum->m_iDatum = aCacheLine->w8_4B(i_Offset); break;
-    case MN_5B:   pDatum->m_iDatum = aCacheLine->w8_5B(i_Offset); break;
-    case MN_6B:   pDatum->m_iDatum = aCacheLine->w8_6B(i_Offset); break;
-    case MN_7B:   pDatum->m_iDatum = aCacheLine->w8_7B(i_Offset); break;
-    case MN_8B:   pDatum->m_iDatum = aCacheLine->w8_8B(i_Offset); break;
+    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
+    case MN_1B:   pDatum->m_iInt = aCacheLine->w8_1B(i_Offset); break;
+    case MN_2B:   pDatum->m_iInt = aCacheLine->w8_2B(i_Offset); break;
+    case MN_3B:   pDatum->m_iInt = aCacheLine->w8_3B(i_Offset); break;
+    case MN_4B:   pDatum->m_iInt = aCacheLine->w8_4B(i_Offset); break;
+    case MN_5B:   pDatum->m_iInt = aCacheLine->w8_5B(i_Offset); break;
+    case MN_6B:   pDatum->m_iInt = aCacheLine->w8_6B(i_Offset); break;
+    case MN_7B:   pDatum->m_iInt = aCacheLine->w8_7B(i_Offset); break;
+    case MN_8B:   pDatum->m_iInt = aCacheLine->w8_8B(i_Offset); break;
       
     default:
       NEVER_REACH;
@@ -579,15 +579,15 @@ void RowCoder::vDecodeTme(CacheLine xaCacheLine[], i8 i_Row,
   eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
   switch (eEncoding) {
       
-    case MN_NULL: pDatum->m_iDatum = C_DATUM_NULL;                break;
-    case MN_1B:   pDatum->m_iDatum = aCacheLine->w8_1B(i_Offset); break;
-    case MN_2B:   pDatum->m_iDatum = aCacheLine->w8_2B(i_Offset); break;
-    case MN_3B:   pDatum->m_iDatum = aCacheLine->w8_3B(i_Offset); break;
-    case MN_4B:   pDatum->m_iDatum = aCacheLine->w8_4B(i_Offset); break;
-    case MN_5B:   pDatum->m_iDatum = aCacheLine->w8_5B(i_Offset); break;
-    case MN_6B:   pDatum->m_iDatum = aCacheLine->w8_6B(i_Offset); break;
-    case MN_7B:   pDatum->m_iDatum = aCacheLine->w8_7B(i_Offset); break;
-    case MN_8B:   pDatum->m_iDatum = aCacheLine->w8_8B(i_Offset); break;
+    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
+    case MN_1B:   pDatum->m_iInt = aCacheLine->w8_1B(i_Offset); break;
+    case MN_2B:   pDatum->m_iInt = aCacheLine->w8_2B(i_Offset); break;
+    case MN_3B:   pDatum->m_iInt = aCacheLine->w8_3B(i_Offset); break;
+    case MN_4B:   pDatum->m_iInt = aCacheLine->w8_4B(i_Offset); break;
+    case MN_5B:   pDatum->m_iInt = aCacheLine->w8_5B(i_Offset); break;
+    case MN_6B:   pDatum->m_iInt = aCacheLine->w8_6B(i_Offset); break;
+    case MN_7B:   pDatum->m_iInt = aCacheLine->w8_7B(i_Offset); break;
+    case MN_8B:   pDatum->m_iInt = aCacheLine->w8_8B(i_Offset); break;
       
     default:
       NEVER_REACH;
@@ -610,15 +610,15 @@ void RowCoder::vDecodeTsp(CacheLine xaCacheLine[], i8 i_Row,
   eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
   switch (eEncoding) {
       
-    case MN_NULL: pDatum->m_iDatum = C_DATUM_NULL;                break;
-    case MN_1B:   pDatum->m_iDatum = aCacheLine->w8_1B(i_Offset); break;
-    case MN_2B:   pDatum->m_iDatum = aCacheLine->w8_2B(i_Offset); break;
-    case MN_3B:   pDatum->m_iDatum = aCacheLine->w8_3B(i_Offset); break;
-    case MN_4B:   pDatum->m_iDatum = aCacheLine->w8_4B(i_Offset); break;
-    case MN_5B:   pDatum->m_iDatum = aCacheLine->w8_5B(i_Offset); break;
-    case MN_6B:   pDatum->m_iDatum = aCacheLine->w8_6B(i_Offset); break;
-    case MN_7B:   pDatum->m_iDatum = aCacheLine->w8_7B(i_Offset); break;
-    case MN_8B:   pDatum->m_iDatum = aCacheLine->w8_8B(i_Offset); break;
+    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
+    case MN_1B:   pDatum->m_iInt = aCacheLine->w8_1B(i_Offset); break;
+    case MN_2B:   pDatum->m_iInt = aCacheLine->w8_2B(i_Offset); break;
+    case MN_3B:   pDatum->m_iInt = aCacheLine->w8_3B(i_Offset); break;
+    case MN_4B:   pDatum->m_iInt = aCacheLine->w8_4B(i_Offset); break;
+    case MN_5B:   pDatum->m_iInt = aCacheLine->w8_5B(i_Offset); break;
+    case MN_6B:   pDatum->m_iInt = aCacheLine->w8_6B(i_Offset); break;
+    case MN_7B:   pDatum->m_iInt = aCacheLine->w8_7B(i_Offset); break;
+    case MN_8B:   pDatum->m_iInt = aCacheLine->w8_8B(i_Offset); break;
       
     default:
       NEVER_REACH;
@@ -643,15 +643,15 @@ void RowCoder::vDecodeVch(CacheLine xaCacheLine[], i8 i_Row,
   eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
   switch (eEncoding) {
       
-    case MN_NULL: pDatum->m_iDatum = C_DATUM_NULL;                break;
-    case MN_1B:   pDatum->m_iDatum = aCacheLine->w8_1B(i_Offset); break;
-    case MN_2B:   pDatum->m_iDatum = aCacheLine->w8_2B(i_Offset); break;
-    case MN_3B:   pDatum->m_iDatum = aCacheLine->w8_3B(i_Offset); break;
-    case MN_4B:   pDatum->m_iDatum = aCacheLine->w8_4B(i_Offset); break;
-    case MN_5B:   pDatum->m_iDatum = aCacheLine->w8_5B(i_Offset); break;
-    case MN_6B:   pDatum->m_iDatum = aCacheLine->w8_6B(i_Offset); break;
-    case MN_7B:   pDatum->m_iDatum = aCacheLine->w8_7B(i_Offset); break;
-    case MN_8B:   pDatum->m_iDatum = aCacheLine->w8_8B(i_Offset); break;
+    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
+    case MN_1B:   pDatum->m_iInt = aCacheLine->w8_1B(i_Offset); break;
+    case MN_2B:   pDatum->m_iInt = aCacheLine->w8_2B(i_Offset); break;
+    case MN_3B:   pDatum->m_iInt = aCacheLine->w8_3B(i_Offset); break;
+    case MN_4B:   pDatum->m_iInt = aCacheLine->w8_4B(i_Offset); break;
+    case MN_5B:   pDatum->m_iInt = aCacheLine->w8_5B(i_Offset); break;
+    case MN_6B:   pDatum->m_iInt = aCacheLine->w8_6B(i_Offset); break;
+    case MN_7B:   pDatum->m_iInt = aCacheLine->w8_7B(i_Offset); break;
+    case MN_8B:   pDatum->m_iInt = aCacheLine->w8_8B(i_Offset); break;
       
     case MN_SHOCO_2B: {
       i8 i_Shoco = aCacheLine->w8_2B(i_Offset);
@@ -661,7 +661,7 @@ void RowCoder::vDecodeVch(CacheLine xaCacheLine[], i8 i_Row,
       
       s256 sDecomp;
       i8 iLenDecompressed =
-      Compress::iFromShoco(pDatum->szDatum()->aChar(), 255,
+      Compress::iFromShoco(pDatum->m_sDatum.aChar(), 255,
                            ((byte*)aShocoLine)+8, iLenCompressed);
       sDecomp.aChar()[iLenDecompressed] = '\0';
       vTrace("Decomp: %s\n"_Stz,sDecomp.aChar());
@@ -683,14 +683,14 @@ void RowCoder::vEncodeBcd(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->ayDatum();
+  w8 wOriginal = *(i8*)pDatum->m_sDatum.aChar();
   
   //! temp
-  pDatum->m_iDatum = wOriginal;
+  pDatum->m_iInt = wOriginal;
   
   // hash the column value if part of partition key
   if (pColumn->bIsPartitionKey())
-    iHash += HshLib::iHash(&pDatum->m_iDatum,sizeof(w8));
+    iHash += HshLib::iHash(&pDatum->m_iInt,sizeof(w8));
   
   i8 nBytesEncoded;
   eMN eEncoding = RowCoder::eEncodingBcd(pDatum,nBytesEncoded);
@@ -701,7 +701,7 @@ void RowCoder::vEncodeBcd(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,eEncoding);
+    aCacheLine->vPut(i_Offset,pDatum->m_iInt,eEncoding);
   
   i_Offset += nBytesEncoded;
   
@@ -709,7 +709,7 @@ void RowCoder::vEncodeBcd(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   // cross-check
   
   RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
-  RASSERT(wOriginal == (w8)pDatum->m_iDatum);
+  RASSERT(wOriginal == (w8)pDatum->m_iInt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -721,14 +721,14 @@ void RowCoder::vEncodeBol(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->ayDatum();
+  w8 wOriginal = *(i8*)pDatum->m_ayDatum;
   
   //! temp
-  pDatum->m_iDatum = wOriginal;
+  pDatum->m_iInt = wOriginal;
   
   // hash the column value if part of partition key
   if (pColumn->bIsPartitionKey())
-    iHash += HshLib::iHash(&pDatum->m_iDatum,sizeof(w8));
+    iHash += HshLib::iHash(&pDatum->m_iInt,sizeof(w8));
   
   i8 nBytesEncoded;
   eMN eEncoding = RowCoder::eEncodingBol(pDatum,nBytesEncoded);
@@ -743,7 +743,7 @@ void RowCoder::vEncodeBol(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   // cross-check
   
   RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
-  RASSERT(wOriginal == (w8)pDatum->m_iDatum);
+  RASSERT(wOriginal == (w8)pDatum->m_iInt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -755,14 +755,14 @@ void RowCoder::vEncodeDte(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->ayDatum();
+  w8 wOriginal = *(i8*)pDatum->m_ayDatum;
   
   //! temp
-  pDatum->m_iDatum = wOriginal;
+  pDatum->m_iInt = wOriginal;
   
   // hash the column value if part of partition key
   if (pColumn->bIsPartitionKey())
-    iHash += HshLib::iHash(&pDatum->m_iDatum,sizeof(w8));
+    iHash += HshLib::iHash(&pDatum->m_iInt,sizeof(w8));
   
   i8 nBytesEncoded;
   eMN eEncoding = RowCoder::eEncodingDte(pDatum,nBytesEncoded);
@@ -773,7 +773,7 @@ void RowCoder::vEncodeDte(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,eEncoding);
+    aCacheLine->vPut(i_Offset,pDatum->m_iInt,eEncoding);
   
   i_Offset += nBytesEncoded;
   
@@ -781,7 +781,7 @@ void RowCoder::vEncodeDte(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   // cross-check
   
   RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
-  RASSERT(wOriginal == (w8)pDatum->m_iDatum);
+  RASSERT(wOriginal == (w8)pDatum->m_iInt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -793,14 +793,14 @@ void RowCoder::vEncodeFlt(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->ayDatum();
+  w8 wOriginal = *(i8*)pDatum->m_ayDatum;
   
   //! temp
-  pDatum->m_iDatum = wOriginal;
+  pDatum->m_iInt = wOriginal;
   
   // hash the column value if part of partition key
   if (pColumn->bIsPartitionKey())
-    iHash += HshLib::iHash(&pDatum->m_iDatum,sizeof(w8));
+    iHash += HshLib::iHash(&pDatum->m_iInt,sizeof(w8));
   
   i8 nBytesEncoded;
   eMN eEncoding = RowCoder::eEncodingFlt(pDatum,nBytesEncoded);
@@ -811,7 +811,7 @@ void RowCoder::vEncodeFlt(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,eEncoding);
+    aCacheLine->vPut(i_Offset,pDatum->m_iInt,eEncoding);
   
   i_Offset += nBytesEncoded;
   
@@ -819,7 +819,7 @@ void RowCoder::vEncodeFlt(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   // cross-check
   
   RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
-  RASSERT(wOriginal == (w8)pDatum->m_iDatum);
+  RASSERT(wOriginal == (w8)pDatum->m_iInt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -831,14 +831,14 @@ void RowCoder::vEncodeInt(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->ayDatum();
+  w8 wOriginal = *(i8*)pDatum->m_ayDatum;
   
   //! temp
-  pDatum->m_iDatum = wOriginal;
+  pDatum->m_iInt = wOriginal;
   
   // hash the column value if part of partition key
   if (pColumn->bIsPartitionKey())
-    iHash += HshLib::iHash(&pDatum->m_iDatum,sizeof(w8));
+    iHash += HshLib::iHash(&pDatum->m_iInt,sizeof(w8));
   
   i8 nBytesEncoded;
   eMN eEncoding = RowCoder::eEncodingInt(pDatum,nBytesEncoded);
@@ -849,7 +849,7 @@ void RowCoder::vEncodeInt(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,eEncoding);
+    aCacheLine->vPut(i_Offset,pDatum->m_iInt,eEncoding);
   
   i_Offset += nBytesEncoded;
   
@@ -857,7 +857,7 @@ void RowCoder::vEncodeInt(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   // cross-check
   
   RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
-  RASSERT(wOriginal == pDatum->m_iDatum);
+  RASSERT(wOriginal == pDatum->m_iInt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -869,14 +869,14 @@ void RowCoder::vEncodeIvl(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->ayDatum();
+  w8 wOriginal = *(i8*)pDatum->m_ayDatum;
   
   //! temp
-  pDatum->m_iDatum = wOriginal;
+  pDatum->m_iInt = wOriginal;
   
   // hash the column value if part of partition key
   if (pColumn->bIsPartitionKey())
-    iHash += HshLib::iHash(&pDatum->m_iDatum,sizeof(w8));
+    iHash += HshLib::iHash(&pDatum->m_iInt,sizeof(w8));
   
   i8 nBytesEncoded;
   eMN eEncoding = RowCoder::eEncodingIvl(pDatum,nBytesEncoded);
@@ -887,7 +887,7 @@ void RowCoder::vEncodeIvl(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,eEncoding);
+    aCacheLine->vPut(i_Offset,pDatum->m_iInt,eEncoding);
   
   i_Offset += nBytesEncoded;
   
@@ -895,7 +895,7 @@ void RowCoder::vEncodeIvl(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   // cross-check
   
   RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
-  RASSERT(wOriginal == (w8)pDatum->m_iDatum);
+  RASSERT(wOriginal == (w8)pDatum->m_iInt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -907,14 +907,14 @@ void RowCoder::vEncodeTme(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->ayDatum();
+  w8 wOriginal = *(i8*)pDatum->m_ayDatum;
   
   //! temp
-  pDatum->m_iDatum = wOriginal;
+  pDatum->m_iInt = wOriginal;
   
   // hash the column value if part of partition key
   if (pColumn->bIsPartitionKey())
-    iHash += HshLib::iHash(&pDatum->m_iDatum,sizeof(w8));
+    iHash += HshLib::iHash(&pDatum->m_iInt,sizeof(w8));
   
   i8 nBytesEncoded;
   eMN eEncoding = RowCoder::eEncodingTme(pDatum,nBytesEncoded);
@@ -925,7 +925,7 @@ void RowCoder::vEncodeTme(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,eEncoding);
+    aCacheLine->vPut(i_Offset,pDatum->m_iInt,eEncoding);
   
   i_Offset += nBytesEncoded;
   
@@ -933,7 +933,7 @@ void RowCoder::vEncodeTme(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   // cross-check
   
   RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
-  RASSERT(wOriginal == (w8)pDatum->m_iDatum);
+  RASSERT(wOriginal == (w8)pDatum->m_iInt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -945,14 +945,14 @@ void RowCoder::vEncodeTsp(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->ayDatum();
+  w8 wOriginal = *(i8*)pDatum->m_ayDatum;
   
   //! temp
-  pDatum->m_iDatum = wOriginal;
+  pDatum->m_iInt = wOriginal;
   
   // hash the column value if part of partition key
   if (pColumn->bIsPartitionKey())
-    iHash += HshLib::iHash(&pDatum->m_iDatum,sizeof(w8));
+    iHash += HshLib::iHash(&pDatum->m_iInt,sizeof(w8));
   
   i8 nBytesEncoded;
   eMN eEncoding = RowCoder::eEncodingTsp(pDatum,nBytesEncoded);
@@ -963,7 +963,7 @@ void RowCoder::vEncodeTsp(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aCacheLine->vPut(i_Offset,pDatum->m_iDatum,eEncoding);
+    aCacheLine->vPut(i_Offset,pDatum->m_iInt,eEncoding);
   
   i_Offset += nBytesEncoded;
   
@@ -971,7 +971,7 @@ void RowCoder::vEncodeTsp(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   // cross-check
   
   RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
-  RASSERT(wOriginal == (w8)pDatum->m_iDatum);
+  RASSERT(wOriginal == (w8)pDatum->m_iInt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -983,11 +983,11 @@ void RowCoder::vEncodeVch(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = (w8)pDatum->ayDatum();
+  w8 wOriginal = (w8)pDatum->m_ayDatum;
     
   // hash the column value if part of partition key
   if (pColumn->bIsPartitionKey())
-    iHash += HshLib::iHash(pDatum->ayDatum(),sizeof(w8));
+    iHash += HshLib::iHash(pDatum->m_ayDatum,sizeof(w8));
   
   i8 nBytesEncoded;
   eMN eEncoding = RowCoder::eEncodingVch(pDatum,nBytesEncoded);
@@ -1010,7 +1010,7 @@ void RowCoder::vEncodeVch(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
     // compress varchar into tail shoco cache line
     i8 iLenCompressed =
     Compress::iIntoShoco(((byte*)aShocoLine)+8, C_BYTES_PER_CACHE_LINE-8,
-                         (char*)pDatum->ayDatum(), nBytesEncoded);
+                         (char*)pDatum->m_ayDatum, nBytesEncoded);
     
     // set length of the compressed string encoded into tail shoco cache line
     aShocoLine->v1N(0,iLenCompressed);
@@ -1026,7 +1026,7 @@ void RowCoder::vEncodeVch(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
     //    vTrace("Decomp: %s\n"_Stz,sDecomp.aChar());
   }
   else {
-    aCacheLine->vPut(i_Offset,(w8)pDatum->ayDatum(),nBytesEncoded);
+    aCacheLine->vPut(i_Offset,(w8)pDatum->m_ayDatum,nBytesEncoded);
     i_Offset += nBytesEncoded;
   }
   
@@ -1043,12 +1043,12 @@ eMN RowCoder::eEncodingBcd(Datum* pDatum, i8& nBytesEncoded)
 {
   eMN eEncoding;
   
-  if (pDatum->m_iDatum == C_DATUM_NULL) {
+  if (pDatum->m_iInt == C_DATUM_NULL) {
     eEncoding = MN_NULL;
     nBytesEncoded = 0;
   }
   else {
-    eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iDatum);
+    eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iInt);
     nBytesEncoded = eEncoding;
   }
   
@@ -1062,9 +1062,9 @@ eMN RowCoder::eEncodingBol(Datum* pDatum, i8& nBytesEncoded)
 {
   eMN eEncoding;
   
-  if (pDatum->m_iDatum == C_DATUM_NULL)
+  if (pDatum->m_iInt == C_DATUM_NULL)
     eEncoding = MN_NULL;
-  else if (pDatum->m_iDatum)
+  else if (pDatum->m_iInt)
     eEncoding = MN_TRUE;
   else
     eEncoding = MN_FALSE;
@@ -1081,7 +1081,7 @@ eMN RowCoder::eEncodingDte(Datum* pDatum, i8& nBytesEncoded)
 {
   eMN eEncoding;
   
-  if (pDatum->m_iDatum == C_DATUM_NULL) {
+  if (pDatum->m_iInt == C_DATUM_NULL) {
     nBytesEncoded = 0;
     return MN_NULL;
   }
@@ -1101,7 +1101,7 @@ eMN RowCoder::eEncodingDte(Datum* pDatum, i8& nBytesEncoded)
       break;
   }
   
-  eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iDatum);
+  eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iInt);
   
   nBytesEncoded = eEncoding;
   
@@ -1115,12 +1115,12 @@ eMN RowCoder::eEncodingFlt(Datum* pDatum, i8& nBytesEncoded)
 {
   eMN eEncoding;
   
-  if (pDatum->m_iDatum == C_DATUM_NULL) {
+  if (pDatum->m_iInt == C_DATUM_NULL) {
     eEncoding = MN_NULL;
     nBytesEncoded = 0;
   }
   else {
-    eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iDatum);
+    eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iInt);
     nBytesEncoded = eEncoding;
   }
   
@@ -1134,12 +1134,12 @@ eMN RowCoder::eEncodingInt(Datum* pDatum, i8& nBytesEncoded)
 {
   eMN eEncoding;
   
-  if (pDatum->m_iDatum == C_DATUM_NULL) {
+  if (pDatum->m_iInt == C_DATUM_NULL) {
     eEncoding = MN_NULL;
     nBytesEncoded = 0;
   }
   else {
-    eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iDatum);
+    eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iInt);
     nBytesEncoded = eEncoding;
   }
   
@@ -1153,12 +1153,12 @@ eMN RowCoder::eEncodingIvl(Datum* pDatum, i8& nBytesEncoded)
 {
   eMN eEncoding;
   
-  if (pDatum->m_iDatum == C_DATUM_NULL) {
+  if (pDatum->m_iInt == C_DATUM_NULL) {
     eEncoding = MN_NULL;
     nBytesEncoded = 0;
   }
   else {
-    eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iDatum);
+    eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iInt);
     nBytesEncoded = eEncoding;
   }
   
@@ -1170,7 +1170,7 @@ eMN RowCoder::eEncodingIvl(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingTme(Datum* pDatum, i8& nBytesEncoded)
 {
-  if (pDatum->m_iDatum == C_DATUM_NULL) {
+  if (pDatum->m_iInt == C_DATUM_NULL) {
     nBytesEncoded = 0;
     return MN_NULL;
   }
@@ -1192,7 +1192,7 @@ eMN RowCoder::eEncodingTme(Datum* pDatum, i8& nBytesEncoded)
       break;
   }
   
-  eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iDatum);
+  eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iInt);
   
   nBytesEncoded = eEncoding;
   
@@ -1204,7 +1204,7 @@ eMN RowCoder::eEncodingTme(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingTsp(Datum* pDatum, i8& nBytesEncoded)
 {
-  if (pDatum->m_iDatum == C_DATUM_NULL) {
+  if (pDatum->m_iInt == C_DATUM_NULL) {
     nBytesEncoded = 0;
     return MN_NULL;
   }
@@ -1226,7 +1226,7 @@ eMN RowCoder::eEncodingTsp(Datum* pDatum, i8& nBytesEncoded)
       break;
   }
   
-  eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iDatum);
+  eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iInt);
   
   nBytesEncoded = eEncoding;
   
@@ -1290,7 +1290,7 @@ void RowCoder::vInitCacheLine(CacheLine* aCacheLine)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRestoreDte(Datum* pDatum, eMN eEncoding)
 {
-  pDatum->m_iDatum <<= 40;
+  pDatum->m_iInt <<= 40;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1298,7 +1298,7 @@ void RowCoder::vRestoreDte(Datum* pDatum, eMN eEncoding)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRestoreTme(Datum* pDatum, eMN eEncoding)
 {
-  pDatum->m_iDatum <<= 40;
+  pDatum->m_iInt <<= 40;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1306,7 +1306,7 @@ void RowCoder::vRestoreTme(Datum* pDatum, eMN eEncoding)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRestoreTsp(Datum* pDatum, eMN eEncoding)
 {
-  pDatum->m_iDatum <<= 24;
+  pDatum->m_iInt <<= 24;
 }
 
 /*----------------------------------------------------------------------------*/

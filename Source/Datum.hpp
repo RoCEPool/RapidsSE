@@ -13,9 +13,17 @@ namespace Data
     eDM m_eDatum;
   
     union {
-      d8   m_dDatum;
-      i8   m_iDatum;
-      w8   m_wDatum;
+      i8   m_iBcd;
+      i8   m_iBol;
+      i8   m_iDte;
+      d8   m_dFlt;
+      i8   m_iInt;
+      i8   m_iIvl;
+      i8   m_iTme;
+      i8   m_iTsp;
+      Stz* m_szVch;
+
+      w8   m_wWord;
       byte m_yaByte[C_BYTES_PER_WORD];
     };
   
@@ -33,20 +41,6 @@ namespace Data
     Datum(void);
     ~Datum(void) noexcept(false);
   
-    eDM eDatum(void);
-    void vDatum(eDM eDatum);
-
-    w8 wDatum(void);
-    void vDatum(w8 wDatum);
-
-    s4K& sDatum(void);
-    void vDatum(s4K& sDatum);
-
-    Stz* szDatum(void);
-    void vDatum(Stz* szDatum);
-
-    byte* ayDatum(void);
-    void vDatum(byte* ayDatum);
 
   private:
     Footer* aFooter(void);

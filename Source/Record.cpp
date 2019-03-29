@@ -111,7 +111,7 @@ bool Record::bExtract(Column* pColumn, Datum* pDatum, char** aaSrc,
     }
   }
   
-  pDatum->vDatum((byte*)szDst->aChar());
+  pDatum->m_ayDatum = (byte*)szDst->aChar();
   
   // move past the field delimiter
   //   (but not past the record terminator or record ends)
@@ -158,7 +158,7 @@ void Record::vAppendBcd(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_sRecStr.vCatSprint("%lld"_Stz,(i8)pDatum->wDatum());
+  m_sRecStr.vCatSprint("%lld"_Stz,pDatum->m_iBcd);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,7 +168,7 @@ void Record::vAppendBol(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_sRecStr.vConcat(pDatum->wDatum() ? "true"_Stz : "false"_Stz);
+  m_sRecStr.vConcat(pDatum->m_iBol ? "true"_Stz : "false"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -179,7 +179,7 @@ void Record::vAppendDte(Column* pCol, Datum* pDatum)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
   Dte wDte;
-  wDte.vAsI8(pDatum->wDatum());
+  wDte.vAsI8(pDatum->m_iDte);
   
   s32 sDte;
   wDte.vSprint(sDte.aStz());
@@ -194,7 +194,7 @@ void Record::vAppendFlt(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_sRecStr.vCatSprint("%g"_Stz,(d8)pDatum->wDatum());
+  m_sRecStr.vCatSprint("%g"_Stz,pDatum->m_dFlt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -204,7 +204,7 @@ void Record::vAppendInt(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_sRecStr.vCatSprint("%lld"_Stz,(i8)pDatum->wDatum());
+  m_sRecStr.vCatSprint("%lld"_Stz,pDatum->m_iInt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,7 +214,7 @@ void Record::vAppendIvl(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_sRecStr.vCatSprint("%lld"_Stz,(i8)pDatum->wDatum());
+  m_sRecStr.vCatSprint("%lld"_Stz,pDatum->m_iIvl);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,7 +225,7 @@ void Record::vAppendTme(Column* pCol, Datum* pDatum)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
   Tme wTme;
-  wTme.vAsI8((i8)pDatum->wDatum());
+  wTme.vAsI8(pDatum->m_iTme);
   
   s32 sTme;
   wTme.vSprint(sTme.aStz());
@@ -241,7 +241,7 @@ void Record::vAppendTsp(Column* pCol, Datum* pDatum)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
   Tsp wTsp;
-  wTsp.vAsI8((i8)pDatum->wDatum());
+  wTsp.vAsI8(pDatum->m_iTsp);
   
   s32 sTsp;
   wTsp.vSprint(sTsp.aStz());
@@ -258,7 +258,7 @@ void Record::vAppendVch(Column* pCol, Datum* pDatum)
   
   s256 sBuf;
   
-  Vch::vSprintQuotes(sBuf,pDatum->szDatum());
+  Vch::vSprintQuotes(sBuf,(Stz*)pDatum->m_ayDatum);
   m_sRecStr.vConcat(sBuf.aStz());
 }
 
