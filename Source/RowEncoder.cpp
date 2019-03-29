@@ -124,7 +124,7 @@ void RowEncoder::vEncodeBcd(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iBcdEncoding(pDatum,nBytesEncoded);
+  i8 iEncoding = RowCoder::iEncodingBcd(pDatum,nBytesEncoded);
   RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_BCD));
 
   // set 4bit meta data for column value
@@ -165,7 +165,7 @@ void RowEncoder::vEncodeBol(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iBolEncoding(pDatum,nBytesEncoded);
+  i8 iEncoding = RowCoder::iEncodingBol(pDatum,nBytesEncoded);
   RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_BOL));
 
   // set 4bit meta data for column value
@@ -202,7 +202,7 @@ void RowEncoder::vEncodeDte(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iDteEncoding(pDatum,nBytesEncoded);
+  i8 iEncoding = RowCoder::iEncodingDte(pDatum,nBytesEncoded);
   RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_DTE));
 
   // set 4bit meta data for column value
@@ -243,7 +243,7 @@ void RowEncoder::vEncodeFlt(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iFltEncoding(pDatum,nBytesEncoded);
+  i8 iEncoding = RowCoder::iEncodingFlt(pDatum,nBytesEncoded);
   RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_FLT));
 
   // set 4bit meta data for column value
@@ -284,7 +284,7 @@ void RowEncoder::vEncodeInt(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iIntEncoding(pDatum,nBytesEncoded);
+  i8 iEncoding = RowCoder::iEncodingInt(pDatum,nBytesEncoded);
   RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_INT));
 
   // set 4bit meta data for column value
@@ -325,7 +325,7 @@ void RowEncoder::vEncodeIvl(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iIvlEncoding(pDatum,nBytesEncoded);
+  i8 iEncoding = RowCoder::iEncodingIvl(pDatum,nBytesEncoded);
   RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_IVL));
 
   // set 4bit meta data for column value
@@ -366,7 +366,7 @@ void RowEncoder::vEncodeTme(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iTmeEncoding(pDatum,nBytesEncoded);
+  i8 iEncoding = RowCoder::iEncodingTme(pDatum,nBytesEncoded);
   RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_TME));
 
   // set 4bit meta data for column value
@@ -407,7 +407,7 @@ void RowEncoder::vEncodeTsp(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iTspEncoding(pDatum,nBytesEncoded);
+  i8 iEncoding = RowCoder::iEncodingTsp(pDatum,nBytesEncoded);
   RASSERT(nBytesEncoded == RowCoder::nEncodedBytes(iEncoding,DM_TSP));
 
   // set 4bit meta data for column value
@@ -445,7 +445,7 @@ void RowEncoder::vEncodeVch(Column* pColumn, Datum* pDatum, i8& iHash)
   }
   
   i8 nBytesEncoded;
-  i8 iEncoding = RowCoder::iVchEncoding(pDatum,nBytesEncoded);
+  i8 iEncoding = RowCoder::iEncodingVch(pDatum,nBytesEncoded);
   //RASSERT(nBytesEncoded == nEncodedBytes(iEncoding,DM_TSP));
   
   // set 4bit meta data for column value

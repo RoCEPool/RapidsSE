@@ -528,7 +528,7 @@ i8 RowCoder::iStripTsp(WordView& wTspView, i8 iEncoding)
 /*----------------------------------------------------------------------------*/
 /* encoding of bcd                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iBcdEncoding(Datum* pDatum, i8& nBytesEncoded)
+i8 RowCoder::iEncodingBcd(Datum* pDatum, i8& nBytesEncoded)
 {
   i8 iEncoding;
   
@@ -547,7 +547,7 @@ i8 RowCoder::iBcdEncoding(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 /* encoding of bol                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iBolEncoding(Datum* pDatum, i8& nBytesEncoded)
+i8 RowCoder::iEncodingBol(Datum* pDatum, i8& nBytesEncoded)
 {
   i8 iEncoding;
   
@@ -566,7 +566,7 @@ i8 RowCoder::iBolEncoding(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 /* encoding of dte                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iDteEncoding(Datum* pDatum, i8& nBytesEncoded)
+i8 RowCoder::iEncodingDte(Datum* pDatum, i8& nBytesEncoded)
 {
   i8 iEncoding;
   
@@ -600,7 +600,7 @@ i8 RowCoder::iDteEncoding(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 /* encoding of flt                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iFltEncoding(Datum* pDatum, i8& nBytesEncoded)
+i8 RowCoder::iEncodingFlt(Datum* pDatum, i8& nBytesEncoded)
 {
   i8 iEncoding;
   
@@ -619,7 +619,7 @@ i8 RowCoder::iFltEncoding(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 /* encoding of int                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iIntEncoding(Datum* pDatum, i8& nBytesEncoded)
+i8 RowCoder::iEncodingInt(Datum* pDatum, i8& nBytesEncoded)
 {
   i8 iEncoding;
   
@@ -638,7 +638,7 @@ i8 RowCoder::iIntEncoding(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 /* encoding of ivl                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iIvlEncoding(Datum* pDatum, i8& nBytesEncoded)
+i8 RowCoder::iEncodingIvl(Datum* pDatum, i8& nBytesEncoded)
 {
   i8 iEncoding;
   
@@ -657,7 +657,7 @@ i8 RowCoder::iIvlEncoding(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 /* encoding of tme                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iTmeEncoding(Datum* pDatum, i8& nBytesEncoded)
+i8 RowCoder::iEncodingTme(Datum* pDatum, i8& nBytesEncoded)
 {
   if (pDatum->m_iDatum == C_DATUM_NULL) {
     nBytesEncoded = 0;
@@ -691,7 +691,7 @@ i8 RowCoder::iTmeEncoding(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 /* encoding of tsp                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iTspEncoding(Datum* pDatum, i8& nBytesEncoded)
+i8 RowCoder::iEncodingTsp(Datum* pDatum, i8& nBytesEncoded)
 {
   if (pDatum->m_iDatum == C_DATUM_NULL) {
     nBytesEncoded = 0;
@@ -725,7 +725,7 @@ i8 RowCoder::iTspEncoding(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 /* encoding of vch                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iVchEncoding(Datum* pDatum, i8& nBytesEncoded)
+i8 RowCoder::iEncodingVch(Datum* pDatum, i8& nBytesEncoded)
 {
   i8 iEncoding;
   
