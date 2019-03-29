@@ -13,9 +13,10 @@ namespace Data
     eDM m_eDatum;
   
     union {
+      d8   m_dDatum;
+      i8   m_iDatum;
       w8   m_wDatum;
       byte m_yaByte[C_BYTES_PER_WORD];
-      i8   m_iDatum;
     };
   
     s4K m_sDatum;

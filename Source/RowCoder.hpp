@@ -35,9 +35,9 @@ namespace Data
 
     static eMN eGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
 
-    static w8 wRestoreDte(w8 wDteStripped, eMN eEncoding);
-    static w8 wRestoreTme(w8 wTmeStripped, eMN eEncoding);
-    static w8 wRestoreTsp(w8 wTspStripped, eMN eEncoding);
+    static void vRestoreDte(Datum* pDatum, eMN eEncoding);
+    static void vRestoreTme(Datum* pDatum, eMN eEncoding);
+    static void vRestoreTsp(Datum* pDatum, eMN eEncoding);
   
     static i8 iStripDte(WordView& wTspView, i8 iEncoding);
     static i8 iStripTme(WordView& wTspView, i8 iEncoding);
@@ -53,17 +53,6 @@ namespace Data
     static i8 iTspEncoding(Datum* pDatum, i8& nBytesEncoded);
     static i8 iVchEncoding(Datum* pDatum, i8& nBytesEncoded);
   
-    static w8 wDecode(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
-    static w8 wDecodeBcd(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
-    static w8 wDecodeBol(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
-    static w8 wDecodeDte(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
-    static w8 wDecodeFlt(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
-    static w8 wDecodeInt(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
-    static w8 wDecodeIvl(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
-    static w8 wDecodeTme(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
-    static w8 wDecodeTsp(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
-    static w8 wDecodeVch(Column* pColumn, CacheLine* aCacheLine, Datum* pDatum);
-
     static void vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine);
   
 

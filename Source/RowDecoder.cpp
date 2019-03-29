@@ -272,8 +272,8 @@ void RowDecoder::vDecodeDte(i8 i_Row, Column* pCol, Datum* pDatum)
       NEVER_REACH;
   }
   
-  wDatum = RowCoder::wRestoreDte(wDatum,eEncoding);
   pDatum->vDatum(wDatum);
+  RowCoder::vRestoreDte(pDatum,eEncoding);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -406,8 +406,8 @@ void RowDecoder::vDecodeTme(i8 i_Row, Column* pCol, Datum* pDatum)
       NEVER_REACH;
   }
   
-  wDatum = RowCoder::wRestoreTme(wDatum,eEncoding);
   pDatum->vDatum(wDatum);
+  RowCoder::vRestoreTme(pDatum,eEncoding);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -440,9 +440,9 @@ void RowDecoder::vDecodeTsp(i8 i_Row, Column* pCol, Datum* pDatum)
       NEVER_REACH;
   }
   
-  if (eEncoding == MN_5B)
-    wDatum = RowCoder::wRestoreTsp(wDatum,eEncoding);
   pDatum->vDatum(wDatum);
+  if (eEncoding == MN_5B)
+    RowCoder::vRestoreTsp(pDatum,eEncoding);
 }
 
 /*----------------------------------------------------------------------------*/
