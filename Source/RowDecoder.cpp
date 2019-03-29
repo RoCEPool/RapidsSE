@@ -77,46 +77,6 @@ void RowDecoder::vDecode(i8 i_Row, Column* pCol, Datum* pDatum)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* print decoded datum from cache line                                        */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vPrint(i8 i_Row, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
-  
-  w8 wDatum;
-  s256 sDatum;
-
-  Datum* pDatum = new Datum;
-  Record* pRec = new Record;
-
-  vDecode(i_Row,pCol,pDatum);
-  
-  eDM eDatum = pCol->eDatumType();
-  switch (eDatum) {
-    case DM_BCD: pRec->vAppendBcd(pCol,pDatum); break;
-    case DM_BOL: pRec->vAppendBol(pCol,pDatum); break;
-    case DM_DTE: pRec->vAppendDte(pCol,pDatum); break;
-    case DM_FLT: pRec->vAppendFlt(pCol,pDatum); break;
-    case DM_INT: pRec->vAppendInt(pCol,pDatum); break;
-    case DM_IVL: pRec->vAppendIvl(pCol,pDatum); break;
-    case DM_TME: pRec->vAppendTme(pCol,pDatum); break;
-    case DM_TSP: pRec->vAppendTsp(pCol,pDatum); break;
-    case DM_VCH: pRec->vAppendVch(pCol,pDatum); break;
-    default:
-      NEVER_REACH;
-  }
-
-  vTrace("Column[%lld %s %s] : %s\n"_Stz,
-         pCol->iColumnNo(),
-         pCol->sColumnName().aStz(),
-         aDM[pCol->eDatumType()],
-         pRec->szRecStr());
-  
-  delete pRec;
-  delete pDatum;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

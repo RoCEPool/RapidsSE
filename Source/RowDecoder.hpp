@@ -21,7 +21,6 @@ namespace Data
     ~RowDecoder(void) noexcept(false);
 
     void vDecode(i8 i_Row, Column* pCol, Datum* pDatum);
-    void vPrint(i8 i_Row, Column* pCol);
 
   private:
   

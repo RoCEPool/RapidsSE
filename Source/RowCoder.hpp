@@ -45,7 +45,9 @@ namespace Data
   
     static eMN eGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
 
-    void vRecord(Record* pRec, CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec);
+    static void vPrint(CacheLine xaCacheLine[], i8 i_Row, Column* pCol);
+  
+    static void vRecord(Record* pRec, CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec);
   
     static void vRestoreDte(Datum* pDatum, eMN eEncoding);
     static void vRestoreTme(Datum* pDatum, eMN eEncoding);
