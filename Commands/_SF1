@@ -31,7 +31,7 @@ timerStart;
 ld lineitem "/tpch/SF1/lineitem.csv" ;
 timerEnd;
 
-anidx lineitem hidden;
+antbl lineitem;
 anidx lineitem idx;
 visidx lineitem idx;
 

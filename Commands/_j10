@@ -15,10 +15,6 @@ print "loading j10.csv..." ;
 ld j1 "../JTEST/j10.csv" ;
 ld j10 "../JTEST/j10.csv" ;
 
-//dumpidx j10 hidden;
-
-//dump j10;
-
 lspart;
 
 print "fethcing j10";
@@ -89,7 +85,7 @@ drop table j10;
 docol epochDump;
 
 
-vfyidx j10 hidden;
+vfytbl j10;
 
 dex j10 "/tmp/j10_dex.csv" ;
 ex j10 "/tmp/j10_ex.csv" ;

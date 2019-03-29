@@ -35,8 +35,8 @@ timerEnd;
 
 space;
 
-print "analyzing hidden index..." ;
-anidx lineitem hidden;
+print "analyzing table..." ;
+antbl lineitem;
 
 print "analyzing idx index..." ;
 anidx lineitem idx;

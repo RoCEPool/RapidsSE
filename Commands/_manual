@@ -253,17 +253,17 @@ anidx j10 idx 1;
 
 print "";
 print "=====================================================================";
-print "dumping index hidden on table j10 when not in tables...";
+print "dumping table j10 when not in tables...";
 print "=====================================================================";
 cf ..;
-dumpidx j10 hidden;
+dumptbl j10;
 cf tables;
 
 print "";
 print "=====================================================================";
-print "dumping index hidden on non-existent table k10";
+print "dumping non-existent table k10";
 print "=====================================================================";
-dumpidx k10 hidden;
+dumptbl k10 ;
 
 print "";
 print "=====================================================================";

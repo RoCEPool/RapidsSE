@@ -18,7 +18,7 @@ create table jInt (
 print "loading jInt.csv..." ;
 ld jInt "../JTEST/jInt.csv" ;
 
-dumpidx jInt hidden;
+dumptbl jInt;
 
 /*============================================================================*/
 /* end                                                                        */

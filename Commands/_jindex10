@@ -71,8 +71,6 @@ lsidx j10;
 
 create index idx1 on j10 (j10_key);
 
-print "loading j10.csv..." ;
-ld j10 "../JTEST/j10.csv" ;
 dumpidx j10 idx1;
 
 print "-----------------------------";
@@ -127,7 +125,7 @@ sztbl j10;
 
 vfytbl j10;
 
-drop table j10;
+//drop table j10;
 
 docol epochDump;
 

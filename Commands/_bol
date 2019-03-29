@@ -17,7 +17,7 @@ create table bolTbl (
 
 ld bolTbl "/DATA/Datums/boolean.csv" ;
 
-dumpidx bolTbl hidden;
+dumptbl bolTbl;
 
 fetch bolTbl;
 
