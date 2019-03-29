@@ -147,58 +147,6 @@ Stz* IndexTree::pAnalyze(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert an entry for {key,id} into an index buffer at given level           */
-/*----------------------------------------------------------------------------*/
-Item* IndexTree::pAppendRow(i8 iTxId, Stz* aRow_Data, i8 iRowLength)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
-  gpAttachMap->m_oStatistics.IndexTree.m_nAppendRows++;
-
-  Item* aNewEntry;
-  
-  m_okLock.vGrabWrite();
-  
-  if (m_pRootBuffer == nullptr) {
-    ASSERT( ! m_pCurrentBuffer )
-    m_pRootBuffer = new EntryBuffer();
-    m_pRootBuffer->vIndex(m_pIndex);
-    m_pRootBuffer->vPartitionNo(m_iPartitionNo);
-    m_pCurrentBuffer = m_pRootBuffer;
-  }
-  
-  RowWrk xRowWrk;
-  
-  xRowWrk.vEmbedded((char*)aRow_Data);
-  xRowWrk.vRowDataSize(iRowLength);
-  //xRowWrk.vShow(m_pIndex->pTable()->pColumnVec());
-  
-  aNewEntry = m_pCurrentBuffer->aAppendRow(xRowWrk);
-  //m_pCurrentBuffer->vDump();
-  if ( !aNewEntry ) {
-    //----------------------------------------------------------------------------
-    // create a new entry buffer and link with current buffer
-    EntryBuffer* pNewBuffer = new EntryBuffer();
-    pNewBuffer->vIndex(m_pIndex);
-    pNewBuffer->vPartitionNo(m_iPartitionNo);
-    pNewBuffer->vNextBuffer(m_pCurrentBuffer->pNextBuffer());
-    pNewBuffer->vPrevBuffer(m_pCurrentBuffer);
-    m_pCurrentBuffer->vNextBuffer(pNewBuffer);
-
-    //----------------------------------------------------------------------------
-    // toggle to the new buffer
-    m_pCurrentBuffer = pNewBuffer;
-
-    // now insert into new buffer
-    aNewEntry = m_pCurrentBuffer->aAppendRow(xRowWrk);
-    ASSERT(aNewEntry);
-  }
-  m_okLock.vDropWrite();
-  
-  return aNewEntry;
-}
-
-/*----------------------------------------------------------------------------*/
 /* compact the index                                                          */
 /*----------------------------------------------------------------------------*/
 void IndexTree::vCompact(void)
