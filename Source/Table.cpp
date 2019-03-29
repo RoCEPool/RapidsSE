@@ -331,10 +331,11 @@ void Table::vLazyBuildIndexes(i8 iSlot)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert entries from a row buffer into the table (hidden and other indexes) */
+/* insert entries from a row buffer into the table indexes                    */
 /*----------------------------------------------------------------------------*/
 void Table::vInsertEntries(i8 iTxId, i8 iSlot, RowBuffer* pRowBuffer)
 { //# indexTuning
+  
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   //----------------------------------------------------------------------------
@@ -350,7 +351,7 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, RowBuffer* pRowBuffer)
   }
 
   //----------------------------------------------------------------------------
-  // (1) append the buffer entries into the hidden index
+  // (1) append the buffer entries into the table
   TablePtn* pPartition = this->pPartition(iSlot);
   
   //----------------------------------------------------------------------------
@@ -358,8 +359,7 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, RowBuffer* pRowBuffer)
   pPartition->vAppendBuffer(pRowBuffer);
   
   //----------------------------------------------------------------------------
-  // (2) insert entries from hidden index pFirstBuffer starting at pFirstEntry
-  // into all other indexes of the table
+  // (2) insert entries from rowBuffer into all indexes of the table
 
   // get no of indexes of the table
   IndexTreeVec* pIndexTreeVec = pPartition->pIndexTreeVec();
@@ -682,7 +682,7 @@ EntryBuffer* Table::pRootBuffer(i8 i_Slot, i8 i_Index)
   
   TablePtn* pTblPtn = pPartition(i_Slot);
   
-  IndexTree* pIdxTree = pTblPtn->pIndexTree(i_Index); // assume 0 is hidden index
+  IndexTree* pIdxTree = pTblPtn->pIndexTree(i_Index);
   
   EntryBuffer* pRootBuffer = pIdxTree->pRoot();
   
