@@ -74,6 +74,8 @@ RowBuffer::RowBuffer(void)
   m_pNextBuffer   = nullptr;
   m_pPrevBuffer   = nullptr;
   
+  m_oWhenNewed.vNow();
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   _checkInitialised_(CN_ROWBUFFER);
@@ -124,6 +126,25 @@ RowBuffer* RowBuffer::pRefdRowBuffer(Id& xId)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get age of buffer in seconds                                               */
+/*----------------------------------------------------------------------------*/
+i8 RowBuffer::iAgeSsec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  Since oSince;
+  oSince.vNow();
+  
+  Ivl wDiff;
+  
+  wDiff = oSince.wSubtract(m_oWhenNewed);
+  
+  i8 iAge = wDiff.iSecond();
+  
+  return iAge;
+}
 
 /*----------------------------------------------------------------------------*/
 /* analyze this buffer                                                        */
@@ -611,6 +632,16 @@ bool RowBuffer::bVerifyNextPrev(void)
   }
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* when was this buffer newed?                                                */
+/*----------------------------------------------------------------------------*/
+Since& RowBuffer::oWhenNewed(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER);
+  
+  return m_oWhenNewed;
 }
 
 /*----------------------------------------------------------------------------*/

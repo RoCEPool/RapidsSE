@@ -21,6 +21,7 @@ namespace Data
     RowBuffer* m_pNextBuffer;      // next buffer
     RowBuffer* m_pPrevBuffer;      // previous buffer
     
+    Since  m_oWhenNewed;           // when was this buffer created?
   
     SeeMe m_xSeeMe;
   
@@ -46,7 +47,7 @@ namespace Data
 
     ////////////////////////////////////////////////////////////////////////////
     // buffer functions
-  
+    i8          iAgeSsec(void);
     void        vBufferCount(i8& nBufferCount);
     i8          iDecile(void);
     RowBuffer*  pNextBuffer(void);
@@ -56,7 +57,8 @@ namespace Data
     RowBuffer*  pPrevBuffer(void);
     void        vPrevBuffer(RowBuffer* pPrevBuffer);
     void        vTruncate(void);
-
+    Since&      oWhenNewed(void);
+    
     ////////////////////////////////////////////////////////////////////////////
     // row functions
     void  vShow(void);
