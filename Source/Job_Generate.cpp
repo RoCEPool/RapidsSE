@@ -812,11 +812,6 @@ void Job_Generate::vLoadColumns(void)
   
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     Column* pColumn = pColVec->pGet(i_Column);
- 
-    if (pColumn->sColumnName().bSame("hidden_column"_Stz)) {
-      vTrace("skipping: %s\n"_Stz,pColumn->sColumnName().aChar());
-      continue;
-    }
     
     // use first character of column name to determine column kind
     char cKind  = *pColumn->sColumnName().aChar();
