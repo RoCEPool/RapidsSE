@@ -19,8 +19,6 @@ namespace Data
   private:
     static void vAppend(Record* pRec, CacheLine xaCacheLine[], i8 i_Row, Column* pCol);
   
-    static void vCacheLineInit(CacheLine* aCacheLine);
-  
     static void vDecodeBcd(CacheLine xaCacheLine[], i8 i_Row,
                            Column* pCol, Datum* pDatum);
     static void vDecodeBol(CacheLine xaCacheLine[], i8 i_Row,
@@ -72,6 +70,8 @@ namespace Data
     static i8 iEncodingVch(Datum* pDatum, i8& nBytesEncoded);
   
     static eMN eGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
+  
+    static void vInitCacheLine(CacheLine* aCacheLine);
   
     static void vRestoreDte(Datum* pDatum, eMN eEncoding);
     static void vRestoreTme(Datum* pDatum, eMN eEncoding);

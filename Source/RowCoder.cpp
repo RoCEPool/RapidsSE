@@ -9,18 +9,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* initialise given cache line                                                */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vCacheLineInit(CacheLine* aCacheLine)
-{
-  // set all bytes in the entire cache line to xFF
-  aCacheLine->vSetAll(0xFF);
-  
-  // set all bits in first word of cache line to zero
-  aCacheLine->v8B(0,0);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get encoded datum from cache line                                          */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecode(CacheLine xaCacheLine[], i8 i_Row,
@@ -41,6 +29,245 @@ void RowCoder::vDecode(CacheLine xaCacheLine[], i8 i_Row,
     default:
       NEVER_REACH;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode given datum into cache line                                         */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vEncode(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                       Column* pColumn, Datum* pDatum, i8& iHash)
+{
+  i8 i_Column = pColumn->iColumnNo();
+  
+  //! don't encode columns 16+                                             (fix)
+  if (i_Column >= 16)
+    return;
+  
+  CacheLine* aCacheLine = &xaCacheLine[0];
+  
+  //i8 i_Tail = C_CACHELINES - 1;
+  
+  eDM eDatum = pColumn->eDatumType();
+  switch (eDatum) {
+    case DM_BCD:
+      vEncodeBcd(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_BOL:
+      vEncodeBol(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_DTE:
+      vEncodeDte(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_FLT:
+      vEncodeFlt(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_INT:
+      vEncodeInt(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_IVL:
+      vEncodeIvl(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_TME:
+      vEncodeTme(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_TSP:
+      vEncodeTsp(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
+      return;
+    case DM_VCH:
+      vEncodeVch(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
+      return;
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* print decoded datum from cache line                                        */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vPrint(CacheLine xaCacheLine[], i8 i_Row, Column* pCol)
+{
+  Datum* pDatum = new Datum;
+  Record* pRec = new Record;
+  
+  vDecode(xaCacheLine,i_Row,pCol,pDatum);
+  
+  eDM eDatum = pCol->eDatumType();
+  switch (eDatum) {
+    case DM_BCD: pRec->vAppendBcd(pCol,pDatum); break;
+    case DM_BOL: pRec->vAppendBol(pCol,pDatum); break;
+    case DM_DTE: pRec->vAppendDte(pCol,pDatum); break;
+    case DM_FLT: pRec->vAppendFlt(pCol,pDatum); break;
+    case DM_INT: pRec->vAppendInt(pCol,pDatum); break;
+    case DM_IVL: pRec->vAppendIvl(pCol,pDatum); break;
+    case DM_TME: pRec->vAppendTme(pCol,pDatum); break;
+    case DM_TSP: pRec->vAppendTsp(pCol,pDatum); break;
+    case DM_VCH: pRec->vAppendVch(pCol,pDatum); break;
+    default:
+      NEVER_REACH;
+  }
+  
+  vTrace("Column[%lld %s %s] : %s\n"_Stz,
+         pCol->iColumnNo(),
+         pCol->sColumnName().aStz(),
+         aDM[pCol->eDatumType()],
+         pRec->szRecStr());
+  
+  delete pRec;
+  delete pDatum;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint decode row from cache line into string                              */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecord(Record* pRec,
+                       CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec)
+{
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+  
+  // for each column
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
+    
+    // get the column at index
+    Column* pCol = pColVec->pGet(i_Column);
+    
+    // comma separate column values
+    if (i_Column)
+      pRec->szRecStr()->vConcat(","_Stz);
+    
+    // append column value
+    RowCoder::vAppend(pRec,xaCacheLine,i_Row,pCol);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* print row decoded datum from cache line                                    */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine)
+{
+  Datum* pDatum = new Datum;
+  
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+  
+  // for each column
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
+    
+    // get the column at index
+    Column* pColumn = pColVec->pGet(i_Column);
+    
+    // not the first column
+    if (i_Column == 0)
+      sString.vConcat(""_Stz);
+    else
+      sString.vConcat(","_Stz);
+    
+    // copy the data for the column into aDst
+    eDM eDatum = pColumn->eDatumType();
+    RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
+    
+    // check for nulls
+    if (pDatum->m_iDatum == C_DATUM_NULL) {
+      
+      // NULL Floats ?
+      RASSERT(eDatum != DM_FLT);
+      
+      sString.vCatSprint("null"_Stz);
+      continue;
+    }
+    
+    switch (eDatum) {
+      case DM_BCD: {
+        sString.vCatSprint("%lld"_Stz, pDatum->m_iDatum);
+        break;
+      }
+      case DM_BOL: {
+        sString.vConcat(pDatum->m_iDatum ? "true"_Stz : "false"_Stz);
+        break;
+      }
+      case DM_DTE: {
+        Dte wDte;
+        wDte.vAsI8(pDatum->m_iDatum);
+        s32 sDte;
+        wDte.vSprint(sDte.aStz());
+        sString.vConcat(sDte.aStz());
+        break;
+      }
+      case DM_FLT: {
+        sString.vCatSprint("%g"_Stz, pDatum->m_dDatum);
+        break;
+      }
+      case DM_INT: {
+        sString.vCatSprint("%lld"_Stz, pDatum->m_iDatum);
+        break;
+      }
+      case DM_IVL: {
+        sString.vCatSprint("%lld"_Stz, pDatum->m_iDatum);
+        break;
+      }
+      case DM_TME: {
+        Tme wTme;
+        wTme.vAsI8(pDatum->m_iDatum);
+        s32 sTme;
+        wTme.vSprint(sTme.aStz());
+        sString.vConcat(sTme.aStz());
+        break;
+      }
+      case DM_TSP: {
+        Tsp wTsp;
+        wTsp.vAsI8(pDatum->m_iDatum);
+        s32 sTsp;
+        wTsp.vSprint(sTsp.aStz());
+        sString.vConcat(sTsp.aStz());
+        break;
+      }
+      case DM_VCH: {
+        s256 sStr;
+        Vch::vSprintQuotes(sStr, pDatum->m_sDatum);
+        sString.vConcat(sStr.aStz());
+        break;
+      }
+      default:
+        NEVER_REACH;
+    }
+    
+  }
+  
+  delete pDatum;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* decode and append column datum from cache line                             */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vAppend(Record* pRec, CacheLine xaCacheLine[], i8 i_Row, Column* pCol)
+{
+  Datum* pDatum = new Datum;
+  
+  CacheLine* aCacheLine = &xaCacheLine[0];
+  
+  RowCoder::vDecode(aCacheLine,i_Row,pCol,pDatum);
+  
+  eDM eDatum = pCol->eDatumType();
+  switch (eDatum) {
+    case DM_BCD: pRec->vAppendBcd(pCol,pDatum); break;
+    case DM_BOL: pRec->vAppendBol(pCol,pDatum); break;
+    case DM_DTE: pRec->vAppendDte(pCol,pDatum); break;
+    case DM_FLT: pRec->vAppendFlt(pCol,pDatum); break;
+    case DM_INT: pRec->vAppendInt(pCol,pDatum); break;
+    case DM_IVL: pRec->vAppendIvl(pCol,pDatum); break;
+    case DM_TME: pRec->vAppendTme(pCol,pDatum); break;
+    case DM_TSP: pRec->vAppendTsp(pCol,pDatum); break;
+    case DM_VCH: pRec->vAppendVch(pCol,pDatum); break;
+    default:
+      NEVER_REACH;
+  }
+  
+  delete pDatum;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -325,56 +552,6 @@ void RowCoder::vDecodeVch(CacheLine xaCacheLine[], i8 i_Row,
       break;
     }
       
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode given datum into cache line                                         */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vEncode(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
-                       Column* pColumn, Datum* pDatum, i8& iHash)
-{
-  i8 i_Column = pColumn->iColumnNo();
-  
-  //! don't encode columns 16+                                             (fix)
-  if (i_Column >= 16)
-    return;
-  
-  CacheLine* aCacheLine = &xaCacheLine[0];
-  
-  //i8 i_Tail = C_CACHELINES - 1;
-  
-  eDM eDatum = pColumn->eDatumType();
-  switch (eDatum) {
-    case DM_BCD:
-      vEncodeBcd(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
-      return;
-    case DM_BOL:
-      vEncodeBol(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
-      return;
-    case DM_DTE:
-      vEncodeDte(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
-      return;
-    case DM_FLT:
-      vEncodeFlt(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
-      return;
-    case DM_INT:
-      vEncodeInt(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
-      return;
-    case DM_IVL:
-      vEncodeIvl(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
-      return;
-    case DM_TME:
-      vEncodeTme(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
-      return;
-    case DM_TSP:
-      vEncodeTsp(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
-      return;
-    case DM_VCH:
-      vEncodeVch(aCacheLine,i_Tail,i_Offset,pColumn,pDatum,iHash);
-      return;
     default:
       NEVER_REACH;
   }
@@ -1133,62 +1310,15 @@ eMN RowCoder::eGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print decoded datum from cache line                                        */
+/* initialise given cache line                                                */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vPrint(CacheLine xaCacheLine[], i8 i_Row, Column* pCol)
+void RowCoder::vInitCacheLine(CacheLine* aCacheLine)
 {
-  Datum* pDatum = new Datum;
-  Record* pRec = new Record;
+  // set all bytes in the entire cache line to xFF
+  aCacheLine->vSetAll(0xFF);
   
-  vDecode(xaCacheLine,i_Row,pCol,pDatum);
-  
-  eDM eDatum = pCol->eDatumType();
-  switch (eDatum) {
-    case DM_BCD: pRec->vAppendBcd(pCol,pDatum); break;
-    case DM_BOL: pRec->vAppendBol(pCol,pDatum); break;
-    case DM_DTE: pRec->vAppendDte(pCol,pDatum); break;
-    case DM_FLT: pRec->vAppendFlt(pCol,pDatum); break;
-    case DM_INT: pRec->vAppendInt(pCol,pDatum); break;
-    case DM_IVL: pRec->vAppendIvl(pCol,pDatum); break;
-    case DM_TME: pRec->vAppendTme(pCol,pDatum); break;
-    case DM_TSP: pRec->vAppendTsp(pCol,pDatum); break;
-    case DM_VCH: pRec->vAppendVch(pCol,pDatum); break;
-    default:
-      NEVER_REACH;
-  }
-  
-  vTrace("Column[%lld %s %s] : %s\n"_Stz,
-         pCol->iColumnNo(),
-         pCol->sColumnName().aStz(),
-         aDM[pCol->eDatumType()],
-         pRec->szRecStr());
-  
-  delete pRec;
-  delete pDatum;
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint decode row from cache line into string                              */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRecord(Record* pRec,
-                      CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec)
-{
-  // get no of columns
-  i8 nColumns = pColVec->nItems();
-  
-  // for each column
-  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
-    
-    // get the column at index
-    Column* pCol = pColVec->pGet(i_Column);
-    
-    // comma separate column values
-    if (i_Column)
-      pRec->szRecStr()->vConcat(","_Stz);
-    
-    // append column value
-    RowCoder::vAppend(pRec,xaCacheLine,i_Row,pCol);
-  }
+  // set all bits in first word of cache line to zero
+  aCacheLine->v8B(0,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1247,138 +1377,6 @@ i8 RowCoder::iStripTsp(WordView& wTspView, i8 iEncoding)
   
   return iDecoded;
 }
-
-/*----------------------------------------------------------------------------*/
-/* print row decoded datum from cache line                                    */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine)
-{
-  Datum* pDatum = new Datum;
-  
-  // get no of columns
-  i8 nColumns = pColVec->nItems();
-  
-  // for each column
-  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
-    
-    // get the column at index
-    Column* pColumn = pColVec->pGet(i_Column);
-    
-    // not the first column
-    if (i_Column == 0)
-      sString.vConcat(""_Stz);
-    else
-      sString.vConcat(","_Stz);
-    
-    // copy the data for the column into aDst
-    eDM eDatum = pColumn->eDatumType();
-    RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
-    
-    // check for nulls
-    if (pDatum->m_iDatum == C_DATUM_NULL) {
-      
-      // NULL Floats ?
-      RASSERT(eDatum != DM_FLT);
-      
-      sString.vCatSprint("null"_Stz);
-      continue;
-    }
-    
-    switch (eDatum) {
-      case DM_BCD: {
-        sString.vCatSprint("%lld"_Stz, pDatum->m_iDatum);
-        break;
-      }
-      case DM_BOL: {
-        sString.vConcat(pDatum->m_iDatum ? "true"_Stz : "false"_Stz);
-        break;
-      }
-      case DM_DTE: {
-        Dte wDte;
-        wDte.vAsI8(pDatum->m_iDatum);
-        s32 sDte;
-        wDte.vSprint(sDte.aStz());
-        sString.vConcat(sDte.aStz());
-        break;
-      }
-      case DM_FLT: {
-        sString.vCatSprint("%g"_Stz, pDatum->m_dDatum);
-        break;
-      }
-      case DM_INT: {
-        sString.vCatSprint("%lld"_Stz, pDatum->m_iDatum);
-        break;
-      }
-      case DM_IVL: {
-        sString.vCatSprint("%lld"_Stz, pDatum->m_iDatum);
-        break;
-      }
-      case DM_TME: {
-        Tme wTme;
-        wTme.vAsI8(pDatum->m_iDatum);
-        s32 sTme;
-        wTme.vSprint(sTme.aStz());
-        sString.vConcat(sTme.aStz());
-        break;
-      }
-      case DM_TSP: {
-        Tsp wTsp;
-        wTsp.vAsI8(pDatum->m_iDatum);
-        s32 sTsp;
-        wTsp.vSprint(sTsp.aStz());
-        sString.vConcat(sTsp.aStz());
-        break;
-      }
-      case DM_VCH: {
-        s256 sStr;
-        Vch::vSprintQuotes(sStr, pDatum->m_sDatum);
-        sString.vConcat(sStr.aStz());
-        break;
-      }
-      default:
-        NEVER_REACH;
-    }
-    
-  }
-  
-  delete pDatum;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* decode and append column datum from cache line                             */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vAppend(Record* pRec, CacheLine xaCacheLine[], i8 i_Row, Column* pCol)
-{
-  Datum* pDatum = new Datum;
-  
-  CacheLine* aCacheLine = &xaCacheLine[0];
-  
-  RowCoder::vDecode(aCacheLine,i_Row,pCol,pDatum);
-  
-  eDM eDatum = pCol->eDatumType();
-  switch (eDatum) {
-    case DM_BCD: pRec->vAppendBcd(pCol,pDatum); break;
-    case DM_BOL: pRec->vAppendBol(pCol,pDatum); break;
-    case DM_DTE: pRec->vAppendDte(pCol,pDatum); break;
-    case DM_FLT: pRec->vAppendFlt(pCol,pDatum); break;
-    case DM_INT: pRec->vAppendInt(pCol,pDatum); break;
-    case DM_IVL: pRec->vAppendIvl(pCol,pDatum); break;
-    case DM_TME: pRec->vAppendTme(pCol,pDatum); break;
-    case DM_TSP: pRec->vAppendTsp(pCol,pDatum); break;
-    case DM_VCH: pRec->vAppendVch(pCol,pDatum); break;
-    default:
-      NEVER_REACH;
-  }
-  
-  delete pDatum;
-}
-
-
 
 /*============================================================================*/
 /* end                                                                        */
