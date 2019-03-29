@@ -503,7 +503,7 @@ i8 giClassSize[]
   /*    */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER
   /*102 */ sizeof(RowAgg),             // CN_ROWAGG
   /*    */ sizeof(RowBuffer),          // CN_ROWBUFFER
-  /*    */ sizeof(RowDecoder),         // CN_ROWDECODER
+  /*    */ 0,         // CN_ROWDECODER
   /*105 */ sizeof(RowOnce),            // CN_ROWONCE
   /*105 */ sizeof(RowTray),            // CN_ROWTRAY
   /*106 */ sizeof(RowWrk),             // CN_ROWWRK
