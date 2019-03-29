@@ -156,7 +156,7 @@ bool Record::bExtract(Column* pColumn, Datum* pDatum, char** aaSrc,
 /*----------------------------------------------------------------------------*/
 void Record::vAppendBcd(Column* pCol, Datum* pDatum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
   m_sRecStr.vCatSprint("%lld"_Stz,(i8)pDatum->wDatum());
 }
@@ -166,7 +166,7 @@ void Record::vAppendBcd(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void Record::vAppendBol(Column* pCol, Datum* pDatum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
   m_sRecStr.vConcat(pDatum->wDatum() ? "true"_Stz : "false"_Stz);
 }
@@ -176,7 +176,7 @@ void Record::vAppendBol(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void Record::vAppendDte(Column* pCol, Datum* pDatum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
   Dte wDte;
   wDte.vAsI8(pDatum->wDatum());
@@ -192,7 +192,7 @@ void Record::vAppendDte(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void Record::vAppendFlt(Column* pCol, Datum* pDatum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
   m_sRecStr.vCatSprint("%g"_Stz,(d8)pDatum->wDatum());
 }
@@ -202,7 +202,7 @@ void Record::vAppendFlt(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void Record::vAppendInt(Column* pCol, Datum* pDatum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
   m_sRecStr.vCatSprint("%lld"_Stz,(i8)pDatum->wDatum());
 }
@@ -212,7 +212,7 @@ void Record::vAppendInt(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void Record::vAppendIvl(Column* pCol, Datum* pDatum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
   m_sRecStr.vCatSprint("%lld"_Stz,(i8)pDatum->wDatum());
 }
@@ -222,7 +222,7 @@ void Record::vAppendIvl(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void Record::vAppendTme(Column* pCol, Datum* pDatum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
   Tme wTme;
   wTme.vAsI8((i8)pDatum->wDatum());
@@ -238,7 +238,7 @@ void Record::vAppendTme(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void Record::vAppendTsp(Column* pCol, Datum* pDatum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
   Tsp wTsp;
   wTsp.vAsI8((i8)pDatum->wDatum());
@@ -254,7 +254,7 @@ void Record::vAppendTsp(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void Record::vAppendVch(Column* pCol, Datum* pDatum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
   s256 sBuf;
   
