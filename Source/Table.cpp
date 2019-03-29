@@ -377,48 +377,6 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, RowBuffer* pRowBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert a row into the table (hidden and other indexes)                     */
-/*----------------------------------------------------------------------------*/
-void Table::vInsertRow(i8 iTxId, i8 iSlot, Stz* aRow_Data, i8 iRowLength)
-{ //# indexTuning
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  //----------------------------------------------------------------------------
-  // This function is invoked when we insert a row into a table via a
-  // insert and via the API's insert-select
-  
-  ASSERT(iSlot < gpAttachMap->m_pGrid->m_nSlotsPerNode);
-  
-  //----------------------------------------------------------------------------
-  // (1) append the row into the hidden index
-  TablePtn* pPartition = this->pPartition(iSlot);
-  IndexTree* pHiddenIndexTree = pPartition->pHiddenIndexTree();
-  
-  Item* aItem = pHiddenIndexTree->pAppendRow(iTxId, aRow_Data, iRowLength);
-  
-  //----------------------------------------------------------------------------
-  // (2) insert entry into all other indexes of the table
-  
-  // get no of indexes of the table
-  IndexTreeVec* pIndexTreeVec = pPartition->pIndexTreeVec();
-  i8 nIndexes = pIndexTreeVec->nItems();
-  
-  // iterate all indexes of the table
-  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-    
-    // get index
-    IndexTree* pNewIndexTree = pIndexTreeVec->pGet(i_Index);
-    
-    // get the index
-    Index* pIndex = pNewIndexTree->pIndex();
-    
-    // insert entry into other indexes
-    bool bResult = pNewIndexTree->bInsertEntry(aItem);
-    RASSERT(bResult);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* get ColumnVec                                                              */
 /*----------------------------------------------------------------------------*/
 ColumnVec* Table::pColumnVec(void)

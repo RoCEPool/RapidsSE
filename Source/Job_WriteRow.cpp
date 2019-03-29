@@ -152,10 +152,9 @@ void Job_WriteRow::vInsertRow(void)
   i8 iSlot = TablePtn::iPartitionToSlot(m_iPartitionId);
   
   TablePtn* pPartition = m_pTable->pPartition(iSlot);
-  //ALKA: LOCKS
-  pPartition->vAppendRow(m_oRowParts, m_nRowBytes);
   
-  //m_pTable->vInsertRow(iTxId, iSlot, &m_xRow, m_nRowBytes);
+  // append the row to the partition and all its indexes
+  pPartition->vAppendRow(m_oRowParts, m_nRowBytes);
 }
 
 /*----------------------------------------------------------------------------*/

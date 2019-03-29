@@ -65,7 +65,6 @@ namespace MetaData
     void vCompactIndex(Index* pIndex);
     void vLazyBuildIndexes(i8 iSlot);
     
-    void vInsertRow(i8 iTxId, i8 iPartition, Stz* m_aRecord, i8 iRecordLength);
     void vInsertEntries(i8 iTxId, i8 iPartition,
                       Data::RowBuffer* pRowBuffer);
     ColumnVec* pColumnVec(void);
