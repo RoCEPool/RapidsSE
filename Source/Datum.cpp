@@ -53,7 +53,7 @@ Datum::Datum(void)
   
   m_eDatum = DM_NONE;
   m_wWord  = C_UNKNOWN;
-  //m_sDatum;
+  m_xWsp.vZero(CN_DATUM);
   m_ayDatum = nullptr;
 
   _checkInitialised_(CN_DATUM);

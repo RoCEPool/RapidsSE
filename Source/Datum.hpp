@@ -30,7 +30,7 @@ namespace Data
       Object* m_pObj;
     };
   
-    s4K m_sStr;
+    Wsp_t<C_4KB> m_xWsp;
 
     byte* m_ayDatum; //! temporary
   

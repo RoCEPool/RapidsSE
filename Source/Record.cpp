@@ -76,7 +76,7 @@ bool Record::bExtract(Column* pColumn, Datum* pDatum, char** aaSrc,
   bool b = false;
   eDM eDatum = pColumn->eDatumType();
   
-  Stz* szDst = pDatum->m_sStr.aStz();
+  Stz* szDst = pDatum->m_xWsp.aStz();
   
   if (pFormatters->m_bDefault) {
     switch (eDatum) {
