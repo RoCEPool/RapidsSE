@@ -47,7 +47,6 @@ namespace MiniHeaps
     i8    iNEOsize(void);
     i8    nLevels(void);
     void  vLevels(i8 nLevels);
-    Item* aRefdItem(void);
     
     i8    nSizeItem_WithoutOffsets(void);
     i8    nSizeData(void);

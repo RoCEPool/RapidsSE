@@ -486,9 +486,6 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   // iterate thru the buffer till no more entries
   while (aLowerEntry) {
     
-    // get the dataRow from the hidden index
-    //Item* aDataRowEntry = (Item*)_aItem(aLowerEntry->aRefdItem());
-    
     // insert row from entry in fetchBuffer
     if ( ! Task::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows)) {
       
@@ -754,8 +751,6 @@ void Step::vIndexRange(MP_Task mpTask)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // if aLowerEntry is before aUpperEntry then append to result buffer
     if (bBefore) {
-      // get the dataRow from the hidden index
-      //Item* aDataRowEntry = (Item*)_aItem(aLowerEntry->aRefdItem());
       
       // insert row from entry in tempEntryBuffer
       if ( ! Task::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows)) {
