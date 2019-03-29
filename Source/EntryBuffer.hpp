@@ -68,11 +68,6 @@ namespace Data
     Item* aLeadEntry(void);
     Item* aLastEntry(void);
     void  vShowEntry(Item* pEntry);
-
-    ////////////////////////////////////////////////////////////////////////////
-    // row functions
-  
-    Item* aAppendRow(RowWrk& xRowWrk);
   
   private:
     Item* aAllotEntry(i8 nBytes_Without_Offsets);
