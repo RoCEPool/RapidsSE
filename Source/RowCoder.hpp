@@ -33,16 +33,6 @@ namespace Data
 
     static i8 nEncodedBytes(i8 iEncoding, eDM eDatum);
 
-    static eMN eGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
-
-    static void vRestoreDte(Datum* pDatum, eMN eEncoding);
-    static void vRestoreTme(Datum* pDatum, eMN eEncoding);
-    static void vRestoreTsp(Datum* pDatum, eMN eEncoding);
-  
-    static i8 iStripDte(WordView& wTspView, i8 iEncoding);
-    static i8 iStripTme(WordView& wTspView, i8 iEncoding);
-    static i8 iStripTsp(WordView& wTspView, i8 iEncoding);
-  
     static i8 iEncodingBcd(Datum* pDatum, i8& nBytesEncoded);
     static i8 iEncodingBol(Datum* pDatum, i8& nBytesEncoded);
     static i8 iEncodingDte(Datum* pDatum, i8& nBytesEncoded);
@@ -53,10 +43,21 @@ namespace Data
     static i8 iEncodingTsp(Datum* pDatum, i8& nBytesEncoded);
     static i8 iEncodingVch(Datum* pDatum, i8& nBytesEncoded);
   
+    static eMN eGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
+
+    static void vRestoreDte(Datum* pDatum, eMN eEncoding);
+    static void vRestoreTme(Datum* pDatum, eMN eEncoding);
+    static void vRestoreTsp(Datum* pDatum, eMN eEncoding);
+  
+    static i8 iStripDte(WordView& wTspView, i8 iEncoding);
+    static i8 iStripTme(WordView& wTspView, i8 iEncoding);
+    static i8 iStripTsp(WordView& wTspView, i8 iEncoding);
+  
     static void vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine);
   
+  //private:
+    static void vAppend(Record* pRec, CacheLine xaCacheLine[], i8 i_Row, Column* pCol);
 
-  private:
   };
 }
 

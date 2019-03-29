@@ -448,84 +448,6 @@ i8 RowCoder::nEncodedBytes(i8 iEncoding, eDM eDatum)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the encoding of of a column from given cache line                      */
-/*----------------------------------------------------------------------------*/
-eMN RowCoder::eGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset)
-{
-  i_Offset = 8;
-  
-  for (i8 i_Nibble = 0; i_Nibble < i_Column; i_Nibble++) {
-    i8 nDataBytes = aCacheLine->w8_1N(i_Nibble);
-    if (nDataBytes <= MN_8B)
-      i_Offset += nDataBytes;
-  }
-  
-  eMN eEncoding = (eMN)aCacheLine->w8_1N(i_Column);
-  
-  return eEncoding;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* restore zero stripped dte                                                  */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRestoreDte(Datum* pDatum, eMN eEncoding)
-{
-  pDatum->m_iDatum <<= 40;
-}
-
-/*----------------------------------------------------------------------------*/
-/* restore zero stripped tme                                                  */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRestoreTme(Datum* pDatum, eMN eEncoding)
-{
-  pDatum->m_iDatum <<= 40;
-}
-
-/*----------------------------------------------------------------------------*/
-/* restore zero stripped tsp                                                  */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRestoreTsp(Datum* pDatum, eMN eEncoding)
-{
-  pDatum->m_iDatum <<= 24;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decoding of dte                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::iStripDte(WordView& wTspView, i8 iEncoding)
-{
-  i8 iDecoded = wTspView.m_iI8;
-  iDecoded <<= 40;
-  
-  return iDecoded;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decoding of tme                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::iStripTme(WordView& wTspView, i8 iEncoding)
-{
-  i8 iDecoded = wTspView.m_iI8;
-  iDecoded <<= 40;
-  
-  return iDecoded;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decoding of tsp                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::iStripTsp(WordView& wTspView, i8 iEncoding)
-{
-  i8 iDecoded = wTspView.m_iI8;
-  iDecoded <<= 24;
-  
-  return iDecoded;
-}
-
-/*----------------------------------------------------------------------------*/
 /* encoding of bcd                                                            */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iEncodingBcd(Datum* pDatum, i8& nBytesEncoded)
@@ -745,6 +667,81 @@ i8 RowCoder::iEncodingVch(Datum* pDatum, i8& nBytesEncoded)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the encoding of of a column from given cache line                      */
+/*----------------------------------------------------------------------------*/
+eMN RowCoder::eGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset)
+{
+  i_Offset = 8;
+  
+  for (i8 i_Nibble = 0; i_Nibble < i_Column; i_Nibble++) {
+    i8 nDataBytes = aCacheLine->w8_1N(i_Nibble);
+    if (nDataBytes <= MN_8B)
+      i_Offset += nDataBytes;
+  }
+  
+  eMN eEncoding = (eMN)aCacheLine->w8_1N(i_Column);
+  
+  return eEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* restore zero stripped dte                                                  */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRestoreDte(Datum* pDatum, eMN eEncoding)
+{
+  pDatum->m_iDatum <<= 40;
+}
+
+/*----------------------------------------------------------------------------*/
+/* restore zero stripped tme                                                  */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRestoreTme(Datum* pDatum, eMN eEncoding)
+{
+  pDatum->m_iDatum <<= 40;
+}
+
+/*----------------------------------------------------------------------------*/
+/* restore zero stripped tsp                                                  */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRestoreTsp(Datum* pDatum, eMN eEncoding)
+{
+  pDatum->m_iDatum <<= 24;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decoding of dte                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iStripDte(WordView& wTspView, i8 iEncoding)
+{
+  i8 iDecoded = wTspView.m_iI8;
+  iDecoded <<= 40;
+  
+  return iDecoded;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decoding of tme                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iStripTme(WordView& wTspView, i8 iEncoding)
+{
+  i8 iDecoded = wTspView.m_iI8;
+  iDecoded <<= 40;
+  
+  return iDecoded;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decoding of tsp                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iStripTsp(WordView& wTspView, i8 iEncoding)
+{
+  i8 iDecoded = wTspView.m_iI8;
+  iDecoded <<= 24;
+  
+  return iDecoded;
+}
+
+/*----------------------------------------------------------------------------*/
 /* print row decoded datum from cache line                                    */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine)
@@ -841,10 +838,39 @@ void RowCoder::vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine)
 }
 
 
-
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* decode and append column datum from cache line                             */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vAppend(Record* pRec, CacheLine xaCacheLine[], i8 i_Row, Column* pCol)
+{
+  Datum* pDatum = new Datum;
+  
+  CacheLine* aCacheLine = &xaCacheLine[0];
+  
+  RowCoder::vDecode(aCacheLine,i_Row,pCol,pDatum);
+  
+  eDM eDatum = pCol->eDatumType();
+  switch (eDatum) {
+    case DM_BCD: pRec->vAppendBcd(pCol,pDatum); break;
+    case DM_BOL: pRec->vAppendBol(pCol,pDatum); break;
+    case DM_DTE: pRec->vAppendDte(pCol,pDatum); break;
+    case DM_FLT: pRec->vAppendFlt(pCol,pDatum); break;
+    case DM_INT: pRec->vAppendInt(pCol,pDatum); break;
+    case DM_IVL: pRec->vAppendIvl(pCol,pDatum); break;
+    case DM_TME: pRec->vAppendTme(pCol,pDatum); break;
+    case DM_TSP: pRec->vAppendTsp(pCol,pDatum); break;
+    case DM_VCH: pRec->vAppendVch(pCol,pDatum); break;
+    default:
+      NEVER_REACH;
+  }
+  
+  delete pDatum;
+}
+
 
 
 /*============================================================================*/

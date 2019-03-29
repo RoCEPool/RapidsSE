@@ -138,7 +138,7 @@ void RowDecoder::vRecord(Record* pRec, i8 i_Row, ColumnVec* pColVec)
       pRec->szRecStr()->vConcat(","_Stz);
     
     // append column value
-    vAppend(pRec,i_Row,pCol);
+    RowCoder::vAppend(pRec,m_pRowTray->aGet(0),i_Row,pCol);
   }
 }
 
@@ -146,35 +146,6 @@ void RowDecoder::vRecord(Record* pRec, i8 i_Row, ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* decode and append column datum from cache line                             */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vAppend(Record* pRec, i8 i_Row, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWDECODER,_FOOTER_);
-    
-  Datum* pDatum = new Datum;
-  
-  vDecode(i_Row,pCol,pDatum);
-  
-  eDM eDatum = pCol->eDatumType();
-  switch (eDatum) {
-    case DM_BCD: pRec->vAppendBcd(pCol,pDatum); break;
-    case DM_BOL: pRec->vAppendBol(pCol,pDatum); break;
-    case DM_DTE: pRec->vAppendDte(pCol,pDatum); break;
-    case DM_FLT: pRec->vAppendFlt(pCol,pDatum); break;
-    case DM_INT: pRec->vAppendInt(pCol,pDatum); break;
-    case DM_IVL: pRec->vAppendIvl(pCol,pDatum); break;
-    case DM_TME: pRec->vAppendTme(pCol,pDatum); break;
-    case DM_TSP: pRec->vAppendTsp(pCol,pDatum); break;
-    case DM_VCH: pRec->vAppendVch(pCol,pDatum); break;
-    default:
-      NEVER_REACH;
-  }
-  
-  delete pDatum;
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

@@ -25,7 +25,6 @@ namespace Data
     void vRecord(Record* pRec, i8 i_Row, ColumnVec* pColVec);
 
   private:
-    void vAppend(Record* pRec, i8 i_Row, Column* pCol);
   
     void vDecodeBcd(i8 i_Row, Column* pCol, Datum* pDatum);
     void vDecodeBol(i8 i_Row, Column* pCol, Datum* pDatum);
