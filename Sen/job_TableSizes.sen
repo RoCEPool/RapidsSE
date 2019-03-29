@@ -64,12 +64,6 @@
   pJob_TableSizes job.pushPath
   task::dicStack.set
 
-  //"hidden" find execute to pIndex
-  //pIndex index.space 0 swap number.magnitude to iSize
-  //iSize grid::thisNodeName@ "row: ( %v %v )" str.format
-
-  //"STACK IS a:" . stk
-
   //""
   pathCurrentFolder dic.lastWord dup
   iterate
