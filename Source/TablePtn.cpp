@@ -253,6 +253,49 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append a row to the row buffer into the TablePtn                           */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vAppendRow(RowParts& oRowParts, i8 nRowBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
+  
+  RASSERT(m_okLock.bIsLocked());
+  //m_okLock.vGrabWrite();
+  
+  if (m_pRootRowBuffer == nullptr) {
+    ASSERT( ! m_pCurrentRowBuffer )
+    m_pRootRowBuffer = new RowBuffer;
+    m_pCurrentRowBuffer = m_pRootRowBuffer;
+  }
+  
+  m_pCurrentRowBuffer->aAppendRow(oRowParts.aGet(0));
+  
+  // get the row from the buffer
+  Id xId;
+  i8 iRow = m_pCurrentRowBuffer->nRowCount();
+  CacheLine* aRowData = m_pCurrentRowBuffer->pRow(iRow);
+  xId.vItem(iRow);
+  
+  // get no of indexes of the table
+  i8 nIndexes = m_pIndexTreeVec->nItems();
+  
+  // iterate all indexes of the table
+  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+    
+    // get index
+    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
+    
+    // insert entry into other indexes
+    bool bResult = pIndexTree->bInsertEntry(aRowData, xId);
+    RASSERT(bResult);
+  }
+  
+  //m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* append a row buffer into the TablePtn                                      */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vAppendBuffer(RowBuffer* pRowBuffer)

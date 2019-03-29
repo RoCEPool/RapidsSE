@@ -7,6 +7,10 @@
 
 namespace Data
 {
+  static const i8 C_CACHELINES = 256;
+  
+  typedef TrayNL_t<CN_ROWTRAY,CacheLine,C_CACHELINES> RowParts;
+  
   void vCheckAssumptions(void);
 
   static const i8 C_FLAT_LEVELS_MAX   = 16;

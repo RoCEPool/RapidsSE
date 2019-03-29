@@ -7,14 +7,10 @@ namespace Data
 {
   
   typedef VectorNL_t<CN_INDEXTREEVEC,
-                     IndexTree,
-                     CN_INDEXTREE,
-                     C_INDEXES_PER_TABLE,
-                     u8> IndexTreeVec;
-}
-
-namespace Data
-{
+  IndexTree,
+  CN_INDEXTREE,
+  C_INDEXES_PER_TABLE,
+  u8> IndexTreeVec;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -58,6 +54,7 @@ namespace Data
     void vAddIndex(Data::IndexTree* pIndexTree);
     bool bAllBuffersWritten(eDS eDataSource);
     void vAppendBuffer(RowBuffer* pRowBuffer);
+    void vAppendRow(RowParts& oRowParts, i8 nRowBytes);
     void vDump(void);
     void vWriteBehindBuffers(i8 nWriteBehindBuffers);
     void vBuffersWritten(i8 m_nBuffersWritten);
