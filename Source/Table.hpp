@@ -98,33 +98,9 @@ namespace MetaData
     bool bVerifyIndex(Index* pIndex);
    
     Footer* aFooter(void);
-  
-    i8 nHiddenEntryCount(Data::EntryBuffer* pFirstH0Buffer);
-    
-//  void vNewIndexLoad(i8 iPartition, IndexTree* pIndexTree,
-//                     IndexTree* pHiddenIndexTree, i8 nHiddenEntries);
-    
-//    void vPopulateSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
-//                            IndexTree* pIndexTree, EntryBuffer* pFirstH0Buffer);
-//    void vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
-//                       IndexTree* pIndexTree);
-//    void vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
-//                        IndexTree* pIndexTree);
-//    void vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
-//                        IndexTree* pIndexTree);
-//    void vBuildKeyWrk(KeyData* aSortElm, IdxColVec* pIdxColVec, KeyWrk& xKeyWrk);
   };
   
   Table* _pTable(void* aAddr);
-  
-//#ifdef WITH_APPLE
-//  int iQsort_complex(void* aIndexTree, const void* aArg1, const void* aArg2);
-//#else
-//  int iQsort_complex(const void* aArg1, const void* aArg2, void* aIndexTree);
-//#endif
-//  int iQsort_i8(const void* aArg1, const void* aArg2);
-//  int iQsort_i8i8(const void* aArg1, const void* aArg2);
-//  int iQsort_i8i8i8(const void* aArg1, const void* aArg2);
 }
 
 /*============================================================================*/
