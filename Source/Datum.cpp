@@ -49,7 +49,7 @@ void Datum::operator delete(void* aAddr)
 Datum::Datum(void)
 : Object(CN_DATUM)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DATUM,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   m_eDatum = DM_NONE;
   m_wWord  = C_UNKNOWN;
@@ -57,7 +57,7 @@ Datum::Datum(void)
 
   _checkInitialised_(CN_DATUM);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_DATUM,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,8 +76,8 @@ Datum::~Datum(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool Datum::bIsNull(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DATUM);
-  
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+
   if (m_iInt == C_DATUM_NULL)
     return true;
   else
@@ -89,8 +89,8 @@ bool Datum::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Datum::vSetNull(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DATUM);
-  
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+
   m_iInt = C_DATUM_NULL;
 }
 
@@ -103,7 +103,7 @@ void Datum::vSetNull(void)
 /*----------------------------------------------------------------------------*/
 Footer* Datum::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DATUM);
+  _precondition_(_MAGIC_,CN_DATUM);
   
   return &m_xFooter;
 }
