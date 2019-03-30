@@ -17,7 +17,6 @@ namespace Datums
   public:
     static i8   nCopy(eDM eDatum, void* pDst, void* pSrc);
     static void vCopy(eDM eDatum,  void* aDst, void* aSrc);
-    static void vHash(eDM eDatum, i8& iHash, Stz* aSrc);
     static bool bLessThan(eDM eDatum, char* aArgA, char* aArgB);
     static bool bLessEqual(eDM eDatum, char* aArgA, char* aArgB);
     static bool bEqualTo(eDM eDatum, char* aArgA, char* aArgB);
