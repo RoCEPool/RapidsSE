@@ -95,21 +95,21 @@ void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters)
       
     case DM_BCD: {
       Bcd xBcd;
-      bool b = Bcd::bExtractBcdSupplied(&pSrc,(Stz*)&xBcd,pCol,pFormatters);
+      bool b = Record::bExtractBcdSupplied(&pSrc,(Stz*)&xBcd,pCol,pFormatters);
       nBytes = Bcd::nCopy((char*)pDst,(char*)&xBcd);
       break;
     }
       
     case DM_BOL: {
       Bol xBol;
-      bool b = Bol::bExtractBolSupplied(&pSrc,(Stz*)&xBol,pCol,pFormatters);
+      bool b = Record::bExtractBolSupplied(&pSrc,(Stz*)&xBol,pCol,pFormatters);
       nBytes = Bol::nCopy((char*)pDst,(char*)&xBol);
       break;
     }
       
     case DM_DTE: {
       Dte xDte;
-      bool b = Dte::bExtractDteSupplied(&pSrc,(Stz*)&xDte,pCol,pFormatters);
+      bool b = Record::bExtractDteSupplied(&pSrc,(Stz*)&xDte,pCol,pFormatters);
       nBytes = Dte::nCopy((char*)pDst,(char*)&xDte);
       break;
     }
@@ -122,28 +122,28 @@ void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters)
       
     case DM_IVL: {
       Ivl xInterval;
-      bool b = Ivl::bExtractIvlSupplied(&pSrc,(Stz*)&xInterval,pCol,pFormatters);
+      bool b = Record::bExtractIvlSupplied(&pSrc,(Stz*)&xInterval,pCol,pFormatters);
       nBytes = Ivl::nCopy(pDst,(void*)&xInterval);
       break;
     }
       
     case DM_FLT: {
       Flt xFloat;
-      bool b = Flt::bExtractFltSupplied(&pSrc,(Stz*)&xFloat,pCol,pFormatters);
+      bool b = Record::bExtractFltSupplied(&pSrc,(Stz*)&xFloat,pCol,pFormatters);
       nBytes = Flt::nCopy(pDst,(void*)&xFloat);
       break;
     }
       
     case DM_TME: {
       Tme xTime;
-      bool b = Tme::bExtractTmeSupplied(&pSrc,(Stz*)&xTime,pCol,pFormatters);
+      bool b = Record::bExtractTmeSupplied(&pSrc,(Stz*)&xTime,pCol,pFormatters);
       nBytes = Tme::nCopy((char*)pDst,(char*)&xTime);
       break;
     }
       
     case DM_TSP: {
       Tsp xTimestamp;
-      bool b = Tsp::bExtractTspSupplied(&pSrc,(Stz*)&xTimestamp,pCol,pFormatters);
+      bool b = Record::bExtractTspSupplied(&pSrc,(Stz*)&xTimestamp,pCol,pFormatters);
       nBytes = Tsp::nCopy((char*)pDst,(char*)&xTimestamp);
       break;
     }
