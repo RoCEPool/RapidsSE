@@ -25,41 +25,41 @@ namespace Data
     static bool bExtract(Column* pColumn, Datum* pDatum, char** aaSrc,
                          bool bLastColumn, Formatters* pFormatters);
   
-    static bool bExtractBcdDefault(char** aaSrc, Stz* aDst,
+    static bool bExtractBcdDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
                                    Column* pColumn, Formatters* pFormatters);
-    static bool bExtractBcdSupplied(char** aaSrc, Stz* aDst,
+    static bool bExtractBcdSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
                                     Column* pColumn, Formatters* pFormatters);
-    static bool bExtractBolDefault(char** aaSrc, Stz* aDst,
+    static bool bExtractBolDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
                                    Column* pColumn, Formatters* pFormatters);
-    static bool bExtractBolSupplied(char** aaSrc, Stz* aDst,
+    static bool bExtractBolSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
                                     Column* pColumn, Formatters* pFormatters);
-    static bool bExtractDteDefault(char** aaSrc, Stz* aDst,
+    static bool bExtractDteDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
                                    Column* pColumn, Formatters* pFormatters);
-    static bool bExtractDteSupplied(char** aaSrc, Stz* aDst,
+    static bool bExtractDteSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
                                     Column* pColumn, Formatters* pFormatters);
-    static bool bExtractFltDefault(char** aaSrc, Stz* aDst,
+    static bool bExtractFltDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
                                    Column* pColumn, Formatters* pFormatters);
-    static bool bExtractFltSupplied(char** aaSrc, Stz* aDst,
+    static bool bExtractFltSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
                                     Column* pColumn, Formatters* pFormatters);
-    static bool bExtractIntDefault(char** aaSrc, Stz* aDst,
+    static bool bExtractIntDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
                                    Column* pColumn, Formatters* pFormatters);
-    static bool bExtractIntSupplied(char** aaSrc, Stz* aDst,
+    static bool bExtractIntSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
                                     Column* pColumn, Formatters* pFormatters);
-    static bool bExtractIvlDefault(char** aaSrc, Stz* aDst,
+    static bool bExtractIvlDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
                                    Column* pColumn, Formatters* pFormatters);
-    static bool bExtractIvlSupplied(char** aaSrc, Stz* aDst,
+    static bool bExtractIvlSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
                                     Column* pColumn, Formatters* pFormatters);
-    static bool bExtractTmeDefault(char** aaSrc, Stz* aDst,
+    static bool bExtractTmeDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
                                    Column* pColumn, Formatters* pFormatters);
-    static bool bExtractTmeSupplied(char** aaSrc, Stz* aDst,
+    static bool bExtractTmeSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
                                     Column* pColumn, Formatters* pFormatters);
-    static bool bExtractTspDefault(char** aaSrc, Stz* aDst,
+    static bool bExtractTspDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
                                    Column* pColumn, Formatters* pFormatters);
-    static bool bExtractTspSupplied(char** aaSrc, Stz* aDst,
+    static bool bExtractTspSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
                                     Column* pColumn, Formatters* pFormatters);
-    static bool bExtractVchDefault(char** aaSrc, Stz* aDst,
+    static bool bExtractVchDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
                                    Column* pColumn, Formatters* pFormatters);
-    static bool bExtractVchSupplied(char** aaSrc, Stz* aDst,
+    static bool bExtractVchSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
                                     Column* pColumn, Formatters* pFormatters);
 
     void vAppendBcd(Column* pCol, Datum* pDatum);

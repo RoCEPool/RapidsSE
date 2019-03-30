@@ -44,7 +44,6 @@ namespace Data
     Datum(void);
     ~Datum(void) noexcept(false);
   
-
   private:
     Footer* aFooter(void);
   };

@@ -397,6 +397,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   FetchBuffer* pFetchBuffer;
   
   GenVar xVariable;
+  Datum oDatum;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
@@ -445,7 +446,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   KeyWrk xKeyWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
-  xKeyWrkLower.vAddDatum(xVariable,pColumn0,pFormatters);
+  xKeyWrkLower.vAddDatum(&oDatum,xVariable,pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
       xKeyWrkLower.vAddMinusInfinity_Flt();
@@ -591,7 +592,10 @@ void Step::vIndexRange(MP_Task mpTask)
   GenVar xValWrkLwr;
   GenVar xValWrkUpr;
   GenVar xVariable;
-  
+  Datum oDatumLwr;
+  Datum oDatumUpr;
+
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
@@ -654,7 +658,7 @@ void Step::vIndexRange(MP_Task mpTask)
   KeyWrk xKeyWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
-  xKeyWrkLower.vAddDatum(xValWrkLwr,pColumn0,pFormatters);
+  xKeyWrkLower.vAddDatum(&oDatumLwr,xValWrkLwr,pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
       xKeyWrkLower.vAddMinusInfinity_Flt();
@@ -667,7 +671,7 @@ void Step::vIndexRange(MP_Task mpTask)
   // make the upper key
   KeyWrk xKeyWrkUpper;
   pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  xKeyWrkUpper.vAddDatum(xValWrkUpr,pColumn0,pFormatters);
+  xKeyWrkUpper.vAddDatum(&oDatumUpr,xValWrkUpr,pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
       xKeyWrkUpper.vAddPlusInfinity_Flt();
@@ -968,6 +972,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   Object* pPtrIndex = nullptr;
   Session* pSession = mpTask->m_pSession;
   GenVar xVariable;
+  Datum oDatum;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
@@ -1027,7 +1032,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   KeyWrk xKeyWrkUpper;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
-  xKeyWrkUpper.vAddDatum(xVariable,pColumn0,pFormatters);
+  xKeyWrkUpper.vAddDatum(&oDatum,xVariable,pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
       xKeyWrkUpper.vAddPlusInfinity_Flt();
