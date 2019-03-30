@@ -297,60 +297,6 @@ bool DtmLib::bGreaterThan(eDM eDatum, char* aArgA, char* aArgB)
   return bGT;
 }
 
-/*----------------------------------------------------------------------------*/
-/* cmp datum argA with argB (-ve: A < B, 0: A == B, +ve: A > B)               */
-/*----------------------------------------------------------------------------*/
-i8 DtmLib::iCmp(eDM eDatum, char* aArgA, char* aArgB)
-{
-  i8 iCmp = 0;
-  
-  switch (eDatum) {
-    case DM_BCD: iCmp = Bcd::iCmp(aArgA,aArgB); break;
-    case DM_BOL: iCmp = Bol::iCmp(aArgA,aArgB); break;
-    case DM_CHR: iCmp = Vch::iCmp(aArgA,aArgB); break;
-    case DM_DTE: iCmp = Dte::iCmp(aArgA,aArgB); break;
-    case DM_FLT: iCmp = Flt::iCmp(aArgA,aArgB); break;
-    case DM_INT: iCmp = Int::iCmp(aArgA,aArgB); break;
-    case DM_IVL: iCmp = Ivl::iCmp(aArgA,aArgB); break;
-    case DM_TME: iCmp = Tme::iCmp(aArgA,aArgB); break;
-    case DM_TSP: iCmp = Tsp::iCmp(aArgA,aArgB); break;
-    case DM_VBN: NEVER_REACH; break;
-    case DM_VCH: iCmp = Vch::iCmp(aArgA,aArgB); break;
-      
-    default:
-      THROW("DtmLib::iCmp: Invalid eDatum %lld"_Stz,eDatum);
-  }
-  
-  return iCmp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* cmp datum argA with argB (-ve: A < B, 0: A == B, +ve: A > B)               */
-/*----------------------------------------------------------------------------*/
-i8 DtmLib::iSize(eDM eDatum, char* aSrc)
-{
-  i8 iCmp = 0;
-  
-  switch (eDatum) {
-    case DM_BCD: return sizeof(Bcd); break;
-    case DM_BOL: return sizeof(Bol); break;
-    case DM_CHR: return StrLib::iSize(aSrc); break;
-    case DM_DTE: return sizeof(Dte); break;
-    case DM_FLT: return sizeof(Flt); break;
-    case DM_INT: return sizeof(Int); break;
-    case DM_IVL: return sizeof(Ivl); break;
-    case DM_TME: return sizeof(Tme); break;
-    case DM_TSP: return sizeof(Tsp); break;
-    case DM_VBN: NEVER_REACH; break;
-    case DM_VCH: return Vch::iSize(aSrc); break;
-      
-    default:
-      THROW("DtmLib::iCmp: Invalid eDatum %lld"_Stz,eDatum);
-  }
-  
-  return iCmp;
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

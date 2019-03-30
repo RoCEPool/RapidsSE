@@ -582,69 +582,6 @@ bool Column::bGreaterThan(char* aArgA, char* aArgB)
 /*----------------------------------------------------------------------------*/
 /* cmp                                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Column::iCmp(char* aArgA, char* aArgB)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  i8 iCmp = DtmLib::iCmp(m_eDatumType,aArgA,aArgB);
-  
-  return iCmp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* cmp                                                                        */
-/*----------------------------------------------------------------------------*/
-//bool Column::bCmp(eRO eRelnOp, char* aArgA, i8 nBytesA, char* aArgB, i8 nBytesB)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-//  
-//  switch (m_eColumnType) {
-//    case CT_BOOLEAN:   NEVER_REACH;
-//      
-//    case CT_CHAR:      NEVER_REACH;
-//      
-//    case CT_DATE:      NEVER_REACH;
-//      
-//    case CT_DECIMAL:   NEVER_REACH;
-//      
-//    case CT_FLOAT:     NEVER_REACH;
-//      
-//    case CT_INTEGER:
-//      switch(eRelnOp) {
-//        case RO_LESS_THAN:    return bLessThan    (aArgA, nBytesA, aArgB, nBytesB);
-//        case RO_LESS_EQUAL:   return bLessEqual   (aArgA, nBytesA, aArgB, nBytesB);
-//        case RO_EQUAL:        return bEqualTo     (aArgA, nBytesA, aArgB, nBytesB);
-//        case RO_NOT_EQUAL:    return bNotEqual    (aArgA, nBytesA, aArgB, nBytesB);
-//        case RO_GREATER_EQUAL:return bGreaterEqual(aArgA, nBytesA, aArgB, nBytesB);
-//        case RO_GREATER:      return bGreaterThan (aArgA, nBytesA, aArgB, nBytesB);
-//        default: NEVER_REACH;
-//      }
-//      
-//    case CT_INTERVAL:  NEVER_REACH;
-//      
-//    case CT_TIME:      NEVER_REACH;
-//      
-//    case CT_TIMESTAMP: NEVER_REACH;
-//      
-//    case CT_VARBINARY: NEVER_REACH;
-//      
-//    case CT_VARCHAR:
-//      switch(eRelnOp) {
-//        case RO_LESS_THAN:    return bLessThan    (aArgA, nBytesA, aArgB, nBytesB);
-//        case RO_LESS_EQUAL:   return bLessEqual   (aArgA, nBytesA, aArgB, nBytesB);
-//        case RO_EQUAL:        return bEqualTo     (aArgA, nBytesA, aArgB, nBytesB);
-//        case RO_NOT_EQUAL:    return bNotEqual    (aArgA, nBytesA, aArgB, nBytesB);
-//        case RO_GREATER_EQUAL:return bGreaterEqual(aArgA, nBytesA, aArgB, nBytesB);
-//        case RO_GREATER:      return bGreaterThan (aArgA, nBytesA, aArgB, nBytesB);
-//        default: NEVER_REACH;
-//      }
-//      
-//    default:
-//      NEVER_REACH;
-//  }
-//  return true;
-//}
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 bool Column::bCmp(eRO eRelnOp, char* aArgA, char* aArgB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);

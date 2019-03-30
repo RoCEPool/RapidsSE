@@ -24,9 +24,6 @@ namespace Datums
     static bool bNotEqual(eDM eDatum, char* aArgA, char* aArgB);
     static bool bGreaterEqual(eDM eDatum, char* aArgA, char* aArgB);
     static bool bGreaterThan(eDM eDatum, char* aArgA, char* aArgB);
-    
-    static i8 iCmp(eDM eDatum, char* aArgA, char* aArgB);
-    static i8 iSize(eDM eDatum, char* pSrc);
   };
 }
 

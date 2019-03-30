@@ -117,8 +117,6 @@ namespace MetaData
     bool bGreaterEqual(char* aArgA, char* aArgB);
     bool bGreaterThan(char* aArgA, char* aArgB);
     
-    i8 iCmp(char* aArgA, char* aArgB);
-
     bool bCmp(eRO eRelOp, char* aArgA, char* aArgB);
   
     Footer* aFooter(void);
