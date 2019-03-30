@@ -1216,7 +1216,7 @@ bool Record::bIsThereRecordData(char* aSrc, Formatters* pFormatters)
 /*----------------------------------------------------------------------------*/
 /* test for null token                                                        */
 /*----------------------------------------------------------------------------*/
-bool Record::bTestForNull(MetaData::Column* pColumn, char** aaSrc,
+bool Record::bTestForNull(Column* pColumn, char** aaSrc,
                           Formatters* pFormatters,
                           bool& bValidNull,
                           bool bSkipTrailingSpaces)
@@ -1318,7 +1318,7 @@ bool Record::bTestForNull(MetaData::Column* pColumn, char** aaSrc,
 /*----------------------------------------------------------------------------*/
 /* test for null token                                                        */
 /*----------------------------------------------------------------------------*/
-bool Record::bTestForNullDefault(MetaData::Column* pColumn, char** aaSrc,
+bool Record::bTestForNullDefault(Column* pColumn, char** aaSrc,
                                  Formatters* pFormatters, bool& bValidNull,
                                  bool bSkipTrailingSpaces)
 {
@@ -1501,6 +1501,84 @@ bool Record::bValidRecordEnd(char* aSrc, Formatters* pFormatters)
       return false;
   }
 }
+
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
+//!                     REVIEW WHICH FUNCTIONS USE THESE                     !//
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
+
+/*----------------------------------------------------------------------------*/
+/* s-print                                                                    */
+/*----------------------------------------------------------------------------*/
+void Record::vSprint(Column* pColumn, Stz* aDst, Stz* aSrc)
+{
+  eDM eDatum = pColumn->eDatumType();
+  
+  switch (eDatum) {
+    case DM_BCD: Bcd::vSprint(aDst,aSrc,pColumn); break;
+    case DM_BOL: Bol::vSprint(aDst,aSrc); break;
+    case DM_CHR: Vch::vSprint(aDst,aSrc); break;
+    case DM_DTE: Dte::vSprint(aDst,aSrc); break;
+    case DM_FLT: Flt::vSprint(aDst,aSrc); break;
+    case DM_INT: Int::vSprint(aDst,aSrc); break;
+    case DM_IVL: Ivl::vSprint(aDst,aSrc); break;
+    case DM_TME: Tme::vSprint(aDst,aSrc); break;
+    case DM_TSP: Tsp::vSprint(aDst,aSrc); break;
+    case DM_VCH: Vch::vSprint(aDst,aSrc); break;
+    default:
+      vFatal("DtmLib::vSprint: Invalid aDatum argument: %lld\n"_Stz,
+             eDatum);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* s-print                                                                    */
+/*----------------------------------------------------------------------------*/
+void Record::vSprintQuotes(Column* pColumn, Stz* aDst, Stz* aSrc)
+{
+  eDM eDatum = pColumn->eDatumType();
+  
+  switch (eDatum) {
+    case DM_BCD: Bcd::vSprint(aDst,aSrc,pColumn); break;
+    case DM_BOL: Bol::vSprint(aDst,aSrc); break;
+    case DM_CHR: Vch::vSprint(aDst,aSrc); break;
+    case DM_DTE: Dte::vSprint(aDst,aSrc); break;
+    case DM_FLT: Flt::vSprint(aDst,aSrc); break;
+    case DM_INT: Int::vSprint(aDst,aSrc); break;
+    case DM_IVL: Ivl::vSprint(aDst,aSrc); break;
+    case DM_TME: Tme::vSprint(aDst,aSrc); break;
+    case DM_TSP: Tsp::vSprint(aDst,aSrc); break;
+    case DM_VCH: Vch::vSprintQuotes(aDst,aSrc); break;
+    default:
+      vFatal("DtmLib::vSprint: Invalid aDatum argument: %lld\n"_Stz,
+             eDatum);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* s-print escaped                                                            */
+/*----------------------------------------------------------------------------*/
+void Record::vSprintEscaped(Column* pColumn, Stz* aDst, Stz* aSrc)
+{
+  eDM eDatum = pColumn->eDatumType();
+  
+  switch (eDatum) {
+    case DM_BCD: Bcd::vSprint(aDst,aSrc,pColumn); break;
+    case DM_BOL: Bol::vSprint(aDst,aSrc);         break;
+    case DM_CHR: Vch::vSprint(aDst,aSrc);         break;
+    case DM_DTE: Dte::vSprintEscaped(aDst,aSrc);  break;
+    case DM_FLT: Flt::vSprint(aDst,aSrc);         break;
+    case DM_INT: Int::vSprint(aDst,aSrc);         break;
+    case DM_IVL: Ivl::vSprint(aDst,aSrc);         break;
+    case DM_TME: Tme::vSprintEscaped(aDst,aSrc);  break;
+    case DM_TSP: Tsp::vSprintEscaped(aDst,aSrc);  break;
+    case DM_VCH: Vch::vSprintEscaped(aDst,aSrc);  break;
+    default:
+      vFatal("DtmLib::vSprint: Invalid aDatum argument: %lld\n"_Stz,
+             eDatum);
+  }
+}
+
 
 
 /*----------------------------------------------------------------------------*/

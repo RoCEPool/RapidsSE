@@ -77,12 +77,12 @@ namespace Data
     static bool bIsEnclosed(char** aaSrc, Formatters* pFormatters);
     static bool bIsThereFieldData(char* aSrc, Formatters* pFormatters);
     static bool bIsThereRecordData(char* aSrc, Formatters* pFormatters);
-    static bool bTestForNull(MetaData::Column* pColumn,
+    static bool bTestForNull(Column* pColumn,
                              char** aaSrc,
                              Formatters* pFormatters,
                              bool& bValidNull,
                              bool bSkipTrailingSpaces=true);
-    static bool bTestForNullDefault(MetaData::Column* pColumn,
+    static bool bTestForNullDefault(Column* pColumn,
                                     char** aaSrc,
                                     Formatters* pFormatters,
                                     bool& bValidNull,
@@ -90,6 +90,11 @@ namespace Data
     static bool bValidFieldEnd(char* aSrc, Formatters* pFormatters);
     static bool bValidFieldEndDefault(char* aSrc, Formatters* pFormatters);
     static bool bValidRecordEnd(char* aSrc, Formatters* pFormatters);
+
+    //! REVIEW WHICH FUNCTIONS USE THESE
+    static void vSprint(Column* pColumn, Stz* aDst, Stz* aSrc);
+    static void vSprintQuotes(Column* pColumn, Stz* aDst, Stz* aSrc);
+    static void vSprintEscaped(Column* pColumn, Stz* aDst, Stz* aSrc);
 
   private:
     Footer* aFooter(void);
