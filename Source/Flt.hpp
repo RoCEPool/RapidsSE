@@ -18,7 +18,7 @@ namespace Datums
   {
   friend class DtmLib;
     
-  protected:
+  public:
     d8 m_dFlt;
   
   public:

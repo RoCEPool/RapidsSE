@@ -15,7 +15,7 @@ namespace Datums
   class Bcd
   {
     
-  protected:
+  public:
     i8 m_iBcd;
   
   public:

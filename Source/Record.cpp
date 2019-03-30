@@ -146,6 +146,922 @@ bool Record::bExtract(Column* pColumn, Datum* pDatum, char** aaSrc,
   return b;
 }
 
+/*----------------------------------------------------------------------------*/
+/* extract a decimal field from csv substr                                    */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractBcdSupplied(char** aaSrc, Stz* aDst,
+                                 Column* pColumn, Formatters* pFormatters)
+{
+  Bcd* aBcd = (Bcd*)aDst;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  bool bSawEnclosedLeading =
+  StrLib::bSkipLeading(aaSrc,pFormatters->m_cEnclosedBy_Leading);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aBcd->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // decimal field processing
+  
+  if ( ! StrLib::bExtractDecimal(aaSrc,aBcd->m_iBcd,
+                                 pColumn->iColumnLength(),pColumn->iColumnScale()) )
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  bool bSawEnclosedTrailing =
+  StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
+  if (! bSawEnclosedTrailing)
+    return false;
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a decimal field from csv substr                                    */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractBcdDefault(char** aaSrc, Stz* aDst,
+                                Column* pColumn, Formatters* pFormatters)
+{
+  Bcd* aBcd = (Bcd*)aDst;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aBcd->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // decimal field processing
+  
+  if ( ! StrLib::bExtractDecimal(aaSrc,aBcd->m_iBcd,
+                                 pColumn->iColumnLength(),pColumn->iColumnScale()) )
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a boolean field from csv substr                                    */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractBolSupplied(char** aaSrc, Stz* aDst,
+                                 Column* pColumn, Formatters* pFormatters)
+{
+  Bol* aBol = (Bol*)aDst;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  bool bSawEnclosedLeading =
+  StrLib::bSkipLeading(aaSrc,pFormatters->m_cEnclosedBy_Leading);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aBol->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // boolean field processing
+  
+  if ( ! StrLib::bExtractBoolean(aaSrc,aBol->m_bBol) )
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  bool bSawEnclosedTrailing =
+  StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
+  if (! bSawEnclosedTrailing)
+    return false;
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a boolean field from csv substr                                    */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractBolDefault(char** aaSrc, Stz* aDst,
+                                Column* pColumn, Formatters* pFormatters)
+{
+  Bol* aBol = (Bol*)aDst;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aBol->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // boolean field processing
+  
+  if ( ! StrLib::bExtractBoolean(aaSrc,aBol->m_bBol) )
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a date field from csv substr                           yyyy-mo-ddZ */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractDteSupplied(char** aaSrc, Stz* aDst,
+                                 Column* pColumn, Formatters* pFormatters)
+{
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  Dte* aDte = (Dte*)aDst;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  bool bSawEnclosedLeading =
+  StrLib::bSkipLeading(aaSrc,pFormatters->m_cEnclosedBy_Leading);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aDte->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // date field processing
+  
+  i8 iYear, iMonth, iDay;
+  
+  if ( ! StrLib::bExtractDate2(aaSrc, iYear, iMonth, iDay,
+                               pFormatters->m_eDateComponent,
+                               pFormatters->m_cDateSeparator) )
+    return false;
+  
+  aDte->x.m_uYear   = iYear;
+  aDte->x.m_uMonth  = iMonth;
+  aDte->x.m_uDay    = iDay;
+  aDte->x.m_uSpare  = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  bool bSawEnclosedTrailing =
+  StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
+  if (! bSawEnclosedTrailing)
+    return false;
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a date field from csv substr                           yyyy-mo-ddZ */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractDteDefault(char** aaSrc, Stz* aDst,
+                                Column* pColumn, Formatters* pFormatters)
+{
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  Dte* aDte = (Dte*)aDst;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aDte->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // date field processing
+  
+  i8 iYear, iMonth, iDay;
+  
+  if ( ! StrLib::bExtractDate2(aaSrc, iYear, iMonth, iDay,
+                               pFormatters->m_eDateComponent,
+                               pFormatters->m_cDateSeparator) )
+    return false;
+  
+  aDte->x.m_uYear   = iYear;
+  aDte->x.m_uMonth  = iMonth;
+  aDte->x.m_uDay    = iDay;
+  aDte->x.m_uSpare  = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a float field from csv substr                                      */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractFltSupplied(char** aaSrc, Stz* aDst,
+                                 Column* pColumn, Formatters* pFormatters)
+{
+  Flt* aFlt = (Flt*)aDst;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  bool bSawEnclosedLeading =
+  StrLib::bSkipLeading(aaSrc,pFormatters->m_cEnclosedBy_Leading);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aFlt->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // float field processing
+  
+  if ( ! StrLib::bExtractFloat(aaSrc,aFlt->m_dFlt) )
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  bool bSawEnclosedTrailing =
+  StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
+  if (! bSawEnclosedTrailing)
+    return false;
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a float field from csv substr                                      */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractFltDefault(char** aaSrc, Stz* aDst,
+                                Column* pColumn, Formatters* pFormatters)
+{
+  Flt* aFlt = (Flt*)aDst;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aFlt->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // float field processing
+  
+  if ( ! StrLib::bExtractFloat(aaSrc,aFlt->m_dFlt) )
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract an integer field from csv substr                                   */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractIntSupplied(char** aaSrc, Stz* aDst,
+                                 Column* pColumn, Formatters* pFormatters)
+{
+  Int* aInt = (Int*)aDst;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  bool bSawEnclosedLeading =
+  StrLib::bSkipLeading(aaSrc,pFormatters->m_cEnclosedBy_Leading);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aInt->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // integer field processing
+  
+  if ( ! StrLib::bExtractInteger(aaSrc,&aInt->m_iInt,
+                                 true/*bWithSign*/) )
+    return false;
+  
+  // ignore any trailing digits (after optional '.')
+  if ('.' == **aaSrc) {
+    
+    // skip the '.' and any digits
+    (*aaSrc)++;
+    StrLib::vSkipDigits(aaSrc);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  bool bSawEnclosedTrailing =
+  StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
+  if (! bSawEnclosedTrailing)
+    return false;
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract an integer field from csv substr                                   */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractIntDefault(char** aaSrc, Stz* aDst,
+                                Column* pColumn, Formatters* pFormatters)
+{
+  Int* aInt = (Int*)aDst;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aInt->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // integer field processing
+  
+  if ( ! StrLib::bExtractInteger(aaSrc,&aInt->m_iInt,
+                                 true/*bWithSign*/) )
+    return false;
+  
+  // ignore any trailing digits (after optional '.')
+  if ('.' == **aaSrc) {
+    
+    // skip the '.' and any digits
+    (*aaSrc)++;
+    StrLib::vSkipDigits(aaSrc);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract an interval field from csv substr                                  */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractIvlSupplied(char** aaSrc, Stz* aDst,
+                                 Column* pColumn, Formatters* pFormatters)
+{
+  Ivl* aIvl = (Ivl*)aDst;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  bool bSawEnclosedLeading =
+  StrLib::bSkipLeading(aaSrc,pFormatters->m_cEnclosedBy_Leading);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aIvl->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // interval field processing
+  
+  i8 iSecond, iMilli;
+  
+  if ( ! StrLib::bExtractInterval(aaSrc, iSecond, iMilli) )
+    return false;
+  
+  aIvl->x.m_uSecond = iSecond;
+  aIvl->x.m_uMilli  = iMilli;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  bool bSawEnclosedTrailing =
+  StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
+  if (! bSawEnclosedTrailing)
+    return false;
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract an interval field from csv substr                                  */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractIvlDefault(char** aaSrc, Stz* aDst,
+                                Column* pColumn, Formatters* pFormatters)
+{
+  Ivl* aIvl = (Ivl*)aDst;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aIvl->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // interval field processing
+  
+  i8 iSecond, iMilli;
+  
+  if ( ! StrLib::bExtractInterval(aaSrc, iSecond, iMilli) )
+    return false;
+  
+  aIvl->x.m_uSecond = iSecond;
+  aIvl->x.m_uMilli  = iMilli;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a time field from csv substr                         hh:mi:ss.fffZ */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractTmeSupplied(char** aaSrc, Stz* aDst,
+                                 Column* pColumn, Formatters* pFormatters)
+{
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  Tme* aTme = (Tme*)aDst;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  bool bSawEnclosedLeading =
+  StrLib::bSkipLeading(aaSrc,pFormatters->m_cEnclosedBy_Leading);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aTme->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // time field processing
+  
+  i8 iHour, iMinute, iSecond, iMicro;
+  
+  if ( ! StrLib::bExtractTime(aaSrc, iHour, iMinute, iSecond, iMicro) )
+    return false;
+  
+  aTme->x.m_uHour   = iHour;
+  aTme->x.m_uMinute = iMinute;
+  aTme->x.m_uSecond = iSecond;
+  aTme->x.m_uMicro  = iMicro;
+  aTme->x.m_uSpare  = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  bool bSawEnclosedTrailing =
+  StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
+  if (! bSawEnclosedTrailing)
+    return false;
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a time field from csv substr                         hh:mi:ss.fffZ */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractTmeDefault(char** aaSrc, Stz* aDst,
+                                Column* pColumn, Formatters* pFormatters)
+{
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  Tme* aTme = (Tme*)aDst;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aTme->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // time field processing
+  
+  i8 iHour, iMinute, iSecond, iMicro;
+  
+  if ( ! StrLib::bExtractTime(aaSrc, iHour, iMinute, iSecond, iMicro) )
+    return false;
+  
+  aTme->x.m_uHour   = iHour;
+  aTme->x.m_uMinute = iMinute;
+  aTme->x.m_uSecond = iSecond;
+  aTme->x.m_uMicro  = iMicro;
+  aTme->x.m_uSpare  = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractTspSupplied(char** aaSrc, Stz* aDst,
+                                 Column* pColumn, Formatters* pFormatters)
+{
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  Tsp* aTsp = (Tsp*)aDst;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  bool bSawEnclosedLeading =
+  StrLib::bSkipLeading(aaSrc,pFormatters->m_cEnclosedBy_Leading);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aTsp->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // timestamp field processing
+  
+  i8 iYear, iMonth, iDay;
+  i8 iHour, iMinute, iSecond, iMicro;
+  
+  if ( ! StrLib::bExtractTimestamp2(aaSrc, iYear, iMonth, iDay,
+                                    iHour, iMinute, iSecond, iMicro,
+                                    pFormatters->m_eDateComponent,
+                                    pFormatters->m_cDateSeparator) )
+    return false;
+  
+  aTsp->x.m_uYear   = iYear;
+  aTsp->x.m_uMonth  = iMonth;
+  aTsp->x.m_uDay    = iDay;
+  aTsp->x.m_uHour   = iHour;
+  aTsp->x.m_uMinute = iMinute;
+  aTsp->x.m_uSecond = iSecond;
+  aTsp->x.m_uMicro  = iMicro;
+  aTsp->x.m_uSpare  = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  bool bSawEnclosedTrailing =
+  StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
+  if (! bSawEnclosedTrailing)
+    return false;
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractTspDefault(char** aaSrc, Stz* aDst,
+                                Column* pColumn, Formatters* pFormatters)
+{
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  Tsp* aTsp = (Tsp*)aDst;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aTsp->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // timestamp field processing
+  
+  i8 iYear, iMonth, iDay;
+  i8 iHour, iMinute, iSecond, iMicro;
+  
+  if ( ! StrLib::bExtractTimestamp2(aaSrc, iYear, iMonth, iDay,
+                                    iHour, iMinute, iSecond, iMicro,
+                                    pFormatters->m_eDateComponent,
+                                    pFormatters->m_cDateSeparator) )
+    return false;
+  
+  aTsp->x.m_uYear   = iYear;
+  aTsp->x.m_uMonth  = iMonth;
+  aTsp->x.m_uDay    = iDay;
+  aTsp->x.m_uHour   = iHour;
+  aTsp->x.m_uMinute = iMinute;
+  aTsp->x.m_uSecond = iSecond;
+  aTsp->x.m_uMicro  = iMicro;
+  aTsp->x.m_uSpare  = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a varchar field from csv substr                                    */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractVchSupplied(char** aaSrc, Stz* aDst,
+                                 Column* pColumn, Formatters* pFormatters)
+{
+  Vch* aVch = (Vch*)aDst;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for null
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull,false)) {
+    if ( ! bValidNull )
+      return false;
+    aVch->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for enclosed
+  bool bSawEnclosedLeading = DtmLib::bIsEnclosed(aaSrc,pFormatters);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // varchar field processing
+  
+  i8 iColumnLength = pColumn->iColumnLength();
+  if ( ! StrLib::bExtractVarchar(aaSrc,(char*)aVch,
+                                 iColumnLength,
+                                 bSawEnclosedLeading,
+                                 pFormatters->m_cEnclosedBy_Leading,
+                                 pFormatters->m_cEnclosedBy_Trailing,
+                                 pFormatters->m_cEscapeChar,
+                                 pFormatters->m_cFieldDelimiter,
+                                 pFormatters->m_cRecordTerminator,
+                                 pFormatters->m_bAllowNonPrintable
+                                 ) )
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // shoco test
+  
+  //  char caCompressed[1024];
+  //  i8 iLen = StrLib::iLength((char*)aVch);
+  //  i8 iLenCompressed = shoco_compress((char*)aVch, iLen,
+  //                                     caCompressed, sizeof(caCompressed));
+  //  vTrace("%2lld -> %2lld: %s\n"_Stz,iLen,iLenCompressed,(char*)aVch);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  bool bSawEnclosedTrailing =
+  StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
+  if (! bSawEnclosedTrailing)
+    return false;
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a varchar field from csv substr                                    */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractVchDefault(char** aaSrc, Stz* aDst,
+                                Column* pColumn, Formatters* pFormatters)
+{
+  Vch* aVch = (Vch*)aDst;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for null
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aVch->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for enclosed
+  //bool bSawEnclosedLeading = DtmLib::bIsEnclosed(aaSrc,pFormatters);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // varchar field processing
+  
+  i8 iColumnLength = pColumn->iColumnLength();
+  if ( ! StrLib::bExtractVarcharDefault(aaSrc,(char*)aVch,
+                                        iColumnLength) )
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  //bool bSawEnclosedTrailing =
+  //StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
+  //if (! bSawEnclosedTrailing)
+  //  return false;
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
