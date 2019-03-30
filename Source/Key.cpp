@@ -326,7 +326,7 @@ void KeyData::vShow(IdxColVec* pIdxColVec)
       nBytes = StrLib::iWordFlipBack(caLiteral, aDatum);
     }
     else
-      DtmLib::vSprint(pColumn,(Stz*)caLiteral,(Stz*)aDatum);
+      Record::vSprint(pColumn,(Stz*)caLiteral,(Stz*)aDatum);
     vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Column,nBytes,caLiteral);
   }
   
