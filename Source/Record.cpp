@@ -111,7 +111,7 @@ bool Record::bExtract(Column* pCol, Datum* pDatum, char** aaSrc,
     }
   }
   
-  pDatum->m_ayDatum = (byte*)szDst->aChar();
+  //pDatum->m_ayDatum = (byte*)szDst->aChar();
   
   // move past the field delimiter
   //   (but not past the record terminator or record ends)
@@ -196,11 +196,9 @@ bool Record::bExtractBcdSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract a decimal field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractBcdDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
+bool Record::bExtractBcdDefault(Datum* pDatum, char** aaSrc, Stz* ,
                                 Column* pColumn, Formatters* pFormatters)
 {
-  Bcd* aBcd = (Bcd*)aDst;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -213,14 +211,14 @@ bool Record::bExtractBcdDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
   if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    aBcd->vSetNull();
+    pDatum->vSetNull();
     return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decimal field processing
   
-  if ( ! StrLib::bExtractDecimal(aaSrc,aBcd->m_iBcd,
+  if ( ! StrLib::bExtractDecimal(aaSrc,pDatum->m_iBcd,
                                  pColumn->iColumnLength(),pColumn->iColumnScale()) )
     return false;
   
@@ -239,11 +237,9 @@ bool Record::bExtractBcdDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract a boolean field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractBolSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
+bool Record::bExtractBolSupplied(Datum* pDatum, char** aaSrc, Stz* ,
                                  Column* pColumn, Formatters* pFormatters)
 {
-  Bol* aBol = (Bol*)aDst;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -257,14 +253,14 @@ bool Record::bExtractBolSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
   if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    aBol->vSetNull();
+    pDatum->vSetNull();
     return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // boolean field processing
   
-  if ( ! StrLib::bExtractBoolean(aaSrc,aBol->m_bBol) )
+  if ( ! StrLib::bExtractBoolean(aaSrc,pDatum->m_iBol) )
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -285,11 +281,9 @@ bool Record::bExtractBolSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract a boolean field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractBolDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
+bool Record::bExtractBolDefault(Datum* pDatum, char** aaSrc, Stz* ,
                                 Column* pColumn, Formatters* pFormatters)
 {
-  Bol* aBol = (Bol*)aDst;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -302,14 +296,14 @@ bool Record::bExtractBolDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
   if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    aBol->vSetNull();
+    pDatum->vSetNull();
     return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // boolean field processing
   
-  if ( ! StrLib::bExtractBoolean(aaSrc,aBol->m_bBol) )
+  if ( ! StrLib::bExtractBoolean(aaSrc,pDatum->m_iBol) )
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -327,12 +321,10 @@ bool Record::bExtractBolDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract a date field from csv substr                           yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractDteSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
+bool Record::bExtractDteSupplied(Datum* pDatum, char** aaSrc, Stz* ,
                                  Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
-  
-  Dte* aDte = (Dte*)aDst;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -347,7 +339,7 @@ bool Record::bExtractDteSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
   if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    aDte->vSetNull();
+    pDatum->vSetNull();
     return true;
   }
   
@@ -361,10 +353,10 @@ bool Record::bExtractDteSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
                                pFormatters->m_cDateSeparator) )
     return false;
   
-  aDte->x.m_uYear   = iYear;
-  aDte->x.m_uMonth  = iMonth;
-  aDte->x.m_uDay    = iDay;
-  aDte->x.m_uSpare  = 0;
+  pDatum->xDte.m_uYear  = iYear;
+  pDatum->xDte.m_uMonth = iMonth;
+  pDatum->xDte.m_uDay   = iDay;
+  pDatum->xDte.m_uSpare = 0;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
@@ -384,12 +376,10 @@ bool Record::bExtractDteSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract a date field from csv substr                           yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractDteDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
+bool Record::bExtractDteDefault(Datum* pDatum, char** aaSrc, Stz* ,
                                 Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
-  
-  Dte* aDte = (Dte*)aDst;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -403,7 +393,7 @@ bool Record::bExtractDteDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
   if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    aDte->vSetNull();
+    pDatum->vSetNull();
     return true;
   }
   
@@ -417,11 +407,11 @@ bool Record::bExtractDteDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
                                pFormatters->m_cDateSeparator) )
     return false;
   
-  aDte->x.m_uYear   = iYear;
-  aDte->x.m_uMonth  = iMonth;
-  aDte->x.m_uDay    = iDay;
-  aDte->x.m_uSpare  = 0;
-  
+  pDatum->xDte.m_uYear  = iYear;
+  pDatum->xDte.m_uMonth = iMonth;
+  pDatum->xDte.m_uDay   = iDay;
+  pDatum->xDte.m_uSpare = 0;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
@@ -437,11 +427,9 @@ bool Record::bExtractDteDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract a float field from csv substr                                      */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractFltSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
+bool Record::bExtractFltSupplied(Datum* pDatum, char** aaSrc, Stz* ,
                                  Column* pColumn, Formatters* pFormatters)
 {
-  Flt* aFlt = (Flt*)aDst;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -455,14 +443,14 @@ bool Record::bExtractFltSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
   if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    aFlt->vSetNull();
+    pDatum->vSetNull();
     return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // float field processing
   
-  if ( ! StrLib::bExtractFloat(aaSrc,aFlt->m_dFlt) )
+  if ( ! StrLib::bExtractFloat(aaSrc,pDatum->m_dFlt) )
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -483,11 +471,9 @@ bool Record::bExtractFltSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract a float field from csv substr                                      */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractFltDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
+bool Record::bExtractFltDefault(Datum* pDatum, char** aaSrc, Stz* ,
                                 Column* pColumn, Formatters* pFormatters)
 {
-  Flt* aFlt = (Flt*)aDst;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -500,14 +486,14 @@ bool Record::bExtractFltDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
   if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    aFlt->vSetNull();
+    pDatum->vSetNull();
     return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // float field processing
   
-  if ( ! StrLib::bExtractFloat(aaSrc,aFlt->m_dFlt) )
+  if ( ! StrLib::bExtractFloat(aaSrc,pDatum->m_dFlt) )
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -525,11 +511,9 @@ bool Record::bExtractFltDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract an integer field from csv substr                                   */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractIntSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
+bool Record::bExtractIntSupplied(Datum* pDatum, char** aaSrc, Stz* ,
                                  Column* pColumn, Formatters* pFormatters)
 {
-  Int* aInt = (Int*)aDst;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -543,14 +527,14 @@ bool Record::bExtractIntSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
   if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    aInt->vSetNull();
+    pDatum->vSetNull();
     return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // integer field processing
   
-  if ( ! StrLib::bExtractInteger(aaSrc,&aInt->m_iInt,
+  if ( ! StrLib::bExtractInteger(aaSrc,&pDatum->m_iInt,
                                  true/*bWithSign*/) )
     return false;
   
@@ -580,11 +564,9 @@ bool Record::bExtractIntSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract an integer field from csv substr                                   */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractIntDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
+bool Record::bExtractIntDefault(Datum* pDatum, char** aaSrc, Stz* ,
                                 Column* pColumn, Formatters* pFormatters)
 {
-  Int* aInt = (Int*)aDst;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -597,14 +579,14 @@ bool Record::bExtractIntDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
   if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    aInt->vSetNull();
+    pDatum->vSetNull();
     return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // integer field processing
   
-  if ( ! StrLib::bExtractInteger(aaSrc,&aInt->m_iInt,
+  if ( ! StrLib::bExtractInteger(aaSrc,&pDatum->m_iInt,
                                  true/*bWithSign*/) )
     return false;
   
@@ -631,10 +613,9 @@ bool Record::bExtractIntDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract an interval field from csv substr                                  */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractIvlSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
+bool Record::bExtractIvlSupplied(Datum* pDatum, char** aaSrc, Stz* ,
                                  Column* pColumn, Formatters* pFormatters)
 {
-  Ivl* aIvl = (Ivl*)aDst;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -648,7 +629,7 @@ bool Record::bExtractIvlSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
   if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    aIvl->vSetNull();
+    pDatum->vSetNull();
     return true;
   }
   
@@ -660,8 +641,8 @@ bool Record::bExtractIvlSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
   if ( ! StrLib::bExtractInterval(aaSrc, iSecond, iMilli) )
     return false;
   
-  aIvl->x.m_uSecond = iSecond;
-  aIvl->x.m_uMilli  = iMilli;
+  pDatum->xIvl.m_uSecond = iSecond;
+  pDatum->xIvl.m_uMilli  = iMilli;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
@@ -681,10 +662,9 @@ bool Record::bExtractIvlSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract an interval field from csv substr                                  */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractIvlDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
+bool Record::bExtractIvlDefault(Datum* pDatum, char** aaSrc, Stz* ,
                                 Column* pColumn, Formatters* pFormatters)
 {
-  Ivl* aIvl = (Ivl*)aDst;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -697,7 +677,7 @@ bool Record::bExtractIvlDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
   if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    aIvl->vSetNull();
+    pDatum->vSetNull();
     return true;
   }
   
@@ -709,9 +689,9 @@ bool Record::bExtractIvlDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
   if ( ! StrLib::bExtractInterval(aaSrc, iSecond, iMilli) )
     return false;
   
-  aIvl->x.m_uSecond = iSecond;
-  aIvl->x.m_uMilli  = iMilli;
-  
+  pDatum->xIvl.m_uSecond = iSecond;
+  pDatum->xIvl.m_uMilli  = iMilli;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
@@ -727,12 +707,11 @@ bool Record::bExtractIvlDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract a time field from csv substr                         hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractTmeSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
+bool Record::bExtractTmeSupplied(Datum* pDatum, char** aaSrc, Stz* ,
                                  Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
-  Tme* aTme = (Tme*)aDst;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -746,7 +725,7 @@ bool Record::bExtractTmeSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
   if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    aTme->vSetNull();
+    pDatum->vSetNull();
     return true;
   }
   
@@ -758,11 +737,11 @@ bool Record::bExtractTmeSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
   if ( ! StrLib::bExtractTime(aaSrc, iHour, iMinute, iSecond, iMicro) )
     return false;
   
-  aTme->x.m_uHour   = iHour;
-  aTme->x.m_uMinute = iMinute;
-  aTme->x.m_uSecond = iSecond;
-  aTme->x.m_uMicro  = iMicro;
-  aTme->x.m_uSpare  = 0;
+  pDatum->xTme.m_uHour   = iHour;
+  pDatum->xTme.m_uMinute = iMinute;
+  pDatum->xTme.m_uSecond = iSecond;
+  pDatum->xTme.m_uMicro  = iMicro;
+  pDatum->xTme.m_uSpare  = 0;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
@@ -787,7 +766,6 @@ bool Record::bExtractTmeDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
-  Tme* aTme = (Tme*)aDst;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -800,7 +778,7 @@ bool Record::bExtractTmeDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
   if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    aTme->vSetNull();
+    pDatum->vSetNull();
     return true;
   }
   
@@ -812,12 +790,12 @@ bool Record::bExtractTmeDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
   if ( ! StrLib::bExtractTime(aaSrc, iHour, iMinute, iSecond, iMicro) )
     return false;
   
-  aTme->x.m_uHour   = iHour;
-  aTme->x.m_uMinute = iMinute;
-  aTme->x.m_uSecond = iSecond;
-  aTme->x.m_uMicro  = iMicro;
-  aTme->x.m_uSpare  = 0;
-  
+  pDatum->xTme.m_uHour   = iHour;
+  pDatum->xTme.m_uMinute = iMinute;
+  pDatum->xTme.m_uSecond = iSecond;
+  pDatum->xTme.m_uMicro  = iMicro;
+  pDatum->xTme.m_uSpare  = 0;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
@@ -833,12 +811,10 @@ bool Record::bExtractTmeDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractTspSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
+bool Record::bExtractTspSupplied(Datum* pDatum, char** aaSrc, Stz* ,
                                  Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
-  
-  Tsp* aTsp = (Tsp*)aDst;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -853,7 +829,7 @@ bool Record::bExtractTspSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
   if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    aTsp->vSetNull();
+    pDatum->vSetNull();
     return true;
   }
   
@@ -869,14 +845,14 @@ bool Record::bExtractTspSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
                                     pFormatters->m_cDateSeparator) )
     return false;
   
-  aTsp->x.m_uYear   = iYear;
-  aTsp->x.m_uMonth  = iMonth;
-  aTsp->x.m_uDay    = iDay;
-  aTsp->x.m_uHour   = iHour;
-  aTsp->x.m_uMinute = iMinute;
-  aTsp->x.m_uSecond = iSecond;
-  aTsp->x.m_uMicro  = iMicro;
-  aTsp->x.m_uSpare  = 0;
+  pDatum->xTsp.m_uYear   = iYear;
+  pDatum->xTsp.m_uMonth  = iMonth;
+  pDatum->xTsp.m_uDay    = iDay;
+  pDatum->xTsp.m_uHour   = iHour;
+  pDatum->xTsp.m_uMinute = iMinute;
+  pDatum->xTsp.m_uSecond = iSecond;
+  pDatum->xTsp.m_uMicro  = iMicro;
+  pDatum->xTsp.m_uSpare  = 0;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
@@ -896,12 +872,10 @@ bool Record::bExtractTspSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractTspDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
+bool Record::bExtractTspDefault(Datum* pDatum, char** aaSrc, Stz* ,
                                 Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
-  
-  Tsp* aTsp = (Tsp*)aDst;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -915,7 +889,7 @@ bool Record::bExtractTspDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
   if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    aTsp->vSetNull();
+    pDatum->vSetNull();
     return true;
   }
   
@@ -931,15 +905,15 @@ bool Record::bExtractTspDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
                                     pFormatters->m_cDateSeparator) )
     return false;
   
-  aTsp->x.m_uYear   = iYear;
-  aTsp->x.m_uMonth  = iMonth;
-  aTsp->x.m_uDay    = iDay;
-  aTsp->x.m_uHour   = iHour;
-  aTsp->x.m_uMinute = iMinute;
-  aTsp->x.m_uSecond = iSecond;
-  aTsp->x.m_uMicro  = iMicro;
-  aTsp->x.m_uSpare  = 0;
-  
+  pDatum->xTsp.m_uYear   = iYear;
+  pDatum->xTsp.m_uMonth  = iMonth;
+  pDatum->xTsp.m_uDay    = iDay;
+  pDatum->xTsp.m_uHour   = iHour;
+  pDatum->xTsp.m_uMinute = iMinute;
+  pDatum->xTsp.m_uSecond = iSecond;
+  pDatum->xTsp.m_uMicro  = iMicro;
+  pDatum->xTsp.m_uSpare  = 0;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
@@ -955,10 +929,9 @@ bool Record::bExtractTspDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractVchSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
+bool Record::bExtractVchSupplied(Datum* pDatum, char** aaSrc, Stz* ,
                                  Column* pColumn, Formatters* pFormatters)
 {
-  Vch* aVch = (Vch*)aDst;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null
   
@@ -966,7 +939,7 @@ bool Record::bExtractVchSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
   if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull,false)) {
     if ( ! bValidNull )
       return false;
-    aVch->vSetNull();
+    pDatum->vSetNull();
     return true;
   }
   
@@ -978,7 +951,8 @@ bool Record::bExtractVchSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
   // varchar field processing
   
   i8 iColumnLength = pColumn->iColumnLength();
-  if ( ! StrLib::bExtractVarchar(aaSrc,(char*)aVch,
+  if ( ! StrLib::bExtractVarchar(aaSrc,
+                                 pDatum->m_xWsp.aArea(),
                                  iColumnLength,
                                  bSawEnclosedLeading,
                                  pFormatters->m_cEnclosedBy_Leading,
@@ -1017,10 +991,9 @@ bool Record::bExtractVchSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractVchDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
+bool Record::bExtractVchDefault(Datum* pDatum, char** aaSrc, Stz* ,
                                 Column* pColumn, Formatters* pFormatters)
 {
-  Vch* aVch = (Vch*)aDst;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null
   
@@ -1028,7 +1001,7 @@ bool Record::bExtractVchDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
   if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    aVch->vSetNull();
+    pDatum->vSetNull();
     return true;
   }
   
@@ -1040,7 +1013,8 @@ bool Record::bExtractVchDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
   // varchar field processing
   
   i8 iColumnLength = pColumn->iColumnLength();
-  if ( ! StrLib::bExtractVarcharDefault(aaSrc,(char*)aVch,
+  if ( ! StrLib::bExtractVarcharDefault(aaSrc,
+                                        pDatum->m_xWsp.aArea(),
                                         iColumnLength) )
     return false;
   

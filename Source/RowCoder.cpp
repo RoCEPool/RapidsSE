@@ -683,7 +683,7 @@ void RowCoder::vEncodeBcd(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->m_xWsp.aStz();
+  w8 wOriginal = pDatum->m_iBcd;
   
   //! temp
   pDatum->m_iInt = wOriginal;
@@ -721,7 +721,7 @@ void RowCoder::vEncodeBol(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->m_ayDatum;
+  w8 wOriginal = pDatum->m_iBol;
   
   //! temp
   pDatum->m_iInt = wOriginal;
@@ -755,7 +755,7 @@ void RowCoder::vEncodeDte(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->m_ayDatum;
+  w8 wOriginal = pDatum->m_iDte;
   
   //! temp
   pDatum->m_iInt = wOriginal;
@@ -793,7 +793,7 @@ void RowCoder::vEncodeFlt(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->m_ayDatum;
+  w8 wOriginal = (w8)pDatum->m_wWord;
   
   //! temp
   pDatum->m_iInt = wOriginal;
@@ -831,7 +831,7 @@ void RowCoder::vEncodeInt(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->m_ayDatum;
+  w8 wOriginal = pDatum->m_iInt;
   
   //! temp
   pDatum->m_iInt = wOriginal;
@@ -869,7 +869,7 @@ void RowCoder::vEncodeIvl(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->m_ayDatum;
+  w8 wOriginal = pDatum->m_iIvl;
   
   //! temp
   pDatum->m_iInt = wOriginal;
@@ -907,7 +907,7 @@ void RowCoder::vEncodeTme(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->m_ayDatum;
+  w8 wOriginal = pDatum->m_iTme;
   
   //! temp
   pDatum->m_iInt = wOriginal;
@@ -945,7 +945,7 @@ void RowCoder::vEncodeTsp(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = *(i8*)pDatum->m_ayDatum;
+  w8 wOriginal = pDatum->m_iTsp;
   
   //! temp
   pDatum->m_iInt = wOriginal;
@@ -1010,7 +1010,7 @@ void RowCoder::vEncodeVch(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
     // compress varchar into tail shoco cache line
     i8 iLenCompressed =
     Compress::iIntoShoco(((byte*)aShocoLine)+8, C_BYTES_PER_CACHE_LINE-8,
-                         (char*)pDatum->m_ayDatum, nBytesEncoded);
+                         (char*)pDatum->m_xWsp.aArea(), nBytesEncoded);
     
     // set length of the compressed string encoded into tail shoco cache line
     aShocoLine->v1N(0,iLenCompressed);
@@ -1026,7 +1026,7 @@ void RowCoder::vEncodeVch(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
     //    vTrace("Decomp: %s\n"_Stz,sDecomp.aChar());
   }
   else {
-    aCacheLine->vPut(i_Offset,(w8)pDatum->m_ayDatum,nBytesEncoded);
+    aCacheLine->vPut(i_Offset,(w8)pDatum->m_xWsp.aArea(),nBytesEncoded);
     i_Offset += nBytesEncoded;
   }
   
@@ -1240,7 +1240,7 @@ eMN RowCoder::eEncodingVch(Datum* pDatum, i8& nBytesEncoded)
 {
   eMN eEncoding;
   
-  i8 iLen = StrLib::iLength((char*)pDatum->m_ayDatum);
+  i8 iLen = StrLib::iLength((char*)pDatum->m_xWsp.aArea());
   //RASSERT(iLen <= 8);
   
   if (iLen <= 8) {
