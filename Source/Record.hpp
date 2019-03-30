@@ -74,6 +74,23 @@ namespace Data
 
     Stz* szRecStr(void);
   
+    static bool bIsEnclosed(char** aaSrc, Formatters* pFormatters);
+    static bool bIsThereFieldData(char* aSrc, Formatters* pFormatters);
+    static bool bIsThereRecordData(char* aSrc, Formatters* pFormatters);
+    static bool bTestForNull(MetaData::Column* pColumn,
+                             char** aaSrc,
+                             Formatters* pFormatters,
+                             bool& bValidNull,
+                             bool bSkipTrailingSpaces=true);
+    static bool bTestForNullDefault(MetaData::Column* pColumn,
+                                    char** aaSrc,
+                                    Formatters* pFormatters,
+                                    bool& bValidNull,
+                                    bool bSkipTrailingSpaces=true);
+    static bool bValidFieldEnd(char* aSrc, Formatters* pFormatters);
+    static bool bValidFieldEndDefault(char* aSrc, Formatters* pFormatters);
+    static bool bValidRecordEnd(char* aSrc, Formatters* pFormatters);
+
   private:
     Footer* aFooter(void);
   };

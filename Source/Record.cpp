@@ -160,7 +160,7 @@ bool Record::bExtractBcdSupplied(Datum* pDatum, char** aaSrc,
   // null processing
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
+  if (bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     pDatum->vSetNull();
@@ -183,7 +183,7 @@ bool Record::bExtractBcdSupplied(Datum* pDatum, char** aaSrc,
     return false;
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+  if ( ! bValidFieldEnd(*aaSrc,pFormatters) )
     return false;
   
   return true;
@@ -204,7 +204,7 @@ bool Record::bExtractBcdDefault(Datum* pDatum, char** aaSrc,
   // null processing
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
+  if (bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     pDatum->vSetNull();
@@ -224,7 +224,7 @@ bool Record::bExtractBcdDefault(Datum* pDatum, char** aaSrc,
   StrLib::vSkipSpaces(aaSrc);
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+  if ( ! bValidFieldEndDefault(*aaSrc,pFormatters) )
     return false;
   
   return true;
@@ -246,7 +246,7 @@ bool Record::bExtractBolSupplied(Datum* pDatum, char** aaSrc,
   // null processing
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
+  if (bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     pDatum->vSetNull();
@@ -268,7 +268,7 @@ bool Record::bExtractBolSupplied(Datum* pDatum, char** aaSrc,
     return false;
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+  if ( ! bValidFieldEnd(*aaSrc,pFormatters) )
     return false;
   
   return true;
@@ -289,7 +289,7 @@ bool Record::bExtractBolDefault(Datum* pDatum, char** aaSrc,
   // null processing
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
+  if (bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     pDatum->vSetNull();
@@ -308,7 +308,7 @@ bool Record::bExtractBolDefault(Datum* pDatum, char** aaSrc,
   StrLib::vSkipSpaces(aaSrc);
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+  if ( ! bValidFieldEndDefault(*aaSrc,pFormatters) )
     return false;
   
   return true;
@@ -332,7 +332,7 @@ bool Record::bExtractDteSupplied(Datum* pDatum, char** aaSrc,
   // null processing
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
+  if (bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     pDatum->vSetNull();
@@ -363,7 +363,7 @@ bool Record::bExtractDteSupplied(Datum* pDatum, char** aaSrc,
     return false;
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+  if ( ! bValidFieldEnd(*aaSrc,pFormatters) )
     return false;
   
   return true;
@@ -386,7 +386,7 @@ bool Record::bExtractDteDefault(Datum* pDatum, char** aaSrc,
   // null processing
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
+  if (bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     pDatum->vSetNull();
@@ -414,7 +414,7 @@ bool Record::bExtractDteDefault(Datum* pDatum, char** aaSrc,
   StrLib::vSkipSpaces(aaSrc);
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+  if ( ! bValidFieldEndDefault(*aaSrc,pFormatters) )
     return false;
   
   return true;
@@ -436,7 +436,7 @@ bool Record::bExtractFltSupplied(Datum* pDatum, char** aaSrc,
   // null processing
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
+  if (bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     pDatum->vSetNull();
@@ -458,7 +458,7 @@ bool Record::bExtractFltSupplied(Datum* pDatum, char** aaSrc,
     return false;
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+  if ( ! bValidFieldEnd(*aaSrc,pFormatters) )
     return false;
   
   return true;
@@ -479,7 +479,7 @@ bool Record::bExtractFltDefault(Datum* pDatum, char** aaSrc,
   // null processing
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
+  if (bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     pDatum->vSetNull();
@@ -498,7 +498,7 @@ bool Record::bExtractFltDefault(Datum* pDatum, char** aaSrc,
   StrLib::vSkipSpaces(aaSrc);
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+  if ( ! bValidFieldEndDefault(*aaSrc,pFormatters) )
     return false;
   
   return true;
@@ -520,7 +520,7 @@ bool Record::bExtractIntSupplied(Datum* pDatum, char** aaSrc,
   // null processing
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
+  if (bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     pDatum->vSetNull();
@@ -551,7 +551,7 @@ bool Record::bExtractIntSupplied(Datum* pDatum, char** aaSrc,
     return false;
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+  if ( ! bValidFieldEnd(*aaSrc,pFormatters) )
     return false;
   
   return true;
@@ -572,7 +572,7 @@ bool Record::bExtractIntDefault(Datum* pDatum, char** aaSrc,
   // null processing
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
+  if (bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     pDatum->vSetNull();
@@ -600,7 +600,7 @@ bool Record::bExtractIntDefault(Datum* pDatum, char** aaSrc,
   StrLib::vSkipSpaces(aaSrc);
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+  if ( ! bValidFieldEndDefault(*aaSrc,pFormatters) )
     return false;
   
   return true;
@@ -622,7 +622,7 @@ bool Record::bExtractIvlSupplied(Datum* pDatum, char** aaSrc,
   // null processing
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
+  if (bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     pDatum->vSetNull();
@@ -649,7 +649,7 @@ bool Record::bExtractIvlSupplied(Datum* pDatum, char** aaSrc,
     return false;
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+  if ( ! bValidFieldEnd(*aaSrc,pFormatters) )
     return false;
   
   return true;
@@ -670,7 +670,7 @@ bool Record::bExtractIvlDefault(Datum* pDatum, char** aaSrc,
   // null processing
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
+  if (bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     pDatum->vSetNull();
@@ -694,7 +694,7 @@ bool Record::bExtractIvlDefault(Datum* pDatum, char** aaSrc,
   StrLib::vSkipSpaces(aaSrc);
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+  if ( ! bValidFieldEndDefault(*aaSrc,pFormatters) )
     return false;
   
   return true;
@@ -718,7 +718,7 @@ bool Record::bExtractTmeSupplied(Datum* pDatum, char** aaSrc,
   // null processing
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
+  if (bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     pDatum->vSetNull();
@@ -748,7 +748,7 @@ bool Record::bExtractTmeSupplied(Datum* pDatum, char** aaSrc,
     return false;
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+  if ( ! bValidFieldEnd(*aaSrc,pFormatters) )
     return false;
   
   return true;
@@ -771,7 +771,7 @@ bool Record::bExtractTmeDefault(Datum* pDatum, char** aaSrc,
   // null processing
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
+  if (bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     pDatum->vSetNull();
@@ -798,7 +798,7 @@ bool Record::bExtractTmeDefault(Datum* pDatum, char** aaSrc,
   StrLib::vSkipSpaces(aaSrc);
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+  if ( ! bValidFieldEndDefault(*aaSrc,pFormatters) )
     return false;
   
   return true;
@@ -822,7 +822,7 @@ bool Record::bExtractTspSupplied(Datum* pDatum, char** aaSrc,
   // null processing
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
+  if (bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     pDatum->vSetNull();
@@ -859,7 +859,7 @@ bool Record::bExtractTspSupplied(Datum* pDatum, char** aaSrc,
     return false;
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+  if ( ! bValidFieldEnd(*aaSrc,pFormatters) )
     return false;
   
   return true;
@@ -882,7 +882,7 @@ bool Record::bExtractTspDefault(Datum* pDatum, char** aaSrc,
   // null processing
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
+  if (bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     pDatum->vSetNull();
@@ -916,7 +916,7 @@ bool Record::bExtractTspDefault(Datum* pDatum, char** aaSrc,
   StrLib::vSkipSpaces(aaSrc);
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+  if ( ! bValidFieldEndDefault(*aaSrc,pFormatters) )
     return false;
   
   return true;
@@ -932,7 +932,7 @@ bool Record::bExtractVchSupplied(Datum* pDatum, char** aaSrc,
   // test for null
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull,false)) {
+  if (bTestForNull(pColumn,aaSrc,pFormatters,bValidNull,false)) {
     if ( ! bValidNull )
       return false;
     pDatum->vSetNull();
@@ -941,7 +941,7 @@ bool Record::bExtractVchSupplied(Datum* pDatum, char** aaSrc,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for enclosed
-  bool bSawEnclosedLeading = DtmLib::bIsEnclosed(aaSrc,pFormatters);
+  bool bSawEnclosedLeading = bIsEnclosed(aaSrc,pFormatters);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // varchar field processing
@@ -978,7 +978,7 @@ bool Record::bExtractVchSupplied(Datum* pDatum, char** aaSrc,
     return false;
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+  if ( ! bValidFieldEnd(*aaSrc,pFormatters) )
     return false;
   
   return true;
@@ -994,7 +994,7 @@ bool Record::bExtractVchDefault(Datum* pDatum, char** aaSrc,
   // test for null
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
+  if (bTestForNullDefault(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     pDatum->vSetNull();
@@ -1003,7 +1003,7 @@ bool Record::bExtractVchDefault(Datum* pDatum, char** aaSrc,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for enclosed
-  //bool bSawEnclosedLeading = DtmLib::bIsEnclosed(aaSrc,pFormatters);
+  //bool bSawEnclosedLeading = bIsEnclosed(aaSrc,pFormatters);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // varchar field processing
@@ -1025,7 +1025,7 @@ bool Record::bExtractVchDefault(Datum* pDatum, char** aaSrc,
   //  return false;
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+  if ( ! bValidFieldEndDefault(*aaSrc,pFormatters) )
     return false;
   
   return true;
@@ -1157,6 +1157,349 @@ Stz* Record::szRecStr(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
   
   return m_sRecStr.aStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* is the string enclosed?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Record::bIsEnclosed(char** aaSrc, Formatters* pFormatters)
+{
+  if (! pFormatters->m_cEnclosedBy_Leading)
+    return false;
+  
+  char *aStart = *aaSrc;
+  
+  // find first non-space character
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
+  
+  // is it an enclosed varchar?
+  if (**aaSrc == pFormatters->m_cEnclosedBy_Leading) {
+    (*aaSrc)++;
+    return true;
+  }
+  else {
+    *(aaSrc) = aStart;
+    return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* is there data?                                                             */
+/*----------------------------------------------------------------------------*/
+bool Record::bIsThereFieldData(char* aSrc, Formatters* pFormatters)
+{
+  if ( ! *aSrc
+      || *aSrc == pFormatters->m_cFieldDelimiter
+      || *aSrc == C_NL
+      || *aSrc == C_CR
+      )
+    return false;
+  else
+    return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is there data?                                                             */
+/*----------------------------------------------------------------------------*/
+bool Record::bIsThereRecordData(char* aSrc, Formatters* pFormatters)
+{
+  if ( ! *aSrc
+      || *aSrc == C_NL
+      || *aSrc == C_CR
+      )
+    return false;
+  else
+    return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for null token                                                        */
+/*----------------------------------------------------------------------------*/
+bool Record::bTestForNull(MetaData::Column* pColumn, char** aaSrc,
+                          Formatters* pFormatters,
+                          bool& bValidNull,
+                          bool bSkipTrailingSpaces)
+{
+  /*
+   * This function scans aaSrc and attempts to identify the text form of a null.
+   * There are three text forms of null: null, \N or '\N'.
+   * If a null (and only a null) is detected and
+   *  a) the column is nullable, then bValidNull is set to true and the
+   *     function returns true; or
+   *  b) the column is not nullable, then bValidNull is set to false and the
+   *     function returns true.
+   * If no form of null is detected then bValidNull is set to false and the
+   * function returns false.
+   * Importantly a valid null is one of the three forms of null -- there can be
+   * no further characters after it. Eg: "nulla" or "null a" are not
+   * correct forms of null.
+   */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test if there is any field data
+  
+  if ( ! bIsThereFieldData(*aaSrc, pFormatters)) {
+    if ( ! pColumn->bIsNullable() ) {
+      // a null was detected in a non-nullable column
+      bValidNull = false;
+      return true;
+    }
+    // a null was detected in a nullable column
+    bValidNull = true;
+    return true;
+  }
+  
+  //if ( ! bIsThereFieldData(*aaSrc, pFormatters))
+  //  return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for null, \N, '\N' or [\N]
+  
+  char* aStart = *aaSrc;
+  
+  if ( (**aaSrc == 'N' || **aaSrc == 'n') && (0 == StrLib::iCompare(*aaSrc+1, "ULL", 3, C_NO_CASE)) ) {
+    // skip over token null
+    *aaSrc = (*aaSrc) + 4;
+  }
+  else if (**aaSrc     == pFormatters->m_cEscapeChar &&
+           *(*aaSrc+1) == 'N') {
+    // skip over \N
+    *aaSrc = (*aaSrc) + 2;
+  }
+  else if (**aaSrc     == pFormatters->m_cEnclosedBy_Leading &&
+           *(*aaSrc+1) == pFormatters->m_cEscapeChar &&
+           *(*aaSrc+2) == 'N'                        &&
+           *(*aaSrc+3) == pFormatters->m_cEnclosedBy_Trailing) {
+    // skip over '\N' or [\N]
+    *aaSrc = (*aaSrc) + 4;
+  }
+  else if (**aaSrc    == pFormatters->m_cEnclosedBy_Leading &&
+           ((*(*aaSrc+1) == 'N' || *(*aaSrc+1) == 'n') && (0 == StrLib::iCompare(*aaSrc+2, "ULL", 3, C_NO_CASE))) &&
+           *(*aaSrc+5) == pFormatters->m_cEnclosedBy_Trailing) {
+    // skip over 'NULL'
+    *aaSrc = (*aaSrc) + 6;
+  }
+  else {
+    // no null detected
+    bValidNull = false; // no null, so neither valid or invalid
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  // optionally skip trailing spaces
+  if (bSkipTrailingSpaces)
+    StrLib::vSkipSpaces(aaSrc);
+  
+  // check it was "null" only
+  if (! bValidFieldEnd(*aaSrc,pFormatters)) {
+    // no well formed null detected
+    *(aaSrc) = aStart;
+    bValidNull = false; // no null, so neither valid or invalid
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check the column is nullable
+  
+  if ( ! pColumn->bIsNullable() ) {
+    // a null was detected in a non-nullable column
+    bValidNull = false;
+    return true;
+  }
+  
+  // a null was detected in a nullable column
+  bValidNull = true;
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for null token                                                        */
+/*----------------------------------------------------------------------------*/
+bool Record::bTestForNullDefault(MetaData::Column* pColumn, char** aaSrc,
+                                 Formatters* pFormatters, bool& bValidNull,
+                                 bool bSkipTrailingSpaces)
+{
+  /*
+   * This function scans aaSrc and attempts to identify the text form of a null.
+   * There are three text forms of null: null, \N or '\N'.
+   * If a null (and only a null) is detected and
+   *  a) the column is nullable, then bValidNull is set to true and the
+   *     function returns true; or
+   *  b) the column is not nullable, then bValidNull is set to false and the
+   *     function returns true.
+   * If no form of null is detected then bValidNull is set to false and the
+   * function returns false.
+   * Importantly a valid null is one of the three forms of null -- there can be
+   * no further characters after it. Eg: "nulla" or "null a" are not
+   * correct forms of null.
+   */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test if there is any field data
+  
+  if ( ! bIsThereFieldData(*aaSrc, pFormatters)) {
+    if ( ! pColumn->bIsNullable() ) {
+      // a null was detected in a non-nullable column
+      bValidNull = false;
+      return true;
+    }
+    // a null was detected in a nullable column
+    bValidNull = true;
+    return true;
+  }
+  
+  //if ( ! bIsThereFieldData(*aaSrc, pFormatters))
+  //  return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for null, \N, '\N' or [\N]
+  
+  char* aStart = *aaSrc;
+  
+  if ( (**aaSrc == 'N' || **aaSrc == 'n') && (0 == StrLib::iCompare(*aaSrc+1, "ULL", 3, C_NO_CASE)) ) {
+    // skip over token null
+    *aaSrc = (*aaSrc) + 4;
+  }
+  else if (**aaSrc     == pFormatters->m_cEscapeChar &&
+           *(*aaSrc+1) == 'N') {
+    // skip over \N
+    *aaSrc = (*aaSrc) + 2;
+  }
+  else {
+    // no null detected
+    bValidNull = false; // no null, so neither valid or invalid
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  // optionally skip trailing spaces
+  if (bSkipTrailingSpaces)
+    StrLib::vSkipSpaces(aaSrc);
+  // check it was "null" only
+  if (! bValidFieldEndDefault(*aaSrc,pFormatters)) {
+    // no well formed null detected
+    *(aaSrc) = aStart;
+    bValidNull = false; // no null, so neither valid or invalid
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check the column is nullable
+  
+  if ( ! pColumn->bIsNullable() ) {
+    // a null was detected in a non-nullable column
+    bValidNull = false;
+    return true;
+  }
+  
+  // a null was detected in a nullable column
+  bValidNull = true;
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for valid field end                                                   */
+/*----------------------------------------------------------------------------*/
+bool Record::bValidFieldEnd(char* aSrc, Formatters* pFormatters)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for end of data
+  
+  // valid field end if we've run out of data
+  if (! *aSrc)
+    return true;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for explicit field separator
+  
+  // valid field end if we've encounter the field delimiter
+  if (*aSrc == pFormatters->m_cFieldDelimiter)
+    return true;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for explicit record terminator
+  
+  if (pFormatters->m_cRecordTerminator) {
+    
+    // not a valid field end if expected record terminator is not seen
+    if (*aSrc != pFormatters->m_cRecordTerminator)
+      return false;
+    
+    // test we see the record end after the record termintor
+    bool bValidEnd = bValidRecordEnd(aSrc+1,pFormatters);
+    
+    return bValidEnd;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for explicit record ends
+  
+  bool bValidEnd = bValidRecordEnd(aSrc,pFormatters);
+  
+  return bValidEnd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for valid field end                                                   */
+/*----------------------------------------------------------------------------*/
+bool Record::bValidFieldEndDefault(char* aSrc, Formatters* pFormatters)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for end of data
+  
+  // valid field end if we've run out of data
+  if (! *aSrc)
+    return true;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for explicit field separator
+  
+  // valid field end if we've encounter the field delimiter
+  if (*aSrc == pFormatters->m_cFieldDelimiter)
+    return true;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for explicit record ends
+  
+  bool bValidEnd = bValidRecordEnd(aSrc,pFormatters);
+  
+  return bValidEnd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for valid record end                                                  */
+/*----------------------------------------------------------------------------*/
+bool Record::bValidRecordEnd(char* aSrc, Formatters* pFormatters)
+{
+  switch (pFormatters->m_eRecordEnd) {
+      
+    case RE_NL: // test for \n
+      if (C_NL == *aSrc)
+        return true;
+      else
+        return false;
+      
+    case RE_CR: // test for \r
+      if (C_CR == *aSrc)
+        return true;
+      else
+        return false;
+      
+    case RE_CRNL: // test for \r\n
+      if (C_CR == *aSrc && C_NL == *(aSrc+1))
+        return true;
+      else
+        return false;
+      
+    default: // otherwise not a field end
+      NEVER_REACH;
+      return false;
+  }
 }
 
 
