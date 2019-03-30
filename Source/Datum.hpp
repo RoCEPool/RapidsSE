@@ -74,8 +74,6 @@ namespace Data
     };
   
     Wsp_t<C_4KB> m_xWsp;
-
-    byte* m_ayDatum; //! temporary
   
     // must be last
     Footer m_xFooter;

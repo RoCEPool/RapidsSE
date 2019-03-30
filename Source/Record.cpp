@@ -1144,7 +1144,7 @@ void Record::vAppendVch(Column* pCol, Datum* pDatum)
   
   s256 sBuf;
   
-  Vch::vSprintQuotes(sBuf,(Stz*)pDatum->m_ayDatum);
+  Vch::vSprintQuotes(sBuf,pDatum->m_xWsp.aStz());
   m_sRecStr.vConcat(sBuf.aStz());
 }
 

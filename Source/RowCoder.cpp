@@ -983,11 +983,11 @@ void RowCoder::vEncodeVch(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
   CacheLine* aCacheLine = &xaCacheLine[0];
   
   i8 i_Column = pColumn->iColumnNo();
-  w8 wOriginal = (w8)pDatum->m_ayDatum;
+  w8 wOriginal = (w8)pDatum->m_xWsp.aArea();
     
   // hash the column value if part of partition key
   if (pColumn->bIsPartitionKey())
-    iHash += HshLib::iHash(pDatum->m_ayDatum,sizeof(w8));
+    iHash += HshLib::iHash(pDatum->m_xWsp.aArea(),sizeof(w8));
   
   i8 nBytesEncoded;
   eMN eEncoding = RowCoder::eEncodingVch(pDatum,nBytesEncoded);
