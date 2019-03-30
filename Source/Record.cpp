@@ -76,36 +76,34 @@ bool Record::bExtract(Column* pCol, Datum* pDatum, char** aaSrc,
   bool b = false;
   eDM eDatum = pCol->eDatumType();
   
-  Stz* szDst = pDatum->m_xWsp.aStz();
-  
   if (pFmt->m_bDefault) {
     switch (eDatum) {
-      case DM_BCD: b = bExtractBcdDefault(pDatum,aaSrc,szDst,pCol,pFmt); break;
-      case DM_BOL: b = bExtractBolDefault(pDatum,aaSrc,szDst,pCol,pFmt); break;
-      case DM_CHR: b = bExtractVchDefault(pDatum,aaSrc,szDst,pCol,pFmt); break;
-      case DM_DTE: b = bExtractDteDefault(pDatum,aaSrc,szDst,pCol,pFmt); break;
-      case DM_FLT: b = bExtractFltDefault(pDatum,aaSrc,szDst,pCol,pFmt); break;
-      case DM_INT: b = bExtractIntDefault(pDatum,aaSrc,szDst,pCol,pFmt); break;
-      case DM_IVL: b = bExtractIvlDefault(pDatum,aaSrc,szDst,pCol,pFmt); break;
-      case DM_TME: b = bExtractTmeDefault(pDatum,aaSrc,szDst,pCol,pFmt); break;
-      case DM_TSP: b = bExtractTspDefault(pDatum,aaSrc,szDst,pCol,pFmt); break;
-      case DM_VCH: b = bExtractVchDefault(pDatum,aaSrc,szDst,pCol,pFmt); break;
+      case DM_BCD: b = bExtractBcdDefault(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_BOL: b = bExtractBolDefault(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_CHR: b = bExtractVchDefault(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_DTE: b = bExtractDteDefault(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_FLT: b = bExtractFltDefault(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_INT: b = bExtractIntDefault(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_IVL: b = bExtractIvlDefault(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_TME: b = bExtractTmeDefault(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_TSP: b = bExtractTspDefault(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_VCH: b = bExtractVchDefault(pDatum,aaSrc,pCol,pFmt); break;
       default:
         vFatal("Record::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
     }
   }
   else {
     switch (eDatum) {
-      case DM_BCD: b = bExtractBcdSupplied(pDatum,aaSrc,szDst,pCol,pFmt); break;
-      case DM_BOL: b = bExtractBolSupplied(pDatum,aaSrc,szDst,pCol,pFmt); break;
-      case DM_CHR: b = bExtractVchSupplied(pDatum,aaSrc,szDst,pCol,pFmt); break;
-      case DM_DTE: b = bExtractDteSupplied(pDatum,aaSrc,szDst,pCol,pFmt); break;
-      case DM_FLT: b = bExtractFltSupplied(pDatum,aaSrc,szDst,pCol,pFmt); break;
-      case DM_INT: b = bExtractIntSupplied(pDatum,aaSrc,szDst,pCol,pFmt); break;
-      case DM_IVL: b = bExtractIvlSupplied(pDatum,aaSrc,szDst,pCol,pFmt); break;
-      case DM_TME: b = bExtractTmeSupplied(pDatum,aaSrc,szDst,pCol,pFmt); break;
-      case DM_TSP: b = bExtractTspSupplied(pDatum,aaSrc,szDst,pCol,pFmt); break;
-      case DM_VCH: b = bExtractVchSupplied(pDatum,aaSrc,szDst,pCol,pFmt); break;
+      case DM_BCD: b = bExtractBcdSupplied(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_BOL: b = bExtractBolSupplied(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_CHR: b = bExtractVchSupplied(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_DTE: b = bExtractDteSupplied(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_FLT: b = bExtractFltSupplied(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_INT: b = bExtractIntSupplied(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_IVL: b = bExtractIvlSupplied(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_TME: b = bExtractTmeSupplied(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_TSP: b = bExtractTspSupplied(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_VCH: b = bExtractVchSupplied(pDatum,aaSrc,pCol,pFmt); break;
       default:
         vFatal("Record::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
     }
@@ -149,11 +147,9 @@ bool Record::bExtract(Column* pCol, Datum* pDatum, char** aaSrc,
 /*----------------------------------------------------------------------------*/
 /* extract a decimal field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractBcdSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
+bool Record::bExtractBcdSupplied(Datum* pDatum, char** aaSrc,
                                  Column* pColumn, Formatters* pFormatters)
 {
-  Bcd* aBcd = (Bcd*)aDst;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -167,14 +163,14 @@ bool Record::bExtractBcdSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
   if (DtmLib::bTestForNull(pColumn,aaSrc,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    aBcd->vSetNull();
+    pDatum->vSetNull();
     return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decimal field processing
   
-  if ( ! StrLib::bExtractDecimal(aaSrc,aBcd->m_iBcd,
+  if ( ! StrLib::bExtractDecimal(aaSrc,pDatum->m_iBcd,
                                  pColumn->iColumnLength(),pColumn->iColumnScale()) )
     return false;
   
@@ -196,7 +192,7 @@ bool Record::bExtractBcdSupplied(Datum* pDatum, char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract a decimal field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractBcdDefault(Datum* pDatum, char** aaSrc, Stz* ,
+bool Record::bExtractBcdDefault(Datum* pDatum, char** aaSrc,
                                 Column* pColumn, Formatters* pFormatters)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -237,7 +233,7 @@ bool Record::bExtractBcdDefault(Datum* pDatum, char** aaSrc, Stz* ,
 /*----------------------------------------------------------------------------*/
 /* extract a boolean field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractBolSupplied(Datum* pDatum, char** aaSrc, Stz* ,
+bool Record::bExtractBolSupplied(Datum* pDatum, char** aaSrc,
                                  Column* pColumn, Formatters* pFormatters)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -281,7 +277,7 @@ bool Record::bExtractBolSupplied(Datum* pDatum, char** aaSrc, Stz* ,
 /*----------------------------------------------------------------------------*/
 /* extract a boolean field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractBolDefault(Datum* pDatum, char** aaSrc, Stz* ,
+bool Record::bExtractBolDefault(Datum* pDatum, char** aaSrc,
                                 Column* pColumn, Formatters* pFormatters)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -321,7 +317,7 @@ bool Record::bExtractBolDefault(Datum* pDatum, char** aaSrc, Stz* ,
 /*----------------------------------------------------------------------------*/
 /* extract a date field from csv substr                           yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractDteSupplied(Datum* pDatum, char** aaSrc, Stz* ,
+bool Record::bExtractDteSupplied(Datum* pDatum, char** aaSrc,
                                  Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
@@ -376,7 +372,7 @@ bool Record::bExtractDteSupplied(Datum* pDatum, char** aaSrc, Stz* ,
 /*----------------------------------------------------------------------------*/
 /* extract a date field from csv substr                           yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractDteDefault(Datum* pDatum, char** aaSrc, Stz* ,
+bool Record::bExtractDteDefault(Datum* pDatum, char** aaSrc,
                                 Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
@@ -427,7 +423,7 @@ bool Record::bExtractDteDefault(Datum* pDatum, char** aaSrc, Stz* ,
 /*----------------------------------------------------------------------------*/
 /* extract a float field from csv substr                                      */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractFltSupplied(Datum* pDatum, char** aaSrc, Stz* ,
+bool Record::bExtractFltSupplied(Datum* pDatum, char** aaSrc,
                                  Column* pColumn, Formatters* pFormatters)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -471,7 +467,7 @@ bool Record::bExtractFltSupplied(Datum* pDatum, char** aaSrc, Stz* ,
 /*----------------------------------------------------------------------------*/
 /* extract a float field from csv substr                                      */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractFltDefault(Datum* pDatum, char** aaSrc, Stz* ,
+bool Record::bExtractFltDefault(Datum* pDatum, char** aaSrc,
                                 Column* pColumn, Formatters* pFormatters)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -511,7 +507,7 @@ bool Record::bExtractFltDefault(Datum* pDatum, char** aaSrc, Stz* ,
 /*----------------------------------------------------------------------------*/
 /* extract an integer field from csv substr                                   */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractIntSupplied(Datum* pDatum, char** aaSrc, Stz* ,
+bool Record::bExtractIntSupplied(Datum* pDatum, char** aaSrc,
                                  Column* pColumn, Formatters* pFormatters)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -564,7 +560,7 @@ bool Record::bExtractIntSupplied(Datum* pDatum, char** aaSrc, Stz* ,
 /*----------------------------------------------------------------------------*/
 /* extract an integer field from csv substr                                   */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractIntDefault(Datum* pDatum, char** aaSrc, Stz* ,
+bool Record::bExtractIntDefault(Datum* pDatum, char** aaSrc,
                                 Column* pColumn, Formatters* pFormatters)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -613,7 +609,7 @@ bool Record::bExtractIntDefault(Datum* pDatum, char** aaSrc, Stz* ,
 /*----------------------------------------------------------------------------*/
 /* extract an interval field from csv substr                                  */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractIvlSupplied(Datum* pDatum, char** aaSrc, Stz* ,
+bool Record::bExtractIvlSupplied(Datum* pDatum, char** aaSrc,
                                  Column* pColumn, Formatters* pFormatters)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -662,7 +658,7 @@ bool Record::bExtractIvlSupplied(Datum* pDatum, char** aaSrc, Stz* ,
 /*----------------------------------------------------------------------------*/
 /* extract an interval field from csv substr                                  */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractIvlDefault(Datum* pDatum, char** aaSrc, Stz* ,
+bool Record::bExtractIvlDefault(Datum* pDatum, char** aaSrc,
                                 Column* pColumn, Formatters* pFormatters)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -707,7 +703,7 @@ bool Record::bExtractIvlDefault(Datum* pDatum, char** aaSrc, Stz* ,
 /*----------------------------------------------------------------------------*/
 /* extract a time field from csv substr                         hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractTmeSupplied(Datum* pDatum, char** aaSrc, Stz* ,
+bool Record::bExtractTmeSupplied(Datum* pDatum, char** aaSrc,
                                  Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
@@ -761,7 +757,7 @@ bool Record::bExtractTmeSupplied(Datum* pDatum, char** aaSrc, Stz* ,
 /*----------------------------------------------------------------------------*/
 /* extract a time field from csv substr                         hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractTmeDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
+bool Record::bExtractTmeDefault(Datum* pDatum, char** aaSrc,
                                 Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
@@ -811,7 +807,7 @@ bool Record::bExtractTmeDefault(Datum* pDatum, char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractTspSupplied(Datum* pDatum, char** aaSrc, Stz* ,
+bool Record::bExtractTspSupplied(Datum* pDatum, char** aaSrc,
                                  Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
@@ -872,7 +868,7 @@ bool Record::bExtractTspSupplied(Datum* pDatum, char** aaSrc, Stz* ,
 /*----------------------------------------------------------------------------*/
 /* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractTspDefault(Datum* pDatum, char** aaSrc, Stz* ,
+bool Record::bExtractTspDefault(Datum* pDatum, char** aaSrc,
                                 Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
@@ -929,7 +925,7 @@ bool Record::bExtractTspDefault(Datum* pDatum, char** aaSrc, Stz* ,
 /*----------------------------------------------------------------------------*/
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractVchSupplied(Datum* pDatum, char** aaSrc, Stz* ,
+bool Record::bExtractVchSupplied(Datum* pDatum, char** aaSrc,
                                  Column* pColumn, Formatters* pFormatters)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -991,7 +987,7 @@ bool Record::bExtractVchSupplied(Datum* pDatum, char** aaSrc, Stz* ,
 /*----------------------------------------------------------------------------*/
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtractVchDefault(Datum* pDatum, char** aaSrc, Stz* ,
+bool Record::bExtractVchDefault(Datum* pDatum, char** aaSrc,
                                 Column* pColumn, Formatters* pFormatters)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

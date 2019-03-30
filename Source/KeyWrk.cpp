@@ -84,7 +84,9 @@ void KeyWrk::vAddDatum(Datum* pDatum, GenVar& xVariable, Column* pCol, Formatter
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
+  bool b;
   i8 nBytes;
+  i8 iInt;
   
   StrVal* aStrVal = _aStrVal(xVariable.aNestedValue());
   
@@ -93,60 +95,45 @@ void KeyWrk::vAddDatum(Datum* pDatum, GenVar& xVariable, Column* pCol, Formatter
   
   switch(pCol->eDatumType()) {
       
-    case DM_BCD: {
-      Bcd xBcd;
-      bool b = Record::bExtractBcdSupplied(pDatum,&pSrc,(Stz*)&xBcd,pCol,pFormatters);
-      nBytes = Bcd::nCopy((char*)pDst,(char*)&xBcd);
+    case DM_BCD:
+      b = Record::bExtractBcdSupplied(pDatum,&pSrc,pCol,pFormatters);
+      nBytes = Bcd::nCopy((char*)pDst,(char*)&pDatum->m_iBcd);
       break;
-    }
-      
-    case DM_BOL: {
-      Bol xBol;
-      bool b = Record::bExtractBolSupplied(pDatum,&pSrc,(Stz*)&xBol,pCol,pFormatters);
-      nBytes = Bol::nCopy((char*)pDst,(char*)&xBol);
+  
+    case DM_BOL:
+      b = Record::bExtractBolSupplied(pDatum,&pSrc,pCol,pFormatters);
+      nBytes = Bol::nCopy((char*)pDst,(char*)&pDatum->m_iBol);
       break;
-    }
       
-    case DM_DTE: {
-      Dte xDte;
-      bool b = Record::bExtractDteSupplied(pDatum,&pSrc,(Stz*)&xDte,pCol,pFormatters);
-      nBytes = Dte::nCopy((char*)pDst,(char*)&xDte);
+    case DM_DTE:
+      b = Record::bExtractDteSupplied(pDatum,&pSrc,pCol,pFormatters);
+      nBytes = Dte::nCopy((char*)pDst,(char*)&pDatum->m_iDte);
       break;
-    }
       
-    case DM_INT: {
-      i8 iInt = StrLib::iToI8(pSrc);
+    case DM_INT:
+      iInt = StrLib::iToI8(pSrc);
       nBytes = Int::nCopy(pDst,(void*)&iInt);
       break;
-    }
       
-    case DM_IVL: {
-      Ivl xInterval;
-      bool b = Record::bExtractIvlSupplied(pDatum,&pSrc,(Stz*)&xInterval,pCol,pFormatters);
-      nBytes = Ivl::nCopy(pDst,(void*)&xInterval);
+    case DM_IVL:
+      b = Record::bExtractIvlSupplied(pDatum,&pSrc,pCol,pFormatters);
+      nBytes = Ivl::nCopy(pDst,(void*)&pDatum->m_iIvl);
       break;
-    }
       
-    case DM_FLT: {
-      Flt xFloat;
-      bool b = Record::bExtractFltSupplied(pDatum,&pSrc,(Stz*)&xFloat,pCol,pFormatters);
-      nBytes = Flt::nCopy(pDst,(void*)&xFloat);
+    case DM_FLT:
+      b = Record::bExtractFltSupplied(pDatum,&pSrc,pCol,pFormatters);
+      nBytes = Flt::nCopy(pDst,(void*)&pDatum->m_dFlt);
       break;
-    }
       
-    case DM_TME: {
-      Tme xTime;
-      bool b = Record::bExtractTmeSupplied(pDatum,&pSrc,(Stz*)&xTime,pCol,pFormatters);
-      nBytes = Tme::nCopy((char*)pDst,(char*)&xTime);
+    case DM_TME:
+      b = Record::bExtractTmeSupplied(pDatum,&pSrc,pCol,pFormatters);
+      nBytes = Tme::nCopy((char*)pDst,(char*)&pDatum->m_iTme);
       break;
-    }
       
-    case DM_TSP: {
-      Tsp xTimestamp;
-      bool b = Record::bExtractTspSupplied(pDatum,&pSrc,(Stz*)&xTimestamp,pCol,pFormatters);
-      nBytes = Tsp::nCopy((char*)pDst,(char*)&xTimestamp);
+    case DM_TSP:
+      b = Record::bExtractTspSupplied(pDatum,&pSrc,pCol,pFormatters);
+      nBytes = Tsp::nCopy((char*)pDst,(char*)&pDatum->m_iTsp);
       break;
-    }
       
     case DM_VCH:
       //nBytes = Vch::nCopy(pDst,pSrc);
