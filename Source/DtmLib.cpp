@@ -30,25 +30,6 @@ i8 DtmLib::nCopy(eDM eDatum, void* pDst, void* pSrc)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* s-print                                                                    */
-/*----------------------------------------------------------------------------*/
-void DtmLib::vCopy(eDM eDatum, void* aDst, void* aSrc)
-{
-  switch(eDatum) {
-    case DM_BCD: Bcd::vCopy((char*)aDst,(char*)aSrc); break;
-    case DM_BOL: Bol::vCopy((char*)aDst,(char*)aSrc); break;
-    case DM_DTE: Dte::vCopy((char*)aDst,(char*)aSrc); break;
-    case DM_FLT: Flt::vCopy((char*)aDst,(char*)aSrc); break;
-    case DM_INT: Int::vCopy((char*)aDst,(char*)aSrc); break;
-    case DM_IVL: Ivl::vCopy((char*)aDst,(char*)aSrc); break;
-    case DM_TME: Tme::vCopy((char*)aDst,(char*)aSrc); break;
-    case DM_TSP: Tsp::vCopy((char*)aDst,(char*)aSrc); break;
-    case DM_VCH: Vch::vCopy((char*)aDst,(char*)aSrc); break;
-    default:
-      NEVER_REACH;
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/

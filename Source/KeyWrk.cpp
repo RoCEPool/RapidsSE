@@ -184,12 +184,13 @@ void KeyWrk::vAddKey(KeyData* aKey, IdxColVec* pColVec)
   for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
     Column* pColumn = pColVec->pGet(iColumn);
     
-    char* aElement = aKey->aEachDatum(pColumn, nBytes,&aCursor);
+    char* aElement = aKey->aEachDatum(pColumn,nBytes,&aCursor);
     
     char* pDst = aLatter();
     char* pSrc = aElement;
     
-    DtmLib::vCopy(pColumn->eDatumType(),pDst,pSrc);
+    i8 nBytesCopied = DtmLib::nCopy(pColumn->eDatumType(),pDst,pSrc);
+    ASSERT(nBytesCopied == nBytes);
     
     vTake(nBytes);
   }
