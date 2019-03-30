@@ -199,7 +199,7 @@ void Ivl::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract an interval field from csv substr                                  */
 /*----------------------------------------------------------------------------*/
-bool Ivl::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
+bool Ivl::bExtractIvlSupplied(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
   Ivl* aIvl = (Ivl*)aDst;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -248,7 +248,7 @@ bool Ivl::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormat
 /*----------------------------------------------------------------------------*/
 /* extract an interval field from csv substr                                  */
 /*----------------------------------------------------------------------------*/
-bool Ivl::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
+bool Ivl::bExtractIvlDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
   Ivl* aIvl = (Ivl*)aDst;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

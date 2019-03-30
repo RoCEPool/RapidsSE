@@ -250,7 +250,7 @@ void Tme::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a time field from csv substr                         hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Tme::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
+bool Tme::bExtractTmeSupplied(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
@@ -304,7 +304,7 @@ bool Tme::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormat
 /*----------------------------------------------------------------------------*/
 /* extract a time field from csv substr                         hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Tme::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
+bool Tme::bExtractTmeDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   

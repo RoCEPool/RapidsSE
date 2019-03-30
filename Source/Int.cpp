@@ -229,7 +229,7 @@ void Int::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract an integer field from csv substr                                   */
 /*----------------------------------------------------------------------------*/
-bool Int::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
+bool Int::bExtractIntSupplied(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
   Int* aInt = (Int*)aDst;
   
@@ -283,7 +283,7 @@ bool Int::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormat
 /*----------------------------------------------------------------------------*/
 /* extract an integer field from csv substr                                   */
 /*----------------------------------------------------------------------------*/
-bool Int::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
+bool Int::bExtractIntDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
   Int* aInt = (Int*)aDst;
   

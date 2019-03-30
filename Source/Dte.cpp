@@ -225,7 +225,7 @@ void Dte::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a date field from csv substr                           yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool Dte::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
+bool Dte::bExtractDteSupplied(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
@@ -281,7 +281,7 @@ bool Dte::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormat
 /*----------------------------------------------------------------------------*/
 /* extract a date field from csv substr                           yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool Dte::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
+bool Dte::bExtractDteDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   

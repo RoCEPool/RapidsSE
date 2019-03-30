@@ -228,7 +228,7 @@ void Bol::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a boolean field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Bol::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
+bool Bol::bExtractBolSupplied(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
   Bol* aBol = (Bol*)aDst;
   
@@ -273,7 +273,7 @@ bool Bol::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormat
 /*----------------------------------------------------------------------------*/
 /* extract a boolean field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Bol::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
+bool Bol::bExtractBolDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
   Bol* aBol = (Bol*)aDst;
   

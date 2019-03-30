@@ -41,9 +41,9 @@ namespace Datums
   
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
-    static bool bExtract(char** aaSrc, Stz* aDst,
+    static bool bExtractFltSupplied(char** aaSrc, Stz* aDst,
                          MetaData::Column* pColumn, Formatters* pFormatters);
-    static bool bExtractDefault(char** aaSrc, Stz* aDst,
+    static bool bExtractFltDefault(char** aaSrc, Stz* aDst,
                          MetaData::Column* pColumn, Formatters* pFormatters);
     static void vSprint(Stz* aDst, Stz* aSrc);
     static bool bIsValidSize(i8 iPrecision);

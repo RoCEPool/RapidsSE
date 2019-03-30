@@ -173,7 +173,7 @@ void Bcd::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a decimal field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Bcd::bExtract(char** aaSrc, Stz* aDst, MetaData::Column* pColumn, Formatters* pFormatters)
+bool Bcd::bExtractBcdSupplied(char** aaSrc, Stz* aDst, MetaData::Column* pColumn, Formatters* pFormatters)
 {
   Bcd* aBcd = (Bcd*)aDst;
   
@@ -219,7 +219,7 @@ bool Bcd::bExtract(char** aaSrc, Stz* aDst, MetaData::Column* pColumn, Formatter
 /*----------------------------------------------------------------------------*/
 /* extract a decimal field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Bcd::bExtractDefault(char** aaSrc, Stz* aDst, MetaData::Column* pColumn, Formatters* pFormatters)
+bool Bcd::bExtractBcdDefault(char** aaSrc, Stz* aDst, MetaData::Column* pColumn, Formatters* pFormatters)
 {
   Bcd* aBcd = (Bcd*)aDst;
   

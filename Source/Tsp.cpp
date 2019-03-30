@@ -280,7 +280,7 @@ void Tsp::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Tsp::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
+bool Tsp::bExtractTspSupplied(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
@@ -342,7 +342,7 @@ bool Tsp::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormat
 /*----------------------------------------------------------------------------*/
 /* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Tsp::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
+bool Tsp::bExtractTspDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
