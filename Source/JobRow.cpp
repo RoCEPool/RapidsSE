@@ -97,7 +97,7 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Datum* pDatum = new Datum;
+  Datum oDatum;
   m_oRowParts.vReset();
 
   ColumnVec* pColVec = m_pTable->pColumnVec();
@@ -111,7 +111,7 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // extract datum from record
     
-    bValidDatum = Record::bExtract(pColumn, pDatum, &aSrc,
+    bValidDatum = Record::bExtract(pColumn, &oDatum, &aSrc,
                                    bLastColumn, &m_oFormatters);
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -126,7 +126,6 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
         vTrace("\n"_Stz);
       }
       //delete pRowEncoder;
-      delete pDatum;
       return false;
     }
     
@@ -135,15 +134,13 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     
     //pDatum->vDatum((byte*)sDst.aChar());
     RowCoder::vEncode(m_oRowParts.aGet(0),i_Tail,i_Offset,
-                      pColumn,pDatum,m_iHash);
+                      pColumn,&oDatum,m_iHash);
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     //RowEncoder::vPrint(pColumn,aCacheLine);
 
   } // for each column
   
   //MemLib::vWordDump(m_oRowParts.aGet(0),sizeof(CacheLine));
-
-  delete pDatum;
 
   return true;
 }

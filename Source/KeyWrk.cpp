@@ -280,8 +280,7 @@ void KeyWrk::vExtractKey(CacheLine* aRowData, IdxColVec* pIdxColVec)
 {
   GenVar xVariable;
   
-  //! this is inefficient
-  Datum* pDatum = new Datum;
+  Datum oDatum;
   
   i8 nCols = pIdxColVec->nItems();
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
@@ -290,14 +289,12 @@ void KeyWrk::vExtractKey(CacheLine* aRowData, IdxColVec* pIdxColVec)
     Column* pColumn = pIdxColVec->pGet(i_Column);
     
     // get the column value from the row for the iColumnNo
-    RowCoder::vDecode(aRowData,0,pColumn,pDatum);
-    xVariable = (i8)pDatum->m_iInt;
+    RowCoder::vDecode(aRowData,0,pColumn,&oDatum);
+    xVariable = oDatum.m_iInt;
     
     // add the column value to the key
     vAddDatum(xVariable, pColumn);
   }
-  
-  delete pDatum;
 }
 
 /*----------------------------------------------------------------------------*/

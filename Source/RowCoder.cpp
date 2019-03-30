@@ -86,22 +86,22 @@ void RowCoder::vEncode(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
 /*----------------------------------------------------------------------------*/
 void RowCoder::vPrint(CacheLine xaCacheLine[], i8 i_Row, Column* pCol)
 {
-  Datum* pDatum = new Datum;
+  Datum oDatum;
   Record* pRec = new Record;
   
-  vDecode(xaCacheLine,i_Row,pCol,pDatum);
+  vDecode(xaCacheLine,i_Row,pCol,&oDatum);
   
   eDM eDatum = pCol->eDatumType();
   switch (eDatum) {
-    case DM_BCD: pRec->vAppendBcd(pCol,pDatum); break;
-    case DM_BOL: pRec->vAppendBol(pCol,pDatum); break;
-    case DM_DTE: pRec->vAppendDte(pCol,pDatum); break;
-    case DM_FLT: pRec->vAppendFlt(pCol,pDatum); break;
-    case DM_INT: pRec->vAppendInt(pCol,pDatum); break;
-    case DM_IVL: pRec->vAppendIvl(pCol,pDatum); break;
-    case DM_TME: pRec->vAppendTme(pCol,pDatum); break;
-    case DM_TSP: pRec->vAppendTsp(pCol,pDatum); break;
-    case DM_VCH: pRec->vAppendVch(pCol,pDatum); break;
+    case DM_BCD: pRec->vAppendBcd(pCol,&oDatum); break;
+    case DM_BOL: pRec->vAppendBol(pCol,&oDatum); break;
+    case DM_DTE: pRec->vAppendDte(pCol,&oDatum); break;
+    case DM_FLT: pRec->vAppendFlt(pCol,&oDatum); break;
+    case DM_INT: pRec->vAppendInt(pCol,&oDatum); break;
+    case DM_IVL: pRec->vAppendIvl(pCol,&oDatum); break;
+    case DM_TME: pRec->vAppendTme(pCol,&oDatum); break;
+    case DM_TSP: pRec->vAppendTsp(pCol,&oDatum); break;
+    case DM_VCH: pRec->vAppendVch(pCol,&oDatum); break;
     default:
       NEVER_REACH;
   }
@@ -113,7 +113,6 @@ void RowCoder::vPrint(CacheLine xaCacheLine[], i8 i_Row, Column* pCol)
          pRec->szRecStr());
   
   delete pRec;
-  delete pDatum;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -145,7 +144,7 @@ void RowCoder::vRecord(Record* pRec,
 /*----------------------------------------------------------------------------*/
 void RowCoder::vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine)
 {
-  Datum* pDatum = new Datum;
+  Datum oDatum;
   
   // get no of columns
   i8 nColumns = pColVec->nItems();
@@ -164,10 +163,10 @@ void RowCoder::vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine)
     
     // copy the data for the column into aDst
     eDM eDatum = pColumn->eDatumType();
-    RowCoder::vDecode(aCacheLine,0,pColumn,pDatum);
+    RowCoder::vDecode(aCacheLine,0,pColumn,&oDatum);
     
     // check for nulls
-    if (pDatum->m_iInt == C_DATUM_NULL) {
+    if (oDatum.bIsNull()) {
       
       // NULL Floats ?
       RASSERT(eDatum != DM_FLT);
@@ -178,36 +177,36 @@ void RowCoder::vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine)
     
     switch (eDatum) {
       case DM_BCD: {
-        sString.vCatSprint("%lld"_Stz, pDatum->m_iInt);
+        sString.vCatSprint("%lld"_Stz, oDatum.m_iInt);
         break;
       }
       case DM_BOL: {
-        sString.vConcat(pDatum->m_iInt ? "true"_Stz : "false"_Stz);
+        sString.vConcat(oDatum.m_iInt ? "true"_Stz : "false"_Stz);
         break;
       }
       case DM_DTE: {
         Dte wDte;
-        wDte.vAsI8(pDatum->m_iInt);
+        wDte.vAsI8(oDatum.m_iInt);
         s32 sDte;
         wDte.vSprint(sDte.aStz());
         sString.vConcat(sDte.aStz());
         break;
       }
       case DM_FLT: {
-        sString.vCatSprint("%g"_Stz, pDatum->m_dFlt);
+        sString.vCatSprint("%g"_Stz, oDatum.m_dFlt);
         break;
       }
       case DM_INT: {
-        sString.vCatSprint("%lld"_Stz, pDatum->m_iInt);
+        sString.vCatSprint("%lld"_Stz, oDatum.m_iInt);
         break;
       }
       case DM_IVL: {
-        sString.vCatSprint("%lld"_Stz, pDatum->m_iInt);
+        sString.vCatSprint("%lld"_Stz, oDatum.m_iInt);
         break;
       }
       case DM_TME: {
         Tme wTme;
-        wTme.vAsI8(pDatum->m_iInt);
+        wTme.vAsI8(oDatum.m_iInt);
         s32 sTme;
         wTme.vSprint(sTme.aStz());
         sString.vConcat(sTme.aStz());
@@ -215,7 +214,7 @@ void RowCoder::vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine)
       }
       case DM_TSP: {
         Tsp wTsp;
-        wTsp.vAsI8(pDatum->m_iInt);
+        wTsp.vAsI8(oDatum.m_iInt);
         s32 sTsp;
         wTsp.vSprint(sTsp.aStz());
         sString.vConcat(sTsp.aStz());
@@ -223,7 +222,7 @@ void RowCoder::vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine)
       }
       case DM_VCH: {
         s256 sStr;
-        Vch::vSprintQuotes(sStr, pDatum->m_xWsp.aStz());
+        Vch::vSprintQuotes(sStr, oDatum.m_xWsp.aStz());
         sString.vConcat(sStr.aStz());
         break;
       }
@@ -232,8 +231,6 @@ void RowCoder::vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine)
     }
     
   }
-  
-  delete pDatum;
 }
 
 
@@ -246,28 +243,26 @@ void RowCoder::vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vAppend(Record* pRec, CacheLine xaCacheLine[], i8 i_Row, Column* pCol)
 {
-  Datum* pDatum = new Datum;
+  Datum oDatum;
   
   CacheLine* aCacheLine = &xaCacheLine[0];
   
-  RowCoder::vDecode(aCacheLine,i_Row,pCol,pDatum);
+  RowCoder::vDecode(aCacheLine,i_Row,pCol,&oDatum);
   
   eDM eDatum = pCol->eDatumType();
   switch (eDatum) {
-    case DM_BCD: pRec->vAppendBcd(pCol,pDatum); break;
-    case DM_BOL: pRec->vAppendBol(pCol,pDatum); break;
-    case DM_DTE: pRec->vAppendDte(pCol,pDatum); break;
-    case DM_FLT: pRec->vAppendFlt(pCol,pDatum); break;
-    case DM_INT: pRec->vAppendInt(pCol,pDatum); break;
-    case DM_IVL: pRec->vAppendIvl(pCol,pDatum); break;
-    case DM_TME: pRec->vAppendTme(pCol,pDatum); break;
-    case DM_TSP: pRec->vAppendTsp(pCol,pDatum); break;
-    case DM_VCH: pRec->vAppendVch(pCol,pDatum); break;
+    case DM_BCD: pRec->vAppendBcd(pCol,&oDatum); break;
+    case DM_BOL: pRec->vAppendBol(pCol,&oDatum); break;
+    case DM_DTE: pRec->vAppendDte(pCol,&oDatum); break;
+    case DM_FLT: pRec->vAppendFlt(pCol,&oDatum); break;
+    case DM_INT: pRec->vAppendInt(pCol,&oDatum); break;
+    case DM_IVL: pRec->vAppendIvl(pCol,&oDatum); break;
+    case DM_TME: pRec->vAppendTme(pCol,&oDatum); break;
+    case DM_TSP: pRec->vAppendTsp(pCol,&oDatum); break;
+    case DM_VCH: pRec->vAppendVch(pCol,&oDatum); break;
     default:
       NEVER_REACH;
   }
-  
-  delete pDatum;
 }
 
 /*----------------------------------------------------------------------------*/
