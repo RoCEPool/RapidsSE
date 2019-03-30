@@ -37,10 +37,6 @@ namespace Datums
     static void vSprintEscaped(Stz* aDst, Stz* aSrc);
     static bool bIsValidSize(i8 iSize);
     
-    static bool bExtractVchSupplied(char** aaSrc, Stz* aDst,
-                          MetaData::Column* pColumn, Formatters* pFormatters);
-    static bool bExtractVchDefault(char** aaSrc, Stz* aDst,
-                          MetaData::Column* pColumn, Formatters* pFormatters);
     static bool bLessThan(char* aArgA, char* aArgB);
     static bool bLessEqual(char* aArgA, char* aArgB);
     static bool bEqualTo(char* aArgA, char* aArgB);

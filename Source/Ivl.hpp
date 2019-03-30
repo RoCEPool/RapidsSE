@@ -46,12 +46,6 @@ namespace Datums
   
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
-    static bool bExtractIvlSupplied(char** aaSrc, Stz* aDst,
-                         MetaData::Column* pColumn, Formatters* pFormatters);
-    static bool bExtractIvlDefault(char** aaSrc, Stz* aDst,
-                         MetaData::Column* pColumn, Formatters* pFormatters);
-    static bool bExtractExtract(char** aaSrc, Stz* aDst,
-                         MetaData::Column* pColumn, Formatters* pFormatters);
     static void vSprint(Stz* aDst, Stz* aSrc);
     
     static bool bLessThan(char* aArgA, char* aArgB);
