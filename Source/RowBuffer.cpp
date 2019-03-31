@@ -217,6 +217,9 @@ CacheLine* RowBuffer::aAllotTails(i8 nTails)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
+  if (! nTails)
+    return nullptr;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has space
   
@@ -270,19 +273,25 @@ CacheLine* RowBuffer::aAppendRow(CacheLine* aRowData)
   ColumnVec* pColVec = m_pTable->pColumnVec();
   i8 nCacheLines = RowCoder::nLines(aRowData,0,pColVec);
   
-  // NOTE:: Assuming each row fits in a cacheline
-  CacheLine* pRow = aAllotRow(C_BYTES_PER_CACHE_LINE);
-  
-  if (! pRow)
+  if (! bHasSpace(sizeof(CacheLine) * nCacheLines))
     return nullptr;
   
+  //! NOTE:: Assuming each row fits in a cacheline + (n * Shoco Lines)
+  CacheLine* pHead  = aAllotHead();
+  CacheLine* pTails = aAllotTails(nCacheLines - 1);
+  
+  RASSERT(pHead);
+  RASSERT(nCacheLines == 1 || pTails);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy row data into row entry
   
-  MemLib::vCopy(pRow,aRowData,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
+  //MemLib::vCopy(pHead,aRowData,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
+  RowCoder::vCopy(pHead,pTails,aRowData,pColVec);
+  
   //pRowEntry->vShow(0, m_pIndex, false);
   
-  return pRow;
+  return pHead;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -370,6 +379,7 @@ bool RowBuffer::bHasSpace(i8 nBytes)
   i8 nFreeCacheLines = m_xRowTray.nFree();
   i8 nFreeBytes = nFreeCacheLines * C_BYTES_PER_CACHE_LINE;
   
+  //! is this correct now that we have separated RowBuffer from EntryBuffer?
   if (gpAttachMap->m_nIndexEntries > 0) {
     // has space calculation based on no of entries
     if (nRowCount() >= gpAttachMap->m_nIndexEntries)

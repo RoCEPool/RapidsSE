@@ -9,6 +9,19 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* copy an encoded row from one tray to another                               */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vCopy(CacheLine* pIntoHead, CacheLine* pIntoTails,
+                     CacheLine xaFromLine[],
+                     ColumnVec* pColVec)
+{
+  CacheLine* pFromHead = &xaFromLine[0];
+  MemLib::vCopy(pIntoHead,pFromHead,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
+
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get encoded datum from cache line                                          */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecode(CacheLine xaCacheLine[], i8 i_Row,

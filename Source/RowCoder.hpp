@@ -8,6 +8,10 @@ namespace Data
   class RowCoder
   {
   public:
+    static void vCopy(CacheLine* pIntoHead, CacheLine* pIntoTails,
+                      CacheLine xaFromLine[],
+                      ColumnVec* pColVec);
+  
     static void vDecode(CacheLine xaCacheLine[], i8 i_Row,
                         Column* pCol, Datum* pDatum);
     static i8   nLines(CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec);
