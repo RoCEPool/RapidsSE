@@ -488,19 +488,26 @@ void Jobs::vJob_FetchRows_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer, bool bPrint)
 {
-  ColumnVec* pColumnVec = pJob_FetchRows->m_pTable->pColumnVec();
+  ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
   CacheLine** aaCacheLine = nullptr;
   aaCacheLine = pFetchBuffer->aaFirstRowPtr();
   
+  Record* pRecord = new Record;
+
   while (aaCacheLine) {
     
-    s48K sRowString;
-    RowCoder::vString(sRowString, pColumnVec,*aaCacheLine);
+    //s48K sRowString;
+    //RowCoder::vString(sRowString, pColumnVec,*aaCacheLine);
+    
+    RowCoder::vRecord(pRecord,*aaCacheLine,0,pColVec);
+
     if (bPrint)
-      vTrace("row: (%s)\n"_Stz, sRowString.aChar());
+      vTrace("row: (%s)\n"_Stz, pRecord->szRecStr());
     
     aaCacheLine = pFetchBuffer->aaNextRowPtr(aaCacheLine);
   }
+  
+  delete pRecord;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -14,7 +14,6 @@ namespace Data
                         Column* pColumn, Datum* pDatum, i8& iHash);
     static void vPrint(CacheLine xaCacheLine[], i8 i_Row, Column* pCol);
     static void vRecord(Record* pRec, CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec);
-    static void vString(s48K& sString, ColumnVec* pColVec, CacheLine* aCacheLine);
   
   private:
     static void vAppend(Record* pRec, CacheLine xaCacheLine[], i8 i_Row, Column* pCol);

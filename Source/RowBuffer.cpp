@@ -460,12 +460,20 @@ void RowBuffer::vShowRow(i8 iRowNo)
          iRowNo
          );
   
-  ColumnVec* pColumnVec = m_pTable->pColumnVec();
+  ColumnVec* pColVec = m_pTable->pColumnVec();
   
-  s48K sRowString;
   CacheLine* aRowCacheLine = m_xRowTray.aGet(iRowNo);
-  RowCoder::vString(sRowString, pColumnVec,aRowCacheLine);
-  vTrace("row: (%s)\n"_Stz, sRowString.aChar());
+  
+  //s48K sRowString;
+  //RowCoder::vString(sRowString, pColumnVec,aRowCacheLine);
+  
+  Record* pRecord = new Record;
+  
+  RowCoder::vRecord(pRecord,aRowCacheLine,0,pColVec);
+
+  vTrace("row: (%s)\n"_Stz,pRecord->szRecStr());
+  
+  delete pRecord;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -568,22 +568,30 @@ void TablePtn::vPublish(void)
   m_okLock.vGrabWrite();
   
   // is there a current buffer ?
-  if ( ! m_pCurrentRowBuffer)
+  if ( ! m_pCurrentRowBuffer) {
+    m_okLock.vDropWrite();
     return;
+  }
   
-  s48K sRowString;
-  
+  Record* pRecord = new Record;
+  ColumnVec* pColVec = m_pCurrentRowBuffer->pTable()->pColumnVec();
+
   // publish the current buffer (last buffer that was added)
   i8 nRowCount = m_pCurrentRowBuffer->nRowCount();
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
     CacheLine* aRowData = m_pCurrentRowBuffer->pRow(i_Row);
-    RowCoder::vString(sRowString,m_pCurrentRowBuffer->pTable()->pColumnVec(), aRowData);
-    vTrace("row: (%s)\n"_Stz, sRowString.aChar());
+    //RowCoder::vString(sRowString,m_pCurrentRowBuffer->pTable()->pColumnVec(), aRowData);
+    RowCoder::vRecord(pRecord,aRowData,0,pColVec);
+    vTrace("row: (%s)\n"_Stz,pRecord->szRecStr());
   }
+  
   vTrace("Partition%lld: published %lld rows\n"_Stz,m_iPartitionId,
          m_pCurrentRowBuffer->nRowCount());
+  
   m_okLock.vDropWrite();
+  
+  delete pRecord;
 }
 
 /*----------------------------------------------------------------------------*/
