@@ -71,6 +71,8 @@ namespace Data
   
   private:
     CacheLine* aAllotRow(i8 nBytes);
+    CacheLine* aAllotHead(void);
+    CacheLine* aAllotTails(i8 nTails);
     bool       bHasSpace(i8 nBytes);
 
     ////////////////////////////////////////////////////////////////////////////

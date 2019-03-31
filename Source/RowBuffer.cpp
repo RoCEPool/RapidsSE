@@ -184,10 +184,50 @@ CacheLine* RowBuffer::aAllotRow(i8 nBytes)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if this buffer has space
   
-  if ( ! bHasSpace(nBytes))
+  if (! bHasSpace(nBytes))
     return nullptr;
   
   i8 iCacheLine = m_xRowTray.iAllotHead();
+  
+  return m_xRowTray.aGet(iCacheLine);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot a head cache line in this buffer                                     */
+/*----------------------------------------------------------------------------*/
+CacheLine* RowBuffer::aAllotHead(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if this buffer has space
+  
+  if (! bHasSpace(sizeof(CacheLine)))
+    return nullptr;
+  
+  i8 iCacheLine = m_xRowTray.iAllotHead();
+  
+  return m_xRowTray.aGet(iCacheLine);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot one or more tail cache lines in this buffer                          */
+/*----------------------------------------------------------------------------*/
+CacheLine* RowBuffer::aAllotTails(i8 nTails)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if this buffer has space
+  
+  if (! bHasSpace(sizeof(CacheLine) * nTails))
+    return nullptr;
+  
+  i8 iCacheLine = C_UNKNOWN;
+  
+  for (i8 i_Tail = 0; i_Tail < nTails; i_Tail++)
+    iCacheLine = m_xRowTray.iAllotTail();
+  ASSERT(iCacheLine != C_UNKNOWN);
   
   return m_xRowTray.aGet(iCacheLine);
 }
@@ -227,6 +267,8 @@ CacheLine* RowBuffer::aAppendRow(CacheLine* aRowData)
   // allot row entry in this buffer
   
   bn nBufferNo = this->nPoolBufferNo();
+  ColumnVec* pColVec = m_pTable->pColumnVec();
+  i8 nCacheLines = RowCoder::nLines(aRowData,0,pColVec);
   
   // NOTE:: Assuming each row fits in a cacheline
   CacheLine* pRow = aAllotRow(C_BYTES_PER_CACHE_LINE);
