@@ -195,6 +195,30 @@ CacheLine* RowBuffer::aAllotRow(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* append a row entry into this buffer                                        */
 /*----------------------------------------------------------------------------*/
+//CacheLine* RowBuffer::aAppendRow(CacheLine* aRowData)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+//  
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // allot row entry in this buffer
+//  
+//  bn nBufferNo = this->nPoolBufferNo();
+//
+//  // NOTE:: Assuming each row fits in a cacheline
+//  CacheLine* pRow = aAllotRow(C_BYTES_PER_CACHE_LINE);
+//  
+//  if (! pRow)
+//    return nullptr;
+//  
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // copy row data into row entry
+//  
+//  MemLib::vCopy(pRow,aRowData,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
+//  //pRowEntry->vShow(0, m_pIndex, false);
+//  
+//  return pRow;
+//}
+/*----------------------------------------------------------------------------*/
 CacheLine* RowBuffer::aAppendRow(CacheLine* aRowData)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
@@ -203,7 +227,7 @@ CacheLine* RowBuffer::aAppendRow(CacheLine* aRowData)
   // allot row entry in this buffer
   
   bn nBufferNo = this->nPoolBufferNo();
-
+  
   // NOTE:: Assuming each row fits in a cacheline
   CacheLine* pRow = aAllotRow(C_BYTES_PER_CACHE_LINE);
   

@@ -10,6 +10,7 @@ namespace Data
   public:
     static void vDecode(CacheLine xaCacheLine[], i8 i_Row,
                         Column* pCol, Datum* pDatum);
+    static i8   nLines(CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec);
     static void vEncode(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
                         Column* pColumn, Datum* pDatum, i8& iHash);
     static void vPrint(CacheLine xaCacheLine[], i8 i_Row, Column* pCol);

@@ -82,6 +82,35 @@ void RowCoder::vEncode(CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
 }
 
 /*----------------------------------------------------------------------------*/
+/* compute how many cache lines an encoded row occupies                       */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::nLines(CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec)
+{
+  i8 nCacheLines = 1;
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+  
+  i8 i_Offset = C_UNKNOWN;
+  
+  // for each column
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
+    
+    // get the column at index
+    Column* pCol = pColVec->pGet(i_Column);
+    
+    if (DM_VCH != pCol->eDatumType())
+      continue;
+    
+    eMN eEncoding = eGetEncoding(i_Column,&xaCacheLine[0],i_Offset);
+    
+    if (MN_SHOCO_2B == eEncoding)
+      nCacheLines++;
+  }
+  
+  return nCacheLines;
+}
+
+/*----------------------------------------------------------------------------*/
 /* print decoded datum from cache line                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vPrint(CacheLine xaCacheLine[], i8 i_Row, Column* pCol)
