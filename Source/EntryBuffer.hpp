@@ -182,7 +182,6 @@ namespace Data
     bool         bVerifyKeyBufferOrder(void);
     bool         bVerifyKeyOrder(void);
     bool         bVerifyNextPrev(void);
-    bool         bVerifyRows(void);
     bool         bVerifyRowRefs(void);
     bool         bVerifySkipListEntry(bool bShowKeys = false);
     bool         bVerifySkipListLevels(bool bShowKeys = false);
