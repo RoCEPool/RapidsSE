@@ -44,10 +44,6 @@ ItemHeap::ItemHeap(eCN eClassNo)
   
   // head of free item chain
   m_aFreeItemChain  = nullptr;
-
-  // entry offsets array
-  m_i4aItemOffsets    = nullptr;
-  m_i_FreeOffsetChain = C_NO_MORE_ITEMS;
   
   
 #ifdef WITH_CHECK_INITIALISED
@@ -192,8 +188,8 @@ void ItemHeap::vDumpItems(void)
   i8 iItem = 0;
 
   Item* aItem = aFirstItem();
-  if (m_i4aItemOffsets)
-    aItem = aAdd<Item*>(aItem,sizeof(i4) * C_MAX_ITEMS);
+//  if (m_i4aItemOffsets)
+//    aItem = aAdd<Item*>(aItem,sizeof(i4) * C_MAX_ITEMS);
 
   for (;
        aItem;
@@ -290,19 +286,6 @@ void ItemHeap::vGiveSpace(i8 nBytes)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_xWsp.vGive(nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
-/* does buffer have a free item no in free chain ?                            */
-/*----------------------------------------------------------------------------*/
-bool ItemHeap::bHasFreeItem(void)
-{
-  if (C_NO_MORE_ITEMS == m_i_FreeOffsetChain)
-    return false;
-  
-  //RASSERT(nItems() < C_MAX_ITEMS - 16);
-
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/

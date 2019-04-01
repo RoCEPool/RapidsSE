@@ -826,7 +826,6 @@ void EntryBuffer::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  RASSERT(nullptr == m_i4aItemOffsets);
   RASSERT(1 == m_iBufferHeight);
   
   vResetUsed();
@@ -838,8 +837,6 @@ void EntryBuffer::vReset(void)
   m_xSkipRoots.vNEO(0,-1);
   m_xSkipRoots.vNEO(1,-1);
   m_xSkipRoots.vNEO(2,-1);
-
-  m_i_FreeOffsetChain = C_NO_MORE_ITEMS;
   
   //m_aHeadEntry  = nullptr;
   m_aLastEntry  = nullptr;
@@ -867,20 +864,20 @@ void EntryBuffer::vRestore(void)
   
   // get the original buffer address
   //  nb: the given address has to be an address in the orginal buffer
-  PoolBuffer* pOriginalBuffer =
-  pBitAnd<PoolBuffer*>(m_i4aItemOffsets,C_OBJECT_TO_BUFFER_MASK);
+//  PoolBuffer* pOriginalBuffer =
+//  pBitAnd<PoolBuffer*>(m_i4aItemOffsets,C_OBJECT_TO_BUFFER_MASK);
   
   // get this buffer address
   PoolBuffer* pThisBuffer =
   pBitAnd<PoolBuffer*>(this,C_OBJECT_TO_BUFFER_MASK);
   
   // calculate offset for m_i4aItemOffsets and set it
-  if (m_i4aItemOffsets) {
-    PoolBuffer* pOriginalBuffer =
-    pBitAnd<PoolBuffer*>(m_i4aItemOffsets,C_OBJECT_TO_BUFFER_MASK);
-    u8 uOffset = nSub(m_i4aItemOffsets, pOriginalBuffer);
-    m_i4aItemOffsets = aBitOr<i4*>(pThisBuffer,uOffset);
-  }
+//  if (m_i4aItemOffsets) {
+//    PoolBuffer* pOriginalBuffer =
+//    pBitAnd<PoolBuffer*>(m_i4aItemOffsets,C_OBJECT_TO_BUFFER_MASK);
+//    u8 uOffset = nSub(m_i4aItemOffsets, pOriginalBuffer);
+//    m_i4aItemOffsets = aBitOr<i4*>(pThisBuffer,uOffset);
+//  }
   
   // calculate offset for m_aHeadEntry and set it
   //uOffset = nSub(m_aHeadEntry, pOriginalBuffer);
@@ -998,9 +995,6 @@ void EntryBuffer::vShow(Item* aMarkEntry)
   
   vTrace("  index: %s partition: %lld height: %lld\n"_Stz,
          m_pIndex ? m_pIndex->aIndexName() : "NULL"_Stz,m_iPartitionNo,m_iBufferHeight);
-  
-  vTrace("  entryOffset: %p freeOffsetHead: %lld\n"_Stz,
-         m_i4aItemOffsets,m_i_FreeOffsetChain);
   
   vTrace("  skipRoots: %p[%d,%d,%d] lastEntry: %p firstFree: %p\n"_Stz,
          aSkipRoots(),

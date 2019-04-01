@@ -17,7 +17,6 @@ namespace MiniHeaps
     i8 m_iBufferNo; // this EntryBuffer's buffer number
     i8 m_nItems;    // number of items in this heap
     ItemHeap* m_pNextBuffer; // next buffer
-    i4* m_i4aItemOffsets;    // array of offsets (i4) to items in m_xWsp
     Wsp_t<C_WSP_ITEMHEAP> m_xWsp; // workspace
     // End RDP Java layout -----------------------------------------------------
 
@@ -32,8 +31,6 @@ namespace MiniHeaps
     bool   m_bIsLast;            // is this the last buffer in sequence
   
     FreeItem* m_aFreeItemChain;  // head of free item chain
-
-    i4  m_i_FreeOffsetChain;     // head of free item offset chain
   
   public:
     ItemHeap(eCN eClassNo);
@@ -51,7 +48,6 @@ namespace MiniHeaps
     i8     nFreeBytes(void); //-> nAvailBytes()
     void   vFreeItem(Item* aItem);
     void   vGiveSpace(i8 nBytes);
-    bool   bHasFreeItem(void);
     bool   bHasSpace(i8 nBytes);
     void   vIsLast(bool bIsLast);
     bool   bIsLast(void);
