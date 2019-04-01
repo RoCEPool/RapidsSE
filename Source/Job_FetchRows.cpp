@@ -115,6 +115,7 @@ Job_FetchRows::Job_FetchRows(Interface::Session* pSession)
   m_pTable       = nullptr;
   m_iPartition   = -1;
   m_bDisplay     = true;
+  m_bPrint       = true;
   m_pPlanner     = nullptr;
   m_pBufferQueue = new Queue;
   m_pFetchBuffer = nullptr;
