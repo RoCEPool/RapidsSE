@@ -5,35 +5,45 @@
 
 namespace Structures
 {
-//  template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
-//  class TrayNL_t;
-//
-//  template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
-//  class Tray_t : public Object
-//  {
-//  private:
-//    u8 m_nMaxItems;  // max number of items
-//    u8 m_nHeadItems; // number of items from the head
-//    u8 m_nTailItems; // number of items from the tail
-//    ITEM* m_xaItem;  // set of items
-//
-//  public:
-//    Tray_t(void);
-//   ~Tray_t(void) noexcept(false);
-//  };
+  template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
+  class TrayNL_t;
+
+  template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
+  class Tray_t : public Object
+  {
+  friend TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>;
+
+  private:
+    u8 m_nMaxItems;  // max number of items
+    u8 m_nHeadItems; // number of items from the head
+    u8 m_nTailItems; // number of items from the tail
+    ITEM* m_xaItem;  // set of items
+
+    // must be last
+    Footer m_xFooter;
+  
+  public:
+    Tray_t(void);
+   ~Tray_t(void) noexcept(false);
+  
+  private:
+    Footer* aFooter(void);
+  };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
   class TrayNL_t : public Object
   {
+  friend Tray_t<TRAY_CN,ITEM,MAX_ITEMS>;
+  
   protected:
     u8 m_nMaxItems;  // max number of items
     u8 m_nHeadItems; // number of items from the head
     u8 m_nTailItems; // number of items from the tail
     ITEM m_xItem[MAX_ITEMS]; // set of items
   
-    //Tray_t<TRAY_CN,ITEM,MAX_ITEMS> m_oTray;
+    Tray_t<TRAY_CN,ITEM,MAX_ITEMS> m_oTray;
 
     // must be last
     Footer m_xFooter;
@@ -63,9 +73,71 @@ namespace Structures
   TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>* _pTrayNL(void* aAddr);
 }
 
+using namespace Structures;
+
+
+////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-using namespace Structures;
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
+Tray_t<TRAY_CN,ITEM,MAX_ITEMS>::Tray_t(void)
+: Object(TRAY_CN)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  m_nMaxItems = MAX_ITEMS;
+  
+  m_nHeadItems = 0; // number of items from the head
+  m_nTailItems = 0; // number of items from the tail
+  m_xaItem     = nullptr;  // set of items
+
+  
+  i8 nBytes = sizeof(Tray_t<TRAY_CN,ITEM,MAX_ITEMS>);
+  _checkInitialisedSize_(nBytes);
+  
+  _postcondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
+Tray_t<TRAY_CN,ITEM,MAX_ITEMS>::~Tray_t(void) noexcept(false)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
+Footer* Tray_t<TRAY_CN,ITEM,MAX_ITEMS>::aFooter(void)
+{
+  _precondition_(_MAGIC_,TRAY_CN);
+  
+  return &m_xFooter;
+}
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -249,6 +321,7 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::nTails(void)
   
   return m_nTailItems;
 }
+
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
