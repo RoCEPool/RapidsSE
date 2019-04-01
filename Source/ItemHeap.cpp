@@ -334,30 +334,6 @@ bool ItemHeap::bHasSpace(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set up the initial entry offset free chain                                 */
-/*----------------------------------------------------------------------------*/
-void ItemHeap::vInitFreeChain(void)
-{
-  m_i4aItemOffsets  =
-    reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_MAX_ITEMS));
-  
-  m_i_FreeOffsetChain = C_NO_MORE_ITEMS;
-  
-  i8 iMaxItems =
-    gpAttachMap->m_nIndexEntries ? gpAttachMap->m_nIndexEntries : C_MAX_ITEMS;
-  
-  for (i4 i_Item = 0; i_Item < (iMaxItems - 1); i_Item++) {
-    RASSERT(i_Item >= 0 && i_Item < C_MAX_ITEMS);
-    m_i4aItemOffsets[i_Item] = - (i_Item + 1);
-  }
-  
-  RASSERT((iMaxItems - 1) >= 0 && (iMaxItems - 1) < C_MAX_ITEMS);
-  m_i4aItemOffsets[iMaxItems - 1] = - C_NO_MORE_ITEMS;
-  
-  m_i_FreeOffsetChain = 0;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set buffer is last                                                         */
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vIsLast(bool bIsLast)
