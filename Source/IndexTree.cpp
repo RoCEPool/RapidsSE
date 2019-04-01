@@ -51,7 +51,6 @@ IndexTree::IndexTree(Index* pIndex, i8 iPartitionNo)
   m_okLock.vInitLock(LK_INDEX_TREE);
   m_pIndex = pIndex;
   m_iPartitionNo = iPartitionNo;
-  m_pPartition   = nullptr;
   m_pRootBuffer  = nullptr;
   
   _checkInitialised_(CN_INDEXTREE);
