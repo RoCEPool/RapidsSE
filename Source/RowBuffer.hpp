@@ -50,6 +50,7 @@ namespace Data
     i8          iAgeSsec(void);
     void        vBufferCount(i8& nBufferCount);
     i8          iDecile(void);
+    i8          iLengthList(void);
     RowBuffer*  pNextBuffer(void);
     void        vNextBuffer(RowBuffer* pNextBuffer);
     void        vPartitionNo(i8 iPartitionNo);

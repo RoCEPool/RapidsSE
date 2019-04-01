@@ -560,7 +560,7 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 void TablePtn::vPublish(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   if ( ! m_pRootRowBuffer)
     return;
@@ -594,6 +594,69 @@ void TablePtn::vPublish(void)
   m_okLock.vDropWrite();
   
   //delete pRecord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* purge the table buffers                                                    */
+/*----------------------------------------------------------------------------*/
+bool TablePtn::bPurge(i8 iOlderThanSeconds)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  static i8 iMaxAge = 0;
+  static i8 nMaxBuffers = 0;
+  
+  if (! m_pRootRowBuffer)
+    return false;
+  
+  m_okLock.vGrabWrite();
+  
+  i8 iAge = m_pRootRowBuffer->iAgeSsec();
+  
+  //  if (iAge <= 1) {
+  //    vTrace("Purge: age is %llds\n"_Stz,iMaxAge);
+  //  }
+  
+  if (iAge > iMaxAge) {
+    iMaxAge = iAge;
+    //    vTrace("Purge: max age now %llds\n"_Stz,iMaxAge);
+  }
+  
+  i8 iLengthList = m_pRootRowBuffer->iLengthList();
+  if (iLengthList > nMaxBuffers) {
+    nMaxBuffers = iLengthList;
+    //vTrace("Purge: max buffer chain now %lld buffers\n"_Stz,nMaxBuffers);
+  }
+  
+  
+  if (iAge <= iOlderThanSeconds) {
+    m_okLock.vDropWrite();
+    return false;
+  }
+  
+  // is currentBuffer same as rootBuffer ?
+  if (m_pCurrentRowBuffer == m_pRootRowBuffer)
+    m_pCurrentRowBuffer = nullptr;
+  
+  RowBuffer* pRowBuffer = m_pRootRowBuffer;
+  
+  // get next entry buffer
+  m_pRootRowBuffer = m_pRootRowBuffer->pNextBuffer();
+  
+  // set prev pointer to null
+  if (m_pRootRowBuffer) {
+    ASSERT(pRowBuffer ==  m_pRootRowBuffer->pPrevBuffer());
+    m_pRootRowBuffer->vPrevBuffer(nullptr);
+  }
+  
+  m_okLock.vDropWrite();
+  
+  // delete the root buffer
+  delete pRowBuffer;
+  
+  gpAttachMap->m_oStatistics.IndexTree.m_nBuffersPurged++;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

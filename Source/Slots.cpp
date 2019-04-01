@@ -238,6 +238,20 @@ bool Slots::bPurgeIndex(i8 iPartitionNo, i8 iIndexNo, i8 iOlderThanSeconds)
 }
 
 /*----------------------------------------------------------------------------*/
+/* attempt to purge oldest buffer of table                                    */
+/*----------------------------------------------------------------------------*/
+bool Slots::bPurgeTable(i8 iPartitionNo, i8 iOlderThanSeconds)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+  
+  TablePtn* pTablePtn = m_pTablePtnVec->pGet(iPartitionNo);
+  
+  bool bPurged = pTablePtn->bPurge(iOlderThanSeconds);
+  
+  return bPurged;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show column vector                                                         */
 /*----------------------------------------------------------------------------*/
 void Slots::vShowColumnVec(void)

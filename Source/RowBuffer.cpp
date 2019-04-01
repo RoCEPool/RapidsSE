@@ -397,6 +397,20 @@ bool RowBuffer::bHasSpace(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get length of list of buffers                                               */
+/*----------------------------------------------------------------------------*/
+i8 RowBuffer::iLengthList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  i8 iLength = 0;
+  for (RowBuffer* pLn = this; pLn; pLn = pLn->pNextBuffer())
+    iLength++;
+  
+  return iLength;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set the table of the row buffer                                            */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vTable(Table* pTable)

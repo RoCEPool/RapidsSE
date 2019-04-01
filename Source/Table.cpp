@@ -617,19 +617,20 @@ bool Table::bPurge(i8 iPartition, i8 iOlderThanSeconds)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   //vTrace("Purging table %s\n"_Stz, m_sTableName.aChar());
+  bool bPurged = m_xSlots.bPurgeTable(iPartition, iOlderThanSeconds);
   
   // purge all other indexes
-  for (i8 iIndexNo = 0; iIndexNo < m_pIdxVec->nItems(); iIndexNo++) {
-    
-    Index* pIndex = m_pIdxVec->pGet(iIndexNo);
-    
-    bool bPurged = m_xSlots.bPurgeIndex(iPartition, pIndex->iIndexNo(), iOlderThanSeconds);
-    
-    if (! bPurged)
-      return false;
-  }
+//  for (i8 iIndexNo = 0; iIndexNo < m_pIdxVec->nItems(); iIndexNo++) {
+//
+//    Index* pIndex = m_pIdxVec->pGet(iIndexNo);
+//
+//    bool bPurged = m_xSlots.bPurgeIndex(iPartition, pIndex->iIndexNo(), iOlderThanSeconds);
+//
+//    if (! bPurged)
+//      return false;
+//  }
   
-  return true;
+  return bPurged;
 }
 
 /*----------------------------------------------------------------------------*/
