@@ -718,59 +718,6 @@ bool IndexTree::bInsertEntry(CacheLine* aRowData, Id& xId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert entries from entryBuffer into this index at level 0                 */
-/*----------------------------------------------------------------------------*/
-void IndexTree::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
-  //m_okLock.vGrabWrite();
-  
-  //pEntryBuffer->vShow();
-  
-  for ( Item* aItem = pEntryBuffer->aLeadEntry() ;
-       aItem;
-       aItem = pEntryBuffer->aNextEntry(aItem, 0)) {
-    
-    bool bInserted = bInsertEntry(aItem);
-    //bVerify();
-    ASSERT(bInserted);
-  }
-  
-  //m_okLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert an entry for given row into this index at level 0                   */
-/*----------------------------------------------------------------------------*/
-bool IndexTree::bInsertEntry(Item* aRowEntry)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
-  m_okLock.vGrabWrite();
-  
-  KeyWrk xKeyWrk;
-  xKeyWrk.vExtractKey(aRowEntry,m_pIndex->pIdxColVec());
-  xKeyWrk.vId(aRowEntry->xId());
-  //xKeyWrk.vShow(m_pIndex->pIdxColVec(), false);
-  
-  if ( ! m_pRootBuffer ) {
-    m_pRootBuffer = new EntryBuffer;
-    m_pRootBuffer->vIndex(m_pIndex);
-    m_pRootBuffer->vPartitionNo(m_iPartitionNo);
-  }
-  
-  Item* aKeyEntry = EntryBuffer::aInsertKeyTree(xKeyWrk,&m_pRootBuffer);
-  ASSERT(aKeyEntry);
-  
-  //m_pRootBuffer->bVerify();
-  
-  m_okLock.vDropWrite();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* build skip lists for the index                                             */
 /*----------------------------------------------------------------------------*/
 void IndexTree::vLazyBuild(void)

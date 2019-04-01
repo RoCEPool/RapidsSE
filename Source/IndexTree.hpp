@@ -48,10 +48,6 @@ namespace Data
     
     bool         bInsertEntry(CacheLine* aRowData, Id& xId);
     void         vInsertEntriesFromBuffer(RowBuffer* pRowBuffer);
-
-    //! REVIEW: these shold go !!!
-    bool         bInsertEntry(Item* aRowItem);
-    void         vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer);
     
     void         vLazyBuild(void);
     EntryBuffer* pPopSubList(EntryBuffer** ppSubList);
