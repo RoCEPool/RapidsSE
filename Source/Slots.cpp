@@ -252,6 +252,11 @@ void Slots::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   m_pTable = pTable;
+  
+  // set the table pointer in the tablePtn's
+  for (i8 i_Slot = 0; i_Slot < gpAttachMap->m_pGrid->nSlotsPerNode(); i_Slot++) {
+    m_pTablePtnVec->pGet(i_Slot)->vTable(m_pTable);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

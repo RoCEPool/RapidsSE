@@ -17,9 +17,9 @@ namespace Data
   class TablePtn : public Object
   {
   private:
-    Lock m_okLock; // lock on the partition
-  
-    i8 m_iPartitionId; // partition number
+    Lock m_okLock;               // lock on the partition
+    Table* m_pTable;             // table this partition belongs to
+    i8 m_iPartitionId;           // partition number
     bool m_bLowMemLoad;          // was low memory detected during this load
   
     i8 m_nWriteBehindBuffers;    // buffers to be written
@@ -79,6 +79,8 @@ namespace Data
     void vResetWrite(void);
     RowBuffer* pRootRowBuffer(void);
     i8   nRowBuffers(void);
+    void vTable(Table* pTable);
+    Table* pTable(void);
     void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);
     void vTruncate(void);

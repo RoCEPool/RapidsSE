@@ -99,6 +99,7 @@ TablePtn::TablePtn(void)
   
   m_okLock.vInitLock(LK_PARTITION);
   m_iPartitionId = -1;
+  m_pTable = nullptr;
   
   m_nSubLoadersDone  = 0;
   m_nSubInsertersDone = 0;
@@ -267,10 +268,25 @@ void TablePtn::vAppendRow(RowParts& oRowParts, i8 nRowBytes)
   if (m_pRootRowBuffer == nullptr) {
     ASSERT( ! m_pCurrentRowBuffer )
     m_pRootRowBuffer = new RowBuffer;
+    m_pRootRowBuffer->vTable(m_pTable);
+    m_pRootRowBuffer->vPartitionNo(m_iPartitionId);
     m_pCurrentRowBuffer = m_pRootRowBuffer;
   }
   
-  m_pCurrentRowBuffer->aAppendRow(oRowParts.aGet(0));
+  CacheLine* aRow = m_pCurrentRowBuffer->aAppendRow(oRowParts.aGet(0));
+  
+  if ( ! aRow ) {
+    RowBuffer* pRowBuffer = new RowBuffer;
+    m_pRootRowBuffer->vTable(m_pTable);
+    m_pRootRowBuffer->vPartitionNo(m_iPartitionId);
+    pRowBuffer->vNextBuffer(m_pCurrentRowBuffer->pNextBuffer());
+    pRowBuffer->vPrevBuffer(m_pCurrentRowBuffer);
+    m_pCurrentRowBuffer->vNextBuffer(pRowBuffer);
+    m_pCurrentRowBuffer = pRowBuffer;
+    
+    CacheLine* aRow = m_pCurrentRowBuffer->aAppendRow(oRowParts.aGet(0));
+    RASSERT(aRow);
+  }
   
   // get the row from the buffer
   Id xId;
@@ -687,6 +703,25 @@ i8 TablePtn::nRowBuffers(void)
   return nBufferCount;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set table                                                                  */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  m_pTable = pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table                                                                  */
+/*----------------------------------------------------------------------------*/
+Table* TablePtn::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  return m_pTable;
+}
 
 /*----------------------------------------------------------------------------*/
 /* tidy up                                                                    */
