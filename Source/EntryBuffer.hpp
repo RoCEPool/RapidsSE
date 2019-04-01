@@ -184,7 +184,6 @@ namespace Data
     bool         bVerifyAdjacent(void);
     bool         bVerifyBufferRefs(void);
     bool         bVerifyFirstKeys(void);
-    bool         bVerifyFreeList(void);
     bool         bVerifyItems(void);
     bool         bVerifyKeyBufferOrder(void);
     bool         bVerifyKeyOrder(void);

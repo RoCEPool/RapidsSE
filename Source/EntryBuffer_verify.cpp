@@ -235,10 +235,6 @@ bool EntryBuffer::bVerifyL0Other(void)
   if (! bValid)
     return false;
   
-  bValid = bVerifyFreeList();
-  if (! bValid)
-    return false;
-  
   bValid = bVerifyKeyOrder();
   if (! bValid)
     return false;
@@ -276,10 +272,6 @@ bool EntryBuffer::bVerifyLnAny(void)
     return false;
   
   bValid = bVerifyItems();
-  if (! bValid)
-    return false;
-  
-  bValid = bVerifyFreeList();
   if (! bValid)
     return false;
   
@@ -455,31 +447,6 @@ bool EntryBuffer::bVerifyFirstKeys(void)
       return false;
     }
   }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* verify the free list of this buffer                                        */
-/*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifyFreeList(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  /*
-   The chain of free entries in any buffer must consist of solely
-   of FreeEntry's.  No other class is permited.
-   */
-  
-//  for (FreeItem* aFreeEntry = m_aFreeItemChain;
-//       aFreeEntry != nullptr;
-//       aFreeEntry = aFreeEntry->aNextFree()) {
-//    
-//    if (! aFreeEntry->bValidFreeEntry()) {
-//      vVerifyFault();
-//      return false;
-//    }
-//  }
   
   return true;
 }
