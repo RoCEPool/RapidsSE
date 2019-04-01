@@ -43,9 +43,7 @@ namespace MetaData
     Data::TablePtn*  pPartition(i8 iSlot);
     bool       bPopulateIndex(i8 iIndexNo);
     PtnColVec* pPtnColVec(void);
-    void       vPublishIndex(i8 iPartitionNo, i8 iIndexNo);
     void       vPublishTable(i8 iPartitionNo);
-    bool       bPurgeIndex(i8 iPartitionNo, i8 iIndexNo, i8 iOlderThanSeconds);
     bool       bPurgeTable(i8 iPartitionNo, i8 iOlderThanSeconds);
     void       vShowColumnVec(void);
     Dic*       pSubDic(void);

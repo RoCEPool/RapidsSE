@@ -58,8 +58,6 @@ namespace Data
     void         vLazyBuild(void);
     EntryBuffer* pPopSubList(EntryBuffer** ppSubList);
     EntryBuffer* pPositionH0Buffer(KeyWrk& xKeyWrk);
-    void         vPublish(void);
-    bool         bPurge(i8 iOlderThanSeconds);
     EntryBuffer* pRoot(void);
     void         vTidyUp(void);
     void         vTruncate(void);

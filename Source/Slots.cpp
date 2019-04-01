@@ -196,20 +196,6 @@ PtnColVec* Slots::pPtnColVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* publish partition buffers                                                  */
-/*----------------------------------------------------------------------------*/
-void Slots::vPublishIndex(i8 iPartitionNo, i8 iIndexNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  
-  TablePtn* pTablePtn = m_pTablePtnVec->pGet(iPartitionNo);
-  
-  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-  
-  pIndexTree->vPublish();
-}
-
-/*----------------------------------------------------------------------------*/
 /* publish partition buffers for table                                        */
 /*----------------------------------------------------------------------------*/
 void Slots::vPublishTable(i8 iPartitionNo)
@@ -219,22 +205,6 @@ void Slots::vPublishTable(i8 iPartitionNo)
   TablePtn* pTablePtn = m_pTablePtnVec->pGet(iPartitionNo);
   
   pTablePtn->vPublish();
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to purge oldest buffer                                             */
-/*----------------------------------------------------------------------------*/
-bool Slots::bPurgeIndex(i8 iPartitionNo, i8 iIndexNo, i8 iOlderThanSeconds)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  
-  TablePtn* pTablePtn = m_pTablePtnVec->pGet(iPartitionNo);
-  
-  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-  
-  bool bPurged = pIndexTree->bPurge(iOlderThanSeconds);
-  
-  return bPurged;
 }
 
 /*----------------------------------------------------------------------------*/

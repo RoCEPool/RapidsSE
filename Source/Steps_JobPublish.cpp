@@ -10,27 +10,9 @@ extern AttachMap* gpAttachMap;
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobPublish(void)
-{  
-  vAddStep("job_publish.publish"_Stz,  &Step::vJob_PublishPublish);
+{
   vAddStep("Job_publish.spawnSub"_Stz, &Step::vJob_PublishSpawnSub);
   vAddStep("job_publish.table!"_Stz,   &Step::vJob_PublishTableStore);
-}
-
-/*----------------------------------------------------------------------------*/
-/* job_purge.purge -- purge table                                             */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_PublishPublish(MP_Task mpTask)
-{
-  ENTRY("vJob_PublishPublish"_Stz);
-  
-  Object* pPtrJob_Publish;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_Publish) )
-    THROW_INVALID_DSTACK("job_publish.publish"_Stz);
-  Job_Publish* pJob_Publish = _pJob_Publish(pPtrJob_Publish);
-  
-  pJob_Publish->vPublish();
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
