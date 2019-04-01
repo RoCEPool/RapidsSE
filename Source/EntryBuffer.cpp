@@ -70,10 +70,7 @@ EntryBuffer::EntryBuffer(void)
   
   //m_aHeadEntry  = nullptr;
   m_aLastEntry  = nullptr;
-  
   m_aLazyChain  = nullptr;
-  
-  //vHeadEntryNew();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   

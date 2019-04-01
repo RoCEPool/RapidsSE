@@ -40,7 +40,6 @@ namespace Data
     void         vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pLeftL0);
     void         vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
     void         vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
-  //void         vCopyLeftV1(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
     void         vDump(bool bSameHeight);
     EntryBuffer* pFirstL1Buffer(void);
     
