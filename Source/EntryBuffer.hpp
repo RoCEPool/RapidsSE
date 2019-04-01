@@ -16,16 +16,10 @@ namespace Data
   friend class IndexTree;
 
   protected:
-    Lock   m_okLock; // lock
-    Index* m_pIndex; // index this buffer belongs to
- 
-    SkipRoots m_xSkipRoots;
-
-    ////////////////////////////////////////////////////////////////////////////
-    // only used in index entry buffers
-
-    Item* m_aLastEntry; // last entry (would append to this)
-    Item* m_aLazyChain; // first lazy entry
+    Lock      m_okLock;         // lock
+    Index*    m_pIndex;         // index this buffer belongs to
+    SkipRoots m_xSkipRoots;     // skip roots
+    Item*     m_aLazyChain;     // first lazy entry
   
     SeeMe m_xSeeMe;
   
@@ -106,7 +100,6 @@ namespace Data
     void        vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     void        vBuildSkipListSorted(void);
     void        vDeleteEntry(Item** aaItem);
-    //bool       bDeleteKey(KeyData* aDeleteKey, EntryBuffer* pToBuffer);
     void        vDump(void);
     EntryBuffer* pFirstChildBuffer(void);
     Item*       aInsertKeyAbs(KeyWrk& xKeyWrk);
@@ -148,8 +141,6 @@ namespace Data
                                    Item* aOriginalFirstEntry,
                                    EntryBuffer** ppRootKeyBuffer);
     Item*       aSkipRoots(void);
-    void        vHeadEntryNew(void);
-    void        vHeadEntryRestore(void);
     EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
     Item*       aInsertKeyAbsLazy(KeyWrk& xKeyWrk);
@@ -158,7 +149,6 @@ namespace Data
                                   EntryBuffer** ppRootKeyBuffer);
     Item*       aInsertKeyUpwards(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
-    void         vItemCountRestore(void);
     bool         bKeyBeforeBuffer(KeyWrk& xKey);
     FreeItem*    aMakeFreeEntry(Item* aItem);
     EntryBuffer* pNewHigherBuffer(void);
@@ -188,7 +178,6 @@ namespace Data
     bool         bVerifyKeyBufferOrder(void);
     bool         bVerifyKeyOrder(void);
     bool         bVerifyNextPrev(void);
-    bool         bVerifyRows(void);
     bool         bVerifyRowRefs(void);
     bool         bVerifySkipListEntry(bool bShowKeys = false);
     bool         bVerifySkipListLevels(bool bShowKeys = false);

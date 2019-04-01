@@ -69,11 +69,7 @@ EntryBuffer::EntryBuffer(void)
   m_pIndex        = nullptr;
   
   //m_aHeadEntry  = nullptr;
-  m_aLastEntry  = nullptr;
-  
   m_aLazyChain  = nullptr;
-  
-  //vHeadEntryNew();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -145,9 +141,6 @@ EntryBuffer* EntryBuffer::pRefdEntryBuffer(Id& xId)
 Item* EntryBuffer::aAllotEntry(i8 nBytes_Without_Offsets)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  //if (nItems() >= C_MAX_ITEMS - 16)
-  //  return nullptr;
   
   Item* aItem = aAllotItem(CN_ENTRY,nBytes_Without_Offsets);
   if (! aItem)
@@ -265,8 +258,6 @@ void EntryBuffer::vDeleteEntry(Item** aaItem)
   
   Item* xPriorVec[gpAttachMap->m_nIndexLevels];
   
-  //KeyData* aKey = _aKeyData(aItem->aDataArea());
-  
   vPositionPriorVecEntry(aItem, xPriorVec, aItem);
   
   vCutEntry(aItem,xPriorVec);
@@ -349,9 +340,6 @@ EntryBuffer* EntryBuffer::pFirstChildBuffer(void)
   
 #ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
-  
-  //if (m_aLazyChain)
-  //  vBuildSkipList();
 #endif
   
   Item* aFirstEntry = this->aLeadEntry();
@@ -455,18 +443,6 @@ Index* EntryBuffer::pIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* restore item count                                                         */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vItemCountRestore(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_nItems = 0;
-  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem, 0))
-    m_nItems++;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get last entry                                                             */
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::aLastEntry(void)
@@ -501,9 +477,6 @@ Item* EntryBuffer::aLeadEntry(void)
   
 #ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
-  
-  //if (m_aLazyChain)
-  //  vBuildSkipList();
 #endif
   
   Item* aFirst = aNextEntry(aSkipRoots(),0);
@@ -829,18 +802,12 @@ void EntryBuffer::vReset(void)
   RASSERT(1 == m_iBufferHeight);
   
   vResetUsed();
-  
-//  m_xSkipRoots.m_iaNextOffset[0] = -1;
-//  m_xSkipRoots.m_iaNextOffset[1] = -1;
-//  m_xSkipRoots.m_iaNextOffset[2] = -1;
 
   m_xSkipRoots.vNEO(0,-1);
   m_xSkipRoots.vNEO(1,-1);
   m_xSkipRoots.vNEO(2,-1);
   
   //m_aHeadEntry  = nullptr;
-  m_aLastEntry  = nullptr;
-  
   m_aLazyChain  = nullptr;
   
   //vHeadEntryNew();
@@ -860,44 +827,10 @@ void EntryBuffer::vRestore(void)
   // set the index to nullptr (this pointer is not valid any more)
   m_pIndex = nullptr;
   
-  
-  // get the original buffer address
-  //  nb: the given address has to be an address in the orginal buffer
-//  PoolBuffer* pOriginalBuffer =
-//  pBitAnd<PoolBuffer*>(m_i4aItemOffsets,C_OBJECT_TO_BUFFER_MASK);
-  
   // get this buffer address
   PoolBuffer* pThisBuffer =
   pBitAnd<PoolBuffer*>(this,C_OBJECT_TO_BUFFER_MASK);
-  
-  // calculate offset for m_i4aItemOffsets and set it
-//  if (m_i4aItemOffsets) {
-//    PoolBuffer* pOriginalBuffer =
-//    pBitAnd<PoolBuffer*>(m_i4aItemOffsets,C_OBJECT_TO_BUFFER_MASK);
-//    u8 uOffset = nSub(m_i4aItemOffsets, pOriginalBuffer);
-//    m_i4aItemOffsets = aBitOr<i4*>(pThisBuffer,uOffset);
-//  }
-  
-  // calculate offset for m_aHeadEntry and set it
-  //uOffset = nSub(m_aHeadEntry, pOriginalBuffer);
-  //m_aHeadEntry = pBitOr<Item*>(pThisBuffer,uOffset);
-  
-  // calculate offset for m_aLastEntry and set it
-  if (m_aLastEntry) {
-    PoolBuffer* pOriginalBuffer =
-    pBitAnd<PoolBuffer*>(m_aLastEntry,C_OBJECT_TO_BUFFER_MASK);
-    u8 uOffset = nSub(m_aLastEntry, pOriginalBuffer);
-    m_aLastEntry = pBitOr<Item*>(pThisBuffer,uOffset);
-  }
-  
-  // calculate offset for m_aFreeItemChain and set it
-//  if (m_aFreeItemChain) {
-//    PoolBuffer* pOriginalBuffer =
-//    pBitAnd<PoolBuffer*>(m_aFreeItemChain,C_OBJECT_TO_BUFFER_MASK);
-//    u8 uOffset = nSub(m_aFreeItemChain, pOriginalBuffer);
-//    m_aFreeItemChain = pBitOr<FreeItem*>(pThisBuffer,uOffset);
-//  }
-  
+
   // calculate offset for m_aLazyChain and set it
   if (m_aLazyChain) {
     PoolBuffer* pOriginalBuffer =

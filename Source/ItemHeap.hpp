@@ -10,22 +10,20 @@ namespace MiniHeaps
     static const i8 C_WSP_ITEMHEAP = C_SIZE_LARGE_OBJECT - C_1KB;
   
   protected:
-    // RDP Java layout ---------------------------------------------------------
-    i8 m_iBufferNo; // this EntryBuffer's buffer number
-    i8 m_nItems;    // number of items in this heap
-    ItemHeap* m_pNextBuffer; // next buffer
-    Wsp_t<C_WSP_ITEMHEAP> m_xWsp; // workspace
-    // End RDP Java layout -----------------------------------------------------
-
-    ItemHeap* m_pPrevBuffer;   // prev buffer
-    ItemHeap* m_pHigherBuffer; // higher level buffer that has entries
-                               // that point to this buffer
-
-    i2     m_iPartitionNo;      // partition no this buffer belongs to
-    i2     m_iBufferHeight;     // buffer height in the tree
     
-    Since  m_oWhenNewed;        // when was this buffer created?
-    bool   m_bIsLast;            // is this the last buffer in sequence
+    i8       m_iBufferNo;        // this EntryBuffer's buffer number
+    i8       m_nItems;           // number of items in this heap
+    i2       m_iPartitionNo;     // partition no this buffer belongs to
+    i2       m_iBufferHeight;    // buffer height in the tree
+    
+    ItemHeap* m_pNextBuffer;      // next buffer
+    ItemHeap* m_pPrevBuffer;      // prev buffer
+    ItemHeap* m_pHigherBuffer;    // higher level buffer that has entries
+                                  // that point to this buffer
+    Wsp_t<C_WSP_ITEMHEAP> m_xWsp; // workspace
+    
+    Since  m_oWhenNewed;          // when was this buffer created?
+    bool   m_bIsLast;             // is this the last buffer in sequence
   
   public:
     ItemHeap(eCN eClassNo);
@@ -40,7 +38,7 @@ namespace MiniHeaps
     void   vDecItems(void);
     void   vDumpItems(void);
     Item*  aFirstItem(void);
-    i8     nFreeBytes(void); //-> nAvailBytes()
+    i8     nFreeBytes(void);
     void   vFreeItem(Item* aItem);
     void   vGiveSpace(i8 nBytes);
     bool   bHasSpace(i8 nBytes);

@@ -189,23 +189,6 @@ void EntryBuffer::vPositionPriorVecEntry(Item* aFindKey, Item* aPriorVec[],
       
       KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
       
-      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
-      
-      //#ifdef USE_EB_SINGLE_COLIDX
-      //      if (m_pIndex->bSingleColumn()) {
-      //        bIsJuxta = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
-      //        //        if (bIsJuxta != aNextKey->bGreaterEqual(aFindKey,pIdxColVec)) {
-      //        //          aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
-      //        //          aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
-      //        //        }
-      //      }
-      //      else
-      //        bIsJuxta = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
-      //#else
-      //      bIsJuxta = aNextKey->bGreaterEqual(aFindKey,pIdxColVec);
-      //#endif
-      
       bIsJuxta = KeyData::bGreaterEqual(aNextEntry_sl, aFindKey);
       
       if (bIsJuxta) {
@@ -270,11 +253,6 @@ void EntryBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
    */
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//  if (1 == m_iBufferHeight) {
-//    int iDebug = 1;
-//    vShow();
-//  }
   
   for (i8 i_Level = 0; i_Level < gpAttachMap->m_nIndexLevels; i_Level++)
     aPriorVec[i_Level] = aSkipRoots();
