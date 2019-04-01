@@ -4,7 +4,26 @@
 #pragma once
 
 namespace Structures
-{  
+{
+//  template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
+//  class TrayNL_t;
+//
+//  template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
+//  class Tray_t : public Object
+//  {
+//  private:
+//    u8 m_nMaxItems;  // max number of items
+//    u8 m_nHeadItems; // number of items from the head
+//    u8 m_nTailItems; // number of items from the tail
+//    ITEM* m_xaItem;  // set of items
+//
+//  public:
+//    Tray_t(void);
+//   ~Tray_t(void) noexcept(false);
+//  };
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
   class TrayNL_t : public Object
   {
@@ -13,6 +32,8 @@ namespace Structures
     u8 m_nHeadItems; // number of items from the head
     u8 m_nTailItems; // number of items from the tail
     ITEM m_xItem[MAX_ITEMS]; // set of items
+  
+    //Tray_t<TRAY_CN,ITEM,MAX_ITEMS> m_oTray;
 
     // must be last
     Footer m_xFooter;
