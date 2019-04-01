@@ -71,8 +71,7 @@ namespace Data
   
   private:
     Item* aAllotEntry(i8 nBytes_Without_Offsets);
-    Item* aAllotRowEntry(RowWrk& xRowWrk);
-
+    
     ////////////////////////////////////////////////////////////////////////////
   
   public:
