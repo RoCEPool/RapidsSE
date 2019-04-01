@@ -274,7 +274,8 @@ void Job_SubExporter::vSprintRows(void)
   char* aRecord = nullptr;
   i8 nBytes = 0;
   
-  Record* pRecord = new Record;
+  //Record* pRecord = new Record;
+  HV_Rec hvRec;
 
   ColumnVec* pColVec = m_pJobExport->m_pTable->pColumnVec();
   i8 nRowCount = m_pRowBuffer->nRowCount();
@@ -284,11 +285,11 @@ void Job_SubExporter::vSprintRows(void)
     CacheLine* aRow = m_pRowBuffer->pRow(i_Row);
     
     //RowCoder::vString(sRecord,pColVec,aRow);
-    RowCoder::vRecord(pRecord,aRow,0,pColVec);
-    StrLib::vConcat(pRecord->szRecStr()->aChar(),'\n');
+    RowCoder::vRecord(hvRec,aRow,0,pColVec);
+    StrLib::vConcat(hvRec->szRecStr()->aChar(),'\n');
     //vTrace("]]%s[[\n"_Stz,sRecord.aStz());
     
-    nBytes = pRecord->szRecStr()->nSize();
+    nBytes = hvRec->szRecStr()->nSize();
     
     if (! m_pExportBuffer) {
       m_pExportBuffer = new ExportBuffer;
@@ -302,13 +303,13 @@ void Job_SubExporter::vSprintRows(void)
     }
     
     aRecord = m_pExportBuffer->aAllotRecord(nBytes - 1);
-    StrLib::vCopyLen(aRecord,pRecord->szRecStr()->aChar(),nBytes - 1);
+    StrLib::vCopyLen(aRecord,hvRec->szRecStr()->aChar(),nBytes - 1);
   }
 
   if (aRecord)
     aRecord[nBytes-1] = '\0';
   
-  delete pRecord;
+  //delete pRecord;
 }
 
 /*----------------------------------------------------------------------------*/

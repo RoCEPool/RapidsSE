@@ -46,14 +46,13 @@ namespace Data
     ////////////////////////////////////////////////////////////////////////////
     // buffer functions
   
-    void        vBufferCount(i8& nBufferCount);
+    void         vBufferCount(i8& nBufferCount);
     EntryBuffer* pHigherBuffer(void);
-    void        vHigherBuffer(EntryBuffer* pHigherBuffer);
+    void         vHigherBuffer(EntryBuffer* pHigherBuffer);
     EntryBuffer* pNextBuffer(void);
-    void        vNextBuffer(EntryBuffer* pNextBuffer);
+    void         vNextBuffer(EntryBuffer* pNextBuffer);
     EntryBuffer* pPrevBuffer(void);
-    void        vPrevBuffer(EntryBuffer* pPrevBuffer);
-    void        vTruncate(void);
+    void         vPrevBuffer(EntryBuffer* pPrevBuffer);
 
     ////////////////////////////////////////////////////////////////////////////
     // entry functions
@@ -119,6 +118,7 @@ namespace Data
     void        vShowSubList(void);
     void        vShowTree(bool bDumpBuffer=false);
     void        vSpliceAfter(EntryBuffer* pSplicedBuffer);
+    void        vTruncate(void);
     EntryBuffer* pUnlinkSubList(void);
     bool        bVerify(void);
   
@@ -185,8 +185,6 @@ namespace Data
 
     public:
     Footer* aFooter(void);
-  
-    static void vUnitTest_c(Table* pTable);
   };
   
   EntryBuffer* _pEntryBuffer(void* aAddr);

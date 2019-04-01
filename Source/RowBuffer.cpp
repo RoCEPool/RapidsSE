@@ -543,13 +543,14 @@ void RowBuffer::vShowRow(i8 iRowNo)
   //s48K sRowString;
   //RowCoder::vString(sRowString, pColumnVec,aRowCacheLine);
   
-  Record* pRecord = new Record;
+  //Record* pRecord = new Record;
+  HV_Rec hvRec;
   
-  RowCoder::vRecord(pRecord,aRowCacheLine,0,pColVec);
+  RowCoder::vRecord(hvRec,aRowCacheLine,0,pColVec);
 
-  vTrace("row: (%s)\n"_Stz,pRecord->szRecStr());
+  vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
   
-  delete pRecord;
+  //delete pRecord;
 }
 
 /*----------------------------------------------------------------------------*/

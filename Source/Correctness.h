@@ -24,6 +24,7 @@ using namespace Correctness;
 
 #include "Addressing.hpp"
 #include "MP.hpp"
+#include "HeapVar.hpp"
 #include "String_t.hpp"
 
 typedef String_t<32>     s32;

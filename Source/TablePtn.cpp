@@ -573,7 +573,9 @@ void TablePtn::vPublish(void)
     return;
   }
   
-  Record* pRecord = new Record;
+  //Record* pRecord = new Record;
+  HV_Rec hvRec;
+  
   ColumnVec* pColVec = m_pCurrentRowBuffer->pTable()->pColumnVec();
 
   // publish the current buffer (last buffer that was added)
@@ -582,8 +584,8 @@ void TablePtn::vPublish(void)
     
     CacheLine* aRowData = m_pCurrentRowBuffer->pRow(i_Row);
     //RowCoder::vString(sRowString,m_pCurrentRowBuffer->pTable()->pColumnVec(), aRowData);
-    RowCoder::vRecord(pRecord,aRowData,0,pColVec);
-    vTrace("row: (%s)\n"_Stz,pRecord->szRecStr());
+    RowCoder::vRecord(hvRec,aRowData,0,pColVec);
+    vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
   }
   
   vTrace("Partition%lld: published %lld rows\n"_Stz,m_iPartitionId,
@@ -591,7 +593,7 @@ void TablePtn::vPublish(void)
   
   m_okLock.vDropWrite();
   
-  delete pRecord;
+  //delete pRecord;
 }
 
 /*----------------------------------------------------------------------------*/

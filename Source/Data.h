@@ -11,6 +11,9 @@ namespace Data
   
   typedef TrayNL_t<CN_ROWTRAY,CacheLine,C_CACHELINES> RowParts;
   
+  class Record;
+  typedef HV<Record,CN_RECORD> HV_Rec;
+  
   void vCheckAssumptions(void);
 
   static const i8 C_FLAT_LEVELS_MAX   = 16;

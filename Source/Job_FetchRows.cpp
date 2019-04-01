@@ -492,22 +492,23 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuff
   CacheLine** aaCacheLine = nullptr;
   aaCacheLine = pFetchBuffer->aaFirstRowPtr();
   
-  Record* pRecord = new Record;
-
+  //Record* pRecord = new Record;
+  HV_Rec hvRec;
+  
   while (aaCacheLine) {
     
     //s48K sRowString;
     //RowCoder::vString(sRowString, pColumnVec,*aaCacheLine);
     
-    RowCoder::vRecord(pRecord,*aaCacheLine,0,pColVec);
+    RowCoder::vRecord(hvRec,*aaCacheLine,0,pColVec);
 
     if (bPrint)
-      vTrace("row: (%s)\n"_Stz, pRecord->szRecStr());
+      vTrace("row: (%s)\n"_Stz, hvRec->szRecStr());
     
     aaCacheLine = pFetchBuffer->aaNextRowPtr(aaCacheLine);
   }
   
-  delete pRecord;
+  //delete pRecord;
 }
 
 /*----------------------------------------------------------------------------*/
