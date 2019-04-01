@@ -16,13 +16,13 @@ namespace Data
   friend class IndexTree;
 
   protected:
-    Lock   m_okLock; // lock
-    Index* m_pIndex; // index this buffer belongs to
+    Lock   m_okLock;         // lock
+    Index* m_pIndex;         // index this buffer belongs to
  
-    SkipRoots m_xSkipRoots;
+    SkipRoots m_xSkipRoots;  // skip roots
 
-    Item* m_aLastEntry; // last entry (would append to this)
-    Item* m_aLazyChain; // first lazy entry
+    Item* m_aLastEntry;      // last entry (would append to this)
+    Item* m_aLazyChain;      // first lazy entry
   
     SeeMe m_xSeeMe;
   
@@ -152,7 +152,6 @@ namespace Data
                                   EntryBuffer** ppRootKeyBuffer);
     Item*       aInsertKeyUpwards(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
-    void         vItemCountRestore(void);
     bool         bKeyBeforeBuffer(KeyWrk& xKey);
     FreeItem*    aMakeFreeEntry(Item* aItem);
     EntryBuffer* pNewHigherBuffer(void);

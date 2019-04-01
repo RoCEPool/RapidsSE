@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntryBuffer_key.cpp -- insert related functions for Entry Buffer           */
+/* EntryBuffer_insert.cpp -- insert related functions for Entry Buffer        */
 /*============================================================================*/
 
 #include "Data.h"
@@ -129,14 +129,6 @@ void EntryBuffer::vCompact(void)
   FreeItem* aFreeEntry;
   Item*     aMoveEntry;
   Item*     xPriorVec[gpAttachMap->m_nIndexLevels];
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  
-//  // we can only compact if there are free entries
-//  if (! m_aFreeItemChain)
-//    return;
-//  
-//  // loose the free list so vShow() works correctly
-//  m_aFreeItemChain = nullptr;
   
   // scan item is the working pointer
   Item* aScanItem = aFirstItem();

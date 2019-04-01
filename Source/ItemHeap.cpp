@@ -265,11 +265,6 @@ void ItemHeap::vFreeItem(Item* aItem)
   
   FreeItem* aFreeItem = FreeItem::aMorphFreeItem(aItem);
   
-  //if (m_aFreeItemChain)
-  //  aFreeItem->vNextFree(m_aFreeItemChain);
-  
-  //m_aFreeItemChain = aFreeItem;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decement the number of items in buffer
   vDecItems();
@@ -291,11 +286,6 @@ void ItemHeap::vGiveSpace(i8 nBytes)
 bool ItemHeap::bHasSpace(i8 nBytes)
 {
   i8 nFree = m_xWsp.nFree() - sizeof(Wilderness);
-  
-  // we allow for only C_MAX_ITEMS - 16 entries
-//  if (nItems() >= C_MAX_ITEMS - 16) {
-//    return false;
-//  }
   
   if (gpAttachMap->m_nIndexEntries > 0) {
     // has space calculation based on no of entries

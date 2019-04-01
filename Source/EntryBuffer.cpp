@@ -444,18 +444,6 @@ Index* EntryBuffer::pIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* restore item count                                                         */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vItemCountRestore(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_nItems = 0;
-  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem, 0))
-    m_nItems++;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get last entry                                                             */
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::aLastEntry(void)
@@ -846,18 +834,6 @@ void EntryBuffer::vRestore(void)
   PoolBuffer* pThisBuffer =
   pBitAnd<PoolBuffer*>(this,C_OBJECT_TO_BUFFER_MASK);
   
-  // calculate offset for m_i4aItemOffsets and set it
-//  if (m_i4aItemOffsets) {
-//    PoolBuffer* pOriginalBuffer =
-//    pBitAnd<PoolBuffer*>(m_i4aItemOffsets,C_OBJECT_TO_BUFFER_MASK);
-//    u8 uOffset = nSub(m_i4aItemOffsets, pOriginalBuffer);
-//    m_i4aItemOffsets = aBitOr<i4*>(pThisBuffer,uOffset);
-//  }
-  
-  // calculate offset for m_aHeadEntry and set it
-  //uOffset = nSub(m_aHeadEntry, pOriginalBuffer);
-  //m_aHeadEntry = pBitOr<Item*>(pThisBuffer,uOffset);
-  
   // calculate offset for m_aLastEntry and set it
   if (m_aLastEntry) {
     PoolBuffer* pOriginalBuffer =
@@ -865,15 +841,7 @@ void EntryBuffer::vRestore(void)
     u8 uOffset = nSub(m_aLastEntry, pOriginalBuffer);
     m_aLastEntry = pBitOr<Item*>(pThisBuffer,uOffset);
   }
-  
-  // calculate offset for m_aFreeItemChain and set it
-//  if (m_aFreeItemChain) {
-//    PoolBuffer* pOriginalBuffer =
-//    pBitAnd<PoolBuffer*>(m_aFreeItemChain,C_OBJECT_TO_BUFFER_MASK);
-//    u8 uOffset = nSub(m_aFreeItemChain, pOriginalBuffer);
-//    m_aFreeItemChain = pBitOr<FreeItem*>(pThisBuffer,uOffset);
-//  }
-  
+
   // calculate offset for m_aLazyChain and set it
   if (m_aLazyChain) {
     PoolBuffer* pOriginalBuffer =
