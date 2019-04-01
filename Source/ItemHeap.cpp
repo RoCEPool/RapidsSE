@@ -283,25 +283,6 @@ void ItemHeap::vFreeItem(Item* aItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next free item number (or C_NO_MORE_ITEMS if none)                     */
-/*----------------------------------------------------------------------------*/
-i4 ItemHeap::iGetItemNo(void)
-{
-  RASSERT( (m_i_FreeOffsetChain >= 0 && m_i_FreeOffsetChain < C_MAX_ITEMS) ||
-           (C_NO_MORE_ITEMS == m_i_FreeOffsetChain) );
-  
-  if (C_NO_MORE_ITEMS == m_i_FreeOffsetChain)
-    return C_NO_MORE_ITEMS;
-  
-  i4 i_ItemNo = m_i_FreeOffsetChain;
-  
-  RASSERT(i_ItemNo < C_MAX_ITEMS);
-  m_i_FreeOffsetChain = - m_i4aItemOffsets[i_ItemNo];
-  
-  return i_ItemNo;
-}
-
-/*----------------------------------------------------------------------------*/
 /* give space back to this buffer                                             */
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vGiveSpace(i8 nBytes)

@@ -50,7 +50,6 @@ namespace MiniHeaps
     Item*  aFirstItem(void);
     i8     nFreeBytes(void); //-> nAvailBytes()
     void   vFreeItem(Item* aItem);
-    i4     iGetItemNo(void);
     void   vGiveSpace(i8 nBytes);
     bool   bHasFreeItem(void);
     bool   bHasSpace(i8 nBytes);
