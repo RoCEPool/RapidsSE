@@ -69,7 +69,6 @@ EntryBuffer::EntryBuffer(void)
   m_pIndex        = nullptr;
   
   //m_aHeadEntry  = nullptr;
-  m_aLastEntry  = nullptr;
   m_aLazyChain  = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -809,8 +808,6 @@ void EntryBuffer::vReset(void)
   m_xSkipRoots.vNEO(2,-1);
   
   //m_aHeadEntry  = nullptr;
-  m_aLastEntry  = nullptr;
-  
   m_aLazyChain  = nullptr;
   
   //vHeadEntryNew();
@@ -833,14 +830,6 @@ void EntryBuffer::vRestore(void)
   // get this buffer address
   PoolBuffer* pThisBuffer =
   pBitAnd<PoolBuffer*>(this,C_OBJECT_TO_BUFFER_MASK);
-  
-  // calculate offset for m_aLastEntry and set it
-  if (m_aLastEntry) {
-    PoolBuffer* pOriginalBuffer =
-    pBitAnd<PoolBuffer*>(m_aLastEntry,C_OBJECT_TO_BUFFER_MASK);
-    u8 uOffset = nSub(m_aLastEntry, pOriginalBuffer);
-    m_aLastEntry = pBitOr<Item*>(pThisBuffer,uOffset);
-  }
 
   // calculate offset for m_aLazyChain and set it
   if (m_aLazyChain) {

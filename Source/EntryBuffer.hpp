@@ -16,13 +16,10 @@ namespace Data
   friend class IndexTree;
 
   protected:
-    Lock   m_okLock;         // lock
-    Index* m_pIndex;         // index this buffer belongs to
- 
-    SkipRoots m_xSkipRoots;  // skip roots
-
-    Item* m_aLastEntry;      // last entry (would append to this)
-    Item* m_aLazyChain;      // first lazy entry
+    Lock      m_okLock;         // lock
+    Index*    m_pIndex;         // index this buffer belongs to
+    SkipRoots m_xSkipRoots;     // skip roots
+    Item*     m_aLazyChain;     // first lazy entry
   
     SeeMe m_xSeeMe;
   
