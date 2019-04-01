@@ -30,8 +30,6 @@ namespace MiniHeaps
     Since  m_oWhenNewed;        // when was this buffer created?
     bool   m_bIsLast;            // is this the last buffer in sequence
   
-    FreeItem* m_aFreeItemChain;  // head of free item chain
-  
   public:
     ItemHeap(eCN eClassNo);
    ~ItemHeap(void) noexcept(false);

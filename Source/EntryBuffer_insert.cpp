@@ -131,12 +131,12 @@ void EntryBuffer::vCompact(void)
   Item*     xPriorVec[gpAttachMap->m_nIndexLevels];
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  // we can only compact if there are free entries
-  if (! m_aFreeItemChain)
-    return;
-  
-  // loose the free list so vShow() works correctly
-  m_aFreeItemChain = nullptr;
+//  // we can only compact if there are free entries
+//  if (! m_aFreeItemChain)
+//    return;
+//  
+//  // loose the free list so vShow() works correctly
+//  m_aFreeItemChain = nullptr;
   
   // scan item is the working pointer
   Item* aScanItem = aFirstItem();

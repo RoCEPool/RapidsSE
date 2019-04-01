@@ -840,7 +840,6 @@ void EntryBuffer::vReset(void)
   
   //m_aHeadEntry  = nullptr;
   m_aLastEntry  = nullptr;
-  m_aFreeItemChain  = nullptr;
   
   m_aLazyChain  = nullptr;
   
@@ -892,12 +891,12 @@ void EntryBuffer::vRestore(void)
   }
   
   // calculate offset for m_aFreeItemChain and set it
-  if (m_aFreeItemChain) {
-    PoolBuffer* pOriginalBuffer =
-    pBitAnd<PoolBuffer*>(m_aFreeItemChain,C_OBJECT_TO_BUFFER_MASK);
-    u8 uOffset = nSub(m_aFreeItemChain, pOriginalBuffer);
-    m_aFreeItemChain = pBitOr<FreeItem*>(pThisBuffer,uOffset);
-  }
+//  if (m_aFreeItemChain) {
+//    PoolBuffer* pOriginalBuffer =
+//    pBitAnd<PoolBuffer*>(m_aFreeItemChain,C_OBJECT_TO_BUFFER_MASK);
+//    u8 uOffset = nSub(m_aFreeItemChain, pOriginalBuffer);
+//    m_aFreeItemChain = pBitOr<FreeItem*>(pThisBuffer,uOffset);
+//  }
   
   // calculate offset for m_aLazyChain and set it
   if (m_aLazyChain) {
@@ -996,12 +995,11 @@ void EntryBuffer::vShow(Item* aMarkEntry)
   vTrace("  index: %s partition: %lld height: %lld\n"_Stz,
          m_pIndex ? m_pIndex->aIndexName() : "NULL"_Stz,m_iPartitionNo,m_iBufferHeight);
   
-  vTrace("  skipRoots: %p[%d,%d,%d] lastEntry: %p firstFree: %p\n"_Stz,
+  vTrace("  skipRoots: %p[%d,%d,%d] lastEntry: %p\n"_Stz,
          aSkipRoots(),
          aSkipRoots() ? aSkipRoots()->iNEO(0) : 0,
          aSkipRoots() ? aSkipRoots()->iNEO(1) : 0,
-         aSkipRoots() ? aSkipRoots()->iNEO(2) : 0,
-         m_aLastEntry,m_aFreeItemChain);
+         aSkipRoots() ? aSkipRoots()->iNEO(2) : 0);
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);

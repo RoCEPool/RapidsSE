@@ -42,9 +42,6 @@ ItemHeap::ItemHeap(eCN eClassNo)
   m_oWhenNewed.vNow();
   m_bIsLast       = false;
   
-  // head of free item chain
-  m_aFreeItemChain  = nullptr;
-  
   
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(eClassNo);
