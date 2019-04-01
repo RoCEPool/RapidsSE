@@ -39,18 +39,12 @@ namespace Data
     void         vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
     void         vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
     void         vDump(bool bSameHeight);
-    EntryBuffer* pFirstL1Buffer(void);
-    
-    EntryBuffer* pFirstH0Buffer(void);
-
-    Index*       pIndex(void);
     i8           nEntryBuffers(void);
-    
+    EntryBuffer* pFirstH0Buffer(void);
+    Index*       pIndex(void);
     bool         bInsertEntry(CacheLine* aRowData, Id& xId);
     void         vInsertEntriesFromBuffer(RowBuffer* pRowBuffer);
-    
-    void         vLazyBuild(void);
-    EntryBuffer* pPopSubList(EntryBuffer** ppSubList);
+    void         vLazyBuild(void);    
     EntryBuffer* pPositionH0Buffer(KeyWrk& xKeyWrk);
     EntryBuffer* pRoot(void);
     void         vTidyUp(void);
@@ -63,12 +57,13 @@ namespace Data
     
   private:
     void         vDumpLevel(EntryBuffer* pEntryBuffer);
+    EntryBuffer* pFirstL1Buffer(void);
+    EntryBuffer* pPopSubList(EntryBuffer** ppSubList);
   };
   
   IndexTree* _pIndexTree(void* pAddr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   
  }
 

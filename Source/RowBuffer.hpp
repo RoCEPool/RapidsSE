@@ -11,17 +11,16 @@ namespace Data
   friend class IndexTree;
 
   protected:
-    Lock   m_okLock;               // lock
-    i8     m_iBufferNo;            // this RowBuffer's buffer number
-    Table* m_pTable;               // table this buffer belongs to
-    i8     m_iPartitionNo;         // partition no this buffer belongs to
+    Lock    m_okLock;               // lock
+    i8      m_iBufferNo;            // this RowBuffer's buffer number
+    Table*  m_pTable;               // table this buffer belongs to
+    i8      m_iPartitionNo;         // partition no this buffer belongs to
+    RowTray m_xRowTray;             // tray of rows
   
-    RowTray m_xRowTray;            // tray of rows
-  
-    RowBuffer* m_pNextBuffer;      // next buffer
-    RowBuffer* m_pPrevBuffer;      // previous buffer
+    RowBuffer* m_pNextBuffer;       // next buffer
+    RowBuffer* m_pPrevBuffer;       // previous buffer
     
-    Since  m_oWhenNewed;           // when was this buffer created?
+    Since  m_oWhenNewed;            // when was this buffer created?
   
     SeeMe m_xSeeMe;
   

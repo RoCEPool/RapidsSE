@@ -38,10 +38,8 @@ ItemHeap::ItemHeap(eCN eClassNo)
 
   m_iPartitionNo  = -1;
   m_iBufferHeight = 0;
-  
-  m_oWhenNewed.vNow();
+
   m_bIsLast       = false;
-  
   
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(eClassNo);
@@ -81,24 +79,6 @@ Item* ItemHeap::aAdjacentItem(Item* aItem)
     return nullptr;
   
   return aAdjacent;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get age of buffer in seconds                                               */
-/*----------------------------------------------------------------------------*/
-i8 ItemHeap::iAgeSsec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  Since oSince;
-  oSince.vNow();
-  
-  Ivl wDiff;
-  
-  wDiff = oSince.wSubtract(m_oWhenNewed);
-  
-  i8 iAge = wDiff.iSecond();
-  
-  return iAge;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -445,17 +425,6 @@ i8 ItemHeap::nUsedBytes(void)
   
   return nBytes;
 }
-
-/*----------------------------------------------------------------------------*/
-/* when was this buffer newed?                                                */
-/*----------------------------------------------------------------------------*/
-Since& ItemHeap::oWhenNewed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_oWhenNewed;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

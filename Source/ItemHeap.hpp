@@ -22,7 +22,6 @@ namespace MiniHeaps
                                   // that point to this buffer
     Wsp_t<C_WSP_ITEMHEAP> m_xWsp; // workspace
     
-    Since  m_oWhenNewed;          // when was this buffer created?
     bool   m_bIsLast;             // is this the last buffer in sequence
   
   public:
@@ -30,7 +29,6 @@ namespace MiniHeaps
    ~ItemHeap(void) noexcept(false);
   
     Item*  aAdjacentItem(Item* aItem);
-    i8     iAgeSsec(void);
     Item*  aAllotItem(eCN eClassNo, i8 nBytes);
     NEO*   aAllotNEO(i8 nBytes);
     char*  aAllotSpace(i8 nBytes);
@@ -55,7 +53,6 @@ namespace MiniHeaps
     void   vSetUsed(Item* aUptil);
     i4     iToOffset(Item* aItem);
     i8     nUsedBytes(void);
-    Since& oWhenNewed(void);
 
   private:
     void   vSetWilderness(void);
