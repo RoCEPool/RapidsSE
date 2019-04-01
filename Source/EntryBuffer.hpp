@@ -64,7 +64,6 @@ namespace Data
     ////////////////////////////////////////////////////////////////////////////
     // entry functions
   
-    Item* aGetEntry_Item(i8 i_Item);
     Item* aLeadEntry(void);
     Item* aLastEntry(void);
     void  vShowEntry(Item* pEntry);
