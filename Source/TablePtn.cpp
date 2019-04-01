@@ -453,19 +453,6 @@ bool TablePtn::bGrabWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get hidden IndexTree                                                       */
-/*----------------------------------------------------------------------------*/
-IndexTree* TablePtn::pHiddenIndexTree(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  IndexTree* pIndexTree = nullptr;
-  pIndexTree = m_pIndexTreeVec->pGet(0);
-  
-  return pIndexTree;
-}
-
-/*----------------------------------------------------------------------------*/
 /* increment buffers written so far                                           */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vIncBuffersWritten(void)

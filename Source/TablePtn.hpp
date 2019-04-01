@@ -65,7 +65,6 @@ namespace Data
     RowBuffer* pFirstRowBuffer(void);
     bool bGrabRead(void);
     bool bGrabWrite(void);
-    Data::IndexTree* pHiddenIndexTree(void);
     void vIncBuffersWritten(void);
     Data::IndexTree* pIndexTree(i8 iIndexNo);
     Data::IndexTreeVec* pIndexTreeVec(void);
