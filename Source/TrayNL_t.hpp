@@ -9,6 +9,7 @@ namespace Structures
   class TrayNL_t : public Object
   {
   protected:
+    u8 m_nMaxItems;  // max number of items
     u8 m_nHeadItems; // number of items from the head
     u8 m_nTailItems; // number of items from the tail
     ITEM m_xItem[MAX_ITEMS]; // set of items
@@ -94,6 +95,8 @@ TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::TrayNL_t(void)
 : Object(TRAY_CN)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  m_nMaxItems = MAX_ITEMS;
   
   vReset();
   
