@@ -143,9 +143,6 @@ Item* EntryBuffer::aAllotEntry(i8 nBytes_Without_Offsets)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  //if (nItems() >= C_MAX_ITEMS - 16)
-  //  return nullptr;
-  
   Item* aItem = aAllotItem(CN_ENTRY,nBytes_Without_Offsets);
   if (! aItem)
     return nullptr;
@@ -262,8 +259,6 @@ void EntryBuffer::vDeleteEntry(Item** aaItem)
   
   Item* xPriorVec[gpAttachMap->m_nIndexLevels];
   
-  //KeyData* aKey = _aKeyData(aItem->aDataArea());
-  
   vPositionPriorVecEntry(aItem, xPriorVec, aItem);
   
   vCutEntry(aItem,xPriorVec);
@@ -346,9 +341,6 @@ EntryBuffer* EntryBuffer::pFirstChildBuffer(void)
   
 #ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
-  
-  //if (m_aLazyChain)
-  //  vBuildSkipList();
 #endif
   
   Item* aFirstEntry = this->aLeadEntry();
@@ -498,9 +490,6 @@ Item* EntryBuffer::aLeadEntry(void)
   
 #ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
-  
-  //if (m_aLazyChain)
-  //  vBuildSkipList();
 #endif
   
   Item* aFirst = aNextEntry(aSkipRoots(),0);
@@ -826,10 +815,6 @@ void EntryBuffer::vReset(void)
   RASSERT(1 == m_iBufferHeight);
   
   vResetUsed();
-  
-//  m_xSkipRoots.m_iaNextOffset[0] = -1;
-//  m_xSkipRoots.m_iaNextOffset[1] = -1;
-//  m_xSkipRoots.m_iaNextOffset[2] = -1;
 
   m_xSkipRoots.vNEO(0,-1);
   m_xSkipRoots.vNEO(1,-1);
@@ -856,12 +841,6 @@ void EntryBuffer::vRestore(void)
   
   // set the index to nullptr (this pointer is not valid any more)
   m_pIndex = nullptr;
-  
-  
-  // get the original buffer address
-  //  nb: the given address has to be an address in the orginal buffer
-//  PoolBuffer* pOriginalBuffer =
-//  pBitAnd<PoolBuffer*>(m_i4aItemOffsets,C_OBJECT_TO_BUFFER_MASK);
   
   // get this buffer address
   PoolBuffer* pThisBuffer =
