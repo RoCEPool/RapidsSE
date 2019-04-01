@@ -32,7 +32,7 @@ namespace Jobs
   public:
     
     bool  bAppendRow(CacheLine* pRow);
-    RowData** aaAllotRowPtr(i8 nBytes);
+    CacheLine** aaAllotRowPtr(i8 nBytes);
     char* aDataArea(void);
     i8    nFetchedRows(void);
     

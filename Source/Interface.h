@@ -13,7 +13,7 @@ namespace Interface
   void vCheckAssumptions(void);
   
   static const i8 C_ROWS_PER_BUFFER
-    = (C_SIZE_LARGE_OBJECT - C_1KB*4)/sizeof(RowData*);
+    = (C_SIZE_LARGE_OBJECT - C_1KB*4)/sizeof(CacheLine*);
 }
 
 using namespace Interface;

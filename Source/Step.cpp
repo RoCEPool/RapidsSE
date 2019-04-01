@@ -138,7 +138,6 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_Queues();
   
-  Step::vAddSteps_Row();
   Step::vAddSteps_Rstack();
   
   Step::vAddSteps_Session();

@@ -227,7 +227,6 @@ enum eCN : u2 // Class Number
   /*                    Heap:L */ CN_ROWBUFFER,
   /* 174 0xAE      152B Heap:S */ CN_ROWONCE,
   /*                           */ CN_ROWTRAY,
-  /* 175 0xAF    17448B Heap:I */ CN_ROWWRK,
   
   /* 176 0xB0    50208B Heap:L */ CN_SCHEMATEST,
   /*                           */ CN_SEEME,
@@ -496,7 +495,6 @@ static Stz* aCN[]
   /*          */ "ROWBUFFER"_Stz,           // CN_ROWBUFFER
   /* 174 0xAE */ "ROWONCE"_Stz,             // CN_ROWONCE
   /*          */ "ROWTRAY"_Stz,             // CN_ROWTRAY
-  /* 175 0xAF */ "ROWWRK"_Stz,              // CN_ROWWRK
   
   /* 176 0xB0 */ "SCHEMATEST"_Stz,          // CN_SCHEMATEST
   /*          */ "SEEME"_Stz,               // CN_SEEME

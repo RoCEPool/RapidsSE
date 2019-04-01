@@ -94,7 +94,7 @@ bool FetchBuffer::bAppendRow(CacheLine* pRow)
     return false;
   
   // allocate row
-  CacheLine** ppFetchRow = (CacheLine**)aaAllotRowPtr(iCacheLineSize);
+  CacheLine** ppFetchRow = aaAllotRowPtr(iCacheLineSize);
   
   // copy the cacheLine pointer
   *ppFetchRow = pRow;
@@ -237,7 +237,7 @@ i8 FetchBuffer::nUsedBytes(void)
 /*----------------------------------------------------------------------------*/
 /* allot space for a row ptr in this buffer                                   */
 /*----------------------------------------------------------------------------*/
-RowData** FetchBuffer::aaAllotRowPtr(i8 nBytes)
+CacheLine** FetchBuffer::aaAllotRowPtr(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
@@ -245,11 +245,11 @@ RowData** FetchBuffer::aaAllotRowPtr(i8 nBytes)
   if (nFreeBytes() < nBytes)
     return nullptr;
   
-  RowData** aaRow = reinterpret_cast<RowData**>(m_xWsp.aAllot(nBytes));
+  CacheLine** aaCacheLine = reinterpret_cast<CacheLine**>(m_xWsp.aAllot(nBytes));
   
   m_nFetchedRows++;
   
-  return aaRow;
+  return aaCacheLine;
 }
 
 /*----------------------------------------------------------------------------*/
