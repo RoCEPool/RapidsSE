@@ -18,7 +18,6 @@ namespace Data
     TablePtn*    m_pPartition;     // which partition                     UNUSED
     
     EntryBuffer* m_pRootBuffer;    // the root buffer
-    EntryBuffer* m_pCurrentBuffer; // current buffer for insert hidden index
 
     // must be last
     Footer m_xFooter;
@@ -51,7 +50,7 @@ namespace Data
     bool         bInsertEntry(CacheLine* aRowData, Id& xId);
     void         vInsertEntriesFromBuffer(RowBuffer* pRowBuffer);
 
-    // ALKA: these shold go !!!
+    //! REVIEW: these shold go !!!
     bool         bInsertEntry(Item* aRowItem);
     void         vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer);
     

@@ -53,7 +53,6 @@ IndexTree::IndexTree(Index* pIndex, i8 iPartitionNo)
   m_iPartitionNo = iPartitionNo;
   m_pPartition   = nullptr;
   m_pRootBuffer  = nullptr;
-  m_pCurrentBuffer = nullptr;
   
   _checkInitialised_(CN_INDEXTREE);
   
@@ -851,7 +850,6 @@ void IndexTree::vTruncate(void)
     m_pRootBuffer->vTruncate();
   
   m_pRootBuffer    = nullptr;
-  m_pCurrentBuffer = nullptr;
   
   m_okLock.vDropWrite();
 }
