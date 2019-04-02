@@ -1106,7 +1106,7 @@ void Step::vJobParticipantStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Step::vJobPartitionsFetch(MP_Task mpTask)
 {
-  ENTRY("vJobParticipantResponseFetch"_Stz);
+  ENTRY("vJobPartitionsFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )

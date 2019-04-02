@@ -1160,6 +1160,16 @@ Stz* Record::szRecStr(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set record string                                                          */
+/*----------------------------------------------------------------------------*/
+void Record::vRecStr(Stz* szStr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
+  
+  m_sRecStr = szStr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is the string enclosed?                                                    */
 /*----------------------------------------------------------------------------*/
 bool Record::bIsEnclosed(char** aaSrc, Formatters* pFormatters)

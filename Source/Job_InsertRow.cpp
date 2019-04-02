@@ -110,10 +110,9 @@ Job_InsertRow::Job_InsertRow(Interface::Session* pSession)
 : Job(CN_JOB_INSERTROW, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
-  
   m_pTable = nullptr;
   
-  //m_aRawData
+  m_pRecord = new Record;
   m_nRawDataBytes = C_UNKNOWN;
   m_iPartitionId = C_UNKNOWN;
   
@@ -128,6 +127,8 @@ Job_InsertRow::Job_InsertRow(Interface::Session* pSession)
 Job_InsertRow::~Job_InsertRow(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
+  
+  delete m_pRecord;
 }
 
 
@@ -192,7 +193,7 @@ bool Job_InsertRow::bPopulateJob(TokenVec* pTokenVec)
 //    return false;
 //
   // get the length of the record
-  m_nRawDataBytes = StrLib::iSize(m_aRawData.aChar());
+  //m_nRawDataBytes = StrLib::iSize(m_aRawData.aChar());
 
   return true;
 }

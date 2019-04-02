@@ -572,6 +572,7 @@
   static void vJob_CopyBufferCopy(Tasks::MP_Task mpTask);
 
   static void vJob_InsertRowPartitionFetch(Tasks::MP_Task mpTask);
+  static void vJob_InsertRowRecordStore(Tasks::MP_Task mpTask);
   static void vJob_InsertRowNewJobWriteRow(Tasks::MP_Task mpTask);
   static void vJob_InsertRowSpawnJobWriteRow(Tasks::MP_Task mpTask);
 

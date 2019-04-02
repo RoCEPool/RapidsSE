@@ -90,6 +90,10 @@
   // get table name
   pJob_InsertRow job.objectName@ locals| sTableNm |
 
+  // null the record in the insertJob
+  // as its not a valid pointer (and is not needed) in the distributed jobs
+  nullptr pJob_InsertRow job_insertRow.record!
+
   // if job being inserted on this node then wait
   pJob_InsertRow job_insertRow.partition@ locals| iPartition |
 

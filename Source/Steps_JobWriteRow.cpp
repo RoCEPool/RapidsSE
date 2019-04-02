@@ -58,7 +58,8 @@ void Step::vJob_WriteRowHashRow(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first format the row
   bool bBlankLine;
-  bool bResult = pJob_WriteRow->bFormatRow(pJob_InsertRow->m_aRawData,
+  //vTrace("sRecord %s\n"_Stz, pJob_InsertRow->m_pRecord->szRecStr());
+  bool bResult = pJob_WriteRow->bFormatRow(pJob_InsertRow->m_pRecord->szRecStr(),
                                            pJob_InsertRow->m_nRawDataBytes,
                                            bBlankLine);
   

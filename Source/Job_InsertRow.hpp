@@ -12,7 +12,7 @@ namespace Jobs
   {
   public:
     Table*     m_pTable;             // table pointer
-    s48K       m_aRawData;           // raw record
+    Record*    m_pRecord;            // raw record
     i8         m_nRawDataBytes;      // length of record
     i8         m_iPartitionId;       // partition
     

@@ -72,6 +72,7 @@ namespace Data
     void vAppendTsp(Column* pCol, Datum* pDatum);
     void vAppendVch(Column* pCol, Datum* pDatum);
 
+    void vRecStr(Stz* szRecStr);
     Stz* szRecStr(void);
   
     static bool bIsEnclosed(char** aaSrc, Formatters* pFormatters);
