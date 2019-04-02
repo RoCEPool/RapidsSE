@@ -9,11 +9,6 @@ namespace Data
 {
   static const i8 C_CACHELINES = 256;
   
-  typedef TrayNL_t<CN_ROWTRAY,CacheLine,C_CACHELINES> RowParts;
-  
-  class Record;
-  typedef HV<Record,CN_RECORD> HV_Rec;
-  
   void vCheckAssumptions(void);
 
   static const i8 C_FLAT_LEVELS_MAX   = 16;
@@ -57,15 +52,21 @@ namespace Data
   MN_GLOBAL_HMAP = 0b1111, // F: 2B in data words indicating global hashmap
   };
   
+  class Record;
+  typedef HV<Record,CN_RECORD> HV_Rec;
 
+  typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
+  
+  typedef Nub_t<CN_ROWTRAY,CacheLine> RowNub;
+  typedef TrayNL_t<CN_ROWTRAY,CacheLine,C_CACHELINES> RowParts;
+  typedef TrayNL_t<CN_ROWTRAY,CacheLine,C_MAX_ROWS> RowTray;
 }
 
 using namespace Data;
 
 //------------------------------------------------------------------------------
 
-typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
-typedef TrayNL_t<CN_ROWTRAY,CacheLine,C_MAX_ROWS> RowTray;
+
 
 #include "Datum.hpp"
 #include "EntWrk.hpp"

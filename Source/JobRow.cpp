@@ -133,7 +133,8 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     // encode datum into cache line
     
     //pDatum->vDatum((byte*)sDst.aChar());
-    RowCoder::vEncode(m_oRowParts.aGet(0),i_Tail,i_Offset,
+    RowCoder::vEncode(m_oRowParts,
+                      m_oRowParts.aGet(0),i_Tail,i_Offset,
                       pColumn,&oDatum,m_iHash);
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     //RowEncoder::vPrint(pColumn,aCacheLine);

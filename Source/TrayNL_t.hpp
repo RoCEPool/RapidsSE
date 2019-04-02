@@ -30,6 +30,7 @@ namespace Structures
     ITEM* aGet(i8 i_Item);
     i8    nHeads(void);
     i8    nItems(void);
+    i8    nMaxItems(void);
     void  vReset(void);
     i8    nTails(void);
   
@@ -60,6 +61,9 @@ namespace Structures
     TrayNL_t(void);
     ~TrayNL_t(void) noexcept(false);
   
+    // auto conversion
+    operator Nub_t<TRAY_CN,ITEM>*(void);
+  
     i8    iAllotHead(void);
     i8    iAllotTail(void);
     i8    nFree(void);
@@ -68,7 +72,6 @@ namespace Structures
     i8    nItems(void);
     void  vReset(void);
     i8    nTails(void);
-    Nub_t<TRAY_CN,ITEM>* pNub(void);
   
   private:
     Footer* aFooter(void);
@@ -210,6 +213,17 @@ i8 Nub_t<TRAY_CN,ITEM>::nItems(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get maximum number of items                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM>
+i8 Nub_t<TRAY_CN,ITEM>::nMaxItems(void)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  return m_nMaxItems;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset all items                                                            */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM>
@@ -341,6 +355,18 @@ TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::~TrayNL_t(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the inner tray                                                         */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
+TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::operator Nub_t<TRAY_CN,ITEM>*(void)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  return &m_oNub;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -444,17 +470,6 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::nTails(void)
   i8 nTails = m_oNub.nTails();
   
   return nTails;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the inner tray                                                         */
-/*----------------------------------------------------------------------------*/
-template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
-Nub_t<TRAY_CN,ITEM>* TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::pNub(void)
-{
-  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
-  
-  return &m_oNub;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -19,6 +19,7 @@ namespace Correctness
     String_t(Stz* aArg);
    ~String_t(void) noexcept(false);
   
+    // auto conversion
     operator Stz*(void);
 
     void operator =(i8);
