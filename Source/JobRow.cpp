@@ -99,6 +99,9 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 
   Datum oDatum;
   m_oRowParts.vReset();
+  
+  i8 i_Head = m_oRowParts.iAllotHead();
+  ASSERT(0 == i_Head);
 
   ColumnVec* pColVec = m_pTable->pColumnVec();
   i8 nColumns = m_pTable->pColumnVec()->nItems();
@@ -134,7 +137,7 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     
     //pDatum->vDatum((byte*)sDst.aChar());
     RowCoder::vEncode(m_oRowParts,
-                      m_oRowParts.aGet(0),i_Tail,i_Offset,
+                      i_Tail,i_Offset,
                       pColumn,&oDatum,m_iHash);
     //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
     //RowEncoder::vPrint(pColumn,aCacheLine);

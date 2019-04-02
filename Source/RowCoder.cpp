@@ -85,7 +85,7 @@ void RowCoder::vDecode(CacheLine xaCacheLine[], i8 i_Row,
 /* encode given datum into cache line                                         */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncode(RowNub* pRowNub,
-                       CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                       i8& i_Tail, i8& i_Offset,
                        Column* pColumn, Datum* pDatum, i8& iHash)
 {
   i8 i_Column = pColumn->iColumnNo();
@@ -94,10 +94,7 @@ void RowCoder::vEncode(RowNub* pRowNub,
   if (i_Column >= 16)
     return;
   
-  //
-  RASSERT(pRowNub->nMaxItems() == 256);
-  
-  CacheLine* aCacheLine = &xaCacheLine[0];
+  CacheLine* aCacheLine = pRowNub->aGet(0);
   
   //i8 i_Tail = C_CACHELINES - 1;
   
