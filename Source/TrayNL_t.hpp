@@ -17,7 +17,7 @@ namespace Structures
     u8 m_nMaxItems;  // max number of items
     u8 m_nHeadItems; // number of items from the head
     u8 m_nTailItems; // number of items from the tail
-    ITEM* m_xaItem;  // set of items
+    ITEM* m_axaItem; // set of items
 
     // must be last
     Footer m_xFooter;
@@ -25,6 +25,8 @@ namespace Structures
   public:
     Tray_t(void);
    ~Tray_t(void) noexcept(false);
+  
+    void vReset(void);
   
   private:
     Footer* aFooter(void);
@@ -38,9 +40,9 @@ namespace Structures
   friend Tray_t<TRAY_CN,ITEM,MAX_ITEMS>;
   
   protected:
-    u8 m_nMaxItems;  // max number of items
-    u8 m_nHeadItems; // number of items from the head
-    u8 m_nTailItems; // number of items from the tail
+//    u8 m_nMaxItems;  // max number of items
+//    u8 m_nHeadItems; // number of items from the head
+//    u8 m_nTailItems; // number of items from the tail
     ITEM m_xItem[MAX_ITEMS]; // set of items
   
     Tray_t<TRAY_CN,ITEM,MAX_ITEMS> m_oTray;
@@ -93,11 +95,10 @@ Tray_t<TRAY_CN,ITEM,MAX_ITEMS>::Tray_t(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  m_nMaxItems = MAX_ITEMS;
-  
+  m_nMaxItems  = MAX_ITEMS;
   m_nHeadItems = 0; // number of items from the head
   m_nTailItems = 0; // number of items from the tail
-  m_xaItem     = nullptr;  // set of items
+  m_axaItem    = nullptr;  // set of items
 
   
   i8 nBytes = sizeof(Tray_t<TRAY_CN,ITEM,MAX_ITEMS>);
@@ -114,6 +115,22 @@ Tray_t<TRAY_CN,ITEM,MAX_ITEMS>::~Tray_t(void) noexcept(false)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/* reset all items                                                            */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
+void Tray_t<TRAY_CN,ITEM,MAX_ITEMS>::vReset(void)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  m_nHeadItems = 0;
+  m_nTailItems = 0;
+  
+  MemLib::vZero(m_axaItem,(sizeof(ITEM) * MAX_ITEMS),TRAY_CN);
+}
+
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -189,7 +206,7 @@ TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::TrayNL_t(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  m_nMaxItems = MAX_ITEMS;
+  m_oTray.m_axaItem = &m_xItem[0];
   
   vReset();
   
@@ -225,7 +242,7 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::iAllotHead(void)
   if (nItems() >= MAX_ITEMS)
     return C_UNKNOWN;
   
-  i8 i_Item = m_nHeadItems++;
+  i8 i_Item = m_oTray.m_nHeadItems++;
   
   return i_Item;
 }
@@ -241,7 +258,7 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::iAllotTail(void)
   if (nItems() >= MAX_ITEMS)
     return C_UNKNOWN;
 
-  i8 i_Item = MAX_ITEMS - 1 - m_nTailItems++;
+  i8 i_Item = MAX_ITEMS - 1 - m_oTray.m_nTailItems++;
   
   return i_Item;
 }
@@ -254,7 +271,7 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::nFree(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  i8 nFree = MAX_ITEMS - ( m_nHeadItems + m_nTailItems);
+  i8 nFree = MAX_ITEMS - ( m_oTray.m_nHeadItems + m_oTray.m_nTailItems);
   
   return nFree;
 }
@@ -267,7 +284,7 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::nHeads(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  return m_nHeadItems;
+  return m_oTray.m_nHeadItems;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -278,7 +295,7 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::nItems(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  i8 nItems = m_nHeadItems + m_nTailItems;
+  i8 nItems = m_oTray.m_nHeadItems + m_oTray.m_nTailItems;
   
   return nItems;
 }
@@ -306,9 +323,9 @@ void TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::vReset(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  m_nHeadItems = 0;
-  m_nTailItems = 0;
-  MemLib::vZero(m_xItem,sizeof(m_xItem),TRAY_CN);
+  //MemLib::vZero(m_xItem,sizeof(m_xItem),TRAY_CN);
+  
+  m_oTray.vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -319,7 +336,7 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::nTails(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  return m_nTailItems;
+  return m_oTray.m_nTailItems;
 }
 
 /*----------------------------------------------------------------------------*/
