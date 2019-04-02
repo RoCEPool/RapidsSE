@@ -6,9 +6,10 @@
 namespace Structures
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // nub (the inner tray)
   
   template <eCN TRAY_CN, class ITEM>
-  class Tray_t : public Object
+  class Nub_t : public Object
   {
   private:
     i8 m_nMaxItems;  // max number of items
@@ -20,15 +21,15 @@ namespace Structures
     Footer m_xFooter;
   
   public:
-    Tray_t(void);
-    ~Tray_t(void) noexcept(false);
+    Nub_t(void);
+    ~Nub_t(void) noexcept(false);
   
     i8    iAllotHead(void);
     i8    iAllotTail(void);
     i8    nFree(void);
+    ITEM* aGet(i8 i_Item);
     i8    nHeads(void);
     i8    nItems(void);
-    ITEM* aGet(i8 i_Item);
     void  vReset(void);
     i8    nTails(void);
   
@@ -39,20 +40,20 @@ namespace Structures
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  // tray (the outer tray)
+
   template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
   class TrayNL_t : public Object
   {
   protected:
-    ITEM m_xItem[MAX_ITEMS]; // set of items
+    ITEM m_xaItem[MAX_ITEMS]; // array of items
   
-    Tray_t<TRAY_CN,ITEM> m_oTray;
+    Nub_t<TRAY_CN,ITEM> m_oNub;
   
     // must be last
     Footer m_xFooter;
   
   public:
-  
     void* operator new(size_t);
     void  operator delete(void*);
   
@@ -62,19 +63,19 @@ namespace Structures
     i8    iAllotHead(void);
     i8    iAllotTail(void);
     i8    nFree(void);
+    ITEM* aGet(i8 i_Item);
     i8    nHeads(void);
     i8    nItems(void);
-    ITEM* aGet(i8 i_Item);
     void  vReset(void);
     i8    nTails(void);
-    Tray_t<TRAY_CN,ITEM>* pTray(void);
+    Nub_t<TRAY_CN,ITEM>* pNub(void);
   
   private:
     Footer* aFooter(void);
   };
   
   template <eCN TRAY_CN, class ITEM,  i8 MAX_ITEMS>
-  TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>* _pTrayNL(void* aAddr);
+  TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>* _pNubNL(void* aAddr);
 }
 
 using namespace Structures;
@@ -82,7 +83,7 @@ using namespace Structures;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-///                                 tray                                     ///
+///                             NUB (inner tray)                             ///
 ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -94,7 +95,7 @@ using namespace Structures;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM>
-Tray_t<TRAY_CN,ITEM>::Tray_t(void)
+Nub_t<TRAY_CN,ITEM>::Nub_t(void)
 : Object(TRAY_CN)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
@@ -104,7 +105,7 @@ Tray_t<TRAY_CN,ITEM>::Tray_t(void)
   m_nTailItems = 0; // number of items from the tail
   m_axaItem    = nullptr;  // set of items
   
-  i8 nBytes = sizeof(Tray_t<TRAY_CN,ITEM>);
+  i8 nBytes = sizeof(Nub_t<TRAY_CN,ITEM>);
   _checkInitialisedSize_(nBytes);
   
   _postcondition_(_MAGIC_,TRAY_CN,_FOOTER_);
@@ -114,21 +115,21 @@ Tray_t<TRAY_CN,ITEM>::Tray_t(void)
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM>
-Tray_t<TRAY_CN,ITEM>::~Tray_t(void) noexcept(false)
+Nub_t<TRAY_CN,ITEM>::~Nub_t(void) noexcept(false)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
 }
 
 
 /*----------------------------------------------------------------------------*/
-/*-- Public --------------------------------- ---------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* allot head item                                                            */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM>
-i8 Tray_t<TRAY_CN,ITEM>::iAllotHead(void)
+i8 Nub_t<TRAY_CN,ITEM>::iAllotHead(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
@@ -144,7 +145,7 @@ i8 Tray_t<TRAY_CN,ITEM>::iAllotHead(void)
 /* allot tail item                                                            */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM>
-i8 Tray_t<TRAY_CN,ITEM>::iAllotTail(void)
+i8 Nub_t<TRAY_CN,ITEM>::iAllotTail(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
@@ -160,44 +161,20 @@ i8 Tray_t<TRAY_CN,ITEM>::iAllotTail(void)
 /* get total number of free items                                             */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM>
-i8 Tray_t<TRAY_CN,ITEM>::nFree(void)
+i8 Nub_t<TRAY_CN,ITEM>::nFree(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  i8 nFree = m_nMaxItems - ( m_nHeadItems + m_nTailItems);
+  i8 nFree = m_nMaxItems - (m_nHeadItems + m_nTailItems);
   
   return nFree;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get total number of head items                                             */
-/*----------------------------------------------------------------------------*/
-template <eCN TRAY_CN, class ITEM>
-i8 Tray_t<TRAY_CN,ITEM>::nHeads(void)
-{
-  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
-  
-  return m_nHeadItems;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get total number of actual items                                           */
-/*----------------------------------------------------------------------------*/
-template <eCN TRAY_CN, class ITEM>
-i8 Tray_t<TRAY_CN,ITEM>::nItems(void)
-{
-  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
-  
-  i8 nItems = m_nHeadItems + m_nTailItems;
-  
-  return nItems;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get a specific item                                                        */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM>
-ITEM* Tray_t<TRAY_CN,ITEM>::aGet(i8 i_Item)
+ITEM* Nub_t<TRAY_CN,ITEM>::aGet(i8 i_Item)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
@@ -209,10 +186,34 @@ ITEM* Tray_t<TRAY_CN,ITEM>::aGet(i8 i_Item)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get total number of head items                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM>
+i8 Nub_t<TRAY_CN,ITEM>::nHeads(void)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  return m_nHeadItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total number of actual items                                           */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM>
+i8 Nub_t<TRAY_CN,ITEM>::nItems(void)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  i8 nItems = m_nHeadItems + m_nTailItems;
+  
+  return nItems;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset all items                                                            */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM>
-void Tray_t<TRAY_CN,ITEM>::vReset(void)
+void Nub_t<TRAY_CN,ITEM>::vReset(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
@@ -226,7 +227,7 @@ void Tray_t<TRAY_CN,ITEM>::vReset(void)
 /* get total number of tail items                                             */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM>
-i8 Tray_t<TRAY_CN,ITEM>::nTails(void)
+i8 Nub_t<TRAY_CN,ITEM>::nTails(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
@@ -237,15 +238,13 @@ i8 Tray_t<TRAY_CN,ITEM>::nTails(void)
 /* set item array                                                             */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM>
-void Tray_t<TRAY_CN,ITEM>::vSetItems(i8 nMaxItems, ITEM *axaItem)
+void Nub_t<TRAY_CN,ITEM>::vSetItems(i8 nMaxItems, ITEM *axaItem)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
   m_nMaxItems = nMaxItems;
   m_axaItem   = axaItem;
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
@@ -255,7 +254,7 @@ void Tray_t<TRAY_CN,ITEM>::vSetItems(i8 nMaxItems, ITEM *axaItem)
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM>
-Footer* Tray_t<TRAY_CN,ITEM>::aFooter(void)
+Footer* Nub_t<TRAY_CN,ITEM>::aFooter(void)
 {
   _precondition_(_MAGIC_,TRAY_CN);
   
@@ -278,7 +277,7 @@ Footer* Tray_t<TRAY_CN,ITEM>::aFooter(void)
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
-TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>* Structures::_pTrayNL(void* aAddr)
+TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>* Structures::_pNubNL(void* aAddr)
 {
   TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>* pVector =
   reinterpret_cast<TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>*>(aAddr);
@@ -294,9 +293,9 @@ TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>* Structures::_pTrayNL(void* aAddr)
 template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
 void* TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::operator new(size_t)
 {
-  void* pTray = HeapMem::pAllocate(TRAY_CN);
+  void* pNub = HeapMem::pAllocate(TRAY_CN);
   
-  return pTray;
+  return pNub;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -305,10 +304,10 @@ void* TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::operator new(size_t)
 template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
 void TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::operator delete(void* pAddr)
 {
-  TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>* pTray =
-  _pTrayNL<TRAY_CN,ITEM,MAX_ITEMS>(pAddr);
+  TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>* pNub =
+    _pNubNL<TRAY_CN,ITEM,MAX_ITEMS>(pAddr);
   
-  HeapMem::vFree(pTray);
+  HeapMem::vFree(pNub);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -320,7 +319,7 @@ TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::TrayNL_t(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  m_oTray.vSetItems(MAX_ITEMS,&m_xItem[0]);
+  m_oNub.vSetItems(MAX_ITEMS,&m_xaItem[0]);
   
   vReset();
   
@@ -353,7 +352,7 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::iAllotHead(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  i8 i_Item = m_oTray.iAllotHead();
+  i8 i_Item = m_oNub.iAllotHead();
   
   return i_Item;
 }
@@ -366,7 +365,7 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::iAllotTail(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  i8 i_Item = m_oTray.iAllotTail();
+  i8 i_Item = m_oNub.iAllotTail();
   
   return i_Item;
 }
@@ -379,9 +378,22 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::nFree(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  i8 nFree = m_oTray.nFree();
+  i8 nFree = m_oNub.nFree();
   
   return nFree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a specific item                                                        */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
+ITEM* TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::aGet(i8 i_Item)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  ITEM* aItem = m_oNub.aGet(i_Item);
+  
+  return aItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -392,7 +404,7 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::nHeads(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  i8 nHeads = m_oTray.nHeads();
+  i8 nHeads = m_oNub.nHeads();
   
   return nHeads;
 }
@@ -405,22 +417,9 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::nItems(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  i8 nItems = m_oTray.nItems();
+  i8 nItems = m_oNub.nItems();
   
   return nItems;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get a specific item                                                        */
-/*----------------------------------------------------------------------------*/
-template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
-ITEM* TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::aGet(i8 i_Item)
-{
-  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
-  
-  ITEM* aItem = m_oTray.aGet(i_Item);
-  
-  return aItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -431,7 +430,7 @@ void TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::vReset(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  m_oTray.vReset();
+  m_oNub.vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -442,7 +441,7 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::nTails(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  i8 nTails = m_oTray.nTails();
+  i8 nTails = m_oNub.nTails();
   
   return nTails;
 }
@@ -451,11 +450,11 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::nTails(void)
 /* get the inner tray                                                         */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
-Tray_t<TRAY_CN,ITEM>* TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::pTray(void)
+Nub_t<TRAY_CN,ITEM>* TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::pNub(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  return &m_oTray;
+  return &m_oNub;
 }
 
 /*----------------------------------------------------------------------------*/
