@@ -25,6 +25,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.columnIsPartKey"_Stz,  &Step::vJobColumnIsPartKey);
   vAddStep("job.columnName@"_Stz,      &Step::vJobColumnNameFetch);
   vAddStep("job.columnType@"_Stz,      &Step::vJobColumnTypeFetch);
+  vAddStep("job.createResponseVec"_Stz,&Step::vJobCreateResponseVec);
   
   vAddStep("job.decAcksRemaining"_Stz, &Step::vJobDecAcksRemaining);
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
@@ -67,6 +68,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.parentId@"_Stz,        &Step::vJobParentIdFetch);
   vAddStep("job.participant@"_Stz,     &Step::vJobParticipantFetch);
   vAddStep("job.participant!"_Stz,     &Step::vJobParticipantStore);
+  vAddStep("job.participantError!"_Stz,&Step::vJobParticipantErrorStore);
   vAddStep("job.partitions@"_Stz,      &Step::vJobPartitionsFetch);
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("job.phase!"_Stz,           &Step::vJobPhaseStore);
@@ -444,6 +446,24 @@ void Step::vJobColumnTypeFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.columnType@"_Stz);
   
   mpTask->m_pDataStack->vPushI8(pJob_CreateTable->m_xColumns[iColumnNo].m_eColumnType);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.createResponseVec -- create the response vector in the job             */
+/*----------------------------------------------------------------------------*/
+void Step::vJobCreateResponseVec(MP_Task mpTask)
+{
+  ENTRY("vJobCreateResponseVec"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.createResponseVec@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  RASSERT( ! pJob->m_pResponseVec );
+  pJob->m_pResponseVec = new ResponseVec;
   
   EXIT();
 }
@@ -1097,6 +1117,44 @@ void Step::vJobParticipantStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.partcipant!"_Stz);
   
   pJob->m_iParticipantNode = iParticipantNode;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.participantError! -- store the job error for the partcipant node       */
+/*----------------------------------------------------------------------------*/
+void Step::vJobParticipantErrorStore(MP_Task mpTask)
+{
+  ENTRY("vJobParticipantErrorStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.participantError!"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  i8 iNode;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
+    THROW_INVALID_DSTACK("job.participantError!"_Stz);
+  
+  i8 iJobError;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iJobError) )
+    THROW_INVALID_DSTACK("job.participantError!"_Stz);
+  
+  // there should be a response vector
+  RASSERT( pJob->m_pResponseVec );
+  
+  // create a new response
+  Response* pResonse = new Response;
+  
+  // set node and error in the response
+  pResonse->m_iNode       = iNode;
+  pResonse->m_eErrorCode  = (eEC)iJobError;
+  
+  // add the response to the vector of responses
+  pJob->m_pResponseVec->vAdd(pResonse);
+  
+  ActionSequence::vAdd(pJob,AN_ERROR_CODE,iJobError);
   
   EXIT();
 }

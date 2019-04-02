@@ -427,6 +427,7 @@
   static void vJobColumnNameFetch(Tasks::MP_Task mpTask);
   static void vJobColumnIsPartKey(Tasks::MP_Task mpTask);
   static void vJobColumnTypeFetch(Tasks::MP_Task mpTask);
+  static void vJobCreateResponseVec(Tasks::MP_Task mpTask);
 
   static void vJobDecAcksRemaining(Tasks::MP_Task mpTask);
   static void vJobDelete(Tasks::MP_Task mpTask);
@@ -469,6 +470,7 @@
   static void vJobParentIdFetch(Tasks::MP_Task mpTask);
   static void vJobParticipantFetch(Tasks::MP_Task mpTask);
   static void vJobParticipantStore(Tasks::MP_Task mpTask);
+  static void vJobParticipantErrorStore(Tasks::MP_Task mpTask);
   static void vJobPartitionsFetch(Tasks::MP_Task mpTask);
   static void vJobPhaseFetch(Tasks::MP_Task mpTask);
   static void vJobPhaseStore(Tasks::MP_Task mpTask);
