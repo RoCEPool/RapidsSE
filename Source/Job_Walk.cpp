@@ -114,7 +114,7 @@ Job_Walk::Job_Walk(Interface::Session* pSession)
   m_pTable = nullptr;
   m_pIndex = nullptr;
 
-  m_sIndexName = "hidden"_Stz;
+  m_sIndexName = ""_Stz;
   
   _checkInitialised_(CN_JOB_WALK);
   
