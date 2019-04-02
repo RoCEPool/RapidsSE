@@ -48,6 +48,7 @@ Response::Response(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESPONSE);
   
+  m_iNode           = C_UNKNOWN;
   m_sResponse       = ""_Stz;
   m_ixRowsProcessed = 0;
   m_ixRowsInvalid   = 0;
