@@ -222,6 +222,8 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_RECORD
   /*    */ &Finalize::vUndefined,         // CN_RECORDBUFFER
   /*    */ &Finalize::vUndefined,         // CN_RESOURCETRACKER
+  /*    */ &Finalize::vUndefined,         // CN_RESPONSE
+  /*    */ &Finalize::vUndefined,         // CN_RESPONSEVEC
   /*102 */ &Finalize::vUndefined,         // CN_ROWAGG
   /*    */ &Finalize::vUndefined,         // CN_ROWBUFFER
   /*105 */ &Finalize::vUndefined,         // CN_ROWONCE

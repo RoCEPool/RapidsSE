@@ -227,6 +227,8 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_RECORD
   /*    */ &Dump::vUndefined,       // CN_RECORDBUFFER
   /*    */ &LocalSet::vDump,        // CN_RESOURCETRACKER
+  /*    */ &Dump::vUndefined,       // CN_RESPONSE
+  /*    */ &Dump::vUndefined,       // CN_RESPONSEVEC
   /*102 */ &Dump::vUndefined,       // CN_ROWAGG
   /*    */ &Dump::vUndefined,       // CN_ROWBUFFER
   /*105 */ &Dump::vUndefined,       // CN_ROWONCE
@@ -499,6 +501,8 @@ i8 giClassSize[]
   /*    */ sizeof(Record),             // CN_RECORD
   /*    */ sizeof(RecordBuffer),       // CN_RECORDBUFFER
   /*    */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER
+  /*    */ sizeof(Response),           // CN_RESPONSE
+  /*    */ sizeof(ResponseVec),        // CN_RESPONSEVEC
   /*102 */ sizeof(RowAgg),             // CN_ROWAGG
   /*    */ sizeof(RowBuffer),          // CN_ROWBUFFER
   /*105 */ sizeof(RowOnce),            // CN_ROWONCE
@@ -771,6 +775,8 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_RECORD
   /*    */ HT_TRANSIENT_LARGE,   // CN_RECORDBUFFER
   /*    */ HT_TRANSIENT_SMALL,   // CN_RESOURCETRACKER
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_RESPONSE
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_RESPONSEVEC
   /*102 */ HT_TRANSIENT_MEDIUM,  // CN_ROWAGG
   /*    */ HT_TRANSIENT_LARGE,   // CN_ROWBUFFER
   /*105 */ HT_TRANSIENT_SMALL,   // CN_ROWONCE
