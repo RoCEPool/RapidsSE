@@ -44,7 +44,7 @@ void Response::operator delete(void* pAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Response::Response(void)
-: Object(CN_ROWAGG)
+: Object(CN_RESPONSE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RESPONSE);
   

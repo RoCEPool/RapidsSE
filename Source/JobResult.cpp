@@ -34,6 +34,9 @@ JobResult::JobResult(void)
   m_sMetadata = ""_Stz;
   m_bHasError = false;
   
+  //m_xResponse
+  m_pResponseVec = nullptr;
+  
   for (i8 i_Node = 0;i_Node < C_MAX_NODES; i_Node++) {
     m_xNode[i_Node].m_sResponse      = ""_Stz;
     m_xNode[i_Node].m_ixRowsProcessed = 0;
@@ -48,7 +51,8 @@ JobResult::JobResult(void)
 /*----------------------------------------------------------------------------*/
 JobResult::~JobResult(void) noexcept(false)
 {
-
+  if (m_pResponseVec)
+    delete m_pResponseVec;
 }
 
 /*----------------------------------------------------------------------------*/

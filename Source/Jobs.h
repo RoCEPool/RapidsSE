@@ -48,6 +48,7 @@ static Stz* aJL[]
 #include "ExportBuffer.hpp"
 #include "FetchBuffer.hpp"
 
+#include "Response.hpp"
 #include "JobDicPath.hpp"
 #include "JobFilePath.hpp"
 #include "JobObjectName.hpp"
@@ -56,7 +57,6 @@ static Stz* aJL[]
 #include "JobTable.hpp"
 #include "Job.hpp"
 #include "JobWriteBehind.hpp"
-#include "Response.hpp"
 #include "RowAgg.hpp"
 #include "RowOnce.hpp"
 
