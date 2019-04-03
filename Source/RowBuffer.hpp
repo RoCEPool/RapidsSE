@@ -67,7 +67,7 @@ namespace Data
 
     ////////////////////////////////////////////////////////////////////////////
     // row functions
-    CacheLine* aAppendRow(CacheLine* aRowData);
+    CacheLine* aAppendRow(RowNub* pRowNub, CacheLine* aRowData);
   
   private:
     CacheLine* aAllotRow(i8 nBytes);

@@ -194,7 +194,7 @@ void Job_CopyBuffer::vCopy(void)
     
     // insert row into a working buffer in job InsertRow
     m_pJob_SubInserter->vGrabWrite();
-    eEC eErrorCode = m_pJob_SubInserter->eInsertRow(m_oRowParts.aGet(0), m_nRowBytes);
+    eEC eErrorCode = m_pJob_SubInserter->eInsertRow(m_oRowParts,m_oRowParts.aGet(0), m_nRowBytes);
     RASSERT(eErrorCode == EC_NONE);
     m_pJob_SubInserter->vDropWrite();
   }

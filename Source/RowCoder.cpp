@@ -111,7 +111,7 @@ void RowCoder::vEncode(RowNub* pRowNub, Column* pColumn, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* compute how many cache lines an encoded row occupies                       */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::nLines(CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec)
+i8 RowCoder::nLines(RowNub* pRowNub, i8 i_Row, ColumnVec* pColVec)
 {
   i8 nCacheLines = 1;
   // get no of columns
@@ -128,7 +128,8 @@ i8 RowCoder::nLines(CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec)
     if (DM_VCH != pCol->eDatumType())
       continue;
     
-    eMN eEncoding = eGetEncoding(i_Column,&xaCacheLine[0],i_Offset);
+    CacheLine* aCacheLine = pRowNub->aGet(i_Row);
+    eMN eEncoding = eGetEncoding(i_Column,aCacheLine,i_Offset);
     
     if (MN_SHOCO_2B == eEncoding)
       nCacheLines++;

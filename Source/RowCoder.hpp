@@ -14,7 +14,7 @@ namespace Data
     static void vDecode(CacheLine xaCacheLine[], i8 i_Row,
                         Column* pCol, Datum* pDatum);
   
-    static i8   nLines(CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec);
+    static i8   nLines(RowNub* pRowNub, i8 i_Row, ColumnVec* pColVec);
   
     static void vEncode(RowNub* pRowNub, Column* pColumn, Datum* pDatum);
   

@@ -262,7 +262,7 @@ CacheLine* RowBuffer::aAllotTails(i8 nTails)
 //  return pRow;
 //}
 /*----------------------------------------------------------------------------*/
-CacheLine* RowBuffer::aAppendRow(CacheLine* aRowData)
+CacheLine* RowBuffer::aAppendRow(RowNub* pRowNub, CacheLine* aRowData)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
@@ -271,7 +271,7 @@ CacheLine* RowBuffer::aAppendRow(CacheLine* aRowData)
   
   bn nBufferNo = this->nPoolBufferNo();
   ColumnVec* pColVec = m_pTable->pColumnVec();
-  i8 nCacheLines = RowCoder::nLines(aRowData,0,pColVec);
+  i8 nCacheLines = RowCoder::nLines(pRowNub,0,pColVec);
   
   if (! bHasSpace(sizeof(CacheLine) * nCacheLines))
     return nullptr;

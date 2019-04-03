@@ -273,7 +273,7 @@ void TablePtn::vAppendRow(RowParts& oRowParts, i8 nRowBytes)
     m_pCurrentRowBuffer = m_pRootRowBuffer;
   }
   
-  CacheLine* aRow = m_pCurrentRowBuffer->aAppendRow(oRowParts.aGet(0));
+  CacheLine* aRow = m_pCurrentRowBuffer->aAppendRow(oRowParts,oRowParts.aGet(0));
   
   if ( ! aRow ) {
     RowBuffer* pRowBuffer = new RowBuffer;
@@ -284,7 +284,7 @@ void TablePtn::vAppendRow(RowParts& oRowParts, i8 nRowBytes)
     m_pCurrentRowBuffer->vNextBuffer(pRowBuffer);
     m_pCurrentRowBuffer = pRowBuffer;
     
-    CacheLine* aRow = m_pCurrentRowBuffer->aAppendRow(oRowParts.aGet(0));
+    CacheLine* aRow = m_pCurrentRowBuffer->aAppendRow(oRowParts,oRowParts.aGet(0));
     RASSERT(aRow);
   }
   

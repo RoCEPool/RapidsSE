@@ -94,13 +94,13 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
 /*----------------------------------------------------------------------------*/
 eEC JobWriteBehind::eInsertRow(void)
 {
-  return eInsertRow(m_oRowParts.aGet(0), m_nRowBytes);
+  return eInsertRow(m_oRowParts,m_oRowParts.aGet(0), m_nRowBytes);
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobWriteBehind::eInsertRow(CacheLine* aRow_Data, i8 nRowBytes)
+eEC JobWriteBehind::eInsertRow(RowNub* pRowNub, CacheLine* aRow_Data, i8 nRowBytes)
 {
   // insert the row in a working buffer
   while (true) {
@@ -134,7 +134,7 @@ eEC JobWriteBehind::eInsertRow(CacheLine* aRow_Data, i8 nRowBytes)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert row into working buffer
     pRowBuffer->vGrabWrite();
-    CacheLine* pRow = pRowBuffer->aAppendRow(aRow_Data);
+    CacheLine* pRow = pRowBuffer->aAppendRow(pRowNub,aRow_Data);
     pRowBuffer->vDropWrite();
     
     //pRowBuffer->vDump();

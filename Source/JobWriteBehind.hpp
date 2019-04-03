@@ -10,11 +10,11 @@ namespace Jobs
   class JobWriteBehind : public JobRow
   {
   public:
-    Job* m_pParentJob;      // parent job
-    eDS  m_eDataSource;     // data source of this writeBehind
+    Job* m_pParentJob;  // parent job
+    eDS  m_eDataSource; // data source of this writeBehind
 
-    RowBuffer* m_pRowBuffer[C_MAX_PARTITIONS];         // row buffers
-    i8 m_nWriteBehindBuffers[C_MAX_PARTITIONS];        // how many buffers
+    RowBuffer* m_pRowBuffer[C_MAX_PARTITIONS];  // row buffers
+    i8 m_nWriteBehindBuffers[C_MAX_PARTITIONS]; // how many buffers
     
   public:
     void* operator new(size_t);
@@ -25,7 +25,7 @@ namespace Jobs
   public:
     void vHandleDanglingBuffers(void);
     eEC  eInsertRow(void);
-    eEC  eInsertRow(CacheLine* aRow_Data, i8 nRowBytes);
+    eEC  eInsertRow(RowNub* pRowNub, CacheLine* aRow_Data, i8 nRowBytes);
     eEC  eProcessRecord(Stz* aRecord,  i8 nBytes);
   
   private:
