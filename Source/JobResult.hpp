@@ -34,6 +34,7 @@ namespace Jobs
     
     void vPrintErrors(void);
     void vPrintResult(void);
+    void vPrintSuccess(void);
   };
 }
 

@@ -94,6 +94,13 @@ void JobResult::vPrintResult(void)
   }
   vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
 }
+/*----------------------------------------------------------------------------*/
+/* print success                                                              */
+/*----------------------------------------------------------------------------*/
+void JobResult::vPrintSuccess(void)
+{
+  vTrace("success: 0 rows affected\n"_Stz);
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Static Functions --------------------------------------------------------*/
