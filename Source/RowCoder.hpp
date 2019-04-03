@@ -17,9 +17,8 @@ namespace Data
   
     static i8   nLines(CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec);
   
-    static void vEncode(RowNub* pRowNub,
-                        i8& i_Tail, i8& i_Offset,
-                        Column* pColumn, Datum* pDatum, i8& iHash);
+    static void vEncode(RowNub* pRowNub, i8& i_Offset, Column* pColumn,
+                        Datum* pDatum, i8& iHash);
   
     static void vPrint(CacheLine xaCacheLine[], i8 i_Row, Column* pCol);
   
@@ -50,33 +49,24 @@ namespace Data
     static void vDecodeVch(CacheLine xaCacheLine[], i8 i_Row,
                            Column* pCol, Datum* pDatum);
   
-    static void vEncodeBcd(RowNub* pRowNub,
-                           i8& i_Tail, i8& i_Offset,
-                           Column* pColumn, Datum* pDatum, i8& iHash);
-    static void vEncodeBol(RowNub* pRowNub,
-                           i8& i_Tail, i8& i_Offset,
-                           Column* pColumn, Datum* pDatum, i8& iHash);
-    static void vEncodeDte(RowNub* pRowNub,
-                           i8& i_Tail, i8& i_Offset,
-                           Column* pColumn, Datum* pDatum, i8& iHash);
-    static void vEncodeFlt(RowNub* pRowNub,
-                           i8& i_Tail, i8& i_Offset,
-                           Column* pColumn, Datum* pDatum, i8& iHash);
-    static void vEncodeInt(RowNub* pRowNub,
-                           i8& i_Tail, i8& i_Offset,
-                           Column* pColumn, Datum* pDatum, i8& iHash);
-    static void vEncodeIvl(RowNub* pRowNub,
-                           i8& i_Tail, i8& i_Offset,
-                           Column* pColumn, Datum* pDatum, i8& iHash);
-    static void vEncodeTme(RowNub* pRowNub,
-                           i8& i_Tail, i8& i_Offset,
-                           Column* pColumn, Datum* pDatum, i8& iHash);
-    static void vEncodeTsp(RowNub* pRowNub,
-                           i8& i_Tail, i8& i_Offset,
-                           Column* pColumn, Datum* pDatum, i8& iHash);
-    static void vEncodeVch(RowNub* pRowNub,
-                           i8& i_Tail, i8& i_Offset,
-                           Column* pColumn, Datum* pDatum, i8& iHash);
+    static void vEncodeBcd(RowNub* pRowNub, i8& i_Offset, Column* pColumn,
+                           Datum* pDatum, i8& iHash);
+    static void vEncodeBol(RowNub* pRowNub, i8& i_Offset, Column* pColumn,
+                           Datum* pDatum, i8& iHash);
+    static void vEncodeDte(RowNub* pRowNub, i8& i_Offset, Column* pColumn,
+                           Datum* pDatum, i8& iHash);
+    static void vEncodeFlt(RowNub* pRowNub, i8& i_Offset, Column* pColumn,
+                           Datum* pDatum, i8& iHash);
+    static void vEncodeInt(RowNub* pRowNub, i8& i_Offset, Column* pColumn,
+                           Datum* pDatum, i8& iHash);
+    static void vEncodeIvl(RowNub* pRowNub, i8& i_Offset, Column* pColumn,
+                           Datum* pDatum, i8& iHash);
+    static void vEncodeTme(RowNub* pRowNub, i8& i_Offset, Column* pColumn,
+                           Datum* pDatum, i8& iHash);
+    static void vEncodeTsp(RowNub* pRowNub, i8& i_Offset, Column* pColumn,
+                           Datum* pDatum, i8& iHash);
+    static void vEncodeVch(RowNub* pRowNub, i8& i_Offset, Column* pColumn,
+                           Datum* pDatum, i8& iHash);
   
     static eMN eEncodingBcd(Datum* pDatum, i8& nBytesEncoded);
     static eMN eEncodingBol(Datum* pDatum, i8& nBytesEncoded);
