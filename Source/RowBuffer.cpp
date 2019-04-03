@@ -262,7 +262,7 @@ CacheLine* RowBuffer::aAllotTails(i8 nTails)
 //  return pRow;
 //}
 /*----------------------------------------------------------------------------*/
-CacheLine* RowBuffer::aAppendRow(RowNub* pRowNub, CacheLine* aRowData)
+CacheLine* RowBuffer::aAppendRow(RowNub* pFromRowNub, CacheLine* aRowData)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
@@ -271,7 +271,7 @@ CacheLine* RowBuffer::aAppendRow(RowNub* pRowNub, CacheLine* aRowData)
   
   bn nBufferNo = this->nPoolBufferNo();
   ColumnVec* pColVec = m_pTable->pColumnVec();
-  i8 nCacheLines = RowCoder::nLines(pRowNub,0,pColVec);
+  i8 nCacheLines = RowCoder::nLines(pFromRowNub,0,pColVec);
   
   if (! bHasSpace(sizeof(CacheLine) * nCacheLines))
     return nullptr;
@@ -287,7 +287,8 @@ CacheLine* RowBuffer::aAppendRow(RowNub* pRowNub, CacheLine* aRowData)
   // copy row data into row entry
   
   //MemLib::vCopy(pHead,aRowData,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
-  RowCoder::vCopy(pHead,pTails,aRowData,pColVec);
+  RowNub* pIntoRowNub = *&m_xRowTray;
+  RowCoder::vCopy(pIntoRowNub,pHead,pTails,pFromRowNub,aRowData,pColVec);
   
   //pRowEntry->vShow(0, m_pIndex, false);
   

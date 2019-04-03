@@ -11,8 +11,8 @@
 /*----------------------------------------------------------------------------*/
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vCopy(CacheLine* pIntoHead, CacheLine* pIntoTails,
-                     CacheLine xaFromLine[],
+void RowCoder::vCopy(RowNub* pIntoRowNub, CacheLine* pIntoHead, CacheLine* pIntoTails,
+                     RowNub* pFromRowNub, CacheLine xaFromLine[],
                      ColumnVec* pColVec)
 {
   CacheLine* pFromHead = &xaFromLine[0];
