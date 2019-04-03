@@ -18,7 +18,8 @@ namespace Structures
     ITEM* m_axaItem; // array of items
   
     i8 m_i_Offset;   // encoding offset
-  
+    i8 m_iHash;      // encoding hash
+
     // must be last
     Footer m_xFooter;
   
@@ -31,6 +32,8 @@ namespace Structures
     i8    nFree(void);
     ITEM* aGet(i8 i_Item);
     i8    nHeads(void);
+    i8    iHash(void);
+    void  vHashInc(i8 iDelta);
     i8    nItems(void);
     i8    nMaxItems(void);
     i8    i_Offset(void);
@@ -113,7 +116,8 @@ Nub_t<TRAY_CN,ITEM>::Nub_t(void)
   m_axaItem    = nullptr;  // set of items
   
   m_i_Offset   = 8;
-  
+  m_iHash      = 0;
+
   i8 nBytes = sizeof(Nub_t<TRAY_CN,ITEM>);
   _checkInitialisedSize_(nBytes);
   
@@ -195,6 +199,28 @@ ITEM* Nub_t<TRAY_CN,ITEM>::aGet(i8 i_Item)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get total number of actual items                                           */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM>
+i8 Nub_t<TRAY_CN,ITEM>::iHash(void)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  return m_iHash;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total number of actual items                                           */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM>
+void Nub_t<TRAY_CN,ITEM>::vHashInc(i8 iDelta)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  m_iHash += iDelta;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get total number of head items                                             */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM>
@@ -265,6 +291,7 @@ void Nub_t<TRAY_CN,ITEM>::vReset(void)
   MemLib::vZero(m_axaItem,(sizeof(ITEM) * m_nMaxItems),TRAY_CN);
   
   m_i_Offset = 8;
+  m_iHash    = 0;
 }
 
 /*----------------------------------------------------------------------------*/
