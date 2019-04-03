@@ -51,31 +51,31 @@ namespace Data
                            Column* pCol, Datum* pDatum);
   
     static void vEncodeBcd(RowNub* pRowNub,
-                           CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                           i8& i_Tail, i8& i_Offset,
                            Column* pColumn, Datum* pDatum, i8& iHash);
     static void vEncodeBol(RowNub* pRowNub,
-                           CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                           i8& i_Tail, i8& i_Offset,
                            Column* pColumn, Datum* pDatum, i8& iHash);
     static void vEncodeDte(RowNub* pRowNub,
-                           CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                           i8& i_Tail, i8& i_Offset,
                            Column* pColumn, Datum* pDatum, i8& iHash);
     static void vEncodeFlt(RowNub* pRowNub,
-                           CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                           i8& i_Tail, i8& i_Offset,
                            Column* pColumn, Datum* pDatum, i8& iHash);
     static void vEncodeInt(RowNub* pRowNub,
-                           CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                           i8& i_Tail, i8& i_Offset,
                            Column* pColumn, Datum* pDatum, i8& iHash);
     static void vEncodeIvl(RowNub* pRowNub,
-                           CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                           i8& i_Tail, i8& i_Offset,
                            Column* pColumn, Datum* pDatum, i8& iHash);
     static void vEncodeTme(RowNub* pRowNub,
-                           CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                           i8& i_Tail, i8& i_Offset,
                            Column* pColumn, Datum* pDatum, i8& iHash);
     static void vEncodeTsp(RowNub* pRowNub,
-                           CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                           i8& i_Tail, i8& i_Offset,
                            Column* pColumn, Datum* pDatum, i8& iHash);
     static void vEncodeVch(RowNub* pRowNub,
-                           CacheLine xaCacheLine[], i8& i_Tail, i8& i_Offset,
+                           i8& i_Tail, i8& i_Offset,
                            Column* pColumn, Datum* pDatum, i8& iHash);
   
     static eMN eEncodingBcd(Datum* pDatum, i8& nBytesEncoded);
