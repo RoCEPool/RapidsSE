@@ -68,7 +68,7 @@
 
   iPartitions node.partitions == not if
     EC_CLUSTER_PARTITIONS_MISMATCH
-    grid::thisNode@ pJob_Sanity job.error!
+    pJob_Sanity <ERROR_JOB>
   else
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -78,7 +78,7 @@
 
     iSize node.size == not if
       EC_CLUSTER_SIZE_MISMATCH
-      grid::thisNode@ pJob_Sanity job.error!
+      pJob_Sanity <ERROR_JOB>
     else
       "row: ('"
       grid::thisNodeName@ str.cat
