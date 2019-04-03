@@ -32,7 +32,7 @@ JobClass xJobClass_AnalyzeTable =
 
   eJob_checkCluster,         // prompt check function
   pJob_AnalyzeTable_pre,     // prompt pre-process function
-  vJob_AnalyzeTable_post,    // prompt post-process function
+  vJob_post,                 // prompt post-process function
   nullptr,                   // job new function
   vJob_AnalyzeTable_delete,  // job delete function
   vJob_send,                 // job pre-send function
@@ -216,36 +216,6 @@ Job* Jobs::pJob_AnalyzeTable_pre(Interface::Session* pSession)
   }
   
   return pJob_AnalyzeTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_AnalyzeTable_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_AnalyzeTable* pJob_AnalyzeTable = _pJob_AnalyzeTable(pJob);
-  
-  if ( pJob_AnalyzeTable->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_AnalyzeTable->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
-  else {
-    if (gpAttachMap->m_bMetadata) {
-      vTrace("metadata: %s\n"_Stz, pJob_AnalyzeTable->m_sMetadata.aStz());
-    }
-    
-    i8 iRowsProcessed = 0;
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("%s\n"_Stz, pJob_AnalyzeTable->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += *pJob_AnalyzeTable->m_xNode[i_Node].m_ixRowsProcessed;
-    }
-    
-    vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

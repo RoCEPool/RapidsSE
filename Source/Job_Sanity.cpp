@@ -32,7 +32,7 @@ JobClass xJobClass_Sanity =
 
   eJob_checkCluster, // prompt check function
   pJob_Sanity_pre,   // prompt pre-process function
-  vJob_Sanity_post,  // prompt post-process function
+  vJob_post,         // prompt post-process function
   nullptr,           // job new function
   vJob_Sanity_delete,// job delete function
   vJob_send,         // job pre-send function
@@ -213,16 +213,6 @@ Job* Jobs::pJob_Sanity_pre(Interface::Session* pSession)
   }
   
   return pJob_Sanity;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_Sanity_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_Sanity* pJob_Sanity = _pJob_Sanity(pJob);
-  
-  pJob_Sanity->vPrintResult();
 }
 
 /*----------------------------------------------------------------------------*/
