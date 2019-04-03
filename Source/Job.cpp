@@ -548,6 +548,17 @@ eEC Jobs::eJob_checkCluster(Interface::Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
+/* post-execute job function                                                  */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_post(Interface::Session* pSession, Job* pJob)
+{
+  if (pJob->m_bHasError)
+    pJob->vPrintErrors();
+  else
+    pJob->vPrintResult();
+}
+
+/*----------------------------------------------------------------------------*/
 /* pre-send job function                                                      */
 /*----------------------------------------------------------------------------*/
 void Jobs::vJob_send(Job* pJob)

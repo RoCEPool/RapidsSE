@@ -253,6 +253,7 @@ namespace Jobs
   eEC  eJob_checkCluster(Interface::Session* pSession);
   void vJob_recv(Job* pJob);
   void vJob_send(Job* pJob);
+  void vJob_post(Interface::Session* pSession, Job* pJob);
 }
 
 bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch);
