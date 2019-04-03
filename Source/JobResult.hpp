@@ -31,6 +31,8 @@ namespace Jobs
   
     JobResult(void);
     ~JobResult(void) noexcept(false);
+    
+    void vPrintResult(void);
   };
 }
 

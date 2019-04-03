@@ -2,7 +2,10 @@
 /* JobResult.cpp -- Job Result                                                */
 /*============================================================================*/
 
+#include "StorageEngine.h"
 #include "Jobs.h"
+
+extern AttachMap*      gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -53,6 +56,37 @@ JobResult::~JobResult(void) noexcept(false)
 {
   if (m_pResponseVec)
     delete m_pResponseVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print result                                                               */
+/*----------------------------------------------------------------------------*/
+void JobResult::vPrintResult(void)
+{
+  i8 iResponses = m_pResponseVec->nItems();
+  RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
+  
+  if ( m_bHasError ) {
+    
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, m_pResponseVec->pGet(i_Node)->m_eErrorCode);
+    }
+    
+  }
+  else {
+    
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("metadata: %s\n"_Stz, m_sMetadata.aStz());
+    }
+    
+    i8 iRowsProcessed = 0;
+    
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      vTrace("%s\n"_Stz, m_pResponseVec->pGet(i_Node)->m_sResponse.aChar());
+      iRowsProcessed += *m_pResponseVec->pGet(i_Node)->m_ixRowsProcessed;
+    }
+    vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
