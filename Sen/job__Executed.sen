@@ -46,6 +46,7 @@
      error pJob__Executed jobExecuted.error!
   then
 
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set the originator node as the send target node
@@ -91,8 +92,8 @@
   pJob__Executed job.participant@ to iParticipantNode
 
   // get the error code from job__executed
-  pJob__Executed jobExecuted.error@ to error
-
+  //pJob__Executed jobExecuted.error@ to error
+/*
   error EC_NONE == if
 
     // get the response string from job__executed and set in pJob
@@ -114,6 +115,9 @@
     error iParticipantNode pJobOriginator job.error!
 
   then
+*/
+
+  pJob__Executed iParticipantNode pJobOriginator job.participantResponse!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __executed job on this originating node

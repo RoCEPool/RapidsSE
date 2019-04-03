@@ -471,6 +471,7 @@
   static void vJobParticipantFetch(Tasks::MP_Task mpTask);
   static void vJobParticipantStore(Tasks::MP_Task mpTask);
   static void vJobParticipantResponseStore(Tasks::MP_Task mpTask);
+  static void vJobParticipantHasError(Tasks::MP_Task mpTask);
   static void vJobPartitionsFetch(Tasks::MP_Task mpTask);
   static void vJobPhaseFetch(Tasks::MP_Task mpTask);
   static void vJobPhaseStore(Tasks::MP_Task mpTask);

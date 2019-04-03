@@ -69,6 +69,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.participant@"_Stz,     &Step::vJobParticipantFetch);
   vAddStep("job.participant!"_Stz,     &Step::vJobParticipantStore);
   vAddStep("job.participantResponse!"_Stz, &Step::vJobParticipantResponseStore);
+  vAddStep("job.participantHasError"_Stz,  &Step::vJobParticipantHasError);
   vAddStep("job.partitions@"_Stz,      &Step::vJobPartitionsFetch);
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("job.phase!"_Stz,           &Step::vJobPhaseStore);
@@ -564,7 +565,7 @@ void Step::vJobErrorFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
     THROW_INVALID_DSTACK("job.error@"_Stz);
   
-  mpTask->m_pDataStack->vPushI8(pJob->m_xNode[iNode].m_eErrorCode);
+  mpTask->m_pDataStack->vPushI8(pJob->m_xResponse.m_eErrorCode);
   
   EXIT();
 }
@@ -589,7 +590,7 @@ void Step::vJobErrorStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobError) )
     THROW_INVALID_DSTACK("job.error!"_Stz);
   
-  //pJob->m_bHasError = true;
+  pJob->m_bHasError = true;
   //pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
   pJob->m_xResponse.m_eErrorCode = (eEC)iJobError;
   
@@ -1123,6 +1124,32 @@ void Step::vJobParticipantStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.participantHasError -- has any participant returned an error ?         */
+/*----------------------------------------------------------------------------*/
+void Step::vJobParticipantHasError(MP_Task mpTask)
+{
+  ENTRY("job.participantHasError"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.participantHasError@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  i8 bHasError = false;
+  i8 iResponses = pJob->m_pResponseVec->nItems();
+  
+  for (i8 i_Response = 0; i_Response < iResponses; i_Response++) {
+    if (pJob->m_pResponseVec->pGet(i_Response)->m_eErrorCode != EC_NONE) {
+      bHasError = true;
+      break;
+    }
+  }
+  mpTask->m_pDataStack->vPushI8(bHasError);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.participantResponse! -- store the job response for the partcipant node */
 /*----------------------------------------------------------------------------*/
 void Step::vJobParticipantResponseStore(MP_Task mpTask)
@@ -1156,6 +1183,9 @@ void Step::vJobParticipantResponseStore(MP_Task mpTask)
   pResponse->m_ixRowsInvalid   = pParticipantJob->m_xResponse.m_ixRowsInvalid;
   pResponse->m_ixRowsSkipped   = pParticipantJob->m_xResponse.m_ixRowsSkipped;
   pResponse->m_eErrorCode      = pParticipantJob->m_xResponse.m_eErrorCode;
+  
+  if (pResponse->m_eErrorCode != EC_NONE)
+    pJob->m_bHasError = true;
   
   // add the response to the vector of responses
   pJob->m_pResponseVec->vAdd(pResponse);
@@ -1423,7 +1453,7 @@ void Step::vJobResponseFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
     THROW_INVALID_DSTACK("job.response@"_Stz);
   
-  mpTask->m_pDataStack->vPushS4K(pJob->m_xNode[iNode].m_sResponse);
+  mpTask->m_pDataStack->vPushS4K(pJob->m_xResponse.m_sResponse);
   
   EXIT();
 }
@@ -1509,7 +1539,7 @@ void Step::vJobRowsInvalidFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
     THROW_INVALID_DSTACK("job.rowsInvalid@"_Stz);
   
-  i8 iRowsInvalid = *pJob->m_xNode[iNode].m_ixRowsInvalid;
+  i8 iRowsInvalid = *pJob->m_xResponse.m_ixRowsInvalid;
   mpTask->m_pDataStack->vPushI8(iRowsInvalid);
   
   EXIT();
@@ -1558,7 +1588,7 @@ void Step::vJobRowsProcessedFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
     THROW_INVALID_DSTACK("job.rowsProcessed@"_Stz);
   
-  i8 iRowsProcessed = *pJob->m_xNode[iNode].m_ixRowsProcessed;
+  i8 iRowsProcessed = *pJob->m_xResponse.m_ixRowsProcessed;
   mpTask->m_pDataStack->vPushI8(iRowsProcessed);
   
   EXIT();
@@ -1607,7 +1637,7 @@ void Step::vJobRowsSkippedFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
     THROW_INVALID_DSTACK("job.rowsSkipped@"_Stz);
  
-  i8 iRowsSkipped = *pJob->m_xNode[iNode].m_ixRowsSkipped;
+  i8 iRowsSkipped = *pJob->m_xResponse.m_ixRowsSkipped;
 
   mpTask->m_pDataStack->vPushI8(iRowsSkipped);
   

@@ -44,6 +44,8 @@ void Step::vJob__BegunErrorFetch(MP_Task mpTask)
 {
   ENTRY("vJob__BegunErrorFetch"_Stz);
   
+  RASSERT(0);
+  
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("jobBegun.error@"_Stz);
@@ -61,6 +63,8 @@ void Step::vJob__BegunErrorFetch(MP_Task mpTask)
 void Step::vJob__BegunErrorStore(MP_Task mpTask)
 {
   ENTRY("vJob__BegunErrorStore"_Stz);
+  
+  RASSERT(0);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -85,6 +89,8 @@ void Step::vJob__CancelledErrorFetch(MP_Task mpTask)
 {
   ENTRY("vJob__CancelledErrorFetch"_Stz);
   
+  RASSERT(0);
+  
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("jobCancelled.error@"_Stz);
@@ -102,6 +108,8 @@ void Step::vJob__CancelledErrorFetch(MP_Task mpTask)
 void Step::vJob__CancelledErrorStore(MP_Task mpTask)
 {
   ENTRY("vJob__CancelledErrorStore"_Stz);
+  
+  RASSERT(0);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -129,11 +137,11 @@ void Step::vJob__ExecutedErrorFetch(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("jobExecuted.error@"_Stz);
-  
+
   Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
   
-  mpTask->m_pDataStack->vPushI8(pJob__Executed->m_eErrorCode);
-  
+  mpTask->m_pDataStack->vPushI8(pJob__Executed->m_xResponse.m_eErrorCode);
+
   EXIT();
 }
 
@@ -148,13 +156,13 @@ void Step::vJob__ExecutedErrorStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("jobExecuted.error!"_Stz);
   Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
-  
+
   i8 iErrorCode;
   if ( ! mpTask->m_pDataStack->bPop(iErrorCode) )
     THROW_INVALID_DSTACK("jobExecuted.error!"_Stz);
-  
-  pJob__Executed->m_eErrorCode = (eEC)iErrorCode;
-  
+
+  pJob__Executed->m_xResponse.m_eErrorCode = (eEC)iErrorCode;
+
   ActionSequence::vAdd(pJob__Executed,AN_ERROR_CODE,iErrorCode);
   
   EXIT();
@@ -172,7 +180,7 @@ void Step::vJob__ExecutedResponseFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("jobExecuted.response@"_Stz);
   Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
   
-  mpTask->m_pDataStack->vPushS256(pJob__Executed->m_sResponse);
+  mpTask->m_pDataStack->vPushS4K(pJob__Executed->m_xResponse.m_sResponse);
   
   EXIT();
 }
@@ -193,7 +201,7 @@ void Step::vJob__ExecutedResponseStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sResponse) )
     THROW_INVALID_DSTACK("jobExecuted.response!"_Stz);
   
-  pJob__Executed->m_sResponse = sResponse;
+  pJob__Executed->m_xResponse.m_sResponse = sResponse;
   
   EXIT();
 }
@@ -210,7 +218,7 @@ void Step::vJob__ExecutedRowsInvalidFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("jobExecuted.rowsProcessed@"_Stz);
   Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
   
-  mpTask->m_pDataStack->vPushI8(pJob__Executed->m_iRowsInvalid);
+  mpTask->m_pDataStack->vPushI8(*pJob__Executed->m_xResponse.m_ixRowsInvalid);
   
   EXIT();
 }
@@ -231,7 +239,7 @@ void Step::vJob__ExecutedRowsInvalidStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iRowsInvalid) )
     THROW_INVALID_DSTACK("jobExecuted.rowsInvalid!"_Stz);
   
-  pJob__Executed->m_iRowsInvalid = iRowsInvalid;
+  pJob__Executed->m_xResponse.m_ixRowsInvalid = iRowsInvalid;
   
   EXIT();
 }
@@ -242,13 +250,13 @@ void Step::vJob__ExecutedRowsInvalidStore(MP_Task mpTask)
 void Step::vJob__ExecutedRowsProcessedFetch(MP_Task mpTask)
 {
   ENTRY("vJob__ExecutedRowsProcessedFetch"_Stz);
-  
+
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("jobExecuted.rowsProcessed@"_Stz);
   Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
   
-  mpTask->m_pDataStack->vPushI8(pJob__Executed->m_iRowsProcessed);
+  mpTask->m_pDataStack->vPushI8(*pJob__Executed->m_xResponse.m_ixRowsProcessed);
   
   EXIT();
 }
@@ -269,7 +277,7 @@ void Step::vJob__ExecutedRowsProcessedStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iRowsProcessed) )
     THROW_INVALID_DSTACK("jobExecuted.rowsProcessed!"_Stz);
   
-  pJob__Executed->m_iRowsProcessed = iRowsProcessed;
+  pJob__Executed->m_xResponse.m_ixRowsProcessed = iRowsProcessed;
   
   EXIT();
 }
@@ -286,7 +294,7 @@ void Step::vJob__ExecutedRowsSkippedFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("jobExecuted.rowsSkipped@"_Stz);
   Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
   
-  mpTask->m_pDataStack->vPushI8(pJob__Executed->m_iRowsSkipped);
+  mpTask->m_pDataStack->vPushI8(*pJob__Executed->m_xResponse.m_ixRowsSkipped);
   
   EXIT();
 }
@@ -307,7 +315,7 @@ void Step::vJob__ExecutedRowsSkippedStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iRowsSkipped) )
     THROW_INVALID_DSTACK("jobExecuted.rowsSkipped!"_Stz);
   
-  pJob__Executed->m_iRowsSkipped = iRowsSkipped;
+  pJob__Executed->m_xResponse.m_ixRowsSkipped = iRowsSkipped;
   
   EXIT();
 }

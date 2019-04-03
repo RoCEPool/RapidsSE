@@ -110,11 +110,11 @@ Job__Executed::Job__Executed(Job* pDistJob)
   m_iParentId = pDistJob->m_iJobId;
   m_i_ActionRoot = pDistJob->m_i_ActionRoot;
 
-  m_sResponse      = ""_Stz;
-  m_iRowsProcessed = 0;
-  m_iRowsInvalid   = 0;
-  m_iRowsSkipped   = 0;
-  m_eErrorCode     = EC_NONE;
+//  m_sResponse      = ""_Stz;
+//  m_iRowsProcessed = 0;
+//  m_iRowsInvalid   = 0;
+//  m_iRowsSkipped   = 0;
+//  m_eErrorCode     = EC_NONE;
   
   _checkInitialised_(CN_JOB__EXECUTED);
   

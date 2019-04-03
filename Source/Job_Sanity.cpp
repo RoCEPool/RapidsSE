@@ -222,21 +222,46 @@ void Jobs::vJob_Sanity_post(Interface::Session* pSession, Job* pJob)
 {
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJob);
   
+//  if ( pJob_Sanity->m_bHasError ) {
+//    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+//      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_Sanity->m_xNode[i_Node].m_eErrorCode]);
+//    }
+//  }
+//  else {
+//    if (gpAttachMap->m_bMetadata) {
+//      vTrace("metadata: %s\n"_Stz, pJob_Sanity->m_sMetadata.aStz());
+//    }
+//
+//    i8 iRowsProcessed = 0;
+//
+//    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+//      vTrace("%s\n"_Stz, pJob_Sanity->m_xNode[i_Node].m_sResponse.aChar());
+//      iRowsProcessed += *pJob_Sanity->m_xNode[i_Node].m_ixRowsProcessed;
+//    }
+//    vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
+//  }
+  
+  i8 iResponses = pJob_Sanity->m_pResponseVec->nItems();
+  RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
+  
   if ( pJob_Sanity->m_bHasError ) {
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_Sanity->m_xNode[i_Node].m_eErrorCode]);
+    
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, pJob_Sanity->m_pResponseVec->pGet(i_Node)->m_eErrorCode);
     }
+    
   }
   else {
+    
     if (gpAttachMap->m_bMetadata) {
       vTrace("metadata: %s\n"_Stz, pJob_Sanity->m_sMetadata.aStz());
     }
-    
+
     i8 iRowsProcessed = 0;
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("%s\n"_Stz, pJob_Sanity->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += *pJob_Sanity->m_xNode[i_Node].m_ixRowsProcessed;
+
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      vTrace("%s\n"_Stz, pJob_Sanity->m_pResponseVec->pGet(i_Node)->m_sResponse.aChar());
+      iRowsProcessed += *pJob_Sanity->m_pResponseVec->pGet(i_Node)->m_ixRowsProcessed;
     }
     vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
   }
