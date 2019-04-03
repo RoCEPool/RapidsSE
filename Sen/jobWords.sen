@@ -238,6 +238,9 @@
 
   loop
 
+  // create the response vector in the orginating job to receive responses
+  pJob job.createResponseVec
+
   // wait for ack from deciding job__Ended
   task::wait
 ;
