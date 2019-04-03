@@ -18,7 +18,7 @@ namespace Data
   
     static void vEncode(RowNub* pRowNub, Column* pColumn, Datum* pDatum);
   
-    static void vPrint(CacheLine xaCacheLine[], i8 i_Row, Column* pCol);
+    static void vPrint(RowNub* pRowNub, i8 i_Row, Column* pCol);
   
     static void vRecord(Record* pRec,
                         CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec);

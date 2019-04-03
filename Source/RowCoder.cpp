@@ -141,12 +141,14 @@ i8 RowCoder::nLines(RowNub* pRowNub, i8 i_Row, ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 /* print decoded datum from cache line                                        */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vPrint(CacheLine xaCacheLine[], i8 i_Row, Column* pCol)
+void RowCoder::vPrint(RowNub* pRowNub, i8 i_Row, Column* pCol)
 {
   Datum oDatum;
   Record* pRec = new Record;
   
-  vDecode(xaCacheLine,i_Row,pCol,&oDatum);
+  CacheLine* aCacheLine = pRowNub->aGet(i_Row);
+  
+  vDecode(aCacheLine,i_Row,pCol,&oDatum);
   
   eDM eDatum = pCol->eDatumType();
   switch (eDatum) {
