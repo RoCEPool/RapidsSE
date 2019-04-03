@@ -68,7 +68,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.parentId@"_Stz,        &Step::vJobParentIdFetch);
   vAddStep("job.participant@"_Stz,     &Step::vJobParticipantFetch);
   vAddStep("job.participant!"_Stz,     &Step::vJobParticipantStore);
-  vAddStep("job.participantError!"_Stz,&Step::vJobParticipantErrorStore);
+  vAddStep("job.participantResponse!"_Stz, &Step::vJobParticipantResponseStore);
   vAddStep("job.partitions@"_Stz,      &Step::vJobPartitionsFetch);
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("job.phase!"_Stz,           &Step::vJobPhaseStore);
@@ -1122,39 +1122,45 @@ void Step::vJobParticipantStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.participantError! -- store the job error for the partcipant node       */
+/* job.participantResponse! -- store the job response for the partcipant node */
 /*----------------------------------------------------------------------------*/
-void Step::vJobParticipantErrorStore(MP_Task mpTask)
+void Step::vJobParticipantResponseStore(MP_Task mpTask)
 {
-  ENTRY("vJobParticipantErrorStore"_Stz);
+  ENTRY("vJobParticipantResponseStore"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.participantError!"_Stz);
+    THROW_INVALID_DSTACK("job.participantResponse!"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
   i8 iNode;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
-    THROW_INVALID_DSTACK("job.participantError!"_Stz);
+    THROW_INVALID_DSTACK("job.participantResponse!"_Stz);
   
-  i8 iJobError;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iJobError) )
-    THROW_INVALID_DSTACK("job.participantError!"_Stz);
+  Object* pParticipantJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pParticipantJobPtr) )
+    THROW_INVALID_DSTACK("job.participantResponse!"_Stz);
+  Job* pParticipantJob = _pJob(pParticipantJobPtr);
   
   // there should be a response vector
   RASSERT( pJob->m_pResponseVec );
   
   // create a new response
-  Response* pResonse = new Response;
+  Response* pResponse = new Response;
   
   // set node and error in the response
-  pResonse->m_iNode       = iNode;
-  pResonse->m_eErrorCode  = (eEC)iJobError;
+  pResponse->m_iNode           = iNode;
+  pResponse->m_sResponse       = pParticipantJob->m_xResponse.m_sResponse;
+  pResponse->m_ixRowsProcessed = pParticipantJob->m_xResponse.m_ixRowsProcessed;
+  pResponse->m_ixRowsInvalid   = pParticipantJob->m_xResponse.m_ixRowsInvalid;
+  pResponse->m_ixRowsSkipped   = pParticipantJob->m_xResponse.m_ixRowsSkipped;
+  pResponse->m_eErrorCode      = pParticipantJob->m_xResponse.m_eErrorCode;
   
   // add the response to the vector of responses
-  pJob->m_pResponseVec->vAdd(pResonse);
+  pJob->m_pResponseVec->vAdd(pResponse);
   
-  ActionSequence::vAdd(pJob,AN_ERROR_CODE,iJobError);
+  if (pResponse->m_eErrorCode != EC_NONE)
+    ActionSequence::vAdd(pJob,AN_ERROR_CODE,pResponse->m_eErrorCode);
   
   EXIT();
 }
