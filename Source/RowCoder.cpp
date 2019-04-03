@@ -178,7 +178,7 @@ void RowCoder::vPrint(RowNub* pRowNub, i8 i_Row, Column* pCol)
 /* sprint decode row from cache line into string                              */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecord(Record* pRec,
-                       CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec)
+                       RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec)
 {
   // get no of columns
   i8 nColumns = pColVec->nItems();

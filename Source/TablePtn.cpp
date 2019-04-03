@@ -586,8 +586,9 @@ void TablePtn::vPublish(void)
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
     CacheLine* aRowData = m_pCurrentRowBuffer->pRow(i_Row);
+    RowTray* pRowTray = m_pCurrentRowBuffer->pRowTray();
     //RowCoder::vString(sRowString,m_pCurrentRowBuffer->pTable()->pColumnVec(), aRowData);
-    RowCoder::vRecord(hvRec,aRowData,0,pColVec);
+    RowCoder::vRecord(hvRec,*pRowTray,aRowData,0,pColVec);
     vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
   }
   

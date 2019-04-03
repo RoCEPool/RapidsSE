@@ -21,7 +21,7 @@ namespace Data
     static void vPrint(RowNub* pRowNub, i8 i_Row, Column* pCol);
   
     static void vRecord(Record* pRec,
-                        CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec);
+                        RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec);
   
   private:
     static void vAppend(Record* pRec, CacheLine xaCacheLine[], i8 i_Row, Column* pCol);

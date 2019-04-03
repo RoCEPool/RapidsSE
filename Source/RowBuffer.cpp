@@ -541,6 +541,16 @@ void RowBuffer::vRestoreTable(Table* pTable)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the row tray                                                           */
+/*----------------------------------------------------------------------------*/
+RowTray* RowBuffer::pRowTray(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  return &m_xRowTray;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show entry                                                                 */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vShowRow(i8 iRowNo)
@@ -560,7 +570,7 @@ void RowBuffer::vShowRow(i8 iRowNo)
   //Record* pRecord = new Record;
   HV_Rec hvRec;
   
-  RowCoder::vRecord(hvRec,aRowCacheLine,0,pColVec);
+  RowCoder::vRecord(hvRec,m_xRowTray,aRowCacheLine,0,pColVec);
 
   vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
   
