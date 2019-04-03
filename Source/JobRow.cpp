@@ -74,7 +74,6 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   bool bValidDatum;
   char* aSrc = aRecord->aChar();
   
-  i8 i_Offset = 8;
   
   //  char caRow[1024];
   //  StrLib::vCopyLen(caRow,aRecord->aChar(),nBytes);
@@ -135,8 +134,8 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     // encode datum into cache line
     
     //pDatum->vDatum((byte*)sDst.aChar());
-    RowCoder::vEncode(m_oRowParts,i_Offset,pColumn,&oDatum,m_iHash);
-    //MemLib::vWordDump(aCacheLine,sizeof(CacheLine));
+    RowCoder::vEncode(m_oRowParts,pColumn,&oDatum,m_iHash);
+    //MemLib::vWordDump(m_oRowParts.aGet(0),sizeof(CacheLine));
     //RowEncoder::vPrint(pColumn,aCacheLine);
 
   } // for each column

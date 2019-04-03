@@ -17,6 +17,8 @@ namespace Structures
     i8 m_nTailItems; // number of items from the tail
     ITEM* m_axaItem; // array of items
   
+    i8 m_i_Offset;   // encoding offset
+  
     // must be last
     Footer m_xFooter;
   
@@ -31,6 +33,8 @@ namespace Structures
     i8    nHeads(void);
     i8    nItems(void);
     i8    nMaxItems(void);
+    i8    i_Offset(void);
+    void  vOffsetInc(i8 iDelta);
     void  vReset(void);
     i8    nTails(void);
   
@@ -107,6 +111,8 @@ Nub_t<TRAY_CN,ITEM>::Nub_t(void)
   m_nHeadItems = 0; // number of items from the head
   m_nTailItems = 0; // number of items from the tail
   m_axaItem    = nullptr;  // set of items
+  
+  m_i_Offset   = 8;
   
   i8 nBytes = sizeof(Nub_t<TRAY_CN,ITEM>);
   _checkInitialisedSize_(nBytes);
@@ -213,6 +219,28 @@ i8 Nub_t<TRAY_CN,ITEM>::nItems(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get total number of actual items                                           */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM>
+i8 Nub_t<TRAY_CN,ITEM>::i_Offset(void)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  return m_i_Offset;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total number of actual items                                           */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM>
+void Nub_t<TRAY_CN,ITEM>::vOffsetInc(i8 iDelta)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  m_i_Offset += iDelta;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get maximum number of items                                                */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM>
@@ -235,6 +263,8 @@ void Nub_t<TRAY_CN,ITEM>::vReset(void)
   m_nTailItems = 0;
   
   MemLib::vZero(m_axaItem,(sizeof(ITEM) * m_nMaxItems),TRAY_CN);
+  
+  m_i_Offset = 8;
 }
 
 /*----------------------------------------------------------------------------*/
