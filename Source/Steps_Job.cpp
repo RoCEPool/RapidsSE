@@ -589,8 +589,9 @@ void Step::vJobErrorStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobError) )
     THROW_INVALID_DSTACK("job.error!"_Stz);
   
-  pJob->m_bHasError = true;
-  pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
+  //pJob->m_bHasError = true;
+  //pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
+  pJob->m_xResponse.m_eErrorCode = (eEC)iJobError;
   
   ActionSequence::vAdd(pJob,AN_ERROR_CODE,iJobError);
   
@@ -1447,7 +1448,8 @@ void Step::vJobResponseStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sResponse) )
     THROW_INVALID_DSTACK("job.response!"_Stz);
   
-  pJob->m_xNode[iNode].m_sResponse = sResponse;
+  //pJob->m_xNode[iNode].m_sResponse = sResponse;
+  pJob->m_xResponse.m_sResponse = sResponse;
   
   EXIT();
 }
@@ -1533,7 +1535,9 @@ void Step::vJobRowsInvalidStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iRowsInvalid) )
     THROW_INVALID_DSTACK("job.rowsInvalid!"_Stz);
   
-  pJob->m_xNode[iNode].m_ixRowsInvalid = iRowsInvalid;
+  //pJob->m_xNode[iNode].m_ixRowsInvalid = iRowsInvalid;
+  
+  pJob->m_xResponse.m_ixRowsInvalid = iRowsInvalid;
   
   EXIT();
 }
@@ -1580,7 +1584,9 @@ void Step::vJobRowsProcessedStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iRowsProcessed) )
     THROW_INVALID_DSTACK("job.rowsProcessed!"_Stz);
   
-  pJob->m_xNode[iNode].m_ixRowsProcessed = iRowsProcessed;
+  //pJob->m_xNode[iNode].m_ixRowsProcessed = iRowsProcessed;
+  
+  pJob->m_xResponse.m_ixRowsProcessed = iRowsProcessed;
   
   EXIT();
 }
@@ -1628,7 +1634,9 @@ void Step::vJobRowsSkippedStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iRowsSkipped) )
     THROW_INVALID_DSTACK("job.rowsSkipped!"_Stz);
   
-  pJob->m_xNode[iNode].m_ixRowsSkipped = iRowsSkipped;
+  //pJob->m_xNode[iNode].m_ixRowsSkipped = iRowsSkipped;
+  
+  pJob->m_xResponse.m_ixRowsSkipped = iRowsSkipped;
   
   EXIT();
 }
