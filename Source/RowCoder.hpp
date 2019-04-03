@@ -67,7 +67,7 @@ namespace Data
     static eMN eEncodingTsp(Datum* pDatum, i8& nBytesEncoded);
     static eMN eEncodingVch(Datum* pDatum, i8& nBytesEncoded);
   
-    static eMN eGetEncoding(i8 i_Column, CacheLine* aCacheLine, i8& i_Offset);
+    static eMN eGetEncoding(CacheLine* aCacheLine, i8 i_Column, i8& i_Offset);
   
     static void vInitCacheLine(CacheLine* aCacheLine);
   
