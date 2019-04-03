@@ -68,7 +68,8 @@ void Step::vJob_WriteRowHashRow(MP_Task mpTask)
   else {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // hash the record to a partition
-    pJob_WriteRow->m_iPartitionId = pJob_WriteRow->m_pTable->iRowPartition(pJob_WriteRow->m_iHash);
+    i8 iHash = pJob_WriteRow->m_oRowParts.iHash();
+    pJob_WriteRow->m_iPartitionId = pJob_WriteRow->m_pTable->iRowPartition(iHash);
     pJob_InsertRow->m_iPartitionId = pJob_WriteRow->m_iPartitionId ;
 
     mpTask->m_pDataStack->vPushI8(1);

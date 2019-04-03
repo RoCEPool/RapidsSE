@@ -12,7 +12,6 @@ namespace Jobs
     Table*      m_pTable;       // table pointer
     RowParts    m_oRowParts;    // tray of row parts
     i8          m_nRowBytes;    // length of formatted row
-    i8          m_iHash;        // row hash
     Formatters  m_oFormatters;  // formatters
     
   public:

@@ -75,6 +75,7 @@ namespace Structures
     i8    iAllotTail(void);
     i8    nFree(void);
     ITEM* aGet(i8 i_Item);
+    i8    iHash(void);
     i8    nHeads(void);
     i8    nItems(void);
     void  vReset(void);
@@ -477,6 +478,19 @@ ITEM* TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::aGet(i8 i_Item)
   ITEM* aItem = m_oNub.aGet(i_Item);
   
   return aItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total number of head items                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM, i8 MAX_ITEMS>
+i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::iHash(void)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  i8 iHash = m_oNub.iHash();
+  
+  return iHash;
 }
 
 /*----------------------------------------------------------------------------*/
