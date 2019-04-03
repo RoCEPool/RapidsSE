@@ -227,7 +227,6 @@ void Jobs::vJob_CompactIndex_post(Interface::Session* pSession, Job* pJob)
     pJob->vPrintErrors();
   else
     pJob->vPrintSuccess();
-  }
 }
 
 /*----------------------------------------------------------------------------*/
