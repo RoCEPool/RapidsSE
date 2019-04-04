@@ -57,9 +57,9 @@ namespace Data
 
   typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
   
-  typedef Nub_t<CN_ROWTRAY,CacheLine> RowNub;
-  typedef TrayNL_t<CN_ROWTRAY,CacheLine,C_CACHELINES> RowParts;
-  typedef TrayNL_t<CN_ROWTRAY,CacheLine,C_MAX_ROWS> RowTray;
+  typedef Nub_t<CN_ROWTRAY,CacheLine,Table> RowNub;
+  typedef TrayNL_t<CN_ROWTRAY,CacheLine,Table,C_CACHELINES> RowParts;
+  typedef TrayNL_t<CN_ROWTRAY,CacheLine,Table,C_MAX_ROWS> RowTray;
 }
 
 using namespace Data;

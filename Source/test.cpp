@@ -113,8 +113,7 @@ void vTest3(void)
 /*----------------------------------------------------------------------------*/
 void vTest4(void)
 {
-  TrayNL_t<CN_NONE,CacheLine,16> xTrayLines;
-  
+
   vTrace("vTest4\n"_Stz);
 }
 
