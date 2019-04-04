@@ -29,23 +29,23 @@ namespace Data
   
     static i8 nDataBytes(eMN eEncoding, eDM eDatum);
   
-    static void vDecodeBcd(CacheLine xaCacheLine[], i8 i_Row,
+    static void vDecodeBcd(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
                            Column* pCol, Datum* pDatum);
-    static void vDecodeBol(CacheLine xaCacheLine[], i8 i_Row,
+    static void vDecodeBol(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
                            Column* pCol, Datum* pDatum);
-    static void vDecodeDte(CacheLine xaCacheLine[], i8 i_Row,
+    static void vDecodeDte(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
                            Column* pCol, Datum* pDatum);
-    static void vDecodeFlt(CacheLine xaCacheLine[], i8 i_Row,
+    static void vDecodeFlt(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
                            Column* pCol, Datum* pDatum);
-    static void vDecodeInt(CacheLine xaCacheLine[], i8 i_Row,
+    static void vDecodeInt(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
                            Column* pCol, Datum* pDatum);
-    static void vDecodeIvl(CacheLine xaCacheLine[], i8 i_Row,
+    static void vDecodeIvl(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
                            Column* pCol, Datum* pDatum);
-    static void vDecodeTme(CacheLine xaCacheLine[], i8 i_Row,
+    static void vDecodeTme(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
                            Column* pCol, Datum* pDatum);
-    static void vDecodeTsp(CacheLine xaCacheLine[], i8 i_Row,
+    static void vDecodeTsp(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
                            Column* pCol, Datum* pDatum);
-    static void vDecodeVch(CacheLine xaCacheLine[], i8 i_Row,
+    static void vDecodeVch(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
                            Column* pCol, Datum* pDatum);
   
     static void vEncodeBcd(RowNub* pRowNub, Column* pColumn, Datum* pDatum);

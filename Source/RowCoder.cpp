@@ -74,15 +74,15 @@ void RowCoder::vDecode(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
   eDM eDatum = pCol->eDatumType();
   
   switch (eDatum) {
-    case DM_BCD: vDecodeBcd(xaCacheLine,i_Row,pCol,pDatum); break;
-    case DM_BOL: vDecodeBol(xaCacheLine,i_Row,pCol,pDatum); break;
-    case DM_DTE: vDecodeDte(xaCacheLine,i_Row,pCol,pDatum); break;
-    case DM_FLT: vDecodeFlt(xaCacheLine,i_Row,pCol,pDatum); break;
-    case DM_INT: vDecodeInt(xaCacheLine,i_Row,pCol,pDatum); break;
-    case DM_IVL: vDecodeIvl(xaCacheLine,i_Row,pCol,pDatum); break;
-    case DM_TME: vDecodeTme(xaCacheLine,i_Row,pCol,pDatum); break;
-    case DM_TSP: vDecodeTsp(xaCacheLine,i_Row,pCol,pDatum); break;
-    case DM_VCH: vDecodeVch(xaCacheLine,i_Row,pCol,pDatum); break;
+    case DM_BCD: vDecodeBcd(pRowNub,xaCacheLine,i_Row,pCol,pDatum); break;
+    case DM_BOL: vDecodeBol(pRowNub,xaCacheLine,i_Row,pCol,pDatum); break;
+    case DM_DTE: vDecodeDte(pRowNub,xaCacheLine,i_Row,pCol,pDatum); break;
+    case DM_FLT: vDecodeFlt(pRowNub,xaCacheLine,i_Row,pCol,pDatum); break;
+    case DM_INT: vDecodeInt(pRowNub,xaCacheLine,i_Row,pCol,pDatum); break;
+    case DM_IVL: vDecodeIvl(pRowNub,xaCacheLine,i_Row,pCol,pDatum); break;
+    case DM_TME: vDecodeTme(pRowNub,xaCacheLine,i_Row,pCol,pDatum); break;
+    case DM_TSP: vDecodeTsp(pRowNub,xaCacheLine,i_Row,pCol,pDatum); break;
+    case DM_VCH: vDecodeVch(pRowNub,xaCacheLine,i_Row,pCol,pDatum); break;
     default:
       NEVER_REACH;
   }
@@ -357,7 +357,7 @@ i8 RowCoder::nDataBytes(eMN eEncoding, eDM eDatum)
 /*----------------------------------------------------------------------------*/
 /* decode decimal from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeBcd(CacheLine xaCacheLine[], i8 i_Row,
+void RowCoder::vDecodeBcd(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
                           Column* pCol, Datum* pDatum)
 {
   CacheLine* aCacheLine = &xaCacheLine[i_Row];
@@ -390,7 +390,7 @@ void RowCoder::vDecodeBcd(CacheLine xaCacheLine[], i8 i_Row,
 /*----------------------------------------------------------------------------*/
 /* decode boolean from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeBol(CacheLine xaCacheLine[], i8 i_Row,
+void RowCoder::vDecodeBol(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
                           Column* pCol, Datum* pDatum)
 {
   CacheLine* aCacheLine = &xaCacheLine[i_Row];
@@ -413,7 +413,7 @@ void RowCoder::vDecodeBol(CacheLine xaCacheLine[], i8 i_Row,
 /*----------------------------------------------------------------------------*/
 /* decode date from given cache line                                          */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeDte(CacheLine xaCacheLine[], i8 i_Row,
+void RowCoder::vDecodeDte(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
                           Column* pCol, Datum* pDatum)
 {
   CacheLine* aCacheLine = &xaCacheLine[i_Row];
@@ -444,7 +444,7 @@ void RowCoder::vDecodeDte(CacheLine xaCacheLine[], i8 i_Row,
 /*----------------------------------------------------------------------------*/
 /* decode float from given cache line                                         */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeFlt(CacheLine xaCacheLine[], i8 i_Row,
+void RowCoder::vDecodeFlt(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
                           Column* pCol, Datum* pDatum)
 {
   CacheLine* aCacheLine = &xaCacheLine[i_Row];
@@ -473,7 +473,7 @@ void RowCoder::vDecodeFlt(CacheLine xaCacheLine[], i8 i_Row,
 /*----------------------------------------------------------------------------*/
 /* decode integer from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeInt(CacheLine xaCacheLine[], i8 i_Row,
+void RowCoder::vDecodeInt(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
                           Column* pCol, Datum* pDatum)
 {
   CacheLine* aCacheLine = &xaCacheLine[i_Row];
@@ -506,7 +506,7 @@ void RowCoder::vDecodeInt(CacheLine xaCacheLine[], i8 i_Row,
 /*----------------------------------------------------------------------------*/
 /* decode interval from given cache line                                      */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeIvl(CacheLine xaCacheLine[], i8 i_Row,
+void RowCoder::vDecodeIvl(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
                           Column* pCol, Datum* pDatum)
 {
   CacheLine* aCacheLine = &xaCacheLine[i_Row];
@@ -535,7 +535,7 @@ void RowCoder::vDecodeIvl(CacheLine xaCacheLine[], i8 i_Row,
 /*----------------------------------------------------------------------------*/
 /* decode time from given cache line                                          */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeTme(CacheLine xaCacheLine[], i8 i_Row,
+void RowCoder::vDecodeTme(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
                           Column* pCol, Datum* pDatum)
 {
   CacheLine* aCacheLine = &xaCacheLine[i_Row];
@@ -566,7 +566,7 @@ void RowCoder::vDecodeTme(CacheLine xaCacheLine[], i8 i_Row,
 /*----------------------------------------------------------------------------*/
 /* decode timestamp from given cache line                                     */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeTsp(CacheLine xaCacheLine[], i8 i_Row,
+void RowCoder::vDecodeTsp(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
                           Column* pCol, Datum* pDatum)
 {
   CacheLine* aCacheLine = &xaCacheLine[i_Row];
@@ -598,7 +598,7 @@ void RowCoder::vDecodeTsp(CacheLine xaCacheLine[], i8 i_Row,
 /*----------------------------------------------------------------------------*/
 /* decode varchar from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeVch(CacheLine xaCacheLine[], i8 i_Row,
+void RowCoder::vDecodeVch(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
                           Column* pCol, Datum* pDatum)
 {
   CacheLine* aCacheLine = &xaCacheLine[i_Row];
