@@ -59,7 +59,6 @@ namespace Jobs
     
     void vAddError(eEC eError);
     
-    void vPrintDataRows(void);
     void vPrintNodeErrors(void);
     void vPrintNodeRows(void);
     void vPrintLoadRows(void);

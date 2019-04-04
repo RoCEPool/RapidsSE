@@ -13,7 +13,7 @@ JobClass xJobClass_FetchRows =
 {
   CN_JOB_FETCHROWS,          // class enum
   JK_LOCAL,                  // job kind
-  RK_NONE,                   // response kind
+  RK_DATA_ROWS,              // response kind
   "fetch rows"_Stz,          // comment about the job
   "fetch"_Stz,               // the prompt command
   nullptr,                   // the second word
@@ -29,7 +29,7 @@ JobClass xJobClass_FetchRows =
   JT_NONE,                   // job trace
   DL_GRAB_READ,              // ddl lock model
   PY_NORMAL,                 // priority
-  JF_NONE,                  // flags
+  JF_NONE,                   // flags
 
   eJob_checkCluster,         // prompt check function
   pJob_FetchRows_pre,        // prompt pre-process function
@@ -430,9 +430,8 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
   
   if ( pJob_FetchRows->m_bHasError ) {
     
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_FetchRows->m_xNode[i_Node].m_eErrorCode]);
-    }
+    vTrace("error: (node%lld) %s\n"_Stz, gpAttachMap->m_pGrid->iThisNode(),
+             aEC[pJob_FetchRows->m_xResponse.m_eErrorCode]);
    
     return;
   }
@@ -442,14 +441,6 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
   }
   
   while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
-    
-    // attempt to pop buffer off the buffer queue
-//    if ( ! pJob_FetchRows->m_pBufferQueue->bPop(&xVariable) ) {
-//      Pthread::vSleepMilli(1);
-//      continue;
-//    }
-//    PtrVal* aPtrVal = xVariable.aNestedPtrVal();
-//    pFetchBuffer = (FetchBuffer*)(aPtrVal->pObj());
     
     pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
     if (! pFetchBuffer) {

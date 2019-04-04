@@ -83,21 +83,6 @@ void JobResult::vAddError(eEC eError)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print data rows                                                            */
-/*----------------------------------------------------------------------------*/
-void JobResult::vPrintDataRows(void)
-{
-  i8 iResponses = m_pResponseVec->nItems();
-  RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
-  
-  if (m_bHasError) {
-    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* print errors                                                               */
 /*----------------------------------------------------------------------------*/
 void JobResult::vPrintNodeErrors(void)
