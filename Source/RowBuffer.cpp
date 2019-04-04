@@ -521,14 +521,11 @@ void RowBuffer::vShowRow(i8 i_Row)
 {
   vTrace("Id: %3lli.%03lli "_Stz,m_iBufferNo,i_Row);
   
-  ColumnVec* pColVec = pTable()->pColumnVec();
-  
   HV_Rec hvRec;
   
-  RowCoder::vRecord(hvRec,m_xRowTray,i_Row,pColVec);
+  RowCoder::vRecord(hvRec,m_xRowTray,i_Row);
 
   vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
-  
 }
 
 /*----------------------------------------------------------------------------*/

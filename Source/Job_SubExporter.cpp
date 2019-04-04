@@ -278,7 +278,6 @@ void Job_SubExporter::vSprintRows(void)
   //Record* pRecord = new Record;
   HV_Rec hvRec;
 
-  ColumnVec* pColVec = m_pJobExport->m_pTable->pColumnVec();
   i8 nRowCount = m_pRowBuffer->nRowCount();
   
   RowTray* pRowTray = m_pRowBuffer->pRowTray();
@@ -286,7 +285,7 @@ void Job_SubExporter::vSprintRows(void)
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
 
     //RowCoder::vString(sRecord,pColVec,aRow);
-    RowCoder::vRecord(hvRec,*pRowTray,i_Row,pColVec);
+    RowCoder::vRecord(hvRec,*pRowTray,i_Row);
     StrLib::vConcat(hvRec->szRecStr()->aChar(),'\n');
     //vTrace("]]%s[[\n"_Stz,sRecord.aStz());
     

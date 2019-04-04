@@ -19,8 +19,7 @@ namespace Data
   
     static void vPrint(RowNub* pRowNub, i8 i_Row, Column* pCol);
   
-    static void vRecord(Record* pRec,
-                        RowNub* pRowNub, i8 i_Row, ColumnVec* pColVec);
+    static void vRecord(Record* pRec, RowNub* pRowNub, i8 i_Row);
   
   private:
     static void vAppend(Record* pRec, RowNub* pRowNub, i8 i_Row, Column* pCol);

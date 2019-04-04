@@ -185,8 +185,7 @@ void RowCoder::vPrint(RowNub* pRowNub, i8 i_Row, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* sprint decode row from cache line into string                              */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecord(Record* pRec,
-                       RowNub* pRowNub, i8 i_Row, ColumnVec* )
+void RowCoder::vRecord(Record* pRec, RowNub* pRowNub, i8 i_Row)
 {
   ColumnVec* pColVec = pRowNub->pDesc()->pColumnVec();
 

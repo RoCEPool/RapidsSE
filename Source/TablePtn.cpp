@@ -575,17 +575,16 @@ void TablePtn::vPublish(void)
     return;
   }
   
-  //Record* pRecord = new Record;
   HV_Rec hvRec;
   
-  ColumnVec* pColVec = m_pCurrentRowBuffer->pTable()->pColumnVec();
+  //ColumnVec* pColVec = m_pCurrentRowBuffer->pTable()->pColumnVec();
 
   // publish the current buffer (last buffer that was added)
   i8 nRowCount = m_pCurrentRowBuffer->nRowCount();
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
     RowTray* pRowTray = m_pCurrentRowBuffer->pRowTray();
-    RowCoder::vRecord(hvRec,*pRowTray,i_Row,pColVec);
+    RowCoder::vRecord(hvRec,*pRowTray,i_Row);
     vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
   }
   
@@ -594,7 +593,6 @@ void TablePtn::vPublish(void)
   
   m_okLock.vDropWrite();
   
-  //delete pRecord;
 }
 
 /*----------------------------------------------------------------------------*/
