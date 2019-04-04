@@ -5,6 +5,32 @@
 
 namespace Jobs
 {
+  enum eRK // response kind
+  {
+    /* 0 */ RK_NONE=0,
+    
+    /* 1 */ RK_DATA_ROWS,
+    /* 2 */ RK_ERROR,
+    /* 3 */ RK_LOAD_ROWS,
+    /* 4 */ RK_NODE_ROWS,
+    /* 5 */ RK_SUCCESS,
+    
+    /* 6 */ RK_ENUMS_
+  };
+  
+  static Stz* aRK[]
+  {
+    /* 0 */ "NONE"_Stz,
+    
+    /* 1 */ "DATA_ROWS"_Stz,
+    /* 2 */ "ERROR"_Stz,
+    /* 3 */ "LOAD_ROWS"_Stz,
+    /* 4 */ "NODE_ROWS"_Stz,
+    /* 5 */ "SUCCESS"_Stz,
+    
+    /* 6 */ "ENUMS_"_Stz
+  };
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class JobResult
   {
