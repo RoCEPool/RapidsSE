@@ -64,7 +64,6 @@ RowBuffer::RowBuffer(void)
   m_okLock.vInitLock(LK_ROWBUFFER);
   
   m_iBufferNo     = *nPoolBufferNo();
-  m_pTable        = nullptr;
   m_iPartitionNo  = -1;
   
   // zero all the cachelines in the row tray
@@ -269,7 +268,7 @@ bool RowBuffer::bAppendRow(RowNub* pFromRowNub)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for space in this buffer
   
-  ColumnVec* pColVec = m_pTable->pColumnVec();
+  ColumnVec* pColVec = pTable()->pColumnVec();
   i8 nCacheLines = RowCoder::nLines(pFromRowNub,0,pColVec);
   
   if (! bHasSpace(sizeof(CacheLine) * nCacheLines))
@@ -302,7 +301,7 @@ void RowBuffer::vBufferCount(i8& nBuffers)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // table ?
   
-  RASSERT(m_pTable);
+  RASSERT(pTable());
   
   pNextBuffer = this->pNextBuffer();
   nBuffers++;
@@ -408,7 +407,7 @@ void RowBuffer::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   RASSERT(pTable);
-  m_pTable = pTable;
+  m_xRowTray.vDesc(pTable);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -418,7 +417,7 @@ Table* RowBuffer::pTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  return m_pTable;
+  return m_xRowTray.pDesc();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -510,7 +509,7 @@ void RowBuffer::vRestore(void)
   RASSERT( ! m_pPrevBuffer );
   
   // set the table to nullptr (this pointer is not valid any more)
-  m_pTable = nullptr;
+  vTable(nullptr);
   
   // get the buffer no
   bn nBuffer = nPoolBufferNo();
@@ -527,7 +526,7 @@ void RowBuffer::vRestoreTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   //RASSERT( ! m_pTable );
-  m_pTable = pTable;
+  vTable(pTable);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -547,7 +546,7 @@ void RowBuffer::vShowRow(i8 i_Row)
 {
   vTrace("Id: %3lli.%03lli "_Stz,m_iBufferNo,i_Row);
   
-  ColumnVec* pColVec = m_pTable->pColumnVec();
+  ColumnVec* pColVec = pTable()->pColumnVec();
   
   HV_Rec hvRec;
   

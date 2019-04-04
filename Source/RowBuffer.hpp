@@ -13,7 +13,6 @@ namespace Data
   protected:
     Lock    m_okLock;               // lock
     i8      m_iBufferNo;            // this RowBuffer's buffer number
-    Table*  m_pTable;               // table this buffer belongs to
     i8      m_iPartitionNo;         // partition no this buffer belongs to
     RowTray m_xRowTray;             // tray of rows
   
