@@ -27,7 +27,7 @@
 
   error EC_NONE == if
     // get the response from participant job and set it in executed job
-    grid::thisNode@  pJobParticipant job.response@ pJob__Executed job.response!
+    pJobParticipant job.response@ pJob__Executed job.response!
 
     // get the no of rows processed from participant job and set it in executed job
     grid::thisNode@

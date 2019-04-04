@@ -166,7 +166,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set response in the job
-  grid::thisNode@ pJob job.response!
+  pJob job.response!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sent rows Processed in the job

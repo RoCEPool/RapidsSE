@@ -32,12 +32,6 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // set the originator node as the send target node
-  //iJobId job::originator@ grid::node task::this task.sendNode!
-
-  // move this task through send state/queue
-  //ask.send
-
   // send the cancelled job
   iJobId job::originator@ locals| iOriginator |
   //iOriginator pJob__Cancelled jobCancelled.cancelOriginator!

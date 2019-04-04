@@ -119,7 +119,7 @@
   sIndexNm find execute index.verify
   sTableNm sIndexNm grid::thisNodeName@
   "row: ('%v', '%v', '%v', '%v')\n" str.format
-  grid::thisNode@ pJob_VerifyIndex job.response!
+  pJob_VerifyIndex job.response!
   1 pJob_VerifyIndex job.rowsProcessed!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

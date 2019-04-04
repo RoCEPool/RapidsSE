@@ -17,7 +17,7 @@
   // get table
   sTableNm find execute to pTable
 
-  pTable >str grid::thisNode@ pJob_ListColumns job.response!
+  pTable >str pJob_ListColumns job.response!
 ;
 
 /*----------------------------------------------------------------------------*/

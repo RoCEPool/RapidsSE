@@ -54,7 +54,7 @@
   // end working string
   "')\n" str.cat
 
-  grid::thisNode@ pJob_Pwf job.response!
+  pJob_Pwf job.response!
   1 pJob_Pwf job.rowsProcessed!
 
   900 apiState::senLoc
