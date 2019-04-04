@@ -109,8 +109,8 @@
   // pop table folder
   popTable
 
-  grid::thisNode@ pJob_SizeTable job.response!
-  1 grid::thisNode@ pJob_SizeTable job.rowsProcessed!
+  pJob_SizeTable job.response!
+  1 pJob_SizeTable job.rowsProcessed!
 
   pJob_SizeTable job.notice
 

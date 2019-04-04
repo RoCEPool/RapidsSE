@@ -46,7 +46,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sent rows Processed in the job
-  iCount grid::thisNode@ pJob_ListIndexes job.rowsProcessed!
+  iCount pJob_ListIndexes job.rowsProcessed!
 
 ;
 

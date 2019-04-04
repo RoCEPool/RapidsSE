@@ -124,8 +124,8 @@
   popIndexes
   popTable
 
-  grid::thisNode@ pJob_SizeIndex job.response!
-  1 grid::thisNode@ pJob_SizeIndex job.rowsProcessed!
+  pJob_SizeIndex job.response!
+  1 pJob_SizeIndex job.rowsProcessed!
 
   pJob_SizeIndex job.notice
 

@@ -83,7 +83,7 @@
       "row: ('"
       grid::thisNodeName@ str.cat
        "','sanity check passed')" str.cat
-      grid::thisNode@ pJob_Sanity job.response!
+      pJob_Sanity job.response!
     then
 
   then

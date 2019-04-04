@@ -27,23 +27,23 @@
 
   error EC_NONE == if
     // get the response from participant job and set it in executed job
-    grid::thisNode@  pJobParticipant job.response@ pJob__Executed jobExecuted.response!
+    grid::thisNode@  pJobParticipant job.response@ pJob__Executed job.response!
 
     // get the no of rows processed from participant job and set it in executed job
     grid::thisNode@
       pJobParticipant job.rowsProcessed@
-      pJob__Executed  jobExecuted.rowsProcessed!
+      pJob__Executed  job.rowsProcessed!
 
     grid::thisNode@
       pJobParticipant job.rowsInvalid@
-      pJob__Executed  jobExecuted.rowsInvalid!
+      pJob__Executed  job.rowsInvalid!
 
     grid::thisNode@
       pJobParticipant job.rowsSkipped@
-      pJob__Executed  jobExecuted.rowsSkipped!
+      pJob__Executed  job.rowsSkipped!
   else
      // set error in executed job
-     error pJob__Executed jobExecuted.error!
+     error pJob__Executed job.error!
   then
 
 
@@ -91,32 +91,7 @@
   // get the participant node from where this job__begun started
   pJob__Executed job.participant@ to iParticipantNode
 
-  // get the error code from job__executed
-  //pJob__Executed jobExecuted.error@ to error
-/*
-  error EC_NONE == if
-
-    // get the response string from job__executed and set in pJob
-    pJob__Executed jobExecuted.response@ iParticipantNode pJobOriginator job.response!
-
-    // get the rows processed from job__executed and set in pJob
-    pJob__Executed jobExecuted.rowsProcessed@
-      iParticipantNode pJobOriginator job.rowsProcessed!
-
-    pJob__Executed jobExecuted.rowsInvalid@
-      iParticipantNode pJobOriginator job.rowsInvalid!
-
-    pJob__Executed jobExecuted.rowsSkipped@
-      iParticipantNode pJobOriginator job.rowsSkipped!
-
-  else
-
-    // set the error code in pJob
-    error iParticipantNode pJobOriginator job.error!
-
-  then
-*/
-
+  // set the participant response in the originator job
   pJob__Executed iParticipantNode pJobOriginator job.participantResponse!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

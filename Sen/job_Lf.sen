@@ -70,7 +70,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set response in job
   grid::thisNode@ pJob_Lf job.response!
-  iCount grid::thisNode@ pJob_Lf job.rowsProcessed!
+  iCount pJob_Lf job.rowsProcessed!
 
   <<am <DONE_REQ>
 ;

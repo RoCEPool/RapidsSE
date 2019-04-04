@@ -98,7 +98,7 @@
   //"STACK IS b:" . stk
 
   grid::thisNode@ pJob_TableSizes job.response!
-  iCount grid::thisNode@ pJob_TableSizes job.rowsProcessed!
+  iCount pJob_TableSizes job.rowsProcessed!
 
   pJob_TableSizes job.notice
 

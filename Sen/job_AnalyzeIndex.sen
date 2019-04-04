@@ -124,8 +124,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put response in the job
-  grid::thisNode@ pJob_AnalyzeIndex job.response!
-  grid::slots grid::thisNode@ pJob_AnalyzeIndex job.rowsProcessed!
+  pJob_AnalyzeIndex job.response!
+  grid::slots pJob_AnalyzeIndex job.rowsProcessed!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table

@@ -35,7 +35,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sent rows Processed in the job
-  iPartitionCols grid::thisNode@ pJob_ListPartColumns job.rowsProcessed!
+  iPartitionCols pJob_ListPartColumns job.rowsProcessed!
 ;
 
 /*----------------------------------------------------------------------------*/

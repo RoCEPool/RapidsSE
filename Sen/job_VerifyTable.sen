@@ -107,7 +107,7 @@
   sTableNm grid::thisNodeName@
   "row: ('%v', '%v', '%v')\n" str.format
   grid::thisNode@ pjob_VerifyTable job.response!
-  1 grid::thisNode@ pjob_VerifyTable job.rowsProcessed!
+  1 pjob_VerifyTable job.rowsProcessed!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table folder

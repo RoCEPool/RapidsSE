@@ -60,7 +60,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the status string in job response
   grid::thisNode@ pJob_Status job.response!
-  1 grid::thisNode@ pJob_Status job.rowsProcessed!
+  1 pJob_Status job.rowsProcessed!
 
   pJob_Status job.notice
 

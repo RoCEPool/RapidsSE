@@ -1448,10 +1448,6 @@ void Step::vJobResponseFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.response@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  i8 iNode;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
-    THROW_INVALID_DSTACK("job.response@"_Stz);
-  
   mpTask->m_pDataStack->vPushS4K(pJob->m_xResponse.m_sResponse);
   
   EXIT();
@@ -1468,10 +1464,6 @@ void Step::vJobResponseStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.response!"_Stz);
   Job* pJob = _pJob(pJobPtr);
-  
-  i8 iNode;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
-    THROW_INVALID_DSTACK("job.response!"_Stz);
   
   s4K sResponse;
   if ( ! mpTask->m_pDataStack->bPop(sResponse) )
@@ -1534,10 +1526,6 @@ void Step::vJobRowsInvalidFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.rowsInvalid@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  i8 iNode;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
-    THROW_INVALID_DSTACK("job.rowsInvalid@"_Stz);
-  
   i8 iRowsInvalid = *pJob->m_xResponse.m_ixRowsInvalid;
   mpTask->m_pDataStack->vPushI8(iRowsInvalid);
   
@@ -1555,10 +1543,6 @@ void Step::vJobRowsInvalidStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.rowsInvalid!"_Stz);
   Job* pJob = _pJob(pJobPtr);
-  
-  i8 iNode;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
-    THROW_INVALID_DSTACK("job.rowsInvalid!"_Stz);
   
   i8 iRowsInvalid;
   if ( ! mpTask->m_pDataStack->bPop(iRowsInvalid) )
@@ -1583,10 +1567,6 @@ void Step::vJobRowsProcessedFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.rowsProcessed@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  i8 iNode;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
-    THROW_INVALID_DSTACK("job.rowsProcessed@"_Stz);
-  
   i8 iRowsProcessed = *pJob->m_xResponse.m_ixRowsProcessed;
   mpTask->m_pDataStack->vPushI8(iRowsProcessed);
   
@@ -1604,10 +1584,6 @@ void Step::vJobRowsProcessedStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.rowsProcessed!"_Stz);
   Job* pJob = _pJob(pJobPtr);
-  
-  i8 iNode;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
-    THROW_INVALID_DSTACK("job.rowsProcessed!"_Stz);
   
   i8 iRowsProcessed;
   if ( ! mpTask->m_pDataStack->bPop(iRowsProcessed) )
@@ -1631,10 +1607,6 @@ void Step::vJobRowsSkippedFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.rowsSkipped@"_Stz);
   Job* pJob = _pJob(pJobPtr);
-  
-  i8 iNode;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
-    THROW_INVALID_DSTACK("job.rowsSkipped@"_Stz);
  
   i8 iRowsSkipped = *pJob->m_xResponse.m_ixRowsSkipped;
 
@@ -1654,10 +1626,6 @@ void Step::vJobRowsSkippedStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.rowsSkipped!"_Stz);
   Job* pJob = _pJob(pJobPtr);
-  
-  i8 iNode;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
-    THROW_INVALID_DSTACK("job.rowsSkipped!"_Stz);
   
   i8 iRowsSkipped;
   if ( ! mpTask->m_pDataStack->bPop(iRowsSkipped) )

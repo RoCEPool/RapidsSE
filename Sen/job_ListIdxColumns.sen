@@ -38,7 +38,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sent rows Processed in the job
-  iColumns grid::thisNode@ pJob_ListIdxColumns job.rowsProcessed!
+  iColumns pJob_ListIdxColumns job.rowsProcessed!
 ;
 
 /*----------------------------------------------------------------------------*/
