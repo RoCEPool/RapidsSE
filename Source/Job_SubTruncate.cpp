@@ -13,7 +13,7 @@ JobClass xJobClass_SubTruncate =
 {
   CN_JOB_SUBTRUNCATE,        // class enum
   JK_CHILD,                  // job kind
-  RK_NONE,                  // response kind
+  RK_NODE_ERRORS,            // response kind
   "table sub-truncate"_Stz,  // comment about the job
   nullptr,                   // the prompt command
   nullptr,                   // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_SubTruncate =
 
   nullptr,                   // prompt check function
   pJob_SubTruncate_pre,      // prompt pre-process function
-  vJob_SubTruncate_post,     // prompt post-process function
+  vJob_post,                 // prompt post-process function
   nullptr,                   // job new function
   vJob_SubTruncate_delete,   // job delete function
   nullptr,                   // job pre-send function
@@ -179,22 +179,6 @@ Job* Jobs::pJob_SubTruncate_pre(Interface::Session* pSession)
   Job_SubTruncate* pJob_SubTruncate = new Job_SubTruncate(pSession);
   
   return pJob_SubTruncate;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubTruncate_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_SubTruncate* pJob_SubTruncate = _pJob_SubTruncate(pJob);
-  
-  if ( pJob_SubTruncate->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_SubTruncate->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
 }
 
 /*----------------------------------------------------------------------------*/

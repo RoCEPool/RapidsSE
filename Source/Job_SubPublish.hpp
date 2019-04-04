@@ -51,7 +51,6 @@ namespace Jobs
   Job_SubPublish* _pJob_SubPublish(void* aAddr);
   
   Job* pJob_SubPublish_pre(Interface::Session* pSession);
-  void vJob_SubPublish_post(Interface::Session* pSession, Job* pJob);
   void vJob_SubPublish_delete(Interface::Session* pSession, Job* pJob);
   void vJob_SubPublish_show(Job* pJob);
   

@@ -46,7 +46,6 @@ namespace Jobs
   Job_SubWalker* _pJob_SubWalker(void* aAddr);
   
   Job* pJob_SubWalker_pre(Interface::Session* pSession);
-  void vJob_SubWalker_post(Interface::Session* pSession, Job* pJob);
   void vJob_SubWalker_delete(Interface::Session* pSession, Job* pJob);
   void vJob_SubWalker_show(Job* pJob);
   

@@ -13,7 +13,7 @@ JobClass xJobClass_SubPurger =
 {
   CN_JOB_SUBPURGER,       // class enum
   JK_CHILD,               // job kind
-  RK_NONE,                  // response kind
+  RK_NODE_ERRORS,         // response kind
   "table sub-purger"_Stz, // comment about the job
   "_SUBPURGER"_Stz,       // the prompt command
   nullptr,                // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_SubPurger =
 
   nullptr,                // prompt check function
   pJob_SubPurger_pre,     // prompt pre-process function
-  vJob_SubPurger_post,    // prompt post-process function
+  vJob_post,              // prompt post-process function
   nullptr,                // job new function
   vJob_SubPurger_delete,  // job delete function
   nullptr,                // job pre-send function
@@ -237,22 +237,6 @@ Job* Jobs::pJob_SubPurger_pre(Interface::Session* pSession)
   Job_SubPurger* pJob_SubPurger = new Job_SubPurger(pSession);
   
   return pJob_SubPurger;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubPurger_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_SubPurger* pJob_SubPurger = _pJob_SubPurger(pJob);
-  
-  if ( pJob_SubPurger->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_SubPurger->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,7 +13,7 @@ JobClass xJobClass_SubFetch =
 {
   CN_JOB_SUBFETCH,           // class enum
   JK_CHILD,                  // job kind
-  RK_NONE,                   // response kind
+  RK_NODE_ERRORS,            // response kind
   "sub-fetch rows"_Stz,      // comment about the job
   nullptr,                   // the prompt command
   nullptr,                   // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_SubFetch =
 
   nullptr,                   // prompt check function
   pJob_SubFetch_pre,         // prompt pre-process function
-  vJob_SubFetch_post,        // prompt post-process function
+  vJob_post,                 // prompt post-process function
   nullptr,                   // job new function
   vJob_SubFetch_delete,      // job delete function
   nullptr,                   // job pre-send function
@@ -182,22 +182,6 @@ Job* Jobs::pJob_SubFetch_pre(Interface::Session* pSession)
   Job_SubFetch* pJob_SubFetch = new Job_SubFetch(pSession);
   
   return pJob_SubFetch;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubFetch_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pJob);
-  
-  if ( pJob_SubFetch->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_SubFetch->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
 }
 
 /*----------------------------------------------------------------------------*/

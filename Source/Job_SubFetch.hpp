@@ -39,7 +39,6 @@ namespace Jobs
   Job_SubFetch* _pJob_SubFetch(void* aAddr);
   
   Job* pJob_SubFetch_pre(Interface::Session* pSession);
-  void vJob_SubFetch_post(Interface::Session* pSession, Job* pJob);
   void vJob_SubFetch_delete(Interface::Session* pSession, Job* pJob);
   void vJob_SubFetch_show(Job* pJob);
   

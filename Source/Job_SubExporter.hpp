@@ -50,7 +50,6 @@ namespace Jobs
   Job_SubExporter* _pJob_SubExporter(void* aAddr);
   
   Job* pJob_SubExporter_pre(Interface::Session* pSession);
-  void vJob_SubExporter_post(Interface::Session* pSession, Job* pJob);
   void vJob_SubExporter_delete(Interface::Session* pSession, Job* pJob);
   void vJob_SubExporter_show(Job* pJob);
   

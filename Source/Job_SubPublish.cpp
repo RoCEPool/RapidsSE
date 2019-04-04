@@ -13,7 +13,7 @@ JobClass xJobClass_SubPublish =
 {
   CN_JOB_SUBPUBLISH,      // class enum
   JK_CHILD,               // job kind
-  RK_NONE,                  // response kind
+  RK_NODE_ERRORS,         // response kind
   "table sub-publish"_Stz,// comment about the job
   "_SUBPUBLISH"_Stz,      // the prompt command
   nullptr,                // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_SubPublish =
 
   nullptr,                // prompt check function
   pJob_SubPublish_pre,    // prompt pre-process function
-  vJob_SubPublish_post,   // prompt post-process function
+  vJob_post,              // prompt post-process function
   nullptr,                // job new function
   vJob_SubPublish_delete, // job delete function
   nullptr,                // job pre-send function
@@ -266,22 +266,6 @@ Job* Jobs::pJob_SubPublish_pre(Interface::Session* pSession)
   Job_SubPublish* pJob_SubPublish = new Job_SubPublish(pSession);
   
   return pJob_SubPublish;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubPublish_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_SubPublish* pJob_SubPublish = _pJob_SubPublish(pJob);
-  
-  if ( pJob_SubPublish->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_SubPublish->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
 }
 
 /*----------------------------------------------------------------------------*/

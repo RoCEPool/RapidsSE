@@ -13,7 +13,7 @@ JobClass xJobClass_SubExporter =
 {
   CN_JOB_SUBEXPORTER,        // class enum
   JK_CHILD,                  // job kind
-  RK_NONE,                   // response kind
+  RK_NODE_ERRORS,            // response kind
   "sub-export rows"_Stz,     // comment about the job
   "subExporter"_Stz,         // the prompt command
   nullptr,                   // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_SubExporter =
 
   nullptr,                   // prompt check function
   pJob_SubExporter_pre,      // prompt pre-process function
-  vJob_SubExporter_post,     // prompt post-process function
+  vJob_post,                 // prompt post-process function
   nullptr,                   // job new function
   vJob_SubExporter_delete,   // job delete function
   nullptr,                   // job pre-send function
@@ -339,15 +339,6 @@ Job* Jobs::pJob_SubExporter_pre(Interface::Session* pSession)
   Job_SubExporter* pJob_SubExporter = new Job_SubExporter(pSession);
   
   return pJob_SubExporter;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubExporter_post(Interface::Session* pSession, Job* pJob)
-{
-  if (pJob->m_bHasError)
-    pJob->vPrintNodeErrors();
 }
 
 /*----------------------------------------------------------------------------*/
