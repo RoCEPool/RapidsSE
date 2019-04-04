@@ -214,33 +214,6 @@ Job* Jobs::pJob_Space_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Space_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_Space* pJob_Space = _pJob_Space(pJob);
-
-  if ( pJob_Space->m_bHasError ) {
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_Space->m_xNode[i_Node].m_eErrorCode]);
-    }
-  }
-  else {
-    if (gpAttachMap->m_bMetadata) {
-      vTrace("metadata: %s\n"_Stz, pJob_Space->m_sMetadata.aStz());
-    }
-    
-    i8 iRowsProcessed = 0;
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("%s\n"_Stz, pJob_Space->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += *pJob_Space->m_xNode[i_Node].m_ixRowsProcessed;
-    }
-    vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
 void Jobs::vJob_Space_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Space* pJob_Space = _pJob_Space(pJob);
