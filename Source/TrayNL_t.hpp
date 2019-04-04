@@ -27,13 +27,16 @@ namespace Structures
     Nub_t(void);
     ~Nub_t(void) noexcept(false);
   
+    ITEM* aAllotHead(void);
     i8    iAllotHead(void);
+    ITEM* aAllotTails(i8 nTails);
     i8    iAllotTail(void);
     i8    nFree(void);
     ITEM* aGet(i8 i_Item);
     i8    nHeads(void);
     i8    iHash(void);
     void  vHashInc(i8 iDelta);
+    bool  bHasSpace(i8 nBytes);
     i8    nItems(void);
     i8    nMaxItems(void);
     i8    i_Offset(void);
@@ -71,11 +74,14 @@ namespace Structures
     // auto conversion
     operator Nub_t<TRAY_CN,ITEM>*(void);
   
+    ITEM* aAllotHead(void);
     i8    iAllotHead(void);
+    ITEM* aAllotTails(i8 nTails);
     i8    iAllotTail(void);
     i8    nFree(void);
     ITEM* aGet(i8 i_Item);
     i8    iHash(void);
+    bool  bHasSpace(i8 nBytes);
     i8    nHeads(void);
     i8    nItems(void);
     void  vReset(void);
@@ -143,6 +149,24 @@ Nub_t<TRAY_CN,ITEM>::~Nub_t(void) noexcept(false)
 /* allot head item                                                            */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM>
+ITEM* Nub_t<TRAY_CN,ITEM>::aAllotHead(void)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  i8 i_Item = iAllotHead();
+  
+  if (C_UNKNOWN == i_Item)
+    return nullptr;
+  
+  ITEM* pItem = aGet(i_Item);
+  
+  return pItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot head item                                                            */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM>
 i8 Nub_t<TRAY_CN,ITEM>::iAllotHead(void)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
@@ -153,6 +177,31 @@ i8 Nub_t<TRAY_CN,ITEM>::iAllotHead(void)
   i8 i_Item = m_nHeadItems++;
   
   return i_Item;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot tail items                                                           */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM>
+ITEM* Nub_t<TRAY_CN,ITEM>::aAllotTails(i8 nTails)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  if (! nTails)
+    return nullptr;
+
+  if (! bHasSpace(sizeof(CacheLine) * nTails))
+    return nullptr;
+
+  i8 i_CacheLine = C_UNKNOWN;
+  
+  for (i8 i_Tail = 0; i_Tail < nTails; i_Tail++)
+    i_CacheLine = iAllotTail();
+  ASSERT(i_CacheLine != C_UNKNOWN);
+
+  ITEM* pItem = aGet(i_CacheLine);
+  
+  return pItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,6 +268,23 @@ void Nub_t<TRAY_CN,ITEM>::vHashInc(i8 iDelta)
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
   m_iHash += iDelta;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does buffer have space for nBytes ?                                        */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM>
+bool Nub_t<TRAY_CN,ITEM>::bHasSpace(i8 nBytes)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+
+  i8 nFreeCacheLines = nFree();
+  i8 nFreeBytes = nFreeCacheLines * C_BYTES_PER_CACHE_LINE;
+  
+  if (nFreeBytes < nBytes)
+    return false;
+  else
+    return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -492,6 +558,8 @@ i8 TrayNL_t<TRAY_CN,ITEM,MAX_ITEMS>::iHash(void)
   
   return iHash;
 }
+
+
 
 /*----------------------------------------------------------------------------*/
 /* get total number of head items                                             */

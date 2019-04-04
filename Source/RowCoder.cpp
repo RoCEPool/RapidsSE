@@ -11,10 +11,18 @@
 /*----------------------------------------------------------------------------*/
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vCopy(RowNub* pIntoRowNub, CacheLine* pIntoHead, CacheLine* pIntoTails,
+void RowCoder::vCopy(RowNub* pIntoRowNub, CacheLine* pIntoHead, CacheLine* pIntoTails ,
                      RowNub* pFromRowNub, CacheLine xaFromLine[],
                      ColumnVec* pColVec)
 {
+  //i8 nCacheLines = RowCoder::nLines(pFromRowNub,0,pColVec);
+
+//  i8 i_IntoHead = pIntoRowNub->iAllotHead();
+//  i8 i_IntoTail = pIntoRowNub->iAllotTail();
+//  CacheLine* pIntoHead  = pIntoRowNub->aGet(i_IntoHead);
+//  CacheLine* pIntoTails = pIntoRowNub->aGet(i_IntoTail);
+  
+  
   CacheLine* pFromHead = &xaFromLine[0];
   MemLib::vCopy(pIntoHead,pFromHead,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
 
