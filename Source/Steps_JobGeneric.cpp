@@ -11,9 +11,6 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobGeneric(void)
 {
-  vAddStep("jobCancelled.error@"_Stz, &Step::vJob__CancelledErrorFetch);
-  vAddStep("jobCancelled.error!"_Stz, &Step::vJob__CancelledErrorStore);
-  
   vAddStep("job__Begun::new"_Stz,        &Step::vJob__BegunNew);
   vAddStep("job__Cancel::new"_Stz,       &Step::vJob__CancelNew);
   vAddStep("job__Cancelled::new"_Stz,    &Step::vJob__CancelledNew);
@@ -21,51 +18,6 @@ void Step::vAddSteps_JobGeneric(void)
   vAddStep("job__Ended::new"_Stz,        &Step::vJob__EndedNew);
   vAddStep("job__Execute::new"_Stz,      &Step::vJob__ExecuteNew);
   vAddStep("job__Executed::new"_Stz,     &Step::vJob__ExecutedNew);
-}
-
-/*----------------------------------------------------------------------------*/
-/* jobCancelled.error@ -- fetch job error of participant from job__cancelled  */
-/*----------------------------------------------------------------------------*/
-void Step::vJob__CancelledErrorFetch(MP_Task mpTask)
-{
-  ENTRY("vJob__CancelledErrorFetch"_Stz);
-  
-  RASSERT(0);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("jobCancelled.error@"_Stz);
-  
-  Job__Cancelled* pJob__Cancelled = _pJob__Cancelled(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushI8(pJob__Cancelled->m_eErrorCode);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jobCancelled.error! -- store job error of participant in job__cancelled    */
-/*----------------------------------------------------------------------------*/
-void Step::vJob__CancelledErrorStore(MP_Task mpTask)
-{
-  ENTRY("vJob__CancelledErrorStore"_Stz);
-  
-  RASSERT(0);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("jobCancelled.error!"_Stz);
-  Job__Cancelled* pJob__Cancelled = _pJob__Cancelled(pJobPtr);
-  
-  i8 iErrorCode;
-  if ( ! mpTask->m_pDataStack->bPop(iErrorCode) )
-    THROW_INVALID_DSTACK("jobCancelled.error!"_Stz);
-  
-  pJob__Cancelled->m_eErrorCode = (eEC)iErrorCode;
-  
-  ActionSequence::vAdd(pJob__Cancelled,AN_ERROR_CODE,iErrorCode);
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
