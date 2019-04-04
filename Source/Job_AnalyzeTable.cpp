@@ -13,7 +13,7 @@ JobClass xJobClass_AnalyzeTable =
 {
   CN_JOB_ANALYZETABLE,       // class enum
   JK_DIST2PC,                // job kind
-  RK_NONE,                  // response kind
+  RK_NODE_ROWS,              // response kind
   "analyze table"_Stz,       // comment about the job
   "antbl"_Stz,               // the prompt command
   nullptr,                   // the second word
