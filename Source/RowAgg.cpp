@@ -151,7 +151,7 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
     
     //aSrc = (byte*)aRowData->aColumnDatum(m_pKeyColumn->iColumnNo());
     
-    RowCoder::vDecode(aRowData,0,m_pKeyColumn,&oDatum);
+    RowCoder::vDecode(*pRowBuffer->pRowTray(),aRowData,0,m_pKeyColumn,&oDatum);
     xKey = oDatum.m_iInt;
 
     for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
@@ -160,7 +160,7 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
       i_Col = pAggColumn->iColumnNo();
       
       //aSrc = (byte*)aRowData->aColumnDatum(i_Col);
-      RowCoder::vDecode(aRowData,0,pAggColumn,&oDatum);
+      RowCoder::vDecode(*pRowBuffer->pRowTray(),aRowData,0,pAggColumn,&oDatum);
       xVal = oDatum.m_iInt;
     
       if (xVal.iAsI8() < m_iaMinVal[i_AggCol]) {

@@ -277,7 +277,7 @@ void KeyWrk::vAddWord(w8 wWord)
 /*----------------------------------------------------------------------------*/
 /* extract an index key into KeyWrk from this row using given index columns   */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vExtractKey(CacheLine* aRowData, IdxColVec* pIdxColVec)
+void KeyWrk::vExtractKey(RowNub* pRowNub, CacheLine* aRowData, IdxColVec* pIdxColVec)
 {
   GenVar xVariable;
   
@@ -290,7 +290,7 @@ void KeyWrk::vExtractKey(CacheLine* aRowData, IdxColVec* pIdxColVec)
     Column* pColumn = pIdxColVec->pGet(i_Column);
     
     // get the column value from the row for the iColumnNo
-    RowCoder::vDecode(aRowData,0,pColumn,&oDatum);
+    RowCoder::vDecode(pRowNub,aRowData,0,pColumn,&oDatum);
     xVariable = oDatum.m_iInt;
     
     // add the column value to the key

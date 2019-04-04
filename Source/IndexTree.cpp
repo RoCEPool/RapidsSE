@@ -677,7 +677,7 @@ void IndexTree::vInsertEntriesFromBuffer(RowBuffer* pRowBuffer)
     CacheLine* aRowData = pRowBuffer->pRow(iRow);
     xId.vItem(iRow);
     
-    bool bInserted = bInsertEntry(aRowData, xId);
+    bool bInserted = bInsertEntry(*pRowBuffer->pRowTray(),aRowData, xId);
     
     //bVerify();
     ASSERT(bInserted);
@@ -689,14 +689,14 @@ void IndexTree::vInsertEntriesFromBuffer(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-bool IndexTree::bInsertEntry(CacheLine* aRowData, Id& xId)
+bool IndexTree::bInsertEntry(RowNub* pRowNub, CacheLine* aRowData, Id& xId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   m_okLock.vGrabWrite();
   
   KeyWrk xKeyWrk;
-  xKeyWrk.vExtractKey(aRowData,m_pIndex->pIdxColVec());
+  xKeyWrk.vExtractKey(pRowNub, aRowData,m_pIndex->pIdxColVec());
   xKeyWrk.vId(xId);
   
   //xKeyWrk.vShow(m_pIndex->pIdxColVec(), false);

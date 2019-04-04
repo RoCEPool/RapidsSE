@@ -29,7 +29,7 @@ namespace Data
     void vAddPlusInfinity_Flt(void);
     void vAddWord(w8 wWord);
 
-    void vExtractKey(CacheLine* aRowData, IdxColVec* pIdxColVec);
+    void vExtractKey(RowNub* pRowNub, CacheLine* aRowData, IdxColVec* pIdxColVec);
     
     i8   iHashKey(void);
     KeyData* aKey(void);
