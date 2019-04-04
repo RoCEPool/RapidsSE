@@ -11,9 +11,6 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobGeneric(void)
 {
-  vAddStep("jobBegun.error@"_Stz,     &Step::vJob__BegunErrorFetch);
-  vAddStep("jobBegun.error!"_Stz,     &Step::vJob__BegunErrorStore);
-  
   vAddStep("jobCancelled.error@"_Stz, &Step::vJob__CancelledErrorFetch);
   vAddStep("jobCancelled.error!"_Stz, &Step::vJob__CancelledErrorStore);
 
@@ -35,51 +32,6 @@ void Step::vAddSteps_JobGeneric(void)
   vAddStep("job__Ended::new"_Stz,        &Step::vJob__EndedNew);
   vAddStep("job__Execute::new"_Stz,      &Step::vJob__ExecuteNew);
   vAddStep("job__Executed::new"_Stz,     &Step::vJob__ExecutedNew);
-}
-
-/*----------------------------------------------------------------------------*/
-/* jobBegun.error@ -- fetch job error of participant from job__begun          */
-/*----------------------------------------------------------------------------*/
-void Step::vJob__BegunErrorFetch(MP_Task mpTask)
-{
-  ENTRY("vJob__BegunErrorFetch"_Stz);
-  
-  RASSERT(0);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("jobBegun.error@"_Stz);
-  
-  Job__Begun* pJob__Begun = _pJob__Begun(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushI8(pJob__Begun->m_eErrorCode);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jobBegun.error! -- store job error of participant in job__begun            */
-/*----------------------------------------------------------------------------*/
-void Step::vJob__BegunErrorStore(MP_Task mpTask)
-{
-  ENTRY("vJob__BegunErrorStore"_Stz);
-  
-  RASSERT(0);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("jobBegun.error!"_Stz);
-  Job__Begun* pJob__Begun = _pJob__Begun(pJobPtr);
-  
-  i8 iErrorCode;
-  if ( ! mpTask->m_pDataStack->bPop(iErrorCode) )
-    THROW_INVALID_DSTACK("jobBegun.error!"_Stz);
-  
-  pJob__Begun->m_eErrorCode = (eEC)iErrorCode;
- 
-  ActionSequence::vAdd(pJob__Begun,AN_ERROR_CODE,iErrorCode);
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

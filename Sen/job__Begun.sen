@@ -26,9 +26,7 @@
   grid::thisNode@ pJobParticipant job.error@ to error
 
   error EC_NONE != if
-    // set error in executed job
-    //error error.msg "Setting error '%v' in Job__Begun" str.format .
-    //error pJob__Begun jobBegun.error!
+    // set error in the job
     error pJob__Begun job.error!
   then
 
@@ -89,11 +87,10 @@
   pJob__Begun job.participant@ to iParticipantNode
 
   // get the error code from job__begun
-  //pJob__Begun jobBegun.error@ to error
   pJob__Begun job.error@ to error
 
   error EC_NONE != if
-    // set the error code in pJobOriginator
+    // set the error code in pJobOriginator for this partcipant
     //error iParticipantNode pJobOriginator job.error!
     pJob__Begun iParticipantNode pJobOriginator job.participantResponse!
   then

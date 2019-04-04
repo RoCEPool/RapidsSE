@@ -511,8 +511,6 @@
   static void vJobWaitParticipant(Tasks::MP_Task mpTask);
 
   // job generic
-  static void vJob__BegunErrorFetch(Tasks::MP_Task mpTask);
-  static void vJob__BegunErrorStore(Tasks::MP_Task mpTask);
   static void vJob__CancelledErrorFetch(Tasks::MP_Task mpTask);
   static void vJob__CancelledErrorStore(Tasks::MP_Task mpTask);
   static void vJob__ExecutedErrorFetch(Tasks::MP_Task mpTask);
