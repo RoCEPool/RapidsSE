@@ -291,7 +291,6 @@ void TablePtn::vAppendRow(RowParts& oRowParts, i8 nRowBytes)
   // get the row from the buffer
   Id xId;
   i8 iRow = m_pCurrentRowBuffer->nRowCount();
-  CacheLine* aRowData = m_pCurrentRowBuffer->pRow(iRow);
   xId.vItem(iRow);
   
   // get no of indexes of the table
@@ -304,7 +303,7 @@ void TablePtn::vAppendRow(RowParts& oRowParts, i8 nRowBytes)
     IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
     
     // insert entry into other indexes
-    bool bResult = pIndexTree->bInsertEntry(oRowParts, 0, aRowData, xId);
+    bool bResult = pIndexTree->bInsertEntry(oRowParts,0,xId);
     RASSERT(bResult);
   }
   

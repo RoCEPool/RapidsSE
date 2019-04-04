@@ -673,11 +673,9 @@ void IndexTree::vInsertEntriesFromBuffer(RowBuffer* pRowBuffer)
   // iterate thru the buffer till no more entries
   for (i8 i_Row = 0; i_Row < pRowBuffer->nRowCount(); i_Row++) {
 
-    // get the row from the buffer
-    CacheLine* aRowData = pRowBuffer->pRow(i_Row);
     xId.vItem(i_Row);
     
-    bool bInserted = bInsertEntry(*pRowBuffer->pRowTray(),i_Row,aRowData, xId);
+    bool bInserted = bInsertEntry(*pRowBuffer->pRowTray(),i_Row,xId);
     
     //bVerify();
     ASSERT(bInserted);
@@ -689,14 +687,14 @@ void IndexTree::vInsertEntriesFromBuffer(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-bool IndexTree::bInsertEntry(RowNub* pRowNub, i8 i_Row, CacheLine* aRowData, Id& xId)
+bool IndexTree::bInsertEntry(RowNub* pRowNub, i8 i_Row, Id& xId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   m_okLock.vGrabWrite();
   
   KeyWrk xKeyWrk;
-  xKeyWrk.vExtractKey(pRowNub,i_Row,aRowData,m_pIndex->pIdxColVec());
+  xKeyWrk.vExtractKey(pRowNub,i_Row,m_pIndex->pIdxColVec());
   xKeyWrk.vId(xId);
   
   //xKeyWrk.vShow(m_pIndex->pIdxColVec(), false);
