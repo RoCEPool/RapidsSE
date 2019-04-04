@@ -29,24 +29,15 @@ namespace Data
   
     static i8 nDataBytes(eMN eEncoding, eDM eDatum);
   
-    static void vDecodeBcd(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
-                           Column* pCol, Datum* pDatum);
-    static void vDecodeBol(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
-                           Column* pCol, Datum* pDatum);
-    static void vDecodeDte(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
-                           Column* pCol, Datum* pDatum);
-    static void vDecodeFlt(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
-                           Column* pCol, Datum* pDatum);
-    static void vDecodeInt(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
-                           Column* pCol, Datum* pDatum);
-    static void vDecodeIvl(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
-                           Column* pCol, Datum* pDatum);
-    static void vDecodeTme(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
-                           Column* pCol, Datum* pDatum);
-    static void vDecodeTsp(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
-                           Column* pCol, Datum* pDatum);
-    static void vDecodeVch(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
-                           Column* pCol, Datum* pDatum);
+    static void vDecodeBcd(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
+    static void vDecodeBol(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
+    static void vDecodeDte(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
+    static void vDecodeFlt(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
+    static void vDecodeInt(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
+    static void vDecodeIvl(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
+    static void vDecodeTme(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
+    static void vDecodeTsp(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
+    static void vDecodeVch(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
   
     static void vEncodeBcd(RowNub* pRowNub, Column* pColumn, Datum* pDatum);
     static void vEncodeBol(RowNub* pRowNub, Column* pColumn, Datum* pDatum);
