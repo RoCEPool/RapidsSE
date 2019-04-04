@@ -11,10 +11,12 @@
 /*----------------------------------------------------------------------------*/
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vCopy(RowNub* pIntoRowNub, 
-                     RowNub* pFromRowNub, 
-                     ColumnVec* pColVec)
+void RowCoder::vCopy(RowNub* pIntoRowNub, RowNub* pFromRowNub)
 {
+  RASSERT(pIntoRowNub->pDesc() == pFromRowNub->pDesc());
+  
+  ColumnVec* pColVec = pIntoRowNub->pDesc()->pColumnVec();
+
   //! NOTE:: Assuming each row fits in a cacheline + (n * Shoco Lines)
   i8 nCacheLines = RowCoder::nLines(pFromRowNub,0,pColVec);
 
@@ -117,8 +119,10 @@ void RowCoder::vEncode(RowNub* pRowNub, Column* pColumn, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* compute how many cache lines an encoded row occupies                       */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::nLines(RowNub* pRowNub, i8 i_Row, ColumnVec* pColVec)
+i8 RowCoder::nLines(RowNub* pRowNub, i8 i_Row, ColumnVec* )
 {
+  ColumnVec* pColVec = pRowNub->pDesc()->pColumnVec();
+
   i8 nCacheLines = 1;
   // get no of columns
   i8 nColumns = pColVec->nItems();
@@ -182,8 +186,10 @@ void RowCoder::vPrint(RowNub* pRowNub, i8 i_Row, Column* pCol)
 /* sprint decode row from cache line into string                              */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecord(Record* pRec,
-                       RowNub* pRowNub, i8 i_Row, ColumnVec* pColVec)
+                       RowNub* pRowNub, i8 i_Row, ColumnVec* )
 {
+  ColumnVec* pColVec = pRowNub->pDesc()->pColumnVec();
+
   // get no of columns
   i8 nColumns = pColVec->nItems();
   
