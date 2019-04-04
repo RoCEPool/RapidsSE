@@ -61,6 +61,30 @@ JobResult::~JobResult(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* print errors                                                               */
 /*----------------------------------------------------------------------------*/
+void JobResult::vAddError(eEC eError)
+{
+  // get the node id
+  i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  // create a response vector
+  m_pResponseVec = new ResponseVec();
+  
+  // create a new response
+  Response* pResponse = new Response;
+  
+  m_bHasError = true;
+  
+  // set node and error in the response
+  pResponse->m_iNode           = iNode;
+  pResponse->m_eErrorCode      = EC_INVALID_COMMAND;
+  
+  // add the response to the response vector
+  m_pResponseVec->vAdd(pResponse);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print errors                                                               */
+/*----------------------------------------------------------------------------*/
 void JobResult::vPrintErrors(void)
 {
   i8 iResponses = m_pResponseVec->nItems();
@@ -69,7 +93,7 @@ void JobResult::vPrintErrors(void)
   RASSERT(m_bHasError);
   
   for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-    vTrace("error: (node%lld) %s\n"_Stz, i_Node, m_pResponseVec->pGet(i_Node)->m_eErrorCode);
+    vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
   }
   
 }

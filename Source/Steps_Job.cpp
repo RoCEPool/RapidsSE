@@ -590,7 +590,6 @@ void Step::vJobErrorStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobError) )
     THROW_INVALID_DSTACK("job.error!"_Stz);
   
-  pJob->m_bHasError = true;
   //pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
   pJob->m_xResponse.m_eErrorCode = (eEC)iJobError;
   

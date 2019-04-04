@@ -11,8 +11,7 @@ namespace Jobs
   public:
     s4K          m_sMetadata;    // meta data of job
     
-    //! this should go
-    bool         m_bHasError;    // has an error of one or more nodes
+    bool         m_bHasError;    // has an error from one or more nodes
     
     Response     m_xResponse;    // response of this job
     ResponseVec* m_pResponseVec; // vector of responses from all the nodes
@@ -31,6 +30,8 @@ namespace Jobs
   
     JobResult(void);
     ~JobResult(void) noexcept(false);
+    
+    void vAddError(eEC eError);
     
     void vPrintErrors(void);
     void vPrintResult(void);
