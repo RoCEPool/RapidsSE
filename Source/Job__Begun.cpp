@@ -11,6 +11,7 @@ JobClass xJobClass__Begun =
 {
   CN_JOB__BEGUN,           // class enum
   JK_GENERIC,              // job kind
+  RK_NONE,                 // response kind
   "job was begun"_Stz,     // comment about the job
   nullptr,                 // the prompt command
   nullptr,                 // the second word

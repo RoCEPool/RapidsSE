@@ -13,6 +13,7 @@ JobClass xJobClass_SubPurger =
 {
   CN_JOB_SUBPURGER,       // class enum
   JK_CHILD,               // job kind
+  RK_NONE,                  // response kind
   "table sub-purger"_Stz, // comment about the job
   "_SUBPURGER"_Stz,       // the prompt command
   nullptr,                // the second word

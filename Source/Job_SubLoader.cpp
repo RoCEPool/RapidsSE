@@ -13,6 +13,7 @@ JobClass xJobClass_SubLoader =
 {
   CN_JOB_SUBLOADER,       // class enum
   JK_CHILD,               // job kind
+  RK_NONE,                  // response kind
   "table sub-loader"_Stz, // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word

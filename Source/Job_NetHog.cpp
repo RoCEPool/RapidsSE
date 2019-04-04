@@ -13,6 +13,7 @@ JobClass xJobClass_NetHog =
 {
   CN_JOB_NETHOG,         // class enum
   JK_OTHER,              // job kind
+  RK_NONE,               // response kind
   "network hog"_Stz,     // comment about the job
   "nethog"_Stz,          // the prompt command
   nullptr,               // the second word

@@ -13,6 +13,7 @@ JobClass xJobClass_Sink =
 {
   CN_JOB_SINK,         // class enum
   JK_LOCAL,            // job kind
+  RK_NONE,             // response kind
   "sink data"_Stz,     // comment about the job
   "sink"_Stz,          // the prompt command
   nullptr,             // the second word

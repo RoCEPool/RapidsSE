@@ -13,6 +13,7 @@ JobClass xJobClass_Ping =
 {
   CN_JOB_PING,       // class enum
   JK_LOCAL,          // job kind
+  RK_NONE,           // response kind
   "ping"_Stz,        // comment about the job
   "ping"_Stz,        // the prompt command
   nullptr,           // the second word

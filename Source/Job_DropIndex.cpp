@@ -13,6 +13,7 @@ JobClass xJobClass_DropIndex =
 {
   CN_JOB_DROPINDEX,      // class enum
   JK_DIST2PC,            // job kind
+  RK_NONE,                  // response kind
   "drop index"_Stz,      // comment about the job
   "drop"_Stz,            // the prompt command
   "index"_Stz,           // the second word

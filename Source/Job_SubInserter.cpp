@@ -13,6 +13,7 @@ JobClass xJobClass_SubInserter =
 {
   CN_JOB_SUBINSERTER,       // class enum
   JK_CHILD,                 // job kind
+  RK_NONE,                  // response kind
   "insert into table"_Stz,  // comment about the job
   "insert"_Stz,             // the prompt command
   "rows"_Stz,               // the second word

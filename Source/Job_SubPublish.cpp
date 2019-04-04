@@ -13,6 +13,7 @@ JobClass xJobClass_SubPublish =
 {
   CN_JOB_SUBPUBLISH,      // class enum
   JK_CHILD,               // job kind
+  RK_NONE,                  // response kind
   "table sub-publish"_Stz,// comment about the job
   "_SUBPUBLISH"_Stz,      // the prompt command
   nullptr,                // the second word

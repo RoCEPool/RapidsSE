@@ -13,6 +13,7 @@ JobClass xJobClass_VisualizeIndex =
 {
   CN_JOB_VISUALIZEINDEX,      // class enum
   JK_LOCAL,                   // job kind
+  RK_NONE,                    // response kind
   "visualize index"_Stz,      // comment about the job
   "visidx"_Stz,               // the prompt command
   nullptr,                    // the second word

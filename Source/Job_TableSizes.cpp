@@ -13,6 +13,7 @@ JobClass xJobClass_TableSizes =
 {
   CN_JOB_TABLESIZES,     // class enum
   JK_DIST2PC,            // job kind
+  RK_NONE,               // response kind
   "table sizes"_Stz,     // comment about the job
   "tableSizes"_Stz,      // the prompt command
   nullptr,               // the second word

@@ -13,6 +13,7 @@ JobClass xJobClass_ListColumns =
 {
   CN_JOB_LISTCOLUMNS,     // class enum
   JK_LOCAL,               // job kind
+  RK_NONE,                // response kind
   "list table columns"_Stz, // comment about the job
   "lscol"_Stz,            // the prompt command
   nullptr,                // the second word

@@ -13,6 +13,7 @@ JobClass xJobClass_UseSchema =
 {
   CN_JOB_USESCHEMA,      // class enum
   JK_LOCAL,              // job kind
+  RK_NONE,               // response kind
   "use schema"_Stz,      // comment about the job
   "use"_Stz,             // the prompt command
   "schema"_Stz,          // the second word

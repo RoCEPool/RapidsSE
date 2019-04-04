@@ -13,6 +13,7 @@ JobClass xJobClass_CreateTable =
 {
   CN_JOB_CREATETABLE,     // class enum
   JK_DIST2PC,             // job kind
+  RK_NONE,                  // response kind
   "create table"_Stz,     // comment about the job
   "create"_Stz,           // the prompt command
   "table"_Stz,            // the second word

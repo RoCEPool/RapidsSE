@@ -13,6 +13,7 @@ JobClass xJobClass_SubWalker =
 {
   CN_JOB_SUBWALKER,          // class enum
   JK_CHILD,                  // job kind
+  RK_NONE,                  // response kind
   "sub-walker"_Stz,          // comment about the job
   nullptr,                   // the prompt command
   nullptr,                   // the second word

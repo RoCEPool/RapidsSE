@@ -13,6 +13,7 @@ JobClass xJobClass_Export =
 {
   CN_JOB_EXPORT,        // class enum
   JK_DIST2PC,           // job kind
+  RK_NONE,              // response kind
   "export table"_Stz,   // comment about the job
   "export"_Stz,         // the prompt command
   nullptr,              // the second word

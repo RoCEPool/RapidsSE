@@ -11,8 +11,9 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubExporter =
 {
-  CN_JOB_SUBEXPORTER,          // class enum
+  CN_JOB_SUBEXPORTER,        // class enum
   JK_CHILD,                  // job kind
+  RK_NONE,                   // response kind
   "sub-export rows"_Stz,     // comment about the job
   "subExporter"_Stz,         // the prompt command
   nullptr,                   // the second word

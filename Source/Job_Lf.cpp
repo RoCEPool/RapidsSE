@@ -13,6 +13,7 @@ JobClass xJobClass_Lf =
 {
   CN_JOB_LF,         // class enum
   JK_LOCAL,          // job kind
+  RK_NONE,           // response kind
   "list folder"_Stz, // comment about the job
   "lf"_Stz,          // the prompt command
   nullptr,           // the second word

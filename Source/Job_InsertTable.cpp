@@ -19,6 +19,7 @@ JobClass xJobClass_EndInsert =
 {
   CN_JOB_INSERTTABLE,       // class enum
   JK_DIST2PC,               // job kind
+  RK_NONE,                  // response kind
   "insert table"_Stz,       // comment about the job
   nullptr,                  // the prompt command
   nullptr,                  // the second word

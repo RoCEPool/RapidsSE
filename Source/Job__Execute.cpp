@@ -11,6 +11,7 @@ JobClass xJobClass__Execute =
 {
   CN_JOB__EXECUTE,         // class enum
   JK_GENERIC,              // job kind
+  RK_NONE,                 // response kind
   "job to execute"_Stz,    // comment about the job
   nullptr,                 // the prompt command
   nullptr,                 // the _run task seed

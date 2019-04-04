@@ -13,6 +13,7 @@ JobClass xJobClass_InsertRow =
 {
   CN_JOB_INSERTROW,       // class enum
   JK_DIST2PC,             // job kind
+  RK_NONE,                // response kind
   "insert into tableNm"_Stz, // comment about the job
   "insert"_Stz,           // the prompt command
   "into"_Stz,             // the second word

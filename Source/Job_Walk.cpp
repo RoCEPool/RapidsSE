@@ -13,6 +13,7 @@ JobClass xJobClass_Walk =
 {
   CN_JOB_WALK,               // class enum
   JK_DIST2PC,                // job kind
+  RK_NONE,                   // response kind
   "walk"_Stz,                // comment about the job
   "walk"_Stz,                // the prompt command
   nullptr,                   // the second word

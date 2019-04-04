@@ -11,8 +11,9 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_DropTable =
 {
-   CN_JOB_DROPTABLE,      // class enum
+  CN_JOB_DROPTABLE,      // class enum
   JK_DIST2PC,            // job kind
+  RK_NONE,               // response kind
   "drop table"_Stz,      // comment about the job
   "drop"_Stz,            // the prompt command
   "table"_Stz,           // the second word

@@ -13,6 +13,7 @@ JobClass xJobClass_Start =
 {
   CN_JOB_START,       // class enum
   JK_SYSTEM,          // job kind
+  RK_NONE,            // response kind
   "system start"_Stz, // comment about the job
   nullptr,            // the prompt command
   nullptr,            // the second word

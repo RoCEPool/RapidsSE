@@ -13,6 +13,7 @@ JobClass xJobClass_ListTenants =
 {
   CN_JOB_LISTTENANTS,     // class enum
   JK_LOCAL,               // job kind
+  RK_NONE,                // response kind
   "list tenants"_Stz,     // comment about the job
   "lsten"_Stz,            // the prompt command
   nullptr,                // the second word

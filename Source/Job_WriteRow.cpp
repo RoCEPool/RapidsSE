@@ -17,6 +17,7 @@ JobClass xJobClass_WriteRow =
 {
   CN_JOB_WRITEROW,     // class enum
   JK_GRANDKID,         // job kind
+  RK_NONE,             // response kind
   "write row"_Stz,     // comment about the job
   nullptr,             // the prompt command
   nullptr,             // the second word

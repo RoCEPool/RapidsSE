@@ -13,6 +13,7 @@ JobClass xJobClass_SubTruncate =
 {
   CN_JOB_SUBTRUNCATE,        // class enum
   JK_CHILD,                  // job kind
+  RK_NONE,                  // response kind
   "table sub-truncate"_Stz,  // comment about the job
   nullptr,                   // the prompt command
   nullptr,                   // the second word

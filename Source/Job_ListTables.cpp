@@ -13,6 +13,7 @@ JobClass xJobClass_ListTables =
 {
   CN_JOB_LISTTABLES,      // class enum
   JK_LOCAL,               // job kind
+  RK_NONE,                // response kind
   "list tables"_Stz,      // comment about the job
   "lstbl"_Stz,            // the prompt command
   nullptr,                // the second word

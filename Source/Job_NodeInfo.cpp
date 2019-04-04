@@ -13,6 +13,7 @@ JobClass xJobClass_NodeInfo =
 {
   CN_JOB_NODEINFO,   // class enum
   JK_INFO,           // job kind
+  RK_NONE,           // response kind
   "node info"_Stz,   // comment about the job
   nullptr,           // the prompt command
   nullptr,           // the second word

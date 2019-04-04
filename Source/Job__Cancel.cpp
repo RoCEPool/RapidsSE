@@ -11,6 +11,7 @@ JobClass xJobClass__Cancel =
 {
   CN_JOB__CANCEL,          // class enum
   JK_GENERIC,              // job kind
+  RK_NONE,                 // response kind
   "job to cancel"_Stz,     // comment about the job
   nullptr,                 // the prompt command
   nullptr,                 // the second word

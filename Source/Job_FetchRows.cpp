@@ -13,6 +13,7 @@ JobClass xJobClass_FetchRows =
 {
   CN_JOB_FETCHROWS,          // class enum
   JK_LOCAL,                  // job kind
+  RK_NONE,                   // response kind
   "fetch rows"_Stz,          // comment about the job
   "fetch"_Stz,               // the prompt command
   nullptr,                   // the second word

@@ -19,6 +19,7 @@ JobClass xJobClass_LoadTable =
 {
   CN_JOB_LOADTABLE,       // class enum
   JK_DIST2PC,             // job kind
+  RK_NONE,                // response kind
   "load table"_Stz,       // comment about the job
   "ld"_Stz,               // the prompt command
   nullptr,                // the second word

@@ -13,6 +13,7 @@ JobClass xJobClass_Docol =
 {
   CN_JOB_DOCOL,      // class enum
   JK_LOCAL,          // job kind
+  RK_NONE,           // response kind
   "execute word"_Stz,// comment about the job
   "docol"_Stz,       // the prompt command
   nullptr,           // the second word

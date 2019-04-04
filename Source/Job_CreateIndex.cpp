@@ -13,6 +13,7 @@ JobClass xJobClass_CreateIndex =
 {
   CN_JOB_CREATEINDEX,      // class enum
   JK_DIST2PC,              // job kind
+  RK_NONE,                  // response kind
   "create index"_Stz,      // comment about the job
   "create"_Stz,            // the prompt command
   "index"_Stz,             // the second word
@@ -51,6 +52,7 @@ JobClass xJobClass_CreateIndexUnique =
 {
   CN_JOB_CREATEINDEX,      // class enum
   JK_DIST2PC,              // job kind
+  RK_NONE,                  // response kind
   "create unique index"_Stz, // comment about the job
   "create"_Stz,            // the prompt command
   "unique"_Stz,            // the second word

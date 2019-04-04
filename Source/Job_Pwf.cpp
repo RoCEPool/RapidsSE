@@ -13,6 +13,7 @@ JobClass xJobClass_Pwf =
 {
   CN_JOB_PWF,            // class enum
   JK_LOCAL,              // job kind
+  RK_NONE,               // response kind
   "working folder"_Stz,  // comment about the job
   "pwf"_Stz,             // the prompt command
   nullptr,               // the second word

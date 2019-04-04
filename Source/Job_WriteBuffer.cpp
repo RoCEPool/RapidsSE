@@ -17,6 +17,7 @@ JobClass xJobClass_WriteBuffer =
 {
   CN_JOB_WRITEBUFFER,     // class enum
   JK_GRANDKID,            // job kind
+  RK_NONE,                // response kind
   "write buffer"_Stz,     // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word

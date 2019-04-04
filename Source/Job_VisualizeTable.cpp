@@ -13,6 +13,7 @@ JobClass xJobClass_VisualizeTable =
 {
   CN_JOB_VISUALIZETABLE,      // class enum
   JK_LOCAL,                   // job kind
+  RK_NONE,                    // response kind
   "visualize table"_Stz,      // comment about the job
   "vistbl"_Stz,               // the prompt command
   nullptr,                    // the second word

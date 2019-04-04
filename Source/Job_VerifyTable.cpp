@@ -13,6 +13,7 @@ JobClass xJobClass_VerifyTable =
 {
   CN_JOB_VERIFYTABLE,         // class enum
   JK_DIST2PC,                 // job kind
+  RK_NONE,                    // response kind
   "verify table"_Stz,         // comment about the job
   "vfytbl"_Stz,               // the prompt command
   nullptr,                    // the second word

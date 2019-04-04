@@ -13,6 +13,7 @@ JobClass xJobClass_ListPartColumns =
 {
   CN_JOB_LISTPARTCOLUMNS,           // class enum
   JK_LOCAL,                         // job kind
+  RK_NONE,                          // response kind
   "list partition key"_Stz,         // comment about the job
   "lspartcol"_Stz,                  // the prompt command
   nullptr,                          // the second word

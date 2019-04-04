@@ -13,6 +13,7 @@ JobClass xJobClass_Status =
 {
   CN_JOB_STATUS,     // class enum
   JK_DIST2PC,        // job kind
+  RK_NONE,           // response kind
   "status"_Stz,      // comment about the job
   "status"_Stz,      // the prompt command
   nullptr,           // the second word

@@ -13,6 +13,7 @@ JobClass xJobClass_StartCluster =
 {
   CN_JOB_STARTCLUSTER,     // class enum
   JK_DIST2PC,              // job kind
+  RK_NONE,                 // response kind
   "start cluster"_Stz,     // comment about the job
   "startCluster"_Stz,      // the prompt command
   nullptr,                 // the second word

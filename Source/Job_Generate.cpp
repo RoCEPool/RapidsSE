@@ -13,6 +13,7 @@ JobClass xJobClass_GenData =
 {
   CN_JOB_GENERATE,       // class enum
   JK_LOCAL,              // job kind
+  RK_NONE,               // response kind
   "generate data"_Stz,   // comment about the job
   "generate"_Stz,        // the prompt command
   nullptr,               // the second word

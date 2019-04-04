@@ -13,6 +13,7 @@ JobClass xJobClass_SubFetch =
 {
   CN_JOB_SUBFETCH,           // class enum
   JK_CHILD,                  // job kind
+  RK_NONE,                   // response kind
   "sub-fetch rows"_Stz,      // comment about the job
   nullptr,                   // the prompt command
   nullptr,                   // the second word

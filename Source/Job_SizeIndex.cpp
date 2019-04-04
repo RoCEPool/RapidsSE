@@ -13,6 +13,7 @@ JobClass xJobClass_SizeIndex =
 {
   CN_JOB_SIZEINDEX,      // class enum
   JK_DIST2PC,            // job kind
+  RK_NONE,               // response kind
   "size of index"_Stz,   // comment about the job
   "szidx"_Stz,           // the prompt command
   nullptr,               // the second word

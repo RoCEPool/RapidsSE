@@ -13,6 +13,7 @@ JobClass xJobClass_ListSchemas =
 {
   CN_JOB_LISTSCHEMAS,     // class enum
   JK_LOCAL,               // job kind
+  RK_NONE,                // response kind
   "list schemas"_Stz,     // comment about the job
   "lssch"_Stz,            // the prompt command
   nullptr,                // the second word

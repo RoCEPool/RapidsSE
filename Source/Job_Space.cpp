@@ -13,6 +13,7 @@ JobClass xJobClass_Space =
 {
   CN_JOB_SPACE,     // class enum
   JK_DIST2PC,       // job kind
+  RK_NONE,          // response kind
   "space"_Stz,      // comment about the job
   "space"_Stz,      // the prompt command
   nullptr,          // the second word

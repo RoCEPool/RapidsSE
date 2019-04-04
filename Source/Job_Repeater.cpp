@@ -13,6 +13,7 @@ JobClass xJobClass_Repeater =
 {
   CN_JOB_REPEATER,       // class enum
   JK_LOCAL,              // job kind
+  RK_NONE,               // response kind
   "repeat data"_Stz,     // comment about the job
   "repeater"_Stz,        // the prompt command
   nullptr,               // the second word

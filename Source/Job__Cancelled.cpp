@@ -11,6 +11,7 @@ JobClass xJobClass__Cancelled =
 {
   CN_JOB__CANCELLED,       // class enum
   JK_GENERIC,              // job kind
+  RK_NONE,                 // response kind
   "job was cancelled"_Stz, // comment about the job
   nullptr,                 // the prompt command
   nullptr,                 // the second word

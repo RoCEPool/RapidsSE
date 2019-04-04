@@ -13,6 +13,7 @@ JobClass xJobClass_Report =
 {
   CN_JOB_REPORT,      // class enum
   JK_LOCAL,           // job kind
+  RK_NONE,            // response kind
   "report"_Stz,       // comment about the job
   "report"_Stz,       // the prompt command
   nullptr,            // the second word

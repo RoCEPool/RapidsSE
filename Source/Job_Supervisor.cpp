@@ -13,6 +13,7 @@ JobClass xJobClass_Supervisor =
 {
   CN_JOB_SUPERVISOR,     // class enum
   JK_SYSTEM,             // job kind
+  RK_NONE,               // response kind
   "supervisor"_Stz,      // comment about the job
   nullptr,               // the prompt command
   nullptr,               // the second word

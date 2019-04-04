@@ -13,6 +13,7 @@ JobClass xJobClass_DropTenant =
 {
   CN_JOB_DROPTENANT,      // class enum
   JK_DIST2PC,             // job kind
+  RK_NONE,                // response kind
   "drop tenant"_Stz,      // comment about the job
   "drop"_Stz,             // the prompt command
   "tenant"_Stz,           // the second word

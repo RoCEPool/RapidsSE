@@ -13,6 +13,7 @@ JobClass xJobClass_Answer =
 {
   CN_JOB_ANSWER,       // class enum
   JK_SYSTEM,           // job kind
+  RK_NONE,             // response kind
   "socket answer"_Stz, // comment about the job
   nullptr,             // the prompt command
   nullptr,             // the second word

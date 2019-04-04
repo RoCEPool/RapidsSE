@@ -13,6 +13,7 @@ JobClass xJobClass_DropCatalog =
 {
   CN_JOB_DROPCATALOG,      // class enum
   JK_DIST2PC,              // job kind
+  RK_NONE,                  // response kind
   "drop catalog"_Stz,      // comment about the job
   "drop"_Stz,              // the prompt command
   "catalog"_Stz,           // the second word

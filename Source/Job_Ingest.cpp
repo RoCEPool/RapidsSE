@@ -13,6 +13,7 @@ JobClass xJobClass_Ingest =
 {
   CN_JOB_INGEST,         // class enum
   JK_LOCAL,              // job kind
+  RK_NONE,               // response kind
   "ingest data"_Stz,     // comment about the job
   "ingest"_Stz,          // the prompt command
   nullptr,               // the second word

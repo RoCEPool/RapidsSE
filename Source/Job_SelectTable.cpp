@@ -13,6 +13,7 @@ JobClass xJobClass_SelectTable =
 {
   CN_JOB_SELECTTABLE,        // class enum
   JK_LOCAL,                  // job kind
+  RK_NONE,                   // response kind
   "select table"_Stz,        // comment about the job
   "select"_Stz,              // the prompt command
   nullptr,                   // the second word

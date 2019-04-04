@@ -13,6 +13,7 @@ JobClass xJobClass_SizeTable =
 {
   CN_JOB_SIZETABLE,      // class enum
   JK_DIST2PC,            // job kind
+  RK_NONE,               // response kind
   "size of table"_Stz,   // comment about the job
   "szTbl"_Stz,           // the prompt command
   nullptr,               // the second word
