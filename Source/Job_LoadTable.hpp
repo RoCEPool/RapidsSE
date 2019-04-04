@@ -52,7 +52,6 @@ namespace Jobs
   Job_LoadTable* _pJob_LoadTable(void* aAddr);
   
   Job* pJob_LoadTable_pre(Interface::Session* pSession);
-  void vJob_LoadTable_post(Interface::Session* pSession, Job* pJob);
   Job* pJob_LoadTable_new(Job* pArg);
   void vJob_LoadTable_delete(Interface::Session* pSession, Job* pJob);
   void vJob_LoadTable_show(Job* pJob);
