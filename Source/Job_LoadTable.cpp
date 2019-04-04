@@ -638,9 +638,8 @@ Job* Jobs::pJob_LoadTable_pre(Interface::Session* pSession)
   bool bResult = pJob_LoadTable->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
     pJob_LoadTable->m_bHasError = true;
-    pJob_LoadTable->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_LoadTable->m_xResponse.m_eErrorCode = EC_INVALID_COMMAND;
   }
   
   return pJob_LoadTable;
@@ -651,26 +650,24 @@ Job* Jobs::pJob_LoadTable_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 void Jobs::vJob_LoadTable_post(Interface::Session* pSession, Job* pJob)
 {
-  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJob);
-  
-  if ( pJob_LoadTable->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_LoadTable->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
+  if ( pJob->m_bHasError ) {
+    pJob->vPrintErrors();
   }
   else {
+    i8 iResponses = pJob->m_pResponseVec->nItems();
+    RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
+    
     i8 iRowsProcessed = 0;
     i8 iRowsInvalid   = 0;
     i8 iRowsSkipped   = 0;
 
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
       
+      Response* pResponse = pJob->m_pResponseVec->pGet(i_Node);
       //vTrace("%s"_Stz, pJob_LoadTable->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += *pJob_LoadTable->m_xNode[i_Node].m_ixRowsProcessed;
-      iRowsInvalid   += *pJob_LoadTable->m_xNode[i_Node].m_ixRowsInvalid;
-      iRowsSkipped   += *pJob_LoadTable->m_xNode[i_Node].m_ixRowsSkipped;
+      iRowsProcessed += *pResponse->m_ixRowsProcessed;
+      iRowsInvalid   += *pResponse->m_ixRowsInvalid;
+      iRowsSkipped   += *pResponse->m_ixRowsSkipped;
     }
     if (iRowsInvalid || iRowsSkipped)
       vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
