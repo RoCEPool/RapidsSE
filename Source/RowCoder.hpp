@@ -11,8 +11,7 @@ namespace Data
     static void vCopy(RowNub* pIntoRowNub, RowNub* pFromRowNub,
                       ColumnVec* pColVec);
   
-    static void vDecode(RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row,
-                        Column* pCol, Datum* pDatum);
+    static void vDecode(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
   
     static i8   nLines(RowNub* pRowNub, i8 i_Row, ColumnVec* pColVec);
   
