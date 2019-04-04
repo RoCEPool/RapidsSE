@@ -513,16 +513,6 @@
   // job generic
   static void vJob__CancelledErrorFetch(Tasks::MP_Task mpTask);
   static void vJob__CancelledErrorStore(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedErrorFetch(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedErrorStore(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedResponseFetch(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedResponseStore(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedRowsInvalidFetch(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedRowsInvalidStore(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedRowsProcessedFetch(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedRowsProcessedStore(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedRowsSkippedFetch(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedRowsSkippedStore(Tasks::MP_Task mpTask);
 
   static void vJob__BegunNew(Tasks::MP_Task mpTask);
   static void vJob__CancelNew(Tasks::MP_Task mpTask);
