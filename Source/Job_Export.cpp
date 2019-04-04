@@ -292,9 +292,7 @@ Job* Jobs::pJob_Export_pre(Interface::Session* pSession)
   bool bResult = pJob_Export->bPopulateJob(pTokenVec);
 
   if (! bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_Export->m_bHasError = true;
-    pJob_Export->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_Export->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_Export;

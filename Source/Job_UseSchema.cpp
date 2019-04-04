@@ -211,9 +211,7 @@ Job* Jobs::pJob_UseSchema_pre(Interface::Session* pSession)
   bool bResult = pJob_UseSchema->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_UseSchema->m_bHasError = true;
-    pJob_UseSchema->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_UseSchema->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_UseSchema;

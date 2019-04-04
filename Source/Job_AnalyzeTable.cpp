@@ -210,9 +210,7 @@ Job* Jobs::pJob_AnalyzeTable_pre(Interface::Session* pSession)
   bool bResult = pJob_AnalyzeTable->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_AnalyzeTable->m_bHasError = true;
-    pJob_AnalyzeTable->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_AnalyzeTable->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_AnalyzeTable;

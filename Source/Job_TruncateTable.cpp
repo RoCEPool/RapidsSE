@@ -206,9 +206,7 @@ Job* Jobs::pJob_TruncateTable_pre(Interface::Session* pSession)
   bool bResult = pJob_TruncateTable->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_TruncateTable->m_bHasError = true;
-    pJob_TruncateTable->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_TruncateTable->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_TruncateTable;

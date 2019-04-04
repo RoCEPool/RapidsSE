@@ -207,9 +207,7 @@ Job* Jobs::pJob_CreateTenant_pre(Interface::Session* pSession)
   bool bResult = pJob_CreateTenant->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_CreateTenant->m_bHasError = true;
-    pJob_CreateTenant->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_CreateTenant->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_CreateTenant;

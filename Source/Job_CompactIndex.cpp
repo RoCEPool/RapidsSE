@@ -210,9 +210,7 @@ Job* Jobs::pJob_CompactIndex_pre(Interface::Session* pSession)
   bool bResult = pJob_CompactIndex->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_CompactIndex->m_bHasError = true;
-    pJob_CompactIndex->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_CompactIndex->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_CompactIndex;

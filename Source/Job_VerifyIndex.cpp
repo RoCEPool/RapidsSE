@@ -210,9 +210,7 @@ Job* Jobs::pJob_VerifyIndex_pre(Interface::Session* pSession)
   bool bResult = pJob_VerifyIndex->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_VerifyIndex->m_bHasError = true;
-    pJob_VerifyIndex->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_VerifyIndex->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_VerifyIndex;

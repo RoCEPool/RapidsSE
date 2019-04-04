@@ -408,9 +408,7 @@ Job* Jobs::pJob_FetchRows_pre(Interface::Session* pSession)
   bool bResult = pJob_FetchRows->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_FetchRows->m_bHasError = true;
-    pJob_FetchRows->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_FetchRows->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_FetchRows;

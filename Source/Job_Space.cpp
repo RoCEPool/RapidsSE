@@ -204,9 +204,7 @@ Job* Jobs::pJob_Space_pre(Interface::Session* pSession)
   bool bResult = pJob_Space->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_Space->m_bHasError = true;
-    pJob_Space->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_Space->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_Space;

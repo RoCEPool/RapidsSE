@@ -202,9 +202,7 @@ Job* Jobs::pJob_TableSizes_pre(Interface::Session* pSession)
   bool bResult = pJob_TableSizes->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_TableSizes->m_bHasError = true;
-    pJob_TableSizes->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_TableSizes->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_TableSizes;

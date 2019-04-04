@@ -638,8 +638,7 @@ Job* Jobs::pJob_LoadTable_pre(Interface::Session* pSession)
   bool bResult = pJob_LoadTable->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    pJob_LoadTable->m_bHasError = true;
-    pJob_LoadTable->m_xResponse.m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_LoadTable->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_LoadTable;

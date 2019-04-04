@@ -631,9 +631,7 @@ Job* Jobs::pJob_CreateTable_pre(Interface::Session* pSession)
   eEC eError = pJob_CreateTable->ePopulateJob(pTokenVec);
   
   if ( eError != EC_NONE ) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_CreateTable->m_bHasError = true;
-    pJob_CreateTable->m_xNode[iNode].m_eErrorCode = eError;
+    pJob_CreateTable->vAddError(eError);
   }
   
   return pJob_CreateTable;

@@ -209,9 +209,7 @@ Job* Jobs::pJob_DropTenant_pre(Interface::Session* pSession)
   bool bResult = pJob_DropTenant->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_DropTenant->m_bHasError = true;
-    pJob_DropTenant->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_DropTenant->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_DropTenant;

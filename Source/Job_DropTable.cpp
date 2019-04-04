@@ -206,9 +206,7 @@ Job* Jobs::pJob_DropTable_pre(Interface::Session* pSession)
   bool bResult = pJob_DropTable->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_DropTable->m_bHasError = true;
-    pJob_DropTable->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_DropTable->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_DropTable;

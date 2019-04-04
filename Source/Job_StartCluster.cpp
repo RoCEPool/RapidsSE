@@ -203,9 +203,7 @@ Job* Jobs::pJob_StartCluster_pre(Interface::Session* pSession)
   bool bResult = pJob_StartCluster->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_StartCluster->m_bHasError = true;
-    pJob_StartCluster->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_StartCluster->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_StartCluster;

@@ -355,9 +355,7 @@ Job* Jobs::pJob_CreateIndex_pre(Interface::Session* pSession)
   bool bResult = pJob_CreateIndex->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_CreateIndex->m_bHasError = true;
-    pJob_CreateIndex->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_CreateIndex->vAddError(EC_INVALID_COMMAND);
   }
   return pJob_CreateIndex;
 }
