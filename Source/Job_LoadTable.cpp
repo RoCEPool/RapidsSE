@@ -19,7 +19,7 @@ JobClass xJobClass_LoadTable =
 {
   CN_JOB_LOADTABLE,       // class enum
   JK_DIST2PC,             // job kind
-  RK_NONE,                // response kind
+  RK_LOAD_ROWS,           // response kind
   "load table"_Stz,       // comment about the job
   "ld"_Stz,               // the prompt command
   nullptr,                // the second word
@@ -39,7 +39,7 @@ JobClass xJobClass_LoadTable =
 
   eJob_checkCluster,      // prompt check function
   pJob_LoadTable_pre,     // prompt pre-process function
-  vJob_LoadTable_post,    // prompt post-process function
+  vJob_post,              // prompt post-process function
   pJob_LoadTable_new,     // job new function
   vJob_LoadTable_delete,  // job delete function
   vJob_send,              // job pre-send function
@@ -643,39 +643,6 @@ Job* Jobs::pJob_LoadTable_pre(Interface::Session* pSession)
   }
   
   return pJob_LoadTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_LoadTable_post(Interface::Session* pSession, Job* pJob)
-{
-  if ( pJob->m_bHasError ) {
-    pJob->vPrintNodeErrors();
-  }
-  else {
-    i8 iResponses = pJob->m_pResponseVec->nItems();
-    RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
-    
-    i8 iRowsProcessed = 0;
-    i8 iRowsInvalid   = 0;
-    i8 iRowsSkipped   = 0;
-
-    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      
-      Response* pResponse = pJob->m_pResponseVec->pGet(i_Node);
-      //vTrace("%s"_Stz, pJob_LoadTable->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += *pResponse->m_ixRowsProcessed;
-      iRowsInvalid   += *pResponse->m_ixRowsInvalid;
-      iRowsSkipped   += *pResponse->m_ixRowsSkipped;
-    }
-    if (iRowsInvalid || iRowsSkipped)
-      vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
-             iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
-    else
-      vTrace("success: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
-           iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

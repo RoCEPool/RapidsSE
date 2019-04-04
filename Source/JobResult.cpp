@@ -120,18 +120,31 @@ void JobResult::vPrintLoadRows(void)
 {
   i8 iResponses = m_pResponseVec->nItems();
   
-  if (m_bHasError) {
-    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+  if ( m_bHasError ) {
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++)
       vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
-    }
     return;
   }
-  
+
   RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
+  
+  i8 iRowsProcessed = 0;
+  i8 iRowsInvalid   = 0;
+  i8 iRowsSkipped   = 0;
   
   for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
     
+    Response* pResponse = m_pResponseVec->pGet(i_Node);
+    iRowsProcessed += *pResponse->m_ixRowsProcessed;
+    iRowsInvalid   += *pResponse->m_ixRowsInvalid;
+    iRowsSkipped   += *pResponse->m_ixRowsSkipped;
   }
+  if (iRowsInvalid || iRowsSkipped)
+    vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
+           iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
+  else
+    vTrace("success: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
+           iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
   
 }
 

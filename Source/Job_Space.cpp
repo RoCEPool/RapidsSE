@@ -13,7 +13,7 @@ JobClass xJobClass_Space =
 {
   CN_JOB_SPACE,     // class enum
   JK_DIST2PC,       // job kind
-  RK_NONE,          // response kind
+  RK_NODE_ROWS,     // response kind
   "space"_Stz,      // comment about the job
   "space"_Stz,      // the prompt command
   nullptr,          // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_Space =
 
   eJob_checkCluster,// prompt check function
   pJob_Space_pre,   // prompt pre-process function
-  vJob_Space_post,  // prompt post-process function
+  vJob_post,        // prompt post-process function
   nullptr,          // job new function
   vJob_Space_delete,// job delete function
   vJob_send,        // job pre-send function
