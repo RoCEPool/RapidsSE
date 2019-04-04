@@ -262,7 +262,7 @@ CacheLine* RowBuffer::aAllotTails(i8 nTails)
 //  return pRow;
 //}
 /*----------------------------------------------------------------------------*/
-bool RowBuffer::bAppendRow(RowNub* pFromRowNub, CacheLine* aRowData)
+bool RowBuffer::bAppendRow(RowNub* pFromRowNub)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
@@ -279,7 +279,7 @@ bool RowBuffer::bAppendRow(RowNub* pFromRowNub, CacheLine* aRowData)
   // copy row data into row entry
   
   RowNub* pIntoRowNub = *&m_xRowTray;
-  RowCoder::vCopy(pIntoRowNub,pFromRowNub,aRowData,pColVec);
+  RowCoder::vCopy(pIntoRowNub,pFromRowNub,pColVec);
   
   return true;
 }

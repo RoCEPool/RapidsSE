@@ -12,7 +12,7 @@
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCopy(RowNub* pIntoRowNub, 
-                     RowNub* pFromRowNub, CacheLine _xaFromLine[],
+                     RowNub* pFromRowNub, 
                      ColumnVec* pColVec)
 {
   //! NOTE:: Assuming each row fits in a cacheline + (n * Shoco Lines)

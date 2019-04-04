@@ -25,7 +25,7 @@ namespace Jobs
   public:
     void vHandleDanglingBuffers(void);
     eEC  eInsertRow(void);
-    eEC  eInsertRow(RowNub* pRowNub, CacheLine* aRow_Data, i8 nRowBytes);
+    eEC  eInsertRow(RowNub* pRowNub);
     eEC  eProcessRecord(Stz* aRecord,  i8 nBytes);
   
   private:

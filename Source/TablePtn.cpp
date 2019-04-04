@@ -273,7 +273,7 @@ void TablePtn::vAppendRow(RowParts& oRowParts, i8 nRowBytes)
     m_pCurrentRowBuffer = m_pRootRowBuffer;
   }
   
-  bool bAppended = m_pCurrentRowBuffer->bAppendRow(oRowParts,oRowParts.aGet(0));
+  bool bAppended = m_pCurrentRowBuffer->bAppendRow(oRowParts);
   
   if ( ! bAppended ) {
     RowBuffer* pRowBuffer = new RowBuffer;
@@ -284,7 +284,7 @@ void TablePtn::vAppendRow(RowParts& oRowParts, i8 nRowBytes)
     m_pCurrentRowBuffer->vNextBuffer(pRowBuffer);
     m_pCurrentRowBuffer = pRowBuffer;
     
-    bAppended = m_pCurrentRowBuffer->bAppendRow(oRowParts,oRowParts.aGet(0));
+    bAppended = m_pCurrentRowBuffer->bAppendRow(oRowParts);
     RASSERT(bAppended);
   }
   
