@@ -543,28 +543,18 @@ RowTray* RowBuffer::pRowTray(void)
 /*----------------------------------------------------------------------------*/
 /* show entry                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vShowRow(i8 iRowNo)
+void RowBuffer::vShowRow(i8 i_Row)
 {
-  vTrace("Id: %3lli.%03lli "_Stz,
-         m_iBufferNo,
-         iRowNo
-         );
+  vTrace("Id: %3lli.%03lli "_Stz,m_iBufferNo,i_Row);
   
   ColumnVec* pColVec = m_pTable->pColumnVec();
   
-  CacheLine* aRowCacheLine = m_xRowTray.aGet(iRowNo);
-  
-  //s48K sRowString;
-  //RowCoder::vString(sRowString, pColumnVec,aRowCacheLine);
-  
-  //Record* pRecord = new Record;
   HV_Rec hvRec;
   
-  RowCoder::vRecord(hvRec,m_xRowTray,aRowCacheLine,0,pColVec);
+  RowCoder::vRecord(hvRec,m_xRowTray,i_Row,pColVec);
 
   vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
   
-  //delete pRecord;
 }
 
 /*----------------------------------------------------------------------------*/

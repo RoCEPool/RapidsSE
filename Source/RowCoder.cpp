@@ -182,7 +182,7 @@ void RowCoder::vPrint(RowNub* pRowNub, i8 i_Row, Column* pCol)
 /* sprint decode row from cache line into string                              */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecord(Record* pRec,
-                       RowNub* pRowNub, CacheLine xaCacheLine[], i8 i_Row, ColumnVec* pColVec)
+                       RowNub* pRowNub, i8 i_Row, ColumnVec* pColVec)
 {
   // get no of columns
   i8 nColumns = pColVec->nItems();
@@ -198,7 +198,7 @@ void RowCoder::vRecord(Record* pRec,
       pRec->szRecStr()->vConcat(","_Stz);
     
     // append column value
-    vAppend(pRec,pRowNub,xaCacheLine,i_Row,pCol);
+    vAppend(pRec,pRowNub,i_Row,pCol);
   }
 }
 
@@ -209,8 +209,7 @@ void RowCoder::vRecord(Record* pRec,
 /*----------------------------------------------------------------------------*/
 /* decode and append column datum from cache line                             */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vAppend(Record* pRec, RowNub* pRowNub,
-                       CacheLine xaCacheLine[], i8 i_Row, Column* pCol)
+void RowCoder::vAppend(Record* pRec, RowNub* pRowNub, i8 i_Row, Column* pCol)
 {
   Datum oDatum;
   
