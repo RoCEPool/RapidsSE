@@ -9,7 +9,6 @@ namespace Jobs
   class JobRow
   {
   public:
-    Table*      m_pTable;       // table pointer
     RowParts    m_oRowParts;    // tray of row parts
     i8          m_nRowBytes;    // length of formatted row
     Formatters  m_oFormatters;  // formatters
@@ -22,6 +21,9 @@ namespace Jobs
     
   public:
     bool bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine);
+  
+    Table* pTable(void);
+    void vTable(Table* pTable);
 
   private:
     bool bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine);

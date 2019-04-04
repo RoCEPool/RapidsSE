@@ -26,8 +26,6 @@ void* JobRow::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 JobRow::JobRow(void)
 {
-  m_pTable = nullptr;
-  
   //m_aRecord;
   m_nRowBytes = 0;
   //m_oFormatters;
@@ -55,6 +53,24 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   bool bFormatted = bFormRow(aRecord, nBytes, bBlankLine);
   
   return bFormatted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table                                                                  */
+/*----------------------------------------------------------------------------*/
+Table* JobRow::pTable(void)
+{
+  Table* pTable = m_oRowParts.pDesc();
+  
+  return pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table                                                                  */
+/*----------------------------------------------------------------------------*/
+void JobRow::vTable(Table* pTable)
+{
+  m_oRowParts.vDesc(pTable);
 }
 
 
@@ -99,8 +115,8 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   i8 i_Head = m_oRowParts.iAllotHead();
   ASSERT(0 == i_Head);
 
-  ColumnVec* pColVec = m_pTable->pColumnVec();
-  i8 nColumns = m_pTable->pColumnVec()->nItems();
+  ColumnVec* pColVec = pTable()->pColumnVec();
+  i8 nColumns = pColVec->nItems();
   
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     

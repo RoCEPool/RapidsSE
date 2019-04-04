@@ -175,7 +175,8 @@ bool Job_SubIngester::bBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINGESTER,_FOOTER_);
   
   // set the table and parentJob in the writeBehind Job
-  JobWriteBehind::m_pTable = m_pJob_Ingest->m_pTable;
+  Table* pTable = m_pJob_Ingest->pTable();
+  JobWriteBehind::vTable(pTable);
   JobWriteBehind::m_pParentJob = m_pJob_Ingest;
   
   return true;

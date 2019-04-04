@@ -169,7 +169,7 @@ void Job_SubInserter::vBegin(Table* pTable)
   
   // set the table and parentJob in the writeBehind Job
   //RASSERT(pTable == this->m_pTable);
-  JobWriteBehind::m_pTable = pTable;
+  JobWriteBehind::vTable(pTable);
   JobWriteBehind::m_pParentJob = (Job*)m_pJob_InsertTable;
 }
 
