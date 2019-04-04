@@ -12,7 +12,7 @@
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCopy(RowNub* pIntoRowNub, 
-                     RowNub* pFromRowNub, CacheLine xaFromLine[],
+                     RowNub* pFromRowNub, CacheLine _xaFromLine[],
                      ColumnVec* pColVec)
 {
   //! NOTE:: Assuming each row fits in a cacheline + (n * Shoco Lines)
@@ -21,7 +21,7 @@ void RowCoder::vCopy(RowNub* pIntoRowNub,
   CacheLine* pIntoHead  = pIntoRowNub->aAllotHead();
   CacheLine* pIntoTails = pIntoRowNub->aAllotTails(nCacheLines - 1);
   
-  CacheLine* pFromHead = &xaFromLine[0];
+  CacheLine* pFromHead = pFromRowNub->aGet(0);
   
   MemLib::vCopy(pIntoHead,pFromHead,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
 
@@ -32,7 +32,7 @@ void RowCoder::vCopy(RowNub* pIntoRowNub,
   i8 i_Offset = C_UNKNOWN;
   
   i8 i_Tail = 0;
-  CacheLine* pFromTails = &xaFromLine[i_Tail];
+  CacheLine* pFromTails = pFromRowNub->aGet(0);
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     Column* pCol = pColVec->pGet(i_Column);
@@ -40,7 +40,7 @@ void RowCoder::vCopy(RowNub* pIntoRowNub,
     if (DM_VCH != pCol->eDatumType())
       continue;
     
-    eMN eEncoding = eGetEncoding(&xaFromLine[0],i_Column,i_Offset);
+    eMN eEncoding = eGetEncoding(pFromHead,i_Column,i_Offset);
     
     if (MN_SHOCO_2B != eEncoding)
       continue;
