@@ -223,9 +223,9 @@ Job* Jobs::pJob_CompactIndex_pre(Interface::Session* pSession)
 void Jobs::vJob_CompactIndex_post(Interface::Session* pSession, Job* pJob)
 {
   if ( pJob->m_bHasError )
-    pJob->vPrintErrors();
+    pJob->vPrintNodeErrors();
   else
-    pJob->vPrintSuccess();
+    pJob->vPrintZeroRows();
 }
 
 /*----------------------------------------------------------------------------*/

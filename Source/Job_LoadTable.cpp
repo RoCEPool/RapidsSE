@@ -651,7 +651,7 @@ Job* Jobs::pJob_LoadTable_pre(Interface::Session* pSession)
 void Jobs::vJob_LoadTable_post(Interface::Session* pSession, Job* pJob)
 {
   if ( pJob->m_bHasError ) {
-    pJob->vPrintErrors();
+    pJob->vPrintNodeErrors();
   }
   else {
     i8 iResponses = pJob->m_pResponseVec->nItems();

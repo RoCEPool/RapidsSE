@@ -552,10 +552,21 @@ eEC Jobs::eJob_checkCluster(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 void Jobs::vJob_post(Interface::Session* pSession, Job* pJob)
 {
-  if (pJob->m_bHasError)
-    pJob->vPrintErrors();
-  else
-    pJob->vPrintResult();
+  
+  switch (pJob->m_pJobClass->m_eResponse) {
+      
+    case RK_NONE:      /* do nothing */      break;
+    case RK_DATA_ROWS  : pJob->vPrintDataRows();   break;
+    case RK_LOAD_ROWS  : pJob->vPrintLoadRows();   break;
+    case RK_NODE_ERRORS: pJob->vPrintNodeErrors(); break;
+    case RK_NODE_ROWS  : pJob->vPrintNodeRows();   break;
+    case RK_ZERO_ROWS  : pJob->vPrintZeroRows();   break;
+      
+    default:
+      vTrace("Invalid response in job %s : %s\n"_Stz,
+             aCN[pJob->m_pJobClass->m_eClass],
+             aRK[pJob->m_pJobClass->m_eResponse]);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

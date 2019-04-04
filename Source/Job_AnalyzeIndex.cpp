@@ -13,7 +13,7 @@ JobClass xJobClass_AnalyzeIndex =
 {
   CN_JOB_ANALYZEINDEX,       // class enum
   JK_DIST2PC,                // job kind
-  RK_NONE,                  // response kind
+  RK_NONE,                   // response kind
   "analyse index"_Stz,       // comment about the job
   "anidx"_Stz,               // the prompt command
   nullptr,                   // the second word

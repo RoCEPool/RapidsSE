@@ -83,27 +83,72 @@ void JobResult::vAddError(eEC eError)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print errors                                                               */
+/* print data rows                                                            */
 /*----------------------------------------------------------------------------*/
-void JobResult::vPrintErrors(void)
+void JobResult::vPrintDataRows(void)
 {
   i8 iResponses = m_pResponseVec->nItems();
   RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
   
-  RASSERT(m_bHasError);
+  if (m_bHasError) {
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* print errors                                                               */
+/*----------------------------------------------------------------------------*/
+void JobResult::vPrintNodeErrors(void)
+{
+  i8 iResponses = m_pResponseVec->nItems();
+  RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
   
-  for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-    vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+  if (m_bHasError) {
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+    }
   }
   
 }
 
 /*----------------------------------------------------------------------------*/
-/* print result                                                               */
+/* print load rows                                                            */
 /*----------------------------------------------------------------------------*/
-void JobResult::vPrintResult(void)
+void JobResult::vPrintLoadRows(void)
 {
   i8 iResponses = m_pResponseVec->nItems();
+  
+  if (m_bHasError) {
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+    }
+    return;
+  }
+  
+  RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
+  
+  for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+    
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* print node rows                                                            */
+/*----------------------------------------------------------------------------*/
+void JobResult::vPrintNodeRows(void)
+{
+  i8 iResponses = m_pResponseVec->nItems();
+  
+  if (m_bHasError) {
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+    }
+    return;
+  }
+  
   RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
   
   if (gpAttachMap->m_bMetadata) {
@@ -118,11 +163,23 @@ void JobResult::vPrintResult(void)
   }
   vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
 }
+
 /*----------------------------------------------------------------------------*/
 /* print success                                                              */
 /*----------------------------------------------------------------------------*/
-void JobResult::vPrintSuccess(void)
+void JobResult::vPrintZeroRows(void)
 {
+  i8 iResponses = m_pResponseVec->nItems();
+  
+  if (m_bHasError) {
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+    }
+    return;
+  }
+  
+  RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
+  
   vTrace("success: 0 rows affected\n"_Stz);
 }
 

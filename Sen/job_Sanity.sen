@@ -88,6 +88,8 @@
 
   then
 
+  1 pJob_Sanity job.rowsProcessed!
+
   pJob_Sanity job.notice
 
   pJob_Sanity job::participantExecuted

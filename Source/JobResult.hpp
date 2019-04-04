@@ -10,10 +10,10 @@ namespace Jobs
     /* 0 */ RK_NONE=0,
     
     /* 1 */ RK_DATA_ROWS,
-    /* 2 */ RK_ERROR,
-    /* 3 */ RK_LOAD_ROWS,
+    /* 2 */ RK_LOAD_ROWS,
+    /* 3 */ RK_NODE_ERRORS,
     /* 4 */ RK_NODE_ROWS,
-    /* 5 */ RK_SUCCESS,
+    /* 5 */ RK_ZERO_ROWS,
     
     /* 6 */ RK_ENUMS_
   };
@@ -23,10 +23,10 @@ namespace Jobs
     /* 0 */ "NONE"_Stz,
     
     /* 1 */ "DATA_ROWS"_Stz,
-    /* 2 */ "ERROR"_Stz,
-    /* 3 */ "LOAD_ROWS"_Stz,
+    /* 2 */ "LOAD_ROWS"_Stz,
+    /* 3 */ "NODE_ERRORS"_Stz,
     /* 4 */ "NODE_ROWS"_Stz,
-    /* 5 */ "SUCCESS"_Stz,
+    /* 5 */ "ZERO_ROWS"_Stz,
     
     /* 6 */ "ENUMS_"_Stz
   };
@@ -53,15 +53,17 @@ namespace Jobs
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
+    
     JobResult(void);
     ~JobResult(void) noexcept(false);
     
     void vAddError(eEC eError);
     
-    void vPrintErrors(void);
-    void vPrintResult(void);
-    void vPrintSuccess(void);
+    void vPrintDataRows(void);
+    void vPrintNodeErrors(void);
+    void vPrintNodeRows(void);
+    void vPrintLoadRows(void);
+    void vPrintZeroRows(void);
   };
 }
 

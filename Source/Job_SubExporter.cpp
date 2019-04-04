@@ -347,7 +347,7 @@ Job* Jobs::pJob_SubExporter_pre(Interface::Session* pSession)
 void Jobs::vJob_SubExporter_post(Interface::Session* pSession, Job* pJob)
 {
   if (pJob->m_bHasError)
-    pJob->vPrintErrors();
+    pJob->vPrintNodeErrors();
 }
 
 /*----------------------------------------------------------------------------*/
