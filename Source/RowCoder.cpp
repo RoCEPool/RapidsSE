@@ -18,7 +18,7 @@ void RowCoder::vCopy(RowNub* pIntoRowNub, RowNub* pFromRowNub)
   ColumnVec* pColVec = pIntoRowNub->pDesc()->pColumnVec();
 
   //! NOTE:: Assuming each row fits in a cacheline + (n * Shoco Lines)
-  i8 nCacheLines = RowCoder::nLines(pFromRowNub,0,pColVec);
+  i8 nCacheLines = RowCoder::nLines(pFromRowNub,0);
 
   CacheLine* pIntoHead  = pIntoRowNub->aAllotHead();
   CacheLine* pIntoTails = pIntoRowNub->aAllotTails(nCacheLines - 1);
@@ -119,7 +119,7 @@ void RowCoder::vEncode(RowNub* pRowNub, Column* pColumn, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* compute how many cache lines an encoded row occupies                       */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::nLines(RowNub* pRowNub, i8 i_Row, ColumnVec* )
+i8 RowCoder::nLines(RowNub* pRowNub, i8 i_Row)
 {
   ColumnVec* pColVec = pRowNub->pDesc()->pColumnVec();
 

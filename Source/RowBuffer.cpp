@@ -244,8 +244,7 @@ bool RowBuffer::bAppendRow(RowNub* pFromRowNub)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for space in this buffer
   
-  ColumnVec* pColVec = pTable()->pColumnVec();
-  i8 nCacheLines = RowCoder::nLines(pFromRowNub,0,pColVec);
+  i8 nCacheLines = RowCoder::nLines(pFromRowNub,0);
   
   if (! bHasSpace(sizeof(CacheLine) * nCacheLines))
     return false;

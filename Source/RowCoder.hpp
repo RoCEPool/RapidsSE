@@ -12,7 +12,8 @@ namespace Data
   
     static void vDecode(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
   
-    static i8   nLines(RowNub* pRowNub, i8 i_Row, ColumnVec* pColVec);
+    //! make this private
+    static i8   nLines(RowNub* pRowNub, i8 i_Row);
   
     static void vEncode(RowNub* pRowNub, Column* pColumn, Datum* pDatum);
   
