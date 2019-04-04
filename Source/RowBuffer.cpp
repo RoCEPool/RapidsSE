@@ -262,37 +262,26 @@ CacheLine* RowBuffer::aAllotTails(i8 nTails)
 //  return pRow;
 //}
 /*----------------------------------------------------------------------------*/
-CacheLine* RowBuffer::aAppendRow(RowNub* pFromRowNub, CacheLine* aRowData)
+bool RowBuffer::bAppendRow(RowNub* pFromRowNub, CacheLine* aRowData)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allot row entry in this buffer
+  // check for space in this buffer
   
-  bn nBufferNo = this->nPoolBufferNo();
   ColumnVec* pColVec = m_pTable->pColumnVec();
   i8 nCacheLines = RowCoder::nLines(pFromRowNub,0,pColVec);
   
   if (! bHasSpace(sizeof(CacheLine) * nCacheLines))
-    return nullptr;
+    return false;
   
-  //! NOTE:: Assuming each row fits in a cacheline + (n * Shoco Lines)
-  CacheLine* pHead  = aAllotHead();
-  CacheLine* pTails = aAllotTails(nCacheLines - 1);
-  
-  RASSERT(pHead);
-  RASSERT(nCacheLines == 1 || pTails);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy row data into row entry
   
-  //MemLib::vCopy(pHead,aRowData,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
   RowNub* pIntoRowNub = *&m_xRowTray;
-  RowCoder::vCopy(pIntoRowNub,pHead,pTails,pFromRowNub,aRowData,pColVec);
+  RowCoder::vCopy(pIntoRowNub,pFromRowNub,aRowData,pColVec);
   
-  //pRowEntry->vShow(0, m_pIndex, false);
-  
-  return pHead;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

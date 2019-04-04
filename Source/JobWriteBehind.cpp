@@ -134,14 +134,14 @@ eEC JobWriteBehind::eInsertRow(RowNub* pRowNub, CacheLine* aRow_Data, i8 nRowByt
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert row into working buffer
     pRowBuffer->vGrabWrite();
-    CacheLine* pRow = pRowBuffer->aAppendRow(pRowNub,aRow_Data);
+    bool bRowAppended = pRowBuffer->bAppendRow(pRowNub,aRow_Data);
     pRowBuffer->vDropWrite();
     
     //pRowBuffer->vDump();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // appended ?
-    if (pRow)
+    if (bRowAppended)
       return EC_NONE;
     
     m_pRowBuffer[iPartition] = nullptr;

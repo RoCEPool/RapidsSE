@@ -282,6 +282,8 @@ void Job_SubLoader::vEnd(void)
   
   // add processed rows into parent load table job
   i8 iRowsProcessed = *m_xNode[i_Node].m_ixRowsProcessed;
+  //! REMOVE THIS TRACE
+  vTrace("iRowsProcessed %lld [RJH REMOVE]\n"_Stz,iRowsProcessed);
   m_pJob_LoadTable->m_xNode[i_Node].m_ixRowsProcessed += iRowsProcessed;
   
   // close the file being loaded

@@ -5,6 +5,7 @@
 
 namespace Jobs
 {
+  //! rename to FetchResult
   class FetchBuffer : public Object
   {
     static const i8 C_WSP_FETCHBUFFER = C_SIZE_LARGE_OBJECT - C_4KB;

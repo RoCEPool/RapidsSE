@@ -273,9 +273,9 @@ void TablePtn::vAppendRow(RowParts& oRowParts, i8 nRowBytes)
     m_pCurrentRowBuffer = m_pRootRowBuffer;
   }
   
-  CacheLine* aRow = m_pCurrentRowBuffer->aAppendRow(oRowParts,oRowParts.aGet(0));
+  bool bAppended = m_pCurrentRowBuffer->bAppendRow(oRowParts,oRowParts.aGet(0));
   
-  if ( ! aRow ) {
+  if ( ! bAppended ) {
     RowBuffer* pRowBuffer = new RowBuffer;
     m_pRootRowBuffer->vTable(m_pTable);
     m_pRootRowBuffer->vPartitionNo(m_iPartitionId);
@@ -284,8 +284,8 @@ void TablePtn::vAppendRow(RowParts& oRowParts, i8 nRowBytes)
     m_pCurrentRowBuffer->vNextBuffer(pRowBuffer);
     m_pCurrentRowBuffer = pRowBuffer;
     
-    CacheLine* aRow = m_pCurrentRowBuffer->aAppendRow(oRowParts,oRowParts.aGet(0));
-    RASSERT(aRow);
+    bAppended = m_pCurrentRowBuffer->bAppendRow(oRowParts,oRowParts.aGet(0));
+    RASSERT(bAppended);
   }
   
   // get the row from the buffer
