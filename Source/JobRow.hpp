@@ -10,7 +10,6 @@ namespace Jobs
   {
   public:
     RowParts    m_oRowParts;    // tray of row parts
-    i8          m_nRowBytes;    // length of formatted row
     Formatters  m_oFormatters;  // formatters
     
   public:
@@ -24,9 +23,6 @@ namespace Jobs
   
     Table* pTable(void);
     void vTable(Table* pTable);
-
-  private:
-    bool bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine);
   };
 }
 
