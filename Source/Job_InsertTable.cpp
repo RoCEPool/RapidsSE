@@ -19,7 +19,7 @@ JobClass xJobClass_EndInsert =
 {
   CN_JOB_INSERTTABLE,       // class enum
   JK_DIST2PC,               // job kind
-  RK_NONE,                  // response kind
+  RK_NODE_ERRORS,           // response kind
   "insert table"_Stz,       // comment about the job
   nullptr,                  // the prompt command
   nullptr,                  // the second word
@@ -39,7 +39,7 @@ JobClass xJobClass_EndInsert =
 
   eJob_checkCluster,        // prompt check function
   pJob_InsertTable_pre,     // prompt pre-process function
-  vJob_InsertTable_post,    // prompt post-process function
+  vJob_post,                // prompt post-process function
   pJob_InsertTable_new,     // job new function
   vJob_InsertTable_delete,  // job delete function
   vJob_send,                // job pre-send function
@@ -195,22 +195,6 @@ Job* Jobs::pJob_InsertTable_pre(Interface::Session* pSession)
 //  pJob_InsertTable->m_iJobId = iJobId;
   
   return pJob_InsertTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_InsertTable_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJob);
-  
-  if ( pJob_InsertTable->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_InsertTable->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
 }
 
 /*----------------------------------------------------------------------------*/
