@@ -23,9 +23,6 @@ namespace Jobs
   
     Table* pTable(void);
     void vTable(Table* pTable);
-
-  private:
-    bool bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine);
   };
 }
 

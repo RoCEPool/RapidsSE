@@ -46,40 +46,6 @@ JobRow::~JobRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 {
-  // format into subInserters m_aRow
-  bool bFormatted = bFormRow(aRecord, nBytes, bBlankLine);
-  
-  return bFormatted;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get table                                                                  */
-/*----------------------------------------------------------------------------*/
-Table* JobRow::pTable(void)
-{
-  Table* pTable = m_oRowParts.pDesc();
-  
-  return pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set table                                                                  */
-/*----------------------------------------------------------------------------*/
-void JobRow::vTable(Table* pTable)
-{
-  m_oRowParts.vDesc(pTable);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private Functions -------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* Format the row                                                             */
-/*----------------------------------------------------------------------------*/
-bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
-{
   bBlankLine = false;
   
   bool bValidDatum;
@@ -154,6 +120,24 @@ bool JobRow::bFormRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   //MemLib::vWordDump(m_oRowParts.aGet(0),sizeof(CacheLine));
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table                                                                  */
+/*----------------------------------------------------------------------------*/
+Table* JobRow::pTable(void)
+{
+  Table* pTable = m_oRowParts.pDesc();
+  
+  return pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table                                                                  */
+/*----------------------------------------------------------------------------*/
+void JobRow::vTable(Table* pTable)
+{
+  m_oRowParts.vDesc(pTable);
 }
 
 /*============================================================================*/
