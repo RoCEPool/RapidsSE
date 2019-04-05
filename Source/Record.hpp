@@ -23,7 +23,7 @@ namespace Data
     ~Record(void) noexcept(false);
   
     static bool bExtract(Column* pColumn, Datum* pDatum, char** aaSrc,
-                         bool bLastColumn, Formatters* pFormatters);
+                         Formatters* pFormatters);
   
     static bool bExtractBcdDefault(Datum* pDatum, char** aaSrc,
                                    Column* pColumn, Formatters* pFormatters);

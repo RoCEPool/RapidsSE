@@ -70,8 +70,7 @@ Record::~Record(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* extract                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtract(Column* pCol, Datum* pDatum, char** aaSrc,
-                      bool bLastColumn, Formatters* pFmt)
+bool Record::bExtract(Column* pCol, Datum* pDatum, char** aaSrc, Formatters* pFmt)
 {
   bool b = false;
   eDM eDatum = pCol->eDatumType();
@@ -114,7 +113,7 @@ bool Record::bExtract(Column* pCol, Datum* pDatum, char** aaSrc,
   // move past the field delimiter
   //   (but not past the record terminator or record ends)
   
-  if (bLastColumn) {
+  if (pCol->bIsLastColumn()) {
     // do not expect to see a field delimiter
     if ( pFmt->m_cFieldDelimiter &&
         pFmt->m_cRecordTerminator &&

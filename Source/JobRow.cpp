@@ -84,15 +84,11 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     Column* pColumn = pColVec->pGet(i_Column);
-    bool bLastColumn = (i_Column + 1 == nColumns) ? true : false;
-    
-    RASSERT(bLastColumn == pColumn->bIsLastColumn());
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // extract datum from record
     
-    bValidDatum = Record::bExtract(pColumn, &oDatum, &aSrc,
-                                   bLastColumn, &m_oFormatters);
+    bValidDatum = Record::bExtract(pColumn,&oDatum,&aSrc,&m_oFormatters);
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // is the datum valid ?
