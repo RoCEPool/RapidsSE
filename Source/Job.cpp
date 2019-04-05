@@ -555,10 +555,10 @@ void Jobs::vJob_post(Interface::Session* pSession, Job* pJob)
   
   switch (pJob->m_pJobClass->m_eResponse) {
       
-    case RK_NONE:      /* do nothing */             break;
+    case RK_NONE:      /* do nothing */              break;
     case RK_DATA_ROWS   : RASSERT(0);                break;
     case RK_LOAD_ROWS   : pJob->vPrintLoadRows();    break;
-    case RK_LOCAL_ERRORS: pJob->vPrintLocalErrors(); break;
+    case RK_LOCAL_ROWS  : pJob->vPrintLocalRows();   break;
     case RK_NODE_ERRORS : pJob->vPrintNodeErrors();  break;
     case RK_NODE_ROWS   : pJob->vPrintNodeRows();    break;
     case RK_ZERO_ROWS   : pJob->vPrintZeroRows();    break;

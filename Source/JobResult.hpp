@@ -11,7 +11,7 @@ namespace Jobs
     
     /* 1 */ RK_DATA_ROWS,
     /* 2 */ RK_LOAD_ROWS,
-    /* 3 */ RK_LOCAL_ERRORS,
+    /* 3 */ RK_LOCAL_ROWS,
     /* 4 */ RK_NODE_ERRORS,
     /* 5 */ RK_NODE_ROWS,
     /* 6 */ RK_ZERO_ROWS,
@@ -62,7 +62,7 @@ namespace Jobs
     void vAddError(eEC eError);
     
     void vPrintLoadRows(void);
-    void vPrintLocalErrors(void);
+    void vPrintLocalRows(void);
     void vPrintNodeErrors(void);
     void vPrintNodeRows(void);
     void vPrintZeroRows(void);

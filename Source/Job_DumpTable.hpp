@@ -36,7 +36,6 @@ namespace Jobs
   Job_DumpTable* _pJob_DumpTable(void* aAddr);
   
   Job* pJob_DumpTable_pre(Interface::Session* pSession);
-  void vJob_DumpTable_post(Interface::Session* pSession, Job* pJob);
   void vJob_DumpTable_delete(Interface::Session* pSession, Job* pJob);
   void vJob_DumpTable_show(Job* pJob);
   

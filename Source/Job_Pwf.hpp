@@ -36,7 +36,6 @@ namespace Jobs
   Job_Pwf* _pJob_Pwf(void* aAddr);
   
   Job* pJob_Pwf_pre(Interface::Session* pSession);
-  void vJob_Pwf_post(Interface::Session* pSession, Job* pJob);
   void vJob_Pwf_delete(Interface::Session* pSession, Job* pJob);
   void vJob_Pwf_show(Job* pJob);
   

@@ -13,7 +13,7 @@ JobClass xJobClass_DumpTable =
 {
   CN_JOB_DUMPTABLE,      // class enum
   JK_LOCAL,              // job kind
-  RK_NONE,               // response kind
+  RK_LOCAL_ROWS,         // response kind
   "dump table"_Stz,      // comment about the job
   "dumptbl"_Stz,         // the prompt command
   nullptr,               // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_DumpTable =
 
   eJob_checkCluster,     // prompt check function
   pJob_DumpTable_pre,    // prompt pre-process function
-  vJob_DumpTable_post,   // prompt post-process function
+  vJob_post,             // prompt post-process function
   nullptr,               // job new function
   vJob_DumpTable_delete, // job delete function
   nullptr,               // job pre-send function
@@ -211,23 +211,6 @@ Job* Jobs::pJob_DumpTable_pre(Interface::Session* pSession)
   }
   
   return pJob_DumpTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_DumpTable_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_DumpTable* pJob_DumpTable = _pJob_DumpTable(pJob);
-  
-  if ( pJob_DumpTable->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_DumpTable->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
-  vTrace("success: 0 rows affected\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -118,16 +118,24 @@ void JobResult::vPrintLoadRows(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print local errors                                                         */
+/* print local rows                                                           */
 /*----------------------------------------------------------------------------*/
-void JobResult::vPrintLocalErrors(void)
+void JobResult::vPrintLocalRows(void)
 {
-  
   if (m_bHasError) {
     vTrace("error: (node%lld) %s\n"_Stz, gpAttachMap->m_pGrid->iThisNode(),
            aEC[m_xResponse.m_eErrorCode]);
+    return;
   }
   
+  if (gpAttachMap->m_bMetadata) {
+    vTrace("metadata: %s\n"_Stz, m_sMetadata.aStz());
+  }
+  
+  if (*m_xResponse.m_ixRowsProcessed)
+    vTrace("%s"_Stz, m_xResponse.m_sResponse.aChar());
+
+    vTrace("success: %lld rows affected\n"_Stz, *m_xResponse.m_ixRowsProcessed);
 }
 
 /*----------------------------------------------------------------------------*/
