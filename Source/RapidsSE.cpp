@@ -294,8 +294,10 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
 
     // check if job had an error
     if (pJob->m_bHasError) {
-      for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-        eEC eError = pJob->m_xNode[i_Node].m_eErrorCode;
+      i8 iResponses = pJob->m_pResponseVec->nItems();
+      
+      for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+        eEC eError = pJob->m_pResponseVec->pGet(i_Node)->m_eErrorCode;
         if (eError != EC_NONE) {
           pSession->m_pJobStack->vPushPointer(pJob);
           API_RETURN_ERROR(eError);
@@ -372,9 +374,11 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     // check if job had an error
     if (pJob_InsertRow->m_bHasError) {
       
-      for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      i8 iResponses = pJob->m_pResponseVec->nItems();
+      
+      for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+        eEC eError = pJob->m_pResponseVec->pGet(i_Node)->m_eErrorCode;
         
-        eEC eError = pJob_InsertRow->m_xNode[i_Node].m_eErrorCode;
         if (eError != EC_NONE)
           API_RETURN_ERROR(eError);
       }
@@ -555,9 +559,10 @@ eEC RapidsSE_EndInsert(i8 iTrace, Session* pSession, void* aJob)
 
     // check if job had an error
     if (pJob_InsertTable->m_bHasError) {
+      i8 iResponses = pJob->m_pResponseVec->nItems();
       
-      for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-        eEC eError = pJob_InsertTable->m_xNode[i_Node].m_eErrorCode;
+      for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+        eEC eError = pJob->m_pResponseVec->pGet(i_Node)->m_eErrorCode;
         if (eError != EC_NONE)
           API_RETURN_ERROR(eError);
       }
@@ -783,12 +788,13 @@ eEC RapidsSE_GetLoadResult(i8 iTrace, Session* pSession, void* aJob,
     i8 iRowsProcessed = 0;
     i8 iRowsInvalid   = 0;
     i8 iRowsSkipped   = 0;
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      
-      //vTrace("%s"_Stz, pJob_LoadTable->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += *pJob_LoadTable->m_xNode[i_Node].m_ixRowsProcessed;
-      iRowsInvalid   += *pJob_LoadTable->m_xNode[i_Node].m_ixRowsInvalid;
-      iRowsSkipped   += *pJob_LoadTable->m_xNode[i_Node].m_ixRowsSkipped;
+    i8 iResponses = pJob->m_pResponseVec->nItems();
+    
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      Response* pResponse = pJob->m_pResponseVec->pGet(i_Node);
+      iRowsProcessed += *pResponse->m_ixRowsProcessed;
+      iRowsInvalid   += *pResponse->m_ixRowsInvalid;
+      iRowsSkipped   += *pResponse->m_ixRowsSkipped;
     }
     API_LOC(320);
     
@@ -840,8 +846,13 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
   
   i8 i_Node;
   i8 iMaxRowNo = 0;
-  for (i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-    iMaxRowNo = *pJob->m_xNode[i_Node].m_ixRowsProcessed;
+  
+  i8 iResponses = pJob->m_pResponseVec->nItems();
+  Response* pResponse;
+  
+  for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+    pResponse = pJob->m_pResponseVec->pGet(i_Node);
+    iMaxRowNo = *pResponse->m_ixRowsProcessed;
     if (iRow < iMaxRowNo)
       break;
     iRow -= iMaxRowNo;
@@ -849,7 +860,7 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
   API_LOC(310);
 
   // tokenize the response
-  TokenVec* pTknVec = Tokeniser::pTokenise(pJob->m_xNode[i_Node].m_sResponse);
+  TokenVec* pTknVec = Tokeniser::pTokenise(pResponse->m_sResponse);
   API_LOC(320);
 
   i8 iRows = 0;
@@ -903,8 +914,11 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
   API_BEGIN();
   
   i8 iRowsProcessed= 0;
-  for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++)
-    iRowsProcessed += *pJob->m_xNode[i_Node].m_ixRowsProcessed;
+  i8 iResponses = pJob->m_pResponseVec->nItems();
+  
+  for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+    iRowsProcessed += *pJob->m_pResponseVec->pGet(i_Node)->m_ixRowsProcessed;
+  }
   API_LOC(310);
 
   *aiRowCount = iRowsProcessed;
@@ -932,9 +946,9 @@ eEC RapidsSE_GetTableColumnRow(i8 iTrace, Session* pSession, void* aJob,
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(aJob);
   API_LOC(310);
   
-  i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+  //i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
   Table* pTable =
-  (Table*)StrLib::iToI8(pJob_ListColumns->m_xNode[iNode].m_sResponse.aChar());
+  (Table*)StrLib::iToI8(pJob_ListColumns->m_xResponse.m_sResponse.aChar());
   API_LOC(320);
   
   ColumnVec* pColumnVec = pTable->pColumnVec();
@@ -975,21 +989,19 @@ eEC RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(aJob);
   API_LOC(310);
 
-  i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+  //i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
   Table* pTable =
-    (Table*)StrLib::iToI8(pJob_ListColumns->m_xNode[iNode].m_sResponse.aChar());
+    (Table*)StrLib::iToI8(pJob_ListColumns->m_xResponse.m_sResponse.aChar());
   API_LOC(320);
 
   ColumnVec* pColumnVec = pTable->pColumnVec();
   API_LOC(330);
 
-  pJob_ListColumns->m_xNode[iNode].m_ixRowsProcessed = pColumnVec->nItems();
+  pJob_ListColumns->m_xResponse.m_ixRowsProcessed = pColumnVec->nItems();
   API_LOC(340);
 
-  *aiRowCount = *(pJob_ListColumns->m_xNode[iNode].m_ixRowsProcessed);
+  *aiRowCount = *(pJob_ListColumns->m_xResponse.m_ixRowsProcessed);
   API_LOC(350);
-
-  //vTrace("RowCount = %lld\n"_Stz, pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
   
   API_RETURN();
 }
