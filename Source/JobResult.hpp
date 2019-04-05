@@ -40,9 +40,7 @@ namespace Jobs
   {
   public:
     s4K          m_sMetadata;    // meta data of job
-    
     bool         m_bHasError;    // has an error from one or more nodes
-    
     Response     m_xResponse;    // response of this job
     ResponseVec* m_pResponseVec; // vector of responses from all the nodes
   

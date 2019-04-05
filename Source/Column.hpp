@@ -110,15 +110,6 @@ namespace MetaData
     
     char* aValue(i8& nBytes, char** aaCursor);
   
-    bool bLessThan(char* aArgA, char* aArgB);
-    bool bLessEqual(char* aArgA, char* aArgB);
-    bool bEqualTo(char* aArgA, char* aArgB);
-    bool bNotEqual(char* aArgA, char* aArgB);
-    bool bGreaterEqual(char* aArgA, char* aArgB);
-    bool bGreaterThan(char* aArgA, char* aArgB);
-    
-    bool bCmp(eRO eRelOp, char* aArgA, char* aArgB);
-  
     Footer* aFooter(void);
   };
   
