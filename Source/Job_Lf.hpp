@@ -36,7 +36,6 @@ namespace Jobs
   Job_Lf* _pJob_Lf(void* aAddr);
   
   Job* pJob_Lf_pre(Interface::Session* pSession);
-  void vJob_Lf_post(Interface::Session* pSession, Job* pJob);
   void vJob_Lf_delete(Interface::Session* pSession, Job* pJob);
   void vJob_Lf_show(Job* pJob);
   

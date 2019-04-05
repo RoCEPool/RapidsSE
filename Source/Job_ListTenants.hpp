@@ -36,7 +36,6 @@ namespace Jobs
   Job_ListTenants* _pJob_ListTenants(void* aAddr);
   
   Job* pJob_ListTenants_pre(Interface::Session* pSession);
-  void vJob_ListTenants_post(Interface::Session* pSession, Job* pJob);
   void vJob_ListTenants_delete(Interface::Session* pSession, Job* pJob);
   void vJob_ListTenants_show(Job* pJob);
   

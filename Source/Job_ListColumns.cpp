@@ -13,7 +13,7 @@ JobClass xJobClass_ListColumns =
 {
   CN_JOB_LISTCOLUMNS,     // class enum
   JK_LOCAL,               // job kind
-  RK_NONE,                // response kind
+  RK_LOAD_ROWS,           // response kind
   "list table columns"_Stz, // comment about the job
   "lscol"_Stz,            // the prompt command
   nullptr,                // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_ListColumns =
 
   eJob_checkCluster,      // prompt check function
   pJob_ListColumns_pre,   // prompt pre-process function
-  vJob_ListColumns_post,  // prompt post-process function
+  vJob_post,              // prompt post-process function
   nullptr,                // job new function
   vJob_ListColumns_delete,// job delete function
   nullptr,                // job pre-send function
@@ -224,9 +224,8 @@ void Jobs::vJob_ListColumns_post(Interface::Session* pSession, Job* pJob)
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJob);
   
   if ( pJob_ListColumns->m_bHasError ) {
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_ListColumns->m_xNode[i_Node].m_eErrorCode]);
-    }
+    vTrace("error: (node%lld) %s\n"_Stz, gpAttachMap->m_pGrid->iThisNode(),
+           aEC[pJob_ListColumns->m_xResponse.m_eErrorCode]);
   }
   else {
     if (gpAttachMap->m_bMetadata) {
@@ -234,7 +233,7 @@ void Jobs::vJob_ListColumns_post(Interface::Session* pSession, Job* pJob)
     }
     
     i8 iRowsProcessed = 0;
-    Table* pTable = (Table*)StrLib::iToI8(pJob_ListColumns->m_xNode[gpAttachMap->m_pGrid->m_iThisNode].m_sResponse.aChar());
+    Table* pTable = (Table*)StrLib::iToI8(pJob_ListColumns->m_xResponse.m_sResponse.aChar());
     
     ColumnVec* pColumnVec = pTable->pColumnVec();
     i8 iColumns = pColumnVec->nItems();

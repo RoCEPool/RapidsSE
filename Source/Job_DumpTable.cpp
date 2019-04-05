@@ -13,7 +13,7 @@ JobClass xJobClass_DumpTable =
 {
   CN_JOB_DUMPTABLE,      // class enum
   JK_LOCAL,              // job kind
-  RK_LOCAL_ROWS,         // response kind
+  RK_LOCAL_ERRORS,       // response kind
   "dump table"_Stz,      // comment about the job
   "dumptbl"_Stz,         // the prompt command
   nullptr,               // the second word

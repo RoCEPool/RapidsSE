@@ -33,7 +33,7 @@ JobClass xJobClass_SelectTable =
 
   eJob_checkCluster,         // prompt check function
   pJob_SelectTable_pre,      // prompt pre-process function
-  vJob_SelectTable_post,     // prompt post-process function
+  vJob_post,                 // prompt post-process function
   nullptr,                   // job new function
   vJob_SelectTable_delete,   // job delete function
   nullptr,                   // job pre-send function
@@ -219,24 +219,6 @@ Job* Jobs::pJob_SelectTable_pre(Interface::Session* pSession)
   }
   
   return pJob_SelectTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_SelectTable_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_SelectTable* pJob_SelectTable = _pJob_SelectTable(pJob);
-  
-  if ( pJob_SelectTable->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_SelectTable->m_xNode[i_Node].m_eErrorCode]);
-    }
-   
-    return;
-  }
-  
 }
 
 /*----------------------------------------------------------------------------*/

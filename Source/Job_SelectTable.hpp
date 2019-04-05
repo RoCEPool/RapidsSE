@@ -40,7 +40,6 @@ namespace Jobs
   Job_SelectTable* _pJob_SelectTable(void* aAddr);
   
   Job* pJob_SelectTable_pre(Interface::Session* pSession);
-  void vJob_SelectTable_post(Interface::Session* pSession, Job* pJob);
   void vJob_SelectTable_delete(Interface::Session* pSession, Job* pJob);
   void vJob_SelectTable_show(Job* pJob);
   

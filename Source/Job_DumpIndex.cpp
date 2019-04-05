@@ -13,7 +13,7 @@ JobClass xJobClass_DumpIndex =
 {
   CN_JOB_DUMPINDEX,      // class enum
   JK_LOCAL,              // job kind
-  RK_LOCAL_ROWS,         // response kind
+  RK_LOCAL_ERRORS,       // response kind
   "dump index"_Stz,      // comment about the job
   "dumpidx"_Stz,         // the prompt command
   nullptr,               // the second word

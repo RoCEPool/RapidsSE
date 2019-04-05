@@ -42,7 +42,6 @@ namespace Jobs
   Job_CopyBuffer* _pJob_CopyBuffer(void* aAddr);
   
   Job* pJob_CopyBuffer_pre(Interface::Session* pSession);
-  void vJob_CopyBuffer_post(Interface::Session* pSession, Job* pJob);
   Job* pJob_CopyBuffer_new(Job* pArg);
   void vJob_CopyBuffer_delete(Interface::Session* pSession, Job* pJob);
   void vJob_CopyBuffer_show(Job* pJob);

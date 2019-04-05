@@ -12,8 +12,8 @@ extern AttachMap* gpAttachMap;
 JobClass xJobClass_ListPartitions =
 {
   CN_JOB_LISTPARTITIONS,    // class enum
-  JK_DIST2PC,               // job kind
-  RK_NONE,                  // response kind
+  JK_LOCAL,                 // job kind
+  RK_LOCAL_ROWS,            // response kind
   "list partitions"_Stz,    // comment about the job
   "lspart"_Stz,             // the prompt command
   nullptr,                  // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_ListPartitions =
 
   eJob_checkCluster,        // prompt check function
   pJob_ListPartitions_pre,  // prompt pre-process function
-  vJob_ListPartitions_post, // prompt post-process function
+  vJob_post,                // prompt post-process function
   nullptr,                  // job new function
   vJob_ListPartitions_delete, // job delete function
   vJob_send,                  // job pre-send function
@@ -210,32 +210,6 @@ Job* Jobs::pJob_ListPartitions_pre(Interface::Session* pSession)
   }
   
   return pJob_ListPartitions;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListPartitions_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_ListPartitions* pJob_ListPartitions = _pJob_ListPartitions(pJob);
-  
-  if ( pJob_ListPartitions->m_bHasError ) {
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_ListPartitions->m_xNode[i_Node].m_eErrorCode]);
-    }
-  }
-  else {
-    if (gpAttachMap->m_bMetadata) {
-      vTrace("metadata: %s\n"_Stz, pJob_ListPartitions->m_sMetadata.aStz());
-    }
-    i8 iRowsProcessed = 0;
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("%s\n"_Stz, pJob_ListPartitions->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += *pJob_ListPartitions->m_xNode[i_Node].m_ixRowsProcessed;
-    }
-    vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
