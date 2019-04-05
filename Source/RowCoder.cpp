@@ -15,10 +15,19 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 {
   RASSERT(pIntoNub->pDesc() == pFromNub->pDesc());
   
+  i8 nCacheLines = nLines(pFromNub,0);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // check for space in target nub
+  if (! pIntoNub->bHasSpace(sizeof(CacheLine) * nCacheLines))
+    return false;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   ColumnVec* pColVec = pIntoNub->pDesc()->pColumnVec();
 
   //! NOTE:: Assuming each row fits in a cacheline + (n * Shoco Lines)
-  i8 nCacheLines = nLines(pFromNub,0);
 
   CacheLine* pIntoHead  = pIntoNub->aAllotHead();
   CacheLine* pIntoTails = pIntoNub->aAllotTails(nCacheLines - 1);

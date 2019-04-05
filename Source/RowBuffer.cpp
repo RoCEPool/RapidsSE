@@ -241,18 +241,8 @@ bool RowBuffer::bAppendRow(RowNub* pFromRowNub)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check for space in this buffer
-  
-  i8 nCacheLines = RowCoder::nLines(pFromRowNub,0);
-  
-  if (! bHasSpace(sizeof(CacheLine) * nCacheLines))
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy row data into row entry
-  
   RowNub* pIntoRowNub = *&m_xRowTray;
+  
   bool bCopied = RowCoder::bCopy(pIntoRowNub,pFromRowNub);
   
   return bCopied;
