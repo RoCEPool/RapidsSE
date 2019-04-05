@@ -36,7 +36,6 @@ namespace Jobs
   Job_VisualizeTable* _pJob_VisualizeTable(void* aAddr);
   
   Job* pJob_VisualizeTable_pre(Interface::Session* pSession);
-  void vJob_VisualizeTable_post(Interface::Session* pSession, Job* pJob);
   void vJob_VisualizeTable_delete(Interface::Session* pSession, Job* pJob);
   void vJob_VisualizeTable_show(Job* pJob);
   

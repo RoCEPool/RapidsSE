@@ -13,7 +13,7 @@ JobClass xJobClass_VisualizeTable =
 {
   CN_JOB_VISUALIZETABLE,      // class enum
   JK_LOCAL,                   // job kind
-  RK_NONE,                    // response kind
+  RK_LOCAL_ERRORS,            // response kind
   "visualize table"_Stz,      // comment about the job
   "vistbl"_Stz,               // the prompt command
   nullptr,                    // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_VisualizeTable =
 
   eJob_checkCluster,          // prompt check function
   pJob_VisualizeTable_pre,    // prompt pre-process function
-  vJob_VisualizeTable_post,   // prompt post-process function
+  vJob_post,                  // prompt post-process function
   nullptr,                    // job new function
   vJob_VisualizeTable_delete, // job delete function
   nullptr,                    // job pre-send function
@@ -211,22 +211,6 @@ Job* Jobs::pJob_VisualizeTable_pre(Interface::Session* pSession)
   }
   
   return pJob_VisualizeTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_VisualizeTable_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_VisualizeTable* pJob_VisualizeTable = _pJob_VisualizeTable(pJob);
-  
-  if ( pJob_VisualizeTable->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_VisualizeTable->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
 }
 
 /*----------------------------------------------------------------------------*/

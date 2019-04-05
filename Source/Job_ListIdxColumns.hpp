@@ -36,7 +36,6 @@ namespace Jobs
   Job_ListIdxColumns* _pJob_ListIdxColumns(void* aAddr);
   
   Job* pJob_ListIdxColumns_pre(Interface::Session* pSession);
-  void vJob_ListIdxColumns_post(Interface::Session* pSession, Job* pJob);
   void vJob_ListIdxColumns_delete(Interface::Session* pSession, Job* pJob);
   void vJob_ListIdxColumns_show(Job* pJob);
   

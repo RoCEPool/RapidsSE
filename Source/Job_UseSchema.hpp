@@ -36,7 +36,6 @@ namespace Jobs
   Job_UseSchema* _pJob_UseSchema(void* aAddr);
   
   Job* pJob_UseSchema_pre(Interface::Session* pSession);
-  void vJob_UseSchema_post(Interface::Session* pSession, Job* pJob);
   void vJob_UseSchema_delete(Interface::Session* pSession, Job* pJob);
   void vJob_UseSchema_show(Job* pJob);
   

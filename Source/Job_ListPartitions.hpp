@@ -36,7 +36,6 @@ namespace Jobs
   Job_ListPartitions* _pJob_ListPartitions(void* aAddr);
   
   Job* pJob_ListPartitions_pre(Interface::Session* pSession);
-  void vJob_ListPartitions_post(Interface::Session* pSession, Job* pJob);
   void vJob_ListPartitions_delete(Interface::Session* pSession, Job* pJob);
   void vJob_ListPartitions_show(Job* pJob);
   
