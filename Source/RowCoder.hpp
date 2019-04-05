@@ -12,9 +12,6 @@ namespace Data
   
     static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol);
   
-    //! make this private
-    static i8   nLines(RowNub* pNub, i8 i_Row);
-  
     static void vEncode(RowNub* pNub, Column* pCol, Datum* pDatum);
   
     static void vPrint(RowNub* pNub, i8 i_Row, Column* pCol);
@@ -59,6 +56,8 @@ namespace Data
     static eMN eGetEncoding(CacheLine* aCacheLine, i8 i_Coln, i8& i_Offset);
   
     static void vInitCacheLine(CacheLine* aCacheLine);
+  
+    static i8 nLines(RowNub* pNub, i8 i_Row);
   
     static void vRestoreDte(Datum* pDatum, eMN eEncoding);
     static void vRestoreTme(Datum* pDatum, eMN eEncoding);

@@ -127,38 +127,6 @@ void RowCoder::vEncode(RowNub* pNub, Column* pCol, Datum* pDatum)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute how many cache lines an encoded row occupies                       */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::nLines(RowNub* pNub, i8 i_Row)
-{
-  ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
-
-  i8 nCacheLines = 1;
-  // get no of columns
-  i8 nColumns = pColVec->nItems();
-  
-  i8 i_Offset = C_UNKNOWN;
-  
-  // for each column
-  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
-    
-    // get the column at index
-    Column* pCol = pColVec->pGet(i_Column);
-    
-    if (DM_VCH != pCol->eDatumType())
-      continue;
-    
-    CacheLine* aCacheLine = pNub->aGet(i_Row);
-    eMN eEncoding = eGetEncoding(aCacheLine,i_Column,i_Offset);
-    
-    if (MN_SHOCO_2B == eEncoding)
-      nCacheLines++;
-  }
-  
-  return nCacheLines;
-}
-
-/*----------------------------------------------------------------------------*/
 /* print decoded datum from cache line                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vPrint(RowNub* pNub, i8 i_Row, Column* pCol)
@@ -1260,6 +1228,38 @@ void RowCoder::vInitCacheLine(CacheLine* aCacheLine)
   
   // set all bits in first word of cache line to zero
   aCacheLine->v8B(0,0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute how many cache lines an encoded row occupies                       */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::nLines(RowNub* pNub, i8 i_Row)
+{
+  ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
+  
+  i8 nCacheLines = 1;
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+  
+  i8 i_Offset = C_UNKNOWN;
+  
+  // for each column
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
+    
+    // get the column at index
+    Column* pCol = pColVec->pGet(i_Column);
+    
+    if (DM_VCH != pCol->eDatumType())
+      continue;
+    
+    CacheLine* aCacheLine = pNub->aGet(i_Row);
+    eMN eEncoding = eGetEncoding(aCacheLine,i_Column,i_Offset);
+    
+    if (MN_SHOCO_2B == eEncoding)
+      nCacheLines++;
+  }
+  
+  return nCacheLines;
 }
 
 /*----------------------------------------------------------------------------*/
