@@ -13,7 +13,7 @@ JobClass xJobClass_Docol =
 {
   CN_JOB_DOCOL,      // class enum
   JK_LOCAL,          // job kind
-  RK_NONE,           // response kind
+  RK_LOCAL_ROWS,     // response kind
   "execute word"_Stz,// comment about the job
   "docol"_Stz,       // the prompt command
   nullptr,           // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_Docol =
 
   nullptr,           // prompt check function
   pJob_Docol_pre,    // prompt pre-process function
-  vJob_Docol_post,   // prompt post-process function
+  vJob_post,         // prompt post-process function
   nullptr,           // job new function
   vJob_Docol_delete, // job delete function
   nullptr,           // job pre-send function
@@ -213,19 +213,6 @@ Job* Jobs::pJob_Docol_pre(Interface::Session* pSession)
   }
   
   return pJob_Docol;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_Docol_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_Docol* pJob_Docol = _pJob_Docol(pJob);
-  
-  // Note: take care of errors / meta data ????
-  for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-    vTrace("%s\n"_Stz, pJob_Docol->m_xNode[i_Node].m_sResponse.aChar());
-  }
 }
 
 /*----------------------------------------------------------------------------*/
