@@ -74,9 +74,6 @@ namespace MetaData
     void* operator new(size_t);
     void  operator delete(void*);
     
-    //Column(void);
-    //Column(Stz* aName);
-    //Column(Stz* aName, Stz* aDefinition);
     Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo);
     ~Column(void) noexcept(false);
   
@@ -109,7 +106,6 @@ namespace MetaData
     bool bIsPartitionKey(void);
     void vIsPartitionKey(bool bIsPartitionKey);
 
-    //void vSet(Stz* aDefinition);
     void vShow(void);
     
     char* aValue(i8& nBytes, char** aaCursor);
