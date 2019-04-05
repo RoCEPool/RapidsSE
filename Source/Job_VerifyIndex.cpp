@@ -13,7 +13,7 @@ JobClass xJobClass_VerifyIndex =
 {
   CN_JOB_VERIFYINDEX,         // class enum
   JK_DIST2PC,                 // job kind
-  RK_NONE,                    // response kind
+  RK_NODE_ROWS,               // response kind
   "verify index"_Stz,         // comment about the job
   "vfyidx"_Stz,               // the prompt command
   nullptr,                    // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_VerifyIndex =
 
   eJob_checkCluster,          // prompt check function
   pJob_VerifyIndex_pre,       // prompt pre-process function
-  vJob_VerifyIndex_post,      // prompt post-process function
+  vJob_post,                  // prompt post-process function
   nullptr,                    // job new function
   vJob_VerifyIndex_delete,    // job delete function
   vJob_send,                  // job pre-send function
@@ -215,31 +215,6 @@ Job* Jobs::pJob_VerifyIndex_pre(Interface::Session* pSession)
   }
   
   return pJob_VerifyIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_VerifyIndex_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_VerifyIndex* pJob_VerifyIndex = _pJob_VerifyIndex(pJob);
-  
-  if ( pJob_VerifyIndex->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_VerifyIndex->m_xNode[i_Node].m_eErrorCode]);
-    }
-  }
-  else {
-    if (gpAttachMap->m_bMetadata) {
-      vTrace("metadata: %s\n"_Stz, pJob_VerifyIndex->m_sMetadata.aStz());
-    }
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("%s\n"_Stz, pJob_VerifyIndex->m_xNode[i_Node].m_sResponse.aChar());
-    }
-    vTrace("success: %lld rows affected\n"_Stz, gpAttachMap->m_pGrid->m_nNodes);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -36,7 +36,6 @@ namespace Jobs
   Job_SizeIndex* _pJob_SizeIndex(void* aAddr);
   
   Job* pJob_SizeIndex_pre(Interface::Session* pSession);
-  void vJob_SizeIndex_post(Interface::Session* pSession, Job* pJob);
   void vJob_SizeIndex_delete(Interface::Session* pSession, Job* pJob);
   void vJob_SizeIndex_show(Job* pJob);
   

@@ -36,7 +36,6 @@ namespace Jobs
   Job_SizeTable* _pJob_SizeTable(void* aAddr);
   
   Job* pJob_SizeTable_pre(Interface::Session* pSession);
-  void vJob_SizeTable_post(Interface::Session* pSession, Job* pJob);
   void vJob_SizeTable_delete(Interface::Session* pSession, Job* pJob);
   void vJob_SizeTable_show(Job* pJob);
   

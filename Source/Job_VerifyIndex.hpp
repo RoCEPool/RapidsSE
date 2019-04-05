@@ -36,7 +36,6 @@ namespace Jobs
   Job_VerifyIndex* _pJob_VerifyIndex(void* aAddr);
   
   Job* pJob_VerifyIndex_pre(Interface::Session* pSession);
-  void vJob_VerifyIndex_post(Interface::Session* pSession, Job* pJob);
   void vJob_VerifyIndex_delete(Interface::Session* pSession, Job* pJob);
   void vJob_VerifyIndex_show(Job* pJob);
   
