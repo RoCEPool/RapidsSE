@@ -45,14 +45,6 @@ namespace Jobs
     
     Response     m_xResponse;    // response of this job
     ResponseVec* m_pResponseVec; // vector of responses from all the nodes
-    
-    struct {
-      s4K  m_sResponse;          // response string
-      Atomic m_ixRowsProcessed;  // rows processed
-      Atomic m_ixRowsInvalid;    // invalid rows detected
-      Atomic m_ixRowsSkipped;    // rows skipped
-      eEC  m_eErrorCode;         // error code
-    } m_xNode[C_MAX_NODES];
   
   public:
     void* operator new(size_t);
