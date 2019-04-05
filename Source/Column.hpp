@@ -64,6 +64,7 @@ namespace MetaData
     eDM   m_eDatumType;
     bool  m_bIsNullable;
     bool  m_bIsPartitionKey;
+    bool  m_bIsLastColumn;
     
     // must be last
     Footer m_xFooter;
@@ -73,9 +74,6 @@ namespace MetaData
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Column(void);
-    Column(Stz* aName);
-    Column(Stz* aName, Stz* aDefinition);
     Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo);
     ~Column(void) noexcept(false);
   
@@ -97,15 +95,17 @@ namespace MetaData
     eDM  eDatumType(void);
     void vDatumType(eDM eDatumType);
   
+    bool bIsLastColumn(void);
+    void vIsLastColumn(bool bIsLastColumn);
+  
     bool bIsName(s32& sName);
   
     bool bIsNullable(void);
     void vIsNullable(bool bIsNullable);
   
     bool bIsPartitionKey(void);
-    void vIsPartitionKey(bool bIsNullable);
+    void vIsPartitionKey(bool bIsPartitionKey);
 
-    void vSet(Stz* aDefinition);
     void vShow(void);
     
     char* aValue(i8& nBytes, char** aaCursor);
