@@ -11,11 +11,12 @@ namespace Jobs
     
     /* 1 */ RK_DATA_ROWS,
     /* 2 */ RK_LOAD_ROWS,
-    /* 3 */ RK_NODE_ERRORS,
-    /* 4 */ RK_NODE_ROWS,
-    /* 5 */ RK_ZERO_ROWS,
+    /* 3 */ RK_LOCAL_ERRORS,
+    /* 4 */ RK_NODE_ERRORS,
+    /* 5 */ RK_NODE_ROWS,
+    /* 6 */ RK_ZERO_ROWS,
     
-    /* 6 */ RK_ENUMS_
+    /* 7 */ RK_ENUMS_
   };
   
   static Stz* aRK[]
@@ -24,11 +25,12 @@ namespace Jobs
     
     /* 1 */ "DATA_ROWS"_Stz,
     /* 2 */ "LOAD_ROWS"_Stz,
-    /* 3 */ "NODE_ERRORS"_Stz,
-    /* 4 */ "NODE_ROWS"_Stz,
-    /* 5 */ "ZERO_ROWS"_Stz,
+    /* 3 */ "LOCAL_ERRORS"_Stz,
+    /* 4 */ "NODE_ERRORS"_Stz,
+    /* 5 */ "NODE_ROWS"_Stz,
+    /* 6 */ "ZERO_ROWS"_Stz,
     
-    /* 6 */ "ENUMS_"_Stz
+    /* 7 */ "ENUMS_"_Stz
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -59,9 +61,10 @@ namespace Jobs
     
     void vAddError(eEC eError);
     
+    void vPrintLoadRows(void);
+    void vPrintLocalErrors(void);
     void vPrintNodeErrors(void);
     void vPrintNodeRows(void);
-    void vPrintLoadRows(void);
     void vPrintZeroRows(void);
   };
 }

@@ -83,22 +83,6 @@ void JobResult::vAddError(eEC eError)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print errors                                                               */
-/*----------------------------------------------------------------------------*/
-void JobResult::vPrintNodeErrors(void)
-{
-  i8 iResponses = m_pResponseVec->nItems();
-  RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
-  
-  if (m_bHasError) {
-    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
-    }
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* print load rows                                                            */
 /*----------------------------------------------------------------------------*/
 void JobResult::vPrintLoadRows(void)
@@ -133,6 +117,34 @@ void JobResult::vPrintLoadRows(void)
   
 }
 
+/*----------------------------------------------------------------------------*/
+/* print local errors                                                         */
+/*----------------------------------------------------------------------------*/
+void JobResult::vPrintLocalErrors(void)
+{
+  
+  if (m_bHasError) {
+    vTrace("error: (node%lld) %s\n"_Stz, gpAttachMap->m_pGrid->iThisNode(),
+           aEC[m_xResponse.m_eErrorCode]);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* print errors                                                               */
+/*----------------------------------------------------------------------------*/
+void JobResult::vPrintNodeErrors(void)
+{
+  i8 iResponses = m_pResponseVec->nItems();
+  RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
+  
+  if (m_bHasError) {
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+    }
+  }
+  
+}
 /*----------------------------------------------------------------------------*/
 /* print node rows                                                            */
 /*----------------------------------------------------------------------------*/

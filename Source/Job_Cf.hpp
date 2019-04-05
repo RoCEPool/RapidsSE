@@ -36,7 +36,6 @@ namespace Jobs
   Job_Cf* _pJob_Cf(void* aAddr);
   
   Job* pJob_Cf_pre(Interface::Session* pSession);
-  void vJob_Cf_post(Interface::Session* pSession, Job* pJob);
   void vJob_Cf_delete(Interface::Session* pSession, Job* pJob);
   void vJob_Cf_show(Job* pJob);
   

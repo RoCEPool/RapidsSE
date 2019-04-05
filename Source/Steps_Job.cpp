@@ -591,6 +591,7 @@ void Step::vJobErrorStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.error!"_Stz);
   
   //pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
+  pJob->m_bHasError = true;
   pJob->m_xResponse.m_eErrorCode = (eEC)iJobError;
   
   ActionSequence::vAdd(pJob,AN_ERROR_CODE,iJobError);
