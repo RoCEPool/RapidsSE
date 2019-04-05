@@ -10,7 +10,7 @@ namespace Data
   public:
     static void vCopy(RowNub* pIntoRowNub, RowNub* pFromRowNub);
   
-    static void vDecode(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
+    static void vDecode(Datum* pDatum, RowNub* pRowNub, i8 i_Row, Column* pCol);
   
     //! make this private
     static i8   nLines(RowNub* pRowNub, i8 i_Row);

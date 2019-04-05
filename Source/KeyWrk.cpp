@@ -290,7 +290,7 @@ void KeyWrk::vExtractKey(RowNub* pRowNub, i8 i_Row, IdxColVec* pIdxColVec)
     Column* pColumn = pIdxColVec->pGet(i_Column);
     
     // get the column value from the row for the iColumnNo
-    RowCoder::vDecode(pRowNub,i_Row,pColumn,&oDatum);
+    RowCoder::vDecode(&oDatum,pRowNub,i_Row,pColumn);
     xVariable = oDatum.m_iInt;
     
     // add the column value to the key

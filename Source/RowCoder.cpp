@@ -70,7 +70,7 @@ void RowCoder::vCopy(RowNub* pIntoRowNub, RowNub* pFromRowNub)
 /*----------------------------------------------------------------------------*/
 /* get encoded datum from cache line                                          */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecode(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum)
+void RowCoder::vDecode(Datum* pDatum, RowNub* pRowNub, i8 i_Row, Column* pCol)
 {
   eDM eDatum = pCol->eDatumType();
   
@@ -156,7 +156,7 @@ void RowCoder::vPrint(RowNub* pRowNub, i8 i_Row, Column* pCol)
   Datum oDatum;
   Record* pRec = new Record;
   
-  vDecode(pRowNub,i_Row,pCol,&oDatum);
+  vDecode(&oDatum,pRowNub,i_Row,pCol);
   
   eDM eDatum = pCol->eDatumType();
   switch (eDatum) {
@@ -218,7 +218,7 @@ void RowCoder::vAppend(Record* pRec, RowNub* pRowNub, i8 i_Row, Column* pCol)
 {
   Datum oDatum;
   
-  vDecode(pRowNub,i_Row,pCol,&oDatum);
+  vDecode(&oDatum,pRowNub,i_Row,pCol);
   
   eDM eDatum = pCol->eDatumType();
   switch (eDatum) {
@@ -675,7 +675,7 @@ void RowCoder::vEncodeBcd(RowNub* pRowNub, Column* pColumn, Datum* pDatum)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-  vDecode(pRowNub,0,pColumn,pDatum);
+  vDecode(pDatum,pRowNub,0,pColumn);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
 }
 
@@ -710,7 +710,7 @@ void RowCoder::vEncodeBol(RowNub* pRowNub, Column* pColumn, Datum* pDatum)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-  vDecode(pRowNub,0,pColumn,pDatum);
+  vDecode(pDatum,pRowNub,0,pColumn);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
 }
 
@@ -749,7 +749,7 @@ void RowCoder::vEncodeDte(RowNub* pRowNub, Column* pColumn, Datum* pDatum)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-  vDecode(pRowNub,0,pColumn,pDatum);
+  vDecode(pDatum,pRowNub,0,pColumn);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
 }
 
@@ -788,7 +788,7 @@ void RowCoder::vEncodeFlt(RowNub* pRowNub, Column* pColumn, Datum* pDatum)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-  vDecode(pRowNub,0,pColumn,pDatum);
+  vDecode(pDatum,pRowNub,0,pColumn);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
 }
 
@@ -827,7 +827,7 @@ void RowCoder::vEncodeInt(RowNub* pRowNub, Column* pColumn, Datum* pDatum)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-  vDecode(pRowNub,0,pColumn,pDatum);
+  vDecode(pDatum,pRowNub,0,pColumn);
   RASSERT(wOriginal == pDatum->m_iInt);
 }
 
@@ -866,7 +866,7 @@ void RowCoder::vEncodeIvl(RowNub* pRowNub, Column* pColumn, Datum* pDatum)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-  vDecode(pRowNub,0,pColumn,pDatum);
+  vDecode(pDatum,pRowNub,0,pColumn);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
 }
 
@@ -905,7 +905,7 @@ void RowCoder::vEncodeTme(RowNub* pRowNub, Column* pColumn, Datum* pDatum)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-  vDecode(pRowNub,0,pColumn,pDatum);
+  vDecode(pDatum,pRowNub,0,pColumn);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
 }
 
@@ -944,7 +944,7 @@ void RowCoder::vEncodeTsp(RowNub* pRowNub, Column* pColumn, Datum* pDatum)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-  vDecode(pRowNub,0,pColumn,pDatum);
+  vDecode(pDatum,pRowNub,0,pColumn);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
 }
 
