@@ -72,6 +72,8 @@ namespace Data
     void vAppendTsp(Column* pCol, Datum* pDatum);
     void vAppendVch(Column* pCol, Datum* pDatum);
 
+    void vPrintRow(void);
+  
     void vRecStr(Stz* szRecStr);
     Stz* szRecStr(void);
   
@@ -96,6 +98,7 @@ namespace Data
     static void vSprint(Column* pColumn, Stz* aDst, Stz* aSrc);
     static void vSprintQuotes(Column* pColumn, Stz* aDst, Stz* aSrc);
     static void vSprintEscaped(Column* pColumn, Stz* aDst, Stz* aSrc);
+  
 
   private:
     Footer* aFooter(void);

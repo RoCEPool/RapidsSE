@@ -1147,6 +1147,15 @@ void Record::vAppendVch(Column* pCol, Datum* pDatum)
   m_sRecStr.vConcat(sBuf.aStz());
 }
 
+/*----------------------------------------------------------------------------*/
+/* print record string as row                                                 */
+/*----------------------------------------------------------------------------*/
+void Record::vPrintRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
+  
+  vTrace("row: (%s)\n"_Stz,m_sRecStr.aStz());
+}
 
 /*----------------------------------------------------------------------------*/
 /* get record string                                                          */

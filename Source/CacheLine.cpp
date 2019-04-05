@@ -367,6 +367,9 @@ void CacheLine::v8B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void CacheLine::v1N(i8 i_Nibble, w8 wArg)
 {
+  ASSERT(i_Nibble < 16);
+  ASSERT(wArg < 16);
+  
   w8 iByte = w8_1B(i_Nibble/2);
 
   if (0 == i_Nibble % 2) {

@@ -9,13 +9,9 @@ namespace Data
   {
   public:
     static bool bCopy(RowNub* pIntoNub, RowNub* pFromNub);
-  
     static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol);
-  
     static void vEncode(RowNub* pNub, Column* pCol, Datum* pDatum);
-  
     static void vPrint(RowNub* pNub, i8 i_Row, Column* pCol);
-  
     static void vRecord(Record* pRec, RowNub* pNub, i8 i_Row);
   
   private:
@@ -53,7 +49,7 @@ namespace Data
     static eMN eEncodingTsp(Datum* pDatum, i8& nBytesEncoded);
     static eMN eEncodingVch(Datum* pDatum, i8& nBytesEncoded);
   
-    static eMN eGetEncoding(CacheLine* aCacheLine, i8 i_Coln, i8& i_Offset);
+    static eMN eGetEncoding(CacheLine* aCacheLine, i8 i_Col, i8& i_Offset);
   
     static void vInitCacheLine(CacheLine* aCacheLine);
   

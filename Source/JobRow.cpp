@@ -48,7 +48,6 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 {
   bBlankLine = false;
   
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   char* aSrc = aRecord->aChar();
@@ -66,7 +65,14 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // debug
+  
+//  char caRecord[C_16KB];
+//  StrLib::vCopyTill(caRecord,aSrc,'\n');
+//  vTrace("Formatting: %s\n"_Stz,caRecord);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   Datum oDatum;
   m_oRowParts.vReset();
   
@@ -104,11 +110,15 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     
     RowCoder::vEncode(m_oRowParts,pColumn,&oDatum);
     //MemLib::vWordDump(m_oRowParts.aGet(0),sizeof(CacheLine));
-    //RowEncoder::vPrint(pColumn,aCacheLine);
+    //RowCoder::vPrint(m_oRowParts,0,pColumn);
 
   } // for each column
   
   //MemLib::vWordDump(m_oRowParts.aGet(0),sizeof(CacheLine));
+  
+//  HV_Rec hvRec;
+//  RowCoder::vRecord(hvRec,m_oRowParts,0);
+//  hvRec->vPrintRow();
 
   return true;
 }
