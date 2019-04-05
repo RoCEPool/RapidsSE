@@ -40,7 +40,6 @@ namespace Jobs
   Job_Walk* _pJob_Walk(void* aAddr);
   
   Job* pJob_Walk_pre(Interface::Session* pSession);
-  void vJob_Walk_post(Interface::Session* pSession, Job* pJob);
   void vJob_Walk_delete(Interface::Session* pSession, Job* pJob);
   void vJob_Walk_show(Job* pJob);
   

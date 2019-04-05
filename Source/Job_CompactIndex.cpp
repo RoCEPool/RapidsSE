@@ -13,7 +13,7 @@ JobClass xJobClass_CompactIndex =
 {
   CN_JOB_COMPACTINDEX,    // class enum
   JK_DIST2PC,             // job kind
-  RK_NONE,                  // response kind
+  RK_ZERO_ROWS,           // response kind
   "compact index"_Stz,    // comment about the job
   "compactidx"_Stz,       // the prompt command
   nullptr,                // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_CompactIndex =
 
   eJob_checkCluster,      // prompt check function
   pJob_CompactIndex_pre,  // prompt pre-process function
-  vJob_CompactIndex_post, // prompt post-process function
+  vJob_post,              // prompt post-process function
   nullptr,                // job new function
   vJob_CompactIndex_delete, // job delete function
   vJob_send,              // job pre-send function
@@ -215,17 +215,6 @@ Job* Jobs::pJob_CompactIndex_pre(Interface::Session* pSession)
   }
   
   return pJob_CompactIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_CompactIndex_post(Interface::Session* pSession, Job* pJob)
-{
-  if ( pJob->m_bHasError )
-    pJob->vPrintNodeErrors();
-  else
-    pJob->vPrintZeroRows();
 }
 
 /*----------------------------------------------------------------------------*/

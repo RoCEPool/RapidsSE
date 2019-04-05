@@ -36,7 +36,6 @@ namespace Jobs
   Job_DropTable* _pJob_DropTable(void* aAddr);
   
   Job* pJob_DropTable_pre(Interface::Session* pSession);
-  void vJob_DropTable_post(Interface::Session* pSession, Job* pJob);
   void vJob_DropTable_delete(Interface::Session* pSession, Job* pJob);
   void vJob_DropTable_show(Job* pJob);
   

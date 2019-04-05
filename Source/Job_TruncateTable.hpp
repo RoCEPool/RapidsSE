@@ -36,7 +36,6 @@ namespace Jobs
   Job_TruncateTable* _pJob_TruncateTable(void* aAddr);
   
   Job* pJob_TruncateTable_pre(Interface::Session* pSession);
-  void vJob_TruncateTable_post(Interface::Session* pSession, Job* pJob);
   void vJob_TruncateTable_delete(Interface::Session* pSession, Job* pJob);
   void vJob_TruncateTable_show(Job* pJob);
   

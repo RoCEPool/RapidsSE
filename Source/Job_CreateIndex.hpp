@@ -43,7 +43,6 @@ namespace Jobs
   Job_CreateIndex* _pJob_CreateIndex(void* aAddr);
   
   Job* pJob_CreateIndex_pre(Interface::Session* pSession);
-  void vJob_CreateIndex_post(Interface::Session* pSession, Job* pJob);
   void vJob_CreateIndex_delete(Interface::Session* pSession, Job* pJob);
   void vJob_CreateIndex_show(Job* pJob);
   

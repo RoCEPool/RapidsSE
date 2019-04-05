@@ -36,7 +36,6 @@ namespace Jobs
   Job_CreateSchema* _pJob_CreateSchema(void* aAddr);
   
   Job* pJob_CreateSchema_pre(Interface::Session* pSession);
-  void vJob_CreateSchema_post(Interface::Session* pSession, Job* pJob);
   void vJob_CreateSchema_delete(Interface::Session* pSession, Job* pJob);
   void vJob_CreateSchema_show(Job* pJob);
   

@@ -36,7 +36,6 @@ namespace Jobs
   Job_CreateCatalog* _pJob_CreateCatalog(void* aAddr);
   
   Job* pJob_CreateCatalog_pre(Interface::Session* pSession);
-  void vJob_CreateCatalog_post(Interface::Session* pSession, Job* pJob);
   void vJob_CreateCatalog_delete(Interface::Session* pSession, Job* pJob);
   void vJob_CreateCatalog_show(Job* pJob);
   

@@ -36,7 +36,6 @@ namespace Jobs
   Job_DropSchema* _pJob_DropSchema(void* aAddr);
   
   Job* pJob_DropSchema_pre(Interface::Session* pSession);
-  void vJob_DropSchema_post(Interface::Session* pSession, Job* pJob);
   void vJob_DropSchema_delete(Interface::Session* pSession, Job* pJob);
   void vJob_DropSchema_show(Job* pJob);
   

@@ -13,7 +13,7 @@ JobClass xJobClass_CreateTable =
 {
   CN_JOB_CREATETABLE,     // class enum
   JK_DIST2PC,             // job kind
-  RK_NONE,                  // response kind
+  RK_ZERO_ROWS,           // response kind
   "create table"_Stz,     // comment about the job
   "create"_Stz,           // the prompt command
   "table"_Stz,            // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_CreateTable =
 
   eJob_checkCluster,      // prompt check function
   pJob_CreateTable_pre,   // prompt pre-process function
-  vJob_CreateTable_post,  // prompt post-process function
+  vJob_post,              // prompt post-process function
   pJob_CreateTable_new,   // job new function
   vJob_CreateTable_delete,// job delete function
   vJob_send,              // job pre-send function
@@ -636,25 +636,6 @@ Job* Jobs::pJob_CreateTable_pre(Interface::Session* pSession)
   }
   
   return pJob_CreateTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_CreateTable_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJob);
-  
-  if ( pJob_CreateTable->m_bHasError ) {
-  
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_CreateTable->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
-  else {
-    vTrace("success: 0 rows affected\n"_Stz);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

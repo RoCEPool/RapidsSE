@@ -13,7 +13,7 @@ JobClass xJobClass_CreateCatalog =
 {
   CN_JOB_CREATECATALOG,     // class enum
   JK_DIST2PC,               // job kind
-  RK_NONE,                  // response kind
+  RK_ZERO_ROWS,             // response kind
   "create catalog"_Stz,     // comment about the job
   "create"_Stz,             // the prompt command
   "catalog"_Stz,            // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_CreateCatalog =
 
   eJob_checkCluster,        // prompt check function
   pJob_CreateCatalog_pre,   // prompt pre-process function
-  vJob_CreateCatalog_post,  // prompt post-process function
+  vJob_post,                // prompt post-process function
   nullptr,                  // job new function
   vJob_CreateCatalog_delete,// job delete function
   vJob_send,                // job pre-send function
@@ -212,25 +212,6 @@ Job* Jobs::pJob_CreateCatalog_pre(Interface::Session* pSession)
   }
   
   return pJob_CreateCatalog;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_CreateCatalog_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_CreateCatalog* pJob_CreateCatalog = _pJob_CreateCatalog(pJob);
-  
-  if ( pJob_CreateCatalog->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_CreateCatalog->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
-  else {
-    vTrace("success: 0 rows affected\n"_Stz);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

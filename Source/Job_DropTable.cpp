@@ -13,7 +13,7 @@ JobClass xJobClass_DropTable =
 {
   CN_JOB_DROPTABLE,      // class enum
   JK_DIST2PC,            // job kind
-  RK_NONE,               // response kind
+  RK_ZERO_ROWS,          // response kind
   "drop table"_Stz,      // comment about the job
   "drop"_Stz,            // the prompt command
   "table"_Stz,           // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_DropTable =
 
   eJob_checkCluster,     // prompt check function
   pJob_DropTable_pre,    // prompt pre-process function
-  vJob_DropTable_post,   // prompt post-process function
+  vJob_post,             // prompt post-process function
   nullptr,               // job new function
   vJob_DropTable_delete, // job delete function
   vJob_send,             // job pre-send function
@@ -211,25 +211,6 @@ Job* Jobs::pJob_DropTable_pre(Interface::Session* pSession)
   }
   
   return pJob_DropTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_DropTable_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_DropTable* pJob_DropTable = _pJob_DropTable(pJob);
-  
-  if ( pJob_DropTable->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_DropTable->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
-  else {
-    vTrace("success: 0 rows affected\n"_Stz);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

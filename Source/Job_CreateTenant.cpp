@@ -13,7 +13,7 @@ JobClass xJobClass_CreateTenant =
 {
   CN_JOB_CREATETENANT,       // class enum
   JK_DIST2PC,                // job kind
-  RK_NONE,                  // response kind
+  RK_ZERO_ROWS,              // response kind
   "create tenant"_Stz,       // comment about the job
   "create"_Stz,              // the prompt command
   "tenant"_Stz,              // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_CreateTenant =
 
   eJob_checkCluster,         // prompt check function
   pJob_CreateTenant_pre,     // prompt pre-process function
-  vJob_CreateTenant_post,    // prompt post-process function
+  vJob_post,                 // prompt post-process function
   nullptr,                   // job new function
   vJob_CreateTenant_delete,  // job delete function
   vJob_send,                 // job pre-send function
@@ -212,25 +212,6 @@ Job* Jobs::pJob_CreateTenant_pre(Interface::Session* pSession)
   }
   
   return pJob_CreateTenant;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_CreateTenant_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_CreateTenant* pJob_CreateTenant = _pJob_CreateTenant(pJob);
-  
-  if ( pJob_CreateTenant->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_CreateTenant->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
-  else {
-    vTrace("success: 0 rows affected\n"_Stz);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

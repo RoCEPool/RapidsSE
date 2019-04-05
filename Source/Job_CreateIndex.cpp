@@ -13,7 +13,7 @@ JobClass xJobClass_CreateIndex =
 {
   CN_JOB_CREATEINDEX,      // class enum
   JK_DIST2PC,              // job kind
-  RK_NONE,                  // response kind
+  RK_ZERO_ROWS,            // response kind
   "create index"_Stz,      // comment about the job
   "create"_Stz,            // the prompt command
   "index"_Stz,             // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_CreateIndex =
 
   eJob_checkCluster,       // prompt check function
   pJob_CreateIndex_pre,    // prompt pre-process function
-  vJob_CreateIndex_post,   // prompt post-process function
+  vJob_post,               // prompt post-process function
   nullptr,                 // job new function
   vJob_CreateIndex_delete, // job delete function
   vJob_send,               // job pre-send function
@@ -52,7 +52,7 @@ JobClass xJobClass_CreateIndexUnique =
 {
   CN_JOB_CREATEINDEX,      // class enum
   JK_DIST2PC,              // job kind
-  RK_NONE,                  // response kind
+  RK_ZERO_ROWS,            // response kind
   "create unique index"_Stz, // comment about the job
   "create"_Stz,            // the prompt command
   "unique"_Stz,            // the second word
@@ -72,7 +72,7 @@ JobClass xJobClass_CreateIndexUnique =
 
   eJob_checkCluster,       // prompt check function
   pJob_CreateIndex_pre,    // prompt pre-process function
-  vJob_CreateIndex_post,   // prompt post-process function
+  vJob_post,               // prompt post-process function
   nullptr,                 // job new function
   vJob_CreateIndex_delete, // job delete function
   vJob_send,               // job pre-send function
@@ -360,25 +360,6 @@ Job* Jobs::pJob_CreateIndex_pre(Interface::Session* pSession)
     pJob_CreateIndex->vAddError(EC_INVALID_COMMAND);
   }
   return pJob_CreateIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_CreateIndex_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJob);
-  
-  if ( pJob_CreateIndex->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_CreateIndex->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
-  else {
-    vTrace("success: 0 rows affected\n"_Stz);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

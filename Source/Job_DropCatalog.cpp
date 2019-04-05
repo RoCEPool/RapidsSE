@@ -13,7 +13,7 @@ JobClass xJobClass_DropCatalog =
 {
   CN_JOB_DROPCATALOG,      // class enum
   JK_DIST2PC,              // job kind
-  RK_NONE,                  // response kind
+  RK_ZERO_ROWS,            // response kind
   "drop catalog"_Stz,      // comment about the job
   "drop"_Stz,              // the prompt command
   "catalog"_Stz,           // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_DropCatalog =
 
   eJob_checkCluster,       // prompt check function
   pJob_DropCatalog_pre,    // prompt pre-process function
-  vJob_DropCatalog_post,   // prompt post-process function
+  vJob_post,               // prompt post-process function
   nullptr,                 // job new function
   vJob_DropCatalog_delete, // job delete function
   vJob_send,               // job pre-send function
@@ -214,25 +214,6 @@ Job* Jobs::pJob_DropCatalog_pre(Interface::Session* pSession)
   }
   
   return pJob_DropCatalog;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_DropCatalog_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_DropCatalog* pJob_DropCatalog = _pJob_DropCatalog(pJob);
-  
-  if ( pJob_DropCatalog->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_DropCatalog->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
-  else {
-    vTrace("success: 0 rows affected\n"_Stz);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

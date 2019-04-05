@@ -36,7 +36,6 @@ namespace Jobs
   Job_CreateTenant* _pJob_CreateTenant(void* aAddr);
   
   Job* pJob_CreateTenant_pre(Interface::Session* pSession);
-  void vJob_CreateTenant_post(Interface::Session* pSession, Job* pJob);
   void vJob_CreateTenant_delete(Interface::Session* pSession, Job* pJob);
   void vJob_CreateTenant_show(Job* pJob);
   
