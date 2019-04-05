@@ -54,7 +54,7 @@ namespace Data
     void vAddIndex(Data::IndexTree* pIndexTree);
     bool bAllBuffersWritten(eDS eDataSource);
     void vAppendBuffer(RowBuffer* pRowBuffer);
-    void vAppendRow(RowParts& oRowParts, i8 nRowBytes);
+    void vAppendRow(RowParts& oRowParts);
     void vDump(void);
     void vWriteBehindBuffers(i8 nWriteBehindBuffers);
     void vBuffersWritten(i8 m_nBuffersWritten);

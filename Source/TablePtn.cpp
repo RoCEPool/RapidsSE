@@ -256,7 +256,7 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
 /*----------------------------------------------------------------------------*/
 /* append a row to the row buffer into the TablePtn                           */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vAppendRow(RowParts& oRowParts, i8 nRowBytes)
+void TablePtn::vAppendRow(RowParts& oRowParts)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   

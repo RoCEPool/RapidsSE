@@ -26,11 +26,8 @@ void* JobRow::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 JobRow::JobRow(void)
 {
-  //m_aRecord;
-  m_nRowBytes = 0;
-  //m_oFormatters;
   //m_oRowParts;
-
+  //m_oFormatters;
 }
 
 /*----------------------------------------------------------------------------*/

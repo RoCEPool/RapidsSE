@@ -10,7 +10,6 @@ namespace Jobs
   {
   public:
     RowParts    m_oRowParts;    // tray of row parts
-    i8          m_nRowBytes;    // length of formatted row
     Formatters  m_oFormatters;  // formatters
     
   public:
