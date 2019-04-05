@@ -298,12 +298,11 @@ bool Job_WriteBuffer::bInsertRows_LowMem(void)
     Job_LoadTable* pJob_LoadTable = static_cast<Job_LoadTable*>(pJobFound);
 
     // add the number of rows into rows skipped
-    i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_LoadTable->m_xNode[iThisNode].m_ixRowsSkipped += m_nRows;
+    pJob_LoadTable->m_xResponse.m_ixRowsSkipped += m_nRows;
   
     if (gpAttachMap->m_bVerbose)
       vTrace("m_iRowsSkipped %lld m_nRows %lld\n"_Stz,
-             *pJob_LoadTable->m_xNode[iThisNode].m_ixRowsSkipped,
+             *pJob_LoadTable->m_xResponse.m_ixRowsSkipped,
              m_nRows);
   }
   
