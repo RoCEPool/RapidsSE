@@ -33,7 +33,7 @@ JobClass xJobClass_Cat =
 
   eJob_checkCluster,   // prompt check function
   pJob_Cat_pre,        // prompt pre-process function
-  vJob_Cat_post,       // prompt post-process function
+  vJob_post,           // prompt post-process function
   pJob_Cat_new,        // job new function
   vJob_Cat_delete,     // job delete function
   nullptr,             // job pre-send function
@@ -208,13 +208,6 @@ Job* Jobs::pJob_Cat_pre(Interface::Session* pSession)
     pJob_Cat->m_bStatistics = true;
   
   return pJob_Cat;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_Cat_post(Interface::Session* pSession, Job* pJob)
-{
 }
 
 /*----------------------------------------------------------------------------*/

@@ -33,7 +33,7 @@ JobClass xJobClass_Monitor =
 
   eJob_checkCluster,    // prompt check function
   pJob_Monitor_pre,     // prompt pre-process function
-  vJob_Monitor_post,    // prompt post-process function
+  vJob_post,            // prompt post-process function
   pJob_Monitor_new,     // job new function
   vJob_Monitor_delete,  // job delete function
   nullptr,              // job pre-send function
@@ -200,13 +200,6 @@ Job* Jobs::pJob_Monitor_pre(Interface::Session* pSession)
   }
   
   return pJob_Monitor;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_Monitor_post(Interface::Session* pSession, Job* pJob)
-{
 }
 
 /*----------------------------------------------------------------------------*/

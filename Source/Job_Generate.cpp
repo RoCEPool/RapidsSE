@@ -33,7 +33,7 @@ JobClass xJobClass_GenData =
 
   eJob_checkCluster,     // prompt check function
   pJob_Generate_pre,     // prompt pre-process function
-  vJob_Generate_post,    // prompt post-process function
+  vJob_post,             // prompt post-process function
   pJob_Generate_new,     // job new function
   vJob_Generate_delete,  // job delete function
   nullptr,               // job pre-send function
@@ -313,13 +313,6 @@ Job* Jobs::pJob_Generate_pre(Interface::Session* pSession)
   }
 
   return pJob_Generate;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_Generate_post(Interface::Session* pSession, Job* pJob)
-{
 }
 
 /*----------------------------------------------------------------------------*/

@@ -33,7 +33,7 @@ JobClass xJobClass_Ingest =
 
   eJob_checkCluster,     // prompt check function
   pJob_Ingest_pre,       // prompt pre-process function
-  vJob_Ingest_post,      // prompt post-process function
+  vJob_post,             // prompt post-process function
   pJob_Ingest_new,       // job new function
   vJob_Ingest_delete,    // job delete function
   nullptr,               // job pre-send function
@@ -214,13 +214,6 @@ Job* Jobs::pJob_Ingest_pre(Interface::Session* pSession)
     pJob_Ingest->m_pByteRate = new ByteRate;
 
   return pJob_Ingest;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_Ingest_post(Interface::Session* pSession, Job* pJob)
-{
 }
 
 /*----------------------------------------------------------------------------*/

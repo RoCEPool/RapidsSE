@@ -41,7 +41,6 @@ namespace Jobs
   Job_Sink* _pJob_Sink(void* aAddr);
   
   Job* pJob_Sink_pre(Interface::Session* pSession);
-  void vJob_Sink_post(Interface::Session* pSession, Job* pJob);
   Job* pJob_Sink_new(Job* pArg);
   void vJob_Sink_delete(Interface::Session* pSession, Job* pJob);
   void vJob_Sink_show(Job* pJob);
