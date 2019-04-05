@@ -26,15 +26,15 @@ namespace Data
   
     static i8 nDataBytes(eMN eEncoding, eDM eDatum);
   
-    static void vDecodeBcd(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
-    static void vDecodeBol(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
-    static void vDecodeDte(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
-    static void vDecodeFlt(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
-    static void vDecodeInt(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
-    static void vDecodeIvl(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
-    static void vDecodeTme(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
-    static void vDecodeTsp(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
-    static void vDecodeVch(RowNub* pRowNub, i8 i_Row, Column* pCol, Datum* pDatum);
+    static void vDecodeBcd(Datum* pDatum, RowNub* pRowNub, i8 i_Row, Column* pCol);
+    static void vDecodeBol(Datum* pDatum, RowNub* pRowNub, i8 i_Row, Column* pCol);
+    static void vDecodeDte(Datum* pDatum, RowNub* pRowNub, i8 i_Row, Column* pCol);
+    static void vDecodeFlt(Datum* pDatum, RowNub* pRowNub, i8 i_Row, Column* pCol);
+    static void vDecodeInt(Datum* pDatum, RowNub* pRowNub, i8 i_Row, Column* pCol);
+    static void vDecodeIvl(Datum* pDatum, RowNub* pRowNub, i8 i_Row, Column* pCol);
+    static void vDecodeTme(Datum* pDatum, RowNub* pRowNub, i8 i_Row, Column* pCol);
+    static void vDecodeTsp(Datum* pDatum, RowNub* pRowNub, i8 i_Row, Column* pCol);
+    static void vDecodeVch(Datum* pDatum, RowNub* pRowNub, i8 i_Row, Column* pCol);
   
     static void vEncodeBcd(RowNub* pRowNub, Column* pColumn, Datum* pDatum);
     static void vEncodeBol(RowNub* pRowNub, Column* pColumn, Datum* pDatum);
