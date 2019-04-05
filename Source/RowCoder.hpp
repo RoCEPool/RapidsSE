@@ -8,7 +8,7 @@ namespace Data
   class RowCoder
   {
   public:
-    static void vCopy(RowNub* pIntoNub, RowNub* pFromNub);
+    static bool bCopy(RowNub* pIntoNub, RowNub* pFromNub);
   
     static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol);
   

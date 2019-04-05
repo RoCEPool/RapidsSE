@@ -253,9 +253,9 @@ bool RowBuffer::bAppendRow(RowNub* pFromRowNub)
   // copy row data into row entry
   
   RowNub* pIntoRowNub = *&m_xRowTray;
-  RowCoder::vCopy(pIntoRowNub,pFromRowNub);
+  bool bCopied = RowCoder::bCopy(pIntoRowNub,pFromRowNub);
   
-  return true;
+  return bCopied;
 }
 
 /*----------------------------------------------------------------------------*/
