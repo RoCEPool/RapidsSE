@@ -70,7 +70,7 @@ Record::~Record(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* extract                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Record::bExtract(Column* pCol, Datum* pDatum, char** aaSrc, Formatters* pFmt)
+bool Record::bExtract(Datum* pDatum, char** aaSrc, Column* pCol, Formatters* pFmt)
 {
   bool b = false;
   eDM eDatum = pCol->eDatumType();

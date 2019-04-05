@@ -48,16 +48,11 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 {
   bBlankLine = false;
   
-  bool bValidDatum;
-  char* aSrc = aRecord->aChar();
-  
-  
-  //  char caRow[1024];
-  //  StrLib::vCopyLen(caRow,aRecord->aChar(),nBytes);
-  //  vTrace("Row: %s\n"_Stz,caRow);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  char* aSrc = aRecord->aChar();
+
   // skip leading spaces
   if (m_oFormatters.m_cRecordTerminator)
     StrLib::vSkipWhite(&aSrc);
@@ -88,7 +83,7 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // extract datum from record
     
-    bValidDatum = Record::bExtract(pColumn,&oDatum,&aSrc,&m_oFormatters);
+    bool bValidDatum = Record::bExtract(&oDatum,&aSrc,pColumn,&m_oFormatters);
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // is the datum valid ?
@@ -108,7 +103,6 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // encode datum into cache line
     
-    //pDatum->vDatum((byte*)sDst.aChar());
     RowCoder::vEncode(m_oRowParts,pColumn,&oDatum);
     //MemLib::vWordDump(m_oRowParts.aGet(0),sizeof(CacheLine));
     //RowEncoder::vPrint(pColumn,aCacheLine);
