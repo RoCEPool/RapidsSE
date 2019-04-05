@@ -13,7 +13,7 @@ JobClass xJobClass_Status =
 {
   CN_JOB_STATUS,     // class enum
   JK_DIST2PC,        // job kind
-  RK_NONE,           // response kind
+  RK_NODE_ROWS,      // response kind
   "status"_Stz,      // comment about the job
   "status"_Stz,      // the prompt command
   nullptr,           // the second word
@@ -33,7 +33,7 @@ JobClass xJobClass_Status =
 
   eJob_checkCluster, // prompt check function
   pJob_Status_pre,   // prompt pre-process function
-  vJob_Status_post,  // prompt post-process function
+  vJob_post,         // prompt post-process function
   nullptr,           // job new function
   vJob_Status_delete,// job delete function
   vJob_send,         // job pre-send function
@@ -208,30 +208,6 @@ Job* Jobs::pJob_Status_pre(Interface::Session* pSession)
   }
   
   return pJob_Status;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_Status_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_Status* pJob_Status = _pJob_Status(pJob);
-  
-  if ( pJob_Status->m_bHasError ) {
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_Status->m_xNode[i_Node].m_eErrorCode]);
-    }
-  }
-  else {
-    if (gpAttachMap->m_bMetadata) {
-      vTrace("metadata: %s\n"_Stz, pJob_Status->m_sMetadata.aStz());
-    }
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("%s\n"_Stz, pJob_Status->m_xNode[i_Node].m_sResponse.aChar());
-    }
-    vTrace("success: %lld rows affected\n"_Stz, gpAttachMap->m_pGrid->m_nNodes);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

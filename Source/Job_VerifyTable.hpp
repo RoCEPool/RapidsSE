@@ -36,7 +36,6 @@ namespace Jobs
   Job_VerifyTable* _pJob_VerifyTable(void* aAddr);
   
   Job* pJob_VerifyTable_pre(Interface::Session* pSession);
-  void vJob_VerifyTable_post(Interface::Session* pSession, Job* pJob);
   void vJob_VerifyTable_delete(Interface::Session* pSession, Job* pJob);
   void vJob_VerifyTable_show(Job* pJob);
   
