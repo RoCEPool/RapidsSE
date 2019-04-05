@@ -399,26 +399,26 @@ void Table::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* create column vector                                                       */
 /*----------------------------------------------------------------------------*/
-void Table::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-//  vTrace("vCreateColumnVec: table %s column %s %s\n"_Stz,
-//         aTableName(),
-//         sColumnNm.aStz(),
-//         sColumnDefn.aStz());
-  
-  Column* pColumn = new Column(sColumnNm.aStz(),sColumnDefn.aStz());
-  
-  m_pColumnVec->vInsert(pColumn);
-  
-  // renumber
-  for (i8 iColumn = 0; iColumn < m_pColumnVec->nItems(); iColumn++) {
-    Column* pColumn = m_pColumnVec->pGet(iColumn);
-    if (pColumn->iColumnNo() != -1)
-      pColumn->vColumnNo(iColumn);
-  }
-}
+//void Table::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+//  
+////  vTrace("vCreateColumnVec: table %s column %s %s\n"_Stz,
+////         aTableName(),
+////         sColumnNm.aStz(),
+////         sColumnDefn.aStz());
+//  
+//  Column* pColumn = new Column(sColumnNm.aStz(),sColumnDefn.aStz());
+//  
+//  m_pColumnVec->vInsert(pColumn);
+//  
+//  // renumber
+//  for (i8 iColumn = 0; iColumn < m_pColumnVec->nItems(); iColumn++) {
+//    Column* pColumn = m_pColumnVec->pGet(iColumn);
+//    if (pColumn->iColumnNo() != -1)
+//      pColumn->vColumnNo(iColumn);
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* create column vector                                                       */
@@ -427,11 +427,15 @@ void Table::vCreateColumnVec(Jobs::Job_CreateTable* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  for (i8 i= 0; i < pJob->m_iColumns; i++) {
+  Column* pColumn = nullptr;
   
-    Column* pColumn = new Column(pJob, i);
+  for (i8 i_Col = 0; i_Col < pJob->m_iColumns; i_Col++) {
+    pColumn = new Column(pJob,i_Col);
     m_pColumnVec->vAdd(pColumn);
   }
+  
+  if (pColumn)
+    pColumn->vIsLastColumn(true);
 }
 
 /*----------------------------------------------------------------------------*/

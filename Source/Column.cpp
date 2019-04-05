@@ -44,70 +44,70 @@ void Column::operator delete(void* pAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Column::Column(void)
-: Object(CN_COLUMN)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  m_iColumnNo   = 0;
-  m_sColumnName = "<notSet>"_Stz;
-  m_eColumnType = CT_NONE;
-  m_iColumnLength = 0;
-  m_iColumnScale  = 0;
-  m_eDatumType  = DM_NONE;
-  m_bIsNullable = true;
-  m_bIsPartitionKey = false;
-  
-  _checkInitialised_(CN_COLUMN);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-}
+//Column::Column(void)
+//: Object(CN_COLUMN)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+//
+//  m_iColumnNo   = 0;
+//  m_sColumnName = "<notSet>"_Stz;
+//  m_eColumnType = CT_NONE;
+//  m_iColumnLength = 0;
+//  m_iColumnScale  = 0;
+//  m_eDatumType  = DM_NONE;
+//  m_bIsNullable = true;
+//  m_bIsPartitionKey = false;
+//
+//  _checkInitialised_(CN_COLUMN);
+//
+//  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Column::Column(Stz* aName)
-: Object(CN_COLUMN)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  m_iColumnNo   = 0;
-  m_sColumnName = aName;
-  m_eColumnType = CT_INTEGER;
-  m_iColumnLength = 0;
-  m_iColumnScale  = 0;
-  m_eDatumType  = DM_INT;
-  m_bIsNullable = true;
-  m_bIsPartitionKey = false;
-  
-  _checkInitialised_(CN_COLUMN);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-}
+//Column::Column(Stz* aName)
+//: Object(CN_COLUMN)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+//
+//  m_iColumnNo   = 0;
+//  m_sColumnName = aName;
+//  m_eColumnType = CT_INTEGER;
+//  m_iColumnLength = 0;
+//  m_iColumnScale  = 0;
+//  m_eDatumType  = DM_INT;
+//  m_bIsNullable = true;
+//  m_bIsPartitionKey = false;
+//
+//  _checkInitialised_(CN_COLUMN);
+//
+//  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Column::Column(Stz* aName, Stz* aDefinition)
-: Object(CN_COLUMN)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  m_iColumnNo   = 0;
-  m_sColumnName = aName;
-  m_eColumnType = CT_NONE;
-  m_iColumnLength = 0;
-  m_iColumnScale  = 0;
-  m_eDatumType  = DM_NONE;
-  m_bIsNullable = true;
-  m_bIsPartitionKey = false;
-  
-  vSet(aDefinition);
-  
-  _checkInitialised_(CN_COLUMN);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-}
+//Column::Column(Stz* aName, Stz* aDefinition)
+//: Object(CN_COLUMN)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+//  
+//  m_iColumnNo   = 0;
+//  m_sColumnName = aName;
+//  m_eColumnType = CT_NONE;
+//  m_iColumnLength = 0;
+//  m_iColumnScale  = 0;
+//  m_eDatumType  = DM_NONE;
+//  m_bIsNullable = true;
+//  m_bIsPartitionKey = false;
+//  
+//  vSet(aDefinition);
+//  
+//  _checkInitialised_(CN_COLUMN);
+//  
+//  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -125,6 +125,8 @@ Column::Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo)
   m_eDatumType    = pJob->m_xColumns[iColumnNo].m_eDatumType;
   m_bIsNullable   = pJob->m_xColumns[iColumnNo].m_bIsNullable;
   m_bIsPartitionKey = pJob->m_xColumns[iColumnNo].m_bIsPartitionKey;
+  
+  m_bIsLastColumn = false;
   
   _checkInitialised_(CN_COLUMN);
   
@@ -264,6 +266,26 @@ void Column::vDatumType(eDM eDatumType)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get is last column?                                                        */
+/*----------------------------------------------------------------------------*/
+bool Column::bIsLastColumn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  return m_bIsLastColumn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set is last column?                                                        */
+/*----------------------------------------------------------------------------*/
+void Column::vIsLastColumn(bool bIsLastColumn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  m_bIsLastColumn = bIsLastColumn;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is column the given name?                                                  */
 /*----------------------------------------------------------------------------*/
 bool Column::bIsName(s32& sName)
@@ -294,6 +316,7 @@ void Column::vIsNullable(bool bIsNullable)
   
   m_bIsNullable = bIsNullable;
 }
+
 /*----------------------------------------------------------------------------*/
 /* get is partition key?                                                      */
 /*----------------------------------------------------------------------------*/
@@ -317,95 +340,95 @@ void Column::vIsPartitionKey(bool bIsPartitionKey)
 /*----------------------------------------------------------------------------*/
 /* parse definition and set                                                   */
 /*----------------------------------------------------------------------------*/
-void Column::vSet(Stz* aDefinition)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  bool b;
-  char caWord[128];
-  
-  char* aCursor = (char*)aDefinition;
-  b = StrLib::bExtractWord(&aCursor,caWord);
-  
-  //vTrace("Type: %s\n"_Stz,aBuffer);
-  
-  if (StrLib::bSame(caWord,"boolean")) {
-    m_eColumnType = CT_BOOLEAN;
-    m_eDatumType = DM_BOL;
-  }
-  else if (StrLib::bSame(caWord,"char")) {
-    m_eColumnType = CT_CHAR;
-    m_eDatumType = DM_VCH;
-    m_iColumnLength = C_64K;
-  }
-  else if (StrLib::bSame(caWord,"date")) {
-    m_eColumnType = CT_DATE;
-    m_eDatumType = DM_DTE;
-  }
-  else if (StrLib::bSame(caWord,"decimal")) {
-    m_eColumnType = CT_DECIMAL;
-    m_eDatumType = DM_BCD;
-    m_iColumnLength = C_MAX_PRECISION_BCD;
-    m_iColumnScale = 0;
-  }
-  else if (StrLib::bSame(caWord,"float")) {
-    m_eColumnType = CT_FLOAT;
-    m_eDatumType = DM_FLT;
-    m_iColumnLength = C_MAX_PRECISION_FLT;
-  }
-  else if (StrLib::bSame(caWord,"integer")) {
-    m_eColumnType = CT_INTEGER;
-    m_eDatumType = DM_INT;
-    m_iColumnLength = C_MAX_PRECISION_INT;
-  }
-  else if (StrLib::bSame(caWord,"interval")) {
-    m_eColumnType = CT_INTERVAL;
-    m_eDatumType = DM_IVL;
-  }
-  else if (StrLib::bSame(caWord,"time")) {
-    m_eColumnType = CT_TIME;
-    m_eDatumType = DM_TME;
-  }
-  else if (StrLib::bSame(caWord,"timestamp")) {
-    m_eColumnType = CT_TIMESTAMP;
-    m_eDatumType = DM_TSP;
-  }
-//  else if (StrLib::bSame(aBuffer,"varbinary")) {
-//    m_eColumnType   = CT_VARBINARY;
-//    m_eDatumType    = DM_VBN;
+//void Column::vSet(Stz* aDefinition)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+//  
+//  bool b;
+//  char caWord[128];
+//  
+//  char* aCursor = (char*)aDefinition;
+//  b = StrLib::bExtractWord(&aCursor,caWord);
+//  
+//  //vTrace("Type: %s\n"_Stz,aBuffer);
+//  
+//  if (StrLib::bSame(caWord,"boolean")) {
+//    m_eColumnType = CT_BOOLEAN;
+//    m_eDatumType = DM_BOL;
+//  }
+//  else if (StrLib::bSame(caWord,"char")) {
+//    m_eColumnType = CT_CHAR;
+//    m_eDatumType = DM_VCH;
 //    m_iColumnLength = C_64K;
 //  }
-  else if (StrLib::bSame(caWord,"varchar")) {
-    m_eColumnType = CT_VARCHAR;
-    m_eDatumType = DM_VCH;
-    m_iColumnLength = C_MAX_SIZE_VCH;
-  }
-  else {
-    m_eColumnType = CT_INTEGER;
-    m_eDatumType = DM_INT;
-  }
-  
-  StrLib::vSkipWhite(&aCursor);
-  
-  if ('(' == *aCursor) {
-    aCursor++;
-    StrLib::vSkipWhite(&aCursor);
-    b = StrLib::bExtractInteger(&aCursor,&m_iColumnLength);
-    
-    StrLib::vSkipWhite(&aCursor);
-    if (',' == *aCursor) {
-      aCursor++;
-      StrLib::vSkipWhite(&aCursor);
-      b = StrLib::bExtractInteger(&aCursor,&m_iColumnScale);
-    }
-    StrLib::vSkipWhite(&aCursor);
-    aCursor++;
-    StrLib::vSkipWhite(&aCursor);
-  }
-  
-  if (StrLib::bSame(aCursor,"not null"))
-    m_bIsNullable = false;
-}
+//  else if (StrLib::bSame(caWord,"date")) {
+//    m_eColumnType = CT_DATE;
+//    m_eDatumType = DM_DTE;
+//  }
+//  else if (StrLib::bSame(caWord,"decimal")) {
+//    m_eColumnType = CT_DECIMAL;
+//    m_eDatumType = DM_BCD;
+//    m_iColumnLength = C_MAX_PRECISION_BCD;
+//    m_iColumnScale = 0;
+//  }
+//  else if (StrLib::bSame(caWord,"float")) {
+//    m_eColumnType = CT_FLOAT;
+//    m_eDatumType = DM_FLT;
+//    m_iColumnLength = C_MAX_PRECISION_FLT;
+//  }
+//  else if (StrLib::bSame(caWord,"integer")) {
+//    m_eColumnType = CT_INTEGER;
+//    m_eDatumType = DM_INT;
+//    m_iColumnLength = C_MAX_PRECISION_INT;
+//  }
+//  else if (StrLib::bSame(caWord,"interval")) {
+//    m_eColumnType = CT_INTERVAL;
+//    m_eDatumType = DM_IVL;
+//  }
+//  else if (StrLib::bSame(caWord,"time")) {
+//    m_eColumnType = CT_TIME;
+//    m_eDatumType = DM_TME;
+//  }
+//  else if (StrLib::bSame(caWord,"timestamp")) {
+//    m_eColumnType = CT_TIMESTAMP;
+//    m_eDatumType = DM_TSP;
+//  }
+////  else if (StrLib::bSame(aBuffer,"varbinary")) {
+////    m_eColumnType   = CT_VARBINARY;
+////    m_eDatumType    = DM_VBN;
+////    m_iColumnLength = C_64K;
+////  }
+//  else if (StrLib::bSame(caWord,"varchar")) {
+//    m_eColumnType = CT_VARCHAR;
+//    m_eDatumType = DM_VCH;
+//    m_iColumnLength = C_MAX_SIZE_VCH;
+//  }
+//  else {
+//    m_eColumnType = CT_INTEGER;
+//    m_eDatumType = DM_INT;
+//  }
+//  
+//  StrLib::vSkipWhite(&aCursor);
+//  
+//  if ('(' == *aCursor) {
+//    aCursor++;
+//    StrLib::vSkipWhite(&aCursor);
+//    b = StrLib::bExtractInteger(&aCursor,&m_iColumnLength);
+//    
+//    StrLib::vSkipWhite(&aCursor);
+//    if (',' == *aCursor) {
+//      aCursor++;
+//      StrLib::vSkipWhite(&aCursor);
+//      b = StrLib::bExtractInteger(&aCursor,&m_iColumnScale);
+//    }
+//    StrLib::vSkipWhite(&aCursor);
+//    aCursor++;
+//    StrLib::vSkipWhite(&aCursor);
+//  }
+//  
+//  if (StrLib::bSame(aCursor,"not null"))
+//    m_bIsNullable = false;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* show column contents                                                       */

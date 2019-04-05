@@ -86,6 +86,8 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     Column* pColumn = pColVec->pGet(i_Column);
     bool bLastColumn = (i_Column + 1 == nColumns) ? true : false;
     
+    RASSERT(bLastColumn == pColumn->bIsLastColumn());
+    
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // extract datum from record
     
