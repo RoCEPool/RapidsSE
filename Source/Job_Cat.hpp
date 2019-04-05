@@ -45,7 +45,6 @@ namespace Jobs
   Job_Cat* _pJob_Cat(void* aAddr);
   
   Job* pJob_Cat_pre(Interface::Session* pSession);
-  void vJob_Cat_post(Interface::Session* pSession, Job* pJob);
   Job* pJob_Cat_new(Job* pArg);
   void vJob_Cat_delete(Interface::Session* pSession, Job* pJob);
   void vJob_Cat_show(Job* pJob);
