@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vCopy(RowNub* pIntoNub, RowNub* pFromNub)
+bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 {
   RASSERT(pIntoNub->pDesc() == pFromNub->pDesc());
   
@@ -28,7 +28,7 @@ void RowCoder::vCopy(RowNub* pIntoNub, RowNub* pFromNub)
   MemLib::vCopy(pIntoHead,pFromHead,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
 
   if (! pIntoTails)
-    return;
+    return true;
   
   i8 nColumns = pColVec->nItems();
   i8 i_Offset = C_UNKNOWN;
@@ -64,7 +64,8 @@ void RowCoder::vCopy(RowNub* pIntoNub, RowNub* pFromNub)
 
     i_Tail++;
   }
-
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

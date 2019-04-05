@@ -96,7 +96,6 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
           vTrace("%c"_Stz,*a);
         vTrace("\n"_Stz);
       }
-      //delete pRowEncoder;
       return false;
     }
     
