@@ -581,10 +581,6 @@ void Step::vJobErrorStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.error!"_Stz);
   Job* pJob = _pJob(pJobPtr);
-
-  i8 iNode;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
-    THROW_INVALID_DSTACK("job.error!"_Stz);
   
   i8 iJobError;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobError) )

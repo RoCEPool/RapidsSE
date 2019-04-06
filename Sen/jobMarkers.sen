@@ -206,7 +206,7 @@
   ddlLock::testDrop
 
   //errorCode error.msg "Setting error '%v' in job" str.format .
-  errorCode grid::thisNode@ pJob job.error!
+  errorCode pJob job.error!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -222,7 +222,7 @@
   nullptr task::this task.job!
 
   //errorCode error.msg "Setting error '%v' in job" str.format .
-  errorCode grid::thisNode@ pJob job.error!
+  errorCode pJob job.error!
 
   //"Signalling connector thread" .
   pJob job.signalConnector
