@@ -186,23 +186,6 @@ void RowCoder::vRecord(Record* pRec, RowNub* pNub, i8 i_Row)
   CacheLine* aHeadLine = pNub->aGet(i_Row);
 
   ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
-
-//  // get no of columns
-//  i8 nColumns = pColVec->nItems();
-//
-//  // for each column
-//  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
-//
-//    // get the column at index
-//    Column* pCol = pColVec->pGet(i_Column);
-//
-//    // comma separate column values
-//    if (i_Column)
-//      pRec->szRecStr()->vConcat(","_Stz);
-//
-//    // append column value
-//    vAppend(pRec,aHeadLine,pNub,i_Row,pCol);
-//  }
   
   vRecord(pRec,aHeadLine,pColVec);
 }
@@ -381,8 +364,6 @@ i8 RowCoder::nDataBytes(eMN eEncoding, eDM eDatum)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeBcd(Datum* pDatum, CacheLine* aHeadLine, Column* pCol)
 {
-  //CacheLine* aHeadLine = pNub->aGet(i_Row);
-  
   i8 i_Offset  = C_UNKNOWN;
   i8 i_Column  = pCol->iColumnNo();
   
@@ -413,8 +394,6 @@ void RowCoder::vDecodeBcd(Datum* pDatum, CacheLine* aHeadLine, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeBol(Datum* pDatum, CacheLine* aHeadLine, Column* pCol)
 {
-  //CacheLine* aHeadLine = pNub->aGet(i_Row);
-
   i8 i_Offset  = C_UNKNOWN;
   i8 i_Column  = pCol->iColumnNo();
   
@@ -435,8 +414,6 @@ void RowCoder::vDecodeBol(Datum* pDatum, CacheLine* aHeadLine, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeDte(Datum* pDatum, CacheLine* aHeadLine, Column* pCol)
 {
-  //CacheLine* aHeadLine = pNub->aGet(i_Row);
-
   i8 i_Offset  = C_UNKNOWN;
   i8 i_Column  = pCol->iColumnNo();
   
@@ -465,8 +442,6 @@ void RowCoder::vDecodeDte(Datum* pDatum, CacheLine* aHeadLine, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeFlt(Datum* pDatum, CacheLine* aHeadLine, Column* pCol)
 {
-  //CacheLine* aHeadLine = pNub->aGet(i_Row);
-
   i8 i_Offset  = C_UNKNOWN;
   i8 i_Column  = pCol->iColumnNo();
   
@@ -493,8 +468,6 @@ void RowCoder::vDecodeFlt(Datum* pDatum, CacheLine* aHeadLine, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeInt(Datum* pDatum, CacheLine* aHeadLine, Column* pCol)
 {
-//  CacheLine* aHeadLine = pNub->aGet(i_Row);
-
   i8 i_Offset  = C_UNKNOWN;
   i8 i_Column  = pCol->iColumnNo();
   
@@ -525,8 +498,6 @@ void RowCoder::vDecodeInt(Datum* pDatum, CacheLine* aHeadLine, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeIvl(Datum* pDatum, CacheLine* aHeadLine, Column* pCol)
 {
-  //CacheLine* aHeadLine = pNub->aGet(i_Row);
-
   i8 i_Offset  = C_UNKNOWN;
   i8 i_Column  = pCol->iColumnNo();
   
@@ -553,8 +524,6 @@ void RowCoder::vDecodeIvl(Datum* pDatum, CacheLine* aHeadLine, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeTme(Datum* pDatum, CacheLine* aHeadLine, Column* pCol)
 {
-  //CacheLine* aHeadLine = pNub->aGet(i_Row);
-
   i8 i_Offset  = C_UNKNOWN;
   i8 i_Column  = pCol->iColumnNo();
   
@@ -583,8 +552,6 @@ void RowCoder::vDecodeTme(Datum* pDatum, CacheLine* aHeadLine, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeTsp(Datum* pDatum, CacheLine* aHeadLine, Column* pCol)
 {
-  //CacheLine* aHeadLine = pNub->aGet(i_Row);
-
   i8 i_Offset  = C_UNKNOWN;
   i8 i_Column  = pCol->iColumnNo();
   
@@ -614,8 +581,6 @@ void RowCoder::vDecodeTsp(Datum* pDatum, CacheLine* aHeadLine, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeVch(Datum* pDatum, CacheLine* aHeadLine, Column* pCol)
 {
-  //CacheLine* aHeadLine = pNub->aGet(i_Row);
-
   i8 i_Offset  = C_UNKNOWN;
   i8 i_Column  = pCol->iColumnNo();
   
@@ -641,11 +606,7 @@ void RowCoder::vDecodeVch(Datum* pDatum, CacheLine* aHeadLine, Column* pCol)
 void RowCoder::vDecodeVchShoco(Datum* pDatum, CacheLine* aHeadLine,
                                Column* pCol, eMN eEncoding, i8 i_Offset)
 {
-  //CacheLine* aHeadLine = pNub->aGet(i_Row);
-  
   i8 i_Delta = aHeadLine->w8_2B(i_Offset);
-  //i8 i_Shoco = i_Row + i_Delta;
-  //CacheLine* aShocoLine = pNub->aGet(i_Shoco);
   CacheLine* aShocoLine = aHeadLine + i_Delta;
   //MemLib::vWordDump(aShocoLine,sizeof(CacheLine));
   
@@ -665,8 +626,6 @@ void RowCoder::vDecodeVchShoco(Datum* pDatum, CacheLine* aHeadLine,
 void RowCoder::vDecodeVchSmall(Datum* pDatum, CacheLine* aHeadLine,
                                Column* pCol, eMN eEncoding, i8 i_Offset)
 {
-  //CacheLine* aHeadLine = pNub->aGet(i_Row);
-  
   switch (eEncoding) {
       
     case MN_1B:
@@ -903,7 +862,7 @@ void RowCoder::vEncodeInt(RowNub* pNub, Column* pCol, Datum* pDatum)
   // cross-check
   
   vDecode(pDatum,pNub,0,pCol);
-  RASSERT(wOriginal == pDatum->m_iInt);
+  RASSERT(wOriginal == (w8)pDatum->m_iInt);
 }
 
 /*----------------------------------------------------------------------------*/
