@@ -44,6 +44,32 @@ void Column::operator delete(void* pAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+Column::Column(void)
+: Object(CN_COLUMN)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  s32 sName = ""_Stz;
+  m_iColumnNo     = -1;
+  m_sColumnName   = sName;
+  m_eColumnType   = CT_NONE;
+  m_iColumnLength = 0;
+  m_iColumnScale  = 0;
+  m_eDatumType    = DM_NONE;
+  m_bIsNullable   = true;
+  m_bIsUnique     = false;
+  m_bIsPartitionKey = false;
+  
+  m_bIsLastColumn = false;
+  
+  _checkInitialised_(CN_COLUMN);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 Column::Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo)
 : Object(CN_COLUMN)
 {
@@ -56,6 +82,7 @@ Column::Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo)
   m_iColumnScale  = pJob->m_xColumns[iColumnNo].m_iColumnScale;
   m_eDatumType    = pJob->m_xColumns[iColumnNo].m_eDatumType;
   m_bIsNullable   = pJob->m_xColumns[iColumnNo].m_bIsNullable;
+  m_bIsUnique     = pJob->m_xColumns[iColumnNo].m_bIsUnique;
   m_bIsPartitionKey = pJob->m_xColumns[iColumnNo].m_bIsPartitionKey;
   
   m_bIsLastColumn = false;
@@ -150,11 +177,11 @@ s32& Column::sColumnName(void)
 /*----------------------------------------------------------------------------*/
 /* set column name                                                            */
 /*----------------------------------------------------------------------------*/
-void Column::vColumnName(s32& sColumnName)
+void Column::vColumnName(Stz* aColumnName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  m_sColumnName = sColumnName;
+  m_sColumnName = aColumnName;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -247,6 +274,26 @@ void Column::vIsNullable(bool bIsNullable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
   m_bIsNullable = bIsNullable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get is unique?                                                             */
+/*----------------------------------------------------------------------------*/
+bool Column::bIsUnique(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  return m_bIsUnique;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set is unique?                                                           */
+/*----------------------------------------------------------------------------*/
+void Column::vIsUnique(bool bIsUnique)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  m_bIsUnique = bIsUnique;
 }
 
 /*----------------------------------------------------------------------------*/

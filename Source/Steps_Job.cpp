@@ -404,7 +404,7 @@ void Step::vJobColumnIsPartKey(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iColumnNo) )
     THROW_INVALID_DSTACK("job.columnIsPartKey@"_Stz);
   
-  mpTask->m_pDataStack->vPushI8(pJob_CreateTable->m_xColumns[iColumnNo].m_bIsPartitionKey);
+  mpTask->m_pDataStack->vPushI8(pJob_CreateTable->m_xColumns[iColumnNo].bIsPartitionKey());
   
   EXIT();
 }
@@ -425,7 +425,7 @@ void Step::vJobColumnNameFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iColumnNo) )
     THROW_INVALID_DSTACK("job.columnName@"_Stz);
   
-  mpTask->m_pDataStack->vPushS32(pJob_CreateTable->m_xColumns[iColumnNo].m_sColumnName);
+  mpTask->m_pDataStack->vPushS32(pJob_CreateTable->m_xColumns[iColumnNo].sColumnName());
   
   EXIT();
 }
@@ -446,7 +446,7 @@ void Step::vJobColumnTypeFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iColumnNo) )
     THROW_INVALID_DSTACK("job.columnType@"_Stz);
   
-  mpTask->m_pDataStack->vPushI8(pJob_CreateTable->m_xColumns[iColumnNo].m_eColumnType);
+  mpTask->m_pDataStack->vPushI8(pJob_CreateTable->m_xColumns[iColumnNo].eColumnType());
   
   EXIT();
 }

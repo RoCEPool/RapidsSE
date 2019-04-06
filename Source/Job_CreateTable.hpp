@@ -13,19 +13,7 @@ namespace Jobs
     eTT    m_eTableType;   // table type
     i8     m_iColumns;     // no of columns
     
-    struct {
-      
-      i8    m_iColumnNo;     // column no )within this table)
-      s32   m_sColumnName;   // name of column
-      eCT   m_eColumnType;   // column type
-      i8    m_iColumnLength; // length of column
-      i8    m_iColumnScale;  // column scale
-      bool  m_bIsNullable;   // is allowed to be null
-      bool  m_bIsUnique;     // is unique
-      bool  m_bIsPartitionKey; // is a partition key?
-      eDM   m_eDatumType;    // SE datum type
-      
-    } m_xColumns[C_MAX_COLUMNS];
+    Column m_xColumns[C_MAX_COLUMNS];   // column definitions
   
     // must be last
     Footer m_xFooter;

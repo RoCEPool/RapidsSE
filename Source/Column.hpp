@@ -63,6 +63,7 @@ namespace MetaData
     i8    m_iColumnScale;
     eDM   m_eDatumType;
     bool  m_bIsNullable;
+    bool  m_bIsUnique;
     bool  m_bIsPartitionKey;
     bool  m_bIsLastColumn;
     
@@ -74,6 +75,7 @@ namespace MetaData
     void* operator new(size_t);
     void  operator delete(void*);
     
+    Column(void);
     Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo);
     ~Column(void) noexcept(false);
   
@@ -87,7 +89,7 @@ namespace MetaData
     void vColumnNo(i8 iColumnNo);
   
     s32& sColumnName(void);
-    void vColumnName(s32& sColumnName);
+    void vColumnName(Stz* sColumnName);
   
     eCT  eColumnType(void);
     void vColumnType(eCT eColumnType);
@@ -100,6 +102,9 @@ namespace MetaData
   
     bool bIsName(s32& sName);
   
+    bool bIsUnique(void);
+    void vIsUnique(bool bIsUnique);
+    
     bool bIsNullable(void);
     void vIsNullable(bool bIsNullable);
   
