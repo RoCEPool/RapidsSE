@@ -1693,7 +1693,11 @@ bool StrLib::bExtractVarchar(char** aaSrc,
     return bSawTrailingEnclosed;
   
   // its not an enclosed varchar so we consider it to be valid
-  nChars = iLength;
+  if (iLength < iMaxLength)
+    nChars = iLength;
+  else
+    nChars = iMaxLength;
+
   return true;
 }
 
@@ -1783,7 +1787,10 @@ bool StrLib::bExtractVarcharDefault(char** aaSrc,
   *aDst++ = '\0';
   
   // its not an enclosed varchar so we consider it to be valid
-  nChars = iLength;
+  if (iLength < iMaxLength)
+    nChars = iLength;
+  else
+    nChars = iMaxLength;
   return true;
 }
 

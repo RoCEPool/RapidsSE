@@ -957,8 +957,7 @@ bool Record::bExtractVchSupplied(Datum* pDatum, char** aaSrc,
                                  pFormatters->m_cFieldDelimiter,
                                  pFormatters->m_cRecordTerminator,
                                  pFormatters->m_bAllowNonPrintable,
-                                 nChars
-                                 ) )
+                                 pDatum->m_nChars) )
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1011,11 +1010,10 @@ bool Record::bExtractVchDefault(Datum* pDatum, char** aaSrc,
   // varchar field processing
   
   i8 iColumnLength = pColumn->iColumnLength();
-  i8 nChars;
   if ( ! StrLib::bExtractVarcharDefault(aaSrc,
                                         pDatum->m_xWsp.aArea(),
                                         iColumnLength,
-                                        nChars) )
+                                        pDatum->m_nChars) )
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

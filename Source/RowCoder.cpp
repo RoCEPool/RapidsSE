@@ -984,20 +984,21 @@ void RowCoder::vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   i8 nBytesEncoded;
   eMN eEncoding = eEncodingVch(pDatum,nBytesEncoded);
-  //RASSERT(nBytesEncoded == nEncodedBytes(eEncoding,DM_TSP));
-  
+  RASSERT(nBytesEncoded == pDatum->m_nChars);
+
   // set 4bit meta data for column value
   aCacheLine->v1N(i_Column,eEncoding);
   
   // set n-byte data for column value
   if (eEncoding == MN_SHOCO_2B) {
-    vEncodeVchShoco(pNub,pCol,pDatum,nBytesEncoded);
+    vEncodeVchShoco(pNub,pCol,pDatum);
     return;
   }
   else {
     aCacheLine->vPut(pNub->i_Offset(),
-                     *(w8*)pDatum->m_xWsp.aArea(),nBytesEncoded);
-    pNub->vOffsetInc(nBytesEncoded);
+                     *(w8*)pDatum->m_xWsp.aArea(),
+                     pDatum->m_nChars);
+    pNub->vOffsetInc(pDatum->m_nChars);
   }
   
   
@@ -1010,7 +1011,7 @@ void RowCoder::vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum)
 /* encode varchar as shoco                                                    */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol,
-                               Datum* pDatum, i8 nBytes)
+                               Datum* pDatum)
 {
   CacheLine* aCacheLine = pNub->aGet(0);
   
@@ -1030,7 +1031,7 @@ void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol,
     Compress::iIntoShoco((byte*)aShocoLine + C_BYTES_PER_WORD,
                          C_BYTES_PER_CACHE_LINE - C_BYTES_PER_WORD,
                          (char*)pDatum->m_xWsp.aArea(),
-                         nBytes);
+                         pDatum->m_nChars);
   
   // set length of the compressed string encoded into tail shoco cache line
   aShocoLine->v1B(0,nCompressed);

@@ -21,7 +21,8 @@ namespace Data
       i8   m_iIvl;
       i8   m_iTme;
       i8   m_iTsp;
-      Stz* m_szVch;
+      
+      //Stz* m_szVch;
 
       struct {
         u8 m_uSpare : 43 ; //
@@ -68,6 +69,8 @@ namespace Data
 
       w8   m_wWord;
       byte m_yaByte[C_BYTES_PER_WORD];
+      
+      i8   m_nChars;
       
       void*   m_aAdr;
       Object* m_pObj;
