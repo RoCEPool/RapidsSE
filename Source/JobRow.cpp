@@ -116,9 +116,9 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   
   //MemLib::vWordDump(m_oRowParts.aGet(0),sizeof(CacheLine));
   
-//  HV_Rec hvRec;
-//  RowCoder::vRecord(hvRec,m_oRowParts,0);
-//  hvRec->vPrintRow();
+  HV_Rec hvRec;
+  RowCoder::vRecord(hvRec,m_oRowParts,0);
+  hvRec->vPrintRow();
 
   return true;
 }

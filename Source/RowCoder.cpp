@@ -990,16 +990,10 @@ void RowCoder::vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum)
   aCacheLine->v1N(i_Column,eEncoding);
   
   // set n-byte data for column value
-  if (eEncoding == MN_SHOCO_2B) {
+  if (eEncoding == MN_SHOCO_2B)
     vEncodeVchShoco(pNub,pCol,pDatum);
-    return;
-  }
-  else {
-    aCacheLine->vPut(pNub->i_Offset(),
-                     *(w8*)pDatum->m_xWsp.aArea(),
-                     pDatum->m_nChars);
-    pNub->vOffsetInc(pDatum->m_nChars);
-  }
+  else
+    vEncodeVchSmall(pNub,pCol,pDatum);
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1010,8 +1004,7 @@ void RowCoder::vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encode varchar as shoco                                                    */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol,
-                               Datum* pDatum)
+void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum)
 {
   CacheLine* aCacheLine = pNub->aGet(0);
   
@@ -1048,6 +1041,20 @@ void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode varchar as small                                                    */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vEncodeVchSmall(RowNub* pNub, Column* pCol, Datum* pDatum)
+{
+  CacheLine* aCacheLine = pNub->aGet(0);
+  
+  aCacheLine->vPut(pNub->i_Offset(),
+                   *(w8*)pDatum->m_xWsp.aArea(),
+                   pDatum->m_nChars);
+  
+  pNub->vOffsetInc(pDatum->m_nChars);
 }
 
 /*----------------------------------------------------------------------------*/

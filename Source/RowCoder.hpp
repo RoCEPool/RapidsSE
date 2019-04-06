@@ -39,6 +39,7 @@ namespace Data
     static void vEncodeTsp(RowNub* pNub, Column* pCol, Datum* pDatum);
     static void vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum);
   
+    static void vEncodeVchSmall(RowNub* pNub, Column* pCol, Datum* pDatum);
     static void vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum);
 
     static eMN eEncodingBcd(Datum* pDatum, i8& nBytesEncoded);
