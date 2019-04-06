@@ -28,7 +28,12 @@ namespace Data
     static void vDecodeTme(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol);
     static void vDecodeTsp(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol);
     static void vDecodeVch(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol);
-  
+
+    static void vDecodeVchShoco(Datum* pDatum, RowNub* pNub, i8 i_Row,
+                                Column* pCol, eMN eEncoding, i8 i_Offset);
+    static void vDecodeVchSmall(Datum* pDatum, RowNub* pNub, i8 i_Row,
+                                Column* pCol, eMN eEncoding, i8 i_Offset);
+
     static void vEncodeBcd(RowNub* pNub, Column* pCol, Datum* pDatum);
     static void vEncodeBol(RowNub* pNub, Column* pCol, Datum* pDatum);
     static void vEncodeDte(RowNub* pNub, Column* pCol, Datum* pDatum);
@@ -39,8 +44,8 @@ namespace Data
     static void vEncodeTsp(RowNub* pNub, Column* pCol, Datum* pDatum);
     static void vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum);
   
-    static void vEncodeVchSmall(RowNub* pNub, Column* pCol, Datum* pDatum);
     static void vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum);
+    static void vEncodeVchSmall(RowNub* pNub, Column* pCol, Datum* pDatum);
 
     static eMN eEncodingBcd(Datum* pDatum, i8& nBytesEncoded);
     static eMN eEncodingBol(Datum* pDatum, i8& nBytesEncoded);

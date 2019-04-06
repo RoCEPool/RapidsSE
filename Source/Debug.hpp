@@ -83,10 +83,11 @@ namespace Debugging
   /*--------------------------------------------------------------------------*/
   /* NEVER_REACH macro (point in code which should never be reached           */
   /*--------------------------------------------------------------------------*/
-  #define NEVER_REACH \
+  #define NEVER_REACH { \
     Debugging::vAssertTrap(); \
-    THROW_ERROR_MSG(EC_ASSERT,"CodePath"_Stz);
-
+    THROW_ERROR_MSG(EC_ASSERT,"NEVER_REACH"_Stz); \
+  }
+  
   /*--------------------------------------------------------------------------*/
   /* throw exception macro's                                                  */
   /*--------------------------------------------------------------------------*/

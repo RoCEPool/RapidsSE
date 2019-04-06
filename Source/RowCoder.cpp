@@ -582,21 +582,53 @@ void RowCoder::vDecodeVch(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol)
   
   //! needs more work
   eMN eEncoding = eGetEncoding(aCacheLine,i_Column,i_Offset);
+  
+  if (MN_NULL == eEncoding)
+    pDatum->m_iInt = C_DATUM_NULL;
+
+  else if (eEncoding <= MN_8B)
+    vDecodeVchSmall(pDatum,pNub,i_Row,pCol,eEncoding,i_Offset);
+  
+  else if (MN_SHOCO_2B == eEncoding)
+    vDecodeVchShoco(pDatum,pNub,i_Row,pCol,eEncoding,i_Offset);
+
+  else
+    NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode varchar from given cache line                                       */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeVchShoco(Datum* pDatum, RowNub* pNub, i8 i_Row,
+                               Column* pCol, eMN eEncoding, i8 i_Offset)
+{
+  CacheLine* aCacheLine = pNub->aGet(i_Row);
+  
+  i8 i_Delta = aCacheLine->w8_2B(i_Offset);
+  i8 i_Shoco = i_Row + i_Delta;
+  CacheLine* aShocoLine = pNub->aGet(i_Shoco);
+  //MemLib::vWordDump(aShocoLine,sizeof(CacheLine));
+  
+  i8 nCompressed = aShocoLine->w8_1B(0);
+  
+  i8 nDecompressed =
+    Compress::iFromShoco((char*)pDatum->m_xWsp.aStz(),
+                         255,
+                         ((byte*)aShocoLine)+8,
+                         nCompressed);
+  ASSERT(nDecompressed);
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode varchar from given cache line                                       */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeVchSmall(Datum* pDatum, RowNub* pNub, i8 i_Row,
+                               Column* pCol, eMN eEncoding, i8 i_Offset)
+{
+  CacheLine* aCacheLine = pNub->aGet(i_Row);
+  
   switch (eEncoding) {
       
-//    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
-//    case MN_1B:   pDatum->m_iInt = aCacheLine->w8_1B(i_Offset); break;
-//    case MN_2B:   pDatum->m_iInt = aCacheLine->w8_2B(i_Offset); break;
-//    case MN_3B:   pDatum->m_iInt = aCacheLine->w8_3B(i_Offset); break;
-//    case MN_4B:   pDatum->m_iInt = aCacheLine->w8_4B(i_Offset); break;
-//    case MN_5B:   pDatum->m_iInt = aCacheLine->w8_5B(i_Offset); break;
-//    case MN_6B:   pDatum->m_iInt = aCacheLine->w8_6B(i_Offset); break;
-//    case MN_7B:   pDatum->m_iInt = aCacheLine->w8_7B(i_Offset); break;
-//    case MN_8B:   pDatum->m_iInt = aCacheLine->w8_8B(i_Offset); break;
-
-    case MN_NULL:
-      pDatum->m_iInt = C_DATUM_NULL;
-      break;
     case MN_1B:
       pDatum->m_iInt = aCacheLine->w8_1B(i_Offset);
       *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
@@ -621,7 +653,7 @@ void RowCoder::vDecodeVch(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol)
       pDatum->m_iInt = aCacheLine->w8_5B(i_Offset);
       *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
       ((char*)pDatum->m_xWsp.aStz())[5] = '\0';
-     break;
+      break;
     case MN_6B:
       pDatum->m_iInt = aCacheLine->w8_6B(i_Offset);
       *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
@@ -637,25 +669,10 @@ void RowCoder::vDecodeVch(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol)
       *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
       ((char*)pDatum->m_xWsp.aStz())[8] = '\0';
       break;
-
-    case MN_SHOCO_2B: {
-      i8 i_Delta = aCacheLine->w8_2B(i_Offset);
-      i8 i_Shoco = i_Row + i_Delta;
-      CacheLine* aShocoLine = pNub->aGet(i_Shoco);
-      //MemLib::vWordDump(aShocoLine,sizeof(CacheLine));
-
-      i8 iLenCompressed = aShocoLine->w8_1B(0);
-      
-      i8 iLenDecompressed =
-      Compress::iFromShoco((char*)pDatum->m_xWsp.aStz(), 255,
-                           ((byte*)aShocoLine)+8, iLenCompressed);
-      
-      break;
-    }
-      
     default:
       NEVER_REACH;
   }
+
 }
 
 /*----------------------------------------------------------------------------*/
