@@ -991,33 +991,35 @@ void RowCoder::vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   // set n-byte data for column value
   if (eEncoding == MN_SHOCO_2B) {
-    // we would encode the shoco version of the string into a cache line
-    
-    // allot a tail cache line
-    i8 i_Shoco = pNub->iAllotTail();
-    RASSERT(255 == i_Shoco);
-    CacheLine* aShocoLine = pNub->aGet(i_Shoco);
-    
-    // set data for column value as the index of the shoco cache line
-    aCacheLine->vPut(pNub->i_Offset(),i_Shoco,MN_2B);
-    
-    // compress varchar into tail shoco cache line
-    i8 iLenCompressed =
-    Compress::iIntoShoco(((byte*)aShocoLine)+8, C_BYTES_PER_CACHE_LINE-8,
-                         (char*)pDatum->m_xWsp.aArea(), nBytesEncoded);
-    
-    // set length of the compressed string encoded into tail shoco cache line
-    aShocoLine->v1B(0,iLenCompressed);
-    
-    //MemLib::vWordDump(aShocoLine,sizeof(CacheLine));
-    pNub->vOffsetInc(2);
-
-    //    s256 sDecomp;
-    //    i8 iLenDecompressed =
-    //      Compress::iFromShoco(sDecomp.aChar(), 255,
-    //                           ((byte*)aShocoLine)+8, C_BYTES_PER_CACHE_LINE-8);
-    //    sDecomp.aChar()[iLenDecompressed] = '\0';
-    //    vTrace("Decomp: %s\n"_Stz,sDecomp.aChar());
+    vEncodeVchShoco(pNub,pCol,pDatum,nBytesEncoded);
+    return;
+//    // we would encode the shoco version of the string into a cache line
+//
+//    // allot a tail cache line
+//    i8 i_Shoco = pNub->iAllotTail();
+//    RASSERT(255 == i_Shoco);
+//    CacheLine* aShocoLine = pNub->aGet(i_Shoco);
+//
+//    // set data for column value as the index of the shoco cache line
+//    aCacheLine->vPut(pNub->i_Offset(),i_Shoco,MN_2B);
+//
+//    // compress varchar into tail shoco cache line
+//    i8 iLenCompressed =
+//    Compress::iIntoShoco(((byte*)aShocoLine)+8, C_BYTES_PER_CACHE_LINE-8,
+//                         (char*)pDatum->m_xWsp.aArea(), nBytesEncoded);
+//
+//    // set length of the compressed string encoded into tail shoco cache line
+//    aShocoLine->v1B(0,iLenCompressed);
+//
+//    //MemLib::vWordDump(aShocoLine,sizeof(CacheLine));
+//    pNub->vOffsetInc(2);
+//
+//    //    s256 sDecomp;
+//    //    i8 iLenDecompressed =
+//    //      Compress::iFromShoco(sDecomp.aChar(), 255,
+//    //                           ((byte*)aShocoLine)+8, C_BYTES_PER_CACHE_LINE-8);
+//    //    sDecomp.aChar()[iLenDecompressed] = '\0';
+//    //    vTrace("Decomp: %s\n"_Stz,sDecomp.aChar());
   }
   else {
     aCacheLine->vPut(pNub->i_Offset(),
@@ -1025,6 +1027,49 @@ void RowCoder::vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum)
     pNub->vOffsetInc(nBytesEncoded);
   }
   
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-check
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode varchar as shoco                                                    */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol,
+                               Datum* pDatum, i8 nBytes)
+{
+  CacheLine* aCacheLine = pNub->aGet(0);
+  
+  // we would encode the shoco version of the string into a cache line
+  
+  // allot a tail cache line
+  i8 i_Shoco = pNub->iAllotTail();
+  RASSERT(255 == i_Shoco);
+  CacheLine* aShocoLine = pNub->aGet(i_Shoco);
+  
+  // set data for column value as the index of the shoco cache line
+  aCacheLine->vPut(pNub->i_Offset(),i_Shoco,MN_2B);
+  pNub->vOffsetInc(2);
+
+  // compress varchar into tail shoco cache line
+  i8 nCompressed =
+    Compress::iIntoShoco((byte*)aShocoLine + C_BYTES_PER_WORD,
+                         C_BYTES_PER_CACHE_LINE - C_BYTES_PER_WORD,
+                         (char*)pDatum->m_xWsp.aArea(),
+                         nBytes);
+  
+  // set length of the compressed string encoded into tail shoco cache line
+  aShocoLine->v1B(0,nCompressed);
+  
+  //MemLib::vWordDump(aShocoLine,sizeof(CacheLine));
+  
+  //    s256 sDecomp;
+  //    i8 iLenDecompressed =
+  //      Compress::iFromShoco(sDecomp.aChar(), 255,
+  //                           ((byte*)aShocoLine)+8, C_BYTES_PER_CACHE_LINE-8);
+  //    sDecomp.aChar()[iLenDecompressed] = '\0';
+  //    vTrace("Decomp: %s\n"_Stz,sDecomp.aChar());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
