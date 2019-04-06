@@ -77,6 +77,8 @@ namespace Data
     void vRecStr(Stz* szRecStr);
     Stz* szRecStr(void);
   
+    void vReset(void);
+  
     static bool bIsEnclosed(char** aaSrc, Formatters* pFormatters);
     static bool bIsThereFieldData(char* aSrc, Formatters* pFormatters);
     static bool bIsThereRecordData(char* aSrc, Formatters* pFormatters);

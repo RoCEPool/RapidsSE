@@ -41,6 +41,7 @@ namespace Correctness
     void vMidValue(void);
     void vMinValue(void);
     void vNullValue(void);
+    void vReset(void);
     bool bSame(Stz* aArg);
     i8   nSize(void);
     void vSprint(Stz* aFormat, ...);
@@ -343,6 +344,15 @@ void String_t<SIZE>::vMinValue(void)
 template <int SIZE>
 void String_t<SIZE>::vNullValue(void)
 {
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset string                                                               */
+/*----------------------------------------------------------------------------*/
+template <int SIZE>
+void String_t<SIZE>::vReset(void)
+{
+  m_caArea[0] = '\0';
 }
 
 /*----------------------------------------------------------------------------*/

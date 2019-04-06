@@ -43,7 +43,6 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   i8 i_Offset = C_UNKNOWN;
   
   i8 i_Tail = 0;
-  CacheLine* pFromTails = pFromNub->aGet(0);
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     Column* pCol = pColVec->pGet(i_Column);
@@ -58,16 +57,19 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // copy and adjust a shoco tail line
-
-    MemLib::vCopy(&pIntoTails[i_Tail],&pFromTails[i_Tail],
+    
+    i8 i_Diff = pFromHead->w8_2B(i_Offset);
+    CacheLine* pFromTail = pFromHead + i_Diff;
+    
+    MemLib::vCopy(&pIntoTails[i_Tail],pFromTail,
                   C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
     
     // what gets encoded is the difference in cache lines
-    i8 iDiff = &pIntoTails[i_Tail] - pIntoHead;
+    i8 i_RevisedDiff = &pIntoTails[i_Tail] - pIntoHead;
     
     //MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
 
-    pIntoHead->vPut(i_Offset,iDiff,MN_2B);
+    pIntoHead->vPut(i_Offset,i_RevisedDiff,MN_2B);
 
     //MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
 
@@ -195,6 +197,8 @@ void RowCoder::vRecord(Record* pRec, RowNub* pNub, i8 i_Row)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecord(Record* pRec, CacheLine* aHeadLine, ColumnVec* pColVec)
 {
+  pRec->vReset();
+  
   // get no of columns
   i8 nColumns = pColVec->nItems();
   

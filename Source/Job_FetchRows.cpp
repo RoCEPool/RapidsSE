@@ -482,11 +482,15 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuff
   CacheLine** aaCacheLine = nullptr;
   aaCacheLine = pFetchBuffer->aaFirstRowPtr();
   
+  ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
+  
   HV_Rec hvRec;
   
   while (aaCacheLine) {
     
-    RowCoder::vRecord(hvRec,(CacheLine*)nullptr,0);
+    CacheLine* aHeadLine = *aaCacheLine;
+
+    RowCoder::vRecord(hvRec,aHeadLine,pColVec);
 
     if (bPrint)
       vTrace("row: (%s)\n"_Stz, hvRec->szRecStr());
