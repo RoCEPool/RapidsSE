@@ -109,12 +109,11 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     // encode datum into cache line
     
     RowCoder::vEncode(m_oRowParts,pColumn,&oDatum);
-    //MemLib::vWordDump(m_oRowParts.aGet(0),sizeof(CacheLine));
-    //RowCoder::vPrint(m_oRowParts,0,pColumn);
 
   } // for each column
   
-  //MemLib::vWordDump(m_oRowParts.aGet(0),sizeof(CacheLine));
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // debug
   
 //  HV_Rec hvRec;
 //  RowCoder::vRecord(hvRec,m_oRowParts,0);
