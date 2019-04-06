@@ -87,15 +87,15 @@ void RowCoder::vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol)
   CacheLine* aCacheLine = pNub->aGet(i_Row);
 
   switch (eDatum) {
-    case DM_BCD: vDecodeBcd(pDatum,aCacheLine,pNub,i_Row,pCol); break;
-    case DM_BOL: vDecodeBol(pDatum,aCacheLine,pNub,i_Row,pCol); break;
-    case DM_DTE: vDecodeDte(pDatum,aCacheLine,pNub,i_Row,pCol); break;
-    case DM_FLT: vDecodeFlt(pDatum,aCacheLine,pNub,i_Row,pCol); break;
-    case DM_INT: vDecodeInt(pDatum,aCacheLine,pNub,i_Row,pCol); break;
-    case DM_IVL: vDecodeIvl(pDatum,aCacheLine,pNub,i_Row,pCol); break;
-    case DM_TME: vDecodeTme(pDatum,aCacheLine,pNub,i_Row,pCol); break;
-    case DM_TSP: vDecodeTsp(pDatum,aCacheLine,pNub,i_Row,pCol); break;
-    case DM_VCH: vDecodeVch(pDatum,aCacheLine,pNub,i_Row,pCol); break;
+    case DM_BCD: vDecodeBcd(pDatum,aCacheLine,pCol); break;
+    case DM_BOL: vDecodeBol(pDatum,aCacheLine,pCol); break;
+    case DM_DTE: vDecodeDte(pDatum,aCacheLine,pCol); break;
+    case DM_FLT: vDecodeFlt(pDatum,aCacheLine,pCol); break;
+    case DM_INT: vDecodeInt(pDatum,aCacheLine,pCol); break;
+    case DM_IVL: vDecodeIvl(pDatum,aCacheLine,pCol); break;
+    case DM_TME: vDecodeTme(pDatum,aCacheLine,pCol); break;
+    case DM_TSP: vDecodeTsp(pDatum,aCacheLine,pCol); break;
+    case DM_VCH: vDecodeVch(pDatum,aCacheLine,pCol); break;
     default:
       NEVER_REACH;
   }
@@ -367,7 +367,7 @@ i8 RowCoder::nDataBytes(eMN eEncoding, eDM eDatum)
 /*----------------------------------------------------------------------------*/
 /* decode decimal from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeBcd(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol)
+void RowCoder::vDecodeBcd(Datum* pDatum, CacheLine* aCacheLine, Column* pCol)
 {
   //CacheLine* aCacheLine = pNub->aGet(i_Row);
   
@@ -399,7 +399,7 @@ void RowCoder::vDecodeBcd(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8
 /*----------------------------------------------------------------------------*/
 /* decode boolean from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeBol(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol)
+void RowCoder::vDecodeBol(Datum* pDatum, CacheLine* aCacheLine, Column* pCol)
 {
   //CacheLine* aCacheLine = pNub->aGet(i_Row);
 
@@ -421,7 +421,7 @@ void RowCoder::vDecodeBol(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8
 /*----------------------------------------------------------------------------*/
 /* decode date from given cache line                                          */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeDte(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol)
+void RowCoder::vDecodeDte(Datum* pDatum, CacheLine* aCacheLine, Column* pCol)
 {
   //CacheLine* aCacheLine = pNub->aGet(i_Row);
 
@@ -451,7 +451,7 @@ void RowCoder::vDecodeDte(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8
 /*----------------------------------------------------------------------------*/
 /* decode float from given cache line                                         */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeFlt(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol)
+void RowCoder::vDecodeFlt(Datum* pDatum, CacheLine* aCacheLine, Column* pCol)
 {
   //CacheLine* aCacheLine = pNub->aGet(i_Row);
 
@@ -479,7 +479,7 @@ void RowCoder::vDecodeFlt(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8
 /*----------------------------------------------------------------------------*/
 /* decode integer from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeInt(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol)
+void RowCoder::vDecodeInt(Datum* pDatum, CacheLine* aCacheLine, Column* pCol)
 {
 //  CacheLine* aCacheLine = pNub->aGet(i_Row);
 
@@ -511,7 +511,7 @@ void RowCoder::vDecodeInt(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8
 /*----------------------------------------------------------------------------*/
 /* decode interval from given cache line                                      */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeIvl(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol)
+void RowCoder::vDecodeIvl(Datum* pDatum, CacheLine* aCacheLine, Column* pCol)
 {
   //CacheLine* aCacheLine = pNub->aGet(i_Row);
 
@@ -539,7 +539,7 @@ void RowCoder::vDecodeIvl(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8
 /*----------------------------------------------------------------------------*/
 /* decode time from given cache line                                          */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeTme(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol)
+void RowCoder::vDecodeTme(Datum* pDatum, CacheLine* aCacheLine, Column* pCol)
 {
   //CacheLine* aCacheLine = pNub->aGet(i_Row);
 
@@ -569,7 +569,7 @@ void RowCoder::vDecodeTme(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8
 /*----------------------------------------------------------------------------*/
 /* decode timestamp from given cache line                                     */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeTsp(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol)
+void RowCoder::vDecodeTsp(Datum* pDatum, CacheLine* aCacheLine, Column* pCol)
 {
   //CacheLine* aCacheLine = pNub->aGet(i_Row);
 
@@ -600,7 +600,7 @@ void RowCoder::vDecodeTsp(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8
 /*----------------------------------------------------------------------------*/
 /* decode varchar from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeVch(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol)
+void RowCoder::vDecodeVch(Datum* pDatum, CacheLine* aCacheLine, Column* pCol)
 {
   //CacheLine* aCacheLine = pNub->aGet(i_Row);
 
@@ -614,10 +614,10 @@ void RowCoder::vDecodeVch(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8
     pDatum->m_iInt = C_DATUM_NULL;
 
   else if (eEncoding <= MN_8B)
-    vDecodeVchSmall(pDatum,aCacheLine,pNub,i_Row,pCol,eEncoding,i_Offset);
+    vDecodeVchSmall(pDatum,aCacheLine,pCol,eEncoding,i_Offset);
   
   else if (MN_SHOCO_2B == eEncoding)
-    vDecodeVchShoco(pDatum,aCacheLine,pNub,i_Row,pCol,eEncoding,i_Offset);
+    vDecodeVchShoco(pDatum,aCacheLine,pCol,eEncoding,i_Offset);
 
   else
     NEVER_REACH;
@@ -626,7 +626,7 @@ void RowCoder::vDecodeVch(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8
 /*----------------------------------------------------------------------------*/
 /* decode varchar from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeVchShoco(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row,
+void RowCoder::vDecodeVchShoco(Datum* pDatum, CacheLine* aCacheLine,
                                Column* pCol, eMN eEncoding, i8 i_Offset)
 {
   //CacheLine* aCacheLine = pNub->aGet(i_Row);
@@ -650,7 +650,7 @@ void RowCoder::vDecodeVchShoco(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNu
 /*----------------------------------------------------------------------------*/
 /* decode varchar from given cache line                                       */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeVchSmall(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row,
+void RowCoder::vDecodeVchSmall(Datum* pDatum, CacheLine* aCacheLine, 
                                Column* pCol, eMN eEncoding, i8 i_Offset)
 {
   //CacheLine* aCacheLine = pNub->aGet(i_Row);
