@@ -1567,14 +1567,16 @@ bool StrLib::bExtractU8(char** ps, u8* aU8, i8 iDigits)
 /* bExtractVarchar: extract a varchar from substr                             */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractVarchar(char** aaSrc,
-                              char* aVarChar, i8 iMaxLength,
-                              bool bSawLeadingEnclosed,
-                              char cEnclosedBy_Leading,
-                              char cEnclosedBy_Trailing,
-                              char cEscapeChar,
-                              char cFieldSeparator,
-                              char cRecordTerminator,
-                              bool bAllowNonPrintable)
+                             char* aVarChar,
+                             i8 iMaxLength,
+                             bool bSawLeadingEnclosed,
+                             char cEnclosedBy_Leading,
+                             char cEnclosedBy_Trailing,
+                             char cEscapeChar,
+                             char cFieldSeparator,
+                             char cRecordTerminator,
+                             bool bAllowNonPrintable,
+                             i8& nChars)
 {
   i8 iLength = 0;
   char *aDst = (char*)aVarChar;
@@ -1691,6 +1693,7 @@ bool StrLib::bExtractVarchar(char** aaSrc,
     return bSawTrailingEnclosed;
   
   // its not an enclosed varchar so we consider it to be valid
+  nChars = iLength;
   return true;
 }
 
@@ -1698,7 +1701,9 @@ bool StrLib::bExtractVarchar(char** aaSrc,
 /* bExtractVarchar: extract a varchar from substr                             */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractVarcharDefault(char** aaSrc,
-                                    char* aVarChar, i8 iMaxLength)
+                                    char* aVarChar,
+                                    i8 iMaxLength,
+                                    i8& nChars)
 {
   i8 iLength = 0;
   
@@ -1778,6 +1783,7 @@ bool StrLib::bExtractVarcharDefault(char** aaSrc,
   *aDst++ = '\0';
   
   // its not an enclosed varchar so we consider it to be valid
+  nChars = iLength;
   return true;
 }
 

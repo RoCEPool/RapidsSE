@@ -194,18 +194,21 @@ namespace Base
                                     eDC* pDateComponents, char cDateSeparator);
     static bool  bExtractU8(char** ps, u8* u);
     static bool  bExtractU8(char** ps, u8* u, i8 iDigits);
-    
     static bool  bExtractVarchar(char** ps,
-                                  char* aVarchar, i8 iMaxLength,
-                                  bool bIsEnclosed,
-                                  char cEnclosedBy_Leading,
-                                  char cEnclosedBy_Trailing,
-                                  char cEscapeChar,
-                                  char cFieldSeparator,
-                                  char cRecordTerminator,
-                                  bool bAllowNonPrintable);
+                                 char* aVarchar,
+                                 i8 iMaxLength,
+                                 bool bIsEnclosed,
+                                 char cEnclosedBy_Leading,
+                                 char cEnclosedBy_Trailing,
+                                 char cEscapeChar,
+                                 char cFieldSeparator,
+                                 char cRecordTerminator,
+                                 bool bAllowNonPrintable,
+                                 i8& nChars);
     static bool  bExtractVarcharDefault(char** ps,
-                                  char* aVarchar, i8 iMaxLength);
+                                        char* aVarchar,
+                                        i8 iMaxLength,
+                                        i8& nChars);
     static bool  bExtractWord(char** ps, char* pWord);
     static bool  bExtractWordString(char** ps, char* pWord);
     static bool  bExtractYear(char** ps, i8& iYear);

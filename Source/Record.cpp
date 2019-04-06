@@ -946,6 +946,7 @@ bool Record::bExtractVchSupplied(Datum* pDatum, char** aaSrc,
   // varchar field processing
   
   i8 iColumnLength = pColumn->iColumnLength();
+  i8 nChars;
   if ( ! StrLib::bExtractVarchar(aaSrc,
                                  pDatum->m_xWsp.aArea(),
                                  iColumnLength,
@@ -955,7 +956,8 @@ bool Record::bExtractVchSupplied(Datum* pDatum, char** aaSrc,
                                  pFormatters->m_cEscapeChar,
                                  pFormatters->m_cFieldDelimiter,
                                  pFormatters->m_cRecordTerminator,
-                                 pFormatters->m_bAllowNonPrintable
+                                 pFormatters->m_bAllowNonPrintable,
+                                 nChars
                                  ) )
     return false;
   
@@ -972,7 +974,8 @@ bool Record::bExtractVchSupplied(Datum* pDatum, char** aaSrc,
   // tail processing
   
   bool bSawEnclosedTrailing =
-  StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
+  StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,
+                        pFormatters->m_cEnclosedBy_Trailing);
   if (! bSawEnclosedTrailing)
     return false;
   
@@ -1008,9 +1011,11 @@ bool Record::bExtractVchDefault(Datum* pDatum, char** aaSrc,
   // varchar field processing
   
   i8 iColumnLength = pColumn->iColumnLength();
+  i8 nChars;
   if ( ! StrLib::bExtractVarcharDefault(aaSrc,
                                         pDatum->m_xWsp.aArea(),
-                                        iColumnLength) )
+                                        iColumnLength,
+                                        nChars) )
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
