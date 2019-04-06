@@ -179,13 +179,13 @@ void Job_CopyBuffer::vCopy(void)
     
     // format the row
     bool bBlankLine;
-    Stz* aData = aAdd<Stz*>(aRecord, 4);
+    Stz* szRecStr = aAdd<Stz*>(aRecord, 4);
     
-    bool bValid = bFormatRow(aData, uRecordLength, bBlankLine);
+    bool bValid = bEncodeRow(szRecStr, uRecordLength, bBlankLine);
     
     // is the record invalid ?
     if (! bValid) {
-      vTrace("Error inserting row %lld %s\n"_Stz, uRecordLength, aData);
+      vTrace("Error inserting row %lld %s\n"_Stz, uRecordLength, szRecStr);
       //RASSERT(0);
       //eErrorCode = EC_INVALID_VALUE;
       //return eErrorCode;

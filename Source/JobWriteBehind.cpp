@@ -164,21 +164,20 @@ eEC JobWriteBehind::eInsertRow(RowNub* pRowNub)
 /*----------------------------------------------------------------------------*/
 /* process record                                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobWriteBehind::eProcessRecord(Stz* aRecord,
-                                   i8 nBytes)
+eEC JobWriteBehind::eProcessRecord(Stz* szRecStr, i8 nBytes)
 {
   bool bBlankLine = false;
   
   if (nBytes > C_MAX_RECORD) {
     if ( ! gpAttachMap->m_bMetadata ) {
       vWarn("Skipping row %.20s... - record in file > %lld bytes\n"_Stz,
-            aRecord,
+            szRecStr,
             C_MAX_RECORD);
     }
     return EC_MAX_ROW_LENGTH;
   }
 
-  bool bFormat = bFormatRow(aRecord, nBytes, bBlankLine);
+  bool bFormat = bEncodeRow(szRecStr, nBytes, bBlankLine);
   
   if (bBlankLine)
     return EC_BLANKLINE;

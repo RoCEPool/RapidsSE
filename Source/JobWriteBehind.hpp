@@ -7,7 +7,7 @@ namespace Jobs
 {
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class JobWriteBehind : public JobRow
+  class JobWriteBehind : public JobEncodeRow
   {
   public:
     Job* m_pParentJob;  // parent job

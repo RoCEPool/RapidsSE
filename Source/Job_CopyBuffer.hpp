@@ -10,7 +10,7 @@ namespace Jobs
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_CopyBuffer : public Job,
-                         public JobRow
+                         public JobEncodeRow
   {
   public:
     Job_SubInserter*         m_pJob_SubInserter;
