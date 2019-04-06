@@ -192,6 +192,29 @@ void RowCoder::vRecord(Record* pRec, RowNub* pNub, i8 i_Row)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint decode row from cache line into string                              */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecord(Record* pRec, CacheLine* pCacheLine, ColumnVec* pColVec)
+{
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+  
+  // for each column
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
+    
+    // get the column at index
+    Column* pCol = pColVec->pGet(i_Column);
+    
+    // comma separate column values
+    if (i_Column)
+      pRec->szRecStr()->vConcat(","_Stz);
+    
+    // append column value
+    //vAppend(pRec,pNub,i_Row,pCol);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -605,8 +628,9 @@ void RowCoder::vDecodeVchShoco(Datum* pDatum, RowNub* pNub, i8 i_Row,
   CacheLine* aCacheLine = pNub->aGet(i_Row);
   
   i8 i_Delta = aCacheLine->w8_2B(i_Offset);
-  i8 i_Shoco = i_Row + i_Delta;
-  CacheLine* aShocoLine = pNub->aGet(i_Shoco);
+  //i8 i_Shoco = i_Row + i_Delta;
+  //CacheLine* aShocoLine = pNub->aGet(i_Shoco);
+  CacheLine* aShocoLine = aCacheLine + i_Delta;
   //MemLib::vWordDump(aShocoLine,sizeof(CacheLine));
   
   i8 nCompressed = aShocoLine->w8_1B(0);

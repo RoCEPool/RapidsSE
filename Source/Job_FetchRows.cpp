@@ -486,7 +486,7 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuff
   
   while (aaCacheLine) {
     
-    RowCoder::vRecord(hvRec,nullptr,0);
+    RowCoder::vRecord(hvRec,(CacheLine*)nullptr,0);
 
     if (bPrint)
       vTrace("row: (%s)\n"_Stz, hvRec->szRecStr());
