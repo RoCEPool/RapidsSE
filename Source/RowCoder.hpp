@@ -13,26 +13,26 @@ namespace Data
     static void vEncode(RowNub* pNub, Column* pCol, Datum* pDatum);
     static void vPrint(RowNub* pNub, i8 i_Row, Column* pCol);
     static void vRecord(Record* pRec, RowNub* pNub, i8 i_Row);
-    static void vRecord(Record* pRec, CacheLine* pCacheLine, ColumnVec* pColVec);
+    static void vRecord(Record* pRec, CacheLine* aCacheLine, ColumnVec* pColVec);
 
   private:
-    static void vAppend(Record* pRec, RowNub* pNub, i8 i_Row, Column* pCol);
+    static void vAppend(Record* pRec, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol);
   
     static i8 nDataBytes(eMN eEncoding, eDM eDatum);
   
-    static void vDecodeBcd(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol);
-    static void vDecodeBol(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol);
-    static void vDecodeDte(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol);
-    static void vDecodeFlt(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol);
-    static void vDecodeInt(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol);
-    static void vDecodeIvl(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol);
-    static void vDecodeTme(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol);
-    static void vDecodeTsp(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol);
-    static void vDecodeVch(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol);
+    static void vDecodeBcd(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol);
+    static void vDecodeBol(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol);
+    static void vDecodeDte(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol);
+    static void vDecodeFlt(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol);
+    static void vDecodeInt(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol);
+    static void vDecodeIvl(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol);
+    static void vDecodeTme(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol);
+    static void vDecodeTsp(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol);
+    static void vDecodeVch(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row, Column* pCol);
 
-    static void vDecodeVchShoco(Datum* pDatum, RowNub* pNub, i8 i_Row,
+    static void vDecodeVchShoco(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
-    static void vDecodeVchSmall(Datum* pDatum, RowNub* pNub, i8 i_Row,
+    static void vDecodeVchSmall(Datum* pDatum, CacheLine* aCacheLine, RowNub* pNub, i8 i_Row,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
 
     static void vEncodeBcd(RowNub* pNub, Column* pCol, Datum* pDatum);
