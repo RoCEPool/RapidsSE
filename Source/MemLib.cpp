@@ -119,17 +119,16 @@ i8 MemLib::iCompareWords(const void* pVal1, const void* pVal2, i8 nBytes)
   //  }
 
   // nBytes should be a multiple of 8
-  RASSERT(nBytes%8 == 0);
+  RASSERT(nBytes % 8 == 0);
 
   const i8 *iWord1 = (const i8*)pVal1;
   const i8 *iWord2 = (const i8*)pVal2;
 
-  while (nBytes > 0)
-    {
-    if (*iWord1++ != *iWord2++ )
+  while (nBytes > 0) {
+    if (*iWord1++ != *iWord2++)
       return iWord1[-1] < iWord2[-1] ? -1 : 1;
     nBytes -=8;
-    }
+  }
 
   return 0;
 }

@@ -116,6 +116,31 @@ void RowCoder::vDecode(Datum* pDatum, CacheLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
+/* search for duplicate tail line                                             */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iDupeTail(RowNub* pNub, CacheLine* aFindLine)
+{
+  i8 nTails = pNub->nTails();
+  
+  if (! nTails)
+    return C_UNKNOWN;
+  
+  i8 i_Tail = pNub->nItems() - 1;
+  
+  while (nTails--) {
+    
+    CacheLine* aTailLine = pNub->aGet(i_Tail);
+    
+    if (0 == MemLib::iCompareWords(aTailLine,aFindLine,sizeof(CacheLine)))
+      return i_Tail;
+    
+    i_Tail--;
+  }
+  
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
 /* encode given datum into cache line                                         */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncode(RowNub* pNub, Column* pCol, Datum* pDatum)

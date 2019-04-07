@@ -37,6 +37,8 @@ namespace Data
     static void vDecodeVchSmall(Datum* pDatum, CacheLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
 
+    static i8 iDupeTail(RowNub* pNub, CacheLine* aFindLine);
+
     static void vEncodeBcd(RowNub* pNub, Column* pCol, Datum* pDatum);
     static void vEncodeBol(RowNub* pNub, Column* pCol, Datum* pDatum);
     static void vEncodeDte(RowNub* pNub, Column* pCol, Datum* pDatum);
