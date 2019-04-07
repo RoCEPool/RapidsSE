@@ -35,6 +35,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   CacheLine* pFromHead = pFromNub->aGet(0);
   
   MemLib::vCopy(pIntoHead,pFromHead,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
+  //MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
 
   if (! pIntoTails)
     return true;
@@ -252,6 +253,8 @@ void RowCoder::vAppend(Record* pRec, CacheLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* return number of data bytes of encoding                                    */
 /*----------------------------------------------------------------------------*/
+
+//! this may be better done as a 2d array
 i8 RowCoder::nDataBytes(eMN eEncoding, eDM eDatum)
 {
   if (eEncoding == MN_NULL)
@@ -352,7 +355,7 @@ i8 RowCoder::nDataBytes(eMN eEncoding, eDM eDatum)
       switch (eEncoding) {
         case MN_COL_ARRAY:   NEVER_REACH; return 0;
         case MN_SHOCO_CL:    NEVER_REACH; return 0;
-        case MN_SHOCO_2B:    NEVER_REACH; return 0;
+        case MN_SHOCO_2B:    return 2;
         case MN_LOCAL_HMAP:  NEVER_REACH; return 0;
         case MN_GLOBAL_HMAP: NEVER_REACH; return 0;
         default:
@@ -1038,6 +1041,8 @@ void RowCoder::vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum)
 {
+  static i8 nShortOnes = 0;
+  static i8 nLongOnes = 0;
   CacheLine* aHeadLine = pNub->aGet(0);
   
   // we would encode the shoco version of the string into a cache line
@@ -1061,6 +1066,19 @@ void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   // set length of the compressed string encoded into tail shoco cache line
   aShocoLine->v1B(0,nCompressed);
+  
+  if (nCompressed > 20) {
+    nLongOnes++;
+    if (IntLib::bIsDecaCycle(nLongOnes))
+      vTrace("%lld long ones (eg. %lld)\n"_Stz,nLongOnes,nCompressed);
+  }
+  else {
+    nShortOnes++;
+    if (IntLib::bIsDecaCycle(nShortOnes))
+      vTrace("%lld short ones (eg. %lld)\n"_Stz,nShortOnes,nCompressed);
+  }
+    
+  
   
   //MemLib::vWordDump(aShocoLine,sizeof(CacheLine));
   
@@ -1312,6 +1330,8 @@ eMN RowCoder::eEncodingVch(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 /* get the encoding of of a column from given cache line                      */
 /*----------------------------------------------------------------------------*/
+
+//! consider passing a eDatum array instead of colum vector
 eMN RowCoder::eGetEncoding(CacheLine* aHeadLine, ColumnVec* pColVec,
                            i8 i_Col, i8& i_Offset)
 {
@@ -1319,10 +1339,12 @@ eMN RowCoder::eGetEncoding(CacheLine* aHeadLine, ColumnVec* pColVec,
   
   for (i8 i_Nibble = 0; i_Nibble < i_Col; i_Nibble++) {
     
-    i8 nDataBytes = aHeadLine->w8_1N(i_Nibble);
+    eMN eEncoding = (eMN)aHeadLine->w8_1N(i_Nibble);
+
+    Column* pCol  = pColVec->pGet(i_Nibble);
+    eDM eDatum    = pCol->eDatumType();
     
-    if (nDataBytes <= MN_8B)
-      i_Offset += nDataBytes;
+    i_Offset += nDataBytes(eEncoding,eDatum);
   }
   
   eMN eEncoding = (eMN)aHeadLine->w8_1N(i_Col);
