@@ -1032,11 +1032,12 @@ void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   // allot a tail cache line
   i8 i_Shoco = pNub->iAllotTail();
-  RASSERT(255 == i_Shoco);
+  //RASSERT(255 == i_Shoco);
   CacheLine* aShocoLine = pNub->aGet(i_Shoco);
   
   // set data for column value as the index of the shoco cache line
-  aHeadLine->vPut(pNub->i_Offset(),i_Shoco,MN_2B);
+  i8 i_Offset = pNub->i_Offset();
+  aHeadLine->vPut(i_Offset,i_Shoco,MN_2B);
   pNub->vOffsetInc(2);
 
   // compress varchar into tail shoco cache line
@@ -1304,7 +1305,9 @@ eMN RowCoder::eGetEncoding(CacheLine* aHeadLine, i8 i_Col, i8& i_Offset)
   i_Offset = 8;
   
   for (i8 i_Nibble = 0; i_Nibble < i_Col; i_Nibble++) {
+    
     i8 nDataBytes = aHeadLine->w8_1N(i_Nibble);
+    
     if (nDataBytes <= MN_8B)
       i_Offset += nDataBytes;
   }
