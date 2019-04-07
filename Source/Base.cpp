@@ -71,6 +71,11 @@ void Base::vTraceWith(void)
 #ifdef WITH_TRACE_API
   vTrace("  WITH_TRACE_API\n"_Stz);
 #endif
+  
+#ifdef WITH_SHOCO_DUPLICATES
+  vTrace("  WITH_SHOCO_DUPLICATES\n"_Stz);
+#endif
+
 }
 
 /*============================================================================*/
