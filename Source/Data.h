@@ -46,7 +46,7 @@ namespace Data
   MN_DIFF_1B   = 0b1111,   // F: 1B in data words datum indicating difference
   
   MN_COL_ARRAY   = 0b1011, // B: 1B in data words subscript into col array
-  MN_SHOCO_CL    = 0b1100, // C: len+shoco in data words
+  MN_SHOCO_FIT   = 0b1100, // C: len+shoco in data words
   MN_SHOCO_2B    = 0b1101, // D: 2B in data words indicating shoco overflow
   MN_LOCAL_HMAP  = 0b1110, // E: 2B in data words indicating local hashmap
   MN_GLOBAL_HMAP = 0b1111, // F: 2B in data words indicating global hashmap

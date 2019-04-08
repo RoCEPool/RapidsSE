@@ -14,7 +14,6 @@
 bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 {
   static i8 nFolds = 0;
-  static i8 nLast = 0;
   RASSERT(pIntoNub->pDesc() == pFromNub->pDesc());
   
   i8 nCacheLines = nLines(pFromNub,0);
@@ -67,19 +66,33 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 #ifdef WITH_SHOCO_FOLDLAST
     if (pCol->bIsLastColumn()) {
       
-      nLast++;
-      if (IntLib::bIsDecaCycle(nLast))
-        vTrace("%lld last\n"_Stz,nLast);
-      
-      i8 nFreeBytes = C_BYTES_PER_CACHE_LINE - i_Offset - 2;
+      i8 nFreeHeadBytes = C_BYTES_PER_CACHE_LINE - i_Offset - 1;
       i8 nCompressed = pFromTail->w8_2B(0);
       
-      if (nCompressed <= nFreeBytes) {
+      if (nCompressed <= nFreeHeadBytes) {
+        
+        //MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
+        pIntoHead->v1N(i_Column,MN_SHOCO_FIT);
+        //MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
+        pIntoHead->v1B(i_Offset,nCompressed);
+        //MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
+
+        byte* aFrom = (byte*)pFromTail + C_BYTES_PER_WORD;
+        byte* aInto = (byte*)pIntoHead + i_Offset + 1;
+        
+        MemLib::vCopy(aInto,aFrom,nCompressed,CN_ROWBUFFER);
+
+        //MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
+
         nFolds++;
         if (IntLib::bIsDecaCycle(nFolds))
           vTrace("%lld folds\n"_Stz,nFolds);
+        
+        i_Tail++;
+        continue;
       }
       
+      // fall thru
     }
 #endif
 
@@ -467,7 +480,7 @@ i8 RowCoder::nDataBytes(eMN eEncoding, eDM eDatum)
     case DM_VCH:
       switch (eEncoding) {
         case MN_COL_ARRAY:   NEVER_REACH; return 0;
-        case MN_SHOCO_CL:    NEVER_REACH; return 0;
+        case MN_SHOCO_FIT:   return 2;
         case MN_SHOCO_2B:    return 2;
         case MN_LOCAL_HMAP:  NEVER_REACH; return 0;
         case MN_GLOBAL_HMAP: NEVER_REACH; return 0;
@@ -727,6 +740,9 @@ void RowCoder::vDecodeVch(Datum* pDatum, CacheLine* aHeadLine,
   
   else if (MN_SHOCO_2B == eEncoding)
     vDecodeVchShoco(pDatum,aHeadLine,pCol,eEncoding,i_Offset);
+  
+  else if (MN_SHOCO_FIT == eEncoding)
+    vDecodeVchShocoFit(pDatum,aHeadLine,pCol,eEncoding,i_Offset);
 
   else
     NEVER_REACH;
@@ -748,6 +764,22 @@ void RowCoder::vDecodeVchShoco(Datum* pDatum, CacheLine* aHeadLine,
     Compress::iFromShoco((char*)pDatum->m_xWsp.aStz(),
                          255,
                          ((byte*)aShocoLine)+8,
+                         nCompressed);
+  ASSERT(nDecompressed);
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode varchar from given cache line                                       */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeVchShocoFit(Datum* pDatum, CacheLine* aHeadLine,
+                               Column* pCol, eMN eEncoding, i8 i_Offset)
+{
+  i8 nCompressed = aHeadLine->w8_1B(i_Offset);
+  
+  i8 nDecompressed =
+    Compress::iFromShoco((char*)pDatum->m_xWsp.aStz(),
+                         255,
+                         ((byte*)aHeadLine)+i_Offset+2,
                          nCompressed);
   ASSERT(nDecompressed);
 }
@@ -1500,10 +1532,16 @@ eMN RowCoder::eGetEncoding(CacheLine* aHeadLine, ColumnVec* pColVec,
     eDM eDatum    = pCol->eDatumType();
     
     i_Offset += nDataBytes(eEncoding,eDatum);
+    
   }
   
   eMN eEncoding = (eMN)aHeadLine->w8_1N(i_Col);
   
+//  if (MN_SHOCO_FIT == eEncoding) {
+//    i8 nCompressed = aHeadLine->w8_2B(i_Offset);
+//    i_Offset += nCompressed;
+//  }
+
   return eEncoding;
 }
 

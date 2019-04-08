@@ -378,7 +378,7 @@ void CacheLine::v1N(i8 i_Nibble, w8 wArg)
   }
   else {
     // right nibble
-    iByte = iByte | wArg;
+    iByte = ((iByte >> 4) << 4) | wArg;
   }
 
   v1B(i_Nibble/2,iByte);
