@@ -141,7 +141,7 @@ void Dte::vAsI8(i8 iAsI8)
 /*----------------------------------------------------------------------------*/
 i8 Dte::iYear(void)
 {
-  return x.m_uYear;
+  return x.m_uYear + C_BASE_YEAR;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -194,7 +194,7 @@ void Dte::vSprint(Stz* aDst)
   }
   
   StrLib::vSprint(aDst,"%02lld-%02lld-%02lld%c"_Stz,
-                  (i8)x.m_uYear,
+                  (i8)x.m_uYear + C_BASE_YEAR,
                   (i8)x.m_uMonth,
                   (i8)x.m_uDay,
                   '\0');
@@ -234,7 +234,7 @@ void Dte::vSprint(Stz* aDst, Stz* aSrc)
                     '\0');
   else
     StrLib::vSprint(aDst,"%02lld-%02lld-%02lld%c"_Stz,
-                    aDte->x.m_uYear,
+                    aDte->x.m_uYear + C_BASE_YEAR,
                     aDte->x.m_uMonth,
                     aDte->x.m_uDay,
                     '\0');
@@ -252,7 +252,7 @@ void Dte::vSprintEscaped(Stz* aDst, Stz* aSrc)
                     '\0');
   else
     StrLib::vSprint(aDst,"%02lld-%02lld-%02lld%c"_Stz,
-                    aDte->x.m_uYear,
+                    aDte->x.m_uYear + C_BASE_YEAR,
                     aDte->x.m_uMonth,
                     aDte->x.m_uDay,
                     '\0');

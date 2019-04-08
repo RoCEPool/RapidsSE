@@ -348,7 +348,7 @@ bool Record::bExtractDteSupplied(Datum* pDatum, char** aaSrc,
                                pFormatters->m_cDateSeparator) )
     return false;
   
-  pDatum->xDte.m_uYear  = iYear;
+  pDatum->xDte.m_uYear  = iYear - C_BASE_YEAR;
   pDatum->xDte.m_uMonth = iMonth;
   pDatum->xDte.m_uDay   = iDay;
   pDatum->xDte.m_uSpare = 0;
@@ -402,7 +402,7 @@ bool Record::bExtractDteDefault(Datum* pDatum, char** aaSrc,
                                pFormatters->m_cDateSeparator) )
     return false;
   
-  pDatum->xDte.m_uYear  = iYear;
+  pDatum->xDte.m_uYear  = iYear - C_BASE_YEAR;
   pDatum->xDte.m_uMonth = iMonth;
   pDatum->xDte.m_uDay   = iDay;
   pDatum->xDte.m_uSpare = 0;
@@ -840,7 +840,7 @@ bool Record::bExtractTspSupplied(Datum* pDatum, char** aaSrc,
                                     pFormatters->m_cDateSeparator) )
     return false;
   
-  pDatum->xTsp.m_uYear   = iYear;
+  pDatum->xTsp.m_uYear   = iYear - C_BASE_YEAR;
   pDatum->xTsp.m_uMonth  = iMonth;
   pDatum->xTsp.m_uDay    = iDay;
   pDatum->xTsp.m_uHour   = iHour;
@@ -900,7 +900,7 @@ bool Record::bExtractTspDefault(Datum* pDatum, char** aaSrc,
                                     pFormatters->m_cDateSeparator) )
     return false;
   
-  pDatum->xTsp.m_uYear   = iYear;
+  pDatum->xTsp.m_uYear   = iYear - C_BASE_YEAR;
   pDatum->xTsp.m_uMonth  = iMonth;
   pDatum->xTsp.m_uDay    = iDay;
   pDatum->xTsp.m_uHour   = iHour;

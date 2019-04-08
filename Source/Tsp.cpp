@@ -145,7 +145,7 @@ void Tsp::vAsI8(i8 iAsI8)
 /*----------------------------------------------------------------------------*/
 i8 Tsp::iYear(void)
 {
-  return x.m_uYear;
+  return x.m_uYear + C_BASE_YEAR;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -223,7 +223,7 @@ void Tsp::vSetAsNow(void)
   if (! aLocalDateTime)
     vWarn("localtime() error; errno=%d"_Stz,errno);
   
-  x.m_uYear   = aLocalDateTime->tm_year + 1900;
+  x.m_uYear   = (aLocalDateTime->tm_year + 1900) - C_BASE_YEAR;
   x.m_uMonth  = aLocalDateTime->tm_mon  + 1;
   x.m_uDay    = aLocalDateTime->tm_mday;
   x.m_uHour   = aLocalDateTime->tm_hour;
@@ -292,7 +292,7 @@ void Tsp::vSprint(Stz* aDst)
     StrLib::vFormatFraction(caFraction,x.m_uMicro,6);
     
     StrLib::vSprint(aDst,"TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s'%c"_Stz,
-                    (i8)x.m_uYear,
+                    (i8)x.m_uYear + C_BASE_YEAR,
                     (i8)x.m_uMonth,
                     (i8)x.m_uDay,
                     (i8)x.m_uHour,
@@ -304,7 +304,7 @@ void Tsp::vSprint(Stz* aDst)
   }
   
   StrLib::vSprint(aDst,"TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld'%c"_Stz,
-                  (i8)x.m_uYear,
+                  (i8)x.m_uYear + C_BASE_YEAR,
                   (i8)x.m_uMonth,
                   (i8)x.m_uDay,
                   (i8)x.m_uHour,
@@ -332,7 +332,7 @@ void Tsp::vSprint(Stz* aDst, Stz* aSrc)
     StrLib::vFormatFraction(caFraction,uMicro,6);
     
     StrLib::vSprint(aDst,"TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s'%c"_Stz,
-                         (i8)aTsp->x.m_uYear,
+                         (i8)aTsp->x.m_uYear + C_BASE_YEAR,
                          (i8)aTsp->x.m_uMonth,
                          (i8)aTsp->x.m_uDay,
                          (i8)aTsp->x.m_uHour,
@@ -344,7 +344,7 @@ void Tsp::vSprint(Stz* aDst, Stz* aSrc)
   }
 
   StrLib::vSprint(aDst,"TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld'%c"_Stz,
-                       (i8)aTsp->x.m_uYear,
+                       (i8)aTsp->x.m_uYear + C_BASE_YEAR,
                        (i8)aTsp->x.m_uMonth,
                        (i8)aTsp->x.m_uDay,
                        (i8)aTsp->x.m_uHour,
@@ -372,7 +372,7 @@ void Tsp::vSprintEscaped(Stz* aDst, Stz* aSrc)
     StrLib::vFormatFraction(caFraction,uMicro,6);
 
     StrLib::vSprint(aDst,"%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s%c"_Stz,
-                         (i8)aTsp->x.m_uYear,
+                         (i8)aTsp->x.m_uYear + C_BASE_YEAR,
                          (i8)aTsp->x.m_uMonth,
                          (i8)aTsp->x.m_uDay,
                          (i8)aTsp->x.m_uHour,
@@ -384,7 +384,7 @@ void Tsp::vSprintEscaped(Stz* aDst, Stz* aSrc)
   }
 
   StrLib::vSprint(aDst,"%02lld-%02lld-%02lld %02lld:%02lld:%02lld%c"_Stz,
-                       (i8)aTsp->x.m_uYear,
+                       (i8)aTsp->x.m_uYear + C_BASE_YEAR,
                        (i8)aTsp->x.m_uMonth,
                        (i8)aTsp->x.m_uDay,
                        (i8)aTsp->x.m_uHour,
@@ -412,7 +412,7 @@ void Tsp::vSprintNonSQL(Stz* aDst, Stz* aSrc)
     StrLib::vFormatFraction(sFraction,uMicro,6);
 
     StrLib::vSprint(aDst,"%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s%c"_Stz,
-                         (i8)aTsp->x.m_uYear,
+                         (i8)aTsp->x.m_uYear + C_BASE_YEAR,
                          (i8)aTsp->x.m_uMonth,
                          (i8)aTsp->x.m_uDay,
                          (i8)aTsp->x.m_uHour,
@@ -424,7 +424,7 @@ void Tsp::vSprintNonSQL(Stz* aDst, Stz* aSrc)
   }
   
   StrLib::vSprint(aDst,"%02lld-%02lld-%02lld %02lld:%02lld:%02lld%c"_Stz,
-                       (i8)aTsp->x.m_uYear,
+                       (i8)aTsp->x.m_uYear + C_BASE_YEAR,
                        (i8)aTsp->x.m_uMonth,
                        (i8)aTsp->x.m_uDay,
                        (i8)aTsp->x.m_uHour,
