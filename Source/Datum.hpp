@@ -26,34 +26,38 @@ namespace Data
 
       struct {
         u8 m_uSpare : 43 ; //
-        u8 m_uDay   :  5 ; // 0..31
+        
+        u8 m_uDay   :  5 ; // 0..31   same as xTsp.dte
         u8 m_uMonth :  4 ; // 0..15
-        u8 m_uYear  : 12 ; // 0..4095
+        u8 m_uYear  : 12 ; // 0..4095 8b base 1900
         //           ---
         //            64
         //           ===
       } xDte;
       
       struct {
-        u8 m_uSpare  : 20 ; //
-        u8 m_uMicro  : 20 ; // 0..1M
-        u8 m_uSecond :  8 ; // 0..63
-        u8 m_uMinute :  8 ; // 0..63
-        u8 m_uHour   :  8 ; // 0..31
+        u8 m_uSpare  : 27 ; //
+        
+        u8 m_uMicro  : 20 ; // 0..1M  same as xTsp.tme
+        u8 m_uSecond :  6 ; // 0..63
+        u8 m_uMinute :  6 ; // 0..63
+        u8 m_uHour   :  5 ; // 0..31
         //            ---
         //             64
         //            ===
       } xTme;
 
       struct {
-        u8 m_uSpare  :  6 ; //
+        u8 m_uSpare  :  6 ; //           // 6b
+        
         u8 m_uMicro  : 20 ; // 0..1M
         u8 m_uSecond :  6 ; // 0..63
         u8 m_uMinute :  6 ; // 0..63
-        u8 m_uHour   :  5 ; // 0..31
+        u8 m_uHour   :  5 ; // 0..31     // 37b
+        
         u8 m_uDay    :  5 ; // 0..31
         u8 m_uMonth  :  4 ; // 0..15
-        u8 m_uYear   : 12 ; // 0..4095
+        u8 m_uYear   : 12 ; // 0..4095   // 21b  (1900+8b == 2155)
         //            ---
         //             64
         //            ===
