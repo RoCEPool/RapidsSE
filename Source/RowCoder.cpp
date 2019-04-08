@@ -59,11 +59,26 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     
     i8 i_Diff = pFromHead->w8_2B(i_Offset);
     CacheLine* pFromTail = pFromHead + i_Diff;
-
-    CacheLine* pIntoTail = pIntoNub->aAllotTails(1);
-
-    MemLib::vCopy(pIntoTail,pFromTail,
-                  C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
+    
+    CacheLine* pIntoTail = nullptr;
+    
+#ifdef WITH_SHOCO_DUPLICATES
+    pIntoTail = pFindTail(pIntoNub,pFromTail);
+#endif
+    
+    if (! pIntoTail) {
+      pIntoTail = pIntoNub->aAllotTails(1);
+      MemLib::vCopy(pIntoTail,pFromTail,
+                    C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
+      if (13 == i_Column) {
+        //MemLib::vWordDump(pIntoTail,sizeof(CacheLine));
+        int iDebug = 1;
+      }
+    }
+    else {
+      //MemLib::vWordDump(pIntoTail,sizeof(CacheLine));
+      int iDebug = 1;
+    }
     
     // what gets encoded is the difference in cache lines
     i8 i_RevisedDiff = pIntoTail - pIntoHead;
@@ -182,31 +197,6 @@ void RowCoder::vDecode(Datum* pDatum, CacheLine* aHeadLine,
     default:
       NEVER_REACH;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* search for duplicate tail line                                             */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::iDupeTail(RowNub* pNub, CacheLine* aFindLine)
-{
-  i8 nTails = pNub->nTails();
-  
-  if (! nTails)
-    return C_UNKNOWN;
-  
-  i8 i_Tail = pNub->nItems() - 1;
-  
-  while (nTails--) {
-    
-    CacheLine* aTailLine = pNub->aGet(i_Tail);
-    
-    if (0 == MemLib::iCompareWords(aTailLine,aFindLine,sizeof(CacheLine)))
-      return i_Tail;
-    
-    i_Tail--;
-  }
-  
-  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1163,13 +1153,13 @@ void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   if (nCompressed > 20) {
     nLongOnes++;
-    if (IntLib::bIsDecaCycle(nLongOnes))
-      vTrace("%lld long ones (eg. %lld)\n"_Stz,nLongOnes,nCompressed);
+//    if (IntLib::bIsDecaCycle(nLongOnes))
+//      vTrace("%lld long ones (eg. %lld)\n"_Stz,nLongOnes,nCompressed);
   }
   else {
     nShortOnes++;
-    if (IntLib::bIsDecaCycle(nShortOnes))
-      vTrace("%lld short ones (eg. %lld)\n"_Stz,nShortOnes,nCompressed);
+//    if (IntLib::bIsDecaCycle(nShortOnes))
+//      vTrace("%lld short ones (eg. %lld)\n"_Stz,nShortOnes,nCompressed);
   }
     
   
@@ -1419,6 +1409,48 @@ eMN RowCoder::eEncodingVch(Datum* pDatum, i8& nBytesEncoded)
   }
   
   return eEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* search for duplicate tail line                                             */
+/*----------------------------------------------------------------------------*/
+CacheLine* RowCoder::pFindTail(RowNub* pNub, CacheLine* aFindLine)
+{
+  static i8 nFound = 0;
+  static i8 nNotFound = 0;
+
+  i8 nTails = pNub->nTails();
+  
+  if (! nTails) {
+    nNotFound++;
+//    if (IntLib::bIsDecaCycle(nNotFound))
+//      vTrace("%lld dupe tail NOT found\n"_Stz,nNotFound);
+    return nullptr;
+  }
+  
+  i8 i_Tail = pNub->nMaxItems() - 1;
+  
+  while (nTails--) {
+    
+    CacheLine* aTailLine = pNub->aGet(i_Tail);
+    
+    //MemLib::vWordDump(aFindLine,sizeof(CacheLine));
+    //MemLib::vWordDump(aTailLine,sizeof(CacheLine));
+
+    if (0 == MemLib::iCompareWords(aTailLine,aFindLine,sizeof(CacheLine))) {
+      nFound++;
+//      if (IntLib::bIsDecaCycle(nFound))
+//        vTrace("%lld dupe tail found\n"_Stz,nFound);
+      return aTailLine;
+    }
+    
+    i_Tail--;
+  }
+  
+  nNotFound++;
+//  if (IntLib::bIsDecaCycle(nNotFound))
+//    vTrace("%lld dupe tail NOT found\n"_Stz,nNotFound);
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

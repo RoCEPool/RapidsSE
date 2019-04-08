@@ -37,8 +37,6 @@ namespace Data
     static void vDecodeVchSmall(Datum* pDatum, CacheLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
 
-    static i8 iDupeTail(RowNub* pNub, CacheLine* aFindLine);
-
     static void vEncodeBcd(RowNub* pNub, Column* pCol, Datum* pDatum);
     static void vEncodeBol(RowNub* pNub, Column* pCol, Datum* pDatum);
     static void vEncodeDte(RowNub* pNub, Column* pCol, Datum* pDatum);
@@ -61,6 +59,8 @@ namespace Data
     static eMN eEncodingTme(Datum* pDatum, i8& nBytesEncoded);
     static eMN eEncodingTsp(Datum* pDatum, i8& nBytesEncoded);
     static eMN eEncodingVch(Datum* pDatum, i8& nBytesEncoded);
+  
+    static CacheLine* pFindTail(RowNub* pNub, CacheLine* aFindLine);
   
     static eMN eGetEncoding(CacheLine* aHeadLine, ColumnVec* pColVec,
                             i8 i_Col, i8& i_Offset);
