@@ -34,6 +34,8 @@ namespace Data
 
     static void vDecodeVchShoco(Datum* pDatum, CacheLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
+    static void vDecodeVchShocoFit(Datum* pDatum, CacheLine* aHeadLine,
+                                   Column* pCol, eMN eEncoding, i8 i_Offset);
     static void vDecodeVchSmall(Datum* pDatum, CacheLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
 
