@@ -1092,6 +1092,11 @@ void Record::vAppendFlt(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
+  if (pDatum->bIsNull()) {
+    m_sRecStr.vCatSprint("null"_Stz);
+    return;
+  }
+  
   m_sRecStr.vCatSprint("%g"_Stz,pDatum->m_dFlt);
 }
 
