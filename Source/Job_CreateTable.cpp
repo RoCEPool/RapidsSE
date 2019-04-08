@@ -13,7 +13,7 @@ JobClass xJobClass_CreateTable =
 {
   CN_JOB_CREATETABLE,     // class enum
   JK_DIST2PC,             // job kind
-  RK_ZERO_ROWS,           // response kind
+  RK_NODE_ZERO,           // response kind
   "create table"_Stz,     // comment about the job
   "create"_Stz,           // the prompt command
   "table"_Stz,            // the second word
@@ -625,6 +625,27 @@ Job* Jobs::pJob_CreateTable_pre(Interface::Session* pSession)
   }
   
   return pJob_CreateTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print success                                                              */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_CreateTable_post(Interface::Session* pSession, Job* pJob)
+{
+  vTrace("I am here\n"_Stz);
+  
+  i8 iResponses = pJob->m_pResponseVec->nItems();
+  
+  if (pJob->m_bHasError) {
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob->m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+    }
+    return;
+  }
+  
+  RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
+  
+  vTrace("success: 0 rows affected\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

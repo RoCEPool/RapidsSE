@@ -13,7 +13,7 @@ JobClass xJobClass_CompactIndex =
 {
   CN_JOB_COMPACTINDEX,    // class enum
   JK_DIST2PC,             // job kind
-  RK_ZERO_ROWS,           // response kind
+  RK_NODE_ZERO,           // response kind
   "compact index"_Stz,    // comment about the job
   "compactidx"_Stz,       // the prompt command
   nullptr,                // the second word

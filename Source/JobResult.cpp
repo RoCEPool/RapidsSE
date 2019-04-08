@@ -186,9 +186,9 @@ void JobResult::vPrintNodeRows(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print success                                                              */
+/* print zero rows                                                            */
 /*----------------------------------------------------------------------------*/
-void JobResult::vPrintZeroRows(void)
+void JobResult::vPrintNodeZero(void)
 {
   i8 iResponses = m_pResponseVec->nItems();
   
@@ -200,6 +200,21 @@ void JobResult::vPrintZeroRows(void)
   }
   
   RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
+  
+  vTrace("success: 0 rows affected\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print local zero rows                                                      */
+/*----------------------------------------------------------------------------*/
+void JobResult::vPrintLocalZero(void)
+{
+  if (m_bHasError) {
+    vTrace("error: (node%lld) %s\n"_Stz,
+           gpAttachMap->m_pGrid->iThisNode(),
+           aEC[m_xResponse.m_eErrorCode]);
+    return;
+  }
   
   vTrace("success: 0 rows affected\n"_Stz);
 }

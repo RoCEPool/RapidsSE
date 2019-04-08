@@ -14,7 +14,7 @@ JobClass xJobClass_DropSchema =
 {
   CN_JOB_DROPSCHEMA,      // class enum
   JK_DIST2PC,             // job kind
-  RK_ZERO_ROWS,           // response kind
+  RK_NODE_ZERO,           // response kind
   "drop schema"_Stz,      // comment about the job
   "drop"_Stz,             // the prompt command
   "schema"_Stz,           // the second word

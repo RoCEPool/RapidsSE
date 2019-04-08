@@ -48,6 +48,7 @@ namespace Jobs
   Job_CreateTable* _pJob_CreateTable(void* aAddr);
   
   Job* pJob_CreateTable_pre(Interface::Session* pSession);
+  void vJob_CreateTable_post(Interface::Session* pSession, Job* pJob);
   Job* pJob_CreateTable_new(Job* pArg);
   void vJob_CreateTable_delete(Interface::Session* pSession, Job* pJob);
   void vJob_CreateTable_show(Job* pJob);

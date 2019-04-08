@@ -13,7 +13,7 @@ JobClass xJobClass_DropTable =
 {
   CN_JOB_DROPTABLE,      // class enum
   JK_DIST2PC,            // job kind
-  RK_ZERO_ROWS,          // response kind
+  RK_NODE_ZERO,          // response kind
   "drop table"_Stz,      // comment about the job
   "drop"_Stz,            // the prompt command
   "table"_Stz,           // the second word

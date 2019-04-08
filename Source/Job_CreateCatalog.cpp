@@ -13,7 +13,7 @@ JobClass xJobClass_CreateCatalog =
 {
   CN_JOB_CREATECATALOG,     // class enum
   JK_DIST2PC,               // job kind
-  RK_ZERO_ROWS,             // response kind
+  RK_NODE_ZERO,             // response kind
   "create catalog"_Stz,     // comment about the job
   "create"_Stz,             // the prompt command
   "catalog"_Stz,            // the second word

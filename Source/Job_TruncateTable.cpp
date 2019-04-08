@@ -13,7 +13,7 @@ JobClass xJobClass_TruncateTable =
 {
   CN_JOB_TRUNCATETABLE,      // class enum
   JK_DIST2PC,                // job kind
-  RK_ZERO_ROWS,              // response kind
+  RK_NODE_ZERO,              // response kind
   "truncate table"_Stz,      // comment about the job
   "tr"_Stz,                  // the prompt command
   nullptr,                   // the second word
