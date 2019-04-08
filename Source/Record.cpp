@@ -1046,12 +1046,13 @@ void Record::vAppendBcd(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
 
-  if (pDatum->bIsNull()) {
-    m_sRecStr.vCatSprint("null"_Stz);
-    return;
-  }
+  Bcd wBcd;
+  wBcd.vAsI8(pDatum->m_iBcd);
   
-  m_sRecStr.vCatSprint("%lld"_Stz,pDatum->m_iBcd);
+  s32 sBcd;
+  wBcd.vSprint(sBcd.aStz(), pCol);
+  
+  m_sRecStr.vConcat(sBcd.aStz());
 }
 
 /*----------------------------------------------------------------------------*/

@@ -118,6 +118,14 @@ i8 Bcd::iAsI8(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set as i8                                                                  */
+/*----------------------------------------------------------------------------*/
+void Bcd::vAsI8(i8 iAsI8)
+{
+  m_iBcd = iAsI8;
+}
+
+/*----------------------------------------------------------------------------*/
 /* initialse to all zero                                                      */
 /*----------------------------------------------------------------------------*/
 void Bcd::vInitZero(void)
@@ -168,6 +176,42 @@ i8 Bcd::nCopy(void* aDst, void* aSrc)
 void Bcd::vCopy(void* aDst, void* aSrc)
 {
   *(i8*)aDst = *(i8*)aSrc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint bcd datum                                                           */
+/*----------------------------------------------------------------------------*/
+void Bcd::vSprint(Stz* aDst, MetaData::Column* pColumn)
+{
+  bool bNegative = false;
+  
+  if (bIsNull()) {
+    StrLib::vSprint(aDst,"null%c"_Stz, '\0');
+  return;
+ }
+  
+  i8 iDigits = 1;
+  for (i8 i_Digit = 0; i_Digit < pColumn->iColumnScale(); i_Digit++)
+    iDigits *= 10;
+  
+  i8 iBcd_Whole = m_iBcd / iDigits;
+  i8 iBcd_Fraction = m_iBcd % iDigits;
+  
+  if (iBcd_Fraction < 0 || iBcd_Whole < 0) {
+    bNegative = true;
+    iBcd_Fraction = iBcd_Fraction * -1;
+    iBcd_Whole = iBcd_Whole * -1;
+  }
+  
+  if (pColumn->iColumnScale())
+    StrLib::vSprint(aDst,"%s%lld.%.*lld%c"_Stz,
+                    bNegative ? "-" : "",
+                    iBcd_Whole,
+                    pColumn->iColumnScale(),
+                    iBcd_Fraction,'\0');
+  else
+    StrLib::vSprint(aDst,"%s%lld%c"_Stz, bNegative ? "-" : "",iBcd_Whole, '\0');
+
 }
 
 /*----------------------------------------------------------------------------*/

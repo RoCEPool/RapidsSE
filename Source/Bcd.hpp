@@ -32,10 +32,12 @@ namespace Datums
     bool operator >  (Bcd& xBcd);
   
     i8   iAsI8(void);
+    void vAsI8(i8 iAsI8);
     void vInitZero(void);
     bool bIsNull(void);
     void vSetNull(void);
-  
+    void vSprint(Stz* aDst, MetaData::Column* pColumn);
+    
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
 
