@@ -69,13 +69,19 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
 #ifdef WITH_PREPOST_CHECKING
   vTrace("  WITH_PREPOST_CHECKING\n"_Stz);
 #endif
+
+  
   
 #ifdef WITH_SHOCO_DUPLICATES
   vTrace("  WITH_SHOCO_DUPLICATES\n"_Stz);
 #endif
-  
 
-    
+#ifdef WITH_SHOCO_FOLDLAST
+  vTrace("  WITH_SHOCO_FOLDLAST\n"_Stz);
+#endif
+
+
+
   vTrace("\n"_Stz);
 
   return true;
