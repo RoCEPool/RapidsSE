@@ -30,16 +30,14 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   //! NOTE:: Assuming each row fits in a cacheline + (n * Shoco Lines)
 
   CacheLine* pIntoHead  = pIntoNub->aAllotHead();
-  CacheLine* pIntoTails = pIntoNub->aAllotTails(nCacheLines - 1);
-  
   CacheLine* pFromHead = pFromNub->aGet(0);
   
   MemLib::vCopy(pIntoHead,pFromHead,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
   //MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
 
-  if (! pIntoTails)
+  if (1 == nCacheLines)
     return true;
-  
+
   i8 nColumns = pColVec->nItems();
   i8 i_Offset = C_UNKNOWN;
   
@@ -61,12 +59,14 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     
     i8 i_Diff = pFromHead->w8_2B(i_Offset);
     CacheLine* pFromTail = pFromHead + i_Diff;
-    
-    MemLib::vCopy(&pIntoTails[i_Tail],pFromTail,
+
+    CacheLine* pIntoTail = pIntoNub->aAllotTails(1);
+
+    MemLib::vCopy(pIntoTail,pFromTail,
                   C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
     
     // what gets encoded is the difference in cache lines
-    i8 i_RevisedDiff = &pIntoTails[i_Tail] - pIntoHead;
+    i8 i_RevisedDiff = pIntoTail - pIntoHead;
     
     //MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
 
@@ -79,6 +79,75 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   
   return true;
 }
+/*----------------------------------------------------------------------------*/
+//bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
+//{
+//  RASSERT(pIntoNub->pDesc() == pFromNub->pDesc());
+//
+//  i8 nCacheLines = nLines(pFromNub,0);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  // check for space in target nub
+//  if (! pIntoNub->bHasSpace(sizeof(CacheLine) * nCacheLines))
+//    return false;
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  ColumnVec* pColVec = pIntoNub->pDesc()->pColumnVec();
+//
+//  //! NOTE:: Assuming each row fits in a cacheline + (n * Shoco Lines)
+//
+//  CacheLine* pIntoHead  = pIntoNub->aAllotHead();
+//  CacheLine* pIntoTails = pIntoNub->aAllotTails(nCacheLines - 1);
+//
+//  CacheLine* pFromHead = pFromNub->aGet(0);
+//
+//  MemLib::vCopy(pIntoHead,pFromHead,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
+//  //MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
+//
+//  if (! pIntoTails)
+//    return true;
+//
+//  i8 nColumns = pColVec->nItems();
+//  i8 i_Offset = C_UNKNOWN;
+//
+//  i8 i_Tail = 0;
+//  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
+//
+//    Column* pCol = pColVec->pGet(i_Column);
+//
+//    if (DM_VCH != pCol->eDatumType())
+//      continue;
+//
+//    eMN eEncoding = eGetEncoding(pFromHead,pColVec,i_Column,i_Offset);
+//
+//    if (MN_SHOCO_2B != eEncoding)
+//      continue;
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    // copy and adjust a shoco tail line
+//
+//    i8 i_Diff = pFromHead->w8_2B(i_Offset);
+//    CacheLine* pFromTail = pFromHead + i_Diff;
+//
+//    MemLib::vCopy(&pIntoTails[i_Tail],pFromTail,
+//                  C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
+//
+//    // what gets encoded is the difference in cache lines
+//    i8 i_RevisedDiff = &pIntoTails[i_Tail] - pIntoHead;
+//
+//    //MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
+//
+//    pIntoHead->vPut(i_Offset,i_RevisedDiff,MN_2B);
+//
+//    //MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
+//
+//    i_Tail++;
+//  }
+//
+//  return true;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get encoded datum from cache line                                          */
