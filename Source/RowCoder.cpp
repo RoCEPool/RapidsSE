@@ -1428,20 +1428,20 @@ eMN RowCoder::eEncodingTsp(Datum* pDatum, i8& nBytesEncoded)
   
   eMN eEncoding;
   
-  bool bSawNonZero = true;
-  
-  while (! pDatum->m_yaByte[0]) {
-    
-    bSawNonZero = false;
-    
-    for (i8 i_Byte = 0; i_Byte < 7; i_Byte++)
-      if ( (pDatum->m_yaByte[i_Byte] = pDatum->m_yaByte[i_Byte+1]) )
-        bSawNonZero = true;
-    pDatum->m_yaByte[7] = 0;
-    
-    if (! bSawNonZero)
-      break;
-  }
+//  bool bSawNonZero = true;
+//  
+//  while (! pDatum->m_yaByte[0]) {
+//    
+//    bSawNonZero = false;
+//    
+//    for (i8 i_Byte = 0; i_Byte < 7; i_Byte++)
+//      if ( (pDatum->m_yaByte[i_Byte] = pDatum->m_yaByte[i_Byte+1]) )
+//        bSawNonZero = true;
+//    pDatum->m_yaByte[7] = 0;
+//    
+//    if (! bSawNonZero)
+//      break;
+//  }
   
   eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iInt);
   
