@@ -25,50 +25,50 @@ namespace Data
       //Stz* m_szVch;
 
       struct {
-        u8 m_uSpare : 43 ; //
+        u8 m_uSpare    : 43 ; //
         
-        u8 m_uDay   :  5 ; // 0..31   same as xTsp.dte
-        u8 m_uMonth :  4 ; // 0..15
-        u8 m_uYear  : 12 ; // 0..4095 8b base 1900
-        //           ---
-        //            64
-        //           ===
+        u8 m_uDay      :  5 ; // 0..31   same as xTsp.dte
+        u8 m_uMonth    :  4 ; // 0..15
+        u8 m_uYearDelta: 12 ; // 0..4095 8b base 1900
+        //              ---
+        //               64
+        //              ===
       } xDte;
       
       struct {
-        u8 m_uSpare  : 27 ; //
+        u8 m_uSpare    : 27 ; //
         
-        u8 m_uMicro  : 20 ; // 0..1M  same as xTsp.tme
-        u8 m_uSecond :  6 ; // 0..63
-        u8 m_uMinute :  6 ; // 0..63
-        u8 m_uHour   :  5 ; // 0..31
-        //            ---
-        //             64
-        //            ===
+        u8 m_uMicro    : 20 ; // 0..1M  same as xTsp.tme
+        u8 m_uSecond   :  6 ; // 0..63
+        u8 m_uMinute   :  6 ; // 0..63
+        u8 m_uHour     :  5 ; // 0..31
+        //              ---
+        //               64
+        //              ===
       } xTme;
 
       struct {
-        u8 m_uSpare  :  6 ; //           // 6b
+        u8 m_uSpare    :  6 ; //           // 6b
         
-        u8 m_uMicro  : 20 ; // 0..1M
-        u8 m_uSecond :  6 ; // 0..63
-        u8 m_uMinute :  6 ; // 0..63
-        u8 m_uHour   :  5 ; // 0..31     // 37b
+        u8 m_uMicro    : 20 ; // 0..1M
+        u8 m_uSecond   :  6 ; // 0..63
+        u8 m_uMinute   :  6 ; // 0..63
+        u8 m_uHour     :  5 ; // 0..31     // 37b
         
-        u8 m_uDay    :  5 ; // 0..31
-        u8 m_uMonth  :  4 ; // 0..15
-        u8 m_uYear   : 12 ; // 0..4095   // 21b  (1900+8b == 2155)
-        //            ---
-        //             64
-        //            ===
+        u8 m_uDay      :  5 ; // 0..31
+        u8 m_uMonth    :  4 ; // 0..15
+        u8 m_uYearDelta: 12 ; // 0..4095   // 21b  (1900+8b == 2155)
+        //              ---
+        //               64
+        //              ===
       } xTsp;
 
       struct {
-        u8 m_uMilli  : 10 ; // 0..1023
-        u8 m_uSecond : 54 ; // 0..1.8E16
-        //            ---
-        //             64
-        //            ===
+        u8 m_uMilli    : 10 ; // 0..1023
+        u8 m_uSecond   : 54 ; // 0..1.8E16
+        //              ---
+        //               64
+        //              ===
       } xIvl;
 
       w8   m_wWord;

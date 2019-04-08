@@ -16,7 +16,7 @@ namespace Datums
         
         u8 m_uDay   :  5 ; // 0..31
         u8 m_uMonth :  4 ; // 0..15
-        u8 m_uYear  : 12 ; // 0..4095
+        u8 m_uYearDelta  : 12 ; // 0..4095
         //           ---
         //            64
         //           ===
