@@ -1170,6 +1170,11 @@ void Record::vAppendVch(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
+  if (pDatum->bIsNull()) {
+    m_sRecStr.vCatSprint("null"_Stz);
+    return;
+  }
+  
   s256 sBuf;
   
   Vch::vSprintQuotes(sBuf,pDatum->m_xWsp.aStz());
