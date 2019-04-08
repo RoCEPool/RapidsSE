@@ -12,11 +12,12 @@ namespace Datums
   public:
     union {
       struct {
-        u8 m_uSpare  : 20 ; //
+        u8 m_uSpare  : 27 ; //
+        
         u8 m_uMicro  : 20 ; // 0..1M
-        u8 m_uSecond :  8 ; // 0..63
-        u8 m_uMinute :  8 ; // 0..63
-        u8 m_uHour   :  8 ; // 0..31
+        u8 m_uSecond :  6 ; // 0..63
+        u8 m_uMinute :  6 ; // 0..63
+        u8 m_uHour   :  5 ; // 0..31
         //            ---
         //             64
         //            ===
