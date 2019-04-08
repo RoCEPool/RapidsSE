@@ -371,7 +371,7 @@ void RowBuffer::vTable(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  RASSERT(pTable);
+  //RASSERT(pTable);
   m_xRowTray.vDesc(pTable);
 }
 

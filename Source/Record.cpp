@@ -1046,7 +1046,10 @@ void Record::vAppendBcd(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_sRecStr.vCatSprint("%lld"_Stz,pDatum->m_iBcd);
+  if (pDatum->bIsNull())
+    m_sRecStr.vCatSprint("null%c"_Stz,'\0');
+  else
+    m_sRecStr.vCatSprint("%lld"_Stz,pDatum->m_iBcd);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1056,7 +1059,10 @@ void Record::vAppendBol(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_sRecStr.vConcat(pDatum->m_iBol ? "true"_Stz : "false"_Stz);
+  if (pDatum->bIsNull())
+    m_sRecStr.vCatSprint("null%c"_Stz,'\0');
+  else
+    m_sRecStr.vConcat(pDatum->m_iBol ? "true"_Stz : "false"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1066,13 +1072,18 @@ void Record::vAppendDte(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  Dte wDte;
-  wDte.vAsI8(pDatum->m_iDte);
-  
-  s32 sDte;
-  wDte.vSprint(sDte.aStz());
-  
-  m_sRecStr.vConcat(sDte.aStz());
+  if (pDatum->bIsNull())
+    m_sRecStr.vCatSprint("null%c"_Stz,'\0');
+  else {
+    
+    Dte wDte;
+    wDte.vAsI8(pDatum->m_iDte);
+    
+    s32 sDte;
+    wDte.vSprint(sDte.aStz());
+    
+    m_sRecStr.vConcat(sDte.aStz());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1082,7 +1093,10 @@ void Record::vAppendFlt(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_sRecStr.vCatSprint("%g"_Stz,pDatum->m_dFlt);
+  if (pDatum->bIsNull())
+    m_sRecStr.vCatSprint("null%c"_Stz,'\0');
+  else
+    m_sRecStr.vCatSprint("%g"_Stz,pDatum->m_dFlt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1092,7 +1106,10 @@ void Record::vAppendInt(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_sRecStr.vCatSprint("%lld"_Stz,pDatum->m_iInt);
+  if (pDatum->bIsNull())
+    m_sRecStr.vCatSprint("null%c"_Stz,'\0');
+  else
+    m_sRecStr.vCatSprint("%lld"_Stz,pDatum->m_iInt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1102,7 +1119,10 @@ void Record::vAppendIvl(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_sRecStr.vCatSprint("%lld"_Stz,pDatum->m_iIvl);
+  if (pDatum->bIsNull())
+    m_sRecStr.vCatSprint("null%c"_Stz,'\0');
+  else
+    m_sRecStr.vCatSprint("%lld"_Stz,pDatum->m_iIvl);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1112,13 +1132,17 @@ void Record::vAppendTme(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  Tme wTme;
-  wTme.vAsI8(pDatum->m_iTme);
-  
-  s32 sTme;
-  wTme.vSprint(sTme.aStz());
-  
-  m_sRecStr.vConcat(sTme.aStz());
+  if (pDatum->bIsNull())
+    m_sRecStr.vCatSprint("null%c"_Stz,'\0');
+  else {
+    Tme wTme;
+    wTme.vAsI8(pDatum->m_iTme);
+    
+    s32 sTme;
+    wTme.vSprint(sTme.aStz());
+    
+    m_sRecStr.vConcat(sTme.aStz());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1128,13 +1152,17 @@ void Record::vAppendTsp(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  Tsp wTsp;
-  wTsp.vAsI8(pDatum->m_iTsp);
-  
-  s32 sTsp;
-  wTsp.vSprint(sTsp.aStz());
-  
-  m_sRecStr.vConcat(sTsp.aStz());
+  if (pDatum->bIsNull())
+    m_sRecStr.vCatSprint("null%c"_Stz,'\0');
+  else {
+    Tsp wTsp;
+    wTsp.vAsI8(pDatum->m_iTsp);
+    
+    s32 sTsp;
+    wTsp.vSprint(sTsp.aStz());
+    
+    m_sRecStr.vConcat(sTsp.aStz());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1144,10 +1172,14 @@ void Record::vAppendVch(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  s256 sBuf;
-  
-  Vch::vSprintQuotes(sBuf,pDatum->m_xWsp.aStz());
-  m_sRecStr.vConcat(sBuf.aStz());
+  if (pDatum->bIsNull())
+    m_sRecStr.vCatSprint("null%c"_Stz,'\0');
+  else {
+    s256 sBuf;
+    
+    Vch::vSprintQuotes(sBuf,pDatum->m_xWsp.aStz());
+    m_sRecStr.vConcat(sBuf.aStz());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
