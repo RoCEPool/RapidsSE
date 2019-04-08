@@ -552,10 +552,13 @@ eEC Jobs::eJob_checkCluster(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 void Jobs::vJob_post(Interface::Session* pSession, Job* pJob)
 {
+  eCN eClass = pJob->eClass();
+  JobClass* pJobClass = JobClass::pFind(eClass);
+  pJob->m_pJobClass = pJobClass;
   
   switch (pJob->m_pJobClass->m_eResponse) {
       
-    case RK_NONE:      /* do nothing */                break;
+    case RK_NONE:       /* do nothing */                break;
     case RK_DATA_ROWS    : RASSERT(0);                 break;
     case RK_LOAD_ROWS    : pJob->vPrintLoadRows();     break;
     case RK_LOCAL_ERRORS : pJob->vPrintLocalErrors();  break;
