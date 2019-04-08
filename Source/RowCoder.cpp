@@ -1162,19 +1162,18 @@ void RowCoder::vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum)
     pNub->vHashInc(iHash);
   }
   
-  i8 nBytesEncoded;
-  eMN eEncoding = eEncodingVch(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == pDatum->m_nChars);
+  eMN eEncoding = eEncodingVch(pDatum,pDatum->m_nChars);
 
   // set 4bit meta data for column value
   aHeadLine->v1N(i_Column,eEncoding);
   
   // set n-byte data for column value
-  if (eEncoding == MN_SHOCO_2B)
-    vEncodeVchShoco(pNub,pCol,pDatum);
-  else
-    vEncodeVchSmall(pNub,pCol,pDatum);
-  
+  if (pDatum->m_nChars) {
+    if (eEncoding == MN_SHOCO_2B)
+      vEncodeVchShoco(pNub,pCol,pDatum);
+    else
+      vEncodeVchSmall(pNub,pCol,pDatum);
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -1455,6 +1454,11 @@ eMN RowCoder::eEncodingTsp(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingVch(Datum* pDatum, i8& nBytesEncoded)
 {
+  if (pDatum->m_iInt == C_DATUM_NULL) {
+    nBytesEncoded = 0;
+    return MN_NULL;
+  }
+  
   eMN eEncoding;
   
   i8 iLen = StrLib::iLength((char*)pDatum->m_xWsp.aArea());
