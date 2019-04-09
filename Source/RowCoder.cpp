@@ -1183,18 +1183,20 @@ void RowCoder::vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum)
   // set 4bit meta data for column value
   aHeadLine->v1N(i_Column,eEncoding);
   
-  // set n-byte data for column value
-  if (pDatum->m_nChars) {
-    if (eEncoding == MN_SHOCO_2B)
-      vEncodeVchShoco(pNub,pCol,pDatum);
-    else
-      vEncodeVchSmall(pNub,pCol,pDatum);
-  }
-  else {
-    aHeadLine->v1N(i_Column,MN_1B);
-    i8 i_Offset = pNub->i_Offset();
-    aHeadLine->v1B(i_Offset,0);
-    pNub->vOffsetInc(1);
+  // set n-byte data for column value for non-null's
+  if (eEncoding != MN_NULL) {
+    if (pDatum->m_nChars) {
+      if (eEncoding == MN_SHOCO_2B)
+        vEncodeVchShoco(pNub,pCol,pDatum);
+      else
+        vEncodeVchSmall(pNub,pCol,pDatum);
+    }
+    else {
+      aHeadLine->v1N(i_Column,MN_1B);
+      i8 i_Offset = pNub->i_Offset();
+      aHeadLine->v1B(i_Offset,0);
+      pNub->vOffsetInc(1);
+    }
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
