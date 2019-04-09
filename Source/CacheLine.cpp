@@ -370,15 +370,21 @@ void CacheLine::v1N(i8 i_Nibble, w8 wArg)
   ASSERT(i_Nibble < 16);
   ASSERT(wArg < 16);
   
+  // just to be safe, lets mask off the top 56 bits
+  wArg &= 0xF;
+  
   w8 iByte = w8_1B(i_Nibble/2);
 
   if (0 == i_Nibble % 2) {
     // left nibble
-    iByte = iByte | (wArg << 4);
-  }
+    wArg <<= 4;
+    iByte &= 0x0F;
+    iByte |= wArg;
+ }
   else {
     // right nibble
-    iByte = ((iByte >> 4) << 4) | wArg;
+    iByte &= 0xF0;
+    iByte |= wArg;
   }
 
   v1B(i_Nibble/2,iByte);

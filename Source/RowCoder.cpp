@@ -13,6 +13,9 @@
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 {
+  static i8 nCalls = 0;
+  nCalls++;
+  
   static i8 nFolds = 0;
   RASSERT(pIntoNub->pDesc() == pFromNub->pDesc());
   
@@ -71,22 +74,25 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
       
       if (nCompressed <= nFreeHeadBytes) {
         
-        //MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
+        //if (82 == nCalls)
+        //  MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
         pIntoHead->v1N(i_Column,MN_SHOCO_FIT);
-        //MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
+        //if (82 == nCalls)
+        //  MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
         pIntoHead->v1B(i_Offset,nCompressed);
-        //MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
+        //if (82 == nCalls)
+        //  MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
 
         byte* aFrom = (byte*)pFromTail + C_BYTES_PER_WORD;
         byte* aInto = (byte*)pIntoHead + i_Offset + 1;
         
         MemLib::vCopy(aInto,aFrom,nCompressed,CN_ROWBUFFER);
-
-        //MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
+        //if (82 == nCalls)
+        //  MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
 
         nFolds++;
-        if (IntLib::bIsDecaCycle(nFolds))
-          vTrace("%lld folds\n"_Stz,nFolds);
+        //if (IntLib::bIsDecaCycle(nFolds))
+        //  vTrace("%lld folds\n"_Stz,nFolds);
         
         i_Tail++;
         continue;
@@ -779,7 +785,7 @@ void RowCoder::vDecodeVchShocoFit(Datum* pDatum, CacheLine* aHeadLine,
   i8 nDecompressed =
     Compress::iFromShoco((char*)pDatum->m_xWsp.aStz(),
                          255,
-                         ((byte*)aHeadLine)+i_Offset+2,
+                         ((byte*)aHeadLine)+i_Offset+1,
                          nCompressed);
   ASSERT(nDecompressed);
 }
