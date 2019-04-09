@@ -421,10 +421,12 @@ i8 RowCoder::nDataBytes(eMN eEncoding, eDM eDatum)
       
     case DM_DTE:
       switch (eEncoding) {
-        case MN_DIFF_1B: return 1;
-        case MN_DIFF_2B: return 2;
-        case MN_DIFF_3B: return 3;
-        case MN_DIFF_4B: return 4;
+        case MN_CLASSICAL_1B: return 1;
+        case MN_CLASSICAL_2B: return 2;
+        case MN_SILVER_1B:    return 1;
+        case MN_SILVER_2B:    return 2;
+        case MN_MODERN_1B:    return 1;
+        case MN_MODERN_2B:    return 2;
         default:
           NEVER_REACH;
       }
@@ -452,10 +454,6 @@ i8 RowCoder::nDataBytes(eMN eEncoding, eDM eDatum)
       
     case DM_IVL:
       switch (eEncoding) {
-        case MN_DIFF_1B: return 1;
-        case MN_DIFF_2B: return 2;
-        case MN_DIFF_3B: return 3;
-        case MN_DIFF_4B: return 4;
         default:
           NEVER_REACH;
       }
@@ -463,10 +461,6 @@ i8 RowCoder::nDataBytes(eMN eEncoding, eDM eDatum)
       
     case DM_TME:
       switch (eEncoding) {
-        case MN_DIFF_1B: return 1;
-        case MN_DIFF_2B: return 2;
-        case MN_DIFF_3B: return 3;
-        case MN_DIFF_4B: return 4;
         default:
           NEVER_REACH;
       }
@@ -474,22 +468,15 @@ i8 RowCoder::nDataBytes(eMN eEncoding, eDM eDatum)
       
     case DM_TSP:
       switch (eEncoding) {
-        case MN_DIFF_1B: return 1;
-        case MN_DIFF_2B: return 2;
-        case MN_DIFF_3B: return 3;
-        case MN_DIFF_4B: return 4;
-        default:
+         default:
           NEVER_REACH;
       }
       break;
       
     case DM_VCH:
       switch (eEncoding) {
-        case MN_COL_ARRAY:   NEVER_REACH; return 0;
         case MN_SHOCO_FIT:   return 2;
         case MN_SHOCO_2B:    return 2;
-        case MN_LOCAL_HMAP:  NEVER_REACH; return 0;
-        case MN_GLOBAL_HMAP: NEVER_REACH; return 0;
         default:
           NEVER_REACH;
       }

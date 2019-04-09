@@ -20,38 +20,58 @@ namespace Data
   
   enum eMN // metadata nibbles
   {
-  MN_NULL = 0b0000,        // 0: null datum (no bytes in data words)
-  MN_1B   = 0b0001,        // 1: data words contain 1B datum
-  MN_2B   = 0b0010,        // 2: data words contain 2B datum
-  MN_3B   = 0b0011,        // 3: data words contain 3B datum
-  MN_4B   = 0b0100,        // 4: data words contain 4B datum
-  MN_5B   = 0b0101,        // 5: data words contain 5B datum
-  MN_6B   = 0b0110,        // 6: data words contain 6B datum
-  MN_7B   = 0b0111,        // 7: data words contain 7B datum
-  MN_8B   = 0b1000,        // 8: data words contain 8B datum
+  MN_NULL = 0b0000,       // 0: null datum (no bytes in data words)
   
-  MN_OVERFLOW = 0b1001,    // 9: data words has 2B indicating overflow cacheline
-  MN_REPEATS  = 0b1010,    // A: next nibble contains nibble repeat count
+  MN_1B   = 0b0001,       // 1: data words contain 1B datum
+  MN_2B   = 0b0010,       // 2: data words contain 2B datum
+  MN_3B   = 0b0011,       // 3: data words contain 3B datum
+  MN_4B   = 0b0100,       // 4: data words contain 4B datum
+  MN_5B   = 0b0101,       // 5: data words contain 5B datum
+  MN_6B   = 0b0110,       // 6: data words contain 6B datum
+  MN_7B   = 0b0111,       // 7: data words contain 7B datum
+  MN_8B   = 0b1000,       // 8: data words contain 8B datum
   
-  MN_FALSE = 0b1110,       // E: false datum (no bytes in data words)
-  MN_TRUE  = 0b1111,       // F: true datum (no bytes in data words)
+  MN_FALSE = 0b1101,      // D: false datum (no bytes in data words)
+  MN_TRUE  = 0b1110,      // E: true datum (no bytes in data words)
   
-  MN_MINUS_ONE = 0b1101,   // D: -1 datum (no bytes in data words)
-  MN_ZERO      = 0b1110,   // E: 0 datum (no bytes in data words)
-  MN_PLUS_ONE  = 0b1111,   // F: 1 datum (no bytes in data words)
+  //! the following are to be renamed
+  MN_CLASSICAL_1B = 0b1001, // 9: classical era 1B
+  MN_CLASSICAL_2B = 0b1010, // A: classical era 2B
+  MN_SILVER_1B    = 0b1011, // B: silver era 1B
+  MN_SILVER_2B    = 0b1100, // C: silver era 2B
+  MN_MODERN_1B    = 0b1101, // D: modern era 1B
+  MN_MODERN_2B    = 0b1110, // E: modern era 2B
+
+  MN_MINUS_ONE = 0b1100,  // C: -1 datum (no bytes in data words)
+  MN_ZERO      = 0b1101,  // D: 0 datum (no bytes in data words)
+  MN_PLUS_ONE  = 0b1110,  // E: 1 datum (no bytes in data words)
   
-  MN_DIFF_4B   = 0b1100,   // C: 4B in data words indicating difference
-  MN_DIFF_3B   = 0b1101,   // D: 3B in data words datum indicating difference
-  MN_DIFF_2B   = 0b1110,   // E: 2B in data words datum indicating difference
-  MN_DIFF_1B   = 0b1111,   // F: 1B in data words datum indicating difference
+  MN_REV_2B = 0b1001, // 9: reverse 2B
+  MN_REV_3B = 0b1010, // A: reverse 3B
+  MN_REV_4B = 0b1011, // B: reverse 4B
+  MN_REV_5B = 0b1100, // C: reverse 5B
+  MN_REV_6B = 0b1101, // D: reverse 6B
+  MN_REV_7B = 0b1110, // E: reverse 7B
+
+  MN_SHOCO_FIT = 0b1101,  // D: len+shoco in data words
+  MN_SHOCO_2B  = 0b1110,  // E: 2B in data words indicating shoco overflow
   
-  MN_COL_ARRAY   = 0b1011, // B: 1B in data words subscript into col array
-  MN_SHOCO_FIT   = 0b1100, // C: len+shoco in data words
-  MN_SHOCO_2B    = 0b1101, // D: 2B in data words indicating shoco overflow
-  MN_LOCAL_HMAP  = 0b1110, // E: 2B in data words indicating local hashmap
-  MN_GLOBAL_HMAP = 0b1111, // F: 2B in data words indicating global hashmap
+  //! the following are to be renamed
+  MN_COLTAIL_V5 = 0b1001, // 9: classical era 1B
+  MN_COLTAIL_V4 = 0b1010, // A: classical era 2B
+  MN_COLTAIL_V3 = 0b1011, // B: silver era 1B
+  MN_COLTAIL_V2 = 0b1100, // C: silver era 2B
+  MN_COLTAIL_V1 = 0b1101, // D: modern era 1B
+  MN_COLTAIL_V0 = 0b1110, // E: modern era 2B
+
+  MN_OVERFLOW  = 0b1111,  // F: data words has 2B indicating overflow cacheline
   };
   
+  //! we'll start with 3 era's and see what happens
+  static const i8 C_CLASSICAL_ERA = 0;        // 1900
+  static const i8 C_SILVER_ERA    = 92 * 365; // 1992
+  static const i8 C_MODERN_ERA    = 99 * 365; // 1999
+
   class Record;
   typedef HV<Record,CN_RECORD> HV_Rec;
 
@@ -65,8 +85,6 @@ namespace Data
 using namespace Data;
 
 //------------------------------------------------------------------------------
-
-
 
 #include "Datum.hpp"
 #include "EntWrk.hpp"
