@@ -151,7 +151,7 @@ void KeyWrk::vAddDatum(Datum* pDatum, GenVar& xVariable, Column* pCol, Formatter
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol)
+void KeyWrk::vAddDatum(Datum& oDatum, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
@@ -161,11 +161,11 @@ void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol)
   char* aSrc;
   
   if (DM_VCH == pCol->eDatumType()) {
-    aSrc = (char*)(_aStrVal(xVariable.aNestedValue())->aStz());
+    aSrc = (char*)(oDatum.m_yaByte);
     nBytes = StrLib::iWordFlip(aDst, aSrc);
   }
   else {
-    aSrc = aAdd<char*>(xVariable.aNestedValue(),sizeof(Value));
+    aSrc = (char*)(&oDatum.m_iInt);
     nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,aSrc);
   }
   
@@ -279,8 +279,6 @@ void KeyWrk::vAddWord(w8 wWord)
 /*----------------------------------------------------------------------------*/
 void KeyWrk::vExtractKey(RowNub* pRowNub, i8 i_Row, IdxColVec* pIdxColVec)
 {
-  GenVar xVariable;
-  
   Datum oDatum;
   
   i8 nCols = pIdxColVec->nItems();
@@ -291,10 +289,9 @@ void KeyWrk::vExtractKey(RowNub* pRowNub, i8 i_Row, IdxColVec* pIdxColVec)
     
     // get the column value from the row for the iColumnNo
     RowCoder::vDecode(&oDatum,pRowNub,i_Row,pColumn);
-    xVariable = oDatum.m_iInt;
     
     // add the column value to the key
-    vAddDatum(xVariable, pColumn);
+    vAddDatum(oDatum, pColumn);
   }
 }
 
