@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* vch_defaults -- varchar with deafult formatters                            */
+/* vch_enclosedBy -- varchar with enclosedBy formatters                       */
 /*----------------------------------------------------------------------------*/
 
 // create the tables
