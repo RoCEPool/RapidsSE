@@ -1180,6 +1180,12 @@ void RowCoder::vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum)
     else
       vEncodeVchSmall(pNub,pCol,pDatum);
   }
+  else {
+    aHeadLine->v1N(i_Column,MN_1B);
+    i8 i_Offset = pNub->i_Offset();
+    aHeadLine->v1B(i_Offset,0);
+    pNub->vOffsetInc(1);
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -1470,7 +1476,11 @@ eMN RowCoder::eEncodingVch(Datum* pDatum, i8& nBytesEncoded)
   i8 iLen = StrLib::iLength((char*)pDatum->m_xWsp.aArea());
   //RASSERT(iLen <= 8);
   
-  if (iLen <= 8) {
+  if (iLen == 0) {
+    eEncoding = MN_1B;
+    nBytesEncoded = 0;
+  }
+  else if (iLen <= 8) {
     eEncoding = (eMN)iLen;
     nBytesEncoded = iLen;
   }
