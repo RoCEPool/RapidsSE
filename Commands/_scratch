@@ -3,14 +3,53 @@
 /*============================================================================*/
 startCluster;
 
-create table NATION (
-n_nationkey INTEGER NOT NULL,
-n_name VARCHAR(25),
-n_regionkey INTEGER NOT NULL,
-n_comment VARCHAR(152)
+create table T (
+c1 integer,
+c2 varchar,
+c3 varchar
 );
-ld NATION "/DATA/Load/nation.csv" record_ends "\r\n";
 
+// load data into the table with default formatter settings
+ld T "/DATA/Load/terminator_cr.csv" record_ends "\r";
+
+// create index
+create index idx on T(c1);
+
+// fetch
+fetch T "c1 1 =";
+
+/*
+create table vch (
+vch_testno  INTEGER     NOT NULL,
+vch_field   VARCHAR(32),
+vch_comment VARCHAR(64) NOT NULL
+);
+
+
+// create an index
+create index idx on vch (vch_testno);
+
+
+// load data into the table with default formatter settings
+ld vch "/DATA/Load/vch_enclosedBy.csv" enclosed_by_leading "'";
+
+fetch vch;
+
+fetch vch "vch_testno 109 =";
+*/
+/*
+create table T1 (
+col_id       INTEGER,
+col_vch      VARCHAR(15),
+col_int      INTEGER
+);
+
+// load T1 with deafult enclosedBy
+ld T1 "/DATA/Load/emptyString1.csv" enclosed_by_leading "'";
+
+// fetch rows
+fetch T1;
+*/
 //*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
