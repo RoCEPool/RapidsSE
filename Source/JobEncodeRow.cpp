@@ -73,7 +73,6 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Datum oDatum;
   m_oRowParts.vReset();
   
   i8 i_Head = m_oRowParts.iAllotHead();
@@ -84,11 +83,12 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
   
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
+    Datum oDatum;
     Column* pColumn = pColVec->pGet(i_Column);
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // extract datum from record
-    
+
     bool bValidDatum = Record::bExtract(&oDatum,&aSrc,pColumn,&m_oFormatters);
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
