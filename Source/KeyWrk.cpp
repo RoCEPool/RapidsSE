@@ -161,7 +161,7 @@ void KeyWrk::vAddDatum(Datum& oDatum, Column* pCol)
   char* aSrc;
   
   if (DM_VCH == pCol->eDatumType()) {
-    aSrc = (char*)(oDatum.m_yaByte);
+    aSrc = (char*)(oDatum.m_xWsp.aStz());
     nBytes = StrLib::iWordFlip(aDst, aSrc);
   }
   else {
