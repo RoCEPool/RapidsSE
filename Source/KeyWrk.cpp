@@ -64,18 +64,15 @@ KeyWrk::~KeyWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters)
+void KeyWrk::vAddDatum(Stz* aSrc, Column* pCol, Formatters* pFormatters)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
   bool b;
   i8 nBytes;
-  i8 iInt;
-  
-  StrVal* aStrVal = _aStrVal(xVariable.aNestedValue());
   
   char* pDst = aLatter();
-  char* pSrc = (char*)aStrVal->aStz();
+  char* pSrc = (char*)aSrc;
   Datum xDatum;
   
   if (pCol->eDatumType() != DM_VCH) {
@@ -151,34 +148,6 @@ void KeyWrk::vAddDatum(Datum& oDatum, Column* pCol)
   }
   
   vTake(nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a key                                                                  */
-/*----------------------------------------------------------------------------*/
-void KeyWrk::vAddKey(KeyData* aKey, IdxColVec* pColVec)
-{
-  _precondition_(_MAGIC_,CN_KEYWRK);
-  
-  char* aCursor = aKey->aByteSequence();
-  i8 nBytes;
-  for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
-    Column* pColumn = pColVec->pGet(iColumn);
-    
-    char* aElement = aKey->aEachDatum(pColumn,nBytes,&aCursor);
-    
-    char* pDst = aLatter();
-    char* pSrc = aElement;
-    
-    i8 nBytesCopied = DtmLib::nCopy(pColumn->eDatumType(),pDst,pSrc);
-    ASSERT(nBytesCopied == nBytes);
-    
-    vTake(nBytes);
-  }
-  
-  _checkInitialisedSize_(sizeof(KeyWrk));
-  
-  _postcondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

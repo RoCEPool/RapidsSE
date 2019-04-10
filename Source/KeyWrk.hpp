@@ -20,8 +20,7 @@ namespace Data
     ~KeyWrk(void) noexcept(false);
 
     void vAddDatum(Datum& oDatum, Column* pCol);
-    void vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters);
-    void vAddKey(KeyData* aKey, IdxColVec* pColVec);
+    void vAddDatum(Stz* aSrc, Column* pCol, Formatters* pFormatters);
     void vAddMinusInfinity(void);
     void vAddMinusInfinity_Flt(void);
     void vAddPlusInfinity(void);

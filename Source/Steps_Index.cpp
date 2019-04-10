@@ -445,7 +445,9 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   KeyWrk xKeyWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
-  xKeyWrkLower.vAddDatum(xVariable,pColumn0,pFormatters);
+  StrVal* aStrVal = _aStrVal(xVariable.aNestedStrVal());
+  
+  xKeyWrkLower.vAddDatum(aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
       xKeyWrkLower.vAddMinusInfinity_Flt();
@@ -590,7 +592,6 @@ void Step::vIndexRange(MP_Task mpTask)
   
   GenVar xValWrkLwr;
   GenVar xValWrkUpr;
-  GenVar xVariable;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
@@ -654,7 +655,9 @@ void Step::vIndexRange(MP_Task mpTask)
   KeyWrk xKeyWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
-  xKeyWrkLower.vAddDatum(xValWrkLwr,pColumn0,pFormatters);
+  StrVal* aStrVal = _aStrVal(xValWrkLwr.aNestedStrVal());
+  
+  xKeyWrkLower.vAddDatum(aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
       xKeyWrkLower.vAddMinusInfinity_Flt();
@@ -667,7 +670,9 @@ void Step::vIndexRange(MP_Task mpTask)
   // make the upper key
   KeyWrk xKeyWrkUpper;
   pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  xKeyWrkUpper.vAddDatum(xValWrkUpr,pColumn0,pFormatters);
+  aStrVal = _aStrVal(xValWrkUpr.aNestedStrVal());
+  
+  xKeyWrkUpper.vAddDatum(aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
       xKeyWrkUpper.vAddPlusInfinity_Flt();
@@ -1027,7 +1032,9 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   KeyWrk xKeyWrkUpper;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
-  xKeyWrkUpper.vAddDatum(xVariable,pColumn0,pFormatters);
+  StrVal* aStrVal = _aStrVal(xVariable.aNestedStrVal());
+  
+  xKeyWrkUpper.vAddDatum(aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
       xKeyWrkUpper.vAddPlusInfinity_Flt();
