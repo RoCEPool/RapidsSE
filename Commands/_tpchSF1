@@ -161,6 +161,27 @@ time fetch region displayOff ;
 print "fetching supplier.csv..." ;
 time fetch supplier displayOff ;
 print "-----------------------------------------------------------------------";
+
+
+print "-----------------------------------------------------------------------";
+print "fetching customer.csv (noPrint)..." ;
+time fetch customer noPrint;
+print "fetching lineitem.csv (noPrint)..." ;
+time fetch lineitem noPrint;
+print "fetching nation.csv (noPrint)..." ;
+time fetch nation noPrint;
+print "fetching orders.csv (noPrint)..." ;
+time fetch orders noPrint;
+print "fetching part.csv (noPrint)..." ;
+time fetch part noPrint;
+print "fetching partsupp.csv (noPrint)..." ;
+time fetch partsupp noPrint;
+print "fetching region.csv (noPrint)..." ;
+time fetch region noPrint;
+print "fetching supplier.csv (noPrint)..." ;
+time fetch supplier noPrint;
+print "-----------------------------------------------------------------------";
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 print "-----------------------------------------------------------------------";
