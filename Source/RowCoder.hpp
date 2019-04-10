@@ -75,7 +75,7 @@ namespace Data
     static void vRestoreTme(Datum* pDatum, eMN eEncoding);
     static void vRestoreTsp(Datum* pDatum, eMN eEncoding);
   
-    static i8 iBaseDays(Datum* pDatum);
+    static i8 nBaseDays(Datum* pDatum);
   
     static i8 iStripDte(WordView& wTspView, eMN eEncoding);
     static i8 iStripTme(WordView& wTspView, eMN eEncoding);
