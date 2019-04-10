@@ -552,16 +552,24 @@ void RowCoder::vDecodeDte(Datum* pDatum, CacheLine* aHeadLine,
   eMN eEncoding = eGetEncoding(aHeadLine,pColVec,i_Column,i_Offset);
   switch (eEncoding) {
       
-    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
-    case MN_1B:   pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
-    case MN_2B:   pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
-    case MN_3B:   pDatum->m_iInt = aHeadLine->w8_3B(i_Offset); break;
-    case MN_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
-    case MN_5B:   pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
-    case MN_6B:   pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
-    case MN_7B:   pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
-    case MN_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
+    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL; break;
       
+//    case MN_1B: pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
+//    case MN_2B: pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
+//    case MN_3B: pDatum->m_iInt = aHeadLine->w8_3B(i_Offset); break;
+//    case MN_4B: pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
+//    case MN_5B: pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
+//    case MN_6B: pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
+//    case MN_7B: pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
+    case MN_8B: pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
+
+    case MN_CLASSICAL_1B: pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
+    case MN_CLASSICAL_2B: pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
+    case MN_SILVER_1B:    pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
+    case MN_SILVER_2B:    pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
+    case MN_MODERN_1B:    pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
+    case MN_MODERN_2B:    pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
+
     default:
       NEVER_REACH;
   }
@@ -946,7 +954,7 @@ void RowCoder::vEncodeDte(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aHeadLine->vPut(pNub->i_Offset(),pDatum->m_iInt,eEncoding);
+    aHeadLine->vPut(pNub->i_Offset(),pDatum->m_iInt,nBytesEncoded);
   
   pNub->vOffsetInc(nBytesEncoded);
 
@@ -1332,15 +1340,47 @@ eMN RowCoder::eEncodingDte(Datum* pDatum, i8& nBytesEncoded)
 //    if (! bSawNonZero)
 //      break;
 //  }
+  
+  i8 iEra = 0;
 
-  vIntoBaseDays(pDatum);
+  vIntoBaseDays(pDatum,iEra);
   //vFromBaseDays(pDatum);
  
   //pDatum->m_iInt >>= 47;
   
-  eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iInt);
+  i8 iBytes = (eMN)IntLib::iByteMagnitude(pDatum->m_iInt);
   
-  nBytesEncoded = eEncoding;
+  if (C_SILVER_ERA == iEra) {
+    if (1 == iBytes) {
+      eEncoding = MN_SILVER_1B;
+      nBytesEncoded = 1;
+    }
+    else {
+      eEncoding = MN_SILVER_2B;
+      nBytesEncoded = 2;
+    }
+  }
+  else if (C_MODERN_ERA == iEra) {
+    if (1 == iBytes) {
+      eEncoding = MN_MODERN_1B;
+      nBytesEncoded = 1;
+    }
+    else {
+      eEncoding = MN_MODERN_2B;
+      nBytesEncoded = 2;
+    }
+  }
+  else {
+    ASSERT(C_CLASSICAL_ERA == iEra);
+    if (1 == iBytes) {
+      eEncoding = MN_CLASSICAL_1B;
+      nBytesEncoded = 1;
+    }
+    else {
+      eEncoding = MN_CLASSICAL_2B;
+      nBytesEncoded = 2;
+    }
+  }
   
   return eEncoding;
 }
@@ -1623,7 +1663,17 @@ i8 RowCoder::nLines(RowNub* pNub, i8 i_Row)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRestoreDte(Datum* pDatum, eMN eEncoding)
 {
-  vFromBaseDays(pDatum);
+  i8 iEra = 0;
+  
+  if (MN_SILVER_1B == eEncoding || MN_SILVER_2B == eEncoding)
+    iEra = C_SILVER_ERA;
+  else if (MN_MODERN_1B == eEncoding || MN_MODERN_2B == eEncoding)
+    iEra = C_MODERN_ERA;
+  else {
+    iEra = C_CLASSICAL_ERA;
+  }
+
+  vFromBaseDays(pDatum,iEra);
   //pDatum->m_iInt <<= 47;
 }
 
@@ -1653,10 +1703,18 @@ const static i8 nMonthDaySum[13] =
 /*----------------------------------------------------------------------------*/
 /* compute date from number of days since base date                           */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vFromBaseDays(Datum* pDatum)
+void RowCoder::vFromBaseDays(Datum* pDatum, i8& iEra)
 {
   i8 nYearsMonthsDays = pDatum->m_iDte;
-  
+
+  if (C_SILVER_ERA == iEra)
+    nYearsMonthsDays += C_SILVER_DAYS;
+  else if (C_MODERN_ERA == iEra)
+    nYearsMonthsDays += C_MODERN_DAYS;
+  else {
+    ASSERT(C_CLASSICAL_ERA == iEra);
+  }
+
   i8 nYears = (nYearsMonthsDays - 1) / 366;
   i8 nMonthsDays = nYearsMonthsDays - (nYears * 366);
 
@@ -1664,6 +1722,8 @@ void RowCoder::vFromBaseDays(Datum* pDatum)
   for (i_Month = 1; i_Month <= 11; i_Month++)
     if (nMonthDaySum[i_Month] >= nMonthsDays)
       break;
+  
+  
   
   pDatum->xDte.m_uYearDelta = nYears;
   pDatum->xDte.m_uMonth     = i_Month;
@@ -1674,14 +1734,28 @@ void RowCoder::vFromBaseDays(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* compute number of days since base date                                     */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vIntoBaseDays(Datum* pDatum)
+void RowCoder::vIntoBaseDays(Datum* pDatum, i8& iEra)
 {
-  //! still to do leap year
-  
+  if (pDatum->xDte.m_uYearDelta < C_SILVER_ERA)
+    iEra = C_CLASSICAL_ERA;
+  else if (pDatum->xDte.m_uYearDelta < C_MODERN_ERA)
+    iEra = C_SILVER_ERA;
+  else
+    iEra = C_MODERN_ERA;
+
   i8 nDays = 0;
   
   // year component
   nDays = pDatum->xDte.m_uYearDelta * 366;
+  
+  if (C_SILVER_ERA == iEra)
+    nDays -= C_SILVER_DAYS;
+  else if (C_MODERN_ERA == iEra)
+    nDays -= C_MODERN_DAYS;
+  else {
+    ASSERT(C_CLASSICAL_ERA == iEra);
+  }
+
   
   // month components
   nDays += nMonthDaySum[pDatum->xDte.m_uMonth - 1];

@@ -68,9 +68,13 @@ namespace Data
   };
   
   //! we'll start with 3 era's and see what happens
-  static const i8 C_CLASSICAL_ERA =  0 * 365; // 1900
-  static const i8 C_SILVER_ERA    = 92 * 365; // 1992
-  static const i8 C_MODERN_ERA    = 99 * 365; // 1999
+  static const i8 C_CLASSICAL_ERA  =  0; // 1900
+  static const i8 C_SILVER_ERA     = 92; // 1992
+  static const i8 C_MODERN_ERA     = 99; // 1999
+
+  static const i8 C_CLASSICAL_DAYS =  0 * 365; // 1900
+  static const i8 C_SILVER_DAYS    = 92 * 365; // 1992
+  static const i8 C_MODERN_DAYS    = 99 * 365; // 1999
 
   class Record;
   typedef HV<Record,CN_RECORD> HV_Rec;
