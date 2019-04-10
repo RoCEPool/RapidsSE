@@ -362,9 +362,11 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analysis
-  vTrace("Heads %lld Tails %lld\n"_Stz,
-         pRowBuffer->pRowTray()->nHeads(),
-         pRowBuffer->pRowTray()->nTails());
+//  vTrace("Heads %lld Tails %lld\n"_Stz,
+//         pRowBuffer->pRowTray()->nHeads(),
+//         pRowBuffer->pRowTray()->nTails());
+  
+  RowCoder::vAnalyse(*pRowBuffer->pRowTray());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a write buffer job
