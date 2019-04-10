@@ -1,9 +1,10 @@
 /*============================================================================*/
-/* _tpch/SF1-- tpc-h creation, load, fetch and drop for scale factor 1         */
+/* _TPCH/SF1-- tpc-h creation, load, fetch and drop for scale factor 1         */
 /*============================================================================*/
 
 startCluster;
 
+print "-----------------------------------------------------------------------";
 time create table customer (
 	C_CUSTKEY       INTEGER NOT NULL,
 	C_NAME          VARCHAR(25) NOT NULL,
@@ -73,7 +74,7 @@ time create table partsupp (
 	PS_COMMENT      VARCHAR(199) NOT NULL
 );
 
-time reate table region (
+time create table region (
   R_REGIONKEY     INTEGER NOT NULL,
   R_NAME          CHAR(25) NOT NULL,
   R_COMMENT       VARCHAR(152)
@@ -88,30 +89,61 @@ time create table supplier (
   S_ACCTBAL       DECIMAL(15,2) NOT NULL,
   S_COMMENT       VARCHAR(101) NOT NULL
 );
+print "-----------------------------------------------------------------------";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+print "-----------------------------------------------------------------------";
 print "loading customer.csv..." ;
-time ld customer "/tpch/SF1/customer.csv" ;
+time ld customer "/TPCH/SF1/customer.csv" ;
 print "loading lineitem.csv..." ;
-time ld lineitem "/tpch/SF1/lineitem.csv" ;
+time ld lineitem "/TPCH/SF1/lineitem.csv" ;
 print "loading nation.csv..." ;
-time ld nation "/tpch/SF1/nation.csv" ;
+time ld nation "/TPCH/SF1/nation.csv" ;
 print "loading orders.csv..." ;
-time ld orders "/tpch/SF1/orders.csv" ;
+time ld orders "/TPCH/SF1/orders.csv" ;
 print "loading part.csv..." ;
-time ld part "/tpch/SF1/part.csv" ;
+time ld part "/TPCH/SF1/part.csv" ;
 print "loading partsupp.csv..." ;
-time ld partsupp "/tpch/SF1/partsupp.csv" ;
+time ld partsupp "/TPCH/SF1/partsupp.csv" ;
 print "loading region.csv..." ;
-time ld region "/tpch/SF1/region.csv" ;
+time ld region "/TPCH/SF1/region.csv" ;
 print "loading supplier.csv..." ;
-time ld supplier "/tpch/SF1/supplier.csv" ;
-
+time ld supplier "/TPCH/SF1/supplier.csv" ;
+print "-----------------------------------------------------------------------";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+print "-----------------------------------------------------------------------";
 TableSizes;
+print "-----------------------------------------------------------------------";
 
+print "-----------------------------------------------------------------------";
+print "size customer..." ;
+sz customer;
+
+print "size lineitem..." ;
+sz lineitem;
+
+print "size nation..." ;
+sz nation;
+
+print "size orders..." ;
+sz orders;
+
+print "size part..." ;
+sz part;
+
+print "size partsupp..." ;
+sz partsupp;
+
+print "size region..." ;
+sz region;
+
+print "size supplier..." ;
+sz supplier;
+print "-----------------------------------------------------------------------";
+
+print "-----------------------------------------------------------------------";
 print "fetching customer.csv..." ;
 time fetch customer displayOff ;
 print "fetching lineitem.csv..." ;
@@ -128,9 +160,10 @@ print "fetching region.csv..." ;
 time fetch region displayOff ;
 print "fetching supplier.csv..." ;
 time fetch supplier displayOff ;
-
+print "-----------------------------------------------------------------------";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+print "-----------------------------------------------------------------------";
 print "dropping customer.csv..." ;
 time drop table customer ;
 print "dropping lineitem.csv..." ;
@@ -147,7 +180,7 @@ print "dropping region.csv..." ;
 time drop table region ;
 print "dropping supplier.csv..." ;
 time drop table supplier ;
-
+print "-----------------------------------------------------------------------";
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

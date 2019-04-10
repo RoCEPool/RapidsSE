@@ -1,8 +1,9 @@
 /*============================================================================*/
-/* _tpch/SF100 -- tpc h creation and load etc                                 */
+/* _TPCH/SF100 -- tpc h creation and load etc                                 */
 /*============================================================================*/
 startCluster;
 
+print "-----------------------------------------------------------------------";
 time create table customer (
 C_CUSTKEY       INTEGER NOT NULL,
 C_NAME          VARCHAR(25) NOT NULL,
@@ -72,7 +73,7 @@ PS_SUPPLYCOST   DECIMAL(15,2) NOT NULL,
 PS_COMMENT      VARCHAR(199) NOT NULL
 );
 
-time reate table region (
+time create table region (
 R_REGIONKEY     INTEGER NOT NULL,
 R_NAME          CHAR(25) NOT NULL,
 R_COMMENT       VARCHAR(152)
@@ -87,30 +88,59 @@ S_PHONE         CHAR(15) NOT NULL,
 S_ACCTBAL       DECIMAL(15,2) NOT NULL,
 S_COMMENT       VARCHAR(101) NOT NULL
 );
+print "-----------------------------------------------------------------------";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+print "-----------------------------------------------------------------------";
 print "loading customer.csv..." ;
-time ld customer "/tpch/SF100/customer.csv" ;
+time ld customer "/TPCH/SF100/customer.csv" ;
 print "loading lineitem.csv..." ;
-time ld lineitem "/tpch/SF100/lineitem.csv" ;
+time ld lineitem "/TPCH/SF100/lineitem.csv" ;
 print "loading nation.csv..." ;
-time ld nation "/tpch/SF100/nation.csv" ;
+time ld nation "/TPCH/SF100/nation.csv" ;
 print "loading orders.csv..." ;
-time ld orders "/tpch/SF100/orders.csv" ;
+time ld orders "/TPCH/SF100/orders.csv" ;
 print "loading part.csv..." ;
-time ld part "/tpch/SF100/part.csv" ;
+time ld part "/TPCH/SF100/part.csv" ;
 print "loading partsupp.csv..." ;
-time ld partsupp "/tpch/SF100/partsupp.csv" ;
+time ld partsupp "/TPCH/SF100/partsupp.csv" ;
 print "loading region.csv..." ;
-time ld region "/tpch/SF100/region.csv" ;
+time ld region "/TPCH/SF100/region.csv" ;
 print "loading supplier.csv..." ;
-time ld supplier "/tpch/SF100/supplier.csv" ;
+time ld supplier "/TPCH/SF100/supplier.csv" ;
+print "-----------------------------------------------------------------------";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+print "-----------------------------------------------------------------------";
 TableSizes;
+print "-----------------------------------------------------------------------";
 
+print "size customer..." ;
+sz customer;
+
+print "size lineitem..." ;
+sz lineitem;
+
+print "size nation..." ;
+sz nation;
+
+print "size orders..." ;
+sz orders;
+
+print "size part..." ;
+sz part;
+
+print "size partsupp..." ;
+sz partsupp;
+
+print "size region..." ;
+sz region;
+
+print "size supplier..." ;
+sz supplier;
+print "-----------------------------------------------------------------------";
+
+print "-----------------------------------------------------------------------";
 print "fetching customer.csv..." ;
 time fetch customer displayOff ;
 print "fetching lineitem.csv..." ;
@@ -127,9 +157,10 @@ print "fetching region.csv..." ;
 time fetch region displayOff ;
 print "fetching supplier.csv..." ;
 time fetch supplier displayOff ;
-
+print "-----------------------------------------------------------------------";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+print "-----------------------------------------------------------------------";
 print "dropping customer.csv..." ;
 time drop table customer ;
 print "dropping lineitem.csv..." ;
@@ -146,7 +177,7 @@ print "dropping region.csv..." ;
 time drop table region ;
 print "dropping supplier.csv..." ;
 time drop table supplier ;
-
+print "-----------------------------------------------------------------------";
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
