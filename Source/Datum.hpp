@@ -25,11 +25,11 @@ namespace Data
       //Stz* m_szVch;
 
       struct {
-        u8 m_uSpare    : 43 ; //
+        u8 m_uSpare    : 47 ; //
         
         u8 m_uDay      :  5 ; // 0..31   same as xTsp.dte
         u8 m_uMonth    :  4 ; // 0..15
-        u8 m_uYearDelta: 12 ; // 0..4095 8b base 1900
+        u8 m_uYearDelta:  8 ; // 0..255  (1900+8b == 2155)
         //              ---
         //               64
         //              ===
@@ -48,7 +48,7 @@ namespace Data
       } xTme;
 
       struct {
-        u8 m_uSpare    :  6 ; //           // 6b
+        u8 m_uSpare    : 10 ; //           // 10b
         
         u8 m_uMicro    : 20 ; // 0..1M
         u8 m_uSecond   :  6 ; // 0..63
@@ -57,7 +57,7 @@ namespace Data
         
         u8 m_uDay      :  5 ; // 0..31
         u8 m_uMonth    :  4 ; // 0..15
-        u8 m_uYearDelta: 12 ; // 0..4095   // 21b  (1900+8b == 2155)
+        u8 m_uYearDelta:  8 ; // 0..255    // 17b  (1900+8b == 2155)
         //              ---
         //               64
         //              ===

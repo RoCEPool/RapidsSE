@@ -9,8 +9,8 @@
 
 namespace Datums
 {
-  static const u8 C_BASE_YEAR  = 0;
-  static const u8 C_YEAR_RANGE = 4095;
+  static const u8 C_BASE_YEAR  = 1900;
+  static const u8 C_YEAR_RANGE = 255;
 
   enum eDM // Datum Type
   {

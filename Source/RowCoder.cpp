@@ -1313,20 +1313,22 @@ eMN RowCoder::eEncodingDte(Datum* pDatum, i8& nBytesEncoded)
     return MN_NULL;
   }
   
-  bool bSawNonZero = true;
-  
-  while (! pDatum->m_yaByte[0]) {
-    
-    bSawNonZero = false;
-    
-    for (i8 i_Byte = 0; i_Byte < 7; i_Byte++)
-      if ( (pDatum->m_yaByte[i_Byte] = pDatum->m_yaByte[i_Byte+1]) )
-        bSawNonZero = true;
-    pDatum->m_yaByte[7] = 0;
-    
-    if (! bSawNonZero)
-      break;
-  }
+//  bool bSawNonZero = true;
+//
+//  while (! pDatum->m_yaByte[0]) {
+//
+//    bSawNonZero = false;
+//
+//    for (i8 i_Byte = 0; i_Byte < 7; i_Byte++)
+//      if ( (pDatum->m_yaByte[i_Byte] = pDatum->m_yaByte[i_Byte+1]) )
+//        bSawNonZero = true;
+//    pDatum->m_yaByte[7] = 0;
+//
+//    if (! bSawNonZero)
+//      break;
+//  }
+
+  pDatum->m_iInt >>= 47;
   
   eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iInt);
   
@@ -1613,7 +1615,7 @@ i8 RowCoder::nLines(RowNub* pNub, i8 i_Row)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRestoreDte(Datum* pDatum, eMN eEncoding)
 {
-  pDatum->m_iInt <<= 40;
+  pDatum->m_iInt <<= 47;
 }
 
 /*----------------------------------------------------------------------------*/
