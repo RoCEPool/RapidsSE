@@ -64,22 +64,6 @@ KeyWrk::~KeyWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddDatum(char* aDatum)
-{
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
-  
-  char* aDst = aLatter();
-  char* aSrc = (char*)aDatum;
-  i8 nSize = StrLib::iSize(aSrc);
-  
-  MemLib::vCopy(aDst,aSrc,nSize,CN_KEYWRK);
-  
-  vTake(nSize);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add element to key                                                         */
-/*----------------------------------------------------------------------------*/
 void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);

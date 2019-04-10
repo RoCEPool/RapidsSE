@@ -18,8 +18,7 @@ namespace Data
     
     KeyWrk(void);
     ~KeyWrk(void) noexcept(false);
-  
-    void vAddDatum(char* aDatum);
+
     void vAddDatum(Datum& oDatum, Column* pCol);
     void vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters);
     void vAddKey(KeyData* aKey, IdxColVec* pColVec);
