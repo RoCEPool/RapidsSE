@@ -361,6 +361,12 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
                                            i8 nWriteBehindBuffers)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // analysis
+  vTrace("Heads %lld Tails %lld\n"_Stz,
+         pRowBuffer->pRowTray()->nHeads(),
+         pRowBuffer->pRowTray()->nTails());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a write buffer job
   
   //! this needs to be optimised

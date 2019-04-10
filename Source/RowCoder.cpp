@@ -1756,7 +1756,6 @@ void RowCoder::vIntoBaseDays(Datum* pDatum, i8& iEra)
     ASSERT(C_CLASSICAL_ERA == iEra);
   }
 
-  
   // month components
   nDays += nMonthDaySum[pDatum->xDte.m_uMonth - 1];
   
