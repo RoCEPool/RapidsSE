@@ -13,9 +13,34 @@
 /*----------------------------------------------------------------------------*/
 void RowCoder::vAnalyse(RowNub* pNub)
 {
-  vTrace("Heads %lld Tails %lld\n"_Stz,
+  
+  i8 iSum = 0;
+  i8 nTails = 0;
+  i8 iMin = C_I8_MAX;
+  i8 iMax = C_I8_MIN;
+
+  for (i8 i_Tail = pNub->nMaxItems() - pNub->nTails();
+       i_Tail < pNub->nMaxItems();
+       i_Tail++) {
+    
+    CacheLine* aTail = pNub->aGet(i_Tail);
+    
+    i8 iLen = aTail->w8_2B(0);
+    iSum += iLen;
+    nTails++;
+    
+    if (iLen < iMin)
+      iMin = iLen;
+    if (iLen > iMax)
+      iMax = iLen;
+  }
+
+  vTrace("Heads %lld Tails %lld Avg tail use %lldB Min %lldB Max %lldB\n"_Stz,
          pNub->nHeads(),
-         pNub->nTails());
+         pNub->nTails(),
+         iSum/nTails,
+         iMin,
+         iMax);
 
 }
 
