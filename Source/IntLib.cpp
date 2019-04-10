@@ -29,6 +29,64 @@ i8 IntLib::iByteMagnitude(u8 uArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is the arg a deca-cycle?                                                   */
+/*----------------------------------------------------------------------------*/
+bool IntLib::bIsDecaCycle(i8 iArg)
+{
+  if (iArg >= C_100T) { if (0 == iArg % C_100T) return true; else return false; }
+  if (iArg >= C_10T ) { if (0 == iArg % C_10T ) return true; else return false; }
+  if (iArg >= C_1T  ) { if (0 == iArg % C_1T  ) return true; else return false; }
+  
+  if (iArg >= C_100G) { if (0 == iArg % C_100G) return true; else return false; }
+  if (iArg >= C_10G ) { if (0 == iArg % C_10G ) return true; else return false; }
+  if (iArg >= C_1G  ) { if (0 == iArg % C_1G  ) return true; else return false; }
+  
+  if (iArg >= C_100M) { if (0 == iArg % C_100M) return true; else return false; }
+  if (iArg >= C_10M ) { if (0 == iArg % C_10M ) return true; else return false; }
+  if (iArg >= C_1M  ) { if (0 == iArg % C_1M  ) return true; else return false; }
+  
+  if (iArg >= C_100K) { if (0 == iArg % C_100K) return true; else return false; }
+  if (iArg >= C_10K ) { if (0 == iArg % C_10K ) return true; else return false; }
+  if (iArg >= C_1K  ) { if (0 == iArg % C_1K  ) return true; else return false; }
+  
+  if (iArg >= 100   ) { if (0 == iArg % 100)    return true; else return false; }
+  if (iArg >= 10    ) { if (0 == iArg %  10)    return true; else return false; }
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get deca index of arg                                                      */
+/*----------------------------------------------------------------------------*/
+i8 IntLib::iDecaIndex(i8 iArg, i8& i_Magn, i8 &i_Group)
+{
+  if (iArg >= C_1E  ) { i_Magn = 18; i_Group = (iArg-(iArg/C_1E)  *C_1E)  /C_100P; return C_100P + iArg / C_1E;   }
+
+  if (iArg >= C_100P) { i_Magn = 17; i_Group = (iArg-(iArg/C_100P)*C_100P)/C_10P;  return  C_10P + iArg / C_100P; }
+  if (iArg >= C_10P ) { i_Magn = 16; i_Group = (iArg-(iArg/C_10P) *C_10P) /C_1P;   return   C_1P + iArg / C_10P;  }
+  if (iArg >= C_1P  ) { i_Magn = 15; i_Group = (iArg-(iArg/C_1P)  *C_1P)  /C_100T; return C_100T + iArg / C_1P;   }
+  
+  if (iArg >= C_100T) { i_Magn = 14; i_Group = (iArg-(iArg/C_100T)*C_100T)/C_10T;  return  C_10T + iArg / C_100T; }
+  if (iArg >= C_10T ) { i_Magn = 13; i_Group = (iArg-(iArg/C_10T) *C_10T) /C_1T;   return   C_1T + iArg / C_10T;  }
+  if (iArg >= C_1T  ) { i_Magn = 12; i_Group = (iArg-(iArg/C_1T)  *C_1T)  /C_100G; return C_100G + iArg / C_1T;   }
+  
+  if (iArg >= C_100G) { i_Magn = 11; i_Group = (iArg-(iArg/C_100G)*C_100G)/C_10G;  return  C_10G + iArg / C_100G; }
+  if (iArg >= C_10G ) { i_Magn = 10; i_Group = (iArg-(iArg/C_10G) *C_10G) /C_1G;   return   C_1G + iArg / C_10G;  }
+  if (iArg >= C_1G  ) { i_Magn = 9;  i_Group = (iArg-(iArg/C_1G)  *C_1G)  /C_100M; return C_100M + iArg / C_1G;   }
+  
+  if (iArg >= C_100M) { i_Magn = 8;  i_Group = (iArg-(iArg/C_100M)*C_100M)/C_10M;  return  C_10M + iArg / C_100M; }
+  if (iArg >= C_10M ) { i_Magn = 7;  i_Group = (iArg-(iArg/C_10M) *C_10M) /C_1M;   return   C_1M + iArg / C_10M;  }
+  if (iArg >= C_1M  ) { i_Magn = 6;  i_Group = (iArg-(iArg/C_1M)  *C_1M)  /C_100K; return C_100K + iArg / C_1M;   }
+  
+  if (iArg >= C_100K) { i_Magn = 5;  i_Group = (iArg-(iArg/C_100K)*C_100K)/C_10K;  return     40 + iArg / C_100K; }
+  if (iArg >= C_10K ) { i_Magn = 4;  i_Group = (iArg-(iArg/C_10K) *C_10K) /C_1K;   return     30 + iArg / C_10K;  }
+  if (iArg >= C_1K  ) { i_Magn = 3;  i_Group = (iArg-(iArg/C_1K)  *C_1K)  /100;    return     20 + iArg / C_1K;   }
+  
+  if (iArg >= 100   ) { i_Magn = 2;  i_Group = (iArg-(iArg/100)   *100)   /10;     return     10 + iArg / 100;    }
+  if (iArg >= 10    ) { i_Magn = 1;  i_Group = (iArg-(iArg/10 )   *10 )   / 1;     return      0 + iArg / 10;     }
+                        i_Magn = 0;  i_Group = iArg;                               return      0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return the decile of arg given its maximum                                 */
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iDecile(i8 iArg, i8 iMax)
@@ -175,32 +233,6 @@ i8 IntLib::iIntToVlq(i8 iInt, byte yVlqVec[16])
   return nBytes;
 }
 */
-
-/*----------------------------------------------------------------------------*/
-/* is the arg a deca-cycle?                                                   */
-/*----------------------------------------------------------------------------*/
-bool IntLib::bIsDecaCycle(i8 iArg)
-{
-  if (iArg >= C_100T) { if (0 == iArg % C_100T) return true; else return false; }
-  if (iArg >= C_10T ) { if (0 == iArg % C_10T ) return true; else return false; }
-  if (iArg >= C_1T  ) { if (0 == iArg % C_1T  ) return true; else return false; }
-  
-  if (iArg >= C_100G) { if (0 == iArg % C_100G) return true; else return false; }
-  if (iArg >= C_10G ) { if (0 == iArg % C_10G ) return true; else return false; }
-  if (iArg >= C_1G  ) { if (0 == iArg % C_1G  ) return true; else return false; }
-  
-  if (iArg >= C_100M) { if (0 == iArg % C_100M) return true; else return false; }
-  if (iArg >= C_10M ) { if (0 == iArg % C_10M ) return true; else return false; }
-  if (iArg >= C_1M  ) { if (0 == iArg % C_1M  ) return true; else return false; }
-  
-  if (iArg >= C_100K) { if (0 == iArg % C_100K) return true; else return false; }
-  if (iArg >= C_10K ) { if (0 == iArg % C_10K ) return true; else return false; }
-  if (iArg >= C_1K  ) { if (0 == iArg % C_1K  ) return true; else return false; }
-
-  if (iArg >= 100   ) { if (0 == iArg % 100)    return true; else return false; }
-  if (iArg >= 10    ) { if (0 == iArg %  10)    return true; else return false; }
-  return true;
-}
 
 /*----------------------------------------------------------------------------*/
 /* return the decile of value given its maximum                               */

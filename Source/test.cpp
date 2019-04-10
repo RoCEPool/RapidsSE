@@ -113,8 +113,15 @@ void vTest3(void)
 /*----------------------------------------------------------------------------*/
 void vTest4(void)
 {
-
   vTrace("vTest4\n"_Stz);
+  
+  i8 i_Magn;
+  i8 i_Index;
+  i8 i_Group;
+  for (i8 i = 0; i < 100000; i++) {
+    i_Index = IntLib::iDecaIndex(i,i_Magn,i_Group);
+    vTrace("%lld : %lld , %lld, %lld\n"_Stz,i,i_Index,i_Magn,i_Group);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
