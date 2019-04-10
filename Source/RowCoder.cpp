@@ -1636,16 +1636,38 @@ void RowCoder::vRestoreTsp(Datum* pDatum, eMN eEncoding)
 
 
 /*----------------------------------------------------------------------------*/
+const static i8 nMonthDaySum[13] =
+  //    J  F  M   A   M   J   J   A   S   O   N   D
+    {0,31,59,90,120,151,181,212,243,273,304,334,365};
+
+
+/*----------------------------------------------------------------------------*/
+/* compute date from number of days since base date                           */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vFromBaseDays(Datum* pDatum)
+{
+  i8 nYearsMonthsDays = pDatum->m_iDte;
+  
+  i8 nYears = nYearsMonthsDays / 365;
+  i8 nMonthsDays = nYearsMonthsDays - (nYears * 365);
+
+  i8 i_Month;
+  for (i_Month = 1; i_Month <= 12; i_Month++)
+    if (nMonthsDays >= nMonthDaySum[i_Month])
+      break;
+  
+  pDatum->xDte.m_uYearDelta = nYears;
+  pDatum->xDte.m_uMonth     = i_Month;
+  pDatum->xDte.m_uDay       = nMonthsDays - nMonthDaySum[i_Month];
+}
+
+/*----------------------------------------------------------------------------*/
 /* compute number of days since base date                                     */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::nBaseDays(Datum* pDatum)
+void RowCoder::vToBaseDays(Datum* pDatum)
 {
   //! still to do leap year
   
-  const static i8 nMonthDaySum[13] =
-  //     J  F  M   A   M   J   J   A   S   O   N   D
-     {0,31,59,90,120,151,181,212,243,273,304,334,365};
-
   i8 nDays = 0;
   
   // year component
@@ -1657,7 +1679,7 @@ i8 RowCoder::nBaseDays(Datum* pDatum)
   // day component
   nDays += pDatum->xDte.m_uDay;
   
-  return nDays;
+  pDatum->m_iDte = nDays;
 }
 
 
