@@ -935,6 +935,9 @@ void RowCoder::vEncodeDte(RowNub* pNub, Column* pCol, Datum* pDatum)
   }
   
   i8 nBytesEncoded;
+//  vTrace("++ %lld-%lld-%lld\n"_Stz,
+//         pDatum->xDte.m_uYearDelta,pDatum->xDte.m_uMonth,pDatum->xDte.m_uDay);
+  
   eMN eEncoding = eEncodingDte(pDatum,nBytesEncoded);
   RASSERT(nBytesEncoded == nDataBytes(eEncoding,DM_DTE));
   
@@ -951,6 +954,8 @@ void RowCoder::vEncodeDte(RowNub* pNub, Column* pCol, Datum* pDatum)
   // cross-check
   
   vDecode(pDatum,pNub,0,pCol);
+//  vTrace("-- %lld-%lld-%lld\n"_Stz,
+//         pDatum->xDte.m_uYearDelta,pDatum->xDte.m_uMonth,pDatum->xDte.m_uDay);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
 }
 
@@ -1328,7 +1333,10 @@ eMN RowCoder::eEncodingDte(Datum* pDatum, i8& nBytesEncoded)
 //      break;
 //  }
 
-  pDatum->m_iInt >>= 47;
+  vIntoBaseDays(pDatum);
+  //vFromBaseDays(pDatum);
+ 
+  //pDatum->m_iInt >>= 47;
   
   eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iInt);
   
@@ -1615,7 +1623,8 @@ i8 RowCoder::nLines(RowNub* pNub, i8 i_Row)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRestoreDte(Datum* pDatum, eMN eEncoding)
 {
-  pDatum->m_iInt <<= 47;
+  vFromBaseDays(pDatum);
+  //pDatum->m_iInt <<= 47;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1638,7 +1647,7 @@ void RowCoder::vRestoreTsp(Datum* pDatum, eMN eEncoding)
 /*----------------------------------------------------------------------------*/
 const static i8 nMonthDaySum[13] =
   //    J  F  M   A   M   J   J   A   S   O   N   D
-    {0,31,59,90,120,151,181,212,243,273,304,334,365};
+    {0,31,60,91,121,152,182,213,244,274,305,335,366};
 
 
 /*----------------------------------------------------------------------------*/
@@ -1648,30 +1657,31 @@ void RowCoder::vFromBaseDays(Datum* pDatum)
 {
   i8 nYearsMonthsDays = pDatum->m_iDte;
   
-  i8 nYears = nYearsMonthsDays / 365;
-  i8 nMonthsDays = nYearsMonthsDays - (nYears * 365);
+  i8 nYears = (nYearsMonthsDays - 1) / 366;
+  i8 nMonthsDays = nYearsMonthsDays - (nYears * 366);
 
   i8 i_Month;
-  for (i_Month = 1; i_Month <= 12; i_Month++)
-    if (nMonthsDays >= nMonthDaySum[i_Month])
+  for (i_Month = 1; i_Month <= 11; i_Month++)
+    if (nMonthDaySum[i_Month] >= nMonthsDays)
       break;
   
   pDatum->xDte.m_uYearDelta = nYears;
   pDatum->xDte.m_uMonth     = i_Month;
-  pDatum->xDte.m_uDay       = nMonthsDays - nMonthDaySum[i_Month];
+  pDatum->xDte.m_uDay       = nMonthsDays - nMonthDaySum[i_Month - 1];
+  pDatum->xDte.m_uSpare     = 0;
 }
 
 /*----------------------------------------------------------------------------*/
 /* compute number of days since base date                                     */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vToBaseDays(Datum* pDatum)
+void RowCoder::vIntoBaseDays(Datum* pDatum)
 {
   //! still to do leap year
   
   i8 nDays = 0;
   
   // year component
-  nDays = pDatum->xDte.m_uYearDelta * 365;
+  nDays = pDatum->xDte.m_uYearDelta * 366;
   
   // month components
   nDays += nMonthDaySum[pDatum->xDte.m_uMonth - 1];
