@@ -80,7 +80,7 @@ void KeyWrk::vAddDatum(char* aDatum)
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddDatum(Datum* pDatum, GenVar& xVariable, Column* pCol, Formatters* pFormatters)
+void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
@@ -92,44 +92,45 @@ void KeyWrk::vAddDatum(Datum* pDatum, GenVar& xVariable, Column* pCol, Formatter
   
   char* pDst = aLatter();
   char* pSrc = (char*)aStrVal->aStz();
+  Datum xDatum;
   
   if (pCol->eDatumType() != DM_VCH) {
-    b = Record::bExtractDatum(pDatum,&pSrc,pCol,pFormatters);
+    b = Record::bExtractDatum(&xDatum,&pSrc,pCol,pFormatters);
     RASSERT(b);
   }
   
   switch(pCol->eDatumType()) {
       
     case DM_BCD:
-      nBytes = Bcd::nCopy((char*)pDst,(char*)&pDatum->m_iBcd);
+      nBytes = Bcd::nCopy((char*)pDst,(char*)&xDatum.m_iBcd);
       break;
   
     case DM_BOL:
-      nBytes = Bol::nCopy((char*)pDst,(char*)&pDatum->m_iBol);
+      nBytes = Bol::nCopy((char*)pDst,(char*)&xDatum.m_iBol);
       break;
       
     case DM_DTE:
-      nBytes = Dte::nCopy((char*)pDst,(char*)&pDatum->m_iDte);
+      nBytes = Dte::nCopy((char*)pDst,(char*)&xDatum.m_iDte);
       break;
       
     case DM_INT:
-      nBytes = Int::nCopy(pDst,(void*)&pDatum->m_iDte);
+      nBytes = Int::nCopy(pDst,(void*)&xDatum.m_iDte);
       break;
       
     case DM_IVL:
-      nBytes = Ivl::nCopy(pDst,(void*)&pDatum->m_iIvl);
+      nBytes = Ivl::nCopy(pDst,(void*)&xDatum.m_iIvl);
       break;
       
     case DM_FLT:
-      nBytes = Flt::nCopy(pDst,(void*)&pDatum->m_dFlt);
+      nBytes = Flt::nCopy(pDst,(void*)&xDatum.m_dFlt);
       break;
       
     case DM_TME:
-      nBytes = Tme::nCopy(pDst,&pDatum->m_iTme);
+      nBytes = Tme::nCopy(pDst,&xDatum.m_iTme);
       break;
       
     case DM_TSP:
-      nBytes = Tsp::nCopy(pDst,&pDatum->m_iTsp);
+      nBytes = Tsp::nCopy(pDst,&xDatum.m_iTsp);
       break;
       
     case DM_VCH:

@@ -22,6 +22,9 @@ namespace Data
     Record(void);
     ~Record(void) noexcept(false);
   
+    static bool bExtractDatum(Datum* pDatum, char** aaSrc,
+                              Column* pColumn, Formatters* pFormatters);
+    
     static bool bExtract(Datum* pDatum, char** aaSrc,
                          Column* pColumn, Formatters* pFormatters);
   
