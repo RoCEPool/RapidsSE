@@ -23,13 +23,8 @@ EntWrk::EntWrk(eCN eClassNo)
          0 == m_xId.iItem()   &&
          0 == m_xId.nLevels());
   
-#ifdef WITH_CHECK_INITIALISED
-  m_xWsp.vZero(eClassNo);
-#endif
   
-  m_xWsp.vInit();
-  
-  m_aEmbedded = m_xWsp.aArea();
+  m_aEmbedded = m_xDatum.m_xWsp.aArea();
   
   _checkInitialisedSize_(sizeof(EntWrk));
   
@@ -151,7 +146,7 @@ void EntWrk::vItemNo(i8 iItemNo)
 /*----------------------------------------------------------------------------*/
 char* EntWrk::aLatter(void)
 {
-  return m_xWsp.aLatter();
+  return m_xDatum.m_xWsp.aLatter();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -207,7 +202,7 @@ void EntWrk::vReset(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_aEmbedded = m_xWsp.aArea();
+  m_aEmbedded = m_xDatum.m_xWsp.aArea();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -217,7 +212,7 @@ void EntWrk::vTake(i8 iSize)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xWsp.vTake(iSize);
+  m_xDatum.m_xWsp.vTake(iSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -231,7 +226,7 @@ i8 EntWrk::nDataSize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return m_xWsp.nUsed();
+  return m_xDatum.m_xWsp.nUsed();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -241,7 +236,7 @@ void EntWrk::vDataSize(i8 nDataBytes)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xWsp.vUsed(nDataBytes);
+  m_xDatum.m_xWsp.vUsed(nDataBytes);
 }
 
 /*----------------------------------------------------------------------------*/

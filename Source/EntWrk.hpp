@@ -21,7 +21,7 @@ namespace Data
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key and row workspace
-    Wsp_t<C_WSP_ENTWRK> m_xWsp; // embedded object workspace
+    Datum m_xDatum;
   
     Footer m_xFooter;
   
