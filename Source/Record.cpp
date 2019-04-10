@@ -144,6 +144,105 @@ bool Record::bExtract(Datum* pDatum, char** aaSrc, Column* pCol, Formatters* pFm
 }
 
 /*----------------------------------------------------------------------------*/
+/* extract                                                                    */
+/*----------------------------------------------------------------------------*/
+bool Record::bExtractDatum(Datum* pDatum, char** aaSrc, Column* pCol, Formatters* pFmt)
+{
+  bool b = false;
+  eDM eDatum = pCol->eDatumType();
+  
+  i8 iYear, iMonth, iDay;
+  i8 iHour, iMinute, iSecond, iMicro, iMilli;
+  
+  switch (eDatum) {
+    case DM_BCD:
+       b = StrLib::bExtractDecimal(aaSrc,pDatum->m_iBcd,
+                                   pCol->iColumnLength(),
+                                   pCol->iColumnScale());
+       break;
+      
+    case DM_BOL:
+      b = StrLib::bExtractBoolean(aaSrc,pDatum->m_iBol);
+      break;
+     
+    case DM_CHR:
+       b = bExtractVchDefault(pDatum,aaSrc,pCol,pFmt);
+       break;
+      
+    case DM_DTE:
+      i8 iYear, iMonth, iDay;
+      b = StrLib::bExtractDate2(aaSrc, iYear, iMonth, iDay,
+                                pFmt->m_eDateComponent,
+                                pFmt->m_cDateSeparator);
+       if (!b)
+         break;
+      
+       pDatum->xDte.m_uYearDelta  = iYear - C_BASE_YEAR;
+       pDatum->xDte.m_uMonth = iMonth;
+       pDatum->xDte.m_uDay   = iDay;
+       pDatum->xDte.m_uSpare = 0;
+      break;
+     
+    case DM_FLT:
+      b = StrLib::bExtractFloat(aaSrc,pDatum->m_dFlt);
+      break;
+      
+    case DM_INT:
+      b = StrLib::bExtractInteger(aaSrc,&pDatum->m_iInt, true/*bWithSign*/);
+      break;
+      
+    case DM_IVL:
+      b = StrLib::bExtractInterval(aaSrc, iSecond, iMilli);
+      break;
+      
+    case DM_TME:
+      b = StrLib::bExtractTime(aaSrc, iHour, iMinute, iSecond, iMicro);
+      
+      if (!b)
+        break;
+      
+      pDatum->xTme.m_uHour   = iHour;
+      pDatum->xTme.m_uMinute = iMinute;
+      pDatum->xTme.m_uSecond = iSecond;
+      pDatum->xTme.m_uMicro  = iMicro;
+      pDatum->xTme.m_uSpare  = 0;
+      
+      break;
+      
+    case DM_TSP:
+      b = StrLib::bExtractTimestamp2(aaSrc, iYear, iMonth, iDay,
+                                     iHour, iMinute, iSecond, iMicro,
+                                     pFmt->m_eDateComponent,
+                                     pFmt->m_cDateSeparator);
+      
+      if (!b)
+        break;
+      
+      pDatum->xTsp.m_uYearDelta   = iYear - C_BASE_YEAR;
+      pDatum->xTsp.m_uMonth  = iMonth;
+      pDatum->xTsp.m_uDay    = iDay;
+      pDatum->xTsp.m_uHour   = iHour;
+      pDatum->xTsp.m_uMinute = iMinute;
+      pDatum->xTsp.m_uSecond = iSecond;
+      pDatum->xTsp.m_uMicro  = iMicro;
+      pDatum->xTsp.m_uSpare  = 0;
+      break;
+      
+     case DM_VCH:
+       b = StrLib::bExtractVarcharDefault(aaSrc,
+                                          pDatum->m_xWsp.aArea(),
+                                          pCol->iColumnLength(),
+                                          pDatum->m_nChars);
+       break;
+      
+      default:
+        vFatal("Record::bExtractDatum: Invalid eDatum : %lld\n"_Stz,eDatum);
+  }
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
 /* extract a decimal field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
 bool Record::bExtractBcdSupplied(Datum* pDatum, char** aaSrc,

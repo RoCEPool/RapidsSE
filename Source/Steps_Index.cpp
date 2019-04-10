@@ -665,7 +665,7 @@ void Step::vIndexRange(MP_Task mpTask)
     else
       xKeyWrkLower.vAddMinusInfinity();
   }
-  //xKeyWrkLower.vShow();
+  xKeyWrkLower.vShow(pIndex->pIdxColVec());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the upper key

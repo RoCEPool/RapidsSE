@@ -93,50 +93,46 @@ void KeyWrk::vAddDatum(Datum* pDatum, GenVar& xVariable, Column* pCol, Formatter
   char* pDst = aLatter();
   char* pSrc = (char*)aStrVal->aStz();
   
+  if (pCol->eDatumType() != DM_VCH) {
+    b = Record::bExtractDatum(pDatum,&pSrc,pCol,pFormatters);
+    RASSERT(b);
+  }
+  
   switch(pCol->eDatumType()) {
       
     case DM_BCD:
-      b = Record::bExtractBcdSupplied(pDatum,&pSrc,pCol,pFormatters);
       nBytes = Bcd::nCopy((char*)pDst,(char*)&pDatum->m_iBcd);
       break;
   
     case DM_BOL:
-      b = Record::bExtractBolSupplied(pDatum,&pSrc,pCol,pFormatters);
       nBytes = Bol::nCopy((char*)pDst,(char*)&pDatum->m_iBol);
       break;
       
     case DM_DTE:
-      b = Record::bExtractDteSupplied(pDatum,&pSrc,pCol,pFormatters);
       nBytes = Dte::nCopy((char*)pDst,(char*)&pDatum->m_iDte);
       break;
       
     case DM_INT:
-      iInt = StrLib::iToI8(pSrc);
-      nBytes = Int::nCopy(pDst,(void*)&iInt);
+      nBytes = Int::nCopy(pDst,(void*)&pDatum->m_iDte);
       break;
       
     case DM_IVL:
-      b = Record::bExtractIvlSupplied(pDatum,&pSrc,pCol,pFormatters);
       nBytes = Ivl::nCopy(pDst,(void*)&pDatum->m_iIvl);
       break;
       
     case DM_FLT:
-      b = Record::bExtractFltSupplied(pDatum,&pSrc,pCol,pFormatters);
       nBytes = Flt::nCopy(pDst,(void*)&pDatum->m_dFlt);
       break;
       
     case DM_TME:
-      b = Record::bExtractTmeSupplied(pDatum,&pSrc,pCol,pFormatters);
-      nBytes = Tme::nCopy((char*)pDst,(char*)&pDatum->m_iTme);
+      nBytes = Tme::nCopy(pDst,&pDatum->m_iTme);
       break;
       
     case DM_TSP:
-      b = Record::bExtractTspSupplied(pDatum,&pSrc,pCol,pFormatters);
-      nBytes = Tsp::nCopy((char*)pDst,(char*)&pDatum->m_iTsp);
+      nBytes = Tsp::nCopy(pDst,&pDatum->m_iTsp);
       break;
       
     case DM_VCH:
-      //nBytes = Vch::nCopy(pDst,pSrc);
       nBytes = StrLib::iWordFlip(pDst, pSrc);
       break;
       
