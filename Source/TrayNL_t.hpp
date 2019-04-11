@@ -34,7 +34,6 @@ namespace Structures
     Nub_t(void);
     ~Nub_t(void) noexcept(false);
   
-    HEAD* aAllotHead(void);
     i8    iAllotHead(void);
     TAIL* aAllotTails(i8 nTails);
     i8    iAllotTail(void);
@@ -86,7 +85,6 @@ namespace Structures
     // auto conversion
     operator Nub_t<CN,HEAD,TAIL,DESC,CODA>*(void);
   
-    HEAD* aAllotHead(void);
     i8    iAllotHead(void);
     TAIL* aAllotTails(i8 nTails);
     i8    iAllotTail(void);
@@ -166,24 +164,6 @@ Nub_t<CN,HEAD,TAIL,DESC,CODA>::~Nub_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* allot head item                                                            */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
-HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aAllotHead(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  i8 i_Item = iAllotHead();
-  
-  if (C_UNKNOWN == i_Item)
-    return nullptr;
-  
-  HEAD* pItem = aGetHead(i_Item);
-  
-  return pItem;
-}
 
 /*----------------------------------------------------------------------------*/
 /* allot head item                                                            */
