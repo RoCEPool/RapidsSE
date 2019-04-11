@@ -81,10 +81,10 @@ namespace Data
 
   typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
   
-  typedef Nub_t<CN_ROWTRAY,CacheLine,DoubleWord,Table,void*> RowNub;
-  typedef TrayNL_t<CN_ROWTRAY,CacheLine,DoubleWord,Table,void*,
+  typedef Nub_t<CN_ROWTRAY,CacheLine,CacheLine,Table,void*> RowNub;
+  typedef TrayNL_t<CN_ROWTRAY,CacheLine,CacheLine,Table,void*,
                    (C_CACHELINES * sizeof(CacheLine))> RowParts;
-  typedef TrayNL_t<CN_ROWTRAY,CacheLine,DoubleWord,Table,void*,
+  typedef TrayNL_t<CN_ROWTRAY,CacheLine,CacheLine,Table,void*,
                    (C_MAX_ROWS * sizeof(CacheLine))> RowTray;
 }
 

@@ -36,13 +36,13 @@ namespace Structures
   
     HEAD* aAllotHead(void);
     i8    iAllotHead(void);
-    HEAD* aAllotTails(i8 nTails);
+    TAIL* aAllotTails(i8 nTails);
     i8    iAllotTail(void);
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
     i8    nFree(void);
     HEAD* aGetHead(i8 i_Item);
-    HEAD* aGetTail(i8 i_Item);
+    TAIL* aGetTail(i8 i_Item);
     i8    nHeads(void);
     i8    iHash(void);
     void  vHashInc(i8 iDelta);
@@ -86,13 +86,13 @@ namespace Structures
   
     HEAD* aAllotHead(void);
     i8    iAllotHead(void);
-    HEAD* aAllotTails(i8 nTails);
+    TAIL* aAllotTails(i8 nTails);
     i8    iAllotTail(void);
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
     i8    nFree(void);
     HEAD* aGetHead(i8 i_Item);
-    HEAD* aGetTail(i8 i_Item);
+    TAIL* aGetTail(i8 i_Item);
     i8    iHash(void);
     bool  bHasSpace(i8 nBytes);
     i8    nHeads(void);
@@ -205,7 +205,7 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotHead(void)
 /* allot tail items                                                           */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
-HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aAllotTails(i8 nTails)
+TAIL* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aAllotTails(i8 nTails)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -221,7 +221,7 @@ HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aAllotTails(i8 nTails)
     i_CacheLine = iAllotTail();
   ASSERT(i_CacheLine != C_UNKNOWN);
 
-  HEAD* pItem = aGetTail(i_CacheLine);
+  TAIL* pItem = aGetTail(i_CacheLine);
   
   return pItem;
 }
@@ -300,7 +300,7 @@ HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetHead(i8 i_Item)
 /* get a specific tail item                                                   */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
-HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetTail(i8 i_Item)
+TAIL* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetTail(i8 i_Item)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -308,7 +308,7 @@ HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetTail(i8 i_Item)
   
   
   i8 i_Unit = i_Item * (sizeof(HEAD) / sizeof(DoubleWord));
-  HEAD* aUnit = (HEAD*)&m_axaUnits[i_Unit];
+  TAIL* aUnit = (HEAD*)&m_axaUnits[i_Unit];
 
   return aUnit;
 }
@@ -644,11 +644,11 @@ HEAD* TrayNL_t<CN,HEAD,TAIL,DESC,CODA,BYTES>::aGetHead(i8 i_Item)
 /* get a specific tail item                                                   */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 BYTES>
-HEAD* TrayNL_t<CN,HEAD,TAIL,DESC,CODA,BYTES>::aGetTail(i8 i_Item)
+TAIL* TrayNL_t<CN,HEAD,TAIL,DESC,CODA,BYTES>::aGetTail(i8 i_Item)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  HEAD* aItem = m_oNub.aGetTail(i_Item);
+  TAIL* aItem = m_oNub.aGetTail(i_Item);
   
   return aItem;
 }
