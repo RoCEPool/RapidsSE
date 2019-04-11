@@ -21,7 +21,7 @@ namespace Data
   private:
     static void vAppend(Record* pRec, CacheLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
   
-    static i8 nDataBytes(eMN eEncoding, eDM eDatum);
+    static i8 nDataBytes(CacheLine* aHeadLine, Column* pCol, eMN eEncoding, eDM eDatum);
   
     static void vDecodeBcd(Datum* pDatum, CacheLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
     static void vDecodeBol(Datum* pDatum, CacheLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
@@ -64,6 +64,8 @@ namespace Data
     static eMN eEncodingVch(Datum* pDatum, i8& nBytesEncoded);
   
     static CacheLine* pFindTail(RowNub* pNub, CacheLine* aFindLine);
+  
+    static i8 nFreeSpaceHead(RowNub* pNub, CacheLine* aHeadLine);
   
     static eMN eGetEncoding(CacheLine* aHeadLine, ColumnVec* pColVec,
                             i8 i_Col, i8& i_Offset);
