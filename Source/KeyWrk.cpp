@@ -166,21 +166,6 @@ void KeyWrk::vAddMinusInfinity(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add min lower value to key for float                                       */
-/*----------------------------------------------------------------------------*/
-void KeyWrk::vAddMinusInfinity_Flt(void)
-{
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
-  
-  char* aDst = aLatter();
-  
-  d8 fFlt = C_FLOAT_MINUS_INFINITY;
-  Flt::nCopy(aDst,(void*)&fFlt);
-  
-  vTake(C_BYTES_PER_WORD);
-}
-
-/*----------------------------------------------------------------------------*/
 /* add max upper value to key                                                 */
 /*----------------------------------------------------------------------------*/
 void KeyWrk::vAddPlusInfinity(void)
@@ -190,22 +175,7 @@ void KeyWrk::vAddPlusInfinity(void)
   char* aDst = aLatter();
   
   i8 iInt = C_DATUM_PLUS_INFINITY;
-  Flt::nCopy(aDst,(void*)&iInt);
-  
-  vTake(C_BYTES_PER_WORD);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add max upper value to key for float                                       */
-/*----------------------------------------------------------------------------*/
-void KeyWrk::vAddPlusInfinity_Flt(void)
-{
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
-  
-  char* aDst = aLatter();
-  
-  d8 fFlt = C_FLOAT_PLUS_INFINITY;
-  Int::nCopy(aDst,(void*)&fFlt);
+  Int::nCopy(aDst,(void*)&iInt);
   
   vTake(C_BYTES_PER_WORD);
 }

@@ -449,10 +449,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   
   xKeyWrkLower.vAddDatum(aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-    if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
-      xKeyWrkLower.vAddMinusInfinity_Flt();
-    else
-      xKeyWrkLower.vAddMinusInfinity();
+    xKeyWrkLower.vAddMinusInfinity();
   }
   //xKeyWrk.vShow();
   
@@ -659,10 +656,7 @@ void Step::vIndexRange(MP_Task mpTask)
   
   xKeyWrkLower.vAddDatum(aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-    if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
-      xKeyWrkLower.vAddMinusInfinity_Flt();
-    else
-      xKeyWrkLower.vAddMinusInfinity();
+    xKeyWrkLower.vAddMinusInfinity();
   }
   //xKeyWrkLower.vShow(pIndex->pIdxColVec());
   
@@ -674,10 +668,7 @@ void Step::vIndexRange(MP_Task mpTask)
   
   xKeyWrkUpper.vAddDatum(aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-    if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
-      xKeyWrkUpper.vAddPlusInfinity_Flt();
-    else
-      xKeyWrkUpper.vAddPlusInfinity();
+    xKeyWrkUpper.vAddPlusInfinity();
   }
   //xKeyWrkUpper.vShow();
   
@@ -1036,10 +1027,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   
   xKeyWrkUpper.vAddDatum(aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-    if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
-      xKeyWrkUpper.vAddPlusInfinity_Flt();
-    else
-      xKeyWrkUpper.vAddPlusInfinity();
+    xKeyWrkUpper.vAddPlusInfinity();
   }
   //xKeyWrkUpper.vShow();
   

@@ -134,7 +134,7 @@ d8 Flt::dAsD8(void)
 /*----------------------------------------------------------------------------*/
 bool Flt::bIsNull(void)
 {
-  if (C_FLOAT_NULL == m_dFlt)
+  if (C_DATUM_NULL == m_dFlt)
     return true;
   else
     return false;
@@ -145,7 +145,7 @@ bool Flt::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Flt::vSetNull(void)
 {
-  m_dFlt = C_FLOAT_NULL;
+  m_dFlt = C_DATUM_NULL;
 }
 
 /*----------------------------------------------------------------------------*/

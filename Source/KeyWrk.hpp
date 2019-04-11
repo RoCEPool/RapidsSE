@@ -22,9 +22,7 @@ namespace Data
     void vAddDatum(Datum& oDatum, Column* pCol);
     void vAddDatum(Stz* aSrc, Column* pCol, Formatters* pFormatters);
     void vAddMinusInfinity(void);
-    void vAddMinusInfinity_Flt(void);
     void vAddPlusInfinity(void);
-    void vAddPlusInfinity_Flt(void);
     void vAddWord(w8 wWord);
 
     void vExtractKey(RowNub* pRowNub, i8 i_Row, IdxColVec* pIdxColVec);
