@@ -23,6 +23,8 @@ namespace Structures
     DESC* m_pDesc;    // object describing the items
     HEAD* m_axaItem;  // array of items
   
+    DoubleWord* m_axaUnits;  // array of space units
+
     i8 m_i_Offset;    // encoding offset
     i8 m_iHash;       // encoding hash
 
@@ -139,7 +141,9 @@ Nub_t<CN,HEAD,TAIL,DESC,CODA>::Nub_t(void)
   
   m_pDesc       = nullptr;
   m_axaItem     = nullptr;
-  
+
+  m_axaUnits    = nullptr;
+
   m_i_Offset    = 8;
   m_iHash       = 0;
 
@@ -194,6 +198,8 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotHead(void)
   
   i8 i_Item = m_nHeadItems++;
   
+  m_nHeadUnits += (sizeof(HEAD) / sizeof(DoubleWord));
+  
   return i_Item;
 }
 
@@ -235,6 +241,8 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotTail(void)
   
   i8 i_Item = m_nMaxItems - 1 - m_nTailItems++;
   
+  m_nTailUnits += (sizeof(TAIL) / sizeof(DoubleWord));
+
   return i_Item;
 }
 
@@ -285,7 +293,11 @@ HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetHead(i8 i_Item)
   
   HEAD* aItem = &m_axaItem[i_Item];
   
-  return aItem;
+  i8 i_Unit = i_Item * (sizeof(HEAD) / sizeof(DoubleWord));
+  HEAD* aUnit = (HEAD*)&m_axaUnits[i_Unit];
+  RASSERT(aUnit == aItem);
+  
+  return aUnit;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -300,7 +312,11 @@ HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetTail(i8 i_Item)
   
   HEAD* aItem = &m_axaItem[i_Item];
   
-  return aItem;
+  i8 i_Unit = i_Item * (sizeof(HEAD) / sizeof(DoubleWord));
+  HEAD* aUnit = (HEAD*)&m_axaUnits[i_Unit];
+  RASSERT(aUnit == aItem);
+
+  return aUnit;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -407,10 +423,13 @@ void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vReset(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
+  m_nHeadUnits = 0;
+  m_nTailUnits = 0;
+
   m_nHeadItems = 0;
   m_nTailItems = 0;
   
-  MemLib::vZero(m_axaItem,(sizeof(HEAD) * m_nMaxItems),CN);
+  MemLib::vZero(m_axaUnits,(sizeof(DoubleWord) * m_nSpaceUnits),CN);
   
   m_i_Offset = 8;
   m_iHash    = 0;
@@ -435,9 +454,11 @@ void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vSetItems(i8 nSpaceUnits, i8 nMaxItems, HEAD
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  m_nSpaceUnits    = nSpaceUnits;
-  m_nMaxItems = nMaxItems;
-  m_axaItem   = axaItem;
+  m_nSpaceUnits = nSpaceUnits;
+  m_nMaxItems   = nMaxItems;
+  m_axaItem     = axaItem;
+  
+  m_axaUnits    = reinterpret_cast<DoubleWord*>(axaItem);
 }
 
 /*----------------------------------------------------------------------------*/
