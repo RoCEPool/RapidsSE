@@ -27,6 +27,7 @@ using namespace Base;
 #include "ByteLiterals.hpp"
 #include "CacheLine.hpp"
 #include "ClassNumbers.hpp"
+#include "DoubleWord.hpp"
 #include "IntLib.hpp"
 #include "i3.hpp"
 #include "Magnitudes.hpp"
