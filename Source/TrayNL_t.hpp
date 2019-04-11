@@ -38,11 +38,13 @@ namespace Structures
     i8    iAllotHead(void);
     TAIL* aAllotTails(i8 nTails);
     i8    iAllotTail(void);
+    i8    iAllotTail_Bytes(i8 nBytes);
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
     i8    nFree(void);
     HEAD* aGetHead(i8 i_Item);
     TAIL* aGetTail(i8 i_Item);
+    TAIL* aGetTail_Unit(i8 i_Unit);
     i8    nHeads(void);
     i8    iHash(void);
     void  vHashInc(i8 iDelta);
@@ -245,6 +247,31 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotTail(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allot tail item                                                            */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotTail_Bytes(i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  RASSERT(nBytes);
+  
+  if (nItems() >= m_nMaxItems)
+    return C_UNKNOWN;
+
+  i8 nUnits = nBytes / (i8)sizeof(DoubleWord);
+  if (nBytes % (i8)sizeof(DoubleWord))
+    nUnits++;
+  RASSERT(nUnits * (i8)sizeof(DoubleWord) >= nBytes);
+  
+  m_nTailUnits += nUnits;
+
+  i8 i_Tail = m_nSpaceUnits - m_nTailUnits;
+  
+  return i_Tail;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the item describer                                                     */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
@@ -306,11 +333,23 @@ TAIL* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetTail(i8 i_Item)
   
   ASSERT(i_Item >= 0 && i_Item < m_nMaxItems);
   
-  
   i8 i_Unit = i_Item * (sizeof(HEAD) / sizeof(DoubleWord));
-  TAIL* aUnit = (HEAD*)&m_axaUnits[i_Unit];
+  TAIL* aTail = (TAIL*)&m_axaUnits[i_Unit];
 
-  return aUnit;
+  return aTail;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a specific tail item                                                   */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+TAIL* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetTail_Unit(i8 i_Unit)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  TAIL* aTail = (TAIL*)&m_axaUnits[i_Unit];
+  
+  return aTail;
 }
 
 /*----------------------------------------------------------------------------*/
