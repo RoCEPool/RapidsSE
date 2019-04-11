@@ -53,7 +53,9 @@ Datum::Datum(void)
   
   m_eDatum = DM_NONE;
   m_wWord  = C_UNKNOWN;
+#ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(CN_DATUM);
+#endif
 
   _checkInitialised_(CN_DATUM);
   
