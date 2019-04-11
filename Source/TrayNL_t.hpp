@@ -8,7 +8,7 @@ namespace Structures
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // nub (the inner tray)
   
-  template <eCN CN, class HEAD, class TAIL, class DESC>
+  template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
   class Nub_t : public Object
   {
   private:
@@ -57,13 +57,13 @@ namespace Structures
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tray (the outer tray)
 
-  template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
+  template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
   class TrayNL_t : public Object
   {
   protected:
     HEAD m_xaItem[ITEMS]; // array of items
   
-    Nub_t<CN,HEAD,TAIL,DESC> m_oNub;
+    Nub_t<CN,HEAD,TAIL,DESC,CODA> m_oNub;
   
     // must be last
     Footer m_xFooter;
@@ -76,7 +76,7 @@ namespace Structures
     ~TrayNL_t(void) noexcept(false);
   
     // auto conversion
-    operator Nub_t<CN,HEAD,TAIL,DESC>*(void);
+    operator Nub_t<CN,HEAD,TAIL,DESC,CODA>*(void);
   
     HEAD* aAllotHead(void);
     i8    iAllotHead(void);
@@ -98,8 +98,8 @@ namespace Structures
     Footer* aFooter(void);
   };
   
-  template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-  TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>* _pNubNL(void* aAddr);
+  template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+  TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>* _pNubNL(void* aAddr);
 }
 
 using namespace Structures;
@@ -118,8 +118,8 @@ using namespace Structures;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-Nub_t<CN,HEAD,TAIL,DESC>::Nub_t(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+Nub_t<CN,HEAD,TAIL,DESC,CODA>::Nub_t(void)
 : Object(CN)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
@@ -133,7 +133,7 @@ Nub_t<CN,HEAD,TAIL,DESC>::Nub_t(void)
   m_i_Offset   = 8;
   m_iHash      = 0;
 
-  i8 nBytes = sizeof(Nub_t<CN,HEAD,TAIL,DESC>);
+  i8 nBytes = sizeof(Nub_t<CN,HEAD,TAIL,DESC,CODA>);
   _checkInitialisedSize_(nBytes);
   
   _postcondition_(_MAGIC_,CN,_FOOTER_);
@@ -142,8 +142,8 @@ Nub_t<CN,HEAD,TAIL,DESC>::Nub_t(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-Nub_t<CN,HEAD,TAIL,DESC>::~Nub_t(void) noexcept(false)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+Nub_t<CN,HEAD,TAIL,DESC,CODA>::~Nub_t(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
 }
@@ -156,8 +156,8 @@ Nub_t<CN,HEAD,TAIL,DESC>::~Nub_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* allot head item                                                            */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-HEAD* Nub_t<CN,HEAD,TAIL,DESC>::aAllotHead(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aAllotHead(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -174,8 +174,8 @@ HEAD* Nub_t<CN,HEAD,TAIL,DESC>::aAllotHead(void)
 /*----------------------------------------------------------------------------*/
 /* allot head item                                                            */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,DESC>::iAllotHead(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotHead(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -190,8 +190,8 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::iAllotHead(void)
 /*----------------------------------------------------------------------------*/
 /* allot tail items                                                           */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-HEAD* Nub_t<CN,HEAD,TAIL,DESC>::aAllotTails(i8 nTails)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aAllotTails(i8 nTails)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -215,8 +215,8 @@ HEAD* Nub_t<CN,HEAD,TAIL,DESC>::aAllotTails(i8 nTails)
 /*----------------------------------------------------------------------------*/
 /* allot tail item                                                            */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,DESC>::iAllotTail(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotTail(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -231,8 +231,8 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::iAllotTail(void)
 /*----------------------------------------------------------------------------*/
 /* get the item describer                                                     */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-DESC* Nub_t<CN,HEAD,TAIL,DESC>::pDesc(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+DESC* Nub_t<CN,HEAD,TAIL,DESC,CODA>::pDesc(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -242,8 +242,8 @@ DESC* Nub_t<CN,HEAD,TAIL,DESC>::pDesc(void)
 /*----------------------------------------------------------------------------*/
 /* set the item describer                                                     */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-void Nub_t<CN,HEAD,TAIL,DESC>::vDesc(DESC* pDesc)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vDesc(DESC* pDesc)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -253,8 +253,8 @@ void Nub_t<CN,HEAD,TAIL,DESC>::vDesc(DESC* pDesc)
 /*----------------------------------------------------------------------------*/
 /* get total number of free items                                             */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,DESC>::nFree(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::nFree(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -266,8 +266,8 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::nFree(void)
 /*----------------------------------------------------------------------------*/
 /* get a specific head item                                                   */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-HEAD* Nub_t<CN,HEAD,TAIL,DESC>::aGetHead(i8 i_Item)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetHead(i8 i_Item)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -281,8 +281,8 @@ HEAD* Nub_t<CN,HEAD,TAIL,DESC>::aGetHead(i8 i_Item)
 /*----------------------------------------------------------------------------*/
 /* get a specific tail item                                                   */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-HEAD* Nub_t<CN,HEAD,TAIL,DESC>::aGetTail(i8 i_Item)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetTail(i8 i_Item)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -296,8 +296,8 @@ HEAD* Nub_t<CN,HEAD,TAIL,DESC>::aGetTail(i8 i_Item)
 /*----------------------------------------------------------------------------*/
 /* get total number of actual items                                           */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,DESC>::iHash(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iHash(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -307,8 +307,8 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::iHash(void)
 /*----------------------------------------------------------------------------*/
 /* get total number of actual items                                           */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-void Nub_t<CN,HEAD,TAIL,DESC>::vHashInc(i8 iDelta)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vHashInc(i8 iDelta)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -318,8 +318,8 @@ void Nub_t<CN,HEAD,TAIL,DESC>::vHashInc(i8 iDelta)
 /*----------------------------------------------------------------------------*/
 /* does buffer have space for nBytes ?                                        */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-bool Nub_t<CN,HEAD,TAIL,DESC>::bHasSpace(i8 nBytes)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+bool Nub_t<CN,HEAD,TAIL,DESC,CODA>::bHasSpace(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
 
@@ -335,8 +335,8 @@ bool Nub_t<CN,HEAD,TAIL,DESC>::bHasSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get total number of head items                                             */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,DESC>::nHeads(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::nHeads(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -346,8 +346,8 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::nHeads(void)
 /*----------------------------------------------------------------------------*/
 /* get total number of actual items                                           */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,DESC>::nItems(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::nItems(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -359,8 +359,8 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* get total number of actual items                                           */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,DESC>::i_Offset(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::i_Offset(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -370,8 +370,8 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::i_Offset(void)
 /*----------------------------------------------------------------------------*/
 /* get total number of actual items                                           */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-void Nub_t<CN,HEAD,TAIL,DESC>::vOffsetInc(i8 iDelta)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vOffsetInc(i8 iDelta)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -381,8 +381,8 @@ void Nub_t<CN,HEAD,TAIL,DESC>::vOffsetInc(i8 iDelta)
 /*----------------------------------------------------------------------------*/
 /* get maximum number of items                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,DESC>::nMaxItems(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::nMaxItems(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -392,8 +392,8 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::nMaxItems(void)
 /*----------------------------------------------------------------------------*/
 /* reset all items                                                            */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-void Nub_t<CN,HEAD,TAIL,DESC>::vReset(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vReset(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -409,8 +409,8 @@ void Nub_t<CN,HEAD,TAIL,DESC>::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* get total number of tail items                                             */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,DESC>::nTails(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::nTails(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -420,8 +420,8 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::nTails(void)
 /*----------------------------------------------------------------------------*/
 /* set item array                                                             */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-void Nub_t<CN,HEAD,TAIL,DESC>::vSetItems(i8 nMaxItems, HEAD *axaItem)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vSetItems(i8 nMaxItems, HEAD *axaItem)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -436,8 +436,8 @@ void Nub_t<CN,HEAD,TAIL,DESC>::vSetItems(i8 nMaxItems, HEAD *axaItem)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-Footer* Nub_t<CN,HEAD,TAIL,DESC>::aFooter(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+Footer* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aFooter(void)
 {
   _precondition_(_MAGIC_,CN);
   
@@ -459,11 +459,11 @@ Footer* Nub_t<CN,HEAD,TAIL,DESC>::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>* Structures::_pNubNL(void* aAddr)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>* Structures::_pNubNL(void* aAddr)
 {
-  TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>* pVector =
-  reinterpret_cast<TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>*>(aAddr);
+  TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>* pVector =
+  reinterpret_cast<TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>*>(aAddr);
   
   RASSERT_TYPE(pVector,CN);
   
@@ -473,8 +473,8 @@ TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>* Structures::_pNubNL(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-void* TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::operator new(size_t)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+void* TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::operator new(size_t)
 {
   void* pNub = HeapMem::pAllocate(CN);
   
@@ -484,11 +484,11 @@ void* TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-void TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::operator delete(void* pAddr)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+void TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::operator delete(void* pAddr)
 {
-  TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>* pNub =
-    _pNubNL<CN,HEAD,TAIL,DESC,ITEMS,BYTES>(pAddr);
+  TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>* pNub =
+    _pNubNL<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>(pAddr);
   
   HeapMem::vFree(pNub);
 }
@@ -496,8 +496,8 @@ void TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::operator delete(void* pAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::TrayNL_t(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::TrayNL_t(void)
 : Object(CN)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
@@ -508,7 +508,7 @@ TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::TrayNL_t(void)
   
   _setFooter_();
   
-  i8 nBytes = sizeof(TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>);
+  i8 nBytes = sizeof(TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>);
   _checkInitialisedSize_(nBytes);
   
   _postcondition_(_MAGIC_,CN,_FOOTER_);
@@ -517,8 +517,8 @@ TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::TrayNL_t(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::~TrayNL_t(void) noexcept(false)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::~TrayNL_t(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
 }
@@ -526,8 +526,8 @@ TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::~TrayNL_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get the inner tray                                                         */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::operator Nub_t<CN,HEAD,TAIL,DESC>*(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::operator Nub_t<CN,HEAD,TAIL,DESC,CODA>*(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -542,8 +542,8 @@ TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::operator Nub_t<CN,HEAD,TAIL,DESC>*(void
 /*----------------------------------------------------------------------------*/
 /* allot head item                                                            */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-i8 TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::iAllotHead(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+i8 TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::iAllotHead(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -555,8 +555,8 @@ i8 TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::iAllotHead(void)
 /*----------------------------------------------------------------------------*/
 /* allot tail item                                                            */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-i8 TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::iAllotTail(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+i8 TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::iAllotTail(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -568,8 +568,8 @@ i8 TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::iAllotTail(void)
 /*----------------------------------------------------------------------------*/
 /* get the item describer                                                     */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-DESC* TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::pDesc(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+DESC* TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::pDesc(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -579,8 +579,8 @@ DESC* TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::pDesc(void)
 /*----------------------------------------------------------------------------*/
 /* set the item describer                                                     */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-void TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::vDesc(DESC* pDesc)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+void TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::vDesc(DESC* pDesc)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -590,8 +590,8 @@ void TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::vDesc(DESC* pDesc)
 /*----------------------------------------------------------------------------*/
 /* get total number of free items                                             */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-i8 TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::nFree(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+i8 TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::nFree(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -603,8 +603,8 @@ i8 TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::nFree(void)
 /*----------------------------------------------------------------------------*/
 /* get a specific head item                                                   */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-HEAD* TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::aGetHead(i8 i_Item)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+HEAD* TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::aGetHead(i8 i_Item)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -616,8 +616,8 @@ HEAD* TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::aGetHead(i8 i_Item)
 /*----------------------------------------------------------------------------*/
 /* get a specific tail item                                                   */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-HEAD* TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::aGetTail(i8 i_Item)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+HEAD* TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::aGetTail(i8 i_Item)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -629,8 +629,8 @@ HEAD* TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::aGetTail(i8 i_Item)
 /*----------------------------------------------------------------------------*/
 /* get total number of head items                                             */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-i8 TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::iHash(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+i8 TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::iHash(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -644,8 +644,8 @@ i8 TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::iHash(void)
 /*----------------------------------------------------------------------------*/
 /* get total number of head items                                             */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-i8 TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::nHeads(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+i8 TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::nHeads(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -657,8 +657,8 @@ i8 TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::nHeads(void)
 /*----------------------------------------------------------------------------*/
 /* get total number of actual items                                           */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-i8 TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::nItems(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+i8 TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::nItems(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -670,8 +670,8 @@ i8 TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* reset all items                                                            */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-void TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::vReset(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+void TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::vReset(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -681,8 +681,8 @@ void TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* get total number of tail items                                             */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-i8 TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::nTails(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+i8 TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::nTails(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -698,8 +698,8 @@ i8 TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::nTails(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, i8 ITEMS, i8 BYTES>
-Footer* TrayNL_t<CN,HEAD,TAIL,DESC,ITEMS,BYTES>::aFooter(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 BYTES>
+Footer* TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::aFooter(void)
 {
   _precondition_(_MAGIC_,CN);
   
