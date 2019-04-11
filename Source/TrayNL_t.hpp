@@ -35,7 +35,6 @@ namespace Structures
     ~Nub_t(void) noexcept(false);
   
     i8    iAllotHead(void);
-    TAIL* aAllotTails(i8 nTails);
     i8    iAllotTail(void);
     i8    iAllotTail_Bytes(i8 nBytes);
     DESC* pDesc(void);
@@ -86,7 +85,6 @@ namespace Structures
     operator Nub_t<CN,HEAD,TAIL,DESC,CODA>*(void);
   
     i8    iAllotHead(void);
-    TAIL* aAllotTails(i8 nTails);
     i8    iAllotTail(void);
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
@@ -181,31 +179,6 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotHead(void)
   m_nHeadUnits += (sizeof(HEAD) / sizeof(DoubleWord));
   
   return i_Item;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot tail items                                                           */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
-TAIL* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aAllotTails(i8 nTails)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  if (! nTails)
-    return nullptr;
-
-  if (! bHasSpace(sizeof(CacheLine) * nTails))
-    return nullptr;
-
-  i8 i_CacheLine = C_UNKNOWN;
-  
-  for (i8 i_Tail = 0; i_Tail < nTails; i_Tail++)
-    i_CacheLine = iAllotTail();
-  ASSERT(i_CacheLine != C_UNKNOWN);
-
-  TAIL* pItem = aGetTail(i_CacheLine);
-  
-  return pItem;
 }
 
 /*----------------------------------------------------------------------------*/

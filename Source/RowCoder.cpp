@@ -188,7 +188,8 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 #endif
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    pIntoTail = pIntoNub->aAllotTails(1);
+    i8 i_Tail = pIntoNub->iAllotTail();
+    pIntoTail = pIntoNub->aGetTail(i_Tail);
     MemLib::vCopy(pIntoTail,pFromTail,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
     
     // what gets encoded is the difference in cache lines

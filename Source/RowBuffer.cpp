@@ -210,31 +210,6 @@ CacheLine* RowBuffer::aAllotHead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot one or more tail cache lines in this buffer                          */
-/*----------------------------------------------------------------------------*/
-CacheLine* RowBuffer::aAllotTails(i8 nTails)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  if (! nTails)
-    return nullptr;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if this buffer has space
-  
-  if (! bHasSpace(sizeof(CacheLine) * nTails))
-    return nullptr;
-  
-  i8 iCacheLine = C_UNKNOWN;
-  
-  for (i8 i_Tail = 0; i_Tail < nTails; i_Tail++)
-    iCacheLine = m_xRowTray.iAllotTail();
-  ASSERT(iCacheLine != C_UNKNOWN);
-  
-  return m_xRowTray.aGetTail(iCacheLine);
-}
-
-/*----------------------------------------------------------------------------*/
 /* append a row entry into this buffer                                        */
 /*----------------------------------------------------------------------------*/
 bool RowBuffer::bAppendRow(RowNub* pFromRowNub)
