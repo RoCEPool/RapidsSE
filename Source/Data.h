@@ -83,9 +83,9 @@ namespace Data
   
   typedef Nub_t<CN_ROWTRAY,CacheLine,DoubleWord,Table,void*> RowNub;
   typedef TrayNL_t<CN_ROWTRAY,CacheLine,DoubleWord,Table,void*,
-                   C_CACHELINES,(C_CACHELINES * sizeof(CacheLine))> RowParts;
+                   (C_CACHELINES * sizeof(CacheLine))> RowParts;
   typedef TrayNL_t<CN_ROWTRAY,CacheLine,DoubleWord,Table,void*,
-                   C_MAX_ROWS,(C_MAX_ROWS * sizeof(CacheLine))> RowTray;
+                   (C_MAX_ROWS * sizeof(CacheLine))> RowTray;
 }
 
 using namespace Data;
