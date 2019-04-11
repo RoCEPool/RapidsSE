@@ -12,14 +12,19 @@ namespace Structures
   class Nub_t : public Object
   {
   private:
-    i8 m_nMaxItems;  // max number of items
-    i8 m_nHeadItems; // number of items from the head
-    i8 m_nTailItems; // number of items from the tail
-    DESC* m_pDesc;   // object describing the items
-    HEAD* m_axaItem; // array of items
+    i8 m_nSpaceUnits; // number of space units
+    i8 m_nHeadUnits;  // number of space units allocated from the head
+    i8 m_nTailUnits;  // number of space units allocated from the tail
+
+    i8 m_nMaxItems;   // max number of items
+    i8 m_nHeadItems;  // number of items allocated from the head
+    i8 m_nTailItems;  // number of items allocated from the tail
   
-    i8 m_i_Offset;   // encoding offset
-    i8 m_iHash;      // encoding hash
+    DESC* m_pDesc;    // object describing the items
+    HEAD* m_axaItem;  // array of items
+  
+    i8 m_i_Offset;    // encoding offset
+    i8 m_iHash;       // encoding hash
 
     // must be last
     Footer m_xFooter;
@@ -48,7 +53,7 @@ namespace Structures
     void  vReset(void);
     i8    nTails(void);
   
-    void  vSetItems(i8 nMaxItems, HEAD* axaItem);
+    void  vSetItems(i8 nSpaceUnits, i8 nMaxItems, HEAD* axaItem);
   
   private:
     Footer* aFooter(void);
@@ -124,14 +129,19 @@ Nub_t<CN,HEAD,TAIL,DESC,CODA>::Nub_t(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  m_nMaxItems  = C_UNKNOWN;
-  m_nHeadItems = 0;
-  m_nTailItems = 0;
-  m_pDesc      = nullptr;
-  m_axaItem    = nullptr;
+  m_nSpaceUnits = C_UNKNOWN;
+  m_nHeadUnits  = 0;
+  m_nTailUnits  = 0;
+
+  m_nMaxItems   = C_UNKNOWN;
+  m_nHeadItems  = 0;
+  m_nTailItems  = 0;
   
-  m_i_Offset   = 8;
-  m_iHash      = 0;
+  m_pDesc       = nullptr;
+  m_axaItem     = nullptr;
+  
+  m_i_Offset    = 8;
+  m_iHash       = 0;
 
   i8 nBytes = sizeof(Nub_t<CN,HEAD,TAIL,DESC,CODA>);
   _checkInitialisedSize_(nBytes);
@@ -421,10 +431,11 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::nTails(void)
 /* set item array                                                             */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
-void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vSetItems(i8 nMaxItems, HEAD *axaItem)
+void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vSetItems(i8 nSpaceUnits, i8 nMaxItems, HEAD *axaItem)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
+  m_nSpaceUnits    = nSpaceUnits;
   m_nMaxItems = nMaxItems;
   m_axaItem   = axaItem;
 }
@@ -501,9 +512,10 @@ TrayNL_t<CN,HEAD,TAIL,DESC,CODA,BYTES>::TrayNL_t(void)
 : Object(CN)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
-    
+  
+  i8 nSpaceUnits = BYTES / sizeof(DoubleWord);
   i8 nItems = BYTES / sizeof(HEAD);
-  m_oNub.vSetItems(nItems,&m_xaItem[0]);
+  m_oNub.vSetItems(nSpaceUnits,nItems,&m_xaItem[0]);
   
   vReset();
   
