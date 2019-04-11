@@ -61,7 +61,7 @@ namespace Structures
   class TrayNL_t : public Object
   {
   protected:
-    HEAD m_xaItem[ITEMS]; // array of items
+    HEAD m_xaItem[BYTES / sizeof(HEAD)]; // array of items
   
     Nub_t<CN,HEAD,TAIL,DESC,CODA> m_oNub;
   
@@ -463,7 +463,7 @@ template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 ITEMS, i8 B
 TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>* Structures::_pNubNL(void* aAddr)
 {
   TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>* pVector =
-  reinterpret_cast<TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>*>(aAddr);
+    reinterpret_cast<TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>*>(aAddr);
   
   RASSERT_TYPE(pVector,CN);
   
@@ -502,7 +502,11 @@ TrayNL_t<CN,HEAD,TAIL,DESC,CODA,ITEMS,BYTES>::TrayNL_t(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  m_oNub.vSetItems(ITEMS,&m_xaItem[0]);
+  RASSERT(BYTES == sizeof(HEAD) * ITEMS);
+  RASSERT(ITEMS == BYTES / sizeof(HEAD));
+  
+  i8 nItems = BYTES / sizeof(HEAD);
+  m_oNub.vSetItems(nItems,&m_xaItem[0]);
   
   vReset();
   
