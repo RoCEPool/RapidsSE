@@ -65,7 +65,7 @@ Index::Index(void)
   
   gpAttachMap->m_oStatistics.Index.m_nCreates++;
   
-  Word* pWord = Word::pToWord(this);
+  ForthWord* pWord = ForthWord::pToWord(this);
   
   m_iIndexNo   = -1;
   m_sIndexName = pWord->sName();;

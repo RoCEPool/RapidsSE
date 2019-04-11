@@ -11,7 +11,7 @@ namespace Forth
     union {
       
       //
-      // cells are primarily a pointer to the address of a Word::m_pEntryStep
+      // cells are primarily a pointer to the address of a ForthWord::m_pEntryStep
       // which contains a pointer the step function which executes the word
       //
       // that step will be:

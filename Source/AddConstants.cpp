@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Axioms::vAddConstant(Stz* aName, i8 iVal)
 {
-  Word* pNewWord = new(&gpAttachMap->m_oRootDic) Word(aName);
+  ForthWord* pNewWord = new(&gpAttachMap->m_oRootDic) ForthWord(aName);
   
   IntVal xIntVal;
   xIntVal = iVal;
@@ -25,7 +25,7 @@ void Axioms::vAddConstant(Stz* aName, i8 iVal)
 /*----------------------------------------------------------------------------*/
 void Axioms::vAddConstant(Stz* aName, Stz* aValue)
 {
-  Word* pNewWord = new(&gpAttachMap->m_oRootDic) Word(aName);
+  ForthWord* pNewWord = new(&gpAttachMap->m_oRootDic) ForthWord(aName);
   
   GenVar xWspStr;
   xWspStr = aValue;
@@ -619,7 +619,7 @@ void Axioms::vAddConstants(void)
   /* 66 */ vAddConstant("SIZEOF_TIMER"_Stz,        sizeof(Timer));
   /* 67 */ vAddConstant("SIZEOF_TOKENISER"_Stz,    sizeof(Tokeniser));
   /* 68 */ vAddConstant("SIZEOF_TX"_Stz,           sizeof(Tx));
-  /* 74 */ vAddConstant("SIZEOF_WORD"_Stz,         sizeof(Word));
+  /* 74 */ vAddConstant("SIZEOF_WORD"_Stz,         sizeof(ForthWord));
   
   /*  0 */ vAddConstant("SIZEOF_S32"_Stz,          sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256"_Stz,         sizeof(s256));

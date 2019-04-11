@@ -192,20 +192,20 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   // set up initial default path
   
   // /tenants
-  //Word* pTenants = gpAttachMap->m_oRootDic.pFindWord("tenants"_Stz);
-  Word* pTenants = gpAttachMap->m_pTenants;
+  //ForthWord* pTenants = gpAttachMap->m_oRootDic.pFindWord("tenants"_Stz);
+  ForthWord* pTenants = gpAttachMap->m_pTenants;
   ASSERT(pTenants);
   Cell* aCell = pTenants->aFirstCell();
   m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
 
   // /tenants/boray
-  Word* pTenant = m_oDicStack.pFindInCurrent("boray"_Stz);
+  ForthWord* pTenant = m_oDicStack.pFindInCurrent("boray"_Stz);
   ASSERT(pTenant);
   aCell = pTenant->aFirstCell();
   m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
   
   // /tenants/boray/catalogs
-  Word* pCatalogs = m_oDicStack.pFindInCurrent("catalogs"_Stz);
+  ForthWord* pCatalogs = m_oDicStack.pFindInCurrent("catalogs"_Stz);
   ASSERT(pCatalogs);
   aCell = pCatalogs->aFirstCell();
   m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
@@ -214,7 +214,7 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
     return EC_NONE;
   
   // /tenants/boray/catalogs/rapidsse
-  Word* pCatalog = m_oDicStack.pFindInCurrent(pCatalogName);
+  ForthWord* pCatalog = m_oDicStack.pFindInCurrent(pCatalogName);
   if ( ! pCatalog)
     return EC_NO_SUCH_CATALOG;
   
@@ -222,7 +222,7 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
   
   // /tenants/boray/catalogs/rapidsse/schemas
-  Word* pSchemas = m_oDicStack.pFindInCurrent("schemas"_Stz);
+  ForthWord* pSchemas = m_oDicStack.pFindInCurrent("schemas"_Stz);
   ASSERT(pSchemas);
   aCell = pSchemas->aFirstCell();
   m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
@@ -231,7 +231,7 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
     return EC_NONE;
   
   // /tenants/boray/catalogs/rapidsse/schemas/public
-  Word* pSchema = m_oDicStack.pFindInCurrent(pSchemaName);
+  ForthWord* pSchema = m_oDicStack.pFindInCurrent(pSchemaName);
   if ( ! pSchema)
     return EC_NO_SUCH_SCHEMA;
   
@@ -239,7 +239,7 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
 
   // /tenants/boray/catalogs/rapidsse/schemas/public/tables
-  Word* pTables = m_oDicStack.pFindInCurrent("tables"_Stz);
+  ForthWord* pTables = m_oDicStack.pFindInCurrent("tables"_Stz);
   ASSERT(pTables);
   
   aCell = pTables->aFirstCell();

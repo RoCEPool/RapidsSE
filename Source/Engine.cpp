@@ -887,7 +887,7 @@ void Engine::vStartSystem(void)
   
   
   // get the trace file
-  //Word* pTraceFileWord = gpAttachMap->m_oRootDic.pFindWord("trace_file"_Stz);
+  //ForthWord* pTraceFileWord = gpAttachMap->m_oRootDic.pFindWord("trace_file"_Stz);
   //gpTraceFile = reinterpret_cast<File*>(pTraceFileWord->aBodyArea());
   
   //if (gpAttachMap->m_bVerbose)

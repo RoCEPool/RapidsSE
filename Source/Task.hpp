@@ -53,7 +53,7 @@ namespace Tasks
                public ListNode_t<Task>
   {
   friend class Steps::Step;
-  friend class Word;
+  friend class ForthWord;
 
   private:
   
@@ -174,7 +174,7 @@ namespace Tasks
     void vAddBaseWords(void);
     void vAddMunged(MP_Task mpTask);
     void vAddRoutines(void);
-    Word* pCompileColon(s48K& sDefinition);
+    ForthWord* pCompileColon(s48K& sDefinition);
     void  vCompileConstant(s48K& sDefinition);
 
     /*------------------------------------------------------------------------*/

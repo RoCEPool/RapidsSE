@@ -35,7 +35,7 @@ using namespace Forth;
 #include "Local.hpp"
 #include "LocalSet.hpp"
 #include "Routine.hpp"
-#include "Word.hpp"
+#include "ForthWord.hpp"
 
 #include "Stack.hpp"
 

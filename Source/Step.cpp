@@ -14,7 +14,7 @@ void Step::vAddStep(Stz* aName, StepFp fpStep, bool bImmediate)
 {
   RASSERT(aName->nSize() <= 32);
   
-  Word* pNewWord = new(&gpAttachMap->m_oRootDic) Word(aName);
+  ForthWord* pNewWord = new(&gpAttachMap->m_oRootDic) ForthWord(aName);
   
   //m_pCompiler->m_pCurrentWord = pNewWord;
   

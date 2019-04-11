@@ -61,7 +61,7 @@ Table::Table(void)
   
   gpAttachMap->m_oStatistics.Table.m_nCreates++;
   
-  Word* pWord = Word::pToWord(this);
+  ForthWord* pWord = ForthWord::pToWord(this);
   
   m_sTableName = pWord->sName();
   m_eTableType = TT_NORMAL;
@@ -133,11 +133,11 @@ Table* Table::pFindTable(DicStack* pDicStack, Stz* aTableNm)
 {
   Dic* pDic = pDicStack->pTop();
   
-  Word* pTableDicWord = pDic->pFindWord(aTableNm);
+  ForthWord* pTableDicWord = pDic->pFindWord(aTableNm);
   
   Dic* pTableDic = _pDic(pTableDicWord->aWspArea());
 
-  Word* pTableWord = pTableDic->pFindWord(aTableNm);
+  ForthWord* pTableWord = pTableDic->pFindWord(aTableNm);
   
   Table* pTable = _pTable(pTableWord->aWspArea());
   
