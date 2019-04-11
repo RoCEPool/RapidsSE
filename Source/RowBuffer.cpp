@@ -68,7 +68,7 @@ RowBuffer::RowBuffer(void)
   
   // zero all the cachelines in the row tray
   for (i8 iIndex = 0 ; iIndex < C_MAX_ROWS; iIndex++)
-    m_xRowTray.aGet(iIndex)->vSetAll(0);
+    m_xRowTray.aGetHead(iIndex)->vSetAll(0);
   
   m_pNextBuffer   = nullptr;
   m_pPrevBuffer   = nullptr;
@@ -188,7 +188,7 @@ CacheLine* RowBuffer::aAllotRow(i8 nBytes)
   
   i8 iCacheLine = m_xRowTray.iAllotHead();
   
-  return m_xRowTray.aGet(iCacheLine);
+  return m_xRowTray.aGetHead(iCacheLine);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -206,7 +206,7 @@ CacheLine* RowBuffer::aAllotHead(void)
   
   i8 iCacheLine = m_xRowTray.iAllotHead();
   
-  return m_xRowTray.aGet(iCacheLine);
+  return m_xRowTray.aGetHead(iCacheLine);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -231,7 +231,7 @@ CacheLine* RowBuffer::aAllotTails(i8 nTails)
     iCacheLine = m_xRowTray.iAllotTail();
   ASSERT(iCacheLine != C_UNKNOWN);
   
-  return m_xRowTray.aGet(iCacheLine);
+  return m_xRowTray.aGetTail(iCacheLine);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -450,7 +450,7 @@ CacheLine* RowBuffer::pRow(i8 iRowNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  return m_xRowTray.aGet(iRowNo);
+  return m_xRowTray.aGetHead(iRowNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -642,7 +642,7 @@ bool RowBuffer::bVerifyRows(void)
   i8 nRows = nRowCount();
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    CacheLine* aRowCacheLine = m_xRowTray.aGet(i_Row);
+    CacheLine* aRowCacheLine = m_xRowTray.aGetHead(i_Row);
     RASSERT(aRowCacheLine);
   }
   
