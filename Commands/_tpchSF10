@@ -110,24 +110,6 @@ print "loading supplier.csv..." ;
 time ld supplier "/TPCH/SF10/supplier.csv" ;
 print "-----------------------------------------------------------------------";
 
-print "-----------------------------------------------------------------------";
-print "fetching customer.csv (noPrint)..." ;
-time fetch customer noPrint;
-print "fetching lineitem.csv (noPrint)..." ;
-time fetch lineitem noPrint;
-print "fetching nation.csv (noPrint)..." ;
-time fetch nation noPrint;
-print "fetching orders.csv (noPrint)..." ;
-time fetch orders noPrint;
-print "fetching part.csv (noPrint)..." ;
-time fetch part noPrint;
-print "fetching partsupp.csv (noPrint)..." ;
-time fetch partsupp noPrint;
-print "fetching region.csv (noPrint)..." ;
-time fetch region noPrint;
-print "fetching supplier.csv (noPrint)..." ;
-time fetch supplier noPrint;
-print "-----------------------------------------------------------------------";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 print "-----------------------------------------------------------------------";
 TableSizes;
@@ -135,28 +117,28 @@ print "-----------------------------------------------------------------------";
 
 print "-----------------------------------------------------------------------";
 print "size customer..." ;
-sz customer;
+szTbl customer;
 
 print "size lineitem..." ;
-sz lineitem;
+szTbl lineitem;
 
 print "size nation..." ;
-sz nation;
+szTbl nation;
 
 print "size orders..." ;
-sz orders;
+szTbl orders;
 
 print "size part..." ;
-sz part;
+szTbl part;
 
 print "size partsupp..." ;
-sz partsupp;
+szTbl partsupp;
 
 print "size region..." ;
-sz region;
+szTbl region;
 
 print "size supplier..." ;
-sz supplier;
+szTbl supplier;
 print "-----------------------------------------------------------------------";
 
 print "-----------------------------------------------------------------------";
@@ -177,6 +159,28 @@ time fetch region displayOff ;
 print "fetching supplier.csv..." ;
 time fetch supplier displayOff ;
 print "-----------------------------------------------------------------------";
+
+
+print "-----------------------------------------------------------------------";
+print "fetching customer.csv (noPrint)..." ;
+time fetch customer noPrint;
+print "fetching lineitem.csv (noPrint)..." ;
+time fetch lineitem noPrint;
+print "fetching nation.csv (noPrint)..." ;
+time fetch nation noPrint;
+print "fetching orders.csv (noPrint)..." ;
+time fetch orders noPrint;
+print "fetching part.csv (noPrint)..." ;
+time fetch part noPrint;
+print "fetching partsupp.csv (noPrint)..." ;
+time fetch partsupp noPrint;
+print "fetching region.csv (noPrint)..." ;
+time fetch region noPrint;
+print "fetching supplier.csv (noPrint)..." ;
+time fetch supplier noPrint;
+print "-----------------------------------------------------------------------";
+
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 print "-----------------------------------------------------------------------";

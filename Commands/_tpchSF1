@@ -119,28 +119,28 @@ print "-----------------------------------------------------------------------";
 
 print "-----------------------------------------------------------------------";
 print "size customer..." ;
-sz customer;
+szTbl customer;
 
 print "size lineitem..." ;
-sz lineitem;
+szTbl lineitem;
 
 print "size nation..." ;
-sz nation;
+szTbl nation;
 
 print "size orders..." ;
-sz orders;
+szTbl orders;
 
 print "size part..." ;
-sz part;
+szTbl part;
 
 print "size partsupp..." ;
-sz partsupp;
+szTbl partsupp;
 
 print "size region..." ;
-sz region;
+szTbl region;
 
 print "size supplier..." ;
-sz supplier;
+szTbl supplier;
 print "-----------------------------------------------------------------------";
 
 print "-----------------------------------------------------------------------";
