@@ -61,11 +61,11 @@ void RowCoder::vAnalyse(RowNub* pNub)
          pNub->nHeads(),
          pNub->nTails(),
 
-         iSumHead/nHeads,
+         nHeads ? iSumHead/nHeads : 0,
          iMinHead,
          iMaxHead,
 
-         iSumTail/nTails,
+         nTails ? iSumTail/nTails : 0,
          iMinTail,
          iMaxTail);
 
