@@ -98,9 +98,10 @@ using namespace Data;
 #include "Key.hpp"
 #include "Record.hpp"
 #include "RowCoder.hpp"
-
 #include "SkipRoots.hpp"
 #include "TablePtn.hpp"
+#include "TailLine.hpp"
+
 #include "EntryBuffer.hpp"
 #include "RowBuffer.hpp"
 #include "IndexTree.hpp"
