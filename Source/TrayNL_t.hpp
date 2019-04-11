@@ -35,7 +35,7 @@ namespace Structures
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
     i8    nFree(void);
-    ITEM_HEAD* aGet(i8 i_Item);
+    ITEM_HEAD* aGetHead(i8 i_Item);
     ITEM_HEAD* aGetTail(i8 i_Item);
     i8    nHeads(void);
     i8    iHash(void);
@@ -85,7 +85,7 @@ namespace Structures
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
     i8    nFree(void);
-    ITEM_HEAD* aGet(i8 i_Item);
+    ITEM_HEAD* aGetHead(i8 i_Item);
     ITEM_HEAD* aGetTail(i8 i_Item);
     i8    iHash(void);
     bool  bHasSpace(i8 nBytes);
@@ -166,7 +166,7 @@ ITEM_HEAD* Nub_t<TRAY_CN,ITEM_HEAD,ITEM_TAIL,DESC>::aAllotHead(void)
   if (C_UNKNOWN == i_Item)
     return nullptr;
   
-  ITEM_HEAD* pItem = aGet(i_Item);
+  ITEM_HEAD* pItem = aGetHead(i_Item);
   
   return pItem;
 }
@@ -207,7 +207,7 @@ ITEM_HEAD* Nub_t<TRAY_CN,ITEM_HEAD,ITEM_TAIL,DESC>::aAllotTails(i8 nTails)
     i_CacheLine = iAllotTail();
   ASSERT(i_CacheLine != C_UNKNOWN);
 
-  ITEM_HEAD* pItem = aGet(i_CacheLine);
+  ITEM_HEAD* pItem = aGetTail(i_CacheLine);
   
   return pItem;
 }
@@ -267,7 +267,7 @@ i8 Nub_t<TRAY_CN,ITEM_HEAD,ITEM_TAIL,DESC>::nFree(void)
 /* get a specific head item                                                   */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM_HEAD, class ITEM_TAIL, class DESC>
-ITEM_HEAD* Nub_t<TRAY_CN,ITEM_HEAD,ITEM_TAIL,DESC>::aGet(i8 i_Item)
+ITEM_HEAD* Nub_t<TRAY_CN,ITEM_HEAD,ITEM_TAIL,DESC>::aGetHead(i8 i_Item)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
@@ -604,11 +604,11 @@ i8 TrayNL_t<TRAY_CN,ITEM_HEAD,ITEM_TAIL,DESC,MAX_ITEMS>::nFree(void)
 /* get a specific head item                                                   */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM_HEAD, class ITEM_TAIL, class DESC, i8 MAX_ITEMS>
-ITEM_HEAD* TrayNL_t<TRAY_CN,ITEM_HEAD,ITEM_TAIL,DESC,MAX_ITEMS>::aGet(i8 i_Item)
+ITEM_HEAD* TrayNL_t<TRAY_CN,ITEM_HEAD,ITEM_TAIL,DESC,MAX_ITEMS>::aGetHead(i8 i_Item)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
-  ITEM_HEAD* aItem = m_oNub.aGet(i_Item);
+  ITEM_HEAD* aItem = m_oNub.aGetHead(i_Item);
   
   return aItem;
 }
