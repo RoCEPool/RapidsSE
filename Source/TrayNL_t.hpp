@@ -36,6 +36,7 @@ namespace Structures
     void  vDesc(DESC* pDesc);
     i8    nFree(void);
     ITEM_HEAD* aGet(i8 i_Item);
+    ITEM_HEAD* aGetTail(i8 i_Item);
     i8    nHeads(void);
     i8    iHash(void);
     void  vHashInc(i8 iDelta);
@@ -85,6 +86,7 @@ namespace Structures
     void  vDesc(DESC* pDesc);
     i8    nFree(void);
     ITEM_HEAD* aGet(i8 i_Item);
+    ITEM_HEAD* aGetTail(i8 i_Item);
     i8    iHash(void);
     bool  bHasSpace(i8 nBytes);
     i8    nHeads(void);
@@ -262,10 +264,25 @@ i8 Nub_t<TRAY_CN,ITEM_HEAD,ITEM_TAIL,DESC>::nFree(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a specific item                                                        */
+/* get a specific head item                                                   */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM_HEAD, class ITEM_TAIL, class DESC>
 ITEM_HEAD* Nub_t<TRAY_CN,ITEM_HEAD,ITEM_TAIL,DESC>::aGet(i8 i_Item)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  ASSERT(i_Item >= 0 && i_Item < m_nMaxItems);
+  
+  ITEM_HEAD* aItem = &m_axaItem[i_Item];
+  
+  return aItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a specific tail item                                                   */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM_HEAD, class ITEM_TAIL, class DESC>
+ITEM_HEAD* Nub_t<TRAY_CN,ITEM_HEAD,ITEM_TAIL,DESC>::aGetTail(i8 i_Item)
 {
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
@@ -584,7 +601,7 @@ i8 TrayNL_t<TRAY_CN,ITEM_HEAD,ITEM_TAIL,DESC,MAX_ITEMS>::nFree(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a specific item                                                        */
+/* get a specific head item                                                   */
 /*----------------------------------------------------------------------------*/
 template <eCN TRAY_CN, class ITEM_HEAD, class ITEM_TAIL, class DESC, i8 MAX_ITEMS>
 ITEM_HEAD* TrayNL_t<TRAY_CN,ITEM_HEAD,ITEM_TAIL,DESC,MAX_ITEMS>::aGet(i8 i_Item)
@@ -592,6 +609,19 @@ ITEM_HEAD* TrayNL_t<TRAY_CN,ITEM_HEAD,ITEM_TAIL,DESC,MAX_ITEMS>::aGet(i8 i_Item)
   _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
   
   ITEM_HEAD* aItem = m_oNub.aGet(i_Item);
+  
+  return aItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a specific tail item                                                   */
+/*----------------------------------------------------------------------------*/
+template <eCN TRAY_CN, class ITEM_HEAD, class ITEM_TAIL, class DESC, i8 MAX_ITEMS>
+ITEM_HEAD* TrayNL_t<TRAY_CN,ITEM_HEAD,ITEM_TAIL,DESC,MAX_ITEMS>::aGetTail(i8 i_Item)
+{
+  _precondition_(_MAGIC_,TRAY_CN,_FOOTER_);
+  
+  ITEM_HEAD* aItem = m_oNub.aGetTail(i_Item);
   
   return aItem;
 }
