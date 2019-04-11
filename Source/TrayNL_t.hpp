@@ -21,7 +21,6 @@ namespace Structures
     i8 m_nTailItems;  // number of items allocated from the tail
   
     DESC* m_pDesc;    // object describing the items
-    HEAD* m_axaItem;  // array of items
   
     DoubleWord* m_axaUnits;  // array of space units
 
@@ -55,7 +54,7 @@ namespace Structures
     void  vReset(void);
     i8    nTails(void);
   
-    void  vSetItems(i8 nSpaceUnits, i8 nMaxItems, HEAD* axaItem);
+    void  vSetItems(i8 nSpaceUnits, i8 nMaxItems, HEAD* axaUnits);
   
   private:
     Footer* aFooter(void);
@@ -140,7 +139,6 @@ Nub_t<CN,HEAD,TAIL,DESC,CODA>::Nub_t(void)
   m_nTailItems  = 0;
   
   m_pDesc       = nullptr;
-  m_axaItem     = nullptr;
 
   m_axaUnits    = nullptr;
 
@@ -291,11 +289,9 @@ HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetHead(i8 i_Item)
   
   ASSERT(i_Item >= 0 && i_Item < m_nMaxItems);
   
-  HEAD* aItem = &m_axaItem[i_Item];
   
   i8 i_Unit = i_Item * (sizeof(HEAD) / sizeof(DoubleWord));
   HEAD* aUnit = (HEAD*)&m_axaUnits[i_Unit];
-  RASSERT(aUnit == aItem);
   
   return aUnit;
 }
@@ -310,11 +306,9 @@ HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetTail(i8 i_Item)
   
   ASSERT(i_Item >= 0 && i_Item < m_nMaxItems);
   
-  HEAD* aItem = &m_axaItem[i_Item];
   
   i8 i_Unit = i_Item * (sizeof(HEAD) / sizeof(DoubleWord));
   HEAD* aUnit = (HEAD*)&m_axaUnits[i_Unit];
-  RASSERT(aUnit == aItem);
 
   return aUnit;
 }
@@ -450,15 +444,14 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::nTails(void)
 /* set item array                                                             */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
-void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vSetItems(i8 nSpaceUnits, i8 nMaxItems, HEAD *axaItem)
+void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vSetItems(i8 nSpaceUnits, i8 nMaxItems, HEAD *axaUnits)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   m_nSpaceUnits = nSpaceUnits;
   m_nMaxItems   = nMaxItems;
-  m_axaItem     = axaItem;
   
-  m_axaUnits    = reinterpret_cast<DoubleWord*>(axaItem);
+  m_axaUnits    = reinterpret_cast<DoubleWord*>(axaUnits);
 }
 
 /*----------------------------------------------------------------------------*/
