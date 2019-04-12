@@ -50,9 +50,11 @@ namespace Structures
     void  vHashInc(i8 iDelta);
     bool  bHasSpace(i8 nBytes);
     i8    nItems(void);
+    i8    iLastTail(void);
     i8    iNextTail(i8 i_Tail);
     i8    i_Offset(void);
     void  vOffsetInc(i8 iDelta);
+    i8    iPrevTail(i8 i_Tail);
     void  vReset(void);
     i8    nTails(void);
   
@@ -402,6 +404,22 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nItems(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get last tail                                                              */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iLastTail(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  if (! m_nTailUnits)
+    return C_UNKNOWN;
+  
+  i8 i_Tail = m_nSpaceUnits - m_nTailUnits; // 10 - 3 : [0 1 2 .. 7 8 9];
+  
+  return i_Tail;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get total number of actual items                                           */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
@@ -424,7 +442,7 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vOffsetInc(i8 iDelta)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next tail                                                             */
+/* get next tail                                                              */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
 i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iNextTail(i8 i_PrevTail)
@@ -433,6 +451,21 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iNextTail(i8 i_PrevTail)
   
   i8 i_Tail = i_PrevTail - (sizeof(TAIL) / sizeof(UNIT));
   if (i_Tail >= m_nSpaceUnits - m_nTailUnits) // 10 - 3 : [0 1 2 .. 7 8 9]
+    return i_Tail;
+  
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get prev tail                                                              */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iPrevTail(i8 i_PriorTail)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  i8 i_Tail = i_PriorTail - (sizeof(TAIL) / sizeof(UNIT));
+  if (i_Tail < m_nSpaceUnits)
     return i_Tail;
   
   return C_UNKNOWN;
