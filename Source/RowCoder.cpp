@@ -752,8 +752,9 @@ void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
 void RowCoder::vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
                                Column* pCol, eMN eEncoding, i8 i_Offset)
 {
-  i8 i_Delta = aHeadLine->w8_2B(i_Offset);
-  HeadLine* aShocoLine = aHeadLine + i_Delta;
+  i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
+  HeadLine* aShocoLine = aHeadLine + i_TailDistance;
+  
   //MemLib::vWordDump(aShocoLine,sizeof(HeadLine));
   
   i8 nCompressed = aShocoLine->w8_1B(0);

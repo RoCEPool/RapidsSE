@@ -33,6 +33,10 @@ namespace Structures
     Nub_t(void);
     ~Nub_t(void) noexcept(false);
   
+    static TAIL* aToTail(HEAD* aHead, i8 i_Distance);
+    static i8 iToTail(i8 i_Head, i8 i_Distance);
+    static i8 iUnitDiff(i8 i_Head, i8 i_Tail);
+
     i8    iAllotHead(void);
     i8    iAllotTail(i8 nBytes);
     DESC* pDesc(void);
@@ -51,8 +55,6 @@ namespace Structures
     void  vOffsetInc(i8 iDelta);
     void  vReset(void);
     i8    nTails(void);
-    i8    iToTail(i8 i_Head, i8 i_Diff);
-    i8    iUnitDiff(i8 i_Head, i8 i_Tail);
   
     void  vSetItems(i8 nSpaceUnits, UNIT* axaUnits);
   
@@ -158,6 +160,48 @@ template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::~Nub_t(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* compute tail from head + diff                                              */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+TAIL* Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::aToTail(HEAD* aHead, i8 i_Distance)
+{
+  TAIL* aTail = (TAIL*)((UNIT*)aHead + i_Distance);
+  
+  return aTail;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute tail from head + diff                                              */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iToTail(i8 i_Head, i8 i_Diff)
+{
+  i8 i_HeadUnit = i_Head * (sizeof(HEAD) / sizeof(UNIT));
+  
+  i8 i_Tail = i_HeadUnit + i_Diff;
+  
+  return i_Tail;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute unit difference between a head and a tail                          */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iUnitDiff(i8 i_Head, i8 i_Tail)
+{
+  i8 i_HeadUnit = i_Head * (sizeof(HEAD) / sizeof(UNIT));
+  
+  i8 i_Diff = i_Tail - i_HeadUnit;
+  
+  return i_Diff;
 }
 
 
@@ -436,36 +480,6 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vSetItems(i8 nSpaceUnits, UNIT* axaUnit
   m_nSpaceUnits = nSpaceUnits;
   
   m_axaUnits    = axaUnits;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compute tail from head + diff                                              */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iToTail(i8 i_Head, i8 i_Diff)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  i8 i_HeadUnit = i_Head * (sizeof(HEAD) / sizeof(UNIT));
-  
-  i8 i_Tail = i_HeadUnit + i_Diff;
-  
-  return i_Tail;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compute unit difference between a head and a tail                          */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iUnitDiff(i8 i_Head, i8 i_Tail)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  i8 i_HeadUnit = i_Head * (sizeof(HEAD) / sizeof(UNIT));
-
-  i8 i_Diff = i_Tail - i_HeadUnit;
-  
-  return i_Diff;
 }
 
 
