@@ -16,7 +16,6 @@ namespace Structures
     i8 m_nHeadUnits;  // number of space units allocated from the head
     i8 m_nTailUnits;  // number of space units allocated from the tail
 
-    i8 m_nMaxItems;   // max number of items
     i8 m_nHeadItems;  // number of items allocated from the head
     i8 m_nTailItems;  // number of items allocated from the tail
   
@@ -53,7 +52,7 @@ namespace Structures
     void  vReset(void);
     i8    nTails(void);
   
-    void  vSetItems(i8 nSpaceUnits, i8 nMaxItems, HEAD* axaUnits);
+    void  vSetItems(i8 nSpaceUnits, HEAD* axaUnits);
   
   private:
     Footer* aFooter(void);
@@ -133,7 +132,6 @@ Nub_t<CN,HEAD,TAIL,DESC,CODA>::Nub_t(void)
   m_nHeadUnits  = 0;
   m_nTailUnits  = 0;
 
-  m_nMaxItems   = C_UNKNOWN;
   m_nHeadItems  = 0;
   m_nTailItems  = 0;
   
@@ -264,13 +262,13 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::nFreeBytes(void)
 /* get a specific head item                                                   */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
-HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetHead(i8 i_Item)
+HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetHead(i8 i_Head)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  ASSERT(i_Item >= 0 && i_Item < m_nMaxItems);
+  ASSERT(i_Item >= 0 && i_Item < m_nHeadUnits);
   
-  i8 i_Unit = i_Item * (sizeof(HEAD) / sizeof(TAIL));
+  i8 i_Unit = i_Head * (sizeof(HEAD) / sizeof(TAIL));
   HEAD* aUnit = (HEAD*)&m_axaUnits[i_Unit];
   
   return aUnit;
@@ -384,7 +382,7 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iNextTail(i8 i_PrevTail)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   i8 i_Tail = i_PrevTail - 1;
-  if (i_Tail < m_nSpaceUnits - m_nTailUnits) // 10 - 3 : [0 1 2 .. 7 8 9]
+  if (i_Tail >= m_nSpaceUnits - m_nTailUnits) // 10 - 3 : [0 1 2 .. 7 8 9]
     return i_Tail;
   
   return C_UNKNOWN;
@@ -425,12 +423,11 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::nTails(void)
 /* set item array                                                             */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
-void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vSetItems(i8 nSpaceUnits, i8 nMaxItems, HEAD *axaUnits)
+void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vSetItems(i8 nSpaceUnits, HEAD *axaUnits)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   m_nSpaceUnits = nSpaceUnits;
-  m_nMaxItems   = nMaxItems;
   
   m_axaUnits    = reinterpret_cast<TAIL*>(axaUnits);
 }
@@ -509,8 +506,7 @@ TrayNL_t<CN,HEAD,TAIL,DESC,CODA,BYTES>::TrayNL_t(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   i8 nSpaceUnits = BYTES / sizeof(TAIL);
-  i8 nItems = BYTES / sizeof(HEAD);
-  m_oNub.vSetItems(nSpaceUnits,nItems,&m_xaItem[0]);
+  m_oNub.vSetItems(nSpaceUnits,&m_xaItem[0]);
   
   vReset();
   
