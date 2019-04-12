@@ -98,7 +98,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   HeadLine* pIntoHead = pIntoNub->aGetHead(i_IntoHead);
   HeadLine* pFromHead = pFromNub->aGetHead(0);
   
-  MemLib::vCopy(pIntoHead,pFromHead,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
+  MemLib::vCopy(pIntoHead,pFromHead,sizeof(HeadLine),CN_ROWBUFFER);
   //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
 
   if (1 == nHeadLines)
@@ -188,7 +188,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     i_IntoTail = pIntoNub->iAllotTail(sizeof(TailLine));
     pIntoTail = pIntoNub->aGetTail(i_IntoTail);
-    MemLib::vCopy(pIntoTail,pFromTail,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
+    MemLib::vCopy(pIntoTail,pFromTail,sizeof(TailLine),CN_ROWBUFFER);
     
     // what gets encoded is the difference in cache lines
     i8 i_TailDistance = pIntoNub->iUnitDiff(i_IntoHead,i_IntoTail);
