@@ -107,7 +107,6 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   i8 nColumns = pColVec->nItems();
   i8 i_Offset = C_UNKNOWN;
   
-  i8 i_Tail = 0;
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     Column* pCol = pColVec->pGet(i_Column);
@@ -156,7 +155,6 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
         //if (IntLib::bIsDecaCycle(nFolds))
         //  vTrace("%lld folds\n"_Stz,nFolds);
         
-        i_Tail++;
         continue;
       }
       
@@ -168,9 +166,12 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #ifdef WITH_SHOCO_DUPLICATES
-    pIntoTail = pFindTail(pIntoNub,pFromTail);
+    i8 i_IntoTail = iFindTail(pIntoNub,pFromTail);
     
-    if (pIntoTail) {
+    if (C_UNKNOWN != i_IntoTail) {
+
+      pIntoTail = pIntoNub->aGetTail(i_IntoTail);
+    
       // what gets encoded is the difference in cache lines
       i8 i_RevisedDiff = (HeadLine*)pIntoTail - (HeadLine*)pIntoHead;
       
@@ -180,14 +181,13 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
       
       //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
       
-      i_Tail++;
       continue;
     }
 #endif
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    i8 i_Tail = pIntoNub->iAllotTail(sizeof(TailLine));
-    pIntoTail = pIntoNub->aGetTail(i_Tail);
+    i_IntoTail = pIntoNub->iAllotTail(sizeof(TailLine));
+    pIntoTail = pIntoNub->aGetTail(i_IntoTail);
     MemLib::vCopy(pIntoTail,pFromTail,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
     
     // what gets encoded is the difference in cache lines
@@ -199,7 +199,6 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     
     //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
     
-    i_Tail++;
     continue;
   }
   
