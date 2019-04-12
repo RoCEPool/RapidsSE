@@ -21,7 +21,7 @@ namespace Structures
   
     DESC* m_pDesc;    // object describing the items
   
-    TAIL* m_axaUnits;  // array of space units
+    UNIT* m_axaUnits;  // array of space units
 
     i8 m_i_Offset;    // encoding offset
     i8 m_iHash;       // encoding hash
@@ -52,7 +52,7 @@ namespace Structures
     void  vReset(void);
     i8    nTails(void);
   
-    void  vSetItems(i8 nSpaceUnits, TAIL* axaUnits);
+    void  vSetItems(i8 nSpaceUnits, UNIT* axaUnits);
   
   private:
     Footer* aFooter(void);
@@ -65,7 +65,7 @@ namespace Structures
   class TrayNL_t : public Object
   {
   protected:
-    TAIL m_xaUnits[BYTES / sizeof(TAIL)]; // array of items
+    UNIT m_xaUnits[BYTES / sizeof(UNIT)]; // array of space units
   
     Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA> m_oNub;
   
@@ -423,7 +423,7 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nTails(void)
 /* set item array                                                             */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
-void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vSetItems(i8 nSpaceUnits, TAIL* axaUnits)
+void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vSetItems(i8 nSpaceUnits, UNIT* axaUnits)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
