@@ -38,7 +38,6 @@ namespace Structures
     i8    iAllotTail_Bytes(i8 nBytes);
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
-    i8    nFree(void);
     i8    nFreeBytes(void);
     HEAD* aGetHead(i8 i_Item);
     TAIL* aGetTail_Unit(i8 i_Unit);
@@ -86,7 +85,7 @@ namespace Structures
     i8    iAllotHead(void);
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
-    i8    nFree(void);
+    i8    nFreeBytes(void);
     HEAD* aGetHead(i8 i_Item);
     TAIL* aGetTail(i8 i_Item);
     i8    iHash(void);
@@ -238,19 +237,6 @@ void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vDesc(DESC* pDesc)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   m_pDesc = pDesc;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get total number of free items                                             */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
-i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::nFree(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  i8 nFree = m_nMaxItems - (m_nHeadItems + m_nTailItems);
-  
-  return nFree;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -589,13 +575,13 @@ void TrayNL_t<CN,HEAD,TAIL,DESC,CODA,BYTES>::vDesc(DESC* pDesc)
 /* get total number of free items                                             */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 BYTES>
-i8 TrayNL_t<CN,HEAD,TAIL,DESC,CODA,BYTES>::nFree(void)
+i8 TrayNL_t<CN,HEAD,TAIL,DESC,CODA,BYTES>::nFreeBytes(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  i8 nFree = m_oNub.nFree();
+  i8 nFreeBytes = m_oNub.nFreeBytes();
   
-  return nFree;
+  return nFreeBytes;
 }
 
 /*----------------------------------------------------------------------------*/
