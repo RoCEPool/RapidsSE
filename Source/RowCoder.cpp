@@ -1574,41 +1574,6 @@ i8 RowCoder::iFindTail(RowNub* pNub, TailLine* aFindLine)
 }
 
 /*----------------------------------------------------------------------------*/
-/* search for duplicate tail line                                             */
-/*----------------------------------------------------------------------------*/
-TailLine* RowCoder::pFindTail(RowNub* pNub, TailLine* aFindLine)
-{
-  static i8 nFound = 0;
-  static i8 nNotFound = 0;
-
-  for (i8 i_Tail = pNub->iFirstTail();
-       i_Tail != C_UNKNOWN;
-       i_Tail = pNub->iNextTail(i_Tail)) {
-
-    TailLine* aTailLine = pNub->aGetTail(i_Tail);
-    
-    //MemLib::vWordDump(aFindLine,sizeof(HeadLine));
-    //MemLib::vWordDump(aTailLine,sizeof(HeadLine));
-
-    if (0 == MemLib::iCompareWords(aTailLine,aFindLine,sizeof(TailLine))) {
-      nFound++;
-//      if (IntLib::bIsDecaCycle(nFound))
-//        vTrace("%lld dupe tail found\n"_Stz,nFound);
-      return aTailLine;
-    }
-
-    i_Tail = pNub->iNextTail(i_Tail);
-    if (C_UNKNOWN == i_Tail)
-      break;
-  }
-  
-  nNotFound++;
-//  if (IntLib::bIsDecaCycle(nNotFound))
-//    vTrace("%lld dupe tail NOT found\n"_Stz,nNotFound);
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* calculate free space of a head line                                        */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::nFreeSpaceHead(RowNub* pNub, HeadLine* aHeadLine)
