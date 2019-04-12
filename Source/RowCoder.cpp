@@ -23,13 +23,13 @@ void RowCoder::vAnalyse(RowNub* pNub)
   i8 iMinHead = C_I8_MAX;
   i8 iMaxHead = C_I8_MIN;
 
-  for (i8 i_Tail = pNub->nMaxItems() - pNub->nTails();
-       i_Tail < pNub->nMaxItems();
-       i_Tail++) {
+  for (i8 i_Tail = pNub->iFirstTail();
+       i_Tail != C_UNKNOWN;
+       i_Tail = pNub->iNextTail(i_Tail)) {
     
     TailLine* aTail = pNub->aGetTail(i_Tail);
     
-    i8 iLenTail = aTail->w8_2B(0);
+    i8 iLenTail = aTail->w8_1B(0);
     iSumTail += iLenTail;
     nTails++;
     
@@ -37,7 +37,6 @@ void RowCoder::vAnalyse(RowNub* pNub)
       iMinTail = iLenTail;
     if (iLenTail > iMaxTail)
       iMaxTail = iLenTail;
-  
   }
   
   for (i8 i_Head = 0; i_Head < pNub->nHeads();  i_Head++) {
@@ -68,7 +67,6 @@ void RowCoder::vAnalyse(RowNub* pNub)
          nTails ? iSumTail/nTails : 0,
          iMinTail,
          iMaxTail);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1549,17 +1547,10 @@ TailLine* RowCoder::pFindTail(RowNub* pNub, TailLine* aFindLine)
   static i8 nFound = 0;
   static i8 nNotFound = 0;
 
-  i8 i_Tail = pNub->iFirstTail();
+  for (i8 i_Tail = pNub->iFirstTail();
+       i_Tail != C_UNKNOWN;
+       i_Tail = pNub->iNextTail(i_Tail)) {
 
-  if (C_UNKNOWN == i_Tail) {
-    nNotFound++;
-//    if (IntLib::bIsDecaCycle(nNotFound))
-//      vTrace("%lld dupe tail NOT found\n"_Stz,nNotFound);
-    return nullptr;
-  }
-  
-  for (;;) {
-    
     TailLine* aTailLine = pNub->aGetTail(i_Tail);
     
     //MemLib::vWordDump(aFindLine,sizeof(HeadLine));
