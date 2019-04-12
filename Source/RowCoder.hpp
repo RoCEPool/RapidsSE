@@ -64,7 +64,8 @@ namespace Data
     static eMN eEncodingVch(Datum* pDatum, i8& nBytesEncoded);
   
     static TailLine* pFindTail(RowNub* pNub, TailLine* aFindLine);
-  
+    static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
+
     static i8 nFreeSpaceHead(RowNub* pNub, HeadLine* aHeadLine);
   
     static eMN eGetEncoding(HeadLine* aHeadLine, ColumnVec* pColVec,

@@ -40,7 +40,7 @@ namespace Structures
     i8    nFreeBytes(void);
     i8    iFirstTail(void);
     HEAD* aGetHead(i8 i_Head);
-    TAIL* aGetTail(i8 i_Head);
+    TAIL* aGetTail(i8 i_Tail);
     i8    nHeads(void);
     i8    iHash(void);
     void  vHashInc(i8 iDelta);
@@ -463,7 +463,7 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iUnitDiff(i8 i_Head, i8 i_Tail)
   
   i8 i_HeadUnit = i_Head * (sizeof(HEAD) / sizeof(UNIT));
 
-  i8 i_Diff = i_HeadUnit - i_Tail;
+  i8 i_Diff = i_Tail - i_HeadUnit;
   
   return i_Diff;
 }
