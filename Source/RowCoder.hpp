@@ -5,8 +5,12 @@
 
 namespace Data
 {
+  static const i8 C_TAIL_UNITS_OFFSET = 0;
+  static const i8 C_TAIL_UNITS_BYTES  = 1;
+  
+  static const i8 C_SHOCO_COMPRESSED_OFFSET = C_TAIL_UNITS_OFFSET
+                                              + C_TAIL_UNITS_BYTES;
   static const i8 C_SHOCO_COMPRESSED_BYTES  = 1;
-  static const i8 C_SHOCO_COMPRESSED_OFFSET = 0;
 
   class RowCoder
   {

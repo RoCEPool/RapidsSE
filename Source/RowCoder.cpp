@@ -126,16 +126,16 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     TailLine* pShocoTail = pFromNub->aGetTail(i_Shoco);
     
     /*
-     +=================================+
-     |          Shoco Tail Line        +
-     +=================================+
-     | C | <compressed bytes> <unused> +
-     +---------------------------------+
-     | 0 | 1                        63 |
-     +---------------------------------+
+     +=====================================+
+     |            Shoco Tail Line          +
+     +=====================================+
+     | U | C | <compressed bytes> <unused> +
+     +-------------------------------------+
+     | 0 | 1 | 2                        63 |
+     +-------------------------------------+
      
-     where C is one byte being the number of compressed bytes
-     
+     where: U is one byte being the unit length of the tail line
+            C is one byte being the number of compressed bytes
      */
 
     
@@ -759,16 +759,16 @@ void RowCoder::vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
   //MemLib::vWordDump(aShocoLine,sizeof(HeadLine));
   
   /*
-   +=================================+
-   |          Shoco Tail Line        +
-   +=================================+
-   | C | <compressed bytes> <unused> +
-   +---------------------------------+
-   | 0 | 1                        63 |
-   +---------------------------------+
+   +=====================================+
+   |            Shoco Tail Line          +
+   +=====================================+
+   | U | C | <compressed bytes> <unused> +
+   +-------------------------------------+
+   | 0 | 1 | 2                        63 |
+   +-------------------------------------+
    
-   where C is one byte being the number of compressed bytes
-   
+   where: U is one byte being the unit length of the tail line
+          C is one byte being the number of compressed bytes
    */
 
   i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
@@ -1238,18 +1238,18 @@ void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum)
   pNub->vOffsetInc(2);
 
   /*
-      +=================================+
-      |          Shoco Tail Line        +
-      +=================================+
-      | C | <compressed bytes> <unused> +
-      +---------------------------------+
-      | 0 | 1                        63 |
-      +---------------------------------+
+   +=====================================+
+   |            Shoco Tail Line          +
+   +=====================================+
+   | U | C | <compressed bytes> <unused> +
+   +-------------------------------------+
+   | 0 | 1 | 2                        63 |
+   +-------------------------------------+
    
-      where C is one byte being the number of compressed bytes
-   
+   where: U is one byte being the unit length of the tail line
+          C is one byte being the number of compressed bytes
    */
-  
+
   // compress varchar into tail shoco cache line
   i8 nCompressed =
     Compress::iIntoShoco((byte*)aShocoTail       // into compressed destination
