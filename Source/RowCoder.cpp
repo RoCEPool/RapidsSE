@@ -764,7 +764,7 @@ void RowCoder::vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
   i8 nDecompressed =
     Compress::iFromShoco((char*)pDatum->m_xWsp.aStz(),
                          255,
-                         ((byte*)aShocoLine)+8,
+                         ((byte*)aShocoLine)+1,
                          nCompressed);
   ASSERT(nDecompressed);
   pDatum->m_nChars = nDecompressed;
@@ -1227,8 +1227,8 @@ void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum)
 
   // compress varchar into tail shoco cache line
   i8 nCompressed =
-    Compress::iIntoShoco((byte*)aShocoLine + C_BYTES_PER_WORD,
-                         C_BYTES_PER_CACHE_LINE - C_BYTES_PER_WORD,
+    Compress::iIntoShoco((byte*)aShocoLine + 1,
+                         C_BYTES_PER_CACHE_LINE - 1,
                          (char*)pDatum->m_xWsp.aArea(),
                          pDatum->m_nChars);
   
