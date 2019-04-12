@@ -52,7 +52,7 @@ namespace Structures
     void  vReset(void);
     i8    nTails(void);
   
-    void  vSetItems(i8 nSpaceUnits, HEAD* axaUnits);
+    void  vSetItems(i8 nSpaceUnits, TAIL* axaUnits);
   
   private:
     Footer* aFooter(void);
@@ -65,7 +65,7 @@ namespace Structures
   class TrayNL_t : public Object
   {
   protected:
-    HEAD m_xaItem[BYTES / sizeof(HEAD)]; // array of items
+    TAIL m_xaUnits[BYTES / sizeof(TAIL)]; // array of items
   
     Nub_t<CN,HEAD,TAIL,DESC,CODA> m_oNub;
   
@@ -423,13 +423,13 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::nTails(void)
 /* set item array                                                             */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
-void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vSetItems(i8 nSpaceUnits, HEAD *axaUnits)
+void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vSetItems(i8 nSpaceUnits, TAIL* axaUnits)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   m_nSpaceUnits = nSpaceUnits;
   
-  m_axaUnits    = reinterpret_cast<TAIL*>(axaUnits);
+  m_axaUnits    = axaUnits;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -506,7 +506,7 @@ TrayNL_t<CN,HEAD,TAIL,DESC,CODA,BYTES>::TrayNL_t(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   i8 nSpaceUnits = BYTES / sizeof(TAIL);
-  m_oNub.vSetItems(nSpaceUnits,&m_xaItem[0]);
+  m_oNub.vSetItems(nSpaceUnits,&m_xaUnits[0]);
   
   vReset();
   
