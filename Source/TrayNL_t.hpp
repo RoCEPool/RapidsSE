@@ -22,7 +22,7 @@ namespace Structures
   
     DESC* m_pDesc;    // object describing the items
   
-    DoubleWord* m_axaUnits;  // array of space units
+    TAIL* m_axaUnits;  // array of space units
 
     i8 m_i_Offset;    // encoding offset
     i8 m_iHash;       // encoding hash
@@ -35,14 +35,12 @@ namespace Structures
     ~Nub_t(void) noexcept(false);
   
     i8    iAllotHead(void);
-    i8    iAllotTail(void);
     i8    iAllotTail_Bytes(i8 nBytes);
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
     i8    nFree(void);
     i8    nFreeBytes(void);
     HEAD* aGetHead(i8 i_Item);
-    TAIL* aGetTail(i8 i_Item);
     TAIL* aGetTail_Unit(i8 i_Unit);
     i8    nHeads(void);
     i8    iHash(void);
@@ -86,7 +84,6 @@ namespace Structures
     operator Nub_t<CN,HEAD,TAIL,DESC,CODA>*(void);
   
     i8    iAllotHead(void);
-    i8    iAllotTail(void);
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
     i8    nFree(void);
@@ -183,29 +180,8 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotHead(void)
 
   i8 i_Item = m_nHeadItems++;
   
-  m_nHeadUnits += (sizeof(HEAD) / sizeof(DoubleWord));
+  m_nHeadUnits += (sizeof(HEAD) / sizeof(TAIL));
   
-  return i_Item;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot tail item                                                            */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
-i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotTail(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  if (nItems() >= m_nMaxItems) {
-    RASSERT(nFreeBytes() < (i8)sizeof(TAIL));
-    return C_UNKNOWN;
-  }
-  RASSERT(nFreeBytes() >= (i8)sizeof(TAIL));
-
-  i8 i_Item = m_nMaxItems - 1 - m_nTailItems++;
-  
-  m_nTailUnits += (sizeof(TAIL) / sizeof(DoubleWord));
-
   return i_Item;
 }
 
@@ -228,10 +204,10 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotTail_Bytes(i8 nBytes)
   if (nItems() >= m_nMaxItems)
     return C_UNKNOWN;
 
-  i8 nUnits = nBytes / (i8)sizeof(DoubleWord);
-  if (nBytes % (i8)sizeof(DoubleWord))
+  i8 nUnits = nBytes / (i8)sizeof(TAIL);
+  if (nBytes % (i8)sizeof(TAIL))
     nUnits++;
-  RASSERT(nUnits * (i8)sizeof(DoubleWord) >= nBytes);
+  RASSERT(nUnits * (i8)sizeof(TAIL) >= nBytes);
   
   m_nTailUnits += nUnits;
 
@@ -299,7 +275,7 @@ HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetHead(i8 i_Item)
   ASSERT(i_Item >= 0 && i_Item < m_nMaxItems);
   
   
-  i8 i_Unit = i_Item * (sizeof(HEAD) / sizeof(DoubleWord));
+  i8 i_Unit = i_Item * (sizeof(HEAD) / sizeof(TAIL));
   HEAD* aUnit = (HEAD*)&m_axaUnits[i_Unit];
   
   return aUnit;
@@ -309,27 +285,13 @@ HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetHead(i8 i_Item)
 /* get a specific tail item                                                   */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
-TAIL* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetTail(i8 i_Item)
+TAIL* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetTail_Unit(i8 i_Tail)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  ASSERT(i_Item >= 0 && i_Item < m_nMaxItems);
+  ASSERT(i_Tail >= 0 && i_Tail < m_nSpaceUnits);
   
-  i8 i_Unit = i_Item * (sizeof(HEAD) / sizeof(DoubleWord));
-  TAIL* aTail = (TAIL*)&m_axaUnits[i_Unit];
-
-  return aTail;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get a specific tail item                                                   */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
-TAIL* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetTail_Unit(i8 i_Unit)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  TAIL* aTail = (TAIL*)&m_axaUnits[i_Unit];
+  TAIL* aTail = (TAIL*)&m_axaUnits[i_Tail];
   
   return aTail;
 }
@@ -364,8 +326,7 @@ bool Nub_t<CN,HEAD,TAIL,DESC,CODA>::bHasSpace(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
 
-  i8 nFreeItems = nFree();
-  i8 nFreeBytes = nFreeItems * (i8)sizeof(HEAD);
+  i8 nFreeBytes = this->nFreeBytes();
   
   if (nFreeBytes < nBytes)
     return false;
@@ -444,7 +405,7 @@ void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vReset(void)
   m_nHeadItems = 0;
   m_nTailItems = 0;
   
-  MemLib::vZero(m_axaUnits,(sizeof(DoubleWord) * m_nSpaceUnits),CN);
+  MemLib::vZero(m_axaUnits,(sizeof(TAIL) * m_nSpaceUnits),CN);
   
   m_i_Offset = 8;
   m_iHash    = 0;
@@ -472,7 +433,7 @@ void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vSetItems(i8 nSpaceUnits, i8 nMaxItems, HEAD
   m_nSpaceUnits = nSpaceUnits;
   m_nMaxItems   = nMaxItems;
   
-  m_axaUnits    = reinterpret_cast<DoubleWord*>(axaUnits);
+  m_axaUnits    = reinterpret_cast<TAIL*>(axaUnits);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -548,7 +509,7 @@ TrayNL_t<CN,HEAD,TAIL,DESC,CODA,BYTES>::TrayNL_t(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  i8 nSpaceUnits = BYTES / sizeof(DoubleWord);
+  i8 nSpaceUnits = BYTES / sizeof(TAIL);
   i8 nItems = BYTES / sizeof(HEAD);
   m_oNub.vSetItems(nSpaceUnits,nItems,&m_xaItem[0]);
   
@@ -596,19 +557,6 @@ i8 TrayNL_t<CN,HEAD,TAIL,DESC,CODA,BYTES>::iAllotHead(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   i8 i_Item = m_oNub.iAllotHead();
-  
-  return i_Item;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot tail item                                                            */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, class CODA, i8 BYTES>
-i8 TrayNL_t<CN,HEAD,TAIL,DESC,CODA,BYTES>::iAllotTail(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  i8 i_Item = m_oNub.iAllotTail();
   
   return i_Item;
 }
