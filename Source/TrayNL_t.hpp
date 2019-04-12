@@ -125,9 +125,10 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::Nub_t(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  // head must be a multiple of tail
-  RASSERT(0 == sizeof(HEAD) % sizeof(TAIL));
-  
+  // head and tail must be a multiple of unit
+  RASSERT(0 == sizeof(HEAD) % sizeof(UNIT));
+  RASSERT(0 == sizeof(TAIL) % sizeof(UNIT));
+
   m_nSpaceUnits = C_UNKNOWN;
   m_nHeadUnits  = 0;
   m_nTailUnits  = 0;
@@ -174,8 +175,10 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotHead(void)
     return C_UNKNOWN;
 
   i8 i_Item = m_nHeadItems++;
-  
-  m_nHeadUnits += (sizeof(HEAD) / sizeof(TAIL));
+
+  i8 nHeadUnits = (sizeof(HEAD) / sizeof(UNIT));
+
+  m_nHeadUnits += nHeadUnits;
   
   return i_Item;
 }
@@ -193,10 +196,10 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotTail(i8 nBytes)
   if (nFreeBytes() < nBytes)
     return C_UNKNOWN;
 
-  i8 nUnits = nBytes / (i8)sizeof(TAIL);
-  if (nBytes % (i8)sizeof(TAIL))
+  i8 nUnits = nBytes / (i8)sizeof(UNIT);
+  if (nBytes % (i8)sizeof(UNIT))
     nUnits++;
-  RASSERT(nUnits * (i8)sizeof(TAIL) >= nBytes);
+  RASSERT(nUnits * (i8)sizeof(UNIT) >= nBytes);
   RASSERT(nUnits == 1);
 
   m_nTailUnits += nUnits;
@@ -253,7 +256,7 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nFreeBytes(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  i8 nFreeBytes = (m_nSpaceUnits - (m_nHeadUnits + m_nTailUnits)) * sizeof(TAIL);
+  i8 nFreeBytes = (m_nSpaceUnits - (m_nHeadUnits + m_nTailUnits)) * sizeof(UNIT);
   
   return nFreeBytes;
 }
@@ -268,7 +271,7 @@ HEAD* Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::aGetHead(i8 i_Head)
   
   ASSERT(i_Item >= 0 && i_Item < m_nHeadUnits);
   
-  i8 i_Unit = i_Head * (sizeof(HEAD) / sizeof(TAIL));
+  i8 i_Unit = i_Head * (sizeof(HEAD) / sizeof(UNIT));
   HEAD* aUnit = (HEAD*)&m_axaUnits[i_Unit];
   
   return aUnit;
@@ -402,7 +405,7 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vReset(void)
   m_nHeadItems = 0;
   m_nTailItems = 0;
   
-  MemLib::vZero(m_axaUnits,(sizeof(TAIL) * m_nSpaceUnits),CN);
+  MemLib::vZero(m_axaUnits,(sizeof(UNIT) * m_nSpaceUnits),CN);
   
   m_i_Offset = 8;
   m_iHash    = 0;
@@ -505,7 +508,7 @@ TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::TrayNL_t(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  i8 nSpaceUnits = BYTES / sizeof(TAIL);
+  i8 nSpaceUnits = BYTES / sizeof(UNIT);
   m_oNub.vSetItems(nSpaceUnits,&m_xaUnits[0]);
   
   vReset();
