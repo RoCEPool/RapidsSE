@@ -77,20 +77,26 @@ namespace Data
   static const i8 C_MODERN_DAYS    = 99 * 365; // 1999
 
   class Record;
-  typedef HV<Record,CN_RECORD> HV_Rec;
-
-  typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
-  
-  typedef Nub_t<CN_ROWTRAY,CacheLine,CacheLine,Table,void*> RowNub;
-  typedef TrayNL_t<CN_ROWTRAY,CacheLine,CacheLine,Table,void*,
-                   (C_CACHELINES * sizeof(CacheLine))> RowParts;
-  typedef TrayNL_t<CN_ROWTRAY,CacheLine,CacheLine,Table,void*,
-                   (C_MAX_ROWS * sizeof(CacheLine))> RowTray;
 }
 
 using namespace Data;
 
 //------------------------------------------------------------------------------
+
+#include "TailLine.hpp"
+
+
+typedef HV<Record,CN_RECORD> HV_Rec;
+
+typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
+
+typedef Nub_t<CN_ROWTRAY,CacheLine,TailLine,Table,void*> RowNub;
+
+typedef TrayNL_t<CN_ROWTRAY,CacheLine,TailLine,Table,void*,
+                (C_CACHELINES * sizeof(CacheLine))> RowParts;
+
+typedef TrayNL_t<CN_ROWTRAY,CacheLine,TailLine,Table,void*,
+                 (C_MAX_ROWS * sizeof(CacheLine))> RowTray;
 
 #include "Datum.hpp"
 #include "EntWrk.hpp"
@@ -99,9 +105,8 @@ using namespace Data;
 #include "Record.hpp"
 #include "RowCoder.hpp"
 #include "SkipRoots.hpp"
-#include "TablePtn.hpp"
-#include "TailLine.hpp"
 
+#include "TablePtn.hpp"
 #include "EntryBuffer.hpp"
 #include "RowBuffer.hpp"
 #include "IndexTree.hpp"

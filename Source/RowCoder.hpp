@@ -63,7 +63,7 @@ namespace Data
     static eMN eEncodingTsp(Datum* pDatum, i8& nBytesEncoded);
     static eMN eEncodingVch(Datum* pDatum, i8& nBytesEncoded);
   
-    static CacheLine* pFindTail(RowNub* pNub, CacheLine* aFindLine);
+    static TailLine* pFindTail(RowNub* pNub, TailLine* aFindLine);
   
     static i8 nFreeSpaceHead(RowNub* pNub, CacheLine* aHeadLine);
   

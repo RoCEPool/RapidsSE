@@ -27,7 +27,7 @@ void RowCoder::vAnalyse(RowNub* pNub)
        i_Tail < pNub->nMaxItems();
        i_Tail++) {
     
-    CacheLine* aTail = pNub->aGetTail(i_Tail);
+    TailLine* aTail = pNub->aGetTail(i_Tail);
     
     i8 iLenTail = aTail->w8_2B(0);
     iSumTail += iLenTail;
@@ -126,7 +126,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     // copy and adjust a shoco tail line
     
     i8 i_Diff = pFromHead->w8_2B(i_Offset);
-    CacheLine* pFromTail = pFromHead + i_Diff;
+    TailLine* pFromTail = (TailLine*)pFromHead + i_Diff;
     
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -166,7 +166,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     }
 #endif
 
-    CacheLine* pIntoTail = nullptr;
+    TailLine* pIntoTail = nullptr;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #ifdef WITH_SHOCO_DUPLICATES
@@ -174,7 +174,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     
     if (pIntoTail) {
       // what gets encoded is the difference in cache lines
-      i8 i_RevisedDiff = pIntoTail - pIntoHead;
+      i8 i_RevisedDiff = (CacheLine*)pIntoTail - (CacheLine*)pIntoHead;
       
       //MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
       
@@ -193,7 +193,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     MemLib::vCopy(pIntoTail,pFromTail,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
     
     // what gets encoded is the difference in cache lines
-    i8 i_RevisedDiff = pIntoTail - pIntoHead;
+    i8 i_RevisedDiff = (CacheLine*)pIntoTail - (CacheLine*)pIntoHead;
     
     //MemLib::vWordDump(pIntoHead,sizeof(CacheLine));
     
@@ -1218,7 +1218,7 @@ void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum)
   // allot a tail cache line
   i8 i_Shoco = pNub->iAllotTail();
   //RASSERT(255 == i_Shoco);
-  CacheLine* aShocoLine = pNub->aGetTail(i_Shoco);
+  TailLine* aShocoLine = pNub->aGetTail(i_Shoco);
   
   // set data for column value as the index of the shoco cache line
   i8 i_Offset = pNub->i_Offset();
@@ -1544,7 +1544,7 @@ eMN RowCoder::eEncodingVch(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 /* search for duplicate tail line                                             */
 /*----------------------------------------------------------------------------*/
-CacheLine* RowCoder::pFindTail(RowNub* pNub, CacheLine* aFindLine)
+TailLine* RowCoder::pFindTail(RowNub* pNub, TailLine* aFindLine)
 {
   static i8 nFound = 0;
   static i8 nNotFound = 0;
@@ -1562,7 +1562,7 @@ CacheLine* RowCoder::pFindTail(RowNub* pNub, CacheLine* aFindLine)
   
   while (nTails--) {
     
-    CacheLine* aTailLine = pNub->aGetTail(i_Tail);
+    TailLine* aTailLine = pNub->aGetTail(i_Tail);
     
     //MemLib::vWordDump(aFindLine,sizeof(CacheLine));
     //MemLib::vWordDump(aTailLine,sizeof(CacheLine));
