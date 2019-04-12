@@ -35,18 +35,20 @@ namespace Structures
     ~Nub_t(void) noexcept(false);
   
     i8    iAllotHead(void);
-    i8    iAllotTail_Bytes(i8 nBytes);
+    i8    iAllotTail(i8 nBytes);
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
     i8    nFreeBytes(void);
-    HEAD* aGetHead(i8 i_Item);
-    TAIL* aGetTail_Unit(i8 i_Unit);
+    i8    iFirstTail(void);
+    HEAD* aGetHead(i8 i_Head);
+    TAIL* aGetTail(i8 i_Head);
     i8    nHeads(void);
     i8    iHash(void);
     void  vHashInc(i8 iDelta);
     bool  bHasSpace(i8 nBytes);
     i8    nItems(void);
     i8    nMaxItems(void);
+    i8    iNextTail(i8 i_Tail);
     i8    i_Offset(void);
     void  vOffsetInc(i8 iDelta);
     void  vReset(void);
@@ -86,8 +88,8 @@ namespace Structures
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
     i8    nFreeBytes(void);
-    HEAD* aGetHead(i8 i_Item);
-    TAIL* aGetTail(i8 i_Item);
+    HEAD* aGetHead(i8 i_Head);
+    TAIL* aGetTail(i8 i_Tail);
     i8    iHash(void);
     bool  bHasSpace(i8 nBytes);
     i8    nHeads(void);
@@ -185,7 +187,7 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotHead(void)
 /* allot tail item                                                            */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
-i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotTail_Bytes(i8 nBytes)
+i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotTail(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -193,15 +195,6 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotTail_Bytes(i8 nBytes)
   
   if (nFreeBytes() < nBytes)
     return C_UNKNOWN;
-
-//  if (nItems() >= m_nMaxItems) {
-//    RASSERT(nFreeBytes() < (i8)sizeof(TAIL));
-//    return C_UNKNOWN;
-//  }
-//  RASSERT(nFreeBytes() >= (i8)sizeof(TAIL));
-//
-//  if (nItems() >= m_nMaxItems)
-//    return C_UNKNOWN;
 
   i8 nUnits = nBytes / (i8)sizeof(TAIL);
   if (nBytes % (i8)sizeof(TAIL))
@@ -240,6 +233,19 @@ void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vDesc(DESC* pDesc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get first tail                                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iFirstTail(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+
+  i8 i_Tail = m_nSpaceUnits - m_nTailUnits;
+
+  return i_Tail;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get total number of free bytes                                             */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
@@ -272,7 +278,7 @@ HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetHead(i8 i_Item)
 /* get a specific tail item                                                   */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
-TAIL* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetTail_Unit(i8 i_Tail)
+TAIL* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetTail(i8 i_Tail)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -376,6 +382,21 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::nMaxItems(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   return m_nMaxItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next tail                                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iNextTail(i8 i_PrevTail)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  i8 i_Tail = i_PrevTail + 1;
+  if (i_Tail < m_nSpaceUnits)
+    return i_Tail;
+  
+  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
