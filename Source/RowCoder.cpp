@@ -756,7 +756,7 @@ void RowCoder::vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
   i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
   TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
   
-  //MemLib::vWordDump(aShocoLine,sizeof(HeadLine));
+  //MemLib::vWordDump(aShocoTail,sizeof(TailLine));
   
   /*
    +=====================================+

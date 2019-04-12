@@ -256,6 +256,9 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotTail(i8 nBytes)
 
   i8 i_Tail = m_nSpaceUnits - m_nTailUnits;
   
+  TAIL* aTail = aGetTail(i_Tail);
+  aTail->v1B(0,nUnits);
+  
   return i_Tail;
 }
 
