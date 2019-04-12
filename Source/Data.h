@@ -83,6 +83,7 @@ using namespace Data;
 
 //------------------------------------------------------------------------------
 
+#include "HeadLine.hpp"
 #include "TailLine.hpp"
 
 
