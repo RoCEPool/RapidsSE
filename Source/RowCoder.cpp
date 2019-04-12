@@ -120,10 +120,10 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
       continue;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // copy and adjust a shoco tail line
+    // copy shoco tail line from nub
     
-    i8 i_Diff = pFromHead->w8_2B(i_Offset);
-    TailLine* pFromTail = (TailLine*)pFromHead + i_Diff;
+    i8 i_Shoco = pFromHead->w8_2B(i_Offset);
+    TailLine* pFromTail = pFromNub->aGetTail(i_Shoco);
     
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -173,11 +173,11 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
       pIntoTail = pIntoNub->aGetTail(i_IntoTail);
     
       // what gets encoded is the unit difference between head and tail
-      i8 i_RevisedDiff = pIntoNub->iUnitDiff(i_IntoHead,i_IntoTail);
+      i8 i_TailDistance = pIntoNub->iUnitDiff(i_IntoHead,i_IntoTail);
       
       //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
       
-      pIntoHead->vPut(i_Offset,i_RevisedDiff,MN_2B);
+      pIntoHead->vPut(i_Offset,i_TailDistance,MN_2B);
       
       //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
       
@@ -191,11 +191,11 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     MemLib::vCopy(pIntoTail,pFromTail,C_BYTES_PER_CACHE_LINE,CN_ROWBUFFER);
     
     // what gets encoded is the difference in cache lines
-    i8 i_RevisedDiff = (HeadLine*)pIntoTail - (HeadLine*)pIntoHead;
-    
+    i8 i_TailDistance = pIntoNub->iUnitDiff(i_IntoHead,i_IntoTail);
+
     //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
     
-    pIntoHead->vPut(i_Offset,i_RevisedDiff,MN_2B);
+    pIntoHead->vPut(i_Offset,i_TailDistance,MN_2B);
     
     //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
     
