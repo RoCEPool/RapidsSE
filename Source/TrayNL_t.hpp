@@ -40,6 +40,7 @@ namespace Structures
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
     i8    nFree(void);
+    i8    nFreeBytes(void);
     HEAD* aGetHead(i8 i_Item);
     TAIL* aGetTail(i8 i_Item);
     TAIL* aGetTail_Unit(i8 i_Unit);
@@ -128,6 +129,9 @@ Nub_t<CN,HEAD,TAIL,DESC,CODA>::Nub_t(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
+  // head must be a multiple of tail
+  RASSERT(0 == sizeof(HEAD) % sizeof(TAIL));
+  
   m_nSpaceUnits = C_UNKNOWN;
   m_nHeadUnits  = 0;
   m_nTailUnits  = 0;
@@ -171,9 +175,12 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotHead(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  if (nItems() >= m_nMaxItems)
+  if (nItems() >= m_nMaxItems) {
+    RASSERT(nFreeBytes() < (i8)sizeof(HEAD));
     return C_UNKNOWN;
-  
+  }
+  RASSERT(nFreeBytes() >= (i8)sizeof(HEAD));
+
   i8 i_Item = m_nHeadItems++;
   
   m_nHeadUnits += (sizeof(HEAD) / sizeof(DoubleWord));
@@ -189,9 +196,12 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotTail(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  if (nItems() >= m_nMaxItems)
+  if (nItems() >= m_nMaxItems) {
+    RASSERT(nFreeBytes() < (i8)sizeof(TAIL));
     return C_UNKNOWN;
-  
+  }
+  RASSERT(nFreeBytes() >= (i8)sizeof(TAIL));
+
   i8 i_Item = m_nMaxItems - 1 - m_nTailItems++;
   
   m_nTailUnits += (sizeof(TAIL) / sizeof(DoubleWord));
@@ -209,6 +219,12 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotTail_Bytes(i8 nBytes)
   
   RASSERT(nBytes);
   
+  if (nItems() >= m_nMaxItems) {
+    RASSERT(nFreeBytes() < (i8)sizeof(TAIL));
+    return C_UNKNOWN;
+  }
+  RASSERT(nFreeBytes() >= (i8)sizeof(TAIL));
+
   if (nItems() >= m_nMaxItems)
     return C_UNKNOWN;
 
@@ -257,6 +273,19 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::nFree(void)
   i8 nFree = m_nMaxItems - (m_nHeadItems + m_nTailItems);
   
   return nFree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total number of free bytes                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::nFreeBytes(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  i8 nFreeBytes = (m_nSpaceUnits - (m_nHeadUnits + m_nTailUnits)) * sizeof(TAIL);
+  
+  return nFreeBytes;
 }
 
 /*----------------------------------------------------------------------------*/
