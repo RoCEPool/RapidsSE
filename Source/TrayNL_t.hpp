@@ -171,11 +171,8 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotHead(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  if (nItems() >= m_nMaxItems) {
-    RASSERT(nFreeBytes() < (i8)sizeof(HEAD));
+  if (nFreeBytes() < (i8)sizeof(HEAD))
     return C_UNKNOWN;
-  }
-  RASSERT(nFreeBytes() >= (i8)sizeof(HEAD));
 
   i8 i_Item = m_nHeadItems++;
   
@@ -194,14 +191,17 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotTail_Bytes(i8 nBytes)
   
   RASSERT(nBytes);
   
-  if (nItems() >= m_nMaxItems) {
-    RASSERT(nFreeBytes() < (i8)sizeof(TAIL));
+  if (nFreeBytes() < nBytes)
     return C_UNKNOWN;
-  }
-  RASSERT(nFreeBytes() >= (i8)sizeof(TAIL));
 
-  if (nItems() >= m_nMaxItems)
-    return C_UNKNOWN;
+//  if (nItems() >= m_nMaxItems) {
+//    RASSERT(nFreeBytes() < (i8)sizeof(TAIL));
+//    return C_UNKNOWN;
+//  }
+//  RASSERT(nFreeBytes() >= (i8)sizeof(TAIL));
+//
+//  if (nItems() >= m_nMaxItems)
+//    return C_UNKNOWN;
 
   i8 nUnits = nBytes / (i8)sizeof(TAIL);
   if (nBytes % (i8)sizeof(TAIL))
@@ -261,7 +261,6 @@ HEAD* Nub_t<CN,HEAD,TAIL,DESC,CODA>::aGetHead(i8 i_Item)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   ASSERT(i_Item >= 0 && i_Item < m_nMaxItems);
-  
   
   i8 i_Unit = i_Item * (sizeof(HEAD) / sizeof(TAIL));
   HEAD* aUnit = (HEAD*)&m_axaUnits[i_Unit];
