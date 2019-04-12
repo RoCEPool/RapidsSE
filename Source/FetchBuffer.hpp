@@ -32,16 +32,16 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public:
     
-    bool  bAppendRow(CacheLine* pRow);
-    CacheLine** aaAllotRowPtr(i8 nBytes);
+    bool  bAppendRow(HeadLine* pRow);
+    HeadLine** aaAllotRowPtr(i8 nBytes);
     char* aDataArea(void);
     i8    nFetchedRows(void);
     
     void  vIsLast(bool bIsLast);
     bool  bIsLast(void);
     
-    CacheLine** aaFirstRowPtr(void);
-    CacheLine** aaNextRowPtr(CacheLine** ppRow);
+    HeadLine** aaFirstRowPtr(void);
+    HeadLine** aaNextRowPtr(HeadLine** ppRow);
     
     i8    nPartitionNo(void);
     void  vRestore(void);

@@ -681,7 +681,7 @@ bool EntryBuffer::bVerifyRowRefs(void)
     
     // get the row entry from referenced entry buffer
     i8 i_Item = aItem->iItemNo();
-    CacheLine* aRowData = pRowBuffer->pRow(i_Item);
+    HeadLine* aRowData = pRowBuffer->pRow(i_Item);
     
     if (! aRowData ) {
       vVerifyFault();

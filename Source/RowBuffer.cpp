@@ -176,7 +176,7 @@ void RowBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
 /*----------------------------------------------------------------------------*/
 /* allot a row in this buffer                                                 */
 /*----------------------------------------------------------------------------*/
-CacheLine* RowBuffer::aAllotRow(i8 nBytes)
+HeadLine* RowBuffer::aAllotRow(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
@@ -194,7 +194,7 @@ CacheLine* RowBuffer::aAllotRow(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* allot a head cache line in this buffer                                     */
 /*----------------------------------------------------------------------------*/
-CacheLine* RowBuffer::aAllotHead(void)
+HeadLine* RowBuffer::aAllotHead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
@@ -421,7 +421,7 @@ void RowBuffer::vPrevBuffer(RowBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 /* get row                                                                    */
 /*----------------------------------------------------------------------------*/
-CacheLine* RowBuffer::pRow(i8 iRowNo)
+HeadLine* RowBuffer::pRow(i8 iRowNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
@@ -617,7 +617,7 @@ bool RowBuffer::bVerifyRows(void)
   i8 nRows = nRowCount();
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    CacheLine* aRowCacheLine = m_xRowTray.aGetHead(i_Row);
+    HeadLine* aRowCacheLine = m_xRowTray.aGetHead(i_Row);
     RASSERT(aRowCacheLine);
   }
   

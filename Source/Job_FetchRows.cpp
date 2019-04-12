@@ -485,10 +485,10 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
 
   ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
   
-  CacheLine** aaCacheLine = pFetchBuffer->aaFirstRowPtr();
+  HeadLine** aaCacheLine = pFetchBuffer->aaFirstRowPtr();
   while (aaCacheLine) {
     
-    CacheLine* aHeadLine = *aaCacheLine;
+    HeadLine* aHeadLine = *aaCacheLine;
 
     RowCoder::vRecord(hvRec,aHeadLine,pColVec);
 

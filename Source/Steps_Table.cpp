@@ -551,7 +551,7 @@ void Step::vTableScan(MP_Task mpTask)
     for (i8 iRow = 0; iRow < pRowBuffer->nRowCount(); iRow++) {
       
       // get the row from the buffer
-      CacheLine* aRowData = pRowBuffer->pRow(iRow);
+      HeadLine* aRowData = pRowBuffer->pRow(iRow);
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // insert row from entry in FetchBuffer

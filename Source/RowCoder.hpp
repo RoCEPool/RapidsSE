@@ -11,33 +11,33 @@ namespace Data
     static void vAnalyse(RowNub* pNub);
     static bool bCopy(RowNub* pIntoNub, RowNub* pFromNub);
     static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol);
-    static void vDecode(Datum* pDatum, CacheLine* aHeadLine,
+    static void vDecode(Datum* pDatum, HeadLine* aHeadLine,
                         ColumnVec* pColVec, Column* pCol);
     static void vEncode(RowNub* pNub, Column* pCol, Datum* pDatum);
     static void vPrint(RowNub* pNub, i8 i_Row, Column* pCol);
     static void vRecord(Record* pRec, RowNub* pNub, i8 i_Row);
-    static void vRecord(Record* pRec, CacheLine* aHeadLine, ColumnVec* pColVec);
+    static void vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec);
 
   private:
-    static void vAppend(Record* pRec, CacheLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
+    static void vAppend(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
   
-    static i8 nDataBytes(CacheLine* aHeadLine, Column* pCol, eMN eEncoding, eDM eDatum);
+    static i8 nDataBytes(HeadLine* aHeadLine, Column* pCol, eMN eEncoding, eDM eDatum);
   
-    static void vDecodeBcd(Datum* pDatum, CacheLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    static void vDecodeBol(Datum* pDatum, CacheLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    static void vDecodeDte(Datum* pDatum, CacheLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    static void vDecodeFlt(Datum* pDatum, CacheLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    static void vDecodeInt(Datum* pDatum, CacheLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    static void vDecodeIvl(Datum* pDatum, CacheLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    static void vDecodeTme(Datum* pDatum, CacheLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    static void vDecodeTsp(Datum* pDatum, CacheLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    static void vDecodeVch(Datum* pDatum, CacheLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
+    static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
+    static void vDecodeBol(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
+    static void vDecodeDte(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
+    static void vDecodeFlt(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
+    static void vDecodeInt(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
+    static void vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
+    static void vDecodeTme(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
+    static void vDecodeTsp(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
+    static void vDecodeVch(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
 
-    static void vDecodeVchShoco(Datum* pDatum, CacheLine* aHeadLine,
+    static void vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
-    static void vDecodeVchShocoFit(Datum* pDatum, CacheLine* aHeadLine,
+    static void vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
                                    Column* pCol, eMN eEncoding, i8 i_Offset);
-    static void vDecodeVchSmall(Datum* pDatum, CacheLine* aHeadLine,
+    static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
 
     static void vEncodeBcd(RowNub* pNub, Column* pCol, Datum* pDatum);
@@ -65,12 +65,12 @@ namespace Data
   
     static TailLine* pFindTail(RowNub* pNub, TailLine* aFindLine);
   
-    static i8 nFreeSpaceHead(RowNub* pNub, CacheLine* aHeadLine);
+    static i8 nFreeSpaceHead(RowNub* pNub, HeadLine* aHeadLine);
   
-    static eMN eGetEncoding(CacheLine* aHeadLine, ColumnVec* pColVec,
+    static eMN eGetEncoding(HeadLine* aHeadLine, ColumnVec* pColVec,
                             i8 i_Col, i8& i_Offset);
   
-    static void vInitCacheLine(CacheLine* aHeadLine);
+    static void vInitHeadLine(HeadLine* aHeadLine);
   
     static i8 nLines(RowNub* pNub, i8 i_Row);
   

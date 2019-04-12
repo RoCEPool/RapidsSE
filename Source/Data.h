@@ -91,13 +91,13 @@ typedef HV<Record,CN_RECORD> HV_Rec;
 
 typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 
-typedef Nub_t<CN_ROWTRAY,CacheLine,TailLine,Table,void*> RowNub;
+typedef Nub_t<CN_ROWTRAY,HeadLine,TailLine,Table,void*> RowNub;
 
-typedef TrayNL_t<CN_ROWTRAY,CacheLine,TailLine,Table,void*,
-                (C_CACHELINES * sizeof(CacheLine))> RowParts;
+typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,Table,void*,
+                (C_CACHELINES * sizeof(HeadLine))> RowParts;
 
-typedef TrayNL_t<CN_ROWTRAY,CacheLine,TailLine,Table,void*,
-                 (C_MAX_ROWS * sizeof(CacheLine))> RowTray;
+typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,Table,void*,
+                 (C_MAX_ROWS * sizeof(HeadLine))> RowTray;
 
 #include "Datum.hpp"
 #include "EntWrk.hpp"

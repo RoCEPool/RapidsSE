@@ -1193,7 +1193,7 @@ bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Item* aItem, Job_FetchRows* pJo
   RowBuffer* pRowBuffer = RowBuffer::pRefdRowBuffer(xId);
   
   // get the dataRow
-  CacheLine* aRowData = pRowBuffer->pRow(xId.iItem());
+  HeadLine* aRowData = pRowBuffer->pRow(xId.iItem());
 
   if (pFetchBuffer->bAppendRow(aRowData))
     return true;

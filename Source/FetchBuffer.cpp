@@ -82,11 +82,11 @@ FetchBuffer::~FetchBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append row                                                                 */
 /*----------------------------------------------------------------------------*/
-bool FetchBuffer::bAppendRow(CacheLine* pRow)
+bool FetchBuffer::bAppendRow(HeadLine* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
-  i8 iCacheLineSize = sizeof(CacheLine*);
+  i8 iCacheLineSize = sizeof(HeadLine*);
   
   // do we have enough space for this row ?
   i8 nFreeSpace = nFreeBytes();
@@ -94,7 +94,7 @@ bool FetchBuffer::bAppendRow(CacheLine* pRow)
     return false;
   
   // allocate row
-  CacheLine** ppFetchRow = aaAllotRowPtr(iCacheLineSize);
+  HeadLine** ppFetchRow = aaAllotRowPtr(iCacheLineSize);
   
   // copy the cacheLine pointer
   *ppFetchRow = pRow;
@@ -154,14 +154,14 @@ bool FetchBuffer::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 /* first item                                                                 */
 /*----------------------------------------------------------------------------*/
-CacheLine** FetchBuffer::aaFirstRowPtr(void)
+HeadLine** FetchBuffer::aaFirstRowPtr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
   if (nUsedBytes() == 0)
     return nullptr;
   
-  CacheLine** aaFirstRow = reinterpret_cast<CacheLine**>(m_xWsp.aArea());
+  HeadLine** aaFirstRow = reinterpret_cast<HeadLine**>(m_xWsp.aArea());
   
   return aaFirstRow;
 }
@@ -169,11 +169,11 @@ CacheLine** FetchBuffer::aaFirstRowPtr(void)
 /*----------------------------------------------------------------------------*/
 /* get next item                                                              */
 /*----------------------------------------------------------------------------*/
-CacheLine** FetchBuffer::aaNextRowPtr(CacheLine** ppCurrentRow)
+HeadLine** FetchBuffer::aaNextRowPtr(HeadLine** ppCurrentRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
-  CacheLine** aaNextRow = aAdd<CacheLine**>(ppCurrentRow,sizeof(CacheLine*));
+  HeadLine** aaNextRow = aAdd<HeadLine**>(ppCurrentRow,sizeof(CacheLine*));
   
   if ((char**)aaNextRow >= (char**)m_xWsp.aLatter())
     return nullptr;
@@ -237,7 +237,7 @@ i8 FetchBuffer::nUsedBytes(void)
 /*----------------------------------------------------------------------------*/
 /* allot space for a row ptr in this buffer                                   */
 /*----------------------------------------------------------------------------*/
-CacheLine** FetchBuffer::aaAllotRowPtr(i8 nBytes)
+HeadLine** FetchBuffer::aaAllotRowPtr(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
@@ -245,7 +245,7 @@ CacheLine** FetchBuffer::aaAllotRowPtr(i8 nBytes)
   if (nFreeBytes() < nBytes)
     return nullptr;
   
-  CacheLine** aaCacheLine = reinterpret_cast<CacheLine**>(m_xWsp.aAllot(nBytes));
+  HeadLine** aaCacheLine = reinterpret_cast<HeadLine**>(m_xWsp.aAllot(nBytes));
   
   m_nFetchedRows++;
   

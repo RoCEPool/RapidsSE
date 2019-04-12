@@ -63,15 +63,15 @@ namespace Data
     // row functions
     void  vShow(void);
     void  vShowRow(i8 iRowNo);
-    CacheLine* pRow(i8 iRow);
+    HeadLine* pRow(i8 iRow);
 
     ////////////////////////////////////////////////////////////////////////////
     // row functions
     bool bAppendRow(RowNub* pRowNub);
   
   private:
-    CacheLine* aAllotRow(i8 nBytes);
-    CacheLine* aAllotHead(void);
+    HeadLine* aAllotRow(i8 nBytes);
+    HeadLine* aAllotHead(void);
     bool       bHasSpace(i8 nBytes);
 
     ////////////////////////////////////////////////////////////////////////////
