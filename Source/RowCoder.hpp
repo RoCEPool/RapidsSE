@@ -4,7 +4,10 @@
 #pragma once
 
 namespace Data
-{  
+{
+  static const i8 C_SHOCO_COMPRESSED_BYTES  = 1;
+  static const i8 C_SHOCO_COMPRESSED_OFFSET = 0;
+
   class RowCoder
   {
   public:
