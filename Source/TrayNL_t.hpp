@@ -176,14 +176,14 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotHead(void)
   if (nFreeBytes() < (i8)sizeof(HEAD))
     return C_UNKNOWN;
 
-  i8 i_Item = m_nHeadItems++;
+  i8 i_Head = m_nHeadItems++;
 
   i8 nUnits = (sizeof(HEAD) / sizeof(UNIT));
   RASSERT(nUnits == 4 || nUnits == 1); //! temp
 
   m_nHeadUnits += nUnits;
   
-  return i_Item;
+  return i_Head;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -246,7 +246,7 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iFirstTail(void)
   if (! m_nTailUnits)
     return C_UNKNOWN;
 
-  i8 i_Tail = m_nSpaceUnits - 1;
+  i8 i_Tail = m_nSpaceUnits - (sizeof(TAIL) / sizeof(UNIT));
 
   return i_Tail;
 }
@@ -275,9 +275,9 @@ HEAD* Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::aGetHead(i8 i_Head)
   ASSERT(i_Head >= 0 && i_Head < m_nHeadItems);
   
   i8 i_Unit = i_Head * (sizeof(HEAD) / sizeof(UNIT));
-  HEAD* aUnit = (HEAD*)&m_axaUnits[i_Unit];
+  HEAD* aHead = (HEAD*)&m_axaUnits[i_Unit];
   
-  return aUnit;
+  return aHead;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -387,7 +387,7 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iNextTail(i8 i_PrevTail)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  i8 i_Tail = i_PrevTail - 1;
+  i8 i_Tail = i_PrevTail - (sizeof(TAIL) / sizeof(UNIT));
   if (i_Tail >= m_nSpaceUnits - m_nTailUnits) // 10 - 3 : [0 1 2 .. 7 8 9]
     return i_Tail;
   
