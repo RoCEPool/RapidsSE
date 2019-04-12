@@ -47,7 +47,6 @@ namespace Structures
     void  vHashInc(i8 iDelta);
     bool  bHasSpace(i8 nBytes);
     i8    nItems(void);
-    i8    nMaxItems(void);
     i8    iNextTail(i8 i_Tail);
     i8    i_Offset(void);
     void  vOffsetInc(i8 iDelta);
@@ -374,17 +373,6 @@ void Nub_t<CN,HEAD,TAIL,DESC,CODA>::vOffsetInc(i8 iDelta)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   m_i_Offset += iDelta;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get maximum number of items                                                */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
-i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::nMaxItems(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  return m_nMaxItems;
 }
 
 /*----------------------------------------------------------------------------*/
