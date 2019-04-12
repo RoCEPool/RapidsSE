@@ -51,6 +51,7 @@ namespace Structures
     void  vOffsetInc(i8 iDelta);
     void  vReset(void);
     i8    nTails(void);
+    i8    iUnitDiff(i8 i_Head, i8 i_Tail);
   
     void  vSetItems(i8 nSpaceUnits, UNIT* axaUnits);
   
@@ -435,6 +436,22 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vSetItems(i8 nSpaceUnits, UNIT* axaUnit
   
   m_axaUnits    = axaUnits;
 }
+
+/*----------------------------------------------------------------------------*/
+/* compute unit difference between a head and a tail                          */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iUnitDiff(i8 i_Head, i8 i_Tail)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  i8 i_HeadUnit = i_Head * (sizeof(HEAD) / sizeof(UNIT));
+
+  i8 i_Diff = i_HeadUnit - i_Tail;
+  
+  return i_Diff;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
