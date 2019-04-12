@@ -1549,18 +1549,16 @@ TailLine* RowCoder::pFindTail(RowNub* pNub, TailLine* aFindLine)
   static i8 nFound = 0;
   static i8 nNotFound = 0;
 
-  i8 nTails = pNub->nTails();
-  
-  if (! nTails) {
+  i8 i_Tail = pNub->iFirstTail();
+
+  if (C_UNKNOWN == i_Tail) {
     nNotFound++;
 //    if (IntLib::bIsDecaCycle(nNotFound))
 //      vTrace("%lld dupe tail NOT found\n"_Stz,nNotFound);
     return nullptr;
   }
   
-  i8 i_Tail = pNub->nMaxItems() - 1;
-  
-  while (nTails--) {
+  for (;;) {
     
     TailLine* aTailLine = pNub->aGetTail(i_Tail);
     
@@ -1573,8 +1571,10 @@ TailLine* RowCoder::pFindTail(RowNub* pNub, TailLine* aFindLine)
 //        vTrace("%lld dupe tail found\n"_Stz,nFound);
       return aTailLine;
     }
-    
-    i_Tail--;
+
+    i_Tail = pNub->iNextTail(i_Tail);
+    if (C_UNKNOWN == i_Tail)
+      break;
   }
   
   nNotFound++;

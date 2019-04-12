@@ -239,8 +239,11 @@ template <eCN CN, class HEAD, class TAIL, class DESC, class CODA>
 i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iFirstTail(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  if (! m_nTailUnits)
+    return C_UNKNOWN;
 
-  i8 i_Tail = m_nSpaceUnits - m_nTailUnits;
+  i8 i_Tail = m_nSpaceUnits - 1;
 
   return i_Tail;
 }
@@ -392,8 +395,8 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iNextTail(i8 i_PrevTail)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  i8 i_Tail = i_PrevTail + 1;
-  if (i_Tail < m_nSpaceUnits)
+  i8 i_Tail = i_PrevTail - 1;
+  if (i_Tail < m_nSpaceUnits - m_nTailUnits) // 10 - 3 : [0 1 2 .. 7 8 9]
     return i_Tail;
   
   return C_UNKNOWN;
