@@ -176,9 +176,10 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotHead(void)
 
   i8 i_Item = m_nHeadItems++;
 
-  i8 nHeadUnits = (sizeof(HEAD) / sizeof(UNIT));
+  i8 nUnits = (sizeof(HEAD) / sizeof(UNIT));
+  RASSERT(nUnits == 4 || nUnits == 1); //! temp
 
-  m_nHeadUnits += nHeadUnits;
+  m_nHeadUnits += nUnits;
   
   return i_Item;
 }
@@ -200,7 +201,7 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotTail(i8 nBytes)
   if (nBytes % (i8)sizeof(UNIT))
     nUnits++;
   RASSERT(nUnits * (i8)sizeof(UNIT) >= nBytes);
-  RASSERT(nUnits == 1);
+  RASSERT(nUnits == 4 || nUnits == 1); //! temp
 
   m_nTailUnits += nUnits;
   m_nTailItems++;
@@ -269,7 +270,7 @@ HEAD* Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::aGetHead(i8 i_Head)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  ASSERT(i_Item >= 0 && i_Item < m_nHeadUnits);
+  ASSERT(i_Head >= 0 && i_Head < m_nHeadItems);
   
   i8 i_Unit = i_Head * (sizeof(HEAD) / sizeof(UNIT));
   HEAD* aUnit = (HEAD*)&m_axaUnits[i_Unit];
@@ -285,7 +286,7 @@ TAIL* Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::aGetTail(i8 i_Tail)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  ASSERT(i_Tail >= 0 && i_Tail < m_nSpaceUnits);
+  ASSERT(m_nSpaceUnits - m_nTailUnits >= 0 && i_Tail < m_nSpaceUnits);
   
   TAIL* aTail = (TAIL*)&m_axaUnits[i_Tail];
   

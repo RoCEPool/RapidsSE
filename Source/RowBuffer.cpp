@@ -67,8 +67,8 @@ RowBuffer::RowBuffer(void)
   m_iPartitionNo  = -1;
   
   // zero all the cachelines in the row tray
-  for (i8 iIndex = 0 ; iIndex < C_MAX_ROWS; iIndex++)
-    m_xRowTray.aGetHead(iIndex)->vSetAll(0);
+//  for (i8 iIndex = 0 ; iIndex < C_MAX_ROWS; iIndex++)
+//    m_xRowTray.aGetHead(iIndex)->vSetAll(0);
   
   m_pNextBuffer   = nullptr;
   m_pPrevBuffer   = nullptr;
