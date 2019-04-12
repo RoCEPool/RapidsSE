@@ -1567,7 +1567,7 @@ TailLine* RowCoder::pFindTail(RowNub* pNub, TailLine* aFindLine)
     //MemLib::vWordDump(aFindLine,sizeof(HeadLine));
     //MemLib::vWordDump(aTailLine,sizeof(HeadLine));
 
-    if (0 == MemLib::iCompareWords(aTailLine,aFindLine,sizeof(HeadLine))) {
+    if (0 == MemLib::iCompareWords(aTailLine,aFindLine,sizeof(TailLine))) {
       nFound++;
 //      if (IntLib::bIsDecaCycle(nFound))
 //        vTrace("%lld dupe tail found\n"_Stz,nFound);

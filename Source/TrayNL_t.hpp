@@ -208,8 +208,10 @@ i8 Nub_t<CN,HEAD,TAIL,DESC,CODA>::iAllotTail_Bytes(i8 nBytes)
   if (nBytes % (i8)sizeof(TAIL))
     nUnits++;
   RASSERT(nUnits * (i8)sizeof(TAIL) >= nBytes);
-  
+  RASSERT(nUnits == 1);
+
   m_nTailUnits += nUnits;
+  m_nTailItems++;
 
   i8 i_Tail = m_nSpaceUnits - m_nTailUnits;
   
