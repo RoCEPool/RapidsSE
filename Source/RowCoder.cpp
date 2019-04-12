@@ -134,7 +134,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     if (pCol->bIsLastColumn()) {
       
       i8 nFreeHeadBytes = C_BYTES_PER_CACHE_LINE - i_Offset - 1;
-      i8 nCompressed = pFromTail->w8_2B(0);
+      i8 nCompressed = pFromTail->w8_1B(0);
       
       if (nCompressed <= nFreeHeadBytes) {
         
