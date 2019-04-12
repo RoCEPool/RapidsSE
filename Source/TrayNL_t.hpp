@@ -464,7 +464,7 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iPrevTail(i8 i_PriorTail)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  i8 i_Tail = i_PriorTail - (sizeof(TAIL) / sizeof(UNIT));
+  i8 i_Tail = i_PriorTail + (sizeof(TAIL) / sizeof(UNIT));
   if (i_Tail < m_nSpaceUnits)
     return i_Tail;
   
