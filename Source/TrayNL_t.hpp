@@ -463,15 +463,19 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iNextTail(i8 i_PrevTail)
 /* get prev tail                                                              */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iPrevTail(i8 i_PriorTail)
+i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iPrevTail(i8 i_CurrTail)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  i8 i_Tail = i_PriorTail + (sizeof(TAIL) / sizeof(UNIT));
-  if (i_Tail < m_nSpaceUnits)
-    return i_Tail;
+  TAIL* aPriorTail = aGetTail(i_CurrTail);
+  i8 nPriorUnits = aPriorTail->w8_1B(0);
   
-  return C_UNKNOWN;
+  UNIT* aPrevTail_Unit = (UNIT*)aPriorTail + nPriorUnits;
+  if (aPrevTail_Unit >= &m_axaUnits[m_nSpaceUnits])
+    return C_UNKNOWN;
+
+  i8 i_Tail = i_CurrTail + nPriorUnits;
+  return i_Tail;
 }
 
 /*----------------------------------------------------------------------------*/
