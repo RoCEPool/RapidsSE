@@ -23,13 +23,13 @@ void RowCoder::vAnalyse(RowNub* pNub)
   i8 iMinHead = C_I8_MAX;
   i8 iMaxHead = C_I8_MIN;
 
-  for (i8 i_Tail = pNub->iFirstTail();
+  for (i8 i_Tail = pNub->iLastTail();
        i_Tail != C_UNKNOWN;
-       i_Tail = pNub->iNextTail(i_Tail)) {
+       i_Tail = pNub->iPrevTail(i_Tail)) {
     
     TailLine* aTail = pNub->aGetTail(i_Tail);
     
-    i8 iLenTail = aTail->w8_1B(0);
+    i8 iLenTail = aTail->w8_1B(1);
     iSumTail += iLenTail;
     nTails++;
     
@@ -80,19 +80,16 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   static i8 nFolds = 0;
   RASSERT(pIntoNub->pDesc() == pFromNub->pDesc());
   
-  i8 nHeadLines = nLines(pFromNub,0);
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // check for space in target nub
-  if (! pIntoNub->bHasSpace(sizeof(HeadLine) * nHeadLines))
+  i8 nSpaceNeeded = pFromNub->nUsedBytes();
+  if (! pIntoNub->bHasSpace(nSpaceNeeded))
     return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   ColumnVec* pColVec = pIntoNub->pDesc()->pColumnVec();
-
-  //! NOTE:: Assuming each row fits in a cacheline + (n * Shoco Lines)
 
   i8 i_IntoHead = pIntoNub->iAllotHead();
   HeadLine* pIntoHead = pIntoNub->aGetHead(i_IntoHead);
@@ -101,9 +98,11 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   MemLib::vCopy(pIntoHead,pFromHead,sizeof(HeadLine),CN_ROWBUFFER);
   //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
 
-  if (1 == nHeadLines)
+  if (! pFromNub->nTails())
     return true;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   i8 nColumns = pColVec->nItems();
   i8 i_Offset = C_UNKNOWN;
   
@@ -190,10 +189,13 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    i_IntoTail = pIntoNub->iAllotTail(sizeof(TailLine));
+    i8 nTailUnits = pShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
+    i8 nShocoBytes = pShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+    
+    i_IntoTail = pIntoNub->iAllotTail(2 + nShocoBytes);
     pIntoTail = pIntoNub->aGetTail(i_IntoTail);
     
-    MemLib::vCopy(pIntoTail,pShocoTail,sizeof(TailLine),CN_ROWBUFFER);
+    MemLib::vCopy(pIntoTail,pShocoTail,nTailUnits*sizeof(DoubleWord),CN_ROWBUFFER);
     
     // what gets encoded is the unit difference between head and tail
     i8 i_TailDistance = pIntoNub->iUnitDiff(i_IntoHead,i_IntoTail);
@@ -1226,38 +1228,46 @@ void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum)
   static i8 nShortOnes = 0;
   static i8 nLongOnes = 0;
   
+  char caShoco[C_4KB];
+  
   HeadLine* aHeadLine = pNub->aGetHead(0);
   
+  /*
+     +=====================================+
+     |            Shoco Tail Line          +
+     +=====================================+
+     | U | C | <compressed bytes> <unused> +
+     +-------------------------------------+
+     | 0 | 1 | 2                        63 |
+     +-------------------------------------+
+   
+     where: U is one byte being the unit length of the tail line
+            C is one byte being the number of compressed bytes
+   */
+
+  // compress varchar into tail shoco cache line
+  i8 nCompressed =
+    Compress::iIntoShoco((byte*)caShoco,         // into compressed destination
+                         sizeof(caShoco) - 1,    // destination size
+                         pDatum->m_xWsp.aArea(), // from uncompressed source
+                         pDatum->m_nChars);      // source bytes
+
+  //! temporary limitation
+  RASSERT(nCompressed < 56);
+  
   // allot a tail cache line
-  i8 i_Shoco = pNub->iAllotTail(sizeof(TailLine));
+  i8 i_Shoco = pNub->iAllotTail(2 + nCompressed);
   TailLine* aShocoTail = pNub->aGetTail(i_Shoco);
+  
+  // copy shoco into tail
+  char *aWithinTail = (char*)aShocoTail
+                        + C_SHOCO_COMPRESSED_BYTES + C_SHOCO_COMPRESSED_BYTES;
+  MemLib::vCopy(aWithinTail,caShoco,nCompressed,CN_ROWBUFFER);
   
   // set data for column value as the index of the shoco cache line
   i8 i_Offset = pNub->i_Offset();
   aHeadLine->vPut(i_Offset,i_Shoco,MN_2B);
   pNub->vOffsetInc(2);
-
-  /*
-   +=====================================+
-   |            Shoco Tail Line          +
-   +=====================================+
-   | U | C | <compressed bytes> <unused> +
-   +-------------------------------------+
-   | 0 | 1 | 2                        63 |
-   +-------------------------------------+
-   
-   where: U is one byte being the unit length of the tail line
-          C is one byte being the number of compressed bytes
-   */
-
-  // compress varchar into tail shoco cache line
-  i8 nCompressed =
-    Compress::iIntoShoco((byte*)aShocoTail       // into compressed destination
-                         + C_SHOCO_COMPRESSED_OFFSET
-                         + C_SHOCO_COMPRESSED_BYTES,
-                         sizeof(TailLine) - 1,   // remaining size
-                         pDatum->m_xWsp.aArea(), // from uncompressed source
-                         pDatum->m_nChars);      // source bytes
   
   // set length of the compressed string encoded into tail shoco cache line
   aShocoTail->v1B(C_SHOCO_COMPRESSED_OFFSET,nCompressed);
@@ -1587,14 +1597,15 @@ i8 RowCoder::iFindTail(RowNub* pNub, TailLine* aFindLine)
 //       i_Tail = pNub->iNextTail(i_Tail)) {
     
     TailLine* aTailLine = pNub->aGetTail(i_Tail);
-    
+    i8 nTailUnits = aTailLine->w8_1B(C_TAIL_UNITS_OFFSET);
+
     //MemLib::vWordDump(aFindLine,sizeof(HeadLine));
     //MemLib::vWordDump(aTailLine,sizeof(HeadLine));
     
-    if (0 == MemLib::iCompareWords(aTailLine,aFindLine,sizeof(TailLine))) {
+    if (0 == MemLib::iCompareWords(aTailLine,aFindLine,nTailUnits*sizeof(DoubleWord))) {
       nFound++;
-      //      if (IntLib::bIsDecaCycle(nFound))
-      //        vTrace("%lld dupe tail found\n"_Stz,nFound);
+//      if (IntLib::bIsDecaCycle(nFound))
+//        vTrace("%lld dupe tail found\n"_Stz,nFound);
       return i_Tail;
     }
     

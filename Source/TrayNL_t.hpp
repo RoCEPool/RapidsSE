@@ -39,6 +39,7 @@ namespace Structures
 
     i8    iAllotHead(void);
     i8    iAllotTail(i8 nBytes);
+    i8    nAreaBytes(void);
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
     i8    nFreeBytes(void);
@@ -57,7 +58,8 @@ namespace Structures
     i8    iPrevTail(i8 i_Tail);
     void  vReset(void);
     i8    nTails(void);
-  
+    i8    nUsedBytes(void);
+
     void  vSetItems(i8 nSpaceUnits, UNIT* axaUnits);
   
   private:
@@ -249,7 +251,7 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotTail(i8 nBytes)
   if (nBytes % (i8)sizeof(UNIT))
     nUnits++;
   RASSERT(nUnits * (i8)sizeof(UNIT) >= nBytes);
-  RASSERT(nUnits == 4 || nUnits == 1); //! temp
+  //RASSERT(nUnits == 4 || nUnits == 1); //! temp
 
   m_nTailUnits += nUnits;
   m_nTailItems++;
@@ -260,6 +262,19 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotTail(i8 nBytes)
   aTail->v1B(0,nUnits);
   
   return i_Tail;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total space area (used + free)                                         */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nAreaBytes(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  i8 nBytes = sizeof(UNIT) * m_nSpaceUnits;
+  
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -507,6 +522,19 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nTails(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   return m_nTailItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total number of used bytes                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nUsedBytes(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  i8 nBytes = (m_nHeadUnits + m_nTailUnits) * sizeof(UNIT);
+  
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
