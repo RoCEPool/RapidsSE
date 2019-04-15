@@ -17,7 +17,8 @@ namespace Base
     void vPut(i8 i_Offset, w8 wWord, i8 iEncoding);
   
     void vSetAll(byte yVal);
-  
+    void vSet(i8 i_Offset, i8 nBytes, byte yVal);
+    
     w8 w8_1B(i8 i_Byte);
     w8 w8_2B(i8 i_Byte);
     w8 w8_3B(i8 i_Byte);

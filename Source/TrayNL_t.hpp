@@ -331,7 +331,24 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vCoda(CODA* pCoda)
 template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
 void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes)
 {
+  i8 iStartMove = i_Offset + nCutBytes ;
+  RASSERT(iEndMove <= nSize);
   
+  // get the start address
+  byte* aSrc = aAdd<byte*>(aAddr, iStartMove);
+  
+  // get the dst address
+  byte* aDst = aAdd<byte*>(aAddr, i_Offset);
+  
+  // copy nCutBytes from src to dst
+  MemLib::vCopy(aDst, aSrc, nSize - (iStartMove), CN);
+  
+  // calculate the end address after cut
+  i8 iLen = nSize - nCutBytes;
+  byte* aAddrEnd = aAdd<byte*>(aAddr, iLen);
+  
+  // zero the last nCutBytes
+  MemLib::vZero(aAddrEnd, nCutBytes, CN);
 }
 
 /*----------------------------------------------------------------------------*/

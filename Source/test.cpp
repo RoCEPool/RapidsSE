@@ -279,10 +279,45 @@ void vTest10(void)
 /*----------------------------------------------------------------------------*/
 void vTest11(void)
 {
+  
   CacheLine xCacheLine;
-  byte x = 'a';
-  xCacheLine.vSetAll(x);
+
+  xCacheLine.vSetAll('a');
+  
+  // set bytes to be moved + 2 to 'b'
+  xCacheLine.vSet(5, 12, 'b');
+  
+  // dump the cacheline
   MemLib::vWordDump(&xCacheLine,sizeof(CacheLine));
+  
+  // cut 10 bytes from offset 6
+  RowNub::vCut(&xCacheLine, sizeof(CacheLine), 6, 10);
+  
+  // dump cacheline after cut
+  MemLib::vWordDump(&xCacheLine,sizeof(CacheLine));
+  
+  xCacheLine.vSetAll('a');
+
+  // set bytes to be moved + 2 to 'b'
+  xCacheLine.vSet(4, sizeof(CacheLine) - 6, 'b');
+  
+  // cut last but 6 bytes
+  RowNub::vCut(&xCacheLine, sizeof(CacheLine), 6, sizeof(CacheLine) - 6);
+  
+  // dump cacheline after cut
+  MemLib::vWordDump(&xCacheLine,sizeof(CacheLine));
+  
+  xCacheLine.vSetAll('a');
+  
+  // set bytes to be moved + 2 to 'b'
+  xCacheLine.vSet(0, 8, 'b');
+  
+  // cut frst 6 bytes
+  RowNub::vCut(&xCacheLine, sizeof(CacheLine), 0, 6);
+  
+  // dump cacheline after cut
+  MemLib::vWordDump(&xCacheLine,sizeof(CacheLine));
+  
 }
 
 /*============================================================================*/
