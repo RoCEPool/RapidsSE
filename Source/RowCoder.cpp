@@ -801,7 +801,7 @@ void RowCoder::vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
    */
 
   i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
-  RASSERT(nCompressed <= 4);
+  //RASSERT(nCompressed <= 4);
 
   i8 nDecompressed =
     Compress::iFromShoco(pDatum->m_xWsp.aArea(),   // decompressed destination
