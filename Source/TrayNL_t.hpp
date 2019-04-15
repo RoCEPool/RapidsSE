@@ -20,8 +20,10 @@ namespace Structures
     i8 m_nTailItems;  // number of items allocated from the tail
   
     DESC* m_pDesc;    // object describing the items
-  
-    UNIT* m_axaUnits;  // array of space units
+
+    CODA* m_pCoda;    // object decoding the items
+
+    UNIT* m_axaUnits; // array of space units
 
     i8 m_i_Offset;    // encoding offset
     i8 m_iHash;       // encoding hash
@@ -41,6 +43,8 @@ namespace Structures
     i8    iAllotHead(void);
     i8    iAllotTail(i8 nBytes);
     i8    nAreaBytes(void);
+    CODA* pCoda(void);
+    void  vCoda(CODA* pCoda);
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
     i8    nFreeBytes(void);
@@ -92,6 +96,8 @@ namespace Structures
     operator Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>*(void);
   
     i8    iAllotHead(void);
+    CODA* pCoda(void);
+    void  vCoda(CODA* pCoda);
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
     i8    nFreeBytes(void);
@@ -145,6 +151,7 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::Nub_t(void)
   m_nHeadItems  = 0;
   m_nTailItems  = 0;
   
+  m_pCoda       = nullptr;
   m_pDesc       = nullptr;
 
   m_axaUnits    = nullptr;
@@ -293,6 +300,28 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nAreaBytes(void)
   i8 nBytes = sizeof(UNIT) * m_nSpaceUnits;
   
   return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the item decoder                                                     */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+CODA* Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::pCoda(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  return m_pCoda;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the item decoder                                                       */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vCoda(CODA* pCoda)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  m_pCoda = pCoda;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -502,9 +531,11 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iPrevTail(i8 i_CurrTail)
   
   TAIL* aPriorTail = aGetTail(i_CurrTail);
   i8 nPriorUnits = aPriorTail->w8_1B(0);
-  RASSERT(nPriorUnits <= 4);
+  //RASSERT(nPriorUnits <= 4);
   
   UNIT* aPrevTail_Unit = (UNIT*)aPriorTail + nPriorUnits;
+  if (m_pCoda && aPrevTail_Unit >= (UNIT*)m_pCoda)
+    return C_UNKNOWN;
   if (aPrevTail_Unit >= &m_axaUnits[m_nSpaceUnits])
     return C_UNKNOWN;
 
@@ -648,6 +679,9 @@ TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::TrayNL_t(void)
   
   vReset();
   
+//  CODA* pCoda = (CODA*)m_oNub.iAllotTail(sizeof(CODA));
+//  m_oNub.vCoda(pCoda);
+
   _setFooter_();
   
   i8 nBytes = sizeof(TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>);
@@ -692,6 +726,28 @@ i8 TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::iAllotHead(void)
   i8 i_Item = m_oNub.iAllotHead();
   
   return i_Item;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the item coda                                                          */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA, i8 BYTES>
+CODA* TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::pCoda(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  return m_oNub.pCoda();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the item describer                                                     */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA, i8 BYTES>
+void TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::vCoda(CODA* pCoda)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  m_oNub.vCoda(pCoda);
 }
 
 /*----------------------------------------------------------------------------*/

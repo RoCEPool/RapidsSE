@@ -12,7 +12,7 @@ namespace Datums
   static const u8 C_BASE_YEAR  = 1900;
   static const u8 C_YEAR_RANGE = 255;
 
-  enum eDM // Datum Type
+  enum eDM : u1 // Datum Type
   {
   /*  0 */ DM_NONE=0,
   /*  1 */ DM_BCD,
@@ -26,7 +26,13 @@ namespace Datums
   /*  9 */ DM_TSP,
   /* 10 */ DM_VBN,
   /* 11 */ DM_VCH,
-  /* 12 */ DM_ENUMS
+  
+  /* 12 */ DM_SPARE_12,
+  /* 13 */ DM_SPARE_13,
+  /* 14 */ DM_SPARE_14,
+  /* 15 */ DM_SPARE_15,
+
+  /* 16 */ DM_ENUMS
   };
   
   static Stz* aDM[]

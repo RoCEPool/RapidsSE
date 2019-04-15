@@ -1627,7 +1627,7 @@ i8 RowCoder::iFindTail(RowNub* pNub, TailLine* aFindLine)
     
     TailLine* aTailLine = pNub->aGetTail(i_Tail);
     i8 nTailUnits = aTailLine->w8_1B(C_TAIL_UNITS_OFFSET);
-    RASSERT(nTailUnits <= 4);
+    //RASSERT(nTailUnits <= 4);
 
     //MemLib::vWordDump(aFindLine,sizeof(HeadLine));
     //MemLib::vWordDump(aTailLine,sizeof(HeadLine));

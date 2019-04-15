@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Data.h -- Data namespace                                         */
+/* Data.h -- Data namespace                                                   */
 /*============================================================================*/
 #pragma once
 
@@ -20,6 +20,12 @@ namespace Data
   
   enum eMN : u1 // metadata nibbles
   {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  //! warning
+  //! warning : do not define values which override this set
+  //! warning
+
   MN_NULL = 0b0000,       // 0: null datum (no bytes in data words)
   
   MN_1B   = 0b0001,       // 1: data words contain 1B datum
@@ -31,10 +37,12 @@ namespace Data
   MN_7B   = 0b0111,       // 7: data words contain 7B datum
   MN_8B   = 0b1000,       // 8: data words contain 8B datum
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   MN_FALSE = 0b1101,      // D: false datum (no bytes in data words)
   MN_TRUE  = 0b1110,      // E: true datum (no bytes in data words)
   
-  //! the following are to be renamed
+  // the following are to be renamed
   MN_CLASSICAL_1B = 0b1001, // 9: classical era 1B
   MN_CLASSICAL_2B = 0b1010, // A: classical era 2B
   MN_SILVER_1B    = 0b1011, // B: silver era 1B
@@ -89,14 +97,14 @@ using namespace Data;
 
 typedef HV<Record,CN_RECORD> HV_Rec;
 
-typedef ArrayNL_t<CN_ROWAGG,eMN,256> EmnAry;
+typedef ArrayNL_t<CN_ROWAGG,eDM,256> Coda;
 
-typedef Nub_t<CN_ROWTRAY,HeadLine,TailLine,DoubleWord,Table,EmnAry*> RowNub;
+typedef Nub_t<CN_ROWTRAY,HeadLine,TailLine,DoubleWord,Table,Coda> RowNub;
 
-typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,DoubleWord,Table,EmnAry*,
+typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,DoubleWord,Table,Coda,
                 (C_CACHELINES * sizeof(HeadLine))> RowParts;
 
-typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,DoubleWord,Table,EmnAry*,
+typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,DoubleWord,Table,Coda,
                  (C_MAX_ROWS * sizeof(HeadLine))> RowTray;
 
 #include "Datum.hpp"
