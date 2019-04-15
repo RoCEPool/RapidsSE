@@ -1051,6 +1051,7 @@
   static void vTestTest8(Tasks::MP_Task mpTask);
   static void vTestTest9(Tasks::MP_Task mpTask);
   static void vTestTest10(Tasks::MP_Task mpTask);
+  static void vTestTest11(Tasks::MP_Task mpTask);
 
   // thread
   static void vThreadBind(Tasks::MP_Task mpTask);

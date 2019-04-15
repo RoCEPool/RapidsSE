@@ -35,6 +35,7 @@ namespace Structures
     Nub_t(void);
     ~Nub_t(void) noexcept(false);
   
+    static void  vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes);
     static TAIL* aToTail(HEAD* aHead, i8 i_Distance);
     static i8 iToTail(i8 i_Head, i8 i_Distance);
     static i8 iUnitDiff(i8 i_Head, i8 i_Tail);
@@ -303,7 +304,7 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nAreaBytes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the item decoder                                                     */
+/* get the item decoder                                                       */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
 CODA* Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::pCoda(void)
@@ -322,6 +323,15 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vCoda(CODA* pCoda)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   m_pCoda = pCoda;
+}
+
+/*----------------------------------------------------------------------------*/
+/* cut bytes off                                                              */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes)
+{
+  
 }
 
 /*----------------------------------------------------------------------------*/
