@@ -136,111 +136,17 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     Column* pCol = pColVec->pGet(i_Column);
+    eDM eDatum = pCol->eDatumType();
     
-    if (DM_VCH != pCol->eDatumType())
-      continue;
+//    if (DM_VCH != eDatum)
+//      continue;
     
     eMN eEncoding = eGetEncoding(pFromHead,pColVec,i_Column,i_LastColumn,i_Offset);
     
-    if (MN_SHOCO_2B != eEncoding)
-      continue;
-
-    vCopyShoco(pIntoNub,pIntoHead,i_IntoHead,pFromNub,pCol,i_Offset);
+    if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding)
+      vCopyShoco(pIntoNub,pIntoHead,i_IntoHead,pFromNub,pCol,i_Offset);
   }
   
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // copy shoco tail line from nub
-//    
-//    i8 i_Distance = pFromHead->w8_2B(i_Offset);
-//    TailLine* pShocoTail = pFromNub->aGetTail(i_Distance);
-//    
-//    /*
-//     +=====================================+
-//     |            Shoco Tail Line          +
-//     +=====================================+
-//     | U | C | <compressed bytes> <unused> +
-//     +-------------------------------------+
-//     | 0 | 1 | 2                        63 |
-//     +-------------------------------------+
-//     
-//     where: U is one byte being the unit length of the tail line
-//            C is one byte being the number of compressed bytes
-//     */
-//
-//    
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//#ifdef WITH_SHOCO_FOLDLAST
-//    if (pCol->bIsLastColumn()) {
-//      
-//      i8 nCompressed = pShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
-//      //RASSERT(nCompressed <= 56);
-//
-//      i8 nFreeHeadBytes = sizeof(HeadLine) - i_Offset - C_SHOCO_COMPRESSED_BYTES;
-//      
-//      if (nCompressed <= nFreeHeadBytes) {
-//        
-//        pIntoHead->v1N(i_Column,MN_SHOCO_FIT);
-//        
-//        pIntoHead->v1B(i_Offset,nCompressed);
-//
-//        byte* aFrom = (byte*)pShocoTail + C_SHOCO_COMPRESSED_OFFSET
-//                                        + C_SHOCO_COMPRESSED_BYTES;
-//        byte* aInto = (byte*)pIntoHead + i_Offset
-//                                       + C_SHOCO_COMPRESSED_BYTES;
-//        
-//        MemLib::vCopy(aInto,aFrom,nCompressed,CN_ROWBUFFER);
-//
-//        nFolds++;
-//        //if (IntLib::bIsDecaCycle(nFolds))
-//        //  vTrace("%lld folds\n"_Stz,nFolds);
-//        
-//        continue;
-//      }
-//      
-//      // fall thru
-//    }
-//#endif
-//
-//    TailLine* pIntoTail = nullptr;
-//    
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//#ifdef WITH_SHOCO_DUPLICATES
-//    i8 i_IntoTail = iFindTail(pIntoNub,pShocoTail);
-//    
-//    if (C_UNKNOWN != i_IntoTail) {
-//
-//      pIntoTail = pIntoNub->aGetTail(i_IntoTail);
-//    
-//      // what gets encoded is the unit difference between head and tail
-//      i8 i_TailDistance = pIntoNub->iUnitDiff(i_IntoHead,i_IntoTail);
-//      pIntoHead->vPut(i_Offset,i_TailDistance,MN_2B);
-//      
-//      continue;
-//    }
-//#endif
-//
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    
-//    i8 nTailUnits = pShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
-//    //RASSERT(nTailUnits <= 4);
-//    i8 nShocoBytes = pShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
-//    //RASSERT(nShocoBytes <= 56);
-//
-//    i_IntoTail = pIntoNub->iAllotTail(2 + nShocoBytes);
-//    pIntoTail = pIntoNub->aGetTail(i_IntoTail);
-//    
-//    MemLib::vCopy(pIntoTail,pShocoTail,
-//                  nTailUnits*sizeof(DoubleWord),CN_ROWBUFFER);
-//    //i8 nCopiedBytes = pIntoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
-//    //RASSERT(nCopiedBytes <= 56);
-//
-//    // what gets encoded is the unit difference between head and tail
-//    i8 i_TailDistance = pIntoNub->iUnitDiff(i_IntoHead,i_IntoTail);
-//    pIntoHead->vPut(i_Offset,i_TailDistance,MN_2B);
-//    //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
-//    
-//    continue;
-//  }
   
   return true;
 }
