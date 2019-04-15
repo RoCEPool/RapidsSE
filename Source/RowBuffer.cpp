@@ -123,6 +123,25 @@ RowBuffer* RowBuffer::pRefdRowBuffer(Id& xId)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the row buffer that contains the given address                         */
+/*----------------------------------------------------------------------------*/
+RowBuffer* RowBuffer::pToRowBuffer(void* aAddr)
+{
+  PoolBuffer* pPoolBuffer =
+    PoolBuffer::pGetPoolBuffer((Object*)aAddr);
+  
+  HeapBuffer* pHeapBuffer =
+    reinterpret_cast<HeapBuffer*>(pPoolBuffer);
+
+  RowBuffer* pRowBuffer =
+    reinterpret_cast<RowBuffer*>(pHeapBuffer->aFirstChunk());
+
+  RASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
+  
+  return pRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

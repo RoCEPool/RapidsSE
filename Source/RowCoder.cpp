@@ -434,6 +434,12 @@ void RowCoder::vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec)
 {
   pRec->vReset();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // get no of columns
   i8 nColumns = pColVec->nItems();
   
@@ -451,7 +457,7 @@ void RowCoder::vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec)
       pRec->szRecStr()->vConcat(","_Stz);
     
     // append column value
-    vAppend(pRec,aHeadLine,pColVec,pCol, i_LastColumn, i_LastOffset);
+    vAppend(pRec,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
   }
 }
 
@@ -593,7 +599,7 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
 }
 
 /*----------------------------------------------------------------------------*/
-/* reencode a 1B Vch                                                          */
+/* re-encode a 1B Vch                                                         */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCopyVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
                           RowNub* pFromNub, Column* pCol,
