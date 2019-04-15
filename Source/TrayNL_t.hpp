@@ -332,7 +332,7 @@ template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
 void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes)
 {
   i8 iStartMove = i_Offset + nCutBytes ;
-  RASSERT(iEndMove <= nSize);
+  RASSERT(iStartMove <= nSize);
   
   // get the start address
   byte* aSrc = aAdd<byte*>(aAddr, iStartMove);
