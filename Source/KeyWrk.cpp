@@ -202,13 +202,15 @@ void KeyWrk::vExtractKey(RowNub* pRowNub, i8 i_Row, IdxColVec* pIdxColVec)
   Datum oDatum;
   
   i8 nCols = pIdxColVec->nItems();
+  i8 i_LastColumn = 0;
+  i8 i_LastOffset = 8;
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     
     // get the column from the index column vector
     Column* pColumn = pIdxColVec->pGet(i_Column);
     
     // get the column value from the row for the iColumnNo
-    RowCoder::vDecode(&oDatum,pRowNub,i_Row,pColumn);
+    RowCoder::vDecode(&oDatum,pRowNub,i_Row,pColumn,i_LastColumn,i_LastOffset);
     
     // add the column value to the key
     vAddDatum(oDatum, pColumn);

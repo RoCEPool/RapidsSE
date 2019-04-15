@@ -17,28 +17,30 @@ namespace Data
   public:
     static void vAnalyse(RowNub* pNub);
     static bool bCopy(RowNub* pIntoNub, RowNub* pFromNub);
-    static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol);
+    static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol, 
+                        i8& i_LastColumn, i8& i_LastOffset);
     static void vDecode(Datum* pDatum, HeadLine* aHeadLine,
-                        ColumnVec* pColVec, Column* pCol);
+                        ColumnVec* pColVec, Column* pCol,
+                        i8& i_LastColumn, i8& i_LastOffset);
     static void vEncode(RowNub* pNub, Column* pCol, Datum* pDatum);
-    static void vPrint(RowNub* pNub, i8 i_Row, Column* pCol);
+    static void vPrint(RowNub* pNub, i8 i_Row, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
     static void vRecord(Record* pRec, RowNub* pNub, i8 i_Row);
     static void vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec);
 
   private:
-    static void vAppend(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
+    static void vAppend(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
   
     static i8 nDataBytes(HeadLine* aHeadLine, Column* pCol, eMN eEncoding, eDM eDatum);
   
-    static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    static void vDecodeBol(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    static void vDecodeDte(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    static void vDecodeFlt(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    static void vDecodeInt(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    static void vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    static void vDecodeTme(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    static void vDecodeTsp(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    static void vDecodeVch(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
+    static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeBol(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeDte(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeFlt(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeInt(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeTme(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeTsp(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeVch(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
 
     static void vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
@@ -76,7 +78,7 @@ namespace Data
     static i8 nFreeSpaceHead(RowNub* pNub, HeadLine* aHeadLine);
   
     static eMN eGetEncoding(HeadLine* aHeadLine, ColumnVec* pColVec,
-                            i8 i_Col, i8& i_Offset);
+                            i8 i_Col, i8& i_LastCol, i8& i_Offset);
   
     static void vInitHeadLine(HeadLine* aHeadLine);
   
