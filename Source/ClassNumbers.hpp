@@ -58,7 +58,6 @@ enum eCN : u2 // Class Number
   /*  31 0x1F      152B Heap:S */ CN_DICSTACK,
   /*  32 0x20      608B Heap:S */ CN_DIR,
   
-  /*                           */ CN_EDMARRAY,
   /*  33 0x21       40B Heap:I */ CN_ENTRY,
   /*  34 0x22  1043848B Heap:L */ CN_ENTRYBUFFER,
   /*                           */ CN_ENUMFLAGS,
@@ -330,7 +329,6 @@ static Stz* aCN[]
   /*  31 0x1F */ "DICSTACK"_Stz,            // CN_DICSTACK
   /*  32 0x20 */ "DIR"_Stz,                 // CN_DIR
   
-  /*          */ "EDMARRAY"_Stz,            // CN_EDMARRAY
   /*  33 0x21 */ "ENTRY"_Stz,               // CN_ENTRY
   /*  34 0x22 */ "ENTRYBUFFER"_Stz,         // CN_ENTRYBUFFER
   /*          */ "ENUMFLAGS"_Stz,           // CN_ENUMFLAGS

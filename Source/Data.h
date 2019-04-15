@@ -98,7 +98,7 @@ using namespace Data;
 
 typedef HV<Record,CN_RECORD> HV_Rec;
 
-typedef ArrayNL_t<CN_EDMARRAY,eDM,256> EdmAry;
+//typedef ArrayNL_t<CN_EDMARRAY,eDM,256> EdmAry;
 
 typedef Nub_t<CN_ROWTRAY,HeadLine,TailLine,DoubleWord,Table,Coda> RowNub;
 

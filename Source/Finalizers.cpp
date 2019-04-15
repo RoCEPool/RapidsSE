@@ -55,7 +55,6 @@ pFINALIZE *gpFinalize[]
   /* 34 */ &Finalize::vUndefined,         // CN_DICSTACK
   /* 35 */ &Finalize::vUndefined,         // CN_DIR
   
-  /*    */ &Finalize::vUndefined,         // CN_EDMARRAY
   /* 36 */ &Finalize::vUndefined,         // CN_ENTRY
   /* 37 */ &Finalize::vUndefined,         // CN_ENTRYBUFFER
   /*    */ &Finalize::vUndefined,         // CN_ENUMFLAGS
