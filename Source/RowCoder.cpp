@@ -138,15 +138,21 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     Column* pCol = pColVec->pGet(i_Column);
     eDM eDatum = pCol->eDatumType();
     
-//    if (DM_VCH != eDatum)
-//      continue;
+    // init coda
+    if (0 == i_IntoHead) {
+      Coda* pCoda = pIntoNub->pCoda();
+      pCoda->m_aeDatum[i_Column] = eDatum;
+      pCoda->m_aiAux[i_Column]   = 0;
+    }
     
     eMN eEncoding = eGetEncoding(pFromHead,pColVec,i_Column,i_LastColumn,i_Offset);
     
     if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding)
       vCopyShoco(pIntoNub,pIntoHead,i_IntoHead,pFromNub,pCol,i_Offset);
+    
+    if (DM_VCH == eDatum && MN_1B == eEncoding)
+      vCopyVch1B(pIntoNub,pIntoHead,i_IntoHead,pFromNub,pCol,i_Offset);
   }
-  
   
   return true;
 }
@@ -584,6 +590,20 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
   //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
   
   return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reencode a 1B Vch                                                          */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vCopyVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
+                          RowNub* pFromNub, Column* pCol,
+                          i8& i_Offset)
+{
+  Coda* pCoda = pIntoNub->pCoda();
+  i8 i_Column = pCol->iColumnNo();
+
+  pCoda->m_aeDatum[i_Column] = DM_ALPHA;
+  pCoda->m_aiAux[i_Column]   = pIntoHead->w8_1B(i_Offset);
 }
 
 /*----------------------------------------------------------------------------*/

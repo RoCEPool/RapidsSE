@@ -34,7 +34,10 @@ namespace Data
     static void vCopyShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
                            RowNub* pFromNub, Column* pCol,
                            i8 i_Offset);
-  
+    static void vCopyVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
+                           RowNub* pFromNub, Column* pCol,
+                           i8& i_Offset);
+
     static i8 nDataBytes(HeadLine* aHeadLine, Column* pCol, eMN eEncoding, eDM eDatum);
   
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec,
