@@ -15,6 +15,7 @@ namespace Datums
   enum eDM : u1 // Datum Type
   {
   /*  0 */ DM_NONE=0,
+  
   /*  1 */ DM_BCD,
   /*  2 */ DM_BOL,
   /*  3 */ DM_CHR,
@@ -31,13 +32,16 @@ namespace Datums
   /* 13 */ DM_SPARE_13,
   /* 14 */ DM_SPARE_14,
   /* 15 */ DM_SPARE_15,
+  
+  /* 16 */ DM_ALPHA,
 
-  /* 16 */ DM_ENUMS
+  /* 17 */ DM_ENUMS
   };
   
   static Stz* aDM[]
   {
   /*  0 */ "NONE"_Stz,
+  
   /*  1 */ "BCD"_Stz,
   /*  2 */ "BOL"_Stz,
   /*  3 */ "CHR"_Stz,
@@ -49,6 +53,14 @@ namespace Datums
   /*  9 */ "TSP"_Stz,
   /* 10 */ "VBN"_Stz,
   /* 11 */ "VCH"_Stz,
+  
+  /* 12 */ "SPARE_12"_Stz,
+  /* 13 */ "SPARE_13"_Stz,
+  /* 14 */ "SPARE_14"_Stz,
+  /* 15 */ "SPARE_15"_Stz,
+
+  /* 16 */ "ALPHA"_Stz,
+
   /* 12 */ "ENUMS"_Stz,
   };
   
