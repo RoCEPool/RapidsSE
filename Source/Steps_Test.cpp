@@ -23,6 +23,7 @@ void Step::vAddSteps_Test(void)
   vAddStep("test::test8"_Stz,  &Step::vTestTest8);
   vAddStep("test::test9"_Stz,  &Step::vTestTest9);
   vAddStep("test::test10"_Stz, &Step::vTestTest10);
+  vAddStep("test::test11"_Stz, &Step::vTestTest11);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,6 +152,18 @@ void Step::vTestTest10(MP_Task mpTask)
   ENTRY("vTestTest10 "_Stz);
   
   vTest10();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* test::test11 -- test1                                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vTestTest11(MP_Task mpTask)
+{
+  ENTRY("vTestTest11 "_Stz);
+  
+  vTest11();
   
   EXIT();
 }
