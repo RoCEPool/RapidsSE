@@ -92,6 +92,8 @@ namespace Data
     static i8 iStripDte(WordView& wTspView, eMN eEncoding);
     static i8 iStripTme(WordView& wTspView, eMN eEncoding);
     static i8 iStripTsp(WordView& wTspView, eMN eEncoding);
+ 
+    static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
   };
 }
 

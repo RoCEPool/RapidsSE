@@ -22,6 +22,8 @@ void RowCoder::vAnalyse(RowNub* pNub)
   i8 iSumHead = 0;
   i8 iMinHead = C_I8_MAX;
   i8 iMaxHead = C_I8_MIN;
+  
+  i8 nWouldReduce = 0;
 
   for (i8 i_Tail = pNub->iLastTail();
        i_Tail != C_UNKNOWN;
@@ -30,6 +32,7 @@ void RowCoder::vAnalyse(RowNub* pNub)
     TailLine* aTail = pNub->aGetTail(i_Tail);
     
     i8 iLenTail = aTail->w8_1B(1);
+    RASSERT(iLenTail <= 56);
     iSumTail += iLenTail;
     nTails++;
     
@@ -43,19 +46,34 @@ void RowCoder::vAnalyse(RowNub* pNub)
     
     HeadLine* aHead = pNub->aGetHead(i_Head);
     
-    i8 nFreeHead = nFreeSpaceHead(pNub,aHead);
-    iSumHead += nFreeHead;
+    i8 nHeadFree = nFreeSpaceHead(pNub,aHead);
+    iSumHead += nHeadFree;
     nHeads++;
     
-    if (nFreeHead < iMinHead)
-      iMinHead = nFreeHead;
-    if (nFreeHead > iMaxHead)
-      iMaxHead = nFreeHead;
+    if (nHeadFree < iMinHead)
+      iMinHead = nHeadFree;
+    if (nHeadFree > iMaxHead)
+      iMaxHead = nHeadFree;
+    
+    i8 nTailUsed = nShocoTailSize(pNub,aHead);
+    
+    if (nTailUsed != C_UNKNOWN) {
+      
+      i8 nRemainder = nTailUsed - nHeadFree;
+      
+      i8 nUnitsTail = pNub->nUnits(nTailUsed);
+      i8 nUnitsRemainder = pNub->nUnits(nRemainder);
+      
+      if (nUnitsRemainder < nUnitsTail)
+        nWouldReduce++;
+      
+    }
   }
 
   vTrace("Heads %lld Tails %lld; "
          "Avg head free %lldB Min %lldB Max %lldB; "
-         "Avg tail use %lldB Min %lldB Max %lldB\n"_Stz,
+         "Avg tail use %lldB Min %lldB Max %lldB; "
+         "WouldReduce %lld\n"_Stz,
          
          pNub->nHeads(),
          pNub->nTails(),
@@ -66,7 +84,10 @@ void RowCoder::vAnalyse(RowNub* pNub)
 
          nTails ? iSumTail/nTails : 0,
          iMinTail,
-         iMaxTail);
+         iMaxTail,
+         
+         nWouldReduce
+         );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,8 +142,8 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // copy shoco tail line from nub
     
-    i8 i_Shoco = pFromHead->w8_2B(i_Offset);
-    TailLine* pShocoTail = pFromNub->aGetTail(i_Shoco);
+    i8 i_Distance = pFromHead->w8_2B(i_Offset);
+    TailLine* pShocoTail = pFromNub->aGetTail(i_Distance);
     
     /*
      +=====================================+
@@ -143,6 +164,8 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     if (pCol->bIsLastColumn()) {
       
       i8 nCompressed = pShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+      RASSERT(nCompressed <= 56);
+
       i8 nFreeHeadBytes = sizeof(HeadLine) - i_Offset - C_SHOCO_COMPRESSED_BYTES;
       
       if (nCompressed <= nFreeHeadBytes) {
@@ -190,13 +213,17 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     i8 nTailUnits = pShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
+    RASSERT(nTailUnits <= 4);
     i8 nShocoBytes = pShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
-    
+    RASSERT(nShocoBytes <= 56);
+
     i_IntoTail = pIntoNub->iAllotTail(2 + nShocoBytes);
     pIntoTail = pIntoNub->aGetTail(i_IntoTail);
     
     MemLib::vCopy(pIntoTail,pShocoTail,nTailUnits*sizeof(DoubleWord),CN_ROWBUFFER);
-    
+    i8 nCopiedBytes = pIntoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+    RASSERT(nCopiedBytes <= 56);
+
     // what gets encoded is the unit difference between head and tail
     i8 i_TailDistance = pIntoNub->iUnitDiff(i_IntoHead,i_IntoTail);
     pIntoHead->vPut(i_Offset,i_TailDistance,MN_2B);
@@ -774,7 +801,8 @@ void RowCoder::vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
    */
 
   i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
-  
+  RASSERT(nCompressed <= 4);
+
   i8 nDecompressed =
     Compress::iFromShoco(pDatum->m_xWsp.aArea(),   // decompressed destination
                          255,                      // max destination
@@ -793,7 +821,8 @@ void RowCoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
                                Column* pCol, eMN eEncoding, i8 i_Offset)
 {
   i8 nCompressed = aHeadLine->w8_1B(i_Offset);
-  
+  RASSERT(nCompressed <= 56);
+
   i8 nDecompressed =
     Compress::iFromShoco((char*)pDatum->m_xWsp.aStz(),
                          255,
@@ -1598,6 +1627,7 @@ i8 RowCoder::iFindTail(RowNub* pNub, TailLine* aFindLine)
     
     TailLine* aTailLine = pNub->aGetTail(i_Tail);
     i8 nTailUnits = aTailLine->w8_1B(C_TAIL_UNITS_OFFSET);
+    RASSERT(nTailUnits <= 4);
 
     //MemLib::vWordDump(aFindLine,sizeof(HeadLine));
     //MemLib::vWordDump(aTailLine,sizeof(HeadLine));
@@ -1634,6 +1664,7 @@ i8 RowCoder::nFreeSpaceHead(RowNub* pNub, HeadLine* aHeadLine)
   
   if (MN_SHOCO_FIT == eEncoding) {
     i8 nCompressed = aHeadLine->w8_1B(i_Offset);
+    RASSERT(nCompressed <= 56);
     i_Offset += nCompressed;
   }
 
@@ -1856,6 +1887,37 @@ i8 RowCoder::iStripTsp(WordView& wTspView, eMN eEncoding)
   iDecoded <<= 24;
   
   return iDecoded;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get length of tail associate with a head line                              */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine)
+{
+  //MemLib::vWordDump(aHeadLine,sizeof(HeadLine));
+  
+  ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
+  
+  Column* pLastCol = pColVec->pGet(pColVec->nItems() - 1);
+  ASSERT(pLastCol->bIsLastColumn());
+  
+  i8 i_Offset = 0;
+  eMN eEncoding = eGetEncoding(aHeadLine,pColVec,pLastCol->iColumnNo(),i_Offset);
+  
+  if (MN_SHOCO_2B != eEncoding)
+    return C_UNKNOWN;
+  
+  i8 i_Distance = aHeadLine->w8_2B(i_Offset);
+  TailLine* pShocoTail = pNub->aToTail(aHeadLine,i_Distance);
+
+  i8 nCompressed = pShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+  RASSERT(nCompressed <= 56);
+  i8 nTailSize = nCompressed + 1;
+  
+  //MemLib::vWordDump(aHeadLine,sizeof(HeadLine));
+
+
+  return nTailSize;
 }
 
 /*============================================================================*/

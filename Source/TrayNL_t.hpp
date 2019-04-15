@@ -36,6 +36,7 @@ namespace Structures
     static TAIL* aToTail(HEAD* aHead, i8 i_Distance);
     static i8 iToTail(i8 i_Head, i8 i_Distance);
     static i8 iUnitDiff(i8 i_Head, i8 i_Tail);
+    static i8 nUnits(i8 nBytes);
 
     i8    iAllotHead(void);
     i8    iAllotTail(i8 nBytes);
@@ -206,6 +207,23 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iUnitDiff(i8 i_Head, i8 i_Tail)
   i8 i_Diff = i_Tail - i_HeadUnit;
   
   return i_Diff;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot tail item                                                            */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nUnits(i8 nBytes)
+{
+  if (! nBytes)
+    return 0;
+  
+  i8 nUnits = nBytes / (i8)sizeof(UNIT);
+  if (nBytes % (i8)sizeof(UNIT))
+    nUnits++;
+  RASSERT(nUnits * (i8)sizeof(UNIT) >= nBytes);
+  
+  return nUnits;
 }
 
 
@@ -484,6 +502,7 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iPrevTail(i8 i_CurrTail)
   
   TAIL* aPriorTail = aGetTail(i_CurrTail);
   i8 nPriorUnits = aPriorTail->w8_1B(0);
+  RASSERT(nPriorUnits <= 4);
   
   UNIT* aPrevTail_Unit = (UNIT*)aPriorTail + nPriorUnits;
   if (aPrevTail_Unit >= &m_axaUnits[m_nSpaceUnits])
