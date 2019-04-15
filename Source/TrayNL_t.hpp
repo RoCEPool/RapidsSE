@@ -680,7 +680,7 @@ TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::TrayNL_t(void)
   vReset();
   
   i8 i_Coda = m_oNub.iAllotTail(sizeof(CODA)+1);
-  CODA* pCoda = (CODA*)( (char*)m_oNub.aGetTail(i_Coda) + 1);
+  CODA* pCoda = (CODA*)( (char*)m_oNub.aGetTail(i_Coda) + 1 );
   new (pCoda) CODA;
   
   m_oNub.vCoda(pCoda);

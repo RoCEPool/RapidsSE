@@ -93,11 +93,12 @@ using namespace Data;
 
 #include "HeadLine.hpp"
 #include "TailLine.hpp"
+#include "Coda.hpp"
 
 
 typedef HV<Record,CN_RECORD> HV_Rec;
 
-typedef ArrayNL_t<CN_CODA,eDM,256> Coda;
+typedef ArrayNL_t<CN_EDMARRAY,eDM,256> EdmAry;
 
 typedef Nub_t<CN_ROWTRAY,HeadLine,TailLine,DoubleWord,Table,Coda> RowNub;
 
