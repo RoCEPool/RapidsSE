@@ -18,7 +18,7 @@ namespace Data
   
   static const i8 C_MAX_ROWS = (C_SIZE_LARGE_OBJECT - C_1KB) / C_BYTES_PER_CACHE_LINE;
   
-  enum eMN // metadata nibbles
+  enum eMN : u1 // metadata nibbles
   {
   MN_NULL = 0b0000,       // 0: null datum (no bytes in data words)
   
@@ -89,14 +89,14 @@ using namespace Data;
 
 typedef HV<Record,CN_RECORD> HV_Rec;
 
-typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
+typedef ArrayNL_t<CN_ROWAGG,eMN,256> EmnAry;
 
-typedef Nub_t<CN_ROWTRAY,HeadLine,TailLine,DoubleWord,Table,void*> RowNub;
+typedef Nub_t<CN_ROWTRAY,HeadLine,TailLine,DoubleWord,Table,EmnAry*> RowNub;
 
-typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,DoubleWord,Table,void*,
+typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,DoubleWord,Table,EmnAry*,
                 (C_CACHELINES * sizeof(HeadLine))> RowParts;
 
-typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,DoubleWord,Table,void*,
+typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,DoubleWord,Table,EmnAry*,
                  (C_MAX_ROWS * sizeof(HeadLine))> RowTray;
 
 #include "Datum.hpp"
