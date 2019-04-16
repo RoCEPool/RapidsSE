@@ -35,31 +35,44 @@ namespace Data
     static void vCopyShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
                            RowNub* pFromNub, Column* pCol,
                            i8 i_Offset);
-    static void vCopyVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
+    static void vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
                            RowNub* pFromNub, Column* pCol,
                            i8& i_Offset);
 
     static i8 nDataBytes(HeadLine* aHeadLine, Column* pCol, eMN eEncoding, eDM eDatum);
   
-    static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec,
-                           Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeBol(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec,
-                           Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeDte(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec,
-                           Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeFlt(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec,
-                           Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeInt(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec,
-                           Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec,
-                           Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeTme(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec,
-                           Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeTsp(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec,
-                           Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeVch(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec,
-                           Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
-
+    static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
+                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                           i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,
+                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                           i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
+                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                           i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeFlt(Datum* pDatum, HeadLine* aHeadLine,
+                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                           i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeInt(Datum* pDatum, HeadLine* aHeadLine,
+                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                           i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine,
+                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                           i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeTme(Datum* pDatum, HeadLine* aHeadLine,
+                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                           i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeTsp(Datum* pDatum, HeadLine* aHeadLine,
+                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                           i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
+                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                           i8& i_LastColumn, i8& i_LastOffset);
+  
+    static void vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
+                             ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                             i8& i_LastColumn, i8& i_LastOffset);
+  
     static void vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
     static void vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
@@ -95,7 +108,7 @@ namespace Data
 
     static i8 nFreeSpaceHead(RowNub* pNub, HeadLine* aHeadLine);
   
-    static eMN eGetEncoding(HeadLine* aHeadLine, ColumnVec* pColVec,
+    static eMN eGetEncoding(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda,
                             i8 i_Col, i8& i_LastCol, i8& i_Offset);
   
     static void vInitHeadLine(HeadLine* aHeadLine);

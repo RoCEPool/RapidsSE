@@ -44,6 +44,8 @@ time ld lineitem "/tpch/SF0/lineitem10k.csv" max_errors 100;
 space;
 sztbl lineitem;
 
+fetch lineitem;
+
 /*
 time fetch lineitem
   "l_orderKey 2341987 > l_orderKey 443873129 < and"
