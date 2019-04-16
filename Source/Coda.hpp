@@ -11,7 +11,21 @@ namespace Data
   public:
  
     eDM m_aeDatum[150];
-    i2  m_aiAux[150];
+  
+    union {
+      i8   m_iBcd;
+      i8   m_iBol;
+      i8   m_iDte;
+      d8   m_dFlt;
+      i8   m_iInt;
+      i8   m_iIvl;
+      i8   m_iTme;
+      i8   m_iTsp;
+      char m_caChr[C_BYTES_PER_WORD];
+      
+      i8   m_iTail;
+      
+    } m_aiAux[150];
 
     // must be last
     Footer m_xFooter;

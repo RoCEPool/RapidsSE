@@ -142,7 +142,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     if (0 == i_IntoHead) {
       Coda* pCoda = pIntoNub->pCoda();
       pCoda->m_aeDatum[i_Column] = eDatum;
-      pCoda->m_aiAux[i_Column]   = 0;
+      pCoda->m_aiAux[i_Column].m_iInt = 0;
     }
     
     eMN eEncoding = eGetEncoding(pFromHead,pColVec,i_Column,i_LastColumn,i_Offset);
@@ -367,7 +367,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
     // the extended datums
       
     case DM_ALPHA:
-      vDecodeVch(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+      vDecodeAlpha(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
       
     default:
@@ -413,7 +413,7 @@ void RowCoder::vPrint(RowNub* pNub, i8 i_Row, Column* pCol, i8& i_LastColumn, i8
 {
   Datum oDatum;
   HV_Rec hvRec;
-   
+  
   vDecode(&oDatum,pNub,i_Row,pCol,i_LastColumn,i_LastOffset);
   
   eDM eDatum = oDatum.m_eDatum;
@@ -644,7 +644,7 @@ void RowCoder::vCopyVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
   i8 i_Column = pCol->iColumnNo();
 
   pCoda->m_aeDatum[i_Column] = DM_ALPHA;
-  pCoda->m_aiAux[i_Column]   = pIntoHead->w8_1B(i_Offset);
+  pCoda->m_aiAux[i_Column].m_iInt   = pIntoHead->w8_1B(i_Offset);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1040,6 +1040,27 @@ void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode varchar from given cache line                                       */
 /*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
+                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                            i8& i_LastColumn, i8& i_Offset)
+{
+  i8 i_Column  = pCol->iColumnNo();
+  
+  pDatum->m_eDatum = DM_VCH;
+  
+  //! needs more work
+  eMN eEncoding = eGetEncoding(aHeadLine,pColVec,i_Column,i_LastColumn,i_Offset);
+  
+  RASSERT(MN_1B == eEncoding);
+  
+  vDecodeVchSmall(pDatum,aHeadLine,pCol,eEncoding,i_Offset);
+  
+  //RASSERT(pDatum->m_xWsp.aArea()[0] == (char)pCoda->m_aiAux[i_Column]);
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode varchar from given cache line                                       */
+/*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
                                Column* pCol, eMN eEncoding, i8 i_Offset)
 {
@@ -1188,7 +1209,7 @@ void RowCoder::vEncodeBcd(RowNub* pNub, Column* pCol, Datum* pDatum)
   pNub->vOffsetInc(nBytesEncoded);
   
   Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column] = nBytesEncoded;
+  pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1228,7 +1249,7 @@ void RowCoder::vEncodeBol(RowNub* pNub, Column* pCol, Datum* pDatum)
   pNub->vOffsetInc(nBytesEncoded);
 
   Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column] = nBytesEncoded;
+  pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -1275,7 +1296,7 @@ void RowCoder::vEncodeDte(RowNub* pNub, Column* pCol, Datum* pDatum)
   pNub->vOffsetInc(nBytesEncoded);
 
   Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column] = nBytesEncoded;
+  pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -1321,7 +1342,7 @@ void RowCoder::vEncodeFlt(RowNub* pNub, Column* pCol, Datum* pDatum)
   pNub->vOffsetInc(nBytesEncoded);
 
   Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column] = nBytesEncoded;
+  pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -1365,7 +1386,7 @@ void RowCoder::vEncodeInt(RowNub* pNub, Column* pCol, Datum* pDatum)
   pNub->vOffsetInc(nBytesEncoded);
 
   Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column] = nBytesEncoded;
+  pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -1409,7 +1430,7 @@ void RowCoder::vEncodeIvl(RowNub* pNub, Column* pCol, Datum* pDatum)
   pNub->vOffsetInc(nBytesEncoded);
 
   Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column] = nBytesEncoded;
+  pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -1453,7 +1474,7 @@ void RowCoder::vEncodeTme(RowNub* pNub, Column* pCol, Datum* pDatum)
   pNub->vOffsetInc(nBytesEncoded);
 
   Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column] = nBytesEncoded;
+  pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -1497,7 +1518,7 @@ void RowCoder::vEncodeTsp(RowNub* pNub, Column* pCol, Datum* pDatum)
   pNub->vOffsetInc(nBytesEncoded);
 
   Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column] = nBytesEncoded;
+  pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -1543,7 +1564,7 @@ void RowCoder::vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum)
       aHeadLine->v1B(i_Offset,0);
       pNub->vOffsetInc(1);
       Coda* pCoda = pNub->pCoda();
-      pCoda->m_aiAux[i_Column] = 1;
+      pCoda->m_aiAux[i_Column].m_iInt = 1;
       
     }
   }
@@ -1605,7 +1626,7 @@ void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum)
   pNub->vOffsetInc(2);
   
   Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column] = 2;
+  pCoda->m_aiAux[i_Column].m_iInt = 2;
   
   // set length of the compressed string encoded into tail shoco cache line
   aShocoTail->v1B(C_SHOCO_COMPRESSED_OFFSET,nCompressed);
@@ -1653,7 +1674,7 @@ void RowCoder::vEncodeVchSmall(RowNub* pNub, Column* pCol, Datum* pDatum)
   pNub->vOffsetInc(pDatum->m_nChars);
   
   Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column] = pDatum->m_nChars;
+  pCoda->m_aiAux[i_Column].m_iInt = pDatum->m_nChars;
 }
 
 /*----------------------------------------------------------------------------*/
