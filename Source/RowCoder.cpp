@@ -117,7 +117,6 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   HeadLine* pFromHead = pFromNub->aGetHead(0);
   
   MemLib::vCopy(pIntoHead,pFromHead,sizeof(HeadLine),CN_ROWBUFFER);
-  //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
   
   //! temp
 //  Coda* pFromCoda = pFromNub->pCoda();
@@ -130,8 +129,11 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 nColumns = pColVec->nItems();
-  i8 i_Offset = 8;
+  i8 i_FromOffset = 8;
+  i8 i_IntoOffset = 8;
+  i8 i_OldOffset  = 0;
   i8 i_LastColumn = 0;
+  
   Coda* pCoda = pIntoNub->pCoda();
 
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
@@ -145,13 +147,18 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
       pCoda->m_aiAux[i_Column].m_iInt = 0;
     }
     
-    eMN eEncoding = eGetEncoding(pIntoHead,pColVec,pCoda,i_Column,i_LastColumn,i_Offset);
+    // save old fromOfset
+    i_OldOffset = i_FromOffset;
+    eMN eEncoding = eGetEncoding2(pFromHead,pColVec,pCoda,i_Column,i_LastColumn,i_FromOffset);
+    
+    // calculate new IntoOffset
+    i_IntoOffset += i_FromOffset - i_OldOffset;
     
     if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding)
-      vCopyShoco(pIntoNub,pIntoHead,i_IntoHead,pFromNub,pCol,i_Offset);
+      vCopyShoco(pIntoNub,pIntoHead,i_IntoHead,pFromNub,pCol,i_IntoOffset,i_FromOffset);
     
     if (DM_VCH == eDatum && MN_1B == eEncoding)
-      vRecodeVch1B(pIntoNub,pIntoHead,i_IntoHead,pFromNub,pCol,i_Offset);
+      vRecodeVch1B(pIntoNub,pIntoHead,i_IntoHead,pFromNub,pCol,i_IntoOffset,i_FromOffset);
   }
   
   return true;
@@ -384,7 +391,7 @@ void RowCoder::vAppend(Record* pRec, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
                           RowNub* pFromNub, Column* pCol,
-                          i8 i_Offset)
+                          i8 i_IntoOffset, i8 i_FromOffset)
 {
   static i8 nFolds = 0;
   
@@ -394,8 +401,7 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy shoco tail line from nub
-  
-  i8 i_Distance = pFromHead->w8_2B(i_Offset);
+  i8 i_Distance = pFromHead->w8_2B(i_FromOffset);
   TailLine* pShocoTail = pFromNub->aGetTail(i_Distance);
   
   /*
@@ -419,17 +425,17 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
     i8 nCompressed = pShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
     //RASSERT(nCompressed <= 56);
     
-    i8 nFreeHeadBytes = sizeof(HeadLine) - i_Offset - C_SHOCO_COMPRESSED_BYTES;
+    i8 nFreeHeadBytes = sizeof(HeadLine) - i_IntoOffset - C_SHOCO_COMPRESSED_BYTES;
     
     if (nCompressed <= nFreeHeadBytes) {
       
       pIntoHead->v1N(i_Column,MN_SHOCO_FIT);
       
-      pIntoHead->v1B(i_Offset,nCompressed);
+      pIntoHead->v1B(i_IntoOffset,nCompressed);
       
       byte* aFrom = (byte*)pShocoTail + C_SHOCO_COMPRESSED_OFFSET
       + C_SHOCO_COMPRESSED_BYTES;
-      byte* aInto = (byte*)pIntoHead + i_Offset
+      byte* aInto = (byte*)pIntoHead + i_IntoOffset
       + C_SHOCO_COMPRESSED_BYTES;
       
       MemLib::vCopy(aInto,aFrom,nCompressed,CN_ROWBUFFER);
@@ -456,7 +462,7 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
     
     // what gets encoded is the unit difference between head and tail
     i8 i_TailDistance = pIntoNub->iUnitDiff(i_IntoHead,i_IntoTail);
-    pIntoHead->vPut(i_Offset,i_TailDistance,MN_2B);
+    pIntoHead->vPut(i_IntoOffset,i_TailDistance,MN_2B);
     
     return;
   }
@@ -479,7 +485,7 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
   
   // what gets encoded is the unit difference between head and tail
   i8 i_TailDistance = pIntoNub->iUnitDiff(i_IntoHead,i_IntoTail);
-  pIntoHead->vPut(i_Offset,i_TailDistance,MN_2B);
+  pIntoHead->vPut(i_IntoOffset,i_TailDistance,MN_2B);
   //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
   
   return;
@@ -490,14 +496,12 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
                             RowNub* pFromNub, Column* pCol,
-                            i8& i_Offset)
+                            i8& i_IntoOffset, i8& i_FromOffset)
 {
   Coda* pCoda = pIntoNub->pCoda();
   i8 i_Column = pCol->iColumnNo();
-
-  pCoda->m_aeDatum[i_Column] = DM_ALPHA;
   
-  char cChr = pIntoHead->w8_1B(i_Offset);
+  char cChr = pIntoHead->w8_1B(i_FromOffset);
   
   eMN eRevisedEncoding;
   
@@ -508,12 +512,15 @@ void RowCoder::vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead
       break;
     
     if (cChr == pCoda->m_aiAux[i_Column].m_caChr[i_Char]) {
+      pCoda->m_aeDatum[i_Column] = DM_ALPHA;
       eRevisedEncoding = (eMN)(MN_ALPHA_0 + i_Char);
       
       pIntoHead->v1N(i_Column,eRevisedEncoding);
       //!! cut
-      //pIntoNub->vCut(pIntoHead,sizeof(HeadLine),i_Offset,1);
-      //i_Offset--;
+      //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
+      pIntoNub->vCut(pIntoHead,sizeof(HeadLine),i_IntoOffset,1);
+      //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
+      i_IntoOffset--;
       return;
     }
   }
@@ -525,13 +532,14 @@ void RowCoder::vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead
   // didn't find one, add it
   pCoda->m_aiAux[i_Column].m_caChr[i_Char] = cChr;
   
+  pCoda->m_aeDatum[i_Column] = DM_ALPHA;
   eRevisedEncoding = (eMN)(MN_ALPHA_0 + i_Char);
   pIntoHead->v1N(i_Column,eRevisedEncoding);
   //!! cut
   
   //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
-  //pIntoNub->vCut(pIntoHead,sizeof(HeadLine),i_Offset,1);
-  //i_Offset--;
+  pIntoNub->vCut(pIntoHead,sizeof(HeadLine),i_IntoOffset,1);
+  i_IntoOffset--;
   //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
 
 }
@@ -641,7 +649,7 @@ i8 RowCoder::nDataBytes(HeadLine* aHeadLine, Column* pCol, eMN eEncoding, eDM eD
       break;
       
     case DM_ALPHA:
-      return 1;  //!! goes to 0
+      return 0;  //!! goes to 0
       
     default:
       NEVER_REACH;
@@ -943,7 +951,12 @@ void RowCoder::vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
   //! needs more work
   eMN eEncoding = eGetEncoding(aHeadLine,pColVec,pCoda,i_Column,i_LastColumn,i_Offset);
   
-  RASSERT(eEncoding >= MN_ALPHA_0 && eEncoding <= MN_ALPHA_5);
+  //RASSERT(eEncoding >= MN_ALPHA_0 && eEncoding <= MN_ALPHA_5);
+
+  if (eEncoding < MN_ALPHA_0 || eEncoding > MN_ALPHA_5) {
+    vDecodeVch(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_Offset);
+    return;
+  }
   
   //vDecodeVchSmall(pDatum,aHeadLine,pCol,eEncoding,i_Offset);
   
@@ -1942,6 +1955,42 @@ eMN RowCoder::eGetEncoding(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda,
 //    i8 nCompressed = aHeadLine->w8_2B(i_Offset);
 //    i_Offset += nCompressed;
 //  }
+  return eEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the encoding of of a column from given cache line                      */
+/*----------------------------------------------------------------------------*/
+
+//! consider passing a eDatum array instead of colum vector
+eMN RowCoder::eGetEncoding2(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda,
+                           i8 i_Col, i8& i_LastColumn, i8& i_Offset)
+{
+  
+  if (i_Col < i_LastColumn) {
+    i_LastColumn = 0;
+    i_Offset = 8;
+  }
+  
+  for (i8 i_Nibble = i_LastColumn; i_Nibble < i_Col; i_Nibble++) {
+    
+    eMN eEncoding = (eMN)aHeadLine->w8_1N(i_Nibble);
+    
+    Column* pCol  = pColVec->pGet(i_Nibble);
+    eDM eDatumCol = pCol->eDatumType();
+    //eDM eDatumExt = pCoda->m_aeDatum[i_Nibble];
+    
+    i_Offset += nDataBytes(aHeadLine,pCol,eEncoding,eDatumCol);
+    
+  }
+  
+  eMN eEncoding = (eMN)aHeadLine->w8_1N(i_Col);
+  i_LastColumn = i_Col;
+  
+  //  if (MN_SHOCO_FIT == eEncoding) {
+  //    i8 nCompressed = aHeadLine->w8_2B(i_Offset);
+  //    i_Offset += nCompressed;
+  //  }
   return eEncoding;
 }
 

@@ -34,10 +34,10 @@ namespace Data
   
     static void vCopyShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
                            RowNub* pFromNub, Column* pCol,
-                           i8 i_Offset);
+                           i8 i_ToOffset, i8 i_FromOffset);
     static void vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
                            RowNub* pFromNub, Column* pCol,
-                           i8& i_Offset);
+                           i8& i_IntoOffset, i8& i_FromOffset);
 
     static i8 nDataBytes(HeadLine* aHeadLine, Column* pCol, eMN eEncoding, eDM eDatum);
   
@@ -109,6 +109,8 @@ namespace Data
     static i8 nFreeSpaceHead(RowNub* pNub, HeadLine* aHeadLine);
   
     static eMN eGetEncoding(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda,
+                            i8 i_Col, i8& i_LastCol, i8& i_Offset);
+    static eMN eGetEncoding2(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda,
                             i8 i_Col, i8& i_LastCol, i8& i_Offset);
   
     static void vInitHeadLine(HeadLine* aHeadLine);
