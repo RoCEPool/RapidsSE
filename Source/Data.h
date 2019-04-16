@@ -50,6 +50,14 @@ namespace Data
   MN_MODERN_1B    = 0b1101, // D: modern era 1B
   MN_MODERN_2B    = 0b1110, // E: modern era 2B
 
+  // the following are to be renamed
+  MN_ALPHA_0      = 0b1001, // 9: m_caChr[0]
+  MN_ALPHA_1      = 0b1010, // A: m_caChr[1]
+  MN_ALPHA_2      = 0b1011, // B: m_caChr[2]
+  MN_ALPHA_3      = 0b1100, // C: m_caChr[3]
+  MN_ALPHA_4      = 0b1101, // D: m_caChr[4]
+  MN_ALPHA_5      = 0b1110, // E: m_caChr[5]
+
   MN_MINUS_ONE = 0b1100,  // C: -1 datum (no bytes in data words)
   MN_ZERO      = 0b1101,  // D: 0 datum (no bytes in data words)
   MN_PLUS_ONE  = 0b1110,  // E: 1 datum (no bytes in data words)

@@ -33,6 +33,7 @@ namespace Datums
   /* 14 */ DM_SPARE_14,
   /* 15 */ DM_SPARE_15,
   
+  // extended datums
   /* 16 */ DM_ALPHA,
 
   /* 17 */ DM_ENUMS
