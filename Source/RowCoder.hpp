@@ -39,7 +39,7 @@ namespace Data
                            RowNub* pFromNub, Column* pCol,
                            i8& i_IntoOffset, i8& i_FromOffset);
 
-    static i8 nDataBytes(HeadLine* aHeadLine, eDM eDatum, eMN eEncoding);
+    static i8 nDataBytes(eDM eDatum, eMN eEncoding);
   
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,

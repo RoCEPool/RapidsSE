@@ -550,7 +550,7 @@ void RowCoder::vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead
 /*----------------------------------------------------------------------------*/
 
 //! this may be better done as a 2d array
-i8 RowCoder::nDataBytes(HeadLine* aHeadLine, eDM eDatum, eMN eEncoding)
+i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
 {
   if (eEncoding == MN_NULL)
     return 0;
@@ -559,7 +559,7 @@ i8 RowCoder::nDataBytes(HeadLine* aHeadLine, eDM eDatum, eMN eEncoding)
     return eEncoding;
   
   if (MN_OVERFLOW == eEncoding)
-    return 0;
+    RASSERT(0); //! not implemented yet
   
   switch (eDatum) {
       
@@ -1109,7 +1109,7 @@ void RowCoder::vEncodeBcd(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   i8 nBytesEncoded;
   eMN eEncoding = eEncodingBcd(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == nDataBytes(aHeadLine,DM_BCD,eEncoding));
+  RASSERT(nBytesEncoded == nDataBytes(DM_BCD,eEncoding));
   
   // set 4bit meta data for column value
   aHeadLine->v1N(i_Column,eEncoding);
@@ -1153,7 +1153,7 @@ void RowCoder::vEncodeBol(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   i8 nBytesEncoded;
   eMN eEncoding = eEncodingBol(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == nDataBytes(aHeadLine,DM_BOL,eEncoding));
+  RASSERT(nBytesEncoded == nDataBytes(DM_BOL,eEncoding));
   
   // set 4bit meta data for column value
   aHeadLine->v1N(i_Column,eEncoding);
@@ -1196,7 +1196,7 @@ void RowCoder::vEncodeDte(RowNub* pNub, Column* pCol, Datum* pDatum)
 //         pDatum->xDte.m_uYearDelta,pDatum->xDte.m_uMonth,pDatum->xDte.m_uDay);
   
   eMN eEncoding = eEncodingDte(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == nDataBytes(aHeadLine,DM_DTE,eEncoding));
+  RASSERT(nBytesEncoded == nDataBytes(DM_DTE,eEncoding));
   
   // set 4bit meta data for column value
   aHeadLine->v1N(i_Column,eEncoding);
@@ -1242,7 +1242,7 @@ void RowCoder::vEncodeFlt(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   i8 nBytesEncoded;
   eMN eEncoding = eEncodingFlt(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == nDataBytes(aHeadLine,DM_FLT,eEncoding));
+  RASSERT(nBytesEncoded == nDataBytes(DM_FLT,eEncoding));
   
   // set 4bit meta data for column value
   aHeadLine->v1N(i_Column,eEncoding);
@@ -1286,7 +1286,7 @@ void RowCoder::vEncodeInt(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   i8 nBytesEncoded;
   eMN eEncoding = eEncodingInt(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == nDataBytes(aHeadLine,DM_INT,eEncoding));
+  RASSERT(nBytesEncoded == nDataBytes(DM_INT,eEncoding));
   
   // set 4bit meta data for column value
   aHeadLine->v1N(i_Column,eEncoding);
@@ -1330,7 +1330,7 @@ void RowCoder::vEncodeIvl(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   i8 nBytesEncoded;
   eMN eEncoding = eEncodingIvl(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == nDataBytes(aHeadLine,DM_IVL,eEncoding));
+  RASSERT(nBytesEncoded == nDataBytes(DM_IVL,eEncoding));
   
   // set 4bit meta data for column value
   aHeadLine->v1N(i_Column,eEncoding);
@@ -1374,7 +1374,7 @@ void RowCoder::vEncodeTme(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   i8 nBytesEncoded;
   eMN eEncoding = eEncodingTme(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == nDataBytes(aHeadLine,DM_TME,eEncoding));
+  RASSERT(nBytesEncoded == nDataBytes(DM_TME,eEncoding));
   
   // set 4bit meta data for column value
   aHeadLine->v1N(i_Column,eEncoding);
@@ -1418,7 +1418,7 @@ void RowCoder::vEncodeTsp(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   i8 nBytesEncoded;
   eMN eEncoding = eEncodingTsp(pDatum,nBytesEncoded);
-  RASSERT(nBytesEncoded == nDataBytes(aHeadLine,DM_TSP,eEncoding));
+  RASSERT(nBytesEncoded == nDataBytes(DM_TSP,eEncoding));
   
   // set 4bit meta data for column value
   aHeadLine->v1N(i_Column,eEncoding);
@@ -1945,7 +1945,7 @@ eMN RowCoder::eGetEncoding(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda,
     eDM eDatumCol = pCol->eDatumType();
     eDM eDatumExt = pCoda->m_aeDatum[i_Nibble];
 
-    i_Offset += nDataBytes(aHeadLine,eDatumExt,eEncoding);
+    i_Offset += nDataBytes(eDatumExt,eEncoding);
     
   }
   
@@ -1981,7 +1981,7 @@ eMN RowCoder::eGetEncoding2(i8 i_ForCol, HeadLine* aFromHead,
     Column* pCol  = pColVec->pGet(i_Column);
     eDM eDatumCol = pCol->eDatumType();
     
-    i_FromOffset_ += nDataBytes(aFromHead,eDatumCol,eEncoding);
+    i_FromOffset_ += nDataBytes(eDatumCol,eEncoding);
   }
   
   eMN eEncoding  = (eMN)aFromHead->w8_1N(i_ForCol);
