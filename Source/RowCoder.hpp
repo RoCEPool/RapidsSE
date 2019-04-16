@@ -39,7 +39,7 @@ namespace Data
                            RowNub* pFromNub, Column* pCol,
                            i8& i_IntoOffset, i8& i_FromOffset);
 
-    static i8 nDataBytes(HeadLine* aHeadLine, Column* pCol, eMN eEncoding, eDM eDatum);
+    static i8 nDataBytes(HeadLine* aHeadLine, eDM eDatum, eMN eEncoding);
   
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -110,8 +110,9 @@ namespace Data
   
     static eMN eGetEncoding(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda,
                             i8 i_Col, i8& i_LastCol, i8& i_Offset);
-    static eMN eGetEncoding2(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda,
-                            i8 i_Col, i8& i_LastCol, i8& i_Offset);
+    static eMN eGetEncoding2(i8 i_ForCol, HeadLine* aHeadLine,
+                             ColumnVec* pColVec, Coda* pCoda, i8& i_LastCol_,
+                             i8& i_Offset_);
   
     static void vInitHeadLine(HeadLine* aHeadLine);
   
