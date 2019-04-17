@@ -13,6 +13,7 @@ int main(int argc, const char* argv[])
 {
   printf("sizeof(Nibbler1) %ld\n",sizeof(Nibbler1));
   printf("sizeof(Nibbler2) %ld\n",sizeof(Nibbler2));
+  printf("C_2_BYTES %llu\n",C_2_BYTES);
 
   // parse the command line arguments
   if ( ! gxArguments.bParse(argc,(Stz**)argv) )

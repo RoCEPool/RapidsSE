@@ -605,8 +605,10 @@ void RowCoder::vRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
                                i8& i_IntoOffset, i8& i_FromOffset)
 {
   static int nSame = 0;
+  static int nLess = 0;
   static int nLeft = 0;
   static int nPlus1 = 0;
+  static int nPlus2 = 0;
 
   Coda* pCoda = pIntoNub->pCoda();
   i8 i_Column = pCol->iColumnNo();
@@ -642,6 +644,13 @@ void RowCoder::vRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
   i8 iFirstInt = pCoda->m_aiAux[i_Column].m_iInt;
   
   eMN eExtendedEncoding;
+ 
+  if (iCurrentInt < iFirstInt) {
+    nLess++;
+    if (IntLib::bIsDecaCycle(nLess))
+      vTrace("%lld nSame\n"_Stz,nLess);
+    return;
+  }
   
   if (iCurrentInt == iFirstInt) {
     
@@ -690,6 +699,34 @@ void RowCoder::vRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
       vTrace("%lld nPlus1\n"_Stz,nPlus1);
     return;
   }
+  
+  if (iCurrentInt > iFirstInt && (u8)(iCurrentInt - iFirstInt) <= C_2_BYTES) {
+    
+    //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+    
+    // change the encoding to extended deltaPlus
+    pCoda->m_aeDatum[i_Column] = DM_DELTA_PLUS;
+    
+    // revise the encoding in the metaword of into head
+    eExtendedEncoding = MN_PLUS_2B;
+    aIntoHead->v1N(i_Column,eExtendedEncoding);
+    
+    i8 i2B = iCurrentInt - iFirstInt;
+    aIntoHead->v2B(i_IntoOffset,i2B);
+    
+    i8 nToCut = IntLib::iByteMagnitude(iCurrentInt);
+    if (nToCut > 2) {
+      pIntoNub->vCut(aIntoHead,sizeof(HeadLine),i_IntoOffset+1,nToCut-2);
+      i_IntoOffset -= (nToCut-2);
+    }
+    
+    //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+    nPlus2++;
+    if (IntLib::bIsDecaCycle(nPlus2))
+      vTrace("%lld nPlus2\n"_Stz,nPlus2);
+    return;
+  }
+
   
   nLeft++;
   if (IntLib::bIsDecaCycle(nLeft))

@@ -32,6 +32,16 @@ const u8 C_BIT_5  = 32;
 const u8 C_BIT_6  = 64;
 const u8 C_BIT_7  = 128;
 
+const u8 C_1_BYTE  = C_8_BITS;
+const u8 C_2_BYTES = C_1_BYTE * 2;
+const u8 C_3_BYTED = C_1_BYTE * 3;
+const u8 C_4_BYTES = C_1_BYTE * 4;
+const u8 C_5_BYTES = C_1_BYTE * 5;
+const u8 C_6_BYTES = C_1_BYTE * 6;
+const u8 C_7_BYTES = C_1_BYTE * 7;
+const u8 C_8_BYTES = C_1_BYTE * 8;
+
+
 //                              fedc    7654
 //                              ....ba98....3210
 const u8 C_MASKOFF_LOWER_56 = 0xFF00000000000000;
