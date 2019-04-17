@@ -57,20 +57,21 @@ namespace Data
   MN_ALPHA_4      = 0b1101, // D: m_caChr[4]
   MN_ALPHA_5      = 0b1110, // E: m_caChr[5]
   
-  MN_DIGIT1_0     = 0b1001, // 9: 0
-  MN_DIGIT1_1     = 0b1010, // A: 1
-  MN_DIGIT1_2     = 0b1011, // B: 2
-  MN_DIGIT1_3     = 0b1100, // C: 3
-  MN_DIGIT1_4     = 0b1101, // D: 4
-  MN_DIGIT1_5     = 0b1110, // E: 5
-
-  MN_DIGIT2_6     = 0b1001, // 9: 6
-  MN_DIGIT3_7     = 0b1010, // A: 7
-  MN_DIGIT4_8     = 0b1011, // B: 8
-  MN_DIGIT5_9     = 0b1100, // C: 9
-  MN_DIGIT6_10    = 0b1101, // D: 10
-  MN_DIGIT7_11    = 0b1110, // E: 11
-
+  MN_DIGIT_0     = 0b0001, // 1: digit 0
+  MN_DIGIT_1     = 0b0010, // 2: digit 1
+  MN_DIGIT_2     = 0b0011, // 3: digit 2
+  MN_DIGIT_3     = 0b0100, // 4: digit 3
+  MN_DIGIT_4     = 0b0101, // 5: digit 4
+  MN_DIGIT_5     = 0b0110, // 6: digit 5
+  MN_DIGIT_6     = 0b0111, // 7: digit 6
+  MN_DIGIT_7     = 0b1000, // 8: digit 7
+  MN_DIGIT_1B    = 0b1001, // 9: data words contain 1B datum
+  MN_DIGIT_2B    = 0b1010, // A: data words contain 2B datum
+  MN_DIGIT_3B    = 0b1011, // B: data words contain 3B datum
+  MN_DIGIT_4B    = 0b1100, // C: data words contain 4B datum
+  MN_DIGIT_6B    = 0b1101, // D: data words contain 6B datum
+  MN_DIGIT_8B    = 0b1110, // E: data words contain 8B datum
+    
   MN_DELTA_PLUS_0 = 0b1001, // 9: 0
   MN_DELTA_PLUS_1 = 0b1010, // A: 1
   MN_DELTA_PLUS_2 = 0b1011, // B: 2

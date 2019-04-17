@@ -36,10 +36,9 @@ namespace Datums
   
   // extended datums
   /* 16 */ DM_ALPHA,
-  /* 17 */ DM_DIGIT1,
-  /* 18 */ DM_DIGIT2,
+  /* 17 */ DM_DIGIT,
 
-  /* 19 */ DM_ENUMS
+  /* 18 */ DM_ENUMS
   };
   
   static Stz* aDM[]
@@ -64,8 +63,9 @@ namespace Datums
   /* 15 */ "SPARE_15"_Stz,
 
   /* 16 */ "ALPHA"_Stz,
-
-  /* 17 */ "ENUMS"_Stz,
+  /* 17 */ "DIGIT"_Stz,
+    
+  /* 18 */ "ENUMS"_Stz,
   };
   
   void vCheckAssumptions(void);

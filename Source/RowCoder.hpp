@@ -35,9 +35,12 @@ namespace Data
     static void vCopyShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
                            RowNub* pFromNub, Column* pCol,
                            i8 i_ToOffset, i8 i_FromOffset);
+    
+    static void vRecodeInt(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
+                           i8& i_IntoOffset, i8& i_FromOffset);
     static void vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
                              i8& i_IntoOffset, i8& i_FromOffset);
-
+    
     static i8 nDataBytes(eDM eDatum, eMN eEncoding);
   
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
@@ -68,10 +71,15 @@ namespace Data
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
   
+    // extended datums
     static void vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
                              ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                              i8& i_LastColumn, i8& i_LastOffset);
-  
+    static void vDecodeDigit(Datum* pDatum, HeadLine* aHeadLine,
+                             ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                              i8& i_LastColumn, i8& i_LastOffset);
+    
+    // shocos
     static void vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
     static void vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
