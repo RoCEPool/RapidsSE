@@ -115,17 +115,11 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   i8 i_IntoHead = pIntoNub->iAllotHead();
   HeadLine* pIntoHead = pIntoNub->aGetHead(i_IntoHead);
   HeadLine* pFromHead = pFromNub->aGetHead(0);
-  
+ 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   MemLib::vCopy(pIntoHead,pFromHead,sizeof(HeadLine),CN_ROWBUFFER);
   
-  //! temp
-//  Coda* pFromCoda = pFromNub->pCoda();
-//  Coda* pIntoCoda = pIntiNub->pCoda();
-//  MemLib::vCopy(pIntoCoda,pFromCoda,sizeof(CODA),CN_ROWBUFFER);
-
-  //if (! pFromNub->nTails())
-  //  return true;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 nColumns = pColVec->nItems();
@@ -136,31 +130,42 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   
   Coda* pIntoCoda = pIntoNub->pCoda();
 
-  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
+  for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
     
-    Column* pCol = pColVec->pGet(i_Column);
+    Column* pCol = pColVec->pGet(i_ForCol);
     eDM eDatum = pCol->eDatumType();
     
     // init coda
     if (0 == i_IntoHead) {
-      pIntoCoda->m_aeDatum[i_Column] = eDatum;
-      pIntoCoda->m_aiAux[i_Column].m_iInt = 0;
+      pIntoCoda->m_aeDatum[i_ForCol] = eDatum;
+      pIntoCoda->m_aiAux[i_ForCol].m_iInt = 0;
     }
     
     // save old fromOffset
     i_OldOffset = i_FromOffset;
-    eMN eEncoding = eGetEncodingNat(i_Column,pFromHead,pColVec,
-                                  i_LastColumn,i_FromOffset);
+    eMN eEncoding = eGetEncodingNat(i_ForCol,pFromHead,pColVec,
+                                    i_LastColumn,i_FromOffset);
     
     // calculate new IntoOffset
     i_IntoOffset += i_FromOffset - i_OldOffset;
     
-    if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding)
-      vCopyShoco(pIntoNub,pIntoHead,i_IntoHead,pFromNub,pCol,i_IntoOffset,i_FromOffset);
+    //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    //
     
+    // copy a shoco tail
+    if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding) {
+      vCopyShoco(pIntoNub,pIntoHead,i_IntoHead,pFromNub,pCol,
+                 i_IntoOffset,i_FromOffset);
+      continue;
+    }
+    
+    // recode a Vch1B into an Alpha
     //!? a recode of Vch1B van only be done on char(1) columns
-    if (DM_VCH == eDatum && MN_1B == eEncoding && 1 == pCol->iColumnLength())
-      vRecodeVch1B(pIntoNub,pIntoHead,pFromNub,pCol,i_IntoOffset,i_FromOffset);
+    if (DM_VCH == eDatum && MN_1B == eEncoding && 1 == pCol->iColumnLength()) {
+      vRecodeVch1B(pIntoNub,pIntoHead,pCol,
+                   i_IntoOffset,i_FromOffset);
+      continue;
+    }
   }
   
   return true;
@@ -496,57 +501,83 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
 /*----------------------------------------------------------------------------*/
 /* re-encode a 1B Vch as Alpha                                                */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead,
-                            RowNub* pFromNub, Column* pCol,
+void RowCoder::vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
                             i8& i_IntoOffset, i8& i_FromOffset)
 {
+  eMN eExtendedEncoding;
+  
   Coda* pCoda = pIntoNub->pCoda();
   i8 i_Column = pCol->iColumnNo();
   
-  char cChr = pIntoHead->w8_1B(i_FromOffset);
+  eMN eCurrentEncoding = (eMN)pIntoHead->w8_1N(i_Column);
+  RASSERT(MN_1B == eCurrentEncoding);
+
+  // get the 1B char from the data portion of the intoHead
+  char c1BChar = pIntoHead->w8_1B(i_FromOffset);
   
-  eMN eExtendedEncoding;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // search for the 1B in coda aux for this column
   
   i8 i_Char;
   for (i_Char = 0; i_Char < 6; i_Char++) {
     
-    if (! pCoda->m_aiAux[i_Column].m_caChr[i_Char])
+    // did we find a match?
+    if (c1BChar == pCoda->m_aiAux[i_Column].m_caChr[i_Char])
       break;
     
-    if (cChr == pCoda->m_aiAux[i_Column].m_caChr[i_Char]) {
-      
-      pCoda->m_aeDatum[i_Column] = DM_ALPHA;
-      
-      eExtendedEncoding = (eMN)(MN_ALPHA_0 + i_Char);
-      pIntoHead->v1N(i_Column,eExtendedEncoding);
-      
-      //!! cut
-      //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
-      pIntoNub->vCut(pIntoHead,sizeof(HeadLine),i_IntoOffset,1);
-      //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
-      
-      i_IntoOffset--;
-      return;
-    }
+    // run out of existing aux chars?
+    if (! pCoda->m_aiAux[i_Column].m_caChr[i_Char])
+      break;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // determine if we can revise the encoding
+
+  
   // no space?
-  if (i_Char >= 6)
+  if (i_Char >= 6) {
     return;
+  }
   
-  // didn't find one, add it
-  pCoda->m_aiAux[i_Column].m_caChr[i_Char] = cChr;
   
+  // found existing alpha?
+  if (pCoda->m_aiAux[i_Column].m_caChr[i_Char]) {
+    
+    // change the encoding to extended alpha
+    pCoda->m_aeDatum[i_Column] = DM_ALPHA;
+ 
+    // revise the encoding
+    eExtendedEncoding = (eMN)(MN_ALPHA_0 + i_Char);
+    pIntoHead->v1N(i_Column,eExtendedEncoding);
+    
+    // cut the 1B char out of the into head
+    //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
+    pIntoNub->vCut(pIntoHead,sizeof(HeadLine),i_IntoOffset,1);
+    //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
+    
+    // go back one char in the intoOffset
+    i_IntoOffset--;
+    return;
+  }
+  
+  
+  // didn't find existing alpha, add it
+  pCoda->m_aiAux[i_Column].m_caChr[i_Char] = c1BChar;
+  
+  // change the extended encoding to alpha
   pCoda->m_aeDatum[i_Column] = DM_ALPHA;
+  
+  // revise the encoding in the metaword of into head
   eExtendedEncoding = (eMN)(MN_ALPHA_0 + i_Char);
   pIntoHead->v1N(i_Column,eExtendedEncoding);
-  //!! cut
-  
+ 
+  // cut the 1B char out of the into head
   //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
   pIntoNub->vCut(pIntoHead,sizeof(HeadLine),i_IntoOffset,1);
-  i_IntoOffset--;
   //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
 
+  // go back one char in the intoOffset
+  i_IntoOffset--;
 }
 
 /*----------------------------------------------------------------------------*/
