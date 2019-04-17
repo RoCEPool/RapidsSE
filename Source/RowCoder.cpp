@@ -159,7 +159,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
       vCopyShoco(pIntoNub,pIntoHead,i_IntoHead,pFromNub,pCol,i_IntoOffset,i_FromOffset);
     
     if (DM_VCH == eDatum && MN_1B == eEncoding)
-      vRecodeVch1B(pIntoNub,pIntoHead,i_IntoHead,pFromNub,pCol,i_IntoOffset,i_FromOffset);
+      vRecodeVch1B(pIntoNub,pIntoHead,pFromNub,pCol,i_IntoOffset,i_FromOffset);
   }
   
   return true;
@@ -495,7 +495,7 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
 /*----------------------------------------------------------------------------*/
 /* re-encode a 1B Vch as Alpha                                                */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
+void RowCoder::vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead,
                             RowNub* pFromNub, Column* pCol,
                             i8& i_IntoOffset, i8& i_FromOffset)
 {
@@ -504,7 +504,7 @@ void RowCoder::vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead
   
   char cChr = pIntoHead->w8_1B(i_FromOffset);
   
-  eMN eRevisedEncoding;
+  eMN eExtendedEncoding;
   
   i8 i_Char;
   for (i_Char = 0; i_Char < 6; i_Char++) {
@@ -513,14 +513,17 @@ void RowCoder::vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead
       break;
     
     if (cChr == pCoda->m_aiAux[i_Column].m_caChr[i_Char]) {
-      pCoda->m_aeDatum[i_Column] = DM_ALPHA;
-      eRevisedEncoding = (eMN)(MN_ALPHA_0 + i_Char);
       
-      pIntoHead->v1N(i_Column,eRevisedEncoding);
+      pCoda->m_aeDatum[i_Column] = DM_ALPHA;
+      
+      eExtendedEncoding = (eMN)(MN_ALPHA_0 + i_Char);
+      pIntoHead->v1N(i_Column,eExtendedEncoding);
+      
       //!! cut
       //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
       pIntoNub->vCut(pIntoHead,sizeof(HeadLine),i_IntoOffset,1);
       //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
+      
       i_IntoOffset--;
       return;
     }
@@ -534,8 +537,8 @@ void RowCoder::vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead
   pCoda->m_aiAux[i_Column].m_caChr[i_Char] = cChr;
   
   pCoda->m_aeDatum[i_Column] = DM_ALPHA;
-  eRevisedEncoding = (eMN)(MN_ALPHA_0 + i_Char);
-  pIntoHead->v1N(i_Column,eRevisedEncoding);
+  eExtendedEncoding = (eMN)(MN_ALPHA_0 + i_Char);
+  pIntoHead->v1N(i_Column,eExtendedEncoding);
   //!! cut
   
   //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));

@@ -35,7 +35,7 @@ namespace Data
     static void vCopyShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
                            RowNub* pFromNub, Column* pCol,
                            i8 i_ToOffset, i8 i_FromOffset);
-    static void vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
+    static void vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead,
                            RowNub* pFromNub, Column* pCol,
                            i8& i_IntoOffset, i8& i_FromOffset);
 
