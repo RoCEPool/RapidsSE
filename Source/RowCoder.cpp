@@ -684,6 +684,9 @@ i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
       
     case DM_VCH:
       switch (eEncoding) {
+        case MN_EMPTY: {
+          return 0;
+        }
         case MN_SHOCO_FIT: {
           //aHeadLine->w8_1B(i_Offset);
           return 1;
