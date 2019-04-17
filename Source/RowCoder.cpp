@@ -149,7 +149,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     
     // save old fromOffset
     i_OldOffset = i_FromOffset;
-    eMN eEncoding = eGetEncoding2(i_Column,pFromHead,pColVec,
+    eMN eEncoding = eGetEncodingNat(i_Column,pFromHead,pColVec,
                                   i_LastColumn,i_FromOffset);
     
     // calculate new IntoOffset
@@ -1956,13 +1956,13 @@ eMN RowCoder::eGetEncodingExt(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCo
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the encoding (and offset) of a column from given head line             */
+/* get the natural encoding (and offset) of a column from given head line     */
 /*----------------------------------------------------------------------------*/
 //! consider passing a eDatum array instead of colum vector
 
-eMN RowCoder::eGetEncoding2(i8 i_ForCol, HeadLine* aFromHead,
-                            ColumnVec* pColVec, i8& i_PriorColumn_,
-                            i8& i_FromOffset_)
+eMN RowCoder::eGetEncodingNat(i8 i_ForCol, HeadLine* aFromHead,
+                              ColumnVec* pColVec, i8& i_PriorColumn_,
+                              i8& i_FromOffset_)
 {
   
   if (i_ForCol < i_PriorColumn_) {
