@@ -36,8 +36,10 @@ namespace Datums
   
   // extended datums
   /* 16 */ DM_ALPHA,
+  /* 17 */ DM_DIGIT1,
+  /* 18 */ DM_DIGIT2,
 
-  /* 17 */ DM_ENUMS
+  /* 19 */ DM_ENUMS
   };
   
   static Stz* aDM[]
