@@ -108,11 +108,13 @@ namespace Data
 
     static i8 nFreeSpaceHead(RowNub* pNub, HeadLine* aHeadLine);
   
-    static eMN eGetEncodingExt(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda,
-                            i8 i_Col, i8& i_LastCol, i8& i_Offset);
+    static eMN eGetEncodingExt(i8 i_Col, HeadLine* aHeadLine,
+                               ColumnVec* pColVec, Coda* pCoda, i8& i_PriorColumn_,
+                               i8& i_Offset_);
+  
     static eMN eGetEncodingNat(i8 i_ForCol, HeadLine* aHeadLine,
-                             ColumnVec* pColVec, i8& i_LastCol_,
-                             i8& i_Offset_);
+                               ColumnVec* pColVec, i8& i_PriorColumn_,
+                               i8& i_Offset_);
   
     static void vInitHeadLine(HeadLine* aHeadLine);
   
