@@ -161,12 +161,19 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     //
     
-    if (eDatum == DM_INT) {
+   if (DM_INT == eDatum) {
       //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-      vRecodeIntDelta(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+      vRecodeInt(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
       //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
       continue;
     }
+    
+//    if (eDatum == DM_INT) {
+//      MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+//      vRecodeIntDelta(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+//      MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+//      continue;
+//    }
     
     // copy a shoco tail
     if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding) {
@@ -187,10 +194,6 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
      continue;
     }
     
-//   if (DM_INT == eDatum) {
-//      vRecodeInt(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
-//      continue;
-//    }
   }
   
   return true;
@@ -568,8 +571,8 @@ void RowCoder::vRecodeInt(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
     if (c1BInt >= 0 && c1BInt <= 7) {
       
       // revise the encoding
-      vTrace("Rewising %lld\n"_Stz, c1BInt);
       eExtendedEncoding = (eMN)(MN_DIGIT_0 + c1BInt);
+      //vTrace("Rewising column %lld to E%llx\n"_Stz,i_Column, eExtendedEncoding);
       aIntoHead->v1N(i_Column,eExtendedEncoding);
       
       // cut the 1B char out of the into head
@@ -593,6 +596,9 @@ void RowCoder::vRecodeInt(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
     default:
       RASSERT(0);
   }
+  
+  //vTrace("Rewising column %lld to E%llx\n"_Stz,i_Column, eExtendedEncoding);
+
   aIntoHead->v1N(i_Column,eExtendedEncoding);
 
   //vTrace("CurrentEncoding %lld ~ %lld\n"_Stz, eCurrentEncoding, eExtendedEncoding);
@@ -828,7 +834,7 @@ i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
   if (eEncoding == MN_NULL)
     return 0;
   
-  if (eEncoding <= MN_8B)
+  if (eDatum <= DM_VCH && eEncoding <= MN_8B)
     return eEncoding;
   
   if (MN_OVERFLOW == eEncoding)
@@ -945,8 +951,10 @@ i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
     case DM_DIGIT:
       if (eEncoding >= MN_DIGIT_0 && eEncoding <= MN_DIGIT_7)
         return 0;
-      else
-        return (eEncoding - MN_DIGIT_7);
+      else {
+        i8 nBytes = eEncoding - MN_DIGIT_7;
+        return nBytes;
+      }
       
     default:
       NEVER_REACH;
