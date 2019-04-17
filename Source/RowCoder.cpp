@@ -153,7 +153,20 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     i_IntoOffset += i_FromOffset - i_OldFromOffset;
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    
+    if (0 == i_IntoHead && eDatum == DM_INT) {
+      vSetAuxInt(pIntoCoda,aIntoHead,pCol,eEncoding,i_IntoOffset);
+    }
+    
+    //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     //
+    
+//    if (eDatum == DM_INT) {
+//      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+//      vRecodeIntDelta(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+//      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+//      continue;
+//    }
     
     // copy a shoco tail
     if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding) {
@@ -728,9 +741,12 @@ i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
       
     case DM_INT:
       switch (eEncoding) {
-        case MN_MINUS_ONE: return 0;
-        case MN_ZERO:      return 0;
-        case MN_PLUS_ONE:  return 0;
+        case MN_MINUS_ONE:  return 0;
+        case MN_ZERO:       return 0;
+        case MN_PLUS_ONE:   return 0;
+        case MN_SAME:       return 0;
+        case MN_PLUS_1B:    return 1;
+        case MN_MINUS_1B:   return 1;
         default:
           NEVER_REACH;
       }
@@ -942,6 +958,20 @@ void RowCoder::vDecodeInt(Datum* pDatum, HeadLine* aHeadLine,
     case MN_MINUS_ONE: pDatum->m_iInt = (i8)-1; break;
     case MN_ZERO:      pDatum->m_iInt = (i8)0;  break;
     case MN_PLUS_ONE:  pDatum->m_iInt = (i8)1;  break;
+      
+    case MN_SAME:
+      pDatum->m_iInt = pCoda->m_aiAux[i_Column].m_iInt;
+      break;
+      
+    case MN_PLUS_1B:
+      pDatum->m_iInt = pCoda->m_aiAux[i_Column].m_iInt
+                     + aHeadLine->w8_1B(i_Offset);
+      break;
+
+    case MN_MINUS_1B:
+      pDatum->m_iInt = pCoda->m_aiAux[i_Column].m_iInt
+                     - aHeadLine->w8_1B(i_Offset);
+      break;
       
     default:
       NEVER_REACH;
@@ -2385,6 +2415,38 @@ i8 RowCoder::nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine)
 
 
   return nTailSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get length of tail associate with a head line                              */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vSetAuxInt(Coda* pIntoCoda, HeadLine* aIntoHead, Column* pCol,
+                          eMN eEncoding, i8 i_IntoOffset)
+{
+  i8 iInt = 0;
+  
+  switch (eEncoding) {
+      
+    case MN_NULL: return;
+      
+    case MN_1B:   iInt = aIntoHead->w8_1B(i_IntoOffset); break;
+    case MN_2B:   iInt = aIntoHead->w8_2B(i_IntoOffset); break;
+    case MN_3B:   iInt = aIntoHead->w8_3B(i_IntoOffset); break;
+    case MN_4B:   iInt = aIntoHead->w8_4B(i_IntoOffset); break;
+    case MN_5B:   iInt = aIntoHead->w8_5B(i_IntoOffset); break;
+    case MN_6B:   iInt = aIntoHead->w8_6B(i_IntoOffset); break;
+    case MN_7B:   iInt = aIntoHead->w8_7B(i_IntoOffset); break;
+    case MN_8B:   iInt = aIntoHead->w8_8B(i_IntoOffset); break;
+      
+    case MN_MINUS_ONE: iInt = -1; break;
+    case MN_ZERO:      iInt = 0;  break;
+    case MN_PLUS_ONE:  iInt = 1;  break;
+      
+    default:
+      NEVER_REACH;
+  }
+
+  pIntoCoda->m_aiAux[pCol->iColumnNo()].m_iInt = iInt;
 }
 
 /*============================================================================*/

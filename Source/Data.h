@@ -86,9 +86,12 @@ namespace Data
   MN_DELTA_MINUS_4 = 0b1101, // D: 4
   MN_DELTA_MINUS_5 = 0b1110, // E: 5
   
-  MN_MINUS_ONE = 0b1100,  // C: -1 datum (no bytes in data words)
-  MN_ZERO      = 0b1101,  // D: 0 datum (no bytes in data words)
-  MN_PLUS_ONE  = 0b1110,  // E: 1 datum (no bytes in data words)
+  MN_MINUS_ONE = 0b1001,  // 9: == -1 (no bytes in data words)
+  MN_ZERO      = 0b1010,  // A: == 0 datum (no bytes in data words)
+  MN_PLUS_ONE  = 0b1011,  // B: == 1 datum (no bytes in data words)
+  MN_SAME      = 0b1100,  // C: same as aux int (no bytes in data words)
+  MN_PLUS_1B   = 0b1101,  // D: aux int+1B
+  MN_MINUS_1B  = 0b1110,  // E: aux int-1B
   
   MN_REV_2B = 0b1001, // 9: reverse 2B
   MN_REV_3B = 0b1010, // A: reverse 3B

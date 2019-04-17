@@ -35,9 +35,13 @@ namespace Data
     static void vCopyShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
                            RowNub* pFromNub, Column* pCol,
                            i8 i_ToOffset, i8 i_FromOffset);
-    
+  
     static void vRecodeInt(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
                            i8& i_IntoOffset, i8& i_FromOffset);
+  
+    static void vRecodeIntDelta(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
+                                 i8& i_IntoOffset, i8& i_FromOffset);
+
     static void vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
                              i8& i_IntoOffset, i8& i_FromOffset);
     
@@ -139,6 +143,9 @@ namespace Data
     static i8 iStripTsp(WordView& wTspView, eMN eEncoding);
  
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
+  
+    static void vSetAuxInt(Coda* pIntoCoda, HeadLine* aIntoHead, Column* pCol,
+                           eMN eEncoding, i8 i_IntoOffset);
   };
 }
 
