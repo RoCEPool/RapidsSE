@@ -161,7 +161,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     
     // recode a Vch1B into an Alpha
     //!? a recode of Vch1B van only be done on char(1) columns
-    if (DM_VCH == eDatum && MN_1B == eEncoding && 1 == pCol->iColumnLength()) {
+    if (DM_VCH == eDatum && MN_1B == eEncoding) {
       vRecodeVch1B(pIntoNub,pIntoHead,pCol,
                    i_IntoOffset,i_FromOffset);
       continue;
@@ -510,6 +510,8 @@ void RowCoder::vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
   i8 i_Column = pCol->iColumnNo();
   
   eMN eCurrentEncoding = (eMN)pIntoHead->w8_1N(i_Column);
+
+  RASSERT(DM_VCH == pCol->eDatumType());
   RASSERT(MN_1B == eCurrentEncoding);
 
   // get the 1B char from the data portion of the intoHead
@@ -519,7 +521,7 @@ void RowCoder::vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
   // search for the 1B in coda aux for this column
   
   i8 i_Char;
-  for (i_Char = 0; i_Char < 6; i_Char++) {
+  for (i_Char = 0; i_Char < C_EXTENDED_AUX; i_Char++) {
     
     // did we find a match?
     if (c1BChar == pCoda->m_aiAux[i_Column].m_caChr[i_Char])
@@ -534,16 +536,17 @@ void RowCoder::vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
   // determine if we can revise the encoding
 
   
-  // no space?
-  if (i_Char >= 6) {
+  // no space, leave as is
+  if (i_Char >= C_EXTENDED_AUX)
     return;
-  }
   
   
   // found existing alpha?
   if (pCoda->m_aiAux[i_Column].m_caChr[i_Char]) {
     
     // change the encoding to extended alpha
+    RASSERT(DM_ALPHA == pCoda->m_aeDatum[i_Column] ||
+            DM_VCH == pCoda->m_aeDatum[i_Column]);
     pCoda->m_aeDatum[i_Column] = DM_ALPHA;
  
     // revise the encoding
@@ -984,7 +987,7 @@ void RowCoder::vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
   
   pDatum->m_eDatum = DM_VCH;
   
-  //! needs more work
+  //!! needs more work
   eMN eEncoding = eGetEncodingExt(i_Column,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
   
   //RASSERT(eEncoding >= MN_ALPHA_0 && eEncoding <= MN_ALPHA_5);
@@ -2011,9 +2014,9 @@ eMN RowCoder::eGetEncodingNat(i8 i_ForCol, HeadLine* aFromHead,
     eMN eEncoding = (eMN)aFromHead->w8_1N(i_Column);
     
     Column* pCol  = pColVec->pGet(i_Column);
-    eDM eDatumCol = pCol->eDatumType();
+    eDM eDatumNat = pCol->eDatumType();
     
-    i_FromOffset_ += nDataBytes(eDatumCol,eEncoding);
+    i_FromOffset_ += nDataBytes(eDatumNat,eEncoding);
   }
   
   eMN eEncoding  = (eMN)aFromHead->w8_1N(i_ForCol);
