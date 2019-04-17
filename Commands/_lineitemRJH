@@ -5,10 +5,10 @@
 startCluster;
 
 time create table lineitem (
-  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B   
-  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
-  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
-  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B   1+
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B   random
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B   random
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B   1..7
   L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
   L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
   L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
