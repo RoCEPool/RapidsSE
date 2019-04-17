@@ -108,7 +108,7 @@ namespace Data
 
     static i8 nFreeSpaceHead(RowNub* pNub, HeadLine* aHeadLine);
   
-    static eMN eGetEncoding(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda,
+    static eMN eGetEncodingExt(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda,
                             i8 i_Col, i8& i_LastCol, i8& i_Offset);
     static eMN eGetEncoding2(i8 i_ForCol, HeadLine* aHeadLine,
                              ColumnVec* pColVec, i8& i_LastCol_,
