@@ -158,7 +158,8 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding)
       vCopyShoco(pIntoNub,pIntoHead,i_IntoHead,pFromNub,pCol,i_IntoOffset,i_FromOffset);
     
-    if (DM_VCH == eDatum && MN_1B == eEncoding)
+    //!? a recode of Vch1B van only be done on char(1) columns
+    if (DM_VCH == eDatum && MN_1B == eEncoding && 1 == pCol->iColumnLength())
       vRecodeVch1B(pIntoNub,pIntoHead,pFromNub,pCol,i_IntoOffset,i_FromOffset);
   }
   
