@@ -531,6 +531,7 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vOffsetInc(i8 iDelta)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   m_i_Offset += iDelta;
+  RASSERT(m_i_Offset <= 64);
 }
 
 /*----------------------------------------------------------------------------*/
