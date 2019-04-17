@@ -966,6 +966,12 @@ void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
   else if (eEncoding <= MN_8B)
     vDecodeVchSmall(pDatum,aHeadLine,pCol,eEncoding,i_Offset);
   
+  else if (MN_EMPTY == eEncoding) {
+    pDatum->m_nChars = 0;
+    *pDatum->m_xWsp.aArea() = '\0';
+    pDatum->m_iInt = 0;
+  }
+  
   else if (MN_SHOCO_2B == eEncoding)
     vDecodeVchShoco(pDatum,aHeadLine,pCol,eEncoding,i_Offset);
   
@@ -1509,12 +1515,15 @@ void RowCoder::vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum)
         vEncodeVchSmall(pNub,pCol,pDatum);
     }
     else {
-      aHeadLine->v1N(i_Column,MN_1B);
-      i8 i_Offset = pNub->i_Offset();
-      aHeadLine->v1B(i_Offset,0);
-      pNub->vOffsetInc(1);
-      Coda* pCoda = pNub->pCoda();
-      pCoda->m_aiAux[i_Column].m_iInt = 1;
+      // empty string
+      aHeadLine->v1N(i_Column,MN_EMPTY);
+
+//      aHeadLine->v1N(i_Column,MN_1B);
+//      i8 i_Offset = pNub->i_Offset();
+//      aHeadLine->v1B(i_Offset,0);
+//      pNub->vOffsetInc(1);
+//      Coda* pCoda = pNub->pCoda();
+//      pCoda->m_aiAux[i_Column].m_iInt = 1;
       
     }
   }
