@@ -11,8 +11,9 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
-  printf("sizeof(Item) %ld\n",sizeof(Item));
-  
+  printf("sizeof(Nibbler1) %ld\n",sizeof(Nibbler1));
+  printf("sizeof(Nibbler2) %ld\n",sizeof(Nibbler2));
+
   // parse the command line arguments
   if ( ! gxArguments.bParse(argc,(Stz**)argv) )
     exit(EXIT_FAILURE);

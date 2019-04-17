@@ -102,6 +102,21 @@ namespace Data
   Datum* _pDatum(void* aAddr);
 }
 
+#pragma pack(push, 1)
+class Nibbler1 {
+  struct {
+    u8 m_uNibble : 4 ; //
+  } m_xaNibbles[128];
+};
+class Nibbler2 {
+  struct {
+    u8 m_uNibbleL : 4 ; //
+    u8 m_uNibbleR : 4 ; //
+  } m_xaNibbles[64];
+};
+#pragma pack(pop)
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
