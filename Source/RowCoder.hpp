@@ -79,6 +79,9 @@ namespace Data
     static void vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
                              ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                              i8& i_LastColumn, i8& i_LastOffset);
+   static void vDecodeDeltaPlus(Datum* pDatum, HeadLine* aHeadLine,
+                                ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                                i8& i_LastColumn, i8& i_LastOffset);
     static void vDecodeDigit(Datum* pDatum, HeadLine* aHeadLine,
                              ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                               i8& i_LastColumn, i8& i_LastOffset);

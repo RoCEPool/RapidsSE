@@ -90,9 +90,13 @@ namespace Data
   MN_ZERO      = 0b1010,  // A: == 0 datum (no bytes in data words)
   MN_PLUS_ONE  = 0b1011,  // B: == 1 datum (no bytes in data words)
   MN_SAME      = 0b1100,  // C: same as aux int (no bytes in data words)
-  MN_PLUS_1B   = 0b1101,  // D: aux int+1B
-  MN_MINUS_1B  = 0b1110,  // E: aux int-1B
   
+  MN_PLUS_1B   = 0b1101,  // D: aux int+1B
+  MN_PLUS_2B   = 0b1110,  // E: aux int+1B
+
+  MN_MINUS_1B  = 0b1101,  // D: aux int-1B
+  MN_MINUS_2B  = 0b1110,  // E: aux int-1B
+
   MN_REV_2B = 0b1001, // 9: reverse 2B
   MN_REV_3B = 0b1010, // A: reverse 3B
   MN_REV_4B = 0b1011, // B: reverse 4B
