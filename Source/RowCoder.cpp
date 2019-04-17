@@ -123,17 +123,20 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 nColumns = pColVec->nItems();
+  i8 i_LastColumn = 0;
   i8 i_FromOffset = 8;
   i8 i_IntoOffset = 8;
-  i8 i_OldOffset  = 0;
-  i8 i_LastColumn = 0;
+  i8 i_OldFromOffset  = 0;
   
   Coda* pIntoCoda = pIntoNub->pCoda();
 
   for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
-    
+  
     Column* pCol = pColVec->pGet(i_ForCol);
     eDM eDatum = pCol->eDatumType();
+    
+    //vTrace("Col %lld %s\n"_Stz,i_ForCol,pCol->sColumnName().aStz());
+    //MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
     
     // init coda
     if (0 == i_IntoHead) {
@@ -142,12 +145,12 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     }
     
     // save old fromOffset
-    i_OldOffset = i_FromOffset;
+    i_OldFromOffset = i_FromOffset;
     eMN eEncoding = eGetEncodingNat(i_ForCol,pFromHead,pColVec,
                                     i_LastColumn,i_FromOffset);
     
     // calculate new IntoOffset
-    i_IntoOffset += i_FromOffset - i_OldOffset;
+    i_IntoOffset += i_FromOffset - i_OldFromOffset;
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     //
@@ -162,10 +165,15 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     // recode a Vch1B into an Alpha
     //!? a recode of Vch1B van only be done on char(1) columns
     if (DM_VCH == eDatum && MN_1B == eEncoding) {
+      //if (9 == i_ForCol)
+      //  MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
       vRecodeVch1B(pIntoNub,pIntoHead,pCol,
                    i_IntoOffset,i_FromOffset);
-      continue;
+      //if (9 == i_ForCol)
+      //  MemLib::vWordDump(pIntoHead,sizeof(HeadLine));
+     continue;
     }
+    
   }
   
   return true;
@@ -515,7 +523,7 @@ void RowCoder::vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
   RASSERT(MN_1B == eCurrentEncoding);
 
   // get the 1B char from the data portion of the intoHead
-  char c1BChar = pIntoHead->w8_1B(i_FromOffset);
+  char c1BChar = pIntoHead->w8_1B(i_IntoOffset);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // search for the 1B in coda aux for this column
