@@ -69,6 +69,7 @@ namespace Data
   MN_REV_6B = 0b1101, // D: reverse 6B
   MN_REV_7B = 0b1110, // E: reverse 7B
 
+  MN_EMPTY     = 0b1100,  // C: empty string
   MN_SHOCO_FIT = 0b1101,  // D: len+shoco in data words
   MN_SHOCO_2B  = 0b1110,  // E: 2B in data words indicating shoco overflow
   
