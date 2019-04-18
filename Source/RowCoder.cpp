@@ -173,6 +173,13 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
       continue;
     }
     
+    if (DM_BCD == eDatum) {
+      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+      vRecodeBcdTenth(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+      continue;
+    }
+
     
     // copy a shoco tail
     if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding) {
@@ -269,6 +276,10 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       
     case DM_DIGIT:
       vDecodeDigit(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      break;
+      
+    case DM_TENTH:
+      vDecodeTenth(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
       
     default:
@@ -751,6 +762,78 @@ bool RowCoder::bRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
 }
 
 /*----------------------------------------------------------------------------*/
+/* re-encode an Bcd as Tenth                                                  */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecodeBcdTenth(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
+                               i8& i_IntoOffset, i8& i_FromOffset)
+{
+  eMN eExtendedEncoding;
+  
+  Coda* pCoda = pIntoNub->pCoda();
+  i8 i_Column = pCol->iColumnNo();
+  
+  eMN eCurrentEncoding = (eMN)aIntoHead->w8_1N(i_Column);
+  //vTrace("CurrentEncoding %lld\n"_Stz, eCurrentEncoding);
+  
+  RASSERT(DM_BCD == pCol->eDatumType());
+  //RASSERT(MN_1B == eCurrentEncoding);
+  
+  
+  // check for NULL
+  if (eCurrentEncoding == MN_NULL)
+    return;
+  
+  // is it a 1B encoding ?
+  if (eCurrentEncoding == MN_1B) {
+    
+    // get the 1B int from the data portion of the intoHead
+    i8 i1B = aIntoHead->w8_1B(i_IntoOffset);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // revise the encoding
+    
+    if (i1B >= 0 && i1B <= 10) {
+      
+      // change the encoding to extended tenth
+      pCoda->m_aeDatum[i_Column] = DM_TENTH;
+      
+     // revise the encoding
+      eExtendedEncoding = (eMN)(MN_TENTH_0 + i1B);
+      //vTrace("Rewising column %lld to E%llx\n"_Stz,i_Column, eExtendedEncoding);
+      aIntoHead->v1N(i_Column,eExtendedEncoding);
+      
+      // cut the 1B char out of the into head
+      pIntoNub->vCut(aIntoHead,sizeof(HeadLine),i_IntoOffset,1);
+      
+      // go back one char in the intoOffset
+      i_IntoOffset--;
+      return;
+    }
+  }
+  
+  return;
+  
+  switch (eCurrentEncoding) {
+    case MN_1B: RASSERT(0); break;
+    case MN_2B: eExtendedEncoding = MN_TENTH_2B; break;
+    case MN_3B: RASSERT(0); break;
+    case MN_4B: eExtendedEncoding = MN_TENTH_4B; break;
+    case MN_5B: RASSERT(0); break;
+    case MN_6B: RASSERT(0); break;
+    case MN_7B: RASSERT(0); break;
+    case MN_8B: eExtendedEncoding = MN_TENTH_8B; break;
+    default:
+      RASSERT(0);
+  }
+  
+  //vTrace("Rewising column %lld to E%llx\n"_Stz,i_Column, eExtendedEncoding);
+  
+  aIntoHead->v1N(i_Column,eExtendedEncoding);
+  
+  //vTrace("CurrentEncoding %lld ~ %lld\n"_Stz, eCurrentEncoding, eExtendedEncoding);
+}
+
+/*----------------------------------------------------------------------------*/
 /* re-encode a 1B Vch as Alpha                                                */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeVch1B(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
@@ -970,6 +1053,17 @@ i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
         return nBytes;
       }
       
+    case DM_TENTH:
+      if (eEncoding >= MN_TENTH_0 && eEncoding <= MN_TENTH_10)
+        return 0;
+      switch (eEncoding) {
+        case MN_2B:  return 2;
+        case MN_4B:  return 4;
+        case MN_8B:  return 8;
+        default:
+          NEVER_REACH;
+      }
+
     default:
       NEVER_REACH;
   }
@@ -1391,6 +1485,36 @@ void RowCoder::vDecodeDigit(Datum* pDatum, HeadLine* aHeadLine,
       case MN_DIGIT_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
       case MN_DIGIT_6B:   pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
       case MN_DIGIT_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
+      default:
+        NEVER_REACH;
+    }
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode tenth from given cache line                                         */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeTenth(Datum* pDatum, HeadLine* aHeadLine,
+                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                            i8& i_LastColumn, i8& i_Offset)
+{
+  i8 i_Column  = pCol->iColumnNo();
+  
+  pDatum->m_eDatum = DM_BCD;
+  
+  //!! needs more work
+  eMN eEncoding = eGetEncodingExt(i_Column,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+  
+  if (eEncoding >= MN_TENTH_0 && eEncoding <= MN_TENTH_10) {
+    pDatum->m_iBcd = (i8)(eEncoding - MN_TENTH_0);
+  }
+  else {
+    switch (eEncoding) {
+      case MN_NULL:       pDatum->m_iInt = C_DATUM_NULL;                break;
+      case MN_TENTH_2B:   pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
+      case MN_TENTH_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
+      case MN_TENTH_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
       default:
         NEVER_REACH;
     }

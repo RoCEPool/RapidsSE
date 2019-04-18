@@ -86,6 +86,23 @@ namespace Data
   MN_DELTA_MINUS_4 = 0b1101, // D: 4
   MN_DELTA_MINUS_5 = 0b1110, // E: 5
   
+  MN_TENTH_0     = 0b0001, // 1: tenth 0
+  MN_TENTH_1     = 0b0010, // 2: tenth 1
+  MN_TENTH_2     = 0b0011, // 3: tenth 2
+  MN_TENTH_3     = 0b0100, // 4: tenth 3
+  MN_TENTH_4     = 0b0101, // 5: tenth 4
+  MN_TENTH_5     = 0b0110, // 6: tenth 5
+  MN_TENTH_6     = 0b0111, // 7: tenth 6
+  MN_TENTH_7     = 0b1000, // 8: tenth 7
+  MN_TENTH_8     = 0b1001, // 9: tenth 8
+  MN_TENTH_9     = 0b1010, // A: tenth 9
+  MN_TENTH_10    = 0b1011, // B: tenth 10
+  
+  MN_TENTH_2B    = 0b1100, // C: data words contain 2B datum
+  MN_TENTH_4B    = 0b1101, // D: data words contain 4B datum
+  MN_TENTH_8B    = 0b1110, // E: data words contain 8B datum
+  
+
   MN_MINUS_ONE = 0b1001,  // 9: == -1 (no bytes in data words)
   MN_ZERO      = 0b1010,  // A: == 0 datum (no bytes in data words)
   MN_PLUS_ONE  = 0b1011,  // B: == 1 datum (no bytes in data words)

@@ -89,7 +89,7 @@ namespace Data
                              ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                               i8& i_LastColumn, i8& i_LastOffset);
   
-    static void vDecodeTength(Datum* pDatum, HeadLine* aHeadLine,
+    static void vDecodeTenth(Datum* pDatum, HeadLine* aHeadLine,
                               ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                               i8& i_LastColumn, i8& i_LastOffset);
 
