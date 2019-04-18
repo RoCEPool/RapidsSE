@@ -119,6 +119,7 @@ Job_FetchRows::Job_FetchRows(Interface::Session* pSession)
   m_bPrint       = true;
   m_bLimit       = false;
   m_bRandom      = false;
+  m_bFirst       = false;
   m_iRows        = C_UNKNOWN;
   m_pPlanner     = nullptr;
   m_pBufferQueue = new Queue;
@@ -322,10 +323,10 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
     //fetch j10 |limit 10|first 10|random 10|;
     if (pTokenVec->pGet(2)->eToken() == TN_NAME) {
       
-      if (pTokenVec->pGet(2)->aText()->bSame("limit"_Stz) ||
-          pTokenVec->pGet(2)->aText()->bSame("first"_Stz)) {
+      if (pTokenVec->pGet(2)->aText()->bSame("limit"_Stz))
         m_bLimit = true;
-      }
+      else if (pTokenVec->pGet(2)->aText()->bSame("first"_Stz))
+        m_bFirst = true;
       else if (pTokenVec->pGet(2)->aText()->bSame("random"_Stz))
         m_bRandom = true;
       else
@@ -358,10 +359,11 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
       m_iPartition = pTokenVec->pGet(3)->iToI8();
     }
     else if (pTokenVec->pGet(3)->eToken() == TN_NAME) {
-      if (pTokenVec->pGet(3)->aText()->bSame("limit"_Stz) ||
-          pTokenVec->pGet(3)->aText()->bSame("first"_Stz)) {
+      
+      if (pTokenVec->pGet(3)->aText()->bSame("limit"_Stz))
         m_bLimit = true;
-      }
+      else if (pTokenVec->pGet(3)->aText()->bSame("first"_Stz))
+        m_bFirst = true;
       else if (pTokenVec->pGet(3)->aText()->bSame("random"_Stz))
         m_bRandom = true;
       else
@@ -397,12 +399,14 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
     
     if (pTokenVec->pGet(3)->eToken() == TN_NAME) {
         
-      if (pTokenVec->pGet(3)->aText()->bSame("limit"_Stz) ||
-          pTokenVec->pGet(3)->aText()->bSame("first"_Stz)) {
+      if (pTokenVec->pGet(3)->aText()->bSame("limit"_Stz))
         m_bLimit = true;
-      }
+      else if (pTokenVec->pGet(3)->aText()->bSame("first"_Stz))
+        m_bFirst = true;
       else if (pTokenVec->pGet(3)->aText()->bSame("random"_Stz))
         m_bRandom = true;
+      else
+        return false;
     }
     else
       return false;
@@ -437,12 +441,14 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
       
       if (pTokenVec->pGet(4)->eToken() == TN_NAME) {
         
-        if (pTokenVec->pGet(4)->aText()->bSame("limit"_Stz) ||
-            pTokenVec->pGet(4)->aText()->bSame("first"_Stz)) {
+        if (pTokenVec->pGet(4)->aText()->bSame("limit"_Stz))
           m_bLimit = true;
-        }
+        else if (pTokenVec->pGet(4)->aText()->bSame("first"_Stz))
+          m_bFirst = true;
         else if (pTokenVec->pGet(4)->aText()->bSame("random"_Stz))
           m_bRandom = true;
+        else
+          return false;
       }
       else
         return false;
@@ -528,8 +534,10 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
   GenVar xVariable;
   i8 nRowsProcessed = 0;
   i8 nLastBuffersScanned = 0;
+  i8 iRowsPrinted = 0;
   
   FetchBuffer* pFetchBuffer = nullptr;
+  bool bDone = false;
   
   if ( pJob_FetchRows->m_bHasError ) {
     
@@ -552,7 +560,10 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
     }
     
     if (pJob_FetchRows->m_bDisplay) {
-      vIterateBuffer(pJob_FetchRows, pFetchBuffer, pJob_FetchRows->m_bPrint);
+      if (pJob_FetchRows->m_bLimit && iRowsPrinted != pJob_FetchRows->m_iRows)
+        vIterateBuffer(pJob_FetchRows, pFetchBuffer, iRowsPrinted);
+      else
+        vIterateBuffer(pJob_FetchRows, pFetchBuffer, iRowsPrinted);
     }
     
     nRowsProcessed += pFetchBuffer->nFetchedRows();
@@ -563,8 +574,17 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
     delete pFetchBuffer;
     pFetchBuffer = nullptr;
   }
-    
-  vTrace("success: %lld rows fetched\n"_Stz, nRowsProcessed);
+  
+  if (pJob_FetchRows->m_iRows == C_UNKNOWN)
+    vTrace("success: %lld rows fetched\n"_Stz,nRowsProcessed);
+  else {
+    if (pJob_FetchRows->m_bFirst)
+      vTrace("success: %lld rows fetched; first %lld rows printed\n"_Stz, nRowsProcessed, pJob_FetchRows->m_iRows);
+    else if (pJob_FetchRows->m_bLimit)
+      vTrace("success: %lld rows fetched\n"_Stz, pJob_FetchRows->m_iRows);
+    else
+      RASSERT(0);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -582,7 +602,7 @@ void Jobs::vJob_FetchRows_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
                           FetchBuffer* pFetchBuffer,
-                          bool bPrint)
+                          i8& iRowsPrinted)
 {
   HV_Rec hvRec;
 
@@ -595,11 +615,30 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
 
     RowCoder::vRecord(hvRec,aHeadLine,pColVec);
 
-    if (bPrint)
-      hvRec->vPrintRow();
+    if (pJob_FetchRows->m_bPrint) {
+      if (pJob_FetchRows->m_bFirst) {
+        if (iRowsPrinted < pJob_FetchRows->m_iRows) {
+          hvRec->vPrintRow();
+          iRowsPrinted++;
+        }
+      }
+      else if (pJob_FetchRows->m_bLimit) {
+        if (iRowsPrinted < pJob_FetchRows->m_iRows) {
+          hvRec->vPrintRow();
+          iRowsPrinted++;
+        }
+        else {
+          return;
+        }
+      }
+      else
+        hvRec->vPrintRow();
+    }
     
     aaCacheLine = pFetchBuffer->aaNextRowPtr(aaCacheLine);
   }
+  
+  return;
 }
 
 /*----------------------------------------------------------------------------*/

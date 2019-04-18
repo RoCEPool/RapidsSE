@@ -15,6 +15,7 @@ namespace Jobs
     i8           m_iPartition;          // partition this fetch task to fetch from
     bool         m_bDisplay;            // display on
     bool         m_bPrint;              // print on
+    bool         m_bFirst;              // print first few rows
     bool         m_bLimit;              // limit no of rows to print
     bool         m_bRandom;             // random limit on no of rows to print
     i8           m_iRows;               // rows to print
@@ -56,8 +57,7 @@ namespace Jobs
   Job* pJob_FetchRows_pre(Interface::Session* pSession);
   void vJob_FetchRows_post(Interface::Session* pSession, Job* pJob);
   void vJob_FetchRows_delete(Interface::Session* pSession, Job* pJob);
-  void vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer,
-                      bool bPrint);
+  void vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer, i8& iRowsPrinted);
   void vJob_FetchRows_show(Job* pJob);
   
   JobClass* pJob_FetchRows_class(pFUN** aaFun);
