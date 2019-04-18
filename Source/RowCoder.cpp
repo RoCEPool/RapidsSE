@@ -160,34 +160,33 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     //
-    
+
     if (DM_DTE == eDatum) {
       //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
       vRecodeDteDays(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
       //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
       continue;
     }
-    
+
     if (DM_INT == eDatum) {
       if (bRecodeIntDelta(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset))
         continue;
     }
-
+    
     if (DM_INT == eDatum) {
       //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
       vRecodeIntDigit(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
       //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
       continue;
     }
-    
+   
     if (DM_BCD == eDatum) {
       //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
       vRecodeBcdTenth(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
       //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
       continue;
     }
-
-    
+  
     // copy a shoco tail
     if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding) {
       vCopyShoco(pIntoNub,aIntoHead,i_IntoHead,pFromNub,pCol,
@@ -330,6 +329,45 @@ void RowCoder::vEncode(RowNub* pNub, Column* pCol, Datum* pDatum)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint decode row from cache line into string                              */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
+  Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
+  
+   MemLib::vWordDump(aHeadLine, sizeof(HeadLine));
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+  
+  Datum oDatum;
+  i8 i_LastOffset = 8;
+  
+  vTrace("Column# ColumnName      Datum      ExtDatum        Encoding \n"_Stz);
+  
+  // for each column
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
+    
+    // get the column at index
+    Column* pCol = pColVec->pGet(i_Column);
+    
+    // first get the encoded value into datum
+    //vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_Column,i_LastOffset);
+    eDM eDatum = pCol->eDatumType();
+    eDM eDatumCoda = pCoda->m_aeDatum[pCol->iColumnNo()];
+    eMN eEncoding = eGetEncodingExt(i_Column,aHeadLine,pColVec,pCoda,i_Column,i_LastOffset);
+    
+    vTrace("%7lld %-15s %-10s %-5s %8lld\n"_Stz, i_Column, pCol->sColumnName().aChar(), aDM[eDatum],
+           aDM[eDatumCoda], eEncoding);
+    
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* print decoded datum from cache line                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vPrint(RowNub* pNub, i8 i_Row, Column* pCol, i8& i_LastColumn, i8& i_LastOffset)
@@ -386,6 +424,7 @@ void RowCoder::vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec)
 {
   pRec->vReset();
   
+  //vHeadDump(aHeadLine, pColVec);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
@@ -1029,7 +1068,10 @@ i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
   if (eEncoding == MN_NULL)
     return 0;
   
-  if (eDatum <= DM_VCH && eEncoding <= MN_8B)
+  //if (eEncoding <= MN_8B)
+  //  return eEncoding;
+  
+  if ((eDatum <= DM_VCH || eDatum == DM_ALPHA) && eEncoding <= MN_8B)
     return eEncoding;
   
   if (MN_OVERFLOW == eEncoding)
