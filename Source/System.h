@@ -20,6 +20,7 @@ using namespace System;
 
 #include "Atomic.hpp"
 #include "Compress.hpp"
+#include "DecaCnt.hpp"
 #include "Dir.hpp"
 #include "Env.hpp"
 #include "File.hpp"

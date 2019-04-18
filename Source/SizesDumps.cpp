@@ -329,7 +329,7 @@ i8 giClassSize[]
   /* 32 */ sizeof(Completer),          // CN_COMPLETER
 
   /*    */ sizeof(Datum),              // CN_DATUM
-  /*    */ 0,            // CN_DECACNT
+  /*    */ sizeof(DecaCnt),            // CN_DECACNT
   /*    */ sizeof(Decider),            // CN_DECIDER
   /* 33 */ sizeof(Dic),                // CN_DIC
   /* 34 */ sizeof(DicPath),            // CN_DICPATH

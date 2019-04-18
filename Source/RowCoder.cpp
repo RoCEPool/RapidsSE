@@ -620,11 +620,11 @@ void RowCoder::vRecodeIntDigit(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
 bool RowCoder::bRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
                                i8& i_IntoOffset, i8& i_FromOffset)
 {
-  static int nSame = 0;
-  static int nLess = 0;
-  static int nLeft = 0;
-  static int nPlus1 = 0;
-  static int nPlus2 = 0;
+  static DecaCnt dcSame("Same"_Stz);
+  static DecaCnt dcLess("Less"_Stz);
+  static DecaCnt dcLeft("Left"_Stz);
+  static DecaCnt dcPlus1("Plus1"_Stz);
+  static DecaCnt dcPlus2("Plus2"_Stz);
 
   Coda* pCoda = pIntoNub->pCoda();
   i8 i_Column = pCol->iColumnNo();
@@ -672,9 +672,7 @@ bool RowCoder::bRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
   eMN eExtendedEncoding;
  
   if (iCurrentInt < iFirstInt) {
-    nLess++;
-    if (IntLib::bIsDecaCycle(nLess))
-      vTrace("%lld nSame\n"_Stz,nLess);
+    dcLess.vInc("\n"_Stz);
     return true;
   }
   
@@ -693,9 +691,7 @@ bool RowCoder::bRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
     // go back one char in the intoOffset
     i_IntoOffset -= eCurrentEncoding;
     
-    nSame++;
-    if (IntLib::bIsDecaCycle(nSame))
-      vTrace("%lld nSame\n"_Stz,nSame);
+    dcSame.vInc("\n"_Stz);
     return true;
   }
   
@@ -720,9 +716,7 @@ bool RowCoder::bRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
     }
     
     //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-    nPlus1++;
-    if (IntLib::bIsDecaCycle(nPlus1))
-      vTrace("%lld nPlus1\n"_Stz,nPlus1);
+    dcPlus1.vInc("\n"_Stz);
     return true;
   }
   
@@ -747,16 +741,12 @@ bool RowCoder::bRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
     }
     
     //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-    nPlus2++;
-    if (IntLib::bIsDecaCycle(nPlus2))
-      vTrace("%lld nPlus2\n"_Stz,nPlus2);
+    dcPlus2.vInc("\n"_Stz);
     return true;
   }
 
   
-  nLeft++;
-  if (IntLib::bIsDecaCycle(nLeft))
-    vTrace("%lld nLeft (e.g. %lld (first %lld))\n"_Stz,nLeft,iCurrentInt,iFirstInt);
+  dcLeft.vInc(" (e.g. %lld (first %lld))\n"_Stz,iCurrentInt,iFirstInt);
   
   return true;
 }
