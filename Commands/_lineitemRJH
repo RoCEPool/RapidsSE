@@ -46,7 +46,7 @@ time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 space;
 sztbl lineitem;
 
-//fetch lineitem;
+r//fetch lineitem;
 
 /*
 time fetch lineitem

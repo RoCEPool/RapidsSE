@@ -14,14 +14,14 @@
 const u8 C_BITS_PER_WORD = 64;
 const u8 C_ALL_BITS_ON   = 0xFFFFFFFFFFFFFFFFLL;
 
-const u1 C_1_BIT  = 1;
-const u1 C_2_BITS = 3;
-const u1 C_3_BITS = 7;
-const u1 C_4_BITS = 15;
-const u1 C_5_BITS = 31;
-const u1 C_6_BITS = 63;
-const u1 C_7_BITS = 127;
-const u1 C_8_BITS = 255;
+const u8 C_1_BIT  = 1;
+const u8 C_2_BITS = 3;
+const u8 C_3_BITS = 7;
+const u8 C_4_BITS = 15;
+const u8 C_5_BITS = 31;
+const u8 C_6_BITS = 63;
+const u8 C_7_BITS = 127;
+const u8 C_8_BITS = 255;
 
 const u8 C_BIT_0  = 1;
 const u8 C_BIT_1  = 2;
@@ -32,14 +32,14 @@ const u8 C_BIT_5  = 32;
 const u8 C_BIT_6  = 64;
 const u8 C_BIT_7  = 128;
 
-const u8 C_1_BYTE  = C_8_BITS;
-const u8 C_2_BYTES = C_1_BYTE * 2;
-const u8 C_3_BYTED = C_1_BYTE * 3;
-const u8 C_4_BYTES = C_1_BYTE * 4;
-const u8 C_5_BYTES = C_1_BYTE * 5;
-const u8 C_6_BYTES = C_1_BYTE * 6;
-const u8 C_7_BYTES = C_1_BYTE * 7;
-const u8 C_8_BYTES = C_1_BYTE * 8;
+const u8 C_1_BYTE  = 255;
+const u8 C_2_BYTES = (C_1_BYTE +1) * 256 - 1;
+const u8 C_3_BYTES = (C_2_BYTES+1) * 256 - 1;
+const u8 C_4_BYTES = (C_3_BYTES+1) * 256 - 1;
+const u8 C_5_BYTES = (C_4_BYTES+1) * 256 - 1;
+const u8 C_6_BYTES = (C_5_BYTES+1) * 256 - 1;
+const u8 C_7_BYTES = (C_6_BYTES+1) * 256 - 1;
+const u8 C_8_BYTES = (C_7_BYTES+1) * 256 - 1;
 
 
 //                              fedc    7654

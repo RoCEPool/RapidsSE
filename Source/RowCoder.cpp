@@ -745,7 +745,7 @@ bool RowCoder::bRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
   
   nLeft++;
   if (IntLib::bIsDecaCycle(nLeft))
-    vTrace("%lld nLeft\n"_Stz,nLeft);
+    vTrace("%lld nLeft (e.g. %lld (first %lld))\n"_Stz,nLeft,iCurrentInt,iFirstInt);
   
   return true;
 }
