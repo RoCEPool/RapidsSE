@@ -256,6 +256,7 @@ eEC Job_CreateTable::eAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
   
   // now collect the column names and their types
   i8 iColumn = 0;
+  i8 iFirstDate = C_UNKNOWN;
   i8 i_StartToken = iCurrentToken;
   
   while ( ! pTokenVec->pGet(iCurrentToken)->bSame(")"_Stz)) {
@@ -310,6 +311,10 @@ eEC Job_CreateTable::eAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
     else if (pTokenVec->pGet(iCurrentToken)->bSame("date"_Stz)) {
       m_xColumns[iColumn].vColumnType(CT_DATE);
       m_xColumns[iColumn].vDatumType(DM_DTE);
+      if (iFirstDate == C_UNKNOWN) {
+        iFirstDate = iColumn;
+      }
+      m_xColumns[iColumn].vFirstDate(iFirstDate);
       iCurrentToken++;
     }
     else if (pTokenVec->pGet(iCurrentToken)->bSame("time"_Stz)) {
