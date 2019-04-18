@@ -36,12 +36,13 @@ namespace Datums
   
   // extended datums
   /* 16 */ DM_ALPHA,
-  /* 17 */ DM_DELTA_PLUS,
-  /* 18 */ DM_DELTA_MINUS,
-  /* 19 */ DM_DIGIT,
-  /* 20 */ DM_TENTH,
+  /* 17 */ DM_DAYS,
+  /* 18 */ DM_DELTA_PLUS,
+  /* 19 */ DM_DELTA_MINUS,
+  /* 20 */ DM_DIGIT,
+  /* 21 */ DM_TENTH,
 
-  /* 21 */ DM_ENUMS
+  /* 22 */ DM_ENUMS
   };
   
   static Stz* aDM[]
@@ -66,10 +67,11 @@ namespace Datums
   /* 15 */ "SPARE_15"_Stz,
 
   /* 16 */ "ALPHA"_Stz,
-  /* 17 */ "DELTA_PLUS"_Stz,
-  /* 18 */ "DELTA_MINUS"_Stz,
-  /* 19 */ "DIGIT"_Stz,
-  /* 20 */ "TENTH"_Stz,
+  /* 17 */ "DAYS"_Stz,
+  /* 18 */ "DELTA_PLUS"_Stz,
+  /* 19 */ "DELTA_MINUS"_Stz,
+  /* 20 */ "DIGIT"_Stz,
+  /* 21 */ "TENTH"_Stz,
 
   /* 21 */ "ENUMS"_Stz,
   };
