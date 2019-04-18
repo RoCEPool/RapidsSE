@@ -278,7 +278,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       break;
     
     case DM_DAYS:
-      vDecodeBcd(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      vDecodeDays(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
       
     case DM_DELTA_PLUS:
@@ -562,7 +562,98 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
 void RowCoder::vRecodeDteDays(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
                               i8& i_IntoOffset, i8& i_FromOffset)
 {
+  RASSERT(DM_DTE == pCol->eDatumType());
   
+  i8 i_FirstDate = pCol->iFirstDate();
+  if (C_UNKNOWN == i_FirstDate)
+    return;
+  
+  i8 i_Column = pCol->iColumnNo();
+  if (i_Column == i_FirstDate)
+    return;
+
+  Coda* pCoda = pIntoNub->pCoda();
+
+  eMN eCurrentEncoding = (eMN)aIntoHead->w8_1N(i_Column);
+  
+  i8 iThisDte = 0;
+  switch (eCurrentEncoding) {
+      
+    case MN_NULL: return;
+      
+    case MN_SILVER_1B:    iThisDte = aIntoHead->w8_1B(i_IntoOffset); break;
+    case MN_SILVER_2B:    iThisDte = aIntoHead->w8_2B(i_IntoOffset); break;
+      
+    default:
+      RASSERT(0);
+  }
+
+  Datum oFirstDte;
+  ColumnVec* pColVec = pIntoNub->pDesc()->pColumnVec();
+  Column* pColFirst = pColVec->pGet(i_FirstDate);
+  i8 i_LastColumn = 0;
+  i8 i_LastOffset = 8;
+  vDecodeDte(&oFirstDte,aIntoHead,pColVec,pColFirst,pCoda,i_LastColumn,i_LastOffset);
+  
+  i8 iFirstDte = 0;
+  
+  eMN eFirstEncoding = (eMN)aIntoHead->w8_1N(i_FirstDate);
+
+  switch (eFirstEncoding) {
+      
+    case MN_NULL: return;
+      
+    case MN_SILVER_1B:    iFirstDte = aIntoHead->w8_1B(i_LastOffset); break;
+    case MN_SILVER_2B:    iFirstDte = aIntoHead->w8_2B(i_LastOffset); break;
+      
+    default:
+      RASSERT(0);
+  }
+
+  i8 iDiff = iThisDte - iFirstDte;
+  
+  if (iDiff >= 0 && iDiff <= (i8)C_1_BYTE) {
+    
+    // change the encoding to extended days
+    pCoda->m_aeDatum[i_Column] = DM_DAYS;
+    
+    // revise the encoding
+    eMN eExtendedEncoding = MN_DAYS_PLUS_1B;
+    aIntoHead->v1N(i_Column,eExtendedEncoding);
+
+    //
+    i8 i1B = iDiff;
+    aIntoHead->v1B(i_IntoOffset,i1B);
+    
+    // cut 1B char out of the into head
+    if (MN_SILVER_2B == eCurrentEncoding) {
+      pIntoNub->vCut(aIntoHead,sizeof(HeadLine),i_IntoOffset+1,1);
+      i_IntoOffset--;
+    }
+  }
+  else
+  if (iDiff >= -255 && iDiff < 0) {
+    
+    // change the encoding to extended days
+    pCoda->m_aeDatum[i_Column] = DM_DAYS;
+    
+    // revise the encoding
+    eMN eExtendedEncoding = MN_DAYS_MINUS_1B;
+    aIntoHead->v1N(i_Column,eExtendedEncoding);
+
+    //
+    i8 i1B = - iDiff;
+    aIntoHead->v1B(i_IntoOffset,i1B);
+    
+    // cut 1B char out of the into head
+    if (MN_SILVER_2B == eCurrentEncoding) {
+      pIntoNub->vCut(aIntoHead,sizeof(HeadLine),i_IntoOffset+1,1);
+      i_IntoOffset--;
+    }
+  }
+  else {
+    vTrace("Huh??\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1039,6 +1130,9 @@ i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
     case DM_ALPHA:
       return 0;
       
+    case DM_DAYS:
+      return 1;
+      
     case DM_DELTA_PLUS:
       if (eEncoding <= MN_8B)
         return eEncoding;
@@ -1412,6 +1506,54 @@ void RowCoder::vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
   //RASSERT(cChr == pDatum->m_xWsp.aArea()[0]);
 
   //RASSERT(pDatum->m_xWsp.aArea()[0] == (char)pCoda->m_aiAux[i_Column]);
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode days from given cache line                                          */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeDays(Datum* pDatum, HeadLine* aHeadLine,
+                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                            i8& i_LastColumn, i8& i_Offset)
+{
+  i8 i_Column  = pCol->iColumnNo();
+  i8 i_FirstColumn  = pCol->iFirstDate();
+  Column* pFirstColumn  = pColVec->pGet(i_FirstColumn);
+
+  pDatum->m_eDatum = DM_DTE;
+  
+  //!! needs more work
+  eMN eThisEncoding = eGetEncodingExt(i_Column,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+  
+  i8 iDays = 0;
+  switch (eThisEncoding) {
+      
+    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL; return;
+      
+    case MN_DAYS_PLUS_1B:  iDays = aHeadLine->w8_1B(i_Offset);  break;
+    case MN_DAYS_MINUS_1B: iDays = - aHeadLine->w8_1B(i_Offset); break;
+    default:
+      NEVER_REACH;
+  }
+  
+  
+  i8 i_SearchColumn = 0;
+  i8 i_SearchOffset = 8;
+  eMN eFirstEncoding = eGetEncodingExt(pCol->iFirstDate(),aHeadLine,pColVec,
+                                       pCoda,i_SearchColumn,i_SearchOffset);
+
+  switch (eFirstEncoding) {
+    case MN_SILVER_1B:    pDatum->m_iInt = aHeadLine->w8_1B(i_SearchOffset); break;
+    case MN_SILVER_2B:    pDatum->m_iInt = aHeadLine->w8_2B(i_SearchOffset); break;
+    default:
+      NEVER_REACH;
+  }
+
+  pDatum->m_iInt += iDays;
+  
+  i8 iEra = C_SILVER_ERA;
+  vFromBaseDays(pDatum,iEra);
+
+  
 }
 
 /*----------------------------------------------------------------------------*/
