@@ -49,6 +49,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_COMPLETER
 
   /*    */ &Finalize::vUndefined,         // CN_DATUM
+  /*    */ &Finalize::vUndefined,         // CN_DECACNT
   /*    */ &Finalize::vUndefined,         // CN_DECIDER
   /* 33 */ &Dic::vFinalize,               // CN_DIC
   /*    */ &Finalize::vUndefined,         // CN_DICPATH
