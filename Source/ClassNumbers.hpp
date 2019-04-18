@@ -52,6 +52,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_COMPLETER,
 
   /*                           */ CN_DATUM,
+  /*                           */ CN_DECACNT,
   /*  28 0x1C       24B Heap:S */ CN_DECIDER,
   /*  29 0x1D      248B Heap:M */ CN_DIC,
   /*  30 0x1E      792B Heap:S */ CN_DICPATH,
@@ -323,6 +324,7 @@ static Stz* aCN[]
   /*          */ "COMPLETER"_Stz,           // CN_COMPLETER
 
   /*          */ "DATUM"_Stz,               // CN_DATUM
+  /*          */ "DECACNT"_Stz,             // CN_DECACNT
   /*  28 0x1C */ "DECIDER"_Stz,             // CN_DECIDER
   /*  29 0x1D */ "DIC"_Stz,                 // CN_DIC
   /*  30 0x1E */ "DICPATH"_Stz,             // CN_DICPATH
