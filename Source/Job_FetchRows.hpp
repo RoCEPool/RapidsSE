@@ -15,6 +15,9 @@ namespace Jobs
     i8           m_iPartition;          // partition this fetch task to fetch from
     bool         m_bDisplay;            // display on
     bool         m_bPrint;              // print on
+    bool         m_bLimit;              // limit no of rows to print
+    bool         m_bRandom;             // random limit on no of rows to print
+    i8           m_iRows;               // rows to print
     Planner*     m_pPlanner;            // fetch planner
     Queue*       m_pBufferQueue;        // buffer queue where fetch buffers are pushed
     FetchBuffer* m_pFetchBuffer;        // fetch buffer

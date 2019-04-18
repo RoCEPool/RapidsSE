@@ -117,6 +117,9 @@ Job_FetchRows::Job_FetchRows(Interface::Session* pSession)
   m_iPartition   = -1;
   m_bDisplay     = true;
   m_bPrint       = true;
+  m_bLimit       = false;
+  m_bRandom      = false;
+  m_iRows        = C_UNKNOWN;
   m_pPlanner     = nullptr;
   m_pBufferQueue = new Queue;
   m_pFetchBuffer = nullptr;
@@ -215,7 +218,7 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 2 to 5 tokens
-  if (iNumTokens < 2 || iNumTokens > 5)
+  if (iNumTokens < 2 || iNumTokens > 6)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - -
@@ -266,8 +269,9 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   // - - - - - - - - - - - - - - - - - - - - -
   // 4 tokens
   //fetch j10 "where" 1;
-  //fetch j10 1 displayOff|noPrint;
-  //fetch j10 "where" displayOff|noPrint;
+  //fetch j10 |limit 10|first 10|random 10|;
+  //fetch j10 1 |displayOff|noPrint;
+  //fetch j10 "where" |displayOff|noPrint;
   if (iNumTokens == 4) {
     if (pTokenVec->pGet(2)->eToken() == TN_STRING) {
       
@@ -282,7 +286,8 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
         return false;
       
       if ( ! pTokenVec->pGet(3)->aText()->bSame("displayOff"_Stz) &&
-          ! pTokenVec->pGet(3)->aText()->bSame("noPrint"_Stz))
+           ! pTokenVec->pGet(3)->aText()->bSame("noPrint"_Stz) &&
+           ! pTokenVec->pGet(3)->aText()->bSame("noPrint"_Stz))
         return false;
       
       if (pTokenVec->pGet(3)->aText()->bSame("displayOff"_Stz))
@@ -314,28 +319,60 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
       return true;
     }
     
+    //fetch j10 |limit 10|first 10|random 10|;
+    if (pTokenVec->pGet(2)->eToken() == TN_NAME) {
+      
+      if (pTokenVec->pGet(2)->aText()->bSame("limit"_Stz) ||
+          pTokenVec->pGet(2)->aText()->bSame("first"_Stz)) {
+        m_bLimit = true;
+      }
+      else if (pTokenVec->pGet(2)->aText()->bSame("random"_Stz))
+        m_bRandom = true;
+      else
+        return false;
+      
+      if (pTokenVec->pGet(3)->eToken() == TN_INTEGER) {
+        m_iRows = pTokenVec->pGet(3)->iToI8();
+        return true;
+      }
+      
+      return false;
+      
+    }
     return false;
-    
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
   // 5 tokens
   //fetch j10 "where" 1 displayOff|noPrint;
+  //fetch j10 "where" displayOff|noPrint;
+  //fetch j10 1 |limit 10|first 10|random 10|;
   if (iNumTokens == 5) {
     
     // get where
     if (pTokenVec->pGet(2)->eToken() == TN_STRING) {
       m_sWhere = pTokenVec->pGet(2)->aText();
-    }
-    else
-      return false;
     
     // get partition
     if (pTokenVec->pGet(3)->eToken() == TN_INTEGER) {
       m_iPartition = pTokenVec->pGet(3)->iToI8();
     }
-    else
+    else if (pTokenVec->pGet(3)->eToken() == TN_NAME) {
+      if (pTokenVec->pGet(3)->aText()->bSame("limit"_Stz) ||
+          pTokenVec->pGet(3)->aText()->bSame("first"_Stz)) {
+        m_bLimit = true;
+      }
+      else if (pTokenVec->pGet(3)->aText()->bSame("random"_Stz))
+        m_bRandom = true;
+      else
+        return false;
+      
+      if (pTokenVec->pGet(4)->eToken() == TN_INTEGER) {
+        m_iRows = pTokenVec->pGet(4)->iToI8();
+        return true;
+      }
       return false;
+    }
     
     // get displayOff
     if (pTokenVec->pGet(4)->eToken() == TN_NAME) {
@@ -349,6 +386,72 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
         m_bPrint = false;
         return true;
       }
+    }
+    return false;
+  }
+    
+  //fetch j10 1 |limit 10|first 10|random 10|;
+  if (pTokenVec->pGet(2)->eToken() == TN_INTEGER) {
+    
+    m_iPartition = pTokenVec->pGet(2)->iToI8();
+    
+    if (pTokenVec->pGet(3)->eToken() == TN_NAME) {
+        
+      if (pTokenVec->pGet(3)->aText()->bSame("limit"_Stz) ||
+          pTokenVec->pGet(3)->aText()->bSame("first"_Stz)) {
+        m_bLimit = true;
+      }
+      else if (pTokenVec->pGet(3)->aText()->bSame("random"_Stz))
+        m_bRandom = true;
+    }
+    else
+      return false;
+    
+    if (pTokenVec->pGet(4)->eToken() == TN_INTEGER) {
+      m_iRows = pTokenVec->pGet(4)->iToI8();
+      return true;
+    }
+  
+    return false;
+  }
+
+  return false;
+
+}
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // 6 tokens
+  //fetch j10 "where" 1 |limit 10|first 10|random 10|;
+  if (iNumTokens == 6) {
+    
+    // get where
+    if (pTokenVec->pGet(2)->eToken() == TN_STRING) {
+      m_sWhere = pTokenVec->pGet(2)->aText();
+      
+      // get partition
+      if (pTokenVec->pGet(3)->eToken() == TN_INTEGER) {
+        m_iPartition = pTokenVec->pGet(3)->iToI8();
+      }
+      else
+        return false;
+      
+      if (pTokenVec->pGet(4)->eToken() == TN_NAME) {
+        
+        if (pTokenVec->pGet(4)->aText()->bSame("limit"_Stz) ||
+            pTokenVec->pGet(4)->aText()->bSame("first"_Stz)) {
+          m_bLimit = true;
+        }
+        else if (pTokenVec->pGet(4)->aText()->bSame("random"_Stz))
+          m_bRandom = true;
+      }
+      else
+        return false;
+      
+      if (pTokenVec->pGet(5)->eToken() == TN_INTEGER) {
+        m_iRows = pTokenVec->pGet(5)->iToI8();
+        return true;
+      }
+      return false;
     }
     return false;
   }
