@@ -168,7 +168,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 
     if (DM_INT == eDatum) {
       //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-      vRecodeInt(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+      vRecodeIntDigit(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
       //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
       continue;
     }
@@ -537,8 +537,8 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
 /*----------------------------------------------------------------------------*/
 /* re-encode an Int as Digit                                                  */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeInt(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
-                            i8& i_IntoOffset, i8& i_FromOffset)
+void RowCoder::vRecodeIntDigit(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
+                               i8& i_IntoOffset, i8& i_FromOffset)
 {
   eMN eExtendedEncoding;
   

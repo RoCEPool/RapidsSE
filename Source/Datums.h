@@ -39,8 +39,9 @@ namespace Datums
   /* 17 */ DM_DELTA_PLUS,
   /* 18 */ DM_DELTA_MINUS,
   /* 19 */ DM_DIGIT,
+  /* 20 */ DM_TENTH,
 
-  /* 20 */ DM_ENUMS
+  /* 21 */ DM_ENUMS
   };
   
   static Stz* aDM[]
@@ -68,8 +69,9 @@ namespace Datums
   /* 17 */ "DELTA_PLUS"_Stz,
   /* 18 */ "DELTA_MINUS"_Stz,
   /* 19 */ "DIGIT"_Stz,
-    
-  /* 20 */ "ENUMS"_Stz,
+  /* 20 */ "TENTH"_Stz,
+
+  /* 21 */ "ENUMS"_Stz,
   };
   
   void vCheckAssumptions(void);

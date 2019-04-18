@@ -36,7 +36,10 @@ namespace Data
                            RowNub* pFromNub, Column* pCol,
                            i8 i_ToOffset, i8 i_FromOffset);
   
-    static void vRecodeInt(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
+    static void vRecodeBcdTenth(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
+                              i8& i_IntoOffset, i8& i_FromOffset);
+  
+    static void vRecodeIntDigit(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
                            i8& i_IntoOffset, i8& i_FromOffset);
   
     static bool bRecodeIntDelta(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
@@ -79,13 +82,17 @@ namespace Data
     static void vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
                              ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                              i8& i_LastColumn, i8& i_LastOffset);
-   static void vDecodeDeltaPlus(Datum* pDatum, HeadLine* aHeadLine,
-                                ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                                i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeDeltaPlus(Datum* pDatum, HeadLine* aHeadLine,
+                                 ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                                 i8& i_LastColumn, i8& i_LastOffset);
     static void vDecodeDigit(Datum* pDatum, HeadLine* aHeadLine,
                              ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                               i8& i_LastColumn, i8& i_LastOffset);
-    
+  
+    static void vDecodeTength(Datum* pDatum, HeadLine* aHeadLine,
+                              ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                              i8& i_LastColumn, i8& i_LastOffset);
+
     // shocos
     static void vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
