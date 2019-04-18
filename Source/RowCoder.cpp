@@ -161,6 +161,13 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     //
     
+    if (DM_DTE == eDatum) {
+      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+      vRecodeDteDays(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+      continue;
+    }
+    
     if (DM_INT == eDatum) {
       if (bRecodeIntDelta(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset))
         continue;
@@ -270,6 +277,10 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       vDecodeAlpha(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
     
+    case DM_DAYS:
+      vDecodeBcd(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      break;
+      
     case DM_DELTA_PLUS:
       vDecodeDeltaPlus(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
@@ -543,6 +554,15 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
   //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
   
   return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to re-encode an Int as DeltaPlus                                   */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecodeDteDays(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
+                              i8& i_IntoOffset, i8& i_FromOffset)
+{
+  
 }
 
 /*----------------------------------------------------------------------------*/
