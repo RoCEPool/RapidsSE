@@ -39,7 +39,7 @@ namespace Data
     static void vRecodeInt(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
                            i8& i_IntoOffset, i8& i_FromOffset);
   
-    static void vRecodeIntDelta(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
+    static bool bRecodeIntDelta(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
                                  i8& i_IntoOffset, i8& i_FromOffset);
 
     static void vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,

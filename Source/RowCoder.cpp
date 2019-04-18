@@ -161,19 +161,18 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     //
     
-   if (DM_INT == eDatum) {
+    if (DM_INT == eDatum) {
+      if (bRecodeIntDelta(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset))
+        continue;
+    }
+
+    if (DM_INT == eDatum) {
       //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
       vRecodeInt(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
       //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
       continue;
     }
     
-//    if (eDatum == DM_INT) {
-//      MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-//      vRecodeIntDelta(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
-//      MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-//      continue;
-//    }
     
     // copy a shoco tail
     if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding) {
@@ -605,9 +604,9 @@ void RowCoder::vRecodeInt(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
 }
 
 /*----------------------------------------------------------------------------*/
-/* re-encode an Int as DeltaPlus                                              */
+/* attempt to re-encode an Int as DeltaPlus                                   */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
+bool RowCoder::bRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
                                i8& i_IntoOffset, i8& i_FromOffset)
 {
   static int nSame = 0;
@@ -622,13 +621,18 @@ void RowCoder::vRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
   eMN eCurrentEncoding = (eMN)aIntoHead->w8_1N(i_Column);
   //vTrace("CurrentEncoding %lld\n"_Stz, eCurrentEncoding);
   
+  // if encoding as digit then dont proceed
+  if (DM_DIGIT == pCoda->m_aeDatum[i_Column]) {
+    return false;
+  }
+
   RASSERT(DM_INT == pCol->eDatumType());
   
   i8 iCurrentInt = 0;
   
   switch (eCurrentEncoding) {
       
-    case MN_NULL: return;
+    case MN_NULL: return true;
       
     case MN_1B:   iCurrentInt = aIntoHead->w8_1B(i_IntoOffset); break;
     case MN_2B:   iCurrentInt = aIntoHead->w8_2B(i_IntoOffset); break;
@@ -639,14 +643,19 @@ void RowCoder::vRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
     case MN_7B:   iCurrentInt = aIntoHead->w8_7B(i_IntoOffset); break;
     case MN_8B:   iCurrentInt = aIntoHead->w8_8B(i_IntoOffset); break;
       
-    case MN_MINUS_ONE: return;
-    case MN_ZERO:      return;
-    case MN_PLUS_ONE:  return;
+    case MN_MINUS_ONE: return true;
+    case MN_ZERO:      return true;
+    case MN_PLUS_ONE:  return true;
       
     default:
       NEVER_REACH;
   }
   
+  // defer to vRecodeInt
+  if ( (iCurrentInt >= 0 && iCurrentInt <= 7) &&
+       DM_INT == pCoda->m_aeDatum[i_Column]  )
+    return false;
+
   i8 iFirstInt = pCoda->m_aiAux[i_Column].m_iInt;
   
   eMN eExtendedEncoding;
@@ -655,7 +664,7 @@ void RowCoder::vRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
     nLess++;
     if (IntLib::bIsDecaCycle(nLess))
       vTrace("%lld nSame\n"_Stz,nLess);
-    return;
+    return true;
   }
   
   if (iCurrentInt == iFirstInt) {
@@ -676,7 +685,7 @@ void RowCoder::vRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
     nSame++;
     if (IntLib::bIsDecaCycle(nSame))
       vTrace("%lld nSame\n"_Stz,nSame);
-    return;
+    return true;
   }
   
   if (iCurrentInt > iFirstInt && iCurrentInt - iFirstInt <= 255) {
@@ -703,7 +712,7 @@ void RowCoder::vRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
     nPlus1++;
     if (IntLib::bIsDecaCycle(nPlus1))
       vTrace("%lld nPlus1\n"_Stz,nPlus1);
-    return;
+    return true;
   }
   
   if (iCurrentInt > iFirstInt && (u8)(iCurrentInt - iFirstInt) <= C_2_BYTES) {
@@ -730,13 +739,15 @@ void RowCoder::vRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
     nPlus2++;
     if (IntLib::bIsDecaCycle(nPlus2))
       vTrace("%lld nPlus2\n"_Stz,nPlus2);
-    return;
+    return true;
   }
 
   
   nLeft++;
   if (IntLib::bIsDecaCycle(nLeft))
     vTrace("%lld nLeft\n"_Stz,nLeft);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -936,7 +947,10 @@ i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
       return 0;
       
     case DM_DELTA_PLUS:
-      switch (eEncoding) {
+      if (eEncoding <= MN_8B)
+        return eEncoding;
+      
+     switch (eEncoding) {
         case MN_MINUS_ONE:  return 0;
         case MN_ZERO:       return 0;
         case MN_PLUS_ONE:   return 0;
