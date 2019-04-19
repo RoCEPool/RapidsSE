@@ -1090,8 +1090,6 @@ void RowCoder::vRecodeBcdTenth(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
     }
   }
   
-  return;
-  
   switch (eCurrentEncoding) {
     case MN_1B: RASSERT(0); break;
     case MN_2B: eExtendedEncoding = MN_TENTH_2B; break;
@@ -1342,9 +1340,9 @@ i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
       if (eEncoding >= MN_TENTH_0 && eEncoding <= MN_TENTH_10)
         return 0;
       switch (eEncoding) {
-        case MN_2B:  return 2;
-        case MN_4B:  return 4;
-        case MN_8B:  return 8;
+        case MN_TENTH_2B:  return 2;
+        case MN_TENTH_4B:  return 4;
+        case MN_TENTH_8B:  return 8;
         default:
           NEVER_REACH;
       }
@@ -2908,8 +2906,9 @@ Stz* RowCoder::sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt)
       
     case DM_BOL:
       switch (eEncoding) {
+        case MN_NULL:  return("MN_NULL"_Stz);  break;
         case MN_FALSE: return("MN_FALSE"_Stz); break;
-        case MN_TRUE:  return("MN_TRUE"_Stz); break;
+        case MN_TRUE:  return("MN_TRUE"_Stz);  break;
         default:
           NEVER_REACH;
       }
@@ -3028,6 +3027,7 @@ Stz* RowCoder::sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt)
       
     case DM_DIGIT:
       switch (eEncoding) {
+        case MN_NULL:     return("MN_NULL"_Stz);    break;
         case MN_DIGIT_0:  return("MN_DIGIT_0"_Stz); break;
         case MN_DIGIT_1:  return("MN_DIGIT_1"_Stz); break;
         case MN_DIGIT_2:  return("MN_DIGIT_2"_Stz); break;
@@ -3048,6 +3048,7 @@ Stz* RowCoder::sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt)
       
     case DM_TENTH:
       switch (eEncoding) {
+        case MN_NULL:     return("MN_NULL"_Stz);  break;
         case MN_TENTH_0:  return("MN_TENTH_0"_Stz); break;
         case MN_TENTH_1:  return("MN_TENTH_1"_Stz); break;
         case MN_TENTH_2:  return("MN_TENTH_2"_Stz); break;
