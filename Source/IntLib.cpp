@@ -31,11 +31,79 @@ i8 IntLib::iByteMagnitude(u8 uArg)
 /*----------------------------------------------------------------------------*/
 /* return the byte magnitude of arg                                           */
 /*----------------------------------------------------------------------------*/
-i8 IntLib::iByteSpace(u8 uMin, u8 uMax)
+i8 IntLib::iBytePower(i8 iByte)
 {
-  i8 nNumbers = uMax - uMin + 1;
+  if (1 == iByte) return 256 - 1;
+  if (2 == iByte) return 65536 - 1;
+  if (3 == iByte) return 16777216 - 1;
+  if (4 == iByte) return 4294967296 - 1;
+  if (5 == iByte) return 1099511627776 - 1;
+  if (6 == iByte) return 281474976710656 - 1;
+  if (7 == iByte) return 72057594037927936 - 1;
   
-  return 8 * nNumbers;
+  return C_I8_MAX;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return the byte magnitude of arg                                           */
+/*----------------------------------------------------------------------------*/
+i8 IntLib::iByteSpace(u8 nNumbers)
+{
+  i8 nB[8] = {0,0,0,0,0,0,0,0};
+//  u8 nL[8] = {C_1_BYTE, C_2_BYTES,C_3_BYTES,C_4_BYTES,
+//              C_5_BYTES,C_6_BYTES,C_7_BYTES,C_8_BYTES};
+//  u8 nY[8] = {C_1_BYTE_RANGE, C_2_BYTES_RANGE,
+//              C_3_BYTES_RANGE,C_4_BYTES_RANGE,
+//              C_5_BYTES_RANGE,C_6_BYTES_RANGE,
+//              C_7_BYTES_RANGE,C_8_BYTES_RANGE};
+
+  i8 nRange = 0;
+  i8 nRemaining = nNumbers;
+  
+  if (nRemaining > 0) {
+    nRange = ((u8)nRemaining > C_1_BYTE) ? C_1_BYTE : nRemaining;
+    nB[0] = nRange * 1;
+    nRemaining -= C_1_BYTE_RANGE;
+  }
+  if (nRemaining > 0) {
+    nRange = ((u8)nRemaining > C_2_BYTES) ? C_2_BYTES : nRemaining;
+    nB[1] = nRange * 2;
+    nRemaining -= C_2_BYTES_RANGE;
+  }
+  if (nRemaining > 0) {
+    nRange = ((u8)nRemaining > C_3_BYTES) ? C_3_BYTES : nRemaining;
+    nB[2] = nRange * 3;
+    nRemaining -= C_3_BYTES_RANGE;
+  }
+  if (nRemaining > 0) {
+    nRange = ((u8)nRemaining > C_4_BYTES) ? C_4_BYTES : nRemaining;
+    nB[3] = nRange * 4;
+    nRemaining -= C_4_BYTES_RANGE;
+  }
+  if (nRemaining > 0) {
+    nRange = ((u8)nRemaining > C_5_BYTES) ? C_5_BYTES : nRemaining;
+    nB[4] = nRange * 5;
+    nRemaining -= C_5_BYTES_RANGE;
+  }
+  if (nRemaining > 0) {
+    nRange = ((u8)nRemaining > C_6_BYTES) ? C_6_BYTES : nRemaining;
+    nB[5] = nRange * 6;
+    nRemaining -= C_6_BYTES_RANGE;
+  }
+  if (nRemaining > 0) {
+    nRange = ((u8)nRemaining > C_7_BYTES) ? C_7_BYTES : nRemaining;
+    nB[6] = nRange * 7;
+    nRemaining -= C_7_BYTES_RANGE;
+  }
+  if (nRemaining > 0) {
+    nRange = ((u8)nRemaining > C_8_BYTES) ? C_8_BYTES : nRemaining;
+    nB[7] = nRange * 8;
+    nRemaining -= C_8_BYTES_RANGE;
+  }
+
+  i8 nSum = nB[0]+nB[1]+nB[2]+nB[3]+nB[4]+nB[5]+nB[6]+nB[7];
+  
+  return nSum;
 }
 
 /*----------------------------------------------------------------------------*/

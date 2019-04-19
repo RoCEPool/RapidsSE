@@ -74,12 +74,12 @@ bool Prompt::bPrompt_tpch(SePrompt* pPrompt)
     Magnitudes::vUnitMag(C_TPCH_PARTSUPP * iSF,sMagPartSupp);
     Magnitudes::vUnitMag(C_TPCH_SUPPLIER * iSF,sMagSupplier);
 
-    Magnitudes::vByteMag(IntLib::iByteSpace(1,C_TPCH_CUSTOMER * iSF),sByteMagCustomer);
-    Magnitudes::vByteMag(IntLib::iByteSpace(1,C_TPCH_LINEITEM * iSF),sByteMagLineItem);
-    Magnitudes::vByteMag(IntLib::iByteSpace(1,C_TPCH_ORDERS   * iSF),sByteMagOrders);
-    Magnitudes::vByteMag(IntLib::iByteSpace(1,C_TPCH_PART     * iSF),sByteMagPart);
-    Magnitudes::vByteMag(IntLib::iByteSpace(1,C_TPCH_PARTSUPP * iSF),sByteMagPartSupp);
-    Magnitudes::vByteMag(IntLib::iByteSpace(1,C_TPCH_SUPPLIER * iSF),sByteMagSupplier);
+    Magnitudes::vByteMag(IntLib::iByteSpace(C_TPCH_CUSTOMER * iSF),sByteMagCustomer);
+    Magnitudes::vByteMag(IntLib::iByteSpace(C_TPCH_LINEITEM * iSF),sByteMagLineItem);
+    Magnitudes::vByteMag(IntLib::iByteSpace(C_TPCH_ORDERS   * iSF),sByteMagOrders);
+    Magnitudes::vByteMag(IntLib::iByteSpace(C_TPCH_PART     * iSF),sByteMagPart);
+    Magnitudes::vByteMag(IntLib::iByteSpace(C_TPCH_PARTSUPP * iSF),sByteMagPartSupp);
+    Magnitudes::vByteMag(IntLib::iByteSpace(C_TPCH_SUPPLIER * iSF),sByteMagSupplier);
 
     vTrace("%4s(%5s) %4s(%5s) %4s(%5s) %4s(%5s) %4s(%5s) %4s(%5s)\n"_Stz,
            sMagCustomer.aChar(),sByteMagCustomer.aChar(),

@@ -41,6 +41,35 @@ const u8 C_6_BYTES = (C_5_BYTES+1) * 256 - 1;
 const u8 C_7_BYTES = (C_6_BYTES+1) * 256 - 1;
 const u8 C_8_BYTES = (C_7_BYTES+1) * 256 - 1;
 
+const u8 C_1_BYTE_RANGE  = C_1_BYTE;
+const u8 C_2_BYTES_RANGE = C_2_BYTES - C_1_BYTE_RANGE;
+const u8 C_3_BYTES_RANGE = C_3_BYTES - C_2_BYTES_RANGE
+                                     - C_1_BYTE_RANGE;
+const u8 C_4_BYTES_RANGE = C_4_BYTES - C_3_BYTES_RANGE
+                                     - C_2_BYTES_RANGE
+                                     - C_1_BYTE_RANGE;
+const u8 C_5_BYTES_RANGE = C_5_BYTES - C_4_BYTES_RANGE
+                                     - C_3_BYTES_RANGE
+                                     - C_2_BYTES_RANGE
+                                     - C_1_BYTE_RANGE;
+const u8 C_6_BYTES_RANGE = C_6_BYTES - C_5_BYTES_RANGE
+                                     - C_4_BYTES_RANGE
+                                     - C_3_BYTES_RANGE
+                                     - C_2_BYTES_RANGE
+                                     - C_1_BYTE_RANGE;
+const u8 C_7_BYTES_RANGE = C_7_BYTES - C_6_BYTES_RANGE
+                                     - C_5_BYTES_RANGE
+                                     - C_4_BYTES_RANGE
+                                     - C_3_BYTES_RANGE
+                                     - C_2_BYTES_RANGE
+                                     - C_1_BYTE_RANGE;
+const u8 C_8_BYTES_RANGE = C_8_BYTES - C_7_BYTES_RANGE
+                                     - C_6_BYTES_RANGE
+                                     - C_5_BYTES_RANGE
+                                     - C_4_BYTES_RANGE
+                                     - C_3_BYTES_RANGE
+                                     - C_2_BYTES_RANGE
+                                     - C_1_BYTE_RANGE;
 
 //                              fedc    7654
 //                              ....ba98....3210
