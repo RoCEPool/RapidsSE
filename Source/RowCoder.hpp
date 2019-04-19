@@ -24,6 +24,9 @@ namespace Data
                         i8& i_LastColumn, i8& i_LastOffset);
     static void vEncode(RowNub* pNub, Column* pCol, Datum* pDatum);
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
+    static void vHeadDumpColumn(HeadLine* aHeadLine, ColumnVec* pColVec, i8 iCol, Stz* aRecodeFunction);
+    static void vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec);
+    static void vHeadDumpNatColumn(HeadLine* aHeadLine, ColumnVec* pColVec, i8 iCol);
     static void vPrint(RowNub* pNub, i8 i_Row, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
     static void vRecord(Record* pRec, RowNub* pNub, i8 i_Row);
     static void vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec);
@@ -143,7 +146,7 @@ namespace Data
     static eMN eGetEncodingNat(i8 i_ForCol, HeadLine* aHeadLine,
                                ColumnVec* pColVec, i8& i_PriorColumn_,
                                i8& i_Offset_);
-  
+    static Stz* sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt);
     static void vInitHeadLine(HeadLine* aHeadLine);
   
     static i8 nLines(RowNub* pNub, i8 i_Row);

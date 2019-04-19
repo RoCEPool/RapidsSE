@@ -121,6 +121,10 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   MemLib::vCopy(aIntoHead,aFromHead,sizeof(HeadLine),CN_ROWBUFFER);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifdef WITH_TRACE_ENCODING
+  RowCoder::vHeadDumpNat(aIntoHead, pIntoNub->pDesc()->pColumnVec());
+#endif
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 nColumns = pColVec->nItems();
   i8 i_LastColumn = 0;
@@ -135,8 +139,11 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     Column* pCol = pColVec->pGet(i_ForCol);
     eDM eDatum = pCol->eDatumType();
     
-    //vTrace("Col %lld %s\n"_Stz,i_ForCol,pCol->sColumnName().aStz());
-    //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+#ifdef WITH_TRACE_ENCODING
+    vTrace("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - - - - - \n"_Stz);
+#endif
+    
+    //vTrace("%s:\n"_Stz, pCol->sColumnName().aChar());
     
     // init coda
     if (0 == i_IntoHead) {
@@ -162,28 +169,36 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     //
 
     if (DM_DTE == eDatum) {
-      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
       vRecodeDteDays(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
-      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+#ifdef WITH_TRACE_ENCODING
+      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol,"vRecodeDteDays"_Stz);
+#endif
       continue;
     }
 
     if (DM_INT == eDatum) {
-      if (bRecodeIntDelta(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset))
+      
+      if (bRecodeIntDelta(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset)) {
+#ifdef WITH_TRACE_ENCODING
+        RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "bRecodeIntDelta"_Stz);
+#endif
         continue;
+      }
     }
     
     if (DM_INT == eDatum) {
-      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
       vRecodeIntDigit(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
-      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+#ifdef WITH_TRACE_ENCODING
+      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "vRecodeIntDigit"_Stz);
+#endif
       continue;
     }
    
     if (DM_BCD == eDatum) {
-      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
       vRecodeBcdTenth(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
-      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+#ifdef WITH_TRACE_ENCODING
+      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "vRecodeBcdTenth"_Stz);
+#endif
       continue;
     }
   
@@ -191,22 +206,31 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding) {
       vCopyShoco(pIntoNub,aIntoHead,i_IntoHead,pFromNub,pCol,
                  i_IntoOffset,i_FromOffset);
+#ifdef WITH_TRACE_ENCODING
+      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "vCopyShoco"_Stz);
+#endif
       continue;
     }
     
     // recode a Vch1B into an Alpha
     //!? a recode of Vch1B van only be done on char(1) columns
     if (DM_VCH == eDatum && MN_1B == eEncoding) {
-      //if (9 == i_ForCol)
-      //  MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-      vRecodeVch1B(pIntoNub,aIntoHead,pCol,
-                   i_IntoOffset,i_FromOffset);
-      //if (9 == i_ForCol)
-      //  MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-     continue;
+       vRecodeVch1B(pIntoNub, aIntoHead, pCol, i_IntoOffset, i_FromOffset);
+#ifdef WITH_TRACE_ENCODING
+      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "vRecodeVch1B"_Stz);
+#endif
+      continue;
     }
     
   }
+  
+#ifdef WITH_TRACE_ENCODING
+  RowCoder::vHeadDump(aIntoHead, pIntoNub->pDesc()->pColumnVec());
+  HV_Rec hvRec;
+  RowCoder::vRecord(hvRec,aIntoHead,pColVec);
+  hvRec->vPrintRow();
+  vTrace("\n\n"_Stz);
+ #endif
   
   return true;
 }
@@ -331,7 +355,7 @@ void RowCoder::vEncode(RowNub* pNub, Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* sprint decode row from cache line into string                              */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
+void RowCoder::vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -360,13 +384,114 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     eDM eDatum = pCol->eDatumType();
     eDM eDatumCoda = pCoda->m_aeDatum[pCol->iColumnNo()];
     eMN eEncoding = eGetEncodingExt(i_Column,aHeadLine,pColVec,pCoda,i_Column,i_LastOffset);
+    Stz* aEncoding = sEncoding(eEncoding, eDatum, DM_NONE);
     
-    vTrace("%7lld %-15s %-10s %-5s %8lld\n"_Stz, i_Column, pCol->sColumnName().aChar(), aDM[eDatum],
-           aDM[eDatumCoda], eEncoding);
+    vTrace("%7lld %-15s %-10s %-15s %-16s\n"_Stz, i_Column, pCol->sColumnName().aChar(), aDM[eDatum],
+           aDM[eDatumCoda], aEncoding);
     
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* sprint decode row from cache line into string                              */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
+  Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
+  
+  MemLib::vWordDump(aHeadLine, sizeof(HeadLine));
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+  
+  Datum oDatum;
+  i8 i_LastOffset = 8;
+  
+  vTrace("Column# ColumnName      Datum      ExtDatum        Encoding \n"_Stz);
+  
+  // for each column
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
+    
+    // get the column at index
+    Column* pCol = pColVec->pGet(i_Column);
+    
+    // first get the encoded value into datum
+    //vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_Column,i_LastOffset);
+    eDM eDatum = pCol->eDatumType();
+    eDM eDatumCoda = pCoda->m_aeDatum[pCol->iColumnNo()];
+    eMN eEncoding = eGetEncodingExt(i_Column,aHeadLine,pColVec,pCoda,i_Column,i_LastOffset);
+    Stz* aEncoding = sEncoding(eEncoding, eDatum, eDatumCoda);
+    vTrace("%7lld %-15s %-10s %-15s %-16s\n"_Stz, i_Column, pCol->sColumnName().aChar(), aDM[eDatum],
+           aDM[eDatumCoda], aEncoding);
+    
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint decode row column from cache line into string                       */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vHeadDumpNatColumn(HeadLine* aHeadLine, ColumnVec* pColVec, i8 iCol)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
+  Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Datum oDatum;
+  i8 i_LastOffset = 8;
+  
+  // get the column at index
+  Column* pCol = pColVec->pGet(iCol);
+  
+  // first get the encoded value into datum
+  //vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_Column,i_LastOffset);
+  eDM eDatum = pCol->eDatumType();
+  eDM eDatumCoda = pCoda->m_aeDatum[iCol];
+  eMN eEncoding = eGetEncodingExt(iCol,aHeadLine,pColVec,pCoda,iCol,i_LastOffset);
+  Stz* aEncoding = sEncoding(eEncoding, eDatum, DM_NONE);
+  
+  vTrace("%7lld %-15s %-10s %-15s %-16s\n"_Stz, iCol, pCol->sColumnName().aChar(), aDM[eDatum],
+         aDM[eDatumCoda], aEncoding);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint decode row from cache line into string                              */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vHeadDumpColumn(HeadLine* aHeadLine, ColumnVec* pColVec, i8 iCol, Stz* aRecodeFunction)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
+  Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
+  
+  //MemLib::vWordDump(aHeadLine, sizeof(HeadLine));
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+  
+  Datum oDatum;
+  i8 i_LastOffset = 8;
+  
+  // get the column at index
+  Column* pCol = pColVec->pGet(iCol);
+  
+  // first get the encoded value into datum
+  //vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_Column,i_LastOffset);
+  eDM eDatum = pCol->eDatumType();
+  eDM eDatumCoda = pCoda->m_aeDatum[iCol];
+  eMN eEncoding = eGetEncodingExt(pCol->iColumnNo(),aHeadLine,pColVec,pCoda,iCol,i_LastOffset);
+  Stz* aEncoding = sEncoding(eEncoding, eDatum, eDatumCoda);
+  vTrace("%7lld %-15s %-10s %-15s %-16s %s\n"_Stz, iCol, pCol->sColumnName().aChar(), aDM[eDatum],
+         aDM[eDatumCoda], aEncoding, aRecodeFunction);
+}
 /*----------------------------------------------------------------------------*/
 /* print decoded datum from cache line                                        */
 /*----------------------------------------------------------------------------*/
@@ -770,11 +895,11 @@ void RowCoder::vRecodeIntDigit(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
 bool RowCoder::bRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
                                i8& i_IntoOffset, i8& i_FromOffset)
 {
-  static DecaCnt dcSame("Same"_Stz);
-  static DecaCnt dcLess("Less"_Stz);
-  static DecaCnt dcLeft("Left"_Stz);
-  static DecaCnt dcPlus1("Plus1"_Stz);
-  static DecaCnt dcPlus2("Plus2"_Stz);
+//  static DecaCnt dcSame("Same"_Stz);
+//  static DecaCnt dcLess("Less"_Stz);
+//  static DecaCnt dcLeft("Left"_Stz);
+//  static DecaCnt dcPlus1("Plus1"_Stz);
+//  static DecaCnt dcPlus2("Plus2"_Stz);
 
   Coda* pCoda = pIntoNub->pCoda();
   i8 i_Column = pCol->iColumnNo();
@@ -822,7 +947,7 @@ bool RowCoder::bRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
   eMN eExtendedEncoding;
  
   if (iCurrentInt < iFirstInt) {
-    dcLess.vInc("\n"_Stz);
+    //dcLess.vInc("\n"_Stz);
     return true;
   }
   
@@ -841,7 +966,7 @@ bool RowCoder::bRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
     // go back one char in the intoOffset
     i_IntoOffset -= eCurrentEncoding;
     
-    dcSame.vInc("\n"_Stz);
+    //dcSame.vInc("\n"_Stz);
     return true;
   }
   
@@ -866,7 +991,7 @@ bool RowCoder::bRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
     }
     
     //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-    dcPlus1.vInc("\n"_Stz);
+    //dcPlus1.vInc("\n"_Stz);
     return true;
   }
   
@@ -891,12 +1016,12 @@ bool RowCoder::bRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
     }
     
     //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-    dcPlus2.vInc("\n"_Stz);
+    //dcPlus2.vInc("\n"_Stz);
     return true;
   }
 
   
-  dcLeft.vInc(" (e.g. %lld (first %lld))\n"_Stz,iCurrentInt,iFirstInt);
+  //dcLeft.vInc(" (e.g. %lld (first %lld))\n"_Stz,iCurrentInt,iFirstInt);
   
   return true;
 }
@@ -2734,6 +2859,200 @@ eMN RowCoder::eGetEncodingNat(i8 i_ForCol, HeadLine* aFromHead,
   i_PriorColumn_ = i_ForCol;
   
   return eEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the encoding as a string given its datum                               */
+/*----------------------------------------------------------------------------*/
+Stz* RowCoder::sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt)
+{
+  
+  eDM eDatum = eDatumExt == DM_NONE ? eDatumNat : eDatumExt;
+  
+  switch (eDatum) {
+      
+    case DM_BCD:
+    case DM_FLT:
+    case DM_INT:
+      switch (eEncoding) {
+        case MN_NULL:      return("MN_NULL"_Stz); break;
+        case MN_1B:        return("MN_1B"_Stz); break;
+        case MN_2B:        return("MN_2B"_Stz); break;
+        case MN_3B:        return("MN_3B"_Stz); break;
+        case MN_4B:        return("MN_4B"_Stz); break;
+        case MN_5B:        return("MN_5B"_Stz); break;
+        case MN_6B:        return("MN_6B"_Stz); break;
+        case MN_7B:        return("MN_7B"_Stz); break;
+        case MN_8B:        return("MN_8B"_Stz); break;
+        case MN_MINUS_ONE: return("MN_MINUS_ONE"_Stz); break;
+        case MN_ZERO:      return("MN_ZERO"_Stz);      break;
+        case MN_PLUS_ONE:  return("MN_PLUS_ONE"_Stz);  break;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_BOL:
+      switch (eEncoding) {
+        case MN_FALSE: return("MN_FALSE"_Stz); break;
+        case MN_TRUE:  return("MN_TRUE"_Stz); break;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_DTE:
+      switch (eEncoding) {
+        case MN_NULL:         return("MN_NULL"_Stz);         break;
+        case MN_CLASSICAL_1B: return("MN_CLASSICAL_1B"_Stz); break;
+        case MN_CLASSICAL_2B: return("MN_CLASSICAL_2B"_Stz); break;
+        case MN_SILVER_1B:    return("MN_SILVER_1B"_Stz); break;
+        case MN_SILVER_2B:    return("MN_SILVER_2B"_Stz); break;
+        case MN_MODERN_1B:    return("MN_MODERN_1B"_Stz); break;
+        case MN_MODERN_2B:    return("MN_MODERN_2B"_Stz); break;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    
+    case DM_IVL:
+    case DM_TME:
+    case DM_TSP:
+      switch (eEncoding) {
+        case MN_NULL:      return("MN_NULL"_Stz); break;
+        case MN_1B:        return("MN_1B"_Stz); break;
+        case MN_2B:        return("MN_2B"_Stz); break;
+        case MN_3B:        return("MN_3B"_Stz); break;
+        case MN_4B:        return("MN_4B"_Stz); break;
+        case MN_5B:        return("MN_5B"_Stz); break;
+        case MN_6B:        return("MN_6B"_Stz); break;
+        case MN_7B:        return("MN_7B"_Stz); break;
+        case MN_8B:        return("MN_8B"_Stz); break;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+    case DM_VCH:
+      switch (eEncoding) {
+        case MN_NULL:      return("MN_NULL"_Stz); break;
+        case MN_1B:        return("MN_1B"_Stz); break;
+        case MN_2B:        return("MN_2B"_Stz); break;
+        case MN_3B:        return("MN_3B"_Stz); break;
+        case MN_4B:        return("MN_4B"_Stz); break;
+        case MN_5B:        return("MN_5B"_Stz); break;
+        case MN_6B:        return("MN_6B"_Stz); break;
+        case MN_7B:        return("MN_7B"_Stz); break;
+        case MN_8B:        return("MN_8B"_Stz); break;
+        case MN_EMPTY:     return("MN_EMPTY"_Stz);     break;
+        case MN_SHOCO_FIT: return("MN_SHOCO_FIT"_Stz); break;
+        case MN_SHOCO_2B:  return("MN_SHOCO_2B"_Stz);  break;
+        default:
+          NEVER_REACH;
+      }
+      break;
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case DM_ALPHA:
+      switch (eEncoding) {
+        case MN_NULL:    return("MN_NULL"_Stz);    break;
+        case MN_1B:      return("MN_1B"_Stz);      break;
+        case MN_2B:      return("MN_2B"_Stz);      break;
+        case MN_3B:      return("MN_3B"_Stz);      break;
+        case MN_4B:      return("MN_4B"_Stz);      break;
+        case MN_5B:      return("MN_5B"_Stz);      break;
+        case MN_6B:      return("MN_6B"_Stz);      break;
+        case MN_7B:      return("MN_7B"_Stz);      break;
+        case MN_8B:      return("MN_8B"_Stz);      break;
+        case MN_ALPHA_0: return("MN_ALPHA_0"_Stz); break;
+        case MN_ALPHA_1: return("MN_ALPHA_1"_Stz); break;
+        case MN_ALPHA_2: return("MN_ALPHA_2"_Stz); break;
+        case MN_ALPHA_3: return("MN_ALPHA_3"_Stz); break;
+        case MN_ALPHA_4: return("MN_ALPHA_4"_Stz); break;
+        case MN_ALPHA_5: return("MN_ALPHA_5"_Stz); break;
+        default:
+          NEVER_REACH;
+      }
+      
+    case DM_DAYS:
+      switch (eEncoding) {
+        case MN_NULL:      return("MN_NULL"_Stz); break;
+        case MN_1B:        return("MN_1B"_Stz);   break;
+        case MN_2B:        return("MN_2B"_Stz);   break;
+        case MN_3B:        return("MN_3B"_Stz);   break;
+        case MN_4B:        return("MN_4B"_Stz);   break;
+        case MN_5B:        return("MN_5B"_Stz);   break;
+        case MN_6B:        return("MN_6B"_Stz);   break;
+        case MN_7B:        return("MN_7B"_Stz);   break;
+        case MN_8B:        return("MN_8B"_Stz);   break;
+        case MN_DAYS_PLUS_1B:  return("MN_DAYS_PLUS_1B"_Stz);  break;
+        case MN_DAYS_MINUS_1B: return("MN_DAYS_MINUS_1B"_Stz); break;
+        default:
+          NEVER_REACH;
+      }
+      
+    case DM_DELTA_PLUS:
+      switch (eEncoding) {
+        case MN_NULL:      return("MN_NULL"_Stz); break;
+        case MN_1B:        return("MN_1B"_Stz);   break;
+        case MN_2B:        return("MN_2B"_Stz);   break;
+        case MN_3B:        return("MN_3B"_Stz);   break;
+        case MN_4B:        return("MN_4B"_Stz);   break;
+        case MN_5B:        return("MN_5B"_Stz);   break;
+        case MN_6B:        return("MN_6B"_Stz);   break;
+        case MN_7B:        return("MN_7B"_Stz);   break;
+        case MN_8B:        return("MN_8B"_Stz);   break;
+        case MN_MINUS_ONE: return("MN_MINUS_ONE"_Stz); break;
+        case MN_ZERO:      return("MN_ZERO"_Stz);      break;
+        case MN_PLUS_1B:   return("MN_PLUS_1B"_Stz);   break;
+        case MN_PLUS_2B:   return("MN_PLUS_2B"_Stz);   break;
+        case MN_SAME:      return("MN_SAME"_Stz);      break;
+        default:
+          NEVER_REACH;
+      }
+      
+    case DM_DIGIT:
+      switch (eEncoding) {
+        case MN_DIGIT_0:  return("MN_DIGIT_0"_Stz); break;
+        case MN_DIGIT_1:  return("MN_DIGIT_1"_Stz); break;
+        case MN_DIGIT_2:  return("MN_DIGIT_2"_Stz); break;
+        case MN_DIGIT_3:  return("MN_DIGIT_3"_Stz); break;
+        case MN_DIGIT_4:  return("MN_DIGIT_4"_Stz); break;
+        case MN_DIGIT_5:  return("MN_DIGIT_5"_Stz); break;
+        case MN_DIGIT_6:  return("MN_DIGIT_6"_Stz); break;
+        case MN_DIGIT_7:  return("MN_DIGIT_7"_Stz); break;
+        case MN_DIGIT_1B: return("MN_DIGIT_1B"_Stz); break;
+        case MN_DIGIT_2B: return("MN_DIGIT_2B"_Stz); break;
+        case MN_DIGIT_3B: return("MN_DIGIT_3B"_Stz); break;
+        case MN_DIGIT_4B: return("MN_DIGIT_4B"_Stz); break;
+        case MN_DIGIT_6B: return("MN_DIGIT_6B"_Stz); break;
+        case MN_DIGIT_8B: return("MN_DIGIT_8B"_Stz); break;
+        default:
+          NEVER_REACH;
+      }
+      
+    case DM_TENTH:
+      switch (eEncoding) {
+        case MN_TENTH_0:  return("MN_TENTH_0"_Stz); break;
+        case MN_TENTH_1:  return("MN_TENTH_1"_Stz); break;
+        case MN_TENTH_2:  return("MN_TENTH_2"_Stz); break;
+        case MN_TENTH_3:  return("MN_TENTH_3"_Stz); break;
+        case MN_TENTH_4:  return("MN_TENTH_4"_Stz); break;
+        case MN_TENTH_5:  return("MN_TENTH_5"_Stz); break;
+        case MN_TENTH_6:  return("MN_TENTH_6"_Stz); break;
+        case MN_TENTH_7:  return("MN_TENTH_7"_Stz); break;
+        case MN_TENTH_8:  return("MN_TENTH_8"_Stz); break;
+        case MN_TENTH_9:  return("MN_TENTH_9"_Stz); break;
+        case MN_TENTH_10: return("MN_TENTH_10"_Stz); break;
+        case MN_TENTH_2B: return("MN_TENTH_2B"_Stz); break;
+        case MN_TENTH_4B: return("MN_TENTH_4B"_Stz); break;
+        case MN_TENTH_8B: return("MN_TENTH_8B"_Stz); break;
+        default:
+          NEVER_REACH;
+      }
+  }
+  return ""_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
