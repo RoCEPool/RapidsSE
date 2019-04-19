@@ -31,6 +31,7 @@ namespace Base
   
   public:
     static i8 iByteMagnitude(u8 uArg);
+    static i8 iByteSpace(u8 uMin, u8 uMax);
     static bool bIsDecaCycle(i8 iArg);
     static i8 iDecaIndex(i8 iArg, i8& i_Magn, i8 &i_Group);
     static i8 iDecile(i8 iArg, i8 iMax);
