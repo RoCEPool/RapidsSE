@@ -178,13 +178,13 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
       vRecodeInt(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
     }
     
-    if (DM_BCD == eDatum) {
-      vRecodeBcdTenth(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
-#ifdef WITH_TRACE_ENCODING
-      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "vRecodeBcdTenth"_Stz);
-#endif
-      continue;
-    }
+//    if (DM_BCD == eDatum) {
+//      vRecodeBcdTenth(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+//#ifdef WITH_TRACE_ENCODING
+//      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "vRecodeBcdTenth"_Stz);
+//#endif
+//      continue;
+//    }
 
     // copy a shoco tail
     if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding) {
