@@ -117,6 +117,7 @@ using namespace Prompt;
 #include "Prompt_threads.hpp"
 #include "Prompt_timerEnd.hpp"
 #include "Prompt_timerStart.hpp"
+#include "Prompt_tpch.hpp"
 
 #include "Prompt_uptime.hpp"
 

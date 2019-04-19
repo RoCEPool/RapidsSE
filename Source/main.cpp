@@ -11,8 +11,8 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
-  printf("sizeof(Nibbler1) %ld\n",sizeof(Nibbler1));
-  printf("sizeof(Nibbler2) %ld\n",sizeof(Nibbler2));
+//  printf("sizeof(Nibbler1) %ld\n",sizeof(Nibbler1));
+//  printf("sizeof(Nibbler2) %ld\n",sizeof(Nibbler2));
   printf("C_1_BYTE %llu\n",C_1_BYTE);
   printf("C_2_BYTES %llu\n",C_2_BYTES);
   printf("C_3_BYTES %llu\n",C_3_BYTES);
