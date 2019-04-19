@@ -45,7 +45,8 @@ namespace Data
   
     static void vRecodeDteDays(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
                                i8& i_IntoOffset, i8& i_FromOffset);
-  
+    static void vRecodeInt(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
+                           i8& i_IntoOffset, i8& i_FromOffset);
     static void vRecodeIntDigit(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
                            i8& i_IntoOffset, i8& i_FromOffset);
   

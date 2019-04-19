@@ -69,6 +69,7 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
 #ifdef WITH_TRACE_ENCODING
   char caRecord[C_16KB];
   StrLib::vCopyTill(caRecord,aSrc,'\n');
+  vTrace("\n--------------------------------------------------------------------------\n"_Stz);
   vTrace("\nFormatting record: %s\n"_Stz,caRecord);
 #endif
   

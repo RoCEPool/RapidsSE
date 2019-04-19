@@ -140,10 +140,8 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     eDM eDatum = pCol->eDatumType();
     
 #ifdef WITH_TRACE_ENCODING
-    vTrace("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - - - - - \n"_Stz);
+    vTrace("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n"_Stz);
 #endif
-    
-    //vTrace("%s:\n"_Stz, pCol->sColumnName().aChar());
     
     // init coda
     if (0 == i_IntoHead) {
@@ -175,25 +173,11 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 #endif
       continue;
     }
-
-    if (DM_INT == eDatum) {
-      
-      if (bRecodeIntDelta(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset)) {
-#ifdef WITH_TRACE_ENCODING
-        RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "bRecodeIntDelta"_Stz);
-#endif
-        continue;
-      }
-    }
     
     if (DM_INT == eDatum) {
-      vRecodeIntDigit(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
-#ifdef WITH_TRACE_ENCODING
-      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "vRecodeIntDigit"_Stz);
-#endif
-      continue;
+      vRecodeInt(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
     }
-   
+    
     if (DM_BCD == eDatum) {
       vRecodeBcdTenth(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
 #ifdef WITH_TRACE_ENCODING
@@ -201,7 +185,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 #endif
       continue;
     }
-  
+
     // copy a shoco tail
     if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding) {
       vCopyShoco(pIntoNub,aIntoHead,i_IntoHead,pFromNub,pCol,
@@ -229,8 +213,8 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   HV_Rec hvRec;
   RowCoder::vRecord(hvRec,aIntoHead,pColVec);
   hvRec->vPrintRow();
-  vTrace("\n\n"_Stz);
- #endif
+  vTrace("\n"_Stz);
+#endif
   
   return true;
 }
@@ -887,6 +871,36 @@ void RowCoder::vRecodeIntDigit(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
   aIntoHead->v1N(i_Column,eExtendedEncoding);
 
   //vTrace("CurrentEncoding %lld ~ %lld\n"_Stz, eCurrentEncoding, eExtendedEncoding);
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to re-encode an Int depending on extended datums so far            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecodeInt(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
+                               i8& i_IntoOffset, i8& i_FromOffset)
+{
+  Coda* pIntoCoda = pIntoNub->pCoda();
+
+  switch (pIntoCoda->m_aeDatum[pCol->iColumnNo()]) {
+      
+    case DM_DELTA_PLUS:
+      bRecodeIntDelta(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+      break;
+      
+    case DM_DIGIT:
+      vRecodeIntDigit(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+      break;
+      
+    case DM_NONE:
+      if (bRecodeIntDelta(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset))
+        break;
+      
+      vRecodeIntDigit(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+      break;
+      
+    default:
+      break;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
