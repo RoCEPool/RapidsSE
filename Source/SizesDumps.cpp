@@ -214,6 +214,7 @@ pDUMPFUN *gpDump[]
   
   /* 78 */ &Parser::vDump,          // CN_PARSER
   /* 82 */ &Dump::vInvalid,         // CN_PATHVEC
+  /* 82 */ &Dump::vInvalid,         // CN_PERUSE
   /*    */ &Dump::vInvalid,         // CN_PIPE
   /* 86 */ &Plan::vDump,            // CN_PLAN
   /* 87 */ &Dump::vUndefined,       // CN_PLANNER
@@ -490,6 +491,7 @@ i8 giClassSize[]
   
   /* 78 */ sizeof(Parser),             // CN_PARSER
   /* 82 */ sizeof(PathVec),            // CN_PATHVEC
+  /*    */ sizeof(Peruse),             // CN_PERUSE
   /*    */ sizeof(Pipe),               // CN_PIPE
   /* 86 */ sizeof(Plan),               // CN_PLAN
   /* 87 */ sizeof(Planner),            // CN_PLANNER
@@ -766,6 +768,7 @@ eHT geWhichHeap[]
   
   /* 78 */ HT_TRANSIENT_MEDIUM,  // CN_PARSER
   /* 82 */ HT_TRANSIENT_MEDIUM,  // CN_PATHVEC
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_PERUSE
   /*    */ HT_TRANSIENT_SMALL,   // CN_PIPE
   /* 86 */ HT_TRANSIENT_MEDIUM,  // CN_PLAN
   /* 87 */ HT_TRANSIENT_MEDIUM,  // CN_PLANNER

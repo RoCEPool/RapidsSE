@@ -89,6 +89,16 @@ bool Prompt::bPrompt_tpch(SePrompt* pPrompt)
            sMagPartSupp.aChar(),sByteMagPartSupp.aChar(),
            sMagSupplier.aChar(),sByteMagSupplier.aChar());
   }
+  
+//  s32 sMag;
+//  Magnitudes::vByteMag(IntLib::iByteSpace(C_1_BYTE), 3,sMag); vTrace("1B: %4s %lld\n"_Stz,sMag.aChar());
+//  Magnitudes::vByteMag(IntLib::iByteSpace(C_2_BYTES),3,sMag); vTrace("2B: %4s\n"_Stz,sMag.aChar());
+//  Magnitudes::vByteMag(IntLib::iByteSpace(C_3_BYTES),3,sMag); vTrace("3B: %4s\n"_Stz,sMag.aChar());
+//  Magnitudes::vByteMag(IntLib::iByteSpace(C_4_BYTES),3,sMag); vTrace("4B: %4s\n"_Stz,sMag.aChar());
+//  Magnitudes::vByteMag(IntLib::iByteSpace(C_5_BYTES),3,sMag); vTrace("5B: %4s\n"_Stz,sMag.aChar());
+//  Magnitudes::vByteMag(IntLib::iByteSpace(C_6_BYTES),3,sMag); vTrace("6B: %4s\n"_Stz,sMag.aChar());
+//  Magnitudes::vByteMag(IntLib::iByteSpace(C_7_BYTES),3,sMag); vTrace("7B: %4s\n"_Stz,sMag.aChar());
+//  Magnitudes::vByteMag(IntLib::iByteSpace(C_8_BYTES),3,sMag); vTrace("8B: %4s\n"_Stz,sMag.aChar());
 
   return true;
 }
