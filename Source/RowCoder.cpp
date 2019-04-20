@@ -24,7 +24,7 @@ void RowCoder::vAnalyse(RowNub* pNub)
   i8 iMaxHead = C_I8_MIN;
   
   i8 nWouldReduce = 0;
-
+  
   for (i8 i_Tail = pNub->iLastTail();
        i_Tail != C_UNKNOWN;
        i_Tail = pNub->iPrevTail(i_Tail)) {
@@ -95,6 +95,8 @@ void RowCoder::vAnalyse(RowNub* pNub)
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 {
+  static Peruse xPeruse("Col0"_Stz);
+  
   static i8 nCalls = 0;
   nCalls++;
   
@@ -178,6 +180,13 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
       vRecodeInt(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
     }
     
+    if (0 == i_ForCol) {
+      Datum oCol0;
+      i8 i_LastColumn = 0;
+      i8 i_LastOffset = 8;
+      vDecode(&oCol0,aIntoHead,pColVec,pCol,pIntoCoda,i_LastColumn,i_LastOffset);
+      xPeruse.vAdd(oCol0.m_iInt,"\n"_Stz);
+    }
 //    if (DM_BCD == eDatum) {
 //      vRecodeBcdTenth(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
 //#ifdef WITH_TRACE_ENCODING
