@@ -1307,6 +1307,8 @@ i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
           //aHeadLine->w8_1B(i_Offset);
           return 1;
         }
+        case MN_SHOCO_SPLIT:
+          return 2;
         case MN_SHOCO_2B:
           return 2;
         default:
@@ -1660,6 +1662,9 @@ void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
   else if (MN_SHOCO_FIT == eEncoding)
     vDecodeVchShocoFit(pDatum,aHeadLine,pCol,eEncoding,i_Offset);
 
+  else if (MN_SHOCO_SPLIT == eEncoding)
+    vDecodeVchShocoSplit(pDatum,aHeadLine,pCol,eEncoding,i_Offset);
+  
   else
     NEVER_REACH;
 }
@@ -1913,6 +1918,41 @@ void RowCoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
     Compress::iFromShoco((char*)pDatum->m_xWsp.aStz(),
                          255,
                          ((byte*)aHeadLine)+i_Offset+1,
+                         nCompressed);
+  ASSERT(nDecompressed);
+  pDatum->m_nChars = nDecompressed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode varchar from given cache line                                       */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
+                                  Column* pCol, eMN eEncoding, i8 i_Offset)
+{
+  byte caShoco[C_4KB];
+  
+  i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
+  TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
+  
+  i8 nCompressed = aHeadLine->w8_1B(i_Offset+2);
+  RASSERT(nCompressed <= 56);
+  
+  i8 nBytesPartA = sizeof(HeadLine) - i_Offset - 3;
+  i8 nBytesPartB = nCompressed - nBytesPartA;
+
+  MemLib::vCopy(caShoco,
+                aHeadLine + 3,
+                nBytesPartA,
+                CN_ROWTRAY);
+  MemLib::vCopy((byte*)caShoco+nBytesPartA,
+                (byte*)aShocoTail+1,
+                nBytesPartB,
+                CN_ROWTRAY);
+  
+  i8 nDecompressed =
+    Compress::iFromShoco((char*)pDatum->m_xWsp.aStz(),
+                         255,
+                         (byte*)caShoco,
                          nCompressed);
   ASSERT(nDecompressed);
   pDatum->m_nChars = nDecompressed;
@@ -2958,18 +2998,19 @@ Stz* RowCoder::sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt)
       
     case DM_VCH:
       switch (eEncoding) {
-        case MN_NULL:      return("MN_NULL"_Stz); break;
-        case MN_1B:        return("MN_1B"_Stz); break;
-        case MN_2B:        return("MN_2B"_Stz); break;
-        case MN_3B:        return("MN_3B"_Stz); break;
-        case MN_4B:        return("MN_4B"_Stz); break;
-        case MN_5B:        return("MN_5B"_Stz); break;
-        case MN_6B:        return("MN_6B"_Stz); break;
-        case MN_7B:        return("MN_7B"_Stz); break;
-        case MN_8B:        return("MN_8B"_Stz); break;
-        case MN_EMPTY:     return("MN_EMPTY"_Stz);     break;
-        case MN_SHOCO_FIT: return("MN_SHOCO_FIT"_Stz); break;
-        case MN_SHOCO_2B:  return("MN_SHOCO_2B"_Stz);  break;
+        case MN_NULL:        return("MN_NULL"_Stz); break;
+        case MN_1B:          return("MN_1B"_Stz); break;
+        case MN_2B:          return("MN_2B"_Stz); break;
+        case MN_3B:          return("MN_3B"_Stz); break;
+        case MN_4B:          return("MN_4B"_Stz); break;
+        case MN_5B:          return("MN_5B"_Stz); break;
+        case MN_6B:          return("MN_6B"_Stz); break;
+        case MN_7B:          return("MN_7B"_Stz); break;
+        case MN_8B:          return("MN_8B"_Stz); break;
+        case MN_EMPTY:       return("MN_EMPTY"_Stz);     break;
+        case MN_SHOCO_FIT:   return("MN_SHOCO_FIT"_Stz); break;
+        case MN_SHOCO_SPLIT: return("MN_SHOCO_SPLIT"_Stz); break;
+        case MN_SHOCO_2B:    return("MN_SHOCO_2B"_Stz);  break;
         default:
           NEVER_REACH;
       }

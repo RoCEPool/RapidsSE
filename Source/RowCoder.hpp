@@ -109,6 +109,8 @@ namespace Data
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
     static void vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
                                    Column* pCol, eMN eEncoding, i8 i_Offset);
+    static void vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
+                                   Column* pCol, eMN eEncoding, i8 i_Offset);
     static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
 
