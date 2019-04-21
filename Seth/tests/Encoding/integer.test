@@ -1,0 +1,68 @@
+/*----------------------------------------------------------------------------*/
+/* integer.test -- INTEGER ENCODING tests                                     */
+/*----------------------------------------------------------------------------*/
+
+// (1) create a table
+create table IntTbl (
+  int_col1  INTEGER
+);
+success
+
+// create indexes
+create index int_idx1 on IntTbl (int_col1);
+success
+
+// check existence of index
+lsidx IntTbl;
+rows:
+  ('int_idx1', false, false)
+
+// check columns of index
+lsidxcol IntTbl int_idx1;
+rows:
+  ('int_col1', 'INTEGER', 19, 0, true, true)
+
+ld IntTbl "/DATA/Encoding/integer.csv" ;
+success
+
+// check no of rows
+fetch IntTbl;
+rows: 52
+
+// dump index int_idx1
+dumpidx IntTbl int_idx1;
+success
+
+// fetch
+fetch intTbl "int_col1 -1 =";
+rows:
+(-1)
+
+// fetch
+fetch intTbl "int_col1 13 =";
+rows:
+ (13)
+
+// fetch
+fetch intTbl "int_col1 14 =";
+rows:
+  (14)
+
+// fetch
+fetch intTbl "int_col1 50 =";
+rows:
+  (50)
+
+CLEANUP {
+  
+  // drop the table
+  //drop table IntTbl;
+  //mute
+  
+  bye;
+  mute
+}
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
