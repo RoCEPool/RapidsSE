@@ -674,11 +674,14 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
     }
     
     // SPLIT case?
+    
+    // calc the
     i8 nOverHang = (nCompressed + 2) % sizeof(DoubleWord);
 
-    if (nOverHang > 0 && nOverHang <= nFreeHeadBytes + 1) {
-      
-      vHeadDump(aIntoHead,pColVec);
+    if ( (nOverHang > 0  && nOverHang <= nFreeHeadBytes + 1) ||
+         (nOverHang == 0 && nFreeHeadBytes + 1 > 3) ) {
+
+      //vHeadDump(aIntoHead,pColVec);
       HV_Rec hvRec;
 //      RowCoder::vRecord(hvRec,aFromHead,pColVec);
 //      hvRec->vPrintRow();
@@ -686,42 +689,55 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
 
       i8 nTailUnits = aShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
       RASSERT(nTailUnits > 1);
-      MemLib::vWordDump(aShocoTail,nTailUnits * sizeof(DoubleWord));
-      
+      //MemLib::vWordDump(aShocoTail,nTailUnits * sizeof(DoubleWord));
+
       aIntoHead->v1N(i_Column,MN_SHOCO_SPLIT);
-      
+
       byte* ayInto = (byte*)aIntoHead  + sizeof(HeadLine) - nFreeHeadBytes+1;
       byte* ayFrom = (byte*)aShocoTail + C_TAIL_UNITS_BYTES;
 
       MemLib::vCopy(ayInto,ayFrom,nFreeHeadBytes+1,CN_ROWBUFFER);
-      MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
 
       RowNub::vCut(aShocoTail,nTailUnits*sizeof(DoubleWord),
                    C_TAIL_UNITS_BYTES,nFreeHeadBytes-1);
-      MemLib::vWordDump(aShocoTail,nTailUnits * sizeof(DoubleWord));
-      
-      i8 i_IntoTail = pIntoNub->iAllotTail(nTailUnits * sizeof(DoubleWord));//2 + nCompressed - nOverHang);
+      //MemLib::vWordDump(aShocoTail,nTailUnits * sizeof(DoubleWord));
+
+      i8 nNewTailUnits
+           = (nCompressed - (nFreeHeadBytes+1)) / sizeof(DoubleWord) ;
+      if (!nNewTailUnits)
+        nNewTailUnits++;
+      //RASSERT(0 == (nCompressed - (nFreeHeadBytes+1)) % sizeof(DoubleWord)) ;
+
+      i8 i_IntoTail = pIntoNub->iAllotTail(nNewTailUnits * sizeof(DoubleWord));//2 + nCompressed - nOverHang);
       aIntoTail = pIntoNub->aGetTail(i_IntoTail);
-      
+
+      //MemLib::vWordDump(aIntoTail,(1+nTailUnits) * sizeof(DoubleWord));
       MemLib::vCopy((byte*)aIntoTail + C_TAIL_UNITS_BYTES,
                     (byte*)aShocoTail + C_TAIL_UNITS_BYTES,
                     aIntoTail->w8_1B(C_TAIL_UNITS_OFFSET)*sizeof(DoubleWord) - C_TAIL_UNITS_BYTES,
                     CN_ROWBUFFER);
-      
+      //MemLib::vWordDump(aIntoTail,(1+nTailUnits) * sizeof(DoubleWord));
+
       // what gets encoded is the unit difference between head and tail
       i8 i_TailDistance = pIntoNub->iUnitDiff(i_IntoHead,i_IntoTail);
       aIntoHead->vPut(i_IntoOffset,i_TailDistance,MN_2B);
-      
-      vHeadDump(aIntoHead,pColVec);
-      
-      RowCoder::vRecord(hvRec,aIntoHead,pColVec);
-      hvRec->vPrintRow();
-      vTrace("\n"_Stz);
-      
-      MemLib::vWordDump(aIntoTail,nTailUnits * sizeof(TailLine));
+
+      //vHeadDump(aIntoHead,pColVec);
+
+      //RowCoder::vRecord(hvRec,aIntoHead,pColVec);
+      //hvRec->vPrintRow();
+      //vTrace("\n"_Stz);
+
+      //MemLib::vWordDump(aIntoTail,nTailUnits * sizeof(TailLine));
+      return;
     }
     
     // fall thru
+    MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+    MemLib::vWordDump(aShocoTail,sizeof(HeadLine));
+    
+    int iDebug = 0;
   }
 #endif
   
@@ -2001,7 +2017,7 @@ void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
                 nBytesPartB,
                 CN_ROWTRAY);
   
-  MemLib::vWordDump(caShoco+2,3 * sizeof(DoubleWord));
+  //MemLib::vWordDump(caShoco+2,3 * sizeof(DoubleWord));
   
   i8 nDecompressed =
     Compress::iFromShoco((char*)pDatum->m_xWsp.aStz(),
