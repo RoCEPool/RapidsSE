@@ -456,6 +456,9 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
 
     i_LastOffset += nBytes;
     
+    if (eDatumCoda == DM_VCH && eEncoding == MN_SHOCO_SPLIT)
+      int iDebug = 1;
+
   }
   
   int iDebug = 1;
@@ -2978,13 +2981,20 @@ i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda
   eMN eEncoding = eGetEncodingExt(pLastCol->iColumnNo(),aHeadLine,pColVec,pCoda,
                                   i_LastColumn,i_Offset);
   
+  if (MN_SHOCO_SPLIT == eEncoding)
+    return 0;
+  
   if (MN_SHOCO_FIT == eEncoding) {
     i8 nCompressed = aHeadLine->w8_1B(i_Offset);
     RASSERT(nCompressed <= 56);
     i_Offset += nCompressed;
   }
   
-  i8 nFreeBytes = C_BYTES_PER_CACHE_LINE - i_Offset;
+  eDM eDatumExt = pCoda->m_aeDatum[pLastCol->iColumnNo()];
+
+  i8 nBytes = nDataBytes(eDatumExt, eEncoding);
+  
+  i8 nFreeBytes = C_BYTES_PER_CACHE_LINE - i_Offset - nBytes;
   
   return nFreeBytes;
 }
