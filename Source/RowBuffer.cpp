@@ -237,6 +237,10 @@ bool RowBuffer::bAppendRow(RowNub* pFromRowNub)
   
   RowNub* pIntoRowNub = *&m_xRowTray;
   
+#ifdef WITH_TRACE_ENCODING
+  vTrace("Partition:%lld\n"_Stz, m_iPartitionNo);
+#endif
+  
   bool bCopied = RowCoder::bCopy(pIntoRowNub,pFromRowNub);
   
   return bCopied;
