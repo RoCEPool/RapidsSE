@@ -6,7 +6,7 @@ escape_rev6.test
 null_rev6.test
 part_curlyBraces.test
 //rdp.test
-regressionData.test
+//regressionData.test
 spaces_rev6.test
 terminator_cr.test
 terminatorLarge_cr.test
