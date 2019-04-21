@@ -415,7 +415,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
   i8 i_LastOffset = 8;
   
   vTrace("Col ColumnName      Datum  ExtDatum    Encoding"
-         "     Offset  Bytes              Value\n"_Stz);
+         "       Offset  Bytes              Value\n"_Stz);
   
   // for each column
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
@@ -431,12 +431,15 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     Stz* aEncoding = sEncoding(eEncoding, eDatum, eDatumCoda);
 
     i8 nBytes = nDataBytes(eDatumCoda,eEncoding);
+    
+    i8 iNibble = aHeadLine->w8_1N(i_Column);
 
-    vTrace("%3lld %-15s %-6s %-11s %-16s %2lld %2lld "_Stz,
+    vTrace("%3lld %-15s %-6s %-11s %x %-16s %2lld %2lld "_Stz,
            i_Column,
            pCol->sColumnName().aChar(),
            aDM[eDatum],
            aDM[eDatumCoda],
+           iNibble,
            aEncoding,
            i_LastOffset,
            nBytes);
