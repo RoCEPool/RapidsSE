@@ -401,6 +401,10 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
   Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
   
   MemLib::vWordDump(aHeadLine, sizeof(HeadLine));
+  
+  i8 nFreeBytes = nFreeSpaceHead(aHeadLine,pColVec,pCoda);
+  vTrace("FreeBytes %lld\n"_Stz,nFreeBytes);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get no of columns
@@ -2952,6 +2956,19 @@ i8 RowCoder::nFreeSpaceHead(RowNub* pNub, HeadLine* aHeadLine)
   
   ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
   Coda* pCoda = pNub->pCoda();
+
+  i8 nFreeBytes = nFreeSpaceHead(aHeadLine, pColVec, pCoda);
+  
+  return nFreeBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* calculate free space of a head line                                        */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda)
+{
+  //MemLib::vWordDump(aHeadLine,sizeof(HeadLine));
+  
   Column* pLastCol = pColVec->pGet(pColVec->nItems() - 1);
   ASSERT(pLastCol->bIsLastColumn());
   
@@ -2966,7 +2983,7 @@ i8 RowCoder::nFreeSpaceHead(RowNub* pNub, HeadLine* aHeadLine)
     RASSERT(nCompressed <= 56);
     i_Offset += nCompressed;
   }
-
+  
   i8 nFreeBytes = C_BYTES_PER_CACHE_LINE - i_Offset;
   
   return nFreeBytes;

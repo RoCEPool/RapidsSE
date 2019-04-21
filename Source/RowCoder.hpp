@@ -141,7 +141,8 @@ namespace Data
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
 
     static i8 nFreeSpaceHead(RowNub* pNub, HeadLine* aHeadLine);
-  
+    static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda);
+
     static eMN eGetEncodingExt(i8 i_Col, HeadLine* aHeadLine,
                                ColumnVec* pColVec, Coda* pCoda, i8& i_PriorColumn_,
                                i8& i_Offset_);
