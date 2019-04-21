@@ -95,7 +95,7 @@ void RowCoder::vAnalyse(RowNub* pNub)
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 {
-  static Peruse xPeruse("Col0"_Stz);
+  static Peruse xPeruse("Split"_Stz);
   
   static i8 nCalls = 0;
   nCalls++;
@@ -185,15 +185,15 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
       i8 i_LastColumn = 0;
       i8 i_LastOffset = 8;
       vDecode(&oCol0,aIntoHead,pColVec,pCol,pIntoCoda,i_LastColumn,i_LastOffset);
-      xPeruse.vAdd(oCol0.m_iInt,"\n"_Stz);
     }
-//    if (DM_BCD == eDatum) {
-//      vRecodeBcdTenth(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+    
+    if (DM_BCD == eDatum) {
+      vRecodeBcdTenth(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
 //#ifdef WITH_TRACE_ENCODING
 //      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "vRecodeBcdTenth"_Stz);
 //#endif
-//      continue;
-//    }
+      continue;
+    }
 
     // copy a shoco tail
     if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding) {
@@ -659,6 +659,7 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
                           i8 i_IntoOffset, i8 i_FromOffset)
 {
   static i8 nFolds = 0;
+  static Peruse xSplits("Splits"_Stz);
  
   ColumnVec* pColVec = pIntoNub->pDesc()->pColumnVec();
 
@@ -724,8 +725,8 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
     if ( (nOverHang > 0  && nOverHang <= nFreeHeadBytes + 1) ||
          (nOverHang == 0 && nFreeHeadBytes + 1 > 3) ) {
 
-      //vHeadDump(aIntoHead,pColVec);
-      HV_Rec hvRec;
+      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+//      HV_Rec hvRec;
 //      RowCoder::vRecord(hvRec,aFromHead,pColVec);
 //      hvRec->vPrintRow();
 //      vTrace("\n"_Stz);
@@ -773,6 +774,13 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
       //vTrace("\n"_Stz);
 
       //MemLib::vWordDump(aIntoTail,nTailUnits * sizeof(TailLine));
+//      if (0 == (nCompressed - (nFreeHeadBytes+1))) {
+//        vHeadDump(aIntoHead,pColVec);
+//        MemLib::vWordDump(aIntoTail,nNewTailUnits * sizeof(DoubleWord));
+//        int iDebug = 0;
+//      }
+      //xSplits.vAdd((nCompressed - (nFreeHeadBytes+1)),"\n"_Stz);
+
       return;
     }
     
@@ -780,7 +788,6 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
     MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
     MemLib::vWordDump(aShocoTail,sizeof(HeadLine));
     
-    int iDebug = 0;
   }
 #endif
   
@@ -1193,6 +1200,11 @@ void RowCoder::vRecodeBcdTenth(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
   if (eCurrentEncoding == MN_NULL)
     return;
   
+  if (eCurrentEncoding != MN_1B) {
+    RASSERT(DM_BCD == pCoda->m_aeDatum[i_Column]);
+    return;
+  }
+
   // is it a 1B encoding ?
   if (eCurrentEncoding == MN_1B) {
     
@@ -1222,7 +1234,7 @@ void RowCoder::vRecodeBcdTenth(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
   }
   
   switch (eCurrentEncoding) {
-    case MN_1B: RASSERT(0); break;
+    case MN_1B: return;
     case MN_2B: eExtendedEncoding = MN_TENTH_2B; break;
     case MN_3B: RASSERT(0); break;
     case MN_4B: eExtendedEncoding = MN_TENTH_4B; break;
