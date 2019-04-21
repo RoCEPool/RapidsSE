@@ -693,10 +693,12 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
     i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
     //RASSERT(nCompressed <= 56);
     
-    i8 nFreeHeadBytes = sizeof(HeadLine) - i_IntoOffset - C_SHOCO_COMPRESSED_BYTES;
+    i8 nAvailHeadBytes = sizeof(HeadLine) - i_IntoOffset;
+
+    //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
     
     // FIT case?
-    if (nCompressed <= nFreeHeadBytes) {
+    if (C_SHOCO_COMPRESSED_BYTES + nCompressed <= nAvailHeadBytes) {
       
       aIntoHead->v1N(i_Column,MN_SHOCO_FIT);
       
@@ -718,7 +720,8 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
     }
     
     // SPLIT case?
-    
+    i8 nFreeHeadBytes = sizeof(HeadLine) - i_IntoOffset - C_SHOCO_COMPRESSED_BYTES;
+
     // calc the
     i8 nOverHang = (nCompressed + 2) % sizeof(DoubleWord);
 
