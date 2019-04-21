@@ -935,9 +935,17 @@ void RowCoder::vRecodeIntDigit(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
     case MN_2B: eExtendedEncoding = MN_DIGIT_2B; break;
     case MN_3B: eExtendedEncoding = MN_DIGIT_3B; break;
     case MN_4B: eExtendedEncoding = MN_DIGIT_4B; break;
-    case MN_5B: RASSERT(0); break;
+    case MN_5B:
+      // extend by 1B
+      pIntoNub->vEntend(aIntoHead,sizeof(HeadLine),i_IntoOffset,1);
+      eExtendedEncoding = MN_6B;
+      break;
     case MN_6B: eExtendedEncoding = MN_DIGIT_6B; break;
-    case MN_7B: RASSERT(0); break;
+    case MN_7B:
+      // extend by 1B
+      pIntoNub->vEntend(aIntoHead,sizeof(HeadLine),i_IntoOffset,1);
+      eExtendedEncoding = MN_6B;
+      break;
     case MN_8B: eExtendedEncoding = MN_DIGIT_8B; break;
     default:
       RASSERT(0);

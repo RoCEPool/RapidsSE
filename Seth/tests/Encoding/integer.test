@@ -27,7 +27,7 @@ success
 
 // check no of rows
 fetch IntTbl;
-rows: 52
+rows: 72
 
 // dump index int_idx1
 dumpidx IntTbl int_idx1;
