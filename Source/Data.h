@@ -124,19 +124,14 @@ namespace Data
   MN_REV_6B = 0b1101, // D: reverse 6B
   MN_REV_7B = 0b1110, // E: reverse 7B
 
-  MN_EMPTY     = 0b1100,  // C: empty string
-  MN_SHOCO_FIT = 0b1101,  // D: len+shoco in data words
-  MN_SHOCO_2B  = 0b1110,  // E: 2B in data words indicating shoco overflow
+  MN_EMPTY       = 0b1011,  // B: empty string (no bytes in head)
+  MN_SHOCO_FIT   = 0b1100,  // C: head: 1Blen,shoco
+  MN_SHOCO_SPLIT = 0b1101,  // D: head: 2B->tail,1Blen,part-shoco till end of head
+                            //    tail: has remaining shoco
+  MN_SHOCO_2B    = 0b1110,  // E: head: 2B->tail,
+                            //    tail: has 1Blen,shoco
   
-  //! the following are to be renamed
-  MN_COLTAIL_V5 = 0b1001, // 9: classical era 1B
-  MN_COLTAIL_V4 = 0b1010, // A: classical era 2B
-  MN_COLTAIL_V3 = 0b1011, // B: silver era 1B
-  MN_COLTAIL_V2 = 0b1100, // C: silver era 2B
-  MN_COLTAIL_V1 = 0b1101, // D: modern era 1B
-  MN_COLTAIL_V0 = 0b1110, // E: modern era 2B
-
-  MN_OVERFLOW  = 0b1111,  // F: data words has 2B indicating overflow cacheline
+  MN_OVERFLOW  = 0b1111,    // F: data words has 2B indicating overflow cacheline
   };
   
   //! we'll start with 3 era's and see what happens
