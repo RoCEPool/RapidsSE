@@ -406,10 +406,12 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
   // get no of columns
   i8 nColumns = pColVec->nItems();
   
-  Datum oDatum;
+  HV_Rec hvRec;
+  
   i8 i_LastOffset = 8;
   
-  vTrace("Column# ColumnName      Datum      ExtDatum        Encoding \n"_Stz);
+  vTrace("Col ColumnName      Datum  ExtDatum    Encoding"
+         "     Offset  Bytes              Value\n"_Stz);
   
   // for each column
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
@@ -423,10 +425,36 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     eDM eDatumCoda = pCoda->m_aeDatum[pCol->iColumnNo()];
     eMN eEncoding = eGetEncodingExt(i_Column,aHeadLine,pColVec,pCoda,i_Column,i_LastOffset);
     Stz* aEncoding = sEncoding(eEncoding, eDatum, eDatumCoda);
-    vTrace("%7lld %-15s %-10s %-15s %-16s\n"_Stz, i_Column, pCol->sColumnName().aChar(), aDM[eDatum],
-           aDM[eDatumCoda], aEncoding);
+
+    i8 nBytes = nDataBytes(eDatumCoda,eEncoding);
+
+    vTrace("%3lld %-15s %-6s %-11s %-16s %2lld %2lld "_Stz,
+           i_Column,
+           pCol->sColumnName().aChar(),
+           aDM[eDatum],
+           aDM[eDatumCoda],
+           aEncoding,
+           i_LastOffset,
+           nBytes);
+    
+    if (nBytes)
+     for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
+        vTrace("%02x"_Stz,aHeadLine->w8_1B(i_LastOffset+i_Byte));
+    for (i8 i_Byte = nBytes; i_Byte < 8; i_Byte++)
+      vTrace("__"_Stz);
+    vTrace(" "_Stz);
+    
+    hvRec->vReset();
+    vAppend(hvRec,aHeadLine,pColVec,pCol,pCoda,i_Column,i_LastOffset);
+    vTrace("%s"_Stz,hvRec->szRecStr());
+    
+    vTrace("\n"_Stz);
+
+    i_LastOffset += nBytes;
     
   }
+  
+  int iDebug = 1;
 }
 
 /*----------------------------------------------------------------------------*/
