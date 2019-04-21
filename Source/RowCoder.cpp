@@ -202,6 +202,11 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 #ifdef WITH_TRACE_ENCODING
       RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "vCopyShoco"_Stz);
 #endif
+
+//      if (15 == i_ForCol &&
+//          (MN_SHOCO_2B == aIntoHead->w8_1N(15) || MN_SHOCO_SPLIT == aIntoHead->w8_1N(15)))
+//        RowCoder::vHeadDump(aIntoHead, pIntoNub->pDesc()->pColumnVec());
+
       continue;
     }
     
@@ -744,17 +749,21 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #ifdef WITH_SHOCO_DUPLICATES
-  i8 i_IntoTail = iFindTail(pIntoNub,aShocoTail);
+  i8 i_FoundTail = iFindTail(pIntoNub,aShocoTail);
   
-  if (C_UNKNOWN != i_IntoTail) {
+  if (C_UNKNOWN != i_FoundTail) {
     
-    aIntoTail = pIntoNub->aGetTail(i_IntoTail);
+    aIntoTail = pIntoNub->aGetTail(i_FoundTail);
     
     // what gets encoded is the unit difference between head and tail
-    i8 i_TailDistance = pIntoNub->iUnitDiff(i_IntoHead,i_IntoTail);
+    i8 i_TailDistance = pIntoNub->iUnitDiff(i_IntoHead,i_FoundTail);
     aIntoHead->vPut(i_IntoOffset,i_TailDistance,MN_2B);
     
     return;
+  }
+  else {
+    //MemLib::vWordDump(aShocoTail,sizeof(HeadLine));
+    int iDebug = 0;
   }
 #endif
   
@@ -765,14 +774,13 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
   i8 nShocoBytes = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
   //RASSERT(nShocoBytes <= 56);
   
-  i_IntoTail = pIntoNub->iAllotTail(2 + nShocoBytes);
+  i8 i_IntoTail = pIntoNub->iAllotTail(2 + nShocoBytes);
   aIntoTail = pIntoNub->aGetTail(i_IntoTail);
   
   MemLib::vCopy(aIntoTail,aShocoTail,
                 nTailUnits*sizeof(DoubleWord),CN_ROWBUFFER);
-  //i8 nCopiedBytes = pIntoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
-  //RASSERT(nCopiedBytes <= 56);
-  
+  //MemLib::vWordDump(aIntoTail,nTailUnits*sizeof(DoubleWord));
+
   // what gets encoded is the unit difference between head and tail
   i8 i_TailDistance = pIntoNub->iUnitDiff(i_IntoHead,i_IntoTail);
   aIntoHead->vPut(i_IntoOffset,i_TailDistance,MN_2B);
@@ -2855,7 +2863,7 @@ eMN RowCoder::eEncodingVch(Datum* pDatum, i8& nBytesEncoded)
     eEncoding = MN_1B;
     nBytesEncoded = 0;
   }
-  else if (iLen <= 8) {
+  else if (iLen <= 3) {
     eEncoding = (eMN)iLen;
     nBytesEncoded = iLen;
   }
