@@ -127,7 +127,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   RowCoder::vHeadDumpNat(aIntoHead, pIntoNub->pDesc()->pColumnVec());
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   i8 nColumns = pColVec->nItems();
   i8 i_LastColumn = 0;
   i8 i_FromOffset = 8;
@@ -150,7 +150,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
       pIntoCoda->m_aeDatum[i_ForCol] = eDatum;
       pIntoCoda->m_aiAux[i_ForCol].m_iInt = 0;
     }
-    
+
     // save old fromOffset
     i_OldFromOffset = i_FromOffset;
     eMN eEncoding = eGetEncodingNat(i_ForCol,aFromHead,pColVec,
@@ -158,7 +158,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     
     // calculate new IntoOffset
     i_IntoOffset += i_FromOffset - i_OldFromOffset;
-    
+ 
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     
     if (0 == i_IntoHead && eDatum == DM_INT) {
@@ -209,7 +209,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 
       continue;
     }
-    
+
     // recode a Vch1B into an Alpha
     //!? a recode of Vch1B van only be done on char(1) columns
     if (DM_VCH == eDatum && MN_1B == eEncoding) {
@@ -219,7 +219,6 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 #endif
       continue;
     }
-    
   }
   
 #ifdef WITH_TRACE_ENCODING
@@ -229,7 +228,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   hvRec->vPrintRow();
   vTrace("\n"_Stz);
 #endif
-  
+ 
   return true;
 }
 
@@ -2192,10 +2191,12 @@ void RowCoder::vEncodeBcd(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
+#ifdef WITH_TRACE_ENCODING
   i8 i_LastOffset = 8;
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn, i_LastOffset);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2231,11 +2232,12 @@ void RowCoder::vEncodeBol(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
-  
+#ifdef WITH_TRACE_ENCODING
   i8 i_LastOffset = 8;
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn, i_LastOffset);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2278,13 +2280,14 @@ void RowCoder::vEncodeDte(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
-  
+#ifdef WITH_TRACE_ENCODING
   i8 i_LastOffset = 8;
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn, i_LastOffset);
 //  vTrace("-- %lld-%lld-%lld\n"_Stz,
 //         pDatum->xDte.m_uYearDelta,pDatum->xDte.m_uMonth,pDatum->xDte.m_uDay);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2324,11 +2327,12 @@ void RowCoder::vEncodeFlt(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
-  
+#ifdef WITH_TRACE_ENCODING
   i8 i_LastOffset = 8;
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn,i_LastOffset);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2368,11 +2372,12 @@ void RowCoder::vEncodeInt(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
-  
+#ifdef WITH_TRACE_ENCODING
   i8 i_LastOffset = 8;
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn,i_LastOffset);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2412,11 +2417,12 @@ void RowCoder::vEncodeIvl(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
-  
+#ifdef WITH_TRACE_ENCODING
   i8 i_LastOffset = 8;
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn,i_LastOffset);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2456,11 +2462,12 @@ void RowCoder::vEncodeTme(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
-  
+#ifdef WITH_TRACE_ENCODING
   i8 i_LastOffset = 8;
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn,i_LastOffset);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2500,11 +2507,12 @@ void RowCoder::vEncodeTsp(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
-  
+#ifdef WITH_TRACE_ENCODING
   i8 i_LastOffset = 8;
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn,i_LastOffset);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
