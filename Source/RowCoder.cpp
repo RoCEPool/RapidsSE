@@ -167,7 +167,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     //
-
+#ifdef WITH_EXTENTED_DATE
     if (DM_DTE == eDatum) {
       vRecodeDteDays(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
 #ifdef WITH_TRACE_ENCODING
@@ -175,18 +175,22 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 #endif
       continue;
     }
-    
+#endif
+ 
+#ifdef WITH_EXTENTED_INT
     if (DM_INT == eDatum) {
       vRecodeInt(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
     }
+#endif
     
-    if (0 == i_ForCol) {
-      Datum oCol0;
-      i8 i_LastColumn = 0;
-      i8 i_LastOffset = 8;
-      vDecode(&oCol0,aIntoHead,pColVec,pCol,pIntoCoda,i_LastColumn,i_LastOffset);
-    }
+//    if (0 == i_ForCol) {
+//      Datum oCol0;
+//      i8 i_LastColumn = 0;
+//      i8 i_LastOffset = 8;
+//      vDecode(&oCol0,aIntoHead,pColVec,pCol,pIntoCoda,i_LastColumn,i_LastOffset);
+//    }
     
+#ifdef WITH_EXTENTED_BCD
     if (DM_BCD == eDatum) {
       vRecodeBcdTenth(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
 //#ifdef WITH_TRACE_ENCODING
@@ -194,7 +198,8 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 //#endif
       continue;
     }
-
+#endif
+    
     // copy a shoco tail
     if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding) {
       vCopyShoco(pIntoNub,aIntoHead,i_IntoHead,pFromNub,pCol,
@@ -210,6 +215,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
       continue;
     }
 
+#ifdef WITH_EXTENTED_VCH
     // recode a Vch1B into an Alpha
     //!? a recode of Vch1B van only be done on char(1) columns
     if (DM_VCH == eDatum && MN_1B == eEncoding) {
@@ -219,6 +225,8 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 #endif
       continue;
     }
+#endif
+    
   }
   
 #ifdef WITH_TRACE_ENCODING
