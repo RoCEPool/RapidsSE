@@ -46,6 +46,23 @@ RowCoder::RowCoder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
+  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
+    
+    m_xaUsage[i_Col].m_pCol = nullptr;
+    
+    m_xaUsage[i_Col].m_eNatDatum = DM_NONE;
+    m_xaUsage[i_Col].m_eExtDatum = DM_NONE;
+    m_xaUsage[i_Col].m_bFixed = false;
+    
+    m_xaUsage[i_Col].m_nCount = 0;
+    m_xaUsage[i_Col].m_nRequiredBytes = 0;
+    m_xaUsage[i_Col].m_nEncodedBytes  = 0;
+
+    m_xaUsage[i_Col].m_nPriorCount = 0;
+    m_xaUsage[i_Col].m_nPriorRequiredBytes = 0;
+    m_xaUsage[i_Col].m_nPriorEncodedBytes  = 0;
+  }
+  
   _checkInitialised_(CN_ROWCODER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
@@ -3600,6 +3617,20 @@ void RowCoder::vSetAuxInt(Coda* pIntoCoda, HeadLine* aIntoHead, Column* pCol,
   }
 
   pIntoCoda->m_aiAux[pCol->iColumnNo()].m_iInt = iInt;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* RowCoder::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER);
+  
+  return &m_xFooter;
 }
 
 /*============================================================================*/

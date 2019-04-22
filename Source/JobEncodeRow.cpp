@@ -28,6 +28,8 @@ JobEncodeRow::JobEncodeRow(void)
 {
   //m_oRowParts;
   //m_oFormatters;
+  
+  m_pRowCoder = new RowCoder;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,6 +37,7 @@ JobEncodeRow::JobEncodeRow(void)
 /*----------------------------------------------------------------------------*/
 JobEncodeRow::~JobEncodeRow(void) noexcept(false)
 {
+  delete m_pRowCoder;
 }
 
 /*----------------------------------------------------------------------------*/

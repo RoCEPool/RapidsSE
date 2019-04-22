@@ -11,6 +11,8 @@ namespace Jobs
   public:
     RowParts    m_oRowParts;    // tray of row parts
     Formatters  m_oFormatters;  // formatters
+  
+    RowCoder*   m_pRowCoder;    //
     
   public:
     void* operator new(size_t);

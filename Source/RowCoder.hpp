@@ -32,6 +32,9 @@ namespace Data
 
     } m_xaUsage[C_MAX_COLUMNS];
   
+    // must be last
+    Footer m_xFooter;
+  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
@@ -194,6 +197,9 @@ namespace Data
   
     static void vSetAuxInt(Coda* pIntoCoda, HeadLine* aIntoHead, Column* pCol,
                            eMN eEncoding, i8 i_IntoOffset);
+
+  private:
+    Footer* aFooter(void);
   };
   
   RowCoder* _pRowCoder(void* aAddr);
