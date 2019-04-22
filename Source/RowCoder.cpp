@@ -167,7 +167,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     //
-#ifdef WITH_EXTENTED_DATE
+#ifdef WITH_EXTENDED_DATE
     if (DM_DTE == eDatum) {
       vRecodeDteDays(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
 #ifdef WITH_TRACE_ENCODING
@@ -177,7 +177,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     }
 #endif
  
-#ifdef WITH_EXTENTED_INT
+#ifdef WITH_EXTENDED_INT
     if (DM_INT == eDatum) {
       vRecodeInt(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
     }
@@ -190,7 +190,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 //      vDecode(&oCol0,aIntoHead,pColVec,pCol,pIntoCoda,i_LastColumn,i_LastOffset);
 //    }
     
-#ifdef WITH_EXTENTED_BCD
+#ifdef WITH_EXTENDED_BCD
     if (DM_BCD == eDatum) {
       vRecodeBcdTenth(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
 //#ifdef WITH_TRACE_ENCODING
@@ -215,7 +215,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
       continue;
     }
 
-#ifdef WITH_EXTENTED_VCH
+#ifdef WITH_EXTENDED_VCH
     // recode a Vch1B into an Alpha
     //!? a recode of Vch1B van only be done on char(1) columns
     if (DM_VCH == eDatum && MN_1B == eEncoding) {
