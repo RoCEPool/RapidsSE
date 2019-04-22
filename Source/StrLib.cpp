@@ -180,14 +180,13 @@ void StrLib::vClick(char* aArg)
 /*----------------------------------------------------------------------------*/
 /* comma seperate the integer argument                                        */
 /*----------------------------------------------------------------------------*/
-void StrLib::vComma(char* psDst, i8 iArg)
+void StrLib::vComma(char* azDst, i8 iArg)
 {
   char caInteger[32];
   vToString(caInteger,iArg);
   
   char caReverse[32];
-  //vReverse(caReverse,caInteger);
-  vCopy(caReverse,caInteger);
+  vReverse(caReverse,caInteger);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   char caRevCommas[32];
@@ -207,13 +206,11 @@ void StrLib::vComma(char* psDst, i8 iArg)
   
   if (iArg < 0)
     *aChar++ = '-';
+  
+  *aChar = '\0';
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  char caHasCommas[32];
-  //vReverse(caHasCommas,caRevCommas);
-  vCopy(caHasCommas,caRevCommas);
-
-  vCopy(psDst,caHasCommas);
+  vReverse(azDst,caRevCommas);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2369,6 +2366,20 @@ NextIteration:
   }
   
   return bReplaced;
+}
+
+/*----------------------------------------------------------------------------*/
+/* vReverse: reverse a string                                                 */
+/*----------------------------------------------------------------------------*/
+void StrLib::vReverse(char* azDst, char* azSrc)
+{
+  char* acSrc = azSrc + strlen(azSrc) - 1;
+  char* acDst = azDst;
+
+  while (acSrc >= azSrc)
+    *acDst++ = *acSrc--;
+  
+  *acDst = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
