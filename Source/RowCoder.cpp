@@ -238,7 +238,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     //
-#ifdef WITH_EXTENDED_DATE
+#ifdef WITH_EXTENDED_DTE
     if (DM_DTE == eDatum) {
       vRecodeDteDays(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
 #ifdef WITH_TRACE_ENCODING
@@ -1106,11 +1106,15 @@ void RowCoder::vRecodeInt(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
       break;
       
     case DM_INT:
+#ifdef WITH_EXTENDED_INT_DELTA
       if (bRecodeIntDelta(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset))
         break;
+#endif
       
+#ifdef WITH_EXTENDED_INT_DIGIT
       vRecodeIntDigit(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
       break;
+#endif
       
     default:
       break;
