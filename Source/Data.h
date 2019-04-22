@@ -17,6 +17,7 @@ namespace Data
   static const i8 C_MAX_INDEX_COLUMNS = 16;
   
   static const i8 C_MAX_ROWS = (C_SIZE_LARGE_OBJECT - C_1KB) / C_BYTES_PER_CACHE_LINE;
+  static const i8 C_MAX_COLUMNS = 150;
   
   enum eMN : u1 // metadata nibbles
   {

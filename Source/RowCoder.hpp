@@ -15,6 +15,24 @@ namespace Data
   class RowCoder
   {
   public:
+    struct {
+      Column* m_pCol; // the column
+      
+      eDM  m_eNatDatum; // its natural datum
+      eDM  m_eExtDatum; // its current extended datum
+      bool m_bFixed;    // has the encoding decision been fixed?
+      
+      i8   m_nCount;         // no of times the column has been encoded
+      i8   m_nRequiredBytes; // bytes required
+      i8   m_nEncodedBytes;  // bytes actually encoded
+
+      i8   m_nPriorCount;          // prior no of time the column has been encoded
+      i8   m_nPriorRequiredBytes;  // prior bytes required
+      i8   m_nPriorEncodedBytes;   // prior bytes actually encoded
+
+    } m_xaUsage[C_MAX_COLUMNS];
+  
+  public:
     static void vAnalyse(RowNub* pNub);
     static bool bCopy(RowNub* pIntoNub, RowNub* pFromNub);
     static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol, 

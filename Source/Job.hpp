@@ -9,8 +9,6 @@ namespace Jobs
 
   class Job;
   
-  static const i8 C_MAX_COLUMNS = 150;
-  
   enum eJF // job flags
   {
     /*  0 */ JF_NONE   = 0x0,
