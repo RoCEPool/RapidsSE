@@ -12,7 +12,7 @@ namespace Data
                                               + C_TAIL_UNITS_BYTES;
   static const i8 C_SHOCO_COMPRESSED_BYTES  = 1;
 
-  class RowCoder
+  class RowCoder : public Object
   {
   public:
     struct {
@@ -33,6 +33,12 @@ namespace Data
     } m_xaUsage[C_MAX_COLUMNS];
   
   public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
+    RowCoder(void);
+    ~RowCoder(void) noexcept(false);
+
     static void vAnalyse(RowNub* pNub);
     static bool bCopy(RowNub* pIntoNub, RowNub* pFromNub);
     static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol, 
@@ -189,6 +195,8 @@ namespace Data
     static void vSetAuxInt(Coda* pIntoCoda, HeadLine* aIntoHead, Column* pCol,
                            eMN eEncoding, i8 i_IntoOffset);
   };
+  
+  RowCoder* _pRowCoder(void* aAddr);
 }
 
 /*============================================================================*/
