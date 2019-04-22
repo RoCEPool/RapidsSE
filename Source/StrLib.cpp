@@ -178,6 +178,45 @@ void StrLib::vClick(char* aArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* comma seperate the integer argument                                        */
+/*----------------------------------------------------------------------------*/
+void StrLib::vComma(char* psDst, i8 iArg)
+{
+  char caInteger[32];
+  vToString(caInteger,iArg);
+  
+  char caReverse[32];
+  //vReverse(caReverse,caInteger);
+  vCopy(caReverse,caInteger);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  char caRevCommas[32];
+
+  char* aChar = caRevCommas;
+  char* aDigit = caReverse;
+  
+  i8 nDigit = 0;
+  while (*aDigit) {
+    if (nDigit == 3) {
+      *aChar++ = C_COMMA;
+      nDigit = 0;
+    }
+    *aChar++ = *aDigit++;
+    nDigit++;
+  }
+  
+  if (iArg < 0)
+    *aChar++ = '-';
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  char caHasCommas[32];
+  //vReverse(caHasCommas,caRevCommas);
+  vCopy(caHasCommas,caRevCommas);
+
+  vCopy(psDst,caHasCommas);
+}
+
+/*----------------------------------------------------------------------------*/
 /* iCompare: standard compare of the two args                                 */
 /*----------------------------------------------------------------------------*/
 i8 StrLib::iCompare(const char* pArg1, const char* pArg2)
@@ -2645,6 +2684,14 @@ char* StrLib::wToPointer(void* pArg, char* wArg)
   }
   
   return w;
+}
+
+/*----------------------------------------------------------------------------*/
+/* vToString: convert given float into its char/str form                      */
+/*----------------------------------------------------------------------------*/
+void StrLib::vToString(char* psDst, i8 iArg)
+{
+  wToString(iArg,psDst);
 }
 
 /*----------------------------------------------------------------------------*/

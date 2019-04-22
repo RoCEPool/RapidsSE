@@ -134,6 +134,7 @@ namespace Base
     static bool  bBackward(const char** ps, char* pBegin, const char c);
 
     static void  vClick(char* aArg);
+    static void  vComma(char* psDst, i8 iArg);
     static i8    iCompare(const char* pArg1, const char* pArg2);
     static bool  iCompare(const char* pArg1, const char* pArg2, i8 iCase);
     static bool  iCompare(const char* pArg1, const char* pArg2, i8 nBytes, i8 iCase);
@@ -271,6 +272,7 @@ namespace Base
     static i8    iToI8(const char* s);
     static void  vToLower(char* s);
     static char* wToPointer(void* pArg, char* w);
+    static void  vToString(char* psDst, i8 iArg);
     static char* wToString(d8 dArg, char* w);
     static char* wToString(i8 iArg, char* w);
     
