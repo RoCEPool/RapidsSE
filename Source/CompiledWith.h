@@ -34,6 +34,10 @@
 #define WITH_PREPOST_CHECKING   // _pre/postCondition_()
 #define WITH_TRACE_API          // code for tracing api's compiled in
 //#define WITH_TRACE_ENCODING     // code for tracing encoding compiled in
+//#define WITH_EXTENDED_BCD       // encode extended bcd
+//#define WITH_EXTENDED_INT       // encode extended int
+//#define WITH_EXTENDED_DTE       // encode extended date
+//#define WITH_EXTENDED_VCH       // encode extended vch
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // release behaviours
@@ -49,7 +53,10 @@
 #define WITH_ENTRY_EXIT         // code for ENTRY() & EXIT() macros compiled in
 #define WITH_PREPOST_CHECKING   // _pre/postCondition_()
 #define WITH_TRACE_API          // code for tracing api's compiled in
-
+//#define WITH_EXTENDED_BCD       // encode extended bcd
+//#define WITH_EXTENDED_INT       // encode extended int
+//#define WITH_EXTENDED_DTE       // encode extended date
+//#define WITH_EXTENDED_VCH       // encode extended vch
 #endif
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
