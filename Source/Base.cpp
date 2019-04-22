@@ -72,6 +72,34 @@ void Base::vTraceWith(void)
   vTrace("  WITH_TRACE_API\n"_Stz);
 #endif
   
+#ifdef WITH_TRACE_ENCODING
+  vTrace("  WITH_TRACE_ENCODING\n"_Stz);
+#endif
+  
+#ifdef WITH_EXTENDED_BCD
+  vTrace("  WITH_EXTENDED_BCD\n"_Stz);
+#endif
+  
+#ifdef WITH_EXTENDED_INT
+  vTrace("  WITH_EXTENDED_INT\n"_Stz);
+#endif
+  
+#ifdef WITH_EXTENDED_INT_DELTA
+  vTrace("  WITH_EXTENDED_INT_DELTA\n"_Stz);
+#endif
+  
+#ifdef WITH_EXTENDED_INT_DIGIT
+  vTrace("  WITH_EXTENDED_INT_DIGIT\n"_Stz);
+#endif
+  
+#ifdef WITH_EXTENDED_DTE
+  vTrace("  WITH_EXTENDED_DTE\n"_Stz);
+#endif
+  
+#ifdef WITH_EXTENDED_VCH
+  vTrace("  WITH_EXTENDED_VCH\n"_Stz);
+#endif
+  
 #ifdef WITH_SHOCO_DUPLICATES
   vTrace("  WITH_SHOCO_DUPLICATES\n"_Stz);
 #endif
