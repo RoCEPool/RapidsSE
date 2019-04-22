@@ -231,7 +231,7 @@ HeadLine* RowBuffer::aAllotHead(void)
 /*----------------------------------------------------------------------------*/
 /* append a row entry into this buffer                                        */
 /*----------------------------------------------------------------------------*/
-bool RowBuffer::bAppendRow(RowNub* pFromRowNub)
+bool RowBuffer::bAppendRow(RowCoder* pRowCoder, RowNub* pFromRowNub)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
@@ -241,7 +241,7 @@ bool RowBuffer::bAppendRow(RowNub* pFromRowNub)
   vTrace("Partition:%lld\n"_Stz, m_iPartitionNo);
 #endif
   
-  bool bCopied = RowCoder::bCopy(pIntoRowNub,pFromRowNub);
+  bool bCopied = pRowCoder->bCopy(pIntoRowNub,pFromRowNub);
   
   return bCopied;
 }

@@ -256,7 +256,7 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
 /*----------------------------------------------------------------------------*/
 /* append a row to the row buffer into the TablePtn                           */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vAppendRow(RowParts& oRowParts)
+void TablePtn::vAppendRow(RowCoder* pRowCoder, RowParts& oRowParts)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
@@ -273,7 +273,7 @@ void TablePtn::vAppendRow(RowParts& oRowParts)
     m_pCurrentRowBuffer = m_pRootRowBuffer;
   }
   
-  bool bAppended = m_pCurrentRowBuffer->bAppendRow(oRowParts);
+  bool bAppended = m_pCurrentRowBuffer->bAppendRow(pRowCoder,oRowParts);
   
   if ( ! bAppended ) {
     RowBuffer* pRowBuffer = new RowBuffer;
@@ -284,7 +284,7 @@ void TablePtn::vAppendRow(RowParts& oRowParts)
     m_pCurrentRowBuffer->vNextBuffer(pRowBuffer);
     m_pCurrentRowBuffer = pRowBuffer;
     
-    bAppended = m_pCurrentRowBuffer->bAppendRow(oRowParts);
+    bAppended = m_pCurrentRowBuffer->bAppendRow(pRowCoder,oRowParts);
     RASSERT(bAppended);
   }
   

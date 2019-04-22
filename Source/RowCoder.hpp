@@ -56,7 +56,7 @@ namespace Data
     static void vRecord(Record* pRec, RowNub* pNub, i8 i_Row);
     static void vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec);
   
-    static bool bCopy(RowNub* pIntoNub, RowNub* pFromNub);
+    bool bCopy(RowNub* pIntoNub, RowNub* pFromNub);
     void vEncode(RowNub* pNub, Column* pCol, Datum* pDatum);
 
   private:

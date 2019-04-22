@@ -134,7 +134,7 @@ eEC JobWriteBehind::eInsertRow(RowNub* pRowNub)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert row into working buffer
     pRowBuffer->vGrabWrite();
-    bool bRowAppended = pRowBuffer->bAppendRow(pRowNub);
+    bool bRowAppended = pRowBuffer->bAppendRow(m_pRowCoder,pRowNub);
     pRowBuffer->vDropWrite();
     
     //pRowBuffer->vDump();

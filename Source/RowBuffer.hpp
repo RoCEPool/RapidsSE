@@ -68,7 +68,7 @@ namespace Data
 
     ////////////////////////////////////////////////////////////////////////////
     // row functions
-    bool bAppendRow(RowNub* pRowNub);
+    bool bAppendRow(RowCoder* pRowCoder, RowNub* pRowNub);
   
   private:
     HeadLine* aAllotRow(i8 nBytes);
