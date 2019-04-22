@@ -766,8 +766,6 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
       i8 i_TailDistance = pIntoNub->iUnitDiff(i_IntoHead,i_IntoTail);
       aIntoHead->vPut(i_IntoOffset,i_TailDistance,MN_2B);
 
-      //vHeadDump(aIntoHead,pColVec);
-
       //RowCoder::vRecord(hvRec,aIntoHead,pColVec);
       //hvRec->vPrintRow();
       //vTrace("\n"_Stz);
@@ -778,7 +776,8 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
 //        MemLib::vWordDump(aIntoTail,nNewTailUnits * sizeof(DoubleWord));
 //        int iDebug = 0;
 //      }
-      xSplits.vAdd(nPartB,"\n"_Stz);
+      //vHeadDump(aIntoHead,pColVec);
+      //xSplits.vAdd(nPartB,"\n"_Stz);
 
       return;
     }
