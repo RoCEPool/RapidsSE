@@ -230,6 +230,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_RESPONSEVEC,
   /* 173 0xAD      896B Heap:M */ CN_ROWAGG,
   /*                    Heap:L */ CN_ROWBUFFER,
+  /*                           */ CN_ROWCODER,
   /* 174 0xAE      152B Heap:S */ CN_ROWONCE,
   /*                           */ CN_ROWTRAY,
   
@@ -503,6 +504,7 @@ static Stz* aCN[]
   /*          */ "RESPONSEVEC"_Stz,         // CN_RESPONSEVEC
   /* 173 0xAD */ "ROWAGG"_Stz,              // CN_ROWAGG
   /*          */ "ROWBUFFER"_Stz,           // CN_ROWBUFFER
+  /*          */ "ROWCODER"_Stz,            // CN_ROWCODER
   /* 174 0xAE */ "ROWONCE"_Stz,             // CN_ROWONCE
   /*          */ "ROWTRAY"_Stz,             // CN_ROWTRAY
   
