@@ -137,6 +137,7 @@ void Peruse::vAdd(i8 iArg, Stz* szFormat,...)
            m_iGrandSum,
            m_iGrandMin,
            m_iGrandMax,
+           
            iGrandAvg,
            dGrandVar,
            dGrandStdDev,

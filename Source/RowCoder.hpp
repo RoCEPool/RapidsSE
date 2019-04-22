@@ -43,13 +43,11 @@ namespace Data
     ~RowCoder(void) noexcept(false);
 
     static void vAnalyse(RowNub* pNub);
-    static bool bCopy(RowNub* pIntoNub, RowNub* pFromNub);
-    static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol, 
+    static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
                          i8& i_LastColumn, i8& i_LastOffset);
     static void vDecode(Datum* pDatum, HeadLine* aHeadLine,
                         ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                         i8& i_LastColumn, i8& i_LastOffset);
-    static void vEncode(RowNub* pNub, Column* pCol, Datum* pDatum);
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
     static void vHeadDumpColumn(HeadLine* aHeadLine, ColumnVec* pColVec, i8 iCol, Stz* aRecodeFunction);
     static void vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec);
@@ -57,6 +55,9 @@ namespace Data
     static void vPrint(RowNub* pNub, i8 i_Row, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
     static void vRecord(Record* pRec, RowNub* pNub, i8 i_Row);
     static void vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec);
+  
+    static bool bCopy(RowNub* pIntoNub, RowNub* pFromNub);
+    static void vEncode(RowNub* pNub, Column* pCol, Datum* pDatum);
 
   private:
     static void vAppend(Record* pRec, HeadLine* aHeadLine,

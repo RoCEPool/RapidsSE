@@ -76,7 +76,7 @@ RowCoder::~RowCoder(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -162,154 +162,6 @@ void RowCoder::vAnalyse(RowNub* pNub)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy an encoded row from one tray to another                               */
-/*----------------------------------------------------------------------------*/
-bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
-{
-  static i8 nCalls = 0;
-  nCalls++;
-  
-  static i8 nFolds = 0;
-  RASSERT(pIntoNub->pDesc() == pFromNub->pDesc());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // check for space in target nub
-  i8 nSpaceNeeded = pFromNub->nUsedBytes();
-  if (! pIntoNub->bHasSpace(nSpaceNeeded))
-    return false;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  ColumnVec* pColVec = pIntoNub->pDesc()->pColumnVec();
-
-  i8 i_IntoHead = pIntoNub->iAllotHead();
-  HeadLine* aIntoHead = pIntoNub->aGetHead(i_IntoHead);
-  HeadLine* aFromHead = pFromNub->aGetHead(0);
- 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  MemLib::vCopy(aIntoHead,aFromHead,sizeof(HeadLine),CN_ROWBUFFER);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef WITH_TRACE_ENCODING
-  RowCoder::vHeadDumpNat(aIntoHead, pIntoNub->pDesc()->pColumnVec());
-#endif
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  i8 nColumns = pColVec->nItems();
-  i8 i_LastColumn = 0;
-  i8 i_FromOffset = 8;
-  i8 i_IntoOffset = 8;
-  i8 i_OldFromOffset  = 0;
-  
-  Coda* pIntoCoda = pIntoNub->pCoda();
-
-  for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
-  
-    Column* pCol = pColVec->pGet(i_ForCol);
-    eDM eDatum = pCol->eDatumType();
-    
-#ifdef WITH_TRACE_ENCODING
-    vTrace("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n"_Stz);
-#endif
-    
-    // init coda
-    if (0 == i_IntoHead) {
-      pIntoCoda->m_aeDatum[i_ForCol] = eDatum;
-      pIntoCoda->m_aiAux[i_ForCol].m_iInt = 0;
-    }
-
-    // save old fromOffset
-    i_OldFromOffset = i_FromOffset;
-    eMN eEncoding = eGetEncodingNat(i_ForCol,aFromHead,pColVec,
-                                    i_LastColumn,i_FromOffset);
-    
-    // calculate new IntoOffset
-    i_IntoOffset += i_FromOffset - i_OldFromOffset;
- 
-    //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    
-    if (0 == i_IntoHead && eDatum == DM_INT) {
-      vSetAuxInt(pIntoCoda,aIntoHead,pCol,eEncoding,i_IntoOffset);
-    }
-    
-    //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    //
-#ifdef WITH_EXTENDED_DTE
-    if (DM_DTE == eDatum) {
-      vRecodeDteDays(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
-#ifdef WITH_TRACE_ENCODING
-      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol,"vRecodeDteDays"_Stz);
-#endif
-      continue;
-    }
-#endif
- 
-#ifdef WITH_EXTENDED_INT
-    if (DM_INT == eDatum) {
-      vRecodeInt(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
-    }
-#endif
-    
-//    if (0 == i_ForCol) {
-//      Datum oCol0;
-//      i8 i_LastColumn = 0;
-//      i8 i_LastOffset = 8;
-//      vDecode(&oCol0,aIntoHead,pColVec,pCol,pIntoCoda,i_LastColumn,i_LastOffset);
-//    }
-    
-#ifdef WITH_EXTENDED_BCD
-    if (DM_BCD == eDatum) {
-      vRecodeBcdTenth(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
-//#ifdef WITH_TRACE_ENCODING
-//      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "vRecodeBcdTenth"_Stz);
-//#endif
-      continue;
-    }
-#endif
-    
-    // copy a shoco tail
-    if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding) {
-      vCopyShoco(pIntoNub,aIntoHead,i_IntoHead,pFromNub,pCol,
-                 i_IntoOffset,i_FromOffset);
-#ifdef WITH_TRACE_ENCODING
-      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "vCopyShoco"_Stz);
-#endif
-
-//      if (15 == i_ForCol &&
-//          (MN_SHOCO_2B == aIntoHead->w8_1N(15) || MN_SHOCO_SPLIT == aIntoHead->w8_1N(15)))
-//        RowCoder::vHeadDump(aIntoHead, pIntoNub->pDesc()->pColumnVec());
-
-      continue;
-    }
-
-#ifdef WITH_EXTENDED_VCH
-    // recode a Vch1B into an Alpha
-    //!? a recode of Vch1B van only be done on char(1) columns
-    if (DM_VCH == eDatum && MN_1B == eEncoding) {
-       vRecodeVch1B(pIntoNub, aIntoHead, pCol, i_IntoOffset, i_FromOffset);
-#ifdef WITH_TRACE_ENCODING
-      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "vRecodeVch1B"_Stz);
-#endif
-      continue;
-    }
-#endif
-    
-  }
-  
-#ifdef WITH_TRACE_ENCODING
-  RowCoder::vHeadDump(aIntoHead, pIntoNub->pDesc()->pColumnVec());
-  HV_Rec hvRec;
-  RowCoder::vRecord(hvRec,aIntoHead,pColVec);
-  hvRec->vPrintRow();
-  vTrace("\n"_Stz);
-#endif
- 
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get encoded datum from cache line                                          */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
@@ -390,37 +242,6 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       vDecodeTenth(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
       
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode given datum into cache line                                         */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vEncode(RowNub* pNub, Column* pCol, Datum* pDatum)
-{
-  i8 i_Column = pCol->iColumnNo();
-  
-  //! don't encode columns 16+                                             (fix)
-  if (i_Column >= 16)
-    return;
-  
-  eDM eDatum = pCol->eDatumType();
-  
-  Coda* pCoda = pNub->pCoda();
-  pCoda->m_aeDatum[i_Column] = eDatum;
-  
-  switch (eDatum) {
-    case DM_BCD: vEncodeBcd(pNub,pCol,pDatum); return;
-    case DM_BOL: vEncodeBol(pNub,pCol,pDatum); return;
-    case DM_DTE: vEncodeDte(pNub,pCol,pDatum); return;
-    case DM_FLT: vEncodeFlt(pNub,pCol,pDatum); return;
-    case DM_INT: vEncodeInt(pNub,pCol,pDatum); return;
-    case DM_IVL: vEncodeIvl(pNub,pCol,pDatum); return;
-    case DM_TME: vEncodeTme(pNub,pCol,pDatum); return;
-    case DM_TSP: vEncodeTsp(pNub,pCol,pDatum); return;
-    case DM_VCH: vEncodeVch(pNub,pCol,pDatum); return;
     default:
       NEVER_REACH;
   }
@@ -688,6 +509,189 @@ void RowCoder::vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec)
     // append column value
     vAppend(pRec,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
     //vTrace("%s\n"_Stz,pRec->szRecStr());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* copy an encoded row from one tray to another                               */
+/*----------------------------------------------------------------------------*/
+bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
+{
+  static i8 nCalls = 0;
+  nCalls++;
+  
+  static i8 nFolds = 0;
+  RASSERT(pIntoNub->pDesc() == pFromNub->pDesc());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // check for space in target nub
+  i8 nSpaceNeeded = pFromNub->nUsedBytes();
+  if (! pIntoNub->bHasSpace(nSpaceNeeded))
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  ColumnVec* pColVec = pIntoNub->pDesc()->pColumnVec();
+  
+  i8 i_IntoHead = pIntoNub->iAllotHead();
+  HeadLine* aIntoHead = pIntoNub->aGetHead(i_IntoHead);
+  HeadLine* aFromHead = pFromNub->aGetHead(0);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  MemLib::vCopy(aIntoHead,aFromHead,sizeof(HeadLine),CN_ROWBUFFER);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifdef WITH_TRACE_ENCODING
+  RowCoder::vHeadDumpNat(aIntoHead, pIntoNub->pDesc()->pColumnVec());
+#endif
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 nColumns = pColVec->nItems();
+  i8 i_LastColumn = 0;
+  i8 i_FromOffset = 8;
+  i8 i_IntoOffset = 8;
+  i8 i_OldFromOffset  = 0;
+  
+  Coda* pIntoCoda = pIntoNub->pCoda();
+  
+  for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
+    
+    Column* pCol = pColVec->pGet(i_ForCol);
+    eDM eDatum = pCol->eDatumType();
+    
+#ifdef WITH_TRACE_ENCODING
+    vTrace("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n"_Stz);
+#endif
+    
+    // init coda
+    if (0 == i_IntoHead) {
+      pIntoCoda->m_aeDatum[i_ForCol] = eDatum;
+      pIntoCoda->m_aiAux[i_ForCol].m_iInt = 0;
+    }
+    
+    // save old fromOffset
+    i_OldFromOffset = i_FromOffset;
+    eMN eEncoding = eGetEncodingNat(i_ForCol,aFromHead,pColVec,
+                                    i_LastColumn,i_FromOffset);
+    
+    // calculate new IntoOffset
+    i_IntoOffset += i_FromOffset - i_OldFromOffset;
+    
+    //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    
+    if (0 == i_IntoHead && eDatum == DM_INT) {
+      vSetAuxInt(pIntoCoda,aIntoHead,pCol,eEncoding,i_IntoOffset);
+    }
+    
+    //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    //
+#ifdef WITH_EXTENDED_DTE
+    if (DM_DTE == eDatum) {
+      vRecodeDteDays(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+#ifdef WITH_TRACE_ENCODING
+      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol,"vRecodeDteDays"_Stz);
+#endif
+      continue;
+    }
+#endif
+    
+#ifdef WITH_EXTENDED_INT
+    if (DM_INT == eDatum) {
+      vRecodeInt(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+    }
+#endif
+    
+    //    if (0 == i_ForCol) {
+    //      Datum oCol0;
+    //      i8 i_LastColumn = 0;
+    //      i8 i_LastOffset = 8;
+    //      vDecode(&oCol0,aIntoHead,pColVec,pCol,pIntoCoda,i_LastColumn,i_LastOffset);
+    //    }
+    
+#ifdef WITH_EXTENDED_BCD
+    if (DM_BCD == eDatum) {
+      vRecodeBcdTenth(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+      //#ifdef WITH_TRACE_ENCODING
+      //      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "vRecodeBcdTenth"_Stz);
+      //#endif
+      continue;
+    }
+#endif
+    
+    // copy a shoco tail
+    if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding) {
+      vCopyShoco(pIntoNub,aIntoHead,i_IntoHead,pFromNub,pCol,
+                 i_IntoOffset,i_FromOffset);
+#ifdef WITH_TRACE_ENCODING
+      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "vCopyShoco"_Stz);
+#endif
+      
+      //      if (15 == i_ForCol &&
+      //          (MN_SHOCO_2B == aIntoHead->w8_1N(15) || MN_SHOCO_SPLIT == aIntoHead->w8_1N(15)))
+      //        RowCoder::vHeadDump(aIntoHead, pIntoNub->pDesc()->pColumnVec());
+      
+      continue;
+    }
+    
+#ifdef WITH_EXTENDED_VCH
+    // recode a Vch1B into an Alpha
+    //!? a recode of Vch1B van only be done on char(1) columns
+    if (DM_VCH == eDatum && MN_1B == eEncoding) {
+      vRecodeVch1B(pIntoNub, aIntoHead, pCol, i_IntoOffset, i_FromOffset);
+#ifdef WITH_TRACE_ENCODING
+      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "vRecodeVch1B"_Stz);
+#endif
+      continue;
+    }
+#endif
+    
+  }
+  
+#ifdef WITH_TRACE_ENCODING
+  RowCoder::vHeadDump(aIntoHead, pIntoNub->pDesc()->pColumnVec());
+  HV_Rec hvRec;
+  RowCoder::vRecord(hvRec,aIntoHead,pColVec);
+  hvRec->vPrintRow();
+  vTrace("\n"_Stz);
+#endif
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode given datum into cache line                                         */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vEncode(RowNub* pNub, Column* pCol, Datum* pDatum)
+{
+  i8 i_Column = pCol->iColumnNo();
+  
+  //! don't encode columns 16+                                             (fix)
+  if (i_Column >= 16)
+    return;
+  
+  eDM eDatum = pCol->eDatumType();
+  
+  Coda* pCoda = pNub->pCoda();
+  pCoda->m_aeDatum[i_Column] = eDatum;
+  
+  switch (eDatum) {
+    case DM_BCD: vEncodeBcd(pNub,pCol,pDatum); return;
+    case DM_BOL: vEncodeBol(pNub,pCol,pDatum); return;
+    case DM_DTE: vEncodeDte(pNub,pCol,pDatum); return;
+    case DM_FLT: vEncodeFlt(pNub,pCol,pDatum); return;
+    case DM_INT: vEncodeInt(pNub,pCol,pDatum); return;
+    case DM_IVL: vEncodeIvl(pNub,pCol,pDatum); return;
+    case DM_TME: vEncodeTme(pNub,pCol,pDatum); return;
+    case DM_TSP: vEncodeTsp(pNub,pCol,pDatum); return;
+    case DM_VCH: vEncodeVch(pNub,pCol,pDatum); return;
+    default:
+      NEVER_REACH;
   }
 }
 
