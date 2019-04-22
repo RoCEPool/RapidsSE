@@ -14,6 +14,8 @@ Peruse::Peruse(Stz* szName)
   
   m_sName  = szName;
   
+  m_oTimer.vStart();
+  
   m_iCount = 0;
   m_iMax   = C_I8_MIN;
   m_iMin   = C_I8_MAX;
@@ -117,8 +119,16 @@ void Peruse::vAdd(i8 iArg, Stz* szFormat,...)
     
     d8 dGrandKurt = double(m_iGrandCount)*m_dGrandM4 / (m_dGrandM2*m_dGrandM2) - 3.0;
     
-    vTrace("%s cnt %lld sum %lld min %lld max %lld avg %lld var %g dev %g skw %g krt %g"_Stz,
+    m_oTimer.vUpdate();
+    s32 sElapsedMag;
+    Magnitudes::vTimeMag(m_oTimer.iMilliseconds()*C_1M, sElapsedMag);
+    vTrace("%s %s "
+           "cnt %lld sum %lld min %lld max %lld "
+           "avg %lld var %g dev %g skw %g krt %g"_Stz,
+           
            m_sName.aStz(),
+           sElapsedMag.aStz(),
+           
            m_iGrandCount,
            m_iGrandSum,
            m_iGrandMin,

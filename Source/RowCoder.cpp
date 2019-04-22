@@ -166,8 +166,6 @@ void RowCoder::vAnalyse(RowNub* pNub)
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 {
-  static Peruse xPeruse("Split"_Stz);
-  
   static i8 nCalls = 0;
   nCalls++;
   
@@ -736,14 +734,10 @@ void RowCoder::vCopyShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
                           RowNub* pFromNub, Column* pCol,
                           i8 i_IntoOffset, i8 i_FromOffset)
 {
-  static i8 nFolds = 0;
   static Peruse xSplits("Splits"_Stz);
  
-  ColumnVec* pColVec = pIntoNub->pDesc()->pColumnVec();
-
   HeadLine* aFromHead = pFromNub->aGetHead(0);
   TailLine* aIntoTail = nullptr;
-  i8 i_Column = pCol->iColumnNo();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy shoco tail line from nub

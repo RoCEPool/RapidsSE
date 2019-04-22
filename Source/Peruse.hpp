@@ -20,6 +20,8 @@ namespace Measurment
   public:
     s32 m_sName;
   
+    Timer m_oTimer;
+  
     i8  m_iCount;
     i8  m_iMax;
     i8  m_iMin;

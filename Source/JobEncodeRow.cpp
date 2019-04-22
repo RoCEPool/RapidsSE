@@ -50,6 +50,8 @@ JobEncodeRow::~JobEncodeRow(void) noexcept(false)
 bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
 {
   bBlankLine = false;
+  static Peruse xRows("Rows:"_Stz);
+  xRows.vAdd(1,"\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
