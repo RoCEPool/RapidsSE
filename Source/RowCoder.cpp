@@ -298,10 +298,6 @@ void RowCoder::vEncodeBcd(RowNub* pNub, Column* pCol, Datum* pDatum)
   pNub->vOffsetInc(nBytesEncoded);
   vUsageIncEncoded(i_Column,nBytesEncoded);
   
-  Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
-  
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
@@ -340,9 +336,6 @@ void RowCoder::vEncodeBol(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   pNub->vOffsetInc(nBytesEncoded);
   vUsageIncEncoded(i_Column,nBytesEncoded);
-  
-  Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -390,9 +383,6 @@ void RowCoder::vEncodeDte(RowNub* pNub, Column* pCol, Datum* pDatum)
   pNub->vOffsetInc(nBytesEncoded);
   vUsageIncEncoded(i_Column,nBytesEncoded);
   
-  Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
@@ -438,9 +428,6 @@ void RowCoder::vEncodeFlt(RowNub* pNub, Column* pCol, Datum* pDatum)
   pNub->vOffsetInc(nBytesEncoded);
   vUsageIncEncoded(i_Column,nBytesEncoded);
   
-  Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
@@ -484,9 +471,6 @@ void RowCoder::vEncodeInt(RowNub* pNub, Column* pCol, Datum* pDatum)
   pNub->vOffsetInc(nBytesEncoded);
   vUsageIncEncoded(i_Column,nBytesEncoded);
   
-  Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
@@ -528,11 +512,6 @@ void RowCoder::vEncodeIvl(RowNub* pNub, Column* pCol, Datum* pDatum)
     aHeadLine->vPut(pNub->i_Offset(),pDatum->m_iInt,eEncoding);
   
   pNub->vOffsetInc(nBytesEncoded);
-  vUsageIncEncoded(i_Column,nBytesEncoded);
-  
-  Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
-  
   vUsageIncEncoded(i_Column,nBytesEncoded);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -578,9 +557,6 @@ void RowCoder::vEncodeTme(RowNub* pNub, Column* pCol, Datum* pDatum)
   pNub->vOffsetInc(nBytesEncoded);
   vUsageIncEncoded(i_Column,nBytesEncoded);
   
-  Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
@@ -623,9 +599,6 @@ void RowCoder::vEncodeTsp(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   pNub->vOffsetInc(nBytesEncoded);
   vUsageIncEncoded(i_Column,nBytesEncoded);
-  
-  Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -734,9 +707,6 @@ void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum)
   pNub->vOffsetInc(2);
   vUsageIncEncoded(i_Column,2);
   
-  Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column].m_iInt = 2;
-  
   // set length of the compressed string encoded into tail shoco cache line
   aShocoTail->v1B(C_SHOCO_COMPRESSED_OFFSET,nCompressed);
   
@@ -771,10 +741,6 @@ void RowCoder::vEncodeVchSmall(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   pNub->vOffsetInc(pDatum->m_nChars);
   vUsageIncEncoded(i_Column,pDatum->m_nChars);
-  
-  Coda* pCoda = pNub->pCoda();
-  pCoda->m_aiAux[i_Column].m_iInt = pDatum->m_nChars;
-  
 }
 
 /*----------------------------------------------------------------------------*/

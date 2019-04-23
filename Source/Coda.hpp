@@ -23,8 +23,6 @@ namespace Data
       i8   m_iTsp;
       char m_caChr[C_BYTES_PER_WORD];
       
-      i8   m_iTail;
-      
     } m_aiAux[C_MAX_COLUMNS];
 
     // must be last
