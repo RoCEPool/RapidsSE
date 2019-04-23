@@ -87,12 +87,13 @@ RowCoder::~RowCoder(void) noexcept(false)
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
     Column* pCol = m_pColVec->pGet(i_Col);
+
     if (DM_DTE != pCol->eDatumType())
       continue;
 
     i8 nDeltaBytes =
-      - (m_xaUsage[i_Col].m_nEncodedBytes - m_xaUsage[i_Col].m_nRecodedBytes
-         + m_xaUsage[i_Col].m_nOopsBytes);
+         m_xaUsage[i_Col].m_nRecodedBytes + m_xaUsage[i_Col].m_nOopsBytes
+           - m_xaUsage[i_Col].m_nEncodedBytes;
     
     nSumEncodedBytes += m_xaUsage[i_Col].m_nEncodedBytes;
     nSumRecodedBytes += m_xaUsage[i_Col].m_nRecodedBytes;
