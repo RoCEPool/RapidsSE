@@ -23,7 +23,7 @@ create table bolTbl (
 );
 success
 
-Loop 100 {
+Loop 1000 {
   
   ld bolTbl "/DATA/Encoding/boolean.csv" ;
   success
@@ -32,72 +32,68 @@ Loop 100 {
 
 // check no of rows
 fetch bolTbl;
-rows: 10000
+rows: 100000
 
 // dump table
-dumpTbl bolTbl;
+//dumpTbl bolTbl;
 
 fetch retrieve bolTbl bol_col0;
-rows: 10000
+affected: 100000
 
 fetch retrieve bolTbl bol_col1;
-rows: 10000
+affected: 100000
 
 fetch retrieve bolTbl bol_col2;
-rows: 10000
+affected: 100000
 
 fetch retrieve bolTbl bol_col3;
-rows: 10000
+affected: 100000
 
 fetch retrieve bolTbl bol_col4;
-rows: 10000
+affected: 100000
 
 fetch retrieve bolTbl bol_col5;
-rows: 10000
+affected: 100000
 
 fetch retrieve bolTbl bol_col6;
-rows: 10000
+affected: 100000
 
 fetch retrieve bolTbl bol_col7;
-rows: 10000
+affected: 100000
 
 fetch retrieve bolTbl bol_col8;
-rows: 10000
+affected: 100000
 
 fetch retrieve bolTbl bol_col9;
-rows: 10000
+affected: 100000
 
 fetch retrieve bolTbl bol_col10;
-rows: 10000
+affected: 100000
 
 fetch retrieve bolTbl bol_col11;
-rows: 10000
+affected: 100000
 
 fetch retrieve bolTbl bol_col12;
-rows: 10000
+affected: 100000
 
 fetch retrieve bolTbl bol_col13;
-rows: 10000
+affected: 100000
 
 fetch retrieve bolTbl bol_col14;
-rows: 10000
+affected: 100000
 
 fetch retrieve bolTbl bol_col15;
-rows: 10000
+affected: 100000
 
 // drop the table
-drop table bolTbl;
-success
-
-// check existence of table
-lstbl;
-rows: 0
+//drop table bolTbl;
+//success
 
 CLEANUP {
   
   // drop the table
-  drop table bolTbl;
-  mute
+  //drop table bolTbl;
+  //mute
   
   bye;
   mute

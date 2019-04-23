@@ -2170,8 +2170,9 @@ void RowCoder::vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,
   
   pDatum->m_eDatum = DM_BOL;
   
-  eMN eEncoding = eGetEncodingExt(i_Column,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
-
+  //eMN eEncoding = eGetEncodingExt(i_Column,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+  eMN eEncoding = (eMN)aHeadLine->w8_1N(i_Column);
+  
   switch (eEncoding) {
       
     case MN_NULL:  pDatum->m_iInt = C_DATUM_NULL; break;
