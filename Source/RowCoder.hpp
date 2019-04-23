@@ -24,8 +24,8 @@ namespace Data
       bool m_bFixed;    // has the encoding decision been fixed?
       
       i8   m_nCount;         // no of times the column has been encoded
-      i8   m_nRequiredBytes; // bytes required
       i8   m_nEncodedBytes;  // bytes actually encoded
+      i8   m_nRecodedBytes;  // bytes recoded
 
       i8   m_nPriorCount;          // prior no of time the column has been encoded
       i8   m_nPriorRequiredBytes;  // prior bytes required
@@ -63,6 +63,19 @@ namespace Data
     bool bCopy(RowNub* pIntoNub, RowNub* pFromNub);
     void vEncode(RowNub* pNub, Column* pCol, Datum* pDatum);
 
+    void vRecodeBcdTenth(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
+                         i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeDteDays(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
+                        i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeInt(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
+                    i8& i_IntoOffset, i8& i_FromOffset);
+    bool bRecodeIntDelta(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
+                       i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeIntDigit(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
+                         i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
+                      i8& i_IntoOffset, i8& i_FromOffset);
+  
   private:
     static void vAppend(Record* pRec, HeadLine* aHeadLine,
                         ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -72,22 +85,6 @@ namespace Data
                            RowNub* pFromNub, Column* pCol,
                            i8 i_ToOffset, i8 i_FromOffset);
   
-    static void vRecodeBcdTenth(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
-                              i8& i_IntoOffset, i8& i_FromOffset);
-  
-    static void vRecodeDteDays(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
-                               i8& i_IntoOffset, i8& i_FromOffset);
-    static void vRecodeInt(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
-                           i8& i_IntoOffset, i8& i_FromOffset);
-    static void vRecodeIntDigit(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
-                           i8& i_IntoOffset, i8& i_FromOffset);
-  
-    static bool bRecodeIntDelta(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
-                                 i8& i_IntoOffset, i8& i_FromOffset);
-
-    static void vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
-                             i8& i_IntoOffset, i8& i_FromOffset);
-    
     static i8 nDataBytes(eDM eDatum, eMN eEncoding);
   
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
@@ -204,6 +201,7 @@ namespace Data
                            eMN eEncoding, i8 i_IntoOffset);
   
     void vUsageInc(i8 i_Col, i8 nBytes);
+    void vUsageIncRecoded(i8 i_Col, i8 nBytes);
     void vUsageReset(void);
 
   private:
