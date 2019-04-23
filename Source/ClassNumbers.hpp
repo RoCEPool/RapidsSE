@@ -152,7 +152,6 @@ enum eCN : u2 // Class Number
   /* 111 0x6F    70608B Heap:L */ CN_JOB_RECEIVER,
   /* 112 0x70    71168B Heap:L */ CN_JOB_REPEATER,
   /* 113 0x71    71168B Heap:L */ CN_JOB_REPORT,
-  /*                           */ CN_JOB_RETRIEVEROWS,
   /* 114 0x72    70608B Heap:L */ CN_JOB_SELECTTABLE,
   /* 115 0x73    70608B Heap:L */ CN_JOB_SANITY,
   /* 116 0x74    70592B Heap:L */ CN_JOB_SHOWCLUSTER,
@@ -427,7 +426,6 @@ static Stz* aCN[]
   /* 111 0x6F */ "JOB_RECEIVER"_Stz,        // CN_JOB_RECEIVER
   /* 112 0x70 */ "JOB_REPEATER"_Stz,        // CN_JOB_REPEATER
   /* 113 0x71 */ "JOB_REPORT"_Stz,          // CN_JOB_REPORT
-  /*          */ "CN_JOB_RETRIEVEROWS"_Stz, // CN_JOB_RETRIEVEROWS
   /* 114 0x72 */ "JOB_SELECTTABLE"_Stz,     // CN_JOB_SELECTTABLE
   /* 115 0x73 */ "JOB_SANITY"_Stz,          // CN_JOB_SANITY
   /* 116 0x74 */ "JOB_SHOWCLUSTER"_Stz,     // CN_JOB_SHOWCLUSTER
