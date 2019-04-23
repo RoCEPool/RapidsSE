@@ -30,10 +30,6 @@ namespace Data
       i8   m_nOops;          // no of times unable to succesfully recode
       i8   m_nOopsBytes;     // oops bytes
 
-      i8   m_nPriorCount;          // prior no of time the column has been encoded
-      i8   m_nPriorRequiredBytes;  // prior bytes required
-      i8   m_nPriorEncodedBytes;   // prior bytes actually encoded
-
     } m_xaUsage[C_MAX_COLUMNS];
   
     i8 m_nBuffers;
@@ -49,9 +45,43 @@ namespace Data
     RowCoder(void);
     ~RowCoder(void) noexcept(false);
 
+    bool bCopy(RowNub* pIntoNub, RowNub* pFromNub);
+    void vEncode(RowNub* pNub, Column* pCol, Datum* pDatum);
+
+  private:
+    void vEncodeBcd(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeBol(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeDte(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeFlt(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeInt(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeIvl(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeTme(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeTsp(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeVchSmall(RowNub* pNub, Column* pCol, Datum* pDatum);
+  
+    void vRecodeBcdTenth(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
+                         i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeDteDays(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
+                        i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeInt(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
+                    i8& i_IntoOffset, i8& i_FromOffset);
+    bool bRecodeIntDelta(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
+                         i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeIntDigit(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
+                         i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeVchAlpha(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
+                      i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeVchShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
+                    RowNub* pFromNub, Column* pCol,
+                    i8 i_ToOffset, i8 i_FromOffset);
+  
+
+  public:
     static void vAnalyse(RowNub* pNub);
     static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
-                         i8& i_LastColumn, i8& i_LastOffset);
+                        i8& i_LastColumn, i8& i_LastOffset);
     static void vDecode(Datum* pDatum, HeadLine* aHeadLine,
                         ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                         i8& i_LastColumn, i8& i_LastOffset);
@@ -62,31 +92,11 @@ namespace Data
     static void vPrint(RowNub* pNub, i8 i_Row, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
     static void vRecord(Record* pRec, RowNub* pNub, i8 i_Row);
     static void vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec);
-  
-    bool bCopy(RowNub* pIntoNub, RowNub* pFromNub);
-    void vEncode(RowNub* pNub, Column* pCol, Datum* pDatum);
 
-    void vRecodeBcdTenth(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
-                         i8& i_IntoOffset, i8& i_FromOffset);
-    void vRecodeDteDays(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
-                        i8& i_IntoOffset, i8& i_FromOffset);
-    void vRecodeInt(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
-                    i8& i_IntoOffset, i8& i_FromOffset);
-    bool bRecodeIntDelta(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
-                       i8& i_IntoOffset, i8& i_FromOffset);
-    void vRecodeIntDigit(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
-                         i8& i_IntoOffset, i8& i_FromOffset);
-    void vRecodeVch1B(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
-                      i8& i_IntoOffset, i8& i_FromOffset);
-  
   private:
     static void vAppend(Record* pRec, HeadLine* aHeadLine,
                         ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                         i8& i_LastColumn, i8& i_LastOffset);
-  
-    static void vCopyShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
-                           RowNub* pFromNub, Column* pCol,
-                           i8 i_ToOffset, i8 i_FromOffset);
   
     static i8 nDataBytes(eDM eDatum, eMN eEncoding);
   
@@ -146,20 +156,7 @@ namespace Data
     static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
 
-    void vEncodeBcd(RowNub* pNub, Column* pCol, Datum* pDatum);
-    void vEncodeBol(RowNub* pNub, Column* pCol, Datum* pDatum);
-    void vEncodeDte(RowNub* pNub, Column* pCol, Datum* pDatum);
-    void vEncodeFlt(RowNub* pNub, Column* pCol, Datum* pDatum);
-    void vEncodeInt(RowNub* pNub, Column* pCol, Datum* pDatum);
-    void vEncodeIvl(RowNub* pNub, Column* pCol, Datum* pDatum);
-    void vEncodeTme(RowNub* pNub, Column* pCol, Datum* pDatum);
-    void vEncodeTsp(RowNub* pNub, Column* pCol, Datum* pDatum);
-    void vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum);
-  
-    void vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum);
-    void vEncodeVchSmall(RowNub* pNub, Column* pCol, Datum* pDatum);
-
-    eMN eEncodingBcd(Datum* pDatum, i8& nBytesEncoded);
+    static eMN eEncodingBcd(Datum* pDatum, i8& nBytesEncoded);
     static eMN eEncodingBol(Datum* pDatum, i8& nBytesEncoded);
     static eMN eEncodingDte(Datum* pDatum, i8& nBytesEncoded);
     static eMN eEncodingFlt(Datum* pDatum, i8& nBytesEncoded);
