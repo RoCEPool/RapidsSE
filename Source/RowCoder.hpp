@@ -23,9 +23,12 @@ namespace Data
       eDM  m_eExtDatum; // its current extended datum
       bool m_bFixed;    // has the encoding decision been fixed?
       
-      i8   m_nCount;         // no of times the column has been encoded
-      i8   m_nEncodedBytes;  // bytes actually encoded
-      i8   m_nRecodedBytes;  // bytes recoded
+      i8   m_nEncoded;       // no of times the column has originally encoded
+      i8   m_nEncodedBytes;  // bytes originally encoded
+      i8   m_nRecoded;       // no of times able to succesfully recode
+      i8   m_nRecodedBytes;  // bytes succesfully recoded
+      i8   m_nOops;          // no of times unable to succesfully recode
+      i8   m_nOopsBytes;     // oops bytes
 
       i8   m_nPriorCount;          // prior no of time the column has been encoded
       i8   m_nPriorRequiredBytes;  // prior bytes required
@@ -200,8 +203,9 @@ namespace Data
     static void vSetAuxInt(Coda* pIntoCoda, HeadLine* aIntoHead, Column* pCol,
                            eMN eEncoding, i8 i_IntoOffset);
   
-    void vUsageInc(i8 i_Col, i8 nBytes);
+    void vUsageIncEncoded(i8 i_Col, i8 nBytes);
     void vUsageIncRecoded(i8 i_Col, i8 nBytes);
+    void vUsageIncOops(i8 i_Col, i8 nBytes);
     void vUsageReset(void);
 
   private:

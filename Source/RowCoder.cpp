@@ -54,10 +54,15 @@ RowCoder::RowCoder(void)
     m_xaUsage[i_Col].m_eExtDatum = DM_NONE;
     m_xaUsage[i_Col].m_bFixed = false;
     
-    m_xaUsage[i_Col].m_nCount = 0;
+    m_xaUsage[i_Col].m_nEncoded = 0;
     m_xaUsage[i_Col].m_nEncodedBytes = 0;
+    
+    m_xaUsage[i_Col].m_nRecoded = 0;
     m_xaUsage[i_Col].m_nRecodedBytes = 0;
 
+    m_xaUsage[i_Col].m_nOops = 0;
+    m_xaUsage[i_Col].m_nOopsBytes = 0;
+    
     m_xaUsage[i_Col].m_nPriorCount = 0;
     m_xaUsage[i_Col].m_nPriorRequiredBytes = 0;
     m_xaUsage[i_Col].m_nPriorEncodedBytes  = 0;
@@ -291,7 +296,7 @@ void RowCoder::vEncodeBcd(RowNub* pNub, Column* pCol, Datum* pDatum)
     aHeadLine->vPut(pNub->i_Offset(),pDatum->m_iInt,eEncoding);
   
   pNub->vOffsetInc(nBytesEncoded);
-  vUsageInc(i_Column,nBytesEncoded);
+  vUsageIncEncoded(i_Column,nBytesEncoded);
   
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
@@ -334,7 +339,7 @@ void RowCoder::vEncodeBol(RowNub* pNub, Column* pCol, Datum* pDatum)
   aHeadLine->v1N(i_Column,eEncoding);
   
   pNub->vOffsetInc(nBytesEncoded);
-  vUsageInc(i_Column,nBytesEncoded);
+  vUsageIncEncoded(i_Column,nBytesEncoded);
   
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
@@ -383,7 +388,7 @@ void RowCoder::vEncodeDte(RowNub* pNub, Column* pCol, Datum* pDatum)
     aHeadLine->vPut(pNub->i_Offset(),pDatum->m_iInt,nBytesEncoded);
   
   pNub->vOffsetInc(nBytesEncoded);
-  vUsageInc(i_Column,nBytesEncoded);
+  vUsageIncEncoded(i_Column,nBytesEncoded);
   
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
@@ -431,7 +436,7 @@ void RowCoder::vEncodeFlt(RowNub* pNub, Column* pCol, Datum* pDatum)
     aHeadLine->vPut(pNub->i_Offset(),pDatum->m_iInt,eEncoding);
   
   pNub->vOffsetInc(nBytesEncoded);
-  vUsageInc(i_Column,nBytesEncoded);
+  vUsageIncEncoded(i_Column,nBytesEncoded);
   
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
@@ -477,7 +482,7 @@ void RowCoder::vEncodeInt(RowNub* pNub, Column* pCol, Datum* pDatum)
     aHeadLine->vPut(pNub->i_Offset(),pDatum->m_iInt,eEncoding);
   
   pNub->vOffsetInc(nBytesEncoded);
-  vUsageInc(i_Column,nBytesEncoded);
+  vUsageIncEncoded(i_Column,nBytesEncoded);
   
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
@@ -523,12 +528,12 @@ void RowCoder::vEncodeIvl(RowNub* pNub, Column* pCol, Datum* pDatum)
     aHeadLine->vPut(pNub->i_Offset(),pDatum->m_iInt,eEncoding);
   
   pNub->vOffsetInc(nBytesEncoded);
-  vUsageInc(i_Column,nBytesEncoded);
+  vUsageIncEncoded(i_Column,nBytesEncoded);
   
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
   
-  vUsageInc(i_Column,nBytesEncoded);
+  vUsageIncEncoded(i_Column,nBytesEncoded);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -571,7 +576,7 @@ void RowCoder::vEncodeTme(RowNub* pNub, Column* pCol, Datum* pDatum)
     aHeadLine->vPut(pNub->i_Offset(),pDatum->m_iInt,eEncoding);
   
   pNub->vOffsetInc(nBytesEncoded);
-  vUsageInc(i_Column,nBytesEncoded);
+  vUsageIncEncoded(i_Column,nBytesEncoded);
   
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
@@ -617,7 +622,7 @@ void RowCoder::vEncodeTsp(RowNub* pNub, Column* pCol, Datum* pDatum)
     aHeadLine->vPut(pNub->i_Offset(),pDatum->m_iInt,eEncoding);
   
   pNub->vOffsetInc(nBytesEncoded);
-  vUsageInc(i_Column,nBytesEncoded);
+  vUsageIncEncoded(i_Column,nBytesEncoded);
   
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
@@ -727,7 +732,7 @@ void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum)
   i8 i_Offset = pNub->i_Offset();
   aHeadLine->vPut(i_Offset,i_Shoco,MN_2B);
   pNub->vOffsetInc(2);
-  vUsageInc(i_Column,2);
+  vUsageIncEncoded(i_Column,2);
   
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = 2;
@@ -765,7 +770,7 @@ void RowCoder::vEncodeVchSmall(RowNub* pNub, Column* pCol, Datum* pDatum)
                   pDatum->m_nChars);
   
   pNub->vOffsetInc(pDatum->m_nChars);
-  vUsageInc(i_Column,pDatum->m_nChars);
+  vUsageIncEncoded(i_Column,pDatum->m_nChars);
   
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = pDatum->m_nChars;
@@ -3640,10 +3645,10 @@ void RowCoder::vSetAuxInt(Coda* pIntoCoda, HeadLine* aIntoHead, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* inc column usage                                                           */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vUsageInc(i8 i_Col, i8 nBytes)
+void RowCoder::vUsageIncEncoded(i8 i_Col, i8 nBytes)
 {
   m_xaUsage[i_Col].m_nEncodedBytes += nBytes;
-  m_xaUsage[i_Col].m_nCount++;
+  m_xaUsage[i_Col].m_nEncoded++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3652,6 +3657,16 @@ void RowCoder::vUsageInc(i8 i_Col, i8 nBytes)
 void RowCoder::vUsageIncRecoded(i8 i_Col, i8 nBytes)
 {
   m_xaUsage[i_Col].m_nRecodedBytes += nBytes;
+  m_xaUsage[i_Col].m_nRecoded++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc column usage                                                           */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vUsageIncOops(i8 i_Col, i8 nBytes)
+{
+  m_xaUsage[i_Col].m_nOopsBytes += nBytes;
+  m_xaUsage[i_Col].m_nOops++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3667,10 +3682,15 @@ void RowCoder::vUsageReset(void)
     m_xaUsage[i_Col].m_eExtDatum = DM_NONE;
     m_xaUsage[i_Col].m_bFixed = false;
     
-    m_xaUsage[i_Col].m_nCount = 0;
+    m_xaUsage[i_Col].m_nEncoded = 0;
     m_xaUsage[i_Col].m_nEncodedBytes = 0;
+    
+    m_xaUsage[i_Col].m_nRecoded = 0;
     m_xaUsage[i_Col].m_nRecodedBytes = 0;
 
+    m_xaUsage[i_Col].m_nOops = 0;
+    m_xaUsage[i_Col].m_nOopsBytes = 0;
+    
     m_xaUsage[i_Col].m_nPriorCount = 0;
     m_xaUsage[i_Col].m_nPriorRequiredBytes = 0;
     m_xaUsage[i_Col].m_nPriorEncodedBytes  = 0;
