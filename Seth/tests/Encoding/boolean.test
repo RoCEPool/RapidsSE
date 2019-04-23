@@ -1,0 +1,53 @@
+/*----------------------------------------------------------------------------*/
+/* boolean.test -- BOOLEAN DATUM tests                                        */
+/*----------------------------------------------------------------------------*/
+
+// (1) create a table
+create table bolTbl (
+  bol_col0   BOOLEAN     NOT NULL,
+  bol_col1   BOOLEAN     NOT NULL,
+  bol_col2   BOOLEAN     NOT NULL,
+  bol_col3   BOOLEAN     NOT NULL,
+  bol_col4   BOOLEAN     NOT NULL,
+  bol_col5   BOOLEAN     NOT NULL,
+  bol_col6   BOOLEAN     NOT NULL,
+  bol_col7   BOOLEAN     NOT NULL,
+  bol_col8   BOOLEAN     NOT NULL,
+  bol_col9   BOOLEAN     NOT NULL,
+  bol_col10  BOOLEAN     NOT NULL,
+  bol_col11  BOOLEAN     NOT NULL,
+  bol_col12  BOOLEAN     NOT NULL,
+  bol_col13  BOOLEAN     NOT NULL,
+  bol_col14  BOOLEAN     NOT NULL,
+  bol_col15  BOOLEAN
+);
+success
+
+ld bolTbl "/DATA/Encoding/boolean.csv" ;
+success
+
+// check no of rows
+fetch bolTbl;
+rows: 1
+
+// dump table
+dumpTbl bolTbl;
+
+// drop the table
+drop table bolTbl;
+success
+
+// check existence of table
+lstbl;
+rows: 0
+
+CLEANUP {
+  
+  // drop the table
+  drop table bolTbl;
+  mute
+  
+  bye;
+  mute
+}
+

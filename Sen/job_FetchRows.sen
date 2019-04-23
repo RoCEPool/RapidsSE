@@ -156,7 +156,9 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the column from the table and set it in the fetchRows job
-  sColumnNm pTable table.findColumn pJob_FetchRows job_fetchRows.column!
+  "" sColumnNm str.equal not if
+    sColumnNm pTable table.findColumn pJob_FetchRows job_fetchRows.column!
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the metadata string
