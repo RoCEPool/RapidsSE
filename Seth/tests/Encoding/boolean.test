@@ -23,15 +23,67 @@ create table bolTbl (
 );
 success
 
-ld bolTbl "/DATA/Encoding/boolean.csv" ;
-success
+Loop 100 {
+  
+  ld bolTbl "/DATA/Encoding/boolean.csv" ;
+  success
+
+}
 
 // check no of rows
 fetch bolTbl;
-rows: 1
+rows: 10000
 
 // dump table
 dumpTbl bolTbl;
+
+fetch retrieve bolTbl bol_col0;
+rows: 10000
+
+fetch retrieve bolTbl bol_col1;
+rows: 10000
+
+fetch retrieve bolTbl bol_col2;
+rows: 10000
+
+fetch retrieve bolTbl bol_col3;
+rows: 10000
+
+fetch retrieve bolTbl bol_col4;
+rows: 10000
+
+fetch retrieve bolTbl bol_col5;
+rows: 10000
+
+fetch retrieve bolTbl bol_col6;
+rows: 10000
+
+fetch retrieve bolTbl bol_col7;
+rows: 10000
+
+fetch retrieve bolTbl bol_col8;
+rows: 10000
+
+fetch retrieve bolTbl bol_col9;
+rows: 10000
+
+fetch retrieve bolTbl bol_col10;
+rows: 10000
+
+fetch retrieve bolTbl bol_col11;
+rows: 10000
+
+fetch retrieve bolTbl bol_col12;
+rows: 10000
+
+fetch retrieve bolTbl bol_col13;
+rows: 10000
+
+fetch retrieve bolTbl bol_col14;
+rows: 10000
+
+fetch retrieve bolTbl bol_col15;
+rows: 10000
 
 // drop the table
 drop table bolTbl;
