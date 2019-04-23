@@ -23,6 +23,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.getPtn"_Stz,             &Step::vTableGetPtn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.init"_Stz,               &Step::vTableInit);
+  vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
   vAddStep("table.isLoading!"_Stz,         &Step::vTableIsLoadingStore);
   vAddStep("table.isValidIndexColumns"_Stz,&Step::vTableIsValidIndexColumns);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
@@ -171,7 +172,7 @@ void Step::vTableIsLoadingStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.coumn@ -- get the column from the table                              */
+/* table.column@ -- get the column from the table                             */
 /*----------------------------------------------------------------------------*/
 void Step::vTableColumnFetch(MP_Task mpTask)
 {
@@ -386,6 +387,45 @@ ENTRY("vTableInit"_Stz);
   ASSERT(CN_TABLE == pTable->eClass());
   
   new(pTable) Table;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.isColumn -- is the column a valid column of the table ?              */
+/*----------------------------------------------------------------------------*/
+void Step::vTableIsColumn(MP_Task mpTask)
+{
+  ENTRY("vTableInit"_Stz);
+  
+  Object* pPtrTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.isColumn"_Stz);
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  s32 sColumnName;
+  if ( ! mpTask->m_pDataStack->bPop(sColumnName) )
+    THROW_INVALID_DSTACK("table.isColumn"_Stz);
+  
+  ColumnVec* pColVec = pTable->pColumnVec();
+  Column* pColumn;
+  bool bFound = false;
+  
+  // look for the column in the columnVec
+  i8 nTableColumns = pColVec->nItems();
+  for (i8 i_Col = 0; i_Col < nTableColumns; i_Col++) {
+    
+    pColumn = pColVec->pGet(i_Col);
+    
+    if (pColumn->sColumnName().bSame(sColumnName)) {
+      bFound = true;
+      break;
+    }
+  }
+  
+  mpTask->m_pDataStack->vPushI8(bFound);
   
   EXIT();
 }

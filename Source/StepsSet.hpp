@@ -539,6 +539,7 @@
   static void vJob_ExportTableStore(Tasks::MP_Task mpTask);
 
   // job FetchRows
+  static void vJob_FetchRowsColumnNameFetch(Tasks::MP_Task mpTask);
   static void vJob_FetchRowsLastBuffersStore(Tasks::MP_Task mpTask);
   static void vJob_FetchRowsPartitionFetch(Tasks::MP_Task mpTask);
   static void vJob_FetchRowsPlannerStore(Tasks::MP_Task mpTask);
@@ -983,6 +984,7 @@
   static void vTableGetPtn(Tasks::MP_Task mpTask);
   static void vTableIndexCount(Tasks::MP_Task mpTask);
   static void vTableInit(Tasks::MP_Task mpTask);
+  static void vTableIsColumn(Tasks::MP_Task mpTask);
   static void vTableIsLoadingStore(Tasks::MP_Task mpTask);
   static void vTableLazyBuildIndexes(Tasks::MP_Task mpTask);
   static void vTableList(Tasks::MP_Task mpTask);
