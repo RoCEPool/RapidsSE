@@ -79,14 +79,28 @@ RowCoder::~RowCoder(void) noexcept(false)
   
   i8 nCols = m_pColVec->nItems();
   
+  i8 nSumEncodedBytes = 0;
+  i8 nSumRecodedBytes = 0;
+  i8 nSumOopsBytes    = 0;
+  i8 nSumDeltaBytes   = 0;
+
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
     Column* pCol = m_pColVec->pGet(i_Col);
     if (DM_DTE != pCol->eDatumType())
       continue;
+
+    i8 nDeltaBytes =
+      - (m_xaUsage[i_Col].m_nEncodedBytes - m_xaUsage[i_Col].m_nRecodedBytes
+         + m_xaUsage[i_Col].m_nOopsBytes);
     
+    nSumEncodedBytes += m_xaUsage[i_Col].m_nEncodedBytes;
+    nSumRecodedBytes += m_xaUsage[i_Col].m_nRecodedBytes;
+    nSumOopsBytes    += m_xaUsage[i_Col].m_nOopsBytes;
+    nSumDeltaBytes   += nDeltaBytes;
+
     vTrace(": %2lld %-15s %-8s "
-           "E:%lld(%lldB) R:%lld(%lldB) O:%lld(%lldB) ∆(%lldB)\n"_Stz,
+           "E:%lld(%lldB) R:%lld(%lldB) O:%lld(%lldB) ∆:(%lldB)\n"_Stz,
            
            i_Col,
            pCol->sColumnName().aStz(),
@@ -95,11 +109,17 @@ RowCoder::~RowCoder(void) noexcept(false)
            m_xaUsage[i_Col].m_nEncoded, m_xaUsage[i_Col].m_nEncodedBytes,
            m_xaUsage[i_Col].m_nRecoded, m_xaUsage[i_Col].m_nRecodedBytes,
            m_xaUsage[i_Col].m_nOops,    m_xaUsage[i_Col].m_nOopsBytes,
-           
-           - (m_xaUsage[i_Col].m_nEncodedBytes - m_xaUsage[i_Col].m_nRecodedBytes
-                                               + m_xaUsage[i_Col].m_nOopsBytes)
+           nDeltaBytes
            );
   }
+  
+  vTrace(":  "
+         "E:(%lldB) R:(%lldB) O:(%lldB) ∆:(%lldB)\n"_Stz,
+         nSumEncodedBytes,
+         nSumRecodedBytes,
+         nSumOopsBytes,
+         nSumDeltaBytes);
+
   
 }
 
