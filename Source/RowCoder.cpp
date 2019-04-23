@@ -837,6 +837,7 @@ void RowCoder::vRecodeDteDays(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCo
   i8  nEncodedBytes = nDataBytes(DM_DTE,eCurrentEncoding);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for re-encoding
   
   // is this a 2nd+ date in the row?
   i8 i_FirstDate = pCol->iFirstDate();
@@ -853,6 +854,7 @@ void RowCoder::vRecodeDteDays(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCo
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // now re-encoding into DM_DAYS
   
   // change the encoding to extended days
   if (1 == pIntoNub->nHeads())
@@ -892,6 +894,8 @@ void RowCoder::vRecodeDteDays(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCo
   i8 iDiff = iThisDte - iFirstDte;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // re-encode into MN_DAYS_PLUS_1B
+  
   if (iDiff >= 0 && iDiff <= (i8)C_1_BYTE) {
     
     // revise the encoding
@@ -912,6 +916,8 @@ void RowCoder::vRecodeDteDays(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCo
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // re-encode into MN_DAYS_MINUS_1B
+  
   if (iDiff >= -(i8)C_1_BYTE && iDiff < 0) {
     
     // revise the encoding
@@ -932,8 +938,10 @@ void RowCoder::vRecodeDteDays(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCo
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("Huh??\n"_Stz);
-  NEVER_REACH;
+  // re-encode into MN_DAYS_CLASSIC_2B, MN_DAYS_SILVER_2B or MN_DAYS_SILVER_2B
+
+  vTrace("!!! vRecodeDteDays() into nB not implemented!!!\n"_Stz);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2041,7 +2049,15 @@ i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
       return 0;
       
     case DM_DAYS:
-      return 1;
+      switch (eEncoding) {
+        case MN_DAYS_PLUS_1B:    return 1;
+        case MN_DAYS_MINUS_1B:   return 1;
+        case MN_DAYS_CLASSIC_2B: return 2;
+        case MN_DAYS_SILVER_2B:  return 2;
+        case MN_DAYS_MODERN_2B:  return 2;
+        default:
+          NEVER_REACH;
+      }
       
     case DM_DELTA_PLUS:
       if (eEncoding <= MN_8B)
@@ -3287,8 +3303,11 @@ Stz* RowCoder::sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt)
         case MN_6B:        return("MN_6B"_Stz);   break;
         case MN_7B:        return("MN_7B"_Stz);   break;
         case MN_8B:        return("MN_8B"_Stz);   break;
-        case MN_DAYS_PLUS_1B:  return("MN_DAYS_PLUS_1B"_Stz);  break;
-        case MN_DAYS_MINUS_1B: return("MN_DAYS_MINUS_1B"_Stz); break;
+        case MN_DAYS_PLUS_1B:    return("MN_DAYS_PLUS_1B"_Stz);  break;
+        case MN_DAYS_MINUS_1B:   return("MN_DAYS_MINUS_1B"_Stz); break;
+        case MN_DAYS_CLASSIC_2B: return("MN_DAYS_CLASSIC_2B"_Stz); break;
+        case MN_DAYS_SILVER_2B:  return("MN_DAYS_SILVER_2B"_Stz); break;
+        case MN_DAYS_MODERN_2B:  return("MN_DAYS_MODERN_2B"_Stz); break;
         default:
           NEVER_REACH;
       }

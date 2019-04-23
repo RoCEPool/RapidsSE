@@ -58,9 +58,12 @@ namespace Data
   MN_ALPHA_4      = 0b1101, // D: m_caChr[4]
   MN_ALPHA_5      = 0b1110, // E: m_caChr[5]
   
-  MN_DAYS_PLUS_1B  = 0b1001, // 9: classical era 1B
-  MN_DAYS_MINUS_1B = 0b1010, // A: classical era 2B
-  
+  MN_DAYS_PLUS_1B    = 0b1001, // 9: +days 1B
+  MN_DAYS_MINUS_1B   = 0b1010, // A: -days 1B
+  MN_DAYS_CLASSIC_2B = 0b1011, // B: oops, its actually a classical era 2B
+  MN_DAYS_SILVER_2B  = 0b1100, // C: oops, its actually a silver era 2B
+  MN_DAYS_MODERN_2B  = 0b1101, // D: oops, its actually a modern era 2B
+
   MN_DIGIT_0     = 0b0001, // 1: digit 0
   MN_DIGIT_1     = 0b0010, // 2: digit 1
   MN_DIGIT_2     = 0b0011, // 3: digit 2
