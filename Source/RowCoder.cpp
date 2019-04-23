@@ -2268,8 +2268,9 @@ void RowCoder::vEncodeBcd(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
-
   
+  m_xaUsage[i_Column].m_nEncodedBytes += nBytesEncoded;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
@@ -2311,6 +2312,10 @@ void RowCoder::vEncodeBol(RowNub* pNub, Column* pCol, Datum* pDatum)
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
   
+  m_xaUsage[i_Column].m_nEncodedBytes += nBytesEncoded;
+  
+  m_xaUsage[i_Column].m_nEncodedBytes += nBytesEncoded;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
@@ -2359,6 +2364,8 @@ void RowCoder::vEncodeDte(RowNub* pNub, Column* pCol, Datum* pDatum)
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
   
+  m_xaUsage[i_Column].m_nEncodedBytes += nBytesEncoded;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
@@ -2406,6 +2413,8 @@ void RowCoder::vEncodeFlt(RowNub* pNub, Column* pCol, Datum* pDatum)
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
   
+  m_xaUsage[i_Column].m_nEncodedBytes += nBytesEncoded;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
@@ -2451,6 +2460,8 @@ void RowCoder::vEncodeInt(RowNub* pNub, Column* pCol, Datum* pDatum)
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
   
+  m_xaUsage[i_Column].m_nEncodedBytes += nBytesEncoded;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
@@ -2496,6 +2507,8 @@ void RowCoder::vEncodeIvl(RowNub* pNub, Column* pCol, Datum* pDatum)
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
   
+  m_xaUsage[i_Column].m_nEncodedBytes += nBytesEncoded;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
@@ -2541,6 +2554,8 @@ void RowCoder::vEncodeTme(RowNub* pNub, Column* pCol, Datum* pDatum)
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
   
+  m_xaUsage[i_Column].m_nEncodedBytes += nBytesEncoded;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
@@ -2585,6 +2600,8 @@ void RowCoder::vEncodeTsp(RowNub* pNub, Column* pCol, Datum* pDatum)
 
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = nBytesEncoded;
+  
+  m_xaUsage[i_Column].m_nEncodedBytes += nBytesEncoded;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -2649,9 +2666,6 @@ void RowCoder::vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum)
 {
-  static i8 nShortOnes = 0;
-  static i8 nLongOnes = 0;
-  
   i8 i_Column = pCol->iColumnNo();
   
   char caShoco[C_4KB];
@@ -2701,20 +2715,14 @@ void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum)
   // set length of the compressed string encoded into tail shoco cache line
   aShocoTail->v1B(C_SHOCO_COMPRESSED_OFFSET,nCompressed);
   
-  if (nCompressed > 20) {
-    nLongOnes++;
-//    if (IntLib::bIsDecaCycle(nLongOnes))
-//      vTrace("%lld long ones (eg. %lld)\n"_Stz,nLongOnes,nCompressed);
-  }
-  else {
-    nShortOnes++;
-//    if (IntLib::bIsDecaCycle(nShortOnes))
-//      vTrace("%lld short ones (eg. %lld)\n"_Stz,nShortOnes,nCompressed);
-  }
-    
-  
+  m_xaUsage[i_Column].m_nEncodedBytes += nCompressed;
+
   
   //MemLib::vWordDump(aShocoLine,sizeof(HeadLine));
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-check
   
   //    s256 sDecomp;
   //    i8 iLenDecompressed =
@@ -2722,10 +2730,6 @@ void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum)
   //                           ((byte*)aShocoLine)+8, C_BYTES_PER_CACHE_LINE-8);
   //    sDecomp.aChar()[iLenDecompressed] = '\0';
   //    vTrace("Decomp: %s\n"_Stz,sDecomp.aChar());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2745,6 +2749,8 @@ void RowCoder::vEncodeVchSmall(RowNub* pNub, Column* pCol, Datum* pDatum)
   
   Coda* pCoda = pNub->pCoda();
   pCoda->m_aiAux[i_Column].m_iInt = pDatum->m_nChars;
+  
+  m_xaUsage[i_Column].m_nEncodedBytes += pDatum->m_nChars;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3619,6 +3625,29 @@ void RowCoder::vSetAuxInt(Coda* pIntoCoda, HeadLine* aIntoHead, Column* pCol,
   }
 
   pIntoCoda->m_aiAux[pCol->iColumnNo()].m_iInt = iInt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset usage                                                                */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vResetUsage(void)
+{
+  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
+  
+    m_xaUsage[i_Col].m_pCol = nullptr;
+    
+    m_xaUsage[i_Col].m_eNatDatum = DM_NONE;
+    m_xaUsage[i_Col].m_eExtDatum = DM_NONE;
+    m_xaUsage[i_Col].m_bFixed = false;
+    
+    m_xaUsage[i_Col].m_nCount = 0;
+    m_xaUsage[i_Col].m_nRequiredBytes = 0;
+    m_xaUsage[i_Col].m_nEncodedBytes  = 0;
+    
+    m_xaUsage[i_Col].m_nPriorCount = 0;
+    m_xaUsage[i_Col].m_nPriorRequiredBytes = 0;
+    m_xaUsage[i_Col].m_nPriorEncodedBytes  = 0;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
