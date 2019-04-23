@@ -569,6 +569,32 @@ void RowCoder::vEncodeTme(RowNub* pNub, Column* pCol, Datum* pDatum)
 
 /*----------------------------------------------------------------------------*/
 /* encode timestamp                                                           */
+/* retrieve and decode row from cache line into a datu                        */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRetrieve(Datum& oDatum, HeadLine* aHeadLine, Column* pCol, ColumnVec* pColVec)
+{
+  
+  //vHeadDump(aHeadLine, pColVec);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
+  Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 i_LastColumn = 0;
+  i8 i_LastOffset = 8;
+  
+  // get the encoded value into datum
+  vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeTsp(RowNub* pNub, Column* pCol, Datum* pDatum)
 {

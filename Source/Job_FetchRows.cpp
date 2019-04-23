@@ -48,6 +48,45 @@ JobClass xJobClass_FetchRows =
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
 
+JobClass xJobClass_FetchRetrieveRows =
+{
+  CN_JOB_FETCHROWS,          // class enum
+  JK_LOCAL,                  // job kind
+  RK_DATA_ROWS,              // response kind
+  "fetch retrive rows"_Stz,  // comment about the job
+  "fetch"_Stz,               // the prompt command
+  "retrieve"_Stz,            // the second word
+  nullptr,                   // the _run task seed
+  "fetchRows_req"_Stz,       // the _req task seed
+  nullptr,                   // the _rcv task seed
+  nullptr,                   // the _exe task seed
+  nullptr,                   // the _end task seed
+  nullptr,                   // the _can task seed
+  true,                      // check resources?
+  false,                     // detached job?
+  false,                     // buffer attached?
+  JT_NONE,                   // job trace
+  DL_GRAB_READ,              // ddl lock model
+  PY_NORMAL,                 // priority
+  JF_NONE,                   // flags
+  
+  eJob_checkCluster,         // prompt check function
+  pJob_FetchRows_pre,        // prompt pre-process function
+  vJob_FetchRows_post,       // prompt post-process function
+  nullptr,                   // job new function
+  vJob_FetchRows_delete,     // job delete function
+  nullptr,                   // job pre-send function
+  nullptr,                   // job post-receive function
+  vJob_FetchRows_show,       // job show function
+  
+  // help and example
+  true,
+  "fetch retrieve <tableNm> <columnNm>"_Stz,
+  "fetch supplier S_SUPPKEY"_Stz,
+  
+  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
+};
+
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
@@ -113,6 +152,7 @@ Job_FetchRows::Job_FetchRows(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
     
   m_sWhere       = ""_Stz;
+  m_sColumnName  = ""_Stz;
   m_pTable       = nullptr;
   m_iPartition   = -1;
   m_bDisplay     = true;
@@ -127,6 +167,7 @@ Job_FetchRows::Job_FetchRows(Interface::Session* pSession)
   m_nLastBuffers = 0;
   m_nLastBuffersScanned = 0;
   m_pRowOnce     = nullptr;
+  m_bRetrieve    = false;
   
   _checkInitialised_(CN_JOB_FETCHROWS);
   
@@ -216,6 +257,33 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   
   // get number of items in token vector
   iNumTokens = pTokenVec->nItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // is it a fetch retrieve ?
+  if (pTokenVec->pGet(1)->bSame("retrieve"_Stz)) {
+    
+    // - - - - - - - - - - - - - - - - - - - - -
+    // there should be 4 tokens
+    if (iNumTokens != 4)
+      return false;
+    
+    // - - - - - - - - - - - - - - - - - - - - -
+    // set retrive
+    m_bRetrieve = true;
+    
+    // - - - - - - - - - - - - - - - - - - - - -
+    // set the table name
+    m_sObjectName = pTokenVec->pGet(2)->aText();
+    
+    // - - - - - - - - - - - - - - - - - - - - -
+    // fetch retrieve j10 column;
+    if (pTokenVec->pGet(3)->eToken() == TN_NAME) {
+      m_sColumnName = pTokenVec->pGet(3)->aText();
+      return true;
+    }
+
+    return false;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 2 to 5 tokens
@@ -547,6 +615,57 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
     return;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // retrieve
+  if (pJob_FetchRows->m_bRetrieve) {
+    
+    // find the column in the table
+    Column* pColumn = nullptr;
+    bool bFound = false;
+    
+    ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
+    
+    i8 nTableColumns = pColVec->nItems();
+    for (i8 i_Col = 0; i_Col < nTableColumns; i_Col++) {
+      
+      pColumn = pColVec->pGet(i_Col);
+      
+      if (pColumn->sColumnName().bSame(pJob_FetchRows->m_sColumnName)) {
+        bFound = true;
+        break;
+      }
+    }
+    
+    if (!bFound) {
+      vTrace("error: (node%lld) %s\n"_Stz, gpAttachMap->m_pGrid->iThisNode(),
+             aEC[EC_INVALID_COLUMN]);
+      return;
+    }
+      
+    while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
+      
+      pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
+      if (! pFetchBuffer) {
+        Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
+        continue;
+      }
+      
+      vRetrieveColumn(pJob_FetchRows, pFetchBuffer, pColumn);
+      nRowsProcessed += pFetchBuffer->nFetchedRows();
+      
+      if (pFetchBuffer->bIsLast()) {
+        nLastBuffersScanned++;
+      }
+      delete pFetchBuffer;
+      pFetchBuffer = nullptr;
+    }
+    
+    vTrace("success: %lld rows Retrieved\n"_Stz,nRowsProcessed);
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fetch
   if (gpAttachMap->m_bMetadata) {
     vTrace("metadata: %s\n"_Stz, pJob_FetchRows->m_sMetadata.aStz());
   }
@@ -641,6 +760,28 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
   return;
 }
 
+/*----------------------------------------------------------------------------*/
+/* iterate and retrieve column from rows in the buffer                        */
+/*----------------------------------------------------------------------------*/
+void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetcheRows,
+                            FetchBuffer* pFetchBuffer,
+                            Column* pCol)
+{
+  Datum oDatum;
+  ColumnVec* pColumnVec = pJob_FetcheRows->m_pTable->pColumnVec();
+  
+  HeadLine** aaCacheLine = pFetchBuffer->aaFirstRowPtr();
+  while (aaCacheLine) {
+    
+    HeadLine* aHeadLine = *aaCacheLine;
+    
+    RowCoder::vRetrieve(oDatum,aHeadLine,pCol, pColumnVec);
+    
+    aaCacheLine = pFetchBuffer->aaNextRowPtr(aaCacheLine);
+  }
+  
+  return;
+}
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
