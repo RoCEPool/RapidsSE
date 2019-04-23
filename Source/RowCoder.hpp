@@ -15,6 +15,7 @@ namespace Data
   class RowCoder : public Object
   {
   public:
+  
     struct {
       Column* m_pCol; // the column
       
@@ -32,6 +33,9 @@ namespace Data
 
     } m_xaUsage[C_MAX_COLUMNS];
   
+    i8 m_nBuffers;
+    i8 m_nRows;
+
     // must be last
     Footer m_xFooter;
   
@@ -142,20 +146,20 @@ namespace Data
     static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
 
-    static void vEncodeBcd(RowNub* pNub, Column* pCol, Datum* pDatum);
-    static void vEncodeBol(RowNub* pNub, Column* pCol, Datum* pDatum);
-    static void vEncodeDte(RowNub* pNub, Column* pCol, Datum* pDatum);
-    static void vEncodeFlt(RowNub* pNub, Column* pCol, Datum* pDatum);
-    static void vEncodeInt(RowNub* pNub, Column* pCol, Datum* pDatum);
-    static void vEncodeIvl(RowNub* pNub, Column* pCol, Datum* pDatum);
-    static void vEncodeTme(RowNub* pNub, Column* pCol, Datum* pDatum);
-    static void vEncodeTsp(RowNub* pNub, Column* pCol, Datum* pDatum);
-    static void vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeBcd(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeBol(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeDte(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeFlt(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeInt(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeIvl(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeTme(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeTsp(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum);
   
-    static void vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum);
-    static void vEncodeVchSmall(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeVchSmall(RowNub* pNub, Column* pCol, Datum* pDatum);
 
-    static eMN eEncodingBcd(Datum* pDatum, i8& nBytesEncoded);
+    eMN eEncodingBcd(Datum* pDatum, i8& nBytesEncoded);
     static eMN eEncodingBol(Datum* pDatum, i8& nBytesEncoded);
     static eMN eEncodingDte(Datum* pDatum, i8& nBytesEncoded);
     static eMN eEncodingFlt(Datum* pDatum, i8& nBytesEncoded);
@@ -198,6 +202,9 @@ namespace Data
   
     static void vSetAuxInt(Coda* pIntoCoda, HeadLine* aIntoHead, Column* pCol,
                            eMN eEncoding, i8 i_IntoOffset);
+  
+    void vUsageInc(i8 i_Col, i8 nBytes);
+    void vUsageReset(void);
 
   private:
     Footer* aFooter(void);
