@@ -53,7 +53,7 @@ JobClass xJobClass_Report =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Report_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Sanity_class;
+  *pNextFun = (pFUN*)pJob_RetrieveRows_class;
   
   return &xJobClass_Report;
 }
