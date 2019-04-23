@@ -155,6 +155,10 @@
   pTable pJob_FetchRows job_fetchRows.table!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the column from the table and set it in the fetchRows job
+  sColumnNm pTable table.findColumn pJob_FetchRows job_fetchRows.column!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the metadata string
   args.metadata if
     pTable table.getColumnsAsString "(%v)" str.format pJob_FetchRows job.metadata!

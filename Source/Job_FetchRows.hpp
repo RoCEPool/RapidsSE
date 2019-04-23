@@ -13,6 +13,7 @@ namespace Jobs
     s256         m_sWhere;              // where clause string for the fetch
     s256         m_sColumnName;         // column name in case of retrieve
     Table*       m_pTable;              // table rows being fetched from
+    Column*      m_pColumn;             // column to be retrieved
     i8           m_iPartition;          // partition this fetch task to fetch from
     bool         m_bDisplay;            // display on
     bool         m_bPrint;              // print on
@@ -60,7 +61,7 @@ namespace Jobs
   void vJob_FetchRows_post(Interface::Session* pSession, Job* pJob);
   void vJob_FetchRows_delete(Interface::Session* pSession, Job* pJob);
   void vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer, i8& iRowsPrinted);
-  void vRetrieveColumn(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer, Column* pCol);
+  void vRetrieveColumn(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer);
   void vJob_FetchRows_show(Job* pJob);
   
   JobClass* pJob_FetchRows_class(pFUN** aaFun);

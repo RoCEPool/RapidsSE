@@ -540,6 +540,7 @@
 
   // job FetchRows
   static void vJob_FetchRowsColumnNameFetch(Tasks::MP_Task mpTask);
+  static void vJob_FetchRowsColumnStore(Tasks::MP_Task mpTask);
   static void vJob_FetchRowsLastBuffersStore(Tasks::MP_Task mpTask);
   static void vJob_FetchRowsPartitionFetch(Tasks::MP_Task mpTask);
   static void vJob_FetchRowsPlannerStore(Tasks::MP_Task mpTask);
@@ -977,6 +978,7 @@
   static void vTableCreateColumnVec(Tasks::MP_Task mpTask);
   static void vTableDrop(Tasks::MP_Task mpTask);
   static void vTableDump(Tasks::MP_Task mpTask);
+  static void vTableFindColumn(Tasks::MP_Task mpTask);
   static void vTableFirstBuffer(Tasks::MP_Task mpTask);
   static void vTableGenData(Tasks::MP_Task mpTask);
   static void vTableGetColumnsAsString(Tasks::MP_Task mpTask);

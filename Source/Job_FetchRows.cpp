@@ -154,6 +154,7 @@ Job_FetchRows::Job_FetchRows(Interface::Session* pSession)
   m_sWhere       = ""_Stz;
   m_sColumnName  = ""_Stz;
   m_pTable       = nullptr;
+  m_pColumn      = nullptr;
   m_iPartition   = -1;
   m_bDisplay     = true;
   m_bPrint       = true;
@@ -619,29 +620,29 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
   // retrieve
   if (pJob_FetchRows->m_bRetrieve) {
     
-    // find the column in the table
-    Column* pColumn = nullptr;
-    bool bFound = false;
+//    // find the column in the table
+//    Column* pColumn = nullptr;
+//    bool bFound = false;
+//
+//    ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
+//
+//    i8 nTableColumns = pColVec->nItems();
+//    for (i8 i_Col = 0; i_Col < nTableColumns; i_Col++) {
+//
+//      pColumn = pColVec->pGet(i_Col);
+//
+//      if (pColumn->sColumnName().bSame(pJob_FetchRows->m_sColumnName)) {
+//        bFound = true;
+//        break;
+//      }
+//    }
+//
+//    if (!bFound) {
+//      vTrace("error: (node%lld) %s\n"_Stz, gpAttachMap->m_pGrid->iThisNode(),
+//             aEC[EC_INVALID_COLUMN]);
+//      return;
+//    }
     
-    ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
-    
-    i8 nTableColumns = pColVec->nItems();
-    for (i8 i_Col = 0; i_Col < nTableColumns; i_Col++) {
-      
-      pColumn = pColVec->pGet(i_Col);
-      
-      if (pColumn->sColumnName().bSame(pJob_FetchRows->m_sColumnName)) {
-        bFound = true;
-        break;
-      }
-    }
-    
-    if (!bFound) {
-      vTrace("error: (node%lld) %s\n"_Stz, gpAttachMap->m_pGrid->iThisNode(),
-             aEC[EC_INVALID_COLUMN]);
-      return;
-    }
-      
     while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
       
       pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
@@ -650,7 +651,7 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
         continue;
       }
       
-      vRetrieveColumn(pJob_FetchRows, pFetchBuffer, pColumn);
+      vRetrieveColumn(pJob_FetchRows, pFetchBuffer);
       nRowsProcessed += pFetchBuffer->nFetchedRows();
       
       if (pFetchBuffer->bIsLast()) {
@@ -764,8 +765,7 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
 /* iterate and retrieve column from rows in the buffer                        */
 /*----------------------------------------------------------------------------*/
 void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetcheRows,
-                            FetchBuffer* pFetchBuffer,
-                            Column* pCol)
+                           FetchBuffer* pFetchBuffer)
 {
   Datum oDatum;
   ColumnVec* pColumnVec = pJob_FetcheRows->m_pTable->pColumnVec();
@@ -775,7 +775,7 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetcheRows,
     
     HeadLine* aHeadLine = *aaCacheLine;
     
-    RowCoder::vRetrieve(oDatum,aHeadLine,pCol, pColumnVec);
+    RowCoder::vRetrieve(oDatum,aHeadLine,pJob_FetcheRows->m_pColumn, pColumnVec);
     
     aaCacheLine = pFetchBuffer->aaNextRowPtr(aaCacheLine);
   }

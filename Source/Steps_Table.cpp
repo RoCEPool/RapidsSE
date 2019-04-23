@@ -18,6 +18,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.createColumnVec"_Stz,    &Step::vTableCreateColumnVec);
   vAddStep("table.drop"_Stz,               &Step::vTableDrop);
   vAddStep("table.dump"_Stz,               &Step::vTableDump);
+  vAddStep("table.findColumn"_Stz,         &Step::vTableFindColumn);
   vAddStep("table.genData"_Stz,            &Step::vTableGenData);
   vAddStep("table.getColumnsAsString"_Stz, &Step::vTableGetColumnsAsString);
   vAddStep("table.getPtn"_Stz,             &Step::vTableGetPtn);
@@ -387,6 +388,46 @@ ENTRY("vTableInit"_Stz);
   ASSERT(CN_TABLE == pTable->eClass());
   
   new(pTable) Table;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.findColumn -- find the column from the table ?                       */
+/*----------------------------------------------------------------------------*/
+void Step::vTableFindColumn(MP_Task mpTask)
+{
+  ENTRY("vTableFindColumn"_Stz);
+  
+  Object* pPtrTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.findColumn"_Stz);
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  s32 sColumnName;
+  if ( ! mpTask->m_pDataStack->bPop(sColumnName) )
+    THROW_INVALID_DSTACK("table.findColumn"_Stz);
+  
+  ColumnVec* pColVec = pTable->pColumnVec();
+  Column* pColumn = nullptr;
+  bool bFound = false;
+  
+  // look for the column in the columnVec
+  i8 nTableColumns = pColVec->nItems();
+  for (i8 i_Col = 0; i_Col < nTableColumns; i_Col++) {
+    
+    pColumn = pColVec->pGet(i_Col);
+    
+    if (pColumn->sColumnName().bSame(sColumnName)) {
+      bFound = true;
+      break;
+    }
+  }
+  RASSERT(bFound);
+  
+  mpTask->m_pDataStack->vPushPointer(pColumn);
   
   EXIT();
 }
