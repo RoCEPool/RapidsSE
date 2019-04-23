@@ -15,6 +15,7 @@ namespace Data
   class RowCoder : public Object
   {
   public:
+  
     struct {
       Column* m_pCol; // the column
       
@@ -32,6 +33,9 @@ namespace Data
 
     } m_xaUsage[C_MAX_COLUMNS];
   
+    i8 m_nBuffers;
+    i8 m_nRows;
+
     // must be last
     Footer m_xFooter;
   
@@ -199,7 +203,8 @@ namespace Data
     static void vSetAuxInt(Coda* pIntoCoda, HeadLine* aIntoHead, Column* pCol,
                            eMN eEncoding, i8 i_IntoOffset);
   
-    void vResetUsage(void);
+    void vUsageInc(i8 i_Col, i8 nBytes);
+    void vUsageReset(void);
 
   private:
     Footer* aFooter(void);
