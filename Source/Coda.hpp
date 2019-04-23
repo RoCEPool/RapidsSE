@@ -10,7 +10,7 @@ namespace Data
   {
   public:
  
-    eDM m_aeDatum[150];
+    eDM m_aeExtDatum[C_MAX_COLUMNS];
   
     union {
       i8   m_iBcd;
@@ -25,7 +25,7 @@ namespace Data
       
       i8   m_iTail;
       
-    } m_aiAux[150];
+    } m_aiAux[C_MAX_COLUMNS];
 
     // must be last
     Footer m_xFooter;
