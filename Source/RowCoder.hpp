@@ -16,13 +16,10 @@ namespace Data
   {
   public:
   
+    ColumnVec* m_pColVec;
+    Coda*      m_pCoda;
+
     struct {
-      Column* m_pCol; // the column
-      
-      eDM  m_eNatDatum; // its natural datum
-      eDM  m_eExtDatum; // its current extended datum
-      bool m_bFixed;    // has the encoding decision been fixed?
-      
       i8   m_nEncoded;       // no of times the column has originally encoded
       i8   m_nEncodedBytes;  // bytes originally encoded
       i8   m_nRecoded;       // no of times able to succesfully recode
@@ -190,8 +187,9 @@ namespace Data
     static void vRestoreTsp(Datum* pDatum, eMN eEncoding);
   
     static void vFromBaseDays(Datum* pDatum, i8& iEra);
+    static i8   iIntoBaseDays(i8 nDaysWithinEra, i8 iEra);
     static void vIntoBaseDays(Datum* pDatum, i8& iEra);
-  
+
     static i8 iStripDte(WordView& wTspView, eMN eEncoding);
     static i8 iStripTme(WordView& wTspView, eMN eEncoding);
     static i8 iStripTsp(WordView& wTspView, eMN eEncoding);

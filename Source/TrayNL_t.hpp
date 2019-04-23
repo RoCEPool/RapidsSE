@@ -36,7 +36,7 @@ namespace Structures
     ~Nub_t(void) noexcept(false);
   
     static void  vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes);
-    static void  vEntend(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes);
+    static void  vExpand(void* aAddr, i8 nSize, i8 i_Offset, i8 nAddBytes);
     static TAIL* aToTail(HEAD* aHead, i8 i_Distance);
     static i8 iToTail(i8 i_Head, i8 i_Distance);
     static i8 iUnitDiff(i8 i_Head, i8 i_Tail);
@@ -356,16 +356,16 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vCut(void* aAddr, i8 nSize, i8 i_Offset
 /* extend bytes to make space for additional data                             */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
-void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vEntend(void* aAddr, i8 nSize, i8 i_Offset, i8 nExtendBytes)
+void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vExpand(void* aAddr, i8 nSize, i8 i_Offset, i8 nAddBytes)
 {
   i8 iStartMove = i_Offset;
-  RASSERT(iStartMove + nExtendBytes <= nSize);
+  RASSERT(iStartMove + nAddBytes <= nSize);
   
   // get the start address
   byte* aSrc = aAdd<byte*>(aAddr, iStartMove);
   
   // get the dst address
-  byte* aDst = aAdd<byte*>(aAddr, i_Offset + nExtendBytes);
+  byte* aDst = aAdd<byte*>(aAddr, i_Offset + nAddBytes);
   
   // copy nExtendBytes from src to dst
   MemLib::vCopy(aDst, aSrc, nSize - (iStartMove), CN);
