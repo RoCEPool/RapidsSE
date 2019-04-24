@@ -625,15 +625,19 @@ void RowCoder::vEncodeTme(RowNub* pNub, Column* pCol, Datum* pDatum)
 /* encode timestamp                                                           */
 /* retrieve and decode row from cache line into a datu                        */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRetrieve(Datum& oDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, WordView& xWord)
+void RowCoder::vRetrieve(Datum& oDatum, RowBuffer** ppRowBuffer, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, WordView& xWord)
 {
   
   //vHeadDump(aHeadLine, pColVec);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // check if aHeadLine is from the last rowBuffer
+  if ( ! RowBuffer::bCheckAddress(*ppRowBuffer, aHeadLine)) {
+    *ppRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
+  }
   
-  RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
-  Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
-  
+  Coda* pCoda = (*ppRowBuffer)->pRowTray()->pCoda();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 i_LastColumn = 0;

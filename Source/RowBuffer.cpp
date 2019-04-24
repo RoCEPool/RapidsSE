@@ -135,10 +135,19 @@ RowBuffer* RowBuffer::pToRowBuffer(void* aAddr)
 
   RowBuffer* pRowBuffer =
     reinterpret_cast<RowBuffer*>(pHeapBuffer->aFirstChunk());
-
+  
   RASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
   
   return pRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check if the row buffer contains the given address                         */
+/*----------------------------------------------------------------------------*/
+bool RowBuffer::bCheckAddress(RowBuffer* pRowBuffer, void* aAddr)
+{
+  // Ray to code !!!
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
