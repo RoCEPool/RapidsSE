@@ -775,7 +775,7 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetcheRows,
     
     HeadLine* aHeadLine = *aaCacheLine;
     
-    RowCoder::vRetrieve(oDatum,aHeadLine,pJob_FetcheRows->m_pColumn, pColumnVec);
+    RowCoder::vRetrieve(oDatum,aHeadLine,pColumnVec,pJob_FetcheRows->m_pColumn);
     
     aaCacheLine = pFetchBuffer->aaNextRowPtr(aaCacheLine);
   }

@@ -625,7 +625,7 @@ void RowCoder::vEncodeTme(RowNub* pNub, Column* pCol, Datum* pDatum)
 /* encode timestamp                                                           */
 /* retrieve and decode row from cache line into a datu                        */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRetrieve(Datum& oDatum, HeadLine* aHeadLine, Column* pCol, ColumnVec* pColVec)
+void RowCoder::vRetrieve(Datum& oDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 {
   
   //vHeadDump(aHeadLine, pColVec);
@@ -640,7 +640,7 @@ void RowCoder::vRetrieve(Datum& oDatum, HeadLine* aHeadLine, Column* pCol, Colum
   i8 i_LastOffset = 8;
   
   // get the encoded value into datum
-  vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+  vDecodeFast(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1710,6 +1710,20 @@ void RowCoder::vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* get encoded datum from cache line                                          */
 /*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol,
+                       Coda* pCoda, i8& i_LastColumn, i8& i_LastOffset)
+{
+  
+  if (pCol->eDatumType() == DM_BOL) {
+    vDecodeBolFast(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+    return;
+  }
+  vDecode(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get encoded datum from cache line                                          */
+/*----------------------------------------------------------------------------*/
 void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
                        ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                        i8& i_LastColumn, i8& i_LastOffset)
@@ -2284,6 +2298,30 @@ void RowCoder::vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
 /* decode boolean from given cache line                                       */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,
+                          ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                          i8& i_LastColumn, i8& i_Offset)
+{
+  i8 i_Column  = pCol->iColumnNo();
+  
+  pDatum->m_eDatum = DM_BOL;
+  
+  eMN eEncoding = eGetEncodingExt(i_Column,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+  
+  switch (eEncoding) {
+      
+    case MN_NULL:  pDatum->m_iInt = C_DATUM_NULL; break;
+    case MN_FALSE: pDatum->m_iInt = (i8)0;        break;
+    case MN_TRUE:  pDatum->m_iInt = (i8)1;        break;
+      
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode boolean from given cache line                                       */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeBolFast(Datum* pDatum, HeadLine* aHeadLine,
                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                           i8& i_LastColumn, i8& i_Offset)
 {
