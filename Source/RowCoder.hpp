@@ -108,8 +108,7 @@ namespace Data
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
     static void vDecodeBolFast(Datum* pDatum, HeadLine* aHeadLine,
-                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                           WordView& xWord, i8& i_LastColumn, i8& i_LastOffset);
+                           Column* pCol,WordView& xWord);
     static void vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);

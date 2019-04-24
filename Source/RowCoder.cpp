@@ -1716,7 +1716,7 @@ void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVe
 {
   
   if (pCol->eDatumType() == DM_BOL) {
-    vDecodeBolFast(pDatum,aHeadLine,pColVec,pCol,pCoda,xWord,i_LastColumn,i_LastOffset);
+    vDecodeBolFast(pDatum,aHeadLine,pCol,xWord);
     return;
   }
   vDecode(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
@@ -2323,8 +2323,7 @@ void RowCoder::vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,
 /* decode boolean from given cache line                                       */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeBolFast(Datum* pDatum, HeadLine* aHeadLine,
-                          ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                          WordView& xWord, i8& i_LastColumn, i8& i_Offset)
+                              Column* pCol, WordView& xWord)
 {
   i8 i_Column  = pCol->iColumnNo();
   
@@ -2332,7 +2331,7 @@ void RowCoder::vDecodeBolFast(Datum* pDatum, HeadLine* aHeadLine,
   
   //eMN eEncoding = eGetEncodingExt(i_Column,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
   eMN eEncoding = (eMN)aHeadLine->w8_1NFast(xWord, i_Column);
-  
+
   switch (eEncoding) {
       
     case MN_NULL:  pDatum->m_iInt = C_DATUM_NULL; break;
@@ -2342,6 +2341,7 @@ void RowCoder::vDecodeBolFast(Datum* pDatum, HeadLine* aHeadLine,
     default:
       NEVER_REACH;
   }
+
 }
 
 /*----------------------------------------------------------------------------*/
