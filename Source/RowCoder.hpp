@@ -57,7 +57,7 @@ namespace Data
     void vEncodeVch(RowNub* pNub, Column* pCol, Datum* pDatum);
     void vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum);
     void vEncodeVchSmall(RowNub* pNub, Column* pCol, Datum* pDatum);
-  
+    
     void vRecodeBcdTenth(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
                          i8& i_IntoOffset, i8& i_FromOffset);
     void vRecodeDteDays(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,

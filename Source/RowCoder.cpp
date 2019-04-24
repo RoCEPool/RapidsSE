@@ -91,7 +91,9 @@ RowCoder::~RowCoder(void) noexcept(false)
     if ( ! (DM_DTE == pCol->eDatumType() ||
             
             DM_DIGIT == m_pCoda->m_aeExtDatum[i_Col] ||
-            DM_INT   == m_pCoda->m_aeExtDatum[i_Col])
+            DM_INT   == m_pCoda->m_aeExtDatum[i_Col] ||
+            
+            DM_VCH   == m_pCoda->m_aeExtDatum[i_Col])
         )
       continue;
 
@@ -211,6 +213,13 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     //
+#ifdef WITH_EXTENDED_BCD
+    if (DM_BCD == eDatum) {
+      vRecodeBcdTenth(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+      continue;
+    }
+#endif
+    
 #ifdef WITH_EXTENDED_DTE
     if (DM_DTE == eDatum) {
       vRecodeDteDays(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
@@ -225,25 +234,24 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     }
 #endif
     
-#ifdef WITH_EXTENDED_BCD
-    if (DM_BCD == eDatum) {
-      vRecodeBcdTenth(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
-      continue;
-    }
-#endif
-    
 #ifdef WITH_EXTENDED_VCH
     if (DM_VCH == eDatum && MN_1B == eEncoding) {
-      vRecodeVchAlpha(pIntoNub, aIntoHead, pCol, i_IntoOffset, i_FromOffset);
+      vRecodeVchAlpha(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
       continue;
     }
 #endif
 
-    // copy a shoco tail
-    if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding) {
-      vRecodeVchShoco(pIntoNub,aIntoHead,i_IntoHead,pFromNub,pCol,
-                     i_IntoOffset,i_FromOffset);
-      continue;
+    if (DM_VCH == eDatum) {
+      if (MN_SHOCO_2B == eEncoding) {
+        vRecodeVchShoco(pIntoNub,aIntoHead,i_IntoHead,pFromNub,pCol,
+                       i_IntoOffset,i_FromOffset);
+        continue;
+      }
+      else {
+        if (eEncoding >= MN_1B && eEncoding <= MN_8B)
+          vUsageIncRecoded(i_ForCol,eEncoding);
+        continue;
+      }
     }
     
   }
@@ -764,7 +772,7 @@ void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum)
   i8 i_Offset = pNub->i_Offset();
   aHeadLine->vPut(i_Offset,i_Shoco,MN_2B);
   pNub->vOffsetInc(2);
-  vUsageIncEncoded(i_Column,2);
+  vUsageIncEncoded(i_Column,2 + 2 + nCompressed);
   
   // set length of the compressed string encoded into tail shoco cache line
   aShocoTail->v1B(C_SHOCO_COMPRESSED_OFFSET,nCompressed);
@@ -1559,24 +1567,23 @@ void RowCoder::vRecodeVchShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoH
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy fromTail to intoTail
   
   i8 nTailUnits = aShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
-  //RASSERT(nTailUnits <= 4);
   i8 nShocoBytes = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
-  //RASSERT(nShocoBytes <= 56);
   
   i8 i_IntoTail = pIntoNub->iAllotTail(2 + nShocoBytes);
   aIntoTail = pIntoNub->aGetTail(i_IntoTail);
   
   MemLib::vCopy(aIntoTail,aShocoTail,
                 nTailUnits*sizeof(DoubleWord),CN_ROWBUFFER);
-  //MemLib::vWordDump(aIntoTail,nTailUnits*sizeof(DoubleWord));
   
   // what gets encoded is the unit difference between head and tail
   i8 i_TailDistance = pIntoNub->iUnitDiff(i_IntoHead,i_IntoTail);
   aIntoHead->vPut(i_IntoOffset,i_TailDistance,MN_2B);
-  //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
   
+  vUsageIncRecoded(pCol->iColumnNo(),2 + 2 + nShocoBytes);
+
   return;
 }
 
