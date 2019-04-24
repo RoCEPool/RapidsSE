@@ -1066,8 +1066,8 @@ void RowCoder::vRecodeInt(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
       break;
       
     case DM_DIGIT:
-      vRecodeIntDigit(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
-      break;
+      if (bRecodeIntDigit(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset))
+        break;
       
     case DM_INT:
 #ifdef WITH_EXTENDED_INT_DELTA
@@ -1076,8 +1076,8 @@ void RowCoder::vRecodeInt(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
 #endif
       
 #ifdef WITH_EXTENDED_INT_DIGIT
-      vRecodeIntDigit(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
-      break;
+      if (bRecodeIntDigit(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset))
+        break;
 #endif
       
     default:
@@ -1088,7 +1088,7 @@ void RowCoder::vRecodeInt(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* attempt to re-encode Int as Digit                                          */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeIntDigit(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
+bool RowCoder::bRecodeIntDigit(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
                                i8& i_IntoOffset, i8& i_FromOffset)
 {
   RASSERT(DM_INT == pCol->eDatumType());
@@ -1107,18 +1107,18 @@ void RowCoder::vRecodeIntDigit(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
     
     if (MN_1B != eThisEncoding) {
       vUsageIncRecoded(i_Column,nEncodedBytes);
-      return;
+      return true;
     }
     
     if (c1BInt < 0 && c1BInt <= 7) {
       vUsageIncRecoded(i_Column,nEncodedBytes);
-      return;
+      return true;
     }
   }
   
   if (pIntoNub->nHeads() > 1 && pCoda->m_aeExtDatum[i_Column] != DM_DIGIT) {
     vUsageIncRecoded(i_Column,nEncodedBytes);
-    return;
+    return true;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1154,11 +1154,12 @@ void RowCoder::vRecodeIntDigit(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
       
       // go back one char in the intoOffset
       i_IntoOffset--;
-      return;
+      return true;
     }
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // oops!
   
   switch (eThisEncoding) {
     case MN_1B: eExtendedEncoding = MN_DIGIT_1B;
@@ -1191,11 +1192,9 @@ void RowCoder::vRecodeIntDigit(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
       RASSERT(0);
   }
   
-  //vTrace("Rewising column %lld to E%llx\n"_Stz,i_Column, eExtendedEncoding);
-  
   aIntoHead->v1N(i_Column,eExtendedEncoding);
   
-  //vTrace("CurrentEncoding %lld ~ %lld\n"_Stz, eCurrentEncoding, eExtendedEncoding);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

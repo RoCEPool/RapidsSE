@@ -66,7 +66,7 @@ namespace Data
                     i8& i_IntoOffset, i8& i_FromOffset);
     bool bRecodeIntDelta(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
                          i8& i_IntoOffset, i8& i_FromOffset);
-    void vRecodeIntDigit(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
+    bool bRecodeIntDigit(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
                          i8& i_IntoOffset, i8& i_FromOffset);
     void vRecodeVchAlpha(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
                       i8& i_IntoOffset, i8& i_FromOffset);
