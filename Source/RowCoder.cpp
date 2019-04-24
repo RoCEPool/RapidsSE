@@ -88,7 +88,11 @@ RowCoder::~RowCoder(void) noexcept(false)
     
     Column* pCol = m_pColVec->pGet(i_Col);
 
-    if (DM_DTE != pCol->eDatumType())
+    if ( ! (DM_DTE == pCol->eDatumType() ||
+            
+            DM_DIGIT == m_pCoda->m_aeExtDatum[i_Col] ||
+            DM_INT   == m_pCoda->m_aeExtDatum[i_Col])
+        )
       continue;
 
     i8 nDeltaBytes =
@@ -930,7 +934,7 @@ void RowCoder::vRecodeDteDays(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCo
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now re-encoding 2nd+ date into DM_DAYS
+  // now re-encoding 2nd+ date of row into DM_DAYS
   
   // change the extended datum to days
   if (1 == pIntoNub->nHeads())
@@ -1087,26 +1091,50 @@ void RowCoder::vRecodeInt(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
 void RowCoder::vRecodeIntDigit(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
                                i8& i_IntoOffset, i8& i_FromOffset)
 {
-  eMN eExtendedEncoding;
-  
+  RASSERT(DM_INT == pCol->eDatumType());
+
   Coda* pCoda = pIntoNub->pCoda();
   i8 i_Column = pCol->iColumnNo();
   
-  eMN eCurrentEncoding = (eMN)aIntoHead->w8_1N(i_Column);
-  //vTrace("CurrentEncoding %lld\n"_Stz, eCurrentEncoding);
+  eMN eThisEncoding = (eMN)aIntoHead->w8_1N(i_Column);
+  i8  nEncodedBytes = nDataBytes(DM_DTE,eThisEncoding);
+  i8  c1BInt = aIntoHead->w8_1B(i_IntoOffset);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for re-encoding
   
-  RASSERT(DM_INT == pCol->eDatumType());
-  //RASSERT(MN_1B == eCurrentEncoding);
+  if (1 == pIntoNub->nHeads()) {
+    
+    if (MN_1B != eThisEncoding) {
+      vUsageIncRecoded(i_Column,nEncodedBytes);
+      return;
+    }
+    
+    if (c1BInt < 0 && c1BInt <= 7) {
+      vUsageIncRecoded(i_Column,nEncodedBytes);
+      return;
+    }
+  }
   
-  // change the encoding to extended digit1
-  pCoda->m_aeExtDatum[i_Column] = DM_DIGIT;
-  
-  // check for NULL
-  if (eCurrentEncoding == MN_NULL)
+  if (pIntoNub->nHeads() > 1 && pCoda->m_aeExtDatum[i_Column] != DM_DIGIT) {
+    vUsageIncRecoded(i_Column,nEncodedBytes);
     return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // now re-encoding integer of row into DM_DIGIT
+
+  // change the extended datum to digit
+  if (1 == pIntoNub->nHeads())
+    pCoda->m_aeExtDatum[i_Column] = DM_DIGIT;
+  RASSERT(DM_DIGIT == pCoda->m_aeExtDatum[i_Column]);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  eMN eExtendedEncoding;
+
   // is it a 1B encoding ?
-  if (eCurrentEncoding == MN_1B) {
+  if (eThisEncoding == MN_1B) {
     
     // get the 1B int from the data portion of the intoHead
     i8 c1BInt = aIntoHead->w8_1B(i_IntoOffset);
@@ -1117,10 +1145,10 @@ void RowCoder::vRecodeIntDigit(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
     if (c1BInt >= 0 && c1BInt <= 7) {
       
       // revise the encoding
-      eExtendedEncoding = (eMN)(MN_DIGIT_0 + c1BInt);
-      //vTrace("Rewising column %lld to E%llx\n"_Stz,i_Column, eExtendedEncoding);
+      eMN eExtendedEncoding = (eMN)(MN_DIGIT_0 + c1BInt);
       aIntoHead->v1N(i_Column,eExtendedEncoding);
-      
+      vUsageIncRecoded(i_Column,0);
+
       // cut the 1B char out of the into head
       pIntoNub->vCut(aIntoHead,sizeof(HeadLine),i_IntoOffset,1);
       
@@ -1130,23 +1158,35 @@ void RowCoder::vRecodeIntDigit(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
     }
   }
   
-  switch (eCurrentEncoding) {
-    case MN_1B: eExtendedEncoding = MN_DIGIT_1B; break;
-    case MN_2B: eExtendedEncoding = MN_DIGIT_2B; break;
-    case MN_3B: eExtendedEncoding = MN_DIGIT_3B; break;
-    case MN_4B: eExtendedEncoding = MN_DIGIT_4B; break;
-    case MN_5B:
-      // extend by 1B
-      pIntoNub->vExpand(aIntoHead,sizeof(HeadLine),i_IntoOffset,1);
-      eExtendedEncoding = MN_6B;
-      break;
-    case MN_6B: eExtendedEncoding = MN_DIGIT_6B; break;
-    case MN_7B:
-      // extend by 1B
-      pIntoNub->vExpand(aIntoHead,sizeof(HeadLine),i_IntoOffset,1);
-      eExtendedEncoding = MN_6B;
-      break;
-    case MN_8B: eExtendedEncoding = MN_DIGIT_8B; break;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  switch (eThisEncoding) {
+    case MN_1B: eExtendedEncoding = MN_DIGIT_1B;
+                vUsageIncOops(i_Column,1);
+                break;
+    case MN_2B: eExtendedEncoding = MN_DIGIT_2B;
+                vUsageIncOops(i_Column,2);
+                break;
+    case MN_3B: eExtendedEncoding = MN_DIGIT_3B;
+                vUsageIncOops(i_Column,3);
+                break;
+    case MN_4B: eExtendedEncoding = MN_DIGIT_4B;
+                vUsageIncOops(i_Column,4);
+                break;
+    case MN_5B: pIntoNub->vExpand(aIntoHead,sizeof(HeadLine),i_IntoOffset,1);
+                eExtendedEncoding = MN_6B;
+                vUsageIncOops(i_Column,6);
+                break;
+    case MN_6B: eExtendedEncoding = MN_DIGIT_6B;
+                vUsageIncOops(i_Column,6);
+                break;
+    case MN_7B: pIntoNub->vExpand(aIntoHead,sizeof(HeadLine),i_IntoOffset,1);
+                vUsageIncOops(i_Column,8);
+                eExtendedEncoding = MN_8B;
+                break;
+    case MN_8B: eExtendedEncoding = MN_DIGIT_8B;
+                vUsageIncOops(i_Column,8);
+                break;
     default:
       RASSERT(0);
   }
