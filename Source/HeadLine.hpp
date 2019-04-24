@@ -19,7 +19,6 @@ namespace Base
     void vSetAll(byte yVal);
   
     w8 w8_1B(i8 i_Byte);
-    w8 w8_1BFast(WordView& xWord, i8 i_Byte);
     w8 w8_2B(i8 i_Byte);
     w8 w8_3B(i8 i_Byte);
     w8 w8_4B(i8 i_Byte);
@@ -29,7 +28,6 @@ namespace Base
     w8 w8_8B(i8 i_Byte);
 
     w8 w8_1N(i8 i_Nibble);
-    w8 w8_1NFast(WordView& xWord, i8 i_Nibble);
 
     void v1B(i8 i_Byte, w8 wArg);
     void v2B(i8 i_Byte, w8 wArg);
@@ -42,6 +40,39 @@ namespace Base
 
     void v1N(i8 i_Nibble, w8 wArg);
     
+    /*----------------------------------------------------------------------------*/
+    /* return 1 byte at offset as w8                                              */
+    /*----------------------------------------------------------------------------*/
+    inline w8 w8_1BFast(WordView& xWord, i8 i_Byte)
+    {
+      byte* aByte = ((byte*)this) + i_Byte;
+      
+      xWord.m_iI8 = 0;
+      xWord.m_yaByte[0] = *aByte;
+      
+      return xWord.m_wWord;
+    }
+
+    /*----------------------------------------------------------------------------*/
+    /* return 1 nibble at offset as w8                                            */
+    /*----------------------------------------------------------------------------*/
+    inline w8 w8_1NFast(WordView& xWord, i8 i_Nibble)
+    {
+      w8 iNibble;
+      w8 iByte = w8_1BFast(xWord, i_Nibble/2);
+      
+      if (0 == i_Nibble % 2) {
+        // left nibble
+        iNibble = iByte >> 4;
+      }
+      else {
+        // right nibble
+        iNibble = iByte & 0xF;
+      }
+      
+      return iNibble;
+    }
+
   };
   
   /*--------------------------------------------------------------------------*/
