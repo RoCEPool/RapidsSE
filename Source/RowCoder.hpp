@@ -92,7 +92,7 @@ namespace Data
     static void vPrint(RowNub* pNub, i8 i_Row, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
     static void vRecord(Record* pRec, RowNub* pNub, i8 i_Row);
     static void vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec);
-    static void vRetrieve(Datum& oDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, WordView& xWord);
+    static void vRetrieve(Datum& oDatum, RowBuffer** ppRowBuffer, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, WordView& xWord);
   
   private:
     static void vAppend(Record* pRec, HeadLine* aHeadLine,
@@ -108,8 +108,7 @@ namespace Data
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
     static void vDecodeBolFast(Datum* pDatum, HeadLine* aHeadLine,
-                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                           WordView& xWord, i8& i_LastColumn, i8& i_LastOffset);
+                           Column* pCol,WordView& xWord);
     static void vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
