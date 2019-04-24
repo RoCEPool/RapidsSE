@@ -1079,6 +1079,8 @@ void RowCoder::vRecodeInt(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
       if (bRecodeIntDigit(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset))
         break;
 #endif
+      // leave as int
+      break;
       
     default:
       break;
@@ -1105,20 +1107,23 @@ bool RowCoder::bRecodeIntDigit(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
   
   if (1 == pIntoNub->nHeads()) {
     
-    if (MN_1B != eThisEncoding) {
+    RASSERT(DM_INT == pCoda->m_aeExtDatum[i_Column]);
+    
+   if (MN_1B != eThisEncoding) {
       vUsageIncRecoded(i_Column,nEncodedBytes);
-      return true;
+      return false;
     }
     
-    if (c1BInt < 0 && c1BInt <= 7) {
+    if (c1BInt < 0 && c1BInt > 7) {
       vUsageIncRecoded(i_Column,nEncodedBytes);
-      return true;
+      return false;
     }
   }
   
   if (pIntoNub->nHeads() > 1 && pCoda->m_aeExtDatum[i_Column] != DM_DIGIT) {
+    RASSERT(DM_INT == pCoda->m_aeExtDatum[i_Column]);
     vUsageIncRecoded(i_Column,nEncodedBytes);
-    return true;
+    return false;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
