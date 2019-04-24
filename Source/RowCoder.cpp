@@ -93,7 +93,9 @@ RowCoder::~RowCoder(void) noexcept(false)
             DM_DIGIT == m_pCoda->m_aeExtDatum[i_Col] ||
             DM_INT   == m_pCoda->m_aeExtDatum[i_Col] ||
             
-            DM_VCH   == m_pCoda->m_aeExtDatum[i_Col])
+            DM_ALPHA == m_pCoda->m_aeExtDatum[i_Col] ||
+            DM_VCH   == m_pCoda->m_aeExtDatum[i_Col]
+            )
         )
       continue;
 
@@ -1332,17 +1334,14 @@ bool RowCoder::bRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
 void RowCoder::vRecodeVchAlpha(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
                                i8& i_IntoOffset, i8& i_FromOffset)
 {
-  eMN eExtendedEncoding;
-  
   Coda* pCoda = pIntoNub->pCoda();
   i8 i_Column = pCol->iColumnNo();
   
-  eMN eCurrentEncoding = (eMN)aIntoHead->w8_1N(i_Column);
+  eMN eThisEncoding = (eMN)aIntoHead->w8_1N(i_Column);
   
   RASSERT(DM_VCH == pCol->eDatumType());
-  RASSERT(MN_1B == eCurrentEncoding);
+  RASSERT(MN_1B == eThisEncoding);
   
-  // get the 1B char from the data portion of the intoHead
   char c1BChar = aIntoHead->w8_1B(i_IntoOffset);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1363,11 +1362,15 @@ void RowCoder::vRecodeVchAlpha(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // determine if we can revise the encoding
   
-  
   // no space, leave as is
-  if (i_Char >= C_EXTENDED_AUX)
+  if (i_Char >= C_EXTENDED_AUX) {
+    vUsageIncOops(i_Column,MN_1B);
     return;
+  }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  eMN eExtendedEncoding;
   
   // found existing alpha?
   if (pCoda->m_aiAux[i_Column].m_caChr[i_Char]) {
@@ -1380,17 +1383,17 @@ void RowCoder::vRecodeVchAlpha(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
     // revise the encoding
     eExtendedEncoding = (eMN)(MN_ALPHA_0 + i_Char);
     aIntoHead->v1N(i_Column,eExtendedEncoding);
-    
+    vUsageIncRecoded(i_Column,0);
+
     // cut the 1B char out of the into head
-    //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
     pIntoNub->vCut(aIntoHead,sizeof(HeadLine),i_IntoOffset,1);
-    //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
     
     // go back one char in the intoOffset
     i_IntoOffset--;
     return;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // didn't find existing alpha, add it
   pCoda->m_aiAux[i_Column].m_caChr[i_Char] = c1BChar;
@@ -1401,11 +1404,10 @@ void RowCoder::vRecodeVchAlpha(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
   // revise the encoding in the metaword of into head
   eExtendedEncoding = (eMN)(MN_ALPHA_0 + i_Char);
   aIntoHead->v1N(i_Column,eExtendedEncoding);
-  
+  vUsageIncRecoded(i_Column,0);
+
   // cut the 1B char out of the into head
-  //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
   pIntoNub->vCut(aIntoHead,sizeof(HeadLine),i_IntoOffset,1);
-  //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
   
   // go back one char in the intoOffset
   i_IntoOffset--;
