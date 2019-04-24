@@ -206,18 +206,14 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     
-    if (0 == i_IntoHead && eDatum == DM_INT) {
+    if (0 == i_IntoHead && eDatum == DM_INT)
       vSetAuxInt(pIntoCoda,aIntoHead,pCol,eEncoding,i_IntoOffset);
-    }
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     //
 #ifdef WITH_EXTENDED_DTE
     if (DM_DTE == eDatum) {
       vRecodeDteDays(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
-#ifdef WITH_TRACE_ENCODING
-      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol,"vRecodeDteDays"_Stz);
-#endif
       continue;
     }
 #endif
@@ -225,52 +221,30 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 #ifdef WITH_EXTENDED_INT
     if (DM_INT == eDatum) {
       vRecodeInt(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+      continue;
     }
 #endif
-    
-    //    if (0 == i_ForCol) {
-    //      Datum oCol0;
-    //      i8 i_LastColumn = 0;
-    //      i8 i_LastOffset = 8;
-    //      vDecode(&oCol0,aIntoHead,pColVec,pCol,pIntoCoda,i_LastColumn,i_LastOffset);
-    //    }
     
 #ifdef WITH_EXTENDED_BCD
     if (DM_BCD == eDatum) {
       vRecodeBcdTenth(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
-      //#ifdef WITH_TRACE_ENCODING
-      //      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "vRecodeBcdTenth"_Stz);
-      //#endif
       continue;
     }
 #endif
     
+#ifdef WITH_EXTENDED_VCH
+    if (DM_VCH == eDatum && MN_1B == eEncoding) {
+      vRecodeVchAlpha(pIntoNub, aIntoHead, pCol, i_IntoOffset, i_FromOffset);
+      continue;
+    }
+#endif
+
     // copy a shoco tail
     if (DM_VCH == eDatum && MN_SHOCO_2B == eEncoding) {
       vRecodeVchShoco(pIntoNub,aIntoHead,i_IntoHead,pFromNub,pCol,
-                 i_IntoOffset,i_FromOffset);
-#ifdef WITH_TRACE_ENCODING
-      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "vRecodeVchShoco"_Stz);
-#endif
-      
-      //      if (15 == i_ForCol &&
-      //          (MN_SHOCO_2B == aIntoHead->w8_1N(15) || MN_SHOCO_SPLIT == aIntoHead->w8_1N(15)))
-      //        RowCoder::vHeadDump(aIntoHead, pIntoNub->pDesc()->pColumnVec());
-      
+                     i_IntoOffset,i_FromOffset);
       continue;
     }
-    
-#ifdef WITH_EXTENDED_VCH
-    // recode a Vch1B into an Alpha
-    //!? a recode of Vch1B van only be done on char(1) columns
-    if (DM_VCH == eDatum && MN_1B == eEncoding) {
-      vRecodeVchAlpha(pIntoNub, aIntoHead, pCol, i_IntoOffset, i_FromOffset);
-#ifdef WITH_TRACE_ENCODING
-      RowCoder::vHeadDumpColumn(aIntoHead, pIntoNub->pDesc()->pColumnVec(), i_ForCol, "vRecodeVchAlpha"_Stz);
-#endif
-      continue;
-    }
-#endif
     
   }
   
