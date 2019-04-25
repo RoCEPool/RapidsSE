@@ -55,7 +55,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // testing
 
-//#define WITH_EXTENDED_BCD       // encode extended bcd
+#define WITH_EXTENDED_BCD       // encode extended bcd
 #define WITH_EXTENDED_INT       // encode extended int
 #define WITH_EXTENDED_INT_DELTA   // encode extended int delta
 #define WITH_EXTENDED_INT_DIGIT   // encode extended int digit
