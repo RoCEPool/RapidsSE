@@ -31,6 +31,8 @@ namespace Data
   
     i8 m_nBuffers;
     i8 m_nRows;
+    i8 m_nTails;
+    i8 m_nTailUnits;
 
     // must be last
     Footer m_xFooter;
