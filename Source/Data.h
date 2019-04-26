@@ -147,6 +147,7 @@ using namespace Data;
 
 #include "HeadLine.hpp"
 #include "TailLine.hpp"
+#include "SpaceUnit.hpp"
 #include "Coda.hpp"
 
 
