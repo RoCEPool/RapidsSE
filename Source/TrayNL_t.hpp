@@ -254,7 +254,7 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotHead(void)
   i8 i_Head = m_nHeadItems++;
 
   i8 nUnits = (sizeof(HEAD) / sizeof(UNIT));
-  RASSERT(nUnits == 4 || nUnits == 1); //! temp
+  //RASSERT(nUnits == 4 || nUnits == 1); //! temp
 
   m_nHeadUnits += nUnits;
   

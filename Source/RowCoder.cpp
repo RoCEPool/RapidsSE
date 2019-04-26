@@ -68,6 +68,13 @@ RowCoder::RowCoder(void)
   m_nTails = 0;
   m_nTailUnits = 0;
 
+  m_nFreeHead_0_7   = 0;
+  m_nFreeHead_8_15  = 0;
+  m_nFreeHead_16_23 = 0;
+  m_nFreeHead_24_31 = 0;
+  m_nFreeHead_32_39 = 0;
+  m_nFreeHead_40_47 = 0;
+
   _checkInitialised_(CN_ROWCODER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
@@ -164,14 +171,36 @@ RowCoder::~RowCoder(void) noexcept(false)
          nSumDeltaBytes
          );
 
-  vTrace(": Buffers %lld Rows %lld(%lldB) HeadFree %lldB Tails %lld(%lldB) ∑(%lldB)\n"_Stz,
+  i8 nHeadUsedBytes = m_nRows * sizeof(HeadLine);
+  i8 nTailUsedBytes = m_nTailUnits * sizeof(DoubleWord);
+  i8 nTotalUsedBytes = m_nRows * sizeof(HeadLine) + m_nTailUnits * sizeof(DoubleWord);
+  
+  vTrace(": Buffers %lld Rows %lld(%lldB) "
+         "HeadFree %lldB(%lld%%) "
+         "Tails %lld(%lldB %lld%%) "
+         "∑(%lldB)\n"_Stz,
+         
          m_nBuffers,
          m_nRows,
-         m_nRows * sizeof(HeadLine),
+         nHeadUsedBytes,
+         
          m_nHeadFree,
+         IntLib::iPercent(m_nHeadFree, nTotalUsedBytes),
+
          m_nTails,
-         m_nTailUnits * sizeof(DoubleWord),
-         m_nRows * sizeof(HeadLine) + m_nTailUnits * sizeof(DoubleWord));
+         nTailUsedBytes,
+         IntLib::iPercent(nTailUsedBytes, nTotalUsedBytes),
+
+         nTotalUsedBytes);
+  
+  vTrace(": Free: 0..7:%lld 8..15:%lld 16..23:%lld 24..31:%lld 32..39:%lld 40..47:%lld µ:%lldB\n"_Stz,
+         m_nFreeHead_0_7,
+         m_nFreeHead_8_15,
+         m_nFreeHead_16_23,
+         m_nFreeHead_24_31,
+         m_nFreeHead_32_39,
+         m_nFreeHead_40_47,
+         m_nHeadFree / m_nRows);
 
 }
 
@@ -300,15 +329,26 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     }
     
   }
+
+  i8 nFreeBytes = nFreeSpaceHead(aIntoHead,pColVec,pIntoCoda);
+  m_nHeadFree += nFreeBytes;
   
-  m_nHeadFree += nFreeSpaceHead(aIntoHead,pColVec,pIntoCoda);
-  
+       if (nFreeBytes <= 7 ) m_nFreeHead_0_7++;
+  else if (nFreeBytes <= 15) m_nFreeHead_8_15++;
+  else if (nFreeBytes <= 23) m_nFreeHead_16_23++;
+  else if (nFreeBytes <= 31) m_nFreeHead_24_31++;
+  else if (nFreeBytes <= 39) m_nFreeHead_32_39++;
+  else if (nFreeBytes <= 47) m_nFreeHead_40_47++;
+
+    
 #ifdef WITH_TRACE_ENCODING
-  RowCoder::vHeadDump(aIntoHead, pIntoNub->pDesc()->pColumnVec());
-  HV_Rec hvRec;
-  RowCoder::vRecord(hvRec,aIntoHead,pColVec);
-  hvRec->vPrintRow();
-  vTrace("\n"_Stz);
+  if (nFreeBytes >= 8) {
+    RowCoder::vHeadDump(aIntoHead, pIntoNub->pDesc()->pColumnVec());
+    HV_Rec hvRec;
+    RowCoder::vRecord(hvRec,aIntoHead,pColVec);
+    hvRec->vPrintRow();
+    vTrace("\n"_Stz);
+  }
 #endif
   
   return true;

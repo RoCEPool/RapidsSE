@@ -36,7 +36,14 @@ namespace Data
 
     i8 m_nTails;
     i8 m_nTailUnits;
-
+  
+    i8 m_nFreeHead_0_7;
+    i8 m_nFreeHead_8_15;
+    i8 m_nFreeHead_16_23;
+    i8 m_nFreeHead_24_31;
+    i8 m_nFreeHead_32_39;
+    i8 m_nFreeHead_40_47;
+  
     // must be last
     Footer m_xFooter;
   
@@ -44,7 +51,9 @@ namespace Data
     void* operator new(size_t);
     void  operator delete(void*);
   
-    RowCoder(void);
+  void extracted();
+  
+  RowCoder(void);
     ~RowCoder(void) noexcept(false);
 
     bool bCopy(RowNub* pIntoNub, RowNub* pFromNub);
