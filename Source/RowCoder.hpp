@@ -26,11 +26,14 @@ namespace Data
       i8   m_nRecodedBytes;  // bytes succesfully recoded
       i8   m_nOops;          // no of times unable to succesfully recode
       i8   m_nOopsBytes;     // oops bytes
+      i8   m_nOopsMiss;      // oops miss
 
     } m_xaUsage[C_MAX_COLUMNS];
   
     i8 m_nBuffers;
     i8 m_nRows;
+    i8 m_nHeadFree;
+
     i8 m_nTails;
     i8 m_nTailUnits;
 
@@ -208,7 +211,7 @@ namespace Data
   
     void vUsageIncEncoded(i8 i_Col, i8 nBytes);
     void vUsageIncRecoded(i8 i_Col, i8 nBytes);
-    void vUsageIncOops(i8 i_Col, i8 nBytes);
+    void vUsageIncOops(i8 i_Col, i8 nBytes, i8 nMiss);
     void vUsageReset(void);
 
   private:
