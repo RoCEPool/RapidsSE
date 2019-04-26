@@ -8,8 +8,8 @@ namespace Base
   class HeadLine
   {
   public:
-    byte m_yaByte[C_BYTES_PER_CACHE_LINE];
-  
+    byte m_yaByte[sizeof(CacheLine)];
+
   public:
     HeadLine(void);
     ~HeadLine(void) noexcept(false);

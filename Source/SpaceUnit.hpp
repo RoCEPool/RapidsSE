@@ -9,7 +9,7 @@ namespace Base
   {
   public:
     byte m_yaByte[sizeof(DoubleWord)];
-  
+
   public:
     SpaceUnit(void);
     ~SpaceUnit(void) noexcept(false);

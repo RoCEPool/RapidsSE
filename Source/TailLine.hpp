@@ -8,7 +8,7 @@ namespace Base
   class TailLine
   {
   public:
-    byte m_yaByte[C_BYTES_PER_CACHE_LINE];
+    byte m_yaByte[sizeof(SpaceUnit)];
   
   public:
     TailLine(void);

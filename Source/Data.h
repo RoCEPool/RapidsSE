@@ -16,9 +16,6 @@ namespace Data
   static const i8 C_FLAT_FREQ         = 2;
   static const i8 C_MAX_INDEX_COLUMNS = 16;
   
-  static const i8 C_MAX_ROWS = (C_SIZE_LARGE_OBJECT - C_1KB) / C_BYTES_PER_CACHE_LINE;
-  static const i8 C_MAX_COLUMNS = 150;
-  
   enum eMN : u1 // metadata nibbles
   {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -145,22 +142,25 @@ using namespace Data;
 
 //------------------------------------------------------------------------------
 
+#include "SpaceUnit.hpp"
 #include "HeadLine.hpp"
 #include "TailLine.hpp"
-#include "SpaceUnit.hpp"
-#include "Coda.hpp"
 
+static const i8 C_MAX_ROWS = (C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(HeadLine);
+static const i8 C_MAX_COLUMNS = 150;
+
+#include "Coda.hpp"
 
 typedef HV<Record,CN_RECORD> HV_Rec;
 
 //typedef ArrayNL_t<CN_EDMARRAY,eDM,256> EdmAry;
 
-typedef Nub_t<CN_ROWTRAY,HeadLine,TailLine,DoubleWord,Table,Coda> RowNub;
+typedef Nub_t<CN_ROWTRAY,HeadLine,TailLine,SpaceUnit,Table,Coda> RowNub;
 
-typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,DoubleWord,Table,Coda,
+typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,SpaceUnit,Table,Coda,
                 (C_CACHELINES * sizeof(HeadLine))> RowParts;
 
-typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,DoubleWord,Table,Coda,
+typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,SpaceUnit,Table,Coda,
                  (C_MAX_ROWS * sizeof(HeadLine))> RowTray;
 
 #include "Datum.hpp"

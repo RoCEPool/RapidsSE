@@ -329,18 +329,17 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
     }
     
   }
-
+  
   i8 nFreeBytes = nFreeSpaceHead(aIntoHead,pColVec,pIntoCoda);
   m_nHeadFree += nFreeBytes;
   
-       if (nFreeBytes <= 7 ) m_nFreeHead_0_7++;
+  if (nFreeBytes <= 7 ) m_nFreeHead_0_7++;
   else if (nFreeBytes <= 15) m_nFreeHead_8_15++;
   else if (nFreeBytes <= 23) m_nFreeHead_16_23++;
   else if (nFreeBytes <= 31) m_nFreeHead_24_31++;
   else if (nFreeBytes <= 39) m_nFreeHead_32_39++;
   else if (nFreeBytes <= 47) m_nFreeHead_40_47++;
-
-    
+  
 #ifdef WITH_TRACE_ENCODING
   if (nFreeBytes >= 8) {
     RowCoder::vHeadDump(aIntoHead, pIntoNub->pDesc()->pColumnVec());
@@ -1660,7 +1659,7 @@ void RowCoder::vRecodeVchShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoH
       //      vTrace("\n"_Stz);
       
       i8 nShocoTailUnits = aShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
-      RASSERT(nShocoTailUnits > 1);
+      //RASSERT(nShocoTailUnits > 1);
       //MemLib::vWordDump(aShocoTail,nTailUnits * sizeof(SpaceUnit));
       
       aIntoHead->v1N(i_Col,MN_SHOCO_SPLIT);
@@ -1712,8 +1711,8 @@ void RowCoder::vRecodeVchShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoH
     }
     
     // fall thru
-    MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-    MemLib::vWordDump(aShocoTail,sizeof(HeadLine));
+    //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+    //MemLib::vWordDump(aShocoTail,sizeof(HeadLine));
     
   }
 #endif
