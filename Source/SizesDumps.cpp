@@ -209,6 +209,7 @@ pDUMPFUN *gpDump[]
 
   /* 75 */ &Node::vDump,            // CN_NODE
   /*    */ &Dump::vUndefined,       // CN_NOW
+  /*    */ &Dump::vUndefined,       // CN_NUMBAT
 
   /* 77 */ &Dump::vUndefined,       // CN_OP
   
@@ -487,6 +488,7 @@ i8 giClassSize[]
 
   /* 75 */ sizeof(Node),               // CN_NODE
   /*    */ sizeof(Now),                // CN_NOW
+  /*    */ sizeof(Numbat),             // CN_NUMBAT
 
   /* 77 */ sizeof(Op),                 // CN_OP
   
@@ -765,6 +767,7 @@ eHT geWhichHeap[]
 
   /* 75 */ HT_TRANSIENT_SMALL,   // CN_NODE
   /*    */ HT_TRANSIENT_SMALL,   // CN_NOW
+  /*    */ HT_TRANSIENT_LARGE,   // CN_NUMBAT
 
   /* 77 */ HT_TRANSIENT_SMALL,   // CN_OP
   

@@ -204,7 +204,8 @@ pFINALIZE *gpFinalize[]
   
   /* 75 */ &Finalize::vUndefined,         // CN_NODE
   /*    */ &Finalize::vUndefined,         // CN_NOW
-  
+  /*    */ &Finalize::vUndefined,         // CN_NUMBAT
+
   /* 77 */ &Finalize::vUndefined,         // CN_OP
   
   /* 78 */ &Finalize::vUndefined,         // CN_PARSER
