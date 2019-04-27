@@ -29,7 +29,8 @@ namespace Structures
     void vInsert(byte* aKey, i8 nBytes, i8 iValue);
 
   private:
-    
+    void vInsert(i8 iHash, byte* aKey, i8 nBytes, i8 iValue);
+
     Footer* aFooter(void);
   };
   

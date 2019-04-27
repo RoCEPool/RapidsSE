@@ -117,6 +117,9 @@ void vTest4(void)
 
   HashMap* pHashMap = new HashMap;
   
+  s32 sKey("ALPHA"_Stz);
+  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),1);
+  
   delete pHashMap;
 }
 
