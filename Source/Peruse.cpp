@@ -144,7 +144,7 @@ void Peruse::vAdd(i8 iArg, Stz* szFormat,...)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (IntLib::bIsDecaCycle(m_iCount)) {
+  if (szFormat && IntLib::bIsDecaCycle(m_iCount)) {
     
     i8 iGrandAvg = m_iGrandSum / m_iGrandCount;
     

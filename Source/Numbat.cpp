@@ -40,7 +40,15 @@ void Numbat::vAdd(i8 iArg)
   
   i8 i_Mag = IntLib::iByteMagnitude(iArg) - 1;
   
+  i8 iMsb = IntLib::uByte(iArg,i_Mag);
   
+  i8 i_Grp = IntLib::uBits(iMsb,7,3);
+  i8 i_SubGrp = IntLib::uBits(iMsb,4,3);
+  
+  vTrace("$$ [%lld][%lld][%lld] %lld\n"_Stz,
+         i_Mag,i_Grp,i_SubGrp,iArg);
+
+  m_oNumSet[i_Mag].m_oPeruse[i_Grp][i_SubGrp].vAdd(iArg,nullptr);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -353,24 +353,29 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   return true;
 }
 
+static Numbat oNumBat("partKey"_Stz);
+
 /*----------------------------------------------------------------------------*/
 /* encode given datum into cache line                                         */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncode(RowNub* pNub, Column* pCol, Datum* pDatum)
 {
-  i8 i_Column = pCol->iColumnNo();
+  i8 i_Col = pCol->iColumnNo();
   
-  if (0 == i_Column)
+  if (0 == i_Col)
     m_nRows++;
   
   //! don't encode columns 16+                                             (fix)
-  if (i_Column >= 16)
+  if (i_Col >= 16)
     return;
+  
+  if (1 == i_Col)
+    oNumBat.vAdd(pDatum->m_iInt);
   
   eDM eDatum = pCol->eDatumType();
   
   Coda* pCoda = pNub->pCoda();
-  pCoda->m_aeExtDatum[i_Column] = eDatum;
+  pCoda->m_aeExtDatum[i_Col] = eDatum;
   
   switch (eDatum) {
     case DM_BCD: vEncodeBcd(pNub,pCol,pDatum); return;
