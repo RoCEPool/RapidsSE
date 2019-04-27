@@ -19,7 +19,8 @@ namespace Base
       i2    m_iaI2[4];
       i4    m_iaI4[2];
       i8    m_iI8;
-      
+      u8    m_uI8;
+
       w8    m_wWord;
     };
   

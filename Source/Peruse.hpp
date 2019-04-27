@@ -46,6 +46,7 @@ namespace Measurment
     Footer m_xFooter;
     
   public:
+    Peruse(void);
     Peruse(Stz* szName);
     ~Peruse() noexcept(false);
   

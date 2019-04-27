@@ -7,6 +7,43 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+Peruse::Peruse(void)
+: Object(CN_PERUSE)
+{
+  _precondition_(_MAGIC_,CN_PERUSE,_FOOTER_);
+  
+  m_sName = "<none>"_Stz;
+  
+  m_oTimer.vStart();
+  
+  m_iCount = 0;
+  m_iMax   = C_I8_MIN;
+  m_iMin   = C_I8_MAX;
+  m_iSum   = 0;
+  
+  m_dM1    = 0.0;
+  m_dM2    = 0.0;
+  m_dM3    = 0.0;
+  m_dM4    = 0.0;
+  
+  m_iGrandCount = 0;
+  m_iGrandMax   = C_I8_MIN;
+  m_iGrandMin   = C_I8_MAX;
+  m_iGrandSum   = 0;
+  
+  m_dGrandM1    = 0.0;
+  m_dGrandM2    = 0.0;
+  m_dGrandM3    = 0.0;
+  m_dGrandM4    = 0.0;
+  
+  _checkInitialised_(CN_PERUSE);
+  
+  _postcondition_(_MAGIC_,CN_PERUSE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 Peruse::Peruse(Stz* szName)
 : Object(CN_PERUSE)
 {

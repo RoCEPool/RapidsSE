@@ -21,12 +21,13 @@ using namespace Measurement;
 #include "EnumFlags.hpp"
 #include "LockTracker.hpp"
 #include "Now.hpp"
-#include "Numbat.hpp"
 #include "Peruse.hpp"
 #include "ResourceTracker.hpp"
 #include "Statistics.hpp"
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
+
+#include "Numbat.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

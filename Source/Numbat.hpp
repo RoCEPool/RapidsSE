@@ -5,33 +5,19 @@
 
 namespace Measurment
 {
+  struct NumSet
+  {
+    Peruse m_oPeruse[8][8];
+  };
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Numbat : public Object
   {
   public:
     s32 m_sName;
   
-    Timer m_oTimer;
+    NumSet m_oNumSet[8];
   
-    i8  m_iCount;
-    i8  m_iMax;
-    i8  m_iMin;
-    i8  m_iSum;
-
-    d8  m_dM1;
-    d8  m_dM2;
-    d8  m_dM3;
-    d8  m_dM4;
-
-    i8  m_iGrandCount;
-    i8  m_iGrandMax;
-    i8  m_iGrandMin;
-    i8  m_iGrandSum;
-  
-    d8  m_dGrandM1;
-    d8  m_dGrandM2;
-    d8  m_dGrandM3;
-    d8  m_dGrandM4;
-
     // must be last
     Footer m_xFooter;
     
@@ -39,10 +25,8 @@ namespace Measurment
     Numbat(Stz* szName);
     ~Numbat() noexcept(false);
   
-    void vAdd(i8 iArg, Stz* szFormat,...);
-    void vReset(void);
-    void vPrint(Stz* szFormat,...);
-
+    void vAdd(i8 iArg);
+  
     Footer* aFooter(void);
   };
 }

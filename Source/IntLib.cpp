@@ -13,6 +13,32 @@ const u1 C_VLQ_NULL_BIT = 6;
 const u1 C_VLQ_SIGN_BIT = 5;
 
 /*----------------------------------------------------------------------------*/
+/* return a shifted bit sequence                                              */
+/*----------------------------------------------------------------------------*/
+u8 IntLib::uBits(u8 uArg, i8 i_Bit, i8 nBits)
+{
+  i8 nLeft = 63 - i_Bit;
+  u8 uL = uArg << nLeft;
+
+  i8 nRight = 64 - nBits;
+  u8 uR = uL >> nRight;
+
+  return uR;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return a byte                                                              */
+/*----------------------------------------------------------------------------*/
+u8 IntLib::uByte(u8 uArg, i8 i_Byte)
+{
+  WordView wWord;
+  
+  wWord.m_uI8 = uArg;
+  
+  return wWord.m_yaByte[i_Byte];
+}
+
+/*----------------------------------------------------------------------------*/
 /* return the byte magnitude of arg                                           */
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iByteMagnitude(u8 uArg)
@@ -29,17 +55,18 @@ i8 IntLib::iByteMagnitude(u8 uArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return the byte magnitude of arg                                           */
+/* return 2^iRaised                                                           */
 /*----------------------------------------------------------------------------*/
-i8 IntLib::iBytePower(i8 iByte)
+i8 IntLib::iBytePower(i8 iRaised)
 {
-  if (1 == iByte) return 256 - 1;
-  if (2 == iByte) return 65536 - 1;
-  if (3 == iByte) return 16777216 - 1;
-  if (4 == iByte) return 4294967296 - 1;
-  if (5 == iByte) return 1099511627776 - 1;
-  if (6 == iByte) return 281474976710656 - 1;
-  if (7 == iByte) return 72057594037927936 - 1;
+  if (0 == iRaised) return 1;
+  if (1 == iRaised) return 256 - 1;
+  if (2 == iRaised) return 65536 - 1;
+  if (3 == iRaised) return 16777216 - 1;
+  if (4 == iRaised) return 4294967296 - 1;
+  if (5 == iRaised) return 1099511627776 - 1;
+  if (6 == iRaised) return 281474976710656 - 1;
+  if (7 == iRaised) return 72057594037927936 - 1;
   
   return C_I8_MAX;
 }

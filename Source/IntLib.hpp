@@ -30,6 +30,8 @@ namespace Base
   private:
   
   public:
+    static u8 uBits(u8 uArg, i8 i_Bit, i8 nBits);
+    static u8 uByte(u8 uArg, i8 i_Byte);
     static i8 iByteMagnitude(u8 uArg);
     static i8 iByteSpace(u8 uMax);
     static i8 iBytePower(i8 iByte);
