@@ -55,18 +55,18 @@ i8 IntLib::iByteMagnitude(u8 uArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return 2^iRaised                                                           */
+/* return 8^iRaised'                                                          */
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iBytePower(i8 iRaised)
 {
-  if (0 == iRaised) return 1;
-  if (1 == iRaised) return 256 - 1;
-  if (2 == iRaised) return 65536 - 1;
-  if (3 == iRaised) return 16777216 - 1;
-  if (4 == iRaised) return 4294967296 - 1;
-  if (5 == iRaised) return 1099511627776 - 1;
-  if (6 == iRaised) return 281474976710656 - 1;
-  if (7 == iRaised) return 72057594037927936 - 1;
+  if (0 == iRaised) return 0;
+  if (1 == iRaised) return 256;
+  if (2 == iRaised) return 65536;
+  if (3 == iRaised) return 16777216;
+  if (4 == iRaised) return 4294967296;
+  if (5 == iRaised) return 1099511627776;
+  if (6 == iRaised) return 281474976710656;
+  if (7 == iRaised) return 72057594037927936;
   
   return C_I8_MAX;
 }

@@ -26,7 +26,8 @@ namespace Measurment
     ~Numbat() noexcept(false);
   
     void vAdd(i8 iArg);
-  
+    void vPrint(void);
+
     Footer* aFooter(void);
   };
 }

@@ -215,34 +215,49 @@ void Peruse::vPrint(Stz* szFormat,...)
 {
   _precondition_(_MAGIC_,CN_PERUSE,_FOOTER_);
   
-  i8 iAvg = m_iSum / m_iCount;
-  
-  d8 dVar = m_dM2/(m_iCount-1.0);
-  
-  d8 dStdDev = sqrt( dVar );
-  
-  d8 dSkew = sqrt(double(m_iCount)) * m_dM3/ pow(m_dM2, 1.5);
-  
-  d8 dKurt = double(m_iCount)*m_dM4 / (m_dM2*m_dM2) - 3.0;
-  
-  vTrace("%s cnt %lld sum %lld min %lld max %lld avg %lld var %g dev %g skw %g krt %g"_Stz,
-         m_sName.aStz(),
-         m_iCount,
-         m_iSum,
-         m_iMin,
-         m_iMax,
-         iAvg,
-         dVar,
-         dStdDev,
-         dSkew,
-         dKurt
-         );
-
+  if (! m_iGrandCount) {
+    //vTrace("cnt 0\n"_Stz);
+    return;
+  }
   
   va_list xArgs;
   va_start(xArgs,szFormat);
-  vPrint(szFormat,xArgs);
+  ::vPrint(szFormat,xArgs);
   va_end(xArgs);
+  
+  i8 iGrandAvg = m_iGrandSum / m_iGrandCount;
+  
+  d8 dGrandVar = m_dGrandM2 / (m_iGrandCount-1.0);
+  
+  d8 dGrandStdDev = sqrt(dGrandVar);
+  
+  d8 dGrandSkew = sqrt(double(m_iGrandCount)) * m_dGrandM3 / pow(m_dGrandM2, 1.5);
+  
+  d8 dGrandKurt = double(m_iGrandCount)*m_dGrandM4 / (m_dGrandM2*m_dGrandM2) - 3.0;
+  
+  m_oTimer.vUpdate();
+  s32 sElapsedMag;
+  Magnitudes::vTimeMag(m_oTimer.iMilliseconds()*C_1M, sElapsedMag);
+  
+  s32 sCountComma;
+  StrLib::vComma(sCountComma.aChar(), m_iGrandCount);
+  
+  
+  vTrace("cnt %s sum %lld min %lld max %lld "
+         "avg %lld var %g dev %g skw %g krt %g\n"_Stz,
+         
+         sCountComma.aStz(),
+         m_iGrandSum,
+         m_iGrandMin,
+         m_iGrandMax,
+         
+         iGrandAvg,
+         dGrandVar,
+         dGrandStdDev,
+         dGrandSkew,
+         dGrandKurt
+         );
+  
 }
 
 /*----------------------------------------------------------------------------*/

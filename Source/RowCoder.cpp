@@ -4,6 +4,9 @@
 
 #include "Data.h"
 
+static Numbat oNumBat("partKey"_Stz);
+
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -223,6 +226,7 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   i8 nSpaceNeeded = pFromNub->nUsedBytes();
   if (! pIntoNub->bHasSpace(nSpaceNeeded)) {
     m_nBuffers++;
+    //oNumBat.vPrint();
     return false;
   }
   
@@ -353,8 +357,6 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   return true;
 }
 
-static Numbat oNumBat("partKey"_Stz);
-
 /*----------------------------------------------------------------------------*/
 /* encode given datum into cache line                                         */
 /*----------------------------------------------------------------------------*/
@@ -369,8 +371,8 @@ void RowCoder::vEncode(RowNub* pNub, Column* pCol, Datum* pDatum)
   if (i_Col >= 16)
     return;
   
-  if (1 == i_Col)
-    oNumBat.vAdd(pDatum->m_iInt);
+//  if (1 == i_Col)
+//    oNumBat.vAdd(pDatum->m_iInt);
   
   eDM eDatum = pCol->eDatumType();
   

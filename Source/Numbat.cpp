@@ -45,10 +45,27 @@ void Numbat::vAdd(i8 iArg)
   i8 i_Grp = IntLib::uBits(iMsb,7,3);
   i8 i_SubGrp = IntLib::uBits(iMsb,4,3);
   
-  vTrace("$$ [%lld][%lld][%lld] %lld\n"_Stz,
-         i_Mag,i_Grp,i_SubGrp,iArg);
+//  vTrace("$$ [%lld][%lld][%lld] %lld\n"_Stz,
+//         i_Mag,i_Grp,i_SubGrp,iArg);
 
   m_oNumSet[i_Mag].m_oPeruse[i_Grp][i_SubGrp].vAdd(iArg,nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void Numbat::vPrint(void)
+{
+  for (i8 i_Mag = 0; i_Mag < 8; i_Mag++)
+    for (i8 i_Grp = 0; i_Grp < 8; i_Grp++)
+      for (i8 i_SubGrp = 0; i_SubGrp < 8; i_SubGrp++)
+        m_oNumSet[i_Mag].m_oPeruse[i_Grp][i_SubGrp].vPrint(
+          "[%lld][%lld][%lld] %lld..%lld "_Stz,
+          i_Mag,i_Grp,i_SubGrp,
+          IntLib::iBytePower(i_Mag) + ( ((i_Grp << 5) | (i_SubGrp << 2) | 0) << (i_Mag*8) ),
+          IntLib::iBytePower(i_Mag) + ( ((i_Grp << 5) | (i_SubGrp << 2) | 3) << (i_Mag*8) )
+                                    + ( i_Mag ? IntLib::iBytePower(i_Mag) - 1 : 0)
+      );
 }
 
 /*----------------------------------------------------------------------------*/
