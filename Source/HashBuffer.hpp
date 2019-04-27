@@ -23,6 +23,7 @@ namespace Structures
     ~HashBuffer(void) noexcept(false);
   
     void vInsert(i8 iHash, byte* aKey, i8 nBytes, i8 iValue);
+    bool bIterate(i8& iCursor, byte*& aKey, i8& nBytes, i8& iValue);
 
   private:
     Footer* aFooter(void);

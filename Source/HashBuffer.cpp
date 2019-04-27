@@ -84,6 +84,22 @@ void HashBuffer::vInsert(i8 iHash, byte* aKey, i8 nBytes, i8 iValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* iterate                                                                    */
+/*----------------------------------------------------------------------------*/
+bool HashBuffer::bIterate(i8& iCursor, byte*& aKey, i8& nBytes, i8& iValue)
+{
+  for ( ; iCursor < C_HASH_ENTRIES; iCursor++)
+    if (C_UNKNOWN != m_xHashEntry[iCursor].m_iHash) {
+      aKey   = &m_xHashEntry[iCursor].m_ayKey[0];
+      nBytes = m_xHashEntry[iCursor].m_nBytes;
+      iValue = m_xHashEntry[iCursor].m_iValue;
+      iCursor++;
+      return true;
+    }
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

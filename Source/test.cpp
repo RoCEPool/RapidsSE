@@ -120,6 +120,15 @@ void vTest4(void)
   s32 sKey("ALPHA"_Stz);
   pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),1);
   
+  i8 iCursor = 0;
+  byte* aKey;
+  i8 nBytes;
+  i8 iValue;
+  while (pHashMap->bIterate(iCursor,aKey,nBytes,iValue)) {
+    StrLib::vCopyLen(sKey.aChar(),(char*)aKey,nBytes);
+    vTrace("[%lld] %s/%lld %lld\n"_Stz,iCursor,sKey.aChar(),nBytes,iValue);
+  }
+  
   delete pHashMap;
 }
 
