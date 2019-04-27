@@ -22,12 +22,11 @@ namespace Structures
  
     HashMap(void);
     ~HashMap(void) noexcept(false);
-    
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
-    i8   iEach(char* aKey, i8 nBytes, void* aCursor);
-    bool bExists(char* aKey, i8 nBytes, i8 iValue);
-    void vInsert(char* aKey, i8 nBytes, i8 iValue);
+    i8   iEach(byte* aKey,   i8 nBytes, void*& aCursor);
+    bool bExists(byte* aKey, i8 nBytes);
+    bool bExists(byte* aKey, i8 nBytes, i8 iValue);
+    void vInsert(byte* aKey, i8 nBytes, i8 iValue);
 
   private:
     

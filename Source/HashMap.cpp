@@ -57,7 +57,7 @@ HashMap::HashMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
   
-  m_pRootBuffer = nullptr;
+  m_pRootBuffer = new HashBuffer;
 
   _checkInitialised_(CN_HASHMAP);
   
@@ -71,19 +71,46 @@ HashMap::~HashMap(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
   
-  ASSERT( ! m_pRootBuffer );
+  delete m_pRootBuffer;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* dump grid                                                                  */
+/* iterate each key,value in the hashmap                                      */
 /*----------------------------------------------------------------------------*/
-void HashMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
+i8 HashMap::iEach(byte* aKey, i8 nBytes, void*& aCursor)
 {
-  //HashMap* pHashMap = _pHashMap(pObject);
+  
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does given key exist in the hashmap                                        */
+/*----------------------------------------------------------------------------*/
+bool HashMap::bExists(byte* aKey, i8 nBytes)
+{
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does given key,value exist in the hashmap                                  */
+/*----------------------------------------------------------------------------*/
+bool HashMap::bExists(byte* aKey, i8 nBytes, i8 iValue)
+{
+ 
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert a key,value into the hashmap                                        */
+/*----------------------------------------------------------------------------*/
+void HashMap::vInsert(byte* aKey, i8 nBytes, i8 iValue)
+{
   
 }
 
