@@ -5,9 +5,12 @@
 
 namespace Structures
 {
+  static const i8 C_HASH_ENTRIES = (C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(HashEntry);
+
   class HashBuffer : public Object
   {
   private:
+    HashEntry m_xHashEntry[C_HASH_ENTRIES];
   
     // must be last
     Footer m_xFooter;
@@ -18,9 +21,9 @@ namespace Structures
     
     HashBuffer(void);
     ~HashBuffer(void) noexcept(false);
-    
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
+    void vInsert(i8 iHash, byte* aKey, i8 nBytes, i8 iValue);
+
   private:
     Footer* aFooter(void);
  };

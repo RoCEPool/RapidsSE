@@ -82,7 +82,7 @@ HashMap::~HashMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* iterate each key,value in the hashmap                                      */
 /*----------------------------------------------------------------------------*/
-i8 HashMap::iEach(byte* aKey, i8 nBytes, void*& aCursor)
+i8 HashMap::iEach(byte* aKey, i8 nBytes, i8& iCursor)
 {
   
   return C_UNKNOWN;
@@ -124,7 +124,7 @@ void HashMap::vInsert(byte* aKey, i8 nBytes, i8 iValue)
 /*----------------------------------------------------------------------------*/
 void HashMap::vInsert(i8 iHash, byte* aKey, i8 nBytes, i8 iValue)
 {
-  
+  m_pRootBuffer->vInsert(iHash,aKey,nBytes,iValue);
 }
 
 

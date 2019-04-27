@@ -66,6 +66,22 @@ HashBuffer::~HashBuffer(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* insert a key,value into this hash buffer                                   */
+/*----------------------------------------------------------------------------*/
+void HashBuffer::vInsert(i8 iHash, byte* aKey, i8 nBytes, i8 iValue)
+{
+  int iDebug = 1;
+  
+  i8 i_Entry = iHash % C_HASH_ENTRIES;
+  
+  RASSERT(C_UNKNOWN == m_xHashEntry[i_Entry].m_iHash); //! temp
+  
+  m_xHashEntry[i_Entry].m_iHash = iHash;
+  MemLib::vCopy(m_xHashEntry[i_Entry].m_ayKey,aKey,nBytes,CN_HASHBUFFER);
+  m_xHashEntry[i_Entry].m_nBytes = nBytes;
+  m_xHashEntry[i_Entry].m_iValue = iValue;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

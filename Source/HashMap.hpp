@@ -23,10 +23,11 @@ namespace Structures
     HashMap(void);
     ~HashMap(void) noexcept(false);
   
-    i8   iEach(byte* aKey,   i8 nBytes, void*& aCursor);
+    i8   iEach(byte* aKey,   i8 nBytes, i8& iCursor);
     bool bExists(byte* aKey, i8 nBytes);
     bool bExists(byte* aKey, i8 nBytes, i8 iValue);
     void vInsert(byte* aKey, i8 nBytes, i8 iValue);
+    bool bIterate(i8& iCursor, byte*& aKey, i8& nBytes, i8& iValue);
 
   private:
     void vInsert(i8 iHash, byte* aKey, i8 nBytes, i8 iValue);

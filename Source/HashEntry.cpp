@@ -25,6 +25,7 @@ HashEntry::HashEntry(void)
 {
   m_iHash  = C_UNKNOWN;
   MemLib::vZero(m_ayKey,sizeof(m_ayKey),CN_HASHBUFFER);
+  m_nBytes = C_UNKNOWN;
   m_iValue = C_UNKNOWN;
 }
 
