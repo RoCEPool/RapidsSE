@@ -87,7 +87,9 @@ namespace Data
     void vRecodeVchShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
                     RowNub* pFromNub, Column* pCol,
                     i8 i_ToOffset, i8 i_FromOffset);
-  
+
+    void vReport(void);
+
 
   public:
     static void vAnalyse(RowNub* pNub);

@@ -88,123 +88,7 @@ RowCoder::RowCoder(void)
 /*----------------------------------------------------------------------------*/
 RowCoder::~RowCoder(void) noexcept(false)
 {
-  if (! m_pColVec)
-    return;
-  
-  i8 nCols = m_pColVec->nItems();
-  
-  i8 nSumEncodedBytes = 0;
-  i8 nSumRecodedBytes = 0;
-  i8 nSumOopsBytes    = 0;
-  i8 nSumOopsMiss     = 0;
-  i8 nSumDeltaBytes   = 0;
-
-  i8 nSumEncoded = 0;
-  i8 nSumRecoded = 0;
-  i8 nSumOops    = 0;
-
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    
-    Column* pCol = m_pColVec->pGet(i_Col);
-
-    if ( ! (
-            DM_BCD == pCol->eDatumType() ||
-
-            DM_DTE == pCol->eDatumType() ||
-            
-            DM_DELTA_PLUS == m_pCoda->m_aeExtDatum[i_Col] ||
-            DM_DIGIT == m_pCoda->m_aeExtDatum[i_Col] ||
-            DM_INT   == m_pCoda->m_aeExtDatum[i_Col] ||
-            
-            DM_ALPHA == m_pCoda->m_aeExtDatum[i_Col] ||
-            DM_VCH   == m_pCoda->m_aeExtDatum[i_Col]
-            )
-        )
-      continue;
-
-    i8 nDeltaBytes =
-         m_xaUsage[i_Col].m_nRecodedBytes + m_xaUsage[i_Col].m_nOopsBytes
-           - m_xaUsage[i_Col].m_nEncodedBytes;
-    
-    nSumEncoded      += m_xaUsage[i_Col].m_nEncoded;
-    nSumEncodedBytes += m_xaUsage[i_Col].m_nEncodedBytes;
-    
-    nSumRecoded      += m_xaUsage[i_Col].m_nRecoded;
-    nSumRecodedBytes += m_xaUsage[i_Col].m_nRecodedBytes;
-    
-    nSumOops         += m_xaUsage[i_Col].m_nOops;
-    nSumOopsBytes    += m_xaUsage[i_Col].m_nOopsBytes;
-    nSumOopsMiss     += m_xaUsage[i_Col].m_nOopsMiss;
-
-    nSumDeltaBytes   += nDeltaBytes;
-
-    vTrace(": %2lld %-15s %-8s "
-           "E:%lld(%lldB) R:%lld(%lldB) O:%lld(%lldB,%lld %lld%%) ∆:%lld(%lldB)\n"_Stz,
-           
-           i_Col,
-           pCol->sColumnName().aStz(),
-           aDM[m_pCoda->m_aeExtDatum[i_Col]],
-           
-           m_xaUsage[i_Col].m_nEncoded, m_xaUsage[i_Col].m_nEncodedBytes,
-           m_xaUsage[i_Col].m_nRecoded, m_xaUsage[i_Col].m_nRecodedBytes,
-           m_xaUsage[i_Col].m_nOops,    m_xaUsage[i_Col].m_nOopsBytes, m_xaUsage[i_Col].m_nOopsMiss,
-           IntLib::iPercent(m_xaUsage[i_Col].m_nOopsMiss, m_xaUsage[i_Col].m_nRecodedBytes),
-           
-           m_xaUsage[i_Col].m_nEncoded - m_xaUsage[i_Col].m_nRecoded
-                                       - m_xaUsage[i_Col].m_nOops,
-           nDeltaBytes
-           );
-  }
-  
-  vTrace(":  "
-         "E:%lld(%lldB) R:%lld(%lldB) O:%lld(%lldB,%lldB %lld%%) ∆:%lld(%lldB)\n"_Stz,
-         
-         nSumEncoded,
-         nSumEncodedBytes,
-         
-         nSumRecoded,
-         nSumRecodedBytes,
-         
-         nSumOops,
-         nSumOopsBytes,
-         nSumOopsMiss,
-         IntLib::iPercent(nSumOopsMiss, nSumRecodedBytes),
-
-         nSumEncoded - nSumRecoded - nSumOops,
-         nSumDeltaBytes
-         );
-
-  i8 nHeadUsedBytes = m_nRows * sizeof(HeadLine);
-  i8 nTailUsedBytes = m_nTailUnits * sizeof(SpaceUnit);
-  i8 nTotalUsedBytes = m_nRows * sizeof(HeadLine) + m_nTailUnits * sizeof(SpaceUnit);
-  
-  vTrace(": Buffers %lld Rows %lld(%lldB) "
-         "HeadFree %lldB(%lld%%) "
-         "Tails %lld(%lldB %lld%%) "
-         "∑(%lldB)\n"_Stz,
-         
-         m_nBuffers,
-         m_nRows,
-         nHeadUsedBytes,
-         
-         m_nHeadFree,
-         IntLib::iPercent(m_nHeadFree, nTotalUsedBytes),
-
-         m_nTails,
-         nTailUsedBytes,
-         IntLib::iPercent(nTailUsedBytes, nTotalUsedBytes),
-
-         nTotalUsedBytes);
-  
-  vTrace(": Free: 0..7:%lld 8..15:%lld 16..23:%lld 24..31:%lld 32..39:%lld 40..47:%lld µ:%lldB\n"_Stz,
-         m_nFreeHead_0_7,
-         m_nFreeHead_8_15,
-         m_nFreeHead_16_23,
-         m_nFreeHead_24_31,
-         m_nFreeHead_32_39,
-         m_nFreeHead_40_47,
-         m_nHeadFree / m_nRows);
-
+  vReport();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -721,6 +605,129 @@ void RowCoder::vRetrieve(Datum& oDatum, RowBuffer** ppRowBuffer, HeadLine* aHead
   // get the encoded value into datum
   vDecodeFast(&oDatum,aHeadLine,pColVec,pCol,pCoda,xWord,i_LastColumn,i_LastOffset);
   //vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vReport(void)
+{
+  if (! m_pColVec)
+    return;
+  
+  i8 nCols = m_pColVec->nItems();
+  
+  i8 nSumEncodedBytes = 0;
+  i8 nSumRecodedBytes = 0;
+  i8 nSumOopsBytes    = 0;
+  i8 nSumOopsMiss     = 0;
+  i8 nSumDeltaBytes   = 0;
+  
+  i8 nSumEncoded = 0;
+  i8 nSumRecoded = 0;
+  i8 nSumOops    = 0;
+  
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    Column* pCol = m_pColVec->pGet(i_Col);
+    
+    if ( ! (
+            DM_BCD == pCol->eDatumType() ||
+            
+            DM_DTE == pCol->eDatumType() ||
+            
+            DM_DELTA_PLUS == m_pCoda->m_aeExtDatum[i_Col] ||
+            DM_DIGIT == m_pCoda->m_aeExtDatum[i_Col] ||
+            DM_INT   == m_pCoda->m_aeExtDatum[i_Col] ||
+            
+            DM_ALPHA == m_pCoda->m_aeExtDatum[i_Col] ||
+            DM_VCH   == m_pCoda->m_aeExtDatum[i_Col]
+            )
+        )
+      continue;
+    
+    i8 nDeltaBytes =
+    m_xaUsage[i_Col].m_nRecodedBytes + m_xaUsage[i_Col].m_nOopsBytes
+    - m_xaUsage[i_Col].m_nEncodedBytes;
+    
+    nSumEncoded      += m_xaUsage[i_Col].m_nEncoded;
+    nSumEncodedBytes += m_xaUsage[i_Col].m_nEncodedBytes;
+    
+    nSumRecoded      += m_xaUsage[i_Col].m_nRecoded;
+    nSumRecodedBytes += m_xaUsage[i_Col].m_nRecodedBytes;
+    
+    nSumOops         += m_xaUsage[i_Col].m_nOops;
+    nSumOopsBytes    += m_xaUsage[i_Col].m_nOopsBytes;
+    nSumOopsMiss     += m_xaUsage[i_Col].m_nOopsMiss;
+    
+    nSumDeltaBytes   += nDeltaBytes;
+    
+    vTrace(": %2lld %-15s %-8s "
+           "E:%lld(%lldB) R:%lld(%lldB) O:%lld(%lldB,%lld %lld%%) ∆:%lld(%lldB)\n"_Stz,
+           
+           i_Col,
+           pCol->sColumnName().aStz(),
+           aDM[m_pCoda->m_aeExtDatum[i_Col]],
+           
+           m_xaUsage[i_Col].m_nEncoded, m_xaUsage[i_Col].m_nEncodedBytes,
+           m_xaUsage[i_Col].m_nRecoded, m_xaUsage[i_Col].m_nRecodedBytes,
+           m_xaUsage[i_Col].m_nOops,    m_xaUsage[i_Col].m_nOopsBytes, m_xaUsage[i_Col].m_nOopsMiss,
+           IntLib::iPercent(m_xaUsage[i_Col].m_nOopsMiss, m_xaUsage[i_Col].m_nRecodedBytes),
+           
+           m_xaUsage[i_Col].m_nEncoded - m_xaUsage[i_Col].m_nRecoded
+           - m_xaUsage[i_Col].m_nOops,
+           nDeltaBytes
+           );
+  }
+  
+  vTrace(": E:%lld(%lldB) R:%lld(%lldB) O:%lld(%lldB,%lldB %lld%%) ∆:%lld(%lldB)\n"_Stz,
+         
+         nSumEncoded,
+         nSumEncodedBytes,
+         
+         nSumRecoded,
+         nSumRecodedBytes,
+         
+         nSumOops,
+         nSumOopsBytes,
+         nSumOopsMiss,
+         IntLib::iPercent(nSumOopsMiss, nSumRecodedBytes),
+         
+         nSumEncoded - nSumRecoded - nSumOops,
+         nSumDeltaBytes
+         );
+  
+  i8 nHeadUsedBytes = m_nRows * sizeof(HeadLine);
+  i8 nTailUsedBytes = m_nTailUnits * sizeof(SpaceUnit);
+  i8 nTotalUsedBytes = m_nRows * sizeof(HeadLine) + m_nTailUnits * sizeof(SpaceUnit);
+  
+  vTrace(": Buffers %lld Rows %lld(%lldB) "
+         "HeadFree %lldB(%lld%%) "
+         "Tails %lld(%lldB %lld%%) "
+         "∑(%lldB)\n"_Stz,
+         
+         m_nBuffers,
+         m_nRows,
+         nHeadUsedBytes,
+         
+         m_nHeadFree,
+         IntLib::iPercent(m_nHeadFree, nTotalUsedBytes),
+         
+         m_nTails,
+         nTailUsedBytes,
+         IntLib::iPercent(nTailUsedBytes, nTotalUsedBytes),
+         
+         nTotalUsedBytes);
+  
+  vTrace(": Free: 0..7:%lld 8..15:%lld 16..23:%lld 24..31:%lld 32..39:%lld 40..47:%lld µ:%lldB\n"_Stz,
+         m_nFreeHead_0_7,
+         m_nFreeHead_8_15,
+         m_nFreeHead_16_23,
+         m_nFreeHead_24_31,
+         m_nFreeHead_32_39,
+         m_nFreeHead_40_47,
+         m_nHeadFree / m_nRows);
+  
 }
 
 /*----------------------------------------------------------------------------*/
