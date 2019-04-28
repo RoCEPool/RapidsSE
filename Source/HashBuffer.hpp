@@ -11,8 +11,10 @@ namespace Structures
   class HashBuffer : public Object
   {
   private:
+    i8 m_i_Duplicate;
     HashEntry m_xHashEntry[C_HASH_ENTRIES];
   
+    HashBuffer* m_pDuplicates;
     HashBuffer* m_paCollides[C_HASH_COLLIDES];
   
     // must be last
@@ -25,8 +27,10 @@ namespace Structures
     HashBuffer(void);
     ~HashBuffer(void) noexcept(false);
   
+    void vAppendDuplicate(i8 iDepth, i8 iHash, byte* yaKey, i8 nBytes, i8 iValue);
     void vInsert(i8 iDepth, i8 iHash, byte* yaKey, i8 nBytes, i8 iValue);
     void vInsertCollide(i8 iDepth, byte* yaKey, i8 nBytes, i8 iValue);
+    void vInsertDuplicate(i8 iDepth, byte* yaKey, i8 nBytes, i8 iValue);
     bool bIterate(i8& iCursor, byte*& yaKey, i8& nBytes, i8& iValue);
 
   private:

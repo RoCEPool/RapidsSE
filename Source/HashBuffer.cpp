@@ -49,7 +49,11 @@ HashBuffer::HashBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
   
+  m_i_Duplicate = 0;
   //m_xHashEntry[]
+
+  m_pDuplicates = nullptr;
+
   for (i8 i_Colide = 0; i_Colide < C_HASH_COLLIDES; i_Colide++)
     m_paCollides[i_Colide] = nullptr;
   
@@ -65,6 +69,8 @@ HashBuffer::~HashBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
   
+  delete m_pDuplicates;
+  
   for (i8 i_Colide = 0; i_Colide < C_HASH_COLLIDES; i_Colide++)
     if (m_paCollides[i_Colide])
       delete m_paCollides[i_Colide];
@@ -73,6 +79,25 @@ HashBuffer::~HashBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* insert a key,value into this hash buffer                                   */
+/*----------------------------------------------------------------------------*/
+void HashBuffer::vAppendDuplicate(i8 iDepth, i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
+{
+  if (m_i_Duplicate + 1 >= C_HASH_ENTRIES) {
+    m_pDuplicates = new HashBuffer;
+    m_pDuplicates->vAppendDuplicate(iDepth+1,iHash,yaKey,nBytes,iValue);
+    return;
+  }
+
+  m_i_Duplicate++;
+  
+  m_xHashEntry[m_i_Duplicate].m_iHash = iHash;
+  MemLib::vCopy(m_xHashEntry[m_i_Duplicate].m_yaKey,yaKey,nBytes,CN_HASHBUFFER);
+  m_xHashEntry[m_i_Duplicate].m_nBytes = nBytes;
+  m_xHashEntry[m_i_Duplicate].m_iValue = iValue;
+}
 
 /*----------------------------------------------------------------------------*/
 /* insert a key,value into this hash buffer                                   */
@@ -109,7 +134,14 @@ void HashBuffer::vInsertCollide(i8 iDepth, byte* yaKey, i8 nBytes, i8 iValue)
   if (! m_paCollides[i_Colide])
     m_paCollides[i_Colide] = new HashBuffer;
   m_paCollides[i_Colide]->vInsert(iDepth + 1,iHashRev,yaKey,nBytes,iValue);
+  
+}
 
+/*----------------------------------------------------------------------------*/
+/* insert a key,value into this hash buffer                                   */
+/*----------------------------------------------------------------------------*/
+void HashBuffer::vInsertDuplicate(i8 iDepth, byte* yaKey, i8 nBytes, i8 iValue)
+{
 }
 
 /*----------------------------------------------------------------------------*/

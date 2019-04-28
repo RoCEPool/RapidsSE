@@ -27,6 +27,8 @@ HashEntry::HashEntry(void)
   MemLib::vZero(m_yaKey,sizeof(m_yaKey),CN_HASHBUFFER);
   m_nBytes = C_UNKNOWN;
   m_iValue = C_UNKNOWN;
+  
+  m_aDupeChain = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
