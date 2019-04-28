@@ -49,18 +49,17 @@ HashBuffer::HashBuffer(HashMap* pHashMap, bool bDuplicates, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
   
-  m_pHashMap = pHashMap;
+  m_pHashMap    = pHashMap;
   m_bDuplicates = bDuplicates;
-  m_iDepth = iDepth;
+  m_iDepth      = iDepth;
   
-  m_i_Duplicate = 0;
   //m_xHashEntry[]
-
-  m_pDuplicates = nullptr;
-
   for (i8 i_Colide = 0; i_Colide < C_HASH_COLLIDES; i_Colide++)
     m_paCollides[i_Colide] = nullptr;
-  
+
+  m_i_Duplicate = 0;
+  m_pLinkDuplicates = nullptr;
+
   _checkInitialised_(CN_HASHBUFFER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
@@ -73,7 +72,7 @@ HashBuffer::~HashBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
   
-  delete m_pDuplicates;
+  delete m_pLinkDuplicates;
   
   for (i8 i_Colide = 0; i_Colide < C_HASH_COLLIDES; i_Colide++)
     if (m_paCollides[i_Colide])
@@ -89,9 +88,13 @@ HashBuffer::~HashBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void HashBuffer::vAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
 {
+  RASSERT(m_bDuplicates);
+  
   if (m_i_Duplicate + 1 > C_HASH_ENTRIES) {
-    m_pDuplicates = new HashBuffer(m_pHashMap,true,-1);
-    m_pDuplicates->vAppendDuplicate(aHeadEntry,iValue);
+    HashBuffer* pDuplicates = new HashBuffer(m_pHashMap,true,m_iDepth+1);
+    pDuplicates->m_pLinkDuplicates = this;
+    m_pHashMap->m_pRootDuplicates = pDuplicates;
+    m_pHashMap->m_pRootDuplicates->vAppendDuplicate(aHeadEntry,iValue);
     return;
   }
 
@@ -116,10 +119,10 @@ void HashBuffer::vHandleOccupied(i8 i_Entry, i8 iHash, byte* yaKey, i8 nBytes, i
   if (nBytes == m_xHashEntry[i_Entry].m_nBytes &&
       MemLib::bCompareBytes(m_xHashEntry[i_Entry].m_yaKey,yaKey,nBytes)) {
     
-    if (! m_pDuplicates)
-      m_pDuplicates = new HashBuffer(m_pHashMap,true,-1);
+    if (! m_pHashMap->m_pRootDuplicates)
+      m_pHashMap->m_pRootDuplicates = new HashBuffer(m_pHashMap,true,0);
     
-    m_pDuplicates->vAppendDuplicate(&m_xHashEntry[i_Entry],iValue);
+    m_pHashMap->m_pRootDuplicates->vAppendDuplicate(&m_xHashEntry[i_Entry],iValue);
     return;
   }
   

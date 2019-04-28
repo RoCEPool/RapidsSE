@@ -5,13 +5,14 @@
 
 namespace Structures
 {
-  class HashBuffer;
-  
   class HashMap : public Object
   {
+  friend HashBuffer;
+  
   private:
     HashBuffer* m_pRootBuffer;
-  
+    HashBuffer* m_pRootDuplicates;
+
     // must be last
     Footer m_xFooter;
     

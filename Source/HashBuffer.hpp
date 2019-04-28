@@ -15,13 +15,13 @@ namespace Structures
   private:
     HashMap* m_pHashMap;     // which hash map
     bool     m_bDuplicates;  // is this buffer handling duplicates?
-    i8       m_iDepth;       // depth of hash buffer (non-duplicates)
+    i8       m_iDepth;       // depth of hash buffer
   
-    i8   m_i_Duplicate;
-    HashEntry m_xHashEntry[C_HASH_ENTRIES];
-  
-    HashBuffer* m_pDuplicates;
+    HashEntry   m_xHashEntry[C_HASH_ENTRIES];
     HashBuffer* m_paCollides[C_HASH_COLLIDES];
+
+    i8 m_i_Duplicate;
+    HashBuffer* m_pLinkDuplicates;
   
     // must be last
     Footer m_xFooter;

@@ -58,6 +58,7 @@ HashMap::HashMap(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
   
   m_pRootBuffer = new HashBuffer(this,false,0);
+  m_pRootDuplicates = nullptr;
 
   _checkInitialised_(CN_HASHMAP);
   
