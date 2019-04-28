@@ -118,7 +118,11 @@ void vTest4(void)
   HashMap* pHashMap = new HashMap;
   
   s32 sKey("ALPHA"_Stz);
+  
+  // insert original
   pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),1);
+  
+  // insert duplicate
   pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),1);
 
   i8 iCursor = 0;
