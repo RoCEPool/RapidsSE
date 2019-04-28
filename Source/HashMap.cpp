@@ -57,7 +57,7 @@ HashMap::HashMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
   
-  m_pRootBuffer = new HashBuffer;
+  m_pRootBuffer = new HashBuffer(false);
 
   _checkInitialised_(CN_HASHMAP);
   

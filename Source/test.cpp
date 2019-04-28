@@ -123,7 +123,7 @@ void vTest4(void)
   pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),1);
   
   // insert duplicate
-  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),1);
+  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),2);
 
   i8 iCursor = 0;
   byte* aKey;

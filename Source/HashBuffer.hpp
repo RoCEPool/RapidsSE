@@ -11,7 +11,9 @@ namespace Structures
   class HashBuffer : public Object
   {
   private:
-    i8 m_i_Duplicate;
+    bool m_bDuplicates;  // is this buffer handling duplicates?
+  
+    i8   m_i_Duplicate;
     HashEntry m_xHashEntry[C_HASH_ENTRIES];
   
     HashBuffer* m_pDuplicates;
@@ -24,7 +26,7 @@ namespace Structures
     void* operator new(size_t);
     void  operator delete(void*);
     
-    HashBuffer(void);
+    HashBuffer(bool bDuplicates);
     ~HashBuffer(void) noexcept(false);
   
     void vAppendDuplicate(HashEntry* aHeadEntry, i8 iValue);
