@@ -8,12 +8,14 @@ namespace Structures
   static const i8 C_HASH_ENTRIES = (C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(HashEntry);
   static const i8 C_HASH_COLLIDES = 8;
 
+  class HashMap;
+  
   class HashBuffer : public Object
   {
   private:
-    bool m_bDuplicates;  // is this buffer handling duplicates?
-  
-    i8   m_iDepth;       // depth of hash buffer (non-duplicates)
+    HashMap* m_pHashMap;     // which hash map
+    bool     m_bDuplicates;  // is this buffer handling duplicates?
+    i8       m_iDepth;       // depth of hash buffer (non-duplicates)
   
     i8   m_i_Duplicate;
     HashEntry m_xHashEntry[C_HASH_ENTRIES];
@@ -28,7 +30,7 @@ namespace Structures
     void* operator new(size_t);
     void  operator delete(void*);
     
-    HashBuffer(bool bDuplicates, i8 iDepth);
+    HashBuffer(HashMap* pHashMap, bool bDuplicates, i8 iDepth);
     ~HashBuffer(void) noexcept(false);
   
     void vAppendDuplicate(HashEntry* aHeadEntry, i8 iValue);
