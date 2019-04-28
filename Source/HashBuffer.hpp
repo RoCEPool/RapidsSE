@@ -13,6 +13,8 @@ namespace Structures
   private:
     bool m_bDuplicates;  // is this buffer handling duplicates?
   
+    i8   m_iDepth;       // depth of hash buffer (non-duplicates)
+  
     i8   m_i_Duplicate;
     HashEntry m_xHashEntry[C_HASH_ENTRIES];
   
@@ -26,7 +28,7 @@ namespace Structures
     void* operator new(size_t);
     void  operator delete(void*);
     
-    HashBuffer(bool bDuplicates);
+    HashBuffer(bool bDuplicates, i8 iDepth);
     ~HashBuffer(void) noexcept(false);
   
     void vAppendDuplicate(HashEntry* aHeadEntry, i8 iValue);

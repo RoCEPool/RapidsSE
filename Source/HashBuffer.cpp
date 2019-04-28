@@ -44,12 +44,13 @@ void HashBuffer::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HashBuffer::HashBuffer(bool bDuplicates)
+HashBuffer::HashBuffer(bool bDuplicates, i8 iDepth)
 : Object(CN_HASHBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
   
   m_bDuplicates = bDuplicates;
+  m_iDepth = iDepth;
   
   m_i_Duplicate = 0;
   //m_xHashEntry[]
@@ -88,7 +89,7 @@ HashBuffer::~HashBuffer(void) noexcept(false)
 void HashBuffer::vAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
 {
   if (m_i_Duplicate + 1 > C_HASH_ENTRIES) {
-    m_pDuplicates = new HashBuffer(true);
+    m_pDuplicates = new HashBuffer(true,-1);
     m_pDuplicates->vAppendDuplicate(aHeadEntry,iValue);
     return;
   }
@@ -115,7 +116,7 @@ void HashBuffer::vHandleOccupied(i8 i_Entry, i8 iDepth, i8 iHash, byte* yaKey, i
       MemLib::bCompareBytes(m_xHashEntry[i_Entry].m_yaKey,yaKey,nBytes)) {
     
     if (! m_pDuplicates)
-      m_pDuplicates = new HashBuffer(true);
+      m_pDuplicates = new HashBuffer(true,-1);
     
     m_pDuplicates->vAppendDuplicate(&m_xHashEntry[i_Entry],iValue);
     return;
@@ -158,7 +159,7 @@ void HashBuffer::vInsertCollide(i8 iDepth, byte* yaKey, i8 nBytes, i8 iValue)
   
   i8 i_Colide = iHashRev % C_HASH_COLLIDES;
   if (! m_paCollides[i_Colide])
-    m_paCollides[i_Colide] = new HashBuffer(false);
+    m_paCollides[i_Colide] = new HashBuffer(false,m_iDepth+1);
   m_paCollides[i_Colide]->vInsert(iDepth + 1,iHashRev,yaKey,nBytes,iValue);
 }
 
