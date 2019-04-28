@@ -109,7 +109,7 @@ void HashBuffer::vAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
 /*----------------------------------------------------------------------------*/
 /* handle an occupation                                                       */
 /*----------------------------------------------------------------------------*/
-void HashBuffer::vHandleOccupied(i8 i_Entry, i8 iDepth, i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
+void HashBuffer::vHandleOccupied(i8 i_Entry, i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
 {
   // is it a key duplicate?
   if (nBytes == m_xHashEntry[i_Entry].m_nBytes &&
@@ -123,18 +123,18 @@ void HashBuffer::vHandleOccupied(i8 i_Entry, i8 iDepth, i8 iHash, byte* yaKey, i
   }
   
   // its a hash collision
-  vInsertCollide(iDepth,yaKey,nBytes,iValue);
+  vInsertCollide(yaKey,nBytes,iValue);
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert a key,value into this hash buffer                                   */
 /*----------------------------------------------------------------------------*/
-void HashBuffer::vInsert(i8 iDepth, i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
+void HashBuffer::vInsert(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
 {
   i8 i_Entry = iHash % C_HASH_ENTRIES;
   
   if (C_UNKNOWN != m_xHashEntry[i_Entry].m_iHash) {
-    vHandleOccupied(i_Entry,iDepth,iHash,yaKey,nBytes,iValue);
+    vHandleOccupied(i_Entry,iHash,yaKey,nBytes,iValue);
     return;
   }
   
@@ -147,7 +147,7 @@ void HashBuffer::vInsert(i8 iDepth, i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
 /*----------------------------------------------------------------------------*/
 /* insert a key,value into this hash buffer                                   */
 /*----------------------------------------------------------------------------*/
-void HashBuffer::vInsertCollide(i8 iDepth, byte* yaKey, i8 nBytes, i8 iValue)
+void HashBuffer::vInsertCollide(byte* yaKey, i8 nBytes, i8 iValue)
 {
   byte ayKeyReverse[32];
   
@@ -160,14 +160,7 @@ void HashBuffer::vInsertCollide(i8 iDepth, byte* yaKey, i8 nBytes, i8 iValue)
   i8 i_Colide = iHashRev % C_HASH_COLLIDES;
   if (! m_paCollides[i_Colide])
     m_paCollides[i_Colide] = new HashBuffer(false,m_iDepth+1);
-  m_paCollides[i_Colide]->vInsert(iDepth + 1,iHashRev,yaKey,nBytes,iValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert a key,value into this hash buffer                                   */
-/*----------------------------------------------------------------------------*/
-void HashBuffer::vInsertDuplicate(i8 iDepth, byte* yaKey, i8 nBytes, i8 iValue)
-{
+  m_paCollides[i_Colide]->vInsert(iHashRev,yaKey,nBytes,iValue);
 }
 
 /*----------------------------------------------------------------------------*/
