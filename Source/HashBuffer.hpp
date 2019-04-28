@@ -6,11 +6,14 @@
 namespace Structures
 {
   static const i8 C_HASH_ENTRIES = (C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(HashEntry);
+  static const i8 C_HASH_COLLIDES = 8;
 
   class HashBuffer : public Object
   {
   private:
     HashEntry m_xHashEntry[C_HASH_ENTRIES];
+  
+    HashBuffer* m_paCollides[C_HASH_COLLIDES];
   
     // must be last
     Footer m_xFooter;
@@ -22,8 +25,9 @@ namespace Structures
     HashBuffer(void);
     ~HashBuffer(void) noexcept(false);
   
-    void vInsert(i8 iHash, byte* aKey, i8 nBytes, i8 iValue);
-    bool bIterate(i8& iCursor, byte*& aKey, i8& nBytes, i8& iValue);
+    void vInsert(i8 iDepth, i8 iHash, byte* yaKey, i8 nBytes, i8 iValue);
+    void vInsertCollide(i8 iDepth, byte* yaKey, i8 nBytes, i8 iValue);
+    bool bIterate(i8& iCursor, byte*& yaKey, i8& nBytes, i8& iValue);
 
   private:
     Footer* aFooter(void);

@@ -49,6 +49,10 @@ HashBuffer::HashBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
   
+  //m_xHashEntry[]
+  for (i8 i_Colide = 0; i_Colide < C_HASH_COLLIDES; i_Colide++)
+    m_paCollides[i_Colide] = nullptr;
+  
   _checkInitialised_(CN_HASHBUFFER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
@@ -60,6 +64,10 @@ HashBuffer::HashBuffer(void)
 HashBuffer::~HashBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
+  
+  for (i8 i_Colide = 0; i_Colide < C_HASH_COLLIDES; i_Colide++)
+    if (m_paCollides[i_Colide])
+      delete m_paCollides[i_Colide];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,28 +77,49 @@ HashBuffer::~HashBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* insert a key,value into this hash buffer                                   */
 /*----------------------------------------------------------------------------*/
-void HashBuffer::vInsert(i8 iHash, byte* aKey, i8 nBytes, i8 iValue)
+void HashBuffer::vInsert(i8 iDepth, i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
 {
-  int iDebug = 1;
-  
   i8 i_Entry = iHash % C_HASH_ENTRIES;
   
-  RASSERT(C_UNKNOWN == m_xHashEntry[i_Entry].m_iHash); //! temp
+  if (C_UNKNOWN != m_xHashEntry[i_Entry].m_iHash) {
+    vInsertCollide(iDepth,yaKey,nBytes,iValue);
+    return;
+  }
   
   m_xHashEntry[i_Entry].m_iHash = iHash;
-  MemLib::vCopy(m_xHashEntry[i_Entry].m_ayKey,aKey,nBytes,CN_HASHBUFFER);
+  MemLib::vCopy(m_xHashEntry[i_Entry].m_yaKey,yaKey,nBytes,CN_HASHBUFFER);
   m_xHashEntry[i_Entry].m_nBytes = nBytes;
   m_xHashEntry[i_Entry].m_iValue = iValue;
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert a key,value into this hash buffer                                   */
+/*----------------------------------------------------------------------------*/
+void HashBuffer::vInsertCollide(i8 iDepth, byte* yaKey, i8 nBytes, i8 iValue)
+{
+  byte ayKeyReverse[32];
+  
+  i8 i_Src = nBytes - 1;
+  for (i8 i_Dst = 0; i_Dst < nBytes; i_Dst++, i_Src--)
+    ayKeyReverse[i_Dst] = yaKey[i_Src];
+  
+  i8 iHashRev = HshLib::iHash(ayKeyReverse,nBytes);
+  
+  i8 i_Colide = iHashRev % C_HASH_COLLIDES;
+  if (! m_paCollides[i_Colide])
+    m_paCollides[i_Colide] = new HashBuffer;
+  m_paCollides[i_Colide]->vInsert(iDepth + 1,iHashRev,yaKey,nBytes,iValue);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* iterate                                                                    */
 /*----------------------------------------------------------------------------*/
-bool HashBuffer::bIterate(i8& iCursor, byte*& aKey, i8& nBytes, i8& iValue)
+bool HashBuffer::bIterate(i8& iCursor, byte*& yaKey, i8& nBytes, i8& iValue)
 {
   for ( ; iCursor < C_HASH_ENTRIES; iCursor++)
     if (C_UNKNOWN != m_xHashEntry[iCursor].m_iHash) {
-      aKey   = &m_xHashEntry[iCursor].m_ayKey[0];
+      yaKey   = &m_xHashEntry[iCursor].m_yaKey[0];
       nBytes = m_xHashEntry[iCursor].m_nBytes;
       iValue = m_xHashEntry[iCursor].m_iValue;
       iCursor++;

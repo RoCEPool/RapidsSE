@@ -10,7 +10,7 @@ namespace Structures
   {
   public:
     i8   m_iHash;
-    byte m_ayKey[32];
+    byte m_yaKey[32];
     i8   m_nBytes;
     i8   m_iValue;
 

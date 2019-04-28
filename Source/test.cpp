@@ -119,7 +119,8 @@ void vTest4(void)
   
   s32 sKey("ALPHA"_Stz);
   pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),1);
-  
+  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),1);
+
   i8 iCursor = 0;
   byte* aKey;
   i8 nBytes;

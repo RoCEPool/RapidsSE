@@ -112,7 +112,7 @@ bool HashMap::bExists(byte* aKey, i8 nBytes, i8 iValue)
 void HashMap::vInsert(byte* aKey, i8 nBytes, i8 iValue)
 {
   i8 iHash = HshLib::iHash(aKey,nBytes);
-  vInsert(iHash,aKey,nBytes,iValue);
+  m_pRootBuffer->vInsert(0,iHash,aKey,nBytes,iValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,13 +129,6 @@ bool HashMap::bIterate(i8& iCursor, byte*& aKey, i8& nBytes, i8& iValue)
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* insert a key,value into the hashmap                                        */
-/*----------------------------------------------------------------------------*/
-void HashMap::vInsert(i8 iHash, byte* aKey, i8 nBytes, i8 iValue)
-{
-  m_pRootBuffer->vInsert(iHash,aKey,nBytes,iValue);
-}
 
 
 /*----------------------------------------------------------------------------*/
