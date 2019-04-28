@@ -22,6 +22,7 @@ using namespace Structures;
 #include "HashEntry.hpp"
 #include "HashBuffer.hpp"
 #include "HashMap.hpp"
+#include "HashCursor.hpp"
 
 #include "Link_t.hpp"
 
