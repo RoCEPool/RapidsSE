@@ -124,7 +124,7 @@ i8 MemLib::iCompareBytes(const void* aArg1, const void* aArg2, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* word compare of arg1 with arg2                                             */
 /*----------------------------------------------------------------------------*/
-bool MemLib::bCompareWord(const void* aArg1, const void* aArg2, i8 nBytes)
+bool MemLib::bCompareWords(const void* aArg1, const void* aArg2, i8 nBytes)
 {
   if (0 == iCompareWords(aArg1,aArg2,nBytes))
     return true;
