@@ -95,6 +95,44 @@ void MemLib::vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* byte compare of arg1 with arg2                                             */
+/*----------------------------------------------------------------------------*/
+bool MemLib::bCompareBytes(const void* aArg1, const void* aArg2, i8 nBytes)
+{
+  if (0 == iCompareBytes(aArg1,aArg2,nBytes))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* byte compare of arg1 with arg2                                             */
+/*----------------------------------------------------------------------------*/
+i8 MemLib::iCompareBytes(const void* aArg1, const void* aArg2, i8 nBytes)
+{
+  const byte *yByte1 = (byte*)aArg1;
+  const byte *yByte2 = (byte*)aArg2;
+  
+  while (nBytes--) {
+    if (*yByte1++ != *yByte2++)
+      return yByte2[-1] - yByte1[-1];
+  }
+  
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* word compare of arg1 with arg2                                             */
+/*----------------------------------------------------------------------------*/
+bool MemLib::bCompareWord(const void* aArg1, const void* aArg2, i8 nBytes)
+{
+  if (0 == iCompareWords(aArg1,aArg2,nBytes))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* word compare of val1 with val2                                             */
 /*----------------------------------------------------------------------------*/
 //i8 MemLib::iCompareWords(const void* aVal1, const void* aVal2, i8 nBytes)
