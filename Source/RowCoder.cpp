@@ -873,24 +873,14 @@ void RowCoder::vRecode(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
       vRecodeInt(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
       continue;
     }
-    
-    if (DM_VCH == eDatum && MN_1B == eEncoding) {
-      vRecodeVchAlpha(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+
+    if (DM_VCH == eDatum) {
+      vRecodeVch(pIntoNub,aIntoHead,i_IntoHead,
+                 pFromNub,pCol,eEncoding,
+                 i_IntoOffset,i_FromOffset);
       continue;
     }
-    
-    if (DM_VCH == eDatum) {
-      if (MN_SHOCO_2B == eEncoding) {
-        vRecodeVchShoco(pIntoNub,aIntoHead,i_IntoHead,pFromNub,pCol,
-                        i_IntoOffset,i_FromOffset);
-        continue;
-      }
-      else {
-        if (eEncoding >= MN_1B && eEncoding <= MN_8B)
-          vUsageIncRecoded(i_ForCol,eEncoding);
-        continue;
-      }
-    }
+
   }
   
 }
@@ -1498,6 +1488,31 @@ bool RowCoder::bRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
   //dcLeft.vInc(" (e.g. %lld (first %lld))\n"_Stz,iCurrentInt,iFirstInt);
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy an encoded row from one tray to another                               */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecodeVch(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
+                          RowNub* pFromNub, Column* pCol, eMN eEncoding,
+                          i8& i_IntoOffset, i8& i_FromOffset)
+{
+  if (MN_1B == eEncoding) {
+    vRecodeVchAlpha(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+    return;
+  }
+  
+  if (MN_SHOCO_2B == eEncoding) {
+    vRecodeVchShoco(pIntoNub,aIntoHead,i_IntoHead,pFromNub,pCol,
+                    i_IntoOffset,i_FromOffset);
+    return;
+  }
+
+  if (eEncoding >= MN_1B && eEncoding <= MN_8B) {
+    vUsageIncRecoded(pCol->iColumnNo(),eEncoding);
+    return;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

@@ -84,11 +84,14 @@ namespace Data
                          i8& i_IntoOffset, i8& i_FromOffset);
     bool bRecodeIntDigit(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
                          i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeVch(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
+                    RowNub* pFromNub, Column* pCol, eMN eEncoding,
+                    i8& i_ToOffset, i8& i_FromOffset);
     void vRecodeVchAlpha(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
-                      i8& i_IntoOffset, i8& i_FromOffset);
+                         i8& i_IntoOffset, i8& i_FromOffset);
     void vRecodeVchShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
-                    RowNub* pFromNub, Column* pCol,
-                    i8 i_ToOffset, i8 i_FromOffset);
+                         RowNub* pFromNub, Column* pCol,
+                         i8 i_ToOffset, i8 i_FromOffset);
 
     void vReport(void);
 
