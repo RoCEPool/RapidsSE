@@ -28,6 +28,12 @@ HashCursor::HashCursor(HashMap* pHashMap)
   m_pHashBuffer = nullptr;
   m_i_HashEntry = 0;
   
+  for (i8 i_Stack = 0; i_Stack < C_HASH_DEPTH; i_Stack++) {
+    m_ia_HashEntry[i_Stack] = 0;
+    m_paHashBuffer[i_Stack] = nullptr;
+  }
+  m_i_Stack = 0;
+  
   m_pDupeBuffer = nullptr;
   m_pDupeEntry  = nullptr;
 }
