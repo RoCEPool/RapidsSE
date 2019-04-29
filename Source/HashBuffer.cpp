@@ -170,16 +170,17 @@ void HashBuffer::vInsertCollide(byte* yaKey, i8 nBytes, i8 iValue)
 /*----------------------------------------------------------------------------*/
 /* iterate                                                                    */
 /*----------------------------------------------------------------------------*/
-bool HashBuffer::bIterate(i8& iCursor, byte*& yaKey, i8& nBytes, i8& iValue)
+bool HashBuffer::bIterate(HashCursor* pCursor, byte*& yaKey, i8& nBytes, i8& iValue)
 {
-  for ( ; iCursor < C_HASH_ENTRIES; iCursor++)
-    if (C_UNKNOWN != m_xHashEntry[iCursor].m_iHash) {
-      yaKey   = &m_xHashEntry[iCursor].m_yaKey[0];
-      nBytes = m_xHashEntry[iCursor].m_nBytes;
-      iValue = m_xHashEntry[iCursor].m_iValue;
-      iCursor++;
+  for ( ; pCursor->m_i_HashEntry < C_HASH_ENTRIES; pCursor->m_i_HashEntry++)
+    if (C_UNKNOWN != m_xHashEntry[pCursor->m_i_HashEntry].m_iHash) {
+      yaKey  = &m_xHashEntry[pCursor->m_i_HashEntry].m_yaKey[0];
+      nBytes = m_xHashEntry[pCursor->m_i_HashEntry].m_nBytes;
+      iValue = m_xHashEntry[pCursor->m_i_HashEntry].m_iValue;
+      pCursor->m_i_HashEntry++;
       return true;
     }
+  
   return false;
 }
 

@@ -125,13 +125,16 @@ void vTest4(void)
   // insert duplicate
   pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),2);
 
-  i8 iCursor = 0;
   byte* aKey;
   i8 nBytes;
   i8 iValue;
-  while (pHashMap->bIterate(iCursor,aKey,nBytes,iValue)) {
+  
+  HashCursor xCursor(pHashMap);
+  
+  while (pHashMap->bIterate(&xCursor,aKey,nBytes,iValue)) {
     StrLib::vCopyLen(sKey.aChar(),(char*)aKey,nBytes);
-    vTrace("[%lld] %s/%lld %lld\n"_Stz,iCursor,sKey.aChar(),nBytes,iValue);
+    vTrace("[%lld] %s/%lld %lld\n"_Stz,
+           xCursor.m_i_HashEntry,sKey.aChar(),nBytes,iValue);
   }
   
   delete pHashMap;

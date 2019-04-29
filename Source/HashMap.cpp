@@ -119,9 +119,9 @@ void HashMap::vInsert(byte* aKey, i8 nBytes, i8 iValue)
 /*----------------------------------------------------------------------------*/
 /* iterate                                                                    */
 /*----------------------------------------------------------------------------*/
-bool HashMap::bIterate(i8& iCursor, byte*& aKey, i8& nBytes, i8& iValue)
+bool HashMap::bIterate(HashCursor* pCursor, byte*& aKey, i8& nBytes, i8& iValue)
 {
-  bool b = m_pRootBuffer->bIterate(iCursor,aKey,nBytes,iValue);
+  bool b = m_pRootBuffer->bIterate(pCursor,aKey,nBytes,iValue);
   
   return b;
 }

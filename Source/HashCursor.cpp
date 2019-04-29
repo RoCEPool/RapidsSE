@@ -21,8 +21,15 @@ HashCursor* Structures::_pHashCursor(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HashCursor::HashCursor(void)
+HashCursor::HashCursor(HashMap* pHashMap)
 {
+  m_pHashMap = pHashMap;
+
+  m_pHashBuffer = nullptr;
+  m_i_HashEntry = 0;
+  
+  m_pDupeBuffer = nullptr;
+  m_pDupeEntry  = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

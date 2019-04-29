@@ -8,6 +8,7 @@ namespace Structures
   static const i8 C_HASH_ENTRIES = (C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(HashEntry);
   static const i8 C_HASH_COLLIDES = 8;
 
+  class HashCursor;
   class HashMap;
   
   class HashBuffer : public Object
@@ -37,7 +38,7 @@ namespace Structures
     void vHandleOccupied(i8 i_Entry, i8 iHash, byte* yaKey, i8 nBytes, i8 iValue);
     void vInsert(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue);
     void vInsertCollide(byte* yaKey, i8 nBytes, i8 iValue);
-    bool bIterate(i8& iCursor, byte*& yaKey, i8& nBytes, i8& iValue);
+    bool bIterate(HashCursor* pCursor, byte*& yaKey, i8& nBytes, i8& iValue);
 
   private:
     Footer* aFooter(void);

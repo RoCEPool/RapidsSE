@@ -9,9 +9,16 @@ namespace Structures
   class HashCursor
   {
   public:
+    HashMap*    m_pHashMap;
+
+    HashBuffer* m_pHashBuffer;
+    i8          m_i_HashEntry;
+
+    HashBuffer* m_pDupeBuffer;
+    HashEntry*  m_pDupeEntry;
 
   public:
-    HashCursor(void);
+    HashCursor(HashMap* pHashMap);
     ~HashCursor(void) noexcept(false);
   };
   
