@@ -74,9 +74,9 @@ namespace Data
     
     void vRecode(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
                  RowNub* pFromNub, HeadLine* aFromHead);
-    void vRecodeBcdTenth(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
+    void vRecodeBcd(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
                          i8& i_IntoOffset, i8& i_FromOffset);
-    void vRecodeDteDays(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
+    void vRecodeDte(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
                         i8& i_IntoOffset, i8& i_FromOffset);
     void vRecodeInt(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
                     i8& i_IntoOffset, i8& i_FromOffset);

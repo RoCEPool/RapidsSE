@@ -859,31 +859,25 @@ void RowCoder::vRecode(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     //
-  #ifdef WITH_EXTENDED_BCD
     if (DM_BCD == eDatum) {
-      vRecodeBcdTenth(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+      vRecodeBcd(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
       continue;
     }
-  #endif
     
-  #ifdef WITH_EXTENDED_DTE
     if (DM_DTE == eDatum) {
-      vRecodeDteDays(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
+      vRecodeDte(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
       continue;
     }
-  #endif
     
     if (DM_INT == eDatum) {
       vRecodeInt(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
       continue;
     }
     
-  #ifdef WITH_EXTENDED_VCH
     if (DM_VCH == eDatum && MN_1B == eEncoding) {
       vRecodeVchAlpha(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
       continue;
     }
-  #endif
     
     if (DM_VCH == eDatum) {
       if (MN_SHOCO_2B == eEncoding) {
@@ -904,9 +898,11 @@ void RowCoder::vRecode(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
 /*----------------------------------------------------------------------------*/
 /* attempt to re-encode Bcd as Tenth                                          */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeBcdTenth(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
-                               i8& i_IntoOffset, i8& i_FromOffset)
+void RowCoder::vRecodeBcd(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
+                          i8& i_IntoOffset, i8& i_FromOffset)
 {
+#ifdef WITH_EXTENDED_BCD
+  
   RASSERT(DM_BCD == pCol->eDatumType());
   
   Coda* pCoda = pIntoNub->pCoda();
@@ -1041,14 +1037,16 @@ void RowCoder::vRecodeBcdTenth(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
       RASSERT(0);
   }
   
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
 /* attempt to re-encode a subsequent Dte into +/-Days                         */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeDteDays(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
-                              i8& i_IntoOffset, i8& i_FromOffset)
+void RowCoder::vRecodeDte(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
+                          i8& i_IntoOffset, i8& i_FromOffset)
 {
+#ifdef WITH_EXTENDED_DTE
   RASSERT(DM_DTE == pCol->eDatumType());
   
   Coda* pCoda = pIntoNub->pCoda();
@@ -1190,6 +1188,8 @@ void RowCoder::vRecodeDteDays(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCo
   aIntoHead->v2B(i_IntoOffset,iThisDteDays);
 
   vUsageIncOops(i_Column,2,1);
+
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1506,6 +1506,7 @@ bool RowCoder::bRecodeIntDelta(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
 void RowCoder::vRecodeVchAlpha(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
                                i8& i_IntoOffset, i8& i_FromOffset)
 {
+#ifdef WITH_EXTENDED_VCH
   Coda* pCoda = pIntoNub->pCoda();
   i8 i_Column = pCol->iColumnNo();
   
@@ -1583,6 +1584,7 @@ void RowCoder::vRecodeVchAlpha(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pC
   
   // go back one char in the intoOffset
   i_IntoOffset--;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
