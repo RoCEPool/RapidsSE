@@ -1,0 +1,101 @@
+/*----------------------------------------------------------------------------*/
+/* timestamp.test -- TIMESTAMP ENCODING tests                                 */
+/*----------------------------------------------------------------------------*/
+
+// (1) create a table
+create table tspTbl (
+tsp_col0   TIMESTAMP     NOT NULL,
+tsp_col1   TIMESTAMP     NOT NULL,
+tsp_col2   TIMESTAMP     NOT NULL,
+tsp_col3   TIMESTAMP     NOT NULL,
+tsp_col4   TIMESTAMP     NOT NULL,
+tsp_col5   TIMESTAMP     NOT NULL,
+tsp_col6   TIMESTAMP     NOT NULL,
+tsp_col7   TIMESTAMP     NOT NULL,
+tsp_col8   TIMESTAMP     NOT NULL,
+tsp_col9   TIMESTAMP     NOT NULL,
+tsp_col10  TIMESTAMP     NOT NULL,
+tsp_col11  TIMESTAMP     NOT NULL,
+tsp_col12  TIMESTAMP     NOT NULL,
+tsp_col13  TIMESTAMP     NOT NULL,
+tsp_col14  TIMESTAMP     NOT NULL,
+tsp_col15  TIMESTAMP
+);
+success
+
+Loop 1000 {
+  
+  ld tspTbl "/DATA/Encoding/timestamp.csv" ;
+  success
+  
+}
+
+// check no of rows
+fetch tspTbl;
+rows: 100000
+
+// dump table
+//dumpTbl tspTbl;
+
+fetch retrieve tspTbl tsp_col0;
+affected: 100000
+
+fetch retrieve tspTbl tsp_col1;
+affected: 100000
+
+fetch retrieve tspTbl tsp_col2;
+affected: 100000
+
+fetch retrieve tspTbl tsp_col3;
+affected: 100000
+
+fetch retrieve tspTbl tsp_col4;
+affected: 100000
+
+fetch retrieve tspTbl tsp_col5;
+affected: 100000
+
+fetch retrieve tspTbl tsp_col6;
+affected: 100000
+
+fetch retrieve tspTbl tsp_col7;
+affected: 100000
+
+fetch retrieve tspTbl tsp_col8;
+affected: 100000
+
+fetch retrieve tspTbl tsp_col9;
+affected: 100000
+
+fetch retrieve tspTbl tsp_col10;
+affected: 100000
+
+fetch retrieve tspTbl tsp_col11;
+affected: 100000
+
+fetch retrieve tspTbl tsp_col12;
+affected: 100000
+
+fetch retrieve tspTbl tsp_col13;
+affected: 100000
+
+fetch retrieve tspTbl tsp_col14;
+affected: 100000
+
+fetch retrieve tspTbl tsp_col15;
+affected: 100000
+
+// drop the table
+drop table tspTbl;
+success
+
+CLEANUP {
+  
+  // drop the table
+  drop table tspTbl;
+  mute
+  
+  bye;
+  mute
+}
+

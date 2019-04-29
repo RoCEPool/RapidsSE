@@ -3,66 +3,99 @@
 /*----------------------------------------------------------------------------*/
 
 // (1) create a table
-create table IntTbl (
-  int_col1  INTEGER
+create table intTbl (
+int_col0   INTEGER     NOT NULL,
+int_col1   INTEGER     NOT NULL,
+int_col2   INTEGER     NOT NULL,
+int_col3   INTEGER     NOT NULL,
+int_col4   INTEGER     NOT NULL,
+int_col5   INTEGER     NOT NULL,
+int_col6   INTEGER     NOT NULL,
+int_col7   INTEGER     NOT NULL,
+int_col8   INTEGER     NOT NULL,
+int_col9   INTEGER     NOT NULL,
+int_col10  INTEGER     NOT NULL,
+int_col11  INTEGER     NOT NULL,
+int_col12  INTEGER     NOT NULL,
+int_col13  INTEGER     NOT NULL,
+int_col14  INTEGER     NOT NULL,
+int_col15  INTEGER
 );
 success
 
-// create indexes
-create index int_idx1 on IntTbl (int_col1);
-success
-
-// check existence of index
-lsidx IntTbl;
-rows:
-  ('int_idx1', false, false)
-
-// check columns of index
-lsidxcol IntTbl int_idx1;
-rows:
-  ('int_col1', 'INTEGER', 19, 0, true, true)
-
-ld IntTbl "/DATA/Encoding/integer.csv" ;
-success
+Loop 1000 {
+  
+  ld intTbl "/DATA/Encoding/integer.csv" ;
+  success
+  
+}
 
 // check no of rows
-fetch IntTbl;
-rows: 72
+fetch intTbl;
+rows: 100000
 
-// dump index int_idx1
-dumpidx IntTbl int_idx1;
+// dump table
+//dumpTbl intTbl;
+
+fetch retrieve intTbl int_col0;
+affected: 100000
+
+fetch retrieve intTbl int_col1;
+affected: 100000
+
+fetch retrieve intTbl int_col2;
+affected: 100000
+
+fetch retrieve intTbl int_col3;
+affected: 100000
+
+fetch retrieve intTbl int_col4;
+affected: 100000
+
+fetch retrieve intTbl int_col5;
+affected: 100000
+
+fetch retrieve intTbl int_col6;
+affected: 100000
+
+fetch retrieve intTbl int_col7;
+affected: 100000
+
+fetch retrieve intTbl int_col8;
+affected: 100000
+
+fetch retrieve intTbl int_col9;
+affected: 100000
+
+fetch retrieve intTbl int_col10;
+affected: 100000
+
+fetch retrieve intTbl int_col11;
+affected: 100000
+
+fetch retrieve intTbl int_col12;
+affected: 100000
+
+fetch retrieve intTbl int_col13;
+affected: 100000
+
+fetch retrieve intTbl int_col14;
+affected: 100000
+
+fetch retrieve intTbl int_col15;
+affected: 100000
+
+// drop the table
+drop table intTbl;
 success
-
-// fetch
-fetch intTbl "int_col1 -1 =";
-rows:
-(-1)
-
-// fetch
-fetch intTbl "int_col1 13 =";
-rows:
- (13)
-
-// fetch
-fetch intTbl "int_col1 14 =";
-rows:
-  (14)
-
-// fetch
-fetch intTbl "int_col1 50 =";
-rows:
-  (50)
 
 CLEANUP {
   
   // drop the table
-  //drop table IntTbl;
-  //mute
+  drop table intTbl;
+  mute
   
   bye;
   mute
 }
 
-/*----------------------------------------------------------------------------*/
-/* end                                                                        */
-/*----------------------------------------------------------------------------*/

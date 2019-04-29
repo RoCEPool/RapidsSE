@@ -1,0 +1,101 @@
+/*----------------------------------------------------------------------------*/
+/* varchar.test -- VARCHAR ENCODING tests                                     */
+/*----------------------------------------------------------------------------*/
+
+// (1) create a table
+create table vchTbl (
+vch_col0   VARCHAR     NOT NULL,
+vch_col1   VARCHAR     NOT NULL,
+vch_col2   VARCHAR     NOT NULL,
+vch_col3   VARCHAR     NOT NULL,
+vch_col4   VARCHAR     NOT NULL,
+vch_col5   VARCHAR     NOT NULL,
+vch_col6   VARCHAR     NOT NULL,
+vch_col7   VARCHAR     NOT NULL,
+vch_col8   VARCHAR     NOT NULL,
+vch_col9   VARCHAR     NOT NULL,
+vch_col10  VARCHAR     NOT NULL,
+vch_col11  VARCHAR     NOT NULL,
+vch_col12  VARCHAR     NOT NULL,
+vch_col13  VARCHAR     NOT NULL,
+vch_col14  VARCHAR     NOT NULL,
+vch_col15  VARCHAR
+);
+success
+
+Loop 1000 {
+  
+  ld vchTbl "/DATA/Encoding/varchar.csv" ;
+  success
+  
+}
+
+// check no of rows
+fetch vchTbl;
+rows: 100000
+
+// dump table
+//dumpTbl vchTbl;
+
+fetch retrieve vchTbl vch_col0;
+affected: 100000
+
+fetch retrieve vchTbl vch_col1;
+affected: 100000
+
+fetch retrieve vchTbl vch_col2;
+affected: 100000
+
+fetch retrieve vchTbl vch_col3;
+affected: 100000
+
+fetch retrieve vchTbl vch_col4;
+affected: 100000
+
+fetch retrieve vchTbl vch_col5;
+affected: 100000
+
+fetch retrieve vchTbl vch_col6;
+affected: 100000
+
+fetch retrieve vchTbl vch_col7;
+affected: 100000
+
+fetch retrieve vchTbl vch_col8;
+affected: 100000
+
+fetch retrieve vchTbl vch_col9;
+affected: 100000
+
+fetch retrieve vchTbl vch_col10;
+affected: 100000
+
+fetch retrieve vchTbl vch_col11;
+affected: 100000
+
+fetch retrieve vchTbl vch_col12;
+affected: 100000
+
+fetch retrieve vchTbl vch_col13;
+affected: 100000
+
+fetch retrieve vchTbl vch_col14;
+affected: 100000
+
+fetch retrieve vchTbl vch_col15;
+affected: 100000
+
+// drop the table
+drop table vchTbl;
+success
+
+CLEANUP {
+  
+  // drop the table
+  drop table vchTbl;
+  mute
+  
+  bye;
+  mute
+}
+
