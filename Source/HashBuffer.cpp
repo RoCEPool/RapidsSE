@@ -172,12 +172,18 @@ void HashBuffer::vInsertCollide(byte* yaKey, i8 nBytes, i8 iValue)
 /*----------------------------------------------------------------------------*/
 bool HashBuffer::bIterate(HashCursor* pCursor, byte*& yaKey, i8& nBytes, i8& iValue)
 {
-  for ( ; pCursor->m_i_HashEntry < C_HASH_ENTRIES; pCursor->m_i_HashEntry++)
-    if (C_UNKNOWN != m_xHashEntry[pCursor->m_i_HashEntry].m_iHash) {
-      yaKey  = &m_xHashEntry[pCursor->m_i_HashEntry].m_yaKey[0];
-      nBytes = m_xHashEntry[pCursor->m_i_HashEntry].m_nBytes;
-      iValue = m_xHashEntry[pCursor->m_i_HashEntry].m_iValue;
-      pCursor->m_i_HashEntry++;
+  for ( ;
+       pCursor->m_ia_HashEntry[pCursor->m_i_Stack] < C_HASH_ENTRIES;
+       pCursor->m_ia_HashEntry[pCursor->m_i_Stack]++)
+    
+    if (C_UNKNOWN != m_xHashEntry[pCursor->m_ia_HashEntry[pCursor->m_i_Stack]].m_iHash) {
+      
+      yaKey  = &m_xHashEntry[pCursor->m_ia_HashEntry[pCursor->m_i_Stack]].m_yaKey[0];
+      nBytes = m_xHashEntry[pCursor->m_ia_HashEntry[pCursor->m_i_Stack]].m_nBytes;
+      iValue = m_xHashEntry[pCursor->m_ia_HashEntry[pCursor->m_i_Stack]].m_iValue;
+      
+      pCursor->m_ia_HashEntry[pCursor->m_i_Stack]++;
+      
       return true;
     }
   

@@ -24,9 +24,6 @@ HashCursor* Structures::_pHashCursor(void* aAddr)
 HashCursor::HashCursor(HashMap* pHashMap)
 {
   m_pHashMap = pHashMap;
-
-  m_pHashBuffer = nullptr;
-  m_i_HashEntry = 0;
   
   for (i8 i_Stack = 0; i_Stack < C_HASH_DEPTH; i_Stack++) {
     m_ia_HashEntry[i_Stack] = 0;

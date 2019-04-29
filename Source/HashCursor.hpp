@@ -12,9 +12,6 @@ namespace Structures
   {
   public:
     HashMap*    m_pHashMap;
-
-    HashBuffer* m_pHashBuffer;
-    i8          m_i_HashEntry;
   
     i8          m_ia_HashEntry[C_HASH_DEPTH];
     HashBuffer* m_paHashBuffer[C_HASH_DEPTH];
