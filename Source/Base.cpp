@@ -80,10 +80,6 @@ void Base::vTraceWith(void)
   vTrace("  WITH_EXTENDED_BCD\n"_Stz);
 #endif
   
-#ifdef WITH_EXTENDED_INT
-  vTrace("  WITH_EXTENDED_INT\n"_Stz);
-#endif
-  
 #ifdef WITH_EXTENDED_INT_DELTA
   vTrace("  WITH_EXTENDED_INT_DELTA\n"_Stz);
 #endif
