@@ -166,7 +166,7 @@ void RowCoder::vEncodeBegin(RowNub* pEncodeNub)
 /*----------------------------------------------------------------------------*/
 /* encode given datum into cache line                                         */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeDatum(Column* pCol, Datum* pDatum)
+void RowCoder::vEncodeDatum(Datum* pDatum, Column* pCol)
 {
   i8 i_Col = pCol->iColumnNo();
   
@@ -186,15 +186,15 @@ void RowCoder::vEncodeDatum(Column* pCol, Datum* pDatum)
   pCoda->m_aeExtDatum[i_Col] = eDatum;
   
   switch (eDatum) {
-    case DM_BCD: vEncodeBcd(pCol,pDatum); return;
-    case DM_BOL: vEncodeBol(pCol,pDatum); return;
-    case DM_DTE: vEncodeDte(pCol,pDatum); return;
-    case DM_FLT: vEncodeFlt(pCol,pDatum); return;
-    case DM_INT: vEncodeInt(pCol,pDatum); return;
-    case DM_IVL: vEncodeIvl(pCol,pDatum); return;
-    case DM_TME: vEncodeTme(pCol,pDatum); return;
-    case DM_TSP: vEncodeTsp(pCol,pDatum); return;
-    case DM_VCH: vEncodeVch(pCol,pDatum); return;
+    case DM_BCD: vEncodeBcd(pDatum,pCol); return;
+    case DM_BOL: vEncodeBol(pDatum,pCol); return;
+    case DM_DTE: vEncodeDte(pDatum,pCol); return;
+    case DM_FLT: vEncodeFlt(pDatum,pCol); return;
+    case DM_INT: vEncodeInt(pDatum,pCol); return;
+    case DM_IVL: vEncodeIvl(pDatum,pCol); return;
+    case DM_TME: vEncodeTme(pDatum,pCol); return;
+    case DM_TSP: vEncodeTsp(pDatum,pCol); return;
+    case DM_VCH: vEncodeVch(pDatum,pCol); return;
     default:
       NEVER_REACH;
   }
@@ -212,7 +212,7 @@ void RowCoder::vEncodeEnd(void)
 /*----------------------------------------------------------------------------*/
 /* encode decimal                                                             */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeBcd(Column* pCol, Datum* pDatum)
+void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
 {
   HeadLine* aHeadLine = m_pEncodeNub->aGetHead(0);
   
@@ -255,7 +255,7 @@ void RowCoder::vEncodeBcd(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encode boolean                                                             */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeBol(Column* pCol, Datum* pDatum)
+void RowCoder::vEncodeBol(Datum* pDatum, Column* pCol)
 {
   HeadLine* aHeadLine = m_pEncodeNub->aGetHead(0);
   
@@ -294,7 +294,7 @@ void RowCoder::vEncodeBol(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encode date                                                                */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeDte(Column* pCol, Datum* pDatum)
+void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
 {
   HeadLine* aHeadLine = m_pEncodeNub->aGetHead(0);
   
@@ -342,7 +342,7 @@ void RowCoder::vEncodeDte(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encode float                                                               */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeFlt(Column* pCol, Datum* pDatum)
+void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
 {
   HeadLine* aHeadLine = m_pEncodeNub->aGetHead(0);
   
@@ -385,7 +385,7 @@ void RowCoder::vEncodeFlt(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encode integer                                                             */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeInt(Column* pCol, Datum* pDatum)
+void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
 {
   HeadLine* aHeadLine = m_pEncodeNub->aGetHead(0);
   
@@ -428,7 +428,7 @@ void RowCoder::vEncodeInt(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encode interval                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeIvl(Column* pCol, Datum* pDatum)
+void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
 {
   HeadLine* aHeadLine = m_pEncodeNub->aGetHead(0);
   
@@ -471,7 +471,7 @@ void RowCoder::vEncodeIvl(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encode time                                                                */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeTme(Column* pCol, Datum* pDatum)
+void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
 {
   HeadLine* aHeadLine = m_pEncodeNub->aGetHead(0);
   
@@ -671,7 +671,7 @@ void RowCoder::vReport(void)
 /*----------------------------------------------------------------------------*/
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeTsp(Column* pCol, Datum* pDatum)
+void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
 {
   HeadLine* aHeadLine = m_pEncodeNub->aGetHead(0);
   
@@ -714,7 +714,7 @@ void RowCoder::vEncodeTsp(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encode varchar                                                             */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeVch(Column* pCol, Datum* pDatum)
+void RowCoder::vEncodeVch(Datum* pDatum, Column* pCol)
 {
   HeadLine* aHeadLine = m_pEncodeNub->aGetHead(0);
   
@@ -736,9 +736,9 @@ void RowCoder::vEncodeVch(Column* pCol, Datum* pDatum)
   if (eEncoding != MN_NULL) {
     if (pDatum->m_nChars) {
       if (eEncoding == MN_SHOCO_2B)
-        vEncodeVchShoco(pCol,pDatum);
+        vEncodeVchShoco(pDatum,pCol);
       else
-        vEncodeVchSmall(pCol,pDatum);
+        vEncodeVchSmall(pDatum,pCol);
     }
     else {
       // empty string
@@ -762,7 +762,7 @@ void RowCoder::vEncodeVch(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encode varchar as shoco                                                    */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeVchShoco(Column* pCol, Datum* pDatum)
+void RowCoder::vEncodeVchShoco(Datum* pDatum, Column* pCol)
 {
   i8 i_Column = pCol->iColumnNo();
   
@@ -831,7 +831,7 @@ void RowCoder::vEncodeVchShoco(Column* pCol, Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encode varchar as small                                                    */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeVchSmall(Column* pCol, Datum* pDatum)
+void RowCoder::vEncodeVchSmall(Datum* pDatum, Column* pCol)
 {
   HeadLine* aHeadLine = m_pEncodeNub->aGetHead(0);
   

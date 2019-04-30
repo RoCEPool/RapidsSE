@@ -61,21 +61,21 @@ namespace Data
     bool bCopy(RowNub* pIntoNub, RowNub* pFromNub);
 
     void vEncodeBegin(RowNub* pEncodeNub);
-    void vEncodeDatum(Column* pCol, Datum* pDatum);
+    void vEncodeDatum(Datum* pDatum, Column* pCol);
     void vEncodeEnd(void);
 
   private:
-    void vEncodeBcd(Column* pCol, Datum* pDatum);
-    void vEncodeBol(Column* pCol, Datum* pDatum);
-    void vEncodeDte(Column* pCol, Datum* pDatum);
-    void vEncodeFlt(Column* pCol, Datum* pDatum);
-    void vEncodeInt(Column* pCol, Datum* pDatum);
-    void vEncodeIvl(Column* pCol, Datum* pDatum);
-    void vEncodeTme(Column* pCol, Datum* pDatum);
-    void vEncodeTsp(Column* pCol, Datum* pDatum);
-    void vEncodeVch(Column* pCol, Datum* pDatum);
-    void vEncodeVchShoco(Column* pCol, Datum* pDatum);
-    void vEncodeVchSmall(Column* pCol, Datum* pDatum);
+    void vEncodeBcd(Datum* pDatum, Column* pCol);
+    void vEncodeBol(Datum* pDatum, Column* pCol);
+    void vEncodeDte(Datum* pDatum, Column* pCol);
+    void vEncodeFlt(Datum* pDatum, Column* pCol);
+    void vEncodeInt(Datum* pDatum, Column* pCol);
+    void vEncodeIvl(Datum* pDatum, Column* pCol);
+    void vEncodeTme(Datum* pDatum, Column* pCol);
+    void vEncodeTsp(Datum* pDatum, Column* pCol);
+    void vEncodeVch(Datum* pDatum, Column* pCol);
+    void vEncodeVchShoco(Datum* pDatum, Column* pCol);
+    void vEncodeVchSmall(Datum* pDatum, Column* pCol);
     
     void vRecode(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
                  RowNub* pFromNub, HeadLine* aFromHead);
