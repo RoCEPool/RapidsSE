@@ -20,7 +20,12 @@ namespace Data
   
     ColumnVec* m_pColVec;
     Coda*      m_pCoda;
+  
+    i8 m_i_Offset; // encoding offset
 
+
+    //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+  
     struct {
       i8   m_nEncoded;       // no of times the column has originally encoded
       i8   m_nEncodedBytes;  // bytes originally encoded

@@ -50,8 +50,10 @@ RowCoder::RowCoder(void)
   
   m_pEncodeNub = nullptr;
   
-  m_pColVec = nullptr;
-  m_pCoda   = nullptr;
+  m_pColVec    = nullptr;
+  m_pCoda      = nullptr;
+
+  m_i_Offset   = 0;
 
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     
