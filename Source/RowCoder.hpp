@@ -120,6 +120,8 @@ namespace Data
                         ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                         i8& i_LastColumn, i8& i_LastOffset);
   
+    static i8 iBaseOffset(ColumnVec* pColVec);
+  
     static i8 nDataBytes(eDM eDatum, eMN eEncoding);
   
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,

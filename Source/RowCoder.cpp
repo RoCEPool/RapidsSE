@@ -6,8 +6,6 @@
 
 static Numbat oNumBat("partKey"_Stz);
 
-#define _BASE_OFFSET_ 8
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -225,7 +223,7 @@ void RowCoder::vEncodeBcd(RowNub* pNub, Column* pCol, Datum* pDatum)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
-  i8 i_LastOffset = _BASE_OFFSET_;
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn, i_LastOffset);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
@@ -264,7 +262,7 @@ void RowCoder::vEncodeBol(RowNub* pNub, Column* pCol, Datum* pDatum)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
-  i8 i_LastOffset = _BASE_OFFSET_;
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn, i_LastOffset);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
@@ -310,7 +308,7 @@ void RowCoder::vEncodeDte(RowNub* pNub, Column* pCol, Datum* pDatum)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
-  i8 i_LastOffset = _BASE_OFFSET_;
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn, i_LastOffset);
   //  vTrace("-- %lld-%lld-%lld\n"_Stz,
@@ -355,7 +353,7 @@ void RowCoder::vEncodeFlt(RowNub* pNub, Column* pCol, Datum* pDatum)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
-  i8 i_LastOffset = _BASE_OFFSET_;
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn,i_LastOffset);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
@@ -398,7 +396,7 @@ void RowCoder::vEncodeInt(RowNub* pNub, Column* pCol, Datum* pDatum)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
-  i8 i_LastOffset = _BASE_OFFSET_;
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn,i_LastOffset);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
@@ -441,7 +439,7 @@ void RowCoder::vEncodeIvl(RowNub* pNub, Column* pCol, Datum* pDatum)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
-  i8 i_LastOffset = _BASE_OFFSET_;
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn,i_LastOffset);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
@@ -484,7 +482,7 @@ void RowCoder::vEncodeTme(RowNub* pNub, Column* pCol, Datum* pDatum)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
-  i8 i_LastOffset = _BASE_OFFSET_;
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn,i_LastOffset);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
@@ -511,7 +509,7 @@ void RowCoder::vRetrieve(Datum& oDatum, RowBuffer** ppRowBuffer, HeadLine* aHead
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 i_LastColumn = 0;
-  i8 i_LastOffset = _BASE_OFFSET_;
+  i8 i_LastOffset = iBaseOffset(pColVec);
   
   // get the encoded value into datum
   vDecodeFast(&oDatum,aHeadLine,pColVec,pCol,pCoda,xWord,i_LastColumn,i_LastOffset);
@@ -684,7 +682,7 @@ void RowCoder::vEncodeTsp(RowNub* pNub, Column* pCol, Datum* pDatum)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
 #ifdef WITH_TRACE_ENCODING
-  i8 i_LastOffset = _BASE_OFFSET_;
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn,i_LastOffset);
   RASSERT(wOriginal == (w8)pDatum->m_iInt);
@@ -802,8 +800,8 @@ void RowCoder::vEncodeVchShoco(RowNub* pNub, Column* pCol, Datum* pDatum)
   //    s256 sDecomp;
   //    i8 iLenDecompressed =
   //      Compress::iFromShoco(sDecomp.aChar(), 255,
-  //                           ((byte*)aShocoLine)+_BASE_OFFSET_,
-  //                           C_BYTES_PER_CACHE_LINE-_BASE_OFFSET_);
+  //                           ((byte*)aShocoLine)+iBaseOffset(pColVec),
+  //                           C_BYTES_PER_CACHE_LINE-iBaseOffset(pColVec));
   //    sDecomp.aChar()[iLenDecompressed] = '\0';
   //    vTrace("Decomp: %s\n"_Stz,sDecomp.aChar());
 }
@@ -841,8 +839,8 @@ void RowCoder::vRecode(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
   Coda* pIntoCoda = pIntoNub->pCoda();
 
   i8 i_LastColumn = 0;
-  i8 i_FromOffset = _BASE_OFFSET_;
-  i8 i_IntoOffset = _BASE_OFFSET_;
+  i8 i_FromOffset = iBaseOffset(pColVec);
+  i8 i_IntoOffset = iBaseOffset(pColVec);
   i8 i_OldFromOffset = 0;
 
   if (0 == i_IntoHead) {
@@ -1112,7 +1110,7 @@ void RowCoder::vRecodeDte(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
   ColumnVec* pColVec = pIntoNub->pDesc()->pColumnVec();
   Column* pColFirst = pColVec->pGet(i_FirstDate);
   i8 i_LastColumn = 0;
-  i8 i_LastOffset = _BASE_OFFSET_;
+  i8 i_LastOffset = iBaseOffset(pColVec);
 
   Datum oDte;
   vDecodeDte(&oDte,aIntoHead,pColVec,pColFirst,pCoda,i_LastColumn,i_LastOffset);
@@ -2013,7 +2011,7 @@ void RowCoder::vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec)
   i8 nColumns = pColVec->nItems();
   
   Datum oDatum;
-  i8 i_LastOffset = _BASE_OFFSET_;
+  i8 i_LastOffset = iBaseOffset(pColVec);
   
   vTrace("Column# ColumnName      Datum      ExtDatum        Encoding \n"_Stz);
   
@@ -2058,7 +2056,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
   
   HV_Rec hvRec;
   
-  i8 i_LastOffset = _BASE_OFFSET_;
+  i8 i_LastOffset = iBaseOffset(pColVec);
   
   vTrace("Col ColumnName      Datum  ExtDatum    Encoding"
          "       Offset  Bytes              Value\n"_Stz);
@@ -2126,7 +2124,7 @@ void RowCoder::vHeadDumpNatColumn(HeadLine* aHeadLine, ColumnVec* pColVec, i8 iC
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Datum oDatum;
-  i8 i_LastOffset = _BASE_OFFSET_;
+  i8 i_LastOffset = iBaseOffset(pColVec);
   
   // get the column at index
   Column* pCol = pColVec->pGet(iCol);
@@ -2160,7 +2158,7 @@ void RowCoder::vHeadDumpColumn(HeadLine* aHeadLine, ColumnVec* pColVec, i8 iCol,
   i8 nColumns = pColVec->nItems();
   
   Datum oDatum;
-  i8 i_LastOffset = _BASE_OFFSET_;
+  i8 i_LastOffset = iBaseOffset(pColVec);
   
   // get the column at index
   Column* pCol = pColVec->pGet(iCol);
@@ -2243,7 +2241,7 @@ void RowCoder::vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec)
   i8 nColumns = pColVec->nItems();
   
   i8 i_LastColumn = 0;
-  i8 i_LastOffset = _BASE_OFFSET_;
+  i8 i_LastOffset = iBaseOffset(pColVec);
   
   // for each column
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
@@ -2298,10 +2296,16 @@ void RowCoder::vAppend(Record* pRec, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
+/* return base offset for column vector                                       */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iBaseOffset(ColumnVec* pColVec)
+{
+  return 8;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return number of data bytes of encoding                                    */
 /*----------------------------------------------------------------------------*/
-
-//! this may be better done as a 2d array
 i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
 {
   if (eEncoding == MN_NULL)
@@ -2856,7 +2860,7 @@ void RowCoder::vDecodeDays(Datum* pDatum, HeadLine* aHeadLine,
   
   
   i8 i_SearchColumn = 0;
-  i8 i_SearchOffset = _BASE_OFFSET_;
+  i8 i_SearchOffset = iBaseOffset(pColVec);
   eMN eFirstEncoding = eGetEncodingExt(pCol->iFirstDate(),aHeadLine,pColVec,
                                        pCoda,i_SearchColumn,i_SearchOffset);
 
@@ -3478,7 +3482,7 @@ i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda
   Column* pLastCol = pColVec->pGet(pColVec->nItems() - 1);
   ASSERT(pLastCol->bIsLastColumn());
   
-  i8 i_Offset = _BASE_OFFSET_;
+  i8 i_Offset = iBaseOffset(pColVec);
   i8 i_LastColumn = 0;
   
   eMN eEncoding = eGetEncodingExt(pLastCol->iColumnNo(),aHeadLine,pColVec,pCoda,
@@ -3514,7 +3518,7 @@ eMN RowCoder::eGetEncodingExt(i8 i_ForCol, HeadLine* aHeadLine,
   
   if (i_ForCol < i_PriorColumn_) {
     i_PriorColumn_ = 0;
-    i_Offset_ = _BASE_OFFSET_;
+    i_Offset_ = iBaseOffset(pColVec);
   }
   
   for (i8 i_Nibble = i_PriorColumn_; i_Nibble < i_ForCol; i_Nibble++) {
@@ -3546,7 +3550,7 @@ eMN RowCoder::eGetEncodingNat(i8 i_ForCol, HeadLine* aFromHead,
   
   if (i_ForCol < i_PriorColumn_) {
     i_PriorColumn_ = 0;
-    i_FromOffset_  = _BASE_OFFSET_;
+    i_FromOffset_  = iBaseOffset(pColVec);
   }
   
   for (i8 i_Column = i_PriorColumn_; i_Column < i_ForCol; i_Column++) {
@@ -3791,7 +3795,7 @@ i8 RowCoder::nLines(RowNub* pNub, i8 i_Row)
   // get no of columns
   i8 nColumns = pColVec->nItems();
   
-  i8 i_Offset = _BASE_OFFSET_;
+  i8 i_Offset = iBaseOffset(pColVec);
   i8 i_LastColumn = 0;
   
   // for each column
@@ -3989,7 +3993,7 @@ i8 RowCoder::nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine)
   Column* pLastCol = pColVec->pGet(pColVec->nItems() - 1);
   ASSERT(pLastCol->bIsLastColumn());
   
-  i8 i_Offset = _BASE_OFFSET_;
+  i8 i_Offset = iBaseOffset(pColVec);
   i8 i_LastColumn = 0;
   
   eMN eEncoding = eGetEncodingExt(pLastCol->iColumnNo(),aHeadLine,
