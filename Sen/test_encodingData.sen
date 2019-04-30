@@ -18,6 +18,72 @@
 
   sFileNm OPEN_WRITE pFile file.open
   not if
+  "file not opened" .
+  exit
+  then
+
+  nRecs 0 > if
+  nRecs 0
+  do
+  //I I "%v,String%v" str.format .
+  I 7 % 0 == if
+  -1000000 1000000 int.random
+  else
+  "null"
+  then
+  -9223372036854775806 9223372036854775806 int.random
+  0 9223372036854 int.random
+  0 10000000 int.random
+  -1000 1000000 int.random
+  1000 1000000 int.random
+  0 10000000 int.random
+  0 1000000 int.random
+  0 100000 int.random
+  -1 1 int.random
+  I 10000 %
+  I 1000 %
+  I 100 %
+  I 10 %
+  I 7 %
+  I
+  "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.write
+  loop
+  then
+
+  pFile file.close
+
+  pFile file.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate date                                                              */
+/*----------------------------------------------------------------------------*/
+: generateDate
+
+  params| high |
+  params| low |
+
+  1 28 int.random
+  1 12 int.random
+  low high int.random
+  "%v-%v-%v" str.format
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* generate date data file                                                    */
+/*----------------------------------------------------------------------------*/
+: dateDataFile
+
+  params| nRecs |
+  params| sFileNm |
+
+  nRecs sFileNm "File: %v nRecs %v" fmt.print
+
+  file::new locals| pFile |
+
+  sFileNm OPEN_WRITE pFile file.open
+  not if
     "file not opened" .
     exit
   then
@@ -27,24 +93,24 @@
     do
       //I I "%v,String%v" str.format .
       I 7 % 0 == if
-        -1000000 1000000 int.random
+        1900 2000 generateDate
       else
         "null"
       then
-      -9223372036854775806 9223372036854775806 int.random
-      0 9223372036854 int.random
-      0 10000000 int.random
-      -1000 1000000 int.random
-      1000 1000000 int.random
-      0 10000000 int.random
-      0 1000000 int.random
-      0 100000 int.random
-      -1 1 int.random
-      I 10000 %
-      I 1000 %
-      I 100 %
-      I 10 %
-      I 7 %
+      1900 2000 generateDate
+      1910 2000 generateDate
+      1920 2000 generateDate
+      1930 2000 generateDate
+      1940 2000 generateDate
+      1960 2000 generateDate
+      1980 2000 generateDate
+      1980 2000 generateDate
+      1960 1980 generateDate
+      1940 1960 generateDate
+      1920 1940 generateDate
+      1900 1920 generateDate
+      1920 1960 generateDate
+      1900 1920 generateDate
       I
       "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.write
     loop
@@ -56,12 +122,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* generate the i data files                                                  */
+/* generate the date data files                                               */
+/*----------------------------------------------------------------------------*/
+: dateData
+  "../DATA/Encoding/date.csv"    1000000      dateDataFile
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate the integer data files                                            */
 /*----------------------------------------------------------------------------*/
 : integerData
-
   "../DATA/Encoding/integer.csv"    1000000      integerDataFile
-
 ;
 
 /*============================================================================*/
