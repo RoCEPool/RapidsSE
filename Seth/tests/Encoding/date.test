@@ -4,7 +4,7 @@
 
 // (1) create a table
 create table dteTbl (
-dte_col0   DATE     NOT NULL,
+dte_col0   INTEGER  NOT NULL,
 dte_col1   DATE     NOT NULL,
 dte_col2   DATE     NOT NULL,
 dte_col3   DATE     NOT NULL,
@@ -22,68 +22,64 @@ dte_col14  DATE     NOT NULL,
 dte_col15  DATE
 );
 success
-
-Loop 1000 {
   
-  ld dteTbl "/DATA/Encoding/date.csv" ;
-  success
-  
-}
+ld dteTbl "/DATA/Encoding/date.csv" ;
+success
 
 // check no of rows
 fetch dteTbl;
-rows: 100000
+rows: 1000000
 
 // dump table
 //dumpTbl dteTbl;
 
 fetch retrieve dteTbl dte_col0;
-affected: 100000
+affected: 1000000
 
 fetch retrieve dteTbl dte_col1;
-affected: 100000
+affected: 1000000
 
 fetch retrieve dteTbl dte_col2;
-affected: 100000
+affected: 1000000
 
 fetch retrieve dteTbl dte_col3;
-affected: 100000
+affected: 1000000
 
 fetch retrieve dteTbl dte_col4;
-affected: 100000
+affected: 1000000
 
 fetch retrieve dteTbl dte_col5;
-affected: 100000
+affected: 1000000
 
 fetch retrieve dteTbl dte_col6;
-affected: 100000
+affected: 1000000
 
 fetch retrieve dteTbl dte_col7;
-affected: 100000
+affected: 1000000
 
 fetch retrieve dteTbl dte_col8;
-affected: 100000
+affected: 1000000
 
 fetch retrieve dteTbl dte_col9;
-affected: 100000
+affected: 1000000
 
 fetch retrieve dteTbl dte_col10;
-affected: 100000
+affected: 1000000
 
 fetch retrieve dteTbl dte_col11;
-affected: 100000
+affected: 1000000
 
 fetch retrieve dteTbl dte_col12;
-affected: 100000
+affected: 1000000
 
 fetch retrieve dteTbl dte_col13;
-affected: 100000
+affected: 1000000
 
 fetch retrieve dteTbl dte_col14;
-affected: 100000
+affected: 1000000
 
 fetch retrieve dteTbl dte_col15;
-affected: 100000
+affected: 1000000
 
 // drop the table
 drop table dteTbl;
