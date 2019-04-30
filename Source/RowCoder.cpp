@@ -851,36 +851,43 @@ void RowCoder::vRecode(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoHead,
     
     // calculate new IntoOffset
     i_IntoOffset += i_FromOffset - i_OldFromOffset;
-  
-    //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    
-    if (0 == i_IntoHead && eDatum == DM_INT)
-      vSetAuxInt(pIntoCoda,aIntoHead,pCol,eEncoding,i_IntoOffset);
-    
+      
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     //
-    if (DM_BCD == eDatum) {
+    
+    switch (eDatum) {
+    
+    case Datums::DM_BCD:
       vRecodeBcd(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
       continue;
-    }
-    
-    if (DM_DTE == eDatum) {
+    case Datums::DM_BOL:
+      continue;
+    case Datums::DM_DTE:
       vRecodeDte(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
       continue;
-    }
-    
-    if (DM_INT == eDatum) {
+    case Datums::DM_FLT:
+      continue;
+    case Datums::DM_INT:
+      if (0 == i_IntoHead)
+        vSetAuxInt(pIntoCoda,aIntoHead,pCol,eEncoding,i_IntoOffset);
       vRecodeInt(pIntoNub,aIntoHead,pCol,i_IntoOffset,i_FromOffset);
       continue;
-    }
-
-    if (DM_VCH == eDatum) {
-      vRecodeVch(pIntoNub,aIntoHead,i_IntoHead,
-                 pFromNub,pCol,eEncoding,
-                 i_IntoOffset,i_FromOffset);
+    case Datums::DM_IVL:
       continue;
+    case Datums::DM_TME:
+      continue;
+    case Datums::DM_TSP:
+      continue;
+    case Datums::DM_VCH:
+        vRecodeVch(pIntoNub,aIntoHead,i_IntoHead,
+                   pFromNub,pCol,eEncoding,
+                   i_IntoOffset,i_FromOffset);
+        continue;
+        
+    default:
+      NEVER_REACH;
     }
-
+    
   }
   
 }
