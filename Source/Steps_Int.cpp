@@ -26,6 +26,7 @@ void Step::vAddSteps_Int(void)
   vAddStep("!="_Stz,              &Step::vIntNotEqual);
   vAddStep("-"_Stz,               &Step::vIntSubtract);
   vAddStep("int.random"_Stz,      &Step::vIntRandom);
+  vAddStep("uint.random"_Stz,     &Step::vUnsignedIntRandom);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -293,12 +294,12 @@ void Step::vIntRandom(MP_Task mpTask)
 {
   ENTRY("vIntRandom"_Stz);
   
-  i8 iLow;
-  if ( ! mpTask->m_pDataStack->bPop(iLow) )
-    THROW_INVALID_DSTACK("int.random"_Stz);
-  
   i8 iHigh;
   if ( ! mpTask->m_pDataStack->bPop(iHigh) )
+    THROW_INVALID_DSTACK("int.random"_Stz);
+  
+  i8 iLow;
+  if ( ! mpTask->m_pDataStack->bPop(iLow) )
     THROW_INVALID_DSTACK("int.random"_Stz);
   
   i8 iRandom = Random::iInteger(iLow,iHigh);
@@ -323,6 +324,28 @@ void Step::vIntSubtract(MP_Task mpTask)
   r = i - j;
   
   mpTask->m_pDataStack->vPushI8(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* uint.random -- generate a random number in the given range                  */
+/*----------------------------------------------------------------------------*/
+void Step::vUnsignedIntRandom(MP_Task mpTask)
+{
+  ENTRY("vUnsignedIntRandom"_Stz);
+  
+  i8 iHigh;
+  if ( ! mpTask->m_pDataStack->bPop(iHigh) )
+    THROW_INVALID_DSTACK("uint.random"_Stz);
+  
+  i8 iLow;
+  if ( ! mpTask->m_pDataStack->bPop(iLow) )
+    THROW_INVALID_DSTACK("uint.random"_Stz);
+  
+  u8 uRandom = Random::uInteger(iLow,iHigh);
+  
+  mpTask->m_pDataStack->vPushI8(uRandom);
   
   EXIT();
 }

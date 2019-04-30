@@ -4,7 +4,7 @@
 
 // (1) create a table
 create table bolTbl (
-  bol_col0   BOOLEAN     NOT NULL,
+  bol_col0   INTEGER     NOT NULL,
   bol_col1   BOOLEAN     NOT NULL,
   bol_col2   BOOLEAN     NOT NULL,
   bol_col3   BOOLEAN     NOT NULL,
@@ -22,78 +22,74 @@ create table bolTbl (
   bol_col15  BOOLEAN
 );
 success
-
-Loop 1000 {
   
-  ld bolTbl "/DATA/Encoding/boolean.csv" ;
-  success
-
-}
+ld bolTbl "/DATA/Encoding/boolean.csv" ;
+success
 
 // check no of rows
 fetch bolTbl;
-rows: 100000
+rows: 1000000
 
 // dump table
 //dumpTbl bolTbl;
 
 fetch retrieve bolTbl bol_col0;
-affected: 100000
+affected: 1000000
 
 fetch retrieve bolTbl bol_col1;
-affected: 100000
+affected: 1000000
 
 fetch retrieve bolTbl bol_col2;
-affected: 100000
+affected: 1000000
 
 fetch retrieve bolTbl bol_col3;
-affected: 100000
+affected: 1000000
 
 fetch retrieve bolTbl bol_col4;
-affected: 100000
+affected: 1000000
 
 fetch retrieve bolTbl bol_col5;
-affected: 100000
+affected: 1000000
 
 fetch retrieve bolTbl bol_col6;
-affected: 100000
+affected: 1000000
 
 fetch retrieve bolTbl bol_col7;
-affected: 100000
+affected: 1000000
 
 fetch retrieve bolTbl bol_col8;
-affected: 100000
+affected: 1000000
 
 fetch retrieve bolTbl bol_col9;
-affected: 100000
+affected: 1000000
 
 fetch retrieve bolTbl bol_col10;
-affected: 100000
+affected: 1000000
 
 fetch retrieve bolTbl bol_col11;
-affected: 100000
+affected: 1000000
 
 fetch retrieve bolTbl bol_col12;
-affected: 100000
+affected: 1000000
 
 fetch retrieve bolTbl bol_col13;
-affected: 100000
+affected: 1000000
 
 fetch retrieve bolTbl bol_col14;
-affected: 100000
+affected: 1000000
 
 fetch retrieve bolTbl bol_col15;
-affected: 100000
+affected: 1000000
 
 // drop the table
-//drop table bolTbl;
-//success
+drop table bolTbl;
+success
 
 CLEANUP {
   
   // drop the table
-  //drop table bolTbl;
-  //mute
+  drop table bolTbl;
+  mute
   
   bye;
   mute

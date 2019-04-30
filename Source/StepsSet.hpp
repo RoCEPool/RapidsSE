@@ -399,6 +399,7 @@
   static void vIntNotEqual(Tasks::MP_Task mpTask);
   static void vIntRandom(Tasks::MP_Task mpTask);
   static void vIntSubtract(Tasks::MP_Task mpTask);
+  static void vUnsignedIntRandom(Tasks::MP_Task mpTask);
 
   // jobClass
   static void vJobClassBuffer(Tasks::MP_Task mpTask);
