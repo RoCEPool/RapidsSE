@@ -17,6 +17,10 @@ namespace Base
     void vPut(i8 i_Offset, w8 wWord, i8 iEncoding);
   
     void vSetAll(byte yVal);
+
+    i8   iMetaNibble(i8 i_Nibble);
+    void vMetaNibble(i8 i_Nibble, w8 wArg);
+
   
     w8 w8_1B(i8 i_Byte);
     w8 w8_2B(i8 i_Byte);
@@ -29,6 +33,7 @@ namespace Base
 
     w8 w8_1N(i8 i_Nibble);
 
+  
     void v1B(i8 i_Byte, w8 wArg);
     void v2B(i8 i_Byte, w8 wArg);
     void v3B(i8 i_Byte, w8 wArg);
