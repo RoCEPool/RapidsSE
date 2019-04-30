@@ -131,9 +131,24 @@
   params| highDecimal |
   params| lowDecimal |
 
-  highDecimal lowDecimal int.random
-  highWhole lowWhole int.random
+  lowWhole highWhole int.random
+  lowDecimal highDecimal int.random
+
   "%v.%v" str.format
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate decimal                                                           */
+/*----------------------------------------------------------------------------*/
+: generateTenthDecimal
+
+  params| highWhole |
+  params| lowWhole |
+
+  0 10 int.random >str
+  lowWhole highWhole int.random
+
+  "%v.0%v" str.format
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -159,19 +174,19 @@
     do
       //I I "%v,String%v" str.format .
       I 7 % 0 == if
-        -1000000 1000000 int.random
+        -1000 1000 0 1000 generateDecimal
       else
         "null"
       then
 
-      -9223372036854775806 9223372036854775806 int.random
-      0 9223372036854 int.random
-      0 10000000 int.random
-      -1000 1000000 int.random
-      1000 1000000 int.random
-      0 10000000 int.random
-      0 1000000 int.random
-      0 100000 int.random
+      -9223372 9223372 0 99999999 generateDecimal
+      0 922337 0 9223 generateDecimal
+      0 10000000 0 100 generateDecimal
+      0 0 0 10 generateDecimal
+      1000 1000000 10 1000 generateDecimal
+      0 10000000 generateTenthDecimal
+      0 1000 0 1000 generateDecimal
+      0 1000 generateTenthDecimal
       -1 1 int.random
       I 10000 %
       I 1000 %
