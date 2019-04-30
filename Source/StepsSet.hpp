@@ -397,6 +397,7 @@
   static void vIntMultiply(Tasks::MP_Task mpTask);
   static void vIntNeg(Tasks::MP_Task mpTask);
   static void vIntNotEqual(Tasks::MP_Task mpTask);
+  static void vIntRandom(Tasks::MP_Task mpTask);
   static void vIntSubtract(Tasks::MP_Task mpTask);
 
   // jobClass
