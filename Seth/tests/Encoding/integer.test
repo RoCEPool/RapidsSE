@@ -22,68 +22,64 @@ int_col14  INTEGER     NOT NULL,
 int_col15  INTEGER
 );
 success
-
-Loop 1000 {
   
-  ld intTbl "/DATA/Encoding/integer.csv" ;
-  success
-  
-}
+ld intTbl "/DATA/Encoding/integer.csv" ;
+success
 
 // check no of rows
 fetch intTbl;
-rows: 100000
+rows: 1000000
 
 // dump table
 //dumpTbl intTbl;
 
 fetch retrieve intTbl int_col0;
-affected: 100000
+affected: 1000000
 
 fetch retrieve intTbl int_col1;
-affected: 100000
+affected: 1000000
 
 fetch retrieve intTbl int_col2;
-affected: 100000
+affected: 1000000
 
 fetch retrieve intTbl int_col3;
-affected: 100000
+affected: 1000000
 
 fetch retrieve intTbl int_col4;
-affected: 100000
+affected: 1000000
 
 fetch retrieve intTbl int_col5;
-affected: 100000
+affected: 1000000
 
 fetch retrieve intTbl int_col6;
-affected: 100000
+affected: 1000000
 
 fetch retrieve intTbl int_col7;
-affected: 100000
+affected: 1000000
 
 fetch retrieve intTbl int_col8;
-affected: 100000
+affected: 1000000
 
 fetch retrieve intTbl int_col9;
-affected: 100000
+affected: 1000000
 
 fetch retrieve intTbl int_col10;
-affected: 100000
+affected: 1000000
 
 fetch retrieve intTbl int_col11;
-affected: 100000
+affected: 1000000
 
 fetch retrieve intTbl int_col12;
-affected: 100000
+affected: 1000000
 
 fetch retrieve intTbl int_col13;
-affected: 100000
+affected: 1000000
 
 fetch retrieve intTbl int_col14;
-affected: 100000
+affected: 1000000
 
 fetch retrieve intTbl int_col15;
-affected: 100000
+affected: 1000000
 
 // drop the table
 drop table intTbl;
