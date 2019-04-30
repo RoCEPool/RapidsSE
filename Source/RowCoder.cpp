@@ -158,6 +158,9 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 void RowCoder::vEncodeBegin(RowNub* pEncodeNub)
 {
   m_pEncodeNub = pEncodeNub;
+  m_pColVec    = m_pEncodeNub->pDesc()->pColumnVec();
+  m_pCoda      = m_pEncodeNub->pCoda();
+
 }
 
 /*----------------------------------------------------------------------------*/
