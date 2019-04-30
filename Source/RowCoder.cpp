@@ -117,10 +117,10 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   i8 i_IntoHead = pIntoNub->iAllotHead();
   HeadLine* aIntoHead = pIntoNub->aGetHead(i_IntoHead);
   
+  ColumnVec* pColVec = pIntoNub->pDesc()->pColumnVec();
+  Coda* pIntoCoda = pIntoNub->pCoda();
+  
   if (0 == i_IntoHead) {
-    ColumnVec* pColVec = pIntoNub->pDesc()->pColumnVec();
-    Coda* pIntoCoda = pIntoNub->pCoda();
-    
     m_pColVec = pColVec;
     m_pCoda   = pIntoCoda;
   }
@@ -138,6 +138,16 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
   
   vRecode(pIntoNub,aIntoHead,i_IntoHead,pFromNub,aFromHead);
   
+  i8 nFreeBytes = nFreeSpaceHead(aIntoHead,pColVec,pIntoCoda);
+  m_nHeadFree += nFreeBytes;
+  
+  if (nFreeBytes <= 7 ) m_nFreeHead_0_7++;
+  else if (nFreeBytes <= 15) m_nFreeHead_8_15++;
+  else if (nFreeBytes <= 23) m_nFreeHead_16_23++;
+  else if (nFreeBytes <= 31) m_nFreeHead_24_31++;
+  else if (nFreeBytes <= 39) m_nFreeHead_32_39++;
+  else if (nFreeBytes <= 47) m_nFreeHead_40_47++;
+
   return true;
 }
 
@@ -602,7 +612,6 @@ void RowCoder::vReport(void)
   i8 nTotalUsedBytes = m_nRows * sizeof(HeadLine) + m_nTailUnits * sizeof(SpaceUnit);
   
   vTrace(": Buffers %lld Rows %lld(%lldB) "
-         "HeadFree %lldB(%lld%%) "
          "Tails %lld(%lldB %lld%%) "
          "∑(%lldB)\n"_Stz,
          
@@ -610,24 +619,28 @@ void RowCoder::vReport(void)
          m_nRows,
          nHeadUsedBytes,
          
-         m_nHeadFree,
-         IntLib::iPercent(m_nHeadFree, nTotalUsedBytes),
-         
          m_nTails,
          nTailUsedBytes,
          IntLib::iPercent(nTailUsedBytes, nTotalUsedBytes),
          
          nTotalUsedBytes);
   
-  vTrace(": Free: 0..7:%lld 8..15:%lld 16..23:%lld 24..31:%lld 32..39:%lld 40..47:%lld µ:%lldB\n"_Stz,
+  vTrace(": HeadFree %lldB(%lld%%) : "
+         "0..7B:%lld 8..15B:%lld 16..23B:%lld 24..31B:%lld "
+           "32..39B:%lld 40..47B:%lld "
+         "µ:%lldB\n"_Stz,
+         
+         m_nHeadFree,
+         IntLib::iPercent(m_nHeadFree, nTotalUsedBytes),
+         
          m_nFreeHead_0_7,
          m_nFreeHead_8_15,
          m_nFreeHead_16_23,
          m_nFreeHead_24_31,
          m_nFreeHead_32_39,
          m_nFreeHead_40_47,
+         
          m_nHeadFree / m_nRows);
-  
 }
 
 /*----------------------------------------------------------------------------*/
