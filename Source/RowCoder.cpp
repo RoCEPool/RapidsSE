@@ -48,6 +48,8 @@ RowCoder::RowCoder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
+  m_pEncodeNub = nullptr;
+  
   m_pColVec = nullptr;
   m_pCoda   = nullptr;
 
@@ -153,8 +155,18 @@ bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 /*----------------------------------------------------------------------------*/
 /* encode given datum into cache line                                         */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncode(RowNub* pNub, Column* pCol, Datum* pDatum)
+void RowCoder::vEncodeBegin(RowNub* pEncodeNub)
 {
+  m_pEncodeNub = pEncodeNub;
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode given datum into cache line                                         */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vEncodeDatum(RowNub* pNub, Column* pCol, Datum* pDatum)
+{
+  RASSERT(pNub == m_pEncodeNub)
+  ;
   i8 i_Col = pCol->iColumnNo();
   
   if (0 == i_Col)
@@ -186,6 +198,15 @@ void RowCoder::vEncode(RowNub* pNub, Column* pCol, Datum* pDatum)
       NEVER_REACH;
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/* encode given datum into cache line                                         */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vEncodeEnd(void)
+{
+  m_pEncodeNub = nullptr;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* encode decimal                                                             */

@@ -16,6 +16,8 @@ namespace Data
   {
   public:
   
+    RowNub*    m_pEncodeNub;
+  
     ColumnVec* m_pColVec;
     Coda*      m_pCoda;
 
@@ -53,11 +55,14 @@ namespace Data
   
   void extracted();
   
-  RowCoder(void);
+    RowCoder(void);
     ~RowCoder(void) noexcept(false);
 
     bool bCopy(RowNub* pIntoNub, RowNub* pFromNub);
-    void vEncode(RowNub* pNub, Column* pCol, Datum* pDatum);
+
+    void vEncodeBegin(RowNub* pEncodeNub);
+    void vEncodeDatum(RowNub* pNub, Column* pCol, Datum* pDatum);
+    void vEncodeEnd(void);
 
   private:
     void vEncodeBcd(RowNub* pNub, Column* pCol, Datum* pDatum);
