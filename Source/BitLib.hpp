@@ -141,7 +141,7 @@ static CAST aBitAnd(void* aAddress, u8 uMask)
 /* bitwise-and of object address with mask                                    */
 /*----------------------------------------------------------------------------*/
 template <class CAST>
-static CAST pBitAnd(void* aAddress, u8 uMask)
+inline static CAST pBitAnd(void* aAddress, u8 uMask)
 {
   u8 uNewAddress = BITWISE_AND((u8)aAddress,uMask);
   
