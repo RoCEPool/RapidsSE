@@ -3,22 +3,56 @@
 /*============================================================================*/
 startCluster;
 
-create table T (
-c1 integer,
-c2 varchar,
-c3 varchar
+create table bolTbl (
+bol_col0   INTEGER     NOT NULL,
+bol_col1   BOOLEAN     NOT NULL,
+bol_col2   BOOLEAN     NOT NULL,
+bol_col3   BOOLEAN     NOT NULL,
+bol_col4   BOOLEAN     NOT NULL,
+bol_col5   BOOLEAN     NOT NULL,
+bol_col6   BOOLEAN     NOT NULL,
+bol_col7   BOOLEAN     NOT NULL,
+bol_col8   BOOLEAN     NOT NULL,
+bol_col9   BOOLEAN     NOT NULL,
+bol_col10  BOOLEAN     NOT NULL,
+bol_col11  BOOLEAN     NOT NULL,
+bol_col12  BOOLEAN     NOT NULL,
+bol_col13  BOOLEAN     NOT NULL,
+bol_col14  BOOLEAN     NOT NULL,
+bol_col15  BOOLEAN
+);
+
+ld bolTbl "/DATA/Encoding/boolean.csv" ;
+
+time fetch retrieve bolTbl bol_col1;
+time fetch retrieve bolTbl bol_col1;
+time fetch retrieve bolTbl bol_col1;
+/*
+create table bolTbl (
+bol_col1   BOOLEAN     NOT NULL,
+vch_col2   VARCHAR(32) NOT NULL,
+int_col3   INTEGER     NOT NULL,
+int_col4   INTEGER     NOT NULL,
+dec_col5   DECIMAL(10,2) NOT NULL,
+flt_col6   FLOAT       NOT NULL,
+tsp_col7   TIMESTAMP   NOT NULL,
+bol_col8   BOOLEAN
+);
+
+
+ld bolTbl "/DATA/Datums/boolean.csv" ;
+
+// check no of rows
+fetch bolTbl;
+
+create table T1 (
+  col0   DECIMAL
 );
 
 // load data into the table with default formatter settings
-ld T "/DATA/Load/terminator_cr.csv" record_ends "\r";
+ld T1 "../JTEST/T1.csv" ;
+fetch T1;
 
-// create index
-create index idx on T(c1);
-
-// fetch
-fetch T "c1 1 =";
-
-/*
 create table vch (
 vch_testno  INTEGER     NOT NULL,
 vch_field   VARCHAR(32),
