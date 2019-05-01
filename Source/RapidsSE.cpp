@@ -844,11 +844,10 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
   API_NOTNULL(aaRow);
   API_BEGIN();
   
-  i8 i_Node;
   i8 iMaxRowNo = 0;
   
   i8 iResponses = pJob->m_pResponseVec->nItems();
-  Response* pResponse;
+  Response* pResponse = nullptr;
   
   for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
     pResponse = pJob->m_pResponseVec->pGet(i_Node);
