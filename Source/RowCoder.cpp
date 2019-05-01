@@ -107,6 +107,8 @@ RowCoder::~RowCoder(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
 {
+  m_i_Offset = 8;
+  
   // check for space in target nub
   i8 nSpaceNeeded = pFromNub->nUsedBytes();
   if (! pIntoNub->bHasSpace(nSpaceNeeded)) {
@@ -162,6 +164,8 @@ void RowCoder::vEncodeBegin(RowNub* pEncodeNub)
   m_pEncodeNub = pEncodeNub;
   m_pColVec    = m_pEncodeNub->pDesc()->pColumnVec();
   m_pCoda      = m_pEncodeNub->pCoda();
+
+  m_i_Offset   = 8;
 
 }
 
@@ -239,9 +243,9 @@ void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aHeadLine->vPut(m_pEncodeNub->i_Offset(),pDatum->m_iInt,eEncoding);
+    aHeadLine->vPut(m_i_Offset,pDatum->m_iInt,eEncoding);
   
-  m_pEncodeNub->vOffsetInc(nBytesEncoded);
+  m_i_Offset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -280,7 +284,7 @@ void RowCoder::vEncodeBol(Datum* pDatum, Column* pCol)
   // set 4bit meta data for column value
   aHeadLine->vMetaNibble(i_Column,eEncoding);
   
-  m_pEncodeNub->vOffsetInc(nBytesEncoded);
+  m_i_Offset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -324,9 +328,9 @@ void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aHeadLine->vPut(m_pEncodeNub->i_Offset(),pDatum->m_iInt,nBytesEncoded);
+    aHeadLine->vPut(m_i_Offset,pDatum->m_iInt,nBytesEncoded);
   
-  m_pEncodeNub->vOffsetInc(nBytesEncoded);
+  m_i_Offset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -369,9 +373,9 @@ void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aHeadLine->vPut(m_pEncodeNub->i_Offset(),pDatum->m_iInt,eEncoding);
+    aHeadLine->vPut(m_i_Offset,pDatum->m_iInt,eEncoding);
   
-  m_pEncodeNub->vOffsetInc(nBytesEncoded);
+  m_i_Offset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -412,9 +416,9 @@ void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aHeadLine->vPut(m_pEncodeNub->i_Offset(),pDatum->m_iInt,eEncoding);
+    aHeadLine->vPut(m_i_Offset,pDatum->m_iInt,eEncoding);
   
-  m_pEncodeNub->vOffsetInc(nBytesEncoded);
+  m_i_Offset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -455,9 +459,9 @@ void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aHeadLine->vPut(m_pEncodeNub->i_Offset(),pDatum->m_iInt,eEncoding);
+    aHeadLine->vPut(m_i_Offset,pDatum->m_iInt,eEncoding);
   
-  m_pEncodeNub->vOffsetInc(nBytesEncoded);
+  m_i_Offset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -498,9 +502,9 @@ void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aHeadLine->vPut(m_pEncodeNub->i_Offset(),pDatum->m_iInt,eEncoding);
+    aHeadLine->vPut(m_i_Offset,pDatum->m_iInt,eEncoding);
   
-  m_pEncodeNub->vOffsetInc(nBytesEncoded);
+  m_i_Offset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -698,9 +702,9 @@ void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    aHeadLine->vPut(m_pEncodeNub->i_Offset(),pDatum->m_iInt,eEncoding);
+    aHeadLine->vPut(m_i_Offset,pDatum->m_iInt,eEncoding);
   
-  m_pEncodeNub->vOffsetInc(nBytesEncoded);
+  m_i_Offset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -805,9 +809,9 @@ void RowCoder::vEncodeVchShoco(Datum* pDatum, Column* pCol)
   MemLib::vCopy(aWithinTail,caShoco,nCompressed,CN_ROWBUFFER);
   
   // set data for column value as the index of the shoco cache line
-  i8 i_Offset = m_pEncodeNub->i_Offset();
+  i8 i_Offset = m_i_Offset;
   aHeadLine->vPut(i_Offset,i_Shoco,MN_2B);
-  m_pEncodeNub->vOffsetInc(2);
+  m_i_Offset += 2;
   vUsageIncEncoded(i_Column,2 + 2 + nCompressed);
   
   // set length of the compressed string encoded into tail shoco cache line
@@ -839,11 +843,11 @@ void RowCoder::vEncodeVchSmall(Datum* pDatum, Column* pCol)
   
   i8 i_Column = pCol->iColumnNo();
   
-  aHeadLine->vPut(m_pEncodeNub->i_Offset(),
+  aHeadLine->vPut(m_i_Offset,
                   *(w8*)pDatum->m_xWsp.aArea(),
                   pDatum->m_nChars);
   
-  m_pEncodeNub->vOffsetInc(pDatum->m_nChars);
+  m_i_Offset += pDatum->m_nChars;
   vUsageIncEncoded(i_Column,pDatum->m_nChars);
 }
 
