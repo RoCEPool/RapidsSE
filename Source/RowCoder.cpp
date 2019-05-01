@@ -121,14 +121,13 @@ void RowCoder::vCopyEnd(void)
 /*----------------------------------------------------------------------------*/
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
-bool RowCoder::bCopyRow(RowNub* pIntoNub, RowNub* pFromNub)
+bool RowCoder::bCopyRow(RowNub* pFromNub)
 {
-  RASSERT(pIntoNub == m_pEncodeNub);
   m_i_Offset = 8;
   
   // check for space in target nub
   i8 nSpaceNeeded = pFromNub->nUsedBytes();
-  if (! pIntoNub->bHasSpace(nSpaceNeeded)) {
+  if (! m_pEncodeNub->bHasSpace(nSpaceNeeded)) {
     m_nBuffers++;
     //oNumBat.vPrint();
     return false;
@@ -136,11 +135,11 @@ bool RowCoder::bCopyRow(RowNub* pIntoNub, RowNub* pFromNub)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 i_IntoHead = pIntoNub->iAllotHead();
-  HeadLine* aIntoHead = pIntoNub->aGetHead(i_IntoHead);
+  i8 i_IntoHead = m_pEncodeNub->iAllotHead();
+  HeadLine* aIntoHead = m_pEncodeNub->aGetHead(i_IntoHead);
   
-  ColumnVec* pColVec = pIntoNub->pDesc()->pColumnVec();
-  Coda* pIntoCoda = pIntoNub->pCoda();
+  ColumnVec* pColVec = m_pEncodeNub->pDesc()->pColumnVec();
+  Coda* pIntoCoda = m_pEncodeNub->pCoda();
   
   if (0 == i_IntoHead) {
     m_pColVec = pColVec;
@@ -158,7 +157,7 @@ bool RowCoder::bCopyRow(RowNub* pIntoNub, RowNub* pFromNub)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vRecode(pIntoNub,aIntoHead,i_IntoHead,pFromNub,aFromHead);
+  vRecode(m_pEncodeNub,aIntoHead,i_IntoHead,pFromNub,aFromHead);
   
   i8 nFreeBytes = nFreeSpaceHead(aIntoHead,pColVec,pIntoCoda);
   m_nHeadFree += nFreeBytes;

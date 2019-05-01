@@ -248,14 +248,12 @@ HeadLine* RowBuffer::aAllotHead(void)
 bool RowBuffer::bAppendRow(RowCoder* pRowCoder, RowNub* pFromRowNub)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  RowNub* pIntoRowNub = *&m_xRowTray;
-  
+    
 #ifdef WITH_TRACE_ENCODING
   vTrace("Partition:%lld\n"_Stz, m_iPartitionNo);
 #endif
   
-  bool bCopied = pRowCoder->bCopyRow(pIntoRowNub,pFromRowNub);
+  bool bCopied = pRowCoder->bCopyRow(pFromRowNub);
   
   return bCopied;
 }

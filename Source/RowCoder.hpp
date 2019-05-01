@@ -67,7 +67,7 @@ namespace Data
 
     void vCopyBegin(RowNub* pIntoNub);
     void vCopyEnd(void);
-    bool bCopyRow(RowNub* pIntoNub, RowNub* pFromNub);
+    bool bCopyRow(RowNub* pFromNub);
 
     void vEncodeBegin(RowNub* pEncodeNub);
     void vEncodeDatum(Datum* pDatum, Column* pCol);
