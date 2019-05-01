@@ -88,24 +88,17 @@ namespace Data
     void vEncodeVchShoco(Datum* pDatum, Column* pCol);
     void vEncodeVchSmall(Datum* pDatum, Column* pCol);
     
-    void vRecode(HeadLine* pIntoHead, i8 i_IntoHead,
-                 RowNub* pFromNub, HeadLine* aFromHead);
-    void vRecodeBcd(HeadLine* pIntoHead, Column* pCol,
-                         i8& i_IntoOffset, i8& i_FromOffset);
-    void vRecodeDte(HeadLine* pIntoHead, Column* pCol,
-                        i8& i_IntoOffset, i8& i_FromOffset);
-    void vRecodeInt(HeadLine* aIntoHead, Column* pCol,
-                    i8& i_IntoOffset, i8& i_FromOffset);
-    bool bRecodeIntDelta(HeadLine* pIntoHead, Column* pCol,
-                         i8& i_IntoOffset, i8& i_FromOffset);
-    bool bRecodeIntDigit(HeadLine* pIntoHead, Column* pCol,
-                         i8& i_IntoOffset, i8& i_FromOffset);
-    void vRecodeVch(HeadLine* pIntoHead, i8 i_IntoHead,
+    void vRecode(i8 i_IntoHead, RowNub* pFromNub, HeadLine* aFromHead);
+    void vRecodeBcd(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeDte(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeInt(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
+    bool bRecodeIntDelta(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
+    bool bRecodeIntDigit(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeVch(i8 i_IntoHead,
                     RowNub* pFromNub, Column* pCol, eMN eEncoding,
                     i8& i_ToOffset, i8& i_FromOffset);
-    void vRecodeVchAlpha(HeadLine* pIntoHead, Column* pCol,
-                         i8& i_IntoOffset, i8& i_FromOffset);
-    void vRecodeVchShoco(HeadLine* pIntoHead, i8 i_IntoHead,
+    void vRecodeVchAlpha(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeVchShoco(i8 i_IntoHead,
                          RowNub* pFromNub, Column* pCol,
                          i8 i_ToOffset, i8 i_FromOffset);
 
