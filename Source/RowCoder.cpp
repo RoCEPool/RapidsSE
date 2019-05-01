@@ -1292,7 +1292,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  eMN eExtendedEncoding;
+  eMN eExtendedEncoding = MN_NULL;
 
   // is it a 1B encoding ?
   if (eThisEncoding == MN_1B) {
