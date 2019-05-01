@@ -824,13 +824,10 @@ void RowCoder::vEncodeVchSmall(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRetrieve(Datum& oDatum,
                          RowBuffer* pRowBuffer, HeadLine* aHeadLine,
-                         ColumnVec* pColVec, Column* pCol)
+                         Column* pCol)
 {
   
   //vHeadDump(aHeadLine, pColVec);
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get the encoded value into datum
