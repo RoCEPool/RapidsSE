@@ -834,7 +834,7 @@ void RowCoder::vRetrieve(Datum& oDatum,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get the encoded value into datum
-  vDecodeFast(&oDatum,pRowBuffer,aHeadLine,pColVec,pCol);
+  vDecodeFast(&oDatum,pRowBuffer,aHeadLine,pCol);
 }
 
 /*----------------------------------------------------------------------------*/

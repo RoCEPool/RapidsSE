@@ -287,7 +287,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     static inline void vDecodeFast(Datum* pDatum,
                                    RowBuffer* pRowBuffer, HeadLine* aHeadLine,
-                                   ColumnVec* pColVec, Column* pCol)
+                                   Column* pCol)
     {
       
       if (pCol->eDatumType() == DM_BOL) {
@@ -295,11 +295,11 @@ namespace Data
         return;
       }
     
+      Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
+      ColumnVec* pColVec = pRowBuffer->pRowTray()->pDesc()->pColumnVec();
       i8 i_LastColumn = 0;
       i8 i_LastOffset = iBaseOffset(pColVec);
     
-      Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
-
       vDecode(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
     }
   };
