@@ -69,6 +69,8 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
 
     if ( ! m_pRowBuffer[iPartition] )
       vNewRowBuffer(iPartition);
+    else
+      m_pRowCoder_Copy->vCopyEnd();
 
     // get the entry buffer
     RowBuffer* pRowBuffer = m_pRowBuffer[iPartition];
@@ -120,6 +122,10 @@ eEC JobWriteBehind::eInsertRow(RowNub* pRowNub)
         vTrace("RowBuffer allocation failed\n"_Stz);
         return EC_LOW_MEMORY;
       }
+
+      RowBuffer* pRowBuffer = m_pRowBuffer[iPartition];
+      RowNub* pIntoRowNub = *pRowBuffer->pRowTray();
+      m_pRowCoder_Copy->vCopyBegin(pIntoRowNub);
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -134,7 +140,7 @@ eEC JobWriteBehind::eInsertRow(RowNub* pRowNub)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert row into working buffer
     pRowBuffer->vGrabWrite();
-    bool bRowAppended = pRowBuffer->bAppendRow(m_pRowCoder,pRowNub);
+    bool bRowAppended = pRowBuffer->bAppendRow(m_pRowCoder_Copy,pRowNub);
     pRowBuffer->vDropWrite();
     
     //pRowBuffer->vDump();
@@ -148,6 +154,7 @@ eEC JobWriteBehind::eInsertRow(RowNub* pRowNub)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn a write buffer job
+    m_pRowCoder_Copy->vCopyEnd();
     Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession,
                                           pTable()->aTableName(),
                                           m_eDataSource,

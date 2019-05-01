@@ -255,7 +255,7 @@ bool RowBuffer::bAppendRow(RowCoder* pRowCoder, RowNub* pFromRowNub)
   vTrace("Partition:%lld\n"_Stz, m_iPartitionNo);
 #endif
   
-  bool bCopied = pRowCoder->bCopy(pIntoRowNub,pFromRowNub);
+  bool bCopied = pRowCoder->bCopyRow(pIntoRowNub,pFromRowNub);
   
   return bCopied;
 }

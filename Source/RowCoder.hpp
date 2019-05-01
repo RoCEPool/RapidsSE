@@ -65,7 +65,9 @@ namespace Data
     RowCoder(void);
     ~RowCoder(void) noexcept(false);
 
-    bool bCopy(RowNub* pIntoNub, RowNub* pFromNub);
+    void vCopyBegin(RowNub* pIntoNub);
+    void vCopyEnd(void);
+    bool bCopyRow(RowNub* pIntoNub, RowNub* pFromNub);
 
     void vEncodeBegin(RowNub* pEncodeNub);
     void vEncodeDatum(Datum* pDatum, Column* pCol);

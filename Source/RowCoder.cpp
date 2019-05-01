@@ -106,8 +106,24 @@ RowCoder::~RowCoder(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
-bool RowCoder::bCopy(RowNub* pIntoNub, RowNub* pFromNub)
+void RowCoder::vCopyBegin(RowNub* pIntoNub)
 {
+  m_pEncodeNub = pIntoNub;
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy an encoded row from one tray to another                               */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vCopyEnd(void)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy an encoded row from one tray to another                               */
+/*----------------------------------------------------------------------------*/
+bool RowCoder::bCopyRow(RowNub* pIntoNub, RowNub* pFromNub)
+{
+  RASSERT(pIntoNub == m_pEncodeNub);
   m_i_Offset = 8;
   
   // check for space in target nub
@@ -1687,7 +1703,7 @@ void RowCoder::vRecodeVchShoco(RowNub* pIntoNub, HeadLine* aIntoHead, i8 i_IntoH
 /*----------------------------------------------------------------------------*/
 void RowCoder::vReport(void)
 {
-  if (! m_pColVec)
+  if (! m_pColVec || !m_nRows)
     return;
   
   i8 nCols = m_pColVec->nItems();
