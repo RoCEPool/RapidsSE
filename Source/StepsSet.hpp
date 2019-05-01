@@ -268,13 +268,11 @@
 
   // entry buffer
   static void vEntryBufferDump(Tasks::MP_Task mpTask);
-  static void vEntryBufferFirstEntry(Tasks::MP_Task mpTask);
   static void vEntryBufferIndexFetch(Tasks::MP_Task mpTask);
   static void vEntryBufferIndexStore(Tasks::MP_Task mpTask);
   static void vEntryBufferIsLastFetch(Tasks::MP_Task mpTask);
   static void vEntryBufferIsLastStore(Tasks::MP_Task mpTask);
   static void vEntryBufferNextBuffer(Tasks::MP_Task mpTask);
-  static void vEntryBufferNextEntry(Tasks::MP_Task mpTask);
   static void vEntryBufferPartitionFetch(Tasks::MP_Task mpTask);
   static void vEntryBufferPartitionStore(Tasks::MP_Task mpTask);
   static void vEntryBufferToEntryBuffer(Tasks::MP_Task mpTask);

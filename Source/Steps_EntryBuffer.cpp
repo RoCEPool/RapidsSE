@@ -12,12 +12,10 @@ extern AttachMap* gpAttachMap;
 void Step::vAddSteps_EntryBuffer(void)
 {
   vAddStep("entryBuffer.dump"_Stz,        &Step::vEntryBufferDump);
-  vAddStep("entryBuffer.firstEntry"_Stz,  &Step::vEntryBufferFirstEntry);
   vAddStep("entryBuffer.index@"_Stz,      &Step::vEntryBufferIndexFetch);
   vAddStep("entryBuffer.index!"_Stz,      &Step::vEntryBufferIndexStore);
   vAddStep("entryBuffer.isLast@"_Stz,     &Step::vEntryBufferIsLastFetch);
   vAddStep("entryBuffer.isLast!"_Stz,     &Step::vEntryBufferIsLastStore);
-  vAddStep("entryBuffer.nextEntry"_Stz,   &Step::vEntryBufferNextEntry);
   vAddStep("entryBuffer.nextBuffer"_Stz,  &Step::vEntryBufferNextBuffer);
   vAddStep("entryBuffer.partition@"_Stz,  &Step::vEntryBufferPartitionFetch);
   vAddStep("entryBuffer.partition!"_Stz,  &Step::vEntryBufferPartitionStore);
@@ -39,29 +37,6 @@ void Step::vEntryBufferDump(MP_Task mpTask)
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   
   pIndexBuffer->vShow();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* entryBuffer.firstEntry -- get first entry from index buffer                */
-/*----------------------------------------------------------------------------*/
-void Step::vEntryBufferFirstEntry(MP_Task mpTask)
-{
-  ENTRY("vEntryBufferFirstEntry"_Stz);
-  
-  Object* pPtrEntry = nullptr;
-  Object* pPtrIndexBuffer;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.firstEntry!"_Stz);
-  
-  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
-  
-  if (pIndexBuffer)
-    mpTask->m_pDataStack->vPushEntry(pIndexBuffer->aLeadEntry());
-  else
-    mpTask->m_pDataStack->vPushEntry(nullptr);
   
   EXIT();
 }
@@ -172,41 +147,6 @@ void Step::vEntryBufferNextBuffer(MP_Task mpTask)
   }
   
   mpTask->m_pDataStack->vPushPointer(pIndexBuffer->pNextBuffer());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* entryBuffer.nextEntry -- get next entry from index buffer                  */
-/*----------------------------------------------------------------------------*/
-void Step::vEntryBufferNextEntry(MP_Task mpTask)
-{
-  ENTRY("vEntryBufferNextEntry"_Stz);
-  
-  Object* pPtrEntry = nullptr;
-  Object* pPtrIndexBuffer;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.nextEntry"_Stz);
-  
-  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("entryBuffer.nextEntry"_Stz);
-  
-  Item* aItem = (Item*)_aItem(pPtrEntry);
-  
-  Item* aNextEntry;
-  
-  if ( pPtrEntry ) {
-    ASSERT(CN_ENTRY == aItem->eClass());
-    aNextEntry = pIndexBuffer->aNextEntry(aItem, 0);
-  }
-  else {
-    aNextEntry = pIndexBuffer->aLeadEntry();
-  }
-  
-  mpTask->m_pDataStack->vPushEntry(aNextEntry);
   
   EXIT();
 }

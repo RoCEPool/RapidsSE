@@ -923,19 +923,6 @@ void Stack::vPushCell(Cell* aCell)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push buffer entry onto value stack                                         */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushEntry(Item* aItem)
-{
-  RASSERT(0);
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  vPushEntry(aItem);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushGenVar(GenVar* pGenVar)
