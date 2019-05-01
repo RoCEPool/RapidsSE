@@ -25,7 +25,6 @@ namespace Structures
 
     UNIT* m_axaUnits; // array of space units
 
-    i8 m_i_Offset;    // encoding offset
     i8 m_iHash;       // encoding hash
 
     // must be last
@@ -60,8 +59,6 @@ namespace Structures
     i8    nItems(void);
     i8    iLastTail(void);
     i8    iNextTail(i8 i_Tail);
-    i8    i_Offset(void);
-    void  vOffsetInc(i8 iDelta);
     i8    iPrevTail(i8 i_Tail);
     void  vReset(void);
     i8    nTails(void);
@@ -158,8 +155,7 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::Nub_t(void)
 
   m_axaUnits    = nullptr;
 
-  m_i_Offset    = 8;
-  m_iHash       = 0;
+   m_iHash       = 0;
 
   i8 nBytes = sizeof(Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>);
   _checkInitialisedSize_(nBytes);
@@ -532,29 +528,6 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iLastTail(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get total number of actual items                                           */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::i_Offset(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  return m_i_Offset;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get total number of actual items                                           */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
-void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vOffsetInc(i8 iDelta)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  m_i_Offset += iDelta;
-  RASSERT(m_i_Offset <= 64);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get next tail                                                              */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
@@ -607,7 +580,6 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vReset(void)
   
   MemLib::vZero(m_axaUnits,(sizeof(UNIT) * m_nSpaceUnits),CN);
   
-  m_i_Offset = 8;
   m_iHash    = 0;
 }
 

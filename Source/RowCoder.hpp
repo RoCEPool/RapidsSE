@@ -20,8 +20,10 @@ namespace Data
   
     ColumnVec* m_pColVec;
     Coda*      m_pCoda;
-  
-    i8 m_i_Offset; // encoding offset
+
+    HeadLine*  m_aHeadLine;
+
+    i8         m_i_Offset; // encoding offset
 
 
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -63,7 +65,9 @@ namespace Data
     RowCoder(void);
     ~RowCoder(void) noexcept(false);
 
-    bool bCopy(RowNub* pIntoNub, RowNub* pFromNub);
+    void vCopyBegin(RowNub* pIntoNub);
+    void vCopyEnd(void);
+    bool bCopyRow(RowNub* pFromNub);
 
     void vEncodeBegin(RowNub* pEncodeNub);
     void vEncodeDatum(Datum* pDatum, Column* pCol);

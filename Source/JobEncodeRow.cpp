@@ -29,7 +29,8 @@ JobEncodeRow::JobEncodeRow(void)
   //m_oRowParts;
   //m_oFormatters;
   
-  m_pRowCoder = new RowCoder;
+  m_pRowCoder_Copy   = new RowCoder;
+  m_pRowCoder_Encode = new RowCoder;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,7 +38,8 @@ JobEncodeRow::JobEncodeRow(void)
 /*----------------------------------------------------------------------------*/
 JobEncodeRow::~JobEncodeRow(void) noexcept(false)
 {
-  delete m_pRowCoder;
+  delete m_pRowCoder_Copy;
+  delete m_pRowCoder_Encode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,7 +90,7 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
   ColumnVec* pColVec = pTable()->pColumnVec();
   i8 nColumns = pColVec->nItems();
   
-  m_pRowCoder->vEncodeBegin(m_oRowParts);
+  m_pRowCoder_Encode->vEncodeBegin(m_oRowParts);
   
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
@@ -117,14 +119,14 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // encode datum into cache line
     
-    m_pRowCoder->vEncodeDatum(&oDatum,pColumn);
+    m_pRowCoder_Encode->vEncodeDatum(&oDatum,pColumn);
 
     //HeadLine* aHeadLine = m_oRowParts.aGetHead(0);
     //MemLib::vWordDump(aHeadLine,sizeof(HeadLine));
     
   } // for each column
   
-  m_pRowCoder->vEncodeEnd();
+  m_pRowCoder_Encode->vEncodeEnd();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // debug
