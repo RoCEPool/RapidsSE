@@ -87,7 +87,7 @@ namespace MetaData
     i8   iColumnScale(void);
     void vColumnScale(i8 iColumnScale);
   
-    i8   iColumnNo(void);
+    //i8   iColumnNo(void);
     void vColumnNo(i8 iColumnNo);
   
     s32& sColumnName(void);
@@ -96,7 +96,7 @@ namespace MetaData
     eCT  eColumnType(void);
     void vColumnType(eCT eColumnType);
   
-    eDM  eDatumType(void);
+    //eDM  eDatumType(void);
     void vDatumType(eDM eDatumType);
     
     i8   iFirstDate(void);
@@ -121,6 +121,28 @@ namespace MetaData
     char* aValue(i8& nBytes, char** aaCursor);
   
     Footer* aFooter(void);
+  
+    /*----------------------------------------------------------------------------*/
+    /* get column no                                                              */
+    /*----------------------------------------------------------------------------*/
+    inline i8 iColumnNo(void)
+    {
+      _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+    
+      return m_iColumnNo;
+    }
+  
+    /*----------------------------------------------------------------------------*/
+    /* get datum type                                                             */
+    /*----------------------------------------------------------------------------*/
+    inline eDM eDatumType(void)
+    {
+      _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+    
+      return m_eDatumType;
+    }
+  
+
   };
   
   Column* _pColumn(void* aAddr);

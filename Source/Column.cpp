@@ -106,16 +106,6 @@ Column::~Column(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get column no                                                              */
-/*----------------------------------------------------------------------------*/
-i8 Column::iColumnNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  return m_iColumnNo;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set column no                                                              */
 /*----------------------------------------------------------------------------*/
 void Column::vColumnNo(i8 iColumnNo)
@@ -203,16 +193,6 @@ void Column::vColumnType(eCT eColumnType)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
   m_eColumnType = eColumnType;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get datum type                                                             */
-/*----------------------------------------------------------------------------*/
-eDM Column::eDatumType(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  return m_eDatumType;
 }
 
 /*----------------------------------------------------------------------------*/
