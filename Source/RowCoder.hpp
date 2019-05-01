@@ -286,13 +286,17 @@ namespace Data
     /* get encoded datum from cache line                                          */
     /*----------------------------------------------------------------------------*/
     static inline void vDecodeFast(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol,
-                                   Coda* pCoda, i8& i_LastColumn, i8& i_LastOffset)
+                                   Coda* pCoda)
     {
       
       if (pCol->eDatumType() == DM_BOL) {
         vDecodeBolFast(pDatum,aHeadLine,pCol);
         return;
       }
+    
+      i8 i_LastColumn = 0;
+      i8 i_LastOffset = iBaseOffset(pColVec);
+    
       vDecode(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
     }
   };

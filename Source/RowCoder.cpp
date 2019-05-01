@@ -839,12 +839,8 @@ void RowCoder::vRetrieve(Datum& oDatum,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 i_LastColumn = 0;
-  i8 i_LastOffset = iBaseOffset(pColVec);
-  
   // get the encoded value into datum
-  vDecodeFast(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-  //vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+  vDecodeFast(&oDatum,aHeadLine,pColVec,pCol,pCoda);
 }
 
 /*----------------------------------------------------------------------------*/
