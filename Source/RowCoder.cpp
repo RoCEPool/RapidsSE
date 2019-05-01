@@ -1893,20 +1893,6 @@ void RowCoder::vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* get encoded datum from cache line                                          */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol,
-                       Coda* pCoda, WordView& xWord, i8& i_LastColumn, i8& i_LastOffset)
-{
-  
-  if (pCol->eDatumType() == DM_BOL) {
-    vDecodeBolFast(pDatum,aHeadLine,pCol,xWord);
-    return;
-  }
-  vDecode(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get encoded datum from cache line                                          */
-/*----------------------------------------------------------------------------*/
 void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
                        ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                        i8& i_LastColumn, i8& i_LastOffset)
