@@ -824,7 +824,7 @@ void RowCoder::vEncodeVchSmall(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRetrieve(Datum& oDatum,
                          RowBuffer** ppRowBuffer, HeadLine* aHeadLine,
-                         ColumnVec* pColVec, Column* pCol, WordView& xWord)
+                         ColumnVec* pColVec, Column* pCol)
 {
   
   //vHeadDump(aHeadLine, pColVec);
@@ -843,7 +843,7 @@ void RowCoder::vRetrieve(Datum& oDatum,
   i8 i_LastOffset = iBaseOffset(pColVec);
   
   // get the encoded value into datum
-  vDecodeFast(&oDatum,aHeadLine,pColVec,pCol,pCoda,xWord,i_LastColumn,i_LastOffset);
+  vDecodeFast(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
   //vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
 }
 

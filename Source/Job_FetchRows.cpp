@@ -768,7 +768,6 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetcheRows,
                            FetchBuffer* pFetchBuffer)
 {
   Datum oDatum;
-  WordView xWord;
   RowBuffer* pRowBuffer = nullptr;
   ColumnVec* pColumnVec = pJob_FetcheRows->m_pTable->pColumnVec();
   
@@ -777,7 +776,7 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetcheRows,
     
     HeadLine* aHeadLine = *aaCacheLine;
     
-    RowCoder::vRetrieve(oDatum,&pRowBuffer,aHeadLine,pColumnVec,pJob_FetcheRows->m_pColumn,xWord);
+    RowCoder::vRetrieve(oDatum,&pRowBuffer,aHeadLine,pColumnVec,pJob_FetcheRows->m_pColumn);
     
     aaCacheLine = pFetchBuffer->aaNextRowPtr(aaCacheLine);
   }

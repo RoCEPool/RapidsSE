@@ -78,6 +78,23 @@ namespace Base
       
       return iNibble;
     }
+    /*----------------------------------------------------------------------------*/
+    inline w8 w8_1NFast2(i8 i_Nibble)
+    {
+      w8 iNibble;
+      byte yByte = *((byte*)this + i_Nibble/2);
+
+      if ( 0 == (i_Nibble & 0x1)) {
+        // left nibble
+        iNibble = yByte >> 4;
+      }
+      else {
+        // right nibble
+        iNibble = yByte & 0xF;
+      }
+    
+      return iNibble;
+    }
 
   };
   

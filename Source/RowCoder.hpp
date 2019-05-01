@@ -122,7 +122,7 @@ namespace Data
     static void vPrint(RowNub* pNub, i8 i_Row, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
     static void vRecord(Record* pRec, RowNub* pNub, i8 i_Row);
     static void vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec);
-    static void vRetrieve(Datum& oDatum, RowBuffer** ppRowBuffer, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, WordView& xWord);
+    static void vRetrieve(Datum& oDatum, RowBuffer** ppRowBuffer, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
   
   private:
     static void vAppend(Record* pRec, HeadLine* aHeadLine,
@@ -248,15 +248,16 @@ namespace Data
     /* decode boolean from given cache line                                       */
     /*----------------------------------------------------------------------------*/
     static inline void vDecodeBolFast(Datum* pDatum, HeadLine* aHeadLine,
-                                  Column* pCol, WordView& xWord)
+                                  Column* pCol)
     {
       i8 i_Column  = pCol->iColumnNo();
       
       pDatum->m_eDatum = DM_BOL;
       
       //eMN eEncoding = eGetEncodingExt(i_Column,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
-      eMN eEncoding = (eMN)aHeadLine->w8_1NFast(xWord, i_Column);
-      
+      //eMN eEncoding = (eMN)aHeadLine->w8_1NFast(xWord, i_Column);
+      eMN eEncoding = (eMN)aHeadLine->w8_1NFast2(i_Column);
+
 //      switch (eEncoding) {
 //
 //        case MN_NULL:  pDatum->m_iInt = C_DATUM_NULL; break;
@@ -285,11 +286,11 @@ namespace Data
     /* get encoded datum from cache line                                          */
     /*----------------------------------------------------------------------------*/
     static inline void vDecodeFast(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol,
-                                   Coda* pCoda, WordView& xWord, i8& i_LastColumn, i8& i_LastOffset)
+                                   Coda* pCoda, i8& i_LastColumn, i8& i_LastOffset)
     {
       
       if (pCol->eDatumType() == DM_BOL) {
-        vDecodeBolFast(pDatum,aHeadLine,pCol,xWord);
+        vDecodeBolFast(pDatum,aHeadLine,pCol);
         return;
       }
       vDecode(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
