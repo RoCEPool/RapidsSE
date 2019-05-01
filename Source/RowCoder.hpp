@@ -23,7 +23,8 @@ namespace Data
 
     HeadLine*  m_aHeadLine;
 
-    i8         m_i_Offset; // encoding offset
+    i8         m_i_IntoOffset; // encoding offset
+    i8         m_i_FromOffset; // encoding offset
 
 
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
