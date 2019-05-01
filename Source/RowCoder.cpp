@@ -823,19 +823,14 @@ void RowCoder::vEncodeVchSmall(Datum* pDatum, Column* pCol)
 /* retrieve and decode row from cache line into a datu                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRetrieve(Datum& oDatum,
-                         RowBuffer** ppRowBuffer, HeadLine* aHeadLine,
+                         RowBuffer* pRowBuffer, HeadLine* aHeadLine,
                          ColumnVec* pColVec, Column* pCol)
 {
   
   //vHeadDump(aHeadLine, pColVec);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // check if aHeadLine is from the last rowBuffer
-  if ( ! RowBuffer::bCheckAddress(*ppRowBuffer, aHeadLine)) {
-    *ppRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
-  }
-  
-  Coda* pCoda = (*ppRowBuffer)->pRowTray()->pCoda();
+  Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

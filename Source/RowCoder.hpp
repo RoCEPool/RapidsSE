@@ -122,7 +122,7 @@ namespace Data
     static void vPrint(RowNub* pNub, i8 i_Row, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
     static void vRecord(Record* pRec, RowNub* pNub, i8 i_Row);
     static void vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec);
-    static void vRetrieve(Datum& oDatum, RowBuffer** ppRowBuffer, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
+    static void vRetrieve(Datum& oDatum, RowBuffer* pRowBuffer, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
   
   private:
     static void vAppend(Record* pRec, HeadLine* aHeadLine,
