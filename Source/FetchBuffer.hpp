@@ -42,7 +42,9 @@ namespace Jobs
     
     HeadLine** aaFirstRowPtr(void);
     HeadLine** aaNextRowPtr(HeadLine** ppRow);
-    
+  
+    HeadLine* aLatter(void);
+
     i8    nPartitionNo(void);
     void  vRestore(void);
     void  vShow(void);

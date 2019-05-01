@@ -169,6 +169,18 @@ HeadLine** FetchBuffer::aaFirstRowPtr(void)
 /*----------------------------------------------------------------------------*/
 /* get next item                                                              */
 /*----------------------------------------------------------------------------*/
+HeadLine* FetchBuffer::aLatter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
+  
+  HeadLine* aHeadLine = (HeadLine*)m_xWsp.aLatter();
+  
+  return aHeadLine;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next item                                                              */
+/*----------------------------------------------------------------------------*/
 HeadLine** FetchBuffer::aaNextRowPtr(HeadLine** ppCurrentRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
