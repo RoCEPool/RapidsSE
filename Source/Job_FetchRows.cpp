@@ -781,9 +781,8 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
     HeadLine* aHeadLine = *aaHeadLine;
     
     // check if aHeadLine is from the last rowBuffer
-    if ( ! RowBuffer::bCheckAddress(pRowBuffer, aHeadLine)) {
+    if (! RowBuffer::bCheckAddress(pRowBuffer,aHeadLine))
       pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
-    }
 
     RowCoder::vRetrieve(oDatum,pRowBuffer,aHeadLine,pCol);
     
