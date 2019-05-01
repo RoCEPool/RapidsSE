@@ -146,8 +146,13 @@ RowBuffer* RowBuffer::pToRowBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 bool RowBuffer::bCheckAddress(RowBuffer* pRowBuffer, void* aAddr)
 {
-  // Ray to code !!!
-  return false;
+  PoolBuffer* pRowPoolBuffer = PoolBuffer::pGetPoolBuffer(pRowBuffer);
+  PoolBuffer* pAddrPoolBuffer = PoolBuffer::pGetPoolBuffer((Object*)aAddr);
+
+  if (pAddrPoolBuffer == pRowPoolBuffer)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
