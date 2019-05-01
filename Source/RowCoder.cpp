@@ -820,21 +820,6 @@ void RowCoder::vEncodeVchSmall(Datum* pDatum, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* retrieve and decode row from cache line into a datu                        */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRetrieve(Datum& oDatum,
-                         RowBuffer* pRowBuffer, HeadLine* aHeadLine,
-                         Column* pCol)
-{
-  
-  //vHeadDump(aHeadLine, pColVec);
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // get the encoded value into datum
-  vDecodeFast(&oDatum,pRowBuffer,aHeadLine,pCol);
-}
-
-/*----------------------------------------------------------------------------*/
 /* recode the datums                                                          */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecode(i8 i_IntoHead,

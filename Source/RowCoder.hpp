@@ -122,7 +122,6 @@ namespace Data
     static void vPrint(RowNub* pNub, i8 i_Row, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
     static void vRecord(Record* pRec, RowNub* pNub, i8 i_Row);
     static void vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec);
-    static void vRetrieve(Datum& oDatum, RowBuffer* pRowBuffer, HeadLine* aHeadLine, Column* pCol);
   
   private:
     static void vAppend(Record* pRec, HeadLine* aHeadLine,
@@ -302,6 +301,26 @@ namespace Data
     
       vDecode(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
     }
+  
+  public:
+    /*----------------------------------------------------------------------------*/
+    /* retrieve and decode row from cache line into a datu                        */
+    /*----------------------------------------------------------------------------*/
+    static inline void vRetrieve(Datum& oDatum,
+                                 RowBuffer* pRowBuffer, HeadLine* aHeadLine,
+                                 Column* pCol)
+    {
+    
+      //vHeadDump(aHeadLine, pColVec);
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+      // get the encoded value into datum
+      vDecodeFast(&oDatum,pRowBuffer,aHeadLine,pCol);
+    }
+  
+
+  
+  
   };
   
   RowCoder* _pRowCoder(void* aAddr);
