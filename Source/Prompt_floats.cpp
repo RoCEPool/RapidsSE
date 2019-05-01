@@ -85,7 +85,7 @@ bool Prompt::bPrompt_floats(SePrompt* pPrompt)
   vTrace("null     "_Stz); vHuh(x._d); vTrace("\n"_Stz);
 
   
-  printf("%lld: ",0);
+  printf("%lld: ",(i8)0);
   vHuh((d8)0.0);
   vHuh((d8)0.0);
   vHuh((d8)0.0);
