@@ -20,7 +20,6 @@ namespace Pool
     PoolBuffer(eCN eClass);
     ~PoolBuffer(void) noexcept(false);
   
-    static PoolBuffer* pGetPoolBuffer(Object* pObject);
   
     void* aDataArea(void);
     Stz*  aLastUsableByte(void);
@@ -30,6 +29,18 @@ namespace Pool
     void  vPoolBufferNo(bn nBufferNo);
 
     Footer* aFooter(void);
+  
+    /*----------------------------------------------------------------------------*/
+    /* get buffer that an object is within                                        */
+    /*----------------------------------------------------------------------------*/
+    inline static PoolBuffer* pGetPoolBuffer(Object* pObject)
+    {
+      PoolBuffer* pPoolBuffer =
+        (PoolBuffer*)(pBitAnd<PoolBuffer*>(pObject,C_OBJECT_TO_BUFFER_MASK));
+    
+      return pPoolBuffer;
+    }
+  
   };
   
   PoolBuffer* _pPoolBuffer(void* aAddr);

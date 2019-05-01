@@ -78,17 +78,6 @@ PoolBuffer::~PoolBuffer(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get buffer that an object is within                                        */
-/*----------------------------------------------------------------------------*/
-PoolBuffer* PoolBuffer::pGetPoolBuffer(Object* pObject)
-{
-  PoolBuffer* pBuffer =
-    _pPoolBuffer(pBitAnd<PoolBuffer*>(pObject,C_OBJECT_TO_BUFFER_MASK));
-  
-  return pBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get address of data area in buffer                                         */
 /*----------------------------------------------------------------------------*/
 void* PoolBuffer::aDataArea(void)
