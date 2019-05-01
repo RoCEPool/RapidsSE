@@ -3718,6 +3718,9 @@ Stz* RowCoder::sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt)
         default:
           NEVER_REACH;
       }
+      
+    default:
+      NEVER_REACH;
   }
   return ""_Stz;
 }
