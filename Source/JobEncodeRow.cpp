@@ -38,6 +38,8 @@ JobEncodeRow::JobEncodeRow(void)
 /*----------------------------------------------------------------------------*/
 JobEncodeRow::~JobEncodeRow(void) noexcept(false)
 {
+  m_pRowCoder_Copy->vReport(m_pRowCoder_Encode);
+  
   delete m_pRowCoder_Copy;
   delete m_pRowCoder_Encode;
 }

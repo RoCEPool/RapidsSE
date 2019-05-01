@@ -42,9 +42,9 @@ space;
 //time ld lineitem "/tpch/SF0/lineitem10.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem100.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem1k.csv" max_errors 100;
-time ld lineitem "/tpch/SF0/lineitem10k.csv" max_errors 100;
+//time ld lineitem "/tpch/SF0/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem100k.csv" max_errors 100;
-//time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
+time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 space;
 sztbl lineitem;
 
