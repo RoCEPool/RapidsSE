@@ -38,8 +38,7 @@ namespace Data
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static RowBuffer* pRefdRowBuffer(Id& xId);
     static RowBuffer* pToRowBuffer(void* aAddr);
-    static bool bCheckAddress(RowBuffer* pRowBuffer, void* aAddr);
-    
+  
     void    vDropWrite(void);
     void    vGrabWrite(void);
     void    vTable(Table* pTable);
@@ -106,7 +105,22 @@ namespace Data
 
     public:
     Footer* aFooter(void);
-
+  
+  
+    /*----------------------------------------------------------------------------*/
+    /* check if the row buffer contains the given address                         */
+    /*----------------------------------------------------------------------------*/
+    inline static bool bCheckAddress(RowBuffer* pRowBuffer, void* aAddr)
+    {
+      PoolBuffer* pRowPoolBuffer  = PoolBuffer::pGetPoolBuffer(pRowBuffer);
+      PoolBuffer* pAddrPoolBuffer = PoolBuffer::pGetPoolBuffer((Object*)aAddr);
+    
+      if (pAddrPoolBuffer == pRowPoolBuffer)
+        return true;
+      else
+        return false;
+    }
+  
   };
   
   RowBuffer* _pRowBuffer(void* aAddr);

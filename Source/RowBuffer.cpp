@@ -142,20 +142,6 @@ RowBuffer* RowBuffer::pToRowBuffer(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* check if the row buffer contains the given address                         */
-/*----------------------------------------------------------------------------*/
-bool RowBuffer::bCheckAddress(RowBuffer* pRowBuffer, void* aAddr)
-{
-  PoolBuffer* pRowPoolBuffer = PoolBuffer::pGetPoolBuffer(pRowBuffer);
-  PoolBuffer* pAddrPoolBuffer = PoolBuffer::pGetPoolBuffer((Object*)aAddr);
-
-  if (pAddrPoolBuffer == pRowPoolBuffer)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
