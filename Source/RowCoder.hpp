@@ -23,7 +23,8 @@ namespace Data
 
     HeadLine*  m_aHeadLine;
 
-    i8         m_i_Offset; // encoding offset
+    i8         m_i_IntoOffset; // encoding offset
+    i8         m_i_FromOffset; // encoding offset
 
 
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -73,6 +74,8 @@ namespace Data
     void vEncodeDatum(Datum* pDatum, Column* pCol);
     void vEncodeEnd(void);
 
+    void vReport(RowCoder* pRowCoder_Encode);
+  
   private:
     void vEncodeBcd(Datum* pDatum, Column* pCol);
     void vEncodeBol(Datum* pDatum, Column* pCol);
@@ -86,28 +89,20 @@ namespace Data
     void vEncodeVchShoco(Datum* pDatum, Column* pCol);
     void vEncodeVchSmall(Datum* pDatum, Column* pCol);
     
-    void vRecode(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
-                 RowNub* pFromNub, HeadLine* aFromHead);
-    void vRecodeBcd(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
-                         i8& i_IntoOffset, i8& i_FromOffset);
-    void vRecodeDte(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
-                        i8& i_IntoOffset, i8& i_FromOffset);
-    void vRecodeInt(RowNub* pIntoNub, HeadLine* aIntoHead, Column* pCol,
-                    i8& i_IntoOffset, i8& i_FromOffset);
-    bool bRecodeIntDelta(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
-                         i8& i_IntoOffset, i8& i_FromOffset);
-    bool bRecodeIntDigit(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
-                         i8& i_IntoOffset, i8& i_FromOffset);
-    void vRecodeVch(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
+    void vRecode(i8 i_IntoHead, RowNub* pFromNub, HeadLine* aFromHead);
+    void vRecodeBcd(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeDte(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeInt(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
+    bool bRecodeIntDelta(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
+    bool bRecodeIntDigit(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeVch(i8 i_IntoHead,
                     RowNub* pFromNub, Column* pCol, eMN eEncoding,
                     i8& i_ToOffset, i8& i_FromOffset);
-    void vRecodeVchAlpha(RowNub* pIntoNub, HeadLine* pIntoHead, Column* pCol,
-                         i8& i_IntoOffset, i8& i_FromOffset);
-    void vRecodeVchShoco(RowNub* pIntoNub, HeadLine* pIntoHead, i8 i_IntoHead,
+    void vRecodeVchAlpha(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeVchShoco(i8 i_IntoHead,
                          RowNub* pFromNub, Column* pCol,
                          i8 i_ToOffset, i8 i_FromOffset);
 
-    void vReport(void);
 
 
   public:

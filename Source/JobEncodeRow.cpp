@@ -29,8 +29,13 @@ JobEncodeRow::JobEncodeRow(void)
   //m_oRowParts;
   //m_oFormatters;
   
-  m_pRowCoder_Copy   = new RowCoder;
   m_pRowCoder_Encode = new RowCoder;
+  for (i8 i_Ptn = 0; i_Ptn < C_MAX_PARTITIONS; i_Ptn++) {
+    m_paRowCoder_Copy[i_Ptn] = nullptr;
+  }
+  for (i8 i_Ptn = 0; i_Ptn < gpAttachMap->m_pGrid->m_nPartitions; i_Ptn++) {
+    m_paRowCoder_Copy[i_Ptn] = new RowCoder;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,7 +43,11 @@ JobEncodeRow::JobEncodeRow(void)
 /*----------------------------------------------------------------------------*/
 JobEncodeRow::~JobEncodeRow(void) noexcept(false)
 {
-  delete m_pRowCoder_Copy;
+  for (i8 i_Ptn = 0; i_Ptn < gpAttachMap->m_pGrid->m_nPartitions; i_Ptn++) {
+    m_paRowCoder_Copy[i_Ptn]->vReport(m_pRowCoder_Encode);
+  
+    delete m_paRowCoder_Copy[i_Ptn];
+  }
   delete m_pRowCoder_Encode;
 }
 
