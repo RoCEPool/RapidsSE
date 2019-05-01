@@ -764,12 +764,12 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
 /*----------------------------------------------------------------------------*/
 /* iterate and retrieve column from rows in the buffer                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetcheRows,
+void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
                            FetchBuffer* pFetchBuffer)
 {
   Datum oDatum;
   RowBuffer* pRowBuffer = nullptr;
-  ColumnVec* pColumnVec = pJob_FetcheRows->m_pTable->pColumnVec();
+  ColumnVec* pColumnVec = pJob_FetchRows->m_pTable->pColumnVec();
   
   HeadLine** aaCacheLine = pFetchBuffer->aaFirstRowPtr();
   while (aaCacheLine) {
@@ -781,7 +781,7 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetcheRows,
       pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
     }
 
-    RowCoder::vRetrieve(oDatum,pRowBuffer,aHeadLine,pColumnVec,pJob_FetcheRows->m_pColumn);
+    RowCoder::vRetrieve(oDatum,pRowBuffer,aHeadLine,pColumnVec,pJob_FetchRows->m_pColumn);
     
     aaCacheLine = pFetchBuffer->aaNextRowPtr(aaCacheLine);
   }

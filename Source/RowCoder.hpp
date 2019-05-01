@@ -285,7 +285,9 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     /* get encoded datum from cache line                                          */
     /*----------------------------------------------------------------------------*/
-    static inline void vDecodeFast(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol,
+    static inline void vDecodeFast(Datum* pDatum,
+                                   RowBuffer* pRowBuffer, HeadLine* aHeadLine,
+                                   ColumnVec* pColVec, Column* pCol,
                                    Coda* pCoda)
     {
       
