@@ -114,9 +114,9 @@ namespace Data
     static void vAnalyse(RowNub* pNub);
     static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
                         i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeFast(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec,
-                            Column* pCol, Coda* pCoda,
-                            WordView& xWord,i8& i_LastColumn, i8& i_LastOffset);
+//    static void vDecodeFast(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec,
+//                            Column* pCol, Coda* pCoda,
+//                            WordView& xWord,i8& i_LastColumn, i8& i_LastOffset);
     static void vDecode(Datum* pDatum, HeadLine* aHeadLine,
                         ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                         i8& i_LastColumn, i8& i_LastOffset);
@@ -262,17 +262,17 @@ namespace Data
       //eMN eEncoding = eGetEncodingExt(i_Column,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
       eMN eEncoding = (eMN)aHeadLine->w8_1NFast(xWord, i_Column);
       
-      switch (eEncoding) {
-          
-        case MN_NULL:  pDatum->m_iInt = C_DATUM_NULL; break;
-        case MN_FALSE: pDatum->m_iInt = (i8)0;        break;
-        case MN_TRUE:  pDatum->m_iInt = (i8)1;        break;
-          
-        default:
-          NEVER_REACH;
-      }
+//      switch (eEncoding) {
+//
+//        case MN_NULL:  pDatum->m_iInt = C_DATUM_NULL; break;
+//        case MN_FALSE: pDatum->m_iInt = (i8)0;        break;
+//        case MN_TRUE:  pDatum->m_iInt = (i8)1;        break;
+//
+//        default:
+//          NEVER_REACH;
+//      }
+//
       
-      /*
       i8 x = 1;
       switch (x) {
           
@@ -283,7 +283,21 @@ namespace Data
         default:
           NEVER_REACH;
       }
-      */
+     
+    }
+    
+    /*----------------------------------------------------------------------------*/
+    /* get encoded datum from cache line                                          */
+    /*----------------------------------------------------------------------------*/
+    static inline void vDecodeFast(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol,
+                                   Coda* pCoda, WordView& xWord, i8& i_LastColumn, i8& i_LastOffset)
+    {
+      
+      if (pCol->eDatumType() == DM_BOL) {
+        vDecodeBolFast(pDatum,aHeadLine,pCol,xWord);
+        return;
+      }
+      vDecode(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
     }
   };
   
