@@ -66,7 +66,8 @@ namespace Base
       w8 iNibble;
       w8 iByte = w8_1BFast(xWord, i_Nibble/2);
       
-      if (0 == i_Nibble % 2) {
+      //if (0 == i_Nibble % 2) {
+      if ( 0 == (i_Nibble & 0x1)) {
         // left nibble
         iNibble = iByte >> 4;
       }
