@@ -168,12 +168,12 @@ typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,SpaceUnit,Table,Coda,
 #include "KeyWrk.hpp"
 #include "Key.hpp"
 #include "Record.hpp"
-#include "RowCoder.hpp"
 #include "SkipRoots.hpp"
 
+#include "RowBuffer.hpp"
+#include "RowCoder.hpp"
 #include "TablePtn.hpp"
 #include "EntryBuffer.hpp"
-#include "RowBuffer.hpp"
 #include "IndexTree.hpp"
 
 /*============================================================================*/

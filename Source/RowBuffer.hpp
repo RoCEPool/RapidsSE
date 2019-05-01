@@ -5,6 +5,7 @@
 
 namespace Data
 {
+  class RowCoder;
   
   class RowBuffer : public Object
   {

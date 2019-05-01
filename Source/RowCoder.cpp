@@ -830,12 +830,11 @@ void RowCoder::vRetrieve(Datum& oDatum,
   //vHeadDump(aHeadLine, pColVec);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get the encoded value into datum
-  vDecodeFast(&oDatum,pRowBuffer,aHeadLine,pColVec,pCol,pCoda);
+  vDecodeFast(&oDatum,pRowBuffer,aHeadLine,pColVec,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
