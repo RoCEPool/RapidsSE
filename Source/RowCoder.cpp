@@ -869,7 +869,7 @@ void RowCoder::vRecode(i8 i_IntoHead,
     case Datums::DM_BOL:
       continue;
     case Datums::DM_DTE:
-      vRecodeDte(pCol,m_i_IntoOffset,m_i_FromOffset);
+      vRecodeDte(pCol);
       continue;
     case Datums::DM_FLT:
       continue;
@@ -1045,8 +1045,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* attempt to re-encode a subsequent Dte into +/-Days                         */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeDte(Column* pCol,
-                          i8& i_IntoOffset, i8& i_FromOffset)
+void RowCoder::vRecodeDte(Column* pCol)
 {
 #ifdef WITH_EXTENDED_DTE
   RASSERT(DM_DTE == pCol->eDatumType());
@@ -1088,10 +1087,10 @@ void RowCoder::vRecodeDte(Column* pCol,
   i8 iThisDteDays = 0;
   switch (eThisEncoding) {
     case MN_NULL:      return;
-    case MN_SILVER_1B: iThisDteDays = m_aHeadLine->w8_1B(i_IntoOffset);
+    case MN_SILVER_1B: iThisDteDays = m_aHeadLine->w8_1B(m_i_IntoOffset);
                        iThisDteDays = iIntoBaseDays(iThisDteDays,C_SILVER_ERA);
                        break;
-    case MN_SILVER_2B: iThisDteDays = m_aHeadLine->w8_2B(i_IntoOffset);
+    case MN_SILVER_2B: iThisDteDays = m_aHeadLine->w8_2B(m_i_IntoOffset);
                        iThisDteDays = iIntoBaseDays(iThisDteDays,C_SILVER_ERA);
                        break;
     default:
@@ -1143,12 +1142,12 @@ void RowCoder::vRecodeDte(Column* pCol,
     
     // revise the encoding
     m_aHeadLine->vMetaNibble(i_Column,MN_DAYS_PLUS_1B);
-    m_aHeadLine->v1B(i_IntoOffset,iDayDiff);
+    m_aHeadLine->v1B(m_i_IntoOffset,iDayDiff);
     
     // cut 1B char out of the intoHead
     if (MN_SILVER_2B == eThisEncoding) {
-      m_pEncodeNub->vCut(m_aHeadLine,sizeof(HeadLine),i_IntoOffset+1,1);
-      i_IntoOffset--;
+      m_pEncodeNub->vCut(m_aHeadLine,sizeof(HeadLine),m_i_IntoOffset+1,1);
+      m_i_IntoOffset--;
     }
     vUsageIncRecoded(i_Column,1);
     return;
@@ -1161,12 +1160,12 @@ void RowCoder::vRecodeDte(Column* pCol,
     
     // revise the encoding
     m_aHeadLine->vMetaNibble(i_Column,MN_DAYS_MINUS_1B);
-    m_aHeadLine->v1B(i_IntoOffset,iDayDiff);
+    m_aHeadLine->v1B(m_i_IntoOffset,iDayDiff);
     
     // cut 1B char out of the intoHead
     if (MN_SILVER_2B == eThisEncoding) {
-      m_pEncodeNub->vCut(m_aHeadLine,sizeof(HeadLine),i_IntoOffset+1,1);
-      i_IntoOffset--;
+      m_pEncodeNub->vCut(m_aHeadLine,sizeof(HeadLine),m_i_IntoOffset+1,1);
+      m_i_IntoOffset--;
     }
     vUsageIncRecoded(i_Column,1);
     return;
@@ -1184,10 +1183,10 @@ void RowCoder::vRecodeDte(Column* pCol,
   if (MN_MODERN_1B == eThisEncoding)
     eThisEncoding = MN_DAYS_MODERN_2B;
 
-  m_pEncodeNub->vExpand(m_aHeadLine,sizeof(HeadLine),i_IntoOffset,1);
+  m_pEncodeNub->vExpand(m_aHeadLine,sizeof(HeadLine),m_i_IntoOffset,1);
 
   m_aHeadLine->vMetaNibble(i_Column,eThisEncoding);
-  m_aHeadLine->v2B(i_IntoOffset,iThisDteDays);
+  m_aHeadLine->v2B(m_i_IntoOffset,iThisDteDays);
 
   vUsageIncOops(i_Column,2,1);
 
