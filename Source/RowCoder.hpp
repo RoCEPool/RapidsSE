@@ -363,7 +363,7 @@ namespace Data
         i_Offset_ += nDataBytes(eDatumExt,eEncoding);
       }
       
-      eMN eEncoding = (eMN)aHeadLine->iMetaNibble(i_ForCol);
+      eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
       i_PriorColumn_ = i_ForCol;
       
       return eEncoding;
