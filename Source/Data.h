@@ -142,6 +142,8 @@ using namespace Data;
 
 //------------------------------------------------------------------------------
 
+#include "Datum.hpp"
+
 #include "SpaceUnit.hpp"
 #include "HeadLine.hpp"
 #include "TailLine.hpp"
@@ -163,7 +165,6 @@ typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,SpaceUnit,Table,Coda,
 typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,SpaceUnit,Table,Coda,
                  (C_MAX_ROWS * sizeof(HeadLine))> RowTray;
 
-#include "Datum.hpp"
 #include "EntWrk.hpp"
 #include "KeyWrk.hpp"
 #include "Key.hpp"

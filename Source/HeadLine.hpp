@@ -3,8 +3,10 @@
 /*============================================================================*/
 #pragma once
 
-namespace Base
+namespace Data
 {
+  class Datum;
+  
   class HeadLine
   {
   public:
@@ -66,6 +68,38 @@ namespace Base
       xWord.m_yaByte[0] = *aByte;
       
       return xWord.m_wWord;
+    }
+
+    /*----------------------------------------------------------------------------*/
+    /* return 3 bytes at offset as w8                                             */
+    /*----------------------------------------------------------------------------*/
+    inline void w8_3BFast(Datum* pDatum, i8 i_Byte)
+    {
+      byte* aByte = ((byte*)this) + i_Byte;
+      
+      pDatum->m_wWord = 0;
+      pDatum->m_yaByte[0] = *aByte++;
+      pDatum->m_yaByte[1] = *aByte++;
+      pDatum->m_yaByte[2] = *aByte;
+    }
+
+    /*----------------------------------------------------------------------------*/
+    /* return 3 bytes at offset as w8                                             */
+    /*----------------------------------------------------------------------------*/
+    inline i4 w8_3BFast2(i8 i_Byte)
+    {
+      i4 iFour;
+      
+      byte* aByte = ((byte*)this) + i_Byte;
+      byte* aDst = (byte*)&iFour;
+      
+      *aDst++ = *aByte++;
+      *aDst++ = *aByte++;
+      *aDst++ = *aByte++;
+      
+      *aDst = 0;
+      
+      return iFour;
     }
 
     /*----------------------------------------------------------------------------*/
