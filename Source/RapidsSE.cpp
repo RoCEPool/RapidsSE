@@ -1035,7 +1035,7 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
     RASSERT(pTable->eClass() == CN_TABLE);
     API_LOC(320);
     
-    //*piExpectedRows = (i8)(pJob_FetchRows->m_pBufferQueue->iCount() * C_ROWS_PER_BUFFER);
+    // *piExpectedRows = (i8)(pJob_FetchRows->m_pBufferQueue->iCount() * C_ROWS_PER_BUFFER);
     
     Item* aItem = nullptr;
     EntryBuffer* pEntryBuffer = nullptr;

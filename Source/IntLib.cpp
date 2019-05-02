@@ -254,7 +254,7 @@ i8 IntLib::iIntToVlq(i8 iInt, byte yVlqVec[16])
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // explicitly handle numbers between 0 - 31 (that fit in 5 bits)
-  if (iInt <= C_5_BITS) {              // its 0..31
+  if (iInt <= (i8)C_5_BITS) {              // its 0..31
     
     u8 yByte = iInt;
     
