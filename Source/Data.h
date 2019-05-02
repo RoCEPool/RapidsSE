@@ -37,8 +37,8 @@ namespace Data
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  MN_FALSE = 0b1101,      // D: false datum (no bytes in data words)
-  MN_TRUE  = 0b1110,      // E: true datum (no bytes in data words)
+  MN_FALSE = 0b0001,      // 1: false datum (no bytes in data words)
+  MN_TRUE  = 0b0010,      // 2: true datum (no bytes in data words)
   
   // the following are to be renamed
   MN_CLASSIC_1B = 0b1001, // 9: classical era 1B

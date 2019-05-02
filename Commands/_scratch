@@ -27,6 +27,13 @@ ld bolTbl "/DATA/Encoding/boolean.csv" ;
 time fetch retrieve bolTbl bol_col1;
 time fetch retrieve bolTbl bol_col1;
 time fetch retrieve bolTbl bol_col1;
+time fetch retrieve bolTbl bol_col1;
+time fetch retrieve bolTbl bol_col1;
+time fetch retrieve bolTbl bol_col1;
+time fetch retrieve bolTbl bol_col1;
+time fetch retrieve bolTbl bol_col1;
+time fetch retrieve bolTbl bol_col1;
+time fetch retrieve bolTbl bol_col1;
 /*
 create table bolTbl (
 bol_col1   BOOLEAN     NOT NULL,

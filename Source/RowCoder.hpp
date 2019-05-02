@@ -257,27 +257,27 @@ namespace Data
       //eMN eEncoding = (eMN)aHeadLine->w8_1NFast(xWord, i_Column);
       eMN eEncoding = (eMN)aHeadLine->w8_1NFast2(i_Column);
 
-//      switch (eEncoding) {
-//
-//        case MN_NULL:  pDatum->m_iInt = C_DATUM_NULL; break;
-//        case MN_FALSE: pDatum->m_iInt = (i8)0;        break;
-//        case MN_TRUE:  pDatum->m_iInt = (i8)1;        break;
-//
-//        default:
-//          NEVER_REACH;
-//      }
-//
-      
-      i8 x = 1;
-      switch (x) {
-          
-        case 0:  pDatum->m_iInt = C_DATUM_NULL; break;
-        case 1:  pDatum->m_iInt = (i8)0;        break;
-        case 2:  pDatum->m_iInt = (i8)1;        break;
-          
+      switch (eEncoding) {
+
+        case MN_NULL:  pDatum->m_iInt = C_DATUM_NULL; break;
+        case MN_FALSE: pDatum->m_iInt = (i8)0;        break;
+        case MN_TRUE:  pDatum->m_iInt = (i8)1;        break;
+
         default:
           NEVER_REACH;
       }
+
+    
+//      i8 x = 1;
+//      switch (x) {
+//          
+//        case 0:  pDatum->m_iInt = C_DATUM_NULL; break;
+//        case 1:  pDatum->m_iInt = (i8)0;        break;
+//        case 2:  pDatum->m_iInt = (i8)1;        break;
+//          
+//        default:
+//          NEVER_REACH;
+//      }
      
     }
     

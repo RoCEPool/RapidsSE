@@ -2254,7 +2254,7 @@ i8 RowCoder::iBaseOffset(ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
 {
-  if (eEncoding == MN_NULL)
+  if (eEncoding == MN_NULL || DM_BOL == eDatum)
     return 0;
   
   //if (eEncoding <= MN_8B)
