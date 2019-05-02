@@ -1468,7 +1468,7 @@ void RowCoder::vRecodeVch(i8 i_IntoHead,
                           i8& , i8& )
 {
   if (MN_1B == eEncoding) {
-    vRecodeVchAlpha(pCol,m_i_IntoOffset,m_i_FromOffset);
+    vRecodeVchAlpha(pCol);
     return;
   }
   
@@ -1488,8 +1488,7 @@ void RowCoder::vRecodeVch(i8 i_IntoHead,
 /*----------------------------------------------------------------------------*/
 /* re-encode a 1B Vch as Alpha                                                */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeVchAlpha(Column* pCol,
-                               i8& i_IntoOffset, i8& i_FromOffset)
+void RowCoder::vRecodeVchAlpha(Column* pCol)
 {
 #ifdef WITH_EXTENDED_VCH
   Coda* pCoda = m_pEncodeNub->pCoda();
@@ -1500,7 +1499,7 @@ void RowCoder::vRecodeVchAlpha(Column* pCol,
   RASSERT(DM_VCH == pCol->eDatumType());
   RASSERT(MN_1B == eThisEncoding);
   
-  char c1BChar = m_aHeadLine->w8_1B(i_IntoOffset);
+  char c1BChar = m_aHeadLine->w8_1B(m_i_IntoOffset);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // search for the 1B in coda aux for this column
@@ -1544,10 +1543,10 @@ void RowCoder::vRecodeVchAlpha(Column* pCol,
     vUsageIncRecoded(i_Column,0);
 
     // cut the 1B char out of the into head
-    m_pEncodeNub->vCut(m_aHeadLine,sizeof(HeadLine),i_IntoOffset,1);
+    m_pEncodeNub->vCut(m_aHeadLine,sizeof(HeadLine),m_i_IntoOffset,1);
     
     // go back one char in the intoOffset
-    i_IntoOffset--;
+    m_i_IntoOffset--;
     return;
   }
   
@@ -1565,10 +1564,10 @@ void RowCoder::vRecodeVchAlpha(Column* pCol,
   vUsageIncRecoded(i_Column,0);
 
   // cut the 1B char out of the into head
-  m_pEncodeNub->vCut(m_aHeadLine,sizeof(HeadLine),i_IntoOffset,1);
+  m_pEncodeNub->vCut(m_aHeadLine,sizeof(HeadLine),m_i_IntoOffset,1);
   
   // go back one char in the intoOffset
-  i_IntoOffset--;
+  m_i_IntoOffset--;
 #endif
 }
 

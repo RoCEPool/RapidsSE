@@ -98,7 +98,7 @@ namespace Data
     void vRecodeVch(i8 i_IntoHead,
                     RowNub* pFromNub, Column* pCol, eMN eEncoding,
                     i8& i_ToOffset, i8& i_FromOffset);
-    void vRecodeVchAlpha(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeVchAlpha(Column* pCol);
     void vRecodeVchShoco(i8 i_IntoHead,
                          RowNub* pFromNub, Column* pCol,
                          i8 i_ToOffset, i8 i_FromOffset);
