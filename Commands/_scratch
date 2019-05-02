@@ -22,33 +22,33 @@ int_col14  INTEGER     NOT NULL,
 int_col15  INTEGER
 );
 
-ld bolTbl "/DATA/Encoding/integer.csv" ;
+ld intTbl "/DATA/Encoding/integer.csv" ;
 
-time fetch retrieve intTbl bol_col1;
-time fetch retrieve intTbl bol_col2;
-time fetch retrieve intTbl bol_col3;
-time fetch retrieve intTbl bol_col4;
-time fetch retrieve intTbl bol_col5;
-time fetch retrieve intTbl bol_col6;
-time fetch retrieve intTbl bol_col7;
-time fetch retrieve intTbl bol_col8;
-time fetch retrieve intTbl bol_col9;
-time fetch retrieve intTbl bol_col10;
-time fetch retrieve intTbl bol_col11;
-time fetch retrieve intTbl bol_col12;
-time fetch retrieve intTbl bol_col13;
-time fetch retrieve intTbl bol_col14;
-time fetch retrieve intTbl bol_col15;
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col2;
+time fetch retrieve intTbl int_col3;
+time fetch retrieve intTbl int_col4;
+time fetch retrieve intTbl int_col5;
+time fetch retrieve intTbl int_col6;
+time fetch retrieve intTbl int_col7;
+time fetch retrieve intTbl int_col8;
+time fetch retrieve intTbl int_col9;
+time fetch retrieve intTbl int_col10;
+time fetch retrieve intTbl int_col11;
+time fetch retrieve intTbl int_col12;
+time fetch retrieve intTbl int_col13;
+time fetch retrieve intTbl int_col14;
+time fetch retrieve intTbl int_col15;
 /*
 create table bolTbl (
-bol_col1   BOOLEAN     NOT NULL,
+int_col1   BOOLEAN     NOT NULL,
 vch_col2   VARCHAR(32) NOT NULL,
 int_col3   INTEGER     NOT NULL,
 int_col4   INTEGER     NOT NULL,
 dec_col5   DECIMAL(10,2) NOT NULL,
 flt_col6   FLOAT       NOT NULL,
 tsp_col7   TIMESTAMP   NOT NULL,
-bol_col8   BOOLEAN
+int_col8   BOOLEAN
 );
 
 
