@@ -39,6 +39,44 @@ time fetch retrieve intTbl int_col12;
 time fetch retrieve intTbl int_col13;
 time fetch retrieve intTbl int_col14;
 time fetch retrieve intTbl int_col15;
+
+
+/*
+ : HeadFree 3215364B(19%) : 0..7B:38721 8..15B:134240 16..23B:79882 24..31B:0 32..39B:0 40..47B:0 µ:12B
+ success: 1000000 rows loaded (0 invalid rows 0 skipped rows)
+ success: 1000000 rows affected
+ time 73ms
+ success: 1000000 rows affected
+ time 84ms
+ success: 1000000 rows affected
+ time 104ms
+ success: 1000000 rows affected
+ time 117ms
+ success: 1000000 rows affected
+ time 134ms
+ success: 1000000 rows affected
+ time 156ms
+ success: 1000000 rows affected
+ time 173ms
+ success: 1000000 rows affected
+ time 182ms
+ success: 1000000 rows affected
+ time 198ms
+ success: 1000000 rows affected
+ time 217ms
+ success: 1000000 rows affected
+ time 233ms
+ success: 1000000 rows affected
+ time 245ms
+ success: 1000000 rows affected
+ time 270ms
+ success: 1000000 rows affected
+ time 285ms
+ success: 1000000 rows affected
+ time 289ms
+ [N0/1 NODE1 12095] se 4.0.5r has>
+ */
+
 /*
 create table bolTbl (
 int_col1   BOOLEAN     NOT NULL,
