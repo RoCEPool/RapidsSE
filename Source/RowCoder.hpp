@@ -280,7 +280,7 @@ namespace Data
       
       pDatum->m_eDatum = DM_INT;
       
-      eMN eEncoding = eGetEncodingExt(i_Column,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+      eMN eEncoding = eGetEncodingExtFast(i_Column,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
       //vTrace("Decoding %lld\n"_Stz, eEncoding);
       
       switch (eEncoding) {
@@ -339,6 +339,38 @@ namespace Data
       vDecodeFast(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
     }
   
+    /*----------------------------------------------------------------------------*/
+    /* get the extended encoding (and offset) of a column from given head line    */
+    /*----------------------------------------------------------------------------*/
+    //! consider passing a eDatum array instead of colum vector
+    
+    inline eMN eGetEncodingExtFast(i8 i_ForCol, HeadLine* aHeadLine,
+                               ColumnVec* pColVec, Coda* pCoda, i8& i_PriorColumn_,
+                               i8& i_Offset_)
+    {
+      
+      if (i_ForCol < i_PriorColumn_) {
+        i_PriorColumn_ = 0;
+        i_Offset_ = iBaseOffset(pColVec);
+      }
+      
+      for (i8 i_Nibble = i_PriorColumn_; i_Nibble < i_ForCol; i_Nibble++) {
+        
+        eMN eEncoding = (eMN)aHeadLine->iMetaNibble(i_Nibble);
+        
+        Column* pCol  = pColVec->pGet(i_Nibble);
+        
+        eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
+        
+        i_Offset_ += nDataBytes(eDatumExt,eEncoding);
+      }
+      
+      eMN eEncoding = (eMN)aHeadLine->iMetaNibble(i_ForCol);
+      i_PriorColumn_ = i_ForCol;
+      
+      return eEncoding;
+    }
+    
   public:
     /*----------------------------------------------------------------------------*/
     /* retrieve and decode row from cache line into a datu                        */
