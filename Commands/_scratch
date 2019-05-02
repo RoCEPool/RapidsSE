@@ -24,6 +24,19 @@ int_col15  INTEGER
 
 ld intTbl "/DATA/Encoding/integer.csv" ;
 
+time fetch retrieve intTbl int_col0;
+time fetch retrieve intTbl int_col0;
+time fetch retrieve intTbl int_col0;
+time fetch retrieve intTbl int_col0;
+time fetch retrieve intTbl int_col0;
+time fetch retrieve intTbl int_col0;
+time fetch retrieve intTbl int_col0;
+time fetch retrieve intTbl int_col0;
+time fetch retrieve intTbl int_col0;
+time fetch retrieve intTbl int_col0;
+
+/*
+time fetch retrieve intTbl int_col0;
 time fetch retrieve intTbl int_col1;
 time fetch retrieve intTbl int_col2;
 time fetch retrieve intTbl int_col3;
@@ -41,40 +54,41 @@ time fetch retrieve intTbl int_col14;
 time fetch retrieve intTbl int_col15;
 
 
-/*
- : HeadFree 3215364B(19%) : 0..7B:38721 8..15B:134240 16..23B:79882 24..31B:0 32..39B:0 40..47B:0 µ:12B
+ : HeadFree 3213015B(19%) : 0..7B:39052 8..15B:134011 16..23B:79793 24..31B:0 32..39B:0 40..47B:0 µ:12B
  success: 1000000 rows loaded (0 invalid rows 0 skipped rows)
  success: 1000000 rows affected
- time 73ms
+ time 56ms
  success: 1000000 rows affected
- time 84ms
+ time 68ms
  success: 1000000 rows affected
- time 104ms
+ time 83ms
+ success: 1000000 rows affected
+ time 101ms
  success: 1000000 rows affected
  time 117ms
  success: 1000000 rows affected
- time 134ms
+ time 131ms
  success: 1000000 rows affected
- time 156ms
+ time 155ms
  success: 1000000 rows affected
- time 173ms
+ time 170ms
  success: 1000000 rows affected
- time 182ms
+ time 184ms
  success: 1000000 rows affected
- time 198ms
+ time 199ms
  success: 1000000 rows affected
- time 217ms
+ time 218ms
  success: 1000000 rows affected
- time 233ms
+ time 231ms
  success: 1000000 rows affected
  time 245ms
  success: 1000000 rows affected
- time 270ms
+ time 272ms
  success: 1000000 rows affected
- time 285ms
+ time 293ms
  success: 1000000 rows affected
  time 289ms
- [N0/1 NODE1 12095] se 4.0.5r has>
+ [N0/1 NODE1 12681] se 4.0.5r has>
  */
 
 /*
