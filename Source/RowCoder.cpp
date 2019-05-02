@@ -1465,16 +1465,16 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeVch(i8 i_IntoHead,
                           RowNub* pFromNub, Column* pCol, eMN eEncoding,
-                          i8& i_IntoOffset, i8& i_FromOffset)
+                          i8& , i8& )
 {
   if (MN_1B == eEncoding) {
-    vRecodeVchAlpha(pCol,i_IntoOffset,i_FromOffset);
+    vRecodeVchAlpha(pCol,m_i_IntoOffset,m_i_FromOffset);
     return;
   }
   
   if (MN_SHOCO_2B == eEncoding) {
     vRecodeVchShoco(i_IntoHead,pFromNub,pCol,
-                    i_IntoOffset,i_FromOffset);
+                    m_i_IntoOffset,m_i_FromOffset);
     return;
   }
 
