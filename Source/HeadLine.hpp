@@ -52,7 +52,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     inline i8 iMetaNibbleFast(i8 i_Nibble)
     {
-      w8 iNibble = w8_1NFast4(i_Nibble);
+      w8 iNibble = w8_1NFast(i_Nibble);
       
       return iNibble;
     }
@@ -61,20 +61,18 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     inline i8 iMetaNibbleZeroFast(void)
     {
-      return w8_1NFast4_Nibble0();
+      return w8_1NFast_Nibble0();
     }
     
     /*----------------------------------------------------------------------------*/
     /* return 1 byte at offset as w8                                              */
     /*----------------------------------------------------------------------------*/
-    inline w8 w8_1BFast(WordView& xWord, i8 i_Byte)
+    inline void w8_1BFast(Datum* pDatum, i8 i_Byte)
     {
       byte* aByte = ((byte*)this) + i_Byte;
       
-      xWord.m_iI8 = 0;
-      xWord.m_yaByte[0] = *aByte;
-      
-      return xWord.m_wWord;
+      pDatum->m_wWord = 0;
+      pDatum->m_yaByte[0] = *aByte;
     }
 
     /*----------------------------------------------------------------------------*/
@@ -122,56 +120,23 @@ namespace Data
     }
 
     /*----------------------------------------------------------------------------*/
-    /* return 1 nibble at offset as w8                                            */
+    /* return 4 bytes at offset as w8                                             */
     /*----------------------------------------------------------------------------*/
-    inline w8 w8_1NFast(WordView& xWord, i8 i_Nibble)
+    inline void w8_4BFast(Datum* pDatum, i8 i_Byte)
     {
-      w8 iNibble;
-      w8 iByte = w8_1BFast(xWord, i_Nibble/2);
+      WordView xWord;
       
-      //if (0 == i_Nibble % 2) {
-      if ( 0 == (i_Nibble & 0x1)) {
-        // left nibble
-        iNibble = iByte >> 4;
-      }
-      else {
-        // right nibble
-        iNibble = iByte & 0xF;
-      }
+      byte* aByte = ((byte*)this) + i_Byte;
       
-      return iNibble;
+      pDatum->m_wWord = 0;
+      pDatum->m_yaByte[0] = *aByte++;
+      pDatum->m_yaByte[1] = *aByte++;
+      pDatum->m_yaByte[2] = *aByte++;
+      pDatum->m_yaByte[3] = *aByte;
     }
-    /*----------------------------------------------------------------------------*/
-    inline w8 w8_1NFast2(i8 i_Nibble)
-    {
-      w8 iNibble;
-      byte yByte = *((byte*)this + i_Nibble/2);
-
-      if ( 0 == (i_Nibble & 0x1)) {
-        // left nibble
-        iNibble = yByte >> 4;
-      }
-      else {
-        // right nibble
-        iNibble = yByte & 0xF;
-      }
     
-      return iNibble;
-    }
     /*----------------------------------------------------------------------------*/
-    inline byte w8_1NFast3(byte i_Nibble)
-    {
-      byte yByte = *((byte*)this + (i_Nibble>>1));
-    
-      if (i_Nibble & 0x1)
-        // right nibble
-        return yByte & 0xF;
-      else
-        // left nibble
-        return yByte >> 4;
-    }
-    /*----------------------------------------------------------------------------*/
-    inline byte w8_1NFast4_Nibble0()
+    inline byte w8_1NFast_Nibble0()
     {
       byte yByte = *((byte*)this);
       
@@ -180,7 +145,7 @@ namespace Data
     }
                
     /*----------------------------------------------------------------------------*/
-    inline byte w8_1NFast4(byte i_Nibble)
+    inline byte w8_1NFast(byte i_Nibble)
     {
       if (i_Nibble & 0x1)
         // right nibble
