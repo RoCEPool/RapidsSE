@@ -322,7 +322,7 @@ namespace Data
       pDatum->m_eDatum = DM_INT;
       i8 i_Offset = iBaseOffset(pColVec);
       
-      eMN eEncoding = eGetEncodingExtFastCol0(aHeadLine,pColVec,pCoda);
+      eMN eEncoding = eGetEncodingExtFastCol0(aHeadLine);
       //vTrace("Decoding %lld\n"_Stz, eEncoding);
       
       switch (eEncoding) {
@@ -414,10 +414,9 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     //! consider passing a eDatum array instead of colum vector
     
-    static inline eMN eGetEncodingExtFastCol0(HeadLine* aHeadLine,
-                                              ColumnVec* pColVec, Coda* pCoda)
+    static inline eMN eGetEncodingExtFastCol0(HeadLine* aHeadLine)
     {
-      eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(0);
+      eMN eEncoding = (eMN)aHeadLine->iMetaNibbleZeroFast();
       
       return eEncoding;
     }

@@ -57,6 +57,15 @@ namespace Data
       return iNibble;
     }
 
+    /* return meta nibble zero                                                    */
+    /*----------------------------------------------------------------------------*/
+    inline i8 iMetaNibbleZeroFast(void)
+    {
+      w8 iNibble = w8_1NFast4_Nibble0();
+      
+      return iNibble;
+    }
+    
     /*----------------------------------------------------------------------------*/
     /* return 1 byte at offset as w8                                              */
     /*----------------------------------------------------------------------------*/
@@ -151,6 +160,15 @@ namespace Data
         // left nibble
         return yByte >> 4;
     }
+    /*----------------------------------------------------------------------------*/
+    inline byte w8_1NFast4_Nibble0()
+    {
+      byte yByte = *((byte*)this);
+      
+      // left nibble
+      return *((byte*)this) >> 4;
+    }
+               
     /*----------------------------------------------------------------------------*/
     inline byte w8_1NFast4(byte i_Nibble)
     {
