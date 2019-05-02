@@ -73,7 +73,7 @@ void CacheLine::vSet(i8 i_Offset, i8 nBytes, byte yVal)
 /*----------------------------------------------------------------------------*/
 w8 CacheLine::w8_1B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -88,7 +88,7 @@ w8 CacheLine::w8_1B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 CacheLine::w8_2B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -104,7 +104,7 @@ w8 CacheLine::w8_2B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 CacheLine::w8_3B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -121,7 +121,7 @@ w8 CacheLine::w8_3B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 CacheLine::w8_4B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -139,7 +139,7 @@ w8 CacheLine::w8_4B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 CacheLine::w8_5B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -158,7 +158,7 @@ w8 CacheLine::w8_5B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 CacheLine::w8_6B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -178,7 +178,7 @@ w8 CacheLine::w8_6B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 CacheLine::w8_7B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -199,7 +199,7 @@ w8 CacheLine::w8_7B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 CacheLine::w8_8B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -244,7 +244,7 @@ w8 CacheLine::w8_1N(i8 i_Nibble)
 /*----------------------------------------------------------------------------*/
 void CacheLine::v1B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
 
   xWord.m_wWord = wArg;
   
@@ -257,7 +257,7 @@ void CacheLine::v1B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void CacheLine::v2B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -271,7 +271,7 @@ void CacheLine::v2B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void CacheLine::v3B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -286,7 +286,7 @@ void CacheLine::v3B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void CacheLine::v4B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -302,7 +302,7 @@ void CacheLine::v4B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void CacheLine::v5B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -319,7 +319,7 @@ void CacheLine::v5B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void CacheLine::v6B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -337,7 +337,7 @@ void CacheLine::v6B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void CacheLine::v7B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -356,7 +356,7 @@ void CacheLine::v7B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void CacheLine::v8B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   

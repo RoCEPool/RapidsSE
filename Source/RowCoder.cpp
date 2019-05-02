@@ -4055,7 +4055,7 @@ void RowCoder::vIntoBaseDays(Datum* pDatum, i8& iEra)
 /*----------------------------------------------------------------------------*/
 /* decoding of dte                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iStripDte(WordView& wTspView, eMN eEncoding)
+i8 RowCoder::iStripDte(Word& wTspView, eMN eEncoding)
 {
   i8 iDecoded = wTspView.m_iI8;
   iDecoded <<= 40;
@@ -4066,7 +4066,7 @@ i8 RowCoder::iStripDte(WordView& wTspView, eMN eEncoding)
 /*----------------------------------------------------------------------------*/
 /* decoding of tme                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iStripTme(WordView& wTspView, eMN eEncoding)
+i8 RowCoder::iStripTme(Word& wTspView, eMN eEncoding)
 {
   i8 iDecoded = wTspView.m_iI8;
   iDecoded <<= 40;
@@ -4077,7 +4077,7 @@ i8 RowCoder::iStripTme(WordView& wTspView, eMN eEncoding)
 /*----------------------------------------------------------------------------*/
 /* decoding of tsp                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iStripTsp(WordView& wTspView, eMN eEncoding)
+i8 RowCoder::iStripTsp(Word& wTspView, eMN eEncoding)
 {
   i8 iDecoded = wTspView.m_iI8;
   iDecoded <<= 24;

@@ -63,7 +63,7 @@ void TailLine::vSetAll(byte yVal)
 /*----------------------------------------------------------------------------*/
 w8 TailLine::w8_1B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -78,7 +78,7 @@ w8 TailLine::w8_1B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 TailLine::w8_2B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -94,7 +94,7 @@ w8 TailLine::w8_2B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 TailLine::w8_3B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -111,7 +111,7 @@ w8 TailLine::w8_3B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 TailLine::w8_4B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -129,7 +129,7 @@ w8 TailLine::w8_4B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 TailLine::w8_5B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -148,7 +148,7 @@ w8 TailLine::w8_5B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 TailLine::w8_6B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -168,7 +168,7 @@ w8 TailLine::w8_6B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 TailLine::w8_7B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -189,7 +189,7 @@ w8 TailLine::w8_7B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 TailLine::w8_8B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -234,7 +234,7 @@ w8 TailLine::w8_1N(i8 i_Nibble)
 /*----------------------------------------------------------------------------*/
 void TailLine::v1B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
 
   xWord.m_wWord = wArg;
   
@@ -247,7 +247,7 @@ void TailLine::v1B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void TailLine::v2B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -261,7 +261,7 @@ void TailLine::v2B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void TailLine::v3B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -276,7 +276,7 @@ void TailLine::v3B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void TailLine::v4B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -292,7 +292,7 @@ void TailLine::v4B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void TailLine::v5B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -309,7 +309,7 @@ void TailLine::v5B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void TailLine::v6B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -327,7 +327,7 @@ void TailLine::v6B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void TailLine::v7B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -346,7 +346,7 @@ void TailLine::v7B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void TailLine::v8B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   

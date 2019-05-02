@@ -124,7 +124,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     inline void w8_4BFast(Datum* pDatum, i8 i_Byte)
     {
-      WordView xWord;
+      Word xWord;
       
       byte* aByte = ((byte*)this) + i_Byte;
       
@@ -140,7 +140,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     inline void w8_5BFast(Datum* pDatum, i8 i_Byte)
     {
-      WordView xWord;
+      Word xWord;
       
       byte* aByte = ((byte*)this) + i_Byte;
       
@@ -157,7 +157,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     inline void w8_6BFast(Datum* pDatum, i8 i_Byte)
     {
-      WordView xWord;
+      Word xWord;
       
       byte* aByte = ((byte*)this) + i_Byte;
       
@@ -175,7 +175,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     inline void w8_7BFast(Datum* pDatum, i8 i_Byte)
     {
-      WordView xWord;
+      Word xWord;
       
       byte* aByte = ((byte*)this) + i_Byte;
       
@@ -194,7 +194,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     inline void w8_8BFast(Datum* pDatum, i8 i_Byte)
     {
-      WordView xWord;
+      Word xWord;
       
       byte* aByte = ((byte*)this) + i_Byte;
       

@@ -107,7 +107,7 @@ namespace Data
                         i8& i_LastColumn, i8& i_LastOffset);
 //    static void vDecodeFast(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec,
 //                            Column* pCol, Coda* pCoda,
-//                            WordView& xWord,i8& i_LastColumn, i8& i_LastOffset);
+//                            Word& xWord,i8& i_LastColumn, i8& i_LastOffset);
     static void vDecode(Datum* pDatum, HeadLine* aHeadLine,
                         ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                         i8& i_LastColumn, i8& i_LastOffset);
@@ -137,7 +137,7 @@ namespace Data
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
     //static void vDecodeBolFast(Datum* pDatum, HeadLine* aHeadLine,
-    //                       Column* pCol,WordView& xWord);
+    //                       Column* pCol,Word& xWord);
     static void vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
@@ -224,9 +224,9 @@ namespace Data
     static i8   iIntoBaseDays(i8 nDaysWithinEra, i8 iEra);
     static void vIntoBaseDays(Datum* pDatum, i8& iEra);
 
-    static i8 iStripDte(WordView& wTspView, eMN eEncoding);
-    static i8 iStripTme(WordView& wTspView, eMN eEncoding);
-    static i8 iStripTsp(WordView& wTspView, eMN eEncoding);
+    static i8 iStripDte(Word& wTspView, eMN eEncoding);
+    static i8 iStripTme(Word& wTspView, eMN eEncoding);
+    static i8 iStripTsp(Word& wTspView, eMN eEncoding);
  
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
   

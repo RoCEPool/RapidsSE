@@ -31,7 +31,7 @@ u8 IntLib::uBits(u8 uArg, i8 i_Bit, i8 nBits)
 /*----------------------------------------------------------------------------*/
 u8 IntLib::uByte(u8 uArg, i8 i_Byte)
 {
-  WordView wWord;
+  Word wWord;
   
   wWord.m_uI8 = uArg;
   

@@ -81,7 +81,7 @@ void HeadLine::vMetaNibble(i8 i_Nibble, w8 wArg)
 /*----------------------------------------------------------------------------*/
 w8 HeadLine::w8_1B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -96,7 +96,7 @@ w8 HeadLine::w8_1B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 HeadLine::w8_2B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -112,7 +112,7 @@ w8 HeadLine::w8_2B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 HeadLine::w8_3B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -129,7 +129,7 @@ w8 HeadLine::w8_3B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 HeadLine::w8_4B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -147,7 +147,7 @@ w8 HeadLine::w8_4B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 HeadLine::w8_5B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -166,7 +166,7 @@ w8 HeadLine::w8_5B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 HeadLine::w8_6B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -186,7 +186,7 @@ w8 HeadLine::w8_6B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 HeadLine::w8_7B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -207,7 +207,7 @@ w8 HeadLine::w8_7B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 HeadLine::w8_8B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -252,7 +252,7 @@ w8 HeadLine::w8_1N(i8 i_Nibble)
 /*----------------------------------------------------------------------------*/
 void HeadLine::v1B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
 
   xWord.m_wWord = wArg;
   
@@ -265,7 +265,7 @@ void HeadLine::v1B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void HeadLine::v2B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -279,7 +279,7 @@ void HeadLine::v2B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void HeadLine::v3B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -294,7 +294,7 @@ void HeadLine::v3B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void HeadLine::v4B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -310,7 +310,7 @@ void HeadLine::v4B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void HeadLine::v5B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -327,7 +327,7 @@ void HeadLine::v5B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void HeadLine::v6B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -345,7 +345,7 @@ void HeadLine::v6B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void HeadLine::v7B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -364,7 +364,7 @@ void HeadLine::v7B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void HeadLine::v8B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   

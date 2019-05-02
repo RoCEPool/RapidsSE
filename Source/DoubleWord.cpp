@@ -64,7 +64,7 @@ void DoubleWord::vSetAll(byte yVal)
 /*----------------------------------------------------------------------------*/
 w8 DoubleWord::w8_1B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -79,7 +79,7 @@ w8 DoubleWord::w8_1B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 DoubleWord::w8_2B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -95,7 +95,7 @@ w8 DoubleWord::w8_2B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 DoubleWord::w8_3B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -112,7 +112,7 @@ w8 DoubleWord::w8_3B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 DoubleWord::w8_4B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -130,7 +130,7 @@ w8 DoubleWord::w8_4B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 DoubleWord::w8_5B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -149,7 +149,7 @@ w8 DoubleWord::w8_5B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 DoubleWord::w8_6B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -169,7 +169,7 @@ w8 DoubleWord::w8_6B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 DoubleWord::w8_7B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -190,7 +190,7 @@ w8 DoubleWord::w8_7B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 DoubleWord::w8_8B(i8 i_Byte)
 {
-  WordView xWord;
+  Word xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -235,7 +235,7 @@ w8 DoubleWord::w8_1N(i8 i_Nibble)
 /*----------------------------------------------------------------------------*/
 void DoubleWord::v1B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
 
   xWord.m_wWord = wArg;
   
@@ -248,7 +248,7 @@ void DoubleWord::v1B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void DoubleWord::v2B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -262,7 +262,7 @@ void DoubleWord::v2B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void DoubleWord::v3B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -277,7 +277,7 @@ void DoubleWord::v3B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void DoubleWord::v4B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -293,7 +293,7 @@ void DoubleWord::v4B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void DoubleWord::v5B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -310,7 +310,7 @@ void DoubleWord::v5B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void DoubleWord::v6B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -328,7 +328,7 @@ void DoubleWord::v6B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void DoubleWord::v7B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   
@@ -347,7 +347,7 @@ void DoubleWord::v7B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void DoubleWord::v8B(i8 i_Byte, w8 wArg)
 {
-  WordView xWord;
+  Word xWord;
   
   xWord.m_wWord = wArg;
   

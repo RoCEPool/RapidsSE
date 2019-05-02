@@ -35,7 +35,7 @@ using namespace Base;
 #include "QuadWord.hpp"
 #include "Stz.hpp"
 #include "StrLib.hpp"
-#include "WordView.hpp"
+#include "Word.hpp"
 
 const i8 C_UNKNOWN = -1;
 
