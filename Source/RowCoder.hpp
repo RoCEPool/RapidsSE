@@ -115,6 +115,9 @@ namespace Data
     static void vDecode(Datum* pDatum, HeadLine* aHeadLine,
                         ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                         i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
+                        ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                        i8& i_LastColumn, i8& i_LastOffset);
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
     static void vHeadDumpColumn(HeadLine* aHeadLine, ColumnVec* pColVec, i8 iCol, Stz* aRecodeFunction);
     static void vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec);
@@ -267,6 +270,55 @@ namespace Data
     }
     
     /*----------------------------------------------------------------------------*/
+    /* decode integer from given cache line                                       */
+    /*----------------------------------------------------------------------------*/
+    inline void vDecodeIntFast(Datum* pDatum, HeadLine* aHeadLine,
+                              ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                              i8& i_LastColumn, i8& i_Offset)
+    {
+      i8 i_Column  = pCol->iColumnNo();
+      
+      pDatum->m_eDatum = DM_INT;
+      
+      eMN eEncoding = eGetEncodingExt(i_Column,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+      //vTrace("Decoding %lld\n"_Stz, eEncoding);
+      
+      switch (eEncoding) {
+          
+        case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;               break;
+        case MN_1B:   pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
+        case MN_2B:   pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
+        case MN_3B:   pDatum->m_iInt = aHeadLine->w8_3B(i_Offset); break;
+        case MN_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
+        case MN_5B:   pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
+        case MN_6B:   pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
+        case MN_7B:   pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
+        case MN_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
+          
+        case MN_MINUS_ONE: pDatum->m_iInt = (i8)-1; break;
+        case MN_ZERO:      pDatum->m_iInt = (i8)0;  break;
+        case MN_PLUS_ONE:  pDatum->m_iInt = (i8)1;  break;
+          
+        case MN_SAME:
+          pDatum->m_iInt = pCoda->m_aiAux[i_Column].m_iInt;
+          break;
+          
+          //    case MN_PLUS_1B:
+          //      pDatum->m_iInt = pCoda->m_aiAux[i_Column].m_iInt
+          //                     + aHeadLine->w8_1B(i_Offset);
+          //      break;
+          //
+          //    case MN_MINUS_1B:
+          //      pDatum->m_iInt = pCoda->m_aiAux[i_Column].m_iInt
+          //                     - aHeadLine->w8_1B(i_Offset);
+          break;
+          
+        default:
+          NEVER_REACH;
+      }
+    }
+
+    /*----------------------------------------------------------------------------*/
     /* get encoded datum from cache line                                          */
     /*----------------------------------------------------------------------------*/
     static inline void vDecodeFast(Datum* pDatum,
@@ -284,7 +336,7 @@ namespace Data
       i8 i_LastColumn = 0;
       i8 i_LastOffset = iBaseOffset(pColVec);
     
-      vDecode(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      vDecodeFast(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
     }
   
   public:

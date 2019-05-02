@@ -1870,7 +1870,6 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
                        ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                        i8& i_LastColumn, i8& i_LastOffset)
 {
-  eDM eDatum = pCol->eDatumType();
   eDM eDatumCoda = pCoda->m_aeExtDatum[pCol->iColumnNo()];
   
   switch (eDatumCoda) {
@@ -1913,6 +1912,76 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       vDecodeAlpha(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
     
+    case DM_DAYS:
+      vDecodeDays(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      break;
+      
+    case DM_DELTA_PLUS:
+      vDecodeDeltaPlus(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      break;
+      
+    case DM_DIGIT:
+      vDecodeDigit(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      break;
+      
+    case DM_TENTH:
+      vDecodeTenth(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      break;
+      
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get encoded datum from cache line                                          */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
+                       ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                       i8& i_LastColumn, i8& i_LastOffset)
+{
+  eDM eDatumCoda = pCoda->m_aeExtDatum[pCol->iColumnNo()];
+  
+  switch (eDatumCoda) {
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // the regular datums
+      
+    case DM_BCD:
+      vDecodeBcd(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      break;
+    case DM_BOL:
+      vDecodeBol(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      break;
+    case DM_DTE:
+      vDecodeDte(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      break;
+    case DM_FLT:
+      vDecodeFlt(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      break;
+    case DM_INT:
+      vDecodeInt(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      break;
+    case DM_IVL:
+      vDecodeIvl(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      break;
+    case DM_TME:
+      vDecodeTme(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      break;
+    case DM_TSP:
+      vDecodeTsp(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      break;
+    case DM_VCH:
+      vDecodeVch(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      break;
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // the extended datums
+      
+    case DM_ALPHA:
+      vDecodeAlpha(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      break;
+      
     case DM_DAYS:
       vDecodeDays(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
