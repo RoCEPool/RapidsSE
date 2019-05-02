@@ -885,9 +885,7 @@ void RowCoder::vRecode(i8 i_IntoHead,
     case Datums::DM_TSP:
       continue;
     case Datums::DM_VCH:
-        vRecodeVch(i_IntoHead,
-                   pFromNub,pCol,eEncoding,
-                   m_i_IntoOffset,m_i_FromOffset);
+        vRecodeVch(i_IntoHead,pFromNub,pCol,eEncoding);
         continue;
         
     default:
@@ -1464,8 +1462,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeVch(i8 i_IntoHead,
-                          RowNub* pFromNub, Column* pCol, eMN eEncoding,
-                          i8& , i8& )
+                          RowNub* pFromNub, Column* pCol, eMN eEncoding)
 {
   if (MN_1B == eEncoding) {
     vRecodeVchAlpha(pCol);
@@ -1473,8 +1470,7 @@ void RowCoder::vRecodeVch(i8 i_IntoHead,
   }
   
   if (MN_SHOCO_2B == eEncoding) {
-    vRecodeVchShoco(i_IntoHead,pFromNub,pCol,
-                    m_i_IntoOffset,m_i_FromOffset);
+    vRecodeVchShoco(i_IntoHead,pFromNub,pCol);
     return;
   }
 
@@ -1575,8 +1571,7 @@ void RowCoder::vRecodeVchAlpha(Column* pCol)
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeVchShoco(i8 i_IntoHead,
-                               RowNub* pFromNub, Column* pCol,
-                               i8 i_IntoOffset, i8 i_FromOffset)
+                               RowNub* pFromNub, Column* pCol)
 {
   static Peruse xSplits("Splits"_Stz);
   
@@ -1585,7 +1580,7 @@ void RowCoder::vRecodeVchShoco(i8 i_IntoHead,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy shoco tail line from nub
-  i8 i_Distance = aFromHead->w8_2B(i_FromOffset);
+  i8 i_Distance = aFromHead->w8_2B(m_i_FromOffset);
   TailLine* aShocoTail = pFromNub->aGetTail(i_Distance);
   
   /*
@@ -1610,19 +1605,19 @@ void RowCoder::vRecodeVchShoco(i8 i_IntoHead,
     i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
     //RASSERT(nCompressed <= 56);
     
-    i8 nAvailHeadBytes = sizeof(HeadLine) - i_IntoOffset;
+    i8 nAvailHeadBytes = sizeof(HeadLine) - m_i_IntoOffset;
     
     // FIT case?
     if (C_SHOCO_COMPRESSED_BYTES + nCompressed <= nAvailHeadBytes) {
       
       m_aHeadLine->vMetaNibble(i_Col,MN_SHOCO_FIT);
       
-      m_aHeadLine->v1B(i_IntoOffset,nCompressed);
+      m_aHeadLine->v1B(m_i_IntoOffset,nCompressed);
       
       byte* aFrom = (byte*)aShocoTail + C_SHOCO_COMPRESSED_OFFSET
                                       + C_SHOCO_COMPRESSED_BYTES;
       
-      byte* aInto = (byte*)m_aHeadLine + i_IntoOffset
+      byte* aInto = (byte*)m_aHeadLine + m_i_IntoOffset
                                        + C_SHOCO_COMPRESSED_BYTES;
       
       vUsageIncRecoded(i_Col,1 + nCompressed);
@@ -1655,7 +1650,7 @@ void RowCoder::vRecodeVchShoco(i8 i_IntoHead,
       i8 nPartA = nAvailHeadBytes - 2;
       i8 nPartB = nCompressed - nPartA;
       
-      byte* ayInto = (byte*)m_aHeadLine + i_IntoOffset + 2;
+      byte* ayInto = (byte*)m_aHeadLine + m_i_IntoOffset + 2;
       byte* ayFrom = (byte*)aShocoTail + C_TAIL_UNITS_BYTES;
       
       MemLib::vCopy(ayInto,ayFrom,nPartA,CN_ROWBUFFER);
@@ -1680,7 +1675,7 @@ void RowCoder::vRecodeVchShoco(i8 i_IntoHead,
       
       // what gets encoded is the unit difference between head and tail
       i8 i_TailDistance = m_pEncodeNub->iUnitDiff(i_IntoHead,i_IntoTail);
-      m_aHeadLine->vPut(i_IntoOffset,i_TailDistance,MN_2B);
+      m_aHeadLine->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
       
       //RowCoder::vRecord(hvRec,aIntoHead,pColVec);
       //hvRec->vPrintRow();
@@ -1716,7 +1711,7 @@ void RowCoder::vRecodeVchShoco(i8 i_IntoHead,
     
     // what gets encoded is the unit difference between head and tail
     i8 i_TailDistance = m_pEncodeNub->iUnitDiff(i_IntoHead,i_FoundTail);
-    m_aHeadLine->vPut(i_IntoOffset,i_TailDistance,MN_2B);
+    m_aHeadLine->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
     
     vUsageIncRecoded(pCol->iColumnNo(),2 );
 
@@ -1744,7 +1739,7 @@ void RowCoder::vRecodeVchShoco(i8 i_IntoHead,
   
   // what gets encoded is the unit difference between head and tail
   i8 i_TailDistance = m_pEncodeNub->iUnitDiff(i_IntoHead,i_IntoTail);
-  m_aHeadLine->vPut(i_IntoOffset,i_TailDistance,MN_2B);
+  m_aHeadLine->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
   
   vUsageIncRecoded(pCol->iColumnNo(),2 + 2 + nShocoBytes);
 
