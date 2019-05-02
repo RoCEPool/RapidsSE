@@ -92,9 +92,9 @@ namespace Data
     void vRecode(i8 i_IntoHead, RowNub* pFromNub, HeadLine* aFromHead);
     void vRecodeBcd(Column* pCol);
     void vRecodeDte(Column* pCol);
-    void vRecodeInt(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
-    bool bRecodeIntDelta(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
-    bool bRecodeIntDigit(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeInt(Column* pCol);
+    bool bRecodeIntDelta(Column* pCol);
+    bool bRecodeIntDigit(Column* pCol);
     void vRecodeVch(i8 i_IntoHead,
                     RowNub* pFromNub, Column* pCol, eMN eEncoding,
                     i8& i_ToOffset, i8& i_FromOffset);
