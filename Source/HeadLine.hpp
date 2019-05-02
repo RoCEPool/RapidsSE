@@ -136,6 +136,80 @@ namespace Data
     }
     
     /*----------------------------------------------------------------------------*/
+    /* return 5 bytes at offset as w8                                             */
+    /*----------------------------------------------------------------------------*/
+    inline void w8_5BFast(Datum* pDatum, i8 i_Byte)
+    {
+      WordView xWord;
+      
+      byte* aByte = ((byte*)this) + i_Byte;
+      
+      pDatum->m_wWord = 0;
+      pDatum->m_yaByte[0] = *aByte++;
+      pDatum->m_yaByte[1] = *aByte++;
+      pDatum->m_yaByte[2] = *aByte++;
+      pDatum->m_yaByte[3] = *aByte++;
+      pDatum->m_yaByte[4] = *aByte;
+    }
+    
+    /*----------------------------------------------------------------------------*/
+    /* return 6 bytes at offset as w8                                             */
+    /*----------------------------------------------------------------------------*/
+    inline void w8_6BFast(Datum* pDatum, i8 i_Byte)
+    {
+      WordView xWord;
+      
+      byte* aByte = ((byte*)this) + i_Byte;
+      
+      pDatum->m_wWord = 0;
+      pDatum->m_yaByte[0] = *aByte++;
+      pDatum->m_yaByte[1] = *aByte++;
+      pDatum->m_yaByte[2] = *aByte++;
+      pDatum->m_yaByte[3] = *aByte++;
+      pDatum->m_yaByte[4] = *aByte++;
+      pDatum->m_yaByte[5] = *aByte;
+    }
+    
+    /*----------------------------------------------------------------------------*/
+    /* return 7 bytes at offset as w8                                             */
+    /*----------------------------------------------------------------------------*/
+    inline void w8_7BFast(Datum* pDatum, i8 i_Byte)
+    {
+      WordView xWord;
+      
+      byte* aByte = ((byte*)this) + i_Byte;
+      
+      pDatum->m_wWord = 0;
+      pDatum->m_yaByte[0] = *aByte++;
+      pDatum->m_yaByte[1] = *aByte++;
+      pDatum->m_yaByte[2] = *aByte++;
+      pDatum->m_yaByte[3] = *aByte++;
+      pDatum->m_yaByte[4] = *aByte++;
+      pDatum->m_yaByte[5] = *aByte++;
+      pDatum->m_yaByte[6] = *aByte;
+    }
+    
+    /*----------------------------------------------------------------------------*/
+    /* return 8 bytes at offset as w8                                             */
+    /*----------------------------------------------------------------------------*/
+    inline void w8_8BFast(Datum* pDatum, i8 i_Byte)
+    {
+      WordView xWord;
+      
+      byte* aByte = ((byte*)this) + i_Byte;
+      
+      pDatum->m_wWord = 0;
+      pDatum->m_yaByte[0] = *aByte++;
+      pDatum->m_yaByte[1] = *aByte++;
+      pDatum->m_yaByte[2] = *aByte++;
+      xWord.m_yaByte[3] = *aByte++;
+      pDatum->m_yaByte[4] = *aByte++;
+      pDatum->m_yaByte[5] = *aByte++;
+      pDatum->m_yaByte[6] = *aByte++;
+      pDatum->m_yaByte[7] = *aByte;
+    }
+    
+    /*----------------------------------------------------------------------------*/
     inline byte w8_1NFast_Nibble0()
     {
       byte yByte = *((byte*)this);
