@@ -361,19 +361,15 @@ namespace Data
     /* get encoded datum from cache line                                          */
     /*----------------------------------------------------------------------------*/
     static inline void vDecodeFast(Datum* pDatum,
-                                   RowBuffer* pRowBuffer, HeadLine* aHeadLine,
-                                   Column* pCol)
+                                   ColumnVec* pColVec, Coda* pCoda,
+                                   HeadLine* aHeadLine, Column* pCol)
     {
       i8 i_Column = pCol->iColumnNo();
       if (pCol->eDatumType() == DM_BOL) {
         vDecodeBolFast(pDatum,aHeadLine,pCol);
         return;
       }
-    
-      RowTray* pRowTray = pRowBuffer->pRowTray();
-      Coda* pCoda = pRowTray->pCoda();
-      ColumnVec* pColVec = pRowTray->pDesc()->pColumnVec();
-    
+
       vDecodeFast(pDatum,aHeadLine,pColVec,i_Column,pCoda);
     }
   
@@ -417,7 +413,7 @@ namespace Data
     /* retrieve and decode row from cache line into a datu                        */
     /*----------------------------------------------------------------------------*/
     static inline void vRetrieve(Datum& oDatum,
-                                 RowBuffer* pRowBuffer, HeadLine* aHeadLine,
+                                 ColumnVec* pColVec, Coda* pCoda, HeadLine* aHeadLine,
                                  Column* pCol)
     {
     
@@ -425,7 +421,7 @@ namespace Data
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
       // get the encoded value into datum
-      vDecodeFast(&oDatum,pRowBuffer,aHeadLine,pCol);
+      vDecodeFast(&oDatum,pColVec,pCoda,aHeadLine,pCol);
     }
   
 

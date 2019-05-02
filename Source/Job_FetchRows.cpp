@@ -770,6 +770,9 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
 {
   Datum oDatum;
   RowBuffer* pRowBuffer = nullptr;
+  RowTray* pRowTray = nullptr;
+  ColumnVec* pColVec = nullptr;
+  Coda* pCoda = nullptr;
   
   Column* pCol = pJob_FetchRows->m_pColumn;
   
@@ -782,10 +785,13 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
     HeadLine* aHeadLine = *aaHeadLine;
     
     // check if aHeadLine is from the last rowBuffer
-    if (! RowBuffer::bCheckAddress(pRowBuffer,aHeadLine))
+    if (! RowBuffer::bCheckAddress(pRowBuffer,aHeadLine)) {
       pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
-
-    RowCoder::vRetrieve(oDatum,pRowBuffer,aHeadLine,pCol);
+      pRowTray = pRowBuffer->pRowTray();
+      pCoda = pRowTray->pCoda();
+      pColVec = pRowTray->pDesc()->pColumnVec();
+    }
+    RowCoder::vRetrieve(oDatum,pColVec,pCoda,aHeadLine,pCol);
     
     aaHeadLine = aAdd<HeadLine**>(aaHeadLine,sizeof(HeadLine*));
   }
