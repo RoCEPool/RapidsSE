@@ -272,7 +272,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     /* decode integer from given cache line                                       */
     /*----------------------------------------------------------------------------*/
-    inline void vDecodeIntFast(Datum* pDatum, HeadLine* aHeadLine,
+    static inline void vDecodeIntFast(Datum* pDatum, HeadLine* aHeadLine,
                               ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                               i8& i_LastColumn, i8& i_Offset)
     {
@@ -344,7 +344,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     //! consider passing a eDatum array instead of colum vector
     
-    inline eMN eGetEncodingExtFast(i8 i_ForCol, HeadLine* aHeadLine,
+    static inline eMN eGetEncodingExtFast(i8 i_ForCol, HeadLine* aHeadLine,
                                ColumnVec* pColVec, Coda* pCoda, i8& i_PriorColumn_,
                                i8& i_Offset_)
     {
@@ -356,9 +356,7 @@ namespace Data
       
       for (i8 i_Nibble = i_PriorColumn_; i_Nibble < i_ForCol; i_Nibble++) {
         
-        eMN eEncoding = (eMN)aHeadLine->iMetaNibble(i_Nibble);
-        
-        Column* pCol  = pColVec->pGet(i_Nibble);
+        eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_Nibble);
         
         eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
         
