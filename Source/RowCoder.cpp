@@ -1926,15 +1926,14 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 /* get encoded datum from cache line                                          */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
-                           ColumnVec* pColVec, Column* pCol, Coda* pCoda)
+                           ColumnVec* pColVec, i8 i_Column, Coda* pCoda)
 {
-  i8 iCol = pCol->iColumnNo();
-  eDM eDatumCoda = pCoda->m_aeExtDatum[iCol];
+  eDM eDatumCoda = pCoda->m_aeExtDatum[i_Column];
   i8 i_LastOffset = iBaseOffset(pColVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 0th column ?
-  if (iCol == 0) {
+  if (i_Column == 0) {
     switch (eDatumCoda) {
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2039,7 +2038,7 @@ void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
       //vDecodeFlt(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
     case DM_INT:
-      vDecodeIntFast(pDatum,aHeadLine,iCol,pCoda,i_LastOffset);
+      vDecodeIntFast(pDatum,aHeadLine,i_Column,pCoda,i_LastOffset);
       break;
     case DM_IVL:
       //vDecodeIvl(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);

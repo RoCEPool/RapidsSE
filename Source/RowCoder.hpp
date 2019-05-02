@@ -112,7 +112,7 @@ namespace Data
                         ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                         i8& i_LastColumn, i8& i_LastOffset);
     static void vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
-                        ColumnVec* pColVec, Column* pCol, Coda* pCoda);
+                        ColumnVec* pColVec, i8 i_Column, Coda* pCoda);
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
     static void vHeadDumpColumn(HeadLine* aHeadLine, ColumnVec* pColVec, i8 iCol, Stz* aRecodeFunction);
     static void vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec);
@@ -364,16 +364,17 @@ namespace Data
                                    RowBuffer* pRowBuffer, HeadLine* aHeadLine,
                                    Column* pCol)
     {
-      
+      i8 i_Column = pCol->iColumnNo();
       if (pCol->eDatumType() == DM_BOL) {
         vDecodeBolFast(pDatum,aHeadLine,pCol);
         return;
       }
     
-      Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
-      ColumnVec* pColVec = pRowBuffer->pRowTray()->pDesc()->pColumnVec();
+      RowTray* pRowTray = pRowBuffer->pRowTray();
+      Coda* pCoda = pRowTray->pCoda();
+      ColumnVec* pColVec = pRowTray->pDesc()->pColumnVec();
     
-      vDecodeFast(pDatum,aHeadLine,pColVec,pCol,pCoda);
+      vDecodeFast(pDatum,aHeadLine,pColVec,i_Column,pCoda);
     }
   
     /*----------------------------------------------------------------------------*/
