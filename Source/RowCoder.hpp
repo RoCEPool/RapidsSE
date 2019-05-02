@@ -90,7 +90,7 @@ namespace Data
     void vEncodeVchSmall(Datum* pDatum, Column* pCol);
     
     void vRecode(i8 i_IntoHead, RowNub* pFromNub, HeadLine* aFromHead);
-    void vRecodeBcd(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
+    void vRecodeBcd(Column* pCol);
     void vRecodeDte(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
     void vRecodeInt(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
     bool bRecodeIntDelta(Column* pCol, i8& i_IntoOffset, i8& i_FromOffset);
