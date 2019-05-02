@@ -249,36 +249,21 @@ namespace Data
     static inline void vDecodeBolFast(Datum* pDatum, HeadLine* aHeadLine,
                                   Column* pCol)
     {
-      i8 i_Column  = pCol->iColumnNo();
+      i8 i_Column = pCol->iColumnNo();
       
       pDatum->m_eDatum = DM_BOL;
       
-      //eMN eEncoding = eGetEncodingExt(i_Column,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
-      //eMN eEncoding = (eMN)aHeadLine->w8_1NFast(xWord, i_Column);
-      eMN eEncoding = (eMN)aHeadLine->w8_1NFast2(i_Column);
+      eMN eEncoding = (eMN)aHeadLine->w8_1NFast4((byte)i_Column);
 
       switch (eEncoding) {
 
-        case MN_NULL:  pDatum->m_iInt = C_DATUM_NULL; break;
-        case MN_FALSE: pDatum->m_iInt = (i8)0;        break;
-        case MN_TRUE:  pDatum->m_iInt = (i8)1;        break;
+        case MN_NULL:  pDatum->m_iInt = C_DATUM_NULL; return;
+        case MN_FALSE: pDatum->m_iInt = (i8)0;        return;
+        case MN_TRUE:  pDatum->m_iInt = (i8)1;        return;
 
         default:
           NEVER_REACH;
       }
-
-    
-//      i8 x = 1;
-//      switch (x) {
-//          
-//        case 0:  pDatum->m_iInt = C_DATUM_NULL; break;
-//        case 1:  pDatum->m_iInt = (i8)0;        break;
-//        case 2:  pDatum->m_iInt = (i8)1;        break;
-//          
-//        default:
-//          NEVER_REACH;
-//      }
-     
     }
     
     /*----------------------------------------------------------------------------*/
