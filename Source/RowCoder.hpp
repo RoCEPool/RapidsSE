@@ -275,7 +275,7 @@ namespace Data
       
       pDatum->m_eDatum = DM_INT;
       
-      eMN eEncoding = eGetEncodingExtFast(i_Column,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+      eMN eEncoding = eGetEncodingExtFast(i_Column,aHeadLine,pCoda,i_Offset);
       //vTrace("Decoding %lld\n"_Stz, eEncoding);
       
       switch (eEncoding) {
@@ -328,14 +328,14 @@ namespace Data
       switch (eEncoding) {
           
         case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;               break;
-        case MN_1B:   pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
+        case MN_1B:   aHeadLine->w8_1BFast(pDatum, i_Offset); break;
         case MN_2B:   aHeadLine->w8_2BFast(pDatum, i_Offset); break;
         case MN_3B:   aHeadLine->w8_3BFast(pDatum, i_Offset); break;
-        case MN_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
-        case MN_5B:   pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
-        case MN_6B:   pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
-        case MN_7B:   pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
-        case MN_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
+        case MN_4B:   aHeadLine->w8_4BFast(pDatum, i_Offset); break;
+        case MN_5B:   aHeadLine->w8_5BFast(pDatum, i_Offset); break;
+        case MN_6B:   aHeadLine->w8_6BFast(pDatum, i_Offset); break;
+        case MN_7B:   aHeadLine->w8_7BFast(pDatum, i_Offset); break;
+        case MN_8B:   aHeadLine->w8_8BFast(pDatum, i_Offset); break;
           
         case MN_MINUS_ONE: pDatum->m_iInt = (i8)-1; break;
         case MN_ZERO:      pDatum->m_iInt = (i8)0;  break;
@@ -385,16 +385,10 @@ namespace Data
     //! consider passing a eDatum array instead of colum vector
     
     static inline eMN eGetEncodingExtFast(i8 i_ForCol, HeadLine* aHeadLine,
-                               ColumnVec* pColVec, Coda* pCoda, i8& i_PriorColumn_,
-                               i8& i_Offset_)
+                                          Coda* pCoda, i8& i_Offset_)
     {
       
-      if (i_ForCol < i_PriorColumn_) {
-        i_PriorColumn_ = 0;
-        i_Offset_ = iBaseOffset(pColVec);
-      }
-      
-      for (i8 i_Nibble = i_PriorColumn_; i_Nibble < i_ForCol; i_Nibble++) {
+      for (i8 i_Nibble = 0; i_Nibble < i_ForCol; i_Nibble++) {
         
         eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_Nibble);
         
@@ -404,7 +398,6 @@ namespace Data
       }
       
       eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
-      i_PriorColumn_ = i_ForCol;
       
       return eEncoding;
     }
