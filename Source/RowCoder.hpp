@@ -328,14 +328,14 @@ namespace Data
       switch (eEncoding) {
           
         case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;               break;
-        case MN_1B:   pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
+        case MN_1B:   aHeadLine->w8_1BFast(pDatum, i_Offset); break;
         case MN_2B:   aHeadLine->w8_2BFast(pDatum, i_Offset); break;
         case MN_3B:   aHeadLine->w8_3BFast(pDatum, i_Offset); break;
-        case MN_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
-        case MN_5B:   pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
-        case MN_6B:   pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
-        case MN_7B:   pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
-        case MN_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
+        case MN_4B:   aHeadLine->w8_4BFast(pDatum, i_Offset); break;
+        case MN_5B:   aHeadLine->w8_5BFast(pDatum, i_Offset); break;
+        case MN_6B:   aHeadLine->w8_6BFast(pDatum, i_Offset); break;
+        case MN_7B:   aHeadLine->w8_7BFast(pDatum, i_Offset); break;
+        case MN_8B:   aHeadLine->w8_8BFast(pDatum, i_Offset); break;
           
         case MN_MINUS_ONE: pDatum->m_iInt = (i8)-1; break;
         case MN_ZERO:      pDatum->m_iInt = (i8)0;  break;
