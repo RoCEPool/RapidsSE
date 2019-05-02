@@ -2442,6 +2442,24 @@ i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
           NEVER_REACH;
       }
       break;
+    
+    case DM_CHR:
+      switch (eEncoding) {
+        case MN_EMPTY: {
+          return 0;
+        }
+        case MN_SHOCO_FIT: {
+          //aHeadLine->w8_1B(i_Offset);
+          return 1;
+        }
+        case MN_SHOCO_SPLIT:
+          return 3;
+        case MN_SHOCO_2B:
+          return 2;
+        default:
+          NEVER_REACH;
+      }
+      break;
       
     case DM_DTE:
       switch (eEncoding) {
@@ -2497,6 +2515,9 @@ i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
       }
       break;
       
+    case DM_VBN:
+      NEVER_REACH;
+      
     case DM_VCH:
       switch (eEncoding) {
         case MN_EMPTY: {
@@ -2545,6 +2566,9 @@ i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
           NEVER_REACH;
       }
       break;
+      
+    case DM_DELTA_MINUS:
+      NEVER_REACH;
       
     case DM_DIGIT:
       if (eEncoding >= MN_DIGIT_0 && eEncoding <= MN_DIGIT_7)
