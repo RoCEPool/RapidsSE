@@ -315,10 +315,9 @@ namespace Data
     /* decode integer of col0 from given cache line                               */
     /*----------------------------------------------------------------------------*/
     static inline void vDecodeIntFastCol0(Datum* pDatum, HeadLine* aHeadLine,
-                                      ColumnVec* pColVec, Coda* pCoda)
+                                          Coda* pCoda, i8 i_Offset)
     {
       pDatum->m_eDatum = DM_INT;
-      i8 i_Offset = iBaseOffset(pColVec);
       
       eMN eEncoding = eGetEncodingExtFastCol0(aHeadLine);
       //vTrace("Decoding %lld\n"_Stz, eEncoding);

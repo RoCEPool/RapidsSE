@@ -1926,10 +1926,11 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 /* get encoded datum from cache line                                          */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
-                       ColumnVec* pColVec, Column* pCol, Coda* pCoda)
+                           ColumnVec* pColVec, Column* pCol, Coda* pCoda)
 {
   i8 iCol = pCol->iColumnNo();
   eDM eDatumCoda = pCoda->m_aeExtDatum[iCol];
+  i8 i_LastOffset = iBaseOffset(pColVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 0th column ?
@@ -1958,7 +1959,7 @@ void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
         //vDecodeFlt(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
         break;
       case DM_INT:
-        vDecodeIntFastCol0(pDatum,aHeadLine,pColVec,pCoda);
+        vDecodeIntFastCol0(pDatum,aHeadLine,pCoda,i_LastOffset);
         break;
       case DM_IVL:
         //vDecodeIvl(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
@@ -2013,7 +2014,6 @@ void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // not the 0th column
-  i8 i_LastOffset = iBaseOffset(pColVec);
   
   switch (eDatumCoda) {
       
