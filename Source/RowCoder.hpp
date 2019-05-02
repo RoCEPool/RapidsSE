@@ -329,7 +329,7 @@ namespace Data
           
         case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;               break;
         case MN_1B:   pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
-        case MN_2B:   pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
+        case MN_2B:   aHeadLine->w8_2BFast(pDatum, i_Offset); break;
         case MN_3B:   aHeadLine->w8_3BFast(pDatum, i_Offset); break;
         case MN_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
         case MN_5B:   pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;

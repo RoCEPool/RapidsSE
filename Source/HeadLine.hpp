@@ -80,6 +80,18 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     /* return 3 bytes at offset as w8                                             */
     /*----------------------------------------------------------------------------*/
+    inline void w8_2BFast(Datum* pDatum, i8 i_Byte)
+    {
+      byte* aByte = ((byte*)this) + i_Byte;
+      
+      pDatum->m_wWord = 0;
+      pDatum->m_yaByte[0] = *aByte++;
+      pDatum->m_yaByte[1] = *aByte++;
+    }
+
+    /*----------------------------------------------------------------------------*/
+    /* return 3 bytes at offset as w8                                             */
+    /*----------------------------------------------------------------------------*/
     inline void w8_3BFast(Datum* pDatum, i8 i_Byte)
     {
       byte* aByte = ((byte*)this) + i_Byte;

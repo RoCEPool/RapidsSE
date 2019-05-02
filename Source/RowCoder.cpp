@@ -1945,6 +1945,9 @@ void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
       case DM_BOL:
         //vDecodeBol(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
         break;
+      case DM_CHR:
+        //vDecodeVch(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+        break;
       case DM_DTE:
         //vDecodeDte(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
         break;
@@ -1983,6 +1986,10 @@ void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
         
       case DM_DELTA_PLUS:
         //vDecodeDeltaPlus(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+        break;
+        
+      case DM_DELTA_MINUS:
+        //vDecodeDeltaMinus(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
         break;
         
       case DM_DIGIT:
