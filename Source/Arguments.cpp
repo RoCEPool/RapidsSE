@@ -647,7 +647,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
     }
 #else
     if (argv[i_Arg]->bSame("--activityMap"_Stz)) {
-      vWarn("arg --activityMap ignored; not compiled WITH_ACTIVITY_MAP"_Stz);
+      vWarn("arg --activityMap ignored; not compiled WITH_ACTIVITY_MAP\n"_Stz);
       continue;
     }
 #endif
@@ -666,7 +666,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
     }
 #else
     if (argv[i_Arg]->bSame("--actionSequence"_Stz)) {
-      vWarn("arg --actionSequence ignored; not compiled WITH_ACTION_SEQUENCE"_Stz);
+      vWarn("arg --actionSequence ignored; not compiled WITH_ACTION_SEQUENCE\n"_Stz);
       continue;
     }
 #endif
