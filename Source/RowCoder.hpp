@@ -268,10 +268,8 @@ namespace Data
     /* decode integer from given cache line                                       */
     /*----------------------------------------------------------------------------*/
     static inline void vDecodeIntFast(Datum* pDatum, HeadLine* aHeadLine,
-                              ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                              i8& i_LastColumn, i8& i_Offset)
+                                      i8 i_Column, Coda* pCoda,i8& i_Offset)
     {
-      i8 i_Column  = pCol->iColumnNo();
       
       pDatum->m_eDatum = DM_INT;
       

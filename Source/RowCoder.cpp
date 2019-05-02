@@ -2013,7 +2013,6 @@ void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // not the 0th column
-  i8 i_LastColumn = 0;
   i8 i_LastOffset = iBaseOffset(pColVec);
   
   switch (eDatumCoda) {
@@ -2040,7 +2039,7 @@ void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
       //vDecodeFlt(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
     case DM_INT:
-      vDecodeIntFast(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      vDecodeIntFast(pDatum,aHeadLine,iCol,pCoda,i_LastOffset);
       break;
     case DM_IVL:
       //vDecodeIvl(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
