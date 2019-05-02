@@ -29,20 +29,15 @@ namespace Datums
   /* 10 */ DM_VBN,
   /* 11 */ DM_VCH,
   
-//  /* 12 */ DM_SPARE_12,
-//  /* 13 */ DM_SPARE_13,
-//  /* 14 */ DM_SPARE_14,
-//  /* 15 */ DM_SPARE_15,
-  
   // extended datums
-  /* 16 */ DM_ALPHA,
-  /* 17 */ DM_DAYS,
-  /* 18 */ DM_DELTA_PLUS,
-  /* 19 */ DM_DELTA_MINUS,
-  /* 20 */ DM_DIGIT,
-  /* 21 */ DM_TENTH,
+  /* 12 */ DM_ALPHA,
+  /* 13 */ DM_DAYS,
+  /* 14 */ DM_DELTA_PLUS,
+  /* 15 */ DM_DELTA_MINUS,
+  /* 16 */ DM_DIGIT,
+  /* 17 */ DM_TENTH,
 
-  /* 22 */ DM_ENUMS
+  /* 18 */ DM_ENUMS
   };
   
   static Stz* aDM[]
