@@ -1941,6 +1941,7 @@ void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
         
       case DM_NONE:
         NEVER_REACH;
+        
       case DM_BCD:
         //vDecodeBcd(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
         break;
@@ -2020,11 +2021,17 @@ void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // the regular datums
       
+    case DM_NONE:
+      NEVER_REACH;
+      
     case DM_BCD:
       vDecodeBcd(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
     case DM_BOL:
       vDecodeBol(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      break;
+    case DM_CHR:
+      //vDecodeVch(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
     case DM_DTE:
       vDecodeDte(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
@@ -2044,6 +2051,9 @@ void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
     case DM_TSP:
       vDecodeTsp(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
+    case DM_VBN:
+      NEVER_REACH;
+      break;
     case DM_VCH:
       vDecodeVch(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
@@ -2061,6 +2071,10 @@ void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
       
     case DM_DELTA_PLUS:
       vDecodeDeltaPlus(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      break;
+      
+    case DM_DELTA_MINUS:
+      //vDecodeDeltaMinus(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
       
     case DM_DIGIT:
