@@ -1937,6 +1937,8 @@ void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // the regular datums
         
+      case DM_NONE:
+        NEVER_REACH;
       case DM_BCD:
         //vDecodeBcd(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
         break;
@@ -1960,6 +1962,9 @@ void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
         break;
       case DM_TSP:
         //vDecodeTsp(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+        break;
+      case DM_VBN:
+        NEVER_REACH;
         break;
       case DM_VCH:
         //vDecodeVch(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);

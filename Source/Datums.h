@@ -29,10 +29,10 @@ namespace Datums
   /* 10 */ DM_VBN,
   /* 11 */ DM_VCH,
   
-  /* 12 */ DM_SPARE_12,
-  /* 13 */ DM_SPARE_13,
-  /* 14 */ DM_SPARE_14,
-  /* 15 */ DM_SPARE_15,
+//  /* 12 */ DM_SPARE_12,
+//  /* 13 */ DM_SPARE_13,
+//  /* 14 */ DM_SPARE_14,
+//  /* 15 */ DM_SPARE_15,
   
   // extended datums
   /* 16 */ DM_ALPHA,
