@@ -2041,7 +2041,8 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // not the 0th column
   
-  eMN eEncoding = eGetEncodingExtFast(aHeadLine,i_Column,pCoda,i_LastOffset);
+  
+  eMN eEncoding;
   
   switch (eDatumCoda) {
       
@@ -2067,6 +2068,7 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* 
       //vDecodeFlt(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
     case DM_INT:
+      eEncoding = eGetEncodingExtIntFast(aHeadLine,i_Column,pCoda,i_LastOffset);
       vDecodeIntFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
       break;
     case DM_IVL:

@@ -24,18 +24,6 @@ int_col15  INTEGER
 
 ld intTbl "/DATA/Encoding/integer.csv" ;
 
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-
-/*
 time fetch retrieve intTbl int_col0;
 time fetch retrieve intTbl int_col1;
 time fetch retrieve intTbl int_col2;
@@ -52,6 +40,20 @@ time fetch retrieve intTbl int_col12;
 time fetch retrieve intTbl int_col13;
 time fetch retrieve intTbl int_col14;
 time fetch retrieve intTbl int_col15;
+/*
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col1;
+
+
+
 
 
  create table bolTbl (
@@ -121,6 +123,81 @@ time fetch retrieve intTbl int_col15;
  success: 1000000 rows affected
  time 289ms
  [N0/1 NODE1 12681] se 4.0.5r has>
+ 
+ 
+ // STARTING WORK on columns after 2
+ uccess: 1000000 rows loaded (0 invalid rows 0 skipped rows)
+ success: 1000000 rows affected
+ time 25ms
+ success: 1000000 rows affected
+ time 28ms
+ success: 1000000 rows affected
+ time 33ms
+ success: 1000000 rows affected
+ time 38ms
+ success: 1000000 rows affected
+ time 47ms
+ success: 1000000 rows affected
+ time 53ms
+ success: 1000000 rows affected
+ time 75ms
+ success: 1000000 rows affected
+ time 79ms
+ success: 1000000 rows affected
+ time 92ms
+ success: 1000000 rows affected
+ time 106ms
+ success: 1000000 rows affected
+ time 118ms
+ success: 1000000 rows affected
+ time 120ms
+ success: 1000000 rows affected
+ time 128ms
+ success: 1000000 rows affected
+ time 135ms
+ success: 1000000 rows affected
+ time 160ms
+ success: 1000000 rows affected
+ time 146ms
+
+ 
+ By adding eGetEncodingExtIntFast and catering to special case of 0,1,-1,null
+ the timings reduced for last column which has nulls considerably.
+ 
+ success: 1000000 rows affected
+ time 26ms
+ success: 1000000 rows affected
+ time 27ms
+ success: 1000000 rows affected
+ time 34ms
+ success: 1000000 rows affected
+ time 40ms
+ success: 1000000 rows affected
+ time 46ms
+ success: 1000000 rows affected
+ time 52ms
+ success: 1000000 rows affected
+ time 68ms
+ success: 1000000 rows affected
+ time 76ms
+ success: 1000000 rows affected
+ time 73ms
+ success: 1000000 rows affected
+ time 78ms
+ success: 1000000 rows affected
+ time 86ms
+ success: 1000000 rows affected
+ time 93ms
+ success: 1000000 rows affected
+ time 97ms
+ success: 1000000 rows affected
+ time 106ms
+ success: 1000000 rows affected
+ time 118ms
+ success: 1000000 rows affected
+ time 36ms
+ [N0/1 NODE1 39173] se 4.0.5r has>
+ 
  */
 
 /*

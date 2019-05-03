@@ -417,6 +417,56 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     //! consider passing a eDatum array instead of colum vector
     
+    static inline eMN eGetEncodingExtIntFast(HeadLine* aHeadLine, i8 i_ForCol,
+                                          Coda* pCoda, i8& i_Offset_)
+    {
+      
+      //! experiment on loop unrolling
+      //! refer: https://en.wikipedia.org/wiki/Duff%27s_device
+      //
+      //      if (1 == i_ForCol) {
+      //        eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(0);
+      //        eDM eDatumExt = pCoda->m_aeExtDatum[0];
+      //        i_Offset_ += nDataBytes(eDatumExt,eEncoding);
+      //        eEncoding = (eMN)aHeadLine->iMetaNibbleFast(1);
+      //        return eEncoding;
+      //      }
+      
+      eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
+      if (eEncoding == MN_NULL ||
+          eEncoding == MN_MINUS_ONE ||
+          eEncoding == MN_ZERO ||
+          eEncoding == MN_PLUS_ONE)
+        return eEncoding;
+      
+      for (i8 i_Nibble = 0; i_Nibble < i_ForCol; i_Nibble++) {
+        
+        eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_Nibble);
+        
+        eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
+        i_Offset_ += nDataBytes(eDatumExt,eEncoding);
+        
+        //! experiment
+        //        if (eEncoding > MN_8B) {
+        //          eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
+        //          i_Offset_ += nDataBytes(eDatumExt,eEncoding);
+        //        }
+        //        else {
+        //          i_Offset_ += eEncoding;
+        //        }
+        
+      }
+      
+      
+      
+      return eEncoding;
+    }
+    
+    /*----------------------------------------------------------------------------*/
+    /* get the extended encoding (and offset) of a column from given head line    */
+    /*----------------------------------------------------------------------------*/
+    //! consider passing a eDatum array instead of colum vector
+    
     static inline eMN eGetEncodingExtFastCol0(HeadLine* aHeadLine)
     {
       eMN eEncoding = (eMN)aHeadLine->iMetaNibbleZeroFast();
