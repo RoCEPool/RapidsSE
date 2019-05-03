@@ -115,7 +115,7 @@ namespace MetaData
     eCT  eColumnType(void);
     void vColumnType(eCT eColumnType);
 
-    ColumnVec* pColVec(void);
+    //ColumnVec* pColVec(void);
     void vColVec(ColumnVec* pColVec);
 
     //eDM  eDatumType(void);
@@ -162,6 +162,16 @@ namespace MetaData
       _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
     
       return m_eDatumType;
+    }
+  
+    /*----------------------------------------------------------------------------*/
+    /* get column vector                                                          */
+    /*----------------------------------------------------------------------------*/
+    inline ColumnVec* pColVec(void)
+    {
+      _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+    
+      return m_pColVec;
     }
   
 

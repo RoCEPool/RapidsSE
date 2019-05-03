@@ -199,16 +199,6 @@ void Column::vColumnType(eCT eColumnType)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get column vector                                                          */
-/*----------------------------------------------------------------------------*/
-ColumnVec* Column::pColVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  return m_pColVec;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set column vector                                                          */
 /*----------------------------------------------------------------------------*/
 void Column::vColVec(ColumnVec* pColVec)

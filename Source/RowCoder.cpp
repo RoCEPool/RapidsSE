@@ -1950,11 +1950,11 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
  time 18ms
 */
 void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* pCol,
-                                    ColumnVec* pColVec, Coda* pCoda)
+                                    Coda* pCoda)
 {
   i8 i_Column = pCol->iColumnNo();
   eDM eDatumCoda = pCoda->m_aeExtDatum[i_Column];
-  i8 i_LastOffset = iBaseOffset(pColVec);
+  i8 i_LastOffset = iBaseOffset(pCol->pColVec());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 0th column ?
