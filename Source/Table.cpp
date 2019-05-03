@@ -432,6 +432,7 @@ void Table::vCreateColumnVec(Jobs::Job_CreateTable* pJob)
   for (i8 i_Col = 0; i_Col < pJob->m_iColumns; i_Col++) {
     pColumn = new Column(pJob,i_Col);
     m_pColumnVec->vAdd(pColumn);
+    pColumn->vColVec(m_pColumnVec);
   }
   
   if (pColumn)

@@ -63,6 +63,8 @@ Column::Column(void)
   
   m_bIsLastColumn = false;
   
+  m_pColVec       = nullptr;
+  
   _checkInitialised_(CN_COLUMN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
@@ -87,7 +89,8 @@ Column::Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo)
   m_bIsUnique     = pJob->m_xColumns[iColumnNo].m_bIsUnique;
   m_bIsPartitionKey = pJob->m_xColumns[iColumnNo].m_bIsPartitionKey;
   m_bIsLastColumn   = false;
-  
+  m_pColVec         = nullptr;
+
   _checkInitialised_(CN_COLUMN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
@@ -193,6 +196,26 @@ void Column::vColumnType(eCT eColumnType)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
   m_eColumnType = eColumnType;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column vector                                                          */
+/*----------------------------------------------------------------------------*/
+ColumnVec* Column::pColVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  return m_pColVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set column vector                                                          */
+/*----------------------------------------------------------------------------*/
+void Column::vColVec(ColumnVec* pColVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  m_pColVec = pColVec;
 }
 
 /*----------------------------------------------------------------------------*/

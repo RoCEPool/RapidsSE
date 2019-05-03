@@ -4,7 +4,25 @@
 #pragma once
 
 namespace MetaData
-{  
+{
+  class Column;
+  
+  /*--------------------------------------------------------------------------*/
+  /* ColumnVec -- Column Vector                                               */
+  /*--------------------------------------------------------------------------*/
+  typedef VectorNL_t<CN_COLUMNVEC,Column,CN_COLUMN,1024,u8> ColumnVec;
+  
+  /*--------------------------------------------------------------------------*/
+  /* IdxColVec -- Index Column Vector                                         */
+  /*--------------------------------------------------------------------------*/
+  typedef VectorNL_t<CN_IDXCOLVEC,Column,CN_COLUMN,1024,u8> IdxColVec;
+  
+  /*--------------------------------------------------------------------------*/
+  /* PtnColVec -- Partition Column Vector                                     */
+  /*--------------------------------------------------------------------------*/
+  typedef VectorNL_t<CN_PTNCOLVEC,Column,CN_COLUMN,1024,u8> PtnColVec;
+  
+  
   enum eCT // Column Type
   {
     /*  0 */ CT_NONE=0,
@@ -67,7 +85,8 @@ namespace MetaData
     bool  m_bIsUnique;
     bool  m_bIsPartitionKey;
     bool  m_bIsLastColumn;
-    
+  
+    ColumnVec* m_pColVec;
     
     // must be last
     Footer m_xFooter;
@@ -95,7 +114,10 @@ namespace MetaData
   
     eCT  eColumnType(void);
     void vColumnType(eCT eColumnType);
-  
+
+    ColumnVec* pColVec(void);
+    void vColVec(ColumnVec* pColVec);
+
     //eDM  eDatumType(void);
     void vDatumType(eDM eDatumType);
     
@@ -147,21 +169,6 @@ namespace MetaData
   
   Column* _pColumn(void* aAddr);
   
-  /*--------------------------------------------------------------------------*/
-  /* ColumnVec -- Column Vector                                               */
-  /*--------------------------------------------------------------------------*/
-  typedef VectorNL_t<CN_COLUMNVEC,Column,CN_COLUMN,1024,u8> ColumnVec;
-  
-  /*--------------------------------------------------------------------------*/
-  /* IdxColVec -- Index Column Vector                                         */
-  /*--------------------------------------------------------------------------*/
-  typedef VectorNL_t<CN_IDXCOLVEC,Column,CN_COLUMN,1024,u8> IdxColVec;
-  
-  /*--------------------------------------------------------------------------*/
-  /* PtnColVec -- Partition Column Vector                                     */
-  /*--------------------------------------------------------------------------*/
-  typedef VectorNL_t<CN_PTNCOLVEC,Column,CN_COLUMN,1024,u8> PtnColVec;
-
 }
 
 /*============================================================================*/
