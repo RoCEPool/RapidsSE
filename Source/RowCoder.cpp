@@ -2298,6 +2298,183 @@ void RowCoder::vHeadDumpColumn(HeadLine* aHeadLine, ColumnVec* pColVec, i8 iCol,
   vTrace("%7lld %-15s %-10s %-15s %-16s %s\n"_Stz, iCol, pCol->sColumnName().aChar(), aDM[eDatum],
          aDM[eDatumCoda], aEncoding, aRecodeFunction);
 }
+
+/*----------------------------------------------------------------------------*/
+/* initialize the encoding array                                              */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vInitEncoding(void)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DM_BCD
+  m_iDatumEncoding[DM_BCD][MN_NULL] = MN_NULL;
+  m_iDatumEncoding[DM_BCD][MN_1B] = MN_1B;
+  m_iDatumEncoding[DM_BCD][MN_2B] = MN_2B;
+  m_iDatumEncoding[DM_BCD][MN_3B] = MN_3B;
+  m_iDatumEncoding[DM_BCD][MN_4B] = MN_4B;
+  m_iDatumEncoding[DM_BCD][MN_5B] = MN_5B;
+  m_iDatumEncoding[DM_BCD][MN_6B] = MN_6B;
+  m_iDatumEncoding[DM_BCD][MN_7B] = MN_7B;
+  m_iDatumEncoding[DM_BCD][MN_8B] = MN_8B;
+  m_iDatumEncoding[DM_BCD][MN_MINUS_ONE] = MN_MINUS_ONE;
+  m_iDatumEncoding[DM_BCD][MN_ZERO] = MN_ZERO;
+  m_iDatumEncoding[DM_BCD][MN_PLUS_ONE] = MN_PLUS_ONE;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DM_BOL
+  m_iDatumEncoding[DM_BOL][MN_NULL] = 0;
+  m_iDatumEncoding[DM_BOL][MN_FALSE] = 0;
+  m_iDatumEncoding[DM_BOL][MN_TRUE] = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DM_CHR
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DM_DTE
+  m_iDatumEncoding[DM_DTE][MN_CLASSIC_1B] = MN_NULL;
+  m_iDatumEncoding[DM_DTE][MN_CLASSIC_2B] = MN_1B;
+  m_iDatumEncoding[DM_DTE][MN_SILVER_1B] = MN_2B;
+  m_iDatumEncoding[DM_DTE][MN_SILVER_2B] = MN_3B;
+  m_iDatumEncoding[DM_DTE][MN_MODERN_1B] = MN_4B;
+  m_iDatumEncoding[DM_DTE][MN_MODERN_2B] = MN_5B;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DM_FLT
+  m_iDatumEncoding[DM_FLT][MN_NULL] = MN_NULL;
+  m_iDatumEncoding[DM_FLT][MN_1B] = MN_1B;
+  m_iDatumEncoding[DM_FLT][MN_2B] = MN_2B;
+  m_iDatumEncoding[DM_FLT][MN_3B] = MN_3B;
+  m_iDatumEncoding[DM_FLT][MN_4B] = MN_4B;
+  m_iDatumEncoding[DM_FLT][MN_5B] = MN_5B;
+  m_iDatumEncoding[DM_FLT][MN_6B] = MN_6B;
+  m_iDatumEncoding[DM_FLT][MN_7B] = MN_7B;
+  m_iDatumEncoding[DM_FLT][MN_8B] = MN_8B;
+  m_iDatumEncoding[DM_FLT][MN_MINUS_ONE] = MN_MINUS_ONE;
+  m_iDatumEncoding[DM_FLT][MN_ZERO] = MN_ZERO;
+  m_iDatumEncoding[DM_FLT][MN_PLUS_ONE] = MN_PLUS_ONE;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DM_INT
+  m_iDatumEncoding[DM_INT][MN_NULL] = MN_NULL;
+  m_iDatumEncoding[DM_INT][MN_1B] = MN_1B;
+  m_iDatumEncoding[DM_INT][MN_2B] = MN_2B;
+  m_iDatumEncoding[DM_INT][MN_3B] = MN_3B;
+  m_iDatumEncoding[DM_INT][MN_4B] = MN_4B;
+  m_iDatumEncoding[DM_INT][MN_5B] = MN_5B;
+  m_iDatumEncoding[DM_INT][MN_6B] = MN_6B;
+  m_iDatumEncoding[DM_INT][MN_7B] = MN_7B;
+  m_iDatumEncoding[DM_INT][MN_8B] = MN_8B;
+  m_iDatumEncoding[DM_INT][MN_MINUS_ONE] = MN_MINUS_ONE;
+  m_iDatumEncoding[DM_INT][MN_ZERO] = MN_ZERO;
+  m_iDatumEncoding[DM_INT][MN_PLUS_ONE] = MN_PLUS_ONE;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DM_IVL
+  m_iDatumEncoding[DM_IVL][MN_NULL] = MN_NULL;
+  m_iDatumEncoding[DM_IVL][MN_1B] = MN_1B;
+  m_iDatumEncoding[DM_IVL][MN_2B] = MN_2B;
+  m_iDatumEncoding[DM_IVL][MN_3B] = MN_3B;
+  m_iDatumEncoding[DM_IVL][MN_4B] = MN_4B;
+  m_iDatumEncoding[DM_IVL][MN_5B] = MN_5B;
+  m_iDatumEncoding[DM_IVL][MN_6B] = MN_6B;
+  m_iDatumEncoding[DM_IVL][MN_7B] = MN_7B;
+  m_iDatumEncoding[DM_IVL][MN_8B] = MN_8B;
+  m_iDatumEncoding[DM_IVL][MN_MINUS_ONE] = MN_MINUS_ONE;
+  m_iDatumEncoding[DM_IVL][MN_ZERO] = MN_ZERO;
+  m_iDatumEncoding[DM_IVL][MN_PLUS_ONE] = MN_PLUS_ONE;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DM_TME
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DM_TSP
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DM_VBN
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DM_VCH
+  m_iDatumEncoding[DM_VCH][MN_NULL] = MN_NULL;
+  m_iDatumEncoding[DM_VCH][MN_EMPTY] = MN_1B;
+  m_iDatumEncoding[DM_VCH][MN_SHOCO_FIT] = MN_2B;
+  m_iDatumEncoding[DM_VCH][MN_SHOCO_SPLIT] = MN_3B;
+  m_iDatumEncoding[DM_VCH][MN_SHOCO_2B] = MN_4B;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DM_ALPHA (NOT SURE)
+  m_iDatumEncoding[DM_ALPHA][MN_NULL] = MN_NULL;
+  m_iDatumEncoding[DM_ALPHA][MN_1B] = 0;
+  m_iDatumEncoding[DM_ALPHA][MN_2B] = 0;
+  m_iDatumEncoding[DM_ALPHA][MN_3B] = 0;
+  m_iDatumEncoding[DM_ALPHA][MN_4B] = 0;
+  m_iDatumEncoding[DM_ALPHA][MN_5B] = 0;
+  m_iDatumEncoding[DM_ALPHA][MN_6B] = 0;
+  m_iDatumEncoding[DM_ALPHA][MN_7B] = 0;
+  m_iDatumEncoding[DM_ALPHA][MN_8B] = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DM_DAYS
+  m_iDatumEncoding[DM_ALPHA][MN_NULL] = MN_NULL;
+  m_iDatumEncoding[DM_ALPHA][MN_DAYS_PLUS_1B] = 1;
+  m_iDatumEncoding[DM_ALPHA][MN_DAYS_MINUS_1B] = 2;
+  m_iDatumEncoding[DM_ALPHA][MN_DAYS_CLASSIC_2B] = 2;
+  m_iDatumEncoding[DM_ALPHA][MN_DAYS_SILVER_2B] = 2;
+  m_iDatumEncoding[DM_ALPHA][MN_DAYS_MODERN_2B] = 2;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DM_DELTA_PLUS
+  m_iDatumEncoding[DM_DELTA_PLUS][MN_NULL] = MN_NULL;
+  m_iDatumEncoding[DM_DELTA_PLUS][MN_1B] = MN_1B;
+  m_iDatumEncoding[DM_DELTA_PLUS][MN_2B] = MN_2B;
+  m_iDatumEncoding[DM_DELTA_PLUS][MN_3B] = MN_3B;
+  m_iDatumEncoding[DM_DELTA_PLUS][MN_4B] = MN_4B;
+  m_iDatumEncoding[DM_DELTA_PLUS][MN_5B] = MN_5B;
+  m_iDatumEncoding[DM_DELTA_PLUS][MN_6B] = MN_6B;
+  m_iDatumEncoding[DM_DELTA_PLUS][MN_7B] = MN_7B;
+  m_iDatumEncoding[DM_DELTA_PLUS][MN_8B] = MN_8B;
+  m_iDatumEncoding[DM_DELTA_PLUS][MN_MINUS_ONE] = 0;
+  m_iDatumEncoding[DM_DELTA_PLUS][MN_ZERO] = 0;
+  m_iDatumEncoding[DM_DELTA_PLUS][MN_PLUS_ONE] = 0;
+  m_iDatumEncoding[DM_DELTA_PLUS][MN_SAME] = 0;
+  m_iDatumEncoding[DM_DELTA_PLUS][MN_PLUS_1B] = 1;
+  m_iDatumEncoding[DM_DELTA_PLUS][MN_PLUS_2B] = 2;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DM_DIGIT
+  m_iDatumEncoding[DM_DIGIT][MN_NULL] = MN_NULL;
+  m_iDatumEncoding[DM_DIGIT][MN_DIGIT_0] = 0;
+  m_iDatumEncoding[DM_DIGIT][MN_DIGIT_1] = 0;
+  m_iDatumEncoding[DM_DIGIT][MN_DIGIT_2] = 0;
+  m_iDatumEncoding[DM_DIGIT][MN_DIGIT_3] = 0;
+  m_iDatumEncoding[DM_DIGIT][MN_DIGIT_4] = 0;
+  m_iDatumEncoding[DM_DIGIT][MN_DIGIT_5] = 0;
+  m_iDatumEncoding[DM_DIGIT][MN_DIGIT_6] = 0;
+  m_iDatumEncoding[DM_DIGIT][MN_DIGIT_7] = 0;
+  m_iDatumEncoding[DM_DIGIT][MN_DIGIT_1B] = MN_DIGIT_1B - MN_DIGIT_7;
+  m_iDatumEncoding[DM_DIGIT][MN_DIGIT_2B] = MN_DIGIT_2B - MN_DIGIT_7;
+  m_iDatumEncoding[DM_DIGIT][MN_DIGIT_3B] = MN_DIGIT_3B - MN_DIGIT_7;
+  m_iDatumEncoding[DM_DIGIT][MN_DIGIT_4B] = MN_DIGIT_4B - MN_DIGIT_7;
+  m_iDatumEncoding[DM_DIGIT][MN_DIGIT_6B] = MN_DIGIT_6B - MN_DIGIT_7;
+  m_iDatumEncoding[DM_DIGIT][MN_DIGIT_8B] = MN_DIGIT_8B - MN_DIGIT_7;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DM_TENTH
+  m_iDatumEncoding[DM_TENTH][MN_NULL] = MN_NULL;
+  m_iDatumEncoding[DM_TENTH][MN_TENTH_0] = 0;
+  m_iDatumEncoding[DM_TENTH][MN_TENTH_1] = 0;
+  m_iDatumEncoding[DM_TENTH][MN_TENTH_2] = 0;
+  m_iDatumEncoding[DM_TENTH][MN_TENTH_3] = 0;
+  m_iDatumEncoding[DM_TENTH][MN_TENTH_4] = 0;
+  m_iDatumEncoding[DM_TENTH][MN_TENTH_5] = 0;
+  m_iDatumEncoding[DM_TENTH][MN_TENTH_6] = 0;
+  m_iDatumEncoding[DM_TENTH][MN_TENTH_7] = 0;
+  m_iDatumEncoding[DM_TENTH][MN_TENTH_8] = 0;
+  m_iDatumEncoding[DM_TENTH][MN_TENTH_9] = 0;
+  m_iDatumEncoding[DM_TENTH][MN_TENTH_10] = 0;
+  m_iDatumEncoding[DM_TENTH][MN_TENTH_2B] = 2;
+  m_iDatumEncoding[DM_TENTH][MN_TENTH_4B] = 4;
+  m_iDatumEncoding[DM_TENTH][MN_TENTH_8B] = 8;
+}
+
 /*----------------------------------------------------------------------------*/
 /* print decoded datum from cache line                                        */
 /*----------------------------------------------------------------------------*/
@@ -3649,6 +3826,7 @@ eMN RowCoder::eGetEncodingExt(i8 i_ForCol, HeadLine* aHeadLine,
     eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
 
     i_Offset_ += nDataBytes(eDatumExt,eEncoding);
+    //i_Offset_ += m_iDatumEncoding[eDatumExt][eEncoding];
   }
   
   eMN eEncoding = (eMN)aHeadLine->iMetaNibble(i_ForCol);

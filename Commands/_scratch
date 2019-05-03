@@ -198,6 +198,41 @@ time fetch retrieve intTbl int_col1;
  time 36ms
  [N0/1 NODE1 39173] se 4.0.5r has>
  
+ 
+ // By adding the 2D array for nDataBytes:
+ success: 1000000 rows affected
+ time 26ms
+ success: 1000000 rows affected
+ time 22ms
+ success: 1000000 rows affected
+ time 23ms
+ success: 1000000 rows affected
+ time 24ms
+ success: 1000000 rows affected
+ time 28ms
+ success: 1000000 rows affected
+ time 29ms
+ success: 1000000 rows affected
+ time 32ms
+ success: 1000000 rows affected
+ time 41ms
+ success: 1000000 rows affected
+ time 41ms
+ success: 1000000 rows affected
+ time 39ms
+ success: 1000000 rows affected
+ time 41ms
+ success: 1000000 rows affected
+ time 44ms
+ success: 1000000 rows affected
+ time 51ms
+ success: 1000000 rows affected
+ time 51ms
+ success: 1000000 rows affected
+ time 51ms
+ success: 1000000 rows affected
+ time 26ms
+ [N0/1 NODE1 3922] se 4.0.5r has>
  */
 
 /*

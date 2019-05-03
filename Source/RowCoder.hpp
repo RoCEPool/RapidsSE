@@ -11,7 +11,8 @@ namespace Data
   static const i8 C_SHOCO_COMPRESSED_OFFSET = C_TAIL_UNITS_OFFSET
                                               + C_TAIL_UNITS_BYTES;
   static const i8 C_SHOCO_COMPRESSED_BYTES  = 1;
-
+  static i8 m_iDatumEncoding[DM_TENTH][MN_OVERFLOW];
+  
   class RowCoder : public Object
   {
   public:
@@ -25,7 +26,8 @@ namespace Data
 
     i8         m_i_IntoOffset; // encoding offset
     i8         m_i_FromOffset; // encoding offset
-
+    
+    
 
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
   
@@ -117,6 +119,7 @@ namespace Data
     static void vHeadDumpColumn(HeadLine* aHeadLine, ColumnVec* pColVec, i8 iCol, Stz* aRecodeFunction);
     static void vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec);
     static void vHeadDumpNatColumn(HeadLine* aHeadLine, ColumnVec* pColVec, i8 iCol);
+    static void vInitEncoding(void);
     static void vPrint(RowNub* pNub, i8 i_Row, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
     static void vRecord(Record* pRec, RowNub* pNub, i8 i_Row);
     static void vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec);
@@ -520,8 +523,8 @@ namespace Data
         eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_Nibble);
         
         eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
-        i_Offset_ += nDataBytes(eDatumExt,eEncoding);
-        
+        //i_Offset_ += nDataBytes(eDatumExt,eEncoding);
+        i_Offset_ += m_iDatumEncoding[eDatumExt][eEncoding];
         //! experiment
         //        if (eEncoding > MN_8B) {
         //          eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];

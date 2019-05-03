@@ -57,6 +57,8 @@ void Engine::vMainEntry(void)
   if (gxArguments.m_bStart)
     vSetGlobals();
 
+  RowCoder::vInitEncoding();
+  
   vCheckPort();
   
   //gpAttachMap->vPrintAttachMap();
