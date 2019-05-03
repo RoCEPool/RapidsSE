@@ -15,6 +15,9 @@ namespace Data
     Lock    m_okLock;               // lock
     i8      m_iBufferNo;            // this RowBuffer's buffer number
     i8      m_iPartitionNo;         // partition no this buffer belongs to
+  
+    //char    m__filler__[40];
+  
     RowTray m_xRowTray;             // tray of rows
   
     RowBuffer* m_pNextBuffer;       // next buffer

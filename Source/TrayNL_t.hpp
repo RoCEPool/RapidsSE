@@ -77,6 +77,9 @@ namespace Structures
   class TrayNL_t : public Object
   {
   protected:
+  
+    i8 m__filler[6];
+  
     UNIT m_xaUnits[BYTES / sizeof(UNIT)]; // array of space units
   
     Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA> m_oNub;
@@ -430,7 +433,7 @@ HEAD* Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::aGetHead(i8 i_Head)
   
   i8 i_Unit = i_Head * (sizeof(HEAD) / sizeof(UNIT));
   HEAD* aHead = (HEAD*)&m_axaUnits[i_Unit];
-  
+    
   return aHead;
 }
 
@@ -694,6 +697,8 @@ TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::TrayNL_t(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
+  MemLib::vZero(&m__filler,sizeof(m__filler),CN);
+
   i8 nSpaceUnits = BYTES / sizeof(UNIT);
   m_oNub.vSetItems(nSpaceUnits,&m_xaUnits[0]);
   

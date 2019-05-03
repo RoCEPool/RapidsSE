@@ -75,6 +75,8 @@ RowBuffer::RowBuffer(void)
   
   m_oWhenNewed.vNow();
   
+  //MemLib::vZero(m__filler,sizeof(m__filler),CN_ROWBUFFER);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   _checkInitialised_(CN_ROWBUFFER);

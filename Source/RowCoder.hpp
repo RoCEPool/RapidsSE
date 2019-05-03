@@ -481,12 +481,20 @@ namespace Data
     static inline void vRetrieve(Datum& oDatum, HeadLine* aHeadLine, Column* pCol,
                                  Coda* pCoda)
     {
-    
       //vHeadDump(aHeadLine, pColVec);
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
+//      i8 iRem = (i8)aHeadLine % 64;
+//      RASSERT(! iRem);
+    
       // get the encoded value into datum
       vDecodeFast(&oDatum,aHeadLine,pCol,pCoda);
+    
+//      i8 iSum = 0;
+//      byte* ayByte = (byte*)aHeadLine;
+//      for (i8 _i = 0; _i < 64; _i++)
+//        iSum+=*ayByte++;
+//      oDatum.m_iInt = iSum;
     }
   
 
