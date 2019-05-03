@@ -24,34 +24,34 @@ int_col15  INTEGER
 
 ld intTbl "/DATA/Encoding/integer.csv" ;
 
+time fetch retrieve intTbl int_col0;
 time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-/*
- time fetch retrieve intTbl int_col0;
- time fetch retrieve intTbl int_col1;
- time fetch retrieve intTbl int_col2;
- time fetch retrieve intTbl int_col3;
- time fetch retrieve intTbl int_col4;
- time fetch retrieve intTbl int_col5;
- time fetch retrieve intTbl int_col6;
- time fetch retrieve intTbl int_col7;
- time fetch retrieve intTbl int_col8;
- time fetch retrieve intTbl int_col9;
- time fetch retrieve intTbl int_col10;
- time fetch retrieve intTbl int_col11;
- time fetch retrieve intTbl int_col12;
- time fetch retrieve intTbl int_col13;
- time fetch retrieve intTbl int_col14;
- time fetch retrieve intTbl int_col15;
+time fetch retrieve intTbl int_col2;
+time fetch retrieve intTbl int_col3;
+time fetch retrieve intTbl int_col4;
+time fetch retrieve intTbl int_col5;
+time fetch retrieve intTbl int_col6;
+time fetch retrieve intTbl int_col7;
+time fetch retrieve intTbl int_col8;
+time fetch retrieve intTbl int_col9;
+time fetch retrieve intTbl int_col10;
+time fetch retrieve intTbl int_col11;
+time fetch retrieve intTbl int_col12;
+time fetch retrieve intTbl int_col13;
+time fetch retrieve intTbl int_col14;
+time fetch retrieve intTbl int_col15;
 
+/*
+ time fetch retrieve intTbl int_col1;
+ time fetch retrieve intTbl int_col1;
+ time fetch retrieve intTbl int_col1;
+ time fetch retrieve intTbl int_col1;
+ time fetch retrieve intTbl int_col1;
+ time fetch retrieve intTbl int_col1;
+ time fetch retrieve intTbl int_col1;
+ time fetch retrieve intTbl int_col1;
+ time fetch retrieve intTbl int_col1;
+ time fetch retrieve intTbl int_col1;
 
 
 
