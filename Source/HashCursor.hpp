@@ -13,9 +13,12 @@ namespace Structures
   public:
     HashMap*    m_pHashMap;
   
-    i8          m_ia_HashEntry[C_HASH_DEPTH];
-    HashBuffer* m_paHashBuffer[C_HASH_DEPTH];
+    HashBuffer* m_pHashBuffer;
+    i8          m_i_HashEntry;
+  
     i8          m_i_Stack;
+    HashBuffer* m_paHashBuffer[C_HASH_DEPTH];
+    i8          m_ia_HashEntry[C_HASH_DEPTH];
 
     HashBuffer* m_pDupeBuffer;
     HashEntry*  m_pDupeEntry;
