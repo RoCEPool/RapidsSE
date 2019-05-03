@@ -84,7 +84,7 @@ namespace Data
       
       pDatum->m_wWord = 0;
       pDatum->m_yaByte[0] = *aByte++;
-      pDatum->m_yaByte[1] = *aByte++;
+      pDatum->m_yaByte[1] = *aByte;
     }
 
     /*----------------------------------------------------------------------------*/
@@ -124,8 +124,6 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     inline void w8_4BFast(Datum* pDatum, i8 i_Byte)
     {
-      Word xWord;
-      
       byte* aByte = ((byte*)this) + i_Byte;
       
       pDatum->m_wWord = 0;
@@ -140,8 +138,6 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     inline void w8_5BFast(Datum* pDatum, i8 i_Byte)
     {
-      Word xWord;
-      
       byte* aByte = ((byte*)this) + i_Byte;
       
       pDatum->m_wWord = 0;
@@ -157,8 +153,6 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     inline void w8_6BFast(Datum* pDatum, i8 i_Byte)
     {
-      Word xWord;
-      
       byte* aByte = ((byte*)this) + i_Byte;
       
       pDatum->m_wWord = 0;
@@ -175,9 +169,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     inline void w8_7BFast(Datum* pDatum, i8 i_Byte)
     {
-      Word xWord;
-      
-      byte* aByte = ((byte*)this) + i_Byte;
+       byte* aByte = ((byte*)this) + i_Byte;
       
       pDatum->m_wWord = 0;
       pDatum->m_yaByte[0] = *aByte++;
@@ -194,15 +186,12 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     inline void w8_8BFast(Datum* pDatum, i8 i_Byte)
     {
-      Word xWord;
-      
       byte* aByte = ((byte*)this) + i_Byte;
       
-      pDatum->m_wWord = 0;
       pDatum->m_yaByte[0] = *aByte++;
       pDatum->m_yaByte[1] = *aByte++;
       pDatum->m_yaByte[2] = *aByte++;
-      xWord.m_yaByte[3] = *aByte++;
+      pDatum->m_yaByte[3] = *aByte++;
       pDatum->m_yaByte[4] = *aByte++;
       pDatum->m_yaByte[5] = *aByte++;
       pDatum->m_yaByte[6] = *aByte++;
