@@ -142,7 +142,7 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
 /*----------------------------------------------------------------------------*/
 /* handle an occupation                                                       */
 /*----------------------------------------------------------------------------*/
-void HashBuffer::vHandleOccupied(i8 i_Entry, i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
+void HashBuffer::vHandleOccupied(i8 i_Entry, byte* yaKey, i8 nBytes, i8 iValue)
 {
   // is it a key duplicate or a hashcollision?
   if (nBytes == m_xHashEntry[i_Entry].m_nBytes &&
@@ -161,8 +161,9 @@ void HashBuffer::vInsert(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
 {
   i8 i_Entry = iHash % C_HASH_ENTRIES;
   
+  // test if the entry is already in use
   if (C_UNKNOWN != m_xHashEntry[i_Entry].m_iHash) {
-    vHandleOccupied(i_Entry,iHash,yaKey,nBytes,iValue);
+    vHandleOccupied(i_Entry,yaKey,nBytes,iValue);
     return;
   }
   
@@ -198,18 +199,19 @@ bool HashBuffer::bIterate(HashCursor* pCursor, byte*& yaKey, i8& nBytes, i8& iVa
 {
   for ( ;
        pCursor->m_i_HashEntry < C_HASH_ENTRIES;
-       pCursor->m_i_HashEntry++)
+       pCursor->m_i_HashEntry++) {
     
-    if (C_UNKNOWN != m_xHashEntry[pCursor->m_i_HashEntry].m_iHash) {
+    if (C_UNKNOWN == m_xHashEntry[pCursor->m_i_HashEntry].m_iHash)
+      continue;
       
-      yaKey  = &m_xHashEntry[pCursor->m_i_HashEntry].m_yaKey[0];
-      nBytes = m_xHashEntry[pCursor->m_i_HashEntry].m_nBytes;
-      iValue = m_xHashEntry[pCursor->m_i_HashEntry].m_iValue;
-      
-      pCursor->m_i_HashEntry++;
-      
-      return true;
-    }
+    yaKey  = &m_xHashEntry[pCursor->m_i_HashEntry].m_yaKey[0];
+    nBytes = m_xHashEntry[pCursor->m_i_HashEntry].m_nBytes;
+    iValue = m_xHashEntry[pCursor->m_i_HashEntry].m_iValue;
+    
+    pCursor->m_i_HashEntry++;
+    
+    return true;
+  }
   
   return false;
 }

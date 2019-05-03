@@ -26,6 +26,8 @@ namespace Structures
   public:
     HashCursor(HashMap* pHashMap);
     ~HashCursor(void) noexcept(false);
+  
+    bool bIterate(byte*& yaKey, i8& nBytes, i8& iValue);
   };
   
   HashCursor* _pHashCursor(void* aAddr);

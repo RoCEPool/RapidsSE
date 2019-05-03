@@ -36,7 +36,7 @@ namespace Structures
     ~HashBuffer(void) noexcept(false);
   
     bool bAppendDuplicate(HashEntry* aHeadEntry, i8 iValue);
-    void vHandleOccupied(i8 i_Entry, i8 iHash, byte* yaKey, i8 nBytes, i8 iValue);
+    void vHandleOccupied(i8 i_Entry, byte* yaKey, i8 nBytes, i8 iValue);
     void vInsert(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue);
     void vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue);
     bool bIterate(HashCursor* pCursor, byte*& yaKey, i8& nBytes, i8& iValue);
