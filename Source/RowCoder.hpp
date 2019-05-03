@@ -267,12 +267,11 @@ namespace Data
     /* decode integer from given cache line                                       */
     /*----------------------------------------------------------------------------*/
     static inline void vDecodeIntFast(Datum* pDatum, HeadLine* aHeadLine,
-                                      i8 i_Column, Coda* pCoda, i8 i_Offset)
+                                      eMN eEncoding, i8 i_Offset)
     {
       
       pDatum->m_eDatum = DM_INT;
       
-      eMN eEncoding = eGetEncodingExtFast(aHeadLine,i_Column,pCoda,i_Offset);
       //vTrace("Decoding %lld\n"_Stz, eEncoding);
       
       switch (eEncoding) {
@@ -291,9 +290,9 @@ namespace Data
         case MN_ZERO:      pDatum->m_iInt = (i8)0;  break;
         case MN_PLUS_ONE:  pDatum->m_iInt = (i8)1;  break;
           
-        case MN_SAME:
-          pDatum->m_iInt = pCoda->m_aiAux[i_Column].m_iInt;
-          break;
+//        case MN_SAME:
+//          pDatum->m_iInt = pCoda->m_aiAux[i_Column].m_iInt;
+//          break;
           
           //    case MN_PLUS_1B:
           //      pDatum->m_iInt = pCoda->m_aiAux[i_Column].m_iInt
