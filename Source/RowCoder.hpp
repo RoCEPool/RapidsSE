@@ -11,7 +11,8 @@ namespace Data
   static const i8 C_SHOCO_COMPRESSED_OFFSET = C_TAIL_UNITS_OFFSET
                                               + C_TAIL_UNITS_BYTES;
   static const i8 C_SHOCO_COMPRESSED_BYTES  = 1;
-
+  static i8 m_iDatumEncoding[DM_TENTH][MN_OVERFLOW];
+  
   class RowCoder : public Object
   {
   public:
@@ -25,7 +26,8 @@ namespace Data
 
     i8         m_i_IntoOffset; // encoding offset
     i8         m_i_FromOffset; // encoding offset
-
+    
+    
 
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
   
@@ -117,6 +119,7 @@ namespace Data
     static void vHeadDumpColumn(HeadLine* aHeadLine, ColumnVec* pColVec, i8 iCol, Stz* aRecodeFunction);
     static void vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec);
     static void vHeadDumpNatColumn(HeadLine* aHeadLine, ColumnVec* pColVec, i8 iCol);
+    static void vInitEncoding(void);
     static void vPrint(RowNub* pNub, i8 i_Row, Column* pCol, i8& i_LastColumn, i8& i_LastOffset);
     static void vRecord(Record* pRec, RowNub* pNub, i8 i_Row);
     static void vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec);
@@ -129,7 +132,8 @@ namespace Data
     //static i8 iBaseOffset(ColumnVec* pColVec);
   
     static i8 nDataBytes(eDM eDatum, eMN eEncoding);
-  
+    //static i8 nDataBytes2(eDM eDatum, eMN eEncoding);
+    
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
@@ -241,6 +245,81 @@ namespace Data
   private:
     Footer* aFooter(void);
     
+    /*----------------------------------------------------------------------------*/
+    /* return number of data bytes of encoding                                    */
+    /*----------------------------------------------------------------------------*/
+    static inline i8 nDataBytes2(eDM eDatum, eMN eEncoding)
+    {
+      if (eEncoding == MN_NULL)
+        return 0;
+      
+      if (DM_BOL == eDatum)
+        return 0;
+      
+      if ((eDatum <= DM_VCH || eDatum == DM_ALPHA) && eEncoding <= MN_8B)
+        return eEncoding;
+      
+      if (MN_OVERFLOW == eEncoding)
+        RASSERT(0); //! not implemented yet
+      
+      switch (eEncoding) {
+        case MN_1B: //MN_DIGIT_0/MN_TENTH_0
+        case MN_2B: //MN_DIGIT_1/MN_TENTH_1
+        case MN_3B: //MN_DIGIT_2/MN_TENTH_2
+        case MN_4B: //MN_DIGIT_3/MN_TENTH_3
+        case MN_5B: //MN_DIGIT_4/MN_TENTH_4
+        case MN_6B: //MN_DIGIT_5/MN_TENTH_5
+        case MN_7B: //MN_DIGIT_6/MN_TENTH_6
+        case MN_8B: //MN_DIGIT_7/MN_TENTH_7
+          if (eDatum == DM_DIGIT || eDatum == DM_TENTH || eDatum == DM_DELTA_PLUS)
+            return 0;
+          else
+            return eEncoding;
+        case MN_CLASSIC_1B: //MN_ALPHA_0/MN_DAYS_PLUS_1B/MN_DIGIT_1B/MN_DELTA_PLUS_0/MN_DELTA_MINUS_0/MN_TENTH_8/MN_MINUS_ONE
+          if (eDatum == DM_INT)
+            return 0;
+          if (eDatum == DM_DIGIT)
+            return eEncoding - MN_DIGIT_7;
+          if (eDatum == DM_DAYS)
+            return 1;
+          if (eDatum == DM_TENTH)
+            return 0;
+        case MN_CLASSIC_2B: //MN_ALPHA_1/MN_DAYS_MINUS_1B/MN_DIGIT_2B/MN_DELTA_PLUS_1/MN_DELTA_MINUS_1/MN_TENTH_9/MN_ZERO
+          if (eDatum == DM_INT)
+            return 0;
+          if (eDatum == DM_DIGIT)
+            return eEncoding - MN_DIGIT_7;
+          if (eDatum == DM_TENTH)
+            return 0;
+        case MN_SILVER_1B:  //MN_ALPHA_2/MN_DAYS_CLASSIC_2B/MN_DIGIT_3B/MN_DELTA_PLUS_2/MN_DELTA_MINUS_2/MN_TENTH_10/MN_PLUS_ONE
+          if (eDatum == DM_INT)
+            return 0;
+          if (eDatum == DM_DIGIT)
+            return eEncoding - MN_DIGIT_7;
+          if (eDatum == DM_TENTH)
+            return 0;
+        case MN_SILVER_2B:  //MN_ALPHA_3/MN_DAYS_SILVER_2B/MN_DIGIT_4B/MN_DELTA_PLUS_3/MN_DELTA_MINUS_3/MN_TENTH_2B/MN_SAME
+          if (eDatum == DM_DIGIT)
+            return eEncoding - MN_DIGIT_7;
+          if (eDatum == DM_TENTH)
+            return 2;
+        case MN_MODERN_1B:  //MN_ALPHA_4/MN_DAYS_MODERN_2B/MN_DIGIT_6B/MN_DELTA_PLUS_4/MN_DELTA_MINUS_4/MN_TENTH_4B
+          if (eDatum == DM_DIGIT)
+            return eEncoding - MN_DIGIT_7;
+          if (eDatum == DM_TENTH)
+            return 4;
+        case MN_MODERN_2B:  //MN_ALPHA_5/MN_DIGIT_8B/MN_DELTA_PLUS_5/MN_DELTA_MINUS_5/MN_TENTH_8B
+          if (eDatum == DM_TENTH)
+            return 8;
+          
+        case MN_OVERFLOW:
+          RASSERT(0);
+        
+        default:
+          NEVER_REACH;
+      }
+    }
+
     /*----------------------------------------------------------------------------*/
     /* decode boolean from given cache line                                       */
     /*----------------------------------------------------------------------------*/
@@ -441,11 +520,11 @@ namespace Data
       
       for (i8 i_Nibble = 0; i_Nibble < i_ForCol; i_Nibble++) {
         
-        eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_Nibble);
+        eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_Nibble);
         
         eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
-        i_Offset_ += nDataBytes(eDatumExt,eEncoding);
-        
+        //i_Offset_ += nDataBytes(eDatumExt,eEncoding);
+        i_Offset_ += m_iDatumEncoding[eDatumExt][eEncoding];
         //! experiment
         //        if (eEncoding > MN_8B) {
         //          eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];

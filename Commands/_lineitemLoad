@@ -54,7 +54,7 @@ print "loading lineitem.csv..." ;
 space;
 timerStart;
 ld lineitem "/tpch/SF1/lineitem.csv" ;
-//time ld lineitem "/DATA/tpch/lineitem1k.csv" max_errors 100;
+//time ld lineitem "/DATA/tpch/lineitem10.csv" max_errors 100;
 //ld lineitem "/tpch/SF10/lineitem.csv" ;
 timerEnd;
 space;
@@ -86,7 +86,82 @@ time fetch retrieve lineitem L_COMMENT;
 //time fetch lineitem noPrint;
 //time fetch lineitem displayOff;
 //fetch lineitem first 10;
-
+/*
+ 
+ // AFTER the 2D array to get the nDataBytes this is what I get:
+ success: 6001215 rows affected
+ time 96ms
+ success: 6001215 rows affected
+ time 107ms
+ success: 6001215 rows affected
+ time 147ms
+ success: 6001215 rows affected
+ time 132ms
+ success: 6001215 rows affected
+ time 41ms
+ success: 6001215 rows affected
+ time 40ms
+ success: 6001215 rows affected
+ time 41ms
+ success: 6001215 rows affected
+ time 42ms
+ success: 6001215 rows affected
+ time 42ms
+ success: 6001215 rows affected
+ time 40ms
+ success: 6001215 rows affected
+ time 41ms
+ success: 6001215 rows affected
+ time 41ms
+ success: 6001215 rows affected
+ time 40ms
+ success: 6001215 rows affected
+ time 40ms
+ success: 6001215 rows affected
+ time 41ms
+ success: 6001215 rows affected
+ time 40ms
+ [N0/1 NODE1 2989] se 4.0.5r has>
+ 
+ 
+ Below are where we started with:
+ 
+ error: (node0) invalid column
+ success: 6001215 rows affected
+ time 1790ms
+ success: 6001215 rows affected
+ time 1945ms
+ success: 6001215 rows affected
+ time 2098ms
+ success: 6001215 rows affected
+ time 2211ms
+ success: 6001215 rows affected
+ time 1598ms
+ success: 6001215 rows affected
+ time 1592ms
+ success: 6001215 rows affected
+ time 1591ms
+ success: 6001215 rows affected
+ time 1595ms
+ success: 6001215 rows affected
+ time 1611ms
+ success: 6001215 rows affected
+ time 1590ms
+ success: 6001215 rows affected
+ time 1603ms
+ success: 6001215 rows affected
+ time 1607ms
+ success: 6001215 rows affected
+ time 1596ms
+ success: 6001215 rows affected
+ time 1591ms
+ success: 6001215 rows affected
+ time 1598ms
+ success: 6001215 rows affected
+ time 1590ms
+ [N0/1 NODE1 667 AS AM EE+ TA+] se 4.0.5d has>
+ 
+ */
 /* April 22- 2019
  SF1 : Byte Encoding + Shoco
  success: 6001215 rows loaded (0 invalid rows 0 skipped rows)
