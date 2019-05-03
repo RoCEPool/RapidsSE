@@ -34,7 +34,7 @@ namespace Structures
     HashBuffer(HashMap* pHashMap, bool bDuplicates, i8 iDepth);
     ~HashBuffer(void) noexcept(false);
   
-    void vAppendDuplicate(HashEntry* aHeadEntry, i8 iValue);
+    bool bAppendDuplicate(HashEntry* aHeadEntry, i8 iValue);
     void vHandleOccupied(i8 i_Entry, i8 iHash, byte* yaKey, i8 nBytes, i8 iValue);
     void vInsert(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue);
     void vInsertCollide(byte* yaKey, i8 nBytes, i8 iValue);

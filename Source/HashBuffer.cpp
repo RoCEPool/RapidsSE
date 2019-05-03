@@ -86,17 +86,12 @@ HashBuffer::~HashBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append a key,value duplicate onto this hash buffer                         */
 /*----------------------------------------------------------------------------*/
-void HashBuffer::vAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
+bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
 {
   RASSERT(m_bDuplicates);
   
-  if (m_i_Duplicate + 1 > C_HASH_ENTRIES) {
-    HashBuffer* pDuplicates = new HashBuffer(m_pHashMap,true,m_iDepth+1);
-    pDuplicates->m_pLinkDuplicates = this;
-    m_pHashMap->m_pRootDuplicates = pDuplicates;
-    m_pHashMap->m_pRootDuplicates->vAppendDuplicate(aHeadEntry,iValue);
-    return;
-  }
+  if (m_i_Duplicate + 1 > C_HASH_ENTRIES)
+    return false;
 
   m_xHashEntry[m_i_Duplicate].m_iHash = aHeadEntry->m_iHash;
   MemLib::vCopy(m_xHashEntry[m_i_Duplicate].m_yaKey,
@@ -108,6 +103,8 @@ void HashBuffer::vAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
   aHeadEntry->m_aDupeChain = &m_xHashEntry[m_i_Duplicate];
 
   m_i_Duplicate++;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -115,19 +112,14 @@ void HashBuffer::vAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
 /*----------------------------------------------------------------------------*/
 void HashBuffer::vHandleOccupied(i8 i_Entry, i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
 {
-  // is it a key duplicate?
+  // is it a key duplicate or a hashcollision?
   if (nBytes == m_xHashEntry[i_Entry].m_nBytes &&
-      MemLib::bCompareBytes(m_xHashEntry[i_Entry].m_yaKey,yaKey,nBytes)) {
-    
-    if (! m_pHashMap->m_pRootDuplicates)
-      m_pHashMap->m_pRootDuplicates = new HashBuffer(m_pHashMap,true,0);
-    
-    m_pHashMap->m_pRootDuplicates->vAppendDuplicate(&m_xHashEntry[i_Entry],iValue);
-    return;
-  }
-  
-  // its a hash collision
-  vInsertCollide(yaKey,nBytes,iValue);
+      MemLib::bCompareBytes(m_xHashEntry[i_Entry].m_yaKey,yaKey,nBytes))
+    // its a key duplicate
+    m_pHashMap->vAppendDuplicate(&m_xHashEntry[i_Entry],iValue);
+  else
+    // its a hash collision
+    vInsertCollide(yaKey,nBytes,iValue);
 }
 
 /*----------------------------------------------------------------------------*/

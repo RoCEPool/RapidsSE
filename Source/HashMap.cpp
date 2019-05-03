@@ -81,6 +81,22 @@ HashMap::~HashMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* append a key,value duplicate onto this hash map                            */
+/*----------------------------------------------------------------------------*/
+void HashMap::vAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
+{
+  if (! m_pRootDuplicates)
+    m_pRootDuplicates = new HashBuffer(this,true,0);
+  
+  if (! m_pRootDuplicates->bAppendDuplicate(aHeadEntry,iValue)) {
+    m_pRootDuplicates = new HashBuffer(this,true,0);
+    bool b = m_pRootDuplicates->bAppendDuplicate(aHeadEntry,iValue);
+    RASSERT(b);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* iterate each key,value in the hashmap                                      */
 /*----------------------------------------------------------------------------*/
 i8 HashMap::iEach(byte* aKey, i8 nBytes, i8& iCursor)
