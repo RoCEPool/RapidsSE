@@ -377,7 +377,18 @@ namespace Data
     static inline eMN eGetEncodingExtFast(HeadLine* aHeadLine, i8 i_ForCol,
                                           Coda* pCoda, i8& i_Offset_)
     {
-      
+    
+//! experiment on loop unrolling
+//! refer: https://en.wikipedia.org/wiki/Duff%27s_device
+//
+//      if (1 == i_ForCol) {
+//        eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(0);
+//        eDM eDatumExt = pCoda->m_aeExtDatum[0];
+//        i_Offset_ += nDataBytes(eDatumExt,eEncoding);
+//        eEncoding = (eMN)aHeadLine->iMetaNibbleFast(1);
+//        return eEncoding;
+//      }
+    
       for (i8 i_Nibble = 0; i_Nibble < i_ForCol; i_Nibble++) {
         
         eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_Nibble);
