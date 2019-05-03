@@ -151,7 +151,7 @@ void HashBuffer::vHandleOccupied(i8 i_Entry, i8 iHash, byte* yaKey, i8 nBytes, i
     m_pHashMap->vAppendDuplicate(&m_xHashEntry[i_Entry],iValue);
   else
     // its a hash collision
-    vInsertCollide(yaKey,nBytes,iValue);
+    vInsertCollision(yaKey,nBytes,iValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -173,9 +173,9 @@ void HashBuffer::vInsert(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert a key,value into this hash buffer                                   */
+/* insert a colliding key,value into this hash buffer                         */
 /*----------------------------------------------------------------------------*/
-void HashBuffer::vInsertCollide(byte* yaKey, i8 nBytes, i8 iValue)
+void HashBuffer::vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue)
 {
   byte ayKeyReverse[32];
   
