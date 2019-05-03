@@ -1925,6 +1925,30 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* get encoded datum from cache line                                          */
 /*----------------------------------------------------------------------------*/
+
+//! i tried making this inline. became slower!?
+/*
+ success: 1000000 rows affected
+ time 22ms
+ success: 1000000 rows affected
+ time 18ms
+ success: 1000000 rows affected
+ time 18ms
+ success: 1000000 rows affected
+ time 18ms
+ success: 1000000 rows affected
+ time 17ms
+ success: 1000000 rows affected
+ time 18ms
+ success: 1000000 rows affected
+ time 17ms
+ success: 1000000 rows affected
+ time 19ms
+ success: 1000000 rows affected
+ time 17ms
+ success: 1000000 rows affected
+ time 18ms
+*/
 void RowCoder::vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, i8 i_Column, Coda* pCoda)
 {
