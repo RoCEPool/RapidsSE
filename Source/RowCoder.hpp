@@ -111,8 +111,8 @@ namespace Data
     static void vDecode(Datum* pDatum, HeadLine* aHeadLine,
                         ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                         i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeFast(Datum* pDatum, HeadLine* aHeadLine,
-                        ColumnVec* pColVec, i8 i_Column, Coda* pCoda);
+    static void vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* pCol,
+                            ColumnVec* pColVec, Coda* pCoda);
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
     static void vHeadDumpColumn(HeadLine* aHeadLine, ColumnVec* pColVec, i8 iCol, Stz* aRecodeFunction);
     static void vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec);
@@ -244,8 +244,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     /* decode boolean from given cache line                                       */
     /*----------------------------------------------------------------------------*/
-    static inline void vDecodeBolFast(Datum* pDatum, HeadLine* aHeadLine,
-                                  Column* pCol)
+    static inline void vDecodeBolFast(Datum* pDatum, HeadLine* aHeadLine, Column* pCol)
     {
       i8 i_Column = pCol->iColumnNo();
       
@@ -360,17 +359,15 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     /* get encoded datum from cache line                                          */
     /*----------------------------------------------------------------------------*/
-    static inline void vDecodeFast(Datum* pDatum,
-                                   ColumnVec* pColVec, Coda* pCoda,
-                                   HeadLine* aHeadLine, Column* pCol)
+    static inline void vDecodeFast(Datum* pDatum, HeadLine* aHeadLine, Column* pCol,
+                                   ColumnVec* pColVec, Coda* pCoda)
     {
-      i8 i_Column = pCol->iColumnNo();
       if (pCol->eDatumType() == DM_BOL) {
         vDecodeBolFast(pDatum,aHeadLine,pCol);
         return;
       }
 
-      vDecodeFast(pDatum,aHeadLine,pColVec,i_Column,pCoda);
+      vDecodeFast_Fallback(pDatum,aHeadLine,pCol,pColVec,pCoda);
     }
   
     /*----------------------------------------------------------------------------*/
@@ -412,16 +409,15 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     /* retrieve and decode row from cache line into a datu                        */
     /*----------------------------------------------------------------------------*/
-    static inline void vRetrieve(Datum& oDatum,
-                                 ColumnVec* pColVec, Coda* pCoda, HeadLine* aHeadLine,
-                                 Column* pCol)
+    static inline void vRetrieve(Datum& oDatum, HeadLine* aHeadLine, Column* pCol,
+                                 ColumnVec* pColVec, Coda* pCoda)
     {
     
       //vHeadDump(aHeadLine, pColVec);
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
       // get the encoded value into datum
-      vDecodeFast(&oDatum,pColVec,pCoda,aHeadLine,pCol);
+      vDecodeFast(&oDatum,aHeadLine,pCol,pColVec,pCoda);
     }
   
 
