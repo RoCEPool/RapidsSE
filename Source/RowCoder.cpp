@@ -2415,20 +2415,6 @@ void RowCoder::vAppend(Record* pRec, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* return base offset for column vector                                       */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::iBaseOffset(ColumnVec* pColVec)
-{
-  i8 nColumns = pColVec->nItems();
-  
-  i8 iOffset = (nColumns + 1) / 2;
-  
-  iOffset = 8; //! temp
-  
-  return iOffset;
-}
-
-/*----------------------------------------------------------------------------*/
 /* return number of data bytes of encoding                                    */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)

@@ -126,7 +126,7 @@ namespace Data
                         ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                         i8& i_LastColumn, i8& i_LastOffset);
   
-    static i8 iBaseOffset(ColumnVec* pColVec);
+    //static i8 iBaseOffset(ColumnVec* pColVec);
   
     static i8 nDataBytes(eDM eDatum, eMN eEncoding);
   
@@ -425,7 +425,21 @@ namespace Data
     }
   
 
+    /*----------------------------------------------------------------------------*/
+    /* return base offset for column vector                                       */
+    /*----------------------------------------------------------------------------*/
+    static inline i8 iBaseOffset(ColumnVec* pColVec)
+    {
+      i8 nColumns = pColVec->nItems();
+    
+      i8 iOffset = (nColumns + 1) / 2;
+    
+      iOffset = 8; //! temp
+    
+      return iOffset;
+    }
   
+
   
   };
   
