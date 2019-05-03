@@ -93,7 +93,6 @@ void HashMap::vAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
     bool b = m_pRootDuplicates->bAppendDuplicate(aHeadEntry,iValue);
     RASSERT(b);
   }
-  
 }
 
 /*----------------------------------------------------------------------------*/

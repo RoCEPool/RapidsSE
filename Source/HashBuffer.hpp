@@ -15,8 +15,8 @@ namespace Structures
   {
   private:
     HashMap* m_pHashMap;     // which hash map
-    bool     m_bDuplicates;  // is this buffer handling duplicates?
     i8       m_iDepth;       // depth of hash buffer
+    bool     m_bDuplicates;  // is this buffer handling duplicates?
   
     HashEntry   m_xHashEntry[C_HASH_ENTRIES];
     HashBuffer* m_paCollides[C_HASH_COLLIDES];
@@ -31,7 +31,8 @@ namespace Structures
     void* operator new(size_t);
     void  operator delete(void*);
     
-    HashBuffer(HashMap* pHashMap, bool bDuplicates, i8 iDepth);
+    HashBuffer(HashMap* pHashMap, i8 iDepth);
+    HashBuffer(HashMap* pHashMap, i8 iDepth, HashBuffer* pLinkDuplicates);
     ~HashBuffer(void) noexcept(false);
   
     bool bAppendDuplicate(HashEntry* aHeadEntry, i8 iValue);

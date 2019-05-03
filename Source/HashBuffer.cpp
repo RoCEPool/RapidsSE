@@ -44,22 +44,46 @@ void HashBuffer::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HashBuffer::HashBuffer(HashMap* pHashMap, bool bDuplicates, i8 iDepth)
+HashBuffer::HashBuffer(HashMap* pHashMap, i8 iDepth)
 : Object(CN_HASHBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
   
   m_pHashMap    = pHashMap;
-  m_bDuplicates = bDuplicates;
   m_iDepth      = iDepth;
+  m_bDuplicates = false;
   
   //m_xHashEntry[]
-  for (i8 i_Colide = 0; i_Colide < C_HASH_COLLIDES; i_Colide++)
-    m_paCollides[i_Colide] = nullptr;
+  for (i8 i_Collide = 0; i_Collide < C_HASH_COLLIDES; i_Collide++)
+    m_paCollides[i_Collide] = nullptr;
 
   m_i_Duplicate = 0;
   m_pLinkDuplicates = nullptr;
 
+  _checkInitialised_(CN_HASHBUFFER);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+HashBuffer::HashBuffer(HashMap* pHashMap, i8 iDepth, HashBuffer* pLinkDuplicates)
+: Object(CN_HASHBUFFER)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
+  
+  m_pHashMap    = pHashMap;
+  m_iDepth      = iDepth;
+  m_bDuplicates = true;
+  
+  //m_xHashEntry[]
+  for (i8 i_Collide = 0; i_Collide < C_HASH_COLLIDES; i_Collide++)
+    m_paCollides[i_Collide] = nullptr;
+  
+  m_i_Duplicate = 0;
+  m_pLinkDuplicates = pLinkDuplicates;
+  
   _checkInitialised_(CN_HASHBUFFER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
@@ -88,18 +112,26 @@ HashBuffer::~HashBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
 {
+  // check this buffer is used to hold duplicates
   RASSERT(m_bDuplicates);
   
+  // is the buffer full?
   if (m_i_Duplicate + 1 > C_HASH_ENTRIES)
     return false;
 
+  // put the duplicate into next free entry
   m_xHashEntry[m_i_Duplicate].m_iHash = aHeadEntry->m_iHash;
   MemLib::vCopy(m_xHashEntry[m_i_Duplicate].m_yaKey,
-                aHeadEntry->m_yaKey,aHeadEntry->m_nBytes,CN_HASHBUFFER);
+                aHeadEntry->m_yaKey,
+                aHeadEntry->m_nBytes,
+                CN_HASHBUFFER);
   m_xHashEntry[m_i_Duplicate].m_nBytes = aHeadEntry->m_nBytes;
   m_xHashEntry[m_i_Duplicate].m_iValue = aHeadEntry->m_iValue;
   
+  // this new duplicate enty points to the current dupe head
   m_xHashEntry[m_i_Duplicate].m_aDupeChain = aHeadEntry->m_aDupeChain;
+  
+  // the dupe head for the key point to this entry
   aHeadEntry->m_aDupeChain = &m_xHashEntry[m_i_Duplicate];
 
   m_i_Duplicate++;
@@ -155,7 +187,7 @@ void HashBuffer::vInsertCollide(byte* yaKey, i8 nBytes, i8 iValue)
   
   i8 i_Colide = iHashRev % C_HASH_COLLIDES;
   if (! m_paCollides[i_Colide])
-    m_paCollides[i_Colide] = new HashBuffer(m_pHashMap,false,m_iDepth+1);
+    m_paCollides[i_Colide] = new HashBuffer(m_pHashMap,m_iDepth+1);
   m_paCollides[i_Colide]->vInsert(iHashRev,yaKey,nBytes,iValue);
 }
 
