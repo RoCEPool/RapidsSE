@@ -187,8 +187,10 @@ void HashBuffer::vInsert(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
     vHandleOccupied(i_Entry,yaKey,nBytes,iValue);
     return;
   }
-  
-  vTrace("I[%ld,%lld:%lld] %s/%lld %lld\n"_Stz,
+
+  vTrace("%c[%ld,%lld:%lld] %s/%lld %lld\n"_Stz,
+         m_iDepth ? 'C' : 'I',
+         
          m_iDepth,
          i_Entry,
          iHash,
@@ -217,15 +219,6 @@ void HashBuffer::vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue)
   i8 iHashRev = HshLib::iHash(ayKeyReverse,nBytes);
   
   i8 i_Collide = iHashRev % C_HASH_COLLIDES;
-  
-  vTrace("C[%ld,%lld:%lld]: %s/%lld %lld\n"_Stz,
-         m_iDepth,
-         i_Collide,
-         iHashRev,
-         
-         ayKeyReverse,
-         nBytes,
-         iValue);
   
   if (! m_paCollides[i_Collide])
     m_paCollides[i_Collide] = new HashBuffer(m_pHashMap,m_iDepth+1);

@@ -120,9 +120,11 @@ void vTest4(void)
   //s32 sKey("ALPHA"_Stz);
   s32 sKey;
   
-  for (i8 i_Times = 0; i_Times < 100; i_Times++) {
-    sKey.vSprint("Key%02lld"_Stz,i_Times);
-    pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),i_Times);
+  for (i8 nDupes = 0; nDupes < 1; nDupes++) {
+    for (i8 i_Times = 0; i_Times < 100; i_Times++) {
+      sKey.vSprint("Key%02lld"_Stz,i_Times);
+      pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),i_Times);
+    }
   }
   
   HashCursor xCursor(pHashMap);
