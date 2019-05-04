@@ -128,16 +128,11 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
          aHeadEntry->m_nBytes,
          aHeadEntry->m_iValue);
   
-  // put the duplicate into next free entry
-  m_xHashEntry[m_i_Duplicate].m_iHash = aHeadEntry->m_iHash;
-  MemLib::vCopy(m_xHashEntry[m_i_Duplicate].m_yaKey,
-                aHeadEntry->m_yaKey,
-                aHeadEntry->m_nBytes,
-                CN_HASHBUFFER);
-  m_xHashEntry[m_i_Duplicate].m_nBytes = aHeadEntry->m_nBytes;
-  
-  // but with the new value
-  m_xHashEntry[m_i_Duplicate].m_iValue = iValue;
+  // put the duplicate into next free entry but with new value
+  m_xHashEntry[m_i_Duplicate].vSet(aHeadEntry->m_iHash,
+                                   aHeadEntry->m_yaKey,
+                                   aHeadEntry->m_nBytes,
+                                   iValue);
   
   // this new duplicate enty points to the current dupe head
   m_xHashEntry[m_i_Duplicate].m_aDupeChain = aHeadEntry->m_aDupeChain;
@@ -174,10 +169,7 @@ void HashBuffer::vInsertEntry(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
          nBytes,
          iValue);
   
-  m_xHashEntry[i_Entry].m_iHash = iHash;
-  MemLib::vCopy(m_xHashEntry[i_Entry].m_yaKey,yaKey,nBytes,CN_HASHBUFFER);
-  m_xHashEntry[i_Entry].m_nBytes = nBytes;
-  m_xHashEntry[i_Entry].m_iValue = iValue;
+  m_xHashEntry[i_Entry].vSet(iHash,yaKey,nBytes,m_iDepth);
 }
 
 
