@@ -30,7 +30,6 @@ namespace Structures
     bool bExists(byte* yaKey, i8 nBytes);
     bool bExists(byte* yaKey, i8 nBytes, i8 iValue);
     void vInsert(byte* yaKey, i8 nBytes, i8 iValue);
-    bool bIterate(HashCursor* pCursor, byte*& yaKey, i8& nBytes, i8& iValue);
 
   private:
 

@@ -192,29 +192,6 @@ void HashBuffer::vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue)
   m_paCollides[i_Colide]->vInsert(iHashRev,yaKey,nBytes,iValue);
 }
 
-/*----------------------------------------------------------------------------*/
-/* iterate                                                                    */
-/*----------------------------------------------------------------------------*/
-bool HashBuffer::bIterate(HashCursor* pCursor, byte*& yaKey, i8& nBytes, i8& iValue)
-{
-  for ( ;
-       pCursor->m_i_HashEntry < C_HASH_ENTRIES;
-       pCursor->m_i_HashEntry++) {
-    
-    if (C_UNKNOWN == m_xHashEntry[pCursor->m_i_HashEntry].m_iHash)
-      continue;
-      
-    yaKey  = &m_xHashEntry[pCursor->m_i_HashEntry].m_yaKey[0];
-    nBytes = m_xHashEntry[pCursor->m_i_HashEntry].m_nBytes;
-    iValue = m_xHashEntry[pCursor->m_i_HashEntry].m_iValue;
-    
-    pCursor->m_i_HashEntry++;
-    
-    return true;
-  }
-  
-  return false;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
