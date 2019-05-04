@@ -13,6 +13,8 @@ namespace Structures
   
   class HashBuffer : public Object
   {
+  friend HashCursor;
+
   private:
     HashMap* m_pHashMap;     // which hash map
     i8       m_iDepth;       // depth of hash buffer

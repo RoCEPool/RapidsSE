@@ -131,7 +131,7 @@ void vTest4(void)
   
   HashCursor xCursor(pHashMap);
   
-  while (pHashMap->bIterate(&xCursor,aKey,nBytes,iValue)) {
+  while (xCursor.bIterate(aKey,nBytes,iValue)) {
     StrLib::vCopyLen(sKey.aChar(),(char*)aKey,nBytes);
     vTrace("[%lld] %s/%lld %lld\n"_Stz,
            xCursor.m_ia_HashEntry[xCursor.m_i_Stack],sKey.aChar(),nBytes,iValue);
