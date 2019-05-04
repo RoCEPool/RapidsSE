@@ -116,7 +116,6 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iAltValue)
   
   vDumpEntry(m_i_Duplicate,'D');
 
-  
   m_i_Duplicate++;
   
   return true;
@@ -152,9 +151,16 @@ void HashBuffer::vDumpEntry(i8 i_Entry, char cIndicator)
 {
   HashEntry* aHashEntry = &m_xHashEntry[i_Entry];
   
-  vTrace("%c[%-8s:h%08x] %s/%lld/=%lld\n"_Stz,
-         cIndicator,
-         m_sDotNotation.aChar(),
+  s256 sLead;
+  
+  sLead.vSprint("%c %s[%lld]"_Stz,
+                cIndicator,
+                m_sDotNotation.aChar(),
+                i_Entry);
+  
+  vTrace("%-12s h:%08x k:%s/%lld/=v:%lld\n"_Stz,
+         sLead.aChar(),
+         
          aHashEntry->m_iHash,
          
          aHashEntry->m_yaKey,
