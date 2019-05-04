@@ -167,7 +167,7 @@ void HashBuffer::vInsertEntry(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
 /*----------------------------------------------------------------------------*/
 void HashBuffer::vDumpEntry(HashEntry* aHashEntry, char cIndicator, i8 i_Entry)
 {
-  vTrace("%c[%ld,%lld:%08x] %s/%lld/ %lld\n"_Stz,
+  vTrace("%c[%ld,%lld:%08x] %s/%lld/=%lld\n"_Stz,
          cIndicator,
          
          m_iDepth,
@@ -184,15 +184,14 @@ void HashBuffer::vDumpEntry(HashEntry* aHashEntry, char cIndicator, i8 i_Entry)
 /*----------------------------------------------------------------------------*/
 void HashBuffer::vHandleOccupied(i8 i_Entry, byte* yaKey, i8 nBytes, i8 iValue)
 {
-  // is it a key duplicate or a hashcollision?
-  if (nBytes == m_xHashEntry[i_Entry].m_nBytes &&
-      MemLib::bCompareBytes(m_xHashEntry[i_Entry].m_yaKey,yaKey,nBytes)) {
+  vDumpEntry(&m_xHashEntry[i_Entry],'o',i_Entry);
+
+  if (m_xHashEntry[i_Entry].bEqualTo(yaKey,nBytes)) {
     // its a key duplicate
     m_pHashMap->vAppendDuplicate(&m_xHashEntry[i_Entry],iValue);
   }
   else {
     // its a hash collision
-    vDumpEntry(&m_xHashEntry[i_Entry],'o',i_Entry);
     vInsertCollision(yaKey,nBytes,iValue);
   }
 }
@@ -202,7 +201,7 @@ void HashBuffer::vHandleOccupied(i8 i_Entry, byte* yaKey, i8 nBytes, i8 iValue)
 /*----------------------------------------------------------------------------*/
 void HashBuffer::vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue)
 {
-  i8 iHash = HashEntry::iHash(yaKey, nBytes,m_iDepth+1);
+  i8 iHash = HashEntry::iHash(yaKey,nBytes,m_iDepth+1);
 
   i8 i_Collide = iHash % C_HASH_COLLIDES;
   

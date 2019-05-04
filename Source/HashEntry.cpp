@@ -68,6 +68,17 @@ i8 HashEntry::iHash(byte* yaKey, i8 nBytes, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* is this hash entry equal to given key                                      */
+/*----------------------------------------------------------------------------*/
+bool HashEntry::bEqualTo(byte* yaKey, i8 nBytes)
+{
+  if (nBytes == m_nBytes && MemLib::bCompareBytes(m_yaKey,yaKey,nBytes))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set entry contents                                                         */
 /*----------------------------------------------------------------------------*/
 void HashEntry::vSet(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
