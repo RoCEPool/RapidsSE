@@ -125,10 +125,11 @@ bool HashMap::bExists(byte* aKey, i8 nBytes, i8 iValue)
 /*----------------------------------------------------------------------------*/
 /* insert a key,value into the hashmap                                        */
 /*----------------------------------------------------------------------------*/
-void HashMap::vInsert(byte* aKey, i8 nBytes, i8 iValue)
+void HashMap::vInsert(byte* yaKey, i8 nBytes, i8 iValue)
 {
-  i8 iHash = HshLib::iHash(aKey,nBytes);
-  m_pRootBuffer->vInsert(iHash,aKey,nBytes,iValue);
+  i8 iHash = HashEntry::iHash(yaKey,nBytes,0);
+  
+  m_pRootBuffer->vInsertEntry(iHash,yaKey,nBytes,iValue);
 }
 
 /*----------------------------------------------------------------------------*/
