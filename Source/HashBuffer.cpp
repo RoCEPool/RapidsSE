@@ -69,6 +69,11 @@ HashBuffer::HashBuffer(HashMap* pHashMap, HashBuffer* pParent, i8 iArc,
 
   m_i_Duplicate = 0;
   m_pLinkDuplicates = nullptr;
+  
+  // increment number of buffers
+  m_pHashMap->m_nBuffers++;
+  if (m_bDuplicates)
+    m_pHashMap->m_nDupBuffers++;
 
   _checkInitialised_(CN_HASHBUFFER);
   
@@ -114,6 +119,10 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iAltValue)
   // the dupe head for the key point to this entry
   aHeadEntry->m_aDupeChain = &m_xHashEntry[m_i_Duplicate];
   
+  // increment number of entries
+  m_pHashMap->m_nEntries++;
+  m_pHashMap->m_nDupEntries++;
+
   vDumpEntry(m_i_Duplicate,'D');
 
   m_i_Duplicate++;
@@ -136,6 +145,9 @@ void HashBuffer::vInsertEntry(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
   
   m_xHashEntry[i_Entry].vSet(yaKey,nBytes,iValue,iHash);
   
+  // increment number of entries
+  m_pHashMap->m_nEntries++;
+
   vDumpEntry(i_Entry,m_iDepth ? 'C' : 'I');
 }
 
@@ -158,7 +170,7 @@ void HashBuffer::vDumpEntry(i8 i_Entry, char cIndicator)
                 m_sDotNotation.aChar(),
                 i_Entry);
   
-  vTrace("%-12s h:%08x k:%s/%lld/=v:%lld\n"_Stz,
+  vTrace("%-12s h:%08x k:%s/b:%lld/=v:%lld\n"_Stz,
          sLead.aChar(),
          
          aHashEntry->m_iHash,

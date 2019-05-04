@@ -138,6 +138,8 @@ void vTest4(void)
            xCursor.m_iValue);
   }
   
+  pHashMap->vAnalysis();
+  
   delete pHashMap;
 }
 

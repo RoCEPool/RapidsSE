@@ -57,7 +57,13 @@ HashMap::HashMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
   
-  m_pRootBuffer = new HashBuffer(this,nullptr,-1,false);
+  m_nBuffers        = 0;
+  m_nDupBuffers     = 0;
+
+  m_nEntries        = 0;
+  m_nDupEntries     = 0;
+
+  m_pRootBuffer     = new HashBuffer(this,nullptr,-1,false);
   m_pRootDuplicates = nullptr;
 
   _checkInitialised_(CN_HASHMAP);
@@ -79,6 +85,22 @@ HashMap::~HashMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* print analysis of this hash map                                            */
+/*----------------------------------------------------------------------------*/
+void HashMap::vAnalysis(void)
+{
+  vTrace("HM: Buffers %lld Entries %lld µ %lld%% full (%lld entries/buffer)\n"
+         "    DupBuffers %lld DupEntries %lld\n"_Stz,
+         m_nBuffers,
+         m_nEntries,
+         IntLib::iPercent(m_nEntries,C_HASH_ENTRIES*m_nBuffers),
+         C_HASH_ENTRIES,
+         m_nDupBuffers,
+         m_nDupEntries);
+
+}
 
 /*----------------------------------------------------------------------------*/
 /* append a key,value duplicate onto this hash map                            */

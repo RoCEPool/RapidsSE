@@ -11,6 +11,12 @@ namespace Structures
   friend HashCursor;
 
   private:
+  
+    i8          m_nBuffers;
+    i8          m_nDupBuffers;
+    i8          m_nEntries;
+    i8          m_nDupEntries;
+
     HashBuffer* m_pRootBuffer;
     HashBuffer* m_pRootDuplicates;
 
@@ -25,6 +31,7 @@ namespace Structures
     HashMap(void);
     ~HashMap(void) noexcept(false);
   
+    void vAnalysis(void);
     void vAppendDuplicate(HashEntry* aHeadEntry, i8 iValue);
     i8   iEach(byte* yaKey,   i8 nBytes, i8& iCursor);
     bool bExists(byte* yaKey, i8 nBytes);
