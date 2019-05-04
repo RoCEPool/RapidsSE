@@ -107,7 +107,7 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iAltValue)
   RASSERT(m_bDuplicates);
   
   // is the buffer full?
-  if (m_i_Duplicate + 1 > C_HASH_ENTRIES)
+  if (m_i_Duplicate + 1 > m_pHashMap->m_nEntriesPerBuffer)
     return false;
   
   // put the duplicate into next free entry but with alt value
@@ -135,7 +135,7 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iAltValue)
 /*----------------------------------------------------------------------------*/
 void HashBuffer::vInsertEntry(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
 {
-  i8 i_Entry = iHash % C_HASH_ENTRIES;
+  i8 i_Entry = iHash % m_pHashMap->m_nEntriesPerBuffer;
   
   // test if the entry is already in use
   if (C_UNKNOWN != m_xHashEntry[i_Entry].m_iHash) {

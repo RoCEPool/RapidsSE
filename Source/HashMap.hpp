@@ -12,13 +12,15 @@ namespace Structures
 
   private:
   
-    i8          m_nBuffers;
-    i8          m_nDupBuffers;
-    i8          m_nEntries;
-    i8          m_nDupEntries;
+    i8 m_nEntriesPerBuffer;
 
     HashBuffer* m_pRootBuffer;
     HashBuffer* m_pRootDuplicates;
+
+    i8 m_nBuffers;
+    i8 m_nDupBuffers;
+    i8 m_nEntries;
+    i8 m_nDupEntries;
 
     // must be last
     Footer m_xFooter;
@@ -28,7 +30,7 @@ namespace Structures
     void* operator new(size_t, HashMap* pHashMap);
     void  operator delete(void* pHashMapAddress);
  
-    HashMap(void);
+    HashMap(i8 nEntriesPerBuffer=0);
     ~HashMap(void) noexcept(false);
   
     void vAnalysis(void);

@@ -52,20 +52,22 @@ void HashMap::operator delete(void* pHashMapAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HashMap::HashMap(void)
+HashMap::HashMap(i8 nEntriesPerBuffer)
 : Object(CN_HASHMAP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
   
-  m_nBuffers        = 0;
-  m_nDupBuffers     = 0;
-
-  m_nEntries        = 0;
-  m_nDupEntries     = 0;
-
+  m_nEntriesPerBuffer = nEntriesPerBuffer ? nEntriesPerBuffer : C_HASH_ENTRIES;
+  
   m_pRootBuffer     = new HashBuffer(this,nullptr,-1,false);
   m_pRootDuplicates = nullptr;
 
+  m_nBuffers    = 0;
+  m_nDupBuffers = 0;
+  
+  m_nEntries    = 0;
+  m_nDupEntries = 0;
+  
   _checkInitialised_(CN_HASHMAP);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
@@ -95,11 +97,10 @@ void HashMap::vAnalysis(void)
          "    DupBuffers %lld DupEntries %lld\n"_Stz,
          m_nBuffers,
          m_nEntries,
-         IntLib::iPercent(m_nEntries,C_HASH_ENTRIES*m_nBuffers),
-         C_HASH_ENTRIES,
+         IntLib::iPercent(m_nEntries,m_nEntriesPerBuffer*m_nBuffers),
+         m_nEntriesPerBuffer,
          m_nDupBuffers,
          m_nDupEntries);
-
 }
 
 /*----------------------------------------------------------------------------*/
