@@ -17,12 +17,16 @@ namespace Structures
   friend HashCursor;
 
   private:
-    HashMap* m_pHashMap;     // which hash map
-    i8       m_iDepth;       // depth of hash buffer
-    bool     m_bDuplicates;  // is this buffer handling duplicates?
+    HashMap*    m_pHashMap;     // which hash map
+    HashBuffer* m_pParent;      // parent buffer of this buffer
+    i8          m_iDepth;       // depth of this hash buffer
+    bool        m_bDuplicates;  // is this buffer handling duplicates?
   
-    HashEntry   m_xHashEntry[C_HASH_ENTRIES];
-    HashBuffer* m_paCollides[C_HASH_COLLIDES];
+    s256        m_sDotNotation; // dot notation of this buffer
+  
+    HashEntry   m_xHashEntry[C_HASH_ENTRIES]; // array of entries
+  
+    HashBuffer* m_paCollides[C_HASH_COLLIDES]; // child collision buffers
 
     i8 m_i_Duplicate;
     HashBuffer* m_pLinkDuplicates;
@@ -34,8 +38,7 @@ namespace Structures
     void* operator new(size_t);
     void  operator delete(void*);
     
-    HashBuffer(HashMap* pHashMap, i8 iDepth);
-    HashBuffer(HashMap* pHashMap, i8 iDepth, HashBuffer* pLinkDuplicates);
+    HashBuffer(HashMap* pHashMap, HashBuffer* pParent, bool bDuplicates);
     ~HashBuffer(void) noexcept(false);
   
     bool bAppendDuplicate(HashEntry* aHeadEntry, i8 iValue);

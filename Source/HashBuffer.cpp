@@ -44,14 +44,22 @@ void HashBuffer::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HashBuffer::HashBuffer(HashMap* pHashMap, i8 iDepth)
+HashBuffer::HashBuffer(HashMap* pHashMap, HashBuffer* pParent, bool bDuplicates)
 : Object(CN_HASHBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
   
   m_pHashMap    = pHashMap;
-  m_iDepth      = iDepth;
-  m_bDuplicates = false;
+  m_pParent     = pParent;
+  m_iDepth      = m_pParent ? m_pParent->m_iDepth + 1 : 0;
+  m_bDuplicates = bDuplicates;
+  
+  if (! m_pParent)
+    m_sDotNotation = "r"_Stz;
+  else {
+    m_sDotNotation = m_pParent->m_sDotNotation;
+    m_sDotNotation.vCatSprint(".%lld"_Stz,m_iDepth);
+  }
   
   //m_xHashEntry[]
   for (i8 i_Collide = 0; i_Collide < C_HASH_COLLIDES; i_Collide++)
@@ -60,30 +68,6 @@ HashBuffer::HashBuffer(HashMap* pHashMap, i8 iDepth)
   m_i_Duplicate = 0;
   m_pLinkDuplicates = nullptr;
 
-  _checkInitialised_(CN_HASHBUFFER);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-HashBuffer::HashBuffer(HashMap* pHashMap, i8 iDepth, HashBuffer* pLinkDuplicates)
-: Object(CN_HASHBUFFER)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
-  
-  m_pHashMap    = pHashMap;
-  m_iDepth      = iDepth;
-  m_bDuplicates = true;
-  
-  //m_xHashEntry[]
-  for (i8 i_Collide = 0; i_Collide < C_HASH_COLLIDES; i_Collide++)
-    m_paCollides[i_Collide] = nullptr;
-  
-  m_i_Duplicate = 0;
-  m_pLinkDuplicates = pLinkDuplicates;
-  
   _checkInitialised_(CN_HASHBUFFER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
@@ -167,11 +151,9 @@ void HashBuffer::vInsertEntry(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
 /*----------------------------------------------------------------------------*/
 void HashBuffer::vDumpEntry(HashEntry* aHashEntry, char cIndicator, i8 i_Entry)
 {
-  vTrace("%c[%ld,%lld:%08x] %s/%lld/=%lld\n"_Stz,
+  vTrace("%c[%-8s:h%08x] %s/%lld/=%lld\n"_Stz,
          cIndicator,
-         
-         m_iDepth,
-         i_Entry,
+         m_sDotNotation.aChar(),
          aHashEntry->m_iHash,
          
          aHashEntry->m_yaKey,
@@ -206,7 +188,7 @@ void HashBuffer::vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue)
   i8 i_Collide = iHash % C_HASH_COLLIDES;
   
   if (! m_paCollides[i_Collide])
-    m_paCollides[i_Collide] = new HashBuffer(m_pHashMap,m_iDepth+1);
+    m_paCollides[i_Collide] = new HashBuffer(m_pHashMap,this,false);
   
   m_paCollides[i_Collide]->vInsertEntry(iHash,yaKey,nBytes,iValue);
 }
