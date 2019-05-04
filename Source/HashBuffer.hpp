@@ -20,6 +20,7 @@ namespace Structures
     HashMap*    m_pHashMap;     // which hash map
     HashBuffer* m_pParent;      // parent buffer of this buffer
     i8          m_iDepth;       // depth of this hash buffer
+    i8          m_iArc;         // which arc from parent
     bool        m_bDuplicates;  // is this buffer handling duplicates?
   
     s256        m_sDotNotation; // dot notation of this buffer
@@ -38,7 +39,7 @@ namespace Structures
     void* operator new(size_t);
     void  operator delete(void*);
     
-    HashBuffer(HashMap* pHashMap, HashBuffer* pParent, bool bDuplicates);
+    HashBuffer(HashMap* pHashMap, HashBuffer* pParent, i8 iArc, bool bDuplicates);
     ~HashBuffer(void) noexcept(false);
   
     bool bAppendDuplicate(HashEntry* aHeadEntry, i8 iValue);

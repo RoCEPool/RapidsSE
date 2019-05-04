@@ -44,7 +44,8 @@ void HashBuffer::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HashBuffer::HashBuffer(HashMap* pHashMap, HashBuffer* pParent, bool bDuplicates)
+HashBuffer::HashBuffer(HashMap* pHashMap, HashBuffer* pParent, i8 iArc,
+                       bool bDuplicates)
 : Object(CN_HASHBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
@@ -52,13 +53,14 @@ HashBuffer::HashBuffer(HashMap* pHashMap, HashBuffer* pParent, bool bDuplicates)
   m_pHashMap    = pHashMap;
   m_pParent     = pParent;
   m_iDepth      = m_pParent ? m_pParent->m_iDepth + 1 : 0;
+  m_iArc        = iArc;
   m_bDuplicates = bDuplicates;
   
   if (! m_pParent)
-    m_sDotNotation = "r"_Stz;
+    m_sDotNotation = m_bDuplicates ? "d"_Stz : "r"_Stz;
   else {
     m_sDotNotation = m_pParent->m_sDotNotation;
-    m_sDotNotation.vCatSprint(".%lld"_Stz,m_iDepth);
+    m_sDotNotation.vCatSprint(".%lld"_Stz,m_bDuplicates ? m_iDepth : m_iArc);
   }
   
   //m_xHashEntry[]
@@ -185,12 +187,12 @@ void HashBuffer::vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue)
 {
   i8 iHash = HashEntry::iHash(yaKey,nBytes,m_iDepth+1);
 
-  i8 i_Collide = iHash % C_HASH_COLLIDES;
+  i8 i_Arc = iHash % C_HASH_COLLIDES;
   
-  if (! m_paCollides[i_Collide])
-    m_paCollides[i_Collide] = new HashBuffer(m_pHashMap,this,false);
+  if (! m_paCollides[i_Arc])
+    m_paCollides[i_Arc] = new HashBuffer(m_pHashMap,this,i_Arc,false);
   
-  m_paCollides[i_Collide]->vInsertEntry(iHash,yaKey,nBytes,iValue);
+  m_paCollides[i_Arc]->vInsertEntry(iHash,yaKey,nBytes,iValue);
 }
 
 

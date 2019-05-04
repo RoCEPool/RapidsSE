@@ -57,7 +57,7 @@ HashMap::HashMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
   
-  m_pRootBuffer = new HashBuffer(this,nullptr,false);
+  m_pRootBuffer = new HashBuffer(this,nullptr,-1,false);
   m_pRootDuplicates = nullptr;
 
   _checkInitialised_(CN_HASHMAP);
@@ -86,10 +86,10 @@ HashMap::~HashMap(void) noexcept(false)
 void HashMap::vAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
 {
   if (! m_pRootDuplicates)
-    m_pRootDuplicates = new HashBuffer(this,nullptr,true);
+    m_pRootDuplicates = new HashBuffer(this,nullptr,C_UNKNOWN,true);
   
   if (! m_pRootDuplicates->bAppendDuplicate(aHeadEntry,iValue)) {
-    m_pRootDuplicates = new HashBuffer(this,m_pRootDuplicates,true);
+    m_pRootDuplicates = new HashBuffer(this,m_pRootDuplicates,C_UNKNOWN,true);
     bool b = m_pRootDuplicates->bAppendDuplicate(aHeadEntry,iValue);
     RASSERT(b);
   }
