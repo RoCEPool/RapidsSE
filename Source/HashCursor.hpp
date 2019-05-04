@@ -23,11 +23,15 @@ namespace Structures
     HashBuffer* m_pDupeBuffer;
     HashEntry*  m_pDupeEntry;
 
+    byte*       m_yaKey;
+    i8          m_nBytes;
+    i8          m_iValue;
+
   public:
     HashCursor(HashMap* pHashMap);
     ~HashCursor(void) noexcept(false);
   
-    bool bIterate(byte*& yaKey, i8& nBytes, i8& iValue);
+    bool bIterate(void);
   };
   
   HashCursor* _pHashCursor(void* aAddr);

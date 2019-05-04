@@ -122,16 +122,16 @@ void vTest4(void)
   for (i8 i_Times = 0; i_Times < 10; i_Times++)
     pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),i_Times);
   
-  byte* aKey;
-  i8 nBytes;
-  i8 iValue;
   
   HashCursor xCursor(pHashMap);
   
-  while (xCursor.bIterate(aKey,nBytes,iValue)) {
-    StrLib::vCopyLen(sKey.aChar(),(char*)aKey,nBytes);
+  while (xCursor.bIterate()) {
+    StrLib::vCopyLen(sKey.aChar(),(char*)xCursor.m_yaKey,xCursor.m_nBytes);
     vTrace("[%lld] %s/%lld %lld\n"_Stz,
-           xCursor.m_ia_HashEntry[xCursor.m_i_Stack],sKey.aChar(),nBytes,iValue);
+           xCursor.m_ia_HashEntry[xCursor.m_i_Stack],
+           sKey.aChar(),
+           xCursor.m_nBytes,
+           xCursor.m_iValue);
   }
   
   delete pHashMap;

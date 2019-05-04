@@ -36,6 +36,10 @@ HashCursor::HashCursor(HashMap* pHashMap)
   
   m_pDupeBuffer = nullptr;
   m_pDupeEntry  = nullptr;
+  
+  m_yaKey       = nullptr;
+  m_nBytes      = 0;
+  m_iValue      = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,13 +56,13 @@ HashCursor::~HashCursor(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* iterate each entry in the hash map                                         */
 /*----------------------------------------------------------------------------*/
-bool HashCursor::bIterate(byte*& yaKey, i8& nBytes, i8& iValue)
+bool HashCursor::bIterate(void)
 {
   if (m_pDupeEntry) {
     
-    yaKey  = m_pDupeEntry->m_yaKey;
-    nBytes = m_pDupeEntry->m_nBytes;
-    iValue = m_pDupeEntry->m_iValue;
+    m_yaKey  = m_pDupeEntry->m_yaKey;
+    m_nBytes = m_pDupeEntry->m_nBytes;
+    m_iValue = m_pDupeEntry->m_iValue;
 
     m_pDupeEntry = m_pDupeEntry->m_aDupeChain;
     return true;
@@ -71,9 +75,9 @@ bool HashCursor::bIterate(byte*& yaKey, i8& nBytes, i8& iValue)
     if (C_UNKNOWN == m_pHashBuffer->m_xHashEntry[m_i_HashEntry].m_iHash)
       continue;
     
-    yaKey  = m_pHashBuffer->m_xHashEntry[m_i_HashEntry].m_yaKey;
-    nBytes = m_pHashBuffer->m_xHashEntry[m_i_HashEntry].m_nBytes;
-    iValue = m_pHashBuffer->m_xHashEntry[m_i_HashEntry].m_iValue;
+    m_yaKey  = m_pHashBuffer->m_xHashEntry[m_i_HashEntry].m_yaKey;
+    m_nBytes = m_pHashBuffer->m_xHashEntry[m_i_HashEntry].m_nBytes;
+    m_iValue = m_pHashBuffer->m_xHashEntry[m_i_HashEntry].m_iValue;
 
     m_pDupeEntry = m_pHashBuffer->m_xHashEntry[m_i_HashEntry].m_aDupeChain;
 
