@@ -117,7 +117,7 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
   // the dupe head for the key point to this entry
   aHeadEntry->m_aDupeChain = &m_xHashEntry[m_i_Duplicate];
   
-  vDumpEntry(&m_xHashEntry[m_i_Duplicate],'D',m_i_Duplicate);
+  vDumpEntry(m_i_Duplicate,'D');
 
   
   m_i_Duplicate++;
@@ -140,7 +140,7 @@ void HashBuffer::vInsertEntry(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
   
   m_xHashEntry[i_Entry].vSet(iHash,yaKey,nBytes,iValue);
   
-  vDumpEntry(&m_xHashEntry[i_Entry],m_iDepth ? 'C' : 'I',i_Entry);
+  vDumpEntry(i_Entry,m_iDepth ? 'C' : 'I');
 }
 
 
@@ -151,8 +151,10 @@ void HashBuffer::vInsertEntry(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
 /*----------------------------------------------------------------------------*/
 /* dump given entry                                                           */
 /*----------------------------------------------------------------------------*/
-void HashBuffer::vDumpEntry(HashEntry* aHashEntry, char cIndicator, i8 i_Entry)
+void HashBuffer::vDumpEntry(i8 i_Entry, char cIndicator)
 {
+  HashEntry* aHashEntry = &m_xHashEntry[i_Entry];
+  
   vTrace("%c[%-8s:h%08x] %s/%lld/=%lld\n"_Stz,
          cIndicator,
          m_sDotNotation.aChar(),
@@ -168,7 +170,7 @@ void HashBuffer::vDumpEntry(HashEntry* aHashEntry, char cIndicator, i8 i_Entry)
 /*----------------------------------------------------------------------------*/
 void HashBuffer::vHandleOccupied(i8 i_Entry, byte* yaKey, i8 nBytes, i8 iValue)
 {
-  vDumpEntry(&m_xHashEntry[i_Entry],'o',i_Entry);
+  vDumpEntry(i_Entry,'o');
 
   if (m_xHashEntry[i_Entry].bEqualTo(yaKey,nBytes)) {
     // its a key duplicate
