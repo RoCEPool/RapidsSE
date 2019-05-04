@@ -126,7 +126,9 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
                 aHeadEntry->m_nBytes,
                 CN_HASHBUFFER);
   m_xHashEntry[m_i_Duplicate].m_nBytes = aHeadEntry->m_nBytes;
-  m_xHashEntry[m_i_Duplicate].m_iValue = aHeadEntry->m_iValue;
+  
+  // but with the new value
+  m_xHashEntry[m_i_Duplicate].m_iValue = iValue;
   
   // this new duplicate enty points to the current dupe head
   m_xHashEntry[m_i_Duplicate].m_aDupeChain = aHeadEntry->m_aDupeChain;

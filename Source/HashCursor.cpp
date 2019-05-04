@@ -54,6 +54,16 @@ HashCursor::~HashCursor(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool HashCursor::bIterate(byte*& yaKey, i8& nBytes, i8& iValue)
 {
+  if (m_pDupeEntry) {
+    
+    yaKey  = m_pDupeEntry->m_yaKey;
+    nBytes = m_pDupeEntry->m_nBytes;
+    iValue = m_pDupeEntry->m_iValue;
+
+    m_pDupeEntry = m_pDupeEntry->m_aDupeChain;
+    return true;
+ }
+  
   for ( ;
        m_i_HashEntry < C_HASH_ENTRIES;
        m_i_HashEntry++) {
@@ -64,9 +74,10 @@ bool HashCursor::bIterate(byte*& yaKey, i8& nBytes, i8& iValue)
     yaKey  = m_pHashBuffer->m_xHashEntry[m_i_HashEntry].m_yaKey;
     nBytes = m_pHashBuffer->m_xHashEntry[m_i_HashEntry].m_nBytes;
     iValue = m_pHashBuffer->m_xHashEntry[m_i_HashEntry].m_iValue;
-    
+
+    m_pDupeEntry = m_pHashBuffer->m_xHashEntry[m_i_HashEntry].m_aDupeChain;
+
     m_i_HashEntry++;
-    
     return true;
   }
   

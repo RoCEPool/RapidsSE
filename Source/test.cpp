@@ -119,12 +119,9 @@ void vTest4(void)
   
   s32 sKey("ALPHA"_Stz);
   
-  // insert original
-  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),1);
+  for (i8 i_Times = 0; i_Times < 10; i_Times++)
+    pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),i_Times);
   
-  // insert duplicate
-  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),2);
-
   byte* aKey;
   i8 nBytes;
   i8 iValue;
