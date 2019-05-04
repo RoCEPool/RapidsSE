@@ -119,6 +119,15 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
   if (m_i_Duplicate + 1 > C_HASH_ENTRIES)
     return false;
 
+  vTrace("D[%ld,%lld:%lld] %s/%lld %lld\n"_Stz,
+         m_iDepth,
+         m_i_Duplicate,
+         aHeadEntry->m_iHash,
+         
+         aHeadEntry->m_yaKey,
+         aHeadEntry->m_nBytes,
+         aHeadEntry->m_iValue);
+
   // put the duplicate into next free entry
   m_xHashEntry[m_i_Duplicate].m_iHash = aHeadEntry->m_iHash;
   MemLib::vCopy(m_xHashEntry[m_i_Duplicate].m_yaKey,
@@ -148,12 +157,22 @@ void HashBuffer::vHandleOccupied(i8 i_Entry, byte* yaKey, i8 nBytes, i8 iValue)
 {
   // is it a key duplicate or a hashcollision?
   if (nBytes == m_xHashEntry[i_Entry].m_nBytes &&
-      MemLib::bCompareBytes(m_xHashEntry[i_Entry].m_yaKey,yaKey,nBytes))
+      MemLib::bCompareBytes(m_xHashEntry[i_Entry].m_yaKey,yaKey,nBytes)) {
     // its a key duplicate
     m_pHashMap->vAppendDuplicate(&m_xHashEntry[i_Entry],iValue);
-  else
+  }
+  else {
+    vTrace("o[%ld,%lld:%lld] %s/%lld %lld\n"_Stz,
+           m_iDepth,
+           i_Entry,
+           m_xHashEntry[i_Entry].m_iHash,
+           
+           yaKey,
+           nBytes,
+           iValue);
     // its a hash collision
     vInsertCollision(yaKey,nBytes,iValue);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,6 +187,15 @@ void HashBuffer::vInsert(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
     vHandleOccupied(i_Entry,yaKey,nBytes,iValue);
     return;
   }
+  
+  vTrace("I[%ld,%lld:%lld] %s/%lld %lld\n"_Stz,
+         m_iDepth,
+         i_Entry,
+         iHash,
+         
+         yaKey,
+         nBytes,
+         iValue);
   
   m_xHashEntry[i_Entry].m_iHash = iHash;
   MemLib::vCopy(m_xHashEntry[i_Entry].m_yaKey,yaKey,nBytes,CN_HASHBUFFER);
@@ -188,10 +216,20 @@ void HashBuffer::vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue)
   
   i8 iHashRev = HshLib::iHash(ayKeyReverse,nBytes);
   
-  i8 i_Colide = iHashRev % C_HASH_COLLIDES;
-  if (! m_paCollides[i_Colide])
-    m_paCollides[i_Colide] = new HashBuffer(m_pHashMap,m_iDepth+1);
-  m_paCollides[i_Colide]->vInsert(iHashRev,yaKey,nBytes,iValue);
+  i8 i_Collide = iHashRev % C_HASH_COLLIDES;
+  
+  vTrace("C[%ld,%lld:%lld]: %s/%lld %lld\n"_Stz,
+         m_iDepth,
+         i_Collide,
+         iHashRev,
+         
+         ayKeyReverse,
+         nBytes,
+         iValue);
+  
+  if (! m_paCollides[i_Collide])
+    m_paCollides[i_Collide] = new HashBuffer(m_pHashMap,m_iDepth+1);
+  m_paCollides[i_Collide]->vInsert(iHashRev,yaKey,nBytes,iValue);
 }
 
 
