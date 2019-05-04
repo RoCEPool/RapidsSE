@@ -24,6 +24,7 @@ namespace Structures
     static i8 iHash(byte* yaKey, i8 nBytes, i8 iDepth);
   
     bool bEqualTo(byte* yaKey, i8 nBytes);
+    void vSet(HashEntry* aSrcEntry, i8 iAltValue);
     void vSet(byte* yaKey, i8 nBytes, i8 iValue, i8 iHash);
   };
   

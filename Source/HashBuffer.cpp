@@ -96,7 +96,7 @@ HashBuffer::~HashBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append a key,value duplicate onto this hash buffer                         */
 /*----------------------------------------------------------------------------*/
-bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
+bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iAltValue)
 {
   // check this buffer is used to hold duplicates
   RASSERT(m_bDuplicates);
@@ -105,11 +105,8 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
   if (m_i_Duplicate + 1 > C_HASH_ENTRIES)
     return false;
   
-  // put the duplicate into next free entry but with new value
-  m_xHashEntry[m_i_Duplicate].vSet(aHeadEntry->m_yaKey,
-                                   aHeadEntry->m_nBytes,
-                                   iValue,
-                                   aHeadEntry->m_iHash);
+  // put the duplicate into next free entry but with alt value
+  m_xHashEntry[m_i_Duplicate].vSet(aHeadEntry,iAltValue);
   
   // this new duplicate enty points to the current dupe head
   m_xHashEntry[m_i_Duplicate].m_aDupeChain = aHeadEntry->m_aDupeChain;

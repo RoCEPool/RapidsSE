@@ -42,7 +42,7 @@ namespace Structures
     HashBuffer(HashMap* pHashMap, HashBuffer* pParent, i8 iArc, bool bDuplicates);
     ~HashBuffer(void) noexcept(false);
   
-    bool bAppendDuplicate(HashEntry* aHeadEntry, i8 iValue);
+    bool bAppendDuplicate(HashEntry* aHeadEntry, i8 iAltValue);
     void vInsertEntry(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue);
 
   private:

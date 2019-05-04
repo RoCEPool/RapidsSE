@@ -79,6 +79,17 @@ bool HashEntry::bEqualTo(byte* yaKey, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set entry contents based on another entry                                  */
+/*----------------------------------------------------------------------------*/
+void HashEntry::vSet(HashEntry* aSrcEntry, i8 iAltValue)
+{
+  vSet(aSrcEntry->m_yaKey,
+       aSrcEntry->m_nBytes,
+       iAltValue,
+       aSrcEntry->m_iHash);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set entry contents                                                         */
 /*----------------------------------------------------------------------------*/
 void HashEntry::vSet(byte* yaKey, i8 nBytes, i8 iValue, i8 iHash)
@@ -88,7 +99,6 @@ void HashEntry::vSet(byte* yaKey, i8 nBytes, i8 iValue, i8 iHash)
   m_iValue = iValue;
   
   m_iHash = iHash;
-
 }
 
 /*============================================================================*/
