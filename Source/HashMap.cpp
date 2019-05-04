@@ -95,8 +95,8 @@ HashMap::~HashMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void HashMap::vAnalysis(void)
 {
-  vTrace("HM: with %lld entries/buffer and %lld arcs/buffer\n"
-         "    Buffers %lld Entries %lld ArcEntries %lld µ %lld%% full\n"
+  vTrace("HM: (with %lld entries/buffer and %lld arcs/buffer)\n"
+         "    Buffers %lld Entries %lld ArcEntries %lld µ%lld%% full\n"
          "    DupBuffers %lld DupEntries %lld\n"_Stz,
          
          m_nEntriesPerBuffer,
@@ -109,6 +109,8 @@ void HashMap::vAnalysis(void)
          
          m_nDupBuffers,
          m_nDupEntries);
+  
+  m_pRootBuffer->vAnalysis();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -70,6 +70,8 @@ HashBuffer::HashBuffer(HashMap* pHashMap, HashBuffer* pParent, i8 iArc,
   m_i_Duplicate = 0;
   m_pLinkDuplicates = nullptr;
   
+  m_nEntries = 0;
+  
   // increment number of buffers
   m_pHashMap->m_nBuffers++;
   if (m_bDuplicates)
@@ -89,14 +91,29 @@ HashBuffer::~HashBuffer(void) noexcept(false)
   
   delete m_pLinkDuplicates;
   
-  for (i8 i_Colide = 0; i_Colide < C_HASH_ARCS; i_Colide++)
-    if (m_paCollides[i_Colide])
-      delete m_paCollides[i_Colide];
+  for (i8 i_Arc = 0; i_Arc < C_HASH_ARCS; i_Arc++)
+    if (m_paCollides[i_Arc])
+      delete m_paCollides[i_Arc];
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* print analysis of this hash buffer                                         */
+/*----------------------------------------------------------------------------*/
+void HashBuffer::vAnalysis(void)
+{
+  vTrace("    %s Entries %lld Full %lld%\n"_Stz,
+         m_sDotNotation.aChar(),
+         m_nEntries,
+         IntLib::iPercent(m_nEntries, m_pHashMap->m_nEntriesPerBuffer));
+
+  for (i8 i_Arc = 0; i_Arc < C_HASH_ARCS; i_Arc++)
+    if (m_paCollides[i_Arc])
+      m_paCollides[i_Arc]->vAnalysis();
+}
 
 /*----------------------------------------------------------------------------*/
 /* append a key,value duplicate onto this hash buffer                         */
@@ -120,13 +137,14 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iAltValue)
   aHeadEntry->m_aDupeChain = &m_xHashEntry[m_i_Duplicate];
   
   // increment number of entries
+  m_nEntries++;
   m_pHashMap->m_nEntries++;
   m_pHashMap->m_nDupEntries++;
 
   vDumpEntry(m_i_Duplicate,'D');
 
   m_i_Duplicate++;
-  
+
   return true;
 }
 
@@ -146,6 +164,7 @@ void HashBuffer::vInsertEntry(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
   m_xHashEntry[i_Entry].vSet(yaKey,nBytes,iValue,iHash);
   
   // increment number of entries
+  m_nEntries++;
   m_pHashMap->m_nEntries++;
   
   if (m_iDepth)

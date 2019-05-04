@@ -31,6 +31,8 @@ namespace Structures
     i8 m_i_Duplicate;
     HashBuffer* m_pLinkDuplicates;
   
+    i8 m_nEntries;
+  
     // must be last
     Footer m_xFooter;
 
@@ -41,6 +43,7 @@ namespace Structures
     HashBuffer(HashMap* pHashMap, HashBuffer* pParent, i8 iArc, bool bDuplicates);
     ~HashBuffer(void) noexcept(false);
   
+    void vAnalysis(void);
     bool bAppendDuplicate(HashEntry* aHeadEntry, i8 iAltValue);
     void vInsertEntry(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue);
 
