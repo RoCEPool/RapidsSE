@@ -5,9 +5,8 @@
 
 namespace Structures
 {
-  //static const i8 C_HASH_ENTRIES = (C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(HashEntry);
-  static const i8 C_HASH_ENTRIES = 10;
-  static const i8 C_HASH_COLLIDES = 8;
+  static const i8 C_HASH_ENTRIES = (C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(HashEntry);
+  static const i8 C_HASH_ARCS = 64;
 
   class HashCursor;
   class HashMap;
@@ -27,7 +26,7 @@ namespace Structures
   
     HashEntry   m_xHashEntry[C_HASH_ENTRIES]; // array of entries
   
-    HashBuffer* m_paCollides[C_HASH_COLLIDES]; // child collision buffers
+    HashBuffer* m_paCollides[C_HASH_ARCS]; // child collision buffers
 
     i8 m_i_Duplicate;
     HashBuffer* m_pLinkDuplicates;

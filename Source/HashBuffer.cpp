@@ -64,7 +64,7 @@ HashBuffer::HashBuffer(HashMap* pHashMap, HashBuffer* pParent, i8 iArc,
   }
   
   //m_xHashEntry[]
-  for (i8 i_Collide = 0; i_Collide < C_HASH_COLLIDES; i_Collide++)
+  for (i8 i_Collide = 0; i_Collide < C_HASH_ARCS; i_Collide++)
     m_paCollides[i_Collide] = nullptr;
 
   m_i_Duplicate = 0;
@@ -89,7 +89,7 @@ HashBuffer::~HashBuffer(void) noexcept(false)
   
   delete m_pLinkDuplicates;
   
-  for (i8 i_Colide = 0; i_Colide < C_HASH_COLLIDES; i_Colide++)
+  for (i8 i_Colide = 0; i_Colide < C_HASH_ARCS; i_Colide++)
     if (m_paCollides[i_Colide])
       delete m_paCollides[i_Colide];
 }
@@ -147,6 +147,9 @@ void HashBuffer::vInsertEntry(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
   
   // increment number of entries
   m_pHashMap->m_nEntries++;
+  
+  if (m_iDepth)
+    m_pHashMap->m_nArcEntries++;
 
   vDumpEntry(i_Entry,m_iDepth ? 'C' : 'I');
 }
@@ -204,7 +207,7 @@ void HashBuffer::vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue)
 {
   i8 iHash = HashEntry::iHash(yaKey,nBytes,m_iDepth+1);
 
-  i8 i_Arc = iHash % C_HASH_COLLIDES;
+  i8 i_Arc = iHash % m_pHashMap->m_nArcsPerBuffer;
   
   if (! m_paCollides[i_Arc])
     m_paCollides[i_Arc] = new HashBuffer(m_pHashMap,this,i_Arc,false);
