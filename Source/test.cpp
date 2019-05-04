@@ -117,11 +117,13 @@ void vTest4(void)
 
   HashMap* pHashMap = new HashMap;
   
-  s32 sKey("ALPHA"_Stz);
+  //s32 sKey("ALPHA"_Stz);
+  s32 sKey;
   
-  for (i8 i_Times = 0; i_Times < 10; i_Times++)
+  for (i8 i_Times = 0; i_Times < 100; i_Times++) {
+    sKey.vSprint("Key%02"_Stz,i_Times);
     pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),i_Times);
-  
+  }
   
   HashCursor xCursor(pHashMap);
   
