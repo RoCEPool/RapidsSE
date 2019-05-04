@@ -152,7 +152,7 @@ void HashBuffer::vInsertEntry(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
     return;
   }
   
-  m_xHashEntry[i_Entry].vSet(iHash,yaKey,nBytes,m_iDepth);
+  m_xHashEntry[i_Entry].vSet(iHash,yaKey,nBytes,iValue);
   
   vDumpEntry(&m_xHashEntry[i_Entry],m_iDepth ? 'C' : 'I',i_Entry);
 }
