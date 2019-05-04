@@ -119,15 +119,6 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
   if (m_i_Duplicate + 1 > C_HASH_ENTRIES)
     return false;
   
-  vTrace("D[%ld,%lld:%lld] %s/%lld %lld\n"_Stz,
-         m_iDepth,
-         m_i_Duplicate,
-         aHeadEntry->m_iHash,
-         
-         aHeadEntry->m_yaKey,
-         aHeadEntry->m_nBytes,
-         aHeadEntry->m_iValue);
-  
   // put the duplicate into next free entry but with new value
   m_xHashEntry[m_i_Duplicate].vSet(aHeadEntry->m_iHash,
                                    aHeadEntry->m_yaKey,
@@ -139,6 +130,9 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
   
   // the dupe head for the key point to this entry
   aHeadEntry->m_aDupeChain = &m_xHashEntry[m_i_Duplicate];
+  
+  vDumpEntry(&m_xHashEntry[m_i_Duplicate],'D',m_i_Duplicate);
+
   
   m_i_Duplicate++;
   
@@ -158,24 +152,32 @@ void HashBuffer::vInsertEntry(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
     return;
   }
   
-  vTrace("%c[%ld,%lld:%lld] %s/%lld %lld\n"_Stz,
-         m_iDepth ? 'C' : 'I',
-         
-         m_iDepth,
-         i_Entry,
-         iHash,
-         
-         yaKey,
-         nBytes,
-         iValue);
-  
   m_xHashEntry[i_Entry].vSet(iHash,yaKey,nBytes,m_iDepth);
+  
+  vDumpEntry(&m_xHashEntry[i_Entry],m_iDepth ? 'C' : 'I',i_Entry);
 }
 
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump given entry                                                           */
+/*----------------------------------------------------------------------------*/
+void HashBuffer::vDumpEntry(HashEntry* aHashEntry, char cIndicator, i8 i_Entry)
+{
+  vTrace("%c[%ld,%lld:%08x] %s/%lld/ %lld\n"_Stz,
+         cIndicator,
+         
+         m_iDepth,
+         i_Entry,
+         aHashEntry->m_iHash,
+         
+         aHashEntry->m_yaKey,
+         aHashEntry->m_nBytes,
+         aHashEntry->m_iValue);
+}
 
 /*----------------------------------------------------------------------------*/
 /* handle an occupation                                                       */
@@ -189,16 +191,8 @@ void HashBuffer::vHandleOccupied(i8 i_Entry, byte* yaKey, i8 nBytes, i8 iValue)
     m_pHashMap->vAppendDuplicate(&m_xHashEntry[i_Entry],iValue);
   }
   else {
-    vTrace("o[%ld,%lld:%lld] %s/%lld %lld\n"_Stz,
-           m_iDepth,
-           i_Entry,
-           m_xHashEntry[i_Entry].m_iHash,
-           
-           yaKey,
-           nBytes,
-           iValue);
     // its a hash collision
-    
+    vDumpEntry(&m_xHashEntry[i_Entry],'o',i_Entry);
     vInsertCollision(yaKey,nBytes,iValue);
   }
 }
