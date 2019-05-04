@@ -79,7 +79,7 @@ bool HashEntry::bEqualTo(byte* yaKey, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set entry contents based on another entry                                  */
+/* set entry based on another entry (same key but alternate value)            */
 /*----------------------------------------------------------------------------*/
 void HashEntry::vSet(HashEntry* aSrcEntry, i8 iAltValue)
 {
@@ -90,7 +90,7 @@ void HashEntry::vSet(HashEntry* aSrcEntry, i8 iAltValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set entry contents                                                         */
+/* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
 void HashEntry::vSet(byte* yaKey, i8 nBytes, i8 iValue, i8 iHash)
 {
