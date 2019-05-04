@@ -81,12 +81,14 @@ bool HashEntry::bEqualTo(byte* yaKey, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* set entry contents                                                         */
 /*----------------------------------------------------------------------------*/
-void HashEntry::vSet(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
+void HashEntry::vSet(byte* yaKey, i8 nBytes, i8 iValue, i8 iHash)
 {
-  m_iHash = iHash;
   MemLib::vCopy(m_yaKey,yaKey,nBytes,CN_HASHBUFFER);
   m_nBytes = nBytes;
   m_iValue = iValue;
+  
+  m_iHash = iHash;
+
 }
 
 /*============================================================================*/

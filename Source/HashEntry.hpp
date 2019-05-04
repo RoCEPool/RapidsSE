@@ -9,11 +9,12 @@ namespace Structures
   class HashEntry
   {
   public:
-    i8   m_iHash;
     byte m_yaKey[32];
     i8   m_nBytes;
     i8   m_iValue;
-  
+
+    i8   m_iHash;
+
     HashEntry* m_aDupeChain;
 
   public:
@@ -23,7 +24,7 @@ namespace Structures
     static i8 iHash(byte* yaKey, i8 nBytes, i8 iDepth);
   
     bool bEqualTo(byte* yaKey, i8 nBytes);
-    void vSet(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue);
+    void vSet(byte* yaKey, i8 nBytes, i8 iValue, i8 iHash);
   };
   
   HashEntry* _pHashEntry(void* aAddr);

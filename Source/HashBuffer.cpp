@@ -106,10 +106,10 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
     return false;
   
   // put the duplicate into next free entry but with new value
-  m_xHashEntry[m_i_Duplicate].vSet(aHeadEntry->m_iHash,
-                                   aHeadEntry->m_yaKey,
+  m_xHashEntry[m_i_Duplicate].vSet(aHeadEntry->m_yaKey,
                                    aHeadEntry->m_nBytes,
-                                   iValue);
+                                   iValue,
+                                   aHeadEntry->m_iHash);
   
   // this new duplicate enty points to the current dupe head
   m_xHashEntry[m_i_Duplicate].m_aDupeChain = aHeadEntry->m_aDupeChain;
@@ -138,7 +138,7 @@ void HashBuffer::vInsertEntry(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
     return;
   }
   
-  m_xHashEntry[i_Entry].vSet(iHash,yaKey,nBytes,iValue);
+  m_xHashEntry[i_Entry].vSet(yaKey,nBytes,iValue,iHash);
   
   vDumpEntry(i_Entry,m_iDepth ? 'C' : 'I');
 }
