@@ -19,7 +19,8 @@ namespace Structures
   public:
     HashEntry(void);
     ~HashEntry(void) noexcept(false);
-
+  
+    static i8 iHash(byte* yaKey, i8 nBytes, i8 iDepth);
   };
   
   HashEntry* _pHashEntry(void* aAddr);
