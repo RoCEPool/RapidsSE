@@ -829,6 +829,26 @@ void RowCoder::vEncodeVchSmall(Datum* pDatum, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* hash column                                                                */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vHashColumn(Datum* pDatum, Column* pCol)
+{
+  // hash the column value only if part of partition key
+  if (! pCol->bIsPartitionKey())
+    return;
+  
+  // compute hash of this value
+  i8 iHash;
+  if (DM_VCH == pCol->eDatumType())
+    iHash = HshLib::iHash(pDatum->m_xWsp.aArea(),sizeof(w8));
+  else
+    iHash = HshLib::iHash(&pDatum->m_iInt,sizeof(w8));
+  
+  // inc it to the running hash
+  m_pEncodeNub->vHashInc(iHash);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set 4bit meta nibble encoding for column value                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vMetaNibble(i8 i_Column, eMN eMetaNibble)

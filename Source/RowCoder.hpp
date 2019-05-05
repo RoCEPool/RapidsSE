@@ -92,6 +92,8 @@ namespace Data
     void vEncodeVchShoco(Datum* pDatum, Column* pCol);
     void vEncodeVchSmall(Datum* pDatum, Column* pCol);
   
+    void vHashColumn(Datum* pDatum, Column* pCol);
+  
     void vMetaNibble(i8 i_Column, eMN eMetaNibble);
     
     void vRecode(i8 i_IntoHead, RowNub* pFromNub, HeadLine* aFromHead);
