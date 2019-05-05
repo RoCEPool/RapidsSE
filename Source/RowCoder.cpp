@@ -401,7 +401,7 @@ void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    vDataPut(pDatum->m_iInt,eEncoding);
+    vDataPut(pDatum->m_iInt,nBytesEncoded);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -482,7 +482,7 @@ void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    vDataPut(pDatum->m_iInt,(eMN)nBytesEncoded);
+    vDataPut(pDatum->m_iInt,nBytesEncoded);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -525,7 +525,7 @@ void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    vDataPut(pDatum->m_iInt,eEncoding);
+    vDataPut(pDatum->m_iInt,nBytesEncoded);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -566,7 +566,7 @@ void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    vDataPut(pDatum->m_iInt,eEncoding);
+    vDataPut(pDatum->m_iInt,nBytesEncoded);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -607,7 +607,7 @@ void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    vDataPut(pDatum->m_iInt,eEncoding);
+    vDataPut(pDatum->m_iInt,nBytesEncoded);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -648,7 +648,7 @@ void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    vDataPut(pDatum->m_iInt,eEncoding);
+    vDataPut(pDatum->m_iInt,nBytesEncoded);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -689,7 +689,7 @@ void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    vDataPut(pDatum->m_iInt,eEncoding);
+    vDataPut(pDatum->m_iInt,nBytesEncoded);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -792,7 +792,7 @@ void RowCoder::vEncodeVchShoco(Datum* pDatum, Column* pCol)
   MemLib::vCopy(aWithinTail,caShoco,nCompressed,CN_ROWBUFFER);
   
   // set data for column value as the index of the shoco cache line
-  vDataPut(i_Shoco,MN_2B);
+  vDataPut(i_Shoco,2);
   m_i_IntoOffset += 2;
   vUsageIncEncoded(i_Column,2 + 2 + nCompressed);
   
