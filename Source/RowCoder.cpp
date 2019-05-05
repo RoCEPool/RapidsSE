@@ -372,7 +372,8 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDataPut(w8 wDatum, i8 nBytes)
 {
-  m_aHeadLine->vPut(m_i_IntoOffset,wDatum,nBytes);
+  if (nBytes)
+    m_aHeadLine->vPut(m_i_IntoOffset,wDatum,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -400,8 +401,7 @@ void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
   vMetaNibble(i_Column,eEncoding);
   
   // set n-byte data for column value
-  if (nBytesEncoded)
-    vDataPut(pDatum->m_iInt,nBytesEncoded);
+  vDataPut(pDatum->m_iInt,nBytesEncoded);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -440,6 +440,9 @@ void RowCoder::vEncodeBol(Datum* pDatum, Column* pCol)
   // set 4bit meta data for column value
   vMetaNibble(i_Column,eEncoding);
   
+  RASSERT(0 == nBytesEncoded);
+  vDataPut(pDatum->m_iInt,nBytesEncoded);
+
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
   
@@ -481,8 +484,7 @@ void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
   vMetaNibble(i_Column,eEncoding);
   
   // set n-byte data for column value
-  if (nBytesEncoded)
-    vDataPut(pDatum->m_iInt,nBytesEncoded);
+  vDataPut(pDatum->m_iInt,nBytesEncoded);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -524,8 +526,7 @@ void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
   vMetaNibble(i_Column,eEncoding);
   
   // set n-byte data for column value
-  if (nBytesEncoded)
-    vDataPut(pDatum->m_iInt,nBytesEncoded);
+  vDataPut(pDatum->m_iInt,nBytesEncoded);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -565,8 +566,7 @@ void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
   vMetaNibble(i_Column,eEncoding);
   
   // set n-byte data for column value
-  if (nBytesEncoded)
-    vDataPut(pDatum->m_iInt,nBytesEncoded);
+  vDataPut(pDatum->m_iInt,nBytesEncoded);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -606,8 +606,7 @@ void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
   vMetaNibble(i_Column,eEncoding);
   
   // set n-byte data for column value
-  if (nBytesEncoded)
-    vDataPut(pDatum->m_iInt,nBytesEncoded);
+  vDataPut(pDatum->m_iInt,nBytesEncoded);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -647,8 +646,7 @@ void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
   vMetaNibble(i_Column,eEncoding);
   
   // set n-byte data for column value
-  if (nBytesEncoded)
-    vDataPut(pDatum->m_iInt,nBytesEncoded);
+  vDataPut(pDatum->m_iInt,nBytesEncoded);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -688,8 +686,7 @@ void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
   vMetaNibble(i_Column,eEncoding);
   
   // set n-byte data for column value
-  if (nBytesEncoded)
-    vDataPut(pDatum->m_iInt,nBytesEncoded);
+  vDataPut(pDatum->m_iInt,nBytesEncoded);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
