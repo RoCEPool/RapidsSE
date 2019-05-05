@@ -401,7 +401,7 @@ void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    m_aHeadLine->vPut(m_i_IntoOffset,pDatum->m_iInt,eEncoding);
+    vDataPut(m_i_IntoOffset,pDatum->m_iInt,eEncoding);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -482,7 +482,7 @@ void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    m_aHeadLine->vPut(m_i_IntoOffset,pDatum->m_iInt,nBytesEncoded);
+    vDataPut(m_i_IntoOffset,pDatum->m_iInt,(eMN)nBytesEncoded);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -525,7 +525,7 @@ void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    m_aHeadLine->vPut(m_i_IntoOffset,pDatum->m_iInt,eEncoding);
+    vDataPut(m_i_IntoOffset,pDatum->m_iInt,eEncoding);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -566,7 +566,7 @@ void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    m_aHeadLine->vPut(m_i_IntoOffset,pDatum->m_iInt,eEncoding);
+    vDataPut(m_i_IntoOffset,pDatum->m_iInt,eEncoding);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -607,7 +607,7 @@ void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    m_aHeadLine->vPut(m_i_IntoOffset,pDatum->m_iInt,eEncoding);
+    vDataPut(m_i_IntoOffset,pDatum->m_iInt,eEncoding);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -648,7 +648,7 @@ void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    m_aHeadLine->vPut(m_i_IntoOffset,pDatum->m_iInt,eEncoding);
+    vDataPut(m_i_IntoOffset,pDatum->m_iInt,eEncoding);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -689,7 +689,7 @@ void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
   
   // set n-byte data for column value
   if (nBytesEncoded)
-    m_aHeadLine->vPut(m_i_IntoOffset,pDatum->m_iInt,eEncoding);
+    vDataPut(m_i_IntoOffset,pDatum->m_iInt,eEncoding);
   
   m_i_IntoOffset += nBytesEncoded;
   vUsageIncEncoded(i_Column,nBytesEncoded);
@@ -793,7 +793,7 @@ void RowCoder::vEncodeVchShoco(Datum* pDatum, Column* pCol)
   
   // set data for column value as the index of the shoco cache line
   i8 i_Offset = m_i_IntoOffset;
-  m_aHeadLine->vPut(i_Offset,i_Shoco,MN_2B);
+  vDataPut(i_Offset,i_Shoco,MN_2B);
   m_i_IntoOffset += 2;
   vUsageIncEncoded(i_Column,2 + 2 + nCompressed);
   
@@ -824,9 +824,9 @@ void RowCoder::vEncodeVchSmall(Datum* pDatum, Column* pCol)
 {
   i8 i_Column = pCol->iColumnNo();
   
-  m_aHeadLine->vPut(m_i_IntoOffset,
-                  *(w8*)pDatum->m_xWsp.aArea(),
-                  pDatum->m_nChars);
+  vDataPut(m_i_IntoOffset,
+           *(w8*)pDatum->m_xWsp.aArea(),
+           (eMN)pDatum->m_nChars);
   
   m_i_IntoOffset += pDatum->m_nChars;
   vUsageIncEncoded(i_Column,pDatum->m_nChars);
@@ -1696,7 +1696,7 @@ void RowCoder::vRecodeVchShoco(i8 i_IntoHead,
       
       // what gets encoded is the unit difference between head and tail
       i8 i_TailDistance = m_pEncodeNub->iUnitDiff(i_IntoHead,i_IntoTail);
-      m_aHeadLine->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
+      vDataPut(m_i_IntoOffset,i_TailDistance,MN_2B);
       
       //RowCoder::vRecord(hvRec,aIntoHead,pColVec);
       //hvRec->vPrintRow();
@@ -1732,7 +1732,7 @@ void RowCoder::vRecodeVchShoco(i8 i_IntoHead,
     
     // what gets encoded is the unit difference between head and tail
     i8 i_TailDistance = m_pEncodeNub->iUnitDiff(i_IntoHead,i_FoundTail);
-    m_aHeadLine->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
+    vDataPut(m_i_IntoOffset,i_TailDistance,MN_2B);
     
     vUsageIncRecoded(pCol->iColumnNo(),2 );
 
@@ -1760,7 +1760,7 @@ void RowCoder::vRecodeVchShoco(i8 i_IntoHead,
   
   // what gets encoded is the unit difference between head and tail
   i8 i_TailDistance = m_pEncodeNub->iUnitDiff(i_IntoHead,i_IntoTail);
-  m_aHeadLine->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
+  vDataPut(m_i_IntoOffset,i_TailDistance,MN_2B);
   
   vUsageIncRecoded(pCol->iColumnNo(),2 + 2 + nShocoBytes);
 
