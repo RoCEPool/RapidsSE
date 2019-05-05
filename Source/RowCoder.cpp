@@ -173,7 +173,7 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode given datum into cache line                                         */
+/* begin encoding of row into given row nub                                   */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeBegin(RowNub* pEncodeNub)
 {
@@ -181,13 +181,12 @@ void RowCoder::vEncodeBegin(RowNub* pEncodeNub)
   m_pColVec    = m_pEncodeNub->pDesc()->pColumnVec();
   m_pCoda      = m_pEncodeNub->pCoda();
 
-  m_aHeadLine  = m_pEncodeNub->aGetHead(0);
-  m_i_IntoOffset   = 8;
-
+  m_aHeadLine    = m_pEncodeNub->aGetHead(0);
+  m_i_IntoOffset = iBaseOffset(m_pColVec);
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode given datum into cache line                                         */
+/* encode given datum into current row nub                                     */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeDatum(Datum* pDatum, Column* pCol)
 {
@@ -196,17 +195,16 @@ void RowCoder::vEncodeDatum(Datum* pDatum, Column* pCol)
   if (0 == i_Col)
     m_nRows++;
   
-  //! don't encode columns 16+                                             (fix)
-  if (i_Col >= 16)
-    return;
+//  //! don't encode columns 16+                                             (fix)
+//  if (i_Col >= 16)
+//    return;
   
 //  if (1 == i_Col)
 //    oNumBat.vAdd(pDatum->m_iInt);
   
   eDM eDatum = pCol->eDatumType();
   
-  Coda* pCoda = m_pEncodeNub->pCoda();
-  pCoda->m_aeExtDatum[i_Col] = eDatum;
+  m_pCoda->m_aeExtDatum[i_Col] = eDatum;
   
   switch (eDatum) {
     case DM_BCD: vEncodeBcd(pDatum,pCol); return;
@@ -817,6 +815,14 @@ void RowCoder::vEncodeVchSmall(Datum* pDatum, Column* pCol)
   
   m_i_IntoOffset += pDatum->m_nChars;
   vUsageIncEncoded(i_Column,pDatum->m_nChars);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set 4bit meta nibble encoding for column value                             */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vMetaNibble(i8 i_Column, eMN eMetaNibble)
+{
+  m_aHeadLine->vMetaNibble(i_Column,eMetaNibble);
 }
 
 /*----------------------------------------------------------------------------*/
