@@ -47,21 +47,36 @@ HashEntry::~HashEntry(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 i8 HashEntry::iHash(byte* yaKey, i8 nBytes, i8 iDepth)
 {
-  if (0 == (iDepth % 2)) {
+  if (! iDepth) {
     i8 iHash = HshLib::iHash(yaKey,nBytes);
     return iHash;
   }
   
-  byte yaKeyRev[32];
+  byte yaKeyRot[32];
+  MemLib::vCopy(yaKeyRot,yaKey,nBytes,CN_NONE);
+  MemLib::vRotate(yaKeyRot,nBytes,iDepth);
   
-  i8 i_Src = nBytes - 1;
-  for (i8 i_Dst = 0; i_Dst < nBytes; i_Dst++, i_Src--)
-    yaKeyRev[i_Dst] = yaKey[i_Src];
-  
-  i8 iHashRev = HshLib::iHash(yaKeyRev,nBytes);
-
-  return iHashRev;
+  i8 iHash = HshLib::iHash(yaKeyRot,nBytes);
+  return iHash;
 }
+/*----------------------------------------------------------------------------*/
+//i8 HashEntry::iHash(byte* yaKey, i8 nBytes, i8 iDepth)
+//{
+//  if (0 == (iDepth % 2)) {
+//    i8 iHash = HshLib::iHash(yaKey,nBytes);
+//    return iHash;
+//  }
+//
+//  byte yaKeyRev[32];
+//
+//  i8 i_Src = nBytes - 1;
+//  for (i8 i_Dst = 0; i_Dst < nBytes; i_Dst++, i_Src--)
+//    yaKeyRev[i_Dst] = yaKey[i_Src];
+//
+//  i8 iHashRev = HshLib::iHash(yaKeyRev,nBytes);
+//
+//  return iHashRev;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

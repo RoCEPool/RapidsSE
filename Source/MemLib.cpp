@@ -546,11 +546,11 @@ void MemLib::vReset(void)
 void MemLib::vRotate(void* avArg, i8 nBytes, i8 nBy)
 {
   byte yaFront[nBy];
-  
+
   MemLib::vCopy(yaFront,avArg,nBy,CN_NONE);
   
-  MemLib::vMove(avArg,(byte*)avArg+nBy,nBy,CN_NONE);
-  
+  MemLib::vMove(avArg,(byte*)avArg+nBy,nBytes-nBy,CN_NONE);
+
   MemLib::vCopy((byte*)avArg + nBytes - nBy,yaFront,nBy,CN_NONE);
 }
 
