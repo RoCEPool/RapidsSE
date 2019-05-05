@@ -43,40 +43,78 @@ HashEntry::~HashEntry(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* hash a key based on buffer depth                                           */
+/* hash a key for arcing based on buffer depth                                */
 /*----------------------------------------------------------------------------*/
-i8 HashEntry::iHash(byte* yaKey, i8 nBytes, i8 iDepth)
+i8 HashEntry::iHashArc(byte* yaKey, i8 nBytes, i8 iDepth)
 {
-  if (! iDepth) {
-    i8 iHash = HshLib::iHash(yaKey,nBytes);
-    return iHash;
+  i8 iHashArc;
+  
+  if (0 == (iDepth % 2))
+    iHashArc = iHashRotate(yaKey,nBytes,iDepth);
+  else
+    iHashArc = iHashKey(yaKey,nBytes);
+
+  return iHashArc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* hash a key for entry based on buffer depth                                 */
+/*----------------------------------------------------------------------------*/
+i8 HashEntry::iHashEntry(byte* yaKey, i8 nBytes, i8 iDepth)
+{
+  i8 iHashEntry = iHashReverse(yaKey,nBytes,iDepth);
+  
+  return iHashEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* hash a key                                                                 */
+/*----------------------------------------------------------------------------*/
+i8 HashEntry::iHashKey(byte* yaKey, i8 nBytes)
+{
+  i8 iHashKey = HshLib::iHash(yaKey,nBytes);
+  
+  return iHashKey;
+}
+
+/*----------------------------------------------------------------------------*/
+/* hash a key by first reversing it                                           */
+/*----------------------------------------------------------------------------*/
+i8 HashEntry::iHashReverse(byte* yaKey, i8 nBytes, i8 nByChars)
+{
+  if (! nByChars) {
+    i8 iHashRev = iHashKey(yaKey,nBytes);
+    return iHashRev;
+  }
+  
+  byte yaKeyRev[32];
+  
+  i8 i_Src = nBytes - 1;
+  for (i8 i_Dst = 0; i_Dst < nBytes; i_Dst++, i_Src--)
+    yaKeyRev[i_Dst] = yaKey[i_Src];
+  
+  i8 iHashRev = HshLib::iHash(yaKeyRev,nBytes);
+  
+  return iHashRev;
+}
+
+/*----------------------------------------------------------------------------*/
+/* hash a key by first reversing it                                           */
+/*----------------------------------------------------------------------------*/
+i8 HashEntry::iHashRotate(byte* yaKey, i8 nBytes, i8 nByChars)
+{
+  if (! nByChars) {
+    i8 iHashRot = HshLib::iHash(yaKey,nBytes);
+    return iHashRot;
   }
   
   byte yaKeyRot[32];
   MemLib::vCopy(yaKeyRot,yaKey,nBytes,CN_NONE);
-  MemLib::vRotate(yaKeyRot,nBytes,iDepth);
+  MemLib::vRotate(yaKeyRot,nBytes,nByChars);
   
-  i8 iHash = HshLib::iHash(yaKeyRot,nBytes);
-  return iHash;
+  i8 iHashRot = HshLib::iHash(yaKeyRot,nBytes);
+  return iHashRot;
 }
-/*----------------------------------------------------------------------------*/
-//i8 HashEntry::iHash(byte* yaKey, i8 nBytes, i8 iDepth)
-//{
-//  if (0 == (iDepth % 2)) {
-//    i8 iHash = HshLib::iHash(yaKey,nBytes);
-//    return iHash;
-//  }
-//
-//  byte yaKeyRev[32];
-//
-//  i8 i_Src = nBytes - 1;
-//  for (i8 i_Dst = 0; i_Dst < nBytes; i_Dst++, i_Src--)
-//    yaKeyRev[i_Dst] = yaKey[i_Src];
-//
-//  i8 iHashRev = HshLib::iHash(yaKeyRev,nBytes);
-//
-//  return iHashRev;
-//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

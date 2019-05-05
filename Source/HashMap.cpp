@@ -97,6 +97,8 @@ HashMap::~HashMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void HashMap::vAnalysis(void)
 {
+  m_pRootBuffer->vAnalysis();
+  
   i8 iFullTree = (i8)pow(m_nArcsPerBuffer,m_iMaxDepth);
   vTrace("HM: (with %lld entries/buffer and %lld arcs/buffer)\n"
          "    Buffers %lld MaxDepth %lld manifested %lld%% of %lld buffers\n"
@@ -118,7 +120,6 @@ void HashMap::vAnalysis(void)
          m_nDupBuffers,
          m_nDupEntries);
   
-  m_pRootBuffer->vAnalysis();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,9 +168,9 @@ bool HashMap::bExists(byte* aKey, i8 nBytes, i8 iValue)
 /*----------------------------------------------------------------------------*/
 void HashMap::vInsert(byte* yaKey, i8 nBytes, i8 iValue)
 {
-  i8 iHash = HashEntry::iHash(yaKey,nBytes,0);
+  i8 iEntryHash = HashEntry::iHashEntry(yaKey,nBytes,0);
   
-  m_pRootBuffer->vInsertEntry(iHash,yaKey,nBytes,iValue);
+  m_pRootBuffer->vInsertEntry(iEntryHash,yaKey,nBytes,iValue);
 }
 
 /*----------------------------------------------------------------------------*/

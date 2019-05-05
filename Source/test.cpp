@@ -115,28 +115,28 @@ void vTest4(void)
 {
   vTrace("vTest4\n"_Stz);
 
-  HashMap* pHashMap = new HashMap(true,13,8);
+  HashMap* pHashMap = new HashMap(false,0,8);
   
   //s32 sKey("ALPHA"_Stz);
   s32 sKey;
   
   for (i8 nDupes = 0; nDupes < 1; nDupes++) {
-    for (i8 i_Times = 0; i_Times < 100; i_Times++) {
-      sKey.vSprint("Key%02lld"_Stz,i_Times);
+    for (i8 i_Times = 0; i_Times < 100000; i_Times++) {
+      sKey.vSprint("%02lld"_Stz,i_Times);
       pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),i_Times);
     }
   }
   
   HashCursor xCursor(pHashMap);
   
-  while (xCursor.bIterate()) {
-    StrLib::vCopyLen(sKey.aChar(),(char*)xCursor.m_yaKey,xCursor.m_nBytes);
-    vTrace("[%lld] %s/%lld %lld\n"_Stz,
-           xCursor.m_ia_HashEntry[xCursor.m_i_Stack],
-           sKey.aChar(),
-           xCursor.m_nBytes,
-           xCursor.m_iValue);
-  }
+//  while (xCursor.bIterate()) {
+//    StrLib::vCopyLen(sKey.aChar(),(char*)xCursor.m_yaKey,xCursor.m_nBytes);
+//    vTrace("[%lld] %s/%lld %lld\n"_Stz,
+//           xCursor.m_ia_HashEntry[xCursor.m_i_Stack],
+//           sKey.aChar(),
+//           xCursor.m_nBytes,
+//           xCursor.m_iValue);
+//  }
   
   pHashMap->vAnalysis();
   
