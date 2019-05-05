@@ -183,10 +183,11 @@ void RowCoder::vEncodeBegin(RowNub* pEncodeNub)
 
   m_aHeadLine    = m_pEncodeNub->aGetHead(0);
   m_i_IntoOffset = iBaseOffset(m_pColVec);
+  m_i_FromOffset = 0;
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode given datum into current row nub                                     */
+/* encode given datum into current row nub                                    */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeDatum(Datum* pDatum, Column* pCol)
 {
@@ -227,6 +228,12 @@ void RowCoder::vEncodeDatum(Datum* pDatum, Column* pCol)
 void RowCoder::vEncodeEnd(void)
 {
   m_pEncodeNub = nullptr;
+  m_pColVec    = nullptr;
+  m_pCoda      = nullptr;
+  
+  m_aHeadLine    = nullptr;
+  m_i_IntoOffset = C_UNKNOWN;
+  m_i_FromOffset = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -359,6 +366,14 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
 /*----------------------------------------------------------------------------*/
 /*-- Private Non-Static ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* put encoded datum into row of current nub                                  */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDataPut(i8 i_Offset, w8 wWord, eMN eMetaNibble)
+{
+  m_aHeadLine->vPut(i_Offset,wWord,eMetaNibble);
+}
 
 /*----------------------------------------------------------------------------*/
 /* encode decimal                                                             */
