@@ -26,7 +26,7 @@ namespace Structures
   
     HashEntry   m_xHashEntry[C_HASH_ENTRIES]; // array of entries
   
-    HashBuffer* m_paCollides[C_HASH_ARCS]; // child collision buffers
+    HashBuffer* m_paArcs[C_HASH_ARCS]; // child collision buffers
 
     i8 m_i_Duplicate;
     HashBuffer* m_pLinkDuplicates;

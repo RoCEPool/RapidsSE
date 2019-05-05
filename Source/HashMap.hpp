@@ -12,14 +12,17 @@ namespace Structures
 
   private:
   
-    i8 m_nEntriesPerBuffer;
-    i8 m_nArcsPerBuffer;
+    bool m_bTrace;
+    i8   m_nEntriesPerBuffer;
+    i8   m_nArcsPerBuffer;
 
     HashBuffer* m_pRootBuffer;
     HashBuffer* m_pRootDuplicates;
 
     i8 m_nBuffers;
+    i8 m_iMaxDepth;
     i8 m_nDupBuffers;
+  
     i8 m_nEntries;
     i8 m_nArcEntries;
     i8 m_nDupEntries;
@@ -32,7 +35,7 @@ namespace Structures
     void* operator new(size_t, HashMap* pHashMap);
     void  operator delete(void* pHashMapAddress);
  
-    HashMap(i8 nEntriesPerBuffer=0, i8 nArcsPerBuffer=0);
+    HashMap(bool bTrace=false, i8 nEntriesPerBuffer=0, i8 nArcsPerBuffer=0);
     ~HashMap(void) noexcept(false);
   
     void vAnalysis(void);

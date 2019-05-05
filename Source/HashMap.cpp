@@ -52,11 +52,12 @@ void HashMap::operator delete(void* pHashMapAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HashMap::HashMap(i8 nEntriesPerBuffer, i8 nArcsPerBuffer)
+HashMap::HashMap(bool bTrace, i8 nEntriesPerBuffer, i8 nArcsPerBuffer)
 : Object(CN_HASHMAP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
   
+  m_bTrace            = bTrace;
   m_nEntriesPerBuffer = nEntriesPerBuffer ? nEntriesPerBuffer : C_HASH_ENTRIES;
   m_nArcsPerBuffer    = nArcsPerBuffer    ? nArcsPerBuffer    : C_HASH_ARCS;
 
@@ -64,6 +65,7 @@ HashMap::HashMap(i8 nEntriesPerBuffer, i8 nArcsPerBuffer)
   m_pRootDuplicates = nullptr;
 
   m_nBuffers    = 0;
+  m_iMaxDepth   = 0;
   m_nDupBuffers = 0;
   
   m_nEntries    = 0;
@@ -95,17 +97,23 @@ HashMap::~HashMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void HashMap::vAnalysis(void)
 {
+  i8 iFullTree = (i8)pow(m_nArcsPerBuffer,m_iMaxDepth);
   vTrace("HM: (with %lld entries/buffer and %lld arcs/buffer)\n"
-         "    Buffers %lld Entries %lld ArcEntries %lld µ%lld%% full\n"
+         "    Buffers %lld MaxDepth %lld manifested %lld%% of %lld buffers\n"
+         "    Entries %lld ArcEntries %lld µ%lld%% full\n"
          "    DupBuffers %lld DupEntries %lld\n"_Stz,
          
          m_nEntriesPerBuffer,
          m_nArcsPerBuffer,
 
          m_nBuffers,
+         m_iMaxDepth,
+         IntLib::iPercent(m_nBuffers,iFullTree),
+         iFullTree,
+         
          m_nEntries,
          m_nArcEntries,
-         IntLib::iPercent(m_nEntries,m_nEntriesPerBuffer*m_nBuffers),
+         IntLib::iPercent(m_nEntries,m_nEntriesPerBuffer * m_nBuffers),
          
          m_nDupBuffers,
          m_nDupEntries);

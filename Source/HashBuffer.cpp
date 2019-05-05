@@ -64,8 +64,8 @@ HashBuffer::HashBuffer(HashMap* pHashMap, HashBuffer* pParent, i8 iArc,
   }
   
   //m_xHashEntry[]
-  for (i8 i_Collide = 0; i_Collide < C_HASH_ARCS; i_Collide++)
-    m_paCollides[i_Collide] = nullptr;
+  for (i8 i_Arc = 0; i_Arc < C_HASH_ARCS; i_Arc++)
+    m_paArcs[i_Arc] = nullptr;
 
   m_i_Duplicate = 0;
   m_pLinkDuplicates = nullptr;
@@ -76,7 +76,10 @@ HashBuffer::HashBuffer(HashMap* pHashMap, HashBuffer* pParent, i8 iArc,
   m_pHashMap->m_nBuffers++;
   if (m_bDuplicates)
     m_pHashMap->m_nDupBuffers++;
-
+  else
+    if (m_iDepth > m_pHashMap->m_iMaxDepth)
+      m_pHashMap->m_iMaxDepth = m_iDepth;
+  
   _checkInitialised_(CN_HASHBUFFER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
@@ -92,8 +95,8 @@ HashBuffer::~HashBuffer(void) noexcept(false)
   delete m_pLinkDuplicates;
   
   for (i8 i_Arc = 0; i_Arc < C_HASH_ARCS; i_Arc++)
-    if (m_paCollides[i_Arc])
-      delete m_paCollides[i_Arc];
+    if (m_paArcs[i_Arc])
+      delete m_paArcs[i_Arc];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,8 +114,8 @@ void HashBuffer::vAnalysis(void)
          IntLib::iPercent(m_nEntries, m_pHashMap->m_nEntriesPerBuffer));
 
   for (i8 i_Arc = 0; i_Arc < C_HASH_ARCS; i_Arc++)
-    if (m_paCollides[i_Arc])
-      m_paCollides[i_Arc]->vAnalysis();
+    if (m_paArcs[i_Arc])
+      m_paArcs[i_Arc]->vAnalysis();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,7 +144,8 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iAltValue)
   m_pHashMap->m_nEntries++;
   m_pHashMap->m_nDupEntries++;
 
-  vDumpEntry(m_i_Duplicate,'D');
+  if (m_pHashMap->m_bTrace)
+    vDumpEntry(m_i_Duplicate,'D');
 
   m_i_Duplicate++;
 
@@ -154,6 +158,9 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iAltValue)
 void HashBuffer::vInsertEntry(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
 {
   i8 i_Entry = iHash % m_pHashMap->m_nEntriesPerBuffer;
+  
+  if (0 == m_iDepth)
+    vTrace("Hash %10lld\n"_Stz,iHash);
   
   // test if the entry is already in use
   if (C_UNKNOWN != m_xHashEntry[i_Entry].m_iHash) {
@@ -170,7 +177,8 @@ void HashBuffer::vInsertEntry(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
   if (m_iDepth)
     m_pHashMap->m_nArcEntries++;
 
-  vDumpEntry(i_Entry,m_iDepth ? 'C' : 'I');
+  if (m_pHashMap->m_bTrace)
+    vDumpEntry(i_Entry,m_iDepth ? 'C' : 'I');
 }
 
 
@@ -207,7 +215,8 @@ void HashBuffer::vDumpEntry(i8 i_Entry, char cIndicator)
 /*----------------------------------------------------------------------------*/
 void HashBuffer::vHandleOccupied(i8 i_Entry, byte* yaKey, i8 nBytes, i8 iValue)
 {
-  vDumpEntry(i_Entry,'o');
+  if (m_pHashMap->m_bTrace)
+    vDumpEntry(i_Entry,'o');
 
   if (m_xHashEntry[i_Entry].bEqualTo(yaKey,nBytes)) {
     // its a key duplicate
@@ -228,10 +237,10 @@ void HashBuffer::vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue)
 
   i8 i_Arc = iHash % m_pHashMap->m_nArcsPerBuffer;
   
-  if (! m_paCollides[i_Arc])
-    m_paCollides[i_Arc] = new HashBuffer(m_pHashMap,this,i_Arc,false);
+  if (! m_paArcs[i_Arc])
+    m_paArcs[i_Arc] = new HashBuffer(m_pHashMap,this,i_Arc,false);
   
-  m_paCollides[i_Arc]->vInsertEntry(iHash,yaKey,nBytes,iValue);
+  m_paArcs[i_Arc]->vInsertEntry(iHash,yaKey,nBytes,iValue);
 }
 
 
