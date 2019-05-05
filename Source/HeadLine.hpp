@@ -16,7 +16,7 @@ namespace Data
     HeadLine(void);
     ~HeadLine(void) noexcept(false);
   
-    void vPut(i8 i_Offset, w8 wWord, i8 iEncoding);
+    void vPut(i8 i_Offset, w8 wWord, i8 nBytes);
   
     void vSetAll(byte yVal);
 

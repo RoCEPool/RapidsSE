@@ -29,9 +29,9 @@ HeadLine::~HeadLine(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* put encoded datam into cache line                                          */
 /*----------------------------------------------------------------------------*/
-void HeadLine::vPut(i8 i_Offset, w8 wWord, i8 iEncoding)
+void HeadLine::vPut(i8 i_Offset, w8 wWord, i8 nBytes)
 {
-  switch (iEncoding) {
+  switch (nBytes) {
     case 0: return;
     case 1: v1B(i_Offset,wWord); return;
     case 2: v2B(i_Offset,wWord); return;
