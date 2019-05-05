@@ -2385,18 +2385,18 @@ void StrLib::vReverse(char* azDst, char* azSrc)
 /*----------------------------------------------------------------------------*/
 /* vRotate: rotate a string by given number of characters                     */
 /*----------------------------------------------------------------------------*/
-void StrLib::vRotate(char* zArg, i8 nChars)
+void StrLib::vRotate(char* zArg, i8 nBy)
 {
-  i8 nBytes = iLength(zArg);
-  ASSERT(nChars < nBytes);
+  i8 nLen = iLength(zArg);
+  ASSERT(nBy < nLen);
   
-  char caFront[nChars];
+  char caFront[nBy];
   
-  MemLib::vCopy(caFront,zArg,nChars,CN_NONE);
+  MemLib::vCopy(caFront,zArg,nBy,CN_NONE);
   
-  MemLib::vMove(zArg,zArg+nChars,nChars,CN_NONE);
+  MemLib::vMove(zArg,zArg+nBy,nBy,CN_NONE);
   
-  MemLib::vCopy(zArg + nBytes - nChars,caFront,nChars,CN_NONE);
+  MemLib::vCopy(zArg + nLen - nBy,caFront,nBy,CN_NONE);
 }
 
 /*----------------------------------------------------------------------------*/
