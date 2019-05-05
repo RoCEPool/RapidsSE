@@ -76,9 +76,6 @@ HashBuffer::HashBuffer(HashMap* pHashMap, HashBuffer* pParent, i8 iArc,
   m_pHashMap->m_nBuffers++;
   if (m_bDuplicates)
     m_pHashMap->m_nDupBuffers++;
-  else
-    if (m_iDepth > m_pHashMap->m_iMaxDepth)
-      m_pHashMap->m_iMaxDepth = m_iDepth;
   
   _checkInitialised_(CN_HASHBUFFER);
   
@@ -170,15 +167,18 @@ void HashBuffer::vInsertEntry(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue)
   
   m_xHashEntry[i_Entry].vSet(yaKey,nBytes,iValue,iHash);
   
+  if (m_pHashMap->m_bTrace)
+    vDumpEntry(i_Entry,m_iDepth ? 'C' : 'I');
+  
   // increment number of entries
   m_nEntries++;
   m_pHashMap->m_nEntries++;
   
   if (m_iDepth)
     m_pHashMap->m_nArcEntries++;
-
-  if (m_pHashMap->m_bTrace)
-    vDumpEntry(i_Entry,m_iDepth ? 'C' : 'I');
+  
+  if (m_iDepth > m_pHashMap->m_iMaxDepth)
+    m_pHashMap->m_iMaxDepth = m_iDepth;
 }
 
 

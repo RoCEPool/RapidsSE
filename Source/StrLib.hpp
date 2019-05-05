@@ -248,6 +248,7 @@ namespace Base
     static bool  bReplace(char* pDst, const char* pSrc,
                           const char* pThis, const char* pThat);
     static void  vReverse(char* azDst, char* azSrc);
+    static void  vRotate(char* zArg, i8 nChars);
 
     static bool  bSame(const char* s1, const char* s2);
     static i8    iSize(const char* s);

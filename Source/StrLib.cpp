@@ -2383,6 +2383,23 @@ void StrLib::vReverse(char* azDst, char* azSrc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* vRotate: rotate a string by given number of characters                     */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRotate(char* zArg, i8 nChars)
+{
+  i8 nBytes = iLength(zArg);
+  ASSERT(nChars < nBytes);
+  
+  char caFront[nChars];
+  
+  MemLib::vCopy(caFront,zArg,nChars,CN_NONE);
+  
+  MemLib::vMove(zArg,zArg+nChars,nChars,CN_NONE);
+  
+  MemLib::vCopy(zArg + nBytes - nChars,caFront,nChars,CN_NONE);
+}
+
+/*----------------------------------------------------------------------------*/
 /* bSame: are two arguments equal (no case)                                   */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bSame(const char* pArg1, const char* pArg2)
