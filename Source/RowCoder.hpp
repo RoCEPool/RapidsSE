@@ -535,8 +535,7 @@ namespace Data
         //        }
         
       }
-      
-      
+      eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
       
       return eEncoding;
     }
