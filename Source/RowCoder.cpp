@@ -370,9 +370,9 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
 /*----------------------------------------------------------------------------*/
 /* put encoded datum into row of current nub                                  */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDataPut(w8 wWord, eMN eMetaNibble)
+void RowCoder::vDataPut(w8 wDatum, i8 nBytes)
 {
-  m_aHeadLine->vPut(m_i_IntoOffset,wWord,eMetaNibble);
+  m_aHeadLine->vPut(m_i_IntoOffset,wDatum,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
