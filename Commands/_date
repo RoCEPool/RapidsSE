@@ -41,6 +41,40 @@ time fetch retrieve dteTbl dte_col13;
 time fetch retrieve dteTbl dte_col14;
 time fetch retrieve dteTbl dte_col15;
 
+/*
+ success: 1000000 rows affected
+ time 26ms
+ success: 1000000 rows affected
+ time 68ms
+ success: 1000000 rows affected
+ time 75ms
+ success: 1000000 rows affected
+ time 85ms
+ success: 1000000 rows affected
+ time 95ms
+ success: 1000000 rows affected
+ time 111ms
+ success: 1000000 rows affected
+ time 120ms
+ success: 1000000 rows affected
+ time 147ms
+ success: 1000000 rows affected
+ time 152ms
+ success: 1000000 rows affected
+ time 171ms
+ success: 1000000 rows affected
+ time 174ms
+ success: 1000000 rows affected
+ time 201ms
+ success: 1000000 rows affected
+ time 203ms
+ success: 1000000 rows affected
+ time 228ms
+ success: 1000000 rows affected
+ time 230ms
+ success: 1000000 rows affected
+ time 233ms
+*/
 
 //*============================================================================*/
 /* end                                                                        */
