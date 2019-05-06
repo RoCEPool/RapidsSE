@@ -1991,7 +1991,7 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* 
 {
   i8 i_Column = pCol->iColumnNo();
   eDM eDatumCoda = pCoda->m_aeExtDatum[i_Column];
-  i8 i_LastOffset = iBaseOffset(pCol->pColVec());
+  i8 i_Offset = iBaseOffset(pCol->pColVec());
   eMN eEncoding;
   
   
@@ -2010,7 +2010,7 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* 
         NEVER_REACH;
         
       case DM_BCD:
-        //vDecodeBcd(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+        vDecodeBcdFast(pDatum,aHeadLine,eEncoding,i_Offset);
         break;
       case DM_BOL:
         //vDecodeBol(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
@@ -2025,7 +2025,7 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* 
         //vDecodeFlt(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
         break;
       case DM_INT:
-        vDecodeIntFastCol0(pDatum,aHeadLine,eEncoding,pCoda,i_LastOffset);
+        vDecodeIntFastCol0(pDatum,aHeadLine,eEncoding,pCoda,i_Offset);
         break;
       case DM_IVL:
         //vDecodeIvl(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
@@ -2090,7 +2090,8 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* 
       NEVER_REACH;
       
     case DM_BCD:
-      //vDecodeBcd(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      eEncoding = eGetEncodingExtIntFast(aHeadLine,i_Column,pCoda,i_Offset);
+      vDecodeIntFast(pDatum,aHeadLine,eEncoding,i_Offset);
       break;
     case DM_BOL:
       //vDecodeBol(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
@@ -2105,8 +2106,8 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* 
       //vDecodeFlt(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
     case DM_INT:
-      eEncoding = eGetEncodingExtIntFast(aHeadLine,i_Column,pCoda,i_LastOffset);
-      vDecodeIntFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
+      eEncoding = eGetEncodingExtIntFast(aHeadLine,i_Column,pCoda,i_Offset);
+      vDecodeIntFast(pDatum,aHeadLine,eEncoding,i_Offset);
       break;
     case DM_IVL:
       //vDecodeIvl(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);

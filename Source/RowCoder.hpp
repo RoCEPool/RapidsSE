@@ -362,7 +362,7 @@ namespace Data
       
       switch (eEncoding) {
           
-        case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;               break;
+        case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;          break;
         case MN_1B:   aHeadLine->w8_1BFast(pDatum, i_Offset); break;
         case MN_2B:   aHeadLine->w8_2BFast(pDatum, i_Offset); break;
         case MN_3B:   aHeadLine->w8_3BFast(pDatum, i_Offset); break;
