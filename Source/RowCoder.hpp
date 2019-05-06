@@ -242,9 +242,9 @@ namespace Data
     static void vSetAuxInt(Coda* pIntoCoda, HeadLine* aIntoHead, Column* pCol,
                            eMN eEncoding, i8 i_IntoOffset);
   
-    void vUsageIncEncoded(i8 i_Col, i8 nBytes);
-    void vUsageIncRecoded(i8 i_Col, i8 nBytes);
-    void vUsageIncOops(i8 i_Col, i8 nBytes, i8 nMiss);
+    void vUsageIncEncoded(Column* pCol, i8 nBytes);
+    void vUsageIncRecoded(Column* pCol, i8 nBytes);
+    void vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss);
     void vUsageReset(void);
 
   private:

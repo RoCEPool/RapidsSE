@@ -408,7 +408,7 @@ void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
   // set n-byte data for column value
   vDataPut(pDatum->m_iInt,nBytesEncoded);
   
-  vUsageIncEncoded(i_Column,nBytesEncoded);
+  vUsageIncEncoded(pCol,nBytesEncoded);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -447,7 +447,7 @@ void RowCoder::vEncodeBol(Datum* pDatum, Column* pCol)
   RASSERT(0 == nBytesEncoded);
   vDataPut(pDatum->m_iInt,nBytesEncoded);
   
-  vUsageIncEncoded(i_Column,nBytesEncoded);
+  vUsageIncEncoded(pCol,nBytesEncoded);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -489,7 +489,7 @@ void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
   // set n-byte data for column value
   vDataPut(pDatum->m_iInt,nBytesEncoded);
   
-  vUsageIncEncoded(i_Column,nBytesEncoded);
+  vUsageIncEncoded(pCol,nBytesEncoded);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -530,7 +530,7 @@ void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
   // set n-byte data for column value
   vDataPut(pDatum->m_iInt,nBytesEncoded);
   
-  vUsageIncEncoded(i_Column,nBytesEncoded);
+  vUsageIncEncoded(pCol,nBytesEncoded);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -569,7 +569,7 @@ void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
   // set n-byte data for column value
   vDataPut(pDatum->m_iInt,nBytesEncoded);
   
-  vUsageIncEncoded(i_Column,nBytesEncoded);
+  vUsageIncEncoded(pCol,nBytesEncoded);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -608,7 +608,7 @@ void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
   // set n-byte data for column value
   vDataPut(pDatum->m_iInt,nBytesEncoded);
   
-  vUsageIncEncoded(i_Column,nBytesEncoded);
+  vUsageIncEncoded(pCol,nBytesEncoded);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -647,7 +647,7 @@ void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
   // set n-byte data for column value
   vDataPut(pDatum->m_iInt,nBytesEncoded);
   
-  vUsageIncEncoded(i_Column,nBytesEncoded);
+  vUsageIncEncoded(pCol,nBytesEncoded);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -686,7 +686,7 @@ void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
   // set n-byte data for column value
   vDataPut(pDatum->m_iInt,nBytesEncoded);
   
-  vUsageIncEncoded(i_Column,nBytesEncoded);
+  vUsageIncEncoded(pCol,nBytesEncoded);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -788,7 +788,7 @@ void RowCoder::vEncodeVchShoco(Datum* pDatum, Column* pCol)
   // set data for column value as the index of the shoco cache line
   vDataPut(i_Shoco,2);
   
-  vUsageIncEncoded(i_Column,2 + 2 + nCompressed);
+  vUsageIncEncoded(pCol,2 + 2 + nCompressed);
   
   // set length of the compressed string encoded into tail shoco cache line
   aShocoTail->v1B(C_SHOCO_COMPRESSED_OFFSET,nCompressed);
@@ -820,7 +820,7 @@ void RowCoder::vEncodeVchSmall(Datum* pDatum, Column* pCol)
   vDataPut(*(w8*)pDatum->m_xWsp.aArea(),
            (eMN)pDatum->m_nChars);
   
-  vUsageIncEncoded(i_Column,pDatum->m_nChars);
+  vUsageIncEncoded(pCol,pDatum->m_nChars);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -947,7 +947,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
   // test for re-encoding
   
   if (eThisEncoding == MN_NULL) {
-    vUsageIncRecoded(i_Col,0);
+    vUsageIncRecoded(pCol,0);
     return;
   }
   
@@ -955,7 +955,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
 
     if (eThisEncoding != MN_1B) {
       RASSERT(DM_BCD == pCoda->m_aeExtDatum[i_Col]);
-      vUsageIncRecoded(i_Col,eThisEncoding);
+      vUsageIncRecoded(pCol,eThisEncoding);
      return;
     }
     
@@ -964,13 +964,13 @@ void RowCoder::vRecodeBcd(Column* pCol)
     
     if (i1B < 0 || i1B > 10) {
       RASSERT(DM_BCD == pCoda->m_aeExtDatum[i_Col]);
-      vUsageIncRecoded(i_Col,eThisEncoding);
+      vUsageIncRecoded(pCol,eThisEncoding);
       return;
     }
   }
   
   if (m_pEncodeNub->nHeads() > 1 && pCoda->m_aeExtDatum[i_Col] != DM_TENTH) {
-    vUsageIncRecoded(i_Col,eThisEncoding);
+    vUsageIncRecoded(pCol,eThisEncoding);
     return;
   }
 
@@ -1002,7 +1002,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
       // revise the encoding
       eExtendedEncoding = (eMN)(MN_TENTH_0 + i1B);
       vMetaNibble(i_Col,eExtendedEncoding);
-      vUsageIncRecoded(i_Col,0);
+      vUsageIncRecoded(pCol,0);
 
       // cut the 1B char out of the into head
       m_pEncodeNub->vCut(m_aHeadLine,sizeof(HeadLine),m_i_IntoOffset,1);
@@ -1094,13 +1094,13 @@ void RowCoder::vRecodeDte(Column* pCol)
   i8 i_FirstDate = pCol->iFirstDate();
   
   if (C_UNKNOWN == i_FirstDate) {
-    vUsageIncRecoded(i_Column,nEncodedBytes);
+    vUsageIncRecoded(pCol,nEncodedBytes);
     return;
   }
   
   if (i_Column == i_FirstDate) {
     RASSERT(DM_DTE == pCoda->m_aeExtDatum[i_Column]);
-    vUsageIncRecoded(i_Column,nEncodedBytes);
+    vUsageIncRecoded(pCol,nEncodedBytes);
     return;
   }
   
@@ -1180,7 +1180,7 @@ void RowCoder::vRecodeDte(Column* pCol)
       m_pEncodeNub->vCut(m_aHeadLine,sizeof(HeadLine),m_i_IntoOffset+1,1);
       m_i_IntoOffset--;
     }
-    vUsageIncRecoded(i_Column,1);
+    vUsageIncRecoded(pCol,1);
     return;
   }
   
@@ -1198,7 +1198,7 @@ void RowCoder::vRecodeDte(Column* pCol)
       m_pEncodeNub->vCut(m_aHeadLine,sizeof(HeadLine),m_i_IntoOffset+1,1);
       m_i_IntoOffset--;
     }
-    vUsageIncRecoded(i_Column,1);
+    vUsageIncRecoded(pCol,1);
     return;
   }
   
@@ -1219,7 +1219,7 @@ void RowCoder::vRecodeDte(Column* pCol)
   vMetaNibble(pCol,eThisEncoding);
   m_aHeadLine->v2B(m_i_IntoOffset,iThisDteDays);
 
-  vUsageIncOops(i_Column,2,1);
+  vUsageIncOops(pCol,2,1);
 
 #endif
 }
@@ -1242,7 +1242,7 @@ void RowCoder::vRecodeInt(Column* pCol)
   // leave as int
   i8 i_Col = pCol->iColumnNo();
   eMN eThisEncoding = (eMN)m_aHeadLine->iMetaNibble(i_Col);
-  vUsageIncRecoded(i_Col,eThisEncoding);
+  vUsageIncRecoded(pCol,eThisEncoding);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1267,12 +1267,12 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
     RASSERT(DM_INT == pCoda->m_aeExtDatum[i_Column]);
     
     if (MN_1B != eThisEncoding) {
-      //vUsageIncRecoded(i_Column,nEncodedBytes);
+      //vUsageIncRecoded(pCol,nEncodedBytes);
       return false;
     }
     
     if (c1BInt < 0 && c1BInt > 7) {
-      //vUsageIncRecoded(i_Column,nEncodedBytes);
+      //vUsageIncRecoded(pCol,nEncodedBytes);
       return false;
     }
   }
@@ -1307,7 +1307,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
       // revise the encoding
       eMN eExtendedEncoding = (eMN)(MN_DIGIT_0 + c1BInt);
       vMetaNibble(pCol,eExtendedEncoding);
-      vUsageIncRecoded(i_Column,0);
+      vUsageIncRecoded(pCol,0);
 
       // cut the 1B char out of the into head
       m_pEncodeNub->vCut(m_aHeadLine,sizeof(HeadLine),m_i_IntoOffset,1);
@@ -1323,30 +1323,30 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
   
   switch (eThisEncoding) {
     case MN_1B: eExtendedEncoding = MN_DIGIT_1B;
-                vUsageIncOops(i_Column,1,0);
+                vUsageIncOops(pCol,1,0);
                 break;
     case MN_2B: eExtendedEncoding = MN_DIGIT_2B;
-                vUsageIncOops(i_Column,2,0);
+                vUsageIncOops(pCol,2,0);
                 break;
     case MN_3B: eExtendedEncoding = MN_DIGIT_3B;
-                vUsageIncOops(i_Column,3,0);
+                vUsageIncOops(pCol,3,0);
                 break;
     case MN_4B: eExtendedEncoding = MN_DIGIT_4B;
-                vUsageIncOops(i_Column,4,0);
+                vUsageIncOops(pCol,4,0);
                 break;
     case MN_5B: m_pEncodeNub->vExpand(m_aHeadLine,sizeof(HeadLine),m_i_IntoOffset,1);
                 eExtendedEncoding = MN_6B;
-                vUsageIncOops(i_Column,6,0);
+                vUsageIncOops(pCol,6,0);
                 break;
     case MN_6B: eExtendedEncoding = MN_DIGIT_6B;
-                vUsageIncOops(i_Column,6,0);
+                vUsageIncOops(pCol,6,0);
                 break;
     case MN_7B: m_pEncodeNub->vExpand(m_aHeadLine,sizeof(HeadLine),m_i_IntoOffset,1);
-                vUsageIncOops(i_Column,8,0);
+                vUsageIncOops(pCol,8,0);
                 eExtendedEncoding = MN_8B;
                 break;
     case MN_8B: eExtendedEncoding = MN_DIGIT_8B;
-                vUsageIncOops(i_Column,8,0);
+                vUsageIncOops(pCol,8,0);
                 break;
     default:
       RASSERT(0);
@@ -1423,7 +1423,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     
     m_pEncodeNub->vCut(m_aHeadLine,sizeof(HeadLine),m_i_IntoOffset,eThisEncoding);
     //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-    vUsageIncRecoded(i_Column,0);
+    vUsageIncRecoded(pCol,0);
 
     // go back one char in the intoOffset
     m_i_IntoOffset -= eThisEncoding;
@@ -1445,7 +1445,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     
     i8 i1B = iCurrentInt - iFirstInt;
     m_aHeadLine->v1B(m_i_IntoOffset,i1B);
-    vUsageIncRecoded(i_Column,1);
+    vUsageIncRecoded(pCol,1);
 
     i8 nToCut = IntLib::iByteMagnitude(iCurrentInt);
     if (nToCut > 1) {
@@ -1468,7 +1468,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     // revise the encoding in the metaword of into head
     eExtendedEncoding = MN_PLUS_2B;
     vMetaNibble(pCol,eExtendedEncoding);
-    vUsageIncRecoded(i_Column,2);
+    vUsageIncRecoded(pCol,2);
     
     i8 i2B = iCurrentInt - iFirstInt;
     m_aHeadLine->v2B(m_i_IntoOffset,i2B);
@@ -1484,7 +1484,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     return true;
   }
   
-  vUsageIncOops(i_Column,eThisEncoding,0);
+  vUsageIncOops(pCol,eThisEncoding,0);
 
   //dcLeft.vInc(" (e.g. %lld (first %lld))\n"_Stz,iCurrentInt,iFirstInt);
   
@@ -1508,7 +1508,7 @@ void RowCoder::vRecodeVch(i8 i_IntoHead,
   }
 
   if (eEncoding >= MN_1B && eEncoding <= MN_8B) {
-    vUsageIncRecoded(pCol->iColumnNo(),eEncoding);
+    vUsageIncRecoded(pCol,eEncoding);
     return;
   }
 
@@ -1550,7 +1550,7 @@ void RowCoder::vRecodeVchAlpha(Column* pCol)
   
   // no space, leave as is
   if (i_Char >= C_EXTENDED_AUX) {
-    vUsageIncOops(i_Column,MN_1B,1);
+    vUsageIncOops(pCol,MN_1B,1);
     return;
   }
   
@@ -1569,7 +1569,7 @@ void RowCoder::vRecodeVchAlpha(Column* pCol)
     // revise the encoding
     eExtendedEncoding = (eMN)(MN_ALPHA_0 + i_Char);
     vMetaNibble(pCol,eExtendedEncoding);
-    vUsageIncRecoded(i_Column,0);
+    vUsageIncRecoded(pCol,0);
 
     // cut the 1B char out of the into head
     m_pEncodeNub->vCut(m_aHeadLine,sizeof(HeadLine),m_i_IntoOffset,1);
@@ -1590,7 +1590,7 @@ void RowCoder::vRecodeVchAlpha(Column* pCol)
   // revise the encoding in the metaword of into head
   eExtendedEncoding = (eMN)(MN_ALPHA_0 + i_Char);
   vMetaNibble(pCol,eExtendedEncoding);
-  vUsageIncRecoded(i_Column,0);
+  vUsageIncRecoded(pCol,0);
 
   // cut the 1B char out of the into head
   m_pEncodeNub->vCut(m_aHeadLine,sizeof(HeadLine),m_i_IntoOffset,1);
@@ -1653,7 +1653,7 @@ void RowCoder::vRecodeVchShoco(i8 i_IntoHead,
       byte* aInto = (byte*)m_aHeadLine + m_i_IntoOffset
                                        + C_SHOCO_COMPRESSED_BYTES;
       
-      vUsageIncRecoded(i_Col,1 + nCompressed);
+      vUsageIncRecoded(pCol,1 + nCompressed);
       
       MemLib::vCopy(aInto,aFrom,nCompressed,CN_ROWBUFFER);
       
@@ -1703,7 +1703,7 @@ void RowCoder::vRecodeVchShoco(i8 i_IntoHead,
                     (byte*)aShocoTail + C_TAIL_UNITS_BYTES,
                     nPartB,
                     CN_ROWBUFFER);
-      vUsageIncRecoded(i_Col,1 + nCompressed);
+      vUsageIncRecoded(pCol,1 + nCompressed);
       //MemLib::vWordDump(aIntoTail,(1+nTailUnits) * sizeof(SpaceUnit));
       
       // what gets encoded is the unit difference between head and tail
@@ -1777,7 +1777,7 @@ void RowCoder::vRecodeVchShoco(i8 i_IntoHead,
 
   m_aHeadLine->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
 
-  vUsageIncRecoded(pCol->iColumnNo(),2 + 2 + nShocoBytes);
+  vUsageIncRecoded(pCol,2 + 2 + nShocoBytes);
 
   return;
 }
@@ -4388,8 +4388,10 @@ void RowCoder::vSetAuxInt(Coda* pIntoCoda, HeadLine* aIntoHead, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* inc column usage                                                           */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vUsageIncEncoded(i8 i_Col, i8 nBytes)
+void RowCoder::vUsageIncEncoded(Column* pCol, i8 nBytes)
 {
+  i8 i_Col = pCol->iColumnNo();
+  
   m_xaUsage[i_Col].m_nEncodedBytes += nBytes;
   m_xaUsage[i_Col].m_nEncoded++;
 }
@@ -4397,8 +4399,10 @@ void RowCoder::vUsageIncEncoded(i8 i_Col, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* inc column usage                                                           */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vUsageIncRecoded(i8 i_Col, i8 nBytes)
+void RowCoder::vUsageIncRecoded(Column* pCol, i8 nBytes)
 {
+  i8 i_Col = pCol->iColumnNo();
+
   m_xaUsage[i_Col].m_nRecodedBytes += nBytes;
   m_xaUsage[i_Col].m_nRecoded++;
 }
@@ -4406,8 +4410,10 @@ void RowCoder::vUsageIncRecoded(i8 i_Col, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* inc column usage                                                           */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vUsageIncOops(i8 i_Col, i8 nBytes, i8 nMiss)
+void RowCoder::vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss)
 {
+  i8 i_Col = pCol->iColumnNo();
+  
   m_xaUsage[i_Col].m_nOopsBytes += nBytes;
   m_xaUsage[i_Col].m_nOopsMiss  += nMiss;
   m_xaUsage[i_Col].m_nOops++;
