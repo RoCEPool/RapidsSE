@@ -408,7 +408,7 @@ void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
   // set n-byte data for column value
   vDataPut(&m_oEncodedDatum);
   
-  vUsageIncEncoded(pCol,nBytesEncoded);
+  vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -435,9 +435,9 @@ void RowCoder::vEncodeBol(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   RASSERT(0 == nBytesEncoded);
-  vDataPut(m_oEncodedDatum.m_wWord,nBytesEncoded);
-  
-  vUsageIncEncoded(pCol,nBytesEncoded);
+  vDataPut(&m_oEncodedDatum);
+
+  vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -467,9 +467,9 @@ void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(m_oEncodedDatum.m_wWord,nBytesEncoded);
-  
-  vUsageIncEncoded(pCol,nBytesEncoded);
+  vDataPut(&m_oEncodedDatum);
+
+  vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -498,9 +498,9 @@ void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(m_oEncodedDatum.m_wWord,nBytesEncoded);
-  
-  vUsageIncEncoded(pCol,nBytesEncoded);
+  vDataPut(&m_oEncodedDatum);
+
+  vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -527,9 +527,9 @@ void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(m_oEncodedDatum.m_wWord,nBytesEncoded);
-  
-  vUsageIncEncoded(pCol,nBytesEncoded);
+  vDataPut(&m_oEncodedDatum);
+
+  vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -556,9 +556,9 @@ void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(m_oEncodedDatum.m_wWord,nBytesEncoded);
-  
-  vUsageIncEncoded(pCol,nBytesEncoded);
+  vDataPut(&m_oEncodedDatum);
+
+  vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -585,9 +585,9 @@ void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(m_oEncodedDatum.m_wWord,nBytesEncoded);
-  
-  vUsageIncEncoded(pCol,nBytesEncoded);
+  vDataPut(&m_oEncodedDatum);
+
+  vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
@@ -614,9 +614,9 @@ void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(m_oEncodedDatum.m_wWord,nBytesEncoded);
-  
-  vUsageIncEncoded(pCol,nBytesEncoded);
+  vDataPut(&m_oEncodedDatum);
+
+  vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
