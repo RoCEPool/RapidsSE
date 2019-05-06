@@ -403,7 +403,7 @@ void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
   RASSERT(nBytesEncoded == nDataBytes(DM_BCD,eEncoding));
   
   // set 4bit meta data for column value
-  vMetaNibble(i_Column,eEncoding);
+  vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
   vDataPut(pDatum->m_iInt,nBytesEncoded);
@@ -442,7 +442,7 @@ void RowCoder::vEncodeBol(Datum* pDatum, Column* pCol)
   RASSERT(nBytesEncoded == nDataBytes(DM_BOL,eEncoding));
   
   // set 4bit meta data for column value
-  vMetaNibble(i_Column,eEncoding);
+  vMetaNibble(pCol,eEncoding);
   
   RASSERT(0 == nBytesEncoded);
   vDataPut(pDatum->m_iInt,nBytesEncoded);
@@ -484,7 +484,7 @@ void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
   RASSERT(nBytesEncoded == nDataBytes(DM_DTE,eEncoding));
   
   // set 4bit meta data for column value
-  vMetaNibble(i_Column,eEncoding);
+  vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
   vDataPut(pDatum->m_iInt,nBytesEncoded);
@@ -525,7 +525,7 @@ void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
   RASSERT(nBytesEncoded == nDataBytes(DM_FLT,eEncoding));
   
   // set 4bit meta data for column value
-  vMetaNibble(i_Column,eEncoding);
+  vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
   vDataPut(pDatum->m_iInt,nBytesEncoded);
@@ -564,7 +564,7 @@ void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
   RASSERT(nBytesEncoded == nDataBytes(DM_INT,eEncoding));
   
   // set 4bit meta data for column value
-  vMetaNibble(i_Column,eEncoding);
+  vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
   vDataPut(pDatum->m_iInt,nBytesEncoded);
@@ -603,7 +603,7 @@ void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
   RASSERT(nBytesEncoded == nDataBytes(DM_IVL,eEncoding));
   
   // set 4bit meta data for column value
-  vMetaNibble(i_Column,eEncoding);
+  vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
   vDataPut(pDatum->m_iInt,nBytesEncoded);
@@ -642,7 +642,7 @@ void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
   RASSERT(nBytesEncoded == nDataBytes(DM_TME,eEncoding));
   
   // set 4bit meta data for column value
-  vMetaNibble(i_Column,eEncoding);
+  vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
   vDataPut(pDatum->m_iInt,nBytesEncoded);
@@ -681,7 +681,7 @@ void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
   RASSERT(nBytesEncoded == nDataBytes(DM_TSP,eEncoding));
   
   // set 4bit meta data for column value
-  vMetaNibble(i_Column,eEncoding);
+  vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
   vDataPut(pDatum->m_iInt,nBytesEncoded);
@@ -715,7 +715,7 @@ void RowCoder::vEncodeVch(Datum* pDatum, Column* pCol)
   eMN eEncoding = eEncodingVch(pDatum,pDatum->m_nChars);
   
   // set 4bit meta data for column value
-  vMetaNibble(i_Column,eEncoding);
+  vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value for non-null's
   if (eEncoding != MN_NULL) {
@@ -727,9 +727,9 @@ void RowCoder::vEncodeVch(Datum* pDatum, Column* pCol)
     }
     else {
       // empty string
-      vMetaNibble(i_Column,MN_EMPTY);
+      vMetaNibble(pCol,MN_EMPTY);
       
-      //      aHeadLine->vMetaNibble(i_Column,MN_1B);
+      //      aHeadLine->vMetaNibble(pCol,MN_1B);
       //      i8 i_Offset = pNub->i_Offset();
       //      aHeadLine->v1B(i_Offset,0);
       //      pNub->vOffsetInc(1);
@@ -846,8 +846,9 @@ void RowCoder::vHashColumn(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* set 4bit meta nibble encoding for column value                             */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vMetaNibble(i8 i_Column, eMN eMetaNibble)
+void RowCoder::vMetaNibble(Column* pCol, eMN eMetaNibble)
 {
+  i8 i_Column = pCol->iColumnNo();
   m_aHeadLine->vMetaNibble(i_Column,eMetaNibble);
 }
 
@@ -1171,7 +1172,7 @@ void RowCoder::vRecodeDte(Column* pCol)
   if (iDayDiff >= 0 && iDayDiff <= (i8)C_1_BYTE) {
     
     // revise the encoding
-    vMetaNibble(i_Column,MN_DAYS_PLUS_1B);
+    vMetaNibble(pCol,MN_DAYS_PLUS_1B);
     m_aHeadLine->v1B(m_i_IntoOffset,iDayDiff);
     
     // cut 1B char out of the intoHead
@@ -1189,7 +1190,7 @@ void RowCoder::vRecodeDte(Column* pCol)
   if (iDayDiff >= -(i8)C_1_BYTE && iDayDiff < 0) {
     
     // revise the encoding
-    vMetaNibble(i_Column,MN_DAYS_MINUS_1B);
+    vMetaNibble(pCol,MN_DAYS_MINUS_1B);
     m_aHeadLine->v1B(m_i_IntoOffset,iDayDiff);
     
     // cut 1B char out of the intoHead
@@ -1215,7 +1216,7 @@ void RowCoder::vRecodeDte(Column* pCol)
 
   m_pEncodeNub->vExpand(m_aHeadLine,sizeof(HeadLine),m_i_IntoOffset,1);
 
-  vMetaNibble(i_Column,eThisEncoding);
+  vMetaNibble(pCol,eThisEncoding);
   m_aHeadLine->v2B(m_i_IntoOffset,iThisDteDays);
 
   vUsageIncOops(i_Column,2,1);
@@ -1305,7 +1306,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
       
       // revise the encoding
       eMN eExtendedEncoding = (eMN)(MN_DIGIT_0 + c1BInt);
-      vMetaNibble(i_Column,eExtendedEncoding);
+      vMetaNibble(pCol,eExtendedEncoding);
       vUsageIncRecoded(i_Column,0);
 
       // cut the 1B char out of the into head
@@ -1351,7 +1352,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
       RASSERT(0);
   }
   
-  vMetaNibble(i_Column,eExtendedEncoding);
+  vMetaNibble(pCol,eExtendedEncoding);
   
   return true;
 }
@@ -1418,7 +1419,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     
     // revise the encoding in the metaword of into head
     eExtendedEncoding = MN_SAME;
-    vMetaNibble(i_Column,eExtendedEncoding);
+    vMetaNibble(pCol,eExtendedEncoding);
     
     m_pEncodeNub->vCut(m_aHeadLine,sizeof(HeadLine),m_i_IntoOffset,eThisEncoding);
     //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
@@ -1440,7 +1441,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     
     // revise the encoding in the metaword of into head
     eExtendedEncoding = MN_PLUS_1B;
-    vMetaNibble(i_Column,eExtendedEncoding);
+    vMetaNibble(pCol,eExtendedEncoding);
     
     i8 i1B = iCurrentInt - iFirstInt;
     m_aHeadLine->v1B(m_i_IntoOffset,i1B);
@@ -1466,7 +1467,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     
     // revise the encoding in the metaword of into head
     eExtendedEncoding = MN_PLUS_2B;
-    vMetaNibble(i_Column,eExtendedEncoding);
+    vMetaNibble(pCol,eExtendedEncoding);
     vUsageIncRecoded(i_Column,2);
     
     i8 i2B = iCurrentInt - iFirstInt;
@@ -1567,7 +1568,7 @@ void RowCoder::vRecodeVchAlpha(Column* pCol)
     
     // revise the encoding
     eExtendedEncoding = (eMN)(MN_ALPHA_0 + i_Char);
-    vMetaNibble(i_Column,eExtendedEncoding);
+    vMetaNibble(pCol,eExtendedEncoding);
     vUsageIncRecoded(i_Column,0);
 
     // cut the 1B char out of the into head
@@ -1588,7 +1589,7 @@ void RowCoder::vRecodeVchAlpha(Column* pCol)
   
   // revise the encoding in the metaword of into head
   eExtendedEncoding = (eMN)(MN_ALPHA_0 + i_Char);
-  vMetaNibble(i_Column,eExtendedEncoding);
+  vMetaNibble(pCol,eExtendedEncoding);
   vUsageIncRecoded(i_Column,0);
 
   // cut the 1B char out of the into head
