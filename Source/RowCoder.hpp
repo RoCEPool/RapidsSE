@@ -351,6 +351,195 @@ namespace Data
     }
     
     /*----------------------------------------------------------------------------*/
+    /* decode varchar from given cache line                                       */
+    /*----------------------------------------------------------------------------*/
+    static inline void vDecodeVchFast(Datum* pDatum, HeadLine* aHeadLine,
+                                      eMN eEncoding, i8 i_Offset)
+    {
+      
+      pDatum->m_eDatum = DM_VCH;
+      
+      if (MN_NULL == eEncoding)
+        pDatum->m_iInt = C_DATUM_NULL;
+      
+      else if (eEncoding <= MN_8B)
+        vDecodeVchSmallFast(pDatum,aHeadLine,eEncoding,i_Offset);
+      
+      else if (MN_EMPTY == eEncoding) {
+        pDatum->m_nChars = 0;
+        *pDatum->m_xWsp.aArea() = '\0';
+        pDatum->m_iInt = 0;
+      }
+      
+      else if (MN_SHOCO_2B == eEncoding)
+        vDecodeVchShocoFast(pDatum,aHeadLine,eEncoding,i_Offset);
+      
+      else if (MN_SHOCO_FIT == eEncoding)
+        vDecodeVchShocoFitFast(pDatum,aHeadLine,eEncoding,i_Offset);
+      
+      else if (MN_SHOCO_SPLIT == eEncoding)
+        vDecodeVchShocoSplitFast(pDatum,aHeadLine,eEncoding,i_Offset);
+      
+      else
+        NEVER_REACH;
+    }
+    
+    /*----------------------------------------------------------------------------*/
+    /* decode varchar from given cache line                                       */
+    /*----------------------------------------------------------------------------*/
+    static inline void vDecodeVchShocoFast(Datum* pDatum, HeadLine* aHeadLine,
+                                           eMN eEncoding, i8 i_Offset)
+    {
+      i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
+      TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
+      
+      //MemLib::vWordDump(aShocoTail,sizeof(TailLine));
+      
+      /*
+       +=====================================+
+       |            Shoco Tail Line          +
+       +=====================================+
+       | U | C | <compressed bytes> <unused> +
+       +-------------------------------------+
+       | 0 | 1 | 2                        63 |
+       +-------------------------------------+
+       
+       where: U is one byte being the unit length of the tail line
+       C is one byte being the number of compressed bytes
+       */
+      
+      i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+      //RASSERT(nCompressed <= 4);
+      
+      i8 nDecompressed =
+      Compress::iFromShoco(pDatum->m_xWsp.aArea(),   // decompressed destination
+                           255,                      // max destination
+                           ((byte*)aShocoTail)       // from compressed source
+                           + C_SHOCO_COMPRESSED_OFFSET
+                           + C_SHOCO_COMPRESSED_BYTES,
+                           nCompressed);             // bytes compressed
+      ASSERT(nDecompressed);
+      pDatum->m_nChars = nDecompressed;
+    }
+    
+    /*----------------------------------------------------------------------------*/
+    /* decode varchar from given cache line                                       */
+    /*----------------------------------------------------------------------------*/
+    static inline void vDecodeVchShocoFitFast(Datum* pDatum, HeadLine* aHeadLine,
+                                          eMN eEncoding, i8 i_Offset)
+    {
+      i8 nCompressed = aHeadLine->w8_1B(i_Offset);
+      RASSERT(nCompressed <= 56);
+      
+      i8 nDecompressed =
+      Compress::iFromShoco((char*)pDatum->m_xWsp.aStz(),
+                           255,
+                           ((byte*)aHeadLine)+i_Offset+1,
+                           nCompressed);
+      ASSERT(nDecompressed);
+      pDatum->m_nChars = nDecompressed;
+    }
+    
+    /*----------------------------------------------------------------------------*/
+    /* decode varchar from given cache line                                       */
+    /*----------------------------------------------------------------------------*/
+    static inline void vDecodeVchShocoSplitFast(Datum* pDatum, HeadLine* aHeadLine,
+                                            eMN eEncoding, i8 i_Offset)
+    {
+      byte caShoco[C_4KB];
+      
+      i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
+      TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
+      
+      i8 nCompressed = aHeadLine->w8_1B(i_Offset+2);
+      RASSERT(nCompressed <= 56);
+      
+      i8 nBytesPartA = sizeof(HeadLine) - i_Offset - 3;
+      i8 nBytesPartB = nCompressed - nBytesPartA;
+      
+      MemLib::vCopy((byte*)caShoco+2,
+                    (byte*)aHeadLine + i_Offset + 3,
+                    nBytesPartA,
+                    CN_ROWTRAY);
+      MemLib::vCopy((byte*)caShoco+2+nBytesPartA,
+                    (byte*)aShocoTail+1,
+                    nBytesPartB,
+                    CN_ROWTRAY);
+      
+      //MemLib::vWordDump(caShoco+2,3 * sizeof(SpaceUnit));
+      
+      i8 nDecompressed =
+      Compress::iFromShoco((char*)pDatum->m_xWsp.aStz(),
+                           255,
+                           (byte*)caShoco+2,
+                           nCompressed);
+      ASSERT(nDecompressed);
+      pDatum->m_nChars = nDecompressed;
+    }
+
+    /*----------------------------------------------------------------------------*/
+    /* decode varchar from given cache line                                       */
+    /*----------------------------------------------------------------------------*/
+    static inline void vDecodeVchSmallFast(Datum* pDatum, HeadLine* aHeadLine,
+                                           eMN eEncoding, i8 i_Offset)
+    {
+      switch (eEncoding) {
+          
+        case MN_1B:
+          pDatum->m_iInt = aHeadLine->w8_1B(i_Offset);
+          *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
+          ((char*)pDatum->m_xWsp.aStz())[1] = '\0';
+          pDatum->m_nChars = 1;
+          break;
+        case MN_2B:
+          pDatum->m_iInt = aHeadLine->w8_2B(i_Offset);
+          *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
+          ((char*)pDatum->m_xWsp.aStz())[2] = '\0';
+          pDatum->m_nChars = 2;
+          break;
+        case MN_3B:
+          pDatum->m_iInt = aHeadLine->w8_3B(i_Offset);
+          *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
+          ((char*)pDatum->m_xWsp.aStz())[3] = '\0';
+          pDatum->m_nChars = 3;
+          break;
+        case MN_4B:
+          pDatum->m_iInt = aHeadLine->w8_4B(i_Offset);
+          *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
+          ((char*)pDatum->m_xWsp.aStz())[4] = '\0';
+          pDatum->m_nChars = 4;
+          break;
+        case MN_5B:
+          pDatum->m_iInt = aHeadLine->w8_5B(i_Offset);
+          *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
+          ((char*)pDatum->m_xWsp.aStz())[5] = '\0';
+          pDatum->m_nChars = 5;
+          break;
+        case MN_6B:
+          pDatum->m_iInt = aHeadLine->w8_6B(i_Offset);
+          *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
+          ((char*)pDatum->m_xWsp.aStz())[6] = '\0';
+          pDatum->m_nChars = 6;
+          break;
+        case MN_7B:
+          pDatum->m_iInt = aHeadLine->w8_7B(i_Offset);
+          *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
+          ((char*)pDatum->m_xWsp.aStz())[7] = '\0';
+          pDatum->m_nChars = 7;
+          break;
+        case MN_8B:
+          pDatum->m_iInt = aHeadLine->w8_8B(i_Offset);
+          *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
+          ((char*)pDatum->m_xWsp.aStz())[8] = '\0';
+          pDatum->m_nChars = 8;
+          break;
+        default:
+          NEVER_REACH;
+      }
+      
+    }
+
+    /*----------------------------------------------------------------------------*/
     /* get encoded datum from cache line                                          */
     /*----------------------------------------------------------------------------*/
     static inline void vDecodeFast(Datum* pDatum, HeadLine* aHeadLine, Column* pCol,
@@ -464,6 +653,30 @@ namespace Data
     static inline eMN eGetEncodingExtFastCol0(HeadLine* aHeadLine)
     {
       eMN eEncoding = (eMN)aHeadLine->iMetaNibbleZeroFast();
+      
+      return eEncoding;
+    }
+    
+    /*----------------------------------------------------------------------------*/
+    /* get the extended encoding (and offset) of a column from given head line    */
+    /*----------------------------------------------------------------------------*/
+    //! consider passing a eDatum array instead of colum vector
+    
+    static inline eMN eGetEncodingExtFast(i8 i_ForCol, HeadLine* aHeadLine,
+                                          Coda* pCoda, i8& i_Offset_)
+    {
+      eMN eEncoding;
+      
+      for (i8 i_Nibble = 0; i_Nibble < i_ForCol; i_Nibble++) {
+        
+        eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_Nibble);
+        
+        eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
+        //i_Offset_ += nDataBytes(eDatumExt,eEncoding);
+        i_Offset_ += m_iDatumEncoding[eDatumExt][eEncoding];
+        
+      }
+      eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
       
       return eEncoding;
     }

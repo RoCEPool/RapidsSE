@@ -1937,7 +1937,7 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* 
         //vDecodeBol(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
         break;
       case DM_CHR:
-        //vDecodeVch(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+        vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_Offset);
         break;
       case DM_DTE:
         //vDecodeDte(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
@@ -1961,7 +1961,7 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* 
         NEVER_REACH;
         break;
       case DM_VCH:
-        //vDecodeVch(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+        vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_Offset);
         break;
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2018,7 +2018,8 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* 
       //vDecodeBol(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
     case DM_CHR:
-      //vDecodeVch(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      eEncoding = eGetEncodingExtFast(aHeadLine,i_Column,pCoda,i_Offset);
+      vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_Offset);
       break;
     case DM_DTE:
       //vDecodeDte(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
@@ -2043,7 +2044,8 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* 
       NEVER_REACH;
       break;
     case DM_VCH:
-      //vDecodeVch(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      eEncoding = eGetEncodingExtFast(aHeadLine,i_Column,pCoda,i_Offset);
+      vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_Offset);
       break;
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

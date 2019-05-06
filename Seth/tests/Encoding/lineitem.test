@@ -163,7 +163,7 @@ rows:
 
 fetch retrieve lineitem L_RETURNFLAG;
 affected: 10
-/*
+
 fetch retrieve lineitem L_RETURNFLAG print;
 rows:
   ('N')
@@ -175,11 +175,11 @@ rows:
   ('N')
   ('R')
   ('R')
-  ('R')
-*/
+  ('A')
+
 fetch retrieve lineitem L_LINESTATUS;
 affected: 10
-/*
+
 fetch retrieve lineitem L_LINESTATUS print;
 rows:
   ('O')
@@ -192,7 +192,7 @@ rows:
   ('F')
   ('F')
   ('F')
-*/
+
 fetch retrieve lineitem L_SHIPDATE;
 affected: 10
 
@@ -250,7 +250,6 @@ rows:
 fetch retrieve lineitem L_SHIPINSTRUCT;
 affected: 10
 
-/*
 fetch retrieve lineitem L_SHIPINSTRUCT print;
 rows:
   ('DELIVER IN PERSON')
@@ -263,12 +262,10 @@ rows:
   ('NONE')
   ('TAKE BACK RETURN')
   ('DELIVER IN PERSON')
-*/
 
 fetch retrieve lineitem L_SHIPMODE;
 affected: 10
 
-/*
 fetch retrieve lineitem L_SHIPMODE print;
 rows:
   ('TRUCK')
@@ -281,35 +278,33 @@ rows:
   ('AIR')
   ('RAIL')
   ('SHIP')
-*/
+
 
 fetch retrieve lineitem L_COMMENT;
 affected: 10
 
-/*
 fetch retrieve lineitem L_COMMENT print;
 rows:
   ('egular courts above the')
-  ('ly final dependencies: slyly bold')
+  ('ly final dependencies: slyly bold ')
   ('riously. regular: express dep')
   ('lites. fluffily even de')
-  ('pending foxes. slyly re')
+  (' pending foxes. slyly re')
   ('arefully slyly ex')
   ('ven requests. deposits breach a')
   ('ongside of the furiously brave acco')
-  ('unusual accounts. eve')
+  (' unusual accounts. eve')
   ('nal foxes wake. ')
-*/
 
 // drop the table
-drop table lineitem;
-success
+//drop table lineitem;
+//success
 
 CLEANUP {
   
   // drop the table
-  drop table lineitem;
-  mute
+  //drop table lineitem;
+  //mute
   
   bye;
   mute
