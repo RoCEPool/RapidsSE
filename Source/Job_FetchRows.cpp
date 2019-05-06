@@ -81,8 +81,8 @@ JobClass xJobClass_FetchRetrieveRows =
   
   // help and example
   true,
-  "fetch retrieve <tableNm> <columnNm>"_Stz,
-  "fetch supplier S_SUPPKEY"_Stz,
+  "fetch retrieve <tableNm> <columnNm> |print|"_Stz,
+  "fetch retrieve supplier S_SUPPKEY"_Stz,
   
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
@@ -263,9 +263,14 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   // is it a fetch retrieve ?
   if (pTokenVec->pGet(1)->bSame("retrieve"_Stz)) {
     
+    //fetch retrieve <tableNm> <columnNm> |print|
+    
+    // set default to be no print
+    m_bPrint = false;
+    
     // - - - - - - - - - - - - - - - - - - - - -
-    // there should be 4 tokens
-    if (iNumTokens != 4)
+    // there should be 4 or 5 tokens
+    if (iNumTokens != 4 && iNumTokens != 5)
       return false;
     
     // - - - - - - - - - - - - - - - - - - - - -
@@ -280,6 +285,13 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
     // fetch retrieve j10 column;
     if (pTokenVec->pGet(3)->eToken() == TN_NAME) {
       m_sColumnName = pTokenVec->pGet(3)->aText();
+      
+      if (iNumTokens == 5) {
+        if (pTokenVec->pGet(4)->aText()->bSame("print"_Stz))
+          m_bPrint = true;
+        else
+          return false;
+      }
       return true;
     }
 
@@ -643,6 +655,11 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
 //      return;
 //    }
     
+    if (pJob_FetchRows->m_bPrint && gpAttachMap->m_bMetadata) {
+      Column* pCol = pJob_FetchRows->m_pColumn;
+      vTrace("metadata: (%s %s)\n"_Stz, pCol->sColumnName().aChar(), aCT[pCol->eColumnType()]);
+    }
+    
     while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
       
       pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
@@ -662,7 +679,10 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
       pFetchBuffer = nullptr;
     }
     
-    vTrace("success: %lld rows affected\n"_Stz,nRowsProcessed);
+    if (pJob_FetchRows->m_bPrint)
+      vTrace("success: %lld rows fetched\n"_Stz,nRowsProcessed);
+    else
+      vTrace("success: %lld rows affected\n"_Stz,nRowsProcessed);
     return;
   }
   
@@ -791,11 +811,26 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
     }
     RowCoder::vRetrieve(oDatum,aHeadLine,pCol,pCoda);
     
+    if (pJob_FetchRows->m_bPrint) {
+      switch(pCol->eDatumType()) {
+        case DM_BCD: vTrace("row: (%lld)\n"_Stz,oDatum.m_iInt); break;
+        case DM_BOL: vTrace("row: (%lld)\n"_Stz,oDatum.m_iInt); break;
+        case DM_DTE: vTrace("row: (%lld)\n"_Stz,oDatum.m_iInt); break;
+        case DM_FLT: vTrace("row: (%lld)\n"_Stz,oDatum.m_iInt); break;
+        case DM_INT: vTrace("row: (%lld)\n"_Stz,oDatum.m_iInt); break;
+        case DM_IVL: vTrace("row: (%lld)\n"_Stz,oDatum.m_iInt); break;
+        case DM_TME: vTrace("row: (%lld)\n"_Stz,oDatum.m_iInt); break;
+        case DM_TSP: vTrace("row: (%lld)\n"_Stz,oDatum.m_iInt); break;
+        case DM_VCH: vTrace("row: (%lld)\n"_Stz,oDatum.m_iInt); break;
+      }
+    }
+    
     aaHeadLine = aAdd<HeadLine**>(aaHeadLine,sizeof(HeadLine*));
   }
   
   return;
 }
+
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/

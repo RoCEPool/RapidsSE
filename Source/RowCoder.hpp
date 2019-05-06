@@ -249,81 +249,6 @@ namespace Data
 
   private:
     Footer* aFooter(void);
-    
-    /*----------------------------------------------------------------------------*/
-    /* return number of data bytes of encoding                                    */
-    /*----------------------------------------------------------------------------*/
-    static inline i8 nDataBytes2(eDM eDatum, eMN eEncoding)
-    {
-      if (eEncoding == MN_NULL)
-        return 0;
-      
-      if (DM_BOL == eDatum)
-        return 0;
-      
-      if ((eDatum <= DM_VCH || eDatum == DM_ALPHA) && eEncoding <= MN_8B)
-        return eEncoding;
-      
-      if (MN_OVERFLOW == eEncoding)
-        RASSERT(0); //! not implemented yet
-      
-      switch (eEncoding) {
-        case MN_1B: //MN_DIGIT_0/MN_TENTH_0
-        case MN_2B: //MN_DIGIT_1/MN_TENTH_1
-        case MN_3B: //MN_DIGIT_2/MN_TENTH_2
-        case MN_4B: //MN_DIGIT_3/MN_TENTH_3
-        case MN_5B: //MN_DIGIT_4/MN_TENTH_4
-        case MN_6B: //MN_DIGIT_5/MN_TENTH_5
-        case MN_7B: //MN_DIGIT_6/MN_TENTH_6
-        case MN_8B: //MN_DIGIT_7/MN_TENTH_7
-          if (eDatum == DM_DIGIT || eDatum == DM_TENTH || eDatum == DM_DELTA_PLUS)
-            return 0;
-          else
-            return eEncoding;
-        case MN_CLASSIC_1B: //MN_ALPHA_0/MN_DAYS_PLUS_1B/MN_DIGIT_1B/MN_DELTA_PLUS_0/MN_DELTA_MINUS_0/MN_TENTH_8/MN_MINUS_ONE
-          if (eDatum == DM_INT)
-            return 0;
-          if (eDatum == DM_DIGIT)
-            return eEncoding - MN_DIGIT_7;
-          if (eDatum == DM_DAYS)
-            return 1;
-          if (eDatum == DM_TENTH)
-            return 0;
-        case MN_CLASSIC_2B: //MN_ALPHA_1/MN_DAYS_MINUS_1B/MN_DIGIT_2B/MN_DELTA_PLUS_1/MN_DELTA_MINUS_1/MN_TENTH_9/MN_ZERO
-          if (eDatum == DM_INT)
-            return 0;
-          if (eDatum == DM_DIGIT)
-            return eEncoding - MN_DIGIT_7;
-          if (eDatum == DM_TENTH)
-            return 0;
-        case MN_SILVER_1B:  //MN_ALPHA_2/MN_DAYS_CLASSIC_2B/MN_DIGIT_3B/MN_DELTA_PLUS_2/MN_DELTA_MINUS_2/MN_TENTH_10/MN_PLUS_ONE
-          if (eDatum == DM_INT)
-            return 0;
-          if (eDatum == DM_DIGIT)
-            return eEncoding - MN_DIGIT_7;
-          if (eDatum == DM_TENTH)
-            return 0;
-        case MN_SILVER_2B:  //MN_ALPHA_3/MN_DAYS_SILVER_2B/MN_DIGIT_4B/MN_DELTA_PLUS_3/MN_DELTA_MINUS_3/MN_TENTH_2B/MN_SAME
-          if (eDatum == DM_DIGIT)
-            return eEncoding - MN_DIGIT_7;
-          if (eDatum == DM_TENTH)
-            return 2;
-        case MN_MODERN_1B:  //MN_ALPHA_4/MN_DAYS_MODERN_2B/MN_DIGIT_6B/MN_DELTA_PLUS_4/MN_DELTA_MINUS_4/MN_TENTH_4B
-          if (eDatum == DM_DIGIT)
-            return eEncoding - MN_DIGIT_7;
-          if (eDatum == DM_TENTH)
-            return 4;
-        case MN_MODERN_2B:  //MN_ALPHA_5/MN_DIGIT_8B/MN_DELTA_PLUS_5/MN_DELTA_MINUS_5/MN_TENTH_8B
-          if (eDatum == DM_TENTH)
-            return 8;
-          
-        case MN_OVERFLOW:
-          RASSERT(0);
-        
-        default:
-          NEVER_REACH;
-      }
-    }
 
     /*----------------------------------------------------------------------------*/
     /* decode decimal from given cache line                                       */
@@ -337,14 +262,14 @@ namespace Data
       switch (eEncoding) {
           
         case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;               break;
-        case MN_1B:   pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
-        case MN_2B:   pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
-        case MN_3B:   pDatum->m_iInt = aHeadLine->w8_3B(i_Offset); break;
-        case MN_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
-        case MN_5B:   pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
-        case MN_6B:   pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
-        case MN_7B:   pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
-        case MN_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
+        case MN_1B:   aHeadLine->w8_1BFast(pDatum, i_Offset); break;
+        case MN_2B:   aHeadLine->w8_2BFast(pDatum, i_Offset); break;
+        case MN_3B:   aHeadLine->w8_3BFast(pDatum, i_Offset); break;
+        case MN_4B:   aHeadLine->w8_4BFast(pDatum, i_Offset); break;
+        case MN_5B:   aHeadLine->w8_5BFast(pDatum, i_Offset); break;
+        case MN_6B:   aHeadLine->w8_6BFast(pDatum, i_Offset); break;
+        case MN_7B:   aHeadLine->w8_7BFast(pDatum, i_Offset); break;
+        case MN_8B:   aHeadLine->w8_8BFast(pDatum, i_Offset); break;
           
         case MN_MINUS_ONE: pDatum->m_iInt = (i8)-1; break;
         case MN_ZERO:      pDatum->m_iInt = (i8)0;  break;
@@ -437,7 +362,7 @@ namespace Data
       
       switch (eEncoding) {
           
-        case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;               break;
+        case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;          break;
         case MN_1B:   aHeadLine->w8_1BFast(pDatum, i_Offset); break;
         case MN_2B:   aHeadLine->w8_2BFast(pDatum, i_Offset); break;
         case MN_3B:   aHeadLine->w8_3BFast(pDatum, i_Offset); break;
@@ -532,7 +457,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     //! consider passing a eDatum array instead of colum vector
     
-    static inline eMN eGetEncodingExtIntFast(HeadLine* aHeadLine, i8 i_ForCol,
+    static inline eMN eGetEncodingExtGenericFast(HeadLine* aHeadLine, i8 i_ForCol,
                                           Coda* pCoda, i8& i_Offset_)
     {
       
