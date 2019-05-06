@@ -3410,6 +3410,8 @@ void RowCoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingBcd(Datum* pDatum)
 {
+  RASSERT(DM_BCD == pDatum->m_eDatum);
+  
   m_oEncodedDatum.m_eDatum = DM_BCD;
   m_oEncodedDatum.m_iBcd   = pDatum->m_iBcd;
   
@@ -3432,6 +3434,8 @@ eMN RowCoder::eEncodingBcd(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingBol(Datum* pDatum)
 {
+  RASSERT(DM_BOL == pDatum->m_eDatum);
+
   m_oEncodedDatum.m_eDatum = DM_BOL;
   m_oEncodedDatum.m_iBol   = pDatum->m_iBol;
   
@@ -3454,6 +3458,8 @@ eMN RowCoder::eEncodingBol(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingDte(Datum* pDatum)
 {
+  RASSERT(DM_DTE == pDatum->m_eDatum);
+  
   m_oEncodedDatum.m_eDatum = DM_DTE;
   m_oEncodedDatum.m_iDte   = pDatum->m_iDte;
   
@@ -3514,6 +3520,8 @@ eMN RowCoder::eEncodingDte(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingFlt(Datum* pDatum)
 {
+  RASSERT(DM_FLT == pDatum->m_eDatum);
+  
   m_oEncodedDatum.m_eDatum = DM_FLT;
   m_oEncodedDatum.m_dFlt   = pDatum->m_dFlt;
   
@@ -3536,6 +3544,8 @@ eMN RowCoder::eEncodingFlt(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingInt(Datum* pDatum)
 {
+  RASSERT(DM_INT == pDatum->m_eDatum);
+  
   m_oEncodedDatum.m_eDatum = DM_INT;
   m_oEncodedDatum.m_iInt   = pDatum->m_iInt;
   
@@ -3558,6 +3568,8 @@ eMN RowCoder::eEncodingInt(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingIvl(Datum* pDatum)
 {
+  RASSERT(DM_IVL == pDatum->m_eDatum);
+  
   m_oEncodedDatum.m_eDatum = DM_IVL;
   m_oEncodedDatum.m_iIvl   = pDatum->m_iIvl;
   
@@ -3580,6 +3592,8 @@ eMN RowCoder::eEncodingIvl(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingTme(Datum* pDatum)
 {
+  RASSERT(DM_TME == pDatum->m_eDatum);
+  
   m_oEncodedDatum.m_eDatum = DM_TME;
   m_oEncodedDatum.m_iTme   = pDatum->m_iTme;
   
@@ -3617,6 +3631,8 @@ eMN RowCoder::eEncodingTme(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingTsp(Datum* pDatum)
 {
+  RASSERT(DM_TSP == pDatum->m_eDatum);
+  
   m_oEncodedDatum.m_eDatum = DM_TSP;
   m_oEncodedDatum.m_iTsp   = pDatum->m_iTsp;
   
@@ -3640,6 +3656,8 @@ eMN RowCoder::eEncodingTsp(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingVch(Datum* pDatum)
 {
+  RASSERT(DM_VCH == pDatum->m_eDatum);
+  
   m_oEncodedDatum.m_eDatum = DM_VCH;
   m_oEncodedDatum.m_nChars = pDatum->m_nChars;
   
