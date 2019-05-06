@@ -248,6 +248,8 @@ bool Record::bExtractDatum(Datum* pDatum, char** aaSrc, Column* pCol, Formatters
 bool Record::bExtractBcdSupplied(Datum* pDatum, char** aaSrc,
                                  Column* pColumn, Formatters* pFormatters)
 {
+  pDatum->m_eDatum = DM_BCD;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -293,6 +295,8 @@ bool Record::bExtractBcdSupplied(Datum* pDatum, char** aaSrc,
 bool Record::bExtractBcdDefault(Datum* pDatum, char** aaSrc,
                                 Column* pColumn, Formatters* pFormatters)
 {
+  pDatum->m_eDatum = DM_BCD;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -334,6 +338,8 @@ bool Record::bExtractBcdDefault(Datum* pDatum, char** aaSrc,
 bool Record::bExtractBolSupplied(Datum* pDatum, char** aaSrc,
                                  Column* pColumn, Formatters* pFormatters)
 {
+  pDatum->m_eDatum = DM_BOL;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -378,6 +384,8 @@ bool Record::bExtractBolSupplied(Datum* pDatum, char** aaSrc,
 bool Record::bExtractBolDefault(Datum* pDatum, char** aaSrc,
                                 Column* pColumn, Formatters* pFormatters)
 {
+  pDatum->m_eDatum = DM_BOL;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -419,6 +427,8 @@ bool Record::bExtractDteSupplied(Datum* pDatum, char** aaSrc,
                                  Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  pDatum->m_eDatum = DM_DTE;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -475,6 +485,8 @@ bool Record::bExtractDteDefault(Datum* pDatum, char** aaSrc,
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
+  pDatum->m_eDatum = DM_DTE;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -524,6 +536,8 @@ bool Record::bExtractDteDefault(Datum* pDatum, char** aaSrc,
 bool Record::bExtractFltSupplied(Datum* pDatum, char** aaSrc,
                                  Column* pColumn, Formatters* pFormatters)
 {
+  pDatum->m_eDatum = DM_FLT;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -568,6 +582,8 @@ bool Record::bExtractFltSupplied(Datum* pDatum, char** aaSrc,
 bool Record::bExtractFltDefault(Datum* pDatum, char** aaSrc,
                                 Column* pColumn, Formatters* pFormatters)
 {
+  pDatum->m_eDatum = DM_FLT;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -608,6 +624,8 @@ bool Record::bExtractFltDefault(Datum* pDatum, char** aaSrc,
 bool Record::bExtractIntSupplied(Datum* pDatum, char** aaSrc,
                                  Column* pColumn, Formatters* pFormatters)
 {
+  pDatum->m_eDatum = DM_INT;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -661,6 +679,8 @@ bool Record::bExtractIntSupplied(Datum* pDatum, char** aaSrc,
 bool Record::bExtractIntDefault(Datum* pDatum, char** aaSrc,
                                 Column* pColumn, Formatters* pFormatters)
 {
+  pDatum->m_eDatum = DM_INT;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -710,6 +730,8 @@ bool Record::bExtractIntDefault(Datum* pDatum, char** aaSrc,
 bool Record::bExtractIvlSupplied(Datum* pDatum, char** aaSrc,
                                  Column* pColumn, Formatters* pFormatters)
 {
+  pDatum->m_eDatum = DM_IVL;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -759,6 +781,8 @@ bool Record::bExtractIvlSupplied(Datum* pDatum, char** aaSrc,
 bool Record::bExtractIvlDefault(Datum* pDatum, char** aaSrc,
                                 Column* pColumn, Formatters* pFormatters)
 {
+  pDatum->m_eDatum = DM_IVL;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -805,6 +829,8 @@ bool Record::bExtractTmeSupplied(Datum* pDatum, char** aaSrc,
                                  Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  pDatum->m_eDatum = DM_TME;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -860,6 +886,8 @@ bool Record::bExtractTmeDefault(Datum* pDatum, char** aaSrc,
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
+  pDatum->m_eDatum = DM_TME;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -909,6 +937,8 @@ bool Record::bExtractTspSupplied(Datum* pDatum, char** aaSrc,
                                  Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  pDatum->m_eDatum = DM_TSP;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -971,6 +1001,8 @@ bool Record::bExtractTspDefault(Datum* pDatum, char** aaSrc,
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
+  pDatum->m_eDatum = DM_TSP;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -1026,7 +1058,9 @@ bool Record::bExtractTspDefault(Datum* pDatum, char** aaSrc,
 bool Record::bExtractVchSupplied(Datum* pDatum, char** aaSrc,
                                  Column* pColumn, Formatters* pFormatters)
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pDatum->m_eDatum = DM_VCH;
+  
+ // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null
   
   bool bValidNull = false;
@@ -1090,6 +1124,8 @@ bool Record::bExtractVchSupplied(Datum* pDatum, char** aaSrc,
 bool Record::bExtractVchDefault(Datum* pDatum, char** aaSrc,
                                 Column* pColumn, Formatters* pFormatters)
 {
+  pDatum->m_eDatum = DM_VCH;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null
   

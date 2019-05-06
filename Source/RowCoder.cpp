@@ -399,7 +399,7 @@ void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(pDatum->m_iInt,nBytesEncoded);
+  vDataPut(m_oEncodedDatum.m_iInt,nBytesEncoded);
   
   vUsageIncEncoded(pCol,nBytesEncoded);
   
@@ -408,8 +408,9 @@ void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
-  vDecode(pDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
-  RASSERT(wOriginal == (w8)pDatum->m_iInt);
+  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iBcd == pDatum->m_iBcd);
 #endif
 }
 
@@ -431,7 +432,7 @@ void RowCoder::vEncodeBol(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   RASSERT(0 == nBytesEncoded);
-  vDataPut(pDatum->m_iInt,nBytesEncoded);
+  vDataPut(m_oEncodedDatum.m_iInt,nBytesEncoded);
   
   vUsageIncEncoded(pCol,nBytesEncoded);
   
@@ -440,8 +441,9 @@ void RowCoder::vEncodeBol(Datum* pDatum, Column* pCol)
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
-  vDecode(pDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
-  RASSERT(wOriginal == (w8)pDatum->m_iInt);
+  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iBol == pDatum->m_iBol);
 #endif
 }
 
@@ -466,7 +468,7 @@ void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(pDatum->m_iInt,nBytesEncoded);
+  vDataPut(m_oEncodedDatum.m_iInt,nBytesEncoded);
   
   vUsageIncEncoded(pCol,nBytesEncoded);
   
@@ -475,10 +477,11 @@ void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
-  vDecode(pDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
+  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
 //  vTrace("-- %02lld-%02lld-%02lld\n"_Stz,
 //         pDatum->xDte.m_uYearDelta,pDatum->xDte.m_uMonth,pDatum->xDte.m_uDay);
-  RASSERT(wOriginal == (w8)pDatum->m_iInt);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
 #endif
 }
 
@@ -500,7 +503,7 @@ void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(pDatum->m_iInt,nBytesEncoded);
+  vDataPut(m_oEncodedDatum.m_iInt,nBytesEncoded);
   
   vUsageIncEncoded(pCol,nBytesEncoded);
   
@@ -509,8 +512,9 @@ void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
-  vDecode(pDatum,m_pEncodeNub,0,pCol,i_lastColumn,i_LastOffset);
-  RASSERT(wOriginal == (w8)pDatum->m_iInt);
+  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
 #endif
 }
 
@@ -532,7 +536,7 @@ void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(pDatum->m_iInt,nBytesEncoded);
+  vDataPut(m_oEncodedDatum.m_iInt,nBytesEncoded);
   
   vUsageIncEncoded(pCol,nBytesEncoded);
   
@@ -541,8 +545,9 @@ void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
-  vDecode(pDatum,m_pEncodeNub,0,pCol,i_lastColumn,i_LastOffset);
-  RASSERT(wOriginal == (w8)pDatum->m_iInt);
+  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
 #endif
 }
 
@@ -564,7 +569,7 @@ void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(pDatum->m_iInt,nBytesEncoded);
+  vDataPut(m_oEncodedDatum.m_iInt,nBytesEncoded);
   
   vUsageIncEncoded(pCol,nBytesEncoded);
   
@@ -573,8 +578,9 @@ void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
-  vDecode(pDatum,m_pEncodeNub,0,pCol,i_lastColumn,i_LastOffset);
-  RASSERT(wOriginal == (w8)pDatum->m_iInt);
+  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
 #endif
 }
 
@@ -596,7 +602,7 @@ void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(pDatum->m_iInt,nBytesEncoded);
+  vDataPut(m_oEncodedDatum.m_iInt,nBytesEncoded);
   
   vUsageIncEncoded(pCol,nBytesEncoded);
   
@@ -605,8 +611,9 @@ void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
-  vDecode(pDatum,m_pEncodeNub,0,pCol,i_lastColumn,i_LastOffset);
-  RASSERT(wOriginal == (w8)pDatum->m_iInt);
+  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iTme == pDatum->m_iTme);
 #endif
 }
 
@@ -628,7 +635,7 @@ void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(pDatum->m_iInt,nBytesEncoded);
+  vDataPut(m_oEncodedDatum.m_iInt,nBytesEncoded);
   
   vUsageIncEncoded(pCol,nBytesEncoded);
   
@@ -637,8 +644,9 @@ void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
-  vDecode(pDatum,m_pEncodeNub,0,pCol,i_lastColumn,i_LastOffset);
-  RASSERT(wOriginal == (w8)pDatum->m_iInt);
+  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iTsp == pDatum->m_iTsp);
 #endif
 }
 
@@ -3422,7 +3430,7 @@ eMN RowCoder::eEncodingBcd(Datum* pDatum, i8& nBytesEncoded)
     nBytesEncoded = 0;
   }
   else {
-    eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iInt);
+    eEncoding = (eMN)IntLib::iByteMagnitude(m_oEncodedDatum.m_iInt);
     nBytesEncoded = eEncoding;
   }
   
@@ -3484,15 +3492,15 @@ eMN RowCoder::eEncodingDte(Datum* pDatum, i8& nBytesEncoded)
   i8 iEra = 0;
 
   vIntoBaseDays(&m_oEncodedDatum,iEra);
-  vIntoBaseDays(pDatum,iEra);
+  //vIntoBaseDays(pDatum,iEra);
   //vFromBaseDays(pDatum);
  
   //pDatum->m_iInt >>= 47;
   
-  i8 iBytes = (eMN)IntLib::iByteMagnitude(pDatum->m_iInt);
+  i8 nBytes = (eMN)IntLib::iByteMagnitude(m_oEncodedDatum.m_iInt);
   
   if (C_SILVER_ERA == iEra) {
-    if (1 == iBytes) {
+    if (1 == nBytes) {
       eEncoding = MN_SILVER_1B;
       nBytesEncoded = 1;
     }
@@ -3502,7 +3510,7 @@ eMN RowCoder::eEncodingDte(Datum* pDatum, i8& nBytesEncoded)
     }
   }
   else if (C_MODERN_ERA == iEra) {
-    if (1 == iBytes) {
+    if (1 == nBytes) {
       eEncoding = MN_MODERN_1B;
       nBytesEncoded = 1;
     }
@@ -3513,7 +3521,7 @@ eMN RowCoder::eEncodingDte(Datum* pDatum, i8& nBytesEncoded)
   }
   else {
     ASSERT(C_CLASSIC_ERA == iEra);
-    if (1 == iBytes) {
+    if (1 == nBytes) {
       eEncoding = MN_CLASSIC_1B;
       nBytesEncoded = 1;
     }
@@ -3541,7 +3549,7 @@ eMN RowCoder::eEncodingFlt(Datum* pDatum, i8& nBytesEncoded)
     nBytesEncoded = 0;
   }
   else {
-    eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iInt);
+    eEncoding = (eMN)IntLib::iByteMagnitude(m_oEncodedDatum.m_iInt);
     nBytesEncoded = eEncoding;
   }
   
@@ -3563,7 +3571,7 @@ eMN RowCoder::eEncodingInt(Datum* pDatum, i8& nBytesEncoded)
     nBytesEncoded = 0;
   }
   else {
-    eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iInt);
+    eEncoding = (eMN)IntLib::iByteMagnitude(m_oEncodedDatum.m_iInt);
     nBytesEncoded = eEncoding;
   }
   
@@ -3585,7 +3593,7 @@ eMN RowCoder::eEncodingIvl(Datum* pDatum, i8& nBytesEncoded)
     nBytesEncoded = 0;
   }
   else {
-    eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iInt);
+    eEncoding = (eMN)IntLib::iByteMagnitude(m_oEncodedDatum.m_iInt);
     nBytesEncoded = eEncoding;
   }
   
@@ -3609,20 +3617,20 @@ eMN RowCoder::eEncodingTme(Datum* pDatum, i8& nBytesEncoded)
   
   bool bSawNonZero = true;
   
-  while (! pDatum->m_yaByte[0]) {
+  while (! m_oEncodedDatum.m_yaByte[0]) {
     
     bSawNonZero = false;
     
     for (i8 i_Byte = 0; i_Byte < 7; i_Byte++)
-      if ( (pDatum->m_yaByte[i_Byte] = pDatum->m_yaByte[i_Byte+1]) )
+      if ( (m_oEncodedDatum.m_yaByte[i_Byte] = m_oEncodedDatum.m_yaByte[i_Byte+1]) )
         bSawNonZero = true;
-    pDatum->m_yaByte[7] = 0;
+    m_oEncodedDatum.m_yaByte[7] = 0;
     
     if (! bSawNonZero)
       break;
   }
   
-  eEncoding = (eMN)IntLib::iByteMagnitude(pDatum->m_iInt);
+  eEncoding = (eMN)IntLib::iByteMagnitude(m_oEncodedDatum.m_iInt);
   
   nBytesEncoded = eEncoding;
   
