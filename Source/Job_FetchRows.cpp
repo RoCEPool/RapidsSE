@@ -812,17 +812,9 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
     RowCoder::vRetrieve(oDatum,aHeadLine,pCol,pCoda);
     
     if (pJob_FetchRows->m_bPrint) {
-      switch(pCol->eDatumType()) {
-        case DM_BCD: vTrace("row: (%lld)\n"_Stz,oDatum.m_iInt); break;
-        case DM_BOL: vTrace("row: (%lld)\n"_Stz,oDatum.m_iInt); break;
-        case DM_DTE: vTrace("row: (%lld)\n"_Stz,oDatum.m_iInt); break;
-        case DM_FLT: vTrace("row: (%lld)\n"_Stz,oDatum.m_iInt); break;
-        case DM_INT: vTrace("row: (%lld)\n"_Stz,oDatum.m_iInt); break;
-        case DM_IVL: vTrace("row: (%lld)\n"_Stz,oDatum.m_iInt); break;
-        case DM_TME: vTrace("row: (%lld)\n"_Stz,oDatum.m_iInt); break;
-        case DM_TSP: vTrace("row: (%lld)\n"_Stz,oDatum.m_iInt); break;
-        case DM_VCH: vTrace("row: (%lld)\n"_Stz,oDatum.m_iInt); break;
-      }
+      Record xRecord;
+      RowCoder::vAppend(oDatum, pCol, &xRecord);
+      vTrace("row: (%s)\n"_Stz, xRecord.szRecStr());
     }
     
     aaHeadLine = aAdd<HeadLine**>(aaHeadLine,sizeof(HeadLine*));
