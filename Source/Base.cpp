@@ -76,6 +76,10 @@ void Base::vTraceWith(void)
   vTrace("  WITH_TRACE_ENCODING\n"_Stz);
 #endif
   
+#ifdef WITH_ENCODING_XCHECK
+  vTrace("  WITH_ENCODING_XCHECK\n"_Stz);
+#endif
+  
 #ifdef WITH_EXTENDED_BCD
   vTrace("  WITH_EXTENDED_BCD\n"_Stz);
 #endif

@@ -405,7 +405,7 @@ void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
-#ifdef WITH_TRACE_ENCODING
+#ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn, i_LastOffset);
@@ -437,7 +437,7 @@ void RowCoder::vEncodeBol(Datum* pDatum, Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
-#ifdef WITH_TRACE_ENCODING
+#ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn, i_LastOffset);
@@ -472,7 +472,7 @@ void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
-#ifdef WITH_TRACE_ENCODING
+#ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn, i_LastOffset);
@@ -506,7 +506,7 @@ void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
-#ifdef WITH_TRACE_ENCODING
+#ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn,i_LastOffset);
@@ -538,7 +538,7 @@ void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
-#ifdef WITH_TRACE_ENCODING
+#ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn,i_LastOffset);
@@ -570,7 +570,7 @@ void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
-#ifdef WITH_TRACE_ENCODING
+#ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn,i_LastOffset);
@@ -602,7 +602,7 @@ void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
-#ifdef WITH_TRACE_ENCODING
+#ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn,i_LastOffset);
@@ -634,7 +634,7 @@ void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
-#ifdef WITH_TRACE_ENCODING
+#ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
   vDecode(pDatum,pNub,0,pCol,i_lastColumn,i_LastOffset);
