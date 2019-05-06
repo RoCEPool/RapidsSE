@@ -348,52 +348,6 @@ namespace Data
           NEVER_REACH;
       }
     }
-
-    /*----------------------------------------------------------------------------*/
-    /* decode integer of col0 from given cache line                               */
-    /*----------------------------------------------------------------------------*/
-    static inline void vDecodeIntFastCol0(Datum* pDatum, HeadLine* aHeadLine,
-                                          eMN eEncoding, Coda* pCoda, i8 i_Offset)
-    {
-      pDatum->m_eDatum = DM_INT;
-      
-      
-      //vTrace("Decoding %lld\n"_Stz, eEncoding);
-      
-      switch (eEncoding) {
-          
-        case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;          break;
-        case MN_1B:   aHeadLine->w8_1BFast(pDatum, i_Offset); break;
-        case MN_2B:   aHeadLine->w8_2BFast(pDatum, i_Offset); break;
-        case MN_3B:   aHeadLine->w8_3BFast(pDatum, i_Offset); break;
-        case MN_4B:   aHeadLine->w8_4BFast(pDatum, i_Offset); break;
-        case MN_5B:   aHeadLine->w8_5BFast(pDatum, i_Offset); break;
-        case MN_6B:   aHeadLine->w8_6BFast(pDatum, i_Offset); break;
-        case MN_7B:   aHeadLine->w8_7BFast(pDatum, i_Offset); break;
-        case MN_8B:   aHeadLine->w8_8BFast(pDatum, i_Offset); break;
-          
-        case MN_MINUS_ONE: pDatum->m_iInt = (i8)-1; break;
-        case MN_ZERO:      pDatum->m_iInt = (i8)0;  break;
-        case MN_PLUS_ONE:  pDatum->m_iInt = (i8)1;  break;
-          
-        case MN_SAME:
-          pDatum->m_iInt = pCoda->m_aiAux[0].m_iInt;
-          break;
-          
-          //    case MN_PLUS_1B:
-          //      pDatum->m_iInt = pCoda->m_aiAux[i_Column].m_iInt
-          //                     + aHeadLine->w8_1B(i_Offset);
-          //      break;
-          //
-          //    case MN_MINUS_1B:
-          //      pDatum->m_iInt = pCoda->m_aiAux[i_Column].m_iInt
-          //                     - aHeadLine->w8_1B(i_Offset);
-          break;
-          
-        default:
-          NEVER_REACH;
-      }
-    }
     
     /*----------------------------------------------------------------------------*/
     /* get encoded datum from cache line                                          */
