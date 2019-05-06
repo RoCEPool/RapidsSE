@@ -207,6 +207,8 @@ void RowCoder::vEncodeDatum(Datum* pDatum, Column* pCol)
   
   m_pCoda->m_aeExtDatum[i_Col] = eDatum;
   
+  //vHashColumn(pDatum,pCol);
+  
   switch (eDatum) {
     case DM_BCD: vEncodeBcd(pDatum,pCol); return;
     case DM_BOL: vEncodeBol(pDatum,pCol); return;
