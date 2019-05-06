@@ -73,10 +73,11 @@ namespace Data
       byte m_yaByte[C_BYTES_PER_WORD];
     };
   
-    i8 m_nEncodedBytes;
-  
     Wsp_t<C_4KB> m_xWsp;
     i8 m_nChars;
+
+    eMN m_eEncoding;
+    i8  m_nEncodedBytes;
 
     // must be last
     Footer m_xFooter;
