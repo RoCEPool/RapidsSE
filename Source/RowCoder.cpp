@@ -152,7 +152,7 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   MemLib::vCopy(m_aHeadLine,aFromHead,sizeof(HeadLine),CN_ROWBUFFER);
   
 #ifdef WITH_TRACE_ENCODING
-  RowCoder::vHeadDumpNat(aIntoHead,pIntoNub->pDesc()->pColumnVec());
+  RowCoder::vHeadDumpNat(m_aHeadLine,m_pColVec);
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3806,10 +3806,10 @@ i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda
   eMN eEncoding = eGetEncodingExt(pLastCol->iColumnNo(),aHeadLine,pColVec,pCoda,
                                   i_LastColumn,i_Offset);
   
-  if (MN_SHOCO_SPLIT == eEncoding)
+  if (pLastCol->eDatumType() == DM_VCH && MN_SHOCO_SPLIT == eEncoding)
     return 0;
   
-  if (MN_SHOCO_FIT == eEncoding) {
+  if (pLastCol->eDatumType() == DM_VCH && MN_SHOCO_FIT == eEncoding) {
     i8 nCompressed = aHeadLine->w8_1B(i_Offset);
     RASSERT(nCompressed <= 56);
     i_Offset += nCompressed;
