@@ -394,7 +394,7 @@ void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(m_oEncodedDatum.m_iInt,nBytesEncoded);
+  vDataPut(m_oEncodedDatum.m_wWord,nBytesEncoded);
   
   vUsageIncEncoded(pCol,nBytesEncoded);
   
@@ -422,7 +422,7 @@ void RowCoder::vEncodeBol(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   RASSERT(0 == nBytesEncoded);
-  vDataPut(m_oEncodedDatum.m_iInt,nBytesEncoded);
+  vDataPut(m_oEncodedDatum.m_wWord,nBytesEncoded);
   
   vUsageIncEncoded(pCol,nBytesEncoded);
   
@@ -453,7 +453,7 @@ void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(m_oEncodedDatum.m_iInt,nBytesEncoded);
+  vDataPut(m_oEncodedDatum.m_wWord,nBytesEncoded);
   
   vUsageIncEncoded(pCol,nBytesEncoded);
   
@@ -483,7 +483,7 @@ void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(m_oEncodedDatum.m_iInt,nBytesEncoded);
+  vDataPut(m_oEncodedDatum.m_wWord,nBytesEncoded);
   
   vUsageIncEncoded(pCol,nBytesEncoded);
   
@@ -511,7 +511,7 @@ void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(m_oEncodedDatum.m_iInt,nBytesEncoded);
+  vDataPut(m_oEncodedDatum.m_wWord,nBytesEncoded);
   
   vUsageIncEncoded(pCol,nBytesEncoded);
   
@@ -539,7 +539,7 @@ void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(m_oEncodedDatum.m_iInt,nBytesEncoded);
+  vDataPut(m_oEncodedDatum.m_wWord,nBytesEncoded);
   
   vUsageIncEncoded(pCol,nBytesEncoded);
   
@@ -567,7 +567,7 @@ void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(m_oEncodedDatum.m_iInt,nBytesEncoded);
+  vDataPut(m_oEncodedDatum.m_wWord,nBytesEncoded);
   
   vUsageIncEncoded(pCol,nBytesEncoded);
   
@@ -595,7 +595,7 @@ void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
   vMetaNibble(pCol,eEncoding);
   
   // set n-byte data for column value
-  vDataPut(m_oEncodedDatum.m_iInt,nBytesEncoded);
+  vDataPut(m_oEncodedDatum.m_wWord,nBytesEncoded);
   
   vUsageIncEncoded(pCol,nBytesEncoded);
   
