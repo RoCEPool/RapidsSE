@@ -41,7 +41,43 @@ time fetch retrieve dteTbl dte_col13;
 time fetch retrieve dteTbl dte_col14;
 time fetch retrieve dteTbl dte_col15;
 
-/*
+/* Changed to 2D array:
+ success: 1000000 rows affected
+ time 27ms
+ success: 1000000 rows affected
+ time 65ms
+ success: 1000000 rows affected
+ time 66ms
+ success: 1000000 rows affected
+ time 68ms
+ success: 1000000 rows affected
+ time 72ms
+ success: 1000000 rows affected
+ time 73ms
+ success: 1000000 rows affected
+ time 73ms
+ success: 1000000 rows affected
+ time 83ms
+ success: 1000000 rows affected
+ time 84ms
+ success: 1000000 rows affected
+ time 99ms
+ success: 1000000 rows affected
+ time 93ms
+ success: 1000000 rows affected
+ time 101ms
+ success: 1000000 rows affected
+ time 99ms
+ success: 1000000 rows affected
+ time 122ms
+ success: 1000000 rows affected
+ time 109ms
+ success: 1000000 rows affected
+ time 113ms
+ [N0/1 NODE1 44618] se 4.0.5r has>
+ 
+ 6th May 2019
+ ------------
  success: 1000000 rows affected
  time 26ms
  success: 1000000 rows affected

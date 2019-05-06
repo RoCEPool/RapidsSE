@@ -614,7 +614,8 @@ namespace Data
         eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_Nibble);
         
         eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
-        i_Offset_ += nDataBytes(eDatumExt,eEncoding);
+        //i_Offset_ += nDataBytes(eDatumExt,eEncoding);
+        i_Offset_ += m_iDatumEncoding[eDatumExt][eEncoding];
         
 //! experiment
 //        if (eEncoding > MN_8B) {
