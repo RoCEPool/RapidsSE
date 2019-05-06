@@ -457,7 +457,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     //! consider passing a eDatum array instead of colum vector
     
-    static inline eMN eGetEncodingExtIntFast(HeadLine* aHeadLine, i8 i_ForCol,
+    static inline eMN eGetEncodingExtGenericFast(HeadLine* aHeadLine, i8 i_ForCol,
                                           Coda* pCoda, i8& i_Offset_)
     {
       
