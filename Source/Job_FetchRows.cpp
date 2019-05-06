@@ -655,6 +655,11 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
 //      return;
 //    }
     
+    if (pJob_FetchRows->m_bPrint && gpAttachMap->m_bMetadata) {
+      Column* pCol = pJob_FetchRows->m_pColumn;
+      vTrace("metadata: (%s %s)\n"_Stz, pCol->sColumnName().aChar(), aCT[pCol->eColumnType()]);
+    }
+    
     while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
       
       pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
