@@ -616,6 +616,11 @@ namespace Data
 //        return eEncoding;
 //      }
     
+      eMN eEncodingDatum = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
+      
+      if (eEncodingDatum == MN_NULL)
+        return eEncodingDatum;
+      
       for (i8 i_Nibble = 0; i_Nibble < i_ForCol; i_Nibble++) {
         
         eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_Nibble);
@@ -635,9 +640,9 @@ namespace Data
 
       }
       
-      eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
       
-      return eEncoding;
+      
+      return eEncodingDatum;
     }
     
     /*----------------------------------------------------------------------------*/
@@ -660,16 +665,16 @@ namespace Data
       //        return eEncoding;
       //      }
       
-      eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
-      if (eEncoding == MN_NULL ||
-          eEncoding == MN_MINUS_ONE ||
-          eEncoding == MN_ZERO ||
-          eEncoding == MN_PLUS_ONE)
-        return eEncoding;
+      eMN eEncodingDatum = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
+      if (eEncodingDatum == MN_NULL ||
+          eEncodingDatum == MN_MINUS_ONE ||
+          eEncodingDatum == MN_ZERO ||
+          eEncodingDatum == MN_PLUS_ONE)
+        return eEncodingDatum;
       
       for (i8 i_Nibble = 0; i_Nibble < i_ForCol; i_Nibble++) {
         
-        eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_Nibble);
+        eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_Nibble);
         
         eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
         //i_Offset_ += nDataBytes(eDatumExt,eEncoding);
@@ -684,9 +689,9 @@ namespace Data
         //        }
         
       }
-      eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
+      //eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
       
-      return eEncoding;
+      return eEncodingDatum;
     }
     
     /*----------------------------------------------------------------------------*/
