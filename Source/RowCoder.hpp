@@ -324,14 +324,14 @@ namespace Data
           //    case MN_5B: pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
           //    case MN_6B: pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
           //    case MN_7B: pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
-        case MN_8B: pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
+        case MN_8B: aHeadLine->w8_8BFast(pDatum, i_Offset); break;
           
-        case MN_CLASSIC_1B: pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
-        case MN_CLASSIC_2B: pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
-        case MN_SILVER_1B:    pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
-        case MN_SILVER_2B:    pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
-        case MN_MODERN_1B:    pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
-        case MN_MODERN_2B:    pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
+        case MN_CLASSIC_1B: aHeadLine->w8_1BFast(pDatum,i_Offset); break;
+        case MN_CLASSIC_2B: aHeadLine->w8_2BFast(pDatum,i_Offset); break;
+        case MN_SILVER_1B:  aHeadLine->w8_1BFast(pDatum,i_Offset); break;
+        case MN_SILVER_2B:  aHeadLine->w8_2BFast(pDatum,i_Offset); break;
+        case MN_MODERN_1B:  aHeadLine->w8_1BFast(pDatum,i_Offset); break;
+        case MN_MODERN_2B:  aHeadLine->w8_2BFast(pDatum,i_Offset); break;
           
         default:
           NEVER_REACH;
