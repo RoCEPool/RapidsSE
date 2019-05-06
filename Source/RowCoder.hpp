@@ -317,13 +317,15 @@ namespace Data
           
         case MN_NULL: pDatum->m_iInt = C_DATUM_NULL; break;
           
-          //    case MN_1B: pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
-          //    case MN_2B: pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
-          //    case MN_3B: pDatum->m_iInt = aHeadLine->w8_3B(i_Offset); break;
-          //    case MN_4B: pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
-          //    case MN_5B: pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
-          //    case MN_6B: pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
-          //    case MN_7B: pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
+        case MN_1B:
+        case MN_2B:
+        case MN_3B:
+        case MN_4B:
+        case MN_5B:
+        case MN_6B:
+        case MN_7B:
+          NEVER_REACH;
+          
         case MN_8B: aHeadLine->w8_8BFast(pDatum, i_Offset); break;
           
         case MN_CLASSIC_1B: aHeadLine->w8_1BFast(pDatum,i_Offset); break;
