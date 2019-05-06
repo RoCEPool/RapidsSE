@@ -13,6 +13,11 @@ namespace Data
   static const i8 C_SHOCO_COMPRESSED_BYTES  = 1;
   static i8 m_iDatumEncoding[DM_TENTH][MN_OVERFLOW];
   
+  /*----------------------------------------------------------------------------*/
+  const static i8 nMonthDaySum[13] =
+  //    J  F  M   A   M   J   J   A   S   O   N   D
+  {0,31,60,91,121,152,182,213,244,274,305,335,366};
+  
   class RowCoder : public Object
   {
   public:
@@ -339,7 +344,7 @@ namespace Data
           NEVER_REACH;
       }
       
-      vRestoreDte(pDatum,eEncoding);
+      vRestoreDteFast(pDatum,eEncoding);
     }
 
     /*----------------------------------------------------------------------------*/
@@ -758,9 +763,116 @@ namespace Data
       return iOffset;
     }
   
-
+    /*----------------------------------------------------------------------------*/
+    /* compute date from number of days since base date                           */
+    /*----------------------------------------------------------------------------*/
+    static inline void vFromBaseDaysClassicFast(Datum* pDatum)
+    {
+      i8 nYearsMonthsDays = pDatum->m_iDte;
+      i8 nYears = (nYearsMonthsDays - 1) / 366;
+      i8 nMonthsDays = nYearsMonthsDays - (nYears * 366);
+      
+      i8 i_Month;
+      for (i_Month = 1; i_Month <= 11; i_Month++)
+        if (nMonthDaySum[i_Month] >= nMonthsDays)
+          break;
+      
+      pDatum->xDte.m_uYearDelta = nYears;
+      pDatum->xDte.m_uMonth     = i_Month;
+      pDatum->xDte.m_uDay       = nMonthsDays - nMonthDaySum[i_Month - 1];
+      pDatum->xDte.m_uSpare     = 0;
+    }
+    
+    /*----------------------------------------------------------------------------*/
+    /* compute date from number of days since base date                           */
+    /*----------------------------------------------------------------------------*/
+    static inline void vFromBaseDaysModernFast(Datum* pDatum)
+    {
+      i8 nYearsMonthsDays = pDatum->m_iDte + C_MODERN_DAYS;
+      
+      i8 nYears = (nYearsMonthsDays - 1) / 366;
+      i8 nMonthsDays = nYearsMonthsDays - (nYears * 366);
+      
+      i8 i_Month;
+      for (i_Month = 1; i_Month <= 11; i_Month++)
+        if (nMonthDaySum[i_Month] >= nMonthsDays)
+          break;
+      
+      pDatum->xDte.m_uYearDelta = nYears;
+      pDatum->xDte.m_uMonth     = i_Month;
+      pDatum->xDte.m_uDay       = nMonthsDays - nMonthDaySum[i_Month - 1];
+      pDatum->xDte.m_uSpare     = 0;
+    }
+    
+    /*----------------------------------------------------------------------------*/
+    /* compute date from number of days since base date                           */
+    /*----------------------------------------------------------------------------*/
+    static inline void vFromBaseDaysSilverFast(Datum* pDatum)
+    {
+      i8 nYearsMonthsDays = pDatum->m_iDte + C_SILVER_DAYS;
+      
+      i8 nYears = (nYearsMonthsDays - 1) / 366;
+      i8 nMonthsDays = nYearsMonthsDays - (nYears * 366);
+      
+      i8 i_Month;
+      for (i_Month = 1; i_Month <= 11; i_Month++)
+        if (nMonthDaySum[i_Month] >= nMonthsDays)
+          break;
+      
+      pDatum->xDte.m_uYearDelta = nYears;
+      pDatum->xDte.m_uMonth     = i_Month;
+      pDatum->xDte.m_uDay       = nMonthsDays - nMonthDaySum[i_Month - 1];
+      pDatum->xDte.m_uSpare     = 0;
+    }
+    
+    /*----------------------------------------------------------------------------*/
+    /* restore zero stripped dte                                                  */
+    /*----------------------------------------------------------------------------*/
+    static inline void vRestoreDteFast(Datum* pDatum, eMN eEncoding)
+    {
+       switch (eEncoding) {
+           
+         case MN_NULL:
+           break;
+           
+         case MN_CLASSIC_1B:
+         case MN_CLASSIC_2B:
+           vFromBaseDaysClassicFast(pDatum);
+           break;
+         
+         case MN_SILVER_1B:
+         case MN_SILVER_2B:
+           vFromBaseDaysSilverFast(pDatum);
+           break;
+         
+         case MN_MODERN_1B:
+         case MN_MODERN_2B:
+           vFromBaseDaysModernFast(pDatum);
+           break;
+         
+         default:
+           NEVER_REACH;
+       }
+      
+      /*
+       if (eEncoding <= MN_CLASSIC_2B) {
+       vFromBaseDaysClassicFast(pDatum);
+       return;
+       }
+       
+       if (eEncoding <= MN_SILVER_2B) {
+       vFromBaseDaysSilverFast(pDatum);
+       return;
+       }
+       
+       vFromBaseDaysModernFast(pDatum);
+       //pDatum->m_iInt <<= 47;
+       */
+      
+    }
   
   };
+
   
   RowCoder* _pRowCoder(void* aAddr);
 }

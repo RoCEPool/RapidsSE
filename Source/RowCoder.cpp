@@ -4149,6 +4149,9 @@ void RowCoder::vRestoreDte(Datum* pDatum, eMN eEncoding)
 {
   i8 iEra = 0;
   
+  if (MN_NULL == eEncoding)
+    return;
+  
   if (MN_SILVER_1B == eEncoding || MN_SILVER_2B == eEncoding)
     iEra = C_SILVER_ERA;
   else if (MN_MODERN_1B == eEncoding || MN_MODERN_2B == eEncoding)
@@ -4176,13 +4179,6 @@ void RowCoder::vRestoreTsp(Datum* pDatum, eMN eEncoding)
 {
   pDatum->m_iInt <<= 24;
 }
-
-
-/*----------------------------------------------------------------------------*/
-const static i8 nMonthDaySum[13] =
-  //    J  F  M   A   M   J   J   A   S   O   N   D
-    {0,31,60,91,121,152,182,213,244,274,305,335,366};
-
 
 /*----------------------------------------------------------------------------*/
 /* compute date from number of days since base date                           */

@@ -41,41 +41,77 @@ time fetch retrieve dteTbl dte_col13;
 time fetch retrieve dteTbl dte_col14;
 time fetch retrieve dteTbl dte_col15;
 
-/* Using Fast version of w8_*
+/* Little work in vRecordDate
  
  success: 1000000 rows affected
- time 28ms
+ time 25ms
  success: 1000000 rows affected
- time 57ms
+ time 56ms
  success: 1000000 rows affected
  time 59ms
  success: 1000000 rows affected
  time 60ms
  success: 1000000 rows affected
+ time 60ms
+ success: 1000000 rows affected
  time 63ms
  success: 1000000 rows affected
- time 64ms
- success: 1000000 rows affected
- time 66ms
+ time 67ms
  success: 1000000 rows affected
  time 73ms
  success: 1000000 rows affected
+ time 76ms
+ success: 1000000 rows affected
+ time 88ms
+ success: 1000000 rows affected
+ time 81ms
+ success: 1000000 rows affected
+ time 97ms
+ success: 1000000 rows affected
+ time 88ms
+ success: 1000000 rows affected
+ time 114ms
+ success: 1000000 rows affected
+ time 101ms
+ success: 1000000 rows affected
+ time 109ms
+ [N0/1 NODE1 73172] se 4.0.5r has>
+ 
+/* Using Fast version of w8_*
+ 
+ success: 1000000 rows affected
+ time 27ms
+ success: 1000000 rows affected
+ time 57ms
+ success: 1000000 rows affected
+ time 60ms
+ success: 1000000 rows affected
+ time 59ms
+ success: 1000000 rows affected
+ time 64ms
+ success: 1000000 rows affected
+ time 64ms
+ success: 1000000 rows affected
+ time 67ms
+ success: 1000000 rows affected
  time 75ms
  success: 1000000 rows affected
- time 77ms
+ time 76ms
  success: 1000000 rows affected
- time 95ms
+ time 78ms
  success: 1000000 rows affected
- time 92ms
+ time 89ms
  success: 1000000 rows affected
- time 96ms
+ time 120ms
  success: 1000000 rows affected
- time 92ms
+ time 98ms
  success: 1000000 rows affected
- time 112ms
+ time 117ms
  success: 1000000 rows affected
- time 90ms
- [N0/1 NODE1 47869] se 4.0.5r has>
+ time 115ms
+ success: 1000000 rows affected
+ time 116ms
+
  
  Changed to 2D array:
  success: 1000000 rows affected
