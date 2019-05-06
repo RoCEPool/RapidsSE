@@ -62,6 +62,10 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   vTrace("  WITH_TRACE_ENCODING\n"_Stz);
 #endif
   
+#ifdef WITH_ENCODING_XCHECK
+  vTrace("  WITH_ENCODING_XCHECK\n"_Stz);
+#endif
+  
 #ifdef WITH_ENTRY_EXIT
   vTrace("  WITH_ENTRY_EXIT\n"_Stz);
 #endif
