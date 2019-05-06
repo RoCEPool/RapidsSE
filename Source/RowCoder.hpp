@@ -204,15 +204,15 @@ namespace Data
     static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
 
-    eMN eEncodingBcd(Datum* pDatum, i8& nBytesEncoded);
-    eMN eEncodingBol(Datum* pDatum, i8& nBytesEncoded);
-    eMN eEncodingDte(Datum* pDatum, i8& nBytesEncoded);
-    eMN eEncodingFlt(Datum* pDatum, i8& nBytesEncoded);
-    eMN eEncodingInt(Datum* pDatum, i8& nBytesEncoded);
-    eMN eEncodingIvl(Datum* pDatum, i8& nBytesEncoded);
-    eMN eEncodingTme(Datum* pDatum, i8& nBytesEncoded);
-    eMN eEncodingTsp(Datum* pDatum, i8& nBytesEncoded);
-    eMN eEncodingVch(Datum* pDatum, i8& nBytesEncoded);
+    eMN eEncodingBcd(Datum* pDatum);
+    eMN eEncodingBol(Datum* pDatum);
+    eMN eEncodingDte(Datum* pDatum);
+    eMN eEncodingFlt(Datum* pDatum);
+    eMN eEncodingInt(Datum* pDatum);
+    eMN eEncodingIvl(Datum* pDatum);
+    eMN eEncodingTme(Datum* pDatum);
+    eMN eEncodingTsp(Datum* pDatum);
+    eMN eEncodingVch(Datum* pDatum);
   
     //! move into Nub
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
