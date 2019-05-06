@@ -373,6 +373,17 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
 /*----------------------------------------------------------------------------*/
 /* put encoded datum into row of current nub                                  */
 /*----------------------------------------------------------------------------*/
+void RowCoder::vDataPut(Datum* pDatum)
+{
+  if (pDatum->m_nEncodedBytes) {
+    m_aHeadLine->vPut(m_i_IntoOffset,pDatum->m_wWord,pDatum->m_nEncodedBytes);
+    m_i_IntoOffset += pDatum->m_nEncodedBytes;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* put encoded datum into row of current nub                                  */
+/*----------------------------------------------------------------------------*/
 void RowCoder::vDataPut(w8 wDatum, i8 nBytes)
 {
   if (nBytes) {

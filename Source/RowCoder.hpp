@@ -79,6 +79,7 @@ namespace Data
     void vReport(RowCoder* pRowCoder_Encode);
   
   private:
+    void vDataPut(Datum* pDatum);
     void vDataPut(w8 wDatum, i8 nBytes);
     void vEncodeBcd(Datum* pDatum, Column* pCol);
     void vEncodeBol(Datum* pDatum, Column* pCol);
