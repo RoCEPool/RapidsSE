@@ -196,7 +196,6 @@ rows:
 fetch retrieve lineitem L_SHIPDATE;
 affected: 10
 
-/*
 fetch retrieve lineitem L_SHIPDATE print;
 rows:
   ('1996-03-13')
@@ -209,12 +208,10 @@ rows:
   ('1994-02-02')
   ('1993-11-09')
   ('1994-01-16')
-*/
 
 fetch retrieve lineitem L_COMMITDATE;
 affected: 10
 
-/*
 fetch retrieve lineitem L_COMMITDATE print;
 rows:
   ('1996-02-12')
@@ -227,12 +224,10 @@ rows:
   ('1994-01-04')
   ('1993-12-20')
   ('1993-11-22')
-*/
 
 fetch retrieve lineitem L_RECEIPTDATE;
 affected: 10
 
-/*
 fetch retrieve lineitem L_RECEIPTDATE print;
 rows:
   ('1996-03-22')
@@ -245,7 +240,6 @@ rows:
   ('1994-02-23')
   ('1993-11-24')
   ('1994-01-23')
-*/
 
 fetch retrieve lineitem L_SHIPINSTRUCT;
 affected: 10

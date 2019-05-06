@@ -306,6 +306,41 @@ namespace Data
     }
     
     /*----------------------------------------------------------------------------*/
+    /* decode date from given cache line                                          */
+    /*----------------------------------------------------------------------------*/
+    static inline void vDecodeDteFast(Datum* pDatum, HeadLine* aHeadLine,
+                                  eMN eEncoding, i8& i_Offset)
+    {
+      pDatum->m_eDatum = DM_DTE;
+      
+      switch (eEncoding) {
+          
+        case MN_NULL: pDatum->m_iInt = C_DATUM_NULL; break;
+          
+          //    case MN_1B: pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
+          //    case MN_2B: pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
+          //    case MN_3B: pDatum->m_iInt = aHeadLine->w8_3B(i_Offset); break;
+          //    case MN_4B: pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
+          //    case MN_5B: pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
+          //    case MN_6B: pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
+          //    case MN_7B: pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
+        case MN_8B: pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
+          
+        case MN_CLASSIC_1B: pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
+        case MN_CLASSIC_2B: pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
+        case MN_SILVER_1B:    pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
+        case MN_SILVER_2B:    pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
+        case MN_MODERN_1B:    pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
+        case MN_MODERN_2B:    pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
+          
+        default:
+          NEVER_REACH;
+      }
+      
+      vRestoreDte(pDatum,eEncoding);
+    }
+
+    /*----------------------------------------------------------------------------*/
     /* decode integer from given cache line                                       */
     /*----------------------------------------------------------------------------*/
     static inline void vDecodeIntFast(Datum* pDatum, HeadLine* aHeadLine,

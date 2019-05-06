@@ -1927,7 +1927,7 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* 
         vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_Offset);
         break;
       case DM_DTE:
-        //vDecodeDte(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+        vDecodeDteFast(pDatum,aHeadLine,eEncoding,i_Offset);
         break;
       case DM_FLT:
         //vDecodeFlt(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
@@ -2009,7 +2009,8 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* 
       vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_Offset);
       break;
     case DM_DTE:
-      //vDecodeDte(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      eEncoding = eGetEncodingExtFast(aHeadLine,i_Column,pCoda,i_Offset);
+      vDecodeDteFast(pDatum,aHeadLine,eEncoding,i_Offset);
       break;
     case DM_FLT:
       //vDecodeFlt(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
