@@ -739,7 +739,7 @@ void RowCoder::vEncodeVchShoco(Datum* pDatum, Column* pCol)
 /* encode varchar as small                                                    */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeVchSmall(Datum* pDatum, Column* pCol)
-{  
+{
   vDataPut(*(w8*)pDatum->m_xWsp.aArea(),
            (eMN)pDatum->m_nChars);
   
@@ -3412,6 +3412,9 @@ void RowCoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingBcd(Datum* pDatum, i8& nBytesEncoded)
 {
+  m_oEncodedDatum.m_eDatum = DM_BCD;
+  m_oEncodedDatum.m_iBcd   = pDatum->m_iBcd;
+  
   eMN eEncoding;
   
   if (pDatum->m_iInt == C_DATUM_NULL) {
@@ -3431,6 +3434,9 @@ eMN RowCoder::eEncodingBcd(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingBol(Datum* pDatum, i8& nBytesEncoded)
 {
+  m_oEncodedDatum.m_eDatum = DM_BOL;
+  m_oEncodedDatum.m_iBol   = pDatum->m_iBol;
+  
   eMN eEncoding;
   
   if (pDatum->m_iInt == C_DATUM_NULL)
@@ -3450,6 +3456,9 @@ eMN RowCoder::eEncodingBol(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingDte(Datum* pDatum, i8& nBytesEncoded)
 {
+  m_oEncodedDatum.m_eDatum = DM_DTE;
+  m_oEncodedDatum.m_iDte   = pDatum->m_iDte;
+  
   eMN eEncoding;
   
   if (pDatum->m_iInt == C_DATUM_NULL) {
@@ -3474,7 +3483,7 @@ eMN RowCoder::eEncodingDte(Datum* pDatum, i8& nBytesEncoded)
   
   i8 iEra = 0;
 
-  vIntoBaseDays(pDatum,iEra);
+  vIntoBaseDays(&m_oEncodedDatum,iEra);
   //vFromBaseDays(pDatum);
  
   //pDatum->m_iInt >>= 47;
@@ -3521,6 +3530,9 @@ eMN RowCoder::eEncodingDte(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingFlt(Datum* pDatum, i8& nBytesEncoded)
 {
+  m_oEncodedDatum.m_eDatum = DM_FLT;
+  m_oEncodedDatum.m_dFlt   = pDatum->m_dFlt;
+  
   eMN eEncoding;
   
   if (pDatum->m_iInt == C_DATUM_NULL) {
@@ -3540,6 +3552,9 @@ eMN RowCoder::eEncodingFlt(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingInt(Datum* pDatum, i8& nBytesEncoded)
 {
+  m_oEncodedDatum.m_eDatum = DM_INT;
+  m_oEncodedDatum.m_iInt   = pDatum->m_iInt;
+  
   eMN eEncoding;
   
   if (pDatum->m_iInt == C_DATUM_NULL) {
@@ -3559,6 +3574,9 @@ eMN RowCoder::eEncodingInt(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingIvl(Datum* pDatum, i8& nBytesEncoded)
 {
+  m_oEncodedDatum.m_eDatum = DM_IVL;
+  m_oEncodedDatum.m_iIvl   = pDatum->m_iIvl;
+  
   eMN eEncoding;
   
   if (pDatum->m_iInt == C_DATUM_NULL) {
@@ -3578,6 +3596,9 @@ eMN RowCoder::eEncodingIvl(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingTme(Datum* pDatum, i8& nBytesEncoded)
 {
+  m_oEncodedDatum.m_eDatum = DM_TME;
+  m_oEncodedDatum.m_iTme   = pDatum->m_iTme;
+  
   if (pDatum->m_iInt == C_DATUM_NULL) {
     nBytesEncoded = 0;
     return MN_NULL;
@@ -3612,6 +3633,9 @@ eMN RowCoder::eEncodingTme(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingTsp(Datum* pDatum, i8& nBytesEncoded)
 {
+  m_oEncodedDatum.m_eDatum = DM_TSP;
+  m_oEncodedDatum.m_iTsp   = pDatum->m_iTsp;
+  
   if (pDatum->m_iInt == C_DATUM_NULL) {
     nBytesEncoded = 0;
     return MN_NULL;
@@ -3646,11 +3670,17 @@ eMN RowCoder::eEncodingTsp(Datum* pDatum, i8& nBytesEncoded)
 /*----------------------------------------------------------------------------*/
 eMN RowCoder::eEncodingVch(Datum* pDatum, i8& nBytesEncoded)
 {
+  m_oEncodedDatum.m_eDatum = DM_VCH;
+  m_oEncodedDatum.m_nChars = pDatum->m_nChars;
+  
   if (pDatum->m_iInt == C_DATUM_NULL) {
     nBytesEncoded = 0;
     return MN_NULL;
   }
-  
+
+  StrLib::vCopy((char*)m_oEncodedDatum.m_xWsp.aArea(),
+                (char*)pDatum->m_xWsp.aArea());
+
   eMN eEncoding;
   
   i8 iLen = StrLib::iLength((char*)pDatum->m_xWsp.aArea());

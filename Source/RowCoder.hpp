@@ -27,7 +27,7 @@ namespace Data
     i8         m_i_IntoOffset; // encoding offset
     i8         m_i_FromOffset; // encoding offset
     
-    
+    Datum      m_oEncodedDatum; // the encoded datum
 
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
   
@@ -197,15 +197,15 @@ namespace Data
     static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
 
-    static eMN eEncodingBcd(Datum* pDatum, i8& nBytesEncoded);
-    static eMN eEncodingBol(Datum* pDatum, i8& nBytesEncoded);
-    static eMN eEncodingDte(Datum* pDatum, i8& nBytesEncoded);
-    static eMN eEncodingFlt(Datum* pDatum, i8& nBytesEncoded);
-    static eMN eEncodingInt(Datum* pDatum, i8& nBytesEncoded);
-    static eMN eEncodingIvl(Datum* pDatum, i8& nBytesEncoded);
-    static eMN eEncodingTme(Datum* pDatum, i8& nBytesEncoded);
-    static eMN eEncodingTsp(Datum* pDatum, i8& nBytesEncoded);
-    static eMN eEncodingVch(Datum* pDatum, i8& nBytesEncoded);
+    eMN eEncodingBcd(Datum* pDatum, i8& nBytesEncoded);
+    eMN eEncodingBol(Datum* pDatum, i8& nBytesEncoded);
+    eMN eEncodingDte(Datum* pDatum, i8& nBytesEncoded);
+    eMN eEncodingFlt(Datum* pDatum, i8& nBytesEncoded);
+    eMN eEncodingInt(Datum* pDatum, i8& nBytesEncoded);
+    eMN eEncodingIvl(Datum* pDatum, i8& nBytesEncoded);
+    eMN eEncodingTme(Datum* pDatum, i8& nBytesEncoded);
+    eMN eEncodingTsp(Datum* pDatum, i8& nBytesEncoded);
+    eMN eEncodingVch(Datum* pDatum, i8& nBytesEncoded);
   
     //! move into Nub
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
