@@ -46,6 +46,41 @@ time fetch retrieve vchTbl vch_col15;
 
 /*
  
+ Added special check for MN_EMPTY. Results looking better:
+ success: 1000000 rows affected
+ time 25ms
+ success: 1000000 rows affected
+ time 77ms
+ success: 1000000 rows affected
+ time 85ms
+ success: 1000000 rows affected
+ time 91ms
+ success: 1000000 rows affected
+ time 90ms
+ success: 1000000 rows affected
+ time 110ms
+ success: 1000000 rows affected
+ time 38ms
+ success: 1000000 rows affected
+ time 78ms
+ success: 1000000 rows affected
+ time 76ms
+ success: 1000000 rows affected
+ time 75ms
+ success: 1000000 rows affected
+ time 138ms
+ success: 1000000 rows affected
+ time 111ms
+ success: 1000000 rows affected
+ time 109ms
+ success: 1000000 rows affected
+ time 96ms
+ success: 1000000 rows affected
+ time 71ms
+ success: 1000000 rows affected
+ time 47ms
+
+ 
  Made tailline w8_1BFast
  And made shoco call the Fast versions for w8B_* passing pDatum
  slight improvement.

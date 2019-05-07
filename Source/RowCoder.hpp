@@ -684,6 +684,62 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     //! consider passing a eDatum array instead of colum vector
     
+    static inline eMN eGetEncodingExtVchFast(HeadLine* aHeadLine, i8 i_ForCol,
+                                          Coda* pCoda, i8& i_Offset_)
+    {
+      
+      //! experiment on loop unrolling
+      //! refer: https://en.wikipedia.org/wiki/Duff%27s_device
+      //
+      //      if (1 == i_ForCol) {
+      //        eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(0);
+      //        eDM eDatumExt = pCoda->m_aeExtDatum[0];
+      //        i_Offset_ += nDataBytes(eDatumExt,eEncoding);
+      //        eEncoding = (eMN)aHeadLine->iMetaNibbleFast(1);
+      //        return eEncoding;
+      //      }
+      
+      eMN eEncodingDatum = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
+      i8 i_Offset1_ = i_Offset_;
+      
+      if (eEncodingDatum == MN_NULL || eEncodingDatum == MN_EMPTY)
+        return eEncodingDatum;
+      
+      for (i8 i_Nibble = 0; i_Nibble < i_ForCol; i_Nibble++) {
+        
+        eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_Nibble);
+        
+        eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
+        //        i_Offset1_ += nDataBytes(eDatumExt,eEncoding);
+        i_Offset_ += m_iDatumEncoding[eDatumExt][eEncoding];
+        //        if (i_Offset1_ != i_Offset_) {
+        //          i8 x = nDataBytes(eDatumExt,eEncoding);
+        //          i8 y = m_iDatumEncoding[eDatumExt][eEncoding];
+        //          i8 z = 1;
+        //        }
+        //        RASSERT(i_Offset1_ == i_Offset_);
+        
+        //! experiment
+        //        if (eEncoding > MN_8B) {
+        //          eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
+        //          i_Offset_ += nDataBytes(eDatumExt,eEncoding);
+        //        }
+        //        else {
+        //          i_Offset_ += eEncoding;
+        //        }
+        
+      }
+      
+      
+      
+      return eEncodingDatum;
+    }
+    
+    /*----------------------------------------------------------------------------*/
+    /* get the extended encoding (and offset) of a column from given head line    */
+    /*----------------------------------------------------------------------------*/
+    //! consider passing a eDatum array instead of colum vector
+    
     static inline eMN eGetEncodingExtGenericFast(HeadLine* aHeadLine, i8 i_ForCol,
                                           Coda* pCoda, i8& i_Offset_)
     {

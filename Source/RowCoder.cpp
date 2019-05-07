@@ -1902,7 +1902,7 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* 
       NEVER_REACH;
       break;
     case DM_VCH:
-      eEncoding = eGetEncodingExtFast(aHeadLine,i_Column,pCoda,i_Offset);
+      eEncoding = eGetEncodingExtVchFast(aHeadLine,i_Column,pCoda,i_Offset);
       vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_Offset);
       break;
       
