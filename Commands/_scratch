@@ -41,7 +41,7 @@ time fetch retrieve intTbl int_col13;
 time fetch retrieve intTbl int_col14;
 time fetch retrieve intTbl int_col15;
 
-/*
+
  time fetch retrieve intTbl int_col1;
  time fetch retrieve intTbl int_col1;
  time fetch retrieve intTbl int_col1;
@@ -233,6 +233,41 @@ time fetch retrieve intTbl int_col15;
  success: 1000000 rows affected
  time 26ms
  [N0/1 NODE1 3922] se 4.0.5r has>
+ 
+ 5th May 2019
+ success: 1000000 rows affected
+ time 22ms
+ success: 1000000 rows affected
+ time 21ms
+ success: 1000000 rows affected
+ time 23ms
+ success: 1000000 rows affected
+ time 24ms
+ success: 1000000 rows affected
+ time 28ms
+ success: 1000000 rows affected
+ time 30ms
+ success: 1000000 rows affected
+ time 37ms
+ success: 1000000 rows affected
+ time 40ms
+ success: 1000000 rows affected
+ time 38ms
+ success: 1000000 rows affected
+ time 38ms
+ success: 1000000 rows affected
+ time 42ms
+ success: 1000000 rows affected
+ time 44ms
+ success: 1000000 rows affected
+ time 48ms
+ success: 1000000 rows affected
+ time 54ms
+ success: 1000000 rows affected
+ time 54ms
+ success: 1000000 rows affected
+ time 24ms
+ [N0/1 NODE1 15763] se 4.0.5r has>
  */
 
 /*

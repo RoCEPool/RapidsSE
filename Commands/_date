@@ -41,6 +41,11 @@ time fetch retrieve dteTbl dte_col13;
 time fetch retrieve dteTbl dte_col14;
 time fetch retrieve dteTbl dte_col15;
 
+/* added check for NULL in eGetEncoding:
+ last column that has nulls went down to:
+ success: 1000000 rows affected
+ time 40ms
+ 
 /* Little work in vRecordDate
  
  success: 1000000 rows affected

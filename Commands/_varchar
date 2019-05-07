@@ -1,0 +1,49 @@
+/*============================================================================*/
+/* _varchar -- varchar test                                                   */
+/*============================================================================*/
+startCluster;
+
+create table vchTbl (
+vch_col0   INTEGER     NOT NULL,
+vch_col1   VARCHAR     NOT NULL,
+vch_col2   VARCHAR     NOT NULL,
+vch_col3   VARCHAR     NOT NULL,
+vch_col4   VARCHAR     NOT NULL,
+vch_col5   VARCHAR     NOT NULL,
+vch_col6   VARCHAR     NOT NULL,
+vch_col7   VARCHAR     NOT NULL,
+vch_col8   VARCHAR     NOT NULL,
+vch_col9   VARCHAR     NOT NULL,
+vch_col10  VARCHAR     NOT NULL,
+vch_col11  VARCHAR     NOT NULL,
+vch_col12  VARCHAR     NOT NULL,
+vch_col13  VARCHAR     NOT NULL,
+vch_col14  VARCHAR     NOT NULL,
+vch_col15  VARCHAR
+);
+
+ld vchTbl "/DATA/Encoding/varchar.csv" ;
+
+// check no of rows
+fetch vchTbl;
+
+time fetch retrieve vchTbl vch_col0;
+time fetch retrieve vchTbl vch_col1;
+time fetch retrieve vchTbl vch_col2;
+time fetch retrieve vchTbl vch_col3;
+time fetch retrieve vchTbl vch_col4;
+time fetch retrieve vchTbl vch_col5;
+time fetch retrieve vchTbl vch_col6;
+time fetch retrieve vchTbl vch_col7;
+time fetch retrieve vchTbl vch_col8;
+time fetch retrieve vchTbl vch_col9;
+time fetch retrieve vchTbl vch_col10;
+time fetch retrieve vchTbl vch_col11;
+time fetch retrieve vchTbl vch_col12;
+time fetch retrieve vchTbl vch_col13;
+time fetch retrieve vchTbl vch_col14;
+time fetch retrieve vchTbl vch_col15;
+
+//*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
