@@ -214,6 +214,17 @@ namespace Data
     void vEncodingTsp(Datum* pDatum);
     void vEncodingVch(Datum* pDatum);
   
+    void vXcheckBcd(Datum* pDatum, Column* pCol);
+    void vXcheckBol(Datum* pDatum, Column* pCol);
+    void vXcheckDte(Datum* pDatum, Column* pCol);
+    void vXcheckFlt(Datum* pDatum, Column* pCol);
+    void vXcheckInt(Datum* pDatum, Column* pCol);
+    void vXcheckIvl(Datum* pDatum, Column* pCol);
+    void vXcheckTme(Datum* pDatum, Column* pCol);
+    void vXcheckTsp(Datum* pDatum, Column* pCol);
+    void vXcheckVch(Datum* pDatum, Column* pCol);
+
+  
     //! move into Nub
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
 

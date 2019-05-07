@@ -3698,6 +3698,129 @@ void RowCoder::vEncodingVch(Datum* pDatum)
 }
 
 /*----------------------------------------------------------------------------*/
+/* cross-check the encoding of bcd                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXcheckBcd(Datum* pDatum, Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iBcd == pDatum->m_iBcd);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of bol                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXcheckBol(Datum* pDatum, Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iBol == pDatum->m_iBol);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of dte                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXcheckDte(Datum* pDatum, Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
+  //  vTrace("-- %02lld-%02lld-%02lld\n"_Stz,
+  //         pDatum->xDte.m_uYearDelta,pDatum->xDte.m_uMonth,pDatum->xDte.m_uDay);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of flt                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXcheckFlt(Datum* pDatum, Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of int                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXcheckInt(Datum* pDatum, Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of ivl                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXcheckIvl(Datum* pDatum, Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of tme                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXcheckTme(Datum* pDatum, Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iTme == pDatum->m_iTme);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of tsp                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXcheckTsp(Datum* pDatum, Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iTsp == pDatum->m_iTsp);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of vch                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXcheckVch(Datum* pDatum, Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* search for duplicate tail line                                             */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iFindTail(RowNub* pNub, TailLine* aFindLine)
