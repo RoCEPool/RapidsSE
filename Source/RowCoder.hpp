@@ -101,7 +101,7 @@ namespace Data
     void vHashColumn(Datum* pDatum, Column* pCol);
   
     void vMetaNibble(Column* pCol, eMN eMetaNibble);
-    void vMetaPut(Column* pCol, Datum* pDatum);
+    void vMetaPut(Datum* pDatum, Column* pCol);
 
     void vRecode(i8 i_IntoHead, RowNub* pFromNub, HeadLine* aFromHead);
     void vRecodeBcd(Column* pCol);
@@ -262,6 +262,7 @@ namespace Data
                            eMN eEncoding, i8 i_IntoOffset);
   
     void vUsageIncEncoded(Column* pCol, i8 nBytes);
+    void vUsageIncEncoded(Column* pCol, Datum* pDatum);
     void vUsageIncRecoded(Column* pCol, i8 nBytes);
     void vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss);
     void vUsageReset(void);
