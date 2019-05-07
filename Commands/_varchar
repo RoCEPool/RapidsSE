@@ -53,38 +53,39 @@ time fetch retrieve vchTbl vch_col15;
  success: 1000000 rows affected
  time 27ms
  success: 1000000 rows affected
- time 85ms
+ time 78ms
+ success: 1000000 rows affected
+ time 83ms
+ success: 1000000 rows affected
+ time 90ms
  success: 1000000 rows affected
  time 94ms
  success: 1000000 rows affected
- time 96ms
+ time 119ms
  success: 1000000 rows affected
- time 97ms
+ time 40ms
  success: 1000000 rows affected
- time 122ms
+ time 81ms
  success: 1000000 rows affected
- time 37ms
+ time 80ms
  success: 1000000 rows affected
- time 86ms
+ time 76ms
  success: 1000000 rows affected
- time 85ms
+ time 133ms
  success: 1000000 rows affected
- time 82ms
+ time 123ms
  success: 1000000 rows affected
- time 142ms
+ time 116ms
  success: 1000000 rows affected
- time 132ms
+ time 106ms
  success: 1000000 rows affected
- time 125ms
+ time 77ms
  success: 1000000 rows affected
- time 114ms
- success: 1000000 rows affected
- time 63ms
- success: 1000000 rows affected
- time 53ms
- [N0/1 NODE1 42392] se 4.0.5r has>
+ time 52ms
+[N0/1 NODE1 44544] se 4.0.5r has>
  
  1st set of results 7 May 2019
+ -----------------------------
  success: 1000000 rows affected
  time 25ms
  success: 1000000 rows affected

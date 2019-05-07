@@ -446,7 +446,10 @@ namespace Data
     static inline void vDecodeVchShocoFast(Datum* pDatum, HeadLine* aHeadLine,
                                            eMN eEncoding, i8 i_Offset)
     {
-      i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
+      //i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
+      aHeadLine->w8_2BFast(pDatum, i_Offset);
+      i8 i_TailDistance = pDatum->m_wWord;
+      
       TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
       
       //MemLib::vWordDump(aShocoTail,sizeof(TailLine));
@@ -464,7 +467,9 @@ namespace Data
        C is one byte being the number of compressed bytes
        */
       
-      i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+      //i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+      aShocoTail->w8_1BFast(pDatum, C_SHOCO_COMPRESSED_OFFSET);
+      i8 nCompressed = pDatum->m_wWord;
       //RASSERT(nCompressed <= 4);
       
       i8 nDecompressed =
