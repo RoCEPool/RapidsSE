@@ -205,15 +205,15 @@ namespace Data
     static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
 
-    void vCodeBcd(Datum* pDatum);
-    void vCodeBol(Datum* pDatum);
-    void vCodeDte(Datum* pDatum);
-    void vCodeFlt(Datum* pDatum);
-    void vCodeInt(Datum* pDatum);
-    void vCodeIvl(Datum* pDatum);
-    void vCodeTme(Datum* pDatum);
-    void vCodeTsp(Datum* pDatum);
-    void vCodeVch(Datum* pDatum);
+    void vCodeBcd(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeBol(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeFlt(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeIvl(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeTme(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeTsp(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum);
   
     void vXchkBcd(Datum* pDatum, Column* pCol);
     void vXchkBol(Datum* pDatum, Column* pCol);
