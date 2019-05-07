@@ -4,28 +4,28 @@
 startCluster;
 
 create table vchTbl (
-vch_col0   INTEGER     NOT NULL,
-vch_col1   VARCHAR     NOT NULL,
-vch_col2   VARCHAR     NOT NULL,
-vch_col3   VARCHAR     NOT NULL,
-vch_col4   VARCHAR     NOT NULL,
-vch_col5   VARCHAR     NOT NULL,
-vch_col6   VARCHAR     NOT NULL,
-vch_col7   VARCHAR     NOT NULL,
-vch_col8   VARCHAR     NOT NULL,
-vch_col9   VARCHAR     NOT NULL,
-vch_col10  VARCHAR     NOT NULL,
-vch_col11  VARCHAR     NOT NULL,
-vch_col12  VARCHAR     NOT NULL,
-vch_col13  VARCHAR     NOT NULL,
-vch_col14  VARCHAR     NOT NULL,
+vch_col0   INTEGER,
+vch_col1   VARCHAR,
+vch_col2   VARCHAR,
+vch_col3   VARCHAR,
+vch_col4   VARCHAR,
+vch_col5   VARCHAR,
+vch_col6   VARCHAR,
+vch_col7   VARCHAR,
+vch_col8   VARCHAR,
+vch_col9   VARCHAR,
+vch_col10  VARCHAR,
+vch_col11  VARCHAR,
+vch_col12  VARCHAR,
+vch_col13  VARCHAR,
+vch_col14  VARCHAR,
 vch_col15  VARCHAR
 );
 
 ld vchTbl "/DATA/Encoding/varchar.csv" ;
 
 // check no of rows
-fetch vchTbl;
+//fetch vchTbl;
 
 time fetch retrieve vchTbl vch_col0;
 time fetch retrieve vchTbl vch_col1;
@@ -43,6 +43,44 @@ time fetch retrieve vchTbl vch_col12;
 time fetch retrieve vchTbl vch_col13;
 time fetch retrieve vchTbl vch_col14;
 time fetch retrieve vchTbl vch_col15;
+
+/*
+ 
+ 1st set of results 7 May 2019
+ success: 1000000 rows affected
+ time 25ms
+ success: 1000000 rows affected
+ time 83ms
+ success: 1000000 rows affected
+ time 97ms
+ success: 1000000 rows affected
+ time 98ms
+ success: 1000000 rows affected
+ time 100ms
+ success: 1000000 rows affected
+ time 118ms
+ success: 1000000 rows affected
+ time 43ms
+ success: 1000000 rows affected
+ time 86ms
+ success: 1000000 rows affected
+ time 84ms
+ success: 1000000 rows affected
+ time 83ms
+ success: 1000000 rows affected
+ time 147ms
+ success: 1000000 rows affected
+ time 139ms
+ success: 1000000 rows affected
+ time 130ms
+ success: 1000000 rows affected
+ time 112ms
+ success: 1000000 rows affected
+ time 70ms
+ success: 1000000 rows affected
+ time 55ms
+ [N0/1 NODE1 33384] se 4.0.5r has>
+ */
 
 //*============================================================================*/
 /* end                                                                        */
