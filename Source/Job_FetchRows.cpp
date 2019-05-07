@@ -798,6 +798,7 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
   HeadLine** aaHeadLine = pFetchBuffer->aaFirstRowPtr();
   
   HeadLine** aaLatter = (HeadLine**)pFetchBuffer->aLatter();
+  HV_Rec hvRec;
   
   while (aaHeadLine < aaLatter) {
     
@@ -812,9 +813,11 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
     RowCoder::vRetrieve(oDatum,aHeadLine,pCol,pCoda);
     
     if (pJob_FetchRows->m_bPrint) {
-      Record xRecord;
-      RowCoder::vAppend(oDatum, pCol, &xRecord);
-      vTrace("row: (%s)\n"_Stz, xRecord.szRecStr());
+      
+      hvRec->vReset();
+      
+      RowCoder::vAppend(oDatum, pCol, hvRec);
+      vTrace("row: (%s)\n"_Stz, hvRec->szRecStr());
     }
     
     aaHeadLine = aAdd<HeadLine**>(aaHeadLine,sizeof(HeadLine*));
