@@ -2214,10 +2214,17 @@ void RowCoder::vInitEncoding(void)
   // DM_VCH
   m_iDatumEncoding[DM_VCH][MN_NULL] = MN_NULL;
   m_iDatumEncoding[DM_VCH][MN_1B] = MN_1B;
+  m_iDatumEncoding[DM_VCH][MN_2B] = MN_2B;
+  m_iDatumEncoding[DM_VCH][MN_3B] = MN_3B;
+  m_iDatumEncoding[DM_VCH][MN_4B] = MN_4B;
+  m_iDatumEncoding[DM_VCH][MN_5B] = MN_5B;
+  m_iDatumEncoding[DM_VCH][MN_6B] = MN_6B;
+  m_iDatumEncoding[DM_VCH][MN_7B] = MN_7B;
+  m_iDatumEncoding[DM_VCH][MN_8B] = MN_8B;
   m_iDatumEncoding[DM_VCH][MN_EMPTY] = MN_1B;
   m_iDatumEncoding[DM_VCH][MN_SHOCO_FIT] = MN_2B;
   m_iDatumEncoding[DM_VCH][MN_SHOCO_SPLIT] = MN_3B;
-  m_iDatumEncoding[DM_VCH][MN_SHOCO_2B] = MN_4B;
+  m_iDatumEncoding[DM_VCH][MN_SHOCO_2B] = MN_2B;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DM_ALPHA (NOT SURE)
