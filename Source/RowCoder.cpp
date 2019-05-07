@@ -2151,10 +2151,10 @@ void RowCoder::vInitEncoding(void)
   // DM_DTE
   m_iDatumEncoding[DM_DTE][MN_CLASSIC_1B] = MN_NULL;
   m_iDatumEncoding[DM_DTE][MN_CLASSIC_2B] = MN_1B;
-  m_iDatumEncoding[DM_DTE][MN_SILVER_1B] = MN_2B;
-  m_iDatumEncoding[DM_DTE][MN_SILVER_2B] = MN_3B;
-  m_iDatumEncoding[DM_DTE][MN_MODERN_1B] = MN_4B;
-  m_iDatumEncoding[DM_DTE][MN_MODERN_2B] = MN_5B;
+  m_iDatumEncoding[DM_DTE][MN_SILVER_1B] = MN_1B;
+  m_iDatumEncoding[DM_DTE][MN_SILVER_2B] = MN_2B;
+  m_iDatumEncoding[DM_DTE][MN_MODERN_1B] = MN_1B;
+  m_iDatumEncoding[DM_DTE][MN_MODERN_2B] = MN_2B;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DM_FLT
