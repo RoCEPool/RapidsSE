@@ -39,6 +39,18 @@ namespace Base
     void v8B(i8 i_Byte, w8 wArg);
 
     void v1N(i8 i_Nibble, w8 wArg);
+    
+    /*----------------------------------------------------------------------------*/
+    /* return 1 byte at offset as w8                                              */
+    /*----------------------------------------------------------------------------*/
+    inline void w8_1BFast(Datum* pDatum, i8 i_Byte)
+    {
+      byte* aByte = ((byte*)this) + i_Byte;
+      
+      pDatum->m_wWord = 0;
+      pDatum->m_yaByte[0] = *aByte;
+    }
+    
   };
   
   /*--------------------------------------------------------------------------*/
@@ -50,6 +62,8 @@ namespace Base
     
     return aTailLine;
   }
+  
+  
 }
 
 /*============================================================================*/
