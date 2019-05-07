@@ -247,7 +247,6 @@
       I 7 %
       I
       "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.write
-
     loop
   then
 
@@ -279,25 +278,25 @@
     do
       //I I "%v,String%v" str.format .
       I 7 % 0 == if
-        -1000000 1000000 int.random
+        10 str.random
       else
         "null"
       then
 
-      -9223372036854775806 9223372036854775806 int.random
-      0 9223372036854 int.random
-      0 10000000 int.random
-      -1000 1000000 int.random
-      1000 1000000 int.random
-      0 10000000 int.random
-      0 1000000 int.random
-      0 100000 int.random
-      -1 1 int.random
-      I 10000 %
-      I 1000 %
-      I 100 %
-      I 10 %
-      I 7 %
+      1 7 int.random >str
+      5 str.random
+      10 str.random
+      15 str.random
+      22 str.random
+      4 str.random
+      4 str.random
+      6 str.random
+      1 str.random
+      I 33 % str.random
+      I 10 % str.random
+      I 10 % str.random
+      I 10 % str.random
+      I 7 % str.random
       I
       "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.write
     loop
@@ -340,7 +339,7 @@
 /* generate the varchar data files                                            */
 /*----------------------------------------------------------------------------*/
 : varcharData
-  "../DATA/Encoding/varchar.csv"    1000000      varcharDataFile
+  "../DATA/Encoding/varchar.csv"    1000000     varcharDataFile
 ;
 
 
