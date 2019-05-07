@@ -101,7 +101,8 @@ namespace Data
     void vHashColumn(Datum* pDatum, Column* pCol);
   
     void vMetaNibble(Column* pCol, eMN eMetaNibble);
-    
+    void vMetaPut(Column* pCol, Datum* pDatum);
+
     void vRecode(i8 i_IntoHead, RowNub* pFromNub, HeadLine* aFromHead);
     void vRecodeBcd(Column* pCol);
     void vRecodeDte(Column* pCol);
