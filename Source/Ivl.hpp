@@ -43,7 +43,8 @@ namespace Datums
     i8   iMilli(void);
   
     void vSet(u8 uSecond, u8 uMilli);
-  
+    void vSprint(Stz* aDst);
+
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
     static void vSprint(Stz* aDst, Stz* aSrc);

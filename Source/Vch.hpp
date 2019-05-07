@@ -28,7 +28,8 @@ namespace Datums
     void vInitZero(void);
     bool bIsNull(void);
     void vSetNull(void);
-    
+    void vSprint(Stz* aDst, Stz* aSrc, bool bQuoted);
+
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
     static i8   iSize(char* aSrc);

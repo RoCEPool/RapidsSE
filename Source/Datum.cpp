@@ -129,6 +129,7 @@ void Datum::vSprintBcd(Stz* szDst, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
+  m_wBcd.vSprint(szDst,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -138,6 +139,7 @@ void Datum::vSprintBol(Stz* szDst, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
+  m_wBol.vSprint(szDst);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,6 +149,7 @@ void Datum::vSprintDte(Stz* szDst, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
+  m_wDte.vSprint(szDst);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -156,6 +159,7 @@ void Datum::vSprintFlt(Stz* szDst, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
+  m_wFlt.vSprint(szDst);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,6 +169,7 @@ void Datum::vSprintInt(Stz* szDst, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
+  m_wInt.vSprint(szDst);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -174,6 +179,7 @@ void Datum::vSprintIvl(Stz* szDst, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
+  m_wIvl.vSprint(szDst);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -183,6 +189,7 @@ void Datum::vSprintTme(Stz* szDst, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
+  m_wTme.vSprint(szDst);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -192,6 +199,7 @@ void Datum::vSprintTsp(Stz* szDst, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
+  m_wTsp.vSprint(szDst);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,6 +209,12 @@ void Datum::vSprintVch(Stz* szDst, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
+  if (bIsNull()) {
+    szDst->vSprint("null"_Stz);
+    return;
+  }
+  
+  Vch::vSprintQuotes(szDst,m_xWsp.aStz());
 }
 
 /*----------------------------------------------------------------------------*/
