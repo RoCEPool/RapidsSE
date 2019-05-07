@@ -542,49 +542,49 @@ namespace Data
       switch (eEncoding) {
           
         case MN_1B:
-          pDatum->m_iInt = aHeadLine->w8_1B(i_Offset);
+          aHeadLine->w8_1BFast(pDatum,i_Offset);
           *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
           ((char*)pDatum->m_xWsp.aStz())[1] = '\0';
           pDatum->m_nChars = 1;
           break;
         case MN_2B:
-          pDatum->m_iInt = aHeadLine->w8_2B(i_Offset);
+          aHeadLine->w8_2BFast(pDatum,i_Offset);
           *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
           ((char*)pDatum->m_xWsp.aStz())[2] = '\0';
           pDatum->m_nChars = 2;
           break;
         case MN_3B:
-          pDatum->m_iInt = aHeadLine->w8_3B(i_Offset);
+          aHeadLine->w8_3BFast(pDatum,i_Offset);
           *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
           ((char*)pDatum->m_xWsp.aStz())[3] = '\0';
           pDatum->m_nChars = 3;
           break;
         case MN_4B:
-          pDatum->m_iInt = aHeadLine->w8_4B(i_Offset);
+          aHeadLine->w8_4BFast(pDatum,i_Offset);
           *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
           ((char*)pDatum->m_xWsp.aStz())[4] = '\0';
           pDatum->m_nChars = 4;
           break;
         case MN_5B:
-          pDatum->m_iInt = aHeadLine->w8_5B(i_Offset);
+          aHeadLine->w8_5BFast(pDatum,i_Offset);
           *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
           ((char*)pDatum->m_xWsp.aStz())[5] = '\0';
           pDatum->m_nChars = 5;
           break;
         case MN_6B:
-          pDatum->m_iInt = aHeadLine->w8_6B(i_Offset);
+          aHeadLine->w8_6BFast(pDatum,i_Offset);
           *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
           ((char*)pDatum->m_xWsp.aStz())[6] = '\0';
           pDatum->m_nChars = 6;
           break;
         case MN_7B:
-          pDatum->m_iInt = aHeadLine->w8_7B(i_Offset);
+          aHeadLine->w8_7BFast(pDatum,i_Offset);
           *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
           ((char*)pDatum->m_xWsp.aStz())[7] = '\0';
           pDatum->m_nChars = 7;
           break;
         case MN_8B:
-          pDatum->m_iInt = aHeadLine->w8_8B(i_Offset);
+          aHeadLine->w8_8BFast(pDatum,i_Offset);
           *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
           ((char*)pDatum->m_xWsp.aStz())[8] = '\0';
           pDatum->m_nChars = 8;
