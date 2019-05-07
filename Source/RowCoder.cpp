@@ -226,6 +226,10 @@ void RowCoder::vEncodeDatum(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeEnd(void)
 {
+  HV_Rec hvRec;
+  vRecord(hvRec,m_aHeadLine,m_pColVec,m_pCoda);
+  vTrace("encoded: (%s)\n"_Stz,hvRec->szRecStr());
+
   m_pEncodeNub = nullptr;
   m_pColVec    = nullptr;
   m_pCoda      = nullptr;
@@ -2367,6 +2371,40 @@ void RowCoder::vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+  
+  i8 i_LastColumn = 0;
+  i8 i_LastOffset = iBaseOffset(pColVec);
+  
+  // for each column
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
+    
+    // get the column at index
+    Column* pCol = pColVec->pGet(i_Column);
+    
+    // comma separate column values
+    if (i_Column)
+      pRec->szRecStr()->vConcat(","_Stz);
+    
+    // append column value
+    vAppend(pRec,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+    //vTrace("%s\n"_Stz,pRec->szRecStr());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint decode row from cache line into string                              */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecord(Record* pRec, HeadLine* aHeadLine,
+                       ColumnVec* pColVec, Coda* pCoda)
+{
+  pRec->vReset();
+  
+  //vHeadDump(aHeadLine, pColVec);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  
   // get no of columns
   i8 nColumns = pColVec->nItems();
   
