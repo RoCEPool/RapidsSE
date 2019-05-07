@@ -195,11 +195,7 @@ void RowCoder::vEncodeDatum(Datum* pDatum, Column* pCol)
   
   if (0 == i_Col)
     m_nRows++;
-  
-//  //! don't encode columns 16+                                             (fix)
-//  if (i_Col >= 16)
-//    return;
-  
+    
 //  if (1 == i_Col)
 //    oNumBat.vAdd(pDatum->m_iInt);
   
