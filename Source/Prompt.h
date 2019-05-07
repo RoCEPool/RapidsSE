@@ -49,6 +49,7 @@ using namespace Prompt;
 
 #include "Prompt_file.hpp"
 #include "Prompt_fileCat.hpp"
+#include "Prompt_fileProc.hpp"
 #include "Prompt_floats.hpp"
 #include "Prompt_funs.hpp"
 
