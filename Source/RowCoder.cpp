@@ -3394,6 +3394,7 @@ void RowCoder::vEncodingDte(Datum* pDatum)
     m_oEncodedDatum.m_eEncoding = MN_NULL;
     m_oEncodedDatum.m_nEncodedBytes = 0;
     RASSERT(m_oEncodedDatum.m_nEncodedBytes == nDataBytes(DM_DTE,MN_NULL));
+    return;
   }
   
   eMN eEncoding;
@@ -3537,6 +3538,7 @@ void RowCoder::vEncodingTme(Datum* pDatum)
     m_oEncodedDatum.m_eEncoding = MN_NULL;
     m_oEncodedDatum.m_nEncodedBytes = 0;
     RASSERT(m_oEncodedDatum.m_nEncodedBytes == nDataBytes(DM_TME,MN_NULL));
+    return;
   }
   
   eMN eEncoding;
@@ -3578,6 +3580,7 @@ void RowCoder::vEncodingTsp(Datum* pDatum)
     m_oEncodedDatum.m_eEncoding = MN_NULL;
     m_oEncodedDatum.m_nEncodedBytes = 0;
     RASSERT(m_oEncodedDatum.m_nEncodedBytes == nDataBytes(DM_TSP,MN_NULL));
+    return;
   }
   
   eMN eEncoding;
@@ -4166,8 +4169,10 @@ void RowCoder::vRestoreDte(Datum* pDatum, eMN eEncoding)
 {
   i8 iEra = 0;
   
-  if (MN_NULL == eEncoding)
+  if (MN_NULL == eEncoding) {
+    pDatum->m_iDte = C_DATUM_NULL;
     return;
+  }
   
   if (MN_SILVER_1B == eEncoding || MN_SILVER_2B == eEncoding)
     iEra = C_SILVER_ERA;
