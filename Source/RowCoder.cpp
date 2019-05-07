@@ -559,7 +559,7 @@ void RowCoder::vEncodeVch(Datum* pDatum, Column* pCol)
     }
     else {
       // empty string
-      vMetaNibble(pCol,MN_EMPTY);
+      RASSERT(MN_EMPTY == m_oEncodedDatum.m_eEncoding);
     }
   }
   
@@ -3603,6 +3603,7 @@ void RowCoder::vEncodingVch(Datum* pDatum)
   if (pDatum->m_iInt == C_DATUM_NULL) {
     m_oEncodedDatum.m_eEncoding = MN_NULL;
     m_oEncodedDatum.m_nEncodedBytes = 0;
+    return;
   }
 
   i8 iLen = StrLib::nCopy((char*)m_oEncodedDatum.m_xWsp.aArea(),
@@ -3610,23 +3611,22 @@ void RowCoder::vEncodingVch(Datum* pDatum)
 
   eMN eEncoding;
   
-  //i8 iLen = StrLib::iLength((char*)pDatum->m_xWsp.aArea());
-  //RASSERT(iLen <= 8);
-  
   if (iLen == 0) {
-    eEncoding = MN_1B;
+    eEncoding = MN_EMPTY;
+    m_oEncodedDatum.m_eEncoding = eEncoding;
     m_oEncodedDatum.m_nEncodedBytes = 0;
   }
   else if (iLen <= 3) {
     eEncoding = (eMN)iLen;
+    m_oEncodedDatum.m_eEncoding = eEncoding;
     m_oEncodedDatum.m_nEncodedBytes = iLen;
   }
   else {
     eEncoding = MN_SHOCO_2B;
+    m_oEncodedDatum.m_eEncoding = eEncoding;
     m_oEncodedDatum.m_nEncodedBytes = iLen;
   }
   
-  m_oEncodedDatum.m_eEncoding = eEncoding;
 }
 
 /*----------------------------------------------------------------------------*/
