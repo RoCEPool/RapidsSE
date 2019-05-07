@@ -55,6 +55,17 @@ i8 IntLib::iByteMagnitude(u8 uArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return the byte magnitude of arg (with null being a magnitude of 0)        */
+/*----------------------------------------------------------------------------*/
+i8 IntLib::iByteMagNull(u8 uArg)
+{
+  if (uArg == (u8)C_DATUM_NULL)
+    return 0;
+  
+  return iByteMagnitude(uArg);
+}
+
+/*----------------------------------------------------------------------------*/
 /* return 8^iRaised'                                                          */
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iBytePower(i8 iRaised)
