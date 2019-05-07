@@ -101,7 +101,8 @@ namespace Data
     void vHashColumn(Datum* pDatum, Column* pCol);
   
     void vMetaNibble(Column* pCol, eMN eMetaNibble);
-    
+    void vMetaPut(Column* pCol, Datum* pDatum);
+
     void vRecode(i8 i_IntoHead, RowNub* pFromNub, HeadLine* aFromHead);
     void vRecodeBcd(Column* pCol);
     void vRecodeDte(Column* pCol);
@@ -204,25 +205,25 @@ namespace Data
     static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
 
-    void vEncodingBcd(Datum* pDatum);
-    void vEncodingBol(Datum* pDatum);
-    void vEncodingDte(Datum* pDatum);
-    void vEncodingFlt(Datum* pDatum);
-    void vEncodingInt(Datum* pDatum);
-    void vEncodingIvl(Datum* pDatum);
-    void vEncodingTme(Datum* pDatum);
-    void vEncodingTsp(Datum* pDatum);
-    void vEncodingVch(Datum* pDatum);
+    void vCodeBcd(Datum* pDatum);
+    void vCodeBol(Datum* pDatum);
+    void vCodeDte(Datum* pDatum);
+    void vCodeFlt(Datum* pDatum);
+    void vCodeInt(Datum* pDatum);
+    void vCodeIvl(Datum* pDatum);
+    void vCodeTme(Datum* pDatum);
+    void vCodeTsp(Datum* pDatum);
+    void vCodeVch(Datum* pDatum);
   
-    void vXcheckBcd(Datum* pDatum, Column* pCol);
-    void vXcheckBol(Datum* pDatum, Column* pCol);
-    void vXcheckDte(Datum* pDatum, Column* pCol);
-    void vXcheckFlt(Datum* pDatum, Column* pCol);
-    void vXcheckInt(Datum* pDatum, Column* pCol);
-    void vXcheckIvl(Datum* pDatum, Column* pCol);
-    void vXcheckTme(Datum* pDatum, Column* pCol);
-    void vXcheckTsp(Datum* pDatum, Column* pCol);
-    void vXcheckVch(Datum* pDatum, Column* pCol);
+    void vXchkBcd(Datum* pDatum, Column* pCol);
+    void vXchkBol(Datum* pDatum, Column* pCol);
+    void vXchkDte(Datum* pDatum, Column* pCol);
+    void vXchkFlt(Datum* pDatum, Column* pCol);
+    void vXchkInt(Datum* pDatum, Column* pCol);
+    void vXchkIvl(Datum* pDatum, Column* pCol);
+    void vXchkTme(Datum* pDatum, Column* pCol);
+    void vXchkTsp(Datum* pDatum, Column* pCol);
+    void vXchkVch(Datum* pDatum, Column* pCol);
 
   
     //! move into Nub

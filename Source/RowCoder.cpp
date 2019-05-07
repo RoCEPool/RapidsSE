@@ -397,17 +397,12 @@ void RowCoder::vDataPut(w8 wDatum, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
 {
-  vEncodingBcd(pDatum);
-
-  // set 4bit meta data for column value
-  vMetaNibble(pCol,m_oEncodedDatum.m_eEncoding);
-  
-  // set n-byte data for column value
+  vCodeBcd(pDatum);
+  vMetaPut(pCol,&m_oEncodedDatum);
   vDataPut(&m_oEncodedDatum);
-  
+  vXchkBcd(pDatum,pCol);
+
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
-  
-  vXcheckBcd(pDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -415,17 +410,12 @@ void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeBol(Datum* pDatum, Column* pCol)
 {
-  vEncodingBol(pDatum);
-
-  // set 4bit meta data for column value
-  vMetaNibble(pCol,m_oEncodedDatum.m_eEncoding);
-  
-  RASSERT(0 == m_oEncodedDatum.m_nEncodedBytes);
+  vCodeBol(pDatum);
+  vMetaPut(pCol,&m_oEncodedDatum);
   vDataPut(&m_oEncodedDatum);
+  vXchkBol(pDatum,pCol);
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
-  
-  vXcheckBol(pDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -436,17 +426,12 @@ void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
   //  vTrace("++ %lld-%lld-%lld\n"_Stz,
   //         pDatum->xDte.m_uYearDelta,pDatum->xDte.m_uMonth,pDatum->xDte.m_uDay);
   
-  vEncodingDte(pDatum);
-
-  // set 4bit meta data for column value
-  vMetaNibble(pCol,m_oEncodedDatum.m_eEncoding);
-  
-  // set n-byte data for column value
+  vCodeDte(pDatum);
+  vMetaPut(pCol,&m_oEncodedDatum);
   vDataPut(&m_oEncodedDatum);
+  vXchkDte(pDatum,pCol);
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
-  
-  vXcheckDte(pDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -454,17 +439,12 @@ void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
 {
-  vEncodingFlt(pDatum);
-
-  // set 4bit meta data for column value
-  vMetaNibble(pCol,m_oEncodedDatum.m_eEncoding);
-  
-  // set n-byte data for column value
+  vCodeFlt(pDatum);
+  vMetaPut(pCol,&m_oEncodedDatum);
   vDataPut(&m_oEncodedDatum);
+  vXchkFlt(pDatum,pCol);
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
-  
-  vXcheckFlt(pDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -472,17 +452,12 @@ void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
 {
-  vEncodingInt(pDatum);
-
-  // set 4bit meta data for column value
-  vMetaNibble(pCol,m_oEncodedDatum.m_eEncoding);
-  
-  // set n-byte data for column value
+  vCodeInt(pDatum);
+  vMetaPut(pCol,&m_oEncodedDatum);
   vDataPut(&m_oEncodedDatum);
+  vXchkInt(pDatum,pCol);
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
-  
-  vXcheckInt(pDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -490,17 +465,12 @@ void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
 {
-  vEncodingIvl(pDatum);
-
-  // set 4bit meta data for column value
-  vMetaNibble(pCol,m_oEncodedDatum.m_eEncoding);
-  
-  // set n-byte data for column value
+  vCodeIvl(pDatum);
+  vMetaPut(pCol,&m_oEncodedDatum);
   vDataPut(&m_oEncodedDatum);
+  vXchkIvl(pDatum,pCol);
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
-  
-  vXcheckIvl(pDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -508,17 +478,12 @@ void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
 {
-  vEncodingTme(pDatum);
-
-  // set 4bit meta data for column value
-  vMetaNibble(pCol,m_oEncodedDatum.m_eEncoding);
-  
-  // set n-byte data for column value
+  vCodeTme(pDatum);
+  vMetaPut(pCol,&m_oEncodedDatum);
   vDataPut(&m_oEncodedDatum);
+  vXchkTme(pDatum,pCol);
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
-  
-  vXcheckTme(pDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -526,17 +491,12 @@ void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
 {
-  vEncodingTsp(pDatum);
-
-  // set 4bit meta data for column value
-  vMetaNibble(pCol,m_oEncodedDatum.m_eEncoding);
-  
-  // set n-byte data for column value
+  vCodeTsp(pDatum);
+  vMetaPut(pCol,&m_oEncodedDatum);
   vDataPut(&m_oEncodedDatum);
+  vXchkTsp(pDatum,pCol);
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
-  
-  vXcheckTsp(pDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -544,12 +504,9 @@ void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeVch(Datum* pDatum, Column* pCol)
 {
-  vEncodingVch(pDatum);
+  vCodeVch(pDatum);
+  vMetaPut(pCol,&m_oEncodedDatum);
 
-  // set 4bit meta data for column value
-  vMetaNibble(pCol,m_oEncodedDatum.m_eEncoding);
-  
-  // set n-byte data for column value for non-null's
   if (m_oEncodedDatum.m_eEncoding != MN_NULL) {
     if (m_oEncodedDatum.m_nChars) {
       if (m_oEncodedDatum.m_eEncoding == MN_SHOCO_2B)
@@ -563,7 +520,7 @@ void RowCoder::vEncodeVch(Datum* pDatum, Column* pCol)
     }
   }
   
-  vXcheckVch(pDatum,pCol);
+  vXchkVch(pDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -668,6 +625,15 @@ void RowCoder::vMetaNibble(Column* pCol, eMN eMetaNibble)
 {
   i8 i_Column = pCol->iColumnNo();
   m_aHeadLine->vMetaNibble(i_Column,eMetaNibble);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the meta bits for encoded column value                                 */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vMetaPut(Column* pCol, Datum* pDatum)
+{
+  i8 i_Column = pCol->iColumnNo();
+  m_aHeadLine->vMetaNibble(i_Column,pDatum->m_eEncoding);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3332,7 +3298,7 @@ void RowCoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* encoding of bcd                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodingBcd(Datum* pDatum)
+void RowCoder::vCodeBcd(Datum* pDatum)
 {
   RASSERT(DM_BCD == pDatum->m_eDatum);
   
@@ -3358,7 +3324,7 @@ void RowCoder::vEncodingBcd(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encoding of bol                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodingBol(Datum* pDatum)
+void RowCoder::vCodeBol(Datum* pDatum)
 {
   RASSERT(DM_BOL == pDatum->m_eDatum);
 
@@ -3383,7 +3349,7 @@ void RowCoder::vEncodingBol(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encoding of dte                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodingDte(Datum* pDatum)
+void RowCoder::vCodeDte(Datum* pDatum)
 {
   RASSERT(DM_DTE == pDatum->m_eDatum);
   
@@ -3449,7 +3415,7 @@ void RowCoder::vEncodingDte(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encoding of flt                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodingFlt(Datum* pDatum)
+void RowCoder::vCodeFlt(Datum* pDatum)
 {
   RASSERT(DM_FLT == pDatum->m_eDatum);
   
@@ -3475,7 +3441,7 @@ void RowCoder::vEncodingFlt(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encoding of int                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodingInt(Datum* pDatum)
+void RowCoder::vCodeInt(Datum* pDatum)
 {
   RASSERT(DM_INT == pDatum->m_eDatum);
   
@@ -3501,7 +3467,7 @@ void RowCoder::vEncodingInt(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encoding of ivl                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodingIvl(Datum* pDatum)
+void RowCoder::vCodeIvl(Datum* pDatum)
 {
   RASSERT(DM_IVL == pDatum->m_eDatum);
   
@@ -3527,7 +3493,7 @@ void RowCoder::vEncodingIvl(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encoding of tme                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodingTme(Datum* pDatum)
+void RowCoder::vCodeTme(Datum* pDatum)
 {
   RASSERT(DM_TME == pDatum->m_eDatum);
   
@@ -3569,7 +3535,7 @@ void RowCoder::vEncodingTme(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encoding of tsp                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodingTsp(Datum* pDatum)
+void RowCoder::vCodeTsp(Datum* pDatum)
 {
   RASSERT(DM_TSP == pDatum->m_eDatum);
   
@@ -3596,7 +3562,7 @@ void RowCoder::vEncodingTsp(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* encoding of vch                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodingVch(Datum* pDatum)
+void RowCoder::vCodeVch(Datum* pDatum)
 {
   RASSERT(DM_VCH == pDatum->m_eDatum);
   
@@ -3635,7 +3601,7 @@ void RowCoder::vEncodingVch(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 /* cross-check the encoding of bcd                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXcheckBcd(Datum* pDatum, Column* pCol)
+void RowCoder::vXchkBcd(Datum* pDatum, Column* pCol)
 {
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
@@ -3649,7 +3615,7 @@ void RowCoder::vXcheckBcd(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* cross-check the encoding of bol                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXcheckBol(Datum* pDatum, Column* pCol)
+void RowCoder::vXchkBol(Datum* pDatum, Column* pCol)
 {
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
@@ -3663,7 +3629,7 @@ void RowCoder::vXcheckBol(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* cross-check the encoding of dte                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXcheckDte(Datum* pDatum, Column* pCol)
+void RowCoder::vXchkDte(Datum* pDatum, Column* pCol)
 {
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
@@ -3679,7 +3645,7 @@ void RowCoder::vXcheckDte(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* cross-check the encoding of flt                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXcheckFlt(Datum* pDatum, Column* pCol)
+void RowCoder::vXchkFlt(Datum* pDatum, Column* pCol)
 {
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
@@ -3693,7 +3659,7 @@ void RowCoder::vXcheckFlt(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* cross-check the encoding of int                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXcheckInt(Datum* pDatum, Column* pCol)
+void RowCoder::vXchkInt(Datum* pDatum, Column* pCol)
 {
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
@@ -3707,7 +3673,7 @@ void RowCoder::vXcheckInt(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* cross-check the encoding of ivl                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXcheckIvl(Datum* pDatum, Column* pCol)
+void RowCoder::vXchkIvl(Datum* pDatum, Column* pCol)
 {
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
@@ -3721,7 +3687,7 @@ void RowCoder::vXcheckIvl(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* cross-check the encoding of tme                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXcheckTme(Datum* pDatum, Column* pCol)
+void RowCoder::vXchkTme(Datum* pDatum, Column* pCol)
 {
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
@@ -3735,7 +3701,7 @@ void RowCoder::vXcheckTme(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* cross-check the encoding of tsp                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXcheckTsp(Datum* pDatum, Column* pCol)
+void RowCoder::vXchkTsp(Datum* pDatum, Column* pCol)
 {
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
@@ -3749,7 +3715,7 @@ void RowCoder::vXcheckTsp(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* cross-check the encoding of vch                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXcheckVch(Datum* pDatum, Column* pCol)
+void RowCoder::vXchkVch(Datum* pDatum, Column* pCol)
 {
 #ifdef WITH_ENCODING_XCHECK
 #endif
