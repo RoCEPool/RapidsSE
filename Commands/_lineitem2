@@ -1,0 +1,75 @@
+/*============================================================================*/
+/* _lineitem2 - create and load TPC-H LineItem2 table                         */
+/*============================================================================*/
+
+startCluster;
+
+time create table LineItem2 (
+
+  L_ORDERKEY       INTEGER NOT NULL,         //  0)
+  L_PARTKEY        INTEGER NOT NULL,         //  1)
+  L_SUPPKEY        INTEGER NOT NULL,         //  2)
+  L_LINENUMBER     INTEGER NOT NULL,         //  3)
+  L_QUANTITY       DECIMAL(15,2) NOT NULL,   //  4)
+  L_EXTENDEDPRICE  DECIMAL(15,2) NOT NULL,   //  5)
+  L_DISCOUNT       DECIMAL(15,2) NOT NULL,   //  6)
+  L_TAX            DECIMAL(15,2) NOT NULL,   //  7)
+  L_RETURNFLAG     CHAR(1) NOT NULL,         //  8)
+  L_LINESTATUS     CHAR(1) NOT NULL,         //  9)
+  L_SHIPDATE       DATE NOT NULL,            // 10)
+  L_COMMITDATE     DATE NOT NULL,            // 11)
+  L_RECEIPTDATE    DATE NOT NULL,            // 12)
+  L_SHIPINSTRUCT   CHAR(25) NOT NULL,        // 13)
+  L_SHIPMODE       CHAR(10) NOT NULL,        // 14)
+  L_COMMENT        VARCHAR(44) NOT NULL,     // 15)
+
+  L_ORDERKEY2      INTEGER NOT NULL,         // 16)
+  L_PARTKEY2       INTEGER NOT NULL,         // 17)
+  L_SUPPKEY2       INTEGER NOT NULL,         // 18)
+  L_LINENUMBER2    INTEGER NOT NULL,         // 19)
+  L_QUANTITY2      DECIMAL(15,2) NOT NULL,   // 20)
+  L_EXTENDEDPRICE2 DECIMAL(15,2) NOT NULL,   // 21)
+  L_DISCOUNT2      DECIMAL(15,2) NOT NULL,   // 22)
+  L_TAX2           DECIMAL(15,2) NOT NULL,   // 23)
+  L_RETURNFLAG2    CHAR(1) NOT NULL,         // 24)
+  L_LINESTATUS2    CHAR(1) NOT NULL,         // 25)
+  L_SHIPDATE2      DATE NOT NULL,            // 26)
+  L_COMMITDATE2    DATE NOT NULL,            // 27)
+  L_RECEIPTDATE2   DATE NOT NULL,            // 28)
+  L_SHIPINSTRUCT2  CHAR(25) NOT NULL,        // 29)
+  L_SHIPMODE2      CHAR(10) NOT NULL,        // 30)
+  L_COMMENT2       VARCHAR(44) NOT NULL      // 31)
+  //                                                ---- ----
+  // 32 columns
+  //
+);
+
+// sample data:
+// 1,155190,7706,1,17,21168.23,0.04,0.02,N,O,1996-03-13,1996-02-12,1996-03-22,
+// DELIVER IN PERSON,TRUCK,egular courts above the,
+// 1,155190,7706,1,17,21168.23,0.04,0.02,N,O,1996-03-13,1996-02-12,1996-03-22,
+// DELIVER IN PERSON,TRUCK,egular courts above the,
+
+
+space;
+//time ld LineiItem2 "/tpch/SF0/lineitem1.csv" max_errors 100;
+//time ld LineiItem2 "/tpch/SF0/lineitem10.csv" max_errors 100;
+//time ld LineiItem2 "/tpch/SF0/lineitem100.csv" max_errors 100;
+time ld LineiItem2 "/tpch/SF0/lineitem1k.csv" max_errors 100;
+//time ld LineiItem2 "/tpch/SF0/lineitem10k.csv" max_errors 100;
+//time ld LineiItem2 "/tpch/SF0/lineitem100k.csv" max_errors 100;
+//time ld LineiItem2 "/tpch/SF1/LineiItem2.csv" max_errors 100;
+space;
+sztbl LineiItem2;
+fetch LineiItem2 limit 10;
+//fileCat "/tpch/SF0/lineitem1.csv" 10;
+//fileCat "/tpch/SF0/lineitem10.csv" 10;
+//fileCat "/tpch/SF0/lineitem100.csv" 10;
+fileCat "/tpch/SF0/lineitem1k.csv" 10;
+//fileCat "/tpch/SF0/lineitem10k.csv" 10;
+//fileCat "/tpch/SF0/lineitem100k.csv" 10;
+//fileCat "/tpch/SF1/LineiItem2.csv" 10;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
