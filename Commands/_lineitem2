@@ -46,29 +46,29 @@ time create table LineItem2 (
 
 // sample data:
 // 1,155190,7706,1,17,21168.23,0.04,0.02,N,O,1996-03-13,1996-02-12,1996-03-22,
-// DELIVER IN PERSON,TRUCK,egular courts above the,
-// 1,155190,7706,1,17,21168.23,0.04,0.02,N,O,1996-03-13,1996-02-12,1996-03-22,
-// DELIVER IN PERSON,TRUCK,egular courts above the,
+//   DELIVER IN PERSON,TRUCK,egular courts above the,
+//   1,155190,7706,1,17,21168.23,0.04,0.02,N,O,1996-03-13,1996-02-12,1996-03-22,
+//   DELIVER IN PERSON,TRUCK,egular courts above the,
 
 
 space;
-//time ld LineiItem2 "/tpch/SF0/lineitem1.csv" max_errors 100;
-//time ld LineiItem2 "/tpch/SF0/lineitem10.csv" max_errors 100;
-//time ld LineiItem2 "/tpch/SF0/lineitem100.csv" max_errors 100;
-time ld LineiItem2 "/tpch/SF0/lineitem1k.csv" max_errors 100;
-//time ld LineiItem2 "/tpch/SF0/lineitem10k.csv" max_errors 100;
-//time ld LineiItem2 "/tpch/SF0/lineitem100k.csv" max_errors 100;
-//time ld LineiItem2 "/tpch/SF1/LineiItem2.csv" max_errors 100;
+//time ld LineiItem2 "/tpch/SF0/lineitem_1.csv" max_errors 100;
+//time ld LineiItem2 "/tpch/SF0/lineitem_10.csv" max_errors 100;
+//time ld LineiItem2 "/tpch/SF0/lineitem_100.csv" max_errors 100;
+time ld LineiItem2 "/tpch/SF0/lineitem_1k.csv" max_errors 100;
+//time ld LineiItem2 "/tpch/SF0/lineitem_10k.csv" max_errors 100;
+//time ld LineiItem2 "/tpch/SF0/lineitem_100k.csv" max_errors 100;
+//time ld LineiItem2 "/tpch/SF1/LineiItem.csv" max_errors 100;
 space;
 sztbl LineiItem2;
 fetch LineiItem2 limit 10;
-//fileCat "/tpch/SF0/lineitem1.csv" 10;
-//fileCat "/tpch/SF0/lineitem10.csv" 10;
-//fileCat "/tpch/SF0/lineitem100.csv" 10;
-fileCat "/tpch/SF0/lineitem1k.csv" 10;
-//fileCat "/tpch/SF0/lineitem10k.csv" 10;
-//fileCat "/tpch/SF0/lineitem100k.csv" 10;
-//fileCat "/tpch/SF1/LineiItem2.csv" 10;
+//fileCat "/tpch/SF0/lineitem_1.csv" 10;
+//fileCat "/tpch/SF0/lineitem_10.csv" 10;
+//fileCat "/tpch/SF0/lineitem_100.csv" 10;
+fileCat "/tpch/SF0/lineitem_1k.csv" 10;
+//fileCat "/tpch/SF0/lineitem_10k.csv" 10;
+//fileCat "/tpch/SF0/lineitem_100k.csv" 10;
+//fileCat "/tpch/SF1/LineiItem.csv" 10;
 
 /*============================================================================*/
 /* end                                                                        */
