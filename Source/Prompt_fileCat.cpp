@@ -23,7 +23,32 @@ PromptNote mPromptNote_fileCat (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_fileCat(SePrompt* pPrompt)
 {
+  s256 sFile;
+
+  TokenVec* pTokenVec = pPrompt->pTknVec();
   
+  ASSERT((*pTokenVec)[0]->bSame("fileCat"_Stz));
+  
+  sFile = (*pTokenVec)[1]->aText();
+  i8 nLines = pTokenVec->pGet(2)->iToI8();
+
+  File oFile;
+  
+  if (! oFile.bOpenRead(sFile)) {
+    vTrace("No such file\n"_Stz);
+    return true;
+  }
+  
+  s16KB sLine;
+  int i_Line = 0;
+  while (oFile.bReadLine(sLine)) {
+    if (++i_Line > nLines)
+      break;
+    vTrace("%s\n"_Stz,sLine.aStz());
+  }
+  
+  oFile.vClose();
+
   return true;
 }
 
