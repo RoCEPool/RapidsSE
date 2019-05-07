@@ -52,23 +52,23 @@ time create table LineItem2 (
 
 
 space;
-//time ld LineiItem2 "/tpch/SF0/lineitem_1.csv" max_errors 100;
-//time ld LineiItem2 "/tpch/SF0/lineitem_10.csv" max_errors 100;
-//time ld LineiItem2 "/tpch/SF0/lineitem_100.csv" max_errors 100;
-time ld LineiItem2 "/tpch/SF0/lineitem_1k.csv" max_errors 100;
-//time ld LineiItem2 "/tpch/SF0/lineitem_10k.csv" max_errors 100;
-//time ld LineiItem2 "/tpch/SF0/lineitem_100k.csv" max_errors 100;
-//time ld LineiItem2 "/tpch/SF1/LineiItem.csv" max_errors 100;
+time ld LineItem2 "/tpch/SF0/lineitem2_1.csv" max_errors 100;
+//time ld LineItem2 "/tpch/SF0/lineitem2_10.csv" max_errors 100;
+//time ld LineItem2 "/tpch/SF0/lineitem2_100.csv" max_errors 100;
+//time ld LineItem2 "/tpch/SF0/lineitem2_1k.csv" max_errors 100;
+//time ld LineItem2 "/tpch/SF0/lineitem2_10k.csv" max_errors 100;
+//time ld LineItem2 "/tpch/SF0/lineitem2_100k.csv" max_errors 100;
+//time ld LineItem2 "/tpch/SF1/LineItem2.csv" max_errors 100;
 space;
-sztbl LineiItem2;
-fetch LineiItem2 limit 10;
-//fileCat "/tpch/SF0/lineitem_1.csv" 10;
-//fileCat "/tpch/SF0/lineitem_10.csv" 10;
-//fileCat "/tpch/SF0/lineitem_100.csv" 10;
-fileCat "/tpch/SF0/lineitem_1k.csv" 10;
-//fileCat "/tpch/SF0/lineitem_10k.csv" 10;
-//fileCat "/tpch/SF0/lineitem_100k.csv" 10;
-//fileCat "/tpch/SF1/LineiItem.csv" 10;
+sztbl LineItem2;
+fetch LineItem2 limit 10;
+fileCat "/tpch/SF0/lineitem2_1.csv" 10;
+//fileCat "/tpch/SF0/lineitem2_10.csv" 10;
+//fileCat "/tpch/SF0/lineitem2_100.csv" 10;
+//fileCat "/tpch/SF0/lineitem2_1k.csv" 10;
+//fileCat "/tpch/SF0/lineitem2_10k.csv" 10;
+//fileCat "/tpch/SF0/lineitem2_100k.csv" 10;
+//fileCat "/tpch/SF1/LineItem2.csv" 10;
 
 /*============================================================================*/
 /* end                                                                        */
