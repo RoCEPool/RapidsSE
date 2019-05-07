@@ -88,40 +88,83 @@ time fetch retrieve lineitem L_COMMENT;
 //fetch lineitem first 10;
 /*
  
+ // After the date and VCH optimizations we got
+ 
+ uccess: 1 rows affected
+ error: (node0) invalid column
+ success: 6001215 rows affected
+ time 106ms
+ success: 6001215 rows affected
+ time 157ms
+ success: 6001215 rows affected
+ time 137ms
+ success: 6001215 rows affected
+ time 145ms
+ success: 6001215 rows affected
+ time 171ms
+ success: 6001215 rows affected
+ time 178ms
+ success: 6001215 rows affected
+ time 195ms
+ success: 6001215 rows affected
+ time 211ms
+ success: 6001215 rows affected
+ time 239ms
+ success: 6001215 rows affected
+ time 282ms
+ success: 6001215 rows affected
+ time 419ms
+ success: 6001215 rows affected
+ time 417ms
+ success: 6001215 rows affected
+ time 483ms
+ success: 6001215 rows affected
+ time 649ms
+ success: 6001215 rows affected
+ time 541ms
+ success: 6001215 rows affected
+ time 1593ms
+ [N0/1 NODE1 73322] se 4.0.5r has>
+ 
+ // 1partition
  // AFTER the 2D array to get the nDataBytes this is what I get:
+ metadata: (nodeName VARCHAR, size VARCHAR)
+ row: ( NODE1, 736MB )
+ success: 1 rows affected
+ error: (node0) invalid column
  success: 6001215 rows affected
- time 96ms
+ time 102ms
  success: 6001215 rows affected
- time 107ms
+ time 149ms
  success: 6001215 rows affected
- time 147ms
+ time 133ms
  success: 6001215 rows affected
- time 132ms
+ time 142ms
  success: 6001215 rows affected
- time 41ms
+ time 166ms
  success: 6001215 rows affected
- time 40ms
+ time 177ms
  success: 6001215 rows affected
- time 41ms
+ time 199ms
  success: 6001215 rows affected
- time 42ms
+ time 211ms
  success: 6001215 rows affected
- time 42ms
+ time 526ms
  success: 6001215 rows affected
- time 40ms
+ time 658ms
  success: 6001215 rows affected
- time 41ms
+ time 859ms
  success: 6001215 rows affected
- time 41ms
+ time 905ms
  success: 6001215 rows affected
- time 40ms
+ time 932ms
  success: 6001215 rows affected
- time 40ms
+ time 1257ms
  success: 6001215 rows affected
- time 41ms
+ time 1275ms
  success: 6001215 rows affected
- time 40ms
- [N0/1 NODE1 2989] se 4.0.5r has>
+ time 2265ms
+ [N0/1 NODE1 41602] se 4.0.5r has>
  
  
  Below are where we started with:
