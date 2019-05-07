@@ -4,7 +4,7 @@
 
 // (1) create a table
 create table vchTbl (
-vch_col0   VARCHAR     NOT NULL,
+vch_col0   INTEGER     NOT NULL,
 vch_col1   VARCHAR     NOT NULL,
 vch_col2   VARCHAR     NOT NULL,
 vch_col3   VARCHAR     NOT NULL,
@@ -22,68 +22,64 @@ vch_col14  VARCHAR     NOT NULL,
 vch_col15  VARCHAR
 );
 success
-
-Loop 1000 {
   
-  ld vchTbl "/DATA/Encoding/varchar.csv" ;
-  success
-  
-}
+ld vchTbl "/DATA/Encoding/varchar.csv" ;
+success
 
 // check no of rows
 fetch vchTbl;
-rows: 100000
+rows: 1000000
 
 // dump table
 //dumpTbl vchTbl;
 
 fetch retrieve vchTbl vch_col0;
-affected: 100000
+affected: 1000000
 
 fetch retrieve vchTbl vch_col1;
-affected: 100000
+affected: 1000000
 
 fetch retrieve vchTbl vch_col2;
-affected: 100000
+affected: 1000000
 
 fetch retrieve vchTbl vch_col3;
-affected: 100000
+affected: 1000000
 
 fetch retrieve vchTbl vch_col4;
-affected: 100000
+affected: 1000000
 
 fetch retrieve vchTbl vch_col5;
-affected: 100000
+affected: 1000000
 
 fetch retrieve vchTbl vch_col6;
-affected: 100000
+affected: 1000000
 
 fetch retrieve vchTbl vch_col7;
-affected: 100000
+affected: 1000000
 
 fetch retrieve vchTbl vch_col8;
-affected: 100000
+affected: 1000000
 
 fetch retrieve vchTbl vch_col9;
-affected: 100000
+affected: 1000000
 
 fetch retrieve vchTbl vch_col10;
-affected: 100000
+affected: 1000000
 
 fetch retrieve vchTbl vch_col11;
-affected: 100000
+affected: 1000000
 
 fetch retrieve vchTbl vch_col12;
-affected: 100000
+affected: 1000000
 
 fetch retrieve vchTbl vch_col13;
-affected: 100000
+affected: 1000000
 
 fetch retrieve vchTbl vch_col14;
-affected: 100000
+affected: 1000000
 
 fetch retrieve vchTbl vch_col15;
-affected: 100000
+affected: 1000000
 
 // drop the table
 drop table vchTbl;
