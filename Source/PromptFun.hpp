@@ -29,6 +29,7 @@ namespace Prompt
   /*    */ PF_ENUMS,
   /*    */ PF_ERRNO,
   /*    */ PF_EXECUTING,
+  /*    */ PF_FILECAT,
   /*    */ PF_FILESTATS,
   /*    */ PF_FLOATS,
   /*    */ PF_FUNS,

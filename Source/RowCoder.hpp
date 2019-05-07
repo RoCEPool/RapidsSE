@@ -101,7 +101,7 @@ namespace Data
     void vHashColumn(Datum* pDatum, Column* pCol);
   
     void vMetaNibble(Column* pCol, eMN eMetaNibble);
-    void vMetaPut(Column* pCol, Datum* pDatum);
+    void vMetaPut(Datum* pDatum, Column* pCol);
 
     void vRecode(i8 i_IntoHead, RowNub* pFromNub, HeadLine* aFromHead);
     void vRecodeBcd(Column* pCol);
@@ -205,15 +205,15 @@ namespace Data
     static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
 
-    void vCodeBcd(Datum* pDatum);
-    void vCodeBol(Datum* pDatum);
-    void vCodeDte(Datum* pDatum);
-    void vCodeFlt(Datum* pDatum);
-    void vCodeInt(Datum* pDatum);
-    void vCodeIvl(Datum* pDatum);
-    void vCodeTme(Datum* pDatum);
-    void vCodeTsp(Datum* pDatum);
-    void vCodeVch(Datum* pDatum);
+    void vCodeBcd(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeBol(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeFlt(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeIvl(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeTme(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeTsp(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum);
   
     void vXchkBcd(Datum* pDatum, Column* pCol);
     void vXchkBol(Datum* pDatum, Column* pCol);
@@ -262,6 +262,7 @@ namespace Data
                            eMN eEncoding, i8 i_IntoOffset);
   
     void vUsageIncEncoded(Column* pCol, i8 nBytes);
+    void vUsageIncEncoded(Column* pCol, Datum* pDatum);
     void vUsageIncRecoded(Column* pCol, i8 nBytes);
     void vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss);
     void vUsageReset(void);
