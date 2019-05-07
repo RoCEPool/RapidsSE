@@ -8,8 +8,27 @@ namespace System
   class Compress
   {
   public:
-    static i8 iIntoShoco(byte* aDst, i8 iDstLen, char* aSrc, i8 iSrcLen);
-    static i8 iFromShoco(char* aDst, i8 iDstLen, byte* aSrc, i8 iSrcLen);
+    
+    /*----------------------------------------------------------------------------*/
+    /* convert given src string into shoco dst                                    */
+    /*----------------------------------------------------------------------------*/
+    static inline i8 iIntoShoco(byte* aDst, i8 iDstLen, char* aSrc, i8 iSrcLen)
+    {
+      i8 iLenCompressed = shoco_compress(aSrc,iSrcLen,(char*)aDst,iDstLen);
+      
+      return iLenCompressed;
+    }
+    
+    /*----------------------------------------------------------------------------*/
+    /* convert given src shoco into dst string                                    */
+    /*----------------------------------------------------------------------------*/
+    static inline i8 iFromShoco(char* aDst, i8 iDstLen, byte* aSrc, i8 iSrcLen)
+    {
+      i8 iLenDecompressed = shoco_decompress((char*)aSrc,iSrcLen,aDst,iDstLen);
+      
+      return iLenDecompressed;
+    }
+    
   };
 }
 

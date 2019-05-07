@@ -435,11 +435,11 @@ namespace Data
           break;
           
         case MN_SHOCO_FIT:
-          vDecodeVchShocoFitFast(pDatum,aHeadLine,eEncoding,i_Offset);
+          vDecodeVchShocoFitFast(pDatum,aHeadLine,i_Offset);
           break;
           
         case MN_SHOCO_SPLIT:
-          vDecodeVchShocoSplitFast(pDatum,aHeadLine,eEncoding,i_Offset);
+          vDecodeVchShocoSplitFast(pDatum,aHeadLine,i_Offset);
           break;
           
         case MN_SHOCO_2B:
@@ -524,7 +524,7 @@ namespace Data
     /* decode varchar from given cache line                                       */
     /*----------------------------------------------------------------------------*/
     static inline void vDecodeVchShocoFitFast(Datum* pDatum, HeadLine* aHeadLine,
-                                          eMN eEncoding, i8 i_Offset)
+                                             i8 i_Offset)
     {
       //i8 nCompressed = aHeadLine->w8_1B(i_Offset);
       aHeadLine->w8_1BFast(pDatum, i_Offset);
@@ -545,7 +545,7 @@ namespace Data
     /* decode varchar from given cache line                                       */
     /*----------------------------------------------------------------------------*/
     static inline void vDecodeVchShocoSplitFast(Datum* pDatum, HeadLine* aHeadLine,
-                                            eMN eEncoding, i8 i_Offset)
+                                                i8 i_Offset)
     {
       byte caShoco[C_4KB];
       
