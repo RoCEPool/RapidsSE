@@ -384,7 +384,6 @@ void HeadLine::v8B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void HeadLine::v1N(i8 i_Nibble, w8 wArg)
 {
-  ASSERT(i_Nibble < 16);
   ASSERT(wArg < 16);
   
   // just to be safe, lets mask off the top 56 bits
