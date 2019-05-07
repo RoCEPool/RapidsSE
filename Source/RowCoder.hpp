@@ -484,7 +484,10 @@ namespace Data
     static inline void vDecodeVchShocoFitFast(Datum* pDatum, HeadLine* aHeadLine,
                                           eMN eEncoding, i8 i_Offset)
     {
-      i8 nCompressed = aHeadLine->w8_1B(i_Offset);
+      //i8 nCompressed = aHeadLine->w8_1B(i_Offset);
+      aHeadLine->w8_1BFast(pDatum, i_Offset);
+      i8 nCompressed = pDatum->m_wWord;
+      
       RASSERT(nCompressed <= 56);
       
       i8 nDecompressed =
@@ -504,10 +507,16 @@ namespace Data
     {
       byte caShoco[C_4KB];
       
-      i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
+      //i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
+      aHeadLine->w8_2BFast(pDatum, i_Offset);
+      i8 i_TailDistance = pDatum->m_wWord;
+      
       TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
       
-      i8 nCompressed = aHeadLine->w8_1B(i_Offset+2);
+      //i8 nCompressed = aHeadLine->w8_1B(i_Offset+2);
+      aHeadLine->w8_2BFast(pDatum, i_Offset+2);
+      i8 nCompressed = pDatum->m_wWord;
+      
       RASSERT(nCompressed <= 56);
       
       i8 nBytesPartA = sizeof(HeadLine) - i_Offset - 3;

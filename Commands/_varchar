@@ -46,6 +46,44 @@ time fetch retrieve vchTbl vch_col15;
 
 /*
  
+ Made tailline w8_1BFast
+ And made shoco call the Fast versions for w8B_* passing pDatum
+ slight improvement.
+ 
+ success: 1000000 rows affected
+ time 27ms
+ success: 1000000 rows affected
+ time 85ms
+ success: 1000000 rows affected
+ time 94ms
+ success: 1000000 rows affected
+ time 96ms
+ success: 1000000 rows affected
+ time 97ms
+ success: 1000000 rows affected
+ time 122ms
+ success: 1000000 rows affected
+ time 37ms
+ success: 1000000 rows affected
+ time 86ms
+ success: 1000000 rows affected
+ time 85ms
+ success: 1000000 rows affected
+ time 82ms
+ success: 1000000 rows affected
+ time 142ms
+ success: 1000000 rows affected
+ time 132ms
+ success: 1000000 rows affected
+ time 125ms
+ success: 1000000 rows affected
+ time 114ms
+ success: 1000000 rows affected
+ time 63ms
+ success: 1000000 rows affected
+ time 53ms
+ [N0/1 NODE1 42392] se 4.0.5r has>
+ 
  1st set of results 7 May 2019
  success: 1000000 rows affected
  time 25ms
