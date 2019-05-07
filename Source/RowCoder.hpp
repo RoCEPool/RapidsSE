@@ -415,6 +415,42 @@ namespace Data
       
       pDatum->m_eDatum = DM_VCH;
       
+      switch (eEncoding) {
+        case MN_NULL: pDatum->m_iInt = C_DATUM_NULL; break;
+        case MN_1B:
+        case MN_2B:
+        case MN_3B:
+        case MN_4B:
+        case MN_5B:
+        case MN_6B:
+        case MN_7B:
+        case MN_8B:
+          vDecodeVchSmallFast(pDatum,aHeadLine,eEncoding,i_Offset);
+          break;
+          
+        case MN_EMPTY:
+          pDatum->m_nChars = 0;
+          *pDatum->m_xWsp.aArea() = '\0';
+          pDatum->m_iInt = 0;
+          break;
+          
+        case MN_SHOCO_FIT:
+          vDecodeVchShocoFitFast(pDatum,aHeadLine,eEncoding,i_Offset);
+          break;
+          
+        case MN_SHOCO_SPLIT:
+          vDecodeVchShocoSplitFast(pDatum,aHeadLine,eEncoding,i_Offset);
+          break;
+          
+        case MN_SHOCO_2B:
+          vDecodeVchShocoFast(pDatum,aHeadLine,i_Offset);
+          break;
+          
+        default:
+          NEVER_REACH;
+      }
+      
+      /*
       if (MN_NULL == eEncoding)
         pDatum->m_iInt = C_DATUM_NULL;
       
@@ -438,13 +474,14 @@ namespace Data
       
       else
         NEVER_REACH;
+       */
+      
     }
     
     /*----------------------------------------------------------------------------*/
     /* decode varchar from given cache line                                       */
     /*----------------------------------------------------------------------------*/
-    static inline void vDecodeVchShocoFast(Datum* pDatum, HeadLine* aHeadLine,
-                                           eMN eEncoding, i8 i_Offset)
+    static inline void vDecodeVchShocoFast(Datum* pDatum, HeadLine* aHeadLine, i8 i_Offset)
     {
       //i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
       aHeadLine->w8_2BFast(pDatum, i_Offset);
@@ -700,7 +737,6 @@ namespace Data
       //      }
       
       eMN eEncodingDatum = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
-      i8 i_Offset1_ = i_Offset_;
       
       if (eEncodingDatum == MN_NULL || eEncodingDatum == MN_EMPTY)
         return eEncodingDatum;
