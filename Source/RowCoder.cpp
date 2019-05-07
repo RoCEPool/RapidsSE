@@ -398,11 +398,7 @@ void RowCoder::vDataPut(w8 wDatum, i8 nBytes)
 void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
 {
   vEncodingBcd(pDatum);
-
-  // set 4bit meta data for column value
   vMetaPut(pCol,&m_oEncodedDatum);
-  
-  // set n-byte data for column value
   vDataPut(&m_oEncodedDatum);
   
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
@@ -416,11 +412,7 @@ void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
 void RowCoder::vEncodeBol(Datum* pDatum, Column* pCol)
 {
   vEncodingBol(pDatum);
-
-  // set 4bit meta data for column value
   vMetaPut(pCol,&m_oEncodedDatum);
-
-  RASSERT(0 == m_oEncodedDatum.m_nEncodedBytes);
   vDataPut(&m_oEncodedDatum);
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
@@ -437,11 +429,7 @@ void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
   //         pDatum->xDte.m_uYearDelta,pDatum->xDte.m_uMonth,pDatum->xDte.m_uDay);
   
   vEncodingDte(pDatum);
-
-  // set 4bit meta data for column value
   vMetaPut(pCol,&m_oEncodedDatum);
-
-  // set n-byte data for column value
   vDataPut(&m_oEncodedDatum);
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
@@ -455,11 +443,7 @@ void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
 void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
 {
   vEncodingFlt(pDatum);
-
-  // set 4bit meta data for column value
   vMetaPut(pCol,&m_oEncodedDatum);
-
-  // set n-byte data for column value
   vDataPut(&m_oEncodedDatum);
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
@@ -473,11 +457,7 @@ void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
 void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
 {
   vEncodingInt(pDatum);
-
-  // set 4bit meta data for column value
   vMetaPut(pCol,&m_oEncodedDatum);
-
-  // set n-byte data for column value
   vDataPut(&m_oEncodedDatum);
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
@@ -491,11 +471,7 @@ void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
 void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
 {
   vEncodingIvl(pDatum);
-
-  // set 4bit meta data for column value
   vMetaPut(pCol,&m_oEncodedDatum);
-
-  // set n-byte data for column value
   vDataPut(&m_oEncodedDatum);
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
@@ -509,11 +485,7 @@ void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
 void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
 {
   vEncodingTme(pDatum);
-
-  // set 4bit meta data for column value
   vMetaPut(pCol,&m_oEncodedDatum);
-
-  // set n-byte data for column value
   vDataPut(&m_oEncodedDatum);
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
@@ -527,11 +499,7 @@ void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
 void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
 {
   vEncodingTsp(pDatum);
-
-  // set 4bit meta data for column value
   vMetaPut(pCol,&m_oEncodedDatum);
-
-  // set n-byte data for column value
   vDataPut(&m_oEncodedDatum);
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
@@ -545,11 +513,8 @@ void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
 void RowCoder::vEncodeVch(Datum* pDatum, Column* pCol)
 {
   vEncodingVch(pDatum);
-
-  // set 4bit meta data for column value
   vMetaPut(pCol,&m_oEncodedDatum);
 
-  // set n-byte data for column value for non-null's
   if (m_oEncodedDatum.m_eEncoding != MN_NULL) {
     if (m_oEncodedDatum.m_nChars) {
       if (m_oEncodedDatum.m_eEncoding == MN_SHOCO_2B)
