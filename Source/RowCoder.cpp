@@ -407,15 +407,7 @@ void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
   
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = iBaseOffset(m_pColVec);
-  i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
-  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_iBcd == pDatum->m_iBcd);
-#endif
+  vXcheckBcd(pDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -433,15 +425,7 @@ void RowCoder::vEncodeBol(Datum* pDatum, Column* pCol)
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = iBaseOffset(m_pColVec);
-  i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
-  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_iBol == pDatum->m_iBol);
-#endif
+  vXcheckBol(pDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -462,17 +446,7 @@ void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = iBaseOffset(m_pColVec);
-  i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
-//  vTrace("-- %02lld-%02lld-%02lld\n"_Stz,
-//         pDatum->xDte.m_uYearDelta,pDatum->xDte.m_uMonth,pDatum->xDte.m_uDay);
-  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
-#endif
+  vXcheckDte(pDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -490,15 +464,7 @@ void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = iBaseOffset(m_pColVec);
-  i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
-  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
-#endif
+  vXcheckFlt(pDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -516,15 +482,7 @@ void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = iBaseOffset(m_pColVec);
-  i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
-  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
-#endif
+  vXcheckInt(pDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -542,15 +500,7 @@ void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = iBaseOffset(m_pColVec);
-  i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
-  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
-#endif
+  vXcheckIvl(pDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -568,15 +518,7 @@ void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = iBaseOffset(m_pColVec);
-  i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
-  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_iTme == pDatum->m_iTme);
-#endif
+  vXcheckTme(pDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -594,15 +536,7 @@ void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
 
   vUsageIncEncoded(pCol,m_oEncodedDatum.m_nEncodedBytes);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = iBaseOffset(m_pColVec);
-  i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pEncodeNub,0,pCol,i_lastColumn, i_LastOffset);
-  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_iTsp == pDatum->m_iTsp);
-#endif
+  vXcheckTsp(pDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -629,9 +563,7 @@ void RowCoder::vEncodeVch(Datum* pDatum, Column* pCol)
     }
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-  
+  vXcheckVch(pDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
