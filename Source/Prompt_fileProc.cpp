@@ -23,31 +23,47 @@ PromptNote mPromptNote_fileProc (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_fileProc(SePrompt* pPrompt)
 {
-  s256 sFile;
+  s256 sFileInp;
+  s256 sFileOut;
 
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTknVec = pPrompt->pTknVec();
   
-  ASSERT((*pTokenVec)[0]->bSame("fileProc"_Stz));
+  ASSERT((*pTknVec)[0]->bSame("fileProc"_Stz));
   
-  sFile = (*pTokenVec)[1]->aText();
-  i8 nLines = pTokenVec->pGet(2)->iToI8();
+  sFileInp = (*pTknVec)[1]->aText();
+  sFileOut = (*pTknVec)[2]->aText();
+  i8 nLines = pTknVec->nItems() > 3 ? pTknVec->pGet(3)->iToI8() : 0;
 
-  File oFile;
-  
-  if (! oFile.bOpenRead(sFile)) {
-    vTrace("No such file\n"_Stz);
+  File oFileInp;
+  File oFileOut;
+
+  if (! oFileInp.bOpenRead(sFileInp)) {
+    vTrace("No such input file\n"_Stz);
     return true;
   }
-  
-  s16KB sLine;
+  if (! oFileOut.bOpenWrite(sFileOut)) {
+    vTrace("Unable to open output file\n"_Stz);
+    return true;
+  }
+
+  s16KB sLine_1;
+  s16KB sLine_2;
   int i_Line = 0;
-  while (oFile.bReadLine(sLine)) {
-    if (++i_Line > nLines)
+  while (oFileInp.bReadLine(sLine_1)) {
+    
+    if (! oFileInp.bReadLine(sLine_2))
       break;
-    vTrace("%s\n"_Stz,sLine.aStz());
+
+    if (nLines && ++i_Line > nLines)
+      break;
+    
+    vTrace("%lld: %s%s\n"_Stz,i_Line,sLine_1.aStz(),sLine_2.aStz());
+    
+    oFileOut.vPrint("%s%s\n"_Stz,sLine_1.aStz(),sLine_2.aStz());
   }
   
-  oFile.vClose();
+  oFileInp.vClose();
+  oFileOut.vClose();
 
   return true;
 }
