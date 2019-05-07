@@ -92,6 +92,17 @@ namespace Data
     bool bIsNull(void);
     void vSetNull(void);
   
+    void vSprint(Stz* szDst, Column* pCol);
+    void vSprintBcd(Stz* szDst, Column* pCol);
+    void vSprintBol(Stz* szDst, Column* pCol);
+    void vSprintDte(Stz* szDst, Column* pCol);
+    void vSprintFlt(Stz* szDst, Column* pCol);
+    void vSprintInt(Stz* szDst, Column* pCol);
+    void vSprintIvl(Stz* szDst, Column* pCol);
+    void vSprintTme(Stz* szDst, Column* pCol);
+    void vSprintTsp(Stz* szDst, Column* pCol);
+    void vSprintVch(Stz* szDst, Column* pCol);
+
   private:
     Footer* aFooter(void);
   };

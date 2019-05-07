@@ -101,6 +101,109 @@ void Datum::vSetNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint into szDst                                                          */
+/*----------------------------------------------------------------------------*/
+void Datum::vSprint(Stz* szDst, Column* pCol)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  switch (m_eDatum) {
+    case DM_BCD: vSprintBcd(szDst,pCol); return;
+    case DM_BOL: vSprintBol(szDst,pCol); return;
+    case DM_DTE: vSprintDte(szDst,pCol); return;
+    case DM_FLT: vSprintFlt(szDst,pCol); return;
+    case DM_INT: vSprintInt(szDst,pCol); return;
+    case DM_IVL: vSprintIvl(szDst,pCol); return;
+    case DM_TME: vSprintTme(szDst,pCol); return;
+    case DM_TSP: vSprintTsp(szDst,pCol); return;
+    case DM_VCH: vSprintVch(szDst,pCol); return;
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint into szDst                                                          */
+/*----------------------------------------------------------------------------*/
+void Datum::vSprintBcd(Stz* szDst, Column* pCol)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint into szDst                                                          */
+/*----------------------------------------------------------------------------*/
+void Datum::vSprintBol(Stz* szDst, Column* pCol)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint into szDst                                                          */
+/*----------------------------------------------------------------------------*/
+void Datum::vSprintDte(Stz* szDst, Column* pCol)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint into szDst                                                          */
+/*----------------------------------------------------------------------------*/
+void Datum::vSprintFlt(Stz* szDst, Column* pCol)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint into szDst                                                          */
+/*----------------------------------------------------------------------------*/
+void Datum::vSprintInt(Stz* szDst, Column* pCol)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint into szDst                                                          */
+/*----------------------------------------------------------------------------*/
+void Datum::vSprintIvl(Stz* szDst, Column* pCol)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint into szDst                                                          */
+/*----------------------------------------------------------------------------*/
+void Datum::vSprintTme(Stz* szDst, Column* pCol)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint into szDst                                                          */
+/*----------------------------------------------------------------------------*/
+void Datum::vSprintTsp(Stz* szDst, Column* pCol)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint into szDst                                                          */
+/*----------------------------------------------------------------------------*/
+void Datum::vSprintVch(Stz* szDst, Column* pCol)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
