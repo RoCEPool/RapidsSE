@@ -2213,6 +2213,7 @@ void RowCoder::vInitEncoding(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DM_VCH
   m_iDatumEncoding[DM_VCH][MN_NULL] = MN_NULL;
+  m_iDatumEncoding[DM_VCH][MN_1B] = MN_1B;
   m_iDatumEncoding[DM_VCH][MN_EMPTY] = MN_1B;
   m_iDatumEncoding[DM_VCH][MN_SHOCO_FIT] = MN_2B;
   m_iDatumEncoding[DM_VCH][MN_SHOCO_SPLIT] = MN_3B;
