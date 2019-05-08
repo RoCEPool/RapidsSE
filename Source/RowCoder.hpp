@@ -38,7 +38,8 @@ namespace Data
     i8         m_i_FromOffset; // encoding offset
     HeadLine*  m_aFromLine;
 
-  
+    HeadLine*  m_aRecodeLine;
+
     Datum      m_oEncodedDatum; // the encoded datum
 
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -

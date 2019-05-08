@@ -52,17 +52,19 @@ RowCoder::RowCoder(void)
   m_pWorkingParts = nullptr;
   m_pWorkingNub   = nullptr;
 
-  m_pColVec      = nullptr;
-  m_pCoda        = nullptr;
+  m_pColVec       = nullptr;
+  m_pCoda         = nullptr;
 
-  m_i_IntoHead   = 0;
-  m_i_IntoOffset = 0;
-  m_aHeadLine    = nullptr;
+  m_i_IntoHead    = 0;
+  m_i_IntoOffset  = 0;
+  m_aHeadLine     = nullptr;
   
-  m_i_FromHead   = 0;
-  m_i_FromOffset = 0;
-  m_aFromLine    = nullptr;
+  m_i_FromHead    = 0;
+  m_i_FromOffset  = 0;
+  m_aFromLine     = nullptr;
 
+  m_aRecodeLine   = nullptr;
+  
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     
     m_xaUsage[i_Col].m_nEncoded = 0;
