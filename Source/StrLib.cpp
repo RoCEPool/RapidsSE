@@ -1723,16 +1723,16 @@ bool StrLib::bExtractVarchar(char** aaSrc,
   // terminate
   *aDst++ = '\0';
   
-  // if this an enclosed varchar we should have expected to
-  // see the trailing enclosedBy
-  if (bSawLeadingEnclosed)
-    return bSawTrailingEnclosed;
-  
   // its not an enclosed varchar so we consider it to be valid
   if (iLength < iMaxLength)
     nChars = iLength;
   else
     nChars = iMaxLength;
+  
+  // if this an enclosed varchar we should have expected to
+  // see the trailing enclosedBy
+  if (bSawLeadingEnclosed)
+    return bSawTrailingEnclosed;
 
   return true;
 }
