@@ -780,7 +780,8 @@ void RowCoder::vRecode_Large(RowNub* pFromNub)
 void RowCoder::vRecode_Short(RowNub* pFromNub)
 {
   HeadLine* aFromHead = pFromNub->aGetHead(0);
-  
+  m_aRecodeLine = m_pEncodeNub->aGetHead();
+
   ColumnVec* pColVec = m_pEncodeNub->pDesc()->pColumnVec();
   i8 nColumns = pColVec->nItems();
   
@@ -861,7 +862,6 @@ void RowCoder::vRecodeBcd(Column* pCol)
   
   RASSERT(DM_BCD == pCol->eDatumType());
   
-  Coda* pCoda = m_pEncodeNub->pCoda();
   i8 i_Col = pCol->iColumnNo();
   
   eMN eThisEncoding = (eMN)m_aHeadLine->iMetaNibble(i_Col);
@@ -877,7 +877,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
   if (1 == m_pEncodeNub->nHeads()) {
 
     if (eThisEncoding != MN_1B) {
-      RASSERT(DM_BCD == pCoda->m_aeExtDatum[i_Col]);
+      RASSERT(DM_BCD == m_pCoda->m_aeExtDatum[i_Col]);
       vUsageIncRecoded(pCol,eThisEncoding);
      return;
     }
@@ -886,13 +886,13 @@ void RowCoder::vRecodeBcd(Column* pCol)
     i8 i1B = m_aHeadLine->w8_1B(m_i_IntoOffset);
     
     if (i1B < 0 || i1B > 10) {
-      RASSERT(DM_BCD == pCoda->m_aeExtDatum[i_Col]);
+      RASSERT(DM_BCD == m_pCoda->m_aeExtDatum[i_Col]);
       vUsageIncRecoded(pCol,eThisEncoding);
       return;
     }
   }
   
-  if (m_pEncodeNub->nHeads() > 1 && pCoda->m_aeExtDatum[i_Col] != DM_TENTH) {
+  if (m_pEncodeNub->nHeads() > 1 && m_pCoda->m_aeExtDatum[i_Col] != DM_TENTH) {
     vUsageIncRecoded(pCol,eThisEncoding);
     return;
   }
@@ -901,8 +901,8 @@ void RowCoder::vRecodeBcd(Column* pCol)
   
   // change the extended datum to tenth
   if (1 == m_pEncodeNub->nHeads())
-    pCoda->m_aeExtDatum[i_Col] = DM_TENTH;
-  RASSERT(DM_TENTH == pCoda->m_aeExtDatum[i_Col]);
+    m_pCoda->m_aeExtDatum[i_Col] = DM_TENTH;
+  RASSERT(DM_TENTH == m_pCoda->m_aeExtDatum[i_Col]);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -920,7 +920,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
     if (i1B >= 0 && i1B <= 10) {
       
       // change the extended encoding to tenth
-      pCoda->m_aeExtDatum[i_Col] = DM_TENTH;
+      m_pCoda->m_aeExtDatum[i_Col] = DM_TENTH;
       
       // revise the encoding
       eExtendedEncoding = (eMN)(MN_TENTH_0 + i1B);
