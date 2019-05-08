@@ -229,6 +229,8 @@ void RowCoder::vEncodeEnd(void)
   HV_Rec hvRec;
   vRecord(hvRec,m_aHeadLine,m_pColVec,m_pCoda);
   vTrace("encoded: (%s)\n"_Stz,hvRec->szRecStr());
+  
+  vHeadDump(m_aHeadLine,m_pColVec,m_pCoda);
 
   m_pEncodeNub = nullptr;
   m_pColVec    = nullptr;
@@ -1988,10 +1990,18 @@ void RowCoder::vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
   Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
+  
+  vHeadDump(aHeadLine,pColVec,pCoda);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint decode row from cache line into string                              */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   MemLib::vWordDump(aHeadLine, sizeof(HeadLine));
   
