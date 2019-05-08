@@ -31,11 +31,14 @@ namespace Data
     Coda*      m_pCoda;
 
     i8         m_i_IntoHead;
-    HeadLine*  m_aHeadLine;
-
     i8         m_i_IntoOffset; // encoding offset
+    HeadLine*  m_aHeadLine;
+  
+    i8         m_i_FromHead;
     i8         m_i_FromOffset; // encoding offset
-    
+    HeadLine*  m_aFromLine;
+
+  
     Datum      m_oEncodedDatum; // the encoded datum
 
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
