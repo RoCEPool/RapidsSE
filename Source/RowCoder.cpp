@@ -141,27 +141,18 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   i8 i_IntoHead = m_pEncodeNub->iAllotHead();
   m_aHeadLine = m_pEncodeNub->aGetHead(i_IntoHead);
   
-  ColumnVec* pColVec = m_pEncodeNub->pDesc()->pColumnVec();
-  Coda* pIntoCoda = m_pEncodeNub->pCoda();
-  
   if (0 == i_IntoHead) {
-    m_pColVec = pColVec;
-    m_pCoda   = pIntoCoda;
+    RASSERT(1 == m_pEncodeNub->nHeads());
+    m_pColVec = m_pEncodeNub->pDesc()->pColumnVec();
+    m_pCoda   = m_pEncodeNub->pCoda();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  HeadLine* aFromHead = pFromNub->aGetHead(0);
-  MemLib::vCopy(m_aHeadLine,aFromHead,sizeof(HeadLine),CN_ROWBUFFER);
-  
-#ifdef WITH_TRACE_ENCODING
-  RowCoder::vHeadDumpNat(m_aHeadLine,m_pColVec);
-#endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #ifdef WITH_LARGE_ROWS
+  vCopy_Large(pFromNub);
   vRecode_Large(i_IntoHead,pFromNub);
 #else
+  vCopy_Short(pFromNub);
   vRecode_Short(i_IntoHead,pFromNub);
 #endif
   
@@ -169,7 +160,8 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   RowCoder::vHeadDump(m_aHeadLine,m_pColVec);
 #endif
   
-  i8 nFreeBytes = nFreeSpaceHead(m_aHeadLine,pColVec,pIntoCoda);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  i8 nFreeBytes = nFreeSpaceHead(m_aHeadLine,m_pColVec,m_pCoda);
   m_nHeadFree += nFreeBytes;
   
        if (nFreeBytes <= 7 ) m_nFreeHead_0_7++;
@@ -391,8 +383,10 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
 /*----------------------------------------------------------------------------*/
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vCopy_Large(RowNub* pFromNub, HeadLine* aFromHead)
+void RowCoder::vCopy_Large(RowNub* pFromNub)
 {
+  HeadLine* aFromHead = pFromNub->aGetHead(0);
+
   MemLib::vCopy(m_aHeadLine,aFromHead,sizeof(HeadLine),CN_ROWBUFFER);
   
 #ifdef WITH_TRACE_ENCODING
@@ -403,8 +397,10 @@ void RowCoder::vCopy_Large(RowNub* pFromNub, HeadLine* aFromHead)
 /*----------------------------------------------------------------------------*/
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vCopy_Short(RowNub* pFromNub, HeadLine* aFromHead)
+void RowCoder::vCopy_Short(RowNub* pFromNub)
 {
+  HeadLine* aFromHead = pFromNub->aGetHead(0);
+ 
   MemLib::vCopy(m_aHeadLine,aFromHead,sizeof(HeadLine),CN_ROWBUFFER);
   
 #ifdef WITH_TRACE_ENCODING
