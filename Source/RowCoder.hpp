@@ -23,23 +23,21 @@ namespace Data
   public:
   
     RowNub*    m_pIntoNub;
+    i8         m_i_IntoHead;
+    HeadLine*  m_aIntoLine;
+    i8         m_i_IntoOffset; // encoding offset
   
+    i8         m_i_FromHead;
+    HeadLine*  m_aFromLine;
+    i8         m_i_FromOffset; // encoding offset
+ 
     RowParts*  m_pWorkingParts;
     RowNub*    m_pWorkingNub;
+    HeadLine*  m_aRecodeLine;
 
     ColumnVec* m_pColVec;
     Coda*      m_pCoda;
-
-    i8         m_i_IntoHead;
-    i8         m_i_IntoOffset; // encoding offset
-    HeadLine*  m_aHeadLine;
   
-    i8         m_i_FromHead;
-    i8         m_i_FromOffset; // encoding offset
-    HeadLine*  m_aFromLine;
-
-    HeadLine*  m_aRecodeLine;
-
     Datum      m_oEncodedDatum; // the encoded datum
 
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
