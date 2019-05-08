@@ -892,7 +892,7 @@ namespace Data
     
       i8 iOffset = (nColumns + 1) / 2;
     
-      iOffset = 8; //! temp
+      //iOffset = 8; //! temp
     
       return iOffset;
     }

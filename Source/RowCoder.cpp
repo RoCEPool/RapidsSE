@@ -123,7 +123,7 @@ void RowCoder::vCopyEnd(void)
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bCopyRow(RowNub* pFromNub)
 {
-  m_i_IntoOffset = 8;
+   m_i_IntoOffset = iBaseOffset(pFromNub->pDesc()->pColumnVec());
   
   // check for space in target nub
   i8 nSpaceNeeded = pFromNub->nUsedBytes();
