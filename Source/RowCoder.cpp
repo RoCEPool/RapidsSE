@@ -1174,7 +1174,6 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
 {
   RASSERT(DM_INT == pCol->eDatumType());
 
-  Coda* pCoda = m_pEncodeNub->pCoda();
   i8 i_Column = pCol->iColumnNo();
   
   eMN eThisEncoding = (eMN)m_aHeadLine->iMetaNibble(i_Column);
@@ -1186,7 +1185,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
   
   if (1 == m_pEncodeNub->nHeads()) {
     
-    RASSERT(DM_INT == pCoda->m_aeExtDatum[i_Column]);
+    RASSERT(DM_INT == m_pCoda->m_aeExtDatum[i_Column]);
     
     if (MN_1B != eThisEncoding) {
       //vUsageIncRecoded(pCol,nEncodedBytes);
@@ -1199,7 +1198,8 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
     }
   }
   
-  if (m_pEncodeNub->nHeads() > 1 && pCoda->m_aeExtDatum[i_Column] != DM_DIGIT) {
+  if (m_pEncodeNub->nHeads() > 1 &&
+      m_pCoda->m_aeExtDatum[i_Column] != DM_DIGIT) {
     return false;
   }
 
@@ -1208,8 +1208,8 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
 
   // change the extended datum to digit
   if (1 == m_pEncodeNub->nHeads())
-    pCoda->m_aeExtDatum[i_Column] = DM_DIGIT;
-  RASSERT(DM_DIGIT == pCoda->m_aeExtDatum[i_Column]);
+    m_pCoda->m_aeExtDatum[i_Column] = DM_DIGIT;
+  RASSERT(DM_DIGIT == m_pCoda->m_aeExtDatum[i_Column]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
