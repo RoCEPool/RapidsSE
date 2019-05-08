@@ -1070,7 +1070,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
       return false;
     }
     
-    if (c1BInt < 0 && c1BInt > 7) {
+    if (c1BInt < 0 || c1BInt > 7) {
       //vUsageIncRecoded(pCol,nEncodedBytes);
       return false;
     }
