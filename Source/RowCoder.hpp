@@ -87,6 +87,7 @@ namespace Data
     void vReport(RowCoder* pRowCoder_Encode);
   
   private:
+    void vAnalyseFree(void);
     void vCopy_Large(RowNub* pFromNub);
     void vCopy_Short(RowNub* pFromNub);
     void vDataPut(Datum* pDatum);

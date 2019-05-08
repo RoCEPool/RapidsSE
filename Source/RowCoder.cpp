@@ -126,7 +126,6 @@ void RowCoder::vCopyEnd(void)
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bCopyRow(RowNub* pFromNub)
 {
-   m_i_IntoOffset = iBaseOffset(pFromNub->pDesc()->pColumnVec());
   
   // check for space in target nub
   i8 nSpaceNeeded = pFromNub->nUsedBytes();
@@ -143,9 +142,10 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
     m_pCoda   = m_pEncodeNub->pCoda();
   }
 
-  i8 i_IntoHead = m_pEncodeNub->iAllotHead();
-  m_aHeadLine = m_pEncodeNub->aGetHead(i_IntoHead);
-  
+  i8 i_IntoHead  = m_pEncodeNub->iAllotHead();
+  m_aHeadLine    = m_pEncodeNub->aGetHead(i_IntoHead);
+  m_i_IntoOffset = iBaseOffset(pFromNub->pDesc()->pColumnVec());
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 #ifdef WITH_LARGE_ROWS
@@ -156,24 +156,13 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   vRecode_Short(i_IntoHead,pFromNub);
 #endif
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vAnalyseFree();
+
 #ifdef WITH_TRACE_ENCODING
   RowCoder::vHeadDump(m_aHeadLine,m_pColVec);
 #endif
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  i8 nFreeBytes = nFreeSpaceHead(m_aHeadLine,m_pColVec,m_pCoda);
-  m_nHeadFree += nFreeBytes;
-  
-       if (nFreeBytes <= 7 ) m_nFreeHead_0_7++;
-  else if (nFreeBytes <= 15) m_nFreeHead_8_15++;
-  else if (nFreeBytes <= 23) m_nFreeHead_16_23++;
-  else if (nFreeBytes <= 31) m_nFreeHead_24_31++;
-  else if (nFreeBytes <= 39) m_nFreeHead_32_39++;
-  else if (nFreeBytes <= 47) m_nFreeHead_40_47++;
-  else if (nFreeBytes <= 55) m_nFreeHead_48_55++;
-  else if (nFreeBytes <= 63) m_nFreeHead_56_63++;
-  else                       m_nFreeHead_64_++;
-
   return true;
 }
 
@@ -379,6 +368,25 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
 /*----------------------------------------------------------------------------*/
 /*-- Private Non-Static ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* analyse the free bytes of the head                                         */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vAnalyseFree(void)
+{
+  i8 nFreeBytes = nFreeSpaceHead(m_aHeadLine,m_pColVec,m_pCoda);
+  m_nHeadFree += nFreeBytes;
+  
+  if (nFreeBytes <= 7 ) m_nFreeHead_0_7++;
+  else if (nFreeBytes <= 15) m_nFreeHead_8_15++;
+  else if (nFreeBytes <= 23) m_nFreeHead_16_23++;
+  else if (nFreeBytes <= 31) m_nFreeHead_24_31++;
+  else if (nFreeBytes <= 39) m_nFreeHead_32_39++;
+  else if (nFreeBytes <= 47) m_nFreeHead_40_47++;
+  else if (nFreeBytes <= 55) m_nFreeHead_48_55++;
+  else if (nFreeBytes <= 63) m_nFreeHead_56_63++;
+  else                       m_nFreeHead_64_++;
+}
 
 /*----------------------------------------------------------------------------*/
 /* copy an encoded row from one tray to another                               */
