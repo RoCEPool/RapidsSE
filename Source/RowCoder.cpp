@@ -1169,6 +1169,10 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
   eMN eThisEncoding = (eMN)m_aHeadLine->iMetaNibble(i_Column);
   //vTrace("CurrentEncoding %lld\n"_Stz, eCurrentEncoding);
   
+  if (m_pEncodeNub->nHeads() > 1 && pCoda->m_aeExtDatum[i_Column] != DM_DELTA_PLUS) {
+    return false;
+  }
+  
   // if encoding as digit then dont proceed
   if (DM_DIGIT == pCoda->m_aeExtDatum[i_Column]) {
     return false;
@@ -1198,6 +1202,9 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     default:
       NEVER_REACH;
   }
+  
+  if (iCurrentInt < 0)
+    return false;
   
   // defer to vRecodeInt
   if ( (iCurrentInt >= 0 && iCurrentInt <= 7) &&
