@@ -12,13 +12,13 @@ namespace Structures
   class Nub_t : public Object
   {
   private:
+    i8 m_nHeadItems;  // number of items allocated from the head
+    i8 m_nTailItems;  // number of items allocated from the tail
+  
     i8 m_nSpaceUnits; // number of space units
     i8 m_nHeadUnits;  // number of space units allocated from the head
     i8 m_nTailUnits;  // number of space units allocated from the tail
 
-    i8 m_nHeadItems;  // number of items allocated from the head
-    i8 m_nTailItems;  // number of items allocated from the tail
-  
     DESC* m_pDesc;    // object describing the items
 
     CODA* m_pCoda;    // object decoding the items

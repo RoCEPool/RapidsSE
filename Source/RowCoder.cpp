@@ -49,14 +49,14 @@ RowCoder::RowCoder(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
   m_pIntoNub      = nullptr;
-  m_i_IntoHead    = 0;
+  m_i_IntoHead    = C_UNKNOWN;
   m_aIntoLine     = nullptr;
-  m_i_IntoOffset  = 0;
+  m_i_IntoOffset  = C_UNKNOWN;
   
   m_pFromNub      = nullptr;
-  m_i_FromHead    = 0;
+  m_i_FromHead    = C_UNKNOWN;
   m_aFromLine     = nullptr;
-  m_i_FromOffset  = 0;
+  m_i_FromOffset  = C_UNKNOWN;
 
   m_pColVec       = nullptr;
   m_pCoda         = nullptr;
@@ -135,14 +135,14 @@ void RowCoder::vCopyBegin(RowNub* pIntoNub)
 void RowCoder::vCopyEnd(void)
 {
   m_pIntoNub      = nullptr;
-  m_i_IntoHead    = 0;
+  m_i_IntoHead    = C_UNKNOWN;
   m_aIntoLine     = nullptr;
-  m_i_IntoOffset  = 0;
+  m_i_IntoOffset  = C_UNKNOWN;
   
   m_pFromNub      = nullptr;
-  m_i_FromHead    = 0;
+  m_i_FromHead    = C_UNKNOWN;
   m_aFromLine     = nullptr;
-  m_i_FromOffset  = 0;
+  m_i_FromOffset  = C_UNKNOWN;
   
   m_pColVec       = nullptr;
   m_pCoda         = nullptr;
