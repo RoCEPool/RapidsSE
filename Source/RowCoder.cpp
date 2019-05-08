@@ -549,7 +549,7 @@ void RowCoder::vEncodeVchShoco(Datum* pDatum, Column* pCol)
   i8 nCompressed =
   Compress::iIntoShoco((byte*)caShoco,         // into compressed destination
                        sizeof(caShoco) - 1,    // destination size
-                       pDatum->m_xWsp.aArea(), // from uncompressed source
+                       pDatum->m_sVch.aChar(), // from uncompressed source
                        pDatum->m_nChars);      // source bytes
   
   //! temporary limitation
@@ -594,7 +594,7 @@ void RowCoder::vEncodeVchShoco(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeVchSmall(Datum* pDatum, Column* pCol)
 {
-  vDataPut(*(w8*)pDatum->m_xWsp.aArea(),
+  vDataPut(*(w8*)pDatum->m_sVch.aChar(),
            (eMN)pDatum->m_nChars);
   
   vUsageIncEncoded(pCol,pDatum->m_nChars);
@@ -612,7 +612,7 @@ void RowCoder::vHashColumn(Datum* pDatum, Column* pCol)
   // compute hash of this value
   i8 iHash;
   if (DM_VCH == pCol->eDatumType())
-    iHash = HshLib::iHash(pDatum->m_xWsp.aArea(),sizeof(w8));
+    iHash = HshLib::iHash(pDatum->m_sVch.aChar(),sizeof(w8));
   else
     iHash = HshLib::iHash(&pDatum->m_iInt,sizeof(w8));
   
@@ -2977,7 +2977,7 @@ void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
   
   else if (MN_EMPTY == eEncoding) {
     pDatum->m_nChars = 0;
-    *pDatum->m_xWsp.aArea() = '\0';
+    *pDatum->m_sVch.aChar() = '\0';
     pDatum->m_iInt = 0;
   }
   
@@ -3017,13 +3017,13 @@ void RowCoder::vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
   
   //vDecodeVchSmall(pDatum,aHeadLine,pCol,eEncoding,i_Offset);
   
-  pDatum->m_xWsp.aArea()[0] = pCoda->m_aiAux[i_Column].m_caChr[eEncoding - MN_ALPHA_0];
-  pDatum->m_xWsp.aArea()[1] = '\0';
+  pDatum->m_sVch.aChar()[0] = pCoda->m_aiAux[i_Column].m_caChr[eEncoding - MN_ALPHA_0];
+  pDatum->m_sVch.aChar()[1] = '\0';
   
   //char cChr = aHeadLine->w8_1B(i_Offset);
-  //RASSERT(cChr == pDatum->m_xWsp.aArea()[0]);
+  //RASSERT(cChr == pDatum->m_sVch.aChar()[0]);
 
-  //RASSERT(pDatum->m_xWsp.aArea()[0] == (char)pCoda->m_aiAux[i_Column]);
+  //RASSERT(pDatum->m_sVch.aChar()[0] == (char)pCoda->m_aiAux[i_Column]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3220,7 +3220,7 @@ void RowCoder::vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
   //RASSERT(nCompressed <= 4);
 
   i8 nDecompressed =
-    Compress::iFromShoco(pDatum->m_xWsp.aArea(),   // decompressed destination
+    Compress::iFromShoco(pDatum->m_sVch.aChar(),   // decompressed destination
                          255,                      // max destination
                          ((byte*)aShocoTail)       // from compressed source
                            + C_SHOCO_COMPRESSED_OFFSET
@@ -3240,7 +3240,7 @@ void RowCoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
   RASSERT(nCompressed <= 56);
 
   i8 nDecompressed =
-    Compress::iFromShoco((char*)pDatum->m_xWsp.aStz(),
+    Compress::iFromShoco((char*)pDatum->m_sVch.aChar(),
                          255,
                          ((byte*)aHeadLine)+i_Offset+1,
                          nCompressed);
@@ -3277,7 +3277,7 @@ void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
   //MemLib::vWordDump(caShoco+2,3 * sizeof(SpaceUnit));
   
   i8 nDecompressed =
-    Compress::iFromShoco((char*)pDatum->m_xWsp.aStz(),
+    Compress::iFromShoco((char*)pDatum->m_sVch.aChar(),
                          255,
                          (byte*)caShoco+2,
                          nCompressed);
@@ -3295,50 +3295,50 @@ void RowCoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
       
     case MN_1B:
       pDatum->m_iInt = aHeadLine->w8_1B(i_Offset);
-      *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
-      ((char*)pDatum->m_xWsp.aStz())[1] = '\0';
+      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+      ((char*)pDatum->m_sVch.aChar())[1] = '\0';
       pDatum->m_nChars = 1;
       break;
     case MN_2B:
       pDatum->m_iInt = aHeadLine->w8_2B(i_Offset);
-      *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
-      ((char*)pDatum->m_xWsp.aStz())[2] = '\0';
+      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+      ((char*)pDatum->m_sVch.aChar())[2] = '\0';
       pDatum->m_nChars = 2;
       break;
     case MN_3B:
       pDatum->m_iInt = aHeadLine->w8_3B(i_Offset);
-      *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
-      ((char*)pDatum->m_xWsp.aStz())[3] = '\0';
+      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+      ((char*)pDatum->m_sVch.aChar())[3] = '\0';
       pDatum->m_nChars = 3;
       break;
     case MN_4B:
       pDatum->m_iInt = aHeadLine->w8_4B(i_Offset);
-      *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
-      ((char*)pDatum->m_xWsp.aStz())[4] = '\0';
+      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+      ((char*)pDatum->m_sVch.aChar())[4] = '\0';
       pDatum->m_nChars = 4;
       break;
     case MN_5B:
       pDatum->m_iInt = aHeadLine->w8_5B(i_Offset);
-      *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
-      ((char*)pDatum->m_xWsp.aStz())[5] = '\0';
+      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+      ((char*)pDatum->m_sVch.aChar())[5] = '\0';
       pDatum->m_nChars = 5;
       break;
     case MN_6B:
       pDatum->m_iInt = aHeadLine->w8_6B(i_Offset);
-      *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
-      ((char*)pDatum->m_xWsp.aStz())[6] = '\0';
+      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+      ((char*)pDatum->m_sVch.aChar())[6] = '\0';
       pDatum->m_nChars = 6;
       break;
     case MN_7B:
       pDatum->m_iInt = aHeadLine->w8_7B(i_Offset);
-      *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
-      ((char*)pDatum->m_xWsp.aStz())[7] = '\0';
+      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+      ((char*)pDatum->m_sVch.aChar())[7] = '\0';
       pDatum->m_nChars = 7;
       break;
     case MN_8B:
       pDatum->m_iInt = aHeadLine->w8_8B(i_Offset);
-      *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
-      ((char*)pDatum->m_xWsp.aStz())[8] = '\0';
+      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+      ((char*)pDatum->m_sVch.aChar())[8] = '\0';
       pDatum->m_nChars = 8;
       break;
     default:
@@ -3576,8 +3576,8 @@ void RowCoder::vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum)
     return;
   }
   
-  i8 iLen = StrLib::nCopy((char*)pTgtDatum->m_xWsp.aArea(),
-                          (char*)pSrcDatum->m_xWsp.aArea());
+  i8 iLen = StrLib::nCopy((char*)pTgtDatum->m_sVch.aChar(),
+                          (char*)pSrcDatum->m_sVch.aChar());
   
   eMN eEncoding;
   

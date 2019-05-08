@@ -53,9 +53,7 @@ Datum::Datum(void)
   
   m_eDatum = DM_NONE;
   m_wWord  = C_UNKNOWN;
-#ifdef WITH_CHECK_INITIALISED
-  m_xWsp.vZero(CN_DATUM);
-#endif
+  //m_sVch
   m_nChars = 0;
 
   m_eEncoding = MN_NULL;
@@ -214,7 +212,7 @@ void Datum::vSprintVch(Stz* szDst, Column* pCol)
     return;
   }
   
-  Vch::vSprintQuotes(szDst,m_xWsp.aStz());
+  Vch::vSprintQuotes(szDst,m_sVch.aStz());
 }
 
 /*----------------------------------------------------------------------------*/

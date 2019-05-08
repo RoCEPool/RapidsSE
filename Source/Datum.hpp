@@ -82,7 +82,7 @@ namespace Data
       byte m_yaByte[C_BYTES_PER_WORD];
     };
   
-    Wsp_t<C_4KB> m_xWsp;
+    sVCH m_sVch;
     i8 m_nChars;
 
     eMN m_eEncoding;

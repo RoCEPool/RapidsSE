@@ -139,7 +139,7 @@ void KeyWrk::vAddDatum(Datum& oDatum, Column* pCol)
   char* aSrc;
   
   if (DM_VCH == pCol->eDatumType()) {
-    aSrc = (char*)(oDatum.m_xWsp.aStz());
+    aSrc = (char*)(oDatum.m_sVch.aStz());
     nBytes = StrLib::iWordFlip(aDst, aSrc);
   }
   else {
