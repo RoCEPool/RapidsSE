@@ -60,7 +60,10 @@ namespace Data
     i8 m_nFreeHead_24_31;
     i8 m_nFreeHead_32_39;
     i8 m_nFreeHead_40_47;
-  
+    i8 m_nFreeHead_48_55;
+    i8 m_nFreeHead_56_63;
+    i8 m_nFreeHead_64_;
+
     // must be last
     Footer m_xFooter;
   
@@ -433,7 +436,7 @@ namespace Data
           
         case MN_EMPTY:
           pDatum->m_nChars = 0;
-          *pDatum->m_xWsp.aArea() = '\0';
+          *pDatum->m_sVch.aChar() = '\0';
           pDatum->m_iInt = 0;
           break;
           
@@ -513,7 +516,7 @@ namespace Data
       //RASSERT(nCompressed <= 4);
       
       i8 nDecompressed =
-      Compress::iFromShoco(pDatum->m_xWsp.aArea(),   // decompressed destination
+      Compress::iFromShoco(pDatum->m_sVch.aChar(),   // decompressed destination
                            255,                      // max destination
                            ((byte*)aShocoTail)       // from compressed source
                            + C_SHOCO_COMPRESSED_OFFSET
@@ -536,7 +539,7 @@ namespace Data
       RASSERT(nCompressed <= 56);
       
       i8 nDecompressed =
-      Compress::iFromShoco((char*)pDatum->m_xWsp.aStz(),
+      Compress::iFromShoco((char*)pDatum->m_sVch.aChar(),
                            255,
                            ((byte*)aHeadLine)+i_Offset+1,
                            nCompressed);
@@ -579,7 +582,7 @@ namespace Data
       //MemLib::vWordDump(caShoco+2,3 * sizeof(SpaceUnit));
       
       i8 nDecompressed =
-      Compress::iFromShoco((char*)pDatum->m_xWsp.aStz(),
+      Compress::iFromShoco((char*)pDatum->m_sVch.aChar(),
                            255,
                            (byte*)caShoco+2,
                            nCompressed);
@@ -597,50 +600,50 @@ namespace Data
           
         case MN_1B:
           aHeadLine->w8_1BFast(pDatum,i_Offset);
-          *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
-          ((char*)pDatum->m_xWsp.aStz())[1] = '\0';
+          *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+          ((char*)pDatum->m_sVch.aChar())[1] = '\0';
           pDatum->m_nChars = 1;
           break;
         case MN_2B:
           aHeadLine->w8_2BFast(pDatum,i_Offset);
-          *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
-          ((char*)pDatum->m_xWsp.aStz())[2] = '\0';
+          *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+          ((char*)pDatum->m_sVch.aChar())[2] = '\0';
           pDatum->m_nChars = 2;
           break;
         case MN_3B:
           aHeadLine->w8_3BFast(pDatum,i_Offset);
-          *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
-          ((char*)pDatum->m_xWsp.aStz())[3] = '\0';
+          *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+          ((char*)pDatum->m_sVch.aChar())[3] = '\0';
           pDatum->m_nChars = 3;
           break;
         case MN_4B:
           aHeadLine->w8_4BFast(pDatum,i_Offset);
-          *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
-          ((char*)pDatum->m_xWsp.aStz())[4] = '\0';
+          *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+          ((char*)pDatum->m_sVch.aChar())[4] = '\0';
           pDatum->m_nChars = 4;
           break;
         case MN_5B:
           aHeadLine->w8_5BFast(pDatum,i_Offset);
-          *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
-          ((char*)pDatum->m_xWsp.aStz())[5] = '\0';
+          *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+          ((char*)pDatum->m_sVch.aChar())[5] = '\0';
           pDatum->m_nChars = 5;
           break;
         case MN_6B:
           aHeadLine->w8_6BFast(pDatum,i_Offset);
-          *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
-          ((char*)pDatum->m_xWsp.aStz())[6] = '\0';
+          *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+          ((char*)pDatum->m_sVch.aChar())[6] = '\0';
           pDatum->m_nChars = 6;
           break;
         case MN_7B:
           aHeadLine->w8_7BFast(pDatum,i_Offset);
-          *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
-          ((char*)pDatum->m_xWsp.aStz())[7] = '\0';
+          *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+          ((char*)pDatum->m_sVch.aChar())[7] = '\0';
           pDatum->m_nChars = 7;
           break;
         case MN_8B:
           aHeadLine->w8_8BFast(pDatum,i_Offset);
-          *(i8*)pDatum->m_xWsp.aStz() = pDatum->m_iInt;
-          ((char*)pDatum->m_xWsp.aStz())[8] = '\0';
+          *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+          ((char*)pDatum->m_sVch.aChar())[8] = '\0';
           pDatum->m_nChars = 8;
           break;
         default:

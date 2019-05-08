@@ -12,6 +12,8 @@ namespace Datums
   static const u8 C_BASE_YEAR  = 1900;
   static const u8 C_YEAR_RANGE = 255;
   static const i8 C_EXTENDED_AUX = 6;
+  
+  static const i8 C_MAX_VCH = C_4KB;
 
   enum eDM : u1 // Datum Type
   {
@@ -93,6 +95,8 @@ using namespace Datums;
 
 #include "DtmLib.hpp"
 #include "DatumUnion.hpp"
+
+typedef String_t<C_MAX_VCH> sVCH;
 
 /*============================================================================*/
 /* end                                                                        */

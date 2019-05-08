@@ -230,7 +230,7 @@ bool Record::bExtractDatum(Datum* pDatum, char** aaSrc, Column* pCol, Formatters
       
      case DM_VCH:
        b = StrLib::bExtractVarcharDefault(aaSrc,
-                                          pDatum->m_xWsp.aArea(),
+                                          pDatum->m_sVch.aChar(),
                                           pCol->iColumnLength(),
                                           pDatum->m_nChars);
        break;
@@ -1081,7 +1081,7 @@ bool Record::bExtractVchSupplied(Datum* pDatum, char** aaSrc,
   i8 iColumnLength = pColumn->iColumnLength();
   i8 nChars;
   if ( ! StrLib::bExtractVarchar(aaSrc,
-                                 pDatum->m_xWsp.aArea(),
+                                 pDatum->m_sVch.aChar(),
                                  iColumnLength,
                                  bSawEnclosedLeading,
                                  pFormatters->m_cEnclosedBy_Leading,
@@ -1146,7 +1146,7 @@ bool Record::bExtractVchDefault(Datum* pDatum, char** aaSrc,
   
   i8 iColumnLength = pColumn->iColumnLength();
   if ( ! StrLib::bExtractVarcharDefault(aaSrc,
-                                        pDatum->m_xWsp.aArea(),
+                                        pDatum->m_sVch.aChar(),
                                         iColumnLength,
                                         pDatum->m_nChars) )
     return false;
@@ -1312,7 +1312,7 @@ void Record::vAppendVch(Column* pCol, Datum* pDatum)
   
   s256 sBuf;
   
-  Vch::vSprintQuotes(sBuf,pDatum->m_xWsp.aStz());
+  Vch::vSprintQuotes(sBuf,pDatum->m_sVch.aStz());
   m_sRecStr.vConcat(sBuf.aStz());
 }
 
