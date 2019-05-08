@@ -1286,14 +1286,13 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeIntDelta(Column* pCol)
 {
-  Coda* pCoda = m_pEncodeNub->pCoda();
   i8 i_Column = pCol->iColumnNo();
   
   eMN eThisEncoding = (eMN)m_aHeadLine->iMetaNibble(i_Column);
   //vTrace("CurrentEncoding %lld\n"_Stz, eCurrentEncoding);
   
   // if encoding as digit then dont proceed
-  if (DM_DIGIT == pCoda->m_aeExtDatum[i_Column]) {
+  if (DM_DIGIT == m_pCoda->m_aeExtDatum[i_Column]) {
     return false;
   }
   
@@ -1324,10 +1323,10 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
   
   // defer to vRecodeInt
   if ( (iCurrentInt >= 0 && iCurrentInt <= 7) &&
-      DM_INT == pCoda->m_aeExtDatum[i_Column]  )
+      DM_INT == m_pCoda->m_aeExtDatum[i_Column]  )
     return false;
   
-  i8 iFirstInt = pCoda->m_aiAux[i_Column].m_iInt;
+  i8 iFirstInt = m_pCoda->m_aiAux[i_Column].m_iInt;
   
   eMN eExtendedEncoding;
   
@@ -1339,7 +1338,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
   if (iCurrentInt == iFirstInt) {
     
     // change the encoding to extended deltaPlus
-    pCoda->m_aeExtDatum[i_Column] = DM_DELTA_PLUS;
+    m_pCoda->m_aeExtDatum[i_Column] = DM_DELTA_PLUS;
     
     // revise the encoding in the metaword of into head
     eExtendedEncoding = MN_SAME;
@@ -1361,7 +1360,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
     
     // change the encoding to extended deltaPlus
-    pCoda->m_aeExtDatum[i_Column] = DM_DELTA_PLUS;
+    m_pCoda->m_aeExtDatum[i_Column] = DM_DELTA_PLUS;
     
     // revise the encoding in the metaword of into head
     eExtendedEncoding = MN_PLUS_1B;
@@ -1387,7 +1386,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
     
     // change the encoding to extended deltaPlus
-    pCoda->m_aeExtDatum[i_Column] = DM_DELTA_PLUS;
+    m_pCoda->m_aeExtDatum[i_Column] = DM_DELTA_PLUS;
     
     // revise the encoding in the metaword of into head
     eExtendedEncoding = MN_PLUS_2B;
