@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowCoder.cpp -- Row Coder                                                  */
+/* RowCoder.cpp -- Row Coder Mark II                                          */
 /*============================================================================*/
 
 #include "Data.h"
@@ -125,6 +125,9 @@ void RowCoder::vCopyBegin(RowNub* pIntoNub)
 {
   m_pIntoNub = pIntoNub;
   
+  m_pColVec = m_pIntoNub->pDesc()->pColumnVec();
+  m_pCoda   = m_pIntoNub->pCoda();
+
   m_pWorkingParts = new RowParts;
   m_pWorkingNub   = *m_pWorkingParts;
 }
@@ -169,16 +172,9 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   
   m_pFromNub = pFromNub;
   
-  if (0 == m_pIntoNub->nHeads()) {
-    m_pColVec = m_pIntoNub->pDesc()->pColumnVec();
-    m_pCoda   = m_pIntoNub->pCoda();
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   m_i_IntoHead   = m_pIntoNub->iAllotHead();
   m_aIntoLine    = m_pIntoNub->aGetHead(m_i_IntoHead);
-  m_i_IntoOffset = iBaseOffset(pFromNub->pDesc()->pColumnVec());
+  m_i_IntoOffset = iBaseOffset(m_pColVec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
