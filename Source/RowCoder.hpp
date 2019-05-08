@@ -27,6 +27,7 @@ namespace Data
     ColumnVec* m_pColVec;
     Coda*      m_pCoda;
 
+    i8         m_i_IntoHead;
     HeadLine*  m_aHeadLine;
 
     i8         m_i_IntoOffset; // encoding offset

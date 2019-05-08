@@ -53,6 +53,7 @@ RowCoder::RowCoder(void)
   m_pColVec      = nullptr;
   m_pCoda        = nullptr;
 
+  m_i_IntoHead   = 0;
   m_aHeadLine    = nullptr;
   m_i_IntoOffset = 0;
   m_i_FromOffset = 0;
@@ -142,18 +143,18 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
     m_pCoda   = m_pEncodeNub->pCoda();
   }
 
-  i8 i_IntoHead  = m_pEncodeNub->iAllotHead();
-  m_aHeadLine    = m_pEncodeNub->aGetHead(i_IntoHead);
+  m_i_IntoHead   = m_pEncodeNub->iAllotHead();
+  m_aHeadLine    = m_pEncodeNub->aGetHead(m_i_IntoHead);
   m_i_IntoOffset = iBaseOffset(pFromNub->pDesc()->pColumnVec());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 #ifdef WITH_LARGE_ROWS
   vCopy_Large(pFromNub);
-  vRecode_Large(i_IntoHead,pFromNub);
+  vRecode_Large(m_i_IntoHead,pFromNub);
 #else
   vCopy_Short(pFromNub);
-  vRecode_Short(i_IntoHead,pFromNub);
+  vRecode_Short(m_i_IntoHead,pFromNub);
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
