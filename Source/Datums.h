@@ -57,20 +57,16 @@ namespace Datums
   /*  9 */ "TSP"_Stz,
   /* 10 */ "VBN"_Stz,
   /* 11 */ "VCH"_Stz,
-  
-  /* 12 */ "SPARE_12"_Stz,
-  /* 13 */ "SPARE_13"_Stz,
-  /* 14 */ "SPARE_14"_Stz,
-  /* 15 */ "SPARE_15"_Stz,
 
-  /* 16 */ "ALPHA"_Stz,
-  /* 17 */ "DAYS"_Stz,
-  /* 18 */ "DELTA_PLUS"_Stz,
-  /* 19 */ "DELTA_MINUS"_Stz,
-  /* 20 */ "DIGIT"_Stz,
-  /* 21 */ "TENTH"_Stz,
+  // extended datums
+  /* 12 */ "ALPHA"_Stz,
+  /* 13 */ "DAYS"_Stz,
+  /* 14 */ "DELTA_PLUS"_Stz,
+  /* 15 */ "DELTA_MINUS"_Stz,
+  /* 16 */ "DIGIT"_Stz,
+  /* 17 */ "TENTH"_Stz,
 
-  /* 21 */ "ENUMS"_Stz,
+  /* 18 */ "ENUMS"_Stz,
   };
   
   void vCheckAssumptions(void);
