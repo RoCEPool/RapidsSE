@@ -50,6 +50,7 @@ namespace Structures
     void  vDesc(DESC* pDesc);
     i8    nFreeBytes(void);
     i8    iFirstTail(void);
+    HEAD* aGetHead(void);
     HEAD* aGetHead(i8 i_Head);
     TAIL* aGetTail(i8 i_Tail);
     i8    nHeads(void);
@@ -419,6 +420,22 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nFreeBytes(void)
   i8 nFreeBytes = (m_nSpaceUnits - (m_nHeadUnits + m_nTailUnits)) * sizeof(UNIT);
   
   return nFreeBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get most recent head item                                                  */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+HEAD* Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::aGetHead(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  ASSERT(m_nHeadItems);
+  
+  i8 i_Unit = (m_nHeadItems - 1) * (sizeof(HEAD) / sizeof(UNIT));
+  HEAD* aHead = (HEAD*)&m_axaUnits[i_Unit];
+  
+  return aHead;
 }
 
 /*----------------------------------------------------------------------------*/

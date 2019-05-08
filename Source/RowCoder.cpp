@@ -138,16 +138,16 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 i_IntoHead = m_pEncodeNub->iAllotHead();
-  m_aHeadLine = m_pEncodeNub->aGetHead(i_IntoHead);
-  
-  if (0 == i_IntoHead) {
-    RASSERT(1 == m_pEncodeNub->nHeads());
+  if (0 == m_pEncodeNub->nHeads()) {
     m_pColVec = m_pEncodeNub->pDesc()->pColumnVec();
     m_pCoda   = m_pEncodeNub->pCoda();
   }
+
+  i8 i_IntoHead = m_pEncodeNub->iAllotHead();
+  m_aHeadLine = m_pEncodeNub->aGetHead(i_IntoHead);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
 #ifdef WITH_LARGE_ROWS
   vCopy_Large(pFromNub);
   vRecode_Large(i_IntoHead,pFromNub);
