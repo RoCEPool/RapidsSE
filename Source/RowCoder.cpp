@@ -151,10 +151,10 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   
 #ifdef WITH_LARGE_ROWS
   vCopy_Large(pFromNub);
-  vRecode_Large(m_i_IntoHead,pFromNub);
+  vRecode_Large(pFromNub);
 #else
   vCopy_Short(pFromNub);
-  vRecode_Short(m_i_IntoHead,pFromNub);
+  vRecode_Short(pFromNub);
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -686,7 +686,7 @@ void RowCoder::vMetaPut(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* recode the datums                                                          */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecode_Large(i8 i_IntoHead, RowNub* pFromNub)
+void RowCoder::vRecode_Large(RowNub* pFromNub)
 {
   HeadLine* aFromHead = pFromNub->aGetHead(0);
   
@@ -700,7 +700,7 @@ void RowCoder::vRecode_Large(i8 i_IntoHead, RowNub* pFromNub)
   m_i_IntoOffset = iBaseOffset(pColVec);
   i8 i_OldFromOffset = 0;
   
-  if (0 == i_IntoHead) {
+  if (0 == m_i_IntoHead) {
     for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
       Column* pCol = pColVec->pGet(i_ForCol);
       eDM eDatum = pCol->eDatumType();
@@ -739,7 +739,7 @@ void RowCoder::vRecode_Large(i8 i_IntoHead, RowNub* pFromNub)
       case Datums::DM_FLT:
         continue;
       case Datums::DM_INT:
-        if (0 == i_IntoHead)
+        if (0 == m_i_IntoHead)
           vSetAuxInt(pIntoCoda,m_aHeadLine,pCol,eEncoding,m_i_IntoOffset);
         vRecodeInt(pCol);
         continue;
@@ -750,7 +750,7 @@ void RowCoder::vRecode_Large(i8 i_IntoHead, RowNub* pFromNub)
       case Datums::DM_TSP:
         continue;
       case Datums::DM_VCH:
-        vRecodeVch(i_IntoHead,pFromNub,pCol,eEncoding);
+        vRecodeVch(m_i_IntoHead,pFromNub,pCol,eEncoding);
         continue;
         
       default:
@@ -764,7 +764,7 @@ void RowCoder::vRecode_Large(i8 i_IntoHead, RowNub* pFromNub)
 /*----------------------------------------------------------------------------*/
 /* recode the datums                                                          */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecode_Short(i8 i_IntoHead, RowNub* pFromNub)
+void RowCoder::vRecode_Short(RowNub* pFromNub)
 {
   HeadLine* aFromHead = pFromNub->aGetHead(0);
   
@@ -778,7 +778,7 @@ void RowCoder::vRecode_Short(i8 i_IntoHead, RowNub* pFromNub)
   m_i_IntoOffset = iBaseOffset(pColVec);
   i8 i_OldFromOffset = 0;
   
-  if (0 == i_IntoHead) {
+  if (0 == m_i_IntoHead) {
     for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
       Column* pCol = pColVec->pGet(i_ForCol);
       eDM eDatum = pCol->eDatumType();
@@ -817,7 +817,7 @@ void RowCoder::vRecode_Short(i8 i_IntoHead, RowNub* pFromNub)
       case Datums::DM_FLT:
         continue;
       case Datums::DM_INT:
-        if (0 == i_IntoHead)
+        if (0 == m_i_IntoHead)
           vSetAuxInt(pIntoCoda,m_aHeadLine,pCol,eEncoding,m_i_IntoOffset);
         vRecodeInt(pCol);
         continue;
@@ -828,7 +828,7 @@ void RowCoder::vRecode_Short(i8 i_IntoHead, RowNub* pFromNub)
       case Datums::DM_TSP:
         continue;
       case Datums::DM_VCH:
-        vRecodeVch(i_IntoHead,pFromNub,pCol,eEncoding);
+        vRecodeVch(m_i_IntoHead,pFromNub,pCol,eEncoding);
         continue;
         
       default:

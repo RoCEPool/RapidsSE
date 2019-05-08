@@ -110,8 +110,8 @@ namespace Data
     void vMetaNibble(Column* pCol, eMN eMetaNibble);
     void vMetaPut(Datum* pDatum, Column* pCol);
 
-    void vRecode_Large(i8 i_IntoHead, RowNub* pFromNub);
-    void vRecode_Short(i8 i_IntoHead, RowNub* pFromNub);
+    void vRecode_Large(RowNub* pFromNub);
+    void vRecode_Short(RowNub* pFromNub);
     void vRecodeBcd(Column* pCol);
     void vRecodeDte(Column* pCol);
     void vRecodeInt(Column* pCol);
