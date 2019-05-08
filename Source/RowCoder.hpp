@@ -35,9 +35,9 @@ namespace Data
     ColumnVec* m_pColVec;
     Coda*      m_pCoda;
   
-    RowParts*  m_pWorkingParts;
-    RowNub*    m_pWorkingNub;
-    HeadLine*  m_aRecodeLine;
+    RowParts*  m_pWorkParts;
+    RowNub*    m_pWorkNub;
+    HeadLine*  m_aWorkHead;
 
     Datum      m_oEncodedDatum; // the encoded datum
 
@@ -95,8 +95,8 @@ namespace Data
   
   private:
     void vAnalyseFree(void);
-    void vCopy_Large(RowNub* pFromNub);
-    void vCopy_Short(RowNub* pFromNub);
+    void vCopy_Large(void);
+    void vCopy_Short(void);
     void vDataPut(Datum* pDatum);
     void vDataPut(w8 wDatum, i8 nBytes);
     void vEncodeBcd(Datum* pDatum, Column* pCol);

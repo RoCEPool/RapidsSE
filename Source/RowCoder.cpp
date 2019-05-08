@@ -61,9 +61,9 @@ RowCoder::RowCoder(void)
   m_pColVec       = nullptr;
   m_pCoda         = nullptr;
   
-  m_pWorkingParts = nullptr;
-  m_pWorkingNub   = nullptr;
-  m_aRecodeLine   = nullptr;
+  m_pWorkParts    = nullptr;
+  m_pWorkNub      = nullptr;
+  m_aWorkHead     = nullptr;
   
   //m_oEncodedDatum
   
@@ -128,8 +128,8 @@ void RowCoder::vCopyBegin(RowNub* pIntoNub)
   m_pColVec = m_pIntoNub->pDesc()->pColumnVec();
   m_pCoda   = m_pIntoNub->pCoda();
 
-  m_pWorkingParts = new RowParts;
-  m_pWorkingNub   = *m_pWorkingParts;
+  m_pWorkParts = new RowParts;
+  m_pWorkNub   = *m_pWorkParts;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,9 +150,9 @@ void RowCoder::vCopyEnd(void)
   m_pColVec       = nullptr;
   m_pCoda         = nullptr;
 
-  m_pWorkingNub   = nullptr;
-  delete m_pWorkingParts;
-  m_pWorkingParts = nullptr;
+  m_pWorkNub      = nullptr;
+  delete m_pWorkParts;
+  m_pWorkParts    = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -170,7 +170,8 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pFromNub = pFromNub;
+  m_pFromNub  = pFromNub;
+  m_aFromHead = m_pFromNub->aGetHead();
   
   m_i_IntoHead   = m_pIntoNub->iAllotHead();
   m_aIntoHead    = m_pIntoNub->aGetHead(m_i_IntoHead);
@@ -179,10 +180,10 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 #ifdef WITH_LARGE_ROWS
-  vCopy_Large(pFromNub);
+  vCopy_Large();
   vRecode_Large(pFromNub);
 #else
-  vCopy_Short(pFromNub);
+  vCopy_Short();
   vRecode_Short(pFromNub);
 #endif
   
@@ -428,11 +429,9 @@ void RowCoder::vAnalyseFree(void)
 /*----------------------------------------------------------------------------*/
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vCopy_Large(RowNub* pFromNub)
+void RowCoder::vCopy_Large(void)
 {
-  HeadLine* aFromHead = pFromNub->aGetHead(0);
-
-  MemLib::vCopy(m_aIntoHead,aFromHead,sizeof(HeadLine),CN_ROWBUFFER);
+  MemLib::vCopy(m_aIntoHead,m_aFromHead,sizeof(HeadLine),CN_ROWBUFFER);
   
 #ifdef WITH_TRACE_ENCODING
   RowCoder::vHeadDumpNat(m_aIntoHead,m_pColVec);
@@ -442,11 +441,9 @@ void RowCoder::vCopy_Large(RowNub* pFromNub)
 /*----------------------------------------------------------------------------*/
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vCopy_Short(RowNub* pFromNub)
+void RowCoder::vCopy_Short(void)
 {
-  HeadLine* aFromHead = pFromNub->aGetHead(0);
- 
-  MemLib::vCopy(m_aIntoHead,aFromHead,sizeof(HeadLine),CN_ROWBUFFER);
+  MemLib::vCopy(m_aIntoHead,m_aFromHead,sizeof(HeadLine),CN_ROWBUFFER);
   
 #ifdef WITH_TRACE_ENCODING
   RowCoder::vHeadDumpNat(m_aIntoHead,m_pColVec);
@@ -803,7 +800,7 @@ void RowCoder::vRecode_Large(RowNub* pFromNub)
 void RowCoder::vRecode_Short(RowNub* pFromNub)
 {
   HeadLine* aFromHead = pFromNub->aGetHead(0);
-  m_aRecodeLine = m_pIntoNub->aGetHead();
+  m_aWorkHead = m_pIntoNub->aGetHead();
 
   ColumnVec* pColVec = m_pIntoNub->pDesc()->pColumnVec();
   i8 nColumns = pColVec->nItems();
