@@ -60,7 +60,10 @@ namespace Data
     i8 m_nFreeHead_24_31;
     i8 m_nFreeHead_32_39;
     i8 m_nFreeHead_40_47;
-  
+    i8 m_nFreeHead_48_55;
+    i8 m_nFreeHead_56_63;
+    i8 m_nFreeHead_64_;
+
     // must be last
     Footer m_xFooter;
   

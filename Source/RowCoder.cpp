@@ -82,6 +82,9 @@ RowCoder::RowCoder(void)
   m_nFreeHead_24_31 = 0;
   m_nFreeHead_32_39 = 0;
   m_nFreeHead_40_47 = 0;
+  m_nFreeHead_48_55 = 0;
+  m_nFreeHead_56_63 = 0;
+  m_nFreeHead_64_   = 0;
 
   _checkInitialised_(CN_ROWCODER);
   
@@ -162,12 +165,15 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   i8 nFreeBytes = nFreeSpaceHead(m_aHeadLine,pColVec,pIntoCoda);
   m_nHeadFree += nFreeBytes;
   
-  if (nFreeBytes <= 7 ) m_nFreeHead_0_7++;
+       if (nFreeBytes <= 7 ) m_nFreeHead_0_7++;
   else if (nFreeBytes <= 15) m_nFreeHead_8_15++;
   else if (nFreeBytes <= 23) m_nFreeHead_16_23++;
   else if (nFreeBytes <= 31) m_nFreeHead_24_31++;
   else if (nFreeBytes <= 39) m_nFreeHead_32_39++;
   else if (nFreeBytes <= 47) m_nFreeHead_40_47++;
+  else if (nFreeBytes <= 55) m_nFreeHead_48_55++;
+  else if (nFreeBytes <= 63) m_nFreeHead_56_63++;
+  else                       m_nFreeHead_64_++;
 
   return true;
 }
@@ -351,7 +357,7 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
   
   vTrace(": HeadFree %lldB(%lld%%) : "
          "0..7B:%lld 8..15B:%lld 16..23B:%lld 24..31B:%lld "
-         "32..39B:%lld 40..47B:%lld "
+         "32..39B:%lld 40..47B:%lld 48..55B:%lld 56..63B:%lld 64..B:%lld "
          "µ:%lldB\n"_Stz,
          
          m_nHeadFree,
@@ -363,6 +369,9 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
          m_nFreeHead_24_31,
          m_nFreeHead_32_39,
          m_nFreeHead_40_47,
+         m_nFreeHead_48_55,
+         m_nFreeHead_56_63,
+         m_nFreeHead_64_,
          
          m_nHeadFree / pRowCoder_Encode->m_nRows);
 }
