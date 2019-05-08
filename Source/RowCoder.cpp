@@ -48,8 +48,10 @@ RowCoder::RowCoder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  m_pEncodeNub   = nullptr;
-  
+  m_pEncodeNub    = nullptr;
+  m_pWorkingParts = nullptr;
+  m_pWorkingNub   = nullptr;
+
   m_pColVec      = nullptr;
   m_pCoda        = nullptr;
 
@@ -113,6 +115,9 @@ RowCoder::~RowCoder(void) noexcept(false)
 void RowCoder::vCopyBegin(RowNub* pIntoNub)
 {
   m_pEncodeNub = pIntoNub;
+  
+  m_pWorkingParts = new RowParts;
+  m_pWorkingNub   = *m_pWorkingParts;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,6 +125,10 @@ void RowCoder::vCopyBegin(RowNub* pIntoNub)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCopyEnd(void)
 {
+  m_pWorkingNub = nullptr;
+  
+  delete m_pWorkingParts;
+  m_pWorkingParts = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,7 +136,6 @@ void RowCoder::vCopyEnd(void)
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bCopyRow(RowNub* pFromNub)
 {
-  
   // check for space in target nub
   i8 nSpaceNeeded = pFromNub->nUsedBytes();
   if (! m_pEncodeNub->bHasSpace(nSpaceNeeded)) {

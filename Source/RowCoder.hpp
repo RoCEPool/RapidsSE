@@ -24,6 +24,9 @@ namespace Data
   
     RowNub*    m_pEncodeNub;
   
+    RowParts*  m_pWorkingParts;
+    RowNub*    m_pWorkingNub;
+
     ColumnVec* m_pColVec;
     Coda*      m_pCoda;
 
