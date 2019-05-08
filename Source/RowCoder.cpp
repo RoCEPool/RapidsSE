@@ -206,13 +206,19 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeBegin(RowNub* pIntoNub)
 {
-  m_pIntoNub   = pIntoNub;
-  m_pColVec    = m_pIntoNub->pDesc()->pColumnVec();
-  m_pCoda      = m_pIntoNub->pCoda();
+  m_pIntoNub = pIntoNub;
+  
+  m_pColVec  = m_pIntoNub->pDesc()->pColumnVec();
+  m_pCoda    = m_pIntoNub->pCoda();
 
-  m_aIntoLine    = m_pIntoNub->aGetHead(0);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_pIntoNub->vReset();
+  m_i_IntoHead = m_pIntoNub->iAllotHead();
+  ASSERT(0 == m_i_IntoHead);
+
+  m_aIntoLine    = m_pIntoNub->aGetHead();
   m_i_IntoOffset = iBaseOffset(m_pColVec);
-  m_i_FromOffset = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -261,13 +267,13 @@ void RowCoder::vEncodeEnd(void)
 //  
 //  vHeadDump(m_aIntoLine,m_pColVec,m_pCoda);
 
-  m_pIntoNub = nullptr;
-  m_pColVec    = nullptr;
-  m_pCoda      = nullptr;
-  
+  m_pIntoNub     = nullptr;
+  m_i_IntoHead   = C_UNKNOWN;
   m_aIntoLine    = nullptr;
   m_i_IntoOffset = C_UNKNOWN;
-  m_i_FromOffset = C_UNKNOWN;
+
+  m_pColVec  = nullptr;
+  m_pCoda    = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -410,9 +416,9 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
 void RowCoder::vAnalyseFree(void)
 {
   i8 nFreeBytes = nFreeSpaceHead(m_aIntoLine,m_pColVec,m_pCoda);
-  m_nHeadFree += nFreeBytes;
+  m_nHeadFree  += nFreeBytes;
   
-  if (nFreeBytes <= 7 ) m_nFreeHead_0_7++;
+       if (nFreeBytes <= 7 ) m_nFreeHead_0_7++;
   else if (nFreeBytes <= 15) m_nFreeHead_8_15++;
   else if (nFreeBytes <= 23) m_nFreeHead_16_23++;
   else if (nFreeBytes <= 31) m_nFreeHead_24_31++;

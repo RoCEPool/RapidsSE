@@ -91,11 +91,6 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_oRowParts.vReset();
-  
-  i8 i_Head = m_oRowParts.iAllotHead();
-  ASSERT(0 == i_Head);
-
   ColumnVec* pColVec = pTable()->pColumnVec();
   i8 nColumns = pColVec->nItems();
   
