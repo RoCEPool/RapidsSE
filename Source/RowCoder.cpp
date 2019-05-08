@@ -161,6 +161,10 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vRecode(i_IntoHead,pFromNub,aFromHead);
+ 
+#ifdef WITH_TRACE_ENCODING
+  RowCoder::vHeadDump(m_aHeadLine,m_pColVec);
+#endif
   
   i8 nFreeBytes = nFreeSpaceHead(m_aHeadLine,pColVec,pIntoCoda);
   m_nHeadFree += nFreeBytes;
@@ -1132,7 +1136,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
                 vUsageIncOops(pCol,4,0);
                 break;
     case MN_5B: m_pEncodeNub->vExpand(m_aHeadLine,sizeof(HeadLine),m_i_IntoOffset,1);
-                eExtendedEncoding = MN_6B;
+                eExtendedEncoding = MN_DIGIT_6B;
                 vUsageIncOops(pCol,6,0);
                 break;
     case MN_6B: eExtendedEncoding = MN_DIGIT_6B;
@@ -1140,7 +1144,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
                 break;
     case MN_7B: m_pEncodeNub->vExpand(m_aHeadLine,sizeof(HeadLine),m_i_IntoOffset,1);
                 vUsageIncOops(pCol,8,0);
-                eExtendedEncoding = MN_8B;
+                eExtendedEncoding = MN_DIGIT_8B;
                 break;
     case MN_8B: eExtendedEncoding = MN_DIGIT_8B;
                 vUsageIncOops(pCol,8,0);
