@@ -63,6 +63,7 @@
 //#define WITH_SHOCO_DUPLICATES   // test for duplicate shoco tail lines
 //#define WITH_SHOCO_FOLDLAST     // test for folding last shoco line
 #define WITH_ENCODING_XCHECK    // encode cross check
+#define WITH_LARGE_ROWS         // encode cross check
 
 
 /*============================================================================*/
