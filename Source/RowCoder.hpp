@@ -27,17 +27,18 @@ namespace Data
     HeadLine*  m_aIntoLine;
     i8         m_i_IntoOffset; // encoding offset
   
+    RowNub*    m_pFromNub;
     i8         m_i_FromHead;
     HeadLine*  m_aFromLine;
     i8         m_i_FromOffset; // encoding offset
  
+    ColumnVec* m_pColVec;
+    Coda*      m_pCoda;
+  
     RowParts*  m_pWorkingParts;
     RowNub*    m_pWorkingNub;
     HeadLine*  m_aRecodeLine;
 
-    ColumnVec* m_pColVec;
-    Coda*      m_pCoda;
-  
     Datum      m_oEncodedDatum; // the encoded datum
 
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -

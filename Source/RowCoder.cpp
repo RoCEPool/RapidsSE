@@ -53,16 +53,17 @@ RowCoder::RowCoder(void)
   m_aIntoLine     = nullptr;
   m_i_IntoOffset  = 0;
   
+  m_pFromNub      = nullptr;
   m_i_FromHead    = 0;
   m_aFromLine     = nullptr;
   m_i_FromOffset  = 0;
 
+  m_pColVec       = nullptr;
+  m_pCoda         = nullptr;
+  
   m_pWorkingParts = nullptr;
   m_pWorkingNub   = nullptr;
   m_aRecodeLine   = nullptr;
-  
-  m_pColVec       = nullptr;
-  m_pCoda         = nullptr;
   
   //m_oEncodedDatum
   
@@ -133,8 +134,20 @@ void RowCoder::vCopyBegin(RowNub* pIntoNub)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCopyEnd(void)
 {
-  m_pWorkingNub = nullptr;
+  m_pIntoNub      = nullptr;
+  m_i_IntoHead    = 0;
+  m_aIntoLine     = nullptr;
+  m_i_IntoOffset  = 0;
   
+  m_pFromNub      = nullptr;
+  m_i_FromHead    = 0;
+  m_aFromLine     = nullptr;
+  m_i_FromOffset  = 0;
+  
+  m_pColVec       = nullptr;
+  m_pCoda         = nullptr;
+
+  m_pWorkingNub   = nullptr;
   delete m_pWorkingParts;
   m_pWorkingParts = nullptr;
 }
@@ -154,11 +167,15 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  m_pFromNub = pFromNub;
+  
   if (0 == m_pIntoNub->nHeads()) {
     m_pColVec = m_pIntoNub->pDesc()->pColumnVec();
     m_pCoda   = m_pIntoNub->pCoda();
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   m_i_IntoHead   = m_pIntoNub->iAllotHead();
   m_aIntoLine    = m_pIntoNub->aGetHead(m_i_IntoHead);
   m_i_IntoOffset = iBaseOffset(pFromNub->pDesc()->pColumnVec());
@@ -174,6 +191,7 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   vAnalyseFree();
 
 #ifdef WITH_TRACE_ENCODING
