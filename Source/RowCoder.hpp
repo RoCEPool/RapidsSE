@@ -87,6 +87,8 @@ namespace Data
     void vReport(RowCoder* pRowCoder_Encode);
   
   private:
+    void vCopy_Large(RowNub* pFromNub, HeadLine* aFromHead);
+    void vCopy_Short(RowNub* pFromNub, HeadLine* aFromHead);
     void vDataPut(Datum* pDatum);
     void vDataPut(w8 wDatum, i8 nBytes);
     void vEncodeBcd(Datum* pDatum, Column* pCol);
@@ -106,8 +108,8 @@ namespace Data
     void vMetaNibble(Column* pCol, eMN eMetaNibble);
     void vMetaPut(Datum* pDatum, Column* pCol);
 
-    void vRecode_Large(i8 i_IntoHead, RowNub* pFromNub, HeadLine* aFromHead);
-    void vRecode_Short(i8 i_IntoHead, RowNub* pFromNub, HeadLine* aFromHead);
+    void vRecode_Large(i8 i_IntoHead, RowNub* pFromNub);
+    void vRecode_Short(i8 i_IntoHead, RowNub* pFromNub);
     void vRecodeBcd(Column* pCol);
     void vRecodeDte(Column* pCol);
     void vRecodeInt(Column* pCol);
