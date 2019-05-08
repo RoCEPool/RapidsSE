@@ -160,7 +160,11 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vRecode(i_IntoHead,pFromNub,aFromHead);
+#ifdef WITH_LARGE_ROWS
+  vRecode_Large(i_IntoHead,pFromNub,aFromHead);
+#else
+  vRecode_Short(i_IntoHead,pFromNub,aFromHead);
+#endif
   
   i8 nFreeBytes = nFreeSpaceHead(m_aHeadLine,pColVec,pIntoCoda);
   m_nHeadFree += nFreeBytes;
@@ -650,8 +654,85 @@ void RowCoder::vMetaPut(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* recode the datums                                                          */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecode(i8 i_IntoHead,
-                       RowNub* pFromNub, HeadLine* aFromHead)
+void RowCoder::vRecode_Large(i8 i_IntoHead,
+                             RowNub* pFromNub, HeadLine* aFromHead)
+{
+  ColumnVec* pColVec = m_pEncodeNub->pDesc()->pColumnVec();
+  i8 nColumns = pColVec->nItems();
+  
+  Coda* pIntoCoda = m_pEncodeNub->pCoda();
+  
+  i8 i_LastColumn = 0;
+  m_i_FromOffset = iBaseOffset(pColVec);
+  m_i_IntoOffset = iBaseOffset(pColVec);
+  i8 i_OldFromOffset = 0;
+  
+  if (0 == i_IntoHead) {
+    for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
+      Column* pCol = pColVec->pGet(i_ForCol);
+      eDM eDatum = pCol->eDatumType();
+      pIntoCoda->m_aeExtDatum[i_ForCol] = eDatum;
+      pIntoCoda->m_aiAux[i_ForCol].m_iInt = 0;
+    }
+  }
+  
+  for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
+    
+    Column* pCol = pColVec->pGet(i_ForCol);
+    eDM eDatum = pCol->eDatumType();
+    
+    // save old fromOffset
+    i_OldFromOffset = m_i_FromOffset;
+    eMN eEncoding = eGetEncodingNat(i_ForCol,aFromHead,pColVec,
+                                    i_LastColumn,m_i_FromOffset);
+    
+    // calculate new IntoOffset
+    m_i_IntoOffset += m_i_FromOffset - i_OldFromOffset;
+    
+    
+    //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    //
+    
+    switch (eDatum) {
+        
+      case Datums::DM_BCD:
+        vRecodeBcd(pCol);
+        continue;
+      case Datums::DM_BOL:
+        continue;
+      case Datums::DM_DTE:
+        vRecodeDte(pCol);
+        continue;
+      case Datums::DM_FLT:
+        continue;
+      case Datums::DM_INT:
+        if (0 == i_IntoHead)
+          vSetAuxInt(pIntoCoda,m_aHeadLine,pCol,eEncoding,m_i_IntoOffset);
+        vRecodeInt(pCol);
+        continue;
+      case Datums::DM_IVL:
+        continue;
+      case Datums::DM_TME:
+        continue;
+      case Datums::DM_TSP:
+        continue;
+      case Datums::DM_VCH:
+        vRecodeVch(i_IntoHead,pFromNub,pCol,eEncoding);
+        continue;
+        
+      default:
+        NEVER_REACH;
+    }
+    
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* recode the datums                                                          */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecode_Short(i8 i_IntoHead,
+                             RowNub* pFromNub, HeadLine* aFromHead)
 {
   ColumnVec* pColVec = m_pEncodeNub->pDesc()->pColumnVec();
   i8 nColumns = pColVec->nItems();
