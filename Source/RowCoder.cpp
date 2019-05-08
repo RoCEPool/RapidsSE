@@ -1004,7 +1004,6 @@ void RowCoder::vRecodeDte(Column* pCol)
 #ifdef WITH_EXTENDED_DTE
   RASSERT(DM_DTE == pCol->eDatumType());
   
-  Coda* pCoda = m_pEncodeNub->pCoda();
   i8 i_Column = pCol->iColumnNo();
   
   eMN eThisEncoding = (eMN)m_aHeadLine->iMetaNibble(i_Column);
@@ -1022,7 +1021,7 @@ void RowCoder::vRecodeDte(Column* pCol)
   }
   
   if (i_Column == i_FirstDate) {
-    RASSERT(DM_DTE == pCoda->m_aeExtDatum[i_Column]);
+    RASSERT(DM_DTE == m_pCoda->m_aeExtDatum[i_Column]);
     vUsageIncRecoded(pCol,nEncodedBytes);
     return;
   }
@@ -1032,8 +1031,8 @@ void RowCoder::vRecodeDte(Column* pCol)
   
   // change the extended datum to days
   if (1 == m_pEncodeNub->nHeads())
-    pCoda->m_aeExtDatum[i_Column] = DM_DAYS;
-  RASSERT(DM_DAYS == pCoda->m_aeExtDatum[i_Column]);
+    m_pCoda->m_aeExtDatum[i_Column] = DM_DAYS;
+  RASSERT(DM_DAYS == m_pCoda->m_aeExtDatum[i_Column]);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute the difference in days between this 2nd+ date and the first date
@@ -1057,7 +1056,7 @@ void RowCoder::vRecodeDte(Column* pCol)
   i8 i_LastOffset = iBaseOffset(pColVec);
 
   Datum oDte;
-  vDecodeDte(&oDte,m_aHeadLine,pColVec,pColFirst,pCoda,i_LastColumn,i_LastOffset);
+  vDecodeDte(&oDte,m_aHeadLine,pColVec,pColFirst,m_pCoda,i_LastColumn,i_LastOffset);
   
   eMN eFirstEncoding = (eMN)m_aHeadLine->iMetaNibble(i_FirstDate);
   
