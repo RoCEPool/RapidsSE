@@ -67,6 +67,7 @@ using namespace Prompt;
 #include "Prompt_jobcat.hpp"
 #include "Prompt_jobClass.hpp"
 
+#include "Prompt_limits.hpp"
 #include "Prompt_locks.hpp"
 #include "Prompt_ls.hpp"
 #include "Prompt_lvl.hpp"
