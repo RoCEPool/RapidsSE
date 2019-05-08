@@ -24,12 +24,12 @@ namespace Data
   
     RowNub*    m_pIntoNub;
     i8         m_i_IntoHead;
-    HeadLine*  m_aIntoLine;
+    HeadLine*  m_aIntoHead;
     i8         m_i_IntoOffset; // encoding offset
   
     RowNub*    m_pFromNub;
     i8         m_i_FromHead;
-    HeadLine*  m_aFromLine;
+    HeadLine*  m_aFromHead;
     i8         m_i_FromOffset; // encoding offset
  
     ColumnVec* m_pColVec;
