@@ -889,10 +889,12 @@ namespace Data
     static inline i8 iBaseOffset(ColumnVec* pColVec)
     {
       i8 nColumns = pColVec->nItems();
+
+      i8 iOffset  = (nColumns + 1) / 2;
     
-      i8 iOffset = (nColumns + 1) / 2;
-    
-      iOffset = 8; //! temp
+      //! temporary                                                          FIX
+      if (iOffset < 8)
+        iOffset = 8;
     
       return iOffset;
     }
