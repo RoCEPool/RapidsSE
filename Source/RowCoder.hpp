@@ -22,7 +22,7 @@ namespace Data
   {
   public:
   
-    RowNub*    m_pEncodeNub;
+    RowNub*    m_pIntoNub;
   
     RowParts*  m_pWorkingParts;
     RowNub*    m_pWorkingNub;
