@@ -181,10 +181,10 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   
 #ifdef WITH_LARGE_ROWS
   vCopy_Large();
-  vRecode_Large(pFromNub);
+  vRecode_Large();
 #else
   vCopy_Short();
-  vRecode_Short(pFromNub);
+  vRecode_Short();
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -719,10 +719,8 @@ void RowCoder::vMetaPut(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* recode the datums                                                          */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecode_Large(RowNub* pFromNub)
+void RowCoder::vRecode_Large(void)
 {
-  HeadLine* aFromHead = pFromNub->aGetHead(0);
-  
   ColumnVec* pColVec = m_pIntoNub->pDesc()->pColumnVec();
   i8 nColumns = pColVec->nItems();
   
@@ -749,7 +747,7 @@ void RowCoder::vRecode_Large(RowNub* pFromNub)
     
     // save old fromOffset
     i_OldFromOffset = m_i_FromOffset;
-    eMN eEncoding = eGetEncodingNat(i_ForCol,aFromHead,pColVec,
+    eMN eEncoding = eGetEncodingNat(i_ForCol,m_aFromHead,pColVec,
                                     i_LastColumn,m_i_FromOffset);
     
     // calculate new IntoOffset
@@ -783,7 +781,7 @@ void RowCoder::vRecode_Large(RowNub* pFromNub)
       case Datums::DM_TSP:
         continue;
       case Datums::DM_VCH:
-        vRecodeVch(m_i_IntoHead,pFromNub,pCol,eEncoding);
+        vRecodeVch(m_i_IntoHead,m_pFromNub,pCol,eEncoding);
         continue;
         
       default:
@@ -797,9 +795,8 @@ void RowCoder::vRecode_Large(RowNub* pFromNub)
 /*----------------------------------------------------------------------------*/
 /* recode the datums                                                          */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecode_Short(RowNub* pFromNub)
+void RowCoder::vRecode_Short(void)
 {
-  HeadLine* aFromHead = pFromNub->aGetHead(0);
   m_aWorkHead = m_pIntoNub->aGetHead();
 
   ColumnVec* pColVec = m_pIntoNub->pDesc()->pColumnVec();
@@ -828,7 +825,7 @@ void RowCoder::vRecode_Short(RowNub* pFromNub)
     
     // save old fromOffset
     i_OldFromOffset = m_i_FromOffset;
-    eMN eEncoding = eGetEncodingNat(i_ForCol,aFromHead,pColVec,
+    eMN eEncoding = eGetEncodingNat(i_ForCol,m_aFromHead,pColVec,
                                     i_LastColumn,m_i_FromOffset);
     
     // calculate new IntoOffset
@@ -862,7 +859,7 @@ void RowCoder::vRecode_Short(RowNub* pFromNub)
       case Datums::DM_TSP:
         continue;
       case Datums::DM_VCH:
-        vRecodeVch(m_i_IntoHead,pFromNub,pCol,eEncoding);
+        vRecodeVch(m_i_IntoHead,m_pFromNub,pCol,eEncoding);
         continue;
         
       default:
