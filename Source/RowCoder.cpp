@@ -721,19 +721,18 @@ void RowCoder::vMetaPut(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecode_Large(void)
 {
-  ColumnVec* pColVec = m_pIntoNub->pDesc()->pColumnVec();
-  i8 nColumns = pColVec->nItems();
+  i8 nColumns = m_pColVec->nItems();
   
   Coda* pIntoCoda = m_pIntoNub->pCoda();
   
   i8 i_LastColumn = 0;
-  m_i_FromOffset = iBaseOffset(pColVec);
-  m_i_IntoOffset = iBaseOffset(pColVec);
+  m_i_FromOffset = iBaseOffset(m_pColVec);
+  m_i_IntoOffset = iBaseOffset(m_pColVec);
   i8 i_OldFromOffset = 0;
   
   if (0 == m_i_IntoHead) {
     for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
-      Column* pCol = pColVec->pGet(i_ForCol);
+      Column* pCol = m_pColVec->pGet(i_ForCol);
       eDM eDatum = pCol->eDatumType();
       pIntoCoda->m_aeExtDatum[i_ForCol] = eDatum;
       pIntoCoda->m_aiAux[i_ForCol].m_iInt = 0;
@@ -742,12 +741,12 @@ void RowCoder::vRecode_Large(void)
   
   for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
     
-    Column* pCol = pColVec->pGet(i_ForCol);
+    Column* pCol = m_pColVec->pGet(i_ForCol);
     eDM eDatum = pCol->eDatumType();
     
     // save old fromOffset
     i_OldFromOffset = m_i_FromOffset;
-    eMN eEncoding = eGetEncodingNat(i_ForCol,m_aFromHead,pColVec,
+    eMN eEncoding = eGetEncodingNat(i_ForCol,m_aFromHead,m_pColVec,
                                     i_LastColumn,m_i_FromOffset);
     
     // calculate new IntoOffset
@@ -799,19 +798,18 @@ void RowCoder::vRecode_Short(void)
 {
   m_aWorkHead = m_pIntoNub->aGetHead();
 
-  ColumnVec* pColVec = m_pIntoNub->pDesc()->pColumnVec();
-  i8 nColumns = pColVec->nItems();
+  i8 nColumns = m_pColVec->nItems();
   
   Coda* pIntoCoda = m_pIntoNub->pCoda();
   
   i8 i_LastColumn = 0;
-  m_i_FromOffset = iBaseOffset(pColVec);
-  m_i_IntoOffset = iBaseOffset(pColVec);
+  m_i_FromOffset = iBaseOffset(m_pColVec);
+  m_i_IntoOffset = iBaseOffset(m_pColVec);
   i8 i_OldFromOffset = 0;
   
   if (0 == m_i_IntoHead) {
     for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
-      Column* pCol = pColVec->pGet(i_ForCol);
+      Column* pCol = m_pColVec->pGet(i_ForCol);
       eDM eDatum = pCol->eDatumType();
       pIntoCoda->m_aeExtDatum[i_ForCol] = eDatum;
       pIntoCoda->m_aiAux[i_ForCol].m_iInt = 0;
@@ -820,12 +818,12 @@ void RowCoder::vRecode_Short(void)
   
   for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
     
-    Column* pCol = pColVec->pGet(i_ForCol);
+    Column* pCol = m_pColVec->pGet(i_ForCol);
     eDM eDatum = pCol->eDatumType();
     
     // save old fromOffset
     i_OldFromOffset = m_i_FromOffset;
-    eMN eEncoding = eGetEncodingNat(i_ForCol,m_aFromHead,pColVec,
+    eMN eEncoding = eGetEncodingNat(i_ForCol,m_aFromHead,m_pColVec,
                                     i_LastColumn,m_i_FromOffset);
     
     // calculate new IntoOffset
