@@ -1438,7 +1438,7 @@ void RowCoder::vRecodeVch(Column* pCol, eMN eEncoding)
   }
   
   if (MN_SHOCO_2B == eEncoding) {
-    vRecodeVchShoco(m_pFromNub,pCol);
+    vRecodeVchShoco(pCol);
     return;
   }
 
@@ -1538,7 +1538,7 @@ void RowCoder::vRecodeVchAlpha(Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeVchShoco(RowNub* pFromNub, Column* pCol)
+void RowCoder::vRecodeVchShoco(Column* pCol)
 {
   static Peruse xSplits("Splits"_Stz);
   
@@ -1547,7 +1547,7 @@ void RowCoder::vRecodeVchShoco(RowNub* pFromNub, Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy shoco tail line from nub
   i8 i_Distance = m_aFromHead->w8_2B(m_i_FromOffset);
-  TailLine* aShocoTail = pFromNub->aGetTail(i_Distance);
+  TailLine* aShocoTail = m_pFromNub->aGetTail(i_Distance);
   
   /*
    +=====================================+

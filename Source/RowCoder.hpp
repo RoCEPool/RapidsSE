@@ -125,7 +125,7 @@ namespace Data
     bool bRecodeIntDigit(Column* pCol);
     void vRecodeVch(Column* pCol, eMN eEncoding);
     void vRecodeVchAlpha(Column* pCol);
-    void vRecodeVchShoco(RowNub* pFromNub, Column* pCol);
+    void vRecodeVchShoco(Column* pCol);
 
 
 
