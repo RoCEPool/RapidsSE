@@ -754,7 +754,6 @@ void RowCoder::vRecode_Large(void)
     
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    //
     
     switch (eDatum) {
         
@@ -780,7 +779,7 @@ void RowCoder::vRecode_Large(void)
       case Datums::DM_TSP:
         continue;
       case Datums::DM_VCH:
-        vRecodeVch(m_i_IntoHead,m_pFromNub,pCol,eEncoding);
+        vRecodeVch(pCol,eEncoding);
         continue;
         
       default:
@@ -831,7 +830,6 @@ void RowCoder::vRecode_Short(void)
     
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    //
     
     switch (eDatum) {
         
@@ -857,7 +855,7 @@ void RowCoder::vRecode_Short(void)
       case Datums::DM_TSP:
         continue;
       case Datums::DM_VCH:
-        vRecodeVch(m_i_IntoHead,m_pFromNub,pCol,eEncoding);
+        vRecodeVch(pCol,eEncoding);
         continue;
         
       default:
@@ -1432,8 +1430,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeVch(i8 i_IntoHead,
-                          RowNub* pFromNub, Column* pCol, eMN eEncoding)
+void RowCoder::vRecodeVch(Column* pCol, eMN eEncoding)
 {
   if (MN_1B == eEncoding) {
     vRecodeVchAlpha(pCol);
@@ -1441,7 +1438,7 @@ void RowCoder::vRecodeVch(i8 i_IntoHead,
   }
   
   if (MN_SHOCO_2B == eEncoding) {
-    vRecodeVchShoco(i_IntoHead,pFromNub,pCol);
+    vRecodeVchShoco(m_pFromNub,pCol);
     return;
   }
 
@@ -1541,17 +1538,15 @@ void RowCoder::vRecodeVchAlpha(Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeVchShoco(i8 i_IntoHead,
-                               RowNub* pFromNub, Column* pCol)
+void RowCoder::vRecodeVchShoco(RowNub* pFromNub, Column* pCol)
 {
   static Peruse xSplits("Splits"_Stz);
   
-  HeadLine* aFromHead = pFromNub->aGetHead(0);
   TailLine* aIntoTail = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy shoco tail line from nub
-  i8 i_Distance = aFromHead->w8_2B(m_i_FromOffset);
+  i8 i_Distance = m_aFromHead->w8_2B(m_i_FromOffset);
   TailLine* aShocoTail = pFromNub->aGetTail(i_Distance);
   
   /*
@@ -1566,8 +1561,6 @@ void RowCoder::vRecodeVchShoco(i8 i_IntoHead,
    where: U is one byte being the unit length of the tail line
    C is one byte being the number of compressed bytes
    */
-  
-  i8 i_Col = pCol->iColumnNo();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #ifdef WITH_SHOCO_FOLDLAST
@@ -1645,7 +1638,7 @@ void RowCoder::vRecodeVchShoco(i8 i_IntoHead,
       //MemLib::vWordDump(aIntoTail,(1+nTailUnits) * sizeof(SpaceUnit));
       
       // what gets encoded is the unit difference between head and tail
-      i8 i_TailDistance = m_pIntoNub->iUnitDiff(i_IntoHead,i_IntoTail);
+      i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
 
       m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
 
@@ -1682,7 +1675,7 @@ void RowCoder::vRecodeVchShoco(i8 i_IntoHead,
     aIntoTail = m_pIntoNub->aGetTail(i_FoundTail);
     
     // what gets encoded is the unit difference between head and tail
-    i8 i_TailDistance = m_pIntoNub->iUnitDiff(i_IntoHead,i_FoundTail);
+    i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_FoundTail);
 
     m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
 
@@ -1711,7 +1704,7 @@ void RowCoder::vRecodeVchShoco(i8 i_IntoHead,
                 nTailUnits*sizeof(SpaceUnit),CN_ROWBUFFER);
   
   // what gets encoded is the unit difference between head and tail
-  i8 i_TailDistance = m_pIntoNub->iUnitDiff(i_IntoHead,i_IntoTail);
+  i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
 
   m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
 

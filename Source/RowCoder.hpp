@@ -123,9 +123,9 @@ namespace Data
     void vRecodeInt(Column* pCol);
     bool bRecodeIntDelta(Column* pCol);
     bool bRecodeIntDigit(Column* pCol);
-    void vRecodeVch(i8 i_IntoHead, RowNub* pFromNub, Column* pCol, eMN eEncoding);
+    void vRecodeVch(Column* pCol, eMN eEncoding);
     void vRecodeVchAlpha(Column* pCol);
-    void vRecodeVchShoco(i8 i_IntoHead, RowNub* pFromNub, Column* pCol);
+    void vRecodeVchShoco(RowNub* pFromNub, Column* pCol);
 
 
 
