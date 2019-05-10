@@ -1304,7 +1304,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
   eMN eThisEncoding = (eMN)m_aIntoHead->iMetaNibble(i_Col);
   //vTrace("CurrentEncoding %lld\n"_Stz, eCurrentEncoding);
   
-  if (m_pEncodeNub->nHeads() > 1 && pCoda->m_aeExtDatum[i_Column] != DM_DELTA_PLUS) {
+  if (m_pIntoNub->nHeads() > 1 && m_pCoda->m_aeExtDatum[i_Col] != DM_DELTA_PLUS) {
     return false;
   }
   
