@@ -746,7 +746,7 @@ void RowCoder::vRecode_Large(void)
     
     // save old fromOffset
     i_OldFromOffset = m_i_FromOffset;
-    eMN eEncoding = eEncodingOriginal(pCol,m_aFromHead,m_pColVec,
+    eMN eEncoding = eEncodingOriginal(m_aFromHead,pCol,m_pColVec,
                                       i_LastColumn,m_i_FromOffset);
     
     // calculate new IntoOffset
@@ -822,7 +822,7 @@ void RowCoder::vRecode_Short(void)
     
     // save old fromOffset
     i_OldFromOffset = m_i_FromOffset;
-    eMN eEncoding = eEncodingOriginal(pCol,m_aFromHead,m_pColVec,
+    eMN eEncoding = eEncodingOriginal(m_aFromHead,pCol,m_pColVec,
                                       i_LastColumn,m_i_FromOffset);
     
     // calculate new IntoOffset
@@ -2124,7 +2124,7 @@ void RowCoder::vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec)
     //vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_Column,i_LastOffset);
     eDM eDatum = pCol->eDatumType();
     eDM eDatumCoda = pCoda->m_aeExtDatum[pCol->iColumnNo()];
-    eMN eEncoding = eEncodingRecoded(pCol,aHeadLine,pColVec,pCoda,i_Column,i_LastOffset);
+    eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_Column,i_LastOffset);
     Stz* aEncoding = sEncoding(eEncoding, eDatum, DM_NONE);
     
     vTrace("%7lld %-15s %-10s %-15s %-16s\n"_Stz, i_Column, pCol->sColumnName().aChar(), aDM[eDatum],
@@ -2178,7 +2178,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda)
     //vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_Column,i_LastOffset);
     eDM eDatum = pCol->eDatumType();
     eDM eDatumCoda = pCoda->m_aeExtDatum[pCol->iColumnNo()];
-    eMN eEncoding = eEncodingRecoded(pCol,aHeadLine,pColVec,pCoda,i_Column,i_LastOffset);
+    eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_Column,i_LastOffset);
     Stz* aEncoding = sEncoding(eEncoding, eDatum, eDatumCoda);
 
     i8 nBytes = nDataBytes(eDatumCoda,eEncoding);
@@ -2240,7 +2240,7 @@ void RowCoder::vHeadDumpNatColumn(HeadLine* aHeadLine, ColumnVec* pColVec, i8 i_
   //vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_Column,i_LastOffset);
   eDM eDatum = pCol->eDatumType();
   eDM eDatumCoda = pCoda->m_aeExtDatum[i_Col];
-  eMN eEncoding = eEncodingRecoded(pCol,aHeadLine,pColVec,pCoda,i_Col,i_LastOffset);
+  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_Col,i_LastOffset);
   Stz* aEncoding = sEncoding(eEncoding, eDatum, DM_NONE);
   
   vTrace("%7lld %-15s %-10s %-15s %-16s\n"_Stz, i_Col, pCol->sColumnName().aChar(), aDM[eDatum],
@@ -2274,7 +2274,7 @@ void RowCoder::vHeadDumpColumn(HeadLine* aHeadLine, ColumnVec* pColVec, i8 iCol,
   //vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_Column,i_LastOffset);
   eDM eDatum = pCol->eDatumType();
   eDM eDatumCoda = pCoda->m_aeExtDatum[iCol];
-  eMN eEncoding = eEncodingRecoded(pCol,aHeadLine,pColVec,pCoda,iCol,i_LastOffset);
+  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,iCol,i_LastOffset);
   Stz* aEncoding = sEncoding(eEncoding, eDatum, eDatumCoda);
   vTrace("%7lld %-15s %-10s %-15s %-16s %s\n"_Stz, iCol, pCol->sColumnName().aChar(), aDM[eDatum],
          aDM[eDatumCoda], aEncoding, aRecodeFunction);
@@ -2846,7 +2846,7 @@ void RowCoder::vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
   
   pDatum->m_eDatum = DM_BCD;
   
-  eMN eEncoding = eEncodingRecoded(pCol,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
   switch (eEncoding) {
       
     case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;               break;
@@ -2879,7 +2879,7 @@ void RowCoder::vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,
   
   pDatum->m_eDatum = DM_BOL;
   
-  eMN eEncoding = eEncodingRecoded(pCol,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
   
   switch (eEncoding) {
       
@@ -2905,7 +2905,7 @@ void RowCoder::vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
   
   pDatum->m_eDatum = DM_DTE;
   
-  eMN eEncoding = eEncodingRecoded(pCol,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
   switch (eEncoding) {
       
     case MN_NULL: pDatum->m_iInt = C_DATUM_NULL; break;
@@ -2944,7 +2944,7 @@ void RowCoder::vDecodeFlt(Datum* pDatum, HeadLine* aHeadLine,
   
   pDatum->m_eDatum = DM_FLT;
   
-  eMN eEncoding = eEncodingRecoded(pCol,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
   switch (eEncoding) {
       
     case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
@@ -2973,7 +2973,7 @@ void RowCoder::vDecodeInt(Datum* pDatum, HeadLine* aHeadLine,
   
   pDatum->m_eDatum = DM_INT;
   
-  eMN eEncoding = eEncodingRecoded(pCol,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
   //vTrace("Decoding %lld\n"_Stz, eEncoding);
   
   switch (eEncoding) {
@@ -3022,7 +3022,7 @@ void RowCoder::vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine,
   
   pDatum->m_eDatum = DM_IVL;
   
-  eMN eEncoding = eEncodingRecoded(pCol,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
   switch (eEncoding) {
       
     case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
@@ -3051,7 +3051,7 @@ void RowCoder::vDecodeTme(Datum* pDatum, HeadLine* aHeadLine,
   
   pDatum->m_eDatum = DM_TME;
   
-  eMN eEncoding = eEncodingRecoded(pCol,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
   switch (eEncoding) {
       
     case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
@@ -3082,7 +3082,7 @@ void RowCoder::vDecodeTsp(Datum* pDatum, HeadLine* aHeadLine,
   
   pDatum->m_eDatum = DM_TSP;
   
-  eMN eEncoding = eEncodingRecoded(pCol,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
   switch (eEncoding) {
       
     case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
@@ -3115,7 +3115,7 @@ void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
   pDatum->m_eDatum = DM_VCH;
   
   //! needs more work
-  eMN eEncoding = eEncodingRecoded(pCol,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
   
   if (MN_NULL == eEncoding)
     pDatum->m_iInt = C_DATUM_NULL;
@@ -3154,7 +3154,7 @@ void RowCoder::vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
   pDatum->m_eDatum = DM_VCH;
   
   //!! needs more work
-  eMN eEncoding = eEncodingRecoded(pCol,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
   
   //RASSERT(eEncoding >= MN_ALPHA_0 && eEncoding <= MN_ALPHA_5);
 
@@ -3188,7 +3188,7 @@ void RowCoder::vDecodeDays(Datum* pDatum, HeadLine* aHeadLine,
   pDatum->m_eDatum = DM_DTE;
   
   //!! needs more work
-  eMN eThisEncoding = eEncodingRecoded(pCol,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+  eMN eThisEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
   
   i8 iDays = 0;
   switch (eThisEncoding) {
@@ -3205,7 +3205,7 @@ void RowCoder::vDecodeDays(Datum* pDatum, HeadLine* aHeadLine,
   i8 i_SearchColumn = 0;
   i8 i_SearchOffset = iBaseOffset(pColVec);
   Column* pColFirstDate  = pColVec->pGet(pCol->iFirstDate());
-  eMN eFirstEncoding = eEncodingRecoded(pColFirstDate,aHeadLine,pColVec,
+  eMN eFirstEncoding = eEncodingRecoded(aHeadLine,pColFirstDate,pColVec,
                                        pCoda,i_SearchColumn,i_SearchOffset);
 
   switch (eFirstEncoding) {
@@ -3234,7 +3234,7 @@ void RowCoder::vDecodeDeltaPlus(Datum* pDatum, HeadLine* aHeadLine,
   
   pDatum->m_eDatum = DM_INT;
   
-  eMN eEncoding = eEncodingRecoded(pCol,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
   //vTrace("Decoding %lld\n"_Stz, eEncoding);
   
   switch (eEncoding) {
@@ -3290,7 +3290,7 @@ void RowCoder::vDecodeDigit(Datum* pDatum, HeadLine* aHeadLine,
   pDatum->m_eDatum = DM_INT;
   
   //!! needs more work
-  eMN eEncoding = eEncodingRecoded(pCol,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
   
   if (eEncoding >= MN_DIGIT_0 && eEncoding <= MN_DIGIT_7) {
     pDatum->m_iInt = (i8)(eEncoding - MN_DIGIT_0);
@@ -3323,7 +3323,7 @@ void RowCoder::vDecodeTenth(Datum* pDatum, HeadLine* aHeadLine,
   pDatum->m_eDatum = DM_BCD;
   
   //!! needs more work
-  eMN eEncoding = eEncodingRecoded(pCol,aHeadLine,pColVec,pCoda,i_LastColumn,i_Offset);
+  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
   
   if (eEncoding >= MN_TENTH_0 && eEncoding <= MN_TENTH_10) {
     pDatum->m_iBcd = (i8)(eEncoding - MN_TENTH_0);
@@ -3924,7 +3924,7 @@ i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda
   i8 i_Offset = iBaseOffset(pColVec);
   i8 i_LastColumn = 0;
   
-  eMN eEncoding = eEncodingRecoded(pLastCol,aHeadLine,pColVec,pCoda,
+  eMN eEncoding = eEncodingRecoded(aHeadLine,pLastCol,pColVec,pCoda,
                                   i_LastColumn,i_Offset);
   
   if (pLastCol->eDatumType() == DM_VCH && MN_SHOCO_SPLIT == eEncoding)
@@ -3948,9 +3948,9 @@ i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda
 /*----------------------------------------------------------------------------*/
 /* get the original/natural encoding (and offset) of a column datum           */
 /*----------------------------------------------------------------------------*/
-eMN RowCoder::eEncodingOriginal(Column* pCol, HeadLine* aFromHead,
-                                ColumnVec* pColVec, i8& i_PriorColumn_,
-                                i8& i_FromOffset_)
+eMN RowCoder::eEncodingOriginal(HeadLine* aFromHead,
+                                Column* pCol, ColumnVec* pColVec,
+                                i8& i_PriorColumn_, i8& i_FromOffset_)
 {
   i8 i_ForCol = pCol->iColumnNo();
   
@@ -3978,9 +3978,9 @@ eMN RowCoder::eEncodingOriginal(Column* pCol, HeadLine* aFromHead,
 /*----------------------------------------------------------------------------*/
 /* get the recoded/extended encoding (and offset) of a column datum           */
 /*----------------------------------------------------------------------------*/
-eMN RowCoder::eEncodingRecoded(Column* pCol, HeadLine* aHeadLine,
-                               ColumnVec* pColVec, Coda* pCoda, i8& i_PriorColumn_,
-                               i8& i_Offset_)
+eMN RowCoder::eEncodingRecoded(HeadLine* aHeadLine,
+                               Column* pCol, ColumnVec* pColVec, Coda* pCoda,
+                               i8& i_PriorColumn_, i8& i_Offset_)
 {
   i8 i_ForCol = pCol->iColumnNo();
   
@@ -4248,8 +4248,8 @@ i8 RowCoder::nLines(RowNub* pNub, i8 i_Row)
     
     HeadLine* aHeadLine = pNub->aGetHead(i_Row);
     
-    eMN eEncoding = eEncodingRecoded(pCol,aHeadLine,
-                                    pColVec,pCoda,
+    eMN eEncoding = eEncodingRecoded(aHeadLine,
+                                    pCol,pColVec,pCoda,
                                     i_LastColumn,i_Offset);
     
     if (MN_SHOCO_2B == eEncoding)
@@ -4433,9 +4433,9 @@ i8 RowCoder::nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine)
   i8 i_Offset = iBaseOffset(pColVec);
   i8 i_LastColumn = 0;
   
-  eMN eEncoding = eEncodingRecoded(pLastCol,aHeadLine,
-                                  pColVec,pCoda,
-                                  i_LastColumn,i_Offset);
+  eMN eEncoding = eEncodingRecoded(aHeadLine,
+                                   pLastCol,pColVec,pCoda,
+                                   i_LastColumn,i_Offset);
   
   if (MN_SHOCO_2B != eEncoding)
     return C_UNKNOWN;

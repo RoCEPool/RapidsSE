@@ -248,12 +248,12 @@ namespace Data
 
     static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda);
 
-    static eMN eEncodingOriginal(Column* pCol, HeadLine* aHeadLine,
-                                 ColumnVec* pColVec, i8& i_PriorColumn_,
-                                 i8& i_Offset_);
-    static eMN eEncodingRecoded(Column* pCol, HeadLine* aHeadLine,
-                                ColumnVec* pColVec, Coda* pCoda, i8& i_PriorColumn_,
-                                i8& i_Offset_);
+    static eMN eEncodingOriginal(HeadLine* aHeadLine,
+                                 Column* pCol, ColumnVec* pColVec,
+                                 i8& i_PriorColumn_, i8& i_Offset_);
+    static eMN eEncodingRecoded(HeadLine* aHeadLine,
+                                Column* pCol, ColumnVec* pColVec, Coda* pCoda,
+                                i8& i_PriorColumn_, i8& i_Offset_);
   
     static Stz* sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt);
     static void vInitHeadLine(HeadLine* aHeadLine);
