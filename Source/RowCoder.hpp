@@ -11,7 +11,8 @@ namespace Data
   static const i8 C_SHOCO_COMPRESSED_OFFSET = C_TAIL_UNITS_OFFSET
                                               + C_TAIL_UNITS_BYTES;
   static const i8 C_SHOCO_COMPRESSED_BYTES  = 1;
-  static i8 m_iDatumEncoding[DM_TENTH][MN_OVERFLOW];
+  
+  static i8 g_iDatumEncoding[DM_TENTH][MN_OVERFLOW];
   
   /*----------------------------------------------------------------------------*/
   const static i8 nMonthDaySum[13] =
@@ -87,7 +88,7 @@ namespace Data
     void vCopyEnd(void);
     bool bCopyRow(RowNub* pFromNub);
 
-    void vEncodeBegin(RowNub* pEncodeNub);
+    void vEncodeBegin(RowNub* pIntoNub);
     void vEncodeDatum(Datum* pDatum, Column* pCol);
     void vEncodeEnd(void);
 
@@ -697,10 +698,10 @@ namespace Data
         
         eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
 //        i_Offset1_ += nDataBytes(eDatumExt,eEncoding);
-        i_Offset_ += m_iDatumEncoding[eDatumExt][eEncoding];
+        i_Offset_ += g_iDatumEncoding[eDatumExt][eEncoding];
 //        if (i_Offset1_ != i_Offset_) {
 //          i8 x = nDataBytes(eDatumExt,eEncoding);
-//          i8 y = m_iDatumEncoding[eDatumExt][eEncoding];
+//          i8 y = g_iDatumEncoding[eDatumExt][eEncoding];
 //          i8 z = 1;
 //        }
 //        RASSERT(i_Offset1_ == i_Offset_);
@@ -752,10 +753,10 @@ namespace Data
         
         eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
         //        i_Offset1_ += nDataBytes(eDatumExt,eEncoding);
-        i_Offset_ += m_iDatumEncoding[eDatumExt][eEncoding];
+        i_Offset_ += g_iDatumEncoding[eDatumExt][eEncoding];
         //        if (i_Offset1_ != i_Offset_) {
         //          i8 x = nDataBytes(eDatumExt,eEncoding);
-        //          i8 y = m_iDatumEncoding[eDatumExt][eEncoding];
+        //          i8 y = g_iDatumEncoding[eDatumExt][eEncoding];
         //          i8 z = 1;
         //        }
         //        RASSERT(i_Offset1_ == i_Offset_);
@@ -809,7 +810,7 @@ namespace Data
         
         eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
         //i_Offset_ += nDataBytes(eDatumExt,eEncoding);
-        i_Offset_ += m_iDatumEncoding[eDatumExt][eEncoding];
+        i_Offset_ += g_iDatumEncoding[eDatumExt][eEncoding];
         //! experiment
         //        if (eEncoding > MN_8B) {
         //          eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
@@ -853,7 +854,7 @@ namespace Data
         
         eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
         //i_Offset_ += nDataBytes(eDatumExt,eEncoding);
-        i_Offset_ += m_iDatumEncoding[eDatumExt][eEncoding];
+        i_Offset_ += g_iDatumEncoding[eDatumExt][eEncoding];
         
       }
       eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
