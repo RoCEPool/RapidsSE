@@ -736,64 +736,48 @@ void RowCoder::vRecode_Large(void)
 {
   i8 nColumns = m_pColVec->nItems();
   
-  Coda* pIntoCoda = m_pIntoNub->pCoda();
-  
-  i8 i_LastColumn = 0;
-  m_i_FromOffset = iBaseOffset(m_pColVec);
-  m_i_IntoOffset = iBaseOffset(m_pColVec);
-  i8 i_OldFromOffset = 0;
-  
   if (0 == m_i_IntoHead) {
     for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
       Column* pCol = m_pColVec->pGet(i_ForCol);
       eDM eDatum = pCol->eDatumType();
-      pIntoCoda->m_aeExtDatum[i_ForCol] = eDatum;
-      pIntoCoda->m_aiAux[i_ForCol].m_iInt = 0;
+      m_pIntoCoda->m_aeExtDatum[i_ForCol] = eDatum;
+      m_pIntoCoda->m_aiAux[i_ForCol].m_iInt = 0;
     }
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 i_LastColumn = 0;
   
   for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
     
     Column* pCol = m_pColVec->pGet(i_ForCol);
     eDM eDatum = pCol->eDatumType();
     
-    // save old fromOffset
-    i_OldFromOffset = m_i_FromOffset;
+    i8 i_PriorFromOffset = m_i_FromOffset;
     eMN eEncoding = eEncodingOriginal(m_aFromHead,pCol,m_pColVec,
                                       i_LastColumn,m_i_FromOffset);
     
     // calculate new IntoOffset
-    m_i_IntoOffset += m_i_FromOffset - i_OldFromOffset;
-    
+    m_i_IntoOffset += m_i_FromOffset - i_PriorFromOffset;
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     
     switch (eDatum) {
         
-      case Datums::DM_BCD:
-        vRecodeBcd(pCol);
-        continue;
-      case Datums::DM_BOL:
-        continue;
-      case Datums::DM_DTE:
-        vRecodeDte(pCol);
-        continue;
-      case Datums::DM_FLT:
-        continue;
+      case Datums::DM_BCD:  vRecodeBcd(pCol); continue;
+      case Datums::DM_BOL:                    continue;
+      case Datums::DM_DTE:  vRecodeDte(pCol); continue;
+      case Datums::DM_FLT:                    continue;
       case Datums::DM_INT:
         if (0 == m_i_IntoHead)
-          vSetAuxInt(pIntoCoda,m_aIntoHead,pCol,eEncoding,m_i_IntoOffset);
+          vSetAuxInt(m_pIntoCoda,m_aIntoHead,pCol,eEncoding,m_i_IntoOffset);
         vRecodeInt(pCol);
         continue;
-      case Datums::DM_IVL:
-        continue;
-      case Datums::DM_TME:
-        continue;
-      case Datums::DM_TSP:
-        continue;
-      case Datums::DM_VCH:
-        vRecodeVch(pCol,eEncoding);
-        continue;
+      case Datums::DM_IVL:                    continue;
+      case Datums::DM_TME:                    continue;
+      case Datums::DM_TSP:                    continue;
+      case Datums::DM_VCH:  vRecodeVch(pCol,eEncoding);  continue;
         
       default:
         NEVER_REACH;
@@ -821,20 +805,19 @@ void RowCoder::vRecode_Short(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 i_LastColumn    = 0;
-  i8 i_OldFromOffset = 0;
+  i8 i_LastColumn = 0;
   
   for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
     
     Column* pCol = m_pColVec->pGet(i_ForCol);
     eDM eDatum = pCol->eDatumType();
-    i_OldFromOffset = m_i_FromOffset;
     
+    i8 i_PriorFromOffset = m_i_FromOffset;
     eMN eEncoding = eEncodingOriginal(m_aFromHead,pCol,m_pColVec,
                                       i_LastColumn,m_i_FromOffset);
     
     // calculate new IntoOffset
-    m_i_IntoOffset += m_i_FromOffset - i_OldFromOffset;
+    m_i_IntoOffset += m_i_FromOffset - i_PriorFromOffset;
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     
