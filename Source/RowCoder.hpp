@@ -12,7 +12,7 @@ namespace Data
                                               + C_TAIL_UNITS_BYTES;
   static const i8 C_SHOCO_COMPRESSED_BYTES  = 1;
   
-  static i8 g_iDatumEncoding[DM_TENTH][MN_OVERFLOW];
+  static i1 g_iDatumEncoding[DM_ENUMS][MN_OVERFLOW];
   
   /*----------------------------------------------------------------------------*/
   const static i8 nMonthDaySum[13] =
@@ -743,6 +743,7 @@ namespace Data
       //      }
       
       eMN eEncodingDatum = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
+      //i8 i_Offset1_ = i_Offset_;
       
       if (eEncodingDatum == MN_NULL || eEncodingDatum == MN_EMPTY)
         return eEncodingDatum;
@@ -752,14 +753,14 @@ namespace Data
         eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_Nibble);
         
         eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
-        //        i_Offset1_ += nDataBytes(eDatumExt,eEncoding);
+        //i_Offset1_ += nDataBytes(eDatumExt,eEncoding);
         i_Offset_ += g_iDatumEncoding[eDatumExt][eEncoding];
-        //        if (i_Offset1_ != i_Offset_) {
-        //          i8 x = nDataBytes(eDatumExt,eEncoding);
-        //          i8 y = g_iDatumEncoding[eDatumExt][eEncoding];
-        //          i8 z = 1;
-        //        }
-        //        RASSERT(i_Offset1_ == i_Offset_);
+//        if (i_Offset1_ != i_Offset_) {
+//          i8 x = nDataBytes(eDatumExt,eEncoding);
+//          i8 y = g_iDatumEncoding[eDatumExt][eEncoding];
+//          i8 z = 1;
+//        }
+//        RASSERT(i_Offset1_ == i_Offset_);
         
         //! experiment
         //        if (eEncoding > MN_8B) {
