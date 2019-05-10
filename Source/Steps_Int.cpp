@@ -150,7 +150,7 @@ void Step::vIntHash(MP_Task mpTask)
   
   i8 iLength = sString.iLength();
   
-  i8 iHash = HshLib::iHash(sString.aChar(),iLength);
+  i8 iHash = HshLib::iHash((byte*)sString.aChar(),iLength);
   
   mpTask->m_pDataStack->vPushI8(iHash);
   

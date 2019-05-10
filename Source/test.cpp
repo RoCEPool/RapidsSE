@@ -123,14 +123,15 @@ void vTest4(void)
   for (i8 nDupes = 0; nDupes < 1; nDupes++) {
     for (i8 i_Times = 0; i_Times < 100000; i_Times++) {
       sKey.vSprint("%02lld"_Stz,i_Times);
-      
-      if ( 4206 == i_Times ||
-          25396 == i_Times ||
-          28848 == i_Times ||
-          40263 == i_Times ||
-          48122 == i_Times)
-        pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),i_Times,true);
-      else
+
+//      if ( 4206 == i_Times ||
+//           4249 == i_Times ||
+//          25396 == i_Times ||
+//          28848 == i_Times ||
+//          40263 == i_Times ||
+//          48122 == i_Times)
+//        pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),i_Times,true);
+//      else
         pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),i_Times,false);
     }
   }
@@ -147,19 +148,22 @@ void vTest4(void)
 //  }
   
 //  sKey.vSprint("%02lld"_Stz,4206);
-//  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),4206);
+//  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),4206,true);
+//
+//  sKey.vSprint("%02lld"_Stz,4249);
+//  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),4249,true);
 //
 //  sKey.vSprint("%02lld"_Stz,25396);
-//  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),25396);
+//  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),25396,true);
 //
 //  sKey.vSprint("%02lld"_Stz,28848);
-//  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),28848);
+//  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),28848,true);
 //
 //  sKey.vSprint("%02lld"_Stz,40263);
-//  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),40263);
+//  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),40263,true);
 //
 //  sKey.vSprint("%02lld"_Stz,48122);
-//  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),48122);
+//  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),48122,true);
   
   pHashMap->vAnalysis(false);
   

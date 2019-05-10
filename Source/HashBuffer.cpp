@@ -168,6 +168,9 @@ void HashBuffer::vInsertEntry(byte* yaKey, i8 nBytes, i8 iValue,
   
   // test if the entry is already in use
   if (C_UNKNOWN != m_xHashEntry[i_Entry].m_iHash) {
+    if (bDebug) {
+      int iDebug = 1;
+    }
     vHandleOccupied(i_Entry,yaKey,nBytes,iValue,bDebug,bArcTrc);
     if (bArcTrc)
       vDumpEntry(i_Entry,'A');
@@ -185,10 +188,10 @@ void HashBuffer::vInsertEntry(byte* yaKey, i8 nBytes, i8 iValue,
   
   if (m_iDepth > m_pHashMap->m_iMaxDepth) {
     m_pHashMap->m_iMaxDepth = m_iDepth;
-    if (bDebug) {
+//    if (bDebug) {
       bArcTrc = true;
       vDumpEntry(i_Entry,'A');
-    }
+//    }
   }
 
   // increment number of entries
@@ -254,7 +257,7 @@ void HashBuffer::vHandleOccupied(i8 i_Entry, byte* yaKey, i8 nBytes, i8 iValue,
 void HashBuffer::vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue,
                                   bool bDebug, bool& bArcTrc)
 {
-  i8 iArcHash = HashEntry::iHashArc(yaKey,nBytes,m_iDepth+1);
+  i8 iArcHash = HashEntry::iHashArc(yaKey,nBytes,m_iDepth);
   i8 i_Arc = iArcHash % m_pHashMap->m_nArcsPerBuffer;
   //vTrace("[%02lld] ArcHash %08x\n"_Stz,m_iDepth,iArcHash);
 

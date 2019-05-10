@@ -47,14 +47,17 @@ HashEntry::~HashEntry(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 i8 HashEntry::iHashArc(byte* yaKey, i8 nBytes, i8 iDepth)
 {
-  i8 iHashArc;
+  i8 iHash;
   
-  if (0 == (iDepth % 2))
-    iHashArc = iHashRotate(yaKey,nBytes,iDepth);
-  else
-    iHashArc = iHashKey(yaKey,nBytes);
-
-  return iHashArc;
+  if (0 == (iDepth % 2)) {
+    iHash = iHashReverse(yaKey,nBytes,iDepth);
+  }
+  else {
+    iHash = iHashRotate(yaKey,nBytes,iDepth);
+    iHash = iHashReverse(yaKey,nBytes,iDepth);
+  }
+  
+  return iHash;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,9 +65,17 @@ i8 HashEntry::iHashArc(byte* yaKey, i8 nBytes, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 i8 HashEntry::iHashEntry(byte* yaKey, i8 nBytes, i8 iDepth)
 {
-  i8 iHashEntry = iHashReverse(yaKey,nBytes,iDepth);
+  i8 iHash;
   
-  return iHashEntry;
+  if (0 == (iDepth % 2)) {
+    iHash = iHashReverse(yaKey,nBytes,iDepth);
+    iHash = iHashRotate(yaKey,nBytes,iDepth);
+  }
+  else {
+    iHash = iHashReverse(yaKey,nBytes,iDepth);
+  }
+  
+  return iHash;
 }
 
 /*----------------------------------------------------------------------------*/

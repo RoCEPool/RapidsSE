@@ -224,7 +224,7 @@ i8 KeyWrk::iHashKey(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  i8 iHash = HshLib::iHash(aKey(),nKeySize());
+  i8 iHash = HshLib::iHash((byte*)aKey(),nKeySize());
   
   return iHash;
 }

@@ -169,6 +169,9 @@ bool HashMap::bExists(byte* aKey, i8 nBytes, i8 iValue)
 /*----------------------------------------------------------------------------*/
 void HashMap::vInsert(byte* yaKey, i8 nBytes, i8 iValue, bool bDebug)
 {
+  if (bDebug)
+    int iDebug = 1;
+  
   bool bArcTrc = false;
   
   m_pRootBuffer->vInsertEntry(yaKey,nBytes,iValue,bDebug,bArcTrc);

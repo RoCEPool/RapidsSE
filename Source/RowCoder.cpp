@@ -703,9 +703,9 @@ void RowCoder::vHashColumn(Datum* pSrcDatum, Column* pCol)
   // compute hash of this value
   i8 iHash;
   if (DM_VCH == pCol->eDatumType())
-    iHash = HshLib::iHash(pSrcDatum->m_sVch.aChar(),sizeof(w8));
+    iHash = HshLib::iHash((byte*)pSrcDatum->m_sVch.aChar(),sizeof(w8));
   else
-    iHash = HshLib::iHash(&pSrcDatum->m_iInt,sizeof(w8));
+    iHash = HshLib::iHash((byte*)&pSrcDatum->m_iInt,sizeof(w8));
   
   // inc it to the running hash
   m_pIntoNub->vHashInc(iHash);
