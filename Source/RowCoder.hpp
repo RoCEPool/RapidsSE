@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowCoder.hpp -- Row Coder                                                  */
+/* RowCoder.hpp -- Row Coder Mark II                                          */
 /*============================================================================*/
 #pragma once
 
@@ -11,7 +11,8 @@ namespace Data
   static const i8 C_SHOCO_COMPRESSED_OFFSET = C_TAIL_UNITS_OFFSET
                                               + C_TAIL_UNITS_BYTES;
   static const i8 C_SHOCO_COMPRESSED_BYTES  = 1;
-  static i8 m_iDatumEncoding[DM_TENTH][MN_OVERFLOW];
+  
+  static i8 g_iDatumEncoding[DM_TENTH][MN_OVERFLOW];
   
   /*----------------------------------------------------------------------------*/
   const static i8 nMonthDaySum[13] =
@@ -22,16 +23,23 @@ namespace Data
   {
   public:
   
-    RowNub*    m_pEncodeNub;
+    RowNub*    m_pIntoNub;
+    i8         m_i_IntoHead;
+    HeadLine*  m_aIntoHead;
+    i8         m_i_IntoOffset; // encoding offset
   
+    RowNub*    m_pFromNub;
+    i8         m_i_FromHead;
+    HeadLine*  m_aFromHead;
+    i8         m_i_FromOffset; // encoding offset
+ 
     ColumnVec* m_pColVec;
     Coda*      m_pCoda;
+  
+    RowParts*  m_pWorkParts;
+    RowNub*    m_pWorkNub;
+    HeadLine*  m_aWorkHead;
 
-    HeadLine*  m_aHeadLine;
-
-    i8         m_i_IntoOffset; // encoding offset
-    i8         m_i_FromOffset; // encoding offset
-    
     Datum      m_oEncodedDatum; // the encoded datum
 
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -80,15 +88,31 @@ namespace Data
     void vCopyEnd(void);
     bool bCopyRow(RowNub* pFromNub);
 
-    void vEncodeBegin(RowNub* pEncodeNub);
+    void vEncodeBegin(RowNub* pIntoNub);
     void vEncodeDatum(Datum* pDatum, Column* pCol);
     void vEncodeEnd(void);
 
     void vReport(RowCoder* pRowCoder_Encode);
   
   private:
+    void vAnalyseFree(void);
+  
+    void vCodeBcd(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeBol(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeFlt(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeIvl(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeTme(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeTsp(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum);
+  
+    void vCopy_Large(void);
+    void vCopy_Short(void);
+  
     void vDataPut(Datum* pDatum);
     void vDataPut(w8 wDatum, i8 nBytes);
+  
     void vEncodeBcd(Datum* pDatum, Column* pCol);
     void vEncodeBol(Datum* pDatum, Column* pCol);
     void vEncodeDte(Datum* pDatum, Column* pCol);
@@ -106,21 +130,36 @@ namespace Data
     void vMetaNibble(Column* pCol, eMN eMetaNibble);
     void vMetaPut(Datum* pDatum, Column* pCol);
 
-    void vRecode(i8 i_IntoHead, RowNub* pFromNub, HeadLine* aFromHead);
+    void vRecode_Large(void);
+    void vRecode_Short(void);
     void vRecodeBcd(Column* pCol);
     void vRecodeDte(Column* pCol);
     void vRecodeInt(Column* pCol);
     bool bRecodeIntDelta(Column* pCol);
     bool bRecodeIntDigit(Column* pCol);
-    void vRecodeVch(i8 i_IntoHead, RowNub* pFromNub, Column* pCol, eMN eEncoding);
+    void vRecodeVch(Column* pCol, eMN eEncoding);
     void vRecodeVchAlpha(Column* pCol);
-    void vRecodeVchShoco(i8 i_IntoHead, RowNub* pFromNub, Column* pCol);
+    void vRecodeVchShoco(Column* pCol);
 
-
-
+    void vUsageIncEncoded(Column* pCol, i8 nBytes);
+    void vUsageIncEncoded(Column* pCol, Datum* pDatum);
+    void vUsageIncRecoded(Column* pCol, i8 nBytes);
+    void vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss);
+    void vUsageReset(void);
+  
+    void vXchkBcd(Datum* pDatum, Column* pCol);
+    void vXchkBol(Datum* pDatum, Column* pCol);
+    void vXchkDte(Datum* pDatum, Column* pCol);
+    void vXchkFlt(Datum* pDatum, Column* pCol);
+    void vXchkInt(Datum* pDatum, Column* pCol);
+    void vXchkIvl(Datum* pDatum, Column* pCol);
+    void vXchkTme(Datum* pDatum, Column* pCol);
+    void vXchkTsp(Datum* pDatum, Column* pCol);
+    void vXchkVch(Datum* pDatum, Column* pCol);
+  
   public:
     static void vAnalyse(RowNub* pNub);
-    static void vAppend(Datum& oDatum, Column* pCol, Record* pRec);
+    static void vAppend(Record* pRec, Datum* pDatum, Column* pCol);
     static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
                         i8& i_LastColumn, i8& i_LastOffset);
 //    static void vDecodeFast(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec,
@@ -148,19 +187,18 @@ namespace Data
                         ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                         i8& i_LastColumn, i8& i_LastOffset);
   
-    //static i8 iBaseOffset(ColumnVec* pColVec);
+    static i8   nDataBytes(eDM eDatum, eMN eEncoding);
   
-    static i8 nDataBytes(eDM eDatum, eMN eEncoding);
-    //static i8 nDataBytes2(eDM eDatum, eMN eEncoding);
-    
+    static void vDaysFromBase(Datum* pDatum, i8& iEra);
+    static i8   iDaysIntoBase(i8 nDaysWithinEra, i8 iEra);
+    static void vDaysIntoBase(Datum* pDatum, i8& iEra);
+
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
     static void vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
-    //static void vDecodeBolFast(Datum* pDatum, HeadLine* aHeadLine,
-    //                       Column* pCol,Word& xWord);
     static void vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
@@ -182,7 +220,15 @@ namespace Data
     static void vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
-  
+    static void vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
+                                Column* pCol, eMN eEncoding, i8 i_Offset);
+    static void vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
+                                   Column* pCol, eMN eEncoding, i8 i_Offset);
+    static void vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
+                                     Column* pCol, eMN eEncoding, i8 i_Offset);
+    static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
+                                Column* pCol, eMN eEncoding, i8 i_Offset);
+
     // extended datums
     static void vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
                              ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -201,78 +247,32 @@ namespace Data
                               ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                               i8& i_LastColumn, i8& i_LastOffset);
 
-    // shocos
-    static void vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
-                                Column* pCol, eMN eEncoding, i8 i_Offset);
-    static void vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
-                                   Column* pCol, eMN eEncoding, i8 i_Offset);
-    static void vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
-                                   Column* pCol, eMN eEncoding, i8 i_Offset);
-    static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
-                                Column* pCol, eMN eEncoding, i8 i_Offset);
-
-    void vCodeBcd(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeBol(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeFlt(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeIvl(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeTme(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeTsp(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum);
-  
-    void vXchkBcd(Datum* pDatum, Column* pCol);
-    void vXchkBol(Datum* pDatum, Column* pCol);
-    void vXchkDte(Datum* pDatum, Column* pCol);
-    void vXchkFlt(Datum* pDatum, Column* pCol);
-    void vXchkInt(Datum* pDatum, Column* pCol);
-    void vXchkIvl(Datum* pDatum, Column* pCol);
-    void vXchkTme(Datum* pDatum, Column* pCol);
-    void vXchkTsp(Datum* pDatum, Column* pCol);
-    void vXchkVch(Datum* pDatum, Column* pCol);
 
   
     //! move into Nub
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
 
-    static i8 nFreeSpaceHead(RowNub* pNub, HeadLine* aHeadLine);
     static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda);
 
-    static eMN eGetEncodingExt(i8 i_Col, HeadLine* aHeadLine,
-                               ColumnVec* pColVec, Coda* pCoda, i8& i_PriorColumn_,
-                               i8& i_Offset_);
+    static eMN eEncodingOriginal(HeadLine* aHeadLine,
+                                 Column* pCol, ColumnVec* pColVec,
+                                 i8& i_PriorColumn_, i8& i_Offset_);
+    static eMN eEncodingRecoded(HeadLine* aHeadLine,
+                                Column* pCol, ColumnVec* pColVec, Coda* pCoda,
+                                i8& i_PriorColumn_, i8& i_Offset_);
   
-    static eMN eGetEncodingNat(i8 i_ForCol, HeadLine* aHeadLine,
-                               ColumnVec* pColVec, i8& i_PriorColumn_,
-                               i8& i_Offset_);
     static Stz* sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt);
-    static void vInitHeadLine(HeadLine* aHeadLine);
-  
-    static i8 nLines(RowNub* pNub, i8 i_Row);
   
     static void vRestoreDte(Datum* pDatum, eMN eEncoding);
     static void vRestoreTme(Datum* pDatum, eMN eEncoding);
     static void vRestoreTsp(Datum* pDatum, eMN eEncoding);
   
-    static void vFromBaseDays(Datum* pDatum, i8& iEra);
-    static i8   iIntoBaseDays(i8 nDaysWithinEra, i8 iEra);
-    static void vIntoBaseDays(Datum* pDatum, i8& iEra);
-
-    static i8 iStripDte(Word& wTspView, eMN eEncoding);
-    static i8 iStripTme(Word& wTspView, eMN eEncoding);
-    static i8 iStripTsp(Word& wTspView, eMN eEncoding);
  
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
   
     static void vSetAuxInt(Coda* pIntoCoda, HeadLine* aIntoHead, Column* pCol,
                            eMN eEncoding, i8 i_IntoOffset);
   
-    void vUsageIncEncoded(Column* pCol, i8 nBytes);
-    void vUsageIncEncoded(Column* pCol, Datum* pDatum);
-    void vUsageIncRecoded(Column* pCol, i8 nBytes);
-    void vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss);
-    void vUsageReset(void);
-
   private:
     Footer* aFooter(void);
 
@@ -698,10 +698,10 @@ namespace Data
         
         eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
 //        i_Offset1_ += nDataBytes(eDatumExt,eEncoding);
-        i_Offset_ += m_iDatumEncoding[eDatumExt][eEncoding];
+        i_Offset_ += g_iDatumEncoding[eDatumExt][eEncoding];
 //        if (i_Offset1_ != i_Offset_) {
 //          i8 x = nDataBytes(eDatumExt,eEncoding);
-//          i8 y = m_iDatumEncoding[eDatumExt][eEncoding];
+//          i8 y = g_iDatumEncoding[eDatumExt][eEncoding];
 //          i8 z = 1;
 //        }
 //        RASSERT(i_Offset1_ == i_Offset_);
@@ -753,10 +753,10 @@ namespace Data
         
         eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
         //        i_Offset1_ += nDataBytes(eDatumExt,eEncoding);
-        i_Offset_ += m_iDatumEncoding[eDatumExt][eEncoding];
+        i_Offset_ += g_iDatumEncoding[eDatumExt][eEncoding];
         //        if (i_Offset1_ != i_Offset_) {
         //          i8 x = nDataBytes(eDatumExt,eEncoding);
-        //          i8 y = m_iDatumEncoding[eDatumExt][eEncoding];
+        //          i8 y = g_iDatumEncoding[eDatumExt][eEncoding];
         //          i8 z = 1;
         //        }
         //        RASSERT(i_Offset1_ == i_Offset_);
@@ -810,7 +810,7 @@ namespace Data
         
         eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
         //i_Offset_ += nDataBytes(eDatumExt,eEncoding);
-        i_Offset_ += m_iDatumEncoding[eDatumExt][eEncoding];
+        i_Offset_ += g_iDatumEncoding[eDatumExt][eEncoding];
         //! experiment
         //        if (eEncoding > MN_8B) {
         //          eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
@@ -854,7 +854,7 @@ namespace Data
         
         eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
         //i_Offset_ += nDataBytes(eDatumExt,eEncoding);
-        i_Offset_ += m_iDatumEncoding[eDatumExt][eEncoding];
+        i_Offset_ += g_iDatumEncoding[eDatumExt][eEncoding];
         
       }
       eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);

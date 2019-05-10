@@ -814,8 +814,8 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
     if (pJob_FetchRows->m_bPrint) {
       HV_Rec hvRec;
       
-      RowCoder::vAppend(oDatum, pCol, hvRec);
-      vTrace("row: (%s)\n"_Stz, hvRec->szRecStr());
+      RowCoder::vAppend(hvRec,&oDatum,pCol);
+      vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
     }
     
     aaHeadLine = aAdd<HeadLine**>(aaHeadLine,sizeof(HeadLine*));
