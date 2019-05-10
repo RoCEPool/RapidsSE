@@ -55,22 +55,22 @@ namespace Data
 
     } m_xaUsage[C_MAX_COLUMNS];
   
-    i8 m_nBuffers;
-    i8 m_nRows;
-    i8 m_nHeadFree;
+    i8 m_nTotalBuffers;
+    i8 m_nTotalRows;
 
     i8 m_nTails;
     i8 m_nTailUnits;
   
-    i8 m_nFreeHead_0_7;
-    i8 m_nFreeHead_8_15;
-    i8 m_nFreeHead_16_23;
-    i8 m_nFreeHead_24_31;
-    i8 m_nFreeHead_32_39;
-    i8 m_nFreeHead_40_47;
-    i8 m_nFreeHead_48_55;
-    i8 m_nFreeHead_56_63;
-    i8 m_nFreeHead_64_;
+    i8 m_nHeadFree;
+    i8 m_nHeadFree_0_7;
+    i8 m_nHeadFree_8_15;
+    i8 m_nHeadFree_16_23;
+    i8 m_nHeadFree_24_31;
+    i8 m_nHeadFree_32_39;
+    i8 m_nHeadFree_40_47;
+    i8 m_nHeadFree_48_55;
+    i8 m_nHeadFree_56_63;
+    i8 m_nHeadFree_64_;
 
     // must be last
     Footer m_xFooter;
@@ -89,7 +89,7 @@ namespace Data
     bool bCopyRow(RowNub* pFromNub);
 
     void vEncodeBegin(RowNub* pIntoNub);
-    void vEncodeDatum(Datum* pDatum, Column* pCol);
+    void vEncodeDatum(Datum* pSrcDatum, Column* pCol);
     void vEncodeEnd(void);
 
     void vReport(RowCoder* pRowCoder_Encode);
@@ -113,19 +113,19 @@ namespace Data
     void vDataPut(Datum* pDatum);
     void vDataPut(w8 wDatum, i8 nBytes);
   
-    void vEncodeBcd(Datum* pDatum, Column* pCol);
-    void vEncodeBol(Datum* pDatum, Column* pCol);
-    void vEncodeDte(Datum* pDatum, Column* pCol);
-    void vEncodeFlt(Datum* pDatum, Column* pCol);
-    void vEncodeInt(Datum* pDatum, Column* pCol);
-    void vEncodeIvl(Datum* pDatum, Column* pCol);
-    void vEncodeTme(Datum* pDatum, Column* pCol);
-    void vEncodeTsp(Datum* pDatum, Column* pCol);
-    void vEncodeVch(Datum* pDatum, Column* pCol);
-    void vEncodeVchShoco(Datum* pDatum, Column* pCol);
-    void vEncodeVchSmall(Datum* pDatum, Column* pCol);
+    void vEncodeBcd(Datum* pSrcDatum, Column* pCol);
+    void vEncodeBol(Datum* pSrcDatum, Column* pCol);
+    void vEncodeDte(Datum* pSrcDatum, Column* pCol);
+    void vEncodeFlt(Datum* pSrcDatum, Column* pCol);
+    void vEncodeInt(Datum* pSrcDatum, Column* pCol);
+    void vEncodeIvl(Datum* pSrcDatum, Column* pCol);
+    void vEncodeTme(Datum* pSrcDatum, Column* pCol);
+    void vEncodeTsp(Datum* pSrcDatum, Column* pCol);
+    void vEncodeVch(Datum* pSrcDatum, Column* pCol);
+    void vEncodeVchShoco(Datum* pSrcDatum, Column* pCol);
+    void vEncodeVchSmall(Datum* pSrcDatum, Column* pCol);
   
-    void vHashColumn(Datum* pDatum, Column* pCol);
+    void vHashColumn(Datum* pSrcDatum, Column* pCol);
   
     void vMetaNibble(Column* pCol, eMN eMetaNibble);
     void vMetaPut(Datum* pDatum, Column* pCol);

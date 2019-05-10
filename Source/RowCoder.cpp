@@ -82,21 +82,22 @@ RowCoder::RowCoder(void)
     m_xaUsage[i_Col].m_nOopsMiss = 0;
   }
   
-  m_nBuffers   = 0;
-  m_nRows      = 0;
-  m_nHeadFree  = 0;
+  m_nTotalBuffers = 0;
+  m_nTotalRows    = 0;
+  
   m_nTails     = 0;
   m_nTailUnits = 0;
 
-  m_nFreeHead_0_7   = 0;
-  m_nFreeHead_8_15  = 0;
-  m_nFreeHead_16_23 = 0;
-  m_nFreeHead_24_31 = 0;
-  m_nFreeHead_32_39 = 0;
-  m_nFreeHead_40_47 = 0;
-  m_nFreeHead_48_55 = 0;
-  m_nFreeHead_56_63 = 0;
-  m_nFreeHead_64_   = 0;
+  m_nHeadFree = 0;
+  m_nHeadFree_0_7   = 0;
+  m_nHeadFree_8_15  = 0;
+  m_nHeadFree_16_23 = 0;
+  m_nHeadFree_24_31 = 0;
+  m_nHeadFree_32_39 = 0;
+  m_nHeadFree_40_47 = 0;
+  m_nHeadFree_48_55 = 0;
+  m_nHeadFree_56_63 = 0;
+  m_nHeadFree_64_   = 0;
 
   _checkInitialised_(CN_ROWCODER);
   
@@ -163,7 +164,7 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   // check for space in target nub
   i8 nSpaceNeeded = pFromNub->nUsedBytes();
   if (! m_pIntoNub->bHasSpace(nSpaceNeeded)) {
-    m_nBuffers++;
+    m_nTotalBuffers++;
     //oNumBat.vPrint();
     return false;
   }
@@ -221,12 +222,12 @@ void RowCoder::vEncodeBegin(RowNub* pIntoNub)
 /*----------------------------------------------------------------------------*/
 /* encode given datum into current row nub                                    */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeDatum(Datum* pDatum, Column* pCol)
+void RowCoder::vEncodeDatum(Datum* pSrcDatum, Column* pCol)
 {
   i8 i_Col = pCol->iColumnNo();
   
   if (0 == i_Col)
-    m_nRows++;
+    m_nTotalRows++;
     
 //  if (1 == i_Col)
 //    oNumBat.vAdd(pDatum->m_iInt);
@@ -236,18 +237,18 @@ void RowCoder::vEncodeDatum(Datum* pDatum, Column* pCol)
   m_pCoda->m_aeExtDatum[i_Col] = eDatum;
   
   // hash the column if its part of the partition key
-  vHashColumn(pDatum,pCol);
+  vHashColumn(pSrcDatum,pCol);
   
   switch (eDatum) {
-    case DM_BCD: vEncodeBcd(pDatum,pCol); return;
-    case DM_BOL: vEncodeBol(pDatum,pCol); return;
-    case DM_DTE: vEncodeDte(pDatum,pCol); return;
-    case DM_FLT: vEncodeFlt(pDatum,pCol); return;
-    case DM_INT: vEncodeInt(pDatum,pCol); return;
-    case DM_IVL: vEncodeIvl(pDatum,pCol); return;
-    case DM_TME: vEncodeTme(pDatum,pCol); return;
-    case DM_TSP: vEncodeTsp(pDatum,pCol); return;
-    case DM_VCH: vEncodeVch(pDatum,pCol); return;
+    case DM_BCD: vEncodeBcd(pSrcDatum,pCol); return;
+    case DM_BOL: vEncodeBol(pSrcDatum,pCol); return;
+    case DM_DTE: vEncodeDte(pSrcDatum,pCol); return;
+    case DM_FLT: vEncodeFlt(pSrcDatum,pCol); return;
+    case DM_INT: vEncodeInt(pSrcDatum,pCol); return;
+    case DM_IVL: vEncodeIvl(pSrcDatum,pCol); return;
+    case DM_TME: vEncodeTme(pSrcDatum,pCol); return;
+    case DM_TSP: vEncodeTsp(pSrcDatum,pCol); return;
+    case DM_VCH: vEncodeVch(pSrcDatum,pCol); return;
     default:
       NEVER_REACH;
   }
@@ -278,7 +279,7 @@ void RowCoder::vEncodeEnd(void)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vReport(RowCoder* pRowCoder_Encode)
 {
-  if (! m_pColVec || !pRowCoder_Encode->m_nRows)
+  if (! m_pColVec || !pRowCoder_Encode->m_nTotalRows)
     return;
   
   i8 nCols = m_pColVec->nItems();
@@ -363,16 +364,16 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
          nSumDeltaBytes
          );
   
-  i8 nHeadUsedBytes = pRowCoder_Encode->m_nRows * sizeof(HeadLine);
+  i8 nHeadUsedBytes = pRowCoder_Encode->m_nTotalRows * sizeof(HeadLine);
   i8 nTailUsedBytes = m_nTailUnits * sizeof(SpaceUnit);
-  i8 nTotalUsedBytes = pRowCoder_Encode->m_nRows * sizeof(HeadLine) + m_nTailUnits * sizeof(SpaceUnit);
+  i8 nTotalUsedBytes = pRowCoder_Encode->m_nTotalRows * sizeof(HeadLine) + m_nTailUnits * sizeof(SpaceUnit);
   
   vTrace(": Buffers %lld Rows %lld(%lldB) "
          "Tails %lld(%lldB %lld%%) "
          "∑(%lldB)\n"_Stz,
          
-         m_nBuffers,
-         m_nRows,
+         m_nTotalBuffers,
+         m_nTotalRows,
          nHeadUsedBytes,
          
          m_nTails,
@@ -389,17 +390,17 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
          m_nHeadFree,
          IntLib::iPercent(m_nHeadFree, nTotalUsedBytes),
          
-         m_nFreeHead_0_7,
-         m_nFreeHead_8_15,
-         m_nFreeHead_16_23,
-         m_nFreeHead_24_31,
-         m_nFreeHead_32_39,
-         m_nFreeHead_40_47,
-         m_nFreeHead_48_55,
-         m_nFreeHead_56_63,
-         m_nFreeHead_64_,
+         m_nHeadFree_0_7,
+         m_nHeadFree_8_15,
+         m_nHeadFree_16_23,
+         m_nHeadFree_24_31,
+         m_nHeadFree_32_39,
+         m_nHeadFree_40_47,
+         m_nHeadFree_48_55,
+         m_nHeadFree_56_63,
+         m_nHeadFree_64_,
          
-         m_nHeadFree / pRowCoder_Encode->m_nRows);
+         m_nHeadFree / pRowCoder_Encode->m_nTotalRows);
 }
 
 
@@ -415,15 +416,15 @@ void RowCoder::vAnalyseFree(void)
   i8 nFreeBytes = nFreeSpaceHead(m_aIntoHead,m_pColVec,m_pCoda);
   m_nHeadFree  += nFreeBytes;
   
-       if (nFreeBytes <= 7 ) m_nFreeHead_0_7++;
-  else if (nFreeBytes <= 15) m_nFreeHead_8_15++;
-  else if (nFreeBytes <= 23) m_nFreeHead_16_23++;
-  else if (nFreeBytes <= 31) m_nFreeHead_24_31++;
-  else if (nFreeBytes <= 39) m_nFreeHead_32_39++;
-  else if (nFreeBytes <= 47) m_nFreeHead_40_47++;
-  else if (nFreeBytes <= 55) m_nFreeHead_48_55++;
-  else if (nFreeBytes <= 63) m_nFreeHead_56_63++;
-  else                       m_nFreeHead_64_++;
+       if (nFreeBytes <= 7 ) m_nHeadFree_0_7++;
+  else if (nFreeBytes <= 15) m_nHeadFree_8_15++;
+  else if (nFreeBytes <= 23) m_nHeadFree_16_23++;
+  else if (nFreeBytes <= 31) m_nHeadFree_24_31++;
+  else if (nFreeBytes <= 39) m_nHeadFree_32_39++;
+  else if (nFreeBytes <= 47) m_nHeadFree_40_47++;
+  else if (nFreeBytes <= 55) m_nHeadFree_48_55++;
+  else if (nFreeBytes <= 63) m_nHeadFree_56_63++;
+  else                       m_nHeadFree_64_++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -453,12 +454,16 @@ void RowCoder::vCopy_Short(void)
 /*----------------------------------------------------------------------------*/
 /* put encoded datum into row of current nub                                  */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDataPut(Datum* pDatum)
+void RowCoder::vDataPut(Datum* pEncodedDatum)
 {
-  if (pDatum->m_nEncodedBytes) {
-    m_aIntoHead->vPut(m_i_IntoOffset,pDatum->m_wWord,pDatum->m_nEncodedBytes);
-    m_i_IntoOffset += pDatum->m_nEncodedBytes;
-  }
+  if (! pEncodedDatum->m_nEncodedBytes)
+    return;
+  
+  m_aIntoHead->vPut(m_i_IntoOffset,
+                    pEncodedDatum->m_wWord,
+                    pEncodedDatum->m_nEncodedBytes);
+
+  m_i_IntoOffset += pEncodedDatum->m_nEncodedBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -466,21 +471,23 @@ void RowCoder::vDataPut(Datum* pDatum)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDataPut(w8 wDatum, i8 nBytes)
 {
-  if (nBytes) {
-    m_aIntoHead->vPut(m_i_IntoOffset,wDatum,nBytes);
-    m_i_IntoOffset += nBytes;
-  }
+  if (! nBytes)
+    return;
+  
+  m_aIntoHead->vPut(m_i_IntoOffset,wDatum,nBytes);
+  
+  m_i_IntoOffset += nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode decimal                                                             */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
+void RowCoder::vEncodeBcd(Datum* pSrcDatum, Column* pCol)
 {
-  vCodeBcd(&m_oEncodedDatum,pDatum);
+  vCodeBcd(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
-  vXchkBcd(pDatum,pCol);
+  vXchkBcd(pSrcDatum,pCol);
 
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
 }
@@ -488,12 +495,12 @@ void RowCoder::vEncodeBcd(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* encode boolean                                                             */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeBol(Datum* pDatum, Column* pCol)
+void RowCoder::vEncodeBol(Datum* pSrcDatum, Column* pCol)
 {
-  vCodeBol(&m_oEncodedDatum,pDatum);
+  vCodeBol(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
-  vXchkBol(pDatum,pCol);
+  vXchkBol(pSrcDatum,pCol);
 
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
 }
@@ -501,15 +508,15 @@ void RowCoder::vEncodeBol(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* encode date                                                                */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
+void RowCoder::vEncodeDte(Datum* pSrcDatum, Column* pCol)
 {
   //  vTrace("++ %lld-%lld-%lld\n"_Stz,
   //         pDatum->xDte.m_uYearDelta,pDatum->xDte.m_uMonth,pDatum->xDte.m_uDay);
   
-  vCodeDte(&m_oEncodedDatum,pDatum);
+  vCodeDte(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
-  vXchkDte(pDatum,pCol);
+  vXchkDte(pSrcDatum,pCol);
 
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
 }
@@ -517,12 +524,12 @@ void RowCoder::vEncodeDte(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* encode float                                                               */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
+void RowCoder::vEncodeFlt(Datum* pSrcDatum, Column* pCol)
 {
-  vCodeFlt(&m_oEncodedDatum,pDatum);
+  vCodeFlt(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
-  vXchkFlt(pDatum,pCol);
+  vXchkFlt(pSrcDatum,pCol);
 
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
 }
@@ -530,12 +537,12 @@ void RowCoder::vEncodeFlt(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* encode integer                                                             */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
+void RowCoder::vEncodeInt(Datum* pSrcDatum, Column* pCol)
 {
-  vCodeInt(&m_oEncodedDatum,pDatum);
+  vCodeInt(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
-  vXchkInt(pDatum,pCol);
+  vXchkInt(pSrcDatum,pCol);
 
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
 }
@@ -543,12 +550,12 @@ void RowCoder::vEncodeInt(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* encode interval                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
+void RowCoder::vEncodeIvl(Datum* pSrcDatum, Column* pCol)
 {
-  vCodeIvl(&m_oEncodedDatum,pDatum);
+  vCodeIvl(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
-  vXchkIvl(pDatum,pCol);
+  vXchkIvl(pSrcDatum,pCol);
 
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
 }
@@ -556,12 +563,12 @@ void RowCoder::vEncodeIvl(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* encode time                                                                */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
+void RowCoder::vEncodeTme(Datum* pSrcDatum, Column* pCol)
 {
-  vCodeTme(&m_oEncodedDatum,pDatum);
+  vCodeTme(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
-  vXchkTme(pDatum,pCol);
+  vXchkTme(pSrcDatum,pCol);
 
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
 }
@@ -569,12 +576,12 @@ void RowCoder::vEncodeTme(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* encode timestamp                                                           */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
+void RowCoder::vEncodeTsp(Datum* pSrcDatum, Column* pCol)
 {
-  vCodeTsp(&m_oEncodedDatum,pDatum);
+  vCodeTsp(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
-  vXchkTsp(pDatum,pCol);
+  vXchkTsp(pSrcDatum,pCol);
 
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
 }
@@ -582,9 +589,9 @@ void RowCoder::vEncodeTsp(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* encode varchar                                                             */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeVch(Datum* pDatum, Column* pCol)
+void RowCoder::vEncodeVch(Datum* pSrcDatum, Column* pCol)
 {
-  vCodeVch(&m_oEncodedDatum,pDatum);
+  vCodeVch(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
 
   if (m_oEncodedDatum.m_eEncoding != MN_NULL) {
@@ -600,13 +607,13 @@ void RowCoder::vEncodeVch(Datum* pDatum, Column* pCol)
     }
   }
   
-  vXchkVch(pDatum,pCol);
+  vXchkVch(pSrcDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode varchar as shoco                                                    */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeVchShoco(Datum* pDatum, Column* pCol)
+void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
 {
   char caShoco[C_4KB];
   
@@ -627,8 +634,8 @@ void RowCoder::vEncodeVchShoco(Datum* pDatum, Column* pCol)
   i8 nCompressed =
   Compress::iIntoShoco((byte*)caShoco,         // into compressed destination
                        sizeof(caShoco) - 1,    // destination size
-                       pDatum->m_sVch.aChar(), // from uncompressed source
-                       pDatum->m_nChars);      // source bytes
+                       pSrcDatum->m_sVch.aChar(), // from uncompressed source
+                       pSrcDatum->m_nChars);      // source bytes
   
   //! temporary limitation
   //RASSERT(nCompressed < 56);
@@ -670,18 +677,18 @@ void RowCoder::vEncodeVchShoco(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* encode varchar as small                                                    */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeVchSmall(Datum* pDatum, Column* pCol)
+void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
 {
-  vDataPut(*(w8*)pDatum->m_sVch.aChar(),
-           (eMN)pDatum->m_nChars);
+  vDataPut(*(w8*)pSrcDatum->m_sVch.aChar(),
+           (eMN)pSrcDatum->m_nChars);
   
-  vUsageIncEncoded(pCol,pDatum->m_nChars);
+  vUsageIncEncoded(pCol,pSrcDatum->m_nChars);
 }
 
 /*----------------------------------------------------------------------------*/
 /* hash a partion key column into running hash                                */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vHashColumn(Datum* pDatum, Column* pCol)
+void RowCoder::vHashColumn(Datum* pSrcDatum, Column* pCol)
 {
   // hash the column value only if part of partition key
   if (! pCol->bIsPartitionKey())
@@ -690,9 +697,9 @@ void RowCoder::vHashColumn(Datum* pDatum, Column* pCol)
   // compute hash of this value
   i8 iHash;
   if (DM_VCH == pCol->eDatumType())
-    iHash = HshLib::iHash(pDatum->m_sVch.aChar(),sizeof(w8));
+    iHash = HshLib::iHash(pSrcDatum->m_sVch.aChar(),sizeof(w8));
   else
-    iHash = HshLib::iHash(&pDatum->m_iInt,sizeof(w8));
+    iHash = HshLib::iHash(&pSrcDatum->m_iInt,sizeof(w8));
   
   // inc it to the running hash
   m_pIntoNub->vHashInc(iHash);
