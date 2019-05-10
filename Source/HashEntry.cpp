@@ -49,14 +49,13 @@ i8 HashEntry::iHashArc(byte* yaKey, i8 nBytes, i8 iDepth)
 {
   i8 iHash;
   
-  if (0 == (iDepth % 2)) {
-    iHash = iHashReverse(yaKey,nBytes,iDepth);
-  }
-  else {
-    iHash = iHashRotate(yaKey,nBytes,iDepth);
-    iHash = iHashReverse(yaKey,nBytes,iDepth);
-  }
-  
+//  if (0 == (iDepth % 2))
+//    iHash = HshLib::iHashRotate(yaKey,nBytes,iDepth);
+//  else
+//    iHash = HshLib::iHashRotateReverse(yaKey,nBytes,iDepth);
+ 
+  iHash = HshLib::iHashRotateReverse(yaKey,nBytes,iDepth);
+
   return iHash;
 }
 
@@ -67,14 +66,13 @@ i8 HashEntry::iHashEntry(byte* yaKey, i8 nBytes, i8 iDepth)
 {
   i8 iHash;
   
-  if (0 == (iDepth % 2)) {
-    iHash = iHashReverse(yaKey,nBytes,iDepth);
-    iHash = iHashRotate(yaKey,nBytes,iDepth);
-  }
-  else {
-    iHash = iHashReverse(yaKey,nBytes,iDepth);
-  }
-  
+//  if (0 == (iDepth % 2))
+//    iHash = HshLib::iHashReverseRotate(yaKey,nBytes,iDepth);
+//  else
+//    iHash = HshLib::iHashReverse(yaKey,nBytes);
+ 
+  iHash = HshLib::iHashReverseRotate(yaKey,nBytes,iDepth);
+
   return iHash;
 }
 

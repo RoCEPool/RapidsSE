@@ -121,7 +121,7 @@ void vTest4(void)
   s32 sKey;
   
   for (i8 nDupes = 0; nDupes < 1; nDupes++) {
-    for (i8 i_Times = 0; i_Times < 100000; i_Times++) {
+    for (i8 i_Times = 0; i_Times < 2000000; i_Times++) {
       sKey.vSprint("%02lld"_Stz,i_Times);
 
 //      if ( 4206 == i_Times ||

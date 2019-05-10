@@ -37,7 +37,7 @@ i8 HshLib::iHashReverse(byte* ayaKey, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 i8 HshLib::iHashReverseRotate(byte* ayaKey, i8 nBytes, i8 nRotate)
 {
-  byte yaPerturbedKey[nBytes];
+  byte yaPerturbedKey[32];//[nBytes];
 
   // reverse the key
   i8 i_Src = nBytes - 1;
@@ -45,6 +45,8 @@ i8 HshLib::iHashReverseRotate(byte* ayaKey, i8 nBytes, i8 nRotate)
     yaPerturbedKey[i_Dst] = ayaKey[i_Src];
 
   // rotate the key
+  if (nRotate >= nBytes)
+    nRotate = nBytes - 1;
   MemLib::vRotate(yaPerturbedKey,nBytes,nRotate);
 
   // hash the perturbed key
@@ -58,10 +60,12 @@ i8 HshLib::iHashReverseRotate(byte* ayaKey, i8 nBytes, i8 nRotate)
 /*----------------------------------------------------------------------------*/
 i8 HshLib::iHashRotate(byte* ayaKey, i8 nBytes, i8 nRotate)
 {
-  byte yaPerturbedKey[nBytes];
+  byte yaPerturbedKey[32];//[nBytes];
   
   // rotate the key
   MemLib::vCopy(yaPerturbedKey,ayaKey,nBytes,CN_NONE);
+  if (nRotate >= nBytes)
+    nRotate = nBytes - 1;
   MemLib::vRotate(yaPerturbedKey,nBytes,nRotate);
 
   // hash the perturbed key
@@ -75,11 +79,13 @@ i8 HshLib::iHashRotate(byte* ayaKey, i8 nBytes, i8 nRotate)
 /*----------------------------------------------------------------------------*/
 i8 HshLib::iHashRotateReverse(byte* ayaKey, i8 nBytes, i8 nRotate)
 {
-  byte yaPerturbedKey[nBytes];
-  byte yaPerturbedKey2[nBytes];
+  byte yaPerturbedKey[32];//[nBytes];
+  byte yaPerturbedKey2[32];//[nBytes];
 
   // rotate the key
   MemLib::vCopy(yaPerturbedKey,ayaKey,nBytes,CN_NONE);
+  if (nRotate >= nBytes)
+    nRotate = nBytes - 1;
   MemLib::vRotate(yaPerturbedKey,nBytes,nRotate);
   
   // reverse the key

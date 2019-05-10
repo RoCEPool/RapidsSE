@@ -222,14 +222,19 @@ void HashBuffer::vDumpEntry(i8 i_Entry, char cIndicator)
                 m_sDotNotation.aChar(),
                 i_Entry);
   
-  vTrace("%-12s h:%08x k:%5s/b:%lld/=v:%lld\n"_Stz,
+  vTrace("%-12s h:%08x k:%5s/b:%lld/=v:%lld (%lld entries (%lld total) %lld%% full)\n"_Stz,
          sLead.aChar(),
          
          aHashEntry->m_iHash,
          
          aHashEntry->m_yaKey,
          aHashEntry->m_nBytes,
-         aHashEntry->m_iValue);
+         aHashEntry->m_iValue,
+         
+         m_nEntries,
+         m_pHashMap->m_nEntries,
+         IntLib::iPercent(m_nEntries, m_pHashMap->m_nEntriesPerBuffer)
+         );
 }
 
 /*----------------------------------------------------------------------------*/
