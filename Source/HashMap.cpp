@@ -95,9 +95,10 @@ HashMap::~HashMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* print analysis of this hash map                                            */
 /*----------------------------------------------------------------------------*/
-void HashMap::vAnalysis(void)
+void HashMap::vAnalysis(bool bBufferAnalysis)
 {
-  m_pRootBuffer->vAnalysis();
+  if (bBufferAnalysis)
+    m_pRootBuffer->vAnalysis();
   
   i8 iFullTree = (i8)pow(m_nArcsPerBuffer,m_iMaxDepth);
   vTrace("HM: (with %lld entries/buffer and %lld arcs/buffer)\n"

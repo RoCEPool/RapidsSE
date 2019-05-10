@@ -204,12 +204,12 @@ void HashBuffer::vDumpEntry(i8 i_Entry, char cIndicator)
   
   s256 sLead;
   
-  sLead.vSprint("%c %s[%lld]"_Stz,
+  sLead.vSprint("%c %10s[%5lld]"_Stz,
                 cIndicator,
                 m_sDotNotation.aChar(),
                 i_Entry);
   
-  vTrace("%-12s h:%08x k:%s/b:%lld/=v:%lld\n"_Stz,
+  vTrace("%-12s h:%08x k:%5s/b:%lld/=v:%lld\n"_Stz,
          sLead.aChar(),
          
          aHashEntry->m_iHash,

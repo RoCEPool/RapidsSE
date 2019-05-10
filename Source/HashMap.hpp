@@ -38,7 +38,7 @@ namespace Structures
     HashMap(bool bTrace=false, i8 nEntriesPerBuffer=0, i8 nArcsPerBuffer=0);
     ~HashMap(void) noexcept(false);
   
-    void vAnalysis(void);
+    void vAnalysis(bool bBufferAnalysis);
     void vAppendDuplicate(HashEntry* aHeadEntry, i8 iValue);
     i8   iEach(byte* yaKey,   i8 nBytes, i8& iCursor);
     bool bExists(byte* yaKey, i8 nBytes);
