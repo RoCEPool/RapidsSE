@@ -4211,18 +4211,6 @@ Stz* RowCoder::sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialise given cache line                                                */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vInitHeadLine(HeadLine* aHeadLine)
-{
-  // set all bytes in the entire cache line to xFF
-  aHeadLine->vSetAll(0xFF);
-  
-  // set all bits in first word of cache line to zero
-  aHeadLine->v8B(0,0);
-}
-
-/*----------------------------------------------------------------------------*/
 /* compute how many cache lines an encoded row occupies                       */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::nLines(RowNub* pNub, i8 i_Row)
@@ -4381,40 +4369,6 @@ void RowCoder::vIntoBaseDays(Datum* pDatum, i8& iEra)
   nDays += pDatum->xDte.m_uDay;
   
   pDatum->m_iDte = nDays;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* decoding of dte                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::iStripDte(Word& wTspView, eMN eEncoding)
-{
-  i8 iDecoded = wTspView.m_iI8;
-  iDecoded <<= 40;
-  
-  return iDecoded;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decoding of tme                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::iStripTme(Word& wTspView, eMN eEncoding)
-{
-  i8 iDecoded = wTspView.m_iI8;
-  iDecoded <<= 40;
-  
-  return iDecoded;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decoding of tsp                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::iStripTsp(Word& wTspView, eMN eEncoding)
-{
-  i8 iDecoded = wTspView.m_iI8;
-  iDecoded <<= 24;
-  
-  return iDecoded;
 }
 
 /*----------------------------------------------------------------------------*/

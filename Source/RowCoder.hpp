@@ -256,7 +256,6 @@ namespace Data
                                 i8& i_PriorColumn_, i8& i_Offset_);
   
     static Stz* sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt);
-    static void vInitHeadLine(HeadLine* aHeadLine);
   
     static i8 nLines(RowNub* pNub, i8 i_Row);
   
@@ -267,10 +266,6 @@ namespace Data
     static void vFromBaseDays(Datum* pDatum, i8& iEra);
     static i8   iIntoBaseDays(i8 nDaysWithinEra, i8 iEra);
     static void vIntoBaseDays(Datum* pDatum, i8& iEra);
-
-    static i8 iStripDte(Word& wTspView, eMN eEncoding);
-    static i8 iStripTme(Word& wTspView, eMN eEncoding);
-    static i8 iStripTsp(Word& wTspView, eMN eEncoding);
  
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
   
