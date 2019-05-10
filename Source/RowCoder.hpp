@@ -249,10 +249,10 @@ namespace Data
     static i8 nFreeSpaceHead(RowNub* pNub, HeadLine* aHeadLine);
     static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda);
 
-    static eMN eEncodingOriginal(i8 i_ForCol, HeadLine* aHeadLine,
+    static eMN eEncodingOriginal(Column* pCol, i8 i_ForCol, HeadLine* aHeadLine,
                                  ColumnVec* pColVec, i8& i_PriorColumn_,
                                  i8& i_Offset_);
-    static eMN eEncodingRecoded(i8 i_Col, HeadLine* aHeadLine,
+    static eMN eEncodingRecoded(Column* pCol, i8 i_Col, HeadLine* aHeadLine,
                                 ColumnVec* pColVec, Coda* pCoda, i8& i_PriorColumn_,
                                 i8& i_Offset_);
   
