@@ -2377,23 +2377,21 @@ void RowCoder::vInitEncoding(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DM_ALPHA (NOT SURE)
   g_iDatumEncoding[DM_ALPHA][MN_NULL] = MN_NULL;
-  g_iDatumEncoding[DM_ALPHA][MN_1B] = 0;
-  g_iDatumEncoding[DM_ALPHA][MN_2B] = 0;
-  g_iDatumEncoding[DM_ALPHA][MN_3B] = 0;
-  g_iDatumEncoding[DM_ALPHA][MN_4B] = 0;
-  g_iDatumEncoding[DM_ALPHA][MN_5B] = 0;
-  g_iDatumEncoding[DM_ALPHA][MN_6B] = 0;
-  g_iDatumEncoding[DM_ALPHA][MN_7B] = 0;
-  g_iDatumEncoding[DM_ALPHA][MN_8B] = 0;
+  g_iDatumEncoding[DM_ALPHA][MN_ALPHA_0] = 0;
+  g_iDatumEncoding[DM_ALPHA][MN_ALPHA_1] = 0;
+  g_iDatumEncoding[DM_ALPHA][MN_ALPHA_2] = 0;
+  g_iDatumEncoding[DM_ALPHA][MN_ALPHA_3] = 0;
+  g_iDatumEncoding[DM_ALPHA][MN_ALPHA_4] = 0;
+  g_iDatumEncoding[DM_ALPHA][MN_ALPHA_5] = 0;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DM_DAYS
-  g_iDatumEncoding[DM_ALPHA][MN_NULL] = MN_NULL;
-  g_iDatumEncoding[DM_ALPHA][MN_DAYS_PLUS_1B] = 1;
-  g_iDatumEncoding[DM_ALPHA][MN_DAYS_MINUS_1B] = 2;
-  g_iDatumEncoding[DM_ALPHA][MN_DAYS_CLASSIC_2B] = 2;
-  g_iDatumEncoding[DM_ALPHA][MN_DAYS_SILVER_2B] = 2;
-  g_iDatumEncoding[DM_ALPHA][MN_DAYS_MODERN_2B] = 2;
+  g_iDatumEncoding[DM_DAYS][MN_NULL] = MN_NULL;
+  g_iDatumEncoding[DM_DAYS][MN_DAYS_PLUS_1B] = 1;
+  g_iDatumEncoding[DM_DAYS][MN_DAYS_MINUS_1B] = 1;
+  g_iDatumEncoding[DM_DAYS][MN_DAYS_CLASSIC_2B] = 2;
+  g_iDatumEncoding[DM_DAYS][MN_DAYS_SILVER_2B] = 2;
+  g_iDatumEncoding[DM_DAYS][MN_DAYS_MODERN_2B] = 2;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DM_DELTA_PLUS
@@ -3782,6 +3780,12 @@ void RowCoder::vXchkTsp(Datum* pDatum, Column* pCol)
 void RowCoder::vXchkVch(Datum* pDatum, Column* pCol)
 {
 #ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_nChars == pDatum->m_nChars);
+  RASSERT(m_oEncodedDatum.m_sVch.bSame(pDatum->m_sVch));
 #endif
 }
 
