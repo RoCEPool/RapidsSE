@@ -2451,44 +2451,6 @@ void RowCoder::vInitEncoding(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print decoded datum from cache line                                        */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vPrint(RowNub* pNub, i8 i_Row, Column* pCol, i8& i_LastColumn, i8& i_LastOffset)
-{
-  Datum oDatum;
-  HV_Rec hvRec;
-  
-  vDecode(&oDatum,pNub,i_Row,pCol,i_LastColumn,i_LastOffset);
-  
-  eDM eDatum = oDatum.m_eDatum;
-  
-  switch (eDatum) {
-    case DM_BCD: hvRec->vAppendBcd(pCol,&oDatum); break;
-    case DM_BOL: hvRec->vAppendBol(pCol,&oDatum); break;
-    case DM_DTE: hvRec->vAppendDte(pCol,&oDatum); break;
-    case DM_FLT: hvRec->vAppendFlt(pCol,&oDatum); break;
-    case DM_INT: hvRec->vAppendInt(pCol,&oDatum); break;
-    case DM_IVL: hvRec->vAppendIvl(pCol,&oDatum); break;
-    case DM_TME: hvRec->vAppendTme(pCol,&oDatum); break;
-    case DM_TSP: hvRec->vAppendTsp(pCol,&oDatum); break;
-    case DM_VCH: hvRec->vAppendVch(pCol,&oDatum); break;
-    default:
-      NEVER_REACH;
-  }
-  
-//  vTrace("Column[%lld %s %s] (e%lld,@%lld) : %s\n"_Stz,
-//         pCol->iColumnNo(),
-//         pCol->sColumnName().aStz(),
-//         aDM[pCol->eDatumType()],
-//
-//         eEncoding,
-//         i_Offset,
-//
-//         hvRec->szRecStr());
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* sprint decode row from cache line into string                              */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecord(Record* pRec, RowNub* pNub, i8 i_Row)
