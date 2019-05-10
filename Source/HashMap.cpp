@@ -167,12 +167,11 @@ bool HashMap::bExists(byte* aKey, i8 nBytes, i8 iValue)
 /*----------------------------------------------------------------------------*/
 /* insert a key,value into the hashmap                                        */
 /*----------------------------------------------------------------------------*/
-void HashMap::vInsert(byte* yaKey, i8 nBytes, i8 iValue)
+void HashMap::vInsert(byte* yaKey, i8 nBytes, i8 iValue, bool bDebug)
 {
   bool bArcTrc = false;
-  i8 iEntryHash = HashEntry::iHashEntry(yaKey,nBytes,0);
   
-  m_pRootBuffer->vInsertEntry(iEntryHash,yaKey,nBytes,iValue,bArcTrc);
+  m_pRootBuffer->vInsertEntry(yaKey,nBytes,iValue,bDebug,bArcTrc);
 }
 
 /*----------------------------------------------------------------------------*/

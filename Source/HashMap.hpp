@@ -43,7 +43,7 @@ namespace Structures
     i8   iEach(byte* yaKey,   i8 nBytes, i8& iCursor);
     bool bExists(byte* yaKey, i8 nBytes);
     bool bExists(byte* yaKey, i8 nBytes, i8 iValue);
-    void vInsert(byte* yaKey, i8 nBytes, i8 iValue);
+    void vInsert(byte* yaKey, i8 nBytes, i8 iValue, bool bDebug);
 
   private:
 

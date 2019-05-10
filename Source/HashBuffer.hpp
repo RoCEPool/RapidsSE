@@ -45,12 +45,15 @@ namespace Structures
   
     void vAnalysis(void);
     bool bAppendDuplicate(HashEntry* aHeadEntry, i8 iAltValue);
-    void vInsertEntry(i8 iHash, byte* yaKey, i8 nBytes, i8 iValue, bool& bArcTrc);
+    void vInsertEntry(byte* yaKey, i8 nBytes, i8 iValue,
+                      bool bDebug, bool& bArcTrc);
 
   private:
      void vDumpEntry(i8 i_Entry, char cIndicator);
-     void vHandleOccupied(i8 i_Entry, byte* yaKey, i8 nBytes, i8 iValue, bool& bArcTrc);
-     void vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue, bool& bArcTrc);
+     void vHandleOccupied(i8 i_Entry, byte* yaKey, i8 nBytes, i8 iValue,
+                          bool bDebug, bool& bArcTrc);
+     void vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue,
+                           bool bDebug, bool& bArcTrc);
   
     Footer* aFooter(void);
  };
