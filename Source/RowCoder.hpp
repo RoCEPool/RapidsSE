@@ -186,19 +186,18 @@ namespace Data
                         ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                         i8& i_LastColumn, i8& i_LastOffset);
   
-    //static i8 iBaseOffset(ColumnVec* pColVec);
+    static i8   nDataBytes(eDM eDatum, eMN eEncoding);
   
-    static i8 nDataBytes(eDM eDatum, eMN eEncoding);
-    //static i8 nDataBytes2(eDM eDatum, eMN eEncoding);
-    
+    static void vDaysFromBase(Datum* pDatum, i8& iEra);
+    static i8   iDaysIntoBase(i8 nDaysWithinEra, i8 iEra);
+    static void vDaysIntoBase(Datum* pDatum, i8& iEra);
+
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
     static void vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
-    //static void vDecodeBolFast(Datum* pDatum, HeadLine* aHeadLine,
-    //                       Column* pCol,Word& xWord);
     static void vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
@@ -220,7 +219,15 @@ namespace Data
     static void vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
-  
+    static void vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
+                                Column* pCol, eMN eEncoding, i8 i_Offset);
+    static void vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
+                                   Column* pCol, eMN eEncoding, i8 i_Offset);
+    static void vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
+                                     Column* pCol, eMN eEncoding, i8 i_Offset);
+    static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
+                                Column* pCol, eMN eEncoding, i8 i_Offset);
+
     // extended datums
     static void vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
                              ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -239,15 +246,6 @@ namespace Data
                               ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                               i8& i_LastColumn, i8& i_LastOffset);
 
-    // shocos
-    static void vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
-                                Column* pCol, eMN eEncoding, i8 i_Offset);
-    static void vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
-                                   Column* pCol, eMN eEncoding, i8 i_Offset);
-    static void vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
-                                   Column* pCol, eMN eEncoding, i8 i_Offset);
-    static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
-                                Column* pCol, eMN eEncoding, i8 i_Offset);
 
   
     //! move into Nub
@@ -270,9 +268,6 @@ namespace Data
     static void vRestoreTme(Datum* pDatum, eMN eEncoding);
     static void vRestoreTsp(Datum* pDatum, eMN eEncoding);
   
-    static void vFromBaseDays(Datum* pDatum, i8& iEra);
-    static i8   iIntoBaseDays(i8 nDaysWithinEra, i8 iEra);
-    static void vIntoBaseDays(Datum* pDatum, i8& iEra);
  
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
   

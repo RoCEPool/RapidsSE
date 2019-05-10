@@ -1054,10 +1054,10 @@ void RowCoder::vRecodeDte(Column* pCol)
   switch (eThisEncoding) {
     case MN_NULL:      return;
     case MN_SILVER_1B: iThisDteDays = m_aIntoHead->w8_1B(m_i_IntoOffset);
-                       iThisDteDays = iIntoBaseDays(iThisDteDays,C_SILVER_ERA);
+                       iThisDteDays = iDaysIntoBase(iThisDteDays,C_SILVER_ERA);
                        break;
     case MN_SILVER_2B: iThisDteDays = m_aIntoHead->w8_2B(m_i_IntoOffset);
-                       iThisDteDays = iIntoBaseDays(iThisDteDays,C_SILVER_ERA);
+                       iThisDteDays = iDaysIntoBase(iThisDteDays,C_SILVER_ERA);
                        break;
     default:
       RASSERT(0);
@@ -1078,22 +1078,22 @@ void RowCoder::vRecodeDte(Column* pCol)
     case MN_NULL:       iFirstDteDays = 0;
                         break;
     case MN_CLASSIC_1B: iFirstDteDays = m_aIntoHead->w8_1B(i_LastOffset);
-                        iFirstDteDays = iIntoBaseDays(iFirstDteDays,C_CLASSIC_ERA);
+                        iFirstDteDays = iDaysIntoBase(iFirstDteDays,C_CLASSIC_ERA);
                         break;
     case MN_CLASSIC_2B: iFirstDteDays = m_aIntoHead->w8_2B(i_LastOffset);
-                        iFirstDteDays = iIntoBaseDays(iFirstDteDays,C_CLASSIC_ERA);
+                        iFirstDteDays = iDaysIntoBase(iFirstDteDays,C_CLASSIC_ERA);
                         break;
     case MN_SILVER_1B:  iFirstDteDays = m_aIntoHead->w8_1B(i_LastOffset);
-                        iFirstDteDays = iIntoBaseDays(iFirstDteDays,C_SILVER_ERA);
+                        iFirstDteDays = iDaysIntoBase(iFirstDteDays,C_SILVER_ERA);
                         break;
     case MN_SILVER_2B:  iFirstDteDays = m_aIntoHead->w8_2B(i_LastOffset);
-                        iFirstDteDays = iIntoBaseDays(iFirstDteDays,C_SILVER_ERA);
+                        iFirstDteDays = iDaysIntoBase(iFirstDteDays,C_SILVER_ERA);
                         break;
     case MN_MODERN_1B:  iFirstDteDays = m_aIntoHead->w8_1B(i_LastOffset);
-                        iFirstDteDays = iIntoBaseDays(iFirstDteDays,C_MODERN_ERA);
+                        iFirstDteDays = iDaysIntoBase(iFirstDteDays,C_MODERN_ERA);
                         break;
     case MN_MODERN_2B:  iFirstDteDays = m_aIntoHead->w8_2B(i_LastOffset);
-                        iFirstDteDays = iIntoBaseDays(iFirstDteDays,C_MODERN_ERA);
+                        iFirstDteDays = iDaysIntoBase(iFirstDteDays,C_MODERN_ERA);
                         break;
     default:
       RASSERT(0);
@@ -3218,7 +3218,7 @@ void RowCoder::vDecodeDays(Datum* pDatum, HeadLine* aHeadLine,
   pDatum->m_iInt += iDays;
   
   i8 iEra = C_SILVER_ERA;
-  vFromBaseDays(pDatum,iEra);
+  vDaysFromBase(pDatum,iEra);
 
   
 }
@@ -3556,7 +3556,7 @@ void RowCoder::vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum)
   }
   
   i8 iEra = 0;
-  vIntoBaseDays(&m_oEncodedDatum,iEra);
+  vDaysIntoBase(&m_oEncodedDatum,iEra);
   
   eMN eEncoding;
   i8 nBytes = (eMN)IntLib::iByteMagnitude(pTgtDatum->m_iInt);
@@ -4267,7 +4267,7 @@ void RowCoder::vRestoreDte(Datum* pDatum, eMN eEncoding)
     iEra = C_CLASSIC_ERA;
   }
 
-  vFromBaseDays(pDatum,iEra);
+  vDaysFromBase(pDatum,iEra);
   //pDatum->m_iInt <<= 47;
 }
 
@@ -4290,7 +4290,7 @@ void RowCoder::vRestoreTsp(Datum* pDatum, eMN eEncoding)
 /*----------------------------------------------------------------------------*/
 /* compute date from number of days since base date                           */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vFromBaseDays(Datum* pDatum, i8& iEra)
+void RowCoder::vDaysFromBase(Datum* pDatum, i8& iEra)
 {
   i8 nYearsMonthsDays = pDatum->m_iDte;
 
@@ -4321,7 +4321,7 @@ void RowCoder::vFromBaseDays(Datum* pDatum, i8& iEra)
 /*----------------------------------------------------------------------------*/
 /* compute number of days since base date                                     */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iIntoBaseDays(i8 nDaysWithinEra, i8 iEra)
+i8 RowCoder::iDaysIntoBase(i8 nDaysWithinEra, i8 iEra)
 {
   i8 nBaseDays;
   
@@ -4340,7 +4340,7 @@ i8 RowCoder::iIntoBaseDays(i8 nDaysWithinEra, i8 iEra)
 /*----------------------------------------------------------------------------*/
 /* compute number of days since base date                                     */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vIntoBaseDays(Datum* pDatum, i8& iEra)
+void RowCoder::vDaysIntoBase(Datum* pDatum, i8& iEra)
 {
   if (pDatum->xDte.m_uYearDelta < C_SILVER_ERA)
     iEra = C_CLASSIC_ERA;
