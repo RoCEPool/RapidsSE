@@ -171,12 +171,17 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pFromNub  = pFromNub;
-  m_aFromHead = m_pFromNub->aGetHead();
-  
+  m_pFromNub     = pFromNub;
+  m_i_FromHead   = 0;
+  m_aFromHead    = m_pFromNub->aGetHead(0);
+  m_i_FromOffset = iBaseOffset(m_pColVec);
+
   m_i_IntoHead   = m_pIntoNub->iAllotHead();
   m_aIntoHead    = m_pIntoNub->aGetHead(m_i_IntoHead);
   m_i_IntoOffset = iBaseOffset(m_pColVec);
+
+  m_aWorkHead    = m_pIntoNub->aGetHead();
+  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -802,16 +807,9 @@ void RowCoder::vRecode_Large(void)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecode_Short(void)
 {
-  m_aWorkHead = m_pIntoNub->aGetHead();
-
   i8 nColumns = m_pColVec->nItems();
   
   Coda* pIntoCoda = m_pIntoNub->pCoda();
-  
-  i8 i_LastColumn = 0;
-  m_i_FromOffset = iBaseOffset(m_pColVec);
-  m_i_IntoOffset = iBaseOffset(m_pColVec);
-  i8 i_OldFromOffset = 0;
   
   if (0 == m_i_IntoHead) {
     for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
@@ -821,6 +819,11 @@ void RowCoder::vRecode_Short(void)
       pIntoCoda->m_aiAux[i_ForCol].m_iInt = 0;
     }
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 i_LastColumn    = 0;
+  i8 i_OldFromOffset = 0;
   
   for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
     
