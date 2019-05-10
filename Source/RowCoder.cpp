@@ -2499,39 +2499,6 @@ void RowCoder::vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* sprint decode row from cache line into string                              */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRecord(Record* pRec, HeadLine* aHeadLine,
-                       ColumnVec* pColVec, Coda* pCoda)
-{
-  pRec->vReset();
-  
-  //vHeadDump(aHeadLine, pColVec);
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  
-  // get no of columns
-  i8 nColumns = pColVec->nItems();
-  
-  i8 i_LastColumn = 0;
-  i8 i_LastOffset = iBaseOffset(pColVec);
-  
-  // for each column
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    
-    // get the column at index
-    Column* pCol = pColVec->pGet(i_Col);
-    
-    // comma separate column values
-    if (i_Col)
-      pRec->szRecStr()->vConcat(","_Stz);
-    
-    // append column value
-    vAppend(pRec,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-    //vTrace("%s\n"_Stz,pRec->szRecStr());
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private Static ----------------------------------------------------------*/
