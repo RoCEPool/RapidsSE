@@ -3416,7 +3416,6 @@ void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
   TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
   
   i8 nCompressed = aHeadLine->w8_1B(i_Offset+2);
-  RASSERT(nCompressed <= 56);
   
   i8 nBytesPartA = sizeof(HeadLine) - i_Offset - 3;
   i8 nBytesPartB = nCompressed - nBytesPartA;
