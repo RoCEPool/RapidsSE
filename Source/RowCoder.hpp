@@ -262,8 +262,6 @@ namespace Data
   
     static Stz* sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt);
   
-    static i8 nLines(RowNub* pNub, i8 i_Row);
-  
     static void vRestoreDte(Datum* pDatum, eMN eEncoding);
     static void vRestoreTme(Datum* pDatum, eMN eEncoding);
     static void vRestoreTsp(Datum* pDatum, eMN eEncoding);

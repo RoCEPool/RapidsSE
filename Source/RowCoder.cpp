@@ -4211,43 +4211,6 @@ Stz* RowCoder::sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute how many cache lines an encoded row occupies                       */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::nLines(RowNub* pNub, i8 i_Row)
-{
-  ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
-  Coda* pCoda = pNub->pCoda();
-  
-  i8 nHeadLines = 1;
-  // get no of columns
-  i8 nColumns = pColVec->nItems();
-  
-  i8 i_Offset = iBaseOffset(pColVec);
-  i8 i_LastColumn = 0;
-  
-  // for each column
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    
-    // get the column at index
-    Column* pCol = pColVec->pGet(i_Col);
-    
-    if (DM_VCH != pCol->eDatumType())
-      continue;
-    
-    HeadLine* aHeadLine = pNub->aGetHead(i_Row);
-    
-    eMN eEncoding = eEncodingRecoded(aHeadLine,
-                                    pCol,pColVec,pCoda,
-                                    i_LastColumn,i_Offset);
-    
-    if (MN_SHOCO_2B == eEncoding)
-      nHeadLines++;
-  }
-  
-  return nHeadLines;
-}
-
-/*----------------------------------------------------------------------------*/
 /* restore zero stripped dte                                                  */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRestoreDte(Datum* pDatum, eMN eEncoding)
