@@ -88,16 +88,16 @@ RowCoder::RowCoder(void)
   m_nTails     = 0;
   m_nTailUnits = 0;
 
-  m_nHeadFree = 0;
-  m_nHeadFree_0_7   = 0;
-  m_nHeadFree_8_15  = 0;
-  m_nHeadFree_16_23 = 0;
-  m_nHeadFree_24_31 = 0;
-  m_nHeadFree_32_39 = 0;
-  m_nHeadFree_40_47 = 0;
-  m_nHeadFree_48_55 = 0;
-  m_nHeadFree_56_63 = 0;
-  m_nHeadFree_64_   = 0;
+  m_nHeadFreeBytes = 0;
+  m_nHeadFreeBytes_0_7   = 0;
+  m_nHeadFreeBytes_8_15  = 0;
+  m_nHeadFreeBytes_16_23 = 0;
+  m_nHeadFreeBytes_24_31 = 0;
+  m_nHeadFreeBytes_32_39 = 0;
+  m_nHeadFreeBytes_40_47 = 0;
+  m_nHeadFreeBytes_48_55 = 0;
+  m_nHeadFreeBytes_56_63 = 0;
+  m_nHeadFreeBytes_64_   = 0;
 
   _checkInitialised_(CN_ROWCODER);
   
@@ -387,20 +387,20 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
          "32..39B:%lld 40..47B:%lld 48..55B:%lld 56..63B:%lld 64..B:%lld "
          "µ:%lldB\n"_Stz,
          
-         m_nHeadFree,
-         IntLib::iPercent(m_nHeadFree, nTotalUsedBytes),
+         m_nHeadFreeBytes,
+         IntLib::iPercent(m_nHeadFreeBytes, nTotalUsedBytes),
          
-         m_nHeadFree_0_7,
-         m_nHeadFree_8_15,
-         m_nHeadFree_16_23,
-         m_nHeadFree_24_31,
-         m_nHeadFree_32_39,
-         m_nHeadFree_40_47,
-         m_nHeadFree_48_55,
-         m_nHeadFree_56_63,
-         m_nHeadFree_64_,
+         m_nHeadFreeBytes_0_7,
+         m_nHeadFreeBytes_8_15,
+         m_nHeadFreeBytes_16_23,
+         m_nHeadFreeBytes_24_31,
+         m_nHeadFreeBytes_32_39,
+         m_nHeadFreeBytes_40_47,
+         m_nHeadFreeBytes_48_55,
+         m_nHeadFreeBytes_56_63,
+         m_nHeadFreeBytes_64_,
          
-         m_nHeadFree / pRowCoder_Encode->m_nTotalRows);
+         m_nHeadFreeBytes / pRowCoder_Encode->m_nTotalRows);
 }
 
 
@@ -414,17 +414,17 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
 void RowCoder::vAnalyseFree(void)
 {
   i8 nFreeBytes = nFreeSpaceHead(m_aIntoHead,m_pColVec,m_pCoda);
-  m_nHeadFree  += nFreeBytes;
+  m_nHeadFreeBytes  += nFreeBytes;
   
-       if (nFreeBytes <= 7 ) m_nHeadFree_0_7++;
-  else if (nFreeBytes <= 15) m_nHeadFree_8_15++;
-  else if (nFreeBytes <= 23) m_nHeadFree_16_23++;
-  else if (nFreeBytes <= 31) m_nHeadFree_24_31++;
-  else if (nFreeBytes <= 39) m_nHeadFree_32_39++;
-  else if (nFreeBytes <= 47) m_nHeadFree_40_47++;
-  else if (nFreeBytes <= 55) m_nHeadFree_48_55++;
-  else if (nFreeBytes <= 63) m_nHeadFree_56_63++;
-  else                       m_nHeadFree_64_++;
+       if (nFreeBytes <= 7 ) m_nHeadFreeBytes_0_7++;
+  else if (nFreeBytes <= 15) m_nHeadFreeBytes_8_15++;
+  else if (nFreeBytes <= 23) m_nHeadFreeBytes_16_23++;
+  else if (nFreeBytes <= 31) m_nHeadFreeBytes_24_31++;
+  else if (nFreeBytes <= 39) m_nHeadFreeBytes_32_39++;
+  else if (nFreeBytes <= 47) m_nHeadFreeBytes_40_47++;
+  else if (nFreeBytes <= 55) m_nHeadFreeBytes_48_55++;
+  else if (nFreeBytes <= 63) m_nHeadFreeBytes_56_63++;
+  else                       m_nHeadFreeBytes_64_++;
 }
 
 /*----------------------------------------------------------------------------*/

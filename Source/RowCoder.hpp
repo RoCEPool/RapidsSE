@@ -61,16 +61,16 @@ namespace Data
     i8 m_nTails;
     i8 m_nTailUnits;
   
-    i8 m_nHeadFree;
-    i8 m_nHeadFree_0_7;
-    i8 m_nHeadFree_8_15;
-    i8 m_nHeadFree_16_23;
-    i8 m_nHeadFree_24_31;
-    i8 m_nHeadFree_32_39;
-    i8 m_nHeadFree_40_47;
-    i8 m_nHeadFree_48_55;
-    i8 m_nHeadFree_56_63;
-    i8 m_nHeadFree_64_;
+    i8 m_nHeadFreeBytes;
+    i8 m_nHeadFreeBytes_0_7;
+    i8 m_nHeadFreeBytes_8_15;
+    i8 m_nHeadFreeBytes_16_23;
+    i8 m_nHeadFreeBytes_24_31;
+    i8 m_nHeadFreeBytes_32_39;
+    i8 m_nHeadFreeBytes_40_47;
+    i8 m_nHeadFreeBytes_48_55;
+    i8 m_nHeadFreeBytes_56_63;
+    i8 m_nHeadFreeBytes_64_;
 
     // must be last
     Footer m_xFooter;
