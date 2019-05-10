@@ -746,17 +746,18 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
                           i8& iRowsPrinted)
 {
   HV_Rec hvRec;
-
   ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
   
-  HeadLine** aaCacheLine = pFetchBuffer->aaFirstRowPtr();
-  while (aaCacheLine) {
+  HeadLine** aaHeadLine = pFetchBuffer->aaFirstRowPtr();
+  
+  while (aaHeadLine) {
     
-    HeadLine* aHeadLine = *aaCacheLine;
-
-    RowCoder::vRecord(hvRec,aHeadLine,pColVec);
+    HeadLine* aHeadLine = *aaHeadLine;
 
     if (pJob_FetchRows->m_bPrint) {
+      
+      RowCoder::vRecord(hvRec,aHeadLine,pColVec);
+      
       if (pJob_FetchRows->m_bFirst) {
         if (iRowsPrinted < pJob_FetchRows->m_iRows) {
           hvRec->vPrintRow();
@@ -775,8 +776,18 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
       else
         hvRec->vPrintRow();
     }
+    else {
+      
+      // just decode the row
+      
+      RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(*aaHeadLine);
+      RowTray* pRowTray = pRowBuffer->pRowTray();
+      Coda* pCoda = pRowTray->pCoda();
+      
+      RowCoder::vRetrieveAll(aHeadLine, pColVec, pCoda);
+    }
     
-    aaCacheLine = pFetchBuffer->aaNextRowPtr(aaCacheLine);
+    aaHeadLine = pFetchBuffer->aaNextRowPtr(aaHeadLine);
   }
   
   return;

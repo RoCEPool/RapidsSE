@@ -886,7 +886,39 @@ namespace Data
 //      oDatum.m_iInt = iSum;
     }
   
-
+    /*----------------------------------------------------------------------------*/
+    /* retrieve and decode row from cache line                                    */
+    /*----------------------------------------------------------------------------*/
+    static inline void vRetrieveAll(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda)
+    {
+      Datum oDatum;
+      
+      //vHeadDump(aHeadLine, pColVec);
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      
+      //      i8 iRem = (i8)aHeadLine % 64;
+      //      RASSERT(! iRem);
+      
+      // get no of columns
+      i8 nColumns = pColVec->nItems();
+      
+      // for each column
+      for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+        
+        // get the column at index
+        Column* pCol = pColVec->pGet(i_Col);
+        
+        // get the encoded value into datum
+        vDecodeFast(&oDatum,aHeadLine,pCol,pCoda);
+      }
+      
+      //      i8 iSum = 0;
+      //      byte* ayByte = (byte*)aHeadLine;
+      //      for (i8 _i = 0; _i < 64; _i++)
+      //        iSum+=*ayByte++;
+      //      oDatum.m_iInt = iSum;
+    }
+    
     /*----------------------------------------------------------------------------*/
     /* return base offset for column vector                                       */
     /*----------------------------------------------------------------------------*/
