@@ -23,7 +23,10 @@ namespace Data
   {
   public:
   
+    ColumnVec* m_pColVec;
+  
     RowNub*    m_pIntoNub;
+    Coda*      m_pIntoCoda;
     i8         m_i_IntoHead;
     HeadLine*  m_aIntoHead;
     i8         m_i_IntoOffset; // encoding offset
@@ -33,9 +36,6 @@ namespace Data
     HeadLine*  m_aFromHead;
     i8         m_i_FromOffset; // encoding offset
  
-    ColumnVec* m_pColVec;
-    Coda*      m_pCoda;
-  
     RowParts*  m_pWorkParts;
     RowNub*    m_pWorkNub;
     HeadLine*  m_aWorkHead;
@@ -55,12 +55,8 @@ namespace Data
 
     } m_xaUsage[C_MAX_COLUMNS];
   
-    i8 m_nTotalBuffers;
-    i8 m_nTotalRows;
+    i8 m_nTotalHeads;
 
-    i8 m_nTails;
-    i8 m_nTailUnits;
-  
     i8 m_nHeadFreeBytes;
     i8 m_nHeadFreeBytes_0_7;
     i8 m_nHeadFreeBytes_8_15;
@@ -71,6 +67,11 @@ namespace Data
     i8 m_nHeadFreeBytes_48_55;
     i8 m_nHeadFreeBytes_56_63;
     i8 m_nHeadFreeBytes_64_;
+
+    i8 m_nTails;
+    i8 m_nTailUnits;
+
+    i8 m_nTotalBuffers;
 
     // must be last
     Footer m_xFooter;
