@@ -562,7 +562,7 @@ namespace Data
       TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
       
       //i8 nCompressed = aHeadLine->w8_1B(i_Offset+2);
-      aHeadLine->w8_2BFast(pDatum, i_Offset+2);
+      aHeadLine->w8_1BFast(pDatum, i_Offset+2);
       i8 nCompressed = pDatum->m_wWord;
       
       RASSERT(nCompressed <= 56);
@@ -743,7 +743,7 @@ namespace Data
       //      }
       
       eMN eEncodingDatum = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
-      //i8 i_Offset1_ = i_Offset_;
+      i8 i_Offset1_ = i_Offset_;
       
       if (eEncodingDatum == MN_NULL || eEncodingDatum == MN_EMPTY)
         return eEncodingDatum;
@@ -753,14 +753,14 @@ namespace Data
         eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_Nibble);
         
         eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
-        //i_Offset1_ += nDataBytes(eDatumExt,eEncoding);
+        i_Offset1_ += nDataBytes(eDatumExt,eEncoding);
         i_Offset_ += g_iDatumEncoding[eDatumExt][eEncoding];
-//        if (i_Offset1_ != i_Offset_) {
-//          i8 x = nDataBytes(eDatumExt,eEncoding);
-//          i8 y = g_iDatumEncoding[eDatumExt][eEncoding];
-//          i8 z = 1;
-//        }
-//        RASSERT(i_Offset1_ == i_Offset_);
+        if (i_Offset1_ != i_Offset_) {
+          i8 x = nDataBytes(eDatumExt,eEncoding);
+          i8 y = g_iDatumEncoding[eDatumExt][eEncoding];
+          i8 z = 1;
+        }
+        RASSERT(i_Offset1_ == i_Offset_);
         
         //! experiment
         //        if (eEncoding > MN_8B) {

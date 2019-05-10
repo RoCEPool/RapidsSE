@@ -812,6 +812,9 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
   
   while (aaHeadLine < aaLatter) {
     
+    if ( ! aaHeadLine )
+      break;
+    
     HeadLine* aHeadLine = *aaHeadLine;
     
     // check if aHeadLine is from the last rowBuffer
