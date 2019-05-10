@@ -1758,9 +1758,12 @@ void RowCoder::vAnalyse(RowNub* pNub)
   
   for (i8 i_Head = 0; i_Head < pNub->nHeads();  i_Head++) {
     
-    HeadLine* aHead = pNub->aGetHead(i_Head);
+    HeadLine* aHeadLine = pNub->aGetHead(i_Head);
     
-    i8 nHeadFree = nFreeSpaceHead(pNub,aHead);
+    ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
+    Coda* pCoda = pNub->pCoda();
+    
+   i8 nHeadFree = nFreeSpaceHead(aHeadLine,pColVec,pCoda);
     iSumHead += nHeadFree;
     nHeads++;
     
@@ -1769,7 +1772,7 @@ void RowCoder::vAnalyse(RowNub* pNub)
     if (nHeadFree > iMaxHead)
       iMaxHead = nHeadFree;
     
-    i8 nTailUsed = nShocoTailSize(pNub,aHead);
+    i8 nTailUsed = nShocoTailSize(pNub,aHeadLine);
     
     if (nTailUsed != C_UNKNOWN) {
       
@@ -3906,21 +3909,6 @@ i8 RowCoder::iFindTail(RowNub* pNub, TailLine* aFindLine)
   //  if (IntLib::bIsDecaCycle(nNotFound))
   //    vTrace("%lld dupe tail NOT found\n"_Stz,nNotFound);
   return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* calculate free space of a head line                                        */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::nFreeSpaceHead(RowNub* pNub, HeadLine* aHeadLine)
-{
-  //MemLib::vWordDump(aHeadLine,sizeof(HeadLine));
-  
-  ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
-  Coda* pCoda = pNub->pCoda();
-
-  i8 nFreeBytes = nFreeSpaceHead(aHeadLine, pColVec, pCoda);
-  
-  return nFreeBytes;
 }
 
 /*----------------------------------------------------------------------------*/

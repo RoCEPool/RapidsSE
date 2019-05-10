@@ -246,7 +246,6 @@ namespace Data
     //! move into Nub
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
 
-    static i8 nFreeSpaceHead(RowNub* pNub, HeadLine* aHeadLine);
     static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda);
 
     static eMN eEncodingOriginal(Column* pCol, HeadLine* aHeadLine,
