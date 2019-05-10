@@ -537,7 +537,7 @@ namespace Data
       aHeadLine->w8_1BFast(pDatum, i_Offset);
       i8 nCompressed = pDatum->m_wWord;
       
-      RASSERT(nCompressed <= 56);
+      //RASSERT(nCompressed <= 56);
       
       i8 nDecompressed =
       Compress::iFromShoco((char*)pDatum->m_sVch.aChar(),
