@@ -27,6 +27,7 @@ namespace Structures
     static i8 iHashReverse(byte* yaKey, i8 nBytes, i8 nChars);
     static i8 iHashRotate(byte* yaKey, i8 nBytes, i8 nChars);
 
+    void vDump(void);
     bool bEqualTo(byte* yaKey, i8 nBytes);
     void vSet(HashEntry* aSrcEntry, i8 iAltValue);
     void vSet(byte* yaKey, i8 nBytes, i8 iValue, i8 iHash);

@@ -123,6 +123,21 @@ i8 HashEntry::iHashRotate(byte* yaKey, i8 nBytes, i8 nByChars)
 /*----------------------------------------------------------------------------*/
 /* is this hash entry equal to given key                                      */
 /*----------------------------------------------------------------------------*/
+void HashEntry::vDump(void)
+{
+  s32 sKey;
+
+  StrLib::vCopyLen(sKey.aChar(),(char*)m_yaKey,m_nBytes);
+
+  vTrace("%s/%lld %lld\n"_Stz,
+         sKey.aChar(),
+         m_nBytes,
+         m_iValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this hash entry equal to given key                                      */
+/*----------------------------------------------------------------------------*/
 bool HashEntry::bEqualTo(byte* yaKey, i8 nBytes)
 {
   if (nBytes == m_nBytes && MemLib::bCompareBytes(m_yaKey,yaKey,nBytes))
