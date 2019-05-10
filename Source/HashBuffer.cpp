@@ -152,7 +152,8 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iAltValue)
 /*----------------------------------------------------------------------------*/
 /* insert a key,value into this hash buffer                                   */
 /*----------------------------------------------------------------------------*/
-void HashBuffer::vInsertEntry(i8 iEntryHash, byte* yaKey, i8 nBytes, i8 iValue)
+void HashBuffer::vInsertEntry(i8 iEntryHash, byte* yaKey, i8 nBytes, i8 iValue,
+                              bool& bArcTrc)
 {
   i8 i_Entry = iEntryHash % m_pHashMap->m_nEntriesPerBuffer;
   
@@ -161,7 +162,7 @@ void HashBuffer::vInsertEntry(i8 iEntryHash, byte* yaKey, i8 nBytes, i8 iValue)
   
   // test if the entry is already in use
   if (C_UNKNOWN != m_xHashEntry[i_Entry].m_iHash) {
-    vHandleOccupied(i_Entry,yaKey,nBytes,iValue);
+    vHandleOccupied(i_Entry,yaKey,nBytes,iValue,bArcTrc);
     return;
   }
   
@@ -177,8 +178,10 @@ void HashBuffer::vInsertEntry(i8 iEntryHash, byte* yaKey, i8 nBytes, i8 iValue)
   if (m_iDepth)
     m_pHashMap->m_nArcEntries++;
   
-  if (m_iDepth > m_pHashMap->m_iMaxDepth)
+  if (m_iDepth > m_pHashMap->m_iMaxDepth) {
     m_pHashMap->m_iMaxDepth = m_iDepth;
+    bArcTrc = true;
+  }
 }
 
 
@@ -213,7 +216,8 @@ void HashBuffer::vDumpEntry(i8 i_Entry, char cIndicator)
 /*----------------------------------------------------------------------------*/
 /* handle an occupation                                                       */
 /*----------------------------------------------------------------------------*/
-void HashBuffer::vHandleOccupied(i8 i_Entry, byte* yaKey, i8 nBytes, i8 iValue)
+void HashBuffer::vHandleOccupied(i8 i_Entry, byte* yaKey, i8 nBytes, i8 iValue,
+                                 bool& bArcTrc)
 {
   if (m_pHashMap->m_bTrace)
     vDumpEntry(i_Entry,'o');
@@ -224,14 +228,15 @@ void HashBuffer::vHandleOccupied(i8 i_Entry, byte* yaKey, i8 nBytes, i8 iValue)
   }
   else {
     // its a hash collision
-    vInsertCollision(yaKey,nBytes,iValue);
+    vInsertCollision(yaKey,nBytes,iValue,bArcTrc);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert a colliding key,value into this hash buffer                         */
 /*----------------------------------------------------------------------------*/
-void HashBuffer::vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue)
+void HashBuffer::vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue,
+                                  bool& bArcTrc)
 {
   i8 iArcHash = HashEntry::iHashArc(yaKey,nBytes,m_iDepth+1);
   i8 i_Arc = iArcHash % m_pHashMap->m_nArcsPerBuffer;
@@ -241,7 +246,7 @@ void HashBuffer::vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue)
     m_paArcs[i_Arc] = new HashBuffer(m_pHashMap,this,i_Arc,false);
   
   i8 iEntryHash = HashEntry::iHashEntry(yaKey,nBytes,m_iDepth+1);
-  m_paArcs[i_Arc]->vInsertEntry(iEntryHash,yaKey,nBytes,iValue);
+  m_paArcs[i_Arc]->vInsertEntry(iEntryHash,yaKey,nBytes,iValue,bArcTrc);
 }
 
 
