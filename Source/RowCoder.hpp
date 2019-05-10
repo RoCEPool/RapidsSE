@@ -159,7 +159,7 @@ namespace Data
   
   public:
     static void vAnalyse(RowNub* pNub);
-    static void vAppend(Datum& oDatum, Column* pCol, Record* pRec);
+    static void vAppend(Record* pRec, Datum* pDatum, Column* pCol);
     static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
                         i8& i_LastColumn, i8& i_LastOffset);
 //    static void vDecodeFast(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec,

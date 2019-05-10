@@ -2624,22 +2624,22 @@ void RowCoder::vAppend(Record* pRec, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode and append column datum from cache line                             */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vAppend(Datum& oDatum, Column* pCol, Record* pRec)
+void RowCoder::vAppend(Record* pRec, Datum* pDatum, Column* pCol)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we have the decoded value in oDatum
   
   eDM eDatum = pCol->eDatumType();
   switch (eDatum) {
-    case DM_BCD: pRec->vAppendBcd(pCol,&oDatum); break;
-    case DM_BOL: pRec->vAppendBol(pCol,&oDatum); break;
-    case DM_DTE: pRec->vAppendDte(pCol,&oDatum); break;
-    case DM_FLT: pRec->vAppendFlt(pCol,&oDatum); break;
-    case DM_INT: pRec->vAppendInt(pCol,&oDatum); break;
-    case DM_IVL: pRec->vAppendIvl(pCol,&oDatum); break;
-    case DM_TME: pRec->vAppendTme(pCol,&oDatum); break;
-    case DM_TSP: pRec->vAppendTsp(pCol,&oDatum); break;
-    case DM_VCH: pRec->vAppendVch(pCol,&oDatum); break;
+    case DM_BCD: pRec->vAppendBcd(pCol,pDatum); break;
+    case DM_BOL: pRec->vAppendBol(pCol,pDatum); break;
+    case DM_DTE: pRec->vAppendDte(pCol,pDatum); break;
+    case DM_FLT: pRec->vAppendFlt(pCol,pDatum); break;
+    case DM_INT: pRec->vAppendInt(pCol,pDatum); break;
+    case DM_IVL: pRec->vAppendIvl(pCol,pDatum); break;
+    case DM_TME: pRec->vAppendTme(pCol,pDatum); break;
+    case DM_TSP: pRec->vAppendTsp(pCol,pDatum); break;
+    case DM_VCH: pRec->vAppendVch(pCol,pDatum); break;
     default:
       NEVER_REACH;
   }
