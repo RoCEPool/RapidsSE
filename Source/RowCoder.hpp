@@ -166,8 +166,8 @@ namespace Data
     static void vDecode(Datum* pDatum, HeadLine* aHeadLine,
                         ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                         i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* pCol,
-                                     Coda* pCoda);
+    static void vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol,
+                                     Coda* pCoda, i8& i_LastColumn, i8& i_LastOffset);
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda);
     static void vHeadDumpColumn(HeadLine* aHeadLine, ColumnVec* pColVec, i8 iCol, Stz* aRecodeFunction);
@@ -303,6 +303,34 @@ namespace Data
 
 
     /*----------------------------------------------------------------------------*/
+    /* decode varchar from given cache line                                       */
+    /*----------------------------------------------------------------------------*/
+    static inline void vDecodeAlphaFast(Datum* pDatum, HeadLine* aHeadLine,
+                                        eMN eEncoding, Column* pCol, Coda* pCoda, i8 i_Offset)
+    {
+      i8 i_Col  = pCol->iColumnNo();
+      
+      pDatum->m_eDatum = DM_VCH;
+      
+      //RASSERT(eEncoding >= MN_ALPHA_0 && eEncoding <= MN_ALPHA_5);
+      
+      if (eEncoding < MN_ALPHA_0 || eEncoding > MN_ALPHA_5) {
+        vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_Offset);
+        return;
+      }
+      
+      //vDecodeVchSmall(pDatum,aHeadLine,pCol,eEncoding,i_Offset);
+      
+      pDatum->m_sVch.aChar()[0] = pCoda->m_aiAux[i_Col].m_caChr[eEncoding - MN_ALPHA_0];
+      pDatum->m_sVch.aChar()[1] = '\0';
+      
+      //char cChr = aHeadLine->w8_1B(i_Offset);
+      //RASSERT(cChr == pDatum->m_sVch.aChar()[0]);
+      
+      //RASSERT(pDatum->m_sVch.aChar()[0] == (char)pCoda->m_aiAux[i_Col]);
+    }
+    
+    /*----------------------------------------------------------------------------*/
     /* decode boolean from given cache line                                       */
     /*----------------------------------------------------------------------------*/
     static inline void vDecodeBolFast(Datum* pDatum, HeadLine* aHeadLine, Column* pCol)
@@ -325,10 +353,132 @@ namespace Data
     }
     
     /*----------------------------------------------------------------------------*/
+    /* decode days from given cache line                                          */
+    /*----------------------------------------------------------------------------*/
+    static inline void vDecodeDaysFast(Datum* pDatum, HeadLine* aHeadLine, eMN eEncoding,
+                                       ColumnVec* pColVec, Column* pCol, Coda* pCoda, i8 i_Offset)
+    {
+      i8 i_Col  = pCol->iColumnNo();
+      i8 i_FirstColumn  = pCol->iFirstDate();
+      
+      pDatum->m_eDatum = DM_DTE;
+      
+      i8 iDays = 0;
+      switch (eEncoding) {
+          
+        case MN_NULL: pDatum->m_iInt = C_DATUM_NULL; return;
+          
+        case MN_DAYS_PLUS_1B:  iDays = aHeadLine->w8_1B(i_Offset);  break;
+        case MN_DAYS_MINUS_1B: iDays = - aHeadLine->w8_1B(i_Offset); break;
+        default:
+          NEVER_REACH;
+      }
+      
+      i8 i_SearchColumn = 0;
+      i8 i_SearchOffset = iBaseOffset(pColVec);
+      Column* pColFirstDate  = pColVec->pGet(pCol->iFirstDate());
+      eMN eFirstEncoding = eEncodingRecoded(aHeadLine,pColFirstDate,pColVec,
+                                            pCoda,i_SearchColumn,i_SearchOffset);
+      
+      switch (eFirstEncoding) {
+        case MN_SILVER_1B:    pDatum->m_iInt = aHeadLine->w8_1B(i_SearchOffset); break;
+        case MN_SILVER_2B:    pDatum->m_iInt = aHeadLine->w8_2B(i_SearchOffset); break;
+        default:
+          NEVER_REACH;
+      }
+      
+      pDatum->m_iInt += iDays;
+      
+      i8 iEra = C_SILVER_ERA;
+      vDaysFromBase(pDatum,iEra);
+      
+    }
+
+    /*----------------------------------------------------------------------------*/
+    /* decode integer from given cache line                                       */
+    /*----------------------------------------------------------------------------*/
+    static inline void vDecodeDeltaPlusFast(Datum* pDatum, HeadLine* aHeadLine,eMN eEncoding,
+                                        Column* pCol, Coda* pCoda, i8 i_Offset)
+    {
+      i8 i_Col  = pCol->iColumnNo();
+      
+      pDatum->m_eDatum = DM_INT;
+      
+      switch (eEncoding) {
+          
+        case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;               break;
+        case MN_1B:   pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
+        case MN_2B:   pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
+        case MN_3B:   pDatum->m_iInt = aHeadLine->w8_3B(i_Offset); break;
+        case MN_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
+        case MN_5B:   pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
+        case MN_6B:   pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
+        case MN_7B:   pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
+        case MN_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
+          
+        case MN_MINUS_ONE: pDatum->m_iInt = (i8)-1; break;
+        case MN_ZERO:      pDatum->m_iInt = (i8)0;  break;
+        case MN_PLUS_ONE:  pDatum->m_iInt = (i8)1;  break;
+          
+        case MN_SAME:
+          pDatum->m_iInt = pCoda->m_aiAux[i_Col].m_iInt;
+          break;
+          
+        case MN_PLUS_1B:
+          pDatum->m_iInt = pCoda->m_aiAux[i_Col].m_iInt
+          + aHeadLine->w8_1B(i_Offset);
+          break;
+          
+        case MN_PLUS_2B:
+          pDatum->m_iInt = pCoda->m_aiAux[i_Col].m_iInt
+          + aHeadLine->w8_2B(i_Offset);
+          break;
+          
+          //
+          //    case MN_MINUS_1B:
+          //      pDatum->m_iInt = pCoda->m_aiAux[i_Col].m_iInt
+          //                     - aHeadLine->w8_1B(i_Offset);
+          break;
+          
+        default:
+          NEVER_REACH;
+      }
+    }
+    
+    /*----------------------------------------------------------------------------*/
+    /* decode digit from given cache line                                         */
+    /*----------------------------------------------------------------------------*/
+    static inline void vDecodeDigitFast(Datum* pDatum, HeadLine* aHeadLine,eMN eEncoding,
+                                        Column* pCol, Coda* pCoda, i8 i_Offset)
+    {
+      i8 i_Col  = pCol->iColumnNo();
+      
+      pDatum->m_eDatum = DM_INT;
+      
+      if (eEncoding >= MN_DIGIT_0 && eEncoding <= MN_DIGIT_7) {
+        pDatum->m_iInt = (i8)(eEncoding - MN_DIGIT_0);
+      }
+      else {
+        switch (eEncoding) {
+          case MN_NULL:       pDatum->m_iInt = C_DATUM_NULL;                break;
+          case MN_DIGIT_1B:   pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
+          case MN_DIGIT_2B:   pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
+          case MN_DIGIT_3B:   pDatum->m_iInt = aHeadLine->w8_3B(i_Offset); break;
+          case MN_DIGIT_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
+          case MN_DIGIT_6B:   pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
+          case MN_DIGIT_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
+          default:
+            NEVER_REACH;
+        }
+      }
+      
+    }
+
+    /*----------------------------------------------------------------------------*/
     /* decode date from given cache line                                          */
     /*----------------------------------------------------------------------------*/
     static inline void vDecodeDteFast(Datum* pDatum, HeadLine* aHeadLine,
-                                  eMN eEncoding, i8& i_Offset)
+                                      eMN eEncoding, i8 i_Offset)
     {
       pDatum->m_eDatum = DM_DTE;
       
@@ -405,6 +555,32 @@ namespace Data
         default:
           NEVER_REACH;
       }
+    }
+    
+    /*----------------------------------------------------------------------------*/
+    /* decode tenth from given cache line                                         */
+    /*----------------------------------------------------------------------------*/
+    static inline void vDecodeTenthFast(Datum* pDatum, HeadLine* aHeadLine, eMN eEncoding,
+                                    Column* pCol, i8 i_Offset)
+    {
+      i8 i_Col  = pCol->iColumnNo();
+      
+      pDatum->m_eDatum = DM_BCD;
+      
+      if (eEncoding >= MN_TENTH_0 && eEncoding <= MN_TENTH_10) {
+        pDatum->m_iBcd = (i8)(eEncoding - MN_TENTH_0);
+      }
+      else {
+        switch (eEncoding) {
+          case MN_NULL:       pDatum->m_iInt = C_DATUM_NULL;                break;
+          case MN_TENTH_2B:   pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
+          case MN_TENTH_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
+          case MN_TENTH_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
+          default:
+            NEVER_REACH;
+        }
+      }
+      
     }
     
     /*----------------------------------------------------------------------------*/
@@ -650,15 +826,15 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     /* get encoded datum from cache line                                          */
     /*----------------------------------------------------------------------------*/
-    static inline void vDecodeFast(Datum* pDatum, HeadLine* aHeadLine, Column* pCol,
-                                   Coda* pCoda)
+    static inline void vDecodeFast(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColumnVec,
+                                   Column* pCol, Coda* pCoda, i8& i_LastColumn, i8& i_LastOffset)
     {
       if (pCol->eDatumType() == DM_BOL) {
         vDecodeBolFast(pDatum,aHeadLine,pCol);
         return;
       }
 
-      vDecodeFast_Fallback(pDatum,aHeadLine,pCol,pCoda);
+      vDecodeFast_Fallback(pDatum,aHeadLine,pColumnVec,pCol,pCoda,i_LastColumn,i_LastOffset);
     }
   
     /*----------------------------------------------------------------------------*/
@@ -667,7 +843,7 @@ namespace Data
     //! consider passing a eDatum array instead of colum vector
     
     static inline eMN eGetEncodingExtFast(HeadLine* aHeadLine, i8 i_ForCol,
-                                          Coda* pCoda, i8& i_Offset_)
+                                          Coda* pCoda, i8& i_LastColumn, i8& i_LastOffset_)
     {
     
 //! experiment on loop unrolling
@@ -682,24 +858,24 @@ namespace Data
 //      }
     
       eMN eEncodingDatum = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
-      i8 i_Offset1_ = i_Offset_;
+      //i8 i_Offset1_ = i_LastOffset_;
       
       if (eEncodingDatum == MN_NULL)
         return eEncodingDatum;
       
-      for (i8 i_Nibble = 0; i_Nibble < i_ForCol; i_Nibble++) {
+      for (i8 i_Nibble = i_LastColumn; i_Nibble < i_ForCol; i_Nibble++) {
         
         eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_Nibble);
         
         eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
 //        i_Offset1_ += nDataBytes(eDatumExt,eEncoding);
-        i_Offset_ += g_iDatumEncoding[eDatumExt][eEncoding];
-//        if (i_Offset1_ != i_Offset_) {
+        i_LastOffset_ += g_iDatumEncoding[eDatumExt][eEncoding];
+//        if (i_Offset1_ != i_LastOffset_) {
 //          i8 x = nDataBytes(eDatumExt,eEncoding);
 //          i8 y = g_iDatumEncoding[eDatumExt][eEncoding];
 //          i8 z = 1;
 //        }
-//        RASSERT(i_Offset1_ == i_Offset_);
+//        RASSERT(i_Offset1_ == i_LastOffset_);
         
 //! experiment
 //        if (eEncoding > MN_8B) {
@@ -711,7 +887,7 @@ namespace Data
 //        }
 
       }
-      
+      i_LastColumn = i_ForCol;
       
       
       return eEncodingDatum;
@@ -723,7 +899,7 @@ namespace Data
     //! consider passing a eDatum array instead of colum vector
     
     static inline eMN eGetEncodingExtVchFast(HeadLine* aHeadLine, i8 i_ForCol,
-                                          Coda* pCoda, i8& i_Offset_)
+                                          Coda* pCoda, i8& i_LastColumn, i8& i_LastOffset_)
     {
       
       //! experiment on loop unrolling
@@ -738,24 +914,24 @@ namespace Data
       //      }
       
       eMN eEncodingDatum = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
-      i8 i_Offset1_ = i_Offset_;
+      //i8 i_Offset1_ = i_LastOffset_;
       
       if (eEncodingDatum == MN_NULL || eEncodingDatum == MN_EMPTY)
         return eEncodingDatum;
       
-      for (i8 i_Nibble = 0; i_Nibble < i_ForCol; i_Nibble++) {
+      for (i8 i_Nibble = i_LastColumn; i_Nibble < i_ForCol; i_Nibble++) {
         
         eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_Nibble);
         
         eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
-        i_Offset1_ += nDataBytes(eDatumExt,eEncoding);
-        i_Offset_ += g_iDatumEncoding[eDatumExt][eEncoding];
-        if (i_Offset1_ != i_Offset_) {
-          i8 x = nDataBytes(eDatumExt,eEncoding);
-          i8 y = g_iDatumEncoding[eDatumExt][eEncoding];
-          i8 z = 1;
-        }
-        RASSERT(i_Offset1_ == i_Offset_);
+        //i_Offset1_ += nDataBytes(eDatumExt,eEncoding);
+        i_LastOffset_ += g_iDatumEncoding[eDatumExt][eEncoding];
+//        if (i_Offset1_ != i_LastOffset_) {
+//          i8 x = nDataBytes(eDatumExt,eEncoding);
+//          i8 y = g_iDatumEncoding[eDatumExt][eEncoding];
+//          i8 z = 1;
+//        }
+//        RASSERT(i_Offset1_ == i_LastOffset_);
         
         //! experiment
         //        if (eEncoding > MN_8B) {
@@ -768,7 +944,7 @@ namespace Data
         
       }
       
-      
+      i_LastColumn = i_ForCol;
       
       return eEncodingDatum;
     }
@@ -779,7 +955,7 @@ namespace Data
     //! consider passing a eDatum array instead of colum vector
     
     static inline eMN eGetEncodingExtGenericFast(HeadLine* aHeadLine, i8 i_ForCol,
-                                          Coda* pCoda, i8& i_Offset_)
+                                          Coda* pCoda, i8& i_LastColumn, i8& i_LastOffset_)
     {
       
       //! experiment on loop unrolling
@@ -800,13 +976,15 @@ namespace Data
           eEncodingDatum == MN_PLUS_ONE)
         return eEncodingDatum;
       
-      for (i8 i_Nibble = 0; i_Nibble < i_ForCol; i_Nibble++) {
+      RASSERT(i_LastColumn <= i_ForCol);
+      
+      for (i8 i_Nibble = i_LastColumn; i_Nibble < i_ForCol; i_Nibble++) {
         
         eMN eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_Nibble);
         
         eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
         //i_Offset_ += nDataBytes(eDatumExt,eEncoding);
-        i_Offset_ += g_iDatumEncoding[eDatumExt][eEncoding];
+        i_LastOffset_ += g_iDatumEncoding[eDatumExt][eEncoding];
         //! experiment
         //        if (eEncoding > MN_8B) {
         //          eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
@@ -818,6 +996,7 @@ namespace Data
         
       }
       //eEncoding = (eMN)aHeadLine->iMetaNibbleFast(i_ForCol);
+      i_LastColumn = i_ForCol;
       
       return eEncodingDatum;
     }
@@ -862,8 +1041,8 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     /* retrieve and decode row from cache line into a datu                        */
     /*----------------------------------------------------------------------------*/
-    static inline void vRetrieve(Datum& oDatum, HeadLine* aHeadLine, Column* pCol,
-                                 Coda* pCoda)
+    static inline void vRetrieve(Datum& oDatum, HeadLine* aHeadLine, ColumnVec* pColVec,
+                                 Column* pCol, Coda* pCoda, i8& i_LastColumn, i8& i_LastOffset)
     {
       //vHeadDump(aHeadLine, pColVec);
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -872,7 +1051,7 @@ namespace Data
 //      RASSERT(! iRem);
     
       // get the encoded value into datum
-      vDecodeFast(&oDatum,aHeadLine,pCol,pCoda);
+      vDecodeFast(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
     
 //      i8 iSum = 0;
 //      byte* ayByte = (byte*)aHeadLine;
@@ -896,6 +1075,8 @@ namespace Data
       
       // get no of columns
       i8 nColumns = pColVec->nItems();
+      i8 i_LastColumn = 0;
+      i8 i_LastOffset = iBaseOffset(pColVec);
       
       // for each column
       for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
@@ -904,7 +1085,7 @@ namespace Data
         Column* pCol = pColVec->pGet(i_Col);
         
         // get the encoded value into datum
-        vDecodeFast(&oDatum,aHeadLine,pCol,pCoda);
+        vDecodeFast(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       }
       
       //      i8 iSum = 0;
