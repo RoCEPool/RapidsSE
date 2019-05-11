@@ -123,7 +123,6 @@ void HashMap::vAnalysis(bool bBufferAnalysis)
          
          m_nDupBuffers,
          m_nDupEntries);
-  
 }
 
 /*----------------------------------------------------------------------------*/

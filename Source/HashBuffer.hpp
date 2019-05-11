@@ -14,6 +14,7 @@ namespace Structures
   class HashBuffer : public Object
   {
   friend HashCursor;
+  friend HashMap;
 
   private:
     HashMap*    m_pHashMap;     // which hash map
@@ -44,17 +45,16 @@ namespace Structures
     HashBuffer(HashMap* pHashMap, HashBuffer* pParent, i8 iArc, bool bDuplicates);
     ~HashBuffer(void) noexcept(false);
   
+  private:
     void vAnalysis(void);
     bool bAppendDuplicate(HashInsert* pHi, HashEntry* aOriginalEntry);
+    i8   iArc(byte* yaKey, i8 nBytes, u8 uSignature);
+    void vDumpEntry(i8 i_Entry, char cIndicator);
+    i8   iEntry(byte* yaKey, i8 nBytes, u8 uSignature);
+    void vHandleOccupied(HashInsert* pHi, i8 i_Entry);
+    void vInsertCollision(HashInsert* pHi);
     void vInsertEntry(HashInsert* pHi);
 
-  private:
-     i8   iArc(byte* yaKey, i8 nBytes, u8 uSignature);
-     void vDumpEntry(i8 i_Entry, char cIndicator);
-     i8   iEntry(byte* yaKey, i8 nBytes, u8 uSignature);
-     void vHandleOccupied(HashInsert* pHi, i8 i_Entry);
-     void vInsertCollision(HashInsert* pHi);
-  
     Footer* aFooter(void);
  };
   

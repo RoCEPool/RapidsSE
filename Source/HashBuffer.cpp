@@ -105,6 +105,11 @@ HashBuffer::~HashBuffer(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* print analysis of this hash buffer                                         */
 /*----------------------------------------------------------------------------*/
@@ -114,7 +119,7 @@ void HashBuffer::vAnalysis(void)
          m_sDotNotation.aChar(),
          m_nEntries,
          IntLib::iPercent(m_nEntries, m_pHashMap->m_nEntriesPerBuffer));
-
+  
   for (i8 i_Arc = 0; i_Arc < C_HASH_ARCS; i_Arc++)
     if (m_paArcs[i_Arc])
       m_paArcs[i_Arc]->vAnalysis();
@@ -135,7 +140,7 @@ bool HashBuffer::bAppendDuplicate(HashInsert* pHi, HashEntry* aOriginalEntry)
   // put the duplicate into next free entry but with alt value
   //m_xHashEntry[m_i_Duplicate].vSet(aHeadEntry,iAltValue);
   m_xHashEntry[m_i_Duplicate].vSet(aOriginalEntry,pHi->m_iValue);
-
+  
   // this new duplicate enty points to the current dupe head
   m_xHashEntry[m_i_Duplicate].m_aDupeChain = aOriginalEntry->m_aDupeChain;
   
@@ -146,70 +151,14 @@ bool HashBuffer::bAppendDuplicate(HashInsert* pHi, HashEntry* aOriginalEntry)
   m_nEntries++;
   m_pHashMap->m_nEntries++;
   m_pHashMap->m_nDupEntries++;
-
+  
   if (m_pHashMap->m_bTrace)
     vDumpEntry(m_i_Duplicate,'D');
-
+  
   m_i_Duplicate++;
-
+  
   return true;
 }
-
-/*----------------------------------------------------------------------------*/
-/* insert a key,value into this hash buffer                                   */
-/*----------------------------------------------------------------------------*/
-void HashBuffer::vInsertEntry(HashInsert* pHi)
-{
-  if (pHi->m_bDebug) {
-    vDebugTrap();
-  }
-  
-  i8 i_Entry = iEntry(pHi->m_yaKey,pHi->m_nBytes,pHi->m_uSignature);
-  
-  //if (0 == m_iDepth)
-  //  vTrace("[%02lld] EntryHash %08x\n"_Stz,m_iDepth,iEntryHash);
-  
-  // test if the entry is already in use
-  if (C_UNKNOWN != m_xHashEntry[i_Entry].m_uHash) {
-    if (pHi->m_bDebug) {
-      vDebugTrap();
-    }
-    vHandleOccupied(pHi,i_Entry);
-    if (pHi->m_bArcTrc)
-      vDumpEntry(i_Entry,'A');
-    else if (pHi->m_bDebug)
-      vDumpEntry(i_Entry,'C');
-    return;
-  }
-  
-  //m_xHashEntry[i_Entry].vSet(yaKey,nBytes,iValue,0,uSignature);
-  m_xHashEntry[i_Entry].vSet(pHi);
-
-  if (pHi->m_bDebug || m_pHashMap->m_bTrace) {
-    vDumpEntry(i_Entry,'I');
-    vDebugTrap();
-  }
-  
-  if (m_iDepth > m_pHashMap->m_iMaxDepth) {
-    m_pHashMap->m_iMaxDepth = m_iDepth;
-//    if (bDebug) {
-      pHi->m_bArcTrc = true;
-      vDumpEntry(i_Entry,'A');
-//    }
-  }
-
-  // increment number of entries
-  m_nEntries++;
-  m_pHashMap->m_nEntries++;
-  
-  if (m_iDepth)
-    m_pHashMap->m_nArcEntries++;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* compute i_Arc from hash                                                    */
@@ -327,6 +276,57 @@ void HashBuffer::vInsertCollision(HashInsert* pHi)
     m_paArcs[i_Arc] = new HashBuffer(m_pHashMap,this,i_Arc,false);
   
   m_paArcs[i_Arc]->vInsertEntry(pHi);
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert a key,value into this hash buffer                                   */
+/*----------------------------------------------------------------------------*/
+void HashBuffer::vInsertEntry(HashInsert* pHi)
+{
+  if (pHi->m_bDebug) {
+    vDebugTrap();
+  }
+  
+  i8 i_Entry = iEntry(pHi->m_yaKey,pHi->m_nBytes,pHi->m_uSignature);
+  
+  //if (0 == m_iDepth)
+  //  vTrace("[%02lld] EntryHash %08x\n"_Stz,m_iDepth,iEntryHash);
+  
+  // test if the entry is already in use
+  if (C_UNKNOWN != m_xHashEntry[i_Entry].m_uHash) {
+    if (pHi->m_bDebug) {
+      vDebugTrap();
+    }
+    vHandleOccupied(pHi,i_Entry);
+    if (pHi->m_bArcTrc)
+      vDumpEntry(i_Entry,'A');
+    else if (pHi->m_bDebug)
+      vDumpEntry(i_Entry,'C');
+    return;
+  }
+  
+  //m_xHashEntry[i_Entry].vSet(yaKey,nBytes,iValue,0,uSignature);
+  m_xHashEntry[i_Entry].vSet(pHi);
+  
+  if (pHi->m_bDebug || m_pHashMap->m_bTrace) {
+    vDumpEntry(i_Entry,'I');
+    vDebugTrap();
+  }
+  
+  if (m_iDepth > m_pHashMap->m_iMaxDepth) {
+    m_pHashMap->m_iMaxDepth = m_iDepth;
+    //    if (bDebug) {
+    pHi->m_bArcTrc = true;
+    vDumpEntry(i_Entry,'A');
+    //    }
+  }
+  
+  // increment number of entries
+  m_nEntries++;
+  m_pHashMap->m_nEntries++;
+  
+  if (m_iDepth)
+    m_pHashMap->m_nArcEntries++;
 }
 
 
