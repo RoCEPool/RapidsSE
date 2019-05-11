@@ -159,10 +159,9 @@ bool HashBuffer::bAppendDuplicate(HashInsert* pHi, HashEntry* aOriginalEntry)
 /* insert a key,value into this hash buffer                                   */
 /*----------------------------------------------------------------------------*/
 void HashBuffer::vInsertEntry(HashInsert* pHi,
-                              byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature,
-                              bool bDebug, bool& bArcTrc)
+                              byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature)
 {
-  if (bDebug) {
+  if (pHi->m_bDebug) {
     int iDebug = 1;
   }
   
@@ -173,13 +172,13 @@ void HashBuffer::vInsertEntry(HashInsert* pHi,
   
   // test if the entry is already in use
   if (C_UNKNOWN != m_xHashEntry[i_Entry].m_uHash) {
-    if (bDebug) {
+    if (pHi->m_bDebug) {
       int iDebug = 1;
     }
-    vHandleOccupied(pHi,i_Entry,yaKey,nBytes,iValue,uSignature,bDebug,bArcTrc);
-    if (bArcTrc)
+    vHandleOccupied(pHi,i_Entry,yaKey,nBytes,iValue,uSignature);
+    if (pHi->m_bArcTrc)
       vDumpEntry(i_Entry,'A');
-    else if (bDebug)
+    else if (pHi->m_bDebug)
       vDumpEntry(i_Entry,'C');
     return;
   }
@@ -187,7 +186,7 @@ void HashBuffer::vInsertEntry(HashInsert* pHi,
   //m_xHashEntry[i_Entry].vSet(yaKey,nBytes,iValue,0,uSignature);
   m_xHashEntry[i_Entry].vSet(pHi);
 
-  if (bDebug || m_pHashMap->m_bTrace) {
+  if (pHi->m_bDebug || m_pHashMap->m_bTrace) {
     vDumpEntry(i_Entry,'I');
     int iDebug = 1;
   }
@@ -195,7 +194,7 @@ void HashBuffer::vInsertEntry(HashInsert* pHi,
   if (m_iDepth > m_pHashMap->m_iMaxDepth) {
     m_pHashMap->m_iMaxDepth = m_iDepth;
 //    if (bDebug) {
-      bArcTrc = true;
+      pHi->m_bArcTrc = true;
       vDumpEntry(i_Entry,'A');
 //    }
   }
@@ -206,7 +205,6 @@ void HashBuffer::vInsertEntry(HashInsert* pHi,
   
   if (m_iDepth)
     m_pHashMap->m_nArcEntries++;
-  
 }
 
 
@@ -304,8 +302,7 @@ i8 HashBuffer::iEntry(byte* yaKey, i8 nBytes, u8 uSignature)
 /* handle an occupation                                                       */
 /*----------------------------------------------------------------------------*/
 void HashBuffer::vHandleOccupied(HashInsert* pHi, i8 i_Entry,
-                                 byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature,
-                                 bool bDebug, bool& bArcTrc)
+                                 byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature)
 {
   if (m_pHashMap->m_bTrace)
     vDumpEntry(i_Entry,'o');
@@ -316,7 +313,7 @@ void HashBuffer::vHandleOccupied(HashInsert* pHi, i8 i_Entry,
   }
   else {
     // its a hash collision
-    vInsertCollision(pHi,yaKey,nBytes,iValue,uSignature,bDebug,bArcTrc);
+    vInsertCollision(pHi,yaKey,nBytes,iValue,uSignature);
   }
 }
 
@@ -324,8 +321,7 @@ void HashBuffer::vHandleOccupied(HashInsert* pHi, i8 i_Entry,
 /* insert a colliding key,value into this hash buffer                         */
 /*----------------------------------------------------------------------------*/
 void HashBuffer::vInsertCollision(HashInsert* pHi,
-                                  byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature,
-                                  bool bDebug, bool& bArcTrc)
+                                  byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature)
 {
   i8 i_Arc = iArc(yaKey,nBytes,uSignature);
   //vTrace("[%02lld] ArcHash %08x\n"_Stz,m_iDepth,iArcHash);
@@ -333,7 +329,7 @@ void HashBuffer::vInsertCollision(HashInsert* pHi,
   if (! m_paArcs[i_Arc])
     m_paArcs[i_Arc] = new HashBuffer(m_pHashMap,this,i_Arc,false);
   
-  m_paArcs[i_Arc]->vInsertEntry(pHi,yaKey,nBytes,iValue,uSignature,bDebug,bArcTrc);
+  m_paArcs[i_Arc]->vInsertEntry(pHi,yaKey,nBytes,iValue,uSignature);
 }
 
 

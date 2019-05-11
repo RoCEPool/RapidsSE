@@ -47,8 +47,7 @@ namespace Structures
     void vAnalysis(void);
     bool bAppendDuplicate(HashInsert* pHi, HashEntry* aHeadEntry);
     void vInsertEntry(HashInsert* pHi,
-                      byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature,
-                      bool bDebug, bool& bArcTrc);
+                      byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature);
 
   private:
      i8   iArc(byte* yaKey, i8 nBytes, u8 uSignature);
@@ -56,11 +55,9 @@ namespace Structures
      i8   iEntry(byte* yaKey, i8 nBytes, u8 uSignature);
      void vHandleOccupied(HashInsert* pHi,
                           i8 i_Entry,
-                          byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature,
-                          bool bDebug, bool& bArcTrc);
+                          byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature);
      void vInsertCollision(HashInsert* pHi,
-                           byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature,
-                           bool bDebug, bool& bArcTrc);
+                           byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature);
   
     Footer* aFooter(void);
  };
