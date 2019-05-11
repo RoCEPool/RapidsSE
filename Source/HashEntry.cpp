@@ -27,7 +27,6 @@ HashEntry::HashEntry(void)
   m_nBytes = C_UNKNOWN;
   m_iValue = C_UNKNOWN;
   
-  m_uHash      = C_UNKNOWN;
   m_uSignature = C_UNKNOWN;
 
   m_aDupeChain = nullptr;
@@ -166,7 +165,6 @@ void HashEntry::vSet(HashInsert* pHi)
   m_nBytes = pHi->m_nBytes;
   m_iValue = pHi->m_iValue;
   
-  m_uHash      = 0;
   m_uSignature = pHi->m_uSignature;
 }
 
@@ -178,20 +176,18 @@ void HashEntry::vSet(HashEntry* aSrcEntry, i8 iAltValue)
   vSet(aSrcEntry->m_yaKey,
        aSrcEntry->m_nBytes,
        iAltValue,
-       aSrcEntry->m_uHash,
        aSrcEntry->m_uSignature);
 }
 
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void HashEntry::vSet(byte* yaKey, i8 nBytes, i8 iValue, u8 uHash, u8 uSignature)
+void HashEntry::vSet(byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature)
 {
   MemLib::vCopy(m_yaKey,yaKey,nBytes,CN_HASHBUFFER);
   m_nBytes = nBytes;
   m_iValue = iValue;
   
-  m_uHash      = uHash;
   m_uSignature = uSignature;
 }
 

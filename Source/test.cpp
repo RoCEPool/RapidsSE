@@ -115,7 +115,7 @@ void vTest4(void)
 {
   vTrace("vTest4\n"_Stz);
 
-  HashMap* pHashMap = new HashMap(false,0,8);
+  HashMap* pHashMap = new HashMap(false,13999,8);
   
   //s32 sKey("ALPHA"_Stz);
   s32 sKey;

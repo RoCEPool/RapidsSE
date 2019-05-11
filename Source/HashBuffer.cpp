@@ -199,10 +199,11 @@ void HashBuffer::vDumpEntry(i8 i_Entry, char cIndicator)
                 m_nStrata,
                 i_Entry);
   
-  vTrace("%-30s h:%08x s:%08x k:%6s/b:%lld/=v:%lld (%lld entries (%lld total) %lld%% full)\n"_Stz,
+  vTrace("%-30s s:%016llx k:%6s/b:%lld/=v:%lld "
+         "(%lld entries (%lld total) %lld%% full)\n"_Stz,
+         
          sLead.aChar(),
          
-         aHashEntry->m_uHash,
          aHashEntry->m_uSignature,
 
          aHashEntry->m_yaKey,
@@ -254,7 +255,7 @@ void HashBuffer::vInsertEntry(HashInsert* pHi)
    i8 i_Entry = iCalcEntry(pHi);
 
   // test if the entry is already in use
-  if (C_UNKNOWN != m_xHashEntry[i_Entry].m_uHash) {
+  if (C_UNKNOWN != m_xHashEntry[i_Entry].m_uSignature) {
     if (pHi->m_bDebug)
       vDebugTrap();
     vHandleOccupied(pHi,i_Entry);
