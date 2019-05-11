@@ -21,7 +21,7 @@ HashInsert* Structures::_pHashInsert(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HashInsert::HashInsert(void)
+HashInsert::HashInsert(i8 nEntriesPerBuffer)
 {
   MemLib::vZero(m_yaKey,sizeof(m_yaKey),CN_HASHBUFFER);
   m_nBytes = C_UNKNOWN;
@@ -41,12 +41,18 @@ HashInsert::HashInsert(void)
   m_bDebug  = false;
   
   for (i8 i_History = 0; i_History < 32; i_History++) {
+    xHistory[i_History].m_uArcTape   = 0;
+    xHistory[i_History].m_uArcBits   = 0;
     xHistory[i_History].m_i_Arc      = C_UNKNOWN;
+    
+    xHistory[i_History].m_uEntryTape = 0;
     xHistory[i_History].m_uEntryHash = 0;
     xHistory[i_History].m_i_Entry    = C_UNKNOWN;
   }
   
   m_nHistory = 0;
+  
+  m_nEntriesPerBuffer = nEntriesPerBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,6 +93,16 @@ void HashInsert::vArcEntry(void)
   m_nEntryTapeBits -= 1;
 
   m_uEntryHash = m_uEntryTape; //HshLib::iHash64(m_yaKey,m_nBytes);
+  
+  xHistory[m_nHistory].m_uArcTape   = m_uArcTape;
+  xHistory[m_nHistory].m_uArcBits   = m_uArcBits;
+  xHistory[m_nHistory].m_i_Arc      = m_uArcBits;
+  
+  xHistory[m_nHistory].m_uEntryTape = m_uEntryTape;
+  xHistory[m_nHistory].m_uEntryHash = m_uEntryHash;
+  xHistory[m_nHistory].m_i_Entry    = m_uEntryHash;
+
+  m_nHistory++;
 }
 /*----------------------------------------------------------------------------*/
 //void HashInsert::vArcEntry(void)
@@ -120,6 +136,26 @@ void HashInsert::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump history                                                               */
+/*----------------------------------------------------------------------------*/
+void HashInsert::vDumpHistory(void)
+{
+  for (i8 i_History = 0; i_History < m_nHistory; i_History++) {
+    
+    vTrace("  Arc %08lx %llu, %lld; Entry %016llx %llu, %lld\n"_Stz,
+           
+           xHistory[i_History].m_uArcTape,
+           xHistory[i_History].m_uArcBits,
+           xHistory[i_History].m_i_Arc,
+           
+           xHistory[i_History].m_uEntryTape,
+           xHistory[i_History].m_uEntryHash,
+           xHistory[i_History].m_i_Entry
+           );
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
 void HashInsert::vSet(byte* yaKey, i8 nBytes, i8 iValue)
@@ -140,6 +176,16 @@ void HashInsert::vSet(byte* yaKey, i8 nBytes, i8 iValue)
 
   m_bArcTrc = false;
   m_bDebug  = false;
+  
+  xHistory[m_nHistory].m_uArcTape   = m_uArcTape;
+  xHistory[m_nHistory].m_uArcBits   = m_uArcBits;
+  xHistory[m_nHistory].m_i_Arc      = m_uArcBits;
+  
+  xHistory[m_nHistory].m_uEntryTape = m_uEntryTape;
+  xHistory[m_nHistory].m_uEntryHash = m_uEntryHash;
+  xHistory[m_nHistory].m_i_Entry    = m_uEntryHash;
+
+  m_nHistory++;
   
   //vTrace(" iValue %lld uSignature %llx\n"_Stz,m_iValue,m_uSignature);
 }

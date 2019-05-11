@@ -178,7 +178,7 @@ void HashMap::vInsert(byte* yaKey, i8 nBytes, i8 iValue, bool bDebug)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  HashInsert xHi;
+  HashInsert xHi(m_nEntriesPerBuffer);
   
   xHi.vSet(yaKey,nBytes,iValue);
   
