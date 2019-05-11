@@ -3023,15 +3023,16 @@ void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                           i8& i_LastColumn, i8& i_Offset)
 {
-  i8 i_Col  = pCol->iColumnNo();
-  
+
   pDatum->m_eDatum = DM_VCH;
   
   //! needs more work
   eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
   
-  if (MN_NULL == eEncoding)
+  if (MN_NULL == eEncoding) {
     pDatum->m_iInt = C_DATUM_NULL;
+    return;
+  }
 
   else if (eEncoding <= MN_8B)
     vDecodeVchSmall(pDatum,aHeadLine,pCol,eEncoding,i_Offset);
@@ -3785,7 +3786,8 @@ void RowCoder::vXchkVch(Datum* pDatum, Column* pCol)
   vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
   RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
   RASSERT(m_oEncodedDatum.m_nChars == pDatum->m_nChars);
-  RASSERT(m_oEncodedDatum.m_sVch.bSame(pDatum->m_sVch));
+  if (m_oEncodedDatum.m_eEncoding != MN_NULL)
+    RASSERT(m_oEncodedDatum.m_sVch.bSame(pDatum->m_sVch));
 #endif
 }
 
