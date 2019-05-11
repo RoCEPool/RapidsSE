@@ -20,6 +20,7 @@ using namespace Structures;
 #include "ArrayNL_t.hpp"
 
 #include "HashEntry.hpp"
+#include "HashInsert.hpp"
 #include "HashBuffer.hpp"
 #include "HashMap.hpp"
 #include "HashCursor.hpp"
