@@ -45,7 +45,7 @@ namespace Structures
     ~HashBuffer(void) noexcept(false);
   
     void vAnalysis(void);
-    bool bAppendDuplicate(HashEntry* aHeadEntry, i8 iAltValue);
+    bool bAppendDuplicate(HashInsert* pHi, HashEntry* aHeadEntry);
     void vInsertEntry(HashInsert* pHi,
                       byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature,
                       bool bDebug, bool& bArcTrc);

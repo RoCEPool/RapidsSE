@@ -39,7 +39,7 @@ namespace Structures
     ~HashMap(void) noexcept(false);
   
     void vAnalysis(bool bBufferAnalysis);
-    void vAppendDuplicate(HashEntry* aHeadEntry, i8 iValue);
+    void vAppendDuplicate(HashInsert* pHi, HashEntry* aHashEntry);
     i8   iEach(byte* yaKey,   i8 nBytes, i8& iCursor);
     bool bExists(byte* yaKey, i8 nBytes);
     bool bExists(byte* yaKey, i8 nBytes, i8 iValue);

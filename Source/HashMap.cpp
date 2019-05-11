@@ -129,14 +129,14 @@ void HashMap::vAnalysis(bool bBufferAnalysis)
 /*----------------------------------------------------------------------------*/
 /* append a key,value duplicate onto this hash map                            */
 /*----------------------------------------------------------------------------*/
-void HashMap::vAppendDuplicate(HashEntry* aHeadEntry, i8 iValue)
+void HashMap::vAppendDuplicate(HashInsert* pHi, HashEntry* aOriginalEntry)
 {
   if (! m_pRootDuplicates)
     m_pRootDuplicates = new HashBuffer(this,nullptr,C_UNKNOWN,true);
   
-  if (! m_pRootDuplicates->bAppendDuplicate(aHeadEntry,iValue)) {
+  if (! m_pRootDuplicates->bAppendDuplicate(pHi,aOriginalEntry)) {
     m_pRootDuplicates = new HashBuffer(this,m_pRootDuplicates,C_UNKNOWN,true);
-    bool b = m_pRootDuplicates->bAppendDuplicate(aHeadEntry,iValue);
+    bool b = m_pRootDuplicates->bAppendDuplicate(pHi,aOriginalEntry);
     RASSERT(b);
   }
 }
@@ -180,7 +180,7 @@ void HashMap::vInsert(byte* yaKey, i8 nBytes, i8 iValue, bool bDebug)
   bool bArcTrc = false;
   
   u8 uSignature = HshLib::iHash64(yaKey,nBytes);
-  vTrace(" iValue %lld uSignature %llx\n"_Stz,iValue,uSignature);
+  //vTrace(" iValue %lld uSignature %llx\n"_Stz,iValue,uSignature);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

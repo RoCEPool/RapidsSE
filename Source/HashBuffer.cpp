@@ -123,7 +123,7 @@ void HashBuffer::vAnalysis(void)
 /*----------------------------------------------------------------------------*/
 /* append a key,value duplicate onto this hash buffer                         */
 /*----------------------------------------------------------------------------*/
-bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iAltValue)
+bool HashBuffer::bAppendDuplicate(HashInsert* pHi, HashEntry* aOriginalEntry)
 {
   // check this buffer is used to hold duplicates
   RASSERT(m_bDuplicates);
@@ -133,13 +133,14 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iAltValue)
     return false;
   
   // put the duplicate into next free entry but with alt value
-  m_xHashEntry[m_i_Duplicate].vSet(aHeadEntry,iAltValue);
-  
+  //m_xHashEntry[m_i_Duplicate].vSet(aHeadEntry,iAltValue);
+  m_xHashEntry[m_i_Duplicate].vSet(aOriginalEntry,pHi->m_iValue);
+
   // this new duplicate enty points to the current dupe head
-  m_xHashEntry[m_i_Duplicate].m_aDupeChain = aHeadEntry->m_aDupeChain;
+  m_xHashEntry[m_i_Duplicate].m_aDupeChain = aOriginalEntry->m_aDupeChain;
   
   // the dupe head for the key point to this entry
-  aHeadEntry->m_aDupeChain = &m_xHashEntry[m_i_Duplicate];
+  aOriginalEntry->m_aDupeChain = &m_xHashEntry[m_i_Duplicate];
   
   // increment number of entries
   m_nEntries++;
@@ -183,8 +184,9 @@ void HashBuffer::vInsertEntry(HashInsert* pHi,
     return;
   }
   
-  m_xHashEntry[i_Entry].vSet(yaKey,nBytes,iValue,0,uSignature);
-  
+  //m_xHashEntry[i_Entry].vSet(yaKey,nBytes,iValue,0,uSignature);
+  m_xHashEntry[i_Entry].vSet(pHi);
+
   if (bDebug || m_pHashMap->m_bTrace) {
     vDumpEntry(i_Entry,'I');
     int iDebug = 1;
@@ -310,7 +312,7 @@ void HashBuffer::vHandleOccupied(HashInsert* pHi, i8 i_Entry,
 
   if (m_xHashEntry[i_Entry].bEqualTo(yaKey,nBytes)) {
     // its a key duplicate
-    m_pHashMap->vAppendDuplicate(&m_xHashEntry[i_Entry],iValue);
+    m_pHashMap->vAppendDuplicate(pHi, &m_xHashEntry[i_Entry]);
   }
   else {
     // its a hash collision
