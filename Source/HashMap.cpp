@@ -180,10 +180,7 @@ void HashMap::vInsert(byte* yaKey, i8 nBytes, i8 iValue, bool bDebug)
   
   HashInsert xHi;
   
-  u8 uSignature = HshLib::iHash64(yaKey,nBytes);
-  //vTrace(" iValue %lld uSignature %llx\n"_Stz,iValue,uSignature);
-
-  xHi.vSet(yaKey,nBytes,iValue,uSignature);
+  xHi.vSet(yaKey,nBytes,iValue);
   
   m_pRootBuffer->vInsertEntry(&xHi);
 }

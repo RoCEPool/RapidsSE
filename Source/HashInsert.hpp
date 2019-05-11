@@ -29,7 +29,7 @@ namespace Structures
   
     void vArcEntry(void);
     void vDump(void);
-    void vSet(byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature);
+    void vSet(byte* yaKey, i8 nBytes, i8 iValue);
   };
   
   HashInsert* _pHashInsert(void* aAddr);

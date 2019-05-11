@@ -82,25 +82,26 @@ void HashInsert::vDump(void)
          m_iValue);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void HashInsert::vSet(byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature)
+void HashInsert::vSet(byte* yaKey, i8 nBytes, i8 iValue)
 {
   MemLib::vCopy(m_yaKey,yaKey,nBytes,CN_HASHBUFFER);
   m_nBytes = nBytes;
   m_iValue = iValue;
   
-  m_uSignature = uSignature;
+  m_uSignature = HshLib::iHash64(m_yaKey,m_nBytes);
   
   m_bArcTrc = false;
   m_bDebug  = false;
   
-  m_uBitTape   = uSignature;
+  m_uBitTape   = m_uSignature;
   m_nTapeBits  = 64;
   m_uArcBits   = 0;
-  m_uEntryHash = 0;
+  m_uEntryHash = m_uSignature;
+  
+  //vTrace(" iValue %lld uSignature %llx\n"_Stz,m_iValue,m_uSignature);
 }
 
 /*============================================================================*/
