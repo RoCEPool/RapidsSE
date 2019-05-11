@@ -182,7 +182,13 @@ void HashMap::vInsert(byte* yaKey, i8 nBytes, i8 iValue, bool bDebug)
   u8 uSignature = HshLib::iHash64(yaKey,nBytes);
   vTrace(" iValue %lld uSignature %llx\n"_Stz,iValue,uSignature);
 
-  m_pRootBuffer->vInsertEntry(yaKey,nBytes,iValue,uSignature,bDebug,bArcTrc);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  HashInsert xHi;
+  
+  xHi.vSet(yaKey,nBytes,iValue,uSignature);
+  
+  m_pRootBuffer->vInsertEntry(&xHi,yaKey,nBytes,iValue,uSignature,bDebug,bArcTrc);
 }
 
 /*----------------------------------------------------------------------------*/
