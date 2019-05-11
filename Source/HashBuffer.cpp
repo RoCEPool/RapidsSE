@@ -48,6 +48,8 @@ HashBuffer::HashBuffer(HashMap* pHashMap, HashBuffer* pParent, i8 iArc,
                        bool bDuplicates)
 : Object(CN_HASHBUFFER)
 {
+  RASSERT(iArc < pHashMap->m_nArcsPerBuffer);
+  
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHBUFFER,_FOOTER_);
   
   m_pHashMap    = pHashMap;
@@ -155,26 +157,24 @@ bool HashBuffer::bAppendDuplicate(HashEntry* aHeadEntry, i8 iAltValue)
 /*----------------------------------------------------------------------------*/
 /* insert a key,value into this hash buffer                                   */
 /*----------------------------------------------------------------------------*/
-void HashBuffer::vInsertEntry(byte* yaKey, i8 nBytes, i8 iValue, i8 iSignature,
+void HashBuffer::vInsertEntry(byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature,
                               bool bDebug, bool& bArcTrc)
 {
   if (bDebug) {
     int iDebug = 1;
   }
   
-  i8 iEntryHash = HashEntry::iHashEntry(yaKey,nBytes,m_iDepth);
-
-  i8 i_Entry = iEntry(iEntryHash);
+  i8 i_Entry = iEntry(yaKey,nBytes,uSignature);
   
   //if (0 == m_iDepth)
   //  vTrace("[%02lld] EntryHash %08x\n"_Stz,m_iDepth,iEntryHash);
   
   // test if the entry is already in use
-  if (C_UNKNOWN != m_xHashEntry[i_Entry].m_iHash) {
+  if (C_UNKNOWN != m_xHashEntry[i_Entry].m_uHash) {
     if (bDebug) {
       int iDebug = 1;
     }
-    vHandleOccupied(i_Entry,yaKey,nBytes,iValue,iSignature,bDebug,bArcTrc);
+    vHandleOccupied(i_Entry,yaKey,nBytes,iValue,uSignature,bDebug,bArcTrc);
     if (bArcTrc)
       vDumpEntry(i_Entry,'A');
     else if (bDebug)
@@ -182,7 +182,7 @@ void HashBuffer::vInsertEntry(byte* yaKey, i8 nBytes, i8 iValue, i8 iSignature,
     return;
   }
   
-  m_xHashEntry[i_Entry].vSet(yaKey,nBytes,iValue,iEntryHash);
+  m_xHashEntry[i_Entry].vSet(yaKey,nBytes,iValue,0,uSignature);
   
   if (bDebug || m_pHashMap->m_bTrace) {
     vDumpEntry(i_Entry,'I');
@@ -212,6 +212,36 @@ void HashBuffer::vInsertEntry(byte* yaKey, i8 nBytes, i8 iValue, i8 iSignature,
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* compute i_Arc from hash                                                    */
+/*----------------------------------------------------------------------------*/
+i8 HashBuffer::iArc(byte* yaKey, i8 nBytes, u8 uSignature)
+{
+  if (m_iDepth > 6)
+    int iDebug = 1;
+  
+  u8 uArcHash = uSignature;//HashEntry::iHashArc(yaKey,nBytes,m_iDepth+1);
+
+  i8 nNextStrataBuffers  = (i8)pow(m_pHashMap->m_nArcsPerBuffer,m_iDepth + 1);
+  i8 nNextStrataElements = nNextStrataBuffers * m_pHashMap->m_nEntriesPerBuffer;
+
+  i8 i_StrataEntry  = uArcHash % nNextStrataElements;
+  i8 i_StrataBuffer = i_StrataEntry / m_pHashMap->m_nEntriesPerBuffer;
+//  i8 i_StrataArc    = i_StrataBuffer / m_pHashMap->m_nArcsPerBuffer;
+  
+//  i8 i_Arc = i_StrataArc >= m_pHashMap->m_nArcsPerBuffer
+//               ? i_StrataArc - ((i_StrataArc -1) * m_pHashMap->m_nArcsPerBuffer)
+//               : i_StrataArc;
+  
+  i8 i_Arc = i_StrataBuffer % m_pHashMap->m_nArcsPerBuffer;
+  
+  RASSERT(i_Arc >= 0 and i_Arc < m_pHashMap->m_nArcsPerBuffer);
+
+  //i8 i_Arc = iHash % m_pHashMap->m_nArcsPerBuffer;
+  
+  return i_Arc;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump given entry                                                           */
 /*----------------------------------------------------------------------------*/
 void HashBuffer::vDumpEntry(i8 i_Entry, char cIndicator)
@@ -223,15 +253,17 @@ void HashBuffer::vDumpEntry(i8 i_Entry, char cIndicator)
   sLead.vSprint("%c %10s[%lld:%lld,%lld]"_Stz,
                 cIndicator,
                 m_sDotNotation.aChar(),
+                
                 m_iDepth,
                 m_nStrata,
                 i_Entry);
   
-  vTrace("%-30s h:%08x k:%6s/b:%lld/=v:%lld (%lld entries (%lld total) %lld%% full)\n"_Stz,
+  vTrace("%-30s h:%08x s:%08x k:%6s/b:%lld/=v:%lld (%lld entries (%lld total) %lld%% full)\n"_Stz,
          sLead.aChar(),
          
-         aHashEntry->m_iHash,
-         
+         aHashEntry->m_uHash,
+         aHashEntry->m_uSignature,
+
          aHashEntry->m_yaKey,
          aHashEntry->m_nBytes,
          aHashEntry->m_iValue,
@@ -243,12 +275,25 @@ void HashBuffer::vDumpEntry(i8 i_Entry, char cIndicator)
 }
 
 /*----------------------------------------------------------------------------*/
-/* handle an occupation                                                       */
+/* compute i_Entry from hash                                                  */
 /*----------------------------------------------------------------------------*/
-i8 HashBuffer::iEntry(i8 iHash)
+i8 HashBuffer::iEntry(byte* yaKey, i8 nBytes, u8 uSignature)
 {
-  i8 i_Entry = iHash % m_pHashMap->m_nEntriesPerBuffer;
+  //i8 iEntryHash = HashEntry::iHashEntry(yaKey,nBytes,m_iDepth);
+  u8 uEntryHash = uSignature;//HashEntry::iHashArc(yaKey,nBytes,m_iDepth);
+
+  i8 nThisStrataBuffers  = (i8)pow(m_pHashMap->m_nArcsPerBuffer,m_iDepth);
+  i8 nThisStrataElements = nThisStrataBuffers * m_pHashMap->m_nEntriesPerBuffer;
   
+  i8 i_StrataEntry  = uEntryHash % nThisStrataElements;
+  i8 i_StrataBuffer = i_StrataEntry / m_pHashMap->m_nEntriesPerBuffer;
+  
+  i8 i_Entry = i_StrataEntry - (i_StrataBuffer * m_pHashMap->m_nEntriesPerBuffer);
+
+  //i8 i_Entry = iHash % m_pHashMap->m_nEntriesPerBuffer;
+  
+  RASSERT(i_Entry >= 0 and i_Entry < m_pHashMap->m_nEntriesPerBuffer);
+
   return i_Entry;
 }
 
@@ -256,7 +301,7 @@ i8 HashBuffer::iEntry(i8 iHash)
 /* handle an occupation                                                       */
 /*----------------------------------------------------------------------------*/
 void HashBuffer::vHandleOccupied(i8 i_Entry,
-                                 byte* yaKey, i8 nBytes, i8 iValue, i8 iSignature,
+                                 byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature,
                                  bool bDebug, bool& bArcTrc)
 {
   if (m_pHashMap->m_bTrace)
@@ -268,24 +313,23 @@ void HashBuffer::vHandleOccupied(i8 i_Entry,
   }
   else {
     // its a hash collision
-    vInsertCollision(yaKey,nBytes,iValue,iSignature,bDebug,bArcTrc);
+    vInsertCollision(yaKey,nBytes,iValue,uSignature,bDebug,bArcTrc);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert a colliding key,value into this hash buffer                         */
 /*----------------------------------------------------------------------------*/
-void HashBuffer::vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue, i8 iSignature,
+void HashBuffer::vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature,
                                   bool bDebug, bool& bArcTrc)
 {
-  i8 iArcHash = HashEntry::iHashArc(yaKey,nBytes,m_iDepth);
-  i8 i_Arc = iArcHash % m_pHashMap->m_nArcsPerBuffer;
+  i8 i_Arc = iArc(yaKey,nBytes,uSignature);
   //vTrace("[%02lld] ArcHash %08x\n"_Stz,m_iDepth,iArcHash);
 
   if (! m_paArcs[i_Arc])
     m_paArcs[i_Arc] = new HashBuffer(m_pHashMap,this,i_Arc,false);
   
-  m_paArcs[i_Arc]->vInsertEntry(yaKey,nBytes,iValue,iSignature,bDebug,bArcTrc);
+  m_paArcs[i_Arc]->vInsertEntry(yaKey,nBytes,iValue,uSignature,bDebug,bArcTrc);
 }
 
 

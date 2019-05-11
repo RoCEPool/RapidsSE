@@ -46,16 +46,17 @@ namespace Structures
   
     void vAnalysis(void);
     bool bAppendDuplicate(HashEntry* aHeadEntry, i8 iAltValue);
-    void vInsertEntry(byte* yaKey, i8 nBytes, i8 iValue, i8 iSignature,
+    void vInsertEntry(byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature,
                       bool bDebug, bool& bArcTrc);
 
   private:
+     i8   iArc(byte* yaKey, i8 nBytes, u8 uSignature);
      void vDumpEntry(i8 i_Entry, char cIndicator);
-     i8   iEntry(i8 iHash);
+     i8   iEntry(byte* yaKey, i8 nBytes, u8 uSignature);
      void vHandleOccupied(i8 i_Entry,
-                          byte* yaKey, i8 nBytes, i8 iValue, i8 iSignature,
+                          byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature,
                           bool bDebug, bool& bArcTrc);
-     void vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue, i8 iSignature,
+     void vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature,
                            bool bDebug, bool& bArcTrc);
   
     Footer* aFooter(void);

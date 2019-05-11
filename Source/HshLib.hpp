@@ -9,6 +9,8 @@ namespace Datums
   {
   public:
     static i8 iHash(byte* ayaKey, i8 nBytes);
+    static i8 iHash32(byte* ayaKey, i8 nBytes);
+    static i8 iHash64(byte* ayaKey, i8 nBytes);
 
     static i8 iHashReverse(byte* ayaKey, i8 nBytes);
     static i8 iHashReverseRotate(byte* ayaKey, i8 nBytes, i8 nRotate);

@@ -545,7 +545,7 @@ void MemLib::vReset(void)
 /*----------------------------------------------------------------------------*/
 void MemLib::vRotate(void* avArg, i8 nBytes, i8 nBy)
 {
-  byte yaFront[nBy];
+  byte yaFront[32];//[nBy];
 
   MemLib::vCopy(yaFront,avArg,nBy,CN_NONE);
   

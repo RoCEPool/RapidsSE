@@ -120,20 +120,14 @@ void vTest4(void)
   //s32 sKey("ALPHA"_Stz);
   s32 sKey;
   
-  for (i8 nDupes = 0; nDupes < 1; nDupes++) {
-    for (i8 i_Times = 0; i_Times < 2000000; i_Times++) {
-      sKey.vSprint("%02lld"_Stz,i_Times);
-
-//      if ( 4206 == i_Times ||
-//           4249 == i_Times ||
-//          25396 == i_Times ||
-//          28848 == i_Times ||
-//          40263 == i_Times ||
-//          48122 == i_Times)
-//        pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),i_Times,true);
-//      else
-        pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),i_Times,false);
+  i8 iKey = 0;
+  for (i8 nRepeats = 0; nRepeats < 100; nRepeats++) {
+    for (i8 nTimes = 0; nTimes < 100000; nTimes++) {
+      sKey.vSprint("%02lld"_Stz,iKey);
+      pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),iKey,false);
+      iKey++;
     }
+    pHashMap->vAnalysis(false);
   }
   
 //  HashCursor xCursor(pHashMap);
@@ -165,7 +159,7 @@ void vTest4(void)
 //  sKey.vSprint("%02lld"_Stz,48122);
 //  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),48122,true);
   
-  pHashMap->vAnalysis(false);
+  //pHashMap->vAnalysis(false);
   
   delete pHashMap;
 }

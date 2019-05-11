@@ -13,7 +13,8 @@ namespace Structures
     i8   m_nBytes;
     i8   m_iValue;
 
-    i8   m_iHash;
+    u8   m_uHash;
+    u8   m_uSignature;
 
     HashEntry* m_aDupeChain;
 
@@ -30,7 +31,7 @@ namespace Structures
     void vDump(void);
     bool bEqualTo(byte* yaKey, i8 nBytes);
     void vSet(HashEntry* aSrcEntry, i8 iAltValue);
-    void vSet(byte* yaKey, i8 nBytes, i8 iValue, i8 iHash);
+    void vSet(byte* yaKey, i8 nBytes, i8 iValue, u8 uHash, u8 uSignature);
   };
   
   HashEntry* _pHashEntry(void* aAddr);
