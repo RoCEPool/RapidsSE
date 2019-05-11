@@ -19,13 +19,15 @@ namespace Structures
     bool m_bDebug;
   
     u8   m_uBitTape;
+    u8   m_nTapeBits;
     u8   m_uArcBits;
-    u8   m_nBitsRemaining;
+    u8   m_uEntryHash;
 
   public:
     HashInsert(void);
     ~HashInsert(void) noexcept(false);
   
+    void vArcEntry(void);
     void vDump(void);
     void vSet(byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature);
   };

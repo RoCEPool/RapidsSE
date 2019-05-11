@@ -50,6 +50,24 @@ HashInsert::~HashInsert(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* compute arc bits and entry hash from bit tape                              */
+/*----------------------------------------------------------------------------*/
+void HashInsert::vArcEntry(void)
+{
+  // get the next lower 3 bits from tape
+  m_uArcBits = m_uBitTape & 0b111;
+  
+  // shift off lower 3 bits
+  m_uBitTape >>= 3;
+  
+  // bit tape has 3 bits less
+  m_nTapeBits -= 3;
+  
+  // compute entry hash
+  m_uEntryHash = HshLib::iHash64(m_yaKey,m_nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this hash entry equal to given key                                      */
 /*----------------------------------------------------------------------------*/
 void HashInsert::vDump(void)
@@ -79,9 +97,10 @@ void HashInsert::vSet(byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature)
   m_bArcTrc = false;
   m_bDebug  = false;
   
-  m_uBitTape = uSignature;
-  m_uArcBits = 0;
-  m_nBitsRemaining = 64;
+  m_uBitTape   = uSignature;
+  m_nTapeBits  = 64;
+  m_uArcBits   = 0;
+  m_uEntryHash = 0;
 }
 
 /*============================================================================*/
