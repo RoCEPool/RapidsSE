@@ -17,6 +17,10 @@ namespace Structures
   
     bool m_bArcTrc;
     bool m_bDebug;
+  
+    u8   m_uBitTape;
+    u8   m_uArcBits;
+    u8   m_nBitsRemaining;
 
   public:
     HashInsert(void);

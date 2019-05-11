@@ -78,6 +78,10 @@ void HashInsert::vSet(byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature)
   
   m_bArcTrc = false;
   m_bDebug  = false;
+  
+  m_uBitTape = uSignature;
+  m_uArcBits = 0;
+  m_nBitsRemaining = 64;
 }
 
 /*============================================================================*/
