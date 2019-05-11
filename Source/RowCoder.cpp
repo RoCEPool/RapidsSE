@@ -1905,12 +1905,12 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
  success: 1000000 rows affected
  time 18ms
 */
-void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* pCol,
-                                    Coda* pCoda)
+void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol,
+                                    Coda* pCoda, i8& i_LastColumn, i8& i_LastOffset)
 {
   i8 i_Col = pCol->iColumnNo();
   eDM eDatumCoda = pCoda->m_aeExtDatum[i_Col];
-  i8 i_Offset = iBaseOffset(pCol->pColVec());
+  //i8 i_Offset = iBaseOffset(pCol->pColVec());
   eMN eEncoding = MN_NULL;
   
   
@@ -1928,22 +1928,22 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* 
         NEVER_REACH;
         
       case DM_BCD:
-        vDecodeBcdFast(pDatum,aHeadLine,eEncoding,i_Offset);
+        vDecodeBcdFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
         break;
       case DM_BOL:
         //vDecodeBol(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
         break;
       case DM_CHR:
-        vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_Offset);
+        vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
         break;
       case DM_DTE:
-        vDecodeDteFast(pDatum,aHeadLine,eEncoding,i_Offset);
+        vDecodeDteFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
         break;
       case DM_FLT:
         //vDecodeFlt(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
         break;
       case DM_INT:
-        vDecodeIntFast(pDatum,aHeadLine,eEncoding,i_Offset);
+        vDecodeIntFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
         break;
       case DM_IVL:
         //vDecodeIvl(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
@@ -1958,34 +1958,34 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* 
         NEVER_REACH;
         break;
       case DM_VCH:
-        vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_Offset);
+        vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
         break;
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // the extended datums
         
       case DM_ALPHA:
-        //vDecodeAlpha(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+        vDecodeAlphaFast(pDatum,aHeadLine,eEncoding,pCol,pCoda,i_LastOffset);
         break;
         
       case DM_DAYS:
-        //vDecodeDays(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+        vDecodeDaysFast(pDatum,aHeadLine,eEncoding,pColVec,pCol,pCoda,i_LastOffset);
         break;
         
       case DM_DELTA_PLUS:
-        //vDecodeDeltaPlus(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+        vDecodeDeltaPlusFast(pDatum,aHeadLine,eEncoding,pCol,pCoda,i_LastOffset);
         break;
         
       case DM_DELTA_MINUS:
-        //vDecodeDeltaMinus(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+        //vDecodeDeltaMinusFast(pDatum,aHeadLine,eEncoding,pCol,pCoda,i_LastOffset);
         break;
         
       case DM_DIGIT:
-        //vDecodeDigit(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+        vDecodeDigitFast(pDatum,aHeadLine,eEncoding,pCol,pCoda,i_LastOffset);
         break;
         
       case DM_TENTH:
-        //vDecodeTenth(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+        vDecodeTenthFast(pDatum,aHeadLine,eEncoding,pCol,i_LastOffset);
         break;
         
       default:
@@ -2008,26 +2008,26 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* 
       NEVER_REACH;
       
     case DM_BCD:
-      eEncoding = eGetEncodingExtGenericFast(aHeadLine,i_Col,pCoda,i_Offset);
-      vDecodeIntFast(pDatum,aHeadLine,eEncoding,i_Offset);
+      eEncoding = eGetEncodingExtGenericFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
+      vDecodeIntFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
       break;
     case DM_BOL:
       //vDecodeBol(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
     case DM_CHR:
-      eEncoding = eGetEncodingExtFast(aHeadLine,i_Col,pCoda,i_Offset);
-      vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_Offset);
+      eEncoding = eGetEncodingExtFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
+      vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
       break;
     case DM_DTE:
-      eEncoding = eGetEncodingExtFast(aHeadLine,i_Col,pCoda,i_Offset);
-      vDecodeDteFast(pDatum,aHeadLine,eEncoding,i_Offset);
+      eEncoding = eGetEncodingExtFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
+      vDecodeDteFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
       break;
     case DM_FLT:
-      //vDecodeFlt(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      //vDecodeFltFast(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
     case DM_INT:
-      eEncoding = eGetEncodingExtGenericFast(aHeadLine,i_Col,pCoda,i_Offset);
-      vDecodeIntFast(pDatum,aHeadLine,eEncoding,i_Offset);
+      eEncoding = eGetEncodingExtGenericFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
+      vDecodeIntFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
       break;
     case DM_IVL:
       //vDecodeIvl(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
@@ -2042,35 +2042,40 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, Column* 
       NEVER_REACH;
       break;
     case DM_VCH:
-      eEncoding = eGetEncodingExtVchFast(aHeadLine,i_Col,pCoda,i_Offset);
-      vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_Offset);
+      eEncoding = eGetEncodingExtVchFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
+      vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
       break;
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // the extended datums
       
     case DM_ALPHA:
-      //vDecodeAlpha(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      eEncoding = eGetEncodingExtVchFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
+      vDecodeAlphaFast(pDatum,aHeadLine,eEncoding,pCol,pCoda,i_LastOffset);
       break;
       
     case DM_DAYS:
-      //vDecodeDays(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      eEncoding = eGetEncodingExtFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
+      vDecodeDaysFast(pDatum,aHeadLine,eEncoding,pColVec,pCol,pCoda,i_LastOffset);
       break;
       
     case DM_DELTA_PLUS:
-      //vDecodeDeltaPlus(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      eEncoding = eGetEncodingExtGenericFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
+      vDecodeDeltaPlusFast(pDatum,aHeadLine,eEncoding,pCol,pCoda,i_LastOffset);
       break;
       
     case DM_DELTA_MINUS:
-      //vDecodeDeltaMinus(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      //vDecodeDeltaMinusFast(pDatum,aHeadLine,pCol,pCoda,i_LastOffset);
       break;
       
     case DM_DIGIT:
-      //vDecodeDigit(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      eEncoding = eGetEncodingExtGenericFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
+      vDecodeDigitFast(pDatum,aHeadLine,eEncoding,pCol,pCoda,i_LastOffset);
       break;
       
     case DM_TENTH:
-      //vDecodeTenth(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      eEncoding = eGetEncodingExtGenericFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
+      vDecodeTenthFast(pDatum,aHeadLine,eEncoding,pCol,i_LastOffset);
       break;
       
     default:
