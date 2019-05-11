@@ -275,6 +275,9 @@ void HashBuffer::vInsertEntry(HashInsert* pHi)
   
   if (m_iDepth > m_pHashMap->m_iMaxDepth) {
     m_pHashMap->m_iMaxDepth = m_iDepth;
+    
+    pHi->vDumpHistory();
+    
     //    if (pHi->m_bDebug) {
     pHi->m_bArcTrc = true;
     vDumpEntry(i_Entry,'A');
