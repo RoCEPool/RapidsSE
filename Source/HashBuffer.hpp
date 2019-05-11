@@ -45,19 +45,15 @@ namespace Structures
     ~HashBuffer(void) noexcept(false);
   
     void vAnalysis(void);
-    bool bAppendDuplicate(HashInsert* pHi, HashEntry* aHeadEntry);
-    void vInsertEntry(HashInsert* pHi,
-                      byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature);
+    bool bAppendDuplicate(HashInsert* pHi, HashEntry* aOriginalEntry);
+    void vInsertEntry(HashInsert* pHi);
 
   private:
      i8   iArc(byte* yaKey, i8 nBytes, u8 uSignature);
      void vDumpEntry(i8 i_Entry, char cIndicator);
      i8   iEntry(byte* yaKey, i8 nBytes, u8 uSignature);
-     void vHandleOccupied(HashInsert* pHi,
-                          i8 i_Entry,
-                          byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature);
-     void vInsertCollision(HashInsert* pHi,
-                           byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature);
+     void vHandleOccupied(HashInsert* pHi, i8 i_Entry);
+     void vInsertCollision(HashInsert* pHi);
   
     Footer* aFooter(void);
  };

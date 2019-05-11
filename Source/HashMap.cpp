@@ -168,7 +168,7 @@ bool HashMap::bExists(byte* aKey, i8 nBytes, i8 iValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert a key,value into the hashmap                                        */
+/* insert a key,value into this hashmap                                       */
 /*----------------------------------------------------------------------------*/
 void HashMap::vInsert(byte* yaKey, i8 nBytes, i8 iValue, bool bDebug)
 {
@@ -177,22 +177,21 @@ void HashMap::vInsert(byte* yaKey, i8 nBytes, i8 iValue, bool bDebug)
   if (91112 == iValue)
     vDebugTrap();
 
-  u8 uSignature = HshLib::iHash64(yaKey,nBytes);
-  //vTrace(" iValue %lld uSignature %llx\n"_Stz,iValue,uSignature);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   HashInsert xHi;
   
+  u8 uSignature = HshLib::iHash64(yaKey,nBytes);
+  //vTrace(" iValue %lld uSignature %llx\n"_Stz,iValue,uSignature);
+
   xHi.vSet(yaKey,nBytes,iValue,uSignature);
   
-  m_pRootBuffer->vInsertEntry(&xHi,yaKey,nBytes,iValue,uSignature);
+  m_pRootBuffer->vInsertEntry(&xHi);
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
 
 
 /*----------------------------------------------------------------------------*/
