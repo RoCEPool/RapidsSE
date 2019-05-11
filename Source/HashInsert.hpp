@@ -15,11 +15,14 @@ namespace Structures
 
     u8   m_uSignature;
   
-    u8   m_uBitTape;
-    u8   m_nTapeBits;
-    u8   m_uArcBits;
+    u8   m_uEntryTape;
+    u8   m_nEntryTapeBits;
     u8   m_uEntryHash;
   
+    u8   m_uArcTape;
+    u8   m_nArcTapeBits;
+    u8   m_uArcBits;
+
     bool m_bArcTrc;
     bool m_bDebug;
   

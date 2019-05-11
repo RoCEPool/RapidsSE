@@ -29,10 +29,13 @@ HashInsert::HashInsert(void)
   
   m_uSignature = C_UNKNOWN;
   
-  m_uBitTape   = 0;
-  m_nTapeBits  = 0;
-  m_uArcBits   = 0;
-  m_uEntryHash = 0;
+  m_uEntryTape     = 0;
+  m_nEntryTapeBits = 0;
+  m_uEntryHash     = 0;
+
+  m_uArcTape     = 0;
+  m_nArcTapeBits = 0;
+  m_uArcBits     = 0;
 
   m_bArcTrc = false;
   m_bDebug  = false;
@@ -60,17 +63,34 @@ HashInsert::~HashInsert(void) noexcept(false)
 void HashInsert::vArcEntry(void)
 {
   // get the next lower 3 bits from tape
-  m_uArcBits = m_uBitTape & 0b111;
+  m_uArcBits = m_uArcTape & 0b111;
   
   // shift off lower 3 bits
-  m_uBitTape >>= 3;
+  m_uArcTape >>= 3;
   
   // bit tape has 3 bits less
-  m_nTapeBits -= 3;
+  m_nArcTapeBits -= 3;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // compute entry hash
-  m_uEntryHash = m_uBitTape; //HshLib::iHash64(m_yaKey,m_nBytes);
+  m_uEntryHash = m_uEntryTape; //HshLib::iHash64(m_yaKey,m_nBytes);
 }
+/*----------------------------------------------------------------------------*/
+//void HashInsert::vArcEntry(void)
+//{
+//  // get the next lower 3 bits from tape
+//  m_uArcBits = m_uEntryTape & 0b111;
+//
+//  // shift off lower 3 bits
+//  m_uEntryTape >>= 3;
+//
+//  // bit tape has 3 bits less
+//  m_nEntryTapeBits -= 3;
+//
+//  // compute entry hash
+//  m_uEntryHash = m_uEntryTape; //HshLib::iHash64(m_yaKey,m_nBytes);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* is this hash entry equal to given key                                      */
@@ -98,11 +118,14 @@ void HashInsert::vSet(byte* yaKey, i8 nBytes, i8 iValue)
   
   m_uSignature = HshLib::iHash64(m_yaKey,m_nBytes);
   
-  m_uBitTape   = m_uSignature;
-  m_nTapeBits  = 64;
-  m_uArcBits   = 0;
-  m_uEntryHash = m_uSignature;
+  m_uEntryTape     = m_uSignature;
+  m_nEntryTapeBits = 64;
+  m_uEntryHash     = m_uSignature;
   
+  m_uArcTape       = HshLib::iHash32(m_yaKey,m_nBytes);;
+  m_nArcTapeBits   = 32;
+  m_uArcBits       = 0;
+
   m_bArcTrc = false;
   m_bDebug  = false;
   
