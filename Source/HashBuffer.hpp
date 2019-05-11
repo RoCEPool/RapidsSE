@@ -48,9 +48,9 @@ namespace Structures
   private:
     void vAnalysis(void);
     bool bAppendDuplicate(HashInsert* pHi, HashEntry* aOriginalEntry);
-    i8   iArc(byte* yaKey, i8 nBytes, u8 uSignature);
+    i8   iCalcArc(HashInsert* pHi);
+    i8   iCalcEntry(HashInsert* pHi);
     void vDumpEntry(i8 i_Entry, char cIndicator);
-    i8   iEntry(byte* yaKey, i8 nBytes, u8 uSignature);
     void vHandleOccupied(HashInsert* pHi, i8 i_Entry);
     void vInsertCollision(HashInsert* pHi);
     void vInsertEntry(HashInsert* pHi);

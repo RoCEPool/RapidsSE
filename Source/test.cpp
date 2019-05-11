@@ -121,25 +121,26 @@ void vTest4(void)
   s32 sKey;
   
   i8 iKey = 0;
-  for (i8 nRepeats = 0; nRepeats < 1; nRepeats++) {
-    for (i8 nTimes = 0; nTimes < 1000; nTimes++) {
+  for (i8 nRepeats = 0; nRepeats < 10; nRepeats++) {
+    for (i8 nTimes = 0; nTimes < 1000000; nTimes++) {
       sKey.vSprint("%02lld"_Stz,iKey);
+      
       pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),iKey,false);
       iKey++;
     }
     pHashMap->vAnalysis(false);
   }
   
-  HashCursor xCursor(pHashMap);
-  
-  while (xCursor.bIterate()) {
-    StrLib::vCopyLen(sKey.aChar(),(char*)xCursor.m_yaKey,xCursor.m_nBytes);
-    vTrace("[%lld] %s/%lld %lld\n"_Stz,
-           xCursor.m_ia_HashEntry[xCursor.m_i_Stack],
-           sKey.aChar(),
-           xCursor.m_nBytes,
-           xCursor.m_iValue);
-  }
+//  HashCursor xCursor(pHashMap);
+//
+//  while (xCursor.bIterate()) {
+//    StrLib::vCopyLen(sKey.aChar(),(char*)xCursor.m_yaKey,xCursor.m_nBytes);
+//    vTrace("[%lld] %s/%lld %lld\n"_Stz,
+//           xCursor.m_ia_HashEntry[xCursor.m_i_Stack],
+//           sKey.aChar(),
+//           xCursor.m_nBytes,
+//           xCursor.m_iValue);
+//  }
   
 //  sKey.vSprint("%02lld"_Stz,4206);
 //  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),4206,true);

@@ -163,31 +163,23 @@ bool HashBuffer::bAppendDuplicate(HashInsert* pHi, HashEntry* aOriginalEntry)
 /*----------------------------------------------------------------------------*/
 /* compute i_Arc from hash                                                    */
 /*----------------------------------------------------------------------------*/
-i8 HashBuffer::iArc(byte* yaKey, i8 nBytes, u8 uSignature)
+i8 HashBuffer::iCalcArc(HashInsert* pHi)
 {
-  if (m_iDepth > 6)
-    vDebugTrap();
-
-  u8 uArcHash = uSignature;//HashEntry::iHashArc(yaKey,nBytes,m_iDepth+1);
-
-  i8 nNextStrataBuffers  = (i8)pow(m_pHashMap->m_nArcsPerBuffer,m_iDepth + 1);
-  i8 nNextStrataElements = nNextStrataBuffers * m_pHashMap->m_nEntriesPerBuffer;
-
-  i8 i_StrataEntry  = uArcHash % nNextStrataElements;
-  i8 i_StrataBuffer = i_StrataEntry / m_pHashMap->m_nEntriesPerBuffer;
-//  i8 i_StrataArc    = i_StrataBuffer / m_pHashMap->m_nArcsPerBuffer;
+  pHi->vArcEntry();
   
-//  i8 i_Arc = i_StrataArc >= m_pHashMap->m_nArcsPerBuffer
-//               ? i_StrataArc - ((i_StrataArc -1) * m_pHashMap->m_nArcsPerBuffer)
-//               : i_StrataArc;
-  
-  i8 i_Arc = i_StrataBuffer % m_pHashMap->m_nArcsPerBuffer;
-  
-  RASSERT(i_Arc >= 0 and i_Arc < m_pHashMap->m_nArcsPerBuffer);
-
-  //i8 i_Arc = iHash % m_pHashMap->m_nArcsPerBuffer;
+  i8 i_Arc = pHi->m_uArcBits;
   
   return i_Arc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute i_Entry from hash                                                  */
+/*----------------------------------------------------------------------------*/
+i8 HashBuffer::iCalcEntry(HashInsert* pHi)
+{
+  i8 i_Entry = pHi->m_uEntryHash % m_pHashMap->m_nEntriesPerBuffer;
+  
+  return i_Entry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -224,29 +216,6 @@ void HashBuffer::vDumpEntry(i8 i_Entry, char cIndicator)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute i_Entry from hash                                                  */
-/*----------------------------------------------------------------------------*/
-i8 HashBuffer::iEntry(byte* yaKey, i8 nBytes, u8 uSignature)
-{
-  //i8 iEntryHash = HashEntry::iHashEntry(yaKey,nBytes,m_iDepth);
-  u8 uEntryHash = uSignature;//HashEntry::iHashArc(yaKey,nBytes,m_iDepth);
-
-  i8 nThisStrataBuffers  = (i8)pow(m_pHashMap->m_nArcsPerBuffer,m_iDepth);
-  i8 nThisStrataElements = nThisStrataBuffers * m_pHashMap->m_nEntriesPerBuffer;
-  
-  i8 i_StrataEntry  = uEntryHash % nThisStrataElements;
-  i8 i_StrataBuffer = i_StrataEntry / m_pHashMap->m_nEntriesPerBuffer;
-  
-  i8 i_Entry = i_StrataEntry - (i_StrataBuffer * m_pHashMap->m_nEntriesPerBuffer);
-
-  //i8 i_Entry = iHash % m_pHashMap->m_nEntriesPerBuffer;
-  
-  RASSERT(i_Entry >= 0 and i_Entry < m_pHashMap->m_nEntriesPerBuffer);
-
-  return i_Entry;
-}
-
-/*----------------------------------------------------------------------------*/
 /* handle an occupation                                                       */
 /*----------------------------------------------------------------------------*/
 void HashBuffer::vHandleOccupied(HashInsert* pHi, i8 i_Entry)
@@ -269,8 +238,7 @@ void HashBuffer::vHandleOccupied(HashInsert* pHi, i8 i_Entry)
 /*----------------------------------------------------------------------------*/
 void HashBuffer::vInsertCollision(HashInsert* pHi)
 {
-  i8 i_Arc = iArc(pHi->m_yaKey,pHi->m_nBytes,pHi->m_uSignature);
-  //vTrace("[%02lld] ArcHash %08x\n"_Stz,m_iDepth,iArcHash);
+  i8 i_Arc = iCalcArc(pHi);
 
   if (! m_paArcs[i_Arc])
     m_paArcs[i_Arc] = new HashBuffer(m_pHashMap,this,i_Arc,false);
@@ -283,20 +251,12 @@ void HashBuffer::vInsertCollision(HashInsert* pHi)
 /*----------------------------------------------------------------------------*/
 void HashBuffer::vInsertEntry(HashInsert* pHi)
 {
-  if (pHi->m_bDebug) {
-    vDebugTrap();
-  }
-  
-  i8 i_Entry = iEntry(pHi->m_yaKey,pHi->m_nBytes,pHi->m_uSignature);
-  
-  //if (0 == m_iDepth)
-  //  vTrace("[%02lld] EntryHash %08x\n"_Stz,m_iDepth,iEntryHash);
-  
+   i8 i_Entry = iCalcEntry(pHi);
+
   // test if the entry is already in use
   if (C_UNKNOWN != m_xHashEntry[i_Entry].m_uHash) {
-    if (pHi->m_bDebug) {
+    if (pHi->m_bDebug)
       vDebugTrap();
-    }
     vHandleOccupied(pHi,i_Entry);
     if (pHi->m_bArcTrc)
       vDumpEntry(i_Entry,'A');
@@ -305,7 +265,6 @@ void HashBuffer::vInsertEntry(HashInsert* pHi)
     return;
   }
   
-  //m_xHashEntry[i_Entry].vSet(yaKey,nBytes,iValue,0,uSignature);
   m_xHashEntry[i_Entry].vSet(pHi);
   
   if (pHi->m_bDebug || m_pHashMap->m_bTrace) {
@@ -315,9 +274,10 @@ void HashBuffer::vInsertEntry(HashInsert* pHi)
   
   if (m_iDepth > m_pHashMap->m_iMaxDepth) {
     m_pHashMap->m_iMaxDepth = m_iDepth;
-    //    if (bDebug) {
+    //    if (pHi->m_bDebug) {
     pHi->m_bArcTrc = true;
     vDumpEntry(i_Entry,'A');
+    vDebugPoint();
     //    }
   }
   
@@ -347,3 +307,60 @@ Footer* HashBuffer::aFooter(void)
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/* compute i_Arc from hash                                                    */
+/*----------------------------------------------------------------------------*/
+/*
+i8 HashBuffer::iArc(byte* yaKey, i8 nBytes, u8 uSignature)
+{
+  if (m_iDepth > 6)
+    vDebugTrap();
+
+  u8 uArcHash = uSignature;//HashEntry::iHashArc(yaKey,nBytes,m_iDepth+1);
+
+  i8 nNextStrataBuffers  = (i8)pow(m_pHashMap->m_nArcsPerBuffer,m_iDepth + 1);
+  i8 nNextStrataElements = nNextStrataBuffers * m_pHashMap->m_nEntriesPerBuffer;
+
+  i8 i_StrataEntry  = uArcHash % nNextStrataElements;
+  i8 i_StrataBuffer = i_StrataEntry / m_pHashMap->m_nEntriesPerBuffer;
+//  i8 i_StrataArc    = i_StrataBuffer / m_pHashMap->m_nArcsPerBuffer;
+
+//  i8 i_Arc = i_StrataArc >= m_pHashMap->m_nArcsPerBuffer
+//               ? i_StrataArc - ((i_StrataArc -1) * m_pHashMap->m_nArcsPerBuffer)
+//               : i_StrataArc;
+
+  i8 i_Arc = i_StrataBuffer % m_pHashMap->m_nArcsPerBuffer;
+
+  RASSERT(i_Arc >= 0 and i_Arc < m_pHashMap->m_nArcsPerBuffer);
+
+  //i8 i_Arc = iHash % m_pHashMap->m_nArcsPerBuffer;
+
+  return i_Arc;
+}
+*/
+
+/*----------------------------------------------------------------------------*/
+/* compute i_Entry from hash                                                  */
+/*----------------------------------------------------------------------------*/
+/*
+i8 HashBuffer::iEntry(byte* yaKey, i8 nBytes, u8 uSignature)
+{
+  //i8 iEntryHash = HashEntry::iHashEntry(yaKey,nBytes,m_iDepth);
+  u8 uEntryHash = uSignature;//HashEntry::iHashArc(yaKey,nBytes,m_iDepth);
+
+  i8 nThisStrataBuffers  = (i8)pow(m_pHashMap->m_nArcsPerBuffer,m_iDepth);
+  i8 nThisStrataElements = nThisStrataBuffers * m_pHashMap->m_nEntriesPerBuffer;
+
+  i8 i_StrataEntry  = uEntryHash % nThisStrataElements;
+  i8 i_StrataBuffer = i_StrataEntry / m_pHashMap->m_nEntriesPerBuffer;
+
+  i8 i_Entry = i_StrataEntry - (i_StrataBuffer * m_pHashMap->m_nEntriesPerBuffer);
+
+  //i8 i_Entry = iHash % m_pHashMap->m_nEntriesPerBuffer;
+
+  RASSERT(i_Entry >= 0 and i_Entry < m_pHashMap->m_nEntriesPerBuffer);
+
+  return i_Entry;
+}
+*/

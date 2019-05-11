@@ -15,14 +15,14 @@ namespace Structures
 
     u8   m_uSignature;
   
-    bool m_bArcTrc;
-    bool m_bDebug;
-  
     u8   m_uBitTape;
     u8   m_nTapeBits;
     u8   m_uArcBits;
     u8   m_uEntryHash;
-
+  
+    bool m_bArcTrc;
+    bool m_bDebug;
+  
   public:
     HashInsert(void);
     ~HashInsert(void) noexcept(false);

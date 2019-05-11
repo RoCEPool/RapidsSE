@@ -29,6 +29,11 @@ HashInsert::HashInsert(void)
   
   m_uSignature = C_UNKNOWN;
   
+  m_uBitTape   = 0;
+  m_nTapeBits  = 0;
+  m_uArcBits   = 0;
+  m_uEntryHash = 0;
+
   m_bArcTrc = false;
   m_bDebug  = false;
 }
@@ -64,7 +69,7 @@ void HashInsert::vArcEntry(void)
   m_nTapeBits -= 3;
   
   // compute entry hash
-  m_uEntryHash = HshLib::iHash64(m_yaKey,m_nBytes);
+  m_uEntryHash = m_uBitTape; //HshLib::iHash64(m_yaKey,m_nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,13 +98,13 @@ void HashInsert::vSet(byte* yaKey, i8 nBytes, i8 iValue)
   
   m_uSignature = HshLib::iHash64(m_yaKey,m_nBytes);
   
-  m_bArcTrc = false;
-  m_bDebug  = false;
-  
   m_uBitTape   = m_uSignature;
   m_nTapeBits  = 64;
   m_uArcBits   = 0;
   m_uEntryHash = m_uSignature;
+  
+  m_bArcTrc = false;
+  m_bDebug  = false;
   
   //vTrace(" iValue %lld uSignature %llx\n"_Stz,m_iValue,m_uSignature);
 }

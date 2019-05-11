@@ -173,8 +173,8 @@ void HashMap::vInsert(byte* yaKey, i8 nBytes, i8 iValue, bool bDebug)
 {
   if (bDebug)
     vDebugTrap();
-  if (91112 == iValue)
-    vDebugTrap();
+  if (341225 == iValue)
+    vDebugPoint();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

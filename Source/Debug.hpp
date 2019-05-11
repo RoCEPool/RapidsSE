@@ -13,6 +13,7 @@ namespace Debugging
   void vAssertTrap(void);
   void vAssertType(void* aObject, eCN eExpectingClass);
   void vAssertWarn(void);
+  void vDebugPoint(void);
   void vDebugTrap(void);
   void vStackDump(void);
   void vThrowTrap(void);
