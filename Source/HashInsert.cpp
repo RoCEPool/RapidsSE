@@ -39,6 +39,14 @@ HashInsert::HashInsert(void)
 
   m_bArcTrc = false;
   m_bDebug  = false;
+  
+  for (i8 i_History = 0; i_History < 32; i_History++) {
+    xHistory[i_History].m_i_Arc      = C_UNKNOWN;
+    xHistory[i_History].m_uEntryHash = 0;
+    xHistory[i_History].m_i_Entry    = C_UNKNOWN;
+  }
+  
+  m_nHistory = 0;
 }
 
 /*----------------------------------------------------------------------------*/

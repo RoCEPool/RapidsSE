@@ -26,6 +26,14 @@ namespace Structures
     bool m_bArcTrc;
     bool m_bDebug;
   
+    struct {
+      i8 m_i_Arc;
+      u8 m_uEntryHash;
+      i8 m_i_Entry;
+    } xHistory[32];
+  
+    i8 m_nHistory;
+  
   public:
     HashInsert(void);
     ~HashInsert(void) noexcept(false);
