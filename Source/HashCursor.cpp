@@ -72,7 +72,7 @@ bool HashCursor::bIterate(void)
        m_i_HashEntry < m_pHashMap->m_nEntriesPerBuffer;
        m_i_HashEntry++) {
     
-    if (C_UNKNOWN == m_pHashBuffer->m_xHashEntry[m_i_HashEntry].m_uSignature)
+    if (! m_pHashBuffer->m_xHashEntry[m_i_HashEntry].m_uSignature)
       continue;
     
     m_yaKey  = m_pHashBuffer->m_xHashEntry[m_i_HashEntry].m_yaKey;

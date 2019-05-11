@@ -27,7 +27,7 @@ HashInsert::HashInsert(void)
   m_nBytes = C_UNKNOWN;
   m_iValue = C_UNKNOWN;
   
-  m_uSignature = C_UNKNOWN;
+  m_uSignature = 0;
   
   m_uEntryTape     = 0;
   m_nEntryTapeBits = 0;
@@ -124,7 +124,7 @@ void HashInsert::vSet(byte* yaKey, i8 nBytes, i8 iValue)
   
   m_uEntryTape     = m_uSignature;
   m_nEntryTapeBits = 64;
-  m_uEntryHash     = m_uSignature;
+  m_uEntryHash     = m_uEntryTape;
   
   m_uArcTape       = HshLib::iHash32(m_yaKey,m_nBytes);;
   m_nArcTapeBits   = 32;

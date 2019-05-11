@@ -255,7 +255,7 @@ void HashBuffer::vInsertEntry(HashInsert* pHi)
    i8 i_Entry = iCalcEntry(pHi);
 
   // test if the entry is already in use
-  if (C_UNKNOWN != m_xHashEntry[i_Entry].m_uSignature) {
+  if (m_xHashEntry[i_Entry].m_uSignature) {
     if (pHi->m_bDebug)
       vDebugTrap();
     vHandleOccupied(pHi,i_Entry);

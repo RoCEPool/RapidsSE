@@ -27,7 +27,7 @@ HashEntry::HashEntry(void)
   m_nBytes = C_UNKNOWN;
   m_iValue = C_UNKNOWN;
   
-  m_uSignature = C_UNKNOWN;
+  m_uSignature = 0;
 
   m_aDupeChain = nullptr;
 }
