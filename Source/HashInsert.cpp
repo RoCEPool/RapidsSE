@@ -28,6 +28,9 @@ HashInsert::HashInsert(void)
   m_iValue = C_UNKNOWN;
   
   m_uSignature = C_UNKNOWN;
+  
+  m_bArcTrc = false;
+  m_bDebug  = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,6 +75,9 @@ void HashInsert::vSet(byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature)
   m_iValue = iValue;
   
   m_uSignature = uSignature;
+  
+  m_bArcTrc = false;
+  m_bDebug  = false;
 }
 
 /*============================================================================*/

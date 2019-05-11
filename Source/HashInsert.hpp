@@ -14,6 +14,9 @@ namespace Structures
     i8   m_iValue;
 
     u8   m_uSignature;
+  
+    bool m_bArcTrc;
+    bool m_bDebug;
 
   public:
     HashInsert(void);

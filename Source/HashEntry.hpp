@@ -30,6 +30,7 @@ namespace Structures
 
     void vDump(void);
     bool bEqualTo(byte* yaKey, i8 nBytes);
+    void vSet(HashInsert* pHi);
     void vSet(HashEntry* aSrcEntry, i8 iAltValue);
     void vSet(byte* yaKey, i8 nBytes, i8 iValue, u8 uHash, u8 uSignature);
   };

@@ -158,6 +158,19 @@ bool HashEntry::bEqualTo(byte* yaKey, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set entry                                                                  */
+/*----------------------------------------------------------------------------*/
+void HashEntry::vSet(HashInsert* pHi)
+{
+  MemLib::vCopy(m_yaKey,pHi->m_yaKey,pHi->m_nBytes,CN_HASHBUFFER);
+  m_nBytes = pHi->m_nBytes;
+  m_iValue = pHi->m_iValue;
+  
+  m_uHash      = 0;
+  m_uSignature = pHi->m_uSignature;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set entry based on another entry (same key but alternate value)            */
 /*----------------------------------------------------------------------------*/
 void HashEntry::vSet(HashEntry* aSrcEntry, i8 iAltValue)
