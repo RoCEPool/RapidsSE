@@ -73,7 +73,11 @@ void HashInsert::vArcEntry(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // compute entry hash
+  // get next entry hash
+  
+  m_uEntryTape >>= 1;
+  m_nEntryTapeBits -= 1;
+
   m_uEntryHash = m_uEntryTape; //HshLib::iHash64(m_yaKey,m_nBytes);
 }
 /*----------------------------------------------------------------------------*/
