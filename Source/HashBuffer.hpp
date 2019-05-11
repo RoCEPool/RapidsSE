@@ -20,6 +20,7 @@ namespace Structures
     HashBuffer* m_pParent;      // parent buffer of this buffer
     i8          m_iDepth;       // depth of this hash buffer
     i8          m_iArc;         // which arc from parent
+    i8          m_nStrata;      // strata no. of this buffer
     bool        m_bDuplicates;  // is this buffer handling duplicates?
   
     s256        m_sDotNotation; // dot notation of this buffer
@@ -45,14 +46,16 @@ namespace Structures
   
     void vAnalysis(void);
     bool bAppendDuplicate(HashEntry* aHeadEntry, i8 iAltValue);
-    void vInsertEntry(byte* yaKey, i8 nBytes, i8 iValue,
+    void vInsertEntry(byte* yaKey, i8 nBytes, i8 iValue, i8 iSignature,
                       bool bDebug, bool& bArcTrc);
 
   private:
      void vDumpEntry(i8 i_Entry, char cIndicator);
-     void vHandleOccupied(i8 i_Entry, byte* yaKey, i8 nBytes, i8 iValue,
+     i8   iEntry(i8 iHash);
+     void vHandleOccupied(i8 i_Entry,
+                          byte* yaKey, i8 nBytes, i8 iValue, i8 iSignature,
                           bool bDebug, bool& bArcTrc);
-     void vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue,
+     void vInsertCollision(byte* yaKey, i8 nBytes, i8 iValue, i8 iSignature,
                            bool bDebug, bool& bArcTrc);
   
     Footer* aFooter(void);

@@ -177,7 +177,9 @@ void HashMap::vInsert(byte* yaKey, i8 nBytes, i8 iValue, bool bDebug)
   
   bool bArcTrc = false;
   
-  m_pRootBuffer->vInsertEntry(yaKey,nBytes,iValue,bDebug,bArcTrc);
+  i8 iSignature = HshLib::iHash(yaKey,nBytes);
+
+  m_pRootBuffer->vInsertEntry(yaKey,nBytes,iValue,iSignature,bDebug,bArcTrc);
 }
 
 /*----------------------------------------------------------------------------*/
