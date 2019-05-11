@@ -162,7 +162,7 @@ void HashBuffer::vInsertEntry(HashInsert* pHi,
                               byte* yaKey, i8 nBytes, i8 iValue, u8 uSignature)
 {
   if (pHi->m_bDebug) {
-    int iDebug = 1;
+    vDebugTrap();
   }
   
   i8 i_Entry = iEntry(yaKey,nBytes,uSignature);
@@ -173,7 +173,7 @@ void HashBuffer::vInsertEntry(HashInsert* pHi,
   // test if the entry is already in use
   if (C_UNKNOWN != m_xHashEntry[i_Entry].m_uHash) {
     if (pHi->m_bDebug) {
-      int iDebug = 1;
+      vDebugTrap();
     }
     vHandleOccupied(pHi,i_Entry,yaKey,nBytes,iValue,uSignature);
     if (pHi->m_bArcTrc)
@@ -188,7 +188,7 @@ void HashBuffer::vInsertEntry(HashInsert* pHi,
 
   if (pHi->m_bDebug || m_pHashMap->m_bTrace) {
     vDumpEntry(i_Entry,'I');
-    int iDebug = 1;
+    vDebugTrap();
   }
   
   if (m_iDepth > m_pHashMap->m_iMaxDepth) {
@@ -218,8 +218,8 @@ void HashBuffer::vInsertEntry(HashInsert* pHi,
 i8 HashBuffer::iArc(byte* yaKey, i8 nBytes, u8 uSignature)
 {
   if (m_iDepth > 6)
-    int iDebug = 1;
-  
+    vDebugTrap();
+
   u8 uArcHash = uSignature;//HashEntry::iHashArc(yaKey,nBytes,m_iDepth+1);
 
   i8 nNextStrataBuffers  = (i8)pow(m_pHashMap->m_nArcsPerBuffer,m_iDepth + 1);

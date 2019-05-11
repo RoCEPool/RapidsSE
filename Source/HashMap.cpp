@@ -173,12 +173,10 @@ bool HashMap::bExists(byte* aKey, i8 nBytes, i8 iValue)
 void HashMap::vInsert(byte* yaKey, i8 nBytes, i8 iValue, bool bDebug)
 {
   if (bDebug)
-    int iDebug = 1;
+    vDebugTrap();
   if (91112 == iValue)
-    int iDebug = 1;
+    vDebugTrap();
 
-  bool bArcTrc = false;
-  
   u8 uSignature = HshLib::iHash64(yaKey,nBytes);
   //vTrace(" iValue %lld uSignature %llx\n"_Stz,iValue,uSignature);
 
