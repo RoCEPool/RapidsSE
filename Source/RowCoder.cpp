@@ -3177,6 +3177,90 @@ i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compute date from number of days since base date                           */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDaysFromBase(Datum* pDatum, i8& iEra)
+{
+  i8 nYearsMonthsDays = pDatum->m_iDte;
+  
+  if (C_SILVER_ERA == iEra)
+    nYearsMonthsDays += C_SILVER_DAYS;
+  else if (C_MODERN_ERA == iEra)
+    nYearsMonthsDays += C_MODERN_DAYS;
+  else {
+    ASSERT(C_CLASSIC_ERA == iEra);
+  }
+  
+  i8 nYears = (nYearsMonthsDays - 1) / 366;
+  i8 nMonthsDays = nYearsMonthsDays - (nYears * 366);
+  
+  i8 i_Month;
+  for (i_Month = 1; i_Month <= 11; i_Month++)
+    if (nMonthDaySum[i_Month] >= nMonthsDays)
+      break;
+  
+  
+  
+  pDatum->xDte.m_uYearDelta = nYears;
+  pDatum->xDte.m_uMonth     = i_Month;
+  pDatum->xDte.m_uDay       = nMonthsDays - nMonthDaySum[i_Month - 1];
+  pDatum->xDte.m_uSpare     = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute number of days since base date                                     */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iDaysIntoBase(i8 nDaysWithinEra, i8 iEra)
+{
+  i8 nBaseDays;
+  
+  if (C_SILVER_ERA == iEra)
+    nBaseDays = nDaysWithinEra + C_SILVER_DAYS;
+  else if (C_MODERN_ERA == iEra)
+    nBaseDays = nDaysWithinEra + C_MODERN_DAYS;
+  else {
+    ASSERT(C_CLASSIC_ERA == iEra);
+    nBaseDays = nDaysWithinEra + C_CLASSIC_DAYS;
+  }
+  
+  return nBaseDays;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute number of days since base date                                     */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDaysIntoBase(Datum* pDatum, i8& iEra)
+{
+  if (pDatum->xDte.m_uYearDelta < C_SILVER_ERA)
+    iEra = C_CLASSIC_ERA;
+  else if (pDatum->xDte.m_uYearDelta < C_MODERN_ERA)
+    iEra = C_SILVER_ERA;
+  else
+    iEra = C_MODERN_ERA;
+  
+  i8 nDays = 0;
+  
+  // year component
+  nDays = pDatum->xDte.m_uYearDelta * 366;
+  
+  if (C_SILVER_ERA == iEra)
+    nDays -= C_SILVER_DAYS;
+  else if (C_MODERN_ERA == iEra)
+    nDays -= C_MODERN_DAYS;
+  else {
+    ASSERT(C_CLASSIC_ERA == iEra);
+  }
+  
+  // month components
+  nDays += nMonthDaySum[pDatum->xDte.m_uMonth - 1];
+  
+  // day component
+  nDays += pDatum->xDte.m_uDay;
+  
+  pDatum->m_iDte = nDays;
+}
+
+/*----------------------------------------------------------------------------*/
 /* decode decimal from given cache line                                       */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
@@ -3232,8 +3316,6 @@ void RowCoder::vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,
       NEVER_REACH;
   }
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /* decode date from given cache line                                          */
@@ -3487,6 +3569,160 @@ void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode varchar from given cache line                                       */
 /*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
+                               Column* pCol, eMN eEncoding, i8 i_Offset)
+{
+  i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
+  TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
+  
+  //MemLib::vWordDump(aShocoTail,sizeof(TailLine));
+  
+  /*
+   +=====================================+
+   |            Shoco Tail Line          +
+   +=====================================+
+   | U | C | <compressed bytes> <unused> +
+   +-------------------------------------+
+   | 0 | 1 | 2                        63 |
+   +-------------------------------------+
+   
+   where: U is one byte being the unit length of the tail line
+   C is one byte being the number of compressed bytes
+   */
+  
+  i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+  //RASSERT(nCompressed <= 4);
+  
+  i8 nDecompressed =
+  Compress::iFromShoco(pDatum->m_sVch.aChar(),   // decompressed destination
+                       255,                      // max destination
+                       ((byte*)aShocoTail)       // from compressed source
+                       + C_SHOCO_COMPRESSED_OFFSET
+                       + C_SHOCO_COMPRESSED_BYTES,
+                       nCompressed);             // bytes compressed
+  ASSERT(nDecompressed);
+  pDatum->m_nChars = nDecompressed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode varchar from given cache line                                       */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
+                                  Column* pCol, eMN eEncoding, i8 i_Offset)
+{
+  i8 nCompressed = aHeadLine->w8_1B(i_Offset);
+  RASSERT(nCompressed <= 56);
+  
+  i8 nDecompressed =
+  Compress::iFromShoco((char*)pDatum->m_sVch.aChar(),
+                       255,
+                       ((byte*)aHeadLine)+i_Offset+1,
+                       nCompressed);
+  ASSERT(nDecompressed);
+  pDatum->m_nChars = nDecompressed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode varchar from given cache line                                       */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
+                                    Column* pCol, eMN eEncoding, i8 i_Offset)
+{
+  byte caShoco[C_4KB];
+  
+  i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
+  TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
+  
+  i8 nCompressed = aHeadLine->w8_1B(i_Offset+2);
+  
+  i8 nBytesPartA = sizeof(HeadLine) - i_Offset - 3;
+  i8 nBytesPartB = nCompressed - nBytesPartA;
+  
+  MemLib::vCopy((byte*)caShoco+2,
+                (byte*)aHeadLine + i_Offset + 3,
+                nBytesPartA,
+                CN_ROWTRAY);
+  MemLib::vCopy((byte*)caShoco+2+nBytesPartA,
+                (byte*)aShocoTail+1,
+                nBytesPartB,
+                CN_ROWTRAY);
+  
+  //MemLib::vWordDump(caShoco+2,3 * sizeof(SpaceUnit));
+  
+  i8 nDecompressed =
+  Compress::iFromShoco((char*)pDatum->m_sVch.aChar(),
+                       255,
+                       (byte*)caShoco+2,
+                       nCompressed);
+  ASSERT(nDecompressed);
+  pDatum->m_nChars = nDecompressed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode varchar from given cache line                                       */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
+                               Column* pCol, eMN eEncoding, i8 i_Offset)
+{
+  switch (eEncoding) {
+      
+    case MN_1B:
+      pDatum->m_iInt = aHeadLine->w8_1B(i_Offset);
+      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+      ((char*)pDatum->m_sVch.aChar())[1] = '\0';
+      pDatum->m_nChars = 1;
+      break;
+    case MN_2B:
+      pDatum->m_iInt = aHeadLine->w8_2B(i_Offset);
+      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+      ((char*)pDatum->m_sVch.aChar())[2] = '\0';
+      pDatum->m_nChars = 2;
+      break;
+    case MN_3B:
+      pDatum->m_iInt = aHeadLine->w8_3B(i_Offset);
+      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+      ((char*)pDatum->m_sVch.aChar())[3] = '\0';
+      pDatum->m_nChars = 3;
+      break;
+    case MN_4B:
+      pDatum->m_iInt = aHeadLine->w8_4B(i_Offset);
+      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+      ((char*)pDatum->m_sVch.aChar())[4] = '\0';
+      pDatum->m_nChars = 4;
+      break;
+    case MN_5B:
+      pDatum->m_iInt = aHeadLine->w8_5B(i_Offset);
+      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+      ((char*)pDatum->m_sVch.aChar())[5] = '\0';
+      pDatum->m_nChars = 5;
+      break;
+    case MN_6B:
+      pDatum->m_iInt = aHeadLine->w8_6B(i_Offset);
+      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+      ((char*)pDatum->m_sVch.aChar())[6] = '\0';
+      pDatum->m_nChars = 6;
+      break;
+    case MN_7B:
+      pDatum->m_iInt = aHeadLine->w8_7B(i_Offset);
+      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+      ((char*)pDatum->m_sVch.aChar())[7] = '\0';
+      pDatum->m_nChars = 7;
+      break;
+    case MN_8B:
+      pDatum->m_iInt = aHeadLine->w8_8B(i_Offset);
+      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+      ((char*)pDatum->m_sVch.aChar())[8] = '\0';
+      pDatum->m_nChars = 8;
+      break;
+    default:
+      NEVER_REACH;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode varchar from given cache line                                       */
+/*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
                             ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                             i8& i_LastColumn, i8& i_Offset)
@@ -3681,234 +3917,6 @@ void RowCoder::vDecodeTenth(Datum* pDatum, HeadLine* aHeadLine,
     }
   }
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode varchar from given cache line                                       */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
-                               Column* pCol, eMN eEncoding, i8 i_Offset)
-{
-  i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
-  TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
-  
-  //MemLib::vWordDump(aShocoTail,sizeof(TailLine));
-  
-  /*
-   +=====================================+
-   |            Shoco Tail Line          +
-   +=====================================+
-   | U | C | <compressed bytes> <unused> +
-   +-------------------------------------+
-   | 0 | 1 | 2                        63 |
-   +-------------------------------------+
-   
-   where: U is one byte being the unit length of the tail line
-          C is one byte being the number of compressed bytes
-   */
-
-  i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
-  //RASSERT(nCompressed <= 4);
-
-  i8 nDecompressed =
-    Compress::iFromShoco(pDatum->m_sVch.aChar(),   // decompressed destination
-                         255,                      // max destination
-                         ((byte*)aShocoTail)       // from compressed source
-                           + C_SHOCO_COMPRESSED_OFFSET
-                           + C_SHOCO_COMPRESSED_BYTES,
-                         nCompressed);             // bytes compressed
-  ASSERT(nDecompressed);
-  pDatum->m_nChars = nDecompressed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode varchar from given cache line                                       */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
-                               Column* pCol, eMN eEncoding, i8 i_Offset)
-{
-  i8 nCompressed = aHeadLine->w8_1B(i_Offset);
-  RASSERT(nCompressed <= 56);
-
-  i8 nDecompressed =
-    Compress::iFromShoco((char*)pDatum->m_sVch.aChar(),
-                         255,
-                         ((byte*)aHeadLine)+i_Offset+1,
-                         nCompressed);
-  ASSERT(nDecompressed);
-  pDatum->m_nChars = nDecompressed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode varchar from given cache line                                       */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
-                                  Column* pCol, eMN eEncoding, i8 i_Offset)
-{
-  byte caShoco[C_4KB];
-  
-  i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
-  TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
-  
-  i8 nCompressed = aHeadLine->w8_1B(i_Offset+2);
-  
-  i8 nBytesPartA = sizeof(HeadLine) - i_Offset - 3;
-  i8 nBytesPartB = nCompressed - nBytesPartA;
-
-  MemLib::vCopy((byte*)caShoco+2,
-                (byte*)aHeadLine + i_Offset + 3,
-                nBytesPartA,
-                CN_ROWTRAY);
-  MemLib::vCopy((byte*)caShoco+2+nBytesPartA,
-                (byte*)aShocoTail+1,
-                nBytesPartB,
-                CN_ROWTRAY);
-  
-  //MemLib::vWordDump(caShoco+2,3 * sizeof(SpaceUnit));
-  
-  i8 nDecompressed =
-    Compress::iFromShoco((char*)pDatum->m_sVch.aChar(),
-                         255,
-                         (byte*)caShoco+2,
-                         nCompressed);
-  ASSERT(nDecompressed);
-  pDatum->m_nChars = nDecompressed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode varchar from given cache line                                       */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
-                               Column* pCol, eMN eEncoding, i8 i_Offset)
-{
-  switch (eEncoding) {
-      
-    case MN_1B:
-      pDatum->m_iInt = aHeadLine->w8_1B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[1] = '\0';
-      pDatum->m_nChars = 1;
-      break;
-    case MN_2B:
-      pDatum->m_iInt = aHeadLine->w8_2B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[2] = '\0';
-      pDatum->m_nChars = 2;
-      break;
-    case MN_3B:
-      pDatum->m_iInt = aHeadLine->w8_3B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[3] = '\0';
-      pDatum->m_nChars = 3;
-      break;
-    case MN_4B:
-      pDatum->m_iInt = aHeadLine->w8_4B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[4] = '\0';
-      pDatum->m_nChars = 4;
-      break;
-    case MN_5B:
-      pDatum->m_iInt = aHeadLine->w8_5B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[5] = '\0';
-      pDatum->m_nChars = 5;
-      break;
-    case MN_6B:
-      pDatum->m_iInt = aHeadLine->w8_6B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[6] = '\0';
-      pDatum->m_nChars = 6;
-      break;
-    case MN_7B:
-      pDatum->m_iInt = aHeadLine->w8_7B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[7] = '\0';
-      pDatum->m_nChars = 7;
-      break;
-    case MN_8B:
-      pDatum->m_iInt = aHeadLine->w8_8B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[8] = '\0';
-      pDatum->m_nChars = 8;
-      break;
-    default:
-      NEVER_REACH;
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* search for duplicate tail line                                             */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::iFindTail(RowNub* pNub, TailLine* aFindLine)
-{
-  static i8 nFound = 0;
-  static i8 nNotFound = 0;
-  
-  for (i8 i_Tail = pNub->iLastTail();
-       i_Tail != C_UNKNOWN;
-       i_Tail = pNub->iPrevTail(i_Tail)) {
-  
-//    vTrace("i_Tail %lld\n"_Stz,i_Tail);
-  
-//  for (i8 i_Tail = pNub->iFirstTail();
-//       i_Tail != C_UNKNOWN;
-//       i_Tail = pNub->iNextTail(i_Tail)) {
-    
-    TailLine* aTailLine = pNub->aGetTail(i_Tail);
-    i8 nTailUnits = aTailLine->w8_1B(C_TAIL_UNITS_OFFSET);
-    //RASSERT(nTailUnits <= 4);
-
-    //MemLib::vWordDump(aFindLine,sizeof(HeadLine));
-    //MemLib::vWordDump(aTailLine,sizeof(HeadLine));
-    
-    if (0 == MemLib::iCompareWords(aTailLine,aFindLine,nTailUnits*sizeof(SpaceUnit))) {
-      nFound++;
-//      if (IntLib::bIsDecaCycle(nFound))
-//        vTrace("%lld dupe tail found\n"_Stz,nFound);
-      return i_Tail;
-    }
-    
-  }
-  
-  nNotFound++;
-  //  if (IntLib::bIsDecaCycle(nNotFound))
-  //    vTrace("%lld dupe tail NOT found\n"_Stz,nNotFound);
-  return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* calculate free space of a head line                                        */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda)
-{
-  //MemLib::vWordDump(aHeadLine,sizeof(HeadLine));
-  
-  Column* pLastCol = pColVec->pGet(pColVec->nItems() - 1);
-  ASSERT(pLastCol->bIsLastColumn());
-  
-  i8 i_Offset = iBaseOffset(pColVec);
-  i8 i_LastColumn = 0;
-  
-  eMN eEncoding = eEncodingRecoded(aHeadLine,pLastCol,pColVec,pCoda,
-                                  i_LastColumn,i_Offset);
-  
-  if (pLastCol->eDatumType() == DM_VCH && MN_SHOCO_SPLIT == eEncoding)
-    return 0;
-  
-  if (pLastCol->eDatumType() == DM_VCH && MN_SHOCO_FIT == eEncoding) {
-    i8 nCompressed = aHeadLine->w8_1B(i_Offset);
-    RASSERT(nCompressed <= 56);
-    i_Offset += nCompressed;
-  }
-  
-  eDM eDatumExt = pCoda->m_aeExtDatum[pLastCol->iColumnNo()];
-
-  i8 nBytes = nDataBytes(eDatumExt, eEncoding);
-  
-  i8 nFreeBytes = C_BYTES_PER_CACHE_LINE - i_Offset - nBytes;
-  
-  return nFreeBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4177,6 +4185,80 @@ Stz* RowCoder::sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt)
 }
 
 /*----------------------------------------------------------------------------*/
+/* search for duplicate tail line                                             */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iFindTail(RowNub* pNub, TailLine* aFindLine)
+{
+  static i8 nFound = 0;
+  static i8 nNotFound = 0;
+  
+  for (i8 i_Tail = pNub->iLastTail();
+       i_Tail != C_UNKNOWN;
+       i_Tail = pNub->iPrevTail(i_Tail)) {
+    
+    //    vTrace("i_Tail %lld\n"_Stz,i_Tail);
+    
+    //  for (i8 i_Tail = pNub->iFirstTail();
+    //       i_Tail != C_UNKNOWN;
+    //       i_Tail = pNub->iNextTail(i_Tail)) {
+    
+    TailLine* aTailLine = pNub->aGetTail(i_Tail);
+    i8 nTailUnits = aTailLine->w8_1B(C_TAIL_UNITS_OFFSET);
+    //RASSERT(nTailUnits <= 4);
+    
+    //MemLib::vWordDump(aFindLine,sizeof(HeadLine));
+    //MemLib::vWordDump(aTailLine,sizeof(HeadLine));
+    
+    if (0 == MemLib::iCompareWords(aTailLine,aFindLine,nTailUnits*sizeof(SpaceUnit))) {
+      nFound++;
+      //      if (IntLib::bIsDecaCycle(nFound))
+      //        vTrace("%lld dupe tail found\n"_Stz,nFound);
+      return i_Tail;
+    }
+    
+  }
+  
+  nNotFound++;
+  //  if (IntLib::bIsDecaCycle(nNotFound))
+  //    vTrace("%lld dupe tail NOT found\n"_Stz,nNotFound);
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* calculate free space of a head line                                        */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda)
+{
+  //MemLib::vWordDump(aHeadLine,sizeof(HeadLine));
+  
+  Column* pLastCol = pColVec->pGet(pColVec->nItems() - 1);
+  ASSERT(pLastCol->bIsLastColumn());
+  
+  i8 i_Offset = iBaseOffset(pColVec);
+  i8 i_LastColumn = 0;
+  
+  eMN eEncoding = eEncodingRecoded(aHeadLine,pLastCol,pColVec,pCoda,
+                                   i_LastColumn,i_Offset);
+  
+  if (pLastCol->eDatumType() == DM_VCH && MN_SHOCO_SPLIT == eEncoding)
+    return 0;
+  
+  if (pLastCol->eDatumType() == DM_VCH && MN_SHOCO_FIT == eEncoding) {
+    i8 nCompressed = aHeadLine->w8_1B(i_Offset);
+    RASSERT(nCompressed <= 56);
+    i_Offset += nCompressed;
+  }
+  
+  eDM eDatumExt = pCoda->m_aeExtDatum[pLastCol->iColumnNo()];
+  
+  i8 nBytes = nDataBytes(eDatumExt, eEncoding);
+  
+  i8 nFreeBytes = C_BYTES_PER_CACHE_LINE - i_Offset - nBytes;
+  
+  return nFreeBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* restore zero stripped dte                                                  */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRestoreDte(Datum* pDatum, eMN eEncoding)
@@ -4214,90 +4296,6 @@ void RowCoder::vRestoreTme(Datum* pDatum, eMN eEncoding)
 void RowCoder::vRestoreTsp(Datum* pDatum, eMN eEncoding)
 {
   pDatum->m_iInt <<= 24;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compute date from number of days since base date                           */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDaysFromBase(Datum* pDatum, i8& iEra)
-{
-  i8 nYearsMonthsDays = pDatum->m_iDte;
-
-  if (C_SILVER_ERA == iEra)
-    nYearsMonthsDays += C_SILVER_DAYS;
-  else if (C_MODERN_ERA == iEra)
-    nYearsMonthsDays += C_MODERN_DAYS;
-  else {
-    ASSERT(C_CLASSIC_ERA == iEra);
-  }
-
-  i8 nYears = (nYearsMonthsDays - 1) / 366;
-  i8 nMonthsDays = nYearsMonthsDays - (nYears * 366);
-
-  i8 i_Month;
-  for (i_Month = 1; i_Month <= 11; i_Month++)
-    if (nMonthDaySum[i_Month] >= nMonthsDays)
-      break;
-  
-  
-  
-  pDatum->xDte.m_uYearDelta = nYears;
-  pDatum->xDte.m_uMonth     = i_Month;
-  pDatum->xDte.m_uDay       = nMonthsDays - nMonthDaySum[i_Month - 1];
-  pDatum->xDte.m_uSpare     = 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compute number of days since base date                                     */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::iDaysIntoBase(i8 nDaysWithinEra, i8 iEra)
-{
-  i8 nBaseDays;
-  
-  if (C_SILVER_ERA == iEra)
-    nBaseDays = nDaysWithinEra + C_SILVER_DAYS;
-  else if (C_MODERN_ERA == iEra)
-    nBaseDays = nDaysWithinEra + C_MODERN_DAYS;
-  else {
-    ASSERT(C_CLASSIC_ERA == iEra);
-    nBaseDays = nDaysWithinEra + C_CLASSIC_DAYS;
-  }
-  
-  return nBaseDays;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compute number of days since base date                                     */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDaysIntoBase(Datum* pDatum, i8& iEra)
-{
-  if (pDatum->xDte.m_uYearDelta < C_SILVER_ERA)
-    iEra = C_CLASSIC_ERA;
-  else if (pDatum->xDte.m_uYearDelta < C_MODERN_ERA)
-    iEra = C_SILVER_ERA;
-  else
-    iEra = C_MODERN_ERA;
-
-  i8 nDays = 0;
-  
-  // year component
-  nDays = pDatum->xDte.m_uYearDelta * 366;
-  
-  if (C_SILVER_ERA == iEra)
-    nDays -= C_SILVER_DAYS;
-  else if (C_MODERN_ERA == iEra)
-    nDays -= C_MODERN_DAYS;
-  else {
-    ASSERT(C_CLASSIC_ERA == iEra);
-  }
-
-  // month components
-  nDays += nMonthDaySum[pDatum->xDte.m_uMonth - 1];
-  
-  // day component
-  nDays += pDatum->xDte.m_uDay;
-  
-  pDatum->m_iDte = nDays;
 }
 
 /*----------------------------------------------------------------------------*/

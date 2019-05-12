@@ -243,13 +243,6 @@ namespace Data
                               ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                               i8& i_LastColumn, i8& i_LastOffset);
 
-
-  
-    //! move into Nub
-    static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
-
-    static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda);
-
     static eMN eEncodingOriginal(HeadLine* aHeadLine,
                                  Column* pCol, ColumnVec* pColVec,
                                  i8& i_PriorColumn_, i8& i_Offset_);
@@ -259,11 +252,14 @@ namespace Data
   
     static Stz* sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt);
   
+    static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
+  
+    static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda);
+  
     static void vRestoreDte(Datum* pDatum, eMN eEncoding);
     static void vRestoreTme(Datum* pDatum, eMN eEncoding);
     static void vRestoreTsp(Datum* pDatum, eMN eEncoding);
   
- 
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
   
     static void vSetAuxInt(Coda* pIntoCoda, HeadLine* aIntoHead, Column* pCol,
