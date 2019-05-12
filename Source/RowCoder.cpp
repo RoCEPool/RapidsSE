@@ -1958,6 +1958,196 @@ void RowCoder::vRecodeVchShoco(Column* pCol)
   return;
 }
 
+/*----------------------------------------------------------------------------*/
+/* inc column usage                                                           */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vUsageIncEncoded(Column* pCol, i8 nBytes)
+{
+  i8 i_Col = pCol->iColumnNo();
+  
+  m_xaUsage[i_Col].m_nEncodedBytes += nBytes;
+  m_xaUsage[i_Col].m_nEncoded++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc column usage                                                           */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vUsageIncEncoded(Column* pCol, Datum* pDatum)
+{
+  vUsageIncEncoded(pCol,pDatum->m_nEncodedBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc column usage                                                           */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vUsageIncRecoded(Column* pCol, i8 nBytes)
+{
+  i8 i_Col = pCol->iColumnNo();
+  
+  m_xaUsage[i_Col].m_nRecodedBytes += nBytes;
+  m_xaUsage[i_Col].m_nRecoded++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc column usage                                                           */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss)
+{
+  i8 i_Col = pCol->iColumnNo();
+  
+  m_xaUsage[i_Col].m_nOopsBytes += nBytes;
+  m_xaUsage[i_Col].m_nOopsMiss  += nMiss;
+  m_xaUsage[i_Col].m_nOops++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset usage                                                                */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vUsageReset(void)
+{
+  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
+    
+    m_xaUsage[i_Col].m_nEncoded = 0;
+    m_xaUsage[i_Col].m_nEncodedBytes = 0;
+    
+    m_xaUsage[i_Col].m_nRecoded = 0;
+    m_xaUsage[i_Col].m_nRecodedBytes = 0;
+    
+    m_xaUsage[i_Col].m_nOops = 0;
+    m_xaUsage[i_Col].m_nOopsBytes = 0;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of bcd                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXchkBcd(Datum* pDatum, Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iBcd == pDatum->m_iBcd);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of bol                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXchkBol(Datum* pDatum, Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iBol == pDatum->m_iBol);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of dte                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXchkDte(Datum* pDatum, Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
+  //  vTrace("-- %02lld-%02lld-%02lld\n"_Stz,
+  //         pDatum->xDte.m_uYearDelta,pDatum->xDte.m_uMonth,pDatum->xDte.m_uDay);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of flt                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXchkFlt(Datum* pDatum, Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of int                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXchkInt(Datum* pDatum, Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of ivl                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXchkIvl(Datum* pDatum, Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of tme                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXchkTme(Datum* pDatum, Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iTme == pDatum->m_iTme);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of tsp                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXchkTsp(Datum* pDatum, Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_iTsp == pDatum->m_iTsp);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of vch                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXchkVch(Datum* pDatum, Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
+  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
+  RASSERT(m_oEncodedDatum.m_nChars == pDatum->m_nChars);
+  if (m_oEncodedDatum.m_eEncoding != MN_NULL)
+    RASSERT(m_oEncodedDatum.m_sVch.bSame(pDatum->m_sVch));
+#endif
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                Static Functions                            //
@@ -3674,136 +3864,6 @@ void RowCoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* cross-check the encoding of bcd                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vXchkBcd(Datum* pDatum, Column* pCol)
-{
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = iBaseOffset(m_pColVec);
-  i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
-  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_iBcd == pDatum->m_iBcd);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* cross-check the encoding of bol                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vXchkBol(Datum* pDatum, Column* pCol)
-{
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = iBaseOffset(m_pColVec);
-  i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
-  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_iBol == pDatum->m_iBol);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* cross-check the encoding of dte                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vXchkDte(Datum* pDatum, Column* pCol)
-{
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = iBaseOffset(m_pColVec);
-  i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
-  //  vTrace("-- %02lld-%02lld-%02lld\n"_Stz,
-  //         pDatum->xDte.m_uYearDelta,pDatum->xDte.m_uMonth,pDatum->xDte.m_uDay);
-  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* cross-check the encoding of flt                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vXchkFlt(Datum* pDatum, Column* pCol)
-{
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = iBaseOffset(m_pColVec);
-  i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
-  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* cross-check the encoding of int                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vXchkInt(Datum* pDatum, Column* pCol)
-{
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = iBaseOffset(m_pColVec);
-  i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
-  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* cross-check the encoding of ivl                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vXchkIvl(Datum* pDatum, Column* pCol)
-{
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = iBaseOffset(m_pColVec);
-  i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
-  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* cross-check the encoding of tme                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vXchkTme(Datum* pDatum, Column* pCol)
-{
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = iBaseOffset(m_pColVec);
-  i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
-  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_iTme == pDatum->m_iTme);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* cross-check the encoding of tsp                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vXchkTsp(Datum* pDatum, Column* pCol)
-{
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = iBaseOffset(m_pColVec);
-  i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
-  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_iTsp == pDatum->m_iTsp);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* cross-check the encoding of vch                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vXchkVch(Datum* pDatum, Column* pCol)
-{
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = iBaseOffset(m_pColVec);
-  i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
-  RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_nChars == pDatum->m_nChars);
-  if (m_oEncodedDatum.m_eEncoding != MN_NULL)
-    RASSERT(m_oEncodedDatum.m_sVch.bSame(pDatum->m_sVch));
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* search for duplicate tail line                                             */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iFindTail(RowNub* pNub, TailLine* aFindLine)
@@ -4332,66 +4392,6 @@ void RowCoder::vSetAuxInt(Coda* pIntoCoda, HeadLine* aIntoHead, Column* pCol,
   }
 
   pIntoCoda->m_aiAux[pCol->iColumnNo()].m_iInt = iInt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc column usage                                                           */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vUsageIncEncoded(Column* pCol, i8 nBytes)
-{
-  i8 i_Col = pCol->iColumnNo();
-  
-  m_xaUsage[i_Col].m_nEncodedBytes += nBytes;
-  m_xaUsage[i_Col].m_nEncoded++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc column usage                                                           */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vUsageIncEncoded(Column* pCol, Datum* pDatum)
-{
-  vUsageIncEncoded(pCol,pDatum->m_nEncodedBytes);
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc column usage                                                           */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vUsageIncRecoded(Column* pCol, i8 nBytes)
-{
-  i8 i_Col = pCol->iColumnNo();
-
-  m_xaUsage[i_Col].m_nRecodedBytes += nBytes;
-  m_xaUsage[i_Col].m_nRecoded++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc column usage                                                           */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss)
-{
-  i8 i_Col = pCol->iColumnNo();
-  
-  m_xaUsage[i_Col].m_nOopsBytes += nBytes;
-  m_xaUsage[i_Col].m_nOopsMiss  += nMiss;
-  m_xaUsage[i_Col].m_nOops++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset usage                                                                */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vUsageReset(void)
-{
-  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
-      
-    m_xaUsage[i_Col].m_nEncoded = 0;
-    m_xaUsage[i_Col].m_nEncodedBytes = 0;
-    
-    m_xaUsage[i_Col].m_nRecoded = 0;
-    m_xaUsage[i_Col].m_nRecodedBytes = 0;
-
-    m_xaUsage[i_Col].m_nOops = 0;
-    m_xaUsage[i_Col].m_nOopsBytes = 0;
-  }
 }
 
 /*----------------------------------------------------------------------------*/
