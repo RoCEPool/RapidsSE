@@ -167,7 +167,7 @@ i8 HashBuffer::iCalcArc(HashInsert* pHi)
 {
   pHi->vArcEntry();
   
-  i8 i_Arc = pHi->m_uArcBits;
+  i8 i_Arc = pHi->m_i_Arc;
   
   return i_Arc;
 }
@@ -177,7 +177,7 @@ i8 HashBuffer::iCalcArc(HashInsert* pHi)
 /*----------------------------------------------------------------------------*/
 i8 HashBuffer::iCalcEntry(HashInsert* pHi)
 {
-  i8 i_Entry = pHi->m_uEntryHash % m_pHashMap->m_nEntriesPerBuffer;
+  i8 i_Entry = pHi->m_i_Entry;
   
   return i_Entry;
 }

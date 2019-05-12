@@ -85,40 +85,28 @@ void HashInsert::vArcEntry(void)
   // bit tape has 3 bits less
   m_nArcTapeBits -= 3;
   
+  m_i_Arc = m_uArcBits;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get next entry hash
   
   m_uEntryTape >>= 1;
   m_nEntryTapeBits -= 1;
-
-  m_uEntryHash = m_uEntryTape; //HshLib::iHash64(m_yaKey,m_nBytes);
+  
+  m_uEntryHash = m_uEntryTape;
+  m_i_Entry    = m_uEntryHash % m_nEntriesPerBuffer;
   
   xHistory[m_nHistory].m_uArcTape   = m_uArcTape;
   xHistory[m_nHistory].m_uArcBits   = m_uArcBits;
-  xHistory[m_nHistory].m_i_Arc      = m_uArcBits;
+  xHistory[m_nHistory].m_i_Arc      = m_i_Arc;
   
   xHistory[m_nHistory].m_uEntryTape = m_uEntryTape;
   xHistory[m_nHistory].m_uEntryHash = m_uEntryHash;
-  xHistory[m_nHistory].m_i_Entry    = m_uEntryHash;
+  xHistory[m_nHistory].m_i_Entry    = m_i_Entry;
 
   m_nHistory++;
 }
-/*----------------------------------------------------------------------------*/
-//void HashInsert::vArcEntry(void)
-//{
-//  // get the next lower 3 bits from tape
-//  m_uArcBits = m_uEntryTape & 0b111;
-//
-//  // shift off lower 3 bits
-//  m_uEntryTape >>= 3;
-//
-//  // bit tape has 3 bits less
-//  m_nEntryTapeBits -= 3;
-//
-//  // compute entry hash
-//  m_uEntryHash = m_uEntryTape; //HshLib::iHash64(m_yaKey,m_nBytes);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* is this hash entry equal to given key                                      */
@@ -142,7 +130,7 @@ void HashInsert::vDumpHistory(void)
 {
   for (i8 i_History = 0; i_History < m_nHistory; i_History++) {
     
-    vTrace("  Arc %08lx %llu, %lld; Entry %016llx %llu, %lld\n"_Stz,
+    vTrace("  Arc %08lx %llu, %lld; Entry %016llx %016llx, %lld\n"_Stz,
            
            xHistory[i_History].m_uArcTape,
            xHistory[i_History].m_uArcBits,
@@ -166,24 +154,26 @@ void HashInsert::vSet(byte* yaKey, i8 nBytes, i8 iValue)
   
   m_uSignature = HshLib::iHash64(m_yaKey,m_nBytes);
   
-  m_uEntryTape     = m_uSignature;
-  m_nEntryTapeBits = 64;
-  m_uEntryHash     = m_uEntryTape;
-  
   m_uArcTape       = HshLib::iHash32(m_yaKey,m_nBytes);;
   m_nArcTapeBits   = 32;
   m_uArcBits       = 0;
+  m_i_Arc          = m_uArcBits;
+  
+  m_uEntryTape     = m_uSignature;
+  m_nEntryTapeBits = 64;
+  m_uEntryHash     = m_uEntryTape;
+  m_i_Entry        = m_uEntryHash % m_nEntriesPerBuffer;
 
   m_bArcTrc = false;
   m_bDebug  = false;
   
   xHistory[m_nHistory].m_uArcTape   = m_uArcTape;
   xHistory[m_nHistory].m_uArcBits   = m_uArcBits;
-  xHistory[m_nHistory].m_i_Arc      = m_uArcBits;
+  xHistory[m_nHistory].m_i_Arc      = m_i_Arc;
   
   xHistory[m_nHistory].m_uEntryTape = m_uEntryTape;
   xHistory[m_nHistory].m_uEntryHash = m_uEntryHash;
-  xHistory[m_nHistory].m_i_Entry    = m_uEntryHash;
+  xHistory[m_nHistory].m_i_Entry    = m_i_Entry;
 
   m_nHistory++;
   
