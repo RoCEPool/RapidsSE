@@ -125,7 +125,8 @@ namespace Data
     void vEncodeVch(Datum* pSrcDatum, Column* pCol);
     void vEncodeVchShoco(Datum* pSrcDatum, Column* pCol);
     void vEncodeVchSmall(Datum* pSrcDatum, Column* pCol);
-  
+    eMN eEncodingInitial(Column* pCol,
+                         i8& i_PriorColumn_, i8& i_Offset_);
     void vHashColumn(Datum* pSrcDatum, Column* pCol);
   
     void vMetaNibble(Column* pCol, eMN eMetaNibble);
@@ -241,11 +242,11 @@ namespace Data
                               ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                               i8& i_LastColumn, i8& i_LastOffset);
 
-    static eMN eEncodingOriginal(HeadLine* aHeadLine,
-                                 Column* pCol, ColumnVec* pColVec,
-                                 i8& i_PriorColumn_, i8& i_Offset_);
-    static eMN eEncodingRecoded(HeadLine* aHeadLine,
-                                Column* pCol, ColumnVec* pColVec, Coda* pCoda,
+    static eMN eEncodingInitial(HeadLine* aHeadLine, Column* pCol,
+                                ColumnVec* pColVec,
+                                i8& i_PriorColumn_, i8& i_Offset_);
+    static eMN eEncodingRecoded(HeadLine* aHeadLine, Column* pCol,
+                                ColumnVec* pColVec, Coda* pCoda,
                                 i8& i_PriorColumn_, i8& i_Offset_);
   
     static Stz* sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt);

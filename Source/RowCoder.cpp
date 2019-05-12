@@ -951,6 +951,18 @@ void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the initial encoding (and offset) of a column datum                    */
+/*----------------------------------------------------------------------------*/
+eMN RowCoder::eEncodingInitial(Column* pCol,
+                               i8& i_PriorColumn_, i8& i_Offset_)
+{
+  eMN eEncoding = eEncodingInitial(m_aFromHead,pCol,
+                                   m_pColVec,
+                                   i_PriorColumn_,i_Offset_);
+  return eEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
 /* hash a partion key column into running hash                                */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vHashColumn(Datum* pSrcDatum, Column* pCol)
@@ -1014,8 +1026,8 @@ void RowCoder::vRecode_Large(void)
     eDM eDatum = pCol->eDatumType();
     
     i8 i_PriorFromOffset = m_i_FromOffset;
-    eMN eEncoding = eEncodingOriginal(m_aFromHead,pCol,m_pColVec,
-                                      i_LastColumn,m_i_FromOffset);
+    eMN eEncoding = eEncodingInitial(m_aFromHead,pCol,m_pColVec,
+                                    i_LastColumn,m_i_FromOffset);
     
     // calculate new IntoOffset
     m_i_IntoOffset += m_i_FromOffset - i_PriorFromOffset;
@@ -1072,8 +1084,8 @@ void RowCoder::vRecode_Short(void)
     eDM eDatum = pCol->eDatumType();
     
     i8 i_PriorFromOffset = m_i_FromOffset;
-    eMN eEncoding = eEncodingOriginal(m_aFromHead,pCol,m_pColVec,
-                                      i_LastColumn,m_i_FromOffset);
+    eMN eEncoding = eEncodingInitial(m_aFromHead,pCol,m_pColVec,
+                                     i_LastColumn,m_i_FromOffset);
     
     // calculate new IntoOffset
     m_i_IntoOffset += m_i_FromOffset - i_PriorFromOffset;
@@ -3858,11 +3870,11 @@ void RowCoder::vDecodeTenth(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the original/natural encoding (and offset) of a column datum           */
+/* get the initial encoding (and offset) of a column datum                    */
 /*----------------------------------------------------------------------------*/
-eMN RowCoder::eEncodingOriginal(HeadLine* aFromHead,
-                                Column* pCol, ColumnVec* pColVec,
-                                i8& i_PriorColumn_, i8& i_FromOffset_)
+eMN RowCoder::eEncodingInitial(HeadLine* aFromHead, Column* pCol,
+                               ColumnVec* pColVec,
+                               i8& i_PriorColumn_, i8& i_FromOffset_)
 {
   i8 i_ForCol = pCol->iColumnNo();
   
@@ -3890,8 +3902,8 @@ eMN RowCoder::eEncodingOriginal(HeadLine* aFromHead,
 /*----------------------------------------------------------------------------*/
 /* get the recoded/extended encoding (and offset) of a column datum           */
 /*----------------------------------------------------------------------------*/
-eMN RowCoder::eEncodingRecoded(HeadLine* aHeadLine,
-                               Column* pCol, ColumnVec* pColVec, Coda* pCoda,
+eMN RowCoder::eEncodingRecoded(HeadLine* aHeadLine, Column* pCol,
+                               ColumnVec* pColVec, Coda* pCoda,
                                i8& i_PriorColumn_, i8& i_Offset_)
 {
   i8 i_ForCol = pCol->iColumnNo();
@@ -3901,13 +3913,13 @@ eMN RowCoder::eEncodingRecoded(HeadLine* aHeadLine,
     i_Offset_ = iBaseOffset(pColVec);
   }
   
-  for (i8 i_Nibble = i_PriorColumn_; i_Nibble < i_ForCol; i_Nibble++) {
+  for (i8 i_Col = i_PriorColumn_; i_Col < i_ForCol; i_Col++) {
     
-    eMN eEncoding = (eMN)aHeadLine->iMetaNibble(i_Nibble);
+    eMN eEncoding = (eMN)aHeadLine->iMetaNibble(i_Col);
 
-    Column* pCol  = pColVec->pGet(i_Nibble);
+    Column* pCol  = pColVec->pGet(i_Col);
     
-    eDM eDatumExt = pCoda->m_aeExtDatum[i_Nibble];
+    eDM eDatumExt = pCoda->m_aeExtDatum[i_Col];
 
     i_Offset_ += nDataBytes(eDatumExt,eEncoding);
    }
