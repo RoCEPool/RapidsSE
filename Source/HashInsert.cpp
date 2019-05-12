@@ -130,14 +130,12 @@ void HashInsert::vDumpHistory(void)
 {
   for (i8 i_History = 0; i_History < m_nHistory; i_History++) {
     
-    vTrace("  Arc %08lx %llu, %lld; Entry %016llx %016llx, %lld\n"_Stz,
+    vTrace("  Arc %08lx, %lld; Entry %016llx, %lld\n"_Stz,
            
            xHistory[i_History].m_uArcTape,
-           xHistory[i_History].m_uArcBits,
            xHistory[i_History].m_i_Arc,
            
-           xHistory[i_History].m_uEntryTape,
-           xHistory[i_History].m_uEntryHash,
+            xHistory[i_History].m_uEntryHash,
            xHistory[i_History].m_i_Entry
            );
   }
