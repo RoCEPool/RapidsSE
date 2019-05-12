@@ -376,9 +376,10 @@ namespace Data
       
       i8 i_SearchColumn = 0;
       i8 i_SearchOffset = iBaseOffset(pColVec);
-      Column* pColFirstDate  = pColVec->pGet(pCol->iFirstDate());
-      eMN eFirstEncoding = eEncodingRecoded(aHeadLine,pColFirstDate,pColVec,
-                                            pCoda,i_SearchColumn,i_SearchOffset);
+      i8 iFirstDateCol = pCol->iFirstDate();
+      Column* pColFirstDate  = pColVec->pGet(iFirstDateCol);
+      eMN eFirstEncoding = eGetEncodingExtFast(aHeadLine,iFirstDateCol,pCoda,
+                                               i_SearchColumn,i_SearchOffset);
       
       switch (eFirstEncoding) {
         case MN_SILVER_1B:    pDatum->m_iInt = aHeadLine->w8_1B(i_SearchOffset); break;
