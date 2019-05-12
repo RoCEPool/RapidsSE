@@ -121,7 +121,7 @@ RowCoder::~RowCoder(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* copy an encoded row from one tray to another                               */
+/* begin copying rows into given row nub                                      */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCopyBegin(RowNub* pIntoNub)
 {
@@ -135,7 +135,7 @@ void RowCoder::vCopyBegin(RowNub* pIntoNub)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy an encoded row from one tray to another                               */
+/* end copying rows into row nub                                              */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCopyEnd(void)
 {
@@ -158,11 +158,12 @@ void RowCoder::vCopyEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy an encoded row from one tray to another                               */
+/* copy (& recode) given encoded row from given nub into current nub          */
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bCopyRow(RowNub* pFromNub)
 {
   // check for space in target nub
+  
   i8 nSpaceNeeded = pFromNub->nUsedBytes();
   if (! m_pIntoNub->bHasSpace(nSpaceNeeded)) {
     m_nTotalBuffers++;
@@ -171,6 +172,7 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // initialise copy
   
   m_pFromNub     = pFromNub;
   m_i_FromHead   = 0;
@@ -183,39 +185,43 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
 
   m_aWorkHead    = m_pIntoNub->aGetHead();
   
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy & recode row
   
 #ifdef WITH_LARGE_ROWS
-  vCopy_Large();
+  vCopyHead_Large();
   vRecode_Large();
 #else
-  vCopy_Short();
+  vCopyHead_Short();
   vRecode_Short();
 #endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vAnalyseFree();
 
 #ifdef WITH_TRACE_ENCODING
   RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
 #endif
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // analyse free space in the into head
+  
+  vAnalyseFree();
   
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* begin encoding of row into given row nub                                   */
+/* begin encoding of a row into given row nub                                  */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeBegin(RowNub* pIntoNub)
 {
+  // set up
+  
   m_pIntoNub = pIntoNub;
   
   m_pColVec   = m_pIntoNub->pDesc()->pColumnVec();
   m_pIntoCoda = m_pIntoNub->pCoda();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // initialise the into row
   
   m_pIntoNub->vReset();
   m_i_IntoHead = m_pIntoNub->iAllotHead();
@@ -231,20 +237,21 @@ void RowCoder::vEncodeBegin(RowNub* pIntoNub)
 void RowCoder::vEncodeDatum(Datum* pSrcDatum, Column* pCol)
 {
   i8 i_Col = pCol->iColumnNo();
-  
   if (0 == i_Col)
     m_nTotalHeads++;
     
 //  if (1 == i_Col)
 //    oNumBat.vAdd(pDatum->m_iInt);
   
+  // record the extended datum for this column
+  // nb. encodeBegin(), encodeDatum(), encodeEnd() is done for each row
   eDM eDatum = pCol->eDatumType();
-  
   m_pIntoCoda->m_aeExtDatum[i_Col] = eDatum;
   
   // hash the column if its part of the partition key
   vHashColumn(pSrcDatum,pCol);
   
+  // encode the datum into the row
   switch (eDatum) {
     case DM_BCD: vEncodeBcd(pSrcDatum,pCol); return;
     case DM_BOL: vEncodeBol(pSrcDatum,pCol); return;
@@ -261,7 +268,7 @@ void RowCoder::vEncodeDatum(Datum* pSrcDatum, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode given datum into cache line                                         */
+/* end encoding of row                                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeEnd(void)
 {
@@ -271,13 +278,13 @@ void RowCoder::vEncodeEnd(void)
 //  
 //  vHeadDump(m_aIntoHead,m_pColVec,m_pIntoCoda);
 
+  m_pColVec      = nullptr;
+  
   m_pIntoNub     = nullptr;
+  m_pIntoCoda    = nullptr;
   m_i_IntoHead   = C_UNKNOWN;
   m_aIntoHead    = nullptr;
   m_i_IntoOffset = C_UNKNOWN;
-
-  m_pColVec  = nullptr;
-  m_pIntoCoda    = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -434,9 +441,261 @@ void RowCoder::vAnalyseFree(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy an encoded row from one tray to another                               */
+/* initial encoding of bcd                                                    */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vCopy_Large(void)
+void RowCoder::vCodeBcd(Datum* pTgtDatum, Datum* pSrcDatum)
+{
+  RASSERT(DM_BCD == pSrcDatum->m_eDatum);
+  
+  m_oEncodedDatum.m_eDatum = DM_BCD;
+  m_oEncodedDatum.m_iBcd   = pSrcDatum->m_iBcd;
+  
+  eMN eEncoding = (eMN)IntLib::iByteMagNull(m_oEncodedDatum.m_iInt);
+  m_oEncodedDatum.m_eEncoding = eEncoding;
+  m_oEncodedDatum.m_nEncodedBytes = eEncoding;
+  
+  RASSERT(m_oEncodedDatum.m_nEncodedBytes == nDataBytes(DM_BCD,eEncoding));
+}
+
+/*----------------------------------------------------------------------------*/
+/* initial encoding of bol                                                    */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vCodeBol(Datum* pTgtDatum, Datum* pSrcDatum)
+{
+  RASSERT(DM_BOL == pSrcDatum->m_eDatum);
+  
+  pTgtDatum->m_eDatum = DM_BOL;
+  pTgtDatum->m_iBol   = pSrcDatum->m_iBol;
+  
+  eMN eEncoding;
+  
+  if (pSrcDatum->bIsNull())
+    eEncoding = MN_NULL;
+  else if (pSrcDatum->m_iInt)
+    eEncoding = MN_TRUE;
+  else
+    eEncoding = MN_FALSE;
+  
+  pTgtDatum->m_eEncoding = eEncoding;
+  pTgtDatum->m_nEncodedBytes = 0;
+  
+  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_BOL,eEncoding));
+}
+
+/*----------------------------------------------------------------------------*/
+/* initial encoding of dte                                                    */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum)
+{
+  RASSERT(DM_DTE == pSrcDatum->m_eDatum);
+  
+  pTgtDatum->m_eDatum = DM_DTE;
+  pTgtDatum->m_iDte   = pSrcDatum->m_iDte;
+  
+  if (pSrcDatum->bIsNull()) {
+    pTgtDatum->m_eEncoding = MN_NULL;
+    pTgtDatum->m_nEncodedBytes = 0;
+    RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_DTE,MN_NULL));
+    return;
+  }
+  
+  i8 iEra = 0;
+  vDaysIntoBase(&m_oEncodedDatum,iEra);
+  
+  eMN eEncoding;
+  i8 nBytes = (eMN)IntLib::iByteMagnitude(pTgtDatum->m_iInt);
+  
+  if (C_SILVER_ERA == iEra) {
+    if (1 == nBytes) {
+      eEncoding = MN_SILVER_1B;
+      pTgtDatum->m_nEncodedBytes = 1;
+    }
+    else {
+      eEncoding = MN_SILVER_2B;
+      pTgtDatum->m_nEncodedBytes = 2;
+    }
+  }
+  else if (C_MODERN_ERA == iEra) {
+    if (1 == nBytes) {
+      eEncoding = MN_MODERN_1B;
+      pTgtDatum->m_nEncodedBytes = 1;
+    }
+    else {
+      eEncoding = MN_MODERN_2B;
+      pTgtDatum->m_nEncodedBytes = 2;
+    }
+  }
+  else {
+    ASSERT(C_CLASSIC_ERA == iEra);
+    if (1 == nBytes) {
+      eEncoding = MN_CLASSIC_1B;
+      pTgtDatum->m_nEncodedBytes = 1;
+    }
+    else {
+      eEncoding = MN_CLASSIC_2B;
+      pTgtDatum->m_nEncodedBytes = 2;
+    }
+  }
+  
+  pTgtDatum->m_eEncoding = eEncoding;
+  
+  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_DTE,eEncoding));
+}
+
+/*----------------------------------------------------------------------------*/
+/* initial encoding of flt                                                    */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vCodeFlt(Datum* pTgtDatum, Datum* pSrcDatum)
+{
+  RASSERT(DM_FLT == pSrcDatum->m_eDatum);
+  
+  pTgtDatum->m_eDatum = DM_FLT;
+  pTgtDatum->m_dFlt   = pSrcDatum->m_dFlt;
+  
+  eMN eEncoding = (eMN)IntLib::iByteMagNull(pTgtDatum->m_iInt);
+  pTgtDatum->m_eEncoding = eEncoding;
+  pTgtDatum->m_nEncodedBytes = eEncoding;
+  
+  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_FLT,eEncoding));
+}
+
+/*----------------------------------------------------------------------------*/
+/* initial encoding of int                                                    */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum)
+{
+  RASSERT(DM_INT == pSrcDatum->m_eDatum);
+  
+  pTgtDatum->m_eDatum = DM_INT;
+  pTgtDatum->m_iInt   = pSrcDatum->m_iInt;
+  
+  eMN eEncoding = (eMN)IntLib::iByteMagNull(pTgtDatum->m_iInt);
+  pTgtDatum->m_eEncoding = eEncoding;
+  pTgtDatum->m_nEncodedBytes = eEncoding;
+  
+  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_INT,eEncoding));
+}
+
+/*----------------------------------------------------------------------------*/
+/* initial encoding of ivl                                                    */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vCodeIvl(Datum* pTgtDatum, Datum* pSrcDatum)
+{
+  RASSERT(DM_IVL == pSrcDatum->m_eDatum);
+  
+  pTgtDatum->m_eDatum = DM_IVL;
+  pTgtDatum->m_iIvl   = pSrcDatum->m_iIvl;
+  
+  eMN eEncoding = (eMN)IntLib::iByteMagNull(pTgtDatum->m_iInt);
+  pTgtDatum->m_eEncoding = eEncoding;
+  pTgtDatum->m_nEncodedBytes = eEncoding;
+  
+  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_IVL,eEncoding));
+}
+
+/*----------------------------------------------------------------------------*/
+/* initial encoding of tme                                                    */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vCodeTme(Datum* pTgtDatum, Datum* pSrcDatum)
+{
+  RASSERT(DM_TME == pSrcDatum->m_eDatum);
+  
+  pTgtDatum->m_eDatum = DM_TME;
+  pTgtDatum->m_iTme   = pSrcDatum->m_iTme;
+  
+  if (pSrcDatum->bIsNull()) {
+    pTgtDatum->m_eEncoding = MN_NULL;
+    pTgtDatum->m_nEncodedBytes = 0;
+    RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_TME,MN_NULL));
+    return;
+  }
+  
+  eMN eEncoding;
+  
+  bool bSawNonZero = true;
+  
+  while (! pTgtDatum->m_yaByte[0]) {
+    
+    bSawNonZero = false;
+    
+    for (i8 i_Byte = 0; i_Byte < 7; i_Byte++)
+      if ( (pTgtDatum->m_yaByte[i_Byte] = pTgtDatum->m_yaByte[i_Byte+1]) )
+        bSawNonZero = true;
+    pTgtDatum->m_yaByte[7] = 0;
+    
+    if (! bSawNonZero)
+      break;
+  }
+  
+  eEncoding = (eMN)IntLib::iByteMagnitude(pTgtDatum->m_iInt);
+  
+  pTgtDatum->m_eEncoding = eEncoding;
+  pTgtDatum->m_nEncodedBytes = eEncoding;
+  
+  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_TME,eEncoding));
+}
+
+/*----------------------------------------------------------------------------*/
+/* initial encoding of tsp                                                    */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vCodeTsp(Datum* pTgtDatum, Datum* pSrcDatum)
+{
+  RASSERT(DM_TSP == pSrcDatum->m_eDatum);
+  
+  pTgtDatum->m_eDatum = DM_TSP;
+  pTgtDatum->m_iTsp   = pSrcDatum->m_iTsp;
+  
+  eMN eEncoding = (eMN)IntLib::iByteMagNull(pTgtDatum->m_iTsp);
+  
+  pTgtDatum->m_eEncoding = eEncoding;
+  pTgtDatum->m_nEncodedBytes = eEncoding;
+  
+  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_TSP,eEncoding));
+}
+
+/*----------------------------------------------------------------------------*/
+/* initial encoding of vch                                                    */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum)
+{
+  RASSERT(DM_VCH == pSrcDatum->m_eDatum);
+  
+  pTgtDatum->m_eDatum = DM_VCH;
+  pTgtDatum->m_nChars = pSrcDatum->m_nChars;
+  
+  if (pSrcDatum->bIsNull()) {
+    pTgtDatum->m_eEncoding = MN_NULL;
+    pTgtDatum->m_nEncodedBytes = 0;
+    return;
+  }
+  
+  i8 iLen = StrLib::nCopy((char*)pTgtDatum->m_sVch.aChar(),
+                          (char*)pSrcDatum->m_sVch.aChar());
+  
+  eMN eEncoding;
+  
+  if (iLen == 0) {
+    eEncoding = MN_EMPTY;
+    pTgtDatum->m_eEncoding = eEncoding;
+    pTgtDatum->m_nEncodedBytes = 0;
+  }
+  else if (iLen <= 3) {
+    eEncoding = (eMN)iLen;
+    pTgtDatum->m_eEncoding = eEncoding;
+    pTgtDatum->m_nEncodedBytes = iLen;
+  }
+  else {
+    eEncoding = MN_SHOCO_2B;
+    pTgtDatum->m_eEncoding = eEncoding;
+    pTgtDatum->m_nEncodedBytes = iLen;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy an encoded row head from the from-nub into the into-nub               */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vCopyHead_Large(void)
 {
   MemLib::vCopy(m_aIntoHead,m_aFromHead,sizeof(HeadLine),CN_ROWBUFFER);
   
@@ -446,9 +705,9 @@ void RowCoder::vCopy_Large(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy an encoded row from one tray to another                               */
+/* copy an encoded row head from the from-nub into the into-nub               */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vCopy_Short(void)
+void RowCoder::vCopyHead_Short(void)
 {
   MemLib::vCopy(m_aIntoHead,m_aFromHead,sizeof(HeadLine),CN_ROWBUFFER);
   
@@ -3412,258 +3671,6 @@ void RowCoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
       NEVER_REACH;
   }
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of bcd                                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vCodeBcd(Datum* pTgtDatum, Datum* pSrcDatum)
-{
-  RASSERT(DM_BCD == pSrcDatum->m_eDatum);
-  
-  m_oEncodedDatum.m_eDatum = DM_BCD;
-  m_oEncodedDatum.m_iBcd   = pSrcDatum->m_iBcd;
-  
-  eMN eEncoding = (eMN)IntLib::iByteMagNull(m_oEncodedDatum.m_iInt);
-  m_oEncodedDatum.m_eEncoding = eEncoding;
-  m_oEncodedDatum.m_nEncodedBytes = eEncoding;
-  
-  RASSERT(m_oEncodedDatum.m_nEncodedBytes == nDataBytes(DM_BCD,eEncoding));
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of bol                                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vCodeBol(Datum* pTgtDatum, Datum* pSrcDatum)
-{
-  RASSERT(DM_BOL == pSrcDatum->m_eDatum);
-  
-  pTgtDatum->m_eDatum = DM_BOL;
-  pTgtDatum->m_iBol   = pSrcDatum->m_iBol;
-  
-  eMN eEncoding;
-  
-  if (pSrcDatum->bIsNull())
-    eEncoding = MN_NULL;
-  else if (pSrcDatum->m_iInt)
-    eEncoding = MN_TRUE;
-  else
-    eEncoding = MN_FALSE;
-  
-  pTgtDatum->m_eEncoding = eEncoding;
-  pTgtDatum->m_nEncodedBytes = 0;
-  
-  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_BOL,eEncoding));
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of dte                                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum)
-{
-  RASSERT(DM_DTE == pSrcDatum->m_eDatum);
-  
-  pTgtDatum->m_eDatum = DM_DTE;
-  pTgtDatum->m_iDte   = pSrcDatum->m_iDte;
-  
-  if (pSrcDatum->bIsNull()) {
-    pTgtDatum->m_eEncoding = MN_NULL;
-    pTgtDatum->m_nEncodedBytes = 0;
-    RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_DTE,MN_NULL));
-    return;
-  }
-  
-  i8 iEra = 0;
-  vDaysIntoBase(&m_oEncodedDatum,iEra);
-  
-  eMN eEncoding;
-  i8 nBytes = (eMN)IntLib::iByteMagnitude(pTgtDatum->m_iInt);
-  
-  if (C_SILVER_ERA == iEra) {
-    if (1 == nBytes) {
-      eEncoding = MN_SILVER_1B;
-      pTgtDatum->m_nEncodedBytes = 1;
-    }
-    else {
-      eEncoding = MN_SILVER_2B;
-      pTgtDatum->m_nEncodedBytes = 2;
-    }
-  }
-  else if (C_MODERN_ERA == iEra) {
-    if (1 == nBytes) {
-      eEncoding = MN_MODERN_1B;
-      pTgtDatum->m_nEncodedBytes = 1;
-    }
-    else {
-      eEncoding = MN_MODERN_2B;
-      pTgtDatum->m_nEncodedBytes = 2;
-    }
-  }
-  else {
-    ASSERT(C_CLASSIC_ERA == iEra);
-    if (1 == nBytes) {
-      eEncoding = MN_CLASSIC_1B;
-      pTgtDatum->m_nEncodedBytes = 1;
-    }
-    else {
-      eEncoding = MN_CLASSIC_2B;
-      pTgtDatum->m_nEncodedBytes = 2;
-    }
-  }
-  
-  pTgtDatum->m_eEncoding = eEncoding;
-  
-  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_DTE,eEncoding));
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of flt                                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vCodeFlt(Datum* pTgtDatum, Datum* pSrcDatum)
-{
-  RASSERT(DM_FLT == pSrcDatum->m_eDatum);
-  
-  pTgtDatum->m_eDatum = DM_FLT;
-  pTgtDatum->m_dFlt   = pSrcDatum->m_dFlt;
-  
-  eMN eEncoding = (eMN)IntLib::iByteMagNull(pTgtDatum->m_iInt);
-  pTgtDatum->m_eEncoding = eEncoding;
-  pTgtDatum->m_nEncodedBytes = eEncoding;
-  
-  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_FLT,eEncoding));
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of int                                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum)
-{
-  RASSERT(DM_INT == pSrcDatum->m_eDatum);
-  
-  pTgtDatum->m_eDatum = DM_INT;
-  pTgtDatum->m_iInt   = pSrcDatum->m_iInt;
-  
-  eMN eEncoding = (eMN)IntLib::iByteMagNull(pTgtDatum->m_iInt);
-  pTgtDatum->m_eEncoding = eEncoding;
-  pTgtDatum->m_nEncodedBytes = eEncoding;
-  
-  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_INT,eEncoding));
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of ivl                                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vCodeIvl(Datum* pTgtDatum, Datum* pSrcDatum)
-{
-  RASSERT(DM_IVL == pSrcDatum->m_eDatum);
-  
-  pTgtDatum->m_eDatum = DM_IVL;
-  pTgtDatum->m_iIvl   = pSrcDatum->m_iIvl;
-  
-  eMN eEncoding = (eMN)IntLib::iByteMagNull(pTgtDatum->m_iInt);
-  pTgtDatum->m_eEncoding = eEncoding;
-  pTgtDatum->m_nEncodedBytes = eEncoding;
-  
-  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_IVL,eEncoding));
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of tme                                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vCodeTme(Datum* pTgtDatum, Datum* pSrcDatum)
-{
-  RASSERT(DM_TME == pSrcDatum->m_eDatum);
-  
-  pTgtDatum->m_eDatum = DM_TME;
-  pTgtDatum->m_iTme   = pSrcDatum->m_iTme;
-  
-  if (pSrcDatum->bIsNull()) {
-    pTgtDatum->m_eEncoding = MN_NULL;
-    pTgtDatum->m_nEncodedBytes = 0;
-    RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_TME,MN_NULL));
-    return;
-  }
-  
-  eMN eEncoding;
-  
-  bool bSawNonZero = true;
-  
-  while (! pTgtDatum->m_yaByte[0]) {
-    
-    bSawNonZero = false;
-    
-    for (i8 i_Byte = 0; i_Byte < 7; i_Byte++)
-      if ( (pTgtDatum->m_yaByte[i_Byte] = pTgtDatum->m_yaByte[i_Byte+1]) )
-        bSawNonZero = true;
-    pTgtDatum->m_yaByte[7] = 0;
-    
-    if (! bSawNonZero)
-      break;
-  }
-  
-  eEncoding = (eMN)IntLib::iByteMagnitude(pTgtDatum->m_iInt);
-  
-  pTgtDatum->m_eEncoding = eEncoding;
-  pTgtDatum->m_nEncodedBytes = eEncoding;
-  
-  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_TME,eEncoding));
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of tsp                                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vCodeTsp(Datum* pTgtDatum, Datum* pSrcDatum)
-{
-  RASSERT(DM_TSP == pSrcDatum->m_eDatum);
-  
-  pTgtDatum->m_eDatum = DM_TSP;
-  pTgtDatum->m_iTsp   = pSrcDatum->m_iTsp;
-  
-  eMN eEncoding = (eMN)IntLib::iByteMagNull(pTgtDatum->m_iTsp);
-  
-  pTgtDatum->m_eEncoding = eEncoding;
-  pTgtDatum->m_nEncodedBytes = eEncoding;
-  
-  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_TSP,eEncoding));
-}
-
-/*----------------------------------------------------------------------------*/
-/* encoding of vch                                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum)
-{
-  RASSERT(DM_VCH == pSrcDatum->m_eDatum);
-  
-  pTgtDatum->m_eDatum = DM_VCH;
-  pTgtDatum->m_nChars = pSrcDatum->m_nChars;
-  
-  if (pSrcDatum->bIsNull()) {
-    pTgtDatum->m_eEncoding = MN_NULL;
-    pTgtDatum->m_nEncodedBytes = 0;
-    return;
-  }
-  
-  i8 iLen = StrLib::nCopy((char*)pTgtDatum->m_sVch.aChar(),
-                          (char*)pSrcDatum->m_sVch.aChar());
-  
-  eMN eEncoding;
-  
-  if (iLen == 0) {
-    eEncoding = MN_EMPTY;
-    pTgtDatum->m_eEncoding = eEncoding;
-    pTgtDatum->m_nEncodedBytes = 0;
-  }
-  else if (iLen <= 3) {
-    eEncoding = (eMN)iLen;
-    pTgtDatum->m_eEncoding = eEncoding;
-    pTgtDatum->m_nEncodedBytes = iLen;
-  }
-  else {
-    eEncoding = MN_SHOCO_2B;
-    pTgtDatum->m_eEncoding = eEncoding;
-    pTgtDatum->m_nEncodedBytes = iLen;
-  }
-  
 }
 
 /*----------------------------------------------------------------------------*/

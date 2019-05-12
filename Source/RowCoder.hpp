@@ -108,8 +108,8 @@ namespace Data
     void vCodeTsp(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum);
   
-    void vCopy_Large(void);
-    void vCopy_Short(void);
+    void vCopyHead_Large(void);
+    void vCopyHead_Short(void);
   
     void vDataPut(Datum* pDatum);
     void vDataPut(w8 wDatum, i8 nBytes);
