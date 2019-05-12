@@ -76,27 +76,26 @@ HashInsert::~HashInsert(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void HashInsert::vArcEntry(void)
 {
-  // get the next lower 3 bits from tape
+  // get next arc
+  
   m_uArcBits = m_uArcTape & 0b111;
-  
-  // shift off lower 3 bits
   m_uArcTape >>= 3;
-  
-  // bit tape has 3 bits less
   m_nArcTapeBits -= 3;
   
   m_i_Arc = m_uArcBits;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // get next entry hash
+  // get next entry
   
   m_uEntryTape >>= 1;
   m_nEntryTapeBits -= 1;
-  
   m_uEntryHash = m_uEntryTape;
-  m_i_Entry    = m_uEntryHash % m_nEntriesPerBuffer;
   
+  m_i_Entry = m_uEntryHash % m_nEntriesPerBuffer;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // record history
+
   xHistory[m_nHistory].m_uArcTape   = m_uArcTape;
   xHistory[m_nHistory].m_uArcBits   = m_uArcBits;
   xHistory[m_nHistory].m_i_Arc      = m_i_Arc;
