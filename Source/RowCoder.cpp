@@ -2243,7 +2243,28 @@ void RowCoder::vAnalyse(RowNub* pNub)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get encoded datum from cache line                                          */
+/* append column datum into record                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vAppend(Record* pRec, Datum* pDatum, Column* pCol)
+{
+  eDM eDatum = pCol->eDatumType();
+  switch (eDatum) {
+    case DM_BCD: pRec->vAppendBcd(pCol,pDatum); break;
+    case DM_BOL: pRec->vAppendBol(pCol,pDatum); break;
+    case DM_DTE: pRec->vAppendDte(pCol,pDatum); break;
+    case DM_FLT: pRec->vAppendFlt(pCol,pDatum); break;
+    case DM_INT: pRec->vAppendInt(pCol,pDatum); break;
+    case DM_IVL: pRec->vAppendIvl(pCol,pDatum); break;
+    case DM_TME: pRec->vAppendTme(pCol,pDatum); break;
+    case DM_TSP: pRec->vAppendTsp(pCol,pDatum); break;
+    case DM_VCH: pRec->vAppendVch(pCol,pDatum); break;
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get encoded datum from row                                                 */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
                        i8& i_LastColumn, i8& i_LastOffset)
@@ -2258,7 +2279,7 @@ void RowCoder::vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get encoded datum from cache line                                          */
+/* get encoded datum from row                                                 */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
                        ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -2330,31 +2351,8 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* get encoded datum from cache line                                          */
 /*----------------------------------------------------------------------------*/
-
-//! i tried making this inline. became slower!?
-/*
- success: 1000000 rows affected
- time 22ms
- success: 1000000 rows affected
- time 18ms
- success: 1000000 rows affected
- time 18ms
- success: 1000000 rows affected
- time 18ms
- success: 1000000 rows affected
- time 17ms
- success: 1000000 rows affected
- time 18ms
- success: 1000000 rows affected
- time 17ms
- success: 1000000 rows affected
- time 19ms
- success: 1000000 rows affected
- time 17ms
- success: 1000000 rows affected
- time 18ms
-*/
-void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol,
+void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine,
+                                    ColumnVec* pColVec, Column* pCol,
                                     Coda* pCoda, i8& i_LastColumn, i8& i_LastOffset)
 {
   i8 i_Col = pCol->iColumnNo();
@@ -2536,46 +2534,6 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine, ColumnVe
 /*----------------------------------------------------------------------------*/
 /* sprint decode row from cache line into string                              */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec)
-{
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
-  Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
-  
-   MemLib::vWordDump(aHeadLine, sizeof(HeadLine));
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // get no of columns
-  i8 nColumns = pColVec->nItems();
-  
-  Datum oDatum;
-  i8 i_LastOffset = iBaseOffset(pColVec);
-  
-  vTrace("Column# ColumnName      Datum      ExtDatum        Encoding \n"_Stz);
-  
-  // for each column
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    
-    // get the column at index
-    Column* pCol = pColVec->pGet(i_Col);
-    
-    // first get the encoded value into datum
-    //vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_Col,i_LastOffset);
-    eDM eDatum = pCol->eDatumType();
-    eDM eDatumCoda = pCoda->m_aeExtDatum[pCol->iColumnNo()];
-    eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_Col,i_LastOffset);
-    Stz* aEncoding = sEncoding(eEncoding, eDatum, DM_NONE);
-    
-    vTrace("%7lld %-15s %-10s %-15s %-16s\n"_Stz, i_Col, pCol->sColumnName().aChar(), aDM[eDatum],
-           aDM[eDatumCoda], aEncoding);
-    
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint decode row from cache line into string                              */
-/*----------------------------------------------------------------------------*/
 void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
 {
   RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
@@ -2656,6 +2614,46 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda)
   }
   
   int iDebug = 1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint decode row from cache line into string                              */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
+  Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
+  
+  MemLib::vWordDump(aHeadLine, sizeof(HeadLine));
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+  
+  Datum oDatum;
+  i8 i_LastOffset = iBaseOffset(pColVec);
+  
+  vTrace("Column# ColumnName      Datum      ExtDatum        Encoding \n"_Stz);
+  
+  // for each column
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+    
+    // get the column at index
+    Column* pCol = pColVec->pGet(i_Col);
+    
+    // first get the encoded value into datum
+    //vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_Col,i_LastOffset);
+    eDM eDatum = pCol->eDatumType();
+    eDM eDatumCoda = pCoda->m_aeExtDatum[pCol->iColumnNo()];
+    eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_Col,i_LastOffset);
+    Stz* aEncoding = sEncoding(eEncoding, eDatum, DM_NONE);
+    
+    vTrace("%7lld %-15s %-10s %-15s %-16s\n"_Stz, i_Col, pCol->sColumnName().aChar(), aDM[eDatum],
+           aDM[eDatumCoda], aEncoding);
+    
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2983,30 +2981,6 @@ void RowCoder::vAppend(Record* pRec, HeadLine* aHeadLine,
     case DM_TME: pRec->vAppendTme(pCol,&oDatum); break;
     case DM_TSP: pRec->vAppendTsp(pCol,&oDatum); break;
     case DM_VCH: pRec->vAppendVch(pCol,&oDatum); break;
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode and append column datum from cache line                             */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vAppend(Record* pRec, Datum* pDatum, Column* pCol)
-{
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // we have the decoded value in oDatum
-  
-  eDM eDatum = pCol->eDatumType();
-  switch (eDatum) {
-    case DM_BCD: pRec->vAppendBcd(pCol,pDatum); break;
-    case DM_BOL: pRec->vAppendBol(pCol,pDatum); break;
-    case DM_DTE: pRec->vAppendDte(pCol,pDatum); break;
-    case DM_FLT: pRec->vAppendFlt(pCol,pDatum); break;
-    case DM_INT: pRec->vAppendInt(pCol,pDatum); break;
-    case DM_IVL: pRec->vAppendIvl(pCol,pDatum); break;
-    case DM_TME: pRec->vAppendTme(pCol,pDatum); break;
-    case DM_TSP: pRec->vAppendTsp(pCol,pDatum); break;
-    case DM_VCH: pRec->vAppendVch(pCol,pDatum); break;
     default:
       NEVER_REACH;
   }
