@@ -1026,8 +1026,7 @@ void RowCoder::vRecode_Large(void)
     eDM eDatum = pCol->eDatumType();
     
     i8 i_PriorFromOffset = m_i_FromOffset;
-    eMN eEncoding = eEncodingInitial(m_aFromHead,pCol,m_pColVec,
-                                    i_LastColumn,m_i_FromOffset);
+    eMN eEncoding = eEncodingInitial(pCol,i_LastColumn,m_i_FromOffset);
     
     // calculate new IntoOffset
     m_i_IntoOffset += m_i_FromOffset - i_PriorFromOffset;
@@ -1084,8 +1083,7 @@ void RowCoder::vRecode_Short(void)
     eDM eDatum = pCol->eDatumType();
     
     i8 i_PriorFromOffset = m_i_FromOffset;
-    eMN eEncoding = eEncodingInitial(m_aFromHead,pCol,m_pColVec,
-                                     i_LastColumn,m_i_FromOffset);
+    eMN eEncoding = eEncodingInitial(pCol,i_LastColumn,m_i_FromOffset);
     
     // calculate new IntoOffset
     m_i_IntoOffset += m_i_FromOffset - i_PriorFromOffset;
