@@ -1315,6 +1315,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
 void RowCoder::vRecodeBol(Column* pCol)
 {
 #ifdef WITH_UNTWISTED_RECODING
+  RASSERT(0 == m_nFromDataBytes);
   m_i_IntoOffset += m_nFromDataBytes;
 #endif
 }
@@ -1329,10 +1330,6 @@ void RowCoder::vRecodeDte(Column* pCol)
   
   i8 i_Col = pCol->iColumnNo();
   
-  //! remove
-  i8  nEncodedBytes = nDataBytes(DM_DTE,m_eFromEncoding);
-  RASSERT(nEncodedBytes == m_nFromDataBytes);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for re-encoding
   
@@ -1340,13 +1337,13 @@ void RowCoder::vRecodeDte(Column* pCol)
   i8 i_FirstDate = pCol->iFirstDate();
   
   if (C_UNKNOWN == i_FirstDate) {
-    vUsageIncRecoded(pCol,nEncodedBytes);
+    vUsageIncRecoded(pCol,m_nFromDataBytes);
     return;
   }
   
   if (i_Col == i_FirstDate) {
     RASSERT(DM_DTE == m_pIntoCoda->m_aeExtDatum[i_Col]);
-    vUsageIncRecoded(pCol,nEncodedBytes);
+    vUsageIncRecoded(pCol,m_nFromDataBytes);
     return;
   }
   
