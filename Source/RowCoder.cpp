@@ -1503,20 +1503,38 @@ void RowCoder::vRecodeFlt(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeInt(Column* pCol)
 {
+  // test for re-encoding
+  
+  if (m_eFromEncoding == MN_NULL) {
+    vUsageIncRecoded(pCol,0);
+#ifdef WITH_UNTWISTED_RECODING
+    RASSERT(0 == m_nFromDataBytes);
+    m_i_IntoOffset += m_nFromDataBytes;
+#endif
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 #ifdef WITH_EXTENDED_INT_DIGIT
   if (bRecodeIntDigit(pCol))
     return;
 #endif
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 #ifdef WITH_EXTENDED_INT_DELTA
   if (bRecodeIntDelta(pCol))
     return;
 #endif
-      
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // leave as int
-  i8 i_Col = pCol->iColumnNo();
-  eMN eThisEncoding = (eMN)m_aIntoHead->iMetaNibble(i_Col);
-  vUsageIncRecoded(pCol,eThisEncoding);
+  vUsageIncRecoded(pCol,m_eFromEncoding);
+#ifdef WITH_UNTWISTED_RECODING
+  m_i_IntoOffset += m_nFromDataBytes;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
