@@ -1119,10 +1119,7 @@ void RowCoder::vRecode_Short(void)
       case Datums::DM_BOL:  vRecodeBol(pCol); continue;
       case Datums::DM_DTE:  vRecodeDte(pCol); continue;
       case Datums::DM_FLT:  vRecodeFlt(pCol); continue;
-      case Datums::DM_INT:  if (0 == m_i_IntoHead)
-                               vSetAuxInt(m_pIntoCoda,m_aIntoHead,pCol,
-                                          m_eFromEncoding,m_i_IntoOffset);
-                            vRecodeInt(pCol); continue;
+      case Datums::DM_INT:  vRecodeInt(pCol); continue;
       case Datums::DM_IVL:  vRecodeIvl(pCol); continue;
       case Datums::DM_TME:  vRecodeTme(pCol); continue;
       case Datums::DM_TSP:  vRecodeTsp(pCol); continue;
@@ -1740,10 +1737,13 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get integer value
-
-  i8 iNBInt = 0;
+  // recoding as DM_DIGIT
   
+  if (0 == m_i_IntoHead)
+    m_pIntoCoda->m_aeExtDatum[i_Col] = DM_DELTA_PLUS;
+
+  // get integer value
+  i8 iNBInt = 0;
   switch (m_eFromEncoding) {
     case MN_1B: iNBInt = m_aIntoHead->w8_1B(m_i_IntoOffset); break;
     case MN_2B: iNBInt = m_aIntoHead->w8_2B(m_i_IntoOffset); break;
@@ -1757,21 +1757,24 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
       NEVER_REACH;
   }
   
+  // set base number of delta plus calculations
+  if (0 == m_i_IntoHead)
+    m_pIntoCoda->m_aiAux[i_Col].m_iInt = iNBInt;
+  
+  // don't change negative numbers
   if (iNBInt < 0)
     return false;
   
+  // don't change delta minus numbers
   i8 iFirstInt = m_pIntoCoda->m_aiAux[i_Col].m_iInt;
-  
-  if (iNBInt < iFirstInt) {
-    //dcLess.vInc("\n"_Stz);
+  if (iNBInt < iFirstInt)
     return false;
-  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // MN_SAME
   
   eMN eExtendedEncoding;
   if (iNBInt == iFirstInt) {
-    
-    // change the encoding to extended deltaPlus
-    m_pIntoCoda->m_aeExtDatum[i_Col] = DM_DELTA_PLUS;
     
     // revise the encoding in the metaword of into head
     eExtendedEncoding = MN_SAME;
@@ -1788,12 +1791,12 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     return true;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // MN_PLUS_1B
+  
   if (iNBInt > iFirstInt && iNBInt - iFirstInt <= 255) {
     
     //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-    
-    // change the encoding to extended deltaPlus
-    m_pIntoCoda->m_aeExtDatum[i_Col] = DM_DELTA_PLUS;
     
     // revise the encoding in the metaword of into head
     eExtendedEncoding = MN_PLUS_1B;
@@ -1814,12 +1817,13 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     return true;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // MN_PLUS_2B
+  
   if (iNBInt > iFirstInt && (u8)(iNBInt - iFirstInt) <= C_2_BYTES) {
     
     //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
     
-    // change the encoding to extended deltaPlus
-    m_pIntoCoda->m_aeExtDatum[i_Col] = DM_DELTA_PLUS;
     
     // revise the encoding in the metaword of into head
     eExtendedEncoding = MN_PLUS_2B;
