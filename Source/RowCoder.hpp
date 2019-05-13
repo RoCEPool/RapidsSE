@@ -35,7 +35,8 @@ namespace Data
     i8         m_i_FromHead;
     HeadLine*  m_aFromHead;
     i8         m_i_FromOffset; // encoding offset
- 
+    eMN        m_eFromEncoding;
+  
     RowParts*  m_pWorkParts;
     RowNub*    m_pWorkNub;
     HeadLine*  m_aWorkHead;
@@ -125,8 +126,8 @@ namespace Data
     void vEncodeVch(Datum* pSrcDatum, Column* pCol);
     void vEncodeVchShoco(Datum* pSrcDatum, Column* pCol);
     void vEncodeVchSmall(Datum* pSrcDatum, Column* pCol);
-    eMN eEncodingInitial(Column* pCol,
-                         i8& i_PriorColumn_, i8& i_Offset_);
+    eMN  eEncodingInitial(Column* pCol,
+                          i8& i_PriorColumn_, i8& i_Offset_);
     void vHashColumn(Datum* pSrcDatum, Column* pCol);
   
     void vMetaNibble(Column* pCol, eMN eMetaNibble);
@@ -144,7 +145,7 @@ namespace Data
     void vRecodeIvl(Column* pCol);
     void vRecodeTme(Column* pCol);
     void vRecodeTsp(Column* pCol);
-    void vRecodeVch(Column* pCol, eMN eEncoding);
+    void vRecodeVch(Column* pCol);
     void vRecodeVchAlpha(Column* pCol);
     void vRecodeVchShoco(Column* pCol);
 

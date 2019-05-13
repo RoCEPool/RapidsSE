@@ -60,6 +60,7 @@ RowCoder::RowCoder(void)
   m_i_FromHead    = C_UNKNOWN;
   m_aFromHead     = nullptr;
   m_i_FromOffset  = C_UNKNOWN;
+  m_eFromEncoding = MN_NULL;
 
   m_pWorkParts    = nullptr;
   m_pWorkNub      = nullptr;
@@ -151,7 +152,8 @@ void RowCoder::vCopyEnd(void)
   m_i_FromHead    = C_UNKNOWN;
   m_aFromHead     = nullptr;
   m_i_FromOffset  = C_UNKNOWN;
-  
+  m_eFromEncoding = MN_NULL;
+
   m_pWorkNub      = nullptr;
   delete m_pWorkParts;
   m_pWorkParts    = nullptr;
@@ -1026,7 +1028,7 @@ void RowCoder::vRecode_Large(void)
     eDM eDatum = pCol->eDatumType();
     
     i8 i_PriorFromOffset = m_i_FromOffset;
-    eMN eEncoding = eEncodingInitial(pCol,i_LastColumn,m_i_FromOffset);
+    m_eFromEncoding = eEncodingInitial(pCol,i_LastColumn,m_i_FromOffset);
     
     // calculate new IntoOffset
     m_i_IntoOffset += m_i_FromOffset - i_PriorFromOffset;
@@ -1036,19 +1038,18 @@ void RowCoder::vRecode_Large(void)
     switch (eDatum) {
         
       case Datums::DM_BCD:  vRecodeBcd(pCol); continue;
-      case Datums::DM_BOL:                    continue;
+      case Datums::DM_BOL:  vRecodeBol(pCol); continue;
       case Datums::DM_DTE:  vRecodeDte(pCol); continue;
-      case Datums::DM_FLT:                    continue;
-      case Datums::DM_INT:
-        if (0 == m_i_IntoHead)
-          vSetAuxInt(m_pIntoCoda,m_aIntoHead,pCol,eEncoding,m_i_IntoOffset);
-        vRecodeInt(pCol);
-        continue;
-      case Datums::DM_IVL:                    continue;
-      case Datums::DM_TME:                    continue;
-      case Datums::DM_TSP:                    continue;
-      case Datums::DM_VCH:  vRecodeVch(pCol,eEncoding);  continue;
-        
+      case Datums::DM_FLT:  vRecodeFlt(pCol); continue;
+      case Datums::DM_INT:  if (0 == m_i_IntoHead)
+                              vSetAuxInt(m_pIntoCoda,m_aIntoHead,pCol,
+                                         m_eFromEncoding,m_i_IntoOffset);
+                            vRecodeInt(pCol); continue;
+      case Datums::DM_IVL:  vRecodeIvl(pCol); continue;
+      case Datums::DM_TME:  vRecodeTme(pCol); continue;
+      case Datums::DM_TSP:  vRecodeTsp(pCol); continue;
+      case Datums::DM_VCH:  vRecodeVch(pCol); continue;
+
       default:
         NEVER_REACH;
     }
@@ -1087,7 +1088,7 @@ void RowCoder::vRecode_Short(void)
     eDM eDatum = pCol->eDatumType();
     
     i8 i_PriorFromOffset = m_i_FromOffset;
-    eMN eEncoding = eEncodingInitial(pCol,i_LastColumn,m_i_FromOffset);
+    m_eFromEncoding = eEncodingInitial(pCol,i_LastColumn,m_i_FromOffset);
     
     // calculate new IntoOffset
     m_i_IntoOffset += m_i_FromOffset - i_PriorFromOffset;
@@ -1101,15 +1102,14 @@ void RowCoder::vRecode_Short(void)
       case Datums::DM_BOL:  vRecodeBol(pCol); continue;
       case Datums::DM_DTE:  vRecodeDte(pCol); continue;
       case Datums::DM_FLT:  vRecodeFlt(pCol); continue;
-      case Datums::DM_INT:
-        if (0 == m_i_IntoHead)
-          vSetAuxInt(m_pIntoCoda,m_aIntoHead,pCol,eEncoding,m_i_IntoOffset);
-        vRecodeInt(pCol);
-        continue;
+      case Datums::DM_INT:  if (0 == m_i_IntoHead)
+                               vSetAuxInt(m_pIntoCoda,m_aIntoHead,pCol,
+                                          m_eFromEncoding,m_i_IntoOffset);
+                            vRecodeInt(pCol); continue;
       case Datums::DM_IVL:  vRecodeIvl(pCol); continue;
       case Datums::DM_TME:  vRecodeTme(pCol); continue;
       case Datums::DM_TSP:  vRecodeTsp(pCol); continue;
-      case Datums::DM_VCH:  vRecodeVch(pCol,eEncoding);  continue;
+      case Datums::DM_VCH:  vRecodeVch(pCol); continue;
         
       default:
         NEVER_REACH;
@@ -1724,20 +1724,20 @@ void RowCoder::vRecodeTsp(Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeVch(Column* pCol, eMN eEncoding)
+void RowCoder::vRecodeVch(Column* pCol)
 {
-  if (MN_1B == eEncoding) {
+  if (MN_1B == m_eFromEncoding) {
     vRecodeVchAlpha(pCol);
     return;
   }
   
-  if (MN_SHOCO_2B == eEncoding) {
+  if (MN_SHOCO_2B == m_eFromEncoding) {
     vRecodeVchShoco(pCol);
     return;
   }
 
-  if (eEncoding >= MN_1B && eEncoding <= MN_8B) {
-    vUsageIncRecoded(pCol,eEncoding);
+  if (m_eFromEncoding >= MN_1B && m_eFromEncoding <= MN_8B) {
+    vUsageIncRecoded(pCol,m_eFromEncoding);
     return;
   }
 
