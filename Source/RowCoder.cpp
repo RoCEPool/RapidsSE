@@ -1333,17 +1333,32 @@ void RowCoder::vRecodeDte(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for re-encoding
   
+  if (m_eFromEncoding == MN_NULL) {
+    vUsageIncRecoded(pCol,0);
+#ifdef WITH_UNTWISTED_RECODING
+    RASSERT(0 == m_nFromDataBytes);
+    m_i_IntoOffset += m_nFromDataBytes;
+#endif
+    return;
+  }
+  
   // is this the first date in the row?
   i8 i_FirstDate = pCol->iFirstDate();
   
   if (C_UNKNOWN == i_FirstDate) {
     vUsageIncRecoded(pCol,m_nFromDataBytes);
+#ifdef WITH_UNTWISTED_RECODING
+    m_i_IntoOffset += m_nFromDataBytes;
+#endif
     return;
   }
   
   if (i_Col == i_FirstDate) {
     RASSERT(DM_DTE == m_pIntoCoda->m_aeExtDatum[i_Col]);
     vUsageIncRecoded(pCol,m_nFromDataBytes);
+#ifdef WITH_UNTWISTED_RECODING
+    m_i_IntoOffset += m_nFromDataBytes;
+#endif
     return;
   }
   
@@ -1360,7 +1375,6 @@ void RowCoder::vRecodeDte(Column* pCol)
   
   i8 iThisDteDays = 0;
   switch (m_eFromEncoding) {
-    case MN_NULL:      return;
     case MN_SILVER_1B: iThisDteDays = m_aIntoHead->w8_1B(m_i_IntoOffset);
                        iThisDteDays = iDaysIntoBase(iThisDteDays,C_SILVER_ERA);
                        break;
@@ -1377,7 +1391,9 @@ void RowCoder::vRecodeDte(Column* pCol)
   i8 i_LastOffset = iBaseOffset(pColVec);
 
   Datum oDte;
-  vDecodeDte(&oDte,m_aIntoHead,pColVec,pColFirst,m_pIntoCoda,i_LastColumn,i_LastOffset);
+
+  vDecodeDte(&oDte,m_aIntoHead,pColVec,pColFirst,
+             m_pIntoCoda,i_LastColumn,i_LastOffset);
   
   eMN eFirstEncoding = (eMN)m_aIntoHead->iMetaNibble(i_FirstDate);
   
@@ -1446,7 +1462,7 @@ void RowCoder::vRecodeDte(Column* pCol)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // re-encode 2nd+ date into MN_DAYS_<era>_2B
+  // oops! re-encode 2nd+ date into MN_DAYS_<era>_2B
 
   if (MN_CLASSIC_1B == m_eFromEncoding)
     m_eFromEncoding = MN_DAYS_CLASSIC_2B;
