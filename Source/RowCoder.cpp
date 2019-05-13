@@ -1602,11 +1602,10 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
       return false;
   }
   
-  // subsequent rows: are we recoding as DM_DIGIT
+  // subsequent rows: are we recoding as DM_DIGIT?
   if (m_pIntoNub->nHeads() > 1 &&
-      m_pIntoCoda->m_aeExtDatum[i_Col] != DM_DIGIT) {
+      m_pIntoCoda->m_aeExtDatum[i_Col] != DM_DIGIT)
     return false;
-  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now re-encoding integer of row as DM_DIGIT
@@ -1729,14 +1728,19 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for re-encoding
   
-  if (m_pIntoNub->nHeads() > 1 && m_pIntoCoda->m_aeExtDatum[i_Col] != DM_DELTA_PLUS) {
-    return false;
+  // first row: initial decision -- can we recode as DM_DELTA_PLUS?
+  if (1 == m_pIntoNub->nHeads()) {
+    // always can??
   }
   
-  // if encoding as digit then dont proceed
-  if (DM_DIGIT == m_pIntoCoda->m_aeExtDatum[i_Col]) {
+  // subsequent rows: are we recoding as DM_DELTA_PLUS?
+  if (m_pIntoNub->nHeads() > 1 &&
+      m_pIntoCoda->m_aeExtDatum[i_Col] != DM_DELTA_PLUS)
     return false;
-  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
   
   
   i8 iCurrentInt = 0;
@@ -1763,10 +1767,6 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
   if (iCurrentInt < 0)
     return false;
   
-  // defer to vRecodeInt
-  if ( (iCurrentInt >= 0 && iCurrentInt <= 7) &&
-      DM_INT == m_pIntoCoda->m_aeExtDatum[i_Col]  )
-    return false;
   
   i8 iFirstInt = m_pIntoCoda->m_aiAux[i_Col].m_iInt;
   
