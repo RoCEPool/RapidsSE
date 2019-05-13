@@ -1044,10 +1044,7 @@ void RowCoder::vRecode_Large(void)
       case Datums::DM_BOL:  vRecodeBol(pCol); continue;
       case Datums::DM_DTE:  vRecodeDte(pCol); continue;
       case Datums::DM_FLT:  vRecodeFlt(pCol); continue;
-      case Datums::DM_INT:  if (0 == m_i_IntoHead)
-                              vSetAuxInt(m_pIntoCoda,m_aIntoHead,pCol,
-                                         m_eFromEncoding,m_i_IntoOffset);
-                            vRecodeInt(pCol); continue;
+      case Datums::DM_INT:  vRecodeInt(pCol); continue;
       case Datums::DM_IVL:  vRecodeIvl(pCol); continue;
       case Datums::DM_TME:  vRecodeTme(pCol); continue;
       case Datums::DM_TSP:  vRecodeTsp(pCol); continue;
@@ -4482,37 +4479,6 @@ i8 RowCoder::nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine)
   return nTailSize;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get length of tail associate with a head line                              */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vSetAuxInt(Coda* pIntoCoda, HeadLine* aIntoHead, Column* pCol,
-                          eMN eEncoding, i8 i_IntoOffset)
-{
-  i8 iInt = 0;
-  
-  switch (eEncoding) {
-      
-    case MN_NULL: return;
-      
-    case MN_1B:   iInt = aIntoHead->w8_1B(i_IntoOffset); break;
-    case MN_2B:   iInt = aIntoHead->w8_2B(i_IntoOffset); break;
-    case MN_3B:   iInt = aIntoHead->w8_3B(i_IntoOffset); break;
-    case MN_4B:   iInt = aIntoHead->w8_4B(i_IntoOffset); break;
-    case MN_5B:   iInt = aIntoHead->w8_5B(i_IntoOffset); break;
-    case MN_6B:   iInt = aIntoHead->w8_6B(i_IntoOffset); break;
-    case MN_7B:   iInt = aIntoHead->w8_7B(i_IntoOffset); break;
-    case MN_8B:   iInt = aIntoHead->w8_8B(i_IntoOffset); break;
-      
-    case MN_MINUS_ONE: iInt = -1; break;
-    case MN_ZERO:      iInt = 0;  break;
-    case MN_PLUS_ONE:  iInt = 1;  break;
-      
-    default:
-      NEVER_REACH;
-  }
-
-  pIntoCoda->m_aiAux[pCol->iColumnNo()].m_iInt = iInt;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

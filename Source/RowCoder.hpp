@@ -267,10 +267,7 @@ namespace Data
     static void vRestoreTsp(Datum* pDatum, eMN eEncoding);
   
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
-  
-    static void vSetAuxInt(Coda* pIntoCoda, HeadLine* aIntoHead, Column* pCol,
-                           eMN eEncoding, i8 i_IntoOffset);
-  
+    
   private:
     Footer* aFooter(void);
 
