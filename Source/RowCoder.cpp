@@ -1135,7 +1135,6 @@ void RowCoder::vRecode_Short(void)
 void RowCoder::vRecodeBcd(Column* pCol)
 {
 #ifdef WITH_EXTENDED_BCD
-  
   RASSERT(DM_BCD == pCol->eDatumType());
   
   i8 i_Col = pCol->iColumnNo();
@@ -1342,10 +1341,13 @@ void RowCoder::vRecodeDte(Column* pCol)
     return;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is this the first date in the row?
+  
   i8 i_FirstDate = pCol->iFirstDate();
   
-  if (C_UNKNOWN == i_FirstDate) {
+  if (i_Col == i_FirstDate) {
+    RASSERT(DM_DTE == m_pIntoCoda->m_aeExtDatum[i_Col]);
     vUsageIncRecoded(pCol,m_nFromDataBytes);
 #ifdef WITH_UNTWISTED_RECODING
     m_i_IntoOffset += m_nFromDataBytes;
@@ -1353,8 +1355,8 @@ void RowCoder::vRecodeDte(Column* pCol)
     return;
   }
   
-  if (i_Col == i_FirstDate) {
-    RASSERT(DM_DTE == m_pIntoCoda->m_aeExtDatum[i_Col]);
+  if (C_UNKNOWN == i_FirstDate) {
+    RASSERT(0);
     vUsageIncRecoded(pCol,m_nFromDataBytes);
 #ifdef WITH_UNTWISTED_RECODING
     m_i_IntoOffset += m_nFromDataBytes;

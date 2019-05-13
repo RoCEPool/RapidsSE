@@ -127,6 +127,8 @@ namespace MetaData
     bool bIsLastColumn(void);
     void vIsLastColumn(bool bIsLastColumn);
   
+    bool bIsFirstDate(void);
+  
     bool bIsName(s32& sName);
   
     bool bIsUnique(void);
