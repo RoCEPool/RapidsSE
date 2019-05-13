@@ -1539,7 +1539,10 @@ void RowCoder::vRecodeInt(Column* pCol)
 {
   // test for re-encoding
   
-  if (m_eFromEncoding == MN_NULL) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // skip nulls
+  if (MN_NULL == m_eFromEncoding) {
     vUsageIncRecoded(pCol,0);
 #ifdef WITH_UNTWISTED_RECODING
     RASSERT(0 == m_nFromDataBytes);
@@ -1648,8 +1651,6 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
   eMN eExtendedEncoding = MN_NULL;
   
   switch (m_eFromEncoding) {
-    case MN_NULL: eExtendedEncoding = MN_NULL;
-                  break;
     case MN_1B:   eExtendedEncoding = MN_DIGIT_1B;
                   vUsageIncOops(pCol,1,0);
 #ifdef WITH_UNTWISTED_RECODING
@@ -1742,16 +1743,14 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
   
   switch (m_eFromEncoding) {
       
-    case MN_NULL: return true;
-      
-    case MN_1B:   iCurrentInt = m_aIntoHead->w8_1B(m_i_IntoOffset); break;
-    case MN_2B:   iCurrentInt = m_aIntoHead->w8_2B(m_i_IntoOffset); break;
-    case MN_3B:   iCurrentInt = m_aIntoHead->w8_3B(m_i_IntoOffset); break;
-    case MN_4B:   iCurrentInt = m_aIntoHead->w8_4B(m_i_IntoOffset); break;
-    case MN_5B:   iCurrentInt = m_aIntoHead->w8_5B(m_i_IntoOffset); break;
-    case MN_6B:   iCurrentInt = m_aIntoHead->w8_6B(m_i_IntoOffset); break;
-    case MN_7B:   iCurrentInt = m_aIntoHead->w8_7B(m_i_IntoOffset); break;
-    case MN_8B:   iCurrentInt = m_aIntoHead->w8_8B(m_i_IntoOffset); break;
+    case MN_1B: iCurrentInt = m_aIntoHead->w8_1B(m_i_IntoOffset); break;
+    case MN_2B: iCurrentInt = m_aIntoHead->w8_2B(m_i_IntoOffset); break;
+    case MN_3B: iCurrentInt = m_aIntoHead->w8_3B(m_i_IntoOffset); break;
+    case MN_4B: iCurrentInt = m_aIntoHead->w8_4B(m_i_IntoOffset); break;
+    case MN_5B: iCurrentInt = m_aIntoHead->w8_5B(m_i_IntoOffset); break;
+    case MN_6B: iCurrentInt = m_aIntoHead->w8_6B(m_i_IntoOffset); break;
+    case MN_7B: iCurrentInt = m_aIntoHead->w8_7B(m_i_IntoOffset); break;
+    case MN_8B: iCurrentInt = m_aIntoHead->w8_8B(m_i_IntoOffset); break;
       
     case MN_MINUS_ONE: return true;
     case MN_ZERO:      return true;
