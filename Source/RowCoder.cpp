@@ -1098,17 +1098,17 @@ void RowCoder::vRecode_Short(void)
     switch (eDatum) {
         
       case Datums::DM_BCD:  vRecodeBcd(pCol); continue;
-      case Datums::DM_BOL:                    continue;
+      case Datums::DM_BOL:  vRecodeBol(pCol); continue;
       case Datums::DM_DTE:  vRecodeDte(pCol); continue;
-      case Datums::DM_FLT:                    continue;
+      case Datums::DM_FLT:  vRecodeFlt(pCol); continue;
       case Datums::DM_INT:
         if (0 == m_i_IntoHead)
           vSetAuxInt(m_pIntoCoda,m_aIntoHead,pCol,eEncoding,m_i_IntoOffset);
         vRecodeInt(pCol);
         continue;
-      case Datums::DM_IVL:                    continue;
-      case Datums::DM_TME:                    continue;
-      case Datums::DM_TSP:                    continue;
+      case Datums::DM_IVL:  vRecodeIvl(pCol); continue;
+      case Datums::DM_TME:  vRecodeTme(pCol); continue;
+      case Datums::DM_TSP:  vRecodeTsp(pCol); continue;
       case Datums::DM_VCH:  vRecodeVch(pCol,eEncoding);  continue;
         
       default:
@@ -1263,6 +1263,13 @@ void RowCoder::vRecodeBcd(Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* attempt to re-encode Bol                                                   */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecodeBol(Column* pCol)
+{
+}
+
+/*----------------------------------------------------------------------------*/
 /* attempt to re-encode a subsequent Dte into +/-Days                         */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeDte(Column* pCol)
@@ -1410,6 +1417,13 @@ void RowCoder::vRecodeDte(Column* pCol)
   vUsageIncOops(pCol,2,1);
 
 #endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to re-encode Flt                                                   */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecodeFlt(Column* pCol)
+{
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1684,6 +1698,27 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
   //dcLeft.vInc(" (e.g. %lld (first %lld))\n"_Stz,iCurrentInt,iFirstInt);
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to re-encode Ivl                                                   */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecodeIvl(Column* pCol)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to re-encode Tme                                                   */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecodeTme(Column* pCol)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to re-encode Tsp                                                   */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecodeTsp(Column* pCol)
+{
 }
 
 /*----------------------------------------------------------------------------*/
