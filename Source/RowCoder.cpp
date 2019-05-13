@@ -1064,6 +1064,7 @@ void RowCoder::vRecode_Short(void)
 {
   i8 nColumns = m_pColVec->nItems();
   
+  // on the first into row set the coda for all columns
   if (0 == m_i_IntoHead) {
     for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
       Column* pCol = m_pColVec->pGet(i_ForCol);
@@ -1074,12 +1075,15 @@ void RowCoder::vRecode_Short(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // recode each column
   
   i8 i_LastColumn = 0;
   
-  for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
     
-    Column* pCol = m_pColVec->pGet(i_ForCol);
+    // get the initial encoding of the datum for i_Col from from-row
+    
+    Column* pCol = m_pColVec->pGet(i_Col);
     eDM eDatum = pCol->eDatumType();
     
     i8 i_PriorFromOffset = m_i_FromOffset;
@@ -1089,6 +1093,7 @@ void RowCoder::vRecode_Short(void)
     m_i_IntoOffset += m_i_FromOffset - i_PriorFromOffset;
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // re-encode datum
     
     switch (eDatum) {
         
@@ -1438,8 +1443,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
   i8 i_Col = pCol->iColumnNo();
   
   eMN eThisEncoding = (eMN)m_aIntoHead->iMetaNibble(i_Col);
-  i8  nEncodedBytes = nDataBytes(DM_DTE,eThisEncoding);
-  i8  c1BInt = m_aIntoHead->w8_1B(m_i_IntoOffset);
+  i8  i1BInt = m_aIntoHead->w8_1B(m_i_IntoOffset);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for re-encoding
@@ -1453,7 +1457,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
       return false;
     }
     
-    if (c1BInt < 0 || c1BInt > 7) {
+    if (i1BInt < 0 || i1BInt > 7) {
       //vUsageIncRecoded(pCol,nEncodedBytes);
       return false;
     }
@@ -1480,15 +1484,15 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
   if (eThisEncoding == MN_1B) {
     
     // get the 1B int from the data portion of the intoHead
-    i8 c1BInt = m_aIntoHead->w8_1B(m_i_IntoOffset);
+    i8 i1BInt = m_aIntoHead->w8_1B(m_i_IntoOffset);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // revise the encoding
     
-    if (c1BInt >= 0 && c1BInt <= 7) {
+    if (i1BInt >= 0 && i1BInt <= 7) {
       
       // revise the encoding
-      eMN eExtendedEncoding = (eMN)(MN_DIGIT_0 + c1BInt);
+      eMN eExtendedEncoding = (eMN)(MN_DIGIT_0 + i1BInt);
       vMetaNibble(pCol,eExtendedEncoding);
       vUsageIncRecoded(pCol,0);
 
