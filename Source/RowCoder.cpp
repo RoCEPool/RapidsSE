@@ -1580,52 +1580,48 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
 
   i8 i_Col = pCol->iColumnNo();
   
-  i8  i1BInt = m_aIntoHead->w8_1B(m_i_IntoOffset);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for re-encoding
   
+  // first row: initial decision -- can we recode as DM_DIGIT?
   if (1 == m_pIntoNub->nHeads()) {
     
     RASSERT(DM_INT == m_pIntoCoda->m_aeExtDatum[i_Col]);
     
-    if (MN_1B != m_eFromEncoding) {
-      //vUsageIncRecoded(pCol,nEncodedBytes);
+    // the datum has to be a MN_1B
+    if (MN_1B != m_eFromEncoding)
       return false;
-    }
-    
-    if (i1BInt < 0 || i1BInt > 7) {
-      //vUsageIncRecoded(pCol,nEncodedBytes);
+
+    // the datum has to be 0..7
+    i8 i1BInt = m_aIntoHead->w8_1B(m_i_IntoOffset);
+    if (i1BInt < 0 || i1BInt > 7)
       return false;
-    }
   }
   
+  // subsequent rows: are we recoding as DM_DIGIT
   if (m_pIntoNub->nHeads() > 1 &&
       m_pIntoCoda->m_aeExtDatum[i_Col] != DM_DIGIT) {
     return false;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now re-encoding integer of row into DM_DIGIT
+  // now re-encoding integer of row as DM_DIGIT
 
-  // change the extended datum to digit
+  // change the extended datum to DM_DIGIT
   if (1 == m_pIntoNub->nHeads())
     m_pIntoCoda->m_aeExtDatum[i_Col] = DM_DIGIT;
   RASSERT(DM_DIGIT == m_pIntoCoda->m_aeExtDatum[i_Col]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  eMN eExtendedEncoding = MN_NULL;
-
   // is it a 1B encoding ?
+  
   if (m_eFromEncoding == MN_1B) {
     
     // get the 1B int from the data portion of the intoHead
     i8 i1BInt = m_aIntoHead->w8_1B(m_i_IntoOffset);
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // revise the encoding
-    
     if (i1BInt >= 0 && i1BInt <= 7) {
       
       // revise the encoding
@@ -1636,8 +1632,12 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
       // cut the 1B char out of the into head
       m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
       
+#ifdef WITH_UNTWISTED_RECODING
+#else
       // go back one char in the intoOffset
       m_i_IntoOffset--;
+#endif
+
       return true;
     }
   }
@@ -1645,37 +1645,67 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // oops!
   
+  eMN eExtendedEncoding = MN_NULL;
+  
   switch (m_eFromEncoding) {
     case MN_NULL: eExtendedEncoding = MN_NULL;
                   break;
-    case MN_1B: eExtendedEncoding = MN_DIGIT_1B;
-                vUsageIncOops(pCol,1,0);
-                break;
-    case MN_2B: eExtendedEncoding = MN_DIGIT_2B;
-                vUsageIncOops(pCol,2,0);
-                break;
-    case MN_3B: eExtendedEncoding = MN_DIGIT_3B;
-                vUsageIncOops(pCol,3,0);
-                break;
-    case MN_4B: eExtendedEncoding = MN_DIGIT_4B;
-                vUsageIncOops(pCol,4,0);
-                break;
-    case MN_5B: m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
-                m_i_IntoOffset++;
-                eExtendedEncoding = MN_DIGIT_6B;
-                vUsageIncOops(pCol,6,0);
-                break;
-    case MN_6B: eExtendedEncoding = MN_DIGIT_6B;
-                vUsageIncOops(pCol,6,0);
-                break;
-    case MN_7B: m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
-                m_i_IntoOffset++;
-                vUsageIncOops(pCol,8,0);
-                eExtendedEncoding = MN_DIGIT_8B;
-                break;
-    case MN_8B: eExtendedEncoding = MN_DIGIT_8B;
-                vUsageIncOops(pCol,8,0);
-                break;
+    case MN_1B:   eExtendedEncoding = MN_DIGIT_1B;
+                  vUsageIncOops(pCol,1,0);
+#ifdef WITH_UNTWISTED_RECODING
+                  m_i_IntoOffset += 1;
+#endif
+                  break;
+    case MN_2B:   eExtendedEncoding = MN_DIGIT_2B;
+                  vUsageIncOops(pCol,2,0);
+#ifdef WITH_UNTWISTED_RECODING
+                  m_i_IntoOffset += 2;
+#endif
+                  break;
+    case MN_3B:   eExtendedEncoding = MN_DIGIT_3B;
+                  vUsageIncOops(pCol,3,0);
+#ifdef WITH_UNTWISTED_RECODING
+                  m_i_IntoOffset += 3;
+#endif
+                  break;
+    case MN_4B:   eExtendedEncoding = MN_DIGIT_4B;
+                  vUsageIncOops(pCol,4,0);
+#ifdef WITH_UNTWISTED_RECODING
+                  m_i_IntoOffset += 4;
+#endif
+                  break;
+    case MN_5B:   m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),
+                                      m_i_IntoOffset,1);
+#ifdef WITH_UNTWISTED_RECODING
+                  m_i_IntoOffset += 6;
+#else
+                  m_i_IntoOffset++;
+#endif
+                  eExtendedEncoding = MN_DIGIT_6B;
+                  vUsageIncOops(pCol,6,0);
+                  break;
+    case MN_6B:   eExtendedEncoding = MN_DIGIT_6B;
+                  vUsageIncOops(pCol,6,0);
+#ifdef WITH_UNTWISTED_RECODING
+                  m_i_IntoOffset += 6;
+#endif
+                  break;
+    case MN_7B:   m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),
+                                      m_i_IntoOffset,1);
+#ifdef WITH_UNTWISTED_RECODING
+                  m_i_IntoOffset += 8;
+#else
+                  m_i_IntoOffset++;
+#endif
+                  vUsageIncOops(pCol,8,0);
+                  eExtendedEncoding = MN_DIGIT_8B;
+                  break;
+    case MN_8B:   eExtendedEncoding = MN_DIGIT_8B;
+                  vUsageIncOops(pCol,8,0);
+#ifdef WITH_UNTWISTED_RECODING
+                  m_i_IntoOffset += 8;
+#endif
+                  break;
     default:
       RASSERT(0);
   }
