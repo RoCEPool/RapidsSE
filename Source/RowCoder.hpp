@@ -36,6 +36,7 @@ namespace Data
     HeadLine*  m_aFromHead;
     i8         m_i_FromOffset; // encoding offset
     eMN        m_eFromEncoding;
+    i8         m_nFromDataBytes;
   
     RowParts*  m_pWorkParts;
     RowNub*    m_pWorkNub;

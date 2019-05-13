@@ -56,15 +56,16 @@ RowCoder::RowCoder(void)
   m_aIntoHead     = nullptr;
   m_i_IntoOffset  = C_UNKNOWN;
   
-  m_pFromNub      = nullptr;
-  m_i_FromHead    = C_UNKNOWN;
-  m_aFromHead     = nullptr;
-  m_i_FromOffset  = C_UNKNOWN;
-  m_eFromEncoding = MN_NULL;
+  m_pFromNub       = nullptr;
+  m_i_FromHead     = C_UNKNOWN;
+  m_aFromHead      = nullptr;
+  m_i_FromOffset   = C_UNKNOWN;
+  m_eFromEncoding  = MN_NULL;
+  m_nFromDataBytes = 0;
 
-  m_pWorkParts    = nullptr;
-  m_pWorkNub      = nullptr;
-  m_aWorkHead     = nullptr;
+  m_pWorkParts     = nullptr;
+  m_pWorkNub       = nullptr;
+  m_aWorkHead      = nullptr;
   
   //m_oEncodedDatum
   
@@ -153,7 +154,8 @@ void RowCoder::vCopyEnd(void)
   m_aFromHead     = nullptr;
   m_i_FromOffset  = C_UNKNOWN;
   m_eFromEncoding = MN_NULL;
-
+  m_nFromDataBytes = 0;
+  
   m_pWorkNub      = nullptr;
   delete m_pWorkParts;
   m_pWorkParts    = nullptr;
@@ -1088,10 +1090,18 @@ void RowCoder::vRecode_Short(void)
     eDM eDatum = pCol->eDatumType();
     
     i8 i_PriorFromOffset = m_i_FromOffset;
-    m_eFromEncoding = eEncodingInitial(pCol,i_LastColumn,m_i_FromOffset);
+#ifndef WITH_UNTWISTED_RECODING
+    m_eFromEncoding  = eEncodingInitial(pCol,i_LastColumn,m_i_FromOffset);
+#else
+    i8 iFromOffset_IGNORE = 0;
+    m_eFromEncoding  = eEncodingInitial(pCol,i_LastColumn,iFromOffset_IGNORE);
+#endif
+    m_nFromDataBytes = nDataBytes(eDatum,m_eFromEncoding);
     
     // calculate new IntoOffset
+#ifndef WITH_UNTWISTED_RECODING
     m_i_IntoOffset += m_i_FromOffset - i_PriorFromOffset;
+#endif
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // re-encode datum
@@ -1267,6 +1277,9 @@ void RowCoder::vRecodeBcd(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeBol(Column* pCol)
 {
+#ifdef WITH_UNTWISTED_RECODING
+  m_i_IntoOffset += m_nFromDataBytes;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1424,6 +1437,9 @@ void RowCoder::vRecodeDte(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeFlt(Column* pCol)
 {
+#ifdef WITH_UNTWISTED_RECODING
+  m_i_IntoOffset += m_nFromDataBytes;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1705,6 +1721,9 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeIvl(Column* pCol)
 {
+#ifdef WITH_UNTWISTED_RECODING
+  m_i_IntoOffset += m_nFromDataBytes;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1712,6 +1731,9 @@ void RowCoder::vRecodeIvl(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeTme(Column* pCol)
 {
+#ifdef WITH_UNTWISTED_RECODING
+  m_i_IntoOffset += m_nFromDataBytes;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1719,6 +1741,9 @@ void RowCoder::vRecodeTme(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeTsp(Column* pCol)
 {
+#ifdef WITH_UNTWISTED_RECODING
+  m_i_IntoOffset += m_nFromDataBytes;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
