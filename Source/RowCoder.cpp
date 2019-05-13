@@ -200,9 +200,10 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   vRecode_Short();
 #endif
 
-#ifdef WITH_TRACE_ENCODING
-  RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
-#endif
+//#ifdef WITH_TRACE_ENCODING
+  if (1 == m_pIntoNub->nHeads())
+    RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
+//#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyse free space in the into head
@@ -213,7 +214,7 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
 }
 
 /*----------------------------------------------------------------------------*/
-/* begin encoding of a row into given row nub                                  */
+/* begin encoding of a row into given row nub                                 */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeBegin(RowNub* pIntoNub)
 {
@@ -1128,9 +1129,9 @@ void RowCoder::vRecode_Short(void)
       case Datums::DM_VCH:
         
 #ifdef WITH_ENCODING_XCHECK
-      i_Column = 0;
-      i_Offset = iBaseOffset(m_pColVec);
-      vDecode(&oDatum1,m_pFromNub,0,pCol,i_Column,i_Offset);
+        i_Column = 0;
+        i_Offset = iBaseOffset(m_pColVec);
+        vDecode(&oDatum1,m_pFromNub,0,pCol,i_Column,i_Offset);
 #endif
         
         vRecodeVch(pCol); continue;
