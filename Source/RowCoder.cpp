@@ -1436,6 +1436,9 @@ void RowCoder::vRecodeDte(Column* pCol)
       m_i_IntoOffset--;
     }
     vUsageIncRecoded(pCol,1);
+#ifdef WITH_UNTWISTED_RECODING
+    m_i_IntoOffset += 1;
+#endif
     return;
   }
   
@@ -1454,6 +1457,9 @@ void RowCoder::vRecodeDte(Column* pCol)
       m_i_IntoOffset--;
     }
     vUsageIncRecoded(pCol,1);
+#ifdef WITH_UNTWISTED_RECODING
+    m_i_IntoOffset += 1;
+#endif
     return;
   }
   
@@ -1475,6 +1481,9 @@ void RowCoder::vRecodeDte(Column* pCol)
   m_aIntoHead->v2B(m_i_IntoOffset,iThisDteDays);
 
   vUsageIncOops(pCol,2,1);
+#ifdef WITH_UNTWISTED_RECODING
+  m_i_IntoOffset += 1;
+#endif
 
 #endif
 }
