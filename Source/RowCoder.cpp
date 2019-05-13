@@ -1140,10 +1140,6 @@ void RowCoder::vRecodeBcd(Column* pCol)
   
   i8 i_Col = pCol->iColumnNo();
   
-  //! remove this call
-  eMN eThisEncoding = (eMN)m_aIntoHead->iMetaNibble(i_Col);
-  RASSERT(eThisEncoding == m_eFromEncoding);
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for re-encoding
   
@@ -1333,9 +1329,10 @@ void RowCoder::vRecodeDte(Column* pCol)
   
   i8 i_Col = pCol->iColumnNo();
   
-  eMN eThisEncoding = (eMN)m_aIntoHead->iMetaNibble(i_Col);
-  i8  nEncodedBytes = nDataBytes(DM_DTE,eThisEncoding);
-  
+  //! remove
+  i8  nEncodedBytes = nDataBytes(DM_DTE,m_eFromEncoding);
+  RASSERT(nEncodedBytes == m_nFromDataBytes);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for re-encoding
   
@@ -1365,7 +1362,7 @@ void RowCoder::vRecodeDte(Column* pCol)
   // compute the difference in days between this 2nd+ date and the first date
   
   i8 iThisDteDays = 0;
-  switch (eThisEncoding) {
+  switch (m_eFromEncoding) {
     case MN_NULL:      return;
     case MN_SILVER_1B: iThisDteDays = m_aIntoHead->w8_1B(m_i_IntoOffset);
                        iThisDteDays = iDaysIntoBase(iThisDteDays,C_SILVER_ERA);
@@ -1425,7 +1422,7 @@ void RowCoder::vRecodeDte(Column* pCol)
     m_aIntoHead->v1B(m_i_IntoOffset,iDayDiff);
     
     // cut 1B char out of the intoHead
-    if (MN_SILVER_2B == eThisEncoding) {
+    if (MN_SILVER_2B == m_eFromEncoding) {
       m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset+1,1);
       m_i_IntoOffset--;
     }
@@ -1443,7 +1440,7 @@ void RowCoder::vRecodeDte(Column* pCol)
     m_aIntoHead->v1B(m_i_IntoOffset,iDayDiff);
     
     // cut 1B char out of the intoHead
-    if (MN_SILVER_2B == eThisEncoding) {
+    if (MN_SILVER_2B == m_eFromEncoding) {
       m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset+1,1);
       m_i_IntoOffset--;
     }
@@ -1454,18 +1451,18 @@ void RowCoder::vRecodeDte(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // re-encode 2nd+ date into MN_DAYS_<era>_2B
 
-  if (MN_CLASSIC_1B == eThisEncoding)
-    eThisEncoding = MN_DAYS_CLASSIC_2B;
+  if (MN_CLASSIC_1B == m_eFromEncoding)
+    m_eFromEncoding = MN_DAYS_CLASSIC_2B;
   else
-  if (MN_SILVER_1B == eThisEncoding)
-    eThisEncoding = MN_DAYS_SILVER_2B;
+  if (MN_SILVER_1B == m_eFromEncoding)
+    m_eFromEncoding = MN_DAYS_SILVER_2B;
   else
-  if (MN_MODERN_1B == eThisEncoding)
-    eThisEncoding = MN_DAYS_MODERN_2B;
+  if (MN_MODERN_1B == m_eFromEncoding)
+    m_eFromEncoding = MN_DAYS_MODERN_2B;
 
   m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
 
-  vMetaNibble(pCol,eThisEncoding);
+  vMetaNibble(pCol,m_eFromEncoding);
   m_aIntoHead->v2B(m_i_IntoOffset,iThisDteDays);
 
   vUsageIncOops(pCol,2,1);
@@ -1513,7 +1510,6 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
 
   i8 i_Col = pCol->iColumnNo();
   
-  eMN eThisEncoding = (eMN)m_aIntoHead->iMetaNibble(i_Col);
   i8  i1BInt = m_aIntoHead->w8_1B(m_i_IntoOffset);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1523,7 +1519,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
     
     RASSERT(DM_INT == m_pIntoCoda->m_aeExtDatum[i_Col]);
     
-    if (MN_1B != eThisEncoding) {
+    if (MN_1B != m_eFromEncoding) {
       //vUsageIncRecoded(pCol,nEncodedBytes);
       return false;
     }
@@ -1552,7 +1548,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
   eMN eExtendedEncoding = MN_NULL;
 
   // is it a 1B encoding ?
-  if (eThisEncoding == MN_1B) {
+  if (m_eFromEncoding == MN_1B) {
     
     // get the 1B int from the data portion of the intoHead
     i8 i1BInt = m_aIntoHead->w8_1B(m_i_IntoOffset);
@@ -1579,7 +1575,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // oops!
   
-  switch (eThisEncoding) {
+  switch (m_eFromEncoding) {
     case MN_NULL: eExtendedEncoding = MN_NULL;
                   break;
     case MN_1B: eExtendedEncoding = MN_DIGIT_1B;
@@ -1624,9 +1620,6 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
 {
   i8 i_Col = pCol->iColumnNo();
   
-  eMN eThisEncoding = (eMN)m_aIntoHead->iMetaNibble(i_Col);
-  //vTrace("CurrentEncoding %lld\n"_Stz, eCurrentEncoding);
-  
   if (m_pIntoNub->nHeads() > 1 && m_pIntoCoda->m_aeExtDatum[i_Col] != DM_DELTA_PLUS) {
     return false;
   }
@@ -1640,7 +1633,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
   
   i8 iCurrentInt = 0;
   
-  switch (eThisEncoding) {
+  switch (m_eFromEncoding) {
       
     case MN_NULL: return true;
       
@@ -1687,12 +1680,12 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     eExtendedEncoding = MN_SAME;
     vMetaNibble(pCol,eExtendedEncoding);
     
-    m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,eThisEncoding);
+    m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,m_eFromEncoding);
     //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
     vUsageIncRecoded(pCol,0);
 
     // go back one char in the intoOffset
-    m_i_IntoOffset -= eThisEncoding;
+    m_i_IntoOffset -= m_eFromEncoding;
     
     //dcSame.vInc("\n"_Stz);
     return true;
@@ -1750,7 +1743,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     return true;
   }
   
-  vUsageIncOops(pCol,eThisEncoding,0);
+  vUsageIncOops(pCol,m_eFromEncoding,0);
 
   //dcLeft.vInc(" (e.g. %lld (first %lld))\n"_Stz,iCurrentInt,iFirstInt);
   
@@ -1818,10 +1811,8 @@ void RowCoder::vRecodeVchAlpha(Column* pCol)
   Coda* pCoda = m_pIntoNub->pCoda();
   i8 i_Col = pCol->iColumnNo();
   
-  eMN eThisEncoding = (eMN)m_aIntoHead->iMetaNibble(i_Col);
-  
   RASSERT(DM_VCH == pCol->eDatumType());
-  RASSERT(MN_1B == eThisEncoding);
+  RASSERT(MN_1B == m_eFromEncoding);
   
   char c1BChar = m_aIntoHead->w8_1B(m_i_IntoOffset);
   
@@ -2045,7 +2036,7 @@ void RowCoder::vRecodeVchShoco(Column* pCol)
   }
   else {
     //MemLib::vWordDump(aShocoTail,sizeof(HeadLine));
-    int iDebug = 0;
+    vDebugPoint();
   }
 #endif
   
