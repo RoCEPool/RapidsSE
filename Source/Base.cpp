@@ -84,16 +84,16 @@ void Base::vTraceWith(void)
   vTrace("  WITH_EXTENDED_BCD\n"_Stz);
 #endif
   
+#ifdef WITH_EXTENDED_DTE
+  vTrace("  WITH_EXTENDED_DTE\n"_Stz);
+#endif
+  
 #ifdef WITH_EXTENDED_INT_DELTA
   vTrace("  WITH_EXTENDED_INT_DELTA\n"_Stz);
 #endif
   
 #ifdef WITH_EXTENDED_INT_DIGIT
   vTrace("  WITH_EXTENDED_INT_DIGIT\n"_Stz);
-#endif
-  
-#ifdef WITH_EXTENDED_DTE
-  vTrace("  WITH_EXTENDED_DTE\n"_Stz);
 #endif
   
 #ifdef WITH_EXTENDED_VCH
@@ -110,6 +110,10 @@ void Base::vTraceWith(void)
   
 #ifdef WITH_SHOCO_FOLDLAST
   vTrace("  WITH_SHOCO_FOLDLAST\n"_Stz);
+#endif
+
+#ifdef WITH_UNTWISTED_RECODING
+  vTrace("  WITH_UNTWISTED_RECODING\n"_Stz);
 #endif
 
 

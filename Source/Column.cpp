@@ -259,6 +259,19 @@ void Column::vIsLastColumn(bool bIsLastColumn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is column the first date in the column vector?                             */
+/*----------------------------------------------------------------------------*/
+bool Column::bIsFirstDate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  if (CT_DATE == m_eColumnType && m_iFirstDate == m_iColumnNo)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is column the given name?                                                  */
 /*----------------------------------------------------------------------------*/
 bool Column::bIsName(s32& sName)
