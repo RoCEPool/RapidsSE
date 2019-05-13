@@ -1140,12 +1140,14 @@ void RowCoder::vRecodeBcd(Column* pCol)
   
   i8 i_Col = pCol->iColumnNo();
   
+  //! remove this call
   eMN eThisEncoding = (eMN)m_aIntoHead->iMetaNibble(i_Col);
+  RASSERT(eThisEncoding == m_eFromEncoding);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for re-encoding
   
-  if (eThisEncoding == MN_NULL) {
+  if (m_eFromEncoding == MN_NULL) {
     vUsageIncRecoded(pCol,0);
 #ifdef WITH_UNTWISTED_RECODING
     RASSERT(0 == m_nFromDataBytes);
@@ -1156,9 +1158,9 @@ void RowCoder::vRecodeBcd(Column* pCol)
   
   if (1 == m_pIntoNub->nHeads()) {
 
-    if (eThisEncoding != MN_1B) {
+    if (m_eFromEncoding != MN_1B) {
       RASSERT(DM_BCD == m_pIntoCoda->m_aeExtDatum[i_Col]);
-      vUsageIncRecoded(pCol,eThisEncoding);
+      vUsageIncRecoded(pCol,m_eFromEncoding);
 #ifdef WITH_UNTWISTED_RECODING
       m_i_IntoOffset += m_nFromDataBytes;
 #endif
@@ -1170,7 +1172,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
     
     if (i1B < 0 || i1B > 10) {
       RASSERT(DM_BCD == m_pIntoCoda->m_aeExtDatum[i_Col]);
-      vUsageIncRecoded(pCol,eThisEncoding);
+      vUsageIncRecoded(pCol,m_eFromEncoding);
 #ifdef WITH_UNTWISTED_RECODING
       m_i_IntoOffset += m_nFromDataBytes;
 #endif
@@ -1179,7 +1181,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
   }
   
   if (m_pIntoNub->nHeads() > 1 && m_pIntoCoda->m_aeExtDatum[i_Col] != DM_TENTH) {
-    vUsageIncRecoded(pCol,eThisEncoding);
+    vUsageIncRecoded(pCol,m_eFromEncoding);
 #ifdef WITH_UNTWISTED_RECODING
     m_i_IntoOffset += m_nFromDataBytes;
 #endif
@@ -1198,7 +1200,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
   eMN eExtendedEncoding;
 
   // is it a 1B encoding ?
-  if (eThisEncoding == MN_1B) {
+  if (m_eFromEncoding == MN_1B) {
     
     // get the 1B int from the data portion of the intoHead
     i8 i1B = m_aIntoHead->w8_1B(m_i_IntoOffset);
@@ -1232,7 +1234,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
   
   i8 iBcd;
   
-  switch (eThisEncoding) {
+  switch (m_eFromEncoding) {
     case MN_1B: iBcd = m_aIntoHead->w8_1B(m_i_IntoOffset);
                 eExtendedEncoding = MN_TENTH_2B;
                 vMetaNibble(pCol,eExtendedEncoding);
