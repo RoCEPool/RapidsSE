@@ -1739,45 +1739,35 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get integer value
 
-
-  
-  
-  i8 iCurrentInt = 0;
+  i8 iNBInt = 0;
   
   switch (m_eFromEncoding) {
-      
-    case MN_1B: iCurrentInt = m_aIntoHead->w8_1B(m_i_IntoOffset); break;
-    case MN_2B: iCurrentInt = m_aIntoHead->w8_2B(m_i_IntoOffset); break;
-    case MN_3B: iCurrentInt = m_aIntoHead->w8_3B(m_i_IntoOffset); break;
-    case MN_4B: iCurrentInt = m_aIntoHead->w8_4B(m_i_IntoOffset); break;
-    case MN_5B: iCurrentInt = m_aIntoHead->w8_5B(m_i_IntoOffset); break;
-    case MN_6B: iCurrentInt = m_aIntoHead->w8_6B(m_i_IntoOffset); break;
-    case MN_7B: iCurrentInt = m_aIntoHead->w8_7B(m_i_IntoOffset); break;
-    case MN_8B: iCurrentInt = m_aIntoHead->w8_8B(m_i_IntoOffset); break;
-      
-    case MN_MINUS_ONE: return true;
-    case MN_ZERO:      return true;
-    case MN_PLUS_ONE:  return true;
-      
+    case MN_1B: iNBInt = m_aIntoHead->w8_1B(m_i_IntoOffset); break;
+    case MN_2B: iNBInt = m_aIntoHead->w8_2B(m_i_IntoOffset); break;
+    case MN_3B: iNBInt = m_aIntoHead->w8_3B(m_i_IntoOffset); break;
+    case MN_4B: iNBInt = m_aIntoHead->w8_4B(m_i_IntoOffset); break;
+    case MN_5B: iNBInt = m_aIntoHead->w8_5B(m_i_IntoOffset); break;
+    case MN_6B: iNBInt = m_aIntoHead->w8_6B(m_i_IntoOffset); break;
+    case MN_7B: iNBInt = m_aIntoHead->w8_7B(m_i_IntoOffset); break;
+    case MN_8B: iNBInt = m_aIntoHead->w8_8B(m_i_IntoOffset); break;
     default:
       NEVER_REACH;
   }
   
-  if (iCurrentInt < 0)
+  if (iNBInt < 0)
     return false;
-  
   
   i8 iFirstInt = m_pIntoCoda->m_aiAux[i_Col].m_iInt;
   
-  eMN eExtendedEncoding;
-  
-  if (iCurrentInt < iFirstInt) {
+  if (iNBInt < iFirstInt) {
     //dcLess.vInc("\n"_Stz);
     return false;
   }
   
-  if (iCurrentInt == iFirstInt) {
+  eMN eExtendedEncoding;
+  if (iNBInt == iFirstInt) {
     
     // change the encoding to extended deltaPlus
     m_pIntoCoda->m_aeExtDatum[i_Col] = DM_DELTA_PLUS;
@@ -1797,7 +1787,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     return true;
   }
   
-  if (iCurrentInt > iFirstInt && iCurrentInt - iFirstInt <= 255) {
+  if (iNBInt > iFirstInt && iNBInt - iFirstInt <= 255) {
     
     //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
     
@@ -1808,11 +1798,11 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     eExtendedEncoding = MN_PLUS_1B;
     vMetaNibble(pCol,eExtendedEncoding);
     
-    i8 i1B = iCurrentInt - iFirstInt;
+    i8 i1B = iNBInt - iFirstInt;
     m_aIntoHead->v1B(m_i_IntoOffset,i1B);
     vUsageIncRecoded(pCol,1);
 
-    i8 nToCut = IntLib::iByteMagnitude(iCurrentInt);
+    i8 nToCut = IntLib::iByteMagnitude(iNBInt);
     if (nToCut > 1) {
       m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset+1,nToCut-1);
       m_i_IntoOffset -= (nToCut-1);
@@ -1823,7 +1813,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     return true;
   }
   
-  if (iCurrentInt > iFirstInt && (u8)(iCurrentInt - iFirstInt) <= C_2_BYTES) {
+  if (iNBInt > iFirstInt && (u8)(iNBInt - iFirstInt) <= C_2_BYTES) {
     
     //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
     
@@ -1835,10 +1825,10 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     vMetaNibble(pCol,eExtendedEncoding);
     vUsageIncRecoded(pCol,2);
     
-    i8 i2B = iCurrentInt - iFirstInt;
+    i8 i2B = iNBInt - iFirstInt;
     m_aIntoHead->v2B(m_i_IntoOffset,i2B);
     
-    i8 nToCut = IntLib::iByteMagnitude(iCurrentInt);
+    i8 nToCut = IntLib::iByteMagnitude(iNBInt);
     if (nToCut > 2) {
       m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset+1,nToCut-2);
       m_i_IntoOffset -= (nToCut-2);
@@ -1848,6 +1838,9 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     //dcPlus2.vInc("\n"_Stz);
     return true;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // oops!
   
   vUsageIncOops(pCol,m_eFromEncoding,0);
 
