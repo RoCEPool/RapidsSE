@@ -1102,6 +1102,12 @@ void RowCoder::vRecode_Short(void)
 #ifndef WITH_UNTWISTED_RECODING
     m_i_IntoOffset += m_i_FromOffset - i_PriorFromOffset;
 #endif
+   
+#ifdef WITH_ENCODING_XCHECK
+    Datum oDatum1, oDatum2;
+    i8 i_Column = 0;
+    i8 i_Offset;
+#endif
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // re-encode datum
@@ -1119,7 +1125,22 @@ void RowCoder::vRecode_Short(void)
       case Datums::DM_IVL:  vRecodeIvl(pCol); continue;
       case Datums::DM_TME:  vRecodeTme(pCol); continue;
       case Datums::DM_TSP:  vRecodeTsp(pCol); continue;
-      case Datums::DM_VCH:  vRecodeVch(pCol); continue;
+      case Datums::DM_VCH:
+        
+#ifdef WITH_ENCODING_XCHECK
+      i_Column = 0;
+      i_Offset = iBaseOffset(m_pColVec);
+      vDecode(&oDatum1,m_pFromNub,0,pCol,i_Column,i_Offset);
+#endif
+        
+        vRecodeVch(pCol); continue;
+        
+#ifdef WITH_ENCODING_XCHECK
+        i_Column = 0;
+        i_Offset = iBaseOffset(m_pColVec);
+        vDecode(&oDatum2,m_aIntoHead,m_pColVec,pCol,m_pIntoCoda,i_Column,i_Offset);
+        RASSERT(oDatum1.m_sVch.bSame(oDatum2.m_sVch));
+#endif
         
       default:
         NEVER_REACH;
