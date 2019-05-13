@@ -1577,10 +1577,10 @@ void RowCoder::vRecodeInt(Column* pCol)
 bool RowCoder::bRecodeIntDigit(Column* pCol)
 {
   RASSERT(DM_INT == pCol->eDatumType());
+  RASSERT(MN_NULL != m_eFromEncoding);
 
   i8 i_Col = pCol->iColumnNo();
   
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for re-encoding
   
@@ -1720,7 +1720,13 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeIntDelta(Column* pCol)
 {
+  RASSERT(DM_INT == pCol->eDatumType());
+  RASSERT(MN_NULL != m_eFromEncoding);
+  
   i8 i_Col = pCol->iColumnNo();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for re-encoding
   
   if (m_pIntoNub->nHeads() > 1 && m_pIntoCoda->m_aeExtDatum[i_Col] != DM_DELTA_PLUS) {
     return false;
@@ -1731,7 +1737,6 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     return false;
   }
   
-  RASSERT(DM_INT == pCol->eDatumType());
   
   i8 iCurrentInt = 0;
   
