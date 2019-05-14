@@ -761,7 +761,7 @@ void RowCoder::vEncodeBcd(Datum* pSrcDatum, Column* pCol)
   vCodeBcd(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
-  vXchkBcd(pSrcDatum,pCol);
+  vXchkBcd(pSrcDatum,pCol,0);
 
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
 }
@@ -774,7 +774,7 @@ void RowCoder::vEncodeBol(Datum* pSrcDatum, Column* pCol)
   vCodeBol(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
-  vXchkBol(pSrcDatum,pCol);
+  vXchkBol(pSrcDatum,pCol,0);
 
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
 }
@@ -2239,28 +2239,58 @@ void RowCoder::vUsageReset(void)
 /*----------------------------------------------------------------------------*/
 /* cross-check the encoding of bcd                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXchkBcd(Datum* pDatum, Column* pCol)
+void RowCoder::vXchkBcd(Datum* pDatum, Column* pCol, i8 iRow)
 {
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
+  vDecode(&m_oEncodedDatum,m_pIntoNub,iRow,pCol,i_lastColumn, i_LastOffset);
   RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
   RASSERT(m_oEncodedDatum.m_iBcd == pDatum->m_iBcd);
 #endif
 }
 
 /*----------------------------------------------------------------------------*/
-/* cross-check the encoding of bol                                            */
+/* cross-check the recoding of bcd                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXchkBol(Datum* pDatum, Column* pCol)
+void RowCoder::vXchkBcdRecode(Column* pCol)
 {
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
+  Datum oFromDatum;
+  vDecode(&oFromDatum,m_pFromNub,m_i_FromHead,pCol,i_lastColumn,i_LastOffset);
+  
+  vXchkBcd(&oFromDatum, pCol, m_i_IntoHead);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of bol                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXchkBol(Datum* pDatum, Column* pCol, i8 iRow)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pIntoNub,iRow,pCol,i_lastColumn, i_LastOffset);
   RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
   RASSERT(m_oEncodedDatum.m_iBol == pDatum->m_iBol);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the recoding of bol                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXchkBolRecode(Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  Datum oFromDatum;
+  vDecode(&oFromDatum,m_pFromNub,m_i_FromHead,pCol,i_lastColumn,i_LastOffset);
+  
+  vXchkBol(&oFromDatum, pCol, m_i_IntoHead);
 #endif
 }
 
