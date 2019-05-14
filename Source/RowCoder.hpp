@@ -162,10 +162,14 @@ namespace Data
     void vXchkFlt(Datum* pDatum, Column* pCol);
     void vXchkInt(Datum* pDatum, Column* pCol);
     void vXchkIvl(Datum* pDatum, Column* pCol);
-    void vXchkTme(Datum* pDatum, Column* pCol);
-    void vXchkTsp(Datum* pDatum, Column* pCol);
-    void vXchkVch(Datum* pDatum, Column* pCol);
-  
+    void vXchkTme(Datum* pDatum, Column* pCol, i8 iRow);
+    void vXchkTsp(Datum* pDatum, Column* pCol, i8 iRow);
+    void vXchkVch(Datum* pDatum, Column* pCol,i8 iRow);
+    
+    void vXchkTmeRecode(Column* pCol);
+    void vXchkTspRecode(Column* pCol);
+    void vXchkVchRecode(Column* pCol);
+    
   public:
     static void vAnalyse(RowNub* pNub);
     static void vAppend(Record* pRec, Datum* pDatum, Column* pCol);
