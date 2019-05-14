@@ -1576,6 +1576,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
 {
   RASSERT(DM_INT == pCol->eDatumType());
   RASSERT(MN_NULL != m_eFromEncoding);
+  RASSERT(m_eFromEncoding >= MN_1B && m_eFromEncoding <= MN_8B);
 
   i8 i_Col = pCol->iColumnNo();
   
@@ -1717,7 +1718,8 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
 {
   RASSERT(DM_INT == pCol->eDatumType());
   RASSERT(MN_NULL != m_eFromEncoding);
-  
+  RASSERT(m_eFromEncoding >= MN_1B && m_eFromEncoding <= MN_8B);
+
   i8 i_Col = pCol->iColumnNo();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1725,6 +1727,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
   
   // first row: initial decision -- can we recode as DM_DELTA_PLUS?
   if (1 == m_pIntoNub->nHeads()) {
+    RASSERT(DM_INT == m_pIntoCoda->m_aeExtDatum[i_Col]);
     // always can??
   }
   
@@ -1781,7 +1784,11 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
 
     // go back one char in the intoOffset
     m_i_IntoOffset -= m_eFromEncoding;
-    
+   
+#ifdef WITH_UNTWISTED_RECODING
+    m_i_IntoOffset += 0;
+#endif
+
     return true;
   }
   
@@ -1805,6 +1812,10 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
       m_i_IntoOffset -= (nToCut-1);
     }
     
+#ifdef WITH_UNTWISTED_RECODING
+    m_i_IntoOffset += 1;
+#endif
+
     return true;
   }
   
@@ -1828,6 +1839,10 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
       m_i_IntoOffset -= (nToCut-2);
     }
     
+#ifdef WITH_UNTWISTED_RECODING
+    m_i_IntoOffset += 1;
+#endif
+    
     return true;
   }
   
@@ -1836,6 +1851,10 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
   
   vUsageIncOops(pCol,m_eFromEncoding,0);
   
+#ifdef WITH_UNTWISTED_RECODING
+  m_i_IntoOffset += m_eFromEncoding;
+#endif
+
   return true;
 }
 
