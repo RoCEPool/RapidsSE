@@ -203,6 +203,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_MEMTEST,
   /* 155 0x9B      160B Heap:S */ CN_MUTEX,
   
+  /*                           */ CN_NMVAL,
   /* 156 0x9C      168B Heap:S */ CN_NODE,
   /* 157 0x9D       88B Heap:S */ CN_NOW,
   /*                           */ CN_NUMBAT,
@@ -478,6 +479,7 @@ static Stz* aCN[]
   /*          */ "MEMTEST"_Stz,             // CN_MEMTEST
   /* 155 0x9B */ "MUTEX"_Stz,               // CN_MUTEX
   
+  /*          */ "NMVAL"_Stz,               // CN_NMVAL
   /* 156 0x9C */ "NODE"_Stz,                // CN_NODE
   /* 157 0x9D */ "NOW"_Stz,                 // CN_NOW
   /*          */ "NUMBAT"_Stz,              // CN_NUMBAT
