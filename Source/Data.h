@@ -130,106 +130,70 @@ namespace Data
   
   enum eMB : u1 // meta bits
   {
-  MB_NULL = 0, // 0: null datum (no bytes in data words)
+  MB_NULL = 0,    // null datum (no bytes in data area)
   
-  MB_1B,       // data words contain 1B datum
-  MB_2B,       // data words contain 2B datum
-  MB_3B,       // 3: data words contain 3B datum
-  MB_4B,       // 4: data words contain 4B datum
-  MB_5B,       // 5: data words contain 5B datum
-  MB_6B,       // 6: data words contain 6B datum
-  MB_7B,       // 7: data words contain 7B datum
-  MB_8B,       // 8: data words contain 8B datum
+  MB_1B,          // data area contains 1B datum
+  MB_2B,          // data area contains 2B datum
+  MB_3B,          // data area contains 3B datum
+  MB_4B,          // data area contains 4B datum
+  MB_5B,          // data area contains 5B datum
+  MB_6B,          // data area contains 6B datum
+  MB_7B,          // data area contains 7B datum
+  MB_8B,          // data area contains 8B datum
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  MB_MINUS_ONE,   // -1 (no bytes in data area)
+  MB_ZERO,        // 0  (no bytes in data area)
+  MB_ONE,         // 1  (no bytes in data area)
+  MB_TWO,         // 2  (no bytes in data area)
+  MB_THREE,       // 3  (no bytes in data area)
+  MB_FOUR,        // 4  (no bytes in data area)
+  MB_FIVE,        // 5  (no bytes in data area)
+  MB_SIX,         // 6  (no bytes in data area)
+  MB_SEVEN,       // 7  (no bytes in data area)
+  MB_EIGHT,       // 8  (no bytes in data area)
+  MB_NINE,        // 9  (no bytes in data area)
+  MB_TEN,         // 10 (no bytes in data area)
   
-  MB_FALSE,    // 1: false datum (no bytes in data words)
-  MB_TRUE,     // 2: true datum (no bytes in data words)
+  MB_SAME,        // same as previous (no bytes in data area)
+  MB_ADD_1B,      // previous + 1B
+  MB_ADD_2B,      // previous + 2B
+  MB_SUB_1B,      // previous - 1B
+  MB_SUB_2B,      // previous - 2B
   
-  // the following are to be renamed
-  MB_CLASSIC_1B, // 9: classical era 1B
-  MB_CLASSIC_2B, // A: classical era 2B
-  MB_SILVER_1B,  // B: silver era 1B
-  MB_SILVER_2B,  // C: silver era 2B
-  MB_MODERN_1B,  // D: modern era 1B
-  MB_MODERN_2B,  // E: modern era 2B
+  MB_FALSE,       // false (no bytes in data area)
+  MB_TRUE,        // true  (no bytes in data area)
   
-  MB_ALPHA_0, // 9: m_caChr[0]
-  MB_ALPHA_1, // A: m_caChr[1]
-  MB_ALPHA_2, // B: m_caChr[2]
-  MB_ALPHA_3, // C: m_caChr[3]
-  MB_ALPHA_4, // D: m_caChr[4]
-  MB_ALPHA_5, // E: m_caChr[5]
+  MB_DATE_E0_2B,  // date in era 0 expressed as 2B
+  MB_DATE_E1_2B,  // date in era 1 expressed as 2B
+  MB_DATE_E2_2B,  // date in era 2 expressed as 2B
+
+  MB_DAYS_ADD_1B, // first date +days 1B
+  MB_DAYS_SUB_1B, // first date -days 1B
   
-  MB_DAYS_PLUS_1B, // 9: +days 1B
-  MB_DAYS_MINUS_1B, // A: -days 1B
-  MB_DAYS_CLASSIC_2B, // B: oops, its actually a classic era 2B
-  MB_DAYS_SILVER_2B, // C: oops, its actually a silver era 2B
-  MB_DAYS_MODERN_2B, // D: oops, its actually a modern era 2B
-  
-  MB_DIGIT_0, // 1: digit 0
-  MB_DIGIT_1, // 2: digit 1
-  MB_DIGIT_2, // 3: digit 2
-  MB_DIGIT_3, // 4: digit 3
-  MB_DIGIT_4, // 5: digit 4
-  MB_DIGIT_5, // 6: digit 5
-  MB_DIGIT_6, // 7: digit 6
-  MB_DIGIT_7, // 8: digit 7
-  MB_DIGIT_1B, // 9: data words contain 1B datum
-  MB_DIGIT_2B, // A: data words contain 2B datum
-  MB_DIGIT_3B, // B: data words contain 3B datum
-  MB_DIGIT_4B, // C: data words contain 4B datum
-  MB_DIGIT_6B, // D: data words contain 6B datum
-  MB_DIGIT_8B, // E: data words contain 8B datum
-  
-  MB_DELTA_PLUS_0, // 9: 0
-  MB_DELTA_PLUS_1, // A: 1
-  MB_DELTA_PLUS_2, // B: 2
-  MB_DELTA_PLUS_3, // C: 3
-  MB_DELTA_PLUS_4, // D: 4
-  MB_DELTA_PLUS_5, // E: 5
-  
-  MB_DELTA_MINUS_0, // 9: 0
-  MB_DELTA_MINUS_1, // A: 1
-  MB_DELTA_MINUS_2, // B: 2
-  MB_DELTA_MINUS_3, // C: 3
-  MB_DELTA_MINUS_4, // D: 4
-  MB_DELTA_MINUS_5, // E: 5
-  
-  MB_TENTH_0, // 1: tenth 0.00
-  MB_TENTH_1, // 2: tenth 0.01
-  MB_TENTH_2, // 3: tenth 0.02
-  MB_TENTH_3, // 4: tenth 0.03
-  MB_TENTH_4, // 5: tenth 0.04
-  MB_TENTH_5, // 6: tenth 0.05
-  MB_TENTH_6, // 7: tenth 0.06
-  MB_TENTH_7, // 8: tenth 0.07
-  MB_TENTH_8, // 9: tenth 0.08
-  MB_TENTH_9, // A: tenth 0.09
-  MB_TENTH_10, // B: tenth 1.00
-  MB_TENTH_2B, // C: data words contain 2B datum
-  MB_TENTH_4B, // D: data words contain 4B datum
-  MB_TENTH_8B, // E: data words contain 8B datum
-  
-  MB_MINUS_ONE,  // 9: == -1 (no bytes in data words)
-  MB_ZERO,       // A: == 0 datum (no bytes in data words)
-  MB_PLUS_ONE,   // B: == 1 datum (no bytes in data words)
-  MB_SAME,       // C: same as aux int (no bytes in data words)
-  
-  MB_PLUS_1B,    // D: aux int+1B
-  MB_PLUS_2B,    // E: aux int+1B
-  
-  MB_MINUS_1B,   // D: aux int-1B
-  MB_MINUS_2B,   // E: aux int-1B
-  
-  MB_EMPTY,      // B: empty string (no bytes in head)
-  MB_SHOCO_FIT,  // C: head: 1Blen,shoco
-  MB_SHOCO_SPLIT, // D: head: 2B->tail,1Blen,part-shoco till end of head
-                  //    tail: has remaining shoco
-  MB_SHOCO_2B,    // E: head: 2B->tail,
-                  //    tail: has 1Blen,shoco
-  
-  MB_OVERFLOW, // F: data words has 2B indicating overflow cacheline
+  MB_STR_EMPTY,   // empty string (no bytes in area)
+  MB_STR_FIT,     // ascii string: 1B=len,ascii
+  MB_STR_SPLIT,   // ascii string:
+                  //   head: 2B->tail,1B=len,part-ascii till end of head
+                  //   tail: has remaining ascii
+  MB_STR_2B,      // ascii string:
+                  //    head: 2B->tail,
+                  //    tail: has 1B=len,ascii
+  MB_LSTR_FIT,    // ascii string: 2B=len,ascii
+  MB_LSTR_SPLIT,  // ascii string:
+                  //   head: 2B->tail,2B=len,part-ascii till end of head
+                  //   tail: has remaining ascii
+  MB_LSTR_2B,     // ascii string:
+                  //    head: 2B->tail,
+                  //    tail: has 2B=len,ascii
+  MB_SHOCO_FIT,   // shoco encoded string: 1B=len,shoco
+  MB_SHOCO_SPLIT, // shoco encoded string:
+                  //   head: 2B->tail,1B=len,part-shoco till end of head
+                  //   tail: has remaining shoco
+  MB_SHOCO_2B,    // shoco encoded string:
+                  //    head: 2B->tail,
+                  //    tail: has 1B=len,shoco
+
+  MB_OVERFLOW,    // 2B indicating overflow tail
   };
   
   //! we'll start with 3 era's and see what happens
