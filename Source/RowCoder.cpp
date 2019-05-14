@@ -851,7 +851,7 @@ void RowCoder::vEncodeTsp(Datum* pSrcDatum, Column* pCol)
   vCodeTsp(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
-  vXchkTsp(pSrcDatum,pCol);
+  vXchkTsp(pSrcDatum,pCol,0);
 
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
 }
@@ -1871,6 +1871,7 @@ void RowCoder::vRecodeTsp(Column* pCol)
 #ifdef WITH_UNTWISTED_RECODING
   m_i_IntoOffset += m_nFromDataBytes;
 #endif
+  vXchkTspRecode(pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2322,14 +2323,29 @@ void RowCoder::vXchkTme(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* cross-check the encoding of tsp                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXchkTsp(Datum* pDatum, Column* pCol)
+void RowCoder::vXchkTsp(Datum* pDatum, Column* pCol, i8 iRow)
 {
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
+  vDecode(&m_oEncodedDatum,m_pIntoNub,iRow,pCol,i_lastColumn, i_LastOffset);
   RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
   RASSERT(m_oEncodedDatum.m_iTsp == pDatum->m_iTsp);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of tsp                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXchkTspRecode(Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  Datum oFromDatum;
+  vDecode(&oFromDatum,m_pFromNub,m_i_FromHead,pCol,i_lastColumn,i_LastOffset);
+  
+  vXchkTsp(&oFromDatum, pCol, m_i_IntoHead);
 #endif
 }
 

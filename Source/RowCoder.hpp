@@ -163,11 +163,12 @@ namespace Data
     void vXchkInt(Datum* pDatum, Column* pCol);
     void vXchkIvl(Datum* pDatum, Column* pCol);
     void vXchkTme(Datum* pDatum, Column* pCol);
-    void vXchkTsp(Datum* pDatum, Column* pCol);
+    void vXchkTsp(Datum* pDatum, Column* pCol, i8 iRow);
     void vXchkVch(Datum* pDatum, Column* pCol,i8 iRow);
     
     void vXchkVchRecode(Column* pCol);
-  
+    void vXchkTspRecode(Column* pCol);
+    
   public:
     static void vAnalyse(RowNub* pNub);
     static void vAppend(Record* pRec, Datum* pDatum, Column* pCol);
