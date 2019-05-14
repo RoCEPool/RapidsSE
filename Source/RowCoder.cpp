@@ -868,18 +868,24 @@ void RowCoder::vEncodeVch(Datum* pSrcDatum, Column* pCol)
   vCodeVch(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
 
-  if (m_oEncodedDatum.m_eEncoding != MN_NULL) {
-    if (m_oEncodedDatum.m_nChars) {
-      if (m_oEncodedDatum.m_eEncoding == MN_SHOCO_2B)
-        vEncodeVchShoco(&m_oEncodedDatum,pCol);
-      else
-        vEncodeVchSmall(&m_oEncodedDatum,pCol);
-    }
-    else {
-      // empty string
-      RASSERT(MN_EMPTY == m_oEncodedDatum.m_eEncoding);
-    }
+  // null string
+  if (MN_NULL == m_oEncodedDatum.m_eEncoding) {
+    vXchkVch(pSrcDatum,pCol,0);
+    return;
   }
+
+  // empty string
+  if (! m_oEncodedDatum.m_nChars) {
+    RASSERT(MN_EMPTY == m_oEncodedDatum.m_eEncoding);
+    vXchkVch(pSrcDatum,pCol,0);
+    return;
+  }
+
+  // shoco or small
+  if (m_oEncodedDatum.m_eEncoding == MN_SHOCO_2B)
+    vEncodeVchShoco(&m_oEncodedDatum,pCol);
+  else
+    vEncodeVchSmall(&m_oEncodedDatum,pCol);
   
   vXchkVch(pSrcDatum,pCol,0);
 }
