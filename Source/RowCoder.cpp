@@ -4492,22 +4492,24 @@ i8 RowCoder::nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine)
 void RowCoder::vVerifyTails(RowNub* pNub, i8 i_Dump)
 {
   i8 nTails = 0;
-  
+  i8 nSumTailUnits = 0;
+
   for (i8 i_Tail = pNub->iLastTail();
        i_Tail != C_UNKNOWN;
        i_Tail = pNub->iPrevTail(i_Tail)) {
     
-    nTails++;
-    
     TailLine* aTailLine = pNub->aGetTail(i_Tail);
-    //i8 nTailUnits = aTailLine->w8_1B(C_TAIL_UNITS_OFFSET);
+    i8 nTailUnits = aTailLine->w8_1B(C_TAIL_UNITS_OFFSET);
     
     if (i_Tail == i_Dump)
       MemLib::vWordDump(aTailLine,sizeof(HeadLine));
 
+    nTails++;
+    nSumTailUnits += nTailUnits;
   }
   
   RASSERT(nTails == pNub->nTails());
+  RASSERT(nTails == pNub->nTailUnits());
 }
 
 
