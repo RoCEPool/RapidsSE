@@ -130,70 +130,118 @@ namespace Data
   
   enum eMB : u1 // meta bits
   {
-  MB_NULL = 0,    // null datum (no bytes in data area)
+  /* 00 */ MB_NULL = 0,    // null datum (no bytes in data area)
   
-  MB_1B,          // data area contains 1B datum
-  MB_2B,          // data area contains 2B datum
-  MB_3B,          // data area contains 3B datum
-  MB_4B,          // data area contains 4B datum
-  MB_5B,          // data area contains 5B datum
-  MB_6B,          // data area contains 6B datum
-  MB_7B,          // data area contains 7B datum
-  MB_8B,          // data area contains 8B datum
+  /* 01 */ MB_1B,          // data area contains 1B datum
+  /* 02 */ MB_2B,          // data area contains 2B datum
+  /* 03 */ MB_3B,          // data area contains 3B datum
+  /* 04 */ MB_4B,          // data area contains 4B datum
+  /* 05 */ MB_5B,          // data area contains 5B datum
+  /* 06 */ MB_6B,          // data area contains 6B datum
+  /* 07 */ MB_7B,          // data area contains 7B datum
+  /* 08 */ MB_8B,          // data area contains 8B datum
   
-  MB_MINUS_ONE,   // -1 (no bytes in data area)
-  MB_ZERO,        // 0  (no bytes in data area)
-  MB_ONE,         // 1  (no bytes in data area)
-  MB_TWO,         // 2  (no bytes in data area)
-  MB_THREE,       // 3  (no bytes in data area)
-  MB_FOUR,        // 4  (no bytes in data area)
-  MB_FIVE,        // 5  (no bytes in data area)
-  MB_SIX,         // 6  (no bytes in data area)
-  MB_SEVEN,       // 7  (no bytes in data area)
-  MB_EIGHT,       // 8  (no bytes in data area)
-  MB_NINE,        // 9  (no bytes in data area)
-  MB_TEN,         // 10 (no bytes in data area)
+  /* 09 */ MB_MINUS_ONE,   // -1 (no bytes in data area)
+  /* 10 */ MB_ZERO,        // 0  (no bytes in data area)
+  /* 11 */ MB_ONE,         // 1  (no bytes in data area)
+  /* 12 */ MB_TWO,         // 2  (no bytes in data area)
+  /* 13 */ MB_THREE,       // 3  (no bytes in data area)
+  /* 14 */ MB_FOUR,        // 4  (no bytes in data area)
+  /* 15 */ MB_FIVE,        // 5  (no bytes in data area)
+  /* 16 */ MB_SIX,         // 6  (no bytes in data area)
+  /* 17 */ MB_SEVEN,       // 7  (no bytes in data area)
+  /* 18 */ MB_EIGHT,       // 8  (no bytes in data area)
+  /* 19 */ MB_NINE,        // 9  (no bytes in data area)
+  /* 20 */ MB_TEN,         // 10 (no bytes in data area)
   
-  MB_SAME,        // same as previous (no bytes in data area)
-  MB_ADD_1B,      // previous + 1B
-  MB_ADD_2B,      // previous + 2B
-  MB_SUB_1B,      // previous - 1B
-  MB_SUB_2B,      // previous - 2B
+  /* 21 */ MB_SAME,        // same as previous (no bytes in data area)
+  /* 22 */ MB_ADD_1B,      // previous + 1B in data area
+  /* 23 */ MB_ADD_2B,      // previous + 2B in data area
+  /* 24 */ MB_SUB_1B,      // previous - 1B in data area
+  /* 25 */ MB_SUB_2B,      // previous - 2B in data area
   
-  MB_FALSE,       // false (no bytes in data area)
-  MB_TRUE,        // true  (no bytes in data area)
+  /* 26 */ MB_FALSE,       // false (no bytes in data area)
+  /* 27 */ MB_TRUE,        // true  (no bytes in data area)
   
-  MB_DATE_E0_2B,  // date in era 0 expressed as 2B
-  MB_DATE_E1_2B,  // date in era 1 expressed as 2B
-  MB_DATE_E2_2B,  // date in era 2 expressed as 2B
+  /* 28 */ MB_DATE_E0_2B,  // date in era 0 expressed as 2B in data area
+  /* 29 */ MB_DATE_E1_2B,  // date in era 1 expressed as 2B in data area
+  /* 30 */ MB_DATE_E2_2B,  // date in era 2 expressed as 2B in data area
 
-  MB_DAYS_ADD_1B, // first date +days 1B
-  MB_DAYS_SUB_1B, // first date -days 1B
+  /* 31 */ MB_DAYS_ADD_1B, // first date +days 1B in data area
+  /* 32 */ MB_DAYS_SUB_1B, // first date -days 1B in data area
   
-  MB_STR_EMPTY,   // empty string (no bytes in area)
-  MB_STR_FIT,     // ascii string: 1B=len,ascii
-  MB_STR_SPLIT,   // ascii string:
-                  //   head: 2B->tail,1B=len,part-ascii till end of head
-                  //   tail: has remaining ascii
-  MB_STR_2B,      // ascii string:
-                  //    head: 2B->tail,
-                  //    tail: has 1B=len,ascii
-  MB_LSTR_FIT,    // ascii string: 2B=len,ascii
-  MB_LSTR_SPLIT,  // ascii string:
-                  //   head: 2B->tail,2B=len,part-ascii till end of head
-                  //   tail: has remaining ascii
-  MB_LSTR_2B,     // ascii string:
-                  //    head: 2B->tail,
-                  //    tail: has 2B=len,ascii
-  MB_SHOCO_FIT,   // shoco encoded string: 1B=len,shoco
-  MB_SHOCO_SPLIT, // shoco encoded string:
-                  //   head: 2B->tail,1B=len,part-shoco till end of head
-                  //   tail: has remaining shoco
-  MB_SHOCO_2B,    // shoco encoded string:
-                  //    head: 2B->tail,
-                  //    tail: has 1B=len,shoco
+  /* 33 */ MB_STR_EMPTY,   // empty string (no bytes in data area)
+  /* 34 */ MB_STR_FIT,     // ascii string: 1B=len,ascii
+  /* 35 */ MB_STR_SPLIT,   // ascii string:
+                           //   head: 2B->tail,1B=len,part-ascii till end of head
+                           //   tail: has remaining ascii
+  /* 36 */ MB_STR_2B,      // longer ascii string:
+                           //    head: 2B->tail,
+                           //    tail: has 1B=len,ascii
+  /* 37 */ MB_LSTR_FIT,    // longer ascii string: 2B=len,ascii
+  /* 38 */ MB_LSTR_SPLIT,  // longer ascii string:
+                           //   head: 2B->tail,2B=len,part-ascii till end of head
+                           //   tail: has remaining ascii
+  /* 39 */ MB_LSTR_2B,     // longer ascii string:
+                           //    head: 2B->tail,
+                           //    tail: has 2B=len,ascii
+  /* 40 */ MB_SHOCO_FIT,   // shoco encoded string: 1B=len,shoco
+  /* 41 */ MB_SHOCO_SPLIT, // shoco encoded string:
+                           //   head: 2B->tail,1B=len,part-shoco till end of head
+                           //   tail: has remaining shoco
+  /* 42 */ MB_SHOCO_2B,    // shoco encoded string:
+                           //    head: 2B->tail,
+                           //    tail: has 1B=len,shoco
 
-  MB_OVERFLOW,    // 2B indicating overflow tail
+  /* 43 */ MB_OVER_2B,     // 2B in data area indicating overflow tail
+  };
+  
+  static Stz* aMB[]
+  {
+  /* 00 */ "MB_NULL"_Stz,
+  /* 01 */ "MB_1B"_Stz,
+  /* 02 */ "MB_2B"_Stz,
+  /* 03 */ "MB_3B"_Stz,
+  /* 04 */ "MB_4B"_Stz,
+  /* 05 */ "MB_5B"_Stz,
+  /* 06 */ "MB_6B"_Stz,
+  /* 07 */ "MB_7B"_Stz,
+  /* 08 */ "MB_8B"_Stz,
+  /* 09 */ "MB_MINUS_ONE"_Stz,
+  /* 10 */ "MB_ZERO"_Stz,
+  /* 11 */ "MB_ONE"_Stz,
+  /* 12 */ "MB_TWO"_Stz,
+  /* 13 */ "MB_THREE"_Stz,
+  /* 14 */ "MB_FOUR"_Stz,
+  /* 15 */ "MB_FIVE"_Stz,
+  /* 16 */ "MB_SIX"_Stz,
+  /* 17 */ "MB_SEVEN"_Stz,
+  /* 18 */ "MB_EIGHT"_Stz,
+  /* 19 */ "MB_NINE"_Stz,
+  /* 20 */ "MB_TEN"_Stz,
+  /* 21 */ "MB_SAME"_Stz,
+  /* 22 */ "MB_ADD_1B"_Stz,
+  /* 23 */ "MB_ADD_2B"_Stz,
+  /* 24 */ "MB_SUB_1B"_Stz,
+  /* 25 */ "MB_SUB_2B"_Stz,
+  /* 26 */ "MB_FALSE"_Stz,
+  /* 27 */ "MB_TRUE"_Stz,
+  /* 28 */ "MB_DATE_E0_2B"_Stz,
+  /* 29 */ "MB_DATE_E1_2B"_Stz,
+  /* 30 */ "MB_DATE_E2_2B"_Stz,
+  /* 31 */ "MB_DAYS_ADD_1B"_Stz,
+  /* 32 */ "MB_DAYS_SUB_1B"_Stz,
+  /* 33 */ "MB_STR_EMPTY"_Stz,
+  /* 34 */ "MB_STR_FIT"_Stz,
+  /* 35 */ "MB_STR_SPLIT"_Stz,
+  /* 36 */ "MB_STR_2B"_Stz,
+  /* 37 */ "MB_LSTR_FIT"_Stz,
+  /* 38 */ "MB_LSTR_SPLIT"_Stz,
+  /* 39 */ "MB_LSTR_2B"_Stz,
+  /* 40 */ "MB_SHOCO_FIT"_Stz,
+  /* 41 */ "MB_SHOCO_SPLIT"_Stz,
+  /* 42 */ "MB_SHOCO_2B"_Stz,
+  /* 43 */ "MB_OVER_2B"_Stz,
   };
   
   //! we'll start with 3 era's and see what happens
