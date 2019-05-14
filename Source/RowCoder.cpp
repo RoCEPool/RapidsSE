@@ -1232,7 +1232,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // oops!
+  // oops! re-encode into MN_TENTH_2B, MN_TENTH_4B or MN_TENTH_8B
   
   i8 iBcdNB;
   
@@ -1349,13 +1349,13 @@ void RowCoder::vRecodeDte(Column* pCol)
   i8 i_Col = pCol->iColumnNo();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for re-encoding
+  // skip nulls
   
-  if (m_eFromEncoding == MN_NULL) {
+  if (MN_NULL == m_eFromEncoding) {
     vUsageIncRecoded(pCol,0);
 #ifdef WITH_UNTWISTED_RECODING
     RASSERT(0 == m_nFromDataBytes);
-    m_i_IntoOffset += m_nFromDataBytes;
+    m_i_IntoOffset += 0;
 #endif
     return;
   }
@@ -1372,11 +1372,8 @@ void RowCoder::vRecodeDte(Column* pCol)
     return;
   }
   
-  // get subscript/columnNo of first date
-  i8 i_FirstDate = pCol->iFirstDate();
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // change the extended datum to days
+  // change the extended datum to DM_DAYS
   
   if (1 == m_pIntoNub->nHeads())
     m_pIntoCoda->m_aeExtDatum[i_Col] = DM_DAYS;
@@ -1386,21 +1383,23 @@ void RowCoder::vRecodeDte(Column* pCol)
   // get this 2nd+ date and first date of row
   
   // get this date in days from epoch
-  i8 iThisDteDays = 0;
+  i8 iThisDateDays = 0;
   switch (m_eFromEncoding) {
-    case MN_SILVER_1B: iThisDteDays = m_aIntoHead->w8_1B(m_i_IntoOffset);
-                       iThisDteDays = iDaysIntoBase(iThisDteDays,C_SILVER_ERA);
+    case MN_SILVER_1B: iThisDateDays = m_aIntoHead->w8_1B(m_i_IntoOffset);
+                       iThisDateDays = iDaysIntoBase(iThisDateDays,C_SILVER_ERA);
                        break;
-    case MN_SILVER_2B: iThisDteDays = m_aIntoHead->w8_2B(m_i_IntoOffset);
-                       iThisDteDays = iDaysIntoBase(iThisDteDays,C_SILVER_ERA);
+    case MN_SILVER_2B: iThisDateDays = m_aIntoHead->w8_2B(m_i_IntoOffset);
+                       iThisDateDays = iDaysIntoBase(iThisDateDays,C_SILVER_ERA);
                        break;
     default:
       RASSERT(0);
   }
   
   // get first date as encoded
-  Column* pColFirstDate = m_pColVec->pGet(i_FirstDate);
-  eMN eFirstEncoding = (eMN)m_aIntoHead->iMetaNibble(i_FirstDate);
+  i8 i_FirstDte = pCol->iFirstDate();
+  
+  Column* pColFirstDate = m_pColVec->pGet(i_FirstDte);
+  eMN eFirstEncoding = (eMN)m_aIntoHead->iMetaNibble(i_FirstDte);
   
   i8 i_LastColumn = 0;
   i8 i_LastOffset = iBaseOffset(m_pColVec);
@@ -1437,11 +1436,11 @@ void RowCoder::vRecodeDte(Column* pCol)
       RASSERT(0);
   }
   
-  // compute the difference in days between this 2nd+ date and the first date
-  i8 iDayDiff = iThisDteDays - iFirstDteDays;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // re-encode 2nd+ date into MN_DAYS_PLUS_1B
+  
+  // compute the difference in days between this 2nd+ date and the first date
+  i8 iDayDiff = iThisDateDays - iFirstDteDays;
   
   if (iDayDiff >= 0 && iDayDiff <= (i8)C_1_BYTE) {
     
@@ -1497,7 +1496,7 @@ void RowCoder::vRecodeDte(Column* pCol)
   m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
 
   vMetaNibble(pCol,m_eFromEncoding);
-  m_aIntoHead->v2B(m_i_IntoOffset,iThisDteDays);
+  m_aIntoHead->v2B(m_i_IntoOffset,iThisDateDays);
   m_i_IntoOffset++;
   
   vUsageIncOops(pCol,2,1);
@@ -3936,6 +3935,8 @@ void RowCoder::vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
   
   pDatum->m_sVch.aChar()[0] = pCoda->m_aiAux[i_Col].m_caChr[eEncoding - MN_ALPHA_0];
   pDatum->m_sVch.aChar()[1] = '\0';
+  
+  pDatum->m_nChars = 1;
   
   //char cChr = aHeadLine->w8_1B(i_Offset);
   //RASSERT(cChr == pDatum->m_sVch.aChar()[0]);
