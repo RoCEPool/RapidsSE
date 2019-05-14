@@ -29,6 +29,7 @@ using namespace System;
 #include "Lock.hpp"
 #include "MemTest.hpp"
 #include "Mutex.hpp"
+#include "NmVal.hpp"
 #include "OpSys.hpp"
 #include "Pipe.hpp"
 #include "Pthread.hpp"
