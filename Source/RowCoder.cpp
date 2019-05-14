@@ -790,7 +790,7 @@ void RowCoder::vEncodeDte(Datum* pSrcDatum, Column* pCol)
   vCodeDte(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
-  vXchkDte(pSrcDatum,pCol);
+  vXchkDte(pSrcDatum,pCol,0);
 
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
 }
@@ -803,7 +803,7 @@ void RowCoder::vEncodeFlt(Datum* pSrcDatum, Column* pCol)
   vCodeFlt(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
-  vXchkFlt(pSrcDatum,pCol);
+  vXchkFlt(pSrcDatum,pCol,0);
 
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
 }
@@ -2267,12 +2267,12 @@ void RowCoder::vXchkBol(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* cross-check the encoding of dte                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXchkDte(Datum* pDatum, Column* pCol)
+void RowCoder::vXchkDte(Datum* pDatum, Column* pCol, i8 iRow)
 {
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
+  vDecode(&m_oEncodedDatum,m_pIntoNub,iRow,pCol,i_lastColumn, i_LastOffset);
   //  vTrace("-- %02lld-%02lld-%02lld\n"_Stz,
   //         pDatum->xDte.m_uYearDelta,pDatum->xDte.m_uMonth,pDatum->xDte.m_uDay);
   RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
@@ -2281,16 +2281,46 @@ void RowCoder::vXchkDte(Datum* pDatum, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cross-check the encoding of flt                                            */
+/* cross-check the recoding of dte                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXchkFlt(Datum* pDatum, Column* pCol)
+void RowCoder::vXchkDteRecode(Column* pCol)
 {
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
+  Datum oFromDatum;
+  vDecode(&oFromDatum,m_pFromNub,m_i_FromHead,pCol,i_lastColumn,i_LastOffset);
+  
+  vXchkDte(&oFromDatum, pCol, m_i_IntoHead);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of flt                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXchkFlt(Datum* pDatum, Column* pCol, i8 iRow)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pIntoNub,iRow,pCol,i_lastColumn, i_LastOffset);
   RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
   RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the recoding of flt                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXchkFltRecode(Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  Datum oFromDatum;
+  vDecode(&oFromDatum,m_pFromNub,m_i_FromHead,pCol,i_lastColumn,i_LastOffset);
+  
+  vXchkFlt(&oFromDatum, pCol, m_i_IntoHead);
 #endif
 }
 

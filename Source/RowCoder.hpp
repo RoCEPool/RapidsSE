@@ -158,14 +158,16 @@ namespace Data
   
     void vXchkBcd(Datum* pDatum, Column* pCol);
     void vXchkBol(Datum* pDatum, Column* pCol);
-    void vXchkDte(Datum* pDatum, Column* pCol);
-    void vXchkFlt(Datum* pDatum, Column* pCol);
+    void vXchkDte(Datum* pDatum, Column* pCol, i8 iRow);
+    void vXchkFlt(Datum* pDatum, Column* pCol, i8 iRow);
     void vXchkInt(Datum* pDatum, Column* pCol, i8 iRow);
     void vXchkIvl(Datum* pDatum, Column* pCol, i8 iRow);
     void vXchkTme(Datum* pDatum, Column* pCol, i8 iRow);
     void vXchkTsp(Datum* pDatum, Column* pCol, i8 iRow);
     void vXchkVch(Datum* pDatum, Column* pCol, i8 iRow);
     
+    void vXchkDteRecode(Column* pCol);
+    void vXchkFltRecode(Column* pCol);
     void vXchkIntRecode(Column* pCol);
     void vXchkIvlRecode(Column* pCol);
     void vXchkTmeRecode(Column* pCol);
