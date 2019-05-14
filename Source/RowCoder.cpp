@@ -4502,6 +4502,7 @@ void RowCoder::vVerifyTails(RowNub* pNub, i8 i_Dump)
     
     TailLine* aTailLine = pNub->aGetTail(i_Tail);
     i8 nTailUnits = aTailLine->w8_1B(C_TAIL_UNITS_OFFSET);
+    RASSERT(nTailUnits > 0 && nTailUnits <= 255);
     
     if (i_Tail == i_Dump)
       MemLib::vWordDump(aTailLine,sizeof(HeadLine));
