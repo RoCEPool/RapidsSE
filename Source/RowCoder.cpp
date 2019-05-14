@@ -141,10 +141,10 @@ void RowCoder::vCopyBegin(RowNub* pIntoNub)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCopyEnd(void)
 {
-  m_pColVec       = nullptr;
+  //m_pColVec       = nullptr;
   
   m_pIntoNub      = nullptr;
-  m_pIntoCoda     = nullptr;
+  //m_pIntoCoda     = nullptr;
   m_i_IntoHead    = C_UNKNOWN;
   m_aIntoHead     = nullptr;
   m_i_IntoOffset  = C_UNKNOWN;
@@ -202,10 +202,10 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
 
   m_nTotalHeads++;
   
-#ifdef WITH_TRACE_ENCODING
-  if (1 == m_pIntoNub->nHeads())
+//#ifdef WITH_TRACE_ENCODING
+  if (m_nTotalHeads < 10)
     RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
-#endif
+//#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyse free space in the into head
@@ -287,7 +287,7 @@ void RowCoder::vEncodeEnd(void)
 //  
 //  vHeadDump(m_aIntoHead,m_pColVec,m_pIntoCoda);
 
-  m_pColVec      = nullptr;
+  //m_pColVec      = nullptr;
   
   m_pIntoNub     = nullptr;
   m_pIntoCoda    = nullptr;
@@ -1897,13 +1897,13 @@ void RowCoder::vRecodeVch(Column* pCol)
   
   if (MN_1B == m_eFromEncoding) {
     vRecodeVchAlpha(pCol);
-    vXchkVchRecode(pCol);
+    //vXchkVchRecode(pCol);                                         //! temp ray
     return;
   }
   
   if (MN_SHOCO_2B == m_eFromEncoding) {
     vRecodeVchShoco(pCol);
-    vXchkVchRecode(pCol);
+    //vXchkVchRecode(pCol);                                         //! temp ray
     return;
   }
 
