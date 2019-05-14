@@ -1768,76 +1768,66 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // MN_SAME
+  // MN_SAME ?
   
-  eMN eExtendedEncoding;
   if (iNBInt == iFirstInt) {
     
-    // revise the encoding in the metaword of into head
-    eExtendedEncoding = MN_SAME;
-    vMetaNibble(pCol,eExtendedEncoding);
+    // revise encoding
+    vMetaNibble(pCol,MN_SAME);
     
+    // cut the iNBInt bytes completely from head
     m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,m_eFromEncoding);
-    //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
     vUsageIncRecoded(pCol,0);
 
     // go back one char in the intoOffset
     m_i_IntoOffset -= m_eFromEncoding;
     
-    //dcSame.vInc("\n"_Stz);
     return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // MN_PLUS_1B
+  // MN_PLUS_1B ?
   
-  if (iNBInt > iFirstInt && iNBInt - iFirstInt <= 255) {
+  if (iNBInt > iFirstInt && (u8)(iNBInt - iFirstInt) <= C_1_BYTE) {
     
-    //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+    // revise encoding
+    vMetaNibble(pCol,MN_PLUS_1B);
     
-    // revise the encoding in the metaword of into head
-    eExtendedEncoding = MN_PLUS_1B;
-    vMetaNibble(pCol,eExtendedEncoding);
-    
-    i8 i1B = iNBInt - iFirstInt;
-    m_aIntoHead->v1B(m_i_IntoOffset,i1B);
+    // set the plus value
+    i8 iPlus1B = iNBInt - iFirstInt;
+    m_aIntoHead->v1B(m_i_IntoOffset,iPlus1B);
     vUsageIncRecoded(pCol,1);
 
+    // remove extraneous bytes
     i8 nToCut = IntLib::iByteMagnitude(iNBInt);
     if (nToCut > 1) {
       m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset+1,nToCut-1);
       m_i_IntoOffset -= (nToCut-1);
     }
     
-    //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-    //dcPlus1.vInc("\n"_Stz);
     return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // MN_PLUS_2B
+  // MN_PLUS_2B ?
   
   if (iNBInt > iFirstInt && (u8)(iNBInt - iFirstInt) <= C_2_BYTES) {
     
-    //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+    // revise encoding
+    vMetaNibble(pCol,MN_PLUS_2B);
     
-    
-    // revise the encoding in the metaword of into head
-    eExtendedEncoding = MN_PLUS_2B;
-    vMetaNibble(pCol,eExtendedEncoding);
+    // set the plus value
+    i8 iPlus2B = iNBInt - iFirstInt;
+    m_aIntoHead->v2B(m_i_IntoOffset,iPlus2B);
     vUsageIncRecoded(pCol,2);
-    
-    i8 i2B = iNBInt - iFirstInt;
-    m_aIntoHead->v2B(m_i_IntoOffset,i2B);
-    
+
+    // remove extraneous bytes
     i8 nToCut = IntLib::iByteMagnitude(iNBInt);
     if (nToCut > 2) {
       m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset+1,nToCut-2);
       m_i_IntoOffset -= (nToCut-2);
     }
     
-    //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-    //dcPlus2.vInc("\n"_Stz);
     return true;
   }
   
@@ -1845,8 +1835,6 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
   // oops!
   
   vUsageIncOops(pCol,m_eFromEncoding,0);
-
-  //dcLeft.vInc(" (e.g. %lld (first %lld))\n"_Stz,iCurrentInt,iFirstInt);
   
   return true;
 }
