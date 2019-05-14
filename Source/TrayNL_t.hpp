@@ -34,6 +34,7 @@ namespace Structures
     Nub_t(void);
     ~Nub_t(void) noexcept(false);
   
+    static i8 nBytes(i8 nUnits);
     static void  vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes);
     static void  vExpand(void* aAddr, i8 nSize, i8 i_Offset, i8 nAddBytes);
     static TAIL* aToTail(HEAD* aHead, i8 i_Distance);
@@ -54,6 +55,7 @@ namespace Structures
     HEAD* aGetHead(i8 i_Head);
     TAIL* aGetTail(i8 i_Tail);
     i8    nHeads(void);
+    i8    nHeadUnits(void);
     i8    iHash(void);
     void  vHashInc(i8 iDelta);
     bool  bHasSpace(i8 nBytes);
@@ -63,6 +65,7 @@ namespace Structures
     i8    iPrevTail(i8 i_Tail);
     void  vReset(void);
     i8    nTails(void);
+    i8    nTailUnits(void);
     i8    nUsedBytes(void);
 
     void  vSetItems(i8 nSpaceUnits, UNIT* axaUnits);
@@ -182,6 +185,20 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::~Nub_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* compute number of bytes in given number of space units                     */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nBytes(i8 nUnits)
+{
+  if (! nUnits)
+    return 0;
+  
+  i8 nBytes = nUnits * (i8)sizeof(UNIT);
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* compute tail from head + diff                                              */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
@@ -219,7 +236,7 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iUnitDiff(i8 i_Head, i8 i_Tail)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot tail item                                                            */
+/* compute number of space units required to hold n bytes                     */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
 i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nUnits(i8 nBytes)
@@ -519,6 +536,17 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nHeads(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get total number of head units                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nHeadUnits(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  return m_nHeadUnits;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get total number of actual items                                           */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
@@ -612,6 +640,17 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nTails(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   return m_nTailItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total number of tail units                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nTailUnits(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  return m_nTailUnits;
 }
 
 /*----------------------------------------------------------------------------*/
