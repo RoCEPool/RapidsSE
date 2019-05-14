@@ -267,7 +267,9 @@ namespace Data
     static void vRestoreTsp(Datum* pDatum, eMN eEncoding);
   
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
-    
+
+    static void vVerifyTails(RowNub* pNub, i8 i_Dump);
+
   private:
     Footer* aFooter(void);
 
