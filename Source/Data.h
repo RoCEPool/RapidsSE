@@ -171,27 +171,27 @@ namespace Data
   /* 32 */ MB_DAYS_SUB_1B, // first date -days 1B in data area
   
   /* 33 */ MB_STR_EMPTY,   // empty string (no bytes in data area)
-  /* 34 */ MB_STR_FIT,     // ascii string: 1B=len,ascii
-  /* 35 */ MB_STR_SPLIT,   // ascii string:
-                           //   head: 2B->tail,1B=len,part-ascii till end of head
-                           //   tail: has remaining ascii
-  /* 36 */ MB_STR_2B,      // longer ascii string:
+  /* 34 */ MB_STR_FIT_1B,   // ascii string: 1B=len,ascii
+  /* 35 */ MB_STR_2B,      // longer ascii string:
                            //    head: 2B->tail,
                            //    tail: has 1B=len,ascii
-  /* 37 */ MB_LSTR_FIT,    // longer ascii string: 2B=len,ascii
-  /* 38 */ MB_LSTR_SPLIT,  // longer ascii string:
-                           //   head: 2B->tail,2B=len,part-ascii till end of head
+  /* 36 */ MB_STR_SPLIT_3B,// ascii string:
+                           //   head: 2B->tail,1B=len,part-ascii till end of head
                            //   tail: has remaining ascii
-  /* 39 */ MB_LSTR_2B,     // longer ascii string:
+  /* 37 */ MB_LSTR_FIT_2B,  // longer ascii string: 2B=len,ascii
+  /* 38 */ MB_LSTR_2B,     // longer ascii string:
                            //    head: 2B->tail,
                            //    tail: has 2B=len,ascii
-  /* 40 */ MB_SHOCO_FIT,   // shoco encoded string: 1B=len,shoco
-  /* 41 */ MB_SHOCO_SPLIT, // shoco encoded string:
-                           //   head: 2B->tail,1B=len,part-shoco till end of head
-                           //   tail: has remaining shoco
-  /* 42 */ MB_SHOCO_2B,    // shoco encoded string:
+  /* 39 */ MB_LSTR_SPLIT_3B,// longer ascii string:
+                           //   head: 2B->tail,2B=len,part-ascii till end of head
+                           //   tail: has remaining ascii
+  /* 40 */ MB_SHOCO_FIT_1B, // shoco encoded string: 1B=len,shoco
+  /* 41 */ MB_SHOCO_2B,    // shoco encoded string:
                            //    head: 2B->tail,
                            //    tail: has 1B=len,shoco
+  /* 42 */ MB_SHOCO_SPLIT_3B,// shoco encoded string:
+                           //   head: 2B->tail,1B=len,part-shoco till end of head
+                           //   tail: has remaining shoco
 
   /* 43 */ MB_OVER_2B,     // 2B in data area indicating overflow tail
   };
@@ -232,15 +232,15 @@ namespace Data
   /* 31 */ "MB_DAYS_ADD_1B"_Stz,
   /* 32 */ "MB_DAYS_SUB_1B"_Stz,
   /* 33 */ "MB_STR_EMPTY"_Stz,
-  /* 34 */ "MB_STR_FIT"_Stz,
-  /* 35 */ "MB_STR_SPLIT"_Stz,
-  /* 36 */ "MB_STR_2B"_Stz,
-  /* 37 */ "MB_LSTR_FIT"_Stz,
-  /* 38 */ "MB_LSTR_SPLIT"_Stz,
-  /* 39 */ "MB_LSTR_2B"_Stz,
-  /* 40 */ "MB_SHOCO_FIT"_Stz,
-  /* 41 */ "MB_SHOCO_SPLIT"_Stz,
-  /* 42 */ "MB_SHOCO_2B"_Stz,
+  /* 34 */ "MB_STR_FIT_1B"_Stz,
+  /* 35 */ "MB_STR_2B"_Stz,
+  /* 36 */ "MB_STR_SPLIT_3B"_Stz,
+  /* 37 */ "MB_LSTR_FIT_1B"_Stz,
+  /* 38 */ "MB_LSTR_2B"_Stz,
+  /* 39 */ "MB_LSTR_SPLIT_3B"_Stz,
+  /* 40 */ "MB_SHOCO_FIT_1B"_Stz,
+  /* 41 */ "MB_SHOCO_2B"_Stz,
+  /* 42 */ "MB_SHOCO_SPLIT_3B"_Stz,
   /* 43 */ "MB_OVER_2B"_Stz,
   };
   
