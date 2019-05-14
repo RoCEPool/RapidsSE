@@ -838,7 +838,7 @@ void RowCoder::vEncodeTme(Datum* pSrcDatum, Column* pCol)
   vCodeTme(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
-  vXchkTme(pSrcDatum,pCol);
+  vXchkTme(pSrcDatum,pCol,0);
 
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
 }
@@ -1861,6 +1861,7 @@ void RowCoder::vRecodeTme(Column* pCol)
 #ifdef WITH_UNTWISTED_RECODING
   m_i_IntoOffset += m_nFromDataBytes;
 #endif
+  vXchkTmeRecode(pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2309,7 +2310,7 @@ void RowCoder::vXchkIvl(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* cross-check the encoding of tme                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXchkTme(Datum* pDatum, Column* pCol)
+void RowCoder::vXchkTme(Datum* pDatum, Column* pCol, i8 iRow)
 {
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
@@ -2317,6 +2318,21 @@ void RowCoder::vXchkTme(Datum* pDatum, Column* pCol)
   vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
   RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
   RASSERT(m_oEncodedDatum.m_iTme == pDatum->m_iTme);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the recoding of tsp                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXchkTmeRecode(Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  Datum oFromDatum;
+  vDecode(&oFromDatum,m_pFromNub,m_i_FromHead,pCol,i_lastColumn,i_LastOffset);
+  
+  vXchkTme(&oFromDatum, pCol, m_i_IntoHead);
 #endif
 }
 
@@ -2335,7 +2351,7 @@ void RowCoder::vXchkTsp(Datum* pDatum, Column* pCol, i8 iRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cross-check the encoding of tsp                                            */
+/* cross-check the recoding of tsp                                            */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkTspRecode(Column* pCol)
 {
@@ -2366,7 +2382,7 @@ void RowCoder::vXchkVch(Datum* pDatum, Column* pCol, i8 iRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cross-check the encoding of vch                                            */
+/* cross-check the recoding of vch                                            */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkVchRecode(Column* pCol)
 {
