@@ -18,6 +18,17 @@ PromptNote mPromptNote_setDbg (
   ""_Stz              // description
 );
 
+//union {
+//
+//  struct {
+//    i8 m_i1;
+//    i8 m_i2;
+//  };
+//
+//  i8 m_iaArray[2];
+//
+//} u;
+
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
@@ -27,7 +38,8 @@ bool Prompt::bPrompt_setDbg(SePrompt* pPrompt)
 
   ASSERT((*pTokenVec)[0]->bSame("setDbg"_Stz));
   
-
+  //vTrace(" sizof(u) %lld\n"_Stz,sizeof(u));
+  
   return true;
 }
 
