@@ -812,7 +812,7 @@ void RowCoder::vEncodeInt(Datum* pSrcDatum, Column* pCol)
   vCodeInt(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
-  vXchkInt(pSrcDatum,pCol);
+  vXchkInt(pSrcDatum,pCol, 0);
 
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
 }
@@ -825,7 +825,7 @@ void RowCoder::vEncodeIvl(Datum* pSrcDatum, Column* pCol)
   vCodeIvl(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
-  vXchkIvl(pSrcDatum,pCol);
+  vXchkIvl(pSrcDatum,pCol,0);
 
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
 }
@@ -1534,15 +1534,19 @@ void RowCoder::vRecodeInt(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #ifdef WITH_EXTENDED_INT_DIGIT
-  if (bRecodeIntDigit(pCol))
+  if (bRecodeIntDigit(pCol)) {
+    vXchkIntRecode(pCol);
     return;
+  }
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #ifdef WITH_EXTENDED_INT_DELTA
-  if (bRecodeIntDelta(pCol))
+  if (bRecodeIntDelta(pCol)) {
+    vXchkIntRecode(pCol);
     return;
+  }
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1820,7 +1824,7 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     // remove extraneous bytes
     i8 nToCut = IntLib::iByteMagnitude(iNBInt);
     if (nToCut > 2) {
-      m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset+1,nToCut-2);
+      m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset+2,nToCut-2);
       m_i_IntoOffset -= (nToCut-2);
     }
     
@@ -1851,6 +1855,7 @@ void RowCoder::vRecodeIvl(Column* pCol)
 #ifdef WITH_UNTWISTED_RECODING
   m_i_IntoOffset += m_nFromDataBytes;
 #endif
+  vXchkIvlRecode(pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2282,28 +2287,58 @@ void RowCoder::vXchkFlt(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* cross-check the encoding of int                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXchkInt(Datum* pDatum, Column* pCol)
+void RowCoder::vXchkInt(Datum* pDatum, Column* pCol, i8 iRow)
 {
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
+  vDecode(&m_oEncodedDatum,m_pIntoNub,iRow,pCol,i_lastColumn, i_LastOffset);
   RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
   RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
 #endif
 }
 
 /*----------------------------------------------------------------------------*/
-/* cross-check the encoding of ivl                                            */
+/* cross-check the recoding of int                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXchkIvl(Datum* pDatum, Column* pCol)
+void RowCoder::vXchkIntRecode(Column* pCol)
 {
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
+  Datum oFromDatum;
+  vDecode(&oFromDatum,m_pFromNub,m_i_FromHead,pCol,i_lastColumn,i_LastOffset);
+  
+  vXchkInt(&oFromDatum, pCol, m_i_IntoHead);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the encoding of ivl                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXchkIvl(Datum* pDatum, Column* pCol, i8 iRow)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  vDecode(&m_oEncodedDatum,m_pIntoNub,iRow,pCol,i_lastColumn, i_LastOffset);
   RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
   RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* cross-check the recoding of ivl                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vXchkIvlRecode(Column* pCol)
+{
+#ifdef WITH_ENCODING_XCHECK
+  i8 i_LastOffset = iBaseOffset(m_pColVec);
+  i8 i_lastColumn = 0;
+  Datum oFromDatum;
+  vDecode(&oFromDatum,m_pFromNub,m_i_FromHead,pCol,i_lastColumn,i_LastOffset);
+  
+  vXchkIvl(&oFromDatum, pCol, m_i_IntoHead);
 #endif
 }
 
@@ -2315,14 +2350,14 @@ void RowCoder::vXchkTme(Datum* pDatum, Column* pCol, i8 iRow)
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = iBaseOffset(m_pColVec);
   i8 i_lastColumn = 0;
-  vDecode(&m_oEncodedDatum,m_pIntoNub,0,pCol,i_lastColumn, i_LastOffset);
+  vDecode(&m_oEncodedDatum,m_pIntoNub,iRow,pCol,i_lastColumn, i_LastOffset);
   RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
   RASSERT(m_oEncodedDatum.m_iTme == pDatum->m_iTme);
 #endif
 }
 
 /*----------------------------------------------------------------------------*/
-/* cross-check the recoding of tsp                                            */
+/* cross-check the recoding of tme                                            */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkTmeRecode(Column* pCol)
 {
@@ -2375,9 +2410,11 @@ void RowCoder::vXchkVch(Datum* pDatum, Column* pCol, i8 iRow)
   i8 i_lastColumn = 0;
   vDecode(&m_oEncodedDatum,m_pIntoNub,iRow,pCol,i_lastColumn, i_LastOffset);
   RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_nChars == pDatum->m_nChars);
-  if (m_oEncodedDatum.m_eEncoding != MN_NULL)
+  
+  if (m_oEncodedDatum.m_eEncoding != MN_NULL) {
+    RASSERT(m_oEncodedDatum.m_nChars == pDatum->m_nChars);
     RASSERT(m_oEncodedDatum.m_sVch.bSame(pDatum->m_sVch));
+  }
 #endif
 }
 
