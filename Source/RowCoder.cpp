@@ -210,6 +210,8 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   
   vAnalyseFree();
   
+  vVerifyTails(m_pIntoNub,C_UNKNOWN);
+  
   return true;
 }
 
@@ -4509,7 +4511,7 @@ void RowCoder::vVerifyTails(RowNub* pNub, i8 i_Dump)
   }
   
   RASSERT(nTails == pNub->nTails());
-  RASSERT(nTails == pNub->nTailUnits());
+  RASSERT(nSumTailUnits == pNub->nTailUnits());
 }
 
 
