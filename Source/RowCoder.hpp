@@ -164,7 +164,9 @@ namespace Data
     void vXchkIvl(Datum* pDatum, Column* pCol);
     void vXchkTme(Datum* pDatum, Column* pCol);
     void vXchkTsp(Datum* pDatum, Column* pCol);
-    void vXchkVch(Datum* pDatum, Column* pCol);
+    void vXchkVch(Datum* pDatum, Column* pCol,i8 iRow);
+    
+    void vXchkVchRecode(Column* pCol);
   
   public:
     static void vAnalyse(RowNub* pNub);
