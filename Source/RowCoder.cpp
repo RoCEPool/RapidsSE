@@ -200,6 +200,8 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   vRecode_Short();
 #endif
 
+  m_nTotalHeads++;
+  
 //#ifdef WITH_TRACE_ENCODING
   if (1 == m_pIntoNub->nHeads())
     RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
@@ -1885,6 +1887,9 @@ void RowCoder::vRecodeTsp(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeVch(Column* pCol)
 {
+  if (4377 == m_nTotalHeads && 15 == pCol->iColumnNo())
+    vDebugPoint();
+  
   if (MN_1B == m_eFromEncoding) {
     vRecodeVchAlpha(pCol);
     vXchkVchRecode(pCol);
