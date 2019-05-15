@@ -1925,25 +1925,25 @@ void RowCoder::vRecodeVchShoco(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy fromTail to intoTail
   
-  i8 nTailUnits = aShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
-  i8 nShocoBytes = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
-  
-  i8 i_IntoTail = m_pIntoNub->iAllotTail(2 + nShocoBytes);
-  aIntoTail = m_pIntoNub->aGetTail(i_IntoTail);
-  m_nTails++;
-  m_nTailUnits += aIntoTail->w8_1B(0);
+//  i8 nTailUnits = aShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
+//  i8 nShocoBytes = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+//
+//  i8 i_IntoTail = m_pIntoNub->iAllotTail(2 + nShocoBytes);
+//  aIntoTail = m_pIntoNub->aGetTail(i_IntoTail);
+//  m_nTails++;
+//  m_nTailUnits += aIntoTail->w8_1B(0);
+//
+//  MemLib::vCopy(aIntoTail,aShocoTail,
+//                nTailUnits*sizeof(SpaceUnit),CN_ROWBUFFER);
+//
+//  // what gets encoded is the unit difference between head and tail
+//  i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
+//
+//  m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
+//
+//  vUsageIncRecoded(pCol,2 + 2 + nShocoBytes);
 
-  MemLib::vCopy(aIntoTail,aShocoTail,
-                nTailUnits*sizeof(SpaceUnit),CN_ROWBUFFER);
-  
-  // what gets encoded is the unit difference between head and tail
-  i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
-
-  m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
-
-  vUsageIncRecoded(pCol,2 + 2 + nShocoBytes);
-
-  return;
+  vRecodeVchShocoTail(pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2262,50 +2262,56 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy an encoded row from one tray to another                               */
+/* copy shoco tail line from nub                                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeVchShocoTail(Column* pCol)
 {
-  TailLine* aIntoTail = nullptr;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy shoco tail line from nub
-  i8 i_Distance = m_aFromHead->w8_2B(m_i_FromOffset);
-  TailLine* aShocoTail = m_pFromNub->aGetTail(i_Distance);
-  
   /*
-   +=====================================+
-   |            Shoco Tail Line          +
-   +=====================================+
-   | U | C | <compressed bytes> <unused> +
-   +-------------------------------------+
-   | 0 | 1 | 2                        63 |
-   +-------------------------------------+
+              - Head Line -                          - Tail Line -
+   +================================+    +=====================================+
+   | meta-bits:       ,MN_SHOCO_2B, |    | U | C | <compressed bytes> <unused> +
+   +================================+    +=====================================+
+   |                                |
+   +--------------------------------+
+   |                           [ST] |
+   +--------------------------------+
    
-   where: U is one byte being the unit length of the tail line
-   C is one byte being the number of compressed bytes
+   where: MN_SHOCO_2B is the meta-bits for the column
+          [ST] is 2 bytes being the index of the Shoco Tail Line
+          U is one byte being the unit length of the tail line
+          C is one byte being the number of compressed bytes
+          <compressed bytes> being the shoco compressed bytes
    */
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy fromTail to intoTail
+  // get tail and details
+  i8 i_FromTail = m_aFromHead->w8_2B(m_i_FromOffset);
+  TailLine* aFromShocoTail = m_pFromNub->aGetTail(i_FromTail);
+
+  i8 nFromTailUnits = aFromShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
+  i8 nCompressed    = aFromShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
   
-  i8 nTailUnits = aShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
-  i8 nShocoBytes = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+  // allot a tail line as per the diagram (U is put in by iAllotTail)
+  i8 nTailBytes  = C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES + nCompressed;
+  i8 i_IntoTail = m_pIntoNub->iAllotTail(nTailBytes);
+  TailLine* aIntoShocoTail = m_pIntoNub->aGetTail(i_IntoTail);
   
-  i8 i_IntoTail = m_pIntoNub->iAllotTail(2 + nShocoBytes);
-  aIntoTail = m_pIntoNub->aGetTail(i_IntoTail);
-  m_nTails++;
-  m_nTailUnits += aIntoTail->w8_1B(0);
-  
-  MemLib::vCopy(aIntoTail,aShocoTail,
-                nTailUnits*sizeof(SpaceUnit),CN_ROWBUFFER);
+  // set length of compressed string into tail (this is C in the diagram)
+  aIntoShocoTail->v1B(C_SHOCO_COMPRESSED_OFFSET,nCompressed);
+
+  // copy shoco into tail (this is <compressed bytes> in the diagram)
+  MemLib::vCopy((char*)aIntoShocoTail + C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES,
+                (char*)aFromShocoTail + C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES,
+                nCompressed,
+                CN_ROWBUFFER);
   
   // what gets encoded is the unit difference between head and tail
   i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
-  
   m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
   
-  vUsageIncRecoded(pCol,2 + 2 + nShocoBytes);
+  vUsageIncRecoded(pCol,2 + 2 + nCompressed);
+
+  m_nTails++;
+  m_nTailUnits += nFromTailUnits;
 }
 
 /*----------------------------------------------------------------------------*/
