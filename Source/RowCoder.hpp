@@ -149,6 +149,9 @@ namespace Data
     void vRecodeVch(Column* pCol);
     void vRecodeVchAlpha(Column* pCol);
     void vRecodeVchShoco(Column* pCol);
+    void vRecodeVchShocoDupe(Column* pCol);
+    void vRecodeVchShocoFold(Column* pCol);
+    void vRecodeVchShocoTail(Column* pCol);
 
     void vUsageIncEncoded(Column* pCol, i8 nBytes);
     void vUsageIncEncoded(Column* pCol, Datum* pDatum);
