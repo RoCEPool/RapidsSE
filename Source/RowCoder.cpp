@@ -1800,24 +1800,34 @@ void RowCoder::vRecodeVchShoco(Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* search and recode a duplicate shoco tail                                   */
+/* search and recode a duplicate shoco tail (any column)                      */
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
 {
   /*
-               - Head Line -                          - Tail Line -
+            - Into Head Line -                     - From Tail Line -
    +================================+    +=====================================+
-   | meta-bits:     ,MN_SHOCO_2B,   |    | U | C | <compressed bytes> <unused> |
+   | meta-bits:     ,MN_SHOCO_2B,   |    | <U><C><compressed bytes> ////////// |
+   +================================+    +=====================================+
+   |                                |
+   +--------------------------------+
+   |                    |ST|        |
+   +--------------------------------+
+   
+            - Into Head Line -               - Into Tail Line (duplicate) -
+   +================================+    +=====================================+
+   | meta-bits:      ,MN_SHOCO_2B,  |    | <U><C><compressed bytes> ////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
    |                    [ST]        |
    +--------------------------------+
    
-   where: MN_SHOCO_2B is the meta-bits for the column
-          [ST] is the 2B relative index of the Shoco Tail Line
-          U is one byte being the unit length of the tail line
-          C is one byte being the number of compressed bytes
+   where: MN_SHOCO_2B are the meta-bits for the column
+          |ST| is 2B absoliute index of the From sTail Line
+          [ST] is 2B relative index of the Into Tail Line
+          <U> is one byte being the unit length of the tail line
+          <C> is one byte being the number of compressed bytes
           <compressed bytes> being the shoco compressed bytes
    */
 
@@ -1825,14 +1835,14 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   i8 i_FromShocoTail = m_aFromHead->w8_2B(m_i_FromOffset);
   TailLine* aFromShocoTail = m_pFromNub->aGetTail(i_FromShocoTail);
   
-  // search for duplicate of from tail in the into-nub
+  // search for duplicate of the from tail in the into-nub
   i8 i_DupeShocoTail = iFindTail(m_pIntoNub,aFromShocoTail);
   if (C_UNKNOWN == i_DupeShocoTail)
     return false;
   
   // what gets encoded is the 2B unit difference between head and tail
-  i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_DupeShocoTail);
-  m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
+  i8 i_ShocoTailRel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_DupeShocoTail);
+  m_aIntoHead->vPut(m_i_IntoOffset,i_ShocoTailRel,MN_2B);
   
   vUsageIncRecoded(pCol,2);
   
@@ -1840,25 +1850,35 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
  }
 
 /*----------------------------------------------------------------------------*/
-/* fold last column shoco into head as a MN_SHOCO_FIT                         */
+/* fold shoco tail into head as a MN_SHOCO_FIT (last column only)             */
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeVchShocoFold(Column* pCol)
 {
   /*
-              - Head Line -                          - Tail Line -
+            - Into Head Line -                     - From Tail Line -
    +================================+    +=====================================+
-   | meta-bits:       ,MN_SHOCO_FIT |    | U | C | <compressed bytes> <unused> |
+   | meta-bits:        ,MN_SHOCO_2B |    | <U><C><compressed bytes> ////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
-   |     | C | <compressed bytes>   |
+   |    [ST] ////////////////////// |
    +--------------------------------+
    
-   where: MN_SHOCO_2B is the meta-bits for the column
-          [ST] is 2 bytes being the index of the Shoco Tail Line
-          U is one byte being the unit length of the tail line
-          C is one byte being the number of compressed bytes
-          <compressed bytes> being the shoco compressed bytes
+            - Into Head Line -                     (no Into Tail Line)
+   +================================+
+   | meta-bits:       ,MN_SHOCO_FIT |
+   +================================+
+   |                                |
+   +--------------------------------+
+   |    <C><compressed bytes> ///// |
+   +--------------------------------+
+   
+   where: MN_SHOCO_2B are the meta-bits for the column
+         |ST| is 2B absoliute index of the From sTail Line
+         [ST] is 2B relative index of the Into Tail Line
+         <U> is one byte being the unit length of the tail line
+         <C> is one byte being the number of compressed bytes
+         <compressed bytes> being the shoco compressed bytes
    */
 
   // fold may only be done on last column
@@ -2015,27 +2035,37 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy shoco tail line from nub                                              */
+/* copy shoco tail line from from-nub into into-nub (any column)              */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeVchShocoTail(Column* pCol)
 {
   /*
-              - Head Line -                          - Tail Line -
+            - Into Head Line -                     - From Tail Line -
    +================================+    +=====================================+
-   | meta-bits:       ,MN_SHOCO_2B, |    | U | C | <compressed bytes> <unused> +
+   | meta-bits:     ,MN_SHOCO_2B,   |    | <U><C><compressed bytes> ////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
-   |                        [ST]    |
+   |                    |ST|        |
    +--------------------------------+
    
-   where: MN_SHOCO_2B is the meta-bits for the column
-          [ST] is 2 bytes being the index of the Shoco Tail Line
-          U is one byte being the unit length of the tail line
-          C is one byte being the number of compressed bytes
+          - Into Head Line -                       - Into Tail Line -
+   +================================+    +=====================================+
+   | meta-bits:      ,MN_SHOCO_2B,  |    | <U><C><compressed bytes> ////////// |
+   +================================+    +=====================================+
+   |                                |
+   +--------------------------------+
+   |                    [ST]        |
+   +--------------------------------+
+   
+   where: MN_SHOCO_2B are the meta-bits for the column
+          |ST| is 2B absoliute index of the From sTail Line
+          [ST] is 2B relative index of the Into Tail Line
+          <U> is one byte being the unit length of the tail line
+          <C> is one byte being the number of compressed bytes
           <compressed bytes> being the shoco compressed bytes
    */
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get tail and details
