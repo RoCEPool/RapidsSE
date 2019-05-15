@@ -191,7 +191,9 @@ namespace Data
                                      ColumnVec* pColVec, Column* pCol,
                                      Coda* pCoda, i8& i_LastColumn, i8& i_LastOffset);
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
+    static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda);
+    static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, Coda* pCoda);
     static void vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec);
     static void vInitEncoding(void);
     static void vRecord(Record* pRec, RowNub* pNub, i8 i_Row);

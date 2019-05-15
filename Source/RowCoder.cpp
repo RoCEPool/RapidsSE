@@ -1123,13 +1123,6 @@ void RowCoder::vRecode_Short(void)
 #ifndef WITH_UNTWISTED_RECODING
     m_i_IntoOffset += m_i_FromOffset - i_PriorFromOffset;
 #endif
-   
-#ifdef WITH_ENCODING_XCHECK
-    Datum oDatum1, oDatum2;
-    i8 i_Column = 0;
-    i8 i_Offset;
-#endif
-    
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // re-encode datum
     
@@ -1139,7 +1132,9 @@ void RowCoder::vRecode_Short(void)
       case Datums::DM_BOL:  vRecodeBol(pCol); continue;
       case Datums::DM_DTE:  vRecodeDte(pCol); continue;
       case Datums::DM_FLT:  vRecodeFlt(pCol); continue;
-      case Datums::DM_INT:  vRecodeInt(pCol); continue;
+      case Datums::DM_INT:  vRecodeInt(pCol);
+        //vTrace("m_i_IntoOffset = %lld\n"_Stz, m_i_IntoOffset);
+        continue;
       case Datums::DM_IVL:  vRecodeIvl(pCol); continue;
       case Datums::DM_TME:  vRecodeTme(pCol); continue;
       case Datums::DM_TSP:  vRecodeTsp(pCol); continue;
@@ -1148,6 +1143,7 @@ void RowCoder::vRecode_Short(void)
       default:
         NEVER_REACH;
     }
+    
     
   }
   
@@ -1561,6 +1557,7 @@ void RowCoder::vRecodeInt(Column* pCol)
 
 #ifdef WITH_EXTENDED_INT_DIGIT
   if (bRecodeIntDigit(pCol)) {
+    //vHeadDump(m_aIntoHead, m_pColVec, pCol);
     vXchkIntRecode(pCol);
     return;
   }
@@ -1570,6 +1567,7 @@ void RowCoder::vRecodeInt(Column* pCol)
 
 #ifdef WITH_EXTENDED_INT_DELTA
   if (bRecodeIntDelta(pCol)) {
+    //vHeadDump(m_aIntoHead, m_pColVec, pCol);
     vXchkIntRecode(pCol);
     return;
   }
@@ -1797,12 +1795,12 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     // cut the iNBInt bytes completely from head
     m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,m_eFromEncoding);
     vUsageIncRecoded(pCol,0);
-
-    // go back one char in the intoOffset
-    m_i_IntoOffset -= m_eFromEncoding;
    
 #ifdef WITH_UNTWISTED_RECODING
     m_i_IntoOffset += 0;
+#else
+    // go back one char in the intoOffset
+    m_i_IntoOffset -= m_eFromEncoding;
 #endif
 
     return true;
@@ -1825,7 +1823,9 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     i8 nToCut = IntLib::iByteMagnitude(iNBInt);
     if (nToCut > 1) {
       m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset+1,nToCut-1);
+#ifndef WITH_UNTWISTED_RECODING
       m_i_IntoOffset -= (nToCut-1);
+#endif
     }
     
 #ifdef WITH_UNTWISTED_RECODING
@@ -1849,14 +1849,17 @@ bool RowCoder::bRecodeIntDelta(Column* pCol)
     vUsageIncRecoded(pCol,2);
 
     // remove extraneous bytes
-    i8 nToCut = IntLib::iByteMagnitude(iNBInt);
-    if (nToCut > 2) {
-      m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset+2,nToCut-2);
-      m_i_IntoOffset -= (nToCut-2);
+    i8 nToCut = IntLib::iByteMagnitude(iNBInt) - 2;
+    if (nToCut > 0) {
+      m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset+2,nToCut);
+      
+#ifndef WITH_UNTWISTED_RECODING
+      m_i_IntoOffset -= nToCut;
+#endif
     }
     
 #ifdef WITH_UNTWISTED_RECODING
-    m_i_IntoOffset += 1;
+    m_i_IntoOffset += 2;
 #endif
     
     return true;
@@ -2919,7 +2922,7 @@ void RowCoder::vXchkInt(Datum* pDatum, Column* pCol, i8 iRow)
   i8 i_lastColumn = 0;
   vDecode(&m_oEncodedDatum,m_pIntoNub,iRow,pCol,i_lastColumn, i_LastOffset);
   RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
-  RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
+  RASSERT(m_oEncodedDatum.m_iInt == pDatum->m_iInt);
 #endif
 }
 
@@ -3443,6 +3446,17 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* sprint decode row from cache line into string                              */
 /*----------------------------------------------------------------------------*/
+void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
+{
+  RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
+  Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
+  
+  vHeadDump(aHeadLine,pColVec,pCol,pCoda);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint decode row from cache line into string                              */
+/*----------------------------------------------------------------------------*/
 void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
 {
   RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
@@ -3525,6 +3539,70 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda)
   int iDebug = 1;
 }
 
+/*----------------------------------------------------------------------------*/
+/* sprint decode row from cache line into string                              */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, Coda* pCoda)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  MemLib::vWordDump(aHeadLine, sizeof(HeadLine));
+  
+  i8 nFreeBytes = nFreeSpaceHead(aHeadLine,pColVec,pCoda);
+  vTrace("FreeBytes %lld\n"_Stz,nFreeBytes);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+  
+  HV_Rec hvRec;
+  
+  i8 i_LastOffset = iBaseOffset(pColVec);
+  
+  vTrace("Col ColumnName      Datum  ExtDatum    Encoding"
+         "       Offset  Bytes              Value\n"_Stz);
+  
+  // get the column no
+  i8 i_Col = pCol->iColumnNo();
+  
+  // first get the encoded value into datum
+  //vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_Col,i_LastOffset);
+  eDM eDatum = pCol->eDatumType();
+  eDM eDatumCoda = pCoda->m_aeExtDatum[pCol->iColumnNo()];
+  eMN eEncoding  = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_Col,i_LastOffset);
+  Stz* aEncoding = sEncoding(eEncoding, eDatum, eDatumCoda);
+  
+  i8 nBytes = nDataBytes(eDatumCoda,eEncoding);
+  
+  i8 iNibble = aHeadLine->iMetaNibble(i_Col);
+  
+  vTrace("%3lld %-15s %-6s %-11s %x %-16s %2lld %2lld "_Stz,
+         i_Col,
+         pCol->sColumnName().aChar(),
+         aDM[eDatum],
+         aDM[eDatumCoda],
+         iNibble,
+         aEncoding,
+         i_LastOffset,
+         nBytes);
+  
+  if (nBytes)
+    for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
+      vTrace("%02x"_Stz,aHeadLine->w8_1B(i_LastOffset+i_Byte));
+  for (i8 i_Byte = nBytes; i_Byte < 8; i_Byte++)
+    vTrace("__"_Stz);
+  vTrace(" "_Stz);
+  
+  hvRec->vReset();
+  vAppend(hvRec,aHeadLine,pColVec,pCol,pCoda,i_Col,i_LastOffset);
+  vTrace("%s"_Stz,hvRec->szRecStr());
+  
+  vTrace("\n"_Stz);
+  
+  i_LastOffset += nBytes;
+  
+}
 /*----------------------------------------------------------------------------*/
 /* sprint decode row from cache line into string                              */
 /*----------------------------------------------------------------------------*/
@@ -4001,9 +4079,19 @@ i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
     case DM_DIGIT:
       if (eEncoding >= MN_DIGIT_0 && eEncoding <= MN_DIGIT_7)
         return 0;
-      else {
-        i8 nBytes = eEncoding - MN_DIGIT_7;
-        return nBytes;
+//      else {
+//        i8 nBytes = eEncoding - MN_DIGIT_7;
+//        return nBytes;
+//      }
+      switch(eEncoding) {
+        case MN_DIGIT_1B: return 1;
+        case MN_DIGIT_2B: return 2;
+        case MN_DIGIT_3B: return 3;
+        case MN_DIGIT_4B: return 4;
+        case MN_DIGIT_6B: return 6;
+        case MN_DIGIT_8B: return 8;
+        default:
+          NEVER_REACH;
       }
       
     case DM_TENTH:
