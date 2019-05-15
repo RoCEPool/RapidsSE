@@ -27,6 +27,7 @@ namespace Correctness
   
     void vAppend(const char cChar);
     bool bBreak(i8 iBreakAt, i8& iPrevBreak);
+    byte* ayByte(void);
     void vCat(Stz* aStr, ...);
     void vCatSprint(Stz* aFormat, ...);
     char* aChar(void);
@@ -176,6 +177,17 @@ bool String_t<SPACE>::bBreak(i8 iBreakAt, i8& iPrevBreak)
   
   iPrevBreak = iBreak;
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get m_caArea                                                                */
+/*----------------------------------------------------------------------------*/
+template <int SPACE>
+byte* String_t<SPACE>::ayByte(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  return (byte*)m_caArea;
 }
 
 /*----------------------------------------------------------------------------*/

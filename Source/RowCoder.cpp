@@ -913,8 +913,8 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
   // compress source varchar into sShoco
   sVCH sShoco;
   i8 nCompressed =
-    Compress::iIntoShoco((byte*)sShoco.aChar(),     // into compressed destination
-                         sShoco.nSpace(),           // destination size
+    Compress::iIntoShoco(sShoco.ayByte(), // into compressed destination
+                         sShoco.nSpace(), // destination size
                          pSrcDatum->m_sVch.aChar(), // from uncompressed source
                          pSrcDatum->m_nChars);      // source bytes
   
@@ -924,10 +924,10 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
   TailLine* aShocoTail = m_pIntoNub->aGetTail(i_ShocoTail);
   ASSERT(m_pIntoNub->nBytes(aShocoTail->w8_1B(0)) >= nTailBytes);
 
-  // set length of the compressed string encoded into tail shoco cache line
+  // set length of compressed string into tail (this is C in the diagram)
   aShocoTail->v1B(C_SHOCO_COMPRESSED_OFFSET,nCompressed);
   
-  // copy shoco into tail
+  // copy shoco into tail (this is <compressed bytes> in the diagram)
   char *aShocoWithinTail = (char*)aShocoTail
                              + C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES;
   MemLib::vCopy(aShocoWithinTail,sShoco.aChar(),nCompressed,CN_ROWCODER);
