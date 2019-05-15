@@ -1765,7 +1765,6 @@ void RowCoder::vRecodeVch(Column* pCol)
     vUsageIncRecoded(pCol,m_eFromEncoding);
     return;
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1901,25 +1900,27 @@ void RowCoder::vRecodeVchShoco(Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #ifdef WITH_SHOCO_DUPLICATES
-  i8 i_FoundTail = iFindTail(m_pIntoNub,aShocoTail);
-  
-  if (C_UNKNOWN != i_FoundTail) {
-    
-    aIntoTail = m_pIntoNub->aGetTail(i_FoundTail);
-    
-    // what gets encoded is the unit difference between head and tail
-    i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_FoundTail);
-
-    m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
-
-    vUsageIncRecoded(pCol,2 );
-
+//  i8 i_FoundTail = iFindTail(m_pIntoNub,aShocoTail);
+//
+//  if (C_UNKNOWN != i_FoundTail) {
+//
+//    aIntoTail = m_pIntoNub->aGetTail(i_FoundTail);
+//
+//    // what gets encoded is the unit difference between head and tail
+//    i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_FoundTail);
+//
+//    m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
+//
+//    vUsageIncRecoded(pCol,2 );
+//
+//    return;
+//  }
+//  else {
+//    //MemLib::vWordDump(aShocoTail,sizeof(HeadLine));
+//    vDebugPoint();
+//  }
+  if (bRecodeVchShocoDupe(pCol))
     return;
-  }
-  else {
-    //MemLib::vWordDump(aShocoTail,sizeof(HeadLine));
-    vDebugPoint();
-  }
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1947,54 +1948,25 @@ void RowCoder::vRecodeVchShoco(Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy an encoded row from one tray to another                               */
+/* search and recode a duplicate shoco tail                                   */
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
 {
-  static Peruse xSplits("Splits"_Stz);
+  i8 i_FromShocoTail = m_aFromHead->w8_2B(m_i_FromOffset);
+  TailLine* aFromShocoTail = m_pFromNub->aGetTail(i_FromShocoTail);
   
-  TailLine* aIntoTail = nullptr;
+  i8 i_DupeShocoTail = iFindTail(m_pIntoNub,aFromShocoTail);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy shoco tail line from nub
-  i8 i_Distance = m_aFromHead->w8_2B(m_i_FromOffset);
-  TailLine* aShocoTail = m_pFromNub->aGetTail(i_Distance);
+  if (C_UNKNOWN == i_DupeShocoTail)
+    return false;
   
-  /*
-   +=====================================+
-   |            Shoco Tail Line          +
-   +=====================================+
-   | U | C | <compressed bytes> <unused> +
-   +-------------------------------------+
-   | 0 | 1 | 2                        63 |
-   +-------------------------------------+
-   
-   where: U is one byte being the unit length of the tail line
-   C is one byte being the number of compressed bytes
-   */
+  // what gets encoded is the 2B unit difference between head and tail
+  i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_DupeShocoTail);
+  m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vUsageIncRecoded(pCol,2);
   
-  i8 i_FoundTail = iFindTail(m_pIntoNub,aShocoTail);
-  
-  if (C_UNKNOWN != i_FoundTail) {
-    
-    aIntoTail = m_pIntoNub->aGetTail(i_FoundTail);
-    
-    // what gets encoded is the unit difference between head and tail
-    i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_FoundTail);
-    
-    m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
-    
-    vUsageIncRecoded(pCol,2 );
-    
-    return true;
-  }
-
-  //MemLib::vWordDump(aShocoTail,sizeof(HeadLine));
-  vDebugPoint();
-
-  return false;
+  return true;
  }
 
 /*----------------------------------------------------------------------------*/
@@ -2304,7 +2276,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
                 nCompressed,
                 CN_ROWBUFFER);
   
-  // what gets encoded is the unit difference between head and tail
+  // what gets encoded is the 2B unit difference between head and tail
   i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
   m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
   
