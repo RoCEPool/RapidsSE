@@ -1852,6 +1852,8 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   i8 i_IntoTailRel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoShocoTail_Dupe);
   m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTailRel,MN_2B);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   // metadata remains the same
   RASSERT(MN_SHOCO_2B == m_aFromHead->w8_2B(pCol->iColumnNo()));
   
@@ -1902,33 +1904,33 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get From-Tail details
-  i8 i_FromTail = m_aFromHead->w8_2B(m_i_FromOffset);
-  TailLine* aFromShocoTail = m_pFromNub->aGetTail(i_FromTail);
+  i8 i_FromShocoTail = m_aFromHead->w8_2B(m_i_FromOffset);
+  TailLine* aFromShocoTail = m_pFromNub->aGetTail(i_FromShocoTail);
   i8 nCompressed = aFromShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // does ( <C><compressed> ) fit into the Into-Head?
-  i8 nAvailHeadBytes = sizeof(HeadLine) - m_i_IntoOffset;
+  // do the bytes ( <C><shoco.....> ) fit into the Into-Head ?
   i8 nNeedHeadBytes  = C_SHOCO_COMPRESSED_BYTES + nCompressed;
+  i8 nAvailHeadBytes = sizeof(HeadLine) - m_i_IntoOffset;  //! not variable head
   if (nNeedHeadBytes > nAvailHeadBytes)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // copy <compressed>, the shoco compressed bytes into the Into-Head
-  byte* aIntoCompressed = (byte*)m_aIntoHead + m_i_IntoOffset
-                                             + C_SHOCO_COMPRESSED_BYTES;
-  byte* aFromCompressed = (byte*)aFromShocoTail + C_SHOCO_COMPRESSED_OFFSET
-                                                + C_SHOCO_COMPRESSED_BYTES;
-  MemLib::vCopy(aIntoCompressed,aFromCompressed,nCompressed,CN_ROWCODER);
+  // copy <shoco.....>, the shoco compressed bytes into the Into-Head
+  byte* aIntoShoco = (byte*)m_aIntoHead + m_i_IntoOffset
+                                        + C_SHOCO_COMPRESSED_BYTES;
+  byte* aFromShoco = (byte*)aFromShocoTail + C_SHOCO_COMPRESSED_OFFSET
+                                           + C_SHOCO_COMPRESSED_BYTES;
+  MemLib::vCopy(aIntoShoco,aFromShoco,nCompressed,CN_ROWCODER);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // put <C>, the shoco compressed bytes into the head
+  // put <C>, the number of shoco compressed bytes into the Into-Head
   m_aIntoHead->v1B(m_i_IntoOffset,nCompressed);
   
-  // change the meta nibble for this column
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // metadata for this column get changed to MN_SHOCO_FIT
   vMetaNibble(pCol,MN_SHOCO_FIT);
   
   // we recoded: 1B <C> + <compressed>
