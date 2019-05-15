@@ -1807,7 +1807,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   /*
                - Head Line -                          - Tail Line -
    +================================+    +=====================================+
-   | meta-bits:     ,MN_SHOCO_2B,   |    | U | C | <compressed bytes> <unused> +
+   | meta-bits:     ,MN_SHOCO_2B,   |    | U | C | <compressed bytes> <unused> |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1821,11 +1821,11 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
           <compressed bytes> being the shoco compressed bytes
    */
 
-  // get tail
+  // get from tail
   i8 i_FromShocoTail = m_aFromHead->w8_2B(m_i_FromOffset);
   TailLine* aFromShocoTail = m_pFromNub->aGetTail(i_FromShocoTail);
   
-  // search for duplicate
+  // search for duplicate of from tail in the into-nub
   i8 i_DupeShocoTail = iFindTail(m_pIntoNub,aFromShocoTail);
   if (C_UNKNOWN == i_DupeShocoTail)
     return false;
@@ -1847,7 +1847,7 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   /*
               - Head Line -                          - Tail Line -
    +================================+    +=====================================+
-   | meta-bits:       ,MN_SHOCO_FIT |    | U | C | <compressed bytes> <unused> +
+   | meta-bits:       ,MN_SHOCO_FIT |    | U | C | <compressed bytes> <unused> |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1867,7 +1867,7 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // get tail and details
+  // get from tail and details
   i8 i_FromTail = m_aFromHead->w8_2B(m_i_FromOffset);
   TailLine* aFromShocoTail = m_pFromNub->aGetTail(i_FromTail);
   i8 nCompressed = aFromShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
@@ -1898,44 +1898,61 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* split shoco from nub across head and tail                                  */
+/* split last column shoco across head and tail                               */
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
 {
-  
-  TailLine* aIntoTail = nullptr;
-  
-  i8 i_Distance = m_aFromHead->w8_2B(m_i_FromOffset);
-  TailLine* aShocoTail = m_pFromNub->aGetTail(i_Distance);
-  
   /*
-   +=====================================+
-   |            Shoco Tail Line          +
-   +=====================================+
-   | U | C | <compressed bytes> <unused> +
-   +-------------------------------------+
-   | 0 | 1 | 2                        63 |
-   +-------------------------------------+
+          - Into Head Line -                        - From Tail Line -
+   +================================+    +=====================================+
+   | meta-bits:           ,MN_SHOCO |    | U | C | <compressed bytes.......... |
+   +================================+    +=====================================+
+   |                                |    | ....over hang> //unused//////////// |
+   +--------------------------------+    +-------------------------------------+
+   |                           [ST] |                                 final unit
+   +--------------------------------+
+
+          - Into Head Line -                      - Into Tail Line -
+   +================================+    +=====================================+
+   | meta-bits:     ,MN_SHOCO_SPLIT |    | U | <part b.......................> |
+   +================================+    +=====================================+
+   |                                |
+   +--------------------------------+
+   |        |[ST]| C | <part a....> |
+   +--------------------------------+
    
-   where: U is one byte being the unit length of the tail line
-   C is one byte being the number of compressed bytes
+   where: MN_SHOCO_2B is the meta-bits for the column
+          [ST] is 2 bytes being the index of the Shoco Tail Line
+          U is one byte being the unit length of the tail line
+          C is one byte being the number of compressed bytes
+          <compressed bytes> being the shoco compressed bytes
+          <part a> is the left-half of the split shoco
+          <part b> is the right-half of the split  shoco
    */
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
   if (! pCol->bIsLastColumn())
     return false;
-    
-  i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
-  //RASSERT(nCompressed <= 56);
-
-  // SPLIT case?
-
-  // calc the
-  i8 nTailOverHang = (nCompressed + 2) % sizeof(SpaceUnit);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // get from tail and details
+  i8 i_FromTail = m_aFromHead->w8_2B(m_i_FromOffset);
+  TailLine* aFromShocoTail = m_pFromNub->aGetTail(i_FromTail);
+  i8 nCompressed = aFromShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+ 
+  // calc the bytes which overhang into the final unit of the from tail
+  i8 nFromBytes = nCompressed + C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES;
+  i8 nFromOverHang = nFromBytes % sizeof(SpaceUnit);
+ 
+  // calc the available bytes in the head
   i8 nAvailHeadBytes = sizeof(HeadLine) - m_i_IntoOffset;
 
-  if ( ! (nTailOverHang > 0  && nTailOverHang <= nAvailHeadBytes) ||
-         (nTailOverHang == 0 && nAvailHeadBytes > 3) )
+  // can we split??
+  
+  if ( ! (nFromOverHang > 0  && nFromOverHang <= nAvailHeadBytes) ||
+         (nFromOverHang == 0 && nAvailHeadBytes > 3) )
     return false;
   
   //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
@@ -1944,7 +1961,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   //      hvRec->vPrintRow();
   //      vTrace("\n"_Stz);
   
-  i8 nShocoTailUnits = aShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
+  i8 nShocoTailUnits = aFromShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
   //RASSERT(nShocoTailUnits > 1);
   //MemLib::vWordDump(aShocoTail,nTailUnits * sizeof(SpaceUnit));
   
@@ -1954,23 +1971,23 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   i8 nPartB = nCompressed - nPartA;
   
   byte* ayInto = (byte*)m_aIntoHead + m_i_IntoOffset + 2;
-  byte* ayFrom = (byte*)aShocoTail + C_TAIL_UNITS_BYTES;
+  byte* ayFrom = (byte*)aFromShocoTail + C_TAIL_UNITS_BYTES;
   
   MemLib::vCopy(ayInto,ayFrom,nPartA,CN_ROWBUFFER);
   //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
   
-  RowNub::vCut(aShocoTail,nShocoTailUnits*sizeof(SpaceUnit),
+  RowNub::vCut(aFromShocoTail,nShocoTailUnits*sizeof(SpaceUnit),
                C_TAIL_UNITS_BYTES,nPartA);
   //MemLib::vWordDump(aShocoTail,nTailUnits * sizeof(SpaceUnit));
   
   i8 i_IntoTail = m_pIntoNub->iAllotTail(nPartB);
-  aIntoTail = m_pIntoNub->aGetTail(i_IntoTail);
+  TailLine* aIntoTail = m_pIntoNub->aGetTail(i_IntoTail);
   m_nTails++;
   m_nTailUnits += aIntoTail->w8_1B(0);
   
   //MemLib::vWordDump(aIntoTail,(1+nTailUnits) * sizeof(SpaceUnit));
   MemLib::vCopy((byte*)aIntoTail  + C_TAIL_UNITS_BYTES,
-                (byte*)aShocoTail + C_TAIL_UNITS_BYTES,
+                (byte*)aFromShocoTail + C_TAIL_UNITS_BYTES,
                 nPartB,
                 CN_ROWBUFFER);
   vUsageIncRecoded(pCol,1 + nCompressed);
