@@ -898,46 +898,45 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
   char caShoco[C_4KB];
   
   /*
-   +=====================================+
-   |            Shoco Tail Line          +
-   +=====================================+
-   | U | C | <compressed bytes> <unused> +
-   +-------------------------------------+
-   | 0 | 1 | 2                        63 |
-   +-------------------------------------+
+   +================================+    +=====================================+
+   |          meta bits             |    |            Shoco Tail Line          +
+   +================================+    +=====================================+
+   |                                |    | U | C | <compressed bytes> <unused> +
+   +--------------------------------+    +-------------------------------------+
+   |                           [ST] |
+   +--------------------------------+
    
-   where: U is one byte being the unit length of the tail line
-   C is one byte being the number of compressed bytes
+   where: [ST] is 2 bytes being the index of the Shoco Tail Line
+          U is one byte being the unit length of the tail line
+          C is one byte being the number of compressed bytes
+          <compressed bytes> being the shoco compressed bytes
    */
   
   // compress varchar into tail shoco cache line
   i8 nCompressed =
-  Compress::iIntoShoco((byte*)caShoco,         // into compressed destination
-                       sizeof(caShoco) - 1,    // destination size
-                       pSrcDatum->m_sVch.aChar(), // from uncompressed source
-                       pSrcDatum->m_nChars);      // source bytes
+    Compress::iIntoShoco((byte*)caShoco,            // into compressed destination
+                         sizeof(caShoco),           // destination size
+                         pSrcDatum->m_sVch.aChar(), // from uncompressed source
+                         pSrcDatum->m_nChars);      // source bytes
   
-  //! temporary limitation
-  //RASSERT(nCompressed < 56);
-  
-  // allot a tail cache line
-  i8 i_Shoco = m_pIntoNub->iAllotTail(2 + nCompressed);
-  TailLine* aShocoTail = m_pIntoNub->aGetTail(i_Shoco);
-  
-  // copy shoco into tail
-  char *aWithinTail = (char*)aShocoTail
-                        + C_SHOCO_COMPRESSED_BYTES + C_SHOCO_COMPRESSED_BYTES;
-  MemLib::vCopy(aWithinTail,caShoco,nCompressed,CN_ROWBUFFER);
-  
-  // set data for column value as the index of the shoco cache line
-  vDataPut(i_Shoco,2);
-  
-  vUsageIncEncoded(pCol,2 + 2 + nCompressed);
-  
+  // allot a tail line as per the diagram (U is put in by iAllotTail)
+  i8 nTailBytes  = C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES + nCompressed;
+  i8 i_ShocoTail = m_pIntoNub->iAllotTail(nTailBytes);
+  TailLine* aShocoTail = m_pIntoNub->aGetTail(i_ShocoTail);
+  ASSERT(m_pIntoNub->nBytes(aShocoTail->w8_1B(0)) >= nTailBytes);
+
   // set length of the compressed string encoded into tail shoco cache line
   aShocoTail->v1B(C_SHOCO_COMPRESSED_OFFSET,nCompressed);
   
+  // copy shoco into tail
+  char *aWithinTail = (char*)aShocoTail
+                        + C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES;
+  MemLib::vCopy(aWithinTail,caShoco,nCompressed,CN_ROWCODER);
   
+  // put index of shoco tail as the 2 data bytes (this is [ST] in the diagram)
+  vDataPut(i_ShocoTail,2);
+  
+  vUsageIncEncoded(pCol,2 + nTailBytes);
   
   //MemLib::vWordDump(aShocoLine,sizeof(HeadLine));
   
