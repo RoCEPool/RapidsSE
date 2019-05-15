@@ -897,14 +897,15 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
 {
   /*
    +================================+    +=====================================+
-   |          meta bits             |    |            Shoco Tail Line          +
+   | meta-bits:       ,MN_SHOCO_2B, |    |            Shoco Tail Line          +
    +================================+    +=====================================+
    |                                |    | U | C | <compressed bytes> <unused> +
    +--------------------------------+    +-------------------------------------+
    |                           [ST] |
    +--------------------------------+
    
-   where: [ST] is 2 bytes being the index of the Shoco Tail Line
+   where: MN_SHOCO_2B is the meta-bits for the column
+          [ST] is 2 bytes being the index of the Shoco Tail Line
           U is one byte being the unit length of the tail line
           C is one byte being the number of compressed bytes
           <compressed bytes> being the shoco compressed bytes
@@ -957,8 +958,22 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
 {
-  vDataPut(*(w8*)pSrcDatum->m_sVch.aChar(),
-           (eMN)pSrcDatum->m_nChars);
+  /*
+   +================================+
+   | meta-bits:             ,MN_nB, |
+   +================================+
+   |                                |
+   +--------------------------------+
+   |                  <small>       |
+   +--------------------------------+
+   
+   where: MN_nB is the meta-bits for the column
+          <small> is the 1..8 ascii bytes for the short varchar
+  */
+  
+  w8 wSmall = *(w8*)pSrcDatum->m_sVch.aChar();
+  
+  vDataPut(wSmall,(eMN)pSrcDatum->m_nChars);
   
   vUsageIncEncoded(pCol,pSrcDatum->m_nChars);
 }
