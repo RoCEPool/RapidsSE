@@ -1789,11 +1789,29 @@ void RowCoder::vRecodeVchShoco(Column* pCol)
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
 {
+  /*
+               - Head Line -                          - Tail Line -
+   +================================+    +=====================================+
+   | meta-bits:     ,MN_SHOCO_2B,   |    | U | C | <compressed bytes> <unused> +
+   +================================+    +=====================================+
+   |                                |
+   +--------------------------------+
+   |                    [ST]        |
+   +--------------------------------+
+   
+   where: MN_SHOCO_2B is the meta-bits for the column
+          [ST] is the 2B relative index of the Shoco Tail Line
+          U is one byte being the unit length of the tail line
+          C is one byte being the number of compressed bytes
+          <compressed bytes> being the shoco compressed bytes
+   */
+
+  // get tail
   i8 i_FromShocoTail = m_aFromHead->w8_2B(m_i_FromOffset);
   TailLine* aFromShocoTail = m_pFromNub->aGetTail(i_FromShocoTail);
   
+  // search for duplicate
   i8 i_DupeShocoTail = iFindTail(m_pIntoNub,aFromShocoTail);
-  
   if (C_UNKNOWN == i_DupeShocoTail)
     return false;
   
@@ -1807,56 +1825,60 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
  }
 
 /*----------------------------------------------------------------------------*/
-/* fold last shoco into head                                                  */
+/* fold last column shoco into head as a MN_SHOCO_FIT                         */
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeVchShocoFold(Column* pCol)
 {
-  
   /*
-   +=====================================+
-   |            Shoco Tail Line          +
-   +=====================================+
-   | U | C | <compressed bytes> <unused> +
-   +-------------------------------------+
-   | 0 | 1 | 2                        63 |
-   +-------------------------------------+
+              - Head Line -                          - Tail Line -
+   +================================+    +=====================================+
+   | meta-bits:       ,MN_SHOCO_FIT |    | U | C | <compressed bytes> <unused> +
+   +================================+    +=====================================+
+   |                                |
+   +--------------------------------+
+   |     | C | <compressed bytes>   |
+   +--------------------------------+
    
-   where: U is one byte being the unit length of the tail line
+   where: MN_SHOCO_2B is the meta-bits for the column
+          [ST] is 2 bytes being the index of the Shoco Tail Line
+          U is one byte being the unit length of the tail line
           C is one byte being the number of compressed bytes
+          <compressed bytes> being the shoco compressed bytes
    */
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // fold may only be done on last column
   if (! pCol->bIsLastColumn())
     return false;
     
-  // copy shoco tail line from nub
-  i8 i_Distance = m_aFromHead->w8_2B(m_i_FromOffset);
-  TailLine* aShocoTail = m_pFromNub->aGetTail(i_Distance);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
-  //RASSERT(nCompressed <= 56);
-  
+  // get tail and details
+  i8 i_FromTail = m_aFromHead->w8_2B(m_i_FromOffset);
+  TailLine* aFromShocoTail = m_pFromNub->aGetTail(i_FromTail);
+  i8 nCompressed = aFromShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+
+  // does the shoco ( C,<compressed bytes> ) fit into the head?
   i8 nAvailHeadBytes = sizeof(HeadLine) - m_i_IntoOffset;
-  
-  // FIT case?
   if (C_SHOCO_COMPRESSED_BYTES + nCompressed > nAvailHeadBytes)
     return false;
-    
-  vMetaNibble(pCol,MN_SHOCO_FIT);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // copy <compressed bytes> into the head
+  byte* aFromCompressed = (byte*)aFromShocoTail + C_SHOCO_COMPRESSED_OFFSET
+                                                + C_SHOCO_COMPRESSED_BYTES;
+  byte* aIntoCompressed = (byte*)m_aIntoHead + m_i_IntoOffset
+                                             + C_SHOCO_COMPRESSED_BYTES;
+  MemLib::vCopy(aIntoCompressed,aFromCompressed,nCompressed,CN_ROWCODER);
+
+  // put C, the shoco compressed length into the head
   m_aIntoHead->v1B(m_i_IntoOffset,nCompressed);
   
-  byte* aFrom = (byte*)aShocoTail
-                  + C_SHOCO_COMPRESSED_OFFSET
-                  + C_SHOCO_COMPRESSED_BYTES;
-  
-  byte* aInto = (byte*)m_aIntoHead + m_i_IntoOffset
-                                   + C_SHOCO_COMPRESSED_BYTES;
+  // change the meta nibble for this column
+  vMetaNibble(pCol,MN_SHOCO_FIT);
   
   vUsageIncRecoded(pCol,1 + nCompressed);
-  
-  MemLib::vCopy(aInto,aFrom,nCompressed,CN_ROWBUFFER);
-  
+
   return true;
 }
 
@@ -1972,7 +1994,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
-   |                           [ST] |
+   |                        [ST]    |
    +--------------------------------+
    
    where: MN_SHOCO_2B is the meta-bits for the column
@@ -1982,12 +2004,16 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
           <compressed bytes> being the shoco compressed bytes
    */
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   // get tail and details
   i8 i_FromTail = m_aFromHead->w8_2B(m_i_FromOffset);
   TailLine* aFromShocoTail = m_pFromNub->aGetTail(i_FromTail);
+  i8 nCompressed = aFromShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
 
   i8 nFromTailUnits = aFromShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
-  i8 nCompressed    = aFromShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // allot a tail line as per the diagram (U is put in by iAllotTail)
   i8 nTailBytes  = C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES + nCompressed;
