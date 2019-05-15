@@ -1780,7 +1780,6 @@ void RowCoder::vRecodeVch(Column* pCol)
     vUsageIncRecoded(pCol,m_eFromEncoding);
     return;
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1816,99 +1815,106 @@ void RowCoder::vRecodeVchShoco(Column* pCol)
     
     i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
     //RASSERT(nCompressed <= 56);
-    
+
     i8 nAvailHeadBytes = sizeof(HeadLine) - m_i_IntoOffset;
-    
-    // FIT case?
-    if (C_SHOCO_COMPRESSED_BYTES + nCompressed <= nAvailHeadBytes) {
-      
-      vMetaNibble(pCol,MN_SHOCO_FIT);
-      
-      m_aIntoHead->v1B(m_i_IntoOffset,nCompressed);
-      
-      byte* aFrom = (byte*)aShocoTail + C_SHOCO_COMPRESSED_OFFSET
-                                      + C_SHOCO_COMPRESSED_BYTES;
-      
-      byte* aInto = (byte*)m_aIntoHead + m_i_IntoOffset
-                                       + C_SHOCO_COMPRESSED_BYTES;
-      
-      vUsageIncRecoded(pCol,1 + nCompressed);
-      
-      MemLib::vCopy(aInto,aFrom,nCompressed,CN_ROWBUFFER);
-      
+//
+//    // FIT case?
+//    if (C_SHOCO_COMPRESSED_BYTES + nCompressed <= nAvailHeadBytes) {
+//
+//      vMetaNibble(pCol,MN_SHOCO_FIT);
+//
+//      m_aIntoHead->v1B(m_i_IntoOffset,nCompressed);
+//
+//      byte* aFrom = (byte*)aShocoTail + C_SHOCO_COMPRESSED_OFFSET
+//                                      + C_SHOCO_COMPRESSED_BYTES;
+//
+//      byte* aInto = (byte*)m_aIntoHead + m_i_IntoOffset
+//                                       + C_SHOCO_COMPRESSED_BYTES;
+//
+//      vUsageIncRecoded(pCol,1 + nCompressed);
+//
+//      MemLib::vCopy(aInto,aFrom,nCompressed,CN_ROWBUFFER);
+//
+//      return;
+//    }
+  
+    if (bRecodeVchShocoFold(pCol))
       return;
-    }
-    
-    // SPLIT case?
-    
-    // calc the
-    i8 nTailOverHang = (nCompressed + 2) % sizeof(SpaceUnit);
-    
-    if ( (nTailOverHang > 0  && nTailOverHang <= nAvailHeadBytes) ||
-        (nTailOverHang == 0 && nAvailHeadBytes > 3) ) {
-      
-      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-      //      HV_Rec hvRec;
-      //      RowCoder::vRecord(hvRec,aFromHead,pColVec);
-      //      hvRec->vPrintRow();
-      //      vTrace("\n"_Stz);
-      
-      i8 nShocoTailUnits = aShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
-      //RASSERT(nShocoTailUnits > 1);
-      //MemLib::vWordDump(aShocoTail,nTailUnits * sizeof(SpaceUnit));
-      
-      vMetaNibble(pCol,MN_SHOCO_SPLIT);
-      
-      i8 nPartA = nAvailHeadBytes - 2;
-      i8 nPartB = nCompressed - nPartA;
-      
-      byte* ayInto = (byte*)m_aIntoHead + m_i_IntoOffset + 2;
-      byte* ayFrom = (byte*)aShocoTail + C_TAIL_UNITS_BYTES;
-      
-      MemLib::vCopy(ayInto,ayFrom,nPartA,CN_ROWBUFFER);
-      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-      
-      RowNub::vCut(aShocoTail,nShocoTailUnits*sizeof(SpaceUnit),
-                   C_TAIL_UNITS_BYTES,nPartA);
-      //MemLib::vWordDump(aShocoTail,nTailUnits * sizeof(SpaceUnit));
-      
-      i8 i_IntoTail = m_pIntoNub->iAllotTail(nPartB);
-      aIntoTail = m_pIntoNub->aGetTail(i_IntoTail);
-      m_nTails++;
-      m_nTailUnits += aIntoTail->w8_1B(0);
 
-      //MemLib::vWordDump(aIntoTail,(1+nTailUnits) * sizeof(SpaceUnit));
-      MemLib::vCopy((byte*)aIntoTail  + C_TAIL_UNITS_BYTES,
-                    (byte*)aShocoTail + C_TAIL_UNITS_BYTES,
-                    nPartB,
-                    CN_ROWBUFFER);
-      vUsageIncRecoded(pCol,1 + nCompressed);
-      //MemLib::vWordDump(aIntoTail,(1+nTailUnits) * sizeof(SpaceUnit));
-      
-      // what gets encoded is the unit difference between head and tail
-      i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
-
-      m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
-
-      //RowCoder::vRecord(hvRec,aIntoHead,pColVec);
-      //hvRec->vPrintRow();
-      //vTrace("\n"_Stz);
-      
-      //MemLib::vWordDump(aIntoTail,nTailUnits * sizeof(TailLine));
-      //      if (0 == (nCompressed - (nFreeHeadBytes+1))) {
-      //        vHeadDump(aIntoHead,pColVec);
-      //        MemLib::vWordDump(aIntoTail,nNewTailUnits * sizeof(SpaceUnit));
-      //        int iDebug = 0;
-      //      }
-      //vHeadDump(aIntoHead,pColVec);
-      //xSplits.vAdd(nPartB,"\n"_Stz);
-      
+    
+//    // SPLIT case?
+//
+//    // calc the
+//    i8 nTailOverHang = (nCompressed + 2) % sizeof(SpaceUnit);
+//
+//    if ( (nTailOverHang > 0  && nTailOverHang <= nAvailHeadBytes) ||
+//        (nTailOverHang == 0 && nAvailHeadBytes > 3) ) {
+//
+//      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+//      //      HV_Rec hvRec;
+//      //      RowCoder::vRecord(hvRec,aFromHead,pColVec);
+//      //      hvRec->vPrintRow();
+//      //      vTrace("\n"_Stz);
+//
+//      i8 nShocoTailUnits = aShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
+//      //RASSERT(nShocoTailUnits > 1);
+//      //MemLib::vWordDump(aShocoTail,nTailUnits * sizeof(SpaceUnit));
+//
+//      vMetaNibble(pCol,MN_SHOCO_SPLIT);
+//
+//      i8 nPartA = nAvailHeadBytes - 2;
+//      i8 nPartB = nCompressed - nPartA;
+//
+//      byte* ayInto = (byte*)m_aIntoHead + m_i_IntoOffset + 2;
+//      byte* ayFrom = (byte*)aShocoTail + C_TAIL_UNITS_BYTES;
+//
+//      MemLib::vCopy(ayInto,ayFrom,nPartA,CN_ROWBUFFER);
+//      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+//
+//      RowNub::vCut(aShocoTail,nShocoTailUnits*sizeof(SpaceUnit),
+//                   C_TAIL_UNITS_BYTES,nPartA);
+//      //MemLib::vWordDump(aShocoTail,nTailUnits * sizeof(SpaceUnit));
+//
+//      i8 i_IntoTail = m_pIntoNub->iAllotTail(nPartB);
+//      aIntoTail = m_pIntoNub->aGetTail(i_IntoTail);
+//      m_nTails++;
+//      m_nTailUnits += aIntoTail->w8_1B(0);
+//
+//      //MemLib::vWordDump(aIntoTail,(1+nTailUnits) * sizeof(SpaceUnit));
+//      MemLib::vCopy((byte*)aIntoTail  + C_TAIL_UNITS_BYTES,
+//                    (byte*)aShocoTail + C_TAIL_UNITS_BYTES,
+//                    nPartB,
+//                    CN_ROWBUFFER);
+//      vUsageIncRecoded(pCol,1 + nCompressed);
+//      //MemLib::vWordDump(aIntoTail,(1+nTailUnits) * sizeof(SpaceUnit));
+//
+//      // what gets encoded is the unit difference between head and tail
+//      i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
+//
+//      m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
+//
+//      //RowCoder::vRecord(hvRec,aIntoHead,pColVec);
+//      //hvRec->vPrintRow();
+//      //vTrace("\n"_Stz);
+//
+//      //MemLib::vWordDump(aIntoTail,nTailUnits * sizeof(TailLine));
+//      //      if (0 == (nCompressed - (nFreeHeadBytes+1))) {
+//      //        vHeadDump(aIntoHead,pColVec);
+//      //        MemLib::vWordDump(aIntoTail,nNewTailUnits * sizeof(SpaceUnit));
+//      //        int iDebug = 0;
+//      //      }
+//      //vHeadDump(aIntoHead,pColVec);
+//      //xSplits.vAdd(nPartB,"\n"_Stz);
+//
+//      return;
+//    }
+//
+//    // fall thru
+//    //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+//    //MemLib::vWordDump(aShocoTail,sizeof(HeadLine));
+    
+    if (bRecodeVchShocoSplit(pCol))
       return;
-    }
-    
-    // fall thru
-    //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-    //MemLib::vWordDump(aShocoTail,sizeof(HeadLine));
     
   }
 #endif
@@ -1916,100 +1922,73 @@ void RowCoder::vRecodeVchShoco(Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #ifdef WITH_SHOCO_DUPLICATES
-  i8 i_FoundTail = iFindTail(m_pIntoNub,aShocoTail);
-  
-  if (C_UNKNOWN != i_FoundTail) {
-    
-    aIntoTail = m_pIntoNub->aGetTail(i_FoundTail);
-    
-    // what gets encoded is the unit difference between head and tail
-    i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_FoundTail);
-
-    m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
-
-    vUsageIncRecoded(pCol,2 );
-
+//  i8 i_FoundTail = iFindTail(m_pIntoNub,aShocoTail);
+//
+//  if (C_UNKNOWN != i_FoundTail) {
+//
+//    aIntoTail = m_pIntoNub->aGetTail(i_FoundTail);
+//
+//    // what gets encoded is the unit difference between head and tail
+//    i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_FoundTail);
+//
+//    m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
+//
+//    vUsageIncRecoded(pCol,2 );
+//
+//    return;
+//  }
+//  else {
+//    //MemLib::vWordDump(aShocoTail,sizeof(HeadLine));
+//    vDebugPoint();
+//  }
+  if (bRecodeVchShocoDupe(pCol))
     return;
-  }
-  else {
-    //MemLib::vWordDump(aShocoTail,sizeof(HeadLine));
-    vDebugPoint();
-  }
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy fromTail to intoTail
   
-  i8 nTailUnits = aShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
-  i8 nShocoBytes = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
-  
-  i8 i_IntoTail = m_pIntoNub->iAllotTail(2 + nShocoBytes);
-  aIntoTail = m_pIntoNub->aGetTail(i_IntoTail);
-  m_nTails++;
-  m_nTailUnits += aIntoTail->w8_1B(0);
+//  i8 nTailUnits = aShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
+//  i8 nShocoBytes = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+//
+//  i8 i_IntoTail = m_pIntoNub->iAllotTail(2 + nShocoBytes);
+//  aIntoTail = m_pIntoNub->aGetTail(i_IntoTail);
+//  m_nTails++;
+//  m_nTailUnits += aIntoTail->w8_1B(0);
+//
+//  MemLib::vCopy(aIntoTail,aShocoTail,
+//                nTailUnits*sizeof(SpaceUnit),CN_ROWBUFFER);
+//
+//  // what gets encoded is the unit difference between head and tail
+//  i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
+//
+//  m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
+//
+//  vUsageIncRecoded(pCol,2 + 2 + nShocoBytes);
 
-  MemLib::vCopy(aIntoTail,aShocoTail,
-                nTailUnits*sizeof(SpaceUnit),CN_ROWBUFFER);
-  
-  // what gets encoded is the unit difference between head and tail
-  i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
-
-  m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
-
-  vUsageIncRecoded(pCol,2 + 2 + nShocoBytes);
-
-  return;
+  vRecodeVchShocoTail(pCol);
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy an encoded row from one tray to another                               */
+/* search and recode a duplicate shoco tail                                   */
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
 {
-  static Peruse xSplits("Splits"_Stz);
+  i8 i_FromShocoTail = m_aFromHead->w8_2B(m_i_FromOffset);
+  TailLine* aFromShocoTail = m_pFromNub->aGetTail(i_FromShocoTail);
   
-  TailLine* aIntoTail = nullptr;
+  i8 i_DupeShocoTail = iFindTail(m_pIntoNub,aFromShocoTail);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy shoco tail line from nub
-  i8 i_Distance = m_aFromHead->w8_2B(m_i_FromOffset);
-  TailLine* aShocoTail = m_pFromNub->aGetTail(i_Distance);
+  if (C_UNKNOWN == i_DupeShocoTail)
+    return false;
   
-  /*
-   +=====================================+
-   |            Shoco Tail Line          +
-   +=====================================+
-   | U | C | <compressed bytes> <unused> +
-   +-------------------------------------+
-   | 0 | 1 | 2                        63 |
-   +-------------------------------------+
-   
-   where: U is one byte being the unit length of the tail line
-   C is one byte being the number of compressed bytes
-   */
+  // what gets encoded is the 2B unit difference between head and tail
+  i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_DupeShocoTail);
+  m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vUsageIncRecoded(pCol,2);
   
-  i8 i_FoundTail = iFindTail(m_pIntoNub,aShocoTail);
-  
-  if (C_UNKNOWN != i_FoundTail) {
-    
-    aIntoTail = m_pIntoNub->aGetTail(i_FoundTail);
-    
-    // what gets encoded is the unit difference between head and tail
-    i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_FoundTail);
-    
-    m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
-    
-    vUsageIncRecoded(pCol,2 );
-    
-    return true;
-  }
-
-  //MemLib::vWordDump(aShocoTail,sizeof(HeadLine));
-  vDebugPoint();
-
-  return false;
+  return true;
  }
 
 /*----------------------------------------------------------------------------*/
@@ -2018,13 +1997,6 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
 bool RowCoder::bRecodeVchShocoFold(Column* pCol)
 {
   
-  TailLine* aIntoTail = nullptr;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy shoco tail line from nub
-  i8 i_Distance = m_aFromHead->w8_2B(m_i_FromOffset);
-  TailLine* aShocoTail = m_pFromNub->aGetTail(i_Distance);
-  
   /*
    +=====================================+
    |            Shoco Tail Line          +
@@ -2035,113 +2007,42 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
    +-------------------------------------+
    
    where: U is one byte being the unit length of the tail line
-   C is one byte being the number of compressed bytes
+          C is one byte being the number of compressed bytes
    */
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if (pCol->bIsLastColumn()) {
-    
-    i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
-    //RASSERT(nCompressed <= 56);
-    
-    i8 nAvailHeadBytes = sizeof(HeadLine) - m_i_IntoOffset;
-    
-    // FIT case?
-    if (C_SHOCO_COMPRESSED_BYTES + nCompressed <= nAvailHeadBytes) {
-      
-      vMetaNibble(pCol,MN_SHOCO_FIT);
-      
-      m_aIntoHead->v1B(m_i_IntoOffset,nCompressed);
-      
-      byte* aFrom = (byte*)aShocoTail + C_SHOCO_COMPRESSED_OFFSET
-      + C_SHOCO_COMPRESSED_BYTES;
-      
-      byte* aInto = (byte*)m_aIntoHead + m_i_IntoOffset
-      + C_SHOCO_COMPRESSED_BYTES;
-      
-      vUsageIncRecoded(pCol,1 + nCompressed);
-      
-      MemLib::vCopy(aInto,aFrom,nCompressed,CN_ROWBUFFER);
-      
-      return true;
-    }
-    
-    // SPLIT case?
-    
-    // calc the
-    i8 nTailOverHang = (nCompressed + 2) % sizeof(SpaceUnit);
-    
-    if ( (nTailOverHang > 0  && nTailOverHang <= nAvailHeadBytes) ||
-        (nTailOverHang == 0 && nAvailHeadBytes > 3) ) {
-      
-      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-      //      HV_Rec hvRec;
-      //      RowCoder::vRecord(hvRec,aFromHead,pColVec);
-      //      hvRec->vPrintRow();
-      //      vTrace("\n"_Stz);
-      
-      i8 nShocoTailUnits = aShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
-      //RASSERT(nShocoTailUnits > 1);
-      //MemLib::vWordDump(aShocoTail,nTailUnits * sizeof(SpaceUnit));
-      
-      vMetaNibble(pCol,MN_SHOCO_SPLIT);
-      
-      i8 nPartA = nAvailHeadBytes - 2;
-      i8 nPartB = nCompressed - nPartA;
-      
-      byte* ayInto = (byte*)m_aIntoHead + m_i_IntoOffset + 2;
-      byte* ayFrom = (byte*)aShocoTail + C_TAIL_UNITS_BYTES;
-      
-      MemLib::vCopy(ayInto,ayFrom,nPartA,CN_ROWBUFFER);
-      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-      
-      RowNub::vCut(aShocoTail,nShocoTailUnits*sizeof(SpaceUnit),
-                   C_TAIL_UNITS_BYTES,nPartA);
-      //MemLib::vWordDump(aShocoTail,nTailUnits * sizeof(SpaceUnit));
-      
-      i8 i_IntoTail = m_pIntoNub->iAllotTail(nPartB);
-      aIntoTail = m_pIntoNub->aGetTail(i_IntoTail);
-      m_nTails++;
-      m_nTailUnits += aIntoTail->w8_1B(0);
-      
-      //MemLib::vWordDump(aIntoTail,(1+nTailUnits) * sizeof(SpaceUnit));
-      MemLib::vCopy((byte*)aIntoTail  + C_TAIL_UNITS_BYTES,
-                    (byte*)aShocoTail + C_TAIL_UNITS_BYTES,
-                    nPartB,
-                    CN_ROWBUFFER);
-      vUsageIncRecoded(pCol,1 + nCompressed);
-      //MemLib::vWordDump(aIntoTail,(1+nTailUnits) * sizeof(SpaceUnit));
-      
-      // what gets encoded is the unit difference between head and tail
-      i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
-      
-      m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
-      
-      //RowCoder::vRecord(hvRec,aIntoHead,pColVec);
-      //hvRec->vPrintRow();
-      //vTrace("\n"_Stz);
-      
-      //MemLib::vWordDump(aIntoTail,nTailUnits * sizeof(TailLine));
-      //      if (0 == (nCompressed - (nFreeHeadBytes+1))) {
-      //        vHeadDump(aIntoHead,pColVec);
-      //        MemLib::vWordDump(aIntoTail,nNewTailUnits * sizeof(SpaceUnit));
-      //        int iDebug = 0;
-      //      }
-      //vHeadDump(aIntoHead,pColVec);
-      //xSplits.vAdd(nPartB,"\n"_Stz);
-      
-      return true;
-    }
-    
-    // fall thru
-    //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-    //MemLib::vWordDump(aShocoTail,sizeof(HeadLine));
-    
+  if (! pCol->bIsLastColumn())
     return false;
-  }
+    
+  // copy shoco tail line from nub
+  i8 i_Distance = m_aFromHead->w8_2B(m_i_FromOffset);
+  TailLine* aShocoTail = m_pFromNub->aGetTail(i_Distance);
   
-  return false;
+  i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+  //RASSERT(nCompressed <= 56);
   
+  i8 nAvailHeadBytes = sizeof(HeadLine) - m_i_IntoOffset;
+  
+  // FIT case?
+  if (C_SHOCO_COMPRESSED_BYTES + nCompressed > nAvailHeadBytes)
+    return false;
+    
+  vMetaNibble(pCol,MN_SHOCO_FIT);
+  
+  m_aIntoHead->v1B(m_i_IntoOffset,nCompressed);
+  
+  byte* aFrom = (byte*)aShocoTail
+                  + C_SHOCO_COMPRESSED_OFFSET
+                  + C_SHOCO_COMPRESSED_BYTES;
+  
+  byte* aInto = (byte*)m_aIntoHead + m_i_IntoOffset
+                                   + C_SHOCO_COMPRESSED_BYTES;
+  
+  vUsageIncRecoded(pCol,1 + nCompressed);
+  
+  MemLib::vCopy(aInto,aFrom,nCompressed,CN_ROWBUFFER);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2152,8 +2053,6 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   
   TailLine* aIntoTail = nullptr;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy shoco tail line from nub
   i8 i_Distance = m_aFromHead->w8_2B(m_i_FromOffset);
   TailLine* aShocoTail = m_pFromNub->aGetTail(i_Distance);
   
@@ -2171,156 +2070,132 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
    */
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if (pCol->bIsLastColumn()) {
-    
-    i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
-    //RASSERT(nCompressed <= 56);
-    
-    i8 nAvailHeadBytes = sizeof(HeadLine) - m_i_IntoOffset;
-    
-    // FIT case?
-    if (C_SHOCO_COMPRESSED_BYTES + nCompressed <= nAvailHeadBytes) {
-      
-      vMetaNibble(pCol,MN_SHOCO_FIT);
-      
-      m_aIntoHead->v1B(m_i_IntoOffset,nCompressed);
-      
-      byte* aFrom = (byte*)aShocoTail + C_SHOCO_COMPRESSED_OFFSET
-      + C_SHOCO_COMPRESSED_BYTES;
-      
-      byte* aInto = (byte*)m_aIntoHead + m_i_IntoOffset
-      + C_SHOCO_COMPRESSED_BYTES;
-      
-      vUsageIncRecoded(pCol,1 + nCompressed);
-      
-      MemLib::vCopy(aInto,aFrom,nCompressed,CN_ROWBUFFER);
-      
-      return true;
-    }
-    
-    // SPLIT case?
-    
-    // calc the
-    i8 nTailOverHang = (nCompressed + 2) % sizeof(SpaceUnit);
-    
-    if ( (nTailOverHang > 0  && nTailOverHang <= nAvailHeadBytes) ||
-        (nTailOverHang == 0 && nAvailHeadBytes > 3) ) {
-      
-      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-      //      HV_Rec hvRec;
-      //      RowCoder::vRecord(hvRec,aFromHead,pColVec);
-      //      hvRec->vPrintRow();
-      //      vTrace("\n"_Stz);
-      
-      i8 nShocoTailUnits = aShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
-      //RASSERT(nShocoTailUnits > 1);
-      //MemLib::vWordDump(aShocoTail,nTailUnits * sizeof(SpaceUnit));
-      
-      vMetaNibble(pCol,MN_SHOCO_SPLIT);
-      
-      i8 nPartA = nAvailHeadBytes - 2;
-      i8 nPartB = nCompressed - nPartA;
-      
-      byte* ayInto = (byte*)m_aIntoHead + m_i_IntoOffset + 2;
-      byte* ayFrom = (byte*)aShocoTail + C_TAIL_UNITS_BYTES;
-      
-      MemLib::vCopy(ayInto,ayFrom,nPartA,CN_ROWBUFFER);
-      //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-      
-      RowNub::vCut(aShocoTail,nShocoTailUnits*sizeof(SpaceUnit),
-                   C_TAIL_UNITS_BYTES,nPartA);
-      //MemLib::vWordDump(aShocoTail,nTailUnits * sizeof(SpaceUnit));
-      
-      i8 i_IntoTail = m_pIntoNub->iAllotTail(nPartB);
-      aIntoTail = m_pIntoNub->aGetTail(i_IntoTail);
-      m_nTails++;
-      m_nTailUnits += aIntoTail->w8_1B(0);
-      
-      //MemLib::vWordDump(aIntoTail,(1+nTailUnits) * sizeof(SpaceUnit));
-      MemLib::vCopy((byte*)aIntoTail  + C_TAIL_UNITS_BYTES,
-                    (byte*)aShocoTail + C_TAIL_UNITS_BYTES,
-                    nPartB,
-                    CN_ROWBUFFER);
-      vUsageIncRecoded(pCol,1 + nCompressed);
-      //MemLib::vWordDump(aIntoTail,(1+nTailUnits) * sizeof(SpaceUnit));
-      
-      // what gets encoded is the unit difference between head and tail
-      i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
-      
-      m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
-      
-      //RowCoder::vRecord(hvRec,aIntoHead,pColVec);
-      //hvRec->vPrintRow();
-      //vTrace("\n"_Stz);
-      
-      //MemLib::vWordDump(aIntoTail,nTailUnits * sizeof(TailLine));
-      //      if (0 == (nCompressed - (nFreeHeadBytes+1))) {
-      //        vHeadDump(aIntoHead,pColVec);
-      //        MemLib::vWordDump(aIntoTail,nNewTailUnits * sizeof(SpaceUnit));
-      //        int iDebug = 0;
-      //      }
-      //vHeadDump(aIntoHead,pColVec);
-      //xSplits.vAdd(nPartB,"\n"_Stz);
-      
-      return true;
-    }
-    
-    // fall thru
-    //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
-    //MemLib::vWordDump(aShocoTail,sizeof(HeadLine));
-    
+  if (! pCol->bIsLastColumn())
     return false;
-  }
-  
-  return false;
-  
-}
+    
+  i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+  //RASSERT(nCompressed <= 56);
 
-/*----------------------------------------------------------------------------*/
-/* copy an encoded row from one tray to another                               */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeVchShocoTail(Column* pCol)
-{
-  TailLine* aIntoTail = nullptr;
+  // SPLIT case?
+
+  // calc the
+  i8 nTailOverHang = (nCompressed + 2) % sizeof(SpaceUnit);
+  i8 nAvailHeadBytes = sizeof(HeadLine) - m_i_IntoOffset;
+
+  if ( ! (nTailOverHang > 0  && nTailOverHang <= nAvailHeadBytes) ||
+         (nTailOverHang == 0 && nAvailHeadBytes > 3) )
+    return false;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy shoco tail line from nub
-  i8 i_Distance = m_aFromHead->w8_2B(m_i_FromOffset);
-  TailLine* aShocoTail = m_pFromNub->aGetTail(i_Distance);
+  //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+  //      HV_Rec hvRec;
+  //      RowCoder::vRecord(hvRec,aFromHead,pColVec);
+  //      hvRec->vPrintRow();
+  //      vTrace("\n"_Stz);
   
-  /*
-   +=====================================+
-   |            Shoco Tail Line          +
-   +=====================================+
-   | U | C | <compressed bytes> <unused> +
-   +-------------------------------------+
-   | 0 | 1 | 2                        63 |
-   +-------------------------------------+
-   
-   where: U is one byte being the unit length of the tail line
-   C is one byte being the number of compressed bytes
-   */
+  i8 nShocoTailUnits = aShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
+  //RASSERT(nShocoTailUnits > 1);
+  //MemLib::vWordDump(aShocoTail,nTailUnits * sizeof(SpaceUnit));
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy fromTail to intoTail
+  vMetaNibble(pCol,MN_SHOCO_SPLIT);
   
-  i8 nTailUnits = aShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
-  i8 nShocoBytes = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+  i8 nPartA = nAvailHeadBytes - 2;
+  i8 nPartB = nCompressed - nPartA;
   
-  i8 i_IntoTail = m_pIntoNub->iAllotTail(2 + nShocoBytes);
+  byte* ayInto = (byte*)m_aIntoHead + m_i_IntoOffset + 2;
+  byte* ayFrom = (byte*)aShocoTail + C_TAIL_UNITS_BYTES;
+  
+  MemLib::vCopy(ayInto,ayFrom,nPartA,CN_ROWBUFFER);
+  //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+  
+  RowNub::vCut(aShocoTail,nShocoTailUnits*sizeof(SpaceUnit),
+               C_TAIL_UNITS_BYTES,nPartA);
+  //MemLib::vWordDump(aShocoTail,nTailUnits * sizeof(SpaceUnit));
+  
+  i8 i_IntoTail = m_pIntoNub->iAllotTail(nPartB);
   aIntoTail = m_pIntoNub->aGetTail(i_IntoTail);
   m_nTails++;
   m_nTailUnits += aIntoTail->w8_1B(0);
   
-  MemLib::vCopy(aIntoTail,aShocoTail,
-                nTailUnits*sizeof(SpaceUnit),CN_ROWBUFFER);
+  //MemLib::vWordDump(aIntoTail,(1+nTailUnits) * sizeof(SpaceUnit));
+  MemLib::vCopy((byte*)aIntoTail  + C_TAIL_UNITS_BYTES,
+                (byte*)aShocoTail + C_TAIL_UNITS_BYTES,
+                nPartB,
+                CN_ROWBUFFER);
+  vUsageIncRecoded(pCol,1 + nCompressed);
+  //MemLib::vWordDump(aIntoTail,(1+nTailUnits) * sizeof(SpaceUnit));
   
   // what gets encoded is the unit difference between head and tail
   i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
   
   m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
   
-  vUsageIncRecoded(pCol,2 + 2 + nShocoBytes);
+  //RowCoder::vRecord(hvRec,aIntoHead,pColVec);
+  //hvRec->vPrintRow();
+  //vTrace("\n"_Stz);
+  
+  //MemLib::vWordDump(aIntoTail,nTailUnits * sizeof(TailLine));
+  //      if (0 == (nCompressed - (nFreeHeadBytes+1))) {
+  //        vHeadDump(aIntoHead,pColVec);
+  //        MemLib::vWordDump(aIntoTail,nNewTailUnits * sizeof(SpaceUnit));
+  //        int iDebug = 0;
+  //      }
+  //vHeadDump(aIntoHead,pColVec);
+  //xSplits.vAdd(nPartB,"\n"_Stz);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy shoco tail line from nub                                             */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecodeVchShocoTail(Column* pCol)
+{
+  /*
+              - Head Line -                          - Tail Line -
+   +================================+    +=====================================+
+   | meta-bits:       ,MN_SHOCO_2B, |    | U | C | <compressed bytes> <unused> +
+   +================================+    +=====================================+
+   |                                |
+   +--------------------------------+
+   |                           [ST] |
+   +--------------------------------+
+   
+   where: MN_SHOCO_2B is the meta-bits for the column
+          [ST] is 2 bytes being the index of the Shoco Tail Line
+          U is one byte being the unit length of the tail line
+          C is one byte being the number of compressed bytes
+          <compressed bytes> being the shoco compressed bytes
+   */
+  
+  // get tail and details
+  i8 i_FromTail = m_aFromHead->w8_2B(m_i_FromOffset);
+  TailLine* aFromShocoTail = m_pFromNub->aGetTail(i_FromTail);
+
+  i8 nFromTailUnits = aFromShocoTail->w8_1B(C_TAIL_UNITS_OFFSET);
+  i8 nCompressed    = aFromShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+  
+  // allot a tail line as per the diagram (U is put in by iAllotTail)
+  i8 nTailBytes  = C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES + nCompressed;
+  i8 i_IntoTail = m_pIntoNub->iAllotTail(nTailBytes);
+  TailLine* aIntoShocoTail = m_pIntoNub->aGetTail(i_IntoTail);
+  
+  // set length of compressed string into tail (this is C in the diagram)
+  aIntoShocoTail->v1B(C_SHOCO_COMPRESSED_OFFSET,nCompressed);
+
+  // copy shoco into tail (this is <compressed bytes> in the diagram)
+  MemLib::vCopy((char*)aIntoShocoTail + C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES,
+                (char*)aFromShocoTail + C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES,
+                nCompressed,
+                CN_ROWBUFFER);
+  
+  // what gets encoded is the 2B unit difference between head and tail
+  i8 i_TailDistance = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
+  m_aIntoHead->vPut(m_i_IntoOffset,i_TailDistance,MN_2B);
+  
+  vUsageIncRecoded(pCol,2 + 2 + nCompressed);
+
+  m_nTails++;
+  m_nTailUnits += nFromTailUnits;
 }
 
 /*----------------------------------------------------------------------------*/
