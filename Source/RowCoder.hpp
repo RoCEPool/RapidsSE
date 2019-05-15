@@ -147,8 +147,9 @@ namespace Data
     void vRecodeTsp(Column* pCol);
     void vRecodeVch(Column* pCol);
     void vRecodeVchShoco(Column* pCol);
-    void vRecodeVchShocoDupe(Column* pCol);
-    void vRecodeVchShocoFold(Column* pCol);
+    bool bRecodeVchShocoDupe(Column* pCol);
+    bool bRecodeVchShocoFold(Column* pCol);
+    bool bRecodeVchShocoSplit(Column* pCol);
     void vRecodeVchShocoTail(Column* pCol);
 
     void vUsageIncEncoded(Column* pCol, i8 nBytes);
