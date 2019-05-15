@@ -195,7 +195,15 @@ namespace Data
                                //   head: 2B->tail, 1B=len, part-shoco
                                //   tail: has remaining shoco
 
-  /* 43 */ MB_OVER_2B,         // 2B in data area indicating overflow tail
+  /* 43 */ MB_TWOS_1B,         // data area contains 1B two's complement datum
+  /* 44 */ MB_TWOS_2B,         // data area contains 2B two's complement datum
+  /* 45 */ MB_TWOS_3B,         // data area contains 3B two's complement datum
+  /* 46 */ MB_TWOS_4B,         // data area contains 4B two's complement datum
+  /* 47 */ MB_TWOS_5B,         // data area contains 5B two's complement datum
+  /* 48 */ MB_TWOS_6B,         // data area contains 6B two's complement datum
+  /* 49 */ MB_TWOS_7B,         // data area contains 7B two's complement datum
+  
+  /* 50 */ MB_OVERFLOW_2B,     // 2B in data area indicating overflow tail
   };
   
   static Stz* aMB[]
@@ -243,7 +251,14 @@ namespace Data
   /* 40 */ "MB_SHOCO_FIT_1L"_Stz,
   /* 41 */ "MB_SHOCO_2T"_Stz,
   /* 42 */ "MB_SHOCO_SPLIT_2T1L"_Stz,
-  /* 43 */ "MB_OVER_2B"_Stz,
+  /* 43 */ "MB_TWOS_1B"_Stz,
+  /* 44 */ "MB_TWOS_2B"_Stz,
+  /* 45 */ "MB_TWOS_3B"_Stz,
+  /* 46 */ "MB_TWOS_4B"_Stz,
+  /* 47 */ "MB_TWOS_5B"_Stz,
+  /* 48 */ "MB_TWOS_6B"_Stz,
+  /* 49 */ "MB_TWOS_7B"_Stz,
+  /* 50 */ "MB_OVERFLOW_2B"_Stz,
   };
   
   //! we'll start with 3 era's and see what happens
