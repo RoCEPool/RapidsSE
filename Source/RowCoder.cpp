@@ -1848,16 +1848,16 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // data gets recoded as the 2B unit difference between Into-Head and Into-Tail
-  i8 i_IntoTailRel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoShocoTail_Dupe);
-  m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTailRel,MN_2B);
+  // data gets recoded as 2B [ST] unit difference between Into-Head and -Tail
+  i8 i_IntoTail_Rel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoShocoTail_Dupe);
+  m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MN_2B);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // metadata remains the same
   RASSERT(MN_SHOCO_2B == m_aFromHead->w8_2B(pCol->iColumnNo()));
   
-  // we recoded the 2B [ST]
+  // we recoded: 2B [ST]
   vUsageIncRecoded(pCol,2);
   
   return true;
@@ -1918,6 +1918,9 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  // put <C>, the number of shoco compressed bytes into the Into-Head
+  m_aIntoHead->v1B(m_i_IntoOffset,nCompressed);
+  
   // copy <shoco.....>, the shoco compressed bytes into the Into-Head
   byte* aIntoShoco = (byte*)m_aIntoHead + m_i_IntoOffset
                                         + C_SHOCO_COMPRESSED_BYTES;
@@ -1925,9 +1928,6 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
                                            + C_SHOCO_COMPRESSED_BYTES;
   MemLib::vCopy(aIntoShoco,aFromShoco,nCompressed,CN_ROWCODER);
 
-  // put <C>, the number of shoco compressed bytes into the Into-Head
-  m_aIntoHead->v1B(m_i_IntoOffset,nCompressed);
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // metadata for this column get changed to MN_SHOCO_FIT
@@ -2106,23 +2106,28 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   i8 i_IntoShocoTail = m_pIntoNub->iAllotTail(nIntoTailBytes);
   TailLine* aIntoShocoTail = m_pIntoNub->aGetTail(i_IntoShocoTail);
   
-  // set <C>, the length of compressed string in Into-Tail
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // set <C>, the number of shoco compressed bytes into the Into-Head
   aIntoShocoTail->v1B(C_SHOCO_COMPRESSED_OFFSET,nCompressed);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // copy <compressed bytes>, the shoco COMPRESSED bytes into Into-Tail
-  char* aIntoCompressed = (char*)aIntoShocoTail + C_TAIL_UNITS_BYTES
-                                                + C_SHOCO_COMPRESSED_BYTES;
-  char* aFromCompressed = (char*)aFromShocoTail + C_TAIL_UNITS_BYTES
-                                                + C_SHOCO_COMPRESSED_BYTES;
-  MemLib::vCopy(aIntoCompressed,aFromCompressed,nCompressed,CN_ROWCODER);
+  // copy <shoco.....>, the shoco compressed bytes into the Into-Tail
+  byte* aIntoShoco = (byte*)aIntoShocoTail + C_TAIL_UNITS_BYTES
+                                           + C_SHOCO_COMPRESSED_BYTES;
+  byte* aFromShoco = (byte*)aFromShocoTail + C_TAIL_UNITS_BYTES
+                                           + C_SHOCO_COMPRESSED_BYTES;
+  MemLib::vCopy(aIntoShoco,aFromShoco,nCompressed,CN_ROWCODER);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // what gets put at [ST] is the 2B unit difference between head and tail
-  i8 i_ShocoTailRel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoShocoTail);
-  m_aIntoHead->vPut(m_i_IntoOffset,i_ShocoTailRel,MN_2B);
+  // data gets recoded as 2B [ST] unit difference between Into-Head and -Tail
+  i8 i_IntoTail_Rel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoShocoTail);
+  m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MN_2B);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // metadata remains the same
+  RASSERT(MN_SHOCO_2B == m_aFromHead->w8_2B(pCol->iColumnNo()));
   
   // we recoded: 2B [ST] + Into-Tail
   vUsageIncRecoded(pCol,2 + nIntoTailBytes);
