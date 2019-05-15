@@ -1787,7 +1787,7 @@ void RowCoder::vRecodeVch(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeVchShoco(Column* pCol)
 {
-   if (bRecodeVchShocoFold(pCol))
+  if (bRecodeVchShocoFold(pCol))
     return;
 
   if (bRecodeVchShocoSplit(pCol))
@@ -1836,20 +1836,24 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get From-Tail details
-  i8 i_FromShocoTail = m_aFromHead->w8_2B(m_i_FromOffset);
-  TailLine* aFromShocoTail = m_pFromNub->aGetTail(i_FromShocoTail);
+  i8 i_FromTail = m_aFromHead->w8_2B(m_i_FromOffset);
+  TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // search for a possible duplicate of the From-Tail in the into-nub
-  i8 i_IntoShocoTail_Dupe = iFindTail(m_pIntoNub,aFromShocoTail);
-  if (C_UNKNOWN == i_IntoShocoTail_Dupe)
+  // search for a possible duplicate of the From-Tail in the Into-Nub
+  i8 i_IntoTail_Dup = iFindTail(m_pIntoNub,aFromTail);
+  if (C_UNKNOWN == i_IntoTail_Dup)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // data gets recoded as 2B [IT] unit difference between Into-Head and -Tail
-  i8 i_IntoTail_Rel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoShocoTail_Dupe);
+  // column data gets recoded as 2B [IT] unit diff between Into-Head and -Tail
+  // +--------------------------------+
+  // |                    [IT]        |
+  // +--------------------------------+
+  //                      ^
+  i8 i_IntoTail_Rel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail_Dup);
   m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MN_2B);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1858,7 +1862,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   RASSERT(MN_SHOCO_2B == m_aFromHead->w8_1N(pCol->iColumnNo()));
   
   // we recoded: 2B [IT]
-  vUsageIncRecoded(pCol,2);
+  vUsageIncRecoded(pCol,MN_2B);
   
   return true;
  }
@@ -2189,7 +2193,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   RASSERT(MN_SHOCO_2B == m_aFromHead->w8_1N(pCol->iColumnNo()));
   
   // we recoded: 2B [IT] + Into-Tail
-  vUsageIncRecoded(pCol,2 + nIntoTailBytes);
+  vUsageIncRecoded(pCol,MN_2B + nIntoTailBytes);
 
   m_nTails++;
   m_nTailUnits += nFromTailUnits;
