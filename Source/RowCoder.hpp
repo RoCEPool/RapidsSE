@@ -141,13 +141,11 @@ namespace Data
     void vRecodeDte(Column* pCol);
     void vRecodeFlt(Column* pCol);
     void vRecodeInt(Column* pCol);
-    bool bRecodeIntDelta(Column* pCol);
     bool bRecodeIntDigit(Column* pCol);
     void vRecodeIvl(Column* pCol);
     void vRecodeTme(Column* pCol);
     void vRecodeTsp(Column* pCol);
     void vRecodeVch(Column* pCol);
-    void vRecodeVchAlpha(Column* pCol);
     void vRecodeVchShoco(Column* pCol);
     void vRecodeVchShocoDupe(Column* pCol);
     void vRecodeVchShocoFold(Column* pCol);

@@ -964,7 +964,7 @@ void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
    +================================+
    |                                |
    +--------------------------------+
-   |                  <small>       |
+   |                <small:1..8B>   |
    +--------------------------------+
    
    where: MN_nB is the meta-bits for the column
@@ -1562,17 +1562,7 @@ void RowCoder::vRecodeInt(Column* pCol)
     return;
   }
 #endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-#ifdef WITH_EXTENDED_INT_DELTA
-  if (bRecodeIntDelta(pCol)) {
-    //vHeadDump(m_aIntoHead, m_pColVec, pCol);
-    vXchkIntRecode(pCol);
-    return;
-  }
-#endif
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // leave as int
@@ -1724,159 +1714,6 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
   return true;
 }
 
-//!                                                           REMOVE IN MARK III
-/*----------------------------------------------------------------------------*/
-/* attempt to re-encode Int as DeltaPlus                                      */
-/*----------------------------------------------------------------------------*/
-bool RowCoder::bRecodeIntDelta(Column* pCol)
-{
-  RASSERT(DM_INT == pCol->eDatumType());
-  RASSERT(MN_NULL != m_eFromEncoding);
-  RASSERT(m_eFromEncoding >= MN_1B && m_eFromEncoding <= MN_8B);
-
-  i8 i_Col = pCol->iColumnNo();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for re-encoding
-  
-  // first row: initial decision -- can we recode as DM_DELTA_PLUS?
-  if (1 == m_pIntoNub->nHeads()) {
-    RASSERT(DM_INT == m_pIntoCoda->m_aeExtDatum[i_Col]);
-    // always can??
-  }
-  
-  // subsequent rows: are we recoding as DM_DELTA_PLUS?
-  if (m_pIntoNub->nHeads() > 1 &&
-      m_pIntoCoda->m_aeExtDatum[i_Col] != DM_DELTA_PLUS)
-    return false;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // recoding as DM_DIGIT
-  
-  if (0 == m_i_IntoHead)
-    m_pIntoCoda->m_aeExtDatum[i_Col] = DM_DELTA_PLUS;
-
-  // get integer value
-  i8 iNBInt = 0;
-  switch (m_eFromEncoding) {
-    case MN_1B: iNBInt = m_aIntoHead->w8_1B(m_i_IntoOffset); break;
-    case MN_2B: iNBInt = m_aIntoHead->w8_2B(m_i_IntoOffset); break;
-    case MN_3B: iNBInt = m_aIntoHead->w8_3B(m_i_IntoOffset); break;
-    case MN_4B: iNBInt = m_aIntoHead->w8_4B(m_i_IntoOffset); break;
-    case MN_5B: iNBInt = m_aIntoHead->w8_5B(m_i_IntoOffset); break;
-    case MN_6B: iNBInt = m_aIntoHead->w8_6B(m_i_IntoOffset); break;
-    case MN_7B: iNBInt = m_aIntoHead->w8_7B(m_i_IntoOffset); break;
-    case MN_8B: iNBInt = m_aIntoHead->w8_8B(m_i_IntoOffset); break;
-    default:
-      NEVER_REACH;
-  }
-  
-  // set base number of delta plus calculations
-  if (0 == m_i_IntoHead)
-    m_pIntoCoda->m_aiAux[i_Col].m_iInt = iNBInt;
-  
-  // don't change negative numbers
-  if (iNBInt < 0)
-    return false;
-  
-  // don't change delta minus numbers
-  i8 iFirstInt = m_pIntoCoda->m_aiAux[i_Col].m_iInt;
-  if (iNBInt < iFirstInt)
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // MN_SAME ?
-  
-  if (iNBInt == iFirstInt) {
-    
-    // revise encoding
-    vMetaNibble(pCol,MN_SAME);
-    
-    // cut the iNBInt bytes completely from head
-    m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,m_eFromEncoding);
-    vUsageIncRecoded(pCol,0);
-   
-#ifdef WITH_UNTWISTED_RECODING
-    m_i_IntoOffset += 0;
-#else
-    // go back one char in the intoOffset
-    m_i_IntoOffset -= m_eFromEncoding;
-#endif
-
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // MN_PLUS_1B ?
-  
-  if (iNBInt > iFirstInt && (u8)(iNBInt - iFirstInt) <= C_1_BYTE) {
-    
-    // revise encoding
-    vMetaNibble(pCol,MN_PLUS_1B);
-    
-    // set the plus value
-    i8 iPlus1B = iNBInt - iFirstInt;
-    m_aIntoHead->v1B(m_i_IntoOffset,iPlus1B);
-    vUsageIncRecoded(pCol,1);
-
-    // remove extraneous bytes
-    i8 nToCut = IntLib::iByteMagnitude(iNBInt);
-    if (nToCut > 1) {
-      m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset+1,nToCut-1);
-#ifndef WITH_UNTWISTED_RECODING
-      m_i_IntoOffset -= (nToCut-1);
-#endif
-    }
-    
-#ifdef WITH_UNTWISTED_RECODING
-    m_i_IntoOffset += 1;
-#endif
-
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // MN_PLUS_2B ?
-  
-  if (iNBInt > iFirstInt && (u8)(iNBInt - iFirstInt) <= C_2_BYTES) {
-    
-    // revise encoding
-    vMetaNibble(pCol,MN_PLUS_2B);
-    
-    // set the plus value
-    i8 iPlus2B = iNBInt - iFirstInt;
-    m_aIntoHead->v2B(m_i_IntoOffset,iPlus2B);
-    vUsageIncRecoded(pCol,2);
-
-    // remove extraneous bytes
-    i8 nToCut = IntLib::iByteMagnitude(iNBInt) - 2;
-    if (nToCut > 0) {
-      m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset+2,nToCut);
-      
-#ifndef WITH_UNTWISTED_RECODING
-      m_i_IntoOffset -= nToCut;
-#endif
-    }
-    
-#ifdef WITH_UNTWISTED_RECODING
-    m_i_IntoOffset += 2;
-#endif
-    
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // oops!
-  
-  vUsageIncOops(pCol,m_eFromEncoding,0);
-  
-#ifdef WITH_UNTWISTED_RECODING
-  m_i_IntoOffset += m_eFromEncoding;
-#endif
-
-  return true;
-}
-
 /*----------------------------------------------------------------------------*/
 /* attempt to re-encode Ivl                                                   */
 /*----------------------------------------------------------------------------*/
@@ -1917,13 +1754,7 @@ void RowCoder::vRecodeVch(Column* pCol)
 {
   if (4377 == m_nTotalHeads && 15 == pCol->iColumnNo())
     vDebugPoint();
-  
-  if (MN_1B == m_eFromEncoding) {
-    vRecodeVchAlpha(pCol);
-    //vXchkVchRecode(pCol);                                         //! temp ray
-    return;
-  }
-  
+    
   if (MN_SHOCO_2B == m_eFromEncoding) {
     vRecodeVchShoco(pCol);
     //vXchkVchRecode(pCol);                                         //! temp ray
@@ -1935,91 +1766,6 @@ void RowCoder::vRecodeVch(Column* pCol)
     return;
   }
 
-}
-
-//!                                                           REMOVE IN MARK III
-/*----------------------------------------------------------------------------*/
-/* re-encode a 1B Vch as Alpha                                                */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeVchAlpha(Column* pCol)
-{
-#ifdef WITH_EXTENDED_VCH
-  Coda* pCoda = m_pIntoNub->pCoda();
-  i8 i_Col = pCol->iColumnNo();
-  
-  RASSERT(DM_VCH == pCol->eDatumType());
-  RASSERT(MN_1B == m_eFromEncoding);
-  
-  char c1BChar = m_aIntoHead->w8_1B(m_i_IntoOffset);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // search for the 1B in coda aux for this column
-  
-  i8 i_Char;
-  for (i_Char = 0; i_Char < C_EXTENDED_AUX; i_Char++) {
-    
-    // did we find a match?
-    if (c1BChar == pCoda->m_aiAux[i_Col].m_caChr[i_Char])
-      break;
-    
-    // run out of existing aux chars?
-    if (! pCoda->m_aiAux[i_Col].m_caChr[i_Char])
-      break;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // determine if we can revise the encoding
-  
-  // no space, leave as is
-  if (i_Char >= C_EXTENDED_AUX) {
-    vUsageIncOops(pCol,MN_1B,1);
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  eMN eExtendedEncoding;
-  
-  // found existing alpha?
-  if (pCoda->m_aiAux[i_Col].m_caChr[i_Char]) {
-    
-    // change the encoding to extended alpha
-    RASSERT(DM_ALPHA == pCoda->m_aeExtDatum[i_Col] ||
-            DM_VCH == pCoda->m_aeExtDatum[i_Col]);
-    pCoda->m_aeExtDatum[i_Col] = DM_ALPHA;
-    
-    // revise the encoding
-    eExtendedEncoding = (eMN)(MN_ALPHA_0 + i_Char);
-    vMetaNibble(pCol,eExtendedEncoding);
-    vUsageIncRecoded(pCol,0);
-
-    // cut the 1B char out of the into head
-    m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
-    
-    // go back one char in the intoOffset
-    m_i_IntoOffset--;
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // didn't find existing alpha, add it
-  pCoda->m_aiAux[i_Col].m_caChr[i_Char] = c1BChar;
-  
-  // change the extended encoding to alpha
-  pCoda->m_aeExtDatum[i_Col] = DM_ALPHA;
-  
-  // revise the encoding in the metaword of into head
-  eExtendedEncoding = (eMN)(MN_ALPHA_0 + i_Char);
-  vMetaNibble(pCol,eExtendedEncoding);
-  vUsageIncRecoded(pCol,0);
-
-  // cut the 1B char out of the into head
-  m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
-  
-  // go back one char in the intoOffset
-  m_i_IntoOffset--;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
