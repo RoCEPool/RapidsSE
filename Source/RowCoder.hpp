@@ -5,6 +5,8 @@
 
 namespace Data
 {
+  static const i8 C_METABITS = 4;
+  
   static const i8 C_TAIL_UNITS_OFFSET = 0;
   static const i8 C_TAIL_UNITS_BYTES  = 1;
   
@@ -1122,13 +1124,28 @@ namespace Data
     }
     
     /*----------------------------------------------------------------------------*/
+    /* get size of the meta tape needed for given column vector                   */
+    /*----------------------------------------------------------------------------*/
+    static inline i8 nMetaTape(ColumnVec* pColVec)
+    {
+      i8 nColumns = pColVec->nItems();
+    
+      i8 nBits = nColumns * C_METABITS;
+    
+      i8 nMetaBytes = nBits / C_BITS_PER_BYTE
+                        + (nBits % C_BITS_PER_BYTE ? 1 : 0);
+    
+      return nMetaBytes;
+    }
+  
+    /*----------------------------------------------------------------------------*/
     /* return base offset for column vector                                       */
     /*----------------------------------------------------------------------------*/
     static inline i8 iBaseOffset(ColumnVec* pColVec)
     {
       i8 nColumns = pColVec->nItems();
-
-      i8 iOffset  = (nColumns + 1) / 2;
+    
+      i8 iOffset  = nMetaTape(pColVec);
     
       //! temporary                                                          FIX
       if (iOffset < 8)
@@ -1136,6 +1153,19 @@ namespace Data
     
       return iOffset;
     }
+    /*----------------------------------------------------------------------------*/
+//    static inline i8 iBaseOffset(ColumnVec* pColVec)
+//    {
+//      i8 nColumns = pColVec->nItems();
+//
+//      i8 iOffset  = (nColumns + 1) / 2;
+//
+//      //! temporary                                                          FIX
+//      if (iOffset < 8)
+//        iOffset = 8;
+//
+//      return iOffset;
+//    }
   
     /*----------------------------------------------------------------------------*/
     /* compute date from number of days since base date                           */

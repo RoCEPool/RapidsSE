@@ -33,6 +33,7 @@ namespace Base
   typedef unsigned int       y4;   // 4 byte
   typedef unsigned long long y8;   // 8 byte
   
+  const u8 C_BITS_PER_BYTE         = 8;
   const u8 C_BYTES_PER_WORD        = 8;
   const u8 C_BYTES_PER_DOUBLE_WORD = 16;
   const u8 C_BYTES_PER_QUAD_WORD   = 32;
