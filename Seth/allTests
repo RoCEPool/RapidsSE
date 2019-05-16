@@ -8,3 +8,4 @@ seth.sh -f tests/Select/testList
 seth.sh -f tests/Table/testList
 seth.sh -f tests/Load/testList
 seth.sh -f tests/Index/testList
+seth.sh -f tests/Tpch/testlist

@@ -8,3 +8,4 @@ sethRel.sh -f tests/Select/testList
 sethRel.sh -f tests/Table/testList
 sethRel.sh -f tests/Load/testList
 sethRel.sh -f tests/Index/testList
+sethRel.sh -f tests/Tpch/testlist
