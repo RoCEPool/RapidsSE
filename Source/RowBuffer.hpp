@@ -75,8 +75,6 @@ namespace Data
     bool bAppendRow(RowCoder* pRowCoder, RowNub* pRowNub);
   
   private:
-    HeadLine* aAllotRow(i8 nBytes);
-    HeadLine* aAllotHead(void);
     bool       bHasSpace(i8 nBytes);
 
     ////////////////////////////////////////////////////////////////////////////

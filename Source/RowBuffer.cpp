@@ -195,42 +195,6 @@ void RowBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot a row in this buffer                                                 */
-/*----------------------------------------------------------------------------*/
-HeadLine* RowBuffer::aAllotRow(i8 nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if this buffer has space
-  
-  if (! bHasSpace(nBytes))
-    return nullptr;
-  
-  i8 iCacheLine = m_xRowTray.iAllotHead();
-  
-  return m_xRowTray.aGetHead(iCacheLine);
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot a head cache line in this buffer                                     */
-/*----------------------------------------------------------------------------*/
-HeadLine* RowBuffer::aAllotHead(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if this buffer has space
-  
-  if (! bHasSpace(sizeof(CacheLine)))
-    return nullptr;
-  
-  i8 iCacheLine = m_xRowTray.iAllotHead();
-  
-  return m_xRowTray.aGetHead(iCacheLine);
-}
-
-/*----------------------------------------------------------------------------*/
 /* append a row entry into this buffer                                        */
 /*----------------------------------------------------------------------------*/
 bool RowBuffer::bAppendRow(RowCoder* pRowCoder, RowNub* pFromRowNub)
