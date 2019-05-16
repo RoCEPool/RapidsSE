@@ -1882,13 +1882,20 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // get From-Tail details
+  // get From-Tail details using |FT| from Into-Head
+  // +--------------------------------+
+  // |                    |FT|        |
+  // +--------------------------------+
+  //                      ^m_i_IntoOffset
   i8 i_FromTail = m_aIntoHead->w8_2B(m_i_IntoOffset);
   TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // search for a possible duplicate of the From-Tail in the Into-Nub
+  // +=====================================+
+  // | <U><C> //////////////////////////// |
+  // +=====================================+
   i8 i_IntoTail_Dup = iFindTail(m_pIntoNub,aFromTail);
   if (C_UNKNOWN == i_IntoTail_Dup)
     return false;
@@ -1903,6 +1910,9 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   i8 i_IntoTail_Rel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail_Dup);
   m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MN_2B);
   
+  // increment into offset by sizeof([IT])
+  m_i_IntoOffset += MN_2B;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // metadata remains MN_SHOCO_2B
@@ -1911,14 +1921,11 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   // we recoded: 2B [IT]
   vUsageIncRecoded(pCol,MN_2B);
   
-  // increment into offset
-  m_i_IntoOffset += MN_2B;
-  
   return true;
  }
 
 /*----------------------------------------------------------------------------*/
-/* fold entire shoco tail into head as a MN_SHOCO_FIT (last column only)      */
+/* fold entire shoco tail into head as a MN_SHOCO_FIT      (last column only) */
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeVchShocoFold(Column* pCol)
 {
@@ -1957,7 +1964,7 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // get From-Tail details
+  // get From-Tail details using |FT| from Into-Head
   i8 i_FromTail = m_aIntoHead->w8_2B(m_i_IntoOffset);
   TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail);
   i8 nCompressed = aFromTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
@@ -2005,9 +2012,8 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   return true;
 }
 
-//!                                                                   TO BE DONE
 /*----------------------------------------------------------------------------*/
-/* split shoco across head and tail as a MN_SHOCO_SPLIT (last column only)    */
+/* split shoco across head and tail as a MN_SHOCO_SPLIT    (last column only) */
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
 {
@@ -2025,11 +2031,11 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
    After:
             -- Into-Head --                           -- Into-Tail --
    +================================+    +=====================================+
-   | mb:            ,MN_SHOCO_SPLIT |    | <U><part b........................> |
+   | mb:            ,MN_SHOCO_SPLIT |    | <U><partB.........................> |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
-   |            [IT]<C><part a....> |
+   |            [IT]<C><partA.....> |
    +--------------------------------+
    
    where: MN_SHOCO_2B is the meta-bits for the column
@@ -2038,8 +2044,8 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
           <U> is one byte being the unit length of a tail line
           <C> is one byte being the number of shoco compressed bytes
           <shoco.....> being the shoco compressed bytes
-          <part a> is the left-half of the split shoco
-          <part b> is the right-half of the split  shoco
+          <partA> is the left-half of the split shoco
+          <partB> is the right-half of the split shoco
    */
 
   // split may only be done on last column
@@ -2048,7 +2054,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // get |FT| From-Tail details
+  // get From-Tail details using |FT| from Into-Head
   i8 i_FromTail = m_aIntoHead->w8_2B(m_i_IntoOffset);
   TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail);
   i8 nTailUnits = aFromTail->w8_1B(C_TAIL_UNITS_OFFSET);
@@ -2057,8 +2063,8 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // calc the bytes which overhang into the final unit of the From-Tail
-  i8 nFromBytes = C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES + nCompressed;
-  i8 nFromOverHang = nFromBytes % sizeof(SpaceUnit);
+  i8 nFromAllBytes = C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES + nCompressed;
+  i8 nFromOverHang = nFromAllBytes % sizeof(SpaceUnit);
  
   // calc the available bytes in the head
   i8 nAvailHeadBytes = sizeof(HeadLine) - m_i_IntoOffset;  //! not variable head
@@ -2083,7 +2089,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // +--------------------------------+
   // |            |FT|<C>//////////// |
   // +--------------------------------+
-  //              ^
+  //              ^m_i_IntoOffset
   m_aIntoHead->vPut(m_i_IntoOffset + MN_2B,nCompressed,MN_1B);
 
   // copy partA into the Into-Head
@@ -2095,9 +2101,9 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // +-------------------------------------+
   //
   // +--------------------------------+
-  // |            |FT|<C><part a....> |
+  // |            |FT|<C><partA.....> |
   // +--------------------------------+
-  //              ^
+  //              ^m_i_IntoOffset
   byte* ayIntoHead_PartA = (byte*)m_aIntoHead + m_i_IntoOffset + MN_2B + MN_1B;
   byte* ayFromTail_PartA = (byte*)aFromTail + C_TAIL_UNITS_BYTES
                                             + C_SHOCO_COMPRESSED_BYTES;
@@ -2106,6 +2112,9 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // allot an Into-Tail
+  // +=====================================+
+  // | <U> /////////////////////////////// |
+  // +=====================================+
   i8 i_IntoTail = m_pIntoNub->iAllotTail(/* <U> */MN_1B + nPartB);
   TailLine* aIntoTail = m_pIntoNub->aGetTail(i_IntoTail);
   
@@ -2118,7 +2127,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // +-------------------------------------+
   //
   // +=====================================+
-  // | <U><part b........................> |
+  // | <U><partB.........................> |
   // +=====================================+
   //      ^
   byte* ayIntoTail_PartB = (byte*)aIntoTail + C_TAIL_UNITS_BYTES;
@@ -2131,9 +2140,9 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   
   // put 2B [IT] unit difference into column data in Into-Head
   // +--------------------------------+
-  // |            [IT]<C><part a....> |
+  // |            [IT]<C><partA.....> |
   // +--------------------------------+
-  //              ^
+  //              ^m_i_IntoOffset
   i8 i_IntoTail_Rel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
   m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MN_2B);
 
@@ -2209,11 +2218,15 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // get From-Tail details
+  // get From-Tail details using |FT| from Into-Head
+  // +--------------------------------+
+  // |                    |FT|        |
+  // +--------------------------------+
+  //                      ^m_i_IntoOffset
   i8 i_FromTail = m_aIntoHead->w8_2B(m_i_IntoOffset);
   TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail);
   i8 nFromTailUnits = aFromTail->w8_1B(C_TAIL_UNITS_OFFSET);
-  i8 nCompressed = aFromTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+  i8 nShocoBytes = aFromTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -2221,7 +2234,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   // +=====================================+
   // | <U> /////////////////////////////// |
   // +=====================================+
-  i8 nIntoTailBytes = C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES + nCompressed;
+  i8 nIntoTailBytes = C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES + nShocoBytes;
   i8 i_IntoTail = m_pIntoNub->iAllotTail(nIntoTailBytes);
   TailLine* aIntoTail = m_pIntoNub->aGetTail(i_IntoTail);
   
@@ -2231,7 +2244,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   // +=====================================+
   // | <U><C> //////////////////////////// |
   // +=====================================+
-  aIntoTail->v1B(C_SHOCO_COMPRESSED_OFFSET,nCompressed);
+  aIntoTail->v1B(C_SHOCO_COMPRESSED_OFFSET,nShocoBytes);
   
   // copy the shoco compressed bytes <shoco.....> into the Into-Tail
   // +=====================================+
@@ -2241,7 +2254,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
                                            + C_SHOCO_COMPRESSED_BYTES;
   byte* aFromTail_Shoco = (byte*)aFromTail + C_TAIL_UNITS_BYTES
                                            + C_SHOCO_COMPRESSED_BYTES;
-  MemLib::vCopy(aIntoTail_Shoco,aFromTail_Shoco,nCompressed,CN_ROWCODER);
+  MemLib::vCopy(aIntoTail_Shoco,aFromTail_Shoco,nShocoBytes,CN_ROWCODER);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -2253,6 +2266,9 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   i8 i_IntoTail_Rel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
   m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MN_2B);
   
+  // increment intoOffset by sizeof([IT])
+  m_i_IntoOffset += MN_2B;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // metadata remains the same
@@ -2263,9 +2279,6 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
 
   m_nTails++;
   m_nTailUnits += nFromTailUnits;
-  
-  // increment into offset
-  m_i_IntoOffset += MN_2B;
 }
 
 /*----------------------------------------------------------------------------*/
