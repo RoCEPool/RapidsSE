@@ -1818,7 +1818,7 @@ void RowCoder::vRecodeVch(Column* pCol)
     
   if (MN_SHOCO_2B == m_eFromEncoding) {
     vRecodeVchShoco(pCol);
-    //vXchkVchRecode(pCol);                                         //! temp ray
+    vXchkVchRecode(pCol);                                         //! temp ray
     return;
   }
 
