@@ -1,0 +1,63 @@
+--------------------------------------------------------------------------------
+-- orders table
+--------------------------------------------------------------------------------
+
+// create a table
+create table orders (
+O_ORDERKEY        INTEGER NOT NULL,
+O_CUSTKEY         INTEGER NOT NULL,
+O_ORDERSTATUS     CHAR(1) NOT NULL,
+O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+O_ORDERDATE       TIMESTAMP NOT NULL,
+O_ORDERPRIORITY   CHAR(15) NOT NULL,
+O_CLERK           CHAR(15) NOT NULL,
+O_SHIPPRIORITY    INTEGER NOT NULL,
+O_COMMENT         VARCHAR(79) NOT NULL
+);
+success
+
+//------------------------------------------------------------------------------
+// create an index on suppkey
+CREATE INDEX orders_idx1 ON orders(o_orderdate);
+affected: 0
+
+// check orders of index
+lsidx orders;
+rows:
+  ("orders_idx1",false,false)
+
+// check columns of index
+lsidxcol orders orders_idx1;
+rows:
+  ("O_ORDERDATE", "TIMESTAMP", 0, 0, false, false)
+
+// load the table
+ld orders "/TPCH/SF1/orders.tbl" field_delimiter "|";
+success
+
+fetch orders;
+rows: 1500000
+
+-----------------------------------------------------------------------
+//fetch orders "l_shipdate '1992-01-02 00:00:00' <=";
+//rows: 17
+
+compactidx orders orders_idx1;
+success
+
+//fetch orders "l_shipdate '1992-01-02 00:00:00' <=";
+//rows: 17
+
+// now drop the table
+drop table orders;
+success
+
+CLEANUP {
+
+  drop table orders;
+  mute
+
+  bye;
+  mute
+}
+
