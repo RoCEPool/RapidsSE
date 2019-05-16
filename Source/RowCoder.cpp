@@ -192,7 +192,7 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   m_aFromHead    = m_pFromNub->aGetHead(m_i_FromHead);
   m_i_FromOffset = m_i_BaseOffset;
 
-  m_i_IntoHead   = m_pIntoNub->iAllotHead();
+  m_i_IntoHead   = m_pIntoNub->iAllotHead(m_nHeadBytes);
   m_aIntoHead    = m_pIntoNub->aGetHead(m_i_IntoHead);
   m_i_IntoOffset = m_i_BaseOffset;
 
@@ -245,7 +245,7 @@ void RowCoder::vEncodeBegin(RowNub* pIntoNub)
   // initialise the into row
   
   m_pIntoNub->vReset();
-  m_i_IntoHead = m_pIntoNub->iAllotHead();
+  m_i_IntoHead = m_pIntoNub->iAllotHead(m_nHeadBytes);
   ASSERT(0 == m_i_IntoHead);
 
   m_aIntoHead    = m_pIntoNub->aGetHead();
