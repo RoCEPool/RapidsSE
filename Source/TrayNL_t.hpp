@@ -61,7 +61,6 @@ namespace Structures
     bool  bHasSpace(i8 nBytes);
     i8    nItems(void);
     i8    iLastTail(void);
-    i8    iNextTail(i8 i_Tail);
     i8    iPrevTail(i8 i_Tail);
     void  vReset(void);
     i8    nTails(void);
@@ -573,21 +572,6 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iLastTail(void)
   i8 i_Tail = m_nSpaceUnits - m_nTailUnits; // 10 - 3 : [0 1 2 .. 7 8 9];
   
   return i_Tail;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next tail                                                              */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iNextTail(i8 i_PrevTail)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  i8 i_Tail = i_PrevTail - (sizeof(TAIL) / sizeof(UNIT));
-  if (i_Tail >= m_nSpaceUnits - m_nTailUnits) // 10 - 3 : [0 1 2 .. 7 8 9]
-    return i_Tail;
-  
-  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/

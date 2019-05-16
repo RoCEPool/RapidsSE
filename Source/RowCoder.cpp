@@ -4683,13 +4683,7 @@ i8 RowCoder::iFindTail(RowNub* pNub, TailLine* aFindLine)
   for (i8 i_Tail = pNub->iLastTail();
        i_Tail != C_UNKNOWN;
        i_Tail = pNub->iPrevTail(i_Tail)) {
-    
-    //    vTrace("i_Tail %lld\n"_Stz,i_Tail);
-    
-    //  for (i8 i_Tail = pNub->iFirstTail();
-    //       i_Tail != C_UNKNOWN;
-    //       i_Tail = pNub->iNextTail(i_Tail)) {
-    
+        
     TailLine* aTailLine = pNub->aGetTail(i_Tail);
     i8 nTailUnits = aTailLine->w8_1B(C_TAIL_UNITS_OFFSET);
     //RASSERT(nTailUnits <= 4);
