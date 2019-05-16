@@ -63,7 +63,7 @@
 #define WITH_ENCODING_XCHECK    // encode cross check
 
 //#define WITH_LARGE_ROWS         // encode cross check
-//#define WITH_UNTWISTED_RECODING // trying to separate recoding from encoding
+#define WITH_UNTWISTED_RECODING // trying to separate recoding from encoding
 
 /*============================================================================*/
 /* end                                                                        */

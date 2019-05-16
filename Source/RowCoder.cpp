@@ -1824,6 +1824,7 @@ void RowCoder::vRecodeVch(Column* pCol)
 
   if (m_eFromEncoding >= MN_1B && m_eFromEncoding <= MN_8B) {
     vUsageIncRecoded(pCol,m_eFromEncoding);
+    m_i_IntoOffset += m_eFromEncoding;
     return;
   }
 }
@@ -1882,7 +1883,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get From-Tail details
-  i8 i_FromTail = m_aFromHead->w8_2B(m_i_FromOffset);
+  i8 i_FromTail = m_aIntoHead->w8_2B(m_i_IntoOffset);
   TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1910,11 +1911,14 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   // we recoded: 2B [IT]
   vUsageIncRecoded(pCol,MN_2B);
   
+  // increment into offset
+  m_i_IntoOffset += MN_2B;
+  
   return true;
  }
 
 /*----------------------------------------------------------------------------*/
-/* fold shoco tail into head as a MN_SHOCO_FIT (last column only)             */
+/* fold entire shoco tail into head as a MN_SHOCO_FIT (last column only)      */
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeVchShocoFold(Column* pCol)
 {
@@ -1954,7 +1958,7 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get From-Tail details
-  i8 i_FromTail = m_aFromHead->w8_2B(m_i_FromOffset);
+  i8 i_FromTail = m_aIntoHead->w8_2B(m_i_IntoOffset);
   TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail);
   i8 nCompressed = aFromTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
 
@@ -1995,6 +1999,9 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   // we recoded: 1B <C> + <compressed>
   vUsageIncRecoded(pCol,MN_1B + nCompressed);
 
+  // increment into offset
+  m_i_IntoOffset += MN_1B + nCompressed;
+  
   return true;
 }
 
@@ -2005,6 +2012,7 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
 bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
 {
   /*
+   Before:
              -- Into-Head --                           -- From-Tail --
    +================================+    +=====================================+
    | mb:               ,MN_SHOCO_2B |    | <U><C><shoco....................... |
@@ -2014,6 +2022,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
    |            |FT| ////////////// |                                 final unit
    +--------------------------------+
 
+   After:
             -- Into-Head --                           -- Into-Tail --
    +================================+    +=====================================+
    | mb:            ,MN_SHOCO_SPLIT |    | <U><part b........................> |
@@ -2040,7 +2049,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get |FT| From-Tail details
-  i8 i_FromTail = m_aFromHead->w8_2B(m_i_FromOffset);
+  i8 i_FromTail = m_aIntoHead->w8_2B(m_i_IntoOffset);
   TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail);
   i8 nTailUnits = aFromTail->w8_1B(C_TAIL_UNITS_OFFSET);
   i8 nCompressed = aFromTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
@@ -2139,6 +2148,8 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   m_nTails++;
   m_nTailUnits += nTailUnits;
 
+  m_i_IntoOffset += MN_2B + MN_1B + nPartA;
+  
   return true;
  
   
@@ -2199,7 +2210,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get From-Tail details
-  i8 i_FromTail = m_aFromHead->w8_2B(m_i_FromOffset);
+  i8 i_FromTail = m_aIntoHead->w8_2B(m_i_IntoOffset);
   TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail);
   i8 nFromTailUnits = aFromTail->w8_1B(C_TAIL_UNITS_OFFSET);
   i8 nCompressed = aFromTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
@@ -2252,6 +2263,9 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
 
   m_nTails++;
   m_nTailUnits += nFromTailUnits;
+  
+  // increment into offset
+  m_i_IntoOffset += MN_2B;
 }
 
 /*----------------------------------------------------------------------------*/
