@@ -12,6 +12,7 @@ namespace Structures
   class Nub_t : public Object
   {
   private:
+    i8 m_nHeadBytes;  // alloted head bytes
     i8 m_nHeadItems;  // number of items allocated from the head
     i8 m_nTailItems;  // number of items allocated from the tail
   
@@ -147,6 +148,7 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::Nub_t(void)
   RASSERT(0 == sizeof(HEAD) % sizeof(UNIT));
   RASSERT(0 == sizeof(TAIL) % sizeof(UNIT));
 
+  m_nHeadBytes  = C_UNKNOWN;
   m_nSpaceUnits = C_UNKNOWN;
   m_nHeadUnits  = 0;
   m_nTailUnits  = 0;
@@ -250,7 +252,8 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotHead(i8 nBytes)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   RASSERT(nBytes);
-  
+  RASSERT(0 == nBytes % sizeof(UNIT));
+
   if (nFreeBytes() < nBytes)
     return C_UNKNOWN;
   
@@ -263,6 +266,8 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotHead(i8 nBytes)
   
   m_nHeadUnits += nUnits;
 
+  m_nHeadBytes = nBytes;
+  
   return i_Head;
 }
 
