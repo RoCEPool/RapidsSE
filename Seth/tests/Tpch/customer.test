@@ -1,0 +1,77 @@
+--------------------------------------------------------------------------------
+-- create customer table
+--------------------------------------------------------------------------------
+
+// create a table
+create table customer (
+C_CUSTKEY       INTEGER NOT NULL,
+C_NAME          VARCHAR(25) NOT NULL,
+C_ADDRESS       VARCHAR(40) NOT NULL,
+C_NATIONKEY     INTEGER NOT NULL,
+C_PHONE         CHAR(15) NOT NULL,
+C_ACCTBAL       DECIMAL(15,2) NOT NULL,
+C_MKTSEGMENT    CHAR(10) NOT NULL,
+C_COMMENT       VARCHAR(117) NOT NULL
+);
+success
+
+//------------------------------------------------------------------------------
+// create an index on custkey
+CREATE INDEX customer_idx1 ON customer(c_custkey);
+affected: 0
+
+//------------------------------------------------------------------------------
+// create an index on nationkey
+CREATE INDEX customer_idx2 ON customer(c_nationkey);
+affected: 0
+
+// check existence of index
+lsidx customer;
+rows:
+  ("customer_idx1",false,false)
+  ("customer_idx2",false,false)
+
+// check columns of index
+lsidxcol customer customer_idx1;
+rows:
+  ("C_CUSTKEY", "INTEGER", 19, 0, false, true)
+
+// check columns of index
+lsidxcol customer customer_idx2;
+rows:
+  ("C_NATIONKEY", "INTEGER", 19, 0, false, false)
+
+// load the table
+ld customer "/TPCH/SF1/customer.tbl" field_delimiter "|";
+success
+
+fetch customer;
+rows: 150000
+
+-----------------------------------------------------------------------
+//fetch customer "l_shipdate '1992-01-02 00:00:00' <=";
+//rows: 17
+
+compactidx customer customer_idx1;
+success
+
+compactidx customer customer_idx2;
+success
+
+-----------------------------------------------------------------------
+//fetch lineitem "l_shipdate '1992-01-02 00:00:00' <=";
+//rows: 17
+
+// now drop the table
+drop table customer;
+success
+
+CLEANUP {
+
+  drop table customer;
+  mute
+
+  bye;
+  mute
+}
+
