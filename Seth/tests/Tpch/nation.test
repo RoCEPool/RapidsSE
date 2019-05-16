@@ -1,0 +1,62 @@
+--------------------------------------------------------------------------------
+-- create index in a loop tests
+--------------------------------------------------------------------------------
+
+// create a table
+create table nation (
+N_NATIONKEY       INTEGER NOT NULL,
+N_NAME            CHAR(25) NOT NULL,
+N_REGIONKEY       INTEGER NOT NULL,
+N_COMMENT         VARCHAR(152)
+);
+success
+
+//------------------------------------------------------------------------------
+// create an index on suppkey
+CREATE INDEX nation_idx1 ON nation(N_NATIONKEY);
+affected: 0
+
+// check existence of index
+lsidx nation;
+rows:
+  ("nation_idx1",false,false)
+
+// check columns of index
+lsidxcol nation nation_idx1;
+rows:
+  ("N_NATIONKEY", "INTEGER", 19, 0, false, true)
+
+// load the table
+ld nation "/TPCH/SF1/nation.tbl" field_delimiter "|";
+success
+
+fetch nation;
+rows: 25
+
+-----------------------------------------------------------------------
+//fetch lineitem "l_shipdate '1992-01-02 00:00:00' <=";
+//rows: 17
+
+compactidx nation nation_idx1;
+success
+
+//fetch lineitem;
+//rows: 6001215
+
+-----------------------------------------------------------------------
+//fetch lineitem "l_shipdate '1992-01-02 00:00:00' <=";
+//rows: 17
+
+// now drop the table
+drop table nation;
+success
+
+CLEANUP {
+
+  drop table nation;
+  mute
+
+  bye;
+  mute
+}
+
