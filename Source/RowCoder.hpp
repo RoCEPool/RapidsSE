@@ -1127,9 +1127,9 @@ namespace Data
     }
     
     /*----------------------------------------------------------------------------*/
-    /* get size of the meta tape needed for given column vector                   */
+    /* calc size of the meta tape needed for given column vector                  */
     /*----------------------------------------------------------------------------*/
-    static inline i8 nMetaTape(ColumnVec* pColVec)
+    static inline i8 nMetaData(ColumnVec* pColVec)
     {
       i8 nColumns = pColVec->nItems();
     
@@ -1142,13 +1142,23 @@ namespace Data
     }
   
     /*----------------------------------------------------------------------------*/
-    /* return base offset for column vector                                       */
+    /* calc size of the head line for column vector                               */
+    /*----------------------------------------------------------------------------*/
+    static inline i8 nHeadBytes(ColumnVec* pColVec)
+    {
+      i8 nBytes = sizeof(CacheLine);
+    
+      return nBytes;
+    }
+  
+    /*----------------------------------------------------------------------------*/
+    /* calc base offset for column vector                                         */
     /*----------------------------------------------------------------------------*/
     static inline i8 iBaseOffset(ColumnVec* pColVec)
     {
       i8 nColumns = pColVec->nItems();
     
-      i8 iOffset  = nMetaTape(pColVec);
+      i8 iOffset  = nMetaData(pColVec);
     
       //! temporary                                                          FIX
       if (iOffset < 8)

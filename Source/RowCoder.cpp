@@ -131,8 +131,8 @@ RowCoder::~RowCoder(void) noexcept(false)
 void RowCoder::vCopyBegin(RowNub* pIntoNub)
 {
   m_pColVec      = pIntoNub->pDesc()->pColumnVec();
-  m_nHeadBytes   = 64;
-  m_nMetaData    = 0;
+  m_nHeadBytes   = nHeadBytes(m_pColVec);
+  m_nMetaData    = nMetaData(m_pColVec);
   m_i_BaseOffset = iBaseOffset(m_pColVec);
   
   m_pIntoNub     = pIntoNub;
@@ -234,8 +234,8 @@ void RowCoder::vEncodeBegin(RowNub* pIntoNub)
   // set up
   
   m_pColVec      = pIntoNub->pDesc()->pColumnVec();
-  m_nHeadBytes   = 64;
-  m_nMetaData    = 0;
+  m_nHeadBytes   = nHeadBytes(m_pColVec);
+  m_nMetaData    = nMetaData(m_pColVec);
   m_i_BaseOffset = iBaseOffset(m_pColVec);
 
   m_pIntoNub     = pIntoNub;
