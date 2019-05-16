@@ -42,7 +42,6 @@ namespace Structures
     static i8 iUnitDiff(i8 i_Head, i8 i_Tail);
     static i8 nUnits(i8 nBytes);
 
-    i8    iAllotHead(void);
     i8    iAllotHead(i8 nBytes);
     i8    iAllotTail(i8 nBytes);
     i8    nAreaBytes(void);
@@ -101,7 +100,6 @@ namespace Structures
     // auto conversion
     operator Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>*(void);
   
-    i8    iAllotHead(void);
     CODA* pCoda(void);
     void  vCoda(CODA* pCoda);
     DESC* pDesc(void);
@@ -256,27 +254,6 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nUnits(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* allot head item                                                            */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotHead(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  if (nFreeBytes() < (i8)sizeof(HEAD))
-    return C_UNKNOWN;
-
-  i8 i_Head = m_nHeadItems++;
-
-  i8 nUnits = (sizeof(HEAD) / sizeof(UNIT));
-  //RASSERT(nUnits == 4 || nUnits == 1); //! temp
-
-  m_nHeadUnits += nUnits;
-  
-  return i_Head;
-}
 
 /*----------------------------------------------------------------------------*/
 /* allot head item (with size as per given number of bytes)                   */
@@ -808,19 +785,6 @@ TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::operator Nub_t<CN,HEAD,TAIL,UNIT,DE
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* allot head item                                                            */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA, i8 BYTES>
-i8 TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::iAllotHead(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  i8 i_Item = m_oNub.iAllotHead();
-  
-  return i_Item;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get the item coda                                                          */
