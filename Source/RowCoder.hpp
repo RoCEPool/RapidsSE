@@ -26,6 +26,9 @@ namespace Data
   public:
   
     ColumnVec* m_pColVec;
+    i8         m_nHeadBytes;   // size of head line for this colvec/table
+    i8         m_nMetaData;    // size of meta data for this colvec/table
+    i8         m_i_BaseOffset; // base offset for this colvec/table
   
     RowNub*    m_pIntoNub;
     Coda*      m_pIntoCoda;
