@@ -3569,6 +3569,94 @@ i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return number of data bytes of encoding                                    */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::nDataBytes_mark3(eDM eDatum, eMB eEncoding)
+{
+  switch (eEncoding) {
+    case MB_NULL:
+    case MB_1B:
+    case MB_2B:
+    case MB_3B:
+    case MB_4B:
+    case MB_5B:
+    case MB_6B:
+    case MB_7B:
+    case MB_8B:
+      return eEncoding;
+      
+    case MB_MINUS_ONE:
+    case MB_ZERO:
+    case MB_ONE:
+    case MB_TWO:
+    case MB_THREE:
+    case MB_FOUR:
+    case MB_FIVE:
+    case MB_SIX:
+    case MB_SEVEN:
+    case MB_EIGHT:
+    case MB_NINE:
+    case MB_TEN:
+    case MB_SAME:
+      return 0;
+     
+    //! NOT SURE
+    case MB_ADD_1B:
+    case MB_ADD_2B:
+    case MB_SUB_1B:
+    case MB_SUB_2B:
+      RASSERT(0);
+      
+    case MB_FALSE:
+    case MB_TRUE:
+      return 0;
+      
+    case MB_DATE_E0_2B:
+    case MB_DATE_E1_2B:
+    case MB_DATE_E2_2B:
+      return 2;
+      
+    case MB_DAYS_ADD_1B:
+    case MB_DAYS_SUB_1B:
+      return 1;
+      
+    case MB_STR_EMPTY:
+      return 0;
+      
+    //! NOT SURE
+    case MB_STR_FIT_1L:
+    case MB_STR_2T:
+    case MB_STR_SPLIT_2T1L:
+      
+    case MB_BSTR_FIT_2L:
+    case MB_BSTR_2T:
+    case MB_BSTR_SPLIT_2T1L:
+      
+    case MB_SHOCO_FIT_1L:
+    case MB_SHOCO_2T:
+    case MB_SHOCO_SPLIT_2T1L:
+      RASSERT(0);
+      
+      //! NOT SURE
+    case MB_TWOS_1B:
+    case MB_TWOS_2B:
+    case MB_TWOS_3B:
+    case MB_TWOS_4B:
+    case MB_TWOS_5B:
+    case MB_TWOS_6B:
+    case MB_TWOS_7B:
+      RASSERT(0);
+      
+    case MB_OVERFLOW_2B:
+      return 2;
+      
+    default:
+      NEVER_REACH;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* compute date from number of days since base date                           */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDaysFromBase(Datum* pDatum, i8& iEra)
