@@ -374,41 +374,49 @@ namespace Data
     static inline void vDecodeDaysFast(Datum* pDatum, HeadLine* aHeadLine, eMN eEncoding,
                                        ColumnVec* pColVec, Column* pCol, Coda* pCoda, i8 i_Offset)
     {
-      i8 i_Col  = pCol->iColumnNo();
       i8 i_FirstColumn  = pCol->iFirstDate();
       
       pDatum->m_eDatum = DM_DTE;
+      i8 iEra;
+      
+      if (eEncoding == MN_DAYS_PLUS_1B || eEncoding == MN_DAYS_MINUS_1B) {
+        i8 i_SearchColumn = 0;
+        i8 i_SearchOffset = iBaseOffset(pColVec);
+        Column* pColFirstDate  = pColVec->pGet(pCol->iFirstDate());
+        eMN eFirstEncoding = eEncodingRecoded(aHeadLine,pColFirstDate,pColVec,
+                                              pCoda,i_SearchColumn,i_SearchOffset);
+        
+        switch (eFirstEncoding) {
+          case MN_SILVER_1B:    pDatum->m_iInt = aHeadLine->w8_1B(i_SearchOffset); iEra = C_SILVER_ERA; break;
+          case MN_SILVER_2B:    pDatum->m_iInt = aHeadLine->w8_2B(i_SearchOffset); iEra = C_SILVER_ERA; break;
+          case MN_CLASSIC_1B:   pDatum->m_iInt = aHeadLine->w8_1B(i_SearchOffset); iEra = C_CLASSIC_ERA; break;
+          case MN_CLASSIC_2B:   pDatum->m_iInt = aHeadLine->w8_2B(i_SearchOffset); iEra = C_CLASSIC_ERA; break;
+          default:
+            NEVER_REACH;
+        }
+      }
       
       i8 iDays = 0;
       switch (eEncoding) {
           
         case MN_NULL: pDatum->m_iInt = C_DATUM_NULL; return;
           
-        case MN_DAYS_PLUS_1B:  iDays = aHeadLine->w8_1B(i_Offset);  break;
-        case MN_DAYS_MINUS_1B: iDays = - aHeadLine->w8_1B(i_Offset); break;
+        case MN_DAYS_PLUS_1B:     iDays = aHeadLine->w8_1B(i_Offset);   break;
+        case MN_DAYS_MINUS_1B:    iDays = - aHeadLine->w8_1B(i_Offset); break;
+        case MN_DAYS_CLASSIC_2B:  iDays = aHeadLine->w8_2B(i_Offset);  iEra = C_CLASSIC_ERA; break;
+        case MN_DAYS_SILVER_2B:   iDays = aHeadLine->w8_2B(i_Offset);  iEra = C_SILVER_ERA; break;
+        case MN_DAYS_MODERN_2B:   iDays = aHeadLine->w8_2B(i_Offset);  iEra = C_MODERN_ERA; break;
         default:
           NEVER_REACH;
       }
       
-      i8 i_SearchColumn = 0;
-      i8 i_SearchOffset = iBaseOffset(pColVec);
-      i8 iFirstDateCol = pCol->iFirstDate();
-      Column* pColFirstDate  = pColVec->pGet(iFirstDateCol);
-      eMN eFirstEncoding = eGetEncodingExtFast(aHeadLine,iFirstDateCol,pCoda,
-                                               i_SearchColumn,i_SearchOffset);
-      
-      switch (eFirstEncoding) {
-        case MN_SILVER_1B:    pDatum->m_iInt = aHeadLine->w8_1B(i_SearchOffset); break;
-        case MN_SILVER_2B:    pDatum->m_iInt = aHeadLine->w8_2B(i_SearchOffset); break;
-        default:
-          NEVER_REACH;
+      if (eEncoding == MN_DAYS_PLUS_1B || eEncoding == MN_DAYS_MINUS_1B) {
+        pDatum->m_iInt += iDays;
       }
-      
-      pDatum->m_iInt += iDays;
-      
-      i8 iEra = C_SILVER_ERA;
+      else {
+        pDatum->m_iInt = iDays;
+      }
       vDaysFromBase(pDatum,iEra);
-      
     }
 
     /*----------------------------------------------------------------------------*/

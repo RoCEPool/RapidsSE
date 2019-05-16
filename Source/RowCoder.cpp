@@ -4220,7 +4220,7 @@ void RowCoder::vDecodeDays(Datum* pDatum, HeadLine* aHeadLine,
   i8 i_FirstColumn  = pCol->iFirstDate();
 
   pDatum->m_eDatum = DM_DTE;
-      i8 iEra;
+  i8 iEra;
   
   //!! needs more work
   eMN eThisEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
