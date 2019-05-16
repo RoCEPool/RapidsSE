@@ -50,7 +50,6 @@ namespace Structures
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
     i8    nFreeBytes(void);
-    i8    iFirstTail(void);
     HEAD* aGetHead(void);
     HEAD* aGetHead(i8 i_Head);
     TAIL* aGetTail(i8 i_Tail);
@@ -401,22 +400,6 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vDesc(DESC* pDesc)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   m_pDesc = pDesc;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get first tail                                                             */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iFirstTail(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  if (! m_nTailUnits)
-    return C_UNKNOWN;
-
-  i8 i_Tail = m_nSpaceUnits - (sizeof(TAIL) / sizeof(UNIT));
-
-  return i_Tail;
 }
 
 /*----------------------------------------------------------------------------*/
