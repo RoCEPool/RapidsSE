@@ -1,0 +1,42 @@
+/*----------------------------------------------------------------------------*/
+/* nulls.test -- NULL values in DATUM tests                                   */
+/*----------------------------------------------------------------------------*/
+
+// (1) create a table
+create table nulTbl (
+  bol_col1   BOOLEAN,
+  vch_col2   VARCHAR(32),
+  int_col3   INTEGER,
+  int_col4   INTEGER,
+  dec_col5   DECIMAL(10,2),
+  flt_col6   FLOAT,
+  tsp_col7   TIMESTAMP ,
+  bol_col8   BOOLEAN
+);
+success
+
+ld nulTbl "/DATA/Datums/nulls.csv" ;
+success
+
+// check no of rows
+fetch nulTbl;
+rows: 50
+
+// drop the table
+drop table nulTbl;
+success
+
+// check existence of table
+lstbl;
+rows: 0
+
+CLEANUP {
+  
+  // drop the table
+  drop table nulTbl;
+  mute
+  
+  bye;
+  mute
+}
+

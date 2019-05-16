@@ -1161,16 +1161,6 @@ void RowCoder::vRecodeBcd(Column* pCol)
   i8 i_Col = pCol->iColumnNo();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // skip nulls
-  
-  if (MN_NULL == m_eFromEncoding) {
-    vUsageIncRecoded(pCol,0);
-    RASSERT(0 == m_nFromDataBytes);
-    m_i_IntoOffset += 0;
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for re-encoding into DM_TENTH
   
   if (1 == m_pIntoNub->nHeads()) {
@@ -1207,6 +1197,16 @@ void RowCoder::vRecodeBcd(Column* pCol)
   if (1 == m_pIntoNub->nHeads())
     m_pIntoCoda->m_aeExtDatum[i_Col] = DM_TENTH;
   RASSERT(DM_TENTH == m_pIntoCoda->m_aeExtDatum[i_Col]);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // skip nulls
+  
+  if (MN_NULL == m_eFromEncoding) {
+    vUsageIncRecoded(pCol,0);
+    RASSERT(0 == m_nFromDataBytes);
+    m_i_IntoOffset += 0;
+    return;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // recode small 1B's into DM_TENTH
@@ -1533,7 +1533,7 @@ void RowCoder::vRecodeFlt(Column* pCol)
 void RowCoder::vRecodeInt(Column* pCol)
 {
   // test for re-encoding
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // skip nulls
@@ -1543,7 +1543,7 @@ void RowCoder::vRecodeInt(Column* pCol)
     m_i_IntoOffset += m_nFromDataBytes;
     return;
   }
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #ifdef WITH_EXTENDED_INT_DIGIT
