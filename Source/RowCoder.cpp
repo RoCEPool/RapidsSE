@@ -1848,17 +1848,17 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // column data gets recoded as 2B [IT] unit diff between Into-Head and -Tail
+  // col data in Into-Head recoded as [IT] unit diff between Into-Head and -Tail
   // +--------------------------------+
   // |                    [IT]        |
   // +--------------------------------+
-  //                      ^
+  //                      ^m_i_IntoOffset
   i8 i_IntoTail_Rel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail_Dup);
   m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MN_2B);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // metadata remains the same
+  // metadata remains MN_SHOCO_2B
   RASSERT(MN_SHOCO_2B == m_aFromHead->w8_1N(pCol->iColumnNo()));
   
   // we recoded: 2B [IT]
