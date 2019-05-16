@@ -1385,18 +1385,6 @@ void RowCoder::vRecodeDte(Column* pCol)
   i8 i_Col = pCol->iColumnNo();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // skip nulls
-  
-  if (MN_NULL == m_eFromEncoding) {
-    vUsageIncRecoded(pCol,0);
-#ifdef WITH_UNTWISTED_RECODING
-    RASSERT(0 == m_nFromDataBytes);
-    m_i_IntoOffset += 0;
-#endif
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is this the first date in the row?
   
   if (pCol->bIsFirstDate()) {
@@ -1414,6 +1402,18 @@ void RowCoder::vRecodeDte(Column* pCol)
   if (1 == m_pIntoNub->nHeads())
     m_pIntoCoda->m_aeExtDatum[i_Col] = DM_DAYS;
   RASSERT(DM_DAYS == m_pIntoCoda->m_aeExtDatum[i_Col]);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // skip nulls
+  
+  if (MN_NULL == m_eFromEncoding) {
+    vUsageIncRecoded(pCol,0);
+#ifdef WITH_UNTWISTED_RECODING
+    RASSERT(0 == m_nFromDataBytes);
+    m_i_IntoOffset += 0;
+#endif
+    return;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get this 2nd+ date and first date of row

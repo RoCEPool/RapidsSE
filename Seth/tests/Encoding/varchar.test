@@ -23,7 +23,7 @@ vch_col15  VARCHAR
 );
 success
   
-ld vchTbl "/DATA/Encoding/xaa" ;
+ld vchTbl "/DATA/Encoding/varchar.csv" ;
 success
 
 // check no of rows
