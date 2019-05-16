@@ -1831,7 +1831,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
           <U> is one byte being the unit length of a tail line
           <C> is one byte being the number of shoco compressed bytes
           <shoco.....> being the shoco compressed bytes
-   */
+  */
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1908,29 +1908,38 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get From-Tail details
-  i8 i_FromShocoTail = m_aFromHead->w8_2B(m_i_FromOffset);
-  TailLine* aFromShocoTail = m_pFromNub->aGetTail(i_FromShocoTail);
-  i8 nCompressed = aFromShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+  i8 i_FromTail = m_aFromHead->w8_2B(m_i_FromOffset);
+  TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail);
+  i8 nCompressed = aFromTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // do the bytes ( <C><shoco.....> ) fit into the Into-Head ?
   i8 nNeedHeadBytes  = C_SHOCO_COMPRESSED_BYTES + nCompressed;
   i8 nAvailHeadBytes = sizeof(HeadLine) - m_i_IntoOffset;  //! not variable head
+  
   if (nNeedHeadBytes > nAvailHeadBytes)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // put <C>, the number of shoco compressed bytes into the Into-Head
+  // put the number of shoco compressed bytes <C> into the Into-Head
+  // +--------------------------------+
+  // |    <C> /////////////////////// |
+  // +--------------------------------+
+  //      ^m_i_IntoOffset
   m_aIntoHead->v1B(m_i_IntoOffset,nCompressed);
   
-  // copy <shoco.....>, the shoco compressed bytes into the Into-Head
-  byte* aIntoShoco = (byte*)m_aIntoHead + m_i_IntoOffset
-                                        + C_SHOCO_COMPRESSED_BYTES;
-  byte* aFromShoco = (byte*)aFromShocoTail + C_SHOCO_COMPRESSED_OFFSET
+  // copy the shoco compressed bytes <shoco.....> into the Into-Head
+  // +--------------------------------+
+  // |    <C><shoco.....> /////////// |
+  // +--------------------------------+
+  //      ^m_i_IntoOffset
+  byte* aIntoHead_Shoco = (byte*)m_aIntoHead + m_i_IntoOffset
+                                             + C_SHOCO_COMPRESSED_BYTES;
+  byte* aFromTail_Shoco = (byte*)aFromTail + C_SHOCO_COMPRESSED_OFFSET
                                            + C_SHOCO_COMPRESSED_BYTES;
-  MemLib::vCopy(aIntoShoco,aFromShoco,nCompressed,CN_ROWCODER);
+  MemLib::vCopy(aIntoHead_Shoco,aFromTail_Shoco,nCompressed,CN_ROWCODER);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1938,7 +1947,7 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   vMetaNibble(pCol,MN_SHOCO_FIT);
   
   // we recoded: 1B <C> + <compressed>
-  vUsageIncRecoded(pCol,1 + nCompressed);
+  vUsageIncRecoded(pCol,MN_1B + nCompressed);
 
   return true;
 }
@@ -2161,13 +2170,13 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // put 1B <C>, the number of shoco compressed bytes in the Into-Tail
+  // put the number of shoco compressed bytes <C> into the Into-Tail
   // +=====================================+
   // | <U><C> //////////////////////////// |
   // +=====================================+
   aIntoTail->v1B(C_SHOCO_COMPRESSED_OFFSET,nCompressed);
   
-  // copy <shoco.....>, the shoco compressed bytes into the Into-Tail
+  // copy the shoco compressed bytes <shoco.....> into the Into-Tail
   // +=====================================+
   // | <U><C><shoco.....> //////////////// |
   // +=====================================+
@@ -2183,7 +2192,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   // +--------------------------------+
   // |                    [IT]        |
   // +--------------------------------+
-  //                      ^
+  //                      ^m_i_IntoOffset
   i8 i_IntoTail_Rel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
   m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MN_2B);
   
