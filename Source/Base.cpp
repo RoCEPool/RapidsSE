@@ -108,10 +108,6 @@ void Base::vTraceWith(void)
   vTrace("  WITH_SHOCO_FOLDLAST\n"_Stz);
 #endif
 
-#ifdef WITH_UNTWISTED_RECODING
-  vTrace("  WITH_UNTWISTED_RECODING\n"_Stz);
-#endif
-
 
 }
 

@@ -1111,19 +1111,12 @@ void RowCoder::vRecode_Short(void)
     eDM eDatum = pCol->eDatumType();
     
     i8 i_PriorFromOffset = m_i_FromOffset;
-#ifndef WITH_UNTWISTED_RECODING
-    m_eFromEncoding  = eEncodingInitial(pCol,i_LastColumn,m_i_FromOffset);
-#else
     i8 iFromOffset_IGNORE = 0;
     i_LastColumn = 0;
     m_eFromEncoding  = eEncodingInitial(pCol,i_LastColumn,iFromOffset_IGNORE);
-#endif
+
     m_nFromDataBytes = nDataBytes(eDatum,m_eFromEncoding);
     
-    // calculate new IntoOffset
-#ifndef WITH_UNTWISTED_RECODING
-    m_i_IntoOffset += m_i_FromOffset - i_PriorFromOffset;
-#endif
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // re-encode datum
     
@@ -1172,10 +1165,8 @@ void RowCoder::vRecodeBcd(Column* pCol)
   
   if (MN_NULL == m_eFromEncoding) {
     vUsageIncRecoded(pCol,0);
-#ifdef WITH_UNTWISTED_RECODING
     RASSERT(0 == m_nFromDataBytes);
     m_i_IntoOffset += 0;
-#endif
     return;
   }
   
@@ -1187,9 +1178,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
     if (m_eFromEncoding != MN_1B) {
       RASSERT(DM_BCD == m_pIntoCoda->m_aeExtDatum[i_Col]);
       vUsageIncRecoded(pCol,m_eFromEncoding);
-#ifdef WITH_UNTWISTED_RECODING
       m_i_IntoOffset += m_nFromDataBytes;
-#endif
       return;
     }
     
@@ -1200,9 +1189,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
     if (iBcd1B < 0 || iBcd1B > 10) {
       RASSERT(DM_BCD == m_pIntoCoda->m_aeExtDatum[i_Col]);
       vUsageIncRecoded(pCol,m_eFromEncoding);
-#ifdef WITH_UNTWISTED_RECODING
       m_i_IntoOffset += m_nFromDataBytes;
-#endif
       return;
     }
   }
@@ -1210,9 +1197,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
   if (m_pIntoNub->nHeads() > 1 &&
       m_pIntoCoda->m_aeExtDatum[i_Col] != DM_TENTH) {
     vUsageIncRecoded(pCol,m_eFromEncoding);
-#ifdef WITH_UNTWISTED_RECODING
     m_i_IntoOffset += m_nFromDataBytes;
-#endif
     return;
   }
 
@@ -1248,10 +1233,6 @@ void RowCoder::vRecodeBcd(Column* pCol)
       // cut the 1B char out of the into head
       m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
       
-      // go back one char in the intoOffset
-#ifndef WITH_UNTWISTED_RECODING
-      m_i_IntoOffset--;
-#endif
       vXchkBcdRecode(pCol);
       return;
     }
@@ -1269,21 +1250,13 @@ void RowCoder::vRecodeBcd(Column* pCol)
                 vUsageIncOops(pCol,2,1);
                 m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
                 m_aIntoHead->v2B(m_i_IntoOffset,iBcdNB);
-      
-#ifdef WITH_UNTWISTED_RECODING
                 m_i_IntoOffset += 2;
-#else
-                m_i_IntoOffset++;
-#endif
                 break;
       
     case MN_2B: eExtendedEncoding = MN_TENTH_2B;
                 vMetaNibble(pCol,eExtendedEncoding);
                 vUsageIncOops(pCol,2,0);
-      
-#ifdef WITH_UNTWISTED_RECODING
                 m_i_IntoOffset += 2;
-#endif
                 break;
     case MN_3B: iBcdNB = m_aIntoHead->w8_3B(m_i_IntoOffset);
                 eExtendedEncoding = MN_TENTH_4B;
@@ -1291,21 +1264,12 @@ void RowCoder::vRecodeBcd(Column* pCol)
                 vUsageIncOops(pCol,4,1);
                 m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
                 m_aIntoHead->v4B(m_i_IntoOffset,iBcdNB);
-                m_i_IntoOffset++;
-
-#ifdef WITH_UNTWISTED_RECODING
                 m_i_IntoOffset += 4;
-#else
-                m_i_IntoOffset++;
-#endif
                 break;
     case MN_4B: eExtendedEncoding = MN_TENTH_4B;
                 vMetaNibble(pCol,eExtendedEncoding);
                 vUsageIncOops(pCol,4,0);
-      
-#ifdef WITH_UNTWISTED_RECODING
                 m_i_IntoOffset += 4;
-#endif
                 break;
     case MN_5B: iBcdNB = m_aIntoHead->w8_5B(m_i_IntoOffset);
                 eExtendedEncoding = MN_TENTH_8B;
@@ -1313,13 +1277,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
                 vUsageIncOops(pCol,8,3);
                 m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,3);
                 m_aIntoHead->v8B(m_i_IntoOffset,iBcdNB);
-      
-#ifdef WITH_UNTWISTED_RECODING
                 m_i_IntoOffset += 8;
-#else
-                m_i_IntoOffset++;
-#endif
-
                 break;
     case MN_6B: iBcdNB = m_aIntoHead->w8_6B(m_i_IntoOffset);
                 eExtendedEncoding = MN_TENTH_8B;
@@ -1327,12 +1285,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
                 vUsageIncOops(pCol,8,2);
                 m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,2);
                 m_aIntoHead->v8B(m_i_IntoOffset,iBcdNB);
-
-#ifdef WITH_UNTWISTED_RECODING
                 m_i_IntoOffset += 8;
-#else
-               m_i_IntoOffset++;
-#endif
                 break;
     case MN_7B: iBcdNB = m_aIntoHead->w8_7B(m_i_IntoOffset);
                 eExtendedEncoding = MN_TENTH_8B;
@@ -1340,19 +1293,12 @@ void RowCoder::vRecodeBcd(Column* pCol)
                 vUsageIncOops(pCol,8,1);
                 m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
                 m_aIntoHead->v8B(m_i_IntoOffset,iBcdNB);
-
-#ifdef WITH_UNTWISTED_RECODING
                 m_i_IntoOffset += 8;
-#else
-                m_i_IntoOffset++;
-#endif
                 break;
     case MN_8B: eExtendedEncoding = MN_TENTH_8B;
                 vMetaNibble(pCol,eExtendedEncoding);
                 vUsageIncOops(pCol,8,0);
-#ifdef WITH_UNTWISTED_RECODING
                 m_i_IntoOffset += 8;
-#endif
                 break;
     default:
       RASSERT(0);
@@ -1368,10 +1314,8 @@ void RowCoder::vRecodeBcd(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeBol(Column* pCol)
 {
-#ifdef WITH_UNTWISTED_RECODING
   RASSERT(0 == m_nFromDataBytes);
   m_i_IntoOffset += m_nFromDataBytes;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1390,9 +1334,7 @@ void RowCoder::vRecodeDte(Column* pCol)
   if (pCol->bIsFirstDate()) {
     RASSERT(DM_DTE == m_pIntoCoda->m_aeExtDatum[i_Col]);
     vUsageIncRecoded(pCol,m_nFromDataBytes);
-#ifdef WITH_UNTWISTED_RECODING
     m_i_IntoOffset += m_nFromDataBytes;
-#endif
     return;
   }
   
@@ -1408,10 +1350,8 @@ void RowCoder::vRecodeDte(Column* pCol)
   
   if (MN_NULL == m_eFromEncoding) {
     vUsageIncRecoded(pCol,0);
-#ifdef WITH_UNTWISTED_RECODING
     RASSERT(0 == m_nFromDataBytes);
     m_i_IntoOffset += 0;
-#endif
     return;
   }
   
@@ -1505,9 +1445,7 @@ void RowCoder::vRecodeDte(Column* pCol)
       //m_i_IntoOffset--;
     }
     vUsageIncRecoded(pCol,1);
-#ifdef WITH_UNTWISTED_RECODING
     m_i_IntoOffset += 1;
-#endif
     vXchkDteRecode(pCol);
     
     return;
@@ -1530,9 +1468,7 @@ void RowCoder::vRecodeDte(Column* pCol)
       //m_i_IntoOffset--;
     }
     vUsageIncRecoded(pCol,1);
-#ifdef WITH_UNTWISTED_RECODING
     m_i_IntoOffset += 1;
-#endif
     vXchkDteRecode(pCol);
     return;
   }
@@ -1576,9 +1512,7 @@ void RowCoder::vRecodeDte(Column* pCol)
   vMetaNibble(pCol,m_eFromEncoding);
   
   vUsageIncOops(pCol,2,1);
-#ifdef WITH_UNTWISTED_RECODING
   m_i_IntoOffset += 2;
-#endif
 
   vXchkDteRecode(pCol);
   
@@ -1590,9 +1524,7 @@ void RowCoder::vRecodeDte(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeFlt(Column* pCol)
 {
-#ifdef WITH_UNTWISTED_RECODING
   m_i_IntoOffset += m_nFromDataBytes;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1607,10 +1539,8 @@ void RowCoder::vRecodeInt(Column* pCol)
   // skip nulls
   if (MN_NULL == m_eFromEncoding) {
     vUsageIncRecoded(pCol,0);
-#ifdef WITH_UNTWISTED_RECODING
     RASSERT(0 == m_nFromDataBytes);
     m_i_IntoOffset += m_nFromDataBytes;
-#endif
     return;
   }
 
@@ -1628,9 +1558,7 @@ void RowCoder::vRecodeInt(Column* pCol)
 
   // leave as int
   vUsageIncRecoded(pCol,m_eFromEncoding);
-#ifdef WITH_UNTWISTED_RECODING
   m_i_IntoOffset += m_nFromDataBytes;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1693,12 +1621,6 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
 
       // cut the 1B char out of the into head
       m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
-      
-#ifdef WITH_UNTWISTED_RECODING
-#else
-      // go back one char in the intoOffset
-      m_i_IntoOffset--;
-#endif
 
       return true;
     }
@@ -1712,59 +1634,39 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
   switch (m_eFromEncoding) {
     case MN_1B:   eExtendedEncoding = MN_DIGIT_1B;
                   vUsageIncOops(pCol,1,0);
-#ifdef WITH_UNTWISTED_RECODING
                   m_i_IntoOffset += 1;
-#endif
                   break;
     case MN_2B:   eExtendedEncoding = MN_DIGIT_2B;
                   vUsageIncOops(pCol,2,0);
-#ifdef WITH_UNTWISTED_RECODING
                   m_i_IntoOffset += 2;
-#endif
                   break;
     case MN_3B:   eExtendedEncoding = MN_DIGIT_3B;
                   vUsageIncOops(pCol,3,0);
-#ifdef WITH_UNTWISTED_RECODING
                   m_i_IntoOffset += 3;
-#endif
                   break;
     case MN_4B:   eExtendedEncoding = MN_DIGIT_4B;
                   vUsageIncOops(pCol,4,0);
-#ifdef WITH_UNTWISTED_RECODING
                   m_i_IntoOffset += 4;
-#endif
                   break;
     case MN_5B:   m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),
                                       m_i_IntoOffset,1);
-#ifdef WITH_UNTWISTED_RECODING
                   m_i_IntoOffset += 6;
-#else
-                  m_i_IntoOffset++;
-#endif
                   eExtendedEncoding = MN_DIGIT_6B;
                   vUsageIncOops(pCol,6,0);
                   break;
     case MN_6B:   eExtendedEncoding = MN_DIGIT_6B;
                   vUsageIncOops(pCol,6,0);
-#ifdef WITH_UNTWISTED_RECODING
                   m_i_IntoOffset += 6;
-#endif
                   break;
     case MN_7B:   m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),
                                       m_i_IntoOffset,1);
-#ifdef WITH_UNTWISTED_RECODING
                   m_i_IntoOffset += 8;
-#else
-                  m_i_IntoOffset++;
-#endif
                   vUsageIncOops(pCol,8,0);
                   eExtendedEncoding = MN_DIGIT_8B;
                   break;
     case MN_8B:   eExtendedEncoding = MN_DIGIT_8B;
                   vUsageIncOops(pCol,8,0);
-#ifdef WITH_UNTWISTED_RECODING
                   m_i_IntoOffset += 8;
-#endif
                   break;
     default:
       RASSERT(0);
@@ -1780,9 +1682,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeIvl(Column* pCol)
 {
-#ifdef WITH_UNTWISTED_RECODING
   m_i_IntoOffset += m_nFromDataBytes;
-#endif
   vXchkIvlRecode(pCol);
 }
 
@@ -1791,9 +1691,7 @@ void RowCoder::vRecodeIvl(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeTme(Column* pCol)
 {
-#ifdef WITH_UNTWISTED_RECODING
   m_i_IntoOffset += m_nFromDataBytes;
-#endif
   vXchkTmeRecode(pCol);
 }
 
@@ -1802,9 +1700,7 @@ void RowCoder::vRecodeTme(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeTsp(Column* pCol)
 {
-#ifdef WITH_UNTWISTED_RECODING
   m_i_IntoOffset += m_nFromDataBytes;
-#endif
   vXchkTspRecode(pCol);
 }
 
