@@ -1,0 +1,64 @@
+--------------------------------------------------------------------------------
+-- supplier table
+--------------------------------------------------------------------------------
+
+// create a table
+create table supplier (
+S_SUPPKEY       INTEGER NOT NULL,
+S_NAME          VARCHAR(25) NOT NULL,
+S_ADDRESS       VARCHAR(40) NOT NULL,
+S_NATIONKEY     INTEGER NOT NULL,
+S_PHONE         VARCHAR(15) NOT NULL,
+S_ACCTBAL       DECIMAL(15,2) NOT NULL,
+S_COMMENT       VARCHAR(101) NOT NULL
+);
+success
+
+
+//------------------------------------------------------------------------------
+// create an index on suppkey
+create index supplier_idx1 on supplier (S_SUPPKEY);
+affected: 0
+
+// check existence of index
+lsidx supplier;
+rows:
+  ('supplier_idx1',false,false)
+
+// check columns of index
+lsidxcol supplier supplier_idx1;
+rows:
+  ('S_SUPPKEY', 'INTEGER', 19, 0, false, true)
+
+-----------------------------------------------------------------------
+// load the table
+ld supplier "/TPCH/SF1/supplier.tbl" field_delimiter "|";
+success
+
+fetch supplier;
+rows: 10000
+
+-----------------------------------------------------------------------
+//fetch lineitem "l_shipdate '1992-01-02 00:00:00' <=";
+//rows: 17
+
+compactidx supplier supplier_idx1;
+success
+
+-----------------------------------------------------------------------
+//fetch lineitem "l_shipdate '1992-01-02 00:00:00' <=";
+//rows: 17
+
+// now drop the table
+drop table supplier;
+success
+
+CLEANUP {
+
+  drop table supplier;
+  mute
+
+  bye;
+  mute
+}
+
