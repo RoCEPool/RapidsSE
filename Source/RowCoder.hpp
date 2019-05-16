@@ -5,7 +5,7 @@
 
 namespace Data
 {
-  static const i8 C_METABITS = 4;
+  static const i8 C_METABITS = 6;
   
   static const i8 C_TAIL_UNITS_OFFSET = 0;
   static const i8 C_TAIL_UNITS_BYTES  = 1;
