@@ -39,7 +39,7 @@ namespace Structures
     static void  vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes);
     static void  vExpand(void* aAddr, i8 nSize, i8 i_Offset, i8 nAddBytes);
     static TAIL* aToTail(HEAD* aHead, i8 i_Distance);
-    static i8 iUnitDiff(i8 i_Head, i8 i_Tail);
+    i8 iUnitDiff(i8 i_Head, i8 i_Tail);
     static i8 nUnits(i8 nBytes);
 
     i8    iAllotHead(i8 nBytes);
@@ -214,7 +214,7 @@ TAIL* Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::aToTail(HEAD* aHead, i8 i_Distance)
 template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
 i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iUnitDiff(i8 i_Head, i8 i_Tail)
 {
-  i8 i_HeadUnit = i_Head * (sizeof(HEAD) / sizeof(UNIT));
+  i8 i_HeadUnit = i_Head * (m_nHeadBytes / sizeof(UNIT));
   
   i8 i_Diff = i_Tail - i_HeadUnit;
   
@@ -442,7 +442,7 @@ HEAD* Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::aGetHead(void)
   
   ASSERT(m_nHeadItems);
   
-  i8 i_Unit = (m_nHeadItems - 1) * (sizeof(HEAD) / sizeof(UNIT));
+  i8 i_Unit = (m_nHeadItems - 1) * (m_nHeadBytes / sizeof(UNIT));
   HEAD* aHead = (HEAD*)&m_axaUnits[i_Unit];
   
   return aHead;
@@ -458,7 +458,7 @@ HEAD* Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::aGetHead(i8 i_Head)
   
   ASSERT(i_Head >= 0 && i_Head < m_nHeadItems);
   
-  i8 i_Unit = i_Head * (sizeof(HEAD) / sizeof(UNIT));
+  i8 i_Unit = i_Head * (m_nHeadBytes / sizeof(UNIT));
   HEAD* aHead = (HEAD*)&m_axaUnits[i_Unit];
     
   return aHead;
