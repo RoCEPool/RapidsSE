@@ -43,6 +43,7 @@ namespace Structures
     static i8 nUnits(i8 nBytes);
 
     i8    iAllotHead(void);
+    i8    iAllotHead(i8 nBytes);
     i8    iAllotTail(i8 nBytes);
     i8    nAreaBytes(void);
     CODA* pCoda(void);
@@ -278,7 +279,32 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotHead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot tail item                                                            */
+/* allot head item (with size as per given number of bytes)                   */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotHead(i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  RASSERT(nBytes);
+  
+  if (nFreeBytes() < nBytes)
+    return C_UNKNOWN;
+  
+  i8 nUnits = nBytes / (i8)sizeof(UNIT);
+  if (nBytes % (i8)sizeof(UNIT))
+    nUnits++;
+  RASSERT(nUnits * (i8)sizeof(UNIT) >= nBytes);
+  
+  i8 i_Head = m_nHeadItems++;
+  
+  m_nHeadUnits += nUnits;
+
+  return i_Head;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot tail item (with size as per given number of bytes)                   */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
 i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotTail(i8 nBytes)
