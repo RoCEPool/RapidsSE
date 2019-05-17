@@ -24,6 +24,8 @@ namespace Data
 
     i8   iMetaNibble(i8 i_Nibble);
     void vMetaNibble(i8 i_Nibble, w8 wArg);
+    i8   nBytes(void);
+    i8   nWords(void);
 
   
     w8 w8_1B(i8 i_Byte);

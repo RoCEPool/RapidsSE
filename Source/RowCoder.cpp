@@ -398,9 +398,9 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
          nSumDeltaBytes
          );
   
-  i8 nHeadUsedBytes = pRowCoder_Encode->m_nTotalHeads * sizeof(HeadLine);
+  i8 nHeadUsedBytes = pRowCoder_Encode->m_nTotalHeads * m_nHeadBytes;
   i8 nTailUsedBytes = m_nTailUnits * sizeof(SpaceUnit);
-  i8 nTotalUsedBytes = pRowCoder_Encode->m_nTotalHeads * sizeof(HeadLine) + m_nTailUnits * sizeof(SpaceUnit);
+  i8 nTotalUsedBytes = pRowCoder_Encode->m_nTotalHeads * m_nHeadBytes + m_nTailUnits * sizeof(SpaceUnit);
   
   vTrace(": Buffers %lld Rows %lld(%lldB) "
          "Tails %lld(%lldB %lld%%) "
@@ -718,7 +718,7 @@ void RowCoder::vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCopyHead_Large(void)
 {
-  MemLib::vCopy(m_aIntoHead,m_aFromHead,sizeof(HeadLine),CN_ROWBUFFER);
+  MemLib::vCopy(m_aIntoHead,m_aFromHead,m_nHeadBytes,CN_ROWBUFFER);
   
 #ifdef WITH_TRACE_ENCODING
   RowCoder::vHeadDumpNat(m_aIntoHead,m_pColVec);
@@ -730,7 +730,7 @@ void RowCoder::vCopyHead_Large(void)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCopyHead_Short(void)
 {
-  MemLib::vCopy(m_aIntoHead,m_aFromHead,sizeof(HeadLine),CN_ROWBUFFER);
+  MemLib::vCopy(m_aIntoHead,m_aFromHead,m_nHeadBytes,CN_ROWBUFFER);
   
 #ifdef WITH_TRACE_ENCODING
   RowCoder::vHeadDumpNat(m_aIntoHead,m_pColVec);
@@ -950,7 +950,7 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
   
   vUsageIncEncoded(pCol,2 + nTailBytes);
   
-  //MemLib::vWordDump(aShocoLine,sizeof(HeadLine));
+  //MemLib::vWordDump(aShocoLine,m_nHeadBytes);
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1243,7 +1243,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
       vUsageIncRecoded(pCol,0);
 
       // cut the 1B char out of the into head
-      m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
+      m_pIntoNub->vCut(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1);
       
       vXchkBcdRecode(pCol);
       return;
@@ -1260,7 +1260,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
                 eExtendedEncoding = MN_TENTH_2B;
                 vMetaNibble(pCol,eExtendedEncoding);
                 vUsageIncOops(pCol,2,1);
-                m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
+                m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1);
                 m_aIntoHead->v2B(m_i_IntoOffset,iBcdNB);
                 m_i_IntoOffset += 2;
                 break;
@@ -1274,7 +1274,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
                 eExtendedEncoding = MN_TENTH_4B;
                 vMetaNibble(pCol,eExtendedEncoding);
                 vUsageIncOops(pCol,4,1);
-                m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
+                m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1);
                 m_aIntoHead->v4B(m_i_IntoOffset,iBcdNB);
                 m_i_IntoOffset += 4;
                 break;
@@ -1287,7 +1287,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
                 eExtendedEncoding = MN_TENTH_8B;
                 vMetaNibble(pCol,eExtendedEncoding);
                 vUsageIncOops(pCol,8,3);
-                m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,3);
+                m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,3);
                 m_aIntoHead->v8B(m_i_IntoOffset,iBcdNB);
                 m_i_IntoOffset += 8;
                 break;
@@ -1295,7 +1295,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
                 eExtendedEncoding = MN_TENTH_8B;
                 vMetaNibble(pCol,eExtendedEncoding);
                 vUsageIncOops(pCol,8,2);
-                m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,2);
+                m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,2);
                 m_aIntoHead->v8B(m_i_IntoOffset,iBcdNB);
                 m_i_IntoOffset += 8;
                 break;
@@ -1303,7 +1303,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
                 eExtendedEncoding = MN_TENTH_8B;
                 vMetaNibble(pCol,eExtendedEncoding);
                 vUsageIncOops(pCol,8,1);
-                m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
+                m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1);
                 m_aIntoHead->v8B(m_i_IntoOffset,iBcdNB);
                 m_i_IntoOffset += 8;
                 break;
@@ -1453,7 +1453,7 @@ void RowCoder::vRecodeDte(Column* pCol)
     if (MN_CLASSIC_2B == m_eFromEncoding ||
         MN_SILVER_2B == m_eFromEncoding ||
         MN_MODERN_2B == m_eFromEncoding) {
-      m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset+1,1);
+      m_pIntoNub->vCut(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset+1,1);
       //m_i_IntoOffset--;
     }
     vUsageIncRecoded(pCol,1);
@@ -1476,7 +1476,7 @@ void RowCoder::vRecodeDte(Column* pCol)
     if (MN_CLASSIC_2B == m_eFromEncoding ||
         MN_SILVER_2B == m_eFromEncoding ||
         MN_MODERN_2B == m_eFromEncoding) {
-      m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset+1,1);
+      m_pIntoNub->vCut(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset+1,1);
       //m_i_IntoOffset--;
     }
     vUsageIncRecoded(pCol,1);
@@ -1490,19 +1490,19 @@ void RowCoder::vRecodeDte(Column* pCol)
 
   if (MN_CLASSIC_1B == m_eFromEncoding) {
     m_eFromEncoding = MN_DAYS_CLASSIC_2B;
-    m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
+    m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1);
     m_aIntoHead->v2B(m_i_IntoOffset,iThisDateDays);
   }
   else
   if (MN_SILVER_1B == m_eFromEncoding) {
     m_eFromEncoding = MN_DAYS_SILVER_2B;
-    m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
+    m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1);
     m_aIntoHead->v2B(m_i_IntoOffset,iThisDateDays);
   }
   else
   if (MN_MODERN_1B == m_eFromEncoding) {
     m_eFromEncoding = MN_DAYS_MODERN_2B;
-    m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
+    m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1);
     m_aIntoHead->v2B(m_i_IntoOffset,iThisDateDays);
   }
   else
@@ -1632,7 +1632,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
       vUsageIncRecoded(pCol,0);
 
       // cut the 1B char out of the into head
-      m_pIntoNub->vCut(m_aIntoHead,sizeof(HeadLine),m_i_IntoOffset,1);
+      m_pIntoNub->vCut(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1);
 
       return true;
     }
@@ -1660,7 +1660,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
                   vUsageIncOops(pCol,4,0);
                   m_i_IntoOffset += 4;
                   break;
-    case MN_5B:   m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),
+    case MN_5B:   m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,
                                       m_i_IntoOffset,1);
                   m_i_IntoOffset += 6;
                   eExtendedEncoding = MN_DIGIT_6B;
@@ -1670,7 +1670,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
                   vUsageIncOops(pCol,6,0);
                   m_i_IntoOffset += 6;
                   break;
-    case MN_7B:   m_pIntoNub->vExpand(m_aIntoHead,sizeof(HeadLine),
+    case MN_7B:   m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,
                                       m_i_IntoOffset,1);
                   m_i_IntoOffset += 8;
                   vUsageIncOops(pCol,8,0);
@@ -1889,7 +1889,7 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
 
   // do the bytes ( <C><shoco.....> ) fit into the Into-Head ?
   i8 nNeedHeadBytes  = C_SHOCO_COMPRESSED_BYTES + nShocoBytes;
-  i8 nAvailHeadBytes = sizeof(HeadLine) - m_i_IntoOffset;  //! not variable head
+  i8 nAvailHeadBytes = m_nHeadBytes - m_i_IntoOffset;  //! not variable head
   
   if (nNeedHeadBytes > nAvailHeadBytes) {
     // +--------------------------------+
@@ -1992,7 +1992,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   i8 nFromOverHang = nFromAllBytes % sizeof(SpaceUnit);
  
   // calc the available bytes in the head
-  i8 nAvailHeadBytes = sizeof(HeadLine) - m_i_IntoOffset;  //! not variable head
+  i8 nAvailHeadBytes = m_nHeadBytes - m_i_IntoOffset;  //! not variable head
 
   // can we split??  can we split effectively?? do we split??
   
@@ -2079,7 +2079,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   return true;
  
   
-  //MemLib::vWordDump(aIntoHead,sizeof(HeadLine));
+  //MemLib::vWordDump(aIntoHead,m_nHeadBytes);
   //      HV_Rec hvRec;
   //      RowCoder::vRecord(hvRec,aFromHead,pColVec);
   //      hvRec->vPrintRow();
@@ -2940,7 +2940,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  MemLib::vWordDump(aHeadLine, sizeof(HeadLine));
+  MemLib::vWordDump(aHeadLine,aHeadLine->nBytes());
   
   i8 nFreeBytes = nFreeSpaceHead(aHeadLine,pColVec,pCoda);
   vTrace("FreeBytes %lld\n"_Stz,nFreeBytes);
@@ -3014,7 +3014,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, 
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  MemLib::vWordDump(aHeadLine, sizeof(HeadLine));
+  MemLib::vWordDump(aHeadLine,aHeadLine->nBytes());
   
   //i8 nFreeBytes = nFreeSpaceHead(aHeadLine,pColVec,pCoda);
   //vTrace("FreeBytes %lld\n"_Stz,nFreeBytes);
@@ -3082,7 +3082,7 @@ void RowCoder::vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec)
   RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
   Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
   
-  MemLib::vWordDump(aHeadLine, sizeof(HeadLine));
+  MemLib::vWordDump(aHeadLine,aHeadLine->nBytes());
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get no of columns
@@ -4127,7 +4127,7 @@ void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
   
   i8 nCompressed = aHeadLine->w8_1B(i_Offset+2);
   
-  i8 nBytesPartA = sizeof(HeadLine) - i_Offset - 3;
+  i8 nBytesPartA = aHeadLine->nBytes() - i_Offset - 3;                           //! <W>
   i8 nBytesPartB = nCompressed - nBytesPartA;
   
   MemLib::vCopy((byte*)caShoco+2,
@@ -4700,8 +4700,8 @@ i8 RowCoder::iFindTail(RowNub* pNub, TailLine* aFindLine)
     i8 nTailUnits = aTailLine->w8_1B(C_TAIL_UNITS_OFFSET);
     //RASSERT(nTailUnits <= 4);
     
-    //MemLib::vWordDump(aFindLine,sizeof(HeadLine));
-    //MemLib::vWordDump(aTailLine,sizeof(HeadLine));
+    //MemLib::vWordDump(aFindLine,m_nHeadBytes);
+    //MemLib::vWordDump(aTailLine,m_nHeadBytes);
     
     if (0 == MemLib::iCompareWords(aTailLine,aFindLine,nTailUnits*sizeof(SpaceUnit))) {
       nFound++;
@@ -4723,7 +4723,7 @@ i8 RowCoder::iFindTail(RowNub* pNub, TailLine* aFindLine)
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda)
 {
-  //MemLib::vWordDump(aHeadLine,sizeof(HeadLine));
+  //MemLib::vWordDump(aHeadLine,m_nHeadBytes);
   
   Column* pLastCol = pColVec->pGet(pColVec->nItems() - 1);
   ASSERT(pLastCol->bIsLastColumn());
@@ -4797,7 +4797,7 @@ void RowCoder::vRestoreTsp(Datum* pDatum, eMN eEncoding)
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine)
 {
-  //MemLib::vWordDump(aHeadLine,sizeof(HeadLine));
+  //MemLib::vWordDump(aHeadLine,m_nHeadBytes);
   
   ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
   Coda* pCoda = pNub->pCoda();
@@ -4822,12 +4822,13 @@ i8 RowCoder::nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine)
   RASSERT(nCompressed <= 56);
   i8 nTailSize = nCompressed + 1;
   
-  //MemLib::vWordDump(aHeadLine,sizeof(HeadLine));
+  //MemLib::vWordDump(aHeadLine,m_nHeadBytes);
 
 
   return nTailSize;
 }
 
+                                                       //! this should be in nub
 /*----------------------------------------------------------------------------*/
 /* verify tail lines of given nub                                             */
 /*----------------------------------------------------------------------------*/
@@ -4845,7 +4846,7 @@ void RowCoder::vVerifyTails(RowNub* pNub, i8 i_Dump)
     RASSERT(nTailUnits > 0 && nTailUnits <= 255);
     
     if (i_Tail == i_Dump)
-      MemLib::vWordDump(aTailLine,sizeof(HeadLine));
+      MemLib::vWordDump(aTailLine,64);
 
     nTails++;
     nSumTailUnits += nTailUnits;
