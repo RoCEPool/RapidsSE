@@ -74,24 +74,6 @@ void HeadLine::vMetaCode(i8 i_Meta, w8 wArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return meta nibble                                                         */
-/*----------------------------------------------------------------------------*/
-i8 HeadLine::iMetaNibble(i8 i_Nibble)
-{
-  w8 iNibble = w8_1N(C_HEAD_PRE_BYTES * C_NIBBLES_PER_BYTE + i_Nibble);
-  
-  return iNibble;
-}
-
-/*----------------------------------------------------------------------------*/
-/* store meta nibble                                                          */
-/*----------------------------------------------------------------------------*/
-void HeadLine::vMetaNibble(i8 i_Nibble, w8 wArg)
-{
-  v1N(C_HEAD_PRE_BYTES * C_NIBBLES_PER_BYTE + i_Nibble,wArg);
-}
-
-/*----------------------------------------------------------------------------*/
 /* return size of head in bytes                                               */
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::nBytes(void)
