@@ -16,9 +16,10 @@ namespace Structures
     i8 m_nHeadAllot;  // size of head to allot
   
     i8 m_nHeadItems;  // number of items allocated from the head
-    i8 m_nTailItems;  // number of items allocated from the tail
-  
+    i8 m_nHeadBytes;  // number of bytes allocated from the head
     i8 m_nHeadUnits;  // number of space units allocated from the head
+
+    i8 m_nTailItems;  // number of items allocated from the tail
     i8 m_nTailUnits;  // number of space units allocated from the tail
 
     DESC* m_pDesc;    // object describing the items
@@ -55,6 +56,7 @@ namespace Structures
     HEAD* aGetHead(i8 i_Head);
     TAIL* aGetTail(i8 i_Tail);
     i8    nHeads(void);
+    i8    nHeadBytes(void);
     i8    nHeadUnits(void);
     i8    iHash(void);
     void  vHashInc(i8 iDelta);
@@ -148,12 +150,14 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::Nub_t(void)
   RASSERT(0 == sizeof(HEAD) % sizeof(UNIT));
   RASSERT(0 == sizeof(TAIL) % sizeof(UNIT));
 
-  m_nHeadAllot  = C_UNKNOWN;
   m_nSpaceUnits = C_UNKNOWN;
-  m_nHeadUnits  = 0;
-  m_nTailUnits  = 0;
+  m_nHeadAllot  = C_UNKNOWN;
 
+  m_nHeadUnits  = 0;
+  m_nHeadBytes  = 0;
   m_nHeadItems  = 0;
+
+  m_nTailUnits  = 0;
   m_nTailItems  = 0;
   
   m_pCoda       = nullptr;
@@ -161,7 +165,7 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::Nub_t(void)
 
   m_axaUnits    = nullptr;
 
-   m_iHash       = 0;
+  m_iHash       = 0;
 
   i8 nBytes = sizeof(Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>);
   _checkInitialisedSize_(nBytes);
@@ -265,12 +269,13 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotHead(i8 nBytes)
   i8 i_Head = m_nHeadItems++;
   
   m_nHeadUnits += nUnits;
+  m_nHeadBytes += nBytes;
 
   m_nHeadAllot = nBytes;
   
   HEAD* aHead = aGetHead(i_Head);
   
-  i8 nWords = nBytes / C_BYTES_PER_WORD;
+  i8 nWords = nBytes / (i8)C_BYTES_PER_WORD;
   RASSERT(nWords == sizeof(HEAD) / C_BYTES_PER_WORD);
   aHead->v1B(0,nWords);
 
@@ -517,6 +522,17 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nHeads(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   return m_nHeadItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total number of head bytes                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nHeadBytes(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  return m_nHeadBytes;
 }
 
 /*----------------------------------------------------------------------------*/
