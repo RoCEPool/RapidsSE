@@ -5,7 +5,7 @@
 
 namespace Base
 {
-  class TailLine
+  class TailLine : public Line
   {
   public:
     byte m_yaByte[sizeof(SpaceUnit)];
