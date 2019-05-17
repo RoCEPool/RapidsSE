@@ -5,7 +5,7 @@
 
 namespace Data
 {
-  static const i8 C_METABITS = 6;
+  static const i8 C_METABITS = 8;
   
   static const i8 C_TAIL_UNITS_OFFSET = 0;
   static const i8 C_TAIL_UNITS_BYTES  = 1;
@@ -136,7 +136,7 @@ namespace Data
                           i8& i_PriorColumn_, i8& i_Offset_);
     void vHashColumn(Datum* pSrcDatum, Column* pCol);
   
-    void vMetaNibble(Column* pCol, eMN eMetaNibble);
+    void vMetaCode(Column* pCol, eMN eMetaCode);
     void vMetaPut(Datum* pDatum, Column* pCol);
 
     void vRecode_Large(void);
@@ -1131,7 +1131,7 @@ namespace Data
     {
       i8 nColumns = pColVec->nItems();
     
-      i8 nBits = (nColumns * C_METABITS) + C_BITS_PER_BYTE;
+      i8 nBits = C_BITS_PER_BYTE + (nColumns * C_METABITS);
     
       i8 nMetaBytes = nBits / C_BITS_PER_BYTE
                         + (nBits % C_BITS_PER_BYTE ? 1 : 0);

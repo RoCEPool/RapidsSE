@@ -56,21 +56,23 @@ void HeadLine::vSetAll(byte yVal)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return meta nibble                                                        */
+/* return meta code                                                           */
 /*----------------------------------------------------------------------------*/
-i8 HeadLine::iMetaNibble(i8 i_Nibble)
+i8 HeadLine::iMetaCode(i8 i_Meta)
 {
-  w8 iNibble = w8_1N(C_HEAD_PRE_BYTES * C_NIBBLES_PER_BYTE + i_Nibble);
-  
-  return iNibble;
+  //w8 iCode = w8_1N(C_HEAD_PRE_BYTES * C_NIBBLES_PER_BYTE + i_Meta);
+  w8 iCode = w8_1B(C_HEAD_PRE_BYTES + i_Meta);
+
+  return iCode;
 }
 
 /*----------------------------------------------------------------------------*/
-/* store meta nibble                                                          */
+/* store meta byte                                                            */
 /*----------------------------------------------------------------------------*/
-void HeadLine::vMetaNibble(i8 i_Nibble, w8 wArg)
+void HeadLine::vMetaCode(i8 i_Meta, w8 wArg)
 {
-  v1N(C_HEAD_PRE_BYTES * C_NIBBLES_PER_BYTE + i_Nibble,wArg);
+  //v1N(C_HEAD_PRE_BYTES * C_NIBBLES_PER_BYTE + i_Meta,wArg);
+  v1B(C_HEAD_PRE_BYTES + i_Meta,wArg);
 }
 
 /*----------------------------------------------------------------------------*/
