@@ -17,8 +17,7 @@ namespace Structures
   
     i8 m_nHeadItems;  // number of items allocated from the head
     i8 m_nHeadBytes;  // number of bytes allocated from the head
-    i8 m_nHeadUnits;  // number of space units allocated from the head
-
+ 
     i8 m_nTailItems;  // number of items allocated from the tail
     i8 m_nTailUnits;  // number of space units allocated from the tail
 
@@ -152,7 +151,6 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::Nub_t(void)
   m_nSpaceUnits = C_UNKNOWN;
   m_nHeadAllot  = C_UNKNOWN;
 
-  m_nHeadUnits  = 0;
   m_nHeadBytes  = 0;
   m_nHeadItems  = 0;
 
@@ -267,7 +265,6 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotHead(i8 nBytes)
   
   i8 i_Head = m_nHeadItems++;
   
-  m_nHeadUnits += nUnits;
   m_nHeadBytes += nBytes;
 
   m_nHeadAllot = nBytes;
@@ -421,8 +418,6 @@ template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
 i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nFreeBytes(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  RASSERT(m_nHeadUnits * sizeof(UNIT) == m_nHeadBytes);
   
   i8 nFreeBytes = (m_nSpaceUnits * sizeof(UNIT))
                      - m_nHeadBytes
@@ -597,7 +592,6 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vReset(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  m_nHeadUnits = 0;
   m_nHeadBytes = 0;
   m_nTailUnits = 0;
 
@@ -627,8 +621,6 @@ template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
 i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nUsedBytes(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  RASSERT(m_nHeadUnits * sizeof(UNIT) == m_nHeadBytes);
   
   i8 nBytes = m_nHeadBytes + (m_nTailUnits * sizeof(UNIT));
   
