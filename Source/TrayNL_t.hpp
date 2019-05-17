@@ -26,6 +26,7 @@ namespace Structures
     CODA* m_pCoda;    // object decoding the items
 
     UNIT* m_axaUnits; // array of space units
+    Word* m_axaWords; // array of word units
 
     i8 m_iHash;       // encoding hash
 
@@ -161,6 +162,7 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::Nub_t(void)
   m_pDesc       = nullptr;
 
   m_axaUnits    = nullptr;
+  m_axaWords    = nullptr;
 
   m_iHash       = 0;
 
@@ -452,8 +454,8 @@ HEAD* Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::aGetHead(i8 i_Head)
   
   ASSERT(i_Head >= 0 && i_Head < m_nHeadItems);
   
-  i8 i_Unit = i_Head * (m_nHeadAllot / sizeof(UNIT));
-  HEAD* aHead = (HEAD*)&m_axaUnits[i_Unit];
+  i8 i_Word = i_Head * (m_nHeadAllot / sizeof(Word));
+  HEAD* aHead = (HEAD*)&m_axaWords[i_Word];
     
   return aHead;
 }
@@ -638,6 +640,7 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vSetItems(i8 nSpaceUnits, UNIT* axaUnit
   m_nSpaceUnits = nSpaceUnits;
   
   m_axaUnits    = axaUnits;
+  m_axaWords    = (Word*)axaUnits;
 }
 
 /*----------------------------------------------------------------------------*/
