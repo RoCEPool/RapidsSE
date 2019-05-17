@@ -288,8 +288,6 @@ namespace Data
   
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
 
-    static void vVerifyTails(RowNub* pNub, i8 i_Dump);
-
   private:
     Footer* aFooter(void);
 

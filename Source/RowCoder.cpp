@@ -221,7 +221,7 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   
   vAnalyseFree();
   
-  vVerifyTails(m_pIntoNub,C_UNKNOWN);
+  m_pIntoNub->vVerifyTails(C_UNKNOWN);
   
   return true;
 }
@@ -4826,34 +4826,6 @@ i8 RowCoder::nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine)
 
 
   return nTailSize;
-}
-
-                                                       //! this should be in nub
-/*----------------------------------------------------------------------------*/
-/* verify tail lines of given nub                                             */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vVerifyTails(RowNub* pNub, i8 i_Dump)
-{
-  i8 nTails = 0;
-  i8 nSumTailUnits = 0;
-
-  for (i8 i_Tail = pNub->iLastTail();
-       i_Tail != C_UNKNOWN;
-       i_Tail = pNub->iPrevTail(i_Tail)) {
-    
-    TailLine* aTailLine = pNub->aGetTail(i_Tail);
-    i8 nTailUnits = aTailLine->w8_1B(C_TAIL_UNITS_OFFSET);
-    RASSERT(nTailUnits > 0 && nTailUnits <= 255);
-    
-    if (i_Tail == i_Dump)
-      MemLib::vWordDump(aTailLine,64);
-
-    nTails++;
-    nSumTailUnits += nTailUnits;
-  }
-  
-  RASSERT(nTails == pNub->nTails());
-  RASSERT(nSumTailUnits == pNub->nTailUnits());
 }
 
 

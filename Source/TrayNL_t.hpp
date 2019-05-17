@@ -68,7 +68,8 @@ namespace Structures
     i8    nTails(void);
     i8    nTailUnits(void);
     i8    nUsedBytes(void);
-
+    void  vVerifyTails(i8 i_Dump);
+  
     void  vSetItems(i8 nSpaceUnits, UNIT* axaUnits);
   
   private:
@@ -423,6 +424,8 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nFreeBytes(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
+  RASSERT(m_nHeadUnits * sizeof(UNIT) == m_nHeadBytes);
+  
   i8 nFreeBytes = (m_nSpaceUnits - (m_nHeadUnits + m_nTailUnits)) * sizeof(UNIT);
   
   return nFreeBytes;
@@ -606,6 +609,7 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vReset(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   m_nHeadUnits = 0;
+  m_nHeadBytes = 0;
   m_nTailUnits = 0;
 
   m_nHeadItems = 0;
@@ -646,6 +650,7 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nUsedBytes(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
+  RASSERT(m_nHeadUnits * sizeof(UNIT) == m_nHeadBytes);
   i8 nBytes = (m_nHeadUnits + m_nTailUnits) * sizeof(UNIT);
   
   return nBytes;
@@ -662,6 +667,34 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vSetItems(i8 nSpaceUnits, UNIT* axaUnit
   m_nSpaceUnits = nSpaceUnits;
   
   m_axaUnits    = axaUnits;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify tail lines of given nub                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
+void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vVerifyTails(i8 i_Dump)
+{
+  i8 nTails = 0;
+  i8 nSumTailUnits = 0;
+  
+  for (i8 i_Tail = iLastTail();
+       i_Tail != C_UNKNOWN;
+       i_Tail = iPrevTail(i_Tail)) {
+    
+    TAIL* aTailLine = aGetTail(i_Tail);
+    i8 nTailUnits = aTailLine->w8_1B(0);
+    RASSERT(nTailUnits > 0 && nTailUnits <= 255);
+    
+    if (i_Tail == i_Dump)
+      MemLib::vWordDump(aTailLine,64);
+    
+    nTails++;
+    nSumTailUnits += nTailUnits;
+  }
+  
+  RASSERT(nTails == m_nTailItems);
+  RASSERT(nSumTailUnits == m_nTailUnits);
 }
 
 
