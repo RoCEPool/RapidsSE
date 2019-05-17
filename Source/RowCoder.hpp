@@ -209,7 +209,7 @@ namespace Data
                         i8& i_LastColumn, i8& i_LastOffset);
   
     static i8   nDataBytes(eDM eDatum, eMN eEncoding);
-    static i8   nDataBytes_mark3(eDM eDatum, eMB eEncoding);
+    static i8   nDataBytes_mark3(eDM eDatum, eMC eMetaCode);
   
     static void vDaysFromBase(Datum* pDatum, i8& iEra);
     static i8   iDaysIntoBase(i8 nDaysWithinEra, i8 iEra);

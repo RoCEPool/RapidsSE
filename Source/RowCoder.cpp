@@ -3582,83 +3582,83 @@ i8 RowCoder::nDataBytes(eDM eDatum, eMN eEncoding)
 /*----------------------------------------------------------------------------*/
 /* return number of data bytes of encoding                                    */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::nDataBytes_mark3(eDM eDatum, eMB eEncoding)
+i8 RowCoder::nDataBytes_mark3(eDM eDatum, eMC eMetaCode)
 {
-  switch (eEncoding) {
-    case MB_NULL:
-    case MB_1B:
-    case MB_2B:
-    case MB_3B:
-    case MB_4B:
-    case MB_5B:
-    case MB_6B:
-    case MB_7B:
-    case MB_8B:
-      return eEncoding;
+  switch (eMetaCode) {
+    case MC_NULL:
+    case MC_1B:
+    case MC_2B:
+    case MC_3B:
+    case MC_4B:
+    case MC_5B:
+    case MC_6B:
+    case MC_7B:
+    case MC_8B:
+      return eMetaCode;
       
-    case MB_MINUS_ONE:
-    case MB_ZERO:
-    case MB_ONE:
-    case MB_TWO:
-    case MB_THREE:
-    case MB_FOUR:
-    case MB_FIVE:
-    case MB_SIX:
-    case MB_SEVEN:
-    case MB_EIGHT:
-    case MB_NINE:
-    case MB_TEN:
-    case MB_SAME:
+    case MC_MINUS_ONE:
+    case MC_ZERO:
+    case MC_ONE:
+    case MC_TWO:
+    case MC_THREE:
+    case MC_FOUR:
+    case MC_FIVE:
+    case MC_SIX:
+    case MC_SEVEN:
+    case MC_EIGHT:
+    case MC_NINE:
+    case MC_TEN:
+    case MC_SAME:
       return 0;
      
     //! NOT SURE
-    case MB_ADD_1B:
-    case MB_ADD_2B:
-    case MB_SUB_1B:
-    case MB_SUB_2B:
+    case MC_ADD_1B:
+    case MC_ADD_2B:
+    case MC_SUB_1B:
+    case MC_SUB_2B:
       RASSERT(0);
       
-    case MB_FALSE:
-    case MB_TRUE:
+    case MC_FALSE:
+    case MC_TRUE:
       return 0;
       
-    case MB_DATE_E0_2B:
-    case MB_DATE_E1_2B:
-    case MB_DATE_E2_2B:
+    case MC_DATE_E0_2B:
+    case MC_DATE_E1_2B:
+    case MC_DATE_E2_2B:
       return 2;
       
-    case MB_DAYS_ADD_1B:
-    case MB_DAYS_SUB_1B:
+    case MC_DAYS_ADD_1B:
+    case MC_DAYS_SUB_1B:
       return 1;
       
-    case MB_STR_EMPTY:
+    case MC_STR_EMPTY:
       return 0;
       
     //! NOT SURE
-    case MB_STR_FIT_1L:
-    case MB_STR_2T:
-    case MB_STR_SPLIT_2T1L:
+    case MC_STR_FIT_1L:
+    case MC_STR_2T:
+    case MC_STR_SPLIT_2T1L:
       
-    case MB_BSTR_FIT_2L:
-    case MB_BSTR_2T:
-    case MB_BSTR_SPLIT_2T1L:
+    case MC_BSTR_FIT_2L:
+    case MC_BSTR_2T:
+    case MC_BSTR_SPLIT_2T1L:
       
-    case MB_SHOCO_FIT_1L:
-    case MB_SHOCO_2T:
-    case MB_SHOCO_SPLIT_2T1L:
+    case MC_SHOCO_FIT_1L:
+    case MC_SHOCO_2T:
+    case MC_SHOCO_SPLIT_2T1L:
       RASSERT(0);
       
       //! NOT SURE
-    case MB_TWOS_1B:
-    case MB_TWOS_2B:
-    case MB_TWOS_3B:
-    case MB_TWOS_4B:
-    case MB_TWOS_5B:
-    case MB_TWOS_6B:
-    case MB_TWOS_7B:
+    case MC_TWOS_1B:
+    case MC_TWOS_2B:
+    case MC_TWOS_3B:
+    case MC_TWOS_4B:
+    case MC_TWOS_5B:
+    case MC_TWOS_6B:
+    case MC_TWOS_7B:
       RASSERT(0);
       
-    case MB_OVERFLOW_2B:
+    case MC_OVERFLOW_2B:
       return 2;
       
     default:
