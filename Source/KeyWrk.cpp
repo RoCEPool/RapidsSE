@@ -203,7 +203,7 @@ void KeyWrk::vExtractKey(RowNub* pRowNub, i8 i_Row, IdxColVec* pIdxColVec)
   
   i8 nCols = pIdxColVec->nItems();
   i8 i_LastColumn = 0;
-  i8 i_LastOffset = 8;
+  i8 i_LastOffset = RowCoder::iBaseOffset(pRowNub->pDesc()->pColumnVec());
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     
     // get the column from the index column vector
