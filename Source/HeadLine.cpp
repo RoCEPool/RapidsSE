@@ -60,7 +60,7 @@ void HeadLine::vSetAll(byte yVal)
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::iMetaNibble(i8 i_Nibble)
 {
-  w8 iNibble = w8_1N(i_Nibble);
+  w8 iNibble = w8_1N(C_HEAD_PRE_BYTES * C_NIBBLES_PER_BYTE + i_Nibble);
   
   return iNibble;
 }
@@ -70,7 +70,7 @@ i8 HeadLine::iMetaNibble(i8 i_Nibble)
 /*----------------------------------------------------------------------------*/
 void HeadLine::vMetaNibble(i8 i_Nibble, w8 wArg)
 {
-  v1N(i_Nibble,wArg);
+  v1N(C_HEAD_PRE_BYTES * C_NIBBLES_PER_BYTE + i_Nibble,wArg);
 }
 
 /*----------------------------------------------------------------------------*/

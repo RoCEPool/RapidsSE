@@ -7,6 +7,8 @@ namespace Data
 {
   class Datum;
   
+  static const i8 C_HEAD_PRE_BYTES = 0;
+
   class HeadLine
   {
   public:
@@ -52,11 +54,12 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     inline i8 iMetaNibbleFast(i8 i_Nibble)
     {
-      w8 iNibble = w8_1NFast(i_Nibble);
+      w8 iNibble = w8_1NFast(C_HEAD_PRE_BYTES * C_NIBBLES_PER_BYTE + i_Nibble);
       
       return iNibble;
     }
 
+    /*----------------------------------------------------------------------------*/
     /* return meta nibble zero                                                    */
     /*----------------------------------------------------------------------------*/
     inline i8 iMetaNibbleZeroFast(void)
@@ -201,7 +204,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     inline byte w8_1NFast_Nibble0()
     {
-      byte yByte = *((byte*)this);
+      byte yByte = *((byte*)this + C_HEAD_PRE_BYTES);
       
       // left nibble
       return (yByte >> 4);
@@ -212,10 +215,10 @@ namespace Data
     {
       if (i_Nibble & 0x1)
         // right nibble
-        return *((byte*)this + (i_Nibble>>1)) & 0xF;
+        return *((byte*)this + C_HEAD_PRE_BYTES + (i_Nibble>>1)) & 0xF;
       else
         // left nibble
-        return *((byte*)this + (i_Nibble>>1)) >> 4;
+        return *((byte*)this + C_HEAD_PRE_BYTES + (i_Nibble>>1)) >> 4;
     }
 
   };
