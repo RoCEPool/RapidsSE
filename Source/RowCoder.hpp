@@ -765,7 +765,7 @@ namespace Data
       aHeadLine->w8_1BFast(pDatum, i_Offset+2);
       i8 nCompressed = pDatum->m_wWord;
       
-      RASSERT(nCompressed <= 56);
+      //RASSERT(nCompressed <= 56);
       
       i8 nBytesPartA = sizeof(HeadLine) - i_Offset - 3;
       i8 nBytesPartB = nCompressed - nBytesPartA;

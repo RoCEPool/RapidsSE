@@ -4096,7 +4096,7 @@ void RowCoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
                                   Column* pCol, eMN eEncoding, i8 i_Offset)
 {
   i8 nCompressed = aHeadLine->w8_1B(i_Offset);
-  RASSERT(nCompressed <= 56);
+  //RASSERT(nCompressed <= 56);
   
   i8 nDecompressed =
   Compress::iFromShoco((char*)pDatum->m_sVch.aChar(),
@@ -4732,7 +4732,7 @@ i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda
   
   if (pLastCol->eDatumType() == DM_VCH && MN_SHOCO_FIT == eEncoding) {
     i8 nCompressed = aHeadLine->w8_1B(i_Offset);
-    RASSERT(nCompressed <= 56);
+    //RASSERT(nCompressed <= 56);
     i_Offset += nCompressed;
   }
   
@@ -4812,7 +4812,7 @@ i8 RowCoder::nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine)
   TailLine* aShocoTail = pNub->aToTail(aHeadLine,i_Distance);
 
   i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
-  RASSERT(nCompressed <= 56);
+  //RASSERT(nCompressed <= 56);
   i8 nTailSize = nCompressed + 1;
   
   //MemLib::vWordDump(aHeadLine,m_nHeadBytes);
