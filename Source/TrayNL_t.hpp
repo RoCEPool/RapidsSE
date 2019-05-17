@@ -57,7 +57,6 @@ namespace Structures
     TAIL* aGetTail(i8 i_Tail);
     i8    nHeads(void);
     i8    nHeadBytes(void);
-    i8    nHeadUnits(void);
     i8    iHash(void);
     void  vHashInc(i8 iDelta);
     bool  bHasSpace(i8 nBytes);
@@ -66,7 +65,6 @@ namespace Structures
     i8    iPrevTail(i8 i_Tail);
     void  vReset(void);
     i8    nTails(void);
-    i8    nTailUnits(void);
     i8    nUsedBytes(void);
     void  vVerifyTails(i8 i_Dump);
   
@@ -539,17 +537,6 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nHeadBytes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get total number of head units                                             */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nHeadUnits(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  return m_nHeadUnits;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get total number of actual items                                           */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
@@ -629,17 +616,6 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nTails(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   return m_nTailItems;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get total number of tail units                                             */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nTailUnits(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  return m_nTailUnits;
 }
 
 /*----------------------------------------------------------------------------*/
