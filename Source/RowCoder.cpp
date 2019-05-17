@@ -4740,7 +4740,7 @@ i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda
   
   i8 nBytes = nDataBytes(eDatumExt, eEncoding);
   
-  i8 nFreeBytes = C_BYTES_PER_CACHE_LINE - i_Offset - nBytes;
+  i8 nFreeBytes = aHeadLine->nBytes() - i_Offset - nBytes;
   
   return nFreeBytes;
 }
