@@ -5,7 +5,7 @@
 
 namespace Data
 {
-  static const i8 C_METABITS = 6;
+  static const i8 C_METABITS = 8;
   
   static const i8 C_TAIL_UNITS_OFFSET = 0;
   static const i8 C_TAIL_UNITS_BYTES  = 1;
@@ -1131,7 +1131,7 @@ namespace Data
     {
       i8 nColumns = pColVec->nItems();
     
-      i8 nBits = (nColumns * C_METABITS) + C_BITS_PER_BYTE;
+      i8 nBits = C_BITS_PER_BYTE + (nColumns * C_METABITS);
     
       i8 nMetaBytes = nBits / C_BITS_PER_BYTE
                         + (nBits % C_BITS_PER_BYTE ? 1 : 0);
