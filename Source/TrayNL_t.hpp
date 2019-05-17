@@ -424,7 +424,9 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nFreeBytes(void)
   
   RASSERT(m_nHeadUnits * sizeof(UNIT) == m_nHeadBytes);
   
-  i8 nFreeBytes = (m_nSpaceUnits - (m_nHeadUnits + m_nTailUnits)) * sizeof(UNIT);
+  i8 nFreeBytes = (m_nSpaceUnits * sizeof(UNIT))
+                     - m_nHeadBytes
+                     - (m_nTailUnits * sizeof(UNIT));
   
   return nFreeBytes;
 }
@@ -627,7 +629,8 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nUsedBytes(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   RASSERT(m_nHeadUnits * sizeof(UNIT) == m_nHeadBytes);
-  i8 nBytes = (m_nHeadUnits + m_nTailUnits) * sizeof(UNIT);
+  
+  i8 nBytes = m_nHeadBytes + (m_nTailUnits * sizeof(UNIT));
   
   return nBytes;
 }
