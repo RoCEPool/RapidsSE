@@ -12,11 +12,12 @@ namespace Structures
   class Nub_t : public Object
   {
   private:
-    i8 m_nHeadBytes;  // alloted head bytes
+    i8 m_nSpaceUnits; // number of space units
+    i8 m_nHeadAllot;  // size of head to allot
+  
     i8 m_nHeadItems;  // number of items allocated from the head
     i8 m_nTailItems;  // number of items allocated from the tail
   
-    i8 m_nSpaceUnits; // number of space units
     i8 m_nHeadUnits;  // number of space units allocated from the head
     i8 m_nTailUnits;  // number of space units allocated from the tail
 
@@ -147,7 +148,7 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::Nub_t(void)
   RASSERT(0 == sizeof(HEAD) % sizeof(UNIT));
   RASSERT(0 == sizeof(TAIL) % sizeof(UNIT));
 
-  m_nHeadBytes  = C_UNKNOWN;
+  m_nHeadAllot  = C_UNKNOWN;
   m_nSpaceUnits = C_UNKNOWN;
   m_nHeadUnits  = 0;
   m_nTailUnits  = 0;
@@ -213,7 +214,7 @@ TAIL* Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::aToTail(HEAD* aHead, i8 i_Distance)
 template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
 i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iUnitDiff(i8 i_Head, i8 i_Tail)
 {
-  i8 i_HeadUnit = i_Head * (m_nHeadBytes / sizeof(UNIT));
+  i8 i_HeadUnit = i_Head * (m_nHeadAllot / sizeof(UNIT));
   
   i8 i_Diff = i_Tail - i_HeadUnit;
   
@@ -265,7 +266,7 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotHead(i8 nBytes)
   
   m_nHeadUnits += nUnits;
 
-  m_nHeadBytes = nBytes;
+  m_nHeadAllot = nBytes;
   
   HEAD* aHead = aGetHead(i_Head);
   
@@ -432,7 +433,7 @@ HEAD* Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::aGetHead(void)
   
   ASSERT(m_nHeadItems);
   
-  i8 i_Unit = (m_nHeadItems - 1) * (m_nHeadBytes / sizeof(UNIT));
+  i8 i_Unit = (m_nHeadItems - 1) * (m_nHeadAllot / sizeof(UNIT));
   HEAD* aHead = (HEAD*)&m_axaUnits[i_Unit];
   
   return aHead;
@@ -448,7 +449,7 @@ HEAD* Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::aGetHead(i8 i_Head)
   
   ASSERT(i_Head >= 0 && i_Head < m_nHeadItems);
   
-  i8 i_Unit = i_Head * (m_nHeadBytes / sizeof(UNIT));
+  i8 i_Unit = i_Head * (m_nHeadAllot / sizeof(UNIT));
   HEAD* aHead = (HEAD*)&m_axaUnits[i_Unit];
     
   return aHead;

@@ -1146,7 +1146,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     static inline i8 nHeadBytes(ColumnVec* pColVec)
     {
-      i8 nBytes = sizeof(CacheLine);
+    i8 nBytes = sizeof(CacheLine); // + C_BYTES_PER_WORD;
     
       return nBytes;
     }
