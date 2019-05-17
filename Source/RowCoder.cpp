@@ -1399,7 +1399,7 @@ void RowCoder::vRecodeDte(Column* pCol)
   i8 i_FirstDte = pCol->iFirstDate();
   
   Column* pColFirstDate = m_pColVec->pGet(i_FirstDte);
-  eMN eFirstEncoding = (eMN)m_aIntoHead->iMetaNibble(i_FirstDte);
+  eMN eFirstEncoding = (eMN)m_aIntoHead->iMetaCode(i_FirstDte);
   
   i8 i_LastColumn = 0;
   i8 i_LastOffset = m_i_BaseOffset;
@@ -1827,7 +1827,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // metadata remains MN_SHOCO_2B
-  RASSERT(MN_SHOCO_2B == m_aFromHead->iMetaNibble(pCol->iColumnNo()));
+  RASSERT(MN_SHOCO_2B == m_aFromHead->iMetaCode(pCol->iColumnNo()));
   
   // we recoded: sizeof([IT])
   vUsageIncRecoded(pCol,MN_2B);
@@ -2192,7 +2192,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // metadata remains the same
-  RASSERT(MN_SHOCO_2B == m_aFromHead->iMetaNibble(pCol->iColumnNo()));
+  RASSERT(MN_SHOCO_2B == m_aFromHead->iMetaCode(pCol->iColumnNo()));
   
   // we recoded: sizeof([IT]) + nIntoTailBytes
   vUsageIncRecoded(pCol,MN_2B + nIntoTailBytes);
@@ -2971,7 +2971,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda)
     
     i8 nBytes = nDataBytes(eDatumCoda,eEncoding);
     
-    i8 iNibble = aHeadLine->iMetaNibble(i_Col);
+    i8 iNibble = aHeadLine->iMetaCode(i_Col);
 
     vTrace("%3lld %-15s %-6s %-11s %x %-16s %2lld %2lld "_Stz,
            i_Col,
@@ -3043,7 +3043,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, 
   
   i8 nBytes = nDataBytes(eDatumCoda,eEncoding);
   
-  i8 iNibble = aHeadLine->iMetaNibble(i_Col);
+  i8 iNibble = aHeadLine->iMetaCode(i_Col);
   
   vTrace("%3lld %-15s %-6s %-11s %x %-16s %2lld %2lld "_Stz,
          i_Col,
@@ -4434,7 +4434,7 @@ eMN RowCoder::eEncodingInitial(HeadLine* aFromHead, Column* pCol,
   
   for (i8 i_Col = i_PriorColumn_; i_Col < i_ForCol; i_Col++) {
     
-    eMN eEncoding = (eMN)aFromHead->iMetaNibble(i_Col);
+    eMN eEncoding = (eMN)aFromHead->iMetaCode(i_Col);
     
     Column* pCol  = pColVec->pGet(i_Col);
     eDM eDatumNat = pCol->eDatumType();
@@ -4442,7 +4442,7 @@ eMN RowCoder::eEncodingInitial(HeadLine* aFromHead, Column* pCol,
     i_FromOffset_ += nDataBytes(eDatumNat,eEncoding);
   }
   
-  eMN eEncoding  = (eMN)aFromHead->iMetaNibble(i_ForCol);
+  eMN eEncoding  = (eMN)aFromHead->iMetaCode(i_ForCol);
   i_PriorColumn_ = i_ForCol;
   
   return eEncoding;
@@ -4464,7 +4464,7 @@ eMN RowCoder::eEncodingRecoded(HeadLine* aHeadLine, Column* pCol,
   
   for (i8 i_Col = i_PriorColumn_; i_Col < i_ForCol; i_Col++) {
     
-    eMN eEncoding = (eMN)aHeadLine->iMetaNibble(i_Col);
+    eMN eEncoding = (eMN)aHeadLine->iMetaCode(i_Col);
 
     Column* pCol  = pColVec->pGet(i_Col);
     
@@ -4473,7 +4473,7 @@ eMN RowCoder::eEncodingRecoded(HeadLine* aHeadLine, Column* pCol,
     i_Offset_ += nDataBytes(eDatumExt,eEncoding);
    }
   
-  eMN eEncoding  = (eMN)aHeadLine->iMetaNibble(i_ForCol);
+  eMN eEncoding  = (eMN)aHeadLine->iMetaCode(i_ForCol);
   i_PriorColumn_ = i_ForCol;
   
   return eEncoding;
