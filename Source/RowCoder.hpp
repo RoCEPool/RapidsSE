@@ -136,7 +136,7 @@ namespace Data
                           i8& i_PriorColumn_, i8& i_Offset_);
     void vHashColumn(Datum* pSrcDatum, Column* pCol);
   
-    void vMetaNibble(Column* pCol, eMN eMetaNibble);
+    void vMetaCode(Column* pCol, eMN eMetaCode);
     void vMetaPut(Datum* pDatum, Column* pCol);
 
     void vRecode_Large(void);

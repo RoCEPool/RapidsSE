@@ -1025,7 +1025,7 @@ void RowCoder::vHashColumn(Datum* pSrcDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* set 4bit meta nibble encoding for column value                             */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vMetaNibble(Column* pCol, eMN eMetaNibble)
+void RowCoder::vMetaCode(Column* pCol, eMN eMetaNibble)
 {
   i8 i_Col = pCol->iColumnNo();
   m_aIntoHead->vMetaNibble(i_Col,eMetaNibble);
@@ -1239,7 +1239,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
       
       // revise the encoding
       eExtendedEncoding = (eMN)(MN_TENTH_0 + iBcd1B);
-      vMetaNibble(pCol,eExtendedEncoding);
+      vMetaCode(pCol,eExtendedEncoding);
       vUsageIncRecoded(pCol,0);
 
       // cut the 1B char out of the into head
@@ -1258,7 +1258,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
   switch (m_eFromEncoding) {
     case MN_1B: iBcdNB = m_aIntoHead->w8_1B(m_i_IntoOffset);
                 eExtendedEncoding = MN_TENTH_2B;
-                vMetaNibble(pCol,eExtendedEncoding);
+                vMetaCode(pCol,eExtendedEncoding);
                 vUsageIncOops(pCol,2,1);
                 m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1);
                 m_aIntoHead->v2B(m_i_IntoOffset,iBcdNB);
@@ -1266,26 +1266,26 @@ void RowCoder::vRecodeBcd(Column* pCol)
                 break;
       
     case MN_2B: eExtendedEncoding = MN_TENTH_2B;
-                vMetaNibble(pCol,eExtendedEncoding);
+                vMetaCode(pCol,eExtendedEncoding);
                 vUsageIncOops(pCol,2,0);
                 m_i_IntoOffset += 2;
                 break;
     case MN_3B: iBcdNB = m_aIntoHead->w8_3B(m_i_IntoOffset);
                 eExtendedEncoding = MN_TENTH_4B;
-                vMetaNibble(pCol,eExtendedEncoding);
+                vMetaCode(pCol,eExtendedEncoding);
                 vUsageIncOops(pCol,4,1);
                 m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1);
                 m_aIntoHead->v4B(m_i_IntoOffset,iBcdNB);
                 m_i_IntoOffset += 4;
                 break;
     case MN_4B: eExtendedEncoding = MN_TENTH_4B;
-                vMetaNibble(pCol,eExtendedEncoding);
+                vMetaCode(pCol,eExtendedEncoding);
                 vUsageIncOops(pCol,4,0);
                 m_i_IntoOffset += 4;
                 break;
     case MN_5B: iBcdNB = m_aIntoHead->w8_5B(m_i_IntoOffset);
                 eExtendedEncoding = MN_TENTH_8B;
-                vMetaNibble(pCol,eExtendedEncoding);
+                vMetaCode(pCol,eExtendedEncoding);
                 vUsageIncOops(pCol,8,3);
                 m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,3);
                 m_aIntoHead->v8B(m_i_IntoOffset,iBcdNB);
@@ -1293,7 +1293,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
                 break;
     case MN_6B: iBcdNB = m_aIntoHead->w8_6B(m_i_IntoOffset);
                 eExtendedEncoding = MN_TENTH_8B;
-                vMetaNibble(pCol,eExtendedEncoding);
+                vMetaCode(pCol,eExtendedEncoding);
                 vUsageIncOops(pCol,8,2);
                 m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,2);
                 m_aIntoHead->v8B(m_i_IntoOffset,iBcdNB);
@@ -1301,14 +1301,14 @@ void RowCoder::vRecodeBcd(Column* pCol)
                 break;
     case MN_7B: iBcdNB = m_aIntoHead->w8_7B(m_i_IntoOffset);
                 eExtendedEncoding = MN_TENTH_8B;
-                vMetaNibble(pCol,eExtendedEncoding);
+                vMetaCode(pCol,eExtendedEncoding);
                 vUsageIncOops(pCol,8,1);
                 m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1);
                 m_aIntoHead->v8B(m_i_IntoOffset,iBcdNB);
                 m_i_IntoOffset += 8;
                 break;
     case MN_8B: eExtendedEncoding = MN_TENTH_8B;
-                vMetaNibble(pCol,eExtendedEncoding);
+                vMetaCode(pCol,eExtendedEncoding);
                 vUsageIncOops(pCol,8,0);
                 m_i_IntoOffset += 8;
                 break;
@@ -1446,7 +1446,7 @@ void RowCoder::vRecodeDte(Column* pCol)
   if (iDayDiff >= 0 && iDayDiff <= (i8)C_1_BYTE) {
     
     // revise the encoding
-    vMetaNibble(pCol,MN_DAYS_PLUS_1B);
+    vMetaCode(pCol,MN_DAYS_PLUS_1B);
     m_aIntoHead->v1B(m_i_IntoOffset,iDayDiff);
     
     // cut 1B char out of the intoHead
@@ -1469,7 +1469,7 @@ void RowCoder::vRecodeDte(Column* pCol)
   if (iDayDiff >= -(i8)C_1_BYTE && iDayDiff < 0) {
     
     // revise the encoding
-    vMetaNibble(pCol,MN_DAYS_MINUS_1B);
+    vMetaCode(pCol,MN_DAYS_MINUS_1B);
     m_aIntoHead->v1B(m_i_IntoOffset,-1*iDayDiff);
     
     // cut 1B char out of the intoHead
@@ -1521,7 +1521,7 @@ void RowCoder::vRecodeDte(Column* pCol)
     m_aIntoHead->v2B(m_i_IntoOffset,iThisDateDays);
   }
   
-  vMetaNibble(pCol,m_eFromEncoding);
+  vMetaCode(pCol,m_eFromEncoding);
   
   vUsageIncOops(pCol,2,1);
   m_i_IntoOffset += 2;
@@ -1628,7 +1628,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
       
       // revise the encoding
       eMN eExtendedEncoding = (eMN)(MN_DIGIT_0 + i1BInt);
-      vMetaNibble(pCol,eExtendedEncoding);
+      vMetaCode(pCol,eExtendedEncoding);
       vUsageIncRecoded(pCol,0);
 
       // cut the 1B char out of the into head
@@ -1684,7 +1684,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
       RASSERT(0);
   }
   
-  vMetaNibble(pCol,eExtendedEncoding);
+  vMetaCode(pCol,eExtendedEncoding);
   
   return true;
 }
@@ -1929,7 +1929,7 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // metadata for this column get changed to MN_SHOCO_FIT
-  vMetaNibble(pCol,MN_SHOCO_FIT);
+  vMetaCode(pCol,MN_SHOCO_FIT);
   
   // we recoded: sizeof(<C>) + nShocoBytes
   vUsageIncRecoded(pCol,MN_1B + nShocoBytes);
@@ -2068,7 +2068,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // metadata for this column get changed to MN_SHOCO_SPLIT
-  vMetaNibble(pCol,MN_SHOCO_SPLIT);
+  vMetaCode(pCol,MN_SHOCO_SPLIT);
   
   // we recoded: 1B <C> + <compressed>
   vUsageIncRecoded(pCol,MN_1B + nShocoBytes);
