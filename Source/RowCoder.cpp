@@ -1828,7 +1828,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // metadata remains MN_SHOCO_2B
-  RASSERT(MN_SHOCO_2B == m_aFromHead->w8_1N(pCol->iColumnNo()));
+  RASSERT(MN_SHOCO_2B == m_aFromHead->iMetaNibble(pCol->iColumnNo()));
   
   // we recoded: sizeof([IT])
   vUsageIncRecoded(pCol,MN_2B);
@@ -2193,7 +2193,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // metadata remains the same
-  RASSERT(MN_SHOCO_2B == m_aFromHead->w8_1N(pCol->iColumnNo()));
+  RASSERT(MN_SHOCO_2B == m_aFromHead->iMetaNibble(pCol->iColumnNo()));
   
   // we recoded: sizeof([IT]) + nIntoTailBytes
   vUsageIncRecoded(pCol,MN_2B + nIntoTailBytes);

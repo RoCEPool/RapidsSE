@@ -267,6 +267,12 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotHead(i8 nBytes)
 
   m_nHeadBytes = nBytes;
   
+  HEAD* aHead = aGetHead(i_Head);
+  
+  i8 nWords = nBytes / C_BYTES_PER_WORD;
+  aHead->v1B(0,nWords);
+
+  
   return i_Head;
 }
 

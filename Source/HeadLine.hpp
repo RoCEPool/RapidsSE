@@ -7,7 +7,7 @@ namespace Data
 {
   class Datum;
   
-  static const i8 C_HEAD_PRE_BYTES = 0;
+  static const i8 C_HEAD_PRE_BYTES = 1;
 
   class HeadLine
   {
