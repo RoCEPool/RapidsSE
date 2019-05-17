@@ -60,8 +60,9 @@ void HeadLine::vSetAll(byte yVal)
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::iMetaCode(i8 i_Meta)
 {
-  w8 iCode = w8_1N(C_HEAD_PRE_BYTES * C_NIBBLES_PER_BYTE + i_Meta);
-  
+  //w8 iCode = w8_1N(C_HEAD_PRE_BYTES * C_NIBBLES_PER_BYTE + i_Meta);
+  w8 iCode = w8_1B(C_HEAD_PRE_BYTES + i_Meta);
+
   return iCode;
 }
 
@@ -70,7 +71,8 @@ i8 HeadLine::iMetaCode(i8 i_Meta)
 /*----------------------------------------------------------------------------*/
 void HeadLine::vMetaCode(i8 i_Meta, w8 wArg)
 {
-  v1N(C_HEAD_PRE_BYTES * C_NIBBLES_PER_BYTE + i_Meta,wArg);
+  //v1N(C_HEAD_PRE_BYTES * C_NIBBLES_PER_BYTE + i_Meta,wArg);
+  v1B(C_HEAD_PRE_BYTES + i_Meta,wArg);
 }
 
 /*----------------------------------------------------------------------------*/
