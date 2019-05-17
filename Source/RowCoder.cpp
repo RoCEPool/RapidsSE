@@ -1028,7 +1028,7 @@ void RowCoder::vHashColumn(Datum* pSrcDatum, Column* pCol)
 void RowCoder::vMetaCode(Column* pCol, eMN eMetaNibble)
 {
   i8 i_Col = pCol->iColumnNo();
-  m_aIntoHead->vMetaNibble(i_Col,eMetaNibble);
+  m_aIntoHead->vMetaCode(i_Col,eMetaNibble);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1036,8 +1036,7 @@ void RowCoder::vMetaCode(Column* pCol, eMN eMetaNibble)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vMetaPut(Datum* pDatum, Column* pCol)
 {
-  i8 i_Col = pCol->iColumnNo();
-  m_aIntoHead->vMetaNibble(i_Col,pDatum->m_eEncoding);
+  vMetaCode(pCol,pDatum->m_eEncoding);
 }
 
 /*----------------------------------------------------------------------------*/
