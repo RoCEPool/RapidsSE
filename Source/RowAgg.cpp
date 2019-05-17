@@ -142,7 +142,7 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
   i8 nRowCount = pRowBuffer->nRowCount();
   Datum oDatum;
   i8 i_LastColumn1 = 0;
-  i8 i_LastOffset1 = 8;
+  i8 i_LastOffset1 = RowCoder::iBaseOffset(m_pTable->pColumnVec());
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
     
