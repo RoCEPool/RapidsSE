@@ -2089,7 +2089,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   //hvRec->vPrintRow();
   //vTrace("\n"_Stz);
   
-  //MemLib::vWordDump(aIntoTail,nTailUnits * sizeof(TailLine));
+  //MemLib::vWordDump(aIntoTail,nTailUnits * aIntoTail->nBytes());
   //      if (0 == (nCompressed - (nFreeHeadBytes+1))) {
   //        vHeadDump(aIntoHead,pColVec);
   //        MemLib::vWordDump(aIntoTail,nNewTailUnits * sizeof(SpaceUnit));
@@ -4067,7 +4067,7 @@ void RowCoder::vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
   i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
   TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
   
-  //MemLib::vWordDump(aShocoTail,sizeof(TailLine));
+  //MemLib::vWordDump(aShocoTail,aShocoTail->nBytes());
   
   /*
    +=====================================+

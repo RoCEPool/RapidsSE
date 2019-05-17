@@ -18,6 +18,11 @@ namespace Base
   
     void vSetAll(byte yVal);
   
+    i8   nBytes(void);
+    i8   nUnits(void);
+    i8   nWords(void);
+
+  
     w8 w8_1B(i8 i_Byte);
     w8 w8_2B(i8 i_Byte);
     w8 w8_3B(i8 i_Byte);
