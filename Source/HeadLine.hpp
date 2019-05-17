@@ -9,7 +9,7 @@ namespace Data
   
   static const i8 C_HEAD_PRE_BYTES = 1;
 
-  class HeadLine
+  class HeadLine : public Line
   {
   public:
     byte m_yaByte[sizeof(CacheLine)];

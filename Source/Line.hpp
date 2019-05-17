@@ -9,10 +9,6 @@ namespace Data
   {
   public:
   
-    // an view of bytes.  it is expected the functions may access beyond
-    // the defined length of the array
-    //byte m_yaByte[];
-
   public:
     Line(void);
     ~Line(void) noexcept(false);
