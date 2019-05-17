@@ -274,7 +274,7 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotHead(i8 nBytes)
   HEAD* aHead = aGetHead(i_Head);
   
   i8 nWords = nBytes / (i8)C_BYTES_PER_WORD;
-  RASSERT(nWords == sizeof(HEAD) / C_BYTES_PER_WORD);
+  RASSERT(nWords >= sizeof(HEAD) / C_BYTES_PER_WORD);
   aHead->v1B(0,nWords);
 
   
