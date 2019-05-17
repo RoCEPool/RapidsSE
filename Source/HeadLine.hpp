@@ -12,7 +12,7 @@ namespace Data
   class HeadLine : public Line
   {
   public:
-    byte m_yaByte[sizeof(CacheLine)];
+    byte m_yaByte[sizeof(Word)];
 
   public:
     HeadLine(void);

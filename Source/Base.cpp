@@ -9,6 +9,9 @@
 /*----------------------------------------------------------------------------*/
 void Base::vCheckAssumptions(void)
 {
+  RASSERT(sizeof(Word)       == C_BYTES_PER_WORD);
+  RASSERT(sizeof(DoubleWord) == 2 * C_BYTES_PER_WORD);
+  RASSERT(sizeof(QuadWord)   == 4 * C_BYTES_PER_WORD);
 }
 
 /*----------------------------------------------------------------------------*/

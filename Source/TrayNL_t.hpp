@@ -146,7 +146,7 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::Nub_t(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   // head and tail must be a multiple of unit
-  RASSERT(0 == sizeof(HEAD) % sizeof(UNIT));
+  RASSERT(0 == sizeof(HEAD) % sizeof(Word));
   RASSERT(0 == sizeof(TAIL) % sizeof(UNIT));
 
   m_nSpaceUnits = C_UNKNOWN;
