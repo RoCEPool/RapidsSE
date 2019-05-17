@@ -1133,7 +1133,7 @@ namespace Data
     {
       i8 nColumns = pColVec->nItems();
     
-      i8 nBits = nColumns * C_METABITS;
+      i8 nBits = (nColumns * C_METABITS) + C_BITS_PER_BYTE;
     
       i8 nMetaBytes = nBits / C_BITS_PER_BYTE
                         + (nBits % C_BITS_PER_BYTE ? 1 : 0);
