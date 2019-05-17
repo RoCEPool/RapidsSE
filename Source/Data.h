@@ -279,6 +279,7 @@ using namespace Data;
 
 #include "Datum.hpp"
 
+#include "Line.hpp"
 #include "SpaceUnit.hpp"
 #include "HeadLine.hpp"
 #include "TailLine.hpp"
