@@ -178,18 +178,18 @@ rows:
 (16,'abcdefghij',116,6,'abc')
 
 // drop the table
-//drop table VchTbl;
-//success
+drop table VchTbl;
+success
 
 // check existence of table
-//lstbl;
-//rows: 0
+lstbl;
+rows: 0
 
 CLEANUP {
   
   // drop the table
-  //drop table VchTbl;
-  //mute
+  drop table VchTbl;
+  mute
 
   bye;
   mute
