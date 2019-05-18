@@ -109,7 +109,7 @@ eEC JobWriteBehind::eInsertRow(RowNub* pRowNub)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // hash the record to a partition
-    i8 i_Ptn = pTable()->iRowPartition(m_oRowParts.iHash());
+    i8 i_Ptn = pTable()->iRowPartition(m_oRowParts.pNub()->iHash());
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check for row buffer
