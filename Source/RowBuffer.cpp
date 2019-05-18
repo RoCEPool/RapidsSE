@@ -247,8 +247,8 @@ i8 RowBuffer::iDecile(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   i8 iDecile;
-  i8 iCachLinesUsed = m_xRowTray.nHeads()
-                        + m_xRowTray.nTails();
+  i8 iCachLinesUsed = m_xRowTray.pNub()->nHeads()
+                        + m_xRowTray.pNub()->nTails();
   i8 iSpaceUsed = iCachLinesUsed * C_BYTES_PER_CACHE_LINE;
   iDecile = IntLib::iDecile( iSpaceUsed , C_SIZE_POOL_BUFFER);
   
@@ -422,7 +422,7 @@ i8 RowBuffer::nRowCount(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  return m_xRowTray.nHeads();
+  return m_xRowTray.pNub()->nHeads();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -490,7 +490,8 @@ void RowBuffer::vShow(void)
   i8 nRows = nRowCount();
   
   vTrace("RowBuffer: %p (buffer %lld): rows: %lld headItems: %lld tailItems: %lld free: %lldB\n"_Stz,
-         this,m_iBufferNo,nRows,m_xRowTray.nHeads(),m_xRowTray.nTails(),
+         this,m_iBufferNo,nRows,
+         m_xRowTray.pNub()->nHeads(),m_xRowTray.pNub()->nTails(),
          m_xRowTray.nFreeBytes());
   
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,

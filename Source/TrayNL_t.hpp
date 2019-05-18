@@ -113,10 +113,8 @@ namespace Structures
     TAIL* aGetTail(i8 i_Tail);
     i8    iHash(void);
     bool  bHasSpace(i8 nBytes);
-    i8    nHeads(void);
     i8    nItems(void);
     void  vReset(void);
-    i8    nTails(void);
   
   private:
     Footer* aFooter(void);
@@ -905,21 +903,6 @@ i8 TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::iHash(void)
   return iHash;
 }
 
-
-
-/*----------------------------------------------------------------------------*/
-/* get total number of head items                                             */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA, i8 BYTES>
-i8 TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::nHeads(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  i8 nHeads = m_oNub.nHeads();
-  
-  return nHeads;
-}
-
 /*----------------------------------------------------------------------------*/
 /* get total number of actual items                                           */
 /*----------------------------------------------------------------------------*/
@@ -944,18 +927,6 @@ void TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::vReset(void)
   m_oNub.vReset();
 }
 
-/*----------------------------------------------------------------------------*/
-/* get total number of tail items                                             */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA, i8 BYTES>
-i8 TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::nTails(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  i8 nTails = m_oNub.nTails();
-  
-  return nTails;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
