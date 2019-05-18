@@ -89,6 +89,7 @@ namespace Data
       Bcd  m_wBcd;
       Bol  m_wBol;
       Dte  m_wDte;
+      Edt  m_wEdt;
       Flt  m_wFlt;
       Int  m_wInt;
       Ivl  m_wIvl;
