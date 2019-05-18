@@ -285,7 +285,7 @@ void Job_SubExporter::vSprintRows(void)
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
 
     //RowCoder::vString(sRecord,pColVec,aRow);
-    RowCoder::vRecord(hvRec,*pRowTray,i_Row);
+    RowCoder::vRecord(hvRec,pRowTray->pNub(),i_Row);
     StrLib::vConcat(hvRec->szRecStr()->aChar(),'\n');
     //vTrace("]]%s[[\n"_Stz,sRecord.aStz());
     

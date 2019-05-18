@@ -100,14 +100,7 @@ namespace Structures
     TrayNL_t(void);
     ~TrayNL_t(void) noexcept(false);
   
-    // auto conversion
-    operator Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>*(void);
     Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>* pNub(void);
-
-    CODA* pCoda(void);
-    void  vCoda(CODA* pCoda);
-    DESC* pDesc(void);
-    void  vDesc(DESC* pDesc);
   
   private:
     Footer* aFooter(void);
@@ -772,18 +765,11 @@ TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::~TrayNL_t(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the inner nub                                                          */
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA, i8 BYTES>
-TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::operator Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>*(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  return &m_oNub;
-}
 
 /*----------------------------------------------------------------------------*/
-/* get the inner nub                                                          */
+/* get the inner nub / interface                                              */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA, i8 BYTES>
 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>*
@@ -796,53 +782,6 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>*
 
 
 
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get the item coda                                                          */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA, i8 BYTES>
-CODA* TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::pCoda(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  return m_oNub.pCoda();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the item describer                                                     */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA, i8 BYTES>
-void TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::vCoda(CODA* pCoda)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  m_oNub.vCoda(pCoda);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the item describer                                                     */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA, i8 BYTES>
-DESC* TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::pDesc(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  return m_oNub.pDesc();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the item describer                                                     */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA, i8 BYTES>
-void TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::vDesc(DESC* pDesc)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  m_oNub.vDesc(pDesc);
-}
 
 
 

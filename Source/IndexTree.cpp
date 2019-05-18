@@ -675,7 +675,7 @@ void IndexTree::vInsertEntriesFromBuffer(RowBuffer* pRowBuffer)
 
     xId.vItem(i_Row);
     
-    bool bInserted = bInsertEntry(*pRowBuffer->pRowTray(),i_Row,xId);
+    bool bInserted = bInsertEntry(pRowBuffer->pRowTray()->pNub(),i_Row,xId);
     
     //bVerify();
     ASSERT(bInserted);

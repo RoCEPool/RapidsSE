@@ -334,7 +334,7 @@ void RowBuffer::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   //RASSERT(pTable);
-  m_xRowTray.vDesc(pTable);
+  m_xRowTray.pNub()->vDesc(pTable);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -344,7 +344,7 @@ Table* RowBuffer::pTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  return m_xRowTray.pDesc();
+  return m_xRowTray.pNub()->pDesc();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -475,7 +475,7 @@ void RowBuffer::vShowRow(i8 i_Row)
   
   HV_Rec hvRec;
   
-  RowCoder::vRecord(hvRec,m_xRowTray,i_Row);
+  RowCoder::vRecord(hvRec,m_xRowTray.pNub(),i_Row);
 
   vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
 }

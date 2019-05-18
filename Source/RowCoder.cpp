@@ -139,7 +139,7 @@ void RowCoder::vCopyBegin(RowNub* pIntoNub)
   m_pIntoCoda    = m_pIntoNub->pCoda();
 
   m_pWorkParts   = new RowParts;
-  m_pWorkNub     = *m_pWorkParts;
+  m_pWorkNub     = m_pWorkParts->pNub();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2904,7 +2904,8 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine,
 void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 {
   RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
-  Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
+  
+  Coda* pCoda = pRowBuffer->pRowTray()->pNub()->pCoda();
   
   vHeadDump(aHeadLine,pColVec,pCol,pCoda);
 }
@@ -2915,8 +2916,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
 {
   RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
-  Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
   
+  Coda* pCoda = pRowBuffer->pRowTray()->pNub()->pCoda();
   vHeadDump(aHeadLine,pColVec,pCoda);
 }
 
@@ -3067,7 +3068,8 @@ void RowCoder::vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
-  Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
+  
+  Coda* pCoda = pRowBuffer->pRowTray()->pNub()->pCoda();
   
   MemLib::vWordDump(aHeadLine,aHeadLine->nBytes());
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3304,7 +3306,7 @@ void RowCoder::vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
-  Coda* pCoda = pRowBuffer->pRowTray()->pCoda();
+  Coda* pCoda = pRowBuffer->pRowTray()->pNub()->pCoda();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

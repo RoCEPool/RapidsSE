@@ -94,7 +94,7 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
   ColumnVec* pColVec = pTable()->pColumnVec();
   i8 nColumns = pColVec->nItems();
   
-  m_pRowCoder_Encode->vEncodeBegin(m_oRowParts);
+  m_pRowCoder_Encode->vEncodeBegin(m_oRowParts.pNub());
   
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
@@ -147,7 +147,7 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
 /*----------------------------------------------------------------------------*/
 Table* JobEncodeRow::pTable(void)
 {
-  Table* pTable = m_oRowParts.pDesc();
+  Table* pTable = m_oRowParts.pNub()->pDesc();
   
   return pTable;
 }
@@ -157,7 +157,7 @@ Table* JobEncodeRow::pTable(void)
 /*----------------------------------------------------------------------------*/
 void JobEncodeRow::vTable(Table* pTable)
 {
-  m_oRowParts.vDesc(pTable);
+  m_oRowParts.pNub()->vDesc(pTable);
 }
 
 /*============================================================================*/

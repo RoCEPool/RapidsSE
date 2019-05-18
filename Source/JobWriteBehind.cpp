@@ -96,7 +96,7 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
 /*----------------------------------------------------------------------------*/
 eEC JobWriteBehind::eInsertRow(void)
 {
-  return eInsertRow(m_oRowParts);
+  return eInsertRow(m_oRowParts.pNub());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,7 +124,7 @@ eEC JobWriteBehind::eInsertRow(RowNub* pRowNub)
       }
 
       RowBuffer* pRowBuffer = m_pRowBuffer[i_Ptn];
-      RowNub* pIntoRowNub = *pRowBuffer->pRowTray();
+      RowNub* pIntoRowNub = pRowBuffer->pRowTray()->pNub();
       m_paRowCoder_Copy[i_Ptn]->vCopyBegin(pIntoRowNub);
     }
     

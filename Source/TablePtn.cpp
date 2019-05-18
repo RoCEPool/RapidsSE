@@ -273,7 +273,7 @@ void TablePtn::vAppendRow(RowCoder* pRowCoder, RowParts& oRowParts)
     m_pCurrentRowBuffer = m_pRootRowBuffer;
   }
   
-  bool bAppended = m_pCurrentRowBuffer->bAppendRow(pRowCoder,oRowParts);
+  bool bAppended = m_pCurrentRowBuffer->bAppendRow(pRowCoder,oRowParts.pNub());
   
   if ( ! bAppended ) {
     RowBuffer* pRowBuffer = new RowBuffer;
@@ -284,7 +284,7 @@ void TablePtn::vAppendRow(RowCoder* pRowCoder, RowParts& oRowParts)
     m_pCurrentRowBuffer->vNextBuffer(pRowBuffer);
     m_pCurrentRowBuffer = pRowBuffer;
     
-    bAppended = m_pCurrentRowBuffer->bAppendRow(pRowCoder,oRowParts);
+    bAppended = m_pCurrentRowBuffer->bAppendRow(pRowCoder,oRowParts.pNub());
     RASSERT(bAppended);
   }
   
@@ -303,7 +303,7 @@ void TablePtn::vAppendRow(RowCoder* pRowCoder, RowParts& oRowParts)
     IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
     
     // insert entry into other indexes
-    bool bResult = pIndexTree->bInsertEntry(oRowParts,0,xId);
+    bool bResult = pIndexTree->bInsertEntry(oRowParts.pNub(),0,xId);
     RASSERT(bResult);
   }
   
@@ -584,7 +584,7 @@ void TablePtn::vPublish(void)
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
     RowTray* pRowTray = m_pCurrentRowBuffer->pRowTray();
-    RowCoder::vRecord(hvRec,*pRowTray,i_Row);
+    RowCoder::vRecord(hvRec,pRowTray->pNub(),i_Row);
     vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
   }
   
