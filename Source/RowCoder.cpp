@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowCoder.cpp -- Row Coder Mark II                                          */
+/* RowCoder.cpp -- Row Coder Mark III                                         */
 /*============================================================================*/
 
 #include "Data.h"
@@ -951,18 +951,6 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
   vUsageIncEncoded(pCol,2 + nTailBytes);
   
   //MemLib::vWordDump(aShocoLine,m_nHeadBytes);
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cross-check
-  
-  //    s256 sDecomp;
-  //    i8 iLenDecompressed =
-  //      Compress::iFromShoco(sDecomp.aChar(), 255,
-  //                           ((byte*)aShocoLine)+iBaseOffset(pColVec),
-  //                           C_BYTES_PER_CACHE_LINE-iBaseOffset(pColVec));
-  //    sDecomp.aChar()[iLenDecompressed] = '\0';
-  //    vTrace("Decomp: %s\n"_Stz,sDecomp.aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2728,7 +2716,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get encoded datum from cache line                                          */
+/* get encoded datum from head line                                           */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine,
                                     ColumnVec* pColVec, Column* pCol,
@@ -2911,7 +2899,7 @@ void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* sprint decode row from cache line into string                              */
+/* dump head line                                                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 {
@@ -2922,7 +2910,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sprint decode row from cache line into string                              */
+/* dump head line                                                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
 {
@@ -2933,7 +2921,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sprint decode row from cache line into string                              */
+/* dump head line                                                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda)
 {
@@ -3007,7 +2995,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sprint decode row from cache line into string                              */
+/* dump head line                                                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, Coda* pCoda)
 {
@@ -3072,7 +3060,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, 
   
 }
 /*----------------------------------------------------------------------------*/
-/* sprint decode row from cache line into string                              */
+/* dump head line                                                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec)
 {
@@ -3294,7 +3282,7 @@ void RowCoder::vInitEncoding(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sprint decode row from cache line into string                              */
+/* sprint decoded row into record                                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecord(Record* pRec, RowNub* pNub, i8 i_Row)
 {
@@ -3306,7 +3294,7 @@ void RowCoder::vRecord(Record* pRec, RowNub* pNub, i8 i_Row)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sprint decode row from cache line into string                              */
+/* sprint decoded row into record                                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec)
 {
@@ -3348,7 +3336,7 @@ void RowCoder::vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* decode and append column datum from cache line                             */
+/* decode and append column datum into record                                 */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vAppend(Record* pRec, HeadLine* aHeadLine,
                        ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -3746,7 +3734,7 @@ void RowCoder::vDaysIntoBase(Datum* pDatum, i8& iEra)
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode decimal from given cache line                                       */
+/* decode decimal from given head line                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -3779,7 +3767,7 @@ void RowCoder::vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
  }
 
 /*----------------------------------------------------------------------------*/
-/* decode boolean from given cache line                                       */
+/* decode boolean from given head line                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,
                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -3803,7 +3791,7 @@ void RowCoder::vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode date from given cache line                                          */
+/* decode date from given head line                                           */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -3842,7 +3830,7 @@ void RowCoder::vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode float from given cache line                                         */
+/* decode float from given head line                                          */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeFlt(Datum* pDatum, HeadLine* aHeadLine,
                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -3871,7 +3859,7 @@ void RowCoder::vDecodeFlt(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode integer from given cache line                                       */
+/* decode integer from given head line                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeInt(Datum* pDatum, HeadLine* aHeadLine,
                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -3920,7 +3908,7 @@ void RowCoder::vDecodeInt(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode interval from given cache line                                      */
+/* decode interval from given head line                                       */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine,
                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -3949,7 +3937,7 @@ void RowCoder::vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode time from given cache line                                          */
+/* decode time from given head line                                           */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeTme(Datum* pDatum, HeadLine* aHeadLine,
                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -3980,7 +3968,7 @@ void RowCoder::vDecodeTme(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode timestamp from given cache line                                     */
+/* decode timestamp from given head line                                      */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeTsp(Datum* pDatum, HeadLine* aHeadLine,
                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -4012,7 +4000,7 @@ void RowCoder::vDecodeTsp(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode varchar from given cache line                                       */
+/* decode varchar from given head line                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -4052,7 +4040,7 @@ void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode varchar from given cache line                                       */
+/* decode varchar from given head line                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
                                Column* pCol, eMN eEncoding, i8 i_Offset)
@@ -4090,7 +4078,7 @@ void RowCoder::vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode varchar from given cache line                                       */
+/* decode varchar from given head line                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
                                   Column* pCol, eMN eEncoding, i8 i_Offset)
@@ -4108,7 +4096,7 @@ void RowCoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode varchar from given cache line                                       */
+/* decode varchar from given head line                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
                                     Column* pCol, eMN eEncoding, i8 i_Offset)
@@ -4144,7 +4132,7 @@ void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode varchar from given cache line                                       */
+/* decode varchar from given head line                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
                                Column* pCol, eMN eEncoding, i8 i_Offset)
@@ -4206,7 +4194,7 @@ void RowCoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode varchar from given cache line                                       */
+/* decode varchar from given head line                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
                             ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -4240,7 +4228,7 @@ void RowCoder::vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode days from given cache line                                          */
+/* decode days from given head line                                           */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeDays(Datum* pDatum, HeadLine* aHeadLine,
                             ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -4295,7 +4283,7 @@ void RowCoder::vDecodeDays(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode integer from given cache line                                       */
+/* decode integer from given head line                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeDeltaPlus(Datum* pDatum, HeadLine* aHeadLine,
                                 ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -4350,7 +4338,7 @@ void RowCoder::vDecodeDeltaPlus(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode digit from given cache line                                         */
+/* decode digit from given head line                                          */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeDigit(Datum* pDatum, HeadLine* aHeadLine,
                             ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -4383,7 +4371,7 @@ void RowCoder::vDecodeDigit(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode tenth from given cache line                                         */
+/* decode tenth from given head line                                          */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeTenth(Datum* pDatum, HeadLine* aHeadLine,
                             ColumnVec* pColVec, Column* pCol, Coda* pCoda,
