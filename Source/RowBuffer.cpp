@@ -412,7 +412,7 @@ HeadLine* RowBuffer::pRow(i8 iRowNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  return m_xRowTray.aGetHead(iRowNo);
+  return m_xRowTray.pNub()->aGetHead(iRowNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -605,7 +605,7 @@ bool RowBuffer::bVerifyRows(void)
   i8 nRows = nRowCount();
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    HeadLine* aRowCacheLine = m_xRowTray.aGetHead(i_Row);
+    HeadLine* aRowCacheLine = m_xRowTray.pNub()->aGetHead(i_Row);
     RASSERT(aRowCacheLine);
   }
   

@@ -109,8 +109,6 @@ namespace Structures
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
     i8    nFreeBytes(void);
-    HEAD* aGetHead(i8 i_Head);
-    TAIL* aGetTail(i8 i_Tail);
     i8    iHash(void);
     bool  bHasSpace(i8 nBytes);
     i8    nItems(void);
@@ -862,32 +860,6 @@ i8 TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::nFreeBytes(void)
   i8 nFreeBytes = m_oNub.nFreeBytes();
   
   return nFreeBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get a specific head item                                                   */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA, i8 BYTES>
-HEAD* TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::aGetHead(i8 i_Item)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  HEAD* aItem = m_oNub.aGetHead(i_Item);
-  
-  return aItem;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get a specific tail item                                                   */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA, i8 BYTES>
-TAIL* TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::aGetTail(i8 i_Item)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  TAIL* aItem = m_oNub.aGetTail(i_Item);
-  
-  return aItem;
 }
 
 /*----------------------------------------------------------------------------*/
