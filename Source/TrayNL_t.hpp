@@ -16,6 +16,7 @@ namespace Structures
     i8 m_nHeadAllot;  // size of head to allot
   
     i8 m_nHeadItems;  // number of items allocated from the head
+    i8 m_nHeadWords;  // number of words allocated from the head
     i8 m_nHeadBytes;  // number of bytes allocated from the head
  
     i8 m_nTailItems;  // number of items allocated from the tail
@@ -153,6 +154,7 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::Nub_t(void)
   m_nHeadAllot  = C_UNKNOWN;
 
   m_nHeadBytes  = 0;
+  m_nHeadWords  = 0;
   m_nHeadItems  = 0;
 
   m_nTailUnits  = 0;
@@ -260,23 +262,20 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotHead(i8 nBytes)
   if (nFreeBytes() < nBytes)
     return C_UNKNOWN;
   
-  i8 nUnits = nBytes / (i8)sizeof(UNIT);
-  if (nBytes % (i8)sizeof(UNIT))
-    nUnits++;
-  RASSERT(nUnits * (i8)sizeof(UNIT) >= nBytes);
+  i8 nWords = nBytes / (i8)sizeof(Word);
+  if (nBytes % (i8)sizeof(Word))
+    nWords++;
+  RASSERT(nWords * (i8)sizeof(Word) >= nBytes);
   
   i8 i_Head = m_nHeadItems++;
-  
   m_nHeadBytes += nBytes;
+  m_nHeadWords += nWords;
 
   m_nHeadAllot = nBytes;
   
   HEAD* aHead = aGetHead(i_Head);
   
-  i8 nWords = nBytes / (i8)C_BYTES_PER_WORD;
-  RASSERT(nWords >= sizeof(HEAD) / C_BYTES_PER_WORD);
   aHead->v1B(0,nWords);
-
   
   return i_Head;
 }
@@ -595,6 +594,7 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vReset(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   m_nHeadBytes = 0;
+  m_nHeadWords = 0;
   m_nTailUnits = 0;
 
   m_nHeadItems = 0;
