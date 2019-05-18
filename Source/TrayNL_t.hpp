@@ -102,7 +102,8 @@ namespace Structures
   
     // auto conversion
     operator Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>*(void);
-  
+    Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>* pNub(void);
+
     CODA* pCoda(void);
     void  vCoda(CODA* pCoda);
     DESC* pDesc(void);
@@ -780,7 +781,7 @@ TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::~TrayNL_t(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the inner tray                                                         */
+/* get the inner nub                                                          */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA, i8 BYTES>
 TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::operator Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>*(void)
@@ -789,6 +790,19 @@ TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::operator Nub_t<CN,HEAD,TAIL,UNIT,DE
   
   return &m_oNub;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get the inner nub                                                          */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA, i8 BYTES>
+Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>*
+  TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::pNub(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  return &m_oNub;
+}
+
 
 
 /*----------------------------------------------------------------------------*/
