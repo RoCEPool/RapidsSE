@@ -6,7 +6,7 @@
 namespace Structures
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // nub (the inner tray)
+  // nub (the tray interface)
   
   template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
   class Nub_t : public Object
