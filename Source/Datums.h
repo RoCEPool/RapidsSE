@@ -82,6 +82,7 @@ using namespace Datums;
 #include "Bcd.hpp"
 #include "Bol.hpp"
 #include "Dte.hpp"
+#include "Edt.hpp"
 #include "Flt.hpp"
 #include "Int.hpp"
 #include "Ivl.hpp"
