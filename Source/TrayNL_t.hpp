@@ -21,6 +21,7 @@ namespace Structures
  
     i8 m_nTailItems;  // number of items allocated from the tail
     i8 m_nTailUnits;  // number of space units allocated from the tail
+    i8 m_nTailBytes;  // number of bytes allocated from the tail
 
     DESC* m_pDesc;    // object describing the items
 
@@ -153,13 +154,14 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::Nub_t(void)
   m_nSpaceUnits = C_UNKNOWN;
   m_nHeadAllot  = C_UNKNOWN;
 
-  m_nHeadBytes  = 0;
-  m_nHeadWords  = 0;
   m_nHeadItems  = 0;
+  m_nHeadWords  = 0;
+  m_nHeadBytes  = 0;
 
-  m_nTailUnits  = 0;
   m_nTailItems  = 0;
-  
+  m_nTailUnits  = 0;
+  m_nTailBytes  = 0;
+
   m_pCoda       = nullptr;
   m_pDesc       = nullptr;
 
@@ -267,9 +269,9 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotHead(i8 nBytes)
     nWords++;
   RASSERT(nWords * (i8)sizeof(Word) >= nBytes);
   
-  i8 i_Head = m_nHeadItems++;
   m_nHeadBytes += nBytes;
   m_nHeadWords += nWords;
+  i8 i_Head = m_nHeadItems++;
 
   m_nHeadAllot = nBytes;
   
@@ -299,6 +301,7 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iAllotTail(i8 nBytes)
   RASSERT(nUnits * (i8)sizeof(UNIT) >= nBytes);
   //RASSERT(nUnits == 4 || nUnits == 1); //! temp
 
+  m_nTailBytes += nBytes;
   m_nTailUnits += nUnits;
   m_nTailItems++;
 
@@ -593,16 +596,17 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vReset(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  m_nHeadBytes = 0;
-  m_nHeadWords = 0;
-  m_nTailUnits = 0;
-
   m_nHeadItems = 0;
+  m_nHeadWords = 0;
+  m_nHeadBytes = 0;
+
   m_nTailItems = 0;
+  m_nTailUnits = 0;
+  m_nTailBytes = 0;
   
   MemLib::vZero(m_axaUnits,(sizeof(UNIT) * m_nSpaceUnits),CN);
   
-  m_iHash    = 0;
+  m_iHash      = 0;
 }
 
 /*----------------------------------------------------------------------------*/
