@@ -104,6 +104,7 @@ namespace Data
     i8 m_nChars;
 
     eMN m_eEncoding;
+    eMC m_eEncoding_m3;
     i8  m_nEncodedBytes;
 
     // must be last
