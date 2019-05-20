@@ -12,6 +12,8 @@ namespace Data
   private:
     s16KB m_sRecStr; // the record as a string
   
+    char* m_azAppendCursor; // cursor for StrLib::vAppend()
+  
     // must be last
     Footer m_xFooter;
   
