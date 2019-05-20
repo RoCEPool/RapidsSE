@@ -329,7 +329,7 @@ void RowCoder::vEncodeDatum_mark3(Datum* pSrcDatum, Column* pCol)
   // encode the datum into the row
   switch (eDatum) {
     case DM_BCD: vEncodeBcd_mark3(pSrcDatum,pCol); return;
-    case DM_BOL: RASSERT(0); vEncodeBol(pSrcDatum,pCol); return;
+    case DM_BOL: vEncodeBol_mark3(pSrcDatum,pCol); return;
     case DM_DTE: RASSERT(0); vEncodeDte(pSrcDatum,pCol); return;
     case DM_FLT: RASSERT(0); vEncodeFlt(pSrcDatum,pCol); return;
     case DM_INT: vEncodeInt_mark3(pSrcDatum,pCol); return;
@@ -787,6 +787,31 @@ void RowCoder::vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum)
 }
 
 /*----------------------------------------------------------------------------*/
+/* initial encoding of bol                                                    */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vCodeBol_mark3(Datum* pTgtDatum, Datum* pSrcDatum)
+{
+  RASSERT(DM_BOL == pSrcDatum->m_eDatum);
+  
+  pTgtDatum->m_eDatum = DM_BOL;
+  pTgtDatum->m_iBol   = pSrcDatum->m_iBol;
+  
+  eMC eEncoding;
+  
+  if (pSrcDatum->bIsNull())
+    eEncoding = MC_NULL;
+  else if (pSrcDatum->m_iInt)
+    eEncoding = MC_TRUE;
+  else
+    eEncoding = MC_FALSE;
+  
+  pTgtDatum->m_eEncoding_m3 = eEncoding;
+  pTgtDatum->m_nEncodedBytes = 0;
+  
+  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes_mark3(DM_BOL,eEncoding));
+}
+
+/*----------------------------------------------------------------------------*/
 /* initial encoding of bcd                                                    */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCodeBcd_mark3(Datum* pTgtDatum, Datum* pSrcDatum)
@@ -1099,6 +1124,19 @@ void RowCoder::vEncodeBcd_mark3(Datum* pSrcDatum, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* encode boolean                                                             */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vEncodeBol_mark3(Datum* pSrcDatum, Column* pCol)
+{
+  vCodeBol_mark3(&m_oEncodedDatum,pSrcDatum);
+  vMetaPut_mark3(&m_oEncodedDatum,pCol);
+  vDataPut(&m_oEncodedDatum);
+  vXchkBol(pSrcDatum,pCol,0);
+  
+  vUsageIncEncoded(pCol,&m_oEncodedDatum);
+}
+
+/*----------------------------------------------------------------------------*/
 /* encode integer                                                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeInt_mark3(Datum* pSrcDatum, Column* pCol)
@@ -1354,7 +1392,7 @@ void RowCoder::vRecode_Short_mark3(void)
         //vTrace("m_i_IntoOffset = %lld\n"_Stz, m_i_IntoOffset);
         //vHeadDump(m_aIntoHead, m_pColVec, pCol);
         continue;
-      case Datums::DM_BOL:  RASSERT(0); vRecodeBol(pCol); continue;
+      case Datums::DM_BOL:  vRecodeBol_mark3(pCol); continue;
       case Datums::DM_DTE:  RASSERT(0); vRecodeDte(pCol);
         //vTrace("m_i_IntoOffset = %lld\n"_Stz, m_i_IntoOffset);
         //vHeadDump(m_aIntoHead, m_pColVec, pCol);
@@ -2466,6 +2504,15 @@ void RowCoder::vRecodeBcd_mark3(Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* attempt to re-encode Bol                                                   */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecodeBol_mark3(Column* pCol)
+{
+  RASSERT(0 == m_nFromDataBytes);
+  m_i_IntoOffset += m_nFromDataBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* attempt to re-encode Int as Delta or Digit                                 */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeInt_mark3(Column* pCol)
@@ -3252,7 +3299,11 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       
       break;
     case DM_BOL:
+#ifdef WITH_MARK3_ENCODING
+      vDecodeBol_mark3(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+#else
       vDecodeBol(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+#endif
       break;
     case DM_DTE:
       vDecodeDte(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
@@ -5017,6 +5068,30 @@ void RowCoder::vDecodeBcd_mark3(Datum* pDatum, HeadLine* aHeadLine,
     case MC_EIGHT:     pDatum->m_iInt = (i8)8;                 break;
     case MC_NINE:      pDatum->m_iInt = (i8)9;                 break;
     case MC_TEN:       pDatum->m_iInt = (i8)10;                break;
+      
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode boolean from given head line                                        */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeBol_mark3(Datum* pDatum, HeadLine* aHeadLine,
+                          ColumnVec* pColVec, Column* pCol,
+                          i8& i_LastColumn, i8& i_Offset)
+{
+  i8 i_Col  = pCol->iColumnNo();
+  
+  pDatum->m_eDatum = DM_BOL;
+  
+  eMC eEncoding = eEncodingRecoded_mark3(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
+  
+  switch (eEncoding) {
+      
+    case MC_NULL:  pDatum->m_iInt = C_DATUM_NULL; break;
+    case MC_FALSE: pDatum->m_iInt = (i8)0;        break;
+    case MC_TRUE:  pDatum->m_iInt = (i8)1;        break;
       
     default:
       NEVER_REACH;
