@@ -12,6 +12,8 @@ namespace Data
   private:
     s16KB m_sRecStr; // the record as a string
   
+    char* m_azAppendCursor; // cursor for StrLib::vAppend()
+  
     // must be last
     Footer m_xFooter;
   
@@ -68,13 +70,21 @@ namespace Data
     void vAppendBcd(Column* pCol, Datum* pDatum);
     void vAppendBcd_Alt(Column* pCol, Datum* pDatum);
     void vAppendBol(Column* pCol, Datum* pDatum);
+    void vAppendBol_Alt(Column* pCol, Datum* pDatum);
     void vAppendDte(Column* pCol, Datum* pDatum);
+    void vAppendDte_Alt(Column* pCol, Datum* pDatum);
     void vAppendFlt(Column* pCol, Datum* pDatum);
+    void vAppendFlt_Alt(Column* pCol, Datum* pDatum);
     void vAppendInt(Column* pCol, Datum* pDatum);
+    void vAppendInt_Alt(Column* pCol, Datum* pDatum);
     void vAppendIvl(Column* pCol, Datum* pDatum);
+    void vAppendIvl_Alt(Column* pCol, Datum* pDatum);
     void vAppendTme(Column* pCol, Datum* pDatum);
+    void vAppendTme_Alt(Column* pCol, Datum* pDatum);
     void vAppendTsp(Column* pCol, Datum* pDatum);
+    void vAppendTsp_Alt(Column* pCol, Datum* pDatum);
     void vAppendVch(Column* pCol, Datum* pDatum);
+    void vAppendVch_Alt(Column* pCol, Datum* pDatum);
 
     void vPrintRow(void);
   

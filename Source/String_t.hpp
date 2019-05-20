@@ -26,6 +26,7 @@ namespace Correctness
     void operator =(Stz* aArg);
   
     void vAppend(const char cChar);
+    void vAppend(char** aazCursor, Stz* aStr);
     bool bBreak(i8 iBreakAt, i8& iPrevBreak);
     byte* ayByte(void);
     void vCat(Stz* aStr, ...);
@@ -157,6 +158,21 @@ void String_t<SPACE>::vAppend(const char cChar)
   // limit???
   
   StrLib::vConcat(m_caArea,cChar);
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append given string using given cursor                                     */
+/*----------------------------------------------------------------------------*/
+template <int SPACE>
+void String_t<SPACE>::vAppend(char** aazCursor, Stz* aStr)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  // limit???
+  
+  StrLib::vAppendString(aazCursor,aStr->aChar());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
