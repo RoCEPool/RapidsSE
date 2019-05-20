@@ -74,13 +74,24 @@ w8 Line::w8_1B(i8 i_Byte)
 {
   Word xWord;
   
-  byte* aByte = ((byte*)this) + i_Byte;
+  u1* au1B = (u1*)((byte*)this + i_Byte);
   
-  xWord.m_iI8 = 0;
-  xWord.m_yaByte[0] = *aByte;
+  xWord.m_uI8 = *au1B;
   
   return xWord.m_wWord;
 }
+/*----------------------------------------------------------------------------*/
+//w8 Line::w8_1B(i8 i_Byte)
+//{
+//  Word xWord;
+//
+//  byte* aByte = ((byte*)this) + i_Byte;
+//
+//  xWord.m_iI8 = 0;
+//  xWord.m_yaByte[0] = *aByte;
+//
+//  return xWord.m_wWord;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* return 2 bytes at offset as w8                                             */
@@ -89,14 +100,25 @@ w8 Line::w8_2B(i8 i_Byte)
 {
   Word xWord;
   
-  byte* aByte = ((byte*)this) + i_Byte;
+  u2* au2B = (u2*)((byte*)this + i_Byte);
   
-  xWord.m_iI8 = 0;
-  xWord.m_yaByte[0] = *aByte++;
-  xWord.m_yaByte[1] = *aByte;
+  xWord.m_uI8 = *au2B;
 
   return xWord.m_wWord;
 }
+/*----------------------------------------------------------------------------*/
+//w8 Line::w8_2B(i8 i_Byte)
+//{
+//  Word xWord;
+//
+//  byte* aByte = ((byte*)this) + i_Byte;
+//
+//  xWord.m_iI8 = 0;
+//  xWord.m_yaByte[0] = *aByte++;
+//  xWord.m_yaByte[1] = *aByte;
+//
+//  return xWord.m_wWord;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* return 3 bytes at offset as w8                                             */
@@ -122,16 +144,27 @@ w8 Line::w8_4B(i8 i_Byte)
 {
   Word xWord;
   
-  byte* aByte = ((byte*)this) + i_Byte;
+  u4* au4B = (u4*)((byte*)this + i_Byte);
   
-  xWord.m_iI8 = 0;
-  xWord.m_yaByte[0] = *aByte++;
-  xWord.m_yaByte[1] = *aByte++;
-  xWord.m_yaByte[2] = *aByte++;
-  xWord.m_yaByte[3] = *aByte;
-  
+  xWord.m_uI8 = *au4B;
+
   return xWord.m_wWord;
 }
+/*----------------------------------------------------------------------------*/
+//w8 Line::w8_4B(i8 i_Byte)
+//{
+//  Word xWord;
+//
+//  byte* aByte = ((byte*)this) + i_Byte;
+//
+//  xWord.m_iI8 = 0;
+//  xWord.m_yaByte[0] = *aByte++;
+//  xWord.m_yaByte[1] = *aByte++;
+//  xWord.m_yaByte[2] = *aByte++;
+//  xWord.m_yaByte[3] = *aByte;
+//
+//  return xWord.m_wWord;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* return 5 bytes at offset as w8                                             */
@@ -200,20 +233,31 @@ w8 Line::w8_8B(i8 i_Byte)
 {
   Word xWord;
   
-  byte* aByte = ((byte*)this) + i_Byte;
+  u8* au8B = (u8*)((byte*)this + i_Byte);
   
-  xWord.m_iI8 = 0;
-  xWord.m_yaByte[0] = *aByte++;
-  xWord.m_yaByte[1] = *aByte++;
-  xWord.m_yaByte[2] = *aByte++;
-  xWord.m_yaByte[3] = *aByte++;
-  xWord.m_yaByte[4] = *aByte++;
-  xWord.m_yaByte[5] = *aByte++;
-  xWord.m_yaByte[6] = *aByte++;
-  xWord.m_yaByte[7] = *aByte;
-  
+  xWord.m_uI8 = *au8B;
+
   return xWord.m_wWord;
 }
+/*----------------------------------------------------------------------------*/
+//w8 Line::w8_8B(i8 i_Byte)
+//{
+//  Word xWord;
+//
+//  byte* aByte = ((byte*)this) + i_Byte;
+//
+//  xWord.m_iI8 = 0;
+//  xWord.m_yaByte[0] = *aByte++;
+//  xWord.m_yaByte[1] = *aByte++;
+//  xWord.m_yaByte[2] = *aByte++;
+//  xWord.m_yaByte[3] = *aByte++;
+//  xWord.m_yaByte[4] = *aByte++;
+//  xWord.m_yaByte[5] = *aByte++;
+//  xWord.m_yaByte[6] = *aByte++;
+//  xWord.m_yaByte[7] = *aByte;
+//
+//  return xWord.m_wWord;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* return 1 nibble at offset as w8                                            */
