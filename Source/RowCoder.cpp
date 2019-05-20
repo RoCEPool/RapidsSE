@@ -214,16 +214,30 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
 #endif
 
   m_nTotalHeads++;
-  
-//#ifdef WITH_TRACE_ENCODING
-  if (m_nTotalHeads < 10)
-    RowCoder::vHeadDump_mark3(m_aIntoHead,m_pColVec);
-//#endif
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // analyse free space in the into head
+#ifdef WITH_MARK3_ENCODING
   
-  vAnalyseFree_mark3();
+  #ifdef WITH_TRACE_ENCODING
+    if (m_nTotalHeads < 10)
+      RowCoder::vHeadDump_mark3(m_aIntoHead,m_pColVec);
+  #endif
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // analyse free space in the into head
+  
+    vAnalyseFree_mark3();
+#else
+  
+    #ifdef WITH_TRACE_ENCODING
+    if (m_nTotalHeads < 10)
+      RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
+    #endif
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // analyse free space in the into head
+
+    vAnalyseFree();
+#endif
   
   m_pIntoNub->vVerifyTails(C_UNKNOWN);
   
