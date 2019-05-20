@@ -66,7 +66,8 @@ namespace Data
                                    Column* pColumn, Formatters* pFormatters);
     static bool bExtractVchSupplied(Datum* pDatum, char** aaSrc,
                                     Column* pColumn, Formatters* pFormatters);
-    //! append init -- ray
+  
+    void vAppend_Alt(Column* pCol, Datum* pDatum);
     void vAppendBcd(Column* pCol, Datum* pDatum);
     void vAppendBcd_Alt(Column* pCol, Datum* pDatum);
     void vAppendBol(Column* pCol, Datum* pDatum);

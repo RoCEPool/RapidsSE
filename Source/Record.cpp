@@ -1177,6 +1177,33 @@ bool Record::bExtractVchDefault(Datum* pDatum, char** aaSrc,
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* append ascii of datum to record                                            */
+/*----------------------------------------------------------------------------*/
+void Record::vAppend_Alt(Column* pCol, Datum* pDatum)
+{
+  if (pDatum->bIsNull()) {
+    m_sRecStr.vAppend(&m_azAppendCursor,"null"_Stz);
+    return;
+  }
+
+  eDM eDatum = pCol->eDatumType();
+  
+  switch (eDatum) {
+    case DM_BCD: vAppendBcd_Alt(pCol,pDatum); break;
+    case DM_BOL: vAppendBol_Alt(pCol,pDatum); break;
+    case DM_DTE: vAppendDte_Alt(pCol,pDatum); break;
+    case DM_FLT: vAppendFlt_Alt(pCol,pDatum); break;
+    case DM_INT: vAppendInt_Alt(pCol,pDatum); break;
+    case DM_IVL: vAppendIvl_Alt(pCol,pDatum); break;
+    case DM_TME: vAppendTme_Alt(pCol,pDatum); break;
+    case DM_TSP: vAppendTsp_Alt(pCol,pDatum); break;
+    case DM_VCH: vAppendVch_Alt(pCol,pDatum); break;
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* append ascii of decimal datum to record                                    */
 /*----------------------------------------------------------------------------*/
 void Record::vAppendBcd(Column* pCol, Datum* pDatum)
