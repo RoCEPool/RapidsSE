@@ -302,6 +302,7 @@ typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,SpaceUnit,Table,Coda,
                  (C_MAX_ROWS * sizeof(HeadLine))> RowTray;
 
 #include "EntWrk.hpp"
+#include "Extractor.hpp"
 #include "KeyWrk.hpp"
 #include "Key.hpp"
 #include "Record.hpp"
