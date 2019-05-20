@@ -25,12 +25,12 @@ namespace Datums
     Int(void);
     ~Int(void) noexcept(false);
   
-    bool operator <  (Int& xInt);
-    bool operator <= (Int& xInt);
-    bool operator == (Int& xInt);
-    bool operator != (Int& xInt);
-    bool operator >= (Int& xInt);
-    bool operator >  (Int& xInt);
+//    bool operator <  (Int& xInt);
+//    bool operator <= (Int& xInt);
+//    bool operator == (Int& xInt);
+//    bool operator != (Int& xInt);
+//    bool operator >= (Int& xInt);
+//    bool operator >  (Int& xInt);
   
     void operator =(i8 iArg);
   

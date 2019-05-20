@@ -1175,7 +1175,7 @@ bool Record::bExtractVchDefault(Datum* pDatum, char** aaSrc,
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* append decimal datum to string                                             */
+/* append ascii of decimal datum to record                                    */
 /*----------------------------------------------------------------------------*/
 void Record::vAppendBcd(Column* pCol, Datum* pDatum)
 {
@@ -1188,6 +1188,40 @@ void Record::vAppendBcd(Column* pCol, Datum* pDatum)
   wBcd.vSprint(sBcd.aStz(), pCol);
   
   m_sRecStr.vConcat(sBcd.aStz());
+}
+/*----------------------------------------------------------------------------*/
+void Record::vAppendBcd_Alt(Column* pCol, Datum* pDatum)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+  
+  char acAscii[32];
+  bool bNegative = false;
+
+  i8 iDigits = 1;
+  for (i8 i_Digit = 0; i_Digit < pCol->iColumnScale(); i_Digit++)
+    iDigits *= 10;
+  
+  i8 iBcd_Whole    = pDatum->m_iBcd / iDigits;
+  i8 iBcd_Fraction = pDatum->m_iBcd % iDigits;
+  
+  if (iBcd_Fraction < 0 || iBcd_Whole < 0) {
+    bNegative     = true;
+    iBcd_Fraction = iBcd_Fraction * -1;
+    iBcd_Whole    = iBcd_Whole * -1;
+  }
+  
+  if (pCol->iColumnScale())
+    StrLib::vSprint(acAscii,"%s%lld.%.*lld"_Stz,
+                    bNegative ? "-" : "",
+                    iBcd_Whole,
+                    pCol->iColumnScale(),
+                    iBcd_Fraction);
+  else
+    StrLib::vSprint(acAscii,"%s%lld%c"_Stz,
+                    bNegative ? "-" : "",
+                    iBcd_Whole);
+
+  m_sRecStr.vConcat((Stz*)acAscii);
 }
 
 /*----------------------------------------------------------------------------*/
