@@ -66,6 +66,7 @@ namespace Data
                                     Column* pColumn, Formatters* pFormatters);
     //! append init -- ray
     void vAppendBcd(Column* pCol, Datum* pDatum);
+    void vAppendBcd_Alt(Column* pCol, Datum* pDatum);
     void vAppendBol(Column* pCol, Datum* pDatum);
     void vAppendDte(Column* pCol, Datum* pDatum);
     void vAppendFlt(Column* pCol, Datum* pDatum);
