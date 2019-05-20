@@ -898,10 +898,10 @@ void RowCoder::vCodeTme_mark3(Datum* pTgtDatum, Datum* pSrcDatum)
   
   eEncoding = (eMC)IntLib::iByteMagnitude(pTgtDatum->m_iInt);
   
-  pTgtDatum->m_eEncoding = eEncoding;
+  pTgtDatum->m_eEncoding_m3 = eEncoding;
   pTgtDatum->m_nEncodedBytes = eEncoding;
   
-  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_TME,eEncoding));
+  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes_mark3(DM_TME,eEncoding));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2766,6 +2766,24 @@ void RowCoder::vRecodeInt_mark3(Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* attempt to re-encode Tme                                                   */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecodeTme_mark3(Column* pCol)
+{
+  m_i_IntoOffset += m_nFromDataBytes;
+  vXchkTmeRecode(pCol);
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to re-encode Tsp                                                   */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecodeTsp_mark3(Column* pCol)
+{
+  m_i_IntoOffset += m_nFromDataBytes;
+  vXchkTspRecode(pCol);
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy an encoded row from one tray to another                               */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeVch_mark3(Column* pCol)
@@ -3511,7 +3529,6 @@ void RowCoder::vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
   ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
 
   Coda* pCoda = pNub->pCoda();
-  
   vDecode(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
 }
 
@@ -3528,15 +3545,15 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // the regular datums
-      
+     
     case DM_BCD:
 #ifdef WITH_MARK3_ENCODING
       vDecodeBcd_mark3(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
 #else
       vDecodeBcd(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
 #endif
-      
       break;
+      
     case DM_BOL:
 #ifdef WITH_MARK3_ENCODING
       vDecodeBol_mark3(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
@@ -3544,9 +3561,11 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       vDecodeBol(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
 #endif
       break;
+      
     case DM_DTE:
       vDecodeDte(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
+      
     case DM_FLT:
 #ifdef WITH_MARK3_ENCODING
       vDecodeFlt_mark3(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
@@ -3554,6 +3573,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       vDecodeFlt(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
 #endif
       break;
+      
     case DM_INT:
 #ifdef WITH_MARK3_ENCODING
       vDecodeInt_mark3(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
@@ -3561,15 +3581,19 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       vDecodeInt(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
 #endif
       break;
+      
     case DM_IVL:
       vDecodeIvl(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
+      
     case DM_TME:
       vDecodeTme(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
+      
     case DM_TSP:
       vDecodeTsp(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
+      
     case DM_VCH:
 #ifdef WITH_MARK3_ENCODING
       vDecodeVch_mark3(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
@@ -3592,7 +3616,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
     case DM_DELTA_PLUS:
       vDecodeDeltaPlus(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
       break;
-      
+     
     case DM_DIGIT:
 #ifdef WITH_MARK3_ENCODING
       vDecodeDigit_mark3(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
@@ -4434,7 +4458,6 @@ void RowCoder::vAppend(Record* pRec, HeadLine* aHeadLine,
   
   // first get the encoded value into datum
   vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_Offset);
-  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we have the decoded value in oDatum
