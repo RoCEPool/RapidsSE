@@ -39,119 +39,119 @@ Int::~Int(void) noexcept(false)
 /*-- Operators ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* is this integer less than given integer?                                   */
-/*----------------------------------------------------------------------------*/
-bool Int::operator < (Int& xInt)
-{
-  // NEED TO CHECK FOR NULLS
-  
-  bool bLessThan;
-  
-  if (m_iInt < xInt.m_iInt)
-    bLessThan = true;
-  else
-    bLessThan = false;
-  
-  ASSERT(0);
-  
-  return bLessThan;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this integer less than or equal to given integer?                       */
-/*----------------------------------------------------------------------------*/
-bool Int::operator <= (Int& xInt)
-{
-  // NEED TO CHECK FOR NULLS
-  
-  bool bLessEqual;
-  
-  if (m_iInt <= xInt.m_iInt)
-    bLessEqual = true;
-  else
-    bLessEqual = false;
-  
-  ASSERT(0);
-  
-  return bLessEqual;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this integer equal to given integer?                                    */
-/*----------------------------------------------------------------------------*/
-bool Int::operator == (Int& xInt)
-{
-  // NEED TO CHECK FOR NULLS
-  
-  bool bEqualTo;
-  
-  if (m_iInt == xInt.m_iInt)
-    bEqualTo = true;
-  else
-    bEqualTo = false;
-  
-  ASSERT(0);
-  
-  return bEqualTo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this integer not equal to given integer?                                */
-/*----------------------------------------------------------------------------*/
-bool Int::operator != (Int& xInt)
-{
-  // NEED TO CHECK FOR NULLS
-  
-  bool bNotEqual;
-  
-  if (m_iInt != xInt.m_iInt)
-    bNotEqual = true;
-  else
-    bNotEqual = false;
-  
-  ASSERT(0);
-  
-  return bNotEqual;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this integer greater than or equal to given integer?                    */
-/*----------------------------------------------------------------------------*/
-bool Int::operator >= (Int& xInt)
-{
-  // NEED TO CHECK FOR NULLS
-  
-  bool bGreaterEqual;
-  
-  if (m_iInt >= xInt.m_iInt)
-    bGreaterEqual = true;
-  else
-    bGreaterEqual = false;
-  
-  ASSERT(0);
-  
-  return bGreaterEqual;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this integer greater than given integer?                                */
-/*----------------------------------------------------------------------------*/
-bool Int::operator > (Int& xInt)
-{
-  // NEED TO CHECK FOR NULLS
-  
-  bool bGreaterThan;
-  
-  if (m_iInt > xInt.m_iInt)
-    bGreaterThan = true;
-  else
-    bGreaterThan = false;
-  
-  ASSERT(0);
-  
-  return bGreaterThan;
-}
+///*----------------------------------------------------------------------------*/
+///* is this integer less than given integer?                                   */
+///*----------------------------------------------------------------------------*/
+//bool Int::operator < (Int& xInt)
+//{
+//  // NEED TO CHECK FOR NULLS
+//  
+//  bool bLessThan;
+//  
+//  if (m_iInt < xInt.m_iInt)
+//    bLessThan = true;
+//  else
+//    bLessThan = false;
+//  
+//  ASSERT(0);
+//  
+//  return bLessThan;
+//}
+//
+///*----------------------------------------------------------------------------*/
+///* is this integer less than or equal to given integer?                       */
+///*----------------------------------------------------------------------------*/
+//bool Int::operator <= (Int& xInt)
+//{
+//  // NEED TO CHECK FOR NULLS
+//  
+//  bool bLessEqual;
+//  
+//  if (m_iInt <= xInt.m_iInt)
+//    bLessEqual = true;
+//  else
+//    bLessEqual = false;
+//  
+//  ASSERT(0);
+//  
+//  return bLessEqual;
+//}
+//
+///*----------------------------------------------------------------------------*/
+///* is this integer equal to given integer?                                    */
+///*----------------------------------------------------------------------------*/
+//bool Int::operator == (Int& xInt)
+//{
+//  // NEED TO CHECK FOR NULLS
+//  
+//  bool bEqualTo;
+//  
+//  if (m_iInt == xInt.m_iInt)
+//    bEqualTo = true;
+//  else
+//    bEqualTo = false;
+//  
+//  ASSERT(0);
+//  
+//  return bEqualTo;
+//}
+//
+///*----------------------------------------------------------------------------*/
+///* is this integer not equal to given integer?                                */
+///*----------------------------------------------------------------------------*/
+//bool Int::operator != (Int& xInt)
+//{
+//  // NEED TO CHECK FOR NULLS
+//  
+//  bool bNotEqual;
+//  
+//  if (m_iInt != xInt.m_iInt)
+//    bNotEqual = true;
+//  else
+//    bNotEqual = false;
+//  
+//  ASSERT(0);
+//  
+//  return bNotEqual;
+//}
+//
+///*----------------------------------------------------------------------------*/
+///* is this integer greater than or equal to given integer?                    */
+///*----------------------------------------------------------------------------*/
+//bool Int::operator >= (Int& xInt)
+//{
+//  // NEED TO CHECK FOR NULLS
+//  
+//  bool bGreaterEqual;
+//  
+//  if (m_iInt >= xInt.m_iInt)
+//    bGreaterEqual = true;
+//  else
+//    bGreaterEqual = false;
+//  
+//  ASSERT(0);
+//  
+//  return bGreaterEqual;
+//}
+//
+///*----------------------------------------------------------------------------*/
+///* is this integer greater than given integer?                                */
+///*----------------------------------------------------------------------------*/
+//bool Int::operator > (Int& xInt)
+//{
+//  // NEED TO CHECK FOR NULLS
+//  
+//  bool bGreaterThan;
+//  
+//  if (m_iInt > xInt.m_iInt)
+//    bGreaterThan = true;
+//  else
+//    bGreaterThan = false;
+//  
+//  ASSERT(0);
+//  
+//  return bGreaterThan;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
