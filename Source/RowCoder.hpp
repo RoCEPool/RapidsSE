@@ -113,11 +113,13 @@ namespace Data
     void vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeFlt(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeInt_mark3(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeIvl(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeTme(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeTsp(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum);
+  
+    void vCodeBcd_mark3(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeInt_mark3(Datum* pTgtDatum, Datum* pSrcDatum);
   
     void vCopyHead_Large(void);
     void vCopyHead_Short(void);
@@ -130,13 +132,16 @@ namespace Data
     void vEncodeDte(Datum* pSrcDatum, Column* pCol);
     void vEncodeFlt(Datum* pSrcDatum, Column* pCol);
     void vEncodeInt(Datum* pSrcDatum, Column* pCol);
-    void vEncodeInt_mark3(Datum* pSrcDatum, Column* pCol);
     void vEncodeIvl(Datum* pSrcDatum, Column* pCol);
     void vEncodeTme(Datum* pSrcDatum, Column* pCol);
     void vEncodeTsp(Datum* pSrcDatum, Column* pCol);
     void vEncodeVch(Datum* pSrcDatum, Column* pCol);
     void vEncodeVchShoco(Datum* pSrcDatum, Column* pCol);
     void vEncodeVchSmall(Datum* pSrcDatum, Column* pCol);
+    
+    void vEncodeBcd_mark3(Datum* pSrcDatum, Column* pCol);
+    void vEncodeInt_mark3(Datum* pSrcDatum, Column* pCol);
+    
     eMN  eEncodingInitial(Column* pCol,
                           i8& i_PriorColumn_, i8& i_Offset_);
     eMC  eEncodingInitial_mark3(Column* pCol,
@@ -150,15 +155,12 @@ namespace Data
 
     void vRecode_Large(void);
     void vRecode_Short(void);
-    void vRecode_Short_mark3(void);
     void vRecodeBcd(Column* pCol);
     void vRecodeBol(Column* pCol);
     void vRecodeDte(Column* pCol);
     void vRecodeFlt(Column* pCol);
     void vRecodeInt(Column* pCol);
-    void vRecodeInt_mark3(Column* pCol);
     bool bRecodeIntDigit(Column* pCol);
-    bool bRecodeIntDigit_mark3(Column* pCol);
     void vRecodeIvl(Column* pCol);
     void vRecodeTme(Column* pCol);
     void vRecodeTsp(Column* pCol);
@@ -169,6 +171,12 @@ namespace Data
     bool bRecodeVchShocoSplit(Column* pCol);
     void vRecodeVchShocoTail(Column* pCol);
 
+    void vRecode_Short_mark3(void);
+
+    void vRecodeBcd_mark3(Column* pCol);
+    void vRecodeInt_mark3(Column* pCol);
+    bool bRecodeIntDigit_mark3(Column* pCol);
+    
     void vUsageIncEncoded(Column* pCol, i8 nBytes);
     void vUsageIncEncoded(Column* pCol, Datum* pDatum);
     void vUsageIncRecoded(Column* pCol, i8 nBytes);
@@ -180,7 +188,6 @@ namespace Data
     void vXchkDte(Datum* pDatum, Column* pCol, i8 iRow);
     void vXchkFlt(Datum* pDatum, Column* pCol, i8 iRow);
     void vXchkInt(Datum* pDatum, Column* pCol, i8 iRow);
-    void vXchkInt_mark3(Datum* pDatum, Column* pCol, i8 iRow);
     void vXchkIvl(Datum* pDatum, Column* pCol, i8 iRow);
     void vXchkTme(Datum* pDatum, Column* pCol, i8 iRow);
     void vXchkTsp(Datum* pDatum, Column* pCol, i8 iRow);
@@ -251,9 +258,6 @@ namespace Data
     static void vDecodeInt(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeInt_mark3(Datum* pDatum, HeadLine* aHeadLine,
-                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                           i8& i_LastColumn, i8& i_LastOffset);
     static void vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
@@ -275,6 +279,14 @@ namespace Data
     static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
 
+    static void vDecodeBcd_mark3(Datum* pDatum, HeadLine* aHeadLine,
+                                 ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                                 i8& i_LastColumn, i8& i_LastOffset);
+
+    static void vDecodeInt_mark3(Datum* pDatum, HeadLine* aHeadLine,
+                                 ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                                 i8& i_LastColumn, i8& i_LastOffset);
+
     // extended datums
     static void vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
                              ColumnVec* pColVec, Column* pCol, Coda* pCoda,
@@ -288,13 +300,17 @@ namespace Data
     static void vDecodeDigit(Datum* pDatum, HeadLine* aHeadLine,
                              ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                               i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeDigit_mark3(Datum* pDatum, HeadLine* aHeadLine,
-                             ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                             i8& i_LastColumn, i8& i_LastOffset);
     static void vDecodeTenth(Datum* pDatum, HeadLine* aHeadLine,
                               ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                               i8& i_LastColumn, i8& i_LastOffset);
 
+    static void vDecodeDigit_mark3(Datum* pDatum, HeadLine* aHeadLine,
+                                   ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                                   i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeTenth_mark3(Datum* pDatum, HeadLine* aHeadLine,
+                                   ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                                   i8& i_LastColumn, i8& i_LastOffset);
+                                   
     static eMN eEncodingInitial(HeadLine* aHeadLine, Column* pCol,
                                 ColumnVec* pColVec,
                                 i8& i_PriorColumn_, i8& i_Offset_);

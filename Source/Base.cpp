@@ -111,6 +111,9 @@ void Base::vTraceWith(void)
   vTrace("  WITH_SHOCO_FOLDLAST\n"_Stz);
 #endif
 
+#ifdef WITH_MARK3_ENCODING
+  vTrace("  WITH_MARK3_ENCODING\n"_Stz);
+#endif
 
 }
 
