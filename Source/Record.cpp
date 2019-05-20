@@ -1225,7 +1225,7 @@ void Record::vAppendBcd_Alt(Column* pCol, Datum* pDatum)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append boolean datum to string                                             */
+/* append ascii of boolean datum to record                                    */
 /*----------------------------------------------------------------------------*/
 void Record::vAppendBol(Column* pCol, Datum* pDatum)
 {
@@ -1238,9 +1238,21 @@ void Record::vAppendBol(Column* pCol, Datum* pDatum)
   
   m_sRecStr.vConcat(pDatum->m_iBol ? "true"_Stz : "false"_Stz);
 }
+/*----------------------------------------------------------------------------*/
+void Record::vAppendBol_Alt(Column* pCol, Datum* pDatum)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+  
+  if (pDatum->bIsNull()) {
+    m_sRecStr.vCatSprint("null"_Stz);
+    return;
+  }
+  
+  m_sRecStr.vConcat(pDatum->m_iBol ? "true"_Stz : "false"_Stz);
+}
 
 /*----------------------------------------------------------------------------*/
-/* append date datum to string                                                */
+/* append ascii of date datum to record                                       */
 /*----------------------------------------------------------------------------*/
 void Record::vAppendDte(Column* pCol, Datum* pDatum)
 {
@@ -1254,9 +1266,24 @@ void Record::vAppendDte(Column* pCol, Datum* pDatum)
     
     m_sRecStr.vConcat(sDte.aStz());
 }
+/*----------------------------------------------------------------------------*/
+void Record::vAppendDte_Alt(Column* pCol, Datum* pDatum)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+  
+  char acAscii[32];
+  
+  StrLib::vSprint(acAscii,
+                  "%02lld-%02lld-%02lld"_Stz,
+                  (i8)pDatum->xDte.m_uYearDelta + C_BASE_YEAR,
+                  (i8)pDatum->xDte.m_uMonth,
+                  (i8)pDatum->xDte.m_uDay);
+
+  m_sRecStr.vConcat((Stz*)acAscii);
+}
 
 /*----------------------------------------------------------------------------*/
-/* append float datum to string                                               */
+/* append ascii of float datum to record                                      */
 /*----------------------------------------------------------------------------*/
 void Record::vAppendFlt(Column* pCol, Datum* pDatum)
 {
@@ -1269,9 +1296,20 @@ void Record::vAppendFlt(Column* pCol, Datum* pDatum)
   
   m_sRecStr.vCatSprint("%g"_Stz,pDatum->m_dFlt);
 }
+/*----------------------------------------------------------------------------*/
+void Record::vAppendFlt_Alt(Column* pCol, Datum* pDatum)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+  
+  char acAscii[32];
+
+  StrLib::vSprint(acAscii,"%g"_Stz,pDatum->m_dFlt);
+  
+  m_sRecStr.vConcat((Stz*)acAscii);
+}
 
 /*----------------------------------------------------------------------------*/
-/* append integer datum to string                                             */
+/* append ascii of integer datum to record                                    */
 /*----------------------------------------------------------------------------*/
 void Record::vAppendInt(Column* pCol, Datum* pDatum)
 {
@@ -1284,9 +1322,20 @@ void Record::vAppendInt(Column* pCol, Datum* pDatum)
   
   m_sRecStr.vCatSprint("%lld"_Stz,pDatum->m_iInt);
 }
+/*----------------------------------------------------------------------------*/
+void Record::vAppendInt_Alt(Column* pCol, Datum* pDatum)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+  
+  char acAscii[32];
+
+  StrLib::vSprint(acAscii,"%lld"_Stz,pDatum->m_iInt);
+  
+  m_sRecStr.vConcat((Stz*)acAscii);
+}
 
 /*----------------------------------------------------------------------------*/
-/* append interval datum to string                                            */
+/* append ascii of interval datum to record                                   */
 /*----------------------------------------------------------------------------*/
 void Record::vAppendIvl(Column* pCol, Datum* pDatum)
 {
@@ -1299,9 +1348,20 @@ void Record::vAppendIvl(Column* pCol, Datum* pDatum)
   
   m_sRecStr.vCatSprint("%lld"_Stz,pDatum->m_iIvl);
 }
+/*----------------------------------------------------------------------------*/
+void Record::vAppendIvl_Alt(Column* pCol, Datum* pDatum)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+ 
+  char acAscii[32];
+  
+  StrLib::vSprint(acAscii,"%lld"_Stz,pDatum->m_iIvl);
+  
+  m_sRecStr.vConcat((Stz*)acAscii);
+}
 
 /*----------------------------------------------------------------------------*/
-/* append time datum to string                                                */
+/* append ascii of time datum to record                                       */
 /*----------------------------------------------------------------------------*/
 void Record::vAppendTme(Column* pCol, Datum* pDatum)
 {
@@ -1315,9 +1375,37 @@ void Record::vAppendTme(Column* pCol, Datum* pDatum)
   
   m_sRecStr.vConcat(sTme.aStz());
 }
+/*----------------------------------------------------------------------------*/
+void Record::vAppendTme_Alt(Column* pCol, Datum* pDatum)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+  
+  char acAscii[32];
+  
+  u8 uMicro = pDatum->xTme.m_uMicro;
+  
+  if (uMicro) {
+    char caFraction[16];
+    StrLib::vFormatFraction(caFraction,uMicro,6);
+    
+    StrLib::vSprint(acAscii,"%02lld:%02lld:%02lld.%s"_Stz,
+                    (i8)pDatum->xTme.m_uHour,
+                    (i8)pDatum->xTme.m_uMinute,
+                    (i8)pDatum->xTme.m_uSecond,
+                    caFraction);
+  }
+  else {
+    StrLib::vSprint(acAscii,"%02lld:%02lld:%02lld"_Stz,
+                    (i8)pDatum->xTme.m_uHour,
+                    (i8)pDatum->xTme.m_uMinute,
+                    (i8)pDatum->xTme.m_uSecond);
+  }
+  
+  m_sRecStr.vConcat((Stz*)acAscii);
+}
 
 /*----------------------------------------------------------------------------*/
-/* append timestamp datum to string                                           */
+/* append ascii of timestamp datum to record                                  */
 /*----------------------------------------------------------------------------*/
 void Record::vAppendTsp(Column* pCol, Datum* pDatum)
 {
@@ -1331,9 +1419,45 @@ void Record::vAppendTsp(Column* pCol, Datum* pDatum)
   
   m_sRecStr.vConcat(sTsp.aStz());
 }
+/*----------------------------------------------------------------------------*/
+void Record::vAppendTsp_Alt(Column* pCol, Datum* pDatum)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+  
+  char acAscii[32];
+  
+
+  if (pDatum->xTsp.m_uMicro) {
+    char caFraction[16];
+    StrLib::vFormatFraction(caFraction,pDatum->xTsp.m_uMicro,6);
+    
+    StrLib::vSprint(acAscii,
+                    "TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s'"_Stz,
+                    (i8)pDatum->xTsp.m_uYearDelta + C_BASE_YEAR,
+                    (i8)pDatum->xTsp.m_uMonth,
+                    (i8)pDatum->xTsp.m_uDay,
+                    (i8)pDatum->xTsp.m_uHour,
+                    (i8)pDatum->xTsp.m_uMinute,
+                    (i8)pDatum->xTsp.m_uSecond,
+                    caFraction);
+  }
+  else {
+  
+    StrLib::vSprint(acAscii,
+                    "TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld"_Stz,
+                    (i8)pDatum->xTsp.m_uYearDelta + C_BASE_YEAR,
+                    (i8)pDatum->xTsp.m_uMonth,
+                    (i8)pDatum->xTsp.m_uDay,
+                    (i8)pDatum->xTsp.m_uHour,
+                    (i8)pDatum->xTsp.m_uMinute,
+                    (i8)pDatum->xTsp.m_uSecond);
+  }
+  
+  m_sRecStr.vConcat((Stz*)acAscii);
+}
 
 /*----------------------------------------------------------------------------*/
-/* append varchar datum to string                                             */
+/* append ascii of varchar datum to record                                    */
 /*----------------------------------------------------------------------------*/
 void Record::vAppendVch(Column* pCol, Datum* pDatum)
 {
@@ -1347,6 +1471,39 @@ void Record::vAppendVch(Column* pCol, Datum* pDatum)
   s256 sBuf;
   
   Vch::vSprintQuotes(sBuf,pDatum->m_sVch.aStz());
+  m_sRecStr.vConcat(sBuf.aStz());
+}
+/*----------------------------------------------------------------------------*/
+void Record::vAppendVch_Alt(Column* pCol, Datum* pDatum)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+  
+  s256 sBuf;
+  
+  char* aDstChar = (char*)sBuf.aChar();
+  char* aSrcChar = (char*)pDatum->m_sVch.aChar();
+  
+  // put leading enclosing quote/char
+  *aDstChar++ = '\'';
+  
+  // copy from src to dst
+  while (*aSrcChar) {
+    
+    if ('\'' == *aSrcChar) {
+      // escape an enclosing quote/char
+      *aDstChar++ = '\'';
+      *aDstChar++ = *aSrcChar++;
+    }
+    else {
+      // copy an ordinary char
+      *aDstChar++ = *aSrcChar++;
+    }
+  }
+  
+  // put trailing enclosing quote/char and \0 terminate
+  *aDstChar++ = '\'';
+  *aDstChar = '\0';
+
   m_sRecStr.vConcat(sBuf.aStz());
 }
 
