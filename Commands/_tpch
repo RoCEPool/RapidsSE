@@ -1,0 +1,31 @@
+/*============================================================================*/
+/* _tpch -- create and load TPC-H tables for SF1                              */
+/*============================================================================*/
+
+startCluster;
+
+_customer
+_lineitem
+_nation
+_orders
+_part
+_partsupp
+_region
+_supplier
+
+lf ;
+
+ld customer "/tpch/SF1/customer.csv" ;
+//ld lineitem "/tpch/SF1/lineitem.csv" ;
+//ld nation   "/tpch/SF1/nation.csv"   ;
+//ld orders   "/tpch/SF1/orders.csv"  ;
+//ld part     "/tpch/SF1/part.csv"     ;
+//ld partsupp "/tpch/SF1/partsupp.csv" ;
+//ld region   "/tpch/SF1/region.csv"       ;
+//ld supplier "/tpch/SF1/supplier.csv" ;
+
+tableSizes ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
