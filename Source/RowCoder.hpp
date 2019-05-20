@@ -280,11 +280,11 @@ namespace Data
                                 Column* pCol, eMN eEncoding, i8 i_Offset);
 
     static void vDecodeBcd_mark3(Datum* pDatum, HeadLine* aHeadLine,
-                                 ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                                 ColumnVec* pColVec, Column* pCol, 
                                  i8& i_LastColumn, i8& i_LastOffset);
 
     static void vDecodeInt_mark3(Datum* pDatum, HeadLine* aHeadLine,
-                                 ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                                 ColumnVec* pColVec, Column* pCol,
                                  i8& i_LastColumn, i8& i_LastOffset);
 
     // extended datums
@@ -321,7 +321,7 @@ namespace Data
                                 ColumnVec* pColVec, Coda* pCoda,
                                 i8& i_PriorColumn_, i8& i_Offset_);
     static eMC eEncodingRecoded_mark3(HeadLine* aHeadLine, Column* pCol,
-                                ColumnVec* pColVec, Coda* pCoda,
+                                ColumnVec* pColVec,
                                 i8& i_PriorColumn_, i8& i_Offset_);
     static Stz* sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt);
   
