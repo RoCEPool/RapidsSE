@@ -326,14 +326,17 @@ void RowCoder::vEncodeDatum_mark3(Datum* pSrcDatum, Column* pCol)
   // hash the column if its part of the partition key
   vHashColumn(pSrcDatum,pCol);
   
+  //! HACK
   // get the extracted date into xEdt
-  Datum oDatum;
-  oDatum.m_wWord = pSrcDatum->m_wWord;
+  if (eDatum == DM_DTE) {
+    Datum oDatum;
+    oDatum.m_wWord = pSrcDatum->m_wWord;
 
-  pSrcDatum->xEdt.m_uYearInEra = oDatum.xDte.m_uYearDelta;;
-  pSrcDatum->xEdt.m_uMonth = oDatum.xDte.m_uMonth;
-  pSrcDatum->xEdt.m_uDay = oDatum.xDte.m_uDay;
-  pSrcDatum->xEdt.m_uSpare = 0;
+    pSrcDatum->xEdt.m_uYearInEra = oDatum.xDte.m_uYearDelta;;
+    pSrcDatum->xEdt.m_uMonth = oDatum.xDte.m_uMonth;
+    pSrcDatum->xEdt.m_uDay = oDatum.xDte.m_uDay;
+    pSrcDatum->xEdt.m_uSpare = 0;
+  }
   
   // encode the datum into the row
   switch (eDatum) {
@@ -3665,11 +3668,19 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       break;
       
     case DM_TME:
+#ifdef WITH_MARK3_ENCODING
+      vDecodeTme_mark3(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+#else
       vDecodeTme(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+#endif
       break;
       
     case DM_TSP:
+#ifdef WITH_MARK3_ENCODING
+      vDecodeTsp_mark3(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+#else
       vDecodeTsp(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+#endif
       break;
       
     case DM_VCH:
