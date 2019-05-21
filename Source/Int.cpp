@@ -414,31 +414,31 @@ bool Int::bGreaterThan(char* aArgA, char* aArgB)
 /*----------------------------------------------------------------------------*/
 /* cmp argA with argB (-ve: argA < argB, 0: argA == argB, +ve: argA > argB)   */
 /*----------------------------------------------------------------------------*/
-i8 Int::iCmp(char* aArgA, char* aArgB)
-{
-  //----------------------------------------------------------------------------
-  // check for nulls first
-  if (((Int*)aArgA)->bIsNull() && ((Int*)aArgB)->bIsNull())
-    return 0;
-  
-  if (((Int*)aArgA)->bIsNull())
-    return -1;
-  
-  if (((Int*)aArgB)->bIsNull())
-    return 1;
-  
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-
-  if (iA > iB)
-    return 1;
-  
-  if (iA < iB)
-    return -1;
-  
-  return 0;
-}
-
+//i8 Int::iCmp(char* aArgA, char* aArgB)
+//{
+//  //----------------------------------------------------------------------------
+//  // check for nulls first
+//  if (((Int*)aArgA)->bIsNull() && ((Int*)aArgB)->bIsNull())
+//    return 0;
+//  
+//  if (((Int*)aArgA)->bIsNull())
+//    return -1;
+//  
+//  if (((Int*)aArgB)->bIsNull())
+//    return 1;
+//  
+//  i8 iA = *(i8*)aArgA;
+//  i8 iB = *(i8*)aArgB;
+//
+//  if (iA > iB)
+//    return 1;
+//  
+//  if (iA < iB)
+//    return -1;
+//  
+//  return 0;
+//}
+//
 
 /*============================================================================*/
 /* end                                                                        */

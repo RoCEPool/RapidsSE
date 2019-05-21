@@ -53,7 +53,7 @@ namespace Datums
     static bool bGreaterEqual(char* aArgA, char* aArgB);
     static bool bGreaterThan(char* aArgA, char* aArgB);
     
-    static i8 iCmp(char* aArgA, char* aArgB);
+    //static i8 iCmp(char* aArgA, char* aArgB);
   };
 }
 
