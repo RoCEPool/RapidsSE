@@ -207,13 +207,13 @@ bool Int::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 /* sprint int datum                                                           */
 /*----------------------------------------------------------------------------*/
-void Int::vSprint(Stz* aDst)
-{
-  if (bIsNull())
-    StrLib::vSprint(aDst,"null"_Stz);
-  else
-    StrLib::vSprint(aDst,"%lld"_Stz,m_iInt);
-}
+//void Int::vSprint(Stz* aDst)
+//{
+//  if (bIsNull())
+//    StrLib::vSprint(aDst,"null"_Stz);
+//  else
+//    StrLib::vSprint(aDst,"%lld"_Stz,m_iInt);
+//}
 
 
 /*----------------------------------------------------------------------------*/

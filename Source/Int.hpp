@@ -39,7 +39,7 @@ namespace Datums
   
     bool bIsNull(void);
     //void vSetNull(void);
-    void vSprint(Stz* aDst);
+    //void vSprint(Stz* aDst);
 
     static i8   nCopy(void* aDst, void* aSrc);
 
