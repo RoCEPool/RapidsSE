@@ -1166,7 +1166,7 @@ bool Extractor::bIsThereFieldData(char* aSrc, Formatters* pFormatters)
 /*----------------------------------------------------------------------------*/
 /* is there data?                                                             */
 /*----------------------------------------------------------------------------*/
-bool Extractor::bIsThereExtractorData(char* aSrc, Formatters* pFormatters)
+bool Extractor::bIsThereRecordData(char* aSrc, Formatters* pFormatters)
 {
   if ( ! *aSrc
       || *aSrc == C_NL
@@ -1395,7 +1395,7 @@ bool Extractor::bValidFieldEnd(char* aSrc, Formatters* pFormatters)
       return false;
     
     // test we see the Extractor end after the Extractor termintor
-    bool bValidEnd = bValidExtractorEnd(aSrc+1,pFormatters);
+    bool bValidEnd = bValidRecordEnd(aSrc+1,pFormatters);
     
     return bValidEnd;
   }
@@ -1403,7 +1403,7 @@ bool Extractor::bValidFieldEnd(char* aSrc, Formatters* pFormatters)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for explicit Extractor ends
   
-  bool bValidEnd = bValidExtractorEnd(aSrc,pFormatters);
+  bool bValidEnd = bValidRecordEnd(aSrc,pFormatters);
   
   return bValidEnd;
 }
@@ -1430,15 +1430,15 @@ bool Extractor::bValidFieldEndDefault(char* aSrc, Formatters* pFormatters)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for explicit Extractor ends
   
-  bool bValidEnd = bValidExtractorEnd(aSrc,pFormatters);
+  bool bValidEnd = bValidRecordEnd(aSrc,pFormatters);
   
   return bValidEnd;
 }
 
 /*----------------------------------------------------------------------------*/
-/* test for valid Extractor end                                                  */
+/* test for valid record end                                                  */
 /*----------------------------------------------------------------------------*/
-bool Extractor::bValidExtractorEnd(char* aSrc, Formatters* pFormatters)
+bool Extractor::bValidRecordEnd(char* aSrc, Formatters* pFormatters)
 {
   switch (pFormatters->m_eRecordEnd) {
       
@@ -1467,86 +1467,6 @@ bool Extractor::bValidExtractorEnd(char* aSrc, Formatters* pFormatters)
 }
 
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
-//!                     REVIEW WHICH FUNCTIONS USE THESE                     !//
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
-
-/*----------------------------------------------------------------------------*/
-/*-- Sprint ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* s-print                                                                    */
-/*----------------------------------------------------------------------------*/
-void Extractor::vSprint(Column* pColumn, Stz* aDst, Stz* aSrc)
-{
-  eDM eDatum = pColumn->eDatumType();
-  
-  switch (eDatum) {
-    case DM_BCD: Bcd::vSprint(aDst,aSrc,pColumn); break;
-    case DM_BOL: Bol::vSprint(aDst,aSrc); break;
-    case DM_CHR: Vch::vSprint(aDst,aSrc); break;
-    case DM_DTE: Dte::vSprint(aDst,aSrc); break;
-    case DM_FLT: Flt::vSprint(aDst,aSrc); break;
-    case DM_INT: Int::vSprint(aDst,aSrc); break;
-    case DM_IVL: Ivl::vSprint(aDst,aSrc); break;
-    case DM_TME: Tme::vSprint(aDst,aSrc); break;
-    case DM_TSP: Tsp::vSprint(aDst,aSrc); break;
-    case DM_VCH: Vch::vSprint(aDst,aSrc); break;
-    default:
-      vFatal("DtmLib::vSprint: Invalid aDatum argument: %lld\n"_Stz,
-             eDatum);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* s-print                                                                    */
-/*----------------------------------------------------------------------------*/
-void Extractor::vSprintQuotes(Column* pColumn, Stz* aDst, Stz* aSrc)
-{
-  eDM eDatum = pColumn->eDatumType();
-  
-  switch (eDatum) {
-    case DM_BCD: Bcd::vSprint(aDst,aSrc,pColumn); break;
-    case DM_BOL: Bol::vSprint(aDst,aSrc); break;
-    case DM_CHR: Vch::vSprint(aDst,aSrc); break;
-    case DM_DTE: Dte::vSprint(aDst,aSrc); break;
-    case DM_FLT: Flt::vSprint(aDst,aSrc); break;
-    case DM_INT: Int::vSprint(aDst,aSrc); break;
-    case DM_IVL: Ivl::vSprint(aDst,aSrc); break;
-    case DM_TME: Tme::vSprint(aDst,aSrc); break;
-    case DM_TSP: Tsp::vSprint(aDst,aSrc); break;
-    case DM_VCH: Vch::vSprintQuotes(aDst,aSrc); break;
-    default:
-      vFatal("DtmLib::vSprint: Invalid aDatum argument: %lld\n"_Stz,
-             eDatum);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* s-print escaped                                                            */
-/*----------------------------------------------------------------------------*/
-void Extractor::vSprintEscaped(Column* pColumn, Stz* aDst, Stz* aSrc)
-{
-  eDM eDatum = pColumn->eDatumType();
-  
-  switch (eDatum) {
-    case DM_BCD: Bcd::vSprint(aDst,aSrc,pColumn); break;
-    case DM_BOL: Bol::vSprint(aDst,aSrc);         break;
-    case DM_CHR: Vch::vSprint(aDst,aSrc);         break;
-    case DM_DTE: Dte::vSprintEscaped(aDst,aSrc);  break;
-    case DM_FLT: Flt::vSprint(aDst,aSrc);         break;
-    case DM_INT: Int::vSprint(aDst,aSrc);         break;
-    case DM_IVL: Ivl::vSprint(aDst,aSrc);         break;
-    case DM_TME: Tme::vSprintEscaped(aDst,aSrc);  break;
-    case DM_TSP: Tsp::vSprintEscaped(aDst,aSrc);  break;
-    case DM_VCH: Vch::vSprintEscaped(aDst,aSrc);  break;
-    default:
-      vFatal("DtmLib::vSprint: Invalid aDatum argument: %lld\n"_Stz,
-             eDatum);
-  }
-}
-
-/*============================================================================*/
+ /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

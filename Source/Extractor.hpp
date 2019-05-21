@@ -58,7 +58,7 @@ namespace Data
   
     static bool bIsEnclosed(char** aaSrc, Formatters* pFormatters);
     static bool bIsThereFieldData(char* aSrc, Formatters* pFormatters);
-    static bool bIsThereExtractorData(char* aSrc, Formatters* pFormatters);
+    static bool bIsThereRecordData(char* aSrc, Formatters* pFormatters);
     static bool bTestForNull(Column* pColumn,
                              char** aaSrc,
                              Formatters* pFormatters,
@@ -71,12 +71,7 @@ namespace Data
                                     bool bSkipTrailingSpaces=true);
     static bool bValidFieldEnd(char* aSrc, Formatters* pFormatters);
     static bool bValidFieldEndDefault(char* aSrc, Formatters* pFormatters);
-    static bool bValidExtractorEnd(char* aSrc, Formatters* pFormatters);
-
-    //! REVIEW WHICH FUNCTIONS USE THESE
-    static void vSprint(Column* pColumn, Stz* aDst, Stz* aSrc);
-    static void vSprintQuotes(Column* pColumn, Stz* aDst, Stz* aSrc);
-    static void vSprintEscaped(Column* pColumn, Stz* aDst, Stz* aSrc);
+    static bool bValidRecordEnd(char* aSrc, Formatters* pFormatters);
   };
   
 }

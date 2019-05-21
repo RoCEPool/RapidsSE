@@ -75,7 +75,7 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
     StrLib::vSkipSpaces(&aSrc);
   
   // ignore blank lines
-  if (! Record::bIsThereRecordData(aSrc,&m_oFormatters) ) {
+  if (! Extractor::bIsThereRecordData(aSrc,&m_oFormatters) ) {
     bBlankLine = true;
     return false;
   }
