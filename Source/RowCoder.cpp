@@ -504,6 +504,15 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
          m_nHeadFreeBytes_64_,
          
          m_nHeadFreeBytes / pRowCoder_Encode->m_nTotalHeads);
+  
+  for (i8 i_Code = 0; i_Code < MC_ENUMS; i_Code++) {
+    if (! m_anMetaCode[i_Code])
+      continue;
+    
+    vTrace(": %s %lld\n"_Stz,
+           aMC[i_Code],
+           m_anMetaCode[i_Code]);
+  }
 }
 
 
@@ -3096,43 +3105,51 @@ bool RowCoder::bRecodeIntDigit_mark3(Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* inc column usage                                                           */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vUsageIncEncoded(Column* pCol, i8 nBytes)
+void RowCoder::vUsageIncEncoded(Column* pCol, i8 nBytes, eMC eMetaCode)
 {
   i8 i_Col = pCol->iColumnNo();
   
   m_xaUsage[i_Col].m_nEncodedBytes += nBytes;
   m_xaUsage[i_Col].m_nEncoded++;
+  
+  m_anMetaCode[eMetaCode]++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* inc column usage                                                           */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vUsageIncEncoded(Column* pCol, Datum* pDatum)
+void RowCoder::vUsageIncEncoded(Column* pCol, Datum* pDatum, eMC eMetaCode)
 {
   vUsageIncEncoded(pCol,pDatum->m_nEncodedBytes);
+  
+  m_anMetaCode[eMetaCode]++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* inc column usage                                                           */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vUsageIncRecoded(Column* pCol, i8 nBytes)
+void RowCoder::vUsageIncRecoded(Column* pCol, i8 nBytes, eMC eMetaCode)
 {
   i8 i_Col = pCol->iColumnNo();
   
   m_xaUsage[i_Col].m_nRecodedBytes += nBytes;
   m_xaUsage[i_Col].m_nRecoded++;
+  
+  m_anMetaCode[eMetaCode]++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* inc column usage                                                           */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss)
+void RowCoder::vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss, eMC eMetaCode)
 {
   i8 i_Col = pCol->iColumnNo();
   
   m_xaUsage[i_Col].m_nOopsBytes += nBytes;
   m_xaUsage[i_Col].m_nOopsMiss  += nMiss;
   m_xaUsage[i_Col].m_nOops++;
+  
+  m_anMetaCode[eMetaCode]++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3151,6 +3168,9 @@ void RowCoder::vUsageReset(void)
     m_xaUsage[i_Col].m_nOops = 0;
     m_xaUsage[i_Col].m_nOopsBytes = 0;
   }
+  
+  for (i8 i_Code = 0; i_Code < MC_ENUMS; i_Code++)
+    m_anMetaCode[i_Code] = 0;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -204,10 +204,10 @@ namespace Data
     void vRecodeTsp_mark3(Column* pCol);
     void vRecodeVch_mark3(Column* pCol);
     
-    void vUsageIncEncoded(Column* pCol, i8 nBytes);
-    void vUsageIncEncoded(Column* pCol, Datum* pDatum);
-    void vUsageIncRecoded(Column* pCol, i8 nBytes);
-    void vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss);
+    void vUsageIncEncoded(Column* pCol, i8 nBytes, eMC eMetaCode = MC_NULL);
+    void vUsageIncEncoded(Column* pCol, Datum* pDatum, eMC eMetaCode = MC_NULL);
+    void vUsageIncRecoded(Column* pCol, i8 nBytes, eMC eMetaCode = MC_NULL);
+    void vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss, eMC eMetaCode = MC_NULL);
     void vUsageReset(void);
   
     void vXchkBcd(Datum* pDatum, Column* pCol, i8 iRow);
