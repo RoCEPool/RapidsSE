@@ -34,7 +34,7 @@ namespace Datums
   
     void operator =(i8 iArg);
   
-    void vInitZero(void);
+    //void vInitZero(void);
     //i8   iAsI8(void);
   
     bool bIsNull(void);
