@@ -167,15 +167,15 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
                         i_Row,pAggColumn,i_LastColumn2,i_LastOffset2);
       xVal = oDatum.m_iInt;
     
-      if (xVal.iAsI8() < m_iaMinVal[i_AggCol]) {
-        m_iaMinVal[i_AggCol] = xVal.iAsI8();
-        m_iaMinKey[i_AggCol] = xKey.iAsI8();
+      if (xVal.m_iInt < m_iaMinVal[i_AggCol]) {
+        m_iaMinVal[i_AggCol] = xVal.m_iInt;
+        m_iaMinKey[i_AggCol] = xKey.m_iInt;
       }
-      if (xVal.iAsI8() > m_iaMaxVal[i_AggCol]) {
-        m_iaMaxVal[i_AggCol] = xVal.iAsI8();
-        m_iaMaxKey[i_AggCol] = xKey.iAsI8();
+      if (xVal.m_iInt > m_iaMaxVal[i_AggCol]) {
+        m_iaMaxVal[i_AggCol] = xVal.m_iInt;
+        m_iaMaxKey[i_AggCol] = xKey.m_iInt;
       }
-      m_iaSumVal[i_AggCol] += xVal.iAsI8();
+      m_iaSumVal[i_AggCol] += xVal.m_iInt;
     }
     
     m_nRows++;
