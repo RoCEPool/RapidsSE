@@ -326,11 +326,20 @@ void RowCoder::vEncodeDatum_mark3(Datum* pSrcDatum, Column* pCol)
   // hash the column if its part of the partition key
   vHashColumn(pSrcDatum,pCol);
   
+  // get the extracted date into xEdt
+  Datum oDatum;
+  oDatum.m_wWord = pSrcDatum->m_wWord;
+
+  pSrcDatum->xEdt.m_uYearInEra = oDatum.xDte.m_uYearDelta;;
+  pSrcDatum->xEdt.m_uMonth = oDatum.xDte.m_uMonth;
+  pSrcDatum->xEdt.m_uDay = oDatum.xDte.m_uDay;
+  pSrcDatum->xEdt.m_uSpare = 0;
+  
   // encode the datum into the row
   switch (eDatum) {
     case DM_BCD: vEncodeBcd_mark3(pSrcDatum,pCol); return;
     case DM_BOL: vEncodeBol_mark3(pSrcDatum,pCol); return;
-    case DM_DTE: RASSERT(0); vEncodeDte(pSrcDatum,pCol); return;
+    case DM_DTE: vEncodeDte_mark3(pSrcDatum,pCol); return;
     case DM_FLT: vEncodeFlt_mark3(pSrcDatum,pCol); return;
     case DM_INT: vEncodeInt_mark3(pSrcDatum,pCol); return;
     case DM_IVL: RASSERT(0); vEncodeIvl(pSrcDatum,pCol); return;
@@ -829,6 +838,47 @@ void RowCoder::vCodeBcd_mark3(Datum* pTgtDatum, Datum* pSrcDatum)
 }
 
 /*----------------------------------------------------------------------------*/
+/* initial encoding of dte                                                    */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vCodeDte_mark3(Datum* pTgtDatum, Datum* pSrcDatum)
+{
+  RASSERT(DM_DTE == pSrcDatum->m_eDatum);
+  
+  pTgtDatum->m_eDatum = DM_DTE;
+  pTgtDatum->m_iDte   = pSrcDatum->m_iDte;
+  
+  if (pSrcDatum->bIsNull()) {
+    pTgtDatum->m_eEncoding_m3 = MC_NULL;
+    pTgtDatum->m_nEncodedBytes = 0;
+    RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes_mark3(DM_DTE,MC_NULL));
+    return;
+  }
+  
+  i8 iEra = 0;
+  vDateIntoDelta_mark3(&m_oEncodedDatum,iEra);
+  
+  eMC eEncoding;
+  
+  if (C_SILVER_ERA == iEra) {
+    eEncoding = MC_DATE_E1_2B;
+    pTgtDatum->m_nEncodedBytes = 2;
+  }
+  else if (C_MODERN_ERA == iEra) {
+    eEncoding = MC_DATE_E2_2B;
+    pTgtDatum->m_nEncodedBytes = 2;
+  }
+  else {
+    ASSERT(C_CLASSIC_ERA == iEra);
+    eEncoding = MC_DATE_E0_2B;
+    pTgtDatum->m_nEncodedBytes = 2;
+  }
+  
+  pTgtDatum->m_eEncoding_m3 = eEncoding;
+  
+  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes_mark3(DM_DTE,eEncoding));
+}
+
+/*----------------------------------------------------------------------------*/
 /* initial encoding of flt                                                    */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCodeFlt_mark3(Datum* pTgtDatum, Datum* pSrcDatum)
@@ -1253,6 +1303,22 @@ void RowCoder::vEncodeBol_mark3(Datum* pSrcDatum, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* encode date                                                                */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vEncodeDte_mark3(Datum* pSrcDatum, Column* pCol)
+{
+  //  vTrace("++ %lld-%lld-%lld\n"_Stz,
+  //         pDatum->xDte.m_uYearDelta,pDatum->xDte.m_uMonth,pDatum->xDte.m_uDay);
+  
+  vCodeDte_mark3(&m_oEncodedDatum,pSrcDatum);
+  vMetaPut_mark3(&m_oEncodedDatum,pCol);
+  vDataPut(&m_oEncodedDatum);
+  vXchkDte(pSrcDatum,pCol,0);
+  
+  vUsageIncEncoded(pCol,&m_oEncodedDatum);
+}
+
+/*----------------------------------------------------------------------------*/
 /* encode float                                                               */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeFlt_mark3(Datum* pSrcDatum, Column* pCol)
@@ -1578,7 +1644,7 @@ void RowCoder::vRecode_Short_mark3(void)
         //vHeadDump(m_aIntoHead, m_pColVec, pCol);
         continue;
       case Datums::DM_BOL:  vRecodeBol_mark3(pCol); continue;
-      case Datums::DM_DTE:  RASSERT(0); vRecodeDte(pCol);
+      case Datums::DM_DTE:  vRecodeDte_mark3(pCol);
         //vTrace("m_i_IntoOffset = %lld\n"_Stz, m_i_IntoOffset);
         //vHeadDump(m_aIntoHead, m_pColVec, pCol);
         continue;
@@ -2731,6 +2797,14 @@ void RowCoder::vRecodeFlt_mark3(Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* attempt to re-encode Flt                                                   */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecodeDte_mark3(Column* pCol)
+{
+  m_i_IntoOffset += m_nFromDataBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* attempt to re-encode Int as Delta or Digit                                 */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeInt_mark3(Column* pCol)
@@ -3563,7 +3637,11 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       break;
       
     case DM_DTE:
+#ifdef WITH_MARK3_ENCODING
+      vDecodeDte_mark3(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+#else
       vDecodeDte(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+#endif
       break;
       
     case DM_FLT:
@@ -4845,6 +4923,42 @@ void RowCoder::vDaysIntoBase(Datum* pDatum, i8& iEra)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compute date w.r.t the base date                                           */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDateIntoDelta_mark3(Datum* pDatum, i8& iEra)
+{
+  Datum oDatum;
+  
+  if (pDatum->xEdt.m_uYearInEra < C_SILVER_ERA)
+    iEra = C_CLASSIC_ERA;
+  else if (pDatum->xEdt.m_uYearInEra < C_MODERN_ERA)
+    iEra = C_SILVER_ERA;
+  else
+    iEra = C_MODERN_ERA;
+  
+  i8 nYearInEra = pDatum->xEdt.m_uYearInEra;
+  
+  // year delta
+  if (C_SILVER_ERA == iEra)
+    nYearInEra -= C_SILVER_ERA;
+  else if (C_MODERN_ERA == iEra)
+    nYearInEra -= C_MODERN_ERA;
+  else {
+    ASSERT(C_CLASSIC_ERA == iEra);
+  }
+  
+  pDatum->xEdt.m_uYearInEra = nYearInEra;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute date w.r.t the base date                                           */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDateFromDelta_mark3(Datum* pDatum, i8& iEra)
+{
+  pDatum->xEdt.m_uYearInEra += iEra;
+}
+
+/*----------------------------------------------------------------------------*/
 /* decode decimal from given head line                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
@@ -5365,6 +5479,45 @@ void RowCoder::vDecodeBol_mark3(Datum* pDatum, HeadLine* aHeadLine,
       
     default:
       NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode date from given head line                                           */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeDte_mark3(Datum* pDatum, HeadLine* aHeadLine,
+                           ColumnVec* pColVec, Column* pCol,
+                           i8& i_LastColumn, i8& i_Offset)
+{
+  pDatum->m_eDatum = DM_DTE;
+  i8 iEra;
+  
+  //!! needs more work
+  eMC eThisEncoding = eEncodingRecoded_mark3(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
+  
+  if (eThisEncoding == MC_DAYS_ADD_1B || eThisEncoding == MC_DAYS_SUB_1B) {
+    // Not yet implemented in MarkIII
+    RASSERT(0);
+  }
+  
+  switch (eThisEncoding) {
+      
+    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL; return;
+      
+    case MC_DAYS_ADD_1B: RASSERT(0);   break;
+    case MC_DAYS_SUB_1B: RASSERT(0); break;
+    case MC_DATE_E0_2B:  pDatum->m_iDte = aHeadLine->w8_2B(i_Offset); iEra = C_CLASSIC_ERA; break;
+    case MC_DATE_E1_2B:  pDatum->m_iDte = aHeadLine->w8_2B(i_Offset); iEra = C_SILVER_ERA; break;
+    case MC_DATE_E2_2B:  pDatum->m_iDte = aHeadLine->w8_2B(i_Offset); iEra = C_MODERN_ERA; break;
+    default:
+      NEVER_REACH;
+  }
+  
+  if (eThisEncoding == MC_DAYS_ADD_1B || eThisEncoding == MC_DAYS_SUB_1B) {
+    RASSERT(0);
+  }
+  else {
+    vDateFromDelta_mark3(pDatum,iEra);
   }
 }
 

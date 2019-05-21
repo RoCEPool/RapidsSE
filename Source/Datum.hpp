@@ -37,11 +37,13 @@ namespace Data
       
       // era-based date
       struct {
-        u8 m_uSpare     : 48 ; //         48b
+        
         
         u8 m_uDay       :  5 ; // 0..31
         u8 m_uMonth     :  4 ; // 0..15
         u8 m_uYearInEra :  7 ; // 0..127  16b (eraBase+7b == 127)
+        
+        u8 m_uSpare     : 48 ; //         48b
         //               ---
         //                64
         //               ===

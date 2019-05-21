@@ -121,6 +121,7 @@ namespace Data
     // MARK III
     void vCodeBol_mark3(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeBcd_mark3(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeDte_mark3(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeFlt_mark3(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeInt_mark3(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeTme_mark3(Datum* pTgtDatum, Datum* pSrcDatum);
@@ -132,6 +133,7 @@ namespace Data
   
     void vDataPut(Datum* pDatum);
     void vDataPut(w8 wDatum, i8 nBytes);
+    void vEraDatePut(Datum* pDatum);
   
     void vEncodeBcd(Datum* pSrcDatum, Column* pCol);
     void vEncodeBol(Datum* pSrcDatum, Column* pCol);
@@ -148,6 +150,7 @@ namespace Data
     // MARK III
     void vEncodeBol_mark3(Datum* pSrcDatum, Column* pCol);
     void vEncodeBcd_mark3(Datum* pSrcDatum, Column* pCol);
+    void vEncodeDte_mark3(Datum* pSrcDatum, Column* pCol);
     void vEncodeFlt_mark3(Datum* pSrcDatum, Column* pCol);
     void vEncodeInt_mark3(Datum* pSrcDatum, Column* pCol);
     void vEncodeTme_mark3(Datum* pSrcDatum, Column* pCol);
@@ -191,6 +194,7 @@ namespace Data
     // MARK III
     void vRecodeBol_mark3(Column* pCol);
     void vRecodeBcd_mark3(Column* pCol);
+    void vRecodeDte_mark3(Column* pCol);
     void vRecodeFlt_mark3(Column* pCol);
     void vRecodeInt_mark3(Column* pCol);
     bool bRecodeIntDigit_mark3(Column* pCol);
@@ -264,6 +268,9 @@ namespace Data
     static i8   iDaysIntoBase(i8 nDaysWithinEra, i8 iEra);
     static void vDaysIntoBase(Datum* pDatum, i8& iEra);
 
+    static void vDateIntoDelta_mark3(Datum* pDatum, i8& iEra);
+    static void vDateFromDelta_mark3(Datum* pDatum, i8& iEra);
+    
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
@@ -307,6 +314,9 @@ namespace Data
                                  i8& i_LastColumn, i8& i_LastOffset);
     static void vDecodeBcd_mark3(Datum* pDatum, HeadLine* aHeadLine,
                                  ColumnVec* pColVec, Column* pCol, 
+                                 i8& i_LastColumn, i8& i_LastOffset);
+   static void vDecodeDte_mark3(Datum* pDatum, HeadLine* aHeadLine,
+                                 ColumnVec* pColVec, Column* pCol,
                                  i8& i_LastColumn, i8& i_LastOffset);
     static void vDecodeFlt_mark3(Datum* pDatum, HeadLine* aHeadLine,
                                  ColumnVec* pColVec, Column* pCol,
