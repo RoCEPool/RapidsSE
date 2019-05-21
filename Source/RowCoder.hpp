@@ -237,6 +237,10 @@ namespace Data
     static void vDecode(Datum* pDatum, HeadLine* aHeadLine,
                         ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                         i8& i_LastColumn, i8& i_LastOffset);
+                        
+    static void vDecode_mark3(Datum* pDatum, HeadLine* aHeadLine,
+                        ColumnVec* pColVec, Column* pCol,
+                        i8& i_LastColumn, i8& i_LastOffset);
     static void vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine,
                                      ColumnVec* pColVec, Column* pCol,
                                      Coda* pCoda, i8& i_LastColumn, i8& i_LastOffset);
@@ -248,8 +252,6 @@ namespace Data
     
     static void vHeadDump_mark3(HeadLine* aHeadLine, ColumnVec* pColVec);
     static void vHeadDump_mark3(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    static void vHeadDump_mark3(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda);
-    static void vHeadDump_mark3(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, Coda* pCoda);
     static void vHeadDumpNat_mark3(HeadLine* aHeadLine, ColumnVec* pColVec);
     
     static void vInitEncoding(void);
@@ -259,6 +261,10 @@ namespace Data
   private:
     static void vAppend(Record* pRec, HeadLine* aHeadLine,
                         ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                        i8& i_LastColumn, i8& i_LastOffset);
+  
+    static void vAppend_mark3(Record* pRec, HeadLine* aHeadLine,
+                        ColumnVec* pColVec, Column* pCol,
                         i8& i_LastColumn, i8& i_LastOffset);
   
     static i8   nDataBytes(eDM eDatum, eMN eEncoding);
@@ -376,7 +382,7 @@ namespace Data
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
   
     static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda);
-    static i8 nFreeSpaceHead_mark3(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda);
+    static i8 nFreeSpaceHead_mark3(HeadLine* aHeadLine, ColumnVec* pColVec);
     
     static void vRestoreDte(Datum* pDatum, eMN eEncoding);
     static void vRestoreTme(Datum* pDatum);
