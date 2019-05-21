@@ -153,7 +153,7 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
     
     RowCoder::vDecode(&oDatum,pRowBuffer->pRowTray()->pNub(),
                       i_Row,m_pKeyColumn,i_LastColumn1,i_LastOffset1);
-    xKey = oDatum.m_iInt;
+    xKey.m_iInt = oDatum.m_iInt;
 
     i8 i_LastColumn2 = 0;
     i8 i_LastOffset2 = 8;
@@ -165,17 +165,17 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
       //aSrc = (byte*)aRowData->aColumnDatum(i_Col);
       RowCoder::vDecode(&oDatum,pRowBuffer->pRowTray()->pNub(),
                         i_Row,pAggColumn,i_LastColumn2,i_LastOffset2);
-      xVal = oDatum.m_iInt;
+      xVal.m_iInt = oDatum.m_iInt;
     
-      if (xVal.iAsI8() < m_iaMinVal[i_AggCol]) {
-        m_iaMinVal[i_AggCol] = xVal.iAsI8();
-        m_iaMinKey[i_AggCol] = xKey.iAsI8();
+      if (xVal.m_iInt < m_iaMinVal[i_AggCol]) {
+        m_iaMinVal[i_AggCol] = xVal.m_iInt;
+        m_iaMinKey[i_AggCol] = xKey.m_iInt;
       }
-      if (xVal.iAsI8() > m_iaMaxVal[i_AggCol]) {
-        m_iaMaxVal[i_AggCol] = xVal.iAsI8();
-        m_iaMaxKey[i_AggCol] = xKey.iAsI8();
+      if (xVal.m_iInt > m_iaMaxVal[i_AggCol]) {
+        m_iaMaxVal[i_AggCol] = xVal.m_iInt;
+        m_iaMaxKey[i_AggCol] = xKey.m_iInt;
       }
-      m_iaSumVal[i_AggCol] += xVal.iAsI8();
+      m_iaSumVal[i_AggCol] += xVal.m_iInt;
     }
     
     m_nRows++;
