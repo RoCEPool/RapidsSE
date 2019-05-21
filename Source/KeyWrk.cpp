@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* KeyWrk.cpp -- KeyData Working Item                                            */
+/* KeyWrk.cpp -- KeyData Working Item                                         */
 /*============================================================================*/
 
 #include "Data.h"
@@ -76,7 +76,8 @@ void KeyWrk::vAddDatum(Stz* aSrc, Column* pCol, Formatters* pFormatters)
   Datum xDatum;
   
   if (pCol->eDatumType() != DM_VCH) {
-    b = Record::bExtractDatum(&xDatum,&pSrc,pCol,pFormatters);
+    //b = Record::bExtractDatum(&xDatum,&pSrc,pCol,pFormatters);
+    b = Extractor::bExtractDatum(&xDatum,&pSrc,pCol,pFormatters);
     RASSERT(b);
   }
   
