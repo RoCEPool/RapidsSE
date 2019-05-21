@@ -32,7 +32,7 @@ namespace Datums
 //    bool operator >= (Int& xInt);
 //    bool operator >  (Int& xInt);
   
-    void operator =(i8 iArg);
+    //void operator =(i8 iArg);
   
     //void vInitZero(void);
     //i8   iAsI8(void);
