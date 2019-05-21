@@ -126,8 +126,17 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //! rjh
+  // I commented this out.  It is the root of some usage of functions in
+  // the various datums (Bcd,... Vch) which I'd like to remove.
+  //
+  // The function sets Index::m_bSingleColumn which seems never to be used.
+  //
+  // I'd like to remove this only after running the set tests
+
   // set if single column
-  pIndex index.setSingleColumn
+  // pIndex index.setSingleColumn
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now populate the index
