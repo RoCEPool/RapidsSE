@@ -63,6 +63,8 @@ namespace Data
 
     } m_xaUsage[C_MAX_COLUMNS];
   
+    i8 m_anMetaCode[MC_ENUMS];
+
     i8 m_nTotalHeads;
 
     i8 m_nHeadFreeBytes;

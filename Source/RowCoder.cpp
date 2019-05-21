@@ -87,7 +87,10 @@ RowCoder::RowCoder(void)
     m_xaUsage[i_Col].m_nOopsMiss = 0;
   }
   
-  m_nTotalHeads    = 0;
+  for (i8 i_Code = 0; i_Code < MC_ENUMS; i_Code++)
+    m_anMetaCode[i_Code] = 0;
+  
+  m_nTotalHeads = 0;
   
   m_nHeadFreeBytes = 0;
   m_nHeadFreeBytes_0_7   = 0;

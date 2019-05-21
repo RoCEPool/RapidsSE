@@ -204,6 +204,8 @@ namespace Data
   /* 49 */ MC_TWOS_7B,         // data area contains 7B two's complement datum
   
   /* 50 */ MC_OVERFLOW_2B,     // 2B in data area indicating overflow tail
+  
+  /* 51 */ MC_ENUMS,
   };
   
   static Stz* aMC[]
@@ -259,6 +261,7 @@ namespace Data
   /* 48 */ "MC_TWOS_6B"_Stz,
   /* 49 */ "MC_TWOS_7B"_Stz,
   /* 50 */ "MC_OVERFLOW_2B"_Stz,
+  /* 51 */ "MC_ENUMS"_Stz,
   };
   
   //! we'll start with 3 era's and see what happens
