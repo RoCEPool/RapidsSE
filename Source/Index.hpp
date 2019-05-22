@@ -76,7 +76,7 @@ namespace MetaData
 //    bool   bGreaterEqual(char* aDatumA, char* aDatumB);
 //    bool   bGreaterThan(char* aDatumA, char* aDatumB);
     
-    eIF    eIndexForm(void);
+//    eIF    eIndexForm(void);
     Stz*   aIndexName(void);
     s32    sIndexName(void);
     void   vIndexNo(i8 iIndexNo);
