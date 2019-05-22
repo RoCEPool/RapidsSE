@@ -986,6 +986,34 @@ eMC RowCoder::eEncodingInitial(Column* pCol,
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the encoding (and offset) of a column datum                            */
+/*----------------------------------------------------------------------------*/
+eMC RowCoder::eGetEncoding(Column* pCol, i8& i_PriorColumn_, i8& i_FromOffset_)
+{
+  i8 i_ForCol = pCol->iColumnNo();
+  
+  if (i_ForCol < i_PriorColumn_) {
+    i_PriorColumn_ = 0;
+    i_FromOffset_  = iBaseOffset(m_pColVec);
+  }
+  
+  for (i8 i_Col = i_PriorColumn_; i_Col < i_ForCol; i_Col++) {
+    
+    eMC eEncoding = (eMC)m_aFromHead->iMetaCode(i_Col);
+    
+    Column* pCol  = m_pColVec->pGet(i_Col);
+    eDM eDatumNat = pCol->eDatumType();
+    
+    i_FromOffset_ += nDataBytes(eDatumNat,eEncoding);
+  }
+  
+  eMC eEncoding  = (eMC)m_aFromHead->iMetaCode(i_ForCol);
+  i_PriorColumn_ = i_ForCol;
+  
+  return eEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
 /* hash a partion key column into running hash                                */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vHashColumn(Datum* pSrcDatum, Column* pCol)
