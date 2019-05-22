@@ -260,42 +260,6 @@ void RowCoder::vEncodeBegin(RowNub* pIntoNub)
 /*----------------------------------------------------------------------------*/
 /* encode given datum into current row nub                                    */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeDatum(Datum* pSrcDatum, Column* pCol)
-{
-  i8 i_Col = pCol->iColumnNo();
-  if (0 == i_Col)
-    m_nTotalHeads++;
-    
-//  if (1 == i_Col)
-//    oNumBat.vAdd(pDatum->m_iInt);
-  
-  // record the extended datum for this column
-  // nb. encodeBegin(), encodeDatum(), encodeEnd() is done for each row
-  eDM eDatum = pCol->eDatumType();
-  m_pIntoCoda->m_aeExtDatum[i_Col] = eDatum;
-  
-  // hash the column if its part of the partition key
-  vHashColumn(pSrcDatum,pCol);
-  
-  // encode the datum into the row
-  switch (eDatum) {
-    case DM_BCD: vEncodeBcd(pSrcDatum,pCol); return;
-    case DM_BOL: vEncodeBol(pSrcDatum,pCol); return;
-    case DM_DTE: vEncodeDte(pSrcDatum,pCol); return;
-    case DM_FLT: vEncodeFlt(pSrcDatum,pCol); return;
-    case DM_INT: vEncodeInt(pSrcDatum,pCol); return;
-    case DM_IVL: vEncodeIvl(pSrcDatum,pCol); return;
-    case DM_TME: vEncodeTme(pSrcDatum,pCol); return;
-    case DM_TSP: vEncodeTsp(pSrcDatum,pCol); return;
-    case DM_VCH: vEncodeVch(pSrcDatum,pCol); return;
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode given datum into current row nub                                    */
-/*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeDatum_mark3(Datum* pSrcDatum, Column* pCol)
 {
   i8 i_Col = pCol->iColumnNo();
@@ -503,25 +467,6 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
 /*----------------------------------------------------------------------------*/
 /*-- Private Non-Static ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* analyse the free bytes of the head                                         */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vAnalyseFree(void)
-{
-  i8 nFreeBytes = nFreeSpaceHead(m_aIntoHead,m_pColVec,m_pIntoCoda);
-  m_nHeadFreeBytes  += nFreeBytes;
-  
-       if (nFreeBytes <= 7 ) m_nHeadFreeBytes_0_7++;
-  else if (nFreeBytes <= 15) m_nHeadFreeBytes_8_15++;
-  else if (nFreeBytes <= 23) m_nHeadFreeBytes_16_23++;
-  else if (nFreeBytes <= 31) m_nHeadFreeBytes_24_31++;
-  else if (nFreeBytes <= 39) m_nHeadFreeBytes_32_39++;
-  else if (nFreeBytes <= 47) m_nHeadFreeBytes_40_47++;
-  else if (nFreeBytes <= 55) m_nHeadFreeBytes_48_55++;
-  else if (nFreeBytes <= 63) m_nHeadFreeBytes_56_63++;
-  else                       m_nHeadFreeBytes_64_++;
-}
 
 /*----------------------------------------------------------------------------*/
 /* analyse the free bytes of the head                                         */
@@ -1063,74 +1008,6 @@ void RowCoder::vDataPut(w8 wDatum, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode decimal                                                             */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeBcd(Datum* pSrcDatum, Column* pCol)
-{
-  vCodeBcd(&m_oEncodedDatum,pSrcDatum);
-  vMetaPut(&m_oEncodedDatum,pCol);
-  vDataPut(&m_oEncodedDatum);
-  vXchkBcd(pSrcDatum,pCol,0);
-
-  vUsageIncEncoded(pCol,&m_oEncodedDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode boolean                                                             */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeBol(Datum* pSrcDatum, Column* pCol)
-{
-  vCodeBol(&m_oEncodedDatum,pSrcDatum);
-  vMetaPut(&m_oEncodedDatum,pCol);
-  vDataPut(&m_oEncodedDatum);
-  vXchkBol(pSrcDatum,pCol,0);
-
-  vUsageIncEncoded(pCol,&m_oEncodedDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode date                                                                */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeDte(Datum* pSrcDatum, Column* pCol)
-{
-  //  vTrace("++ %lld-%lld-%lld\n"_Stz,
-  //         pDatum->xDte.m_uYearDelta,pDatum->xDte.m_uMonth,pDatum->xDte.m_uDay);
-  
-  vCodeDte(&m_oEncodedDatum,pSrcDatum);
-  vMetaPut(&m_oEncodedDatum,pCol);
-  vDataPut(&m_oEncodedDatum);
-  vXchkDte(pSrcDatum,pCol,0);
-
-  vUsageIncEncoded(pCol,&m_oEncodedDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode float                                                               */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeFlt(Datum* pSrcDatum, Column* pCol)
-{
-  vCodeFlt(&m_oEncodedDatum,pSrcDatum);
-  vMetaPut(&m_oEncodedDatum,pCol);
-  vDataPut(&m_oEncodedDatum);
-  vXchkFlt(pSrcDatum,pCol,0);
-
-  vUsageIncEncoded(pCol,&m_oEncodedDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode integer                                                             */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeInt(Datum* pSrcDatum, Column* pCol)
-{
-  vCodeInt(&m_oEncodedDatum,pSrcDatum);
-  vMetaPut(&m_oEncodedDatum,pCol);
-  vDataPut(&m_oEncodedDatum);
-  vXchkInt(pSrcDatum,pCol, 0);
-
-  vUsageIncEncoded(pCol,&m_oEncodedDatum);
-}
-
-/*----------------------------------------------------------------------------*/
 /* encode interval                                                            */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeIvl(Datum* pSrcDatum, Column* pCol)
@@ -1141,62 +1018,6 @@ void RowCoder::vEncodeIvl(Datum* pSrcDatum, Column* pCol)
   vXchkIvl(pSrcDatum,pCol,0);
 
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode time                                                                */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeTme(Datum* pSrcDatum, Column* pCol)
-{
-  vCodeTme(&m_oEncodedDatum,pSrcDatum);
-  vMetaPut(&m_oEncodedDatum,pCol);
-  vDataPut(&m_oEncodedDatum);
-  vXchkTme(pSrcDatum,pCol,0);
-
-  vUsageIncEncoded(pCol,&m_oEncodedDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode timestamp                                                           */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeTsp(Datum* pSrcDatum, Column* pCol)
-{
-  vCodeTsp(&m_oEncodedDatum,pSrcDatum);
-  vMetaPut(&m_oEncodedDatum,pCol);
-  vDataPut(&m_oEncodedDatum);
-  vXchkTsp(pSrcDatum,pCol,0);
-
-  vUsageIncEncoded(pCol,&m_oEncodedDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode varchar                                                             */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeVch(Datum* pSrcDatum, Column* pCol)
-{
-  vCodeVch(&m_oEncodedDatum,pSrcDatum);
-  vMetaPut(&m_oEncodedDatum,pCol);
-
-  // null string
-  if (MN_NULL == m_oEncodedDatum.m_eEncoding) {
-    vXchkVch(pSrcDatum,pCol,0);
-    return;
-  }
-
-  // empty string
-  if (! m_oEncodedDatum.m_nChars) {
-    RASSERT(MN_EMPTY == m_oEncodedDatum.m_eEncoding);
-    vXchkVch(pSrcDatum,pCol,0);
-    return;
-  }
-
-  // shoco or small
-  if (m_oEncodedDatum.m_eEncoding == MN_SHOCO_2B)
-    vEncodeVchShoco(&m_oEncodedDatum,pCol);
-  else
-    vEncodeVchSmall(&m_oEncodedDatum,pCol);
-  
-  vXchkVch(pSrcDatum,pCol,0);
 }
 
 /*----------------------------------------------------------------------------*/

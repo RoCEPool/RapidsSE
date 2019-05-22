@@ -100,14 +100,12 @@ namespace Data
     bool bCopyRow(RowNub* pFromNub);
 
     void vEncodeBegin(RowNub* pIntoNub);
-    void vEncodeDatum(Datum* pSrcDatum, Column* pCol);
     void vEncodeDatum_mark3(Datum* pSrcDatum, Column* pCol);
     void vEncodeEnd(void);
 
     void vReport(RowCoder* pRowCoder_Encode);
   
   private:
-    void vAnalyseFree(void);
     void vAnalyseFree_mark3(void);
     
     void vCodeBcd(Datum* pTgtDatum, Datum* pSrcDatum);
@@ -137,15 +135,8 @@ namespace Data
     void vDataPut(w8 wDatum, i8 nBytes);
     void vEraDatePut(Datum* pDatum);
   
-    void vEncodeBcd(Datum* pSrcDatum, Column* pCol);
-    void vEncodeBol(Datum* pSrcDatum, Column* pCol);
-    void vEncodeDte(Datum* pSrcDatum, Column* pCol);
-    void vEncodeFlt(Datum* pSrcDatum, Column* pCol);
-    void vEncodeInt(Datum* pSrcDatum, Column* pCol);
     void vEncodeIvl(Datum* pSrcDatum, Column* pCol);
-    void vEncodeTme(Datum* pSrcDatum, Column* pCol);
-    void vEncodeTsp(Datum* pSrcDatum, Column* pCol);
-    void vEncodeVch(Datum* pSrcDatum, Column* pCol);
+    
     void vEncodeVchShoco(Datum* pSrcDatum, Column* pCol);
     void vEncodeVchSmall(Datum* pSrcDatum, Column* pCol);
     
@@ -158,8 +149,6 @@ namespace Data
     void vEncodeTme_mark3(Datum* pSrcDatum, Column* pCol);
     void vEncodeTsp_mark3(Datum* pSrcDatum, Column* pCol);
     void vEncodeVch_mark3(Datum* pSrcDatum, Column* pCol);
-    void vEncodeVchShoco_mark3(Datum* pSrcDatum, Column* pCol);
-    void vEncodeVchSmall_mark3(Datum* pSrcDatum, Column* pCol);
     
     eMN  eEncodingInitial(Column* pCol,
                           i8& i_PriorColumn_, i8& i_Offset_);
