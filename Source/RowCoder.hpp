@@ -1184,7 +1184,7 @@ namespace Data
 //      RASSERT(! iRem);
     
       // get the encoded value into datum
-      vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+      vDecode_mark3(&oDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
     
 //      i8 iSum = 0;
 //      byte* ayByte = (byte*)aHeadLine;
@@ -1218,7 +1218,7 @@ namespace Data
         Column* pCol = pColVec->pGet(i_Col);
         
         // get the encoded value into datum
-        vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+        vDecode_mark3(&oDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
       }
       
       //      i8 iSum = 0;

@@ -210,38 +210,21 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   vRecode_Large();
 #else
   vCopyHead_Short();
-#ifdef WITH_MARK3_ENCODING
   vRecode_Short_mark3();
-#else
-  vRecode_Short();
-#endif
 #endif
 
   m_nTotalHeads++;
 
-#ifdef WITH_MARK3_ENCODING
   
-  //#ifdef WITH_TRACE_ENCODING
-    if (m_nTotalHeads < 10)
-      RowCoder::vHeadDump_mark3(m_aIntoHead,m_pColVec);
-  //#endif
+//#ifdef WITH_TRACE_ENCODING
+  if (m_nTotalHeads < 10)
+    RowCoder::vHeadDump_mark3(m_aIntoHead,m_pColVec);
+//#endif
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // analyse free space in the into head
-  
-    vAnalyseFree_mark3();
-#else
-  
-    #ifdef WITH_TRACE_ENCODING
-    if (m_nTotalHeads < 10)
-      RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
-    #endif
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // analyse free space in the into head
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // analyse free space in the into head
 
-    vAnalyseFree();
-#endif
+  vAnalyseFree_mark3();
   
   m_pIntoNub->vVerifyTails(C_UNKNOWN);
   
@@ -2253,13 +2236,8 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
-#ifdef WITH_MARK3_ENCODING
   // metadata remains MN_SHOCO_2B
   RASSERT(MC_SHOCO_2T == m_aFromHead->iMetaCode(pCol->iColumnNo()));
-#else
-  // metadata remains MN_SHOCO_2B
-  RASSERT(MN_SHOCO_2B == m_aFromHead->iMetaCode(pCol->iColumnNo()));
-#endif
   
   // we recoded: sizeof([IT])
   vUsageIncRecoded(pCol,MN_2B);
@@ -2358,13 +2336,8 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   m_i_IntoOffset += MN_1B + nShocoBytes;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef WITH_MARK3_ENCODING
   // metadata for this column get changed to MN_SHOCO_FIT
   vMetaCode_mark3(pCol,MC_SHOCO_FIT_1L);
-#else
-  // metadata for this column get changed to MN_SHOCO_FIT
-  vMetaCode(pCol,MN_SHOCO_FIT);
-#endif
   
   // we recoded: sizeof(<C>) + nShocoBytes
   vUsageIncRecoded(pCol,MN_1B + nShocoBytes);
@@ -2451,9 +2424,6 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // |            |FT|<C>//////////// |
   // +--------------------------------+
   //              ^m_i_IntoOffset
-#ifdef WITH_MARK3_ENCODING
-#else
-#endif
   m_aIntoHead->vPut(m_i_IntoOffset + MN_2B,nShocoBytes,MN_1B);
 
   // copy partA into the Into-Head
@@ -2501,21 +2471,11 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // |            [IT]<C><partA.....> |
   // +--------------------------------+
   //              ^m_i_IntoOffset
-#ifdef WITH_MARK3_ENCODING
   m_i_IntoOffset += MC_2B + MC_1B + nPartA;
-#else
-  m_i_IntoOffset += MN_2B + MN_1B + nPartA;
-#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-#ifdef WITH_MARK3_ENCODING
   // metadata for this column get changed to MN_SHOCO_SPLIT
   vMetaCode_mark3(pCol,MC_SHOCO_SPLIT_2T1L);
-#else
-  // metadata for this column get changed to MN_SHOCO_SPLIT
-  vMetaCode(pCol,MN_SHOCO_SPLIT);
-#endif
   
   // we recoded: 1B <C> + <compressed>
   vUsageIncRecoded(pCol,MN_1B + nShocoBytes);
@@ -2640,11 +2600,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // metadata remains the same
-#ifdef WITH_MARK3_ENCODING
   RASSERT(MC_SHOCO_2T == m_aFromHead->iMetaCode(pCol->iColumnNo()));
-#else
-  RASSERT(MN_SHOCO_2B == m_aFromHead->iMetaCode(pCol->iColumnNo()));
-#endif
   
   // we recoded: sizeof([IT]) + nIntoTailBytes
   vUsageIncRecoded(pCol,MN_2B + nIntoTailBytes);
@@ -3649,12 +3605,7 @@ void RowCoder::vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
   HeadLine* aHeadLine = pNub->aGetHead(i_Row);
   ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
   
-#ifdef WITH_MARK3_ENCODING
   vDecode_mark3(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
-#else
-  Coda* pCoda = pNub->pCoda();
-  vDecode(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-#endif
   
 }
 
@@ -4578,11 +4529,8 @@ void RowCoder::vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec)
       pRec->szRecStr()->vConcat(","_Stz);
     
     // append column value
-#ifdef WITH_MARK3_ENCODING
     vAppend_mark3(pRec,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
-#else
-    vAppend(pRec,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-#endif
+
     //vTrace("%s\n"_Stz,pRec->szRecStr());
   }
 }
