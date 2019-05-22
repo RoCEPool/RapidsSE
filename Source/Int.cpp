@@ -259,157 +259,157 @@ void Int::vSprint(Stz* aDst, Stz* aSrc)
 /*----------------------------------------------------------------------------*/
 /* is embedded int argA < embedded aArgB?                                     */
 /*----------------------------------------------------------------------------*/
-bool Int::bLessThan(char* aArgA, char* aArgB)
-{
-  bool bLessThan;
-  
-  if (((Int*)aArgA)->bIsNull())
-    bLessThan = true;
-  
-  else if (((Int*)aArgB)->bIsNull())
-    bLessThan = false;
-  
-  else {
-    i8 iA = *(i8*)aArgA;
-    i8 iB = *(i8*)aArgB;
-    
-    if (iA < iB)
-      bLessThan = true;
-    else
-      bLessThan = false;
-  }
-  
-  return bLessThan;
-}
+//bool Int::bLessThan(char* aArgA, char* aArgB)
+//{
+//  bool bLessThan;
+//
+//  if (((Int*)aArgA)->bIsNull())
+//    bLessThan = true;
+//
+//  else if (((Int*)aArgB)->bIsNull())
+//    bLessThan = false;
+//
+//  else {
+//    i8 iA = *(i8*)aArgA;
+//    i8 iB = *(i8*)aArgB;
+//
+//    if (iA < iB)
+//      bLessThan = true;
+//    else
+//      bLessThan = false;
+//  }
+//
+//  return bLessThan;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* is embedded int argA <= embedded aArgB?                                    */
 /*----------------------------------------------------------------------------*/
-bool Int::bLessEqual(char* aArgA, char* aArgB)
-{
-  bool bLessEqual;
-  
-  if (((Int*)aArgA)->bIsNull() && ((Int*)aArgB)->bIsNull())
-    bLessEqual = true;
-  
-  else if (((Int*)aArgA)->bIsNull())
-    bLessEqual = true;
-  
-  else if (((Int*)aArgB)->bIsNull())
-    bLessEqual = false;
-  
-  else {
-    i8 iA = *(i8*)aArgA;
-    i8 iB = *(i8*)aArgB;
-    
-    if (iA <= iB)
-      bLessEqual = true;
-    else
-      bLessEqual = false;
-  }
-  
-  return bLessEqual;
-}
+//bool Int::bLessEqual(char* aArgA, char* aArgB)
+//{
+//  bool bLessEqual;
+//
+//  if (((Int*)aArgA)->bIsNull() && ((Int*)aArgB)->bIsNull())
+//    bLessEqual = true;
+//
+//  else if (((Int*)aArgA)->bIsNull())
+//    bLessEqual = true;
+//
+//  else if (((Int*)aArgB)->bIsNull())
+//    bLessEqual = false;
+//
+//  else {
+//    i8 iA = *(i8*)aArgA;
+//    i8 iB = *(i8*)aArgB;
+//
+//    if (iA <= iB)
+//      bLessEqual = true;
+//    else
+//      bLessEqual = false;
+//  }
+//
+//  return bLessEqual;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* is embedded int argA == embedded aArgB?                                    */
 /*----------------------------------------------------------------------------*/
-bool Int::bEqualTo(char* aArgA, char* aArgB)
-{
-  bool bEqualTo;
-  
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA == iB)
-    bEqualTo = true;
-  else
-    bEqualTo = false;
-  
-  return bEqualTo;
-}
+//bool Int::bEqualTo(char* aArgA, char* aArgB)
+//{
+//  bool bEqualTo;
+//
+//  i8 iA = *(i8*)aArgA;
+//  i8 iB = *(i8*)aArgB;
+//
+//  if (iA == iB)
+//    bEqualTo = true;
+//  else
+//    bEqualTo = false;
+//
+//  return bEqualTo;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* is embedded int argA != embedded aArgB?                                    */
 /*----------------------------------------------------------------------------*/
-bool Int::bNotEqual(char* aArgA, char* aArgB)
-{
-  bool bNotEqual;
-  
-  i8 iA = *(i8*)aArgA;
-  i8 iB = *(i8*)aArgB;
-  
-  if (iA != iB)
-    bNotEqual = true;
-  else
-    bNotEqual = false;
-  
-  return bNotEqual;
-}
+//bool Int::bNotEqual(char* aArgA, char* aArgB)
+//{
+//  bool bNotEqual;
+//
+//  i8 iA = *(i8*)aArgA;
+//  i8 iB = *(i8*)aArgB;
+//
+//  if (iA != iB)
+//    bNotEqual = true;
+//  else
+//    bNotEqual = false;
+//
+//  return bNotEqual;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* is embeddedint argA >= embeddedaArgB?                                      */
 /*----------------------------------------------------------------------------*/
-bool Int::bGreaterEqual(char* aArgA, char* aArgB)
-{
-  bool bGreaterEqual;
-  
-//  if (((Int*)aArgA)->bIsNull() && ((Int*)aArgB)->bIsNull())
-//    bGreaterEqual = true;
+//bool Int::bGreaterEqual(char* aArgA, char* aArgB)
+//{
+//  bool bGreaterEqual;
 //
-//  else if (((Int*)aArgA)->bIsNull())
-//    bGreaterEqual = false;
+////  if (((Int*)aArgA)->bIsNull() && ((Int*)aArgB)->bIsNull())
+////    bGreaterEqual = true;
+////
+////  else if (((Int*)aArgA)->bIsNull())
+////    bGreaterEqual = false;
+////
+////  else if (((Int*)aArgB)->bIsNull())
+////    bGreaterEqual = true;
 //
-//  else if (((Int*)aArgB)->bIsNull())
-//    bGreaterEqual = true;
-  
-  if (((Int*)aArgA)->bIsNull()) {
-    if (((Int*)aArgB)->bIsNull())
-      return true;
-    else
-      return false;
-  }
-  else if (((Int*)aArgA)->bIsNull()) {
-      return true;
-  }
-  else {
-    i8 iA = *(i8*)aArgA;
-    i8 iB = *(i8*)aArgB;
-    
-    if (iA >= iB)
-      bGreaterEqual = true;
-    else
-      bGreaterEqual = false;
-  }
-  
-  return bGreaterEqual;
-}
+//  if (((Int*)aArgA)->bIsNull()) {
+//    if (((Int*)aArgB)->bIsNull())
+//      return true;
+//    else
+//      return false;
+//  }
+//  else if (((Int*)aArgA)->bIsNull()) {
+//      return true;
+//  }
+//  else {
+//    i8 iA = *(i8*)aArgA;
+//    i8 iB = *(i8*)aArgB;
+//
+//    if (iA >= iB)
+//      bGreaterEqual = true;
+//    else
+//      bGreaterEqual = false;
+//  }
+//
+//  return bGreaterEqual;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* is embedded int argA > embedded aArgB?                                     */
 /*----------------------------------------------------------------------------*/
-bool Int::bGreaterThan(char* aArgA, char* aArgB)
-{
-  bool bGreaterThan;
-  
-  if (((Int*)aArgA)->bIsNull())
-    bGreaterThan = false;
-  
-  else if (((Int*)aArgB)->bIsNull())
-    bGreaterThan = true;
-  
-  else {
-    i8 iA = *(i8*)aArgA;
-    i8 iB = *(i8*)aArgB;
-    
-    if (iA > iB)
-      bGreaterThan = true;
-    else
-      bGreaterThan = false;
-  }
-  
-  return bGreaterThan;
-}
+//bool Int::bGreaterThan(char* aArgA, char* aArgB)
+//{
+//  bool bGreaterThan;
+//
+//  if (((Int*)aArgA)->bIsNull())
+//    bGreaterThan = false;
+//
+//  else if (((Int*)aArgB)->bIsNull())
+//    bGreaterThan = true;
+//
+//  else {
+//    i8 iA = *(i8*)aArgA;
+//    i8 iB = *(i8*)aArgB;
+//
+//    if (iA > iB)
+//      bGreaterThan = true;
+//    else
+//      bGreaterThan = false;
+//  }
+//
+//  return bGreaterThan;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* cmp argA with argB (-ve: argA < argB, 0: argA == argB, +ve: argA > argB)   */
