@@ -1098,15 +1098,15 @@ void RowCoder::vRecode_Large(void)
     
     switch (eDatum) {
         
-      case Datums::DM_BCD:  vRecodeBcd(pCol); continue;
-      case Datums::DM_BOL:  vRecodeBol(pCol); continue;
-      case Datums::DM_DTE:  vRecodeDte(pCol); continue;
-      case Datums::DM_FLT:  vRecodeFlt(pCol); continue;
-      case Datums::DM_INT:  vRecodeInt(pCol); continue;
+      case Datums::DM_BCD:  vRecodeBcd_mark3(pCol); continue;
+      case Datums::DM_BOL:  vRecodeBol_mark3(pCol); continue;
+      case Datums::DM_DTE:  vRecodeDte_mark3(pCol); continue;
+      case Datums::DM_FLT:  vRecodeFlt_mark3(pCol); continue;
+      case Datums::DM_INT:  vRecodeInt_mark3(pCol); continue;
       case Datums::DM_IVL:  vRecodeIvl(pCol); continue;
-      case Datums::DM_TME:  vRecodeTme(pCol); continue;
-      case Datums::DM_TSP:  vRecodeTsp(pCol); continue;
-      case Datums::DM_VCH:  vRecodeVch(pCol); continue;
+      case Datums::DM_TME:  vRecodeTme_mark3(pCol); continue;
+      case Datums::DM_TSP:  vRecodeTsp_mark3(pCol); continue;
+      case Datums::DM_VCH:  vRecodeVch_mark3(pCol); continue;
 
       default:
         NEVER_REACH;
@@ -1181,7 +1181,7 @@ void RowCoder::vRecode_Short_mark3(void)
         //vTrace("m_i_IntoOffset = %lld\n"_Stz, m_i_IntoOffset);
         //vHeadDump_mark3(m_aIntoHead, m_pColVec, pCol);
         continue;
-      case Datums::DM_IVL:  RASSERT(0); vRecodeIvl(pCol); continue;
+      case Datums::DM_IVL:  vRecodeIvl(pCol); continue;
       case Datums::DM_TME:
         vRecodeTme_mark3(pCol);
         continue;
