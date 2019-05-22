@@ -632,7 +632,7 @@ void RowCoder::vCodeTme_mark3(Datum* pTgtDatum, Datum* pSrcDatum)
   pTgtDatum->m_iTme   = pSrcDatum->m_iTme;
   
   if (pSrcDatum->bIsNull()) {
-    pTgtDatum->m_eEncoding = MN_NULL;
+    pTgtDatum->m_eEncoding_m3 = MC_NULL;
     pTgtDatum->m_nEncodedBytes = 0;
     RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes_mark3(DM_TME,MC_NULL));
     return;
@@ -792,14 +792,14 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
 {
   /*
    +================================+    +=====================================+
-   | meta-bits:       ,MN_SHOCO_2B, |    |            Shoco Tail Line          +
+   | meta-bits:       ,MC_SHOCO_2T, |    |            Shoco Tail Line          +
    +================================+    +=====================================+
    |                                |    | U | C | <compressed bytes> <unused> +
    +--------------------------------+    +-------------------------------------+
    |                           [IT] |
    +--------------------------------+
    
-   where: MN_SHOCO_2B is the meta-bits for the column
+   where: MC_SHOCO_2T is the meta-bits for the column
           [IT] is 2 bytes being the index of the Shoco Tail Line
           U is one byte being the unit length of the tail line
           C is one byte being the number of compressed bytes
@@ -2299,7 +2299,7 @@ void RowCoder::vXchkVch(Datum* pDatum, Column* pCol, i8 iRow)
   vDecode(&m_oEncodedDatum,m_pIntoNub,iRow,pCol,i_lastColumn, i_LastOffset);
   RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
   
-  if (m_oEncodedDatum.m_eEncoding != MN_NULL) {
+  if (m_oEncodedDatum.m_eEncoding_m3 != MC_NULL) {
     RASSERT(m_oEncodedDatum.m_nChars == pDatum->m_nChars);
     RASSERT(m_oEncodedDatum.m_sVch.bSame(pDatum->m_sVch));
   }
@@ -2501,189 +2501,6 @@ void RowCoder::vDecode_mark3(Datum* pDatum, HeadLine* aHeadLine,
     default:
       NEVER_REACH;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get encoded datum from head line                                           */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine,
-                                    ColumnVec* pColVec, Column* pCol,
-                                    Coda* pCoda, i8& i_LastColumn, i8& i_LastOffset)
-{
-  i8 i_Col = pCol->iColumnNo();
-  eDM eDatumCoda = pCoda->m_aeExtDatum[i_Col];
-  //i8 i_Offset = iBaseOffset(pCol->pColVec());
-  eMN eEncoding = MN_NULL;
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 0th column ?
-  if (i_Col == 0) {
-    eEncoding = eGetEncodingExtFastCol0(aHeadLine);
-
-    switch (eDatumCoda) {
-        
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // the regular datums
-        
-      case DM_NONE:
-        NEVER_REACH;
-        
-      case DM_BCD:
-        vDecodeBcdFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
-        break;
-      case DM_BOL:
-        //vDecodeBol(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-        break;
-      case DM_CHR:
-        vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
-        break;
-      case DM_DTE:
-        vDecodeDteFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
-        break;
-      case DM_FLT:
-        //vDecodeFlt(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-        break;
-      case DM_INT:
-        vDecodeIntFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
-        break;
-      case DM_IVL:
-        //vDecodeIvl(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-        break;
-      case DM_TME:
-        //vDecodeTme(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-        break;
-      case DM_TSP:
-        //vDecodeTsp(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-        break;
-      case DM_VBN:
-        NEVER_REACH;
-        break;
-      case DM_VCH:
-        vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
-        break;
-        
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // the extended datums
-        
-      case DM_ALPHA:
-        vDecodeAlphaFast(pDatum,aHeadLine,eEncoding,pCol,pCoda,i_LastOffset);
-        break;
-        
-      case DM_DAYS:
-        vDecodeDaysFast(pDatum,aHeadLine,eEncoding,pColVec,pCol,pCoda,i_LastOffset);
-        break;
-        
-      case DM_DELTA_PLUS:
-        vDecodeDeltaPlusFast(pDatum,aHeadLine,eEncoding,pCol,pCoda,i_LastOffset);
-        break;
-        
-      case DM_DELTA_MINUS:
-        //vDecodeDeltaMinusFast(pDatum,aHeadLine,eEncoding,pCol,pCoda,i_LastOffset);
-        break;
-        
-      case DM_DIGIT:
-        vDecodeDigitFast(pDatum,aHeadLine,eEncoding,pCol,pCoda,i_LastOffset);
-        break;
-        
-      case DM_TENTH:
-        vDecodeTenthFast(pDatum,aHeadLine,eEncoding,pCol,i_LastOffset);
-        break;
-        
-      default:
-        NEVER_REACH;
-    }
-    
-    return;
-    
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // not the 0th column
-  
-  switch (eDatumCoda) {
-      
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // the regular datums
-      
-    case DM_NONE:
-      NEVER_REACH;
-      
-    case DM_BCD:
-      eEncoding = eGetEncodingExtGenericFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
-      vDecodeIntFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
-      break;
-    case DM_BOL:
-      //vDecodeBol(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-    case DM_CHR:
-      eEncoding = eGetEncodingExtFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
-      vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
-      break;
-    case DM_DTE:
-      eEncoding = eGetEncodingExtFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
-      vDecodeDteFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
-      break;
-    case DM_FLT:
-      //vDecodeFltFast(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-    case DM_INT:
-      eEncoding = eGetEncodingExtGenericFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
-      vDecodeIntFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
-      break;
-    case DM_IVL:
-      //vDecodeIvl(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-    case DM_TME:
-      //vDecodeTme(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-    case DM_TSP:
-      //vDecodeTsp(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-    case DM_VBN:
-      NEVER_REACH;
-      break;
-    case DM_VCH:
-      eEncoding = eGetEncodingExtVchFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
-      vDecodeVchFast(pDatum,aHeadLine,eEncoding,i_LastOffset);
-      break;
-      
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // the extended datums
-      
-    case DM_ALPHA:
-      eEncoding = eGetEncodingExtVchFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
-      vDecodeAlphaFast(pDatum,aHeadLine,eEncoding,pCol,pCoda,i_LastOffset);
-      break;
-      
-    case DM_DAYS:
-      eEncoding = eGetEncodingExtFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
-      vDecodeDaysFast(pDatum,aHeadLine,eEncoding,pColVec,pCol,pCoda,i_LastOffset);
-      break;
-      
-    case DM_DELTA_PLUS:
-      eEncoding = eGetEncodingExtGenericFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
-      vDecodeDeltaPlusFast(pDatum,aHeadLine,eEncoding,pCol,pCoda,i_LastOffset);
-      break;
-      
-    case DM_DELTA_MINUS:
-      //vDecodeDeltaMinusFast(pDatum,aHeadLine,pCol,pCoda,i_LastOffset);
-      break;
-      
-    case DM_DIGIT:
-      eEncoding = eGetEncodingExtGenericFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
-      vDecodeDigitFast(pDatum,aHeadLine,eEncoding,pCol,pCoda,i_LastOffset);
-      break;
-      
-    case DM_TENTH:
-      eEncoding = eGetEncodingExtGenericFast(aHeadLine,i_Col,pCoda,i_LastColumn,i_LastOffset);
-      vDecodeTenthFast(pDatum,aHeadLine,eEncoding,pCol,i_LastOffset);
-      break;
-      
-    default:
-      NEVER_REACH;
-  }
-  
 }
 
 /*----------------------------------------------------------------------------*/
