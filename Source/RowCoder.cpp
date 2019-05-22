@@ -1723,11 +1723,6 @@ void RowCoder::vRecodeDte(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeInt(Column* pCol)
 {
-  // test for re-encoding
-  i8 i_Col = pCol->iColumnNo();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   // skip nulls
   if (MC_NULL == m_eFromEncoding) {
     vUsageIncRecoded(pCol,0);
@@ -1801,8 +1796,6 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
   RASSERT(DM_INT == pCol->eDatumType());
   RASSERT(MC_NULL != m_eFromEncoding);
   RASSERT(m_eFromEncoding >= MC_1B && m_eFromEncoding <= MC_8B);
-  
-  i8 i_Col = pCol->iColumnNo();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is it a 1B encoding ?
@@ -2418,11 +2411,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     i_LastOffset += nBytes;
     
     if (eEncoding == MC_STR_SPLIT_2T1L)
-      int iDebug = 1;
-    
+      vDebugPoint();
   }
-  
-  int iDebug = 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2438,9 +2428,6 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
   vTrace("FreeBytes %lld\n"_Stz,nFreeBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // get no of columns
-  i8 nColumns = pColVec->nItems();
   
   HV_Rec hvRec;
   
@@ -2494,10 +2481,6 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec)
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
-  
   MemLib::vWordDump(aHeadLine,aHeadLine->nBytes());
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -2955,8 +2938,6 @@ void RowCoder::vDecodeFlt(Datum* pDatum, HeadLine* aHeadLine,
                           ColumnVec* pColVec, Column* pCol,
                           i8& i_LastColumn, i8& i_Offset)
 {
-  i8 i_Col  = pCol->iColumnNo();
-  
   pDatum->m_eDatum = DM_FLT;
   
   eMC eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
@@ -2984,8 +2965,6 @@ void RowCoder::vDecodeInt(Datum* pDatum, HeadLine* aHeadLine,
                                 ColumnVec* pColVec, Column* pCol,
                                 i8& i_LastColumn, i8& i_Offset)
 {
-  i8 i_Col  = pCol->iColumnNo();
-  
   pDatum->m_eDatum = DM_INT;
   
   eMC eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
@@ -3028,8 +3007,6 @@ void RowCoder::vDecodeTme(Datum* pDatum, HeadLine* aHeadLine,
                           ColumnVec* pColVec, Column* pCol,
                           i8& i_LastColumn, i8& i_Offset)
 {
-  i8 i_Col  = pCol->iColumnNo();
-  
   pDatum->m_eDatum = DM_TME;
   
   eMC eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
@@ -3059,8 +3036,6 @@ void RowCoder::vDecodeTsp(Datum* pDatum, HeadLine* aHeadLine,
                           ColumnVec* pColVec, Column* pCol,
                           i8& i_LastColumn, i8& i_Offset)
 {
-  i8 i_Col  = pCol->iColumnNo();
-  
   pDatum->m_eDatum = DM_TSP;
   
   eMC eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
