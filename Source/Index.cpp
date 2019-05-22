@@ -75,7 +75,6 @@ Index::Index(void)
   m_pTable        = nullptr;
   m_pIdxColVec    = new IdxColVec;
   
-  m_bSingleColumn = false;
   m_fGreaterEqual = nullptr;
   m_fGreaterThan  = nullptr;
   
@@ -328,72 +327,6 @@ i8 Index::iIndexNo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   return m_iIndexNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get if the index is a single column index                                  */
-/*----------------------------------------------------------------------------*/
-bool Index::bSingleColumn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-
-  return m_bSingleColumn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set if the index is a single column index                                  */
-/*----------------------------------------------------------------------------*/
-void Index::vSetSingleColumn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-
-  if (! m_pIdxColVec || 1 != m_pIdxColVec->nItems()) {
-    m_bSingleColumn = false;
-    return;
-  }
-  
-  Column* pColumn = m_pIdxColVec->pGet(0);
-  
-  eDM eDatum = pColumn->eDatumType();
-  
-  switch (eDatum) {
-    case DM_BCD: m_fGreaterEqual = Bcd::bGreaterEqual;
-                 m_fGreaterThan  = Bcd::bGreaterThan;
-                 break;
-    case DM_BOL: m_fGreaterEqual = Bol::bGreaterEqual;
-                 m_fGreaterThan  = Bol::bGreaterThan;
-                 break;
-    case DM_CHR: m_fGreaterEqual = Vch::bGreaterEqual;
-                 m_fGreaterThan  = Vch::bGreaterThan;
-                 break;
-    case DM_DTE: m_fGreaterEqual = Dte::bGreaterEqual;
-                 m_fGreaterThan  = Dte::bGreaterThan;
-                 break;
-    case DM_FLT: m_fGreaterEqual = Flt::bGreaterEqual;
-                 m_fGreaterThan  = Flt::bGreaterThan;
-                 break;
-    case DM_INT: m_fGreaterEqual = Int::bGreaterEqual;
-                 m_fGreaterThan  = Int::bGreaterThan;
-                 break;
-    case DM_IVL: m_fGreaterEqual = Ivl::bGreaterEqual;
-                 m_fGreaterThan  = Ivl::bGreaterThan;
-                 break;
-    case DM_TME: m_fGreaterEqual = Tme::bGreaterEqual;
-                 m_fGreaterThan  = Tme::bGreaterThan;
-                 break;
-    case DM_TSP: m_fGreaterEqual = Tsp::bGreaterEqual;
-                 m_fGreaterThan  = Tsp::bGreaterThan;
-                 break;
-    case DM_VBN: NEVER_REACH; break;
-    case DM_VCH: m_fGreaterEqual = Vch::bGreaterEqual;
-                 m_fGreaterThan  = Vch::bGreaterThan;
-                 break;
-      
-    default:
-      THROW("Index::vSetSingleColumn: Invalid eDatum %lld"_Stz,eDatum);
-  }
-  
-  m_bSingleColumn = true;
 }
 
 /*----------------------------------------------------------------------------*/

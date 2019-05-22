@@ -50,8 +50,7 @@ namespace MetaData
     Dic          m_xSubDic;       // sub dictionary for this index
     IdxColVec*   m_pIdxColVec;    //
   
-    bool         m_bSingleColumn; // is this index only over a signle column
-    bool         (*m_fGreaterEqual)(char* aArgA, char* aArgB);
+     bool         (*m_fGreaterEqual)(char* aArgA, char* aArgB);
     bool         (*m_fGreaterThan)(char* aArgA, char* aArgB);
     
     // must be last
@@ -86,8 +85,6 @@ namespace MetaData
     void   vIsPrimaryKey(bool bUnique);
     bool   bIsUnique(void);
     void   vIsUnique(bool bUnique);
-    bool   bSingleColumn(void);
-    void   vSetSingleColumn(void);
     void   vShowColumnVec(void);
     i8     iSortKeyDatum(void);
     Dic*   pSubDic(void);
