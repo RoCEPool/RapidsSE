@@ -856,7 +856,7 @@ void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
   
   w8 wSmall = *(w8*)pSrcDatum->m_sVch.aChar();
   
-  vDataPut(wSmall,(eMN)pSrcDatum->m_nChars);
+  vDataPut(wSmall,(eMC)pSrcDatum->m_nChars);
   
   vUsageIncEncoded(pCol,pSrcDatum->m_nChars);
 }
