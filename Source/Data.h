@@ -262,8 +262,6 @@ using namespace Data;
 static const i8 C_MAX_ROWS = (C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(HeadLine);
 static const i8 C_MAX_COLUMNS = 150;
 
-#include "Coda.hpp"
-
 typedef HV<Record,CN_RECORD> HV_Rec;
 
 //typedef ArrayNL_t<CN_EDMARRAY,eDM,256> EdmAry;

@@ -41,7 +41,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_BYTERATE
   
   /* 30 */ &Finalize::vUndefined,         // CN_CARRYOVER
-  /* 31 */ &Finalize::vUndefined,         // CN_CODA
   /*    */ &Finalize::vUndefined,         // CN_COLUMN
   /* 32 */ &Finalize::vUndefined,         // CN_COLUMNVEC
   /*    */ &Finalize::vUndefined,         // CN_COMMAND

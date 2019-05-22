@@ -70,9 +70,6 @@ bool Prompt::bPrompt_sizes(SePrompt* pPrompt)
   vTrace("  sizeof(SessionState) = %lu; \n"_Stz, sizeof(SessionState));
   vTrace("\n"_Stz);
   
-  vTrace("  sizeof(Coda) = %lu; \n"_Stz, sizeof(Coda));
-  vTrace("\n"_Stz);
-
   return true;
 }
 
