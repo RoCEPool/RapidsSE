@@ -974,18 +974,6 @@ void RowCoder::vEncodeVch(Datum* pSrcDatum, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the initial encoding (and offset) of a column datum                    */
-/*----------------------------------------------------------------------------*/
-eMC RowCoder::eEncodingInitial(Column* pCol,
-                               i8& i_PriorColumn_, i8& i_Offset_)
-{
-  eMC eEncoding = eEncodingInitial(m_aFromHead,pCol,
-                                         m_pColVec,
-                                        i_PriorColumn_,i_Offset_);
-  return eEncoding;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the encoding (and offset) of a column datum                            */
 /*----------------------------------------------------------------------------*/
 eMC RowCoder::eGetEncoding(Column* pCol, i8& i_PriorColumn_, i8& i_FromOffset_)
@@ -3154,36 +3142,6 @@ void RowCoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
       NEVER_REACH;
   }
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the initial encoding (and offset) of a column datum                    */
-/*----------------------------------------------------------------------------*/
-eMC RowCoder::eEncodingInitial(HeadLine* aFromHead, Column* pCol,
-                               ColumnVec* pColVec,
-                               i8& i_PriorColumn_, i8& i_FromOffset_)
-{
-  i8 i_ForCol = pCol->iColumnNo();
-  
-  if (i_ForCol < i_PriorColumn_) {
-    i_PriorColumn_ = 0;
-    i_FromOffset_  = iBaseOffset(pColVec);
-  }
-  
-  for (i8 i_Col = i_PriorColumn_; i_Col < i_ForCol; i_Col++) {
-    
-    eMC eEncoding = (eMC)aFromHead->iMetaCode(i_Col);
-    
-    Column* pCol  = pColVec->pGet(i_Col);
-    eDM eDatumNat = pCol->eDatumType();
-    
-    i_FromOffset_ += nDataBytes(eDatumNat,eEncoding);
-  }
-  
-  eMC eEncoding  = (eMC)aFromHead->iMetaCode(i_ForCol);
-  i_PriorColumn_ = i_ForCol;
-  
-  return eEncoding;
 }
 
 /*----------------------------------------------------------------------------*/

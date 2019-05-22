@@ -135,8 +135,6 @@ namespace Data
     void vEncodeTsp(Datum* pSrcDatum, Column* pCol);
     void vEncodeVch(Datum* pSrcDatum, Column* pCol);
     
-    eMC  eEncodingInitial(Column* pCol,
-                          i8& i_PriorColumn_, i8& i_Offset_);
     eMC  eGetEncoding(Column* pCol,
                       i8& i_PriorColumn_, i8& i_Offset_);
     void vHashColumn(Datum* pSrcDatum, Column* pCol);
@@ -260,9 +258,6 @@ namespace Data
     static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
                                       Column* pCol, eMC eEncoding, i8 i_Offset);
                                       
-    static eMC eEncodingInitial(HeadLine* aHeadLine, Column* pCol,
-                                ColumnVec* pColVec,
-                                i8& i_PriorColumn_, i8& i_Offset_);
     static eMC eEncodingRecoded(HeadLine* aHeadLine, Column* pCol,
                                 ColumnVec* pColVec,
                                 i8& i_PriorColumn_, i8& i_Offset_);
