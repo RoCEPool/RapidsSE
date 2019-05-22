@@ -268,12 +268,12 @@ typedef HV<Record,CN_RECORD> HV_Rec;
 
 //typedef ArrayNL_t<CN_EDMARRAY,eDM,256> EdmAry;
 
-typedef Nub_t<CN_ROWTRAY,HeadLine,TailLine,SpaceUnit,Table,Coda> RowNub;
+typedef Nub_t<CN_ROWTRAY,HeadLine,TailLine,SpaceUnit,Table> RowNub;
 
-typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,SpaceUnit,Table,Coda,
+typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,SpaceUnit,Table,
                 (C_CACHELINES * sizeof(HeadLine))> RowParts;
 
-typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,SpaceUnit,Table,Coda,
+typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,SpaceUnit,Table,
                  (C_MAX_ROWS * sizeof(HeadLine))> RowTray;
 
 #include "EntWrk.hpp"
