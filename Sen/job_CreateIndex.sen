@@ -126,19 +126,6 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  //! rjh
-  // I commented this out.  It is the root of some usage of functions in
-  // the various datums (Bcd,... Vch) which I'd like to remove.
-  //
-  // The function sets Index::m_bSingleColumn which seems never to be used.
-  //
-  // I'd like to remove this only after running the set tests
-
-  // set if single column
-  // pIndex index.setSingleColumn
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now populate the index
   pIndex index.populate
   not if pJob_CreateIndex <ERROR_JOB> popIndexes popTable

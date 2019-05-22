@@ -29,7 +29,6 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.name@"_Stz,           &Step::vIndexNameFetch);
   vAddStep("index.populate"_Stz,        &Step::vIndexPopulate);
   vAddStep("index.range"_Stz,           &Step::vIndexRange);
-  vAddStep("index.setSingleColumn"_Stz, &Step::vIndexSetSingleColumn);
   vAddStep("index.showColumnVec"_Stz,   &Step::vIndexShowColumnVec);
   vAddStep("index.space"_Stz,           &Step::vIndexSpace);
   vAddStep("index.subDic"_Stz,          &Step::vIndexSubDic);
@@ -799,23 +798,6 @@ LastBuffer:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
   pQueue->vAppend(pFetchBuffer);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.setSingleColumn -- set if single column index                        */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexSetSingleColumn(MP_Task mpTask)
-{
-  ENTRY("vIndexSetSingleColumn"_Stz);
-  
-  Object* pPtrIndex;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.showColumnVec"_Stz);
-  Index* pIndex = _pIndex(pPtrIndex);
-  
-  pIndex->vSetSingleColumn();
   
   EXIT();
 }
