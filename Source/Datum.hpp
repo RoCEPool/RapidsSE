@@ -105,7 +105,7 @@ namespace Data
     sVCH m_sVch;
     i8 m_nChars;
 
-    eMC m_eEncoding_m3;
+    eMC m_eEncoding;
     i8  m_nEncodedBytes;
 
     // must be last
