@@ -269,7 +269,6 @@ namespace Data
     static eMC eEncodingRecoded_mark3(HeadLine* aHeadLine, Column* pCol,
                                 ColumnVec* pColVec,
                                 i8& i_PriorColumn_, i8& i_Offset_);
-    static Stz* sEncoding(eMN eEncoding, eDM eDatumNat, eDM eDatumExt);
   
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
   
