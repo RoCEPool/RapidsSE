@@ -26,7 +26,6 @@ namespace Data
     i8         m_i_BaseOffset; // base offset for this colvec/table
   
     RowNub*    m_pIntoNub;
-    Coda*      m_pIntoCoda;
     i8         m_i_IntoHead;
     HeadLine*  m_aIntoHead;
     i8         m_i_IntoOffset; // encoding offset
