@@ -221,7 +221,6 @@ namespace Data
                         ColumnVec* pColVec, Column* pCol,
                         i8& i_LastColumn, i8& i_LastOffset);
   
-    static i8   nDataBytes(eDM eDatum, eMN eEncoding);
     static i8   nDataBytes_mark3(eDM eDatum, eMC eMetaCode);
   
     static void vDaysFromBase(Datum* pDatum, i8& iEra);
@@ -270,35 +269,9 @@ namespace Data
                                  i8& i_LastColumn, i8& i_LastOffset);
     static void vDecodeVchSmall_mark3(Datum* pDatum, HeadLine* aHeadLine,
                                       Column* pCol, eMC eEncoding, i8 i_Offset);
-    // extended datums
-    static void vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
-                             ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                             i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeDays(Datum* pDatum, HeadLine* aHeadLine,
-                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                            i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeDeltaPlus(Datum* pDatum, HeadLine* aHeadLine,
-                                 ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                                 i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeDigit(Datum* pDatum, HeadLine* aHeadLine,
-                             ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                              i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeTenth(Datum* pDatum, HeadLine* aHeadLine,
-                              ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                              i8& i_LastColumn, i8& i_LastOffset);
-
-    static void vDecodeDigit_mark3(Datum* pDatum, HeadLine* aHeadLine,
-                                   ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                                   i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeTenth_mark3(Datum* pDatum, HeadLine* aHeadLine,
-                                   ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                                   i8& i_LastColumn, i8& i_LastOffset);
-                                   
+                                      
     static eMC eEncodingInitial_mark3(HeadLine* aHeadLine, Column* pCol,
                                 ColumnVec* pColVec,
-                                i8& i_PriorColumn_, i8& i_Offset_);
-    static eMN eEncodingRecoded(HeadLine* aHeadLine, Column* pCol,
-                                ColumnVec* pColVec, Coda* pCoda,
                                 i8& i_PriorColumn_, i8& i_Offset_);
     static eMC eEncodingRecoded_mark3(HeadLine* aHeadLine, Column* pCol,
                                 ColumnVec* pColVec,
@@ -307,7 +280,6 @@ namespace Data
   
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
   
-    static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda);
     static i8 nFreeSpaceHead_mark3(HeadLine* aHeadLine, ColumnVec* pColVec);
     
     static void vRestoreDte(Datum* pDatum, eMN eEncoding);
