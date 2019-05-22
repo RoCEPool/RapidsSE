@@ -258,13 +258,13 @@ namespace Data
     static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
                                       Column* pCol, eMC eEncoding, i8 i_Offset);
                                       
-    static eMC eEncodingRecoded(HeadLine* aHeadLine, Column* pCol,
-                                ColumnVec* pColVec,
-                                i8& i_PriorColumn_, i8& i_Offset_);
-  
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
   
     static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec);
+    
+    static eMC eGetEncoding(HeadLine* aHeadLine, Column* pCol,
+                            ColumnVec* pColVec,
+                            i8& i_PriorColumn_, i8& i_Offset_);
     
     static void vRestoreTme(Datum* pDatum);
     static void vRestoreTsp(Datum* pDatum);
