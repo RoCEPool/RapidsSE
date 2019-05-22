@@ -142,8 +142,6 @@ namespace Data
     void vEncodeTsp_mark3(Datum* pSrcDatum, Column* pCol);
     void vEncodeVch_mark3(Datum* pSrcDatum, Column* pCol);
     
-    eMN  eEncodingInitial(Column* pCol,
-                          i8& i_PriorColumn_, i8& i_Offset_);
     eMC  eEncodingInitial_mark3(Column* pCol,
                           i8& i_PriorColumn_, i8& i_Offset_);
     void vHashColumn(Datum* pSrcDatum, Column* pCol);
@@ -328,9 +326,6 @@ namespace Data
                                    ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                                    i8& i_LastColumn, i8& i_LastOffset);
                                    
-    static eMN eEncodingInitial(HeadLine* aHeadLine, Column* pCol,
-                                ColumnVec* pColVec,
-                                i8& i_PriorColumn_, i8& i_Offset_);
     static eMC eEncodingInitial_mark3(HeadLine* aHeadLine, Column* pCol,
                                 ColumnVec* pColVec,
                                 i8& i_PriorColumn_, i8& i_Offset_);
