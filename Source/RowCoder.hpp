@@ -15,9 +15,6 @@ namespace Data
   static const i8 C_SHOCO_COMPRESSED_BYTES  = 1;
   
   /*----------------------------------------------------------------------------*/
-  const static i8 nMonthDaySum[13] =
-  //    J  F  M   A   M   J   J   A   S   O   N   D
-  {0,31,60,91,121,152,182,213,244,274,305,335,366};
   
   class RowCoder : public Object
   {
@@ -38,7 +35,7 @@ namespace Data
     i8         m_i_FromHead;
     HeadLine*  m_aFromHead;
     i8         m_i_FromOffset; // encoding offset
-    eMC        m_eFromEncoding_m3;
+    eMC        m_eFromEncoding;
     i8         m_nFromDataBytes;
   
     RowParts*  m_pWorkParts;

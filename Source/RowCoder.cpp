@@ -64,7 +64,7 @@ RowCoder::RowCoder(void)
   m_i_FromHead     = C_UNKNOWN;
   m_aFromHead      = nullptr;
   m_i_FromOffset   = C_UNKNOWN;
-  m_eFromEncoding_m3  = MC_NULL;
+  m_eFromEncoding  = MC_NULL;
   m_nFromDataBytes = 0;
 
   m_pWorkParts     = nullptr;
@@ -166,7 +166,7 @@ void RowCoder::vCopyEnd(void)
   m_i_FromHead    = C_UNKNOWN;
   m_aFromHead     = nullptr;
   m_i_FromOffset  = C_UNKNOWN;
-  m_eFromEncoding_m3 = MC_NULL;
+  m_eFromEncoding = MC_NULL;
   m_nFromDataBytes = 0;
   
   m_pWorkNub      = nullptr;
@@ -1060,7 +1060,7 @@ void RowCoder::vRecode_Large(void)
     eDM eDatum = pCol->eDatumType();
     
     i8 i_PriorFromOffset = m_i_FromOffset;
-    m_eFromEncoding_m3 = eEncodingInitial_mark3(pCol,i_LastColumn,m_i_FromOffset);
+    m_eFromEncoding = eEncodingInitial_mark3(pCol,i_LastColumn,m_i_FromOffset);
     
     // calculate new IntoOffset
     m_i_IntoOffset += m_i_FromOffset - i_PriorFromOffset;
@@ -1118,9 +1118,9 @@ void RowCoder::vRecode_Short_mark3(void)
     
     i8 iFromOffset_IGNORE = 0;
     i_LastColumn = 0;
-    m_eFromEncoding_m3  = eEncodingInitial_mark3(pCol,i_LastColumn,iFromOffset_IGNORE);
+    m_eFromEncoding  = eEncodingInitial_mark3(pCol,i_LastColumn,iFromOffset_IGNORE);
     
-    m_nFromDataBytes = nDataBytes_mark3(eDatum,m_eFromEncoding_m3);
+    m_nFromDataBytes = nDataBytes_mark3(eDatum,m_eFromEncoding);
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // re-encode datum
@@ -1663,9 +1663,9 @@ void RowCoder::vRecodeBcd_mark3(Column* pCol)
   
   if (1 == m_pIntoNub->nHeads()) {
     
-    if (m_eFromEncoding_m3 != MC_1B) {
+    if (m_eFromEncoding != MC_1B) {
       RASSERT(DM_BCD == m_pIntoCoda->m_aeExtDatum[i_Col]);
-      vUsageIncRecoded(pCol,m_eFromEncoding_m3);
+      vUsageIncRecoded(pCol,m_eFromEncoding);
       m_i_IntoOffset += m_nFromDataBytes;
       return;
     }
@@ -1676,7 +1676,7 @@ void RowCoder::vRecodeBcd_mark3(Column* pCol)
     // is it in range?
     if (iBcd1B < 0 || iBcd1B > 10) {
       RASSERT(DM_BCD == m_pIntoCoda->m_aeExtDatum[i_Col]);
-      vUsageIncRecoded(pCol,m_eFromEncoding_m3);
+      vUsageIncRecoded(pCol,m_eFromEncoding);
       m_i_IntoOffset += m_nFromDataBytes;
       return;
     }
@@ -1684,7 +1684,7 @@ void RowCoder::vRecodeBcd_mark3(Column* pCol)
   
 //  if (m_pIntoNub->nHeads() > 1 &&
 //      m_pIntoCoda->m_aeExtDatum[i_Col] != DM_TENTH) {
-//    vUsageIncRecoded(pCol,m_eFromEncoding_m3);
+//    vUsageIncRecoded(pCol,m_eFromEncoding);
 //    m_i_IntoOffset += m_nFromDataBytes;
 //    return;
 //  }
@@ -1699,7 +1699,7 @@ void RowCoder::vRecodeBcd_mark3(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // skip nulls
   
-  if (MC_NULL == m_eFromEncoding_m3) {
+  if (MC_NULL == m_eFromEncoding) {
     vUsageIncRecoded(pCol,0);
     RASSERT(0 == m_nFromDataBytes);
     m_i_IntoOffset += 0;
@@ -1712,7 +1712,7 @@ void RowCoder::vRecodeBcd_mark3(Column* pCol)
   eMC eExtendedEncoding;
   
   // is it a 1B encoding ?
-  if (m_eFromEncoding_m3 == MC_1B) {
+  if (m_eFromEncoding == MC_1B) {
     
     // get the 1B bcd from the data portion of the intoHead
     i8 iBcd1B = m_aIntoHead->w8_1B(m_i_IntoOffset);
@@ -1737,8 +1737,8 @@ void RowCoder::vRecodeBcd_mark3(Column* pCol)
     
   }
   
-  vUsageIncOops(pCol,m_eFromEncoding_m3,m_eFromEncoding_m3);
-  m_i_IntoOffset += m_eFromEncoding_m3;
+  vUsageIncOops(pCol,m_eFromEncoding,m_eFromEncoding);
+  m_i_IntoOffset += m_eFromEncoding;
   
   vXchkBcdRecode(pCol);
   
@@ -1781,7 +1781,7 @@ void RowCoder::vRecodeInt_mark3(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // skip nulls
-  if (MC_NULL == m_eFromEncoding_m3) {
+  if (MC_NULL == m_eFromEncoding) {
     vUsageIncRecoded(pCol,0);
     RASSERT(0 == m_nFromDataBytes);
     m_i_IntoOffset += m_nFromDataBytes;
@@ -1801,7 +1801,7 @@ void RowCoder::vRecodeInt_mark3(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // leave as int
-  vUsageIncRecoded(pCol,m_eFromEncoding_m3);
+  vUsageIncRecoded(pCol,m_eFromEncoding);
   m_i_IntoOffset += m_nFromDataBytes;
 }
 
@@ -1831,15 +1831,15 @@ void RowCoder::vRecodeVch_mark3(Column* pCol)
   if (4377 == m_nTotalHeads && 15 == pCol->iColumnNo())
     vDebugPoint();
   
-  if (MC_SHOCO_2T == m_eFromEncoding_m3) {
+  if (MC_SHOCO_2T == m_eFromEncoding) {
     vRecodeVchShoco(pCol);
     vXchkVchRecode(pCol);                                         //! temp ray
     return;
   }
   
-  if (m_eFromEncoding_m3 >= MC_1B && m_eFromEncoding_m3 <= MC_8B) {
-    vUsageIncRecoded(pCol,m_eFromEncoding_m3);
-    m_i_IntoOffset += m_eFromEncoding_m3;
+  if (m_eFromEncoding >= MC_1B && m_eFromEncoding <= MC_8B) {
+    vUsageIncRecoded(pCol,m_eFromEncoding);
+    m_i_IntoOffset += m_eFromEncoding;
     return;
   }
 }
@@ -1851,15 +1851,15 @@ void RowCoder::vRecodeVch_mark3(Column* pCol)
 bool RowCoder::bRecodeIntDigit_mark3(Column* pCol)
 {
   RASSERT(DM_INT == pCol->eDatumType());
-  RASSERT(MC_NULL != m_eFromEncoding_m3);
-  RASSERT(m_eFromEncoding_m3 >= MC_1B && m_eFromEncoding_m3 <= MC_8B);
+  RASSERT(MC_NULL != m_eFromEncoding);
+  RASSERT(m_eFromEncoding >= MC_1B && m_eFromEncoding <= MC_8B);
   
   i8 i_Col = pCol->iColumnNo();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is it a 1B encoding ?
   
-  if (m_eFromEncoding_m3 == MC_1B) {
+  if (m_eFromEncoding == MC_1B) {
     
     // get the 1B int from the data portion of the intoHead
     i8 i1BInt = m_aIntoHead->w8_1B(m_i_IntoOffset);
@@ -1880,8 +1880,8 @@ bool RowCoder::bRecodeIntDigit_mark3(Column* pCol)
   }
   
   // leave encoding as is
-  vUsageIncOops(pCol,m_eFromEncoding_m3,m_eFromEncoding_m3);
-  m_i_IntoOffset += m_eFromEncoding_m3;
+  vUsageIncOops(pCol,m_eFromEncoding,m_eFromEncoding);
+  m_i_IntoOffset += m_eFromEncoding;
   
   return true;
 }
