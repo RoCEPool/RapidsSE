@@ -2955,9 +2955,7 @@ void RowCoder::vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
 void RowCoder::vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,
                           ColumnVec* pColVec, Column* pCol,
                           i8& i_LastColumn, i8& i_Offset)
-{
-  i8 i_Col  = pCol->iColumnNo();
-  
+{  
   pDatum->m_eDatum = DM_BOL;
   
   eMC eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);

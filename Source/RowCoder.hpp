@@ -286,7 +286,7 @@ namespace Data
     /* retrieve and decode row from cache line into a datu                        */
     /*----------------------------------------------------------------------------*/
     static inline void vRetrieve(Datum& oDatum, HeadLine* aHeadLine, ColumnVec* pColVec,
-                                 Column* pCol, Coda* pCoda, i8& i_LastColumn, i8& i_LastOffset)
+                                 Column* pCol, i8& i_LastColumn, i8& i_LastOffset)
     {
       //vHeadDump(aHeadLine, pColVec);
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -307,7 +307,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     /* retrieve and decode row from cache line                                    */
     /*----------------------------------------------------------------------------*/
-    static inline void vRetrieveAll(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda)
+    static inline void vRetrieveAll(HeadLine* aHeadLine, ColumnVec* pColVec)
     {
       Datum oDatum;
       
