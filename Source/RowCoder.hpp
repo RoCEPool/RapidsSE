@@ -108,15 +108,7 @@ namespace Data
   private:
     void vAnalyseFree_mark3(void);
     
-    void vCodeBcd(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeBol(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeFlt(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeIvl(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeTme(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeTsp(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum);
   
     // MARK III
     void vCodeBol_mark3(Datum* pTgtDatum, Datum* pSrcDatum);
@@ -162,7 +154,6 @@ namespace Data
     void vMetaPut_mark3(Datum* pDatum, Column* pCol);
 
     void vRecode_Large(void);
-    void vRecode_Short(void);
     void vRecodeBcd(Column* pCol);
     void vRecodeBol(Column* pCol);
     void vRecodeDte(Column* pCol);

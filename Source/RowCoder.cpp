@@ -1089,7 +1089,7 @@ void RowCoder::vRecode_Large(void)
     eDM eDatum = pCol->eDatumType();
     
     i8 i_PriorFromOffset = m_i_FromOffset;
-    m_eFromEncoding = eEncodingInitial(pCol,i_LastColumn,m_i_FromOffset);
+    m_eFromEncoding_m3 = eEncodingInitial_mark3(pCol,i_LastColumn,m_i_FromOffset);
     
     // calculate new IntoOffset
     m_i_IntoOffset += m_i_FromOffset - i_PriorFromOffset;
@@ -1111,74 +1111,6 @@ void RowCoder::vRecode_Large(void)
       default:
         NEVER_REACH;
     }
-    
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* recode the datums                                                          */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRecode_Short(void)
-{
-  i8 nColumns = m_pColVec->nItems();
-  
-  // on the first into row set the coda for all columns
-  if (0 == m_i_IntoHead) {
-    for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
-      Column* pCol = m_pColVec->pGet(i_ForCol);
-      eDM eDatum = pCol->eDatumType();
-      m_pIntoCoda->m_aeExtDatum[i_ForCol] = eDatum;
-      m_pIntoCoda->m_aiAux[i_ForCol].m_iInt = 0;
-    }
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // recode each column
-  
-  i8 i_LastColumn = 0;
-  
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    
-    // get the initial encoding of the datum for i_Col from from-row
-    
-    Column* pCol = m_pColVec->pGet(i_Col);
-    eDM eDatum = pCol->eDatumType();
-    
-    i8 iFromOffset_IGNORE = 0;
-    i_LastColumn = 0;
-    m_eFromEncoding  = eEncodingInitial(pCol,i_LastColumn,iFromOffset_IGNORE);
-
-    m_nFromDataBytes = nDataBytes(eDatum,m_eFromEncoding);
-    
-    //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    // re-encode datum
-    
-    switch (eDatum) {
-        
-      case Datums::DM_BCD:  vRecodeBcd(pCol);
-        //vTrace("m_i_IntoOffset = %lld\n"_Stz, m_i_IntoOffset);
-        //vHeadDump(m_aIntoHead, m_pColVec, pCol);
-        continue;
-      case Datums::DM_BOL:  vRecodeBol(pCol); continue;
-      case Datums::DM_DTE:  vRecodeDte(pCol);
-        //vTrace("m_i_IntoOffset = %lld\n"_Stz, m_i_IntoOffset);
-        //vHeadDump(m_aIntoHead, m_pColVec, pCol);
-        continue;
-      case Datums::DM_FLT:  vRecodeFlt(pCol); continue;
-      case Datums::DM_INT:  vRecodeInt(pCol);
-        //vTrace("m_i_IntoOffset = %lld\n"_Stz, m_i_IntoOffset);
-        //vHeadDump(m_aIntoHead, m_pColVec, pCol);
-        continue;
-      case Datums::DM_IVL:  vRecodeIvl(pCol); continue;
-      case Datums::DM_TME:  vRecodeTme(pCol); continue;
-      case Datums::DM_TSP:  vRecodeTsp(pCol); continue;
-      case Datums::DM_VCH:  vRecodeVch(pCol); continue;
-        
-      default:
-        NEVER_REACH;
-    }
-    
     
   }
   
