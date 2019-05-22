@@ -237,7 +237,7 @@ namespace Data
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
                                  ColumnVec* pColVec, Column* pCol, 
                                  i8& i_LastColumn, i8& i_LastOffset);
-   static void vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
+    static void vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
                                  ColumnVec* pColVec, Column* pCol,
                                  i8& i_LastColumn, i8& i_LastOffset);
     static void vDecodeFlt(Datum* pDatum, HeadLine* aHeadLine,
