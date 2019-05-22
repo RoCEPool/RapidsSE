@@ -243,11 +243,6 @@ namespace Data
     static void vDecodeFast_Fallback(Datum* pDatum, HeadLine* aHeadLine,
                                      ColumnVec* pColVec, Column* pCol,
                                      Coda* pCoda, i8& i_LastColumn, i8& i_LastOffset);
-    static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
-    static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda);
-    static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, Coda* pCoda);
-    static void vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec);
     
     static void vHeadDump_mark3(HeadLine* aHeadLine, ColumnVec* pColVec);
     static void vHeadDump_mark3(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
