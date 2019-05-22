@@ -264,6 +264,88 @@ namespace Data
   /* 51 */ "MC_ENUMS"_Stz,
   };
   
+  static i8 nMC[] = // size of meta code
+  {
+  /* 00 */ 0, // MC_NULL         // null datum (no bytes in data area)
+  
+  /* 01 */ 1, // MC_1B,          // data area contains 1B datum
+  /* 02 */ 2, // MC_2B,          // data area contains 2B datum
+  /* 03 */ 3, // MC_3B,          // data area contains 3B datum
+  /* 04 */ 4, // MC_4B,          // data area contains 4B datum
+  /* 05 */ 5, // MC_5B,          // data area contains 5B datum
+  /* 06 */ 6, // MC_6B,          // data area contains 6B datum
+  /* 07 */ 7, // MC_7B,          // data area contains 7B datum
+  /* 08 */ 8, // MC_8B,          // data area contains 8B datum
+  
+  /* 09 */ 0, // MC_MINUS_ONE,   // -1 (no bytes in data area)
+  /* 10 */ 0, // MC_ZERO,        // 0  (no bytes in data area)
+  /* 11 */ 0, // MC_ONE,         // 1  (no bytes in data area)
+  /* 12 */ 0, // MC_TWO,         // 2  (no bytes in data area)
+  /* 13 */ 0, // MC_THREE,       // 3  (no bytes in data area)
+  /* 14 */ 0, // MC_FOUR,        // 4  (no bytes in data area)
+  /* 15 */ 0, // MC_FIVE,        // 5  (no bytes in data area)
+  /* 16 */ 0, // MC_SIX,         // 6  (no bytes in data area)
+  /* 17 */ 0, // MC_SEVEN,       // 7  (no bytes in data area)
+  /* 18 */ 0, // MC_EIGHT,       // 8  (no bytes in data area)
+  /* 19 */ 0, // MC_NINE,        // 9  (no bytes in data area)
+  /* 20 */ 0, // MC_TEN,         // 10 (no bytes in data area)
+  
+  /* 21 */ 0, // MC_SAME,        // same as previous (no bytes in data area)
+  /* 22 */ 1, // MC_ADD_1B,      // previous + 1B in data area
+  /* 23 */ 2, // MC_ADD_2B,      // previous + 2B in data area
+  /* 24 */ 1, // MC_SUB_1B,      // previous - 1B in data area
+  /* 25 */ 2, // MC_SUB_2B,      // previous - 2B in data area
+  
+  /* 26 */ 0, // MC_FALSE,       // false (no bytes in data area)
+  /* 27 */ 0, // MC_TRUE,        // true  (no bytes in data area)
+  
+  /* 28 */ 2, // MC_DATE_E0_2B,  // date in era 0 expressed as 2B in data area
+  /* 29 */ 2, // MC_DATE_E1_2B,  // date in era 1 expressed as 2B in data area
+  /* 30 */ 2, // MC_DATE_E2_2B,  // date in era 2 expressed as 2B in data area
+  
+  /* 31 */ 1, // MC_DAYS_ADD_1B, // first date +days 1B in data area
+  /* 32 */ 2, // MC_DAYS_SUB_1B, // first date -days 1B in data area
+  
+  /* 33 */ 0, // MC_STR_EMPTY,   // empty string (no bytes in data area)
+  /* 34 */ 1, // MC_STR_FIT_1L,  // ascii string: 1B=len, then ascii
+  /* 35 */ 2, // MC_STR_2T,      // longer ascii string:
+                                 //    head: 2B->tail
+                                 //    tail: has 1B=len, then ascii
+  /* 36 */ 3, // MC_STR_SPLIT_2T1L,// ascii string:
+                                   //   head: 2B->tail, 1B=len, then part-ascii
+                                   //   tail: has remaining ascii
+  
+  /* 37 */ 2, // MC_BSTR_FIT_2L,   // bigger ascii string: 2B=len then ascii
+  /* 38 */ 2, // MC_BSTR_2T,       // bigger ascii string:
+                                   //    head: 2B->tail
+                                   //    tail: has 2B=len, then ascii
+  /* 39 */ 3, // MC_BSTR_SPLIT_2T1L, // bigger ascii string:
+                                     //   head: 2B->tail, 2B=len, part-ascii
+                                     //   tail: has remaining ascii
+  
+  /* 40 */ 1, // MC_SHOCO_FIT_1L,    // shoco encoded string: 1B=len, then shoco
+  /* 41 */ 2, // MC_SHOCO_2T,        // shoco encoded string:
+                                     //    head: 2B->tail
+                                     //    tail: has 1B=len, then shoco
+  /* 42 */ 3, // MC_SHOCO_SPLIT_2T1L,// shoco encoded string:
+                                     //   head: 2B->tail, 1B=len, part-shoco
+                                     //   tail: has remaining shoco
+  
+  /* 43 */ 1, // MC_TWOS_1B,         // data area contains 1B two's complement datum
+  /* 44 */ 2, // MC_TWOS_2B,         // data area contains 2B two's complement datum
+  /* 45 */ 3, // MC_TWOS_3B,         // data area contains 3B two's complement datum
+  /* 46 */ 4, // MC_TWOS_4B,         // data area contains 4B two's complement datum
+  /* 47 */ 5, // MC_TWOS_5B,         // data area contains 5B two's complement datum
+  /* 48 */ 6, // MC_TWOS_6B,         // data area contains 6B two's complement datum
+  /* 49 */ 7, // MC_TWOS_7B,         // data area contains 7B two's complement datum
+  
+  /* 50 */ 2, // MC_OVERFLOW_2B,     // 2B in data area indicating overflow tail
+  
+  /* 51 */ 0  // MC_ENUMS,
+  };
+  
+
+  
   //! we'll start with 3 era's and see what happens
   static const i8 C_CLASSIC_ERA  =  0; // 1900
   static const i8 C_SILVER_ERA   = 92; // 1992
