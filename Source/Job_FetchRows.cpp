@@ -782,9 +782,8 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
       
       RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(*aaHeadLine);
       RowTray* pRowTray = pRowBuffer->pRowTray();
-      Coda* pCoda = pRowTray->pNub()->pCoda();
       
-      RowCoder::vRetrieveAll(aHeadLine, pColVec, pCoda);
+      RowCoder::vRetrieveAll(aHeadLine, pColVec);
     }
     
     aaHeadLine = pFetchBuffer->aaNextRowPtr(aaHeadLine);
@@ -801,8 +800,6 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
 {
   Datum oDatum;
   RowBuffer* pRowBuffer = nullptr;
-  RowTray* pRowTray = nullptr;
-  Coda* pCoda = nullptr;
   
   ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
   Column* pCol = pJob_FetchRows->m_pColumn;
@@ -823,10 +820,8 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
     // check if aHeadLine is from the last rowBuffer
     if (! RowBuffer::bCheckAddress(pRowBuffer,aHeadLine)) {
       pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
-      pRowTray = pRowBuffer->pRowTray();
-      pCoda = pRowTray->pNub()->pCoda();
     }
-    RowCoder::vRetrieve(oDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
+    RowCoder::vRetrieve(oDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
     
     if (pJob_FetchRows->m_bPrint) {
       HV_Rec hvRec;

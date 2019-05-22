@@ -123,11 +123,7 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // encode datum into cache line
-#ifdef WITH_MARK3_ENCODING
-    m_pRowCoder_Encode->vEncodeDatum_mark3(&oDatum,pColumn);
-#else
     m_pRowCoder_Encode->vEncodeDatum(&oDatum,pColumn);
-#endif
 
     //HeadLine* aHeadLine = m_oRowParts.aGetHead(0);
     //MemLib::vWordDump(aHeadLine,sizeof(HeadLine));
