@@ -843,14 +843,14 @@ void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
 {
   /*
    +================================+
-   | meta-bits:             ,MN_nB, |
+   | meta-bits:             ,MC_nB, |
    +================================+
    |                                |
    +--------------------------------+
    |                <small:1..8B>   |
    +--------------------------------+
    
-   where: MN_nB is the meta-bits for the column
+   where: MC_nB is the meta-bits for the column
           <small> is the 1..8 ascii bytes for the short varchar
   */
   
@@ -1211,7 +1211,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
    Before:
              -- Into-Head --                         -- From-Tail --
    +================================+    +=====================================+
-   | mb:       ,MN_SHOCO_2B,        |    | <U><C><shoco.....> //////////////// |
+   | mb:       ,MC_SHOCO_2B,        |    | <U><C><shoco.....> //////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1221,14 +1221,14 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
    After:
              -- Into-Head --                      -- Into-Tail -- (duplicate)
    +================================+    +=====================================+
-   | mb:             ,MN_SHOCO_2B,  |    | <U><C><shoco.....> //////////////// |
+   | mb:             ,MC_SHOCO_2T,  |    | <U><C><shoco.....> //////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
    |                    [IT]        |
    +--------------------------------+
    
-   where: MN_SHOCO_2B are the meta-bits for the column
+   where: MC_SHOCO_2T are the meta-bits for the column
           |FT| is 2B absolute index of the From-Tail line containing shoco
           [IT] is 2B relative index of the Into-Tail line containing shoco
           <U> is one byte being the unit length of a tail line
@@ -1264,28 +1264,28 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   // +--------------------------------+
   //                      ^m_i_IntoOffset
   i8 i_IntoTail_Rel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail_Dup);
-  m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MN_2B);
+  m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MC_2B);
   
   // increment into offset by sizeof([IT])
   // +--------------------------------+
   // |                    |FT|        |
   // +--------------------------------+
   //                          ^m_i_IntoOffset
-  m_i_IntoOffset += MN_2B;
+  m_i_IntoOffset += MC_2B;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
-  // metadata remains MN_SHOCO_2B
+  // metadata remains MC_SHOCO_2T
   RASSERT(MC_SHOCO_2T == m_aFromHead->iMetaCode(pCol->iColumnNo()));
   
   // we recoded: sizeof([IT])
-  vUsageIncRecoded(pCol,MN_2B);
+  vUsageIncRecoded(pCol,MC_2B);
   
   return true;
  }
 
 /*----------------------------------------------------------------------------*/
-/* fold entire shoco tail into head as a MN_SHOCO_FIT      (last column only) */
+/* fold entire shoco tail into head as a MC_SHOCO_FIT_1L   (last column only) */
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeVchShocoFold(Column* pCol)
 {
@@ -1293,7 +1293,7 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
    Before:
             -- Into-Head --                           -- From-Tail --
    +================================+    +=====================================+
-   | mb:               ,MN_SHOCO_2B |    | <U><C><shoco.....> //////////////// |
+   | mb:               ,MC_SHOCO_2T |    | <U><C><shoco.....> //////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1303,14 +1303,14 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
    After:
             -- Into-Head --                        (no Into-Tail)
    +================================+
-   | mb:              ,MN_SHOCO_FIT |
+   | mb:           ,MC_SHOCO_FIT_1L |
    +================================+
    |                                |
    +--------------------------------+
    |    <C><shoco.....> /////////// |
    +--------------------------------+
    
-   where: MN_SHOCO_2B are the meta-bits for the column
+   where: MC_SHOCO_2T are the meta-bits for the column
           |FT| is 2B absolute index of the From-Tail line containing shoco
           [IT] is 2B relative index of the Into-Tail line containing shoco
           <U> is one byte being the unit length of a tail line
@@ -1372,20 +1372,20 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   // |    <C><shoco.....> /////////// |
   // +--------------------------------+
   //                     ^m_i_IntoOffset
-  m_i_IntoOffset += MN_1B + nShocoBytes;
+  m_i_IntoOffset += MC_1B + nShocoBytes;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // metadata for this column get changed to MN_SHOCO_FIT
+  // metadata for this column get changed to MC_SHOCO_FIT_1L
   vMetaCode_mark3(pCol,MC_SHOCO_FIT_1L);
   
   // we recoded: sizeof(<C>) + nShocoBytes
-  vUsageIncRecoded(pCol,MN_1B + nShocoBytes);
+  vUsageIncRecoded(pCol,MC_1B + nShocoBytes);
 
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* split shoco across head and tail as a MN_SHOCO_SPLIT    (last column only) */
+/* split shoco across head and tail as MC_SHOCO_SPLIT_2T1L (last column only) */
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
 {
@@ -1393,7 +1393,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
    Before:
              -- Into-Head --                           -- From-Tail --
    +================================+    +=====================================+
-   | mb:               ,MN_SHOCO_2B |    | <U><C><shoco....................... |
+   | mb:               ,MC_SHOCO_2T |    | <U><C><shoco....................... |
    +================================+    +=====================================+
    |                                |    | ....overhang> ///////////////////// |
    +--------------------------------+    +-------------------------------------+
@@ -1403,14 +1403,14 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
    After:
             -- Into-Head --                           -- Into-Tail --
    +================================+    +=====================================+
-   | mb:            ,MN_SHOCO_SPLIT |    | <U><partB.........................> |
+   | mb:       ,MC_SHOCO_SPLIT_2T1L |    | <U><partB.........................> |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
    |            [IT]<C><partA.....> |
    +--------------------------------+
    
-   where: MN_SHOCO_2B is the meta-bits for the column
+   where: MC_SHOCO_2T is the meta-bits for the column
           |FT| is 2B absolute index of the From-Tail line containing shoco
           [IT] is 2B relative index of the Into-Tail line containing shoco
           <U> is one byte being the unit length of a tail line
@@ -1453,7 +1453,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // +--------------------------------+    +===================================+
   // |            |FT|<_><....a.....> |    | <_><.............b..............> |
   // +--------------------------------+    +===================================+
-  i8 nPartA = nAvailHeadBytes - ( /*[IT]*/MN_2B + /* <C> */MN_1B );
+  i8 nPartA = nAvailHeadBytes - ( /*[IT]*/MC_2B + /* <C> */MC_1B );
   i8 nPartB = nShocoBytes - nPartA;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1463,14 +1463,14 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // |            |FT|<C>//////////// |
   // +--------------------------------+
   //              ^m_i_IntoOffset
-  m_aIntoHead->vPut(m_i_IntoOffset + MN_2B,nShocoBytes,MN_1B);
+  m_aIntoHead->vPut(m_i_IntoOffset + MC_2B,nShocoBytes,MC_1B);
 
   // copy partA into the Into-Head
   // +--------------------------------+
   // |            |FT|<C><partA.....> |
   // +--------------------------------+
   //              ^m_i_IntoOffset
-  byte* ayIntoHead_PartA = (byte*)m_aIntoHead + m_i_IntoOffset + MN_2B + MN_1B;
+  byte* ayIntoHead_PartA = (byte*)m_aIntoHead + m_i_IntoOffset + MC_2B + MC_1B;
   byte* ayFromTail_PartA = (byte*)aFromTail + C_TAIL_UNITS_BYTES
                                             + C_SHOCO_COMPRESSED_BYTES;
   MemLib::vCopy(ayIntoHead_PartA,ayFromTail_PartA,nPartA,CN_ROWCODER);
@@ -1481,7 +1481,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // +=====================================+
   // | <U> /////////////////////////////// |
   // +=====================================+
-  i8 i_IntoTail = m_pIntoNub->iAllotTail(/* <U> */MN_1B + nPartB);
+  i8 i_IntoTail = m_pIntoNub->iAllotTail(/* <U> */MC_1B + nPartB);
   TailLine* aIntoTail = m_pIntoNub->aGetTail(i_IntoTail);
   
   // copy partB from From-Tail into the Into-Tail
@@ -1503,7 +1503,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // +--------------------------------+
   //              ^m_i_IntoOffset
   i8 i_IntoTail_Rel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
-  m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MN_2B);
+  m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MC_2B);
 
   // increment intoOffset by sizeof([IT]) + sizeof(<C>) + nPartA
   // +--------------------------------+
@@ -1513,11 +1513,11 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   m_i_IntoOffset += MC_2B + MC_1B + nPartA;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // metadata for this column get changed to MN_SHOCO_SPLIT
+  // metadata for this column get changed to MC_SHOCO_SPLIT_2T1L
   vMetaCode_mark3(pCol,MC_SHOCO_SPLIT_2T1L);
   
   // we recoded: 1B <C> + <compressed>
-  vUsageIncRecoded(pCol,MN_1B + nShocoBytes);
+  vUsageIncRecoded(pCol,MC_1B + nShocoBytes);
 
   m_nTails++;
   m_nTailUnits += nTailUnits;
@@ -1554,7 +1554,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
    Before:
             -- Into-Head --                        -- From-Tail --
    +================================+    +=====================================+
-   | mb:            ,MN_SHOCO_2B,   |    | <U><C><shoco.....> //////////////// |
+   | mb:            ,MC_SHOCO_2T,   |    | <U><C><shoco.....> //////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1564,14 +1564,14 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
    After:
             -- Into-Head --                        -- Into-Tail --
    +================================+    +=====================================+
-   | mb:             ,MN_SHOCO_2B,  |    | <U><C><shoco.....> //////////////// |
+   | mb:             ,MC_SHOCO_2T,  |    | <U><C><shoco.....> //////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
    |                    [IT]        |
    +--------------------------------+
    
-   where: MN_SHOCO_2B are the meta-bits for the column
+   where: MC_SHOCO_2T are the meta-bits for the column
           |FT| is 2B absolute index of the From-Tail line containing shoco
           [IT] is 2B relative index of the Into-Tail line containing shoco
           <U> is one byte being the unit length of a tail line
@@ -1627,14 +1627,14 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   // +--------------------------------+
   //                      ^m_i_IntoOffset
   i8 i_IntoTail_Rel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
-  m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MN_2B);
+  m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MC_2B);
   
   // increment intoOffset by sizeof([IT])
   // +--------------------------------+
   // |                    [IT]        |
   // +--------------------------------+
   //                          ^m_i_IntoOffset
-  m_i_IntoOffset += MN_2B;
+  m_i_IntoOffset += MC_2B;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1642,7 +1642,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   RASSERT(MC_SHOCO_2T == m_aFromHead->iMetaCode(pCol->iColumnNo()));
   
   // we recoded: sizeof([IT]) + nIntoTailBytes
-  vUsageIncRecoded(pCol,MN_2B + nIntoTailBytes);
+  vUsageIncRecoded(pCol,MC_2B + nIntoTailBytes);
 
   m_nTails++;
   m_nTailUnits += nFromTailUnits;
@@ -1740,72 +1740,6 @@ void RowCoder::vRecodeBcd_mark3(Column* pCol)
   vUsageIncOops(pCol,m_eFromEncoding_m3,m_eFromEncoding_m3);
   m_i_IntoOffset += m_eFromEncoding_m3;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // oops! re-encode into MN_TENTH_2B, MN_TENTH_4B or MN_TENTH_8B
-  /*
-  i8 iBcdNB;
-  
-  switch (m_eFromEncoding) {
-    case MN_1B: iBcdNB = m_aIntoHead->w8_1B(m_i_IntoOffset);
-      eExtendedEncoding = MC_1B;
-      vMetaCode_mark3(pCol,eExtendedEncoding);
-      vUsageIncOops(pCol,2,1);
-      m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1);
-      m_aIntoHead->v2B(m_i_IntoOffset,iBcdNB);
-      m_i_IntoOffset += 2;
-      break;
-      
-    case MN_2B: eExtendedEncoding = MC_2B;
-      vMetaCode_mark3(pCol,eExtendedEncoding);
-      vUsageIncOops(pCol,2,0);
-      m_i_IntoOffset += 2;
-      break;
-    case MN_3B: iBcdNB = m_aIntoHead->w8_3B(m_i_IntoOffset);
-      eExtendedEncoding = MC_3B;
-      vMetaCode_mark3(pCol,eExtendedEncoding);
-      vUsageIncOops(pCol,4,1);
-      m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1);
-      m_aIntoHead->v4B(m_i_IntoOffset,iBcdNB);
-      m_i_IntoOffset += 4;
-      break;
-    case MN_4B: eExtendedEncoding = MC_4B;
-      vMetaCode_mark3(pCol,eExtendedEncoding);
-      vUsageIncOops(pCol,4,0);
-      m_i_IntoOffset += 4;
-      break;
-    case MN_5B: iBcdNB = m_aIntoHead->w8_5B(m_i_IntoOffset);
-      eExtendedEncoding = MC_5B;
-      vMetaCode_mark3(pCol,eExtendedEncoding);
-      vUsageIncOops(pCol,8,3);
-      m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,3);
-      m_aIntoHead->v8B(m_i_IntoOffset,iBcdNB);
-      m_i_IntoOffset += 8;
-      break;
-    case MN_6B: iBcdNB = m_aIntoHead->w8_6B(m_i_IntoOffset);
-      eExtendedEncoding = MC_6B;
-      vMetaCode_mark3(pCol,eExtendedEncoding);
-      vUsageIncOops(pCol,8,2);
-      m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,2);
-      m_aIntoHead->v8B(m_i_IntoOffset,iBcdNB);
-      m_i_IntoOffset += 8;
-      break;
-    case MN_7B: iBcdNB = m_aIntoHead->w8_7B(m_i_IntoOffset);
-      eExtendedEncoding = MC_7B;
-      vMetaCode_mark3(pCol,eExtendedEncoding);
-      vUsageIncOops(pCol,8,1);
-      m_pIntoNub->vExpand(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1);
-      m_aIntoHead->v8B(m_i_IntoOffset,iBcdNB);
-      m_i_IntoOffset += 8;
-      break;
-    case MN_8B: eExtendedEncoding = MC_8B;
-      vMetaCode_mark3(pCol,eExtendedEncoding);
-      vUsageIncOops(pCol,8,0);
-      m_i_IntoOffset += 8;
-      break;
-    default:
-      RASSERT(0);
-  }
-  */
   vXchkBcdRecode(pCol);
   
 #endif
@@ -1922,37 +1856,6 @@ bool RowCoder::bRecodeIntDigit_mark3(Column* pCol)
   
   i8 i_Col = pCol->iColumnNo();
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for re-encoding
-  
-  // first row: initial decision -- can we recode as DM_DIGIT?
-//  if (1 == m_pIntoNub->nHeads()) {
-//
-//    RASSERT(DM_INT == m_pIntoCoda->m_aeExtDatum[i_Col]);
-//
-//    // the datum has to be a MN_1B
-//    if (MC_1B != m_eFromEncoding_m3)
-//      return false;
-//
-//    // the datum has to be 0..7
-//    i8 i1BInt = m_aIntoHead->w8_1B(m_i_IntoOffset);
-//    if (i1BInt < 0 || i1BInt > 7)
-//      return false;
-//  }
-  
-  // subsequent rows: are we recoding as DM_DIGIT?
-  //  if (m_pIntoNub->nHeads() > 1 &&
-  //      m_pIntoCoda->m_aeExtDatum[i_Col] != DM_DIGIT)
-  //    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now re-encoding integer of row as DM_DIGIT
-  
-  // change the extended datum to DM_DIGIT
-  //  if (1 == m_pIntoNub->nHeads())
-  //    m_pIntoCoda->m_aeExtDatum[i_Col] = DM_DIGIT;
-  //  RASSERT(DM_DIGIT == m_pIntoCoda->m_aeExtDatum[i_Col]);
-  //
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is it a 1B encoding ?
   
@@ -2680,188 +2583,6 @@ void RowCoder::vHeadDumpNat_mark3(HeadLine* aHeadLine, ColumnVec* pColVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize the encoding array                                              */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vInitEncoding(void)
-{
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // DM_BCD
-  g_iDatumEncoding[DM_BCD][MN_NULL] = MN_NULL;
-  g_iDatumEncoding[DM_BCD][MN_1B] = MN_1B;
-  g_iDatumEncoding[DM_BCD][MN_2B] = MN_2B;
-  g_iDatumEncoding[DM_BCD][MN_3B] = MN_3B;
-  g_iDatumEncoding[DM_BCD][MN_4B] = MN_4B;
-  g_iDatumEncoding[DM_BCD][MN_5B] = MN_5B;
-  g_iDatumEncoding[DM_BCD][MN_6B] = MN_6B;
-  g_iDatumEncoding[DM_BCD][MN_7B] = MN_7B;
-  g_iDatumEncoding[DM_BCD][MN_8B] = MN_8B;
-  g_iDatumEncoding[DM_BCD][MN_MINUS_ONE] = MN_MINUS_ONE;
-  g_iDatumEncoding[DM_BCD][MN_ZERO] = MN_ZERO;
-  g_iDatumEncoding[DM_BCD][MN_PLUS_ONE] = MN_PLUS_ONE;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // DM_BOL
-  g_iDatumEncoding[DM_BOL][MN_NULL] = 0;
-  g_iDatumEncoding[DM_BOL][MN_FALSE] = 0;
-  g_iDatumEncoding[DM_BOL][MN_TRUE] = 0;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // DM_CHR
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // DM_DTE
-  g_iDatumEncoding[DM_DTE][MN_CLASSIC_1B] = MN_NULL;
-  g_iDatumEncoding[DM_DTE][MN_CLASSIC_2B] = MN_1B;
-  g_iDatumEncoding[DM_DTE][MN_SILVER_1B] = MN_1B;
-  g_iDatumEncoding[DM_DTE][MN_SILVER_2B] = MN_2B;
-  g_iDatumEncoding[DM_DTE][MN_MODERN_1B] = MN_1B;
-  g_iDatumEncoding[DM_DTE][MN_MODERN_2B] = MN_2B;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // DM_FLT
-  g_iDatumEncoding[DM_FLT][MN_NULL] = MN_NULL;
-  g_iDatumEncoding[DM_FLT][MN_1B] = MN_1B;
-  g_iDatumEncoding[DM_FLT][MN_2B] = MN_2B;
-  g_iDatumEncoding[DM_FLT][MN_3B] = MN_3B;
-  g_iDatumEncoding[DM_FLT][MN_4B] = MN_4B;
-  g_iDatumEncoding[DM_FLT][MN_5B] = MN_5B;
-  g_iDatumEncoding[DM_FLT][MN_6B] = MN_6B;
-  g_iDatumEncoding[DM_FLT][MN_7B] = MN_7B;
-  g_iDatumEncoding[DM_FLT][MN_8B] = MN_8B;
-  g_iDatumEncoding[DM_FLT][MN_MINUS_ONE] = MN_MINUS_ONE;
-  g_iDatumEncoding[DM_FLT][MN_ZERO] = MN_ZERO;
-  g_iDatumEncoding[DM_FLT][MN_PLUS_ONE] = MN_PLUS_ONE;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // DM_INT
-  g_iDatumEncoding[DM_INT][MN_NULL] = MN_NULL;
-  g_iDatumEncoding[DM_INT][MN_1B] = MN_1B;
-  g_iDatumEncoding[DM_INT][MN_2B] = MN_2B;
-  g_iDatumEncoding[DM_INT][MN_3B] = MN_3B;
-  g_iDatumEncoding[DM_INT][MN_4B] = MN_4B;
-  g_iDatumEncoding[DM_INT][MN_5B] = MN_5B;
-  g_iDatumEncoding[DM_INT][MN_6B] = MN_6B;
-  g_iDatumEncoding[DM_INT][MN_7B] = MN_7B;
-  g_iDatumEncoding[DM_INT][MN_8B] = MN_8B;
-  g_iDatumEncoding[DM_INT][MN_MINUS_ONE] = MN_MINUS_ONE;
-  g_iDatumEncoding[DM_INT][MN_ZERO] = MN_ZERO;
-  g_iDatumEncoding[DM_INT][MN_PLUS_ONE] = MN_PLUS_ONE;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // DM_IVL
-  g_iDatumEncoding[DM_IVL][MN_NULL] = MN_NULL;
-  g_iDatumEncoding[DM_IVL][MN_1B] = MN_1B;
-  g_iDatumEncoding[DM_IVL][MN_2B] = MN_2B;
-  g_iDatumEncoding[DM_IVL][MN_3B] = MN_3B;
-  g_iDatumEncoding[DM_IVL][MN_4B] = MN_4B;
-  g_iDatumEncoding[DM_IVL][MN_5B] = MN_5B;
-  g_iDatumEncoding[DM_IVL][MN_6B] = MN_6B;
-  g_iDatumEncoding[DM_IVL][MN_7B] = MN_7B;
-  g_iDatumEncoding[DM_IVL][MN_8B] = MN_8B;
-  g_iDatumEncoding[DM_IVL][MN_MINUS_ONE] = MN_MINUS_ONE;
-  g_iDatumEncoding[DM_IVL][MN_ZERO] = MN_ZERO;
-  g_iDatumEncoding[DM_IVL][MN_PLUS_ONE] = MN_PLUS_ONE;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // DM_TME
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // DM_TSP
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // DM_VBN
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // DM_VCH
-  g_iDatumEncoding[DM_VCH][MN_NULL] = MN_NULL;
-  g_iDatumEncoding[DM_VCH][MN_1B] = MN_1B;
-  g_iDatumEncoding[DM_VCH][MN_2B] = MN_2B;
-  g_iDatumEncoding[DM_VCH][MN_3B] = MN_3B;
-  g_iDatumEncoding[DM_VCH][MN_4B] = MN_4B;
-  g_iDatumEncoding[DM_VCH][MN_5B] = MN_5B;
-  g_iDatumEncoding[DM_VCH][MN_6B] = MN_6B;
-  g_iDatumEncoding[DM_VCH][MN_7B] = MN_7B;
-  g_iDatumEncoding[DM_VCH][MN_8B] = MN_8B;
-  g_iDatumEncoding[DM_VCH][MN_EMPTY] = MN_1B;
-  g_iDatumEncoding[DM_VCH][MN_SHOCO_FIT] = MN_2B;
-  g_iDatumEncoding[DM_VCH][MN_SHOCO_SPLIT] = MN_3B;
-  g_iDatumEncoding[DM_VCH][MN_SHOCO_2B] = MN_2B;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // DM_ALPHA (NOT SURE)
-  g_iDatumEncoding[DM_ALPHA][MN_NULL] = MN_NULL;
-  g_iDatumEncoding[DM_ALPHA][MN_ALPHA_0] = 0;
-  g_iDatumEncoding[DM_ALPHA][MN_ALPHA_1] = 0;
-  g_iDatumEncoding[DM_ALPHA][MN_ALPHA_2] = 0;
-  g_iDatumEncoding[DM_ALPHA][MN_ALPHA_3] = 0;
-  g_iDatumEncoding[DM_ALPHA][MN_ALPHA_4] = 0;
-  g_iDatumEncoding[DM_ALPHA][MN_ALPHA_5] = 0;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // DM_DAYS
-  g_iDatumEncoding[DM_DAYS][MN_NULL] = MN_NULL;
-  g_iDatumEncoding[DM_DAYS][MN_DAYS_PLUS_1B] = 1;
-  g_iDatumEncoding[DM_DAYS][MN_DAYS_MINUS_1B] = 1;
-  g_iDatumEncoding[DM_DAYS][MN_DAYS_CLASSIC_2B] = 2;
-  g_iDatumEncoding[DM_DAYS][MN_DAYS_SILVER_2B] = 2;
-  g_iDatumEncoding[DM_DAYS][MN_DAYS_MODERN_2B] = 2;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // DM_DELTA_PLUS
-  g_iDatumEncoding[DM_DELTA_PLUS][MN_NULL] = MN_NULL;
-  g_iDatumEncoding[DM_DELTA_PLUS][MN_1B] = MN_1B;
-  g_iDatumEncoding[DM_DELTA_PLUS][MN_2B] = MN_2B;
-  g_iDatumEncoding[DM_DELTA_PLUS][MN_3B] = MN_3B;
-  g_iDatumEncoding[DM_DELTA_PLUS][MN_4B] = MN_4B;
-  g_iDatumEncoding[DM_DELTA_PLUS][MN_5B] = MN_5B;
-  g_iDatumEncoding[DM_DELTA_PLUS][MN_6B] = MN_6B;
-  g_iDatumEncoding[DM_DELTA_PLUS][MN_7B] = MN_7B;
-  g_iDatumEncoding[DM_DELTA_PLUS][MN_8B] = MN_8B;
-  g_iDatumEncoding[DM_DELTA_PLUS][MN_MINUS_ONE] = 0;
-  g_iDatumEncoding[DM_DELTA_PLUS][MN_ZERO] = 0;
-  g_iDatumEncoding[DM_DELTA_PLUS][MN_PLUS_ONE] = 0;
-  g_iDatumEncoding[DM_DELTA_PLUS][MN_SAME] = 0;
-  g_iDatumEncoding[DM_DELTA_PLUS][MN_PLUS_1B] = 1;
-  g_iDatumEncoding[DM_DELTA_PLUS][MN_PLUS_2B] = 2;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // DM_DIGIT
-  g_iDatumEncoding[DM_DIGIT][MN_NULL] = MN_NULL;
-  g_iDatumEncoding[DM_DIGIT][MN_DIGIT_0] = 0;
-  g_iDatumEncoding[DM_DIGIT][MN_DIGIT_1] = 0;
-  g_iDatumEncoding[DM_DIGIT][MN_DIGIT_2] = 0;
-  g_iDatumEncoding[DM_DIGIT][MN_DIGIT_3] = 0;
-  g_iDatumEncoding[DM_DIGIT][MN_DIGIT_4] = 0;
-  g_iDatumEncoding[DM_DIGIT][MN_DIGIT_5] = 0;
-  g_iDatumEncoding[DM_DIGIT][MN_DIGIT_6] = 0;
-  g_iDatumEncoding[DM_DIGIT][MN_DIGIT_7] = 0;
-  g_iDatumEncoding[DM_DIGIT][MN_DIGIT_1B] = MN_DIGIT_1B - MN_DIGIT_7;
-  g_iDatumEncoding[DM_DIGIT][MN_DIGIT_2B] = MN_DIGIT_2B - MN_DIGIT_7;
-  g_iDatumEncoding[DM_DIGIT][MN_DIGIT_3B] = MN_DIGIT_3B - MN_DIGIT_7;
-  g_iDatumEncoding[DM_DIGIT][MN_DIGIT_4B] = MN_DIGIT_4B - MN_DIGIT_7;
-  g_iDatumEncoding[DM_DIGIT][MN_DIGIT_6B] = MN_DIGIT_6B - MN_DIGIT_7;
-  g_iDatumEncoding[DM_DIGIT][MN_DIGIT_8B] = MN_DIGIT_8B - MN_DIGIT_7;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // DM_TENTH
-  g_iDatumEncoding[DM_TENTH][MN_NULL] = MN_NULL;
-  g_iDatumEncoding[DM_TENTH][MN_TENTH_0] = 0;
-  g_iDatumEncoding[DM_TENTH][MN_TENTH_1] = 0;
-  g_iDatumEncoding[DM_TENTH][MN_TENTH_2] = 0;
-  g_iDatumEncoding[DM_TENTH][MN_TENTH_3] = 0;
-  g_iDatumEncoding[DM_TENTH][MN_TENTH_4] = 0;
-  g_iDatumEncoding[DM_TENTH][MN_TENTH_5] = 0;
-  g_iDatumEncoding[DM_TENTH][MN_TENTH_6] = 0;
-  g_iDatumEncoding[DM_TENTH][MN_TENTH_7] = 0;
-  g_iDatumEncoding[DM_TENTH][MN_TENTH_8] = 0;
-  g_iDatumEncoding[DM_TENTH][MN_TENTH_9] = 0;
-  g_iDatumEncoding[DM_TENTH][MN_TENTH_10] = 0;
-  g_iDatumEncoding[DM_TENTH][MN_TENTH_2B] = 2;
-  g_iDatumEncoding[DM_TENTH][MN_TENTH_4B] = 4;
-  g_iDatumEncoding[DM_TENTH][MN_TENTH_8B] = 8;
-}
-
-/*----------------------------------------------------------------------------*/
 /* sprint decoded row into record                                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecord(Record* pRec, RowNub* pNub, i8 i_Row)
@@ -3272,7 +2993,7 @@ void RowCoder::vDecodeDte_mark3(Datum* pDatum, HeadLine* aHeadLine,
   
   switch (eThisEncoding) {
       
-    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL; return;
+    case MC_NULL: pDatum->m_iInt = C_DATUM_NULL; return;
       
     case MC_DAYS_ADD_1B: RASSERT(0);   break;
     case MC_DAYS_SUB_1B: RASSERT(0); break;
@@ -3381,12 +3102,12 @@ void RowCoder::vDecodeTme_mark3(Datum* pDatum, HeadLine* aHeadLine,
     case MC_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
     case MC_1B:   pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
     case MC_2B:   pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
-    case MN_3B:   pDatum->m_iInt = aHeadLine->w8_3B(i_Offset); break;
-    case MN_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
-    case MN_5B:   pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
-    case MN_6B:   pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
-    case MN_7B:   pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
-    case MN_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
+    case MC_3B:   pDatum->m_iInt = aHeadLine->w8_3B(i_Offset); break;
+    case MC_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
+    case MC_5B:   pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
+    case MC_6B:   pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
+    case MC_7B:   pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
+    case MC_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
       
     default:
       NEVER_REACH;

@@ -14,8 +14,6 @@ namespace Data
                                               + C_TAIL_UNITS_BYTES;
   static const i8 C_SHOCO_COMPRESSED_BYTES  = 1;
   
-  static i1 g_iDatumEncoding[DM_ENUMS][MC_OVERFLOW_2B];
-  
   /*----------------------------------------------------------------------------*/
   const static i8 nMonthDaySum[13] =
   //    J  F  M   A   M   J   J   A   S   O   N   D
@@ -211,7 +209,6 @@ namespace Data
     static void vHeadDump_mark3(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
     static void vHeadDumpNat_mark3(HeadLine* aHeadLine, ColumnVec* pColVec);
     
-    static void vInitEncoding(void);
     static void vRecord(Record* pRec, RowNub* pNub, i8 i_Row);
     static void vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec);
 
