@@ -476,23 +476,6 @@ void RowCoder::vAnalyseFree(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initial encoding of ivl                                                    */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vCodeIvl(Datum* pTgtDatum, Datum* pSrcDatum)
-{
-  RASSERT(DM_IVL == pSrcDatum->m_eDatum);
-  
-  pTgtDatum->m_eDatum = DM_IVL;
-  pTgtDatum->m_iIvl   = pSrcDatum->m_iIvl;
-  
-  eMC eEncoding = (eMC)IntLib::iByteMagNull(pTgtDatum->m_iInt);
-  pTgtDatum->m_eEncoding = eEncoding;
-  pTgtDatum->m_nEncodedBytes = eEncoding;
-  
-  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_IVL,eEncoding));
-}
-
-/*----------------------------------------------------------------------------*/
 /* initial encoding of bol                                                    */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCodeBol(Datum* pTgtDatum, Datum* pSrcDatum)
@@ -607,6 +590,23 @@ void RowCoder::vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum)
   pTgtDatum->m_nEncodedBytes = eEncoding;
   
   RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_INT,eEncoding));
+}
+
+/*----------------------------------------------------------------------------*/
+/* initial encoding of ivl                                                    */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vCodeIvl(Datum* pTgtDatum, Datum* pSrcDatum)
+{
+  RASSERT(DM_IVL == pSrcDatum->m_eDatum);
+  
+  pTgtDatum->m_eDatum = DM_IVL;
+  pTgtDatum->m_iIvl   = pSrcDatum->m_iIvl;
+  
+  eMC eEncoding = (eMC)IntLib::iByteMagNull(pTgtDatum->m_iInt);
+  pTgtDatum->m_eEncoding = eEncoding;
+  pTgtDatum->m_nEncodedBytes = eEncoding;
+  
+  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_IVL,eEncoding));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1662,8 +1662,6 @@ void RowCoder::vRecodeBcd(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // recode small 1B's into DM_TENTH
   
-  eMC eExtendedEncoding;
-  
   // is it a 1B encoding ?
   if (m_eFromEncoding == MC_1B) {
     
@@ -1672,10 +1670,10 @@ void RowCoder::vRecodeBcd(Column* pCol)
     
     // revise the encoding
     if (iBcd1B >= 0 && iBcd1B <= 10) {
-            
+      
       // revise the encoding
-      eExtendedEncoding = (eMC)(MC_ZERO + iBcd1B);
-      vMetaCode(pCol,eExtendedEncoding);
+      eMC eRevisedEncoding = (eMC)(MC_ZERO + iBcd1B);
+      vMetaCode(pCol,eRevisedEncoding);
       vUsageIncRecoded(pCol,0);
       
       // cut the 1B char out of the into head
@@ -1818,8 +1816,8 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
     if (i1BInt >= 0 && i1BInt <= 10) {
       
       // revise the encoding
-      eMC eExtendedEncoding = (eMC)(MC_ZERO + i1BInt);
-      vMetaCode(pCol,eExtendedEncoding);
+      eMC eRevisedEncoding = (eMC)(MC_ZERO + i1BInt);
+      vMetaCode(pCol,eRevisedEncoding);
       vUsageIncRecoded(pCol,0);
       
       // cut the 1B char out of the into head
