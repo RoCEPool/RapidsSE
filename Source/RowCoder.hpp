@@ -40,7 +40,6 @@ namespace Data
     i8         m_i_FromHead;
     HeadLine*  m_aFromHead;
     i8         m_i_FromOffset; // encoding offset
-    eMN        m_eFromEncoding;
     eMC        m_eFromEncoding_m3;
     i8         m_nFromDataBytes;
   
@@ -199,7 +198,6 @@ namespace Data
     void vXchkVchRecode(Column* pCol);
     
   public:
-    static void vAnalyse(RowNub* pNub);
     static void vAnalyse_mark3(RowNub* pNub);
     static void vAppend(Record* pRec, Datum* pDatum, Column* pCol);
     static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,

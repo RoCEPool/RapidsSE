@@ -64,7 +64,7 @@ RowCoder::RowCoder(void)
   m_i_FromHead     = C_UNKNOWN;
   m_aFromHead      = nullptr;
   m_i_FromOffset   = C_UNKNOWN;
-  m_eFromEncoding  = MN_NULL;
+  m_eFromEncoding_m3  = MC_NULL;
   m_nFromDataBytes = 0;
 
   m_pWorkParts     = nullptr;
@@ -166,7 +166,7 @@ void RowCoder::vCopyEnd(void)
   m_i_FromHead    = C_UNKNOWN;
   m_aFromHead     = nullptr;
   m_i_FromOffset  = C_UNKNOWN;
-  m_eFromEncoding = MN_NULL;
+  m_eFromEncoding_m3 = MC_NULL;
   m_nFromDataBytes = 0;
   
   m_pWorkNub      = nullptr;
@@ -1665,7 +1665,7 @@ void RowCoder::vRecodeBcd_mark3(Column* pCol)
     
     if (m_eFromEncoding_m3 != MC_1B) {
       RASSERT(DM_BCD == m_pIntoCoda->m_aeExtDatum[i_Col]);
-      vUsageIncRecoded(pCol,m_eFromEncoding);
+      vUsageIncRecoded(pCol,m_eFromEncoding_m3);
       m_i_IntoOffset += m_nFromDataBytes;
       return;
     }
@@ -2328,91 +2328,6 @@ void RowCoder::vXchkVchRecode(Column* pCol)
 /*----------------------------------------------------------------------------*/
 /*-- Public Static -----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* analyse nub                                                                */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vAnalyse(RowNub* pNub)
-{
-  i8 nTails = 0;
-  i8 iSumTail = 0;
-  i8 iMinTail = C_I8_MAX;
-  i8 iMaxTail = C_I8_MIN;
-
-  i8 nHeads = 0;
-  i8 iSumHead = 0;
-  i8 iMinHead = C_I8_MAX;
-  i8 iMaxHead = C_I8_MIN;
-  
-  i8 nWouldReduce = 0;
-  
-  for (i8 i_Tail = pNub->iLastTail();
-       i_Tail != C_UNKNOWN;
-       i_Tail = pNub->iPrevTail(i_Tail)) {
-    
-    TailLine* aTail = pNub->aGetTail(i_Tail);
-    
-    i8 iLenTail = aTail->w8_1B(1);
-    RASSERT(iLenTail <= 56);
-    iSumTail += iLenTail;
-    nTails++;
-    
-    if (iLenTail < iMinTail)
-      iMinTail = iLenTail;
-    if (iLenTail > iMaxTail)
-      iMaxTail = iLenTail;
-  }
-  
-  for (i8 i_Head = 0; i_Head < pNub->nHeads();  i_Head++) {
-    
-    HeadLine* aHeadLine = pNub->aGetHead(i_Head);
-    
-    ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
-    Coda* pCoda = pNub->pCoda();
-    
-   i8 nHeadFree = nFreeSpaceHead(aHeadLine,pColVec,pCoda);
-    iSumHead += nHeadFree;
-    nHeads++;
-    
-    if (nHeadFree < iMinHead)
-      iMinHead = nHeadFree;
-    if (nHeadFree > iMaxHead)
-      iMaxHead = nHeadFree;
-    
-    i8 nTailUsed = nShocoTailSize(pNub,aHeadLine);
-    
-    if (nTailUsed != C_UNKNOWN) {
-      
-      i8 nRemainder = nTailUsed - nHeadFree;
-      
-      i8 nUnitsTail = pNub->nUnits(nTailUsed);
-      i8 nUnitsRemainder = pNub->nUnits(nRemainder);
-      
-      if (nUnitsRemainder < nUnitsTail)
-        nWouldReduce++;
-      
-    }
-  }
-
-  vTrace("Heads %lld Tails %lld; "
-         "Avg head free %lldB Min %lldB Max %lldB; "
-         "Avg tail use %lldB Min %lldB Max %lldB; "
-         "WouldReduce %lld\n"_Stz,
-         
-         pNub->nHeads(),
-         pNub->nTails(),
-
-         nHeads ? iSumHead/nHeads : 0,
-         iMinHead,
-         iMaxHead,
-
-         nTails ? iSumTail/nTails : 0,
-         iMinTail,
-         iMaxTail,
-         
-         nWouldReduce
-         );
-}
 
 /*----------------------------------------------------------------------------*/
 /* analyse nub                                                                */
