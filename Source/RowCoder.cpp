@@ -2259,7 +2259,6 @@ void RowCoder::vAnalyse(RowNub* pNub)
     HeadLine* aHeadLine = pNub->aGetHead(i_Head);
     
     ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
-    Coda* pCoda = pNub->pCoda();
     
     i8 nHeadFree = nFreeSpaceHead(aHeadLine,pColVec);
     iSumHead += nHeadFree;
@@ -2539,8 +2538,6 @@ void RowCoder::vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec)
   
   RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
   
-  Coda* pCoda = pRowBuffer->pRowTray()->pNub()->pCoda();
-  
   MemLib::vWordDump(aHeadLine,aHeadLine->nBytes());
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -2592,11 +2589,6 @@ void RowCoder::vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec)
   //vHeadDump(aHeadLine, pColVec);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
-  Coda* pCoda = pRowBuffer->pRowTray()->pNub()->pCoda();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   // get no of columns
   i8 nColumns = pColVec->nItems();
   

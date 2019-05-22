@@ -24,9 +24,7 @@ namespace Structures
     i8 m_nTailBytes;  // number of bytes allocated from the tail
 
     DESC* m_pDesc;    // object describing the items
-
-    CODA* m_pCoda;    // object decoding the items
-
+  
     UNIT* m_axaUnits; // array of space units
     Word* m_axaWords; // array of word units
 
@@ -49,8 +47,6 @@ namespace Structures
     i8    iAllotHead(i8 nBytes);
     i8    iAllotTail(i8 nBytes);
     i8    nAreaBytes(void);
-    CODA* pCoda(void);
-    void  vCoda(CODA* pCoda);
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
     i8    nFreeBytes(void);
@@ -147,7 +143,6 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::Nub_t(void)
   m_nTailUnits  = 0;
   m_nTailBytes  = 0;
 
-  m_pCoda       = nullptr;
   m_pDesc       = nullptr;
 
   m_axaUnits    = nullptr;
@@ -309,28 +304,6 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::nAreaBytes(void)
   i8 nBytes = sizeof(UNIT) * m_nSpaceUnits;
   
   return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the item decoder                                                       */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
-CODA* Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::pCoda(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  return m_pCoda;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the item decoder                                                       */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, class CODA>
-void Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::vCoda(CODA* pCoda)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  m_pCoda = pCoda;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -564,8 +537,6 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC,CODA>::iPrevTail(i8 i_CurrTail)
   //RASSERT(nPriorUnits <= 4);
   
   UNIT* aPrevTail_Unit = (UNIT*)aPriorTail + nPriorUnits;
-  if (m_pCoda && aPrevTail_Unit >= (UNIT*)m_pCoda)
-    return C_UNKNOWN;
   if (aPrevTail_Unit >= &m_axaUnits[m_nSpaceUnits])
     return C_UNKNOWN;
 
@@ -741,12 +712,6 @@ TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>::TrayNL_t(void)
   
   m_oNub.vReset();
   
-  i8 i_Coda = m_oNub.iAllotTail(sizeof(CODA)+1);
-  CODA* pCoda = (CODA*)( (char*)m_oNub.aGetTail(i_Coda) + 1 );
-  new (pCoda) CODA;
-  
-  m_oNub.vCoda(pCoda);
-
   _setFooter_();
   
   i8 nBytes = sizeof(TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,CODA,BYTES>);
