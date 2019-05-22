@@ -221,7 +221,7 @@ namespace Data
     
     
     static void vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine,
-                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                           ColumnVec* pColVec, Column* pCol,
                            i8& i_LastColumn, i8& i_LastOffset);
     
     static void vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,

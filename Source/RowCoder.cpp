@@ -2771,11 +2771,9 @@ void RowCoder::vDateFromDelta(Datum* pDatum, i8& iEra)
 /* decode interval from given head line                                       */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine,
-                          ColumnVec* pColVec, Column* pCol, Coda* pCoda,
+                          ColumnVec* pColVec, Column* pCol,
                           i8& i_LastColumn, i8& i_Offset)
 {
-  i8 i_Col  = pCol->iColumnNo();
-  
   pDatum->m_eDatum = DM_IVL;
   
   eMC eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
