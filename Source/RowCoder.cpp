@@ -3612,84 +3612,6 @@ void RowCoder::vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* get encoded datum from row                                                 */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
-                       ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                       i8& i_LastColumn, i8& i_LastOffset)
-{
-  eDM eDatumCoda = pCoda->m_aeExtDatum[pCol->iColumnNo()];
-  
-  switch (eDatumCoda) {
-      
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // the regular datums
-     
-    case DM_BCD:
-      vDecodeBcd(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-      
-    case DM_BOL:
-      vDecodeBol(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-      
-    case DM_DTE:
-      vDecodeDte(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-      
-    case DM_FLT:
-      vDecodeFlt(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-      
-    case DM_INT:
-      vDecodeInt(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-      
-    case DM_IVL:
-      vDecodeIvl(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-      
-    case DM_TME:
-      vDecodeTme(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-      
-    case DM_TSP:
-      vDecodeTsp(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-      
-    case DM_VCH:
-      vDecodeVch(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // the extended datums
-      
-    case DM_ALPHA:
-      vDecodeAlpha(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-    
-    case DM_DAYS:
-      vDecodeDays(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-      
-    case DM_DELTA_PLUS:
-      vDecodeDeltaPlus(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-     
-    case DM_DIGIT:
-      vDecodeDigit(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-      
-    case DM_TENTH:
-      vDecodeTenth(pDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_LastOffset);
-      break;
-      
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get encoded datum from row                                                 */
-/*----------------------------------------------------------------------------*/
 void RowCoder::vDecode_mark3(Datum* pDatum, HeadLine* aHeadLine,
                              ColumnVec* pColVec, Column* pCol,
                              i8& i_LastColumn, i8& i_LastOffset)
@@ -4006,7 +3928,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Coda* pCoda)
     vTrace(" "_Stz);
     
     hvRec->vReset();
-    vAppend(hvRec,aHeadLine,pColVec,pCol,pCoda,i_Col,i_LastOffset);
+    //vAppend(hvRec,aHeadLine,pColVec,pCol,pCoda,i_Col,i_LastOffset);
     vTrace("%s"_Stz,hvRec->szRecStr());
     
     vTrace("\n"_Stz);
@@ -4078,7 +4000,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol, 
   vTrace(" "_Stz);
   
   hvRec->vReset();
-  vAppend(hvRec,aHeadLine,pColVec,pCol,pCoda,i_LastCol,i_LastOffset);
+  //vAppend(hvRec,aHeadLine,pColVec,pCol,pCoda,i_LastCol,i_LastOffset);
   vTrace("%s"_Stz,hvRec->szRecStr());
   
   vTrace("\n"_Stz);
@@ -4539,37 +4461,6 @@ void RowCoder::vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 /*-- Private Static ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* decode and append column datum into record                                 */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vAppend(Record* pRec, HeadLine* aHeadLine,
-                       ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                       i8& i_LastColumn, i8& i_Offset)
-{
-  Datum oDatum;
-  
-  // first get the encoded value into datum
-  vDecode(&oDatum,aHeadLine,pColVec,pCol,pCoda,i_LastColumn,i_Offset);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // we have the decoded value in oDatum
-  
-  eDM eDatum = pCol->eDatumType();
-  switch (eDatum) {
-    case DM_BCD: pRec->vAppendBcd(pCol,&oDatum); break;
-    case DM_BOL: pRec->vAppendBol(pCol,&oDatum); break;
-    case DM_DTE: pRec->vAppendDte(pCol,&oDatum); break;
-    case DM_FLT: pRec->vAppendFlt(pCol,&oDatum); break;
-    case DM_INT: pRec->vAppendInt(pCol,&oDatum); break;
-    case DM_IVL: pRec->vAppendIvl(pCol,&oDatum); break;
-    case DM_TME: pRec->vAppendTme(pCol,&oDatum); break;
-    case DM_TSP: pRec->vAppendTsp(pCol,&oDatum); break;
-    case DM_VCH: pRec->vAppendVch(pCol,&oDatum); break;
-    default:
-      NEVER_REACH;
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* decode and append column datum into record                                 */

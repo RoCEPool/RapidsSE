@@ -236,9 +236,6 @@ namespace Data
     static void vAppend(Record* pRec, Datum* pDatum, Column* pCol);
     static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
                         i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecode(Datum* pDatum, HeadLine* aHeadLine,
-                        ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                        i8& i_LastColumn, i8& i_LastOffset);
                         
     static void vDecode_mark3(Datum* pDatum, HeadLine* aHeadLine,
                         ColumnVec* pColVec, Column* pCol,
@@ -261,9 +258,6 @@ namespace Data
     static void vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec);
 
   private:
-    static void vAppend(Record* pRec, HeadLine* aHeadLine,
-                        ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                        i8& i_LastColumn, i8& i_LastOffset);
   
     static void vAppend_mark3(Record* pRec, HeadLine* aHeadLine,
                         ColumnVec* pColVec, Column* pCol,
