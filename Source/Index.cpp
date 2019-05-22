@@ -75,8 +75,8 @@ Index::Index(void)
   m_pTable        = nullptr;
   m_pIdxColVec    = new IdxColVec;
   
-  m_fGreaterEqual = nullptr;
-  m_fGreaterThan  = nullptr;
+//  m_fGreaterEqual = nullptr;
+//  m_fGreaterThan  = nullptr;
   
   // m_xSubDic
   
@@ -230,22 +230,22 @@ void Index::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* is single value keyA greater than or equal to keyB?                        */
 /*----------------------------------------------------------------------------*/
-bool Index::bGreaterEqual(char* aDatumA, char* aDatumB)
-{
-  bool bIsGreaterEqual = (*m_fGreaterEqual)(aDatumA,aDatumB);
-  
-  return bIsGreaterEqual;
-}
+//bool Index::bGreaterEqual(char* aDatumA, char* aDatumB)
+//{
+//  bool bIsGreaterEqual = (*m_fGreaterEqual)(aDatumA,aDatumB);
+//
+//  return bIsGreaterEqual;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* is single value keyA greater than keyB?                                    */
 /*----------------------------------------------------------------------------*/
-bool Index::bGreaterThan(char* aDatumA, char* aDatumB)
-{
-  bool bIsGreaterThan = (*m_fGreaterThan)(aDatumA,aDatumB);
-  
-  return bIsGreaterThan;
-}
+//bool Index::bGreaterThan(char* aDatumA, char* aDatumB)
+//{
+//  bool bIsGreaterThan = (*m_fGreaterThan)(aDatumA,aDatumB);
+//  
+//  return bIsGreaterThan;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* compute the index form                                                     */
