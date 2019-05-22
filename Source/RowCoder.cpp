@@ -2504,39 +2504,6 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
   i_LastOffset += nBytes;
   
 }
-/*----------------------------------------------------------------------------*/
-/* dump head line                                                             */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vHeadDumpNat(HeadLine* aHeadLine, ColumnVec* pColVec)
-{
-  MemLib::vWordDump(aHeadLine,aHeadLine->nBytes());
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // get no of columns
-  i8 nColumns = pColVec->nItems();
-  
-  Datum oDatum;
-  i8 i_LastOffset = iBaseOffset(pColVec);
-  
-  vTrace("Column# ColumnName      Datum      ExtDatum        Encoding \n"_Stz);
-  
-  // for each column
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    
-    // get the column at index
-    Column* pCol = pColVec->pGet(i_Col);
-    
-    // first get the encoded valu e into datum
-    //vDecode(&oDatum,aHeadLine,pColVec,pCol,i_Col,i_LastOffset);
-    eDM eDatum = pCol->eDatumType();
-    eMC eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,i_Col,i_LastOffset);
-    Stz* aEncoding = aMC[eEncoding];
-    
-    vTrace("%7lld %-15s %-10s %-16s\n"_Stz, i_Col, pCol->sColumnName().aChar(), aDM[eDatum],
-           aEncoding);
-    
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* sprint decoded row into record                                             */
