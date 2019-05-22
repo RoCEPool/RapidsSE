@@ -238,42 +238,17 @@ namespace Data
     static void vDateIntoDelta_mark3(Datum* pDatum, i8& iEra);
     static void vDateFromDelta_mark3(Datum* pDatum, i8& iEra);
     
-    static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
-                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                           i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,
-                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                           i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
-                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                           i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeFlt(Datum* pDatum, HeadLine* aHeadLine,
-                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                           i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeInt(Datum* pDatum, HeadLine* aHeadLine,
-                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                           i8& i_LastColumn, i8& i_LastOffset);
+    
     static void vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine,
                            ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                            i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeTme(Datum* pDatum, HeadLine* aHeadLine,
-                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                           i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeTsp(Datum* pDatum, HeadLine* aHeadLine,
-                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                           i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
-                           ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                           i8& i_LastColumn, i8& i_LastOffset);
+    
     static void vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
                                 Column* pCol, i8 i_Offset);
     static void vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
                                    Column* pCol, i8 i_Offset);
     static void vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
                                      Column* pCol, i8 i_Offset);
-    static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
-                                Column* pCol, eMN eEncoding, i8 i_Offset);
-
 
     // MARK III
     static void vDecodeBol_mark3(Datum* pDatum, HeadLine* aHeadLine,

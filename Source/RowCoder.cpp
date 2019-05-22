@@ -216,10 +216,10 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   m_nTotalHeads++;
 
   
-//#ifdef WITH_TRACE_ENCODING
+#ifdef WITH_TRACE_ENCODING
   if (m_nTotalHeads < 10)
     RowCoder::vHeadDump_mark3(m_aIntoHead,m_pColVec);
-//#endif
+#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyse free space in the into head
@@ -3634,178 +3634,6 @@ void RowCoder::vDateFromDelta_mark3(Datum* pDatum, i8& iEra)
   pDatum->xEdt.m_uYearInEra += iEra;
 }
 
-/*----------------------------------------------------------------------------*/
-/* decode decimal from given head line                                        */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
-                          ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                          i8& i_LastColumn, i8& i_Offset)
-{
-  i8 i_Col = pCol->iColumnNo();
-  
-  pDatum->m_eDatum = DM_BCD;
-  
-  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
-  switch (eEncoding) {
-      
-    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;               break;
-    case MN_1B:   pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
-    case MN_2B:   pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
-    case MN_3B:   pDatum->m_iInt = aHeadLine->w8_3B(i_Offset); break;
-    case MN_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
-    case MN_5B:   pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
-    case MN_6B:   pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
-    case MN_7B:   pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
-    case MN_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
-      
-    case MN_MINUS_ONE: pDatum->m_iInt = (i8)-1; break;
-    case MN_ZERO:      pDatum->m_iInt = (i8)0;  break;
-    case MN_PLUS_ONE:  pDatum->m_iInt = (i8)1;  break;
-      
-    default:
-      NEVER_REACH;
-  }
- }
-
-/*----------------------------------------------------------------------------*/
-/* decode boolean from given head line                                        */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,
-                          ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                          i8& i_LastColumn, i8& i_Offset)
-{
-  i8 i_Col  = pCol->iColumnNo();
-  
-  pDatum->m_eDatum = DM_BOL;
-  
-  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
-  
-  switch (eEncoding) {
-      
-    case MN_NULL:  pDatum->m_iInt = C_DATUM_NULL; break;
-    case MN_FALSE: pDatum->m_iInt = (i8)0;        break;
-    case MN_TRUE:  pDatum->m_iInt = (i8)1;        break;
-      
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode date from given head line                                           */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
-                          ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                          i8& i_LastColumn, i8& i_Offset)
-{
-  i8 i_Col  = pCol->iColumnNo();
-  
-  pDatum->m_eDatum = DM_DTE;
-  
-  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
-  switch (eEncoding) {
-      
-    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL; break;
-      
-//    case MN_1B: pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
-//    case MN_2B: pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
-//    case MN_3B: pDatum->m_iInt = aHeadLine->w8_3B(i_Offset); break;
-//    case MN_4B: pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
-//    case MN_5B: pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
-//    case MN_6B: pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
-//    case MN_7B: pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
-    case MN_8B: pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
-
-    case MN_CLASSIC_1B: pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
-    case MN_CLASSIC_2B: pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
-    case MN_SILVER_1B:    pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
-    case MN_SILVER_2B:    pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
-    case MN_MODERN_1B:    pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
-    case MN_MODERN_2B:    pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
-
-    default:
-      NEVER_REACH;
-  }
-  
-  vRestoreDte(pDatum,eEncoding);
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode float from given head line                                          */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeFlt(Datum* pDatum, HeadLine* aHeadLine,
-                          ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                          i8& i_LastColumn, i8& i_Offset)
-{
-  i8 i_Col  = pCol->iColumnNo();
-  
-  pDatum->m_eDatum = DM_FLT;
-  
-  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
-  switch (eEncoding) {
-      
-    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
-    case MN_1B:   pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
-    case MN_2B:   pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
-    case MN_3B:   pDatum->m_iInt = aHeadLine->w8_3B(i_Offset); break;
-    case MN_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
-    case MN_5B:   pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
-    case MN_6B:   pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
-    case MN_7B:   pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
-    case MN_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
-      
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode integer from given head line                                        */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeInt(Datum* pDatum, HeadLine* aHeadLine,
-                          ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                          i8& i_LastColumn, i8& i_Offset)
-{
-  i8 i_Col  = pCol->iColumnNo();
-  
-  pDatum->m_eDatum = DM_INT;
-  
-  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
-  //vTrace("Decoding %lld\n"_Stz, eEncoding);
-  
-  switch (eEncoding) {
-      
-    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
-    case MN_1B:   pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
-    case MN_2B:   pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
-    case MN_3B:   pDatum->m_iInt = aHeadLine->w8_3B(i_Offset); break;
-    case MN_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
-    case MN_5B:   pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
-    case MN_6B:   pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
-    case MN_7B:   pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
-    case MN_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
-      
-    case MN_MINUS_ONE: pDatum->m_iInt = (i8)-1; break;
-    case MN_ZERO:      pDatum->m_iInt = (i8)0;  break;
-      
-    case MN_SAME:
-      pDatum->m_iInt = pCoda->m_aiAux[i_Col].m_iInt;
-      break;
-      
-      //    case MN_PLUS_1B:
-      //      pDatum->m_iInt = pCoda->m_aiAux[i_Col].m_iInt
-      //                     + aHeadLine->w8_1B(i_Offset);
-      //      break;
-      //
-      //    case MN_MINUS_1B:
-      //      pDatum->m_iInt = pCoda->m_aiAux[i_Col].m_iInt
-      //                     - aHeadLine->w8_1B(i_Offset);
-      break;
-      
-    default:
-      NEVER_REACH;
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* decode interval from given head line                                       */
@@ -3834,109 +3662,6 @@ void RowCoder::vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine,
     default:
       NEVER_REACH;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode time from given head line                                           */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeTme(Datum* pDatum, HeadLine* aHeadLine,
-                          ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                          i8& i_LastColumn, i8& i_Offset)
-{
-  i8 i_Col  = pCol->iColumnNo();
-  
-  pDatum->m_eDatum = DM_TME;
-  
-  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
-  switch (eEncoding) {
-      
-    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
-    case MN_1B:   pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
-    case MN_2B:   pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
-    case MN_3B:   pDatum->m_iInt = aHeadLine->w8_3B(i_Offset); break;
-    case MN_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
-    case MN_5B:   pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
-    case MN_6B:   pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
-    case MN_7B:   pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
-    case MN_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
-      
-    default:
-      NEVER_REACH;
-  }
-  
-  vRestoreTme(pDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode timestamp from given head line                                      */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeTsp(Datum* pDatum, HeadLine* aHeadLine,
-                          ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                          i8& i_LastColumn, i8& i_Offset)
-{
-  i8 i_Col  = pCol->iColumnNo();
-  
-  pDatum->m_eDatum = DM_TSP;
-  
-  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
-  switch (eEncoding) {
-      
-    case MN_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
-    case MN_1B:   pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
-    case MN_2B:   pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
-    case MN_3B:   pDatum->m_iInt = aHeadLine->w8_3B(i_Offset); break;
-    case MN_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
-    case MN_5B:   pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
-    case MN_6B:   pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
-    case MN_7B:   pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
-    case MN_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
-      
-    default:
-      NEVER_REACH;
-  }
-  
-  if (eEncoding == MN_5B)
-    vRestoreTsp(pDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode varchar from given head line                                        */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
-                          ColumnVec* pColVec, Column* pCol, Coda* pCoda,
-                          i8& i_LastColumn, i8& i_Offset)
-{
-
-  pDatum->m_eDatum = DM_VCH;
-  
-  //! needs more work
-  eMN eEncoding = eEncodingRecoded(aHeadLine,pCol,pColVec,pCoda,i_LastColumn,i_Offset);
-  
-  if (MN_NULL == eEncoding) {
-    pDatum->m_iInt = C_DATUM_NULL;
-    return;
-  }
-
-  else if (eEncoding <= MN_8B)
-    vDecodeVchSmall(pDatum,aHeadLine,pCol,eEncoding,i_Offset);
-  
-  else if (MN_EMPTY == eEncoding) {
-    pDatum->m_nChars = 0;
-    *pDatum->m_sVch.aChar() = '\0';
-    pDatum->m_iInt = 0;
-  }
-  
-  else if (MN_SHOCO_2B == eEncoding)
-    vDecodeVchShoco(pDatum,aHeadLine,pCol,i_Offset);
-  
-  else if (MN_SHOCO_FIT == eEncoding)
-    vDecodeVchShocoFit(pDatum,aHeadLine,pCol,i_Offset);
-
-  else if (MN_SHOCO_SPLIT == eEncoding)
-    vDecodeVchShocoSplit(pDatum,aHeadLine,pCol,i_Offset);
-  
-  else
-    NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4029,68 +3754,6 @@ void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
                        nCompressed);
   ASSERT(nDecompressed);
   pDatum->m_nChars = nDecompressed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode varchar from given head line                                        */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
-                               Column* pCol, eMN eEncoding, i8 i_Offset)
-{
-  switch (eEncoding) {
-      
-    case MN_1B:
-      pDatum->m_iInt = aHeadLine->w8_1B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[1] = '\0';
-      pDatum->m_nChars = 1;
-      break;
-    case MN_2B:
-      pDatum->m_iInt = aHeadLine->w8_2B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[2] = '\0';
-      pDatum->m_nChars = 2;
-      break;
-    case MN_3B:
-      pDatum->m_iInt = aHeadLine->w8_3B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[3] = '\0';
-      pDatum->m_nChars = 3;
-      break;
-    case MN_4B:
-      pDatum->m_iInt = aHeadLine->w8_4B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[4] = '\0';
-      pDatum->m_nChars = 4;
-      break;
-    case MN_5B:
-      pDatum->m_iInt = aHeadLine->w8_5B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[5] = '\0';
-      pDatum->m_nChars = 5;
-      break;
-    case MN_6B:
-      pDatum->m_iInt = aHeadLine->w8_6B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[6] = '\0';
-      pDatum->m_nChars = 6;
-      break;
-    case MN_7B:
-      pDatum->m_iInt = aHeadLine->w8_7B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[7] = '\0';
-      pDatum->m_nChars = 7;
-      break;
-    case MN_8B:
-      pDatum->m_iInt = aHeadLine->w8_8B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[8] = '\0';
-      pDatum->m_nChars = 8;
-      break;
-    default:
-      NEVER_REACH;
-  }
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4438,6 +4101,7 @@ void RowCoder::vDecodeVchSmall_mark3(Datum* pDatum, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode varchar from given head line                                        */
 /*----------------------------------------------------------------------------*/
+/*
 void RowCoder::vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
                             ColumnVec* pColVec, Column* pCol, Coda* pCoda,
                             i8& i_LastColumn, i8& i_Offset)
@@ -4468,7 +4132,7 @@ void RowCoder::vDecodeAlpha(Datum* pDatum, HeadLine* aHeadLine,
 
   //RASSERT(pDatum->m_sVch.aChar()[0] == (char)pCoda->m_aiAux[i_Col]);
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* decode days from given head line                                           */
 /*----------------------------------------------------------------------------*/
