@@ -146,9 +146,7 @@ namespace Data
                           i8& i_PriorColumn_, i8& i_Offset_);
     void vHashColumn(Datum* pSrcDatum, Column* pCol);
   
-    void vMetaCode(Column* pCol, eMN eMetaCode);
     void vMetaCode_mark3(Column* pCol, eMC eMetaCode);
-    void vMetaPut(Datum* pDatum, Column* pCol);
     void vMetaPut_mark3(Datum* pDatum, Column* pCol);
 
     void vRecode_Large(void);

@@ -1020,27 +1020,10 @@ void RowCoder::vHashColumn(Datum* pSrcDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* set 4bit meta nibble encoding for column value                             */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vMetaCode(Column* pCol, eMN eMetaNibble)
-{
-  i8 i_Col = pCol->iColumnNo();
-  m_aIntoHead->vMetaCode(i_Col,eMetaNibble);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set 4bit meta nibble encoding for column value                             */
-/*----------------------------------------------------------------------------*/
 void RowCoder::vMetaCode_mark3(Column* pCol, eMC eMetaNibble)
 {
   i8 i_Col = pCol->iColumnNo();
   m_aIntoHead->vMetaCode(i_Col,eMetaNibble);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the meta bits for encoded column value                                 */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vMetaPut(Datum* pDatum, Column* pCol)
-{
-  vMetaCode(pCol,pDatum->m_eEncoding);
 }
 
 /*----------------------------------------------------------------------------*/
