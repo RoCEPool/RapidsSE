@@ -154,16 +154,8 @@ namespace Data
     void vMetaPut_mark3(Datum* pDatum, Column* pCol);
 
     void vRecode_Large(void);
-    void vRecodeBcd(Column* pCol);
-    void vRecodeBol(Column* pCol);
-    void vRecodeDte(Column* pCol);
-    void vRecodeFlt(Column* pCol);
-    void vRecodeInt(Column* pCol);
-    bool bRecodeIntDigit(Column* pCol);
+
     void vRecodeIvl(Column* pCol);
-    void vRecodeTme(Column* pCol);
-    void vRecodeTsp(Column* pCol);
-    void vRecodeVch(Column* pCol);
     void vRecodeVchShoco(Column* pCol);
     bool bRecodeVchShocoDupe(Column* pCol);
     bool bRecodeVchShocoFold(Column* pCol);
