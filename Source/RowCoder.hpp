@@ -282,7 +282,6 @@ namespace Data
   
     static i8 nFreeSpaceHead_mark3(HeadLine* aHeadLine, ColumnVec* pColVec);
     
-    static void vRestoreDte(Datum* pDatum, eMN eEncoding);
     static void vRestoreTme(Datum* pDatum);
     static void vRestoreTsp(Datum* pDatum);
     

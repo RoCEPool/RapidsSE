@@ -3946,30 +3946,6 @@ i8 RowCoder::nFreeSpaceHead_mark3(HeadLine* aHeadLine, ColumnVec* pColVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* restore zero stripped dte                                                  */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRestoreDte(Datum* pDatum, eMN eEncoding)
-{
-  i8 iEra = 0;
-  
-  if (MN_NULL == eEncoding) {
-    pDatum->m_iDte = C_DATUM_NULL;
-    return;
-  }
-  
-  if (MN_SILVER_1B == eEncoding || MN_SILVER_2B == eEncoding)
-    iEra = C_SILVER_ERA;
-  else if (MN_MODERN_1B == eEncoding || MN_MODERN_2B == eEncoding)
-    iEra = C_MODERN_ERA;
-  else {
-    iEra = C_CLASSIC_ERA;
-  }
-
-  vDaysFromBase(pDatum,iEra);
-  //pDatum->m_iInt <<= 47;
-}
-
-/*----------------------------------------------------------------------------*/
 /* restore zero stripped tme                                                  */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRestoreTme(Datum* pDatum)
