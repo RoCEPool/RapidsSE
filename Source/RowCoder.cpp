@@ -497,11 +497,11 @@ void RowCoder::vCodeIvl(Datum* pTgtDatum, Datum* pSrcDatum)
   pTgtDatum->m_eDatum = DM_IVL;
   pTgtDatum->m_iIvl   = pSrcDatum->m_iIvl;
   
-  eMN eEncoding = (eMN)IntLib::iByteMagNull(pTgtDatum->m_iInt);
-  pTgtDatum->m_eEncoding = eEncoding;
+  eMC eEncoding = (eMC)IntLib::iByteMagNull(pTgtDatum->m_iInt);
+  pTgtDatum->m_eEncoding_m3 = eEncoding;
   pTgtDatum->m_nEncodedBytes = eEncoding;
   
-  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(DM_IVL,eEncoding));
+  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes_mark3(DM_IVL,eEncoding));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -778,7 +778,7 @@ void RowCoder::vDataPut(w8 wDatum, i8 nBytes)
 void RowCoder::vEncodeIvl(Datum* pSrcDatum, Column* pCol)
 {
   vCodeIvl(&m_oEncodedDatum,pSrcDatum);
-  vMetaPut(&m_oEncodedDatum,pCol);
+  vMetaPut_mark3(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
   vXchkIvl(pSrcDatum,pCol,0);
 
