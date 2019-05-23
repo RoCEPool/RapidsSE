@@ -279,6 +279,7 @@ typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,SpaceUnit,Table,
 #include "KeyWrk.hpp"
 #include "Key.hpp"
 #include "Record.hpp"
+#include "Row.hpp"
 #include "SkipRoots.hpp"
 
 #include "RowBuffer.hpp"

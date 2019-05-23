@@ -513,7 +513,7 @@ i8 giClassSize[]
   /*    */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER
   /*    */ sizeof(Response),           // CN_RESPONSE
   /*    */ sizeof(ResponseVec),        // CN_RESPONSEVEC
-  /*    */ 0,             // CN_ROW
+  /*    */ sizeof(Row),                // CN_ROW
   /*102 */ sizeof(RowAgg),             // CN_ROWAGG
   /*    */ sizeof(RowBuffer),          // CN_ROWBUFFER
   /*    */ sizeof(RowCoder),           // CN_ROWCODER
