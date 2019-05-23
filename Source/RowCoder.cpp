@@ -1004,12 +1004,12 @@ void RowCoder::vHashColumn(Datum* pSrcDatum, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set 4bit meta nibble encoding for column value                             */
+/* set meta encoding for column value                                         */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vMetaCode(Column* pCol, eMC eMetaNibble)
+void RowCoder::vMetaCode(Column* pCol, eMC eMetaCode)
 {
   i8 i_Col = pCol->iColumnNo();
-  m_aIntoHead->vMetaCode(i_Col,eMetaNibble);
+  m_aIntoHead->vMetaCode(i_Col,eMetaCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2382,13 +2382,13 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     
     i8 nBytes = nDataBytes(eEncoding);
     
-    i8 iNibble = aHeadLine->iMetaCode(i_Col);
+    i8 iMetaCode = aHeadLine->iMetaCode(i_Col);
     
     vTrace("%3lld %-15s %-6s %x %-16s %2lld %2lld "_Stz,
            i_Col,
            pCol->sColumnName().aChar(),
            aDM[eDatum],
-           iNibble,
+           iMetaCode,
            aEncoding,
            i_LastOffset,
            nBytes);
@@ -2447,13 +2447,13 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
   
   i8 nBytes = nDataBytes(eEncoding);
   
-  i8 iNibble = aHeadLine->iMetaCode(i_Col);
+  i8 iMetaCode = aHeadLine->iMetaCode(i_Col);
   
   vTrace("%3lld %-15s %-6s %x %-16s %2lld %2lld "_Stz,
          i_Col,
          pCol->sColumnName().aChar(),
          aDM[eDatum],
-         iNibble,
+         iMetaCode,
          aEncoding,
          i_LastOffset,
          nBytes);
