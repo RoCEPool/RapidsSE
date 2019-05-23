@@ -2420,9 +2420,15 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
       case MC_FALSE:     *aValue++ =  0;                                  break;
       case MC_TRUE:      *aValue++ =  1;                                  break;
         
-      case MC_DATE_E0_2B:       break;
-      case MC_DATE_E1_2B:       break;
-      case MC_DATE_E2_2B:       break;
+      case MC_DATE_E0_2B:       *aValue++ = (i8)*(i2*)aDataByte;
+                                aDataByte += 2;
+                                vDateFromEra(&wWord,C_ERA_0);             break;
+      case MC_DATE_E1_2B:       *aValue++ = (i8)*(i2*)aDataByte;
+                                aDataByte += 2;
+                                vDateFromEra(&wWord,C_ERA_1);             break;
+      case MC_DATE_E2_2B:       *aValue++ = (i8)*(i2*)aDataByte;
+                                aDataByte += 2;
+                                vDateFromEra(&wWord,C_ERA_2);             break;
       case MC_DAYS_ADD_1B:      break;
       case MC_DAYS_SUB_1B:      break;
         
@@ -2778,9 +2784,17 @@ void RowCoder::vDateIntoDelta(Datum* pDatum, i8& iEra)
 /*----------------------------------------------------------------------------*/
 /* compute date w.r.t the base date                                           */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDateFromEra(Datum* pDatum, i8& iEra)
+void RowCoder::vDateFromEra(Datum* pDatum, i8 iEra)
 {
   pDatum->xEdt.m_uYearInEra += iEra;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute date w.r.t the base date                                           */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDateFromEra(Word* aWord, i8 iEra)
+{
+  aWord->xEdt.m_uYearInEra += iEra;
 }
 
 /*----------------------------------------------------------------------------*/

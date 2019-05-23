@@ -213,8 +213,9 @@ namespace Data
     static i8   nDataBytes(eMC eMetaCode);
 
     static void vDateIntoDelta(Datum* pDatum, i8& iEra);
-    static void vDateFromEra(Datum* pDatum, i8& iEra);
-    
+    static void vDateFromEra(Datum* pDatum, i8 iEra);
+    static void vDateFromEra(Word* aWord, i8 iEra);
+
 
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
                                  ColumnVec* pColVec, Column* pCol, 
