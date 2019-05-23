@@ -2432,16 +2432,19 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
       case MC_DAYS_ADD_1B:      break;
       case MC_DAYS_SUB_1B:      break;
         
-      case MC_STR_EMPTY:        break;
+      case MC_STR_EMPTY:        *aValue++ = 0;                            break;
+        
       case MC_STR_FIT_1L:       break;
       case MC_STR_2T:           break;
       case MC_STR_SPLIT_2T1L:   break;
       case MC_BSTR_FIT_2L:      break;
       case MC_BSTR_2T:          break;
       case MC_BSTR_SPLIT_2T1L:  break;
+        
       case MC_SHOCO_FIT_1L:     break;
       case MC_SHOCO_2T:         break;
       case MC_SHOCO_SPLIT_2T1L: break;
+        
       case MC_TWOS_1B:   break;
       case MC_TWOS_2B:   break;
       case MC_TWOS_3B:   break;
