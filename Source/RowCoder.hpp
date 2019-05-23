@@ -91,7 +91,7 @@ namespace Data
     void vCopyBegin(RowNub* pIntoNub);
     void vCopyEnd(void);
     bool bCopyRow(RowNub* pFromNub);
-
+    
     void vEncodeBegin(RowNub* pIntoNub);
     void vEncodeDatum(Datum* pSrcDatum, Column* pCol);
     void vEncodeEnd(void);
@@ -195,6 +195,8 @@ namespace Data
     static void vDecode(Datum* pDatum, HeadLine* aHeadLine,
                         ColumnVec* pColVec, Column* pCol,
                         i8& i_LastColumn, i8& i_LastOffset);
+    
+    void vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec);
     
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);

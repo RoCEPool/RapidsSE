@@ -2344,6 +2344,87 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
+/* decode headline into row                                                   */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
+{
+  i8 nCols = pColVec->nItems();
+  byte* aMetaCode = (byte*)aHeadLine + C_HEAD_PRE_BYTES;
+  byte* aDataByte = (byte*)aHeadLine + iBaseOffset(pColVec);
+  i8*   aValue    = & pRow->m_aiValue[0];
+  eMC eMetaCode;
+  
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    eMetaCode = (eMC)*aMetaCode++;
+    
+    switch (eMetaCode) {
+      case MC_NULL:      *aValue++ = C_DATUM_NULL;                        break;
+      case MC_1B:        *aValue++ = (i8)*(i1*)aDataByte++;               break;
+      case MC_2B:        *aValue++ = (i8)*(i2*)aDataByte;
+                         aDataByte += 2;                                  break;
+      case MC_3B:        break;
+      case MC_4B:        *aValue++ = (i8)*(i4*)aDataByte;
+                         aDataByte += 4;                                  break;
+      case MC_5B:        break;
+      case MC_6B:        break;
+      case MC_7B:        break;
+      case MC_8B:        *aValue++ = (i8)*(i8*)aDataByte;
+                         aDataByte += 8;                                  break;
+      case MC_MINUS_ONE: *aValue++ = -1;                                  break;
+      case MC_ZERO:      *aValue++ =  0;                                  break;
+      case MC_ONE:       *aValue++ =  1;                                  break;
+      case MC_TWO:       *aValue++ =  2;                                  break;
+      case MC_THREE:     *aValue++ =  3;                                  break;
+      case MC_FOUR:      *aValue++ =  4;                                  break;
+      case MC_FIVE:      *aValue++ =  5;                                  break;
+      case MC_SIX:       *aValue++ =  6;                                  break;
+      case MC_SEVEN:     *aValue++ =  7;                                  break;
+      case MC_EIGHT:     *aValue++ =  8;                                  break;
+      case MC_NINE:      *aValue++ =  9;                                  break;
+      case MC_TEN:       *aValue++ = 10;                                  break;
+      case MC_SAME:      break;
+      case MC_ADD_1B:    break;
+      case MC_ADD_2B:    break;
+      case MC_SUB_1B:    break;
+      case MC_SUB_2B:    break;
+      case MC_FALSE:     *aValue++ =  0;                                  break;
+      case MC_TRUE:      *aValue++ =  1;                                  break;
+        
+      case MC_DATE_E0_2B:       break;
+      case MC_DATE_E1_2B:       break;
+      case MC_DATE_E2_2B:       break;
+      case MC_DAYS_ADD_1B:      break;
+      case MC_DAYS_SUB_1B:      break;
+        
+      case MC_STR_EMPTY:        break;
+      case MC_STR_FIT_1L:       break;
+      case MC_STR_2T:           break;
+      case MC_STR_SPLIT_2T1L:   break;
+      case MC_BSTR_FIT_2L:      break;
+      case MC_BSTR_2T:          break;
+      case MC_BSTR_SPLIT_2T1L:  break;
+      case MC_SHOCO_FIT_1L:     break;
+      case MC_SHOCO_2T:         break;
+      case MC_SHOCO_SPLIT_2T1L: break;
+      case MC_TWOS_1B:   break;
+      case MC_TWOS_2B:   break;
+      case MC_TWOS_3B:   break;
+      case MC_TWOS_4B:   break;
+      case MC_TWOS_5B:   break;
+      case MC_TWOS_6B:   break;
+      case MC_TWOS_7B:   break;
+        
+      case MC_OVERFLOW_2B: break;
+        
+      default:
+        RASSERT(0);
+    }
+    
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump head line                                                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
