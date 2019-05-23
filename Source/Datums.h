@@ -30,16 +30,8 @@ namespace Datums
   /*  9 */ DM_TSP,
   /* 10 */ DM_VBN,
   /* 11 */ DM_VCH,
-  
-  // extended datums
-  /* 12 */ DM_ALPHA,
-  /* 13 */ DM_DAYS,
-  /* 14 */ DM_DELTA_PLUS,
-  /* 15 */ DM_DELTA_MINUS,
-  /* 16 */ DM_DIGIT,
-  /* 17 */ DM_TENTH,
-
-  /* 18 */ DM_ENUMS
+    
+  /* 12 */ DM_ENUMS
   };
   
   static Stz* aDM[]
@@ -58,15 +50,7 @@ namespace Datums
   /* 10 */ "VBN"_Stz,
   /* 11 */ "VCH"_Stz,
 
-  // extended datums
-  /* 12 */ "ALPHA"_Stz,
-  /* 13 */ "DAYS"_Stz,
-  /* 14 */ "DELTA_PLUS"_Stz,
-  /* 15 */ "DELTA_MINUS"_Stz,
-  /* 16 */ "DIGIT"_Stz,
-  /* 17 */ "TENTH"_Stz,
-
-  /* 18 */ "ENUMS"_Stz,
+  /* 12 */ "ENUMS"_Stz,
   };
   
   void vCheckAssumptions(void);
