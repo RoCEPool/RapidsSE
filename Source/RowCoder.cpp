@@ -683,11 +683,13 @@ void RowCoder::vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum)
     pTgtDatum->m_eEncoding = eEncoding;
     pTgtDatum->m_nEncodedBytes = 0;
   }
+#ifdef WITH_ENCODING_VCH_SMALL
   else if (iLen <= 3) {
     eEncoding = (eMC)iLen;
     pTgtDatum->m_eEncoding = eEncoding;
     pTgtDatum->m_nEncodedBytes = iLen;
   }
+#endif
   else {
     eEncoding = MC_SHOCO_TAIL_2T;
     pTgtDatum->m_eEncoding = eEncoding;
