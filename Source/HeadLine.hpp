@@ -22,52 +22,7 @@ namespace Data
     void vMetaCode(i8 i_Meta, w8 wArg);
     
     i8   nBytes(void);
-    i8   nWords(void);
-
-  
-    /*------------------------------------------------------------------------*/
-    /*                         Nibble-Oriented Inlines                        */
-    /*------------------------------------------------------------------------*/
-  
-
-    /*------------------------------------------------------------------------*/
-    /* return meta nibble                                                     */
-    /*------------------------------------------------------------------------*/
-    inline i8 iMetaNibbleFast(i8 i_Nibble)
-    {
-      w8 iNibble = w8_1NFast(C_HEAD_PRE_BYTES * C_NIBBLES_PER_BYTE + i_Nibble);
-    
-      return iNibble;
-    }
-  
-    /*------------------------------------------------------------------------*/
-    /* return meta nibble zero                                                */
-    /*------------------------------------------------------------------------*/
-    inline i8 iMetaNibbleZeroFast(void)
-    {
-      return w8_1NFast_Nibble0();
-    }
-  
-    /*------------------------------------------------------------------------*/
-    inline byte w8_1NFast_Nibble0()
-    {
-      byte yByte = *((byte*)this + C_HEAD_PRE_BYTES);
-    
-      // left nibble
-      return (yByte >> 4);
-    }
-  
-    /*------------------------------------------------------------------------*/
-    inline byte w8_1NFast(byte i_Nibble)
-    {
-      if (i_Nibble & 0x1)
-        // right nibble
-        return *((byte*)this + C_HEAD_PRE_BYTES + (i_Nibble>>1)) & 0xF;
-      else
-        // left nibble
-        return *((byte*)this + C_HEAD_PRE_BYTES + (i_Nibble>>1)) >> 4;
-    }
-  
+    i8   nWords(void);  
   };
 
 
