@@ -124,7 +124,6 @@ namespace Data
     void vEncodeVchShoco(Datum* pSrcDatum, Column* pCol);
     void vEncodeVchSmall(Datum* pSrcDatum, Column* pCol);
     
-    // MARK III
     void vEncodeBol(Datum* pSrcDatum, Column* pCol);
     void vEncodeBcd(Datum* pSrcDatum, Column* pCol);
     void vEncodeDte(Datum* pSrcDatum, Column* pCol);

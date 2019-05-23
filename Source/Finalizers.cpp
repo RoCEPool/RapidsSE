@@ -228,6 +228,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_RESOURCETRACKER
   /*    */ &Finalize::vUndefined,         // CN_RESPONSE
   /*    */ &Finalize::vUndefined,         // CN_RESPONSEVEC
+  /*    */ &Finalize::vUndefined,         // CN_ROW
   /*102 */ &Finalize::vUndefined,         // CN_ROWAGG
   /*    */ &Finalize::vUndefined,         // CN_ROWBUFFER
   /*    */ &Finalize::vUndefined,         // CN_ROWCODER
