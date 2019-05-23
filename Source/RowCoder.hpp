@@ -261,10 +261,6 @@ namespace Data
   
     static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec);
     
-    static eMC eGetEncoding(HeadLine* aHeadLine, Column* pCol,
-                            ColumnVec* pColVec,
-                            i8& i_PriorColumn_, i8& i_Offset_);
-    
     static void vRestoreTme(Datum* pDatum);
     static void vRestoreTsp(Datum* pDatum);
     
@@ -276,6 +272,34 @@ namespace Data
 
     
   public:
+  
+    /*----------------------------------------------------------------------------*/
+    /* get the encoding (and offset) of a column datum                            */
+    /*----------------------------------------------------------------------------*/
+    static inline eMC eGetEncoding(HeadLine* aHeadLine, Column* pCol,
+                                   ColumnVec* pColVec,
+                                   i8& i_PriorColumn_, i8& i_Offset_)
+    {
+      i8 i_ForCol = pCol->iColumnNo();
+      
+      if (i_ForCol < i_PriorColumn_) {
+        i_PriorColumn_ = 0;
+        i_Offset_ = iBaseOffset(pColVec);
+      }
+      
+      for (i8 i_Col = i_PriorColumn_; i_Col < i_ForCol; i_Col++) {
+        
+        eMC eEncoding = (eMC)aHeadLine->iMetaCode(i_Col);
+        
+        i_Offset_ += nDataBytes(eEncoding);
+      }
+      
+      eMC eEncoding  = (eMC)aHeadLine->iMetaCode(i_ForCol);
+      i_PriorColumn_ = i_ForCol;
+      
+      return eEncoding;
+    }
+  
     /*----------------------------------------------------------------------------*/
     /* retrieve and decode row from cache line into a datu                        */
     /*----------------------------------------------------------------------------*/
