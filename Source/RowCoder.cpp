@@ -901,20 +901,21 @@ void RowCoder::vEncodeVch(Datum* pSrcDatum, Column* pCol)
 void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
 {
   /*
+            -- Into-Head --                           -- Into-Tail --
    +================================+    +=====================================+
-   | meta-bits:       ,MC_SHOCO_2T, |    |            Shoco Tail Line          +
+   | mc:              ,MC_SHOCO_2T, |    | <U><C><shoco....> ///////////////// |
    +================================+    +=====================================+
-   |                                |    | U | C | <compressed bytes> <unused> +
-   +--------------------------------+    +-------------------------------------+
+   |                                |
+   +--------------------------------+
    |                           [IT] |
    +--------------------------------+
    
-   where: MC_SHOCO_2T is the meta-bits for the column
-   [IT] is 2 bytes being the index of the Shoco Tail Line
-   U is one byte being the unit length of the tail line
-   C is one byte being the number of compressed bytes
-   <compressed bytes> being the shoco compressed bytes
-   */
+   where: MC_SHOCO_2T is the metaCode for the column
+          [IT] is 2 bytes being the index of the Shoco Tail Line
+          <U> is one byte being the unit length of the tail line
+          <C> is one byte being the number of shoco compressed bytes
+          <shoco.....> being the shoco compressed bytes
+    */
   
   // compress source varchar into sShoco
   sVCH sShoco;
@@ -935,7 +936,7 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
   
   // copy shoco into tail (this is <compressed bytes> in the diagram)
   char *aShocoWithinTail = (char*)aShocoTail
-  + C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES;
+                            + C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES;
   MemLib::vCopy(aShocoWithinTail,sShoco.aChar(),nCompressed,CN_ROWCODER);
   
   // put index of shoco tail as the 2 data bytes (this is [IT] in the diagram)
@@ -952,6 +953,7 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
 void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
 {
   /*
+             -- Into-Head --
    +================================+
    | mc:                    ,MC_nB, |
    +================================+
@@ -1175,7 +1177,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
    Before:
              -- Into-Head --                         -- From-Tail --
    +================================+    +=====================================+
-   | mb:       ,MC_SHOCO_2B,        |    | <U><C><shoco.....> //////////////// |
+   | mc:       ,MC_SHOCO_2B,        |    | <U><C><shoco.....> //////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1185,7 +1187,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
    After:
              -- Into-Head --                      -- Into-Tail -- (duplicate)
    +================================+    +=====================================+
-   | mb:             ,MC_SHOCO_2T,  |    | <U><C><shoco.....> //////////////// |
+   | mc:             ,MC_SHOCO_2T,  |    | <U><C><shoco.....> //////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1257,7 +1259,7 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
    Before:
             -- Into-Head --                           -- From-Tail --
    +================================+    +=====================================+
-   | mb:               ,MC_SHOCO_2T |    | <U><C><shoco.....> //////////////// |
+   | mc:               ,MC_SHOCO_2T |    | <U><C><shoco.....> //////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1267,7 +1269,7 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
    After:
             -- Into-Head --                        (no Into-Tail)
    +================================+
-   | mb:           ,MC_SHOCO_FIT_1L |
+   | mc:           ,MC_SHOCO_FIT_1L |
    +================================+
    |                                |
    +--------------------------------+
@@ -1357,7 +1359,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
    Before:
              -- Into-Head --                           -- From-Tail --
    +================================+    +=====================================+
-   | mb:               ,MC_SHOCO_2T |    | <U><C><shoco....................... |
+   | mc:               ,MC_SHOCO_2T |    | <U><C><shoco....................... |
    +================================+    +=====================================+
    |                                |    | ....overhang> ///////////////////// |
    +--------------------------------+    +-------------------------------------+
@@ -1367,7 +1369,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
    After:
             -- Into-Head --                           -- Into-Tail --
    +================================+    +=====================================+
-   | mb:       ,MC_SHOCO_SPLIT_2T1L |    | <U><partB.........................> |
+   | mc:       ,MC_SHOCO_SPLIT_2T1L |    | <U><partB.........................> |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1518,7 +1520,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
    Before:
             -- Into-Head --                        -- From-Tail --
    +================================+    +=====================================+
-   | mb:            ,MC_SHOCO_2T,   |    | <U><C><shoco.....> //////////////// |
+   | mc:            ,MC_SHOCO_2T,   |    | <U><C><shoco.....> //////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1528,7 +1530,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
    After:
             -- Into-Head --                        -- Into-Tail --
    +================================+    +=====================================+
-   | mb:             ,MC_SHOCO_2T,  |    | <U><C><shoco.....> //////////////// |
+   | mc:             ,MC_SHOCO_2T,  |    | <U><C><shoco.....> //////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1619,9 +1621,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
 {
 #ifdef WITH_EXTENDED_BCD
   RASSERT(DM_BCD == pCol->eDatumType());
-  
-  i8 i_Col = pCol->iColumnNo();
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for re-encoding into DM_TENTH
   
