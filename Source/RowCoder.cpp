@@ -2618,8 +2618,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
   
   i8 i_LastOffset = iBaseOffset(pColVec);
   
-  vTrace("Col ColumnName      Datum  ExtDatum    Encoding"
-         "       Offset  Bytes              Value\n"_Stz);
+  vTrace("Col ColumnName      Datum  MetaCode"
+         "         Offset  Bytes              Value\n"_Stz);
   
   // for each column
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
@@ -2637,7 +2637,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     
     i8 iMetaCode = aHeadLine->eMetaCode(i_Col);
     
-    vTrace("%3lld %-15s %-6s %x %-16s %2lld %2lld "_Stz,
+    //      colNo colNm Dtm  MC aMC   Ofset Bytes
+    vTrace("%3lld %-15s %-6s %02x %-17s %2lld %2lld "_Stz,
            i_Col,
            pCol->sColumnName().aChar(),
            aDM[eDatum],
@@ -2871,7 +2872,7 @@ i8 RowCoder::nDataBytes(eMC eMetaCode)
     case MC_BSTR_SPLIT_2T1L:  return 2;
       
     case MC_SHOCO_FIT_1L:     return 0;
-    case MC_SHOCO_TAIL_2T:         return 2;
+    case MC_SHOCO_TAIL_2T:    return 2;
     case MC_SHOCO_SPLIT_2T1L: return 2;
       
     case MC_TWOS_1B: return 1;
