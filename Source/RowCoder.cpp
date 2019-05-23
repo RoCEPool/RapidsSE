@@ -527,16 +527,16 @@ void RowCoder::vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum)
   
   eMC eEncoding;
   
-  if (C_SILVER_ERA == iEra) {
+  if (C_ERA_1 == iEra) {
     eEncoding = MC_DATE_E1_2B;
     pTgtDatum->m_nEncodedBytes = 2;
   }
-  else if (C_MODERN_ERA == iEra) {
+  else if (C_ERA_2 == iEra) {
     eEncoding = MC_DATE_E2_2B;
     pTgtDatum->m_nEncodedBytes = 2;
   }
   else {
-    ASSERT(C_CLASSIC_ERA == iEra);
+    ASSERT(C_ERA_0 == iEra);
     eEncoding = MC_DATE_E0_2B;
     pTgtDatum->m_nEncodedBytes = 2;
   }
@@ -2754,22 +2754,22 @@ void RowCoder::vDateIntoDelta(Datum* pDatum, i8& iEra)
 {
   Datum oDatum;
   
-  if (pDatum->xEdt.m_uYearInEra < C_SILVER_ERA)
-    iEra = C_CLASSIC_ERA;
-  else if (pDatum->xEdt.m_uYearInEra < C_MODERN_ERA)
-    iEra = C_SILVER_ERA;
+  if (pDatum->xEdt.m_uYearInEra < C_ERA_1)
+    iEra = C_ERA_0;
+  else if (pDatum->xEdt.m_uYearInEra < C_ERA_2)
+    iEra = C_ERA_1;
   else
-    iEra = C_MODERN_ERA;
+    iEra = C_ERA_2;
   
   i8 nYearInEra = pDatum->xEdt.m_uYearInEra;
   
   // year delta
-  if (C_SILVER_ERA == iEra)
-    nYearInEra -= C_SILVER_ERA;
-  else if (C_MODERN_ERA == iEra)
-    nYearInEra -= C_MODERN_ERA;
+  if (C_ERA_1 == iEra)
+    nYearInEra -= C_ERA_1;
+  else if (C_ERA_2 == iEra)
+    nYearInEra -= C_ERA_2;
   else {
-    ASSERT(C_CLASSIC_ERA == iEra);
+    ASSERT(C_ERA_0 == iEra);
   }
   
   pDatum->xEdt.m_uYearInEra = nYearInEra;
@@ -2778,7 +2778,7 @@ void RowCoder::vDateIntoDelta(Datum* pDatum, i8& iEra)
 /*----------------------------------------------------------------------------*/
 /* compute date w.r.t the base date                                           */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDateFromDelta(Datum* pDatum, i8& iEra)
+void RowCoder::vDateFromEra(Datum* pDatum, i8& iEra)
 {
   pDatum->xEdt.m_uYearInEra += iEra;
 }
@@ -2848,9 +2848,9 @@ void RowCoder::vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
       
     case MC_DAYS_ADD_1B: RASSERT(0);   break;
     case MC_DAYS_SUB_1B: RASSERT(0); break;
-    case MC_DATE_E0_2B:  pDatum->m_iDte = aHeadLine->w8_2B(i_Offset); iEra = C_CLASSIC_ERA; break;
-    case MC_DATE_E1_2B:  pDatum->m_iDte = aHeadLine->w8_2B(i_Offset); iEra = C_SILVER_ERA; break;
-    case MC_DATE_E2_2B:  pDatum->m_iDte = aHeadLine->w8_2B(i_Offset); iEra = C_MODERN_ERA; break;
+    case MC_DATE_E0_2B:  pDatum->m_iDte = aHeadLine->w8_2B(i_Offset); iEra = C_ERA_0; break;
+    case MC_DATE_E1_2B:  pDatum->m_iDte = aHeadLine->w8_2B(i_Offset); iEra = C_ERA_1; break;
+    case MC_DATE_E2_2B:  pDatum->m_iDte = aHeadLine->w8_2B(i_Offset); iEra = C_ERA_2; break;
     default:
       NEVER_REACH;
   }
@@ -2859,7 +2859,7 @@ void RowCoder::vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
     RASSERT(0);
   }
   else {
-    vDateFromDelta(pDatum,iEra);
+    vDateFromEra(pDatum,iEra);
   }
 }
 
