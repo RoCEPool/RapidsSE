@@ -1147,7 +1147,7 @@ void RowCoder::vRecode_Short(void)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeBcd(Column* pCol)
 {
-#ifdef WITH_EXTENDED_BCD
+#ifdef WITH_ENCODING_BCD
   RASSERT(DM_BCD == pCol->eDatumType());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1259,7 +1259,7 @@ void RowCoder::vRecodeInt(Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-#ifdef WITH_EXTENDED_INT_DIGIT
+#ifdef WITH_ENCODING_INT_DIGIT
   if (bRecodeIntDigit(pCol)) {
     //vHeadDump(m_aIntoHead, m_pColVec, pCol);
     vXchkIntRecode(pCol);

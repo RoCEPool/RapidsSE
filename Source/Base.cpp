@@ -79,24 +79,24 @@ void Base::vTraceWith(void)
   vTrace("  WITH_TRACE_ENCODING\n"_Stz);
 #endif
   
-#ifdef WITH_ENCODING_XCHECK
-  vTrace("  WITH_ENCODING_XCHECK\n"_Stz);
+#ifdef WITH_ENCODING_BCD
+  vTrace("  WITH_ENCODING_BCD\n"_Stz);
 #endif
   
-#ifdef WITH_EXTENDED_BCD
-  vTrace("  WITH_EXTENDED_BCD\n"_Stz);
+#ifdef WITH_ENCODING_DTE
+  vTrace("  WITH_ENCODING_DTE\n"_Stz);
 #endif
   
-#ifdef WITH_EXTENDED_DTE
-  vTrace("  WITH_EXTENDED_DTE\n"_Stz);
+#ifdef WITH_ENCODING_INT_DIGIT
+  vTrace("  WITH_ENCODING_INT_DIGIT\n"_Stz);
 #endif
   
-#ifdef WITH_EXTENDED_INT_DIGIT
-  vTrace("  WITH_EXTENDED_INT_DIGIT\n"_Stz);
-#endif
-    
 #ifdef WITH_EXTENDED_VCH_SMALL
   vTrace("  WITH_EXTENDED_VCH_SMALL\n"_Stz);
+#endif
+  
+#ifdef WITH_ENCODING_XCHECK
+  vTrace("  WITH_ENCODING_XCHECK\n"_Stz);
 #endif
   
 #ifdef WITH_LARGE_ROWS
