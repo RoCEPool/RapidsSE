@@ -241,15 +241,15 @@ namespace Data
     static void vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
                                  ColumnVec* pColVec, Column* pCol,
                                  i8& i_LastColumn, i8& i_LastOffset);
-    static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
-                                Column* pCol, eMC eEncoding, i8 i_Offset);
-    static void vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
-                                Column* pCol, i8 i_Offset);
     static void vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
                                    Column* pCol, i8 i_Offset);
     static void vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
                                      Column* pCol, i8 i_Offset);
-                                      
+    static void vDecodeVchShocoTail(Datum* pDatum, HeadLine* aHeadLine,
+                                     Column* pCol, i8 i_Offset);
+    static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
+                                     Column* pCol, eMC eEncoding, i8 i_Offset);
+
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
   
     static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec);

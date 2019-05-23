@@ -3063,7 +3063,7 @@ void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
   }
   
   else if (MC_SHOCO_2T == eEncoding)
-    vDecodeVchShoco(pDatum,aHeadLine,pCol,i_Offset);
+    vDecodeVchShocoTail(pDatum,aHeadLine,pCol,i_Offset);
   
   else if (MC_SHOCO_FIT_1L == eEncoding)
     vDecodeVchShocoFit(pDatum,aHeadLine,pCol,i_Offset);
@@ -3076,43 +3076,7 @@ void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode varchar from given head line                                        */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
-                               Column* pCol, i8 i_Offset)
-{
-  i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
-  TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
-  
-  //MemLib::vWordDump(aShocoTail,aShocoTail->nBytes());
-  
-  /*
-               -- Shoco-Tail --
-   +=====================================+
-   | <U><C><shoco....> ///////////////// |
-   +=====================================+
-   
-   where: <U> is one byte being the unit length of the tail line
-          <C> is one byte being the number of shoco compressed bytes
-          <shoco.....> being the shoco compressed bytes
-   */
-  
-  i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
-  //RASSERT(nCompressed <= 4);
-  
-  i8 nDecompressed =
-  Compress::iFromShoco(pDatum->m_sVch.aChar(),   // decompressed destination
-                       255,                      // max destination
-                       ((byte*)aShocoTail)       // from compressed source
-                       + C_SHOCO_COMPRESSED_OFFSET
-                       + C_SHOCO_COMPRESSED_BYTES,
-                       nCompressed);             // bytes compressed
-  ASSERT(nDecompressed);
-  pDatum->m_nChars = nDecompressed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode varchar from given head line                                        */
+/* decode MC_SHOCO_FIT_1L tail line shoco                                     */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
                                   Column* pCol, i8 i_Offset)
@@ -3145,7 +3109,7 @@ void RowCoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode varchar from given head line                                        */
+/* decode MC_SHOCO_SPLIT_2T1L tail line shoco                                 */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
                                     Column* pCol, i8 i_Offset)
@@ -3195,6 +3159,42 @@ void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
                        255,
                        (byte*)caShoco+2,
                        nCompressed);
+  ASSERT(nDecompressed);
+  pDatum->m_nChars = nDecompressed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode MC_SHOCO_2T tail line shoco                                         */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeVchShocoTail(Datum* pDatum, HeadLine* aHeadLine,
+                                   Column* pCol, i8 i_Offset)
+{
+  i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
+  TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
+  
+  //MemLib::vWordDump(aShocoTail,aShocoTail->nBytes());
+  
+  /*
+   -- Shoco-Tail --
+   +=====================================+
+   | <U><C><shoco....> ///////////////// |
+   +=====================================+
+   
+   where: <U> is one byte being the unit length of the tail line
+   <C> is one byte being the number of shoco compressed bytes
+   <shoco.....> being the shoco compressed bytes
+   */
+  
+  i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+  //RASSERT(nCompressed <= 4);
+  
+  i8 nDecompressed =
+  Compress::iFromShoco(pDatum->m_sVch.aChar(),   // decompressed destination
+                       255,                      // max destination
+                       ((byte*)aShocoTail)       // from compressed source
+                       + C_SHOCO_COMPRESSED_OFFSET
+                       + C_SHOCO_COMPRESSED_BYTES,
+                       nCompressed);             // bytes compressed
   ASSERT(nDecompressed);
   pDatum->m_nChars = nDecompressed;
 }
