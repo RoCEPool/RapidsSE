@@ -94,9 +94,9 @@ void Base::vTraceWith(void)
 #ifdef WITH_EXTENDED_INT_DIGIT
   vTrace("  WITH_EXTENDED_INT_DIGIT\n"_Stz);
 #endif
-  
-#ifdef WITH_EXTENDED_VCH
-  vTrace("  WITH_EXTENDED_VCH\n"_Stz);
+    
+#ifdef WITH_EXTENDED_VCH_SMALL
+  vTrace("  WITH_EXTENDED_VCH_SMALL\n"_Stz);
 #endif
   
 #ifdef WITH_LARGE_ROWS
