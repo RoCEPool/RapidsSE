@@ -749,95 +749,6 @@ void RowCoder::vDataPut(w8 wDatum, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode interval                                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeIvl(Datum* pSrcDatum, Column* pCol)
-{
-  vCodeIvl(&m_oEncodedDatum,pSrcDatum);
-  vMetaPut(&m_oEncodedDatum,pCol);
-  vDataPut(&m_oEncodedDatum);
-  vXchkIvl(pSrcDatum,pCol,0);
-
-  vUsageIncEncoded(pCol,&m_oEncodedDatum);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode varchar as shoco                                                    */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
-{
-  /*
-   +================================+    +=====================================+
-   | meta-bits:       ,MC_SHOCO_2T, |    |            Shoco Tail Line          +
-   +================================+    +=====================================+
-   |                                |    | U | C | <compressed bytes> <unused> +
-   +--------------------------------+    +-------------------------------------+
-   |                           [IT] |
-   +--------------------------------+
-   
-   where: MC_SHOCO_2T is the meta-bits for the column
-          [IT] is 2 bytes being the index of the Shoco Tail Line
-          U is one byte being the unit length of the tail line
-          C is one byte being the number of compressed bytes
-          <compressed bytes> being the shoco compressed bytes
-   */
-  
-  // compress source varchar into sShoco
-  sVCH sShoco;
-  i8 nCompressed =
-    Compress::iIntoShoco(sShoco.ayByte(), // into compressed destination
-                         sShoco.nSpace(), // destination size
-                         pSrcDatum->m_sVch.aChar(), // from uncompressed source
-                         pSrcDatum->m_nChars);      // source bytes
-  
-  // allot a tail line as per the diagram (U is put in by iAllotTail)
-  i8 nTailBytes  = C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES + nCompressed;
-  i8 i_ShocoTail = m_pIntoNub->iAllotTail(nTailBytes);
-  TailLine* aShocoTail = m_pIntoNub->aGetTail(i_ShocoTail);
-  ASSERT(m_pIntoNub->nBytes(aShocoTail->w8_1B(C_TAIL_UNITS_OFFSET)) >= nTailBytes);
-
-  // set length of compressed string into tail (this is C in the diagram)
-  aShocoTail->v1B(C_SHOCO_COMPRESSED_OFFSET,nCompressed);
-  
-  // copy shoco into tail (this is <compressed bytes> in the diagram)
-  char *aShocoWithinTail = (char*)aShocoTail
-                             + C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES;
-  MemLib::vCopy(aShocoWithinTail,sShoco.aChar(),nCompressed,CN_ROWCODER);
-  
-  // put index of shoco tail as the 2 data bytes (this is [IT] in the diagram)
-  vDataPut(i_ShocoTail,2);
-  
-  vUsageIncEncoded(pCol,2 + nTailBytes);
-  
-  //MemLib::vWordDump(aShocoLine,m_nHeadBytes);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode varchar as small                                                    */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
-{
-  /*
-   +================================+
-   | meta-bits:             ,MC_nB, |
-   +================================+
-   |                                |
-   +--------------------------------+
-   |                <small:1..8B>   |
-   +--------------------------------+
-   
-   where: MC_nB is the meta-bits for the column
-          <small> is the 1..8 ascii bytes for the short varchar
-  */
-  
-  w8 wSmall = *(w8*)pSrcDatum->m_sVch.aChar();
-  
-  vDataPut(wSmall,(eMC)pSrcDatum->m_nChars);
-  
-  vUsageIncEncoded(pCol,pSrcDatum->m_nChars);
-}
-
-/*----------------------------------------------------------------------------*/
 /* encode decimal                                                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeBcd(Datum* pSrcDatum, Column* pCol)
@@ -916,6 +827,19 @@ void RowCoder::vEncodeInt(Datum* pSrcDatum, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* encode interval                                                            */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vEncodeIvl(Datum* pSrcDatum, Column* pCol)
+{
+  vCodeIvl(&m_oEncodedDatum,pSrcDatum);
+  vMetaPut(&m_oEncodedDatum,pCol);
+  vDataPut(&m_oEncodedDatum);
+  vXchkIvl(pSrcDatum,pCol,0);
+  
+  vUsageIncEncoded(pCol,&m_oEncodedDatum);
+}
+
+/*----------------------------------------------------------------------------*/
 /* encode time                                                                */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeTme(Datum* pSrcDatum, Column* pCol)
@@ -969,6 +893,82 @@ void RowCoder::vEncodeVch(Datum* pSrcDatum, Column* pCol)
     vEncodeVchSmall(&m_oEncodedDatum,pCol);
   
   vXchkVch(pSrcDatum,pCol,0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode varchar as shoco                                                    */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
+{
+  /*
+   +================================+    +=====================================+
+   | meta-bits:       ,MC_SHOCO_2T, |    |            Shoco Tail Line          +
+   +================================+    +=====================================+
+   |                                |    | U | C | <compressed bytes> <unused> +
+   +--------------------------------+    +-------------------------------------+
+   |                           [IT] |
+   +--------------------------------+
+   
+   where: MC_SHOCO_2T is the meta-bits for the column
+   [IT] is 2 bytes being the index of the Shoco Tail Line
+   U is one byte being the unit length of the tail line
+   C is one byte being the number of compressed bytes
+   <compressed bytes> being the shoco compressed bytes
+   */
+  
+  // compress source varchar into sShoco
+  sVCH sShoco;
+  i8 nCompressed =
+  Compress::iIntoShoco(sShoco.ayByte(), // into compressed destination
+                       sShoco.nSpace(), // destination size
+                       pSrcDatum->m_sVch.aChar(), // from uncompressed source
+                       pSrcDatum->m_nChars);      // source bytes
+  
+  // allot a tail line as per the diagram (U is put in by iAllotTail)
+  i8 nTailBytes  = C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES + nCompressed;
+  i8 i_ShocoTail = m_pIntoNub->iAllotTail(nTailBytes);
+  TailLine* aShocoTail = m_pIntoNub->aGetTail(i_ShocoTail);
+  ASSERT(m_pIntoNub->nBytes(aShocoTail->w8_1B(C_TAIL_UNITS_OFFSET)) >= nTailBytes);
+  
+  // set length of compressed string into tail (this is C in the diagram)
+  aShocoTail->v1B(C_SHOCO_COMPRESSED_OFFSET,nCompressed);
+  
+  // copy shoco into tail (this is <compressed bytes> in the diagram)
+  char *aShocoWithinTail = (char*)aShocoTail
+  + C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES;
+  MemLib::vCopy(aShocoWithinTail,sShoco.aChar(),nCompressed,CN_ROWCODER);
+  
+  // put index of shoco tail as the 2 data bytes (this is [IT] in the diagram)
+  vDataPut(i_ShocoTail,2);
+  
+  vUsageIncEncoded(pCol,2 + nTailBytes);
+  
+  //MemLib::vWordDump(aShocoLine,m_nHeadBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode varchar as small                                                    */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
+{
+  /*
+   +================================+
+   | mc:                    ,MC_nB, |
+   +================================+
+   |                                |
+   +--------------------------------+
+   |                  <small>       |
+   +--------------------------------+
+   
+   where: MC_nB is the metaCode for the column
+          <small> is the 1..8 ascii bytes for the short varchar
+   */
+  
+  w8 wSmall = *(w8*)pSrcDatum->m_sVch.aChar();
+  
+  vDataPut(wSmall,(eMC)pSrcDatum->m_nChars);
+  
+  vUsageIncEncoded(pCol,pSrcDatum->m_nChars);
 }
 
 /*----------------------------------------------------------------------------*/
