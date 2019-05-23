@@ -2863,17 +2863,17 @@ i8 RowCoder::nDataBytes(eMC eMetaCode)
       
     case MC_STR_EMPTY:        return 0;
       
-    case MC_STR_FIT_1L:       return 0;
+    case MC_STR_FIT_1L:       return 1;
     case MC_STR_2T:           return 2;
-    case MC_STR_SPLIT_2T1L:   return 2;
+    case MC_STR_SPLIT_2T1L:   return 3;
       
     case MC_BSTR_FIT_2L:      return 2;
     case MC_BSTR_2T:          return 2;
     case MC_BSTR_SPLIT_2T1L:  return 2;
       
-    case MC_SHOCO_FIT_1L:     return 0;
+    case MC_SHOCO_FIT_1L:     return 1;
     case MC_SHOCO_TAIL_2T:    return 2;
-    case MC_SHOCO_SPLIT_2T1L: return 2;
+    case MC_SHOCO_SPLIT_2T1L: return 3;
       
     case MC_TWOS_1B: return 1;
     case MC_TWOS_2B: return 2;
