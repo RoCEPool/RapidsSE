@@ -18,7 +18,7 @@ namespace Data
     HeadLine(void);
     ~HeadLine(void) noexcept(false);
   
-    i8   iMetaCode(i8 i_Meta);
+    eMC  iMetaCode(i8 i_Meta);
     void vMetaCode(i8 i_Meta, w8 wArg);
     
     i8   nBytes(void);
