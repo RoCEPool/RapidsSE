@@ -2350,10 +2350,13 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
 {
   eMC  eMetaCode;
   Word wWord;
+  
   i8   i_Tail_Rel;
   i8   nCompressed;
   i8   nDecompressed;
-  char acCombined[C_4KB];
+  i8   nBytesPartA;
+  i8   nBytesPartB;
+  char caShoco[C_4KB];
   
   TailLine* aShocoTail;
   
@@ -2533,7 +2536,30 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
         aString += nDecompressed;
         pRow->m_i_Wsp += nDecompressed;
         break;
-      case MC_SHOCO_SPLIT_2T1L: break;
+      case MC_SHOCO_SPLIT_2T1L:
+        i_Tail_Rel  = (i8)*(i2*)aDataByte;
+        aDataByte  += 2;
+        aShocoTail  = RowNub::aToTail(aHeadLine,i_Tail_Rel);
+        nCompressed = (i8)*(i1*)aDataByte++;
+        nBytesPartA = aHeadLine->nBytes() - ((byte*)aHeadLine - aDataByte);
+        nBytesPartB = nCompressed - nBytesPartA;
+        MemLib::vCopy((byte*)caShoco,
+                      (byte*)aDataByte,
+                      nBytesPartA,
+                      CN_ROWCODER);
+        MemLib::vCopy((byte*)caShoco+nBytesPartA,
+                      (byte*)aShocoTail+1,
+                      nBytesPartB,
+                      CN_ROWCODER);
+        nDecompressed =
+          Compress::iFromShoco(aString,                  // decompressed dest
+                               255,                      // max destination
+                               (byte*)caShoco,           // compressed source
+                               nCompressed);             // bytes compressed
+        aString += nDecompressed;
+        pRow->m_i_Wsp += nDecompressed;
+        aDataByte += nBytesPartA;
+        break;
         
       case MC_TWOS_1B:
         break;
@@ -3244,11 +3270,11 @@ void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
   MemLib::vCopy((byte*)caShoco+2,
                 (byte*)aHeadLine + i_Offset + 3,
                 nBytesPartA,
-                CN_ROWTRAY);
+                CN_ROWCODER);
   MemLib::vCopy((byte*)caShoco+2+nBytesPartA,
                 (byte*)aShocoTail+1,
                 nBytesPartB,
-                CN_ROWTRAY);
+                CN_ROWCODER);
   
   //MemLib::vWordDump(caShoco+2,3 * sizeof(SpaceUnit));
   
