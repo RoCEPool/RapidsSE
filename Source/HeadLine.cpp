@@ -29,12 +29,12 @@ HeadLine::~HeadLine(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return meta code                                                           */
 /*----------------------------------------------------------------------------*/
-eMC HeadLine::eMetaCode(i8 i_Meta)
-{
-  eMC eCode = (eMC)w8_1B(C_HEAD_PRE_BYTES + i_Meta);
-
-  return eCode;
-}
+//eMC HeadLine::eMetaCode(i8 i_Meta)
+//{
+//  eMC eCode = (eMC)w8_1B(C_HEAD_PRE_BYTES + i_Meta);
+//
+//  return eCode;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* store meta code                                                            */

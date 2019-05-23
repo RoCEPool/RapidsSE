@@ -18,13 +18,22 @@ namespace Data
     HeadLine(void);
     ~HeadLine(void) noexcept(false);
   
-    eMC  eMetaCode(i8 i_Meta);
     void vMetaCode(i8 i_Meta, w8 wArg);
     
     i8   nBytes(void);
     i8   nWords(void);  
-  };
 
+  /*----------------------------------------------------------------------------*/
+  /* return meta code                                                           */
+  /*----------------------------------------------------------------------------*/
+  inline eMC eMetaCode(i8 i_Meta)
+  {
+    eMC eCode = *(eMC*)((byte*)this + C_HEAD_PRE_BYTES + i_Meta);
+  
+    return eCode;
+  }
+  
+  };
 
   /*--------------------------------------------------------------------------*/
   /* safe cast                                                                */
