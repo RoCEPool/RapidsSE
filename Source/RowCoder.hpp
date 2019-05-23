@@ -271,9 +271,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     /* decode boolean from given head line                                        */
     /*----------------------------------------------------------------------------*/
-    static inline void vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,
-    ColumnVec* pColVec, Column* pCol,
-    i8& i_LastColumn, i8& i_Offset)
+    static inline void vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,Column* pCol)
     {
       pDatum->m_eDatum = DM_BOL;
       

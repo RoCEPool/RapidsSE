@@ -2308,7 +2308,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       break;
       
     case DM_BOL:
-      vDecodeBol(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+      vDecodeBol(pDatum,aHeadLine,pCol);
       break;
       
     case DM_DTE:
