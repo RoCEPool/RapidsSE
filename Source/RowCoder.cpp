@@ -2811,7 +2811,7 @@ void RowCoder::vAppend(Record* pRec, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* return number of data bytes of encoding                                    */
+/* how many bytes does given encoding occupy in the data portion of a head?   */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::nDataBytes(eMC eMetaCode)
 {
