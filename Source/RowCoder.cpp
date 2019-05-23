@@ -2724,7 +2724,10 @@ void RowCoder::vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,
 {  
   pDatum->m_eDatum = DM_BOL;
   
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
+  //eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
+  
+  i8 i_Column = pCol->iColumnNo();
+  eMC eEncoding = (eMC)aHeadLine->iMetaCode(i_Column);
   
   switch (eEncoding) {
       
