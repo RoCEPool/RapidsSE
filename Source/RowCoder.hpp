@@ -213,7 +213,7 @@ namespace Data
                         ColumnVec* pColVec, Column* pCol,
                         i8& i_LastColumn, i8& i_LastOffset);
   
-    static i8   nDataBytes(eDM eDatum, eMC eMetaCode);
+    static i8   nDataBytes(eMC eMetaCode);
 
     static void vDateIntoDelta(Datum* pDatum, i8& iEra);
     static void vDateFromDelta(Datum* pDatum, i8& iEra);
