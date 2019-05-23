@@ -29,12 +29,11 @@ HeadLine::~HeadLine(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return meta code                                                           */
 /*----------------------------------------------------------------------------*/
-i8 HeadLine::iMetaCode(i8 i_Meta)
+eMC HeadLine::iMetaCode(i8 i_Meta)
 {
-  //w8 iCode = w8_1N(C_HEAD_PRE_BYTES * C_NIBBLES_PER_BYTE + i_Meta);
-  w8 iCode = w8_1B(C_HEAD_PRE_BYTES + i_Meta);
+  eMC eCode = (eMC)w8_1B(C_HEAD_PRE_BYTES + i_Meta);
 
-  return iCode;
+  return eCode;
 }
 
 /*----------------------------------------------------------------------------*/

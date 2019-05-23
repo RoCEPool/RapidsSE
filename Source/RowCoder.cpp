@@ -901,20 +901,21 @@ void RowCoder::vEncodeVch(Datum* pSrcDatum, Column* pCol)
 void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
 {
   /*
+            -- Into-Head --                           -- Into-Tail --
    +================================+    +=====================================+
-   | meta-bits:       ,MC_SHOCO_2T, |    |            Shoco Tail Line          +
+   | mc:              ,MC_SHOCO_2T, |    | <U><C><shoco....> ///////////////// |
    +================================+    +=====================================+
-   |                                |    | U | C | <compressed bytes> <unused> +
-   +--------------------------------+    +-------------------------------------+
+   |                                |
+   +--------------------------------+
    |                           [IT] |
    +--------------------------------+
    
-   where: MC_SHOCO_2T is the meta-bits for the column
-   [IT] is 2 bytes being the index of the Shoco Tail Line
-   U is one byte being the unit length of the tail line
-   C is one byte being the number of compressed bytes
-   <compressed bytes> being the shoco compressed bytes
-   */
+   where: MC_SHOCO_2T is the metaCode for the column
+          [IT] is 2 bytes being the index of the Shoco Tail Line
+          <U> is one byte being the unit length of the tail line
+          <C> is one byte being the number of shoco compressed bytes
+          <shoco.....> being the shoco compressed bytes
+    */
   
   // compress source varchar into sShoco
   sVCH sShoco;
@@ -935,7 +936,7 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
   
   // copy shoco into tail (this is <compressed bytes> in the diagram)
   char *aShocoWithinTail = (char*)aShocoTail
-  + C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES;
+                            + C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES;
   MemLib::vCopy(aShocoWithinTail,sShoco.aChar(),nCompressed,CN_ROWCODER);
   
   // put index of shoco tail as the 2 data bytes (this is [IT] in the diagram)
@@ -952,6 +953,7 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
 void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
 {
   /*
+             -- Into-Head --
    +================================+
    | mc:                    ,MC_nB, |
    +================================+
@@ -1175,7 +1177,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
    Before:
              -- Into-Head --                         -- From-Tail --
    +================================+    +=====================================+
-   | mb:       ,MC_SHOCO_2B,        |    | <U><C><shoco.....> //////////////// |
+   | mc:       ,MC_SHOCO_2B,        |    | <U><C><shoco.....> //////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1185,7 +1187,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
    After:
              -- Into-Head --                      -- Into-Tail -- (duplicate)
    +================================+    +=====================================+
-   | mb:             ,MC_SHOCO_2T,  |    | <U><C><shoco.....> //////////////// |
+   | mc:             ,MC_SHOCO_2T,  |    | <U><C><shoco.....> //////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1257,7 +1259,7 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
    Before:
             -- Into-Head --                           -- From-Tail --
    +================================+    +=====================================+
-   | mb:               ,MC_SHOCO_2T |    | <U><C><shoco.....> //////////////// |
+   | mc:               ,MC_SHOCO_2T |    | <U><C><shoco.....> //////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1267,7 +1269,7 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
    After:
             -- Into-Head --                        (no Into-Tail)
    +================================+
-   | mb:           ,MC_SHOCO_FIT_1L |
+   | mc:           ,MC_SHOCO_FIT_1L |
    +================================+
    |                                |
    +--------------------------------+
@@ -1357,7 +1359,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
    Before:
              -- Into-Head --                           -- From-Tail --
    +================================+    +=====================================+
-   | mb:               ,MC_SHOCO_2T |    | <U><C><shoco....................... |
+   | mc:               ,MC_SHOCO_2T |    | <U><C><shoco....................... |
    +================================+    +=====================================+
    |                                |    | ....overhang> ///////////////////// |
    +--------------------------------+    +-------------------------------------+
@@ -1367,7 +1369,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
    After:
             -- Into-Head --                           -- Into-Tail --
    +================================+    +=====================================+
-   | mb:       ,MC_SHOCO_SPLIT_2T1L |    | <U><partB.........................> |
+   | mc:       ,MC_SHOCO_SPLIT_2T1L |    | <U><partB.........................> |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1518,7 +1520,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
    Before:
             -- Into-Head --                        -- From-Tail --
    +================================+    +=====================================+
-   | mb:            ,MC_SHOCO_2T,   |    | <U><C><shoco.....> //////////////// |
+   | mc:            ,MC_SHOCO_2T,   |    | <U><C><shoco.....> //////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1528,7 +1530,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
    After:
             -- Into-Head --                        -- Into-Tail --
    +================================+    +=====================================+
-   | mb:             ,MC_SHOCO_2T,  |    | <U><C><shoco.....> //////////////// |
+   | mc:             ,MC_SHOCO_2T,  |    | <U><C><shoco.....> //////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1619,8 +1621,6 @@ void RowCoder::vRecodeBcd(Column* pCol)
 {
 #ifdef WITH_EXTENDED_BCD
   RASSERT(DM_BCD == pCol->eDatumType());
-  
-  i8 i_Col = pCol->iColumnNo();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for re-encoding into DM_TENTH
@@ -2674,126 +2674,6 @@ void RowCoder::vDateFromDelta(Datum* pDatum, i8& iEra)
   pDatum->xEdt.m_uYearInEra += iEra;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* decode interval from given head line                                       */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine,
-                          ColumnVec* pColVec, Column* pCol,
-                          i8& i_LastColumn, i8& i_Offset)
-{
-  pDatum->m_eDatum = DM_IVL;
-  
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
-  switch (eEncoding) {
-      
-    case MC_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
-    case MC_1B:   pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
-    case MC_2B:   pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
-    case MC_3B:   pDatum->m_iInt = aHeadLine->w8_3B(i_Offset); break;
-    case MC_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
-    case MC_5B:   pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
-    case MC_6B:   pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
-    case MC_7B:   pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
-    case MC_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
-      
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode varchar from given head line                                        */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
-                               Column* pCol, i8 i_Offset)
-{
-  i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
-  TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
-  
-  //MemLib::vWordDump(aShocoTail,aShocoTail->nBytes());
-  
-  /*
-   +=====================================+
-   |            Shoco Tail Line          +
-   +=====================================+
-   | U | C | <compressed bytes> <unused> +
-   +-------------------------------------+
-   | 0 | 1 | 2                        63 |
-   +-------------------------------------+
-   
-   where: U is one byte being the unit length of the tail line
-   C is one byte being the number of compressed bytes
-   */
-  
-  i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
-  //RASSERT(nCompressed <= 4);
-  
-  i8 nDecompressed =
-  Compress::iFromShoco(pDatum->m_sVch.aChar(),   // decompressed destination
-                       255,                      // max destination
-                       ((byte*)aShocoTail)       // from compressed source
-                       + C_SHOCO_COMPRESSED_OFFSET
-                       + C_SHOCO_COMPRESSED_BYTES,
-                       nCompressed);             // bytes compressed
-  ASSERT(nDecompressed);
-  pDatum->m_nChars = nDecompressed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode varchar from given head line                                        */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
-                                  Column* pCol, i8 i_Offset)
-{
-  i8 nCompressed = aHeadLine->w8_1B(i_Offset);
-  //RASSERT(nCompressed <= 56);
-  
-  i8 nDecompressed =
-  Compress::iFromShoco((char*)pDatum->m_sVch.aChar(),
-                       255,
-                       ((byte*)aHeadLine)+i_Offset+1,
-                       nCompressed);
-  ASSERT(nDecompressed);
-  pDatum->m_nChars = nDecompressed;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode varchar from given head line                                        */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
-                                    Column* pCol, i8 i_Offset)
-{
-  byte caShoco[C_4KB];
-  
-  i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
-  TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
-  
-  i8 nCompressed = aHeadLine->w8_1B(i_Offset+2);
-  
-  i8 nBytesPartA = aHeadLine->nBytes() - i_Offset - 3;                           //! <W>
-  i8 nBytesPartB = nCompressed - nBytesPartA;
-  
-  MemLib::vCopy((byte*)caShoco+2,
-                (byte*)aHeadLine + i_Offset + 3,
-                nBytesPartA,
-                CN_ROWTRAY);
-  MemLib::vCopy((byte*)caShoco+2+nBytesPartA,
-                (byte*)aShocoTail+1,
-                nBytesPartB,
-                CN_ROWTRAY);
-  
-  //MemLib::vWordDump(caShoco+2,3 * sizeof(SpaceUnit));
-  
-  i8 nDecompressed =
-  Compress::iFromShoco((char*)pDatum->m_sVch.aChar(),
-                       255,
-                       (byte*)caShoco+2,
-                       nCompressed);
-  ASSERT(nDecompressed);
-  pDatum->m_nChars = nDecompressed;
-}
-
 /*----------------------------------------------------------------------------*/
 /* decode decimal from given head line                                        */
 /*----------------------------------------------------------------------------*/
@@ -2966,6 +2846,33 @@ void RowCoder::vDecodeInt(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
+/* decode interval from given head line                                       */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine,
+                          ColumnVec* pColVec, Column* pCol,
+                          i8& i_LastColumn, i8& i_Offset)
+{
+  pDatum->m_eDatum = DM_IVL;
+  
+  eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
+  switch (eEncoding) {
+      
+    case MC_NULL: pDatum->m_iInt = C_DATUM_NULL;                break;
+    case MC_1B:   pDatum->m_iInt = aHeadLine->w8_1B(i_Offset); break;
+    case MC_2B:   pDatum->m_iInt = aHeadLine->w8_2B(i_Offset); break;
+    case MC_3B:   pDatum->m_iInt = aHeadLine->w8_3B(i_Offset); break;
+    case MC_4B:   pDatum->m_iInt = aHeadLine->w8_4B(i_Offset); break;
+    case MC_5B:   pDatum->m_iInt = aHeadLine->w8_5B(i_Offset); break;
+    case MC_6B:   pDatum->m_iInt = aHeadLine->w8_6B(i_Offset); break;
+    case MC_7B:   pDatum->m_iInt = aHeadLine->w8_7B(i_Offset); break;
+    case MC_8B:   pDatum->m_iInt = aHeadLine->w8_8B(i_Offset); break;
+      
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* decode time from given head line                                           */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeTme(Datum* pDatum, HeadLine* aHeadLine,
@@ -3062,6 +2969,98 @@ void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
   
   else
     NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode varchar from given head line                                        */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
+                               Column* pCol, i8 i_Offset)
+{
+  i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
+  TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
+  
+  //MemLib::vWordDump(aShocoTail,aShocoTail->nBytes());
+  
+  /*
+   +=====================================+
+   |            Shoco Tail Line          +
+   +=====================================+
+   | U | C | <compressed bytes> <unused> +
+   +-------------------------------------+
+   | 0 | 1 | 2                        63 |
+   +-------------------------------------+
+   
+   where: U is one byte being the unit length of the tail line
+   C is one byte being the number of compressed bytes
+   */
+  
+  i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+  //RASSERT(nCompressed <= 4);
+  
+  i8 nDecompressed =
+  Compress::iFromShoco(pDatum->m_sVch.aChar(),   // decompressed destination
+                       255,                      // max destination
+                       ((byte*)aShocoTail)       // from compressed source
+                       + C_SHOCO_COMPRESSED_OFFSET
+                       + C_SHOCO_COMPRESSED_BYTES,
+                       nCompressed);             // bytes compressed
+  ASSERT(nDecompressed);
+  pDatum->m_nChars = nDecompressed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode varchar from given head line                                        */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
+                                  Column* pCol, i8 i_Offset)
+{
+  i8 nCompressed = aHeadLine->w8_1B(i_Offset);
+  //RASSERT(nCompressed <= 56);
+  
+  i8 nDecompressed =
+  Compress::iFromShoco((char*)pDatum->m_sVch.aChar(),
+                       255,
+                       ((byte*)aHeadLine)+i_Offset+1,
+                       nCompressed);
+  ASSERT(nDecompressed);
+  pDatum->m_nChars = nDecompressed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode varchar from given head line                                        */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
+                                    Column* pCol, i8 i_Offset)
+{
+  byte caShoco[C_4KB];
+  
+  i8 i_TailDistance = aHeadLine->w8_2B(i_Offset);
+  TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_TailDistance);
+  
+  i8 nCompressed = aHeadLine->w8_1B(i_Offset+2);
+  
+  i8 nBytesPartA = aHeadLine->nBytes() - i_Offset - 3;                           //! <W>
+  i8 nBytesPartB = nCompressed - nBytesPartA;
+  
+  MemLib::vCopy((byte*)caShoco+2,
+                (byte*)aHeadLine + i_Offset + 3,
+                nBytesPartA,
+                CN_ROWTRAY);
+  MemLib::vCopy((byte*)caShoco+2+nBytesPartA,
+                (byte*)aShocoTail+1,
+                nBytesPartB,
+                CN_ROWTRAY);
+  
+  //MemLib::vWordDump(caShoco+2,3 * sizeof(SpaceUnit));
+  
+  i8 nDecompressed =
+  Compress::iFromShoco((char*)pDatum->m_sVch.aChar(),
+                       255,
+                       (byte*)caShoco+2,
+                       nCompressed);
+  ASSERT(nDecompressed);
+  pDatum->m_nChars = nDecompressed;
 }
 
 /*----------------------------------------------------------------------------*/

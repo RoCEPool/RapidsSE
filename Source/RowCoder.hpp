@@ -219,10 +219,6 @@ namespace Data
     static void vDateFromDelta(Datum* pDatum, i8& iEra);
     
     
-    static void vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine,
-                           ColumnVec* pColVec, Column* pCol,
-                           i8& i_LastColumn, i8& i_LastOffset);
-    
     static void vDecodeVchShoco(Datum* pDatum, HeadLine* aHeadLine,
                                 Column* pCol, i8 i_Offset);
     static void vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
@@ -244,6 +240,9 @@ namespace Data
                                  ColumnVec* pColVec, Column* pCol,
                                  i8& i_LastColumn, i8& i_LastOffset);
     static void vDecodeInt(Datum* pDatum, HeadLine* aHeadLine,
+                                 ColumnVec* pColVec, Column* pCol,
+                                 i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine,
                                  ColumnVec* pColVec, Column* pCol,
                                  i8& i_LastColumn, i8& i_LastOffset);
     static void vDecodeTme(Datum* pDatum, HeadLine* aHeadLine,
