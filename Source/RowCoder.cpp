@@ -1242,7 +1242,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
   // metadata remains MC_SHOCO_2T
-  RASSERT(MC_SHOCO_2T == m_aFromHead->iMetaCode(pCol->iColumnNo()));
+  RASSERT(MC_SHOCO_2T == m_aFromHead->eMetaCode(pCol->iColumnNo()));
   
   // we recoded: sizeof([IT])
   vUsageIncRecoded(pCol,MC_2B);
@@ -1605,7 +1605,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // metadata remains the same
-  RASSERT(MC_SHOCO_2T == m_aFromHead->iMetaCode(pCol->iColumnNo()));
+  RASSERT(MC_SHOCO_2T == m_aFromHead->eMetaCode(pCol->iColumnNo()));
   
   // we recoded: sizeof([IT]) + nIntoTailBytes
   vUsageIncRecoded(pCol,MC_2B + nIntoTailBytes);
@@ -2382,7 +2382,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     
     i8 nBytes = nDataBytes(eEncoding);
     
-    i8 iMetaCode = aHeadLine->iMetaCode(i_Col);
+    i8 iMetaCode = aHeadLine->eMetaCode(i_Col);
     
     vTrace("%3lld %-15s %-6s %x %-16s %2lld %2lld "_Stz,
            i_Col,
@@ -2447,7 +2447,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
   
   i8 nBytes = nDataBytes(eEncoding);
   
-  i8 iMetaCode = aHeadLine->iMetaCode(i_Col);
+  i8 iMetaCode = aHeadLine->eMetaCode(i_Col);
   
   vTrace("%3lld %-15s %-6s %x %-16s %2lld %2lld "_Stz,
          i_Col,

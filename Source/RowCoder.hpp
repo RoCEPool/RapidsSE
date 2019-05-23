@@ -278,7 +278,7 @@ namespace Data
       //eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
       
       i8 i_Column = pCol->iColumnNo();
-      eMC eEncoding = (eMC)aHeadLine->iMetaCode(i_Column);
+      eMC eEncoding = aHeadLine->eMetaCode(i_Column);
       
       switch (eEncoding) {
         
@@ -307,12 +307,12 @@ namespace Data
       
       for (i8 i_Col = i_PriorColumn_; i_Col < i_ForCol; i_Col++) {
         
-        eMC eEncoding = (eMC)aHeadLine->iMetaCode(i_Col);
+        eMC eEncoding = aHeadLine->eMetaCode(i_Col);
         
         i_Offset_ += nDataBytes(eEncoding);
       }
       
-      eMC eEncoding  = (eMC)aHeadLine->iMetaCode(i_ForCol);
+      eMC eEncoding  = aHeadLine->eMetaCode(i_ForCol);
       i_PriorColumn_ = i_ForCol;
       
       return eEncoding;
