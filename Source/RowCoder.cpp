@@ -2520,6 +2520,15 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
         break;
         
       case MC_SHOCO_FIT_1L:
+        nCompressed = (i8)*(i1*)aDataByte++;
+        nDecompressed =
+          Compress::iFromShoco(aString,                  // decompressed dest
+                               sizeof(caShoco),          // max destination
+                               aDataByte,                // compressed source
+                               nCompressed);             // bytes compressed
+        aString += nDecompressed;
+        pRow->m_i_Wsp += nDecompressed;
+        aDataByte += nCompressed;
         break;
       case MC_SHOCO_TAIL_2T:
         i_Tail_Rel  = (i8)*(i2*)aDataByte;
@@ -2528,7 +2537,7 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
         nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
         nDecompressed =
           Compress::iFromShoco(aString,                  // decompressed dest
-                               255,                      // max destination
+                               sizeof(caShoco),          // max destination
                                ((byte*)aShocoTail)       // compressed source
                                  + C_SHOCO_COMPRESSED_OFFSET
                                  + C_SHOCO_COMPRESSED_BYTES,
@@ -2553,12 +2562,12 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
                       CN_ROWCODER);
         nDecompressed =
           Compress::iFromShoco(aString,                  // decompressed dest
-                               255,                      // max destination
+                               sizeof(caShoco),          // max destination
                                (byte*)caShoco,           // compressed source
                                nCompressed);             // bytes compressed
-        aString += nDecompressed;
-        pRow->m_i_Wsp += nDecompressed;
-        aDataByte += nBytesPartA;
+          aString += nDecompressed;
+          pRow->m_i_Wsp += nDecompressed;
+          aDataByte += nBytesPartA;
         break;
         
       case MC_TWOS_1B:
