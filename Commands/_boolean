@@ -22,7 +22,9 @@ startCluster;
  bol_col15  BOOLEAN
  );
  
- 
+
+// generate via:
+// docol booleanData;
  ld bolTbl "/DATA/Encoding/boolean.csv" ;
 
  time fetch bolTbl noPrint;
