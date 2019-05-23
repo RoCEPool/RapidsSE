@@ -2716,31 +2716,6 @@ void RowCoder::vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode boolean from given head line                                        */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,
-                          ColumnVec* pColVec, Column* pCol,
-                          i8& i_LastColumn, i8& i_Offset)
-{  
-  pDatum->m_eDatum = DM_BOL;
-  
-  //eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
-  
-  i8 i_Column = pCol->iColumnNo();
-  eMC eEncoding = (eMC)aHeadLine->iMetaCode(i_Column);
-  
-  switch (eEncoding) {
-      
-    case MC_NULL:  pDatum->m_iInt = C_DATUM_NULL; break;
-    case MC_FALSE: pDatum->m_iInt = (i8)0;        break;
-    case MC_TRUE:  pDatum->m_iInt = (i8)1;        break;
-      
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* decode date from given head line                                           */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
