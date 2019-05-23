@@ -103,7 +103,6 @@ namespace Data
     
     void vCodeIvl(Datum* pTgtDatum, Datum* pSrcDatum);
   
-    // MARK III
     void vCodeBol(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeBcd(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum);
@@ -143,28 +142,25 @@ namespace Data
     void vMetaPut(Datum* pDatum, Column* pCol);
 
     void vRecode_Large(void);
-
-    void vRecodeIvl(Column* pCol);
-    void vRecodeVchShoco(Column* pCol);
-    bool bRecodeVchShocoDupe(Column* pCol);
-    bool bRecodeVchShocoFold(Column* pCol);
-    bool bRecodeVchShocoSplit(Column* pCol);
-    void vRecodeVchShocoTail(Column* pCol);
-
-    // MARK III
     void vRecode_Short(void);
 
-    // MARK III
     void vRecodeBol(Column* pCol);
     void vRecodeBcd(Column* pCol);
     void vRecodeDte(Column* pCol);
     void vRecodeFlt(Column* pCol);
     void vRecodeInt(Column* pCol);
     bool bRecodeIntDigit(Column* pCol);
+    void vRecodeIvl(Column* pCol);
     void vRecodeTme(Column* pCol);
     void vRecodeTsp(Column* pCol);
     void vRecodeVch(Column* pCol);
+    void vRecodeVchShoco(Column* pCol);
+    bool bRecodeVchShocoDupe(Column* pCol);
+    bool bRecodeVchShocoFold(Column* pCol);
+    bool bRecodeVchShocoSplit(Column* pCol);
+    void vRecodeVchShocoTail(Column* pCol);
     
+
     void vUsageIncEncoded(Column* pCol, i8 nBytes, eMC eMetaCode = MC_NULL);
     void vUsageIncEncoded(Column* pCol, Datum* pDatum, eMC eMetaCode = MC_NULL);
     void vUsageIncRecoded(Column* pCol, i8 nBytes, eMC eMetaCode = MC_NULL);
@@ -280,6 +276,14 @@ namespace Data
       i8 i_Column = pCol->iColumnNo();
       eMC eEncoding = aHeadLine->eMetaCode(i_Column);
       
+      if (MC_FALSE == eEncoding)
+        pDatum->m_iInt = 0;
+      else if (MC_TRUE == eEncoding)
+        pDatum->m_iInt = 1;
+      else
+        pDatum->m_iInt = C_DATUM_NULL;
+        
+     /*
       switch (eEncoding) {
         
         case MC_NULL:  pDatum->m_iInt = C_DATUM_NULL; break;
@@ -289,6 +293,7 @@ namespace Data
         default:
         NEVER_REACH;
       }
+      */
     }
 
     /*----------------------------------------------------------------------------*/
