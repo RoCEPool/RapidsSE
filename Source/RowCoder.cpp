@@ -2348,6 +2348,8 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
 {
+  Word wWord;
+  
   i8 nCols = pColVec->nItems();
   byte* aMetaCode = (byte*)aHeadLine + C_HEAD_PRE_BYTES;
   byte* aDataByte = (byte*)aHeadLine + iBaseOffset(pColVec);
@@ -2363,12 +2365,39 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
       case MC_1B:        *aValue++ = (i8)*(i1*)aDataByte++;               break;
       case MC_2B:        *aValue++ = (i8)*(i2*)aDataByte;
                          aDataByte += 2;                                  break;
-      case MC_3B:        break;
+      case MC_3B:        wWord.m_iI8 = 0;
+                         wWord.m_yaByte[0] = *aDataByte++;
+                         wWord.m_yaByte[1] = *aDataByte++;
+                         wWord.m_yaByte[2] = *aDataByte++;
+                         *aValue++ = wWord.m_iI8;                         break;
       case MC_4B:        *aValue++ = (i8)*(i4*)aDataByte;
                          aDataByte += 4;                                  break;
-      case MC_5B:        break;
-      case MC_6B:        break;
-      case MC_7B:        break;
+      case MC_5B:        wWord.m_iI8 = 0;
+                         wWord.m_yaByte[0] = *aDataByte++;
+                         wWord.m_yaByte[1] = *aDataByte++;
+                         wWord.m_yaByte[2] = *aDataByte++;
+                         wWord.m_yaByte[3] = *aDataByte++;
+                         wWord.m_yaByte[4] = *aDataByte++;
+                         *aValue++ = wWord.m_iI8;                         break;
+      case MC_6B:        wWord.m_iI8 = 0;
+                         wWord.m_yaByte[0] = *aDataByte++;
+                         wWord.m_yaByte[1] = *aDataByte++;
+                         wWord.m_yaByte[2] = *aDataByte++;
+                         wWord.m_yaByte[3] = *aDataByte++;
+                         wWord.m_yaByte[4] = *aDataByte++;
+                         wWord.m_yaByte[5] = *aDataByte++;
+                         wWord.m_yaByte[6] = *aDataByte++;
+                         *aValue++ = wWord.m_iI8;                         break;
+      case MC_7B:        wWord.m_iI8 = 0;
+                         wWord.m_yaByte[0] = *aDataByte++;
+                         wWord.m_yaByte[1] = *aDataByte++;
+                         wWord.m_yaByte[2] = *aDataByte++;
+                         wWord.m_yaByte[3] = *aDataByte++;
+                         wWord.m_yaByte[4] = *aDataByte++;
+                         wWord.m_yaByte[5] = *aDataByte++;
+                         wWord.m_yaByte[6] = *aDataByte++;
+                         wWord.m_yaByte[7] = *aDataByte++;
+                         *aValue++ = wWord.m_iI8;                         break;
       case MC_8B:        *aValue++ = (i8)*(i8*)aDataByte;
                          aDataByte += 8;                                  break;
       case MC_MINUS_ONE: *aValue++ = -1;                                  break;
