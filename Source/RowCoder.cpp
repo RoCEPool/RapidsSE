@@ -272,18 +272,6 @@ void RowCoder::vEncodeDatum(Datum* pSrcDatum, Column* pCol)
   // hash the column if its part of the partition key
   vHashColumn(pSrcDatum,pCol);
   
-  //! HACK
-  // get the extracted date into xEdt
-  if (eDatum == DM_DTE) {
-    Datum oDatum;
-    oDatum.m_wWord = pSrcDatum->m_wWord;
-
-    pSrcDatum->xEdt.m_uYearInEra = oDatum.xDte.m_uYearDelta;;
-    pSrcDatum->xEdt.m_uMonth = oDatum.xDte.m_uMonth;
-    pSrcDatum->xEdt.m_uDay = oDatum.xDte.m_uDay;
-    pSrcDatum->xEdt.m_uSpare = 0;
-  }
-  
   // encode the datum into the row
   switch (eDatum) {
     case DM_BCD: vEncodeBcd(pSrcDatum,pCol); return;
@@ -883,6 +871,16 @@ void RowCoder::vEncodeDte(Datum* pSrcDatum, Column* pCol)
   //  vTrace("++ %lld-%lld-%lld\n"_Stz,
   //         pDatum->xDte.m_uYearDelta,pDatum->xDte.m_uMonth,pDatum->xDte.m_uDay);
   
+  //! HACK
+  // get the extracted date into xEdt
+  Datum oDatum;
+  oDatum.m_wWord = pSrcDatum->m_wWord;
+  
+  pSrcDatum->xEdt.m_uYearInEra = oDatum.xDte.m_uYearDelta;;
+  pSrcDatum->xEdt.m_uMonth = oDatum.xDte.m_uMonth;
+  pSrcDatum->xEdt.m_uDay = oDatum.xDte.m_uDay;
+  pSrcDatum->xEdt.m_uSpare = 0;
+
   vCodeDte(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
