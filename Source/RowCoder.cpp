@@ -2384,9 +2384,9 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
   i8*   aiValue   = & pRow->m_aiValue[0];
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    
+  
 #ifdef WITH_TRACE_DECODING
-    Column* pCol = pColVec->pGet(i_Col);
+    Column* pCol = pRow->m_pColVec->pGet(i_Col);
 #endif
     eMetaCode = (eMC)*aMetaCode++;
     
@@ -2699,15 +2699,13 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         pRow->m_i_Wsp += nDecompressed;
         break;
       case MC_SHOCO_SPLIT_2T1C:
-        //i_Tail_Rel  = (i8)*(i2*)aDataByte;
-        //aDataByte  += 2;
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *aDataByte++;
         wWord.m_yaByte[1] = *aDataByte++;
         i_Tail_Rel = wWord.m_iI8;
         aShocoTail  = RowNub::aToTail(aHeadLine,i_Tail_Rel);
         nCompressed = (i8)*(i1*)aDataByte++;
-        nBytesPartA = aHeadLine->nBytes() - ((byte*)aHeadLine - aDataByte);
+        nBytesPartA = aHeadLine->nBytes() - (aDataByte - (byte*)aHeadLine);
         nBytesPartB = nCompressed - nBytesPartA;
         MemLib::vCopy((byte*)caShoco,
                       (byte*)aDataByte,
