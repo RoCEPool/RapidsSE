@@ -1463,7 +1463,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fold entire shoco tail into head as a MC_SHOCO_FIT_1L   (last column only) */
+/* fold entire shoco tail into head as a MC_SHOCO_FIT_1C   (last column only) */
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeVchShocoFold(Column* pCol)
 {
@@ -1481,7 +1481,7 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
    After:
    -- Into-Head --                        (no Into-Tail)
    +================================+
-   | mc:           ,MC_SHOCO_FIT_1L |
+   | mc:           ,MC_SHOCO_FIT_1C |
    +================================+
    |                                |
    +--------------------------------+
@@ -1553,8 +1553,8 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   m_i_IntoOffset += MC_1B + nShocoBytes;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // metadata for this column get changed to MC_SHOCO_FIT_1L
-  vMetaCode(pCol,MC_SHOCO_FIT_1L);
+  // metadata for this column get changed to MC_SHOCO_FIT_1C
+  vMetaCode(pCol,MC_SHOCO_FIT_1C);
   
   // we recoded: sizeof(<C>) + nShocoBytes
   vUsageIncRecoded(pCol,MC_1B + nShocoBytes);
@@ -2521,7 +2521,7 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
       case MC_BSTR_SPLIT_2T2L:
         break;
         
-      case MC_SHOCO_FIT_1L:
+      case MC_SHOCO_FIT_1C:
         nCompressed = (i8)*(i1*)aDataByte++;
         nDecompressed =
           Compress::iFromShoco(aString,                  // decompressed dest
@@ -2657,6 +2657,13 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     hvRec->vReset();
     vAppend(hvRec,aHeadLine,pColVec,pCol,i_Col,i_LastOffset);
     vTrace("%s"_Stz,hvRec->szRecStr());
+    
+    i8 iDataValue = aHeadLine->wGet(i_LastOffset,nBytes);
+    if (nBytes)
+      vTrace(" [ =%lld ]"_Stz,iDataValue);
+    else
+      vTrace(" [ =nil ]"_Stz);
+
     
     vTrace("\n"_Stz);
     
@@ -2871,7 +2878,7 @@ i8 RowCoder::nDataBytes(eMC eMetaCode)
     case MC_BSTR_TAIL_2T:     return 2;
     case MC_BSTR_SPLIT_2T2L:  return 4;
       
-    case MC_SHOCO_FIT_1L:     return 1;
+    case MC_SHOCO_FIT_1C:     return 1;
     case MC_SHOCO_TAIL_2T:    return 2;
     case MC_SHOCO_SPLIT_2T1C: return 3;
       
@@ -3201,7 +3208,7 @@ void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
   else if (MC_SHOCO_TAIL_2T == eEncoding)
     vDecodeVchShocoTail(pDatum,aHeadLine,pCol,i_Offset);
   
-  else if (MC_SHOCO_FIT_1L == eEncoding)
+  else if (MC_SHOCO_FIT_1C == eEncoding)
     vDecodeVchShocoFit(pDatum,aHeadLine,pCol,i_Offset);
   
   else if (MC_SHOCO_SPLIT_2T1C == eEncoding)
@@ -3212,7 +3219,7 @@ void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode MC_SHOCO_FIT_1L tail line shoco                                     */
+/* decode MC_SHOCO_FIT_1C tail line shoco                                     */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
                                   Column* pCol, i8 i_Offset)
@@ -3220,14 +3227,14 @@ void RowCoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
   /*
               -- Head-Line --
    +================================+
-   | mc:           ,MC_SHOCO_FIT_1L |
+   | mc:           ,MC_SHOCO_FIT_1C |
    +================================+
    |                                |
    +--------------------------------+
    |    <C><shoco.....> /////////// |
    +--------------------------------+
    
-   where: MC_SHOCO_FIT_1L are the meta-bits for the column
+   where: MC_SHOCO_FIT_1C are the meta-bits for the column
           <C> is one byte being the number of shoco compressed bytes
           <shoco.....> being the shoco compressed bytes
    */
@@ -3450,7 +3457,7 @@ i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec)
   if (pLastCol->eDatumType() == DM_VCH && MC_SHOCO_SPLIT_2T1C == eEncoding)
     return 0;
   
-  if (pLastCol->eDatumType() == DM_VCH && MC_SHOCO_FIT_1L == eEncoding) {
+  if (pLastCol->eDatumType() == DM_VCH && MC_SHOCO_FIT_1C == eEncoding) {
     i8 nCompressed = aHeadLine->w8_1B(i_Offset);
     //RASSERT(nCompressed <= 56);
     i_Offset += nCompressed;
