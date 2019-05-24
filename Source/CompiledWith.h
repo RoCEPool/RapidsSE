@@ -34,6 +34,7 @@
 #define WITH_PREPOST_CHECKING   // _pre/postCondition_()
 #define WITH_TRACE_API          // code for tracing api's compiled in
 //#define WITH_TRACE_ENCODING     // code for tracing encoding compiled in
+//#define WITH_TRACE_DECODING     // code for tracing decoding compiled in
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // release behaviours
@@ -50,6 +51,7 @@
 //#define WITH_PREPOST_CHECKING   // _pre/postCondition_()
 //#define WITH_TRACE_API          // code for tracing api's compiled in
 //#define WITH_TRACE_ENCODING     // code for tracing encoding compiled in
+//#define WITH_TRACE_DECODING     // code for tracing decoding compiled in
 #endif
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -62,7 +64,7 @@
 #define WITH_SHOCO_DUPLICATES   // test for duplicate shoco tail lines
 #define WITH_SHOCO_FOLDLAST     // test for folding last shoco line
 #define WITH_ENCODING_XCHECK    // encode cross check
-
+//#define WITH_TRACE_DECODING     // code for tracing decoding compiled in
 //#define WITH_LARGE_ROWS         // encode cross check
 
 /*============================================================================*/
