@@ -170,7 +170,7 @@ Job_FetchRows::Job_FetchRows(Interface::Session* pSession)
   m_pRowOnce     = nullptr;
   m_bRetrieve    = false;
   
-  m_pRow         = new Row;
+  m_pRow         = nullptr;
   
   _checkInitialised_(CN_JOB_FETCHROWS);
   
@@ -198,7 +198,8 @@ Job_FetchRows::~Job_FetchRows(void) noexcept(false)
     m_pRowOnce = nullptr;
   }
   
-  delete m_pRow;
+  if (m_pRow)
+    delete m_pRow;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -696,6 +697,9 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
     vTrace("metadata: %s\n"_Stz, pJob_FetchRows->m_sMetadata.aStz());
   }
   
+  // create a row for retrieval
+  pJob_FetchRows->m_pRow = new Row(pJob_FetchRows->m_pTable->pColumnVec());
+                   
   while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
     
     pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());

@@ -1265,7 +1265,7 @@ void RowCoder::vRecodeInt(Column* pCol)
   
 #ifdef WITH_ENCODING_INT_DIGIT
   if (bRecodeIntDigit(pCol)) {
-    //vHeadDump(m_aIntoHead, m_pColVec, pCol);
+    //vHeadDump(m_aIntoHead, m_pColVec);
     vXchkIntRecode(pCol);
     return;
   }
@@ -1286,6 +1286,8 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
   RASSERT(DM_INT == pCol->eDatumType());
   RASSERT(MC_NULL != m_eFromEncoding);
   RASSERT(m_eFromEncoding >= MC_1B && m_eFromEncoding <= MC_8B);
+  
+  //vHeadDump(m_aFromHead, m_pColVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is it a 1B encoding ?
@@ -2350,7 +2352,11 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode headline into row                                                   */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
+#ifdef WITH_TRACE_DECODING
+  void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
+#else
+  void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine)
+#endif
 {
   eMC  eMetaCode;
   Word wWord;
@@ -2370,9 +2376,9 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
 
   char* aString = pRow->m_xWsp.aArea();
   
-  i8 nCols = pColVec->nItems();
+  i8 nCols = pRow->m_iColumns;
   byte* aMetaCode = (byte*)aHeadLine + C_HEAD_PRE_BYTES;
-  byte* aDataByte = (byte*)aHeadLine + iBaseOffset(pColVec);
+  byte* aDataByte = (byte*)aHeadLine + pRow->m_iBaseOffset;
   i8*   aiValue   = & pRow->m_aiValue[0];
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {

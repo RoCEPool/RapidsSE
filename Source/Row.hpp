@@ -8,7 +8,8 @@ namespace Data
   class Row : public Object
   {
   public:
-  
+    i8 m_iColumns;
+    i8 m_iBaseOffset;
     i8 m_aiValue[C_MAX_COLUMNS];
   
     i8 m_i_Wsp;
@@ -21,7 +22,7 @@ namespace Data
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Row(void);
+    Row(ColumnVec* pColumnVec);
     ~Row(void) noexcept(false);
   
   private:

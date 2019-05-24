@@ -46,7 +46,7 @@ void Row::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Row::Row(void)
+Row::Row(ColumnVec* pColumnVec)
 : Object(CN_ROW)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
@@ -60,6 +60,9 @@ Row::Row(void)
   
 #endif
 
+  m_iColumns = pColumnVec->nItems();
+  m_iBaseOffset = RowCoder::iBaseOffset(pColumnVec);
+  
   m_i_Wsp = 0;
   // m_xWsp
   
