@@ -22,7 +22,10 @@ dte_col14  DATE     NOT NULL,
 dte_col15  DATE
 );
 
-ld dteTbl "/DATA/Encoding/date.csv" ;
+ld dteTbl "/DATA/Encoding/dateSmall.csv" ;
+
+print "Fetching dteTbl noPrint";
+time fetch dteTbl noPrint;
 
 time fetch retrieve dteTbl dte_col0;
 time fetch retrieve dteTbl dte_col1;

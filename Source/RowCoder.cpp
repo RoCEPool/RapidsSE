@@ -789,10 +789,12 @@ void RowCoder::vEncodeDte(Datum* pSrcDatum, Column* pCol)
   Datum oDatum;
   oDatum.m_wWord = pSrcDatum->m_wWord;
   
-  pSrcDatum->xEdt.m_uYearInEra = oDatum.xDte.m_uYearDelta;;
-  pSrcDatum->xEdt.m_uMonth = oDatum.xDte.m_uMonth;
-  pSrcDatum->xEdt.m_uDay = oDatum.xDte.m_uDay;
-  pSrcDatum->xEdt.m_uSpare = 0;
+  if ( ! pSrcDatum->bIsNull()) {
+    pSrcDatum->xEdt.m_uYearInEra = oDatum.xDte.m_uYearDelta;;
+    pSrcDatum->xEdt.m_uMonth = oDatum.xDte.m_uMonth;
+    pSrcDatum->xEdt.m_uDay = oDatum.xDte.m_uDay;
+    pSrcDatum->xEdt.m_uSpare = 0;
+  }
 
   vCodeDte(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
