@@ -2384,12 +2384,16 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_1B:
-        *aiValue++ = (i8)*(i1*)aDataByte++;
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *aDataByte++;
+        *aiValue++ = wWord.m_iI8;
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_2B:
-        *aiValue++ = (i8)*(i2*)aDataByte;
-        aDataByte += 2;
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *aDataByte++;
+        wWord.m_yaByte[1] = *aDataByte++;
+        *aiValue++ = wWord.m_iI8;
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_3B:
@@ -2401,8 +2405,12 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_4B:
-        *aiValue++ = (i8)*(i4*)aDataByte;
-        aDataByte += 4;
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *aDataByte++;
+        wWord.m_yaByte[1] = *aDataByte++;
+        wWord.m_yaByte[2] = *aDataByte++;
+        wWord.m_yaByte[3] = *aDataByte++;
+        *aiValue++ = wWord.m_iI8;
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_5B:
@@ -2423,7 +2431,6 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
         wWord.m_yaByte[3] = *aDataByte++;
         wWord.m_yaByte[4] = *aDataByte++;
         wWord.m_yaByte[5] = *aDataByte++;
-        wWord.m_yaByte[6] = *aDataByte++;
         *aiValue++ = wWord.m_iI8;
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
@@ -2436,13 +2443,20 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
         wWord.m_yaByte[4] = *aDataByte++;
         wWord.m_yaByte[5] = *aDataByte++;
         wWord.m_yaByte[6] = *aDataByte++;
-        wWord.m_yaByte[7] = *aDataByte++;
         *aiValue++ = wWord.m_iI8;
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_8B:
-        *aiValue++ = (i8)*(i8*)aDataByte;
-        aDataByte += 8;
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *aDataByte++;
+        wWord.m_yaByte[1] = *aDataByte++;
+        wWord.m_yaByte[2] = *aDataByte++;
+        wWord.m_yaByte[3] = *aDataByte++;
+        wWord.m_yaByte[4] = *aDataByte++;
+        wWord.m_yaByte[5] = *aDataByte++;
+        wWord.m_yaByte[6] = *aDataByte++;
+        wWord.m_yaByte[7] = *aDataByte++;
+        *aiValue++ = wWord.m_iI8;
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_MINUS_ONE:

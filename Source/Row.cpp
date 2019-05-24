@@ -54,6 +54,8 @@ Row::Row(void)
 #ifdef WITH_CHECK_INITIALISED
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
     m_aiValue[i_Col] = 0;
+  
+  m_xWsp.vZero(CN_ROW);
 #else
   
 #endif

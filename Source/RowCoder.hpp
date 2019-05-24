@@ -196,7 +196,7 @@ namespace Data
                         ColumnVec* pColVec, Column* pCol,
                         i8& i_LastColumn, i8& i_LastOffset);
     
-    void vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec);
+    static void vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec);
     
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
@@ -352,7 +352,8 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     static inline void vRetrieveAll(HeadLine* aHeadLine, ColumnVec* pColVec)
     {
-      Datum oDatum;
+      //Datum oDatum;
+      Row* pRow = new Row;
       
       //vHeadDump(aHeadLine, pColVec);
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -366,20 +367,24 @@ namespace Data
       i8 i_LastOffset = iBaseOffset(pColVec);
       
       // for each column
-      for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-        
-        // get the column at index
-        Column* pCol = pColVec->pGet(i_Col);
-        
-        // get the encoded value into datum
-        vDecode(&oDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
-      }
-      
+//      for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+//
+//        // get the column at index
+//        Column* pCol = pColVec->pGet(i_Col);
+//
+//        // get the encoded value into datum
+//        vDecode(&oDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+//      }
+
+      RowCoder::vDecode(pRow,aHeadLine,pColVec);
+
       //      i8 iSum = 0;
       //      byte* ayByte = (byte*)aHeadLine;
       //      for (i8 _i = 0; _i < 64; _i++)
       //        iSum+=*ayByte++;
       //      oDatum.m_iInt = iSum;
+      
+      delete pRow;
     }
     
     /*----------------------------------------------------------------------------*/
