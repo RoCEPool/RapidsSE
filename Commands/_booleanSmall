@@ -27,7 +27,9 @@ startCluster;
 // docol booleanData;
  ld bolTbl "/DATA/Encoding/booleanSmall.csv" ;
 
- time fetch bolTbl noPrint;
+print "Fetching bolTbl noPrint";
+time fetch bolTbl noPrint;
+
 
  time fetch retrieve bolTbl bol_col1;
  time fetch retrieve bolTbl bol_col1;

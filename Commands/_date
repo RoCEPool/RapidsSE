@@ -23,6 +23,8 @@ dte_col15  DATE
 );
 
 ld dteTbl "/DATA/Encoding/date.csv" ;
+print "Fetching dteTbl noPrint";
+time fetch dteTbl noPrint;
 
 time fetch retrieve dteTbl dte_col0;
 time fetch retrieve dteTbl dte_col1;

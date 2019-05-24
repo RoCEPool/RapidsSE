@@ -26,7 +26,7 @@ ld intTbl "/DATA/Encoding/integer.csv" ;
 
 print "Fetching intTbl noPrint";
 time fetch intTbl noPrint;
-
+/*
 print "Retrieving col0";
 time fetch retrieve intTbl int_col0;
 
@@ -57,7 +57,7 @@ time fetch retrieve intTbl int_col1;
 time fetch retrieve intTbl int_col1;
 time fetch retrieve intTbl int_col1;
 time fetch retrieve intTbl int_col1;
-
+*/
 /*
 19/5/2019
 retrieves go via decode and not decodeFast
