@@ -60,30 +60,30 @@ namespace Data
   /* 31 */ MC_DAYS_ADD_1B, // first date +days 1B in data area
   /* 32 */ MC_DAYS_SUB_1B, // first date -days 1B in data area
   
-  /* 33 */ MC_STR_EMPTY,   // empty string (no bytes in data area)
-  /* 34 */ MC_STR_FIT_1L,  // ascii string: 1B=len, then ascii
-  /* 35 */ MC_STR_2T,      // longer ascii string:
-                           //    head: 2B->tail
-                           //    tail: has 1B=len, then ascii
-  /* 36 */ MC_STR_SPLIT_2T1L,// ascii string:
-                             //   head: 2B->tail, 1B=len, then part-ascii
-                             //   tail: has remaining ascii
+  /* 33 */ MC_STR_EMPTY,       // empty string (no bytes in data area)
+  /* 34 */ MC_STR_FIT_1L,      // ascii string: 1B=len, then ascii
+  /* 35 */ MC_STR_TAIL_2T,     // ascii string in tail:
+                               //    head: 2B->tail
+                               //    tail: has 1B=len, then ascii
+  /* 36 */ MC_STR_SPLIT_2T1L,  // ascii string split between head and tail:
+                               //   head: 2B->tail, 1B=len, then part-ascii
+                               //   tail: has remaining ascii
   
-  /* 37 */ MC_BSTR_FIT_2L,   // bigger ascii string: 2B=len then ascii
-  /* 38 */ MC_BSTR_2T,       // bigger ascii string:
-                             //    head: 2B->tail
-                             //    tail: has 2B=len, then ascii
-  /* 39 */ MC_BSTR_SPLIT_2T1L, // bigger ascii string:
+  /* 37 */ MC_BSTR_FIT_2L,     // bigger ascii string: 2B=len then ascii
+  /* 38 */ MC_BSTR_TAIL_2T,    // bigger ascii string in tail:
+                               //    head: 2B->tail
+                               //    tail: has 2B=len, then ascii
+  /* 39 */ MC_BSTR_SPLIT_2T2L, // bigger ascii string split between head and tail:
                                //   head: 2B->tail, 2B=len, part-ascii
                                //   tail: has remaining ascii
   
   /* 40 */ MC_SHOCO_FIT_1L,    // shoco encoded string: 1B=len, then shoco
-  /* 41 */ MC_SHOCO_TAIL_2T,   // shoco encoded string:
+  /* 41 */ MC_SHOCO_TAIL_2T,   // shoco encoded string in tail:
                                //    head: 2B->tail
                                //    tail: has 1B=len, then shoco
-  /* 42 */ MC_SHOCO_SPLIT_2T1L,// shoco encoded string:
-                               //   head: 2B->tail, 1B=len, part-shoco
-                               //   tail: has remaining shoco
+  /* 42 */ MC_SHOCO_SPLIT_2T1C,// shoco encoded string split between head and tail:
+                               //   head: 2B->tail, 1B=nCompressed, partA-shoco
+                               //   tail: has remaining partB-shoco
 
   /* 43 */ MC_TWOS_1B,         // data area contains 1B two's complement datum
   /* 44 */ MC_TWOS_2B,         // data area contains 2B two's complement datum
@@ -135,14 +135,14 @@ namespace Data
   /* 32 */ "MC_DAYS_SUB_1B"_Stz,
   /* 33 */ "MC_STR_EMPTY"_Stz,
   /* 34 */ "MC_STR_FIT_1L"_Stz,
-  /* 35 */ "MC_STR_2T"_Stz,
+  /* 35 */ "MC_STR_TAIL_2T"_Stz,
   /* 36 */ "MC_STR_SPLIT_2T1L"_Stz,
   /* 37 */ "MC_BSTR_FIT_2L"_Stz,
-  /* 38 */ "MC_BSTR_2T"_Stz,
-  /* 39 */ "MC_BSTR_SPLIT_2T1L"_Stz,
+  /* 38 */ "MC_BSTR_TAIL_2T"_Stz,
+  /* 39 */ "MC_BSTR_SPLIT_2T2L"_Stz,
   /* 40 */ "MC_SHOCO_FIT_1L"_Stz,
   /* 41 */ "MC_SHOCO_TAIL_2T"_Stz,
-  /* 42 */ "MC_SHOCO_SPLIT_2T1L"_Stz,
+  /* 42 */ "MC_SHOCO_SPLIT_2T1C"_Stz,
   /* 43 */ "MC_TWOS_1B"_Stz,
   /* 44 */ "MC_TWOS_2B"_Stz,
   /* 45 */ "MC_TWOS_3B"_Stz,
@@ -198,7 +198,7 @@ namespace Data
   
   /* 33 */ 0, // MC_STR_EMPTY,   // empty string (no bytes in data area)
   /* 34 */ 1, // MC_STR_FIT_1L,  // ascii string: 1B=len, then ascii
-  /* 35 */ 2, // MC_STR_2T,      // longer ascii string:
+  /* 35 */ 2, // MC_STR_TAIL_2T,      // longer ascii string:
                                  //    head: 2B->tail
                                  //    tail: has 1B=len, then ascii
   /* 36 */ 3, // MC_STR_SPLIT_2T1L,// ascii string:
@@ -206,10 +206,10 @@ namespace Data
                                    //   tail: has remaining ascii
   
   /* 37 */ 2, // MC_BSTR_FIT_2L,   // bigger ascii string: 2B=len then ascii
-  /* 38 */ 2, // MC_BSTR_2T,       // bigger ascii string:
+  /* 38 */ 2, // MC_BSTR_TAIL_2T,       // bigger ascii string:
                                    //    head: 2B->tail
                                    //    tail: has 2B=len, then ascii
-  /* 39 */ 3, // MC_BSTR_SPLIT_2T1L, // bigger ascii string:
+  /* 39 */ 3, // MC_BSTR_SPLIT_2T2L, // bigger ascii string:
                                      //   head: 2B->tail, 2B=len, part-ascii
                                      //   tail: has remaining ascii
   
@@ -217,7 +217,7 @@ namespace Data
   /* 41 */ 2, // MC_SHOCO_TAIL_2T,        // shoco encoded string:
                                      //    head: 2B->tail
                                      //    tail: has 1B=len, then shoco
-  /* 42 */ 3, // MC_SHOCO_SPLIT_2T1L,// shoco encoded string:
+  /* 42 */ 3, // MC_SHOCO_SPLIT_2T1C,// shoco encoded string:
                                      //   head: 2B->tail, 1B=len, part-shoco
                                      //   tail: has remaining shoco
   
