@@ -8,6 +8,8 @@ namespace Data
   class Row : public Object
   {
   public:
+    ColumnVec* m_pColVec;
+  
     i8 m_iColumns;
     i8 m_iBaseOffset;
     i8 m_aiValue[C_MAX_COLUMNS];

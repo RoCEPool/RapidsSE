@@ -2371,6 +2371,8 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
   TailLine* aShocoTail;
   
 #ifdef WITH_TRACE_DECODING
+  static i8 nTotalRows = 0;
+  vTrace("vDecode() of row %lld\n"_Stz,nTotalRows++);
   RowCoder::vHeadDump(aHeadLine,pColVec);
 #endif
 
