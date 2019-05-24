@@ -196,11 +196,7 @@ namespace Data
                         ColumnVec* pColVec, Column* pCol,
                         i8& i_LastColumn, i8& i_LastOffset);
     
-#ifdef WITH_TRACE_DECODING
-    static void vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec);
-#else
     static void vDecode(Row* pRow, HeadLine* aHeadLine);
-#endif
     
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
@@ -379,11 +375,7 @@ namespace Data
 //        vDecode(&oDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
 //      }
 
-#ifdef WITH_TRACE_DECODING
-      RowCoder::vDecode(pRow,aHeadLine,pColVec);
-#else
       RowCoder::vDecode(pRow,aHeadLine);
-#endif
 
       //      i8 iSum = 0;
       //      byte* ayByte = (byte*)aHeadLine;

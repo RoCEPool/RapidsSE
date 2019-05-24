@@ -2352,11 +2352,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode headline into row                                                   */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_TRACE_DECODING
-  void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
-#else
-  void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine)
-#endif
+ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine)
 {
   eMC  eMetaCode;
   Word wWord;
@@ -2388,6 +2384,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 #ifdef WITH_TRACE_DECODING
     Column* pCol = pRow->m_pColVec->pGet(i_Col);
 #endif
+    
     eMetaCode = (eMC)*aMetaCode++;
     
     switch (eMetaCode) {
@@ -2774,8 +2771,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
   
   i8 i_LastOffset = iBaseOffset(pColVec);
   
-  vTrace("Col ColumnName      Datum  MetaCode"
-         "         Offset  DataBytes          Value\n"_Stz);
+  vTrace("Col ColNm           Datum  MetaCode"
+         "         Offset Address       DataBytes          Value\n"_Stz);
   
   // for each column
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
@@ -2784,23 +2781,23 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     Column* pCol = pColVec->pGet(i_Col);
     
     // first get the encoded value into datum
-    //vDecode(&oDatum,aHeadLine,pColVec,pCol,i_Col,i_LastOffset);
-    eDM eDatum = pCol->eDatumType();
+    eDM eDatum     = pCol->eDatumType();
     eMC eEncoding  = eGetEncoding(aHeadLine,pCol,pColVec,i_Col,i_LastOffset);
     Stz* aEncoding = aMC[eEncoding];
     
-    i8 nBytes = nDataBytes(eEncoding);
+    i8 nBytes      = nDataBytes(eEncoding);
     
-    i8 iMetaCode = aHeadLine->eMetaCode(i_Col);
+    i8 iMetaCode   = aHeadLine->eMetaCode(i_Col);
     
-    //      colNo colNm Dtm  MC aMC   Ofset Bytes
-    vTrace("%3lld %-15s %-6s %02x %-17s %2lld %2lld "_Stz,
+    //      colNo colNm Dtm  MC   aMC   Ofset Addr   Bytes
+    vTrace("%3lld %-15s %-6s %02x %-17s %2lld %08llx %2lld "_Stz,
            i_Col,
-           pCol->sColumnName().aChar(),
+           pCol->szColNm(),
            aDM[eDatum],
            iMetaCode,
            aEncoding,
            i_LastOffset,
+           (byte*)aHeadLine + i_LastOffset,
            nBytes);
     
     if (nBytes)
