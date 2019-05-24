@@ -2352,11 +2352,8 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
 {
-  Column* pCol;
   eMC  eMetaCode;
   Word wWord;
-  
-  i8   iTest;
   
   i8   i_Tail_Rel;
   i8   nCompressed;
@@ -2380,8 +2377,9 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    pCol = pColVec->pGet(i_Col);
-    
+#ifdef WITH_TRACE_DECODING
+    Column* pCol = pColVec->pGet(i_Col);
+#endif
     eMetaCode = (eMC)*aMetaCode++;
     
     switch (eMetaCode) {
@@ -2395,7 +2393,7 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
 //        wWord.m_iI8 = 0;
 //        wWord.m_yaByte[0] = *aDataByte++;
 //        *aiValue++ = wWord.m_iI8;
-        *aiValue++ = iTest = *(u1*)(aDataByte);
+        *aiValue++ = *(u1*)(aDataByte);
         aDataByte += 1;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
@@ -2406,7 +2404,7 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
 //        wWord.m_yaByte[0] = *aDataByte++;
 //        wWord.m_yaByte[1] = *aDataByte++;
 //        *aiValue++ = wWord.m_iI8;
-        *aiValue++ = iTest = *(u2*)(aDataByte);
+        *aiValue++ = *(u2*)(aDataByte);
         aDataByte += 2;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
@@ -2429,7 +2427,7 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
 //        wWord.m_yaByte[2] = *aDataByte++;
 //        wWord.m_yaByte[3] = *aDataByte++;
 //        *aiValue++ = wWord.m_iI8;
-        *aiValue++ = iTest = *(u4*)(aDataByte);
+        *aiValue++ = *(u4*)(aDataByte);
         aDataByte += 4;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
@@ -2485,7 +2483,7 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
 //        wWord.m_yaByte[6] = *aDataByte++;
 //        wWord.m_yaByte[7] = *aDataByte++;
 //        *aiValue++ = wWord.m_iI8;
-        *aiValue++ = iTest = *(u8*)(aDataByte);
+        *aiValue++ = *(u8*)(aDataByte);
         aDataByte += 8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));

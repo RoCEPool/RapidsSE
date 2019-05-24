@@ -29,6 +29,8 @@ namespace Jobs
     bool         m_bRetrieve;           // to retrieve rows ?
     RowOnce*     m_pRowOnce;            // has row been seen before?
     
+    Row*         m_pRow;                // row for retrieval
+    
     // must be last
     Footer m_xFooter;
   

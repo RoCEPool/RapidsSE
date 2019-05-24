@@ -170,6 +170,8 @@ Job_FetchRows::Job_FetchRows(Interface::Session* pSession)
   m_pRowOnce     = nullptr;
   m_bRetrieve    = false;
   
+  m_pRow         = new Row;
+  
   _checkInitialised_(CN_JOB_FETCHROWS);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
@@ -195,6 +197,8 @@ Job_FetchRows::~Job_FetchRows(void) noexcept(false)
     delete m_pRowOnce;
     m_pRowOnce = nullptr;
   }
+  
+  delete m_pRow;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -780,7 +784,7 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
       
       // just decode the row
       
-      RowCoder::vRetrieveAll(aHeadLine, pColVec);
+      RowCoder::vRetrieveAll(aHeadLine, pJob_FetchRows->m_pRow, pColVec);
     }
     
     aaHeadLine = pFetchBuffer->aaNextRowPtr(aaHeadLine);

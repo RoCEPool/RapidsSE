@@ -350,10 +350,9 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     /* retrieve and decode row from cache line                                    */
     /*----------------------------------------------------------------------------*/
-    static inline void vRetrieveAll(HeadLine* aHeadLine, ColumnVec* pColVec)
+    static inline void vRetrieveAll(HeadLine* aHeadLine, Row* pRow, ColumnVec* pColVec)
     {
       //Datum oDatum;
-      Row* pRow = new Row;
       
       //vHeadDump(aHeadLine, pColVec);
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -384,7 +383,6 @@ namespace Data
       //        iSum+=*ayByte++;
       //      oDatum.m_iInt = iSum;
       
-      delete pRow;
     }
     
     /*----------------------------------------------------------------------------*/
