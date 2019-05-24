@@ -2652,7 +2652,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
   i8 i_LastOffset = iBaseOffset(pColVec);
   
   vTrace("Col ColumnName      Datum  MetaCode"
-         "         Offset  Bytes              Value\n"_Stz);
+         "         Offset  DataBytes          Value\n"_Stz);
   
   // for each column
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
