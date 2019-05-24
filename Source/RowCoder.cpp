@@ -2771,8 +2771,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
   
   i8 i_LastOffset = iBaseOffset(pColVec);
   
-  vTrace("Col ColNm           Datum  MetaCode"
-         "         Offset Address       DataBytes          Value\n"_Stz);
+  vTrace("Col ColNm         Datum MetaCode"
+         "        Offset Address      DataBytes          Value\n"_Stz);
   
   // for each column
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
@@ -2790,7 +2790,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     i8 iMetaCode   = aHeadLine->eMetaCode(i_Col);
     
     //      colNo colNm Dtm  MC   aMC   Ofset Addr   Bytes
-    vTrace("%3lld %-15s %-6s %02x %-17s %2lld %08llx %2lld "_Stz,
+    vTrace("%3lld %-15s %-3s %02x %-16s %2lld %012llx %1lld "_Stz,
            i_Col,
            pCol->szColNm(),
            aDM[eDatum],
