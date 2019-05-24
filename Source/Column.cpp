@@ -161,6 +161,16 @@ void Column::vColumnScale(i8 iColumnScale)
 /*----------------------------------------------------------------------------*/
 /* get column name                                                            */
 /*----------------------------------------------------------------------------*/
+Stz* Column::szColNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  return m_sColumnName.aStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column name                                                            */
+/*----------------------------------------------------------------------------*/
 s32& Column::sColumnName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);

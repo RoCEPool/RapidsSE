@@ -109,6 +109,7 @@ namespace MetaData
     //i8   iColumnNo(void);
     void vColumnNo(i8 iColumnNo);
   
+    Stz* szColNm(void);
     s32& sColumnName(void);
     void vColumnName(Stz* sColumnName);
   

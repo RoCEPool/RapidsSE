@@ -2350,6 +2350,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
 {
+  Column* pCol;
   eMC  eMetaCode;
   Word wWord;
   
@@ -2367,33 +2368,40 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
   i8 nCols = pColVec->nItems();
   byte* aMetaCode = (byte*)aHeadLine + C_HEAD_PRE_BYTES;
   byte* aDataByte = (byte*)aHeadLine + iBaseOffset(pColVec);
-  i8*   aValue    = & pRow->m_aiValue[0];
+  i8*   aiValue   = & pRow->m_aiValue[0];
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    pCol = pColVec->pGet(i_Col);
     
     eMetaCode = (eMC)*aMetaCode++;
     
     switch (eMetaCode) {
       case MC_NULL:
-        *aValue++ = C_DATUM_NULL;
+        *aiValue++ = C_DATUM_NULL;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_1B:
-        *aValue++ = (i8)*(i1*)aDataByte++;
+        *aiValue++ = (i8)*(i1*)aDataByte++;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_2B:
-        *aValue++ = (i8)*(i2*)aDataByte;
+        *aiValue++ = (i8)*(i2*)aDataByte;
         aDataByte += 2;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_3B:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *aDataByte++;
         wWord.m_yaByte[1] = *aDataByte++;
         wWord.m_yaByte[2] = *aDataByte++;
-        *aValue++ = wWord.m_iI8;
+        *aiValue++ = wWord.m_iI8;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_4B:
-        *aValue++ = (i8)*(i4*)aDataByte;
+        *aiValue++ = (i8)*(i4*)aDataByte;
         aDataByte += 4;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_5B:
         wWord.m_iI8 = 0;
@@ -2402,7 +2410,8 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
         wWord.m_yaByte[2] = *aDataByte++;
         wWord.m_yaByte[3] = *aDataByte++;
         wWord.m_yaByte[4] = *aDataByte++;
-        *aValue++ = wWord.m_iI8;
+        *aiValue++ = wWord.m_iI8;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_6B:
         wWord.m_iI8 = 0;
@@ -2413,7 +2422,8 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
         wWord.m_yaByte[4] = *aDataByte++;
         wWord.m_yaByte[5] = *aDataByte++;
         wWord.m_yaByte[6] = *aDataByte++;
-        *aValue++ = wWord.m_iI8;
+        *aiValue++ = wWord.m_iI8;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_7B:
         wWord.m_iI8 = 0;
@@ -2425,47 +2435,61 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
         wWord.m_yaByte[5] = *aDataByte++;
         wWord.m_yaByte[6] = *aDataByte++;
         wWord.m_yaByte[7] = *aDataByte++;
-        *aValue++ = wWord.m_iI8;
+        *aiValue++ = wWord.m_iI8;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_8B:
-        *aValue++ = (i8)*(i8*)aDataByte;
+        *aiValue++ = (i8)*(i8*)aDataByte;
         aDataByte += 8;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_MINUS_ONE:
-        *aValue++ = -1;
+        *aiValue++ = -1;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_ZERO:
-        *aValue++ =  0;
+        *aiValue++ =  0;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_ONE:
-        *aValue++ =  1;
+        *aiValue++ =  1;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_TWO:
-        *aValue++ =  2;
+        *aiValue++ =  2;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_THREE:
-        *aValue++ =  3;
+        *aiValue++ =  3;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_FOUR:
-        *aValue++ =  4;
+        *aiValue++ =  4;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_FIVE:
-        *aValue++ =  5;
+        *aiValue++ =  5;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_SIX:
-        *aValue++ =  6;
+        *aiValue++ =  6;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_SEVEN:
-        *aValue++ =  7;
+        *aiValue++ =  7;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_EIGHT:
-        *aValue++ =  8;
+        *aiValue++ =  8;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_NINE:
-        *aValue++ =  9;
+        *aiValue++ =  9;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_TEN:
-        *aValue++ = 10;
+        *aiValue++ = 10;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_SAME:
         break;
@@ -2478,26 +2502,31 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
       case MC_SUB_2B:
         break;
       case MC_FALSE:
-        *aValue++ =  0;
+        *aiValue++ =  0;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_TRUE:
-        *aValue++ =  1;
+        *aiValue++ =  1;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
         
       case MC_DATE_E0_2B:
-        *aValue++ = (i8)*(i2*)aDataByte;
+        *aiValue++ = (i8)*(i2*)aDataByte;
         aDataByte += 2;
         vDateFromEra(&wWord,C_ERA_0);
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_DATE_E1_2B:
-        *aValue++ = (i8)*(i2*)aDataByte;
+        *aiValue++ = (i8)*(i2*)aDataByte;
         aDataByte += 2;
         vDateFromEra(&wWord,C_ERA_1);
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_DATE_E2_2B:
-        *aValue++ = (i8)*(i2*)aDataByte;
+        *aiValue++ = (i8)*(i2*)aDataByte;
         aDataByte += 2;
         vDateFromEra(&wWord,C_ERA_2);
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
       case MC_DAYS_ADD_1B:
         break;
@@ -2505,7 +2534,8 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
         break;
         
       case MC_STR_EMPTY:
-        *aValue++ = 0;
+        *aiValue++ = 0;
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
         
       case MC_STR_FIT_1L:
@@ -2528,6 +2558,7 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
                                sizeof(caShoco),          // max destination
                                aDataByte,                // compressed source
                                nCompressed);             // bytes compressed
+        vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),aString);
         aString += nDecompressed;
         pRow->m_i_Wsp += nDecompressed;
         aDataByte += nCompressed;
@@ -2544,6 +2575,7 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
                                  + C_SHOCO_COMPRESSED_OFFSET
                                  + C_SHOCO_COMPRESSED_BYTES,
                                nCompressed);             // bytes compressed
+        vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),aString);
         aString += nDecompressed;
         pRow->m_i_Wsp += nDecompressed;
         break;
@@ -2567,9 +2599,10 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
                                sizeof(caShoco),          // max destination
                                (byte*)caShoco,           // compressed source
                                nCompressed);             // bytes compressed
-          aString += nDecompressed;
-          pRow->m_i_Wsp += nDecompressed;
-          aDataByte += nBytesPartA;
+        vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),aString);
+        aString += nDecompressed;
+        pRow->m_i_Wsp += nDecompressed;
+        aDataByte += nBytesPartA;
         break;
         
       case MC_TWOS_1B:
