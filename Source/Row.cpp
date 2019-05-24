@@ -52,7 +52,7 @@ Row::Row(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
 #ifdef WITH_CHECK_INITIALISED
-  for (i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
+  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
     m_aiValue[i_Col] = 0;
 #else
   
