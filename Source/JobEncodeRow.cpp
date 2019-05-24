@@ -63,6 +63,7 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
   bBlankLine = false;
   static Peruse xRows("Rows:"_Stz);
   xRows.vAdd(1,"\n"_Stz);
+  bool bResult = true;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -128,6 +129,11 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
     //HeadLine* aHeadLine = m_oRowParts.aGetHead(0);
     //MemLib::vWordDump(aHeadLine,sizeof(HeadLine));
     
+    if (m_pRowCoder_Encode->m_i_IntoOffset > C_BYTES_PER_CACHE_LINE) {
+      bResult = false;
+      break;
+    }
+      
   } // for each column
   
   m_pRowCoder_Encode->vEncodeEnd();
@@ -139,7 +145,7 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
 //  RowCoder::vRecord(hvRec,m_oRowParts,0);
 //  hvRec->vPrintRow();
 
-  return true;
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/
