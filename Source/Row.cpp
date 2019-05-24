@@ -51,6 +51,14 @@ Row::Row(ColumnVec* pColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
+  m_pColVec     = pColVec;
+  m_iColumns    = m_pColVec->nItems();
+  m_iBaseOffset = RowCoder::iBaseOffset(m_pColVec);
+  m_bGetAll     = true;
+  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
+    m_abGetCol[i_Col] = false;
+  m_i_Wsp       = 0;
+
 #ifdef WITH_CHECK_INITIALISED
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
     m_aiValue[i_Col] = 0;
@@ -60,11 +68,6 @@ Row::Row(ColumnVec* pColVec)
   
 #endif
 
-  m_pColVec  = pColVec;
-  m_iColumns = m_pColVec->nItems();
-  m_iBaseOffset = RowCoder::iBaseOffset(m_pColVec);
-  
-  m_i_Wsp = 0;
   // m_xWsp
   
   _checkInitialised_(CN_ROW);

@@ -214,7 +214,7 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
 
   
 //#ifdef WITH_TRACE_ENCODING
-//  if (m_nTotalHeads <= 10)
+  if (m_nTotalHeads <= 10)
     RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
 //#endif
 
@@ -2379,6 +2379,8 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
   byte* aDataByte = (byte*)aHeadLine + pRow->m_iBaseOffset;
   i8*   aiValue   = & pRow->m_aiValue[0];
   
+  bool  bGetAll   = pRow->m_bGetAll;
+  
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
   
 #ifdef WITH_TRACE_DECODING
@@ -2386,6 +2388,13 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 #endif
     
     eMetaCode = (eMC)*aMetaCode++;
+    
+    //! temp experiment
+    if ( ! ( bGetAll || pRow->m_abGetCol[i_Col] ) ) {
+      *aiValue++ = C_UNKNOWN;
+      aDataByte += nDataBytes(eMetaCode);
+      continue;
+    }
     
     switch (eMetaCode) {
       case MC_NULL:
