@@ -2356,6 +2356,8 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
   eMC  eMetaCode;
   Word wWord;
   
+  i8   iTest;
+  
   i8   i_Tail_Rel;
   i8   nCompressed;
   i8   nDecompressed;
@@ -2365,7 +2367,9 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
   
   TailLine* aShocoTail;
   
+#ifdef WITH_TRACE_DECODING
   RowCoder::vHeadDump(aHeadLine,pColVec);
+#endif
 
   char* aString = pRow->m_xWsp.aArea();
   
@@ -2383,24 +2387,28 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
     switch (eMetaCode) {
       case MC_NULL:
         *aiValue++ = C_DATUM_NULL;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] null\n"_Stz,i_Col,pCol->szColNm());
 #endif
         break;
       case MC_1B:
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *aDataByte++;
-        *aiValue++ = wWord.m_iI8;
-#ifdef WITH_TRACE_DECODE
+//        wWord.m_iI8 = 0;
+//        wWord.m_yaByte[0] = *aDataByte++;
+//        *aiValue++ = wWord.m_iI8;
+        *aiValue++ = iTest = *(u1*)(aDataByte);
+        aDataByte += 1;
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
       case MC_2B:
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *aDataByte++;
-        wWord.m_yaByte[1] = *aDataByte++;
-        *aiValue++ = wWord.m_iI8;
-#ifdef WITH_TRACE_DECODE
+//        wWord.m_iI8 = 0;
+//        wWord.m_yaByte[0] = *aDataByte++;
+//        wWord.m_yaByte[1] = *aDataByte++;
+//        *aiValue++ = wWord.m_iI8;
+        *aiValue++ = iTest = *(u2*)(aDataByte);
+        aDataByte += 2;
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
@@ -2410,18 +2418,20 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
         wWord.m_yaByte[1] = *aDataByte++;
         wWord.m_yaByte[2] = *aDataByte++;
         *aiValue++ = wWord.m_iI8;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
       case MC_4B:
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *aDataByte++;
-        wWord.m_yaByte[1] = *aDataByte++;
-        wWord.m_yaByte[2] = *aDataByte++;
-        wWord.m_yaByte[3] = *aDataByte++;
-        *aiValue++ = wWord.m_iI8;
-#ifdef WITH_TRACE_DECODE
+//        wWord.m_iI8 = 0;
+//        wWord.m_yaByte[0] = *aDataByte++;
+//        wWord.m_yaByte[1] = *aDataByte++;
+//        wWord.m_yaByte[2] = *aDataByte++;
+//        wWord.m_yaByte[3] = *aDataByte++;
+//        *aiValue++ = wWord.m_iI8;
+        *aiValue++ = iTest = *(u4*)(aDataByte);
+        aDataByte += 4;
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
@@ -2433,7 +2443,7 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
         wWord.m_yaByte[3] = *aDataByte++;
         wWord.m_yaByte[4] = *aDataByte++;
         *aiValue++ = wWord.m_iI8;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
@@ -2446,7 +2456,7 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
         wWord.m_yaByte[4] = *aDataByte++;
         wWord.m_yaByte[5] = *aDataByte++;
         *aiValue++ = wWord.m_iI8;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
@@ -2460,94 +2470,96 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
         wWord.m_yaByte[5] = *aDataByte++;
         wWord.m_yaByte[6] = *aDataByte++;
         *aiValue++ = wWord.m_iI8;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
       case MC_8B:
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *aDataByte++;
-        wWord.m_yaByte[1] = *aDataByte++;
-        wWord.m_yaByte[2] = *aDataByte++;
-        wWord.m_yaByte[3] = *aDataByte++;
-        wWord.m_yaByte[4] = *aDataByte++;
-        wWord.m_yaByte[5] = *aDataByte++;
-        wWord.m_yaByte[6] = *aDataByte++;
-        wWord.m_yaByte[7] = *aDataByte++;
-        *aiValue++ = wWord.m_iI8;
-#ifdef WITH_TRACE_DECODE
+//        wWord.m_iI8 = 0;
+//        wWord.m_yaByte[0] = *aDataByte++;
+//        wWord.m_yaByte[1] = *aDataByte++;
+//        wWord.m_yaByte[2] = *aDataByte++;
+//        wWord.m_yaByte[3] = *aDataByte++;
+//        wWord.m_yaByte[4] = *aDataByte++;
+//        wWord.m_yaByte[5] = *aDataByte++;
+//        wWord.m_yaByte[6] = *aDataByte++;
+//        wWord.m_yaByte[7] = *aDataByte++;
+//        *aiValue++ = wWord.m_iI8;
+        *aiValue++ = iTest = *(u8*)(aDataByte);
+        aDataByte += 8;
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
       case MC_MINUS_ONE:
         *aiValue++ = -1;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
       case MC_ZERO:
         *aiValue++ =  0;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
       case MC_ONE:
         *aiValue++ =  1;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
       case MC_TWO:
         *aiValue++ =  2;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
       case MC_THREE:
         *aiValue++ =  3;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
       case MC_FOUR:
         *aiValue++ =  4;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
       case MC_FIVE:
         *aiValue++ =  5;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
       case MC_SIX:
         *aiValue++ =  6;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
       case MC_SEVEN:
         *aiValue++ =  7;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
       case MC_EIGHT:
         *aiValue++ =  8;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
       case MC_NINE:
         *aiValue++ =  9;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
       case MC_TEN:
         *aiValue++ = 10;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
@@ -2563,39 +2575,60 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
         break;
       case MC_FALSE:
         *aiValue++ =  0;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
       case MC_TRUE:
         *aiValue++ =  1;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
         
       case MC_DATE_E0_2B:
-        *aiValue++ = (i8)*(i2*)aDataByte;
+        *aiValue++ = *(u2*)aDataByte;
         aDataByte += 2;
         vDateFromEra(&wWord,C_ERA_0);
-#ifdef WITH_TRACE_DECODE
-        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#ifdef WITH_TRACE_DECODING
+        wWord.m_iDte = *(aiValue-1);
+        vTrace(" [%lld %15s] %4lld : %02lld-%02lld-%02lld\n"_Stz,
+               i_Col,
+               pCol->szColNm(),
+               wWord.m_iDte,
+               (i8)wWord.xEdt.m_uYearInEra + C_ERA_0 + C_BASE_YEAR,
+               (i8)wWord.xEdt.m_uMonth,
+               (i8)wWord.xEdt.m_uDay);
 #endif
         break;
       case MC_DATE_E1_2B:
-        *aiValue++ = (i8)*(i2*)aDataByte;
+        *aiValue++ = *(u2*)aDataByte;
         aDataByte += 2;
         vDateFromEra(&wWord,C_ERA_1);
-#ifdef WITH_TRACE_DECODE
-        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#ifdef WITH_TRACE_DECODING
+        wWord.m_iDte = *(aiValue-1);
+        vTrace(" [%lld %15s] %4lld : %02lld-%02lld-%02lld\n"_Stz,
+               i_Col,
+               pCol->szColNm(),
+               wWord.m_iDte,
+               (i8)wWord.xEdt.m_uYearInEra + C_ERA_1 + C_BASE_YEAR,
+               (i8)wWord.xEdt.m_uMonth,
+               (i8)wWord.xEdt.m_uDay);
 #endif
         break;
       case MC_DATE_E2_2B:
-        *aiValue++ = (i8)*(i2*)aDataByte;
+        *aiValue++ = *(u2*)aDataByte;
         aDataByte += 2;
         vDateFromEra(&wWord,C_ERA_2);
-#ifdef WITH_TRACE_DECODE
-        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#ifdef WITH_TRACE_DECODING
+        wWord.m_iDte = *(aiValue-1);
+        vTrace(" [%lld %15s] %4lld : %02lld-%02lld-%02lld\n"_Stz,
+               i_Col,
+               pCol->szColNm(),
+               wWord.m_iDte,
+               (i8)wWord.xEdt.m_uYearInEra + C_ERA_2 + C_BASE_YEAR,
+               (i8)wWord.xEdt.m_uMonth,
+               (i8)wWord.xEdt.m_uDay);
 #endif
         break;
       case MC_DAYS_ADD_1B:
@@ -2605,7 +2638,7 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
         
       case MC_STR_EMPTY:
         *aiValue++ = 0;
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
@@ -2630,7 +2663,7 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
                                sizeof(caShoco),          // max destination
                                aDataByte,                // compressed source
                                nCompressed);             // bytes compressed
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),aString);
 #endif
         aString += nDecompressed;
@@ -2653,7 +2686,7 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
                                  + C_SHOCO_COMPRESSED_OFFSET
                                  + C_SHOCO_COMPRESSED_BYTES,
                                nCompressed);             // bytes compressed
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),aString);
 #endif
         aString += nDecompressed;
@@ -2683,7 +2716,7 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
                                sizeof(caShoco),          // max destination
                                (byte*)caShoco,           // compressed source
                                nCompressed);             // bytes compressed
-#ifdef WITH_TRACE_DECODE
+#ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),aString);
 #endif
         aString += nDecompressed;
