@@ -2363,6 +2363,8 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
   
   TailLine* aShocoTail;
   
+  RowCoder::vHeadDump(aHeadLine,pColVec);
+
   char* aString = pRow->m_xWsp.aArea();
   
   i8 nCols = pColVec->nItems();
