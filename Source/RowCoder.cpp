@@ -2381,7 +2381,7 @@ void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine, ColumnVec* pColVec)
     switch (eMetaCode) {
       case MC_NULL:
         *aiValue++ = C_DATUM_NULL;
-        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+        vTrace(" [%lld %15s] null\n"_Stz,i_Col,pCol->szColNm());
         break;
       case MC_1B:
         wWord.m_iI8 = 0;

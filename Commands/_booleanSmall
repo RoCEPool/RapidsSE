@@ -1,0 +1,233 @@
+/*============================================================================*/
+/* _boolean -- boolean test                                                   */
+/*============================================================================*/
+startCluster;
+
+ create table bolTbl (
+ bol_col0   INTEGER     NOT NULL,
+ bol_col1   BOOLEAN     NOT NULL,
+ bol_col2   BOOLEAN     NOT NULL,
+ bol_col3   BOOLEAN     NOT NULL,
+ bol_col4   BOOLEAN     NOT NULL,
+ bol_col5   BOOLEAN     NOT NULL,
+ bol_col6   BOOLEAN     NOT NULL,
+ bol_col7   BOOLEAN     NOT NULL,
+ bol_col8   BOOLEAN     NOT NULL,
+ bol_col9   BOOLEAN     NOT NULL,
+ bol_col10  BOOLEAN     NOT NULL,
+ bol_col11  BOOLEAN     NOT NULL,
+ bol_col12  BOOLEAN     NOT NULL,
+ bol_col13  BOOLEAN     NOT NULL,
+ bol_col14  BOOLEAN     NOT NULL,
+ bol_col15  BOOLEAN
+ );
+ 
+
+// generate via:
+// docol booleanData;
+ ld bolTbl "/DATA/Encoding/booleanSmall.csv" ;
+
+ time fetch bolTbl noPrint;
+
+ time fetch retrieve bolTbl bol_col1;
+ time fetch retrieve bolTbl bol_col1;
+ time fetch retrieve bolTbl bol_col1;
+ time fetch retrieve bolTbl bol_col1;
+ time fetch retrieve bolTbl bol_col1;
+ time fetch retrieve bolTbl bol_col1;
+ time fetch retrieve bolTbl bol_col1;
+ time fetch retrieve bolTbl bol_col1;
+ time fetch retrieve bolTbl bol_col1;
+
+/*
+
+MARKIII : 22 May
+time fetch bolTbl noPrint;
+success: 1000000 rows fetched
+time 600ms
+
+ : HeadFree 3213015B(19%) : 0..7B:39052 8..15B:134011 16..23B:79793 24..31B:0 32..39B:0 40..47B:0 µ:12B
+ success: 1000000 rows loaded (0 invalid rows 0 skipped rows)
+ success: 1000000 rows affected
+ time 56ms
+ success: 1000000 rows affected
+ time 68ms
+ success: 1000000 rows affected
+ time 83ms
+ success: 1000000 rows affected
+ time 101ms
+ success: 1000000 rows affected
+ time 117ms
+ success: 1000000 rows affected
+ time 131ms
+ success: 1000000 rows affected
+ time 155ms
+ success: 1000000 rows affected
+ time 170ms
+ success: 1000000 rows affected
+ time 184ms
+ success: 1000000 rows affected
+ time 199ms
+ success: 1000000 rows affected
+ time 218ms
+ success: 1000000 rows affected
+ time 231ms
+ success: 1000000 rows affected
+ time 245ms
+ success: 1000000 rows affected
+ time 272ms
+ success: 1000000 rows affected
+ time 293ms
+ success: 1000000 rows affected
+ time 289ms
+ [N0/1 NODE1 12681] se 4.0.5r has>
+ 
+ 
+ // STARTING WORK on columns after 2
+ uccess: 1000000 rows loaded (0 invalid rows 0 skipped rows)
+ success: 1000000 rows affected
+ time 25ms
+ success: 1000000 rows affected
+ time 28ms
+ success: 1000000 rows affected
+ time 33ms
+ success: 1000000 rows affected
+ time 38ms
+ success: 1000000 rows affected
+ time 47ms
+ success: 1000000 rows affected
+ time 53ms
+ success: 1000000 rows affected
+ time 75ms
+ success: 1000000 rows affected
+ time 79ms
+ success: 1000000 rows affected
+ time 92ms
+ success: 1000000 rows affected
+ time 106ms
+ success: 1000000 rows affected
+ time 118ms
+ success: 1000000 rows affected
+ time 120ms
+ success: 1000000 rows affected
+ time 128ms
+ success: 1000000 rows affected
+ time 135ms
+ success: 1000000 rows affected
+ time 160ms
+ success: 1000000 rows affected
+ time 146ms
+
+ 
+ By adding eGetEncodingExtIntFast and catering to special case of 0,1,-1,null
+ the timings reduced for last column which has nulls considerably.
+ 
+ success: 1000000 rows affected
+ time 26ms
+ success: 1000000 rows affected
+ time 27ms
+ success: 1000000 rows affected
+ time 34ms
+ success: 1000000 rows affected
+ time 40ms
+ success: 1000000 rows affected
+ time 46ms
+ success: 1000000 rows affected
+ time 52ms
+ success: 1000000 rows affected
+ time 68ms
+ success: 1000000 rows affected
+ time 76ms
+ success: 1000000 rows affected
+ time 73ms
+ success: 1000000 rows affected
+ time 78ms
+ success: 1000000 rows affected
+ time 86ms
+ success: 1000000 rows affected
+ time 93ms
+ success: 1000000 rows affected
+ time 97ms
+ success: 1000000 rows affected
+ time 106ms
+ success: 1000000 rows affected
+ time 118ms
+ success: 1000000 rows affected
+ time 36ms
+ [N0/1 NODE1 39173] se 4.0.5r has>
+ 
+ 
+ // By adding the 2D array for nDataBytes:
+ success: 1000000 rows affected
+ time 26ms
+ success: 1000000 rows affected
+ time 22ms
+ success: 1000000 rows affected
+ time 23ms
+ success: 1000000 rows affected
+ time 24ms
+ success: 1000000 rows affected
+ time 28ms
+ success: 1000000 rows affected
+ time 29ms
+ success: 1000000 rows affected
+ time 32ms
+ success: 1000000 rows affected
+ time 41ms
+ success: 1000000 rows affected
+ time 41ms
+ success: 1000000 rows affected
+ time 39ms
+ success: 1000000 rows affected
+ time 41ms
+ success: 1000000 rows affected
+ time 44ms
+ success: 1000000 rows affected
+ time 51ms
+ success: 1000000 rows affected
+ time 51ms
+ success: 1000000 rows affected
+ time 51ms
+ success: 1000000 rows affected
+ time 26ms
+ [N0/1 NODE1 3922] se 4.0.5r has>
+ 
+ 5th May 2019
+ success: 1000000 rows affected
+ time 22ms
+ success: 1000000 rows affected
+ time 21ms
+ success: 1000000 rows affected
+ time 23ms
+ success: 1000000 rows affected
+ time 24ms
+ success: 1000000 rows affected
+ time 28ms
+ success: 1000000 rows affected
+ time 30ms
+ success: 1000000 rows affected
+ time 37ms
+ success: 1000000 rows affected
+ time 40ms
+ success: 1000000 rows affected
+ time 38ms
+ success: 1000000 rows affected
+ time 38ms
+ success: 1000000 rows affected
+ time 42ms
+ success: 1000000 rows affected
+ time 44ms
+ success: 1000000 rows affected
+ time 48ms
+ success: 1000000 rows affected
+ time 54ms
+ success: 1000000 rows affected
+ time 54ms
+ success: 1000000 rows affected
+ time 24ms
+ [N0/1 NODE1 15763] se 4.0.5r has>
+ */
+
+//*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
