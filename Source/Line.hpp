@@ -13,6 +13,7 @@ namespace Data
     Line(void);
     ~Line(void) noexcept(false);
   
+    w8   wGet(i8 i_Offset, i8 nBytes);
     void vPut(i8 i_Offset, w8 wWord, i8 nBytes);
   
     void vSetAll(byte yVal);

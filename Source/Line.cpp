@@ -27,6 +27,27 @@ Line::~Line(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get bytes from line                                                        */
+/*----------------------------------------------------------------------------*/
+w8 Line::wGet(i8 i_Offset, i8 nBytes)
+{
+  switch (nBytes) {
+    case 0: return 0;
+    case 1: return w8_1B(i_Offset);
+    case 2: return w8_2B(i_Offset);
+    case 3: return w8_3B(i_Offset);
+    case 4: return w8_4B(i_Offset);
+    case 5: return w8_5B(i_Offset);
+    case 6: return w8_6B(i_Offset);
+    case 7: return w8_7B(i_Offset);
+    case 8: return w8_8B(i_Offset);
+      
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* put bytes into line                                                        */
 /*----------------------------------------------------------------------------*/
 void Line::vPut(i8 i_Offset, w8 wWord, i8 nBytes)
