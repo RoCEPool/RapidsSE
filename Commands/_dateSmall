@@ -1,0 +1,194 @@
+/*============================================================================*/
+/* _date -- date test                                                         */
+/*============================================================================*/
+startCluster;
+
+create table dteTbl (
+dte_col0   INTEGER  NOT NULL,
+dte_col1   DATE     NOT NULL,
+dte_col2   DATE     NOT NULL,
+dte_col3   DATE     NOT NULL,
+dte_col4   DATE     NOT NULL,
+dte_col5   DATE     NOT NULL,
+dte_col6   DATE     NOT NULL,
+dte_col7   DATE     NOT NULL,
+dte_col8   DATE     NOT NULL,
+dte_col9   DATE     NOT NULL,
+dte_col10  DATE     NOT NULL,
+dte_col11  DATE     NOT NULL,
+dte_col12  DATE     NOT NULL,
+dte_col13  DATE     NOT NULL,
+dte_col14  DATE     NOT NULL,
+dte_col15  DATE
+);
+
+ld dteTbl "/DATA/Encoding/date.csv" ;
+
+time fetch retrieve dteTbl dte_col0;
+time fetch retrieve dteTbl dte_col1;
+time fetch retrieve dteTbl dte_col2;
+time fetch retrieve dteTbl dte_col3;
+time fetch retrieve dteTbl dte_col4;
+time fetch retrieve dteTbl dte_col5;
+time fetch retrieve dteTbl dte_col6;
+time fetch retrieve dteTbl dte_col7;
+time fetch retrieve dteTbl dte_col8;
+time fetch retrieve dteTbl dte_col9;
+time fetch retrieve dteTbl dte_col10;
+time fetch retrieve dteTbl dte_col11;
+time fetch retrieve dteTbl dte_col12;
+time fetch retrieve dteTbl dte_col13;
+time fetch retrieve dteTbl dte_col14;
+time fetch retrieve dteTbl dte_col15;
+
+/* added check for NULL in eGetEncoding:
+ last column that has nulls went down to:
+ success: 1000000 rows affected
+ time 40ms
+ 
+/* Little work in vRecordDate
+ 
+ success: 1000000 rows affected
+ time 25ms
+ success: 1000000 rows affected
+ time 56ms
+ success: 1000000 rows affected
+ time 59ms
+ success: 1000000 rows affected
+ time 60ms
+ success: 1000000 rows affected
+ time 60ms
+ success: 1000000 rows affected
+ time 63ms
+ success: 1000000 rows affected
+ time 67ms
+ success: 1000000 rows affected
+ time 73ms
+ success: 1000000 rows affected
+ time 76ms
+ success: 1000000 rows affected
+ time 88ms
+ success: 1000000 rows affected
+ time 81ms
+ success: 1000000 rows affected
+ time 97ms
+ success: 1000000 rows affected
+ time 88ms
+ success: 1000000 rows affected
+ time 114ms
+ success: 1000000 rows affected
+ time 101ms
+ success: 1000000 rows affected
+ time 109ms
+ [N0/1 NODE1 73172] se 4.0.5r has>
+ 
+/* Using Fast version of w8_*
+ 
+ success: 1000000 rows affected
+ time 27ms
+ success: 1000000 rows affected
+ time 57ms
+ success: 1000000 rows affected
+ time 60ms
+ success: 1000000 rows affected
+ time 59ms
+ success: 1000000 rows affected
+ time 64ms
+ success: 1000000 rows affected
+ time 64ms
+ success: 1000000 rows affected
+ time 67ms
+ success: 1000000 rows affected
+ time 75ms
+ success: 1000000 rows affected
+ time 76ms
+ success: 1000000 rows affected
+ time 78ms
+ success: 1000000 rows affected
+ time 89ms
+ success: 1000000 rows affected
+ time 120ms
+ success: 1000000 rows affected
+ time 98ms
+ success: 1000000 rows affected
+ time 117ms
+ success: 1000000 rows affected
+ time 115ms
+ success: 1000000 rows affected
+ time 116ms
+
+ 
+ Changed to 2D array:
+ success: 1000000 rows affected
+ time 27ms
+ success: 1000000 rows affected
+ time 65ms
+ success: 1000000 rows affected
+ time 66ms
+ success: 1000000 rows affected
+ time 68ms
+ success: 1000000 rows affected
+ time 72ms
+ success: 1000000 rows affected
+ time 73ms
+ success: 1000000 rows affected
+ time 73ms
+ success: 1000000 rows affected
+ time 83ms
+ success: 1000000 rows affected
+ time 84ms
+ success: 1000000 rows affected
+ time 99ms
+ success: 1000000 rows affected
+ time 93ms
+ success: 1000000 rows affected
+ time 101ms
+ success: 1000000 rows affected
+ time 99ms
+ success: 1000000 rows affected
+ time 122ms
+ success: 1000000 rows affected
+ time 109ms
+ success: 1000000 rows affected
+ time 113ms
+ [N0/1 NODE1 44618] se 4.0.5r has>
+ 
+ 6th May 2019
+ ------------
+ success: 1000000 rows affected
+ time 26ms
+ success: 1000000 rows affected
+ time 68ms
+ success: 1000000 rows affected
+ time 75ms
+ success: 1000000 rows affected
+ time 85ms
+ success: 1000000 rows affected
+ time 95ms
+ success: 1000000 rows affected
+ time 111ms
+ success: 1000000 rows affected
+ time 120ms
+ success: 1000000 rows affected
+ time 147ms
+ success: 1000000 rows affected
+ time 152ms
+ success: 1000000 rows affected
+ time 171ms
+ success: 1000000 rows affected
+ time 174ms
+ success: 1000000 rows affected
+ time 201ms
+ success: 1000000 rows affected
+ time 203ms
+ success: 1000000 rows affected
+ time 228ms
+ success: 1000000 rows affected
+ time 230ms
+ success: 1000000 rows affected
+ time 233ms
+*/
+
+//*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
