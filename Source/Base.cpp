@@ -95,8 +95,8 @@ void Base::vTraceWith(void)
   vTrace("  WITH_ENCODING_INT_DIGIT\n"_Stz);
 #endif
   
-#ifdef WITH_EXTENDED_VCH_SMALL
-  vTrace("  WITH_EXTENDED_VCH_SMALL\n"_Stz);
+#ifdef WITH_ENCODING_VCH_SMALL
+  vTrace("  WITH_ENCODING_VCH_SMALL\n"_Stz);
 #endif
   
 #ifdef WITH_ENCODING_XCHECK
