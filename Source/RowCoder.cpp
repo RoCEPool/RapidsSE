@@ -2381,6 +2381,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
   i8   i_Tail_Rel;
   i8   nCompressed;
   i8   nDecompressed;
+  i8   nLength;
   i8   nBytesPartA;
   i8   nBytesPartB;
   char caShoco[C_4KB];
@@ -2677,7 +2678,20 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         break;
         
       case MC_STR_FIT_1L:
+        nLength = *(u1*)aDataByte++;
+        MemLib::vCopy((byte*)aString,
+                      (byte*)aDataByte,
+                      nLength,
+                      CN_ROWCODER);
+        *(char**)(aiValue++) = aString;
+        aDataByte += nLength;
+        aString   += nLength;
+        *aString++ = '\0';
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
         break;
+        
       case MC_STR_TAIL_2T:
         break;
       case MC_STR_SPLIT_2T1L:
@@ -2703,6 +2717,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         pRow->m_i_Wsp += nDecompressed;
         aDataByte += nCompressed;
         break;
+        
       case MC_SHOCO_TAIL_2T:
         //i_Tail_Rel  = (i8)*(i2*)aDataByte;
         //aDataByte  += 2;
@@ -2725,6 +2740,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         aString += nDecompressed;
         pRow->m_i_Wsp += nDecompressed;
         break;
+        
       case MC_SHOCO_SPLIT_2T1C:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *aDataByte++;
