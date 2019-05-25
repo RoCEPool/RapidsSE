@@ -248,7 +248,7 @@ namespace Data
     static void vDecodeVchShocoTail(Datum* pDatum, HeadLine* aHeadLine,
                                      Column* pCol, i8 i_Offset);
     static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
-                                     Column* pCol, eMC eEncoding, i8 i_Offset);
+                                     Column* pCol, i8 i_Offset);
 
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
   

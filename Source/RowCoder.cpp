@@ -2419,12 +2419,16 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
     }
     
     switch (eMetaCode) {
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_NULL:
         *aiValue++ = C_DATUM_NULL;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] null\n"_Stz,i_Col,pCol->szColNm());
 #endif
         break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_1B:
 //        wWord.m_iI8 = 0;
 //        wWord.m_yaByte[0] = *aDataByte++;
@@ -2435,6 +2439,8 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_2B:
 //        wWord.m_iI8 = 0;
 //        wWord.m_yaByte[0] = *aDataByte++;
@@ -2446,6 +2452,8 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_3B:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *aDataByte++;
@@ -2456,6 +2464,8 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+ 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_4B:
 //        wWord.m_iI8 = 0;
 //        wWord.m_yaByte[0] = *aDataByte++;
@@ -2469,6 +2479,8 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_5B:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *aDataByte++;
@@ -2481,6 +2493,8 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_6B:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *aDataByte++;
@@ -2494,6 +2508,8 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_7B:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *aDataByte++;
@@ -2508,6 +2524,8 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_8B:
 //        wWord.m_iI8 = 0;
 //        wWord.m_yaByte[0] = *aDataByte++;
@@ -2525,94 +2543,132 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_MINUS_ONE:
         *aiValue++ = -1;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_ZERO:
         *aiValue++ =  0;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_ONE:
         *aiValue++ =  1;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_TWO:
         *aiValue++ =  2;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_THREE:
         *aiValue++ =  3;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_FOUR:
         *aiValue++ =  4;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_FIVE:
         *aiValue++ =  5;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_SIX:
         *aiValue++ =  6;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_SEVEN:
         *aiValue++ =  7;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_EIGHT:
         *aiValue++ =  8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_NINE:
         *aiValue++ =  9;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_TEN:
         *aiValue++ = 10;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_SAME:
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_ADD_1B:
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_ADD_2B:
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_SUB_1B:
         break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_SUB_2B:
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_FALSE:
         *aiValue++ =  0;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_TRUE:
         *aiValue++ =  1;
 #ifdef WITH_TRACE_DECODING
@@ -2620,6 +2676,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 #endif
         break;
         
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_DATE_E0_2B:
         *aiValue++ = *(u2*)aDataByte;
         aDataByte += 2;
@@ -2635,6 +2692,8 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
                (i8)wWord.xEdt.m_uDay);
 #endif
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_DATE_E1_2B:
         *aiValue++ = *(u2*)aDataByte;
         aDataByte += 2;
@@ -2650,6 +2709,8 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
                (i8)wWord.xEdt.m_uDay);
 #endif
         break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_DATE_E2_2B:
         *aiValue++ = *(u2*)aDataByte;
         aDataByte += 2;
@@ -2665,11 +2726,16 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
                (i8)wWord.xEdt.m_uDay);
 #endif
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_DAYS_ADD_1B:
         break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_DAYS_SUB_1B:
         break;
         
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_STR_EMPTY:
         *aiValue++ = 0;
 #ifdef WITH_TRACE_DECODING
@@ -2677,6 +2743,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 #endif
         break;
         
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_STR_FIT_1L:
         nLength = *(u1*)aDataByte++;
         MemLib::vCopy((byte*)aString,
@@ -2692,17 +2759,27 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 #endif
         break;
         
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_STR_TAIL_2T:
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_STR_SPLIT_2T1L:
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_BSTR_FIT_2L:
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_BSTR_TAIL_2T:
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_BSTR_SPLIT_2T2L:
         break;
         
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_SHOCO_FIT_1C:
         nCompressed = (i8)*(i1*)aDataByte++;
         nDecompressed =
@@ -2718,6 +2795,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         aDataByte += nCompressed;
         break;
         
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_SHOCO_TAIL_2T:
         //i_Tail_Rel  = (i8)*(i2*)aDataByte;
         //aDataByte  += 2;
@@ -2741,6 +2819,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         pRow->m_i_Wsp += nDecompressed;
         break;
         
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_SHOCO_SPLIT_2T1C:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *aDataByte++;
@@ -2771,21 +2850,35 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         aDataByte += nBytesPartA;
         break;
         
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_TWOS_1B:
         break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_TWOS_2B:
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_TWOS_3B:
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_TWOS_4B:
         break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_TWOS_5B:
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_TWOS_6B:
         break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_TWOS_7B:
         break;
         
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_OVERFLOW_2B:
         break;
         
@@ -3398,14 +3491,14 @@ void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
     return;
   }
   
-  else if (eEncoding <= MC_8B)
-    vDecodeVchSmall(pDatum,aHeadLine,pCol,eEncoding,i_Offset);
-  
   else if (MC_STR_EMPTY == eEncoding) {
     pDatum->m_nChars = 0;
     *pDatum->m_sVch.aChar() = '\0';
     pDatum->m_iInt = 0;
   }
+  
+  else if (MC_STR_FIT_1L == eEncoding)
+    vDecodeVchSmall(pDatum,aHeadLine,pCol,i_Offset);
   
   else if (MC_SHOCO_TAIL_2T == eEncoding)
     vDecodeVchShocoTail(pDatum,aHeadLine,pCol,i_Offset);
@@ -3548,61 +3641,74 @@ void RowCoder::vDecodeVchShocoTail(Datum* pDatum, HeadLine* aHeadLine,
 /* decode varchar from given head line                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
-                                    Column* pCol, eMC eEncoding, i8 i_Offset)
+                               Column* pCol, i8 i_Offset)
 {
-  switch (eEncoding) {
-      
-    case MC_1B:
-      pDatum->m_iInt = aHeadLine->w8_1B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[1] = '\0';
-      pDatum->m_nChars = 1;
-      break;
-    case MC_2B:
-      pDatum->m_iInt = aHeadLine->w8_2B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[2] = '\0';
-      pDatum->m_nChars = 2;
-      break;
-    case MC_3B:
-      pDatum->m_iInt = aHeadLine->w8_3B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[3] = '\0';
-      pDatum->m_nChars = 3;
-      break;
-    case MC_4B:
-      pDatum->m_iInt = aHeadLine->w8_4B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[4] = '\0';
-      pDatum->m_nChars = 4;
-      break;
-    case MC_5B:
-      pDatum->m_iInt = aHeadLine->w8_5B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[5] = '\0';
-      pDatum->m_nChars = 5;
-      break;
-    case MC_6B:
-      pDatum->m_iInt = aHeadLine->w8_6B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[6] = '\0';
-      pDatum->m_nChars = 6;
-      break;
-    case MC_7B:
-      pDatum->m_iInt = aHeadLine->w8_7B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[7] = '\0';
-      pDatum->m_nChars = 7;
-      break;
-    case MC_8B:
-      pDatum->m_iInt = aHeadLine->w8_8B(i_Offset);
-      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
-      ((char*)pDatum->m_sVch.aChar())[8] = '\0';
-      pDatum->m_nChars = 8;
-      break;
-    default:
-      NEVER_REACH;
-  }
+  vDebugPoint();
+  
+  i8 nLength = aHeadLine->w8_1B(i_Offset);
+  
+  MemLib::vCopy((byte*)pDatum->m_sVch.aChar(),
+                (byte*)aHeadLine + i_Offset + 1,
+                nLength,
+                CN_ROWCODER);
+  
+  * (pDatum->m_sVch.aChar() + nLength) = '\0';
+
+  pDatum->m_nChars = nLength;
+
+//  switch (pDatum->m_eEncoding) {
+//
+//    case MC_1B:
+//      pDatum->m_iInt = aHeadLine->w8_1B(i_Offset);
+//      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+//      ((char*)pDatum->m_sVch.aChar())[1] = '\0';
+//      pDatum->m_nChars = 1;
+//      break;
+//    case MC_2B:
+//      pDatum->m_iInt = aHeadLine->w8_2B(i_Offset);
+//      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+//      ((char*)pDatum->m_sVch.aChar())[2] = '\0';
+//      pDatum->m_nChars = 2;
+//      break;
+//    case MC_3B:
+//      pDatum->m_iInt = aHeadLine->w8_3B(i_Offset);
+//      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+//      ((char*)pDatum->m_sVch.aChar())[3] = '\0';
+//      pDatum->m_nChars = 3;
+//      break;
+//    case MC_4B:
+//      pDatum->m_iInt = aHeadLine->w8_4B(i_Offset);
+//      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+//      ((char*)pDatum->m_sVch.aChar())[4] = '\0';
+//      pDatum->m_nChars = 4;
+//      break;
+//    case MC_5B:
+//      pDatum->m_iInt = aHeadLine->w8_5B(i_Offset);
+//      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+//      ((char*)pDatum->m_sVch.aChar())[5] = '\0';
+//      pDatum->m_nChars = 5;
+//      break;
+//    case MC_6B:
+//      pDatum->m_iInt = aHeadLine->w8_6B(i_Offset);
+//      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+//      ((char*)pDatum->m_sVch.aChar())[6] = '\0';
+//      pDatum->m_nChars = 6;
+//      break;
+//    case MC_7B:
+//      pDatum->m_iInt = aHeadLine->w8_7B(i_Offset);
+//      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+//      ((char*)pDatum->m_sVch.aChar())[7] = '\0';
+//      pDatum->m_nChars = 7;
+//      break;
+//    case MC_8B:
+//      pDatum->m_iInt = aHeadLine->w8_8B(i_Offset);
+//      *(i8*)pDatum->m_sVch.aChar() = pDatum->m_iInt;
+//      ((char*)pDatum->m_sVch.aChar())[8] = '\0';
+//      pDatum->m_nChars = 8;
+//      break;
+//    default:
+//      NEVER_REACH;
+//  }
   
 }
 
