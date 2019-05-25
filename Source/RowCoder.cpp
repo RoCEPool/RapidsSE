@@ -667,35 +667,33 @@ void RowCoder::vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum)
   pTgtDatum->m_eDatum = DM_VCH;
   pTgtDatum->m_nChars = pSrcDatum->m_nChars;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null case
   if (pSrcDatum->bIsNull()) {
-    pTgtDatum->m_eEncoding = MC_NULL;
+    pTgtDatum->m_eEncoding     = MC_NULL;
     pTgtDatum->m_nEncodedBytes = 0;
     return;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   i8 iLen = StrLib::nCopy((char*)pTgtDatum->m_sVch.aChar(),
                           (char*)pSrcDatum->m_sVch.aChar());
   
-  eMC eEncoding;
-  
   if (iLen == 0) {
-    eEncoding = MC_STR_EMPTY;
-    pTgtDatum->m_eEncoding = eEncoding;
+    pTgtDatum->m_eEncoding     = MC_STR_EMPTY;
     pTgtDatum->m_nEncodedBytes = 0;
   }
 #ifdef WITH_ENCODING_VCH_SMALL
-  else if (iLen <= 3) {
-    eEncoding = (eMC)iLen;
-    pTgtDatum->m_eEncoding = eEncoding;
+  else if (iLen <= 7) {
+    pTgtDatum->m_eEncoding     = MC_STR_FIT_1L;
     pTgtDatum->m_nEncodedBytes = iLen;
   }
 #endif
   else {
-    eEncoding = MC_SHOCO_TAIL_2T;
-    pTgtDatum->m_eEncoding = eEncoding;
+    pTgtDatum->m_eEncoding     = MC_SHOCO_TAIL_2T;
     pTgtDatum->m_nEncodedBytes = iLen;
   }
-  
 }
 
 /*----------------------------------------------------------------------------*/
