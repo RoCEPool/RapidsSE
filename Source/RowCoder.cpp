@@ -1359,20 +1359,25 @@ void RowCoder::vRecodeTsp(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeVch(Column* pCol)
 {
-  if (4377 == m_nTotalHeads && 15 == pCol->iColumnNo())
-    vDebugPoint();
+  if (MC_STR_FIT_1L == m_eFromEncoding) {
+    vRecodeVchSmall(pCol);
+    vXchkVchRecode(pCol);
+    return;
+  }
   
   if (MC_SHOCO_TAIL_2T == m_eFromEncoding) {
     vRecodeVchShoco(pCol);
-    vXchkVchRecode(pCol);                                         //! temp ray
+    vXchkVchRecode(pCol);
     return;
   }
   
-  if (m_eFromEncoding >= MC_1B && m_eFromEncoding <= MC_8B) {
-    vUsageIncRecoded(pCol,m_eFromEncoding);
-    m_i_IntoOffset += m_eFromEncoding;
-    return;
-  }
+  NEVER_REACH;
+  
+//  if (m_eFromEncoding >= MC_1B && m_eFromEncoding <= MC_8B) {
+//    vUsageIncRecoded(pCol,m_eFromEncoding);
+//    m_i_IntoOffset += m_eFromEncoding;
+//    return;
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1836,6 +1841,14 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   
   m_nTails++;
   m_nTailUnits += nFromTailUnits;
+}
+
+/*----------------------------------------------------------------------------*/
+/* recode MC_STR_FIT_1L                                                       */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vRecodeVchSmall(Column* pCol)
+{
+  vUsageIncRecoded(pCol,1);
 }
 
 /*----------------------------------------------------------------------------*/
