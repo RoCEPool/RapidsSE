@@ -158,7 +158,8 @@ namespace Data
     bool bRecodeVchShocoFold(Column* pCol);
     bool bRecodeVchShocoSplit(Column* pCol);
     void vRecodeVchShocoTail(Column* pCol);
-    
+    void vRecodeVchSmall(Column* pCol);
+
 
     void vUsageIncEncoded(Column* pCol, i8 nBytes, eMC eMetaCode = MC_NULL);
     void vUsageIncEncoded(Column* pCol, Datum* pDatum, eMC eMetaCode = MC_NULL);
@@ -405,13 +406,11 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     static inline i8 nHeadBytes(ColumnVec* pColVec)
     {
-    i8 nBytes = sizeof(CacheLine) + (2 * C_BYTES_PER_WORD);
+      i8 nBytes = sizeof(CacheLine) + (2 * C_BYTES_PER_WORD);
     
       return nBytes;
     }
   
-    
-
     /*----------------------------------------------------------------------------*/
     /* calc base offset for column vector                                         */
     /*----------------------------------------------------------------------------*/
@@ -431,7 +430,6 @@ namespace Data
   
   };
 
-  
   RowCoder* _pRowCoder(void* aAddr);
 }
 
