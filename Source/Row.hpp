@@ -29,6 +29,8 @@ namespace Data
     Row(ColumnVec* pColumnVec);
     ~Row(void) noexcept(false);
   
+    void vDontDecodeVch(void);
+  
   private:
     Footer* aFooter(void);
   };

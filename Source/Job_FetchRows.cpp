@@ -758,6 +758,8 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
   
   HeadLine** aaHeadLine = pFetchBuffer->aaFirstRowPtr();
   
+  pJob_FetchRows->m_pRow->vDontDecodeVch();
+  
   while (aaHeadLine) {
     
     HeadLine* aHeadLine = *aaHeadLine;
