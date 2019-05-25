@@ -1809,9 +1809,9 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   // | <U><C><shoco.....> //////////////// |
   // +=====================================+
   byte* aIntoTail_Shoco = (byte*)aIntoTail + C_TAIL_UNITS_BYTES
-  + C_SHOCO_COMPRESSED_BYTES;
+                                           + C_SHOCO_COMPRESSED_BYTES;
   byte* aFromTail_Shoco = (byte*)aFromTail + C_TAIL_UNITS_BYTES
-  + C_SHOCO_COMPRESSED_BYTES;
+                                          + C_SHOCO_COMPRESSED_BYTES;
   MemLib::vCopy(aIntoTail_Shoco,aFromTail_Shoco,nFromShocoBytes,CN_ROWCODER);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1848,7 +1848,11 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeVchSmall(Column* pCol)
 {
-  vUsageIncRecoded(pCol,1);
+  i8 nLength = m_aIntoHead->w8_1B(m_i_IntoOffset);
+  
+  m_i_IntoOffset += 1 + nLength;
+
+  vUsageIncRecoded(pCol,1 + nLength);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2924,6 +2928,10 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     eMC  eMetaCode = aHeadLine->eMetaCode(i_Col);
     Stz* aMetaCode = aMC[eMetaCode];
     i8   nBytes    = nDataBytes(eMetaCode);
+    if (MC_STR_FIT_1L == eMetaCode) {
+      RASSERT(1 == nBytes);
+      nBytes += aHeadLine->w8_1B(i_LastOffset);
+    }
     
     //      colNo colNm Dtm  MC   aMC   Ofset Addr   Bytes
     vTrace("%3lld %-15s %-3s %02x %-19s %2lld %012llx %1lld "_Stz,

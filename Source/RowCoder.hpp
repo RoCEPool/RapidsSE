@@ -317,6 +317,10 @@ namespace Data
         eMC eEncoding = aHeadLine->eMetaCode(i_Col);
         
         i_Offset_ += nDataBytes(eEncoding);
+        
+        if (MC_STR_FIT_1L == eEncoding) {
+          i_Offset_ += aHeadLine->w8_1B(i_Offset_ - 1);
+        }
       }
       
       eMC eEncoding  = aHeadLine->eMetaCode(i_ForCol);
