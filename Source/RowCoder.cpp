@@ -910,7 +910,7 @@ void RowCoder::vEncodeVch(Datum* pSrcDatum, Column* pCol)
 void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
 {
   /*
-            -- Into-Head --                           -- Into-Tail --
+       -- Into-Head (encoding) --            -- Into-Tail (encoding) --
    +================================+    +=====================================+
    | mc:         ,MC_SHOCO_TAIL_2T, |    | <U><C><shoco....> ///////////////// |
    +================================+    +=====================================+
@@ -957,29 +957,32 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode varchar as small                                                    */
+/* encode varchar as small (MC_STR_FIT_1L)                                    */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
 {
   /*
-             -- Into-Head --
+        -- Into-Head (encoding) --
    +================================+
-   | mc:                    ,MC_nB, |
+   | mc:            ,MC_STR_FIT_1L, |
    +================================+
    |                                |
    +--------------------------------+
-   |                  <small>       |
+   |                  <L><small>    |
    +--------------------------------+
    
-   where: MC_nB is the metaCode for the column
-          <small> is the 1..8 ascii bytes for the short varchar
+   where: MC_STR_FIT_1L is the metaCode for the column
+          <L> is the length of the small string
+          <small> is the 1..7 ascii bytes for the small varchar
    */
   
   w8 wSmall = *(w8*)pSrcDatum->m_sVch.aChar();
   
-  vDataPut(wSmall,(eMC)pSrcDatum->m_nChars);
+  vDataPut(pSrcDatum->m_nChars,1);
   
-  vUsageIncEncoded(pCol,pSrcDatum->m_nChars);
+  vDataPut(wSmall,pSrcDatum->m_nChars);
+  
+  vUsageIncEncoded(pCol,1 + pSrcDatum->m_nChars);
 }
 
 /*----------------------------------------------------------------------------*/
