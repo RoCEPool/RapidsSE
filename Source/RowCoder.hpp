@@ -350,7 +350,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     /* retrieve and decode row from cache line                                    */
     /*----------------------------------------------------------------------------*/
-    static inline void vRetrieveAll(HeadLine* aHeadLine, Row* pRow, ColumnVec* pColVec)
+    static inline void vRetrieveAll(HeadLine* aHeadLine, Row* pRow)
     {
       //Datum oDatum;
       
@@ -361,9 +361,9 @@ namespace Data
       //      RASSERT(! iRem);
       
       // get no of columns
-      i8 nColumns = pColVec->nItems();
-      i8 i_LastColumn = 0;
-      i8 i_LastOffset = iBaseOffset(pColVec);
+      //i8 nColumns = pColVec->nItems();
+      //i8 i_LastColumn = 0;
+      //i8 i_LastOffset = iBaseOffset(pColVec);
       
       // for each column
 //      for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {

@@ -790,7 +790,7 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
       
       // just decode the row
       
-      RowCoder::vRetrieveAll(aHeadLine, pJob_FetchRows->m_pRow, pColVec);
+      RowCoder::vRetrieveAll(aHeadLine, pJob_FetchRows->m_pRow);
     }
     
     aaHeadLine = pFetchBuffer->aaNextRowPtr(aaHeadLine);
