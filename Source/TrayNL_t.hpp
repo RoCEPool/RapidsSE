@@ -63,6 +63,7 @@ namespace Structures
     void  vReset(void);
     i8    nTails(void);
     i8    iUnitDiff(i8 i_Head, i8 i_Tail);
+    i8    iUnitDiff(HEAD* aHead, TAIL* aTail);
     i8    nUsedBytes(void);
     void  vVerifyTails(i8 i_Dump);
   
@@ -185,12 +186,14 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nBytes(i8 nUnits)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute tail from head + diff                                              */
+/* compute tail from head + distance (in units)                               */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
 TAIL* Nub_t<CN,HEAD,TAIL,UNIT,DESC>::aToTail(HEAD* aHead, i8 i_Distance)
 {
-  TAIL* aTail = (TAIL*)((UNIT*)aHead + i_Distance);
+  UNIT* aHead_boundary = (UNIT*)MemLib::aToBoundary(aHead,sizeof(UNIT));
+  
+  TAIL* aTail = (TAIL*)(aHead_boundary + i_Distance);
   
   return aTail;
 }
@@ -574,6 +577,25 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iUnitDiff(i8 i_Head, i8 i_Tail)
   i8 i_Diff = i_Tail - i_HeadUnit;
   
   return i_Diff;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute unit difference between a head and a tail                          */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
+i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iUnitDiff(HEAD* aHead, TAIL* aTail)
+{
+  UNIT* aHead_boundary = (UNIT*)MemLib::aToBoundary(aHead,sizeof(UNIT));
+  UNIT* aTail_boundary = (UNIT*)MemLib::aToBoundary(aTail,sizeof(UNIT));
+
+  // n.b. when you subtract two pointers of the same type the result is
+  // the distance (in array elements) between the two. (it is not the
+  // difference in bytes between the addresses)
+  
+  // compute the unit difference
+  i8 i_DiffInUnits = aTail_boundary - aHead_boundary;
+  
+  return i_DiffInUnits;
 }
 
 /*----------------------------------------------------------------------------*/
