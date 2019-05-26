@@ -522,9 +522,9 @@ void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* is address on an nByte boundary?                                           */
 /*----------------------------------------------------------------------------*/
-bool MemLib::bOnBoundary(void* aAddress, i8 nByte)
+bool MemLib::bOnBoundary(void* aAddress, i8 nByteBoundary)
 {
-  if (0 == (u8)aAddress % nByte)
+  if (0 == (u8)aAddress % nByteBoundary)
     return true;
   else
     return false;
@@ -658,6 +658,18 @@ void MemLib::vStatistics(void)
                     ;
   Magnitudes::vByteMag(iGrandTotal, sByteMag);
   vTrace("Grand Total %s\n"_Stz,sByteMag.aStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute the nByte boundary address of given address                        */
+/*----------------------------------------------------------------------------*/
+void* MemLib::aToBoundary(void* aAddress, i8 nByteBoundary)
+{
+  u8 uBitMask = BITWISE_NOT((nByteBoundary - 1));
+  
+  void* aBoundary = pBitAnd<void*>(aAddress,uBitMask);
+ 
+  return aBoundary;
 }
 
 /*----------------------------------------------------------------------------*/

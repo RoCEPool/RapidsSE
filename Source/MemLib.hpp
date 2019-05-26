@@ -48,12 +48,13 @@ namespace Base
     static void  vHexDump(void *aAddress, i8 nBytes);
     static void* aMallocBlock(i8 nBytes);
     static void  vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo);
-    static bool  bOnBoundary(void* aAddress, i8 nByte);
+    static bool  bOnBoundary(void* aAddress, i8 nByteBoundary);
     static void  vReset(void);
     static void  vRotate(void* aArg, i8 nBytes, i8 nBy);
     static void  vScribble(void* aAddress, i8 nBytes, eCN eClassNo);
     static void  vSet(void* pDst, char bByte, i8 iTimes, eCN eClassNo);
     static void  vStatistics(void);
+    static void* aToBoundary(void* aAddress, i8 nByteBoundary);
     static void  vWordDump(void *aAddress, i8 iSize, i8 iHighlightWord=-1);
     static void  vWordFlip(w8* aWord);
     static void  vZero(void* pDst, i8 iBytes, eCN eClassNo);
