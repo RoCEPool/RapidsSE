@@ -13,7 +13,7 @@ namespace Structures
   static const i8 C_HEADUNIT  = sizeof(Word);
 
   
-  template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
+  template <eCN CN, class HEAD, class TAIL, class DESC>
   class Nub_t : public Object
   {
   private:
@@ -30,8 +30,8 @@ namespace Structures
 
     DESC* m_pDesc;    // object describing the items
   
-    UNIT* m_axaUnits; // array of space units
-    Word* m_axaWords; // array of word units
+    DoubleWord* m_axaUnits; // array of space units
+    Word*       m_axaWords; // array of word units
 
     i8 m_iHash;       // encoding hash
 
@@ -42,11 +42,11 @@ namespace Structures
     Nub_t(void);
     ~Nub_t(void) noexcept(false);
   
-    static i8 nBytes(i8 nUnits);
+    static i8    nBytes(i8 nUnits);
     static void  vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes);
     static void  vExpand(void* aAddr, i8 nSize, i8 i_Offset, i8 nAddBytes);
     static TAIL* aToTail(HEAD* aHead, i8 i_Distance);
-    static i8 nUnits(i8 nBytes);
+    static i8    nUnits(i8 nBytes);
 
     i8    iAllotHead(i8 nBytes);
     i8    iAllotTail(i8 nBytes);
@@ -72,7 +72,7 @@ namespace Structures
     i8    nUsedBytes(void);
     void  vVerifyTails(i8 i_Dump);
   
-    void  vSetItems(i8 nSpaceUnits, UNIT* axaUnits);
+    void  vSetItems(i8 nSpaceUnits, DoubleWord* axaUnits);
   
   private:
     Footer* aFooter(void);
@@ -81,16 +81,16 @@ namespace Structures
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tray (the outer tray)
 
-  template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, i8 BYTES>
+  template <eCN CN, class HEAD, class TAIL, class DESC, i8 BYTES>
   class TrayNL_t : public Object
   {
   protected:
   
     i8 m__filler[6];
   
-    UNIT m_xaUnits[BYTES / C_SPACEUNIT]; // array of space units
+    DoubleWord m_xaUnits[BYTES / C_SPACEUNIT]; // array of space units
   
-    Nub_t<CN,HEAD,TAIL,UNIT,DESC> m_oNub;
+    Nub_t<CN,HEAD,TAIL,DESC> m_oNub;
   
     // must be last
     Footer m_xFooter;
@@ -102,14 +102,14 @@ namespace Structures
     TrayNL_t(void);
     ~TrayNL_t(void) noexcept(false);
   
-    Nub_t<CN,HEAD,TAIL,UNIT,DESC>* pNub(void);
+    Nub_t<CN,HEAD,TAIL,DESC>* pNub(void);
   
   private:
     Footer* aFooter(void);
   };
   
-  template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, i8 BYTES>
-  TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,BYTES>* _pNubNL(void* aAddr);
+  template <eCN CN, class HEAD, class TAIL, class DESC, i8 BYTES>
+  TrayNL_t<CN,HEAD,TAIL,DESC,BYTES>* _pNubNL(void* aAddr);
 }
 
 using namespace Structures;
@@ -128,8 +128,8 @@ using namespace Structures;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-Nub_t<CN,HEAD,TAIL,UNIT,DESC>::Nub_t(void)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+Nub_t<CN,HEAD,TAIL,DESC>::Nub_t(void)
 : Object(CN)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
@@ -156,7 +156,7 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC>::Nub_t(void)
 
   m_iHash       = 0;
 
-  i8 nBytes = sizeof(Nub_t<CN,HEAD,TAIL,UNIT,DESC>);
+  i8 nBytes = sizeof(Nub_t<CN,HEAD,TAIL,DESC>);
   _checkInitialisedSize_(nBytes);
   
   _postcondition_(_MAGIC_,CN,_FOOTER_);
@@ -165,8 +165,8 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC>::Nub_t(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-Nub_t<CN,HEAD,TAIL,UNIT,DESC>::~Nub_t(void) noexcept(false)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+Nub_t<CN,HEAD,TAIL,DESC>::~Nub_t(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
 }
@@ -179,8 +179,8 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC>::~Nub_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* compute number of bytes in given number of space units                     */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nBytes(i8 nUnits)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,TAIL,DESC>::nBytes(i8 nUnits)
 {
   if (! nUnits)
     return 0;
@@ -193,21 +193,21 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nBytes(i8 nUnits)
 /*----------------------------------------------------------------------------*/
 /* compute tail from head + distance (in units)                               */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-TAIL* Nub_t<CN,HEAD,TAIL,UNIT,DESC>::aToTail(HEAD* aHead, i8 i_Distance)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+TAIL* Nub_t<CN,HEAD,TAIL,DESC>::aToTail(HEAD* aHead, i8 i_Distance)
 {
-  UNIT* aHead_boundary = (UNIT*)MemLib::aToBoundary(aHead,C_SPACEUNIT);
+  DoubleWord* aHead_boundary = (DoubleWord*)MemLib::aToBoundary(aHead,C_SPACEUNIT);
   
-  TAIL* aTail = (TAIL*)(aHead_boundary + i_Distance);
+  DoubleWord* aTail = (DoubleWord*)(aHead_boundary + i_Distance);
   
-  return aTail;
+  return (TAIL*)aTail;
 }
 
 /*----------------------------------------------------------------------------*/
 /* compute number of space units required to hold n bytes                     */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nUnits(i8 nBytes)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,TAIL,DESC>::nUnits(i8 nBytes)
 {
   if (! nBytes)
     return 0;
@@ -228,8 +228,8 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nUnits(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* allot head item (with size as per given number of bytes)                   */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iAllotHead(i8 nBytes)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,TAIL,DESC>::iAllotHead(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -260,8 +260,8 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iAllotHead(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* allot tail item (with size as per given number of bytes)                   */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iAllotTail(i8 nBytes)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,TAIL,DESC>::iAllotTail(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -291,8 +291,8 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iAllotTail(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get total space area (used + free)                                         */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nAreaBytes(void)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,TAIL,DESC>::nAreaBytes(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -304,8 +304,8 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nAreaBytes(void)
 /*----------------------------------------------------------------------------*/
 /* cut bytes off                                                              */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-void Nub_t<CN,HEAD,TAIL,UNIT,DESC>::vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+void Nub_t<CN,HEAD,TAIL,DESC>::vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes)
 {
   i8 iStartMove = i_Offset + nCutBytes ;
   RASSERT(iStartMove <= nSize);
@@ -330,8 +330,8 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC>::vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 
 /*----------------------------------------------------------------------------*/
 /* extend bytes to make space for additional data                             */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-void Nub_t<CN,HEAD,TAIL,UNIT,DESC>::vExpand(void* aAddr, i8 nSize, i8 i_Offset, i8 nAddBytes)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+void Nub_t<CN,HEAD,TAIL,DESC>::vExpand(void* aAddr, i8 nSize, i8 i_Offset, i8 nAddBytes)
 {
   i8 iStartMove = i_Offset;
   RASSERT(iStartMove + nAddBytes <= nSize);
@@ -349,8 +349,8 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC>::vExpand(void* aAddr, i8 nSize, i8 i_Offset, 
 /*----------------------------------------------------------------------------*/
 /* get the item describer                                                     */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-DESC* Nub_t<CN,HEAD,TAIL,UNIT,DESC>::pDesc(void)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+DESC* Nub_t<CN,HEAD,TAIL,DESC>::pDesc(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -360,8 +360,8 @@ DESC* Nub_t<CN,HEAD,TAIL,UNIT,DESC>::pDesc(void)
 /*----------------------------------------------------------------------------*/
 /* set the item describer                                                     */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-void Nub_t<CN,HEAD,TAIL,UNIT,DESC>::vDesc(DESC* pDesc)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+void Nub_t<CN,HEAD,TAIL,DESC>::vDesc(DESC* pDesc)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -371,8 +371,8 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC>::vDesc(DESC* pDesc)
 /*----------------------------------------------------------------------------*/
 /* get total number of free bytes                                             */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nFreeBytes(void)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,TAIL,DESC>::nFreeBytes(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -386,8 +386,8 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 /* get most recent head item                                                  */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-HEAD* Nub_t<CN,HEAD,TAIL,UNIT,DESC>::aGetHead(void)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+HEAD* Nub_t<CN,HEAD,TAIL,DESC>::aGetHead(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -402,8 +402,8 @@ HEAD* Nub_t<CN,HEAD,TAIL,UNIT,DESC>::aGetHead(void)
 /*----------------------------------------------------------------------------*/
 /* get a specific head item                                                   */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-HEAD* Nub_t<CN,HEAD,TAIL,UNIT,DESC>::aGetHead(i8 i_Head)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+HEAD* Nub_t<CN,HEAD,TAIL,DESC>::aGetHead(i8 i_Head)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -418,8 +418,8 @@ HEAD* Nub_t<CN,HEAD,TAIL,UNIT,DESC>::aGetHead(i8 i_Head)
 /*----------------------------------------------------------------------------*/
 /* get a specific tail item                                                   */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-TAIL* Nub_t<CN,HEAD,TAIL,UNIT,DESC>::aGetTail(i8 i_Tail)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+TAIL* Nub_t<CN,HEAD,TAIL,DESC>::aGetTail(i8 i_Tail)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -433,8 +433,8 @@ TAIL* Nub_t<CN,HEAD,TAIL,UNIT,DESC>::aGetTail(i8 i_Tail)
 /*----------------------------------------------------------------------------*/
 /* get total number of actual items                                           */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iHash(void)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,TAIL,DESC>::iHash(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -444,8 +444,8 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iHash(void)
 /*----------------------------------------------------------------------------*/
 /* get total number of actual items                                           */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-void Nub_t<CN,HEAD,TAIL,UNIT,DESC>::vHashInc(i8 iDelta)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+void Nub_t<CN,HEAD,TAIL,DESC>::vHashInc(i8 iDelta)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -455,8 +455,8 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC>::vHashInc(i8 iDelta)
 /*----------------------------------------------------------------------------*/
 /* does buffer have space for nBytes ?                                        */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-bool Nub_t<CN,HEAD,TAIL,UNIT,DESC>::bHasSpace(i8 nBytes)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+bool Nub_t<CN,HEAD,TAIL,DESC>::bHasSpace(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
 
@@ -471,8 +471,8 @@ bool Nub_t<CN,HEAD,TAIL,UNIT,DESC>::bHasSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get total number of head items                                             */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nHeads(void)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,TAIL,DESC>::nHeads(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -482,8 +482,8 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nHeads(void)
 /*----------------------------------------------------------------------------*/
 /* get total number of head bytes                                             */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nHeadBytes(void)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,TAIL,DESC>::nHeadBytes(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -493,8 +493,8 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nHeadBytes(void)
 /*----------------------------------------------------------------------------*/
 /* get total number of actual items                                           */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nItems(void)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,TAIL,DESC>::nItems(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -506,8 +506,8 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* get last tail                                                              */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iLastTail(void)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,TAIL,DESC>::iLastTail(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -522,8 +522,8 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iLastTail(void)
 /*----------------------------------------------------------------------------*/
 /* get prev tail                                                              */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iPrevTail(i8 i_CurrTail)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,TAIL,DESC>::iPrevTail(i8 i_CurrTail)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -531,7 +531,7 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iPrevTail(i8 i_CurrTail)
   i8 nPriorUnits = aPriorTail->w8_1B(0);
   //RASSERT(nPriorUnits <= 4);
   
-  UNIT* aPrevTail_Unit = (UNIT*)aPriorTail + nPriorUnits;
+  DoubleWord* aPrevTail_Unit = (DoubleWord*)aPriorTail + nPriorUnits;
   if (aPrevTail_Unit >= &m_axaUnits[m_nSpaceUnits])
     return C_UNKNOWN;
 
@@ -542,8 +542,8 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iPrevTail(i8 i_CurrTail)
 /*----------------------------------------------------------------------------*/
 /* reset all items                                                            */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-void Nub_t<CN,HEAD,TAIL,UNIT,DESC>::vReset(void)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+void Nub_t<CN,HEAD,TAIL,DESC>::vReset(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -563,8 +563,8 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC>::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* get total number of tail items                                             */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nTails(void)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,TAIL,DESC>::nTails(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -574,8 +574,8 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nTails(void)
 /*----------------------------------------------------------------------------*/
 /* compute unit difference between a head and a tail                          */
 /*----------------------------------------------------------------------------*/
-//template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-//i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iUnitDiff(i8 i_Head, i8 i_Tail)
+//template <eCN CN, class HEAD, class TAIL, class DESC>
+//i8 Nub_t<CN,HEAD,TAIL,DESC>::iUnitDiff(i8 i_Head, i8 i_Tail)
 //{
 //  i8 i_HeadUnit = i_Head * (m_nHeadAllot / C_SPACEUNIT);
 //  
@@ -587,11 +587,11 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nTails(void)
 /*----------------------------------------------------------------------------*/
 /* compute unit difference between a head and a tail                          */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iUnitDiff(HEAD* aHead, TAIL* aTail)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,TAIL,DESC>::iUnitDiff(HEAD* aHead, TAIL* aTail)
 {
-  UNIT* aHead_boundary = (UNIT*)MemLib::aToBoundary(aHead,C_SPACEUNIT);
-  UNIT* aTail_boundary = (UNIT*)MemLib::aToBoundary(aTail,C_SPACEUNIT);
+  DoubleWord* aHead_boundary = (DoubleWord*)MemLib::aToBoundary(aHead,C_SPACEUNIT);
+  DoubleWord* aTail_boundary = (DoubleWord*)MemLib::aToBoundary(aTail,C_SPACEUNIT);
 
   // n.b. when you subtract two pointers of the same type the result is
   // the distance (in array elements) between the two. (it is not the
@@ -606,8 +606,8 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iUnitDiff(HEAD* aHead, TAIL* aTail)
 /*----------------------------------------------------------------------------*/
 /* get total number of used bytes                                             */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nUsedBytes(void)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,TAIL,DESC>::nUsedBytes(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -619,8 +619,8 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nUsedBytes(void)
 /*----------------------------------------------------------------------------*/
 /* set item array                                                             */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-void Nub_t<CN,HEAD,TAIL,UNIT,DESC>::vSetItems(i8 nSpaceUnits, UNIT* axaUnits)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+void Nub_t<CN,HEAD,TAIL,DESC>::vSetItems(i8 nSpaceUnits, DoubleWord* axaUnits)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -633,8 +633,8 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC>::vSetItems(i8 nSpaceUnits, UNIT* axaUnits)
 /*----------------------------------------------------------------------------*/
 /* verify tail lines of given nub                                             */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-void Nub_t<CN,HEAD,TAIL,UNIT,DESC>::vVerifyTails(i8 i_Dump)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+void Nub_t<CN,HEAD,TAIL,DESC>::vVerifyTails(i8 i_Dump)
 {
   i8 nTails = 0;
   i8 nSumTailUnits = 0;
@@ -666,8 +666,8 @@ void Nub_t<CN,HEAD,TAIL,UNIT,DESC>::vVerifyTails(i8 i_Dump)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-Footer* Nub_t<CN,HEAD,TAIL,UNIT,DESC>::aFooter(void)
+template <eCN CN, class HEAD, class TAIL, class DESC>
+Footer* Nub_t<CN,HEAD,TAIL,DESC>::aFooter(void)
 {
   _precondition_(_MAGIC_,CN);
   
@@ -689,11 +689,11 @@ Footer* Nub_t<CN,HEAD,TAIL,UNIT,DESC>::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, i8 BYTES>
-TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,BYTES>* Structures::_pNubNL(void* aAddr)
+template <eCN CN, class HEAD, class TAIL, class DESC, i8 BYTES>
+TrayNL_t<CN,HEAD,TAIL,DESC,BYTES>* Structures::_pNubNL(void* aAddr)
 {
-  TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,BYTES>* pVector =
-    reinterpret_cast<TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,BYTES>*>(aAddr);
+  TrayNL_t<CN,HEAD,TAIL,DESC,BYTES>* pVector =
+    reinterpret_cast<TrayNL_t<CN,HEAD,TAIL,DESC,BYTES>*>(aAddr);
   
   RASSERT_TYPE(pVector,CN);
   
@@ -703,8 +703,8 @@ TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,BYTES>* Structures::_pNubNL(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, i8 BYTES>
-void* TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,BYTES>::operator new(size_t)
+template <eCN CN, class HEAD, class TAIL, class DESC, i8 BYTES>
+void* TrayNL_t<CN,HEAD,TAIL,DESC,BYTES>::operator new(size_t)
 {
   void* pNub = HeapMem::pAllocate(CN);
   
@@ -714,11 +714,11 @@ void* TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,BYTES>::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, i8 BYTES>
-void TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,BYTES>::operator delete(void* pAddr)
+template <eCN CN, class HEAD, class TAIL, class DESC, i8 BYTES>
+void TrayNL_t<CN,HEAD,TAIL,DESC,BYTES>::operator delete(void* pAddr)
 {
-  TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,BYTES>* pNub =
-    _pNubNL<CN,HEAD,TAIL,UNIT,DESC,BYTES>(pAddr);
+  TrayNL_t<CN,HEAD,TAIL,DESC,BYTES>* pNub =
+    _pNubNL<CN,HEAD,TAIL,DESC,BYTES>(pAddr);
   
   HeapMem::vFree(pNub);
 }
@@ -726,8 +726,8 @@ void TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,BYTES>::operator delete(void* pAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, i8 BYTES>
-TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,BYTES>::TrayNL_t(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, i8 BYTES>
+TrayNL_t<CN,HEAD,TAIL,DESC,BYTES>::TrayNL_t(void)
 : Object(CN)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
@@ -741,7 +741,7 @@ TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,BYTES>::TrayNL_t(void)
   
   _setFooter_();
   
-  i8 nBytes = sizeof(TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,BYTES>);
+  i8 nBytes = sizeof(TrayNL_t<CN,HEAD,TAIL,DESC,BYTES>);
   _checkInitialisedSize_(nBytes);
   
   _postcondition_(_MAGIC_,CN,_FOOTER_);
@@ -750,8 +750,8 @@ TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,BYTES>::TrayNL_t(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, i8 BYTES>
-TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,BYTES>::~TrayNL_t(void) noexcept(false)
+template <eCN CN, class HEAD, class TAIL, class DESC, i8 BYTES>
+TrayNL_t<CN,HEAD,TAIL,DESC,BYTES>::~TrayNL_t(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
 }
@@ -763,9 +763,9 @@ TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,BYTES>::~TrayNL_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get the inner nub / interface                                              */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, i8 BYTES>
-Nub_t<CN,HEAD,TAIL,UNIT,DESC>*
-  TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,BYTES>::pNub(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, i8 BYTES>
+Nub_t<CN,HEAD,TAIL,DESC>*
+  TrayNL_t<CN,HEAD,TAIL,DESC,BYTES>::pNub(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -784,8 +784,8 @@ Nub_t<CN,HEAD,TAIL,UNIT,DESC>*
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC, i8 BYTES>
-Footer* TrayNL_t<CN,HEAD,TAIL,UNIT,DESC,BYTES>::aFooter(void)
+template <eCN CN, class HEAD, class TAIL, class DESC, i8 BYTES>
+Footer* TrayNL_t<CN,HEAD,TAIL,DESC,BYTES>::aFooter(void)
 {
   _precondition_(_MAGIC_,CN);
   
