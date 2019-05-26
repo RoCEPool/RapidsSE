@@ -12,6 +12,9 @@ spDTE::spDTE(void)
 {
   _precondition_(_MAGIC_,CN_SPDTE,_FOOTER_);
   
+  // set default Dte format
+  vFormat(F_DTE);
+  
   _checkInitialised_(CN_SPDTE);
   
   _postcondition_(_MAGIC_,CN_SPDTE,_FOOTER_);
@@ -28,6 +31,25 @@ spDTE::~spDTE(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* sprint Dte and return Stz* to result                                       */
+/*----------------------------------------------------------------------------*/
+Stz* spDTE::sz(i8 iDte)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  Word wDteWord = iDte;
+  
+  StrLib::vSprint(m_acResult,
+                  (Stz*)m_acFormat,
+                  
+                  (i8)wDteWord.xEdt.m_uYearInEra + C_BASE_YEAR,
+                  (i8)wDteWord.xEdt.m_uMonth,
+                  (i8)wDteWord.xEdt.m_uDay);
+
+  return (Stz*) &m_acResult[0];
+}
 
 
 

@@ -24,10 +24,10 @@ namespace Sprinting
     Stz* sz(void);
   
     Stz* szFormat(void);
-    void vFormat(Stz* szFormat);
+    void vFormat(const Stz* szFormat);
 
     Stz* szResult(void);
-    void vResult(Stz* szResult);
+    void vResult(const Stz* szResult);
 
     Footer* aFooter(void);
   };

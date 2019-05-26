@@ -56,7 +56,7 @@ Stz* Sprint::szFormat(void)
 /*----------------------------------------------------------------------------*/
 /* set format                                                                 */
 /*----------------------------------------------------------------------------*/
-void Sprint::vFormat(Stz* szFormat)
+void Sprint::vFormat(const Stz* szFormat)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -76,7 +76,7 @@ Stz* Sprint::szResult(void)
 /*----------------------------------------------------------------------------*/
 /* set result                                                                 */
 /*----------------------------------------------------------------------------*/
-void Sprint::vResult(Stz* szResult)
+void Sprint::vResult(const Stz* szResult)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   

@@ -16,6 +16,8 @@ namespace Sprinting
     spDTE(void);
     ~spDTE() noexcept(false);
   
+    Stz* sz(i8 iDte);
+  
     Footer* aFooter(void);
   };
 }
