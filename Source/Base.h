@@ -33,6 +33,7 @@ using namespace Base;
 #include "Magnitudes.hpp"
 #include "MemLib.hpp"
 #include "QuadWord.hpp"
+#include "SpaceUnit.hpp"
 #include "Stz.hpp"
 #include "StrLib.hpp"
 #include "Word.hpp"
