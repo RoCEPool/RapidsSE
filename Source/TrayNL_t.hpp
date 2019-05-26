@@ -8,7 +8,7 @@ namespace Structures
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // nub (the tray interface)
   
-  static const i8 C_SPACEUNIT = sizeof(DoubleWord);
+  static const i8 C_SPACEUNIT = sizeof(SpaceUnit);
   static const i8 C_TAILUNIT  = sizeof(DoubleWord);
   static const i8 C_HEADUNIT  = sizeof(Word);
 
@@ -30,8 +30,8 @@ namespace Structures
 
     DESC* m_pDesc;    // object describing the items
   
-    DoubleWord* m_axaUnits; // array of space units
-    Word*       m_axaWords; // array of word units
+    SpaceUnit*  m_axaUnits; // array of space units
+    Word*       m_axaWords; // array of space units as word units
 
     i8 m_iHash;       // encoding hash
 
@@ -72,7 +72,7 @@ namespace Structures
     i8    nUsedBytes(void);
     void  vVerifyTails(i8 i_Dump);
   
-    void  vSetItems(i8 nSpaceUnits, DoubleWord* axaUnits);
+    void  vSetItems(i8 nSpaceUnits, SpaceUnit* axaUnits);
   
   private:
     Footer* aFooter(void);
@@ -88,7 +88,7 @@ namespace Structures
   
     i8 m__filler[6];
   
-    DoubleWord m_xaUnits[BYTES / C_SPACEUNIT]; // array of space units
+    SpaceUnit m_xaUnits[BYTES / C_SPACEUNIT]; // array of space units
   
     Nub_t<CN,HEAD,TAIL,DESC> m_oNub;
   
@@ -196,11 +196,11 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::nBytes(i8 nUnits)
 template <eCN CN, class HEAD, class TAIL, class DESC>
 TAIL* Nub_t<CN,HEAD,TAIL,DESC>::aToTail(HEAD* aHead, i8 i_Distance)
 {
-  DoubleWord* aHead_boundary = (DoubleWord*)MemLib::aToBoundary(aHead,C_SPACEUNIT);
+  SpaceUnit* aHead_unit = (SpaceUnit*)MemLib::aToBoundary(aHead,C_SPACEUNIT);
   
-  DoubleWord* aTail = (DoubleWord*)(aHead_boundary + i_Distance);
+  SpaceUnit* aTail_unit = (SpaceUnit*)(aHead_unit + i_Distance);
   
-  return (TAIL*)aTail;
+  return (TAIL*)aTail_unit;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -531,8 +531,8 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::iPrevTail(i8 i_CurrTail)
   i8 nPriorUnits = aPriorTail->w8_1B(0);
   //RASSERT(nPriorUnits <= 4);
   
-  DoubleWord* aPrevTail_Unit = (DoubleWord*)aPriorTail + nPriorUnits;
-  if (aPrevTail_Unit >= &m_axaUnits[m_nSpaceUnits])
+  SpaceUnit* aPrevTail_unit = (SpaceUnit*)aPriorTail + nPriorUnits;
+  if (aPrevTail_unit >= &m_axaUnits[m_nSpaceUnits])
     return C_UNKNOWN;
 
   i8 i_Tail = i_CurrTail + nPriorUnits;
@@ -590,15 +590,15 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::nTails(void)
 template <eCN CN, class HEAD, class TAIL, class DESC>
 i8 Nub_t<CN,HEAD,TAIL,DESC>::iUnitDiff(HEAD* aHead, TAIL* aTail)
 {
-  DoubleWord* aHead_boundary = (DoubleWord*)MemLib::aToBoundary(aHead,C_SPACEUNIT);
-  DoubleWord* aTail_boundary = (DoubleWord*)MemLib::aToBoundary(aTail,C_SPACEUNIT);
+  SpaceUnit* aHead_unit = (SpaceUnit*)MemLib::aToBoundary(aHead,C_SPACEUNIT);
+  SpaceUnit* aTail_unit = (SpaceUnit*)MemLib::aToBoundary(aTail,C_SPACEUNIT);
 
   // n.b. when you subtract two pointers of the same type the result is
   // the distance (in array elements) between the two. (it is not the
   // difference in bytes between the addresses)
   
   // compute the unit difference
-  i8 i_DiffInUnits = aTail_boundary - aHead_boundary;
+  i8 i_DiffInUnits = aTail_unit - aHead_unit;
   
   return i_DiffInUnits;
 }
@@ -620,7 +620,7 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::nUsedBytes(void)
 /* set item array                                                             */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC>
-void Nub_t<CN,HEAD,TAIL,DESC>::vSetItems(i8 nSpaceUnits, DoubleWord* axaUnits)
+void Nub_t<CN,HEAD,TAIL,DESC>::vSetItems(i8 nSpaceUnits, SpaceUnit* axaUnits)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
