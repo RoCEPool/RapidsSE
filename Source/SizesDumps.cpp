@@ -535,7 +535,7 @@ i8 giClassSize[]
   /*123 */ sizeof(Heap), // correct    // SN_SMALLPERSISTENT
   /*124 */ sizeof(Heap), // correct    // SN_SMALLTRANSIENT
   /*125 */ sizeof(Socket),             // CN_SOCKET
-  /*    */ 0,             // CN_SPRINT
+  /*    */ sizeof(Sprint),             // CN_SPRINT
   /*126 */ sizeof(Stack),              // CN_STACK
   /*    */ sizeof(Statistics),         // CN_STATISTICS
   /*127 */ sizeof(StepAccum),          // CN_STEPACCUM
