@@ -33,7 +33,6 @@ namespace Base
     static const i8 C_SIZEOF_WORD = static_cast<i8>(sizeof(i8));
   
   public:
-    static bool  bBoundary(void* aAddress, i8 nByte);
     static void* pAddBytes(void* aAddress, i8 nBytes);
     static void  vAsciiDump(Stz* aText, i8 nBytes);
     static void  vCheckInitialised(void* aAddress, eCN eClass);
@@ -49,6 +48,7 @@ namespace Base
     static void  vHexDump(void *aAddress, i8 nBytes);
     static void* aMallocBlock(i8 nBytes);
     static void  vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo);
+    static bool  bOnBoundary(void* aAddress, i8 nByte);
     static void  vReset(void);
     static void  vRotate(void* aArg, i8 nBytes, i8 nBy);
     static void  vScribble(void* aAddress, i8 nBytes, eCN eClassNo);

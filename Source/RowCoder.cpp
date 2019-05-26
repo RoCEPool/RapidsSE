@@ -1796,7 +1796,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   i8 i_IntoTail = m_pIntoNub->iAllotTail(nIntoTailBytes);
   TailLine* aIntoTail = m_pIntoNub->aGetTail(i_IntoTail);
   
-  RASSERT(0 == (u8)aIntoTail % sizeof(DoubleWord));
+  RASSERT(MemLib::bOnBoundary(aIntoTail,sizeof(DoubleWord)));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -12,17 +12,6 @@ extern AttachMap* gpAttachMap;
 extern i8 giClassSize[];
 
 /*----------------------------------------------------------------------------*/
-/* is address on an nByte boundary?                                           */
-/*----------------------------------------------------------------------------*/
-bool MemLib::bBoundary(void* aAddress, i8 nByte)
-{
-  if (0 == (u8)aAddress % nByte)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* add number of bytes to given address                                       */
 /*----------------------------------------------------------------------------*/
 void* MemLib::pAddBytes(void* aAddress, i8 nBytes)
@@ -528,6 +517,17 @@ void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
     gpAttachMap->m_oStatistics.Memory.m_iMoveTotal += nBytes;
     gpAttachMap->m_oStatistics.Memory.m_iaMove[eClassNo] += nBytes;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* is address on an nByte boundary?                                           */
+/*----------------------------------------------------------------------------*/
+bool MemLib::bOnBoundary(void* aAddress, i8 nByte)
+{
+  if (0 == (u8)aAddress % nByte)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
