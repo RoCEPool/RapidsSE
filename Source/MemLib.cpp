@@ -12,15 +12,26 @@ extern AttachMap* gpAttachMap;
 extern i8 giClassSize[];
 
 /*----------------------------------------------------------------------------*/
-/* map a new an anonymous region of memory (private or shared)                */
+/* is address on an nByte boundary?                                           */
 /*----------------------------------------------------------------------------*/
-void* MemLib::pAddBytes(void* aAddress, i8 iBytes)
+bool MemLib::bBoundary(void* aAddress, i8 nByte)
 {
-  char* pOrigin = reinterpret_cast<char*>(aAddress);
+  if (0 == (u8)aAddress % nByte)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add number of bytes to given address                                       */
+/*----------------------------------------------------------------------------*/
+void* MemLib::pAddBytes(void* aAddress, i8 nBytes)
+{
+  byte* ayOrigin = reinterpret_cast<byte*>(aAddress);
   
-  char* pNew = pOrigin + iBytes;
+  byte* ayNew = ayOrigin + nBytes;
   
-  return pNew;
+  return ayNew;
 }
 
 /*---------------------------------------------------------------------------*/
