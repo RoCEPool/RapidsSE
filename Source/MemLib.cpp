@@ -14,7 +14,7 @@ extern i8 giClassSize[];
 /*----------------------------------------------------------------------------*/
 /* add number of bytes to given address                                       */
 /*----------------------------------------------------------------------------*/
-void* MemLib::pAddBytes(void* aAddress, i8 nBytes)
+void* MemLib::aAddBytes(void* aAddress, i8 nBytes)
 {
   byte* ayOrigin = reinterpret_cast<byte*>(aAddress);
   

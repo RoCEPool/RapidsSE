@@ -570,7 +570,7 @@ PoolBuffer* BufferPool::pToPoolBuffer(bn nBuffer)
   
   i8 iOffset = C_SIZE_POOL_BUFFER * *nBuffer;
   
-  PoolBuffer* pBuffer = static_cast<PoolBuffer*>(MemLib::pAddBytes(m_pBase,iOffset));
+  PoolBuffer* pBuffer = static_cast<PoolBuffer*>(MemLib::aAddBytes(m_pBase,iOffset));
   
   return pPoolCheck<PoolBuffer*>(pBuffer);
 }

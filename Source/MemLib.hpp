@@ -33,7 +33,7 @@ namespace Base
     static const i8 C_SIZEOF_WORD = static_cast<i8>(sizeof(i8));
   
   public:
-    static void* pAddBytes(void* aAddress, i8 nBytes);
+    static void* aAddBytes(void* aAddress, i8 nBytes);
     static void  vAsciiDump(Stz* aText, i8 nBytes);
     static void  vCheckInitialised(void* aAddress, eCN eClass);
     static void  vCheckInitialised(void* aAddress, i8 nBytes);
