@@ -172,6 +172,31 @@ i8 MemLib::iCompareWords(const void* pVal1, const void* pVal2, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* cut bytes off                                                              */
+/*----------------------------------------------------------------------------*/
+void MemLib::vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes, eCN eClassNo)
+{
+  i8 iStartMove = i_Offset + nCutBytes ;
+  RASSERT(iStartMove <= nSize);
+  
+  // get the start address
+  byte* aSrc = aAdd<byte*>(aAddr, iStartMove);
+  
+  // get the dst address
+  byte* aDst = aAdd<byte*>(aAddr, i_Offset);
+  
+  // copy nCutBytes from src to dst
+  MemLib::vCopy(aDst, aSrc, nSize - (iStartMove), eClassNo);
+  
+  // calculate the end address after cut
+  i8 iLen = nSize - nCutBytes;
+  byte* aAddrEnd = aAdd<byte*>(aAddr, iLen);
+  
+  // zero the last nCutBytes
+  MemLib::vZero(aAddrEnd, nCutBytes, eClassNo);
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump given bytes of memory at given address                                */
 /*----------------------------------------------------------------------------*/
 void MemLib::vDumpWords(void *aAddress, i8 nBytes)
@@ -374,6 +399,24 @@ void MemLib::vDumpWords(void *aAddress, i8 nBytes)
   vTrace("\n"_Stz);
 }
 */
+
+/*----------------------------------------------------------------------------*/
+/* extend bytes to make space for additional data                             */
+/*----------------------------------------------------------------------------*/
+void MemLib::vExpand(void* aAddr, i8 nSize, i8 i_Offset, i8 nAddBytes, eCN eClassNo)
+{
+  i8 iStartMove = i_Offset;
+  RASSERT(iStartMove + nAddBytes <= nSize);
+  
+  // get the start address
+  byte* aSrc = aAdd<byte*>(aAddr, iStartMove);
+  
+  // get the dst address
+  byte* aDst = aAdd<byte*>(aAddr, i_Offset + nAddBytes);
+  
+  // copy nExtendBytes from src to dst
+  MemLib::vCopy(aDst, aSrc, nSize - (iStartMove), eClassNo);
+}
 
 /*----------------------------------------------------------------------------*/
 /* free a block of memory                                                     */
