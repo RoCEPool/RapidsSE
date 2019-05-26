@@ -10,8 +10,6 @@ namespace MetaData
 
 namespace Datums
 {
-  static const i8 C_MAX_PRECISION_BCD = 19;
-  
   class Bcd
   {
     

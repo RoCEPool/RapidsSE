@@ -13,8 +13,7 @@ namespace Datums
   static const u8 C_YEAR_RANGE = 255;
   static const i8 C_EXTENDED_AUX = 6;
   
-  static const i8 C_MAX_VCH = C_4KB;
-
+ 
   enum eDM : u1 // Datum Type
   {
   /*  0 */ DM_NONE=0,

@@ -9,9 +9,7 @@ namespace MetaData
 }
 
 namespace Datums
-{
-  const i8 C_MAX_PRECISION_INT = 19;
-  
+{  
   class Int
   {
   friend class DtmLib;

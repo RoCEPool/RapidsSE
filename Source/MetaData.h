@@ -12,8 +12,6 @@ namespace Data { class EntryBuffer; class IndexTree; class RowBuffer; }
 
 namespace MetaData
 {
-  // allow for maximum 1025 indexes per table
-  static const i8 C_INDEXES_PER_TABLE = 1025;
 
   void vCheckAssumptions(void);
   

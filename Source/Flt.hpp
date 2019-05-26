@@ -7,7 +7,6 @@ namespace Datums
 {
   const d8 C_D8_MIN = DBL_MIN + DBL_EPSILON;
   const d8 C_D8_MAX = DBL_MAX;
-  const i8 C_MAX_PRECISION_FLT = 19;
   
   class Flt
   {
