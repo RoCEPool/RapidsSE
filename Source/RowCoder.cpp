@@ -3828,7 +3828,7 @@ i8 RowCoder::nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine)
     return C_UNKNOWN;
   
   i8 i_Tail_rel = aHeadLine->w8_2B(i_Offset);
-  TailLine* aShocoTail = pNub->aGetTail(aHeadLine,i_Tail_rel);
+  TailLine* aShocoTail = RowNub::aGetTail(aHeadLine,i_Tail_rel);
 
   i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
   //RASSERT(nCompressed <= 56);
