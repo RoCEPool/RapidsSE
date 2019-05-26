@@ -229,7 +229,7 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iAllotHead(i8 nBytes)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   RASSERT(nBytes);
-  RASSERT(0 == nBytes % sizeof(UNIT));
+  //RASSERT(0 == nBytes % sizeof(UNIT));
 
   if (nFreeBytes() < nBytes)
     return C_UNKNOWN;
