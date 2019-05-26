@@ -62,7 +62,7 @@ namespace Structures
     i8    iPrevTail(i8 i_Tail);
     void  vReset(void);
     i8    nTails(void);
-    i8    iUnitDiff(i8 i_Head, i8 i_Tail);
+    //i8    iUnitDiff(i8 i_Head, i8 i_Tail);
     i8    iUnitDiff(HEAD* aHead, TAIL* aTail);
     i8    nUsedBytes(void);
     void  vVerifyTails(i8 i_Dump);
@@ -569,15 +569,15 @@ i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::nTails(void)
 /*----------------------------------------------------------------------------*/
 /* compute unit difference between a head and a tail                          */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iUnitDiff(i8 i_Head, i8 i_Tail)
-{
-  i8 i_HeadUnit = i_Head * (m_nHeadAllot / sizeof(UNIT));
-  
-  i8 i_Diff = i_Tail - i_HeadUnit;
-  
-  return i_Diff;
-}
+//template <eCN CN, class HEAD, class TAIL, class UNIT, class DESC>
+//i8 Nub_t<CN,HEAD,TAIL,UNIT,DESC>::iUnitDiff(i8 i_Head, i8 i_Tail)
+//{
+//  i8 i_HeadUnit = i_Head * (m_nHeadAllot / sizeof(UNIT));
+//  
+//  i8 i_Diff = i_Tail - i_HeadUnit;
+//  
+//  return i_Diff;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* compute unit difference between a head and a tail                          */

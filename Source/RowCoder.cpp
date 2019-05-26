@@ -1450,7 +1450,8 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   i8 i_IntoTail_Dup = iFindTail(m_pIntoNub,aFromTail);
   if (C_UNKNOWN == i_IntoTail_Dup)
     return false;
-  
+  TailLine* aIntoTail_Dup = m_pIntoNub->aGetTail(i_IntoTail_Dup);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // col data in Into-Head recoded as [IT] unit diff between Into-Head and -Tail
@@ -1458,7 +1459,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   // |                    [IT]        |
   // +--------------------------------+
   //                      ^m_i_IntoOffset
-  i8 i_IntoTail_Rel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail_Dup);
+  i8 i_IntoTail_Rel = m_pIntoNub->iUnitDiff(m_aIntoHead,aIntoTail_Dup);
   m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MC_2B);
   
   // increment into offset by sizeof([IT])
@@ -1697,7 +1698,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // |            [IT]<C><partA.....> |
   // +--------------------------------+
   //              ^m_i_IntoOffset
-  i8 i_IntoTail_Rel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
+  i8 i_IntoTail_Rel = m_pIntoNub->iUnitDiff(m_aIntoHead,aIntoTail);
   m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MC_2B);
   
   // increment intoOffset by sizeof([IT]) + sizeof(<C>) + nPartA
@@ -1813,7 +1814,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   byte* aIntoTail_Shoco = (byte*)aIntoTail + C_TAIL_UNITS_BYTES
                                            + C_SHOCO_COMPRESSED_BYTES;
   byte* aFromTail_Shoco = (byte*)aFromTail + C_TAIL_UNITS_BYTES
-                                          + C_SHOCO_COMPRESSED_BYTES;
+                                           + C_SHOCO_COMPRESSED_BYTES;
   MemLib::vCopy(aIntoTail_Shoco,aFromTail_Shoco,nFromShocoBytes,CN_ROWCODER);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1823,7 +1824,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   // |                    [IT]        |
   // +--------------------------------+
   //                      ^m_i_IntoOffset
-  i8 i_IntoTail_Rel = m_pIntoNub->iUnitDiff(m_i_IntoHead,i_IntoTail);
+  i8 i_IntoTail_Rel = m_pIntoNub->iUnitDiff(m_aIntoHead,aIntoTail);
   m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MC_2B);
   
   // increment intoOffset by sizeof([IT])
