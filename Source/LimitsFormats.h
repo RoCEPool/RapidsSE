@@ -22,6 +22,19 @@ static const i8 C_MAX_PRECISION_INT = 19;
 // allow for maximum 1025 indexes per table
 static const i8 C_INDEXES_PER_TABLE = 1025;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+static const Stz* F_BCD       = "%s%lld"_Stz;
+static const Stz* F_BCD_frac  = "%s%lld.%.*lld"_Stz;
+static const Stz* F_DTE       = "%04lld-%02lld-%02lld"_Stz;
+static const Stz* F_FLT       = "%g"_Stz;
+static const Stz* F_INT       = "%lld"_Stz;
+static const Stz* F_IVL       = "%lld"_Stz;
+static const Stz* F_TME       = "%02lld:%02lld:%02lld"_Stz;
+static const Stz* F_TME_frac  = "%02lld:%02lld:%02lld.%s"_Stz;
+static const Stz* F_TSP       = "%02lld-%02lld-%02lld %02lld:%02lld:%02lld"_Stz;
+static const Stz* F_TSP_frac  = "%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s"_Stz;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
