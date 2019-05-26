@@ -2810,7 +2810,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         wWord.m_yaByte[0] = *aDataByte++;
         wWord.m_yaByte[1] = *aDataByte++;
         i_Tail_Rel = wWord.m_iI8;
-        aShocoTail  = RowNub::aToTail(aHeadLine,i_Tail_Rel);
+        aShocoTail  = RowNub::aGetTail(aHeadLine,i_Tail_Rel);
         nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
         nDecompressed =
           Compress::iFromShoco(aString,                  // decompressed dest
@@ -2832,7 +2832,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         wWord.m_yaByte[0] = *aDataByte++;
         wWord.m_yaByte[1] = *aDataByte++;
         i_Tail_Rel = wWord.m_iI8;
-        aShocoTail  = RowNub::aToTail(aHeadLine,i_Tail_Rel);
+        aShocoTail  = RowNub::aGetTail(aHeadLine,i_Tail_Rel);
         nCompressed = (i8)*(i1*)aDataByte++;
         nBytesPartA = aHeadLine->nBytes() - (aDataByte - (byte*)aHeadLine);
         nBytesPartB = nCompressed - nBytesPartA;
@@ -3585,7 +3585,7 @@ void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
   byte caShoco[C_4KB];
   
   i8 i_Tail_Rel = aHeadLine->w8_2B(i_Offset);
-  TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_Tail_Rel);
+  TailLine* aShocoTail = RowNub::aGetTail(aHeadLine,i_Tail_Rel);
   
   i8 nCompressed = aHeadLine->w8_1B(i_Offset+2);
   
@@ -3619,7 +3619,7 @@ void RowCoder::vDecodeVchShocoTail(Datum* pDatum, HeadLine* aHeadLine,
                                    Column* pCol, i8 i_Offset)
 {
   i8 i_Tail_Rel = aHeadLine->w8_2B(i_Offset);
-  TailLine* aShocoTail = RowNub::aToTail(aHeadLine,i_Tail_Rel);
+  TailLine* aShocoTail = RowNub::aGetTail(aHeadLine,i_Tail_Rel);
   
   //MemLib::vWordDump(aShocoTail,aShocoTail->nBytes());
   
@@ -3828,7 +3828,7 @@ i8 RowCoder::nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine)
     return C_UNKNOWN;
   
   i8 i_Distance = aHeadLine->w8_2B(i_Offset);
-  TailLine* aShocoTail = pNub->aToTail(aHeadLine,i_Distance);
+  TailLine* aShocoTail = pNub->aGetTail(aHeadLine,i_Distance);
 
   i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
   //RASSERT(nCompressed <= 56);
