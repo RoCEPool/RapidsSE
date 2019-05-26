@@ -18,7 +18,7 @@ namespace Sprinting
     Footer m_xFooter;
     
   public:
-    Sprint(void);
+    Sprint(eCN eClass);
     ~Sprint() noexcept(false);
   
     Stz* sz(void);

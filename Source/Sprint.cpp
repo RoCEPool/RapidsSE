@@ -7,30 +7,26 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Sprint::Sprint(void)
-: Object(CN_SPRINT)
+Sprint::Sprint(eCN eClass)
+: Object(eClass)
 {
-  _precondition_(_MAGIC_,CN_SPRINT,_FOOTER_);
-  
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_acFormat,sizeof(m_acFormat),CN_SPRINT);
-  MemLib::vZero(m_acResult,sizeof(m_acResult),CN_SPRINT);
+  MemLib::vZero(m_acFormat,sizeof(m_acFormat),CN_SPDTE);
+  MemLib::vZero(m_acResult,sizeof(m_acResult),CN_SPDTE);
 #else
   m_acFormat[0] = '\0';
   m_acResult[0] = '\0';
 #endif
 
   _checkInitialised_(CN_SPRINT);
-  
-  _postcondition_(_MAGIC_,CN_SPRINT,_FOOTER_);
-}
+ }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Sprint::~Sprint(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPRINT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +38,7 @@ Sprint::~Sprint(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* Sprint::sz(void)
 {
-  _precondition_(_MAGIC_,CN_SPRINT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
 
   return (Stz*) &m_acResult[0];
 }
@@ -52,7 +48,7 @@ Stz* Sprint::sz(void)
 /*----------------------------------------------------------------------------*/
 Stz* Sprint::szFormat(void)
 {
-  _precondition_(_MAGIC_,CN_SPRINT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   return (Stz*) &m_acFormat[0];
 }
@@ -62,7 +58,7 @@ Stz* Sprint::szFormat(void)
 /*----------------------------------------------------------------------------*/
 void Sprint::vFormat(Stz* szFormat)
 {
-  _precondition_(_MAGIC_,CN_SPRINT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   StrLib::vCopy(m_acFormat,(char*)szFormat);
 }
@@ -72,7 +68,7 @@ void Sprint::vFormat(Stz* szFormat)
 /*----------------------------------------------------------------------------*/
 Stz* Sprint::szResult(void)
 {
-  _precondition_(_MAGIC_,CN_SPRINT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   return (Stz*) &m_acResult[0];
 }
@@ -82,7 +78,7 @@ Stz* Sprint::szResult(void)
 /*----------------------------------------------------------------------------*/
 void Sprint::vResult(Stz* szResult)
 {
-  _precondition_(_MAGIC_,CN_SPRINT,_FOOTER_);
+  _precondition_(_MAGIC_,_FOOTER_);
   
   StrLib::vCopy(m_acFormat,(char*)szResult);
 }
@@ -97,7 +93,7 @@ void Sprint::vResult(Stz* szResult)
 /*----------------------------------------------------------------------------*/
 Footer* Sprint::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_SPRINT);
+  _precondition_(_MAGIC_);
   
   return &m_xFooter;
 }
