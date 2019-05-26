@@ -2385,7 +2385,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
   eMC  eMetaCode;
   Word wWord;
   
-  i8   i_Tail_Rel;
+  i8   i_Tail_rel;
   i8   nCompressed;
   i8   nDecompressed;
   i8   nLength;
@@ -2804,13 +2804,13 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_SHOCO_TAIL_2T:
-        //i_Tail_Rel  = (i8)*(i2*)aDataByte;
+        //i_Tail_rel  = (i8)*(i2*)aDataByte;
         //aDataByte  += 2;
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *aDataByte++;
         wWord.m_yaByte[1] = *aDataByte++;
-        i_Tail_Rel = wWord.m_iI8;
-        aShocoTail  = RowNub::aGetTail(aHeadLine,i_Tail_Rel);
+        i_Tail_rel = wWord.m_iI8;
+        aShocoTail  = RowNub::aGetTail(aHeadLine,i_Tail_rel);
         nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
         nDecompressed =
           Compress::iFromShoco(aString,                  // decompressed dest
@@ -2831,8 +2831,8 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *aDataByte++;
         wWord.m_yaByte[1] = *aDataByte++;
-        i_Tail_Rel = wWord.m_iI8;
-        aShocoTail  = RowNub::aGetTail(aHeadLine,i_Tail_Rel);
+        i_Tail_rel = wWord.m_iI8;
+        aShocoTail  = RowNub::aGetTail(aHeadLine,i_Tail_rel);
         nCompressed = (i8)*(i1*)aDataByte++;
         nBytesPartA = aHeadLine->nBytes() - (aDataByte - (byte*)aHeadLine);
         nBytesPartB = nCompressed - nBytesPartA;
@@ -3584,8 +3584,8 @@ void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
 
   byte caShoco[C_4KB];
   
-  i8 i_Tail_Rel = aHeadLine->w8_2B(i_Offset);
-  TailLine* aShocoTail = RowNub::aGetTail(aHeadLine,i_Tail_Rel);
+  i8 i_Tail_rel = aHeadLine->w8_2B(i_Offset);
+  TailLine* aShocoTail = RowNub::aGetTail(aHeadLine,i_Tail_rel);
   
   i8 nCompressed = aHeadLine->w8_1B(i_Offset+2);
   
@@ -3618,8 +3618,8 @@ void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
 void RowCoder::vDecodeVchShocoTail(Datum* pDatum, HeadLine* aHeadLine,
                                    Column* pCol, i8 i_Offset)
 {
-  i8 i_Tail_Rel = aHeadLine->w8_2B(i_Offset);
-  TailLine* aShocoTail = RowNub::aGetTail(aHeadLine,i_Tail_Rel);
+  i8 i_Tail_rel = aHeadLine->w8_2B(i_Offset);
+  TailLine* aShocoTail = RowNub::aGetTail(aHeadLine,i_Tail_rel);
   
   //MemLib::vWordDump(aShocoTail,aShocoTail->nBytes());
   
@@ -3827,8 +3827,8 @@ i8 RowCoder::nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine)
   if (MC_SHOCO_TAIL_2T != eEncoding)
     return C_UNKNOWN;
   
-  i8 i_Distance = aHeadLine->w8_2B(i_Offset);
-  TailLine* aShocoTail = pNub->aGetTail(aHeadLine,i_Distance);
+  i8 i_Tail_rel = aHeadLine->w8_2B(i_Offset);
+  TailLine* aShocoTail = pNub->aGetTail(aHeadLine,i_Tail_rel);
 
   i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
   //RASSERT(nCompressed <= 56);

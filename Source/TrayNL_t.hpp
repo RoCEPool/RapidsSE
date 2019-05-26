@@ -43,7 +43,7 @@ namespace Structures
     ~Nub_t(void) noexcept(false);
   
     static i8    nBytes(i8 nUnits);
-    static TAIL* aGetTail(HEAD* aHead, i8 i_Distance);
+    static TAIL* aGetTail(HEAD* aHead, i8 i_Tail_rel);
     static i8    nUnits(i8 nBytes);
 
     i8    iAllotHead(i8 nBytes);
@@ -188,14 +188,14 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::nBytes(i8 nUnits)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute tail from head + distance (in units)                               */
+/* compute tail from head + relative distance (in units)                      */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC>
-TAIL* Nub_t<CN,HEAD,TAIL,DESC>::aGetTail(HEAD* aHead, i8 i_Distance)
+TAIL* Nub_t<CN,HEAD,TAIL,DESC>::aGetTail(HEAD* aHead, i8 i_Tail_rel)
 {
   SpaceUnit* aHead_unit = (SpaceUnit*)MemLib::aToBoundary(aHead,C_SPACEUNIT);
   
-  SpaceUnit* aTail_unit = (SpaceUnit*)(aHead_unit + i_Distance);
+  SpaceUnit* aTail_unit = (SpaceUnit*)(aHead_unit + i_Tail_rel);
   
   return (TAIL*)aTail_unit;
 }
