@@ -332,7 +332,7 @@ void vTest11(void)
   MemLib::vWordDump(&xCacheLine,sizeof(CacheLine));
   
   // cut 10 bytes from offset 6
-  RowNub::vCut(&xCacheLine, sizeof(CacheLine), 6, 10);
+  MemLib::vCut(&xCacheLine, sizeof(CacheLine), 6, 10,CN_NONE);
   
   // dump cacheline after cut
   MemLib::vWordDump(&xCacheLine,sizeof(CacheLine));
@@ -343,7 +343,7 @@ void vTest11(void)
   xCacheLine.vSet(4, sizeof(CacheLine) - 6, 'b');
   
   // cut last but 6 bytes
-  RowNub::vCut(&xCacheLine, sizeof(CacheLine), 6, sizeof(CacheLine) - 6);
+  MemLib::vCut(&xCacheLine, sizeof(CacheLine), 6, sizeof(CacheLine) - 6,CN_NONE);
   
   // dump cacheline after cut
   MemLib::vWordDump(&xCacheLine,sizeof(CacheLine));
@@ -354,7 +354,7 @@ void vTest11(void)
   xCacheLine.vSet(0, 8, 'b');
   
   // cut frst 6 bytes
-  RowNub::vCut(&xCacheLine, sizeof(CacheLine), 0, 6);
+  MemLib::vCut(&xCacheLine, sizeof(CacheLine), 0, 6, CN_NONE);
   
   // dump cacheline after cut
   MemLib::vWordDump(&xCacheLine,sizeof(CacheLine));

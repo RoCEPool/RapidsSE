@@ -43,7 +43,6 @@ namespace Structures
     ~Nub_t(void) noexcept(false);
   
     static i8    nBytes(i8 nUnits);
-    static void  vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes);
     static void  vExpand(void* aAddr, i8 nSize, i8 i_Offset, i8 nAddBytes);
     static TAIL* aToTail(HEAD* aHead, i8 i_Distance);
     static i8    nUnits(i8 nBytes);
@@ -298,32 +297,6 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::nAreaBytes(void)
   i8 nBytes = C_SPACEUNIT * m_nSpaceUnits;
   
   return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* cut bytes off                                                              */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-void Nub_t<CN,HEAD,TAIL,DESC>::vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes)
-{
-  i8 iStartMove = i_Offset + nCutBytes ;
-  RASSERT(iStartMove <= nSize);
-  
-  // get the start address
-  byte* aSrc = aAdd<byte*>(aAddr, iStartMove);
-  
-  // get the dst address
-  byte* aDst = aAdd<byte*>(aAddr, i_Offset);
-  
-  // copy nCutBytes from src to dst
-  MemLib::vCopy(aDst, aSrc, nSize - (iStartMove), CN);
-  
-  // calculate the end address after cut
-  i8 iLen = nSize - nCutBytes;
-  byte* aAddrEnd = aAdd<byte*>(aAddr, iLen);
-  
-  // zero the last nCutBytes
-  MemLib::vZero(aAddrEnd, nCutBytes, CN);
 }
 
 /*----------------------------------------------------------------------------*/

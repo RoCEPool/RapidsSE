@@ -1215,7 +1215,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
       vUsageIncRecoded(pCol,0);
       
       // cut the 1B char out of the into head
-      m_pIntoNub->vCut(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1);
+      MemLib::vCut(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1,CN_ROWCODER);
       
       vXchkBcdRecode(pCol);
       return;
@@ -1314,7 +1314,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
       vUsageIncRecoded(pCol,0);
       
       // cut the 1B char out of the into head
-      m_pIntoNub->vCut(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1);
+      MemLib::vCut(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1,CN_ROWCODER);
       
       return true;
     }
