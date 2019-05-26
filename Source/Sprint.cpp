@@ -12,6 +12,14 @@ Sprint::Sprint(void)
 {
   _precondition_(_MAGIC_,CN_SPRINT,_FOOTER_);
   
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_acFormat,sizeof(m_acFormat),CN_SPRINT);
+  MemLib::vZero(m_acResult,sizeof(m_acResult),CN_SPRINT);
+#else
+  m_acFormat[0] = '\0';
+  m_acResult[0] = '\0';
+#endif
+
   _checkInitialised_(CN_SPRINT);
   
   _postcondition_(_MAGIC_,CN_SPRINT,_FOOTER_);
@@ -28,6 +36,56 @@ Sprint::~Sprint(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get result as Stz*                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* Sprint::sz(void)
+{
+  _precondition_(_MAGIC_,CN_SPRINT,_FOOTER_);
+
+  return (Stz*) &m_acResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* get format as Stz*                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* Sprint::szFormat(void)
+{
+  _precondition_(_MAGIC_,CN_SPRINT,_FOOTER_);
+  
+  return (Stz*) &m_acFormat[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* set format                                                                 */
+/*----------------------------------------------------------------------------*/
+void Sprint::vFormat(Stz* szFormat)
+{
+  _precondition_(_MAGIC_,CN_SPRINT,_FOOTER_);
+  
+  StrLib::vCopy(m_acFormat,(char*)szFormat);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get result as Stz*                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* Sprint::szResult(void)
+{
+  _precondition_(_MAGIC_,CN_SPRINT,_FOOTER_);
+  
+  return (Stz*) &m_acResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* set result                                                                 */
+/*----------------------------------------------------------------------------*/
+void Sprint::vResult(Stz* szResult)
+{
+  _precondition_(_MAGIC_,CN_SPRINT,_FOOTER_);
+  
+  StrLib::vCopy(m_acFormat,(char*)szResult);
+}
 
 
 /*----------------------------------------------------------------------------*/
