@@ -185,18 +185,31 @@ void Record::vAppendDte(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-    //Dte wDte;
-    //wDte.vAsI8(pDatum->m_iDte);
-    
-    s32 sDte;
-    //wDte.vSprint(sDte.aStz());
-    StrLib::vSprint(sDte.aChar(),
-                  "%02lld-%02lld-%02lld"_Stz,
-                  (i8)pDatum->xEdt.m_uYearInEra + C_BASE_YEAR,
-                  (i8)pDatum->xEdt.m_uMonth,
-                  (i8)pDatum->xEdt.m_uDay);
-    m_sRecStr.vConcat(sDte.aStz());
+  // here we declare the Dte helper.
+  // it has both the default format string in it, as well as a result buffer array
+  spDTE spDte;
+  
+  // we call spDte.sz() with the date to be formatted.
+  // it returns a Stz* to the formatted date result
+  m_sRecStr.vConcat(spDte.sz(pDatum->m_iDte));
 }
+/*----------------------------------------------------------------------------*/
+//void Record::vAppendDte(Column* pCol, Datum* pDatum)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+//
+//    //Dte wDte;
+//    //wDte.vAsI8(pDatum->m_iDte);
+//
+//    s32 sDte;
+//    //wDte.vSprint(sDte.aStz());
+//    StrLib::vSprint(sDte.aChar(),
+//                  "%02lld-%02lld-%02lld"_Stz,
+//                  (i8)pDatum->xEdt.m_uYearInEra + C_BASE_YEAR,
+//                  (i8)pDatum->xEdt.m_uMonth,
+//                  (i8)pDatum->xEdt.m_uDay);
+//    m_sRecStr.vConcat(sDte.aStz());
+//}
 /*----------------------------------------------------------------------------*/
 void Record::vAppendDte_Alt(Column* pCol, Datum* pDatum)
 {
