@@ -133,6 +133,8 @@ RowCoder::~RowCoder(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCopyBegin(RowNub* pIntoNub)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   m_pColVec      = pIntoNub->pDesc()->pColumnVec();
   m_nHeadBytes   = nHeadBytes(m_pColVec);
   m_nMetaData    = nMetaData(m_pColVec);
@@ -149,6 +151,8 @@ void RowCoder::vCopyBegin(RowNub* pIntoNub)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCopyEnd(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   //m_pColVec       = nullptr;
   m_nHeadBytes    = C_UNKNOWN;
   m_nMetaData     = C_UNKNOWN;
@@ -176,6 +180,8 @@ void RowCoder::vCopyEnd(void)
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bCopyRow(RowNub* pFromNub)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   // check for space in target nub
   
   i8 nSpaceNeeded = pFromNub->nUsedBytes();
@@ -233,6 +239,8 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeBegin(RowNub* pIntoNub)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   // set up
   
   m_pColVec      = pIntoNub->pDesc()->pColumnVec();
@@ -258,6 +266,8 @@ void RowCoder::vEncodeBegin(RowNub* pIntoNub)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeDatum(Datum* pSrcDatum, Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   i8 i_Col = pCol->iColumnNo();
   if (0 == i_Col)
     m_nTotalHeads++;
@@ -286,6 +296,7 @@ void RowCoder::vEncodeDatum(Datum* pSrcDatum, Column* pCol)
     default:
       NEVER_REACH;
   }
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -293,6 +304,9 @@ void RowCoder::vEncodeDatum(Datum* pSrcDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeEnd(void)
 {
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 //  HV_Rec hvRec;
 //  vRecord(hvRec,m_aIntoHead,m_pColVec);
 //  vTrace("encoded: (%s)\n"_Stz,hvRec->szRecStr());
@@ -312,6 +326,8 @@ void RowCoder::vEncodeEnd(void)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vReport(RowCoder* pRowCoder_Encode)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   if (! m_pColVec || !pRowCoder_Encode->m_nTotalHeads)
     return;
   
@@ -449,6 +465,8 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vAnalyseFree(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   i8 nFreeBytes = nFreeSpaceHead(m_aIntoHead,m_pColVec);
   m_nHeadFreeBytes  += nFreeBytes;
   
@@ -468,6 +486,8 @@ void RowCoder::vAnalyseFree(void)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCodeBol(Datum* pTgtDatum, Datum* pSrcDatum)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   RASSERT(DM_BOL == pSrcDatum->m_eDatum);
   
   pTgtDatum->m_eDatum = DM_BOL;
@@ -493,6 +513,8 @@ void RowCoder::vCodeBol(Datum* pTgtDatum, Datum* pSrcDatum)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCodeBcd(Datum* pTgtDatum, Datum* pSrcDatum)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   RASSERT(DM_BCD == pSrcDatum->m_eDatum);
   
   m_oEncodedDatum.m_eDatum = DM_BCD;
@@ -510,6 +532,8 @@ void RowCoder::vCodeBcd(Datum* pTgtDatum, Datum* pSrcDatum)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   RASSERT(DM_DTE == pSrcDatum->m_eDatum);
   
   pTgtDatum->m_eDatum = DM_DTE;
@@ -551,6 +575,8 @@ void RowCoder::vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCodeFlt(Datum* pTgtDatum, Datum* pSrcDatum)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   RASSERT(DM_FLT == pSrcDatum->m_eDatum);
   
   pTgtDatum->m_eDatum = DM_FLT;
@@ -568,6 +594,8 @@ void RowCoder::vCodeFlt(Datum* pTgtDatum, Datum* pSrcDatum)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   RASSERT(DM_INT == pSrcDatum->m_eDatum);
   
   pTgtDatum->m_eDatum = DM_INT;
@@ -585,6 +613,8 @@ void RowCoder::vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCodeIvl(Datum* pTgtDatum, Datum* pSrcDatum)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   RASSERT(DM_IVL == pSrcDatum->m_eDatum);
   
   pTgtDatum->m_eDatum = DM_IVL;
@@ -602,6 +632,8 @@ void RowCoder::vCodeIvl(Datum* pTgtDatum, Datum* pSrcDatum)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCodeTme(Datum* pTgtDatum, Datum* pSrcDatum)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   RASSERT(DM_TME == pSrcDatum->m_eDatum);
   
   pTgtDatum->m_eDatum = DM_TME;
@@ -644,6 +676,8 @@ void RowCoder::vCodeTme(Datum* pTgtDatum, Datum* pSrcDatum)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCodeTsp(Datum* pTgtDatum, Datum* pSrcDatum)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   RASSERT(DM_TSP == pSrcDatum->m_eDatum);
   
   pTgtDatum->m_eDatum = DM_TSP;
@@ -662,6 +696,8 @@ void RowCoder::vCodeTsp(Datum* pTgtDatum, Datum* pSrcDatum)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   RASSERT(DM_VCH == pSrcDatum->m_eDatum);
   
   pTgtDatum->m_eDatum = DM_VCH;
@@ -694,6 +730,7 @@ void RowCoder::vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum)
     pTgtDatum->m_eEncoding     = MC_SHOCO_TAIL_2T;
     pTgtDatum->m_nEncodedBytes = iLen;
   }
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -701,11 +738,14 @@ void RowCoder::vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCopyHead_Large(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   MemLib::vCopy(m_aIntoHead,m_aFromHead,m_nHeadBytes,CN_ROWBUFFER);
   
 #ifdef WITH_TRACE_ENCODING
   RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
 #endif
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -713,11 +753,14 @@ void RowCoder::vCopyHead_Large(void)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCopyHead_Short(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   MemLib::vCopy(m_aIntoHead,m_aFromHead,m_nHeadBytes,CN_ROWBUFFER);
   
 #ifdef WITH_TRACE_ENCODING
   RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
 #endif
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -725,9 +768,13 @@ void RowCoder::vCopyHead_Short(void)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDataPut(Datum* pEncodedDatum)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   if (! pEncodedDatum->m_nEncodedBytes)
     return;
   
+  //RASSERT(m_i_IntoOffset + pEncodedDatum->m_nEncodedBytes <= nHeadBytes(m_pColVec));
+    
   m_aIntoHead->vPut(m_i_IntoOffset,
                     pEncodedDatum->m_wWord,
                     pEncodedDatum->m_nEncodedBytes);
@@ -740,6 +787,8 @@ void RowCoder::vDataPut(Datum* pEncodedDatum)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDataPut(w8 wDatum, i8 nBytes)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   if (! nBytes)
     return;
   
@@ -753,6 +802,8 @@ void RowCoder::vDataPut(w8 wDatum, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeBcd(Datum* pSrcDatum, Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   vCodeBcd(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
@@ -766,6 +817,8 @@ void RowCoder::vEncodeBcd(Datum* pSrcDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeBol(Datum* pSrcDatum, Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   vCodeBol(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
@@ -779,6 +832,8 @@ void RowCoder::vEncodeBol(Datum* pSrcDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeDte(Datum* pSrcDatum, Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   //  vTrace("++ %lld-%lld-%lld\n"_Stz,
   //         pDatum->xDte.m_uYearDelta,pDatum->xDte.m_uMonth,pDatum->xDte.m_uDay);
   
@@ -807,6 +862,8 @@ void RowCoder::vEncodeDte(Datum* pSrcDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeFlt(Datum* pSrcDatum, Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   vCodeFlt(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
@@ -820,6 +877,8 @@ void RowCoder::vEncodeFlt(Datum* pSrcDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeInt(Datum* pSrcDatum, Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   vCodeInt(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
@@ -833,6 +892,8 @@ void RowCoder::vEncodeInt(Datum* pSrcDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeIvl(Datum* pSrcDatum, Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   vCodeIvl(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
@@ -846,6 +907,8 @@ void RowCoder::vEncodeIvl(Datum* pSrcDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeTme(Datum* pSrcDatum, Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   vCodeTme(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
@@ -859,6 +922,8 @@ void RowCoder::vEncodeTme(Datum* pSrcDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeTsp(Datum* pSrcDatum, Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   vCodeTsp(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
@@ -872,6 +937,8 @@ void RowCoder::vEncodeTsp(Datum* pSrcDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeVch(Datum* pSrcDatum, Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   vCodeVch(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   
@@ -909,6 +976,8 @@ void RowCoder::vEncodeVch(Datum* pSrcDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   /*
        -- Into-Head (encoding) --            -- Into-Tail (encoding) --
    +================================+    +=====================================+
@@ -953,6 +1022,7 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
   
   vUsageIncEncoded(pCol,2 + nTailBytes);
   
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   //MemLib::vWordDump(aShocoLine,m_nHeadBytes);
 }
 
@@ -961,6 +1031,8 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   /*
         -- Into-Head (encoding) --
    +================================+
@@ -983,6 +1055,8 @@ void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
   vDataPut(wSmall,pSrcDatum->m_nChars);
   
   vUsageIncEncoded(pCol,1 + pSrcDatum->m_nChars);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -990,6 +1064,8 @@ void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 eMC RowCoder::eGetEncoding(Column* pCol, i8& i_PriorColumn_, i8& i_FromOffset_)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   eMC eEncoding = eGetEncoding(m_aFromHead, pCol,
                                m_pColVec,
                                i_PriorColumn_, i_FromOffset_);
@@ -1002,6 +1078,8 @@ eMC RowCoder::eGetEncoding(Column* pCol, i8& i_PriorColumn_, i8& i_FromOffset_)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vHashColumn(Datum* pSrcDatum, Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   // hash the column value only if part of partition key
   if (! pCol->bIsPartitionKey())
     return;
@@ -1022,6 +1100,8 @@ void RowCoder::vHashColumn(Datum* pSrcDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vMetaCode(Column* pCol, eMC eMetaCode)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   i8 i_Col = pCol->iColumnNo();
   m_aIntoHead->vMetaCode(i_Col,eMetaCode);
 }
@@ -1031,6 +1111,8 @@ void RowCoder::vMetaCode(Column* pCol, eMC eMetaCode)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vMetaPut(Datum* pDatum, Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   vMetaCode(pCol,pDatum->m_eEncoding);
 }
 
@@ -1039,6 +1121,8 @@ void RowCoder::vMetaPut(Datum* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecode_Large(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   i8 nColumns = m_pColVec->nItems();
   
   i8 i_LastColumn = 0;
@@ -1073,7 +1157,7 @@ void RowCoder::vRecode_Large(void)
     }
     
   }
-  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1081,9 +1165,14 @@ void RowCoder::vRecode_Large(void)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecode_Short(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   i8 nColumns = m_pColVec->nItems();
   
   // recode each column
+  
+  //vTrace("DUMP before recode\n"_Stz);
+  //vHeadDump(m_aFromHead, m_pColVec);
   
   i8 i_LastColumn = 0;
   
@@ -1151,6 +1240,9 @@ void RowCoder::vRecode_Short(void)
     
     
   }
+  //vTrace("DUMP after recode\n"_Stz);
+  //vHeadDump(m_aIntoHead, m_pColVec);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
 }
 
@@ -1159,6 +1251,8 @@ void RowCoder::vRecode_Short(void)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeBcd(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_BCD
   RASSERT(DM_BCD == pCol->eDatumType());
   
@@ -1236,6 +1330,8 @@ void RowCoder::vRecodeBcd(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeBol(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   RASSERT(0 == m_nFromDataBytes);
   m_i_IntoOffset += m_nFromDataBytes;
 }
@@ -1245,6 +1341,8 @@ void RowCoder::vRecodeBol(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeFlt(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   m_i_IntoOffset += m_nFromDataBytes;
 }
 
@@ -1253,6 +1351,8 @@ void RowCoder::vRecodeFlt(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeDte(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   m_i_IntoOffset += m_nFromDataBytes;
 }
 
@@ -1261,6 +1361,8 @@ void RowCoder::vRecodeDte(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeInt(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   // skip nulls
   if (MC_NULL == m_eFromEncoding) {
     vUsageIncRecoded(pCol,0);
@@ -1291,6 +1393,8 @@ void RowCoder::vRecodeInt(Column* pCol)
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeIntDigit(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   RASSERT(DM_INT == pCol->eDatumType());
   RASSERT(MC_NULL != m_eFromEncoding);
   RASSERT(m_eFromEncoding >= MC_1B && m_eFromEncoding <= MC_8B);
@@ -1332,6 +1436,8 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeIvl(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   m_i_IntoOffset += m_nFromDataBytes;
   vXchkIvlRecode(pCol);
 }
@@ -1341,6 +1447,8 @@ void RowCoder::vRecodeIvl(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeTme(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   m_i_IntoOffset += m_nFromDataBytes;
   vXchkTmeRecode(pCol);
 }
@@ -1350,6 +1458,8 @@ void RowCoder::vRecodeTme(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeTsp(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   m_i_IntoOffset += m_nFromDataBytes;
   vXchkTspRecode(pCol);
 }
@@ -1359,6 +1469,8 @@ void RowCoder::vRecodeTsp(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeVch(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   if (MC_STR_FIT_1L == m_eFromEncoding) {
     vRecodeVchSmall(pCol);
     vXchkVchRecode(pCol);
@@ -1385,6 +1497,8 @@ void RowCoder::vRecodeVch(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeVchShoco(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   if (bRecodeVchShocoFold(pCol))
     return;
   
@@ -1402,6 +1516,8 @@ void RowCoder::vRecodeVchShoco(Column* pCol)
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   /*
    Before:
              -- Into-Head --                         -- From-Tail --
@@ -1477,6 +1593,8 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   // we recoded: sizeof([IT])
   vUsageIncRecoded(pCol,MC_2B);
   
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   return true;
 }
 
@@ -1485,6 +1603,8 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeVchShocoFold(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   /*
    Before:
    -- Into-Head --                           -- From-Tail --
@@ -1540,6 +1660,7 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
     // |    <C><shoco.........................>
     // +--------------------------------+
     //      ^m_i_IntoOffset
+    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
     return false;
   }
   
@@ -1577,6 +1698,8 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   // we recoded: sizeof(<C>) + nShocoBytes
   vUsageIncRecoded(pCol,MC_1B + nShocoBytes);
   
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   return true;
 }
 
@@ -1585,6 +1708,8 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   /*
    Before:
               -- Into-Head --                           -- From-Tail --
@@ -1639,9 +1764,17 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   
   // can we split??  can we split effectively?? do we split??
   
-  if ( ! (nFromOverHang > 0  && nFromOverHang <= nAvailHeadBytes) ||
-      (nFromOverHang == 0 && nAvailHeadBytes > 3) )
+  if (nAvailHeadBytes < 4) {
+    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
     return false;
+  }
+  
+  if ( ! (nFromOverHang > 0  && nFromOverHang <= nAvailHeadBytes) ||
+      (nFromOverHang == 0 && nAvailHeadBytes > 3) ) {
+    
+    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+    return false;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1718,6 +1851,8 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   m_nTails++;
   m_nTailUnits += nTailUnits;
   
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   return true;
   
   
@@ -1746,6 +1881,8 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeVchShocoTail(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   /*
    Before:
    -- Into-Head --                        -- From-Tail --
@@ -1844,6 +1981,9 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   
   m_nTails++;
   m_nTailUnits += nFromTailUnits;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1851,11 +1991,15 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeVchSmall(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   i8 nLength = m_aIntoHead->w8_1B(m_i_IntoOffset);
   
   m_i_IntoOffset += 1 + nLength;
 
   vUsageIncRecoded(pCol,1 + nLength);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1863,6 +2007,8 @@ void RowCoder::vRecodeVchSmall(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vUsageIncEncoded(Column* pCol, i8 nBytes, eMC eMetaCode)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   i8 i_Col = pCol->iColumnNo();
   
   m_xaUsage[i_Col].m_nEncodedBytes += nBytes;
@@ -1876,6 +2022,8 @@ void RowCoder::vUsageIncEncoded(Column* pCol, i8 nBytes, eMC eMetaCode)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vUsageIncEncoded(Column* pCol, Datum* pDatum, eMC eMetaCode)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   vUsageIncEncoded(pCol,pDatum->m_nEncodedBytes);
   
   m_anMetaCode[eMetaCode]++;
@@ -1886,6 +2034,8 @@ void RowCoder::vUsageIncEncoded(Column* pCol, Datum* pDatum, eMC eMetaCode)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vUsageIncRecoded(Column* pCol, i8 nBytes, eMC eMetaCode)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   i8 i_Col = pCol->iColumnNo();
   
   m_xaUsage[i_Col].m_nRecodedBytes += nBytes;
@@ -1899,6 +2049,8 @@ void RowCoder::vUsageIncRecoded(Column* pCol, i8 nBytes, eMC eMetaCode)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss, eMC eMetaCode)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   i8 i_Col = pCol->iColumnNo();
   
   m_xaUsage[i_Col].m_nOopsBytes += nBytes;
@@ -1913,6 +2065,8 @@ void RowCoder::vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss, eMC eMetaCode)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vUsageReset(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     
     m_xaUsage[i_Col].m_nEncoded = 0;
@@ -1934,6 +2088,8 @@ void RowCoder::vUsageReset(void)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkBcd(Datum* pDatum, Column* pCol, i8 iRow)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = m_i_BaseOffset;
   i8 i_lastColumn = 0;
@@ -1948,6 +2104,8 @@ void RowCoder::vXchkBcd(Datum* pDatum, Column* pCol, i8 iRow)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkBcdRecode(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = m_i_BaseOffset;
   i8 i_lastColumn = 0;
@@ -1963,6 +2121,8 @@ void RowCoder::vXchkBcdRecode(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkBol(Datum* pDatum, Column* pCol, i8 iRow)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = m_i_BaseOffset;
   i8 i_lastColumn = 0;
@@ -1977,6 +2137,8 @@ void RowCoder::vXchkBol(Datum* pDatum, Column* pCol, i8 iRow)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkBolRecode(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = m_i_BaseOffset;
   i8 i_lastColumn = 0;
@@ -1992,6 +2154,8 @@ void RowCoder::vXchkBolRecode(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkDte(Datum* pDatum, Column* pCol, i8 iRow)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = m_i_BaseOffset;
   i8 i_lastColumn = 0;
@@ -2008,6 +2172,8 @@ void RowCoder::vXchkDte(Datum* pDatum, Column* pCol, i8 iRow)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkDteRecode(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = m_i_BaseOffset;
   i8 i_lastColumn = 0;
@@ -2023,6 +2189,8 @@ void RowCoder::vXchkDteRecode(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkFlt(Datum* pDatum, Column* pCol, i8 iRow)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = m_i_BaseOffset;
   i8 i_lastColumn = 0;
@@ -2037,6 +2205,8 @@ void RowCoder::vXchkFlt(Datum* pDatum, Column* pCol, i8 iRow)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkFltRecode(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = m_i_BaseOffset;
   i8 i_lastColumn = 0;
@@ -2052,6 +2222,8 @@ void RowCoder::vXchkFltRecode(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkInt(Datum* pDatum, Column* pCol, i8 iRow)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = m_i_BaseOffset;
   i8 i_lastColumn = 0;
@@ -2066,6 +2238,8 @@ void RowCoder::vXchkInt(Datum* pDatum, Column* pCol, i8 iRow)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkIntRecode(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = m_i_BaseOffset;
   i8 i_lastColumn = 0;
@@ -2081,6 +2255,8 @@ void RowCoder::vXchkIntRecode(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkIvl(Datum* pDatum, Column* pCol, i8 iRow)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = m_i_BaseOffset;
   i8 i_lastColumn = 0;
@@ -2095,6 +2271,8 @@ void RowCoder::vXchkIvl(Datum* pDatum, Column* pCol, i8 iRow)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkIvlRecode(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = m_i_BaseOffset;
   i8 i_lastColumn = 0;
@@ -2110,6 +2288,8 @@ void RowCoder::vXchkIvlRecode(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkTme(Datum* pDatum, Column* pCol, i8 iRow)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = m_i_BaseOffset;
   i8 i_lastColumn = 0;
@@ -2124,6 +2304,8 @@ void RowCoder::vXchkTme(Datum* pDatum, Column* pCol, i8 iRow)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkTmeRecode(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = m_i_BaseOffset;
   i8 i_lastColumn = 0;
@@ -2139,6 +2321,8 @@ void RowCoder::vXchkTmeRecode(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkTsp(Datum* pDatum, Column* pCol, i8 iRow)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = m_i_BaseOffset;
   i8 i_lastColumn = 0;
@@ -2153,6 +2337,8 @@ void RowCoder::vXchkTsp(Datum* pDatum, Column* pCol, i8 iRow)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkTspRecode(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = m_i_BaseOffset;
   i8 i_lastColumn = 0;
@@ -2168,6 +2354,8 @@ void RowCoder::vXchkTspRecode(Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkVch(Datum* pDatum, Column* pCol, i8 iRow)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = m_i_BaseOffset;
   i8 i_lastColumn = 0;
@@ -2186,6 +2374,8 @@ void RowCoder::vXchkVch(Datum* pDatum, Column* pCol, i8 iRow)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkVchRecode(Column* pCol)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
 #ifdef WITH_ENCODING_XCHECK
   i8 i_LastOffset = m_i_BaseOffset;
   i8 i_lastColumn = 0;
