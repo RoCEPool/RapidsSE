@@ -2599,7 +2599,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 
   char* aString = pRow->m_xWsp.aArea();
   
-  i8 nCols = pRow->m_iColumns;
+  i8 nCols = pRow->m_nColumns;
   byte* aMetaCode = (byte*)aHeadLine + C_HEAD_PRE_BYTES;
   byte* aDataByte = (byte*)aHeadLine + pRow->m_iBaseOffset;
   i8*   aiValue   = & pRow->m_aiValue[0];
