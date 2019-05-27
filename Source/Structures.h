@@ -19,8 +19,6 @@ using namespace Structures;
 
 #include "ArrayNL_t.hpp"
 
-#include "Folder_t.hpp"
-
 #include "HashInsert.hpp"
 #include "HashEntry.hpp"
 #include "HashBuffer.hpp"
@@ -41,9 +39,13 @@ using namespace Structures;
 #include "SkipNode.hpp"
 #include "SkipListNL.hpp"
 
-#include "TrayNL_t.hpp"
-
 #include "VectorNL_t.hpp"
+
+// - - -
+
+#include "Folder_t.hpp"
+
+#include "TrayNL_t.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

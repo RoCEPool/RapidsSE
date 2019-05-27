@@ -5,12 +5,15 @@
 
 namespace Structures
 {  
-  template <eCN CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
+  template <eCN CN, class ITEM, class PARENT>
   class Folder_t : public Object
   {
-  //friend class TokenVec;
-  
   protected:
+  
+    s32     m_sName;   // name of this folder
+    PARENT* m_pParent; // parent object / folder
+  
+    ListNL_t<ITEM>* m_pList; // list of named objects
   
     // must be last
     Footer m_xFooter;
@@ -26,8 +29,10 @@ namespace Structures
     Footer* aFooter(void);
   };
   
-  template <eCN CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
-  Folder_t<CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>* _pFolder(void* aAddr);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  template <eCN CN, class ITEM, class PARENT>
+  Folder_t<CN,ITEM,PARENT>* _pFolder(void* aAddr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -41,11 +46,11 @@ using namespace Structures;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
-Folder_t<CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>* Structures::_pFolder(void* aAddr)
+template <eCN CN, class ITEM, class PARENT>
+Folder_t<CN,ITEM,PARENT>* Structures::_pFolder(void* aAddr)
 {
-  Folder_t<CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>* pVector =
-    reinterpret_cast<Folder_t<CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>*>(aAddr);
+  Folder_t<CN,ITEM,PARENT>* pVector =
+    reinterpret_cast<Folder_t<CN,ITEM,PARENT>*>(aAddr);
   
   RASSERT_TYPE(pVector,CN);
   
@@ -55,8 +60,8 @@ Folder_t<CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>* Structures::_pFolder(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
-void* Folder_t<CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::operator new(size_t)
+template <eCN CN, class ITEM, class PARENT>
+void* Folder_t<CN,ITEM,PARENT>::operator new(size_t)
 {
   void* pObject = HeapMem::pAllocate(CN);
   
@@ -66,11 +71,11 @@ void* Folder_t<CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
-void Folder_t<CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::operator delete(void* pVectorAddress)
+template <eCN CN, class ITEM, class PARENT>
+void Folder_t<CN,ITEM,PARENT>::operator delete(void* pVectorAddress)
 {
-  Folder_t<CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>* pVector =
-    _pFolder<CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>(pVectorAddress);
+  Folder_t<CN,ITEM,PARENT>* pVector =
+    _pFolder<CN,ITEM,PARENT>(pVectorAddress);
   
   HeapMem::vFree(pVector);
 }
@@ -78,14 +83,14 @@ void Folder_t<CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::operator delete(void* pVectorAddre
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
-Folder_t<CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::Folder_t(void)
+template <eCN CN, class ITEM, class PARENT>
+Folder_t<CN,ITEM,PARENT>::Folder_t(void)
 : Object(CN)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   // compute size of this vector proper (in case it is inherited)
-  i8 nBytes = sizeof(Folder_t<CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>);
+  i8 nBytes = sizeof(Folder_t<CN,ITEM,PARENT>);
   
   _checkInitialisedSize_(nBytes);
   
@@ -95,8 +100,8 @@ Folder_t<CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::Folder_t(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
-Folder_t<CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::~Folder_t(void) noexcept(false)
+template <eCN CN, class ITEM, class PARENT>
+Folder_t<CN,ITEM,PARENT>::~Folder_t(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
 }
@@ -112,8 +117,8 @@ Folder_t<CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::~Folder_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
-Footer* Folder_t<CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::aFooter(void)
+template <eCN CN, class ITEM, class PARENT>
+Footer* Folder_t<CN,ITEM,PARENT>::aFooter(void)
 {
   _precondition_(_MAGIC_,CN);
   

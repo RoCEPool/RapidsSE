@@ -31,7 +31,7 @@ namespace Pool
     Footer* aFooter(void);
   
     /*----------------------------------------------------------------------------*/
-    /* get buffer that an object is within                                        */
+    /* get pool buffer boundary that an object is within                          */
     /*----------------------------------------------------------------------------*/
     inline static PoolBuffer* pGetPoolBuffer(Object* pObject)
     {
