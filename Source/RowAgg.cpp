@@ -119,6 +119,7 @@ void RowAgg::vAdd(RowAgg* pAggArg)
 /*----------------------------------------------------------------------------*/
 /* aggregate an entry buffer                                                  */
 /*----------------------------------------------------------------------------*/
+/*
 void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
@@ -204,6 +205,108 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
 //           m_iaAvgVal[i_AggCol]
 //           );
 //  }
+  
+  
+  //vTrace("Slot %lld: published %lld rows\n"_Stz,
+  //       i_Slot, pEntryBuffer->nItems());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+}
+*/
+
+/*----------------------------------------------------------------------------*/
+/* aggregate an entry buffer                                                  */
+/*----------------------------------------------------------------------------*/
+void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  s48K sRowString;
+  
+  Int xKey;
+  Int xVal;
+  Column* pAggColumn;
+  i8 i_Col;
+  
+  i8 nAggColumns = m_pAggColVec->nItems();
+  
+  vReset();
+  
+  m_oSince = pRowBuffer->oWhenNewed();
+  
+  // aggregate the buffer
+  i8 nRowCount = pRowBuffer->nRowCount();
+  Row* pRow = new Row(m_pTable->pColumnVec());
+  
+  for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
+    
+    // get the headline
+    HeadLine* aHeadLine = pRowBuffer->pRowTray()->pNub()->aGetHead(i_Row);
+    
+    // mark key column to be decoded
+    pRow->m_abGetCol[m_pKeyColumn->iColumnNo()] = true;
+    
+    // mark agg columns to be decoded
+    for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
+      pAggColumn = m_pAggColVec->pGet(i_AggCol);
+      pRow->m_abGetCol[pAggColumn->iColumnNo()] = true;
+    }
+    
+    RowCoder::vDecode(pRow,aHeadLine);
+    
+    // get the key value from the row
+    xKey.m_iInt = pRow->m_aiValue[m_pKeyColumn->iColumnNo()];
+    
+    // for each agg column
+    for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
+      
+      pAggColumn = m_pAggColVec->pGet(i_AggCol);
+      i_Col = pAggColumn->iColumnNo();
+      
+      xVal.m_iInt = pRow->m_aiValue[i_Col];
+      
+      if (xVal.m_iInt < m_iaMinVal[i_AggCol]) {
+        m_iaMinVal[i_AggCol] = xVal.m_iInt;
+        m_iaMinKey[i_AggCol] = xKey.m_iInt;
+      }
+      if (xVal.m_iInt > m_iaMaxVal[i_AggCol]) {
+        m_iaMaxVal[i_AggCol] = xVal.m_iInt;
+        m_iaMaxKey[i_AggCol] = xKey.m_iInt;
+      }
+      m_iaSumVal[i_AggCol] += xVal.m_iInt;
+    }
+    
+    m_nRows++;
+    
+  }
+  
+  // delete the row
+  delete pRow;
+  
+  // compute average
+  for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++)
+    m_iaAvgVal[i_AggCol] = m_iaSumVal[i_AggCol] / m_nRows;
+  
+  // temp trace
+  
+  //  Time oDateTime;
+  //  oDateTime.vSetLocal(&m_oSince);
+  //  s32 sDateTime;
+  //  char* z = sDateTime.aChar();
+  //  oDateTime.vAppendLocal(&z);
+  
+  //  vTrace("%s\n"_Stz,sDateTime.aChar());
+  //  for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
+  //    pAggColumn = m_pAggColVec->pGet(i_AggCol);
+  //    vTrace("AggCol %s: min: %lld %lld; max: %lld %lld; avg: %lld\n"_Stz,
+  //           pAggColumn->sColumnName().aChar(),
+  //           m_iaMinKey[i_AggCol], m_iaMinVal[i_AggCol],
+  //           m_iaMaxKey[i_AggCol], m_iaMaxVal[i_AggCol],
+  //           m_iaAvgVal[i_AggCol]
+  //           );
+  //  }
   
   
   //vTrace("Slot %lld: published %lld rows\n"_Stz,
