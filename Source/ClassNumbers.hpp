@@ -44,6 +44,7 @@ enum eCN : u2 // Class Number
   /*  22 0x16      120B Heap:S */ CN_BYTERATE,
   
   /*  23 0x17       40B Heap:I */ CN_CARRYOVER,
+  /*                           */ CN_CATALOG,
   /*  24 0x18      120B Heap:S */ CN_COLUMN,
   /*  25 0x19     8216B Heap:M */ CN_COLUMNVEC,
   /*  26 0x1A       24B Heap:M */ CN_COMMAND,
@@ -324,6 +325,7 @@ static Stz* aCN[]
   /*  22 0x16 */ "BYTERATE"_Stz,            // CN_BYTERATE
   
   /*  23 0x17 */ "CARRYOVER"_Stz,           // CN_CARRYOVER
+  /*          */ "CATALOG"_Stz,             // CN_CATALOG
   /*  24 0x18 */ "COLUMN"_Stz,              // CN_COLUMN
   /*  25 0x19 */ "COLUMNVEC"_Stz,           // CN_COLUMNVEC
   /*  26 0x1A */ "COMMAND"_Stz,             // CN_COMMAND
