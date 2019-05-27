@@ -13,7 +13,7 @@ namespace Structures
     s32     m_sName;   // name of this folder
     PARENT* m_pParent; // parent object / folder
   
-    ListNL_t<ITEM>* m_pList; // list of named objects
+    ListNL_t< NamedItem_t< ITEM > >* m_pList; // list of named items
   
     // must be last
     Footer m_xFooter;
