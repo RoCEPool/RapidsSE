@@ -129,7 +129,7 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
     //HeadLine* aHeadLine = m_oRowParts.aGetHead(0);
     //MemLib::vWordDump(aHeadLine,sizeof(HeadLine));
     
-    if (m_pRowCoder_Encode->m_i_IntoOffset > C_BYTES_PER_CACHE_LINE) {
+    if (m_pRowCoder_Encode->m_i_IntoOffset > m_pRowCoder_Encode->nHeadBytes(pColVec)) {
       bResult = false;
       break;
     }
