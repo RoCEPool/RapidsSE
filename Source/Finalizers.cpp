@@ -249,6 +249,7 @@ pFINALIZE *gpFinalize[]
   /*123 */ &Finalize::vUndefined,         // SN_SMALLPERSISTENT
   /*124 */ &Finalize::vUndefined,         // SN_SMALLTRANSIENT
   /*125 */ &Finalize::vUndefined,         // CN_SOCKET
+  /*    */ &Finalize::vUndefined,         // CN_SPBCD
   /*    */ &Finalize::vUndefined,         // CN_SPDTE
   /*    */ &Finalize::vUndefined,         // CN_SPRINT
   /*126 */ &Finalize::vUndefined,         // CN_STACK

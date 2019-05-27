@@ -19,6 +19,7 @@ using namespace Sprinting;
 
 #include "Sprint.hpp"
 
+#include "spBCD.hpp"
 #include "spDTE.hpp"
 
 /*============================================================================*/

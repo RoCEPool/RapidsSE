@@ -104,14 +104,25 @@ void Record::vAppendBcd(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
 
-  Bcd wBcd;
-  wBcd.vAsI8(pDatum->m_iBcd);
+  spBCD spBcd;
   
-  s32 sBcd;
-  wBcd.vSprint(sBcd.aStz(), pCol);
-  
-  m_sRecStr.vConcat(sBcd.aStz());
+  // we call spDte.sz() with the date to be formatted.
+  // it returns a Stz* to the formatted date result
+  m_sRecStr.vConcat(spBcd.sz(pDatum->m_iBcd,pCol->iColumnScale()));
 }
+/*----------------------------------------------------------------------------*/
+//void Record::vAppendBcd(Column* pCol, Datum* pDatum)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+//
+//  Bcd wBcd;
+//  wBcd.vAsI8(pDatum->m_iBcd);
+//
+//  s32 sBcd;
+//  wBcd.vSprint(sBcd.aStz(), pCol);
+//
+//  m_sRecStr.vConcat(sBcd.aStz());
+//}
 /*----------------------------------------------------------------------------*/
 void Record::vAppendBcd_Alt(Column* pCol, Datum* pDatum)
 {
