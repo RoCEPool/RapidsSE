@@ -71,6 +71,37 @@ Record::~Record(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* decode and sprint row into record                                          */
+/*----------------------------------------------------------------------------*/
+void Record::vAppend(HeadLine* aHeadLine, ColumnVec* pColVec)
+{
+  vReset();
+  
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+  
+  i8 i_LastColumn = 0;
+  i8 i_LastOffset = RowCoder::iBaseOffset(pColVec);
+  
+  // for each column
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+    
+    // get the column at index
+    Column* pCol = pColVec->pGet(i_Col);
+    
+    // comma separate column values
+    if (i_Col)
+      szRecStr()->vConcat(","_Stz);
+    
+    // append column value
+    RowCoder::vAppend(this,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+    
+    //vTrace("%s\n"_Stz,pRec->szRecStr());
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* append ascii of datum to record                                            */
 /*----------------------------------------------------------------------------*/
 void Record::vAppend_Alt(Column* pCol, Datum* pDatum)

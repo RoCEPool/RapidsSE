@@ -24,6 +24,8 @@ namespace Data
     Record(void);
     ~Record(void) noexcept(false);
   
+    void vAppend(HeadLine* aHeadLine, ColumnVec* pColVec);
+
     void vAppend_Alt(Column* pCol, Datum* pDatum);
     void vAppendBcd(Column* pCol, Datum* pDatum);
     void vAppendBcd_Alt(Column* pCol, Datum* pDatum);
