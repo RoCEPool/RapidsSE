@@ -86,6 +86,8 @@ void MemLib::vCheckInitialised(void* aAddress, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void MemLib::vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 {
+  RASSERT(nBytes >= 0);
+  
   memcpy(pDst,pSrc,nBytes);
   
   if (gpAttachMap) {
