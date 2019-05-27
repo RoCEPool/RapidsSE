@@ -1471,6 +1471,12 @@ void RowCoder::vRecodeVch(Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
+  if (MC_NULL == m_eFromEncoding)
+    return;
+  
+  if (MC_STR_EMPTY == m_eFromEncoding)
+    return;
+  
   if (MC_STR_FIT_1L == m_eFromEncoding) {
     vRecodeVchSmall(pCol);
     vXchkVchRecode(pCol);
@@ -2988,6 +2994,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),aString);
 #endif
         aString += nDecompressed;
+        *aString++ = '\0';
         pRow->m_i_Wsp += nDecompressed;
         aDataByte += nCompressed;
         break;
@@ -3013,6 +3020,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),aString);
 #endif
         aString += nDecompressed;
+        *aString++ = '\0';
         pRow->m_i_Wsp += nDecompressed;
         break;
         
@@ -3043,6 +3051,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),aString);
 #endif
         aString += nDecompressed;
+        *aString++ = '\0';
         pRow->m_i_Wsp += nDecompressed;
         aDataByte += nBytesPartA;
         break;
