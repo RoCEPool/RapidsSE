@@ -30,11 +30,11 @@ namespace Structures
 
     DESC* m_pDesc;    // object describing the items
   
-    SpaceUnit*  m_axaUnits; // array of space units
-    Word*       m_axaWords; // array of space units as word units
-
     i8 m_iHash;       // encoding hash
 
+    SpaceUnit* m_axaUnits; // array of space units
+    Word*      m_axaWords; // array of space units as word units
+  
     // must be last
     Footer m_xFooter;
   
@@ -83,7 +83,7 @@ namespace Structures
   {
   protected:
   
-    i8 m__filler[6];
+    i8 m__filler[6]; // fill so m_xaUnits starts on a double word boundry
   
     SpaceUnit m_xaUnits[BYTES / C_SPACEUNIT]; // array of space units
   
@@ -131,7 +131,7 @@ Nub_t<CN,HEAD,TAIL,DESC>::Nub_t(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  // head and tail must be a multiple of unit
+  // head and tail must be a multiples of their units
   RASSERT(0 == sizeof(HEAD) % C_HEADUNIT);
   RASSERT(0 == sizeof(TAIL) % C_SPACEUNIT);
 
@@ -391,7 +391,7 @@ TAIL* Nub_t<CN,HEAD,TAIL,DESC>::aGetTail(i8 i_Tail)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get total number of actual items                                           */
+/* get encoding hash                                                          */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC>
 i8 Nub_t<CN,HEAD,TAIL,DESC>::iHash(void)
@@ -402,7 +402,7 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::iHash(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get total number of actual items                                           */
+/* inc encoding hash                                                          */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC>
 void Nub_t<CN,HEAD,TAIL,DESC>::vHashInc(i8 iDelta)
@@ -429,7 +429,7 @@ bool Nub_t<CN,HEAD,TAIL,DESC>::bHasSpace(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get total number of head items                                             */
+/* get current number of head items                                           */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC>
 i8 Nub_t<CN,HEAD,TAIL,DESC>::nHeads(void)
@@ -440,7 +440,7 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::nHeads(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get total number of head bytes                                             */
+/* get current total of head bytes                                            */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC>
 i8 Nub_t<CN,HEAD,TAIL,DESC>::nHeadBytes(void)
@@ -480,7 +480,7 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::iLastTail(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get prev tail                                                              */
+/* get prev tail (goes left-to-right / ascending memory address)              */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC>
 i8 Nub_t<CN,HEAD,TAIL,DESC>::iPrevTail(i8 i_CurrTail)
@@ -500,7 +500,7 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::iPrevTail(i8 i_CurrTail)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset all items                                                            */
+/* reset the nub                                                              */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC>
 void Nub_t<CN,HEAD,TAIL,DESC>::vReset(void)
@@ -521,7 +521,7 @@ void Nub_t<CN,HEAD,TAIL,DESC>::vReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get total number of tail items                                             */
+/* get current number of tail items                                           */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC>
 i8 Nub_t<CN,HEAD,TAIL,DESC>::nTails(void)
@@ -532,7 +532,7 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::nTails(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get total number of used bytes                                             */
+/* get current total number of used bytes                                     */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class TAIL, class DESC>
 i8 Nub_t<CN,HEAD,TAIL,DESC>::nUsedBytes(void)
