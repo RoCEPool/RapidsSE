@@ -206,14 +206,8 @@ TAIL* Nub_t<CN,HEAD,TAIL,DESC>::aGetTail(HEAD* aHead, i8 i_Tail_rel)
 template <eCN CN, class HEAD, class TAIL, class DESC>
 i8 Nub_t<CN,HEAD,TAIL,DESC>::nUnits(i8 nBytes)
 {
-  if (! nBytes)
-    return 0;
-  
-  i8 nUnits = nBytes / (i8)C_SPACEUNIT;
-  if (nBytes % (i8)C_SPACEUNIT)
-    nUnits++;
-  RASSERT(nUnits * (i8)C_SPACEUNIT >= nBytes);
-  
+  i8 nUnits = MemLib::nQuantaRequired(nBytes,C_SPACEUNIT);
+
   return nUnits;
 }
 
@@ -236,9 +230,7 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::iAllotHead(i8 nBytes)
   if (nFreeBytes() < nBytes)
     return C_UNKNOWN;
   
-  i8 nWords = nBytes / (i8)C_HEADUNIT;
-  if (nBytes % (i8)C_HEADUNIT)
-    nWords++;
+  i8 nWords = MemLib::nQuantaRequired(nBytes,C_HEADUNIT);
   RASSERT(nWords * (i8)C_HEADUNIT >= nBytes);
   
   m_nHeadBytes += nBytes;
@@ -267,11 +259,8 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::iAllotTail(i8 nBytes)
   if (nFreeBytes() < nBytes)
     return C_UNKNOWN;
 
-  i8 nUnits = nBytes / (i8)C_SPACEUNIT;
-  if (nBytes % (i8)C_SPACEUNIT)
-    nUnits++;
+  i8 nUnits = MemLib::nQuantaRequired(nBytes,C_SPACEUNIT);
   RASSERT(nUnits * (i8)C_SPACEUNIT >= nBytes);
-  //RASSERT(nUnits == 4 || nUnits == 1); //! temp
 
   m_nTailBytes += nBytes;
   m_nTailUnits += nUnits;
