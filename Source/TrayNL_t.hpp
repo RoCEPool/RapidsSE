@@ -45,6 +45,7 @@ namespace Structures
     static i8    nBytes(i8 nUnits);
     static TAIL* aGetTail(HEAD* aHead, i8 i_Tail_rel);
     static i8    nUnits(i8 nBytes);
+    static i8    iUnitDiff(HEAD* aHead, TAIL* aTail);
 
     i8    iAllotHead(i8 nBytes);
     i8    iAllotTail(i8 nBytes);
@@ -65,7 +66,6 @@ namespace Structures
     i8    iPrevTail(i8 i_Tail);
     void  vReset(void);
     i8    nTails(void);
-    i8    iUnitDiff(HEAD* aHead, TAIL* aTail);
     i8    nUsedBytes(void);
     void  vVerifyTails(i8 i_Dump);
   
@@ -209,6 +209,25 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::nUnits(i8 nBytes)
   i8 nUnits = MemLib::nQuantaRequired(nBytes,C_SPACEUNIT);
 
   return nUnits;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute unit difference between a head and a tail                          */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,TAIL,DESC>::iUnitDiff(HEAD* aHead, TAIL* aTail)
+{
+  SpaceUnit* aHead_unit = (SpaceUnit*)MemLib::aToBoundary(aHead,C_SPACEUNIT);
+  SpaceUnit* aTail_unit = (SpaceUnit*)MemLib::aToBoundary(aTail,C_SPACEUNIT);
+  
+  // n.b. when you subtract two pointers of the same type the result is
+  // the distance (in array elements) between the two. (it is not the
+  // difference in bytes between the addresses)
+  
+  // compute the unit difference
+  i8 i_Diff_units = aTail_unit - aHead_unit;
+  
+  return i_Diff_units;
 }
 
 
@@ -510,25 +529,6 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::nTails(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   return m_nTailItems;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compute unit difference between a head and a tail                          */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class TAIL, class DESC>
-i8 Nub_t<CN,HEAD,TAIL,DESC>::iUnitDiff(HEAD* aHead, TAIL* aTail)
-{
-  SpaceUnit* aHead_unit = (SpaceUnit*)MemLib::aToBoundary(aHead,C_SPACEUNIT);
-  SpaceUnit* aTail_unit = (SpaceUnit*)MemLib::aToBoundary(aTail,C_SPACEUNIT);
-
-  // n.b. when you subtract two pointers of the same type the result is
-  // the distance (in array elements) between the two. (it is not the
-  // difference in bytes between the addresses)
-  
-  // compute the unit difference
-  i8 i_DiffInUnits = aTail_unit - aHead_unit;
-  
-  return i_DiffInUnits;
 }
 
 /*----------------------------------------------------------------------------*/
