@@ -5,11 +5,11 @@
 
 namespace Structures
 {
-  template <class OBJECT>
+  template <class ITEM>
   class ListNode_t
   {
-    OBJECT* m_pPrevNode;   // prev node
-    OBJECT* m_pNextNode;   // next node
+    ITEM* m_pPrevNode;   // prev node
+    ITEM* m_pNextNode;   // next node
     
     // must be last
     Footer m_xFooter;
@@ -17,12 +17,12 @@ namespace Structures
   public:
     void* operator new(size_t);
     
-    ListNode_t<OBJECT>(void);
+    ListNode_t<ITEM>(void);
     
-    OBJECT* pNextNode(void);
-    void    vNextNode(OBJECT* pNext);
-    OBJECT* pPrevNode(void);
-    void    vPrevNode(OBJECT* pPrev);
+    ITEM* pNextNode(void);
+    void  vNextNode(ITEM* pNext);
+    ITEM* pPrevNode(void);
+    void  vPrevNode(ITEM* pPrev);
     
     Footer* aFooter(void);
   };

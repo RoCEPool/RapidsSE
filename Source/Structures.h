@@ -43,6 +43,7 @@ using namespace Structures;
 
 // - - -
 
+#include "NamedItem_t.hpp"
 #include "Folder_t.hpp"
 
 #include "TrayNL_t.hpp"
