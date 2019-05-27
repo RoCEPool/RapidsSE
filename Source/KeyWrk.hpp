@@ -7,6 +7,7 @@ namespace Data
 {
   class EntryBuffer;
   class KeyData;
+  class Row;
   
   class KeyWrk : public EntWrk
   {
@@ -20,6 +21,7 @@ namespace Data
     ~KeyWrk(void) noexcept(false);
 
     void vAddDatum(Datum& oDatum, Column* pCol);
+    void vAddDatum(Row* pRow, Column* pCol);
     void vAddDatum(Stz* aSrc, Column* pCol, Formatters* pFormatters);
     void vAddMinusInfinity(void);
     void vAddPlusInfinity(void);
