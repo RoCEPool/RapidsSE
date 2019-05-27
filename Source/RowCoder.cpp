@@ -1768,8 +1768,11 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // calc the available bytes in the head
   i8 nAvailHeadBytes = m_nHeadBytes - m_i_IntoOffset;  //! not variable head
   
-  // can we split??  can we split effectively?? do we split??
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // can we split?
   
+  // can't split unless we have space for [IT]<C><a>
+  // where <a> is at least one byte of <partA>
   if (nAvailHeadBytes < 4) {
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
     return false;
