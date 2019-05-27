@@ -48,6 +48,7 @@ using namespace MetaData;
 #include "Schema.hpp"
 #include "Catalog.hpp"
 #include "Tenant.hpp"
+#include "Tenants.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

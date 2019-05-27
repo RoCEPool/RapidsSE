@@ -269,6 +269,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_TASKQUEUE
   /*    */ &Finalize::vUndefined,         // CN_TEMPNAME
   /*    */ &Finalize::vUndefined,         // CN_TENANT
+  /*    */ &Finalize::vUndefined,         // CN_TENANTS
   /*137 */ &Finalize::vUndefined,         // CN_THREAD
   /*    */ &Finalize::vUndefined,         // CN_THREADVEC
   /*141 */ &Finalize::vUndefined,         // CN_TIME

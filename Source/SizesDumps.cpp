@@ -274,6 +274,7 @@ pDUMPFUN *gpDump[]
   /*134 */ &Dump::vUndefined,       // CN_TASKQUEUE
   /*    */ &Dump::vUndefined,       // CN_TEMPNAME
   /*    */ &Dump::vUndefined,       // CN_TENANT
+  /*    */ &Dump::vUndefined,       // CN_TENANTS
   /*137 */ &Dump::vUndefined,       // CN_THREAD
   /*    */ &Dump::vUndefined,       // CN_THREADVEC
   /*141 */ &Dump::vUndefined,       // CN_TIME
@@ -560,6 +561,7 @@ i8 giClassSize[]
   /*134 */ sizeof(TaskQueue),          // CN_TASKQUEUE
   /*134 */ sizeof(TempName),           // CN_TEMPNAME
   /*    */ sizeof(Tenant),             // CN_TENANT
+  /*    */ sizeof(Tenants),            // CN_TENANTS
   /*137 */ sizeof(Thread),             // CN_THREAD
   /*    */ sizeof(ThreadVec),          // CN_THREADVEC
   /*141 */ sizeof(Time),               // CN_TIME
@@ -845,6 +847,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_TASKLIST
   /*    */ HT_TRANSIENT_SMALL,   // CN_TEMPNAME
   /*    */ HT_TRANSIENT_SMALL,   // CN_TENANT
+  /*    */ HT_TRANSIENT_SMALL,   // CN_TENANTS
   /*134 */ HT_TRANSIENT_SMALL,   // CN_TASKQUEUE
   /*137 */ HT_TRANSIENT_SMALL,   // CN_THREAD
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_THREADVEC
