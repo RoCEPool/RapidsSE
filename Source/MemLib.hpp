@@ -51,6 +51,7 @@ namespace Base
     static void* aMallocBlock(i8 nBytes);
     static void  vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo);
     static bool  bOnBoundary(void* aAddress, i8 nByteBoundary);
+    static i8    nQuantaRequired(i8 nBytes, i8 nSizeQuanta);
     static void  vReset(void);
     static void  vRotate(void* aArg, i8 nBytes, i8 nBy);
     static void  vScribble(void* aAddress, i8 nBytes, eCN eClassNo);
