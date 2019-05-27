@@ -30,11 +30,11 @@ int main(int argc, const char* argv[])
 
   // parse the command line arguments
   if ( ! gxArguments.bParse(argc,(Stz**)argv) )
-    exit(EXIT_FAILURE);
+    Process::vExit(EXIT_FAILURE);
   
   // potentially run utilities
   if (Engine::bRunUtilities(argc,(Stz**)argv))
-    exit(EXIT_SUCCESS);
+    Process::vExit(EXIT_SUCCESS);
   
   // execute
   Engine::vMainEntry();

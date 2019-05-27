@@ -184,7 +184,7 @@ void Engine::vCheckPort(void)
              iPort, oSysCall.iError());
     }
     //Engine::vStopSystem();
-    exit(EXIT_FAILURE);
+    Process::vExit(EXIT_FAILURE);
   }
   
   pSocket->bClose(oSysCall);
@@ -516,7 +516,7 @@ void Engine::vOpenPool(void)
     
     if (! gxArguments.m_bRestart && Region::bTest(gxArguments.m_sRegionName)) {
       vTrace("Error: Instance %s already started\n"_Stz,gxArguments.m_sRegionName.aChar());
-      exit(EXIT_FAILURE);
+      Process::vExit(EXIT_FAILURE);
       return;
     }
     
@@ -550,7 +550,7 @@ void Engine::vOpenPool(void)
     if (! Region::bTest(gxArguments.m_sRegionName)) {
       vTrace("Error: Instance %s was not started\n"_Stz,
              gxArguments.m_sRegionName.aChar());
-      exit(EXIT_FAILURE);
+      Process::vExit(EXIT_FAILURE);
       return;
     }
     if (gxArguments.m_bVerbose)
@@ -566,7 +566,7 @@ void Engine::vOpenPool(void)
   if (gxArguments.m_bPrompt || gxArguments.m_bSethScript) {
     if (! Region::bTest(gxArguments.m_sRegionName)) {
       vTrace("Error: Instance %s was not started\n"_Stz,gxArguments.m_sRegionName.aChar());
-      exit(EXIT_FAILURE);
+      Process::vExit(EXIT_FAILURE);
       return;
     }
     if (gxArguments.m_bVerbose)
@@ -576,7 +576,7 @@ void Engine::vOpenPool(void)
                               gxArguments.m_aRegionAddr);
     if ( ! bResult ) {
       vTrace("Error: Unable to attach to instance %s\n"_Stz,gxArguments.m_sRegionName.aChar());
-      exit(EXIT_FAILURE);
+      Process::vExit(EXIT_FAILURE);
       return;
       
     }
@@ -592,7 +592,7 @@ void Engine::vOpenPool(void)
   ASSERT(bResult);
   vAttachRegion();
   //vFatal("Error: Engine missing arguments\n"_Stz);
-  //exit(EXIT_FAILURE);
+  //Process::vExit(EXIT_FAILURE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -774,7 +774,7 @@ void Engine::vSignalHandler(int iSignal)
   vFatal("Error: signal %d:\n"_Stz, iSignal);
   
   Debugging::vStackDump();
-  exit(1);
+  Process::vExit(1);
 }
 
 /*----------------------------------------------------------------------------*/

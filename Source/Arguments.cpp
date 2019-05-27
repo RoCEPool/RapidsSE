@@ -252,7 +252,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
         || argv[i_Arg]->bSame("?"_Stz)
         )  {
       vPrintHelp();
-      exit(EXIT_SUCCESS);
+      Process::vExit(EXIT_SUCCESS);
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -863,7 +863,7 @@ void Arguments::vSanityCheck(void)
   
   if (m_nNodes > C_MAX_NODES) {
     vTrace("Too many nodes: %lld. Max of %lld\n"_Stz,m_nNodes,C_MAX_NODES);
-    exit(EXIT_FAILURE);
+    Process::vExit(EXIT_FAILURE);
   }
   
   i8 iRequiredThreads =
@@ -878,7 +878,7 @@ void Arguments::vSanityCheck(void)
 //RJH    vTrace("Insufficient threads: %lld. At least %lld threads required\n"_Stz,
 //RJH           m_nThreads,
 //RJH           iRequiredThreads);
-//RJH    exit(EXIT_FAILURE);
+//RJH    Process::vExit(EXIT_FAILURE);
 //RJH  }
   
 }

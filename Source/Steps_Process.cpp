@@ -39,7 +39,7 @@ void Step::vProcessQuit(MP_Task mpTask)
   
   vFatal("Process quitting\n"_Stz);
   
-  exit(EXIT_FAILURE);
+  Process::vExit(EXIT_FAILURE);
   
   EXIT();
 }
