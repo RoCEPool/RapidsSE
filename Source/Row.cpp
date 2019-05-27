@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Row.cpp -- Row                                                             */
+/* Row.cpp -- Computable form of Row                                          */
 /*============================================================================*/
 
 #include "Data.h"
@@ -52,7 +52,7 @@ Row::Row(ColumnVec* pColVec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
   m_pColVec     = pColVec;
-  m_iColumns    = m_pColVec->nItems();
+  m_nColumns    = m_pColVec->nItems();
   m_iBaseOffset = RowCoder::iBaseOffset(m_pColVec);
   m_bGetAll     = true;
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
@@ -65,10 +65,8 @@ Row::Row(ColumnVec* pColVec)
   
   m_xWsp.vZero(CN_ROW);
 #else
-  
-#endif
-
   // m_xWsp
+#endif
   
   _checkInitialised_(CN_ROW);
   
@@ -96,7 +94,7 @@ void Row::vDontDecodeVch(void)
 
   m_bGetAll = false;
   
-  for (i8 i_Col = 0; i_Col < m_iColumns; i_Col++) {
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     
     Column* pCol = m_pColVec->pGet(i_Col);
     
@@ -105,7 +103,6 @@ void Row::vDontDecodeVch(void)
     else
       m_abGetCol[i_Col] = true;
   }
-  
 }
 
 

@@ -286,7 +286,7 @@ void Job_SubExporter::vSprintRows(void)
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
 
     HeadLine* aHeadLine = pRowTray->pNub()->aGetHead(i_Row);
-    RowCoder::vRecord(hvRec,aHeadLine,pColVec);
+    hvRec->vAppend(aHeadLine,pColVec);
     StrLib::vConcat(hvRec->szRecStr()->aChar(),'\n');            //! sub-optimal
     //vTrace("]]%s[[\n"_Stz,sRecord.aStz());
     

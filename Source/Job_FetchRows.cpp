@@ -766,7 +766,7 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
 
     if (pJob_FetchRows->m_bPrint) {
       
-      RowCoder::vRecord(hvRec,aHeadLine,pColVec);
+      hvRec->vAppend(aHeadLine,pColVec);
       
       if (pJob_FetchRows->m_bFirst) {
         if (iRowsPrinted < pJob_FetchRows->m_iRows) {

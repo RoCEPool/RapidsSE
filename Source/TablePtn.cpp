@@ -587,7 +587,7 @@ void TablePtn::vPublish(void)
     
     HeadLine* aHeadLine = pRowTray->pNub()->aGetHead(i_Row);
 
-    RowCoder::vRecord(hvRec,aHeadLine,pColVec);
+    hvRec->vAppend(aHeadLine,pColVec);
     vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
   }
   

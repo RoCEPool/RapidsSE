@@ -205,8 +205,6 @@ namespace Data
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
     
-    static void vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec);
-
   private:
   
     static i8   nDataBytes(eMC eMetaCode);

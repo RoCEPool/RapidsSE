@@ -481,7 +481,7 @@ void RowBuffer::vShowRow(i8 i_Row)
 
   HeadLine* aHeadLine = pRowTray->pNub()->aGetHead(i_Row);
 
-  RowCoder::vRecord(hvRec,aHeadLine,pColVec);
+  hvRec->vAppend(aHeadLine,pColVec);
 
   vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
 }
