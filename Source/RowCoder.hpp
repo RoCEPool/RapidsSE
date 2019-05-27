@@ -352,44 +352,6 @@ namespace Data
     }
   
     /*----------------------------------------------------------------------------*/
-    /* retrieve and decode row from cache line                                    */
-    /*----------------------------------------------------------------------------*/
-    static inline void vRetrieveAll(HeadLine* aHeadLine, Row* pRow)
-    {
-      //Datum oDatum;
-      
-      //vHeadDump(aHeadLine, pColVec);
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      
-      //      i8 iRem = (i8)aHeadLine % 64;
-      //      RASSERT(! iRem);
-      
-      // get no of columns
-      //i8 nColumns = pColVec->nItems();
-      //i8 i_LastColumn = 0;
-      //i8 i_LastOffset = iBaseOffset(pColVec);
-      
-      // for each column
-//      for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-//
-//        // get the column at index
-//        Column* pCol = pColVec->pGet(i_Col);
-//
-//        // get the encoded value into datum
-//        vDecode(&oDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
-//      }
-
-      RowCoder::vDecode(pRow,aHeadLine);
-
-      //      i8 iSum = 0;
-      //      byte* ayByte = (byte*)aHeadLine;
-      //      for (i8 _i = 0; _i < 64; _i++)
-      //        iSum+=*ayByte++;
-      //      oDatum.m_iInt = iSum;
-      
-    }
-    
-    /*----------------------------------------------------------------------------*/
     /* calc size of the meta tape needed for given column vector                  */
     /*----------------------------------------------------------------------------*/
     static inline i8 nMetaData(ColumnVec* pColVec)
