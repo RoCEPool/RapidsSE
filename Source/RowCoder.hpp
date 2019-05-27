@@ -201,7 +201,6 @@ namespace Data
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
     
-    static void vRecord(Record* pRec, RowNub* pNub, i8 i_Row);
     static void vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec);
 
   private:

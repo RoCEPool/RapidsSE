@@ -577,14 +577,17 @@ void TablePtn::vPublish(void)
   
   HV_Rec hvRec;
   
-  //ColumnVec* pColVec = m_pCurrentRowBuffer->pTable()->pColumnVec();
+  ColumnVec* pColVec = m_pCurrentRowBuffer->pTable()->pColumnVec();
 
   // publish the current buffer (last buffer that was added)
   i8 nRowCount = m_pCurrentRowBuffer->nRowCount();
+  RowTray* pRowTray = m_pCurrentRowBuffer->pRowTray();
+  
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
-    RowTray* pRowTray = m_pCurrentRowBuffer->pRowTray();
-    RowCoder::vRecord(hvRec,pRowTray->pNub(),i_Row);
+    HeadLine* aHeadLine = pRowTray->pNub()->aGetHead(i_Row);
+
+    RowCoder::vRecord(hvRec,aHeadLine,pColVec);
     vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
   }
   

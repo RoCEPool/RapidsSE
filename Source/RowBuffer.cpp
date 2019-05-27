@@ -475,7 +475,13 @@ void RowBuffer::vShowRow(i8 i_Row)
   
   HV_Rec hvRec;
   
-  RowCoder::vRecord(hvRec,m_xRowTray.pNub(),i_Row);
+  ColumnVec* pColVec = pTable()->pColumnVec();
+
+  RowTray* pRowTray = this->pRowTray();
+
+  HeadLine* aHeadLine = pRowTray->pNub()->aGetHead(i_Row);
+
+  RowCoder::vRecord(hvRec,aHeadLine,pColVec);
 
   vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
 }

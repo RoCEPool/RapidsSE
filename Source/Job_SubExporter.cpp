@@ -279,14 +279,15 @@ void Job_SubExporter::vSprintRows(void)
   HV_Rec hvRec;
 
   i8 nRowCount = m_pRowBuffer->nRowCount();
-  
+  ColumnVec* pColVec = m_pRowBuffer->pTable()->pColumnVec();
+
   RowTray* pRowTray = m_pRowBuffer->pRowTray();
   
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
 
-    //RowCoder::vString(sRecord,pColVec,aRow);
-    RowCoder::vRecord(hvRec,pRowTray->pNub(),i_Row);
-    StrLib::vConcat(hvRec->szRecStr()->aChar(),'\n');
+    HeadLine* aHeadLine = pRowTray->pNub()->aGetHead(i_Row);
+    RowCoder::vRecord(hvRec,aHeadLine,pColVec);
+    StrLib::vConcat(hvRec->szRecStr()->aChar(),'\n');            //! sub-optimal
     //vTrace("]]%s[[\n"_Stz,sRecord.aStz());
     
     nBytes = hvRec->szRecStr()->nSize();

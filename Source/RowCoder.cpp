@@ -3244,18 +3244,6 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* sprint decoded row into record                                             */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vRecord(Record* pRec, RowNub* pNub, i8 i_Row)
-{
-  HeadLine* aHeadLine = pNub->aGetHead(i_Row);
-
-  ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
-  
-  vRecord(pRec,aHeadLine,pColVec);
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint decoded row into record                                             */
-/*----------------------------------------------------------------------------*/
 void RowCoder::vRecord(Record* pRec, HeadLine* aHeadLine, ColumnVec* pColVec)
 {
   pRec->vReset();
