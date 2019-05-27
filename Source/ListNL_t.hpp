@@ -1,17 +1,17 @@
 /*============================================================================*/
-/* ListNL_t.hpp -- Template for Non-Locking List                              */
+/* ListNL_t.hpp -- List of Items (non-locking)                                */
 /*============================================================================*/
 #pragma once
 
 namespace Structures
 {
-  template <class OBJECT> 
+  template <class ITEM> 
   class ListNL_t : public Object
   {
   protected:
     i8      m_nCount;  // number of objects
-    OBJECT* m_pHead;   // head node
-    OBJECT* m_pTail;   // tail node
+    ITEM* m_pHead;   // head node
+    ITEM* m_pTail;   // tail node
 
     // must be last
     Footer m_xFooter;
@@ -22,13 +22,13 @@ namespace Structures
 
     ListNL_t(eCN eClassNo);
     
-    void    vAppend(OBJECT* pNode);
-    OBJECT* pHead(void);
+    void    vAppend(ITEM* pNode);
+    ITEM* pHead(void);
     i8      nObjects(void);
-    OBJECT* pPop(void);
-    void    vPush(OBJECT* pNode);
-    void    vRemove(OBJECT* pNode);
-    OBJECT* pTail(void);
+    ITEM* pPop(void);
+    void    vPush(ITEM* pNode);
+    void    vRemove(ITEM* pNode);
+    ITEM* pTail(void);
     
     Footer* aFooter(void);
   };
@@ -46,8 +46,8 @@ using namespace Structures;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-void* ListNL_t<OBJECT>::operator new(size_t)
+template <class ITEM>
+void* ListNL_t<ITEM>::operator new(size_t)
 {
   void* pObject = HeapMem::pAllocate(CN_TASKLIST);
   
@@ -57,10 +57,10 @@ void* ListNL_t<OBJECT>::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-void ListNL_t<OBJECT>::operator delete(void* aAddress)
+template <class ITEM>
+void ListNL_t<ITEM>::operator delete(void* aAddress)
 {
-  ListNL_t<OBJECT>* pList = reinterpret_cast<ListNL_t<OBJECT>*>(aAddress);
+  ListNL_t<ITEM>* pList = reinterpret_cast<ListNL_t<ITEM>*>(aAddress);
   
   HeapMem::vFree(pList);
 }
@@ -68,8 +68,8 @@ void ListNL_t<OBJECT>::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-ListNL_t<OBJECT>::ListNL_t(eCN eClassNo)
+template <class ITEM>
+ListNL_t<ITEM>::ListNL_t(eCN eClassNo)
 : Object(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
@@ -78,7 +78,7 @@ ListNL_t<OBJECT>::ListNL_t(eCN eClassNo)
   m_pHead  = nullptr;
   m_pTail  = nullptr;
   
-  _checkInitialisedSize_(sizeof(ListNL_t<OBJECT>));
+  _checkInitialisedSize_(sizeof(ListNL_t<ITEM>));
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
@@ -90,8 +90,8 @@ ListNL_t<OBJECT>::ListNL_t(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* append object to end of list                                               */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-void ListNL_t<OBJECT>::vAppend(OBJECT* pNode)
+template <class ITEM>
+void ListNL_t<ITEM>::vAppend(ITEM* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -115,8 +115,8 @@ void ListNL_t<OBJECT>::vAppend(OBJECT* pNode)
 /*----------------------------------------------------------------------------*/
 /* get head object in list                                                    */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-OBJECT* ListNL_t<OBJECT>::pHead(void)
+template <class ITEM>
+ITEM* ListNL_t<ITEM>::pHead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -126,8 +126,8 @@ OBJECT* ListNL_t<OBJECT>::pHead(void)
 /*----------------------------------------------------------------------------*/
 /* get number of objects in list                                              */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-i8 ListNL_t<OBJECT>::nObjects(void)
+template <class ITEM>
+i8 ListNL_t<ITEM>::nObjects(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -137,8 +137,8 @@ i8 ListNL_t<OBJECT>::nObjects(void)
 /*----------------------------------------------------------------------------*/
 /* pop object from head of list                                               */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-OBJECT* ListNL_t<OBJECT>::pPop(void)
+template <class ITEM>
+ITEM* ListNL_t<ITEM>::pPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -147,7 +147,7 @@ OBJECT* ListNL_t<OBJECT>::pPop(void)
     return nullptr;
   }
 
-  OBJECT* pNode = m_pHead;
+  ITEM* pNode = m_pHead;
 
   m_pHead = m_pHead->pNextNode();
   if (m_pHead)
@@ -174,8 +174,8 @@ OBJECT* ListNL_t<OBJECT>::pPop(void)
 /*----------------------------------------------------------------------------*/
 /* push object on top of list                                                 */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-void ListNL_t<OBJECT>::vPush(OBJECT* pNode)
+template <class ITEM>
+void ListNL_t<ITEM>::vPush(ITEM* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -200,11 +200,11 @@ void ListNL_t<OBJECT>::vPush(OBJECT* pNode)
 /*----------------------------------------------------------------------------*/
 /* remove object from head of list                                            */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-void ListNL_t<OBJECT>::vRemove(OBJECT* pNode)
+template <class ITEM>
+void ListNL_t<ITEM>::vRemove(ITEM* pNode)
 {
-  OBJECT* pPrev = pNode->pPrevNode();
-  OBJECT* pNext = pNode->pNextNode();
+  ITEM* pPrev = pNode->pPrevNode();
+  ITEM* pNext = pNode->pNextNode();
 
   if (pPrev)
     pPrev->vNextNode(pNext);
@@ -227,8 +227,8 @@ void ListNL_t<OBJECT>::vRemove(OBJECT* pNode)
 /*----------------------------------------------------------------------------*/
 /* get last object in list                                                    */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-OBJECT* ListNL_t<OBJECT>::pTail(void)
+template <class ITEM>
+ITEM* ListNL_t<ITEM>::pTail(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -242,8 +242,8 @@ OBJECT* ListNL_t<OBJECT>::pTail(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-Footer* ListNL_t<OBJECT>::aFooter(void)
+template <class ITEM>
+Footer* ListNL_t<ITEM>::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
