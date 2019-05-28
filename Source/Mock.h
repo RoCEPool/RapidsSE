@@ -16,6 +16,7 @@ using namespace Mock;
 
 #include "MockAgg.hpp"
 #include "MockFilter.hpp"
+#include "MockQuery.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
