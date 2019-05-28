@@ -229,28 +229,46 @@ void Record::vAppendBol(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  if (pDatum->bIsNull()) {
-    m_sRecStr.vCatSprint("null"_Stz);
-    return;
-  }
+  spBOL spBol;
   
-  m_sRecStr.vConcat(pDatum->m_iBol ? "true"_Stz : "false"_Stz);
+  m_sRecStr.vConcat(spBol.sz(pDatum->m_iBol));
 }
+/*----------------------------------------------------------------------------*/
+//void Record::vAppendBol(Column* pCol, Datum* pDatum)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+//
+//  if (pDatum->bIsNull()) {
+//    m_sRecStr.vCatSprint("null"_Stz);
+//    return;
+//  }
+//
+//  m_sRecStr.vConcat(pDatum->m_iBol ? "true"_Stz : "false"_Stz);
+//}
 /*----------------------------------------------------------------------------*/
 void Record::vAppendBol_Alt(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  s32 sAscii;
-
-  if (pDatum->m_iBol)
-    sAscii = "true"_Stz;
-  else
-    sAscii = "false"_Stz;
+  spBOL spBol;
   
-  //m_sRecStr.vConcat(pDatum->m_iBol ? "true"_Stz : "false"_Stz);
-  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.aChar());
+  m_sRecStr.vAppend(&m_azAppendCursor,spBol.sz(pDatum->m_iBol));
 }
+/*----------------------------------------------------------------------------*/
+//void Record::vAppendBol_Alt(Column* pCol, Datum* pDatum)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+//
+//  s32 sAscii;
+//
+//  if (pDatum->m_iBol)
+//    sAscii = "true"_Stz;
+//  else
+//    sAscii = "false"_Stz;
+//
+//  //m_sRecStr.vConcat(pDatum->m_iBol ? "true"_Stz : "false"_Stz);
+//  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.aChar());
+//}
 
 /*----------------------------------------------------------------------------*/
 /* append ascii of date datum to record                                       */
