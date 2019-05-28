@@ -13,7 +13,12 @@ namespace Data
   static const i8 C_SHOCO_COMPRESSED_OFFSET = C_TAIL_UNITS_OFFSET
                                               + C_TAIL_UNITS_BYTES;
   static const i8 C_SHOCO_COMPRESSED_BYTES  = 1;
-  
+
+  static const i8 _2B_FT = 2;
+  static const i8 _2B_IT = 2;
+  static const i8 _1B_C  = 1;
+  static const i8 _1B_U  = 1;
+
   /*----------------------------------------------------------------------------*/
   
   class RowCoder : public Object
