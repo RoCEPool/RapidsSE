@@ -358,11 +358,11 @@ void Record::vAppendFlt_Alt(Column* pCol, Datum* pDatum)
 //void Record::vAppendFlt_Alt(Column* pCol, Datum* pDatum)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
-//  
+//
 //  s32 sAscii;
-//  
+//
 //  StrLib::vSprint(sAscii.aChar(),"%g"_Stz,pDatum->m_dFlt);
-//  
+//
 //  //m_sRecStr.vConcat((Stz*)sAscii.aChar());
 //  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.aChar());
 //}
@@ -419,25 +419,43 @@ void Record::vAppendIvl(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  if (pDatum->bIsNull()) {
-    m_sRecStr.vCatSprint("null"_Stz);
-    return;
-  }
+  spIVL spIvl;
   
-  m_sRecStr.vCatSprint("%lld"_Stz,pDatum->m_iIvl);
+  m_sRecStr.vConcat(spIvl.sz(pDatum->m_iIvl));
 }
+/*----------------------------------------------------------------------------*/
+//void Record::vAppendIvl(Column* pCol, Datum* pDatum)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+//
+//  if (pDatum->bIsNull()) {
+//    m_sRecStr.vCatSprint("null"_Stz);
+//    return;
+//  }
+//
+//  m_sRecStr.vCatSprint("%lld"_Stz,pDatum->m_iIvl);
+//}
 /*----------------------------------------------------------------------------*/
 void Record::vAppendIvl_Alt(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
  
-  s32 sAscii;
-  
-  StrLib::vSprint(sAscii.aChar(),"%lld"_Stz,pDatum->m_iIvl);
-  
-  //m_sRecStr.vConcat((Stz*)sAscii.aChar());
-  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.aChar());
+  spIVL spIvl;
+
+  m_sRecStr.vAppend(&m_azAppendCursor,spIvl.sz(pDatum->m_iIvl));
 }
+/*----------------------------------------------------------------------------*/
+//void Record::vAppendIvl_Alt(Column* pCol, Datum* pDatum)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+//
+//  s32 sAscii;
+//
+//  StrLib::vSprint(sAscii.aChar(),"%lld"_Stz,pDatum->m_iIvl);
+//
+//  //m_sRecStr.vConcat((Stz*)sAscii.aChar());
+//  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.aChar());
+//}
 
 /*----------------------------------------------------------------------------*/
 /* append ascii of time datum to record                                       */
