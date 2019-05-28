@@ -11,11 +11,11 @@ Sprint::Sprint(eCN eClass)
 : Object(eClass)
 {
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_acFormat,sizeof(m_acFormat),CN_SPDTE);
-  MemLib::vZero(m_acResult,sizeof(m_acResult),CN_SPDTE);
+  MemLib::vZero(m_caFormat,sizeof(m_caFormat),CN_SPDTE);
+  MemLib::vZero(m_caResult,sizeof(m_caResult),CN_SPDTE);
 #else
-  m_acFormat[0] = '\0';
-  m_acResult[0] = '\0';
+  m_caFormat[0] = '\0';
+  m_caResult[0] = '\0';
 #endif
 
   _checkInitialised_(CN_SPRINT);
@@ -40,7 +40,7 @@ Stz* Sprint::sz(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  return (Stz*) &m_acResult[0];
+  return (Stz*) &m_caResult[0];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,7 +50,7 @@ Stz* Sprint::szFormat(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_acFormat[0];
+  return (Stz*) &m_caFormat[0];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void Sprint::vFormat(const Stz* szFormat)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopy(m_acFormat,(char*)szFormat);
+  StrLib::vCopy(m_caFormat,(char*)szFormat);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +70,7 @@ Stz* Sprint::szResult(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_acResult[0];
+  return (Stz*) &m_caResult[0];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,7 +80,7 @@ void Sprint::vResult(const Stz* szResult)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopy(m_acFormat,(char*)szResult);
+  StrLib::vCopy(m_caFormat,(char*)szResult);
 }
 
 

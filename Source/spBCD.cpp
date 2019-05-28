@@ -68,19 +68,19 @@ Stz* spBCD::sz(i8 iBcd, i8 iScale)
   }
   
   if (iScale)
-    StrLib::vSprint(m_acResult,
+    StrLib::vSprint(m_caResult,
                     (Stz*)F_BCD_frac,
                     bNegative ? "-" : "",
                     iBcd_magn,
                     iScale,
                     iBcd_frac);
   else
-    StrLib::vSprint(m_acResult,
+    StrLib::vSprint(m_caResult,
                     (Stz*)F_BCD,
                     bNegative ? "-" : "",
                     iBcd_magn);
 
-  return (Stz*) &m_acResult[0];
+  return (Stz*) &m_caResult[0];
 }
 
 

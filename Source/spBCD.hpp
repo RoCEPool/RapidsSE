@@ -14,7 +14,7 @@ namespace Sprinting
     
   public:
     spBCD(void);
-    ~spBCD() noexcept(false);
+    ~spBCD(void) noexcept(false);
   
     Stz* sz(i8 iBcd);
     Stz* sz(i8 iBcd, i8 iScale);

@@ -11,15 +11,16 @@ namespace Sprinting
   {
   public:
   
-    char m_acFormat[C_SPRINT_SIZE];
-    char m_acResult[C_SPRINT_SIZE];
+    // defult buffers
+    char m_caFormat[C_SPRINT_SIZE];
+    char m_caResult[C_SPRINT_SIZE];
 
     // must be last
     Footer m_xFooter;
     
   public:
     Sprint(eCN eClass);
-    ~Sprint() noexcept(false);
+    ~Sprint(void) noexcept(false);
   
     Stz* sz(void);
   

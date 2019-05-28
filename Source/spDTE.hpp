@@ -14,7 +14,7 @@ namespace Sprinting
     
   public:
     spDTE(void);
-    ~spDTE() noexcept(false);
+    ~spDTE(void) noexcept(false);
   
     Stz* sz(i8 iDte);
   
