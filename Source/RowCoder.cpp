@@ -2506,23 +2506,23 @@ void RowCoder::vAnalyse(RowNub* pNub)
 /*----------------------------------------------------------------------------*/
 /* append column datum into record                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vAppend(Record* pRec, Datum* pDatum, Column* pCol)
-{
-  eDM eDatum = pCol->eDatumType();
-  switch (eDatum) {
-    case DM_BCD: pRec->vAppendBcd(pCol,pDatum); break;
-    case DM_BOL: pRec->vAppendBol(pCol,pDatum); break;
-    case DM_DTE: pRec->vAppendDte(pCol,pDatum); break;
-    case DM_FLT: pRec->vAppendFlt(pCol,pDatum); break;
-    case DM_INT: pRec->vAppendInt(pCol,pDatum); break;
-    case DM_IVL: pRec->vAppendIvl(pCol,pDatum); break;
-    case DM_TME: pRec->vAppendTme(pCol,pDatum); break;
-    case DM_TSP: pRec->vAppendTsp(pCol,pDatum); break;
-    case DM_VCH: pRec->vAppendVch(pCol,pDatum); break;
-    default:
-      NEVER_REACH;
-  }
-}
+//void RowCoder::vAppend(Record* pRec, Datum* pDatum, Column* pCol)
+//{
+//  eDM eDatum = pCol->eDatumType();
+//  switch (eDatum) {
+//    case DM_BCD: pRec->vAppendBcd(pCol,pDatum); break;
+//    case DM_BOL: pRec->vAppendBol(pCol,pDatum); break;
+//    case DM_DTE: pRec->vAppendDte(pCol,pDatum); break;
+//    case DM_FLT: pRec->vAppendFlt(pCol,pDatum); break;
+//    case DM_INT: pRec->vAppendInt(pCol,pDatum); break;
+//    case DM_IVL: pRec->vAppendIvl(pCol,pDatum); break;
+//    case DM_TME: pRec->vAppendTme(pCol,pDatum); break;
+//    case DM_TSP: pRec->vAppendTsp(pCol,pDatum); break;
+//    case DM_VCH: pRec->vAppendVch(pCol,pDatum); break;
+//    default:
+//      NEVER_REACH;
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get encoded datum from row                                                 */
@@ -2610,11 +2610,11 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
   
   TailLine* aShocoTail;
   
-#ifdef WITH_TRACE_DECODING
+//#ifdef WITH_TRACE_DECODING
   static i8 nTotalRows = 0;
   vTrace("vDecode() of row %lld\n"_Stz,nTotalRows++);
   RowCoder::vHeadDump(aHeadLine,pRow->m_pColVec);
-#endif
+//#endif
 
   char* aString = pRow->m_xWsp.aArea();
   
@@ -3157,6 +3157,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
   i8 nColumns = pColVec->nItems();
   
   HV_Rec hvRec;
+  Datum oDatum;
   
   i8 i_LastOffset = iBaseOffset(pColVec);
   
@@ -3198,7 +3199,12 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     vTrace(" "_Stz);
     
     hvRec->vReset();
-    vAppend(hvRec,aHeadLine,pColVec,pCol,i_Col,i_LastOffset);
+    //vAppend(hvRec,aHeadLine,pColVec,pCol,i_Col,i_LastOffset);
+    
+    // first get the encoded value into datum
+    vDecode(&oDatum,aHeadLine,pColVec,pCol,i_Col,i_LastOffset);
+    hvRec->vAppend_Alt(pCol, &oDatum);
+    
     vTrace("%s"_Stz,hvRec->szRecStr());
     
     if (MC_SHOCO_SPLIT_2T1C == eMetaCode) {
@@ -3238,6 +3244,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   HV_Rec hvRec;
+  Datum oDatum;
   
   i8 i_LastCol = 0;
   i8 i_LastOffset = iBaseOffset(pColVec);
@@ -3276,7 +3283,12 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
   vTrace(" "_Stz);
   
   hvRec->vReset();
-  vAppend(hvRec,aHeadLine,pColVec,pCol,i_LastCol,i_LastOffset);
+  //vAppend(hvRec,aHeadLine,pColVec,pCol,i_LastCol,i_LastOffset);
+  
+  // first get the encoded value into datum
+  vDecode(&oDatum,aHeadLine,pColVec,pCol,i_Col,i_LastOffset);
+  hvRec->vAppend_Alt(pCol, &oDatum);
+  
   vTrace("%s"_Stz,hvRec->szRecStr());
   
   vTrace("\n"_Stz);
@@ -3293,33 +3305,33 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* decode and append column datum into record                                 */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vAppend(Record* pRec, HeadLine* aHeadLine,
-                             ColumnVec* pColVec, Column* pCol,
-                             i8& i_LastColumn, i8& i_Offset)
-{
-  Datum oDatum;
-  
-  // first get the encoded value into datum
-  vDecode(&oDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_Offset);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // we have the decoded value in oDatum
-  
-  eDM eDatum = pCol->eDatumType();
-  switch (eDatum) {
-    case DM_BCD: pRec->vAppendBcd(pCol,&oDatum); break;
-    case DM_BOL: pRec->vAppendBol(pCol,&oDatum); break;
-    case DM_DTE: pRec->vAppendDte(pCol,&oDatum); break;
-    case DM_FLT: pRec->vAppendFlt(pCol,&oDatum); break;
-    case DM_INT: pRec->vAppendInt(pCol,&oDatum); break;
-    case DM_IVL: pRec->vAppendIvl(pCol,&oDatum); break;
-    case DM_TME: pRec->vAppendTme(pCol,&oDatum); break;
-    case DM_TSP: pRec->vAppendTsp(pCol,&oDatum); break;
-    case DM_VCH: pRec->vAppendVch(pCol,&oDatum); break;
-    default:
-      NEVER_REACH;
-  }
-}
+//void RowCoder::vAppend(Record* pRec, HeadLine* aHeadLine,
+//                             ColumnVec* pColVec, Column* pCol,
+//                             i8& i_LastColumn, i8& i_Offset)
+//{
+//  Datum oDatum;
+//
+//  // first get the encoded value into datum
+//  vDecode(&oDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_Offset);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // we have the decoded value in oDatum
+//
+//  eDM eDatum = pCol->eDatumType();
+//  switch (eDatum) {
+//    case DM_BCD: pRec->vAppendBcd(pCol,&oDatum); break;
+//    case DM_BOL: pRec->vAppendBol(pCol,&oDatum); break;
+//    case DM_DTE: pRec->vAppendDte(pCol,&oDatum); break;
+//    case DM_FLT: pRec->vAppendFlt(pCol,&oDatum); break;
+//    case DM_INT: pRec->vAppendInt(pCol,&oDatum); break;
+//    case DM_IVL: pRec->vAppendIvl(pCol,&oDatum); break;
+//    case DM_TME: pRec->vAppendTme(pCol,&oDatum); break;
+//    case DM_TSP: pRec->vAppendTsp(pCol,&oDatum); break;
+//    case DM_VCH: pRec->vAppendVch(pCol,&oDatum); break;
+//    default:
+//      NEVER_REACH;
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* how many bytes does given encoding occupy in the data portion of a head?   */
