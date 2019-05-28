@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Prompt_date.cpp -- show date and time                                      */
+/* Prompt_date.cpp -- show current local date and time                        */
 /*============================================================================*/
 
 #include "Prompt.h"
@@ -23,15 +23,9 @@ PromptNote mPromptNote_date (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_date(SePrompt* pPrompt)
 {
-  Time oTime;
-  oTime.vSetLocalNow();
-  
-  s32 sDate;
-  char* z = sDate.aChar();
-  
-  oTime.vAppendLocal(&z);
+  spNOW spNow;
 
-  vTrace("%s\n"_Stz,sDate.aChar());
+  vTrace("%s (local)\n"_Stz,spNow.sz());
   
   return true;
 }
