@@ -335,25 +335,43 @@ void Record::vAppendInt(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  if (pDatum->bIsNull()) {
-    m_sRecStr.vCatSprint("null"_Stz);
-    return;
-  }
+  spINT spInt;
   
-  m_sRecStr.vCatSprint("%lld"_Stz,pDatum->m_iInt);
+  m_sRecStr.vConcat(spInt.sz(pDatum->m_iInt));
 }
+/*----------------------------------------------------------------------------*/
+//void Record::vAppendInt(Column* pCol, Datum* pDatum)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+//
+//  if (pDatum->bIsNull()) {
+//    m_sRecStr.vCatSprint("null"_Stz);
+//    return;
+//  }
+//
+//  m_sRecStr.vCatSprint("%lld"_Stz,pDatum->m_iInt);
+//}
 /*----------------------------------------------------------------------------*/
 void Record::vAppendInt_Alt(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  s32 sAscii;
-
-  StrLib::vSprint(sAscii.aChar(),"%lld"_Stz,pDatum->m_iInt);
+  spINT spInt;
   
-  //m_sRecStr.vConcat((Stz*)sAscii.aChar());
-  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.aChar());
+  m_sRecStr.vAppend(&m_azAppendCursor,spInt.sz(pDatum->m_iInt));
 }
+/*----------------------------------------------------------------------------*/
+//void Record::vAppendInt_Alt(Column* pCol, Datum* pDatum)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+//
+//  s32 sAscii;
+//
+//  StrLib::vSprint(sAscii.aChar(),"%lld"_Stz,pDatum->m_iInt);
+//
+//  //m_sRecStr.vConcat((Stz*)sAscii.aChar());
+//  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.aChar());
+//}
 
 /*----------------------------------------------------------------------------*/
 /* append ascii of interval datum to record                                   */
