@@ -327,28 +327,6 @@ namespace Data
     }
   
     /*----------------------------------------------------------------------------*/
-    /* retrieve and decode row from cache line into a datu                        */
-    /*----------------------------------------------------------------------------*/
-    static inline void vRetrieve(Datum& oDatum, HeadLine* aHeadLine, ColumnVec* pColVec,
-                                 Column* pCol, i8& i_LastColumn, i8& i_LastOffset)
-    {
-      //vHeadDump(aHeadLine, pColVec);
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-//      i8 iRem = (i8)aHeadLine % 64;
-//      RASSERT(! iRem);
-    
-      // get the encoded value into datum
-      vDecode(&oDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
-    
-//      i8 iSum = 0;
-//      byte* ayByte = (byte*)aHeadLine;
-//      for (i8 _i = 0; _i < 64; _i++)
-//        iSum+=*ayByte++;
-//      oDatum.m_iInt = iSum;
-    }
-  
-    /*----------------------------------------------------------------------------*/
     /* calc size of the meta tape needed for given column vector                  */
     /*----------------------------------------------------------------------------*/
     static inline i8 nMetaData(ColumnVec* pColVec)

@@ -831,7 +831,7 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
     if (! RowBuffer::bCheckAddress(pRowBuffer,aHeadLine)) {
       pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
     }
-    //RowCoder::vRetrieve(oDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+    
     RowCoder::vDecode(pJob_FetchRows->m_pRow,aHeadLine);
     
     if (pJob_FetchRows->m_bPrint) {
