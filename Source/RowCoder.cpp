@@ -1582,7 +1582,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   // +--------------------------------+
   //                      ^m_i_IntoOffset
   i8 i_IntoTail_Rel = RowNub::iUnitDiff(m_aIntoHead,aIntoTail_Dup);
-  m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MC_2B);
+  m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,_2B_IT);
   
   // increment into offset by sizeof([IT])
   // +--------------------------------+
@@ -1815,7 +1815,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // |            |FT|<C>//////////// |
   // +--------------------------------+
   //              ^m_i_IntoOffset
-  m_aIntoHead->vPut(m_i_IntoOffset + _2B_FT,nShocoBytes,MC_1B);
+  m_aIntoHead->vPut(m_i_IntoOffset + _2B_FT,nShocoBytes,_1B_C);
   
   // copy partA into the Into-Head
   // +--------------------------------+
@@ -1852,7 +1852,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // +--------------------------------+
   //              ^m_i_IntoOffset
   i8 i_IntoTail_Rel = RowNub::iUnitDiff(m_aIntoHead,aIntoTail);
-  m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MC_2B);
+  m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,_2B_IT);
   
   // increment intoOffset by sizeof([IT]) + sizeof(<C>) + nPartA
   // +--------------------------------+
@@ -1980,7 +1980,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   // +--------------------------------+
   //                      ^m_i_IntoOffset
   i8 i_IntoTail_Rel = RowNub::iUnitDiff(m_aIntoHead,aIntoTail);
-  m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,C_2B);
+  m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,_2B_IT);
   
   // increment intoOffset by sizeof([IT])
   // +--------------------------------+
