@@ -43,6 +43,7 @@ namespace Base
 
   const u8 C_WORDS_PER_CACHE_LINE  = 8;
   
+  const i8 C_0B = 0;
   const i8 C_1B = 1;
   const i8 C_2B = 2;
   const i8 C_3B = 3;

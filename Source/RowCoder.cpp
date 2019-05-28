@@ -77,7 +77,7 @@ RowCoder::RowCoder(void)
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     
     m_xaUsage[i_Col].m_nEncoded = 0;
-    m_xaUsage[i_Col].m_nEncodedBytes = 0;
+    m_xaUsage[i_Col].m_nEncodedBytes = C_0B;
     
     m_xaUsage[i_Col].m_nRecoded = 0;
     m_xaUsage[i_Col].m_nRecodedBytes = 0;
@@ -503,7 +503,7 @@ void RowCoder::vCodeBol(Datum* pTgtDatum, Datum* pSrcDatum)
     eEncoding = MC_FALSE;
   
   pTgtDatum->m_eEncoding = eEncoding;
-  pTgtDatum->m_nEncodedBytes = 0;
+  pTgtDatum->m_nEncodedBytes = C_0B;
   
   RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(eEncoding));
 }
@@ -541,7 +541,7 @@ void RowCoder::vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum)
   
   if (pSrcDatum->bIsNull()) {
     pTgtDatum->m_eEncoding = MC_NULL;
-    pTgtDatum->m_nEncodedBytes = 0;
+    pTgtDatum->m_nEncodedBytes = C_0B;
     RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(MC_NULL));
     return;
   }
@@ -553,16 +553,16 @@ void RowCoder::vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum)
   
   if (C_ERA_1 == iEra) {
     eEncoding = MC_DATE_E1_2B;
-    pTgtDatum->m_nEncodedBytes = 2;
+    pTgtDatum->m_nEncodedBytes = C_2B;
   }
   else if (C_ERA_2 == iEra) {
     eEncoding = MC_DATE_E2_2B;
-    pTgtDatum->m_nEncodedBytes = 2;
+    pTgtDatum->m_nEncodedBytes = C_2B;
   }
   else {
     ASSERT(C_ERA_0 == iEra);
     eEncoding = MC_DATE_E0_2B;
-    pTgtDatum->m_nEncodedBytes = 2;
+    pTgtDatum->m_nEncodedBytes = C_2B;
   }
   
   pTgtDatum->m_eEncoding = eEncoding;
@@ -641,7 +641,7 @@ void RowCoder::vCodeTme(Datum* pTgtDatum, Datum* pSrcDatum)
   
   if (pSrcDatum->bIsNull()) {
     pTgtDatum->m_eEncoding = MC_NULL;
-    pTgtDatum->m_nEncodedBytes = 0;
+    pTgtDatum->m_nEncodedBytes = C_0B;
     RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(MC_NULL));
     return;
   }
@@ -707,28 +707,28 @@ void RowCoder::vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum)
   // null case
   if (pSrcDatum->bIsNull()) {
     pTgtDatum->m_eEncoding     = MC_NULL;
-    pTgtDatum->m_nEncodedBytes = 0;
+    pTgtDatum->m_nEncodedBytes = C_0B;
     return;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  i8 iLen = StrLib::nCopy((char*)pTgtDatum->m_sVch.aChar(),
+  i8 nLen = StrLib::nCopy((char*)pTgtDatum->m_sVch.aChar(),
                           (char*)pSrcDatum->m_sVch.aChar());
   
-  if (iLen == 0) {
+  if (nLen == 0) {
     pTgtDatum->m_eEncoding     = MC_STR_EMPTY;
-    pTgtDatum->m_nEncodedBytes = 0;
+    pTgtDatum->m_nEncodedBytes = C_0B;
   }
 #ifdef WITH_ENCODING_VCH_SMALL
-  else if (iLen <= 7) {
+  else if (nLen <= 7) {
     pTgtDatum->m_eEncoding     = MC_STR_FIT_1L;
-    pTgtDatum->m_nEncodedBytes = iLen;
+    pTgtDatum->m_nEncodedBytes = nLen;
   }
 #endif
   else {
     pTgtDatum->m_eEncoding     = MC_SHOCO_TAIL_2T;
-    pTgtDatum->m_nEncodedBytes = iLen;
+    pTgtDatum->m_nEncodedBytes = nLen;
   }
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
@@ -2088,7 +2088,7 @@ void RowCoder::vUsageReset(void)
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     
     m_xaUsage[i_Col].m_nEncoded = 0;
-    m_xaUsage[i_Col].m_nEncodedBytes = 0;
+    m_xaUsage[i_Col].m_nEncodedBytes = C_0B;
     
     m_xaUsage[i_Col].m_nRecoded = 0;
     m_xaUsage[i_Col].m_nRecodedBytes = 0;
