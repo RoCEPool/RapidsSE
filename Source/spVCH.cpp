@@ -42,8 +42,8 @@ Stz* spVCH::sz(char* azVch)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  char* aDstChar = azVch;
-  char* aSrcChar = &m_caVch[0];
+  char* aDstChar = &m_caVch[0];
+  char* aSrcChar = azVch;
   
   // put leading enclosing quote/char
   *aDstChar++ = '\'';

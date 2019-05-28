@@ -171,8 +171,6 @@ void Record::vAppendBcd(Column* pCol, Datum* pDatum)
 
   spBCD spBcd;
   
-  // we call spDte.sz() with the date to be formatted.
-  // it returns a Stz* to the formatted date result
   m_sRecStr.vConcat(spBcd.sz(pDatum->m_iBcd,pCol->iColumnScale()));
 }
 /*----------------------------------------------------------------------------*/
@@ -488,50 +486,68 @@ void Record::vAppendVch(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  if (pDatum->bIsNull()) {
-    m_sRecStr.vCatSprint("null"_Stz);
-    return;
-  }
+  spVCH spVch;
   
-  s256 sBuf;
-  
-  Vch::vSprintQuotes(sBuf,pDatum->m_sVch.aStz());
-  m_sRecStr.vConcat(sBuf.aStz());
+  m_sRecStr.vConcat(spVch.sz(pDatum->m_sVch.aChar()));
 }
+/*----------------------------------------------------------------------------*/
+//void Record::vAppendVch(Column* pCol, Datum* pDatum)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+//
+//  if (pDatum->bIsNull()) {
+//    m_sRecStr.vCatSprint("null"_Stz);
+//    return;
+//  }
+//
+//  s256 sBuf;
+//
+//  Vch::vSprintQuotes(sBuf,pDatum->m_sVch.aStz());
+//  m_sRecStr.vConcat(sBuf.aStz());
+//}
 /*----------------------------------------------------------------------------*/
 void Record::vAppendVch_Alt(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  s256 sAscii;
+  spVCH spVch;
   
-  char* aDstChar = (char*)sAscii.aChar();
-  char* aSrcChar = (char*)pDatum->m_sVch.aChar();
-  
-  // put leading enclosing quote/char
-  *aDstChar++ = '\'';
-  
-  // copy from src to dst
-  while (*aSrcChar) {
-    
-    if ('\'' == *aSrcChar) {
-      // escape an enclosing quote/char
-      *aDstChar++ = '\'';
-      *aDstChar++ = *aSrcChar++;
-    }
-    else {
-      // copy an ordinary char
-      *aDstChar++ = *aSrcChar++;
-    }
-  }
-  
-  // put trailing enclosing quote/char and \0 terminate
-  *aDstChar++ = '\'';
-  *aDstChar = '\0';
-  
-  //m_sRecStr.vConcat(sAscii.aStz());
-  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.aChar());
+  m_sRecStr.vAppend(&m_azAppendCursor,spVch.sz(pDatum->m_sVch.aChar()));
 }
+/*----------------------------------------------------------------------------*/
+//void Record::vAppendVch_Alt(Column* pCol, Datum* pDatum)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+//
+//  s256 sAscii;
+//
+//  char* aDstChar = (char*)sAscii.aChar();
+//  char* aSrcChar = (char*)pDatum->m_sVch.aChar();
+//
+//  // put leading enclosing quote/char
+//  *aDstChar++ = '\'';
+//
+//  // copy from src to dst
+//  while (*aSrcChar) {
+//
+//    if ('\'' == *aSrcChar) {
+//      // escape an enclosing quote/char
+//      *aDstChar++ = '\'';
+//      *aDstChar++ = *aSrcChar++;
+//    }
+//    else {
+//      // copy an ordinary char
+//      *aDstChar++ = *aSrcChar++;
+//    }
+//  }
+//
+//  // put trailing enclosing quote/char and \0 terminate
+//  *aDstChar++ = '\'';
+//  *aDstChar = '\0';
+//
+//  //m_sRecStr.vConcat(sAscii.aStz());
+//  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.aChar());
+//}
 
 /*----------------------------------------------------------------------------*/
 /* print record string as row                                                 */
