@@ -1763,10 +1763,10 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   
   // calc the bytes which overhang into the final unit of the From-Tail
   i8 nFromAllBytes = C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES + nShocoBytes;
-  i8 nFromOverHang = nFromAllBytes % sizeof(SpaceUnit);
+  i8 nFromOverHang = (nFromAllBytes) % sizeof(SpaceUnit);
   
   // calc the available bytes in the head
-  i8 nAvailHeadBytes = m_nHeadBytes - m_i_IntoOffset;  //! not variable head
+  i8 nAvailHeadBytes = m_nHeadBytes - m_i_IntoOffset - /* |FT| */MC_2B;  //! not variable head
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // can we split?
@@ -1788,7 +1788,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // to move the overhang we need space in headLine at least for:
   //   1B for <C>
   //   nB for <overhang> - <C>
-  if (1 + nFromOverHang - 1 > nAvailHeadBytes) {
+  if (nFromOverHang > nAvailHeadBytes) {
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
     return false;
   }
@@ -1799,8 +1799,16 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // +--------------------------------+    +===================================+
   // |            |FT|<_><....a.....> |    | <_><.............b..............> |
   // +--------------------------------+    +===================================+
-  i8 nPartA = nAvailHeadBytes - ( /*[IT]*/MC_2B + /* <C> */MC_1B );
+  i8 nPartA = nAvailHeadBytes - ( /* <C> */MC_1B );
   i8 nPartB = nShocoBytes - nPartA;
+  
+  if (nPartA < 0 || nPartA > 64) {
+    vTrace("nPartA = %lld\n"_Stz, nPartA);
+  }
+  
+  if (nPartB < 0) {
+    vTrace("nPartB = %lld\n"_Stz, nPartB);
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1818,7 +1826,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   //              ^m_i_IntoOffset
   byte* ayIntoHead_PartA = (byte*)m_aIntoHead + m_i_IntoOffset + MC_2B + MC_1B;
   byte* ayFromTail_PartA = (byte*)aFromTail + C_TAIL_UNITS_BYTES
-  + C_SHOCO_COMPRESSED_BYTES;
+                           + C_SHOCO_COMPRESSED_BYTES;
   MemLib::vCopy(ayIntoHead_PartA,ayFromTail_PartA,nPartA,CN_ROWCODER);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

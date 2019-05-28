@@ -369,10 +369,10 @@ namespace Data
     static inline i8 nHeadBytes(ColumnVec* pColVec)
     {
       // experiment 1
-      i8 nBytes = sizeof(CacheLine) + (1 * C_BYTES_PER_WORD);
+      //i8 nBytes = sizeof(CacheLine) + (1 * C_BYTES_PER_WORD);
       
       // experiment 2
-      //i8 nBytes = pColVec->nItems() * 4;
+      i8 nBytes = pColVec->nItems() * 4;
       
       return nBytes;
     }
