@@ -80,11 +80,11 @@ RowCoder::RowCoder(void)
     m_xaUsage[i_Col].m_nEncodedBytes = C_0B;
     
     m_xaUsage[i_Col].m_nRecoded = 0;
-    m_xaUsage[i_Col].m_nRecodedBytes = 0;
+    m_xaUsage[i_Col].m_nRecodedBytes = C_0B;
 
     m_xaUsage[i_Col].m_nOops = 0;
-    m_xaUsage[i_Col].m_nOopsBytes = 0;
-    m_xaUsage[i_Col].m_nOopsMiss = 0;
+    m_xaUsage[i_Col].m_nOopsBytes = C_0B;
+    m_xaUsage[i_Col].m_nOopsMiss = C_0B;
   }
   
   for (i8 i_Code = 0; i_Code < MC_ENUMS; i_Code++)
@@ -1013,8 +1013,7 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
   aShocoTail->v1B(C_OFFSET_COMPRESSED,nCompressed);
   
   // copy shoco into tail (this is <compressed bytes> in the diagram)
-  char *aShocoWithinTail = (char*)aShocoTail
-                            + _1B_U + _1B_C;
+  char *aShocoWithinTail = (char*)aShocoTail + _1B_U + _1B_C;
   MemLib::vCopy(aShocoWithinTail,sShoco.aChar(),nCompressed,CN_ROWCODER);
   
   // put index of shoco tail as the 2 data bytes (this is [IT] in the diagram)
@@ -1285,9 +1284,9 @@ void RowCoder::vRecodeBcd(Column* pCol)
   // skip nulls
   
   if (MC_NULL == m_eFromEncoding) {
-    vUsageIncRecoded(pCol,0);
+    vUsageIncRecoded(pCol,C_0B);
     RASSERT(0 == m_nFromDataBytes);
-    m_i_IntoOffset += 0;
+    m_i_IntoOffset += C_0B;
     return;
   }
   
@@ -1306,7 +1305,7 @@ void RowCoder::vRecodeBcd(Column* pCol)
       // revise the encoding
       eMC eRevisedEncoding = (eMC)(MC_ZERO + iBcd1B);
       vMetaCode(pCol,eRevisedEncoding);
-      vUsageIncRecoded(pCol,0);
+      vUsageIncRecoded(pCol,C_0B);
       
       // cut the 1B char out of the into head
       MemLib::vCut(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1,CN_ROWCODER);
@@ -1365,7 +1364,7 @@ void RowCoder::vRecodeInt(Column* pCol)
   
   // skip nulls
   if (MC_NULL == m_eFromEncoding) {
-    vUsageIncRecoded(pCol,0);
+    vUsageIncRecoded(pCol,C_0B);
     RASSERT(0 == m_nFromDataBytes);
     m_i_IntoOffset += m_nFromDataBytes;
     return;
@@ -1415,7 +1414,7 @@ bool RowCoder::bRecodeIntDigit(Column* pCol)
       // revise the encoding
       eMC eRevisedEncoding = (eMC)(MC_ZERO + i1BInt);
       vMetaCode(pCol,eRevisedEncoding);
-      vUsageIncRecoded(pCol,0);
+      vUsageIncRecoded(pCol,C_0B);
       
       // cut the 1B char out of the into head
       MemLib::vCut(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1,CN_ROWCODER);
@@ -1613,7 +1612,7 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   
   /*
    Before:
-   -- Into-Head --                           -- From-Tail --
+             -- Into-Head --                           -- From-Tail --
    +================================+    +=====================================+
    | mc:          ,MC_SHOCO_TAIL_2T |    | <U><C><shoco.....> //////////////// |
    +================================+    +=====================================+
