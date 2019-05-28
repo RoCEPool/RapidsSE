@@ -35,6 +35,8 @@ static const Stz* F_TME_frac  = "%02lld:%02lld:%02lld.%s"_Stz;
 static const Stz* F_TSP       = "%02lld-%02lld-%02lld %02lld:%02lld:%02lld"_Stz;
 static const Stz* F_TSP_frac  = "%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s"_Stz;
 
+static const Stz* F_VCH_enclose = "'"_Stz;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
