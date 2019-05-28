@@ -27,6 +27,7 @@ namespace Data
     void vAppend(HeadLine* aHeadLine, ColumnVec* pColVec);
 
     void vAppend_Alt(Column* pCol, Datum* pDatum);
+    void vAppend_Alt(Column* pCol, Row* pRow);
     void vAppendBcd(Column* pCol, Datum* pDatum);
     void vAppendBcd_Alt(Column* pCol, Datum* pDatum);
     void vAppendBol(Column* pCol, Datum* pDatum);

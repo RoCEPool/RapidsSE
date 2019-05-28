@@ -370,11 +370,21 @@ namespace Data
     {
       // experiment 1
       //i8 nBytes = sizeof(CacheLine) + (1 * C_BYTES_PER_WORD);
+      //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
       
       // experiment 2
-      i8 nBytes = pColVec->nItems() * 4;
+      //i8 nBytes = pColVec->nItems() * 4;
+      //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
       
-      return nBytes;
+      // experiment 3
+      //i8 nBytes = pColVec->nItems() * 5;
+      //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+      
+      // experiment 4
+      i8 nBytes = pColVec->nItems() * 6;
+      i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+      
+      return nHeadBytes*C_BYTES_PER_WORD;
     }
   
     /*----------------------------------------------------------------------------*/

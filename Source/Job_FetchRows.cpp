@@ -665,6 +665,9 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
       vTrace("metadata: (%s %s)\n"_Stz, pCol->sColumnName().aChar(), aCT[pCol->eColumnType()]);
     }
     
+    // create a row for retrieval
+    pJob_FetchRows->m_pRow = new Row(pJob_FetchRows->m_pTable->pColumnVec());
+    
     while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
       
       pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
@@ -804,7 +807,7 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
 void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
                            FetchBuffer* pFetchBuffer)
 {
-  Datum oDatum;
+  //Datum oDatum;
   RowBuffer* pRowBuffer = nullptr;
   
   ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
@@ -814,25 +817,27 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
   
   HeadLine** aaLatter = (HeadLine**)pFetchBuffer->aLatter();
   
+  pJob_FetchRows->m_pRow->m_bGetAll = false;
+  pJob_FetchRows->m_pRow->m_abGetCol[pCol->iColumnNo()] = true;
+  
   while (aaHeadLine < aaLatter) {
     
     if ( ! aaHeadLine )
       break;
     
     HeadLine* aHeadLine = *aaHeadLine;
-    i8 i_LastColumn = 0;
-    i8 i_LastOffset = RowCoder::iBaseOffset(pColVec);
     
     // check if aHeadLine is from the last rowBuffer
     if (! RowBuffer::bCheckAddress(pRowBuffer,aHeadLine)) {
       pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
     }
-    RowCoder::vRetrieve(oDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+    //RowCoder::vRetrieve(oDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+    RowCoder::vDecode(pJob_FetchRows->m_pRow,aHeadLine);
     
     if (pJob_FetchRows->m_bPrint) {
       HV_Rec hvRec;
       
-      RowCoder::vAppend(hvRec,&oDatum,pCol);
+      hvRec->vAppend_Alt(pCol,pJob_FetchRows->m_pRow);
       vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
     }
     

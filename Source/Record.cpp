@@ -70,6 +70,7 @@ Record::~Record(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
 /*----------------------------------------------------------------------------*/
 /* decode and sprint row into record                                          */
 /*----------------------------------------------------------------------------*/
@@ -100,7 +101,6 @@ void Record::vAppend(HeadLine* aHeadLine, ColumnVec* pColVec)
   }
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* append ascii of datum to record                                            */
 /*----------------------------------------------------------------------------*/
@@ -123,6 +123,41 @@ void Record::vAppend_Alt(Column* pCol, Datum* pDatum)
     case DM_TME: vAppendTme_Alt(pCol,pDatum); break;
     case DM_TSP: vAppendTsp_Alt(pCol,pDatum); break;
     case DM_VCH: vAppendVch_Alt(pCol,pDatum); break;
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append ascii of datum to record                                            */
+/*----------------------------------------------------------------------------*/
+void Record::vAppend_Alt(Column* pCol, Row* pRow)
+{
+  Datum oDatum;
+  i8 i_Col = pCol->iColumnNo();
+  
+  oDatum.m_iInt = pRow->m_aiValue[i_Col];
+  
+  if (oDatum.bIsNull()) {
+    m_sRecStr.vAppend(&m_azAppendCursor,"null"_Stz);
+    return;
+  }
+  
+  eDM eDatum = pCol->eDatumType();
+ 
+  switch (eDatum) {
+    case DM_BCD: vAppendBcd_Alt(pCol,&oDatum); break;
+    case DM_BOL: vAppendBol_Alt(pCol,&oDatum); break;
+    case DM_DTE: vAppendDte_Alt(pCol,&oDatum); break;
+    case DM_FLT: vAppendFlt_Alt(pCol,&oDatum); break;
+    case DM_INT: vAppendInt_Alt(pCol,&oDatum); break;
+    case DM_IVL: vAppendIvl_Alt(pCol,&oDatum); break;
+    case DM_TME: vAppendTme_Alt(pCol,&oDatum); break;
+    case DM_TSP: vAppendTsp_Alt(pCol,&oDatum); break;
+    case DM_VCH:
+      MemLib::vCopy(oDatum.m_sVch.aChar(), (char*)oDatum.m_iInt, strlen((char*)oDatum.m_iInt), CN_NONE);
+      vAppendVch_Alt(pCol,&oDatum);
+      break;
     default:
       NEVER_REACH;
   }

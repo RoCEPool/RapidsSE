@@ -2613,7 +2613,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 #ifdef WITH_TRACE_DECODING
   static i8 nTotalRows = 0;
   vTrace("vDecode() of row %lld\n"_Stz,nTotalRows++);
-  RowCoder::vHeadDump(aHeadLine,pColVec);
+  RowCoder::vHeadDump(aHeadLine,pRow->m_pColVec);
 #endif
 
   char* aString = pRow->m_xWsp.aArea();
@@ -2636,7 +2636,30 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
     //! temp experiment
     if ( ! ( bGetAll || pRow->m_abGetCol[i_Col] ) ) {
       *aiValue++ = C_UNKNOWN;
-      aDataByte += nDataBytes(eMetaCode);
+      switch(eMetaCode) {
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        case MC_STR_FIT_1L:
+          nLength = *(u1*)aDataByte++;
+          aDataByte += nLength;
+          break;
+          
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        case MC_SHOCO_FIT_1C:
+          nCompressed = (i8)*(i1*)aDataByte++;
+          aDataByte += nCompressed;
+          break;
+          
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        case MC_SHOCO_SPLIT_2T1C:
+          nCompressed = (i8)*(i1*)aDataByte++;
+          nBytesPartA = aHeadLine->nBytes() - (aDataByte - (byte*)aHeadLine);
+          aDataByte += nBytesPartA;
+          break;
+          
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        default: aDataByte += nDataBytes(eMetaCode); break;
+      }
       continue;
     }
     
