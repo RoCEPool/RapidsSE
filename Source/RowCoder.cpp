@@ -1589,7 +1589,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   // |                    |FT|        |
   // +--------------------------------+
   //                          ^m_i_IntoOffset
-  m_i_IntoOffset += MC_2B;
+  m_i_IntoOffset += _2B_FT;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1597,7 +1597,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   RASSERT(MC_SHOCO_TAIL_2T == m_aFromHead->eMetaCode(pCol->iColumnNo()));
   
   // we recoded: sizeof([IT])
-  vUsageIncRecoded(pCol,MC_2B);
+  vUsageIncRecoded(pCol,_2B_FT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
@@ -1684,10 +1684,8 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   // |    <C><shoco.....> /////////// |
   // +--------------------------------+
   //      ^m_i_IntoOffset
-  byte* aIntoHead_Shoco = (byte*)m_aIntoHead + m_i_IntoOffset
-                            + _1B_C;
-  byte* aFromTail_Shoco = (byte*)aFromTail + C_OFFSET_COMPRESSED
-                            + _1B_C;
+  byte* aIntoHead_Shoco = (byte*)m_aIntoHead + m_i_IntoOffset + _1B_C;
+  byte* aFromTail_Shoco = (byte*)aFromTail + C_OFFSET_COMPRESSED + _1B_C;
   MemLib::vCopy(aIntoHead_Shoco,aFromTail_Shoco,nShocoBytes,CN_ROWCODER);
   
   // increment intoOffset by sizeof(<C>) + nShocoBytes
@@ -1695,14 +1693,14 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   // |    <C><shoco.....> /////////// |
   // +--------------------------------+
   //                     ^m_i_IntoOffset
-  m_i_IntoOffset += MC_1B + nShocoBytes;
+  m_i_IntoOffset += _1B_C + nShocoBytes;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // metadata for this column get changed to MC_SHOCO_FIT_1C
   vMetaCode(pCol,MC_SHOCO_FIT_1C);
   
   // we recoded: sizeof(<C>) + nShocoBytes
-  vUsageIncRecoded(pCol,MC_1B + nShocoBytes);
+  vUsageIncRecoded(pCol,_1B_C + nShocoBytes);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
@@ -1970,10 +1968,8 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   // +=====================================+
   // | <U><C><shoco.....> //////////////// |
   // +=====================================+
-  byte* aIntoTail_Shoco = (byte*)aIntoTail + _1B_U
-                                           + _1B_C;
-  byte* aFromTail_Shoco = (byte*)aFromTail + _1B_U
-                                           + _1B_C;
+  byte* aIntoTail_Shoco = (byte*)aIntoTail + _1B_U + _1B_C;
+  byte* aFromTail_Shoco = (byte*)aFromTail + _1B_U + _1B_C;
   MemLib::vCopy(aIntoTail_Shoco,aFromTail_Shoco,nFromShocoBytes,CN_ROWCODER);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1984,7 +1980,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   // +--------------------------------+
   //                      ^m_i_IntoOffset
   i8 i_IntoTail_Rel = RowNub::iUnitDiff(m_aIntoHead,aIntoTail);
-  m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,MC_2B);
+  m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,C_2B);
   
   // increment intoOffset by sizeof([IT])
   // +--------------------------------+
@@ -1999,7 +1995,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   RASSERT(MC_SHOCO_TAIL_2T == m_aFromHead->eMetaCode(pCol->iColumnNo()));
   
   // we recoded: sizeof([IT]) + nIntoTailBytes
-  vUsageIncRecoded(pCol,MC_2B + nIntoTailBytes);
+  vUsageIncRecoded(pCol,C_2B + nIntoTailBytes);
   
   m_nTails++;
   m_nTailUnits += nFromTailUnits;
@@ -2017,9 +2013,9 @@ void RowCoder::vRecodeVchSmall(Column* pCol)
   
   i8 nLength = m_aIntoHead->w8_1B(m_i_IntoOffset);
   
-  m_i_IntoOffset += 1 + nLength;
+  m_i_IntoOffset += _1B_L + nLength;
 
-  vUsageIncRecoded(pCol,1 + nLength);
+  vUsageIncRecoded(pCol,_1B_L + nLength);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }

@@ -10,6 +10,7 @@ namespace Data
   static const i8 _2B_FT = 2;
   static const i8 _2B_IT = 2;
   static const i8 _1B_C  = 1;
+  static const i8 _1B_L  = 1;
   static const i8 _1B_U  = 1;
   static const i8 _1B_W  = 1;
 
