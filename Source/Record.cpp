@@ -87,7 +87,7 @@ void Record::vAppend(ColumnVec* pColVec, Row* pRow)
     
     // comma separate column values
     if (i_Col)
-      szRecStr()->vConcat(","_Stz);
+      m_sRecStr.vAppend(&m_azAppendCursor,","_Stz);
     
     // append column value
     vAppend_Alt(pCol,pRow);
@@ -150,7 +150,11 @@ void Record::vAppend_Alt(Column* pCol, Row* pRow)
     case DM_TME: vAppendTme_Alt(pCol,&oDatum); break;
     case DM_TSP: vAppendTsp_Alt(pCol,&oDatum); break;
     case DM_VCH:
-      MemLib::vCopy(oDatum.m_sVch.aChar(), (char*)oDatum.m_iInt, strlen((char*)oDatum.m_iInt), CN_NONE);
+      //! TOTAL HACK
+      if (oDatum.m_iInt)
+        oDatum.m_sVch.vCopy((Stz*)oDatum.m_iInt);
+      else
+        oDatum.m_sVch.vCopy(""_Stz);
       vAppendVch_Alt(pCol,&oDatum);
       break;
     default:
