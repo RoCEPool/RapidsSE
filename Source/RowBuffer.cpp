@@ -476,13 +476,23 @@ void RowBuffer::vShowRow(i8 i_Row)
   HV_Rec hvRec;
   
   ColumnVec* pColVec = pTable()->pColumnVec();
-
+  
   RowTray* pRowTray = this->pRowTray();
-
+  
+  // create a row
+  Row* pRow = new Row(pColVec);
+  
   HeadLine* aHeadLine = pRowTray->pNub()->aGetHead(i_Row);
 
-  hvRec->vAppend(aHeadLine,pColVec);
-
+  // decode the headline into a row
+  RowCoder::vDecode(pRow,aHeadLine);
+  
+  // append the row to the record
+  hvRec->vAppend(pColVec,pRow);
+  
+  // delete the row
+  delete pRow;
+  
   vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
 }
 

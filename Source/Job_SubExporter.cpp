@@ -281,12 +281,21 @@ void Job_SubExporter::vSprintRows(void)
   i8 nRowCount = m_pRowBuffer->nRowCount();
   ColumnVec* pColVec = m_pRowBuffer->pTable()->pColumnVec();
 
+  // create a row for retrieval the data
+  Row* pRow = new Row(pColVec);
+  
   RowTray* pRowTray = m_pRowBuffer->pRowTray();
   
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
 
     HeadLine* aHeadLine = pRowTray->pNub()->aGetHead(i_Row);
-    hvRec->vAppend(aHeadLine,pColVec);
+    
+    // decode the headline into a row
+    RowCoder::vDecode(pRow,aHeadLine);
+    
+    // append the row to the record
+    hvRec->vAppend(pColVec,pRow);
+    
     StrLib::vConcat(hvRec->szRecStr()->aChar(),'\n');            //! sub-optimal
     //vTrace("]]%s[[\n"_Stz,sRecord.aStz());
     
@@ -307,6 +316,9 @@ void Job_SubExporter::vSprintRows(void)
     StrLib::vCopyLen(aRecord,hvRec->szRecStr()->aChar(),nBytes - 1);
   }
 
+  // delete the row
+  delete pRow;
+  
   if (aRecord)
     aRecord[nBytes-1] = '\0';
   

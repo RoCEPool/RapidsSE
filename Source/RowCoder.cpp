@@ -2635,7 +2635,9 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
     
     //! temp experiment
     if ( ! ( bGetAll || pRow->m_abGetCol[i_Col] ) ) {
+      
       *aiValue++ = C_UNKNOWN;
+      
       switch(eMetaCode) {
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3246,10 +3248,10 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
   // get the column no
   i8 i_Col = pCol->iColumnNo();
   
-  // first get the encoded value into datum
-  //vDecode(&oDatum,aHeadLine,pColVec,pCol,i_Col,i_LastOffset);
+  // get the datum
   eDM eDatum = pCol->eDatumType();
 
+  // first get the encoded value into datum
   eMC eEncoding  = eGetEncoding(aHeadLine,pCol,pColVec,i_Col,i_LastOffset);
   Stz* aEncoding = aMC[eEncoding];
   

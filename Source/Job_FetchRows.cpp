@@ -767,9 +767,12 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
     
     HeadLine* aHeadLine = *aaHeadLine;
 
+    // decode the row
+    RowCoder::vDecode(pJob_FetchRows->m_pRow,aHeadLine);
+    
     if (pJob_FetchRows->m_bPrint) {
       
-      hvRec->vAppend(aHeadLine,pColVec);
+      hvRec->vAppend(pColVec,pJob_FetchRows->m_pRow);
       
       if (pJob_FetchRows->m_bFirst) {
         if (iRowsPrinted < pJob_FetchRows->m_iRows) {
@@ -788,11 +791,6 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
       }
       else
         hvRec->vPrintRow();
-    }
-    else {
-      
-      // just decode the row
-      RowCoder::vDecode(pJob_FetchRows->m_pRow,aHeadLine);
     }
     
     aaHeadLine = pFetchBuffer->aaNextRowPtr(aaHeadLine);

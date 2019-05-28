@@ -65,24 +65,19 @@ Record::~Record(void) noexcept(false)
 {
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
 /*----------------------------------------------------------------------------*/
 /* decode and sprint row into record                                          */
 /*----------------------------------------------------------------------------*/
-void Record::vAppend(HeadLine* aHeadLine, ColumnVec* pColVec)
+void Record::vAppend(ColumnVec* pColVec, Row* pRow)
 {
   vReset();
   
   // get no of columns
   i8 nColumns = pColVec->nItems();
-  
-  i8 i_LastColumn = 0;
-  i8 i_LastOffset = RowCoder::iBaseOffset(pColVec);
   
   // for each column
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
@@ -95,7 +90,7 @@ void Record::vAppend(HeadLine* aHeadLine, ColumnVec* pColVec)
       szRecStr()->vConcat(","_Stz);
     
     // append column value
-    RowCoder::vAppend(this,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+    vAppend_Alt(pCol,pRow);
     
     //vTrace("%s\n"_Stz,pRec->szRecStr());
   }
