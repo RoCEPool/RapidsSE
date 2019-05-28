@@ -94,22 +94,27 @@ print "-----------------------------------------------------------------------";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 print "-----------------------------------------------------------------------";
+print "loading partsupp.csv..." ;
+
 print "loading customer.csv..." ;
-time ld customer "/TPCH/SF1/customer.csv" ;
+
+//time ld partsupp "/TPCH/SF1/temp.tbl" field_delimiter "|";
+
+time ld partsupp "/TPCH/SF1/partsupp.tbl" field_delimiter "|";
+
+time ld customer "/TPCH/SF1/customer.tbl" field_delimiter "|";
 print "loading lineitem.csv..." ;
 time ld lineitem "/TPCH/SF1/lineitem.csv" ;
 print "loading nation.csv..." ;
-time ld nation "/TPCH/SF1/nation.csv" ;
+time ld nation "/TPCH/SF1/nation.tbl" field_delimiter "|";
 print "loading orders.csv..." ;
-time ld orders "/TPCH/SF1/orders.csv" ;
+time ld orders "/TPCH/SF1/orders.tbl" field_delimiter "|";
 print "loading part.csv..." ;
-time ld part "/TPCH/SF1/part.csv" ;
-print "loading partsupp.csv..." ;
-time ld partsupp "/TPCH/SF1/partsupp.csv" ;
+time ld part "/TPCH/SF1/part.tbl" field_delimiter "|";
 print "loading region.csv..." ;
-time ld region "/TPCH/SF1/region.csv" ;
+time ld region "/TPCH/SF1/region.tbl" field_delimiter "|";
 print "loading supplier.csv..." ;
-time ld supplier "/TPCH/SF1/supplier.csv" ;
+time ld supplier "/TPCH/SF1/supplier.tbl" field_delimiter "|";
 print "-----------------------------------------------------------------------";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -202,6 +207,55 @@ time drop table region ;
 print "dropping supplier.csv..." ;
 time drop table supplier ;
 print "-----------------------------------------------------------------------";
+
+
+/*
+ Experiment 1
+ i8 nBytes = sizeof(CacheLine) + (2 * C_BYTES_PER_WORD);
+ C: 32MB->28MB
+ L: 724MB->446MB
+ N: 2MB->1MB
+ O: 128MB->115MB
+ P: 32MB->21MB
+ PS: 96MB->92MB
+ R: 389B->1MB
+ S: 1.3MB->2MB
+ 
+ 
+ Experiment 2
+ i8 nBytes = pColVec->nItems() * 4;
+ C: 32MB->27MB
+ L: 724MB->438MB
+ N: 2MB->1MB----------------> 10 rows failed to load
+ O: 128MB->110MB
+ P: 32MB->15MB--------------> 17491 rows failed to load
+ PS: 96MB->90MB
+ R: 389B->1MB---------------> 3 rows failed to load
+ S: 1.3MB->2MB
+ 
+ Experiment 3
+ i8 nBytes = pColVec->nItems() * 5;
+ C: 32MB->27MB
+ L: 724MB->464MB
+ N: 2MB->1MB
+ O: 128MB->110MB
+ P: 32MB->16MB
+ PS: 96MB->90MB
+ R: 389B->1MB---------------> 3 rows failed to load
+ S: 1.3MB->2MB
+ 
+ Experiment 4
+ i8 nBytes = pColVec->nItems() * 6;
+ C: 32MB->27MB
+ L: 724MB->553MB
+ N: 2MB->1MB
+ O: 128MB->110MB
+ P: 32MB->17MB
+ PS: 96MB->90MB
+ R: 389B->1MB
+ S: 1.3MB->2MB
+ */
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
