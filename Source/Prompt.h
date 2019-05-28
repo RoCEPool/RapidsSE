@@ -41,8 +41,6 @@ using namespace Prompt;
 #include "Prompt_config.hpp"
 #include "Prompt_constants.hpp"
 
-#include "Prompt_date.hpp"
-
 #include "Prompt_enums.hpp"
 #include "Prompt_errno.hpp"
 #include "Prompt_executing.hpp"
@@ -83,6 +81,7 @@ using namespace Prompt;
 #include "Prompt_mkpipe.hpp"
 #include "Prompt_mon.hpp"
 
+#include "Prompt_now.hpp"
 #include "Prompt_numbers.hpp"
 
 #include "Prompt_olist.hpp"
