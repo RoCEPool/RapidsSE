@@ -39,14 +39,14 @@ Stz* spDTE::sz(i8 iDte)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  Word wDteWord = iDte;
+  Word wDte = iDte;
   
   StrLib::vSprint(m_caResult,
                   (Stz*)m_caFormat,
                   
-                  (i8)wDteWord.xEdt.m_uYearInEra + C_BASE_YEAR,
-                  (i8)wDteWord.xEdt.m_uMonth,
-                  (i8)wDteWord.xEdt.m_uDay);
+                  (i8)wDte.xEdt.m_uYearInEra + C_BASE_YEAR,
+                  (i8)wDte.xEdt.m_uMonth,
+                  (i8)wDte.xEdt.m_uDay);
 
   return (Stz*) &m_caResult[0];
 }
