@@ -527,50 +527,68 @@ void Record::vAppendTsp(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  Tsp wTsp;
-  wTsp.vAsI8(pDatum->m_iTsp);
+  spTSP spTsp;
   
-  s256 sTsp;
-  wTsp.vSprint(sTsp.aStz());
-  
-  m_sRecStr.vConcat(sTsp.aStz());
+  m_sRecStr.vConcat(spTsp.sz(pDatum->m_iTsp));
 }
+/*----------------------------------------------------------------------------*/
+//void Record::vAppendTsp(Column* pCol, Datum* pDatum)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+//
+//  Tsp wTsp;
+//  wTsp.vAsI8(pDatum->m_iTsp);
+//
+//  s256 sTsp;
+//  wTsp.vSprint(sTsp.aStz());
+//
+//  m_sRecStr.vConcat(sTsp.aStz());
+//}
 /*----------------------------------------------------------------------------*/
 void Record::vAppendTsp_Alt(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  s32 sAscii;
-
-  if (pDatum->xTsp.m_uMicro) {
-    char caFraction[16];
-    StrLib::vFormatFraction(caFraction,pDatum->xTsp.m_uMicro,6);
-    
-    StrLib::vSprint(sAscii.aChar(),
-                    "TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s'"_Stz,
-                    (i8)pDatum->xTsp.m_uYearDelta + C_BASE_YEAR,
-                    (i8)pDatum->xTsp.m_uMonth,
-                    (i8)pDatum->xTsp.m_uDay,
-                    (i8)pDatum->xTsp.m_uHour,
-                    (i8)pDatum->xTsp.m_uMinute,
-                    (i8)pDatum->xTsp.m_uSecond,
-                    caFraction);
-  }
-  else {
+  spTSP spTsp;
   
-    StrLib::vSprint(sAscii.aChar(),
-                    "TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld"_Stz,
-                    (i8)pDatum->xTsp.m_uYearDelta + C_BASE_YEAR,
-                    (i8)pDatum->xTsp.m_uMonth,
-                    (i8)pDatum->xTsp.m_uDay,
-                    (i8)pDatum->xTsp.m_uHour,
-                    (i8)pDatum->xTsp.m_uMinute,
-                    (i8)pDatum->xTsp.m_uSecond);
-  }
-  
-  //m_sRecStr.vConcat((Stz*)sAscii.aChar());
-  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.aChar());
+  m_sRecStr.vAppend(&m_azAppendCursor,spTsp.sz(pDatum->m_iTsp));
 }
+/*----------------------------------------------------------------------------*/
+//void Record::vAppendTsp_Alt(Column* pCol, Datum* pDatum)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+//
+//  s32 sAscii;
+//
+//  if (pDatum->xTsp.m_uMicro) {
+//    char caFraction[16];
+//    StrLib::vFormatFraction(caFraction,pDatum->xTsp.m_uMicro,6);
+//
+//    StrLib::vSprint(sAscii.aChar(),
+//                    "TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s'"_Stz,
+//                    (i8)pDatum->xTsp.m_uYearDelta + C_BASE_YEAR,
+//                    (i8)pDatum->xTsp.m_uMonth,
+//                    (i8)pDatum->xTsp.m_uDay,
+//                    (i8)pDatum->xTsp.m_uHour,
+//                    (i8)pDatum->xTsp.m_uMinute,
+//                    (i8)pDatum->xTsp.m_uSecond,
+//                    caFraction);
+//  }
+//  else {
+//
+//    StrLib::vSprint(sAscii.aChar(),
+//                    "TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld"_Stz,
+//                    (i8)pDatum->xTsp.m_uYearDelta + C_BASE_YEAR,
+//                    (i8)pDatum->xTsp.m_uMonth,
+//                    (i8)pDatum->xTsp.m_uDay,
+//                    (i8)pDatum->xTsp.m_uHour,
+//                    (i8)pDatum->xTsp.m_uMinute,
+//                    (i8)pDatum->xTsp.m_uSecond);
+//  }
+//
+//  //m_sRecStr.vConcat((Stz*)sAscii.aChar());
+//  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.aChar());
+//}
 
 /*----------------------------------------------------------------------------*/
 /* append ascii of varchar datum to record                                    */
