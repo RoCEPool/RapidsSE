@@ -1004,17 +1004,17 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
                        pSrcDatum->m_nChars);      // source bytes
   
   // allot a tail line as per the diagram (U is put in by iAllotTail)
-  i8 nTailBytes  = C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES + nCompressed;
+  i8 nTailBytes  = _1B_U + _1B_C + nCompressed;
   i8 i_ShocoTail = m_pIntoNub->iAllotTail(nTailBytes);
   TailLine* aShocoTail = m_pIntoNub->aGetTail(i_ShocoTail);
-  ASSERT(m_pIntoNub->nBytes(aShocoTail->w8_1B(C_TAIL_UNITS_OFFSET)) >= nTailBytes);
+  ASSERT(m_pIntoNub->nBytes(aShocoTail->w8_1B(C_OFFSET_UNITS)) >= nTailBytes);
   
   // set length of compressed string into tail (this is C in the diagram)
-  aShocoTail->v1B(C_SHOCO_COMPRESSED_OFFSET,nCompressed);
+  aShocoTail->v1B(C_OFFSET_COMPRESSED,nCompressed);
   
   // copy shoco into tail (this is <compressed bytes> in the diagram)
   char *aShocoWithinTail = (char*)aShocoTail
-                            + C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES;
+                            + _1B_U + _1B_C;
   MemLib::vCopy(aShocoWithinTail,sShoco.aChar(),nCompressed,CN_ROWCODER);
   
   // put index of shoco tail as the 2 data bytes (this is [IT] in the diagram)
@@ -1653,12 +1653,12 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   //      ^m_i_IntoOffset
   i8 i_FromTail = m_aIntoHead->w8_2B(m_i_IntoOffset);
   TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail);
-  i8 nShocoBytes = aFromTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+  i8 nShocoBytes = aFromTail->w8_1B(C_OFFSET_COMPRESSED);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // do the bytes ( <C><shoco.....> ) fit into the Into-Head ?
-  i8 nNeedHeadBytes  = C_SHOCO_COMPRESSED_BYTES + nShocoBytes;
+  i8 nNeedHeadBytes  = _1B_C + nShocoBytes;
   i8 nAvailHeadBytes = m_nHeadBytes - m_i_IntoOffset;  //! not variable head
   
   if (nNeedHeadBytes > nAvailHeadBytes) {
@@ -1685,9 +1685,9 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   // +--------------------------------+
   //      ^m_i_IntoOffset
   byte* aIntoHead_Shoco = (byte*)m_aIntoHead + m_i_IntoOffset
-                            + C_SHOCO_COMPRESSED_BYTES;
-  byte* aFromTail_Shoco = (byte*)aFromTail + C_SHOCO_COMPRESSED_OFFSET
-                            + C_SHOCO_COMPRESSED_BYTES;
+                            + _1B_C;
+  byte* aFromTail_Shoco = (byte*)aFromTail + C_OFFSET_COMPRESSED
+                            + _1B_C;
   MemLib::vCopy(aIntoHead_Shoco,aFromTail_Shoco,nShocoBytes,CN_ROWCODER);
   
   // increment intoOffset by sizeof(<C>) + nShocoBytes
@@ -1756,8 +1756,8 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // get From-Tail details using |FT| from Into-Head
   i8 i_FromTail = m_aIntoHead->w8_2B(m_i_IntoOffset);
   TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail);
-  i8 nTailUnits = aFromTail->w8_1B(C_TAIL_UNITS_OFFSET);
-  i8 nShocoBytes = aFromTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+  i8 nTailUnits = aFromTail->w8_1B(C_OFFSET_UNITS);
+  i8 nShocoBytes = aFromTail->w8_1B(C_OFFSET_COMPRESSED);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1943,8 +1943,8 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   //                      ^m_i_IntoOffset
   i8 i_FromTail = m_aIntoHead->w8_2B(m_i_IntoOffset);
   TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail);
-  i8 nFromTailUnits = aFromTail->w8_1B(C_TAIL_UNITS_OFFSET);
-  i8 nFromShocoBytes = aFromTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+  i8 nFromTailUnits = aFromTail->w8_1B(C_OFFSET_UNITS);
+  i8 nFromShocoBytes = aFromTail->w8_1B(C_OFFSET_COMPRESSED);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1952,7 +1952,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   // +=====================================+
   // | <U> /////////////////////////////// |
   // +=====================================+
-  i8 nIntoTailBytes = C_TAIL_UNITS_BYTES + C_SHOCO_COMPRESSED_BYTES + nFromShocoBytes;
+  i8 nIntoTailBytes = _1B_U + _1B_C + nFromShocoBytes;
   i8 i_IntoTail = m_pIntoNub->iAllotTail(nIntoTailBytes);
   TailLine* aIntoTail = m_pIntoNub->aGetTail(i_IntoTail);
   
@@ -1964,16 +1964,16 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   // +=====================================+
   // | <U><C> //////////////////////////// |
   // +=====================================+
-  aIntoTail->v1B(C_SHOCO_COMPRESSED_OFFSET,nFromShocoBytes);
+  aIntoTail->v1B(C_OFFSET_COMPRESSED,nFromShocoBytes);
   
   // copy the shoco compressed bytes <shoco.....> into the Into-Tail
   // +=====================================+
   // | <U><C><shoco.....> //////////////// |
   // +=====================================+
-  byte* aIntoTail_Shoco = (byte*)aIntoTail + C_TAIL_UNITS_BYTES
-                                           + C_SHOCO_COMPRESSED_BYTES;
-  byte* aFromTail_Shoco = (byte*)aFromTail + C_TAIL_UNITS_BYTES
-                                           + C_SHOCO_COMPRESSED_BYTES;
+  byte* aIntoTail_Shoco = (byte*)aIntoTail + _1B_U
+                                           + _1B_C;
+  byte* aFromTail_Shoco = (byte*)aFromTail + _1B_U
+                                           + _1B_C;
   MemLib::vCopy(aIntoTail_Shoco,aFromTail_Shoco,nFromShocoBytes,CN_ROWCODER);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3027,13 +3027,13 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         wWord.m_yaByte[1] = *aDataByte++;
         i_Tail_rel = wWord.m_iI8;
         aShocoTail  = RowNub::aGetTail(aHeadLine,i_Tail_rel);
-        nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+        nCompressed = aShocoTail->w8_1B(C_OFFSET_COMPRESSED);
         nDecompressed =
           Compress::iFromShoco(aString,                  // decompressed dest
                                sizeof(caShoco),          // max destination
                                ((byte*)aShocoTail)       // compressed source
-                                 + C_SHOCO_COMPRESSED_OFFSET
-                                 + C_SHOCO_COMPRESSED_BYTES,
+                                 + C_OFFSET_COMPRESSED
+                                 + _1B_C,
                                nCompressed);             // bytes compressed
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),aString);
@@ -3821,15 +3821,15 @@ void RowCoder::vDecodeVchShocoTail(Datum* pDatum, HeadLine* aHeadLine,
           <shoco.....> being the shoco compressed bytes
    */
   
-  i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+  i8 nCompressed = aShocoTail->w8_1B(C_OFFSET_COMPRESSED);
   //RASSERT(nCompressed <= 4);
   
   i8 nDecompressed =
   Compress::iFromShoco(pDatum->m_sVch.aChar(),   // decompressed destination
                        255,                      // max destination
                        ((byte*)aShocoTail)       // from compressed source
-                       + C_SHOCO_COMPRESSED_OFFSET
-                       + C_SHOCO_COMPRESSED_BYTES,
+                       + C_OFFSET_COMPRESSED
+                       + _1B_C,
                        nCompressed);             // bytes compressed
   ASSERT(nDecompressed);
   pDatum->m_nChars = nDecompressed;
@@ -3923,7 +3923,7 @@ i8 RowCoder::iFindTail(RowNub* pNub, TailLine* aFindLine)
        i_Tail = pNub->iPrevTail(i_Tail)) {
         
     TailLine* aTailLine = pNub->aGetTail(i_Tail);
-    i8 nTailUnits = aTailLine->w8_1B(C_TAIL_UNITS_OFFSET);
+    i8 nTailUnits = aTailLine->w8_1B(C_OFFSET_UNITS);
     //RASSERT(nTailUnits <= 4);
     
     //MemLib::vWordDump(aFindLine,m_nHeadBytes);
@@ -4017,7 +4017,7 @@ i8 RowCoder::nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine)
   i8 i_Tail_rel = aHeadLine->w8_2B(i_Offset);
   TailLine* aShocoTail = RowNub::aGetTail(aHeadLine,i_Tail_rel);
 
-  i8 nCompressed = aShocoTail->w8_1B(C_SHOCO_COMPRESSED_OFFSET);
+  i8 nCompressed = aShocoTail->w8_1B(C_OFFSET_COMPRESSED);
   //RASSERT(nCompressed <= 56);
   i8 nTailSize = nCompressed + 1;
   

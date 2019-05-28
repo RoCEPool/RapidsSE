@@ -7,17 +7,15 @@ namespace Data
 {
   static const i8 C_METABITS = 8;
   
-  static const i8 C_TAIL_UNITS_OFFSET = 0;
-  static const i8 C_TAIL_UNITS_BYTES  = 1;
-  
-  static const i8 C_SHOCO_COMPRESSED_OFFSET = C_TAIL_UNITS_OFFSET
-                                              + C_TAIL_UNITS_BYTES;
-  static const i8 C_SHOCO_COMPRESSED_BYTES  = 1;
-
   static const i8 _2B_FT = 2;
   static const i8 _2B_IT = 2;
   static const i8 _1B_C  = 1;
   static const i8 _1B_U  = 1;
+  static const i8 _1B_W  = 1;
+
+  static const i8 C_OFFSET_UNITS = 0;
+  static const i8 C_OFFSET_COMPRESSED = C_OFFSET_UNITS + _1B_U;
+
 
   /*----------------------------------------------------------------------------*/
   
