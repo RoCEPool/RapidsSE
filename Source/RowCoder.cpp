@@ -2610,11 +2610,11 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
   
   TailLine* aShocoTail;
   
-//#ifdef WITH_TRACE_DECODING
+#ifdef WITH_TRACE_DECODING
   static i8 nTotalRows = 0;
   vTrace("vDecode() of row %lld\n"_Stz,nTotalRows++);
   RowCoder::vHeadDump(aHeadLine,pRow->m_pColVec);
-//#endif
+#endif
 
   char* aString = pRow->m_xWsp.aArea();
   
@@ -3037,6 +3037,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),aString);
 #endif
+        *(char**)(aiValue++) = aString;
         aString += nDecompressed;
         *aString++ = '\0';
         pRow->m_i_Wsp += nDecompressed;
@@ -3063,6 +3064,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),aString);
 #endif
+        *(char**)(aiValue++) = aString;
         aString += nDecompressed;
         *aString++ = '\0';
         pRow->m_i_Wsp += nDecompressed;
@@ -3094,6 +3096,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),aString);
 #endif
+        *(char**)(aiValue++) = aString;
         aString += nDecompressed;
         *aString++ = '\0';
         pRow->m_i_Wsp += nDecompressed;
