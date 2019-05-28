@@ -34,6 +34,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Forth::vCheckAssumptions();
   MetaData::vCheckAssumptions();
   Data::vCheckAssumptions();
+  Mock::vCheckAssumptions();
   Plans::vCheckAssumptions();
   Jobs::vCheckAssumptions();
   Utilities::vCheckAssumptions();
