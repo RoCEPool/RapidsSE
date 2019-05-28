@@ -20,6 +20,7 @@ using namespace Sprinting;
 #include "Sprint.hpp"
 
 #include "spBCD.hpp"
+#include "spBOL.hpp"
 #include "spDTE.hpp"
 #include "spINT.hpp"
 #include "spVCH.hpp"
