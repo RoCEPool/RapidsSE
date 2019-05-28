@@ -258,6 +258,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_SPINT
   /*    */ &Finalize::vUndefined,         // CN_SPIVL
   /*    */ &Finalize::vUndefined,         // CN_SPTME
+  /*    */ &Finalize::vUndefined,         // CN_SPTSP
   /*    */ &Finalize::vUndefined,         // CN_SPVCH
   /*126 */ &Finalize::vUndefined,         // CN_STACK
   /*    */ &Finalize::vUndefined,         // CN_STATISTICS

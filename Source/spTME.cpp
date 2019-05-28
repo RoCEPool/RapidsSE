@@ -52,6 +52,7 @@ Stz* spTME::sz(i8 iTme)
                     (i8)wTme.xTme.m_uHour,
                     (i8)wTme.xTme.m_uMinute,
                     (i8)wTme.xTme.m_uSecond,
+                    
                     caFraction);
   }
   else {
@@ -65,7 +66,6 @@ Stz* spTME::sz(i8 iTme)
 
   return (Stz*) &m_caResult[0];
 }
-
 
 
 /*----------------------------------------------------------------------------*/

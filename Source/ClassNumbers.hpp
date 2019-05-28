@@ -259,6 +259,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_SPINT,
   /*                           */ CN_SPIVL,
   /*                           */ CN_SPTME,
+  /*                           */ CN_SPTSP,
   /*                           */ CN_SPVCH,
   /* 189 0xBD  1043520B Heap:L */ CN_STACK,
   /* 190 0xBE    12824B Heap:I */ CN_STATISTICS,
@@ -547,6 +548,7 @@ static Stz* aCN[]
   /* 188 0xBC */ "SPINT"_Stz,               // CN_SPINT
   /* 188 0xBC */ "SPIVL"_Stz,               // CN_SPIVL
   /* 188 0xBC */ "SPTME"_Stz,               // CN_SPTME
+  /* 188 0xBC */ "SPTSP"_Stz,               // CN_SPTSP
   /* 188 0xBC */ "SPVCH"_Stz,               // CN_SPVCH
   /* 189 0xBD */ "STACK"_Stz,               // CN_STACK
   /* 190 0xBE */ "STATISTICS"_Stz,          // CN_STATISTICS
