@@ -1771,16 +1771,24 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // can we split?
   
-  // can't split unless we have space for [IT]<C><a>
+  // can't split unless we have space for at least [IT]<C><a>
   // where <a> is at least one byte of <partA>
-  if (nAvailHeadBytes < 4) {
+//  if (nAvailHeadBytes < 4) {
+//    _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+//    return false;
+//  }
+  
+  // do we have a tail which is a whole multiple of SpaceUnit?
+  if (0 == nFromOverHang) {
+    //! temp
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
     return false;
   }
   
-  if ( ! (nFromOverHang > 0  && nFromOverHang <= nAvailHeadBytes) ||
-      (nFromOverHang == 0 && nAvailHeadBytes > 3) ) {
-    
+  // to move the overhang we need space in headLine at least for:
+  //   1B for <C>
+  //   nB for <overhang> - <C>
+  if (1 + nFromOverHang - 1 > nAvailHeadBytes) {
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
     return false;
   }
