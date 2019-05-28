@@ -42,6 +42,15 @@ namespace Base
   const u8 C_NIBBLES_PER_BYTE      = 2;
 
   const u8 C_WORDS_PER_CACHE_LINE  = 8;
+  
+  const i8 C_1B = 1;
+  const i8 C_2B = 2;
+  const i8 C_3B = 3;
+  const i8 C_4B = 4;
+  const i8 C_5B = 5;
+  const i8 C_6B = 6;
+  const i8 C_7B = 7;
+  const i8 C_8B = 8;
 }
 
 /*============================================================================*/
