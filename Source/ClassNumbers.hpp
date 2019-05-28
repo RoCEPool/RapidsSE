@@ -255,6 +255,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_SPBCD,
   /*                           */ CN_SPBOL,
   /*                           */ CN_SPDTE,
+  /*                           */ CN_SPFLT,
   /*                           */ CN_SPINT,
   /*                           */ CN_SPRINT,
   /*                           */ CN_SPVCH,
@@ -541,6 +542,7 @@ static Stz* aCN[]
   /* 188 0xBC */ "SPBCD"_Stz,               // CN_SPBCD
   /* 188 0xBC */ "SPBOL"_Stz,               // CN_SPBOL
   /* 188 0xBC */ "SPDTE"_Stz,               // CN_SPDTE
+  /* 188 0xBC */ "SPFLT"_Stz,               // CN_SPFLT
   /* 188 0xBC */ "SPINT"_Stz,               // CN_SPINT
   /* 188 0xBC */ "SPRINT"_Stz,              // CN_SPRINT
   /* 188 0xBC */ "SPVCH"_Stz,               // CN_SPVCH

@@ -22,6 +22,7 @@ using namespace Sprinting;
 #include "spBCD.hpp"
 #include "spBOL.hpp"
 #include "spDTE.hpp"
+#include "spFLT.hpp"
 #include "spINT.hpp"
 #include "spVCH.hpp"
 

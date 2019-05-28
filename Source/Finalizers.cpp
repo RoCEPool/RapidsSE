@@ -254,6 +254,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_SPBCD
   /*    */ &Finalize::vUndefined,         // CN_SPBOL
   /*    */ &Finalize::vUndefined,         // CN_SPDTE
+  /*    */ &Finalize::vUndefined,         // CN_SPFLT
   /*    */ &Finalize::vUndefined,         // CN_SPINT
   /*    */ &Finalize::vUndefined,         // CN_SPRINT
   /*    */ &Finalize::vUndefined,         // CN_SPVCH
