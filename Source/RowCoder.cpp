@@ -2677,9 +2677,6 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_1B:
-//        wWord.m_iI8 = 0;
-//        wWord.m_yaByte[0] = *aDataByte++;
-//        *aiValue++ = wWord.m_iI8;
         *aiValue++ = *(u1*)(aDataByte);
         aDataByte += 1;
 #ifdef WITH_TRACE_DECODING
@@ -2689,10 +2686,6 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_2B:
-//        wWord.m_iI8 = 0;
-//        wWord.m_yaByte[0] = *aDataByte++;
-//        wWord.m_yaByte[1] = *aDataByte++;
-//        *aiValue++ = wWord.m_iI8;
         *aiValue++ = *(u2*)(aDataByte);
         aDataByte += 2;
 #ifdef WITH_TRACE_DECODING
@@ -2714,12 +2707,6 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
  
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_4B:
-//        wWord.m_iI8 = 0;
-//        wWord.m_yaByte[0] = *aDataByte++;
-//        wWord.m_yaByte[1] = *aDataByte++;
-//        wWord.m_yaByte[2] = *aDataByte++;
-//        wWord.m_yaByte[3] = *aDataByte++;
-//        *aiValue++ = wWord.m_iI8;
         *aiValue++ = *(u4*)(aDataByte);
         aDataByte += 4;
 #ifdef WITH_TRACE_DECODING
@@ -2774,16 +2761,6 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_8B:
-//        wWord.m_iI8 = 0;
-//        wWord.m_yaByte[0] = *aDataByte++;
-//        wWord.m_yaByte[1] = *aDataByte++;
-//        wWord.m_yaByte[2] = *aDataByte++;
-//        wWord.m_yaByte[3] = *aDataByte++;
-//        wWord.m_yaByte[4] = *aDataByte++;
-//        wWord.m_yaByte[5] = *aDataByte++;
-//        wWord.m_yaByte[6] = *aDataByte++;
-//        wWord.m_yaByte[7] = *aDataByte++;
-//        *aiValue++ = wWord.m_iI8;
         *aiValue++ = *(u8*)(aDataByte);
         aDataByte += 8;
 #ifdef WITH_TRACE_DECODING

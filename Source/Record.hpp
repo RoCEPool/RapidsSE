@@ -25,6 +25,7 @@ namespace Data
     ~Record(void) noexcept(false);
   
     void vAppend(ColumnVec* pColVec, Row* pRow);
+    void vAppendTerminator(void);                           //! TEMP-TO GO
     
     void vAppend_Alt(Column* pCol, Datum* pDatum);
     void vAppend_Alt(Column* pCol, Row* pRow);
