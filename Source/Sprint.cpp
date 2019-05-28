@@ -18,7 +18,6 @@ Sprint::Sprint(eCN eClass)
   m_caResult[0] = '\0';
 #endif
 
-  _checkInitialised_(CN_SPRINT);
  }
 
 /*----------------------------------------------------------------------------*/
