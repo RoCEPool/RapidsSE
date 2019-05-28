@@ -464,43 +464,61 @@ void Record::vAppendTme(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  Tme wTme;
-  wTme.vAsI8(pDatum->m_iTme);
+  spTME spTme;
   
-  s32 sTme;
-  wTme.vSprint(sTme.aStz());
-  
-  m_sRecStr.vConcat(sTme.aStz());
+  m_sRecStr.vConcat(spTme.sz(pDatum->m_iTme));
 }
+/*----------------------------------------------------------------------------*/
+//void Record::vAppendTme(Column* pCol, Datum* pDatum)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+//
+//  Tme wTme;
+//  wTme.vAsI8(pDatum->m_iTme);
+//
+//  s32 sTme;
+//  wTme.vSprint(sTme.aStz());
+//
+//  m_sRecStr.vConcat(sTme.aStz());
+//}
 /*----------------------------------------------------------------------------*/
 void Record::vAppendTme_Alt(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  s32 sAscii;
-  
-  u8 uMicro = pDatum->xTme.m_uMicro;
-  
-  if (uMicro) {
-    char caFraction[16];
-    StrLib::vFormatFraction(caFraction,uMicro,6);
-    
-    StrLib::vSprint(sAscii.aChar(),"%02lld:%02lld:%02lld.%s"_Stz,
-                    (i8)pDatum->xTme.m_uHour,
-                    (i8)pDatum->xTme.m_uMinute,
-                    (i8)pDatum->xTme.m_uSecond,
-                    caFraction);
-  }
-  else {
-    StrLib::vSprint(sAscii.aChar(),"%02lld:%02lld:%02lld"_Stz,
-                    (i8)pDatum->xTme.m_uHour,
-                    (i8)pDatum->xTme.m_uMinute,
-                    (i8)pDatum->xTme.m_uSecond);
-  }
-  
-  //m_sRecStr.vConcat((Stz*)sAscii.aChar());
-  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.aChar());
+  spTME spTme;
+
+  m_sRecStr.vAppend(&m_azAppendCursor,spTme.sz(pDatum->m_iTme));
 }
+/*----------------------------------------------------------------------------*/
+//void Record::vAppendTme_Alt(Column* pCol, Datum* pDatum)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+//
+//  s32 sAscii;
+//
+//  u8 uMicro = pDatum->xTme.m_uMicro;
+//
+//  if (uMicro) {
+//    char caFraction[16];
+//    StrLib::vFormatFraction(caFraction,uMicro,6);
+//
+//    StrLib::vSprint(sAscii.aChar(),"%02lld:%02lld:%02lld.%s"_Stz,
+//                    (i8)pDatum->xTme.m_uHour,
+//                    (i8)pDatum->xTme.m_uMinute,
+//                    (i8)pDatum->xTme.m_uSecond,
+//                    caFraction);
+//  }
+//  else {
+//    StrLib::vSprint(sAscii.aChar(),"%02lld:%02lld:%02lld"_Stz,
+//                    (i8)pDatum->xTme.m_uHour,
+//                    (i8)pDatum->xTme.m_uMinute,
+//                    (i8)pDatum->xTme.m_uSecond);
+//  }
+//
+//  //m_sRecStr.vConcat((Stz*)sAscii.aChar());
+//  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.aChar());
+//}
 
 /*----------------------------------------------------------------------------*/
 /* append ascii of timestamp datum to record                                  */
