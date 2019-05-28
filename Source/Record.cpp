@@ -124,16 +124,6 @@ void Record::vAppend_Alt(Column* pCol, Datum* pDatum)
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode and sprint row into record                                          */
-/*----------------------------------------------------------------------------*/
-void Record::vAppendTerminator(void)
-{
-  s32 s = "\0"_Stz;
-  
-  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)s.aChar());
-}
-
-/*----------------------------------------------------------------------------*/
 /* append ascii of datum to record                                            */
 /*----------------------------------------------------------------------------*/
 void Record::vAppend_Alt(Column* pCol, Row* pRow)
