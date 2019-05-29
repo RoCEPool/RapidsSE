@@ -381,8 +381,6 @@ void String_t<SPACE>::vNullValue(void)
 template <int SPACE>
 void String_t<SPACE>::vReset(void)
 {
-  MemLib::vZero(m_caArea,SPACE,CN_STRING_T);                      //! TEMP-TOGO
-  
   m_caArea[0] = '\0';
 }
 
