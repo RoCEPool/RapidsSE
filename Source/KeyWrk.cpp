@@ -173,7 +173,7 @@ void KeyWrk::vAddElement(Row* pRow, Column* pCol)
     nBytes = StrLib::iWordFlip(aDst, aSrc);
   }
   else {
-    nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,aSrc);
+    nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,&aSrc);
   }
   
   vTake(nBytes);
@@ -253,7 +253,7 @@ void KeyWrk::vExtractKey(RowNub* pRowNub, i8 i_Row, IdxColVec* pIdxColVec)
     // add the column value to the key
     vAddElement(pRow, pColumn);
     
-    vShow(pIdxColVec);
+    //vShow(pIdxColVec);
   }
   
   delete pRow;
