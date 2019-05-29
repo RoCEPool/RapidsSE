@@ -60,7 +60,7 @@
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // date & time
+  // timestamp (down to microseconds) date & time
   struct _Tsp {
     u8 m_uSpare     : 10 ; //         10b
     
