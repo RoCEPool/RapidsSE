@@ -48,6 +48,7 @@ namespace Structures
     static i8    iUnitDiff(HEAD* aHead, TAIL* aTail);
 
     i8    iAllotHead(i8 nBytes);
+    i8    iAllotOver(i8 nBytes);
     i8    iAllotTail(i8 nBytes);
     i8    nAreaBytes(void);
     DESC* pDesc(void);
@@ -263,6 +264,34 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::iAllotHead(i8 nBytes)
   aHead->v1B(0,nWords);
   
   return i_Head;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot overflow item (with size as per given number of bytes)               */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,TAIL,DESC>::iAllotOver(i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  RASSERT(nBytes);
+  
+  if (nFreeBytes() < nBytes)
+    return C_UNKNOWN;
+  
+  i8 nUnits = MemLib::nQuantaRequired(nBytes,C_SPACEUNIT);
+  RASSERT(nUnits * (i8)C_SPACEUNIT >= nBytes);
+  
+  m_nTailBytes += nBytes;
+  m_nTailUnits += nUnits;
+  m_nTailItems++;
+  
+  i8 i_Tail = m_nSpaceUnits - m_nTailUnits;
+  
+  TAIL* aTail = aGetTail(i_Tail);
+  aTail->v1B(0,nUnits);
+  
+  return i_Tail;
 }
 
 /*----------------------------------------------------------------------------*/
