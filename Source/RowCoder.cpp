@@ -1201,21 +1201,28 @@ void RowCoder::vRecode_Large(void)
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // re-encode datum
     
-    switch (eDatum) {
-        
-      case Datums::DM_BCD: vRecodeBcd(pCol); continue;
-      case Datums::DM_BOL: vRecodeBol(pCol); continue;
-      case Datums::DM_DTE: vRecodeDte(pCol); continue;
-      case Datums::DM_FLT: vRecodeFlt(pCol); continue;
-      case Datums::DM_INT: vRecodeInt(pCol); continue;
-      case Datums::DM_IVL: vRecodeIvl(pCol); continue;
-      case Datums::DM_TME: vRecodeTme(pCol); continue;
-      case Datums::DM_TSP: vRecodeTsp(pCol); continue;
-      case Datums::DM_VCH: vRecodeVch(pCol); continue;
-        
-      default:
-        NEVER_REACH;
+    if (DM_VCH == eDatum) {
+      vRecodeVch(pCol);
     }
+    else {
+      vUsageIncRecoded(pCol,m_nFromDataBytes,m_eFromEncoding);
+      m_i_IntoOffset += m_nFromDataBytes;
+    }
+//    switch (eDatum) {
+//        
+//      case Datums::DM_BCD: vRecodeBcd(pCol); continue;
+//      case Datums::DM_BOL: vRecodeBol(pCol); continue;
+//      case Datums::DM_DTE: vRecodeDte(pCol); continue;
+//      case Datums::DM_FLT: vRecodeFlt(pCol); continue;
+//      case Datums::DM_INT: vRecodeInt(pCol); continue;
+//      case Datums::DM_IVL: vRecodeIvl(pCol); continue;
+//      case Datums::DM_TME: vRecodeTme(pCol); continue;
+//      case Datums::DM_TSP: vRecodeTsp(pCol); continue;
+//      case Datums::DM_VCH: vRecodeVch(pCol); continue;
+//        
+//      default:
+//        NEVER_REACH;
+//    }
     
   }
   
