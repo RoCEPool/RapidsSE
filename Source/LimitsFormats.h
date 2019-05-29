@@ -33,8 +33,8 @@ static const Stz* F_IVL       = "%lld"_Stz;
 static const Stz* F_IVL_frac  = "%lld.%.*lld"_Stz;
 static const Stz* F_TME       = "%02lld:%02lld:%02lld"_Stz;
 static const Stz* F_TME_frac  = "%02lld:%02lld:%02lld.%s"_Stz;
-static const Stz* F_TSP       = "%02lld-%02lld-%02lld %02lld:%02lld:%02lld"_Stz;
-static const Stz* F_TSP_frac  = "%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s"_Stz;
+static const Stz* F_TSP       = "TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld'"_Stz;
+static const Stz* F_TSP_frac  = "TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s'"_Stz;
 
 static const Stz* F_VCH_enclose = "'"_Stz;
 
