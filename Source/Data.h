@@ -234,16 +234,9 @@ namespace Data
   /* 51 */ 0  // MC_ENUMS,
   };
   
-
-  
-  //! we'll start with 3 era's and see what happens
-  static const i8 C_ERA_0  =  0; // 1900
-  static const i8 C_ERA_1   = 92; // 1992
-  static const i8 C_ERA_2   = 99; // 1999
-
-  static const i8 C_CLASSIC_DAYS =  0 * 365; // 1900
-  static const i8 C_SILVER_DAYS  = 92 * 365; // 1992
-  static const i8 C_MODERN_DAYS  = 99 * 365; // 1999
+  static const i8 C_ERA_0 =  0; // 1900
+  static const i8 C_ERA_1 = 92; // 1992
+  static const i8 C_ERA_2 = 99; // 1999
 
   class Record;
 }
@@ -259,19 +252,21 @@ using namespace Data;
 #include "OverLine.hpp"
 #include "TailLine.hpp"
 
+//------------------------------------------------------------------------------
+
 static const i8 C_MAX_ROWS = (C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(HeadLine);
 
-typedef HV<Record,CN_RECORD> HV_Rec;
+typedef       HV<Record,CN_RECORD>                            HV_Rec;
 
-//typedef ArrayNL_t<CN_EDMARRAY,eDM,256> EdmAry;
+typedef    Nub_t<CN_ROWTRAY,HeadLine,OverLine,TailLine,Table> RowNub;
 
-typedef Nub_t<CN_ROWTRAY,HeadLine,TailLine,Table> RowNub;
+typedef TrayNL_t<CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
+                (C_CACHELINES * sizeof(HeadLine))>            RowParts;
 
-typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,Table,
-                (C_CACHELINES * sizeof(HeadLine))> RowParts;
+typedef TrayNL_t<CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
+                 (C_MAX_ROWS * sizeof(HeadLine))>             RowTray;
 
-typedef TrayNL_t<CN_ROWTRAY,HeadLine,TailLine,Table,
-                 (C_MAX_ROWS * sizeof(HeadLine))> RowTray;
+//------------------------------------------------------------------------------
 
 #include "EntWrk.hpp"
 #include "Extractor.hpp"
