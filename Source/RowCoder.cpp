@@ -1123,7 +1123,7 @@ void RowCoder::vRecode_Large(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
   i8 nColumns = m_pColVec->nItems();
-    
+  
   i8 i_LastColumn = 0;
   
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
@@ -1257,32 +1257,8 @@ void RowCoder::vRecodeBcd(Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
 #ifdef WITH_ENCODING_BCD
+  
   RASSERT(DM_BCD == pCol->eDatumType());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for re-encoding into DM_TENTH
-  
-  if (1 == m_pIntoNub->nHeads()) {
-    
-    if (m_eFromEncoding != MC_1B) {
-      RASSERT(DM_BCD == pCol->eDatumType());
-      vUsageIncRecoded(pCol,m_eFromEncoding);
-      m_i_IntoOffset += m_nFromDataBytes;
-      return;
-    }
-    
-    // get the 1B int from intoHead
-    i8 iBcd1B = m_aIntoHead->w8_1B(m_i_IntoOffset);
-    
-    // is it in range?
-    if (iBcd1B < 0 || iBcd1B > 10) {
-      RASSERT(DM_BCD == pCol->eDatumType());
-      vUsageIncRecoded(pCol,m_eFromEncoding);
-      m_i_IntoOffset += m_nFromDataBytes;
-      return;
-    }
-  }
-  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // skip nulls
