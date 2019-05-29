@@ -1387,49 +1387,6 @@ void RowCoder::vRecodeInt(Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* attempt to re-encode Int as Digit                                          */
-/*----------------------------------------------------------------------------*/
-bool RowCoder::bRecodeIntDigit(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-  RASSERT(DM_INT == pCol->eDatumType());
-  RASSERT(MC_NULL != m_eFromEncoding);
-  RASSERT(m_eFromEncoding >= MC_1B && m_eFromEncoding <= MC_8B);
-  
-  //vHeadDump(m_aFromHead, m_pColVec);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // is it a 1B encoding ?
-  
-  if (m_eFromEncoding == MC_1B) {
-    
-    // get the 1B int from the data portion of the intoHead
-    i8 i1BInt = m_aIntoHead->w8_1B(m_i_IntoOffset);
-    
-    // revise the encoding
-    if (i1BInt >= 0 && i1BInt <= 10) {
-      
-      // revise the encoding
-      eMC eRevisedEncoding = (eMC)(MC_ZERO + i1BInt);
-      vMetaCode(pCol,eRevisedEncoding);
-      vUsageIncRecoded(pCol,C_0B);
-      
-      // cut the 1B char out of the into head
-      MemLib::vCut(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1,CN_ROWCODER);
-      
-      return true;
-    }
-  }
-  
-  // leave encoding as is
-  vUsageIncOops(pCol,m_eFromEncoding,m_eFromEncoding);
-  m_i_IntoOffset += m_eFromEncoding;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* attempt to re-encode Ivl                                                   */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecodeIvl(Column* pCol)
