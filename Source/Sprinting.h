@@ -25,7 +25,6 @@ using namespace Sprinting;
 #include "spFLT.hpp"
 #include "spINT.hpp"
 #include "spIVL.hpp"
-#include "spNOW.hpp"
 #include "spTME.hpp"
 #include "spTSP.hpp"
 #include "spVCH.hpp"

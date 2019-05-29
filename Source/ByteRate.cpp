@@ -167,7 +167,7 @@ void ByteRate::vReportStatistics(void)
   s32 sSecMag;
   s32 sDayMag;
 
-  spNOW oNow;
+  Now oNow;
   
   vUpdateTimer();
   

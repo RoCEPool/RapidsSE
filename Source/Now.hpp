@@ -1,24 +1,23 @@
 /*============================================================================*/
-/* Now.hpp - current date & time                                              */
+/* Now.hpp - Now sprint helper                                                */
 /*============================================================================*/
 #pragma once
 
-namespace Measurement
+namespace Sprinting
 {
-  class Now : public Object
+  class Now : public Sprint
   {
-  private:
-    Time m_oTime;
-    s32  m_sFormatted;
+  public:
+    Tsp m_oTsp;
 
     // must be last
     Footer m_xFooter;
     
   public:
-    Now();
-    ~Now() noexcept(false);
+    Now(void);
+    ~Now(void) noexcept(false);
   
-    Stz* sFormatted(void);  
+    Stz* sz(void);
   
     Footer* aFooter(void);
   };

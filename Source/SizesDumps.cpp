@@ -556,7 +556,7 @@ i8 giClassSize[]
   /*    */ sizeof(spFLT),              // CN_SPFLT
   /*    */ sizeof(spINT),              // CN_SPINT
   /*    */ sizeof(spIVL),              // CN_SPIVL
-  /*    */ sizeof(spNOW),              // CN_SPNOW
+  /*    */ 0,              // CN_SPNOW
   /*    */ sizeof(spTME),              // CN_SPTME
   /*    */ sizeof(spTSP),              // CN_SPTSP
   /*    */ sizeof(spVCH),              // CN_SPVCH

@@ -23,7 +23,7 @@ PromptNote mPromptNote_now (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_now(SePrompt* pPrompt)
 {
-  spNOW spNow;
+  Now spNow;
 
   vTrace("%s (local)\n"_Stz,spNow.sz());
   

@@ -123,7 +123,7 @@ void StepTiming::vWrite(void)
 {
   File oFile;
   
-  spNOW oNow;
+  Now oNow;
   
   s256 sFilePath;
   

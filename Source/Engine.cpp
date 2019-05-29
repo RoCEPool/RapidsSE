@@ -345,7 +345,7 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
 {
   s48K sPortrait;
   
-  spNOW oNow;
+  Now oNow;
   
   sRapidsPortrait.vSprint("\nSystem Monitor #%lld %s\n"_Stz,
                           gpAttachMap->m_oStatistics.m_nMonitorTake++,
