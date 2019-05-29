@@ -767,8 +767,8 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
     
     HeadLine* aHeadLine = *aaHeadLine;
 
-    // decode the row
-    RowCoder::vDecode(pJob_FetchRows->m_pRow,aHeadLine);
+    // inflate compact row into row
+    RowCoder::vInflate(pJob_FetchRows->m_pRow,aHeadLine);
     
     if (pJob_FetchRows->m_bPrint) {
       
@@ -830,7 +830,7 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
       pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
     }
     
-    RowCoder::vDecode(pJob_FetchRows->m_pRow,aHeadLine);
+    RowCoder::vInflate(pJob_FetchRows->m_pRow,aHeadLine);
     
     if (pJob_FetchRows->m_bPrint) {
       HV_Rec hvRec;

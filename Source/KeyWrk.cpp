@@ -243,8 +243,8 @@ void KeyWrk::vExtractKey(RowNub* pRowNub, i8 i_Row, IdxColVec* pIdxColVec)
     pRow->m_abGetCol[pColumn->iColumnNo()] = true;
   }
   
-  // get the index column values from the row
-  RowCoder::vDecode(pRow,pRowNub->aGetHead(i_Row));
+  // inflate the index column values into row
+  RowCoder::vInflate(pRow,pRowNub->aGetHead(i_Row));
 
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     

@@ -591,8 +591,8 @@ void TablePtn::vPublish(void)
     // get the headline
     HeadLine* aHeadLine = pRowTray->pNub()->aGetHead(i_Row);
     
-    // decode the headline into a row
-    RowCoder::vDecode(pRow,aHeadLine);
+    // inflate compacted headline into a row
+    RowCoder::vInflate(pRow,aHeadLine);
     
     // append the row to the record
     hvRec->vAppend(pColVec,pRow);

@@ -254,7 +254,7 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
       pRow->m_abGetCol[pAggColumn->iColumnNo()] = true;
     }
     
-    RowCoder::vDecode(pRow,aHeadLine);
+    RowCoder::vInflate(pRow,aHeadLine);
     
     // get the key value from the row
     xKey.m_iInt = pRow->m_aiValue[m_pKeyColumn->iColumnNo()];

@@ -484,8 +484,8 @@ void RowBuffer::vShowRow(i8 i_Row)
   
   HeadLine* aHeadLine = pRowTray->pNub()->aGetHead(i_Row);
 
-  // decode the headline into a row
-  RowCoder::vDecode(pRow,aHeadLine);
+  // inflate compact row into row
+  RowCoder::vInflate(pRow,aHeadLine);
   
   // append the row to the record
   hvRec->vAppend(pColVec,pRow);

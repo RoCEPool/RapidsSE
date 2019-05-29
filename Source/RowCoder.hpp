@@ -168,12 +168,12 @@ namespace Data
     
   public:
     static void vAnalyse(RowNub* pNub);
-    
-    static void vDecode(Row* pRow, HeadLine* aHeadLine);
-    
+  
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    
+  
+    static void vInflate(Row* pRow, HeadLine* aHeadLine);
+  
   private:
   
     static i8   nDataBytes(eMC eMetaCode);

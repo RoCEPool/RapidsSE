@@ -290,8 +290,8 @@ void Job_SubExporter::vSprintRows(void)
 
     HeadLine* aHeadLine = pRowTray->pNub()->aGetHead(i_Row);
     
-    // decode the headline into a row
-    RowCoder::vDecode(pRow,aHeadLine);
+    // inflate compact row into a row
+    RowCoder::vInflate(pRow,aHeadLine);
     
     // append the row to the record
     hvRec->vAppend(pColVec,pRow);

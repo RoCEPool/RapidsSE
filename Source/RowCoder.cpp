@@ -2120,9 +2120,166 @@ void RowCoder::vAnalyse(RowNub* pNub)
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode headline into row                                                   */
+/* dump head line                                                             */
 /*----------------------------------------------------------------------------*/
- void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine)
+void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  MemLib::vWordDump(aHeadLine,aHeadLine->nBytes());
+  
+  i8 nFreeBytes = nFreeSpaceHead(aHeadLine,pColVec);
+  vTrace("FreeBytes %lld\n"_Stz,nFreeBytes);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+  
+  HV_Rec hvRec;
+  Datum oDatum;
+  
+  i8 i_LastOffset = iBaseOffset(pColVec);
+  
+  vTrace("Col ColNm         Datum MetaCode"
+         "           Offset Address      DataBytes          Value\n"_Stz);
+  
+  // for each column
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+    
+    // get the column at index
+    Column* pCol = pColVec->pGet(i_Col);
+    
+    // get the encoded information
+    eDM  eDatum    = pCol->eDatumType();
+    eMC  eMetaCode = aHeadLine->eMetaCode(i_Col);
+    Stz* aMetaCode = aMC[eMetaCode];
+    i8   nBytes    = nDataBytes(eMetaCode);
+    if (MC_STR_FIT_1L == eMetaCode) {
+      RASSERT(1 == nBytes);
+      nBytes += aHeadLine->w8_1B(i_LastOffset);
+    }
+    
+    //      colNo colNm Dtm  MC   aMC   Ofset Addr   Bytes
+    vTrace("%3lld %-15s %-3s %02x %-19s %2lld %012llx %1lld "_Stz,
+           i_Col,
+           pCol->szColNm(),
+           aDM[eDatum],
+           eMetaCode,
+           aMetaCode,
+           i_LastOffset,
+           (byte*)aHeadLine + i_LastOffset,
+           nBytes);
+    
+    if (nBytes)
+      for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
+        vTrace("%02x"_Stz,aHeadLine->w8_1B(i_LastOffset+i_Byte));
+    for (i8 i_Byte = nBytes; i_Byte < 8; i_Byte++)
+      vTrace("__"_Stz);
+    vTrace(" "_Stz);
+    
+    hvRec->vReset();
+    //vAppend(hvRec,aHeadLine,pColVec,pCol,i_Col,i_LastOffset);
+    
+    // first get the encoded value into datum
+    vDecode(&oDatum,aHeadLine,pColVec,pCol,i_Col,i_LastOffset);
+    hvRec->vAppend(pCol, &oDatum);
+    
+    vTrace("%s"_Stz,hvRec->szRecStr());
+    
+    if (MC_SHOCO_SPLIT_2T1C == eMetaCode) {
+      i8 i2T = aHeadLine->wGet(i_LastOffset,2);
+      i8 i1C = aHeadLine->wGet(i_LastOffset+2,1);
+      vTrace(" [ =%lld.%lld ]"_Stz,i2T,i1C);
+    }
+    else {
+      i8 iDataValue = aHeadLine->wGet(i_LastOffset,nBytes);
+      if (nBytes)
+        vTrace(" [ =%lld ]"_Stz,iDataValue);
+      else
+        vTrace(" [ =nil ]"_Stz);
+    }
+    
+    vTrace("\n"_Stz);
+    
+    i_LastOffset += nBytes;
+    
+    if (eMetaCode == MC_STR_SPLIT_2T1L)
+      vDebugPoint();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump head line                                                             */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  MemLib::vWordDump(aHeadLine,aHeadLine->nBytes());
+  
+  i8 nFreeBytes = nFreeSpaceHead(aHeadLine,pColVec);
+  vTrace("FreeBytes %lld\n"_Stz,nFreeBytes);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  HV_Rec hvRec;
+  Datum oDatum;
+  
+  i8 i_LastOffset = iBaseOffset(pColVec);
+  
+  vTrace("Col ColumnName      Datum  ExtDatum    Encoding"
+         "       Offset  Bytes              Value\n"_Stz);
+  
+  // get the column no
+  i8 i_Col = pCol->iColumnNo();
+  
+  // get the datum
+  eDM eDatum = pCol->eDatumType();
+  
+  // first get the encoded value into datum
+  eMC eEncoding  = eGetEncoding(aHeadLine,pCol,pColVec,i_Col,i_LastOffset);
+  Stz* aEncoding = aMC[eEncoding];
+  
+  i8 nBytes = nDataBytes(eEncoding);
+  
+  i8 iMetaCode = aHeadLine->eMetaCode(i_Col);
+  
+  vTrace("%3lld %-15s %-6s %x %-16s %2lld %2lld "_Stz,
+         i_Col,
+         pCol->sColumnName().aChar(),
+         aDM[eDatum],
+         iMetaCode,
+         aEncoding,
+         i_LastOffset,
+         nBytes);
+  
+  if (nBytes)
+    for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
+      vTrace("%02x"_Stz,aHeadLine->w8_1B(i_LastOffset+i_Byte));
+  for (i8 i_Byte = nBytes; i_Byte < 8; i_Byte++)
+    vTrace("__"_Stz);
+  vTrace(" "_Stz);
+  
+  hvRec->vReset();
+  //vAppend(hvRec,aHeadLine,pColVec,pCol,i_LastCol,i_LastOffset);
+  
+  // first get the encoded value into datum
+  vDecode(&oDatum,aHeadLine,pColVec,pCol,i_Col,i_LastOffset);
+  hvRec->vAppend(pCol, &oDatum);
+  
+  vTrace("%s"_Stz,hvRec->szRecStr());
+  
+  vTrace("\n"_Stz);
+  
+  i_LastOffset += nBytes;
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* inflate headline into row                                                  */
+/*----------------------------------------------------------------------------*/
+ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
 {
   eMC  eMetaCode;
   Word wWord;
@@ -2139,7 +2296,7 @@ void RowCoder::vAnalyse(RowNub* pNub)
   
 #ifdef WITH_TRACE_DECODING
   static i8 nTotalRows = 0;
-  vTrace("vDecode() of row %lld\n"_Stz,nTotalRows++);
+  vTrace("vInflate() of row %lld\n"_Stz,nTotalRows++);
   RowCoder::vHeadDump(aHeadLine,pRow->m_pColVec);
 #endif
 
@@ -2645,163 +2802,6 @@ void RowCoder::vAnalyse(RowNub* pNub)
     }
     
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump head line                                                             */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
-{
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  MemLib::vWordDump(aHeadLine,aHeadLine->nBytes());
-  
-  i8 nFreeBytes = nFreeSpaceHead(aHeadLine,pColVec);
-  vTrace("FreeBytes %lld\n"_Stz,nFreeBytes);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // get no of columns
-  i8 nColumns = pColVec->nItems();
-  
-  HV_Rec hvRec;
-  Datum oDatum;
-  
-  i8 i_LastOffset = iBaseOffset(pColVec);
-  
-  vTrace("Col ColNm         Datum MetaCode"
-         "           Offset Address      DataBytes          Value\n"_Stz);
-  
-  // for each column
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    
-    // get the column at index
-    Column* pCol = pColVec->pGet(i_Col);
-    
-    // get the encoded information
-    eDM  eDatum    = pCol->eDatumType();
-    eMC  eMetaCode = aHeadLine->eMetaCode(i_Col);
-    Stz* aMetaCode = aMC[eMetaCode];
-    i8   nBytes    = nDataBytes(eMetaCode);
-    if (MC_STR_FIT_1L == eMetaCode) {
-      RASSERT(1 == nBytes);
-      nBytes += aHeadLine->w8_1B(i_LastOffset);
-    }
-    
-    //      colNo colNm Dtm  MC   aMC   Ofset Addr   Bytes
-    vTrace("%3lld %-15s %-3s %02x %-19s %2lld %012llx %1lld "_Stz,
-           i_Col,
-           pCol->szColNm(),
-           aDM[eDatum],
-           eMetaCode,
-           aMetaCode,
-           i_LastOffset,
-           (byte*)aHeadLine + i_LastOffset,
-           nBytes);
-    
-    if (nBytes)
-      for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
-        vTrace("%02x"_Stz,aHeadLine->w8_1B(i_LastOffset+i_Byte));
-    for (i8 i_Byte = nBytes; i_Byte < 8; i_Byte++)
-      vTrace("__"_Stz);
-    vTrace(" "_Stz);
-    
-    hvRec->vReset();
-    //vAppend(hvRec,aHeadLine,pColVec,pCol,i_Col,i_LastOffset);
-    
-    // first get the encoded value into datum
-    vDecode(&oDatum,aHeadLine,pColVec,pCol,i_Col,i_LastOffset);
-    hvRec->vAppend(pCol, &oDatum);
-    
-    vTrace("%s"_Stz,hvRec->szRecStr());
-    
-    if (MC_SHOCO_SPLIT_2T1C == eMetaCode) {
-      i8 i2T = aHeadLine->wGet(i_LastOffset,2);
-      i8 i1C = aHeadLine->wGet(i_LastOffset+2,1);
-      vTrace(" [ =%lld.%lld ]"_Stz,i2T,i1C);
-    }
-    else {
-      i8 iDataValue = aHeadLine->wGet(i_LastOffset,nBytes);
-      if (nBytes)
-        vTrace(" [ =%lld ]"_Stz,iDataValue);
-      else
-        vTrace(" [ =nil ]"_Stz);
-    }
-    
-    vTrace("\n"_Stz);
-    
-    i_LastOffset += nBytes;
-    
-    if (eMetaCode == MC_STR_SPLIT_2T1L)
-      vDebugPoint();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump head line                                                             */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
-{
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  MemLib::vWordDump(aHeadLine,aHeadLine->nBytes());
-  
-  i8 nFreeBytes = nFreeSpaceHead(aHeadLine,pColVec);
-  vTrace("FreeBytes %lld\n"_Stz,nFreeBytes);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  HV_Rec hvRec;
-  Datum oDatum;
-  
-  i8 i_LastOffset = iBaseOffset(pColVec);
-  
-  vTrace("Col ColumnName      Datum  ExtDatum    Encoding"
-         "       Offset  Bytes              Value\n"_Stz);
-  
-  // get the column no
-  i8 i_Col = pCol->iColumnNo();
-  
-  // get the datum
-  eDM eDatum = pCol->eDatumType();
-
-  // first get the encoded value into datum
-  eMC eEncoding  = eGetEncoding(aHeadLine,pCol,pColVec,i_Col,i_LastOffset);
-  Stz* aEncoding = aMC[eEncoding];
-  
-  i8 nBytes = nDataBytes(eEncoding);
-  
-  i8 iMetaCode = aHeadLine->eMetaCode(i_Col);
-  
-  vTrace("%3lld %-15s %-6s %x %-16s %2lld %2lld "_Stz,
-         i_Col,
-         pCol->sColumnName().aChar(),
-         aDM[eDatum],
-         iMetaCode,
-         aEncoding,
-         i_LastOffset,
-         nBytes);
-  
-  if (nBytes)
-    for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
-      vTrace("%02x"_Stz,aHeadLine->w8_1B(i_LastOffset+i_Byte));
-  for (i8 i_Byte = nBytes; i_Byte < 8; i_Byte++)
-    vTrace("__"_Stz);
-  vTrace(" "_Stz);
-  
-  hvRec->vReset();
-  //vAppend(hvRec,aHeadLine,pColVec,pCol,i_LastCol,i_LastOffset);
-  
-  // first get the encoded value into datum
-  vDecode(&oDatum,aHeadLine,pColVec,pCol,i_Col,i_LastOffset);
-  hvRec->vAppend(pCol, &oDatum);
-  
-  vTrace("%s"_Stz,hvRec->szRecStr());
-  
-  vTrace("\n"_Stz);
-  
-  i_LastOffset += nBytes;
-  
 }
 
 
