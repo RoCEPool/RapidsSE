@@ -230,7 +230,9 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   vAnalyseFree();
 #endif
   
+#ifdef WITH_VERIFY_TAILS
   m_pIntoNub->vVerifyTails(C_UNKNOWN);
+#endif
   
   return true;
 }

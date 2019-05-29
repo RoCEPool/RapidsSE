@@ -67,6 +67,7 @@
 //#define WITH_TRACE_DECODING     // code for tracing decoding compiled in
 //#define WITH_LARGE_ROWS         // encode cross check
 //#define WITH_ANALYSE_FREE       // analyze free space during load
+//#define WITH_VERIFY_TAILS       // verify tails
 
 /*============================================================================*/
 /* end                                                                        */
