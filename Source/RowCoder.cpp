@@ -1116,46 +1116,50 @@ void RowCoder::vMetaPut(Datum* pDatum, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* recode the datums                                                          */
+/* recode each column                                                         */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vRecode_Large(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
   i8 nColumns = m_pColVec->nItems();
-  
+    
   i8 i_LastColumn = 0;
   
-  for (i8 i_ForCol = 0; i_ForCol < nColumns; i_ForCol++) {
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
     
-    Column* pCol = m_pColVec->pGet(i_ForCol);
+    // get the initial encoding of the datum for i_Col from from-row
+    
+    Column* pCol = m_pColVec->pGet(i_Col);
     eDM eDatum = pCol->eDatumType();
     
-    i8 i_PriorFromOffset = m_i_FromOffset;
-    m_eFromEncoding = eGetEncoding(pCol,i_LastColumn,m_i_FromOffset);
+    i8 iFromOffset_IGNORE = 0;
+    i_LastColumn = 0;
+    m_eFromEncoding  = eGetEncoding(pCol,i_LastColumn,iFromOffset_IGNORE);
     
-    // calculate new IntoOffset
-    m_i_IntoOffset += m_i_FromOffset - i_PriorFromOffset;
+    m_nFromDataBytes = nDataBytes(m_eFromEncoding);
     
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // re-encode datum
     
     switch (eDatum) {
         
-      case Datums::DM_BCD:  vRecodeBcd(pCol); continue;
-      case Datums::DM_BOL:  vRecodeBol(pCol); continue;
-      case Datums::DM_DTE:  vRecodeDte(pCol); continue;
-      case Datums::DM_FLT:  vRecodeFlt(pCol); continue;
-      case Datums::DM_INT:  vRecodeInt(pCol); continue;
-      case Datums::DM_IVL:  vRecodeIvl(pCol); continue;
-      case Datums::DM_TME:  vRecodeTme(pCol); continue;
-      case Datums::DM_TSP:  vRecodeTsp(pCol); continue;
-      case Datums::DM_VCH:  vRecodeVch(pCol); continue;
-
+      case Datums::DM_BCD: vRecodeBcd(pCol); continue;
+      case Datums::DM_BOL: vRecodeBol(pCol); continue;
+      case Datums::DM_DTE: vRecodeDte(pCol); continue;
+      case Datums::DM_FLT: vRecodeFlt(pCol); continue;
+      case Datums::DM_INT: vRecodeInt(pCol); continue;
+      case Datums::DM_IVL: vRecodeIvl(pCol); continue;
+      case Datums::DM_TME: vRecodeTme(pCol); continue;
+      case Datums::DM_TSP: vRecodeTsp(pCol); continue;
+      case Datums::DM_VCH: vRecodeVch(pCol); continue;
+        
       default:
         NEVER_REACH;
     }
     
   }
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
 
