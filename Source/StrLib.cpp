@@ -112,6 +112,8 @@ void StrLib::vAppendString(char** pz, const char* pString)
   while (*pString)
     *z++ = *pString++;
   
+  *z = '\0';
+  
   *pz = z;
 }
 
