@@ -332,7 +332,7 @@ namespace Data
       //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
       
       // seth
-      //i8 nBytes = pColVec->nItems() * 8;
+      //i8 nBytes = pColVec->nItems() * 10;
       //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
       
       return nHeadBytes*C_BYTES_PER_WORD;
