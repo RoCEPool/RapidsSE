@@ -622,11 +622,50 @@ void RowCoder::vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum)
   pTgtDatum->m_iInt   = pSrcDatum->m_iInt;
   
   eMC eEncoding = (eMC)IntLib::iByteMagNull(pTgtDatum->m_iInt);
+  
+  if (MC_NULL == eEncoding) {
+    pTgtDatum->m_eEncoding = MC_NULL;
+    pTgtDatum->m_nEncodedBytes = C_0B;
+    return;
+  }
+
+#ifdef WITH_ENCODING_INT_DIGIT
+  
+  if (MC_1B == eEncoding) {
+    
+    i8 i1BInt = pTgtDatum->m_iInt;
+    
+    if (i1BInt >= 0 && i1BInt <= 10) {
+      
+      // revise the encoding
+      pTgtDatum->m_eEncoding = (eMC)(MC_ZERO + i1BInt);
+      pTgtDatum->m_nEncodedBytes = C_0B;
+      return;
+    }
+  }
+#endif
+
   pTgtDatum->m_eEncoding = eEncoding;
   pTgtDatum->m_nEncodedBytes = eEncoding;
   
   RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(eEncoding));
 }
+/*----------------------------------------------------------------------------*/
+//void RowCoder::vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+//
+//  RASSERT(DM_INT == pSrcDatum->m_eDatum);
+//
+//  pTgtDatum->m_eDatum = DM_INT;
+//  pTgtDatum->m_iInt   = pSrcDatum->m_iInt;
+//
+//  eMC eEncoding = (eMC)IntLib::iByteMagNull(pTgtDatum->m_iInt);
+//  pTgtDatum->m_eEncoding = eEncoding;
+//  pTgtDatum->m_nEncodedBytes = eEncoding;
+//
+//  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(eEncoding));
+//}
 
 /*----------------------------------------------------------------------------*/
 /* initial encoding of ivl                                                    */
@@ -1323,47 +1362,10 @@ void RowCoder::vRecodeInt(Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 
   RASSERT(DM_INT == pCol->eDatumType());
-  RASSERT(m_eFromEncoding >= MC_1B && m_eFromEncoding <= MC_8B);
-
-  // skip nulls
-  if (MC_NULL == m_eFromEncoding) {
-    vUsageIncRecoded(pCol,C_0B);
-    RASSERT(0 == m_nFromDataBytes);
-    m_i_IntoOffset += m_nFromDataBytes;
-    return;
-  }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-#ifdef WITH_ENCODING_INT_DIGIT
-  
-  if (m_eFromEncoding == MC_1B) {
-    
-    // get the 1B int from the data portion of the intoHead
-    i8 i1BInt = m_aIntoHead->w8_1B(m_i_IntoOffset);
-    
-    // revise the encoding
-    if (i1BInt >= 0 && i1BInt <= 10) {
-      
-      // revise the encoding
-      eMC eRevisedEncoding = (eMC)(MC_ZERO + i1BInt);
-      vMetaCode(pCol,eRevisedEncoding);
-      vUsageIncRecoded(pCol,C_0B);
-      
-      // cut the 1B char out of the into head
-      MemLib::vCut(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,C_1B,CN_ROWCODER);
-      
-      vXchkIntRecode(pCol);
-      return ;
-    }
-  }
-#endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // leave as int
   vUsageIncRecoded(pCol,m_eFromEncoding);
   m_i_IntoOffset += m_nFromDataBytes;
+  vXchkIntRecode(pCol);
 }
 
 /*----------------------------------------------------------------------------*/
