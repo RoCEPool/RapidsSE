@@ -39,6 +39,7 @@ using namespace Base;
 #include "Word.hpp"
 
 #include "LimitsFormats.h"
+#include "Structs.h"
 
 const i8 C_UNKNOWN = -1;
 
