@@ -568,8 +568,8 @@ void ActionSequence::vWriteToFile(void)
     return;
   }
   
-  Now oNow;
-  ActivityMap::vMarkInfo("Writing ActionSequence at: %s"_Stz,oNow.sFormatted());
+  spNOW oNow;
+  ActivityMap::vMarkInfo("Writing ActionSequence at: %s"_Stz,oNow.sz());
   
   
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼

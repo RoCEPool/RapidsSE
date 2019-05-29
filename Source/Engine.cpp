@@ -345,11 +345,11 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
 {
   s48K sPortrait;
   
-  Now oNow;
+  spNOW oNow;
   
   sRapidsPortrait.vSprint("\nSystem Monitor #%lld %s\n"_Stz,
                           gpAttachMap->m_oStatistics.m_nMonitorTake++,
-                          oNow.sFormatted());
+                          oNow.sz());
   sRapidsPortrait.vConcat("------------------------------------------------------\n"_Stz);
 
 

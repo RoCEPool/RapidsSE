@@ -18,7 +18,7 @@ spNOW::spNOW(void)
   // convert current epoch time into LOCAL:date&time
   struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);
   
-  if ( ! aLocalDateTime )
+  if (! aLocalDateTime)
     vWarn("localtime() error; errno=%d"_Stz,errno);
   
   m_oTsp.x.m_uYearDelta = aLocalDateTime->tm_year;

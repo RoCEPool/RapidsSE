@@ -434,8 +434,8 @@ void ActivityMap::vOpenByApi(void)
   
   ActivityMap::vMarkInfo("Opened by API"_Stz);
   
-  Now oNow;
-  ActivityMap::vMarkInfo("Time is: "_Stz,oNow.sFormatted());
+  spNOW oNow;
+  ActivityMap::vMarkInfo("Time is: "_Stz,oNow.sz());
 #endif
 }
 
@@ -483,8 +483,8 @@ void ActivityMap::vOpenBySE(bool bStarting)
   Engine::vGetWelcome(sWelcome);
   ActivityMap::vMarkInfo(sWelcome);
   
-  Now oNow;
-  ActivityMap::vMarkInfo("Time is: %s"_Stz,oNow.sFormatted());
+  spNOW oNow;
+  ActivityMap::vMarkInfo("Time is: %s"_Stz,oNow.sz());
 
   s32 sMem;
   Magnitudes::vByteMag(Hardware::iPhysicalMemory(),sMem);
@@ -716,8 +716,8 @@ void ActivityMap::vWriteToFile(bool bShortForm)
     return;
   }
   
-  Now oNow;
-  ActivityMap::vMarkInfo("Writing ActivityMap at: %s"_Stz,oNow.sFormatted());
+  spNOW oNow;
+  ActivityMap::vMarkInfo("Writing ActivityMap at: %s"_Stz,oNow.sz());
   
   s256 sWelcome;
   Engine::vGetWelcome(sWelcome);
