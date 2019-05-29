@@ -56,6 +56,7 @@ namespace Structures
     i8    nFreeBytes(void);
     HEAD* aGetHead(void);
     HEAD* aGetHead(i8 i_Head);
+    OVER* aGetOver(i8 i_Over);
     TAIL* aGetTail(i8 i_Tail);
     i8    nHeads(void);
     i8    nHeadBytes(void);
@@ -274,9 +275,9 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotOver(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  i8 i_Tail = iAllotTail(nBytes);
+  i8 i_Over = iAllotTail(nBytes);
   
-  return i_Tail;
+  return i_Over;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -387,6 +388,19 @@ HEAD* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetHead(i8 i_Head)
   HEAD* aHead = (HEAD*)&m_axaWords[i_Word];
     
   return aHead;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a specific overflow item                                               */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+OVER* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetOver(i8 i_Over)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  OVER* aOver = (OVER*)aGetTail(i_Over);
+  
+  return aOver;
 }
 
 /*----------------------------------------------------------------------------*/
