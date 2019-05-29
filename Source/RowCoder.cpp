@@ -1278,13 +1278,13 @@ void RowCoder::vRecodeVch(Column* pCol)
     i8 nLength = m_aIntoHead->w8_1B(m_i_IntoOffset);
     m_i_IntoOffset += _1B_L + nLength;
     vUsageIncRecoded(pCol,_1B_L + nLength);
-    vXchkVchRecode(pCol);
+    vXchkRecodeVch(pCol);
     return;
   }
   
   if (MC_SHOCO_TAIL_2T == m_eFromEncoding) {
     vRecodeVchShoco(pCol);
-    vXchkVchRecode(pCol);
+    vXchkRecodeVch(pCol);
     return;
   }
   
@@ -1901,23 +1901,6 @@ void RowCoder::vXchkBcd(Datum* pDatum, Column* pCol, i8 iRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cross-check the recoding of bcd                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vXchkBcdRecode(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = m_i_BaseOffset;
-  i8 i_lastColumn = 0;
-  Datum oFromDatum;
-  vDecode(&oFromDatum,m_pFromNub,m_i_FromHead,pCol,i_lastColumn,i_LastOffset);
-  
-  vXchkBcd(&oFromDatum, pCol, m_i_IntoHead);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* cross-check the encoding of bol                                            */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkBol(Datum* pDatum, Column* pCol, i8 iRow)
@@ -1930,23 +1913,6 @@ void RowCoder::vXchkBol(Datum* pDatum, Column* pCol, i8 iRow)
   vDecode(&m_oEncodedDatum,m_pIntoNub,iRow,pCol,i_lastColumn, i_LastOffset);
   RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
   RASSERT(m_oEncodedDatum.m_iBol == pDatum->m_iBol);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* cross-check the recoding of bol                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vXchkBolRecode(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = m_i_BaseOffset;
-  i8 i_lastColumn = 0;
-  Datum oFromDatum;
-  vDecode(&oFromDatum,m_pFromNub,m_i_FromHead,pCol,i_lastColumn,i_LastOffset);
-  
-  vXchkBol(&oFromDatum, pCol, m_i_IntoHead);
 #endif
 }
 
@@ -1969,23 +1935,6 @@ void RowCoder::vXchkDte(Datum* pDatum, Column* pCol, i8 iRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cross-check the recoding of dte                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vXchkDteRecode(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = m_i_BaseOffset;
-  i8 i_lastColumn = 0;
-  Datum oFromDatum;
-  vDecode(&oFromDatum,m_pFromNub,m_i_FromHead,pCol,i_lastColumn,i_LastOffset);
-  
-  vXchkDte(&oFromDatum, pCol, m_i_IntoHead);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* cross-check the encoding of flt                                            */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkFlt(Datum* pDatum, Column* pCol, i8 iRow)
@@ -1998,23 +1947,6 @@ void RowCoder::vXchkFlt(Datum* pDatum, Column* pCol, i8 iRow)
   vDecode(&m_oEncodedDatum,m_pIntoNub,iRow,pCol,i_lastColumn, i_LastOffset);
   RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
   RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* cross-check the recoding of flt                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vXchkFltRecode(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = m_i_BaseOffset;
-  i8 i_lastColumn = 0;
-  Datum oFromDatum;
-  vDecode(&oFromDatum,m_pFromNub,m_i_FromHead,pCol,i_lastColumn,i_LastOffset);
-  
-  vXchkFlt(&oFromDatum, pCol, m_i_IntoHead);
 #endif
 }
 
@@ -2035,23 +1967,6 @@ void RowCoder::vXchkInt(Datum* pDatum, Column* pCol, i8 iRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cross-check the recoding of int                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vXchkIntRecode(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = m_i_BaseOffset;
-  i8 i_lastColumn = 0;
-  Datum oFromDatum;
-  vDecode(&oFromDatum,m_pFromNub,m_i_FromHead,pCol,i_lastColumn,i_LastOffset);
-  
-  vXchkInt(&oFromDatum, pCol, m_i_IntoHead);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* cross-check the encoding of ivl                                            */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkIvl(Datum* pDatum, Column* pCol, i8 iRow)
@@ -2064,23 +1979,6 @@ void RowCoder::vXchkIvl(Datum* pDatum, Column* pCol, i8 iRow)
   vDecode(&m_oEncodedDatum,m_pIntoNub,iRow,pCol,i_lastColumn, i_LastOffset);
   RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
   RASSERT(m_oEncodedDatum.m_iDte == pDatum->m_iDte);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* cross-check the recoding of ivl                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vXchkIvlRecode(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = m_i_BaseOffset;
-  i8 i_lastColumn = 0;
-  Datum oFromDatum;
-  vDecode(&oFromDatum,m_pFromNub,m_i_FromHead,pCol,i_lastColumn,i_LastOffset);
-  
-  vXchkIvl(&oFromDatum, pCol, m_i_IntoHead);
 #endif
 }
 
@@ -2101,23 +1999,6 @@ void RowCoder::vXchkTme(Datum* pDatum, Column* pCol, i8 iRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cross-check the recoding of tme                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vXchkTmeRecode(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = m_i_BaseOffset;
-  i8 i_lastColumn = 0;
-  Datum oFromDatum;
-  vDecode(&oFromDatum,m_pFromNub,m_i_FromHead,pCol,i_lastColumn,i_LastOffset);
-  
-  vXchkTme(&oFromDatum, pCol, m_i_IntoHead);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* cross-check the encoding of tsp                                            */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vXchkTsp(Datum* pDatum, Column* pCol, i8 iRow)
@@ -2130,23 +2011,6 @@ void RowCoder::vXchkTsp(Datum* pDatum, Column* pCol, i8 iRow)
   vDecode(&m_oEncodedDatum,m_pIntoNub,iRow,pCol,i_lastColumn, i_LastOffset);
   RASSERT(m_oEncodedDatum.m_eDatum == pDatum->m_eDatum);
   RASSERT(m_oEncodedDatum.m_iTsp == pDatum->m_iTsp);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* cross-check the recoding of tsp                                            */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vXchkTspRecode(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-#ifdef WITH_ENCODING_XCHECK
-  i8 i_LastOffset = m_i_BaseOffset;
-  i8 i_lastColumn = 0;
-  Datum oFromDatum;
-  vDecode(&oFromDatum,m_pFromNub,m_i_FromHead,pCol,i_lastColumn,i_LastOffset);
-  
-  vXchkTsp(&oFromDatum, pCol, m_i_IntoHead);
 #endif
 }
 
@@ -2173,7 +2037,7 @@ void RowCoder::vXchkVch(Datum* pDatum, Column* pCol, i8 iRow)
 /*----------------------------------------------------------------------------*/
 /* cross-check the recoding of vch                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXchkVchRecode(Column* pCol)
+void RowCoder::vXchkRecodeVch(Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   

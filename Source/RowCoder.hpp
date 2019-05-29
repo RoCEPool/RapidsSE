@@ -166,22 +166,10 @@ namespace Data
     void vXchkTsp(Datum* pDatum, Column* pCol, i8 iRow);
     void vXchkVch(Datum* pDatum, Column* pCol, i8 iRow);
     
-    void vXchkBcdRecode(Column* pCol);
-    void vXchkBolRecode(Column* pCol);
-    void vXchkDteRecode(Column* pCol);
-    void vXchkFltRecode(Column* pCol);
-    void vXchkIntRecode(Column* pCol);
-    void vXchkIvlRecode(Column* pCol);
-    void vXchkTmeRecode(Column* pCol);
-    void vXchkTspRecode(Column* pCol);
-    void vXchkVchRecode(Column* pCol);
+    void vXchkRecodeVch(Column* pCol);
     
   public:
     static void vAnalyse(RowNub* pNub);
-//    static void vAppend(Record* pRec, Datum* pDatum, Column* pCol);
-//    static void vAppend(Record* pRec, HeadLine* aHeadLine,
-//                        ColumnVec* pColVec, Column* pCol,
-//                        i8& i_LastColumn, i8& i_LastOffset);
     
     static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
                         i8& i_LastColumn, i8& i_LastOffset);
