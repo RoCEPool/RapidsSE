@@ -520,7 +520,27 @@ void RowCoder::vCodeBcd(Datum* pTgtDatum, Datum* pSrcDatum)
   m_oEncodedDatum.m_eDatum = DM_BCD;
   m_oEncodedDatum.m_iBcd   = pSrcDatum->m_iBcd;
   
-  eMC eEncoding = (eMC)IntLib::iByteMagNull(m_oEncodedDatum.m_iInt);
+  eMC eEncoding = (eMC)IntLib::iByteMagNull(m_oEncodedDatum.m_iBcd);
+  
+  if (MC_NULL == eEncoding) {
+    pTgtDatum->m_eEncoding = MC_NULL;
+    pTgtDatum->m_nEncodedBytes = C_0B;
+    return;
+  }
+  
+#ifdef WITH_ENCODING_BCD
+  if (MC_1B == m_eFromEncoding) {
+    
+    i8 iBcd1B = pSrcDatum->m_iBcd;
+    if (iBcd1B >= 0 && iBcd1B <= 10) {
+      pTgtDatum->m_eEncoding = (eMC)(MC_ZERO + iBcd1B);
+      pTgtDatum->m_nEncodedBytes = C_0B;
+      return;
+    }
+    
+  }
+#endif
+  
   m_oEncodedDatum.m_eEncoding = eEncoding;
   m_oEncodedDatum.m_nEncodedBytes = eEncoding;
   
@@ -1256,52 +1276,12 @@ void RowCoder::vRecodeBcd(Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-#ifdef WITH_ENCODING_BCD
-  
   RASSERT(DM_BCD == pCol->eDatumType());
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // skip nulls
-  
-  if (MC_NULL == m_eFromEncoding) {
-    vUsageIncRecoded(pCol,C_0B);
-    RASSERT(0 == m_nFromDataBytes);
-    m_i_IntoOffset += C_0B;
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // recode small 1B's into DM_TENTH
-  
-  // is it a 1B encoding ?
-  if (m_eFromEncoding == MC_1B) {
-    
-    // get the 1B bcd from the data portion of the intoHead
-    i8 iBcd1B = m_aIntoHead->w8_1B(m_i_IntoOffset);
-    
-    // revise the encoding
-    if (iBcd1B >= 0 && iBcd1B <= 10) {
-      
-      // revise the encoding
-      eMC eRevisedEncoding = (eMC)(MC_ZERO + iBcd1B);
-      vMetaCode(pCol,eRevisedEncoding);
-      vUsageIncRecoded(pCol,C_0B);
-      
-      // cut the 1B char out of the into head
-      MemLib::vCut(m_aIntoHead,m_nHeadBytes,m_i_IntoOffset,1,CN_ROWCODER);
-      
-      vXchkBcdRecode(pCol);
-      return;
-    }
-    
-  }
-  
-  vUsageIncOops(pCol,m_eFromEncoding,m_eFromEncoding);
+  vUsageIncRecoded(pCol,m_eFromEncoding,m_eFromEncoding);
   m_i_IntoOffset += m_eFromEncoding;
   
   vXchkBcdRecode(pCol);
-  
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
