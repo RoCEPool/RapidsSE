@@ -1208,21 +1208,6 @@ void RowCoder::vRecode_Large(void)
       vUsageIncRecoded(pCol,m_nFromDataBytes,m_eFromEncoding);
       m_i_IntoOffset += m_nFromDataBytes;
     }
-//    switch (eDatum) {
-//        
-//      case Datums::DM_BCD: vRecodeBcd(pCol); continue;
-//      case Datums::DM_BOL: vRecodeBol(pCol); continue;
-//      case Datums::DM_DTE: vRecodeDte(pCol); continue;
-//      case Datums::DM_FLT: vRecodeFlt(pCol); continue;
-//      case Datums::DM_INT: vRecodeInt(pCol); continue;
-//      case Datums::DM_IVL: vRecodeIvl(pCol); continue;
-//      case Datums::DM_TME: vRecodeTme(pCol); continue;
-//      case Datums::DM_TSP: vRecodeTsp(pCol); continue;
-//      case Datums::DM_VCH: vRecodeVch(pCol); continue;
-//        
-//      default:
-//        NEVER_REACH;
-//    }
     
   }
   
@@ -1261,151 +1246,19 @@ void RowCoder::vRecode_Short(void)
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // re-encode datum
     
-    switch (eDatum) {
-        
-      case Datums::DM_BCD:
-        vRecodeBcd(pCol);
-        //vTrace("m_i_IntoOffset = %lld\n"_Stz, m_i_IntoOffset);
-        //vHeadDump(m_aIntoHead, m_pColVec, pCol);
-        continue;
-      case Datums::DM_BOL:
-        vRecodeBol(pCol);
-        //vTrace("m_i_IntoOffset = %lld\n"_Stz, m_i_IntoOffset);
-        //vHeadDump(m_aIntoHead, m_pColVec, pCol);
-        continue;
-      case Datums::DM_DTE:
-        vRecodeDte(pCol);
-        //vTrace("m_i_IntoOffset = %lld\n"_Stz, m_i_IntoOffset);
-        //vHeadDump(m_aIntoHead, m_pColVec, pCol);
-        continue;
-      case Datums::DM_FLT:
-        vRecodeFlt(pCol);
-        //vTrace("m_i_IntoOffset = %lld\n"_Stz, m_i_IntoOffset);
-        //vHeadDump(m_aIntoHead, m_pColVec, pCol);
-        continue;
-      case Datums::DM_INT:
-        vRecodeInt(pCol);
-        //vTrace("m_i_IntoOffset = %lld\n"_Stz, m_i_IntoOffset);
-        //vHeadDump(m_aIntoHead, m_pColVec, pCol);
-        continue;
-      case Datums::DM_IVL:  vRecodeIvl(pCol); continue;
-      case Datums::DM_TME:
-        vRecodeTme(pCol);
-        continue;
-      case Datums::DM_TSP:
-        vRecodeTsp(pCol);
-        //vTrace("m_i_IntoOffset = %lld\n"_Stz, m_i_IntoOffset);
-        //vHeadDump(m_aIntoHead, m_pColVec, pCol);
-        continue;
-      case Datums::DM_VCH:
-        vRecodeVch(pCol);
-        //vTrace("m_i_IntoOffset = %lld\n"_Stz, m_i_IntoOffset);
-        //vHeadDump(m_aIntoHead, m_pColVec, pCol);
-        continue;
-        
-      default:
-        NEVER_REACH;
+    if (DM_VCH == eDatum) {
+      vRecodeVch(pCol);
     }
-    
-    
+    else {
+      vUsageIncRecoded(pCol,m_nFromDataBytes,m_eFromEncoding);
+      m_i_IntoOffset += m_nFromDataBytes;
+    }
+
   }
   //vTrace("DUMP after recode\n"_Stz);
   //vHeadDump(m_aIntoHead, m_pColVec);
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to re-encode Bcd as Tenth                                          */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeBcd(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-  RASSERT(DM_BCD == pCol->eDatumType());
-  
-  vUsageIncRecoded(pCol,m_eFromEncoding,m_eFromEncoding);
-  m_i_IntoOffset += m_eFromEncoding;
-  
-  vXchkBcdRecode(pCol);
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to re-encode Bol                                                   */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeBol(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-  RASSERT(0 == m_nFromDataBytes);
-  m_i_IntoOffset += m_nFromDataBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to re-encode Flt                                                   */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeFlt(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-  m_i_IntoOffset += m_nFromDataBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to re-encode Flt                                                   */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeDte(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-  m_i_IntoOffset += m_nFromDataBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to re-encode Int as Delta or Digit                                 */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeInt(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-
-  RASSERT(DM_INT == pCol->eDatumType());
-  
-  vUsageIncRecoded(pCol,m_eFromEncoding);
-  m_i_IntoOffset += m_nFromDataBytes;
-  vXchkIntRecode(pCol);
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to re-encode Ivl                                                   */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeIvl(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-  m_i_IntoOffset += m_nFromDataBytes;
-  vXchkIvlRecode(pCol);
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to re-encode Tme                                                   */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeTme(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-  m_i_IntoOffset += m_nFromDataBytes;
-  vXchkTmeRecode(pCol);
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to re-encode Tsp                                                   */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeTsp(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-  m_i_IntoOffset += m_nFromDataBytes;
-  vXchkTspRecode(pCol);
 }
 
 /*----------------------------------------------------------------------------*/

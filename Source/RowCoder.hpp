@@ -147,14 +147,6 @@ namespace Data
     void vRecode_Large(void);
     void vRecode_Short(void);
 
-    void vRecodeBol(Column* pCol);
-    void vRecodeBcd(Column* pCol);
-    void vRecodeDte(Column* pCol);
-    void vRecodeFlt(Column* pCol);
-    void vRecodeInt(Column* pCol);
-    void vRecodeIvl(Column* pCol);
-    void vRecodeTme(Column* pCol);
-    void vRecodeTsp(Column* pCol);
     void vRecodeVch(Column* pCol);
     void vRecodeVchShoco(Column* pCol);
     bool bRecodeVchShocoDupe(Column* pCol);
