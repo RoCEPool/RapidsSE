@@ -150,11 +150,7 @@ void Record::vAppend_Alt(Column* pCol, Row* pRow)
     case DM_TME: vAppendTme_Alt(pCol,&oDatum); break;
     case DM_TSP: vAppendTsp_Alt(pCol,&oDatum); break;
     case DM_VCH:
-      //! TOTAL HACK
-      if (oDatum.m_iInt)
-        oDatum.m_sVch.vCopy((Stz*)oDatum.m_iInt);
-      else
-        oDatum.m_sVch.vCopy(""_Stz);
+      oDatum.m_sVch.vCopy((Stz*)oDatum.m_iInt);
       vAppendVch_Alt(pCol,&oDatum);
       break;
     default:
