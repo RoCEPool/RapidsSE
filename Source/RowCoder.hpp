@@ -180,11 +180,9 @@ namespace Data
 
     static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
                         i8& i_LastColumn, i8& i_LastOffset);
-
     static void vDecode(Datum* pDatum, HeadLine* aHeadLine,
                         ColumnVec* pColVec, Column* pCol,
                         i8& i_LastColumn, i8& i_LastOffset);
-
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
                                  ColumnVec* pColVec, Column* pCol, 
                                  i8& i_LastColumn, i8& i_LastOffset);
@@ -224,9 +222,6 @@ namespace Data
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
   
     static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec);
-    
-    static void vRestoreTme(Datum* pDatum);
-    static void vRestoreTsp(Datum* pDatum);
     
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
 

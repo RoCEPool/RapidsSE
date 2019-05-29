@@ -3156,7 +3156,8 @@ void RowCoder::vDecodeTme(Datum* pDatum, HeadLine* aHeadLine,
       NEVER_REACH;
   }
   
-  vRestoreTme(pDatum);
+  //vRestoreTme(pDatum);
+  pDatum->m_iInt <<= 40;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3186,7 +3187,8 @@ void RowCoder::vDecodeTsp(Datum* pDatum, HeadLine* aHeadLine,
   }
   
   if (eEncoding == MC_5B)
-    vRestoreTsp(pDatum);
+    //vRestoreTsp(pDatum);
+    pDatum->m_iInt <<= 24;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3498,22 +3500,6 @@ i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec)
   i8 nFreeBytes = aHeadLine->nBytes() - i_Offset - nBytes;
   
   return nFreeBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* restore zero stripped tme                                                  */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRestoreTme(Datum* pDatum)
-{
-  pDatum->m_iInt <<= 40;
-}
-
-/*----------------------------------------------------------------------------*/
-/* restore zero stripped tsp                                                  */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRestoreTsp(Datum* pDatum)
-{
-  pDatum->m_iInt <<= 24;
 }
 
 /*----------------------------------------------------------------------------*/
