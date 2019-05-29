@@ -44,8 +44,11 @@ JobEncodeRow::JobEncodeRow(void)
 JobEncodeRow::~JobEncodeRow(void) noexcept(false)
 {
   for (i8 i_Ptn = 0; i_Ptn < gpAttachMap->m_pGrid->m_nPartitions; i_Ptn++) {
+    
+#ifdef WITH_ANALYSE_FREE
     m_paRowCoder_Copy[i_Ptn]->vReport(m_pRowCoder_Encode);
-  
+#endif
+    
     delete m_paRowCoder_Copy[i_Ptn];
   }
   delete m_pRowCoder_Encode;
@@ -61,8 +64,12 @@ JobEncodeRow::~JobEncodeRow(void) noexcept(false)
 bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
 {
   bBlankLine = false;
+  
+#ifdef WITH_ANALYSE_FREE
   static Peruse xRows("Rows:"_Stz);
   xRows.vAdd(1,"\n"_Stz);
+#endif
+  
   bool bResult = true;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

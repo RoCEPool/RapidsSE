@@ -115,6 +115,10 @@ void Base::vTraceWith(void)
   vTrace("  WITH_SHOCO_FOLDLAST\n"_Stz);
 #endif
 
+#ifdef WITH_ANALYSE_FREE
+  vTrace("  WITH_ANALYSE_FREE\n"_Stz);
+#endif
+  
 }
 
 /*============================================================================*/

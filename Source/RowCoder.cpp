@@ -91,7 +91,7 @@ RowCoder::RowCoder(void)
     m_anMetaCode[i_Code] = 0;
   
   m_nTotalHeads = 0;
-  
+
   m_nHeadFreeBytes = 0;
   m_nHeadFreeBytes_0_7   = 0;
   m_nHeadFreeBytes_8_15  = 0;
@@ -102,7 +102,7 @@ RowCoder::RowCoder(void)
   m_nHeadFreeBytes_48_55 = 0;
   m_nHeadFreeBytes_56_63 = 0;
   m_nHeadFreeBytes_64_   = 0;
-
+  
   m_nTails     = 0;
   m_nTailUnits = 0;
   
@@ -219,15 +219,16 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   m_nTotalHeads++;
 
   
-//#ifdef WITH_TRACE_ENCODING
+#ifdef WITH_TRACE_ENCODING
   if (m_nTotalHeads <= 10)
     RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
-//#endif
+#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyse free space in the into head
-
+#ifdef WITH_ANALYSE_FREE
   vAnalyseFree();
+#endif
   
   m_pIntoNub->vVerifyTails(C_UNKNOWN);
   
@@ -453,6 +454,7 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
            aMC[i_Code],
            m_anMetaCode[i_Code]);
   }
+  
 }
 
 
@@ -466,7 +468,7 @@ void RowCoder::vReport(RowCoder* pRowCoder_Encode)
 void RowCoder::vAnalyseFree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
+
   i8 nFreeBytes = nFreeSpaceHead(m_aIntoHead,m_pColVec);
   m_nHeadFreeBytes  += nFreeBytes;
   
