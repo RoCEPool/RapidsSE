@@ -1275,7 +1275,9 @@ void RowCoder::vRecodeVch(Column* pCol)
     return;
   
   if (MC_STR_FIT_1L == m_eFromEncoding) {
-    vRecodeVchSmall(pCol);
+    i8 nLength = m_aIntoHead->w8_1B(m_i_IntoOffset);
+    m_i_IntoOffset += _1B_L + nLength;
+    vUsageIncRecoded(pCol,_1B_L + nLength);
     vXchkVchRecode(pCol);
     return;
   }
@@ -1799,22 +1801,6 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* recode MC_STR_FIT_1L                                                       */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRecodeVchSmall(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-  i8 nLength = m_aIntoHead->w8_1B(m_i_IntoOffset);
-  
-  m_i_IntoOffset += _1B_L + nLength;
-
-  vUsageIncRecoded(pCol,_1B_L + nLength);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

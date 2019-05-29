@@ -105,55 +105,50 @@ namespace Data
   private:
     void vAnalyseFree(void);
     
-    void vCodeIvl(Datum* pTgtDatum, Datum* pSrcDatum);
-  
     void vCodeBol(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeBcd(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeFlt(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum);
+    void vCodeIvl(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeTme(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeTsp(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum);
-    
     void vCopyHead_Large(void);
     void vCopyHead_Short(void);
   
     void vDataPut(Datum* pDatum);
     void vDataPut(w8 wDatum, i8 nBytes);
+    
     void vEraDatePut(Datum* pDatum);
-  
-    void vEncodeIvl(Datum* pSrcDatum, Column* pCol);
-    
-    void vEncodeVchShoco(Datum* pSrcDatum, Column* pCol);
-    void vEncodeVchSmall(Datum* pSrcDatum, Column* pCol);
-    
     void vEncodeBol(Datum* pSrcDatum, Column* pCol);
     void vEncodeBcd(Datum* pSrcDatum, Column* pCol);
     void vEncodeDte(Datum* pSrcDatum, Column* pCol);
     void vEncodeFlt(Datum* pSrcDatum, Column* pCol);
     void vEncodeInt(Datum* pSrcDatum, Column* pCol);
+    void vEncodeIvl(Datum* pSrcDatum, Column* pCol);
     void vEncodeTme(Datum* pSrcDatum, Column* pCol);
     void vEncodeTsp(Datum* pSrcDatum, Column* pCol);
     void vEncodeVch(Datum* pSrcDatum, Column* pCol);
-    
-    eMC  eGetEncoding(Column* pCol,
-                      i8& i_PriorColumn_, i8& i_Offset_);
+    void vEncodeVchShoco(Datum* pSrcDatum, Column* pCol);
+    void vEncodeVchSmall(Datum* pSrcDatum, Column* pCol);
+
+    eMC  eGetEncoding(Column* pCol, i8& i_PriorColumn_, i8& i_Offset_);
+                      
     void vHashColumn(Datum* pSrcDatum, Column* pCol);
   
     void vMetaCode(Column* pCol, eMC eMetaCode);
+    
     void vMetaPut(Datum* pDatum, Column* pCol);
 
     void vRecode_Large(void);
     void vRecode_Short(void);
-
     void vRecodeVch(Column* pCol);
     void vRecodeVchShoco(Column* pCol);
     bool bRecodeVchShocoDupe(Column* pCol);
     bool bRecodeVchShocoFold(Column* pCol);
     bool bRecodeVchShocoSplit(Column* pCol);
     void vRecodeVchShocoTail(Column* pCol);
-    void vRecodeVchSmall(Column* pCol);
 
     void vUsageIncEncoded(Column* pCol, i8 nBytes, eMC eMetaCode = MC_NULL);
     void vUsageIncEncoded(Column* pCol, Datum* pDatum, eMC eMetaCode = MC_NULL);
