@@ -288,10 +288,10 @@ void Job_SubExporter::vSprintRows(void)
   
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
 
-    HeadLine* aHeadLine = pRowTray->pNub()->aGetHead(i_Row);
+    HeadLine* aCompactRow = pRowTray->pNub()->aGetHead(i_Row);
     
     // inflate compact row into a row
-    RowCoder::vInflate(pRow,aHeadLine);
+    RowCoder::vInflate(pRow,aCompactRow);
     
     // append the row to the record
     hvRec->vAppend(pColVec,pRow);

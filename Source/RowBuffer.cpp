@@ -482,10 +482,11 @@ void RowBuffer::vShowRow(i8 i_Row)
   // create a row
   Row* pRow = new Row(pColVec);
   
-  HeadLine* aHeadLine = pRowTray->pNub()->aGetHead(i_Row);
+  // get compact row
+  HeadLine* aCompactRow = pRowTray->pNub()->aGetHead(i_Row);
 
   // inflate compact row into row
-  RowCoder::vInflate(pRow,aHeadLine);
+  RowCoder::vInflate(pRow,aCompactRow);
   
   // append the row to the record
   hvRec->vAppend(pColVec,pRow);

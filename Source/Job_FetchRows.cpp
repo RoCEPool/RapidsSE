@@ -759,16 +759,16 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
   HV_Rec hvRec;
   ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
   
-  HeadLine** aaHeadLine = pFetchBuffer->aaFirstRowPtr();
+  HeadLine** aaCompactRow_cursor = pFetchBuffer->aaFirstRowPtr();
   
   //pJob_FetchRows->m_pRow->vDontDecodeVch();
   
-  while (aaHeadLine) {
+  while (aaCompactRow_cursor) {
     
-    HeadLine* aHeadLine = *aaHeadLine;
+    HeadLine* aCompact = *aaCompactRow_cursor;
 
     // inflate compact row into row
-    RowCoder::vInflate(pJob_FetchRows->m_pRow,aHeadLine);
+    RowCoder::vInflate(pJob_FetchRows->m_pRow,aCompact);
     
     if (pJob_FetchRows->m_bPrint) {
       
@@ -793,7 +793,7 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
         hvRec->vPrintRow();
     }
     
-    aaHeadLine = pFetchBuffer->aaNextRowPtr(aaHeadLine);
+    aaCompactRow_cursor = pFetchBuffer->aaNextRowPtr(aaCompactRow_cursor);
   }
   
   return;

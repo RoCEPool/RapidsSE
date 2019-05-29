@@ -244,7 +244,8 @@ void KeyWrk::vExtractKey(RowNub* pRowNub, i8 i_Row, IdxColVec* pIdxColVec)
   }
   
   // inflate the index column values into row
-  RowCoder::vInflate(pRow,pRowNub->aGetHead(i_Row));
+  HeadLine* aCompactRow = pRowNub->aGetHead(i_Row);
+  RowCoder::vInflate(pRow,aCompactRow);
 
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     
