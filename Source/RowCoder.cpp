@@ -2171,13 +2171,13 @@ void RowCoder::vAnalyse(RowNub* pNub)
           
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         case MC_SHOCO_FIT_1C:
-          nCompressed = (i8)*(i1*)aDataByte++;
+          nCompressed = (i8)*(u1*)aDataByte++;
           aDataByte += nCompressed;
           break;
           
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         case MC_SHOCO_SPLIT_2T1C:
-          nCompressed = (i8)*(i1*)aDataByte++;
+          nCompressed = (i8)*(u1*)aDataByte++;
           nBytesPartA = aHeadLine->nBytes() - (aDataByte - (byte*)aHeadLine);
           aDataByte += nBytesPartA;
           break;
@@ -2529,7 +2529,7 @@ void RowCoder::vAnalyse(RowNub* pNub)
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_SHOCO_FIT_1C:
-        nCompressed = (i8)*(i1*)aDataByte++;
+        nCompressed = (i8)*(u1*)aDataByte++;
         nDecompressed =
           Compress::iFromShoco(aString,                  // decompressed dest
                                sizeof(caShoco),          // max destination
@@ -2578,7 +2578,7 @@ void RowCoder::vAnalyse(RowNub* pNub)
         wWord.m_yaByte[1] = *aDataByte++;
         i_Tail_rel = wWord.m_iI8;
         aShocoTail  = RowNub::aGetTail(aHeadLine,i_Tail_rel);
-        nCompressed = (i8)*(i1*)aDataByte++;
+        nCompressed = (i8)*(u1*)aDataByte++;
         nBytesPartA = aHeadLine->nBytes() - (aDataByte - (byte*)aHeadLine);
         nBytesPartB = nCompressed - nBytesPartA;
         MemLib::vCopy((byte*)caShoco,
