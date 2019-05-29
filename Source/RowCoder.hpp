@@ -138,7 +138,6 @@ namespace Data
     void vHashColumn(Datum* pSrcDatum, Column* pCol);
   
     void vMetaCode(Column* pCol, eMC eMetaCode);
-    
     void vMetaPut(Datum* pDatum, Column* pCol);
 
     void vRecode_Large(void);
@@ -165,8 +164,7 @@ namespace Data
     void vXchkTme(Datum* pDatum, Column* pCol, i8 iRow);
     void vXchkTsp(Datum* pDatum, Column* pCol, i8 iRow);
     void vXchkVch(Datum* pDatum, Column* pCol, i8 iRow);
-    
-    void vXchkRecodeVch(Column* pCol);
+    void vXchkVchRecode(Column* pCol);
     
   public:
     static void vAnalyse(RowNub* pNub);
@@ -187,10 +185,9 @@ namespace Data
   
     static i8   nDataBytes(eMC eMetaCode);
 
-    static void vDateIntoDelta(Datum* pDatum, i8& iEra);
+    static void vDateIntoEra(Datum* pDatum, i8& iEra);
     static void vDateFromEra(Datum* pDatum, i8 iEra);
     static void vDateFromEra(Word* aWord, i8 iEra);
-
 
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
                                  ColumnVec* pColVec, Column* pCol, 
