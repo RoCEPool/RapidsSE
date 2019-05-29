@@ -2854,7 +2854,6 @@ i8 StrLib::iWordFlipBack(char* aDst, char* aSrc)
   //MemLib::vDumpWords(aSrc, 16);
   
   i8 iLenSrc = StrLib::iSize(aSrc);
-  i8 iDstLen = 0;
   
   i8 iRoundUp = 0;
   i8 iRemainder = iLenSrc % C_BYTES_PER_WORD;
@@ -2876,7 +2875,7 @@ i8 StrLib::iWordFlipBack(char* aDst, char* aSrc)
   //vTrace("AFTER BACK : %s\n"_Stz, aDst);
   //MemLib::vDumpWords(aDst, iDstSize);
   
-  return iDstLen;
+  return iDstSize;
 }
 
 /*============================================================================*/
