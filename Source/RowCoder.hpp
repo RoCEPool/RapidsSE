@@ -185,10 +185,6 @@ namespace Data
   
     static i8   nDataBytes(eMC eMetaCode);
 
-    static void vDateIntoEra(Datum* pDatum, i8& iEra);
-    static void vDateFromEra(Datum* pDatum, i8 iEra);
-    static void vDateFromEra(Word* aWord, i8 iEra);
-
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
                                  ColumnVec* pColVec, Column* pCol, 
                                  i8& i_LastColumn, i8& i_LastOffset);
@@ -221,7 +217,10 @@ namespace Data
                                      Column* pCol, i8 i_Offset);
     static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
                                      Column* pCol, i8 i_Offset);
-
+    static void vDteIntoEdt(Datum* pDatum, i8& iEra_);
+    static void vDteFromEdt(Datum* pDatum, i8 iEra);
+    static void vDteFromEdt(Word* aWord, i8 iEra);
+                                     
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
   
     static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec);

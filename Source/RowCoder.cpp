@@ -567,7 +567,7 @@ void RowCoder::vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum)
   }
   
   i8 iEra = 0;
-  vDateIntoEra(pTgtDatum,iEra);
+  vDteIntoEdt(pTgtDatum,iEra);
   
   eMC eEncoding;
   
@@ -2494,7 +2494,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       case MC_DATE_E0_2B:
         *aiValue++ = *(u2*)aDataByte;
         aDataByte += C_2B;
-        vDateFromEra((Word*)(aiValue-1),C_ERA_0);
+        vDteFromEdt((Word*)(aiValue-1),C_ERA_0);
 #ifdef WITH_TRACE_DECODING
         wWord.m_iDte = *(aiValue-1);
         vTrace(" [%lld %15s] %4lld : %02lld-%02lld-%02lld\n"_Stz,
@@ -2511,7 +2511,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       case MC_DATE_E1_2B:
         *aiValue++ = *(u2*)aDataByte;
         aDataByte += C_2B;
-        vDateFromEra((Word*)(aiValue-1),C_ERA_1);
+        vDteFromEdt((Word*)(aiValue-1),C_ERA_1);
 #ifdef WITH_TRACE_DECODING
         wWord.m_iDte = *(aiValue-1);
         vTrace(" [%lld %15s] %4lld : %02lld-%02lld-%02lld\n"_Stz,
@@ -2528,7 +2528,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       case MC_DATE_E2_2B:
         *aiValue++ = *(u2*)aDataByte;
         aDataByte += C_2B;
-        vDateFromEra((Word*)(aiValue-1),C_ERA_2);
+        vDteFromEdt((Word*)(aiValue-1),C_ERA_2);
 #ifdef WITH_TRACE_DECODING
         wWord.m_iDte = *(aiValue-1);
         vTrace(" [%lld %15s] %4lld : %02lld-%02lld-%02lld\n"_Stz,
@@ -2954,79 +2954,6 @@ i8 RowCoder::nDataBytes(eMC eMetaCode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute date w.r.t the base date                                           */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDateIntoEra(Datum* pDatum, i8& iEra)
-{
-  i8 iYearDelta;
-  i8 iYearInEra;
-  i8 iMonth;
-  i8 iDay;
-  
-  iYearDelta = pDatum->xDte.m_uYearDelta;
-  iMonth     = pDatum->xDte.m_uMonth;
-  iDay       = pDatum->xDte.m_uDay;
-
-  if (iYearDelta < C_ERA_1) {
-    iEra = C_ERA_0;
-    iYearInEra = iYearDelta - C_ERA_0;
-  }
-  else if (iYearDelta < C_ERA_2) {
-    iEra = C_ERA_1;
-    iYearInEra = iYearDelta - C_ERA_1;
-  }
-  else {
-    iEra = C_ERA_2;
-    iYearInEra = iYearDelta - C_ERA_2;
-  }
-  
-  pDatum->m_iDte = 0;
-  pDatum->xEdt.m_uYearInEra = iYearInEra;
-  pDatum->xEdt.m_uMonth     = iMonth;
-  pDatum->xEdt.m_uDay       = iDay;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compute date w.r.t the base date                                           */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDateFromEra(Datum* pDatum, i8 iEraBaseYear)
-{
-//  i8 iYearInEra;
-//  i8 iMonth;
-//  i8 iDay;
-//
-//  iYearInEra = pDatum->xEdt.m_uYearInEra;
-//  iMonth     = pDatum->xEdt.m_uMonth;
-//  iDay       = pDatum->xEdt.m_uDay;
-//
-//  pDatum->m_iDte = 0;
-//  pDatum->xDte.m_uYearDelta = iYearInEra + iEraBaseYear;
-//  pDatum->xDte.m_uMonth     = iMonth;
-//  pDatum->xDte.m_uDay       = iDay;
-  
-  vDateFromEra((Word*)&pDatum->m_wWord,iEraBaseYear);
-}
-
-/*----------------------------------------------------------------------------*/
-/* compute date w.r.t the base date                                           */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDateFromEra(Word* aWord, i8 iEraBaseYear)
-{
-  i8 iYearInEra;
-  i8 iMonth;
-  i8 iDay;
-  
-  iYearInEra = aWord->xEdt.m_uYearInEra;
-  iMonth     = aWord->xEdt.m_uMonth;
-  iDay       = aWord->xEdt.m_uDay;
-  
-  aWord->m_iDte = 0;
-  aWord->xDte.m_uYearDelta = iYearInEra + iEraBaseYear;
-  aWord->xDte.m_uMonth     = iMonth;
-  aWord->xDte.m_uDay       = iDay;
-}
-
-/*----------------------------------------------------------------------------*/
 /* decode decimal from given head line                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
@@ -3102,7 +3029,7 @@ void RowCoder::vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
     RASSERT(0);
   }
   else {
-    vDateFromEra(pDatum,iEra);
+    vDteFromEdt(pDatum,iEra);
   }
 }
 
@@ -3444,6 +3371,66 @@ void RowCoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
 
   pDatum->m_nChars = nLength;
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert a Dte into an Edt                                                  */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDteIntoEdt(Datum* pDatum, i8& iEra_)
+{
+  i8 iYearDelta;
+  i8 iYearInEra;
+  i8 iMonth;
+  i8 iDay;
+  
+  iYearDelta = pDatum->xDte.m_uYearDelta;
+  iMonth     = pDatum->xDte.m_uMonth;
+  iDay       = pDatum->xDte.m_uDay;
+  
+  if (iYearDelta < C_ERA_1) {
+    iEra_ = C_ERA_0;
+    iYearInEra = iYearDelta - C_ERA_0;
+  }
+  else if (iYearDelta < C_ERA_2) {
+    iEra_ = C_ERA_1;
+    iYearInEra = iYearDelta - C_ERA_1;
+  }
+  else {
+    iEra_ = C_ERA_2;
+    iYearInEra = iYearDelta - C_ERA_2;
+  }
+  
+  pDatum->m_iDte = 0;
+  pDatum->xEdt.m_uYearInEra = iYearInEra;
+  pDatum->xEdt.m_uMonth     = iMonth;
+  pDatum->xEdt.m_uDay       = iDay;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute an Edt into a Dte                                                  */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDteFromEdt(Datum* pDatum, i8 iEraBaseYear)
+{
+  vDteFromEdt((Word*)&pDatum->m_wWord,iEraBaseYear);
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute date w.r.t the base date                                           */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDteFromEdt(Word* aWord, i8 iEraBaseYear)
+{
+  i8 iYearInEra;
+  i8 iMonth;
+  i8 iDay;
+  
+  iYearInEra = aWord->xEdt.m_uYearInEra;
+  iMonth     = aWord->xEdt.m_uMonth;
+  iDay       = aWord->xEdt.m_uDay;
+  
+  aWord->m_iDte = 0;
+  aWord->xDte.m_uYearDelta = iYearInEra + iEraBaseYear;
+  aWord->xDte.m_uMonth     = iMonth;
+  aWord->xDte.m_uDay       = iDay;
 }
 
 /*----------------------------------------------------------------------------*/
