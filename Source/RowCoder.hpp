@@ -169,7 +169,7 @@ namespace Data
   public:
     static void vAnalyse(RowNub* pNub);
   
-    //! alka 
+    //! alka
     static HeadLine* aCompactRow(RowBuffer* pRowBuffer, i8 i_Row);
   
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
@@ -225,6 +225,8 @@ namespace Data
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
   
     static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec);
+  
+    static w8 wGetLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes);
     
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
 

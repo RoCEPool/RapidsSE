@@ -256,6 +256,7 @@ using namespace Data;
 
 #include "Line.hpp"
 #include "HeadLine.hpp"
+#include "OverLine.hpp"
 #include "TailLine.hpp"
 
 static const i8 C_MAX_ROWS = (C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(HeadLine);
