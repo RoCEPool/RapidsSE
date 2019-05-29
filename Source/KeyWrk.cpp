@@ -154,21 +154,25 @@ void KeyWrk::vAddDatum(Datum& oDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddDatum(Row* pRow, Column* pCol)
+void KeyWrk::vAddElement(Row* pRow, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  i8 nBytes;
+  i8 nBytes = 0;
   
   char* aDst = aLatter();
-  char* aSrc;
+  char* aSrc = (char*)pRow->m_aiValue[pCol->iColumnNo()];
   
+  if (pRow->m_aiValue[pCol->iColumnNo()] == C_DATUM_NULL) {
+    nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,&aSrc);
+    vTake(nBytes);
+    return;
+  }
+    
   if (DM_VCH == pCol->eDatumType()) {
-    aSrc = (char*)(pRow->m_xWsp.aArea());
     nBytes = StrLib::iWordFlip(aDst, aSrc);
   }
   else {
-    aSrc = (char*)(&pRow->m_aiValue[pCol->iColumnNo()]);
     nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,aSrc);
   }
   
@@ -224,23 +228,10 @@ void KeyWrk::vAddWord(w8 wWord)
 /*----------------------------------------------------------------------------*/
 void KeyWrk::vExtractKey(RowNub* pRowNub, i8 i_Row, IdxColVec* pIdxColVec)
 {
-  Datum oDatum;
-  i8 nCols = pIdxColVec->nItems();
-  i8 i_LastColumn = 0;
-  i8 i_LastOffset = RowCoder::iBaseOffset(pRowNub->pDesc()->pColumnVec());
-  for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
-
-    // get the column from the index column vector
-    Column* pColumn = pIdxColVec->pGet(i_Column);
-
-    // get the column value from the row for the iColumnNo
-    RowCoder::vDecode(&oDatum,pRowNub,i_Row,pColumn,i_LastColumn,i_LastOffset);
-
-    // add the column value to the key
-    vAddDatum(oDatum, pColumn);
-  }
-  /*
+  
+  // create a row
   Row* pRow = new Row(pRowNub->pDesc()->pColumnVec());
+  
   i8 nCols = pIdxColVec->nItems();
   
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
@@ -260,11 +251,13 @@ void KeyWrk::vExtractKey(RowNub* pRowNub, i8 i_Row, IdxColVec* pIdxColVec)
     Column* pColumn = pIdxColVec->pGet(i_Column);
     
     // add the column value to the key
-    vAddDatum(pRow, pColumn);
+    vAddElement(pRow, pColumn);
+    
+    vShow(pIdxColVec);
   }
   
   delete pRow;
-   */
+
 }
 
 /*----------------------------------------------------------------------------*/
