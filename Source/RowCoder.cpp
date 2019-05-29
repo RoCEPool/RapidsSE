@@ -3507,6 +3507,29 @@ i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get some bytes from head+over                                              */
+/*----------------------------------------------------------------------------*/
+w8 RowCoder::wGetLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes)
+{
+  w8 wSomeBytes = 0;
+
+  i8 nHeadUnits = aHeadLine->nUnits();
+  if (nHeadUnits <= 127) {
+    wSomeBytes = aHeadLine->wGet(i_Offset, nBytes);
+    return wSomeBytes;
+  }
+  
+  i8 nHeadBytes = aHeadLine->nBytes();
+  if (i_Offset < nHeadBytes - 2) {
+    wSomeBytes = aHeadLine->wGet(i_Offset, nBytes);
+    return wSomeBytes;
+  }
+  
+  NEVER_REACH;
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get length of tail associate with a head line                              */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine)

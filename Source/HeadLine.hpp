@@ -21,7 +21,8 @@ namespace Data
     void vMetaCode(i8 i_Meta, w8 wArg);
     
     i8   nBytes(void);
-    i8   nWords(void);  
+    i8   nUnits(void);
+    i8   nWords(void);
 
   /*----------------------------------------------------------------------------*/
   /* return meta code                                                           */
