@@ -517,10 +517,10 @@ void RowCoder::vCodeBcd(Datum* pTgtDatum, Datum* pSrcDatum)
   
   RASSERT(DM_BCD == pSrcDatum->m_eDatum);
   
-  m_oEncodedDatum.m_eDatum = DM_BCD;
-  m_oEncodedDatum.m_iBcd   = pSrcDatum->m_iBcd;
+  pTgtDatum->m_eDatum = DM_BCD;
+  pTgtDatum->m_iBcd   = pSrcDatum->m_iBcd;
   
-  eMC eEncoding = (eMC)IntLib::iByteMagNull(m_oEncodedDatum.m_iBcd);
+  eMC eEncoding = (eMC)IntLib::iByteMagNull(pTgtDatum->m_iBcd);
   
   if (MC_NULL == eEncoding) {
     pTgtDatum->m_eEncoding = MC_NULL;
@@ -541,10 +541,10 @@ void RowCoder::vCodeBcd(Datum* pTgtDatum, Datum* pSrcDatum)
   }
 #endif
   
-  m_oEncodedDatum.m_eEncoding = eEncoding;
-  m_oEncodedDatum.m_nEncodedBytes = eEncoding;
+  pTgtDatum->m_eEncoding = eEncoding;
+  pTgtDatum->m_nEncodedBytes = eEncoding;
   
-  RASSERT(m_oEncodedDatum.m_nEncodedBytes == nDataBytes(eEncoding));
+  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(eEncoding));
 }
 
 /*----------------------------------------------------------------------------*/
