@@ -2600,8 +2600,9 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
         break;
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      case MC_STR_EMPTY:
-        *aiValue++ = 0;
+      case MC_STR_EMPTY:        
+        *(char**)(aiValue++) = aString;
+        *aString++ = '\0';
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
