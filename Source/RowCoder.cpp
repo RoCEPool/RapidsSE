@@ -567,7 +567,7 @@ void RowCoder::vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum)
   }
   
   i8 iEra = 0;
-  vDateIntoDelta(&m_oEncodedDatum,iEra);
+  vDteIntoEdt(pTgtDatum,iEra);
   
   eMC eEncoding;
   
@@ -650,22 +650,6 @@ void RowCoder::vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum)
   
   RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(eEncoding));
 }
-/*----------------------------------------------------------------------------*/
-//void RowCoder::vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-//
-//  RASSERT(DM_INT == pSrcDatum->m_eDatum);
-//
-//  pTgtDatum->m_eDatum = DM_INT;
-//  pTgtDatum->m_iInt   = pSrcDatum->m_iInt;
-//
-//  eMC eEncoding = (eMC)IntLib::iByteMagNull(pTgtDatum->m_iInt);
-//  pTgtDatum->m_eEncoding = eEncoding;
-//  pTgtDatum->m_nEncodedBytes = eEncoding;
-//
-//  RASSERT(pTgtDatum->m_nEncodedBytes == nDataBytes(eEncoding));
-//}
 
 /*----------------------------------------------------------------------------*/
 /* initial encoding of ivl                                                    */
@@ -896,18 +880,6 @@ void RowCoder::vEncodeDte(Datum* pSrcDatum, Column* pCol)
   //  vTrace("++ %lld-%lld-%lld\n"_Stz,
   //         pDatum->xDte.m_uYearDelta,pDatum->xDte.m_uMonth,pDatum->xDte.m_uDay);
   
-  //! HACK
-  // get the extracted date into xEdt
-  Datum oDatum;
-  oDatum.m_wWord = pSrcDatum->m_wWord;
-  
-  if ( ! pSrcDatum->bIsNull()) {
-    pSrcDatum->xEdt.m_uYearInEra = oDatum.xDte.m_uYearDelta;;
-    pSrcDatum->xEdt.m_uMonth = oDatum.xDte.m_uMonth;
-    pSrcDatum->xEdt.m_uDay = oDatum.xDte.m_uDay;
-    pSrcDatum->xEdt.m_uSpare = 0;
-  }
-
   vCodeDte(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
   vDataPut(&m_oEncodedDatum);
@@ -1278,13 +1250,13 @@ void RowCoder::vRecodeVch(Column* pCol)
     i8 nLength = m_aIntoHead->w8_1B(m_i_IntoOffset);
     m_i_IntoOffset += _1B_L + nLength;
     vUsageIncRecoded(pCol,_1B_L + nLength);
-    vXchkRecodeVch(pCol);
+    vXchkVchRecode(pCol);
     return;
   }
   
   if (MC_SHOCO_TAIL_2T == m_eFromEncoding) {
     vRecodeVchShoco(pCol);
-    vXchkRecodeVch(pCol);
+    vXchkVchRecode(pCol);
     return;
   }
   
@@ -2037,7 +2009,7 @@ void RowCoder::vXchkVch(Datum* pDatum, Column* pCol, i8 iRow)
 /*----------------------------------------------------------------------------*/
 /* cross-check the recoding of vch                                            */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vXchkRecodeVch(Column* pCol)
+void RowCoder::vXchkVchRecode(Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
@@ -2144,27 +2116,6 @@ void RowCoder::vAnalyse(RowNub* pNub)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append column datum into record                                            */
-/*----------------------------------------------------------------------------*/
-//void RowCoder::vAppend(Record* pRec, Datum* pDatum, Column* pCol)
-//{
-//  eDM eDatum = pCol->eDatumType();
-//  switch (eDatum) {
-//    case DM_BCD: pRec->vAppendBcd(pCol,pDatum); break;
-//    case DM_BOL: pRec->vAppendBol(pCol,pDatum); break;
-//    case DM_DTE: pRec->vAppendDte(pCol,pDatum); break;
-//    case DM_FLT: pRec->vAppendFlt(pCol,pDatum); break;
-//    case DM_INT: pRec->vAppendInt(pCol,pDatum); break;
-//    case DM_IVL: pRec->vAppendIvl(pCol,pDatum); break;
-//    case DM_TME: pRec->vAppendTme(pCol,pDatum); break;
-//    case DM_TSP: pRec->vAppendTsp(pCol,pDatum); break;
-//    case DM_VCH: pRec->vAppendVch(pCol,pDatum); break;
-//    default:
-//      NEVER_REACH;
-//  }
-//}
-
-/*----------------------------------------------------------------------------*/
 /* get encoded datum from row                                                 */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
@@ -2174,7 +2125,6 @@ void RowCoder::vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
   ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
   
   vDecode(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2544,7 +2494,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       case MC_DATE_E0_2B:
         *aiValue++ = *(u2*)aDataByte;
         aDataByte += C_2B;
-        vDateFromEra(&wWord,C_ERA_0);
+        vDteFromEdt((Word*)(aiValue-1),C_ERA_0);
 #ifdef WITH_TRACE_DECODING
         wWord.m_iDte = *(aiValue-1);
         vTrace(" [%lld %15s] %4lld : %02lld-%02lld-%02lld\n"_Stz,
@@ -2561,7 +2511,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       case MC_DATE_E1_2B:
         *aiValue++ = *(u2*)aDataByte;
         aDataByte += C_2B;
-        vDateFromEra(&wWord,C_ERA_1);
+        vDteFromEdt((Word*)(aiValue-1),C_ERA_1);
 #ifdef WITH_TRACE_DECODING
         wWord.m_iDte = *(aiValue-1);
         vTrace(" [%lld %15s] %4lld : %02lld-%02lld-%02lld\n"_Stz,
@@ -2578,7 +2528,7 @@ void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
       case MC_DATE_E2_2B:
         *aiValue++ = *(u2*)aDataByte;
         aDataByte += C_2B;
-        vDateFromEra(&wWord,C_ERA_2);
+        vDteFromEdt((Word*)(aiValue-1),C_ERA_2);
 #ifdef WITH_TRACE_DECODING
         wWord.m_iDte = *(aiValue-1);
         vTrace(" [%lld %15s] %4lld : %02lld-%02lld-%02lld\n"_Stz,
@@ -2923,37 +2873,6 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* decode and append column datum into record                                 */
-/*----------------------------------------------------------------------------*/
-//void RowCoder::vAppend(Record* pRec, HeadLine* aHeadLine,
-//                             ColumnVec* pColVec, Column* pCol,
-//                             i8& i_LastColumn, i8& i_Offset)
-//{
-//  Datum oDatum;
-//
-//  // first get the encoded value into datum
-//  vDecode(&oDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_Offset);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // we have the decoded value in oDatum
-//
-//  eDM eDatum = pCol->eDatumType();
-//  switch (eDatum) {
-//    case DM_BCD: pRec->vAppendBcd(pCol,&oDatum); break;
-//    case DM_BOL: pRec->vAppendBol(pCol,&oDatum); break;
-//    case DM_DTE: pRec->vAppendDte(pCol,&oDatum); break;
-//    case DM_FLT: pRec->vAppendFlt(pCol,&oDatum); break;
-//    case DM_INT: pRec->vAppendInt(pCol,&oDatum); break;
-//    case DM_IVL: pRec->vAppendIvl(pCol,&oDatum); break;
-//    case DM_TME: pRec->vAppendTme(pCol,&oDatum); break;
-//    case DM_TSP: pRec->vAppendTsp(pCol,&oDatum); break;
-//    case DM_VCH: pRec->vAppendVch(pCol,&oDatum); break;
-//    default:
-//      NEVER_REACH;
-//  }
-//}
-
-/*----------------------------------------------------------------------------*/
 /* how many bytes does given encoding occupy in the data portion of a head?   */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::nDataBytes(eMC eMetaCode)
@@ -3036,50 +2955,6 @@ i8 RowCoder::nDataBytes(eMC eMetaCode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute date w.r.t the base date                                           */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDateIntoDelta(Datum* pDatum, i8& iEra)
-{
-  Datum oDatum;
-  
-  if (pDatum->xEdt.m_uYearInEra < C_ERA_1)
-    iEra = C_ERA_0;
-  else if (pDatum->xEdt.m_uYearInEra < C_ERA_2)
-    iEra = C_ERA_1;
-  else
-    iEra = C_ERA_2;
-  
-  i8 nYearInEra = pDatum->xEdt.m_uYearInEra;
-  
-  // year delta
-  if (C_ERA_1 == iEra)
-    nYearInEra -= C_ERA_1;
-  else if (C_ERA_2 == iEra)
-    nYearInEra -= C_ERA_2;
-  else {
-    ASSERT(C_ERA_0 == iEra);
-  }
-  
-  pDatum->xEdt.m_uYearInEra = nYearInEra;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compute date w.r.t the base date                                           */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDateFromEra(Datum* pDatum, i8 iEra)
-{
-  pDatum->xEdt.m_uYearInEra += iEra;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compute date w.r.t the base date                                           */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDateFromEra(Word* aWord, i8 iEra)
-{
-  aWord->xEdt.m_uYearInEra += iEra;
-}
-
-/*----------------------------------------------------------------------------*/
 /* decode decimal from given head line                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
@@ -3155,7 +3030,7 @@ void RowCoder::vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
     RASSERT(0);
   }
   else {
-    vDateFromEra(pDatum,iEra);
+    vDteFromEdt(pDatum,iEra);
   }
 }
 
@@ -3497,6 +3372,66 @@ void RowCoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
 
   pDatum->m_nChars = nLength;
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert a Dte into an Edt                                                  */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDteIntoEdt(Datum* pDatum, i8& iEra_)
+{
+  i8 iYearDelta;
+  i8 iYearInEra;
+  i8 iMonth;
+  i8 iDay;
+  
+  iYearDelta = pDatum->xDte.m_uYearDelta;
+  iMonth     = pDatum->xDte.m_uMonth;
+  iDay       = pDatum->xDte.m_uDay;
+  
+  if (iYearDelta < C_ERA_1) {
+    iEra_ = C_ERA_0;
+    iYearInEra = iYearDelta - C_ERA_0;
+  }
+  else if (iYearDelta < C_ERA_2) {
+    iEra_ = C_ERA_1;
+    iYearInEra = iYearDelta - C_ERA_1;
+  }
+  else {
+    iEra_ = C_ERA_2;
+    iYearInEra = iYearDelta - C_ERA_2;
+  }
+  
+  pDatum->m_iDte = 0;
+  pDatum->xEdt.m_uYearInEra = iYearInEra;
+  pDatum->xEdt.m_uMonth     = iMonth;
+  pDatum->xEdt.m_uDay       = iDay;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute an Edt into a Dte                                                  */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDteFromEdt(Datum* pDatum, i8 iEraBaseYear)
+{
+  vDteFromEdt((Word*)&pDatum->m_wWord,iEraBaseYear);
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute date w.r.t the base date                                           */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDteFromEdt(Word* aWord, i8 iEraBaseYear)
+{
+  i8 iYearInEra;
+  i8 iMonth;
+  i8 iDay;
+  
+  iYearInEra = aWord->xEdt.m_uYearInEra;
+  iMonth     = aWord->xEdt.m_uMonth;
+  iDay       = aWord->xEdt.m_uDay;
+  
+  aWord->m_iDte = 0;
+  aWord->xDte.m_uYearDelta = iYearInEra + iEraBaseYear;
+  aWord->xDte.m_uMonth     = iMonth;
+  aWord->xDte.m_uDay       = iDay;
 }
 
 /*----------------------------------------------------------------------------*/

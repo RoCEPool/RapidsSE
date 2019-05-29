@@ -138,7 +138,6 @@ namespace Data
     void vHashColumn(Datum* pSrcDatum, Column* pCol);
   
     void vMetaCode(Column* pCol, eMC eMetaCode);
-    
     void vMetaPut(Datum* pDatum, Column* pCol);
 
     void vRecode_Large(void);
@@ -165,8 +164,7 @@ namespace Data
     void vXchkTme(Datum* pDatum, Column* pCol, i8 iRow);
     void vXchkTsp(Datum* pDatum, Column* pCol, i8 iRow);
     void vXchkVch(Datum* pDatum, Column* pCol, i8 iRow);
-    
-    void vXchkRecodeVch(Column* pCol);
+    void vXchkVchRecode(Column* pCol);
     
   public:
     static void vAnalyse(RowNub* pNub);
@@ -186,11 +184,6 @@ namespace Data
   private:
   
     static i8   nDataBytes(eMC eMetaCode);
-
-    static void vDateIntoDelta(Datum* pDatum, i8& iEra);
-    static void vDateFromEra(Datum* pDatum, i8 iEra);
-    static void vDateFromEra(Word* aWord, i8 iEra);
-
 
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
                                  ColumnVec* pColVec, Column* pCol, 
@@ -224,7 +217,10 @@ namespace Data
                                      Column* pCol, i8 i_Offset);
     static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
                                      Column* pCol, i8 i_Offset);
-
+    static void vDteIntoEdt(Datum* pDatum, i8& iEra_);
+    static void vDteFromEdt(Datum* pDatum, i8 iEra);
+    static void vDteFromEdt(Word* aWord, i8 iEra);
+                                     
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
   
     static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec);

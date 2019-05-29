@@ -274,22 +274,7 @@ i8 Nub_t<CN,HEAD,TAIL,DESC>::iAllotOver(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  RASSERT(nBytes);
-  
-  if (nFreeBytes() < nBytes)
-    return C_UNKNOWN;
-  
-  i8 nUnits = MemLib::nQuantaRequired(nBytes,C_SPACEUNIT);
-  RASSERT(nUnits * (i8)C_SPACEUNIT >= nBytes);
-  
-  m_nTailBytes += nBytes;
-  m_nTailUnits += nUnits;
-  m_nTailItems++;
-  
-  i8 i_Tail = m_nSpaceUnits - m_nTailUnits;
-  
-  TAIL* aTail = aGetTail(i_Tail);
-  aTail->v1B(0,nUnits);
+  i8 i_Tail = iAllotTail(nBytes);
   
   return i_Tail;
 }
