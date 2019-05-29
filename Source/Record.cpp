@@ -210,7 +210,7 @@ void Record::vAppendBcd_Alt(Column* pCol, Datum* pDatum)
                     pCol->iColumnScale(),
                     iBcd_Fraction);
   else
-    StrLib::vSprint(sAscii.aChar(),"%s%lld%c"_Stz,
+    StrLib::vSprint(sAscii.aChar(),"%s%lld"_Stz,
                     bNegative ? "-" : "",
                     iBcd_Whole);
 
