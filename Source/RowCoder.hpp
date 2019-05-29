@@ -169,6 +169,8 @@ namespace Data
   public:
     static void vAnalyse(RowNub* pNub);
     
+    static i8   nDataBytes(eMC eMetaCode);
+    
     static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
                         i8& i_LastColumn, i8& i_LastOffset);
                         
@@ -177,14 +179,7 @@ namespace Data
                         i8& i_LastColumn, i8& i_LastOffset);
     
     static void vDecode(Row* pRow, HeadLine* aHeadLine);
-    
-    static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
-    static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    
-  private:
-  
-    static i8   nDataBytes(eMC eMetaCode);
-
+      
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
                                  ColumnVec* pColVec, Column* pCol, 
                                  i8& i_LastColumn, i8& i_LastOffset);
@@ -220,10 +215,13 @@ namespace Data
     static void vDteIntoEdt(Datum* pDatum, i8& iEra_);
     static void vDteFromEdt(Datum* pDatum, i8 iEra);
     static void vDteFromEdt(Word* aWord, i8 iEra);
-                                     
+    
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
   
     static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec);
+    
+    static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
+    static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
     
     static void vRestoreTme(Datum* pDatum);
     static void vRestoreTsp(Datum* pDatum);
