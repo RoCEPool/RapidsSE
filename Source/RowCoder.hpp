@@ -169,6 +169,9 @@ namespace Data
   public:
     static void vAnalyse(RowNub* pNub);
   
+    //! alka 
+    static HeadLine* aCompactRow(RowBuffer* pRowBuffer, i8 i_Row);
+  
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
   
