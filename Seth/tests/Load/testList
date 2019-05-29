@@ -5,8 +5,8 @@ escape_rev6.test
 //max_columns.test
 null_rev6.test
 part_curlyBraces.test
-//rdp.test
-//regressionData.test
+rdp.test
+regressionData.test
 spaces_rev6.test
 terminator_cr.test
 terminatorLarge_cr.test
