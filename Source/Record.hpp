@@ -26,26 +26,17 @@ namespace Data
   
     void vAppend(ColumnVec* pColVec, Row* pRow);
     
-    void vAppend_Alt(Column* pCol, Datum* pDatum);
-    void vAppend_Alt(Column* pCol, Row* pRow);
+    void vAppend(Column* pCol, Datum* pDatum);
+    void vAppend(Column* pCol, Row* pRow);
     void vAppendBcd(Column* pCol, Datum* pDatum);
-    void vAppendBcd_Alt(Column* pCol, Datum* pDatum);
     void vAppendBol(Column* pCol, Datum* pDatum);
-    void vAppendBol_Alt(Column* pCol, Datum* pDatum);
     void vAppendDte(Column* pCol, Datum* pDatum);
-    void vAppendDte_Alt(Column* pCol, Datum* pDatum);
     void vAppendFlt(Column* pCol, Datum* pDatum);
-    void vAppendFlt_Alt(Column* pCol, Datum* pDatum);
     void vAppendInt(Column* pCol, Datum* pDatum);
-    void vAppendInt_Alt(Column* pCol, Datum* pDatum);
     void vAppendIvl(Column* pCol, Datum* pDatum);
-    void vAppendIvl_Alt(Column* pCol, Datum* pDatum);
     void vAppendTme(Column* pCol, Datum* pDatum);
-    void vAppendTme_Alt(Column* pCol, Datum* pDatum);
     void vAppendTsp(Column* pCol, Datum* pDatum);
-    void vAppendTsp_Alt(Column* pCol, Datum* pDatum);
     void vAppendVch(Column* pCol, Datum* pDatum);
-    void vAppendVch_Alt(Column* pCol, Datum* pDatum);
 
     void vPrintRow(void);
   

@@ -2707,7 +2707,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     
     // first get the encoded value into datum
     vDecode(&oDatum,aHeadLine,pColVec,pCol,i_Col,i_LastOffset);
-    hvRec->vAppend_Alt(pCol, &oDatum);
+    hvRec->vAppend(pCol, &oDatum);
     
     vTrace("%s"_Stz,hvRec->szRecStr());
     
@@ -2790,7 +2790,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
   
   // first get the encoded value into datum
   vDecode(&oDatum,aHeadLine,pColVec,pCol,i_Col,i_LastOffset);
-  hvRec->vAppend_Alt(pCol, &oDatum);
+  hvRec->vAppend(pCol, &oDatum);
   
   vTrace("%s"_Stz,hvRec->szRecStr());
   
