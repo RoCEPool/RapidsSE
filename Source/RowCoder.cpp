@@ -2116,73 +2116,6 @@ void RowCoder::vAnalyse(RowNub* pNub)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get encoded datum from row                                                 */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
-                       i8& i_LastColumn, i8& i_LastOffset)
-{
-  HeadLine* aHeadLine = pNub->aGetHead(i_Row);
-  ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
-  
-  vDecode(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get encoded datum from row                                                 */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
-                             ColumnVec* pColVec, Column* pCol,
-                             i8& i_LastColumn, i8& i_LastOffset)
-{
-  eDM eDatum = pCol->eDatumType();
-  
-  switch (eDatum) {
-      
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // the regular datums
-      
-    case DM_BCD:
-      vDecodeBcd(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
-      break;
-      
-    case DM_BOL:
-      vDecodeBol(pDatum,aHeadLine,pCol);
-      break;
-      
-    case DM_DTE:
-      vDecodeDte(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
-      break;
-      
-    case DM_FLT:
-      vDecodeFlt(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
-      break;
-      
-    case DM_INT:
-      vDecodeInt(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
-      break;
-      
-    case DM_IVL:
-      vDecodeIvl(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
-      break;
-      
-    case DM_TME:
-      vDecodeTme(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
-      break;
-      
-    case DM_TSP:
-      vDecodeTsp(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
-      break;
-      
-    case DM_VCH:
-      vDecodeVch(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
-      break;
-      
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* decode headline into row                                                   */
 /*----------------------------------------------------------------------------*/
  void RowCoder::vDecode(Row* pRow, HeadLine* aHeadLine)
@@ -2952,6 +2885,73 @@ i8 RowCoder::nDataBytes(eMC eMetaCode)
       NEVER_REACH;
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* get encoded datum from row                                                 */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
+                       i8& i_LastColumn, i8& i_LastOffset)
+{
+  HeadLine* aHeadLine = pNub->aGetHead(i_Row);
+  ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
+  
+  vDecode(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get encoded datum from row                                                 */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
+                       ColumnVec* pColVec, Column* pCol,
+                       i8& i_LastColumn, i8& i_LastOffset)
+{
+  eDM eDatum = pCol->eDatumType();
+  
+  switch (eDatum) {
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // the regular datums
+      
+    case DM_BCD:
+      vDecodeBcd(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+      break;
+      
+    case DM_BOL:
+      vDecodeBol(pDatum,aHeadLine,pCol);
+      break;
+      
+    case DM_DTE:
+      vDecodeDte(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+      break;
+      
+    case DM_FLT:
+      vDecodeFlt(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+      break;
+      
+    case DM_INT:
+      vDecodeInt(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+      break;
+      
+    case DM_IVL:
+      vDecodeIvl(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+      break;
+      
+    case DM_TME:
+      vDecodeTme(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+      break;
+      
+    case DM_TSP:
+      vDecodeTsp(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+      break;
+      
+    case DM_VCH:
+      vDecodeVch(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
+      break;
+      
+    default:
+      NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

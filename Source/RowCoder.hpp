@@ -169,13 +169,6 @@ namespace Data
   public:
     static void vAnalyse(RowNub* pNub);
     
-    static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
-                        i8& i_LastColumn, i8& i_LastOffset);
-                        
-    static void vDecode(Datum* pDatum, HeadLine* aHeadLine,
-                        ColumnVec* pColVec, Column* pCol,
-                        i8& i_LastColumn, i8& i_LastOffset);
-    
     static void vDecode(Row* pRow, HeadLine* aHeadLine);
     
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
@@ -184,6 +177,13 @@ namespace Data
   private:
   
     static i8   nDataBytes(eMC eMetaCode);
+
+    static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
+                        i8& i_LastColumn, i8& i_LastOffset);
+
+    static void vDecode(Datum* pDatum, HeadLine* aHeadLine,
+                        ColumnVec* pColVec, Column* pCol,
+                        i8& i_LastColumn, i8& i_LastOffset);
 
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
                                  ColumnVec* pColVec, Column* pCol, 
@@ -321,8 +321,8 @@ namespace Data
     static inline i8 nHeadBytes(ColumnVec* pColVec)
     {
       // experiment 1
-      //i8 nBytes = sizeof(CacheLine) + (1 * C_BYTES_PER_WORD);
-      //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+      i8 nBytes = sizeof(CacheLine) + (1 * C_BYTES_PER_WORD);
+      i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
       
       // experiment 2
       //i8 nBytes = pColVec->nItems() * 4;
@@ -333,8 +333,12 @@ namespace Data
       //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
       
       // experiment 4
-      i8 nBytes = pColVec->nItems() * 6;
-      i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+      //i8 nBytes = pColVec->nItems() * 6;
+      //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+      
+      // seth
+      //i8 nBytes = pColVec->nItems() * 8;
+      //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
       
       return nHeadBytes*C_BYTES_PER_WORD;
     }
