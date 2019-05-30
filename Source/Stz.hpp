@@ -43,6 +43,7 @@ namespace Base
     void vToLower(void);
   };
   
+  // user defined string literal
   Stz* operator "" _Stz(const char* aLiteral, size_t nSize);
 }
 

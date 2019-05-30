@@ -810,10 +810,17 @@ void RowCoder::vCopyHead(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 
 #ifdef WITH_HEAD_OVERFLOW
-  // don't copy over the [OT] at the end of the head
-  MemLib::vCopy(m_aIntoHead,m_aFromHead,(m_nHeadBytes - _2B_OT),CN_ROWBUFFER);
+  // don't copy over the <W> at the start of head, and
+  //                 the [OT] at the end of the head
+  MemLib::vCopy((byte*)m_aIntoHead + _1B_W,
+                (byte*)m_aFromHead + _1B_W,
+                (m_nHeadBytes - _1B_W - _2B_OT),
+                CN_ROWBUFFER);
 #else
-  MemLib::vCopy(m_aIntoHead,m_aFromHead,m_nHeadBytes,CN_ROWBUFFER);
+  MemLib::vCopy(m_aIntoHead,
+                m_aFromHead,
+                m_nHeadBytes,
+                CN_ROWBUFFER);
 #endif
   
 #ifdef WITH_TRACE_ENCODING
@@ -821,6 +828,19 @@ void RowCoder::vCopyHead(void)
 #endif
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* check there is enough space for nBytes of data                             */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDataNeed(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  if (m_nHeadBytes - m_i_IntoOffset >= nBytes)
+    return;
+
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1106,8 +1126,8 @@ void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
   
   w8 wSmall = *(w8*)pSrcDatum->m_sVch.aChar();
   
+  vDataNeed(_1B_L + pSrcDatum->m_nChars);
   vDataPut(pSrcDatum->m_nChars,1,pCol);
-  
   vDataPut(wSmall,pSrcDatum->m_nChars,pCol);
   
   vUsageIncEncoded(pCol,1 + pSrcDatum->m_nChars);
