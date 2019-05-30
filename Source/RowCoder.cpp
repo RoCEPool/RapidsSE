@@ -231,10 +231,10 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   m_nTotalHeads++;
 
   
-#ifdef WITH_TRACE_ENCODING
+//#ifdef WITH_TRACE_ENCODING
   if (m_nTotalHeads <= 10)
     RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
-#endif
+//#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyse free space in the into head
@@ -2175,11 +2175,29 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
   
   MemLib::vWordDump(aHeadLine,aHeadLine->nBytes());
   
-  i8 nFreeBytes = nFreeSpaceHead(aHeadLine,pColVec);
-  vTrace("FreeBytes %lld\n"_Stz,nFreeBytes);
-  
+  OverLine* aOverLine = nullptr;
+  if (aHeadLine->bHasOverflow()) {
+    
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
+  i8 nFreeBytes = nFreeSpaceHead(aHeadLine,pColVec);
+
+  if (aHeadLine->bHasOverflow()) {
+    vTrace("<W> %lld [OT] %lld;  FreeBytes %lld\n"_Stz,
+           aHeadLine->nWords(),
+           aHeadLine->iOverflow2B(),
+           nFreeBytes);
+  }
+  else {
+    vTrace("<W> %lld [OT] none;  FreeBytes %lld\n"_Stz,
+           aHeadLine->nWords(),
+           nFreeBytes);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // get no of columns
   i8 nColumns = pColVec->nItems();
   
@@ -4169,6 +4187,26 @@ void RowCoder::vPutLogical(HeadLine* aLogicalRow, i8 i_Offset, i8 nBytes, w8 wBy
   // scenario 3: there is an overflow, and putting bytes into overflow
   
   NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get overflow line using relative index [OT]                                */
+/*----------------------------------------------------------------------------*/
+OverLine* RowCoder::aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel)
+{
+  OverLine* aOver = RowNub::aGetOver(aHeadLine,i_Over_rel);
+  
+  return aOver;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get tail line using relative index [FT]                                    */
+/*----------------------------------------------------------------------------*/
+TailLine* RowCoder::aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel)
+{
+  TailLine* aTail = RowNub::aGetTail(aHeadLine,i_Tail_rel);
+  
+  return aTail;
 }
 
 /*----------------------------------------------------------------------------*/

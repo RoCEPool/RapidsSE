@@ -140,7 +140,7 @@ namespace Data
     void vExtendIntoHead(i8 nBytes);
 
     eMC  eGetEncoding(Column* pCol, i8& i_PriorColumn_, i8& i_Offset_);
-                      
+
     void vHashColumn(Datum* pSrcDatum, Column* pCol);
   
     void vMetaCode(Column* pCol, eMC eMetaCode);
@@ -234,6 +234,9 @@ namespace Data
   
     static w8   wGetLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes);
     static void vPutLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes, w8 wBytes);
+
+    OverLine* aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel);
+    TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
 
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
 
