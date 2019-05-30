@@ -92,7 +92,7 @@ bool HeadLine::bHasOverflow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the relative distance to the overflow line |OT| which is 2B            */
+/* get the relative distance to the overflow line [OT] which is 2B            */
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::iOverflow2B(void)
 {
@@ -104,7 +104,7 @@ i8 HeadLine::iOverflow2B(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the relative distance to the overflow line |OT| which is 2B            */
+/* set the relative distance to the overflow line [OT] which is 2B            */
 /*----------------------------------------------------------------------------*/
 void HeadLine::vOverflow2B(i8 iOver2B)
 {

@@ -7,16 +7,17 @@ namespace Data
 {
   static const i8 C_METABITS = 8;
   
-  static const i8 _2B_FT = 2;
-  static const i8 _2B_IT = 2;
-  static const i8 _1B_C  = 1;
-  static const i8 _1B_L  = 1;
-  static const i8 _1B_U  = 1;
-  static const i8 _1B_W  = 1;
+  static const i8 _2B_FT = 2;  // absolute from-tail i_Line
+  static const i8 _2B_IT = 2;  // relative into-tail i_Line
+  static const i8 _2B_OT = 2;  // relative over-tail i_Line
+  
+  static const i8 _1B_C  = 1;  // 1B no. of compressed bytes
+  static const i8 _1B_L  = 1;  // 1B length in bytes
+  static const i8 _1B_U  = 1;  // 1B length in units
+  static const i8 _1B_W  = 1;  // 1B length in words
 
   static const i8 C_OFFSET_UNITS = 0;
   static const i8 C_OFFSET_COMPRESSED = C_OFFSET_UNITS + _1B_U;
-
 
   /*----------------------------------------------------------------------------*/
   
@@ -132,6 +133,7 @@ namespace Data
     void vEncodeVch(Datum* pSrcDatum, Column* pCol);
     void vEncodeVchShoco(Datum* pSrcDatum, Column* pCol);
     void vEncodeVchSmall(Datum* pSrcDatum, Column* pCol);
+    void vExtendIntoHead(i8 nBytes);
 
     eMC  eGetEncoding(Column* pCol, i8& i_PriorColumn_, i8& i_Offset_);
                       
