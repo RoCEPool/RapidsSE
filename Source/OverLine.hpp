@@ -18,8 +18,9 @@ namespace Data
     OverLine(void);
     ~OverLine(void) noexcept(false);
   
-    i8   nBytes(void);
-    i8   nWords(void);    
+    i8 nBytes(void);
+    i8 nUnits(void);
+    i8 nWords(void);
   };
 
   /*--------------------------------------------------------------------------*/

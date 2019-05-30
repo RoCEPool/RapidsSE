@@ -31,9 +31,19 @@ OverLine::~OverLine(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 i8 OverLine::nBytes(void)
 {
-  i8 nSizeBytes = nWords() * C_BYTES_PER_WORD;
-  
+  i8 nSizeBytes = nUnits() * sizeof(SpaceUnit);
+
   return nSizeBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return size of overflow in units                                           */
+/*----------------------------------------------------------------------------*/
+i8 OverLine::nUnits(void)
+{
+  i8 nSizeUnits = w8_1B(0);
+  
+  return nSizeUnits;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,8 +51,8 @@ i8 OverLine::nBytes(void)
 /*----------------------------------------------------------------------------*/
 i8 OverLine::nWords(void)
 {
-  i8 nSizeWords = w8_1B(0);
-  
+  i8 nSizeWords = nBytes() / C_BYTES_PER_WORD;
+
   return nSizeWords;
 }
 
