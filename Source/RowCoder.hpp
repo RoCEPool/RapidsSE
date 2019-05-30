@@ -232,8 +232,9 @@ namespace Data
   
     static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec);
   
-    static w8   wGetLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes);
-    static void vPutLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes, w8 wBytes);
+    static byte* ayAdrLogical(HeadLine* aHeadLine, i8 i_Offset);
+    static w8    wGetLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes);
+    static void  vPutLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes, w8 wBytes);
 
     static OverLine* aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel);
     static TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);

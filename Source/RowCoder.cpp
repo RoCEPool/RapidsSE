@@ -2226,10 +2226,12 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     Column* pCol = pColVec->pGet(i_Col);
     
     // get the encoded information
-    eDM  eDatum    = pCol->eDatumType();
-    eMC  eMetaCode = aHeadLine->eMetaCode(i_Col);
-    Stz* aMetaCode = aMC[eMetaCode];
-    i8   nBytes    = nDataBytes(eMetaCode);
+    eDM   eDatum     = pCol->eDatumType();
+    Stz*  szDatum    = aDM[eDatum];
+    eMC   eMetaCode  = aHeadLine->eMetaCode(i_Col);
+    Stz*  szMetaCode = aMC[eMetaCode];
+    byte* ayAddr     = ayAdrLogical(aHeadLine,i_Offset);
+    i8    nBytes     = nDataBytes(eMetaCode);
     if (MC_STR_FIT_1L == eMetaCode) {
       RASSERT(1 == nBytes);
       nBytes += wGetLogical(aHeadLine,i_Offset,C_1B);
@@ -2239,11 +2241,11 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     vTrace("%3lld %-15s %-3s %02x %-19s %2lld %012llx %1lld "_Stz,
            i_Col,
            pCol->szColNm(),
-           aDM[eDatum],
+           szDatum,
            eMetaCode,
-           aMetaCode,
+           szMetaCode,
            i_Offset,
-           (byte*)aHeadLine + i_Offset,
+           ayAddr,
            nBytes);
     
     if (nBytes)
@@ -4147,6 +4149,30 @@ i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec)
   i8 nFreeBytes = aHeadLine->nBytes() - i_Offset - nBytes;
   
   return nFreeBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of a byte from logicalRow : head[+over]                        */
+/*----------------------------------------------------------------------------*/
+byte* RowCoder::ayAdrLogical(HeadLine* aLogicalRow, i8 i_Offset)
+{
+  // scenario 1: simple case (no overflow)
+  if (! aLogicalRow->bHasOverflow()) {
+    byte* ayAdr = (byte*)aLogicalRow + i_Offset;
+    return ayAdr;
+  }
+
+  // scenario 2: there is an overflow, but getting address from head
+  i8 nHeadBytes = aLogicalRow->nBytes();
+  if (i_Offset < nHeadBytes - 2) {
+    byte* ayAdr = (byte*)aLogicalRow + i_Offset;
+    return ayAdr;
+  }
+
+  // scenario 3: there is an overflow, and getting address from overflow
+  
+  NEVER_REACH;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
