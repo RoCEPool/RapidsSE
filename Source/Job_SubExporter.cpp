@@ -269,9 +269,7 @@ void Job_SubExporter::vSpawnKidExport(bool bLast)
 void Job_SubExporter::vSprintRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
-  
-  //s48K sRecord;
-  
+    
   char* aRecord = nullptr;
   i8 nBytes = 0;
 
@@ -282,12 +280,10 @@ void Job_SubExporter::vSprintRows(void)
   // create a row for retrieval the data
   HV_Row hRow(pColVec);
   
-  RowTray* pRowTray = m_pRowBuffer->pRowTray();
-  
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
 
-    HeadLine* aCompactRow = pRowTray->pNub()->aGetHead(i_Row);
-    
+    HeadLine* aCompactRow = m_pRowBuffer->aGetCompactRow(i_Row);
+
     // inflate compact row into a row
     RowCoder::vInflate(hRow,aCompactRow);
     
