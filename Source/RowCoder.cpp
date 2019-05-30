@@ -826,7 +826,7 @@ void RowCoder::vCopyHead(void)
 /*----------------------------------------------------------------------------*/
 /* put encoded datum into row of current nub                                  */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDataPut(Datum* pEncodedDatum)
+void RowCoder::vDataPut(Datum* pEncodedDatum, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
@@ -850,7 +850,7 @@ void RowCoder::vDataPut(Datum* pEncodedDatum)
 /*----------------------------------------------------------------------------*/
 /* put encoded datum into row of current nub                                  */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDataPut(w8 wDatum, i8 nBytes)
+void RowCoder::vDataPut(w8 wDatum, i8 nBytes, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
@@ -875,7 +875,7 @@ void RowCoder::vEncodeBcd(Datum* pSrcDatum, Column* pCol)
   
   vCodeBcd(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
-  vDataPut(&m_oEncodedDatum);
+  vDataPut(&m_oEncodedDatum,pCol);
   vXchkBcd(pSrcDatum,pCol,0);
   
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
@@ -890,7 +890,7 @@ void RowCoder::vEncodeBol(Datum* pSrcDatum, Column* pCol)
   
   vCodeBol(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
-  vDataPut(&m_oEncodedDatum);
+  vDataPut(&m_oEncodedDatum,pCol);
   vXchkBol(pSrcDatum,pCol,0);
   
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
@@ -908,7 +908,7 @@ void RowCoder::vEncodeDte(Datum* pSrcDatum, Column* pCol)
   
   vCodeDte(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
-  vDataPut(&m_oEncodedDatum);
+  vDataPut(&m_oEncodedDatum,pCol);
   vXchkDte(pSrcDatum,pCol,0);
   
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
@@ -923,7 +923,7 @@ void RowCoder::vEncodeFlt(Datum* pSrcDatum, Column* pCol)
   
   vCodeFlt(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
-  vDataPut(&m_oEncodedDatum);
+  vDataPut(&m_oEncodedDatum,pCol);
   vXchkFlt(pSrcDatum,pCol,0);
   
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
@@ -938,7 +938,7 @@ void RowCoder::vEncodeInt(Datum* pSrcDatum, Column* pCol)
   
   vCodeInt(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
-  vDataPut(&m_oEncodedDatum);
+  vDataPut(&m_oEncodedDatum,pCol);
   vXchkInt(pSrcDatum,pCol, 0);
   
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
@@ -953,7 +953,7 @@ void RowCoder::vEncodeIvl(Datum* pSrcDatum, Column* pCol)
   
   vCodeIvl(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
-  vDataPut(&m_oEncodedDatum);
+  vDataPut(&m_oEncodedDatum,pCol);
   vXchkIvl(pSrcDatum,pCol,0);
   
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
@@ -968,7 +968,7 @@ void RowCoder::vEncodeTme(Datum* pSrcDatum, Column* pCol)
   
   vCodeTme(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
-  vDataPut(&m_oEncodedDatum);
+  vDataPut(&m_oEncodedDatum,pCol);
   vXchkTme(pSrcDatum,pCol,0);
   
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
@@ -983,7 +983,7 @@ void RowCoder::vEncodeTsp(Datum* pSrcDatum, Column* pCol)
   
   vCodeTsp(&m_oEncodedDatum,pSrcDatum);
   vMetaPut(&m_oEncodedDatum,pCol);
-  vDataPut(&m_oEncodedDatum);
+  vDataPut(&m_oEncodedDatum,pCol);
   vXchkTsp(pSrcDatum,pCol,0);
   
   vUsageIncEncoded(pCol,&m_oEncodedDatum);
@@ -1074,7 +1074,7 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
   MemLib::vCopy(aShocoWithinTail,sShoco.aChar(),nCompressed,CN_ROWCODER);
   
   // put index of shoco tail as the 2 data bytes (this is [IT] in the diagram)
-  vDataPut(i_ShocoTail,2);
+  vDataPut(i_ShocoTail,2,pCol);
   
   vUsageIncEncoded(pCol,2 + nTailBytes);
   
@@ -1106,9 +1106,9 @@ void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
   
   w8 wSmall = *(w8*)pSrcDatum->m_sVch.aChar();
   
-  vDataPut(pSrcDatum->m_nChars,1);
+  vDataPut(pSrcDatum->m_nChars,1,pCol);
   
-  vDataPut(wSmall,pSrcDatum->m_nChars);
+  vDataPut(wSmall,pSrcDatum->m_nChars,pCol);
   
   vUsageIncEncoded(pCol,1 + pSrcDatum->m_nChars);
   

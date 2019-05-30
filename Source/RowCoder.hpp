@@ -121,8 +121,8 @@ namespace Data
     void vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCopyHead(void);
   
-    void vDataPut(Datum* pDatum);
-    void vDataPut(w8 wDatum, i8 nBytes);
+    void vDataPut(Datum* pDatum, Column* pCol);
+    void vDataPut(w8 wDatum, i8 nBytes, Column* pCol);
     
     void vEraDatePut(Datum* pDatum);
     void vEncodeBol(Datum* pSrcDatum, Column* pCol);
