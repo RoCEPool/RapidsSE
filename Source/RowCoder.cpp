@@ -49,15 +49,19 @@ RowCoder::RowCoder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  m_pColVec       = nullptr;
-  m_nHeadBytes    = C_UNKNOWN;
-  m_nMetaData     = C_UNKNOWN;
-  m_i_BaseOffset  = C_UNKNOWN;
+  m_pColVec        = nullptr;
+  m_nHeadBytes     = C_UNKNOWN;
+  m_nMetaData      = C_UNKNOWN;
+  m_i_BaseOffset   = C_UNKNOWN;
 
-  m_pIntoNub      = nullptr;
-  m_i_IntoHead    = C_UNKNOWN;
-  m_aIntoHead     = nullptr;
-  m_i_IntoOffset  = C_UNKNOWN;
+  m_pIntoNub       = nullptr;
+  m_i_IntoHead     = C_UNKNOWN;
+  m_aIntoHead      = nullptr;
+  m_i_IntoOffset   = C_UNKNOWN;
+  //---
+  m_i_IntoOver     = C_UNKNOWN;
+  m_aIntoOver      = nullptr;
+  m_nOverBytes     = C_UNKNOWN;
   
   m_pFromNub       = nullptr;
   m_i_FromHead     = C_UNKNOWN;
@@ -153,10 +157,14 @@ void RowCoder::vCopyEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  //m_pColVec       = nullptr;
+  //m_pColVec     = nullptr;
   m_nHeadBytes    = C_UNKNOWN;
   m_nMetaData     = C_UNKNOWN;
   m_i_BaseOffset  = C_UNKNOWN;
+  //---
+  m_i_IntoOver    = C_UNKNOWN;
+  m_aIntoOver     = nullptr;
+  m_nOverBytes    = C_UNKNOWN;
 
   m_pIntoNub      = nullptr;
   m_i_IntoHead    = C_UNKNOWN;
@@ -202,6 +210,10 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   m_i_IntoHead   = m_pIntoNub->iAllotHead(m_nHeadBytes);
   m_aIntoHead    = m_pIntoNub->aGetHead(m_i_IntoHead);
   m_i_IntoOffset = m_i_BaseOffset;
+  //---
+  m_i_IntoOver   = C_UNKNOWN;
+  m_aIntoOver    = nullptr;
+  m_nOverBytes   = C_UNKNOWN;
 
   m_aWorkHead    = m_pIntoNub->aGetHead();
   
@@ -1091,6 +1103,41 @@ void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
   vUsageIncEncoded(pCol,1 + pSrcDatum->m_nChars);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* extend the into head by alloting an nByte overflow tail line               */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vExtendIntoHead(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  /*
+             -- Into-Head --                        -- Over-Tail --
+   +================================+    +================================+
+   | mc:                            |    | <U> ////////////////////////// |
+   +================================+    +================================+
+   |                                |
+   +--------------------------------+
+   |                           [OT] |
+   +--------------------------------+
+
+   where: [OT] is 2B relative index of the Over-Tail line
+   
+   */
+
+  // allot an overline
+  i8 i_OverTail = m_pIntoNub->iAllotOver(_1B_U + nBytes);
+  OverLine* aOverTail = m_pFromNub->aGetOver(i_OverTail);
+  
+  // compute [OT] relative difference in units
+  i8 i_OverTail_rel = RowNub::iUnitDiff(m_aIntoHead,(TailLine*)aOverTail);
+
+  // the [OT] relative difference goes into the last 2B of headline
+  i8 i_Offset_over = m_nHeadBytes - _2B_OT;
+  
+  // put [OT] relative difference into last 2B of headline
+  m_aIntoHead->vPut(i_Offset_over,i_OverTail_rel,_2B_OT);
 }
 
 /*----------------------------------------------------------------------------*/
