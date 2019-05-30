@@ -119,8 +119,7 @@ namespace Data
     void vCodeTme(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeTsp(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCopyHead_Large(void);
-    void vCopyHead_Short(void);
+    void vCopyHead(void);
   
     void vDataPut(Datum* pDatum);
     void vDataPut(w8 wDatum, i8 nBytes);

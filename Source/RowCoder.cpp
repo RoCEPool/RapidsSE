@@ -221,7 +221,7 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   m_nOverBytes   = C_UNKNOWN;
   
 #ifdef WITH_HEAD_OVERFLOW
-  //vExtendIntoHead(sizeof(CacheLine) - 1);
+  vExtendIntoHead(sizeof(CacheLine) - 1);
   //RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
 #endif
 
@@ -231,10 +231,10 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   // copy & recode row
   
 #ifdef WITH_LARGE_ROWS
-  vCopyHead_Large();
+  vCopyHead();
   vRecode_Large();
 #else
-  vCopyHead_Short();
+  vCopyHead();
   vRecode_Short();
 #endif
 
@@ -805,30 +805,21 @@ void RowCoder::vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum)
 /*----------------------------------------------------------------------------*/
 /* copy an encoded row head from the from-nub into the into-nub               */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vCopyHead_Large(void)
+void RowCoder::vCopyHead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-  MemLib::vCopy(m_aIntoHead,m_aFromHead,m_nHeadBytes,CN_ROWBUFFER);
-  
-#ifdef WITH_TRACE_ENCODING
-  RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
-#endif
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-}
 
-/*----------------------------------------------------------------------------*/
-/* copy an encoded row head from the from-nub into the into-nub               */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vCopyHead_Short(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
+#ifdef WITH_HEAD_OVERFLOW
+  // don't copy over the [OT] at the end of the head
+  MemLib::vCopy(m_aIntoHead,m_aFromHead,(m_nHeadBytes - _2B_OT),CN_ROWBUFFER);
+#else
   MemLib::vCopy(m_aIntoHead,m_aFromHead,m_nHeadBytes,CN_ROWBUFFER);
+#endif
   
 #ifdef WITH_TRACE_ENCODING
   RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
 #endif
+  
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
 
