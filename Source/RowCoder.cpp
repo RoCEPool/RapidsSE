@@ -2303,14 +2303,21 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
   char* aString = pRow->m_xWsp.aArea();
   
   i8 nCols = pRow->m_nColumns;
+  
   byte* aMetaCode = (byte*)aHeadLine + C_HEAD_PRE_BYTES;
   byte* aDataByte = (byte*)aHeadLine + pRow->m_iBaseOffset;
   i8*   aiValue   = & pRow->m_aiValue[0];
   
   bool  bGetAll   = pRow->m_bGetAll;
+  i8    iLastCol  = pRow->m_iLastCol;
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-  
+    
+    if (! bGetAll && i_Col >  iLastCol) {
+      //exit early
+      break;
+    }
+    
 #ifdef WITH_TRACE_DECODING
     Column* pCol = pRow->m_pColVec->pGet(i_Col);
 #endif
@@ -2346,6 +2353,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         default: aDataByte += nDataBytes(eMetaCode); break;
       }
+    
       continue;
     }
     

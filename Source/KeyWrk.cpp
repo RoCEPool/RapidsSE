@@ -235,6 +235,7 @@ void KeyWrk::vExtractKey(RowBuffer* pRowBuffer, i8 i_Row, IdxColVec* pIdxColVec)
   HV_Row hRow(pRowBuffer->pColumnVec());
   
   i8 nCols = pIdxColVec->nItems();
+  hRow->m_bGetAll = false;
   
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     
@@ -242,8 +243,11 @@ void KeyWrk::vExtractKey(RowBuffer* pRowBuffer, i8 i_Row, IdxColVec* pIdxColVec)
     Column* pColumn = pIdxColVec->pGet(i_Column);
     
     // mark column to be retrieved
-    hRow->m_abGetCol[pColumn->iColumnNo()] = true;
+    i8 iColumn = pColumn->iColumnNo();
+    hRow->m_abGetCol[iColumn] = true;
+    hRow->m_iLastCol = iColumn;
   }
+  
   
   // inflate the index column values into row
   

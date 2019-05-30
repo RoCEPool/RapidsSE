@@ -817,6 +817,7 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
   
   pJob_FetchRows->m_pRow->m_bGetAll = false;
   pJob_FetchRows->m_pRow->m_abGetCol[pCol->iColumnNo()] = true;
+  pJob_FetchRows->m_pRow->m_iLastCol = pCol->iColumnNo();
   
   while (aaHeadLine < aaLatter) {
     

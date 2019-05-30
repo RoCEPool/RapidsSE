@@ -239,6 +239,7 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
   // aggregate the buffer
   i8 nRowCount = pRowBuffer->nRowCount();
   HV_Row hRow(m_pTable->pColumnVec());
+  i8 iKeyCol = m_pKeyColumn->iColumnNo();
   
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
@@ -246,14 +247,18 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
     HeadLine* aCompactRow = pRowBuffer->pRowTray()->pNub()->aGetHead(i_Row);
     
     // mark key column to be decoded
-    hRow->m_abGetCol[m_pKeyColumn->iColumnNo()] = true;
+    hRow->m_abGetCol[iKeyCol] = true;
+    
+    i8 iAggCol = C_UNKNOWN;
     
     // mark agg columns to be decoded
-    for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
-      pAggColumn = m_pAggColVec->pGet(i_AggCol);
-      hRow->m_abGetCol[pAggColumn->iColumnNo()] = true;
+    for (i8 i_Col = 0; i_Col < nAggColumns; i_Col++) {
+      pAggColumn = m_pAggColVec->pGet(i_Col);
+      iAggCol = pAggColumn->iColumnNo();
+      hRow->m_abGetCol[iAggCol] = true;
     }
     
+    hRow->m_iLastCol = iKeyCol > iAggCol ? iKeyCol : iAggCol;
     RowCoder::vInflate(hRow,aCompactRow);
     
     // get the key value from the row

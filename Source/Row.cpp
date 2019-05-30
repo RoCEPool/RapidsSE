@@ -55,10 +55,12 @@ Row::Row(ColumnVec* pColVec)
   m_nColumns    = m_pColVec->nItems();
   m_iBaseOffset = RowCoder::iBaseOffset(m_pColVec);
   m_bGetAll     = true;
+  m_iLastCol    = C_UNKNOWN;
+  
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
     m_abGetCol[i_Col] = false;
   m_i_Wsp       = 0;
-
+  
 #ifdef WITH_CHECK_INITIALISED
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
     m_aiValue[i_Col] = 0;
@@ -98,8 +100,9 @@ void Row::vDontDecodeVch(void)
     
     Column* pCol = m_pColVec->pGet(i_Col);
     
-    if (DM_VCH == pCol->eDatumType())
+    if (DM_VCH == pCol->eDatumType()) {
       m_abGetCol[i_Col] = false;
+    }
     else
       m_abGetCol[i_Col] = true;
   }
