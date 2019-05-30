@@ -67,8 +67,9 @@ namespace Data
     
     ////////////////////////////////////////////////////////////////////////////
     // row functions
-    void  vShow(void);
-    void  vShowRow(i8 iRowNo);
+    HeadLine* aGetCompactRow(i8 iRow);
+    void      vShow(void);
+    void      vShowRow(i8 iRowNo);
     HeadLine* pRow(i8 iRow);
 
     ////////////////////////////////////////////////////////////////////////////

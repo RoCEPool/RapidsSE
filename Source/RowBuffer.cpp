@@ -287,6 +287,16 @@ void RowBuffer::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the compact row from the buffer                                        */
+/*----------------------------------------------------------------------------*/
+HeadLine* RowBuffer::aGetCompactRow(i8 i_Row)
+{
+  HeadLine* aCompactRow = m_xRowTray.pNub()->aGetHead(i_Row);
+  
+  return aCompactRow;
+}
+
+/*----------------------------------------------------------------------------*/
 /* grab lock for write                                                        */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vGrabWrite(void)
