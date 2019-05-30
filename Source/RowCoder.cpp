@@ -192,7 +192,12 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   
   // check for space in target nub
   
+#ifdef WITH_HEAD_OVERFLOW
+  i8 nSpaceNeeded = pFromNub->nUsedBytes() + sizeof(CacheLine);
+#else
   i8 nSpaceNeeded = pFromNub->nUsedBytes();
+#endif
+  
   if (! m_pIntoNub->bHasSpace(nSpaceNeeded)) {
     m_nTotalBuffers++;
     //oNumBat.vPrint();
@@ -214,6 +219,11 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   m_i_IntoOver   = C_UNKNOWN;
   m_aIntoOver    = nullptr;
   m_nOverBytes   = C_UNKNOWN;
+  
+#ifdef WITH_HEAD_OVERFLOW
+  //vExtendIntoHead(sizeof(CacheLine) - 1);
+  //RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
+#endif
 
   m_aWorkHead    = m_pIntoNub->aGetHead();
   
@@ -1128,7 +1138,7 @@ void RowCoder::vExtendIntoHead(i8 nBytes)
 
   // allot an overline
   i8 i_OverTail = m_pIntoNub->iAllotOver(_1B_U + nBytes);
-  OverLine* aOverTail = m_pFromNub->aGetOver(i_OverTail);
+  OverLine* aOverTail = m_pIntoNub->aGetOver(i_OverTail);
   
   // compute [OT] relative difference in units
   i8 i_OverTail_rel = RowNub::iUnitDiff(m_aIntoHead,(TailLine*)aOverTail);
@@ -1138,6 +1148,10 @@ void RowCoder::vExtendIntoHead(i8 nBytes)
   
   // put [OT] relative difference into last 2B of headline
   m_aIntoHead->vPut(i_Offset_over,i_OverTail_rel,_2B_OT);
+  
+  i8 iRevised_W = m_aIntoHead->nWords() + 128;
+  
+  m_aIntoHead->v1B(0,iRevised_W);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2173,20 +2187,24 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 nHeadBytes = aHeadLine->nBytes();
-  MemLib::vWordDump(aHeadLine,nHeadBytes);
-  
   OverLine* aOverLine = nullptr;
   i8 i_Over_rel = aHeadLine->iOverflow2B();
   i8 nOverBytes = C_UNKNOWN;
   i8 nOverWords = C_UNKNOWN;
 
   if (aHeadLine->bHasOverflow()) {
+    i8 nHeadBytes = aHeadLine->nBytes();
+    MemLib::vWordDump(aHeadLine,nHeadBytes);
+
     aOverLine  = aGetOverRel(aHeadLine,i_Over_rel);
     nOverBytes = aOverLine->nBytes();
     nOverWords = aOverLine->nWords();
 
     MemLib::vWordDump(aOverLine,nOverBytes);
+  }
+  else {
+    i8 nHeadBytes = aHeadLine->nBytes();
+    MemLib::vWordDump(aHeadLine,nHeadBytes);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4133,7 +4151,7 @@ i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec)
   i8 i_LastColumn = 0;
   
   eMC eEncoding = eGetEncoding(aHeadLine,pLastCol,pColVec,
-                                   i_LastColumn,i_Offset);
+                               i_LastColumn,i_Offset);
   
   if (pLastCol->eDatumType() == DM_VCH && MC_SHOCO_SPLIT_2T1C == eEncoding)
     return 0;

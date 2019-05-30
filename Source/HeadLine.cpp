@@ -63,7 +63,7 @@ i8 HeadLine::nUnits(void)
   i8 nSizeUnits = w8_1B(0);
   
   if (nSizeUnits > 127)
-    nSizeUnits -= 127;
+    nSizeUnits -= 128;
   
   return nSizeUnits;
 }
