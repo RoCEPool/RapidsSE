@@ -43,6 +43,7 @@ namespace Structures
     ~Nub_t(void) noexcept(false);
   
     static i8    nBytes(i8 nUnits);
+    static OVER* aGetOver(HEAD* aHead, i8 i_Over_rel);
     static TAIL* aGetTail(HEAD* aHead, i8 i_Tail_rel);
     static i8    nUnits(i8 nBytes);
     static i8    iUnitDiff(HEAD* aHead, TAIL* aTail);
@@ -187,6 +188,17 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nBytes(i8 nUnits)
   i8 nBytes = nUnits * (i8)C_SPACEUNIT;
   
   return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute over from head + relative distance (in units)                      */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+OVER* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetOver(HEAD* aHead, i8 i_Over_rel)
+{
+  OVER* aOver = (OVER*)aGetTail(aHead,i_Over_rel);
+  
+  return aOver;
 }
 
 /*----------------------------------------------------------------------------*/
