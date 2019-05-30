@@ -62,6 +62,9 @@ i8 HeadLine::nUnits(void)
 {
   i8 nSizeUnits = w8_1B(0);
   
+  if (nSizeUnits > 127)
+    nSizeUnits -= 127;
+  
   return nSizeUnits;
 }
 
@@ -70,7 +73,7 @@ i8 HeadLine::nUnits(void)
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::nWords(void)
 {
-  i8 nSizeWords = w8_1B(0);
+  i8 nSizeWords = nUnits();
   
   return nSizeWords;
 }
@@ -86,6 +89,28 @@ bool HeadLine::bHasOverflow(void)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the relative distance to the overflow line |OT| which is 2B            */
+/*----------------------------------------------------------------------------*/
+i8 HeadLine::iOverflow2B(void)
+{
+  i8 nHeadBytes = nBytes();
+  
+  i8 iOver2B = w8_2B(nHeadBytes - C_2B);
+
+  return iOver2B;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the relative distance to the overflow line |OT| which is 2B            */
+/*----------------------------------------------------------------------------*/
+void HeadLine::vOverflow2B(i8 iOver2B)
+{
+  i8 nHeadBytes = nBytes();
+  
+  v2B(nHeadBytes - C_2B,iOver2B);
 }
 
 /*============================================================================*/

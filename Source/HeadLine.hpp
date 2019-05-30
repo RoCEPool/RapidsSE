@@ -25,7 +25,9 @@ namespace Data
     i8   nWords(void);
 
     bool bHasOverflow(void);
-  
+    i8   iOverflow2B(void);
+    void vOverflow2B(i8 iOver2B);
+
   /*----------------------------------------------------------------------------*/
   /* return meta code                                                           */
   /*----------------------------------------------------------------------------*/
