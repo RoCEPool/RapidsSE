@@ -3527,17 +3527,40 @@ w8 RowCoder::wGetLogical(HeadLine* aLogicalRow, i8 i_Offset, i8 nBytes)
     return wSomeBytes;
   }
   
-  // scenario 2: there is an overflow, but geting bytes from head
+  // scenario 2: there is an overflow, but getting bytes from head
   i8 nHeadBytes = aLogicalRow->nBytes();
   if (i_Offset < nHeadBytes - 2) {
     wSomeBytes = aLogicalRow->wGet(i_Offset, nBytes);
     return wSomeBytes;
   }
   
-  // scenario 3: there is an overflow, but geting bytes from overflow
+  // scenario 3: there is an overflow, and getting bytes from overflow
   
   NEVER_REACH;
   return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* put some bytes into logicalRow : head[+over]                               */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vPutLogical(HeadLine* aLogicalRow, i8 i_Offset, i8 nBytes, w8 wBytes)
+{
+  // scenario 1: simple case (no overflow)
+  if (! aLogicalRow->bHasOverflow()) {
+    aLogicalRow->vPut(i_Offset,wBytes,nBytes);
+    return;
+  }
+  
+  // scenario 2: there is an overflow, but putting bytes into head
+  i8 nHeadBytes = aLogicalRow->nBytes();
+  if (i_Offset < nHeadBytes - 2) {
+    aLogicalRow->vPut(i_Offset,wBytes,nBytes);
+    return;
+  }
+
+  // scenario 3: there is an overflow, and putting bytes into overflow
+  
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
