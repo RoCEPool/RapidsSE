@@ -135,45 +135,6 @@ bool MemLib::bCompareWords(const void* aArg1, const void* aArg2, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word compare of val1 with val2                                             */
-/*----------------------------------------------------------------------------*/
-//i8 MemLib::iCompareWords(const void* aVal1, const void* aVal2, i8 nBytes)
-//{
-//  // nBytes should be a multiple of 8
-//  RASSERT(nBytes % C_BYTES_PER_WORD == 0);
-//
-//  const i8 *aiWord1 = (const i8*)aVal1;
-//  const i8 *aiWord2 = (const i8*)aVal2;
-//
-//  for ( ; nBytes; nBytes -= C_BYTES_PER_WORD)
-//    if ( i8 iDiff = (*aiWord1++ - *aiWord2++) )
-//      return iDiff;
-//
-//  return 0;
-//}
-/*----------------------------------------------------------------------------*/
-i8 MemLib::iCompareWords(const void* pVal1, const void* pVal2, i8 nBytes)
-{
-  //  if (gpAttachMap) {
-  //    gpAttachMap->m_oStatistics.Memory.m_iCompareTotal += nBytes;
-  //  }
-
-  // nBytes should be a multiple of 8
-  RASSERT(nBytes % 8 == 0);
-
-  const i8 *iWord1 = (const i8*)pVal1;
-  const i8 *iWord2 = (const i8*)pVal2;
-
-  while (nBytes > 0) {
-    if (*iWord1++ != *iWord2++)
-      return iWord1[-1] < iWord2[-1] ? -1 : 1;
-    nBytes -=8;
-  }
-
-  return 0;
-}
-
-/*----------------------------------------------------------------------------*/
 /* cut bytes off                                                              */
 /*----------------------------------------------------------------------------*/
 void MemLib::vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes, eCN eClassNo)
