@@ -27,7 +27,7 @@ namespace Data
     void vAddPlusInfinity(void);
     void vAddWord(w8 wWord);
 
-    void vExtractKey(RowNub* pRowNub, i8 i_Row, IdxColVec* pIdxColVec);
+    void vExtractKey(RowBuffer* pRowBuffer, i8 i_Row, IdxColVec* pIdxColVec);
     
     i8   iHashKey(void);
     KeyData* aKey(void);
