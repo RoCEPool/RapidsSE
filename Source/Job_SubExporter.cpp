@@ -280,7 +280,7 @@ void Job_SubExporter::vSprintRows(void)
   HV_Rec hvRec(pColVec);
   
   // create a row for retrieval the data
-  Row* pRow = new Row(pColVec);
+  HV_Row hRow(pColVec);
   
   RowTray* pRowTray = m_pRowBuffer->pRowTray();
   
@@ -289,10 +289,10 @@ void Job_SubExporter::vSprintRows(void)
     HeadLine* aCompactRow = pRowTray->pNub()->aGetHead(i_Row);
     
     // inflate compact row into a row
-    RowCoder::vInflate(pRow,aCompactRow);
+    RowCoder::vInflate(hRow,aCompactRow);
     
     // append the row to the record
-    hvRec->vAppend(pRow);
+    hvRec->vAppend(hRow);
     
     StrLib::vConcat(hvRec->szRecStr()->aChar(),'\n');            //! sub-optimal
     //vTrace("]]%s[[\n"_Stz,sRecord.aStz());
@@ -313,9 +313,6 @@ void Job_SubExporter::vSprintRows(void)
     aRecord = m_pExportBuffer->aAllotRecord(nBytes - 1);
     StrLib::vCopyLen(aRecord,hvRec->szRecStr()->aChar(),nBytes - 1);
   }
-
-  // delete the row
-  delete pRow;
   
   if (aRecord)
     aRecord[nBytes-1] = '\0';

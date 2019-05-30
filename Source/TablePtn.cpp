@@ -579,7 +579,7 @@ void TablePtn::vPublish(void)
   HV_Rec hvRec(pColVec);
   
   // create a row for retrieving the row
-  Row* pRow = new Row(pColVec);
+  HV_Row hRow(pColVec);
   
   // publish the current buffer (last buffer that was added)
   i8 nRowCount = m_pCurrentRowBuffer->nRowCount();
@@ -591,16 +591,13 @@ void TablePtn::vPublish(void)
     HeadLine* aHeadLine = pRowTray->pNub()->aGetHead(i_Row);
     
     // inflate compacted headline into a row
-    RowCoder::vInflate(pRow,aHeadLine);
+    RowCoder::vInflate(hRow,aHeadLine);
     
     // append the row to the record
-    hvRec->vAppend(pRow);
+    hvRec->vAppend(hRow);
     
     vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
   }
-  
-  // delete the row
-  delete pRow;
   
   vTrace("Partition%lld: published %lld rows\n"_Stz,m_iPartitionId,
          m_pCurrentRowBuffer->nRowCount());

@@ -499,19 +499,16 @@ void RowBuffer::vShowRow(i8 i_Row)
   RowTray* pRowTray = this->pRowTray();
   
   // create a row
-  Row* pRow = new Row(pColVec);
+  HV_Row hRow(pColVec);
   
   // get compact row
   HeadLine* aCompactRow = pRowTray->pNub()->aGetHead(i_Row);
 
   // inflate compact row into row
-  RowCoder::vInflate(pRow,aCompactRow);
+  RowCoder::vInflate(hRow,aCompactRow);
   
   // append the row to the record
-  hvRec->vAppend(pRow);
-  
-  // delete the row
-  delete pRow;
+  hvRec->vAppend(hRow);
   
   vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
 }

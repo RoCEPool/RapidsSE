@@ -232,7 +232,7 @@ void KeyWrk::vExtractKey(RowBuffer* pRowBuffer, i8 i_Row, IdxColVec* pIdxColVec)
   RowNub* pRowNub = pRowBuffer->pRowTray()->pNub();
   
   // create a row
-  Row* pRow = new Row(pRowBuffer->pColumnVec());
+  HV_Row hRow(pRowBuffer->pColumnVec());
   
   i8 nCols = pIdxColVec->nItems();
   
@@ -242,25 +242,23 @@ void KeyWrk::vExtractKey(RowBuffer* pRowBuffer, i8 i_Row, IdxColVec* pIdxColVec)
     Column* pColumn = pIdxColVec->pGet(i_Column);
     
     // mark column to be retrieved
-    pRow->m_abGetCol[pColumn->iColumnNo()] = true;
+    hRow->m_abGetCol[pColumn->iColumnNo()] = true;
   }
   
   // inflate the index column values into row
   
   HeadLine* aCompactRow = pRowBuffer->aGetCompactRow(i_Row);
-  RowCoder::vInflate(pRow,aCompactRow);
+  RowCoder::vInflate(hRow,aCompactRow);
 
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     
     Column* pColumn = pIdxColVec->pGet(i_Column);
     
     // add the column value to the key
-    vAddElement(pRow, pColumn);
+    vAddElement(hRow, pColumn);
     
     //vShow(pIdxColVec);
   }
-  
-  delete pRow;
 
 }
 
