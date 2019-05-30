@@ -49,15 +49,19 @@ RowCoder::RowCoder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  m_pColVec       = nullptr;
-  m_nHeadBytes    = C_UNKNOWN;
-  m_nMetaData     = C_UNKNOWN;
-  m_i_BaseOffset  = C_UNKNOWN;
+  m_pColVec        = nullptr;
+  m_nHeadBytes     = C_UNKNOWN;
+  m_nMetaData      = C_UNKNOWN;
+  m_i_BaseOffset   = C_UNKNOWN;
 
-  m_pIntoNub      = nullptr;
-  m_i_IntoHead    = C_UNKNOWN;
-  m_aIntoHead     = nullptr;
-  m_i_IntoOffset  = C_UNKNOWN;
+  m_pIntoNub       = nullptr;
+  m_i_IntoHead     = C_UNKNOWN;
+  m_aIntoHead      = nullptr;
+  m_i_IntoOffset   = C_UNKNOWN;
+  //---
+  m_i_IntoOver     = C_UNKNOWN;
+  m_aIntoOver      = nullptr;
+  m_nOverBytes     = C_UNKNOWN;
   
   m_pFromNub       = nullptr;
   m_i_FromHead     = C_UNKNOWN;
@@ -153,10 +157,14 @@ void RowCoder::vCopyEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  //m_pColVec       = nullptr;
+  //m_pColVec     = nullptr;
   m_nHeadBytes    = C_UNKNOWN;
   m_nMetaData     = C_UNKNOWN;
   m_i_BaseOffset  = C_UNKNOWN;
+  //---
+  m_i_IntoOver    = C_UNKNOWN;
+  m_aIntoOver     = nullptr;
+  m_nOverBytes    = C_UNKNOWN;
 
   m_pIntoNub      = nullptr;
   m_i_IntoHead    = C_UNKNOWN;

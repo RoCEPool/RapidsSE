@@ -34,7 +34,11 @@ namespace Data
     i8         m_i_IntoHead;
     HeadLine*  m_aIntoHead;
     i8         m_i_IntoOffset; // encoding offset
-  
+    //---
+    i8         m_i_IntoOver;
+    OverLine*  m_aIntoOver;
+    i8         m_nOverBytes;
+
     RowNub*    m_pFromNub;
     i8         m_i_FromHead;
     HeadLine*  m_aFromHead;
