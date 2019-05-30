@@ -245,7 +245,7 @@ void KeyWrk::vExtractKey(RowBuffer* pRowBuffer, i8 i_Row, IdxColVec* pIdxColVec)
     // mark column to be retrieved
     i8 iColumn = pColumn->iColumnNo();
     hRow->m_abGetCol[iColumn] = true;
-    hRow->m_iLastCol = iColumn;
+    hRow->m_iLastCol = iColumn > hRow->m_iLastCol ? iColumn :  hRow->m_iLastCol;
   }
   
   
