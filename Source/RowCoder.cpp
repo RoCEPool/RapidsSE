@@ -2326,10 +2326,11 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
- void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
+#ifdef WITH_QUICKER_INFLATE
+
+void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
 {
   eMC  eMetaCode;
-  Word wWord;
   
   i8   i_Tail_rel;
   i8   nCompressed;
@@ -2353,7 +2354,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
   
   byte* aMetaCode = (byte*)aHeadLine + C_HEAD_PRE_BYTES;
   byte* aDataByte = (byte*)aHeadLine + pRow->m_iBaseOffset;
-  i8*   aiValue   = & pRow->m_aiValue[0];
+  byte* aValue    = (byte*)&pRow->m_aiValue[0];
   
   bool  bGetAll   = pRow->m_bGetAll;
   i8    iLastCol  = pRow->m_iLastCol;
@@ -2374,7 +2375,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
     //! temp experiment
     if ( ! ( bGetAll || pRow->m_abGetCol[i_Col] ) ) {
       
-      *aiValue++ = C_UNKNOWN;
+      *(u8*)aValue = C_UNKNOWN;
+      aValue += 8;
       
       switch(eMetaCode) {
         
@@ -2408,7 +2410,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_NULL:
-        *aiValue++ = C_DATUM_NULL;
+        *(u8*)aValue = C_DATUM_NULL;
+        aValue += 8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] null\n"_Stz,i_Col,pCol->szColNm());
 #endif
@@ -2416,7 +2419,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_1B:
-        *aiValue++ = *(u1*)(aDataByte);
+        *(u1*)aValue = *(u1*)(aDataByte);
+        aValue += 8;
         aDataByte += C_1B;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
@@ -2425,7 +2429,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_2B:
-        *aiValue++ = *(u2*)(aDataByte);
+        *(u2*)aValue = *(u2*)(aDataByte);
+        aValue += 8;
         aDataByte += C_2B;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
@@ -2434,11 +2439,10 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_3B:
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *aDataByte++;
-        wWord.m_yaByte[1] = *aDataByte++;
-        wWord.m_yaByte[2] = *aDataByte++;
-        *aiValue++ = wWord.m_iI8;
+        *aValue++ = *aDataByte++;
+        *aValue++ = *aDataByte++;
+        *aValue++ = *aDataByte++;
+        aValue += 5;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -2446,7 +2450,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
  
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_4B:
-        *aiValue++ = *(u4*)(aDataByte);
+        *(u4*)aValue++ = *(u4*)(aDataByte);
+        aValue += 4;
         aDataByte += C_4B;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
@@ -2455,13 +2460,12 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_5B:
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *aDataByte++;
-        wWord.m_yaByte[1] = *aDataByte++;
-        wWord.m_yaByte[2] = *aDataByte++;
-        wWord.m_yaByte[3] = *aDataByte++;
-        wWord.m_yaByte[4] = *aDataByte++;
-        *aiValue++ = wWord.m_iI8;
+        *aValue++ = *aDataByte++;
+        *aValue++ = *aDataByte++;
+        *aValue++ = *aDataByte++;
+        *aValue++ = *aDataByte++;
+        *aValue++= *aDataByte++;
+        aValue += 3;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -2469,14 +2473,13 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_6B:
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *aDataByte++;
-        wWord.m_yaByte[1] = *aDataByte++;
-        wWord.m_yaByte[2] = *aDataByte++;
-        wWord.m_yaByte[3] = *aDataByte++;
-        wWord.m_yaByte[4] = *aDataByte++;
-        wWord.m_yaByte[5] = *aDataByte++;
-        *aiValue++ = wWord.m_iI8;
+        *aValue++ = *aDataByte++;
+        *aValue++ = *aDataByte++;
+        *aValue++ = *aDataByte++;
+        *aValue++= *aDataByte++;
+        *aValue++ = *aDataByte++;
+        *aValue++ = *aDataByte++;
+        aValue += 2;;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -2484,15 +2487,14 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_7B:
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *aDataByte++;
-        wWord.m_yaByte[1] = *aDataByte++;
-        wWord.m_yaByte[2] = *aDataByte++;
-        wWord.m_yaByte[3] = *aDataByte++;
-        wWord.m_yaByte[4] = *aDataByte++;
-        wWord.m_yaByte[5] = *aDataByte++;
-        wWord.m_yaByte[6] = *aDataByte++;
-        *aiValue++ = wWord.m_iI8;
+        *aValue++ = *aDataByte++;
+        *aValue++ = *aDataByte++;
+        *aValue++ = *aDataByte++;
+        *aValue++ = *aDataByte++;
+        *aValue++ = *aDataByte++;
+        *aValue++ = *aDataByte++;
+        *aValue++ = *aDataByte++;
+        aValue++;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -2500,7 +2502,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_8B:
-        *aiValue++ = *(u8*)(aDataByte);
+        *(u8*)aValue = *(u8*)(aDataByte);
+        aValue += 8;
         aDataByte += C_8B;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
@@ -2509,7 +2512,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_MINUS_ONE:
-        *aiValue++ = -1;
+        *(u8*)aValue = -1;
+        aValue += 8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -2517,7 +2521,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_ZERO:
-        *aiValue++ =  0;
+        *(u8*)aValue = 0;
+        aValue += 8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -2525,7 +2530,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_ONE:
-        *aiValue++ =  1;
+        *(u8*)aValue = 1;
+        aValue += 8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -2533,7 +2539,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_TWO:
-        *aiValue++ =  2;
+        *(u8*)aValue = 2;
+        aValue += 8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -2541,7 +2548,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_THREE:
-        *aiValue++ =  3;
+        *(u8*)aValue = 3;
+        aValue += 8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -2549,7 +2557,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_FOUR:
-        *aiValue++ =  4;
+        *(u8*)aValue = 4;
+        aValue += 8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -2557,7 +2566,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_FIVE:
-        *aiValue++ =  5;
+        *(u8*)aValue = 5;
+        aValue += 8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -2565,7 +2575,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_SIX:
-        *aiValue++ =  6;
+        *(u8*)aValue = 6;
+        aValue += 8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -2573,7 +2584,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_SEVEN:
-        *aiValue++ =  7;
+        *(u8*)aValue = 7;
+        aValue += 8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -2581,7 +2593,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_EIGHT:
-        *aiValue++ =  8;
+        *(u8*)aValue = 8;
+        aValue += 8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -2589,7 +2602,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_NINE:
-        *aiValue++ =  9;
+        *(u8*)aValue = 9;
+        aValue += 8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -2597,7 +2611,8 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_TEN:
-        *aiValue++ = 10;
+        *(u8*)aValue = 10;
+        aValue += 8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -2625,7 +2640,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_FALSE:
-        *aiValue++ =  0;
+        aValue += 8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -2633,12 +2648,14 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_TRUE:
-        *aiValue++ =  1;
+        *aValue =  1;
+        aValue += 8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
         break;
-        
+
+/*
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_DATE_E0_2B:
         *aiValue++ = *(u2*)aDataByte;
@@ -2851,7 +2868,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_OVERFLOW_2B:
         break;
-        
+ */
       default:
         RASSERT(0);
     }
@@ -2859,6 +2876,540 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
   }
 }
 
+#else
+void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
+{
+  eMC  eMetaCode;
+  Word wWord;
+  
+  i8   i_Tail_rel;
+  i8   nCompressed;
+  i8   nDecompressed;
+  i8   nLength;
+  i8   nBytesPartA;
+  i8   nBytesPartB;
+  char caShoco[C_4KB];
+  
+  TailLine* aShocoTail;
+  
+#ifdef WITH_TRACE_DECODING
+  static i8 nTotalRows = 0;
+  vTrace("vInflate() of row %lld\n"_Stz,nTotalRows++);
+  RowCoder::vHeadDump(aHeadLine,pRow->m_pColVec);
+#endif
+  
+  char* aString = pRow->m_xWsp.aArea();
+  
+  i8 nCols = pRow->m_nColumns;
+  
+  byte* aMetaCode = (byte*)aHeadLine + C_HEAD_PRE_BYTES;
+  byte* aDataByte = (byte*)aHeadLine + pRow->m_iBaseOffset;
+  i8*   aiValue   = & pRow->m_aiValue[0];
+  
+  bool  bGetAll   = pRow->m_bGetAll;
+  i8    iLastCol  = pRow->m_iLastCol;
+  
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    if (! bGetAll && i_Col >  iLastCol) {
+      //exit early
+      break;
+    }
+    
+#ifdef WITH_TRACE_DECODING
+    Column* pCol = pRow->m_pColVec->pGet(i_Col);
+#endif
+    
+    eMetaCode = (eMC)*aMetaCode++;
+    
+    //! temp experiment
+    if ( ! ( bGetAll || pRow->m_abGetCol[i_Col] ) ) {
+      
+      *aiValue++ = C_UNKNOWN;
+      
+      switch(eMetaCode) {
+          
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        case MC_STR_FIT_1L:
+          nLength = *(u1*)aDataByte++;
+          aDataByte += nLength;
+          break;
+          
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        case MC_SHOCO_FIT_1C:
+          nCompressed = (i8)*(u1*)aDataByte++;
+          aDataByte += nCompressed;
+          break;
+          
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        case MC_SHOCO_SPLIT_2T1C:
+          nCompressed = (i8)*(u1*)aDataByte++;
+          nBytesPartA = aHeadLine->nBytes() - (aDataByte - (byte*)aHeadLine);
+          aDataByte += nBytesPartA;
+          break;
+          
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        default: aDataByte += nDataBytes(eMetaCode); break;
+      }
+      
+      continue;
+    }
+    
+    switch (eMetaCode) {
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_NULL:
+        *aiValue++ = C_DATUM_NULL;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] null\n"_Stz,i_Col,pCol->szColNm());
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_1B:
+        *aiValue++ = *(u1*)(aDataByte);
+        aDataByte += C_1B;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_2B:
+        *aiValue++ = *(u2*)(aDataByte);
+        aDataByte += C_2B;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_3B:
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *aDataByte++;
+        wWord.m_yaByte[1] = *aDataByte++;
+        wWord.m_yaByte[2] = *aDataByte++;
+        *aiValue++ = wWord.m_iI8;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_4B:
+        *aiValue++ = *(u4*)(aDataByte);
+        aDataByte += C_4B;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_5B:
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *aDataByte++;
+        wWord.m_yaByte[1] = *aDataByte++;
+        wWord.m_yaByte[2] = *aDataByte++;
+        wWord.m_yaByte[3] = *aDataByte++;
+        wWord.m_yaByte[4] = *aDataByte++;
+        *aiValue++ = wWord.m_iI8;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_6B:
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *aDataByte++;
+        wWord.m_yaByte[1] = *aDataByte++;
+        wWord.m_yaByte[2] = *aDataByte++;
+        wWord.m_yaByte[3] = *aDataByte++;
+        wWord.m_yaByte[4] = *aDataByte++;
+        wWord.m_yaByte[5] = *aDataByte++;
+        *aiValue++ = wWord.m_iI8;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_7B:
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *aDataByte++;
+        wWord.m_yaByte[1] = *aDataByte++;
+        wWord.m_yaByte[2] = *aDataByte++;
+        wWord.m_yaByte[3] = *aDataByte++;
+        wWord.m_yaByte[4] = *aDataByte++;
+        wWord.m_yaByte[5] = *aDataByte++;
+        wWord.m_yaByte[6] = *aDataByte++;
+        *aiValue++ = wWord.m_iI8;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_8B:
+        *aiValue++ = *(u8*)(aDataByte);
+        aDataByte += C_8B;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_MINUS_ONE:
+        *aiValue++ = -1;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_ZERO:
+        *aiValue++ =  0;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_ONE:
+        *aiValue++ =  1;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_TWO:
+        *aiValue++ =  2;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_THREE:
+        *aiValue++ =  3;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_FOUR:
+        *aiValue++ =  4;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_FIVE:
+        *aiValue++ =  5;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_SIX:
+        *aiValue++ =  6;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_SEVEN:
+        *aiValue++ =  7;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_EIGHT:
+        *aiValue++ =  8;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_NINE:
+        *aiValue++ =  9;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_TEN:
+        *aiValue++ = 10;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_SAME:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_ADD_1B:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_ADD_2B:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_SUB_1B:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_SUB_2B:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_FALSE:
+        *aiValue++ =  0;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_TRUE:
+        *aiValue++ =  1;
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_DATE_E0_2B:
+        *aiValue++ = *(u2*)aDataByte;
+        aDataByte += C_2B;
+        vDteFromEdt((Word*)(aiValue-1),C_ERA_0);
+#ifdef WITH_TRACE_DECODING
+        wWord.m_iDte = *(aiValue-1);
+        vTrace(" [%lld %15s] %4lld : %02lld-%02lld-%02lld\n"_Stz,
+               i_Col,
+               pCol->szColNm(),
+               wWord.m_iDte,
+               (i8)wWord.xEdt.m_uYearInEra + C_ERA_0 + C_BASE_YEAR,
+               (i8)wWord.xEdt.m_uMonth,
+               (i8)wWord.xEdt.m_uDay);
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_DATE_E1_2B:
+        *aiValue++ = *(u2*)aDataByte;
+        aDataByte += C_2B;
+        vDteFromEdt((Word*)(aiValue-1),C_ERA_1);
+#ifdef WITH_TRACE_DECODING
+        wWord.m_iDte = *(aiValue-1);
+        vTrace(" [%lld %15s] %4lld : %02lld-%02lld-%02lld\n"_Stz,
+               i_Col,
+               pCol->szColNm(),
+               wWord.m_iDte,
+               (i8)wWord.xEdt.m_uYearInEra + C_ERA_1 + C_BASE_YEAR,
+               (i8)wWord.xEdt.m_uMonth,
+               (i8)wWord.xEdt.m_uDay);
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_DATE_E2_2B:
+        *aiValue++ = *(u2*)aDataByte;
+        aDataByte += C_2B;
+        vDteFromEdt((Word*)(aiValue-1),C_ERA_2);
+#ifdef WITH_TRACE_DECODING
+        wWord.m_iDte = *(aiValue-1);
+        vTrace(" [%lld %15s] %4lld : %02lld-%02lld-%02lld\n"_Stz,
+               i_Col,
+               pCol->szColNm(),
+               wWord.m_iDte,
+               (i8)wWord.xEdt.m_uYearInEra + C_ERA_2 + C_BASE_YEAR,
+               (i8)wWord.xEdt.m_uMonth,
+               (i8)wWord.xEdt.m_uDay);
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_DAYS_ADD_1B:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_DAYS_SUB_1B:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_STR_EMPTY:
+        *(char**)(aiValue++) = aString;
+        *aString++ = '\0';
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_STR_FIT_1L:
+        nLength = *(u1*)aDataByte++;
+        MemLib::vCopy((byte*)aString,
+                      (byte*)aDataByte,
+                      nLength,
+                      CN_ROWCODER);
+        *(char**)(aiValue++) = aString;
+        aDataByte += nLength;
+        aString   += nLength;
+        *aString++ = '\0';
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
+#endif
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_STR_TAIL_2T:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_STR_SPLIT_2T1L:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_BSTR_FIT_2L:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_BSTR_TAIL_2T:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_BSTR_SPLIT_2T2L:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_SHOCO_FIT_1C:
+        nCompressed = (i8)*(u1*)aDataByte++;
+        nDecompressed =
+        Compress::iFromShoco(aString,                  // decompressed dest
+                             sizeof(caShoco),          // max destination
+                             aDataByte,                // compressed source
+                             nCompressed);             // bytes compressed
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),aString);
+#endif
+        *(char**)(aiValue++) = aString;
+        aString += nDecompressed;
+        *aString++ = '\0';
+        pRow->m_i_Wsp += nDecompressed;
+        aDataByte += nCompressed;
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_SHOCO_TAIL_2T:
+        //i_Tail_rel  = (i8)*(i2*)aDataByte;
+        //aDataByte  += 2;
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *aDataByte++;
+        wWord.m_yaByte[1] = *aDataByte++;
+        i_Tail_rel = wWord.m_iI8;
+        aShocoTail  = RowNub::aGetTail(aHeadLine,i_Tail_rel);
+        nCompressed = aShocoTail->w8_1B(C_OFFSET_COMPRESSED);
+        nDecompressed =
+        Compress::iFromShoco(aString,                  // decompressed dest
+                             sizeof(caShoco),          // max destination
+                             ((byte*)aShocoTail)       // compressed source
+                             + C_OFFSET_COMPRESSED
+                             + _1B_C,
+                             nCompressed);             // bytes compressed
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),aString);
+#endif
+        *(char**)(aiValue++) = aString;
+        aString += nDecompressed;
+        *aString++ = '\0';
+        pRow->m_i_Wsp += nDecompressed;
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_SHOCO_SPLIT_2T1C:
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *aDataByte++;
+        wWord.m_yaByte[1] = *aDataByte++;
+        i_Tail_rel = wWord.m_iI8;
+        aShocoTail  = RowNub::aGetTail(aHeadLine,i_Tail_rel);
+        nCompressed = (i8)*(u1*)aDataByte++;
+        nBytesPartA = aHeadLine->nBytes() - (aDataByte - (byte*)aHeadLine);
+        nBytesPartB = nCompressed - nBytesPartA;
+        MemLib::vCopy((byte*)caShoco,
+                      (byte*)aDataByte,
+                      nBytesPartA,
+                      CN_ROWCODER);
+        MemLib::vCopy((byte*)caShoco+nBytesPartA,
+                      (byte*)aShocoTail+1,
+                      nBytesPartB,
+                      CN_ROWCODER);
+        nDecompressed =
+        Compress::iFromShoco(aString,                  // decompressed dest
+                             sizeof(caShoco),          // max destination
+                             (byte*)caShoco,           // compressed source
+                             nCompressed);             // bytes compressed
+#ifdef WITH_TRACE_DECODING
+        vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),aString);
+#endif
+        *(char**)(aiValue++) = aString;
+        aString += nDecompressed;
+        *aString++ = '\0';
+        pRow->m_i_Wsp += nDecompressed;
+        aDataByte += nBytesPartA;
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_TWOS_1B:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_TWOS_2B:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_TWOS_3B:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_TWOS_4B:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_TWOS_5B:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_TWOS_6B:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_TWOS_7B:
+        break;
+        
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_OVERFLOW_2B:
+        break;
+        
+      default:
+        RASSERT(0);
+    }
+    
+  }
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /*-- Private Static ----------------------------------------------------------*/

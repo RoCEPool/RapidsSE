@@ -66,8 +66,13 @@ Row::Row(ColumnVec* pColVec)
     m_aiValue[i_Col] = 0;
   
   m_xWsp.vZero(CN_ROW);
+  
 #else
   // m_xWsp
+#endif
+ 
+#ifdef WITH_QUICKER_INFLATE
+  MemLib::vZero(&m_aiValue[0],C_MAX_COLUMNS*sizeof(i8),CN_ROW);
 #endif
   
   _checkInitialised_(CN_ROW);

@@ -118,6 +118,10 @@ void Base::vTraceWith(void)
 #ifdef WITH_ANALYSE_FREE
   vTrace("  WITH_ANALYSE_FREE\n"_Stz);
 #endif
+
+#ifdef WITH_QUICKER_INFLATE
+  vTrace("  WITH_QUICKER_INFLATE\n"_Stz);
+#endif
   
 }
 

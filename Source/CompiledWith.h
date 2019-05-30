@@ -68,6 +68,7 @@
 //#define WITH_LARGE_ROWS         // encode cross check
 //#define WITH_ANALYSE_FREE       // analyze free space during load
 //#define WITH_VERIFY_TAILS       // verify tails
+#define WITH_QUICKER_INFLATE      // verify tails
 
 /*============================================================================*/
 /* end                                                                        */
