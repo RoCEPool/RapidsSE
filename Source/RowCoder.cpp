@@ -3522,8 +3522,7 @@ w8 RowCoder::wGetLogical(HeadLine* aLogicalRow, i8 i_Offset, i8 nBytes)
   w8 wSomeBytes = 0;
 
   // scenario 1: simple case (no overflow)
-  i8 nHeadUnits = aLogicalRow->nUnits();
-  if (nHeadUnits <= 127) {
+  if (! aLogicalRow->bHasOverflow()) {
     wSomeBytes = aLogicalRow->wGet(i_Offset, nBytes);
     return wSomeBytes;
   }
