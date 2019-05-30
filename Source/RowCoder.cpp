@@ -2359,6 +2359,8 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
   bool  bGetAll   = pRow->m_bGetAll;
   i8    iLastCol  = pRow->m_iLastCol;
   
+  MemLib::vZero(aValue,nCols*sizeof(i8),CN_ROW);
+  
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
     if (! bGetAll && i_Col >  iLastCol) {

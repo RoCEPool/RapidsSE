@@ -57,22 +57,18 @@ Row::Row(ColumnVec* pColVec)
   m_bGetAll     = true;
   m_iLastCol    = C_UNKNOWN;
   
-  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++)
     m_abGetCol[i_Col] = false;
   m_i_Wsp       = 0;
   
 #ifdef WITH_CHECK_INITIALISED
-  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++)
     m_aiValue[i_Col] = 0;
   
   m_xWsp.vZero(CN_ROW);
   
 #else
   // m_xWsp
-#endif
- 
-#ifdef WITH_QUICKER_INFLATE
-  MemLib::vZero(&m_aiValue[0],C_MAX_COLUMNS*sizeof(i8),CN_ROW);
 #endif
   
   _checkInitialised_(CN_ROW);
