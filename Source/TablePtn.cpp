@@ -303,7 +303,7 @@ void TablePtn::vAppendRow(RowCoder* pRowCoder, RowParts& oRowParts)
     IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
     
     // insert entry into other indexes
-    bool bResult = pIndexTree->bInsertEntry(oRowParts.pNub(),0,xId);
+    bool bResult = pIndexTree->bInsertEntry(m_pCurrentRowBuffer,iRow,xId);
     RASSERT(bResult);
   }
   
