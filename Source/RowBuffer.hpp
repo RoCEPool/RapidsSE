@@ -42,11 +42,12 @@ namespace Data
     static RowBuffer* pRefdRowBuffer(Id& xId);
     static RowBuffer* pToRowBuffer(void* aAddr);
   
-    void    vDropWrite(void);
-    void    vGrabWrite(void);
-    void    vTable(Table* pTable);
-    Table*  pTable(void);
-    i8      nRowCount(void);
+    ColumnVec* pColumnVec(void);
+    void       vDropWrite(void);
+    void       vGrabWrite(void);
+    void       vTable(Table* pTable);
+    Table*     pTable(void);
+    i8         nRowCount(void);
 
     ////////////////////////////////////////////////////////////////////////////
     // buffer functions

@@ -240,6 +240,16 @@ void RowBuffer::vBufferCount(i8& nBuffers)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the column vector                                                      */
+/*----------------------------------------------------------------------------*/
+ColumnVec* RowBuffer::pColumnVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  return pTable()->pColumnVec();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get decile full of the buffer                                              */
 /*----------------------------------------------------------------------------*/
 i8 RowBuffer::iDecile(void)

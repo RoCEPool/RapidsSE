@@ -232,7 +232,7 @@ void KeyWrk::vExtractKey(RowBuffer* pRowBuffer, i8 i_Row, IdxColVec* pIdxColVec)
   RowNub* pRowNub = pRowBuffer->pRowTray()->pNub();
   
   // create a row
-  Row* pRow = new Row(pRowNub->pDesc()->pColumnVec());
+  Row* pRow = new Row(pRowBuffer->pColumnVec());
   
   i8 nCols = pIdxColVec->nItems();
   
