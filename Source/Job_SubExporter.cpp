@@ -292,7 +292,7 @@ void Job_SubExporter::vSprintRows(void)
     RowCoder::vInflate(pRow,aCompactRow);
     
     // append the row to the record
-    hvRec->vAppend(pColVec,pRow);
+    hvRec->vAppend(pRow);
     
     StrLib::vConcat(hvRec->szRecStr()->aChar(),'\n');            //! sub-optimal
     //vTrace("]]%s[[\n"_Stz,sRecord.aStz());

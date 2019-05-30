@@ -594,7 +594,7 @@ void TablePtn::vPublish(void)
     RowCoder::vInflate(pRow,aHeadLine);
     
     // append the row to the record
-    hvRec->vAppend(pColVec,pRow);
+    hvRec->vAppend(pRow);
     
     vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
   }

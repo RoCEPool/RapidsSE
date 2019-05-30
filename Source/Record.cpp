@@ -88,18 +88,18 @@ Record::~Record(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* decode and sprint row into record                                          */
 /*----------------------------------------------------------------------------*/
-void Record::vAppend(ColumnVec* pColVec, Row* pRow)
+void Record::vAppend(Row* pRow)
 {
   vReset();
   
   // get no of columns
-  i8 nColumns = pColVec->nItems();
+  i8 nColumns = m_pColumnVec->nItems();
   
   // for each column
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
     
     // get the column at index
-    Column* pCol = pColVec->pGet(i_Col);
+    Column* pCol = m_pColumnVec->pGet(i_Col);
     
     // comma separate column values
     if (i_Col)

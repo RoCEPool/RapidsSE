@@ -25,7 +25,7 @@ namespace Data
     Record(ColumnVec* pColumnVec);
     ~Record(void) noexcept(false);
   
-    void vAppend(ColumnVec* pColVec, Row* pRow);
+    void vAppend(Row* pRow);
     
     void vAppend(Column* pCol, Datum* pDatum);
     void vAppend(Column* pCol, Row* pRow);

@@ -508,7 +508,7 @@ void RowBuffer::vShowRow(i8 i_Row)
   RowCoder::vInflate(pRow,aCompactRow);
   
   // append the row to the record
-  hvRec->vAppend(pColVec,pRow);
+  hvRec->vAppend(pRow);
   
   // delete the row
   delete pRow;
