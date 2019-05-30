@@ -2173,7 +2173,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     
     if (nBytes)
       for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
-        vTrace("%02x"_Stz,aHeadLine->w8_1B(i_LastOffset+i_Byte));
+        vTrace("%02x"_Stz,wGetLogical(aHeadLine,(i_LastOffset+i_Byte),C_1B));
     for (i8 i_Byte = nBytes; i_Byte < 8; i_Byte++)
       vTrace("__"_Stz);
     vTrace(" "_Stz);
@@ -2188,12 +2188,12 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     vTrace("%s"_Stz,hvRec->szRecStr());
     
     if (MC_SHOCO_SPLIT_2T1C == eMetaCode) {
-      i8 i2T = aHeadLine->wGet(i_LastOffset,2);
-      i8 i1C = aHeadLine->wGet(i_LastOffset+2,1);
+      i8 i2T = wGetLogical(aHeadLine,i_LastOffset,C_2B);
+      i8 i1C = wGetLogical(aHeadLine,(i_LastOffset+2),C_1B);
       vTrace(" [ =%lld.%lld ]"_Stz,i2T,i1C);
     }
     else {
-      i8 iDataValue = aHeadLine->wGet(i_LastOffset,nBytes);
+      i8 iDataValue = wGetLogical(aHeadLine,i_LastOffset,nBytes);
       if (nBytes)
         vTrace(" [ =%lld ]"_Stz,iDataValue);
       else
@@ -2256,7 +2256,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
   
   if (nBytes)
     for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
-      vTrace("%02x"_Stz,aHeadLine->w8_1B(i_LastOffset+i_Byte));
+      vTrace("%02x"_Stz,wGetLogical(aHeadLine,(i_LastOffset+i_Byte),C_1B));
   for (i8 i_Byte = nBytes; i_Byte < 8; i_Byte++)
     vTrace("__"_Stz);
   vTrace(" "_Stz);
@@ -3306,7 +3306,7 @@ void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
   i8 i_Tail_rel = wGetLogical(aHeadLine,i_Offset,C_2B);
   TailLine* aShocoTail = RowNub::aGetTail(aHeadLine,i_Tail_rel);
   
-  i8 nCompressed = aHeadLine->w8_1B(i_Offset+2);
+  i8 nCompressed = wGetLogical(aHeadLine,(i_Offset+2),C_1B);
   
   i8 nBytesPartA = aHeadLine->nBytes() - i_Offset - 3;                           //! <W>
   i8 nBytesPartB = nCompressed - nBytesPartA;
@@ -3515,23 +3515,26 @@ i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get some bytes from head+over                                              */
+/* get some bytes from logicalRow : head[+over]                               */
 /*----------------------------------------------------------------------------*/
-w8 RowCoder::wGetLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes)
+w8 RowCoder::wGetLogical(HeadLine* aLogicalRow, i8 i_Offset, i8 nBytes)
 {
   w8 wSomeBytes = 0;
 
-  i8 nHeadUnits = aHeadLine->nUnits();
-  if (nHeadUnits <= 127) {
-    wSomeBytes = aHeadLine->wGet(i_Offset, nBytes);
+  // scenario 1: simple case (no overflow)
+  if (! aLogicalRow->bHasOverflow()) {
+    wSomeBytes = aLogicalRow->wGet(i_Offset, nBytes);
     return wSomeBytes;
   }
   
-  i8 nHeadBytes = aHeadLine->nBytes();
+  // scenario 2: there is an overflow, but geting bytes from head
+  i8 nHeadBytes = aLogicalRow->nBytes();
   if (i_Offset < nHeadBytes - 2) {
-    wSomeBytes = aHeadLine->wGet(i_Offset, nBytes);
+    wSomeBytes = aLogicalRow->wGet(i_Offset, nBytes);
     return wSomeBytes;
   }
+  
+  // scenario 3: there is an overflow, but geting bytes from overflow
   
   NEVER_REACH;
   return C_UNKNOWN;
