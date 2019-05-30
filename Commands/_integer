@@ -27,6 +27,10 @@ ld intTbl "/DATA/Encoding/integer.csv" ;
 print "Fetching intTbl noPrint";
 time fetch intTbl noPrint;
 /*
+May 30th 2019
+print "Fetching intTbl noPrint";
+166ms
+ 
 print "Retrieving col0";
 time fetch retrieve intTbl int_col0;
 
