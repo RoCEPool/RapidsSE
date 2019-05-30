@@ -226,8 +226,9 @@ namespace Data
   
     static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec);
   
-    static w8 wGetLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes);
-    
+    static w8   wGetLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes);
+    static void vPutLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes, w8 wBytes);
+
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
 
   private:
