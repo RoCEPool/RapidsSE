@@ -2136,7 +2136,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
   // get no of columns
   i8 nColumns = pColVec->nItems();
   
-  HV_Rec hvRec;
+  HV_Rec hvRec(pColVec);
   Datum oDatum;
   
   i8 i_LastOffset = iBaseOffset(pColVec);
@@ -2223,7 +2223,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  HV_Rec hvRec;
+  HV_Rec hvRec(pColVec);
   Datum oDatum;
   
   i8 i_LastOffset = iBaseOffset(pColVec);

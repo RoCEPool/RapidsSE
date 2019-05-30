@@ -274,13 +274,11 @@ void Job_SubExporter::vSprintRows(void)
   
   char* aRecord = nullptr;
   i8 nBytes = 0;
-  
-  //Record* pRecord = new Record;
-  HV_Rec hvRec;
 
   i8 nRowCount = m_pRowBuffer->nRowCount();
   ColumnVec* pColVec = m_pRowBuffer->pTable()->pColumnVec();
-
+  HV_Rec hvRec(pColVec);
+  
   // create a row for retrieval the data
   Row* pRow = new Row(pColVec);
   

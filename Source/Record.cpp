@@ -42,7 +42,6 @@ void Record::operator delete(void* aAddr)
   HeapMem::vFree(pRecord);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -52,6 +51,23 @@ Record::Record(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
   m_azAppendCursor = m_sRecStr.aChar();
+  m_pColumnVec     = nullptr;
+  
+  _checkInitialised_(CN_RECORD);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Record::Record(ColumnVec* pColumnVec)
+: Object(CN_RECORD)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
+  
+  m_azAppendCursor = m_sRecStr.aChar();
+  m_pColumnVec     = pColumnVec;
   
   _checkInitialised_(CN_RECORD);
   

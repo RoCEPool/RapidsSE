@@ -493,9 +493,8 @@ void RowBuffer::vShowRow(i8 i_Row)
 {
   vTrace("Id: %3lli.%03lli "_Stz,m_iBufferNo,i_Row);
   
-  HV_Rec hvRec;
-  
   ColumnVec* pColVec = pTable()->pColumnVec();
+  HV_Rec hvRec(pColVec);
   
   RowTray* pRowTray = this->pRowTray();
   

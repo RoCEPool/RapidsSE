@@ -10,10 +10,10 @@ namespace Data
   class Record : public Object
   {
   private:
-    s16KB m_sRecStr; // the record as a string
-  
-    char* m_azAppendCursor; // cursor for StrLib::vAppend()
-  
+    s16KB      m_sRecStr;        // the record as a string
+    char*      m_azAppendCursor; // cursor for StrLib::vAppend()
+    ColumnVec* m_pColumnVec;     // column vector of table
+    
     // must be last
     Footer m_xFooter;
   
@@ -22,6 +22,7 @@ namespace Data
     void  operator delete(void*);
 
     Record(void);
+    Record(ColumnVec* pColumnVec);
     ~Record(void) noexcept(false);
   
     void vAppend(ColumnVec* pColVec, Row* pRow);

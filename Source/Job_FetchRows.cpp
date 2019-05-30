@@ -756,8 +756,8 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
                           FetchBuffer* pFetchBuffer,
                           i8& iRowsPrinted)
 {
-  HV_Rec hvRec;
   ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
+  HV_Rec hvRec(pColVec);
   
   HeadLine** aaCompactRow_cursor = pFetchBuffer->aaFirstRowPtr();
   
@@ -833,7 +833,7 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
     RowCoder::vInflate(pJob_FetchRows->m_pRow,aHeadLine);
     
     if (pJob_FetchRows->m_bPrint) {
-      HV_Rec hvRec;
+      HV_Rec hvRec(pColVec);
       
       hvRec->vAppend(pCol,pJob_FetchRows->m_pRow);
       vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());

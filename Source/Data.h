@@ -256,15 +256,15 @@ using namespace Data;
 
 static const i8 C_MAX_ROWS = (C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(HeadLine);
 
-typedef       HV<Record,CN_RECORD>                            HV_Rec;
+typedef  HV<Record,ColumnVec,CN_RECORD>                      HV_Rec;
 
-typedef    Nub_t<CN_ROWTRAY,HeadLine,OverLine,TailLine,Table> RowNub;
-
-typedef TrayNL_t<CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
-                (C_CACHELINES * sizeof(HeadLine))>            RowParts;
+typedef  Nub_t<CN_ROWTRAY,HeadLine,OverLine,TailLine,Table>  RowNub;
 
 typedef TrayNL_t<CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
-                 (C_MAX_ROWS * sizeof(HeadLine))>             RowTray;
+                (C_CACHELINES * sizeof(HeadLine))>           RowParts;
+
+typedef TrayNL_t<CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
+                 (C_MAX_ROWS * sizeof(HeadLine))>            RowTray;
 
 //------------------------------------------------------------------------------
 

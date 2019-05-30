@@ -575,9 +575,8 @@ void TablePtn::vPublish(void)
     return;
   }
   
-  HV_Rec hvRec;
-  
   ColumnVec* pColVec = m_pCurrentRowBuffer->pTable()->pColumnVec();
+  HV_Rec hvRec(pColVec);
   
   // create a row for retrieving the row
   Row* pRow = new Row(pColVec);
