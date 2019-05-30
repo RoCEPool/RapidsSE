@@ -835,10 +835,15 @@ void RowCoder::vDataPut(Datum* pEncodedDatum)
   
   //RASSERT(m_i_IntoOffset + pEncodedDatum->m_nEncodedBytes <= nHeadBytes(m_pColVec));
     
-  m_aIntoHead->vPut(m_i_IntoOffset,
-                    pEncodedDatum->m_wWord,
-                    pEncodedDatum->m_nEncodedBytes);
+//  m_aIntoHead->vPut(m_i_IntoOffset,
+//                    pEncodedDatum->m_wWord,
+//                    pEncodedDatum->m_nEncodedBytes);
 
+  vPutLogical(m_aIntoHead,
+              m_i_IntoOffset,
+              pEncodedDatum->m_nEncodedBytes,
+              pEncodedDatum->m_wWord);
+  
   m_i_IntoOffset += pEncodedDatum->m_nEncodedBytes;
 }
 
@@ -852,8 +857,12 @@ void RowCoder::vDataPut(w8 wDatum, i8 nBytes)
   if (! nBytes)
     return;
   
-  m_aIntoHead->vPut(m_i_IntoOffset,wDatum,nBytes);
-  
+//  m_aIntoHead->vPut(m_i_IntoOffset,wDatum,nBytes);
+  vPutLogical(m_aIntoHead,
+              m_i_IntoOffset,
+              nBytes,
+              wDatum);
+
   m_i_IntoOffset += nBytes;
 }
 
