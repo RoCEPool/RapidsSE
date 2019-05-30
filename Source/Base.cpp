@@ -103,6 +103,10 @@ void Base::vTraceWith(void)
   vTrace("  WITH_ENCODING_XCHECK\n"_Stz);
 #endif
   
+#ifdef WITH_HEAD_OVERFLOW
+  vTrace("  WITH_HEAD_OVERFLOW\n"_Stz);
+#endif
+  
 #ifdef WITH_LARGE_ROWS
   vTrace("  WITH_LARGE_ROWS\n"_Stz);
 #endif
