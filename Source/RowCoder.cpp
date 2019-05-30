@@ -210,6 +210,10 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   m_i_IntoHead   = m_pIntoNub->iAllotHead(m_nHeadBytes);
   m_aIntoHead    = m_pIntoNub->aGetHead(m_i_IntoHead);
   m_i_IntoOffset = m_i_BaseOffset;
+  //---
+  m_i_IntoOver   = C_UNKNOWN;
+  m_aIntoOver    = nullptr;
+  m_nOverBytes   = C_UNKNOWN;
 
   m_aWorkHead    = m_pIntoNub->aGetHead();
   
