@@ -238,7 +238,7 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
   
   // aggregate the buffer
   i8 nRowCount = pRowBuffer->nRowCount();
-  Row* pRow = new Row(m_pTable->pColumnVec());
+  HV_Row hRow(m_pTable->pColumnVec());
   
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
@@ -246,18 +246,18 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
     HeadLine* aCompactRow = pRowBuffer->pRowTray()->pNub()->aGetHead(i_Row);
     
     // mark key column to be decoded
-    pRow->m_abGetCol[m_pKeyColumn->iColumnNo()] = true;
+    hRow->m_abGetCol[m_pKeyColumn->iColumnNo()] = true;
     
     // mark agg columns to be decoded
     for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
       pAggColumn = m_pAggColVec->pGet(i_AggCol);
-      pRow->m_abGetCol[pAggColumn->iColumnNo()] = true;
+      hRow->m_abGetCol[pAggColumn->iColumnNo()] = true;
     }
     
-    RowCoder::vInflate(pRow,aCompactRow);
+    RowCoder::vInflate(hRow,aCompactRow);
     
     // get the key value from the row
-    xKey.m_iInt = pRow->m_aiValue[m_pKeyColumn->iColumnNo()];
+    xKey.m_iInt = hRow->m_aiValue[m_pKeyColumn->iColumnNo()];
     
     // for each agg column
     for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
@@ -265,7 +265,7 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
       pAggColumn = m_pAggColVec->pGet(i_AggCol);
       i_Col = pAggColumn->iColumnNo();
       
-      xVal.m_iInt = pRow->m_aiValue[i_Col];
+      xVal.m_iInt = hRow->m_aiValue[i_Col];
       
       if (xVal.m_iInt < m_iaMinVal[i_AggCol]) {
         m_iaMinVal[i_AggCol] = xVal.m_iInt;
@@ -281,9 +281,6 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
     m_nRows++;
     
   }
-  
-  // delete the row
-  delete pRow;
   
   // compute average
   for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++)
