@@ -694,8 +694,7 @@ bool IndexTree::bInsertEntry(RowBuffer* pRowBuffer, i8 i_Row, Id& xId)
   m_okLock.vGrabWrite();
   
   KeyWrk xKeyWrk;
-  RowNub* pRowNub = pRowBuffer->pRowTray()->pNub();
-  xKeyWrk.vExtractKey(pRowNub,i_Row,m_pIndex->pIdxColVec());
+  xKeyWrk.vExtractKey(pRowBuffer,i_Row,m_pIndex->pIdxColVec());
   xKeyWrk.vId(xId);
   
   //xKeyWrk.vShow(m_pIndex->pIdxColVec());

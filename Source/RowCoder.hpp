@@ -319,7 +319,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     /* calc size of the head line for column vector                               */
     /*----------------------------------------------------------------------------*/
-    static inline i8 nHeadBytes(ColumnVec* )
+    static inline i8 nHeadBytes(ColumnVec* pColVec)
     {
       // experiment 1
       i8 nBytes = sizeof(CacheLine) + (1 * C_BYTES_PER_WORD);

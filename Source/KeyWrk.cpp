@@ -226,11 +226,13 @@ void KeyWrk::vAddWord(w8 wWord)
 /*----------------------------------------------------------------------------*/
 /* extract an index key into KeyWrk from this row using given index columns   */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vExtractKey(RowNub* pRowNub, i8 i_Row, IdxColVec* pIdxColVec)
+void KeyWrk::vExtractKey(RowBuffer* pRowBuffer, i8 i_Row, IdxColVec* pIdxColVec)
 {
   
+  RowNub* pRowNub = pRowBuffer->pRowTray()->pNub();
+  
   // create a row
-  Row* pRow = new Row(pRowNub->pDesc()->pColumnVec());
+  Row* pRow = new Row(pRowBuffer->pColumnVec());
   
   i8 nCols = pIdxColVec->nItems();
   
@@ -244,6 +246,7 @@ void KeyWrk::vExtractKey(RowNub* pRowNub, i8 i_Row, IdxColVec* pIdxColVec)
   }
   
   // inflate the index column values into row
+  
   HeadLine* aCompactRow = pRowNub->aGetHead(i_Row);
   RowCoder::vInflate(pRow,aCompactRow);
 
