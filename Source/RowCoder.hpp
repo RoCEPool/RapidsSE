@@ -290,7 +290,7 @@ namespace Data
         i_Offset_ += nDataBytes(eEncoding);
         
         if (MC_STR_FIT_1L == eEncoding) {
-          i_Offset_ += aHeadLine->w8_1B(i_Offset_ - 1);
+          i_Offset_ += wGetLogical(aHeadLine,(i_Offset_ - 1),C_1B);
         }
       }
       
@@ -307,10 +307,10 @@ namespace Data
     {
       i8 nColumns = pColVec->nItems();
     
-      i8 nBits = C_BITS_PER_BYTE + (nColumns * C_METABITS);
+      i8 nBits = (i8)C_BITS_PER_BYTE + (nColumns * (i8)C_METABITS);
     
-      i8 nMetaBytes = nBits / C_BITS_PER_BYTE
-                        + (nBits % C_BITS_PER_BYTE ? 1 : 0);
+      i8 nMetaBytes = nBits / (i8)C_BITS_PER_BYTE
+                        + (nBits % (i8)C_BITS_PER_BYTE ? 1 : 0);
     
       return nMetaBytes;
     }
@@ -318,7 +318,7 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     /* calc size of the head line for column vector                               */
     /*----------------------------------------------------------------------------*/
-    static inline i8 nHeadBytes(ColumnVec* pColVec)
+    static inline i8 nHeadBytes(ColumnVec* )
     {
       // experiment 1
       i8 nBytes = sizeof(CacheLine) + (1 * C_BYTES_PER_WORD);
@@ -340,7 +340,7 @@ namespace Data
       //i8 nBytes = pColVec->nItems() * 10;
       //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
       
-      return nHeadBytes*C_BYTES_PER_WORD;
+      return nHeadBytes * (i8)C_BYTES_PER_WORD;
     }
   
     /*----------------------------------------------------------------------------*/
