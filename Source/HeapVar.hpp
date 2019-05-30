@@ -15,7 +15,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    HV<OBJECT,eClassNo>(PARAMETER* pParam)
+    HV<OBJECT,PARAMETER,eClassNo>(PARAMETER* pParam)
     {
       m_pPointer = new OBJECT(pParam);
     }
