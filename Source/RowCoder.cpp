@@ -2173,11 +2173,20 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  MemLib::vWordDump(aHeadLine,aHeadLine->nBytes());
+  i8 nHeadBytes = aHeadLine->nBytes();
+  MemLib::vWordDump(aHeadLine,nHeadBytes);
   
   OverLine* aOverLine = nullptr;
+  i8 i_Over_rel = aHeadLine->iOverflow2B();
+  i8 nOverBytes = C_UNKNOWN;
+  i8 nOverWords = C_UNKNOWN;
+
   if (aHeadLine->bHasOverflow()) {
-    
+    aOverLine  = aGetOverRel(aHeadLine,i_Over_rel);
+    nOverBytes = aOverLine->nBytes();
+    nOverWords = aOverLine->nWords();
+
+    MemLib::vWordDump(aOverLine,nOverBytes);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2185,13 +2194,14 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
   i8 nFreeBytes = nFreeSpaceHead(aHeadLine,pColVec);
 
   if (aHeadLine->bHasOverflow()) {
-    vTrace("<W> %lld [OT] %lld;  FreeBytes %lld\n"_Stz,
+    vTrace("<W> %lld; [OT] %lld <W> %lld;  FreeBytes %lld\n"_Stz,
            aHeadLine->nWords(),
-           aHeadLine->iOverflow2B(),
+           i_Over_rel,
+           nOverWords,
            nFreeBytes);
   }
   else {
-    vTrace("<W> %lld [OT] none;  FreeBytes %lld\n"_Stz,
+    vTrace("<W> %lld; [OT] none; FreeBytes %lld\n"_Stz,
            aHeadLine->nWords(),
            nFreeBytes);
   }
@@ -2204,7 +2214,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
   HV_Rec hvRec(pColVec);
   Datum oDatum;
   
-  i8 i_LastOffset = iBaseOffset(pColVec);
+  i8 i_Offset = iBaseOffset(pColVec);
   
   vTrace("Col ColNm         Datum MetaCode"
          "           Offset Address      DataBytes          Value\n"_Stz);
@@ -2222,7 +2232,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     i8   nBytes    = nDataBytes(eMetaCode);
     if (MC_STR_FIT_1L == eMetaCode) {
       RASSERT(1 == nBytes);
-      nBytes += wGetLogical(aHeadLine,i_LastOffset,C_1B);
+      nBytes += wGetLogical(aHeadLine,i_Offset,C_1B);
     }
     
     //      colNo colNm Dtm  MC   aMC   Ofset Addr   Bytes
@@ -2232,33 +2242,32 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
            aDM[eDatum],
            eMetaCode,
            aMetaCode,
-           i_LastOffset,
-           (byte*)aHeadLine + i_LastOffset,
+           i_Offset,
+           (byte*)aHeadLine + i_Offset,
            nBytes);
     
     if (nBytes)
       for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
-        vTrace("%02x"_Stz,wGetLogical(aHeadLine,(i_LastOffset+i_Byte),C_1B));
+        vTrace("%02x"_Stz,wGetLogical(aHeadLine,(i_Offset+i_Byte),C_1B));
     for (i8 i_Byte = nBytes; i_Byte < 8; i_Byte++)
       vTrace("__"_Stz);
     vTrace(" "_Stz);
     
     hvRec->vReset();
-    //vAppend(hvRec,aHeadLine,pColVec,pCol,i_Col,i_LastOffset);
     
     // first get the encoded value into datum
-    vDecode(&oDatum,aHeadLine,pColVec,pCol,i_Col,i_LastOffset);
+    vDecode(&oDatum,aHeadLine,pColVec,pCol,i_Col,i_Offset);
     hvRec->vAppend(pCol, &oDatum);
     
     vTrace("%s"_Stz,hvRec->szRecStr());
     
     if (MC_SHOCO_SPLIT_2T1C == eMetaCode) {
-      i8 i2T = wGetLogical(aHeadLine,i_LastOffset,C_2B);
-      i8 i1C = wGetLogical(aHeadLine,(i_LastOffset+2),C_1B);
+      i8 i2T = wGetLogical(aHeadLine,i_Offset,C_2B);
+      i8 i1C = wGetLogical(aHeadLine,(i_Offset+2),C_1B);
       vTrace(" [ =%lld.%lld ]"_Stz,i2T,i1C);
     }
     else {
-      i8 iDataValue = wGetLogical(aHeadLine,i_LastOffset,nBytes);
+      i8 iDataValue = wGetLogical(aHeadLine,i_Offset,nBytes);
       if (nBytes)
         vTrace(" [ =%lld ]"_Stz,iDataValue);
       else
@@ -2267,7 +2276,7 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     
     vTrace("\n"_Stz);
     
-    i_LastOffset += nBytes;
+    i_Offset += nBytes;
     
     if (eMetaCode == MC_STR_SPLIT_2T1L)
       vDebugPoint();
@@ -2806,7 +2815,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[0] = *aDataByte++;
         wWord.m_yaByte[1] = *aDataByte++;
         i_Tail_rel = wWord.m_iI8;
-        aShocoTail  = RowNub::aGetTail(aHeadLine,i_Tail_rel);
+        aShocoTail  = aGetTailRel(aHeadLine,i_Tail_rel);
         nCompressed = aShocoTail->w8_1B(C_OFFSET_COMPRESSED);
         nDecompressed =
           Compress::iFromShoco(aString,                  // decompressed dest
@@ -2830,7 +2839,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[0] = *aDataByte++;
         wWord.m_yaByte[1] = *aDataByte++;
         i_Tail_rel = wWord.m_iI8;
-        aShocoTail  = RowNub::aGetTail(aHeadLine,i_Tail_rel);
+        aShocoTail  = aGetTailRel(aHeadLine,i_Tail_rel);
         nCompressed = (i8)*(u1*)aDataByte++;
         nBytesPartA = aHeadLine->nBytes() - (aDataByte - (byte*)aHeadLine);
         nBytesPartB = nCompressed - nBytesPartA;
@@ -3340,7 +3349,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[0] = *aDataByte++;
         wWord.m_yaByte[1] = *aDataByte++;
         i_Tail_rel = wWord.m_iI8;
-        aShocoTail  = RowNub::aGetTail(aHeadLine,i_Tail_rel);
+        aShocoTail  = aGetTailRel(aHeadLine,i_Tail_rel);
         nCompressed = aShocoTail->w8_1B(C_OFFSET_COMPRESSED);
         nDecompressed =
         Compress::iFromShoco(aString,                  // decompressed dest
@@ -3364,7 +3373,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[0] = *aDataByte++;
         wWord.m_yaByte[1] = *aDataByte++;
         i_Tail_rel = wWord.m_iI8;
-        aShocoTail  = RowNub::aGetTail(aHeadLine,i_Tail_rel);
+        aShocoTail  = aGetTailRel(aHeadLine,i_Tail_rel);
         nCompressed = (i8)*(u1*)aDataByte++;
         nBytesPartA = aHeadLine->nBytes() - (aDataByte - (byte*)aHeadLine);
         nBytesPartB = nCompressed - nBytesPartA;
@@ -3930,7 +3939,7 @@ void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
   byte caShoco[C_4KB];
   
   i8 i_Tail_rel = wGetLogical(aHeadLine,i_Offset,C_2B);
-  TailLine* aShocoTail = RowNub::aGetTail(aHeadLine,i_Tail_rel);
+  TailLine* aShocoTail = aGetTailRel(aHeadLine,i_Tail_rel);
   
   i8 nCompressed = wGetLogical(aHeadLine,(i_Offset+2),C_1B);
   
@@ -3964,7 +3973,7 @@ void RowCoder::vDecodeVchShocoTail(Datum* pDatum, HeadLine* aHeadLine,
                                    Column* pCol, i8 i_Offset)
 {
   i8 i_Tail_rel = wGetLogical(aHeadLine,i_Offset,C_2B);
-  TailLine* aShocoTail = RowNub::aGetTail(aHeadLine,i_Tail_rel);
+  TailLine* aShocoTail = aGetTailRel(aHeadLine,i_Tail_rel);
   
   //MemLib::vWordDump(aShocoTail,aShocoTail->nBytes());
   
@@ -4232,7 +4241,7 @@ i8 RowCoder::nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine)
     return C_UNKNOWN;
   
   i8 i_Tail_rel = wGetLogical(aHeadLine,i_Offset,C_2B);
-  TailLine* aShocoTail = RowNub::aGetTail(aHeadLine,i_Tail_rel);
+  TailLine* aShocoTail = aGetTailRel(aHeadLine,i_Tail_rel);
 
   i8 nCompressed = aShocoTail->w8_1B(C_OFFSET_COMPRESSED);
   //RASSERT(nCompressed <= 56);

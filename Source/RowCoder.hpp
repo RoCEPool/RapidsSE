@@ -235,8 +235,8 @@ namespace Data
     static w8   wGetLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes);
     static void vPutLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes, w8 wBytes);
 
-    OverLine* aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel);
-    TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
+    static OverLine* aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel);
+    static TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
 
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
 
