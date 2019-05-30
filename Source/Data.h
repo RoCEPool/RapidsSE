@@ -239,6 +239,7 @@ namespace Data
   static const i8 C_ERA_2 = 99; // 1999
 
   class Record;
+  class Row;
 }
 
 using namespace Data;
@@ -257,6 +258,7 @@ using namespace Data;
 static const i8 C_MAX_ROWS = (C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(HeadLine);
 
 typedef  HV<Record,ColumnVec,CN_RECORD>                      HV_Rec;
+typedef  HV<Row,ColumnVec,CN_ROW>                            HV_Row;
 
 typedef  Nub_t<CN_ROWTRAY,HeadLine,OverLine,TailLine,Table>  RowNub;
 
