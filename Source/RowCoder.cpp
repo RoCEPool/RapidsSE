@@ -192,11 +192,7 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   
   // check for space in target nub
   
-#ifdef WITH_HEAD_OVERFLOW
-  i8 nSpaceNeeded = pFromNub->nUsedBytes() + sizeof(CacheLine);
-#else
   i8 nSpaceNeeded = pFromNub->nUsedBytes();
-#endif
   
   if (! m_pIntoNub->bHasSpace(nSpaceNeeded)) {
     m_nTotalBuffers++;
@@ -833,14 +829,24 @@ void RowCoder::vCopyHead(void)
 /*----------------------------------------------------------------------------*/
 /* check there is enough space for nBytes of data                             */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDataNeed(i8 nBytes)
+void RowCoder::vDataNeed(i8 nBytes, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  if (m_nHeadBytes - m_i_IntoOffset >= nBytes)
+  // last column?
+  
+  if (pCol->bIsLastColumn()) {
+    if (m_nHeadBytes - m_i_IntoOffset < nBytes)
+      vExtendIntoHead(sizeof(CacheLine) - 1);
     return;
-
-  RASSERT(0);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // not last column
+  
+  // need (nBytes + _2B_OT)
+  if (m_nHeadBytes - m_i_IntoOffset < nBytes + _2B_OT)
+    vExtendIntoHead(sizeof(CacheLine) - 1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -859,6 +865,8 @@ void RowCoder::vDataPut(Datum* pEncodedDatum, Column* pCol)
 //                    pEncodedDatum->m_wWord,
 //                    pEncodedDatum->m_nEncodedBytes);
 
+  vDataNeed(pEncodedDatum->m_nEncodedBytes,pCol);
+  
   vPutLogical(m_aIntoHead,
               m_i_IntoOffset,
               pEncodedDatum->m_nEncodedBytes,
@@ -876,7 +884,9 @@ void RowCoder::vDataPut(w8 wDatum, i8 nBytes, Column* pCol)
   
   if (! nBytes)
     return;
-  
+ 
+  vDataNeed(nBytes,pCol);
+
 //  m_aIntoHead->vPut(m_i_IntoOffset,wDatum,nBytes);
   vPutLogical(m_aIntoHead,
               m_i_IntoOffset,
@@ -1126,7 +1136,7 @@ void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
   
   w8 wSmall = *(w8*)pSrcDatum->m_sVch.aChar();
   
-  vDataNeed(_1B_L + pSrcDatum->m_nChars);
+  vDataNeed(_1B_L + pSrcDatum->m_nChars,pCol);
   vDataPut(pSrcDatum->m_nChars,1,pCol);
   vDataPut(wSmall,pSrcDatum->m_nChars,pCol);
   
