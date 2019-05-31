@@ -18,6 +18,8 @@ namespace Base
     i8 nUnits(void);
     i8 nWords(void);
 
+    i8   iU(void);
+    void vU(i8 nUnits);
   };
   
   /*--------------------------------------------------------------------------*/
