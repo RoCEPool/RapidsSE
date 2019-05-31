@@ -180,7 +180,6 @@ namespace Data
     static HeadLine* aCompactRow(RowBuffer* pRowBuffer, i8 i_Row);
   
     static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec);
-    static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
   
     static void vInflate(Row* pRow, HeadLine* aHeadLine);
   
@@ -351,6 +350,12 @@ namespace Data
       // seth
       //i8 nBytes = pColVec->nItems() * 10;
       //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+      
+      
+#ifdef WITH_HEAD_OVERFLOW
+      nBytes     = 80;
+      nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+#endif
       
       return nHeadBytes * (i8)C_BYTES_PER_WORD;
     }
