@@ -25,16 +25,19 @@ namespace Data
     bool bHasOverflow(void);
     i8   iOverflow2B(void);
     void vOverflow2B(i8 iOver2B);
-
-  /*----------------------------------------------------------------------------*/
-  /* return meta code                                                           */
-  /*----------------------------------------------------------------------------*/
-  inline eMC eMetaCode(i8 i_Meta)
-  {
-    eMC eCode = *(eMC*)((byte*)this + _1B_W + i_Meta);
   
-    return eCode;
-  }
+    i8   iW(void);
+    void vW(i8 nWords);
+
+    /*------------------------------------------------------------------------*/
+    /* return meta code                                                       */
+    /*------------------------------------------------------------------------*/
+    inline eMC eMetaCode(i8 i_Meta)
+    {
+      eMC eCode = *(eMC*)((byte*)this + _1B_W + i_Meta);
+  
+      return eCode;
+    }
   
   };
 
