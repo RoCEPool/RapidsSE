@@ -2414,7 +2414,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
   
   i8 nCols = pRow->m_nColumns;
   
-  byte* aMetaCode = (byte*)aHeadLine + C_HEAD_PRE_BYTES;
+  byte* aMetaCode = (byte*)aHeadLine + _1B_W;
   byte* aDataByte = (byte*)aHeadLine + pRow->m_iBaseOffset;
   byte* aValue    = (byte*)&pRow->m_aiValue[0];
   
@@ -2966,7 +2966,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
   
   i8 nCols = pRow->m_nColumns;
   
-  byte* aMetaCode = (byte*)aHeadLine + C_HEAD_PRE_BYTES;
+  byte* aMetaCode = (byte*)aHeadLine + _1B_W;
   byte* aDataByte = (byte*)aHeadLine + pRow->m_iBaseOffset;
   i8*   aiValue   = & pRow->m_aiValue[0];
   

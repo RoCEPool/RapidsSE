@@ -7,7 +7,7 @@ namespace Data
 {
   class Datum;
   
-  static const i8 C_HEAD_PRE_BYTES = 1;
+  static const i8 C_U_codehead = 0;
 
   class HeadLine : public Line
   {
@@ -33,7 +33,7 @@ namespace Data
   /*----------------------------------------------------------------------------*/
   inline eMC eMetaCode(i8 i_Meta)
   {
-    eMC eCode = *(eMC*)((byte*)this + C_HEAD_PRE_BYTES + i_Meta);
+    eMC eCode = *(eMC*)((byte*)this + _1B_W + i_Meta);
   
     return eCode;
   }
