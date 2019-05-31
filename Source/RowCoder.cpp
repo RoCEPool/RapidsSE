@@ -235,7 +235,7 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   
 //#ifdef WITH_TRACE_ENCODING
   if (m_nTotalHeads <= 10)
-    RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
+    RowCoder::vHeadDump("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
 //#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -332,10 +332,10 @@ void RowCoder::vEncodeEnd(void)
 //  vRecord(hvRec,m_aIntoHead,m_pColVec);
 //  vTrace("encoded: (%s)\n"_Stz,hvRec->szRecStr());
 //  
-//  vHeadDump(m_aIntoHead,m_pColVec);
+//  vHeadDump("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
 
 #ifdef WITH_HEAD_OVERFLOW
-  RowCoder::vHeadDump(m_aIntoHead,m_pColVec,
+  RowCoder::vHeadDump("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec,
                       MemLib::nQuantaRequired(m_i_IntoOffset,C_BYTES_PER_WORD));
   vDebugPoint();
 #endif
@@ -829,7 +829,7 @@ void RowCoder::vCopyHead(void)
 #endif
   
 #ifdef WITH_TRACE_ENCODING
-  RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
+  RowCoder::vHeadDump("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
 #endif
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
@@ -1329,7 +1329,7 @@ void RowCoder::vRecode_Short(void)
   // recode each column
   
   //vTrace("DUMP before recode\n"_Stz);
-  //vHeadDump(m_aFromHead, m_pColVec);
+  //vHeadDump("m_aFromHead"_Stz,m_aFromHead, m_pColVec);
   
   i8 i_LastColumn = 0;
   
@@ -1359,7 +1359,7 @@ void RowCoder::vRecode_Short(void)
 
   }
   //vTrace("DUMP after recode\n"_Stz);
-  //vHeadDump(m_aIntoHead, m_pColVec);
+  //vHeadDump("m_aIntoHead"_Stz,m_aIntoHead, m_pColVec);
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
 }
@@ -1796,11 +1796,11 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
   
   //MemLib::vWordDump(aIntoTail,nTailUnits * aIntoTail->nBytes());
   //      if (0 == (nCompressed - (nFreeHeadBytes+1))) {
-  //        vHeadDump(aIntoHead,pColVec);
+  //        vHeadDump("aIntoHead"_Stz,aIntoHead,pColVec);
   //        MemLib::vWordDump(aIntoTail,nNewTailUnits * sizeof(SpaceUnit));
   //        int iDebug = 0;
   //      }
-  //vHeadDump(aIntoHead,pColVec);
+  //vHeadDump("aIntoHead"_Stz,aIntoHead,pColVec);
   //xSplits.vAdd(nPartB,"\n"_Stz);
 }
 
@@ -2257,9 +2257,10 @@ void RowCoder::vAnalyse(RowNub* pNub)
 /*----------------------------------------------------------------------------*/
 /* dump head line                                                             */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, i8 nWords)
+void RowCoder::vHeadDump(Stz* szTitle,
+                         HeadLine* aHeadLine, ColumnVec* pColVec, i8 nWords)
 {
-  vTrace("\nHeadDump %p :\n"_Stz,aHeadLine);
+  vTrace("\n%s HeadDump %p :\n"_Stz,szTitle,aHeadLine);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -2425,7 +2426,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
 #ifdef WITH_TRACE_DECODING
   static i8 nTotalRows = 0;
   vTrace("vInflate() of row %lld\n"_Stz,nTotalRows++);
-  RowCoder::vHeadDump(aHeadLine,pRow->m_pColVec);
+  RowCoder::vHeadDump("aHeadLine"_Stz,aHeadLine,pRow->m_pColVec);
 #endif
 
   char* aString = pRow->m_xWsp.aArea();
@@ -2977,7 +2978,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
 #ifdef WITH_TRACE_DECODING
   static i8 nTotalRows = 0;
   vTrace("vInflate() of row %lld\n"_Stz,nTotalRows++);
-  RowCoder::vHeadDump(aHeadLine,pRow->m_pColVec);
+  RowCoder::vHeadDump("aHeadLine"_Stz,aHeadLine,pRow->m_pColVec);
 #endif
   
   char* aString = pRow->m_xWsp.aArea();

@@ -179,7 +179,7 @@ namespace Data
     //! alka
     static HeadLine* aCompactRow(RowBuffer* pRowBuffer, i8 i_Row);
   
-    static void vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec,
+    static void vHeadDump(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec,
                           i8 nWords = C_UNKNOWN);
   
     static void vInflate(Row* pRow, HeadLine* aHeadLine);
