@@ -335,7 +335,8 @@ void RowCoder::vEncodeEnd(void)
 //  vHeadDump(m_aIntoHead,m_pColVec);
 
 #ifdef WITH_HEAD_OVERFLOW
-  RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
+  RowCoder::vHeadDump(m_aIntoHead,m_pColVec,
+                      MemLib::nQuantaRequired(m_i_IntoOffset,C_BYTES_PER_WORD));
   vDebugPoint();
 #endif
 
@@ -2256,8 +2257,10 @@ void RowCoder::vAnalyse(RowNub* pNub)
 /*----------------------------------------------------------------------------*/
 /* dump head line                                                             */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
+void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec, i8 nWords)
 {
+  vTrace("\nHeadDump %p :\n"_Stz,aHeadLine);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 nHeadBytes = aHeadLine->nBytes();
@@ -2274,10 +2277,14 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     nOverBytes = aOverLine->nBytes();
     nOverWords = aOverLine->nWords();
 
-    MemLib::vWordDump(aOverLine,nOverBytes);
+    MemLib::vWordDump(aOverLine,
+                      (C_UNKNOWN == nWords)
+                        ? nOverBytes : nWords * C_BYTES_PER_WORD);
   }
   else {
-    MemLib::vWordDump(aHeadLine,nHeadBytes);
+    MemLib::vWordDump(aHeadLine,
+                      (C_UNKNOWN == nWords)
+                        ? nHeadBytes : nWords * C_BYTES_PER_WORD);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
