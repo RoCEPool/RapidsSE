@@ -306,18 +306,25 @@ void RowCoder::vEncodeDatum(Datum* pSrcDatum, Column* pCol)
   
   // encode the datum into the row
   switch (eDatum) {
-    case DM_BCD: vEncodeBcd(pSrcDatum,pCol); return;
-    case DM_BOL: vEncodeBol(pSrcDatum,pCol); return;
-    case DM_DTE: vEncodeDte(pSrcDatum,pCol); return;
-    case DM_FLT: vEncodeFlt(pSrcDatum,pCol); return;
-    case DM_INT: vEncodeInt(pSrcDatum,pCol); return;
-    case DM_IVL: vEncodeIvl(pSrcDatum,pCol); return;
-    case DM_TME: vEncodeTme(pSrcDatum,pCol); return;
-    case DM_TSP: vEncodeTsp(pSrcDatum,pCol); return;
-    case DM_VCH: vEncodeVch(pSrcDatum,pCol); return;
+    case DM_BCD: vEncodeBcd(pSrcDatum,pCol); break;
+    case DM_BOL: vEncodeBol(pSrcDatum,pCol); break;
+    case DM_DTE: vEncodeDte(pSrcDatum,pCol); break;
+    case DM_FLT: vEncodeFlt(pSrcDatum,pCol); break;
+    case DM_INT: vEncodeInt(pSrcDatum,pCol); break;
+    case DM_IVL: vEncodeIvl(pSrcDatum,pCol); break;
+    case DM_TME: vEncodeTme(pSrcDatum,pCol); break;
+    case DM_TSP: vEncodeTsp(pSrcDatum,pCol); break;
+    case DM_VCH: vEncodeVch(pSrcDatum,pCol); break;
     default:
       NEVER_REACH;
   }
+
+#ifdef WITH_HEAD_OVERFLOW
+  RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
+  if (pCol->bIsLastColumn())
+    vDebugPoint();
+#endif
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
 

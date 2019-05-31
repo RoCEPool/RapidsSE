@@ -132,9 +132,6 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // encode datum into cache line
     m_pRowCoder_Encode->vEncodeDatum(&oDatum,pColumn);
-
-    //HeadLine* aHeadLine = m_oRowParts.aGetHead(0);
-    //MemLib::vWordDump(aHeadLine,sizeof(HeadLine));
     
     if (m_pRowCoder_Encode->m_i_IntoOffset > m_pRowCoder_Encode->nHeadBytes(pColVec)) {
       bResult = false;
