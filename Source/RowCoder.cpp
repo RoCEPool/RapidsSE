@@ -193,7 +193,7 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   
   // check for space in target nub
   
-  i8 nSpaceNeeded = pFromNub->nUsedBytes();
+  i8 nSpaceNeeded = pFromNub->nAllotedBytes();
   
   if (! m_pIntoNub->bHasSpace(nSpaceNeeded)) {
     m_nTotalBuffers++;

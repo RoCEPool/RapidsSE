@@ -56,10 +56,11 @@ namespace Structures
     i8    iAllotHead(i8 nBytes);
     i8    iAllotOver(i8 nBytes);
     i8    iAllotTail(i8 nBytes);
+    i8    nAllotedBytes(void);
     i8    nAreaBytes(void);
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
-    i8    nFreeBytes(void);
+    i8    nFreeAllotableBytes(void);
     HEAD* aGetHead(void);
     HEAD* aGetHead(i8 i_Head);
     OVER* aGetOver(i8 i_Over);
@@ -76,7 +77,6 @@ namespace Structures
     i8    iPrevTail(i8 i_Tail);
     void  vReset(void);
     i8    nTails(void);
-    i8    nUsedBytes(void);
     void  vVerifyTails(i8 i_Dump);
   
     void  vSetItems(i8 nSpaceUnits, SpaceUnit* axaUnits);
@@ -269,7 +269,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotHead(i8 nBytes)
                         ? C_UNITS_CODEHEAD * sizeof(Word)
                         : nBytes;
   
-  if (nFreeBytes() < nBytes)
+  if (nFreeAllotableBytes() < nBytes)
     return C_UNKNOWN;
   
   i8 nWords = MemLib::nQuantaRequired(nBytes_revised,C_HEADUNIT);
@@ -312,7 +312,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotTail(i8 nBytes)
   
   RASSERT(nBytes);
   
-  if (nFreeBytes() < nBytes)
+  if (nFreeAllotableBytes() < nBytes)
     return C_UNKNOWN;
 
   i8 nUnits = MemLib::nQuantaRequired(nBytes,C_SPACEUNIT);
@@ -330,6 +330,19 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotTail(i8 nBytes)
   aTail->v1B(0,nUnits);
   
   return i_Tail;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current total number of alloted bytes                                  */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nAllotedBytes(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  i8 nBytes = m_nHeadBytes + (m_nTailUnits * C_SPACEUNIT);
+  
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -368,10 +381,10 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vDesc(DESC* pDesc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get total number of allotable free bytes                                   */
+/* get total number of allotable free bytes remaining                         */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
-i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nFreeBytes(void)
+i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nFreeAllotableBytes(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -472,7 +485,7 @@ bool Nub_t<CN,HEAD,OVER,TAIL,DESC>::bHasSpace(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
 
-  i8 nFreeBytes = this->nFreeBytes();
+  i8 nFreeBytes = this->nFreeAllotableBytes();
   
   if (nFreeBytes < nBytes)
     return false;
@@ -604,19 +617,6 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nTails(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   return m_nTailItems;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get current total number of alloted bytes                                  */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
-i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nUsedBytes(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  i8 nBytes = m_nHeadBytes + (m_nTailUnits * C_SPACEUNIT);
-  
-  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/

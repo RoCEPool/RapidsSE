@@ -313,7 +313,7 @@ bool RowBuffer::bHasSpace(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  i8 nFreeBytes = m_xRowTray.pNub()->nFreeBytes();
+  i8 nFreeBytes = m_xRowTray.pNub()->nFreeAllotableBytes();
   
   //! is this correct now that we have separated RowBuffer from EntryBuffer?
   if (gpAttachMap->m_nIndexEntries > 0) {
@@ -524,8 +524,9 @@ void RowBuffer::vShow(void)
   
   vTrace("RowBuffer: %p (buffer %lld): rows: %lld headItems: %lld tailItems: %lld free: %lldB\n"_Stz,
          this,m_iBufferNo,nRows,
-         m_xRowTray.pNub()->nHeads(),m_xRowTray.pNub()->nTails(),
-         m_xRowTray.pNub()->nFreeBytes());
+         m_xRowTray.pNub()->nHeads(),
+         m_xRowTray.pNub()->nTails(),
+         m_xRowTray.pNub()->nFreeAllotableBytes());
   
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
          m_pPrevBuffer,m_pNextBuffer);
