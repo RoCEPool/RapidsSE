@@ -27,6 +27,7 @@ namespace Structures
     i8 m_nHeadItems;  // number of items allocated from the head
     i8 m_nHeadWords;  // number of words allocated from the head
     i8 m_nHeadBytes;  // number of bytes allocated from the head
+    i8 m_nHeadBytes_used;  // number of bytes used in the large encode headline
  
     i8 m_nTailItems;  // number of items allocated from the tail
     i8 m_nTailUnits;  // number of space units allocated from the tail
@@ -65,6 +66,8 @@ namespace Structures
     TAIL* aGetTail(i8 i_Tail);
     i8    nHeads(void);
     i8    nHeadBytes(void);
+    i8    nHeadBytes_used(void);
+    void  vHeadBytes_used(i8 nBytes);
     i8    iHash(void);
     void  vHashInc(i8 iDelta);
     bool  bHasSpace(i8 nBytes);
@@ -148,6 +151,7 @@ Nub_t<CN,HEAD,OVER,TAIL,DESC>::Nub_t(void)
   m_nHeadItems  = 0;
   m_nHeadWords  = 0;
   m_nHeadBytes  = 0;
+  m_nHeadBytes_used = 0;
 
   m_nTailItems  = 0;
   m_nTailUnits  = 0;
@@ -493,6 +497,28 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nHeadBytes(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   return m_nHeadBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get head bytes actually used                                               */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nHeadBytes_used(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  return m_nHeadBytes_used;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set head bytes actually used                                               */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vHeadBytes_used(i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  m_nHeadBytes_used = nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
