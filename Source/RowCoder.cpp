@@ -217,11 +217,6 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   m_aIntoOver    = nullptr;
   m_nOverBytes   = C_UNKNOWN;
   
-#ifdef WITH_HEAD_OVERFLOW
-  //vExtendIntoHead(sizeof(CacheLine) - 1);
-  //RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
-#endif
-
   m_aWorkHead    = m_pIntoNub->aGetHead();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -841,6 +836,10 @@ void RowCoder::vDataNeed(i8 nBytes, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
+  // already extended?
+  if (m_aIntoHead->bHasOverflow())
+    return;
+  
   // last column?
   
   i8 nFree = 0;
@@ -852,7 +851,7 @@ void RowCoder::vDataNeed(i8 nBytes, Column* pCol)
   
   if (pCol->bIsLastColumn()) {
     if (nFree < nBytes)
-      vExtendIntoHead(sizeof(CacheLine) - 1);
+      vExtendIntoHead(sizeof(CacheLine) - 1,pCol);
     return;
   }
   
@@ -862,7 +861,7 @@ void RowCoder::vDataNeed(i8 nBytes, Column* pCol)
   // need (nBytes + _2B_OT)
   i8 nNeed = nBytes + _2B_OT;
   if (nFree < nNeed)
-    vExtendIntoHead(4*sizeof(CacheLine) - 1);
+    vExtendIntoHead(4*sizeof(CacheLine) - 1,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1164,7 +1163,7 @@ void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* extend the into head by alloting an nByte overflow tail line               */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vExtendIntoHead(i8 nBytes)
+void RowCoder::vExtendIntoHead(i8 nBytes, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
@@ -1202,9 +1201,19 @@ void RowCoder::vExtendIntoHead(i8 nBytes)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  // get the metacode <M> for the column
+  i8 i_Col = pCol->iColumnNo();
+  eMC eDisplacedMetaCode = (eMC)m_aIntoHead->w8_1B(_1B_W + i_Col);
+
+  // the 1B mc for the column in the head line becomes MC_OVERFLOW_2B
+  m_aIntoHead->v1B((_1B_W + i_Col),MC_OVERFLOW_2B);
+  
+  // we put the original 1B mc for the column into the overflow line <U><M>
+  m_aIntoOver->v1B(_1B_U,eDisplacedMetaCode);
+
   //!
   //! we now move m_iIntoOffset being logical
-  m_i_IntoOffset = m_nHeadBytes + _1B_U;
+  m_i_IntoOffset = m_nHeadBytes + _1B_U + _1B_M;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2240,13 +2249,14 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  i8 nHeadBytes = aHeadLine->nBytes();
+  
   OverLine* aOverLine = nullptr;
   i8 i_Over_rel = aHeadLine->iOverflow2B();
   i8 nOverBytes = C_UNKNOWN;
   i8 nOverWords = C_UNKNOWN;
 
   if (aHeadLine->bHasOverflow()) {
-    i8 nHeadBytes = aHeadLine->nBytes();
     MemLib::vWordDump(aHeadLine,nHeadBytes);
 
     aOverLine  = aGetOverRel(aHeadLine,i_Over_rel);
@@ -2256,7 +2266,6 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     MemLib::vWordDump(aOverLine,nOverBytes);
   }
   else {
-    i8 nHeadBytes = aHeadLine->nBytes();
     MemLib::vWordDump(aHeadLine,nHeadBytes);
   }
 
@@ -2290,6 +2299,14 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
   vTrace("Col ColNm         Datum MetaCode"
          "           Offset Address      DataBytes          Value\n"_Stz);
   
+  
+  eDM   eDatum;
+  Stz*  szDatum;
+  eMC   eMetaCode;
+  Stz*  szMetaCode;
+  byte* ayAddr;
+  i8    nBytes;
+
   // for each column
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
     
@@ -2297,12 +2314,18 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
     Column* pCol = pColVec->pGet(i_Col);
     
     // get the encoded information
-    eDM   eDatum     = pCol->eDatumType();
-    Stz*  szDatum    = aDM[eDatum];
-    eMC   eMetaCode  = aHeadLine->eMetaCode(i_Col);
-    Stz*  szMetaCode = aMC[eMetaCode];
-    byte* ayAddr     = ayAdrLogical(aHeadLine,i_Offset);
-    i8    nBytes     = nDataBytes(eMetaCode);
+    eDatum     = pCol->eDatumType();
+    szDatum    = aDM[eDatum];
+    eMetaCode  = aHeadLine->eMetaCode(i_Col);
+    szMetaCode = aMC[eMetaCode];
+    if (MC_OVERFLOW_2B == eMetaCode) {
+      ayAddr = (byte*)aHeadLine + nHeadBytes - _2B_IT;
+      nBytes = _2B_IT;
+    }
+    else {
+      ayAddr = ayAdrLogical(aHeadLine,i_Offset);
+      nBytes = nDataBytes(eMetaCode);
+    }
     if (MC_STR_FIT_1L == eMetaCode) {
       RASSERT(1 == nBytes);
       nBytes += wGetLogical(aHeadLine,i_Offset,C_1B);
@@ -2319,9 +2342,15 @@ void RowCoder::vHeadDump(HeadLine* aHeadLine, ColumnVec* pColVec)
            ayAddr,
            nBytes);
     
-    if (nBytes)
-      for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
-        vTrace("%02x"_Stz,wGetLogical(aHeadLine,(i_Offset+i_Byte),C_1B));
+    if (nBytes) {
+      if (MC_OVERFLOW_2B == eMetaCode)
+        for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
+          vTrace("%02x"_Stz,*(ayAddr + i_Byte));
+      else
+        for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
+          vTrace("%02x"_Stz,wGetLogical(aHeadLine,(i_Offset+i_Byte),C_1B));
+    }
+    
     for (i8 i_Byte = nBytes; i_Byte < 8; i_Byte++)
       vTrace("__"_Stz);
     vTrace(" "_Stz);
@@ -4019,7 +4048,7 @@ void RowCoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
   i8 nLength = wGetLogical(aHeadLine,i_Offset,C_1B);
   
   MemLib::vCopy((byte*)pDatum->m_sVch.aChar(),
-                (byte*)aHeadLine + i_Offset + 1,
+                (byte*)ayAdrLogical(aHeadLine,i_Offset + 1),
                 nLength,
                 CN_ROWCODER);
   

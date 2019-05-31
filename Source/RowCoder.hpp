@@ -140,7 +140,7 @@ namespace Data
     void vEncodeVch(Datum* pSrcDatum, Column* pCol);
     void vEncodeVchShoco(Datum* pSrcDatum, Column* pCol);
     void vEncodeVchSmall(Datum* pSrcDatum, Column* pCol);
-    void vExtendIntoHead(i8 nBytes);
+    void vExtendIntoHead(i8 nBytes, Column* pCol);
 
     eMC  eGetEncoding(Column* pCol, i8& i_PriorColumn_, i8& i_Offset_);
 
@@ -301,14 +301,24 @@ namespace Data
         
         eMC eEncoding = aHeadLine->eMetaCode(i_Col);
         
-        i_Offset_ += nDataBytes(eEncoding);
+        if (MC_OVERFLOW_2B == eEncoding) {
+          i_Offset_ = aHeadLine->nBytes() + _1B_U + _1B_M;
+        }
+        else {
+          i_Offset_ += nDataBytes(eEncoding);
+        }
         
         if (MC_STR_FIT_1L == eEncoding) {
           i_Offset_ += wGetLogical(aHeadLine,(i_Offset_ - 1),C_1B);
         }
       }
       
-      eMC eEncoding  = aHeadLine->eMetaCode(i_ForCol);
+      eMC eEncoding = aHeadLine->eMetaCode(i_ForCol);
+      if (MC_OVERFLOW_2B == eEncoding) {
+        i_Offset_ = aHeadLine->nBytes() + _1B_U + _1B_M;
+        OverLine* aOverLine = aGetOver(aHeadLine);
+        eEncoding = (eMC)aOverLine->w8_1B(1);
+      }
       i_PriorColumn_ = i_ForCol;
       
       return eEncoding;
