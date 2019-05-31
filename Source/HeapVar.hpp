@@ -6,7 +6,7 @@
 namespace Correctness
 {
   
-  template <class OBJECT, class PARAMETER, eCN eClassNo>
+  template <eCN CN, class OBJECT, class PARAMETER>
   class HV
   {
   public:
@@ -15,7 +15,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    HV<OBJECT,PARAMETER,eClassNo>(PARAMETER* pParam)
+    HV<CN,OBJECT,PARAMETER>(PARAMETER* pParam)
     {
       m_pPointer = new OBJECT(pParam);
     }
@@ -23,7 +23,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* destructor                                                             */
     /*------------------------------------------------------------------------*/
-    ~HV<OBJECT,PARAMETER,eClassNo>()
+    ~HV<CN,OBJECT,PARAMETER>(void)
     {
       if ( ! m_pPointer ) {
         throw (i8)__LINE__;
