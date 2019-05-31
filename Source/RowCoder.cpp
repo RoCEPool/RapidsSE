@@ -841,6 +841,8 @@ void RowCoder::vDataNeed(i8 nBytes, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
+  RASSERT(0);
+  
   // already extended?
   if (m_aIntoHead->bHasOverflow())
     return;
@@ -1053,7 +1055,7 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
   /*
        -- Into-Head (encoding) --            -- Into-Tail (encoding) --
    +================================+    +=====================================+
-   | mc:         ,MC_SHOCO_TAIL_2T, |    | <U><C><shoco...> ////////////////// |
+   | <W>{M}      ,MC_SHOCO_TAIL_2T, |    | <U><C><shoco...> ////////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1062,9 +1064,11 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
    
    where: MC_SHOCO_TAIL_2T is the metaCode for the column
           [IT] is 2 bytes being the index of the Shoco Tail Line
-          <U> is one byte being the unit length of the tail line
+          <W> is one byte being the word length of head line
+          {M} is the set of metacodes
+         <U> is one byte being the unit length of the tail line
           <C> is one byte being the number of shoco compressed bytes
-          <shoco.....> being the shoco compressed bytes
+          <shoco...> being the shoco compressed bytes
     */
   
   // compress source varchar into sShoco
@@ -1107,7 +1111,7 @@ void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
   /*
         -- Into-Head (encoding) --
    +================================+
-   | mc:            ,MC_STR_FIT_1L, |
+   | <W>{M}         ,MC_STR_FIT_1L, |
    +================================+
    |                                |
    +--------------------------------+
@@ -1115,8 +1119,10 @@ void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
    +--------------------------------+
    
    where: MC_STR_FIT_1L is the metaCode for the column
-          <L> is the length of the small string
-          <small> is the 1..7 ascii bytes for the small varchar
+          <W> is one byte being the word length of head line
+          {M} is the set of metacodes
+          <L> is the 1B length of the small string
+          <small> is the 1..7B ascii bytes for the small varchar
    */
   
   w8 wSmall = *(w8*)pSrcDatum->m_sVch.aChar();
@@ -1140,10 +1146,12 @@ void RowCoder::vExtendIntoHead(i8 nBytes, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
+  RASSERT(0);
+
   /*
              -- Into-Head --                        -- Over-Tail --
    +================================+    +================================+
-   | mc:                            |    | <U> ////////////////////////// |
+   | <W>{M}                         |    | <U> ////////////////////////// |
    +================================+    +================================+
    |                                |
    +--------------------------------+
@@ -1151,7 +1159,9 @@ void RowCoder::vExtendIntoHead(i8 nBytes, Column* pCol)
    +--------------------------------+
 
    where: [OT] is 2B relative index of the Over-Tail line
-   
+          <W> is one byte being the word length of head line
+          {M} is the set of metacodes
+
    */
 
   // allot an overline
@@ -1419,7 +1429,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
    Before:
              -- Into-Head --                         -- From-Tail --
    +================================+    +=====================================+
-   | mc:       ,MC_SHOCO_2B,        |    | <U><C><shoco.....> //////////////// |
+   | <W>{M}    ,MC_SHOCO_2B,        |    | <U><C><shoco...> ////////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1429,7 +1439,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
    After:
            -- Into-Head --                      -- Into-Tail -- (duplicate)
    +================================+    +=====================================+
-   | mc:        ,MC_SHOCO_TAIL_2T,  |    | <U><C><shoco.....> //////////////// |
+   | <W>{M}     ,MC_SHOCO_TAIL_2T,  |    | <U><C><shoco...> ////////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1439,9 +1449,11 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
    where: MC_SHOCO_TAIL_2T are the meta-bits for the column
           |FT| is 2B absolute index of the From-Tail line containing shoco
           [IT] is 2B relative index of the Into-Tail line containing shoco
+          <W> is one byte being the word length of head line
+          {M} is the set of metacodes
           <U> is one byte being the unit length of a tail line
           <C> is one byte being the number of shoco compressed bytes
-          <shoco.....> being the shoco compressed bytes
+          <shoco...> being the shoco compressed bytes
    */
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1458,7 +1470,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
   
   // search for a possible duplicate of the From-Tail in the Into-Nub
   // +=====================================+
-  // | <U><C><shoco.....> //////////////// |
+  // | <U><C><shoco...> ////////////////// |
   // +=====================================+
   i8 i_IntoTail_Dup = iFindTail(m_pIntoNub,aFromTail);
   if (C_UNKNOWN == i_IntoTail_Dup)
@@ -1506,7 +1518,7 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
    Before:
              -- Into-Head --                           -- From-Tail --
    +================================+    +=====================================+
-   | mc:          ,MC_SHOCO_TAIL_2T |    | <U><C><shoco.....> //////////////// |
+   | <W>{M}       ,MC_SHOCO_TAIL_2T |    | <U><C><shoco...> ////////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1516,19 +1528,21 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
    After:
    -- Into-Head --                        (no Into-Tail)
    +================================+
-   | mc:           ,MC_SHOCO_FIT_1C |
+   | <W>{M}        ,MC_SHOCO_FIT_1C |
    +================================+
    |                                |
    +--------------------------------+
-   |    <C><shoco.....> /////////// |
+   |    <C><shoco...> ///////////// |
    +--------------------------------+
    
    where: MC_SHOCO_TAIL_2T are the meta-bits for the column
          |FT| is 2B absolute index of the From-Tail line containing shoco
          [IT] is 2B relative index of the Into-Tail line containing shoco
+         <W> is one byte being the word length of head line
+         {M} is the set of metacodes
          <U> is one byte being the unit length of a tail line
          <C> is one byte being the number of shoco compressed bytes
-         <shoco.....> being the shoco compressed bytes
+         <shoco...> being the shoco compressed bytes
    */
   
   // fold may only be done on last column
@@ -1548,13 +1562,13 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // do the bytes ( <C><shoco.....> ) fit into the Into-Head ?
+  // do the bytes ( <C><shoco...> ) fit into the Into-Head ?
   i8 nNeedHeadBytes  = _1B_C + nShocoBytes;
   i8 nAvailHeadBytes = m_nHeadBytes - m_i_IntoOffset;
   
   if (nNeedHeadBytes > nAvailHeadBytes) {
     // +--------------------------------+
-    // |    <C><shoco.........................>
+    // |    <C><shoco.................> |
     // +--------------------------------+
     //      ^m_i_IntoOffset
     _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
@@ -1570,9 +1584,9 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   //      ^m_i_IntoOffset
   m_aIntoHead->v1B(m_i_IntoOffset,nShocoBytes);
   
-  // copy the shoco compressed bytes <shoco.....> into the Into-Head
+  // copy the shoco compressed bytes <shoco...> into the Into-Head
   // +--------------------------------+
-  // |    <C><shoco.....> /////////// |
+  // |    <C><shoco...> ///////////// |
   // +--------------------------------+
   //      ^m_i_IntoOffset
   byte* aIntoHead_Shoco = (byte*)m_aIntoHead + m_i_IntoOffset + _1B_C;
@@ -1581,7 +1595,7 @@ bool RowCoder::bRecodeVchShocoFold(Column* pCol)
   
   // increment intoOffset by sizeof(<C>) + nShocoBytes
   // +--------------------------------+
-  // |    <C><shoco.....> /////////// |
+  // |    <C><shoco...> ///////////// |
   // +--------------------------------+
   //                     ^m_i_IntoOffset
   m_i_IntoOffset += _1B_C + nShocoBytes;
@@ -1609,7 +1623,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
    Before:
               -- Into-Head --                           -- From-Tail --
    +================================+    +=====================================+
-   | mc:          ,MC_SHOCO_TAIL_2T |    | <U><C><shoco....................... |
+   | <W>{M}       ,MC_SHOCO_TAIL_2T |    | <U><C><shoco....................... |
    +================================+    +=====================================+
    |                                |    | ....overhang> ///////////////////// |
    +--------------------------------+    +-------------------------------------+
@@ -1619,7 +1633,7 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
    After:
               -- Into-Head --                           -- Into-Tail --
    +================================+    +=====================================+
-   | mc:       ,MC_SHOCO_SPLIT_2T1C |    | <U><partB.........................> |
+   | <W>{M}    ,MC_SHOCO_SPLIT_2T1C |    | <U><partB.........................> |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1629,9 +1643,11 @@ bool RowCoder::bRecodeVchShocoSplit(Column* pCol)
    where: MC_SHOCO_TAIL_2T is the meta-bits for the column
          |FT| is 2B absolute index of the From-Tail line containing shoco
          [IT] is 2B relative index of the Into-Tail line containing shoco
+         <W> is one byte being the word length of head line
+         {M} is the set of metacodes
          <U> is one byte being the unit length of a tail line
          <C> is one byte being the number of shoco compressed bytes
-         <shoco.....> being the shoco compressed bytes
+         <shoco...> being the shoco compressed bytes
          <partA> is the left-half of the split shoco
          <partB> is the right-half of the split shoco
    */
@@ -1798,7 +1814,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
    Before:
    -- Into-Head --                        -- From-Tail --
    +================================+    +=====================================+
-   | mc:       ,MC_SHOCO_TAIL_2T,   |    | <U><C><shoco.....> //////////////// |
+   | <W>{M}    ,MC_SHOCO_TAIL_2T,   |    | <U><C><shoco...> ////////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1808,7 +1824,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
    After:
    -- Into-Head --                        -- Into-Tail --
    +================================+    +=====================================+
-   | mc:        ,MC_SHOCO_TAIL_2T,  |    | <U><C><shoco.....> //////////////// |
+   | <W>{M}     ,MC_SHOCO_TAIL_2T,  |    | <U><C><shoco...> ////////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1818,9 +1834,11 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
    where: MC_SHOCO_TAIL_2T are the meta-bits for the column
          |FT| is 2B absolute index of the From-Tail line containing shoco
          [IT] is 2B relative index of the Into-Tail line containing shoco
+         <W> is one byte being the word length of head line
+         {M} is the set of metacodes
          <U> is one byte being the unit length of a tail line
          <C> is one byte being the number of shoco compressed bytes
-         <shoco.....> being the shoco compressed bytes
+         <shoco...> being the shoco compressed bytes
    */
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1855,9 +1873,9 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   // +=====================================+
   aIntoTail->v1B(C_OFFSET_COMPRESSED,nFromShocoBytes);
   
-  // copy the shoco compressed bytes <shoco.....> into the Into-Tail
+  // copy the shoco compressed bytes <shoco...> into the Into-Tail
   // +=====================================+
-  // | <U><C><shoco.....> //////////////// |
+  // | <U><C><shoco...> ////////////////// |
   // +=====================================+
   byte* aIntoTail_Shoco = (byte*)aIntoTail + _1B_U + _1B_C;
   byte* aFromTail_Shoco = (byte*)aFromTail + _1B_U + _1B_C;
@@ -3915,16 +3933,18 @@ void RowCoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
   /*
               -- Head-Line --
    +================================+
-   | mc:           ,MC_SHOCO_FIT_1C |
+   | <W>{M}        ,MC_SHOCO_FIT_1C |
    +================================+
    |                                |
    +--------------------------------+
-   |    <C><shoco.....> /////////// |
+   |    <C><shoco...> ///////////// |
    +--------------------------------+
    
    where: MC_SHOCO_FIT_1C are the meta-bits for the column
+          <W> is one byte being the word length of head line
+          {M} is the set of metacodes
           <C> is one byte being the number of shoco compressed bytes
-          <shoco.....> being the shoco compressed bytes
+          <shoco...> being the shoco compressed bytes
    */
   
   i8 nCompressed = wGetLogical(aHeadLine,i_Offset,C_1B);
@@ -3948,7 +3968,7 @@ void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
   /*
               -- Head-Line --                       -- Shoco-Tail --
    +================================+    +=====================================+
-   | mc:       ,MC_SHOCO_SPLIT_2T1C |    | <U><partB.........................> |
+   | <W>{M}    ,MC_SHOCO_SPLIT_2T1C |    | <U><partB.........................> |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -3957,9 +3977,10 @@ void RowCoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
    
    where: MC_SHOCO_TAIL_2T is the meta-bits for the column
           [IT] is 2B relative index of the Into-Tail line containing shoco
+          <W> is one byte being the word length of head line
+          {M} is the set of metacodes
           <U> is one byte being the unit length of a tail line
           <C> is one byte being the number of shoco compressed bytes
-          <shoco.....> being the shoco compressed bytes
           <partA> is the left-half of the split shoco
           <partB> is the right-half of the split shoco
    */
@@ -4008,12 +4029,12 @@ void RowCoder::vDecodeVchShocoTail(Datum* pDatum, HeadLine* aHeadLine,
   /*
                -- Shoco-Tail --
    +=====================================+
-   | <U><C><shoco....> ///////////////// |
+   | <U><C><shoco...> ////////////////// |
    +=====================================+
    
    where: <U> is one byte being the unit length of the tail line
           <C> is one byte being the number of shoco compressed bytes
-          <shoco.....> being the shoco compressed bytes
+          <shoco...> being the shoco compressed bytes
    */
   
   i8 nCompressed = aShocoTail->w8_1B(C_OFFSET_COMPRESSED);
