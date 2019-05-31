@@ -236,6 +236,7 @@ namespace Data
     static w8    wGetLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes);
     static void  vPutLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes, w8 wBytes);
 
+    static OverLine* aGetOver(HeadLine* aHeadLine);
     static OverLine* aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel);
     static TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
 
@@ -353,7 +354,7 @@ namespace Data
       
       
 #ifdef WITH_HEAD_OVERFLOW
-      nBytes     = 80;
+      nBytes     = 32;
       nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
 #endif
       

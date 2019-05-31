@@ -843,8 +843,15 @@ void RowCoder::vDataNeed(i8 nBytes, Column* pCol)
   
   // last column?
   
+  i8 nFree = 0;
+  if (m_i_IntoOffset < m_nHeadBytes)
+    nFree = m_nHeadBytes - m_i_IntoOffset;
+  else
+    nFree = (m_nHeadBytes + m_nOverBytes) - m_i_IntoOffset;
+
+  
   if (pCol->bIsLastColumn()) {
-    if (m_nHeadBytes - m_i_IntoOffset < nBytes)
+    if (nFree < nBytes)
       vExtendIntoHead(sizeof(CacheLine) - 1);
     return;
   }
@@ -853,8 +860,9 @@ void RowCoder::vDataNeed(i8 nBytes, Column* pCol)
   // not last column
   
   // need (nBytes + _2B_OT)
-  if (m_nHeadBytes - m_i_IntoOffset < nBytes + _2B_OT)
-    vExtendIntoHead(sizeof(CacheLine) - 1);
+  i8 nNeed = nBytes + _2B_OT;
+  if (nFree < nNeed)
+    vExtendIntoHead(4*sizeof(CacheLine) - 1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4152,23 +4160,26 @@ i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 byte* RowCoder::ayAdrLogical(HeadLine* aLogicalRow, i8 i_Offset)
 {
-  // scenario 1: simple case (no overflow)
-  if (! aLogicalRow->bHasOverflow()) {
-    byte* ayAdr = (byte*)aLogicalRow + i_Offset;
+  HeadLine* aHeadLine = aLogicalRow;
+  
+  // scenario 1: simple case (no overflow), getting address from head
+  if (! aHeadLine->bHasOverflow()) {
+    byte* ayAdr = (byte*)aHeadLine + i_Offset;
     return ayAdr;
   }
 
   // scenario 2: there is an overflow, but getting address from head
   i8 nHeadBytes = aLogicalRow->nBytes();
   if (i_Offset < nHeadBytes - 2) {
-    byte* ayAdr = (byte*)aLogicalRow + i_Offset;
+    byte* ayAdr = (byte*)aHeadLine + i_Offset;
     return ayAdr;
   }
 
   // scenario 3: there is an overflow, and getting address from overflow
-  
-  NEVER_REACH;
-  return nullptr;
+  OverLine* aOverLine = aGetOver(aHeadLine);
+  i8 i_Offset_over = i_Offset - nHeadBytes;
+  byte* ayAdr = (byte*)aOverLine + i_Offset_over;
+  return ayAdr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4176,25 +4187,27 @@ byte* RowCoder::ayAdrLogical(HeadLine* aLogicalRow, i8 i_Offset)
 /*----------------------------------------------------------------------------*/
 w8 RowCoder::wGetLogical(HeadLine* aLogicalRow, i8 i_Offset, i8 nBytes)
 {
+  HeadLine* aHeadLine = aLogicalRow;
   w8 wSomeBytes = 0;
 
-  // scenario 1: simple case (no overflow)
-  if (! aLogicalRow->bHasOverflow()) {
-    wSomeBytes = aLogicalRow->wGet(i_Offset, nBytes);
+  // scenario 1: simple case (no overflow), getting bytes from head
+  if (! aHeadLine->bHasOverflow()) {
+    wSomeBytes = aHeadLine->wGet(i_Offset,nBytes);
     return wSomeBytes;
   }
   
   // scenario 2: there is an overflow, but getting bytes from head
   i8 nHeadBytes = aLogicalRow->nBytes();
   if (i_Offset < nHeadBytes - 2) {
-    wSomeBytes = aLogicalRow->wGet(i_Offset, nBytes);
+    wSomeBytes = aHeadLine->wGet(i_Offset,nBytes);
     return wSomeBytes;
   }
   
   // scenario 3: there is an overflow, and getting bytes from overflow
-  
-  NEVER_REACH;
-  return C_UNKNOWN;
+  OverLine* aOverLine = aGetOver(aHeadLine);
+  i8 i_Offset_over = i_Offset - nHeadBytes;
+  wSomeBytes = aOverLine->wGet(i_Offset_over,nBytes);
+  return wSomeBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4202,22 +4215,37 @@ w8 RowCoder::wGetLogical(HeadLine* aLogicalRow, i8 i_Offset, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vPutLogical(HeadLine* aLogicalRow, i8 i_Offset, i8 nBytes, w8 wBytes)
 {
-  // scenario 1: simple case (no overflow)
-  if (! aLogicalRow->bHasOverflow()) {
-    aLogicalRow->vPut(i_Offset,wBytes,nBytes);
+  HeadLine* aHeadLine = aLogicalRow;
+  
+  // scenario 1: simple case (no overflow), putting bytes into head
+  if (! aHeadLine->bHasOverflow()) {
+    aHeadLine->vPut(i_Offset,wBytes,nBytes);
     return;
   }
   
   // scenario 2: there is an overflow, but putting bytes into head
-  i8 nHeadBytes = aLogicalRow->nBytes();
+  i8 nHeadBytes = aHeadLine->nBytes();
   if (i_Offset < nHeadBytes - 2) {
-    aLogicalRow->vPut(i_Offset,wBytes,nBytes);
+    aHeadLine->vPut(i_Offset,wBytes,nBytes);
     return;
   }
 
   // scenario 3: there is an overflow, and putting bytes into overflow
   
-  NEVER_REACH;
+  OverLine* aOverLine = aGetOver(aHeadLine);
+  i8 i_Offset_over = i_Offset - nHeadBytes;
+  aOverLine->vPut(i_Offset_over,wBytes,nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get overflow line using relative index [OT]                                */
+/*----------------------------------------------------------------------------*/
+OverLine* RowCoder::aGetOver(HeadLine* aHeadLine)
+{
+  i8 i_Over_rel = aHeadLine->iOverflow2B();
+  OverLine* aOver = RowNub::aGetOver(aHeadLine,i_Over_rel);
+  
+  return aOver;
 }
 
 /*----------------------------------------------------------------------------*/
