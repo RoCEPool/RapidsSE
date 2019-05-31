@@ -59,7 +59,6 @@
 
 #define WITH_ENCODING_BCD_DIGIT // encode bcd as digit if possible
 #define WITH_ENCODING_INT_DIGIT // encode int as digit if possible
-#define WITH_ENCODING_DTE       // encode extended date
 #define WITH_ENCODING_VCH_SMALL // encode vch small
 #define WITH_SHOCO_DUPLICATES   // test for duplicate shoco tail lines
 #define WITH_SHOCO_FOLDLAST     // test for folding last shoco line
