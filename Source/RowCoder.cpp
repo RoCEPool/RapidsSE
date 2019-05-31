@@ -272,7 +272,7 @@ void RowCoder::vEncodeBegin(RowNub* pIntoNub)
   
   m_pIntoNub->vReset();
 #ifdef WITH_HEAD_OVERFLOW
-  m_i_IntoHead = m_pIntoNub->iAllotHead(C_BYTES_CODEHEAD);
+  m_i_IntoHead = m_pIntoNub->iAllotHead(C_LARGEHEAD);
 #else
   m_i_IntoHead = m_pIntoNub->iAllotHead(m_nHeadBytes);
 #endif
@@ -336,8 +336,7 @@ void RowCoder::vEncodeEnd(void)
 
 #ifdef WITH_HEAD_OVERFLOW
   RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
-  if (pCol->bIsLastColumn())
-    vDebugPoint();
+  vDebugPoint();
 #endif
 
   m_pIntoNub->vHeadBytes_used(m_i_IntoOffset);

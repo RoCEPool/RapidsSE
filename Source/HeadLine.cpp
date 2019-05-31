@@ -51,10 +51,10 @@ i8 HeadLine::nUnits(void)
 {
   i8 nSizeUnits = w8_1B(0);
   
-  if (C_U_codehead == nSizeUnits)
-    return C_UNITS_CODEHEAD;
+  if (C_W_largehead == nSizeUnits)
+    return C_LARGEHEAD_UNITS;
   
-  if (nSizeUnits > 127)
+  if (nSizeUnits >= 128)
     nSizeUnits -= 128;
   
   return nSizeUnits;
@@ -77,7 +77,7 @@ bool HeadLine::bHasOverflow(void)
 {
   i8 nSizeWords = w8_1B(0);
   
-  if (nSizeWords > 127)
+  if (nSizeWords >= 128)
     return true;
   else
     return false;
