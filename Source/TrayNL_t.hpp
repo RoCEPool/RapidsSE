@@ -14,8 +14,8 @@ namespace Structures
   // nub (the tray interface)
   
   static const i8 C_SPACEUNIT_QUANTA = sizeof(SpaceUnit);
-  static const i8 C_TAILUNIT_QUANTA  = sizeof(DoubleWord);
-  static const i8 C_HEADUNIT_QUANTA  = sizeof(Word);
+  static const i8 C_TAILLINE_QUANTA  = sizeof(DoubleWord);
+  static const i8 C_HEADLINE_QUANTA  = sizeof(Word);
 
   
   template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
@@ -143,7 +143,7 @@ Nub_t<CN,HEAD,OVER,TAIL,DESC>::Nub_t(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   // head and tail must be a multiples of their units
-  RASSERT(0 == sizeof(HEAD) % C_HEADUNIT_QUANTA);
+  RASSERT(0 == sizeof(HEAD) % C_HEADLINE_QUANTA);
   RASSERT(0 == sizeof(TAIL) % C_SPACEUNIT_QUANTA);
 
   m_nSpaceUnits = C_UNKNOWN;
@@ -275,7 +275,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotHead(i8 nBytes)
   if (nFreeAllotableBytes() < nBytes_revised)
     return C_UNKNOWN;
   
-  i8 nWords = MemLib::nQuantaRequired(nBytes_revised,C_HEADUNIT_QUANTA);
+  i8 nWords = MemLib::nQuantaRequired(nBytes_revised,C_HEADLINE_QUANTA);
   
   m_nHeadBytes += nBytes_revised;
   m_nHeadWords += nWords;
@@ -422,7 +422,7 @@ HEAD* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetHead(i8 i_Head)
   
   ASSERT(i_Head >= 0 && i_Head < m_nHeadItems);
   
-  i8 i_Word = i_Head * (m_nHeadAllot / C_HEADUNIT_QUANTA);
+  i8 i_Word = i_Head * (m_nHeadAllot / C_HEADLINE_QUANTA);
   HEAD* aHead = (HEAD*)&m_axaWords[i_Word];
     
   return aHead;
