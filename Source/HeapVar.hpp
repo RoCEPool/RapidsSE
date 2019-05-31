@@ -5,49 +5,51 @@
 
 namespace Correctness
 {
-  
-  template <eCN CN, class OBJECT, class PARAMETER>
+  template <class CLASS, class PARAMETER>
   class HV
   {
-  public:
-    OBJECT* m_pPointer;
+  private:
+  
+    CLASS* m_pObject;
     
+  public:
+  
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    HV<CN,OBJECT,PARAMETER>(PARAMETER* pParam)
+    HV<CLASS,PARAMETER>(PARAMETER* pParameter)
     {
-      m_pPointer = new OBJECT(pParam);
+      m_pObject = new CLASS(pParameter);
     }
     
     /*------------------------------------------------------------------------*/
     /* destructor                                                             */
     /*------------------------------------------------------------------------*/
-    ~HV<CN,OBJECT,PARAMETER>(void)
+    ~HV<CLASS,PARAMETER>(void)
     {
-      if ( ! m_pPointer ) {
+      if (! m_pObject)
         throw (i8)__LINE__;
-      }
-      delete m_pPointer;
+    
+      delete m_pObject;
     }
     
     /*------------------------------------------------------------------------*/
     /* member                                                                 */
     /*------------------------------------------------------------------------*/
-    OBJECT* operator -> (void)
+    CLASS* operator -> (void)
     {
-      if (m_pPointer == nullptr) {
+      if (! m_pObject)
         throw (i8)__LINE__;
-      }
-      return m_pPointer;
+    
+      return m_pObject;
     }
     
-    /*----------------------------------------------------------------------------*/
-    /* get address of object                                                      */
-    /*----------------------------------------------------------------------------*/
-    operator OBJECT*(void)
+    /*------------------------------------------------------------------------*/
+    /* dereference                                                            */
+    /*------------------------------------------------------------------------*/
+    operator CLASS*(void)
     {
-      return m_pPointer;
+      return m_pObject;
     }
     
   };
