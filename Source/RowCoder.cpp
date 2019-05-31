@@ -57,12 +57,13 @@ RowCoder::RowCoder(void)
   m_pIntoNub       = nullptr;
   m_i_IntoHead     = C_UNKNOWN;
   m_aIntoHead      = nullptr;
-  m_i_IntoOffset   = C_UNKNOWN;
   //---
   m_i_IntoOver     = C_UNKNOWN;
   m_aIntoOver      = nullptr;
   m_nOverBytes     = C_UNKNOWN;
-  
+  //---
+  m_i_IntoOffset   = C_UNKNOWN;
+
   m_pFromNub       = nullptr;
   m_i_FromHead     = C_UNKNOWN;
   m_aFromHead      = nullptr;
@@ -217,7 +218,7 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   m_nOverBytes   = C_UNKNOWN;
   
 #ifdef WITH_HEAD_OVERFLOW
-  vExtendIntoHead(sizeof(CacheLine) - 1);
+  //vExtendIntoHead(sizeof(CacheLine) - 1);
   //RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
 #endif
 
@@ -1167,11 +1168,12 @@ void RowCoder::vExtendIntoHead(i8 nBytes)
    */
 
   // allot an overline
-  i8 i_OverTail = m_pIntoNub->iAllotOver(_1B_U + nBytes);
-  OverLine* aOverTail = m_pIntoNub->aGetOver(i_OverTail);
+  m_nOverBytes = _1B_U + nBytes;
+  i8 m_i_IntoOver = m_pIntoNub->iAllotOver(m_nOverBytes);
+  OverLine* m_aIntoOver = m_pIntoNub->aGetOver(m_i_IntoOver);
   
   // compute [OT] relative difference in units
-  i8 i_OverTail_rel = RowNub::iUnitDiff(m_aIntoHead,(TailLine*)aOverTail);
+  i8 i_OverTail_rel = RowNub::iUnitDiff(m_aIntoHead,(TailLine*)m_aIntoOver);
 
   // the [OT] relative difference goes into the last 2B of headline
   i8 i_Offset_over = m_nHeadBytes - _2B_OT;
@@ -1182,6 +1184,12 @@ void RowCoder::vExtendIntoHead(i8 nBytes)
   i8 iRevised_W = m_aIntoHead->nWords() + 128;
   
   m_aIntoHead->v1B(0,iRevised_W);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  //!
+  //! we now move m_iIntoOffset being logical
+  m_i_IntoOffset = m_nHeadBytes + _1B_U;
 }
 
 /*----------------------------------------------------------------------------*/

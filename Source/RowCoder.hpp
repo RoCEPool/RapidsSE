@@ -26,18 +26,19 @@ namespace Data
   public:
   
     ColumnVec* m_pColVec;
-    i8         m_nHeadBytes;   // size of head line for this colvec/table
     i8         m_nMetaData;    // size of meta data for this colvec/table
     i8         m_i_BaseOffset; // base offset for this colvec/table
   
     RowNub*    m_pIntoNub;
     i8         m_i_IntoHead;
     HeadLine*  m_aIntoHead;
-    i8         m_i_IntoOffset; // encoding offset
+    i8         m_nHeadBytes;   // size of head line for this colvec/table
     //---
     i8         m_i_IntoOver;
     OverLine*  m_aIntoOver;
     i8         m_nOverBytes;
+    //---
+    i8         m_i_IntoOffset; // encoding offset
 
     RowNub*    m_pFromNub;
     i8         m_i_FromHead;
