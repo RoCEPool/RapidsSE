@@ -7,7 +7,8 @@ namespace Data
 {
   class Datum;
   
-  static const i8 C_U_codehead = 0;
+  static const i8 C_U_codehead     = 0;
+  static const i8 C_UNITS_CODEHEAD = C_MAX_RECORD / sizeof(Word);
 
   class HeadLine : public Line
   {

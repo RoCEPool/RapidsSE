@@ -51,6 +51,9 @@ i8 HeadLine::nUnits(void)
 {
   i8 nSizeUnits = w8_1B(0);
   
+  if (C_U_codehead == nSizeUnits)
+    return C_UNITS_CODEHEAD;
+  
   if (nSizeUnits > 127)
     nSizeUnits -= 128;
   
