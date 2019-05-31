@@ -91,6 +91,7 @@ namespace Data
   /* 48 */ MC_TWOS_6B,         // data area contains 6B two's complement datum
   /* 49 */ MC_TWOS_7B,         // data area contains 7B two's complement datum
   
+  //       MC_ROW_REF_2B,      // nB in data area being a row reference [RR]
   /* 50 */ MC_OVERFLOW_2B,     // 2B in data area indicating overflow tail
   
   /* 51 */ MC_ENUMS,

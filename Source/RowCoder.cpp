@@ -271,7 +271,11 @@ void RowCoder::vEncodeBegin(RowNub* pIntoNub)
   // initialise the into row
   
   m_pIntoNub->vReset();
+#ifdef WITH_HEAD_OVERFLOW
+  m_i_IntoHead = m_pIntoNub->iAllotHead(C_BYTES_CODEHEAD);
+#else
   m_i_IntoHead = m_pIntoNub->iAllotHead(m_nHeadBytes);
+#endif
   ASSERT(0 == m_i_IntoHead);
 
   m_aIntoHead    = m_pIntoNub->aGetHead();

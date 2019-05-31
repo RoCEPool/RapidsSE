@@ -5,6 +5,10 @@
 
 namespace Structures
 {
+  static const i8 C_U_codehead     = 0;
+  static const i8 C_BYTES_CODEHEAD = 0;
+  static const i8 C_UNITS_CODEHEAD = C_MAX_RECORD / sizeof(Word);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // nub (the tray interface)
   
@@ -257,16 +261,17 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotHead(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  RASSERT(nBytes);
-  //RASSERT(0 == nBytes % C_SPACEUNIT);
-
+  i8 nBytes_revised = (C_BYTES_CODEHEAD == nBytes)
+                        ? C_UNITS_CODEHEAD * sizeof(Word)
+                        : nBytes;
+  
   if (nFreeBytes() < nBytes)
     return C_UNKNOWN;
   
-  i8 nWords = MemLib::nQuantaRequired(nBytes,C_HEADUNIT);
-  RASSERT(nWords * (i8)C_HEADUNIT >= nBytes);
+  i8 nWords = MemLib::nQuantaRequired(nBytes_revised,C_HEADUNIT);
+  RASSERT(nWords * (i8)C_HEADUNIT >= nBytes_revised);
   
-  m_nHeadBytes += nBytes;
+  m_nHeadBytes += nBytes_revised;
   m_nHeadWords += nWords;
   i8 i_Head = m_nHeadItems++;
 
@@ -274,7 +279,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotHead(i8 nBytes)
   
   HEAD* aHead = aGetHead(i_Head);
   
-  aHead->v1B(0,nWords);
+  aHead->v1B(0,(C_BYTES_CODEHEAD == nBytes) ? C_U_codehead : nWords);
   
   return i_Head;
 }
