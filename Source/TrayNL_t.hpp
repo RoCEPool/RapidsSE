@@ -258,7 +258,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iUnitDiff(HEAD* aHead, TAIL* aTail)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* allot head item (with size as per given number of bytes)                   */
+/* allot head item (with <W> size computed from given number of bytes)        */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
 i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotHead(i8 nBytes)
@@ -283,13 +283,14 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotHead(i8 nBytes)
   
   HEAD* aHead = aGetHead(i_Head);
   
+  // set <W>
   aHead->v1B(0,(C_BYTES_CODEHEAD == nBytes) ? C_U_codehead : nWords);
   
   return i_Head;
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot overflow item (with size as per given number of bytes)               */
+/* allot overflow item (with <U> size computed from given number of bytes)    */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
 i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotOver(i8 nBytes)
@@ -302,7 +303,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotOver(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot tail item (with size as per given number of bytes)                   */
+/* allot tail item (with <U> size computed from given number of bytes)        */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
 i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotTail(i8 nBytes)
@@ -324,6 +325,8 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotTail(i8 nBytes)
   i8 i_Tail = m_nSpaceUnits - m_nTailUnits;
   
   TAIL* aTail = aGetTail(i_Tail);
+  
+  // set <U>
   aTail->v1B(0,nUnits);
   
   return i_Tail;
@@ -365,7 +368,7 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vDesc(DESC* pDesc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get total number of free bytes                                             */
+/* get total number of allotable free bytes                                   */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
 i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nFreeBytes(void)
@@ -462,7 +465,7 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vHashInc(i8 iDelta)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does buffer have space for nBytes ?                                        */
+/* does buffer have space to allot nBytes ?                                   */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
 bool Nub_t<CN,HEAD,OVER,TAIL,DESC>::bHasSpace(i8 nBytes)
@@ -489,7 +492,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nHeads(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get current total of head bytes                                            */
+/* get current total of alloted head bytes                                    */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
 i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nHeadBytes(void)
@@ -581,6 +584,7 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vReset(void)
   m_nHeadItems = 0;
   m_nHeadWords = 0;
   m_nHeadBytes = 0;
+  m_nHeadBytes_used = 0;
 
   m_nTailItems = 0;
   m_nTailUnits = 0;
@@ -603,7 +607,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nTails(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get current total number of used bytes                                     */
+/* get current total number of alloted bytes                                  */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
 i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nUsedBytes(void)
