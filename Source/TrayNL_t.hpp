@@ -13,9 +13,9 @@ namespace Structures
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // nub (the tray interface)
   
-  static const i8 C_SPACEUNIT = sizeof(SpaceUnit);
-  static const i8 C_TAILUNIT  = sizeof(DoubleWord);
-  static const i8 C_HEADUNIT  = sizeof(Word);
+  static const i8 C_SPACEUNIT_BYTES = sizeof(SpaceUnit);
+  static const i8 C_TAILUNIT_BYTES  = sizeof(DoubleWord);
+  static const i8 C_HEADUNIT_BYTES  = sizeof(Word);
 
   
   template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
@@ -96,7 +96,7 @@ namespace Structures
   
     i8 m__filler[6]; // fill so m_xaUnits starts on a double word boundry
   
-    SpaceUnit m_xaUnits[BYTES / C_SPACEUNIT]; // array of space units
+    SpaceUnit m_xaUnits[BYTES / C_SPACEUNIT_BYTES]; // array of space units
   
     Nub_t<CN,HEAD,OVER,TAIL,DESC> m_oNub;
   
@@ -143,8 +143,8 @@ Nub_t<CN,HEAD,OVER,TAIL,DESC>::Nub_t(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   // head and tail must be a multiples of their units
-  RASSERT(0 == sizeof(HEAD) % C_HEADUNIT);
-  RASSERT(0 == sizeof(TAIL) % C_SPACEUNIT);
+  RASSERT(0 == sizeof(HEAD) % C_HEADUNIT_BYTES);
+  RASSERT(0 == sizeof(TAIL) % C_SPACEUNIT_BYTES);
 
   m_nSpaceUnits = C_UNKNOWN;
   m_nHeadAllot  = C_UNKNOWN;
@@ -194,7 +194,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nBytes(i8 nUnits)
   if (! nUnits)
     return 0;
   
-  i8 nBytes = nUnits * (i8)C_SPACEUNIT;
+  i8 nBytes = nUnits * (i8)C_SPACEUNIT_BYTES;
   
   return nBytes;
 }
@@ -216,7 +216,7 @@ OVER* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetOver(HEAD* aHead, i8 i_Over_rel)
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
 TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetTail(HEAD* aHead, i8 i_Tail_rel)
 {
-  SpaceUnit* aHead_unit = (SpaceUnit*)MemLib::aToBoundary(aHead,C_SPACEUNIT);
+  SpaceUnit* aHead_unit = (SpaceUnit*)MemLib::aToBoundary(aHead,C_SPACEUNIT_BYTES);
   
   SpaceUnit* aTail_unit = (SpaceUnit*)(aHead_unit + i_Tail_rel);
   
@@ -229,7 +229,7 @@ TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetTail(HEAD* aHead, i8 i_Tail_rel)
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
 i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nUnits(i8 nBytes)
 {
-  i8 nUnits = MemLib::nQuantaRequired(nBytes,C_SPACEUNIT);
+  i8 nUnits = MemLib::nQuantaRequired(nBytes,C_SPACEUNIT_BYTES);
 
   return nUnits;
 }
@@ -240,8 +240,8 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nUnits(i8 nBytes)
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
 i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iUnitDiff(HEAD* aHead, TAIL* aTail)
 {
-  SpaceUnit* aHead_unit = (SpaceUnit*)MemLib::aToBoundary(aHead,C_SPACEUNIT);
-  SpaceUnit* aTail_unit = (SpaceUnit*)MemLib::aToBoundary(aTail,C_SPACEUNIT);
+  SpaceUnit* aHead_unit = (SpaceUnit*)MemLib::aToBoundary(aHead,C_SPACEUNIT_BYTES);
+  SpaceUnit* aTail_unit = (SpaceUnit*)MemLib::aToBoundary(aTail,C_SPACEUNIT_BYTES);
   
   // n.b. when you subtract two pointers of the same type the result is
   // the distance (in array elements) between the two. (it is not the
@@ -275,8 +275,8 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotHead(i8 nBytes)
   if (nFreeAllotableBytes() < nBytes_revised)
     return C_UNKNOWN;
   
-  i8 nWords = MemLib::nQuantaRequired(nBytes_revised,C_HEADUNIT);
-  RASSERT(nWords * (i8)C_HEADUNIT >= nBytes_revised);
+  i8 nWords = MemLib::nQuantaRequired(nBytes_revised,C_HEADUNIT_BYTES);
+  RASSERT(nWords * (i8)C_HEADUNIT_BYTES >= nBytes_revised);
   
   m_nHeadBytes += nBytes_revised;
   m_nHeadWords += nWords;
@@ -287,7 +287,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotHead(i8 nBytes)
   HEAD* aHead = aGetHead(i_Head);
   
   // set <W>
-  aHead->v1B(0,(bLargeHead) ? C_W_largehead : nWords);
+  aHead->vW((bLargeHead) ? C_W_largehead : nWords);
   
   return i_Head;
 }
@@ -318,8 +318,8 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotTail(i8 nBytes)
   if (nFreeAllotableBytes() < nBytes)
     return C_UNKNOWN;
 
-  i8 nUnits = MemLib::nQuantaRequired(nBytes,C_SPACEUNIT);
-  RASSERT(nUnits * (i8)C_SPACEUNIT >= nBytes);
+  i8 nUnits = MemLib::nQuantaRequired(nBytes,C_SPACEUNIT_BYTES);
+  RASSERT(nUnits * (i8)C_SPACEUNIT_BYTES >= nBytes);
 
   m_nTailBytes += nBytes;
   m_nTailUnits += nUnits;
@@ -343,7 +343,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nAllotedBytes(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  i8 nBytes = m_nHeadBytes + (m_nTailUnits * C_SPACEUNIT);
+  i8 nBytes = m_nHeadBytes + (m_nTailUnits * C_SPACEUNIT_BYTES);
   
   return nBytes;
 }
@@ -356,7 +356,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nAreaBytes(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  i8 nBytes = C_SPACEUNIT * m_nSpaceUnits;
+  i8 nBytes = C_SPACEUNIT_BYTES * m_nSpaceUnits;
   
   return nBytes;
 }
@@ -391,9 +391,9 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nFreeAllotableBytes(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  i8 nFreeBytes = (m_nSpaceUnits * C_SPACEUNIT)
+  i8 nFreeBytes = (m_nSpaceUnits * C_SPACEUNIT_BYTES)
                      - m_nHeadBytes
-                     - (m_nTailUnits * C_SPACEUNIT);
+                     - (m_nTailUnits * C_SPACEUNIT_BYTES);
   
   return nFreeBytes;
 }
@@ -408,7 +408,7 @@ HEAD* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetHead(void)
   
   ASSERT(m_nHeadItems);
   
-  i8 i_Unit = (m_nHeadItems - 1) * (m_nHeadAllot / C_SPACEUNIT);
+  i8 i_Unit = (m_nHeadItems - 1) * (m_nHeadAllot / C_SPACEUNIT_BYTES);
   HEAD* aHead = (HEAD*)&m_axaUnits[i_Unit];
   
   return aHead;
@@ -424,7 +424,7 @@ HEAD* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetHead(i8 i_Head)
   
   ASSERT(i_Head >= 0 && i_Head < m_nHeadItems);
   
-  i8 i_Word = i_Head * (m_nHeadAllot / C_HEADUNIT);
+  i8 i_Word = i_Head * (m_nHeadAllot / C_HEADUNIT_BYTES);
   HEAD* aHead = (HEAD*)&m_axaWords[i_Word];
     
   return aHead;
@@ -606,7 +606,7 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vReset(void)
   m_nTailUnits = 0;
   m_nTailBytes = 0;
   
-  MemLib::vZero(m_axaUnits,(C_SPACEUNIT * m_nSpaceUnits),CN);
+  MemLib::vZero(m_axaUnits,(C_SPACEUNIT_BYTES * m_nSpaceUnits),CN);
   
   m_iHash      = 0;
 }
@@ -740,7 +740,7 @@ TrayNL_t<CN,HEAD,OVER,TAIL,DESC,BYTES>::TrayNL_t(void)
   
   MemLib::vZero(&m__filler,sizeof(m__filler),CN);
 
-  i8 nSpaceUnits = BYTES / C_SPACEUNIT;
+  i8 nSpaceUnits = BYTES / C_SPACEUNIT_BYTES;
   m_oNub.vSetItems(nSpaceUnits,&m_xaUnits[0]);
   
   m_oNub.vReset();
