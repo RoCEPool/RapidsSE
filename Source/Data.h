@@ -6,9 +6,7 @@
 #include "MetaData.h"
 
 namespace Data
-{
-  static const i8 C_CACHELINES = 256;
-  
+{  
   void vCheckAssumptions(void);
 
   static const i8 C_FLAT_LEVELS_MAX   = 16;
@@ -257,16 +255,16 @@ using namespace Data;
 
 static const i8 C_MAX_ROWS = (C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(HeadLine);
 
-typedef  HV<Record,ColumnVec,CN_RECORD>                      HV_Rec;
-typedef  HV<Row,ColumnVec,CN_ROW>                            HV_Row;
+typedef       HV <Record,ColumnVec,CN_RECORD>                  HV_Rec;
+typedef       HV <Row,   ColumnVec,CN_ROW>                     HV_Row;
 
-typedef  Nub_t<CN_ROWTRAY,HeadLine,OverLine,TailLine,Table>  RowNub;
+typedef    Nub_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table> RowNub;
 
-typedef TrayNL_t<CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
-                (C_CACHELINES * sizeof(HeadLine))>           RowParts;
+typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
+                  (C_MAX_ROWS * sizeof(HeadLine)) / 2>         RowParts;
 
-typedef TrayNL_t<CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
-                 (C_MAX_ROWS * sizeof(HeadLine))>            RowTray;
+typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
+                  (C_MAX_ROWS * sizeof(HeadLine))>             RowTray;
 
 //------------------------------------------------------------------------------
 
