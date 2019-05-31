@@ -558,7 +558,7 @@ void RowCoder::vCodeBcd(Datum* pTgtDatum, Datum* pSrcDatum)
     return;
   }
   
-#ifdef WITH_ENCODING_BCD
+#ifdef WITH_ENCODING_BCD_DIGIT
   if (MC_1B == m_eFromEncoding) {
     
     i8 iBcd1B = pSrcDatum->m_iBcd;
