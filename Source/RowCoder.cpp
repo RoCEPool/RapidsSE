@@ -896,27 +896,6 @@ void RowCoder::vDataPut(Datum* pEncodedDatum, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put encoded datum into row of current nub                                  */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDataPut(w8 wDatum, i8 nBytes, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-  if (! nBytes)
-    return;
- 
-  vDataNeed(nBytes,pCol);
-
-//  m_aIntoHead->vPut(m_i_IntoOffset,wDatum,nBytes);
-  vPutLogical(m_aIntoHead,
-              m_i_IntoOffset,
-              nBytes,
-              wDatum);
-
-  m_i_IntoOffset += nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* encode decimal                                                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeBcd(Datum* pSrcDatum, Column* pCol)
@@ -1088,7 +1067,7 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
   /*
        -- Into-Head (encoding) --            -- Into-Tail (encoding) --
    +================================+    +=====================================+
-   | mc:         ,MC_SHOCO_TAIL_2T, |    | <U><C><shoco....> ///////////////// |
+   | mc:         ,MC_SHOCO_TAIL_2T, |    | <U><C><shoco...> ////////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1116,15 +1095,15 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
   TailLine* aShocoTail = m_pIntoNub->aGetTail(i_ShocoTail);
   ASSERT(m_pIntoNub->nBytes(aShocoTail->w8_1B(C_OFFSET_UNITS)) >= nTailBytes);
   
-  // set length of compressed string into tail (this is C in the diagram)
+  // set <C> length of compressed string into tail
   aShocoTail->v1B(C_OFFSET_COMPRESSED,nCompressed);
   
-  // copy shoco into tail (this is <compressed bytes> in the diagram)
+  // copy <shoco...> into tail
   char *aShocoWithinTail = (char*)aShocoTail + _1B_U + _1B_C;
   MemLib::vCopy(aShocoWithinTail,sShoco.aChar(),nCompressed,CN_ROWCODER);
   
-  // put index of shoco tail as the 2 data bytes (this is [IT] in the diagram)
-  vDataPut(i_ShocoTail,2,pCol);
+  // put [IT] index of shoco tail as the 2 data bytes
+  vHeadPut(i_ShocoTail,2,pCol);
   
   vUsageIncEncoded(pCol,2 + nTailBytes);
   
@@ -1157,8 +1136,11 @@ void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
   w8 wSmall = *(w8*)pSrcDatum->m_sVch.aChar();
   
   vDataNeed(_1B_L + pSrcDatum->m_nChars,pCol);
-  vDataPut(pSrcDatum->m_nChars,1,pCol);
-  vDataPut(wSmall,pSrcDatum->m_nChars,pCol);
+  
+  // put <L>
+  vHeadPut(pSrcDatum->m_nChars,1,pCol);
+  // put <small>
+  vHeadPut(wSmall,pSrcDatum->m_nChars,pCol);
   
   vUsageIncEncoded(pCol,1 + pSrcDatum->m_nChars);
   
@@ -1255,6 +1237,27 @@ void RowCoder::vHashColumn(Datum* pSrcDatum, Column* pCol)
   
   // inc it to the running hash
   m_pIntoNub->vHashInc(iHash);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put bytes into into-head                                                   */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vHeadPut(w8 wBytes, i8 nBytes, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  if (! nBytes)
+    return;
+  
+  vDataNeed(nBytes,pCol);
+  
+  //  m_aIntoHead->vPut(m_i_IntoOffset,wDatum,nBytes);
+  vPutLogical(m_aIntoHead,
+              m_i_IntoOffset,
+              nBytes,
+              wBytes);
+  
+  m_i_IntoOffset += nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
