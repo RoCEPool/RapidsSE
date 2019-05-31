@@ -317,12 +317,6 @@ void RowCoder::vEncodeDatum(Datum* pSrcDatum, Column* pCol)
     default:
       NEVER_REACH;
   }
-
-#ifdef WITH_HEAD_OVERFLOW
-  RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
-  if (pCol->bIsLastColumn())
-    vDebugPoint();
-#endif
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
@@ -332,7 +326,6 @@ void RowCoder::vEncodeDatum(Datum* pSrcDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeEnd(void)
 {
-  
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
 //  HV_Rec hvRec;
@@ -341,6 +334,15 @@ void RowCoder::vEncodeEnd(void)
 //  
 //  vHeadDump(m_aIntoHead,m_pColVec);
 
+#ifdef WITH_HEAD_OVERFLOW
+  RowCoder::vHeadDump(m_aIntoHead,m_pColVec);
+  if (pCol->bIsLastColumn())
+    vDebugPoint();
+#endif
+
+  m_pIntoNub->vHeadBytes_used(m_i_IntoOffset);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //m_pColVec      = nullptr;
   
   m_pIntoNub     = nullptr;
