@@ -879,24 +879,6 @@ void RowCoder::vDataAdd(Datum* pEncodedDatum, Column* pCol)
   vHeadAdd(pEncodedDatum->m_wWord,
            pEncodedDatum->m_nEncodedBytes,
            pCol);
-  
-//  if (! pEncodedDatum->m_nEncodedBytes)
-//    return;
-//  
-//  //RASSERT(m_i_IntoOffset + pEncodedDatum->m_nEncodedBytes <= nHeadBytes(m_pColVec));
-//    
-////  m_aIntoHead->vPut(m_i_IntoOffset,
-////                    pEncodedDatum->m_wWord,
-////                    pEncodedDatum->m_nEncodedBytes);
-//
-//  vDataNeed(pEncodedDatum->m_nEncodedBytes,pCol);
-//  
-//  vPutLogical(m_aIntoHead,
-//              m_i_IntoOffset,
-//              pEncodedDatum->m_nEncodedBytes,
-//              pEncodedDatum->m_wWord);
-//  
-//  m_i_IntoOffset += pEncodedDatum->m_nEncodedBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1139,11 +1121,11 @@ void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
   
   w8 wSmall = *(w8*)pSrcDatum->m_sVch.aChar();
   
-  vDataNeed(_1B_L + pSrcDatum->m_nChars,pCol);
+  //vDataNeed(_1B_L + pSrcDatum->m_nChars,pCol);
   
-  // put <L>
+  // add <L>
   vHeadAdd(pSrcDatum->m_nChars,1,pCol);
-  // put <small>
+  // add <small>
   vHeadAdd(wSmall,pSrcDatum->m_nChars,pCol);
   
   vUsageIncEncoded(pCol,1 + pSrcDatum->m_nChars);
@@ -1244,7 +1226,7 @@ void RowCoder::vHashColumn(Datum* pSrcDatum, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add bytes onto into-head                                                   */
+/* add bytes onto m_aIntoHead at m_i_IntoOffset, increment m_i_IntoOffset     */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vHeadAdd(w8 wBytes, i8 nBytes, Column* pCol)
 {
@@ -1253,9 +1235,8 @@ void RowCoder::vHeadAdd(w8 wBytes, i8 nBytes, Column* pCol)
   if (! nBytes)
     return;
   
-  vDataNeed(nBytes,pCol);
+  //vDataNeed(nBytes,pCol);
   
-  //  m_aIntoHead->vPut(m_i_IntoOffset,wDatum,nBytes);
   vPutLogical(m_aIntoHead,
               m_i_IntoOffset,
               nBytes,
