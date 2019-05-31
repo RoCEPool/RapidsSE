@@ -548,6 +548,8 @@ i8 MemLib::nQuantaRequired(i8 nBytes, i8 nSizeQuanta)
   if (nBytes % nSizeQuanta)
     nQuanta++;
   
+  ASSERT(nQuanta * nSizeQuanta >= nBytes);
+
   return nQuanta;
 }
 
