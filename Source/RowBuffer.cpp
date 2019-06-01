@@ -477,16 +477,6 @@ void RowBuffer::vRestoreTable(Table* pTable)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the row tray                                                           */
-/*----------------------------------------------------------------------------*/
-RowTray* RowBuffer::pRowTray(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  return &m_xRowTray;
-}
-
-/*----------------------------------------------------------------------------*/
 /* show entry                                                                 */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vShowRow(i8 i_Row)
@@ -496,13 +486,11 @@ void RowBuffer::vShowRow(i8 i_Row)
   ColumnVec* pColVec = pTable()->pColumnVec();
   HV_Rec hvRec(pColVec);
   
-  RowTray* pRowTray = this->pRowTray();
-  
   // create a row
   HV_Row hRow(pColVec);
   
   // get compact row
-  HeadLine* aCompactRow = pRowTray->pNub()->aGetHead(i_Row);
+  HeadLine* aCompactRow = m_xRowTray.pNub()->aGetHead(i_Row);
 
   // inflate compact row into row
   RowCoder::vInflate(hRow,aCompactRow);

@@ -6,10 +6,11 @@
 namespace Data
 {
   class RowCoder;
-  
+
   class RowBuffer : public Object
   {
   friend class IndexTree;
+  friend class RowCoder;
 
   protected:
     Lock    m_okLock;               // lock
@@ -61,7 +62,6 @@ namespace Data
     i8          iPartitionNo(void);
     RowBuffer*  pPrevBuffer(void);
     void        vPrevBuffer(RowBuffer* pPrevBuffer);
-    RowTray*    pRowTray(void);
     void        vTruncate(void);
     Since&      oWhenNewed(void);
     

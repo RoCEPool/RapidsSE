@@ -142,7 +142,7 @@ void RowCoder::vCopyBegin(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  m_pIntoNub     = pRowBuffer->pRowTray()->pNub();
+  m_pIntoNub     = pRowBuffer->m_xRowTray.pNub();
 
   m_bEncoding    = false;
   m_pColVec      = m_pIntoNub->pDesc()->pColumnVec();
@@ -150,7 +150,6 @@ void RowCoder::vCopyBegin(RowBuffer* pRowBuffer)
   m_nMetaData    = nMetaData(m_pColVec);
   m_i_BaseOffset = iBaseOffset(m_pColVec);
   m_bCopyOver    = false;
-  
   
   m_pWorkParts   = new RowParts;
   m_pWorkNub     = m_pWorkParts->pNub();
