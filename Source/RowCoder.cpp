@@ -2067,11 +2067,11 @@ void RowCoder::vTwiddleShiftOver(void)
                   nAddBytes,      // bytes to add
                   CN_ROWCODER);
   
-  // 2) put 0xFFFF as [OT] overflow
+  // 2) temporarily put 0xFFFF as [OT] overflow in last 2 bytes of short head
   i8 i_Overflow2B = m_nHeadBytes - _2B_OT;
   m_aFromHead->vPut(i_Overflow2B,0xFFFF,_2B_IT);
   
-  // 3) put MC_OVERFLOW_2B
+  // 3) put MC_OVERFLOW_2B as metacode for column
   m_aFromHead->vMetaCode(i_ShiftCol,MC_OVERFLOW_2B);
   
   m_bCopyOver = true;
