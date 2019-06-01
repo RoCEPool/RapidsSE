@@ -1999,13 +1999,34 @@ void RowCoder::vTwiddleHeadAllot(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find the column and offset which will flipped to MC_OVERFLOW_2B            */
+/* find the column and offset which will shift over to MC_OVERFLOW_2B         */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iTwiddleOverCol(i8& i_Offset_)
+i8 RowCoder::iTwiddleShiftCol(i8& i_Offset_data_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  i_Offset_ = m_i_BaseOffset;
+  i_Offset_data_ = m_i_BaseOffset;
+  
+  i8 nLimit_OT  = m_nHeadBytes - _2B_OT;
+  
+  i8 nCols = m_pColVec->nItems();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    eMC eEncoding = m_aFromHead->eMetaCode(i_Col);
+    
+    i8 nDataBytes_col = 0;
+    if (MC_STR_FIT_1L == eEncoding)
+      nDataBytes_col = m_aFromHead->wGet(i_Offset_data_,C_1B);
+    nDataBytes_col += nDataBytes(eEncoding);
+    
+    // do we shift at this column?
+    if (i_Offset_data_ + nDataBytes_col > nLimit_OT)
+      return i_Col;
+    
+    i_Offset_data_ += nDataBytes_col;
+  }
+  
+  NEVER_REACH;
   return C_UNKNOWN;
 }
 
@@ -2024,8 +2045,8 @@ void RowCoder::vTwiddleShiftOver(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // 0) determine shift column & offset of column
-  i8 i_ShiftOffset = C_UNKNOWN;
-  i8 i_ShiftCol = iTwiddleOverCol(i_ShiftOffset);
+  i8 i_Offset_shift = C_UNKNOWN;
+  i8 i_Col_shift = iTwiddleShiftCol(i_Offset_shift);
   
   /*
   Before:
@@ -2063,7 +2084,7 @@ void RowCoder::vTwiddleShiftOver(void)
   i8 nAddBytes = C_UNKNOWN;
   MemLib::vExpand(m_aFromHead,    // address of block
                   nFromSize,      // size of block
-                  i_ShiftOffset,  // offset in block to shift right
+                  i_Offset_shift,  // offset in block to shift right
                   nAddBytes,      // bytes to add
                   CN_ROWCODER);
   
@@ -2072,7 +2093,7 @@ void RowCoder::vTwiddleShiftOver(void)
   m_aFromHead->vPut(i_Overflow2B,0xFFFF,_2B_IT);
   
   // 3) put MC_OVERFLOW_2B as metacode for column
-  m_aFromHead->vMetaCode(i_ShiftCol,MC_OVERFLOW_2B);
+  m_aFromHead->vMetaCode(i_Col_shift,MC_OVERFLOW_2B);
   
   m_bCopyOver = true;
 }
