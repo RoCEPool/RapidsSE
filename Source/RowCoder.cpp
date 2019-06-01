@@ -138,19 +138,20 @@ RowCoder::~RowCoder(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* begin copying rows into given row nub                                      */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vCopyBegin(RowNub* pIntoNub)
+void RowCoder::vCopyBegin(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
+  m_pIntoNub     = pRowBuffer->pRowTray()->pNub();
+
   m_bEncoding    = false;
-  m_pColVec      = pIntoNub->pDesc()->pColumnVec();
+  m_pColVec      = m_pIntoNub->pDesc()->pColumnVec();
   m_nHeadBytes   = nHeadBytes(m_pColVec);
   m_nMetaData    = nMetaData(m_pColVec);
   m_i_BaseOffset = iBaseOffset(m_pColVec);
   m_bCopyOver    = false;
-
-  m_pIntoNub     = pIntoNub;
-
+  
+  
   m_pWorkParts   = new RowParts;
   m_pWorkNub     = m_pWorkParts->pNub();
 }

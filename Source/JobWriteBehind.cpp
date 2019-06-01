@@ -124,8 +124,7 @@ eEC JobWriteBehind::eInsertRow(RowNub* pRowNub)
       }
 
       RowBuffer* pRowBuffer = m_pRowBuffer[i_Ptn];
-      RowNub* pIntoRowNub = pRowBuffer->pRowTray()->pNub();
-      m_paRowCoder_Copy[i_Ptn]->vCopyBegin(pIntoRowNub);
+      m_paRowCoder_Copy[i_Ptn]->vCopyBegin(pRowBuffer);
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -100,7 +100,7 @@ namespace Data
     RowCoder(void);
     ~RowCoder(void) noexcept(false);
     
-    void vCopyBegin(RowNub* pIntoNub);
+    void vCopyBegin(RowBuffer* pRowBuffer);
     void vCopyEnd(void);
     bool bCopyRow(RowNub* pFromNub);
     
