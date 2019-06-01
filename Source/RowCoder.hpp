@@ -159,8 +159,8 @@ namespace Data
 
     void vTwiddleFrom(void);
     void vTwiddleHeadAllot(void);
-    bool bTwiddleShocoDupe(Column* pCol, i8 i_Offset);
-    void vTwiddleShocoTail(Column* pCol, i8 i_Offset);
+    bool bTwiddleShocoDupe(Column* pCol, i8 i_FromOffset);
+    void vTwiddleShocoTail(Column* pCol, i8 i_FromOffset);
 
     void vUsageIncEncoded(Column* pCol, i8 nBytes, eMC eMetaCode = MC_NULL);
     void vUsageIncEncoded(Column* pCol, Datum* pDatum, eMC eMetaCode = MC_NULL);
