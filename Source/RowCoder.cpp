@@ -49,6 +49,7 @@ RowCoder::RowCoder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
+  m_bEncoding      = false;
   m_pColVec        = nullptr;
   m_nHeadBytes     = C_UNKNOWN;
   m_nMetaData      = C_UNKNOWN;
@@ -140,6 +141,7 @@ void RowCoder::vCopyBegin(RowNub* pIntoNub)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
+  m_bEncoding    = false;
   m_pColVec      = pIntoNub->pDesc()->pColumnVec();
   m_nHeadBytes   = nHeadBytes(m_pColVec);
   m_nMetaData    = nMetaData(m_pColVec);
@@ -158,6 +160,7 @@ void RowCoder::vCopyEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
+  m_bEncoding    = false;
   //m_pColVec     = nullptr;
   m_nHeadBytes    = C_UNKNOWN;
   m_nMetaData     = C_UNKNOWN;
@@ -190,6 +193,8 @@ void RowCoder::vCopyEnd(void)
 bool RowCoder::bCopyRow(RowNub* pFromNub)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  RASSERT(! m_bEncoding);
   
   // check for space in target nub
   
@@ -260,6 +265,7 @@ void RowCoder::vEncodeBegin(RowNub* pIntoNub)
   
   // set up
   
+  m_bEncoding    = true;
   m_pColVec      = pIntoNub->pDesc()->pColumnVec();
   m_nHeadBytes   = nHeadBytes(m_pColVec);
   m_nMetaData    = nMetaData(m_pColVec);
@@ -288,6 +294,8 @@ void RowCoder::vEncodeBegin(RowNub* pIntoNub)
 void RowCoder::vEncodeDatum(Datum* pSrcDatum, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  RASSERT(m_bEncoding);
   
   i8 i_Col = pCol->iColumnNo();
   if (0 == i_Col)
@@ -343,6 +351,9 @@ void RowCoder::vEncodeEnd(void)
   m_pIntoNub->vHeadBytes_used(m_i_IntoOffset);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_bEncoding    = false;
+
   //m_pColVec      = nullptr;
   
   m_pIntoNub     = nullptr;

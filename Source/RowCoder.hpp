@@ -25,6 +25,7 @@ namespace Data
   {
   public:
   
+    bool       m_bEncoding;    // are we encoding (or copying) ?
     ColumnVec* m_pColVec;
     i8         m_nMetaData;    // size of meta data for this colvec/table
     i8         m_i_BaseOffset; // base offset for this colvec/table
