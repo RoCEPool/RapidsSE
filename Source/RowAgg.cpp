@@ -244,7 +244,7 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
     // get the compact row
-    HeadLine* aCompactRow = pRowBuffer->pRowTray()->pNub()->aGetHead(i_Row);
+    HeadLine* aCompactRow = pRowBuffer->aGetCompactRow(i_Row);
     
     // mark key column to be decoded
     hRow->m_abGetCol[iKeyCol] = true;

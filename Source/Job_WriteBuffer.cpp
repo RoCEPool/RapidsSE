@@ -363,8 +363,6 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analysis
   
-  //RowCoder::vAnalyse(*pRowBuffer->pRowTray());
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a write buffer job
   
