@@ -228,8 +228,10 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   // copy & recode row
   
 #ifdef WITH_LARGE_ROWS
+  vTwiddleFrom();
   vCopyHead();
-  vRecode_Large();
+  //vRecode_Large();
+  vRecode_Short();
 #else
   vCopyHead();
   vRecode_Short();
@@ -1923,6 +1925,14 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* twiddle the from large head prior to putting in row tray                   */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vTwiddleFrom(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

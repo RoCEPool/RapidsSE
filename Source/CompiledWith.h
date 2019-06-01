@@ -64,12 +64,12 @@
 #define WITH_SHOCO_FOLDLAST     // test for folding last shoco line
 //#define WITH_ENCODING_XCHECK    // encode cross check
 //#define WITH_TRACE_DECODING     // code for tracing decoding compiled in
-//#define WITH_LARGE_ROWS         // encode cross check
 //#define WITH_ANALYSE_FREE       // analyze free space during load
 //#define WITH_VERIFY_TAILS       // verify tails
 //#define WITH_QUICKER_INFLATE    // quicker inflate test
 
-#define WITH_HEAD_OVERFLOW      // encode cross check
+#define WITH_LARGE_ROWS         // encode cross check
+//#define WITH_HEAD_OVERFLOW      // encode cross check
 
 /*============================================================================*/
 /* end                                                                        */
