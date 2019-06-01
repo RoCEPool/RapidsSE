@@ -1996,13 +1996,63 @@ void RowCoder::vTwiddleShiftOver(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
+  // do we shift over?
   i8 nFromHeadBytes = m_pFromNub->nHeadBytes_used();
-  
   if (nFromHeadBytes <= m_nHeadBytes)
     return;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // 0) determine shift column & offset of column
   i8 i_ShiftOffset = C_UNKNOWN;
   i8 i_ShiftCol = iTwiddleOverCol(i_ShiftOffset);
+  
+  /*
+  Before:
+        -- From-Head (large) --
+  +================================+
+  | <W>{M}       ,M,               |
+  +================================+
+  |                                |
+  +--------------------------------+
+  |             <M:data> <more...> |
+  +--------------------------------+
+  | <more.................> ////// |
+  +--------------------------------+
+  | ////////////////////////////// |
+  +--------------------------------+
+
+  After:
+         -- From-Head (large) --
+  +================================+
+  | <W>{M}       ,MC_OVERFLOW_2B,  |
+  +================================+
+  |                                |
+  +--------------------------------+
+  |            ////////////// [OT] |
+  +- - - - - - - - - - - - - - - - + Head -- Over boundary
+  | <U><M:data> <more...><more.... |
+  +--------------------------------+
+  | ...........> ///////////////// |
+  +--------------------------------+
+
+  */
+  
+  // 1) expand
+  i8 nFromSize = C_LARGEHEAD_BYTES; //! should be whats used
+  i8 nAddBytes = C_UNKNOWN;
+  MemLib::vExpand(m_aFromHead,    // address of block
+                  nFromSize,      // size of block
+                  i_ShiftOffset,  // offset in block to shift right
+                  nAddBytes,      // bytes to add
+                  CN_ROWCODER);
+  
+  // 2) put 0xFFFF as [OT] overflow
+  i8 i_Overflow2B = m_nHeadBytes - _2B_OT;
+  m_aFromHead->vPut(i_Overflow2B,0xFFFF,_2B_IT);
+  
+  // 3) put MC_OVERFLOW_2B
+  m_aFromHead->vMetaCode(i_ShiftCol,MC_OVERFLOW_2B);
 }
 
 /*----------------------------------------------------------------------------*/
