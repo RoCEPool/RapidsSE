@@ -1979,11 +1979,30 @@ void RowCoder::vTwiddleHeadAllot(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find the column and offset which will flipped to MC_OVERFLOW_2B            */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iTwiddleOverCol(i8& i_Offset_)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  i_Offset_ = m_i_BaseOffset;
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
 /* shift part of large head which dangles over end of normal head             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vTwiddleShiftOver(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  i8 nFromHeadBytes = m_pFromNub->nHeadBytes_used();
+  
+  if (nFromHeadBytes <= m_nHeadBytes)
+    return;
+  
+  i8 i_ShiftOffset = C_UNKNOWN;
+  i8 i_ShiftCol = iTwiddleOverCol(i_ShiftOffset);
 }
 
 /*----------------------------------------------------------------------------*/
