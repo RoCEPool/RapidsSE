@@ -71,6 +71,19 @@ i8 HeadLine::nWords(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a large head line?                                                 */
+/*----------------------------------------------------------------------------*/
+bool HeadLine::bIsLargeHead(void)
+{
+  i8 nSizeWords = w8_1B(0);
+  
+  if (C_LARGEHEAD == nSizeWords)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does this head have an overflow?                                           */
 /*----------------------------------------------------------------------------*/
 bool HeadLine::bHasOverflow(void)

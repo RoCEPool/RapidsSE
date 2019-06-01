@@ -2293,15 +2293,17 @@ void RowCoder::vHeadDump(Stz* szTitle,
   i8 nFreeBytes = nFreeSpaceHead(aHeadLine,pColVec);
 
   if (aHeadLine->bHasOverflow()) {
-    vTrace("<W> %lld; [OT] %lld <W> %lld;  FreeBytes %lld\n"_Stz,
+    vTrace("<W> %lld%s; [OT] %lld <W> %lld;  FreeBytes %lld\n"_Stz,
            aHeadLine->nWords(),
+           aHeadLine->bIsLargeHead() ? " LARGEHEAD"_Stz : ""_Stz,
            i_Over_rel,
            nOverWords,
            nFreeBytes);
   }
   else {
-    vTrace("<W> %lld; [OT] none; FreeBytes %lld\n"_Stz,
+    vTrace("<W> %lld%s; [OT] none; FreeBytes %lld\n"_Stz,
            aHeadLine->nWords(),
+           aHeadLine->bIsLargeHead() ? " LARGEHEAD"_Stz : ""_Stz,
            nFreeBytes);
   }
 
