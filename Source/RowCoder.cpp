@@ -1446,7 +1446,7 @@ bool RowCoder::bRecodeVchShocoDupe(Column* pCol)
    Before:
              -- Into-Head --                         -- From-Tail --
    +================================+    +=====================================+
-   | <W>{M}    ,MC_SHOCO_2B,        |    | <U><C><shoco...> ////////////////// |
+   | <W>{M}    ,MC_SHOCO_TAIL_2T,   |    | <U><C><shoco...> ////////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1937,17 +1937,125 @@ void RowCoder::vTwiddleFrom(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  i8 i_LastColumn = 0;
+  RASSERT(! m_bEncoding);
   
+  i8 i_LastColumn = 0;
+  i8 i_FromOffset = 0;
+
   i8 nColumns = m_pColVec->nItems();
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
     
-    // get the initial encoding of the datum for i_Col from from-row
-    
     Column* pCol = m_pColVec->pGet(i_Col);
-    eDM eDatum = pCol->eDatumType();
+    eDM eDatum   = pCol->eDatumType();
+    
+    if (DM_VCH != eDatum)
+      continue;
+    
+    eMC eFromEncoding = eGetFromEncoding(pCol,i_LastColumn,i_FromOffset);
+    
+    if (MC_SHOCO_TAIL_2T != eFromEncoding)
+      continue;
+    
+    // can we find a duplicate
+    if (bTwiddleShocoDupe(pCol,i_FromOffset))
+      continue;
+    
+    
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* search for a duplicate shoco tail in the into nub                          */
+/*----------------------------------------------------------------------------*/
+bool RowCoder::bTwiddleShocoDupe(Column* pCol, i8 i_Offset)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  /*
+   Before:
+         -- From-Head (large) --                      -- From-Tail --
+   +================================+    +=====================================+
+   | <W>{M}    ,MC_SHOCO_TAIL_2T,   |    | <U><C><shoco...> ////////////////// |
+   +================================+    +=====================================+
+   |                                |
+   +--------------------------------+
+   |                    |FT|        |
+   +--------------------------------+
+   
+   After:
+        -- From-Head (large) --                 -- Into-Tail -- (duplicate)
+   +================================+    +=====================================+
+   | <W>{M}     ,MC_SHOCO_TAIL_2T,  |    | <U><C><shoco...> ////////////////// |
+   +================================+    +=====================================+
+   |                                |
+   +--------------------------------+
+   |                    [IT]        |
+   +--------------------------------+
+   
+   where: MC_SHOCO_TAIL_2T are the meta-bits for the column
+          |FT| is 2B absolute index of the From-Tail line containing shoco
+          [IT] is 2B relative index of the Into-Tail line containing shoco
+          <W> is one byte being the word length of head line
+          {M} is the set of metacodes
+          <U> is one byte being the unit length of a tail line
+          <C> is one byte being the number of shoco compressed bytes
+          <shoco...> being the shoco compressed bytes
+   */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  //!
+  //! NOT FINISHED
+  //!
+  
+  // get From-Tail details using |FT| from Into-Head
+  // +--------------------------------+
+  // |                    |FT|        |
+  // +--------------------------------+
+  //                      ^m_i_IntoOffset
+  i8 i_FromTail = m_aIntoHead->w8_2B(m_i_IntoOffset);
+  TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // search for a possible duplicate of the From-Tail in the Into-Nub
+  // +=====================================+
+  // | <U><C><shoco...> ////////////////// |
+  // +=====================================+
+  i8 i_IntoTail_Dup = iFindTail(m_pIntoNub,aFromTail);
+  if (C_UNKNOWN == i_IntoTail_Dup)
+    return false;
+  TailLine* aIntoTail_Dup = m_pIntoNub->aGetTail(i_IntoTail_Dup);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // col data in Into-Head recoded as [IT] unit diff between Into-Head and -Tail
+  // +--------------------------------+
+  // |                    [IT]        |
+  // +--------------------------------+
+  //                      ^m_i_IntoOffset
+  i8 i_IntoTail_Rel = RowNub::iUnitDiff(m_aIntoHead,aIntoTail_Dup);
+  m_aIntoHead->vPut(m_i_IntoOffset,i_IntoTail_Rel,_2B_IT);
+  
+  // increment into offset by sizeof([IT])
+  // +--------------------------------+
+  // |                    |FT|        |
+  // +--------------------------------+
+  //                          ^m_i_IntoOffset
+  m_i_IntoOffset += _2B_FT;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // metadata remains MC_SHOCO_TAIL_2T
+  RASSERT(MC_SHOCO_TAIL_2T == m_aFromHead->eMetaCode(pCol->iColumnNo()));
+  
+  // we recoded: sizeof([IT])
+  vUsageIncRecoded(pCol,_2B_FT);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
