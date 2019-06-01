@@ -191,7 +191,8 @@ namespace Data
     static HeadLine* aCompactRow(RowBuffer* pRowBuffer, i8 i_Row);
   
     static void vHeadDump(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec,
-                          i8 nWords = C_UNKNOWN);
+                          i8 nWords = C_UNKNOWN,
+                          bool bShortForm = false);
   
     static void vInflate(Row* pRow, HeadLine* aHeadLine);
   

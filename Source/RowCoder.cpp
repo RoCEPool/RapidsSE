@@ -2050,6 +2050,9 @@ void RowCoder::vTwiddleShiftRight(void)
   if (nFromHeadBytes <= m_nHeadBytes)
     return;
   
+  //MemLib::vWordDump(m_aFromHead,16 * sizeof(Word));
+  RowCoder::vHeadDump("vTwiddleShiftRight:: m_aFromHead"_Stz,m_aFromHead,m_pColVec,16,true);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // 0) determine shift column & offset of column
@@ -2645,7 +2648,8 @@ void RowCoder::vAnalyse(RowNub* pNub)
 /* dump head line                                                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vHeadDump(Stz* szTitle,
-                         HeadLine* aHeadLine, ColumnVec* pColVec, i8 nWords)
+                         HeadLine* aHeadLine, ColumnVec* pColVec,
+                         i8 nWords, bool bShortForm)
 {
   vTrace("\n%s HeadDump %p :\n"_Stz,szTitle,aHeadLine);
 
@@ -2763,6 +2767,12 @@ void RowCoder::vHeadDump(Stz* szTitle,
       vTrace("__"_Stz);
     vTrace(" "_Stz);
     
+    if (bShortForm && MC_SHOCO_TAIL_2T == eMetaCode) {
+      vTrace(" n/a\n"_Stz);
+      i_Offset += nBytes;
+      continue;
+    }
+    
     hvRec->vReset();
     
     // first get the encoded value into datum
@@ -2791,6 +2801,7 @@ void RowCoder::vHeadDump(Stz* szTitle,
     if (eMetaCode == MC_STR_SPLIT_2T1L)
       vDebugPoint();
   }
+  
 }
 
 /*----------------------------------------------------------------------------*/
