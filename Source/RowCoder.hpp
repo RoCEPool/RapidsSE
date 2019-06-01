@@ -158,7 +158,9 @@ namespace Data
     void vRecodeVchShocoTail(Column* pCol);
 
     void vTwiddleFrom(void);
+    void vTwiddleHeadAllot(void);
     bool bTwiddleShocoDupe(Column* pCol, i8 i_Offset);
+    void vTwiddleShocoTail(Column* pCol, i8 i_Offset);
 
     void vUsageIncEncoded(Column* pCol, i8 nBytes, eMC eMetaCode = MC_NULL);
     void vUsageIncEncoded(Column* pCol, Datum* pDatum, eMC eMetaCode = MC_NULL);
