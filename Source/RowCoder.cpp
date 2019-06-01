@@ -1216,13 +1216,16 @@ void RowCoder::vExtendIntoHead(i8 nBytes, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* get the encoding (and offset) of a column datum                            */
 /*----------------------------------------------------------------------------*/
-eMC RowCoder::eGetEncoding(Column* pCol, i8& i_PriorColumn_, i8& i_FromOffset_)
+eMC RowCoder::eGetFromEncoding(Column* pCol,
+                               i8& i_PriorColumn_, i8& i_FromOffset_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  eMC eEncoding = eGetEncoding(m_aFromHead, pCol,
+  eMC eEncoding = eGetEncoding(m_aFromHead,
+                               pCol,
                                m_pColVec,
-                               i_PriorColumn_, i_FromOffset_);
+                               i_PriorColumn_,
+                               i_FromOffset_);
   
   return eEncoding;
 }
@@ -1310,7 +1313,7 @@ void RowCoder::vRecode_Large(void)
     
     i8 iFromOffset_IGNORE = 0;
     i_LastColumn = 0;
-    m_eFromEncoding  = eGetEncoding(pCol,i_LastColumn,iFromOffset_IGNORE);
+    m_eFromEncoding  = eGetFromEncoding(pCol,i_LastColumn,iFromOffset_IGNORE);
     
     m_nFromDataBytes = nDataBytes(m_eFromEncoding);
     
@@ -1355,7 +1358,7 @@ void RowCoder::vRecode_Short(void)
     
     i8 iFromOffset_IGNORE = 0;
     i_LastColumn = 0;
-    m_eFromEncoding  = eGetEncoding(pCol,i_LastColumn,iFromOffset_IGNORE);
+    m_eFromEncoding  = eGetFromEncoding(pCol,i_LastColumn,iFromOffset_IGNORE);
     
     m_nFromDataBytes = nDataBytes(m_eFromEncoding);
     
@@ -1933,6 +1936,18 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
 void RowCoder::vTwiddleFrom(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  i8 i_LastColumn = 0;
+  
+  i8 nColumns = m_pColVec->nItems();
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+    
+    // get the initial encoding of the datum for i_Col from from-row
+    
+    Column* pCol = m_pColVec->pGet(i_Col);
+    eDM eDatum = pCol->eDatumType();
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/

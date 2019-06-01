@@ -140,7 +140,7 @@ namespace Data
     void vEncodeVchSmall(Datum* pSrcDatum, Column* pCol);
     void vExtendIntoHead(i8 nBytes, Column* pCol);
 
-    eMC  eGetEncoding(Column* pCol, i8& i_PriorColumn_, i8& i_Offset_);
+    eMC  eGetFromEncoding(Column* pCol, i8& i_PriorColumn_, i8& i_Offset_);
 
     void vHashColumn(Datum* pSrcDatum, Column* pCol);
     void vHeadAdd(w8 wBytes, i8 nBytes, Column* pCol);
