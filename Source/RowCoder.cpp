@@ -2051,7 +2051,10 @@ void RowCoder::vTwiddleShiftRight(void)
     return;
   
   //MemLib::vWordDump(m_aFromHead,16 * sizeof(Word));
-  RowCoder::vHeadDump("vTwiddleShiftRight:: m_aFromHead"_Stz,m_aFromHead,m_pColVec,16,true);
+  
+  i8 i_LastHeadWord = (m_nHeadBytes / sizeof(Word) - 1);
+  RowCoder::vHeadDump("vTwiddleShiftRight:: m_aFromHead"_Stz,
+                      m_aFromHead,m_pColVec,16,i_LastHeadWord,true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -2649,7 +2652,8 @@ void RowCoder::vAnalyse(RowNub* pNub)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vHeadDump(Stz* szTitle,
                          HeadLine* aHeadLine, ColumnVec* pColVec,
-                         i8 nWords, bool bShortForm)
+                         i8 nWords, i8 i_HighLight,
+                         bool bShortForm)
 {
   vTrace("\n%s HeadDump %p :\n"_Stz,szTitle,aHeadLine);
 
@@ -2663,7 +2667,7 @@ void RowCoder::vHeadDump(Stz* szTitle,
   i8 nOverWords = C_UNKNOWN;
 
   if (aHeadLine->bHasOverflow()) {
-    MemLib::vWordDump(aHeadLine,nHeadBytes);
+    MemLib::vWordDump(aHeadLine,nHeadBytes,i_HighLight);
 
     aOverLine  = aGetOverRel(aHeadLine,i_Over_rel);
     nOverBytes = aOverLine->nBytes();
@@ -2676,7 +2680,8 @@ void RowCoder::vHeadDump(Stz* szTitle,
   else {
     MemLib::vWordDump(aHeadLine,
                       (C_UNKNOWN == nWords)
-                        ? nHeadBytes : nWords * C_BYTES_PER_WORD);
+                        ? nHeadBytes : nWords * C_BYTES_PER_WORD,
+                      i_HighLight);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
