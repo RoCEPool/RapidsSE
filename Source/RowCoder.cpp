@@ -1938,6 +1938,9 @@ void RowCoder::vTwiddleFrom(void)
   
   RASSERT(! m_bEncoding);
   
+  // shift part of large head which dangles over end of normal head
+  vTwiddleShiftOver();
+  
   RowCoder::vHeadDump("m_aFromHead"_Stz,m_aFromHead,m_pColVec,16);
 
   i8 i_LastColumn = 0;
@@ -1971,6 +1974,14 @@ void RowCoder::vTwiddleFrom(void)
 /* allot the into head                                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vTwiddleHeadAllot(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* shift part of large head which dangles over end of normal head             */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vTwiddleShiftOver(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
