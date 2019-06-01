@@ -38,6 +38,7 @@ namespace Data
     i8         m_i_IntoOver;
     OverLine*  m_aIntoOver;
     i8         m_nOverBytes;
+    bool       m_bCopyOver;    // is there a overflow portion to be copied?
     //---
     i8         m_i_IntoOffset; // encoding offset
 
@@ -122,7 +123,8 @@ namespace Data
     void vCodeTsp(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCopyHead(void);
-  
+    void vCopyOver(void);
+
     void vDataNeed(i8 nBytes, Column* pCol);
     void vDataAdd(Datum* pDatum, Column* pCol);
     

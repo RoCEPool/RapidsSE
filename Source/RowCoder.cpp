@@ -51,17 +51,18 @@ RowCoder::RowCoder(void)
   
   m_bEncoding      = false;
   m_pColVec        = nullptr;
-  m_nHeadBytes     = C_UNKNOWN;
   m_nMetaData      = C_UNKNOWN;
   m_i_BaseOffset   = C_UNKNOWN;
 
   m_pIntoNub       = nullptr;
   m_i_IntoHead     = C_UNKNOWN;
   m_aIntoHead      = nullptr;
+  m_nHeadBytes     = C_UNKNOWN;
   //---
   m_i_IntoOver     = C_UNKNOWN;
   m_aIntoOver      = nullptr;
   m_nOverBytes     = C_UNKNOWN;
+  m_bCopyOver      = false;
   //---
   m_i_IntoOffset   = C_UNKNOWN;
 
@@ -146,7 +147,8 @@ void RowCoder::vCopyBegin(RowNub* pIntoNub)
   m_nHeadBytes   = nHeadBytes(m_pColVec);
   m_nMetaData    = nMetaData(m_pColVec);
   m_i_BaseOffset = iBaseOffset(m_pColVec);
-  
+  m_bCopyOver    = false;
+
   m_pIntoNub     = pIntoNub;
 
   m_pWorkParts   = new RowParts;
@@ -169,6 +171,7 @@ void RowCoder::vCopyEnd(void)
   m_i_IntoOver    = C_UNKNOWN;
   m_aIntoOver     = nullptr;
   m_nOverBytes    = C_UNKNOWN;
+  m_bCopyOver     = false;
 
   m_pIntoNub      = nullptr;
   m_i_IntoHead    = C_UNKNOWN;
@@ -221,7 +224,8 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   m_i_IntoOver   = C_UNKNOWN;
   m_aIntoOver    = nullptr;
   m_nOverBytes   = C_UNKNOWN;
-  
+  m_bCopyOver    = false;
+
   m_aWorkHead    = m_pIntoNub->aGetHead();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -230,6 +234,7 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
 #ifdef WITH_LARGE_ROWS
   vTwiddleFrom();
   vCopyHead();
+  vCopyOver();
   //vRecode_Large();
   //vRecode_Short();
 #else
@@ -817,7 +822,8 @@ void RowCoder::vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum)
     pTgtDatum->m_eEncoding     = MC_SHOCO_TAIL_2T;
     pTgtDatum->m_nEncodedBytes = nLen;
   }
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -845,8 +851,22 @@ void RowCoder::vCopyHead(void)
   RowCoder::vHeadDump("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
 #endif
   
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/* copy overflow portion of large from head into Inot-Over                   */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vCopyOver(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  if (! m_bCopyOver)
+    return;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* check there is enough space for nBytes of data                             */
@@ -2053,6 +2073,8 @@ void RowCoder::vTwiddleShiftOver(void)
   
   // 3) put MC_OVERFLOW_2B
   m_aFromHead->vMetaCode(i_ShiftCol,MC_OVERFLOW_2B);
+  
+  m_bCopyOver = true;
 }
 
 /*----------------------------------------------------------------------------*/
