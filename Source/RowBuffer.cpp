@@ -68,7 +68,7 @@ RowBuffer::RowBuffer(void)
   
   // zero all the cachelines in the row tray
 //  for (i8 iIndex = 0 ; iIndex < C_TRAY_ROWS; iIndex++)
-//    m_xRowTray.aGetHead(iIndex)->vSetAll(0);
+//    m_oRowTray.aGetHead(iIndex)->vSetAll(0);
   
   m_pNextBuffer   = nullptr;
   m_pPrevBuffer   = nullptr;
@@ -257,8 +257,8 @@ i8 RowBuffer::iDecile(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   i8 iDecile;
-  i8 iCachLinesUsed = m_xRowTray.pNub()->nHeads()
-                        + m_xRowTray.pNub()->nTails();
+  i8 iCachLinesUsed = m_oRowTray.pNub()->nHeads()
+                        + m_oRowTray.pNub()->nTails();
   i8 iSpaceUsed = iCachLinesUsed * C_BYTES_PER_CACHE_LINE;
   iDecile = IntLib::iDecile( iSpaceUsed , C_SIZE_POOL_BUFFER);
   
@@ -291,7 +291,7 @@ void RowBuffer::vDump(void)
 /*----------------------------------------------------------------------------*/
 HeadLine* RowBuffer::aGetCompactRow(i8 i_Row)
 {
-  HeadLine* aCompactRow = m_xRowTray.pNub()->aGetHead(i_Row);
+  HeadLine* aCompactRow = m_oRowTray.pNub()->aGetHead(i_Row);
   
   return aCompactRow;
 }
@@ -313,7 +313,7 @@ bool RowBuffer::bHasSpace(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  i8 nFreeBytes = m_xRowTray.pNub()->nFreeAllotableBytes();
+  i8 nFreeBytes = m_oRowTray.pNub()->nFreeAllotableBytes();
   
   //! is this correct now that we have separated RowBuffer from EntryBuffer?
   if (gpAttachMap->m_nIndexEntries > 0) {
@@ -354,7 +354,7 @@ void RowBuffer::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   //RASSERT(pTable);
-  m_xRowTray.pNub()->vDesc(pTable);
+  m_oRowTray.pNub()->vDesc(pTable);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -364,7 +364,7 @@ Table* RowBuffer::pTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  return m_xRowTray.pNub()->pDesc();
+  return m_oRowTray.pNub()->pDesc();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -432,7 +432,7 @@ HeadLine* RowBuffer::pRow(i8 iRowNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  return m_xRowTray.pNub()->aGetHead(iRowNo);
+  return m_oRowTray.pNub()->aGetHead(iRowNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -442,7 +442,7 @@ i8 RowBuffer::nRowCount(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  return m_xRowTray.pNub()->nHeads();
+  return m_oRowTray.pNub()->nHeads();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -490,7 +490,7 @@ void RowBuffer::vShowRow(i8 i_Row)
   HV_Row hRow(pColVec);
   
   // get compact row
-  HeadLine* aCompactRow = m_xRowTray.pNub()->aGetHead(i_Row);
+  HeadLine* aCompactRow = m_oRowTray.pNub()->aGetHead(i_Row);
 
   // inflate compact row into row
   RowCoder::vInflate(hRow,aCompactRow);
@@ -512,9 +512,9 @@ void RowBuffer::vShow(void)
   
   vTrace("RowBuffer: %p (buffer %lld): rows: %lld headItems: %lld tailItems: %lld free: %lldB\n"_Stz,
          this,m_iBufferNo,nRows,
-         m_xRowTray.pNub()->nHeads(),
-         m_xRowTray.pNub()->nTails(),
-         m_xRowTray.pNub()->nFreeAllotableBytes());
+         m_oRowTray.pNub()->nHeads(),
+         m_oRowTray.pNub()->nTails(),
+         m_oRowTray.pNub()->nFreeAllotableBytes());
   
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
          m_pPrevBuffer,m_pNextBuffer);
@@ -627,7 +627,7 @@ bool RowBuffer::bVerifyRows(void)
   i8 nRows = nRowCount();
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    HeadLine* aRowCacheLine = m_xRowTray.pNub()->aGetHead(i_Row);
+    HeadLine* aRowCacheLine = m_oRowTray.pNub()->aGetHead(i_Row);
     RASSERT(aRowCacheLine);
   }
   
