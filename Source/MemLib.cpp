@@ -706,7 +706,7 @@ void MemLib::vWordDump(void *aAddress, i8 nBytes, i8 iHighlightWord)
 
   // dump a header
   vTrace("\n"_Stz);
-  vTrace("%4s %6s %6s %18s %16s %8s\n"_Stz,
+  vTrace("%4s %6s %6s %14s %16s %8s\n"_Stz,
          "Word"_Stz,
          "Offset"_Stz,
          "Offset"_Stz,
@@ -714,11 +714,11 @@ void MemLib::vWordDump(void *aAddress, i8 nBytes, i8 iHighlightWord)
          "Hex"_Stz,
          "Ascii"_Stz);
   
-  vTrace("%4s %6s %6s %18s %16s %8s\n"_Stz,
+  vTrace("%4s %6s %6s %14s %16s %8s\n"_Stz,
          "----"_Stz,
          "------"_Stz,
          "------"_Stz,
-         "------------------"_Stz,
+         "--------------"_Stz,
          "-------><-------"_Stz,
          "--------"_Stz);
   
@@ -730,7 +730,7 @@ void MemLib::vWordDump(void *aAddress, i8 nBytes, i8 iHighlightWord)
       vTrace("%4d "_Stz, i_Word);
       vTrace("0x%04llx "_Stz, iOffset);
       vTrace("%06lld "_Stz, iOffset);
-      vTrace("0x%016llx "_Stz, (i8)((u1*)aAddress + iOffset));
+      vTrace("0x%012llx "_Stz, (i8)((u1*)aAddress + iOffset));
     }
     
     vTrace("%016llx "_Stz, (i8)(*((i8*)aAddress + i_Word)));
