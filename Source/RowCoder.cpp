@@ -1950,7 +1950,7 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* twiddle the from large head prior to putting in row tray                   */
+/* twiddle the from large head prior to copying it into row tray              */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vTwiddleFrom(void)
 {
@@ -1958,11 +1958,11 @@ void RowCoder::vTwiddleFrom(void)
   
   RASSERT(! m_bEncoding);
   
-  // shift part of large head which dangles over end of normal head
-  vTwiddleShiftOver();
-  
   RowCoder::vHeadDump("m_aFromHead"_Stz,m_aFromHead,m_pColVec,16);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate Vch columns and decide how to handle
+  
   i8 i_LastColumn = 0;
   i8 i_FromOffset = m_i_BaseOffset;
 
@@ -1984,10 +1984,18 @@ void RowCoder::vTwiddleFrom(void)
     if (bTwiddleShocoDupe(pCol,i_FromOffset))
       continue;
     
+    // can we fold a non-dupe string into ?
+    if (bTwiddleShocoFold(pCol,i_FromOffset))
+      continue;
+
     // no, so allot & copy tail into the Into-Nub
     vTwiddleShocoTail(pCol,i_FromOffset);
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // shift part of large head which dangles over end of normal head
+  
+  vTwiddleShiftRight();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2031,13 +2039,13 @@ i8 RowCoder::iTwiddleShiftCol(i8& i_Offset_data_)
 }
 
 /*----------------------------------------------------------------------------*/
-/* shift part of large head which dangles over end of normal head             */
+/* shift right part of large head which dangles over end of left normal head  */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vTwiddleShiftOver(void)
+void RowCoder::vTwiddleShiftRight(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  // do we shift over?
+  // do we shift right at all?
   i8 nFromHeadBytes = m_pFromNub->nHeadBytes_used();
   if (nFromHeadBytes <= m_nHeadBytes)
     return;
@@ -2071,7 +2079,7 @@ void RowCoder::vTwiddleShiftOver(void)
   |                                |
   +--------------------------------+
   |            ////////////// [OT] |
-  +- - - - - - - - - - - - - - - - + Head -- Over boundary
+  +- - - - - - - - - - - - - - - - + Head -- Over right boundary
   | <U><M:data> <more...><more.... |
   +--------------------------------+
   | ...........> ///////////////// |
@@ -2178,6 +2186,18 @@ bool RowCoder::bTwiddleShocoDupe(Column* pCol, i8 i_FromOffset)
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to fold shoco into from line (no dupe was found)                   */
+/*----------------------------------------------------------------------------*/
+bool RowCoder::bTwiddleShocoFold(Column* pCol, i8 i_FromOffset)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  //! to be coded ...
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
