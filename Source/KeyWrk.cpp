@@ -228,9 +228,6 @@ void KeyWrk::vAddWord(w8 wWord)
 /*----------------------------------------------------------------------------*/
 void KeyWrk::vExtractKey(RowBuffer* pRowBuffer, i8 i_Row, IdxColVec* pIdxColVec)
 {
-  
-  RowNub* pRowNub = pRowBuffer->pRowTray()->pNub();
-  
   // create a row
   HV_Row hRow(pRowBuffer->pColumnVec());
   
