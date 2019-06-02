@@ -2739,15 +2739,20 @@ void RowCoder::vHeadDump(Stz* szTitle,
   i8 nFreeBytes = nFreeSpaceHead(aHeadLine,pColVec);
 
   if (aHeadLine->bHasOverflow()) {
-    vTrace("<W> %lld%s; [OT] %lld <W> %lld;  FreeBytes %lld\n"_Stz,
+    i8 i_Over_rel = aHeadLine->iOverflow2B();
+    OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
+
+    vTrace("[HL] 0x%012llx <W> %lld%s; [OT] 0x%012x <W> %lld;  FreeBytes %lld\n"_Stz,
+           aHeadLine,
            aHeadLine->nWords(),
            aHeadLine->bIsLargeHead() ? " LARGEHEAD"_Stz : ""_Stz,
-           i_Over_rel,
+           aOverLine,
            nOverWords,
            nFreeBytes);
   }
   else {
-    vTrace("<W> %lld%s; [OT] none; FreeBytes %lld\n"_Stz,
+    vTrace("[HL] 0x%012llx <W> %lld%s; [OT] none; FreeBytes %lld\n"_Stz,
+           aHeadLine,
            aHeadLine->nWords(),
            aHeadLine->bIsLargeHead() ? " LARGEHEAD"_Stz : ""_Stz,
            nFreeBytes);
@@ -2793,6 +2798,8 @@ void RowCoder::vHeadDump(Stz* szTitle,
       i_Offset   = nHeadBytes + 2;
       ayAddr     = ayAdrLogical(aHeadLine,i_Offset);
       nBytes     = nDataBytes(eMetaCode);
+      vTrace("--- --------------- --- -- ------------------- "
+             "-- ------------ - ---------------- -----------\n"_Stz);
     }
     else {
       ayAddr = ayAdrLogical(aHeadLine,i_Offset);
