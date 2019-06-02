@@ -71,6 +71,32 @@ i8 HeadLine::nWords(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does this head have an overflow?                                           */
+/*----------------------------------------------------------------------------*/
+bool HeadLine::bHasOverflow(void)
+{
+  i8 nSizeWords = iW();
+  
+  if (nSizeWords >= 128)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* mask this head to have an overflow                                         */
+/*----------------------------------------------------------------------------*/
+void HeadLine::vHasOverflow(void)
+{
+  i8 nSizeWords = iW();
+  
+  if (nSizeWords < 128) {
+    nSizeWords += 128;
+    vW(nSizeWords);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a large head line?                                                 */
 /*----------------------------------------------------------------------------*/
 bool HeadLine::bIsLargeHead(void)
@@ -78,19 +104,6 @@ bool HeadLine::bIsLargeHead(void)
   i8 nSizeWords = w8_1B(0);
   
   if (C_LARGEHEAD == nSizeWords)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does this head have an overflow?                                           */
-/*----------------------------------------------------------------------------*/
-bool HeadLine::bHasOverflow(void)
-{
-  i8 nSizeWords = w8_1B(0);
-  
-  if (nSizeWords >= 128)
     return true;
   else
     return false;

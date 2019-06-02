@@ -864,6 +864,9 @@ void RowCoder::vCopyOver(void)
   if (! m_bCopyOver)
     return;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy the right part of from large head into into-over
+  
   m_nOverBytes = m_pFromNub->nHeadBytes_used() - m_nHeadBytes;
   
   i8 m_i_IntoOver = m_pIntoNub->iAllotOver(m_nOverBytes+1);
@@ -871,8 +874,7 @@ void RowCoder::vCopyOver(void)
   
   byte* ayFromHead_over = (byte*)m_aFromHead + m_nHeadBytes;
 
-  // don't copy over the <W> at the start of head, and
-  //                 the [OT] at the end of the head
+  // don't copy over the <U> at the start of over
   MemLib::vCopy((byte*)m_aIntoOver + _1B_U,
                 (byte*)ayFromHead_over,
                 (m_nOverBytes + 1 - _1B_U),
@@ -880,6 +882,18 @@ void RowCoder::vCopyOver(void)
 
   i8 nIntoOver_bytes = m_aIntoOver->nBytes();
   MemLib::vWordDump(m_aIntoOver,nIntoOver_bytes);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // put [OT] into the into-head
+
+  i8 i_IntoOver_rel = RowNub::iUnitDiff(m_aIntoHead,(TailLine*)m_aIntoOver);
+  
+  m_aIntoHead->vOverflow2B(i_IntoOver_rel);
+  m_aIntoHead->vHasOverflow();
+
+  MemLib::vWordDump(m_aIntoHead,m_nHeadBytes);
+  
+  RowCoder::vHeadDump("vCopyOver:: m_aIntoHead"_Stz,m_aIntoHead,m_pColVec,16);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
@@ -2207,10 +2221,10 @@ bool RowCoder::bTwiddleShocoDupe(Column* pCol, i8 i_FromOffset)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   //  From-Head recoded as [IT] unit diff between Into-Head and Into-Tail
-  // +--------------------------------+
-  // |                    [IT]        |
-  // +--------------------------------+
-  //                      ^i_fromOffset
+  //     +--------------------------------+
+  // fh: |                    [IT]        |
+  //     +--------------------------------+
+  //                          ^i_FromOffset
   i8 i_IntoTail_rel = RowNub::iUnitDiff(m_aIntoHead,aIntoTail_dup);
   m_aFromHead->vPut(i_FromOffset,i_IntoTail_rel,_2B_IT);
   
