@@ -2705,6 +2705,33 @@ void RowCoder::vDumpHead(Stz* szTitle,
                          i8 nWords, i8 i_HighLight,
                          bool bShortForm)
 {
+  if (aHeadLine->bIsLargeHead())
+    vDumpHead_large(szTitle,aHeadLine,pColVec,nWords,i_HighLight,bShortForm);
+  else
+    vDumpLine(szTitle,aHeadLine,pColVec,nWords,i_HighLight,bShortForm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump large head line                                                       */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDumpHead_large(Stz* szTitle,
+                               HeadLine* aHeadLine,
+                               ColumnVec* pColVec,
+                               i8 nWords,
+                               i8 i_HighLight,
+                               bool bShortForm)
+{
+  vDumpLine(szTitle,aHeadLine,pColVec,nWords,i_HighLight,bShortForm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump head line                                                             */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDumpLine(Stz* szTitle,
+                         HeadLine* aHeadLine, ColumnVec* pColVec,
+                         i8 nWords, i8 i_HighLight,
+                         bool bShortForm)
+{
   vTrace("\n%s HeadDump %p :\n"_Stz,szTitle,aHeadLine);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
