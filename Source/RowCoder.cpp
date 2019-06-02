@@ -3459,12 +3459,12 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
   
   i8 nCols = pRow->m_nColumns;
   
-  byte* aMetaCode = (byte*)aHeadLine + _1B_W;
-  byte* aDataByte = (byte*)aHeadLine + pRow->m_iBaseOffset;
-  i8*   aiValue   = & pRow->m_aiValue[0];
+  eMC*  aeMetaCode = aAdd<eMC*>(aHeadLine,_1B_W);
+  byte* ayDataByte = (byte*)aHeadLine + pRow->m_iBaseOffset;
+  i8*   aiValue    = & pRow->m_aiValue[0];
   
-  bool  bGetAll   = pRow->m_bGetAll;
-  i8    iLastCol  = pRow->m_iLastCol;
+  bool  bGetAll    = pRow->m_bGetAll;
+  i8    iLastCol   = pRow->m_iLastCol;
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
@@ -3477,7 +3477,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
     Column* pCol = pRow->m_pColVec->pGet(i_Col);
 #endif
     
-    eMetaCode = (eMC)*aMetaCode++;
+    eMetaCode = *aeMetaCode++;
     
     //! temp experiment
     if ( ! ( bGetAll || pRow->m_abGetCol[i_Col] ) ) {
@@ -3488,25 +3488,25 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
           
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         case MC_STR_FIT_1L:
-          nLength = *(u1*)aDataByte++;
-          aDataByte += nLength;
+          nLength = *(u1*)ayDataByte++;
+          ayDataByte += nLength;
           break;
           
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         case MC_SHOCO_FIT_1C:
-          nCompressed = (i8)*(u1*)aDataByte++;
-          aDataByte += nCompressed;
+          nCompressed = (i8)*(u1*)ayDataByte++;
+          ayDataByte += nCompressed;
           break;
           
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         case MC_SHOCO_SPLIT_2T1C:
-          nCompressed = (i8)*(u1*)aDataByte++;
-          nBytesPartA = aHeadLine->nBytes() - (aDataByte - (byte*)aHeadLine);
-          aDataByte += nBytesPartA;
+          nCompressed = (i8)*(u1*)ayDataByte++;
+          nBytesPartA = aHeadLine->nBytes() - (ayDataByte - (byte*)aHeadLine);
+          ayDataByte += nBytesPartA;
           break;
           
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        default: aDataByte += nDataBytes(eMetaCode); break;
+        default: ayDataByte += nDataBytes(eMetaCode); break;
       }
       
       continue;
@@ -3525,8 +3525,8 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_1B:
-        *aiValue++ = *(u1*)(aDataByte);
-        aDataByte += C_1B;
+        *aiValue++ = *(u1*)(ayDataByte);
+        ayDataByte += C_1B;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -3534,8 +3534,8 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_2B:
-        *aiValue++ = *(u2*)(aDataByte);
-        aDataByte += C_2B;
+        *aiValue++ = *(u2*)(ayDataByte);
+        ayDataByte += C_2B;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -3544,9 +3544,9 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_3B:
         wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *aDataByte++;
-        wWord.m_yaByte[1] = *aDataByte++;
-        wWord.m_yaByte[2] = *aDataByte++;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
+        wWord.m_yaByte[2] = *ayDataByte++;
         *aiValue++ = wWord.m_iI8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
@@ -3555,8 +3555,8 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_4B:
-        *aiValue++ = *(u4*)(aDataByte);
-        aDataByte += C_4B;
+        *aiValue++ = *(u4*)(ayDataByte);
+        ayDataByte += C_4B;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -3565,11 +3565,11 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_5B:
         wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *aDataByte++;
-        wWord.m_yaByte[1] = *aDataByte++;
-        wWord.m_yaByte[2] = *aDataByte++;
-        wWord.m_yaByte[3] = *aDataByte++;
-        wWord.m_yaByte[4] = *aDataByte++;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
+        wWord.m_yaByte[2] = *ayDataByte++;
+        wWord.m_yaByte[3] = *ayDataByte++;
+        wWord.m_yaByte[4] = *ayDataByte++;
         *aiValue++ = wWord.m_iI8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
@@ -3579,12 +3579,12 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_6B:
         wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *aDataByte++;
-        wWord.m_yaByte[1] = *aDataByte++;
-        wWord.m_yaByte[2] = *aDataByte++;
-        wWord.m_yaByte[3] = *aDataByte++;
-        wWord.m_yaByte[4] = *aDataByte++;
-        wWord.m_yaByte[5] = *aDataByte++;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
+        wWord.m_yaByte[2] = *ayDataByte++;
+        wWord.m_yaByte[3] = *ayDataByte++;
+        wWord.m_yaByte[4] = *ayDataByte++;
+        wWord.m_yaByte[5] = *ayDataByte++;
         *aiValue++ = wWord.m_iI8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
@@ -3594,13 +3594,13 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_7B:
         wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *aDataByte++;
-        wWord.m_yaByte[1] = *aDataByte++;
-        wWord.m_yaByte[2] = *aDataByte++;
-        wWord.m_yaByte[3] = *aDataByte++;
-        wWord.m_yaByte[4] = *aDataByte++;
-        wWord.m_yaByte[5] = *aDataByte++;
-        wWord.m_yaByte[6] = *aDataByte++;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
+        wWord.m_yaByte[2] = *ayDataByte++;
+        wWord.m_yaByte[3] = *ayDataByte++;
+        wWord.m_yaByte[4] = *ayDataByte++;
+        wWord.m_yaByte[5] = *ayDataByte++;
+        wWord.m_yaByte[6] = *ayDataByte++;
         *aiValue++ = wWord.m_iI8;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
@@ -3609,8 +3609,8 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_8B:
-        *aiValue++ = *(u8*)(aDataByte);
-        aDataByte += C_8B;
+        *aiValue++ = *(u8*)(ayDataByte);
+        ayDataByte += C_8B;
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
 #endif
@@ -3750,8 +3750,8 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_DATE_E0_2B:
-        *aiValue++ = *(u2*)aDataByte;
-        aDataByte += C_2B;
+        *aiValue++ = *(u2*)ayDataByte;
+        ayDataByte += C_2B;
         vDteFromEdt((Word*)(aiValue-1),C_ERA_0);
 #ifdef WITH_TRACE_DECODING
         wWord.m_iDte = *(aiValue-1);
@@ -3767,8 +3767,8 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_DATE_E1_2B:
-        *aiValue++ = *(u2*)aDataByte;
-        aDataByte += C_2B;
+        *aiValue++ = *(u2*)ayDataByte;
+        ayDataByte += C_2B;
         vDteFromEdt((Word*)(aiValue-1),C_ERA_1);
 #ifdef WITH_TRACE_DECODING
         wWord.m_iDte = *(aiValue-1);
@@ -3784,8 +3784,8 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_DATE_E2_2B:
-        *aiValue++ = *(u2*)aDataByte;
-        aDataByte += C_2B;
+        *aiValue++ = *(u2*)ayDataByte;
+        ayDataByte += C_2B;
         vDteFromEdt((Word*)(aiValue-1),C_ERA_2);
 #ifdef WITH_TRACE_DECODING
         wWord.m_iDte = *(aiValue-1);
@@ -3818,13 +3818,13 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_STR_FIT_1L:
-        nLength = *(u1*)aDataByte++;
+        nLength = *(u1*)ayDataByte++;
         MemLib::vCopy((byte*)aString,
-                      (byte*)aDataByte,
+                      (byte*)ayDataByte,
                       nLength,
                       CN_ROWCODER);
         *(char**)(aiValue++) = aString;
-        aDataByte += nLength;
+        ayDataByte += nLength;
         aString   += nLength;
         *aString++ = '\0';
 #ifdef WITH_TRACE_DECODING
@@ -3854,11 +3854,11 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_SHOCO_FIT_1C:
-        nCompressed = (i8)*(u1*)aDataByte++;
+        nCompressed = (i8)*(u1*)ayDataByte++;
         nDecompressed =
         Compress::iFromShoco(aString,                  // decompressed dest
                              sizeof(caShoco),          // max destination
-                             aDataByte,                // compressed source
+                             ayDataByte,                // compressed source
                              nCompressed);             // bytes compressed
 #ifdef WITH_TRACE_DECODING
         vTrace(" [%lld %15s] %s\n"_Stz,i_Col,pCol->szColNm(),aString);
@@ -3867,7 +3867,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         aString += nDecompressed;
         *aString++ = '\0';
         pRow->m_i_Wsp += nDecompressed;
-        aDataByte += nCompressed;
+        ayDataByte += nCompressed;
         break;
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3875,8 +3875,8 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         //i_Tail_rel  = (i8)*(i2*)aDataByte;
         //aDataByte  += 2;
         wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *aDataByte++;
-        wWord.m_yaByte[1] = *aDataByte++;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
         i_Tail_rel = wWord.m_iI8;
         aShocoTail  = aGetTailRel(aHeadLine,i_Tail_rel);
         nCompressed = aShocoTail->w8_1B(C_OFFSET_COMPRESSED);
@@ -3899,15 +3899,15 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_SHOCO_SPLIT_2T1C:
         wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *aDataByte++;
-        wWord.m_yaByte[1] = *aDataByte++;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
         i_Tail_rel = wWord.m_iI8;
         aShocoTail  = aGetTailRel(aHeadLine,i_Tail_rel);
-        nCompressed = (i8)*(u1*)aDataByte++;
-        nBytesPartA = aHeadLine->nBytes() - (aDataByte - (byte*)aHeadLine);
+        nCompressed = (i8)*(u1*)ayDataByte++;
+        nBytesPartA = aHeadLine->nBytes() - (ayDataByte - (byte*)aHeadLine);
         nBytesPartB = nCompressed - nBytesPartA;
         MemLib::vCopy((byte*)caShoco,
-                      (byte*)aDataByte,
+                      (byte*)ayDataByte,
                       nBytesPartA,
                       CN_ROWCODER);
         MemLib::vCopy((byte*)caShoco+nBytesPartA,
@@ -3926,7 +3926,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         aString += nDecompressed;
         *aString++ = '\0';
         pRow->m_i_Wsp += nDecompressed;
-        aDataByte += nBytesPartA;
+        ayDataByte += nBytesPartA;
         break;
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3965,7 +3965,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         //MemLib::vWordDump(aOverLine,32);
 
         eMetaCode = * aAdd<eMC*>(aOverLine,_1B_U);
-        aDataByte = aAdd<byte*>(aOverLine,_1B_U + _1B_M);
+        ayDataByte = aAdd<byte*>(aOverLine,_1B_U + _1B_M);
         goto L_MetaCodeSwitch;
         break;
       }
@@ -3977,6 +3977,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
   }
 }
 #endif
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private Static ----------------------------------------------------------*/
