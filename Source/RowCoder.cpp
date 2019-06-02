@@ -855,7 +855,7 @@ void RowCoder::vCopyHead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy overflow portion of large from head into Inot-Over                   */
+/* copy overflow portion of large from head into Into-Over                    */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vCopyOver(void)
 {
@@ -864,6 +864,23 @@ void RowCoder::vCopyOver(void)
   if (! m_bCopyOver)
     return;
   
+  m_nOverBytes = m_pFromNub->nHeadBytes_used() - m_nHeadBytes;
+  
+  i8 m_i_IntoOver = m_pIntoNub->iAllotOver(m_nOverBytes+1);
+  OverLine* m_aIntoOver = m_pIntoNub->aGetOver(m_i_IntoOver);
+  
+  byte* ayFromHead_over = (byte*)m_aFromHead + m_nHeadBytes;
+
+  // don't copy over the <W> at the start of head, and
+  //                 the [OT] at the end of the head
+  MemLib::vCopy((byte*)m_aIntoOver + _1B_U,
+                (byte*)ayFromHead_over,
+                (m_nOverBytes + 1 - _1B_U),
+                CN_ROWBUFFER);
+
+  i8 nIntoOver_bytes = m_aIntoOver->nBytes();
+  MemLib::vWordDump(m_aIntoOver,nIntoOver_bytes);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
 
@@ -2109,6 +2126,8 @@ void RowCoder::vTwiddleShiftRight(void)
   // temp
   MemLib::vSet((byte*)m_aFromHead + i_Offset_shift,0x00,nAddBytes,CN_ROWCODER);
   
+  m_pFromNub->vHeadBytes_used(nLargeHead_used + nAddBytes);
+  
   MemLib::vWordDump(m_aFromHead,nFromSize,i_LastHeadWord);
 
   // 2) temporarily put 0xFFFF as [OT] overflow in last 2 bytes of short head
@@ -2774,9 +2793,12 @@ void RowCoder::vHeadDump(Stz* szTitle,
            nBytes);
     
     if (nBytes) {
-      if (MC_OVERFLOW_2B == eMetaCode)
+      if (MC_OVERFLOW_2B == eMetaCode) {
         for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
           vTrace("%02x"_Stz,*(ayAddr + i_Byte));
+        vTrace("\n"_Stz); //! temp
+        break;
+      }
       else
         for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
           vTrace("%02x"_Stz,wGetLogical(aHeadLine,(i_Offset+i_Byte),C_1B));

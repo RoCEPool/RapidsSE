@@ -714,7 +714,7 @@ void MemLib::vWordDump(void *aAddress, i8 nBytes, i8 iHighlightWord)
 {
   i8 iOffset = 0;
   i8 iWord   = 0;
-  i8 nWords  = nBytes/C_SIZEOF_WORD;
+  i8 nWords  = MemLib::nQuantaRequired(nBytes,C_SIZEOF_WORD);
 
   // dump a header
   vTrace("\n"_Stz);
