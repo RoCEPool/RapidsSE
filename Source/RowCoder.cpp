@@ -2714,14 +2714,14 @@ void RowCoder::vHeadDump(Stz* szTitle,
   OverLine* aOverLine = nullptr;
   i8 i_Over_rel = aHeadLine->iOverflow2B();
   i8 nOverBytes = C_UNKNOWN;
-  i8 nOverWords = C_UNKNOWN;
+  i8 nOverUnits = C_UNKNOWN;
 
   if (aHeadLine->bHasOverflow()) {
     MemLib::vWordDump(aHeadLine,nHeadBytes,i_HighLight);
 
     aOverLine  = aGetOverRel(aHeadLine,i_Over_rel);
     nOverBytes = aOverLine->nBytes();
-    nOverWords = aOverLine->nWords();
+    nOverUnits = aOverLine->nUnits();
 
     MemLib::vWordDump(aOverLine,
                       (C_UNKNOWN == nWords)
@@ -2742,16 +2742,20 @@ void RowCoder::vHeadDump(Stz* szTitle,
     i8 i_Over_rel = aHeadLine->iOverflow2B();
     OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
 
-    vTrace("[HL] 0x%012llx <W> %lld%s; [OT] 0x%012x <W> %lld;  FreeBytes %lld\n"_Stz,
+    vTrace("[HL] 0x%012llx <W>=%lld%s {M}=%lld FreeBytes %lld; "
+           "[OT] 0x%012x <U>=%lld\n"_Stz,
            aHeadLine,
            aHeadLine->nWords(),
            aHeadLine->bIsLargeHead() ? " LARGEHEAD"_Stz : ""_Stz,
+           pColVec->nItems(),
+           nFreeBytes,
+
            aOverLine,
-           nOverWords,
-           nFreeBytes);
+           nOverUnits);
   }
   else {
-    vTrace("[HL] 0x%012llx <W> %lld%s; [OT] none; FreeBytes %lld\n"_Stz,
+    vTrace("[HL] 0x%012llx <W>=%lld%s FreeBytes %lld; "
+           "[OT] none\n"_Stz,
            aHeadLine,
            aHeadLine->nWords(),
            aHeadLine->bIsLargeHead() ? " LARGEHEAD"_Stz : ""_Stz,
