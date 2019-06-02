@@ -2117,7 +2117,7 @@ void RowCoder::vTwiddleShiftRight(void)
   +--------------------------------+
   |            ////////////// [OT] |
   +- - - - - - - - - - - - - - - - + Head -- Over right boundary
-  | <U><M:data> <more...><more.... |
+  | <M><data> <more...><more...... |
   +--------------------------------+
   | ...........> ///////////////// |
   +--------------------------------+
@@ -2126,7 +2126,7 @@ void RowCoder::vTwiddleShiftRight(void)
   
   // 1) expand
   i8 nLargeHead_used = m_pFromNub->nHeadBytes_used();
-  i8 nAddBytes = m_nHeadBytes - i_Offset_shift;
+  i8 nAddBytes = m_nHeadBytes - i_Offset_shift + _1B_M;
   i8 nFromSize = MemLib::nRoundUp(nLargeHead_used + nAddBytes,sizeof(Word));
   
   MemLib::vWordDump(m_aFromHead,nFromSize,i_LastHeadWord);
@@ -2151,10 +2151,13 @@ void RowCoder::vTwiddleShiftRight(void)
   MemLib::vWordDump(m_aFromHead,nFromSize,i_LastHeadWord);
   
   // 3) put MC_OVERFLOW_2B as metacode for column
+  eMC eMetaCode = m_aFromHead->eMetaCode(i_Col_shift);
   m_aFromHead->vMetaCode(i_Col_shift,MC_OVERFLOW_2B);
   
-  RowCoder::vHeadDump("vTwiddleShiftRight (after):: m_aFromHead"_Stz,
-                      m_aFromHead,m_pColVec,16,i_LastHeadWord,true);
+  // 4) put <M>
+  m_aFromHead->vPut(m_nHeadBytes,eMetaCode,_1B_M);
+
+  MemLib::vWordDump(m_aFromHead,nFromSize,i_LastHeadWord);
 
   m_bCopyOver = true;
 }
@@ -2783,8 +2786,13 @@ void RowCoder::vHeadDump(Stz* szTitle,
     eMetaCode  = aHeadLine->eMetaCode(i_Col);
     szMetaCode = aMC[eMetaCode];
     if (MC_OVERFLOW_2B == eMetaCode) {
-      ayAddr = (byte*)aHeadLine + nHeadBytes - _2B_IT;
-      nBytes = _2B_IT;
+      i8 i_Over_rel = aHeadLine->iOverflow2B();
+      OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
+      eMetaCode  = (eMC)aOverLine->w8_1B(1);
+      szMetaCode = aMC[eMetaCode];
+      i_Offset   = nHeadBytes + 2;
+      ayAddr     = ayAdrLogical(aHeadLine,i_Offset);
+      nBytes     = nDataBytes(eMetaCode);
     }
     else {
       ayAddr = ayAdrLogical(aHeadLine,i_Offset);
@@ -2810,8 +2818,8 @@ void RowCoder::vHeadDump(Stz* szTitle,
       if (MC_OVERFLOW_2B == eMetaCode) {
         for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
           vTrace("%02x"_Stz,*(ayAddr + i_Byte));
-        vTrace("\n"_Stz); //! temp
-        break;
+        //vTrace("\n"_Stz); //! temp
+        //break;
       }
       else
         for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
