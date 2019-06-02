@@ -190,7 +190,9 @@ namespace Data
     //! alka
     static HeadLine* aCompactRow(RowBuffer* pRowBuffer, i8 i_Row);
   
-    static void vHeadDump(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec,
+    static void vDumpHead(Stz* szTitle,
+                          HeadLine* aHeadLine,
+                          ColumnVec* pColVec,
                           i8 nWords = C_UNKNOWN,
                           i8 i_HighLight = C_UNKNOWN,
                           bool bShortForm = false);
