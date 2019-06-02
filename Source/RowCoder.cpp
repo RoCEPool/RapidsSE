@@ -2722,6 +2722,7 @@ void RowCoder::vDumpHead_large(Stz* szTitle,
                                i8 i_HighLight,
                                bool bShortForm)
 {
+
   vDumpLine(szTitle,aHeadLine,pColVec,nWords,i_HighLight,bShortForm);
 }
 

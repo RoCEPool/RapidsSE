@@ -25,6 +25,8 @@ namespace Base
 
   static const i8 C_BYTES_PER_LINE   = 16;
   
+  class Word;
+  
   class MemLib
   {
   private:
@@ -45,6 +47,7 @@ namespace Base
     static void  vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes, eCN eClassNo);
     static void  vDumpWords(void *aAddress, i8 nBytes);
     static void  vExpand(void* aAddr, i8 nSize, i8 i_Offset, i8 nAddBytes, eCN eClassNo);
+    static w8*   awFindNonZeroEnd(w8* awWords, i8 nWords);
     static void  vFreeBlock(void* aBlock, i8 nBytes);
     static i8    iGetTotalMemory(void);
     static void  vHexDump(void *aAddress, i8 nBytes);

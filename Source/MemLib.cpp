@@ -382,6 +382,18 @@ void MemLib::vExpand(void* aAddr, i8 nSize, i8 i_Offset, i8 nAddBytes, eCN eClas
 }
 
 /*----------------------------------------------------------------------------*/
+/* find non-zero end of word-array                                            */
+/*----------------------------------------------------------------------------*/
+w8* MemLib::awFindNonZeroEnd(w8* awWords, i8 nWords)
+{
+  for (i8 i_Word = 0; i_Word < nWords; i_Word++)
+    if (awWords[i_Word])
+      return &awWords[i_Word];
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* free a block of memory                                                     */
 /*----------------------------------------------------------------------------*/
 void MemLib::vFreeBlock(void* aBlock, i8 nBytes)
