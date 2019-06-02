@@ -92,6 +92,7 @@ namespace Data
   /* 49 */ MC_TWOS_7B,         // data area contains 7B two's complement datum
   
   //       MC_ROW_REF_2B,      // nB in data area being a row reference [RR]
+  //       MC_RETURN,          // return
   /* 50 */ MC_OVERFLOW_2B,     // 2B in data area indicating overflow tail
   
   /* 51 */ MC_ENUMS,
@@ -149,6 +150,7 @@ namespace Data
   /* 47 */ "MC_TWOS_5B"_Stz,
   /* 48 */ "MC_TWOS_6B"_Stz,
   /* 49 */ "MC_TWOS_7B"_Stz,
+  /*    */ //"MC_ROW_REF_2B"_Stz,
   /* 50 */ "MC_OVERFLOW_2B"_Stz,
   /* 51 */ "MC_ENUMS"_Stz,
   };
