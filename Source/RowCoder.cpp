@@ -350,8 +350,7 @@ void RowCoder::vEncodeEnd(void)
 //  vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
 
 #ifdef WITH_HEAD_OVERFLOW
-  vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec,
-                      MemLib::nQuantaRequired(m_i_IntoOffset,C_BYTES_PER_WORD));
+  vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
   vDebugPoint();
 #endif
 
@@ -893,7 +892,7 @@ void RowCoder::vCopyOver(void)
 
   MemLib::vWordDump(m_aIntoHead,m_nHeadBytes);
   
-  vDumpHead("vCopyOver:: m_aIntoHead"_Stz,m_aIntoHead,m_pColVec,16);
+  vDumpHead("vCopyOver:: m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
@@ -1989,7 +1988,7 @@ void RowCoder::vTwiddleFrom(void)
   
   RASSERT(! m_bEncoding);
   
-  vDumpHead("m_aFromHead"_Stz,m_aFromHead,m_pColVec,16);
+  vDumpHead("m_aFromHead"_Stz,m_aFromHead,m_pColVec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate Vch columns and decide how to handle
@@ -2701,12 +2700,14 @@ void RowCoder::vAnalyse(RowNub* pNub)
 /* dump head line                                                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDumpHead(Stz* szTitle,
-                         HeadLine* aHeadLine, ColumnVec* pColVec,
-                         i8 nWords, i8 i_HighLight,
+                         HeadLine* aHeadLine,
+                         ColumnVec* pColVec,
+                         i8 nWords,
+                         i8 i_HighLight,
                          bool bShortForm)
 {
   if (aHeadLine->bIsLargeHead())
-    vDumpHead_large(szTitle,aHeadLine,pColVec,nWords,i_HighLight,bShortForm);
+    vDumpHead_large(szTitle,aHeadLine,pColVec,16,i_HighLight,bShortForm);
   else
     vDumpLine(szTitle,aHeadLine,pColVec,nWords,i_HighLight,bShortForm);
 }
