@@ -2053,7 +2053,7 @@ void RowCoder::vTwiddleShiftRight(void)
   //MemLib::vWordDump(m_aFromHead,16 * sizeof(Word));
   
   i8 i_LastHeadWord = (m_nHeadBytes / sizeof(Word) - 1);
-  RowCoder::vHeadDump("vTwiddleShiftRight:: m_aFromHead"_Stz,
+  RowCoder::vHeadDump("vTwiddleShiftRight  (before):: m_aFromHead"_Stz,
                       m_aFromHead,m_pColVec,16,i_LastHeadWord,true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2094,21 +2094,35 @@ void RowCoder::vTwiddleShiftRight(void)
   */
   
   // 1) expand
-  i8 nFromSize = C_LARGEHEAD_BYTES; //! should be whats used
-  i8 nAddBytes = C_UNKNOWN;
+  i8 nLargeHead_used = m_pFromNub->nHeadBytes_used();
+  i8 nAddBytes = m_nHeadBytes - i_Offset_shift;
+  i8 nFromSize = MemLib::nRoundUp(nLargeHead_used + nAddBytes,sizeof(Word));
+  
+  MemLib::vWordDump(m_aFromHead,nFromSize,i_LastHeadWord);
+  
   MemLib::vExpand(m_aFromHead,    // address of block
                   nFromSize,      // size of block
-                  i_Offset_shift,  // offset in block to shift right
+                  i_Offset_shift, // offset in block to shift right
                   nAddBytes,      // bytes to add
                   CN_ROWCODER);
   
+  // temp
+  MemLib::vSet((byte*)m_aFromHead + i_Offset_shift,0x00,nAddBytes,CN_ROWCODER);
+  
+  MemLib::vWordDump(m_aFromHead,nFromSize,i_LastHeadWord);
+
   // 2) temporarily put 0xFFFF as [OT] overflow in last 2 bytes of short head
   i8 i_Overflow2B = m_nHeadBytes - _2B_OT;
   m_aFromHead->vPut(i_Overflow2B,0xFFFF,_2B_IT);
   
+  MemLib::vWordDump(m_aFromHead,nFromSize,i_LastHeadWord);
+  
   // 3) put MC_OVERFLOW_2B as metacode for column
   m_aFromHead->vMetaCode(i_Col_shift,MC_OVERFLOW_2B);
   
+  RowCoder::vHeadDump("vTwiddleShiftRight (after):: m_aFromHead"_Stz,
+                      m_aFromHead,m_pColVec,16,i_LastHeadWord,true);
+
   m_bCopyOver = true;
 }
 

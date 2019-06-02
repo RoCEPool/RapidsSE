@@ -54,6 +54,7 @@ namespace Base
     static i8    nQuantaRequired(i8 nBytes, i8 nSizeQuanta);
     static void  vReset(void);
     static void  vRotate(void* aArg, i8 nBytes, i8 nBy);
+    static i8    nRoundUp(i8 nBytes, i8 nSizeQuanta);
     static void  vScribble(void* aAddress, i8 nBytes, eCN eClassNo);
     static void  vSet(void* pDst, char bByte, i8 iTimes, eCN eClassNo);
     static void  vStatistics(void);

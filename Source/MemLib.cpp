@@ -589,6 +589,18 @@ void MemLib::vRotate(void* avArg, i8 nBytes, i8 nBy)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compute the bytes required to hold n bytes within given quanta             */
+/*----------------------------------------------------------------------------*/
+i8 MemLib::nRoundUp(i8 nBytes, i8 nSizeQuanta)
+{
+  i8 nQuanta = nQuantaRequired(nBytes,nSizeQuanta);
+
+  i8 nRoundedBytes = nQuanta * nSizeQuanta;
+  
+  return nRoundedBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* scribble on memory                                                         */
 /*----------------------------------------------------------------------------*/
 void MemLib::vScribble(void* aAddress, i8 nBytes, eCN eClassNo)
