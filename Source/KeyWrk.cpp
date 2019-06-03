@@ -244,12 +244,6 @@ void KeyWrk::vExtractKey(RowBuffer* pRowBuffer, i8 i_Row, IdxColVec* pIdxColVec)
     hRow->m_abGetCol[iColumn] = true;
     hRow->m_iLastCol = iColumn > hRow->m_iLastCol ? iColumn :  hRow->m_iLastCol;
   }
-  
-  
-  // inflate the index column values into row
-  
-  //HeadLine* aCompactRow = pRowBuffer->aGetCompactRow(i_Row);
-  //RowCoder::vInflate(hRow,aCompactRow);
 
   // get the inflated compact row
   pRowBuffer->vGetRow(hRow, i_Row);

@@ -585,12 +585,6 @@ void TablePtn::vPublish(void)
   i8 nRowCount = m_pCurrentRowBuffer->nRowCount();
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
-    // get the headline
-    //HeadLine* aHeadLine = m_pCurrentRowBuffer->aGetCompactRow(i_Row);
-    
-    // inflate compacted headline into a row
-    //RowCoder::vInflate(hRow,aHeadLine);
-    
     // get the inflated compact row
     m_pCurrentRowBuffer->vGetRow(hRow, i_Row);
     

@@ -157,7 +157,6 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
     }
     
     hRow->m_iLastCol = iKeyCol > iAggCol ? iKeyCol : iAggCol;
-    //RowCoder::vInflate(hRow,aCompactRow);
     
     // get the inflated row
     pRowBuffer->vGetRow(hRow, i_Row);
