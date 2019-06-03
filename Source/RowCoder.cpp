@@ -2697,14 +2697,12 @@ void RowCoder::vAnalyse(RowNub* pNub)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDumpHead(Stz* szTitle,
                          HeadLine* aHeadLine,
-                         ColumnVec* pColVec,
-                         i8 nWords,
-                         i8 i_HighLight)
+                         ColumnVec* pColVec)
 {
   if (aHeadLine->bIsLargeHead())
-    vDumpHead_large(szTitle,aHeadLine,pColVec,16,i_HighLight);
+    vDumpHead_large(szTitle,aHeadLine,pColVec);
   else
-    vDumpLine(szTitle,aHeadLine,pColVec,nWords,i_HighLight);
+    vDumpLine(szTitle,aHeadLine,pColVec);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2712,9 +2710,7 @@ void RowCoder::vDumpHead(Stz* szTitle,
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDumpHead_large(Stz* szTitle,
                                HeadLine* aHeadLine,
-                               ColumnVec* pColVec,
-                               i8 nWords_IGNORE,
-                               i8 i_HighLight)
+                               ColumnVec* pColVec)
 {
   i8 nWords_large = aHeadLine->nWords();
   w8* awLastWord  = MemLib::awFindNonZeroEnd(aHeadLine,nWords_large);
