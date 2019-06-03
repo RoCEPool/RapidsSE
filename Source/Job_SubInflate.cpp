@@ -117,7 +117,7 @@ Job_SubInflate::Job_SubInflate(Interface::Session* pSession)
   m_pJobFetchRows  = nullptr;
   m_iPhrase        = -1;
   
-  _checkInitialised_(CN_JOB_SubInflate);
+  _checkInitialised_(CN_JOB_SUBINFLATE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINFLATE,_FOOTER_);
 }
@@ -127,7 +127,7 @@ Job_SubInflate::Job_SubInflate(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 Job_SubInflate::~Job_SubInflate(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SubInflate,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINFLATE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
