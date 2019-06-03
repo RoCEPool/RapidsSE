@@ -3567,6 +3567,8 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
       
       *aiValue++ = C_UNKNOWN;
       
+    L_SkipCodeSwitch:
+      
       switch(eMetaCode) {
           
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3587,6 +3589,18 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
           nBytesPartA = aHeadLine->nBytes() - (ayDataByte - (byte*)aHeadLine);
           ayDataByte += nBytesPartA;
           break;
+          
+        case MC_OVERFLOW_2B: {
+          vDebugPoint();
+          i8 i_Over_rel = aHeadLine->iOverflow2B();
+          OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
+          //MemLib::vWordDump(aOverLine,32);
+          
+          eMetaCode = * aAdd<eMC*>(aOverLine,_1B_U);
+          ayDataByte = aAdd<byte*>(aOverLine,_1B_U + _1B_M);
+          goto L_SkipCodeSwitch;
+          break;
+        }
           
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         default: ayDataByte += nDataBytes(eMetaCode); break;
