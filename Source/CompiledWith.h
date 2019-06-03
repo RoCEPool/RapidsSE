@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#define RAPIDSSE_VERSION_STRING "4.0.5"
+#define RAPIDSSE_VERSION_STRING "4.0.6"
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // platform
@@ -62,7 +62,7 @@
 #define WITH_ENCODING_VCH_SMALL // encode vch small
 #define WITH_SHOCO_DUPLICATES   // test for duplicate shoco tail lines
 #define WITH_SHOCO_FOLDLAST     // test for folding last shoco line
-//#define WITH_ENCODING_XCHECK    // encode cross check
+#define WITH_ENCODING_XCHECK    // encode cross check
 //#define WITH_TRACE_DECODING     // code for tracing decoding compiled in
 //#define WITH_ANALYSE_FREE       // analyze free space during load
 //#define WITH_VERIFY_TAILS       // verify tails

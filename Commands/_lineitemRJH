@@ -38,10 +38,10 @@ time create table lineitem (
 //nowait monitor 3;
 
 space;
-time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
+//time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_10.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_100.csv" max_errors 100;
-//time ld lineitem "/tpch/SF0/lineitem_1k.csv" max_errors 100;
+time ld lineitem "/tpch/SF0/lineitem_1k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_10k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_100k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
@@ -52,7 +52,7 @@ time fetch lineitem noPrint;
 //fileCat "/tpch/SF0/lineitem_1.csv" 10;
 //fileCat "/tpch/SF0/lineitem_10.csv" 10;
 //fileCat "/tpch/SF0/lineitem_100.csv" 10;
-//fileCat "/tpch/SF0/lineitem_1k.csv" 10;
+fileCat "/tpch/SF0/lineitem_1k.csv" 10;
 //fileCat "/tpch/SF0/lineitem_10k.csv" 10;
 //fileCat "/tpch/SF0/lineitem_100k.csv" 10;
 //fileCat "/tpch/SF1/lineitem.csv" 10;
