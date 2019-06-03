@@ -2033,14 +2033,6 @@ void RowCoder::vTwiddleFrom(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot the into head                                                        */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vTwiddleHeadAllot(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* find the column and offset which will shift over to MC_OVERFLOW_2B         */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iTwiddleShiftCol(i8& i_Offset_data_)
@@ -2246,12 +2238,75 @@ bool RowCoder::bTwiddleShocoDupe(Column* pCol, i8 i_FromOffset)
 /*----------------------------------------------------------------------------*/
 /* attempt to fold shoco into from line (no dupe was found)                   */
 /*----------------------------------------------------------------------------*/
-bool RowCoder::bTwiddleShocoFold(Column* pCol, i8 i_FromOffset)
+bool RowCoder::bTwiddleShocoFold(Column* pCol, i8& i_FromOffset_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  //! to be coded ...
+  return false;
+
   
+  
+  
+  /*
+   Before:
+         -- From-Head (large) --                     -- From-Tail --
+   +================================+    +=====================================+
+   | <W>{M}    ,MC_SHOCO_TAIL_2T,   |    | <U><C><shoco...> ////////////////// |
+   +================================+    +=====================================+
+   |                                |
+   +--------------------------------+
+   |        |FT|                    |
+   +--------------------------------+
+   
+   After:
+         -- From-Head (large) --
+   +================================+
+   | <W>{M}    ,MC_SHOCO_TAIL_2T,   |
+   +================================+
+   |                                |
+   +--------------------------------+
+   |        <C><shoco...>           |
+   +--------------------------------+
+
+  */
+  
+  vDumpHead("bTwiddleShocoFold:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // 0) get From-Tail details using |FT| from From-Head
+  //     +--------------------------------+
+  // fh: |                    |FT|        |
+  //     +--------------------------------+
+  //                          ^i_FromOffset_
+  i8 i_FromTail_abs = m_aFromHead->w8_2B(i_FromOffset_);
+  TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail_abs);
+  i8 nBytes_shoco = aFromTail->w8_1B(C_OFFSET_COMPRESSED);
+
+  // 1) expand the head to accomodate <C><shoco...>
+  i8 nFromSize = m_aFromHead->nBytes(); //! could be optimised
+  
+  MemLib::vExpand(m_aFromHead,          // address of block
+                  nFromSize,            // size of block
+                  i_FromOffset_,        // offset in block to shift right
+                  _1B_C + nBytes_shoco - _2B_FT, // bytes to add
+                  CN_ROWCODER);
+
+  // 2) put <C>
+  m_aIntoHead->vPut(i_FromOffset_,nBytes_shoco,_1B_C);
+  i_FromOffset_ += _1B_C;
+  
+  // 3) copy <shoco...>
+  byte* aFromHead_shoco = (byte*)m_aFromHead + i_FromOffset_;
+  byte* aFromTail_shoco = (byte*)aFromTail + _1B_U + _1B_C;
+
+  MemLib::vCopy(aFromHead_shoco,aFromTail_shoco,nBytes_shoco,CN_ROWCODER);
+
+  // 4) change {M} to MC_SHOCO_FIT_1C
+  m_aFromHead->vMetaCode(pCol->iColumnNo(),MC_SHOCO_FIT_1C);
+  
+  vDumpHead("bTwiddleShocoFold:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
+
   return false;
 }
 
@@ -2703,10 +2758,13 @@ void RowCoder::vDumpHead(Stz* szTitle,
                          HeadLine* aHeadLine,
                          ColumnVec* pColVec)
 {
-  if (aHeadLine->bIsLargeHead())
+  if (aHeadLine->bIsLargeHead()) {
     vDumpHead_large(szTitle,aHeadLine,pColVec);
-  else
-    vDumpLine(szTitle,aHeadLine,pColVec);
+    return;
+  }
+
+  i8 nWords = aHeadLine->nWords();
+  vDumpLine(szTitle,aHeadLine,pColVec,nWords,C_UNKNOWN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2718,11 +2776,11 @@ void RowCoder::vDumpHead_large(Stz* szTitle,
 {
   i8 nWords_large = aHeadLine->nWords();
   w8* awLastWord  = MemLib::awFindNonZeroEnd(aHeadLine,nWords_large);
-  i8 nWords_dump  = (awLastWord - (w8*)aHeadLine) + 1;
+  i8 nWords_limit = (awLastWord - (w8*)aHeadLine) + 1;
   
   i8 i_LastHeadWord = (nHeadBytes(pColVec) / sizeof(Word) - 1);
 
-  vDumpLine(szTitle,aHeadLine,pColVec,nWords_dump,i_LastHeadWord);
+  vDumpLine(szTitle,aHeadLine,pColVec,nWords_limit,i_LastHeadWord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2766,6 +2824,8 @@ void RowCoder::vDumpLine(Stz* szTitle,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   i8 nFreeBytes = nFreeSpaceHead(aHeadLine,pColVec);
+  if (nFreeBytes < 0)
+    nFreeBytes = 0;
 
   if (aHeadLine->bHasOverflow()) {
     i8 i_Over_rel = aHeadLine->iOverflow2B();
@@ -4642,6 +4702,9 @@ i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec)
   i8 nBytes = nDataBytes(eEncoding);
   
   i8 nFreeBytes = aHeadLine->nBytes() - i_Offset - nBytes;
+  
+  if (nFreeBytes < 0)
+    vDebugPoint();
   
   return nFreeBytes;
 }
