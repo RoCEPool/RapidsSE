@@ -2867,7 +2867,7 @@ void RowCoder::vDumpLine(Stz* szTitle,
   i8 i_Offset = iBaseOffset(pColVec);
   
   vTrace("Col ColNm         Datum MetaCode"
-         "           Offset Address      DataBytes          Value\n"_Stz);
+         "           Offset Address      DataBytes           Value\n"_Stz);
   
   
   eDM   eDatum;
@@ -2898,9 +2898,9 @@ void RowCoder::vDumpLine(Stz* szTitle,
       ayAddr     = ayAdrLogical(aHeadLine,i_Offset);
       nBytes     = nDataBytes(eMetaCode);
       //vTrace("--- --------------- --- -- ------------------- "
-      //       "-- ------------ - ---------------- -----------\n"_Stz);
+      //       "-- ------------ -- ---------------- -----------\n"_Stz);
       vTrace("*** *************** *** ** ******************* "
-             "** ************ * **************** **********************\n"_Stz);
+             "** ************ ** **************** **********************\n"_Stz);
     }
     else {
       ayAddr = ayAdrLogical(aHeadLine,i_Offset);
@@ -2916,7 +2916,7 @@ void RowCoder::vDumpLine(Stz* szTitle,
     }
 
     //      colNo colNm Dtm  MC   aMC   Ofset Addr   Bytes
-    vTrace("%3lld %-15s %-3s %02x %-19s %2lld %012llx %1lld "_Stz,
+    vTrace("%3lld %-15s %-3s %02x %-19s %2lld %012llx %2lld "_Stz,
            i_Col,
            pCol->szColNm(),
            szDatum,
