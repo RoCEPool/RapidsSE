@@ -282,10 +282,13 @@ void Job_SubExporter::vSprintRows(void)
   
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
 
-    HeadLine* aCompactRow = m_pRowBuffer->aGetCompactRow(i_Row);
+    //HeadLine* aCompactRow = m_pRowBuffer->aGetCompactRow(i_Row);
 
     // inflate compact row into a row
-    RowCoder::vInflate(hRow,aCompactRow);
+    //RowCoder::vInflate(hRow,aCompactRow);
+    
+    // get the inflated compact row
+    m_pRowBuffer->vGetRow(hRow, i_Row);
     
     // append the row to the record
     hvRec->vAppend(hRow);

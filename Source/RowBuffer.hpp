@@ -64,8 +64,7 @@ namespace Data
     
     ////////////////////////////////////////////////////////////////////////////
     // row functions
-    HeadLine* aGetCompactRow(i8 iRow);
-    void      vGetRow(Row* pRow, i8 iRow);                              //! Alka
+    void      vGetRow(Row* pRow, i8 iRow);                              
     void      vShow(void);
     void      vShowRow(i8 iRowNo);
     HeadLine* pRow(i8 iRow);

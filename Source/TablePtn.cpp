@@ -586,10 +586,13 @@ void TablePtn::vPublish(void)
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
     // get the headline
-    HeadLine* aHeadLine = m_pCurrentRowBuffer->aGetCompactRow(i_Row);
+    //HeadLine* aHeadLine = m_pCurrentRowBuffer->aGetCompactRow(i_Row);
     
     // inflate compacted headline into a row
-    RowCoder::vInflate(hRow,aHeadLine);
+    //RowCoder::vInflate(hRow,aHeadLine);
+    
+    // get the inflated compact row
+    m_pCurrentRowBuffer->vGetRow(hRow, i_Row);
     
     // append the row to the record
     hvRec->vAppend(hRow);

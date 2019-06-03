@@ -289,11 +289,10 @@ void RowBuffer::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* get the compact row from the buffer                                        */
 /*----------------------------------------------------------------------------*/
-HeadLine* RowBuffer::aGetCompactRow(i8 i_Row)
+void RowBuffer::vGetRow(Row* pRow, i8 i_Row)
 {
   HeadLine* aCompactRow = m_oRowTray.pNub()->aGetHead(i_Row);
-  
-  return aCompactRow;
+  RowCoder::vInflate(pRow,aCompactRow);
 }
 
 /*----------------------------------------------------------------------------*/
