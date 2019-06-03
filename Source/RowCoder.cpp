@@ -2234,7 +2234,7 @@ bool RowCoder::bTwiddleShocoDupe(Column* pCol, i8 i_FromOffset)
 /*----------------------------------------------------------------------------*/
 /* attempt to fold shoco into from line (no dupe was found)                   */
 /*----------------------------------------------------------------------------*/
-bool RowCoder::bTwiddleShocoFold(Column* pCol, i8& i_FromOffset_)
+bool RowCoder::bTwiddleShocoFold(Column* pCol, i8 i_FromOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
@@ -2275,7 +2275,7 @@ bool RowCoder::bTwiddleShocoFold(Column* pCol, i8& i_FromOffset_)
   // fh: |                    |FT|        |
   //     +--------------------------------+
   //                          ^i_FromOffset_
-  i8 i_FromTail_abs = m_aFromHead->w8_2B(i_FromOffset_);
+  i8 i_FromTail_abs = m_aFromHead->w8_2B(i_FromOffset);
   TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail_abs);
   i8 nBytes_shoco = aFromTail->w8_1B(C_OFFSET_COMPRESSED);
 
@@ -2284,16 +2284,16 @@ bool RowCoder::bTwiddleShocoFold(Column* pCol, i8& i_FromOffset_)
   
   MemLib::vExpand(m_aFromHead,          // address of block
                   nFromSize,            // size of block
-                  i_FromOffset_,        // offset in block to shift right
+                  i_FromOffset,        // offset in block to shift right
                   _1B_C + nBytes_shoco - _2B_FT, // bytes to add
                   CN_ROWCODER);
 
   // 2) put <C>
-  m_aIntoHead->vPut(i_FromOffset_,nBytes_shoco,_1B_C);
-  i_FromOffset_ += _1B_C;
+  m_aFromHead->vPut(i_FromOffset,nBytes_shoco,_1B_C);
+  i_FromOffset += _1B_C;
   
   // 3) copy <shoco...>
-  byte* aFromHead_shoco = (byte*)m_aFromHead + i_FromOffset_;
+  byte* aFromHead_shoco = (byte*)m_aFromHead + i_FromOffset;
   byte* aFromTail_shoco = (byte*)aFromTail + _1B_U + _1B_C;
 
   MemLib::vCopy(aFromHead_shoco,aFromTail_shoco,nBytes_shoco,CN_ROWCODER);
@@ -2303,7 +2303,7 @@ bool RowCoder::bTwiddleShocoFold(Column* pCol, i8& i_FromOffset_)
   
   vDumpHead("bTwiddleShocoFold:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
 
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2879,6 +2879,7 @@ void RowCoder::vDumpLine(Stz* szTitle,
     szDatum    = aDM[eDatum];
     eMetaCode  = aHeadLine->eMetaCode(i_Col);
     szMetaCode = aMC[eMetaCode];
+    
     if (MC_OVERFLOW_2B == eMetaCode) {
       i8 i_Over_rel = aHeadLine->iOverflow2B();
       OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
@@ -2898,7 +2899,11 @@ void RowCoder::vDumpLine(Stz* szTitle,
       RASSERT(1 == nBytes);
       nBytes += wGetLogical(aHeadLine,i_Offset,C_1B);
     }
-    
+    if (MC_SHOCO_FIT_1C == eMetaCode) {
+      RASSERT(1 == nBytes);
+      nBytes += wGetLogical(aHeadLine,i_Offset,C_1B);
+    }
+
     //      colNo colNm Dtm  MC   aMC   Ofset Addr   Bytes
     vTrace("%3lld %-15s %-3s %02x %-19s %2lld %012llx %1lld "_Stz,
            i_Col,
@@ -2938,6 +2943,10 @@ void RowCoder::vDumpLine(Stz* szTitle,
       i8 i2T = wGetLogical(aHeadLine,i_Offset,C_2B);
       i8 i1C = wGetLogical(aHeadLine,(i_Offset+2),C_1B);
       vTrace(" [ =%lld.%lld ]"_Stz,i2T,i1C);
+    }
+    else if (MC_SHOCO_FIT_1C == eMetaCode) {
+      i8 i1C = wGetLogical(aHeadLine,i_Offset,C_1B);
+      vTrace(" [ =%lld ]"_Stz,i1C);
     }
     else {
       i8 iDataValue = wGetLogical(aHeadLine,i_Offset,nBytes);
