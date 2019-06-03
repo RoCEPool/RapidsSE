@@ -2270,7 +2270,7 @@ bool RowCoder::bTwiddleShocoFold(Column* pCol, i8 i_FromOffset)
 
   */
   
-  vDumpHead("bTwiddleShocoFold:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
+  //vDumpHead("bTwiddleShocoFold:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -2286,12 +2286,17 @@ bool RowCoder::bTwiddleShocoFold(Column* pCol, i8 i_FromOffset)
   // 1) expand the head to accomodate <C><shoco...>
   i8 nFromSize = m_aFromHead->nBytes(); //! could be optimised
   
-  MemLib::vExpand(m_aFromHead,          // address of block
-                  nFromSize,            // size of block
-                  i_FromOffset,        // offset in block to shift right
-                  _1B_C + nBytes_shoco - _2B_FT, // bytes to add
+  i8 nBytesToAdd = _1B_C + nBytes_shoco - _2B_FT;
+  MemLib::vExpand(m_aFromHead,     // address of block to expand
+                  nFromSize,       // size of block
+                  i_FromOffset,    // offset in block to shift right
+                  nBytesToAdd,     // bytes to add
                   CN_ROWCODER);
-
+  
+  i8 nHeadBytes_used = m_pFromNub->nHeadBytes_used();
+  nHeadBytes_used   += nBytesToAdd;
+  m_pFromNub->vHeadBytes_used(nHeadBytes_used);
+  
   // 2) put <C>
   m_aFromHead->vPut(i_FromOffset,nBytes_shoco,_1B_C);
   i_FromOffset += _1B_C;
@@ -2305,7 +2310,7 @@ bool RowCoder::bTwiddleShocoFold(Column* pCol, i8 i_FromOffset)
   // 4) change {M} to MC_SHOCO_FIT_1C
   m_aFromHead->vMetaCode(pCol->iColumnNo(),MC_SHOCO_FIT_1C);
   
-  vDumpHead("bTwiddleShocoFold:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
+  //vDumpHead("bTwiddleShocoFold:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
 
   return true;
 }
