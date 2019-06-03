@@ -3864,9 +3864,9 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
       case MC_SHOCO_FIT_1C:
         nCompressed = (i8)*(u1*)ayDataByte++;
         nDecompressed =
-        Compress::iFromShoco(acString,                  // decompressed dest
+        Compress::iFromShoco(acString,                 // decompressed dest
                              sizeof(caShoco),          // max destination
-                             ayDataByte,                // compressed source
+                             ayDataByte,               // compressed source
                              nCompressed);             // bytes compressed
         *(char**)(aiValue++) = acString;
         acString += nDecompressed;
@@ -3886,11 +3886,11 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         aShocoTail  = aGetTailRel(aHeadLine,i_Tail_rel);
         nCompressed = aShocoTail->w8_1B(C_OFFSET_COMPRESSED);
         nDecompressed =
-        Compress::iFromShoco(acString,                  // decompressed dest
+        Compress::iFromShoco(acString,                 // decompressed dest
                              sizeof(caShoco),          // max destination
                              ((byte*)aShocoTail)       // compressed source
-                             + C_OFFSET_COMPRESSED
-                             + _1B_C,
+                               + _1B_U
+                               + _1B_C,
                              nCompressed);             // bytes compressed
         *(char**)(aiValue++) = acString;
         acString += nDecompressed;
@@ -3917,7 +3917,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
                       nBytesPartB,
                       CN_ROWCODER);
         nDecompressed =
-        Compress::iFromShoco(acString,                  // decompressed dest
+        Compress::iFromShoco(acString,                 // decompressed dest
                              sizeof(caShoco),          // max destination
                              (byte*)caShoco,           // compressed source
                              nCompressed);             // bytes compressed
@@ -4485,15 +4485,16 @@ void RowCoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
           <shoco...> being the shoco compressed bytes
    */
   
-  i8 nCompressed = wGetLogical(aHeadLine,i_Offset,C_1B);
+  i8 nCompressed = wGetLogical(aHeadLine,i_Offset,_1B_C);
   //RASSERT(nCompressed <= 56);
   
   i8 nDecompressed =
   Compress::iFromShoco((char*)pDatum->m_sVch.aChar(),
-                       255,
-                       ((byte*)aHeadLine)+i_Offset+1,
+                       pDatum->m_sVch.nSpace(),
+                       ayAdrLogical(aHeadLine,i_Offset + _1B_C),
+                       //((byte*)aHeadLine)+i_Offset+1,
                        nCompressed);
-  ASSERT(nDecompressed);
+  ASSERT(nDecompressed > 0);
   pDatum->m_nChars = nDecompressed;
 }
 
