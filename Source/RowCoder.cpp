@@ -2234,14 +2234,75 @@ bool RowCoder::bTwiddleShocoDupe(Column* pCol, i8 i_FromOffset)
 /*----------------------------------------------------------------------------*/
 /* attempt to fold shoco into from line (no dupe was found)                   */
 /*----------------------------------------------------------------------------*/
-bool RowCoder::bTwiddleShocoFold(Column* pCol, i8 i_FromOffset)
+bool RowCoder::bTwiddleShocoFold(Column* pCol, i8& i_FromOffset_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  //! to be coded ...
+  return false;
+
   
   
   
+  /*
+   Before:
+         -- From-Head (large) --                     -- From-Tail --
+   +================================+    +=====================================+
+   | <W>{M}    ,MC_SHOCO_TAIL_2T,   |    | <U><C><shoco...> ////////////////// |
+   +================================+    +=====================================+
+   |                                |
+   +--------------------------------+
+   |        |FT|                    |
+   +--------------------------------+
+   
+   After:
+         -- From-Head (large) --
+   +================================+
+   | <W>{M}    ,MC_SHOCO_TAIL_2T,   |
+   +================================+
+   |                                |
+   +--------------------------------+
+   |        <C><shoco...>           |
+   +--------------------------------+
+
+  */
+  
+  vDumpHead("bTwiddleShocoFold:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // 0) get From-Tail details using |FT| from From-Head
+  //     +--------------------------------+
+  // fh: |                    |FT|        |
+  //     +--------------------------------+
+  //                          ^i_FromOffset_
+  i8 i_FromTail_abs = m_aFromHead->w8_2B(i_FromOffset_);
+  TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail_abs);
+  i8 nBytes_shoco = aFromTail->w8_1B(C_OFFSET_COMPRESSED);
+
+  // 1) expand the head to accomodate <C><shoco...>
+  i8 nFromSize = m_aFromHead->nBytes(); //! could be optimised
+  
+  MemLib::vExpand(m_aFromHead,         // address of block
+                  nFromSize,           // size of block
+                  i_FromOffset_,       // offset in block to shift right
+                  nBytes_shoco + _1B_C, // bytes to add
+                  CN_ROWCODER);
+
+  // 2) put <C>
+  m_aIntoHead->vPut(i_FromOffset_,nBytes_shoco,_1B_C);
+  i_FromOffset_ += _1B_C;
+  
+  // 3) copy <shoco...>
+  byte* aIntoHead_shoco = (byte*)m_aIntoHead + i_FromOffset_;
+  byte* aFromTail_shoco = (byte*)aFromTail + C_OFFSET_COMPRESSED + _1B_C;
+
+  MemLib::vCopy(aIntoHead_shoco,aFromTail_shoco,nBytes_shoco,CN_ROWCODER);
+
+  // 4) change {M} to MC_SHOCO_FIT_1C
+  m_aFromHead->vMetaCode(pCol->iColumnNo(),MC_SHOCO_FIT_1C);
+  
+  vDumpHead("bTwiddleShocoFold:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
+
   return false;
 }
 
