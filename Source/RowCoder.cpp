@@ -2836,20 +2836,21 @@ void RowCoder::vDumpLine(Stz* szTitle,
     i8 i_Over_rel = aHeadLine->iOverflow2B();
     OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
 
-    vTrace("[HL] 0x%012llx <W>=%lld%s {M}=%lld FreeBytes %lld; "
-           "[OT] 0x%012x <U>=%lld\n"_Stz,
+    vTrace("HL: 0x%012llx <W>=%lld%s {M}=%lld [OT]=%04x FreeBytes %lld; "
+           "OT: 0x%012x <U>=%lld\n"_Stz,
            aHeadLine,
            aHeadLine->nWords(),
            aHeadLine->bIsLargeHead() ? " LARGEHEAD"_Stz : ""_Stz,
            pColVec->nItems(),
+           aHeadLine->iOverflow2B(),
            nFreeBytes,
 
            aOverLine,
            nOverUnits);
   }
   else {
-    vTrace("[HL] 0x%012llx <W>=%lld%s FreeBytes %lld; "
-           "[OT] none\n"_Stz,
+    vTrace("HL: 0x%012llx <W>=%lld%s FreeBytes %lld; "
+           "OT: none\n"_Stz,
            aHeadLine,
            aHeadLine->nWords(),
            aHeadLine->bIsLargeHead() ? " LARGEHEAD"_Stz : ""_Stz,
