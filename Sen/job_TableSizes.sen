@@ -64,17 +64,11 @@
   pJob_TableSizes job.pushPath
   task::dicStack.set
 
-  //"hidden" find execute to pIndex
-  //pIndex index.space 0 swap number.magnitude to iSize
-  //iSize grid::thisNodeName@ "row: ( %v %v )" str.format
-
-  //"STACK IS a:" . stk
-
-  //""
+  ""
   pathCurrentFolder dic.lastWord dup
   iterate
     1 iCount + to iCount
-    grid::thisNodeName@ "row: ('%v', '" str.format
+    grid::thisNodeName@ "row: ('%v', '" str.format str.cat
 
     object@ word.name to sTableNm
     sTableNm str.cat
@@ -87,16 +81,10 @@
     // check it is a table
     sTableNm checkIsTable not if drop pJob_TableSizes <ERROR_JOB> !!am exit then
 
-    // push indexes folder
-    pushIndexes assert
-
-    //get size of hidden index
-    "hidden" find execute index.space 0 swap number.magnitude to iSize
+    // get size ofthe table
+    sTableNm find execute table.space 0 swap number.magnitude to iSize
     iSize >str
     str.cat
-
-    // pop indexes folder
-    popIndexes
 
     // pop table folder
     popTable
@@ -109,8 +97,8 @@
 
   //"STACK IS b:" . stk
 
-  grid::thisNode@ pJob_TableSizes job.response!
-  iCount grid::thisNode@ pJob_TableSizes job.rowsProcessed!
+  pJob_TableSizes job.response!
+  iCount pJob_TableSizes job.rowsProcessed!
 
   pJob_TableSizes job.notice
 

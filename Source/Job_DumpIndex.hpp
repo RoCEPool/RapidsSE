@@ -36,7 +36,6 @@ namespace Jobs
   Job_DumpIndex* _pJob_DumpIndex(void* aAddr);
   
   Job* pJob_DumpIndex_pre(Interface::Session* pSession);
-  void vJob_DumpIndex_post(Interface::Session* pSession, Job* pJob);
   void vJob_DumpIndex_delete(Interface::Session* pSession, Job* pJob);
   void vJob_DumpIndex_show(Job* pJob);
   

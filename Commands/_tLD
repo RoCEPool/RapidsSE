@@ -16,7 +16,7 @@ create index t_idx0 on t (t_int);
 //ld t "/rapids/t/t0.csv" ;
 //fetch t displayOff;
 //antbl t;
-//dumpidx t hidden;
+//dumptbl t;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -25,7 +25,7 @@ create index t_idx0 on t (t_int);
 //ld t "/rapids/t/t1.csv" ;
 //fetch t displayOff;
 //antbl t;
-//dumpidx t hidden;
+//dumptbl t;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -33,7 +33,7 @@ print "t10.csv..." ;
 ld t "/rapids/t/t10.csv" ;
 fetch t "t_int 5 <";
 //antbl t;
-//dumpidx t hidden;
+//dumptbl t;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -41,7 +41,7 @@ fetch t "t_int 5 <";
 //ld t "/rapids/t/t100.csv" ;
 //fetch t displayOff;
 //antbl t;
-//dumpidx t hidden;
+//dumptbl t;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -49,7 +49,7 @@ fetch t "t_int 5 <";
 //ld t "/rapids/t/t1K.csv" ;
 //fetch t displayOff;
 //antbl t;
-//dumpidx t hidden;
+//dumptbl t;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -57,7 +57,7 @@ fetch t "t_int 5 <";
 //ld t "/rapids/t/t10K.csv" ;
 //fetch t displayOff;
 //antbl t;
-//dumpidx t hidden;
+//dumptbl t;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -65,7 +65,7 @@ fetch t "t_int 5 <";
 //ld t "/rapids/t/t100K.csv" ;
 //fetch t displayOff;
 //antbl t;
-//dumpidx t hidden;
+//dumptbl t;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -74,7 +74,7 @@ fetch t "t_int 5 <";
 //ld t "/rapids/t/t1M.csv" ;
 //fetch t displayOff;
 //antbl t;
-//dumpidx t hidden;
+//dumptbl t;
 //tr t;
 
 /*============================================================================*/

@@ -38,7 +38,6 @@ namespace Jobs
   Job_AnalyzeIndex* _pJob_AnalyzeIndex(void* aAddr);
   
   Job* pJob_AnalyzeIndex_pre(Interface::Session* pSession);
-  void vJob_AnalyzeIndex_post(Interface::Session* pSession, Job* pJob);
   Job* pJob_AnalyzeIndex_new(Job* pArg);
   void vJob_AnalyzeIndex_delete(Interface::Session* pSession, Job* pJob);
   void vJob_AnalyzeIndex_show(Job* pJob);

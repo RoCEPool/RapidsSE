@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* KeyWrk.cpp -- KeyData Working Item                                            */
+/* KeyWrk.cpp -- KeyData Working Item                                         */
 /*============================================================================*/
 
 #include "Data.h"
@@ -64,92 +64,58 @@ KeyWrk::~KeyWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddDatum(char* aDatum)
+void KeyWrk::vAddDatum(Stz* aSrc, Column* pCol, Formatters* pFormatters)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  char* aDst = aLatter();
-  char* aSrc = (char*)aDatum;
-  i8 nSize = StrLib::iSize(aSrc);
-  
-  MemLib::vCopy(aDst,aSrc,nSize,CN_KEYWRK);
-  
-  vTake(nSize);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add element to key                                                         */
-/*----------------------------------------------------------------------------*/
-void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters)
-{
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
-  
+  bool b;
   i8 nBytes;
   
-  StrVal* aStrVal = _aStrVal(xVariable.aNestedValue());
-  
   char* pDst = aLatter();
-  char* pSrc = (char*)aStrVal->aStz();
+  char* pSrc = (char*)aSrc;
+  Datum xDatum;
+  
+  if (pCol->eDatumType() != DM_VCH) {
+    //b = Record::bExtractDatum(&xDatum,&pSrc,pCol,pFormatters);
+    b = Extractor::bExtractDatum(&xDatum,&pSrc,pCol,pFormatters);
+    RASSERT(b);
+  }
   
   switch(pCol->eDatumType()) {
       
-    case DM_BCD: {
-      Bcd xBcd;
-      bool b = Bcd::bExtract(&pSrc,(Stz*)&xBcd,pCol,pFormatters);
-      nBytes = Bcd::nCopy((char*)pDst,(char*)&xBcd);
+    case DM_BCD:
+      nBytes = Bcd::nCopy((char*)pDst,(char*)&xDatum.m_iBcd);
       break;
-    }
+  
+    case DM_BOL:
+      nBytes = Bol::nCopy((char*)pDst,(char*)&xDatum.m_iBol);
+      break;
       
-    case DM_BOL: {
-      Bol xBol;
-      bool b = Bol::bExtract(&pSrc,(Stz*)&xBol,pCol,pFormatters);
-      nBytes = Bol::nCopy((char*)pDst,(char*)&xBol);
+    case DM_DTE:
+      nBytes = Dte::nCopy((char*)pDst,(char*)&xDatum.m_iDte);
       break;
-    }
       
-    case DM_DTE: {
-      Dte xDte;
-      bool b = Dte::bExtract(&pSrc,(Stz*)&xDte,pCol,pFormatters);
-      nBytes = Dte::nCopy((char*)pDst,(char*)&xDte);
+    case DM_INT:
+      nBytes = Int::nCopy(pDst,(void*)&xDatum.m_iDte);
       break;
-    }
       
-    case DM_INT: {
-      i8 iInt = StrLib::iToI8(pSrc);
-      nBytes = Int::nCopy(pDst,(void*)&iInt);
+    case DM_IVL:
+      nBytes = Ivl::nCopy(pDst,(void*)&xDatum.m_iIvl);
       break;
-    }
       
-    case DM_IVL: {
-      Ivl xInterval;
-      bool b = Ivl::bExtract(&pSrc,(Stz*)&xInterval,pCol,pFormatters);
-      nBytes = Ivl::nCopy(pDst,(void*)&xInterval);
+    case DM_FLT:
+      nBytes = Flt::nCopy(pDst,(void*)&xDatum.m_dFlt);
       break;
-    }
       
-    case DM_FLT: {
-      Flt xFloat;
-      bool b = Flt::bExtract(&pSrc,(Stz*)&xFloat,pCol,pFormatters);
-      nBytes = Flt::nCopy(pDst,(void*)&xFloat);
+    case DM_TME:
+      nBytes = Tme::nCopy(pDst,&xDatum.m_iTme);
       break;
-    }
       
-    case DM_TME: {
-      Tme xTime;
-      bool b = Tme::bExtract(&pSrc,(Stz*)&xTime,pCol,pFormatters);
-      nBytes = Tme::nCopy((char*)pDst,(char*)&xTime);
+    case DM_TSP:
+      nBytes = Tsp::nCopy(pDst,&xDatum.m_iTsp);
       break;
-    }
-      
-    case DM_TSP: {
-      Tsp xTimestamp;
-      bool b = Tsp::bExtract(&pSrc,(Stz*)&xTimestamp,pCol,pFormatters);
-      nBytes = Tsp::nCopy((char*)pDst,(char*)&xTimestamp);
-      break;
-    }
       
     case DM_VCH:
-      //nBytes = Vch::nCopy(pDst,pSrc);
       nBytes = StrLib::iWordFlip(pDst, pSrc);
       break;
       
@@ -164,7 +130,7 @@ void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters)
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol)
+void KeyWrk::vAddDatum(Datum& oDatum, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
@@ -174,11 +140,11 @@ void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol)
   char* aSrc;
   
   if (DM_VCH == pCol->eDatumType()) {
-    aSrc = (char*)(_aStrVal(xVariable.aNestedValue())->aStz());
+    aSrc = (char*)(oDatum.m_sVch.aStz());
     nBytes = StrLib::iWordFlip(aDst, aSrc);
   }
   else {
-    aSrc = aAdd<char*>(xVariable.aNestedValue(),sizeof(Value));
+    aSrc = (char*)(&oDatum.m_iInt);
     nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,aSrc);
   }
   
@@ -186,30 +152,31 @@ void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a key                                                                  */
+/* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddKey(KeyData* aKey, IdxColVec* pColVec)
+void KeyWrk::vAddElement(Row* pRow, Column* pCol)
 {
-  _precondition_(_MAGIC_,CN_KEYWRK);
+  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  char* aCursor = aKey->aByteSequence();
-  i8 nBytes;
-  for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
-    Column* pColumn = pColVec->pGet(iColumn);
-    
-    char* aElement = aKey->aEachDatum(pColumn, nBytes,&aCursor);
-    
-    char* pDst = aLatter();
-    char* pSrc = aElement;
-    
-    DtmLib::vCopy(pColumn->eDatumType(),pDst,pSrc);
-    
+  i8 nBytes = 0;
+  
+  char* aDst = aLatter();
+  char* aSrc = (char*)pRow->m_aiValue[pCol->iColumnNo()];
+  
+  if (pRow->m_aiValue[pCol->iColumnNo()] == C_DATUM_NULL) {
+    nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,&aSrc);
     vTake(nBytes);
+    return;
+  }
+    
+  if (DM_VCH == pCol->eDatumType()) {
+    nBytes = StrLib::iWordFlip(aDst, aSrc);
+  }
+  else {
+    nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,&aSrc);
   }
   
-  _checkInitialisedSize_(sizeof(KeyWrk));
-  
-  _postcondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  vTake(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -228,21 +195,6 @@ void KeyWrk::vAddMinusInfinity(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add min lower value to key for float                                       */
-/*----------------------------------------------------------------------------*/
-void KeyWrk::vAddMinusInfinity_Flt(void)
-{
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
-  
-  char* aDst = aLatter();
-  
-  d8 fFlt = C_FLOAT_MINUS_INFINITY;
-  Flt::nCopy(aDst,(void*)&fFlt);
-  
-  vTake(C_BYTES_PER_WORD);
-}
-
-/*----------------------------------------------------------------------------*/
 /* add max upper value to key                                                 */
 /*----------------------------------------------------------------------------*/
 void KeyWrk::vAddPlusInfinity(void)
@@ -252,22 +204,7 @@ void KeyWrk::vAddPlusInfinity(void)
   char* aDst = aLatter();
   
   i8 iInt = C_DATUM_PLUS_INFINITY;
-  Flt::nCopy(aDst,(void*)&iInt);
-  
-  vTake(C_BYTES_PER_WORD);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add max upper value to key for float                                       */
-/*----------------------------------------------------------------------------*/
-void KeyWrk::vAddPlusInfinity_Flt(void)
-{
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
-  
-  char* aDst = aLatter();
-  
-  d8 fFlt = C_FLOAT_PLUS_INFINITY;
-  Int::nCopy(aDst,(void*)&fFlt);
+  Int::nCopy(aDst,(void*)&iInt);
   
   vTake(C_BYTES_PER_WORD);
 }
@@ -289,114 +226,38 @@ void KeyWrk::vAddWord(w8 wWord)
 /*----------------------------------------------------------------------------*/
 /* extract an index key into KeyWrk from this row using given index columns   */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vExtractKey(Item* aRowEntry, IdxColVec* pIdxColVec)
+void KeyWrk::vExtractKey(RowBuffer* pRowBuffer, i8 i_Row, IdxColVec* pIdxColVec)
 {
-  GenVar xVariable;
-  
-  RowData* aRowEntryData = _aRowData(aRowEntry->aDataArea());
+  // create a row
+  HV_Row hRow(pRowBuffer->pColumnVec());
   
   i8 nCols = pIdxColVec->nItems();
+  hRow->m_bGetAll = false;
+  
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     
     // get the column from the index column vector
     Column* pColumn = pIdxColVec->pGet(i_Column);
     
-    // get the column number of the column
-    i8 iColumnNo = pColumn->iColumnNo();
+    // mark column to be retrieved
+    i8 iColumn = pColumn->iColumnNo();
+    hRow->m_abGetCol[iColumn] = true;
+    hRow->m_iLastCol = iColumn > hRow->m_iLastCol ? iColumn :  hRow->m_iLastCol;
+  }
+
+  // get the inflated compact row
+  pRowBuffer->vGetRow(hRow, i_Row);
+  
+  for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     
-    // get the column value from the row for the iColumnNo
-    
-    char* pDst = aRowEntryData->aColumnDatum(iColumnNo);
-    
-    switch(pColumn->eDatumType()) {
-        
-      case DM_BOL: {
-        Bol xBol = *((Bol*)pDst);
-        xVariable = xBol;
-        break;
-      }
-        
-      case DM_DTE: {
-        Dte xDte = *((Dte*)pDst);
-        xVariable = xDte;
-        break;
-      }
-        
-      case DM_BCD: {
-#ifdef USE_VLQ_DATUMS
-        i8 iInt = IntLib::iVlqToInt((byte*)pDst);
-        Bcd xBcd = *((Bcd*)&iInt);
-        xVariable = xBcd;
-        break;
-#else
-        Bcd xBcd = *((Bcd*)pDst);
-        xVariable = xBcd;
-        break;
-#endif
-      }
-        
-      case DM_FLT: {
-        Flt xFlt = *((Flt*)pDst);
-        xVariable = xFlt.dAsD8();
-        break;
-      }
-        
-      case DM_INT: {
-#ifdef USE_VLQ_DATUMS
-        i8 iInt = IntLib::iVlqToInt((byte*)pDst);
-        Int xInt = *((Int*)&iInt);
-        xVariable = xInt.iAsI8();
-        break;
-#else
-        Int xInt = *((Int*)pDst);
-        xVariable = xInt.iAsI8();
-        break;
-#endif
-        
-      }
-        
-      case DM_IVL: {
-        Ivl xIvl = *((Ivl*)pDst);
-        xVariable = xIvl;
-        break;
-      }
-        
-      case DM_TME: {
-        Tme xTme = *((Tme*)pDst);
-        //bool b = Tme::bExtract(pDst,&xTme,iLength,pColumn);
-        //ASSERT(b);
-        xVariable = xTme;
-        break;
-      }
-        
-      case DM_TSP: {
-        Tsp xTsp = *((Tsp*)pDst);
-        //bool b = Tsp::bExtract(pDst,&xTsp,iLength,pColumn);
-        //ASSERT(b);
-        xVariable = xTsp;
-        break;
-      }
-        
-      case DM_VBN: {
-        NEVER_REACH;
-        break;
-      }
-        
-      case DM_VCH: {
-        s17KB s;
-        s = (Stz*)pDst;
-        xVariable = s;
-        break;
-      }
-        
-      default:
-        NEVER_REACH;
-    }
+    Column* pColumn = pIdxColVec->pGet(i_Column);
     
     // add the column value to the key
-    vAddDatum(xVariable, pColumn);
+    vAddElement(hRow, pColumn);
+    
+    //vShow(pIdxColVec);
   }
-  
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -406,7 +267,7 @@ i8 KeyWrk::iHashKey(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  i8 iHash = HshLib::iHash(aKey(),nKeySize());
+  i8 iHash = HshLib::iHash((byte*)aKey(),nKeySize());
   
   return iHash;
 }
@@ -513,12 +374,12 @@ void KeyWrk::vSetKey(Item* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vShow(IdxColVec* pIdxColVec, bool bCompressed)
+void KeyWrk::vShow(IdxColVec* pIdxColVec)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
   KeyData* aKey = this->aKey();
-  aKey->vShow(pIdxColVec, bCompressed);
+  aKey->vShow(pIdxColVec);
   vTrace("\n"_Stz);
 }
 

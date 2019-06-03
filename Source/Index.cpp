@@ -65,7 +65,7 @@ Index::Index(void)
   
   gpAttachMap->m_oStatistics.Index.m_nCreates++;
   
-  Word* pWord = Word::pToWord(this);
+  ForthWord* pWord = ForthWord::pToWord(this);
   
   m_iIndexNo   = -1;
   m_sIndexName = pWord->sName();;
@@ -75,9 +75,8 @@ Index::Index(void)
   m_pTable        = nullptr;
   m_pIdxColVec    = new IdxColVec;
   
-  m_bSingleColumn = false;
-  m_fGreaterEqual = nullptr;
-  m_fGreaterThan  = nullptr;
+//  m_fGreaterEqual = nullptr;
+//  m_fGreaterThan  = nullptr;
   
   // m_xSubDic
   
@@ -231,64 +230,64 @@ void Index::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* is single value keyA greater than or equal to keyB?                        */
 /*----------------------------------------------------------------------------*/
-bool Index::bGreaterEqual(char* aDatumA, char* aDatumB)
-{
-  bool bIsGreaterEqual = (*m_fGreaterEqual)(aDatumA,aDatumB);
-  
-  return bIsGreaterEqual;
-}
+//bool Index::bGreaterEqual(char* aDatumA, char* aDatumB)
+//{
+//  bool bIsGreaterEqual = (*m_fGreaterEqual)(aDatumA,aDatumB);
+//
+//  return bIsGreaterEqual;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* is single value keyA greater than keyB?                                    */
 /*----------------------------------------------------------------------------*/
-bool Index::bGreaterThan(char* aDatumA, char* aDatumB)
-{
-  bool bIsGreaterThan = (*m_fGreaterThan)(aDatumA,aDatumB);
-  
-  return bIsGreaterThan;
-}
+//bool Index::bGreaterThan(char* aDatumA, char* aDatumB)
+//{
+//  bool bIsGreaterThan = (*m_fGreaterThan)(aDatumA,aDatumB);
+//
+//  return bIsGreaterThan;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* compute the index form                                                     */
 /*----------------------------------------------------------------------------*/
-eIF Index::eIndexForm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-
-  Column* pColumn0;
-  Column* pColumn1;
-  Column* pColumn2;
-  
-  if (1 == m_pIdxColVec->nItems()) {
-    pColumn0 = m_pIdxColVec->pGet(0);
-    if (DM_INT == pColumn0->eDatumType())
-      return IF_I8;
-    if (DM_VCH == pColumn0->eDatumType())
-      return IF_STZ;
-    return IF_COMPLEX;
-  }
-  
-  if (2 == m_pIdxColVec->nItems()) {
-    pColumn0 = m_pIdxColVec->pGet(0);
-    pColumn1 = m_pIdxColVec->pGet(1);
-    if (DM_INT == pColumn0->eDatumType() && DM_INT == pColumn1->eDatumType() )
-      return IF_I8_I8;
-    return IF_COMPLEX;
-  }
-  
-  if (3 == m_pIdxColVec->nItems()) {
-    pColumn0 = m_pIdxColVec->pGet(0);
-    pColumn1 = m_pIdxColVec->pGet(1);
-    pColumn2 = m_pIdxColVec->pGet(2);
-    if (DM_INT == pColumn0->eDatumType() &&
-        DM_INT == pColumn1->eDatumType() &&
-        DM_INT == pColumn2->eDatumType())
-      return IF_I8_I8_I8;
-    return IF_COMPLEX;
-  }
-
-  return IF_COMPLEX;
-}
+//eIF Index::eIndexForm(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+//
+//  Column* pColumn0;
+//  Column* pColumn1;
+//  Column* pColumn2;
+//  
+//  if (1 == m_pIdxColVec->nItems()) {
+//    pColumn0 = m_pIdxColVec->pGet(0);
+//    if (DM_INT == pColumn0->eDatumType())
+//      return IF_I8;
+//    if (DM_VCH == pColumn0->eDatumType())
+//      return IF_STZ;
+//    return IF_COMPLEX;
+//  }
+//  
+//  if (2 == m_pIdxColVec->nItems()) {
+//    pColumn0 = m_pIdxColVec->pGet(0);
+//    pColumn1 = m_pIdxColVec->pGet(1);
+//    if (DM_INT == pColumn0->eDatumType() && DM_INT == pColumn1->eDatumType() )
+//      return IF_I8_I8;
+//    return IF_COMPLEX;
+//  }
+//  
+//  if (3 == m_pIdxColVec->nItems()) {
+//    pColumn0 = m_pIdxColVec->pGet(0);
+//    pColumn1 = m_pIdxColVec->pGet(1);
+//    pColumn2 = m_pIdxColVec->pGet(2);
+//    if (DM_INT == pColumn0->eDatumType() &&
+//        DM_INT == pColumn1->eDatumType() &&
+//        DM_INT == pColumn2->eDatumType())
+//      return IF_I8_I8_I8;
+//    return IF_COMPLEX;
+//  }
+//
+//  return IF_COMPLEX;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get the index name                                                         */
@@ -328,72 +327,6 @@ i8 Index::iIndexNo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   return m_iIndexNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get if the index is a single column index                                  */
-/*----------------------------------------------------------------------------*/
-bool Index::bSingleColumn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-
-  return m_bSingleColumn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set if the index is a single column index                                  */
-/*----------------------------------------------------------------------------*/
-void Index::vSetSingleColumn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-
-  if (! m_pIdxColVec || 1 != m_pIdxColVec->nItems()) {
-    m_bSingleColumn = false;
-    return;
-  }
-  
-  Column* pColumn = m_pIdxColVec->pGet(0);
-  
-  eDM eDatum = pColumn->eDatumType();
-  
-  switch (eDatum) {
-    case DM_BCD: m_fGreaterEqual = Bcd::bGreaterEqual;
-                 m_fGreaterThan  = Bcd::bGreaterThan;
-                 break;
-    case DM_BOL: m_fGreaterEqual = Bol::bGreaterEqual;
-                 m_fGreaterThan  = Bol::bGreaterThan;
-                 break;
-    case DM_CHR: m_fGreaterEqual = Vch::bGreaterEqual;
-                 m_fGreaterThan  = Vch::bGreaterThan;
-                 break;
-    case DM_DTE: m_fGreaterEqual = Dte::bGreaterEqual;
-                 m_fGreaterThan  = Dte::bGreaterThan;
-                 break;
-    case DM_FLT: m_fGreaterEqual = Flt::bGreaterEqual;
-                 m_fGreaterThan  = Flt::bGreaterThan;
-                 break;
-    case DM_INT: m_fGreaterEqual = Int::bGreaterEqual;
-                 m_fGreaterThan  = Int::bGreaterThan;
-                 break;
-    case DM_IVL: m_fGreaterEqual = Ivl::bGreaterEqual;
-                 m_fGreaterThan  = Ivl::bGreaterThan;
-                 break;
-    case DM_TME: m_fGreaterEqual = Tme::bGreaterEqual;
-                 m_fGreaterThan  = Tme::bGreaterThan;
-                 break;
-    case DM_TSP: m_fGreaterEqual = Tsp::bGreaterEqual;
-                 m_fGreaterThan  = Tsp::bGreaterThan;
-                 break;
-    case DM_VBN: NEVER_REACH; break;
-    case DM_VCH: m_fGreaterEqual = Vch::bGreaterEqual;
-                 m_fGreaterThan  = Vch::bGreaterThan;
-                 break;
-      
-    default:
-      THROW("Index::vSetSingleColumn: Invalid eDatum %lld"_Stz,eDatum);
-  }
-  
-  m_bSingleColumn = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -454,26 +387,6 @@ void Index::vTidyUp(void)
   m_pIdxColVec->vClear();
   
   delete m_pIdxColVec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a hidden index                                                     */
-/*----------------------------------------------------------------------------*/
-bool Index::bIsHidden(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-  
-  return m_bIsHidden;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set index as a hidden index                                                */
-/*----------------------------------------------------------------------------*/
-void Index::vIsHidden(bool bHidden)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-  
-  m_bIsHidden = bHidden;
 }
 
 /*----------------------------------------------------------------------------*/

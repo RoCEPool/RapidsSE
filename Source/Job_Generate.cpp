@@ -13,6 +13,7 @@ JobClass xJobClass_GenData =
 {
   CN_JOB_GENERATE,       // class enum
   JK_LOCAL,              // job kind
+  RK_NONE,               // response kind
   "generate data"_Stz,   // comment about the job
   "generate"_Stz,        // the prompt command
   nullptr,               // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_GenData =
 
   eJob_checkCluster,     // prompt check function
   pJob_Generate_pre,     // prompt pre-process function
-  vJob_Generate_post,    // prompt post-process function
+  vJob_post,             // prompt post-process function
   pJob_Generate_new,     // job new function
   vJob_Generate_delete,  // job delete function
   nullptr,               // job pre-send function
@@ -312,13 +313,6 @@ Job* Jobs::pJob_Generate_pre(Interface::Session* pSession)
   }
 
   return pJob_Generate;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_Generate_post(Interface::Session* pSession, Job* pJob)
-{
 }
 
 /*----------------------------------------------------------------------------*/
@@ -812,11 +806,6 @@ void Job_Generate::vLoadColumns(void)
   
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     Column* pColumn = pColVec->pGet(i_Column);
- 
-    if (pColumn->sColumnName().bSame("hidden_column"_Stz)) {
-      vTrace("skipping: %s\n"_Stz,pColumn->sColumnName().aChar());
-      continue;
-    }
     
     // use first character of column name to determine column kind
     char cKind  = *pColumn->sColumnName().aChar();

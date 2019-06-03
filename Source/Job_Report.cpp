@@ -13,6 +13,7 @@ JobClass xJobClass_Report =
 {
   CN_JOB_REPORT,      // class enum
   JK_LOCAL,           // job kind
+  RK_NONE,            // response kind
   "report"_Stz,       // comment about the job
   "report"_Stz,       // the prompt command
   nullptr,            // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_Report =
 
   eJob_checkCluster,  // prompt check function
   pJob_Report_pre,    // prompt pre-process function
-  vJob_Report_post,   // prompt post-process function
+  vJob_post,          // prompt post-process function
   pJob_Report_new,    // job new function
   vJob_Report_delete, // job delete function
   nullptr,            // job pre-send function
@@ -216,13 +217,6 @@ Job* Jobs::pJob_Report_pre(Interface::Session* pSession)
   }
   
   return pJob_Report;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_Report_post(Interface::Session* pSession, Job* pJob)
-{
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1,0 +1,97 @@
+/*----------------------------------------------------------------------------*/
+/* decimal.test -- DECIMAL ENCODING tests                                     */
+/*----------------------------------------------------------------------------*/
+
+// (1) create a table
+create table decTbl (
+dec_col0   INTEGER     NOT NULL,
+dec_col1   DECIMAL     NOT NULL,
+dec_col2   DECIMAL     NOT NULL,
+dec_col3   DECIMAL     NOT NULL,
+dec_col4   DECIMAL     NOT NULL,
+dec_col5   DECIMAL     NOT NULL,
+dec_col6   DECIMAL     NOT NULL,
+dec_col7   DECIMAL     NOT NULL,
+dec_col8   DECIMAL     NOT NULL,
+dec_col9   DECIMAL     NOT NULL,
+dec_col10  DECIMAL     NOT NULL,
+dec_col11  DECIMAL     NOT NULL,
+dec_col12  DECIMAL     NOT NULL,
+dec_col13  DECIMAL     NOT NULL,
+dec_col14  DECIMAL     NOT NULL,
+dec_col15  DECIMAL
+);
+success
+
+ld decTbl "/DATA/Encoding/decimal.csv" ;
+success
+
+// check no of rows
+fetch decTbl;
+rows: 1000000
+
+// dump table
+//dumpTbl decTbl;
+
+fetch retrieve decTbl dec_col0;
+affected: 1000000
+
+fetch retrieve decTbl dec_col1;
+affected: 1000000
+
+fetch retrieve decTbl dec_col2;
+affected: 1000000
+
+fetch retrieve decTbl dec_col3;
+affected: 1000000
+
+fetch retrieve decTbl dec_col4;
+affected: 1000000
+
+fetch retrieve decTbl dec_col5;
+affected: 1000000
+
+fetch retrieve decTbl dec_col6;
+affected: 1000000
+
+fetch retrieve decTbl dec_col7;
+affected: 1000000
+
+fetch retrieve decTbl dec_col8;
+affected: 1000000
+
+fetch retrieve decTbl dec_col9;
+affected: 1000000
+
+fetch retrieve decTbl dec_col10;
+affected: 1000000
+
+fetch retrieve decTbl dec_col11;
+affected: 1000000
+
+fetch retrieve decTbl dec_col12;
+affected: 1000000
+
+fetch retrieve decTbl dec_col13;
+affected: 1000000
+
+fetch retrieve decTbl dec_col14;
+affected: 1000000
+
+fetch retrieve decTbl dec_col15;
+affected: 1000000
+
+// drop the table
+drop table decTbl;
+success
+
+CLEANUP {
+  
+  // drop the table
+  drop table decTbl;
+  mute
+  
+  bye;
+  mute
+}
+

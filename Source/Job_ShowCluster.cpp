@@ -13,6 +13,7 @@ JobClass xJobClass_ShowCluster =
 {
   CN_JOB_SHOWCLUSTER,    // class enum
   JK_LOCAL,              // job kind
+  RK_NONE,               // response kind
   "show cluster"_Stz,    // comment about the job
   "showCluster"_Stz,     // the prompt command
   nullptr,               // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_ShowCluster =
 
   nullptr,               // prompt check function
   pJob_ShowCluster_pre,  // prompt pre-process function
-  vJob_ShowCluster_post, // prompt post-process function
+  vJob_post,             // prompt post-process function
   nullptr,               // job new function
   vJob_ShowCluster_delete,  // job delete function
   nullptr,               // job pre-send function
@@ -201,15 +202,6 @@ Job* Jobs::pJob_ShowCluster_pre(Interface::Session* pSession)
   Job_ShowCluster* pJob_ShowCluster = new Job_ShowCluster(pSession);
   
   return pJob_ShowCluster;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_ShowCluster_post(Interface::Session* pSession, Job* pJob)
-{
-  //Job_ShowCluster* pJob_ShowCluster = _pJob_ShowCluster(pJob);
-  
 }
 
 /*----------------------------------------------------------------------------*/

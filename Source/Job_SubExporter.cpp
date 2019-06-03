@@ -11,8 +11,9 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubExporter =
 {
-  CN_JOB_SUBEXPORTER,          // class enum
+  CN_JOB_SUBEXPORTER,        // class enum
   JK_CHILD,                  // job kind
+  RK_NODE_ERRORS,            // response kind
   "sub-export rows"_Stz,     // comment about the job
   "subExporter"_Stz,         // the prompt command
   nullptr,                   // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_SubExporter =
 
   nullptr,                   // prompt check function
   pJob_SubExporter_pre,      // prompt pre-process function
-  vJob_SubExporter_post,     // prompt post-process function
+  vJob_post,                 // prompt post-process function
   nullptr,                   // job new function
   vJob_SubExporter_delete,   // job delete function
   nullptr,                   // job pre-send function
@@ -112,11 +113,10 @@ Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
     
   m_pJobExport = nullptr;
-  m_pIndexTree = nullptr;
-  m_nEntryBuffers = C_UNKNOWN;
-  m_iEntryBuffer  = 0;
+  m_nRowBuffers = C_UNKNOWN;
+  m_iRowBuffer  = 0;
   
-  m_pEntryBuffer = nullptr;
+  m_pRowBuffer = nullptr;
   
   m_nExportBuffers = 0;
   m_pExportBuffer = nullptr;
@@ -162,22 +162,19 @@ bool Job_SubExporter::bBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
   
   Table* pTable = m_pJobExport->m_pTable;
-  
-  i8 i_HiddenIndex  = pTable->pHiddenIndex()->iIndexNo();
   TablePtn* pTblPtn = pTable->pPartition(m_i_Slot);
-  m_pIndexTree      = pTblPtn->pIndexTree(i_HiddenIndex);
   
-  m_pEntryBuffer  = m_pIndexTree->pRoot();
-  m_nEntryBuffers = m_pEntryBuffer->iLengthList();
+  m_pRowBuffer = pTblPtn->pRootRowBuffer();
+  m_nRowBuffers = pTblPtn->nRowBuffers();
   
   if (m_bMarkActivity)
     ActivityMap::vMarkJob(this,
-                          "IndexTree[%lld] for table %s has %lld buffers"_Stz,
+                          "TableTpn[%lld] for table %s has %lld buffers"_Stz,
                           m_i_Slot,
                           pTable->aTableName(),
-                          m_nEntryBuffers);
+                          m_nRowBuffers);
   
-  ActionSequence::vAdd(this,AN_JOB_BEGIN,m_nEntryBuffers);
+  ActionSequence::vAdd(this,AN_JOB_BEGIN,m_nRowBuffers);
   
   return true;
 }
@@ -189,24 +186,24 @@ bool Job_SubExporter::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
   
-  if (! m_pEntryBuffer)
+  if (! m_pRowBuffer)
     return false;
   
   if (m_bMarkActivity)
     ActivityMap::vMarkJob(this,
-                          "Exporting Table %s EntryBuffer[%lld/%lld] %p"_Stz,
+                          "Exporting Table %s RowBuffer[%lld/%lld] %p"_Stz,
                           m_pJobExport->m_pTable->aTableName(),
-                          m_iEntryBuffer,
-                          m_nEntryBuffers,
-                          m_pEntryBuffer);
+                          m_iRowBuffer,
+                          m_nRowBuffers,
+                          m_pRowBuffer);
   
-  ActionSequence::vAdd(this,AN_JOB_CHUNK,m_iEntryBuffer);
+  ActionSequence::vAdd(this,AN_JOB_CHUNK,m_iRowBuffer);
 
-  if (m_pEntryBuffer->nItems())
+  if (m_pRowBuffer->nRowCount())
     vSprintRows();
   
-  m_iEntryBuffer++;
-  m_pEntryBuffer = m_pEntryBuffer->pNextBuffer();
+  m_iRowBuffer++;
+  m_pRowBuffer = m_pRowBuffer->pNextBuffer();
 
   return true;
 }
@@ -221,7 +218,7 @@ void Job_SubExporter::vEnd(void)
   if (m_pExportBuffer)
     vSpawnKidExport(true);
   
-  ActionSequence::vAdd(this,AN_JOB_END,m_iEntryBuffer);
+  ActionSequence::vAdd(this,AN_JOB_END,m_iRowBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -272,24 +269,29 @@ void Job_SubExporter::vSpawnKidExport(bool bLast)
 void Job_SubExporter::vSprintRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
-  
-  s48K sRecord;
-  
+    
   char* aRecord = nullptr;
   i8 nBytes = 0;
-  
-  ColumnVec* pColVec = m_pJobExport->m_pTable->pColumnVec();
-  
-  for (Item* aItem = m_pEntryBuffer->aLeadEntry();
-       aItem;
-       aItem = m_pEntryBuffer->aNextEntry(aItem,0)) {
 
-    RowData* aRow = _aRowData(aItem->aDataArea());
+  i8 nRowCount = m_pRowBuffer->nRowCount();
+  ColumnVec* pColVec = m_pRowBuffer->pTable()->pColumnVec();
+  HV_Rec hvRec(pColVec);
+  
+  // create a row for retrieval the data
+  HV_Row hRow(pColVec);
+  
+  for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
-    aRow->vAsBinaryStringVLQ(sRecord,pColVec);
+    // get the inflated compact row
+    m_pRowBuffer->vGetRow(hRow, i_Row);
+    
+    // append the row to the record
+    hvRec->vAppend(hRow);
+    
+    StrLib::vConcat(hvRec->szRecStr()->aChar(),'\n');            //! sub-optimal
     //vTrace("]]%s[[\n"_Stz,sRecord.aStz());
     
-    nBytes = sRecord.nSize();
+    nBytes = hvRec->szRecStr()->nSize();
     
     if (! m_pExportBuffer) {
       m_pExportBuffer = new ExportBuffer;
@@ -303,11 +305,13 @@ void Job_SubExporter::vSprintRows(void)
     }
     
     aRecord = m_pExportBuffer->aAllotRecord(nBytes - 1);
-    StrLib::vCopyLen(aRecord,sRecord.aChar(),nBytes - 1);
+    StrLib::vCopyLen(aRecord,hvRec->szRecStr()->aChar(),nBytes - 1);
   }
-
+  
   if (aRecord)
     aRecord[nBytes-1] = '\0';
+  
+  //delete pRecord;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -336,22 +340,6 @@ Job* Jobs::pJob_SubExporter_pre(Interface::Session* pSession)
   Job_SubExporter* pJob_SubExporter = new Job_SubExporter(pSession);
   
   return pJob_SubExporter;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubExporter_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pJob);
-  
-  if ( pJob_SubExporter->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_SubExporter->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
 }
 
 /*----------------------------------------------------------------------------*/

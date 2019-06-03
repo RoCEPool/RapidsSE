@@ -27,13 +27,19 @@ using namespace Base;
 #include "ByteLiterals.hpp"
 #include "CacheLine.hpp"
 #include "ClassNumbers.hpp"
+#include "DoubleWord.hpp"
 #include "IntLib.hpp"
 #include "i3.hpp"
 #include "Magnitudes.hpp"
 #include "MemLib.hpp"
+#include "QuadWord.hpp"
+#include "SpaceUnit.hpp"
 #include "Stz.hpp"
 #include "StrLib.hpp"
-#include "WordView.hpp"
+#include "Word.hpp"
+
+#include "LimitsFormats.h"
+#include "Structs.h"
 
 const i8 C_UNKNOWN = -1;
 

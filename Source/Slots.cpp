@@ -196,31 +196,27 @@ PtnColVec* Slots::pPtnColVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* publish partition buffers                                                  */
+/* publish partition buffers for table                                        */
 /*----------------------------------------------------------------------------*/
-void Slots::vPublishIndex(i8 iPartitionNo, i8 iIndexNo)
+void Slots::vPublishTable(i8 iPartitionNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   TablePtn* pTablePtn = m_pTablePtnVec->pGet(iPartitionNo);
   
-  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-  
-  pIndexTree->vPublish();
+  pTablePtn->vPublish();
 }
 
 /*----------------------------------------------------------------------------*/
-/* attempt to purge oldest buffer                                             */
+/* attempt to purge oldest buffer of table                                    */
 /*----------------------------------------------------------------------------*/
-bool Slots::bPurgeIndex(i8 iPartitionNo, i8 iIndexNo, i8 iOlderThanSeconds)
+bool Slots::bPurgeTable(i8 iPartitionNo, i8 iOlderThanSeconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   TablePtn* pTablePtn = m_pTablePtnVec->pGet(iPartitionNo);
   
-  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-  
-  bool bPurged = pIndexTree->bPurge(iOlderThanSeconds);
+  bool bPurged = pTablePtn->bPurge(iOlderThanSeconds);
   
   return bPurged;
 }
@@ -256,6 +252,11 @@ void Slots::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   m_pTable = pTable;
+  
+  // set the table pointer in the tablePtn's
+  for (i8 i_Slot = 0; i_Slot < gpAttachMap->m_pGrid->nSlotsPerNode(); i_Slot++) {
+    m_pTablePtnVec->pGet(i_Slot)->vTable(m_pTable);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -300,25 +301,23 @@ void Slots::vTidyUpIndex(i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tuncate all partitions                                                     */
-/*----------------------------------------------------------------------------*/
-void Slots::vTruncate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-
-  i8 i_Partn;
-  for (i_Partn = 0; i_Partn < gpAttachMap->m_pGrid->nSlotsPerNode(); i_Partn++)
-    m_pTablePtnVec->pGet(i_Partn)->pHiddenIndexTree()->vTruncate();
-}
-
-/*----------------------------------------------------------------------------*/
-/* tuncate partition                                                          */
+/* tuncate partition for the index                                            */
 /*----------------------------------------------------------------------------*/
 void Slots::vTruncateIndex(i8 iPartitionNO, i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   m_pTablePtnVec->pGet(iPartitionNO)->pIndexTree(iIndexNo)->vTruncate();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tuncate table data                                                         */
+/*----------------------------------------------------------------------------*/
+void Slots::vTruncateTable(i8 iPartitionNO)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+  
+  m_pTablePtnVec->pGet(iPartitionNO)->vTruncate();
 }
 
 /*----------------------------------------------------------------------------*/

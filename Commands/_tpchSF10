@@ -1,150 +1,206 @@
 /*============================================================================*/
-/* _tpch/SF10-- tpc h creation and load etc                                   */
+/* _TPCH/SF10-- tpc h creation and load etc                                   */
 /*============================================================================*/
+startCluster;
 
-ping ;
-
-cf tenants ;
-mkten boray ;
-
-cf boray ;
-cf catalogs ;
-mkcat borayCatalog ;
-
-cf borayCatalog ;
-cf schemas ;
-mksch boraySchema ;
-
-cf boraySchema ;
-cf tables ;
-
-create table customer (
-	C_CUSTKEY       INTEGER NOT NULL,
-	C_NAME          VARCHAR(25) NOT NULL,
-	C_ADDRESS       VARCHAR(40) NOT NULL,
-	C_NATIONKEY     INTEGER NOT NULL,
-	C_PHONE         CHAR(15) NOT NULL,
-	C_ACCTBAL       DECIMAL(15,2) NOT NULL,
-	C_MKTSEGMENT    CHAR(10) NOT NULL,
-	C_COMMENT       VARCHAR(117) NOT NULL
+print "-----------------------------------------------------------------------";
+time create table customer (
+C_CUSTKEY       INTEGER NOT NULL,
+C_NAME          VARCHAR(25) NOT NULL,
+C_ADDRESS       VARCHAR(40) NOT NULL,
+C_NATIONKEY     INTEGER NOT NULL,
+C_PHONE         CHAR(15) NOT NULL,
+C_ACCTBAL       DECIMAL(15,2) NOT NULL,
+C_MKTSEGMENT    CHAR(10) NOT NULL,
+C_COMMENT       VARCHAR(117) NOT NULL
 );
 
-create table lineitem (
-	 L_ORDERKEY      INTEGER NOT NULL,
-	 L_PARTKEY       INTEGER NOT NULL,
-	 L_SUPPKEY       INTEGER NOT NULL,
-	 L_LINENUMBER    INTEGER NOT NULL,
-	 L_QUANTITY      DECIMAL(15,2) NOT NULL,
-	 L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
-	 L_DISCOUNT      DECIMAL(15,2) NOT NULL,
-	 L_TAX           DECIMAL(15,2) NOT NULL,
-	 L_RETURNFLAG    CHAR(1) NOT NULL,
-	 L_LINESTATUS    CHAR(1) NOT NULL,
-	 L_SHIPDATE      DATE NOT NULL,
-	 L_COMMITDATE    DATE NOT NULL,
-	 L_RECEIPTDATE   DATE NOT NULL,
-	 L_SHIPINSTRUCT  CHAR(25) NOT NULL,
-	 L_SHIPMODE      CHAR(10) NOT NULL,
-	 L_COMMENT       VARCHAR(44) NOT NULL
+time create table lineitem (
+L_ORDERKEY      INTEGER NOT NULL,
+L_PARTKEY       INTEGER NOT NULL,
+L_SUPPKEY       INTEGER NOT NULL,
+L_LINENUMBER    INTEGER NOT NULL,
+L_QUANTITY      DECIMAL(15,2) NOT NULL,
+L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
+L_DISCOUNT      DECIMAL(15,2) NOT NULL,
+L_TAX           DECIMAL(15,2) NOT NULL,
+L_RETURNFLAG    CHAR(1) NOT NULL,
+L_LINESTATUS    CHAR(1) NOT NULL,
+L_SHIPDATE      DATE NOT NULL,
+L_COMMITDATE    DATE NOT NULL,
+L_RECEIPTDATE   DATE NOT NULL,
+L_SHIPINSTRUCT  CHAR(25) NOT NULL,
+L_SHIPMODE      CHAR(10) NOT NULL,
+L_COMMENT       VARCHAR(44) NOT NULL
 );
 
-create table nation2 (
-	 N_NATIONKEY       INTEGER NOT NULL,
-	 N_NAME            CHAR(25) NOT NULL,
-	 N_REGIONKEY       INTEGER NOT NULL,
-	 N_COMMENT         VARCHAR(152)
+time create table nation (
+N_NATIONKEY     INTEGER NOT NULL,
+N_NAME          CHAR(25) NOT NULL,
+N_REGIONKEY     INTEGER NOT NULL,
+N_COMMENT       VARCHAR(152)
 );
 
-create table orders (
-	 O_ORDERKEY        INTEGER NOT NULL,
-	 O_CUSTKEY         INTEGER NOT NULL,
-	 O_ORDERSTATUS     CHAR(1) NOT NULL,
-	 O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
-	 O_ORDERDATE       DATE NOT NULL,
-	 O_ORDERPRIORITY   CHAR(15) NOT NULL,  
-	 O_CLERK           CHAR(15) NOT NULL,
-	 O_SHIPPRIORITY    INTEGER NOT NULL,
-	 O_COMMENT         VARCHAR(79) NOT NULL
+time create table orders (
+O_ORDERKEY      INTEGER NOT NULL,
+O_CUSTKEY       INTEGER NOT NULL,
+O_ORDERSTATUS   CHAR(1) NOT NULL,
+O_TOTALPRICE    DECIMAL(15,2) NOT NULL,
+O_ORDERDATE     DATE NOT NULL,
+O_ORDERPRIORITY CHAR(15) NOT NULL,
+O_CLERK         CHAR(15) NOT NULL,
+O_SHIPPRIORITY  INTEGER NOT NULL,
+O_COMMENT       VARCHAR(79) NOT NULL
 );
 
-create table part (
-	 P_PARTKEY           INTEGER NOT NULL,
-	 P_NAME              VARCHAR(55) NOT NULL,
-	 P_MFGR              CHAR(25) NOT NULL,
-	 P_BRAND             CHAR(10) NOT NULL,
-	 P_TYPE              VARCHAR(25) NOT NULL,
-	 P_SIZE              INTEGER NOT NULL,
-	 P_CONTAINER         CHAR(10) NOT NULL,
-	 P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
-	 P_COMMENT           VARCHAR(23) NOT NULL
+time create table part (
+P_PARTKEY       INTEGER NOT NULL,
+P_NAME          VARCHAR(55) NOT NULL,
+P_MFGR          CHAR(25) NOT NULL,
+P_BRAND         CHAR(10) NOT NULL,
+P_TYPE          VARCHAR(25) NOT NULL,
+P_SIZE          INTEGER NOT NULL,
+P_CONTAINER     CHAR(10) NOT NULL,
+P_RETAILPRICE   DECIMAL(15,2) NOT NULL,
+P_COMMENT       VARCHAR(23) NOT NULL
 );
 
-create table partsupp (
-	PS_PARTKEY      INTEGER NOT NULL,
-	PS_SUPPKEY      INTEGER NOT NULL,
-	PS_AVAILQTY     INTEGER NOT NULL,
-	PS_SUPPLYCOST   DECIMAL(15,2) NOT NULL,
-	PS_COMMENT      VARCHAR(199) NOT NULL
+time create table partsupp (
+PS_PARTKEY      INTEGER NOT NULL,
+PS_SUPPKEY      INTEGER NOT NULL,
+PS_AVAILQTY     INTEGER NOT NULL,
+PS_SUPPLYCOST   DECIMAL(15,2) NOT NULL,
+PS_COMMENT      VARCHAR(199) NOT NULL
 );
 
-create table region (
-	 R_REGIONKEY       INTEGER NOT NULL,
-	 R_NAME            CHAR(25) NOT NULL,
-	 R_COMMENT         VARCHAR(152)
+time create table region (
+R_REGIONKEY     INTEGER NOT NULL,
+R_NAME          CHAR(25) NOT NULL,
+R_COMMENT       VARCHAR(152)
 );
 
-create table supplier (
-	 S_SUPPKEY       INTEGER NOT NULL,
-	 S_NAME          CHAR(25) NOT NULL,
-	 S_ADDRESS       VARCHAR(40) NOT NULL,
-	 S_NATIONKEY     INTEGER NOT NULL,
-	 S_PHONE         CHAR(15) NOT NULL,
-	 S_ACCTBAL       DECIMAL(15,2) NOT NULL,
-	 S_COMMENT       VARCHAR(101) NOT NULL
+time create table supplier (
+S_SUPPKEY       INTEGER NOT NULL,
+S_NAME          CHAR(25) NOT NULL,
+S_ADDRESS       VARCHAR(40) NOT NULL,
+S_NATIONKEY     INTEGER NOT NULL,
+S_PHONE         CHAR(15) NOT NULL,
+S_ACCTBAL       DECIMAL(15,2) NOT NULL,
+S_COMMENT       VARCHAR(101) NOT NULL
 );
+print "-----------------------------------------------------------------------";
 
-//print "loading customer.csv..." ;
-//ld customer "/tpch/SF10/customer.csv" ;
-
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+print "-----------------------------------------------------------------------";
+print "loading customer.csv..." ;
+time ld customer "/TPCH/SF10/customer.csv" ;
 print "loading lineitem.csv..." ;
-ld lineitem "/tpch/SF10/lineitem.csv" ;
+time ld lineitem "/TPCH/SF10/lineitem.csv" ;
+print "loading nation.csv..." ;
+time ld nation "/TPCH/SF10/nation.csv" ;
+print "loading orders.csv..." ;
+time ld orders "/TPCH/SF10/orders.csv" ;
+print "loading part.csv..." ;
+time ld part "/TPCH/SF10/part.csv" ;
+print "loading partsupp.csv..." ;
+time ld partsupp "/TPCH/SF10/partsupp.csv" ;
+print "loading region.csv..." ;
+time ld region "/TPCH/SF10/region.csv" ;
+print "loading supplier.csv..." ;
+time ld supplier "/TPCH/SF10/supplier.csv" ;
+print "-----------------------------------------------------------------------";
 
-//print "loading nation.csv..." ;
-//ld nation   "/tpch/SF10/nation.csv" ;
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+print "-----------------------------------------------------------------------";
+TableSizes;
+print "-----------------------------------------------------------------------";
 
-//print "loading orders.csv..." ;
-//ld orders   "/tpch/SF10/orders.csv" ;
+print "-----------------------------------------------------------------------";
+print "size customer..." ;
+szTbl customer;
 
-//print "loading part.csv..." ;
-//ld part     "/tpch/SF10/part.csv" ;
+print "size lineitem..." ;
+szTbl lineitem;
 
-//print "loading partsupp.csv..." ;
-//ld partsupp "/tpch/SF10/partsupp.csv" ;
+print "size nation..." ;
+szTbl nation;
 
-//print "loading region.csv..." ;
-//ld region   "/tpch/SF10/region.csv" ;
+print "size orders..." ;
+szTbl orders;
 
-//print "loading supplier.csv..." ;
-//ld supplier "/tpch/SF10/supplier.csv" ;
+print "size part..." ;
+szTbl part;
 
-//ex customer "/tmp/customer.txt" ;
-//ex lineitem "/tmp/lineitem.txt" ;
-//ex nation   "/tmp/nation.txt" ;
-//ex orders   "/tmp/orders.txt" ;
-//ex part     "/tmp/part.txt" ;
-//ex partsupp "/tmp/partsupp.txt" ;
-//ex region   "/tmp/region.txt" ;
-//ex supplier "/tmp/supplier.txt" ;
+print "size partsupp..." ;
+szTbl partsupp;
 
-//cp nation nation_copy ;
-//ex nation_copy "/tmp/nation_copy.txt" ;
+print "size region..." ;
+szTbl region;
 
-pwf ;
-lf ;
+print "size supplier..." ;
+szTbl supplier;
+print "-----------------------------------------------------------------------";
 
-//tr t ;
-//sz t ;
-//rmtbl t ;
+print "-----------------------------------------------------------------------";
+print "fetching customer.csv..." ;
+time fetch customer displayOff ;
+print "fetching lineitem.csv..." ;
+time fetch lineitem displayOff ;
+print "fetching nation.csv..." ;
+time fetch nation displayOff ;
+print "fetching orders.csv..." ;
+time fetch orders displayOff ;
+print "fetching part.csv..." ;
+time fetch part displayOff ;
+print "fetching partsupp.csv..." ;
+time fetch partsupp displayOff ;
+print "fetching region.csv..." ;
+time fetch region displayOff ;
+print "fetching supplier.csv..." ;
+time fetch supplier displayOff ;
+print "-----------------------------------------------------------------------";
+
+
+print "-----------------------------------------------------------------------";
+print "fetching customer.csv (noPrint)..." ;
+time fetch customer noPrint;
+print "fetching lineitem.csv (noPrint)..." ;
+time fetch lineitem noPrint;
+print "fetching nation.csv (noPrint)..." ;
+time fetch nation noPrint;
+print "fetching orders.csv (noPrint)..." ;
+time fetch orders noPrint;
+print "fetching part.csv (noPrint)..." ;
+time fetch part noPrint;
+print "fetching partsupp.csv (noPrint)..." ;
+time fetch partsupp noPrint;
+print "fetching region.csv (noPrint)..." ;
+time fetch region noPrint;
+print "fetching supplier.csv (noPrint)..." ;
+time fetch supplier noPrint;
+print "-----------------------------------------------------------------------";
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print "-----------------------------------------------------------------------";
+print "dropping customer.csv..." ;
+time drop table customer ;
+print "dropping lineitem.csv..." ;
+time drop table lineitem ;
+print "dropping nation.csv..." ;
+time drop table nation ;
+print "dropping orders.csv..." ;
+time drop table orders ;
+print "dropping part.csv..." ;
+time drop table part ;
+print "dropping partsupp.csv..." ;
+time drop table partsupp ;
+print "dropping region.csv..." ;
+time drop table region ;
+print "dropping supplier.csv..." ;
+time drop table supplier ;
+print "-----------------------------------------------------------------------";
 
 /*============================================================================*/
 /* end                                                                        */

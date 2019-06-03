@@ -19,8 +19,11 @@ using namespace Structures;
 
 #include "ArrayNL_t.hpp"
 
+#include "HashInsert.hpp"
+#include "HashEntry.hpp"
 #include "HashBuffer.hpp"
 #include "HashMap.hpp"
+#include "HashCursor.hpp"
 
 #include "Link_t.hpp"
 
@@ -38,6 +41,12 @@ using namespace Structures;
 
 #include "VectorNL_t.hpp"
 
+// - - -
+
+#include "NamedItem_t.hpp"
+#include "Folder_t.hpp"
+
+#include "TrayNL_t.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

@@ -54,27 +54,34 @@
 
   //----------------------------------------------------------------------------
   // push indexes folder
-  pushIndexes assert
+  // pushIndexes assert
 
   //----------------------------------------------------------------------------
   // iterate thru all indexes and tidyUp
-  pathCurrentFolder dic.lastWord dup
-  iterate                        // setup iteration of words
+  //pathCurrentFolder dic.lastWord dup
+  //iterate                        // setup iteration of words
 
-    object@ word.name to sIndexNm
+  //  object@ word.name to sIndexNm
 
     //sIndexNm "Deleting index %v" str.format .
 
     // forward reference :-(
-    sIndexNm "indexTidyUp" find execute
+ //   sIndexNm "indexTidyUp" find execute
 
-    object@ word.prev object!     // step backwards thru words
+ //   object@ word.prev object!     // step backwards thru words
 
-  next
+ // next
 
   //----------------------------------------------------------------------------
   // pop indexes folder
-  popIndexes
+ // popIndexes
+
+  //----------------------------------------------------------------------------
+  // truncate the table
+  args.partitionsPerNode 0
+  do
+    I pTable table.truncate
+  loop
 
   //----------------------------------------------------------------------------
   // forget the indexes in the indexes dictionary

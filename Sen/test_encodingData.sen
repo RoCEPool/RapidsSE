@@ -1,0 +1,348 @@
+/*============================================================================*/
+/* test_encodingData.sen -- generate encoding tests data                      */
+/*============================================================================*/
+
+" test_encodingData.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* generate integer data file                                                 */
+/*----------------------------------------------------------------------------*/
+: booleanDataFile
+
+  params| nRecs |
+  params| sFileNm |
+
+  nRecs sFileNm "File: %v nRecs %v" fmt.print
+
+  file::new locals| pFile |
+
+  sFileNm OPEN_WRITE pFile file.open
+  not if
+    "file not opened" .
+  exit
+  then
+
+  nRecs 0 > if
+    nRecs 0
+    do
+      //I I "%v,String%v" str.format .
+      I 7 % 0 == if
+        0 1 uint.random
+      else
+        "null"
+      then
+      0 1 uint.random
+      0 1 uint.random
+      0 1 uint.random
+      0 1 uint.random
+      0 1 uint.random
+      0 1 uint.random
+      0 1 uint.random
+      0 1 uint.random
+      0 1 uint.random
+      0 1 uint.random
+      0 1 uint.random
+      0 1 uint.random
+      0 1 uint.random
+      0 1 uint.random
+      I
+      "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.write
+    loop
+  then
+
+  pFile file.close
+
+  pFile file.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate date                                                              */
+/*----------------------------------------------------------------------------*/
+: generateDate
+
+  params| high |
+  params| low |
+
+  1 28 int.random
+  1 12 int.random
+  low high int.random
+  "%v-%v-%v" str.format
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate date data file                                                    */
+/*----------------------------------------------------------------------------*/
+: dateDataFile
+
+  params| nRecs |
+  params| sFileNm |
+
+  nRecs sFileNm "File: %v nRecs %v" fmt.print
+
+  file::new locals| pFile |
+
+  sFileNm OPEN_WRITE pFile file.open
+  not if
+    "file not opened" .
+    exit
+  then
+
+  nRecs 0 > if
+    nRecs 0
+    do
+      //I I "%v,String%v" str.format .
+      I 7 % 0 == if
+        1900 2000 generateDate
+      else
+        "null"
+      then
+
+      1900 2000 generateDate
+      1910 2000 generateDate
+      1920 2000 generateDate
+      1930 2000 generateDate
+      1940 2000 generateDate
+      1960 2000 generateDate
+      1980 2000 generateDate
+      1980 2000 generateDate
+      1960 1980 generateDate
+      1940 1960 generateDate
+      1920 1940 generateDate
+      1900 1920 generateDate
+      1920 1960 generateDate
+      1900 1920 generateDate
+      I
+      "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.write
+    loop
+  then
+
+  pFile file.close
+
+  pFile file.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate decimal                                                           */
+/*----------------------------------------------------------------------------*/
+: generateDecimal
+
+  params| highWhole |
+  params| lowWhole |
+  params| highDecimal |
+  params| lowDecimal |
+
+  lowWhole highWhole int.random
+  lowDecimal highDecimal int.random
+
+  "%v.%v" str.format
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate decimal                                                           */
+/*----------------------------------------------------------------------------*/
+: generateTenthDecimal
+
+  params| highWhole |
+  params| lowWhole |
+
+  0 10 int.random >str
+  lowWhole highWhole int.random
+
+  "%v.0%v" str.format
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate decimal data file                                                 */
+/*----------------------------------------------------------------------------*/
+: decimalDataFile
+
+  params| nRecs |
+  params| sFileNm |
+
+  nRecs sFileNm "File: %v nRecs %v" fmt.print
+
+  file::new locals| pFile |
+
+  sFileNm OPEN_WRITE pFile file.open
+  not if
+    "file not opened" .
+    exit
+  then
+
+  nRecs 0 > if
+    nRecs 0
+    do
+      //I I "%v,String%v" str.format .
+      I 7 % 0 == if
+        -1000 1000 0 1000 generateDecimal
+      else
+        "null"
+      then
+
+      -9223372 9223372 0 99999999 generateDecimal
+      0 922337 0 9223 generateDecimal
+      0 10000000 0 100 generateDecimal
+      0 0 0 10 generateDecimal
+      1000 1000000 10 1000 generateDecimal
+      0 10000000 generateTenthDecimal
+      0 1000 0 1000 generateDecimal
+      0 1000 generateTenthDecimal
+      -1 1 int.random
+      I 10000 %
+      I 1000 %
+      I 100 %
+      I 10 %
+      I 7 %
+      I
+      "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.write
+    loop
+  then
+
+  pFile file.close
+
+  pFile file.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate integer data file                                                 */
+/*----------------------------------------------------------------------------*/
+: integerDataFile
+
+  params| nRecs |
+  params| sFileNm |
+
+  nRecs sFileNm "File: %v nRecs %v" fmt.print
+
+  file::new locals| pFile |
+
+  sFileNm OPEN_WRITE pFile file.open
+  not if
+    "file not opened" .
+    exit
+  then
+
+  nRecs 0 > if
+    nRecs 0
+    do
+      //I I "%v,String%v" str.format .
+      I 7 % 0 == if
+        -1000000 1000000 int.random
+      else
+        "null"
+      then
+
+      -92233720368 92233720368 int.random
+      0 9223372036854 int.random
+      0 10000000 int.random
+      -1000 1000000 int.random
+      1000 1000000 int.random
+      0 10000000 int.random
+      0 1000000 int.random
+      0 100000 int.random
+      -1 1 int.random
+      I 10000 %
+      I 1000 %
+      I 100 %
+      I 10 %
+      I 7 %
+      I
+      "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.write
+    loop
+  then
+
+  pFile file.close
+
+  pFile file.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate varchar data file                                                 */
+/*----------------------------------------------------------------------------*/
+: varcharDataFile
+
+  params| nRecs |
+  params| sFileNm |
+
+  nRecs sFileNm "File: %v nRecs %v" fmt.print
+
+  file::new locals| pFile |
+
+  sFileNm OPEN_WRITE pFile file.open
+  not if
+    "file not opened" .
+    exit
+  then
+
+  nRecs 0 > if
+    nRecs 0
+    do
+      //I I "%v,String%v" str.format .
+      I 7 % 0 == if
+        10 str.random
+      else
+        "null"
+      then
+
+      1 7 int.random >str
+      5 str.random
+      10 str.random
+      15 str.random
+      22 str.random
+      4 str.random
+      4 str.random
+      6 str.random
+      1 str.random
+      I 33 % str.random
+      I 10 % str.random
+      I 10 % str.random
+      I 10 % str.random
+      I 7 % str.random
+      I
+      "%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n" str.format pFile file.write
+    loop
+  then
+
+  pFile file.close
+
+  pFile file.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate the boolean data files                                            */
+/*----------------------------------------------------------------------------*/
+: booleanData
+"../DATA/Encoding/boolean.csv"    1000000      booleanDataFile
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate the date data files                                               */
+/*----------------------------------------------------------------------------*/
+: dateData
+  "../DATA/Encoding/date.csv"    1000000      dateDataFile
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate the decimal data files                                            */
+/*----------------------------------------------------------------------------*/
+: decimalData
+  "../DATA/Encoding/decimal.csv"    1000000      decimalDataFile
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate the integer data files                                            */
+/*----------------------------------------------------------------------------*/
+: integerData
+  "../DATA/Encoding/integer.csv"    1000000      integerDataFile
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate the varchar data files                                            */
+/*----------------------------------------------------------------------------*/
+: varcharData
+  "../DATA/Encoding/varchar.csv"    1000000     varcharDataFile
+;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

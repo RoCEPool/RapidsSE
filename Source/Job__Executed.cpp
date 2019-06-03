@@ -11,6 +11,7 @@ JobClass xJobClass__Executed =
 {
   CN_JOB__EXECUTED,        // class enum
   JK_GENERIC,              // job kind
+  RK_NONE,                 // response kind
   "job was executed"_Stz,  // comment about the job
   nullptr,                 // the prompt command
   nullptr,                 // the second word
@@ -110,11 +111,11 @@ Job__Executed::Job__Executed(Job* pDistJob)
   m_iParentId = pDistJob->m_iJobId;
   m_i_ActionRoot = pDistJob->m_i_ActionRoot;
 
-  m_sResponse      = ""_Stz;
-  m_iRowsProcessed = 0;
-  m_iRowsInvalid   = 0;
-  m_iRowsSkipped   = 0;
-  m_eErrorCode     = EC_NONE;
+//  m_sResponse      = ""_Stz;
+//  m_iRowsProcessed = 0;
+//  m_iRowsInvalid   = 0;
+//  m_iRowsSkipped   = 0;
+//  m_eErrorCode     = EC_NONE;
   
   _checkInitialised_(CN_JOB__EXECUTED);
   

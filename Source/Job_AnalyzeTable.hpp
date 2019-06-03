@@ -38,7 +38,6 @@ namespace Jobs
   Job_AnalyzeTable* _pJob_AnalyzeTable(void* aAddr);
   
   Job* pJob_AnalyzeTable_pre(Interface::Session* pSession);
-  void vJob_AnalyzeTable_post(Interface::Session* pSession, Job* pJob);
   void vJob_AnalyzeTable_delete(Interface::Session* pSession, Job* pJob);
   void vJob_AnalyzeTable_show(Job* pJob);
   

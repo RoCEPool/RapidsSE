@@ -119,7 +119,7 @@ void RowAgg::vAdd(RowAgg* pAggArg)
 /*----------------------------------------------------------------------------*/
 /* aggregate an entry buffer                                                  */
 /*----------------------------------------------------------------------------*/
-void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
+void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
   
@@ -128,47 +128,59 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
   
   Int xKey;
   Int xVal;
-  byte* aSrc;
   Column* pAggColumn;
   i8 i_Col;
-  RowData* aRowData;
   
   i8 nAggColumns = m_pAggColVec->nItems();
   
   vReset();
   
-  m_oSince = pEntryBuffer->oWhenNewed();
+  m_oSince = pRowBuffer->oWhenNewed();
   
   // aggregate the buffer
-  for (Item* aItem = pEntryBuffer->aLeadEntry();
-       aItem != nullptr;
-       aItem = pEntryBuffer->aNextEntry(aItem, 0)) {
+  i8 nRowCount = pRowBuffer->nRowCount();
+  HV_Row hRow(m_pTable->pColumnVec());
+  i8 iKeyCol = m_pKeyColumn->iColumnNo();
+  
+  for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
+  
+    // mark key column to be decoded
+    hRow->m_abGetCol[iKeyCol] = true;
     
-    aRowData = _aRowData(aItem->aDataArea());
+    i8 iAggCol = C_UNKNOWN;
     
-    //pRow->vAsBinaryStringVLQ(sRowString, m_pTable->pColumnVec());
-    //vTrace("row: (%s)\n"_Stz, sRowString.aChar());
+    // mark agg columns to be decoded
+    for (i8 i_Col = 0; i_Col < nAggColumns; i_Col++) {
+      pAggColumn = m_pAggColVec->pGet(i_Col);
+      iAggCol = pAggColumn->iColumnNo();
+      hRow->m_abGetCol[iAggCol] = true;
+    }
     
-    aSrc = (byte*)aRowData->aColumnDatum(m_pKeyColumn->iColumnNo());
-    xKey = IntLib::iVlqToInt(aSrc);
-
+    hRow->m_iLastCol = iKeyCol > iAggCol ? iKeyCol : iAggCol;
+    
+    // get the inflated row
+    pRowBuffer->vGetRow(hRow, i_Row);
+    
+    // get the key value from the row
+    xKey.m_iInt = hRow->m_aiValue[m_pKeyColumn->iColumnNo()];
+    
+    // for each agg column
     for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
       
       pAggColumn = m_pAggColVec->pGet(i_AggCol);
       i_Col = pAggColumn->iColumnNo();
       
-      aSrc = (byte*)aRowData->aColumnDatum(i_Col);
-      xVal = IntLib::iVlqToInt(aSrc);
-    
-      if (xVal.iAsI8() < m_iaMinVal[i_AggCol]) {
-        m_iaMinVal[i_AggCol] = xVal.iAsI8();
-        m_iaMinKey[i_AggCol] = xKey.iAsI8();
+      xVal.m_iInt = hRow->m_aiValue[i_Col];
+      
+      if (xVal.m_iInt < m_iaMinVal[i_AggCol]) {
+        m_iaMinVal[i_AggCol] = xVal.m_iInt;
+        m_iaMinKey[i_AggCol] = xKey.m_iInt;
       }
-      if (xVal.iAsI8() > m_iaMaxVal[i_AggCol]) {
-        m_iaMaxVal[i_AggCol] = xVal.iAsI8();
-        m_iaMaxKey[i_AggCol] = xKey.iAsI8();
+      if (xVal.m_iInt > m_iaMaxVal[i_AggCol]) {
+        m_iaMaxVal[i_AggCol] = xVal.m_iInt;
+        m_iaMaxKey[i_AggCol] = xKey.m_iInt;
       }
-      m_iaSumVal[i_AggCol] += xVal.iAsI8();
+      m_iaSumVal[i_AggCol] += xVal.m_iInt;
     }
     
     m_nRows++;
@@ -181,22 +193,22 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
   
   // temp trace
   
-//  Time oDateTime;
-//  oDateTime.vSetLocal(&m_oSince);
-//  s32 sDateTime;
-//  char* z = sDateTime.aChar();
-//  oDateTime.vAppendLocal(&z);
+  //  Time oDateTime;
+  //  oDateTime.vSetLocal(&m_oSince);
+  //  s32 sDateTime;
+  //  char* z = sDateTime.aChar();
+  //  oDateTime.vAppendLocal(&z);
   
-//  vTrace("%s\n"_Stz,sDateTime.aChar());
-//  for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
-//    pAggColumn = m_pAggColVec->pGet(i_AggCol);
-//    vTrace("AggCol %s: min: %lld %lld; max: %lld %lld; avg: %lld\n"_Stz,
-//           pAggColumn->sColumnName().aChar(),
-//           m_iaMinKey[i_AggCol], m_iaMinVal[i_AggCol],
-//           m_iaMaxKey[i_AggCol], m_iaMaxVal[i_AggCol],
-//           m_iaAvgVal[i_AggCol]
-//           );
-//  }
+  //  vTrace("%s\n"_Stz,sDateTime.aChar());
+  //  for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
+  //    pAggColumn = m_pAggColVec->pGet(i_AggCol);
+  //    vTrace("AggCol %s: min: %lld %lld; max: %lld %lld; avg: %lld\n"_Stz,
+  //           pAggColumn->sColumnName().aChar(),
+  //           m_iaMinKey[i_AggCol], m_iaMinVal[i_AggCol],
+  //           m_iaMaxKey[i_AggCol], m_iaMaxVal[i_AggCol],
+  //           m_iaAvgVal[i_AggCol]
+  //           );
+  //  }
   
   
   //vTrace("Slot %lld: published %lld rows\n"_Stz,

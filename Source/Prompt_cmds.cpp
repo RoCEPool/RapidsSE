@@ -31,6 +31,7 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_CF);
   JobClass::vCmds(CN_JOB_DOCOL);
   JobClass::vCmds(CN_JOB_DUMPINDEX);
+  JobClass::vCmds(CN_JOB_DUMPTABLE);
   JobClass::vCmds(CN_JOB_FETCHROWS);
   JobClass::vCmds(CN_JOB_GENERATE);
   JobClass::vCmds(CN_JOB_INGEST);
@@ -53,6 +54,7 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_SINK);
   JobClass::vCmds(CN_JOB_USESCHEMA);
   JobClass::vCmds(CN_JOB_VISUALIZEINDEX);
+  JobClass::vCmds(CN_JOB_VISUALIZETABLE);
   
   // dist2pc
   JobClass::vCmds(CN_JOB_ANALYZEINDEX);
@@ -85,6 +87,7 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_TABLESIZES);
   JobClass::vCmds(CN_JOB_TRUNCATETABLE);
   JobClass::vCmds(CN_JOB_VERIFYINDEX);
+  JobClass::vCmds(CN_JOB_VERIFYTABLE);
   JobClass::vCmds(CN_JOB_WAITCLUSTER);
   JobClass::vCmds(CN_JOB_WALK);
   

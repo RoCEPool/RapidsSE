@@ -42,7 +42,6 @@ namespace Jobs
   Job_InsertTable* _pJob_InsertTable(void* aAddr);
   
   Job* pJob_InsertTable_pre(Interface::Session* pSession);
-  void vJob_InsertTable_post(Interface::Session* pSession, Job* pJob);
   Job* pJob_InsertTable_new(Job* pArg);
   void vJob_InsertTable_delete(Interface::Session* pSession, Job* pJob);
   void vJob_InsertTable_show(Job* pJob);

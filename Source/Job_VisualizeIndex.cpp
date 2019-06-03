@@ -13,6 +13,7 @@ JobClass xJobClass_VisualizeIndex =
 {
   CN_JOB_VISUALIZEINDEX,      // class enum
   JK_LOCAL,                   // job kind
+  RK_LOCAL_ERRORS,            // response kind
   "visualize index"_Stz,      // comment about the job
   "visidx"_Stz,               // the prompt command
   nullptr,                    // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_VisualizeIndex =
 
   eJob_checkCluster,          // prompt check function
   pJob_VisualizeIndex_pre,    // prompt pre-process function
-  vJob_VisualizeIndex_post,   // prompt post-process function
+  vJob_post,                  // prompt post-process function
   nullptr,                    // job new function
   vJob_VisualizeIndex_delete, // job delete function
   nullptr,                    // job pre-send function
@@ -52,7 +53,7 @@ JobClass xJobClass_VisualizeIndex =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_VisualizeIndex_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_WaitCluster_class;
+  *pNextFun = (pFUN*)pJob_VisualizeTable_class;
   
   return &xJobClass_VisualizeIndex;
 }
@@ -210,28 +211,10 @@ Job* Jobs::pJob_VisualizeIndex_pre(Interface::Session* pSession)
   bool bResult = pJob_VisualizeIndex->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_VisualizeIndex->m_bHasError = true;
-    pJob_VisualizeIndex->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_VisualizeIndex->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_VisualizeIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_VisualizeIndex_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_VisualizeIndex* pJob_VisualizeIndex = _pJob_VisualizeIndex(pJob);
-  
-  if ( pJob_VisualizeIndex->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_VisualizeIndex->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
 }
 
 /*----------------------------------------------------------------------------*/

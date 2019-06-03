@@ -252,7 +252,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
         || argv[i_Arg]->bSame("?"_Stz)
         )  {
       vPrintHelp();
-      exit(EXIT_SUCCESS);
+      Process::vExit(EXIT_SUCCESS);
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -647,7 +647,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
     }
 #else
     if (argv[i_Arg]->bSame("--activityMap"_Stz)) {
-      vWarn("arg --activityMap ignored; not compiled WITH_ACTIVITY_MAP"_Stz);
+      vWarn("arg --activityMap ignored; not compiled WITH_ACTIVITY_MAP\n"_Stz);
       continue;
     }
 #endif
@@ -666,7 +666,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
     }
 #else
     if (argv[i_Arg]->bSame("--actionSequence"_Stz)) {
-      vWarn("arg --actionSequence ignored; not compiled WITH_ACTION_SEQUENCE"_Stz);
+      vWarn("arg --actionSequence ignored; not compiled WITH_ACTION_SEQUENCE\n"_Stz);
       continue;
     }
 #endif
@@ -863,7 +863,7 @@ void Arguments::vSanityCheck(void)
   
   if (m_nNodes > C_MAX_NODES) {
     vTrace("Too many nodes: %lld. Max of %lld\n"_Stz,m_nNodes,C_MAX_NODES);
-    exit(EXIT_FAILURE);
+    Process::vExit(EXIT_FAILURE);
   }
   
   i8 iRequiredThreads =
@@ -878,7 +878,7 @@ void Arguments::vSanityCheck(void)
 //RJH    vTrace("Insufficient threads: %lld. At least %lld threads required\n"_Stz,
 //RJH           m_nThreads,
 //RJH           iRequiredThreads);
-//RJH    exit(EXIT_FAILURE);
+//RJH    Process::vExit(EXIT_FAILURE);
 //RJH  }
   
 }

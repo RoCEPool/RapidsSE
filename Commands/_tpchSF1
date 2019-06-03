@@ -1,10 +1,11 @@
 /*============================================================================*/
-/* _tpch/SF1-- tpc-h creation, load, fetch and drop for scale factor 1         */
+/* _TPCH/SF1-- tpc-h creation, load, fetch and drop for scale factor 1         */
 /*============================================================================*/
 
 startCluster;
 
-create table customer (
+print "-----------------------------------------------------------------------";
+time create table customer (
 	C_CUSTKEY       INTEGER NOT NULL,
 	C_NAME          VARCHAR(25) NOT NULL,
 	C_ADDRESS       VARCHAR(40) NOT NULL,
@@ -15,7 +16,7 @@ create table customer (
 	C_COMMENT       VARCHAR(117) NOT NULL
 );
 
-create table lineitem (
+time create table lineitem (
   L_ORDERKEY      INTEGER NOT NULL,
   L_PARTKEY       INTEGER NOT NULL,
   L_SUPPKEY       INTEGER NOT NULL,
@@ -34,14 +35,14 @@ create table lineitem (
   L_COMMENT       VARCHAR(44) NOT NULL
 );
 
-create table nation (
+time create table nation (
   N_NATIONKEY     INTEGER NOT NULL,
   N_NAME          CHAR(25) NOT NULL,
   N_REGIONKEY     INTEGER NOT NULL,
   N_COMMENT       VARCHAR(152)
 );
 
-create table orders (
+time create table orders (
   O_ORDERKEY      INTEGER NOT NULL,
   O_CUSTKEY       INTEGER NOT NULL,
   O_ORDERSTATUS   CHAR(1) NOT NULL,
@@ -53,7 +54,7 @@ create table orders (
   O_COMMENT       VARCHAR(79) NOT NULL
 );
 
-create table part (
+time create table part (
   P_PARTKEY       INTEGER NOT NULL,
   P_NAME          VARCHAR(55) NOT NULL,
   P_MFGR          CHAR(25) NOT NULL,
@@ -65,7 +66,7 @@ create table part (
   P_COMMENT       VARCHAR(23) NOT NULL
 );
 
-create table partsupp (
+time create table partsupp (
 	PS_PARTKEY      INTEGER NOT NULL,
 	PS_SUPPKEY      INTEGER NOT NULL,
 	PS_AVAILQTY     INTEGER NOT NULL,
@@ -73,13 +74,13 @@ create table partsupp (
 	PS_COMMENT      VARCHAR(199) NOT NULL
 );
 
-create table region (
+time create table region (
   R_REGIONKEY     INTEGER NOT NULL,
   R_NAME          CHAR(25) NOT NULL,
   R_COMMENT       VARCHAR(152)
 );
 
-create table supplier (
+time create table supplier (
   S_SUPPKEY       INTEGER NOT NULL,
   S_NAME          CHAR(25) NOT NULL,
   S_ADDRESS       VARCHAR(40) NOT NULL,
@@ -88,63 +89,172 @@ create table supplier (
   S_ACCTBAL       DECIMAL(15,2) NOT NULL,
   S_COMMENT       VARCHAR(101) NOT NULL
 );
+print "-----------------------------------------------------------------------";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print "-----------------------------------------------------------------------";
+print "loading partsupp.csv..." ;
 
 print "loading customer.csv..." ;
-ld customer "/tpch/SF1/customer.csv" ;
+
+//time ld partsupp "/TPCH/SF1/temp.tbl" field_delimiter "|";
+
+time ld partsupp "/TPCH/SF1/partsupp.tbl" field_delimiter "|";
+
+time ld customer "/TPCH/SF1/customer.tbl" field_delimiter "|";
 print "loading lineitem.csv..." ;
-ld lineitem "/tpch/SF1/lineitem.csv" ;
+time ld lineitem "/TPCH/SF1/lineitem.csv" ;
 print "loading nation.csv..." ;
-ld nation "/tpch/SF1/nation.csv" ;
+time ld nation "/TPCH/SF1/nation.tbl" field_delimiter "|";
 print "loading orders.csv..." ;
-ld orders "/tpch/SF1/orders.csv" ;
+time ld orders "/TPCH/SF1/orders.tbl" field_delimiter "|";
 print "loading part.csv..." ;
-ld part "/tpch/SF1/part.csv" ;
-print "loading partsupp.csv..." ;
-ld partsupp "/tpch/SF1/partsupp.csv" ;
+time ld part "/TPCH/SF1/part.tbl" field_delimiter "|";
 print "loading region.csv..." ;
-ld region "/tpch/SF1/region.csv" ;
+time ld region "/TPCH/SF1/region.tbl" field_delimiter "|";
 print "loading supplier.csv..." ;
-ld supplier "/tpch/SF1/supplier.csv" ;
-
+time ld supplier "/TPCH/SF1/supplier.tbl" field_delimiter "|";
+print "-----------------------------------------------------------------------";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+print "-----------------------------------------------------------------------";
+TableSizes;
+print "-----------------------------------------------------------------------";
+
+print "-----------------------------------------------------------------------";
+print "size customer..." ;
+szTbl customer;
+
+print "size lineitem..." ;
+szTbl lineitem;
+
+print "size nation..." ;
+szTbl nation;
+
+print "size orders..." ;
+szTbl orders;
+
+print "size part..." ;
+szTbl part;
+
+print "size partsupp..." ;
+szTbl partsupp;
+
+print "size region..." ;
+szTbl region;
+
+print "size supplier..." ;
+szTbl supplier;
+print "-----------------------------------------------------------------------";
+
+print "-----------------------------------------------------------------------";
 print "fetching customer.csv..." ;
-fetch customer displayOff ;
+time fetch customer displayOff ;
 print "fetching lineitem.csv..." ;
-fetch lineitem displayOff ;
+time fetch lineitem displayOff ;
 print "fetching nation.csv..." ;
-fetch nation displayOff ;
+time fetch nation displayOff ;
 print "fetching orders.csv..." ;
-fetch orders displayOff ;
+time fetch orders displayOff ;
 print "fetching part.csv..." ;
-fetch part displayOff ;
+time fetch part displayOff ;
 print "fetching partsupp.csv..." ;
-fetch partsupp displayOff ;
+time fetch partsupp displayOff ;
 print "fetching region.csv..." ;
-fetch region displayOff ;
+time fetch region displayOff ;
 print "fetching supplier.csv..." ;
-fetch supplier displayOff ;
+time fetch supplier displayOff ;
+print "-----------------------------------------------------------------------";
+
+
+print "-----------------------------------------------------------------------";
+print "fetching customer.csv (noPrint)..." ;
+time fetch customer noPrint;
+print "fetching lineitem.csv (noPrint)..." ;
+time fetch lineitem noPrint;
+print "fetching nation.csv (noPrint)..." ;
+time fetch nation noPrint;
+print "fetching orders.csv (noPrint)..." ;
+time fetch orders noPrint;
+print "fetching part.csv (noPrint)..." ;
+time fetch part noPrint;
+print "fetching partsupp.csv (noPrint)..." ;
+time fetch partsupp noPrint;
+print "fetching region.csv (noPrint)..." ;
+time fetch region noPrint;
+print "fetching supplier.csv (noPrint)..." ;
+time fetch supplier noPrint;
+print "-----------------------------------------------------------------------";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+print "-----------------------------------------------------------------------";
 print "dropping customer.csv..." ;
-drop table customer ;
+time drop table customer ;
 print "dropping lineitem.csv..." ;
-drop table lineitem ;
+time drop table lineitem ;
 print "dropping nation.csv..." ;
-drop table nation ;
+time drop table nation ;
 print "dropping orders.csv..." ;
-drop table orders ;
+time drop table orders ;
 print "dropping part.csv..." ;
-drop table part ;
+time drop table part ;
 print "dropping partsupp.csv..." ;
-drop table partsupp ;
+time drop table partsupp ;
 print "dropping region.csv..." ;
-drop table region ;
+time drop table region ;
 print "dropping supplier.csv..." ;
-drop table supplier ;
+time drop table supplier ;
+print "-----------------------------------------------------------------------";
+
+
+/*
+ Experiment 1
+ i8 nBytes = sizeof(CacheLine) + (2 * C_BYTES_PER_WORD);
+ C: 32MB->28MB
+ L: 724MB->446MB
+ N: 2MB->1MB
+ O: 128MB->115MB
+ P: 32MB->21MB
+ PS: 96MB->92MB
+ R: 389B->1MB
+ S: 1.3MB->2MB
+ 
+ 
+ Experiment 2
+ i8 nBytes = pColVec->nItems() * 4;
+ C: 32MB->27MB
+ L: 724MB->438MB
+ N: 2MB->1MB----------------> 10 rows failed to load
+ O: 128MB->110MB
+ P: 32MB->15MB--------------> 17491 rows failed to load
+ PS: 96MB->90MB
+ R: 389B->1MB---------------> 3 rows failed to load
+ S: 1.3MB->2MB
+ 
+ Experiment 3
+ i8 nBytes = pColVec->nItems() * 5;
+ C: 32MB->27MB
+ L: 724MB->464MB
+ N: 2MB->1MB
+ O: 128MB->110MB
+ P: 32MB->16MB
+ PS: 96MB->90MB
+ R: 389B->1MB---------------> 3 rows failed to load
+ S: 1.3MB->2MB
+ 
+ Experiment 4
+ i8 nBytes = pColVec->nItems() * 6;
+ C: 32MB->27MB
+ L: 724MB->553MB
+ N: 2MB->1MB
+ O: 128MB->110MB
+ P: 32MB->17MB
+ PS: 96MB->90MB
+ R: 389B->1MB
+ S: 1.3MB->2MB
+ */
 
 /*============================================================================*/
 /* end                                                                        */

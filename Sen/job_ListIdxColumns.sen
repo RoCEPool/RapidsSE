@@ -34,11 +34,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set response in the job
-  grid::thisNode@ pJob_ListIdxColumns job.response!
+  pJob_ListIdxColumns job.response!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sent rows Processed in the job
-  iColumns grid::thisNode@ pJob_ListIdxColumns job.rowsProcessed!
+  iColumns pJob_ListIdxColumns job.rowsProcessed!
 ;
 
 /*----------------------------------------------------------------------------*/

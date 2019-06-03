@@ -13,6 +13,7 @@ JobClass xJobClass_ListTenants =
 {
   CN_JOB_LISTTENANTS,     // class enum
   JK_LOCAL,               // job kind
+  RK_LOCAL_ROWS,          // response kind
   "list tenants"_Stz,     // comment about the job
   "lsten"_Stz,            // the prompt command
   nullptr,                // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_ListTenants =
 
   nullptr,                // prompt check function
   pJob_ListTenants_pre,   // prompt pre-process function
-  vJob_ListTenants_post,  // prompt post-process function
+  vJob_post,              // prompt post-process function
   nullptr,                // job new function
   vJob_ListTenants_delete,// job delete function
   nullptr,                // job pre-send function
@@ -205,36 +206,10 @@ Job* Jobs::pJob_ListTenants_pre(Interface::Session* pSession)
   bool bResult = pJob_ListTenants->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_ListTenants->m_bHasError = true;
-    pJob_ListTenants->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_ListTenants->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_ListTenants;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListTenants_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_ListTenants* pJob_ListTenants = _pJob_ListTenants(pJob);
-  
-  if ( pJob_ListTenants->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_ListTenants->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
-  else {
-    i8 iRowsProcessed = 0;
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("%s"_Stz, pJob_ListTenants->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += *pJob_ListTenants->m_xNode[i_Node].m_ixRowsProcessed;
-    }
-    vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

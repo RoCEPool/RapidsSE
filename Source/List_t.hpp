@@ -1,18 +1,18 @@
 /*============================================================================*/
-/* List_t.hpp -- Template for List                                            */
+/* List_t.hpp -- List of Items                                                */
 /*============================================================================*/
 #pragma once
 
 namespace Structures
 {
-  template <class OBJECT> 
+  template <class ITEM>
   class List_t
   {
   protected:
     Lock    m_okLock;   // lock
     i8      m_nCount;  // number of objects
-    OBJECT* m_pHead;   // head node
-    OBJECT* m_pTail;   // tail node
+    ITEM* m_pHead;   // head node
+    ITEM* m_pTail;   // tail node
 
     // must be last
     Footer m_xFooter;
@@ -22,17 +22,17 @@ namespace Structures
     
     List_t(void);
     
-    void    vAppend(OBJECT* mpNode);
+    void    vAppend(ITEM* mpNode);
     i8      iCount(void);
-    OBJECT* npPop(void);
-    void    vPush(OBJECT* mpNode);
-    void    vRemove(OBJECT* mpNode);
+    ITEM* npPop(void);
+    void    vPush(ITEM* mpNode);
+    void    vRemove(ITEM* mpNode);
     
     void    vReadLock(void);
     void    vReadUnlock(void);
 
-    OBJECT* pHead(void);
-    OBJECT* pTail(void);
+    ITEM* pHead(void);
+    ITEM* pTail(void);
     
     Footer* aFooter(void);
   };
@@ -47,8 +47,8 @@ using namespace Structures;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-void* List_t<OBJECT>::operator new(size_t)
+template <class ITEM>
+void* List_t<ITEM>::operator new(size_t)
 {
   vFatal("fatal: List_t class cannot be new'd"_Stz);
   
@@ -58,22 +58,22 @@ void* List_t<OBJECT>::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-List_t<OBJECT>::List_t(void)
+template <class ITEM>
+List_t<ITEM>::List_t(void)
 {
   m_okLock.vInitLock(LK_LIST);
   m_nCount = 0;
   m_pHead  = nullptr;
   m_pTail  = nullptr;
   
-  _checkInitialisedSize_(sizeof(List_t<OBJECT>));
+  _checkInitialisedSize_(sizeof(List_t<ITEM>));
 }
 
 /*----------------------------------------------------------------------------*/
 /* append object to end of list                                               */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-void List_t<OBJECT>::vAppend(OBJECT* mpNode)
+template <class ITEM>
+void List_t<ITEM>::vAppend(ITEM* mpNode)
 {
   ASSERT(NULL == mpNode->pPrevNode());
   ASSERT(NULL == mpNode->pNextNode());
@@ -99,8 +99,8 @@ void List_t<OBJECT>::vAppend(OBJECT* mpNode)
 /*----------------------------------------------------------------------------*/
 /* dump each object in list                                                   */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-i8 List_t<OBJECT>::iCount(void)
+template <class ITEM>
+i8 List_t<ITEM>::iCount(void)
 {
   return m_nCount;
 }
@@ -108,8 +108,8 @@ i8 List_t<OBJECT>::iCount(void)
 /*----------------------------------------------------------------------------*/
 /* pop object from head of list                                               */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-OBJECT* List_t<OBJECT>::npPop(void)
+template <class ITEM>
+ITEM* List_t<ITEM>::npPop(void)
 {
   m_okLock.vGrabWrite();
   
@@ -119,7 +119,7 @@ OBJECT* List_t<OBJECT>::npPop(void)
     return nullptr;
   }
 
-  OBJECT* pNode = m_pHead;
+  ITEM* pNode = m_pHead;
 
   m_pHead = m_pHead->pNextNode();
   if (m_pHead)
@@ -147,8 +147,8 @@ OBJECT* List_t<OBJECT>::npPop(void)
 /*----------------------------------------------------------------------------*/
 /* push object on top of list                                                 */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-void List_t<OBJECT>::vPush(OBJECT* mpNode)
+template <class ITEM>
+void List_t<ITEM>::vPush(ITEM* mpNode)
 {
   ASSERT(NULL == mpNode->pPrevNode());
   ASSERT(NULL == mpNode->pNextNode());
@@ -175,13 +175,13 @@ void List_t<OBJECT>::vPush(OBJECT* mpNode)
 /*----------------------------------------------------------------------------*/
 /* remove object from head of list                                            */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-void List_t<OBJECT>::vRemove(OBJECT* pNode)
+template <class ITEM>
+void List_t<ITEM>::vRemove(ITEM* pNode)
 {
   m_okLock.vGrabWrite();
   
-  OBJECT* pPrev = pNode->pPrevNode();
-  OBJECT* pNext = pNode->pNextNode();
+  ITEM* pPrev = pNode->pPrevNode();
+  ITEM* pNext = pNode->pNextNode();
 
   if (pPrev)
     pPrev->vNextNode(pNext);
@@ -206,8 +206,8 @@ void List_t<OBJECT>::vRemove(OBJECT* pNode)
 /*----------------------------------------------------------------------------*/
 /* get read lock on list                                                      */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-void List_t<OBJECT>::vReadLock(void)
+template <class ITEM>
+void List_t<ITEM>::vReadLock(void)
 {
   m_okLock.vGrabRead();
 }
@@ -215,8 +215,8 @@ void List_t<OBJECT>::vReadLock(void)
 /*----------------------------------------------------------------------------*/
 /* release read lock on list                                                  */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-void List_t<OBJECT>::vReadUnlock(void)
+template <class ITEM>
+void List_t<ITEM>::vReadUnlock(void)
 {
   m_okLock.vDropRead();
 }
@@ -224,8 +224,8 @@ void List_t<OBJECT>::vReadUnlock(void)
 /*----------------------------------------------------------------------------*/
 /* get head object in list                                                    */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-OBJECT* List_t<OBJECT>::pHead(void)
+template <class ITEM>
+ITEM* List_t<ITEM>::pHead(void)
 {
   return m_pHead;
 }
@@ -233,8 +233,8 @@ OBJECT* List_t<OBJECT>::pHead(void)
 /*----------------------------------------------------------------------------*/
 /* get last object in list                                                    */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-OBJECT* List_t<OBJECT>::pTail(void)
+template <class ITEM>
+ITEM* List_t<ITEM>::pTail(void)
 {
   return m_pTail;
 }
@@ -246,8 +246,8 @@ OBJECT* List_t<OBJECT>::pTail(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-template <class OBJECT>
-Footer* List_t<OBJECT>::aFooter(void)
+template <class ITEM>
+Footer* List_t<ITEM>::aFooter(void)
 {
   return &m_xFooter;
 }

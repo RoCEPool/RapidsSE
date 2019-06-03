@@ -200,8 +200,21 @@ void Vch::vSetNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- VLQ ---------------------------------------------------------------------*/
+/* sprint                                                                     */
 /*----------------------------------------------------------------------------*/
+void Vch::vSprint(Stz* aDst, Stz* aSrc, bool bQuoted)
+{
+  if (bIsNull()) {
+    StrLib::vSprint(aDst,"null"_Stz);
+    return;
+  }
+
+  if (bQuoted)
+    vSprintQuotes(aDst,aSrc);
+  else
+    vSprintEscaped(aDst,aSrc);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Extract and Sprint ------------------------------------------------------*/
@@ -230,115 +243,6 @@ i8 Vch::nCopy(void* pDst, void* pSrc)
 void Vch::vCopy(void* pDst, void* pSrc)
 {
   StrLib::vCopy((char*)pDst,(char*)pSrc);
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a varchar field from csv substr                                    */
-/*----------------------------------------------------------------------------*/
-bool Vch::bExtract(char** aaSrc, Stz* aDst,
-                    Column* pColumn, Formatters* pFormatters)
-{
-  Vch* aVch = (Vch*)aDst;
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for null
-  
-  bool bValidNull = false;
-  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull,false)) {
-    if ( ! bValidNull )
-      return false;
-    aVch->vSetNull();
-    return true;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for enclosed
-  bool bSawEnclosedLeading = DtmLib::bIsEnclosed(aaSrc,pFormatters);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // varchar field processing
-  
-  i8 iColumnLength = pColumn->iColumnLength();
-  if ( ! StrLib::bExtractVarchar(aaSrc,(char*)aVch,
-                                  iColumnLength,
-                                  bSawEnclosedLeading,
-                                  pFormatters->m_cEnclosedBy_Leading,
-                                  pFormatters->m_cEnclosedBy_Trailing,
-                                  pFormatters->m_cEscapeChar,
-                                  pFormatters->m_cFieldDelimiter,
-                                  pFormatters->m_cRecordTerminator,
-                                  pFormatters->m_bAllowNonPrintable
-                                 ) )
-    return false;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // shoco test
-  
-//  char caCompressed[1024];
-//  i8 iLen = StrLib::iLength((char*)aVch);
-//  i8 iLenCompressed = shoco_compress((char*)aVch, iLen,
-//                                     caCompressed, sizeof(caCompressed));
-//  vTrace("%2lld -> %2lld: %s\n"_Stz,iLen,iLenCompressed,(char*)aVch);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  bool bSawEnclosedTrailing =
-    StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
-  if (! bSawEnclosedTrailing)
-    return false;
-  
-  // should see a valid field end
-  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a varchar field from csv substr                                    */
-/*----------------------------------------------------------------------------*/
-bool Vch::bExtractDefault(char** aaSrc, Stz* aDst,
-                    Column* pColumn, Formatters* pFormatters)
-{
-  Vch* aVch = (Vch*)aDst;
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for null
-  
-  bool bValidNull = false;
-  if (DtmLib::bTestForNullDefault(aaSrc,pColumn,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    aVch->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for enclosed
-  //bool bSawEnclosedLeading = DtmLib::bIsEnclosed(aaSrc,pFormatters);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // varchar field processing
-  
-  i8 iColumnLength = pColumn->iColumnLength();
-  if ( ! StrLib::bExtractVarcharDefault(aaSrc,(char*)aVch,
-                                  iColumnLength) )
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  StrLib::vSkipSpaces(aaSrc);
-  
-  //bool bSawEnclosedTrailing =
-  //StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
-  //if (! bSawEnclosedTrailing)
-  //  return false;
-  
-  // should see a valid field end
-  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
-    return false;
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -38,6 +38,7 @@
 "job_DropTable.sen" include
 "job_DropTenant.sen" include
 "job_DumpIndex.sen" include
+"job_DumpTable.sen" include
 
 "job_Export.sen" include
 
@@ -103,6 +104,8 @@
 
 "job_VerifyIndex.sen" include
 "job_VisualizeIndex.sen" include
+"job_VisualizeTable.sen" include
+"job_VerifyTable.sen" include
 
 "job_WaitCluster.sen" include
 "job_Walk.sen" include

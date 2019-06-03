@@ -127,7 +127,7 @@ void StepTiming::vWrite(void)
   
   s256 sFilePath;
   
-  sFilePath.vSprint((Stz*)C_StepTiming_FILE,oNow.sFormatted()->aChar());
+  sFilePath.vSprint((Stz*)C_StepTiming_FILE,oNow.sz());
 
   bool bOpened = oFile.bOpenWrite(sFilePath.aStz());
   if (! bOpened) {

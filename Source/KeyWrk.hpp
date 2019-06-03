@@ -7,6 +7,7 @@ namespace Data
 {
   class EntryBuffer;
   class KeyData;
+  class Row;
   
   class KeyWrk : public EntWrk
   {
@@ -18,17 +19,16 @@ namespace Data
     
     KeyWrk(void);
     ~KeyWrk(void) noexcept(false);
-  
-    void vAddDatum(char* aDatum);
-    void vAddDatum(GenVar& xVariable, Column* pCol);
-    void vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters);
-    void vAddKey(KeyData* aKey, IdxColVec* pColVec);
+
+    void vAddDatum(Datum& oDatum, Column* pCol);
+    void vAddElement(Row* pRow, Column* pCol);
+    void vAddDatum(Stz* aSrc, Column* pCol, Formatters* pFormatters);
     void vAddMinusInfinity(void);
-    void vAddMinusInfinity_Flt(void);
     void vAddPlusInfinity(void);
-    void vAddPlusInfinity_Flt(void);
     void vAddWord(w8 wWord);
-    void vExtractKey(Item* aRowEntry, IdxColVec* pIdxColVec);
+
+    void vExtractKey(RowBuffer* pRowBuffer, i8 i_Row, IdxColVec* pIdxColVec);
+    
     i8   iHashKey(void);
     KeyData* aKey(void);
     i8   nKeySize(void);
@@ -37,7 +37,7 @@ namespace Data
     void vReset(void);
     void vSetEntry(Item* pEntry);
     void vSetKey(Item* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec);
-    void vShow(IdxColVec* pIdxColVec, bool bCompressed);
+    void vShow(IdxColVec* pIdxColVec);
   };
 }
 

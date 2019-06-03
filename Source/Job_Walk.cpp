@@ -13,6 +13,7 @@ JobClass xJobClass_Walk =
 {
   CN_JOB_WALK,               // class enum
   JK_DIST2PC,                // job kind
+  RK_NODE_ZERO,              // response kind
   "walk"_Stz,                // comment about the job
   "walk"_Stz,                // the prompt command
   nullptr,                   // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_Walk =
 
   eJob_checkCluster,         // prompt check function
   pJob_Walk_pre,             // prompt pre-process function
-  vJob_Walk_post,            // prompt post-process function
+  vJob_post,                 // prompt post-process function
   nullptr,                   // job new function
   vJob_Walk_delete,          // job delete function
   vJob_send,                 // job pre-send function
@@ -114,7 +115,7 @@ Job_Walk::Job_Walk(Interface::Session* pSession)
   m_pTable = nullptr;
   m_pIndex = nullptr;
 
-  m_sIndexName = "hidden"_Stz;
+  m_sIndexName = ""_Stz;
   
   _checkInitialised_(CN_JOB_WALK);
   
@@ -240,31 +241,10 @@ Job* Jobs::pJob_Walk_pre(Interface::Session* pSession)
   bool bResult = pJob_Walk->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_Walk->m_bHasError = true;
-    pJob_Walk->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_Walk->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_Walk;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_Walk_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_Walk* pJob_Walk = _pJob_Walk(pJob);
-  
-  if ( pJob_Walk->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_Walk->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
-  else {
-    vTrace("success: 0 rows affected\n"_Stz);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

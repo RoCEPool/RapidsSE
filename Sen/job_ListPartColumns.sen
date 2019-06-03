@@ -31,11 +31,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set response in the job
-  grid::thisNode@ pJob_ListPartColumns job.response!
+  pJob_ListPartColumns job.response!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sent rows Processed in the job
-  iPartitionCols grid::thisNode@ pJob_ListPartColumns job.rowsProcessed!
+  iPartitionCols pJob_ListPartColumns job.rowsProcessed!
 ;
 
 /*----------------------------------------------------------------------------*/

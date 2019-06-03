@@ -13,6 +13,7 @@ JobClass xJobClass_Purge =
 {
   CN_JOB_PURGE,          // class enum
   JK_DIST2PC,            // job kind
+  RK_NONE,               // response kind
   "purge table"_Stz,     // comment about the job
   "purge"_Stz,           // the prompt command
   nullptr,               // the second word

@@ -1,6 +1,7 @@
 /*============================================================================*/
 /* _j10 -- jtest creation and load etc                                        */
 /*============================================================================*/
+startCluster;
 
 docol epochTake;
 //ping ;
@@ -15,10 +16,6 @@ print "loading j10.csv..." ;
 ld j1 "../JTEST/j10.csv" ;
 ld j10 "../JTEST/j10.csv" ;
 
-//dumpidx j10 hidden;
-
-//dump j10;
-
 lspart;
 
 print "fethcing j10";
@@ -28,32 +25,93 @@ fetch j10 ;
 //dantbl j10;
 
 
-
+print "-----------------------------";
 print "fetching j10 0";
 fetch j10 0;
+
+print "-----------------------------";
 print "fetching j10 1";
 fetch j10 1;
+
+print "-----------------------------";
 print "fetching j10 2";
 fetch j10 2;
+
+print "-----------------------------";
 print "fetching j10 3";
 fetch j10 3;
+
+print "-----------------------------";
 print "fetching j10 4";
 fetch j10 4;
 
+print "-----------------------------";
 print "fetch j10 where";
 fetch j10 "j10_key 8 ==";
 
+print "-----------------------------";
 print "fetching j10 where partition";
 fetch j10 "j10_key 8 ==" 0;
 
+print "-----------------------------";
 print "fetching j10 displayOff";
 fetch j10 displayOff;
 
+print "-----------------------------";
 print "fetching j10 partition displayOff";
 fetch j10 0 displayOff;
 
+print "-----------------------------";
 print "fetching j10 where partition displayOff";
 fetch j10 "j10_key 8 ==" 0 displayOff;
+
+print "-----------------------------";
+print "fetching j10 limit 10";
+fetch j10 limit 10;
+
+print "-----------------------------";
+print "fetching j10 first 10";
+fetch j10 first 10;
+
+print "-----------------------------";
+print "fetching j10 random 10";
+fetch j10 random 10;
+
+print "-----------------------------";
+print "fetching j10 1 limit 10";
+fetch j10 1 limit 10;
+
+print "-----------------------------";
+print "fetching j10 1 first 10";
+fetch j10 1 first 10;
+
+print "-----------------------------";
+print "fetching j10 1 random 10";
+fetch j10 1 random 10;
+
+print "-----------------------------";
+print "fetching j10 where limit 10";
+fetch j10 "j10_key 8 ==" limit 10;
+
+print "-----------------------------";
+print "fetching j10 where first 10";
+fetch j10 "j10_key 8 ==" first 10;
+
+print "-----------------------------";
+print "fetching j10 where random 10";
+fetch j10 "j10_key 8 ==" random 10;
+
+print "-----------------------------";
+print "fetching j10 where 1 limit 10";
+fetch j10 "j10_key 8 ==" 1 limit 10;
+
+print "-----------------------------";
+print "fetching j10 where 1 first 10";
+fetch j10 "j10_key 8 ==" 1 first 10;
+
+print "-----------------------------";
+print "fetching j10 where 1 random 10";
+fetch j10 "j10_key 8 ==" 1 random 10;
 
 /*
 sz j10;
@@ -89,7 +147,7 @@ drop table j10;
 docol epochDump;
 
 
-vfyidx j10 hidden;
+vfytbl j10;
 
 dex j10 "/tmp/j10_dex.csv" ;
 ex j10 "/tmp/j10_ex.csv" ;

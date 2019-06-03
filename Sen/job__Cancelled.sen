@@ -23,20 +23,14 @@
   pJobParticipant job__Cancelled::new to pJob__Cancelled
 
   // get error if any
-  grid::thisNode@ pJobParticipant job.error@ to error
+  //grid::thisNode@ pJobParticipant job.error@ to error
 
-  error EC_NONE != if
+  //error EC_NONE != if
     // set error in executed job
-    error pJob__Cancelled jobCancelled.error!
-  then
+    //error pJob__Cancelled jobCancelled.error!
+  //then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // set the originator node as the send target node
-  //iJobId job::originator@ grid::node task::this task.sendNode!
-
-  // move this task through send state/queue
-  //ask.send
 
   // send the cancelled job
   iJobId job::originator@ locals| iOriginator |
@@ -77,11 +71,15 @@
   // get the participant node from where this job__begun started
   pJob__Cancelled job.participant@ to iParticipantNode
 
-  // get the error code from job__executed
-  pJob__Cancelled jobCancelled.error@ to error
+  // get the error code from job__cancelled
+  //pJob__Cancelled jobCancelled.error@ to error
 
   // set the error code in pJobOriginator
-  error iParticipantNode pJobOriginator job.error!
+  //error iParticipantNode pJobOriginator job.error!
+  //error EC_NONE != if
+    // set error in executed job
+    //pJob__Cancelled iParticipantNode pJobOriginator job.participantResponse!
+  //then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __begun job on this originating node

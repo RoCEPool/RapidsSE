@@ -104,11 +104,6 @@
   tick index ( ^word ^word )
   eql ( bool )
   if
-    //indexPtr execute index.isHidden@ if
-    //  EC_NO_SUCH_INDEX false ( errorCode false )
-    //  exit
-    //then
-
     true ( true )
     exit
   then
@@ -189,44 +184,6 @@
   indexPtr tablePtr table.addIndex
 
   popIndexes
-;
-
-
-/*----------------------------------------------------------------------------*/
-/* print rows from entries of an index buffer                                 */
-/*----------------------------------------------------------------------------*/
-: printRows ( ^pIndex ^pIndexBuffer --  )
-
-/*
-  0 0 locals| nRowCount aItem pIndexBuffer pIndex iPartitionNo |
-
-  // get the partitionNo
-  pIndexBuffer entryBuffer.partition@ to iPartitionNo
-
-  // get the entry
-  pIndexBuffer entryBuffer.firstEntry to aItem
-
-  begin
-    aItem
-    while
-
-      display@ if
-        args.metadata if
-          pIndex aItem entry.embeddedRow
-          iPartitionNo grid::toPartition
-          "row: (%v,%v)\n" str.format .put
-        else
-          pIndex aItem entry.embeddedRow "row: (%v)\n" str.format .put
-        then
-      then
-      1 nRowCount + to nRowCount
-      aItem pIndexBuffer entryBuffer.nextEntry to aItem
-
-    repeat
-
-    // return nRowCount
-    nRowCount
-*/
 ;
 
 /*----------------------------------------------------------------------------*/

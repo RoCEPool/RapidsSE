@@ -5,18 +5,18 @@
 
 namespace Forth
 {
-  class Word;
+  class ForthWord;
   
   class Dic : public Object
   {
   private:
     s32    m_sName;        // name of this dictionary
-    Word*  m_pDicKind;     // kind of dictionary
+    ForthWord*  m_pDicKind;     // kind of dictionary
     bool   m_bFrozen;      // no more words can be added?
     Atomic m_ixRefCount;   // reference count
 
     Lock   m_okLock;        // lock over:
-    Word*  m_pLastWord;    //   last word in dictionary
+    ForthWord*  m_pLastWord;    //   last word in dictionary
     i8     m_nWords;       //   number of words in dictionary
     
     // must be last
@@ -33,18 +33,18 @@ namespace Forth
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
     
-    void  vAddWord(Word* pWord);
-    Word* pDicKind(void);
-    void  vDicKind(Word* pDicKind);
-    Word* pFindWord(Stz* aName);
-    Word* pFindStep(StepFp fpStep);
-    Word* pRemoveWord(s32& sName);
+    void  vAddWord(ForthWord* pWord);
+    ForthWord* pDicKind(void);
+    void  vDicKind(ForthWord* pDicKind);
+    ForthWord* pFindWord(Stz* aName);
+    ForthWord* pFindStep(StepFp fpStep);
+    ForthWord* pRemoveWord(s32& sName);
     bool  bFrozen(void);
     void  vFrozen(bool bFrozen);
     bool  bHasWords(void);
     void  vInit(void);
     bool  bIsName(s32& sName);
-    Word* pLastWord(void);
+    ForthWord* pLastWord(void);
     void  vListWords(void);
     s32&  sName(void);
     void  vName(Stz* aName);

@@ -294,8 +294,10 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
 
     // check if job had an error
     if (pJob->m_bHasError) {
-      for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-        eEC eError = pJob->m_xNode[i_Node].m_eErrorCode;
+      i8 iResponses = pJob->m_pResponseVec->nItems();
+      
+      for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+        eEC eError = pJob->m_pResponseVec->pGet(i_Node)->m_eErrorCode;
         if (eError != EC_NONE) {
           pSession->m_pJobStack->vPushPointer(pJob);
           API_RETURN_ERROR(eError);
@@ -359,7 +361,8 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     
     // set the row in the insertRow job
     pJob_InsertRow->m_sObjectName = sTableName;
-    pJob_InsertRow->m_aRawData = sRecord;
+    pJob_InsertRow->m_pRecord->vRecStr(sRecord);
+    
     pJob_InsertRow->m_nRawDataBytes = iRawDataLength;
     API_LOC(370);
     
@@ -371,9 +374,11 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     // check if job had an error
     if (pJob_InsertRow->m_bHasError) {
       
-      for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      i8 iResponses = pJob->m_pResponseVec->nItems();
+      
+      for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+        eEC eError = pJob->m_pResponseVec->pGet(i_Node)->m_eErrorCode;
         
-        eEC eError = pJob_InsertRow->m_xNode[i_Node].m_eErrorCode;
         if (eError != EC_NONE)
           API_RETURN_ERROR(eError);
       }
@@ -456,7 +461,7 @@ eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
     API_LOC(350);
 
     // set the table pointer (THIS CAN GO ????)
-    pJob_SubInserter->m_pTable = pJob_InsertTable->m_pTable;
+    pJob_SubInserter->vTable(pJob_InsertTable->m_pTable);
     API_LOC(360);
 
     // return the sub_inserter job
@@ -503,8 +508,9 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
     static_cast<Job_CopyBuffer*>(pJobClass_CopyBuffer->pPreJob(pSession));
     API_LOC(350);
 
-    // set the pJob_SubInserter in the pJob_CopyBuffer
+    // set the pJob_SubInserter and table in the pJob_CopyBuffer
     pJob_CopyBuffer->m_pJob_SubInserter = pJob_SubInserter;
+    pJob_CopyBuffer->vTable(pJob_SubInserter->pTable());
     API_LOC(360);
 
     // move the recordBuffer from the subInsert into CopyBuffer
@@ -553,9 +559,10 @@ eEC RapidsSE_EndInsert(i8 iTrace, Session* pSession, void* aJob)
 
     // check if job had an error
     if (pJob_InsertTable->m_bHasError) {
+      i8 iResponses = pJob->m_pResponseVec->nItems();
       
-      for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-        eEC eError = pJob_InsertTable->m_xNode[i_Node].m_eErrorCode;
+      for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+        eEC eError = pJob->m_pResponseVec->pGet(i_Node)->m_eErrorCode;
         if (eError != EC_NONE)
           API_RETURN_ERROR(eError);
       }
@@ -706,14 +713,16 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
 /* fetch table                                                                */
 /*----------------------------------------------------------------------------*/
 eEC  RapidsSE_FetchTable (i8 iTrace, Session* pSession, Stz* aTable,
-                          i8 iPartition, void** aaEntryBuffer, i8* aiRowCount)
+                          i8 iPartition, void** aaRowBuffer, i8* aiRowCount)
 {
+
   API_SESSION_LEVEL();
   API_ENTER(AC_FetchTable);
-  API_NOTNULL(aaEntryBuffer);
+  API_NOTNULL(aaRowBuffer);
   //API_NOTNULL(aiBufferNo);
   API_NOTNULL(aiRowCount);
   API_BEGIN();
+  
   
   try {
     
@@ -723,22 +732,20 @@ eEC  RapidsSE_FetchTable (i8 iTrace, Session* pSession, Stz* aTable,
     
     // get first entry buffer
     TablePtn* pPartition = pTable->pPartition(TablePtn::iPartitionToSlot(iPartition));
-    Index* pIndex = pTable->pHiddenIndex();
-    IndexTree* pIndexTree = pPartition->pIndexTree(pIndex->iIndexNo());
     API_LOC(330);
     
-    EntryBuffer* pEntryBuffer = pIndexTree->pFirstH0Buffer();
+    RowBuffer* pRowBuffer = pPartition->pFirstRowBuffer();
     API_LOC(340);
     
     // return the first buffer
-    *aaEntryBuffer = pEntryBuffer;
+    *aaRowBuffer = pRowBuffer;
     
     i8 iRowCount = 0;
-    while (pEntryBuffer) {
+    while (pRowBuffer) {
       
-      iRowCount += pEntryBuffer->nItems();
+      iRowCount += pRowBuffer->nRowCount();
       
-      pEntryBuffer = pEntryBuffer->pNextBuffer();
+      pRowBuffer = pRowBuffer->pNextBuffer();
     }
     
     // return table row count
@@ -753,8 +760,9 @@ eEC  RapidsSE_FetchTable (i8 iTrace, Session* pSession, Stz* aTable,
   catch (...) { Error* pError = nullptr; API_CATCH(pError);
     
   }
-  
+
   API_RETURN();
+   
 }
 
 /*----------------------------------------------------------------------------*/
@@ -780,12 +788,13 @@ eEC RapidsSE_GetLoadResult(i8 iTrace, Session* pSession, void* aJob,
     i8 iRowsProcessed = 0;
     i8 iRowsInvalid   = 0;
     i8 iRowsSkipped   = 0;
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      
-      //vTrace("%s"_Stz, pJob_LoadTable->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += *pJob_LoadTable->m_xNode[i_Node].m_ixRowsProcessed;
-      iRowsInvalid   += *pJob_LoadTable->m_xNode[i_Node].m_ixRowsInvalid;
-      iRowsSkipped   += *pJob_LoadTable->m_xNode[i_Node].m_ixRowsSkipped;
+    i8 iResponses = pJob->m_pResponseVec->nItems();
+    
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      Response* pResponse = pJob->m_pResponseVec->pGet(i_Node);
+      iRowsProcessed += *pResponse->m_ixRowsProcessed;
+      iRowsInvalid   += *pResponse->m_ixRowsInvalid;
+      iRowsSkipped   += *pResponse->m_ixRowsSkipped;
     }
     API_LOC(320);
     
@@ -835,10 +844,14 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
   API_NOTNULL(aaRow);
   API_BEGIN();
   
-  i8 i_Node;
   i8 iMaxRowNo = 0;
-  for (i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-    iMaxRowNo = *pJob->m_xNode[i_Node].m_ixRowsProcessed;
+  
+  i8 iResponses = pJob->m_pResponseVec->nItems();
+  Response* pResponse = nullptr;
+  
+  for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+    pResponse = pJob->m_pResponseVec->pGet(i_Node);
+    iMaxRowNo = *pResponse->m_ixRowsProcessed;
     if (iRow < iMaxRowNo)
       break;
     iRow -= iMaxRowNo;
@@ -846,7 +859,7 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
   API_LOC(310);
 
   // tokenize the response
-  TokenVec* pTknVec = Tokeniser::pTokenise(pJob->m_xNode[i_Node].m_sResponse);
+  TokenVec* pTknVec = Tokeniser::pTokenise(pResponse->m_sResponse);
   API_LOC(320);
 
   i8 iRows = 0;
@@ -900,8 +913,11 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
   API_BEGIN();
   
   i8 iRowsProcessed= 0;
-  for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++)
-    iRowsProcessed += *pJob->m_xNode[i_Node].m_ixRowsProcessed;
+  i8 iResponses = pJob->m_pResponseVec->nItems();
+  
+  for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+    iRowsProcessed += *pJob->m_pResponseVec->pGet(i_Node)->m_ixRowsProcessed;
+  }
   API_LOC(310);
 
   *aiRowCount = iRowsProcessed;
@@ -929,9 +945,9 @@ eEC RapidsSE_GetTableColumnRow(i8 iTrace, Session* pSession, void* aJob,
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(aJob);
   API_LOC(310);
   
-  i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+  //i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
   Table* pTable =
-  (Table*)StrLib::iToI8(pJob_ListColumns->m_xNode[iNode].m_sResponse.aChar());
+  (Table*)StrLib::iToI8(pJob_ListColumns->m_xResponse.m_sResponse.aChar());
   API_LOC(320);
   
   ColumnVec* pColumnVec = pTable->pColumnVec();
@@ -972,21 +988,19 @@ eEC RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(aJob);
   API_LOC(310);
 
-  i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+  //i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
   Table* pTable =
-    (Table*)StrLib::iToI8(pJob_ListColumns->m_xNode[iNode].m_sResponse.aChar());
+    (Table*)StrLib::iToI8(pJob_ListColumns->m_xResponse.m_sResponse.aChar());
   API_LOC(320);
 
   ColumnVec* pColumnVec = pTable->pColumnVec();
   API_LOC(330);
 
-  pJob_ListColumns->m_xNode[iNode].m_ixRowsProcessed = pColumnVec->nItems() - 1;
+  pJob_ListColumns->m_xResponse.m_ixRowsProcessed = pColumnVec->nItems();
   API_LOC(340);
 
-  *aiRowCount = *(pJob_ListColumns->m_xNode[iNode].m_ixRowsProcessed);
+  *aiRowCount = *(pJob_ListColumns->m_xResponse.m_ixRowsProcessed);
   API_LOC(350);
-
-  //vTrace("RowCount = %lld\n"_Stz, pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
   
   API_RETURN();
 }
@@ -1011,6 +1025,9 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
   API_NOTNULL(aaRow);
   API_BEGIN();
   
+  RASSERT(0);
+  
+  /*
   try {
 
     // get the table
@@ -1018,7 +1035,7 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
     RASSERT(pTable->eClass() == CN_TABLE);
     API_LOC(320);
     
-    //*piExpectedRows = (i8)(pJob_FetchRows->m_pBufferQueue->iCount() * C_ROWS_PER_BUFFER);
+    // *piExpectedRows = (i8)(pJob_FetchRows->m_pBufferQueue->iCount() * C_ROWS_PER_BUFFER);
     
     Item* aItem = nullptr;
     EntryBuffer* pEntryBuffer = nullptr;
@@ -1093,6 +1110,7 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
   }
   catch (Error* pError) { API_CATCH(pError); }
   catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  */
   
   API_RETURN();
 }
@@ -1111,6 +1129,9 @@ eEC RapidsSE_GetFirstBuffer(i8 iTrace, Session* pSession, void* aTable,
   API_NOTNULL(aiRowCount);
   API_BEGIN();
   
+  RASSERT(0);
+  
+ /*
   try {
     
     // get the table
@@ -1145,6 +1166,7 @@ eEC RapidsSE_GetFirstBuffer(i8 iTrace, Session* pSession, void* aTable,
   }
   catch (Error* pError) { API_CATCH(pError); }
   catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  */
   
   API_RETURN();
 }

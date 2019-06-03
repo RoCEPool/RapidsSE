@@ -13,6 +13,7 @@ JobClass xJobClass_ListColumns =
 {
   CN_JOB_LISTCOLUMNS,     // class enum
   JK_LOCAL,               // job kind
+  RK_LOCAL_ROWS,          // response kind
   "list table columns"_Stz, // comment about the job
   "lscol"_Stz,            // the prompt command
   nullptr,                // the second word
@@ -209,9 +210,7 @@ Job* Jobs::pJob_ListColumns_pre(Interface::Session* pSession)
   bool bResult = pJob_ListColumns->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_ListColumns->m_bHasError = true;
-    pJob_ListColumns->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_ListColumns->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_ListColumns;
@@ -225,9 +224,8 @@ void Jobs::vJob_ListColumns_post(Interface::Session* pSession, Job* pJob)
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJob);
   
   if ( pJob_ListColumns->m_bHasError ) {
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_ListColumns->m_xNode[i_Node].m_eErrorCode]);
-    }
+    vTrace("error: (node%lld) %s\n"_Stz, gpAttachMap->m_pGrid->iThisNode(),
+           aEC[pJob_ListColumns->m_xResponse.m_eErrorCode]);
   }
   else {
     if (gpAttachMap->m_bMetadata) {
@@ -235,11 +233,11 @@ void Jobs::vJob_ListColumns_post(Interface::Session* pSession, Job* pJob)
     }
     
     i8 iRowsProcessed = 0;
-    Table* pTable = (Table*)StrLib::iToI8(pJob_ListColumns->m_xNode[gpAttachMap->m_pGrid->m_iThisNode].m_sResponse.aChar());
+    Table* pTable = (Table*)StrLib::iToI8(pJob_ListColumns->m_xResponse.m_sResponse.aChar());
     
     ColumnVec* pColumnVec = pTable->pColumnVec();
     i8 iColumns = pColumnVec->nItems();
-    for (i8 iColumn = 0; iColumn < iColumns - 1; iColumn++) {
+    for (i8 iColumn = 0; iColumn < iColumns; iColumn++) {
       Column* pColumn = pColumnVec->pGet(iColumn);
       vTrace("row: (%lld, '%s', '%s', %lld, %lld, %s, %s)\n"_Stz,
              pColumn->iColumnNo(),
@@ -252,7 +250,7 @@ void Jobs::vJob_ListColumns_post(Interface::Session* pSession, Job* pJob)
       );
       
     }
-    iRowsProcessed = iColumns - 1;
+    iRowsProcessed = iColumns;
     vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
   }
 }

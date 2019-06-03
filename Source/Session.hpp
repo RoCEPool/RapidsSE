@@ -7,8 +7,6 @@
 
 namespace Interface
 {
-  static const i8 C_MAX_SESSIONS = 1024;
-  
   class SessionState;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

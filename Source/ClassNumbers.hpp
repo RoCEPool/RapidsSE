@@ -44,12 +44,15 @@ enum eCN : u2 // Class Number
   /*  22 0x16      120B Heap:S */ CN_BYTERATE,
   
   /*  23 0x17       40B Heap:I */ CN_CARRYOVER,
+  /*                           */ CN_CATALOG,
   /*  24 0x18      120B Heap:S */ CN_COLUMN,
   /*  25 0x19     8216B Heap:M */ CN_COLUMNVEC,
   /*  26 0x1A       24B Heap:M */ CN_COMMAND,
   /*  27 0x1B       64B Heap:M */ CN_COMPILER,
   /*                           */ CN_COMPLETER,
 
+  /*                           */ CN_DATUM,
+  /*                           */ CN_DECACNT,
   /*  28 0x1C       24B Heap:S */ CN_DECIDER,
   /*  29 0x1D      248B Heap:M */ CN_DIC,
   /*  30 0x1E      792B Heap:S */ CN_DICPATH,
@@ -118,6 +121,7 @@ enum eCN : u2 // Class Number
   /*  83 0x53    70592B Heap:L */ CN_JOB_DROPTABLE,
   /*  84 0x54    70592B Heap:L */ CN_JOB_DROPTENANT,
   /*  85 0x55    70592B Heap:L */ CN_JOB_DUMPINDEX,
+  /*                           */ CN_JOB_DUMPTABLE,
   /*  86 0x56    70864B Heap:L */ CN_JOB_EXPORT,
   /*  87 0x57    70936B Heap:L */ CN_JOB_FETCHROWS,
   /*  88 0x58   122912B Heap:L */ CN_JOB_GENERATE,
@@ -172,7 +176,9 @@ enum eCN : u2 // Class Number
   /* 133 0x85    70592B Heap:L */ CN_JOB_TRUNCATETABLE,
   /* 134 0x86    70592B Heap:L */ CN_JOB_USESCHEMA,
   /* 135 0x87    70592B Heap:L */ CN_JOB_VERIFYINDEX,
+  /*                           */ CN_JOB_VERIFYTABLE,
   /* 136 0x88    70592B Heap:L */ CN_JOB_VISUALIZEINDEX,
+  /*                           */ CN_JOB_VISUALIZETABLE,
   /* 137 0x89    70592B Heap:L */ CN_JOB_WAITCLUSTER,
   /*                           */ CN_JOB_WALK,
   /* 138 0x8A    70648B Heap:L */ CN_JOB_WRITEBUFFER,
@@ -197,13 +203,16 @@ enum eCN : u2 // Class Number
   /*                           */ CN_MEMTEST,
   /* 155 0x9B      160B Heap:S */ CN_MUTEX,
   
+  /*                           */ CN_NMVAL,
   /* 156 0x9C      168B Heap:S */ CN_NODE,
   /* 157 0x9D       88B Heap:S */ CN_NOW,
-  
+  /*                           */ CN_NUMBAT,
+
   /* 158 0x9E       24B Heap:S */ CN_OP,
   
   /* 159 0x9F    48752B Heap:M */ CN_PARSER,
   /* 160 0xA0     1048B Heap:M */ CN_PATHVEC,
+  /*                           */ CN_PERUSE,
   /* 161 0xA1      320B Heap:S */ CN_PIPE,
   /* 162 0xA2    48376B Heap:M */ CN_PLAN,
   /* 163 0xA3     3112B Heap:M */ CN_PLANNER,
@@ -216,12 +225,19 @@ enum eCN : u2 // Class Number
   /* 169 0xA9       64B Heap:I */ CN_QUEUEBUFFER,
   /* 170 0xAA     1232B Heap:S */ CN_QUEUES,
   
+  /*                           */ CN_RECORD,
   /* 171 0xAB  1043496B Heap:L */ CN_RECORDBUFFER,
   /* 172 0xAC      184B Heap:S */ CN_RESOURCETRACKER,
+  /*                           */ CN_RESPONSE,
+  /*                           */ CN_RESPONSEVEC,
+  /*                           */ CN_ROW,
   /* 173 0xAD      896B Heap:M */ CN_ROWAGG,
+  /*                    Heap:L */ CN_ROWBUFFER,
+  /*                           */ CN_ROWCODER,
   /* 174 0xAE      152B Heap:S */ CN_ROWONCE,
-  /* 175 0xAF    17448B Heap:I */ CN_ROWWRK,
+  /*                           */ CN_ROWTRAY,
   
+  /*                           */ CN_SCHEMA,
   /* 176 0xB0    50208B Heap:L */ CN_SCHEMATEST,
   /*                           */ CN_SEEME,
   /* 177 0xB1       88B Heap:L */ CN_SEPROMPT,
@@ -236,6 +252,15 @@ enum eCN : u2 // Class Number
   /* 186 0xBA      232B Heap:I */ CN_SMALLPERSISTENT,
   /* 187 0xBB      232B Heap:I */ CN_SMALLTRANSIENT,
   /* 188 0xBC      176B Heap:S */ CN_SOCKET,
+  /*                           */ CN_SPBCD,
+  /*                           */ CN_SPBOL,
+  /*                           */ CN_SPDTE,
+  /*                           */ CN_SPFLT,
+  /*                           */ CN_SPINT,
+  /*                           */ CN_SPIVL,
+  /*                           */ CN_SPTME,
+  /*                           */ CN_SPTSP,
+  /*                           */ CN_SPVCH,
   /* 189 0xBD  1043520B Heap:L */ CN_STACK,
   /* 190 0xBE    12824B Heap:I */ CN_STATISTICS,
   /* 191 0xBF       64B Heap:S */ CN_STEPACCUM,
@@ -250,6 +275,8 @@ enum eCN : u2 // Class Number
   /* 199 0xC7      184B Heap:S */ CN_TASKLIST,
   /* 200 0xC8      160B Heap:S */ CN_TASKQUEUE,
   /*                           */ CN_TEMPNAME,
+  /*                           */ CN_TENANT,
+  /*                           */ CN_TENANTS,
   /* 201 0xC9       96B Heap:S */ CN_THREAD,
   /* 202 0xCA     2208B Heap:M */ CN_THREADVEC,
   /* 203 0xCB       24B Heap:I */ CN_TIME,
@@ -306,12 +333,15 @@ static Stz* aCN[]
   /*  22 0x16 */ "BYTERATE"_Stz,            // CN_BYTERATE
   
   /*  23 0x17 */ "CARRYOVER"_Stz,           // CN_CARRYOVER
+  /*          */ "CATALOG"_Stz,             // CN_CATALOG
   /*  24 0x18 */ "COLUMN"_Stz,              // CN_COLUMN
   /*  25 0x19 */ "COLUMNVEC"_Stz,           // CN_COLUMNVEC
   /*  26 0x1A */ "COMMAND"_Stz,             // CN_COMMAND
   /*  27 0x1B */ "COMPILER"_Stz,            // CN_COMPILER
   /*          */ "COMPLETER"_Stz,           // CN_COMPLETER
 
+  /*          */ "DATUM"_Stz,               // CN_DATUM
+  /*          */ "DECACNT"_Stz,             // CN_DECACNT
   /*  28 0x1C */ "DECIDER"_Stz,             // CN_DECIDER
   /*  29 0x1D */ "DIC"_Stz,                 // CN_DIC
   /*  30 0x1E */ "DICPATH"_Stz,             // CN_DICPATH
@@ -380,6 +410,7 @@ static Stz* aCN[]
   /*  83 0x53 */ "JOB_DROPTABLE"_Stz,       // CN_JOB_DROPTABLE
   /*  84 0x54 */ "JOB_DROPTENANT"_Stz,      // CN_JOB_DROPTENANT
   /*  85 0x55 */ "JOB_DUMPINDEX"_Stz,       // CN_JOB_DUMPINDEX
+  /*          */ "JOB_DUMPTABLE"_Stz,       // CN_JOB_DUMPTABLE
   /*  86 0x56 */ "JOB_EXPORT"_Stz,          // CN_JOB_EXPORT
   /*  87 0x57 */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
   /*  88 0x58 */ "JOB_GENERATE"_Stz,        // CN_JOB_GENERATE
@@ -434,7 +465,9 @@ static Stz* aCN[]
   /* 133 0x85 */ "JOB_TRUNCATETABLE"_Stz,   // CN_JOB_TRUNCATETABLE
   /* 134 0x86 */ "JOB_USESCHEMA"_Stz,       // CN_JOB_USESCHEMA
   /* 135 0x87 */ "JOB_VERIFYINDEX"_Stz,     // CN_JOB_VERIFYINDEX
+  /*          */ "JOB_VERIFYTABLE"_Stz,     // CN_JOB_VERIFYTABLE
   /* 136 0x88 */ "JOB_VISUALIZEINDEX"_Stz,  // CN_JOB_VISUALIZEINDEX
+  /*          */ "JOB_VISUALIZETABLE"_Stz,  // CN_JOB_VISUALIZETABLE
   /* 137 0x89 */ "JOB_WAITCLUSTER"_Stz,     // CN_JOB_WAITCLUSTER
   /* 137 0x89 */ "JOB_WALK"_Stz,            // CN_JOB_WALK
   /* 138 0x8A */ "JOB_WRITEBUFFER"_Stz,     // CN_JOB_WRITEBUFFER
@@ -459,13 +492,16 @@ static Stz* aCN[]
   /*          */ "MEMTEST"_Stz,             // CN_MEMTEST
   /* 155 0x9B */ "MUTEX"_Stz,               // CN_MUTEX
   
+  /*          */ "NMVAL"_Stz,               // CN_NMVAL
   /* 156 0x9C */ "NODE"_Stz,                // CN_NODE
   /* 157 0x9D */ "NOW"_Stz,                 // CN_NOW
-  
+  /*          */ "NUMBAT"_Stz,              // CN_NUMBAT
+
   /* 158 0x9E */ "OP"_Stz,                  // CN_OP
   
   /* 159 0x9F */ "PARSER"_Stz,              // CN_PARSER
   /* 160 0xA0 */ "PATHVEC"_Stz,             // CN_PATHVEC
+  /*          */ "PERUSE"_Stz,              // CN_PERUSE
   /* 161 0xA1 */ "PIPE"_Stz,                // CN_PIPE
   /* 162 0xA2 */ "PLAN"_Stz,                // CN_PLAN
   /* 163 0xA3 */ "PLANNER"_Stz,             // CN_PLANNER
@@ -478,12 +514,19 @@ static Stz* aCN[]
   /* 169 0xA9 */ "QUEUEBUFFER"_Stz,         // CN_QUEUEBUFFER
   /* 170 0xAA */ "QUEUES"_Stz,              // CN_QUEUES
   
+  /*          */ "RECORD"_Stz,              // CN_RECORD
   /* 171 0xAB */ "RECORDBUFFER"_Stz,        // CN_RECORDBUFFER
   /* 172 0xAC */ "RESOURCETRACKER"_Stz,     // CN_RESOURCETRACKER
+  /*          */ "RESPONSE"_Stz,            // CN_RESPONSE
+  /*          */ "RESPONSEVEC"_Stz,         // CN_RESPONSEVEC
+  /*          */ "ROW"_Stz,                 // CN_ROW
   /* 173 0xAD */ "ROWAGG"_Stz,              // CN_ROWAGG
+  /*          */ "ROWBUFFER"_Stz,           // CN_ROWBUFFER
+  /*          */ "ROWCODER"_Stz,            // CN_ROWCODER
   /* 174 0xAE */ "ROWONCE"_Stz,             // CN_ROWONCE
-  /* 175 0xAF */ "ROWWRK"_Stz,              // CN_ROWWRK
+  /*          */ "ROWTRAY"_Stz,             // CN_ROWTRAY
   
+  /*          */ "SCHEMA"_Stz,              // CN_SCHEMA
   /* 176 0xB0 */ "SCHEMATEST"_Stz,          // CN_SCHEMATEST
   /*          */ "SEEME"_Stz,               // CN_SEEME
   /* 177 0xB1 */ "SEPROMPT"_Stz,            // CN_SEPROMPT
@@ -498,6 +541,15 @@ static Stz* aCN[]
   /* 186 0xBA */ "SMALLPERSISTENT"_Stz,     // CN_SMALLPERSISTENT
   /* 187 0xBB */ "SMALLTRANSIENT"_Stz,      // CN_SMALLTRANSIENT
   /* 188 0xBC */ "SOCKET"_Stz,              // CN_SOCKET
+  /* 188 0xBC */ "SPBCD"_Stz,               // CN_SPBCD
+  /* 188 0xBC */ "SPBOL"_Stz,               // CN_SPBOL
+  /* 188 0xBC */ "SPDTE"_Stz,               // CN_SPDTE
+  /* 188 0xBC */ "SPFLT"_Stz,               // CN_SPFLT
+  /* 188 0xBC */ "SPINT"_Stz,               // CN_SPINT
+  /* 188 0xBC */ "SPIVL"_Stz,               // CN_SPIVL
+  /* 188 0xBC */ "SPTME"_Stz,               // CN_SPTME
+  /* 188 0xBC */ "SPTSP"_Stz,               // CN_SPTSP
+  /* 188 0xBC */ "SPVCH"_Stz,               // CN_SPVCH
   /* 189 0xBD */ "STACK"_Stz,               // CN_STACK
   /* 190 0xBE */ "STATISTICS"_Stz,          // CN_STATISTICS
   /* 191 0xBF */ "STEPACCUM"_Stz,           // CN_STEPACCUM
@@ -512,6 +564,8 @@ static Stz* aCN[]
   /* 199 0xC7 */ "TASKLIST"_Stz,            // CN_TASKLIST
   /* 200 0xC8 */ "TASKQUEUE"_Stz,           // CN_TASKQUEUE
   /*          */ "TEMPNAME"_Stz,            // CN_TEMPNAME
+  /*          */ "TENANT"_Stz,              // CN_TENANT
+  /*          */ "TENANTS"_Stz,             // CN_TENANTS
   /* 201 0xC9 */ "THREAD"_Stz,              // CN_THREAD
   /* 202 0xCA */ "THREADVEC"_Stz,           // CN_THREADVEC
   /* 203 0xCB */ "TIME"_Stz,                // CN_TIME

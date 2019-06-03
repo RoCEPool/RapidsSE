@@ -11,7 +11,7 @@
 
   >>am <SEED_REQ>
 
-  0 0 0 locals| iCount pJob_Ping pTask |
+  0 0 locals| pJob_Ping pTask |
 
   tp: ping_req
 
@@ -36,8 +36,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set response in job
-  "row: ( 'pong' )\n" grid::thisNode@ pJob_Ping job.response!
-  iCount grid::thisNode@ pJob_Ping job.rowsProcessed!
+  "row: ( 'pong' )\n" pJob_Ping job.response!
+  1 pJob_Ping job.rowsProcessed!
 
   <<am <DONE_REQ>
 ;

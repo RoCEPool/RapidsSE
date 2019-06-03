@@ -13,6 +13,7 @@ JobClass xJobClass_Sanity =
 {
   CN_JOB_SANITY,     // class enum
   JK_DIST2PC,        // job kind
+  RK_NODE_ROWS,      // response kind
   "sanity check"_Stz,// comment about the job
   "sanity"_Stz,      // the prompt command
   nullptr,           // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_Sanity =
 
   eJob_checkCluster, // prompt check function
   pJob_Sanity_pre,   // prompt pre-process function
-  vJob_Sanity_post,  // prompt post-process function
+  vJob_post,         // prompt post-process function
   nullptr,           // job new function
   vJob_Sanity_delete,// job delete function
   vJob_send,         // job pre-send function
@@ -207,39 +208,10 @@ Job* Jobs::pJob_Sanity_pre(Interface::Session* pSession)
   bool bResult = pJob_Sanity->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_Sanity->m_bHasError = true;
-    pJob_Sanity->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_Sanity->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_Sanity;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_Sanity_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_Sanity* pJob_Sanity = _pJob_Sanity(pJob);
-  
-  if ( pJob_Sanity->m_bHasError ) {
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_Sanity->m_xNode[i_Node].m_eErrorCode]);
-    }
-  }
-  else {
-    if (gpAttachMap->m_bMetadata) {
-      vTrace("metadata: %s\n"_Stz, pJob_Sanity->m_sMetadata.aStz());
-    }
-    
-    i8 iRowsProcessed = 0;
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("%s\n"_Stz, pJob_Sanity->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += *pJob_Sanity->m_xNode[i_Node].m_ixRowsProcessed;
-    }
-    vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

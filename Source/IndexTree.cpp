@@ -51,9 +51,7 @@ IndexTree::IndexTree(Index* pIndex, i8 iPartitionNo)
   m_okLock.vInitLock(LK_INDEX_TREE);
   m_pIndex = pIndex;
   m_iPartitionNo = iPartitionNo;
-  m_pPartition   = nullptr;
   m_pRootBuffer  = nullptr;
-  m_pCurrentBuffer = nullptr;
   
   _checkInitialised_(CN_INDEXTREE);
   
@@ -138,98 +136,12 @@ Stz* IndexTree::pAnalyze(void)
   i8 nStrandsTotal = 0;
   s48K sAnalysis;
   
-  if (m_pIndex->bIsHidden())
-      sAnalysis.vCatSprint("N%lld: Analysis of table %s\n"_Stz,
-                           gpAttachMap->m_pGrid->iThisNode(),
-                           m_pIndex->pTable()->aTableName());
-  else
-    sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Stz,
-                         gpAttachMap->m_pGrid->iThisNode(),
-                         m_pIndex->aIndexName()->aChar(),
-                         m_pIndex->pTable()->aTableName());
+  sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Stz,
+                        gpAttachMap->m_pGrid->iThisNode(),
+                        m_pIndex->aIndexName()->aChar(),
+                        m_pIndex->pTable()->aTableName());
   
   return sAnalysis;
-}
-
-/*----------------------------------------------------------------------------*/
-/* append a buffer into the IndexTree (should be hidden index IndexTree)      */
-/*----------------------------------------------------------------------------*/
-void IndexTree::vAppendBuffer(EntryBuffer* pEntryBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
-  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
-  
-  // we should be appending buffers only for hidden index
-  ASSERT(m_pIndex->bIsHidden());
-  
-  m_okLock.vGrabWrite();
-  
-  if (m_pRootBuffer == nullptr) {
-    ASSERT( ! m_pCurrentBuffer )
-    m_pRootBuffer = pEntryBuffer;
-  }
-  else {
-    pEntryBuffer->vNextBuffer(m_pCurrentBuffer->pNextBuffer());
-    pEntryBuffer->vPrevBuffer(m_pCurrentBuffer);
-    m_pCurrentBuffer->vNextBuffer(pEntryBuffer);
-  }
-  
-  m_pCurrentBuffer = pEntryBuffer;
-  
-  m_okLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert an entry for {key,id} into an index buffer at given level           */
-/*----------------------------------------------------------------------------*/
-Item* IndexTree::pAppendRow(i8 iTxId, Stz* aRow_Data, i8 iRowLength)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
-  gpAttachMap->m_oStatistics.IndexTree.m_nAppendRows++;
-
-  Item* aNewEntry;
-  
-  m_okLock.vGrabWrite();
-  
-  if (m_pRootBuffer == nullptr) {
-    ASSERT( ! m_pCurrentBuffer )
-    m_pRootBuffer = new EntryBuffer();
-    m_pRootBuffer->vIndex(m_pIndex);
-    m_pRootBuffer->vPartitionNo(m_iPartitionNo);
-    m_pCurrentBuffer = m_pRootBuffer;
-  }
-  
-  RowWrk xRowWrk;
-  
-  xRowWrk.vEmbedded((char*)aRow_Data);
-  xRowWrk.vRowDataSize(iRowLength);
-  //xRowWrk.vShow(m_pIndex->pTable()->pColumnVec());
-  
-  aNewEntry = m_pCurrentBuffer->aAppendRow(xRowWrk);
-  //m_pCurrentBuffer->vDump();
-  if ( !aNewEntry ) {
-    //----------------------------------------------------------------------------
-    // create a new entry buffer and link with current buffer
-    EntryBuffer* pNewBuffer = new EntryBuffer();
-    pNewBuffer->vIndex(m_pIndex);
-    pNewBuffer->vPartitionNo(m_iPartitionNo);
-    pNewBuffer->vNextBuffer(m_pCurrentBuffer->pNextBuffer());
-    pNewBuffer->vPrevBuffer(m_pCurrentBuffer);
-    m_pCurrentBuffer->vNextBuffer(pNewBuffer);
-    
-    //----------------------------------------------------------------------------
-    // toggle to the new buffer
-    m_pCurrentBuffer = pNewBuffer;
-    
-    // now insert into new buffer
-    aNewEntry = m_pCurrentBuffer->aAppendRow(xRowWrk);
-    ASSERT(aNewEntry);
-  }
-  m_okLock.vDropWrite();
-  
-  return aNewEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -639,118 +551,6 @@ void IndexTree::vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy all the elements of the right buffer to the left                      */
-/*----------------------------------------------------------------------------*/
-/*
-void IndexTree::vCopyLeftV1(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-
-  TRACE_COMPACT( vTrace("IndexTree::vCopyLeft (right %lld)\n"_Stz,
-                        pRightL0->iBufferNo()); )
-
-  KeyWrk xLeftKeyWrk;
-  
-  EntryBuffer* pLeftL0 = *ppLeftL0;
-  ASSERT(0 == pLeftL0->m_iBufferHeight());
-  ASSERT(0 == pRightL0->m_iBufferHeight());
-  EntryBuffer* pL1 = pLeftL0->pHigherBuffer();
-  ASSERT(1 == pL1->m_iBufferHeight());
-  ASSERT(pRightL0->pHigherBuffer() == pLeftL0->pHigherBuffer());
-  
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  
-  TRACE_COMPACT( pRightL0->vShow(); )
-  
-  // iterate thru each key entry in right L0
-  for (Item* aRightKeyEntryL0 = pRightL0->pFirstEntry();
-       pRightKeyEntryL0;
-       pRightKeyEntryL0 = pRightL0->pNextEntry(pRightKeyEntryL0,0)) {
-    
-    TRACE_COMPACT( pRightKeyEntryL0->vShow(0, m_pIndex, true); )
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // get the elements of the right key entry
-    
-    i8 iTxId = pRightKeyEntryL0->iTxId();
-    Id xId = pRightKeyEntryL0->xId();
-    KeyData* aKey = pRightKeyEntryL0->aKey();
-    i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nOffsets = pRightKeyEntryL0->nOffsets();
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // form the working version of the left key entry
-    
-    xLeftKeyWrk.vTxId(iTxId);
-    xLeftKeyWrk.vId(xId);
-    xLeftKeyWrk.vEmbedded((char*)aKey);
-    xLeftKeyWrk.vKeySize(nKeySize);
-    xLeftKeyWrk.vOffsets(nOffsets);
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // compute the size of the left key entry
-    
-    i8 nEntryBytes = xLeftKeyWrk.nEntrySize();
-    i8 nOffsetBytes = xLeftKeyWrk.nOffsetSize();
-    i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // get a new left buffer if not enough space in current left buffer
-    
-    if (! pLeftL0->bHasSpace(nEntryPlusOffsets)) {
-      
-      // new left buffer
-      EntryBuffer* pNewLeftL0 = new EntryBuffer;
-      pNewLeftL0->vIndex(m_pIndex);
-      pNewLeftL0->vHigherBuffer(pL1);
-      
-      // splice the new left buffer into the L0 list
-      pLeftL0->vSpliceAfter(pNewLeftL0);
-      
-      // adjust variables
-      *ppLeftL0 = pNewLeftL0;
-      pLeftL0 = pNewLeftL0;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // remove a first L0 key entry from L1
-    
-    if (pRightKeyEntryL0 == pRightL0->pFirstEntry()) {
-      TRACE_COMPACT( pL1->vShow(); )
-      bool bDeleted = pL1->bDeleteKey(aKey,pRightL0);
-      RASSERT(bDeleted);
-      TRACE_COMPACT( pL1->vShow(); )
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // insert a copy of the right key entry into left buffer
-    
-    TRACE_COMPACT( pLeftL0->vShow(); )
-    Item* aLeftKeyEntryL0 = pLeftL0->pInsertKeyAbs(xLeftKeyWrk);
-    TRACE_COMPACT( pLeftKeyEntryL0->vShow(0, m_pIndex, true); )
-    TRACE_COMPACT( pLeftL0->vShow(); )
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // insert a first L0 key entry into L1
-    
-    if (1 == pLeftL0->nItems()) {
-
-      i8 iLeftL0BufferNo = pLeftL0->iBufferNo();
-      xId.vBuffer(iLeftL0BufferNo);
-      xLeftKeyWrk.vId(xId);
-      
-      TRACE_COMPACT( pL1->vShow(); )
-      Item* aLeftEntryL1 = pL1->pInsertKeyAbs(xLeftKeyWrk);
-      TRACE_COMPACT( pLeftEntryL1->vShow(0, m_pIndex, true); )
-      TRACE_COMPACT( pL1->vShow(); )
-    }
-    
-  } // for
-
-}
-*/
-
-/*----------------------------------------------------------------------------*/
 /* dump the index                                                             */
 /*----------------------------------------------------------------------------*/
 void IndexTree::vDump(bool bSameHeight)
@@ -858,19 +658,25 @@ i8 IndexTree::nEntryBuffers(void)
 /*----------------------------------------------------------------------------*/
 /* insert entries from entryBuffer into this index at level 0                 */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer)
+void IndexTree::vInsertEntriesFromBuffer(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   //m_okLock.vGrabWrite();
-  
+
   //pEntryBuffer->vShow();
+
+  Id xId;
+  xId.vBuffer(*pRowBuffer->nPoolBufferNo());
   
-  for ( Item* aItem = pEntryBuffer->aLeadEntry() ;
-       aItem;
-       aItem = pEntryBuffer->aNextEntry(aItem, 0)) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate thru the buffer till no more entries
+  for (i8 i_Row = 0; i_Row < pRowBuffer->nRowCount(); i_Row++) {
+
+    xId.vItem(i_Row);
     
-    bool bInserted = bInsertEntry(aItem);
+    bool bInserted = bInsertEntry(pRowBuffer,i_Row,xId);
+    
     //bVerify();
     ASSERT(bInserted);
   }
@@ -881,16 +687,17 @@ void IndexTree::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-bool IndexTree::bInsertEntry(Item* aRowEntry)
+bool IndexTree::bInsertEntry(RowBuffer* pRowBuffer, i8 i_Row, Id& xId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   m_okLock.vGrabWrite();
   
   KeyWrk xKeyWrk;
-  xKeyWrk.vExtractKey(aRowEntry,m_pIndex->pIdxColVec());
-  xKeyWrk.vId(aRowEntry->xId());
-  //xKeyWrk.vShow(m_pIndex->pIdxColVec(), false);
+  xKeyWrk.vExtractKey(pRowBuffer,i_Row,m_pIndex->pIdxColVec());
+  xKeyWrk.vId(xId);
+  
+  //xKeyWrk.vShow(m_pIndex->pIdxColVec());
   
   if ( ! m_pRootBuffer ) {
     m_pRootBuffer = new EntryBuffer;
@@ -955,105 +762,6 @@ EntryBuffer* IndexTree::pPositionH0Buffer(KeyWrk& xKeyWrk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* publish the index buffers                                                  */
-/*----------------------------------------------------------------------------*/
-void IndexTree::vPublish(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
-  // only allowing publishing of hidden index
-  RASSERT(m_pIndex->bIsHidden());
-  
-  if ( ! m_pRootBuffer)
-    return;
-  
-  m_okLock.vGrabWrite();
-  
-  // is there a current buffer ?
-  if ( ! m_pCurrentBuffer)
-    return;
-  
-  s48K sRowString;
-  
-  // publish the current buffer (last buffer that was added)
-  for (Item* aItem = m_pCurrentBuffer->aLeadEntry();
-       aItem != nullptr;
-       aItem = m_pCurrentBuffer->aNextEntry(aItem, 0)) {
-    RowData* aRowData = _aRowData(aItem->aDataArea());
-    aRowData->vAsBinaryStringVLQ(sRowString, m_pIndex->pTable()->pColumnVec());
-    vTrace("row: (%s)\n"_Stz, sRowString.aChar());
-  }
-  vTrace("Partition%lld: published %lld rows\n"_Stz,m_iPartitionNo, m_pCurrentBuffer->nItems());
-  m_okLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to purge oldest buffer of index tree                               */
-/*----------------------------------------------------------------------------*/
-bool IndexTree::bPurge(i8 iOlderThanSeconds)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
-  static i8 iMaxAge = 0;
-  static i8 nMaxBuffers = 0;
-  
-  // only allowing purging of hidden index
-  RASSERT(m_pIndex->bIsHidden());
-  
-  if (! m_pRootBuffer)
-    return false;
-  
-  m_okLock.vGrabWrite();
-  
-  i8 iAge = m_pRootBuffer->iAgeSsec();
-  
-//  if (iAge <= 1) {
-//    vTrace("Purge: age is %llds\n"_Stz,iMaxAge);
-//  }
-  
-  if (iAge > iMaxAge) {
-    iMaxAge = iAge;
-//    vTrace("Purge: max age now %llds\n"_Stz,iMaxAge);
-  }
-  
-  i8 iLengthList = m_pRootBuffer->iLengthList();
-  if (iLengthList > nMaxBuffers) {
-    nMaxBuffers = iLengthList;
-    //vTrace("Purge: max buffer chain now %lld buffers\n"_Stz,nMaxBuffers);
-  }
-
-  
-  if (iAge <= iOlderThanSeconds) {
-    m_okLock.vDropWrite();
-    return false;
-  }
-  
-  // is currentBuffer same as rootBuffer ?
-  if (m_pCurrentBuffer == m_pRootBuffer)
-    m_pCurrentBuffer = nullptr;
-  
-  EntryBuffer* pEntryBuffer = m_pRootBuffer;
-  
-  // get next entry buffer
-  m_pRootBuffer = m_pRootBuffer->pNextBuffer();
-  
-  // set prev pointer to null
-  if (m_pRootBuffer) {
-    ASSERT(pEntryBuffer ==  m_pRootBuffer->pPrevBuffer());
-    m_pRootBuffer->vPrevBuffer(nullptr);
-  }
-  
-  m_okLock.vDropWrite();
-  
-  // delete the roor buffer
-  delete pEntryBuffer;
-  
-  gpAttachMap->m_oStatistics.IndexTree.m_nBuffersPurged++;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get root entry                                                             */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* IndexTree::pRoot(void)
@@ -1086,7 +794,6 @@ void IndexTree::vTruncate(void)
     m_pRootBuffer->vTruncate();
   
   m_pRootBuffer    = nullptr;
-  m_pCurrentBuffer = nullptr;
   
   m_okLock.vDropWrite();
 }
@@ -1098,7 +805,10 @@ bool IndexTree::bVerify(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  return m_pRootBuffer->bVerify();
+  if (m_pRootBuffer)
+    return m_pRootBuffer->bVerify();
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1108,9 +818,10 @@ bool IndexTree::bVerifyIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  bool bValid = m_pRootBuffer->bVerify();
+  if (m_pRootBuffer)
+    return m_pRootBuffer->bVerify();
   
-  return bValid;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1162,22 +873,6 @@ void IndexTree::vVisualize(void)
   
   if ( ! pEntryBuffer)
     return;
-  
-  // hidden index has all level 0 buffers
-  if (m_pIndex->bIsHidden()) {
-    
-    do {
-      ASSERT(pEntryBuffer->iBufferHeight() == 0);
-      // print the decile of pNextBuffer
-      vTrace("%lld"_Stz, pEntryBuffer->iDecile());
-      
-      pEntryBuffer = pEntryBuffer->pNextBuffer();
-      
-    } while (pEntryBuffer);
-    
-    vTrace("\n"_Stz);
-    return;
-  }
 
   // print the decile of the root buffer
   vTrace("%lld\n"_Stz, pEntryBuffer->iDecile());

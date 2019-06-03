@@ -13,6 +13,7 @@ JobClass xJobClass_SubInserter =
 {
   CN_JOB_SUBINSERTER,       // class enum
   JK_CHILD,                 // job kind
+  RK_NODE_ERRORS,           // response kind
   "insert into table"_Stz,  // comment about the job
   "insert"_Stz,             // the prompt command
   "rows"_Stz,               // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_SubInserter =
 
   eJob_checkCluster,        // prompt check function
   pJob_SubInserter_pre,     // prompt pre-process function
-  vJob_SubInserter_post,    // prompt post-process function
+  vJob_post,                // prompt post-process function
   pJob_SubInserter_new,     // job new function
   vJob_SubInserter_delete,  // job delete function
   nullptr,                  // job pre-send function
@@ -168,7 +169,7 @@ void Job_SubInserter::vBegin(Table* pTable)
   
   // set the table and parentJob in the writeBehind Job
   //RASSERT(pTable == this->m_pTable);
-  JobWriteBehind::m_pTable = pTable;
+  JobWriteBehind::vTable(pTable);
   JobWriteBehind::m_pParentJob = (Job*)m_pJob_InsertTable;
 }
 
@@ -273,22 +274,6 @@ Job* Jobs::pJob_SubInserter_pre(Interface::Session* pSession)
 //  }
   
   return pJob_SubInserter;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubInserter_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJob);
-  
-  if ( pJob_SubInserter->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_SubInserter->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
 }
 
 /*----------------------------------------------------------------------------*/

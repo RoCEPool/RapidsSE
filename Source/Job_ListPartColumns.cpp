@@ -13,6 +13,7 @@ JobClass xJobClass_ListPartColumns =
 {
   CN_JOB_LISTPARTCOLUMNS,           // class enum
   JK_LOCAL,                         // job kind
+  RK_LOCAL_ROWS,                    // response kind
   "list partition key"_Stz,         // comment about the job
   "lspartcol"_Stz,                  // the prompt command
   nullptr,                          // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_ListPartColumns =
 
   eJob_checkCluster,                // prompt check function
   pJob_ListPartColumns_pre,         // prompt pre-process function
-  vJob_ListPartColumns_post,        // prompt post-process function
+  vJob_post,                        // prompt post-process function
   nullptr,                          // job new function
   vJob_ListPartColumns_delete,      // job delete function
   nullptr,                          // job pre-send function
@@ -209,39 +210,10 @@ Job* Jobs::pJob_ListPartColumns_pre(Interface::Session* pSession)
   bool bResult = pJob_ListPartColumns->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_ListPartColumns->m_bHasError = true;
-    pJob_ListPartColumns->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_ListPartColumns->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_ListPartColumns;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListPartColumns_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_ListPartColumns* pJob_ListPartColumns = _pJob_ListPartColumns(pJob);
-  
-  if ( pJob_ListPartColumns->m_bHasError ) {
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_ListPartColumns->m_xNode[i_Node].m_eErrorCode]);
-    }
-  }
-  else {
-    if (gpAttachMap->m_bMetadata) {
-      vTrace("metadata: %s\n"_Stz, pJob_ListPartColumns->m_sMetadata.aStz());
-    }
-    
-    i8 iRowsProcessed = 0;
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("%s"_Stz, pJob_ListPartColumns->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += *pJob_ListPartColumns->m_xNode[i_Node].m_ixRowsProcessed;
-    }
-    vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

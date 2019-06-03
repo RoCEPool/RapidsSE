@@ -45,7 +45,6 @@ namespace Jobs
   Job_SubPurger* _pJob_SubPurger(void* aAddr);
   
   Job* pJob_SubPurger_pre(Interface::Session* pSession);
-  void vJob_SubPurger_post(Interface::Session* pSession, Job* pJob);
   void vJob_SubPurger_delete(Interface::Session* pSession, Job* pJob);
   void vJob_SubPurger_show(Job* pJob);
   

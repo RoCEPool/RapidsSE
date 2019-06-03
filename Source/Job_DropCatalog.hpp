@@ -36,7 +36,6 @@ namespace Jobs
   Job_DropCatalog* _pJob_DropCatalog(void* aAddr);
   
   Job* pJob_DropCatalog_pre(Interface::Session* pSession);
-  void vJob_DropCatalog_post(Interface::Session* pSession, Job* pJob);
   void vJob_DropCatalog_delete(Interface::Session* pSession, Job* pJob);
   void vJob_DropCatalog_show(Job* pJob);
   

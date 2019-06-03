@@ -51,27 +51,6 @@
   sTableNm :table ( ^table ) drop
   sTableNm find execute to pTable
 
-  //----------------------------------------------------------------------------
-  // create the hidden index for the row data
-  sTableNm "hidden" "make_index" find execute
-
-  //----------------------------------------------------------------------------
-  // make the index as hidden
-  "indexes" find execute pathPush
-  "hidden" findInCurrent execute to pIndex
-  true pIndex index.isHidden!
-
-  // now add a column to the hidden index
-  "integer" "hidden_column" pIndex index.createColumnVecHidden
-
-  // step out of indexes
-  pathDrop
-
-  //----------------------------------------------------------------------------
-  // store the hidden index in the table
-  pIndex sTableNm find execute table.hiddenIndex!
-  //pathDump
-
   // return table pointer
   pTable
 ;
@@ -146,7 +125,6 @@
   //----------------------------------------------------------------------------
   // should be in tables
   assertInTables
-
   pJob_CreateTable job.notice
 
   // job::deleteThis

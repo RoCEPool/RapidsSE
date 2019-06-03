@@ -60,7 +60,7 @@
   pIndex pIndex index.table@ table.removeIndex
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tidy up the index abd orget it
+  // tidy up the index and forget it
   sIndexNm indexTidyUp
   sIndexNm :forget
 
@@ -179,12 +179,6 @@
   // check it is an index we are dropping
   sIndexNm checkIsIndex not if
     popIndexes popTable assertInTables pJob_DropIndex <ERROR_JOB> !!am exit
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cannot drop hidden index
-  sIndexNm "hidden" str.equal if
-    popIndexes popTable assertInTables EC_NO_SUCH_INDEX pJob_DropIndex <ERROR_JOB> !!am exit
   then
 
   <<am <Resources_Checked>

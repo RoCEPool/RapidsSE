@@ -134,6 +134,7 @@ namespace Base
     static bool  bBackward(const char** ps, char* pBegin, const char c);
 
     static void  vClick(char* aArg);
+    static void  vComma(char* psDst, i8 iArg);
     static i8    iCompare(const char* pArg1, const char* pArg2);
     static bool  iCompare(const char* pArg1, const char* pArg2, i8 iCase);
     static bool  iCompare(const char* pArg1, const char* pArg2, i8 nBytes, i8 iCase);
@@ -194,18 +195,21 @@ namespace Base
                                     eDC* pDateComponents, char cDateSeparator);
     static bool  bExtractU8(char** ps, u8* u);
     static bool  bExtractU8(char** ps, u8* u, i8 iDigits);
-    
     static bool  bExtractVarchar(char** ps,
-                                  char* aVarchar, i8 iMaxLength,
-                                  bool bIsEnclosed,
-                                  char cEnclosedBy_Leading,
-                                  char cEnclosedBy_Trailing,
-                                  char cEscapeChar,
-                                  char cFieldSeparator,
-                                  char cRecordTerminator,
-                                  bool bAllowNonPrintable);
+                                 char* aVarchar,
+                                 i8 iMaxLength,
+                                 bool bIsEnclosed,
+                                 char cEnclosedBy_Leading,
+                                 char cEnclosedBy_Trailing,
+                                 char cEscapeChar,
+                                 char cFieldSeparator,
+                                 char cRecordTerminator,
+                                 bool bAllowNonPrintable,
+                                 i8& nChars);
     static bool  bExtractVarcharDefault(char** ps,
-                                  char* aVarchar, i8 iMaxLength);
+                                        char* aVarchar,
+                                        i8 iMaxLength,
+                                        i8& nChars);
     static bool  bExtractWord(char** ps, char* pWord);
     static bool  bExtractWordString(char** ps, char* pWord);
     static bool  bExtractYear(char** ps, i8& iYear);
@@ -243,6 +247,8 @@ namespace Base
     static bool  bReplace(char* pString, const char* pThis, const char* pThat);
     static bool  bReplace(char* pDst, const char* pSrc,
                           const char* pThis, const char* pThat);
+    static void  vReverse(char* azDst, char* azSrc);
+    static void  vRotate(char* zArg, i8 nby);
 
     static bool  bSame(const char* s1, const char* s2);
     static i8    iSize(const char* s);
@@ -268,6 +274,7 @@ namespace Base
     static i8    iToI8(const char* s);
     static void  vToLower(char* s);
     static char* wToPointer(void* pArg, char* w);
+    static void  vToString(char* psDst, i8 iArg);
     static char* wToString(d8 dArg, char* w);
     static char* wToString(i8 iArg, char* w);
     

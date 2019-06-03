@@ -53,7 +53,7 @@ namespace Datums
     Footer* aFooter(void);
   };
   
-  static Formatters* _pFormatters(void* aAddr);
+  Formatters* _pFormatters(void* aAddr);
 }
 
 /*============================================================================*/

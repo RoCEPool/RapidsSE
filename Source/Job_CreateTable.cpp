@@ -13,6 +13,7 @@ JobClass xJobClass_CreateTable =
 {
   CN_JOB_CREATETABLE,     // class enum
   JK_DIST2PC,             // job kind
+  RK_NODE_ZERO,           // response kind
   "create table"_Stz,     // comment about the job
   "create"_Stz,           // the prompt command
   "table"_Stz,            // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_CreateTable =
 
   eJob_checkCluster,      // prompt check function
   pJob_CreateTable_pre,   // prompt pre-process function
-  vJob_CreateTable_post,  // prompt post-process function
+  vJob_post,              // prompt post-process function
   pJob_CreateTable_new,   // job new function
   vJob_CreateTable_delete,// job delete function
   vJob_send,              // job pre-send function
@@ -122,18 +123,7 @@ Job_CreateTable::Job_CreateTable(Interface::Session* pSession)
   
   m_eTableType = TT_NONE;
   m_iColumns   = 0;
-  
-  for (i8 i_Column = 0; i_Column < C_MAX_COLUMNS; i_Column++) {
-    m_xColumns[i_Column].m_iColumnNo = -1;
-    m_xColumns[i_Column].m_sColumnName = ""_Stz;
-    m_xColumns[i_Column].m_eColumnType = CT_NONE;
-    m_xColumns[i_Column].m_iColumnLength = 0;
-    m_xColumns[i_Column].m_iColumnScale = 0;
-    m_xColumns[i_Column].m_bIsNullable = true;
-    m_xColumns[i_Column].m_bIsUnique = false;
-    m_xColumns[i_Column].m_bIsPartitionKey = false;
-    m_xColumns[i_Column].m_eDatumType = DM_NONE;
-  }
+  //m_xColumns
   
   _checkInitialised_(CN_JOB_CREATETABLE);
   
@@ -219,7 +209,7 @@ eEC Job_CreateTable::ePopulateJob(TokenVec* pTokenVec)
   else {
     // no partition by clause
     // we will create partitioning using the first column
-    m_xColumns[0].m_bIsPartitionKey = true;
+    m_xColumns[0].vIsPartitionKey(true);
   }
   
   //vShow();
@@ -241,16 +231,16 @@ void Job_CreateTable::vShow(void)
   vTrace("m_iColumns = %lld\n"_Stz,m_iColumns);
   
   for (i8 i_Column = 0; i_Column < m_iColumns; i_Column++) {
-    vTrace("\n"_Stz, i_Column, m_xColumns[i_Column].m_iColumnNo);
-    vTrace("  m_xColumns[%lld].m_iColumnNo = %lld\n"_Stz, i_Column, m_xColumns[i_Column].m_iColumnNo);
-    vTrace("  m_xColumns[%lld].m_sColumnName = %s\n"_Stz, i_Column, m_xColumns[i_Column].m_sColumnName.aChar());
-    vTrace("  m_xColumns[%lld].m_eColumnType = %s\n"_Stz, i_Column, aCT[m_xColumns[i_Column].m_eColumnType]);
-    vTrace("  m_xColumns[%lld].m_iColumnLength = %lld\n"_Stz, i_Column, m_xColumns[i_Column].m_iColumnLength);
-    vTrace("  m_xColumns[%lld].m_iColumnScale = %lld\n"_Stz, i_Column, m_xColumns[i_Column].m_iColumnScale);
-    vTrace("  m_xColumns[%lld].m_bIsNullable = %s\n"_Stz, i_Column, m_xColumns[i_Column].m_bIsNullable ? "true" : "false");
-    vTrace("  m_xColumns[%lld].m_bIsUnique = %s\n"_Stz, i_Column, m_xColumns[i_Column].m_bIsUnique ? "true" : "false");
-    vTrace("  m_xColumns[%lld].m_bIsPartitionKey = %s\n"_Stz, i_Column, m_xColumns[i_Column].m_bIsPartitionKey ? "true" : "false");
-    vTrace("  m_xColumns[%lld].m_eDatumType = %s\n"_Stz, i_Column, aDM[m_xColumns[i_Column].m_eDatumType]);
+    vTrace("\n"_Stz, i_Column, m_xColumns[i_Column].iColumnNo());
+    vTrace("  m_xColumns[%lld].iColumnNo = %lld\n"_Stz, i_Column, m_xColumns[i_Column].iColumnNo());
+    vTrace("  m_xColumns[%lld].sColumnName = %s\n"_Stz, i_Column, m_xColumns[i_Column].sColumnName().aChar());
+    vTrace("  m_xColumns[%lld].eColumnType = %s\n"_Stz, i_Column, aCT[m_xColumns[i_Column].eColumnType()]);
+    vTrace("  m_xColumns[%lld].iColumnLength = %lld\n"_Stz, i_Column, m_xColumns[i_Column].iColumnLength());
+    vTrace("  m_xColumns[%lld].iColumnScale = %lld\n"_Stz, i_Column, m_xColumns[i_Column].iColumnScale());
+    vTrace("  m_xColumns[%lld].bIsNullable = %s\n"_Stz, i_Column, m_xColumns[i_Column].bIsNullable() ? "true" : "false");
+    vTrace("  m_xColumns[%lld].bIsUnique = %s\n"_Stz, i_Column, m_xColumns[i_Column].bIsUnique()? "true" : "false");
+    vTrace("  m_xColumns[%lld].bIsPartitionKey = %s\n"_Stz, i_Column, m_xColumns[i_Column].bIsPartitionKey() ? "true" : "false");
+    vTrace("  m_xColumns[%lld].eDatum = %s\n"_Stz, i_Column, m_xColumns[i_Column].eDatumType());
   }
 }
 
@@ -266,6 +256,7 @@ eEC Job_CreateTable::eAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
   
   // now collect the column names and their types
   i8 iColumn = 0;
+  i8 iFirstDate = C_UNKNOWN;
   i8 i_StartToken = iCurrentToken;
   
   while ( ! pTokenVec->pGet(iCurrentToken)->bSame(")"_Stz)) {
@@ -279,15 +270,15 @@ eEC Job_CreateTable::eAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
     }
     
     // set column number
-    m_xColumns[iColumn].m_iColumnNo = iColumn;
+    m_xColumns[iColumn].vColumnNo(iColumn);
     
     // set column name
     Token* pTkn = pTokenVec->pGet(iCurrentToken++);
-    m_xColumns[iColumn].m_sColumnName = pTkn->aText();
+    m_xColumns[iColumn].vColumnName(pTkn->aText());
     
     // check if column name already added
     for (i8 i_Column = 0; i_Column < iColumn; i_Column++) {
-      if (m_xColumns[i_Column].m_sColumnName.bSame(m_xColumns[iColumn].m_sColumnName))
+      if (m_xColumns[i_Column].sColumnName().bSame(m_xColumns[iColumn].sColumnName()))
         return EC_DUPLICATE_COLUMN;
     }
     
@@ -312,34 +303,38 @@ eEC Job_CreateTable::eAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
         return EC_INVALID_COMMAND;
     }
     else if (pTokenVec->pGet(iCurrentToken)->bSame("integer"_Stz)) {
-      m_xColumns[iColumn].m_eColumnType = CT_INTEGER;
-      m_xColumns[iColumn].m_eDatumType = DM_INT;
-      m_xColumns[iColumn].m_iColumnLength = C_MAX_PRECISION_INT;
+      m_xColumns[iColumn].vColumnType(CT_INTEGER);
+      m_xColumns[iColumn].vDatumType(DM_INT);
+      m_xColumns[iColumn].vColumnLength(C_MAX_PRECISION_INT);
       iCurrentToken++;
     }
     else if (pTokenVec->pGet(iCurrentToken)->bSame("date"_Stz)) {
-      m_xColumns[iColumn].m_eColumnType = CT_DATE;
-      m_xColumns[iColumn].m_eDatumType = DM_DTE;
+      m_xColumns[iColumn].vColumnType(CT_DATE);
+      m_xColumns[iColumn].vDatumType(DM_DTE);
+      if (iFirstDate == C_UNKNOWN) {
+        iFirstDate = iColumn;
+      }
+      m_xColumns[iColumn].vFirstDate(iFirstDate);
       iCurrentToken++;
     }
     else if (pTokenVec->pGet(iCurrentToken)->bSame("time"_Stz)) {
-      m_xColumns[iColumn].m_eColumnType = CT_TIME;
-      m_xColumns[iColumn].m_eDatumType = DM_TME;
+      m_xColumns[iColumn].vColumnType(CT_TIME);
+      m_xColumns[iColumn].vDatumType(DM_TME);
       iCurrentToken++;
     }
     else if (pTokenVec->pGet(iCurrentToken)->bSame("timestamp"_Stz)) {
-      m_xColumns[iColumn].m_eColumnType = CT_TIMESTAMP;
-      m_xColumns[iColumn].m_eDatumType = DM_TSP;
+      m_xColumns[iColumn].vColumnType(CT_TIMESTAMP);
+      m_xColumns[iColumn].vDatumType(DM_TSP);
       iCurrentToken++;
     }
     else if (pTokenVec->pGet(iCurrentToken)->bSame("interval"_Stz)) {
-      m_xColumns[iColumn].m_eColumnType = CT_INTERVAL;
-      m_xColumns[iColumn].m_eDatumType = DM_IVL;
+      m_xColumns[iColumn].vColumnType(CT_INTERVAL);
+      m_xColumns[iColumn].vDatumType(DM_IVL);
       iCurrentToken++;
     }
     else if (pTokenVec->pGet(iCurrentToken)->bSame("boolean"_Stz)) {
-      m_xColumns[iColumn].m_eColumnType = CT_BOOLEAN;
-      m_xColumns[iColumn].m_eDatumType = DM_BOL;
+      m_xColumns[iColumn].vColumnType(CT_BOOLEAN);
+      m_xColumns[iColumn].vDatumType(DM_BOL);
       iCurrentToken++;
     }
     else {
@@ -352,7 +347,7 @@ eEC Job_CreateTable::eAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
       if (!pTokenVec->pGet(iCurrentToken++)->bSame("null"_Stz)) {
         return EC_INVALID_COMMAND;
       }
-      m_xColumns[iColumn].m_bIsNullable = false;
+      m_xColumns[iColumn].vIsNullable(false);
     }
     
     // check for PRIMARY KEY
@@ -369,7 +364,7 @@ eEC Job_CreateTable::eAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
     // check for UNIQUE
     if (pTokenVec->pGet(iCurrentToken)->bSame("unique"_Stz)) {
       iCurrentToken++;
-      m_xColumns[iColumn].m_bIsUnique = true;
+      m_xColumns[iColumn].vIsUnique(true);
     }
     
     iColumn++;
@@ -394,8 +389,8 @@ bool Job_CreateTable::bExtractDecimal(TokenVec* pTokenVec, i8 iColumn, i8& iCurr
   i8 iScale = 0;
 
   // set column type in column
-  m_xColumns[iColumn].m_eColumnType = CT_DECIMAL;
-  m_xColumns[iColumn].m_eDatumType = DM_BCD;
+  m_xColumns[iColumn].vColumnType(CT_DECIMAL);
+  m_xColumns[iColumn].vDatumType(DM_BCD);
   iCurrentToken++;
 
   // extract scale and precison if specified
@@ -427,8 +422,8 @@ bool Job_CreateTable::bExtractDecimal(TokenVec* pTokenVec, i8 iColumn, i8& iCurr
   }
   
   // set scale and length in column
-  m_xColumns[iColumn].m_iColumnLength = iPrecision;
-  m_xColumns[iColumn].m_iColumnScale  = iScale;
+  m_xColumns[iColumn].vColumnLength(iPrecision);
+  m_xColumns[iColumn].vColumnScale(iScale);
   
   return true;
 }
@@ -444,8 +439,8 @@ bool Job_CreateTable::bExtractFloat(TokenVec* pTokenVec, i8 iColumn, i8& iCurren
   i8 iSize = C_MAX_PRECISION_FLT;
 
   // set column type
-  m_xColumns[iColumn].m_eColumnType = CT_FLOAT;
-  m_xColumns[iColumn].m_eDatumType = DM_FLT;
+  m_xColumns[iColumn].vColumnType(CT_FLOAT);
+  m_xColumns[iColumn].vDatumType(DM_FLT);
   iCurrentToken++;
 
   // extract size if specified
@@ -469,7 +464,7 @@ bool Job_CreateTable::bExtractFloat(TokenVec* pTokenVec, i8 iColumn, i8& iCurren
   }
   
   // set size in column
-  m_xColumns[iColumn].m_iColumnLength = iSize;
+  m_xColumns[iColumn].vColumnLength(iSize);
   
   return true;
 }
@@ -482,8 +477,8 @@ bool Job_CreateTable::bExtractVarchar(TokenVec* pTokenVec, i8 iColumn, i8& iCurr
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
   
   // set column type
-  m_xColumns[iColumn].m_eColumnType = CT_VARCHAR;
-  m_xColumns[iColumn].m_eDatumType = DM_VCH;
+  m_xColumns[iColumn].vColumnType(CT_VARCHAR);
+  m_xColumns[iColumn].vDatumType(DM_VCH);
   iCurrentToken++;
 
   // set default size
@@ -492,7 +487,7 @@ bool Job_CreateTable::bExtractVarchar(TokenVec* pTokenVec, i8 iColumn, i8& iCurr
   // extract size if specified
   if (pTokenVec->pGet(iCurrentToken)->bSame("("_Stz)) {
     
-    m_xColumns[iColumn].m_iColumnLength = pTokenVec->pGet(iCurrentToken++)->iToI8();
+    m_xColumns[iColumn].vColumnLength(pTokenVec->pGet(iCurrentToken++)->iToI8());
     
     
     // check if it was numeric
@@ -511,7 +506,7 @@ bool Job_CreateTable::bExtractVarchar(TokenVec* pTokenVec, i8 iColumn, i8& iCurr
     }
   }
   // set size in column
-  m_xColumns[iColumn].m_iColumnLength = iSize;
+  m_xColumns[iColumn].vColumnLength(iSize);
   
   return true;
 }
@@ -552,8 +547,8 @@ bool Job_CreateTable::bPartitionTable(TokenVec* pTokenVec, i8 iCurrentToken)
     
     // find column and set as partition column
     for (i8 i_Column=0; i_Column< m_iColumns; i_Column++) {
-      if (m_xColumns[i_Column].m_sColumnName.bSame(pTokenVec->pGet(iCurrentToken)->aText())) {
-        m_xColumns[i_Column].m_bIsPartitionKey = true;
+      if (m_xColumns[i_Column].sColumnName().bSame(pTokenVec->pGet(iCurrentToken)->aText())) {
+        m_xColumns[i_Column].vIsPartitionKey(true);
         iCurrentToken++;
         bFound = true;
         break;
@@ -631,31 +626,31 @@ Job* Jobs::pJob_CreateTable_pre(Interface::Session* pSession)
   eEC eError = pJob_CreateTable->ePopulateJob(pTokenVec);
   
   if ( eError != EC_NONE ) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_CreateTable->m_bHasError = true;
-    pJob_CreateTable->m_xNode[iNode].m_eErrorCode = eError;
+    pJob_CreateTable->vAddError(eError);
   }
   
   return pJob_CreateTable;
 }
 
 /*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
+/* print success                                                              */
 /*----------------------------------------------------------------------------*/
 void Jobs::vJob_CreateTable_post(Interface::Session* pSession, Job* pJob)
 {
-  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJob);
+  vTrace("I am here\n"_Stz);
   
-  if ( pJob_CreateTable->m_bHasError ) {
+  i8 iResponses = pJob->m_pResponseVec->nItems();
   
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_CreateTable->m_xNode[i_Node].m_eErrorCode]);
+  if (pJob->m_bHasError) {
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob->m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
     }
-    
+    return;
   }
-  else {
-    vTrace("success: 0 rows affected\n"_Stz);
-  }
+  
+  RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
+  
+  vTrace("success: 0 rows affected\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

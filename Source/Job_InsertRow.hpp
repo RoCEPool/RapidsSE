@@ -12,7 +12,7 @@ namespace Jobs
   {
   public:
     Table*     m_pTable;             // table pointer
-    s48K       m_aRawData;           // raw record
+    Record*    m_pRecord;            // raw record
     i8         m_nRawDataBytes;      // length of record
     i8         m_iPartitionId;       // partition
     
@@ -46,7 +46,6 @@ namespace Jobs
   Job_InsertRow* _pJob_InsertRow(void* aAddr);
   
   Job* pJob_InsertRow_pre(Interface::Session* pSession);
-  void vJob_InsertRow_post(Interface::Session* pSession, Job* pJob);
   Job* pJob_InsertRow_new(Job* pArg);
   void vJob_InsertRow_delete(Interface::Session* pSession, Job* pJob);
   void vJob_InsertRow_show(Job* pJob);

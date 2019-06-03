@@ -13,6 +13,7 @@ JobClass xJobClass_Cf =
 {
   CN_JOB_CF,           // class enum
   JK_LOCAL,            // job kind
+  RK_LOCAL_ERRORS,     // response kind
   "change folder"_Stz, // comment about the job
   "cf"_Stz,            // the prompt command
   nullptr,             // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_Cf =
 
   eJob_checkCluster,   // prompt check function
   pJob_Cf_pre,         // prompt pre-process function
-  vJob_Cf_post,        // prompt post-process function
+  vJob_post,           // prompt post-process function
   nullptr,             // job new function
   vJob_Cf_delete,      // job delete function
   nullptr,             // job pre-send function
@@ -204,28 +205,10 @@ Job* Jobs::pJob_Cf_pre(Interface::Session* pSession)
   bool bResult = pJob_Cf->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_Cf->m_bHasError = true;
-    pJob_Cf->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_Cf->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_Cf;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_Cf_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_Cf* pJob_Cf = _pJob_Cf(pJob);
-  
-  if ( pJob_Cf->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_Cf->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
 }
 
 /*----------------------------------------------------------------------------*/

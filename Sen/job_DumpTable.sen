@@ -1,0 +1,135 @@
+/*============================================================================*/
+/* job_DumpTable.sen -- Job Dump Table                                        */
+/*============================================================================*/
+
+" job_DumpTable.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a valid table folder                                      */
+/*----------------------------------------------------------------------------*/
+: checkDumpTable ( "<tableNm>" -- true | errorCode false )
+
+  params| sTableNm |
+
+  // check in tables folder
+  checkInTables not if false exit then
+
+  // check if tableNm is a word in tables folder
+  sTableNm checkIsWord not if EC_NO_SUCH_TABLE false exit then
+
+  // push table folder
+  sTableNm pushTable assert
+
+  sTableNm checkIsTable not if popTable false exit then
+  //sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table folder
+  popTable
+
+  // assert in tables
+  assertInTables
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* dump table request (on originating node)                                   */
+/*----------------------------------------------------------------------------*/
+: dumpTable_req ( -- <R> )
+
+  >>am <SEED_REQ>
+
+  0 0 0 0 locals| pTask sTableNm sIndexNm pJob_DumpTable |
+
+  tp: dumpTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_DumpTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_DUMPTABLE pJob_DumpTable object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set task's dictionary stack from path in job
+  pJob_DumpTable job.pushPath
+  task::dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table name
+  pJob_DumpTable job.objectName@ to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //check if we can dump the table
+  sTableNm checkDumpTable not if pJob_DumpTable <ERROR_REQUEST> !!am exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table folder
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // visualize
+  sTableNm find execute table.dump
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop itable folder
+  popTable
+
+  pJob_DumpTable job.notice
+
+  <<am <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DumpTable job check resources                                  */
+/*----------------------------------------------------------------------------*/
+: dumpTable.checkResources ( pJob_DumpTable -- )
+
+  params| pJob_DumpTable  |
+  0 locals| sTableNm |
+
+  tp: dumpTable.checkResources
+  //checkResources received" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set task's dictionary stack from path in job
+  pJob_DumpTable job.pushPath
+  task::dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get table name
+  pJob_DumpTable job.objectName@ to sTableNm
+
+  sTableNm checkDumpTable not if pJob_DumpTable <ERROR_JOB> !!am exit then
+
+  ddlLock::dropWrite
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DumpIndexTable job release resources                           */
+/*----------------------------------------------------------------------------*/
+: dumpTable.releaseResources ( Job_DumpTable -- )
+
+  params| pJob_DumpTable  |
+
+  tp: dumpTable.releaseResources
+  //releaseResources received" .
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

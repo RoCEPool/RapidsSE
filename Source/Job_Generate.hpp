@@ -84,7 +84,6 @@ namespace Jobs
   Job_Generate* _pJob_Generate(void* aAddr);
   
   Job* pJob_Generate_pre(Interface::Session* pSession);
-  void vJob_Generate_post(Interface::Session* pSession, Job* pJob);
   Job* pJob_Generate_new(Job* pArg);
   void vJob_Generate_delete(Interface::Session* pSession, Job* pJob);
   void vJob_Generate_show(Job* pJob);

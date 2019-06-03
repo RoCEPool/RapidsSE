@@ -1,0 +1,37 @@
+--------------------------------------------------------------------------------
+-- create index in a loop tests
+--------------------------------------------------------------------------------
+
+// create a table
+create table region (
+R_REGIONKEY       INTEGER NOT NULL,
+R_NAME            CHAR(25) NOT NULL,
+R_COMMENT         VARCHAR(152)
+);
+success
+
+-----------------------------------------------------------------------
+// load the table
+ld region "/TPCH/SF1/region.tbl" field_delimiter "|";
+success
+
+fetch region;
+rows: 5
+
+-----------------------------------------------------------------------
+//fetch lineitem "l_shipdate '1992-01-02 00:00:00' <=";
+//rows: 17
+
+// now drop the table
+drop table region;
+success
+
+CLEANUP {
+
+  drop table region;
+  mute
+
+  bye;
+  mute
+}
+

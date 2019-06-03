@@ -19,6 +19,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   // third party??
   Correctness::vCheckAssumptions();
   Datums::vCheckAssumptions();
+  Sprinting::vCheckAssumptions();
   Values::vCheckAssumptions();
   Assembler::vCheckAssumptions();
   Pool::vCheckAssumptions();
@@ -33,6 +34,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Forth::vCheckAssumptions();
   MetaData::vCheckAssumptions();
   Data::vCheckAssumptions();
+  Mock::vCheckAssumptions();
   Plans::vCheckAssumptions();
   Jobs::vCheckAssumptions();
   Utilities::vCheckAssumptions();

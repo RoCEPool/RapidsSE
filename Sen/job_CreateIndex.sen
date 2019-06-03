@@ -126,10 +126,6 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set if single column
-  pIndex index.setSingleColumn
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now populate the index
   pIndex index.populate
   not if pJob_CreateIndex <ERROR_JOB> popIndexes popTable

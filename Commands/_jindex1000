@@ -28,14 +28,14 @@ print "\n";
 print "visualising index idx..." ;
 visidx j1000 idx;
 
-print "visualising index hidden..." ;
-visidx j1000 hidden;
+print "visualising table..." ;
+vistbl j1000;
 
 print "verifying index idx..." ;
 vfyidx j1000 idx;
 
-print "verifying index hidden..." ;
-vfyidx j1000 hidden;
+print "verifying table..." ;
+vfytbl j1000;
 
 fetch j1000 "j1000_key 989 =";
 print "\n";

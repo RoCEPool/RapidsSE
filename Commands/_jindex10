@@ -2,6 +2,8 @@
 /* _jindex10 -- index entry testing                                           */
 /*============================================================================*/
 
+startCluster;
+
 docol epochTake;
 
 create table j10 (
@@ -69,8 +71,6 @@ lsidx j10;
 
 create index idx1 on j10 (j10_key);
 
-print "loading j10.csv..." ;
-ld j10 "../JTEST/j10.csv" ;
 dumpidx j10 idx1;
 
 print "-----------------------------";
@@ -117,7 +117,15 @@ anidx j10 idx1;
 dumpidx j10 idx1;
 szidx j10 idx1;
 
-drop table j10;
+dumptbl j10;
+
+tableSizes;
+
+sztbl j10;
+
+vfytbl j10;
+
+//drop table j10;
 
 docol epochDump;
 

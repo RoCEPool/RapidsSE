@@ -118,6 +118,14 @@ i8 Bcd::iAsI8(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set as i8                                                                  */
+/*----------------------------------------------------------------------------*/
+void Bcd::vAsI8(i8 iAsI8)
+{
+  m_iBcd = iAsI8;
+}
+
+/*----------------------------------------------------------------------------*/
 /* initialse to all zero                                                      */
 /*----------------------------------------------------------------------------*/
 void Bcd::vInitZero(void)
@@ -149,10 +157,6 @@ void Bcd::vSetNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- VLQ ---------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /*-- Extract and Sprint ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -167,18 +171,6 @@ i8 Bcd::nCopy(void* aDst, void* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy bcd datum (VLQ)                                                       */
-/*----------------------------------------------------------------------------*/
-i8 Bcd::nCopyVLQ(void* aDst, void* aSrc)
-{
-  i8 iBcd = IntLib::iVlqToInt((byte*)aSrc);
-  
-  *(i8*)aDst = iBcd;
-  
-  return sizeof(i8);
-}
-
-/*----------------------------------------------------------------------------*/
 /* copy bcd datum                                                             */
 /*----------------------------------------------------------------------------*/
 void Bcd::vCopy(void* aDst, void* aSrc)
@@ -187,91 +179,39 @@ void Bcd::vCopy(void* aDst, void* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a decimal field from csv substr                                    */
+/* sprint bcd datum                                                           */
 /*----------------------------------------------------------------------------*/
-bool Bcd::bExtract(char** aaSrc, Stz* aDst, MetaData::Column* pColumn, Formatters* pFormatters)
+void Bcd::vSprint(Stz* aDst, MetaData::Column* pColumn)
 {
-  Bcd* aBcd = (Bcd*)aDst;
+  bool bNegative = false;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
+  if (bIsNull()) {
+    StrLib::vSprint(aDst,"null%c"_Stz, '\0');
+  return;
+ }
   
-  bool bSawEnclosedLeading =
-    StrLib::bSkipLeading(aaSrc,pFormatters->m_cEnclosedBy_Leading);
+  i8 iDigits = 1;
+  for (i8 i_Digit = 0; i_Digit < pColumn->iColumnScale(); i_Digit++)
+    iDigits *= 10;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
+  i8 iBcd_Whole = m_iBcd / iDigits;
+  i8 iBcd_Fraction = m_iBcd % iDigits;
   
-  bool bValidNull = false;
-  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    aBcd->vSetNull();
-    return true;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // decimal field processing
-    
-  if ( ! StrLib::bExtractDecimal(aaSrc,aBcd->m_iBcd,
-                                 pColumn->iColumnLength(),pColumn->iColumnScale()) )
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  bool bSawEnclosedTrailing =
-    StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
-  if (! bSawEnclosedTrailing)
-    return false;
-  
-  // should see a valid field end
-  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a decimal field from csv substr                                    */
-/*----------------------------------------------------------------------------*/
-bool Bcd::bExtractDefault(char** aaSrc, Stz* aDst, MetaData::Column* pColumn, Formatters* pFormatters)
-{
-  Bcd* aBcd = (Bcd*)aDst;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  StrLib::vSkipSpaces(aaSrc);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (DtmLib::bTestForNullDefault(aaSrc,pColumn,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    aBcd->vSetNull();
-    return true;
+  if (iBcd_Fraction < 0 || iBcd_Whole < 0) {
+    bNegative = true;
+    iBcd_Fraction = iBcd_Fraction * -1;
+    iBcd_Whole = iBcd_Whole * -1;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // decimal field processing
-  
-  if ( ! StrLib::bExtractDecimal(aaSrc,aBcd->m_iBcd,
-                                 pColumn->iColumnLength(),pColumn->iColumnScale()) )
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  StrLib::vSkipSpaces(aaSrc);
-  
-  // should see a valid field end
-  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
-    return false;
-  
-  return true;
+  if (pColumn->iColumnScale())
+    StrLib::vSprint(aDst,"%s%lld.%.*lld%c"_Stz,
+                    bNegative ? "-" : "",
+                    iBcd_Whole,
+                    pColumn->iColumnScale(),
+                    iBcd_Fraction,'\0');
+  else
+    StrLib::vSprint(aDst,"%s%lld%c"_Stz, bNegative ? "-" : "",iBcd_Whole, '\0');
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -287,46 +227,6 @@ void Bcd::vSprint(Stz* aDst, Stz* aSrc, MetaData::Column* pColumn)
                     '\0');
   else {
     i8 iBcd = *(i8*)aSrc;
-    i8 iDigits = 1;
-    for (i8 i_Digit = 0; i_Digit < pColumn->iColumnScale(); i_Digit++)
-      iDigits *= 10;
-    
-    i8 iBcd_Whole = iBcd / iDigits;
-    i8 iBcd_Fraction = iBcd % iDigits;
-    
-    if (iBcd_Fraction < 0 || iBcd_Whole < 0) {
-      bNegative = true;
-      iBcd_Fraction = iBcd_Fraction * -1;
-      iBcd_Whole = iBcd_Whole * -1;
-    }
-    
-    if (pColumn->iColumnScale())
-      StrLib::vSprint(aDst,"%s%lld.%.*lld%c"_Stz,
-                      bNegative ? "-" : "",
-                      iBcd_Whole,
-                      pColumn->iColumnScale(),
-                      iBcd_Fraction,'\0');
-    else
-      StrLib::vSprint(aDst,"%s%lld%c"_Stz, bNegative ? "-" : "",iBcd_Whole, '\0');
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint bcd datum                                                           */
-/*----------------------------------------------------------------------------*/
-void Bcd::vSprintVLQ(Stz* aDst, Stz* aSrc, MetaData::Column* pColumn)
-{
-  
-  i8 iInt = IntLib::iVlqToInt((byte*)aSrc);
-  Bcd* aBcd = (Bcd*)&iInt;
-  
-  bool bNegative = false;
-  
-  if (aBcd->bIsNull())
-    StrLib::vSprint(aDst,"null%c"_Stz,
-                    '\0');
-  else {
-    i8 iBcd = iInt;
     i8 iDigits = 1;
     for (i8 i_Digit = 0; i_Digit < pColumn->iColumnScale(); i_Digit++)
       iDigits *= 10;

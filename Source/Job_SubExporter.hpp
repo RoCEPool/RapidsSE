@@ -11,11 +11,10 @@ namespace Jobs
   public:
     Job_Export*  m_pJobExport;     // export job that spawned this sub export
   
-    IndexTree*   m_pIndexTree;
-    i8           m_nEntryBuffers;
-    i8           m_iEntryBuffer;
+    i8           m_nRowBuffers;
+    i8           m_iRowBuffer;
   
-    EntryBuffer* m_pEntryBuffer;
+    RowBuffer* m_pRowBuffer;
   
     i8 m_nExportBuffers;
     ExportBuffer* m_pExportBuffer;
@@ -51,7 +50,6 @@ namespace Jobs
   Job_SubExporter* _pJob_SubExporter(void* aAddr);
   
   Job* pJob_SubExporter_pre(Interface::Session* pSession);
-  void vJob_SubExporter_post(Interface::Session* pSession, Job* pJob);
   void vJob_SubExporter_delete(Interface::Session* pSession, Job* pJob);
   void vJob_SubExporter_show(Job* pJob);
   

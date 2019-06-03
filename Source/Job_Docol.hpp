@@ -36,7 +36,6 @@ namespace Jobs
   Job_Docol* _pJob_Docol(void* aAddr);
   
   Job* pJob_Docol_pre(Interface::Session* pSession);
-  void vJob_Docol_post(Interface::Session* pSession, Job* pJob);
   void vJob_Docol_delete(Interface::Session* pSession, Job* pJob);
   void vJob_Docol_show(Job* pJob);
   

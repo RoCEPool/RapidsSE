@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Compiler.hpp -- Sen Word Compiler                                          */
+/* Compiler.hpp -- Sen ForthWord Compiler                                          */
 /*============================================================================*/
 #pragma once
 
@@ -12,7 +12,7 @@ namespace Forth
   public:
   
     bool  m_bCompiling;    // currently compiling a word?
-    Word* m_pCurrentWord;  // current word being compiled
+    ForthWord* m_pCurrentWord;  // current word being compiled
     i8    m_nSubDic;       // number of sub dictionaries
     i8    m_nLocals;       // number of locals/params variables
   

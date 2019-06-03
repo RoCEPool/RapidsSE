@@ -9,11 +9,11 @@ namespace Jobs
   class Job__Executed : public Job
   {
   public:
-    s256 m_sResponse;      // response string
-    i8   m_iRowsProcessed; // rows processed
-    i8   m_iRowsInvalid;   // rows invalid
-    i8   m_iRowsSkipped;   // rows skipped
-    eEC  m_eErrorCode;     // error code
+//    s256 m_sResponse;      // response string
+//    i8   m_iRowsProcessed; // rows processed
+//    i8   m_iRowsInvalid;   // rows invalid
+//    i8   m_iRowsSkipped;   // rows skipped
+//    eEC  m_eErrorCode;     // error code
     
     // must be last
     Footer m_xFooter;

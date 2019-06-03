@@ -36,7 +36,6 @@ namespace Jobs
   Job_ShowCluster* _pJob_ShowCluster(void* aAddr);
   
   Job* pJob_ShowCluster_pre(Interface::Session* pSession);
-  void vJob_ShowCluster_post(Interface::Session* pSession, Job* pJob);
   void vJob_ShowCluster_delete(Interface::Session* pSession, Job* pJob);
   void vJob_ShowCluster_show(Job* pJob);
   

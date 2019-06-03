@@ -13,6 +13,7 @@ JobClass xJobClass_Boot =
 {
   CN_JOB_BOOT,       // class enum
   JK_THREAD,         // job kind
+  RK_NONE,           // response kind
   "system boot"_Stz, // comment about the job
   nullptr,           // the prompt command
   nullptr,           // the second word

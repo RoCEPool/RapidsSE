@@ -10,8 +10,8 @@ namespace Measurement
   public:
   
   private:
-    i8 m_iStart;
-    i8 m_iUpdate;
+    i8 m_iStart;   // starting ticks
+    i8 m_iUpdate;  // update point
     
     // must be last
     Footer m_xFooter;
@@ -23,7 +23,6 @@ namespace Measurement
     Timer(void);
     ~Timer() noexcept(false);
     
-    void vInit(void);
     void vReset(void);
     void vSet(i8 iStart, i8 iUpdate);
     void vStart(void);

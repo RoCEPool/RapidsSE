@@ -9,7 +9,7 @@ namespace Datums
   {
   friend class DtmLib;
   
-  protected:
+  public:
     i8 m_bBol;
   
   public:
@@ -29,13 +29,10 @@ namespace Datums
     i8   iAsI8(void);
     bool bIsNull(void);
     void vSetNull(void);
-  
+    void vSprint(Stz* aDst);
+
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
-    static bool bExtract(char** aaSrc, Stz* aDst,
-                         MetaData::Column* pColumn, Formatters* pFormatters);
-    static bool bExtractDefault(char** aaSrc, Stz* aDst,
-                         MetaData::Column* pColumn, Formatters* pFormatters);
     static void vSprint(Stz* aDst, Stz* aSrc);
     
     static bool bLessThan(char* aArgA, char* aArgB);

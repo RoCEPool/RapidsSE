@@ -13,6 +13,7 @@ JobClass xJobClass_ConnectCluster =
 {
   CN_JOB_CONNECTCLUSTER,     // class enum
   JK_DIST2PC,                // job kind
+  RK_NONE,                  // response kind
   "connect cluster"_Stz,     // comment about the job
   "connectCluster"_Stz,      // the prompt command
   nullptr,                   // the second word
@@ -203,9 +204,7 @@ Job* Jobs::pJob_ConnectCluster_pre(Interface::Session* pSession)
   bool bResult = pJob_ConnectCluster->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_ConnectCluster->m_bHasError = true;
-    pJob_ConnectCluster->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_ConnectCluster->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_ConnectCluster;

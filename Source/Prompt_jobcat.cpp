@@ -50,6 +50,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_COPYBUFFER);
   nJobs++; JobClass::vJobCat(CN_JOB_DOCOL);
   nJobs++; JobClass::vJobCat(CN_JOB_DUMPINDEX);
+  nJobs++; JobClass::vJobCat(CN_JOB_DUMPTABLE);
   nJobs++; JobClass::vJobCat(CN_JOB_FETCHROWS);
   nJobs++; JobClass::vJobCat(CN_JOB_GENERATE);
   nJobs++; JobClass::vJobCat(CN_JOB_INGEST);
@@ -73,6 +74,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_SUBINSERTER);
   nJobs++; JobClass::vJobCat(CN_JOB_USESCHEMA);
   nJobs++; JobClass::vJobCat(CN_JOB_VISUALIZEINDEX);
+  nJobs++; JobClass::vJobCat(CN_JOB_VISUALIZETABLE);
  
   // generic
   nJobs++; JobClass::vJobCat(CN_JOB__BEGUN);
@@ -115,6 +117,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_TABLESIZES);
   nJobs++; JobClass::vJobCat(CN_JOB_TRUNCATETABLE);
   nJobs++; JobClass::vJobCat(CN_JOB_VERIFYINDEX);
+  nJobs++; JobClass::vJobCat(CN_JOB_VERIFYTABLE);
   nJobs++; JobClass::vJobCat(CN_JOB_WAITCLUSTER);
   nJobs++; JobClass::vJobCat(CN_JOB_WALK);
 

@@ -197,8 +197,16 @@ void Bol::vSetNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- VLQ ---------------------------------------------------------------------*/
+/* sprint bol datum                                                           */
 /*----------------------------------------------------------------------------*/
+void Bol::vSprint(Stz* aDst)
+{
+  if (bIsNull())
+    StrLib::vSprint(aDst,"null"_Stz);
+  else
+    StrLib::vSprint(aDst,"%s"_Stz,m_bBol ? "true" : "false");
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Extract and Sprint ------------------------------------------------------*/
@@ -228,92 +236,6 @@ void Bol::vCopy(void* aDst, void* aSrc)
  txyz,zero,100,0,0.000,1000.000,1900-01-01 00:00:00,true
  12ab,zero,100,0,0.000,1000.000,1900-01-01 00:00:00,true
  */
-
-/*----------------------------------------------------------------------------*/
-/* extract a boolean field from csv substr                                    */
-/*----------------------------------------------------------------------------*/
-bool Bol::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
-{
-  Bol* aBol = (Bol*)aDst;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  bool bSawEnclosedLeading =
-    StrLib::bSkipLeading(aaSrc,pFormatters->m_cEnclosedBy_Leading);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    aBol->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // boolean field processing
-    
-  if ( ! StrLib::bExtractBoolean(aaSrc,aBol->m_bBol) )
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-    
-  bool bSawEnclosedTrailing =
-    StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
-  if (! bSawEnclosedTrailing)
-    return false;
-  
-  // should see a valid field end
-  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
-    return false;
-      
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a boolean field from csv substr                                    */
-/*----------------------------------------------------------------------------*/
-bool Bol::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
-{
-  Bol* aBol = (Bol*)aDst;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  StrLib::vSkipSpaces(aaSrc);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (DtmLib::bTestForNullDefault(aaSrc,pColumn,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    aBol->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // boolean field processing
-  
-  if ( ! StrLib::bExtractBoolean(aaSrc,aBol->m_bBol) )
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  StrLib::vSkipSpaces(aaSrc);
-  
-  // should see a valid field end
-  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
-    return false;
-  
-  return true;
-}
 
 /*----------------------------------------------------------------------------*/
 /* sprint bol datum                                                           */

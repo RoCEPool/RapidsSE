@@ -13,7 +13,7 @@ namespace Steps
   class Step
   {
   friend class Tasks::Task;
-  friend class Forth::Word;
+  friend class Forth::ForthWord;
   
   public:
     static void vAddSteps(void);
@@ -124,7 +124,6 @@ namespace Steps
   
     static void vAddSteps_Queues(void);
   
-    static void vAddSteps_Row(void);
     static void vAddSteps_Rstack(void);
   
     static void vAddSteps_Session(void);

@@ -17,27 +17,26 @@ namespace MetaData
     /* 1 */ "SKIP_LIST"_Stz
   };
 
-  enum eIF // Index Form
-  {
-    /* 0 */ IF_NONE=0,
-    /* 1 */ IF_I8,
-    /* 2 */ IF_I8_I8,
-    /*   */ IF_I8_I8_I8,
-    /* 3 */ IF_STZ,
-    /* 4 */ IF_COMPLEX
-  };
-
-  static Stz* aIF[]
-  {
-  /* 0 */ "NONE"_Stz,
-  /* 1 */ "I8"_Stz,
-  /* 2 */ "I8_I8"_Stz,
-  /* 3 */ "STZ"_Stz,
-  /* 4 */ "COMPLEX"_Stz,
-  };
+//  enum eIF // Index Form
+//  {
+//    /* 0 */ IF_NONE=0,
+//    /* 1 */ IF_I8,
+//    /* 2 */ IF_I8_I8,
+//    /*   */ IF_I8_I8_I8,
+//    /* 3 */ IF_STZ,
+//    /* 4 */ IF_COMPLEX
+//  };
+//
+//  static Stz* aIF[]
+//  {
+//  /* 0 */ "NONE"_Stz,
+//  /* 1 */ "I8"_Stz,
+//  /* 2 */ "I8_I8"_Stz,
+//  /* 3 */ "STZ"_Stz,
+//  /* 4 */ "COMPLEX"_Stz,
+//  };
   
   class Table;
-  class TablePtn;
   
   class Index : public Object
   {
@@ -50,12 +49,10 @@ namespace MetaData
     Table*       m_pTable;        //
     Dic          m_xSubDic;       // sub dictionary for this index
     IdxColVec*   m_pIdxColVec;    //
-    bool         m_bIsHidden;
   
-    bool         m_bSingleColumn; // is this index only over a signle column
-    bool         (*m_fGreaterEqual)(char* aArgA, char* aArgB);
-    bool         (*m_fGreaterThan)(char* aArgA, char* aArgB);
-    
+//    bool         (*m_fGreaterEqual)(char* aArgA, char* aArgB);
+//    bool         (*m_fGreaterThan)(char* aArgA, char* aArgB);
+  
     // must be last
     Footer m_xFooter;
     
@@ -76,22 +73,18 @@ namespace MetaData
     void   vCreateColumnVec(Jobs::Job_CreateIndex* pJob);
     void   vDump(void);
   
-    bool   bGreaterEqual(char* aDatumA, char* aDatumB);
-    bool   bGreaterThan(char* aDatumA, char* aDatumB);
-    
-    eIF    eIndexForm(void);
+//    bool   bGreaterEqual(char* aDatumA, char* aDatumB);
+//    bool   bGreaterThan(char* aDatumA, char* aDatumB);
+  
+//    eIF    eIndexForm(void);
     Stz*   aIndexName(void);
     s32    sIndexName(void);
     void   vIndexNo(i8 iIndexNo);
     i8     iIndexNo(void);
-    bool   bIsHidden(void);
-    void   vIsHidden(bool bHidden);
     bool   bIsPrimaryKey(void);
     void   vIsPrimaryKey(bool bUnique);
     bool   bIsUnique(void);
     void   vIsUnique(bool bUnique);
-    bool   bSingleColumn(void);
-    void   vSetSingleColumn(void);
     void   vShowColumnVec(void);
     i8     iSortKeyDatum(void);
     Dic*   pSubDic(void);

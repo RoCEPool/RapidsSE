@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Axioms::vAddConstant(Stz* aName, i8 iVal)
 {
-  Word* pNewWord = new(&gpAttachMap->m_oRootDic) Word(aName);
+  ForthWord* pNewWord = new(&gpAttachMap->m_oRootDic) ForthWord(aName);
   
   IntVal xIntVal;
   xIntVal = iVal;
@@ -25,7 +25,7 @@ void Axioms::vAddConstant(Stz* aName, i8 iVal)
 /*----------------------------------------------------------------------------*/
 void Axioms::vAddConstant(Stz* aName, Stz* aValue)
 {
-  Word* pNewWord = new(&gpAttachMap->m_oRootDic) Word(aName);
+  ForthWord* pNewWord = new(&gpAttachMap->m_oRootDic) ForthWord(aName);
   
   GenVar xWspStr;
   xWspStr = aValue;
@@ -241,6 +241,7 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_DROPTABLE"_Stz,      CN_JOB_DROPTABLE);
   /*    */ vAddConstant("CN_JOB_DROPTENANT"_Stz,     CN_JOB_DROPTENANT);
   /*    */ vAddConstant("CN_JOB_DUMPINDEX"_Stz,      CN_JOB_DUMPINDEX);
+  /*    */ vAddConstant("CN_JOB_DUMPTABLE"_Stz,      CN_JOB_DUMPTABLE);
   /*    */ vAddConstant("CN_JOB_EXPORT"_Stz,         CN_JOB_EXPORT);
   /*    */ vAddConstant("CN_JOB_FETCHROWS"_Stz,      CN_JOB_FETCHROWS);
   /*    */ vAddConstant("CN_JOB_INSERTROW"_Stz,      CN_JOB_INSERTROW);
@@ -291,7 +292,9 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_TRUNCATETABLE"_Stz,  CN_JOB_TRUNCATETABLE);
   /*    */ vAddConstant("CN_JOB_USESCHEMA"_Stz,      CN_JOB_USESCHEMA);
   /*    */ vAddConstant("CN_JOB_VERIFYINDEX"_Stz,    CN_JOB_VERIFYINDEX);
+  /*    */ vAddConstant("CN_JOB_VERIFYTABLE"_Stz,    CN_JOB_VERIFYTABLE);
   /*    */ vAddConstant("CN_JOB_VISUALIZEINDEX"_Stz, CN_JOB_VISUALIZEINDEX);
+  /*    */ vAddConstant("CN_JOB_VISUALIZETABLE"_Stz, CN_JOB_VISUALIZETABLE);
   /*    */ vAddConstant("CN_JOB_WAITCLUSTER"_Stz,    CN_JOB_WAITCLUSTER);
   /*    */ vAddConstant("CN_JOB_WALK"_Stz,           CN_JOB_WALK);
 
@@ -321,8 +324,12 @@ void Axioms::vAddConstants(void)
   /* 46 */ vAddConstant("CN_QUEUEBUFFER"_Stz,  CN_QUEUEBUFFER);
   /*    */ vAddConstant("CN_QUEUES"_Stz,       CN_QUEUES);
   
+  /*    */ vAddConstant("CN_RECORD"_Stz,       CN_RECORD);
   /*    */ vAddConstant("CN_RECORDBUFFER"_Stz, CN_RECORDBUFFER);
-  
+  /*    */ vAddConstant("CN_RESPONSE"_Stz,     CN_RESPONSE);
+  /*    */ vAddConstant("CN_RESPONSEVEC"_Stz,  CN_RESPONSEVEC);
+  /*    */ vAddConstant("CN_ROWBUFFER"_Stz,    CN_ROWBUFFER);
+
   /* 57 */ vAddConstant("CN_SESSION"_Stz,      CN_SESSION);
   /* 57 */ vAddConstant("CN_SESSIONSTATE"_Stz, CN_SESSIONSTATE);
   /* 60 */ vAddConstant("CN_SEPROMPT"_Stz,     CN_SEPROMPT);
@@ -612,7 +619,7 @@ void Axioms::vAddConstants(void)
   /* 66 */ vAddConstant("SIZEOF_TIMER"_Stz,        sizeof(Timer));
   /* 67 */ vAddConstant("SIZEOF_TOKENISER"_Stz,    sizeof(Tokeniser));
   /* 68 */ vAddConstant("SIZEOF_TX"_Stz,           sizeof(Tx));
-  /* 74 */ vAddConstant("SIZEOF_WORD"_Stz,         sizeof(Word));
+  /* 74 */ vAddConstant("SIZEOF_WORD"_Stz,         sizeof(ForthWord));
   
   /*  0 */ vAddConstant("SIZEOF_S32"_Stz,          sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256"_Stz,         sizeof(s256));

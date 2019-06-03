@@ -11,7 +11,7 @@ namespace Tasks {
 
 namespace Forth {
   class Cell;
-  class Word;
+  class ForthWord;
   class WrdVal;
 }
 

@@ -267,16 +267,12 @@
   static void vEntryToDataRow(Tasks::MP_Task mpTask);
 
   // entry buffer
-  static void vEntryBufferCreate(Tasks::MP_Task mpTask);
-  static void vEntryBufferDelete(Tasks::MP_Task mpTask);
   static void vEntryBufferDump(Tasks::MP_Task mpTask);
-  static void vEntryBufferFirstEntry(Tasks::MP_Task mpTask);
   static void vEntryBufferIndexFetch(Tasks::MP_Task mpTask);
   static void vEntryBufferIndexStore(Tasks::MP_Task mpTask);
   static void vEntryBufferIsLastFetch(Tasks::MP_Task mpTask);
   static void vEntryBufferIsLastStore(Tasks::MP_Task mpTask);
   static void vEntryBufferNextBuffer(Tasks::MP_Task mpTask);
-  static void vEntryBufferNextEntry(Tasks::MP_Task mpTask);
   static void vEntryBufferPartitionFetch(Tasks::MP_Task mpTask);
   static void vEntryBufferPartitionStore(Tasks::MP_Task mpTask);
   static void vEntryBufferToEntryBuffer(Tasks::MP_Task mpTask);
@@ -349,12 +345,9 @@
   static void vIndexColumnName(Tasks::MP_Task mpTask);
   static void vIndexColumnType(Tasks::MP_Task mpTask);
   static void vIndexCompact(Tasks::MP_Task mpTask);
-  static void vIndexCreateColumnVecHidden(Tasks::MP_Task mpTask);
   static void vIndexCreateColumnVec(Tasks::MP_Task mpTask);
   static void vIndexDump(Tasks::MP_Task mpTask);
   static void vIndexInit(Tasks::MP_Task mpTask);
-  static void vIndexIsHiddenFetch(Tasks::MP_Task mpTask);
-  static void vIndexIsHiddenStore(Tasks::MP_Task mpTask);
   static void vIndexIsPrimaryKeyFetch(Tasks::MP_Task mpTask);
   static void vIndexIsPrimaryKeyStore(Tasks::MP_Task mpTask);
   static void vIndexIsUniqueFetch(Tasks::MP_Task mpTask);
@@ -364,8 +357,6 @@
   static void vIndexNameFetch(Tasks::MP_Task mpTask);
   static void vIndexPopulate(Tasks::MP_Task mpTask);
   static void vIndexRange(Tasks::MP_Task mpTask);
-  static void vIndexScan(Tasks::MP_Task mpTask);
-  static void vIndexSetSingleColumn(Tasks::MP_Task mpTask);
   static void vIndexShowColumnVec(Tasks::MP_Task mpTask);
   static void vIndexSpace(Tasks::MP_Task mpTask);
   static void vIndexSubDic(Tasks::MP_Task mpTask);
@@ -403,7 +394,9 @@
   static void vIntMultiply(Tasks::MP_Task mpTask);
   static void vIntNeg(Tasks::MP_Task mpTask);
   static void vIntNotEqual(Tasks::MP_Task mpTask);
+  static void vIntRandom(Tasks::MP_Task mpTask);
   static void vIntSubtract(Tasks::MP_Task mpTask);
+  static void vUnsignedIntRandom(Tasks::MP_Task mpTask);
 
   // jobClass
   static void vJobClassBuffer(Tasks::MP_Task mpTask);
@@ -433,13 +426,12 @@
   static void vJobColumnNameFetch(Tasks::MP_Task mpTask);
   static void vJobColumnIsPartKey(Tasks::MP_Task mpTask);
   static void vJobColumnTypeFetch(Tasks::MP_Task mpTask);
+  static void vJobCreateResponseVec(Tasks::MP_Task mpTask);
 
   static void vJobDecAcksRemaining(Tasks::MP_Task mpTask);
   static void vJobDelete(Tasks::MP_Task mpTask);
   static void vJobDicPath(Tasks::MP_Task mpTask);
 
-  static void vJobEntryBufferFetch(Tasks::MP_Task mpTask);
-  static void vJobEntryBufferStore(Tasks::MP_Task mpTask);
   static void vJobErrorStore(Tasks::MP_Task mpTask);
   static void vJobErrorFetch(Tasks::MP_Task mpTask);
   static void vJobExecuteFetch(Tasks::MP_Task mpTask);
@@ -477,6 +469,8 @@
   static void vJobParentIdFetch(Tasks::MP_Task mpTask);
   static void vJobParticipantFetch(Tasks::MP_Task mpTask);
   static void vJobParticipantStore(Tasks::MP_Task mpTask);
+  static void vJobParticipantResponseStore(Tasks::MP_Task mpTask);
+  static void vJobParticipantHasError(Tasks::MP_Task mpTask);
   static void vJobPartitionsFetch(Tasks::MP_Task mpTask);
   static void vJobPhaseFetch(Tasks::MP_Task mpTask);
   static void vJobPhaseStore(Tasks::MP_Task mpTask);
@@ -489,6 +483,8 @@
   static void vJobRemoveParticipant(Tasks::MP_Task mpTask);
   static void vJobResponseStore(Tasks::MP_Task mpTask);
   static void vJobResponseFetch(Tasks::MP_Task mpTask);
+  static void vJobRowBufferFetch(Tasks::MP_Task mpTask);
+  static void vJobRowBufferStore(Tasks::MP_Task mpTask);
   static void vJobRowsInvalidFetch(Tasks::MP_Task mpTask);
   static void vJobRowsInvalidStore(Tasks::MP_Task mpTask);
   static void vJobRowsProcessedFetch(Tasks::MP_Task mpTask);
@@ -514,21 +510,6 @@
   static void vJobWaitParticipant(Tasks::MP_Task mpTask);
 
   // job generic
-  static void vJob__BegunErrorFetch(Tasks::MP_Task mpTask);
-  static void vJob__BegunErrorStore(Tasks::MP_Task mpTask);
-  static void vJob__CancelledErrorFetch(Tasks::MP_Task mpTask);
-  static void vJob__CancelledErrorStore(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedErrorFetch(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedErrorStore(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedResponseFetch(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedResponseStore(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedRowsInvalidFetch(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedRowsInvalidStore(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedRowsProcessedFetch(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedRowsProcessedStore(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedRowsSkippedFetch(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedRowsSkippedStore(Tasks::MP_Task mpTask);
-
   static void vJob__BegunNew(Tasks::MP_Task mpTask);
   static void vJob__CancelNew(Tasks::MP_Task mpTask);
   static void vJob__CancelledNew(Tasks::MP_Task mpTask);
@@ -557,6 +538,8 @@
   static void vJob_ExportTableStore(Tasks::MP_Task mpTask);
 
   // job FetchRows
+  static void vJob_FetchRowsColumnNameFetch(Tasks::MP_Task mpTask);
+  static void vJob_FetchRowsColumnStore(Tasks::MP_Task mpTask);
   static void vJob_FetchRowsLastBuffersStore(Tasks::MP_Task mpTask);
   static void vJob_FetchRowsPartitionFetch(Tasks::MP_Task mpTask);
   static void vJob_FetchRowsPlannerStore(Tasks::MP_Task mpTask);
@@ -578,6 +561,7 @@
   static void vJob_CopyBufferCopy(Tasks::MP_Task mpTask);
 
   static void vJob_InsertRowPartitionFetch(Tasks::MP_Task mpTask);
+  static void vJob_InsertRowRecordStore(Tasks::MP_Task mpTask);
   static void vJob_InsertRowNewJobWriteRow(Tasks::MP_Task mpTask);
   static void vJob_InsertRowSpawnJobWriteRow(Tasks::MP_Task mpTask);
 
@@ -611,7 +595,6 @@
   static void vJob_NodeInfoNodeNameFetch(Tasks::MP_Task mpTask);
 
   // job publish
-  static void vJob_PublishPublish(Tasks::MP_Task mpTask);
   static void vJob_PublishSpawnSub(Tasks::MP_Task mpTask);
   static void vJob_PublishTableStore(Tasks::MP_Task mpTask);
 
@@ -708,7 +691,6 @@
   static void vJob_WalkTableStore(Tasks::MP_Task mpTask);
 
   // Job WriteBuffer
-  static void vJob_WriteBufferIndexStore(Tasks::MP_Task mpTask);
   static void vJob_WriteBufferParentJobIdFetch(Tasks::MP_Task mpTask);
   static void vJob_WriteBufferInsertRows(Tasks::MP_Task mpTask);
   static void vJob_WriteBufferIsIngesting(Tasks::MP_Task mpTask);
@@ -873,9 +855,6 @@
   static void vRbCursorTableFetch(Tasks::MP_Task mpTask);
   static void vRbCursorTableStore(Tasks::MP_Task mpTask);
 
-  // row
-  static void vRowEscapedString(Tasks::MP_Task mpTask);
-
   // rowBuffer
   static void vRowBufferDump(Tasks::MP_Task mpTask);
   static void vRowBufferNew(Tasks::MP_Task mpTask);
@@ -998,16 +977,15 @@
   static void vTableCreateColumnVec(Tasks::MP_Task mpTask);
   static void vTableDrop(Tasks::MP_Task mpTask);
   static void vTableDump(Tasks::MP_Task mpTask);
+  static void vTableFindColumn(Tasks::MP_Task mpTask);
   static void vTableFirstBuffer(Tasks::MP_Task mpTask);
   static void vTableGenData(Tasks::MP_Task mpTask);
   static void vTableGetColumnsAsString(Tasks::MP_Task mpTask);
   static void vTableColumnFetch(Tasks::MP_Task mpTask);
   static void vTableGetPtn(Tasks::MP_Task mpTask);
-  static void vTableHiddenIndexFetch(Tasks::MP_Task mpTask);
-  static void vTableHiddenIndexStore(Tasks::MP_Task mpTask);
   static void vTableIndexCount(Tasks::MP_Task mpTask);
   static void vTableInit(Tasks::MP_Task mpTask);
-  static void vTableInsert(Tasks::MP_Task mpTask);
+  static void vTableIsColumn(Tasks::MP_Task mpTask);
   static void vTableIsLoadingStore(Tasks::MP_Task mpTask);
   static void vTableLazyBuildIndexes(Tasks::MP_Task mpTask);
   static void vTableList(Tasks::MP_Task mpTask);
@@ -1015,12 +993,16 @@
   static void vTablePublish(Tasks::MP_Task mpTask);
   static void vTablePurge(Tasks::MP_Task mpTask);
   static void vTableRemoveIndex(Tasks::MP_Task mpTask);
+  static void vTableScan(Tasks::MP_Task mpTask);
   static void vTableShowColumnVec(Tasks::MP_Task mpTask);
   static void vTableSlots(Tasks::MP_Task mpTask);
+  static void vTableSpace(Tasks::MP_Task mpTask);
   static void vTableSubDic(Tasks::MP_Task mpTask);
   static void vTableSubLoaders(Tasks::MP_Task mpTask);
   static void vTableTruncate(Tasks::MP_Task mpTask);
   static void vTableIsValidIndexColumns(Tasks::MP_Task mpTask);
+  static void vTableVerify(Tasks::MP_Task mpTask);
+  static void vTableVisualize(Tasks::MP_Task mpTask);
 
   // table partition
   static void vTablePtnAttemptGrabRead(Tasks::MP_Task mpTask);
@@ -1072,6 +1054,7 @@
   static void vTestTest8(Tasks::MP_Task mpTask);
   static void vTestTest9(Tasks::MP_Task mpTask);
   static void vTestTest10(Tasks::MP_Task mpTask);
+  static void vTestTest11(Tasks::MP_Task mpTask);
 
   // thread
   static void vThreadBind(Tasks::MP_Task mpTask);

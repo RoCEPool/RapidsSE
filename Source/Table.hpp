@@ -3,8 +3,14 @@
 /*============================================================================*/
 #pragma once
 
+namespace Data {
+  class tablePtn;
+}
+
 namespace MetaData
-{  
+{
+  class Index;
+  
   enum eTT // Table Type
   {
     /* 0 */ TT_NONE=0,
@@ -30,7 +36,6 @@ namespace MetaData
     Dic    m_xSubDic;      // sub dictionary for this table
     Slots  m_xSlots;       // slots
     Atomic m_ixIndexNo;    // index no
-    Index* m_pHiddenIndex; // hidden index
     
     IdxVec*    m_pIdxVec;    // index vector
     ColumnVec* m_pColumnVec; // column vector
@@ -56,24 +61,22 @@ namespace MetaData
     
     void vAddIndex(Index* pIndex);
     Stz* pAnalyzeIndex(Index* pIndex, bool bDetailed, i8& nRows);
+    Stz* pAnalyzeTable(bool bDetailed, i8& nRows);
     void vCompactIndex(Index* pIndex);
     void vLazyBuildIndexes(i8 iSlot);
     
-    void vInsertRow(i8 iTxId, i8 iPartition, Stz* m_aRecord, i8 iRecordLength);
-  void vInsertEntries(i8 iTxId, i8 iPartition,
-                      Data::EntryBuffer* pEntryBuffer);
+    void vInsertEntries(i8 iTxId, i8 iPartition,
+                      Data::RowBuffer* pRowBuffer);
     ColumnVec* pColumnVec(void);
     void vContentDump(void);
     void vCreateColumnVec(s32& sName, s48K& sDefinition);
     void vCreateColumnVec(Jobs::Job_CreateTable* pJob);
-    Index* pHiddenIndex(void);
-    void vHiddenIndex(Index* pHiddenIndex);
     IdxVec* pIdxVec(void);
     void  vIsLoading(bool bIsLoading);
     bool  bIsLoading(void);
     bool  bIsValidIndexColumns(Jobs::Job_CreateIndex* pJob);
     void  vMarkTable(void);
-    TablePtn* pPartition(i8 iSlot);
+    Data::TablePtn* pPartition(i8 iSlot);
     bool bPopulateIndex(i8 iIndexNo);
     void vRemoveIndex(Index* pIndex);
     i8   nIndexBuffers(i8 iIndexNo);
@@ -81,8 +84,9 @@ namespace MetaData
     void vPublish(i8 iPartitionNo);
     bool bPurge(i8 iPartitionNo, i8 iOlderThanSeconds);
     Data::EntryBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
-    i8   iRowPartition(Stz* pRow);
+    i8   iRowPartition(i8 iHash);
 
+    i8   nRowBuffers(void);
     void vShowColumnVec(void);
     Dic* pSubDic(void);
     void vSubLoaders(i8 iSubLoaders);
@@ -92,37 +96,14 @@ namespace MetaData
     void vTidyUpIndex(i8 iIndexNo);
     void vTruncate(i8 iPartitionNo);
     void vTruncateIndex(i8 iPartitionNo, i8 iIndexNo);
+    bool bVerifyTable(void);
     bool bVerifyIndexes(void);
     bool bVerifyIndex(Index* pIndex);
    
     Footer* aFooter(void);
-  
-    i8 nHiddenEntryCount(Data::EntryBuffer* pFirstH0Buffer);
-    
-//  void vNewIndexLoad(i8 iPartition, IndexTree* pIndexTree,
-//                     IndexTree* pHiddenIndexTree, i8 nHiddenEntries);
-    
-//    void vPopulateSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
-//                            IndexTree* pIndexTree, EntryBuffer* pFirstH0Buffer);
-//    void vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
-//                       IndexTree* pIndexTree);
-//    void vDumpSortArray(char* aSortArray, i8 nElements, i8 nElmSize,
-//                        IndexTree* pIndexTree);
-//    void vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
-//                        IndexTree* pIndexTree);
-//    void vBuildKeyWrk(KeyData* aSortElm, IdxColVec* pIdxColVec, KeyWrk& xKeyWrk);
   };
   
   Table* _pTable(void* aAddr);
-  
-//#ifdef WITH_APPLE
-//  int iQsort_complex(void* aIndexTree, const void* aArg1, const void* aArg2);
-//#else
-//  int iQsort_complex(const void* aArg1, const void* aArg2, void* aIndexTree);
-//#endif
-//  int iQsort_i8(const void* aArg1, const void* aArg2);
-//  int iQsort_i8i8(const void* aArg1, const void* aArg2);
-//  int iQsort_i8i8i8(const void* aArg1, const void* aArg2);
 }
 
 /*============================================================================*/

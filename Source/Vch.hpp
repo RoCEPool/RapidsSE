@@ -28,7 +28,8 @@ namespace Datums
     void vInitZero(void);
     bool bIsNull(void);
     void vSetNull(void);
-    
+    void vSprint(Stz* aDst, Stz* aSrc, bool bQuoted);
+
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
     static i8   iSize(char* aSrc);
@@ -37,10 +38,6 @@ namespace Datums
     static void vSprintEscaped(Stz* aDst, Stz* aSrc);
     static bool bIsValidSize(i8 iSize);
     
-    static bool bExtract(char** aaSrc, Stz* aDst,
-                          MetaData::Column* pColumn, Formatters* pFormatters);
-    static bool bExtractDefault(char** aaSrc, Stz* aDst,
-                          MetaData::Column* pColumn, Formatters* pFormatters);
     static bool bLessThan(char* aArgA, char* aArgB);
     static bool bLessEqual(char* aArgA, char* aArgB);
     static bool bEqualTo(char* aArgA, char* aArgB);

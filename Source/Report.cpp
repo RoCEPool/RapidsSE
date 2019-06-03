@@ -13,7 +13,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* report a non-recoverable fatal message                                     */
 /*----------------------------------------------------------------------------*/
-__attribute__((noreturn)) void Debugging::vFatal(Stz* aFormat, ...)
+void Debugging::vFatal(Stz* aFormat, ...)
 {
   vStackDump();
   
@@ -23,7 +23,7 @@ __attribute__((noreturn)) void Debugging::vFatal(Stz* aFormat, ...)
   vPrint(aFormat,xArgs);
   va_end(xArgs);
   
-  exit(EXIT_FAILURE);
+  Process::vExit(EXIT_FAILURE);
 }
 
 /*----------------------------------------------------------------------------*/

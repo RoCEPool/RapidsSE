@@ -69,11 +69,7 @@ EntryBuffer::EntryBuffer(void)
   m_pIndex        = nullptr;
   
   //m_aHeadEntry  = nullptr;
-  m_aLastEntry  = nullptr;
-  
   m_aLazyChain  = nullptr;
-  
-  //vHeadEntryNew();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -146,9 +142,6 @@ Item* EntryBuffer::aAllotEntry(i8 nBytes_Without_Offsets)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  //if (nItems() >= C_MAX_ITEMS - 16)
-  //  return nullptr;
-  
   Item* aItem = aAllotItem(CN_ENTRY,nBytes_Without_Offsets);
   if (! aItem)
     return nullptr;
@@ -159,114 +152,12 @@ Item* EntryBuffer::aAllotEntry(i8 nBytes_Without_Offsets)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot a row entry in this buffer                                           */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aAllotRowEntry(RowWrk& xRowWrk)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // rows only ever have one next offset
-  RASSERT(1 == xRowWrk.nLevels());
-  
-  i8 nRowEntrySize = xRowWrk.nRowEntrySize();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if this buffer has enough space and has free item no's
-  
-  if (! bHasSpace(nRowEntrySize))
-    return nullptr;
-  
-  if (! bHasFreeItem()) {
-    //vTrace("No free item no's\n"_Stz);
-    return nullptr;
-  }
-  
-  // hidden index has another limit (offsets) for no of entries
-  if (m_pIndex->bIsHidden()) {
-    if (! bHasFreeItemHidden()) {
-      //vTrace("No free item no's\n"_Stz);
-      return nullptr;
-    }
-    RASSERT(nItems() < C_MAX_ITEMS - 16);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allot an entry and its neo in this entry buffer
-  
-  Item* aNewRowEntry = aAllotEntry(nRowEntrySize - 4);
-  RASSERT(aNewRowEntry);
-  
-  IGNORE_RETURN(aAllotNEO(4));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the item no for this row
-  
-  i8 i_RowItemNo = iGetItemNo();
-  RASSERT(C_NO_MORE_ITEMS != i_RowItemNo);
-  RASSERT(i_RowItemNo >= 0 and i_RowItemNo < C_MAX_ITEMS);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the item id
-  
-  xRowWrk.vItemNo(i_RowItemNo);
-  aNewRowEntry->vId(xRowWrk.xId());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // record the offset for this row entry
-  
-  i4 iNewEntryOffset = iToOffset(aNewRowEntry);
-  RASSERT(i_RowItemNo >= 0 && i_RowItemNo < C_MAX_ITEMS);
-  m_i4aItemOffsets[i_RowItemNo] = iNewEntryOffset;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set neo in head entry for the first time
-  
-  if (aSkipRoots()->iNEO(0) == -1)
-    aSkipRoots()->vNEO(0,iNewEntryOffset);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // a last item should now link to this new item
-  if (m_aLastEntry)
-    m_aLastEntry->vNEO(0,iNewEntryOffset);
-  m_aLastEntry = aNewRowEntry;
-  aNewRowEntry->vNEO(0,-1);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  return aNewRowEntry;
-}
-
-/*----------------------------------------------------------------------------*/
 /* analyze this buffer                                                        */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
                            i8& iBuffers, i8& iEntries)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  if (m_pIndex->bIsHidden()) {
-    
-    ASSERT(m_iBufferHeight == 0);
-    EntryBuffer* pNextBuffer = this;
-    
-    do {
-      ASSERT(pNextBuffer->iBufferHeight() == 0);
-      
-      iBuffers++;
-      iEntries += (pNextBuffer->m_nItems);
-      
-      if (bDetailed)
-        sAnalysis.vCatSprint("row: (%s, %lld, %5lld, 'L%lld', %lld )\n"_Stz,
-                             gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
-                             pNextBuffer->m_iPartitionNo,
-                             iBuffers,
-                             pNextBuffer->m_iBufferHeight,
-                             pNextBuffer->m_nItems);
-      
-      pNextBuffer = pNextBuffer->pNextBuffer();
-    } while (pNextBuffer);
-    
-    return;
-  }
   
   iBuffers++;
   iEntries += m_nItems;
@@ -315,25 +206,6 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
   EntryBuffer* pNextBuffer = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // hidden index ?
-  
-  if (m_pIndex->bIsHidden()) {
-    ASSERT(m_iBufferHeight == 0);
-    pNextBuffer = this->pNextBuffer();
-    nBuffers++;
-    
-    while (pNextBuffer) {
-      ASSERT(pNextBuffer->iBufferHeight() == 0);
-      
-      //EntryBuffer* pThisBuffer = pNextBuffer;
-      pNextBuffer = pNextBuffer->pNextBuffer();
-      nBuffers++;
-    }
-    
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // other index
   
   // count this buffer
@@ -380,16 +252,11 @@ void EntryBuffer::vDeleteEntry(Item** aaItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  // currently we only delete from non-hidden indexes
-  ASSERT(! m_pIndex->bIsHidden());
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Item* aItem = *aaItem;
   
   Item* xPriorVec[gpAttachMap->m_nIndexLevels];
-  
-  //KeyData* aKey = _aKeyData(aItem->aDataArea());
   
   vPositionPriorVecEntry(aItem, xPriorVec, aItem);
   
@@ -473,39 +340,12 @@ EntryBuffer* EntryBuffer::pFirstChildBuffer(void)
   
 #ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
-  
-  //if (m_aLazyChain)
-  //  vBuildSkipList();
 #endif
   
   Item* aFirstEntry = this->aLeadEntry();
   EntryBuffer* pChildEntryBuffer = EntryBuffer::pRefdEntryBuffer(aFirstEntry);
   
   return pChildEntryBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get an entry by number                                                     */
-/*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aGetEntry_Item(i8 i_Item)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-#ifdef USE_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
-#endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (i_Item == C_NO_MORE_ITEMS)
-    return nullptr;
-  
-  RASSERT(i_Item >= 0 && i_Item < C_MAX_ITEMS);
-  i4 iOffset = m_i4aItemOffsets[i_Item];
-  
-  Item* aItem = aAdd<Item*>(aItemArea(), iOffset);
-  
-  return aItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -590,11 +430,6 @@ void EntryBuffer::vIndex(Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_pIndex = pIndex;
-  
-  if (! m_pIndex->bIsHidden())
-    return;
-  
-  vInitFreeChain();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -605,18 +440,6 @@ Index* EntryBuffer::pIndex(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   return m_pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* restore item count                                                         */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vItemCountRestore(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_nItems = 0;
-  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem, 0))
-    m_nItems++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -654,9 +477,6 @@ Item* EntryBuffer::aLeadEntry(void)
   
 #ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
-  
-  //if (m_aLazyChain)
-  //  vBuildSkipList();
 #endif
   
   Item* aFirst = aNextEntry(aSkipRoots(),0);
@@ -979,26 +799,15 @@ void EntryBuffer::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  RASSERT(nullptr == m_i4aItemOffsets);
-  RASSERT(! m_pIndex->bIsHidden());
   RASSERT(1 == m_iBufferHeight);
   
   vResetUsed();
-  
-//  m_xSkipRoots.m_iaNextOffset[0] = -1;
-//  m_xSkipRoots.m_iaNextOffset[1] = -1;
-//  m_xSkipRoots.m_iaNextOffset[2] = -1;
 
   m_xSkipRoots.vNEO(0,-1);
   m_xSkipRoots.vNEO(1,-1);
   m_xSkipRoots.vNEO(2,-1);
-
-  m_i_FreeOffsetChain = C_NO_MORE_ITEMS;
   
   //m_aHeadEntry  = nullptr;
-  m_aLastEntry  = nullptr;
-  m_aFreeItemChain  = nullptr;
-  
   m_aLazyChain  = nullptr;
   
   //vHeadEntryNew();
@@ -1018,44 +827,10 @@ void EntryBuffer::vRestore(void)
   // set the index to nullptr (this pointer is not valid any more)
   m_pIndex = nullptr;
   
-  
-  // get the original buffer address
-  //  nb: the given address has to be an address in the orginal buffer
-  PoolBuffer* pOriginalBuffer =
-  pBitAnd<PoolBuffer*>(m_i4aItemOffsets,C_OBJECT_TO_BUFFER_MASK);
-  
   // get this buffer address
   PoolBuffer* pThisBuffer =
   pBitAnd<PoolBuffer*>(this,C_OBJECT_TO_BUFFER_MASK);
-  
-  // calculate offset for m_i4aItemOffsets and set it
-  if (m_i4aItemOffsets) {
-    PoolBuffer* pOriginalBuffer =
-    pBitAnd<PoolBuffer*>(m_i4aItemOffsets,C_OBJECT_TO_BUFFER_MASK);
-    u8 uOffset = nSub(m_i4aItemOffsets, pOriginalBuffer);
-    m_i4aItemOffsets = aBitOr<i4*>(pThisBuffer,uOffset);
-  }
-  
-  // calculate offset for m_aHeadEntry and set it
-  //uOffset = nSub(m_aHeadEntry, pOriginalBuffer);
-  //m_aHeadEntry = pBitOr<Item*>(pThisBuffer,uOffset);
-  
-  // calculate offset for m_aLastEntry and set it
-  if (m_aLastEntry) {
-    PoolBuffer* pOriginalBuffer =
-    pBitAnd<PoolBuffer*>(m_aLastEntry,C_OBJECT_TO_BUFFER_MASK);
-    u8 uOffset = nSub(m_aLastEntry, pOriginalBuffer);
-    m_aLastEntry = pBitOr<Item*>(pThisBuffer,uOffset);
-  }
-  
-  // calculate offset for m_aFreeItemChain and set it
-  if (m_aFreeItemChain) {
-    PoolBuffer* pOriginalBuffer =
-    pBitAnd<PoolBuffer*>(m_aFreeItemChain,C_OBJECT_TO_BUFFER_MASK);
-    u8 uOffset = nSub(m_aFreeItemChain, pOriginalBuffer);
-    m_aFreeItemChain = pBitOr<FreeItem*>(pThisBuffer,uOffset);
-  }
-  
+
   // calculate offset for m_aLazyChain and set it
   if (m_aLazyChain) {
     PoolBuffer* pOriginalBuffer =
@@ -1117,18 +892,7 @@ void EntryBuffer::vShowEntry(Item* aItem)
   //       Tx::iTxNo(m_iTxId)
   //       );
   
-  if (! m_pIndex->bIsHidden())
-    aKey->vShow(m_pIndex->pIdxColVec(), false);
-  
-  if (m_pIndex->bIsHidden()) {
-    RowData* aRowData = _aRowData(aItem->aDataArea());
-    vTrace("RowData: "_Stz);
-    i8 iRowSize = aItem->nSizeItem_WithoutOffsets();
-    if (iRowSize > 0) {
-      aRowData->vShow(m_pIndex->pTable()->pColumnVec(), true);
-    }
-  }
-  
+  aKey->vShow(m_pIndex->pIdxColVec());
   
   vTrace(" offsets:"_Stz);
   for (i8 i_Level = 0; i_Level < aItem->nLevels(); i_Level++)
@@ -1164,15 +928,11 @@ void EntryBuffer::vShow(Item* aMarkEntry)
   vTrace("  index: %s partition: %lld height: %lld\n"_Stz,
          m_pIndex ? m_pIndex->aIndexName() : "NULL"_Stz,m_iPartitionNo,m_iBufferHeight);
   
-  vTrace("  entryOffset: %p freeOffsetHead: %lld\n"_Stz,
-         m_i4aItemOffsets,m_i_FreeOffsetChain);
-  
-  vTrace("  skipRoots: %p[%d,%d,%d] lastEntry: %p firstFree: %p\n"_Stz,
+  vTrace("  skipRoots: %p[%d,%d,%d] lastEntry: %p\n"_Stz,
          aSkipRoots(),
          aSkipRoots() ? aSkipRoots()->iNEO(0) : 0,
          aSkipRoots() ? aSkipRoots()->iNEO(1) : 0,
-         aSkipRoots() ? aSkipRoots()->iNEO(2) : 0,
-         m_aLastEntry,m_aFreeItemChain);
+         aSkipRoots() ? aSkipRoots()->iNEO(2) : 0);
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
@@ -1358,26 +1118,6 @@ void EntryBuffer::vTruncate(void)
   
   EntryBuffer* pNextBuffer;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // hidden index buffers are just one level
-  
-  if (m_pIndex->bIsHidden()) {
-    ASSERT(m_iBufferHeight == 0);
-    pNextBuffer = this->pNextBuffer();
-    
-    while (pNextBuffer) {
-      ASSERT(pNextBuffer->iBufferHeight() == 0);
-      
-      EntryBuffer* pThisBuffer = pNextBuffer;
-      pNextBuffer = pNextBuffer->pNextBuffer();
-      delete pThisBuffer;
-    }
-    delete this;
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // other index
   if (m_iBufferHeight != 0) {
     
     // recursively delete the lower level buffers

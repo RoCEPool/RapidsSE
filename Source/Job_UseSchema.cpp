@@ -13,6 +13,7 @@ JobClass xJobClass_UseSchema =
 {
   CN_JOB_USESCHEMA,      // class enum
   JK_LOCAL,              // job kind
+  RK_LOCAL_ERRORS,       // response kind
   "use schema"_Stz,      // comment about the job
   "use"_Stz,             // the prompt command
   "schema"_Stz,          // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_UseSchema =
 
   nullptr,               // prompt check function
   pJob_UseSchema_pre,    // prompt pre-process function
-  vJob_UseSchema_post,   // prompt post-process function
+  vJob_post,             // prompt post-process function
   nullptr,               // job new function
   vJob_UseSchema_delete, // job delete function
   nullptr,               // job pre-send function
@@ -211,29 +212,10 @@ Job* Jobs::pJob_UseSchema_pre(Interface::Session* pSession)
   bool bResult = pJob_UseSchema->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_UseSchema->m_bHasError = true;
-    pJob_UseSchema->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_UseSchema->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_UseSchema;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_UseSchema_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_UseSchema* pJob_UseSchema = _pJob_UseSchema(pJob);
-  
-  if ( pJob_UseSchema->m_bHasError ) {
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_UseSchema->m_xNode[i_Node].m_eErrorCode]);
-    }
-  }
-  else {
-    vTrace("success: 0 rows affected\n"_Stz);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

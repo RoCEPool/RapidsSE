@@ -215,13 +215,13 @@ void Task::vAddRoutines(void)
 /*----------------------------------------------------------------------------*/
 /* compile given : routine                                                    */
 /*----------------------------------------------------------------------------*/
-Word* Task::pCompileColon(s48K& sDefinition)
+ForthWord* Task::pCompileColon(s48K& sDefinition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pNewWord;
+  ForthWord* pNewWord;
   StepFp  fpStep;
-  Word* pCalledWord;
+  ForthWord* pCalledWord;
   GenVar xVariable;
   
   m_pCompiler->m_pTokeniser->vUseString(sDefinition);
@@ -240,7 +240,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
   else
     pDic = &gpAttachMap->m_oRootDic;
 
-  pNewWord = new(pDic) Word(m_pCompiler->m_pTokeniser->sToken());
+  pNewWord = new(pDic) ForthWord(m_pCompiler->m_pTokeniser->sToken());
   
   m_pCompiler->m_pCurrentWord = pNewWord;
 

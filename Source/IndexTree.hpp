@@ -15,10 +15,9 @@ namespace Data
     Lock         m_okLock;         // lock on the buffer tree
     Index*       m_pIndex;         // which index
     i8           m_iPartitionNo;   // which partition no
-    TablePtn*    m_pPartition;     // which partition                     UNUSED
-    EntryBuffer* m_pRootBuffer;    // the root buffer
-    EntryBuffer* m_pCurrentBuffer; // current buffer for insert hidden index
     
+    EntryBuffer* m_pRootBuffer;    // the root buffer
+
     // must be last
     Footer m_xFooter;
     
@@ -35,29 +34,18 @@ namespace Data
     static void vMonitorPortrait(s48K& sPortrait);
   
     Stz*         pAnalyze(void);
-    
-    Item*       pAppendRow(i8 iTxId,
-                            Stz* aRow_Data,
-                            i8 iRowLength);
-    void         vAppendBuffer(EntryBuffer* pEntryBuffer);
     void         vCompact(void);
     void         vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pLeftL0);
     void         vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
     void         vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
-  //void         vCopyLeftV1(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
     void         vDump(bool bSameHeight);
-    EntryBuffer* pFirstL1Buffer(void);
+    i8           nEntryBuffers(void);
     EntryBuffer* pFirstH0Buffer(void);
     Index*       pIndex(void);
-    i8           nEntryBuffers(void);
-    
-    bool         bInsertEntry(Item* aRowItem);
-    void         vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer);
-    void         vLazyBuild(void);
-    EntryBuffer* pPopSubList(EntryBuffer** ppSubList);
+    bool         bInsertEntry(RowBuffer* pRowBuffer, i8 i_Row, Id& xId);
+    void         vInsertEntriesFromBuffer(RowBuffer* pRowBuffer);
+    void         vLazyBuild(void);    
     EntryBuffer* pPositionH0Buffer(KeyWrk& xKeyWrk);
-    void         vPublish(void);
-    bool         bPurge(i8 iOlderThanSeconds);
     EntryBuffer* pRoot(void);
     void         vTidyUp(void);
     void         vTruncate(void);
@@ -69,12 +57,13 @@ namespace Data
     
   private:
     void         vDumpLevel(EntryBuffer* pEntryBuffer);
+    EntryBuffer* pFirstL1Buffer(void);
+    EntryBuffer* pPopSubList(EntryBuffer** ppSubList);
   };
   
   IndexTree* _pIndexTree(void* pAddr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   
  }
 

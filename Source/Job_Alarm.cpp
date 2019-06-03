@@ -13,6 +13,7 @@ JobClass xJobClass_Alarm =
 {
   CN_JOB_ALARM,          // class enum
   JK_SYSTEM,             // job kind
+  RK_NONE,               // response kind
   "alarm"_Stz,           // comment about the job
   nullptr,               // the prompt command
   nullptr,               // the second word

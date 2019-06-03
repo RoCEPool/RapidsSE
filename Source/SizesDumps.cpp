@@ -7,7 +7,7 @@
 // Object's : Class::vDump
 // Object's with no vDump defined : Dump::vUndefined
 // Header   : Dump::vInvalid
-// Objects we don't want to dump (eg Word) : Dump::vDummy
+// Objects we don't want to dump (eg ForthWord) : Dump::vDummy
 
 /*----------------------------------------------------------------------------*/
 /* dump functions                                                             */
@@ -44,12 +44,15 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vInvalid,         // CN_BYTERATE
 
   /* 30 */ &Dump::vDummy,           // CN_CARRYOVER
+  /*    */ &Dump::vDummy,           // CN_CATALOG
   /* 31 */ &Dump::vDummy,           // CN_COLUMN
   /* 32 */ &Dump::vDummy,           // CN_COLUMNVEC
   /*    */ &Dump::vDummy,           // CN_COMMAND
   /*    */ &Dump::vDummy,           // CN_COMPILER
   /*    */ &Dump::vDummy,           // CN_COMPLETER
 
+  /*    */ &Dump::vDummy,           // CN_DATUM
+  /*    */ &Dump::vDummy,           // CN_DECACNT
   /*    */ &Dump::vDummy,           // CN_DECIDER
   /* 33 */ &Dic::vDump,             // CN_DIC
   /*    */ &Dump::vDummy,           // CN_DICPATH
@@ -120,6 +123,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_DROPTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_DROPTENANT
   /*    */ &Dump::vDummy,           // CN_JOB_DUMPINDEX
+  /*    */ &Dump::vDummy,           // CN_JOB_DUMPTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_EXPORT
   /*    */ &Dump::vDummy,           // CN_JOB_FETCHROWS
   /*    */ &Dump::vDummy,           // CN_JOB_GENERATE
@@ -174,7 +178,9 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_TRUNCATETABLE
   /*    */ &Dump::vDummy,           // CN_JOB_USESCHEMA
   /*    */ &Dump::vDummy,           // CN_JOB_VERIFYINDEX
+  /*    */ &Dump::vDummy,           // CN_JOB_VERIFYTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_VISUALIZEINDEX
+  /*    */ &Dump::vDummy,           // CN_JOB_VISUALIZETABLE
   /*    */ &Dump::vDummy,           // CN_JOB_WAITCLUSTER
   /*    */ &Dump::vDummy,           // CN_JOB_WALK
   /*    */ &Dump::vDummy,           // CN_JOB_WRITEBUFFER
@@ -201,13 +207,16 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_MEMTEST
   /*114 */ &Dump::vUndefined,       // CN_MUTEX
 
+  /*    */ &Dump::vUndefined,       // CNNMVAL
   /* 75 */ &Node::vDump,            // CN_NODE
   /*    */ &Dump::vUndefined,       // CN_NOW
+  /*    */ &Dump::vUndefined,       // CN_NUMBAT
 
   /* 77 */ &Dump::vUndefined,       // CN_OP
   
   /* 78 */ &Parser::vDump,          // CN_PARSER
   /* 82 */ &Dump::vInvalid,         // CN_PATHVEC
+  /* 82 */ &Dump::vInvalid,         // CN_PERUSE
   /*    */ &Dump::vInvalid,         // CN_PIPE
   /* 86 */ &Plan::vDump,            // CN_PLAN
   /* 87 */ &Dump::vUndefined,       // CN_PLANNER
@@ -220,12 +229,19 @@ pDUMPFUN *gpDump[]
   /* 96 */ &QueueBuffer::vDump,     // CN_QUEUEBUFFER
   /*    */ &Dump::vUndefined,       // CN_QUEUES
 
+  /*    */ &Dump::vUndefined,       // CN_RECORD
   /*    */ &Dump::vUndefined,       // CN_RECORDBUFFER
   /*    */ &LocalSet::vDump,        // CN_RESOURCETRACKER
+  /*    */ &Dump::vUndefined,       // CN_RESPONSE
+  /*    */ &Dump::vUndefined,       // CN_RESPONSEVEC
+  /*    */ &Dump::vUndefined,       // CN_ROW
   /*102 */ &Dump::vUndefined,       // CN_ROWAGG
+  /*    */ &Dump::vUndefined,       // CN_ROWBUFFER
+  /*    */ &Dump::vUndefined,       // CN_ROWCODER
   /*105 */ &Dump::vUndefined,       // CN_ROWONCE
-  /*106 */ &Dump::vUndefined,       // CN_ROWWRK
+  /*    */ &Dump::vUndefined,       // CN_ROWTRAY
   
+  /*    */ &Dump::vUndefined,       // CN_SCHEMA
   /*    */ &Dump::vUndefined,       // CN_SCHEMATEST
   /*    */ &Dump::vUndefined,       // CN_SEEME
   /*115 */ &SePrompt::vDump,        // CN_SEPROMPT
@@ -240,6 +256,15 @@ pDUMPFUN *gpDump[]
   /*123 */ &Heap::vDump,            // SN_SMALLPERSISTENT
   /*124 */ &Heap::vDump,            // SN_SMALLTRANSIENT
   /*125 */ &Socket::vDump,          // CN_SOCKET
+  /*    */ &Dump::vInvalid,         // CN_SPBCD
+  /*    */ &Dump::vInvalid,         // CN_SPBOL
+  /*    */ &Dump::vInvalid,         // CN_SPDTE
+  /*    */ &Dump::vInvalid,         // CN_SPFLT
+  /*    */ &Dump::vInvalid,         // CN_SPINT
+  /*    */ &Dump::vInvalid,         // CN_SPIVL
+  /*    */ &Dump::vInvalid,         // CN_SPTME
+  /*    */ &Dump::vInvalid,         // CN_SPTSP
+  /*    */ &Dump::vInvalid,         // CN_SPVCH
   /*126 */ &Stack::vDump,           // CN_STACK
   /*    */ &Dump::vInvalid,         // CN_STATISTICS
   /*127 */ &Dump::vInvalid,         // CN_STEPACCUM
@@ -254,6 +279,8 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_TASKLIST
   /*134 */ &Dump::vUndefined,       // CN_TASKQUEUE
   /*    */ &Dump::vUndefined,       // CN_TEMPNAME
+  /*    */ &Dump::vUndefined,       // CN_TENANT
+  /*    */ &Dump::vUndefined,       // CN_TENANTS
   /*137 */ &Dump::vUndefined,       // CN_THREAD
   /*    */ &Dump::vUndefined,       // CN_THREADVEC
   /*141 */ &Dump::vUndefined,       // CN_TIME
@@ -266,7 +293,7 @@ pDUMPFUN *gpDump[]
   /*148 */ &Dump::vUndefined,       // CN_TXSET
 
   /*149 */ &Dump::vInvalid,         // CN_WILDERNESS
-  /*150 */ &Word::vDump,            // CN_WORD
+  /*150 */ &ForthWord::vDump,            // CN_WORD
   
   /*151 */ &Dump::vUndefined,       // CN_ZSMALL_
   /*152 */ &Dump::vUndefined,       // CN_ZMEDIUM_
@@ -311,12 +338,15 @@ i8 giClassSize[]
   /* 28 */ sizeof(ByteRate),           // CN_BYTERATE
 
   /* 30 */ sizeof(CarryOver),          // CN_CARRYOVER
+  /*    */ sizeof(Catalog),            // CN_CATALOG
   /* 31 */ sizeof(Column),             // CN_COLUMN
   /* 32 */ sizeof(ColumnVec),          // CN_COLUMNVEC
   /* 32 */ sizeof(Command),            // CN_COMMAND
   /* 32 */ sizeof(Compiler),           // CN_COMPILER
   /* 32 */ sizeof(Completer),          // CN_COMPLETER
 
+  /*    */ sizeof(Datum),              // CN_DATUM
+  /*    */ sizeof(DecaCnt),            // CN_DECACNT
   /*    */ sizeof(Decider),            // CN_DECIDER
   /* 33 */ sizeof(Dic),                // CN_DIC
   /* 34 */ sizeof(DicPath),            // CN_DICPATH
@@ -386,10 +416,11 @@ i8 giClassSize[]
   /*    */ sizeof(Job_DropTable),      // CN_JOB_DROPTABLE
   /*    */ sizeof(Job_DropTenant),     // CN_JOB_DROPTENANT
   /*    */ sizeof(Job_DumpIndex),      // CN_JOB_DUMPINDEX
+  /*    */ sizeof(Job_DumpTable),      // CN_JOB_DUMPTABLE
   /*    */ sizeof(Job_Export),         // CN_JOB_EXPORT
   /*    */ sizeof(Job_FetchRows),      // CN_JOB_FETCHROWS
   /*    */ sizeof(Job_Generate),       // CN_JOB_GENERATE
-  /*    */ 0,       // CN_JOB_HEALTH
+  /*    */ sizeof(Job_Health),         // CN_JOB_HEALTH
   /*    */ sizeof(Job_Ingest),         // CN_JOB_INGEST
   /*    */ sizeof(Job_InsertRow),      // CN_JOB_INSERTROW
   /*    */ sizeof(Job_InsertTable),    // CN_JOB_INSERTTABLE
@@ -439,8 +470,10 @@ i8 giClassSize[]
   /*    */ sizeof(Job_TableSizes),     // CN_JOB_TABLESIZES
   /*    */ sizeof(Job_TruncateTable),  // CN_JOB_TRUNCATETABLE
   /*    */ sizeof(Job_UseSchema),      // CN_JOB_USESCHEMA
-  /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VERIFYINDEX
+  /*    */ sizeof(Job_VerifyIndex),    // CN_JOB_VERIFYINDEX
+  /*    */ sizeof(Job_VerifyTable),    // CN_JOB_VERIFYTABLE
   /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VISUALIZEINDEX
+  /*    */ sizeof(Job_VisualizeTable), // CN_JOB_VISUALIZETABLE
   /*    */ sizeof(Job_WaitCluster),    // CN_JOB_WAITCLUSTER
   /*    */ sizeof(Job_Walk),           // CN_JOB_WALK
   /*    */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
@@ -467,13 +500,16 @@ i8 giClassSize[]
   /*114 */ sizeof(MemTest),            // CN_MEMTEST
   /*114 */ sizeof(Mutex),              // CN_MUTEX
 
+  /*    */ 0,             // CN_NMVAL
   /* 75 */ sizeof(Node),               // CN_NODE
   /*    */ sizeof(Now),                // CN_NOW
+  /*    */ sizeof(Numbat),             // CN_NUMBAT
 
   /* 77 */ sizeof(Op),                 // CN_OP
   
   /* 78 */ sizeof(Parser),             // CN_PARSER
   /* 82 */ sizeof(PathVec),            // CN_PATHVEC
+  /*    */ sizeof(Peruse),             // CN_PERUSE
   /*    */ sizeof(Pipe),               // CN_PIPE
   /* 86 */ sizeof(Plan),               // CN_PLAN
   /* 87 */ sizeof(Planner),            // CN_PLANNER
@@ -486,12 +522,19 @@ i8 giClassSize[]
   /* 96 */ sizeof(QueueBuffer),        // CN_QUEUEBUFFER
   /*    */ sizeof(Queues),             // CN_QUEUES
   
+  /*    */ sizeof(Record),             // CN_RECORD
   /*    */ sizeof(RecordBuffer),       // CN_RECORDBUFFER
   /*    */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER
+  /*    */ sizeof(Response),           // CN_RESPONSE
+  /*    */ sizeof(ResponseVec),        // CN_RESPONSEVEC
+  /*    */ sizeof(Row),                // CN_ROW
   /*102 */ sizeof(RowAgg),             // CN_ROWAGG
+  /*    */ sizeof(RowBuffer),          // CN_ROWBUFFER
+  /*    */ sizeof(RowCoder),           // CN_ROWCODER
   /*105 */ sizeof(RowOnce),            // CN_ROWONCE
-  /*106 */ sizeof(RowWrk),             // CN_ROWWRK
+  /*105 */ sizeof(RowTray),            // CN_ROWTRAY
   
+  /*    */ sizeof(Schema),             // CN_SCHEMA
   /*    */ sizeof(SchemaTest),         // CN_SCHEMATEST
   /*    */ sizeof(SeeMe),              // CN_SEEME
   /*115 */ sizeof(SePrompt),           // CN_SEPROMPT
@@ -506,6 +549,15 @@ i8 giClassSize[]
   /*123 */ sizeof(Heap), // correct    // SN_SMALLPERSISTENT
   /*124 */ sizeof(Heap), // correct    // SN_SMALLTRANSIENT
   /*125 */ sizeof(Socket),             // CN_SOCKET
+  /*    */ sizeof(spBCD),              // CN_SPBCD
+  /*    */ sizeof(spBOL),              // CN_SPBOL
+  /*    */ sizeof(spDTE),              // CN_SPDTE
+  /*    */ sizeof(spFLT),              // CN_SPFLT
+  /*    */ sizeof(spINT),              // CN_SPINT
+  /*    */ sizeof(spIVL),              // CN_SPIVL
+  /*    */ sizeof(spTME),              // CN_SPTME
+  /*    */ sizeof(spTSP),              // CN_SPTSP
+  /*    */ sizeof(spVCH),              // CN_SPVCH
   /*126 */ sizeof(Stack),              // CN_STACK
   /*    */ sizeof(Statistics),         // CN_STATISTICS
   /*127 */ sizeof(StepAccum),          // CN_STEPACCUM
@@ -520,6 +572,8 @@ i8 giClassSize[]
   /*    */ sizeof(TaskList),           // CN_TASKLIST
   /*134 */ sizeof(TaskQueue),          // CN_TASKQUEUE
   /*134 */ sizeof(TempName),           // CN_TEMPNAME
+  /*    */ sizeof(Tenant),             // CN_TENANT
+  /*    */ sizeof(Tenants),            // CN_TENANTS
   /*137 */ sizeof(Thread),             // CN_THREAD
   /*    */ sizeof(ThreadVec),          // CN_THREADVEC
   /*141 */ sizeof(Time),               // CN_TIME
@@ -532,7 +586,7 @@ i8 giClassSize[]
   /*148 */ sizeof(TxSet),              // CN_TXSET
 
   /*149 */ sizeof(Wilderness),         // CN_WILDERNESS
-  /*150 */ sizeof(Word),               // CN_WORD
+  /*150 */ sizeof(ForthWord),               // CN_WORD
   
   /*151 */ C_SIZE_SMALL_OBJECT  - 256, // CN_ZSMALL_
   /*152 */ C_SIZE_MEDIUM_OBJECT - 256, // CN_ZMEDIUM_
@@ -577,12 +631,15 @@ eHT geWhichHeap[]
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_BYTERATE
 
   /* 30 */ HT_INVALID,           // CN_CARRYOVER
-  /* 31 */ HT_TRANSIENT_SMALL,   // CN_COLUMN
-  /* 32 */ HT_TRANSIENT_MEDIUM,  // CN_COLUMNVEC
+  /*    */ HT_INVALID,           // CN_CATALOG
+  /*    */ HT_TRANSIENT_SMALL,   // CN_COLUMN
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_COLUMNVEC
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_COMMAND
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_COMPILER
   /*    */ HT_TRANSIENT_SMALL,   // CN_COMPLETER
 
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_DATUM
+  /*    */ HT_TRANSIENT_SMALL,   // CN_DECACNT
   /*    */ HT_TRANSIENT_SMALL,   // CN_DECIDER
   /* 33 */ HT_TRANSIENT_MEDIUM,  // CN_DIC
   /*    */ HT_TRANSIENT_SMALL,   // CN_DICPATH
@@ -652,6 +709,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPTENANT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DUMPINDEX
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DUMPTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_EXPORT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_FETCHROWS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_GENERATE
@@ -706,7 +764,9 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_TRUNCATETABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_USESCHEMA
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_VERIFYINDEX
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_VERIFYTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_VISUALIZEINDEX
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_VISUALIZETABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WAITCLUSTER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WALK
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEBUFFER
@@ -733,13 +793,16 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_MEMTEST
   /*114 */ HT_TRANSIENT_SMALL,   // CN_MUTEX
 
+  /*    */ HT_TRANSIENT_SMALL,   // CN_NMVAL
   /* 75 */ HT_TRANSIENT_SMALL,   // CN_NODE
   /*    */ HT_TRANSIENT_SMALL,   // CN_NOW
+  /*    */ HT_TRANSIENT_LARGE,   // CN_NUMBAT
 
   /* 77 */ HT_TRANSIENT_SMALL,   // CN_OP
   
   /* 78 */ HT_TRANSIENT_MEDIUM,  // CN_PARSER
   /* 82 */ HT_TRANSIENT_MEDIUM,  // CN_PATHVEC
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_PERUSE
   /*    */ HT_TRANSIENT_SMALL,   // CN_PIPE
   /* 86 */ HT_TRANSIENT_MEDIUM,  // CN_PLAN
   /* 87 */ HT_TRANSIENT_MEDIUM,  // CN_PLANNER
@@ -752,12 +815,19 @@ eHT geWhichHeap[]
   /* 96 */ HT_INVALID,           // CN_QUEUEBUFFER
   /*    */ HT_TRANSIENT_SMALL,   // CN_QUEUES
   
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_RECORD
   /*    */ HT_TRANSIENT_LARGE,   // CN_RECORDBUFFER
   /*    */ HT_TRANSIENT_SMALL,   // CN_RESOURCETRACKER
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_RESPONSE
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_RESPONSEVEC
+  /*    */ HT_TRANSIENT_LARGE,   // CN_ROW
   /*102 */ HT_TRANSIENT_MEDIUM,  // CN_ROWAGG
+  /*    */ HT_TRANSIENT_LARGE,   // CN_ROWBUFFER
+  /*    */ HT_TRANSIENT_LARGE,   // CN_ROWCODER
   /*105 */ HT_TRANSIENT_SMALL,   // CN_ROWONCE
-  /*106 */ HT_INVALID,           // CN_ROWWRK
+  /*    */ HT_TRANSIENT_LARGE,   // CN_ROWTRAY
   
+  /*107 */ HT_TRANSIENT_SMALL,   // CN_SCHEMA
   /*107 */ HT_TRANSIENT_LARGE,   // CN_SCHEMATEST
   /*    */ HT_INVALID,           // CN_SEEME
   /*115 */ HT_TRANSIENT_LARGE,   // CN_SEPROMPT
@@ -772,6 +842,15 @@ eHT geWhichHeap[]
   /*123 */ HT_INVALID,           // SN_SMALLPERSISTENT
   /*124 */ HT_INVALID,           // SN_SMALLTRANSIENT
   /*125 */ HT_TRANSIENT_SMALL,   // CN_SOCKET
+  /*125 */ HT_INVALID,           // CN_SPBCD
+  /*125 */ HT_INVALID,           // CN_SPBOL
+  /*125 */ HT_INVALID,           // CN_SPDTE
+  /*125 */ HT_INVALID,           // CN_SPFLT
+  /*125 */ HT_INVALID,           // CN_SPINT
+  /*125 */ HT_INVALID,           // CN_SPIVL
+  /*125 */ HT_INVALID,           // CN_SPTME
+  /*125 */ HT_INVALID,           // CN_SPTSP
+  /*125 */ HT_INVALID,           // CN_SPVCH
   /*126 */ HT_TRANSIENT_LARGE,   // CN_STACK
   /*127 */ HT_INVALID,           // CN_STEPACCUM
   /*127 */ HT_TRANSIENT_SMALL,   // CN_STATISTICS
@@ -785,6 +864,8 @@ eHT geWhichHeap[]
   /*131 */ HT_TRANSIENT_MEDIUM,  // CN_TASK
   /*    */ HT_TRANSIENT_SMALL,   // CN_TASKLIST
   /*    */ HT_TRANSIENT_SMALL,   // CN_TEMPNAME
+  /*    */ HT_TRANSIENT_SMALL,   // CN_TENANT
+  /*    */ HT_TRANSIENT_SMALL,   // CN_TENANTS
   /*134 */ HT_TRANSIENT_SMALL,   // CN_TASKQUEUE
   /*137 */ HT_TRANSIENT_SMALL,   // CN_THREAD
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_THREADVEC

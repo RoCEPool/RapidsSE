@@ -10,11 +10,11 @@ namespace Jobs
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_CopyBuffer : public Job,
-                         public JobRow
+                         public JobEncodeRow
   {
   public:
-    Job_SubInserter* m_pJob_SubInserter;
-  Interface::RecordBuffer*    m_pRecordBuffer;
+    Job_SubInserter*         m_pJob_SubInserter;
+    Interface::RecordBuffer* m_pRecordBuffer;
     
     // must be last
     Footer m_xFooter;
@@ -42,7 +42,6 @@ namespace Jobs
   Job_CopyBuffer* _pJob_CopyBuffer(void* aAddr);
   
   Job* pJob_CopyBuffer_pre(Interface::Session* pSession);
-  void vJob_CopyBuffer_post(Interface::Session* pSession, Job* pJob);
   Job* pJob_CopyBuffer_new(Job* pArg);
   void vJob_CopyBuffer_delete(Interface::Session* pSession, Job* pJob);
   void vJob_CopyBuffer_show(Job* pJob);

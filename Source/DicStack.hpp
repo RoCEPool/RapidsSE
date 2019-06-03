@@ -29,12 +29,12 @@ namespace Forth
     i8    iCount(void);
     void  vContentDump(void);
     void  vDiscard(void);
-    Word* pFindWord(s32& sName);
-    Word* pFindWord(Stz* aName);
-    Word* pFindInCurrent(Stz* aName);
-    Word* pLocateWord(Cell* aHasCell);
-    Word* pLocateWord(StepFp fpHasStep);
-    Word* pRemoveWord(s32& sName);
+    ForthWord* pFindWord(s32& sName);
+    ForthWord* pFindWord(Stz* aName);
+    ForthWord* pFindInCurrent(Stz* aName);
+    ForthWord* pLocateWord(Cell* aHasCell);
+    ForthWord* pLocateWord(StepFp fpHasStep);
+    ForthWord* pRemoveWord(s32& sName);
     Dic*  pPick(i8 iDic);
     void  vPop(void);
     void  vPush(Dic* pDic);

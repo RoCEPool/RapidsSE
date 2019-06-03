@@ -4,7 +4,6 @@
 #pragma once
 
 #define USE_EB_LAZY_CHAIN
-#define USE_EB_SINGLE_COLIDX
 //#define USE_EB_WATCH
 
 namespace Data
@@ -17,16 +16,10 @@ namespace Data
   friend class IndexTree;
 
   protected:
-    Lock   m_okLock; // lock
-    Index* m_pIndex; // index this buffer belongs to
- 
-    SkipRoots m_xSkipRoots;
-
-    ////////////////////////////////////////////////////////////////////////////
-    // only used in index entry buffers
-
-    Item* m_aLastEntry; // last entry (would append to this)
-    Item* m_aLazyChain; // first lazy entry
+    Lock      m_okLock;         // lock
+    Index*    m_pIndex;         // index this buffer belongs to
+    SkipRoots m_xSkipRoots;     // skip roots
+    Item*     m_aLazyChain;     // first lazy entry
   
     SeeMe m_xSeeMe;
   
@@ -53,32 +46,24 @@ namespace Data
     ////////////////////////////////////////////////////////////////////////////
     // buffer functions
   
-    void        vBufferCount(i8& nBufferCount);
+    void         vBufferCount(i8& nBufferCount);
     EntryBuffer* pHigherBuffer(void);
-    void        vHigherBuffer(EntryBuffer* pHigherBuffer);
+    void         vHigherBuffer(EntryBuffer* pHigherBuffer);
     EntryBuffer* pNextBuffer(void);
-    void        vNextBuffer(EntryBuffer* pNextBuffer);
+    void         vNextBuffer(EntryBuffer* pNextBuffer);
     EntryBuffer* pPrevBuffer(void);
-    void        vPrevBuffer(EntryBuffer* pPrevBuffer);
-    void        vTruncate(void);
+    void         vPrevBuffer(EntryBuffer* pPrevBuffer);
 
     ////////////////////////////////////////////////////////////////////////////
     // entry functions
   
-    Item* aGetEntry_Item(i8 i_Item);
     Item* aLeadEntry(void);
     Item* aLastEntry(void);
     void  vShowEntry(Item* pEntry);
-
-    ////////////////////////////////////////////////////////////////////////////
-    // row functions
-  
-    Item* aAppendRow(RowWrk& xRowWrk);
   
   private:
     Item* aAllotEntry(i8 nBytes_Without_Offsets);
-    Item* aAllotRowEntry(RowWrk& xRowWrk);
-
+    
     ////////////////////////////////////////////////////////////////////////////
   
   public:
@@ -114,7 +99,6 @@ namespace Data
     void        vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     void        vBuildSkipListSorted(void);
     void        vDeleteEntry(Item** aaItem);
-    //bool       bDeleteKey(KeyData* aDeleteKey, EntryBuffer* pToBuffer);
     void        vDump(void);
     EntryBuffer* pFirstChildBuffer(void);
     Item*       aInsertKeyAbs(KeyWrk& xKeyWrk);
@@ -134,6 +118,7 @@ namespace Data
     void        vShowSubList(void);
     void        vShowTree(bool bDumpBuffer=false);
     void        vSpliceAfter(EntryBuffer* pSplicedBuffer);
+    void        vTruncate(void);
     EntryBuffer* pUnlinkSubList(void);
     bool        bVerify(void);
   
@@ -156,8 +141,6 @@ namespace Data
                                    Item* aOriginalFirstEntry,
                                    EntryBuffer** ppRootKeyBuffer);
     Item*       aSkipRoots(void);
-    void        vHeadEntryNew(void);
-    void        vHeadEntryRestore(void);
     EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
     Item*       aInsertKeyAbsLazy(KeyWrk& xKeyWrk);
@@ -166,7 +149,6 @@ namespace Data
                                   EntryBuffer** ppRootKeyBuffer);
     Item*       aInsertKeyUpwards(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
-    void         vItemCountRestore(void);
     bool         bKeyBeforeBuffer(KeyWrk& xKey);
     FreeItem*    aMakeFreeEntry(Item* aItem);
     EntryBuffer* pNewHigherBuffer(void);
@@ -186,30 +168,23 @@ namespace Data
     void         vQuickVerify(Item* aSeeEntry=nullptr);
     bool         bQuickVerify(Item* aNotSeeEntry);
   
-    bool         bVerifyL0Hidden(void);
     bool         bVerifyL0Other(void);
     bool         bVerifyLnAny(void);
 
     bool         bVerifyAdjacent(void);
     bool         bVerifyBufferRefs(void);
-    bool         bVerifyEntryOffset(void);
     bool         bVerifyFirstKeys(void);
-    bool         bVerifyFreeList(void);
     bool         bVerifyItems(void);
     bool         bVerifyKeyBufferOrder(void);
     bool         bVerifyKeyOrder(void);
     bool         bVerifyNextPrev(void);
-    bool         bVerifyRows(void);
     bool         bVerifyRowRefs(void);
     bool         bVerifySkipListEntry(bool bShowKeys = false);
     bool         bVerifySkipListLevels(bool bShowKeys = false);
     void         vVerifyFault(void);
 
-  
     public:
     Footer* aFooter(void);
-  
-    static void vUnitTest_c(Table* pTable);
   };
   
   EntryBuffer* _pEntryBuffer(void* aAddr);

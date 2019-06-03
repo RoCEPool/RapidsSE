@@ -13,6 +13,7 @@ JobClass xJobClass_Repeater =
 {
   CN_JOB_REPEATER,       // class enum
   JK_LOCAL,              // job kind
+  RK_NONE,               // response kind
   "repeat data"_Stz,     // comment about the job
   "repeater"_Stz,        // the prompt command
   nullptr,               // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_Repeater =
 
   eJob_checkCluster,     // prompt check function
   pJob_Repeater_pre,     // prompt pre-process function
-  vJob_Repeater_post,    // prompt post-process function
+  vJob_post,             // prompt post-process function
   pJob_Repeater_new,     // job new function
   vJob_Repeater_delete,  // job delete function
   nullptr,               // job pre-send function
@@ -215,13 +216,6 @@ Job* Jobs::pJob_Repeater_pre(Interface::Session* pSession)
     pJob_Repeater->m_bStatistics = true;
   
   return pJob_Repeater;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_Repeater_post(Interface::Session* pSession, Job* pJob)
-{
 }
 
 /*----------------------------------------------------------------------------*/

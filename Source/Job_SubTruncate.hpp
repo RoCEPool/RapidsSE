@@ -37,7 +37,6 @@ namespace Jobs
   Job_SubTruncate* _pJob_SubTruncate(void* aAddr);
   
   Job* pJob_SubTruncate_pre(Interface::Session* pSession);
-  void vJob_SubTruncate_post(Interface::Session* pSession, Job* pJob);
   void vJob_SubTruncate_delete(Interface::Session* pSession, Job* pJob);
   void vJob_SubTruncate_show(Job* pJob);
   

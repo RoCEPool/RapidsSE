@@ -13,6 +13,7 @@ JobClass xJobClass_CopyBuffer =
 {
   CN_JOB_COPYBUFFER,        // class enum
   JK_GRANDKID,              // job kind
+  RK_NODE_ERRORS,           // response kind
   "copy buffer"_Stz,        // comment about the job
   ""_Stz,                   // the prompt command
   ""_Stz,                   // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_CopyBuffer =
 
   eJob_checkCluster,        // prompt check function
   pJob_CopyBuffer_pre,      // prompt pre-process function
-  vJob_CopyBuffer_post,     // prompt post-process function
+  vJob_post,                // prompt post-process function
   pJob_CopyBuffer_new,      // job new function
   vJob_CopyBuffer_delete,   // job delete function
   nullptr,                  // job pre-send function
@@ -178,16 +179,13 @@ void Job_CopyBuffer::vCopy(void)
     
     // format the row
     bool bBlankLine;
-    Stz* aData = aAdd<Stz*>(aRecord, 4);
+    Stz* szRecStr = aAdd<Stz*>(aRecord, 4);
     
-    bool bValid = m_pJob_SubInserter->bFormatRow(aData, uRecordLength,
-                                                 m_aRow,
-                                                 m_nRowBytes,
-                                                 bBlankLine);
+    bool bValid = bEncodeRow(szRecStr, uRecordLength, bBlankLine);
     
     // is the record invalid ?
     if (! bValid) {
-      vTrace("Error inserting row %lld %s\n"_Stz, uRecordLength, aData);
+      vTrace("Error inserting row %lld %s\n"_Stz, uRecordLength, szRecStr);
       //RASSERT(0);
       //eErrorCode = EC_INVALID_VALUE;
       //return eErrorCode;
@@ -197,13 +195,12 @@ void Job_CopyBuffer::vCopy(void)
     
     // insert row into a working buffer in job InsertRow
     m_pJob_SubInserter->vGrabWrite();
-    eEC eErrorCode = m_pJob_SubInserter->eInsertRow(m_aRow, m_nRowBytes);
+    eEC eErrorCode = m_pJob_SubInserter->eInsertRow(m_oRowParts.pNub());
     RASSERT(eErrorCode == EC_NONE);
     m_pJob_SubInserter->vDropWrite();
   }
   
   ++m_pJob_SubInserter->m_ixCopiedBuffers;
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -244,22 +241,6 @@ Job* Jobs::pJob_CopyBuffer_pre(Interface::Session* pSession)
   Job_CopyBuffer* pJob_CopyBuffer = new Job_CopyBuffer(pSession);
   
   return pJob_CopyBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_CopyBuffer_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_CopyBuffer* pJob_CopyBuffer = _pJob_CopyBuffer(pJob);
-  
-  if ( pJob_CopyBuffer->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_CopyBuffer->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
 }
 
 /*----------------------------------------------------------------------------*/

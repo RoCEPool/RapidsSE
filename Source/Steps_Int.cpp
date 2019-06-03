@@ -25,6 +25,8 @@ void Step::vAddSteps_Int(void)
   vAddStep("neg"_Stz,             &Step::vIntNeg);
   vAddStep("!="_Stz,              &Step::vIntNotEqual);
   vAddStep("-"_Stz,               &Step::vIntSubtract);
+  vAddStep("int.random"_Stz,      &Step::vIntRandom);
+  vAddStep("uint.random"_Stz,     &Step::vUnsignedIntRandom);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,7 +150,7 @@ void Step::vIntHash(MP_Task mpTask)
   
   i8 iLength = sString.iLength();
   
-  i8 iHash = HshLib::iHash(sString.aChar(),iLength);
+  i8 iHash = HshLib::iHash((byte*)sString.aChar(),iLength);
   
   mpTask->m_pDataStack->vPushI8(iHash);
   
@@ -286,6 +288,28 @@ void Step::vIntNotEqual(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* int.random -- generate a random number in the given range                  */
+/*----------------------------------------------------------------------------*/
+void Step::vIntRandom(MP_Task mpTask)
+{
+  ENTRY("vIntRandom"_Stz);
+  
+  i8 iHigh;
+  if ( ! mpTask->m_pDataStack->bPop(iHigh) )
+    THROW_INVALID_DSTACK("int.random"_Stz);
+  
+  i8 iLow;
+  if ( ! mpTask->m_pDataStack->bPop(iLow) )
+    THROW_INVALID_DSTACK("int.random"_Stz);
+  
+  i8 iRandom = Random::iInteger(iLow,iHigh);
+  
+  mpTask->m_pDataStack->vPushI8(iRandom);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* - -- subtract second integer from top integer on stack                     */
 /*----------------------------------------------------------------------------*/
 void Step::vIntSubtract(MP_Task mpTask)
@@ -300,6 +324,28 @@ void Step::vIntSubtract(MP_Task mpTask)
   r = i - j;
   
   mpTask->m_pDataStack->vPushI8(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* uint.random -- generate a random number in the given range                  */
+/*----------------------------------------------------------------------------*/
+void Step::vUnsignedIntRandom(MP_Task mpTask)
+{
+  ENTRY("vUnsignedIntRandom"_Stz);
+  
+  i8 iHigh;
+  if ( ! mpTask->m_pDataStack->bPop(iHigh) )
+    THROW_INVALID_DSTACK("uint.random"_Stz);
+  
+  i8 iLow;
+  if ( ! mpTask->m_pDataStack->bPop(iLow) )
+    THROW_INVALID_DSTACK("uint.random"_Stz);
+  
+  u8 uRandom = Random::uInteger(iLow,iHigh);
+  
+  mpTask->m_pDataStack->vPushI8(uRandom);
   
   EXIT();
 }

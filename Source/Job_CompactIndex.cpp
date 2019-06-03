@@ -13,6 +13,7 @@ JobClass xJobClass_CompactIndex =
 {
   CN_JOB_COMPACTINDEX,    // class enum
   JK_DIST2PC,             // job kind
+  RK_NODE_ZERO,           // response kind
   "compact index"_Stz,    // comment about the job
   "compactidx"_Stz,       // the prompt command
   nullptr,                // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_CompactIndex =
 
   eJob_checkCluster,      // prompt check function
   pJob_CompactIndex_pre,  // prompt pre-process function
-  vJob_CompactIndex_post, // prompt post-process function
+  vJob_post,              // prompt post-process function
   nullptr,                // job new function
   vJob_CompactIndex_delete, // job delete function
   vJob_send,              // job pre-send function
@@ -210,31 +211,10 @@ Job* Jobs::pJob_CompactIndex_pre(Interface::Session* pSession)
   bool bResult = pJob_CompactIndex->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_CompactIndex->m_bHasError = true;
-    pJob_CompactIndex->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_CompactIndex->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_CompactIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_CompactIndex_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_CompactIndex* pJob_CompactIndex = _pJob_CompactIndex(pJob);
-  
-  if ( pJob_CompactIndex->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_CompactIndex->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
-  else {
-    vTrace("success: 0 rows affected\n"_Stz);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

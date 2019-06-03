@@ -44,6 +44,18 @@ Pool::bn Object::nPoolBufferNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the buffer no of the pool buffer that the object is within             */
+/*----------------------------------------------------------------------------*/
+Pool::PoolBuffer* Object::pToPoolBuffer(void)
+{
+  _precondition_(_MAGIC_);
+  
+  PoolBuffer* pBuffer = PoolBuffer::pGetPoolBuffer(this);
+  
+  return pBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set is word body                                                           */
 /*----------------------------------------------------------------------------*/
 void Object::vWordBody(bool bWordBody)

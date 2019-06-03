@@ -7,18 +7,12 @@ namespace Datums
 {
   const d8 C_D8_MIN = DBL_MIN + DBL_EPSILON;
   const d8 C_D8_MAX = DBL_MAX;
-  const d8 C_NULL_FLT = -DBL_MAX;
-  const i8 C_MAX_PRECISION_FLT = 19;
-  
-  const d8 C_FLOAT_NULL     = -DBL_MAX;
-  const d8 C_FLOAT_MINUS_INFINITY = -DBL_MAX;
-  const d8 C_FLOAT_PLUS_INFINITY  = -DBL_MAX;
   
   class Flt
   {
   friend class DtmLib;
     
-  protected:
+  public:
     d8 m_dFlt;
   
   public:
@@ -38,13 +32,10 @@ namespace Datums
     d8   dAsD8(void);
     bool bIsNull(void);
     void vSetNull(void);
-  
+    void vSprint(Stz* aDst);
+
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
-    static bool bExtract(char** aaSrc, Stz* aDst,
-                         MetaData::Column* pColumn, Formatters* pFormatters);
-    static bool bExtractDefault(char** aaSrc, Stz* aDst,
-                         MetaData::Column* pColumn, Formatters* pFormatters);
     static void vSprint(Stz* aDst, Stz* aSrc);
     static bool bIsValidSize(i8 iPrecision);
     

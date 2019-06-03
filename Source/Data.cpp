@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Data::vCheckAssumptions(void)
 {
+  RASSERT(sizeof(HeadLine) == sizeof(Word));
+  RASSERT(sizeof(TailLine) == sizeof(SpaceUnit));
 }
 
 /*============================================================================*/

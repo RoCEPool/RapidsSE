@@ -13,6 +13,7 @@ JobClass xJobClass_Connector =
 {
   CN_JOB_CONNECTOR,       // class enum
   JK_SYSTEM,              // job kind
+  RK_NONE,                // response kind
   "socket connector"_Stz, // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word

@@ -9,8 +9,6 @@ namespace Jobs
 
   class Job;
   
-  static const i8 C_MAX_COLUMNS = 150;
-  
   enum eJF // job flags
   {
     /*  0 */ JF_NONE   = 0x0,
@@ -197,7 +195,7 @@ namespace Jobs
   
     i8  m_iParticipantNode;    // participant node no (FromNodeNo?)
   
-    EntryBuffer* m_pCurrentBuffer; // entry buffer
+    RowBuffer* m_pCurrentBuffer;   // row buffer
   
     Object* m_pSendWith; // object which is to be sent with this job
   
@@ -253,6 +251,7 @@ namespace Jobs
   eEC  eJob_checkCluster(Interface::Session* pSession);
   void vJob_recv(Job* pJob);
   void vJob_send(Job* pJob);
+  void vJob_post(Interface::Session* pSession, Job* pJob);
 }
 
 bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch);

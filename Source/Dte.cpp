@@ -114,7 +114,7 @@ bool Dte::operator > (Dte& xDte)
 /*----------------------------------------------------------------------------*/
 void Dte::vInitZero(void)
 {
-  x.m_uYear   = 0;
+  x.m_uYearDelta   = 0;
   x.m_uMonth  = 0;
   x.m_uDay    = 0;
   x.m_uSpare  = 0;
@@ -129,11 +129,19 @@ i8 Dte::iAsI8(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set as i8                                                                  */
+/*----------------------------------------------------------------------------*/
+void Dte::vAsI8(i8 iAsI8)
+{
+  m_iValue = iAsI8;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get year                                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Dte::iYear(void)
 {
-  return x.m_uYear;
+  return x.m_uYearDelta + C_BASE_YEAR;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -176,8 +184,21 @@ void Dte::vSetNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- VLQ ---------------------------------------------------------------------*/
+/* sprint dte datum                                                           */
 /*----------------------------------------------------------------------------*/
+void Dte::vSprint(Stz* aDst)
+{
+  if (bIsNull()) {
+    StrLib::vSprint(aDst,"null%c"_Stz,'\0');
+    return;
+  }
+  
+  StrLib::vSprint(aDst,"%02lld-%02lld-%02lld%c"_Stz,
+                  (i8)x.m_uYearDelta + C_BASE_YEAR,
+                  (i8)x.m_uMonth,
+                  (i8)x.m_uDay,
+                  '\0');
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Extract and Sprint ------------------------------------------------------*/
@@ -202,114 +223,6 @@ void Dte::vCopy(void* aDst, void* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a date field from csv substr                           yyyy-mo-ddZ */
-/*----------------------------------------------------------------------------*/
-bool Dte::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
-{
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
-  
-  Dte* aDte = (Dte*)aDst;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  bool bSawEnclosedLeading =
-    StrLib::bSkipLeading(aaSrc,pFormatters->m_cEnclosedBy_Leading);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    aDte->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // date field processing
-  
-  i8 iYear, iMonth, iDay;
-  
-  if ( ! StrLib::bExtractDate2(aaSrc, iYear, iMonth, iDay,
-                               pFormatters->m_eDateComponent,
-                               pFormatters->m_cDateSeparator) )
-    return false;
-  
-  aDte->x.m_uYear   = iYear;
-  aDte->x.m_uMonth  = iMonth;
-  aDte->x.m_uDay    = iDay;
-  aDte->x.m_uSpare  = 0;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-    
-  bool bSawEnclosedTrailing =
-    StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
-  if (! bSawEnclosedTrailing)
-    return false;
-  
-  // should see a valid field end
-  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a date field from csv substr                           yyyy-mo-ddZ */
-/*----------------------------------------------------------------------------*/
-bool Dte::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
-{
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
-  
-  Dte* aDte = (Dte*)aDst;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  StrLib::vSkipSpaces(aaSrc);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (DtmLib::bTestForNullDefault(aaSrc,pColumn,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    aDte->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // date field processing
-  
-  i8 iYear, iMonth, iDay;
-  
-  if ( ! StrLib::bExtractDate2(aaSrc, iYear, iMonth, iDay,
-                               pFormatters->m_eDateComponent,
-                               pFormatters->m_cDateSeparator) )
-    return false;
-  
-  aDte->x.m_uYear   = iYear;
-  aDte->x.m_uMonth  = iMonth;
-  aDte->x.m_uDay    = iDay;
-  aDte->x.m_uSpare  = 0;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  StrLib::vSkipSpaces(aaSrc);
-  
-  // should see a valid field end
-  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* sprint dte datum                                                           */
 /*----------------------------------------------------------------------------*/
 void Dte::vSprint(Stz* aDst, Stz* aSrc)
@@ -321,7 +234,7 @@ void Dte::vSprint(Stz* aDst, Stz* aSrc)
                     '\0');
   else
     StrLib::vSprint(aDst,"%02lld-%02lld-%02lld%c"_Stz,
-                    aDte->x.m_uYear,
+                    aDte->x.m_uYearDelta + C_BASE_YEAR,
                     aDte->x.m_uMonth,
                     aDte->x.m_uDay,
                     '\0');
@@ -339,7 +252,7 @@ void Dte::vSprintEscaped(Stz* aDst, Stz* aSrc)
                     '\0');
   else
     StrLib::vSprint(aDst,"%02lld-%02lld-%02lld%c"_Stz,
-                    aDte->x.m_uYear,
+                    aDte->x.m_uYearDelta + C_BASE_YEAR,
                     aDte->x.m_uMonth,
                     aDte->x.m_uDay,
                     '\0');

@@ -20,9 +20,6 @@
     // get the index ptr
     object@ word.name findInCurrent execute to pIndex
 
-    // skip hidden index
-    pIndex index.isHidden@ not if
-
     // increment count
     1 iCount + to iCount
 
@@ -34,23 +31,22 @@
     pIndex index.isUnique@
     if "true" else "false" then
 
-      // add word kind to ls string
-      object@ word.name
+    // add word kind to ls string
+    object@ word.name
 
-      "row: ( '%v',%v,%v )\n" str.format
-      str.cat
-    then
+    "row: ( '%v',%v,%v )\n" str.format
+    str.cat
 
     object@ word.prev object!       // step backwards thru words
   next
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set response in the job
-  grid::thisNode@ pJob_ListIndexes job.response!
+  pJob_ListIndexes job.response!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sent rows Processed in the job
-  iCount grid::thisNode@ pJob_ListIndexes job.rowsProcessed!
+  iCount pJob_ListIndexes job.rowsProcessed!
 
 ;
 

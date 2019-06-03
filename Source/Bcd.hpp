@@ -10,12 +10,10 @@ namespace MetaData
 
 namespace Datums
 {
-  static const i8 C_MAX_PRECISION_BCD = 19;
-  
   class Bcd
   {
     
-  protected:
+  public:
     i8 m_iBcd;
   
   public:
@@ -32,20 +30,16 @@ namespace Datums
     bool operator >  (Bcd& xBcd);
   
     i8   iAsI8(void);
+    void vAsI8(i8 iAsI8);
     void vInitZero(void);
     bool bIsNull(void);
     void vSetNull(void);
-  
+    void vSprint(Stz* aDst, MetaData::Column* pColumn);
+    
     static i8   nCopy(void* aDst, void* aSrc);
-    static i8   nCopyVLQ(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
 
-    static bool bExtract(char** aaSrc, Stz* aDst,
-                         MetaData::Column* pColumn, Formatters* pFormatters);
-    static bool bExtractDefault(char** aaSrc, Stz* aDst,
-                         MetaData::Column* pColumn, Formatters* pFormatters);
     static void vSprint(Stz* aDst, Stz* aSrc, MetaData::Column* pColumn);
-    static void vSprintVLQ(Stz* aDst, Stz* aSrc, MetaData::Column* pColumn);
     static bool bIsValidSize(i8 iPrecision, i8 iScale);
     
     static bool bLessThan(char* aArgA, char* aArgB);

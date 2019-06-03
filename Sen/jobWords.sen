@@ -167,8 +167,8 @@
     pJob pSocket socket.sendObject drop
 
     pJob job.hasEntryBuffer if
-      //"job.send: Job has entry buffer" .
-       pJob job.entryBuffer@ pSocket socket.sendObject drop
+      //"job.send: Job has row buffer" .
+       pJob job.rowBuffer@ pSocket socket.sendObject drop
     then
 
     pJob job.hasSendWith if
@@ -237,6 +237,9 @@
     I pJob job.forward
 
   loop
+
+  // create the response vector in the orginating job to receive responses
+  pJob job.createResponseVec
 
   // wait for ack from deciding job__Ended
   task::wait

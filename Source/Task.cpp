@@ -647,7 +647,7 @@ void Task::vSeedJob(void)
   
   Stz* szSeed = m_pJob->sJobSeed();
   
-  Word* pWord = gpAttachMap->m_oRootDic.pFindWord(szSeed);
+  ForthWord* pWord = gpAttachMap->m_oRootDic.pFindWord(szSeed);
   
   if (! pWord)
     vFatal("Unable to find seed word: %s\n"_Stz,szSeed);
@@ -740,7 +740,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
                                     aCN[ePtrClass],
                                     pPtr,
-                                    ((Word*)pPtr)->sName().aChar());
+                                    ((ForthWord*)pPtr)->sName().aChar());
         else if (CN_QUEUE == ePtrClass) {
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
                                     aCN[ePtrClass],
@@ -854,7 +854,7 @@ void Task::vTracePoint(Stz* aMark)
   
   Cell* aHasCell = FIP.m_aCell;
   
-  Word* pLocatedWord = m_oDicStack.pLocateWord(aHasCell);
+  ForthWord* pLocatedWord = m_oDicStack.pLocateWord(aHasCell);
   if (pLocatedWord)
     sRoutine = pLocatedWord->sName();
   else
@@ -897,7 +897,7 @@ void Task::vTraceStep(Stz* aStepNm)
   s256 sRoutine;
   
   Cell* aHasCell = FIP.m_aCell;
-  Word* pLocatedWord = m_oDicStack.pLocateWord(aHasCell);
+  ForthWord* pLocatedWord = m_oDicStack.pLocateWord(aHasCell);
   if (pLocatedWord)
     sRoutine = pLocatedWord->sName();
   else

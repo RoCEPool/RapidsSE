@@ -9,7 +9,7 @@ namespace Datums
   {
   friend class DtmLib;
   
-  protected:
+  public:
     union {
       struct {
         u8 m_uMilli  : 10 ; // 0..1023
@@ -43,15 +43,10 @@ namespace Datums
     i8   iMilli(void);
   
     void vSet(u8 uSecond, u8 uMilli);
-  
+    void vSprint(Stz* aDst);
+
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
-    static bool bExtract(char** aaSrc, Stz* aDst,
-                         MetaData::Column* pColumn, Formatters* pFormatters);
-    static bool bExtractDefault(char** aaSrc, Stz* aDst,
-                         MetaData::Column* pColumn, Formatters* pFormatters);
-    static bool bExtractExtract(char** aaSrc, Stz* aDst,
-                         MetaData::Column* pColumn, Formatters* pFormatters);
     static void vSprint(Stz* aDst, Stz* aSrc);
     
     static bool bLessThan(char* aArgA, char* aArgB);

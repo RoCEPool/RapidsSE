@@ -4,6 +4,7 @@
 
 "-testing.sen" .verbose
 
+"test_encodingData.sen" include
 "test_jData.sen" include
 "test_misc.sen" include
 "test_unit.sen" include

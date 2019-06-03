@@ -9,9 +9,15 @@
 
 namespace Datums
 {
-  enum eDM // Datum Type
+  static const u8 C_BASE_YEAR  = 1900;
+  static const u8 C_YEAR_RANGE = 255;
+  static const i8 C_EXTENDED_AUX = 6;
+  
+ 
+  enum eDM : u1 // Datum Type
   {
   /*  0 */ DM_NONE=0,
+  
   /*  1 */ DM_BCD,
   /*  2 */ DM_BOL,
   /*  3 */ DM_CHR,
@@ -23,12 +29,14 @@ namespace Datums
   /*  9 */ DM_TSP,
   /* 10 */ DM_VBN,
   /* 11 */ DM_VCH,
+    
   /* 12 */ DM_ENUMS
   };
   
   static Stz* aDM[]
   {
   /*  0 */ "NONE"_Stz,
+  
   /*  1 */ "BCD"_Stz,
   /*  2 */ "BOL"_Stz,
   /*  3 */ "CHR"_Stz,
@@ -40,6 +48,7 @@ namespace Datums
   /*  9 */ "TSP"_Stz,
   /* 10 */ "VBN"_Stz,
   /* 11 */ "VCH"_Stz,
+
   /* 12 */ "ENUMS"_Stz,
   };
   
@@ -56,6 +65,7 @@ using namespace Datums;
 #include "Bcd.hpp"
 #include "Bol.hpp"
 #include "Dte.hpp"
+#include "Edt.hpp"
 #include "Flt.hpp"
 #include "Int.hpp"
 #include "Ivl.hpp"
@@ -64,7 +74,9 @@ using namespace Datums;
 #include "Vch.hpp"
 
 #include "DtmLib.hpp"
-#include "Datum.hpp"
+#include "DatumUnion.hpp"
+
+typedef String_t<C_MAX_VCH> sVCH;
 
 /*============================================================================*/
 /* end                                                                        */

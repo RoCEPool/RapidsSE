@@ -5,27 +5,63 @@
 
 namespace Jobs
 {
+  enum eRK // response kind
+  {
+    /* 0 */ RK_NONE=0,
+    
+    /* 1 */ RK_DATA_ROWS,
+    /* 2 */ RK_LOAD_ROWS,
+    /* 3 */ RK_LOCAL_ERRORS,
+    /* 4 */ RK_LOCAL_ROWS,
+    /* 5 */ RK_LOCAL_ZERO,
+    /* 6 */ RK_NODE_ERRORS,
+    /* 7 */ RK_NODE_ROWS,
+    /* 8 */ RK_NODE_ZERO,
+    
+    /* 9 */ RK_ENUMS_
+  };
+  
+  static Stz* aRK[]
+  {
+    /* 0 */ "NONE"_Stz,
+    
+    /* 1 */ "DATA_ROWS"_Stz,
+    /* 2 */ "LOAD_ROWS"_Stz,
+    /* 3 */ "LOCAL_ERRORS"_Stz,
+    /* 4 */ "LOCAL_ROWS"_Stz,
+    /* 5 */ "LOCAL_ZERO"_Stz,
+    /* 6 */ "NODE_ERRORS"_Stz,
+    /* 7 */ "NODE_ROWS"_Stz,
+    /* 8 */ "NODE_ZERO"_Stz,
+    
+    /* 9 */ "ENUMS_"_Stz
+  };
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class JobResult
   {
   public:
-    s4K    m_sMetadata;  // meta data of job
-    bool   m_bHasError;  // has an error of one or more nodes
-
-    struct {
-      s4K  m_sResponse;         // response string
-      Atomic m_ixRowsProcessed; // rows processed
-      Atomic m_ixRowsInvalid;   // invalid rows detected
-      Atomic m_ixRowsSkipped;   // rows skipped
-      eEC  m_eErrorCode;        // error code
-    } m_xNode[C_MAX_NODES];
+    s4K          m_sMetadata;    // meta data of job
+    bool         m_bHasError;    // has an error from one or more nodes
+    Response     m_xResponse;    // response of this job
+    ResponseVec* m_pResponseVec; // vector of responses from all the nodes
   
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
+    
     JobResult(void);
     ~JobResult(void) noexcept(false);
+    
+    void vAddError(eEC eError);
+    
+    void vPrintLoadRows(void);
+    void vPrintLocalErrors(void);
+    void vPrintLocalRows(void);
+    void vPrintLocalZero(void);
+    void vPrintNodeErrors(void);
+    void vPrintNodeRows(void);
+    void vPrintNodeZero(void);
   };
 }
 

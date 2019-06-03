@@ -19,6 +19,7 @@ JobClass xJobClass_LoadTable =
 {
   CN_JOB_LOADTABLE,       // class enum
   JK_DIST2PC,             // job kind
+  RK_LOAD_ROWS,           // response kind
   "load table"_Stz,       // comment about the job
   "ld"_Stz,               // the prompt command
   nullptr,                // the second word
@@ -38,7 +39,7 @@ JobClass xJobClass_LoadTable =
 
   eJob_checkCluster,      // prompt check function
   pJob_LoadTable_pre,     // prompt pre-process function
-  vJob_LoadTable_post,    // prompt post-process function
+  vJob_post,              // prompt post-process function
   pJob_LoadTable_new,     // job new function
   vJob_LoadTable_delete,  // job delete function
   vJob_send,              // job pre-send function
@@ -638,47 +639,10 @@ Job* Jobs::pJob_LoadTable_pre(Interface::Session* pSession)
   bool bResult = pJob_LoadTable->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_LoadTable->m_bHasError = true;
-    pJob_LoadTable->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_LoadTable->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_LoadTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_LoadTable_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJob);
-  
-  if ( pJob_LoadTable->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_LoadTable->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
-  else {
-    i8 iRowsProcessed = 0;
-    i8 iRowsInvalid   = 0;
-    i8 iRowsSkipped   = 0;
-
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      
-      //vTrace("%s"_Stz, pJob_LoadTable->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += *pJob_LoadTable->m_xNode[i_Node].m_ixRowsProcessed;
-      iRowsInvalid   += *pJob_LoadTable->m_xNode[i_Node].m_ixRowsInvalid;
-      iRowsSkipped   += *pJob_LoadTable->m_xNode[i_Node].m_ixRowsSkipped;
-    }
-    if (iRowsInvalid || iRowsSkipped)
-      vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
-             iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
-    else
-      vTrace("success: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
-           iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,8 +13,9 @@ JobClass xJobClass_SizeTable =
 {
   CN_JOB_SIZETABLE,      // class enum
   JK_DIST2PC,            // job kind
+  RK_NODE_ROWS,          // response kind
   "size of table"_Stz,   // comment about the job
-  "sz"_Stz,              // the prompt command
+  "szTbl"_Stz,           // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
   "sizeTable_req"_Stz,   // the _req task seed
@@ -32,7 +33,7 @@ JobClass xJobClass_SizeTable =
 
   eJob_checkCluster,     // prompt check function
   pJob_SizeTable_pre,    // prompt pre-process function
-  vJob_SizeTable_post,   // prompt post-process function
+  vJob_post,             // prompt post-process function
   nullptr,               // job new function
   vJob_SizeTable_delete, // job delete function
   vJob_send,             // job pre-send function
@@ -41,8 +42,8 @@ JobClass xJobClass_SizeTable =
   
   // help and example
   true,
-  "sz <tableNm>"_Stz,
-  "sz SUPPLIER;"_Stz,
+  "sztbl <tableNm>"_Stz,
+  "sztbl SUPPLIER;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
@@ -151,7 +152,7 @@ bool Job_SizeTable::bPopulateJob(TokenVec* pTokenVec)
   
   i8 iNumTokens;
   
-  ASSERT(pTokenVec->pGet(0)->bSame("sz"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("sztbl"_Stz));
   
   // get number of items in token vector
   iNumTokens = pTokenVec->nItems();
@@ -205,41 +206,10 @@ Job* Jobs::pJob_SizeTable_pre(Interface::Session* pSession)
   bool bResult = pJob_SizeTable->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_SizeTable->m_bHasError = true;
-    pJob_SizeTable->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_SizeTable->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_SizeTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_SizeTable_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_SizeTable* pJob_SizeTable = _pJob_SizeTable(pJob);
-  
-  if ( pJob_SizeTable->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_SizeTable->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
-  else {
-    if (gpAttachMap->m_bMetadata) {
-      vTrace("metadata: %s\n"_Stz, pJob_SizeTable->m_sMetadata.aStz());
-    }
-    
-    i8 iRowsProcessed = 0;
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("%s\n"_Stz, pJob_SizeTable->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += *pJob_SizeTable->m_xNode[i_Node].m_ixRowsProcessed;
-    }
-    vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,6 +13,7 @@ JobClass xJobClass_SubWalker =
 {
   CN_JOB_SUBWALKER,          // class enum
   JK_CHILD,                  // job kind
+  RK_NODE_ERRORS,            // response kind
   "sub-walker"_Stz,          // comment about the job
   nullptr,                   // the prompt command
   nullptr,                   // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_SubWalker =
 
   nullptr,                   // prompt check function
   pJob_SubWalker_pre,        // prompt pre-process function
-  vJob_SubWalker_post,       // prompt post-process function
+  vJob_post,                 // prompt post-process function
   nullptr,                   // job new function
   vJob_SubWalker_delete,     // job delete function
   nullptr,                   // job pre-send function
@@ -465,22 +466,6 @@ Job* Jobs::pJob_SubWalker_pre(Interface::Session* pSession)
   Job_SubWalker* pJob_SubWalker = new Job_SubWalker(pSession);
   
   return pJob_SubWalker;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubWalker_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_SubWalker* pJob_SubWalker = _pJob_SubWalker(pJob);
-  
-  if ( pJob_SubWalker->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_SubWalker->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
 }
 
 /*----------------------------------------------------------------------------*/

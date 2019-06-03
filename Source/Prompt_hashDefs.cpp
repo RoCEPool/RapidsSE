@@ -58,6 +58,14 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   vTrace("  WITH_DEBUG_VERSION\n"_Stz);
 #endif
   
+#ifdef WITH_TRACE_ENCODING
+  vTrace("  WITH_TRACE_ENCODING\n"_Stz);
+#endif
+  
+#ifdef WITH_ENCODING_XCHECK
+  vTrace("  WITH_ENCODING_XCHECK\n"_Stz);
+#endif
+  
 #ifdef WITH_ENTRY_EXIT
   vTrace("  WITH_ENTRY_EXIT\n"_Stz);
 #endif
@@ -69,7 +77,19 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
 #ifdef WITH_PREPOST_CHECKING
   vTrace("  WITH_PREPOST_CHECKING\n"_Stz);
 #endif
-    
+
+  
+  
+#ifdef WITH_SHOCO_DUPLICATES
+  vTrace("  WITH_SHOCO_DUPLICATES\n"_Stz);
+#endif
+
+#ifdef WITH_SHOCO_FOLDLAST
+  vTrace("  WITH_SHOCO_FOLDLAST\n"_Stz);
+#endif
+
+
+
   vTrace("\n"_Stz);
 
   return true;

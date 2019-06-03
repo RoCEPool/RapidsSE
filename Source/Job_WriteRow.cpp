@@ -17,6 +17,7 @@ JobClass xJobClass_WriteRow =
 {
   CN_JOB_WRITEROW,     // class enum
   JK_GRANDKID,         // job kind
+  RK_NONE,             // response kind
   "write row"_Stz,     // comment about the job
   nullptr,             // the prompt command
   nullptr,             // the second word
@@ -115,7 +116,7 @@ Job_WriteRow::Job_WriteRow(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEROW,_FOOTER_);
   
-  m_pTable       = nullptr;
+  vTable(nullptr);
   m_iPartitionId = C_UNKNOWN;
   m_iParentJobId = C_UNKNOWN;
   
@@ -150,10 +151,11 @@ void Job_WriteRow::vInsertRow(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // convert partition to node slot
   i8 iSlot = TablePtn::iPartitionToSlot(m_iPartitionId);
-
-  i8 iTxId = 0;
-
-  m_pTable->vInsertRow(iTxId, iSlot, m_aRow, m_nRowBytes);
+  
+  TablePtn* pPartition = pTable()->pPartition(iSlot);
+  
+  // append the row to the partition and all its indexes
+  pPartition->vAppendRow(m_pRowCoder_Encode,m_oRowParts);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,7 +193,7 @@ Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Interface::Session* pSession,
 
   pJob_WriteRow->m_iParentJobId = iParentJobId;
   pJob_WriteRow->m_sObjectName  = sTableName;
-  pJob_WriteRow->m_pTable       = pTable;
+  pJob_WriteRow->vTable(pTable);
   pJob_WriteRow->m_iPartitionId = C_UNKNOWN;
 
   return pJob_WriteRow;

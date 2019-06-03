@@ -53,6 +53,105 @@ failure contains: '2 invalid'
 fetch VchTbl;
 rows: 101
 
+//------------------------------------------------------------------------------
+// fetch using vch_idx1
+fetch VchTbl "vch_col2 'one' ==";
+rows:
+  (1,'one',101,1,'abcdefghi"jklmnopqrstuvwxyz')
+
+fetch VchTbl "vch_col2 'one zero z' ==";
+rows:
+  (100,'one zero z','200',0,'abcdefghijklmnopqrstuvwxyz')
+
+fetch VchTbl "vch_col2 'eight nine' <=";
+rows:
+  (2,'','102',2,'abcdef''ghijklmnopqrstuvwxyz')
+  (5,'   five-ab','105',5,'abcdefghij''klmnopqrstuvwxyz')
+  (12,'','112',2,null)
+  (16,'abcdefghij','116',6,'abc')
+  (84,'eight four','184',4,'abcdefghijklmnopqrstuvwxyz')
+  (85,'eight five','185',5,'abcdefghijklmnopqrstuvwxyz')
+  (88,'eight eigh','188',8,'abcdefghijklmnopqrstuvwxyz')
+  (89,'eight nine','189',9,'abcdefghijklmnopqrstuvwxyz')
+
+fetch VchTbl "vch_col2 'two' >";
+rows:
+  (0,'zero','0',10,null)
+  (20,'two zero','120',0,'abcdefghijklmnopqrstuvwxyz')
+  (21,'two one','121',1,'abcdefghijklmnopqrstuvwxyz')
+  (22,'two two','122',2,'abcdefghijklmnopqrstuvwxyz')
+  (23,'two three','123',3,'abcdefghijklmnopqrstuvwxyz')
+  (24,'two four','124',4,'abcdefghijklmnopqrstuvwxyz')
+  (25,'two five','125',5,'abcdefghijklmnopqrstuvwxyz')
+  (26,'two six','126',6,'abcdefghijklmnopqrstuvwxyz')
+  (27,'two seven','127',7,'abcdefghijklmnopqrstuvwxyz')
+  (28,'two eight','128',8,'abcdefghijklmnopqrstuvwxyz')
+  (29,'two nine','129',9,'abcdefghijklmnopqrstuvwxyz')
+
+//------------------------------------------------------------------------------
+// fetch using vch_idx2
+fetch VchTbl "vch_col3 '101' ==";
+rows:
+  (1,'one','101',1,'abcdefghi"jklmnopqrstuvwxyz')
+
+fetch VchTbl "vch_col3 '144' ==";
+rows:
+  (44,'four four','144',4,'abcdefghijklmnopqrstuvwxyz')
+
+fetch VchTbl "vch_col3 '120' <";
+rows:
+  (0,'zero','0',10,null)
+  (1,'one','101',1,'abcdefghi"jklmnopqrstuvwxyz')
+  (2,'','102',2,'abcdef''ghijklmnopqrstuvwxyz')
+  (3,'null a','103',3,'abcdef''ghijklmnopqrstuvwxyz')
+  (4,'four   ','104',4,'abcd,efghijklmno,pqrstuvwxyz')
+  (5,'   five-ab','105',5,'abcdefghij''klmnopqrstuvwxyz')
+  (6,'six    ','106',6,'abcdefghij,klmnopqrstuvwxyz')
+  (7,'nulla','107',7,'abcdefghij,klmnopqrstuvwxyz')
+  (8,'eight-abcd','108',8,'abcdefghijklmnopqrstuvwxyz')
+  (9,'nine','109',9,null)
+  (10,'one zero','110',0,null)
+  (11,'one one','111',2,null)
+  (12,'','112',2,null)
+  (13,'one three','113',3,'abcdefghijklmnopqrstuvwxyz')
+  (14,'null ','114',4,'null a')
+  (15,'one five','115',5,'null ')
+  (16,'abcdefghij','116',6,'abc')
+  (17,'null xyz','117',7,'null xyz')
+  (18,'one, eight','118',8,'abcdefghijklmnopqrstuvwxyz')
+  (19,'one nine','119',9,'abcdefghijklmnopqrstuvwxyz')
+
+fetch VchTbl "vch_col3 '197' >";
+rows:
+  (98,'nine eight','198',8,'abcdefghijklmnopqrstuvwxyz')
+  (99,'nine nine','199',9,'abcdefghijklmnopqrstuvwxyz')
+  (100,'one zero z','200',0,'abcdefghijklmnopqrstuvwxyz')
+
+//------------------------------------------------------------------------------
+// fetch using vch_idx3
+fetch VchTbl "vch_col5 'abcdefghijklmnopqrstuvwxyz' ==";
+rows: 85
+
+fetch VchTbl "vch_col5 'abc' ==";
+rows:
+  (16,'abcdefghij','116',6,'abc')
+
+fetch VchTbl "vch_col5 'abcdefghijklmnopqrstuvwxyz' <";
+rows:
+  (0,'zero','0',10,null)
+  (1,'one','101',1,'abcdefghi"jklmnopqrstuvwxyz')
+  (2,'','102',2,'abcdef''ghijklmnopqrstuvwxyz')
+  (3,'null a','103',3,'abcdef''ghijklmnopqrstuvwxyz')
+  (4,'four   ','104',4,'abcd,efghijklmno,pqrstuvwxyz')
+  (5,'   five-ab','105',5,'abcdefghij''klmnopqrstuvwxyz')
+  (7,'nulla','107',7,'abcdefghij,klmnopqrstuvwxyz')
+  (6,'six    ','106',6,'abcdefghij,klmnopqrstuvwxyz')
+  (9,'nine','109',9,null)
+  (10,'one zero','110',0,null)
+  (11,'one one','111',2,null)
+  (12,'','112',2,null)
+  (16,'abcdefghij','116',6,'abc')
+
 // dump index vch_idx1
 dumpidx vchTbl vch_idx1;
 success

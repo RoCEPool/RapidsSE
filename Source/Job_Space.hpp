@@ -36,7 +36,6 @@ namespace Jobs
   Job_Space* _pJob_Space(void* aAddr);
   
   Job* pJob_Space_pre(Interface::Session* pSession);
-  void vJob_Space_post(Interface::Session* pSession, Job* pJob);
   void vJob_Space_delete(Interface::Session* pSession, Job* pJob);
   void vJob_Space_show(Job* pJob);
   

@@ -347,7 +347,7 @@ failure contains: '1 invalid'
 
 fetch limitRow;
 rows: 0
-
+/*
 ld limitRow "/DATA/Load/15KRow.csv";
 
 fetch limitRow;
@@ -357,7 +357,7 @@ ld limitRow "/DATA/Load/16KRow.csv";
 
 fetch limitRow;
 rows: 2
-
+*/
 drop table limitRow;
 success
 

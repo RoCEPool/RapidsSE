@@ -17,6 +17,7 @@ JobClass xJobClass_WriteBuffer =
 {
   CN_JOB_WRITEBUFFER,     // class enum
   JK_GRANDKID,            // job kind
+  RK_NONE,                // response kind
   "write buffer"_Stz,     // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word
@@ -169,8 +170,7 @@ bool Job_WriteBuffer::bInsertRows(void)
 
   TablePtn* pPartition = m_pTable->pPartition(iSlot);
   RASSERT_TYPE(pPartition,CN_TABLEPTN);
-
-  RASSERT_TYPE(m_pCurrentBuffer,CN_ENTRYBUFFER);
+  RASSERT_TYPE(m_pCurrentBuffer,CN_ROWBUFFER);
 
 //  if (gpAttachMap->m_bVerbose)
 //    vTrace("Job_WriteBuffer %lld %lld %s\n"_Stz,
@@ -185,7 +185,6 @@ bool Job_WriteBuffer::bInsertRows(void)
   if (! gpBufferPool->bLowMemory()) {
     // insert the working buffer
     m_pTable->vInsertEntries(iTxId, iSlot, m_pCurrentBuffer);
-
     // null the current buffer as its been appended to the table
     m_pCurrentBuffer = nullptr;
   }
@@ -299,12 +298,11 @@ bool Job_WriteBuffer::bInsertRows_LowMem(void)
     Job_LoadTable* pJob_LoadTable = static_cast<Job_LoadTable*>(pJobFound);
 
     // add the number of rows into rows skipped
-    i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_LoadTable->m_xNode[iThisNode].m_ixRowsSkipped += m_nRows;
+    pJob_LoadTable->m_xResponse.m_ixRowsSkipped += m_nRows;
   
     if (gpAttachMap->m_bVerbose)
       vTrace("m_iRowsSkipped %lld m_nRows %lld\n"_Stz,
-             *pJob_LoadTable->m_xNode[iThisNode].m_ixRowsSkipped,
+             *pJob_LoadTable->m_xResponse.m_ixRowsSkipped,
              m_nRows);
   }
   
@@ -356,12 +354,15 @@ void Job_WriteBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
                                            Stz* sTableName,
                                            eDS eDataSource,
-                                           EntryBuffer* pEntryBuffer,
+                                           RowBuffer* pRowBuffer,
                                            i8 iParentJobId,
                                            i8 iPartition,
                                            bool bFinal,
                                            i8 nWriteBehindBuffers)
 {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // analysis
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a write buffer job
   
@@ -381,8 +382,8 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   pJob_WriteBuffer->m_iParentJobId  = iParentJobId;
   pJob_WriteBuffer->m_sObjectName   = sTableName;
   pJob_WriteBuffer->m_iPartitionId  = iPartition;
-  pJob_WriteBuffer->m_pCurrentBuffer = pEntryBuffer;
-  pJob_WriteBuffer->m_nRows = pEntryBuffer->nItems();
+  pJob_WriteBuffer->m_pCurrentBuffer = pRowBuffer;
+  pJob_WriteBuffer->m_nRows = pRowBuffer->nRowCount();
   
   if (bFinal) {
     ASSERT(C_UNKNOWN != nWriteBehindBuffers);

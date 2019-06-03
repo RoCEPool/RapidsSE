@@ -36,7 +36,6 @@ namespace Jobs
   Job_Ping* _pJob_Ping(void* aAddr);
   
   Job* pJob_Ping_pre(Interface::Session* pSession);
-  void vJob_Ping_post(Interface::Session* pSession, Job* pJob);
   void vJob_Ping_delete(Interface::Session* pSession, Job* pJob);
   void vJob_Ping_show(Job* pJob);
   

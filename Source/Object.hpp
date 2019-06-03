@@ -6,6 +6,8 @@
 namespace Pool
 {
   class bn;
+  
+  class PoolBuffer;
 }
 
 namespace Correctness
@@ -19,7 +21,8 @@ namespace Correctness
   
     i8  iPoolBufferNo(void);
     Pool::bn nPoolBufferNo(void);
-  
+    Pool::PoolBuffer* pToPoolBuffer(void);
+
     bool bWordBody(void);
     void vWordBody(bool bIsWordBody);
     

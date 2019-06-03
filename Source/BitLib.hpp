@@ -11,17 +11,16 @@
 #define BITWISE_SHIFT_LEFT(word,nbits)  ((word) << nBits) // bitwise shift left
 #define BITWISE_SHIFT_RIGHT(word,nbits) ((word) >> nBits) // bitwise shift right
 
-const u8 C_BITS_PER_WORD = 64;
 const u8 C_ALL_BITS_ON   = 0xFFFFFFFFFFFFFFFFLL;
 
-const u1 C_1_BIT  = 1;
-const u1 C_2_BITS = 3;
-const u1 C_3_BITS = 7;
-const u1 C_4_BITS = 15;
-const u1 C_5_BITS = 31;
-const u1 C_6_BITS = 63;
-const u1 C_7_BITS = 127;
-const u1 C_8_BITS = 255;
+const u8 C_1_BIT  = 1;
+const u8 C_2_BITS = 3;
+const u8 C_3_BITS = 7;
+const u8 C_4_BITS = 15;
+const u8 C_5_BITS = 31;
+const u8 C_6_BITS = 63;
+const u8 C_7_BITS = 127;
+const u8 C_8_BITS = 255;
 
 const u8 C_BIT_0  = 1;
 const u8 C_BIT_1  = 2;
@@ -31,6 +30,45 @@ const u8 C_BIT_4  = 16;
 const u8 C_BIT_5  = 32;
 const u8 C_BIT_6  = 64;
 const u8 C_BIT_7  = 128;
+
+const u8 C_1_BYTE  = 255;
+const u8 C_2_BYTES = (C_1_BYTE +1) * 256 - 1;
+const u8 C_3_BYTES = (C_2_BYTES+1) * 256 - 1;
+const u8 C_4_BYTES = (C_3_BYTES+1) * 256 - 1;
+const u8 C_5_BYTES = (C_4_BYTES+1) * 256 - 1;
+const u8 C_6_BYTES = (C_5_BYTES+1) * 256 - 1;
+const u8 C_7_BYTES = (C_6_BYTES+1) * 256 - 1;
+const u8 C_8_BYTES = (C_7_BYTES+1) * 256 - 1;
+
+const u8 C_1_BYTE_RANGE  = C_1_BYTE;
+const u8 C_2_BYTES_RANGE = C_2_BYTES - C_1_BYTE_RANGE;
+const u8 C_3_BYTES_RANGE = C_3_BYTES - C_2_BYTES_RANGE
+                                     - C_1_BYTE_RANGE;
+const u8 C_4_BYTES_RANGE = C_4_BYTES - C_3_BYTES_RANGE
+                                     - C_2_BYTES_RANGE
+                                     - C_1_BYTE_RANGE;
+const u8 C_5_BYTES_RANGE = C_5_BYTES - C_4_BYTES_RANGE
+                                     - C_3_BYTES_RANGE
+                                     - C_2_BYTES_RANGE
+                                     - C_1_BYTE_RANGE;
+const u8 C_6_BYTES_RANGE = C_6_BYTES - C_5_BYTES_RANGE
+                                     - C_4_BYTES_RANGE
+                                     - C_3_BYTES_RANGE
+                                     - C_2_BYTES_RANGE
+                                     - C_1_BYTE_RANGE;
+const u8 C_7_BYTES_RANGE = C_7_BYTES - C_6_BYTES_RANGE
+                                     - C_5_BYTES_RANGE
+                                     - C_4_BYTES_RANGE
+                                     - C_3_BYTES_RANGE
+                                     - C_2_BYTES_RANGE
+                                     - C_1_BYTE_RANGE;
+const u8 C_8_BYTES_RANGE = C_8_BYTES - C_7_BYTES_RANGE
+                                     - C_6_BYTES_RANGE
+                                     - C_5_BYTES_RANGE
+                                     - C_4_BYTES_RANGE
+                                     - C_3_BYTES_RANGE
+                                     - C_2_BYTES_RANGE
+                                     - C_1_BYTE_RANGE;
 
 //                              fedc    7654
 //                              ....ba98....3210
@@ -102,7 +140,7 @@ static CAST aBitAnd(void* aAddress, u8 uMask)
 /* bitwise-and of object address with mask                                    */
 /*----------------------------------------------------------------------------*/
 template <class CAST>
-static CAST pBitAnd(void* aAddress, u8 uMask)
+inline static CAST pBitAnd(void* aAddress, u8 uMask)
 {
   u8 uNewAddress = BITWISE_AND((u8)aAddress,uMask);
   

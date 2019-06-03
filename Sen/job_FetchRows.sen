@@ -56,9 +56,9 @@
 /*----------------------------------------------------------------------------*/
 /* execute checkFetchRows                                                     */
 /*----------------------------------------------------------------------------*/
-: checkFetchRows ( "<tableNm>"  partition -- true | errorCode false )
+: checkFetchRows ( "<sColumnNm>" "<tableNm>"  partition -- true | errorCode false )
 
-  params| iPartition sTableNm |
+  params| iPartition sTableNm sColumnNm |
   0 locals| pJob_FetchRows |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -89,6 +89,12 @@
   sTableNm checkIsTable not if popTable false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // if retrieving column, check it is a valid column
+  "" sColumnNm str.equal not if
+    sColumnNm sTableNm checkIsColumn not if popTable false exit then
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary
   popTable
 
@@ -107,7 +113,7 @@
 
   100 apiState::senLoc
 
-  0 0 0 locals| iPhrases sTableNm sWhere |
+  0 0 0 0 locals| iPhrases sTableNm sColumnNm sWhere |
   0 0 0 0 locals| pJob_FetchRows pTask pPlanner pTable |
   0 locals| iFetchPartition |
 
@@ -133,19 +139,26 @@
   ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the table name and partition
+  // get the table name, column name  and partition
   pJob_FetchRows job.objectName@ to sTableNm
+  pJob_FetchRows Job_FetchRows.columnName@ to sColumnNm
   pJob_FetchRows job_fetchRows.partition@ to iFetchPartition
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //check if we can fetch rows
-  sTableNm iFetchPartition checkFetchRows not if pJob_FetchRows <ERROR_REQUEST> !!am exit then
+  // check if we can fetch rows
+  sColumnNm sTableNm iFetchPartition checkFetchRows not if pJob_FetchRows <ERROR_REQUEST> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the table
   sTableNm pushTable assert
   sTableNm find execute to pTable
   pTable pJob_FetchRows job_fetchRows.table!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the column from the table and set it in the fetchRows job
+  "" sColumnNm str.equal not if
+    sColumnNm pTable table.findColumn pJob_FetchRows job_fetchRows.column!
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the metadata string

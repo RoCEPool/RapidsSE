@@ -38,17 +38,8 @@ ItemHeap::ItemHeap(eCN eClassNo)
 
   m_iPartitionNo  = -1;
   m_iBufferHeight = 0;
-  
-  m_oWhenNewed.vNow();
-  m_bIsLast       = false;
-  
-  // head of free item chain
-  m_aFreeItemChain  = nullptr;
 
-  // entry offsets array
-  m_i4aItemOffsets    = nullptr;
-  m_i_FreeOffsetChain = C_NO_MORE_ITEMS;
-  
+  m_bIsLast       = false;
   
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(eClassNo);
@@ -88,24 +79,6 @@ Item* ItemHeap::aAdjacentItem(Item* aItem)
     return nullptr;
   
   return aAdjacent;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get age of buffer in seconds                                               */
-/*----------------------------------------------------------------------------*/
-i8 ItemHeap::iAgeSsec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  Since oSince;
-  oSince.vNow();
-  
-  Ivl wDiff;
-  
-  wDiff = oSince.wSubtract(m_oWhenNewed);
-  
-  i8 iAge = wDiff.iSecond();
-  
-  return iAge;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -192,8 +165,8 @@ void ItemHeap::vDumpItems(void)
   i8 iItem = 0;
 
   Item* aItem = aFirstItem();
-  if (m_i4aItemOffsets)
-    aItem = aAdd<Item*>(aItem,sizeof(i4) * C_MAX_ITEMS);
+//  if (m_i4aItemOffsets)
+//    aItem = aAdd<Item*>(aItem,sizeof(i4) * C_MAX_ITEMS);
 
   for (;
        aItem;
@@ -272,33 +245,9 @@ void ItemHeap::vFreeItem(Item* aItem)
   
   FreeItem* aFreeItem = FreeItem::aMorphFreeItem(aItem);
   
-  //if (m_aFreeItemChain)
-  //  aFreeItem->vNextFree(m_aFreeItemChain);
-  
-  //m_aFreeItemChain = aFreeItem;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decement the number of items in buffer
   vDecItems();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next free item number (or C_NO_MORE_ITEMS if none)                     */
-/*----------------------------------------------------------------------------*/
-i4 ItemHeap::iGetItemNo(void)
-{
-  RASSERT( (m_i_FreeOffsetChain >= 0 && m_i_FreeOffsetChain < C_MAX_ITEMS) ||
-           (C_NO_MORE_ITEMS == m_i_FreeOffsetChain) );
-  
-  if (C_NO_MORE_ITEMS == m_i_FreeOffsetChain)
-    return C_NO_MORE_ITEMS;
-  
-  i4 i_ItemNo = m_i_FreeOffsetChain;
-  
-  RASSERT(i_ItemNo < C_MAX_ITEMS);
-  m_i_FreeOffsetChain = - m_i4aItemOffsets[i_ItemNo];
-  
-  return i_ItemNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -312,42 +261,11 @@ void ItemHeap::vGiveSpace(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does buffer have a free item no in free chain ?                            */
-/*----------------------------------------------------------------------------*/
-bool ItemHeap::bHasFreeItem(void)
-{
-  if (C_NO_MORE_ITEMS == m_i_FreeOffsetChain)
-    return false;
-  
-  //RASSERT(nItems() < C_MAX_ITEMS - 16);
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does buffer have a free item no in free chain ?                            */
-/*----------------------------------------------------------------------------*/
-bool ItemHeap::bHasFreeItemHidden(void)
-{
-  // we allow for only C_MAX_ITEMS - 16 entries in hidden index
-  if (nItems() >= C_MAX_ITEMS - 16) {
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* does buffer have space for nBytes ?                                        */
 /*----------------------------------------------------------------------------*/
 bool ItemHeap::bHasSpace(i8 nBytes)
 {
   i8 nFree = m_xWsp.nFree() - sizeof(Wilderness);
-  
-  // we allow for only C_MAX_ITEMS - 16 entries
-//  if (nItems() >= C_MAX_ITEMS - 16) {
-//    return false;
-//  }
   
   if (gpAttachMap->m_nIndexEntries > 0) {
     // has space calculation based on no of entries
@@ -363,30 +281,6 @@ bool ItemHeap::bHasSpace(i8 nBytes)
     else
       return true;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* set up the initial entry offset free chain                                 */
-/*----------------------------------------------------------------------------*/
-void ItemHeap::vInitFreeChain(void)
-{
-  m_i4aItemOffsets  =
-    reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_MAX_ITEMS));
-  
-  m_i_FreeOffsetChain = C_NO_MORE_ITEMS;
-  
-  i8 iMaxItems =
-    gpAttachMap->m_nIndexEntries ? gpAttachMap->m_nIndexEntries : C_MAX_ITEMS;
-  
-  for (i4 i_Item = 0; i_Item < (iMaxItems - 1); i_Item++) {
-    RASSERT(i_Item >= 0 && i_Item < C_MAX_ITEMS);
-    m_i4aItemOffsets[i_Item] = - (i_Item + 1);
-  }
-  
-  RASSERT((iMaxItems - 1) >= 0 && (iMaxItems - 1) < C_MAX_ITEMS);
-  m_i4aItemOffsets[iMaxItems - 1] = - C_NO_MORE_ITEMS;
-  
-  m_i_FreeOffsetChain = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -531,17 +425,6 @@ i8 ItemHeap::nUsedBytes(void)
   
   return nBytes;
 }
-
-/*----------------------------------------------------------------------------*/
-/* when was this buffer newed?                                                */
-/*----------------------------------------------------------------------------*/
-Since& ItemHeap::oWhenNewed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_oWhenNewed;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

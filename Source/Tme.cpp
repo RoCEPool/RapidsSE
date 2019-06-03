@@ -130,6 +130,14 @@ i8 Tme::iAsI8(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set as i8                                                                  */
+/*----------------------------------------------------------------------------*/
+void Tme::vAsI8(i8 iAsI8)
+{
+  m_iValue = iAsI8;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get hour                                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Tme::iHour(void)
@@ -185,8 +193,37 @@ void Tme::vSetNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- VLQ ---------------------------------------------------------------------*/
+/* sprint tme datum                                                           */
 /*----------------------------------------------------------------------------*/
+void Tme::vSprint(Stz* aDst)
+{
+  if (bIsNull()) {
+    StrLib::vSprint(aDst,"null%c"_Stz,
+                    '\0');
+    return;
+  }
+  
+  u8 uMicro = x.m_uMicro;
+
+  if (uMicro) {
+    char caFraction[16];
+    StrLib::vFormatFraction(caFraction,uMicro,6);
+    
+    StrLib::vSprint(aDst,"%02lld:%02lld:%02lld.%s%c"_Stz,
+                    (i8)x.m_uHour,
+                    (i8)x.m_uMinute,
+                    (i8)x.m_uSecond,
+                    caFraction,
+                    '\0');
+    return;
+  }
+  
+  StrLib::vSprint(aDst,"%02lld:%02lld:%02lld%c"_Stz,
+                  (i8)x.m_uHour,
+                  (i8)x.m_uMinute,
+                  (i8)x.m_uSecond,
+                  '\0');
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Extract and Sprint ------------------------------------------------------*/
@@ -208,110 +245,6 @@ i8 Tme::nCopy(void* aDst, void* aSrc)
 void Tme::vCopy(void* aDst, void* aSrc)
 {
   *(i8*)aDst = *(i8*)aSrc;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a time field from csv substr                         hh:mi:ss.fffZ */
-/*----------------------------------------------------------------------------*/
-bool Tme::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
-{
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
-  
-  Tme* aTme = (Tme*)aDst;
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  bool bSawEnclosedLeading =
-    StrLib::bSkipLeading(aaSrc,pFormatters->m_cEnclosedBy_Leading);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    aTme->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // time field processing
-  
-  i8 iHour, iMinute, iSecond, iMicro;
-  
-  if ( ! StrLib::bExtractTime(aaSrc, iHour, iMinute, iSecond, iMicro) )
-    return false;
-  
-  aTme->x.m_uHour   = iHour;
-  aTme->x.m_uMinute = iMinute;
-  aTme->x.m_uSecond = iSecond;
-  aTme->x.m_uMicro  = iMicro;
-  aTme->x.m_uSpare  = 0;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-    
-  bool bSawEnclosedTrailing =
-    StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
-  if (! bSawEnclosedTrailing)
-    return false;
-  
-  // should see a valid field end
-  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a time field from csv substr                         hh:mi:ss.fffZ */
-/*----------------------------------------------------------------------------*/
-bool Tme::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
-{
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
-  
-  Tme* aTme = (Tme*)aDst;
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  StrLib::vSkipSpaces(aaSrc);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (DtmLib::bTestForNullDefault(aaSrc,pColumn,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    aTme->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // time field processing
-  
-  i8 iHour, iMinute, iSecond, iMicro;
-  
-  if ( ! StrLib::bExtractTime(aaSrc, iHour, iMinute, iSecond, iMicro) )
-    return false;
-  
-  aTme->x.m_uHour   = iHour;
-  aTme->x.m_uMinute = iMinute;
-  aTme->x.m_uSecond = iSecond;
-  aTme->x.m_uMicro  = iMicro;
-  aTme->x.m_uSpare  = 0;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  StrLib::vSkipSpaces(aaSrc);
-  
-  // should see a valid field end
-  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
-    return false;
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/

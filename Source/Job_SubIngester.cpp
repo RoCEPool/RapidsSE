@@ -13,6 +13,7 @@ JobClass xJobClass_SubIngester =
 {
   CN_JOB_SUBINGESTER,       // class enum
   JK_CHILD,                 // job kind
+  RK_NONE,                  // response kind
   "table sub-ingester"_Stz, // comment about the job
   nullptr,                  // the prompt command
   nullptr,                  // the second word
@@ -174,7 +175,8 @@ bool Job_SubIngester::bBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINGESTER,_FOOTER_);
   
   // set the table and parentJob in the writeBehind Job
-  JobWriteBehind::m_pTable = m_pJob_Ingest->m_pTable;
+  Table* pTable = m_pJob_Ingest->pTable();
+  JobWriteBehind::vTable(pTable);
   JobWriteBehind::m_pParentJob = m_pJob_Ingest;
   
   return true;

@@ -13,6 +13,7 @@ JobClass xJobClass_SizeIndex =
 {
   CN_JOB_SIZEINDEX,      // class enum
   JK_DIST2PC,            // job kind
+  RK_NODE_ROWS,          // response kind
   "size of index"_Stz,   // comment about the job
   "szidx"_Stz,           // the prompt command
   nullptr,               // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_SizeIndex =
 
   eJob_checkCluster,     // prompt check function
   pJob_SizeIndex_pre,    // prompt pre-process function
-  vJob_SizeIndex_post,   // prompt post-process function
+  vJob_post,             // prompt post-process function
   nullptr,               // job new function
   vJob_SizeIndex_delete, // job delete function
   vJob_send,             // job pre-send function
@@ -210,41 +211,10 @@ Job* Jobs::pJob_SizeIndex_pre(Interface::Session* pSession)
   bool bResult = pJob_SizeIndex->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_SizeIndex->m_bHasError = true;
-    pJob_SizeIndex->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_SizeIndex->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_SizeIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_SizeIndex_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_SizeIndex* pJob_SizeIndex = _pJob_SizeIndex(pJob);
-  
-  if ( pJob_SizeIndex->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_SizeIndex->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
-  else {
-    if (gpAttachMap->m_bMetadata) {
-      vTrace("metadata: %s\n"_Stz, pJob_SizeIndex->m_sMetadata.aStz());
-    }
-    
-    i8 iRowsProcessed = 0;
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("%s\n"_Stz, pJob_SizeIndex->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += *pJob_SizeIndex->m_xNode[i_Node].m_ixRowsProcessed;
-    }
-    vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

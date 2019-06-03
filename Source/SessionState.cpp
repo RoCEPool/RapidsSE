@@ -67,7 +67,7 @@ SessionState::SessionState(void)
   m_iJobLoc    = 0;
   m_iSenLoc    = 0;
   
-  m_oTimer.vInit();
+  m_oTimer.vReset();
   m_iTotalMsec = 0;
   
   m_nBegun     = 0;
@@ -136,7 +136,7 @@ void SessionState::vFreeState(i8 i_NextFree)
   m_iJobLoc    = 0;
   m_iSenLoc    = 0;
   
-  m_oTimer.vInit();
+  m_oTimer.vReset();
   m_iTotalMsec = 0;
   
   m_nBegun     = 0;

@@ -1,0 +1,161 @@
+/*============================================================================*/
+/* _varchar -- varchar test                                                   */
+/*============================================================================*/
+startCluster;
+
+create table vchTbl (
+vch_col0   INTEGER,
+vch_col1   VARCHAR,
+vch_col2   VARCHAR,
+vch_col3   VARCHAR,
+vch_col4   VARCHAR,
+vch_col5   VARCHAR,
+vch_col6   VARCHAR,
+vch_col7   VARCHAR,
+vch_col8   VARCHAR,
+vch_col9   VARCHAR,
+vch_col10  VARCHAR,
+vch_col11  VARCHAR,
+vch_col12  VARCHAR,
+vch_col13  VARCHAR,
+vch_col14  VARCHAR,
+vch_col15  VARCHAR
+);
+
+ld vchTbl "/DATA/Encoding/varcharSmall.csv" ;
+
+// check no of rows
+//fetch vchTbl;
+
+time fetch retrieve vchTbl vch_col0;
+time fetch retrieve vchTbl vch_col1;
+time fetch retrieve vchTbl vch_col2;
+time fetch retrieve vchTbl vch_col3;
+time fetch retrieve vchTbl vch_col4;
+time fetch retrieve vchTbl vch_col5;
+time fetch retrieve vchTbl vch_col6;
+time fetch retrieve vchTbl vch_col7;
+time fetch retrieve vchTbl vch_col8;
+time fetch retrieve vchTbl vch_col9;
+time fetch retrieve vchTbl vch_col10;
+time fetch retrieve vchTbl vch_col11;
+time fetch retrieve vchTbl vch_col12;
+time fetch retrieve vchTbl vch_col13;
+time fetch retrieve vchTbl vch_col14;
+time fetch retrieve vchTbl vch_col15;
+
+/*
+ 
+ Added special check for MN_EMPTY. Results looking better:
+ success: 1000000 rows affected
+ time 25ms
+ success: 1000000 rows affected
+ time 77ms
+ success: 1000000 rows affected
+ time 85ms
+ success: 1000000 rows affected
+ time 91ms
+ success: 1000000 rows affected
+ time 90ms
+ success: 1000000 rows affected
+ time 110ms
+ success: 1000000 rows affected
+ time 38ms
+ success: 1000000 rows affected
+ time 78ms
+ success: 1000000 rows affected
+ time 76ms
+ success: 1000000 rows affected
+ time 75ms
+ success: 1000000 rows affected
+ time 138ms
+ success: 1000000 rows affected
+ time 111ms
+ success: 1000000 rows affected
+ time 109ms
+ success: 1000000 rows affected
+ time 96ms
+ success: 1000000 rows affected
+ time 71ms
+ success: 1000000 rows affected
+ time 47ms
+
+ 
+ Made tailline w8_1BFast
+ And made shoco call the Fast versions for w8B_* passing pDatum
+ slight improvement.
+ 
+ success: 1000000 rows affected
+ time 27ms
+ success: 1000000 rows affected
+ time 78ms
+ success: 1000000 rows affected
+ time 83ms
+ success: 1000000 rows affected
+ time 90ms
+ success: 1000000 rows affected
+ time 94ms
+ success: 1000000 rows affected
+ time 119ms
+ success: 1000000 rows affected
+ time 40ms
+ success: 1000000 rows affected
+ time 81ms
+ success: 1000000 rows affected
+ time 80ms
+ success: 1000000 rows affected
+ time 76ms
+ success: 1000000 rows affected
+ time 133ms
+ success: 1000000 rows affected
+ time 123ms
+ success: 1000000 rows affected
+ time 116ms
+ success: 1000000 rows affected
+ time 106ms
+ success: 1000000 rows affected
+ time 77ms
+ success: 1000000 rows affected
+ time 52ms
+[N0/1 NODE1 44544] se 4.0.5r has>
+ 
+ 1st set of results 7 May 2019
+ -----------------------------
+ success: 1000000 rows affected
+ time 25ms
+ success: 1000000 rows affected
+ time 83ms
+ success: 1000000 rows affected
+ time 97ms
+ success: 1000000 rows affected
+ time 98ms
+ success: 1000000 rows affected
+ time 100ms
+ success: 1000000 rows affected
+ time 118ms
+ success: 1000000 rows affected
+ time 43ms
+ success: 1000000 rows affected
+ time 86ms
+ success: 1000000 rows affected
+ time 84ms
+ success: 1000000 rows affected
+ time 83ms
+ success: 1000000 rows affected
+ time 147ms
+ success: 1000000 rows affected
+ time 139ms
+ success: 1000000 rows affected
+ time 130ms
+ success: 1000000 rows affected
+ time 112ms
+ success: 1000000 rows affected
+ time 70ms
+ success: 1000000 rows affected
+ time 55ms
+ [N0/1 NODE1 33384] se 4.0.5r has>
+ */
+
+//*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

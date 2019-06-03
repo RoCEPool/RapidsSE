@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Row.cpp -- Row                                                             */
+/* Row.cpp -- Computable form of Row                                          */
 /*============================================================================*/
 
 #include "Data.h"
@@ -15,9 +15,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RowData* Data::_aRowData(void* aAddr)
+Row* Data::_pRow(void* aAddr)
 {
-  RowData* pRow = reinterpret_cast<RowData*>(aAddr);
+  Row* pRow = reinterpret_cast<Row*>(aAddr);
   
   return pRow;
 }
@@ -25,212 +25,103 @@ RowData* Data::_aRowData(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* RowData::operator new(size_t)
+void* Row::operator new(size_t)
 {
-  vFatal("fatal: RowData class cannot be new'd\n"_Stz);
+  void* pObject = HeapMem::pAllocate(CN_ROW);
   
-  NEVER_REACH;
+  return pObject;
 }
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void Row::operator delete(void* aAddr)
+{
+  Row* pRow = reinterpret_cast<Row*>(aAddr);
+  
+  HeapMem::vFree(pRow);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RowData::RowData(void)
+Row::Row(ColumnVec* pColVec)
+: Object(CN_ROW)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  
+  m_pColVec     = pColVec;
+  m_nColumns    = m_pColVec->nItems();
+  m_iBaseOffset = RowCoder::iBaseOffset(m_pColVec);
+  m_bGetAll     = true;
+  m_iLastCol    = C_UNKNOWN;
+  
+  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
+    m_abGetCol[i_Col] = false;
+  m_i_Wsp       = 0;
+  
+#ifdef WITH_CHECK_INITIALISED
+  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
+    m_aiValue[i_Col] = 0;
+  
+  m_xWsp.vZero(CN_ROW);
+  
+#else
+  // m_xWsp
+#endif
+  
+  _checkInitialised_(CN_ROW);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-RowData::~RowData(void) noexcept(false)
+Row::~Row(void) noexcept(false)
 {
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert row to binary string                                               */
+/* don't decode vch                                                           */
 /*----------------------------------------------------------------------------*/
-void RowData::vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec)
+void Row::vDontDecodeVch(void)
 {
-  Stz* aData;
-  s17KB sDst;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+
+  m_bGetAll = false;
   
-  // get no of columns
-  i8 nColumns = pColVec->nItems();
-  
-  // for each column
-  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     
-    // get the column at index
-    Column* pColumn = pColVec->pGet(i_Column);
+    Column* pCol = m_pColVec->pGet(i_Col);
     
-    // not the first column
-    if (i_Column != 0)
-      sDataString.vConcat(","_Stz);
-    
-    // get the column data pointer
-    aData = (Stz*)aColumnDatum(i_Column);
-    
-    // copy the data for the column into aDst
-    DtmLib::vSprintQuotesVLQ(sDst, aData, pColumn);
-    
-    // now copy the data for the column from aDst to aDataString
-    if (i_Column == 0)
-      sDataString.vCopy(sDst);
+    if (DM_VCH == pCol->eDatumType()) {
+      m_abGetCol[i_Col] = false;
+    }
     else
-      sDataString.vConcat(sDst);
+      m_abGetCol[i_Col] = true;
   }
-  
-//  if (bNewLine)
-//    sDataString.vAppend('\n');
 }
 
+
 /*----------------------------------------------------------------------------*/
-/* convert row to escaped string                                              */
+/*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void RowData::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec)
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Row::aFooter(void)
 {
-  Stz* aData;
-  s17KB sDst;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
-  // get no of columns
-  i8 nColumns = pColVec->nItems();
-  
-  // for each column
-  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
-    
-    // get the column at index
-    Column* pColumn = pColVec->pGet(i_Column);
-    
-    // not the first column
-    if (i_Column != 0)
-      sDataString.vConcat(","_Stz);
-    
-    // move to column data
-    aData = (Stz*)aColumnDatum(i_Column);
-    
-    // copy the data for the column into aDst
-    DtmLib::vSprintEscapedVLQ(pColumn->eDatumType(), sDst, aData, pColumn);
-    
-    // now copy the data for the column from aDst to aDataString
-    if (i_Column == 0)
-      sDataString.vCopy(sDst);
-    else
-      sDataString.vConcat(sDst);
-  }
-  
-//  if (bNewLine)
-//    sDataString.vAppend('\n');
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of a column datum                                              */
-/*----------------------------------------------------------------------------*/
-char* RowData::aColumnDatum(i8 iColumnNo)
-{
-  // get the column offset
-  u2 iOffset = iDatumOffset(iColumnNo);
-  
-  // move to offset
-  char* aCursor = ((char*)(this) + iOffset);
-  
-  return aCursor;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump row                                                                   */
-/*----------------------------------------------------------------------------*/
-void RowData::vDump(ColumnVec* pColVec)
-{
-  vTrace("RowData: "_Stz);
-  
-  Stz* aData;
-  s17KB sDst;
-  
-  // get no of columns
-  i8 nColumns = pColVec->nItems();
-
-  // for each column except hidden column, dump the offsets
-  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
-    u2 iOffset = iDatumOffset(i_Column);
-    vTrace("%lld|"_Stz, iOffset);
-  }
-
-  // for each column except hidden column, dump the column data
-  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
-
-    // get the column
-    Column* pColumn = pColVec->pGet(i_Column);
-
-    // move to column data
-    aData = (Stz*)aColumnDatum(i_Column);
-
-    // dump the column value
-    DtmLib::vSprintVLQ(pColumn->eDatumType(), sDst, aData, pColumn);
-    vTrace("%s|"_Stz, sDst.aChar());
-  }
-
-  vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* show row                                                                   */
-/*----------------------------------------------------------------------------*/
-void RowData::vShow(ColumnVec* pColVec, bool bCompressed)
-{
-  Stz* aData;
-  
-  i8 nColumns = pColVec->nItems() - 1;
-  
-  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
-    
-    Column* pColumn = pColVec->pGet(i_Column);
-    
-    // move to column data
-    aData = (Stz*)aColumnDatum(i_Column);
-    
-    s17KB s;
-    if (bCompressed)
-      DtmLib::vSprintVLQ(pColumn->eDatumType(), s, aData, pColumn);
-    else
-      DtmLib::vSprint(pColumn->eDatumType(), s, aData, pColumn);
-    vTrace("%s "_Stz, s.aChar());
-  }
-  
-}
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get address of the byte vector                                             */
-/*----------------------------------------------------------------------------*/
-byte* RowData::yByteVec(void)
-{
-  byte* yByteVec = aAdd<byte*>(this,auOffsetVec()[0]);
-  
-  return yByteVec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get offset of a column datum                                               */
-/*----------------------------------------------------------------------------*/
-u2 RowData::iDatumOffset(i8 iColumnNo)
-{
-  u2 iDatumOffset = auOffsetVec()[iColumnNo];
-  
-  return iDatumOffset;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get offset of a column value                                               */
-/*----------------------------------------------------------------------------*/
-u2* RowData::auOffsetVec(void)
-{
-  return (u2*)this;
+  return &m_xFooter;
 }
 
 /*============================================================================*/

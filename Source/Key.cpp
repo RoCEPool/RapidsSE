@@ -306,8 +306,7 @@ bool KeyData::bNotEqual(Item* aKeyItem1, Item* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* show the contents of this key                                              */
 /*----------------------------------------------------------------------------*/
-#ifdef USE_VLQ_DATUMS
-void KeyData::vShow(IdxColVec* pIdxColVec, bool bCompressed)
+void KeyData::vShow(IdxColVec* pIdxColVec)
 {
   i8 nBytes;
   
@@ -326,101 +325,14 @@ void KeyData::vShow(IdxColVec* pIdxColVec, bool bCompressed)
     if (eDatum == DM_VCH) {
       nBytes = StrLib::iWordFlipBack(caLiteral, aDatum);
     }
-    else if (bCompressed)
-      DtmLib::vSprintVLQ(eDatum,(Stz*)caLiteral,(Stz*)aDatum,pColumn);
     else
-      DtmLib::vSprint(eDatum,(Stz*)caLiteral,(Stz*)aDatum,pColumn);
+      Record::vSprint(pColumn,(Stz*)caLiteral,(Stz*)aDatum);
     vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Column,nBytes,caLiteral);
   }
   
   //vTrace("%s)\n"_Stz, sKeyString.aStz());
 }
-#else
-void KeyData::vShow(IdxColVec* pIdxColVec, bool bCompressed)
-{
-  i8 nBytes;
-  i8 iKey;
-  Stz* pKey;
-  char* aCursor = aByteSequence();
-  
-  char caLiteral[64];
-  
-  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
-    
-    Column* pColumn = pIdxColVec->pGet(i_Column);
-    
-    char* aDatum = this->aEachDatum(pColumn,nBytes,&aCursor);
-  
-    eDM eDatum = pColumn->eDatumType();
-    DtmLib::vSprint(eDatum,(Stz*)caLiteral,(Stz*)aDatum,pColumn);
-    vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Column,nBytes,caLiteral);
-  }
 
-  //vTrace("%s)\n"_Stz, sKeyString.aStz());
-}
-#endif
-
-/*----------------------------------------------------------------------------*/
-/* sprint sort key into given string variable                                 */
-/*----------------------------------------------------------------------------*/
-#ifdef USE_VLQ_DATUMS
-void KeyData::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
-{
-  char* aWspCursor = aByteSequence();
-
-  sVar = ""_Stz;
-  
-  char caLiteral[64];
-  
-  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
-    
-    if (i_Column)
-      sVar.vAppend(',');
-    
-    Column* pColumn = pIdxColVec->pGet(i_Column);
-    eDM eDatum = pColumn->eDatumType();
-    
-    char* aDatum = aWspCursor;
-    aWspCursor = aAdd<char*>(aWspCursor,sizeof(w8));
-    
-    if (DM_VCH == eDatum)
-      aDatum = *((char**)aDatum);
-    
-    DtmLib::vSprintVLQ(eDatum,(Stz*)caLiteral,(Stz*)aDatum,pColumn);
-    sVar.vConcat((Stz*)caLiteral);
-  }
-  
-}
-#else
-void KeyData::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
-{
-  i8 nBytes;
-  char* aWspCursor = aByteSequence();
-  
-  sVar = ""_Stz;
-  
-  char caLiteral[64];
-  
-  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
-    
-    if (i_Column)
-      sVar.vAppend(',');
-    
-    Column* pColumn = pIdxColVec->pGet(i_Column);
-    eDM eDatum = pColumn->eDatumType();
-    
-    char* aDatum = aWspCursor;
-    aWspCursor = pAdd<char*>(aWspCursor,sizeof(w8));
-    
-    if (DM_VCH == eDatum)
-      aDatum = *((char**)aDatum);
-    
-    DtmLib::vSprint(eDatum,(Stz*)caLiteral,(Stz*)aDatum,pColumn);
-    sVar.vConcat((Stz*)caLiteral);
-  }
-  
-}
-#endif
 /*----------------------------------------------------------------------------*/
 /* get first datum (assuming int)                                             */
 /*----------------------------------------------------------------------------*/

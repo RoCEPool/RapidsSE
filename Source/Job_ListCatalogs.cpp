@@ -13,6 +13,7 @@ JobClass xJobClass_ListCatalogs =
 {
   CN_JOB_LISTCATALOGS,     // class enum
   JK_LOCAL,                // job kind
+  RK_LOCAL_ROWS,           // response kind
   "list catalogs"_Stz,     // comment about the job
   "lscat"_Stz,             // the prompt command
   nullptr,                 // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_ListCatalogs =
 
   nullptr,                 // prompt check function
   pJob_ListCatalogs_pre,   // prompt pre-process function
-  vJob_ListCatalogs_post,  // prompt post-process function
+  vJob_post,               // prompt post-process function
   nullptr,                 // job new function
   vJob_ListCatalogs_delete,// job delete function
   nullptr,                 // job pre-send function
@@ -205,41 +206,10 @@ Job* Jobs::pJob_ListCatalogs_pre(Interface::Session* pSession)
   bool bResult = pJob_ListCatalogs->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_ListCatalogs->m_bHasError = true;
-    pJob_ListCatalogs->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_ListCatalogs->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_ListCatalogs;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListCatalogs_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_ListCatalogs* pJob_ListCatalogs = _pJob_ListCatalogs(pJob);
-  
-  if ( pJob_ListCatalogs->m_bHasError ) {
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_ListCatalogs->m_xNode[i_Node].m_eErrorCode]);
-    }
-  }
-  else {
-    if (gpAttachMap->m_bMetadata) {
-      vTrace("metadata: %s\n"_Stz, pJob_ListCatalogs->m_sMetadata.aStz());
-    }
-    
-    i8 iRowsProcessed = 0;
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("%s"_Stz, pJob_ListCatalogs->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += *pJob_ListCatalogs->m_xNode[i_Node].m_ixRowsProcessed;
-    }
-    if (gpAttachMap->m_bMetadata) {
-      vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
-    }
-  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -14,6 +14,7 @@ JobClass xJobClass_DropSchema =
 {
   CN_JOB_DROPSCHEMA,      // class enum
   JK_DIST2PC,             // job kind
+  RK_NODE_ZERO,           // response kind
   "drop schema"_Stz,      // comment about the job
   "drop"_Stz,             // the prompt command
   "schema"_Stz,           // the second word
@@ -33,7 +34,7 @@ JobClass xJobClass_DropSchema =
 
   eJob_checkCluster,      // prompt check function
   pJob_DropSchema_pre,    // prompt pre-process function
-  vJob_DropSchema_post,   // prompt post-process function
+  vJob_post,              // prompt post-process function
   nullptr,                // job new function
   vJob_DropSchema_delete, // job delete function
   vJob_send,              // job pre-send function
@@ -210,31 +211,10 @@ Job* Jobs::pJob_DropSchema_pre(Interface::Session* pSession)
   bool bResult = pJob_DropSchema->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_DropSchema->m_bHasError = true;
-    pJob_DropSchema->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_DropSchema->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_DropSchema;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_DropSchema_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_DropSchema* pJob_DropSchema = _pJob_DropSchema(pJob);
-  
-  if ( pJob_DropSchema->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_DropSchema->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
-  else {
-    vTrace("success: 0 rows affected\n"_Stz);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

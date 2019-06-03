@@ -11,6 +11,8 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobFetchRows(void)
 {
+  vAddStep("Job_fetchRows.columnName@"_Stz,  &Step::vJob_FetchRowsColumnNameFetch);
+  vAddStep("Job_fetchRows.column!"_Stz,      &Step::vJob_FetchRowsColumnStore);
   vAddStep("Job_fetchRows.lastBuffers!"_Stz, &Step::vJob_FetchRowsLastBuffersStore);
   vAddStep("Job_fetchRows.partition@"_Stz,   &Step::vJob_FetchRowsPartitionFetch);
   vAddStep("Job_fetchRows.planner!"_Stz,     &Step::vJob_FetchRowsPlannerStore);
@@ -22,6 +24,45 @@ void Step::vAddSteps_JobFetchRows(void)
   vAddStep("Job_subFetch.phrase@"_Stz,       &Step::vJob_SubFetchPhraseFetch);
   vAddStep("Job_subFetch.Planner@"_Stz,      &Step::vJob_SubFetchPlannerFetch);
   vAddStep("Job_subFetch.slot@"_Stz,         &Step::vJob_SubFetchSlotFetch);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_fetchRows.column! -- store column in the job                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_FetchRowsColumnStore(MP_Task mpTask)
+{
+  ENTRY("vJob_FetchRowsColumnStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("Job_fetchRows.column!"_Stz);
+  Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
+  
+  Object* pColumnPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pColumnPtr) )
+    THROW_INVALID_DSTACK("Job_fetchRows.table"_Stz);
+  Column* pColumn = _pColumn(pColumnPtr);
+  
+  pJob_FetchRows->m_pColumn = pColumn;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_fetchRows.column@ -- fetch column name from the job                    */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_FetchRowsColumnNameFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_FetchRowsColumnNameFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("Job_fetchRows.columnName@"_Stz);
+  Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushS256(pJob_FetchRows->m_sColumnName);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

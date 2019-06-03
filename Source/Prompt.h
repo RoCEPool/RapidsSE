@@ -41,13 +41,13 @@ using namespace Prompt;
 #include "Prompt_config.hpp"
 #include "Prompt_constants.hpp"
 
-#include "Prompt_date.hpp"
-
 #include "Prompt_enums.hpp"
 #include "Prompt_errno.hpp"
 #include "Prompt_executing.hpp"
 
 #include "Prompt_file.hpp"
+#include "Prompt_fileCat.hpp"
+#include "Prompt_fileProc.hpp"
 #include "Prompt_floats.hpp"
 #include "Prompt_funs.hpp"
 
@@ -65,6 +65,7 @@ using namespace Prompt;
 #include "Prompt_jobcat.hpp"
 #include "Prompt_jobClass.hpp"
 
+#include "Prompt_limits.hpp"
 #include "Prompt_locks.hpp"
 #include "Prompt_ls.hpp"
 #include "Prompt_lvl.hpp"
@@ -80,6 +81,7 @@ using namespace Prompt;
 #include "Prompt_mkpipe.hpp"
 #include "Prompt_mon.hpp"
 
+#include "Prompt_now.hpp"
 #include "Prompt_numbers.hpp"
 
 #include "Prompt_olist.hpp"
@@ -101,6 +103,7 @@ using namespace Prompt;
 #include "Prompt_rnd.hpp"
 
 #include "Prompt_se.hpp"
+#include "Prompt_setDbg.hpp"
 #include "Prompt_shell.hpp"
 #include "Prompt_since.hpp"
 #include "Prompt_sizes.hpp"
@@ -117,6 +120,7 @@ using namespace Prompt;
 #include "Prompt_threads.hpp"
 #include "Prompt_timerEnd.hpp"
 #include "Prompt_timerStart.hpp"
+#include "Prompt_tpch.hpp"
 
 #include "Prompt_uptime.hpp"
 

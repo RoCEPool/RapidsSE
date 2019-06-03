@@ -1,0 +1,454 @@
+/*============================================================================*/
+/* Line.hpp -- a line of bytes                                                */
+/*============================================================================*/
+
+#include "Data.h"
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Line::Line(void)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Line::~Line(void) noexcept(false)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get bytes from line                                                        */
+/*----------------------------------------------------------------------------*/
+w8 Line::wGet(i8 i_Offset, i8 nBytes)
+{
+  switch (nBytes) {
+    case 0: return 0;
+    case 1: return w8_1B(i_Offset);
+    case 2: return w8_2B(i_Offset);
+    case 3: return w8_3B(i_Offset);
+    case 4: return w8_4B(i_Offset);
+    case 5: return w8_5B(i_Offset);
+    case 6: return w8_6B(i_Offset);
+    case 7: return w8_7B(i_Offset);
+    case 8: return w8_8B(i_Offset);
+      
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* put bytes into line                                                        */
+/*----------------------------------------------------------------------------*/
+void Line::vPut(i8 i_Offset, w8 wWord, i8 nBytes)
+{
+  switch (nBytes) {
+    case 0: return;
+    case 1: v1B(i_Offset,wWord); return;
+    case 2: v2B(i_Offset,wWord); return;
+    case 3: v3B(i_Offset,wWord); return;
+    case 4: v4B(i_Offset,wWord); return;
+    case 5: v5B(i_Offset,wWord); return;
+    case 6: v6B(i_Offset,wWord); return;
+    case 7: v7B(i_Offset,wWord); return;
+    case 8: v8B(i_Offset,wWord); return;
+      
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* set all bytes to yVal                                                      */
+/*----------------------------------------------------------------------------*/
+void Line::vSetAll(byte yVal)
+{
+  MemLib::vSet(this, yVal, sizeof(Line), CN_NONE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set all bytes to yVal                                                      */
+/*----------------------------------------------------------------------------*/
+void Line::vSetAll(byte yVal, i8 nBytes)
+{
+  MemLib::vSet(this, yVal, nBytes, CN_NONE);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+//w8 Line::w8_1B(i8 i_Byte)
+//{
+//  Word xWord;
+//
+//  byte* aByte = ((byte*)this) + i_Byte;
+//
+//  xWord.m_iI8 = 0;
+//  xWord.m_yaByte[0] = *aByte;
+//
+//  return xWord.m_wWord;
+//}
+
+/*----------------------------------------------------------------------------*/
+/* return 2 bytes at offset as w8                                             */
+/*----------------------------------------------------------------------------*/
+w8 Line::w8_2B(i8 i_Byte)
+{
+  Word xWord;
+  
+  u2* au2B = (u2*)((byte*)this + i_Byte);
+  
+  xWord.m_uI8 = *au2B;
+
+  return xWord.m_wWord;
+}
+/*----------------------------------------------------------------------------*/
+//w8 Line::w8_2B(i8 i_Byte)
+//{
+//  Word xWord;
+//
+//  byte* aByte = ((byte*)this) + i_Byte;
+//
+//  xWord.m_iI8 = 0;
+//  xWord.m_yaByte[0] = *aByte++;
+//  xWord.m_yaByte[1] = *aByte;
+//
+//  return xWord.m_wWord;
+//}
+
+/*----------------------------------------------------------------------------*/
+/* return 3 bytes at offset as w8                                             */
+/*----------------------------------------------------------------------------*/
+w8 Line::w8_3B(i8 i_Byte)
+{
+  Word xWord;
+  
+  byte* aByte = ((byte*)this) + i_Byte;
+  
+  xWord.m_iI8 = 0;
+  xWord.m_yaByte[0] = *aByte++;
+  xWord.m_yaByte[1] = *aByte++;
+  xWord.m_yaByte[2] = *aByte;
+  
+  return xWord.m_wWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return 4 bytes at offset as w8                                             */
+/*----------------------------------------------------------------------------*/
+w8 Line::w8_4B(i8 i_Byte)
+{
+  Word xWord;
+  
+  u4* au4B = (u4*)((byte*)this + i_Byte);
+  
+  xWord.m_uI8 = *au4B;
+
+  return xWord.m_wWord;
+}
+/*----------------------------------------------------------------------------*/
+//w8 Line::w8_4B(i8 i_Byte)
+//{
+//  Word xWord;
+//
+//  byte* aByte = ((byte*)this) + i_Byte;
+//
+//  xWord.m_iI8 = 0;
+//  xWord.m_yaByte[0] = *aByte++;
+//  xWord.m_yaByte[1] = *aByte++;
+//  xWord.m_yaByte[2] = *aByte++;
+//  xWord.m_yaByte[3] = *aByte;
+//
+//  return xWord.m_wWord;
+//}
+
+/*----------------------------------------------------------------------------*/
+/* return 5 bytes at offset as w8                                             */
+/*----------------------------------------------------------------------------*/
+w8 Line::w8_5B(i8 i_Byte)
+{
+  Word xWord;
+  
+  byte* aByte = ((byte*)this) + i_Byte;
+  
+  xWord.m_iI8 = 0;
+  xWord.m_yaByte[0] = *aByte++;
+  xWord.m_yaByte[1] = *aByte++;
+  xWord.m_yaByte[2] = *aByte++;
+  xWord.m_yaByte[3] = *aByte++;
+  xWord.m_yaByte[4] = *aByte;
+  
+  return xWord.m_wWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return 6 bytes at offset as w8                                             */
+/*----------------------------------------------------------------------------*/
+w8 Line::w8_6B(i8 i_Byte)
+{
+  Word xWord;
+  
+  byte* aByte = ((byte*)this) + i_Byte;
+  
+  xWord.m_iI8 = 0;
+  xWord.m_yaByte[0] = *aByte++;
+  xWord.m_yaByte[1] = *aByte++;
+  xWord.m_yaByte[2] = *aByte++;
+  xWord.m_yaByte[3] = *aByte++;
+  xWord.m_yaByte[4] = *aByte++;
+  xWord.m_yaByte[5] = *aByte;
+  
+  return xWord.m_wWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return 7 bytes at offset as w8                                             */
+/*----------------------------------------------------------------------------*/
+w8 Line::w8_7B(i8 i_Byte)
+{
+  Word xWord;
+  
+  byte* aByte = ((byte*)this) + i_Byte;
+  
+  xWord.m_iI8 = 0;
+  xWord.m_yaByte[0] = *aByte++;
+  xWord.m_yaByte[1] = *aByte++;
+  xWord.m_yaByte[2] = *aByte++;
+  xWord.m_yaByte[3] = *aByte++;
+  xWord.m_yaByte[4] = *aByte++;
+  xWord.m_yaByte[5] = *aByte++;
+  xWord.m_yaByte[6] = *aByte;
+  
+  return xWord.m_wWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return 8 bytes at offset as w8                                             */
+/*----------------------------------------------------------------------------*/
+w8 Line::w8_8B(i8 i_Byte)
+{
+  Word xWord;
+  
+  u8* au8B = (u8*)((byte*)this + i_Byte);
+  
+  xWord.m_uI8 = *au8B;
+
+  return xWord.m_wWord;
+}
+/*----------------------------------------------------------------------------*/
+//w8 Line::w8_8B(i8 i_Byte)
+//{
+//  Word xWord;
+//
+//  byte* aByte = ((byte*)this) + i_Byte;
+//
+//  xWord.m_iI8 = 0;
+//  xWord.m_yaByte[0] = *aByte++;
+//  xWord.m_yaByte[1] = *aByte++;
+//  xWord.m_yaByte[2] = *aByte++;
+//  xWord.m_yaByte[3] = *aByte++;
+//  xWord.m_yaByte[4] = *aByte++;
+//  xWord.m_yaByte[5] = *aByte++;
+//  xWord.m_yaByte[6] = *aByte++;
+//  xWord.m_yaByte[7] = *aByte;
+//
+//  return xWord.m_wWord;
+//}
+
+/*----------------------------------------------------------------------------*/
+/* return 1 nibble at offset as w8                                            */
+/*----------------------------------------------------------------------------*/
+w8 Line::w8_1N(i8 i_Nibble)
+{
+  w8 iNibble;
+  w8 iByte = w8_1B(i_Nibble/2);
+  
+  if (0 == i_Nibble % 2) {
+    // left nibble
+    iNibble = iByte >> 4;
+  }
+  else {
+    // right nibble
+    iNibble = iByte & 0xF;
+  }
+  
+  return iNibble;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* store 1 byte at offset                                                     */
+/*----------------------------------------------------------------------------*/
+void Line::v1B(i8 i_Byte, w8 wArg)
+{
+  Word xWord;
+
+  xWord.m_wWord = wArg;
+  
+  byte* aByte = ((byte*)this) + i_Byte;
+  *aByte = xWord.m_yaByte[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* store 2 bytes at offset                                                    */
+/*----------------------------------------------------------------------------*/
+void Line::v2B(i8 i_Byte, w8 wArg)
+{
+  Word xWord;
+  
+  xWord.m_wWord = wArg;
+  
+  byte* aByte = ((byte*)this) + i_Byte;
+  *aByte++ = xWord.m_yaByte[0];
+  *aByte   = xWord.m_yaByte[1];
+}
+
+/*----------------------------------------------------------------------------*/
+/* store 3 bytes at offset                                                    */
+/*----------------------------------------------------------------------------*/
+void Line::v3B(i8 i_Byte, w8 wArg)
+{
+  Word xWord;
+  
+  xWord.m_wWord = wArg;
+  
+  byte* aByte = ((byte*)this) + i_Byte;
+  *aByte++ = xWord.m_yaByte[0];
+  *aByte++ = xWord.m_yaByte[1];
+  *aByte   = xWord.m_yaByte[2];
+}
+
+/*----------------------------------------------------------------------------*/
+/* store 4 bytes at offset                                                    */
+/*----------------------------------------------------------------------------*/
+void Line::v4B(i8 i_Byte, w8 wArg)
+{
+  Word xWord;
+  
+  xWord.m_wWord = wArg;
+  
+  byte* aByte = ((byte*)this) + i_Byte;
+  *aByte++ = xWord.m_yaByte[0];
+  *aByte++ = xWord.m_yaByte[1];
+  *aByte++ = xWord.m_yaByte[2];
+  *aByte   = xWord.m_yaByte[3];
+}
+
+/*----------------------------------------------------------------------------*/
+/* store 5 bytes at offset                                                    */
+/*----------------------------------------------------------------------------*/
+void Line::v5B(i8 i_Byte, w8 wArg)
+{
+  Word xWord;
+  
+  xWord.m_wWord = wArg;
+  
+  byte* aByte = ((byte*)this) + i_Byte;
+  *aByte++ = xWord.m_yaByte[0];
+  *aByte++ = xWord.m_yaByte[1];
+  *aByte++ = xWord.m_yaByte[2];
+  *aByte++ = xWord.m_yaByte[3];
+  *aByte   = xWord.m_yaByte[4];
+}
+
+/*----------------------------------------------------------------------------*/
+/* store 6 bytes at offset                                                    */
+/*----------------------------------------------------------------------------*/
+void Line::v6B(i8 i_Byte, w8 wArg)
+{
+  Word xWord;
+  
+  xWord.m_wWord = wArg;
+  
+  byte* aByte = ((byte*)this) + i_Byte;
+  *aByte++ = xWord.m_yaByte[0];
+  *aByte++ = xWord.m_yaByte[1];
+  *aByte++ = xWord.m_yaByte[2];
+  *aByte++ = xWord.m_yaByte[3];
+  *aByte++ = xWord.m_yaByte[4];
+  *aByte   = xWord.m_yaByte[5];
+}
+
+/*----------------------------------------------------------------------------*/
+/* store 7 bytes at offset                                                    */
+/*----------------------------------------------------------------------------*/
+void Line::v7B(i8 i_Byte, w8 wArg)
+{
+  Word xWord;
+  
+  xWord.m_wWord = wArg;
+  
+  byte* aByte = ((byte*)this) + i_Byte;
+  *aByte++ = xWord.m_yaByte[0];
+  *aByte++ = xWord.m_yaByte[1];
+  *aByte++ = xWord.m_yaByte[2];
+  *aByte++ = xWord.m_yaByte[3];
+  *aByte++ = xWord.m_yaByte[4];
+  *aByte++ = xWord.m_yaByte[5];
+  *aByte   = xWord.m_yaByte[6];
+}
+
+/*----------------------------------------------------------------------------*/
+/* store 8 bytes at offset                                                    */
+/*----------------------------------------------------------------------------*/
+void Line::v8B(i8 i_Byte, w8 wArg)
+{
+  Word xWord;
+  
+  xWord.m_wWord = wArg;
+  
+  byte* aByte = ((byte*)this) + i_Byte;
+  *aByte++ = xWord.m_yaByte[0];
+  *aByte++ = xWord.m_yaByte[1];
+  *aByte++ = xWord.m_yaByte[2];
+  *aByte++ = xWord.m_yaByte[3];
+  *aByte++ = xWord.m_yaByte[4];
+  *aByte++ = xWord.m_yaByte[5];
+  *aByte++ = xWord.m_yaByte[6];
+  *aByte   = xWord.m_yaByte[7];
+}
+
+/*----------------------------------------------------------------------------*/
+/* store 1 nibble at offset                                                   */
+/*----------------------------------------------------------------------------*/
+void Line::v1N(i8 i_Nibble, w8 wArg)
+{
+  ASSERT(wArg < 16);
+  
+  // just to be safe, lets mask off the top 56 bits
+  wArg &= 0xF;
+  
+  w8 iByte = w8_1B(i_Nibble/2);
+
+  if (0 == i_Nibble % 2) {
+    // left nibble
+    wArg <<= 4;
+    iByte &= 0x0F;
+    iByte |= wArg;
+ }
+  else {
+    // right nibble
+    iByte &= 0xF0;
+    iByte |= wArg;
+  }
+
+  v1B(i_Nibble/2,iByte);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

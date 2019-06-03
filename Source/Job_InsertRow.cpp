@@ -13,6 +13,7 @@ JobClass xJobClass_InsertRow =
 {
   CN_JOB_INSERTROW,       // class enum
   JK_DIST2PC,             // job kind
+  RK_NODE_ERRORS,         // response kind
   "insert into tableNm"_Stz, // comment about the job
   "insert"_Stz,           // the prompt command
   "into"_Stz,             // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_InsertRow =
 
   eJob_checkCluster,      // prompt check function
   pJob_InsertRow_pre,     // prompt pre-process function
-  vJob_InsertRow_post,    // prompt post-process function
+  vJob_post,    // prompt post-process function
   pJob_InsertRow_new,     // job new function
   vJob_InsertRow_delete,  // job delete function
   vJob_send,              // job pre-send function
@@ -110,10 +111,9 @@ Job_InsertRow::Job_InsertRow(Interface::Session* pSession)
 : Job(CN_JOB_INSERTROW, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
-  
   m_pTable = nullptr;
   
-  //m_aRawData
+  m_pRecord = new Record;
   m_nRawDataBytes = C_UNKNOWN;
   m_iPartitionId = C_UNKNOWN;
   
@@ -128,6 +128,8 @@ Job_InsertRow::Job_InsertRow(Interface::Session* pSession)
 Job_InsertRow::~Job_InsertRow(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
+  
+  delete m_pRecord;
 }
 
 
@@ -192,7 +194,7 @@ bool Job_InsertRow::bPopulateJob(TokenVec* pTokenVec)
 //    return false;
 //
   // get the length of the record
-  m_nRawDataBytes = StrLib::iSize(m_aRawData.aChar());
+  //m_nRawDataBytes = StrLib::iSize(m_aRawData.aChar());
 
   return true;
 }
@@ -250,22 +252,6 @@ Job* Jobs::pJob_InsertRow_pre(Interface::Session* pSession)
   //vTrace("InsertRow id %lld\n"_Stz, iJobId);
   
   return pJob_InsertRow;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_InsertRow_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJob);
-  
-  if ( pJob_InsertRow->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_InsertRow->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
 }
 
 /*----------------------------------------------------------------------------*/

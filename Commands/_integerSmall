@@ -1,0 +1,128 @@
+/*============================================================================*/
+/* _integer -- integer test                                                   */
+/*============================================================================*/
+startCluster;
+
+create table intTbl (
+int_col0   INTEGER     NOT NULL,
+int_col1   INTEGER     NOT NULL,
+int_col2   INTEGER     NOT NULL,
+int_col3   INTEGER     NOT NULL,
+int_col4   INTEGER     NOT NULL,
+int_col5   INTEGER     NOT NULL,
+int_col6   INTEGER     NOT NULL,
+int_col7   INTEGER     NOT NULL,
+int_col8   INTEGER     NOT NULL,
+int_col9   INTEGER     NOT NULL,
+int_col10  INTEGER     NOT NULL,
+int_col11  INTEGER     NOT NULL,
+int_col12  INTEGER     NOT NULL,
+int_col13  INTEGER     NOT NULL,
+int_col14  INTEGER     NOT NULL,
+int_col15  INTEGER
+);
+
+ld intTbl "/DATA/Encoding/integerSmall.csv" ;
+
+print "Fetching intTbl noPrint";
+time fetch intTbl noPrint;
+
+/*
+print "Retrieving col0";
+time fetch retrieve intTbl int_col0;
+
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col2;
+time fetch retrieve intTbl int_col3;
+time fetch retrieve intTbl int_col4;
+time fetch retrieve intTbl int_col5;
+time fetch retrieve intTbl int_col6;
+time fetch retrieve intTbl int_col7;
+time fetch retrieve intTbl int_col8;
+time fetch retrieve intTbl int_col9;
+time fetch retrieve intTbl int_col10;
+time fetch retrieve intTbl int_col11;
+time fetch retrieve intTbl int_col12;
+time fetch retrieve intTbl int_col13;
+time fetch retrieve intTbl int_col14;
+time fetch retrieve intTbl int_col15;
+
+
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col1;
+time fetch retrieve intTbl int_col1;
+*/
+/*
+19/5/2019
+retrieves go via decode and not decodeFast
+Rows: 9s cnt 1,000,000 sum 1000000 min 1 max 1 avg 1 var 0 dev 0 skw nan krt nan
+success: 1000000 rows loaded (0 invalid rows 0 skipped rows)
+Fetching intTbl noPrint
+metadata: (int_col0 INTEGER,int_col1 INTEGER,int_col2 INTEGER,int_col3 INTEGER,int_col4 INTEGER,int_col5 INTEGER,int_col6 INTEGER,int_col7 INTEGER,int_col8 INTEGER,int_col9 INTEGER,int_col10 INTEGER,int_col11 INTEGER,int_col12 INTEGER,int_col13 INTEGER,int_col14 INTEGER,int_col15 INTEGER)
+success: 1000000 rows fetched
+time 978ms
+Retrieving col0
+success: 1000000 rows affected
+time 46ms
+success: 1000000 rows affected
+time 47ms
+success: 1000000 rows affected
+time 69ms
+success: 1000000 rows affected
+time 91ms
+success: 1000000 rows affected
+time 106ms
+success: 1000000 rows affected
+time 119ms
+success: 1000000 rows affected
+time 131ms
+success: 1000000 rows affected
+time 152ms
+success: 1000000 rows affected
+time 166ms
+success: 1000000 rows affected
+time 179ms
+success: 1000000 rows affected
+time 195ms
+success: 1000000 rows affected
+time 209ms
+success: 1000000 rows affected
+time 221ms
+success: 1000000 rows affected
+time 242ms
+success: 1000000 rows affected
+time 259ms
+success: 1000000 rows affected
+time 260ms
+success: 1000000 rows affected
+time 48ms
+success: 1000000 rows affected
+time 48ms
+success: 1000000 rows affected
+time 47ms
+success: 1000000 rows affected
+time 48ms
+success: 1000000 rows affected
+time 48ms
+success: 1000000 rows affected
+time 48ms
+success: 1000000 rows affected
+time 47ms
+success: 1000000 rows affected
+time 48ms
+success: 1000000 rows affected
+time 47ms
+success: 1000000 rows affected
+time 47ms
+[N0/1 NODE1 9678] se 4.0.5r has>
+*/
+//*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

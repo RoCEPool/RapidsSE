@@ -52,7 +52,6 @@ namespace Jobs
   Job_SubInserter* _pJob_SubInserter(void* aAddr);
   
   Job* pJob_SubInserter_pre(Interface::Session* pSession);
-  void vJob_SubInserter_post(Interface::Session* pSession, Job* pJob);
   Job* pJob_SubInserter_new(Job* pArg);
   void vJob_SubInserter_delete(Interface::Session* pSession, Job* pJob);
   void vJob_SubInserter_show(Job* pJob);

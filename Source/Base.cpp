@@ -9,6 +9,9 @@
 /*----------------------------------------------------------------------------*/
 void Base::vCheckAssumptions(void)
 {
+  RASSERT(sizeof(Word)       == C_BYTES_PER_WORD);
+  RASSERT(sizeof(DoubleWord) == 2 * C_BYTES_PER_WORD);
+  RASSERT(sizeof(QuadWord)   == 4 * C_BYTES_PER_WORD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,6 +74,55 @@ void Base::vTraceWith(void)
 #ifdef WITH_TRACE_API
   vTrace("  WITH_TRACE_API\n"_Stz);
 #endif
+  
+#ifdef WITH_TRACE_ENCODING
+  vTrace("  WITH_TRACE_ENCODING\n"_Stz);
+#endif
+
+#ifdef WITH_TRACE_DECODING
+  vTrace("  WITH_TRACE_DECODING\n"_Stz);
+#endif
+  
+#ifdef WITH_ENCODING_BCD_DIGIT
+  vTrace("  WITH_ENCODING_BCD_DIGIT\n"_Stz);
+#endif
+    
+#ifdef WITH_ENCODING_INT_DIGIT
+  vTrace("  WITH_ENCODING_INT_DIGIT\n"_Stz);
+#endif
+  
+#ifdef WITH_ENCODING_VCH_SMALL
+  vTrace("  WITH_ENCODING_VCH_SMALL\n"_Stz);
+#endif
+  
+#ifdef WITH_ENCODING_XCHECK
+  vTrace("  WITH_ENCODING_XCHECK\n"_Stz);
+#endif
+  
+#ifdef WITH_HEAD_OVERFLOW
+  vTrace("  WITH_HEAD_OVERFLOW\n"_Stz);
+#endif
+  
+#ifdef WITH_LARGE_ROWS
+  vTrace("  WITH_LARGE_ROWS\n"_Stz);
+#endif
+  
+#ifdef WITH_SHOCO_DUPLICATES
+  vTrace("  WITH_SHOCO_DUPLICATES\n"_Stz);
+#endif
+  
+#ifdef WITH_SHOCO_FOLDLAST
+  vTrace("  WITH_SHOCO_FOLDLAST\n"_Stz);
+#endif
+
+#ifdef WITH_ANALYSE_FREE
+  vTrace("  WITH_ANALYSE_FREE\n"_Stz);
+#endif
+
+#ifdef WITH_QUICKER_INFLATE
+  vTrace("  WITH_QUICKER_INFLATE\n"_Stz);
+#endif
+  
 }
 
 /*============================================================================*/

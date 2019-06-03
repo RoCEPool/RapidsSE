@@ -26,6 +26,8 @@ namespace Base
     void operator =(Stz*);
     void operator =(void*);
   
+    void vCatSprint(Stz* aFormat, ...);
+    char* aChar(void);
     void vConcat(Stz* aArg);
     void vCopy(Stz* aArg);
     void vCopyLen(Stz* aArg, i8 nBytes);
@@ -34,7 +36,6 @@ namespace Base
     bool bIsSomeFalse(void);
     bool bIsSomeTrue(void);
     i8 iLength(void);
-    char* aChar(void);
     bool bSame(Stz* aArg);
     i8 nSize(void);
     void vSprint(Stz* aFormat, ...);
@@ -42,6 +43,7 @@ namespace Base
     void vToLower(void);
   };
   
+  // user defined string literal
   Stz* operator "" _Stz(const char* aLiteral, size_t nSize);
 }
 

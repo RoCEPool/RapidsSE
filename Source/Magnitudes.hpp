@@ -91,6 +91,9 @@ const i8 C_1T   = C_100G * 10;    // 1 trillion    = 1,000,000,000,000
 const i8 C_10T  = C_1T   * 10;    // 10 trillion   = 10,000,000,000,000
 const i8 C_100T = C_10T  * 10;    // 100 trillion  = 100,000,000,000,000
 const i8 C_1P   = C_100T * 10;    // 1 quadrillion = 1,000,000,000,000,000
+const i8 C_10P  = C_1P   * 10;    // 10 quadrillion = 10,000,000,000,000,000
+const i8 C_100P = C_10P  * 10;    // 100 quadrillion = 100,000,000,000,000,000
+const i8 C_1E   = C_100P * 10;    // 1 quintillion   = 1,000,000,000,000,000,000
 
 const i8 C_2K   = C_1K * 2;       // 2 thousand    = 2,000
 const i8 C_4K   = C_1K * 4;       // 4 thousand    = 4,000

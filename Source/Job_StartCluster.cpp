@@ -13,6 +13,7 @@ JobClass xJobClass_StartCluster =
 {
   CN_JOB_STARTCLUSTER,     // class enum
   JK_DIST2PC,              // job kind
+  RK_NONE,                 // response kind
   "start cluster"_Stz,     // comment about the job
   "startCluster"_Stz,      // the prompt command
   nullptr,                 // the second word
@@ -203,9 +204,7 @@ Job* Jobs::pJob_StartCluster_pre(Interface::Session* pSession)
   bool bResult = pJob_StartCluster->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_StartCluster->m_bHasError = true;
-    pJob_StartCluster->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_StartCluster->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_StartCluster;

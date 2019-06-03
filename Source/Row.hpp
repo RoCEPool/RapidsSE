@@ -1,39 +1,42 @@
 /*============================================================================*/
-/* Row.hpp -- Row                                                             */
+/* Row.hpp -- Computable form of Row                                          */
 /*============================================================================*/
 #pragma once
 
 namespace Data
 {
-  static const i8 C_COLUMN_OFFSET_SIZE = 2;
-  static const i8 C_MAX_RECORD = C_16KB;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class RowData
+  class Row : public Object
   {
-  private:
-  // u2 .._uOffsetVec[]
-  // y1 .._yByteVec[]
+  public:
+    ColumnVec* m_pColVec;
+    i8         m_nColumns;
+    i8         m_iBaseOffset;
+    bool       m_bGetAll;
+    bool       m_abGetCol[C_MAX_COLUMNS];
+    i8         m_iLastCol;
+    
+    i8 m_aiValue[C_MAX_COLUMNS];
+  
+    i8 m_i_Wsp;
+    Wsp_t<C_MAX_RECORD> m_xWsp;
 
+    // must be last
+    Footer m_xFooter;
+  
   public:
     void* operator new(size_t);
+    void  operator delete(void*);
+
+    Row(ColumnVec* pColumnVec);
+    ~Row(void) noexcept(false);
   
-    RowData(void);
-    ~RowData(void) noexcept(false);
+    void vDontDecodeVch(void);
   
-    void vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec);
-    void vAsEscapedString(s48K& sDataString, ColumnVec* pColVec);
-    char* aColumnDatum(i8 iColumnNo);
-    void vDump(ColumnVec* pColVec);
-    void vShow(ColumnVec* pColVec, bool bCompressed);
-    
   private:
-    byte* yByteVec(void);
-    u2    iDatumOffset(i8 iColumnNo);
-    u2*   auOffsetVec(void);
+    Footer* aFooter(void);
   };
   
-  RowData* _aRowData(void* aAddr);
+  Row* _pRow(void* aAddr);
 }
 
 /*============================================================================*/

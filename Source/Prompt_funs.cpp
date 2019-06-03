@@ -43,7 +43,6 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_CMDS);
   gxPromptCatalog.vFuns(PF_CONFIG);
   gxPromptCatalog.vFuns(PF_CONSTANTS);
-  gxPromptCatalog.vFuns(PF_DATE);
   gxPromptCatalog.vFuns(PF_ENUMS);
   gxPromptCatalog.vFuns(PF_ERRNO);
   gxPromptCatalog.vFuns(PF_EXECUTING);
@@ -73,6 +72,7 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_MEMTEST);
   gxPromptCatalog.vFuns(PF_MKPIPE);
   gxPromptCatalog.vFuns(PF_MON);
+  gxPromptCatalog.vFuns(PF_NOW);
   gxPromptCatalog.vFuns(PF_NUMBERS);
   gxPromptCatalog.vFuns(PF_OLIST);
   gxPromptCatalog.vFuns(PF_OPSYS);

@@ -4,7 +4,25 @@
 #pragma once
 
 namespace MetaData
-{  
+{
+  class Column;
+  
+  /*--------------------------------------------------------------------------*/
+  /* ColumnVec -- Column Vector                                               */
+  /*--------------------------------------------------------------------------*/
+  typedef VectorNL_t<CN_COLUMNVEC,Column,CN_COLUMN,1024,u8> ColumnVec;
+  
+  /*--------------------------------------------------------------------------*/
+  /* IdxColVec -- Index Column Vector                                         */
+  /*--------------------------------------------------------------------------*/
+  typedef VectorNL_t<CN_IDXCOLVEC,Column,CN_COLUMN,1024,u8> IdxColVec;
+  
+  /*--------------------------------------------------------------------------*/
+  /* PtnColVec -- Partition Column Vector                                     */
+  /*--------------------------------------------------------------------------*/
+  typedef VectorNL_t<CN_PTNCOLVEC,Column,CN_COLUMN,1024,u8> PtnColVec;
+  
+  
   enum eCT // Column Type
   {
     /*  0 */ CT_NONE=0,
@@ -62,8 +80,13 @@ namespace MetaData
     i8    m_iColumnLength;
     i8    m_iColumnScale;
     eDM   m_eDatumType;
+    i8    m_iFirstDate;
     bool  m_bIsNullable;
+    bool  m_bIsUnique;
     bool  m_bIsPartitionKey;
+    bool  m_bIsLastColumn;
+  
+    ColumnVec* m_pColVec;
     
     // must be last
     Footer m_xFooter;
@@ -74,8 +97,6 @@ namespace MetaData
     void  operator delete(void*);
     
     Column(void);
-    Column(Stz* aName);
-    Column(Stz* aName, Stz* aDefinition);
     Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo);
     ~Column(void) noexcept(false);
   
@@ -85,62 +106,82 @@ namespace MetaData
     i8   iColumnScale(void);
     void vColumnScale(i8 iColumnScale);
   
-    i8   iColumnNo(void);
+    //i8   iColumnNo(void);
     void vColumnNo(i8 iColumnNo);
   
+    Stz* szColNm(void);
     s32& sColumnName(void);
-    void vColumnName(s32& sColumnName);
+    void vColumnName(Stz* sColumnName);
   
     eCT  eColumnType(void);
     void vColumnType(eCT eColumnType);
-  
-    eDM  eDatumType(void);
+
+    //ColumnVec* pColVec(void);
+    void vColVec(ColumnVec* pColVec);
+
+    //eDM  eDatumType(void);
     void vDatumType(eDM eDatumType);
+    
+    i8   iFirstDate(void);
+    void vFirstDate(i8 iFirstDate);
+    
+    bool bIsLastColumn(void);
+    void vIsLastColumn(bool bIsLastColumn);
+  
+    bool bIsFirstDate(void);
   
     bool bIsName(s32& sName);
   
+    bool bIsUnique(void);
+    void vIsUnique(bool bIsUnique);
+    
     bool bIsNullable(void);
     void vIsNullable(bool bIsNullable);
   
     bool bIsPartitionKey(void);
-    void vIsPartitionKey(bool bIsNullable);
+    void vIsPartitionKey(bool bIsPartitionKey);
 
-    void vSet(Stz* aDefinition);
     void vShow(void);
     
     char* aValue(i8& nBytes, char** aaCursor);
   
-    bool bLessThan(char* aArgA, char* aArgB);
-    bool bLessEqual(char* aArgA, char* aArgB);
-    bool bEqualTo(char* aArgA, char* aArgB);
-    bool bNotEqual(char* aArgA, char* aArgB);
-    bool bGreaterEqual(char* aArgA, char* aArgB);
-    bool bGreaterThan(char* aArgA, char* aArgB);
-    
-    i8 iCmp(char* aArgA, char* aArgB);
-
-    bool bCmp(eRO eRelOp, char* aArgA, char* aArgB);
-  
     Footer* aFooter(void);
+  
+    /*----------------------------------------------------------------------------*/
+    /* get column no                                                              */
+    /*----------------------------------------------------------------------------*/
+    inline i8 iColumnNo(void)
+    {
+      _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+    
+      return m_iColumnNo;
+    }
+  
+    /*----------------------------------------------------------------------------*/
+    /* get datum type                                                             */
+    /*----------------------------------------------------------------------------*/
+    inline eDM eDatumType(void)
+    {
+      _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+    
+      return m_eDatumType;
+    }
+  
+    /*----------------------------------------------------------------------------*/
+    /* get column vector                                                          */
+    /*----------------------------------------------------------------------------*/
+    inline ColumnVec* pColVec(void)
+    {
+      _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+    
+      return m_pColVec;
+    }
+  
+
   };
   
   Column* _pColumn(void* aAddr);
   
-  /*--------------------------------------------------------------------------*/
-  /* ColumnVec -- Column Vector                                               */
-  /*--------------------------------------------------------------------------*/
-  typedef VectorNL_t<CN_COLUMNVEC,Column,CN_COLUMN,1024,u8> ColumnVec;
-  
-  /*--------------------------------------------------------------------------*/
-  /* IdxColVec -- Index Column Vector                                         */
-  /*--------------------------------------------------------------------------*/
-  typedef VectorNL_t<CN_IDXCOLVEC,Column,CN_COLUMN,1024,u8> IdxColVec;
-  
-  /*--------------------------------------------------------------------------*/
-  /* PtnColVec -- Partition Column Vector                                     */
-  /*--------------------------------------------------------------------------*/
-  typedef VectorNL_t<CN_PTNCOLVEC,Column,CN_COLUMN,1024,u8> PtnColVec;
-
 }
 
 /*============================================================================*/

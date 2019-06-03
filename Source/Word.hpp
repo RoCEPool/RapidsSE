@@ -1,128 +1,117 @@
 /*============================================================================*/
-/* Word.hpp -- Word in Dictionary                                             */
+/* Word.hpp -- Word                                                           */
 /*============================================================================*/
 #pragma once
 
-namespace StorageEngine
+namespace Base
 {
-  class AttachMap;
-}
-
-namespace Forth
-{
-  enum eWT // word type
+  class Word
   {
-    /*  0 */ WT_NONE=0,     // none
-    /*  1 */ WT_LOCAL,      // word ia a local
-    /*  2 */ WT_OBJECT,     // word is an object
-    /*  3 */ WT_PRIMITIVE,  // word is a primitive (eg +, return)
-    /*  4 */ WT_ROUTINE,    // word is a routine
-    /*  5 */ WT_ENUMS
-  };
+  public:
+    union {
+      byte  m_yaByte[C_BYTES_PER_WORD];
+      
+      char* m_aChar;
+      
+      d8    m_dF8;
+      
+      i1    m_iaI1[8];
+      i2    m_iaI2[4];
+      i4    m_iaI4[2];
+      i8    m_iI8;
+      u8    m_uI8;
+      
+      w8    m_wWord;
+      
+      // - - - - - - - - - - - - - - - -
+      
+      i8   m_iBcd;
+      i8   m_iBol;
+      i8   m_iDte;
+      i8   m_iEdt;
+      d8   m_dFlt;
+      i8   m_iInt;
+      i8   m_iIvl;
+      i8   m_iTme;
+      i8   m_iTsp;
+      
+      // date (since 1900)
+      struct {
+        u8 m_uSpare     : 47 ; //         47b
+        
+        u8 m_uDay       :  5 ; // 0..31       same as xTsp.dte
+        u8 m_uMonth     :  4 ; // 0..15
+        u8 m_uYearDelta :  8 ; // 0..255  17b (1900+8b == 2155)
+                               //               ---
+                               //                64
+                               //               ===
+      } xDte;
+      
+      // era-based date
+      struct {
+        
+        
+        u8 m_uDay       :  5 ; // 0..31
+        u8 m_uMonth     :  4 ; // 0..15
+        u8 m_uYearInEra :  7 ; // 0..127  16b (eraBase+7b == 127)
+        
+        u8 m_uSpare     : 48 ; //         48b
+                               //               ---
+                               //                64
+                               //               ===
+      } xEdt;
+      
+      // interval (seconds & milliseconds)
+      struct {
+        u8 m_uMilli     : 10 ; // 0..1023
+        u8 m_uSecond    : 54 ; // 0..1.8E16
+                               //               ---
+                               //                64
+                               //               ===
+      } xIvl;
+      
+      // time (down to microseconds)
+      struct {
+        u8 m_uSpare     : 27 ; //         27b
+        
+        u8 m_uMicro     : 20 ; // 0..1M       same as xTsp.tme
+        u8 m_uSecond    :  6 ; // 0..63
+        u8 m_uMinute    :  6 ; // 0..63
+        u8 m_uHour      :  5 ; // 0..31   37b
+                               //               ---
+                               //                64
+                               //               ===
+      } xTme;
+      
+      // date & time
+      struct {
+        u8 m_uSpare     : 10 ; //         10b
+        
+        u8 m_uMicro     : 20 ; // 0..1M
+        u8 m_uSecond    :  6 ; // 0..63
+        u8 m_uMinute    :  6 ; // 0..63
+        u8 m_uHour      :  5 ; // 0..31   37b
+        
+        u8 m_uDay       :  5 ; // 0..31
+        u8 m_uMonth     :  4 ; // 0..15
+        u8 m_uYearDelta :  8 ; // 0..255  17b  (1900+8b == 2155)
+                               //               ---
+                               //                64
+                               //               ===
+      } xTsp;
+    };
   
-  static Stz* aWT[]
-  {
-    /*  0 */ "NONE"_Stz,
-    /*  1 */ "LOCAL"_Stz,
-    /*  2 */ "OBJECT"_Stz,
-    /*  3 */ "PRIMITIVE"_Stz,
-    /*  4 */ "ROUTINE"_Stz,
-    /*  5 */ "ENUMS"_Stz,
-  };
-  
-  static const i8 C_WSP_WORD = C_SIZE_MEDIUM_OBJECT - C_1KB;
-  
-  class Word : public Object
-  {
-    friend class Dic;
-
-  private:
-    s32      m_sName;        // the name of this word
-    eWT      m_eWordType;    // type of word
-    bool     m_bPersistent;  // is on persistent heap
-    i8       m_iTrace;       // trace level
-    i8       m_iEpoch;       // epoch no. used by bp analyzer
-    Dic*     m_pDic;         // which dictionary this word in
-    Word*    m_pKind;        // kind of word
-    bool     m_bImmediate;   // immediate execution during compile?
-    i8       m_iParams;      // number of parameters
-    Word*    m_pPrevWord;    // previous word in dictionary
-    bool     m_bPrompt;      // can be executed by prompt?
-    i8       m_iLocalNo;     // local number (for a local variable)
-    StepFp   m_fpEntryStep;  // entry step function ∫for this word
-    Cell*    m_aEntryCell;   // the cell to start executing from
-                             //   for normal words this will be the first cell
-                             //     in the data area
-                             //   for objects this will be the cell after
-                             //     does in the defining word
-                             //   for primitives this will be null  
-    Routine  m_xRoutine;
-  
-    // must be last
-    Footer m_xFooter;
-  
-   public:
-    void* operator new(size_t, Dic* pDic);
-    void* operator new(size_t, Dic* pDic, bool bPersistent);
-    void  operator delete(void* pWordAddress);
-  
-    Word(Stz* sName);
+  public:
+    Word(void);
+    Word(i8 iArg);
+    Word(w8 wArg);
     ~Word(void) noexcept(false);
-    
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static Word* pToWord(void* aAddrInsideWsp);
-
-    char* aAllot(i8 iBytes);
-    void* aAppend(Cell* aCell);
-    void  vAppend(Cell* aCell);
-    void* aAppend(i8 iInt);
-    void  vAppend(i8 iInt);
-    void* aAppend(StepFp* afpStep);
-    void  vAppend(StepFp* afpStep);
-    void* aAppend(Value* aValue);
-    void  vAppend(Value* aValue);
-    void  vContentDump(void);
-    Dic*  pDic(void);
-    i8    iEpoch(void);
-    void  vEntryCell(Cell* aCell);
-    Cell* aEntryCell(void);
-    void  vEntryStep(StepFp fpStep);
-    StepFp fpEntryStep(void);
-    StepFp* afpEntryStep(void);
-    void  vEncode(Stz* aWordNm);
-    void  vEncode(Stz* aWordNm, Cell* aCell);
-    void  vEncode(Stz* aWordNm, Word* pWord);
-    void  vEncode(Stz* aWordNm, Value* aValue);
-    void  vEncode(Stz* aWordNm, GenVar* pGenVar);
-    void  vEncode(StepFp* afpEntryStep);
-    Cell* aFirstCell(void);
-    bool  bHasCell(Cell* aCell);
-    bool  bImmediate(void);
-    void  vImmediate(bool bImmediate);
-    bool  bIsName(s32& sName);
-    Word* pKind(void);
-    void  vKind(Word* pKind);
-    Cell* aLastCell(void);
-    i8    iLocalNo(void);
-    void  vLocalNo(i8 iLocalNo);
-    s32&  sName(void);
-    void  vObjectDump(Stz* aTab);
-    void  vParams(i8 iParams);
-    i8    iParams(void);
-    Word* pPrevWord(void);
-    void  vPrevWord(Word* pPrevWord);
-    bool  bPrompt(void);
-    void  vPrompt(bool bImmediate);
-    void  vReset(void);
-    i8    iSize(void);
-    eWT   eWordType(void);
-    void  vWordType(eWT eWordType);
-    char* aWspArea(void);
-
-    Footer* aFooter(void);
-  };
   
-  Word* _pWord(void* aAddr);
+    void operator =(i8 iArg);
+    void operator =(w8 wArg);
+  
+    operator w8(void) { return m_wWord; }
+  };
 }
 
 /*============================================================================*/

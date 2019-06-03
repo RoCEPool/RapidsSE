@@ -102,6 +102,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check if column is a valid column of the table                             */
+/*----------------------------------------------------------------------------*/
+: checkIsColumn ( "<columnNm>" "<tableNm>"-- t|f )
+
+  params| sTableNm sColumnNm |
+  0 locals| pTable |
+
+  sTableNm find execute to pTable
+  sColumnNm pTable table.isColumn if true exit then
+
+  EC_INVALID_COLUMN false
+;
+
+/*----------------------------------------------------------------------------*/
 /* test if this task dic path is same name as argument                        */
 /*----------------------------------------------------------------------------*/
 : withinTable ( "<tableNm>" -- t|f )
@@ -180,16 +194,6 @@
 /*----------------------------------------------------------------------------*/
 : popTable
 
-  pathDrop
-;
-
-/*----------------------------------------------------------------------------*/
-/* get size of table                                                          */
-/*----------------------------------------------------------------------------*/
-: sizeTable ( -- "<size>" )
-
-  "indexes" find execute pathPush
-  "hidden" "sizeIndex" find execute  >str
   pathDrop
 ;
 

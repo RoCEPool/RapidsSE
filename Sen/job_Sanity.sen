@@ -68,7 +68,7 @@
 
   iPartitions node.partitions == not if
     EC_CLUSTER_PARTITIONS_MISMATCH
-    grid::thisNode@ pJob_Sanity job.error!
+    pJob_Sanity <ERROR_JOB>
   else
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -78,15 +78,17 @@
 
     iSize node.size == not if
       EC_CLUSTER_SIZE_MISMATCH
-      grid::thisNode@ pJob_Sanity job.error!
+      pJob_Sanity <ERROR_JOB>
     else
       "row: ('"
       grid::thisNodeName@ str.cat
        "','sanity check passed')" str.cat
-      grid::thisNode@ pJob_Sanity job.response!
+      pJob_Sanity job.response!
     then
 
   then
+
+  1 pJob_Sanity job.rowsProcessed!
 
   pJob_Sanity job.notice
 

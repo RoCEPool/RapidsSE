@@ -3,9 +3,19 @@
 /*============================================================================*/
 #pragma once
 
+namespace Data
+{
+  class TablePtn;
+}
+
 namespace MetaData
 {
   class Table;
+  
+  /*--------------------------------------------------------------------------*/
+  /* TablePtnVec -- Table Partition Vector                                    */
+  /*--------------------------------------------------------------------------*/
+  typedef VectorNL_t<CN_TABLEPTNVEC,Data::TablePtn,CN_TABLEPTN,C_SLOTS_PER_NODE,u8> TablePtnVec;
   
   class Slots : public Object
   {
@@ -30,18 +40,18 @@ namespace MetaData
     
     void       vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn);
     void       vCreateColumnVec(void);
-    TablePtn*  pPartition(i8 iSlot);
+    Data::TablePtn*  pPartition(i8 iSlot);
     bool       bPopulateIndex(i8 iIndexNo);
     PtnColVec* pPtnColVec(void);
-    void       vPublishIndex(i8 iPartitionNo, i8 iIndexNo);
-    bool       bPurgeIndex(i8 iPartitionNo, i8 iIndexNo, i8 iOlderThanSeconds);
+    void       vPublishTable(i8 iPartitionNo);
+    bool       bPurgeTable(i8 iPartitionNo, i8 iOlderThanSeconds);
     void       vShowColumnVec(void);
     Dic*       pSubDic(void);
     void       vTable(Table* pTable);
     void       vTidyUp(void);
     void       vTidyUpIndex(i8 iIndexNo);
-    void       vTruncate(void);
     void       vTruncateIndex(i8 iPartitionNo, i8 iIndexNo);
+    void       vTruncateTable(i8 iPartitionNo);
     
     Footer*    aFooter(void);
   };

@@ -13,6 +13,7 @@ JobClass xJobClass_Sink =
 {
   CN_JOB_SINK,         // class enum
   JK_LOCAL,            // job kind
+  RK_NONE,             // response kind
   "sink data"_Stz,     // comment about the job
   "sink"_Stz,          // the prompt command
   nullptr,             // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_Sink =
 
   eJob_checkCluster,   // prompt check function
   pJob_Sink_pre,       // prompt pre-process function
-  vJob_Sink_post,      // prompt post-process function
+  vJob_post,           // prompt post-process function
   pJob_Sink_new,       // job new function
   vJob_Sink_delete,    // job delete function
   nullptr,             // job pre-send function
@@ -203,13 +204,6 @@ Job* Jobs::pJob_Sink_pre(Interface::Session* pSession)
     pJob_Sink->m_pByteRate = new ByteRate;
   
   return pJob_Sink;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_Sink_post(Interface::Session* pSession, Job* pJob)
-{
 }
 
 /*----------------------------------------------------------------------------*/

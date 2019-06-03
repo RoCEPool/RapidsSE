@@ -114,7 +114,7 @@ bool Tsp::operator > (Tsp& xTsp)
 /*----------------------------------------------------------------------------*/
 void Tsp::vInitZero(void)
 {
-  x.m_uYear   = 0;
+  x.m_uYearDelta   = 0;
   x.m_uMonth  = 0;
   x.m_uDay    = 0;
   x.m_uHour   = 0;
@@ -133,11 +133,19 @@ i8 Tsp::iAsI8(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set as i8                                                                  */
+/*----------------------------------------------------------------------------*/
+void Tsp::vAsI8(i8 iAsI8)
+{
+  m_iValue = iAsI8;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get year                                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Tsp::iYear(void)
 {
-  return x.m_uYear;
+  return x.m_uYearDelta + C_BASE_YEAR;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -215,7 +223,7 @@ void Tsp::vSetAsNow(void)
   if (! aLocalDateTime)
     vWarn("localtime() error; errno=%d"_Stz,errno);
   
-  x.m_uYear   = aLocalDateTime->tm_year + 1900;
+  x.m_uYearDelta   = (aLocalDateTime->tm_year + 1900) - C_BASE_YEAR;
   x.m_uMonth  = aLocalDateTime->tm_mon  + 1;
   x.m_uDay    = aLocalDateTime->tm_mday;
   x.m_uHour   = aLocalDateTime->tm_hour;
@@ -248,10 +256,6 @@ void Tsp::vSetNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- VLQ ---------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /*-- Extract and Sprint ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -274,126 +278,6 @@ void Tsp::vCopy(void* aDst, void* aSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
-/*----------------------------------------------------------------------------*/
-bool Tsp::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
-{
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
-  
-  Tsp* aTsp = (Tsp*)aDst;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  bool bSawEnclosedLeading =
-    StrLib::bSkipLeading(aaSrc,pFormatters->m_cEnclosedBy_Leading);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    aTsp->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // timestamp field processing
-  
-  i8 iYear, iMonth, iDay;
-  i8 iHour, iMinute, iSecond, iMicro;
-  
-  if ( ! StrLib::bExtractTimestamp2(aaSrc, iYear, iMonth, iDay,
-                                           iHour, iMinute, iSecond, iMicro,
-                                    pFormatters->m_eDateComponent,
-                                    pFormatters->m_cDateSeparator) )
-    return false;
-  
-  aTsp->x.m_uYear   = iYear;
-  aTsp->x.m_uMonth  = iMonth;
-  aTsp->x.m_uDay    = iDay;
-  aTsp->x.m_uHour   = iHour;
-  aTsp->x.m_uMinute = iMinute;
-  aTsp->x.m_uSecond = iSecond;
-  aTsp->x.m_uMicro  = iMicro;
-  aTsp->x.m_uSpare  = 0;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  bool bSawEnclosedTrailing =
-    StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
-  if (! bSawEnclosedTrailing)
-    return false;
-  
-  // should see a valid field end
-  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
-/*----------------------------------------------------------------------------*/
-bool Tsp::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
-{
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
-  
-  Tsp* aTsp = (Tsp*)aDst;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  StrLib::vSkipSpaces(aaSrc);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (DtmLib::bTestForNullDefault(aaSrc,pColumn,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    aTsp->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // timestamp field processing
-  
-  i8 iYear, iMonth, iDay;
-  i8 iHour, iMinute, iSecond, iMicro;
-  
-  if ( ! StrLib::bExtractTimestamp2(aaSrc, iYear, iMonth, iDay,
-                                    iHour, iMinute, iSecond, iMicro,
-                                    pFormatters->m_eDateComponent,
-                                    pFormatters->m_cDateSeparator) )
-    return false;
-  
-  aTsp->x.m_uYear   = iYear;
-  aTsp->x.m_uMonth  = iMonth;
-  aTsp->x.m_uDay    = iDay;
-  aTsp->x.m_uHour   = iHour;
-  aTsp->x.m_uMinute = iMinute;
-  aTsp->x.m_uSecond = iSecond;
-  aTsp->x.m_uMicro  = iMicro;
-  aTsp->x.m_uSpare  = 0;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  StrLib::vSkipSpaces(aaSrc);
-  
-  // should see a valid field end
-  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* sprint tsp datum                                                           */
 /*----------------------------------------------------------------------------*/
 void Tsp::vSprint(Stz* aDst)
@@ -403,17 +287,29 @@ void Tsp::vSprint(Stz* aDst)
     return;
   }
   
-  char caFraction[16];
-  StrLib::vFormatFraction(caFraction,x.m_uMicro,6);
+  if (x.m_uMicro) {
+    char caFraction[16];
+    StrLib::vFormatFraction(caFraction,x.m_uMicro,6);
+    
+    StrLib::vSprint(aDst,"TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s'%c"_Stz,
+                    (i8)x.m_uYearDelta + C_BASE_YEAR,
+                    (i8)x.m_uMonth,
+                    (i8)x.m_uDay,
+                    (i8)x.m_uHour,
+                    (i8)x.m_uMinute,
+                    (i8)x.m_uSecond,
+                    caFraction,
+                    '\0');
+    return;
+  }
   
-  StrLib::vSprint(aDst,"%04lld-%02lld-%02lld %02lld:%02lld:%02lld.%s%c"_Stz,
-                  (i8)x.m_uYear,
+  StrLib::vSprint(aDst,"TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld'%c"_Stz,
+                  (i8)x.m_uYearDelta + C_BASE_YEAR,
                   (i8)x.m_uMonth,
                   (i8)x.m_uDay,
                   (i8)x.m_uHour,
                   (i8)x.m_uMinute,
                   (i8)x.m_uSecond,
-                  caFraction,
                   '\0');
 }
 
@@ -436,7 +332,7 @@ void Tsp::vSprint(Stz* aDst, Stz* aSrc)
     StrLib::vFormatFraction(caFraction,uMicro,6);
     
     StrLib::vSprint(aDst,"TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s'%c"_Stz,
-                         (i8)aTsp->x.m_uYear,
+                         (i8)aTsp->x.m_uYearDelta + C_BASE_YEAR,
                          (i8)aTsp->x.m_uMonth,
                          (i8)aTsp->x.m_uDay,
                          (i8)aTsp->x.m_uHour,
@@ -448,7 +344,7 @@ void Tsp::vSprint(Stz* aDst, Stz* aSrc)
   }
 
   StrLib::vSprint(aDst,"TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld'%c"_Stz,
-                       (i8)aTsp->x.m_uYear,
+                       (i8)aTsp->x.m_uYearDelta + C_BASE_YEAR,
                        (i8)aTsp->x.m_uMonth,
                        (i8)aTsp->x.m_uDay,
                        (i8)aTsp->x.m_uHour,
@@ -476,7 +372,7 @@ void Tsp::vSprintEscaped(Stz* aDst, Stz* aSrc)
     StrLib::vFormatFraction(caFraction,uMicro,6);
 
     StrLib::vSprint(aDst,"%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s%c"_Stz,
-                         (i8)aTsp->x.m_uYear,
+                         (i8)aTsp->x.m_uYearDelta + C_BASE_YEAR,
                          (i8)aTsp->x.m_uMonth,
                          (i8)aTsp->x.m_uDay,
                          (i8)aTsp->x.m_uHour,
@@ -488,7 +384,7 @@ void Tsp::vSprintEscaped(Stz* aDst, Stz* aSrc)
   }
 
   StrLib::vSprint(aDst,"%02lld-%02lld-%02lld %02lld:%02lld:%02lld%c"_Stz,
-                       (i8)aTsp->x.m_uYear,
+                       (i8)aTsp->x.m_uYearDelta + C_BASE_YEAR,
                        (i8)aTsp->x.m_uMonth,
                        (i8)aTsp->x.m_uDay,
                        (i8)aTsp->x.m_uHour,
@@ -516,7 +412,7 @@ void Tsp::vSprintNonSQL(Stz* aDst, Stz* aSrc)
     StrLib::vFormatFraction(sFraction,uMicro,6);
 
     StrLib::vSprint(aDst,"%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s%c"_Stz,
-                         (i8)aTsp->x.m_uYear,
+                         (i8)aTsp->x.m_uYearDelta + C_BASE_YEAR,
                          (i8)aTsp->x.m_uMonth,
                          (i8)aTsp->x.m_uDay,
                          (i8)aTsp->x.m_uHour,
@@ -528,7 +424,7 @@ void Tsp::vSprintNonSQL(Stz* aDst, Stz* aSrc)
   }
   
   StrLib::vSprint(aDst,"%02lld-%02lld-%02lld %02lld:%02lld:%02lld%c"_Stz,
-                       (i8)aTsp->x.m_uYear,
+                       (i8)aTsp->x.m_uYearDelta + C_BASE_YEAR,
                        (i8)aTsp->x.m_uMonth,
                        (i8)aTsp->x.m_uDay,
                        (i8)aTsp->x.m_uHour,

@@ -9,14 +9,15 @@ namespace Datums
   {
   friend class DtmLib;
   
-  protected:
+  public:
     union {
       struct {
-        u8 m_uSpare  : 20 ; //
+        u8 m_uSpare  : 27 ; //
+        
         u8 m_uMicro  : 20 ; // 0..1M
-        u8 m_uSecond :  8 ; // 0..63
-        u8 m_uMinute :  8 ; // 0..63
-        u8 m_uHour   :  8 ; // 0..31
+        u8 m_uSecond :  6 ; // 0..63
+        u8 m_uMinute :  6 ; // 0..63
+        u8 m_uHour   :  5 ; // 0..31
         //            ---
         //             64
         //            ===
@@ -39,9 +40,11 @@ namespace Datums
     
     void vInitZero(void);
     i8   iAsI8(void);
+    void vAsI8(i8 iAsI8);
     bool bIsNull(void);
     void vSetNull(void);
- 
+    void vSprint(Stz* szDst);
+
     i8   iHour(void);
     i8   iMinute(void);
     i8   iSecond(void);
@@ -49,10 +52,6 @@ namespace Datums
 
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
-    static bool bExtract(char** aaSrc, Stz* aStz,
-                         MetaData::Column* pColumn, Formatters* pFormatters);
-    static bool bExtractDefault(char** aaSrc, Stz* aStz,
-                         MetaData::Column* pColumn, Formatters* pFormatters);
     static void vSprint(Stz* aDst, Stz* aSrc);
     static void vSprintEscaped(Stz* aDst, Stz* aSrc);
     

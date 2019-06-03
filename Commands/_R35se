@@ -400,17 +400,17 @@ se anidx j10 idx 1;
 
 print "";
 print "=====================================================================";
-print "dumping index hidden on table j10 when not in tables...";
+print "dumping  table j10 when not in tables...";
 print "=====================================================================";
 se cf ..;
-se dumpidx j10 hidden;
+se dumptbl j10;
 se cf tables;
 
 print "";
 print "=====================================================================";
-print "dumping index hidden on non-existent table k10";
+print "dumping non-existent table k10";
 print "=====================================================================";
-se dumpidx k10 hidden;
+se dumptbl k10;
 
 print "";
 print "=====================================================================";

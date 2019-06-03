@@ -18,6 +18,7 @@ namespace Structures
   public:
   
     void* operator new(size_t);
+    void* operator new(size_t, void* aAddr);
     void  operator delete(void*);
 
     ArrayNL_t(void);
@@ -74,6 +75,15 @@ void* ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::operator new(size_t)
   void* pObject = HeapMem::pAllocate(ARRAY_CN);
   
   return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
+void* ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::operator new(size_t, void* aAddr)
+{
+  return aAddr;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -59,7 +59,6 @@ namespace Jobs
   Job_Report* _pJob_Report(void* aAddr);
   
   Job* pJob_Report_pre(Interface::Session* pSession);
-  void vJob_Report_post(Interface::Session* pSession, Job* pJob);
   Job* pJob_Report_new(Job* pArg);
   void vJob_Report_delete(Interface::Session* pSession, Job* pJob);
   void vJob_Report_show(Job* pJob);

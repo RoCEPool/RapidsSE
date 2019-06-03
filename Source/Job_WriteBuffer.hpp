@@ -32,12 +32,12 @@ namespace Jobs
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vSpawnJobWriteBuffer(Interface::Session* pSession,
-                                              Stz* sTableName, eDS eDataSource,
-                                              EntryBuffer* pEntryBuffer,
-                                              i8 iParentJobId,
-                                              i8 iPartition,
-                                              bool bFinal,
-                                              i8 nWriteBehindBuffers);
+                                     Stz* sTableName, eDS eDataSource,
+                                     RowBuffer* pRowBuffer,
+                                     i8 iParentJobId,
+                                     i8 iPartition,
+                                     bool bFinal,
+                                     i8 nWriteBehindBuffers);
     
   public:
     bool bInsertRows(void);

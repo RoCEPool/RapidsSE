@@ -5,6 +5,7 @@
 
 namespace Jobs
 {
+  //! rename to FetchResult
   class FetchBuffer : public Object
   {
     static const i8 C_WSP_FETCHBUFFER = C_SIZE_LARGE_OBJECT - C_4KB;
@@ -30,17 +31,23 @@ namespace Jobs
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public:
-    bool  bAppendRow(RowData* pRow);
-    RowData** aaAllotRowPtr(i8 nBytes);
+    
+    bool  bAppendRow(HeadLine* pRow);
+    HeadLine** aaAllotRowPtr(i8 nBytes);
     char* aDataArea(void);
     i8    nFetchedRows(void);
-    RowData** aaFirstRowPtr(void);
+    
     void  vIsLast(bool bIsLast);
     bool  bIsLast(void);
-    RowData** aaNextRowPtr(RowData** ppRow);
+    
+    HeadLine** aaFirstRowPtr(void);
+    HeadLine** aaNextRowPtr(HeadLine** ppRow);
+  
+    HeadLine* aLatter(void);
+
     i8    nPartitionNo(void);
     void  vRestore(void);
-    void  vShow(bool bCompressed);
+    void  vShow(void);
     i8    nUsedBytes(void);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

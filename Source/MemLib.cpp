@@ -12,15 +12,15 @@ extern AttachMap* gpAttachMap;
 extern i8 giClassSize[];
 
 /*----------------------------------------------------------------------------*/
-/* map a new an anonymous region of memory (private or shared)                */
+/* add number of bytes to given address                                       */
 /*----------------------------------------------------------------------------*/
-void* MemLib::pAddBytes(void* aAddress, i8 iBytes)
+void* MemLib::aAddBytes(void* aAddress, i8 nBytes)
 {
-  char* pOrigin = reinterpret_cast<char*>(aAddress);
+  byte* ayOrigin = reinterpret_cast<byte*>(aAddress);
   
-  char* pNew = pOrigin + iBytes;
+  byte* ayNew = ayOrigin + nBytes;
   
-  return pNew;
+  return ayNew;
 }
 
 /*---------------------------------------------------------------------------*/
@@ -86,6 +86,8 @@ void MemLib::vCheckInitialised(void* aAddress, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void MemLib::vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 {
+  RASSERT(nBytes >= 0);
+  
   memcpy(pDst,pSrc,nBytes);
   
   if (gpAttachMap) {
@@ -95,43 +97,66 @@ void MemLib::vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word compare of val1 with val2                                             */
+/* byte compare of arg1 with arg2                                             */
 /*----------------------------------------------------------------------------*/
-//i8 MemLib::iCompareWords(const void* aVal1, const void* aVal2, i8 nBytes)
-//{
-//  // nBytes should be a multiple of 8
-//  RASSERT(nBytes % C_BYTES_PER_WORD == 0);
-//
-//  const i8 *aiWord1 = (const i8*)aVal1;
-//  const i8 *aiWord2 = (const i8*)aVal2;
-//
-//  for ( ; nBytes; nBytes -= C_BYTES_PER_WORD)
-//    if ( i8 iDiff = (*aiWord1++ - *aiWord2++) )
-//      return iDiff;
-//
-//  return 0;
-//}
-/*----------------------------------------------------------------------------*/
-i8 MemLib::iCompareWords(const void* pVal1, const void* pVal2, i8 nBytes)
+bool MemLib::bCompareBytes(const void* aArg1, const void* aArg2, i8 nBytes)
 {
-  //  if (gpAttachMap) {
-  //    gpAttachMap->m_oStatistics.Memory.m_iCompareTotal += nBytes;
-  //  }
+  if (0 == iCompareBytes(aArg1,aArg2,nBytes))
+    return true;
+  else
+    return false;
+}
 
-  // nBytes should be a multiple of 8
-  RASSERT(nBytes%8 == 0);
-
-  const i8 *iWord1 = (const i8*)pVal1;
-  const i8 *iWord2 = (const i8*)pVal2;
-
-  while (nBytes > 0)
-    {
-    if (*iWord1++ != *iWord2++ )
-      return iWord1[-1] < iWord2[-1] ? -1 : 1;
-    nBytes -=8;
-    }
-
+/*----------------------------------------------------------------------------*/
+/* byte compare of arg1 with arg2                                             */
+/*----------------------------------------------------------------------------*/
+i8 MemLib::iCompareBytes(const void* aArg1, const void* aArg2, i8 nBytes)
+{
+  const byte *yByte1 = (byte*)aArg1;
+  const byte *yByte2 = (byte*)aArg2;
+  
+  while (nBytes--) {
+    if (*yByte1++ != *yByte2++)
+      return yByte2[-1] - yByte1[-1];
+  }
+  
   return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* word compare of arg1 with arg2                                             */
+/*----------------------------------------------------------------------------*/
+bool MemLib::bCompareWords(const void* aArg1, const void* aArg2, i8 nBytes)
+{
+  if (0 == iCompareWords(aArg1,aArg2,nBytes))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* cut bytes off                                                              */
+/*----------------------------------------------------------------------------*/
+void MemLib::vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes, eCN eClassNo)
+{
+  i8 iStartMove = i_Offset + nCutBytes ;
+  RASSERT(iStartMove <= nSize);
+  
+  // get the start address
+  byte* aSrc = aAdd<byte*>(aAddr, iStartMove);
+  
+  // get the dst address
+  byte* aDst = aAdd<byte*>(aAddr, i_Offset);
+  
+  // copy nCutBytes from src to dst
+  MemLib::vCopy(aDst, aSrc, nSize - (iStartMove), eClassNo);
+  
+  // calculate the end address after cut
+  i8 iLen = nSize - nCutBytes;
+  byte* aAddrEnd = aAdd<byte*>(aAddr, iLen);
+  
+  // zero the last nCutBytes
+  MemLib::vZero(aAddrEnd, nCutBytes, eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,7 +202,7 @@ void MemLib::vDumpWords(void *aAddress, i8 nBytes)
       
       u1 cChar = *((u1*)aAddress + (i_Word * C_BYTES_PER_WORD) + i_Char);
       
-      if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX)
+      if (cChar < C_ASCII_MIN_VIZ || cChar > C_ASCII_MAX_VIZ)
         vTrace("%c"_Stz, '.');
       else
         vTrace("%c"_Stz, cChar);
@@ -233,7 +258,7 @@ void MemLib::vDumpWords(void *aAddress, i8 nBytes)
   
   for (u8 i_Char = 0; i_Char < i_Byte % C_BYTES_PER_WORD; i_Char++) {
     u1 cChar = *((u1*)aAddress + i_Word + i_Char);
-    if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX)
+    if (cChar < C_ASCII_MIN_VIZ || cChar > C_ASCII_MAX_VIZ)
       vTrace("%c"_Stz, '.');
     else
       vTrace("%c"_Stz, cChar);
@@ -286,7 +311,7 @@ void MemLib::vDumpWords(void *aAddress, i8 nBytes)
       
       u1 cChar = *((u1*)aAddress + (i_Word * C_BYTES_PER_WORD) + i_Char);
       
-      if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX)
+      if (cChar < C_ASCII_MIN_VIZ || cChar > C_ASCII_MAX_VIZ)
         vTrace("%c"_Stz, '.');
       else
         vTrace("%c"_Stz, cChar);
@@ -328,7 +353,7 @@ void MemLib::vDumpWords(void *aAddress, i8 nBytes)
   
   for (u8 i_Char = 0; i_Char < i_Byte % C_BYTES_PER_WORD; i_Char++) {
     u1 cChar = *((u1*)aAddress + i_Word + i_Char);
-    if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX)
+    if (cChar < C_ASCII_MIN_VIZ || cChar > C_ASCII_MAX_VIZ)
       vTrace("%c"_Stz, '.');
     else
       vTrace("%c"_Stz, cChar);
@@ -337,6 +362,38 @@ void MemLib::vDumpWords(void *aAddress, i8 nBytes)
   vTrace("\n"_Stz);
 }
 */
+
+/*----------------------------------------------------------------------------*/
+/* extend bytes to make space for additional data                             */
+/*----------------------------------------------------------------------------*/
+void MemLib::vExpand(void* aAddr, i8 nSize, i8 i_Offset, i8 nAddBytes, eCN eClassNo)
+{
+  i8 iStartMove = i_Offset;
+  RASSERT(iStartMove + nAddBytes <= nSize);
+  
+  // get the start address
+  byte* aSrc = aAdd<byte*>(aAddr, iStartMove);
+  
+  // get the dst address
+  byte* aDst = aAdd<byte*>(aAddr, i_Offset + nAddBytes);
+  
+  // copy nExtendBytes from src to dst
+  MemLib::vCopy(aDst, aSrc, nSize - (iStartMove), eClassNo);
+}
+
+/*----------------------------------------------------------------------------*/
+/* find non-zero end of word-array                                            */
+/*----------------------------------------------------------------------------*/
+w8* MemLib::awFindNonZeroEnd(void* aWords, i8 nWords)
+{
+  w8* awWords = (w8*)aWords;
+  
+  for (i8 i_Word = nWords - 1; i_Word >= 0; i_Word--)
+    if (awWords[i_Word])
+      return &awWords[i_Word];
+  
+  return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* free a block of memory                                                     */
@@ -410,7 +467,7 @@ void MemLib::vHexDump(void *aAddress, i8 nBytes)
       
       u1 cChar = *((u1*)aAddress + iOffset + i_Char);
       
-      if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX)
+      if (cChar < C_ASCII_MIN_VIZ || cChar > C_ASCII_MAX_VIZ)
         vTrace("%c"_Stz, '.');
       else
         vTrace("%c"_Stz, cChar);
@@ -446,7 +503,7 @@ void MemLib::vHexDump(void *aAddress, i8 nBytes)
   
   for (i8 i_Char = 0; i_Char < nByteInLine; i_Char++) {
     u1 cChar = *((u1*)aAddress + iOffset + i_Char);
-    if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX)
+    if (cChar < C_ASCII_MIN_VIZ || cChar > C_ASCII_MAX_VIZ)
       vTrace("%c"_Stz, '.');
     else
       vTrace("%c"_Stz, cChar);
@@ -483,6 +540,34 @@ void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is address on an nByte boundary?                                           */
+/*----------------------------------------------------------------------------*/
+bool MemLib::bOnBoundary(void* aAddress, i8 nByteBoundary)
+{
+  if (0 == (u8)aAddress % nByteBoundary)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute the memory quanta required to hold n bytes                         */
+/*----------------------------------------------------------------------------*/
+i8 MemLib::nQuantaRequired(i8 nBytes, i8 nSizeQuanta)
+{
+  if (! nBytes)
+    return 0;
+  
+  i8 nQuanta = nBytes / nSizeQuanta;
+  if (nBytes % nSizeQuanta)
+    nQuanta++;
+  
+  ASSERT(nQuanta * nSizeQuanta >= nBytes);
+
+  return nQuanta;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset memory statistics                                                    */
 /*----------------------------------------------------------------------------*/
 void MemLib::vReset(void)
@@ -501,6 +586,32 @@ void MemLib::vReset(void)
     gpAttachMap->m_oStatistics.Memory.m_iaSet[i_Class] = 0;
     gpAttachMap->m_oStatistics.Memory.m_iaZero[i_Class] = 0;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* rotate memory by given number of bytes                                     */
+/*----------------------------------------------------------------------------*/
+void MemLib::vRotate(void* avArg, i8 nBytes, i8 nBy)
+{
+  byte yaFront[32];//[nBy];
+
+  MemLib::vCopy(yaFront,avArg,nBy,CN_NONE);
+  
+  MemLib::vMove(avArg,(byte*)avArg+nBy,nBytes-nBy,CN_NONE);
+
+  MemLib::vCopy((byte*)avArg + nBytes - nBy,yaFront,nBy,CN_NONE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute the bytes required to hold n bytes within given quanta             */
+/*----------------------------------------------------------------------------*/
+i8 MemLib::nRoundUp(i8 nBytes, i8 nSizeQuanta)
+{
+  i8 nQuanta = nQuantaRequired(nBytes,nSizeQuanta);
+
+  i8 nRoundedBytes = nQuanta * nSizeQuanta;
+  
+  return nRoundedBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -599,27 +710,41 @@ void MemLib::vStatistics(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compute the nByte boundary address of given address                        */
+/*----------------------------------------------------------------------------*/
+void* MemLib::aToBoundary(void* aAddress, i8 nByteBoundary)
+{
+  u8 uBitMask = BITWISE_NOT((nByteBoundary - 1));
+  
+  void* aBoundary = pBitAnd<void*>(aAddress,uBitMask);
+ 
+  return aBoundary;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump given words of memory at given address                                */
 /*----------------------------------------------------------------------------*/
 void MemLib::vWordDump(void *aAddress, i8 nBytes, i8 iHighlightWord)
 {
   i8 iOffset = 0;
   i8 iWord   = 0;
-  i8 nWords  = nBytes/C_SIZEOF_WORD;
+  i8 nWords  = MemLib::nQuantaRequired(nBytes,C_BYTES_PER_WORD);
 
   // dump a header
   vTrace("\n"_Stz);
-  vTrace("%6s %8s %18s %16s %8s\n"_Stz,
+  vTrace("%4s %6s %6s %14s %16s %8s\n"_Stz,
          "Word"_Stz,
+         "Offset"_Stz,
          "Offset"_Stz,
          "Address"_Stz,
          "Hex"_Stz,
          "Ascii"_Stz);
   
-  vTrace("%6s %8s %18s %16s %8s\n"_Stz,
+  vTrace("%4s %6s %6s %14s %16s %8s\n"_Stz,
+         "----"_Stz,
          "------"_Stz,
-         "--------"_Stz,
-         "------------------"_Stz,
+         "------"_Stz,
+         "--------------"_Stz,
          "-------><-------"_Stz,
          "--------"_Stz);
   
@@ -628,20 +753,21 @@ void MemLib::vWordDump(void *aAddress, i8 nBytes, i8 iHighlightWord)
     
     // beginning of line, dump the address
     if (iWord == 0) {
-      vTrace("%6d "_Stz, i_Word);
-      vTrace("0x%06llx "_Stz, iOffset);
-      vTrace("0x%016llx "_Stz, (i8)((u1*)aAddress + iOffset));
+      vTrace("%4d "_Stz, i_Word);
+      vTrace("0x%04llx "_Stz, iOffset);
+      vTrace("%06lld "_Stz, iOffset);
+      vTrace("0x%012llx "_Stz, (i8)((u1*)aAddress + iOffset));
     }
     
     vTrace("%016llx "_Stz, (i8)(*((i8*)aAddress + i_Word)));
     
     iWord++;
       
-    for (i8 i_Byte = 0; i_Byte < C_SIZEOF_WORD; i_Byte++) {
+    for (i8 i_Byte = 0; i_Byte < C_BYTES_PER_WORD; i_Byte++) {
       
       u1 cChar = *((u1*)aAddress + iOffset + i_Byte);
       
-      if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX)
+      if (cChar < C_ASCII_MIN_VIZ || cChar > C_ASCII_MAX_VIZ)
         vTrace("%c"_Stz, '.');
       else
         vTrace("%c"_Stz, cChar);
@@ -711,16 +837,16 @@ void MemLib::vWordDump(void *aAddress, i8 nBytes, i8 iHighlightWord)
 
 
     iWord = 0;
-    iOffset += C_SIZEOF_WORD;
+    iOffset += C_BYTES_PER_WORD;
     vTrace("\n"_Stz);
   }
   
   // end of buffer and not at word boundary ?
-  if (iWord > 0 && iWord < C_SIZEOF_WORD) {
+  if (iWord > 0 && iWord < C_BYTES_PER_WORD) {
     
     for (i8 i = 0; i < iWord; i++) {
       u1 cChar = *((u1*)aAddress + iOffset + i);
-      if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX) {
+      if (cChar < C_ASCII_MIN_VIZ || cChar > C_ASCII_MAX_VIZ) {
         vTrace("%c"_Stz, '.');
       } else {
         vTrace("%c"_Stz, cChar);

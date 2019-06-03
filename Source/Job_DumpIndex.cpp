@@ -13,6 +13,7 @@ JobClass xJobClass_DumpIndex =
 {
   CN_JOB_DUMPINDEX,      // class enum
   JK_LOCAL,              // job kind
+  RK_LOCAL_ZERO,         // response kind
   "dump index"_Stz,      // comment about the job
   "dumpidx"_Stz,         // the prompt command
   nullptr,               // the second word
@@ -32,7 +33,7 @@ JobClass xJobClass_DumpIndex =
 
   eJob_checkCluster,     // prompt check function
   pJob_DumpIndex_pre,    // prompt pre-process function
-  vJob_DumpIndex_post,   // prompt post-process function
+  vJob_post,             // prompt post-process function
   nullptr,               // job new function
   vJob_DumpIndex_delete, // job delete function
   nullptr,               // job pre-send function
@@ -52,7 +53,7 @@ JobClass xJobClass_DumpIndex =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_DumpIndex_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Export_class;
+  *pNextFun = (pFUN*)pJob_DumpTable_class;
   
   return &xJobClass_DumpIndex;
 }
@@ -210,29 +211,10 @@ Job* Jobs::pJob_DumpIndex_pre(Interface::Session* pSession)
   bool bResult = pJob_DumpIndex->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_DumpIndex->m_bHasError = true;
-    pJob_DumpIndex->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_DumpIndex->vAddError(EC_INVALID_COMMAND);
   }
   
   return pJob_DumpIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_DumpIndex_post(Interface::Session* pSession, Job* pJob)
-{
-  Job_DumpIndex* pJob_DumpIndex = _pJob_DumpIndex(pJob);
-  
-  if ( pJob_DumpIndex->m_bHasError ) {
-    
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_DumpIndex->m_xNode[i_Node].m_eErrorCode]);
-    }
-    
-  }
-  vTrace("success: 0 rows affected\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

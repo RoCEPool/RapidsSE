@@ -61,7 +61,7 @@ Table::Table(void)
   
   gpAttachMap->m_oStatistics.Table.m_nCreates++;
   
-  Word* pWord = Word::pToWord(this);
+  ForthWord* pWord = ForthWord::pToWord(this);
   
   m_sTableName = pWord->sName();
   m_eTableType = TT_NORMAL;
@@ -71,17 +71,10 @@ Table::Table(void)
   m_xSlots.vTable(this);
   
   m_ixIndexNo.vCheckInit();
-  m_pHiddenIndex = nullptr;
   
   m_pIdxVec = new IdxVec;
   
   m_pColumnVec = new ColumnVec;
-  
-  // create the hidden column for the hidden index here
-  Column* pColumn = new Column("hidden_column"_Stz);
-  pColumn->vColumnNo(-1);
-  pColumn->vColumnType(CT_INTEGER);
-  m_pColumnVec->vAdd(pColumn);
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
     m_ixSubLoaders[i_Slot] = 0;
@@ -140,11 +133,11 @@ Table* Table::pFindTable(DicStack* pDicStack, Stz* aTableNm)
 {
   Dic* pDic = pDicStack->pTop();
   
-  Word* pTableDicWord = pDic->pFindWord(aTableNm);
+  ForthWord* pTableDicWord = pDic->pFindWord(aTableNm);
   
   Dic* pTableDic = _pDic(pTableDicWord->aWspArea());
 
-  Word* pTableWord = pTableDic->pFindWord(aTableNm);
+  ForthWord* pTableWord = pTableDic->pFindWord(aTableNm);
   
   Table* pTable = _pTable(pTableWord->aWspArea());
   
@@ -200,18 +193,6 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed, i8 &nRows)
   i8 nBuffersTotal = 0;
   s48K sAnalysis;
   
-//  if ( ! gpAttachMap->m_bMetadata  || bDetailed ) {
-//    if (pIndex->bIsHidden())
-//      sAnalysis.vCatSprint("N%lld: Analysis of table %s \n"_Stz,
-//                         gpAttachMap->m_pGrid->iThisNode(),
-//                         m_sTableName.aChar());
-//    else
-//      sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s \n"_Stz,
-//                           gpAttachMap->m_pGrid->iThisNode(),
-//                           pIndex->aIndexName()->aChar(),
-//                           m_sTableName.aChar());
-//  }
-  
   for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->m_nSlotsPerNode; iSlot++) {
     
     i8 iPartition = TablePtn::iSlotToPartition(iSlot);
@@ -242,6 +223,58 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed, i8 &nRows)
 //                         "        total: %3lld buffers; %5lld entries\n"_Stz,
 //                         nBuffersTotal,
 //                         nEntriesTotal);
+  
+  if (bDetailed)
+    nRows = nBuffersTotal;
+  else
+    nRows = 1;
+  
+  return sAnalysis;
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyze index                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* Table::pAnalyzeTable(bool bDetailed, i8 &nRows)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  i8 nRowsTotal    = 0;
+  i8 nBuffersTotal = 0;
+  s48K sAnalysis;
+  
+  for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->m_nSlotsPerNode; iSlot++) {
+    
+    i8 iPartition = TablePtn::iSlotToPartition(iSlot);
+    
+    TablePtn *pPartition = this->pPartition(iSlot);
+    
+    RowBuffer* pRowBuffer = pPartition->pRootRowBuffer();
+    
+    i8 nBuffers = 0;
+    i8 nRows    = 0;
+    
+    if (pRowBuffer)
+      pRowBuffer->vAnalyze(sAnalysis, bDetailed, nBuffers, nRows);
+    
+    nRowsTotal += nRows;
+    nBuffersTotal += nBuffers;
+    
+    if ( ! bDetailed ) {
+      sAnalysis.vCatSprint("row: ('%s',%lld,%lld,%lld)\n"_Stz,
+                           gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
+                           iPartition,
+                           nBuffers,
+                           nRows);
+      
+    }
+  }
+  
+  //  if ( ! gpAttachMap->m_bMetadata   || bDetailed)
+  //    sAnalysis.vCatSprint(
+  //                         "        total: %3lld buffers; %5lld entries\n"_Stz,
+  //                         nBuffersTotal,
+  //                         nEntriesTotal);
   
   if (bDetailed)
     nRows = nBuffersTotal;
@@ -286,10 +319,7 @@ void Table::vLazyBuildIndexes(i8 iSlot)
     // get index
     IndexTree* pNewIndexTree = pInedexTreeVec->pGet(i_Index);
     
-    // skip the hidden index
     Index* pIndex = pNewIndexTree->pIndex();
-    if (pIndex->bIsHidden())
-      continue;
     
     // get an L0 buffer
     EntryBuffer *pIndexBuffer = pPartition->pIndexTree(pIndex->iIndexNo())->pFirstH0Buffer();
@@ -301,114 +331,48 @@ void Table::vLazyBuildIndexes(i8 iSlot)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert entries from a row buffer into the table (hidden and other indexes) */
+/* insert entries from a row buffer into the table indexes                    */
 /*----------------------------------------------------------------------------*/
-void Table::vInsertEntries(i8 iTxId, i8 iSlot, EntryBuffer* pEntryBuffer)
+void Table::vInsertEntries(i8 iTxId, i8 iSlot, RowBuffer* pRowBuffer)
 { //# indexTuning
+  
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   //----------------------------------------------------------------------------
   // This function is invoked when we insert rows into a table via a
   // begin/insert/end and via the API's insert-select
-  
+
   ASSERT(iSlot < gpAttachMap->m_pGrid->m_nSlotsPerNode);
-  
+
   // if buffer has 0 entries (only head) then should be last buffer
-  if (pEntryBuffer->nItems() == 0) {
-    delete pEntryBuffer;
+  if (pRowBuffer->nRowCount() == 0) {
+    delete pRowBuffer;
     return;
   }
-  
-  //----------------------------------------------------------------------------
-  // (1) append the buffer entries into the hidden index
-  TablePtn* pPartition = this->pPartition(iSlot);
-  IndexTree* pHiddenIndexTree = pPartition->pHiddenIndexTree();
-  
-  //----------------------------------------------------------------------------
-  // append the buffer to the hidden index tree
-  pHiddenIndexTree->vAppendBuffer(pEntryBuffer);
-  
-  //----------------------------------------------------------------------------
-  // (2) insert entries from hidden index pFirstBuffer starting at pFirstEntry
-  // into all other indexes of the table
-  
-  // get no of indexes of the table
-  IndexTreeVec* pIndexTreeVec = pPartition->pIndexTreeVec();
-  i8 nIndexes = pIndexTreeVec->nItems();
-  
-  // iterate all indexes of the table
-  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-    
-    // get index
-    IndexTree* pNewIndexTree = pIndexTreeVec->pGet(i_Index);
-    
-    // skip the hidden index
-    Index* pIndex = pNewIndexTree->pIndex();
-    if (pIndex->bIsHidden())
-      continue;
-    
-    //pHiddenEntryBuffer->vDump();
-    
-    // insert entries from EntryBuffer into the index
-    pNewIndexTree->vInsertEntriesFromBuffer(pEntryBuffer);
-    
-//    // iterate through all the buffers of the hidden index starting from pFirstEntry
-//    // in pFirstBuffer and insert corresponding entries in other indexes
-//    while (pHiddenEntryBuffer) {
-//
-//      pNewIndexTree->vInsertEntriesFromBuffer(pHiddenEntryBuffer, aItem);
-//      pHiddenEntryBuffer = pHiddenEntryBuffer->pNextBuffer();
-//
-//      // get the next buffer and first entry in it
-//      if (pHiddenEntryBuffer)
-//        aItem = pHiddenEntryBuffer->pFirstEntry();
-//    }
-  }
-}
 
-/*----------------------------------------------------------------------------*/
-/* insert a row into the table (hidden and other indexes)                     */
-/*----------------------------------------------------------------------------*/
-void Table::vInsertRow(i8 iTxId, i8 iSlot, Stz* aRow_Data, i8 iRowLength)
-{ //# indexTuning
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
   //----------------------------------------------------------------------------
-  // This function is invoked when we insert a row into a table via a
-  // insert and via the API's insert-select
-  
-  ASSERT(iSlot < gpAttachMap->m_pGrid->m_nSlotsPerNode);
-  
-  //----------------------------------------------------------------------------
-  // (1) append the row into the hidden index
+  // (1) append the buffer entries into the table
   TablePtn* pPartition = this->pPartition(iSlot);
-  IndexTree* pHiddenIndexTree = pPartition->pHiddenIndexTree();
-  
-  Item* aItem = pHiddenIndexTree->pAppendRow(iTxId, aRow_Data, iRowLength);
   
   //----------------------------------------------------------------------------
-  // (2) insert entry into all other indexes of the table
+  // append the buffer to the data row buffers
+  pPartition->vAppendBuffer(pRowBuffer);
   
+  //----------------------------------------------------------------------------
+  // (2) insert entries from rowBuffer into all indexes of the table
+
   // get no of indexes of the table
   IndexTreeVec* pIndexTreeVec = pPartition->pIndexTreeVec();
   i8 nIndexes = pIndexTreeVec->nItems();
-  
+
   // iterate all indexes of the table
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-    
+
     // get index
     IndexTree* pNewIndexTree = pIndexTreeVec->pGet(i_Index);
-    
-    // skip the hidden index
-    Index* pIndex = pNewIndexTree->pIndex();
-    if (pIndex->bIsHidden())
-      continue;
-    
-    //pHiddenEntryBuffer->vDump();
-    
-    // insert entry into other indexes
-    bool bResult = pNewIndexTree->bInsertEntry(aItem);
-    RASSERT(bResult);
+
+    // insert entries from EntryBuffer into the index
+    pNewIndexTree->vInsertEntriesFromBuffer(pRowBuffer);
   }
 }
 
@@ -435,26 +399,26 @@ void Table::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* create column vector                                                       */
 /*----------------------------------------------------------------------------*/
-void Table::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-//  vTrace("vCreateColumnVec: table %s column %s %s\n"_Stz,
-//         aTableName(),
-//         sColumnNm.aStz(),
-//         sColumnDefn.aStz());
-  
-  Column* pColumn = new Column(sColumnNm.aStz(),sColumnDefn.aStz());
-  
-  m_pColumnVec->vInsert(pColumn);
-  
-  // renumber
-  for (i8 iColumn = 0; iColumn < m_pColumnVec->nItems(); iColumn++) {
-    Column* pColumn = m_pColumnVec->pGet(iColumn);
-    if (pColumn->iColumnNo() != -1)
-      pColumn->vColumnNo(iColumn);
-  }
-}
+//void Table::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+//  
+////  vTrace("vCreateColumnVec: table %s column %s %s\n"_Stz,
+////         aTableName(),
+////         sColumnNm.aStz(),
+////         sColumnDefn.aStz());
+//  
+//  Column* pColumn = new Column(sColumnNm.aStz(),sColumnDefn.aStz());
+//  
+//  m_pColumnVec->vInsert(pColumn);
+//  
+//  // renumber
+//  for (i8 iColumn = 0; iColumn < m_pColumnVec->nItems(); iColumn++) {
+//    Column* pColumn = m_pColumnVec->pGet(iColumn);
+//    if (pColumn->iColumnNo() != -1)
+//      pColumn->vColumnNo(iColumn);
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* create column vector                                                       */
@@ -463,39 +427,16 @@ void Table::vCreateColumnVec(Jobs::Job_CreateTable* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  // NOTE: we will move creation of hidden column here after
-  // old tasking model is removed
-  // For now we will remove the hidden column and add it back in
-  Column* pHiddenColumn = m_pColumnVec->pGet(0);
-  m_pColumnVec->vClear();
+  Column* pColumn = nullptr;
   
-  for (i8 i= 0; i < pJob->m_iColumns; i++) {
-  
-    Column* pColumn = new Column(pJob, i);
+  for (i8 i_Col = 0; i_Col < pJob->m_iColumns; i_Col++) {
+    pColumn = new Column(pJob,i_Col);
     m_pColumnVec->vAdd(pColumn);
+    pColumn->vColVec(m_pColumnVec);
   }
   
-  m_pColumnVec->vAdd(pHiddenColumn);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the hidden index from the table                                        */
-/*----------------------------------------------------------------------------*/
-Index* Table::pHiddenIndex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  return m_pHiddenIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the hidden index in the table                                          */
-/*----------------------------------------------------------------------------*/
-void Table::vHiddenIndex(Index* pHiddenIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  m_pHiddenIndex = pHiddenIndex;
+  if (pColumn)
+    pColumn->vIsLastColumn(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -664,12 +605,13 @@ void Table::vPublish(i8 iPartition)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   vTrace("Publishing table %s\n"_Stz, m_sTableName.aChar());
+  m_xSlots.vPublishTable(iPartition);
   
-  // purge all other indices
-  for (i8 iIndexNo = 0; iIndexNo < m_pIdxVec->nItems(); iIndexNo++) {
-    Index* pIndex = m_pIdxVec->pGet(iIndexNo);
-    m_xSlots.vPublishIndex(iPartition, pIndex->iIndexNo());
-  }
+  // publish all other indices
+//  for (i8 iIndexNo = 0; iIndexNo < m_pIdxVec->nItems(); iIndexNo++) {
+//    Index* pIndex = m_pIdxVec->pGet(iIndexNo);
+//    m_xSlots.vPublishIndex(iPartition, pIndex->iIndexNo());
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -680,19 +622,20 @@ bool Table::bPurge(i8 iPartition, i8 iOlderThanSeconds)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   //vTrace("Purging table %s\n"_Stz, m_sTableName.aChar());
+  bool bPurged = m_xSlots.bPurgeTable(iPartition, iOlderThanSeconds);
   
   // purge all other indexes
-  for (i8 iIndexNo = 0; iIndexNo < m_pIdxVec->nItems(); iIndexNo++) {
-    
-    Index* pIndex = m_pIdxVec->pGet(iIndexNo);
-    
-    bool bPurged = m_xSlots.bPurgeIndex(iPartition, pIndex->iIndexNo(), iOlderThanSeconds);
-    
-    if (! bPurged)
-      return false;
-  }
+//  for (i8 iIndexNo = 0; iIndexNo < m_pIdxVec->nItems(); iIndexNo++) {
+//
+//    Index* pIndex = m_pIdxVec->pGet(iIndexNo);
+//
+//    bool bPurged = m_xSlots.bPurgeIndex(iPartition, pIndex->iIndexNo(), iOlderThanSeconds);
+//
+//    if (! bPurged)
+//      return false;
+//  }
   
-  return true;
+  return bPurged;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -704,7 +647,7 @@ EntryBuffer* Table::pRootBuffer(i8 i_Slot, i8 i_Index)
   
   TablePtn* pTblPtn = pPartition(i_Slot);
   
-  IndexTree* pIdxTree = pTblPtn->pIndexTree(i_Index); // assume 0 is hidden index
+  IndexTree* pIdxTree = pTblPtn->pIndexTree(i_Index);
   
   EntryBuffer* pRootBuffer = pIdxTree->pRoot();
   
@@ -714,6 +657,19 @@ EntryBuffer* Table::pRootBuffer(i8 i_Slot, i8 i_Index)
 /*----------------------------------------------------------------------------*/
 /* hash the first field of row return partition                               */
 /*----------------------------------------------------------------------------*/
+i8 Table::iRowPartition(i8 iHash)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  // modulo to get partition number
+  i8 iPartition =
+  iHash
+  % (gpAttachMap->m_pGrid->m_nSlotsPerNode * gpAttachMap->m_pGrid->nNodes());
+  
+  return iPartition;  
+}
+
+/*
 i8 Table::iRowPartition(Stz* aRow_Data)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -734,20 +690,8 @@ i8 Table::iRowPartition(Stz* aRow_Data)
     RowData* aRowData = (RowData*)aRow_Data;
     char* sCursor = aRowData->aColumnDatum(iColumnNo);
     
-#ifdef USE_VLQ_DATUMS
-    if (pColumn->eDatumType() == DM_INT ||
-        pColumn->eDatumType() == DM_BCD) {
-      i8 iValue = IntLib::iVlqToInt((byte*)sCursor);
-      DtmLib::vHash(pColumn->eDatumType(),iHash,(Stz*)&iValue);
-    }
-    else {
-      DtmLib::vHash(pColumn->eDatumType(),iHash,(Stz*)sCursor);
-    }
-    
-#else
     // hash the column value
     DtmLib::vHash(pColumn->eDatumType(),iHash,(Stz*)sCursor);
-#endif
   }
   
   // modulo to get partition number
@@ -758,46 +702,23 @@ i8 Table::iRowPartition(Stz* aRow_Data)
   
   return iPartition;
 }
-/*
-i8 Table::iRowPartition(Stz* pRow)
+*/
+
+/*----------------------------------------------------------------------------*/
+/* get number of row buffers in this table                                    */
+/*----------------------------------------------------------------------------*/
+i8 Table::nRowBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  i8 nCols = m_xSlots.pPtnColVec()->nItems();
-  GenVar xVariable;
-  s256 s;
-  i8 iHash = 0;
+  i8 iBuffers = 0;
   
-  for (i8 iColumn = 0; iColumn < nCols; iColumn++) {
-    
-    // get the column from the index column vector
-    Column* pColumn = m_xSlots.pPtnColVec()->pGet(iColumn);
-    
-    // get the column number of the column
-    i8 iColumnNo = pColumn->iColumnNo();
-    
-    char* pDst = s.aChar();
-    char* aCursor = reinterpret_cast<char*>(pRow->aChar());
-    
-    // get the column value from the row for the iColumnNo
-    i8 iCol = -1;
-    do {
-      bool bFindPipe = StrLib::bExtractItem(&aCursor, pDst, ',');
-      ASSERT(bFindPipe);
-      iCol++;
-      aCursor++;
-    } while (iColumnNo != iCol);
-    
-    DtmLib::vHash(pColumn->eDatumType(),iHash,(Stz*)pDst,pColumn);
+  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nSlotsPerNode; iPartition++) {
+    iBuffers += pPartition(iPartition)->nRowBuffers();
   }
   
-  // modulo to get partition number
-  i8 iPartition = iHash % (gpAttachMap->m_pGrid;->m_nSlotsPerNode * gpAttachMap->m_pGrid;->iNodes());
-  
-  //vTrace("Partition: %lld\n"_Stz,m_iPartition);
-  return iPartition;
+  return iBuffers;
 }
-*/
 
 /*----------------------------------------------------------------------------*/
 /* show column vector                                                         */
@@ -886,11 +807,14 @@ void Table::vTruncate(i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  // truncate all other indices
+  // truncate all indices
   for (i8 iIndexNo = 0; iIndexNo < m_pIdxVec->nItems(); iIndexNo++) {
     Index* pIndex = m_pIdxVec->pGet(iIndexNo);
     m_xSlots.vTruncateIndex(iPartition, pIndex->iIndexNo());
   }
+  
+  // now truncate the table data
+  m_xSlots.vTruncateTable(iPartition);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -934,8 +858,6 @@ bool Table::bVerifyIndex(Index* pIndex)
   for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->m_nSlotsPerNode; iSlot++) {
     
     bool bVerify = true;
-
-    i8 iPartition = TablePtn::iSlotToPartition(iSlot);
     
     EntryBuffer *pIndexBuffer =
       pPartition(iSlot)->pIndexTree(pIndex->iIndexNo())->pRoot();
@@ -945,6 +867,30 @@ bool Table::bVerifyIndex(Index* pIndex)
     if ( ! bVerify )
       break;
   }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify table                                                               */
+/*----------------------------------------------------------------------------*/
+bool Table::bVerifyTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  // verify all the row buffers with the r ow data
+  for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->m_nSlotsPerNode; iSlot++) {
+    
+    bool bVerify = true;
+    
+    bVerify = pPartition(iSlot)->bVerifyTable();
+    
+    if ( ! bVerify )
+      return bVerify;
+  }
+  
+  // now verify the indexes
+  return bVerifyIndexes();
   
   return true;
 }
@@ -963,21 +909,6 @@ Footer* Table::aFooter(void)
   return &m_xFooter;
 }
 
-/*----------------------------------------------------------------------------*/
-/* compute the number of entries in the hidden index                          */
-/*----------------------------------------------------------------------------*/
-i8 Table::nHiddenEntryCount(EntryBuffer* pFirstH0Buffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  ASSERT(pFirstH0Buffer == nullptr || 0 == pFirstH0Buffer->iBufferHeight());
-  
-  i8 nEntries = 0;
-  for (EntryBuffer* pEB = pFirstH0Buffer; pEB; pEB = pEB->pNextBuffer())
-    nEntries += pEB->nItems();
-  
-  return nEntries;
-}
 
 /*============================================================================*/
 /* end                                                                        */

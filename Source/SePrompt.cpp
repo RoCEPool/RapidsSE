@@ -450,7 +450,7 @@ bool SePrompt::bIsPromptWord(void)
   
   Dic* pDic = &gpAttachMap->m_oRootDic;
   
-  Word* pWord = pDic->pFindWord(sWordNm);
+  ForthWord* pWord = pDic->pFindWord(sWordNm);
   
   if ( ! (pWord && pWord->bPrompt()) )
     return false;

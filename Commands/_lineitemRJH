@@ -1,30 +1,35 @@
 /*============================================================================*/
-/* _lineitemRJH - create and load TPC-H Lineitem table                        */
+/* _lineitemRJH - create and load TPC-H LineItem table                        */
 /*============================================================================*/
 
 startCluster;
 
-create table lineitem (
-  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
-  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
-  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
-  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+time create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B   1+
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B   random
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B   random
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B   1..7
   L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
   L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
   L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
   L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
   L_RETURNFLAG    CHAR(1) NOT NULL,         //  8)  2B   2B
   L_LINESTATUS    CHAR(1) NOT NULL,         //  9)  2B   2B
-  L_SHIPDATE      TIMESTAMP NOT NULL,       // 10)  8B   8B
-  L_COMMITDATE    TIMESTAMP NOT NULL,       // 11)  8B   8B
-  L_RECEIPTDATE   TIMESTAMP NOT NULL,       // 12)  8B   8B
-  L_SHIPINSTRUCT  CHAR(25) NOT NULL,        // 13) 26B  13B
-  L_SHIPMODE      CHAR(10) NOT NULL,        // 14) 11B   5B
-  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+  L_SHIPDATE      DATE NOT NULL,            // 10)  8B   8B   TIMESTAMP
+  L_COMMITDATE    DATE NOT NULL,            // 11)  8B   8B   TIMESTAMP
+  L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B   TIMESTAMP
+  L_SHIPINSTRUCT  CHAR(25) NOT NULL,        // 13) 26B  13B   CHAR(25),2
+  L_SHIPMODE      CHAR(10) NOT NULL,        // 14) 11B   5B   CHAR(10),5
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B   VARCHAR(44)
   //                                              ---- ----
   // 16 columns                                   174B  91B
   //
 );
+
+// sample data:
+// 1,155190,7706,1,17,21168.23,0.04,0.02,N,O,1996-03-13,1996-02-12,1996-03-22,
+//   DELIVER IN PERSON,TRUCK,egular courts above the,
+
 
 //CREATE INDEX lineitem_idx1 ON lineitem(L_ORDERKEY);
 //CREATE INDEX lineitem_idx2 ON lineitem(L_SHIPDATE);
@@ -33,8 +38,25 @@ create table lineitem (
 //nowait monitor 3;
 
 space;
-time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
+time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
+//time ld lineitem "/tpch/SF0/lineitem_10.csv" max_errors 100;
+//time ld lineitem "/tpch/SF0/lineitem_100.csv" max_errors 100;
+//time ld lineitem "/tpch/SF0/lineitem_1k.csv" max_errors 100;
+//time ld lineitem "/tpch/SF0/lineitem_10k.csv" max_errors 100;
+//time ld lineitem "/tpch/SF0/lineitem_100k.csv" max_errors 100;
+//time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 space;
+sztbl lineitem;
+fetch lineitem limit 10;
+time fetch lineitem noPrint;
+//fileCat "/tpch/SF0/lineitem_1.csv" 10;
+//fileCat "/tpch/SF0/lineitem_10.csv" 10;
+//fileCat "/tpch/SF0/lineitem_100.csv" 10;
+//fileCat "/tpch/SF0/lineitem_1k.csv" 10;
+//fileCat "/tpch/SF0/lineitem_10k.csv" 10;
+//fileCat "/tpch/SF0/lineitem_100k.csv" 10;
+//fileCat "/tpch/SF1/lineitem.csv" 10;
+
 
 /*
 time fetch lineitem

@@ -36,7 +36,7 @@ bool Prompt::bPrompt_enums(SePrompt* pPrompt)
   vTrace("  eDS: data source\n"_Stz);
   vTrace("  eEC: error code\n"_Stz);
   vTrace("  eHT: heap type\n"_Stz);
-  vTrace("  eIF: index form\n"_Stz);
+  //vTrace("  eIF: index form\n"_Stz);
   vTrace("  eIS: input source\n"_Stz);
   vTrace("  eIT: index type\n"_Stz);
   vTrace("  eJK: job kind\n"_Stz);

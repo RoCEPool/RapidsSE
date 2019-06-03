@@ -48,11 +48,12 @@ static Stz* aJL[]
 #include "ExportBuffer.hpp"
 #include "FetchBuffer.hpp"
 
+#include "Response.hpp"
 #include "JobDicPath.hpp"
+#include "JobEncodeRow.hpp"
 #include "JobFilePath.hpp"
 #include "JobObjectName.hpp"
 #include "JobResult.hpp"
-#include "JobRow.hpp"
 #include "JobTable.hpp"
 #include "Job.hpp"
 #include "JobWriteBehind.hpp"
@@ -94,6 +95,7 @@ static Stz* aJL[]
 #include "Job_DropTable.hpp"
 #include "Job_DropTenant.hpp"
 #include "Job_DumpIndex.hpp"
+#include "Job_DumpTable.hpp"
 
 #include "Job_Export.hpp"
 
@@ -164,7 +166,9 @@ static Stz* aJL[]
 #include "Job_UseSchema.hpp"
 
 #include "Job_VerifyIndex.hpp"
+#include "Job_VerifyTable.hpp"
 #include "Job_VisualizeIndex.hpp"
+#include "Job_VisualizeTable.hpp"
 
 #include "Job_WaitCluster.hpp"
 #include "Job_Walk.hpp"

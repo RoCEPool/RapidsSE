@@ -17,12 +17,9 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.columnName"_Stz,      &Step::vIndexColumnName);
   vAddStep("index.columnType"_Stz,      &Step::vIndexColumnType);
   vAddStep("index.compact"_Stz,         &Step::vIndexCompact);
-  vAddStep("index.createColumnVecHidden"_Stz, &Step::vIndexCreateColumnVecHidden);
   vAddStep("index.createColumnVec"_Stz, &Step::vIndexCreateColumnVec);
   vAddStep("index.dump"_Stz,            &Step::vIndexDump);
   vAddStep("index.init"_Stz,            &Step::vIndexInit);
-  vAddStep("index.isHidden@"_Stz,       &Step::vIndexIsHiddenFetch);
-  vAddStep("index.isHidden!"_Stz,       &Step::vIndexIsHiddenStore);
   vAddStep("index.isPrimaryKey@"_Stz,   &Step::vIndexIsPrimaryKeyFetch);
   vAddStep("index.isPrimaryKey!"_Stz,   &Step::vIndexIsPrimaryKeyStore);
   vAddStep("index.isUnique@"_Stz,       &Step::vIndexIsUniqueFetch);
@@ -32,9 +29,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.name@"_Stz,           &Step::vIndexNameFetch);
   vAddStep("index.populate"_Stz,        &Step::vIndexPopulate);
   vAddStep("index.range"_Stz,           &Step::vIndexRange);
-  vAddStep("index.setSingleColumn"_Stz, &Step::vIndexSetSingleColumn);
   vAddStep("index.showColumnVec"_Stz,   &Step::vIndexShowColumnVec);
-  vAddStep("index.scan"_Stz,            &Step::vIndexScan);
   vAddStep("index.space"_Stz,           &Step::vIndexSpace);
   vAddStep("index.subDic"_Stz,          &Step::vIndexSubDic);
   vAddStep("index.table@"_Stz,          &Step::vIndexTableFetch);
@@ -188,32 +183,6 @@ void Step::vIndexCompact(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.createColumnVecHidden -- create column vector for hidden index       */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexCreateColumnVecHidden(MP_Task mpTask)
-{
-  ENTRY("vIndexCreateColumnVecHidden"_Stz);
-  
-  Object* pPtrIndex;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.createColumnVec"_Stz);
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  s32 sColumnNm;
-  if ( ! mpTask->m_pDataStack->bPop(sColumnNm) )
-    THROW_INVALID_DSTACK("index.createColumnVec"_Stz);
-  
-  s48K sColumnDef;
-  if ( ! mpTask->m_pDataStack->bPop(sColumnDef) )
-    THROW_INVALID_DSTACK("index.createColumnVec"_Stz);
-  
-  pIndex->vCreateColumnVec(sColumnNm,sColumnDef);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* index.createColumnVecR -- create column vector from job_createIndex        */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexCreateColumnVec(MP_Task mpTask)
@@ -259,10 +228,7 @@ void Step::vIndexDump(MP_Task mpTask)
     IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
     vTrace("Partition %lld\n"_Stz, iPartition);
     
-    if (pIndex->bIsHidden())
-      pIndexTree->vDump(true);
-    else
-      pIndexTree->vDump(false);
+    pIndexTree->vDump(false);
   }
   
   EXIT();
@@ -283,52 +249,6 @@ void Step::vIndexInit(MP_Task mpTask)
   ASSERT(CN_INDEX == pIndex->eClass());
   
   new(pIndex) Index;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.isHidden@ -- fetch isHidden from index                               */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexIsHiddenFetch(MP_Task mpTask)
-{
-  ENTRY("vIndexIsHiddenFetch"_Stz);
-  
-  Object* pPtrIndex = nullptr;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.isHidden@"_Stz);
-  
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  bool bIsHidden = pIndex->bIsHidden();
-  
-  mpTask->m_pDataStack->vPushI8(bIsHidden);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.isHidden! -- store isHidden into index                               */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexIsHiddenStore(MP_Task mpTask)
-{
-  ENTRY("vIndexIsHiddenStore"_Stz);
-  
-  Object* pPtrIndex = nullptr;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.isHidden!"_Stz);
-  
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  i8 iIsHidden;
-  if ( ! mpTask->m_pDataStack->bPop(iIsHidden) )
-    THROW_INVALID_DSTACK("index.isHidden!"_Stz);
-  
-  pIndex->vIsHidden(iIsHidden ? true : false);
   
   EXIT();
 }
@@ -524,12 +444,11 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   KeyWrk xKeyWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
-  xKeyWrkLower.vAddDatum(xVariable,pColumn0,pFormatters);
+  StrVal* aStrVal = _aStrVal(xVariable.aNestedStrVal());
+  
+  xKeyWrkLower.vAddDatum(aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-    if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
-      xKeyWrkLower.vAddMinusInfinity_Flt();
-    else
-      xKeyWrkLower.vAddMinusInfinity();
+    xKeyWrkLower.vAddMinusInfinity();
   }
   //xKeyWrk.vShow();
   
@@ -543,7 +462,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   if (aLowerEntryBuffer) {
     // position in the index buffer at an entry prior to the lower key
     //aLowerEntry = aLowerEntryBuffer->aPositionQuery(xKeyWrkLower, eLowerRelnOp);
-  
+    
     aLowerEntry = aLowerEntryBuffer->pPositionPriorEntry(xKeyWrkLower);
     
     if (eLowerRelnOp == RO_GREATER_THAN) {
@@ -556,21 +475,6 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // loop till we get an entry
-//  while ( ! aLowerEntry) {
-//    if (aLowerEntryBuffer && aLowerEntryBuffer->pNextBuffer()) {
-//
-//      // move to the next buffer
-//      aLowerEntryBuffer = aLowerEntryBuffer->pNextBuffer();
-//
-//      // position in the index buffer at the lower key
-//      aLowerEntry = aLowerEntryBuffer->aPositionQuery(xKeyWrkLower, eLowerRelnOp);
-//    }
-//    else
-//      break;
-//  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get a lower entry ?
   if ( ! aLowerEntry) {
     goto LastBuffer;
@@ -580,27 +484,22 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   // iterate thru the buffer till no more entries
   while (aLowerEntry) {
     
-    // get the dataRow from the hidden index
-    Item* aDataRowEntry = (Item*)_aItem(aLowerEntry->aRefdItem());
-    
     // insert row from entry in fetchBuffer
-    if ( ! Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows)) {
+    if ( ! Task::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows)) {
       
       // Buffer is Full;
       // put this tempEntryBuffer in session bufferQueue
-      //Q: xVariable = (Object*)pFetchBuffer;
-      //Q: pQueue->bAppend(xVariable.aNestedValue());
       pQueue->vAppend(pFetchBuffer);
-
+      
       // create another fetchBuffer for the results
       pFetchBuffer = new FetchBuffer(pTable, iSlot);
       
       // insert row from entry in fetchBuffer
-      bool bResult = Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows);
+      bool bResult = Task::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows);
       RASSERT(bResult);
     }
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move to next entry in the buffer
     aLowerEntry = aLowerEntryBuffer->aNextEntry(aLowerEntry, 0);
     
@@ -626,10 +525,8 @@ LastBuffer:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
-  //Q: xVariable = (Object*)pFetchBuffer;
-  //Q: pQueue->bAppend(xVariable.aNestedValue());
   pQueue->vAppend(pFetchBuffer);
-
+  
   EXIT();
 }
 
@@ -672,9 +569,6 @@ void Step::vIndexPopulate(MP_Task mpTask)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  // not to poulate hidden index
-  ASSERT( ! pIndex->bIsHidden())
-  
   bool bPopulated = pTable->bPopulateIndex(iIndexNo);
   
   mpTask->m_pDataStack->vPushI8(bPopulated ? 1 : 0);
@@ -694,7 +588,6 @@ void Step::vIndexRange(MP_Task mpTask)
   
   GenVar xValWrkLwr;
   GenVar xValWrkUpr;
-  GenVar xVariable;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
@@ -758,34 +651,28 @@ void Step::vIndexRange(MP_Task mpTask)
   KeyWrk xKeyWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
-  xKeyWrkLower.vAddDatum(xValWrkLwr,pColumn0,pFormatters);
+  StrVal* aStrVal = _aStrVal(xValWrkLwr.aNestedStrVal());
+  
+  xKeyWrkLower.vAddDatum(aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-    if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
-      xKeyWrkLower.vAddMinusInfinity_Flt();
-    else
-      xKeyWrkLower.vAddMinusInfinity();
+    xKeyWrkLower.vAddMinusInfinity();
   }
-  //xKeyWrkLower.vShow();
+  //xKeyWrkLower.vShow(pIndex->pIdxColVec());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the upper key
   KeyWrk xKeyWrkUpper;
   pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  xKeyWrkUpper.vAddDatum(xValWrkUpr,pColumn0,pFormatters);
+  aStrVal = _aStrVal(xValWrkUpr.aNestedStrVal());
+  
+  xKeyWrkUpper.vAddDatum(aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-    if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
-      xKeyWrkUpper.vAddPlusInfinity_Flt();
-    else
-      xKeyWrkUpper.vAddPlusInfinity();
+    xKeyWrkUpper.vAddPlusInfinity();
   }
   //xKeyWrkUpper.vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if upperKey > lowerKey
-//  bIsEqual = false;
-//  bBefore = xKeyWrkUpper.aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkLower.aKey(),
-//                                               pIndex->pIdxColVec(), 1,
-//                                               bIsEqual, RO_LESS_THAN);
   eKC eCompare = KeyData::eCompare(xKeyWrkUpper, xKeyWrkLower);
   
   if (eCompare == KC_BEFORE) {
@@ -808,7 +695,6 @@ void Step::vIndexRange(MP_Task mpTask)
   // did we get an entry buffer ?
   if (aLowerEntryBuffer) {
     // position in the index buffer at the lower key
-    //aLowerEntry = aLowerEntryBuffer->aPositionQuery(xKeyWrkLower, eLowerRelnOp);
     aLowerEntry = aLowerEntryBuffer->pPositionPriorEntry(xKeyWrkLower);
     
     if (eLowerRelnOp == RO_GREATER_THAN) {
@@ -820,22 +706,7 @@ void Step::vIndexRange(MP_Task mpTask)
     }
     
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // loop till we get an entry
-//  while ( ! aLowerEntry) {
-//    if (aLowerEntryBuffer && aLowerEntryBuffer->pNextBuffer()) {
-//
-//      // move to the next buffer
-//      aLowerEntryBuffer = aLowerEntryBuffer->pNextBuffer();
-//
-//      // position in the index buffer at the lower key
-//      aLowerEntry = aLowerEntryBuffer->aPositionQuery(xKeyWrkLower, eLowerRelnOp);
-//    }
-//    else
-//      break;
-//  }
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we find a lower entry ?
   if (! aLowerEntry )
@@ -858,59 +729,7 @@ void Step::vIndexRange(MP_Task mpTask)
       aUpperEntry = EntryBuffer::pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
     }
   }
- /*
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // loop till we get an upper entry
-  while ( ! aUpperEntry) {
-    if ( aUpperEntryBuffer && aUpperEntryBuffer->pNextBuffer() ) {
-      
-      // move to the next buffer
-      aUpperEntryBuffer = aUpperEntryBuffer->pNextBuffer();
-      
-      // position in the index buffer at the upper key
-      aUpperEntry = aUpperEntryBuffer->aPositionQuery(xKeyWrkUpper, eUpperRelnOp);
-    }
-    else
-      break;
-  }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now find the correct upper entry
-  while (aUpperEntry) {
-    
-    //aUpperEntry->vShow(0,pIndex,true);
-    
-//    bool bIsEqual = false;
-//    bool bBefore = _aKeyData(aUpperEntry->aDataArea())
-//                         ->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
-//                                         pIndex->pIdxColVec(), 1,
-//                                         bIsEqual, eUpperRelnOp);
-//
-//    if (! bBefore)
-//      break;
-    
-    eKC eCompare = KeyData::eCompare(aUpperEntry, xKeyWrkUpper);
-    
-    if (eCompare == KC_AFTER)
-      break;
-    
-    if (eCompare == KC_SAME && eUpperRelnOp == RO_LESS_THAN)
-      break;
-    
-    // move to next entry in the buffer
-    aUpperEntry = aUpperEntryBuffer->aNextEntry(aUpperEntry, 0);
-    
-    if ( ! aUpperEntry ) {
-      // get next buffer from the current indexBuffer
-      aUpperEntryBuffer = aUpperEntryBuffer->pNextBuffer();
-      
-      if ( aUpperEntryBuffer )
-        aUpperEntry = aUpperEntryBuffer->aLeadEntry();
-    }
-  }
-  
-  //aUpperEntry->vShow(0,pIndex,true);
-*/
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru the buffers till no more entries starting from
   while (aLowerEntry) {
@@ -927,23 +746,19 @@ void Step::vIndexRange(MP_Task mpTask)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // if aLowerEntry is before aUpperEntry then append to result buffer
     if (bBefore) {
-      // get the dataRow from the hidden index
-      Item* aDataRowEntry = (Item*)_aItem(aLowerEntry->aRefdItem());
       
       // insert row from entry in tempEntryBuffer
-      if ( ! Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows)) {
+      if ( ! Task::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows)) {
         
         // Buffer is Full
         // put this fetchBuffer in session bufferQueue
-        //Q: xVariable = (Object*)pFetchBuffer;
-        //Q: pQueue->bAppend(xVariable.aNestedValue());
         pQueue->vAppend(pFetchBuffer);
-
+        
         // create another fetchBbuffer for the results
         pFetchBuffer = new FetchBuffer(pTable, iSlot);
         
         // insert row from entry in temporary buffer
-        bool bResult = Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows);
+        bool bResult = Task::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows);
         RASSERT(bResult);
       }
       
@@ -973,7 +788,7 @@ void Step::vIndexRange(MP_Task mpTask)
     if (pSession->m_bSessionExiting)
       aLowerEntry = nullptr;
   }
-
+  
 LastBuffer:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -982,165 +797,7 @@ LastBuffer:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
-  //Q: xVariable = (Object*)pFetchBuffer;
-  //Q: pQueue->bAppend(xVariable.aNestedValue());
   pQueue->vAppend(pFetchBuffer);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.scan -- scan the index                                               */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexScan(MP_Task mpTask)
-{
-  ENTRY("vIndexScan"_Stz);
-  
-  Session* pSession = mpTask->m_pSession;
-  Object* pPtrIndex = nullptr;
-  FetchBuffer* pFetchBuffer;
-  GenVar xVariable;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get parameters for the primitive
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.scan"_Stz);
-  
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  Object* pPtrJob;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
-    THROW_INVALID_DSTACK("index.scan"_Stz);
-  
-  Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
-  ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get members from subFetch
-  i8 iSlot = pJob_SubFetch->m_i_Slot;
-  Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
-  
-  i8 iIndexNo = pIndex->iIndexNo();
-  Table* pTable = pIndex->pTable();
-  
-  TablePtn* pPartition = pTable->pPartition(iSlot);
-  IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a result buffer for the results
-  pFetchBuffer = new FetchBuffer(pTable, iSlot);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // position in the first index buffer
-  EntryBuffer* pEntryBuffer = pIndexTree->pFirstH0Buffer();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // did we get an entryBuffer ?
-  if (! pEntryBuffer) {
-    // mark this buffer as the last buffer
-    pFetchBuffer->vIsLast(true);
-    
-    // put the buffer in the session bufferQueue
-    //Q: xVariable = (Object*)pFetchBuffer;
-    //Q: pQueue->bAppend(xVariable.aNestedValue());
-    pQueue->vAppend(pFetchBuffer);
-
-    EXIT();
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the first entry in the buffer
-  Item* aItem = pEntryBuffer->aLeadEntry();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // iterate thru the buffer till no more entries
-  //while (aItem) {
-  while (pEntryBuffer) {
-    
-    // handle empty buffers
-    if (! aItem) {
-      
-      // get next buffer from the current indexBuffer
-      pEntryBuffer = pEntryBuffer->pNextBuffer();
-      
-      if (pEntryBuffer)
-        aItem = pEntryBuffer->aLeadEntry();
-      
-      continue;
-    }
-
-
-    RowData* aRowData = _aRowData(aItem->aDataArea());
-    //aRowData->vShow(pTable->pColumnVec(), true);
-    //vTrace("\n"_Stz);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // insert row from entry in FetchBuffer
-    if ( ! pFetchBuffer->bAppendRow(aRowData)) {
-      
-      // Buffer is Full
-      // put this FetchBuffer in session bufferQueue
-      //Q: xVariable = (Object*)pFetchBuffer;
-      //Q: pQueue->bAppend(xVariable.aNestedValue());
-      pQueue->vAppend(pFetchBuffer);
-
-      // create another FetchBuffer for the results
-      pFetchBuffer = new FetchBuffer(pTable, iSlot);
-      
-      // insert row from entry in new fetchBuffer
-      bool bResult = pFetchBuffer->bAppendRow(aRowData);
-      RASSERT(bResult);
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // move to next entry in the buffer
-    aItem = pEntryBuffer->aNextEntry(aItem, 0);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // did we find an entry ?
-    if (! aItem) {
-      continue;
-//      // get next buffer from the current indexBuffer
-//      pEntryBuffer = pEntryBuffer->pNextBuffer();
-//
-//      if (pEntryBuffer)
-//        aItem = pEntryBuffer->aLeadEntry();
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // check if session exiting
-    if (pSession->m_bSessionExiting)
-      aItem = nullptr;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // mark this buffer as the last buffer
-  pFetchBuffer->vIsLast(true);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // put the buffer in the session bufferQueue
-  //Q: xVariable = (Object*)pFetchBuffer;
-  //Q: pQueue->bAppend(xVariable.aNestedValue());
-  pQueue->vAppend(pFetchBuffer);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.setSingleColumn -- set if single column index                        */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexSetSingleColumn(MP_Task mpTask)
-{
-  ENTRY("vIndexSetSingleColumn"_Stz);
-  
-  Object* pPtrIndex;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.showColumnVec"_Stz);
-  Index* pIndex = _pIndex(pPtrIndex);
-  
-  pIndex->vSetSingleColumn();
   
   EXIT();
 }
@@ -1348,12 +1005,11 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   KeyWrk xKeyWrkUpper;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
-  xKeyWrkUpper.vAddDatum(xVariable,pColumn0,pFormatters);
+  StrVal* aStrVal = _aStrVal(xVariable.aNestedStrVal());
+  
+  xKeyWrkUpper.vAddDatum(aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-    if (pIndex->pIdxColVec()->pGet(iKey)->eDatumType() == DM_FLT)
-      xKeyWrkUpper.vAddPlusInfinity_Flt();
-    else
-      xKeyWrkUpper.vAddPlusInfinity();
+    xKeyWrkUpper.vAddPlusInfinity();
   }
   //xKeyWrkUpper.vShow();
   
@@ -1366,7 +1022,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   if ( ! pEntryBuffer) {
     goto LastBuffer;
   }
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the first entry in the buffer
   aItem = pEntryBuffer->aLeadEntry();
@@ -1374,11 +1030,11 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now position at a level 0 buffer for the upper key
   aUpperEntryBuffer = pIndexTree->pPositionH0Buffer(xKeyWrkUpper);
-
-  eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
-
-  if (aUpperEntryBuffer) {
   
+  eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
+  
+  if (aUpperEntryBuffer) {
+    
     aUpperEntry = aUpperEntryBuffer->pPositionPriorEntry(xKeyWrkUpper);
     aUpperEntry = EntryBuffer::pMoveToNextEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
     
@@ -1386,58 +1042,6 @@ void Step::vIndexUpperBound(MP_Task mpTask)
       aUpperEntry = EntryBuffer::pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
     }
   }
-/*
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // did we get an entry buffer ?
-  if (aUpperEntryBuffer) {
-    aUpperEntry = aUpperEntryBuffer->aPositionQuery(xKeyWrkUpper, eUpperRelnOp);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // loop till we get an upper entry
-  while ( ! aUpperEntry) {
-    if ( aUpperEntryBuffer && aUpperEntryBuffer->pNextBuffer() ) {
-      
-      // move to the next buffer
-      aUpperEntryBuffer = aUpperEntryBuffer->pNextBuffer();
-      
-      // position in the index buffer at the upper key
-      aUpperEntry = aUpperEntryBuffer->aPositionQuery(xKeyWrkUpper, eUpperRelnOp);
-    }
-    else
-      break;
-  }
-  
-  //aUpperEntryBuffer->vShow();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now find the correct upper entry
-  while (aUpperEntry) {
-    
-    //aUpperEntry->vShow(0,pIndex,true);
-    
-    bIsEqual = false;
-    
-    eKC eCompare = KeyData::eCompare(aUpperEntry, xKeyWrkUpper);
-    
-    if (eUpperRelnOp == RO_LESS_THAN && eCompare != KC_BEFORE)
-      break;
-    
-    if (eUpperRelnOp == RO_LESS_EQUAL && eCompare == KC_AFTER)
-      break;
-    
-    // move to next entry in the buffer
-    aUpperEntry = aUpperEntryBuffer->aNextEntry(aUpperEntry, 0);
-    
-    if ( ! aUpperEntry ) {
-      // get next buffer from the current indexBuffer
-      aUpperEntryBuffer = aUpperEntryBuffer->pNextBuffer();
-      
-      if ( aUpperEntryBuffer )
-        aUpperEntry = aUpperEntryBuffer->aLeadEntry();
-    }
-  }
-  */
   
   //aUpperEntry->vShow(0,pIndex,true);
   
@@ -1446,27 +1050,23 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   while (aItem) {
     
     bIsEqual = false;
-
+    
     bBefore = (aItem == aUpperEntry) ? false : true;
     
     if (bBefore) {
-      // get the dataRow from the hidden index
-      Item* aDataRowEntry = (Item*)_aItem(aItem->aRefdItem());
       
       // insert row from entry in tempEntryBuffer
-      if ( ! Task::bAppendRow(pFetchBuffer,aDataRowEntry, pJob_FetchRows)) {
+      if ( ! Task::bAppendRow(pFetchBuffer,aItem, pJob_FetchRows)) {
         
         // Buffer is full
         // put this tempEntryBuffer in session bufferQueue
-        //Q: xVariable = (Object*)pFetchBuffer;
-        //Q: pQueue->bAppend(xVariable.aNestedValue());
         pQueue->vAppend(pFetchBuffer);
-
+        
         // create another result buffer for the results
         pFetchBuffer = new FetchBuffer(pTable, iSlot);
         
         // insert row from entry in temporary buffer
-        bool bResult = Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows);
+        bool bResult = Task::bAppendRow(pFetchBuffer, aItem, pJob_FetchRows);
         RASSERT(bResult);
       }
       
@@ -1500,10 +1100,8 @@ LastBuffer:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
-  //Q: xVariable = (Object*)pFetchBuffer;
-  //Q: pQueue->bAppend(xVariable.aNestedValue());
   pQueue->vAppend(pFetchBuffer);
-
+  
   EXIT();
 }
 
@@ -1559,7 +1157,6 @@ void Step::vIndexVisualize(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /*    PRIVATE                                                                 */
 /*----------------------------------------------------------------------------*/
-
 /*----------------------------------------------------------------------------*/
 /* append a row to a working buffer                                           */
 /*----------------------------------------------------------------------------*/
@@ -1574,12 +1171,17 @@ bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Item* aItem, Job_FetchRows* pJo
     return true;
   }
   
-  RowData* aRowData = _aRowData(aItem->aDataArea());
+  // get the rowBuffer
+  RowBuffer* pRowBuffer = RowBuffer::pRefdRowBuffer(xId);
   
+  // get the dataRow
+  HeadLine* aRowData = pRowBuffer->pRow(xId.iItem());
+
   if (pFetchBuffer->bAppendRow(aRowData))
     return true;
   else
     return false;
+  
 }
 
 /*============================================================================*/

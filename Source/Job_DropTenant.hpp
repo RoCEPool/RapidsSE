@@ -36,7 +36,6 @@ namespace Jobs
   Job_DropTenant* _pJob_DropTenant(void* aAddr);
   
   Job* pJob_DropTenant_pre(Interface::Session* pSession);
-  void vJob_DropTenant_post(Interface::Session* pSession, Job* pJob);
   void vJob_DropTenant_delete(Interface::Session* pSession, Job* pJob);
   void vJob_DropTenant_show(Job* pJob);
   

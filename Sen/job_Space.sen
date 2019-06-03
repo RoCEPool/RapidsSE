@@ -61,8 +61,8 @@
   2 bp::freeSpace number.magnitude str.cat
   "')" str.cat
 
-  grid::thisNode@ pJob_Space job.response!
-  1 grid::thisNode@ pJob_Space job.rowsProcessed!
+  pJob_Space job.response!
+  1 pJob_Space job.rowsProcessed!
 
   pJob_Space job.notice
 

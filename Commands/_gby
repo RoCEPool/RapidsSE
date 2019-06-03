@@ -74,7 +74,7 @@ fetch lineitem "L_ORDERKEY 5 ==";
 fetch lineitem "L_ORDERKEY 10 <=";
 fetch lineitem "L_ORDERKEY 999 ==";
 
-visidx lineitem hidden;
+vistbl lineitem;
 visidx lineitem idx1;
 
 /*============================================================================*/

@@ -8,12 +8,10 @@
 
 
 namespace Jobs      { class Job_CreateTable; class Job_CreateIndex; }
-namespace Data { class EntryBuffer; class IndexTree; }
+namespace Data { class EntryBuffer; class IndexTree; class RowBuffer; }
 
 namespace MetaData
 {
-  // allow for maximum 1025 indexes per table
-  static const i8 C_INDEXES_PER_TABLE = 1025;
 
   void vCheckAssumptions(void);
   
@@ -43,10 +41,14 @@ using namespace MetaData;
 #include "RelationalOps.h"
 
 #include "Column.hpp"
-#include "TablePtn.hpp"
 #include "Slots.hpp"
 #include "Table.hpp"
 #include "Index.hpp"
+
+#include "Schema.hpp"
+#include "Catalog.hpp"
+#include "Tenant.hpp"
+#include "Tenants.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

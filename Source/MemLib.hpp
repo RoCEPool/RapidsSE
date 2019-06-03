@@ -25,30 +25,41 @@ namespace Base
 
   static const i8 C_BYTES_PER_LINE   = 16;
   
+  class Word;
+  
   class MemLib
   {
   private:
-    static const u1 C_ASCII_MIN = 32;
-    static const u1 C_ASCII_MAX = 127;
-    static const i8 C_SIZEOF_WORD = static_cast<i8>(sizeof(i8));
+    static const u1 C_ASCII_MIN_VIZ = ' ';
+    static const u1 C_ASCII_MAX_VIZ = '~';
   
   public:
-    static void* pAddBytes(void* aAddress, i8 iBytes);
+    static void* aAddBytes(void* aAddress, i8 nBytes);
     static void  vAsciiDump(Stz* aText, i8 nBytes);
     static void  vCheckInitialised(void* aAddress, eCN eClass);
     static void  vCheckInitialised(void* aAddress, i8 nBytes);
     static void  vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo);
-    static i8    iCompareWords(const void* aVal1, const void* aVal2, i8 nBytes);
+    static bool  bCompareBytes(const void* aVal1, const void* aVal2, i8 nBytes);
+    static i8    iCompareBytes(const void* aVal1, const void* aVal2, i8 nBytes);
+    static bool  bCompareWords(const void* aVal1, const void* aVal2, i8 nBytes);
+    static void  vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes, eCN eClassNo);
     static void  vDumpWords(void *aAddress, i8 nBytes);
+    static void  vExpand(void* aAddr, i8 nSize, i8 i_Offset, i8 nAddBytes, eCN eClassNo);
+    static w8*   awFindNonZeroEnd(void* aWords, i8 nWords);
     static void  vFreeBlock(void* aBlock, i8 nBytes);
     static i8    iGetTotalMemory(void);
     static void  vHexDump(void *aAddress, i8 nBytes);
     static void* aMallocBlock(i8 nBytes);
     static void  vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo);
+    static bool  bOnBoundary(void* aAddress, i8 nByteBoundary);
+    static i8    nQuantaRequired(i8 nBytes, i8 nSizeQuanta);
     static void  vReset(void);
+    static void  vRotate(void* aArg, i8 nBytes, i8 nBy);
+    static i8    nRoundUp(i8 nBytes, i8 nSizeQuanta);
     static void  vScribble(void* aAddress, i8 nBytes, eCN eClassNo);
     static void  vSet(void* pDst, char bByte, i8 iTimes, eCN eClassNo);
     static void  vStatistics(void);
+    static void* aToBoundary(void* aAddress, i8 nByteBoundary);
     static void  vWordDump(void *aAddress, i8 iSize, i8 iHighlightWord=-1);
     static void  vWordFlip(w8* aWord);
     static void  vZero(void* pDst, i8 iBytes, eCN eClassNo);
@@ -58,6 +69,32 @@ namespace Base
   private:
     template <class T>
     static void vPrintColor(Stz* pFmt, const T& Value, Stz* pColour);
+  
+  public:
+    
+    /*----------------------------------------------------------------------------*/
+    /* word compare of val1 with val2                                             */
+    /*----------------------------------------------------------------------------*/
+    static inline i8 iCompareWords(const void* pVal1, const void* pVal2, i8 nBytes)
+    {
+      //  if (gpAttachMap) {
+      //    gpAttachMap->m_oStatistics.Memory.m_iCompareTotal += nBytes;
+      //  }
+      
+      // nBytes should be a multiple of 8
+      //RASSERT(nBytes % 8 == 0);
+      
+      const i8 *iWord1 = (const i8*)pVal1;
+      const i8 *iWord2 = (const i8*)pVal2;
+      
+      while (nBytes > 0) {
+        if (*iWord1++ != *iWord2++)
+          return iWord1[-1] < iWord2[-1] ? -1 : 1;
+        nBytes -=8;
+      }
+      
+      return 0;
+    }
   };
 }
 

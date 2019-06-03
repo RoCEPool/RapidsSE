@@ -30,7 +30,6 @@ namespace Jobs
   public:
     void vShow(void);
   
-    void   vPublish(void);
     Table* pTable(void);
     void   vTable(Table* pTable);
 

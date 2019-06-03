@@ -128,7 +128,6 @@ i8 ByteRate::nBytesPerSecond(void)
   return iAvgBytesPerSec;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* end timing                                                                 */
 /*----------------------------------------------------------------------------*/
@@ -184,7 +183,7 @@ void ByteRate::vReportStatistics(void)
   m_nNextReport += m_iReportQuantum;
   vTrace("%s %s %llds: sum %s %s/ms %s/s %s/day\n"_Stz,
          
-         oNow.sFormatted()->aChar(),
+         oNow.sz(),
          m_sReportPrefix.aStz(),
          iElapsedSeconds,
          
@@ -192,7 +191,6 @@ void ByteRate::vReportStatistics(void)
          sMilMag.aStz(),
          sSecMag.aStz(),
          sDayMag.aStz());
-  
 }
 
 /*----------------------------------------------------------------------------*/

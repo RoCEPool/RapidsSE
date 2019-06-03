@@ -112,6 +112,8 @@ void StrLib::vAppendString(char** pz, const char* pString)
   while (*pString)
     *z++ = *pString++;
   
+  *z = '\0';
+  
   *pz = z;
 }
 
@@ -175,6 +177,42 @@ void StrLib::vClick(char* aArg)
     break;
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* comma seperate the integer argument                                        */
+/*----------------------------------------------------------------------------*/
+void StrLib::vComma(char* azDst, i8 iArg)
+{
+  char caInteger[32];
+  vToString(caInteger,iArg);
+  
+  char caReverse[32];
+  vReverse(caReverse,caInteger);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  char caRevCommas[32];
+
+  char* aChar = caRevCommas;
+  char* aDigit = caReverse;
+  
+  i8 nDigit = 0;
+  while (*aDigit) {
+    if (nDigit == 3) {
+      *aChar++ = C_COMMA;
+      nDigit = 0;
+    }
+    *aChar++ = *aDigit++;
+    nDigit++;
+  }
+  
+  if (iArg < 0)
+    *aChar++ = '-';
+  
+  *aChar = '\0';
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vReverse(azDst,caRevCommas);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -300,14 +338,14 @@ bool StrLib::bContains(char* s, const char* sArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy src into dst, return bytes copied including '\0' terminator           */
+/* copy src into dst, return bytes copied (not including '\0' terminator)     */
 /*----------------------------------------------------------------------------*/
 i8 StrLib::nCopy(char* psDst, const char* psSrc)
 {
   i8 nBytes = 0;
   
   while ( (*psDst++ = *psSrc++))
-    nBytes++;
+    nBytes++; // won't be executed when \0 is copied
   
   return nBytes;
 }
@@ -1567,14 +1605,16 @@ bool StrLib::bExtractU8(char** ps, u8* aU8, i8 iDigits)
 /* bExtractVarchar: extract a varchar from substr                             */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractVarchar(char** aaSrc,
-                              char* aVarChar, i8 iMaxLength,
-                              bool bSawLeadingEnclosed,
-                              char cEnclosedBy_Leading,
-                              char cEnclosedBy_Trailing,
-                              char cEscapeChar,
-                              char cFieldSeparator,
-                              char cRecordTerminator,
-                              bool bAllowNonPrintable)
+                             char* aVarChar,
+                             i8 iMaxLength,
+                             bool bSawLeadingEnclosed,
+                             char cEnclosedBy_Leading,
+                             char cEnclosedBy_Trailing,
+                             char cEscapeChar,
+                             char cFieldSeparator,
+                             char cRecordTerminator,
+                             bool bAllowNonPrintable,
+                             i8& nChars)
 {
   i8 iLength = 0;
   char *aDst = (char*)aVarChar;
@@ -1685,12 +1725,17 @@ bool StrLib::bExtractVarchar(char** aaSrc,
   // terminate
   *aDst++ = '\0';
   
+  // its not an enclosed varchar so we consider it to be valid
+  if (iLength < iMaxLength)
+    nChars = iLength;
+  else
+    nChars = iMaxLength;
+  
   // if this an enclosed varchar we should have expected to
   // see the trailing enclosedBy
   if (bSawLeadingEnclosed)
     return bSawTrailingEnclosed;
-  
-  // its not an enclosed varchar so we consider it to be valid
+
   return true;
 }
 
@@ -1698,7 +1743,9 @@ bool StrLib::bExtractVarchar(char** aaSrc,
 /* bExtractVarchar: extract a varchar from substr                             */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractVarcharDefault(char** aaSrc,
-                                    char* aVarChar, i8 iMaxLength)
+                                    char* aVarChar,
+                                    i8 iMaxLength,
+                                    i8& nChars)
 {
   i8 iLength = 0;
   
@@ -1778,6 +1825,10 @@ bool StrLib::bExtractVarcharDefault(char** aaSrc,
   *aDst++ = '\0';
   
   // its not an enclosed varchar so we consider it to be valid
+  if (iLength < iMaxLength)
+    nChars = iLength;
+  else
+    nChars = iMaxLength;
   return true;
 }
 
@@ -2320,6 +2371,37 @@ NextIteration:
 }
 
 /*----------------------------------------------------------------------------*/
+/* vReverse: reverse a string                                                 */
+/*----------------------------------------------------------------------------*/
+void StrLib::vReverse(char* azDst, char* azSrc)
+{
+  char* acSrc = azSrc + strlen(azSrc) - 1;
+  char* acDst = azDst;
+
+  while (acSrc >= azSrc)
+    *acDst++ = *acSrc--;
+  
+  *acDst = '\0';
+}
+
+/*----------------------------------------------------------------------------*/
+/* vRotate: rotate a string by given number of characters                     */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRotate(char* zArg, i8 nBy)
+{
+  i8 nLen = iLength(zArg);
+  ASSERT(nBy < nLen);
+  
+  char caFront[nBy];
+  
+  MemLib::vCopy(caFront,zArg,nBy,CN_NONE);
+  
+  MemLib::vMove(zArg,zArg+nBy,nBy,CN_NONE);
+  
+  MemLib::vCopy(zArg + nLen - nBy,caFront,nBy,CN_NONE);
+}
+
+/*----------------------------------------------------------------------------*/
 /* bSame: are two arguments equal (no case)                                   */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bSame(const char* pArg1, const char* pArg2)
@@ -2635,6 +2717,14 @@ char* StrLib::wToPointer(void* pArg, char* wArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* vToString: convert given float into its char/str form                      */
+/*----------------------------------------------------------------------------*/
+void StrLib::vToString(char* psDst, i8 iArg)
+{
+  wToString(iArg,psDst);
+}
+
+/*----------------------------------------------------------------------------*/
 /* wToString: convert given float into its char/str form                      */
 /*----------------------------------------------------------------------------*/
 char* StrLib::wToString(d8 d, char* w)
@@ -2764,7 +2854,6 @@ i8 StrLib::iWordFlipBack(char* aDst, char* aSrc)
   //MemLib::vDumpWords(aSrc, 16);
   
   i8 iLenSrc = StrLib::iSize(aSrc);
-  i8 iDstLen = 0;
   
   i8 iRoundUp = 0;
   i8 iRemainder = iLenSrc % C_BYTES_PER_WORD;
@@ -2786,7 +2875,7 @@ i8 StrLib::iWordFlipBack(char* aDst, char* aSrc)
   //vTrace("AFTER BACK : %s\n"_Stz, aDst);
   //MemLib::vDumpWords(aDst, iDstSize);
   
-  return iDstLen;
+  return iDstSize;
 }
 
 /*============================================================================*/

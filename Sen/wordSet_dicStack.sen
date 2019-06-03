@@ -166,11 +166,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set response in the job
-  grid::thisNode@ pJob job.response!
+  pJob job.response!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sent rows Processed in the job
-  iCount grid::thisNode@ pJob job.rowsProcessed!
+  iCount pJob job.rowsProcessed!
 ;
 
 /*----------------------------------------------------------------------------*/

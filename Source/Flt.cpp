@@ -134,7 +134,7 @@ d8 Flt::dAsD8(void)
 /*----------------------------------------------------------------------------*/
 bool Flt::bIsNull(void)
 {
-  if (C_FLOAT_NULL == m_dFlt)
+  if (C_DATUM_NULL == m_dFlt)
     return true;
   else
     return false;
@@ -145,12 +145,20 @@ bool Flt::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Flt::vSetNull(void)
 {
-  m_dFlt = C_FLOAT_NULL;
+  m_dFlt = C_DATUM_NULL;
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- VLQ ---------------------------------------------------------------------*/
+/* sprint flt datum                                                           */
 /*----------------------------------------------------------------------------*/
+void Flt::vSprint(Stz* aDst)
+{
+  if (bIsNull())
+    StrLib::vSprint(aDst,"null"_Stz);
+  else
+    StrLib::vSprint(aDst,"%g"_Stz,m_dFlt);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Extract and Sprint ------------------------------------------------------*/
@@ -172,92 +180,6 @@ i8 Flt::nCopy(void* aDst, void* aSrc)
 void Flt::vCopy(void* aDst, void* aSrc)
 {
   *(d8*)aDst = *(d8*)aSrc;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a float field from csv substr                                      */
-/*----------------------------------------------------------------------------*/
-bool Flt::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
-{
-  Flt* aFlt = (Flt*)aDst;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  bool bSawEnclosedLeading =
-    StrLib::bSkipLeading(aaSrc,pFormatters->m_cEnclosedBy_Leading);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    aFlt->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // float field processing
-  
-  if ( ! StrLib::bExtractFloat(aaSrc,aFlt->m_dFlt) )
-    return false;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-    
-  bool bSawEnclosedTrailing =
-    StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
-  if (! bSawEnclosedTrailing)
-    return false;
-  
-  // should see a valid field end
-  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a float field from csv substr                                      */
-/*----------------------------------------------------------------------------*/
-bool Flt::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
-{
-  Flt* aFlt = (Flt*)aDst;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  StrLib::vSkipSpaces(aaSrc);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (DtmLib::bTestForNullDefault(aaSrc,pColumn,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    aFlt->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // float field processing
-  
-  if ( ! StrLib::bExtractFloat(aaSrc,aFlt->m_dFlt) )
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  StrLib::vSkipSpaces(aaSrc);
-  
-  // should see a valid field end
-  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
-    return false;
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/

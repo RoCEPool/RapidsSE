@@ -113,6 +113,56 @@ void vTest3(void)
 /*----------------------------------------------------------------------------*/
 void vTest4(void)
 {
+  vTrace("vTest4\n"_Stz);
+
+  HashMap* pHashMap = new HashMap(false,13999,8);
+  
+  //s32 sKey("ALPHA"_Stz);
+  s32 sKey;
+  
+  i8 iKey = 0;
+  for (i8 nRepeats = 0; nRepeats < 10; nRepeats++) {
+    for (i8 nTimes = 0; nTimes < 1000000; nTimes++) {
+      sKey.vSprint("%02lld"_Stz,iKey);
+      
+      pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),iKey,false);
+      iKey++;
+    }
+    pHashMap->vAnalysis(false);
+  }
+  
+//  HashCursor xCursor(pHashMap);
+//
+//  while (xCursor.bIterate()) {
+//    StrLib::vCopyLen(sKey.aChar(),(char*)xCursor.m_yaKey,xCursor.m_nBytes);
+//    vTrace("[%lld] %s/%lld %lld\n"_Stz,
+//           xCursor.m_ia_HashEntry[xCursor.m_i_Stack],
+//           sKey.aChar(),
+//           xCursor.m_nBytes,
+//           xCursor.m_iValue);
+//  }
+  
+//  sKey.vSprint("%02lld"_Stz,4206);
+//  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),4206,true);
+//
+//  sKey.vSprint("%02lld"_Stz,4249);
+//  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),4249,true);
+//
+//  sKey.vSprint("%02lld"_Stz,25396);
+//  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),25396,true);
+//
+//  sKey.vSprint("%02lld"_Stz,28848);
+//  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),28848,true);
+//
+//  sKey.vSprint("%02lld"_Stz,40263);
+//  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),40263,true);
+//
+//  sKey.vSprint("%02lld"_Stz,48122);
+//  pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),48122,true);
+  
+  //pHashMap->vAnalysis(false);
+  
+  delete pHashMap;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -264,6 +314,53 @@ void vTest10(void)
 //      vTrace("%lld == %lld\n"_Stz, i1, i2);
   
 }
+
+/*----------------------------------------------------------------------------*/
+/* test11                                                                     */
+/*----------------------------------------------------------------------------*/
+void vTest11(void)
+{
+  
+  CacheLine xCacheLine;
+
+  xCacheLine.vSetAll('a');
+  
+  // set bytes to be moved + 2 to 'b'
+  xCacheLine.vSet(5, 12, 'b');
+  
+  // dump the cacheline
+  MemLib::vWordDump(&xCacheLine,sizeof(CacheLine));
+  
+  // cut 10 bytes from offset 6
+  MemLib::vCut(&xCacheLine, sizeof(CacheLine), 6, 10,CN_NONE);
+  
+  // dump cacheline after cut
+  MemLib::vWordDump(&xCacheLine,sizeof(CacheLine));
+  
+  xCacheLine.vSetAll('a');
+
+  // set bytes to be moved + 2 to 'b'
+  xCacheLine.vSet(4, sizeof(CacheLine) - 6, 'b');
+  
+  // cut last but 6 bytes
+  MemLib::vCut(&xCacheLine, sizeof(CacheLine), 6, sizeof(CacheLine) - 6,CN_NONE);
+  
+  // dump cacheline after cut
+  MemLib::vWordDump(&xCacheLine,sizeof(CacheLine));
+  
+  xCacheLine.vSetAll('a');
+  
+  // set bytes to be moved + 2 to 'b'
+  xCacheLine.vSet(0, 8, 'b');
+  
+  // cut frst 6 bytes
+  MemLib::vCut(&xCacheLine, sizeof(CacheLine), 0, 6, CN_NONE);
+  
+  // dump cacheline after cut
+  MemLib::vWordDump(&xCacheLine,sizeof(CacheLine));
+  
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

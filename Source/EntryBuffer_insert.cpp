@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntryBuffer_key.cpp -- insert related functions for Entry Buffer           */
+/* EntryBuffer_insert.cpp -- insert related functions for Entry Buffer        */
 /*============================================================================*/
 
 #include "Data.h"
@@ -129,14 +129,6 @@ void EntryBuffer::vCompact(void)
   FreeItem* aFreeEntry;
   Item*     aMoveEntry;
   Item*     xPriorVec[gpAttachMap->m_nIndexLevels];
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  
-  // we can only compact if there are free entries
-  if (! m_aFreeItemChain)
-    return;
-  
-  // loose the free list so vShow() works correctly
-  m_aFreeItemChain = nullptr;
   
   // scan item is the working pointer
   Item* aScanItem = aFirstItem();
@@ -534,9 +526,6 @@ Item* EntryBuffer::aInsertKeyAbs(KeyWrk& xKeyWrk)
   
   vInsertKeySkip(aKeyEntry);
   
-  //if (! m_pIndex->bIsHidden() && m_iBufferHeight)
-  //  bVerifyAdjacent();
-  
   //vShow();
   
   return aKeyEntry;
@@ -815,9 +804,9 @@ bool EntryBuffer::bKeyBeforeBuffer(KeyWrk& xKeyTest)
   
   Item* aFirstEntry = this->aLeadEntry();
   
-  bool bLessThan = KeyData::bLessThan(xKeyTest,aFirstEntry);
+  bool bLessEqual = KeyData::bLessEqual(xKeyTest,aFirstEntry);
   
-  return bLessThan;
+  return bLessEqual;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1037,11 +1026,18 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
     HeapBuffer* pHeapBuffer =
     reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBuffer));
     
-    EntryBuffer* pChildBuffer =
-    reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
-    
-    ASSERT(pChildBuffer->m_pHigherBuffer ==
-           EntryBuffer::pRefdEntryBuffer(aNewEntry)->m_pHigherBuffer);
+    if (m_iBufferHeight) {
+      EntryBuffer* pChildBuffer =
+      reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
+      
+      ASSERT(pChildBuffer->m_pHigherBuffer ==
+             EntryBuffer::pRefdEntryBuffer(aNewEntry)->m_pHigherBuffer);
+    }
+    else {
+      RowBuffer* pChildBuffer =
+      reinterpret_cast<RowBuffer*>(pHeapBuffer->aFirstChunk());
+      RASSERT(pChildBuffer);
+    }
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
