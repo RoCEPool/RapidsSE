@@ -2718,12 +2718,15 @@ void RowCoder::vDumpHead(Stz* szTitle,
 void RowCoder::vDumpHead_large(Stz* szTitle,
                                HeadLine* aHeadLine,
                                ColumnVec* pColVec,
-                               i8 nWords,
+                               i8 nWords_IGNORE,
                                i8 i_HighLight,
                                bool bShortForm)
 {
-
-  vDumpLine(szTitle,aHeadLine,pColVec,nWords,i_HighLight,bShortForm);
+  i8 nWords_large= aHeadLine->nWords();
+  w8* awLastWord = MemLib::awFindNonZeroEnd(aHeadLine,nWords_large);
+  
+  i8 nWords_dump = (awLastWord - (w8*)aHeadLine) + 1;
+  vDumpLine(szTitle,aHeadLine,pColVec,nWords_dump,i_HighLight,bShortForm);
 }
 
 /*----------------------------------------------------------------------------*/

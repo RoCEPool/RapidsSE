@@ -30,9 +30,8 @@ namespace Base
   class MemLib
   {
   private:
-    static const u1 C_ASCII_MIN = 32;
-    static const u1 C_ASCII_MAX = 127;
-    static const i8 C_SIZEOF_WORD = static_cast<i8>(sizeof(i8));
+    static const u1 C_ASCII_MIN_VIZ = ' ';
+    static const u1 C_ASCII_MAX_VIZ = '~';
   
   public:
     static void* aAddBytes(void* aAddress, i8 nBytes);
@@ -47,7 +46,7 @@ namespace Base
     static void  vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes, eCN eClassNo);
     static void  vDumpWords(void *aAddress, i8 nBytes);
     static void  vExpand(void* aAddr, i8 nSize, i8 i_Offset, i8 nAddBytes, eCN eClassNo);
-    static w8*   awFindNonZeroEnd(w8* awWords, i8 nWords);
+    static w8*   awFindNonZeroEnd(void* aWords, i8 nWords);
     static void  vFreeBlock(void* aBlock, i8 nBytes);
     static i8    iGetTotalMemory(void);
     static void  vHexDump(void *aAddress, i8 nBytes);

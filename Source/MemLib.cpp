@@ -202,7 +202,7 @@ void MemLib::vDumpWords(void *aAddress, i8 nBytes)
       
       u1 cChar = *((u1*)aAddress + (i_Word * C_BYTES_PER_WORD) + i_Char);
       
-      if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX)
+      if (cChar < C_ASCII_MIN_VIZ || cChar > C_ASCII_MAX_VIZ)
         vTrace("%c"_Stz, '.');
       else
         vTrace("%c"_Stz, cChar);
@@ -258,7 +258,7 @@ void MemLib::vDumpWords(void *aAddress, i8 nBytes)
   
   for (u8 i_Char = 0; i_Char < i_Byte % C_BYTES_PER_WORD; i_Char++) {
     u1 cChar = *((u1*)aAddress + i_Word + i_Char);
-    if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX)
+    if (cChar < C_ASCII_MIN_VIZ || cChar > C_ASCII_MAX_VIZ)
       vTrace("%c"_Stz, '.');
     else
       vTrace("%c"_Stz, cChar);
@@ -311,7 +311,7 @@ void MemLib::vDumpWords(void *aAddress, i8 nBytes)
       
       u1 cChar = *((u1*)aAddress + (i_Word * C_BYTES_PER_WORD) + i_Char);
       
-      if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX)
+      if (cChar < C_ASCII_MIN_VIZ || cChar > C_ASCII_MAX_VIZ)
         vTrace("%c"_Stz, '.');
       else
         vTrace("%c"_Stz, cChar);
@@ -353,7 +353,7 @@ void MemLib::vDumpWords(void *aAddress, i8 nBytes)
   
   for (u8 i_Char = 0; i_Char < i_Byte % C_BYTES_PER_WORD; i_Char++) {
     u1 cChar = *((u1*)aAddress + i_Word + i_Char);
-    if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX)
+    if (cChar < C_ASCII_MIN_VIZ || cChar > C_ASCII_MAX_VIZ)
       vTrace("%c"_Stz, '.');
     else
       vTrace("%c"_Stz, cChar);
@@ -384,9 +384,11 @@ void MemLib::vExpand(void* aAddr, i8 nSize, i8 i_Offset, i8 nAddBytes, eCN eClas
 /*----------------------------------------------------------------------------*/
 /* find non-zero end of word-array                                            */
 /*----------------------------------------------------------------------------*/
-w8* MemLib::awFindNonZeroEnd(w8* awWords, i8 nWords)
+w8* MemLib::awFindNonZeroEnd(void* aWords, i8 nWords)
 {
-  for (i8 i_Word = 0; i_Word < nWords; i_Word++)
+  w8* awWords = (w8*)aWords;
+  
+  for (i8 i_Word = nWords - 1; i_Word >= 0; i_Word--)
     if (awWords[i_Word])
       return &awWords[i_Word];
   
@@ -465,7 +467,7 @@ void MemLib::vHexDump(void *aAddress, i8 nBytes)
       
       u1 cChar = *((u1*)aAddress + iOffset + i_Char);
       
-      if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX)
+      if (cChar < C_ASCII_MIN_VIZ || cChar > C_ASCII_MAX_VIZ)
         vTrace("%c"_Stz, '.');
       else
         vTrace("%c"_Stz, cChar);
@@ -501,7 +503,7 @@ void MemLib::vHexDump(void *aAddress, i8 nBytes)
   
   for (i8 i_Char = 0; i_Char < nByteInLine; i_Char++) {
     u1 cChar = *((u1*)aAddress + iOffset + i_Char);
-    if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX)
+    if (cChar < C_ASCII_MIN_VIZ || cChar > C_ASCII_MAX_VIZ)
       vTrace("%c"_Stz, '.');
     else
       vTrace("%c"_Stz, cChar);
@@ -726,7 +728,7 @@ void MemLib::vWordDump(void *aAddress, i8 nBytes, i8 iHighlightWord)
 {
   i8 iOffset = 0;
   i8 iWord   = 0;
-  i8 nWords  = MemLib::nQuantaRequired(nBytes,C_SIZEOF_WORD);
+  i8 nWords  = MemLib::nQuantaRequired(nBytes,C_BYTES_PER_WORD);
 
   // dump a header
   vTrace("\n"_Stz);
@@ -761,11 +763,11 @@ void MemLib::vWordDump(void *aAddress, i8 nBytes, i8 iHighlightWord)
     
     iWord++;
       
-    for (i8 i_Byte = 0; i_Byte < C_SIZEOF_WORD; i_Byte++) {
+    for (i8 i_Byte = 0; i_Byte < C_BYTES_PER_WORD; i_Byte++) {
       
       u1 cChar = *((u1*)aAddress + iOffset + i_Byte);
       
-      if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX)
+      if (cChar < C_ASCII_MIN_VIZ || cChar > C_ASCII_MAX_VIZ)
         vTrace("%c"_Stz, '.');
       else
         vTrace("%c"_Stz, cChar);
@@ -835,16 +837,16 @@ void MemLib::vWordDump(void *aAddress, i8 nBytes, i8 iHighlightWord)
 
 
     iWord = 0;
-    iOffset += C_SIZEOF_WORD;
+    iOffset += C_BYTES_PER_WORD;
     vTrace("\n"_Stz);
   }
   
   // end of buffer and not at word boundary ?
-  if (iWord > 0 && iWord < C_SIZEOF_WORD) {
+  if (iWord > 0 && iWord < C_BYTES_PER_WORD) {
     
     for (i8 i = 0; i < iWord; i++) {
       u1 cChar = *((u1*)aAddress + iOffset + i);
-      if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX) {
+      if (cChar < C_ASCII_MIN_VIZ || cChar > C_ASCII_MAX_VIZ) {
         vTrace("%c"_Stz, '.');
       } else {
         vTrace("%c"_Stz, cChar);
