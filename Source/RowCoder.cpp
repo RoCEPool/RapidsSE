@@ -2973,6 +2973,10 @@ void RowCoder::vDumpLine(Stz* szTitle,
       i8 i1C = wGetLogical(aHeadLine,i_Offset,C_1B);
       vTrace(" [ =%lld ]"_Stz,i1C);
     }
+    else if (MC_STR_FIT_1L == eMetaCode) {
+      i8 i1C = wGetLogical(aHeadLine,i_Offset,C_1B);
+      vTrace(" [ =%lld ]"_Stz,i1C);
+    }
     else {
       i8 iDataValue = wGetLogical(aHeadLine,i_Offset,nBytes);
       if (nBytes)
