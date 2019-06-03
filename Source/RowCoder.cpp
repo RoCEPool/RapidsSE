@@ -2765,6 +2765,8 @@ void RowCoder::vDumpLine(Stz* szTitle,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   i8 nFreeBytes = nFreeSpaceHead(aHeadLine,pColVec);
+  if (nFreeBytes < 0)
+    nFreeBytes = 0;
 
   if (aHeadLine->bHasOverflow()) {
     i8 i_Over_rel = aHeadLine->iOverflow2B();
@@ -4641,6 +4643,9 @@ i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec)
   i8 nBytes = nDataBytes(eEncoding);
   
   i8 nFreeBytes = aHeadLine->nBytes() - i_Offset - nBytes;
+  
+  if (nFreeBytes < 0)
+    vDebugPoint();
   
   return nFreeBytes;
 }
