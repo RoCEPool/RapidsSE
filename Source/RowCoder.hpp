@@ -162,7 +162,6 @@ namespace Data
     void vRecodeVchShocoTail(Column* pCol);
 
     void vTwiddleFrom(void);
-    void vTwiddleHeadAllot(void);
     i8   iTwiddleShiftCol(i8& i_Offset_data_);
     void vTwiddleShiftRight(void);
     bool bTwiddleShocoDupe(Column* pCol, i8 i_FromOffset);

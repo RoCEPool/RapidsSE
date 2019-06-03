@@ -2029,14 +2029,6 @@ void RowCoder::vTwiddleFrom(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot the into head                                                        */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vTwiddleHeadAllot(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* find the column and offset which will shift over to MC_OVERFLOW_2B         */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iTwiddleShiftCol(i8& i_Offset_data_)
@@ -2247,6 +2239,8 @@ bool RowCoder::bTwiddleShocoFold(Column* pCol, i8 i_FromOffset)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
   //! to be coded ...
+  
+  
   
   return false;
 }
