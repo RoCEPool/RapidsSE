@@ -2699,10 +2699,13 @@ void RowCoder::vDumpHead(Stz* szTitle,
                          HeadLine* aHeadLine,
                          ColumnVec* pColVec)
 {
-  if (aHeadLine->bIsLargeHead())
+  if (aHeadLine->bIsLargeHead()) {
     vDumpHead_large(szTitle,aHeadLine,pColVec);
-  else
-    vDumpLine(szTitle,aHeadLine,pColVec);
+    return;
+  }
+
+  i8 nWords = aHeadLine->nWords();
+  vDumpLine(szTitle,aHeadLine,pColVec,nWords,C_UNKNOWN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2714,11 +2717,11 @@ void RowCoder::vDumpHead_large(Stz* szTitle,
 {
   i8 nWords_large = aHeadLine->nWords();
   w8* awLastWord  = MemLib::awFindNonZeroEnd(aHeadLine,nWords_large);
-  i8 nWords_dump  = (awLastWord - (w8*)aHeadLine) + 1;
+  i8 nWords_limit = (awLastWord - (w8*)aHeadLine) + 1;
   
   i8 i_LastHeadWord = (nHeadBytes(pColVec) / sizeof(Word) - 1);
 
-  vDumpLine(szTitle,aHeadLine,pColVec,nWords_dump,i_LastHeadWord);
+  vDumpLine(szTitle,aHeadLine,pColVec,nWords_limit,i_LastHeadWord);
 }
 
 /*----------------------------------------------------------------------------*/
