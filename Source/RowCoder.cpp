@@ -2242,7 +2242,7 @@ bool RowCoder::bTwiddleShocoFold(Column* pCol, i8 i_FromOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  return false;
+  //return false;
 
   
   
@@ -2897,8 +2897,10 @@ void RowCoder::vDumpLine(Stz* szTitle,
       i_Offset   = nHeadBytes + 2;
       ayAddr     = ayAdrLogical(aHeadLine,i_Offset);
       nBytes     = nDataBytes(eMetaCode);
-      vTrace("--- --------------- --- -- ------------------- "
-             "-- ------------ - ---------------- -----------\n"_Stz);
+      //vTrace("--- --------------- --- -- ------------------- "
+      //       "-- ------------ - ---------------- -----------\n"_Stz);
+      vTrace("*** *************** *** ** ******************* "
+             "** ************ * **************** **********************\n"_Stz);
     }
     else {
       ayAddr = ayAdrLogical(aHeadLine,i_Offset);
