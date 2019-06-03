@@ -2828,6 +2828,9 @@ void RowCoder::vDumpLine(Stz* szTitle,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  // get no of columns
+  i8 nColumns = pColVec->nItems();
+  
   i8 nFreeBytes = nFreeSpaceHead(aHeadLine,pColVec);
   if (nFreeBytes < 0)
     nFreeBytes = 0;
@@ -2835,18 +2838,29 @@ void RowCoder::vDumpLine(Stz* szTitle,
   if (aHeadLine->bHasOverflow()) {
     i8 i_Over_rel = aHeadLine->iOverflow2B();
     OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
+    eMC eOverMeta = (eMC)aOverLine->w8_1B(1);
+    i8 i_Col_over;
+    for (i_Col_over = 0; i_Col_over < nColumns; i_Col_over++)
+      if (MC_OVERFLOW_2B == aHeadLine->eMetaCode(i_Col_over))
+        break;
 
-    vTrace("HL: 0x%012llx <W>=%lld%s {M}=%lld [OT]=%04x FreeBytes %lld; "
-           "OT: 0x%012x <U>=%lld\n"_Stz,
+
+    vTrace("HL: 0x%012llx <W>=%lld%s {M}=%lld [OT]=%04x @ col %lld %s FreeBytes %lld\n"
+           "OT: 0x%012llx <U>=%lld <M>=%ll02x %s\n"_Stz,
            aHeadLine,
            aHeadLine->nWords(),
            aHeadLine->bIsLargeHead() ? " LARGEHEAD"_Stz : ""_Stz,
-           pColVec->nItems(),
+           nColumns,
            aHeadLine->iOverflow2B(),
+           i_Col_over,
+           pColVec->pGet(i_Col_over)->szColNm(),
            nFreeBytes,
 
            aOverLine,
-           nOverUnits);
+           nOverUnits,
+           eOverMeta,
+           aMC[eOverMeta]
+          );
   }
   else {
     vTrace("HL: 0x%012llx <W>=%lld%s FreeBytes %lld; "
@@ -2859,9 +2873,6 @@ void RowCoder::vDumpLine(Stz* szTitle,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // get no of columns
-  i8 nColumns = pColVec->nItems();
-  
   HV_Rec hvRec(pColVec);
   Datum oDatum;
   
@@ -2878,6 +2889,8 @@ void RowCoder::vDumpLine(Stz* szTitle,
   byte* ayAddr;
   i8    nBytes;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   // for each column
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
     
