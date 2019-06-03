@@ -124,6 +124,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   // child
   nJobs++; JobClass::vJobCat(CN_JOB_SUBEXPORTER);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBFETCH);
+  nJobs++; JobClass::vJobCat(CN_JOB_SUBINFLATE);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBINGESTER);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBLOADER);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBPUBLISH);

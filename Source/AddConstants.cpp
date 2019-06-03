@@ -280,6 +280,7 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_STATUS"_Stz,         CN_JOB_STATUS);
   /*    */ vAddConstant("CN_JOB_SUBEXPORTER"_Stz,    CN_JOB_SUBEXPORTER);
   /*    */ vAddConstant("CN_JOB_SUBFETCH"_Stz,       CN_JOB_SUBFETCH);
+  /*    */ vAddConstant("CN_JOB_SUBINFLATE"_Stz,     CN_JOB_SUBINFLATE);
   /*    */ vAddConstant("CN_JOB_SUBINGESTER"_Stz,    CN_JOB_SUBINGESTER);
   /*    */ vAddConstant("CN_JOB_SUBINSERTER"_Stz,    CN_JOB_SUBINSERTER);
   /*    */ vAddConstant("CN_JOB_SUBLOADER"_Stz,      CN_JOB_SUBLOADER);

@@ -151,6 +151,7 @@ static Stz* aJL[]
 
 #include "Job_SubExporter.hpp"
 #include "Job_SubFetch.hpp"
+#include "Job_SubInflate.hpp"
 #include "Job_SubIngester.hpp"
 #include "Job_SubInserter.hpp"
 #include "Job_SubLoader.hpp"
