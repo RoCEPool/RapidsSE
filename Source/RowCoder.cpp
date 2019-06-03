@@ -350,8 +350,8 @@ void RowCoder::vEncodeEnd(void)
 //  vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
 
 #ifdef WITH_HEAD_OVERFLOW
-  vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
-  vDebugPoint();
+  //vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
+  //vDebugPoint();
 #endif
 
   m_pIntoNub->vHeadBytes_used(m_i_IntoOffset);
@@ -880,7 +880,7 @@ void RowCoder::vCopyOver(void)
                 CN_ROWBUFFER);
 
   i8 nIntoOver_bytes = m_aIntoOver->nBytes();
-  MemLib::vWordDump(m_aIntoOver,nIntoOver_bytes);
+  //MemLib::vWordDump(m_aIntoOver,nIntoOver_bytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put [OT] into the into-head
@@ -890,9 +890,9 @@ void RowCoder::vCopyOver(void)
   m_aIntoHead->vOverflow2B(i_IntoOver_rel);
   m_aIntoHead->vHasOverflow();
 
-  MemLib::vWordDump(m_aIntoHead,m_nHeadBytes);
+  //MemLib::vWordDump(m_aIntoHead,m_nHeadBytes);
   
-  vDumpHead("vCopyOver:: m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
+  //vDumpHead("vCopyOver:: m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 }
@@ -1988,7 +1988,7 @@ void RowCoder::vTwiddleFrom(void)
   
   RASSERT(! m_bEncoding);
   
-  vDumpHead("m_aFromHead"_Stz,m_aFromHead,m_pColVec);
+  //vDumpHead("m_aFromHead"_Stz,m_aFromHead,m_pColVec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate Vch columns and decide how to handle
@@ -2124,7 +2124,7 @@ void RowCoder::vTwiddleShiftRight(void)
   i8 nAddBytes = m_nHeadBytes - i_Offset_shift + _1B_M;
   i8 nFromSize = MemLib::nRoundUp(nLargeHead_used + nAddBytes,sizeof(Word));
   
-  MemLib::vWordDump(m_aFromHead,nFromSize,i_LastHeadWord);
+  //MemLib::vWordDump(m_aFromHead,nFromSize,i_LastHeadWord);
   
   MemLib::vExpand(m_aFromHead,    // address of block
                   nFromSize,      // size of block
@@ -2716,11 +2716,13 @@ void RowCoder::vDumpHead_large(Stz* szTitle,
                                i8 nWords_IGNORE,
                                i8 i_HighLight)
 {
-  i8 nWords_large= aHeadLine->nWords();
-  w8* awLastWord = MemLib::awFindNonZeroEnd(aHeadLine,nWords_large);
+  i8 nWords_large = aHeadLine->nWords();
+  w8* awLastWord  = MemLib::awFindNonZeroEnd(aHeadLine,nWords_large);
+  i8 nWords_dump  = (awLastWord - (w8*)aHeadLine) + 1;
   
-  i8 nWords_dump = (awLastWord - (w8*)aHeadLine) + 1;
-  vDumpLine(szTitle,aHeadLine,pColVec,nWords_dump,i_HighLight);
+  i8 i_LastHeadWord = (nHeadBytes(pColVec) / sizeof(Word) - 1);
+
+  vDumpLine(szTitle,aHeadLine,pColVec,nWords_dump,i_LastHeadWord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2867,7 +2869,7 @@ void RowCoder::vDumpLine(Stz* szTitle,
     for (i8 i_Byte = nBytes; i_Byte < 8; i_Byte++)
       vTrace("__"_Stz);
     vTrace(" "_Stz);
-        
+    
     hvRec->vReset();
     
     // first get the encoded value into datum
