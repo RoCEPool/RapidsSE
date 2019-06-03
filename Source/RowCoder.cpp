@@ -230,6 +230,9 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy & recode row
+
+  //if (m_nTotalHeads <= 10)
+  //  vDumpHead("m_aFromHead"_Stz,m_aFromHead,m_pColVec);
   
 #ifdef WITH_LARGE_ROWS
   vTwiddleFrom();
@@ -835,9 +838,10 @@ void RowCoder::vCopyHead(void)
 #ifdef WITH_HEAD_OVERFLOW
   // don't copy over the <W> at the start of head, and
   //                 the [OT] at the end of the head
+  i8 nBytesToCopy = m_nHeadBytes - _1B_W - (m_bCopyOver ? _2B_OT : 0);
   MemLib::vCopy((byte*)m_aIntoHead + _1B_W,
                 (byte*)m_aFromHead + _1B_W,
-                (m_nHeadBytes - _1B_W - _2B_OT),
+                nBytesToCopy,
                 CN_ROWBUFFER);
 #else
   MemLib::vCopy(m_aIntoHead,
