@@ -42,7 +42,6 @@ namespace Base
     static bool  bCompareBytes(const void* aVal1, const void* aVal2, i8 nBytes);
     static i8    iCompareBytes(const void* aVal1, const void* aVal2, i8 nBytes);
     static bool  bCompareWords(const void* aVal1, const void* aVal2, i8 nBytes);
-    //static i8    iCompareWords(const void* aVal1, const void* aVal2, i8 nBytes);
     static void  vCut(void* aAddr, i8 nSize, i8 i_Offset, i8 nCutBytes, eCN eClassNo);
     static void  vDumpWords(void *aAddress, i8 nBytes);
     static void  vExpand(void* aAddr, i8 nSize, i8 i_Offset, i8 nAddBytes, eCN eClassNo);

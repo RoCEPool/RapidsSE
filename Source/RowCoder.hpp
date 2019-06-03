@@ -194,22 +194,19 @@ namespace Data
                           HeadLine* aHeadLine,
                           ColumnVec* pColVec,
                           i8 nWords = C_UNKNOWN,
-                          i8 i_HighLight = C_UNKNOWN,
-                          bool bShortForm = false);
+                          i8 i_HighLight = C_UNKNOWN);
   
     static void vDumpHead_large(Stz* szTitle,
                                 HeadLine* aHeadLine,
                                 ColumnVec* pColVec,
                                 i8 nWords = C_UNKNOWN,
-                                i8 i_HighLight = C_UNKNOWN,
-                                bool bShortForm = false);
+                                i8 i_HighLight = C_UNKNOWN);
   
     static void vDumpLine(Stz* szTitle,
                           HeadLine* aHeadLine,
                           ColumnVec* pColVec,
                           i8 nWords = C_UNKNOWN,
-                          i8 i_HighLight = C_UNKNOWN,
-                          bool bShortForm = false);
+                          i8 i_HighLight = C_UNKNOWN);
   
    static void vInflate(Row* pRow, HeadLine* aHeadLine);
   

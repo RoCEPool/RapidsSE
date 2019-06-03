@@ -2080,11 +2080,7 @@ void RowCoder::vTwiddleShiftRight(void)
   if (nFromHeadBytes <= m_nHeadBytes)
     return;
   
-  //MemLib::vWordDump(m_aFromHead,16 * sizeof(Word));
-  
   i8 i_LastHeadWord = (m_nHeadBytes / sizeof(Word) - 1);
-  vDumpHead("vTwiddleShiftRight  (before):: m_aFromHead"_Stz,
-                      m_aFromHead,m_pColVec,16,i_LastHeadWord,true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -2141,13 +2137,13 @@ void RowCoder::vTwiddleShiftRight(void)
   
   m_pFromNub->vHeadBytes_used(nLargeHead_used + nAddBytes);
   
-  MemLib::vWordDump(m_aFromHead,nFromSize,i_LastHeadWord);
+  //MemLib::vWordDump(m_aFromHead,nFromSize,i_LastHeadWord);
 
   // 2) temporarily put 0xFFFF as [OT] overflow in last 2 bytes of short head
   i8 i_Overflow2B = m_nHeadBytes - _2B_OT;
   m_aFromHead->vPut(i_Overflow2B,0xFFFF,_2B_IT);
   
-  MemLib::vWordDump(m_aFromHead,nFromSize,i_LastHeadWord);
+  //MemLib::vWordDump(m_aFromHead,nFromSize,i_LastHeadWord);
   
   // 3) put MC_OVERFLOW_2B as metacode for column
   eMC eMetaCode = m_aFromHead->eMetaCode(i_Col_shift);
@@ -2156,7 +2152,7 @@ void RowCoder::vTwiddleShiftRight(void)
   // 4) put <M>
   m_aFromHead->vPut(m_nHeadBytes,eMetaCode,_1B_M);
 
-  MemLib::vWordDump(m_aFromHead,nFromSize,i_LastHeadWord);
+  //MemLib::vWordDump(m_aFromHead,nFromSize,i_LastHeadWord);
 
   m_bCopyOver = true;
 }
@@ -2703,13 +2699,12 @@ void RowCoder::vDumpHead(Stz* szTitle,
                          HeadLine* aHeadLine,
                          ColumnVec* pColVec,
                          i8 nWords,
-                         i8 i_HighLight,
-                         bool bShortForm)
+                         i8 i_HighLight)
 {
   if (aHeadLine->bIsLargeHead())
-    vDumpHead_large(szTitle,aHeadLine,pColVec,16,i_HighLight,bShortForm);
+    vDumpHead_large(szTitle,aHeadLine,pColVec,16,i_HighLight);
   else
-    vDumpLine(szTitle,aHeadLine,pColVec,nWords,i_HighLight,bShortForm);
+    vDumpLine(szTitle,aHeadLine,pColVec,nWords,i_HighLight);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2719,23 +2714,23 @@ void RowCoder::vDumpHead_large(Stz* szTitle,
                                HeadLine* aHeadLine,
                                ColumnVec* pColVec,
                                i8 nWords_IGNORE,
-                               i8 i_HighLight,
-                               bool bShortForm)
+                               i8 i_HighLight)
 {
   i8 nWords_large= aHeadLine->nWords();
   w8* awLastWord = MemLib::awFindNonZeroEnd(aHeadLine,nWords_large);
   
   i8 nWords_dump = (awLastWord - (w8*)aHeadLine) + 1;
-  vDumpLine(szTitle,aHeadLine,pColVec,nWords_dump,i_HighLight,bShortForm);
+  vDumpLine(szTitle,aHeadLine,pColVec,nWords_dump,i_HighLight);
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump head line                                                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDumpLine(Stz* szTitle,
-                         HeadLine* aHeadLine, ColumnVec* pColVec,
-                         i8 nWords, i8 i_HighLight,
-                         bool bShortForm)
+                         HeadLine* aHeadLine,
+                         ColumnVec* pColVec,
+                         i8 nWords,
+                         i8 i_HighLight)
 {
   vTrace("\n%s HeadDump %p :\n"_Stz,szTitle,aHeadLine);
 
@@ -2872,13 +2867,7 @@ void RowCoder::vDumpLine(Stz* szTitle,
     for (i8 i_Byte = nBytes; i_Byte < 8; i_Byte++)
       vTrace("__"_Stz);
     vTrace(" "_Stz);
-    
-    if (bShortForm && MC_SHOCO_TAIL_2T == eMetaCode) {
-      vTrace(" n/a\n"_Stz);
-      i_Offset += nBytes;
-      continue;
-    }
-    
+        
     hvRec->vReset();
     
     // first get the encoded value into datum
