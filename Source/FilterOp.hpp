@@ -1,24 +1,19 @@
 /*============================================================================*/
-/* Mock.h -- Mock namespace                                                   */
+/* FilterOp.hpp -- Filter                                                     */
 /*============================================================================*/
 #pragma once
 
-#include "Data.h"
-
-namespace Mock
+namespace PushDown
 {
-  void vCheckAssumptions(void);
+  class FilterOp
+  {
+  private:
+  
+  public:
+  };
+
+  FilterOp* _pFilterOp(void* aAddr);
 }
-
-using namespace Mock;
-
-//------------------------------------------------------------------------------
-
-#include "MockAgg.hpp"
-#include "MockFilter.hpp"
-#include "MockQuery.hpp"
-
-#include "RefSet.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

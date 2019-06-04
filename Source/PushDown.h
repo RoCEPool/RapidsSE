@@ -14,9 +14,9 @@ using namespace PushDown;
 
 //------------------------------------------------------------------------------
 
-#include "MockAgg.hpp"
-#include "MockFilter.hpp"
-#include "MockQuery.hpp"
+#include "AggOp.hpp"
+#include "FilterOp.hpp"
+#include "QueryOp.hpp"
 
 #include "RefSet.hpp"
 
