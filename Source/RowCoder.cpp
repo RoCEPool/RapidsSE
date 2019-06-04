@@ -1877,6 +1877,7 @@ byte* RowCoder::ayShoco(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
   if (MC_SHOCO_FIT_1C != eEncoding)
     return nullptr;
   
+  // get address of <C><shoco...>
   byte* ayAddress = ayAdrLogical(aHeadLine,i_LastOffset);
   
   return ayAddress;
@@ -2059,17 +2060,34 @@ bool RowCoder::bTwiddleShocoDupe_2H(Column* pCol, i8 i_FromOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  i8 nHeads = m_pIntoNub->nHeads();
+  return false;
   
+  
+  i8 nHeads = m_pIntoNub->nHeads();
+
+  byte* ayShoco_cur   = ayAdrLogical(m_aFromHead,i_FromOffset);
+  i8 nShocoBytes      = *(u1*)ayShoco_cur;
   HeadLine* aTestLine = nullptr;
+  byte* ayShoco_dup   = nullptr;
   
   i8 i_Head;
   for (i_Head = 0; i_Head < nHeads; i_Head++) {
-    aTestLine = m_pIntoNub->aGetHead(i_Head);
+    
+    aTestLine   = m_pIntoNub->aGetHead(i_Head);
+    ayShoco_dup = ayShoco(aTestLine, m_pColVec, pCol);
+    if (! ayShoco_dup)
+      continue;
+  
+    if (! MemLib::bCompareBytes(ayShoco_dup, ayShoco_cur, nShocoBytes))
+      continue;
+    
+    break;
   }
   
   if (i_Head >= nHeads)
     return false;
+  
+  // ... to be coded
   
   return false;
 }
