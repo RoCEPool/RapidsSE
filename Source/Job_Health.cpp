@@ -54,7 +54,7 @@ JobClass xJobClass_Health =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Health_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Ingest_class;
+  *pNextFun = (pFUN*)pJob_InflateRows_class;
   
   return &xJobClass_Health;
 }

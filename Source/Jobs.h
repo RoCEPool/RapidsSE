@@ -105,6 +105,7 @@ static Stz* aJL[]
 
 #include "Job_Health.hpp"
 
+#include "Job_InflateRows.hpp"
 #include "Job_Ingest.hpp"
 #include "Job_InsertRow.hpp"
 #include "Job_InsertTable.hpp"

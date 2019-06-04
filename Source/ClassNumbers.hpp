@@ -126,6 +126,7 @@ enum eCN : u2 // Class Number
   /*  87 0x57    70936B Heap:L */ CN_JOB_FETCHROWS,
   /*  88 0x58   122912B Heap:L */ CN_JOB_GENERATE,
   /*                           */ CN_JOB_HEALTH,
+  /*                           */ CN_JOB_INFLATEROWS,
   /*  89 0x59    71456B Heap:L */ CN_JOB_INGEST,
   /*  90 0x5A   118632B Heap:L */ CN_JOB_INSERTROW,
   /*  91 0x5B    70608B Heap:L */ CN_JOB_INSERTTABLE,
@@ -417,6 +418,7 @@ static Stz* aCN[]
   /*  87 0x57 */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
   /*  88 0x58 */ "JOB_GENERATE"_Stz,        // CN_JOB_GENERATE
   /*          */ "JOB_HEALTH"_Stz,          // CN_JOB_HEALTH
+  /*          */ "JOB_INFLATEROWS"_Stz,     // CN_JOB_INFLATEROWS
   /*  89 0x59 */ "JOB_INGEST"_Stz,          // CN_JOB_INGEST
   /*  90 0x5A */ "JOB_INSERTROW"_Stz,       // CN_JOB_INSERTROW
   /*  91 0x5B */ "JOB_INSERTTABLE"_Stz,     // CN_JOB_INSERTTABLE

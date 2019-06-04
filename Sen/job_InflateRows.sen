@@ -1,0 +1,232 @@
+/*============================================================================*/
+/* job_FetchRows.sen -- Job Fetch Rows                                        */
+/*============================================================================*/
+
+" job_FetchRows.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* generate plan for the fetch                                                */
+/*----------------------------------------------------------------------------*/
+: generatePlan ( "<sWhere>" ^pTable -- ^pPlanner )
+
+  0 0 locals| pPlanner pAccessPath pTable sWhere |
+
+  //sWhere "generatePlan" "%v %v" str.format .
+
+  ( cdt_0 ) planner::new to pPlanner
+  ( cdt_1 ) pTable pPlanner Planner.table!
+
+  ( cdt_2 ) sWhere pPlanner Planner.parseWhere  //"parseWheres" .
+
+  ( cdt_3 ) pPlanner Planner.genPaths           //"genPaths" .
+  ( cdt_4 ) pPlanner Planner.scorePaths         //"scorePaths" .
+  //( cdt_5 ) pPlanner Planner.showPaths
+
+  ( cdt_6 ) pPlanner Planner.matchPaths         //"matchPaths" .
+  //( cdt_6 ) pPlanner Planner.showPaths
+
+  ( cdt_7 ) pPlanner Planner.choosePaths        //"choosePaths" .
+
+  // return planner
+  pPlanner
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn sub fetch jobs                                                       */
+/*----------------------------------------------------------------------------*/
+: spawnSub ( phrase planner Job_FetchRows -- )
+
+  params| pJob_FetchRows pPlanner iPhrase |
+  pJob_FetchRows job_fetchRows.partition@ locals| iFetchPartition |
+
+  -1 iFetchPartition == if
+    // spawn a subFetch job for each partition
+    grid::slots 0
+    do
+      //I "Creating Job_SubFetch %v" fmt.print
+      I iPhrase pPlanner pJob_FetchRows job_fetchRows.spawnSub
+    loop
+  else
+    // spawn a sub fetch job for given partition
+    iFetchPartition grid::toSlot iPhrase pPlanner pJob_FetchRows job_fetchRows.spawnSub
+  then
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute checkFetchRows                                                     */
+/*----------------------------------------------------------------------------*/
+: checkFetchRows ( "<sColumnNm>" "<tableNm>"  partition -- true | errorCode false )
+
+  params| iPartition sTableNm sColumnNm |
+  0 locals| pJob_FetchRows |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  task::this task.job@ to pJob_FetchRows
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check partition if specified (should belong to this node)
+  -1 iPartition != if
+    iPartition grid::partitions >= if EC_INVALID_PARTITION false exit then
+    iPartition grid::toNode grid::thisNode@ != if EC_INVALID_PARTITION false exit then
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the tables folder
+  checkInTables not if false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check table folder exists
+  sTableNm checkIsTableFolder not if false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check it is a table
+  sTableNm checkIsTable not if popTable false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // if retrieving column, check it is a valid column
+  "" sColumnNm str.equal not if
+    sColumnNm sTableNm checkIsColumn not if popTable false exit then
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table dictionary
+  popTable
+
+  // assert in tables
+  assertInTables
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* fetch rows table request (on originating node)                             */
+/*----------------------------------------------------------------------------*/
+: fetchRows_req ( -- <R> )
+
+  >>am <SEED_REQ>
+
+  100 apiState::senLoc
+
+  0 0 0 0 locals| iPhrases sTableNm sColumnNm sWhere |
+  0 0 0 0 locals| pJob_FetchRows pTask pPlanner pTable |
+  0 locals| iFetchPartition |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_FetchRows
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_FETCHROWS pJob_FetchRows object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set task's dictionary stack from path in job
+  pJob_FetchRows job.pushPath
+  task::dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table name, column name  and partition
+  pJob_FetchRows job.objectName@ to sTableNm
+  pJob_FetchRows Job_FetchRows.columnName@ to sColumnNm
+  pJob_FetchRows job_fetchRows.partition@ to iFetchPartition
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we can fetch rows
+  sColumnNm sTableNm iFetchPartition checkFetchRows not if pJob_FetchRows <ERROR_REQUEST> !!am exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the table
+  sTableNm pushTable assert
+  sTableNm find execute to pTable
+  pTable pJob_FetchRows job_fetchRows.table!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the column from the table and set it in the fetchRows job
+  "" sColumnNm str.equal not if
+    sColumnNm pTable table.findColumn pJob_FetchRows job_fetchRows.column!
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the metadata string
+  args.metadata if
+    pTable table.getColumnsAsString "(%v)" str.format pJob_FetchRows job.metadata!
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the where clause from the job
+  pJob_FetchRows job_fetchRows.where@ to sWhere
+
+  400 apiState::senLoc
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the plan for the fetch
+  sWhere pTable generatePlan to pPlanner
+  pPlanner pJob_FetchRows job_fetchRows.planner!
+
+  //pPlanner planner.showPaths
+
+  // assert we have a plan
+  pPlanner assert
+  pPlanner planner.phrases@ to iPhrases
+
+  -1 iFetchPartition == if
+     // set the no of last buffers to no phrases * slots in the job
+     iPhrases grid::slots * pJob_FetchRows job_fetchRows.lastBuffers!
+  else
+    // set the no of last buffers to no phrases in the job
+    iPhrases pJob_FetchRows job_fetchRows.lastBuffers!
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn the sub fetch jobs
+  iPhrases 0
+  do
+    I pPlanner pJob_FetchRows spawnSub
+  loop
+/*
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Now spawn the subInflate jobs and wait for them to complete
+
+  // grab this task's lock
+  pTask task.grabLock
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the acks
+  //grid::slots task::acks!
+  1 task::acks!
+
+  //grid::slots 0
+  //do
+    //I "Creating Job_SubTruncate %v" fmt.print
+    pJob_FetchRows job_fetchRows.spawnSubInflate
+  //loop
+
+  //"fetchRows ack waiting" .
+  task::wait
+*/
+  popTable
+
+  pJob_FetchRows job.notice
+
+  900 apiState::senLoc
+
+  <<am <DONE_REQ>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
