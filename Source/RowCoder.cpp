@@ -1892,7 +1892,7 @@ void RowCoder::vTwiddleFrom(void)
   
   RASSERT(! m_bEncoding);
   
-  vDumpHead("vTwiddleFrom:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
+  //vDumpHead("vTwiddleFrom:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate Vch columns and decide how to handle
@@ -2060,7 +2060,7 @@ bool RowCoder::bTwiddleShocoDupe_2H(Column* pCol, i8 i_FromOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  //return false;
+  return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -2091,7 +2091,7 @@ bool RowCoder::bTwiddleShocoDupe_2H(Column* pCol, i8 i_FromOffset)
     
     aTestLine   = m_pIntoNub->aGetHead(i_Head);
     
-    vDumpHead("vTwiddleFrom:: aTestLine"_Stz,aTestLine,m_pColVec);
+    //vDumpHead("vTwiddleFrom:: aTestLine"_Stz,aTestLine,m_pColVec);
 
     ayShoco_dup = ayShoco(aTestLine, m_pColVec, pCol);
     if (! ayShoco_dup)
@@ -2102,10 +2102,10 @@ bool RowCoder::bTwiddleShocoDupe_2H(Column* pCol, i8 i_FromOffset)
                          ayShoco_dup + _1B_C,   // compressed source
                          *(u1*)ayShoco_dup);    // bytes compressed
     
-    vTrace(" Dup:]%s[ v Cur:]%s[\n"_Stz,acDup,acCur);
-    
     if (! MemLib::bCompareBytes(ayShoco_dup, ayShoco_cur, nShocoBytes))
       continue;
+    
+    //vTrace(" Dup:]%s[ v Cur:]%s[\n"_Stz,acDup,acCur);
     
     bFoundMatch = true;
     break;
@@ -2730,7 +2730,8 @@ void RowCoder::vDumpHead(Stz* szTitle,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 nHeadBytes = aHeadLine->nBytes();
-  
+  i8 nHeadWords = aHeadLine->nWords();
+
   OverLine* aOverLine = nullptr;
   i8 i_Over_rel = aHeadLine->iOverflow2B();
   i8 nOverBytes = C_UNKNOWN;
@@ -2755,9 +2756,11 @@ void RowCoder::vDumpHead(Stz* szTitle,
   else if (aHeadLine->bIsLargeHead()) {
     vTrace("\n%s HeadDump %p :\n"_Stz,szTitle,aHeadLine);
     
-    i8 i_LastHeadWord = (nHeadBytes / sizeof(Word)) - 1;
+    w8* awLastWord  = MemLib::awFindNonZeroEnd(aHeadLine,nHeadWords);
+    i8 nWords = (awLastWord - (w8*)aHeadLine) + 1;
+    i8 nBytes_clipped = nWords * C_BYTES_PER_WORD;
 
-    MemLib::vWordDump(aHeadLine,nHeadBytes,i_LastHeadWord);
+    MemLib::vWordDump(aHeadLine,nBytes_clipped);
   }
   else {
     vTrace("\n%s HeadDump %p :\n"_Stz,szTitle,aHeadLine);
