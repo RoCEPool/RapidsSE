@@ -228,6 +228,8 @@ namespace Data
     static void vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
                                  ColumnVec* pColVec, Column* pCol,
                                  i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeVchShocoDup(Datum* pDatum, HeadLine* aHeadLine,
+                                   Column* pCol, i8 i_Offset);
     static void vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
                                    Column* pCol, i8 i_Offset);
     static void vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,

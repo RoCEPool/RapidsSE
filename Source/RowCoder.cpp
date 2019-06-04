@@ -4463,17 +4463,30 @@ void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
   else if (MC_STR_FIT_1L == eEncoding)
     vDecodeVchSmall(pDatum,aHeadLine,pCol,i_Offset);
   
-  else if (MC_SHOCO_TAIL_2T == eEncoding)
-    vDecodeVchShocoTail(pDatum,aHeadLine,pCol,i_Offset);
-  
   else if (MC_SHOCO_FIT_1C == eEncoding)
     vDecodeVchShocoFit(pDatum,aHeadLine,pCol,i_Offset);
   
+  else if (MC_SHOCO_DUP_3D == eEncoding)
+    vDecodeVchShocoDup(pDatum,aHeadLine,pCol,i_Offset);
+  
+  else if (MC_SHOCO_TAIL_2T == eEncoding)
+    vDecodeVchShocoTail(pDatum,aHeadLine,pCol,i_Offset);
+  
+  // ??
   else if (MC_SHOCO_SPLIT_2T1C == eEncoding)
     vDecodeVchShocoSplit(pDatum,aHeadLine,pCol,i_Offset);
   
   else
     NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode MC_SHOCO_DUP_3D shoco duplicate                                     */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeVchShocoDup(Datum* pDatum, HeadLine* aHeadLine,
+                                  Column* pCol, i8 i_Offset)
+{
+  
 }
 
 /*----------------------------------------------------------------------------*/
