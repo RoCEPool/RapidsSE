@@ -194,16 +194,7 @@ namespace Data
     static void vDumpHead(Stz* szTitle,
                           HeadLine* aHeadLine,
                           ColumnVec* pColVec);
-  
-    static void vDumpHead_large(Stz* szTitle,
-                                HeadLine* aHeadLine,
-                                ColumnVec* pColVec);
-  
-    static void vDumpLine(Stz* szTitle,
-                          HeadLine* aHeadLine,
-                          ColumnVec* pColVec,
-                          i8 i_HighLight = C_UNKNOWN);
-  
+    
    static void vInflate(Row* pRow, HeadLine* aHeadLine);
   
   private:

@@ -2756,40 +2756,12 @@ void RowCoder::vAnalyse(RowNub* pNub)
          );
 }
 
-/*----------------------------------------------------------------------------*/
+//*----------------------------------------------------------------------------*/
 /* dump head line                                                             */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDumpHead(Stz* szTitle,
                          HeadLine* aHeadLine,
                          ColumnVec* pColVec)
-{
-  if (aHeadLine->bIsLargeHead()) {
-    vDumpHead_large(szTitle,aHeadLine,pColVec);
-    return;
-  }
-
-  vDumpLine(szTitle,aHeadLine,pColVec,C_UNKNOWN);
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump large head line                                                       */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDumpHead_large(Stz* szTitle,
-                               HeadLine* aHeadLine,
-                               ColumnVec* pColVec)
-{
-  i8 i_LastHeadWord = (nHeadBytes(pColVec) / sizeof(Word) - 1);
-
-  vDumpLine(szTitle,aHeadLine,pColVec,i_LastHeadWord);
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump head line                                                             */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDumpLine(Stz* szTitle,
-                         HeadLine* aHeadLine,
-                         ColumnVec* pColVec,
-                         i8 i_HighLight)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -2803,7 +2775,7 @@ void RowCoder::vDumpLine(Stz* szTitle,
   if (aHeadLine->bHasOverflow()) {
     vTrace("\n%s HeadDump %p :\n"_Stz,szTitle,aHeadLine);
     
-    MemLib::vWordDump(aHeadLine,nHeadBytes,i_HighLight);
+    MemLib::vWordDump(aHeadLine,nHeadBytes);
 
     aOverLine  = aGetOverRel(aHeadLine,i_Over_rel);
     nOverBytes = aOverLine->nBytes();
