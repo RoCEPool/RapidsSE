@@ -1892,7 +1892,7 @@ void RowCoder::vTwiddleFrom(void)
   
   RASSERT(! m_bEncoding);
   
-  //vDumpHead("vTwiddleFrom:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
+  vDumpHead("vTwiddleFrom:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate Vch columns and decide how to handle
@@ -2073,6 +2073,10 @@ bool RowCoder::bTwiddleShocoDupe_3D(Column* pCol, i8 i_FromOffset)
 
   byte* ayShoco_cur   = (byte*)aFromTail + _1B_U;
   i8 nShocoBytes      = *(u1*)ayShoco_cur;
+  
+  if (nShocoBytes < 8)
+    return false;
+  
   HeadLine* aTestLine = nullptr;
   byte* ayShoco_dup   = nullptr;
   
@@ -2117,16 +2121,26 @@ bool RowCoder::bTwiddleShocoDupe_3D(Column* pCol, i8 i_FromOffset)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // found a duplicate
   
-  // ... to be coded
-  vTrace(" Dup:]%s[ v Cur:]%s[\n"_Stz,acDup,acCur);
+  vTrace(" Dup:>%s<: v Cur:>%s<:,\n"_Stz,acDup,acCur);
   
-  // 0) replace the MC_SHOCO_TAIL_2T with MC_SHOCO_DUP_3D
-  vMetaCode(pCol,MC_SHOCO_DUP_3D);
+  // 0) replace the {M} MC_SHOCO_TAIL_2T for this column with MC_SHOCO_DUP_3D
+  i8 i_Col = pCol->iColumnNo();
+  m_aFromHead->vMetaCode(i_Col,MC_SHOCO_DUP_3D);
+  
+  // 1) replace the 2B abs |FT| with 3B rel [DS]
+  i8 i_DiffShoco = nSub(ayShoco_dup,m_aIntoHead);
+  
+  i8 nFromSize = m_aFromHead->nBytes(); //! could be optimised
+  
+  MemLib::vExpand(m_aFromHead,     // address of block to expand
+                  nFromSize,       // size of block
+                  i_FromOffset,    // offset in block to shift right
+                  1,               // bytes to add
+                  CN_ROWCODER);
 
-  // 1) replace the abs |FT| with rel [3D]
-
-
-  return false;
+  m_aFromHead->vPut(i_FromOffset,i_DiffShoco,_3B_DS);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3839,8 +3853,24 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         break;
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      case MC_SHOCO_DUP_3D:
-        break;
+      case MC_SHOCO_DUP_3D: {
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
+        wWord.m_yaByte[2] = *ayDataByte++;
+        byte* ayShoco_dup = aAdd<byte*>(aHeadLine, (-  wWord.m_iI8) );
+        nCompressed = (i8)*(u1*)ayShoco_dup++;
+        nDecompressed =
+        Compress::iFromShoco(acString,                 // decompressed dest
+                             sizeof(caShoco),          // max destination
+                             ayShoco_dup,              // compressed source
+                             nCompressed);             // bytes compressed
+        *(char**)(aiValue++) = acString;
+        acString += nDecompressed;
+        *acString++ = '\0';
+        pRow->m_i_Wsp += nDecompressed;
+      }
+       break;
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_SHOCO_FIT_1C:

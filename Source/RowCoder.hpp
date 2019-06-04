@@ -10,7 +10,8 @@ namespace Data
   static const i8 _2B_FT = 2;  // |FT| absolute from-tail i_Line
   static const i8 _2B_IT = 2;  // [IT] relative into-tail i_Line
   static const i8 _2B_OT = 2;  // [OT] relative over-tail i_Line
-  
+  static const i8 _3B_DS = 3;  // [DS] relative distance to shoco
+
   static const i8 _1B_C  = 1;  // <C>  1B no. of compressed bytes
   static const i8 _1B_L  = 1;  // <L>  1B string length in bytes
 
