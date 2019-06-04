@@ -88,6 +88,7 @@
 "job_Status.sen" include
 "job_SubExporter.sen" include
 "job_SubFetch.sen" include
+"job_SubInflate.sen" include
 "job_SubIngester.sen" include
 "Job_SubInserter.sen" include
 "job_SubPublish.sen" include

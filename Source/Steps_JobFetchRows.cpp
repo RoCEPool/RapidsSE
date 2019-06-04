@@ -17,6 +17,7 @@ void Step::vAddSteps_JobFetchRows(void)
   vAddStep("Job_fetchRows.partition@"_Stz,   &Step::vJob_FetchRowsPartitionFetch);
   vAddStep("Job_fetchRows.planner!"_Stz,     &Step::vJob_FetchRowsPlannerStore);
   vAddStep("Job_fetchRows.spawnSub"_Stz,     &Step::vJob_FetchRowsSpawnSub);
+  vAddStep("Job_fetchRows.spawnSubInflate"_Stz, &Step::vJob_FetchRowsSpawnSubInflate);
   vAddStep("Job_fetchRows.table!"_Stz,       &Step::vJob_FetchRowsTableStore);
   vAddStep("Job_fetchRows.where@"_Stz,       &Step::vJob_FetchRowsWhereFetch);
   
@@ -24,6 +25,9 @@ void Step::vAddSteps_JobFetchRows(void)
   vAddStep("Job_subFetch.phrase@"_Stz,       &Step::vJob_SubFetchPhraseFetch);
   vAddStep("Job_subFetch.Planner@"_Stz,      &Step::vJob_SubFetchPlannerFetch);
   vAddStep("Job_subFetch.slot@"_Stz,         &Step::vJob_SubFetchSlotFetch);
+  
+  vAddStep("Job_subInflate.jobFetchRows@"_Stz, &Step::vJob_SubInflateJobFetchRowsFetch);
+  vAddStep("Job_subInflate.inflateRows"_Stz, &Step::vJob_SubInflateInflateRows);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -180,6 +184,34 @@ void Step::vJob_FetchRowsSpawnSub(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Job_fetchRows.spawnSubInflate -- spawn sub inflate job                     */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_FetchRowsSpawnSubInflate(MP_Task mpTask)
+{
+  ENTRY("vJob_FetchRowsSpawnSubInflate"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("Job_fetchRows.spawnSubInflate"_Stz);
+  Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
+  
+  JobClass* pJobClass_SubInflate = JobClass::pFind(CN_JOB_SUBINFLATE);
+  
+  Job_SubInflate* pJob_SubInflate =
+  static_cast<Job_SubInflate*>(pJobClass_SubInflate->pPreJob(nullptr));
+  
+  pJob_SubInflate->vSeed(SS_SEED_RUN);
+  
+  pJob_SubInflate->m_pJobFetchRows = pJob_FetchRows;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob_SubInflate,SS_SEED_RUN));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Job_fetchRows.table! -- store table in the job                             */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_FetchRowsTableStore(MP_Task mpTask)
@@ -283,6 +315,141 @@ void Step::vJob_SubFetchSlotFetch(MP_Task mpTask)
   Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
   
   mpTask->m_pDataStack->vPushI8(pJob->m_i_Slot);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subInflate.JobFetchRows@ -- fetch the fetch rows job                   */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_SubInflateJobFetchRowsFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_SubInflateJobFetchRowsFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_subInflate.JobFetchRows@"_Stz);
+  Job_SubInflate* pJob = _pJob_SubInflate(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushPointer(pJob->m_pJobFetchRows);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subInflate.inflateRows -- inflate rows                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_SubInflateInflateRows(MP_Task mpTask)
+{
+  ENTRY("vJob_SubInflateInflateRows"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_subInflate.inflateRows"_Stz);
+  Job_SubInflate* pJob_SubInflate = _pJob_SubInflate(pJobPtr);
+  
+  // get the fetch job
+  Job_FetchRows* pJob_FetchRows = pJob_SubInflate->m_pJobFetchRows;
+  
+  // get the buffer queue
+  Queue* pBufferQueue = pJob_FetchRows->m_pBufferQueue;
+  
+  i8 nRowsProcessed = 0;
+  i8 nLastBuffersScanned = 0;
+  i8 iRowsPrinted = 0;
+  
+  FetchBuffer* pFetchBuffer = nullptr;
+  bool bDone = false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check for errors
+  if ( pJob_FetchRows->m_bHasError ) {
+    
+    // just return
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // retrieve
+  if (pJob_FetchRows->m_bRetrieve) {
+    
+    if (pJob_FetchRows->m_bPrint && gpAttachMap->m_bMetadata) {
+      Column* pCol = pJob_FetchRows->m_pColumn;
+      vTrace("metadata: (%s %s)\n"_Stz, pCol->sColumnName().aChar(), aCT[pCol->eColumnType()]);
+    }
+    
+    // create a row for retrieval
+    pJob_FetchRows->m_pRow = new Row(pJob_FetchRows->m_pTable->pColumnVec());
+    
+    while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
+      
+      pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
+      if (! pFetchBuffer) {
+        //Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
+        Pthread::vSleepMicro(250,CN_JOB_FETCHROWS);
+        continue;
+      }
+      
+      vRetrieveColumn(pJob_FetchRows, pFetchBuffer);
+      nRowsProcessed += pFetchBuffer->nFetchedRows();
+      
+      if (pFetchBuffer->bIsLast()) {
+        nLastBuffersScanned++;
+      }
+      delete pFetchBuffer;
+      pFetchBuffer = nullptr;
+    }
+    
+    if (pJob_FetchRows->m_bPrint)
+      vTrace("success: %lld rows fetched\n"_Stz,nRowsProcessed);
+    else
+      vTrace("success: %lld rows affected\n"_Stz,nRowsProcessed);
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fetch
+  if (gpAttachMap->m_bMetadata) {
+    vTrace("metadata: %s\n"_Stz, pJob_FetchRows->m_sMetadata.aStz());
+  }
+  
+  // create a row for retrieval
+  pJob_FetchRows->m_pRow = new Row(pJob_FetchRows->m_pTable->pColumnVec());
+  
+  while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
+    
+    pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
+    if (! pFetchBuffer) {
+      Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
+      continue;
+    }
+    
+    if (pJob_FetchRows->m_bDisplay) {
+      if (pJob_FetchRows->m_bLimit && iRowsPrinted != pJob_FetchRows->m_iRows)
+        vIterateBuffer(pJob_FetchRows, pFetchBuffer, iRowsPrinted);
+      else
+        vIterateBuffer(pJob_FetchRows, pFetchBuffer, iRowsPrinted);
+    }
+    
+    nRowsProcessed += pFetchBuffer->nFetchedRows();
+    
+    if (pFetchBuffer->bIsLast()) {
+      nLastBuffersScanned++;
+    }
+    delete pFetchBuffer;
+    pFetchBuffer = nullptr;
+  }
+  
+  if (pJob_FetchRows->m_iRows == C_UNKNOWN)
+    vTrace("success: %lld rows fetched\n"_Stz,nRowsProcessed);
+  else {
+    if (pJob_FetchRows->m_bFirst)
+      vTrace("success: %lld rows fetched; first %lld rows printed\n"_Stz, nRowsProcessed, pJob_FetchRows->m_iRows);
+    else if (pJob_FetchRows->m_bLimit)
+      vTrace("success: %lld rows fetched\n"_Stz, pJob_FetchRows->m_iRows);
+    else
+      RASSERT(0);
+  }
   
   EXIT();
 }

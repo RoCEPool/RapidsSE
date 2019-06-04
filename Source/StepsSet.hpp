@@ -544,6 +544,7 @@
   static void vJob_FetchRowsPartitionFetch(Tasks::MP_Task mpTask);
   static void vJob_FetchRowsPlannerStore(Tasks::MP_Task mpTask);
   static void vJob_FetchRowsSpawnSub(Tasks::MP_Task mpTask);
+  static void vJob_FetchRowsSpawnSubInflate(Tasks::MP_Task mpTask);
   static void vJob_FetchRowsTableStore(Tasks::MP_Task mpTask);
   static void vJob_FetchRowsWhereFetch(Tasks::MP_Task mpTask);
 
@@ -639,6 +640,10 @@
   static void vJob_SubFetchPhraseFetch(Tasks::MP_Task mpTask);
   static void vJob_SubFetchPlannerFetch(Tasks::MP_Task mpTask);
   static void vJob_SubFetchSlotFetch(Tasks::MP_Task mpTask);
+
+  // job SubInflate
+  static void vJob_SubInflateJobFetchRowsFetch(Tasks::MP_Task mpTask);
+  static void vJob_SubInflateInflateRows(Tasks::MP_Task mpTask);
 
   // job SubIngester
   static void vJob_SubIngesterBegin(Tasks::MP_Task mpTask);

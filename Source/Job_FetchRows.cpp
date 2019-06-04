@@ -617,14 +617,6 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
 {
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
   
-  GenVar xVariable;
-  i8 nRowsProcessed = 0;
-  i8 nLastBuffersScanned = 0;
-  i8 iRowsPrinted = 0;
-  
-  FetchBuffer* pFetchBuffer = nullptr;
-  bool bDone = false;
-  
   if ( pJob_FetchRows->m_bHasError ) {
     
     vTrace("error: (node%lld) %s\n"_Stz, gpAttachMap->m_pGrid->iThisNode(),
@@ -633,32 +625,16 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
     return;
   }
   
+  i8 nRowsProcessed = 0;
+  i8 nLastBuffersScanned = 0;
+  i8 iRowsPrinted = 0;
+  
+  FetchBuffer* pFetchBuffer = nullptr;
+  bool bDone = false;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // retrieve
-  if (pJob_FetchRows->m_bRetrieve) {
-    
-//    // find the column in the table
-//    Column* pColumn = nullptr;
-//    bool bFound = false;
-//
-//    ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
-//
-//    i8 nTableColumns = pColVec->nItems();
-//    for (i8 i_Col = 0; i_Col < nTableColumns; i_Col++) {
-//
-//      pColumn = pColVec->pGet(i_Col);
-//
-//      if (pColumn->sColumnName().bSame(pJob_FetchRows->m_sColumnName)) {
-//        bFound = true;
-//        break;
-//      }
-//    }
-//
-//    if (!bFound) {
-//      vTrace("error: (node%lld) %s\n"_Stz, gpAttachMap->m_pGrid->iThisNode(),
-//             aEC[EC_INVALID_COLUMN]);
-//      return;
-//    }
+  if ( pJob_FetchRows->m_bRetrieve) {
     
     if (pJob_FetchRows->m_bPrint && gpAttachMap->m_bMetadata) {
       Column* pCol = pJob_FetchRows->m_pColumn;
@@ -737,6 +713,7 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
     else
       RASSERT(0);
   }
+  
 }
 
 /*----------------------------------------------------------------------------*/
