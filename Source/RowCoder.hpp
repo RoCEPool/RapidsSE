@@ -51,10 +51,6 @@ namespace Data
     eMC        m_eFromEncoding;
     i8         m_nFromDataBytes;
   
-    RowParts*  m_pWorkParts;
-    RowNub*    m_pWorkNub;
-    HeadLine*  m_aWorkHead;
-
     Datum      m_oEncodedDatum; // the encoded datum
 
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -152,7 +148,6 @@ namespace Data
     void vMetaCode(Column* pCol, eMC eMetaCode);
     void vMetaPut(Datum* pDatum, Column* pCol);
 
-    void vRecode_Large(void);
     void vRecode_Short(void);
     void vRecodeVch(Column* pCol);
     void vRecodeVchShoco(Column* pCol);

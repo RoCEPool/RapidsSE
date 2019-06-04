@@ -59,48 +59,51 @@ namespace Data
   /* 32 */ MC_DAYS_SUB_1B, // first date -days 1B in data area
   
   /* 33 */ MC_STR_EMPTY,       // empty string (no bytes in data area)
-  /* 34 */ MC_STR_FIT_1L,      // ascii string: 1B=len, then ascii
-  /* 35 */ MC_STR_TAIL_2T,     // ascii string in tail:
+  /* 34 */ MC_STR_DUP_2H,      // duplicate string (2B->head)
+  /* 35 */ MC_STR_FIT_1L,      // ascii string: 1B=len, then ascii
+  /* 36 */ MC_STR_TAIL_2T,     // ascii string in tail:
                                //    head: 2B->tail
                                //    tail: has 1B=len, then ascii
-  /* 36 */ MC_STR_SPLIT_2T1L,  // ascii string split between head and tail:
+  /* 37 */ MC_STR_SPLIT_2T1L,  // ascii string split between head and tail:
                                //   head: 2B->tail, 1B=len, then part-ascii
                                //   tail: has remaining ascii
   
-  /* 37 */ MC_BSTR_FIT_2L,     // bigger ascii string: 2B=len then ascii
-  /* 38 */ MC_BSTR_TAIL_2T,    // bigger ascii string in tail:
+  /* 38 */ MC_BSTR_FIT_2L,     // bigger ascii string: 2B=len then ascii
+  /* 39 */ MC_BSTR_TAIL_2T,    // bigger ascii string in tail:
                                //    head: 2B->tail
                                //    tail: has 2B=len, then ascii
-  /* 39 */ MC_BSTR_SPLIT_2T2L, // bigger ascii string split between head and tail:
+  /* 40 */ MC_BSTR_SPLIT_2T2L, // bigger ascii string split between head and tail:
                                //   head: 2B->tail, 2B=len, part-ascii
                                //   tail: has remaining ascii
   
-  /* 40 */ MC_SHOCO_FIT_1C,    // shoco encoded string: 1B=len, then shoco
-  /* 41 */ MC_SHOCO_TAIL_2T,   // shoco encoded string in tail:
+  /* 41 */ MC_SHOCO_DUP_2H,    // duplicate shoco string (2B->head)
+  /* 42 */ MC_SHOCO_FIT_1C,    // shoco encoded string: 1B=len, then shoco
+  /* 43 */ MC_SHOCO_TAIL_2T,   // shoco encoded string in tail:
                                //    head: 2B->tail
                                //    tail: has 1B=len, then shoco
-  /* 42 */ MC_SHOCO_SPLIT_2T1C,// shoco encoded string split between head and tail:
+  /* 44 */ MC_SHOCO_SPLIT_2T1C,// shoco encoded string split between head and tail:
                                //   head: 2B->tail, 1B=nCompressed, partA-shoco
                                //   tail: has remaining partB-shoco
 
-  /* 43 */ MC_TWOS_1B,         // data area contains 1B two's complement datum
-  /* 44 */ MC_TWOS_2B,         // data area contains 2B two's complement datum
-  /* 45 */ MC_TWOS_3B,         // data area contains 3B two's complement datum
-  /* 46 */ MC_TWOS_4B,         // data area contains 4B two's complement datum
-  /* 47 */ MC_TWOS_5B,         // data area contains 5B two's complement datum
-  /* 48 */ MC_TWOS_6B,         // data area contains 6B two's complement datum
-  /* 49 */ MC_TWOS_7B,         // data area contains 7B two's complement datum
+  /* 45 */ MC_TWOS_1B,         // data area contains 1B two's complement datum
+  /* 46 */ MC_TWOS_2B,         // data area contains 2B two's complement datum
+  /* 47 */ MC_TWOS_3B,         // data area contains 3B two's complement datum
+  /* 48 */ MC_TWOS_4B,         // data area contains 4B two's complement datum
+  /* 49 */ MC_TWOS_5B,         // data area contains 5B two's complement datum
+  /* 50 */ MC_TWOS_6B,         // data area contains 6B two's complement datum
+  /* 51 */ MC_TWOS_7B,         // data area contains 7B two's complement datum
   
   //       MC_ROW_REF_2B,      // nB in data area being a row reference [RR]
   //       MC_RETURN,          // return
-  /* 50 */ MC_OVERFLOW_2B,     // 2B in data area indicating overflow tail
+  /* 52 */ MC_OVERFLOW_2B,     // 2B in data area indicating overflow tail
   
-  /* 51 */ MC_ENUMS,
+  /* 53 */ MC_ENUMS,
   };
   
   static Stz* aMC[]
   {
   /* 00 */ "MC_NULL"_Stz,
+  
   /* 01 */ "MC_1B"_Stz,
   /* 02 */ "MC_2B"_Stz,
   /* 03 */ "MC_3B"_Stz,
@@ -109,6 +112,7 @@ namespace Data
   /* 06 */ "MC_6B"_Stz,
   /* 07 */ "MC_7B"_Stz,
   /* 08 */ "MC_8B"_Stz,
+  
   /* 09 */ "MC_MINUS_ONE"_Stz,
   /* 10 */ "MC_ZERO"_Stz,
   /* 11 */ "MC_ONE"_Stz,
@@ -121,38 +125,48 @@ namespace Data
   /* 18 */ "MC_EIGHT"_Stz,
   /* 19 */ "MC_NINE"_Stz,
   /* 20 */ "MC_TEN"_Stz,
+  
   /* 21 */ "MC_SAME"_Stz,
   /* 22 */ "MC_ADD_1B"_Stz,
   /* 23 */ "MC_ADD_2B"_Stz,
   /* 24 */ "MC_SUB_1B"_Stz,
   /* 25 */ "MC_SUB_2B"_Stz,
+  
   /* 26 */ "MC_FALSE"_Stz,
   /* 27 */ "MC_TRUE"_Stz,
+  
   /* 28 */ "MC_DATE_E0_2B"_Stz,
   /* 29 */ "MC_DATE_E1_2B"_Stz,
   /* 30 */ "MC_DATE_E2_2B"_Stz,
+  
   /* 31 */ "MC_DAYS_ADD_1B"_Stz,
   /* 32 */ "MC_DAYS_SUB_1B"_Stz,
+  
   /* 33 */ "MC_STR_EMPTY"_Stz,
-  /* 34 */ "MC_STR_FIT_1L"_Stz,
-  /* 35 */ "MC_STR_TAIL_2T"_Stz,
-  /* 36 */ "MC_STR_SPLIT_2T1L"_Stz,
-  /* 37 */ "MC_BSTR_FIT_2L"_Stz,
-  /* 38 */ "MC_BSTR_TAIL_2T"_Stz,
-  /* 39 */ "MC_BSTR_SPLIT_2T2L"_Stz,
-  /* 40 */ "MC_SHOCO_FIT_1C"_Stz,
-  /* 41 */ "MC_SHOCO_TAIL_2T"_Stz,
-  /* 42 */ "MC_SHOCO_SPLIT_2T1C"_Stz,
-  /* 43 */ "MC_TWOS_1B"_Stz,
-  /* 44 */ "MC_TWOS_2B"_Stz,
-  /* 45 */ "MC_TWOS_3B"_Stz,
-  /* 46 */ "MC_TWOS_4B"_Stz,
-  /* 47 */ "MC_TWOS_5B"_Stz,
-  /* 48 */ "MC_TWOS_6B"_Stz,
-  /* 49 */ "MC_TWOS_7B"_Stz,
+  /* 34 */ "MC_STR_DUP_2H"_Stz,
+  /* 35 */ "MC_STR_FIT_1L"_Stz,
+  /* 36 */ "MC_STR_TAIL_2T"_Stz,
+  /* 37 */ "MC_STR_SPLIT_2T1L"_Stz,
+  
+  /* 38 */ "MC_BSTR_FIT_2L"_Stz,
+  /* 39 */ "MC_BSTR_TAIL_2T"_Stz,
+  /* 40 */ "MC_BSTR_SPLIT_2T2L"_Stz,
+  
+  /* 41 */ "MC_SHOCO_DUP_2H"_Stz,
+  /* 42 */ "MC_SHOCO_FIT_1C"_Stz,
+  /* 43 */ "MC_SHOCO_TAIL_2T"_Stz,
+  /* 44 */ "MC_SHOCO_SPLIT_2T1C"_Stz,
+  
+  /* 45 */ "MC_TWOS_1B"_Stz,
+  /* 46 */ "MC_TWOS_2B"_Stz,
+  /* 47 */ "MC_TWOS_3B"_Stz,
+  /* 48 */ "MC_TWOS_4B"_Stz,
+  /* 49 */ "MC_TWOS_5B"_Stz,
+  /* 50 */ "MC_TWOS_6B"_Stz,
+  /* 51 */ "MC_TWOS_7B"_Stz,
   /*    */ //"MC_ROW_REF_2B"_Stz,
-  /* 50 */ "MC_OVERFLOW_2B"_Stz,
-  /* 51 */ "MC_ENUMS"_Stz,
+  /* 52 */ "MC_OVERFLOW_2B"_Stz,
+  /* 53 */ "MC_ENUMS"_Stz,
   };
   
   static i8 nMC[] = // size of meta code
@@ -198,41 +212,43 @@ namespace Data
   /* 32 */ 2, // MC_DAYS_SUB_1B, // first date -days 1B in data area
   
   /* 33 */ 0, // MC_STR_EMPTY,   // empty string (no bytes in data area)
-  /* 34 */ 1, // MC_STR_FIT_1L,  // ascii string: 1B=len, then ascii
-  /* 35 */ 2, // MC_STR_TAIL_2T,      // longer ascii string:
+  /* 34 */ 2, // MC_STR_DUP_2H,  // duplicate string (2B->head)
+  /* 35 */ 1, // MC_STR_FIT_1L,  // ascii string: 1B=len, then ascii
+  /* 36 */ 2, // MC_STR_TAIL_2T, // longer ascii string:
                                  //    head: 2B->tail
                                  //    tail: has 1B=len, then ascii
-  /* 36 */ 3, // MC_STR_SPLIT_2T1L,// ascii string:
+  /* 37 */ 3, // MC_STR_SPLIT_2T1L,// ascii string:
                                    //   head: 2B->tail, 1B=len, then part-ascii
                                    //   tail: has remaining ascii
   
-  /* 37 */ 2, // MC_BSTR_FIT_2L,   // bigger ascii string: 2B=len then ascii
-  /* 38 */ 2, // MC_BSTR_TAIL_2T,       // bigger ascii string:
+  /* 38 */ 2, // MC_BSTR_FIT_2L,   // bigger ascii string: 2B=len then ascii
+  /* 39 */ 2, // MC_BSTR_TAIL_2T,  // bigger ascii string:
                                    //    head: 2B->tail
                                    //    tail: has 2B=len, then ascii
-  /* 39 */ 3, // MC_BSTR_SPLIT_2T2L, // bigger ascii string:
+  /* 40 */ 3, // MC_BSTR_SPLIT_2T2L, // bigger ascii string:
                                      //   head: 2B->tail, 2B=len, part-ascii
                                      //   tail: has remaining ascii
   
-  /* 40 */ 1, // MC_SHOCO_FIT_1C,    // shoco encoded string: 1B=len, then shoco
-  /* 41 */ 2, // MC_SHOCO_TAIL_2T,        // shoco encoded string:
+  /* 41 */ 2, // MC_SHOCO_DUP_2H,    // duplicate shoco string (2B->head)
+  /* 42 */ 1, // MC_SHOCO_FIT_1C,    // shoco encoded string: 1B=len, then shoco
+  /* 43 */ 2, // MC_SHOCO_TAIL_2T,   // shoco encoded string:
                                      //    head: 2B->tail
                                      //    tail: has 1B=len, then shoco
-  /* 42 */ 3, // MC_SHOCO_SPLIT_2T1C,// shoco encoded string:
+  /* 44 */ 3, // MC_SHOCO_SPLIT_2T1C,// shoco encoded string:
                                      //   head: 2B->tail, 1B=len, part-shoco
                                      //   tail: has remaining shoco
   
-  /* 43 */ 1, // MC_TWOS_1B,         // data area contains 1B two's complement datum
-  /* 44 */ 2, // MC_TWOS_2B,         // data area contains 2B two's complement datum
-  /* 45 */ 3, // MC_TWOS_3B,         // data area contains 3B two's complement datum
-  /* 46 */ 4, // MC_TWOS_4B,         // data area contains 4B two's complement datum
-  /* 47 */ 5, // MC_TWOS_5B,         // data area contains 5B two's complement datum
-  /* 48 */ 6, // MC_TWOS_6B,         // data area contains 6B two's complement datum
-  /* 49 */ 7, // MC_TWOS_7B,         // data area contains 7B two's complement datum
+  /* 45 */ 1, // MC_TWOS_1B,         // data area contains 1B two's complement datum
+  /* 46 */ 2, // MC_TWOS_2B,         // data area contains 2B two's complement datum
+  /* 47 */ 3, // MC_TWOS_3B,         // data area contains 3B two's complement datum
+  /* 48 */ 4, // MC_TWOS_4B,         // data area contains 4B two's complement datum
+  /* 49 */ 5, // MC_TWOS_5B,         // data area contains 5B two's complement datum
+  /* 50 */ 6, // MC_TWOS_6B,         // data area contains 6B two's complement datum
+  /* 51 */ 7, // MC_TWOS_7B,         // data area contains 7B two's complement datum
   
-  /* 50 */ 2, // MC_OVERFLOW_2B,     // 2B in data area indicating overflow tail
+  /* 52 */ 2, // MC_OVERFLOW_2B,     // 2B in data area indicating overflow tail
   
-  /* 51 */ 0  // MC_ENUMS,
+  /* 53 */ 0  // MC_ENUMS,
   };
   
   static const i8 C_ERA_0 =  0; // 1900
