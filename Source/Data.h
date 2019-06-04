@@ -295,6 +295,7 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
 #include "Row.hpp"
 #include "SkipRoots.hpp"
 
+#include "DataBuffer.hpp"
 #include "RowBuffer.hpp"
 #include "RowCoder.hpp"
 #include "TablePtn.hpp"
