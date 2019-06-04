@@ -1895,7 +1895,7 @@ void RowCoder::vTwiddleFrom(void)
       continue;
     
     // can we find a duplicate?
-    if (bTwiddleShocoDupe(pCol,i_FromOffset))
+    if (bTwiddleShocoDupe_2H(pCol,i_FromOffset))
       continue;
     
     // can we fold a non-dupe string into ?
@@ -2035,6 +2035,14 @@ void RowCoder::vTwiddleShiftRight(void)
 
 /*----------------------------------------------------------------------------*/
 /* search for a duplicate shoco tail in the into nub                          */
+/*----------------------------------------------------------------------------*/
+bool RowCoder::bTwiddleShocoDupe_2H(Column* pCol, i8 i_FromOffset)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  return false;
+}
+
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bTwiddleShocoDupe(Column* pCol, i8 i_FromOffset)
 {
