@@ -2120,12 +2120,11 @@ bool RowCoder::bTwiddleShocoDupe_2H(Column* pCol, i8 i_FromOffset)
   // ... to be coded
   vTrace(" Dup:]%s[ v Cur:]%s[\n"_Stz,acDup,acCur);
   
-  // 0) replace the MC_SHOCO_TAIL_2T with MC_SHOCO_DUP_2H
-  vMetaCode(pCol,MC_SHOCO_DUP_2H);
+  // 0) replace the MC_SHOCO_TAIL_2T with MC_SHOCO_DUP_3D
+  vMetaCode(pCol,MC_SHOCO_DUP_3D);
 
-  // 1) replace the abs |FT| with rel [2H]
+  // 1) replace the abs |FT| with rel [3D]
 
-  vMetaCode(pCol,MC_SHOCO_DUP_2H);
 
   return false;
 }
@@ -2946,7 +2945,7 @@ void RowCoder::vDumpHead(Stz* szTitle,
       vDebugPoint();
     if (eMetaCode == MC_STR_DUP_2H)
       vDebugPoint();
-    if (eMetaCode == MC_SHOCO_DUP_2H)
+    if (eMetaCode == MC_SHOCO_DUP_3D)
       vDebugPoint();
   }
   
@@ -3840,7 +3839,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         break;
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      case MC_SHOCO_DUP_2H:
+      case MC_SHOCO_DUP_3D:
         break;
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4064,7 +4063,7 @@ i8 RowCoder::nDataBytes(eMC eMetaCode)
       
     case MC_STR_EMPTY:        return 0;
       
-    case MC_STR_DUP_2H:      return 2;
+    case MC_STR_DUP_2H:       return 2;
     case MC_STR_FIT_1L:       return 1;
     case MC_STR_TAIL_2T:      return 2;
     case MC_STR_SPLIT_2T1L:   return 3;
@@ -4073,7 +4072,7 @@ i8 RowCoder::nDataBytes(eMC eMetaCode)
     case MC_BSTR_TAIL_2T:     return 2;
     case MC_BSTR_SPLIT_2T2L:  return 4;
       
-    case MC_SHOCO_DUP_2H:     return 1;
+    case MC_SHOCO_DUP_3D:     return 3;
     case MC_SHOCO_FIT_1C:     return 1;
     case MC_SHOCO_TAIL_2T:    return 2;
     case MC_SHOCO_SPLIT_2T1C: return 3;

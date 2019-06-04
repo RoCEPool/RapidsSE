@@ -76,7 +76,7 @@ namespace Data
                                //   head: 2B->tail, 2B=len, part-ascii
                                //   tail: has remaining ascii
   
-  /* 41 */ MC_SHOCO_DUP_2H,    // duplicate shoco string (2B->head)
+  /* 41 */ MC_SHOCO_DUP_3D,    // duplicate shoco string (3B->shoco)
   /* 42 */ MC_SHOCO_FIT_1C,    // shoco encoded string: 1B=len, then shoco
   /* 43 */ MC_SHOCO_TAIL_2T,   // shoco encoded string in tail:
                                //    head: 2B->tail
@@ -152,7 +152,7 @@ namespace Data
   /* 39 */ "MC_BSTR_TAIL_2T"_Stz,
   /* 40 */ "MC_BSTR_SPLIT_2T2L"_Stz,
   
-  /* 41 */ "MC_SHOCO_DUP_2H"_Stz,
+  /* 41 */ "MC_SHOCO_DUP_3D"_Stz,
   /* 42 */ "MC_SHOCO_FIT_1C"_Stz,
   /* 43 */ "MC_SHOCO_TAIL_2T"_Stz,
   /* 44 */ "MC_SHOCO_SPLIT_2T1C"_Stz,
@@ -229,7 +229,7 @@ namespace Data
                                      //   head: 2B->tail, 2B=len, part-ascii
                                      //   tail: has remaining ascii
   
-  /* 41 */ 2, // MC_SHOCO_DUP_2H,    // duplicate shoco string (2B->head)
+  /* 41 */ 3, // MC_SHOCO_DUP_3D,    // duplicate shoco string (3B->shoco)
   /* 42 */ 1, // MC_SHOCO_FIT_1C,    // shoco encoded string: 1B=len, then shoco
   /* 43 */ 2, // MC_SHOCO_TAIL_2T,   // shoco encoded string:
                                      //    head: 2B->tail
