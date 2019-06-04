@@ -1873,7 +1873,9 @@ byte* RowCoder::ayShoco(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
   
   eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,
                                i_LastColumn,i_LastOffset);
-  ASSERT(MC_SHOCO_FIT_1C == eEncoding);
+  
+  if (MC_SHOCO_FIT_1C != eEncoding)
+    return nullptr;
   
   byte* ayAddress = ayAdrLogical(aHeadLine,i_LastOffset);
   
