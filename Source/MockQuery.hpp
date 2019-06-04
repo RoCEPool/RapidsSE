@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Mock
+namespace PushDown
 {
   class MockQuery
   {

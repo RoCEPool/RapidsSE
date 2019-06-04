@@ -2,7 +2,7 @@
 /* MockFilter.cpp -- Mock Filter                                              */
 /*============================================================================*/
 
-#include "Mock.h"
+#include "PushDown.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-MockFilter* Mock::_pMockFilter(void* aAddr)
+MockFilter* PushDown::_pMockFilter(void* aAddr)
 {
   MockFilter* pMockFilter = reinterpret_cast<MockFilter*>(aAddr);
   

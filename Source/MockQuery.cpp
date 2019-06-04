@@ -2,7 +2,7 @@
 /* MockQuery.cpp -- Mock Query                                                */
 /*============================================================================*/
 
-#include "Mock.h"
+#include "PushDown.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-MockQuery* Mock::_pMockQuery(void* aAddr)
+MockQuery* PushDown::_pMockQuery(void* aAddr)
 {
   MockQuery* pMockQuery = reinterpret_cast<MockQuery*>(aAddr);
   
