@@ -69,7 +69,6 @@
 //#define WITH_QUICKER_INFLATE    // quicker inflate test
 
 #define WITH_LARGE_ROWS         // encode cross check
-#define WITH_HEAD_OVERFLOW      // encode head overflow
 
 /*============================================================================*/
 /* end                                                                        */

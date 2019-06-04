@@ -272,11 +272,7 @@ void RowCoder::vEncodeBegin(RowNub* pIntoNub)
   // initialise the into row
   
   m_pIntoNub->vReset();
-#ifdef WITH_HEAD_OVERFLOW
   m_i_IntoHead = m_pIntoNub->iAllotHead(C_LARGEHEAD);
-#else
-  m_i_IntoHead = m_pIntoNub->iAllotHead(m_nHeadBytes);
-#endif
   ASSERT(0 == m_i_IntoHead);
 
   m_aIntoHead    = m_pIntoNub->aGetHead();
@@ -337,10 +333,8 @@ void RowCoder::vEncodeEnd(void)
 //  
 //  vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
 
-#ifdef WITH_HEAD_OVERFLOW
   //vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
   //vDebugPoint();
-#endif
 
   m_pIntoNub->vHeadBytes_used(m_i_IntoOffset);
   
@@ -820,7 +814,6 @@ void RowCoder::vCopyHead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 
-#ifdef WITH_HEAD_OVERFLOW
   // don't copy over the <W> at the start of head, and
   //                 the [OT] at the end of the head
   i8 nBytesToCopy = m_nHeadBytes - _1B_W - (m_bCopyOver ? _2B_OT : 0);
@@ -828,12 +821,6 @@ void RowCoder::vCopyHead(void)
                 (byte*)m_aFromHead + _1B_W,
                 nBytesToCopy,
                 CN_ROWBUFFER);
-#else
-  MemLib::vCopy(m_aIntoHead,
-                m_aFromHead,
-                m_nHeadBytes,
-                CN_ROWBUFFER);
-#endif
   
 #ifdef WITH_TRACE_ENCODING
   vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);

@@ -374,11 +374,8 @@ namespace Data
       //i8 nBytes = pColVec->nItems() * 10;
       //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
       
-      
-#ifdef WITH_HEAD_OVERFLOW
-      nBytes     = 24;
+      nBytes     = 32;
       nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(Word));
-#endif
 
       i8 nBytesHead = nHeadWords * (i8)C_BYTES_PER_WORD;
       RASSERT(nBytesHead >= C_HEAD_MIN_BYTES);
