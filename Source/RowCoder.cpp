@@ -1892,7 +1892,7 @@ void RowCoder::vTwiddleFrom(void)
   
   RASSERT(! m_bEncoding);
   
-  //vDumpHead("m_aFromHead"_Stz,m_aFromHead,m_pColVec);
+  vDumpHead("vTwiddleFrom:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate Vch columns and decide how to handle
@@ -2060,7 +2060,7 @@ bool RowCoder::bTwiddleShocoDupe_2H(Column* pCol, i8 i_FromOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  return false;
+  //return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -2068,7 +2068,10 @@ bool RowCoder::bTwiddleShocoDupe_2H(Column* pCol, i8 i_FromOffset)
   if (nHeads <= 1)
     return false;
 
-  byte* ayShoco_cur   = ayAdrLogical(m_aFromHead,i_FromOffset);
+  i8 i_FromTail = wGetLogical(m_aFromHead,i_FromOffset,_2B_FT);
+  TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail);
+
+  byte* ayShoco_cur   = (byte*)aFromTail + _1B_U;
   i8 nShocoBytes      = *(u1*)ayShoco_cur;
   HeadLine* aTestLine = nullptr;
   byte* ayShoco_dup   = nullptr;
@@ -2087,6 +2090,9 @@ bool RowCoder::bTwiddleShocoDupe_2H(Column* pCol, i8 i_FromOffset)
   for (i_Head = 0; i_Head < nHeads - 1; i_Head++) {
     
     aTestLine   = m_pIntoNub->aGetHead(i_Head);
+    
+    vDumpHead("vTwiddleFrom:: aTestLine"_Stz,aTestLine,m_pColVec);
+
     ayShoco_dup = ayShoco(aTestLine, m_pColVec, pCol);
     if (! ayShoco_dup)
       continue;
@@ -2096,7 +2102,7 @@ bool RowCoder::bTwiddleShocoDupe_2H(Column* pCol, i8 i_FromOffset)
                          ayShoco_dup + _1B_C,   // compressed source
                          *(u1*)ayShoco_dup);    // bytes compressed
     
-    vTrace(" [[Dup]%s] v [[Cur]%s] \n"_Stz,acDup,acCur);
+    vTrace(" Dup:]%s[ v Cur:]%s[\n"_Stz,acDup,acCur);
     
     if (! MemLib::bCompareBytes(ayShoco_dup, ayShoco_cur, nShocoBytes))
       continue;

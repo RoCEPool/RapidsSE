@@ -311,7 +311,9 @@ namespace Data
         eMC eEncoding = aHeadLine->eMetaCode(i_Col);
         
         if (MC_OVERFLOW_2T == eEncoding) {
-          i_Offset_ = aHeadLine->nBytes() + _1B_U + _1B_M;
+          i_Offset_ = aHeadLine->nBytes() + _1B_U;
+          eEncoding = (eMC)wGetLogical(aHeadLine,i_Offset_++,C_1B);
+          i_Offset_ += nDataBytes(eEncoding);
         }
         else {
           i_Offset_ += nDataBytes(eEncoding);
