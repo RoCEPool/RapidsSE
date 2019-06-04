@@ -197,27 +197,7 @@
   do
     I pPlanner pJob_FetchRows spawnSub
   loop
-/*
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Now spawn the subInflate jobs and wait for them to complete
 
-  // grab this task's lock
-  pTask task.grabLock
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the acks
-  //grid::slots task::acks!
-  1 task::acks!
-
-  //grid::slots 0
-  //do
-    //I "Creating Job_SubTruncate %v" fmt.print
-    pJob_FetchRows job_fetchRows.spawnSubInflate
-  //loop
-
-  //"fetchRows ack waiting" .
-  task::wait
-*/
   popTable
 
   pJob_FetchRows job.notice
