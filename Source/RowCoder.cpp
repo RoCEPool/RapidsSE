@@ -1864,6 +1864,23 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of given shoco column from head line                           */
+/*----------------------------------------------------------------------------*/
+byte* RowCoder::ayShoco(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
+{
+  i8 i_LastOffset = m_i_BaseOffset;
+  i8 i_LastColumn = 0;
+  
+  eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,
+                               i_LastColumn,i_LastOffset);
+  ASSERT(MC_SHOCO_FIT_1C == eEncoding);
+  
+  byte* ayAddress = ayAdrLogical(aHeadLine,i_LastOffset);
+  
+  return ayAddress;
+}
+
+/*----------------------------------------------------------------------------*/
 /* twiddle the from large head prior to copying it into row tray              */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vTwiddleFrom(void)
@@ -2039,6 +2056,18 @@ void RowCoder::vTwiddleShiftRight(void)
 bool RowCoder::bTwiddleShocoDupe_2H(Column* pCol, i8 i_FromOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  i8 nHeads = m_pIntoNub->nHeads();
+  
+  HeadLine* aTestLine = nullptr;
+  
+  i8 i_Head;
+  for (i_Head = 0; i_Head < nHeads; i_Head++) {
+    aTestLine = m_pIntoNub->aGetHead(i_Head);
+  }
+  
+  if (i_Head >= nHeads)
+    return false;
   
   return false;
 }

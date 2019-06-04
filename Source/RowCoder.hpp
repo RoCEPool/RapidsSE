@@ -155,6 +155,8 @@ namespace Data
     bool bRecodeVchShocoSplit(Column* pCol);
     void vRecodeVchShocoTail(Column* pCol);
 
+    byte* ayShoco(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
+    
     void vTwiddleFrom(void);
     i8   iTwiddleShiftCol(i8& i_Offset_data_);
     void vTwiddleShiftRight(void);
@@ -250,7 +252,7 @@ namespace Data
     static TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
 
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
-
+    
   private:
     Footer* aFooter(void);
 
