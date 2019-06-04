@@ -18,7 +18,7 @@ JobClass xJobClass_InflateRows =
   "inflate"_Stz,             // the prompt command
   nullptr,                   // the second word
   nullptr,                   // the _run task seed
-  "fetchRows_req"_Stz,       // the _req task seed
+  "inflateRows_req"_Stz,     // the _req task seed
   nullptr,                   // the _rcv task seed
   nullptr,                   // the _exe task seed
   nullptr,                   // the _end task seed
@@ -116,20 +116,13 @@ Job_InflateRows::Job_InflateRows(Interface::Session* pSession)
   m_sColumnName  = ""_Stz;
   m_pTable       = nullptr;
   m_pColumn      = nullptr;
-  m_iPartition   = -1;
-  m_bDisplay     = true;
   m_bPrint       = true;
-  m_bLimit       = false;
-  m_bRandom      = false;
-  m_bFirst       = false;
-  m_iRows        = C_UNKNOWN;
   m_pPlanner     = nullptr;
   m_pBufferQueue = new Queue;
   m_pFetchBuffer = nullptr;
   m_nLastBuffers = 0;
   m_nLastBuffersScanned = 0;
   m_pRowOnce     = nullptr;
-  m_bRetrieve    = false;
   
   m_pRow         = nullptr;
   
@@ -242,16 +235,16 @@ bool Job_InflateRows::bPopulateJob(TokenVec* pTokenVec)
   // inflate j10 print;
   if ( iNumTokens == 3) {
     if (pTokenVec->pGet(2)->eToken() == TN_NAME) {
+      
+      if (pTokenVec->pGet(2)->aText()->bSame("print"_Stz)) {
+        m_bPrint = true;
+        return true;
+      }
+      
       m_sColumnName = pTokenVec->pGet(2)->aText();
       return true;
     }
     
-    if (pTokenVec->pGet(3)->aText()->bSame("print"_Stz))
-        m_bPrint = true;
-      else
-        return false;
-    
-    return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
@@ -259,14 +252,13 @@ bool Job_InflateRows::bPopulateJob(TokenVec* pTokenVec)
   if ( iNumTokens == 4) {
     if (pTokenVec->pGet(2)->eToken() == TN_NAME) {
       m_sColumnName = pTokenVec->pGet(2)->aText();
-    }
-    else
-      return false;
     
-    if (pTokenVec->pGet(3)->aText()->bSame("print"_Stz))
-      m_bPrint = true;
-    else
-      return false;
+      if (pTokenVec->pGet(3)->aText()->bSame("print"_Stz)) {
+        m_bPrint = true;
+        return true;
+      }
+      
+    }
   }
   
   return false;
@@ -337,51 +329,7 @@ Job* Jobs::pJob_InflateRows_pre(Interface::Session* pSession)
 void Jobs::vJob_InflateRows_post(Interface::Session* pSession, Job* pJob)
 {
   Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJob);
-  
-  if ( pJob_InflateRows->m_bHasError ) {
-    
-    vTrace("error: (node%lld) %s\n"_Stz, gpAttachMap->m_pGrid->iThisNode(),
-             aEC[pJob_InflateRows->m_xResponse.m_eErrorCode]);
-   
-    return;
-  }
-  
-  i8 nRowsProcessed = 0;
-  i8 nLastBuffersScanned = 0;
-  
-  FetchBuffer* pFetchBuffer = nullptr;
-    
-  if (pJob_InflateRows->m_bPrint && gpAttachMap->m_bMetadata) {
-    Column* pCol = pJob_InflateRows->m_pColumn;
-    vTrace("metadata: (%s %s)\n"_Stz, pCol->sColumnName().aChar(), aCT[pCol->eColumnType()]);
-  }
-  
-  // create a row for retrieval
-  pJob_InflateRows->m_pRow = new Row(pJob_InflateRows->m_pTable->pColumnVec());
-  
-  while ( nLastBuffersScanned != pJob_InflateRows->m_nLastBuffers ) {
-    
-    pFetchBuffer = _pFetchBuffer(pJob_InflateRows->m_pBufferQueue->pPop());
-    if (! pFetchBuffer) {
-      //Pthread::vSleepMilli(1,CN_JOB_INFLATEROWS);
-      Pthread::vSleepMicro(250,CN_JOB_INFLATEROWS);
-      continue;
-    }
-    
-    vRetrieveColumn(pJob_InflateRows, pFetchBuffer);
-    nRowsProcessed += pFetchBuffer->nFetchedRows();
-    
-    if (pFetchBuffer->bIsLast()) {
-      nLastBuffersScanned++;
-    }
-    delete pFetchBuffer;
-    pFetchBuffer = nullptr;
-  }
-  
-  if (pJob_InflateRows->m_bPrint)
-    vTrace("success: %lld rows fetched\n"_Stz,nRowsProcessed);
-  else
-    vTrace("success: %lld rows affected\n"_Stz,nRowsProcessed);
+  // do nothing
 
 }
 
@@ -398,9 +346,8 @@ void Jobs::vJob_InflateRows_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void Jobs::vIterateBuffer(Job_InflateRows* pJob_InflateRows,
-                          FetchBuffer* pFetchBuffer,
-                          i8& iRowsPrinted)
+void Jobs::vRetrieveRows(Job_InflateRows* pJob_InflateRows,
+                          FetchBuffer* pFetchBuffer)
 {
   ColumnVec* pColVec = pJob_InflateRows->m_pTable->pColumnVec();
   HV_Rec hvRec(pColVec);
@@ -419,24 +366,7 @@ void Jobs::vIterateBuffer(Job_InflateRows* pJob_InflateRows,
     if (pJob_InflateRows->m_bPrint) {
       
       hvRec->vAppend(pJob_InflateRows->m_pRow);
-      
-      if (pJob_InflateRows->m_bFirst) {
-        if (iRowsPrinted < pJob_InflateRows->m_iRows) {
-          hvRec->vPrintRow();
-          iRowsPrinted++;
-        }
-      }
-      else if (pJob_InflateRows->m_bLimit) {
-        if (iRowsPrinted < pJob_InflateRows->m_iRows) {
-          hvRec->vPrintRow();
-          iRowsPrinted++;
-        }
-        else {
-          return;
-        }
-      }
-      else
-        hvRec->vPrintRow();
+      hvRec->vPrintRow();
     }
     
     aaCompactRow_cursor = pFetchBuffer->aaNextRowPtr(aaCompactRow_cursor);
@@ -448,7 +378,7 @@ void Jobs::vIterateBuffer(Job_InflateRows* pJob_InflateRows,
 /*----------------------------------------------------------------------------*/
 /* iterate and retrieve column from rows in the buffer                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vRetrieveColumn(Job_InflateRows* pJob_InflateRows,
+void Jobs::vRetrieveColumns(Job_InflateRows* pJob_InflateRows,
                            FetchBuffer* pFetchBuffer)
 {
   //Datum oDatum;

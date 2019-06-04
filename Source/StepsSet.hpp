@@ -552,6 +552,16 @@
   static void vJob_GenerateGenerate(Tasks::MP_Task mpTask);
   static void vJob_GenerateTableStore(Tasks::MP_Task mpTask);
 
+  // job inflate
+  static void vJob_InflateRowsColumnNameFetch(Tasks::MP_Task mpTask);
+  static void vJob_InflateRowsColumnStore(Tasks::MP_Task mpTask);
+  static void vJob_InflateRowsLastBuffersStore(Tasks::MP_Task mpTask);
+  static void vJob_InflateRowsPlannerStore(Tasks::MP_Task mpTask);
+  static void vJob_InflateRowsSpawnSub(Tasks::MP_Task mpTask);
+  static void vJob_InflateRowsSpawnSubInflate(Tasks::MP_Task mpTask);
+  static void vJob_InflateRowsTableStore(Tasks::MP_Task mpTask);
+  static void vJob_InflateRowsWhereFetch(Tasks::MP_Task mpTask);
+
   // job Ingest
   static void vJob_IngestBegin(Tasks::MP_Task mpTask);
   static void vJob_IngestChunk(Tasks::MP_Task mpTask);
@@ -642,7 +652,7 @@
   static void vJob_SubFetchSlotFetch(Tasks::MP_Task mpTask);
 
   // job SubInflate
-  static void vJob_SubInflateJobFetchRowsFetch(Tasks::MP_Task mpTask);
+  static void vJob_SubInflateJobInflateRowsFetch(Tasks::MP_Task mpTask);
   static void vJob_SubInflateInflateRows(Tasks::MP_Task mpTask);
 
   // job SubIngester

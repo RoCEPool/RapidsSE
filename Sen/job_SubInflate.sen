@@ -11,7 +11,7 @@
 
   >>am <SEED_RUN>
 
-  0 0 0 locals| pTask pJob_SubInflate pJob_FetchRows |
+  0 0 0 locals| pTask pJob_SubInflate pJob_InflateRows |
 
   tp: SubFetch
   //"SubFetch_run" .
@@ -24,10 +24,10 @@
   // get the job from the task
   pTask task.job@ to pJob_SubInflate
 
-  // get fetch job
-  pJob_SubInflate job_SubInflate.jobFetchRows@ to pJob_FetchRows
-"t2" .
-  pJob_FetchRows job.executingTask@ locals| pTask_FetchRows |
+  // get inflate job
+  pJob_SubInflate job_SubInflate.jobInflateRows@ to pJob_InflateRows
+
+  pJob_InflateRows job.executingTask@ locals| pTask_FetchRows |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for acks to be set in the fetch task
@@ -36,7 +36,6 @@
   not while
     1 thread.sleep_ms
   repeat
-"t3" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock

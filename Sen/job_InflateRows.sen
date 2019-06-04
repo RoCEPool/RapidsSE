@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* job_FetchRows.sen -- Job Fetch Rows                                        */
+/* job_InflateRows.sen -- Job Fetch Rows                                      */
 /*============================================================================*/
 
-" job_FetchRows.sen" .verbose
+" job_InflateRows.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* generate plan for the fetch                                                */
+/* generate plan for the inflate                                              */
 /*----------------------------------------------------------------------------*/
-: generatePlan ( "<sWhere>" ^pTable -- ^pPlanner )
+: generateInflatePlan ( "<sWhere>" ^pTable -- ^pPlanner )
 
   0 0 locals| pPlanner pAccessPath pTable sWhere |
 
@@ -34,43 +34,30 @@
 /*----------------------------------------------------------------------------*/
 /* spawn sub fetch jobs                                                       */
 /*----------------------------------------------------------------------------*/
-: spawnSub ( phrase planner Job_FetchRows -- )
+: spawnInflateSub ( phrase planner Job_InflateRows -- )
 
-  params| pJob_FetchRows pPlanner iPhrase |
-  pJob_FetchRows job_fetchRows.partition@ locals| iFetchPartition |
+  params| pJob_InflateRows pPlanner iPhrase |
 
-  -1 iFetchPartition == if
-    // spawn a subFetch job for each partition
-    grid::slots 0
-    do
-      //I "Creating Job_SubFetch %v" fmt.print
-      I iPhrase pPlanner pJob_FetchRows job_fetchRows.spawnSub
-    loop
-  else
-    // spawn a sub fetch job for given partition
-    iFetchPartition grid::toSlot iPhrase pPlanner pJob_FetchRows job_fetchRows.spawnSub
-  then
+  // spawn a subFetch job for each partition
+  grid::slots 0
+  do
+    //I "Creating Job_SubFetch %v" fmt.print
+    I iPhrase pPlanner pJob_InflateRows job_InflateRows.spawnSub
+  loop
 
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute checkFetchRows                                                     */
+/* execute checkInflateRows                                                   */
 /*----------------------------------------------------------------------------*/
-: checkFetchRows ( "<sColumnNm>" "<tableNm>"  partition -- true | errorCode false )
+: checkInflateRows ( "<sColumnNm>" "<tableNm>" -- true | errorCode false )
 
-  params| iPartition sTableNm sColumnNm |
-  0 locals| pJob_FetchRows |
+  params| sTableNm sColumnNm |
+  0 locals| pJob_InflateRows |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the job from the task
-  task::this task.job@ to pJob_FetchRows
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check partition if specified (should belong to this node)
-  -1 iPartition != if
-    iPartition grid::partitions >= if EC_INVALID_PARTITION false exit then
-    iPartition grid::toNode grid::thisNode@ != if EC_INVALID_PARTITION false exit then
-  then
+  task::this task.job@ to pJob_InflateRows
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
@@ -107,15 +94,14 @@
 /*----------------------------------------------------------------------------*/
 /* fetch rows table request (on originating node)                             */
 /*----------------------------------------------------------------------------*/
-: fetchRows_req ( -- <R> )
+: InflateRows_req ( -- <R> )
 
   >>am <SEED_REQ>
 
   100 apiState::senLoc
 
   0 0 0 0 locals| iPhrases sTableNm sColumnNm sWhere |
-  0 0 0 0 locals| pJob_FetchRows pTask pPlanner pTable |
-  0 locals| iFetchPartition |
+  0 0 0 0 locals| pJob_InflateRows pTask pPlanner pTable |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task
@@ -123,15 +109,15 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the job from the task
-  pTask task.job@ to pJob_FetchRows
+  pTask task.job@ to pJob_InflateRows
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job
-  CN_JOB_FETCHROWS pJob_FetchRows object.assertClass
+  CN_JOB_INFLATEROWS pJob_InflateRows object.assertClass
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_FetchRows job.pushPath
+  pJob_InflateRows job.pushPath
   task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -140,42 +126,34 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table name, column name  and partition
-  pJob_FetchRows job.objectName@ to sTableNm
-  pJob_FetchRows Job_FetchRows.columnName@ to sColumnNm
-  pJob_FetchRows job_fetchRows.partition@ to iFetchPartition
+  pJob_InflateRows job.objectName@ to sTableNm
+  pJob_InflateRows Job_InflateRows.columnName@ to sColumnNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can fetch rows
-  sColumnNm sTableNm iFetchPartition checkFetchRows not if pJob_FetchRows <ERROR_REQUEST> !!am exit then
+  sColumnNm sTableNm checkInflateRows not if pJob_InflateRows <ERROR_REQUEST> !!am exit then
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the table
   sTableNm pushTable assert
   sTableNm find execute to pTable
-  pTable pJob_FetchRows job_fetchRows.table!
+  pTable pJob_InflateRows job_InflateRows.table!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the column from the table and set it in the fetchRows job
+  // find the column from the table and set it in the InflateRows job
   "" sColumnNm str.equal not if
-    sColumnNm pTable table.findColumn pJob_FetchRows job_fetchRows.column!
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the metadata string
-  args.metadata if
-    pTable table.getColumnsAsString "(%v)" str.format pJob_FetchRows job.metadata!
+    sColumnNm pTable table.findColumn pJob_InflateRows job_InflateRows.column!
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the where clause from the job
-  pJob_FetchRows job_fetchRows.where@ to sWhere
-
-  400 apiState::senLoc
+  pJob_InflateRows job_InflateRows.where@ to sWhere
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the plan for the fetch
-  sWhere pTable generatePlan to pPlanner
-  pPlanner pJob_FetchRows job_fetchRows.planner!
+  sWhere pTable generateInflatePlan to pPlanner
+  pPlanner pJob_InflateRows job_InflateRows.planner!
 
   //pPlanner planner.showPaths
 
@@ -183,21 +161,16 @@
   pPlanner assert
   pPlanner planner.phrases@ to iPhrases
 
-  -1 iFetchPartition == if
-     // set the no of last buffers to no phrases * slots in the job
-     iPhrases grid::slots * pJob_FetchRows job_fetchRows.lastBuffers!
-  else
-    // set the no of last buffers to no phrases in the job
-    iPhrases pJob_FetchRows job_fetchRows.lastBuffers!
-  then
+  // set the no of last buffers to no phrases * slots in the job
+  iPhrases grid::slots * pJob_InflateRows job_InflateRows.lastBuffers!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn the sub fetch jobs
   iPhrases 0
   do
-    I pPlanner pJob_FetchRows spawnSub
+    I pPlanner pJob_InflateRows spawnInflateSub
   loop
-/*
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Now spawn the subInflate jobs and wait for them to complete
 
@@ -209,21 +182,21 @@
   //grid::slots task::acks!
   1 task::acks!
 
-  //grid::slots 0
-  //do
-    //I "Creating Job_SubTruncate %v" fmt.print
-    pJob_FetchRows job_fetchRows.spawnSubInflate
-  //loop
+  grid::slots 0
+  do
+    //I "Creating Job_SubInflate %v" fmt.print
+    pJob_InflateRows job_InflateRows.spawnSubInflate
+  loop
 
-  //"fetchRows ack waiting" .
+  //"InflateRows ack waiting" .
   task::wait
-*/
+
   popTable
 
-  pJob_FetchRows job.notice
+  pJob_InflateRows job.notice
 
   900 apiState::senLoc
-
+ 
   <<am <DONE_REQ>
 ;
 

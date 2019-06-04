@@ -9,7 +9,7 @@ namespace Jobs
   class Job_SubInflate : public Job
   {
   public:
-    Job_FetchRows* m_pJobFetchRows;  // job id of the fetch job that spawned this sub fetch
+    Job_InflateRows* m_pJobInflateRows; 
         
     // must be last
     Footer m_xFooter;

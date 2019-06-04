@@ -418,7 +418,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
-  Job_FetchRows* pJob_FetchRows = pJob_SubFetch->m_pJobFetchRows;
+  Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob_SubFetch->m_pParentJob);
   i8 iSlot = pJob_SubFetch->m_i_Slot;
   i8 iPhrase = pJob_SubFetch->m_iPhrase;
   Planner* pPlanner = pJob_SubFetch->m_pPlanner;
@@ -627,7 +627,7 @@ void Step::vIndexRange(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
-  Job_FetchRows* pJob_FetchRows = pJob_SubFetch->m_pJobFetchRows;
+  Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob_SubFetch->m_pParentJob);
   i8 iSlot = pJob_SubFetch->m_i_Slot;
   i8 iPhrase = pJob_SubFetch->m_iPhrase;
   Planner* pPlanner = pJob_SubFetch->m_pPlanner;
@@ -979,7 +979,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
-  Job_FetchRows* pJob_FetchRows = pJob_SubFetch->m_pJobFetchRows;
+  Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob_SubFetch->m_pParentJob);
   i8 iSlot = pJob_SubFetch->m_i_Slot;
   i8 iPhrase = pJob_SubFetch->m_iPhrase;
   Planner* pPlanner = pJob_SubFetch->m_pPlanner;

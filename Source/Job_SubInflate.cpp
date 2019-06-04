@@ -112,7 +112,7 @@ Job_SubInflate::Job_SubInflate(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINFLATE,_FOOTER_);
     
-  m_pJobFetchRows  = nullptr;
+  m_pJobInflateRows  = nullptr;
   
   _checkInitialised_(CN_JOB_SUBINFLATE);
   
