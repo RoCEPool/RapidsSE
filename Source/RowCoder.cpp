@@ -2062,29 +2062,50 @@ bool RowCoder::bTwiddleShocoDupe_2H(Column* pCol, i8 i_FromOffset)
   
   return false;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 nHeads = m_pIntoNub->nHeads();
+  if (nHeads <= 1)
+    return false;
 
   byte* ayShoco_cur   = ayAdrLogical(m_aFromHead,i_FromOffset);
   i8 nShocoBytes      = *(u1*)ayShoco_cur;
   HeadLine* aTestLine = nullptr;
   byte* ayShoco_dup   = nullptr;
   
+  char acCur[2048];
+  char acDup[2048];
+
+  Compress::iFromShoco(acCur,                 // decompressed dest
+                       sizeof(acCur),         // max destination
+                       ayShoco_cur + _1B_C,   // compressed source
+                       *(u1*)ayShoco_cur);    // bytes compressed
+
+  
   i8 i_Head;
-  for (i_Head = 0; i_Head < nHeads; i_Head++) {
+  bool bFoundMatch = false;
+  for (i_Head = 0; i_Head < nHeads - 1; i_Head++) {
     
     aTestLine   = m_pIntoNub->aGetHead(i_Head);
     ayShoco_dup = ayShoco(aTestLine, m_pColVec, pCol);
     if (! ayShoco_dup)
       continue;
-  
+
+    Compress::iFromShoco(acDup,                 // decompressed dest
+                         sizeof(acDup),         // max destination
+                         ayShoco_dup + _1B_C,   // compressed source
+                         *(u1*)ayShoco_dup);    // bytes compressed
+    
+    vTrace(" [[Dup]%s] v [[Cur]%s] \n"_Stz,acDup,acCur);
+    
     if (! MemLib::bCompareBytes(ayShoco_dup, ayShoco_cur, nShocoBytes))
       continue;
     
+    bFoundMatch = true;
     break;
   }
   
-  if (i_Head >= nHeads)
+  if (! bFoundMatch)
     return false;
   
   // ... to be coded
