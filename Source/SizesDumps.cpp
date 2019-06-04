@@ -426,7 +426,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Health),         // CN_JOB_HEALTH
   /*    */ sizeof(Job_InflateRows),    // CN_JOB_INFLATEROWS
   /*    */ sizeof(Job_Ingest),         // CN_JOB_INGEST
-  /*    */ sizeof(Job_Ingest),         // CN_JOB_INGEST
   /*    */ sizeof(Job_InsertRow),      // CN_JOB_INSERTROW
   /*    */ sizeof(Job_InsertTable),    // CN_JOB_INSERTTABLE
   /*    */ sizeof(Job_KidExport),      // CN_JOB_KIDEXPORT
