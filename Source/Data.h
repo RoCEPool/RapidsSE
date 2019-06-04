@@ -95,7 +95,7 @@ namespace Data
   
   //       MC_ROW_REF_2B,      // nB in data area being a row reference [RR]
   //       MC_RETURN,          // return
-  /* 52 */ MC_OVERFLOW_2B,     // 2B in data area indicating overflow tail
+  /* 52 */ MC_OVERFLOW_2T,     // overflow tail (2B->overflow tail)
   
   /* 53 */ MC_ENUMS,
   };
@@ -165,7 +165,7 @@ namespace Data
   /* 50 */ "MC_TWOS_6B"_Stz,
   /* 51 */ "MC_TWOS_7B"_Stz,
   /*    */ //"MC_ROW_REF_2B"_Stz,
-  /* 52 */ "MC_OVERFLOW_2B"_Stz,
+  /* 52 */ "MC_OVERFLOW_2T"_Stz,
   /* 53 */ "MC_ENUMS"_Stz,
   };
   
@@ -246,7 +246,7 @@ namespace Data
   /* 50 */ 6, // MC_TWOS_6B,         // data area contains 6B two's complement datum
   /* 51 */ 7, // MC_TWOS_7B,         // data area contains 7B two's complement datum
   
-  /* 52 */ 2, // MC_OVERFLOW_2B,     // 2B in data area indicating overflow tail
+  /* 52 */ 2, // MC_OVERFLOW_2T,     // overflow tail (2B->overflow tail)
   
   /* 53 */ 0  // MC_ENUMS,
   };

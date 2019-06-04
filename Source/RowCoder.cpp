@@ -1241,8 +1241,8 @@ void RowCoder::vExtendIntoHead(i8 nBytes, Column* pCol)
   i8 i_Col = pCol->iColumnNo();
   eMC eDisplacedMetaCode = (eMC)m_aIntoHead->w8_1B(_1B_W + i_Col);
 
-  // the 1B mc for the column in the head line becomes MC_OVERFLOW_2B
-  m_aIntoHead->v1B((_1B_W + i_Col),MC_OVERFLOW_2B);
+  // the 1B mc for the column in the head line becomes MC_OVERFLOW_2T
+  m_aIntoHead->v1B((_1B_W + i_Col),MC_OVERFLOW_2T);
   
   // we put the original 1B mc for the column into the overflow line <U><M>
   m_aIntoOver->v1B(_1B_U,eDisplacedMetaCode);
@@ -1978,7 +1978,7 @@ void RowCoder::vTwiddleFrom(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find the column and offset which will shift over to MC_OVERFLOW_2B         */
+/* find the column and offset which will shift over to MC_OVERFLOW_2T         */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iTwiddleShiftCol(i8& i_Offset_data_)
 {
@@ -2047,7 +2047,7 @@ void RowCoder::vTwiddleShiftRight(void)
   After:
          -- From-Head (large) --
   +================================+
-  | <W>{M}       ,MC_OVERFLOW_2B,  |
+  | <W>{M}       ,MC_OVERFLOW_2T,  |
   +================================+
   |                                |
   +--------------------------------+
@@ -2086,9 +2086,9 @@ void RowCoder::vTwiddleShiftRight(void)
   
   //MemLib::vWordDump(m_aFromHead,nFromSize,i_LastHeadWord);
   
-  // 3) put MC_OVERFLOW_2B as metacode for column
+  // 3) put MC_OVERFLOW_2T as metacode for column
   eMC eMetaCode = m_aFromHead->eMetaCode(i_Col_shift);
-  m_aFromHead->vMetaCode(i_Col_shift,MC_OVERFLOW_2B);
+  m_aFromHead->vMetaCode(i_Col_shift,MC_OVERFLOW_2T);
   
   // 4) put <M>
   m_aFromHead->vPut(m_nHeadBytes,eMetaCode,_1B_M);
@@ -2761,7 +2761,7 @@ void RowCoder::vDumpHead(Stz* szTitle,
     eMC eOverMeta = (eMC)aOverLine->w8_1B(1);
     i8 i_Col_over;
     for (i_Col_over = 0; i_Col_over < nColumns; i_Col_over++)
-      if (MC_OVERFLOW_2B == aHeadLine->eMetaCode(i_Col_over))
+      if (MC_OVERFLOW_2T == aHeadLine->eMetaCode(i_Col_over))
         break;
 
 
@@ -2823,7 +2823,7 @@ void RowCoder::vDumpHead(Stz* szTitle,
     eMetaCode  = aHeadLine->eMetaCode(i_Col);
     szMetaCode = aMC[eMetaCode];
     
-    if (MC_OVERFLOW_2B == eMetaCode) {
+    if (MC_OVERFLOW_2T == eMetaCode) {
       i8 i_Over_rel = aHeadLine->iOverflow2B();
       OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
       eMetaCode  = (eMC)aOverLine->w8_1B(1);
@@ -2861,7 +2861,7 @@ void RowCoder::vDumpHead(Stz* szTitle,
            nBytes);
     
     if (nBytes) {
-      if (MC_OVERFLOW_2B == eMetaCode) {
+      if (MC_OVERFLOW_2T == eMetaCode) {
         for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
           vTrace("%02x"_Stz,*(ayAddr + i_Byte));
         //vTrace("\n"_Stz); //! temp
@@ -3464,7 +3464,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         break;
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      case MC_OVERFLOW_2B:
+      case MC_OVERFLOW_2T:
         break;
  */
       default:
@@ -3548,7 +3548,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
           ayDataByte += nBytesPartA;
           break;
           
-        case MC_OVERFLOW_2B: {
+        case MC_OVERFLOW_2T: {
           vDebugPoint();
           i8 i_Over_rel = aHeadLine->iOverflow2B();
           OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
@@ -3907,7 +3907,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         break;
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      case MC_OVERFLOW_2B: {
+      case MC_OVERFLOW_2T: {
         vDebugPoint();
         i8 i_Over_rel = aHeadLine->iOverflow2B();
         OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
@@ -4053,7 +4053,7 @@ i8 RowCoder::nDataBytes(eMC eMetaCode)
     case MC_TWOS_6B: return 6;
     case MC_TWOS_7B: return 7;
       
-    case MC_OVERFLOW_2B:
+    case MC_OVERFLOW_2T:
       return 2;
       
     default:

@@ -308,7 +308,7 @@ namespace Data
         
         eMC eEncoding = aHeadLine->eMetaCode(i_Col);
         
-        if (MC_OVERFLOW_2B == eEncoding) {
+        if (MC_OVERFLOW_2T == eEncoding) {
           i_Offset_ = aHeadLine->nBytes() + _1B_U + _1B_M;
         }
         else {
@@ -324,7 +324,7 @@ namespace Data
       }
       
       eMC eEncoding = aHeadLine->eMetaCode(i_ForCol);
-      if (MC_OVERFLOW_2B == eEncoding) {
+      if (MC_OVERFLOW_2T == eEncoding) {
         i_Offset_ = aHeadLine->nBytes() + _1B_U + _1B_M;
         OverLine* aOverLine = aGetOver(aHeadLine);
         eEncoding = (eMC)aOverLine->w8_1B(1);
