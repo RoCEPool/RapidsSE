@@ -202,7 +202,6 @@ namespace Data
     static void vDumpLine(Stz* szTitle,
                           HeadLine* aHeadLine,
                           ColumnVec* pColVec,
-                          i8 nWords,
                           i8 i_HighLight = C_UNKNOWN);
   
    static void vInflate(Row* pRow, HeadLine* aHeadLine);

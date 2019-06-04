@@ -2768,8 +2768,7 @@ void RowCoder::vDumpHead(Stz* szTitle,
     return;
   }
 
-  i8 nWords = aHeadLine->nWords();
-  vDumpLine(szTitle,aHeadLine,pColVec,nWords,C_UNKNOWN);
+  vDumpLine(szTitle,aHeadLine,pColVec,C_UNKNOWN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2779,13 +2778,9 @@ void RowCoder::vDumpHead_large(Stz* szTitle,
                                HeadLine* aHeadLine,
                                ColumnVec* pColVec)
 {
-  i8 nWords_large = aHeadLine->nWords();
-  w8* awLastWord  = MemLib::awFindNonZeroEnd(aHeadLine,nWords_large);
-  i8 nWords_limit = (awLastWord - (w8*)aHeadLine) + 1;
-  
   i8 i_LastHeadWord = (nHeadBytes(pColVec) / sizeof(Word) - 1);
 
-  vDumpLine(szTitle,aHeadLine,pColVec,nWords_limit,i_LastHeadWord);
+  vDumpLine(szTitle,aHeadLine,pColVec,i_LastHeadWord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2794,7 +2789,6 @@ void RowCoder::vDumpHead_large(Stz* szTitle,
 void RowCoder::vDumpLine(Stz* szTitle,
                          HeadLine* aHeadLine,
                          ColumnVec* pColVec,
-                         i8 nWords_IGNORE,
                          i8 i_HighLight)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
