@@ -221,13 +221,9 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   //if (m_nTotalHeads <= 10)
   //  vDumpHead("m_aFromHead"_Stz,m_aFromHead,m_pColVec);
   
-#ifdef WITH_LARGE_ROWS
   vTwiddleFrom();
   vCopyHead();
   vCopyOver();
-#else
-  vCopyHead();
-#endif
 
   m_nTotalHeads++;
 
