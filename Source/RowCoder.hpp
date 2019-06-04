@@ -51,10 +51,6 @@ namespace Data
     eMC        m_eFromEncoding;
     i8         m_nFromDataBytes;
   
-    RowParts*  m_pWorkParts;
-    RowNub*    m_pWorkNub;
-    HeadLine*  m_aWorkHead;
-
     Datum      m_oEncodedDatum; // the encoded datum
 
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -152,8 +148,6 @@ namespace Data
     void vMetaCode(Column* pCol, eMC eMetaCode);
     void vMetaPut(Datum* pDatum, Column* pCol);
 
-    void vRecode_Large(void);
-    void vRecode_Short(void);
     void vRecodeVch(Column* pCol);
     void vRecodeVchShoco(Column* pCol);
     bool bRecodeVchShocoDupe(Column* pCol);
@@ -161,10 +155,13 @@ namespace Data
     bool bRecodeVchShocoSplit(Column* pCol);
     void vRecodeVchShocoTail(Column* pCol);
 
+    byte* ayShoco(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
+    
     void vTwiddleFrom(void);
     i8   iTwiddleShiftCol(i8& i_Offset_data_);
     void vTwiddleShiftRight(void);
     bool bTwiddleShocoDupe(Column* pCol, i8 i_FromOffset);
+    bool bTwiddleShocoDupe_2H(Column* pCol, i8 i_FromOffset);
     bool bTwiddleShocoFold(Column* pCol, i8 i_FromOffset);
     void vTwiddleShocoTail(Column* pCol, i8 i_FromOffset);
 
@@ -194,16 +191,7 @@ namespace Data
     static void vDumpHead(Stz* szTitle,
                           HeadLine* aHeadLine,
                           ColumnVec* pColVec);
-  
-    static void vDumpHead_large(Stz* szTitle,
-                                HeadLine* aHeadLine,
-                                ColumnVec* pColVec);
-  
-    static void vDumpLine(Stz* szTitle,
-                          HeadLine* aHeadLine,
-                          ColumnVec* pColVec,
-                          i8 i_HighLight = C_UNKNOWN);
-  
+    
    static void vInflate(Row* pRow, HeadLine* aHeadLine);
   
   private:
@@ -264,7 +252,7 @@ namespace Data
     static TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
 
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
-
+    
   private:
     Footer* aFooter(void);
 
@@ -322,7 +310,7 @@ namespace Data
         
         eMC eEncoding = aHeadLine->eMetaCode(i_Col);
         
-        if (MC_OVERFLOW_2B == eEncoding) {
+        if (MC_OVERFLOW_2T == eEncoding) {
           i_Offset_ = aHeadLine->nBytes() + _1B_U + _1B_M;
         }
         else {
@@ -338,7 +326,7 @@ namespace Data
       }
       
       eMC eEncoding = aHeadLine->eMetaCode(i_ForCol);
-      if (MC_OVERFLOW_2B == eEncoding) {
+      if (MC_OVERFLOW_2T == eEncoding) {
         i_Offset_ = aHeadLine->nBytes() + _1B_U + _1B_M;
         OverLine* aOverLine = aGetOver(aHeadLine);
         eEncoding = (eMC)aOverLine->w8_1B(1);
@@ -388,11 +376,8 @@ namespace Data
       //i8 nBytes = pColVec->nItems() * 10;
       //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
       
-      
-#ifdef WITH_HEAD_OVERFLOW
-      nBytes     = 24;
+      nBytes     = 32;
       nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(Word));
-#endif
 
       i8 nBytesHead = nHeadWords * (i8)C_BYTES_PER_WORD;
       RASSERT(nBytesHead >= C_HEAD_MIN_BYTES);

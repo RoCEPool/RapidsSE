@@ -72,10 +72,6 @@ RowCoder::RowCoder(void)
   m_i_FromOffset   = C_UNKNOWN;
   m_eFromEncoding  = MC_NULL;
   m_nFromDataBytes = 0;
-
-  m_pWorkParts     = nullptr;
-  m_pWorkNub       = nullptr;
-  m_aWorkHead      = nullptr;
   
   //m_oEncodedDatum
   
@@ -150,9 +146,6 @@ void RowCoder::vCopyBegin(RowBuffer* pRowBuffer)
   m_nMetaData    = nMetaData(m_pColVec);
   m_i_BaseOffset = iBaseOffset(m_pColVec);
   m_bCopyOver    = false;
-  
-  m_pWorkParts   = new RowParts;
-  m_pWorkNub     = m_pWorkParts->pNub();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,10 +177,6 @@ void RowCoder::vCopyEnd(void)
   m_i_FromOffset  = C_UNKNOWN;
   m_eFromEncoding = MC_NULL;
   m_nFromDataBytes = 0;
-  
-  m_pWorkNub      = nullptr;
-  delete m_pWorkParts;
-  m_pWorkParts    = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,8 +214,6 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   m_aIntoOver    = nullptr;
   m_nOverBytes   = C_UNKNOWN;
   m_bCopyOver    = false;
-
-  m_aWorkHead    = m_pIntoNub->aGetHead();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy & recode row
@@ -234,16 +221,9 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   //if (m_nTotalHeads <= 10)
   //  vDumpHead("m_aFromHead"_Stz,m_aFromHead,m_pColVec);
   
-#ifdef WITH_LARGE_ROWS
   vTwiddleFrom();
   vCopyHead();
   vCopyOver();
-  //vRecode_Large();
-  //vRecode_Short();
-#else
-  vCopyHead();
-  vRecode_Short();
-#endif
 
   m_nTotalHeads++;
 
@@ -287,11 +267,7 @@ void RowCoder::vEncodeBegin(RowNub* pIntoNub)
   // initialise the into row
   
   m_pIntoNub->vReset();
-#ifdef WITH_HEAD_OVERFLOW
   m_i_IntoHead = m_pIntoNub->iAllotHead(C_LARGEHEAD);
-#else
-  m_i_IntoHead = m_pIntoNub->iAllotHead(m_nHeadBytes);
-#endif
   ASSERT(0 == m_i_IntoHead);
 
   m_aIntoHead    = m_pIntoNub->aGetHead();
@@ -352,10 +328,8 @@ void RowCoder::vEncodeEnd(void)
 //  
 //  vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
 
-#ifdef WITH_HEAD_OVERFLOW
   //vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
   //vDebugPoint();
-#endif
 
   m_pIntoNub->vHeadBytes_used(m_i_IntoOffset);
   
@@ -835,7 +809,6 @@ void RowCoder::vCopyHead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
 
-#ifdef WITH_HEAD_OVERFLOW
   // don't copy over the <W> at the start of head, and
   //                 the [OT] at the end of the head
   i8 nBytesToCopy = m_nHeadBytes - _1B_W - (m_bCopyOver ? _2B_OT : 0);
@@ -843,12 +816,6 @@ void RowCoder::vCopyHead(void)
                 (byte*)m_aFromHead + _1B_W,
                 nBytesToCopy,
                 CN_ROWBUFFER);
-#else
-  MemLib::vCopy(m_aIntoHead,
-                m_aFromHead,
-                m_nHeadBytes,
-                CN_ROWBUFFER);
-#endif
   
 #ifdef WITH_TRACE_ENCODING
   vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
@@ -1256,8 +1223,8 @@ void RowCoder::vExtendIntoHead(i8 nBytes, Column* pCol)
   i8 i_Col = pCol->iColumnNo();
   eMC eDisplacedMetaCode = (eMC)m_aIntoHead->w8_1B(_1B_W + i_Col);
 
-  // the 1B mc for the column in the head line becomes MC_OVERFLOW_2B
-  m_aIntoHead->v1B((_1B_W + i_Col),MC_OVERFLOW_2B);
+  // the 1B mc for the column in the head line becomes MC_OVERFLOW_2T
+  m_aIntoHead->v1B((_1B_W + i_Col),MC_OVERFLOW_2T);
   
   // we put the original 1B mc for the column into the overflow line <U><M>
   m_aIntoOver->v1B(_1B_U,eDisplacedMetaCode);
@@ -1345,93 +1312,6 @@ void RowCoder::vMetaPut(Datum* pDatum, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
   vMetaCode(pCol,pDatum->m_eEncoding);
-}
-
-/*----------------------------------------------------------------------------*/
-/* recode each column                                                         */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRecode_Large(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-  i8 nColumns = m_pColVec->nItems();
-  
-  i8 i_LastColumn = 0;
-  
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    
-    // get the initial encoding of the datum for i_Col from from-row
-    
-    Column* pCol = m_pColVec->pGet(i_Col);
-    eDM eDatum = pCol->eDatumType();
-    
-    i8 iFromOffset_IGNORE = 0;
-    i_LastColumn = 0;
-    m_eFromEncoding  = eGetFromEncoding(pCol,i_LastColumn,iFromOffset_IGNORE);
-    
-    m_nFromDataBytes = nDataBytes(m_eFromEncoding);
-    
-    //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    // re-encode datum
-    
-    if (DM_VCH == eDatum) {
-      vRecodeVch(pCol);
-    }
-    else {
-      vUsageIncRecoded(pCol,m_nFromDataBytes,m_eFromEncoding);
-      m_i_IntoOffset += m_nFromDataBytes;
-    }
-    
-  }
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* recode the datums                                                          */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRecode_Short(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-  i8 nColumns = m_pColVec->nItems();
-  
-  // recode each column
-  
-  //vTrace("DUMP before recode\n"_Stz);
-  //vDumpHead("m_aFromHead"_Stz,m_aFromHead, m_pColVec);
-  
-  i8 i_LastColumn = 0;
-  
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    
-    // get the initial encoding of the datum for i_Col from from-row
-    
-    Column* pCol = m_pColVec->pGet(i_Col);
-    eDM eDatum = pCol->eDatumType();
-    
-    i8 iFromOffset_IGNORE = 0;
-    i_LastColumn = 0;
-    m_eFromEncoding  = eGetFromEncoding(pCol,i_LastColumn,iFromOffset_IGNORE);
-    
-    m_nFromDataBytes = nDataBytes(m_eFromEncoding);
-    
-    //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    // re-encode datum
-    
-    if (DM_VCH == eDatum) {
-      vRecodeVch(pCol);
-    }
-    else {
-      vUsageIncRecoded(pCol,m_nFromDataBytes,m_eFromEncoding);
-      m_i_IntoOffset += m_nFromDataBytes;
-    }
-
-  }
-  //vTrace("DUMP after recode\n"_Stz);
-  //vDumpHead("m_aIntoHead"_Stz,m_aIntoHead, m_pColVec);
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1984,6 +1864,26 @@ void RowCoder::vRecodeVchShocoTail(Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of given shoco column from head line                           */
+/*----------------------------------------------------------------------------*/
+byte* RowCoder::ayShoco(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
+{
+  i8 i_LastOffset = m_i_BaseOffset;
+  i8 i_LastColumn = 0;
+  
+  eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,
+                               i_LastColumn,i_LastOffset);
+  
+  if (MC_SHOCO_FIT_1C != eEncoding)
+    return nullptr;
+  
+  // get address of <C><shoco...>
+  byte* ayAddress = ayAdrLogical(aHeadLine,i_LastOffset);
+  
+  return ayAddress;
+}
+
+/*----------------------------------------------------------------------------*/
 /* twiddle the from large head prior to copying it into row tray              */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vTwiddleFrom(void)
@@ -2015,7 +1915,7 @@ void RowCoder::vTwiddleFrom(void)
       continue;
     
     // can we find a duplicate?
-    if (bTwiddleShocoDupe(pCol,i_FromOffset))
+    if (bTwiddleShocoDupe_2H(pCol,i_FromOffset))
       continue;
     
     // can we fold a non-dupe string into ?
@@ -2033,7 +1933,7 @@ void RowCoder::vTwiddleFrom(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find the column and offset which will shift over to MC_OVERFLOW_2B         */
+/* find the column and offset which will shift over to MC_OVERFLOW_2T         */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iTwiddleShiftCol(i8& i_Offset_data_)
 {
@@ -2102,7 +2002,7 @@ void RowCoder::vTwiddleShiftRight(void)
   After:
          -- From-Head (large) --
   +================================+
-  | <W>{M}       ,MC_OVERFLOW_2B,  |
+  | <W>{M}       ,MC_OVERFLOW_2T,  |
   +================================+
   |                                |
   +--------------------------------+
@@ -2141,9 +2041,9 @@ void RowCoder::vTwiddleShiftRight(void)
   
   //MemLib::vWordDump(m_aFromHead,nFromSize,i_LastHeadWord);
   
-  // 3) put MC_OVERFLOW_2B as metacode for column
+  // 3) put MC_OVERFLOW_2T as metacode for column
   eMC eMetaCode = m_aFromHead->eMetaCode(i_Col_shift);
-  m_aFromHead->vMetaCode(i_Col_shift,MC_OVERFLOW_2B);
+  m_aFromHead->vMetaCode(i_Col_shift,MC_OVERFLOW_2T);
   
   // 4) put <M>
   m_aFromHead->vPut(m_nHeadBytes,eMetaCode,_1B_M);
@@ -2155,6 +2055,64 @@ void RowCoder::vTwiddleShiftRight(void)
 
 /*----------------------------------------------------------------------------*/
 /* search for a duplicate shoco tail in the into nub                          */
+/*----------------------------------------------------------------------------*/
+bool RowCoder::bTwiddleShocoDupe_2H(Column* pCol, i8 i_FromOffset)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 nHeads = m_pIntoNub->nHeads();
+  if (nHeads <= 1)
+    return false;
+
+  byte* ayShoco_cur   = ayAdrLogical(m_aFromHead,i_FromOffset);
+  i8 nShocoBytes      = *(u1*)ayShoco_cur;
+  HeadLine* aTestLine = nullptr;
+  byte* ayShoco_dup   = nullptr;
+  
+  char acCur[2048];
+  char acDup[2048];
+
+  Compress::iFromShoco(acCur,                 // decompressed dest
+                       sizeof(acCur),         // max destination
+                       ayShoco_cur + _1B_C,   // compressed source
+                       *(u1*)ayShoco_cur);    // bytes compressed
+
+  
+  i8 i_Head;
+  bool bFoundMatch = false;
+  for (i_Head = 0; i_Head < nHeads - 1; i_Head++) {
+    
+    aTestLine   = m_pIntoNub->aGetHead(i_Head);
+    ayShoco_dup = ayShoco(aTestLine, m_pColVec, pCol);
+    if (! ayShoco_dup)
+      continue;
+
+    Compress::iFromShoco(acDup,                 // decompressed dest
+                         sizeof(acDup),         // max destination
+                         ayShoco_dup + _1B_C,   // compressed source
+                         *(u1*)ayShoco_dup);    // bytes compressed
+    
+    vTrace(" [[Dup]%s] v [[Cur]%s] \n"_Stz,acDup,acCur);
+    
+    if (! MemLib::bCompareBytes(ayShoco_dup, ayShoco_cur, nShocoBytes))
+      continue;
+    
+    bFoundMatch = true;
+    break;
+  }
+  
+  if (! bFoundMatch)
+    return false;
+  
+  // ... to be coded
+  
+  return false;
+}
+
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bTwiddleShocoDupe(Column* pCol, i8 i_FromOffset)
 {
@@ -2763,34 +2721,6 @@ void RowCoder::vDumpHead(Stz* szTitle,
                          HeadLine* aHeadLine,
                          ColumnVec* pColVec)
 {
-  if (aHeadLine->bIsLargeHead()) {
-    vDumpHead_large(szTitle,aHeadLine,pColVec);
-    return;
-  }
-
-  vDumpLine(szTitle,aHeadLine,pColVec,C_UNKNOWN);
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump large head line                                                       */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDumpHead_large(Stz* szTitle,
-                               HeadLine* aHeadLine,
-                               ColumnVec* pColVec)
-{
-  i8 i_LastHeadWord = (nHeadBytes(pColVec) / sizeof(Word) - 1);
-
-  vDumpLine(szTitle,aHeadLine,pColVec,i_LastHeadWord);
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump head line                                                             */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDumpLine(Stz* szTitle,
-                         HeadLine* aHeadLine,
-                         ColumnVec* pColVec,
-                         i8 i_HighLight)
-{
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 nHeadBytes = aHeadLine->nBytes();
@@ -2803,7 +2733,7 @@ void RowCoder::vDumpLine(Stz* szTitle,
   if (aHeadLine->bHasOverflow()) {
     vTrace("\n%s HeadDump %p :\n"_Stz,szTitle,aHeadLine);
     
-    MemLib::vWordDump(aHeadLine,nHeadBytes,i_HighLight);
+    MemLib::vWordDump(aHeadLine,nHeadBytes);
 
     aOverLine  = aGetOverRel(aHeadLine,i_Over_rel);
     nOverBytes = aOverLine->nBytes();
@@ -2844,7 +2774,7 @@ void RowCoder::vDumpLine(Stz* szTitle,
     eMC eOverMeta = (eMC)aOverLine->w8_1B(1);
     i8 i_Col_over;
     for (i_Col_over = 0; i_Col_over < nColumns; i_Col_over++)
-      if (MC_OVERFLOW_2B == aHeadLine->eMetaCode(i_Col_over))
+      if (MC_OVERFLOW_2T == aHeadLine->eMetaCode(i_Col_over))
         break;
 
 
@@ -2906,7 +2836,7 @@ void RowCoder::vDumpLine(Stz* szTitle,
     eMetaCode  = aHeadLine->eMetaCode(i_Col);
     szMetaCode = aMC[eMetaCode];
     
-    if (MC_OVERFLOW_2B == eMetaCode) {
+    if (MC_OVERFLOW_2T == eMetaCode) {
       i8 i_Over_rel = aHeadLine->iOverflow2B();
       OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
       eMetaCode  = (eMC)aOverLine->w8_1B(1);
@@ -2944,7 +2874,7 @@ void RowCoder::vDumpLine(Stz* szTitle,
            nBytes);
     
     if (nBytes) {
-      if (MC_OVERFLOW_2B == eMetaCode) {
+      if (MC_OVERFLOW_2T == eMetaCode) {
         for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
           vTrace("%02x"_Stz,*(ayAddr + i_Byte));
         //vTrace("\n"_Stz); //! temp
@@ -2993,6 +2923,10 @@ void RowCoder::vDumpLine(Stz* szTitle,
     i_Offset += nBytes;
     
     if (eMetaCode == MC_STR_SPLIT_2T1L)
+      vDebugPoint();
+    if (eMetaCode == MC_STR_DUP_2H)
+      vDebugPoint();
+    if (eMetaCode == MC_SHOCO_DUP_2H)
       vDebugPoint();
   }
   
@@ -3543,7 +3477,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         break;
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      case MC_OVERFLOW_2B:
+      case MC_OVERFLOW_2T:
         break;
  */
       default:
@@ -3627,7 +3561,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
           ayDataByte += nBytesPartA;
           break;
           
-        case MC_OVERFLOW_2B: {
+        case MC_OVERFLOW_2T: {
           vDebugPoint();
           i8 i_Over_rel = aHeadLine->iOverflow2B();
           OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
@@ -3848,7 +3782,11 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         *acString++ = '\0';
         break;
         
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_STR_DUP_2H:
+        break;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_STR_FIT_1L:
         nLength = *(u1*)ayDataByte++;
         MemLib::vCopy((byte*)acString,
@@ -3879,6 +3817,10 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_BSTR_SPLIT_2T2L:
+        break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case MC_SHOCO_DUP_2H:
         break;
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3978,7 +3920,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         break;
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      case MC_OVERFLOW_2B: {
+      case MC_OVERFLOW_2T: {
         vDebugPoint();
         i8 i_Over_rel = aHeadLine->iOverflow2B();
         OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
@@ -4102,6 +4044,7 @@ i8 RowCoder::nDataBytes(eMC eMetaCode)
       
     case MC_STR_EMPTY:        return 0;
       
+    case MC_STR_DUP_2H:      return 2;
     case MC_STR_FIT_1L:       return 1;
     case MC_STR_TAIL_2T:      return 2;
     case MC_STR_SPLIT_2T1L:   return 3;
@@ -4110,6 +4053,7 @@ i8 RowCoder::nDataBytes(eMC eMetaCode)
     case MC_BSTR_TAIL_2T:     return 2;
     case MC_BSTR_SPLIT_2T2L:  return 4;
       
+    case MC_SHOCO_DUP_2H:     return 1;
     case MC_SHOCO_FIT_1C:     return 1;
     case MC_SHOCO_TAIL_2T:    return 2;
     case MC_SHOCO_SPLIT_2T1C: return 3;
@@ -4122,7 +4066,7 @@ i8 RowCoder::nDataBytes(eMC eMetaCode)
     case MC_TWOS_6B: return 6;
     case MC_TWOS_7B: return 7;
       
-    case MC_OVERFLOW_2B:
+    case MC_OVERFLOW_2T:
       return 2;
       
     default:
