@@ -2085,6 +2085,8 @@ bool RowCoder::bTwiddleShocoDupe_2H(Column* pCol, i8 i_FromOffset)
                        *(u1*)ayShoco_cur);    // bytes compressed
 
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   i8 i_Head;
   bool bFoundMatch = false;
   for (i_Head = 0; i_Head < nHeads - 1; i_Head++) {
@@ -2105,8 +2107,6 @@ bool RowCoder::bTwiddleShocoDupe_2H(Column* pCol, i8 i_FromOffset)
     if (! MemLib::bCompareBytes(ayShoco_dup, ayShoco_cur, nShocoBytes))
       continue;
     
-    //vTrace(" Dup:]%s[ v Cur:]%s[\n"_Stz,acDup,acCur);
-    
     bFoundMatch = true;
     break;
   }
@@ -2114,8 +2114,19 @@ bool RowCoder::bTwiddleShocoDupe_2H(Column* pCol, i8 i_FromOffset)
   if (! bFoundMatch)
     return false;
   
-  // ... to be coded
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // found a duplicate
   
+  // ... to be coded
+  vTrace(" Dup:]%s[ v Cur:]%s[\n"_Stz,acDup,acCur);
+  
+  // 0) replace the MC_SHOCO_TAIL_2T with MC_SHOCO_DUP_2H
+  vMetaCode(pCol,MC_SHOCO_DUP_2H);
+
+  // 1) replace the abs |FT| with rel [2H]
+
+  vMetaCode(pCol,MC_SHOCO_DUP_2H);
+
   return false;
 }
 
