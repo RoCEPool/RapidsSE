@@ -227,7 +227,6 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   vCopyOver();
 #else
   vCopyHead();
-  vRecode_Short();
 #endif
 
   m_nTotalHeads++;
@@ -1317,53 +1316,6 @@ void RowCoder::vMetaPut(Datum* pDatum, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
   vMetaCode(pCol,pDatum->m_eEncoding);
-}
-
-/*----------------------------------------------------------------------------*/
-/* recode the datums                                                          */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vRecode_Short(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-  i8 nColumns = m_pColVec->nItems();
-  
-  // recode each column
-  
-  //vTrace("DUMP before recode\n"_Stz);
-  //vDumpHead("m_aFromHead"_Stz,m_aFromHead, m_pColVec);
-  
-  i8 i_LastColumn = 0;
-  
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    
-    // get the initial encoding of the datum for i_Col from from-row
-    
-    Column* pCol = m_pColVec->pGet(i_Col);
-    eDM eDatum = pCol->eDatumType();
-    
-    i8 iFromOffset_IGNORE = 0;
-    i_LastColumn = 0;
-    m_eFromEncoding  = eGetFromEncoding(pCol,i_LastColumn,iFromOffset_IGNORE);
-    
-    m_nFromDataBytes = nDataBytes(m_eFromEncoding);
-    
-    //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    // re-encode datum
-    
-    if (DM_VCH == eDatum) {
-      vRecodeVch(pCol);
-    }
-    else {
-      vUsageIncRecoded(pCol,m_nFromDataBytes,m_eFromEncoding);
-      m_i_IntoOffset += m_nFromDataBytes;
-    }
-
-  }
-  //vTrace("DUMP after recode\n"_Stz);
-  //vDumpHead("m_aIntoHead"_Stz,m_aIntoHead, m_pColVec);
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
 }
 
 /*----------------------------------------------------------------------------*/

@@ -148,7 +148,6 @@ namespace Data
     void vMetaCode(Column* pCol, eMC eMetaCode);
     void vMetaPut(Datum* pDatum, Column* pCol);
 
-    void vRecode_Short(void);
     void vRecodeVch(Column* pCol);
     void vRecodeVchShoco(Column* pCol);
     bool bRecodeVchShocoDupe(Column* pCol);
