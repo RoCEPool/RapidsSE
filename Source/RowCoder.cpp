@@ -656,6 +656,12 @@ void RowCoder::vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum)
 
 #ifdef WITH_ENCODING_INT_DIGIT
   
+  if (-1 == pTgtDatum->m_iInt) {
+    pTgtDatum->m_eEncoding = MC_MINUS_ONE;
+    pTgtDatum->m_nEncodedBytes = C_0B;
+    return;
+  }
+  
   if (MC_1B == eEncoding) {
     
     i8 i1BInt = pTgtDatum->m_iInt;
@@ -667,6 +673,7 @@ void RowCoder::vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum)
       pTgtDatum->m_nEncodedBytes = C_0B;
       return;
     }
+    
   }
 #endif
 
@@ -1406,7 +1413,7 @@ void RowCoder::vTwiddleFrom(void)
   
   RASSERT(! m_bEncoding);
   
-  //vDumpHead("vTwiddleFrom:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
+  vDumpHead("vTwiddleFrom:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate Vch columns and decide how to handle
@@ -3936,7 +3943,7 @@ void RowCoder::vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
     case MC_7B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
     case MC_8B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
       
-    case MC_MINUS_ONE: pDatum->m_iInt = C_DATUM_NULL;          break;
+    case MC_MINUS_ONE: pDatum->m_iInt = (i8)-1;                break;
     case MC_ZERO:      pDatum->m_iInt = (i8)0;                 break;
     case MC_ONE:       pDatum->m_iInt = (i8)1;                 break;
     case MC_TWO:       pDatum->m_iInt = (i8)2;                 break;
@@ -4052,7 +4059,7 @@ void RowCoder::vDecodeInt(Datum* pDatum, HeadLine* aHeadLine,
     case MC_7B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
     case MC_8B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
       
-    case MC_MINUS_ONE: pDatum->m_iInt = C_DATUM_NULL;          break;
+    case MC_MINUS_ONE: pDatum->m_iInt = (i8)-1;                break;
     case MC_ZERO:      pDatum->m_iInt = (i8)0;                 break;
     case MC_ONE:       pDatum->m_iInt = (i8)1;                 break;
     case MC_TWO:       pDatum->m_iInt = (i8)2;                 break;
