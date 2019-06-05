@@ -1462,6 +1462,8 @@ i8 RowCoder::iTwiddleShiftCol(i8& i_Offset_data_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
+  //vDumpHead("iTwiddleShiftCol:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
+  
   i_Offset_data_ = m_i_BaseOffset;
   
   i8 nLimit_OT  = m_nHeadBytes - _2B_OT;
@@ -1472,7 +1474,8 @@ i8 RowCoder::iTwiddleShiftCol(i8& i_Offset_data_)
     eMC eEncoding = m_aFromHead->eMetaCode(i_Col);
     
     i8 nDataBytes_col = 0;
-    if (MC_STR_FIT_1L == eEncoding)
+    if (MC_STR_FIT_1L   == eEncoding ||
+        MC_SHOCO_FIT_1C == eEncoding)
       nDataBytes_col = m_aFromHead->wGet(i_Offset_data_,C_1B);
     nDataBytes_col += nDataBytes(eEncoding);
     
