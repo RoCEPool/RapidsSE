@@ -1436,8 +1436,10 @@ void RowCoder::vTwiddleFrom(void)
       continue;
     
     // can we find a duplicate?
-    //if (bTwiddleShocoDupe_3D(pCol,i_FromOffset))
-    //  continue;
+#ifdef WITH_SHOCO_DUPLICATES
+    if (bTwiddleShocoDupe_3D(pCol,i_FromOffset))
+      continue;
+#endif
     
     // can we fold a non-dupe string into ?
     if (bTwiddleShocoFold(pCol,i_FromOffset))

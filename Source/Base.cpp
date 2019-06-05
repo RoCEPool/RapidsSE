@@ -103,10 +103,6 @@ void Base::vTraceWith(void)
   vTrace("  WITH_SHOCO_DUPLICATES\n"_Stz);
 #endif
   
-#ifdef WITH_SHOCO_FOLDLAST
-  vTrace("  WITH_SHOCO_FOLDLAST\n"_Stz);
-#endif
-
 #ifdef WITH_ANALYSE_FREE
   vTrace("  WITH_ANALYSE_FREE\n"_Stz);
 #endif
