@@ -53,7 +53,7 @@ JobClass xJobClass_SubPurger =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_SubPurger_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_SubTruncate_class;
+  *pNextFun = (pFUN*)pJob_SubScan_class;
   
   return &xJobClass_SubPurger;
 }

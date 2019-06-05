@@ -168,6 +168,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBLOADER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBPUBLISH
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBPURGER
+  /*    */ &Finalize::vUndefined,         // CN_JOB_SUBSCAN
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBTRUNCATE
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBWALKER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUPERVISOR

@@ -158,6 +158,7 @@ static Stz* aJL[]
 #include "Job_SubLoader.hpp"
 #include "Job_SubPublish.hpp"
 #include "Job_SubPurger.hpp"
+#include "Job_SubScan.hpp"
 #include "Job_SubTruncate.hpp"
 #include "Job_SubWalker.hpp"
 #include "Job_Supervisor.hpp"

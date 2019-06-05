@@ -130,6 +130,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_SUBLOADER);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBPUBLISH);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBPURGER);
+  nJobs++; JobClass::vJobCat(CN_JOB_SUBSCAN);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBTRUNCATE);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBWALKER);
 

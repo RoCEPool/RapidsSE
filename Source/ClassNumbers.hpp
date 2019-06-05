@@ -171,6 +171,7 @@ enum eCN : u2 // Class Number
   /* 128 0x80   151472B Heap:L */ CN_JOB_SUBLOADER,
   /* 129 0x81    71016B Heap:L */ CN_JOB_SUBPUBLISH,
   /* 130 0x82    70632B Heap:L */ CN_JOB_SUBPURGER,
+  /*                           */ CN_JOB_SUBSCAN,
   /* 131 0x83    70608B Heap:L */ CN_JOB_SUBTRUNCATE,
   /*                           */ CN_JOB_SUBWALKER,
   /*                           */ CN_JOB_SUPERVISOR,
@@ -463,6 +464,7 @@ static Stz* aCN[]
   /* 128 0x80 */ "JOB_SUBLOADER"_Stz,       // CN_JOB_SUBLOADER
   /* 129 0x81 */ "JOB_SUBPUBLISH"_Stz,      // CN_JOB_SUBPUBLISH
   /* 130 0x82 */ "JOB_SUBPURGER"_Stz,       // CN_JOB_SUBPURGER
+  /*          */ "JOB_SUBSCAN"_Stz,         // CN_JOB_SUBSCAN
   /* 131 0x83 */ "JOB_SUBTRUNCATE"_Stz,     // CN_JOB_SUBTRUNCATE
   /*          */ "JOB_SUBWALKER"_Stz,       // CN_JOB_SUBWALKER
   /*          */ "JOB_SUPERVISOR"_Stz,      // CN_JOB_SUPERVISOR
