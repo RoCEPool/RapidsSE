@@ -57,7 +57,7 @@ void RowBuffer::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RowBuffer::RowBuffer(void)
-: Object(CN_ROWBUFFER)
+: DataBuffer(CN_ROWBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   

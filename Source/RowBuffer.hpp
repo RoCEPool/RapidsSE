@@ -7,21 +7,21 @@ namespace Data
 {
   class RowCoder;
 
-  class RowBuffer : public Object
+  class RowBuffer : public DataBuffer
   {
   friend class IndexTree;
   friend class RowCoder;
 
   protected:
-    Lock    m_okLock;       // lock
-    i8      m_iBufferNo;    // this RowBuffer's buffer number
-    i8      m_iPartitionNo; // partition no this buffer belongs to
-    Since   m_oWhenNewed;   // when was this buffer created?
+//    Lock    m_okLock;       // lock
+//    i8      m_iBufferNo;    // this RowBuffer's buffer number
+//    i8      m_iPartitionNo; // partition no this buffer belongs to
+//    Since   m_oWhenNewed;   // when was this buffer created?
 
     RowTray m_oRowTray;     // tray of rows
   
-    RowBuffer* m_pNextBuffer;  // next buffer
-    RowBuffer* m_pPrevBuffer;  // previous buffer
+//    RowBuffer* m_pNextBuffer;  // next buffer
+//    RowBuffer* m_pPrevBuffer;  // previous buffer
   
     SeeMe m_xSeeMe;
   

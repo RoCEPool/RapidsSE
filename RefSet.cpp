@@ -43,7 +43,7 @@ RefSet::RefSet(i8 nRowRefs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REFSET);
   
-  m_nRowRefs    = C_UNKNOWN;
+  m_nRowRefs = C_UNKNOWN;
   
   for (i8 i_RowRef = 0; i_RowRef < nRowRefs; i_RowRef++)
     m_iaRowRef[i_RowRef] = C_UNKNOWN;
