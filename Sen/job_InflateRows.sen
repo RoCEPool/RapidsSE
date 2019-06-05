@@ -179,10 +179,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the acks
-  //grid::slots task::acks!
-  1 task::acks!
+  pJob_InflateRows Job_inflateRows.subInfTasks@ locals| iSubInflateTasks |
+  iSubInflateTasks task::acks!
 
-  grid::slots 0
+  iSubInflateTasks 0
   do
     //I "Creating Job_SubInflate %v" fmt.print
     pJob_InflateRows job_InflateRows.spawnSubInflate

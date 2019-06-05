@@ -559,6 +559,7 @@
   static void vJob_InflateRowsPlannerStore(Tasks::MP_Task mpTask);
   static void vJob_InflateRowsSpawnSub(Tasks::MP_Task mpTask);
   static void vJob_InflateRowsSpawnSubInflate(Tasks::MP_Task mpTask);
+  static void vJob_InflateRowsSubInfTasksFetch(Tasks::MP_Task mpTask);
   static void vJob_InflateRowsTableStore(Tasks::MP_Task mpTask);
   static void vJob_InflateRowsWhereFetch(Tasks::MP_Task mpTask);
 

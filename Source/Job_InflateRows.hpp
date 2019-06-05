@@ -15,11 +15,13 @@ namespace Jobs
     Table*       m_pTable;              // table rows being fetched from
     Column*      m_pColumn;             // column to be retrieved
     bool         m_bPrint;              // print on
+    i8           m_nSubInflateTasks;    // no of sub-inflate tasks to spawn
     Planner*     m_pPlanner;            // fetch planner
     Queue*       m_pBufferQueue;        // buffer queue where fetch buffers are pushed
     FetchBuffer* m_pFetchBuffer;        // fetch buffer
     i8           m_nLastBuffers;        // expected last buffers
-    i8           m_nLastBuffersScanned; // last buffers scanned so far.
+    Atomic       m_inLastBuffersScanned; // last buffers scanned so far.
+    Atomic       m_inRowsProcessed;     // rows processed
     RowOnce*     m_pRowOnce;            // has row been seen before?
     
     Row*         m_pRow;                // row for retrieval
