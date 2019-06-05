@@ -13,16 +13,7 @@ namespace Data
   friend class RowCoder;
 
   protected:
-//    Lock    m_okLock;       // lock
-//    i8      m_iBufferNo;    // this RowBuffer's buffer number
-//    i8      m_iPartitionNo; // partition no this buffer belongs to
-//    Since   m_oWhenNewed;   // when was this buffer created?
-
-    RowTray m_oRowTray;     // tray of rows
-  
-//    RowBuffer* m_pNextBuffer;  // next buffer
-//    RowBuffer* m_pPrevBuffer;  // previous buffer
-  
+    RowTray m_oRowTray;  // tray of rows
     SeeMe m_xSeeMe;
   
     // must be last
@@ -41,26 +32,20 @@ namespace Data
     static RowBuffer* pToRowBuffer(void* aAddr);
   
     ColumnVec* pColumnVec(void);
-    void       vDropWrite(void);
-    void       vGrabWrite(void);
     void       vTable(Table* pTable);
     Table*     pTable(void);
     i8         nRowCount(void);
 
     ////////////////////////////////////////////////////////////////////////////
     // buffer functions
-    i8          iAgeSsec(void);
     void        vBufferCount(i8& nBufferCount);
     i8          iDecile(void);
     i8          iLengthList(void);
     RowBuffer*  pNextBuffer(void);
     void        vNextBuffer(RowBuffer* pNextBuffer);
-    void        vPartitionNo(i8 iPartitionNo);
-    i8          iPartitionNo(void);
     RowBuffer*  pPrevBuffer(void);
     void        vPrevBuffer(RowBuffer* pPrevBuffer);
     void        vTruncate(void);
-    Since&      oWhenNewed(void);
     
     ////////////////////////////////////////////////////////////////////////////
     // row functions

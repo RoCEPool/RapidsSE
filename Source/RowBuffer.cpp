@@ -61,21 +61,6 @@ RowBuffer::RowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  m_okLock.vInitLock(LK_ROWBUFFER);
-  
-  m_iBufferNo     = *nPoolBufferNo();
-  m_iPartitionNo  = -1;
-  
-  // zero all the cachelines in the row tray
-//  for (i8 iIndex = 0 ; iIndex < C_TRAY_ROWS; iIndex++)
-//    m_oRowTray.aGetHead(iIndex)->vSetAll(0);
-  
-  m_pNextBuffer   = nullptr;
-  m_pPrevBuffer   = nullptr;
-  
-  m_oWhenNewed.vNow();
-  
-  //MemLib::vZero(m__filler,sizeof(m__filler),CN_ROWBUFFER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
@@ -146,25 +131,6 @@ RowBuffer* RowBuffer::pToRowBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get age of buffer in seconds                                               */
-/*----------------------------------------------------------------------------*/
-i8 RowBuffer::iAgeSsec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  Since oSince;
-  oSince.vNow();
-  
-  Ivl wDiff;
-  
-  wDiff = oSince.wSubtract(m_oWhenNewed);
-  
-  i8 iAge = wDiff.iSecond();
-  
-  return iAge;
-}
 
 /*----------------------------------------------------------------------------*/
 /* analyze this buffer                                                        */
@@ -266,16 +232,6 @@ i8 RowBuffer::iDecile(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop lock for write                                                        */
-/*----------------------------------------------------------------------------*/
-void RowBuffer::vDropWrite(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  m_okLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vDump(void)
@@ -295,15 +251,6 @@ void RowBuffer::vGetRow(Row* pRow, i8 i_Row)
   RowCoder::vInflate(pRow,aCompactRow);
 }
 
-/*----------------------------------------------------------------------------*/
-/* grab lock for write                                                        */
-/*----------------------------------------------------------------------------*/
-void RowBuffer::vGrabWrite(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  m_okLock.vGrabWrite();
-}
 
 /*----------------------------------------------------------------------------*/
 /* does buffer have space for nBytes ?                                        */
@@ -384,24 +331,6 @@ void RowBuffer::vNextBuffer(RowBuffer* pNextBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   m_pNextBuffer = pNextBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set partition no                                                           */
-/*----------------------------------------------------------------------------*/
-void RowBuffer::vPartitionNo(i8 iPartitionNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  m_iPartitionNo = iPartitionNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get partition no                                                           */
-/*----------------------------------------------------------------------------*/
-i8 RowBuffer::iPartitionNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  return m_iPartitionNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -668,15 +597,6 @@ bool RowBuffer::bVerifyNextPrev(void)
   return true;
 }
 
-/*----------------------------------------------------------------------------*/
-/* when was this buffer newed?                                                */
-/*----------------------------------------------------------------------------*/
-Since& RowBuffer::oWhenNewed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER);
-  
-  return m_oWhenNewed;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
