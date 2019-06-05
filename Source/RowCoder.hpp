@@ -159,6 +159,7 @@ namespace Data
     bool bTwiddleShocoDupe_3D(Column* pCol, i8 i_FromOffset);
     bool bTwiddleShocoFold(Column* pCol, i8 i_FromOffset);
     void vTwiddleShocoTail(Column* pCol, i8 i_FromOffset);
+    bool bTwiddleStringDupe(Column* pCol, i8 i_FromOffset);
     void vTwiddleStringTail(Column* pCol, i8 i_FromOffset);
 
     void vUsageIncEncoded(Column* pCol, i8 nBytes, eMC eMetaCode = MC_NULL);
