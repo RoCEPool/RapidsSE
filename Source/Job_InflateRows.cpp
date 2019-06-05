@@ -117,11 +117,12 @@ Job_InflateRows::Job_InflateRows(Interface::Session* pSession)
   m_pTable       = nullptr;
   m_pColumn      = nullptr;
   m_bPrint       = true;
+  m_nSubInflateTasks = 1;
   m_pPlanner     = nullptr;
   m_pBufferQueue = new Queue;
   m_pFetchBuffer = nullptr;
   m_nLastBuffers = 0;
-  m_nLastBuffersScanned = 0;
+  m_inLastBuffersScanned = 0;
   m_pRowOnce     = nullptr;
   
   m_pRow         = nullptr;
@@ -233,6 +234,7 @@ bool Job_InflateRows::bPopulateJob(TokenVec* pTokenVec)
   // - - - - - - - - - - - - - - - - - - - - -
   // inflate j10 column;
   // inflate j10 print;
+  // inflate j10 threads;
   if ( iNumTokens == 3) {
     if (pTokenVec->pGet(2)->eToken() == TN_NAME) {
       
@@ -245,20 +247,52 @@ bool Job_InflateRows::bPopulateJob(TokenVec* pTokenVec)
       return true;
     }
     
+    if (pTokenVec->pGet(2)->eToken() == TN_INTEGER) {
+      m_nSubInflateTasks = pTokenVec->pGet(2)->iToI8();
+      return true;
+    }
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
   // inflate j10 column print;
+  // inflate j10 column threads;
+  // inflate j10 print threads;
   if ( iNumTokens == 4) {
-    if (pTokenVec->pGet(2)->eToken() == TN_NAME) {
-      m_sColumnName = pTokenVec->pGet(2)->aText();
     
-      if (pTokenVec->pGet(3)->aText()->bSame("print"_Stz)) {
+    if (pTokenVec->pGet(2)->eToken() == TN_NAME) {
+      
+      // inflate j10 print threads;
+      if (pTokenVec->pGet(2)->aText()->bSame("print"_Stz)) {
         m_bPrint = true;
-        return true;
+        
+        if (pTokenVec->pGet(3)->eToken() == TN_INTEGER) {
+          m_nSubInflateTasks = pTokenVec->pGet(3)->iToI8();
+          return true;
+        }
+        return false;
       }
       
+      // inflate j10 column print;
+      // inflate j10 column threads;
+      m_sColumnName = pTokenVec->pGet(2)->aText();
+      
+      // inflate j10 column print;
+      if (pTokenVec->pGet(3)->eToken() == TN_NAME) {
+        if (pTokenVec->pGet(3)->aText()->bSame("print"_Stz)) {
+          m_bPrint = true;
+          return true;
+        }
+        return false;
+      }
+      
+      // inflate j10 column threads;
+      if (pTokenVec->pGet(3)->eToken() == TN_INTEGER) {
+        m_nSubInflateTasks = pTokenVec->pGet(2)->iToI8();
+        return true;
+      }
+
     }
+    
   }
   
   return false;
@@ -329,7 +363,19 @@ Job* Jobs::pJob_InflateRows_pre(Interface::Session* pSession)
 void Jobs::vJob_InflateRows_post(Interface::Session* pSession, Job* pJob)
 {
   Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJob);
-  // do nothing
+  
+  if ( pJob_InflateRows->m_bHasError ) {
+    
+    vTrace("error: (node%lld) %s\n"_Stz, gpAttachMap->m_pGrid->iThisNode(),
+           aEC[pJob_InflateRows->m_xResponse.m_eErrorCode]);
+    
+    return;
+  }
+  
+  if (pJob_InflateRows->m_bPrint)
+    vTrace("success: %lld rows fetched\n"_Stz,*pJob_InflateRows->m_inRowsProcessed);
+  else
+    vTrace("success: %lld rows affected\n"_Stz,*pJob_InflateRows->m_inRowsProcessed);
 
 }
 

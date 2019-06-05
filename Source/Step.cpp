@@ -12,6 +12,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddStep(Stz* aName, StepFp fpStep, bool bImmediate)
 {
+  //vTrace("%s Size = %lld\n"_Stz, aName, aName->nSize());
   RASSERT(aName->nSize() <= 32);
   
   ForthWord* pNewWord = new(&gpAttachMap->m_oRootDic) ForthWord(aName);
