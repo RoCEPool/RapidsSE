@@ -555,8 +555,6 @@
   // job inflate
   static void vJob_InflateRowsColumnNameFetch(Tasks::MP_Task mpTask);
   static void vJob_InflateRowsColumnStore(Tasks::MP_Task mpTask);
-  static void vJob_InflateRowsLastBuffersStore(Tasks::MP_Task mpTask);
-  static void vJob_InflateRowsPlannerStore(Tasks::MP_Task mpTask);
   static void vJob_InflateRowsSpawnSub(Tasks::MP_Task mpTask);
   static void vJob_InflateRowsSpawnSubInflate(Tasks::MP_Task mpTask);
   static void vJob_InflateRowsSubInfTasksFetch(Tasks::MP_Task mpTask);
@@ -685,6 +683,10 @@
 
   static void vJob_SubPurgerSlotFetch(Tasks::MP_Task mpTask);
   static void vJob_SubPurgerPurgeJobIdFetch(Tasks::MP_Task mpTask);
+
+  // job SubScan
+  static void vJob_SubScanBufferQueueFetch(Tasks::MP_Task mpTask);
+  static void vJob_SubScanSlotFetch(Tasks::MP_Task mpTask);
 
   // Job SubTruncate
   static void vJob_SubTruncateSlotFetch(Tasks::MP_Task mpTask);
@@ -999,6 +1001,7 @@
   static void vTableGetColumnsAsString(Tasks::MP_Task mpTask);
   static void vTableColumnFetch(Tasks::MP_Task mpTask);
   static void vTableGetPtn(Tasks::MP_Task mpTask);
+  static void vTableInflateScan(Tasks::MP_Task mpTask);
   static void vTableIndexCount(Tasks::MP_Task mpTask);
   static void vTableInit(Tasks::MP_Task mpTask);
   static void vTableIsColumn(Tasks::MP_Task mpTask);

@@ -95,6 +95,7 @@
 "job_SubPublish.sen" include
 "job_SubPurger.sen" include
 "job_SubLoader.sen" include
+"job_SubScan.sen" include
 "job_SubTruncate.sen" include
 "job_SubWalker.sen" include
 "job_Supervisor.sen" include

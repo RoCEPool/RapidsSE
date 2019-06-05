@@ -16,15 +16,10 @@ namespace Jobs
     Column*      m_pColumn;             // column to be retrieved
     bool         m_bPrint;              // print on
     i8           m_nSubInflateTasks;    // no of sub-inflate tasks to spawn
-    Planner*     m_pPlanner;            // fetch planner
     Queue*       m_pBufferQueue;        // buffer queue where fetch buffers are pushed
-    FetchBuffer* m_pFetchBuffer;        // fetch buffer
-    i8           m_nLastBuffers;        // expected last buffers
-    Atomic       m_inLastBuffersScanned; // last buffers scanned so far.
+    Atomic       m_inBufferCount;        // expected last buffers
+    Atomic       m_inBuffersScanned;    // last buffers scanned so far.
     Atomic       m_inRowsProcessed;     // rows processed
-    RowOnce*     m_pRowOnce;            // has row been seen before?
-    
-    Row*         m_pRow;                // row for retrieval
     
     // must be last
     Footer m_xFooter;
@@ -40,10 +35,7 @@ namespace Jobs
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
-    void vCreateRowOnce(void);
-    void vDeleteBuffer(void);
     bool bPopulateJob(TokenVec* pTokenVec);
-    bool bRowSeen(Id xRowId);
     void vShow(void);
     
   public:
@@ -57,8 +49,8 @@ namespace Jobs
   Job* pJob_InflateRows_pre(Interface::Session* pSession);
   void vJob_InflateRows_post(Interface::Session* pSession, Job* pJob);
   void vJob_InflateRows_delete(Interface::Session* pSession, Job* pJob);
-  void vRetrieveRows(Job_InflateRows* pJob_InflateRows, FetchBuffer* pFetchBuffer, Row* pRow);
-  void vRetrieveColumns(Job_InflateRows* pJob_InflateRows, FetchBuffer* pFetchBuffer);
+  void vRetrieveRows(Job_InflateRows* pJob_InflateRows, RowBuffer* pRowBuffer, Row* pRow);
+  void vRetrieveColumns(Job_InflateRows* pJob_InflateRows, RowBuffer* pRowBuffer, Row* pRow);
   void vJob_InflateRows_show(Job* pJob);
   
   JobClass* pJob_InflateRows_class(pFUN** aaFun);

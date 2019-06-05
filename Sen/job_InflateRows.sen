@@ -5,44 +5,17 @@
 " job_InflateRows.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* generate plan for the inflate                                              */
+/* spawn sub scan jobs                                                       */
 /*----------------------------------------------------------------------------*/
-: generateInflatePlan ( "<sWhere>" ^pTable -- ^pPlanner )
+: spawnSubScan ( Job_InflateRows -- )
 
-  0 0 locals| pPlanner pAccessPath pTable sWhere |
+  params| pJob_InflateRows |
 
-  //sWhere "generatePlan" "%v %v" str.format .
-
-  ( cdt_0 ) planner::new to pPlanner
-  ( cdt_1 ) pTable pPlanner Planner.table!
-
-  ( cdt_2 ) sWhere pPlanner Planner.parseWhere  //"parseWheres" .
-
-  ( cdt_3 ) pPlanner Planner.genPaths           //"genPaths" .
-  ( cdt_4 ) pPlanner Planner.scorePaths         //"scorePaths" .
-  //( cdt_5 ) pPlanner Planner.showPaths
-
-  ( cdt_6 ) pPlanner Planner.matchPaths         //"matchPaths" .
-  //( cdt_6 ) pPlanner Planner.showPaths
-
-  ( cdt_7 ) pPlanner Planner.choosePaths        //"choosePaths" .
-
-  // return planner
-  pPlanner
-;
-
-/*----------------------------------------------------------------------------*/
-/* spawn sub fetch jobs                                                       */
-/*----------------------------------------------------------------------------*/
-: spawnInflateSub ( phrase planner Job_InflateRows -- )
-
-  params| pJob_InflateRows pPlanner iPhrase |
-
-  // spawn a subFetch job for each partition
+  // spawn a subInflate job for each partition
   grid::slots 0
   do
     //I "Creating Job_SubFetch %v" fmt.print
-    I iPhrase pPlanner pJob_InflateRows job_InflateRows.spawnSub
+    I pJob_InflateRows job_InflateRows.spawnSub
   loop
 
 ;
@@ -146,30 +119,10 @@
     sColumnNm pTable table.findColumn pJob_InflateRows job_InflateRows.column!
   then
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the where clause from the job
-  pJob_InflateRows job_InflateRows.where@ to sWhere
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the plan for the fetch
-  sWhere pTable generateInflatePlan to pPlanner
-  pPlanner pJob_InflateRows job_InflateRows.planner!
-
-  //pPlanner planner.showPaths
-
-  // assert we have a plan
-  pPlanner assert
-  pPlanner planner.phrases@ to iPhrases
-
-  // set the no of last buffers to no phrases * slots in the job
-  iPhrases grid::slots * pJob_InflateRows job_InflateRows.lastBuffers!
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn the sub fetch jobs
-  iPhrases 0
-  do
-    I pPlanner pJob_InflateRows spawnInflateSub
-  loop
+  // spawn the sub scan jobs
+  pJob_InflateRows spawnSubScan
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Now spawn the subInflate jobs and wait for them to complete
