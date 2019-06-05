@@ -18,7 +18,6 @@ using namespace PushDown;
 #include "FilterOp.hpp"
 #include "QueryOp.hpp"
 
-#include "RefSet.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
