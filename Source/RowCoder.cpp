@@ -1406,7 +1406,7 @@ void RowCoder::vTwiddleFrom(void)
   
   RASSERT(! m_bEncoding);
   
-  vDumpHead("vTwiddleFrom:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
+  //vDumpHead("vTwiddleFrom:: m_aFromHead"_Stz,m_aFromHead,m_pColVec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate Vch columns and decide how to handle
@@ -1436,8 +1436,8 @@ void RowCoder::vTwiddleFrom(void)
       continue;
     
     // can we find a duplicate?
-    if (bTwiddleShocoDupe_3D(pCol,i_FromOffset))
-      continue;
+    //if (bTwiddleShocoDupe_3D(pCol,i_FromOffset))
+    //  continue;
     
     // can we fold a non-dupe string into ?
     if (bTwiddleShocoFold(pCol,i_FromOffset))
