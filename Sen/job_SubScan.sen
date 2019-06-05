@@ -1,0 +1,87 @@
+/*============================================================================*/
+/* job_SubScan.sen -- Job SubScan                                           */
+/*============================================================================*/
+
+" job_SubScan.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* scan rows                                                                 */
+/*----------------------------------------------------------------------------*/
+: scanRows ( Job_SubScan -- <R> )
+
+  params| pJob_SubScan |
+  0 0 locals| sTableNm iSlot |
+  0 0 locals| pBufferQueue pTable |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // bufferQueue and slot t
+  pJob_SubScan job_SubScan.bufferQueue@ to pBufferQueue
+  pJob_SubScan job_SubScan.slot@ to iSlot
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table
+  pJob_SubScan job.objectName@ to sTableNm
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the table
+  sTableNm find execute to pTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // full scan (no index)
+  iSlot pTable tablePtnGrabRead  //! partitionLock
+  pJob_SubScan pTable table.inflateScan
+  iSlot pTable tablePtnDropRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table
+  popTable
+;
+
+/*----------------------------------------------------------------------------*/
+/* SubScan (on originating node)                                             */
+/*----------------------------------------------------------------------------*/
+: SubScan_run ( -- <R> )
+
+  >>am <SEED_RUN>
+
+  0 0 locals| pTask pJob_SubScan |
+
+  tp: SubScan
+  //"SubScan_run" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_SubScan
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set task's dictionary stack from path in job
+  pJob_SubScan job.pushPath
+  task::dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // execute a table scan
+  pJob_SubScan scanRows
+
+  ddlLock::testDrop
+
+  // null the job in the task
+  nullptr pTask task.job!
+
+  // now delete the ended job
+  pJob_SubScan job.delete
+
+  <DONE_RUN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

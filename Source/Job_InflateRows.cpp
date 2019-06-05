@@ -118,14 +118,10 @@ Job_InflateRows::Job_InflateRows(Interface::Session* pSession)
   m_pColumn      = nullptr;
   m_bPrint       = true;
   m_nSubInflateTasks = 1;
-  m_pPlanner     = nullptr;
   m_pBufferQueue = new Queue;
-  m_pFetchBuffer = nullptr;
-  m_nLastBuffers = 0;
-  m_inLastBuffersScanned = 0;
-  m_pRowOnce     = nullptr;
-  
-  //m_pRow         = nullptr;
+
+  m_inBufferCount = 0;
+  m_inBuffersScanned = 0;
   
   _checkInitialised_(CN_JOB_INFLATEROWS);
   
@@ -141,20 +137,6 @@ Job_InflateRows::~Job_InflateRows(void) noexcept(false)
   
   //m_pBufferQueue->vFinalize();
   delete m_pBufferQueue;
-  
-  // in case excepton , we may not have deleted buffer
-  if (m_pFetchBuffer)
-    delete m_pFetchBuffer;
-  
-  delete m_pPlanner;
-  
-  if (m_pRowOnce) {
-    delete m_pRowOnce;
-    m_pRowOnce = nullptr;
-  }
-  
-  //if (m_pRow)
-  //  delete m_pRow;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -174,36 +156,6 @@ void Job_InflateRows::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* create row once object                                                     */
-/*----------------------------------------------------------------------------*/
-void Job_InflateRows::vCreateRowOnce(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INFLATEROWS,_FOOTER_);
-  
-  RASSERT(! m_pRowOnce);
-  
-  m_pRowOnce = new RowOnce;
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete last fetch buffer                                                   */
-/*----------------------------------------------------------------------------*/
-void Job_InflateRows::vDeleteBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INFLATEROWS,_FOOTER_);
-  
-  if (m_pFetchBuffer) {
-    delete m_pFetchBuffer;
-    m_pFetchBuffer = nullptr;
-  }
-  
-//  if (m_pRowOnce) {
-//    delete m_pRowOnce;
-//    m_pRowOnce = nullptr;
-//  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* populate the job                                                           */
@@ -299,21 +251,6 @@ bool Job_InflateRows::bPopulateJob(TokenVec* pTokenVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if row has been seen so far                                           */
-/*----------------------------------------------------------------------------*/
-bool Job_InflateRows::bRowSeen(Id xRowId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INFLATEROWS,_FOOTER_);
-  
-  if (! m_pRowOnce)
-    return false;
-  
-  bool bSeen = m_pRowOnce->bRowSeen(xRowId);
-  
-  return bSeen;
-}
-
-/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_InflateRows::vShow(void)
@@ -393,76 +330,52 @@ void Jobs::vJob_InflateRows_delete(Interface::Session* pSession, Job* pJob)
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
 void Jobs::vRetrieveRows(Job_InflateRows* pJob_InflateRows,
-                          FetchBuffer* pFetchBuffer, Row* pRow)
+                          RowBuffer* pRowBuffer, Row* pRow)
 {
   ColumnVec* pColVec = pJob_InflateRows->m_pTable->pColumnVec();
   HV_Rec hvRec(pColVec);
   
-  HeadLine** aaCompactRow_cursor = pFetchBuffer->aaFirstRowPtr();
-  
   //pJob_InflateRows->m_pRow->vDontDecodeVch();
   
-  while (aaCompactRow_cursor) {
+  i8 nRowCount = pRowBuffer->nRowCount();
+  for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
-    HeadLine* aCompact = *aaCompactRow_cursor;
-
-    // inflate compact row into row
-    RowCoder::vInflate(pRow,aCompact);
+    // get the inflated compact row
+    pRowBuffer->vGetRow(pRow, i_Row);
     
     if (pJob_InflateRows->m_bPrint) {
       
       hvRec->vAppend(pRow);
       hvRec->vPrintRow();
     }
-    
-    aaCompactRow_cursor = pFetchBuffer->aaNextRowPtr(aaCompactRow_cursor);
   }
-  
-  return;
 }
 
 /*----------------------------------------------------------------------------*/
 /* iterate and retrieve column from rows in the buffer                        */
 /*----------------------------------------------------------------------------*/
 void Jobs::vRetrieveColumns(Job_InflateRows* pJob_InflateRows,
-                           FetchBuffer* pFetchBuffer)
+                            RowBuffer* pRowBuffer, Row* pRow)
 {
-  //Datum oDatum;
-  RowBuffer* pRowBuffer = nullptr;
-  
   ColumnVec* pColVec = pJob_InflateRows->m_pTable->pColumnVec();
   Column* pCol = pJob_InflateRows->m_pColumn;
   
-  HeadLine** aaHeadLine = pFetchBuffer->aaFirstRowPtr();
+  pRow->m_bGetAll = false;
+  pRow->m_abGetCol[pCol->iColumnNo()] = true;
+  pRow->m_iLastCol = pCol->iColumnNo();
   
-  HeadLine** aaLatter = (HeadLine**)pFetchBuffer->aLatter();
-  
-  pJob_InflateRows->m_pRow->m_bGetAll = false;
-  pJob_InflateRows->m_pRow->m_abGetCol[pCol->iColumnNo()] = true;
-  pJob_InflateRows->m_pRow->m_iLastCol = pCol->iColumnNo();
-  
-  while (aaHeadLine < aaLatter) {
+  i8 nRowCount = pRowBuffer->nRowCount();
+  for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
-    if ( ! aaHeadLine )
-      break;
-    
-    HeadLine* aHeadLine = *aaHeadLine;
-    
-    // check if aHeadLine is from the last rowBuffer
-    if (! RowBuffer::bCheckAddress(pRowBuffer,aHeadLine)) {
-      pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
-    }
-    
-    RowCoder::vInflate(pJob_InflateRows->m_pRow,aHeadLine);
+    // get the inflated compact row
+    pRowBuffer->vGetRow(pRow, i_Row);
     
     if (pJob_InflateRows->m_bPrint) {
       HV_Rec hvRec(pColVec);
       
-      hvRec->vAppend(pCol,pJob_InflateRows->m_pRow);
+      hvRec->vAppend(pCol,pRow);
       vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
     }
-    
-    aaHeadLine = aAdd<HeadLine**>(aaHeadLine,sizeof(HeadLine*));
   }
   
   return;

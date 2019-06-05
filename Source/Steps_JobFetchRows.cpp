@@ -22,8 +22,6 @@ void Step::vAddSteps_JobFetchRows(void)
   
   vAddStep("Job_inflateRows.columnName@"_Stz,  &Step::vJob_InflateRowsColumnNameFetch);
   vAddStep("Job_inflateRows.column!"_Stz,      &Step::vJob_InflateRowsColumnStore);
-  vAddStep("Job_inflateRows.lastBuffers!"_Stz, &Step::vJob_InflateRowsLastBuffersStore);
-  vAddStep("Job_inflateRows.planner!"_Stz,     &Step::vJob_InflateRowsPlannerStore);
   vAddStep("Job_inflateRows.spawnSub"_Stz,     &Step::vJob_InflateRowsSpawnSub);
   vAddStep("Job_inflateRows.spawnSubInflate"_Stz, &Step::vJob_InflateRowsSpawnSubInflate);
   vAddStep("job_inflateRows.subInfTasks@"_Stz, &Step::vJob_InflateRowsSubInfTasksFetch);
@@ -37,6 +35,9 @@ void Step::vAddSteps_JobFetchRows(void)
   
   vAddStep("Job_subInflate.jobInflateRows@"_Stz, &Step::vJob_SubInflateJobInflateRowsFetch);
   vAddStep("Job_subInflate.inflateRows"_Stz, &Step::vJob_SubInflateInflateRows);
+  
+  vAddStep("Job_subScan.bufferQueue@"_Stz,  &Step::vJob_SubScanBufferQueueFetch);
+  vAddStep("Job_subScan.slot@"_Stz,         &Step::vJob_SubScanSlotFetch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -271,53 +272,6 @@ void Step::vJob_InflateRowsColumnStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_inflateRows.lastBuffers! -- set no of expected last buffers            */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_InflateRowsLastBuffersStore(MP_Task mpTask)
-{
-  ENTRY("vJob_InflateRowsLastBuffersStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_inflateRows.lastBuffers!"_Stz);
-  Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJobPtr);
-  
-  i8 nLastBuffers;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(nLastBuffers) )
-    THROW_INVALID_DSTACK("Job_inflateRows.lastBuffers"_Stz);
-  
-  pJob_InflateRows->m_nLastBuffers = nLastBuffers;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Job_inflateRows.planner! -- store planner in the job                         */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_InflateRowsPlannerStore(MP_Task mpTask)
-{
-  ENTRY("vJob_InflateRowsPlannerStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_inflateRows.planner!"_Stz);
-  Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJobPtr);
-  
-  Object* pPlannerPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pPlannerPtr) )
-    THROW_INVALID_DSTACK("Job_inflateRows.planner"_Stz);
-  Planner* pPlanner = _pPlanner(pPlannerPtr);
-  
-  pJob_InflateRows->m_pPlanner = pPlanner;
-  
-  // if we have or phrases we'll need a RowOnce object
-  if (pPlanner->nPhrases() > 1)
-    pJob_InflateRows->vCreateRowOnce();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* Job_inflateRows.spawnSub -- spawn sub fetch job                            */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_InflateRowsSpawnSub(MP_Task mpTask)
@@ -329,40 +283,28 @@ void Step::vJob_InflateRowsSpawnSub(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_inflateRows.spawnSub"_Stz);
   Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJobPtr);
   
-  Object* pPlannerPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pPlannerPtr) )
-    THROW_INVALID_DSTACK("Job_inflateRows.spawnSub"_Stz);
-  Planner* pPlanner = _pPlanner(pPlannerPtr);
-  ASSERT(CN_PLANNER == pPlanner->eClass());
-  
-  i8 iPhrase;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iPhrase) )
-    THROW_INVALID_DSTACK("Job_inflateRows.spawnSub"_Stz);
-  
   i8 iSlot;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
     THROW_INVALID_DSTACK("Job_inflateRows.spawnSub"_Stz);
   
   Session* pSession = pJob_InflateRows->m_pSession;
   
-  JobClass* pJobClass_SubFetch = JobClass::pFind(CN_JOB_SUBFETCH);
+  JobClass* pJobClass_SubScan = JobClass::pFind(CN_JOB_SUBSCAN);
   
-  Job_SubFetch* pJob_SubFetch =
-  static_cast<Job_SubFetch*>(pJobClass_SubFetch->pPreJob(pSession));
+  Job_SubScan* pJob_SubScan =
+  static_cast<Job_SubScan*>(pJobClass_SubScan->pPreJob(pSession));
   
-  pJob_SubFetch->vSeed(SS_SEED_RUN);
+  pJob_SubScan->vSeed(SS_SEED_RUN);
   
-  pJob_SubFetch->m_iParentId    = pJob_InflateRows->m_iJobId;
-  pJob_SubFetch->m_pParentJob   = pJob_InflateRows;
-  pJob_SubFetch->m_sObjectName  = pJob_InflateRows->m_sObjectName;
-  pJob_SubFetch->m_pPlanner     = pPlanner;
-  pJob_SubFetch->m_iPhrase      = iPhrase;
-  pJob_SubFetch->m_i_Slot       = iSlot;
-  pJob_SubFetch->m_pBufferQueue = pJob_InflateRows->m_pBufferQueue;
+  pJob_SubScan->m_iParentId    = pJob_InflateRows->m_iJobId;
+  pJob_SubScan->m_pParentJob   = pJob_InflateRows;
+  pJob_SubScan->m_sObjectName  = pJob_InflateRows->m_sObjectName;
+  pJob_SubScan->m_i_Slot       = iSlot;
+  pJob_SubScan->m_pBufferQueue = pJob_InflateRows->m_pBufferQueue;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubFetch,SS_SEED_RUN));
+  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubScan,SS_SEED_RUN));
   
   EXIT();
 }
@@ -387,6 +329,9 @@ void Step::vJob_InflateRowsSpawnSubInflate(MP_Task mpTask)
   pJob_SubInflate->vSeed(SS_SEED_RUN);
   
   pJob_SubInflate->m_pJobInflateRows = pJob_InflateRows;
+  
+  // before spawning the sub inflate jobs set the m_nBufferCount
+  pJob_InflateRows->m_inBufferCount = pJob_InflateRows->m_pTable->nRowBuffers();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -557,12 +502,7 @@ void Step::vJob_SubInflateInflateRows(MP_Task mpTask)
   // get the buffer queue
   Queue* pBufferQueue = pJob_InflateRows->m_pBufferQueue;
   
-  i8 nRowsProcessed = 0;
-  i8 nLastBuffersScanned = 0;
-  i8 iRowsPrinted = 0;
-  
-  FetchBuffer* pFetchBuffer = nullptr;
-  bool bDone = false;
+  RowBuffer* pRowBuffer = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for errors
@@ -578,31 +518,58 @@ void Step::vJob_SubInflateInflateRows(MP_Task mpTask)
   // create a row for retrieval
   pJob_SubInflate->m_pRow = new Row(pJob_InflateRows->m_pTable->pColumnVec());
   
-  while ( *pJob_InflateRows->m_inLastBuffersScanned != pJob_InflateRows->m_nLastBuffers ) {
+  while ( *pJob_InflateRows->m_inBuffersScanned != *pJob_InflateRows->m_inBufferCount ) {
     
-    pFetchBuffer = _pFetchBuffer(pJob_InflateRows->m_pBufferQueue->pPop());
-    if (! pFetchBuffer) {
+    pRowBuffer = _pRowBuffer(pJob_InflateRows->m_pBufferQueue->pPop());
+    if (! pRowBuffer) {
       //Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
       Pthread::vSleepMicro(250,CN_JOB_FETCHROWS);
       continue;
     }
     
-    if (pJob_InflateRows->m_pColumn) {
-      vRetrieveColumns(pJob_InflateRows, pFetchBuffer);
-      pJob_InflateRows->m_inRowsProcessed += pFetchBuffer->nFetchedRows();
-    }
-    else {
-      vRetrieveRows(pJob_InflateRows, pFetchBuffer, pJob_SubInflate->m_pRow);
-      pJob_InflateRows->m_inRowsProcessed += pFetchBuffer->nFetchedRows();
-    }
-    
-    if (pFetchBuffer->bIsLast()) {
-      ++pJob_InflateRows->m_inLastBuffersScanned;
-    }
-    delete pFetchBuffer;
-    pFetchBuffer = nullptr;
+    if (pJob_InflateRows->m_pColumn)
+      vRetrieveColumns(pJob_InflateRows, pRowBuffer, pJob_SubInflate->m_pRow);
+    else
+      vRetrieveRows(pJob_InflateRows, pRowBuffer, pJob_SubInflate->m_pRow);
+  
+    pJob_InflateRows->m_inRowsProcessed += pRowBuffer->nRowCount();
+    ++pJob_InflateRows->m_inBuffersScanned;
   }
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subScan.bufferQueue@ -- fetch the job buffer queue                    */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_SubScanBufferQueueFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_SubScanBufferQueueFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_subScan.bufferQueue@"_Stz);
+  Job_SubScan* pJob = _pJob_SubScan(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushPointer(pJob->m_pBufferQueue);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subScan.slot@ -- fetch the job slot                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_SubScanSlotFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_SubScanSlotFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_subScan.slot@"_Stz);
+  Job_SubScan* pJob = _pJob_SubScan(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushI8(pJob->m_i_Slot);
+  
   EXIT();
 }
 
