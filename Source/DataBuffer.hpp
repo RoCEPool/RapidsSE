@@ -17,7 +17,7 @@ namespace Data
     DataBuffer* m_pPrevBuffer;  // previous buffer
   
   public:
-    DataBuffer(void);
+    DataBuffer(eCN eClass);
     ~DataBuffer(void) noexcept(false);
 
     i8          iAgeSsec(void);

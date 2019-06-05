@@ -5,7 +5,7 @@
 
 namespace Data
 {
-  class RefBuffer : public Object
+  class RefBuffer : public DataBuffer
   {
   protected:
   

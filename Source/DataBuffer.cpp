@@ -25,10 +25,10 @@ DataBuffer* Data::_pDataBuffer(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-DataBuffer::DataBuffer(void)
-: Object(CN_ROWBUFFER)
+DataBuffer::DataBuffer(eCN eClassNo)
+: Object(eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   m_okLock.vInitLock(LK_ROWBUFFER);
   m_iBufferNo     = *nPoolBufferNo();
@@ -38,9 +38,7 @@ DataBuffer::DataBuffer(void)
   m_pNextBuffer   = nullptr;
   m_pPrevBuffer   = nullptr;
   
-  _postcondition_(_ADDRESS_,_MAGIC_);
-  
-  _checkInitialised_(CN_ROWBUFFER);
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }
 
 /*----------------------------------------------------------------------------*/

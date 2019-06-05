@@ -532,7 +532,7 @@ i8 giClassSize[]
   
   /*    */ sizeof(Record),             // CN_RECORD
   /*    */ sizeof(RecordBuffer),       // CN_RECORDBUFFER
-  /*    */ 0,             // CN_REFBUFFER
+  /*    */ sizeof(RefBuffer),          // CN_REFBUFFER
   /*    */ sizeof(RefSet),             // CN_REFSET
   /*    */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER
   /*    */ sizeof(Response),           // CN_RESPONSE

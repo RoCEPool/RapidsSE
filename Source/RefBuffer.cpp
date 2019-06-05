@@ -26,7 +26,7 @@ RefBuffer* Data::_pRefBuffer(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RefBuffer::RefBuffer(void)
-: Object(CN_REFBUFFER)
+: DataBuffer(CN_REFBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
   
