@@ -139,6 +139,7 @@ namespace Data
     void vEncodeVch(Datum* pSrcDatum, Column* pCol);
     void vEncodeVchShoco(Datum* pSrcDatum, Column* pCol);
     void vEncodeVchSmall(Datum* pSrcDatum, Column* pCol);
+    void vEncodeVchTail_str(Datum* pSrcDatum, Column* pCol);
     void vExtendIntoHead(i8 nBytes, Column* pCol);
 
     eMC  eGetFromEncoding(Column* pCol, i8& i_PriorColumn_, i8& i_Offset_);
@@ -253,6 +254,8 @@ namespace Data
     static OverLine* aGetOver(HeadLine* aHeadLine);
     static OverLine* aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel);
     static TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
+
+    static void vMetaCode(HeadLine* aHeadLine, Column* pCol, eMC eMetaCode);
 
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
     

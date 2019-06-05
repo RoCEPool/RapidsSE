@@ -1101,7 +1101,7 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
           [IT] is 2 bytes being the index of the Shoco Tail Line
           <W> is one byte being the word length of head line
           {M} is the set of metacodes
-         <U> is one byte being the unit length of the tail line
+          <U> is one byte being the unit length of the tail line
           <C> is one byte being the number of shoco compressed bytes
           <shoco...> being the shoco compressed bytes
     */
@@ -1113,6 +1113,12 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
                        sShoco.nSpace(), // destination size
                        pSrcDatum->m_sVch.aChar(), // from uncompressed source
                        pSrcDatum->m_nChars);      // source bytes
+  
+  // did it compress?
+//  if (nCompressed == pSrcDatum->m_nChars) {
+//    vEncodeVchTail_str(pSrcDatum,pCol);
+//    return;
+//  }
   
   // allot a tail line as per the diagram (U is put in by iAllotTail)
   i8 nTailBytes  = _1B_U + _1B_C + nCompressed;
@@ -1172,6 +1178,61 @@ void RowCoder::vEncodeVchSmall(Datum* pSrcDatum, Column* pCol)
   vUsageIncEncoded(pCol,1 + pSrcDatum->m_nChars);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode varchar as MC_STR_TAIL_2T                                           */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vEncodeVchTail_str(Datum* pSrcDatum, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  /*
+       -- Into-Head (encoding) --              -- Into-Tail (encoding) --
+   +================================+    +=====================================+
+   | <W>{M}      ,MC_STR_TAIL_2T,   |    | <U><L><string...> ///////////////// |
+   +================================+    +=====================================+
+   |                                |
+   +--------------------------------+
+   |                           [IT] |
+   +--------------------------------+
+   
+   where: MC_SHOCO_TAIL_2T is the metaCode for the column
+          [IT] is 2 bytes being the index of the Shoco Tail Line
+          <W> is one byte being the word length of head line
+          {M} is the set of metacodes
+          <U> is one byte being the unit length of the tail line
+          <L> is the 1B length of the string
+          <string...> being the string
+   */
+  
+  // allot a tail line as per the diagram (U is put in by iAllotTail)
+  i8 nTailBytes  = _1B_U + _1B_L + pSrcDatum->m_nChars;
+  i8 i_Tail_string = m_pIntoNub->iAllotTail(nTailBytes);
+  TailLine* aTail_string = m_pIntoNub->aGetTail(i_Tail_string);
+  ASSERT(m_pIntoNub->nBytes(aTail_string->w8_1B(C_OFFSET_UNITS)) >= nTailBytes);
+  
+  // set <L> length of string into tail
+  aTail_string->v1B(0 + _1B_U,pSrcDatum->m_nChars);
+  
+  // copy <shoco...> into tail
+  char *aString_withinTail = (char*)aTail_string + _1B_U + _1B_L;
+  MemLib::vCopy(aString_withinTail,
+                pSrcDatum->m_sVch.aChar(),
+                pSrcDatum->m_nChars,
+                CN_ROWCODER);
+  
+  // modify
+  vMetaCode(pCol,MC_STR_TAIL_2T);
+  pSrcDatum->m_eEncoding = MC_STR_TAIL_2T;
+  
+  // put [IT] index of string tail as the 2 data bytes
+  vHeadAdd(i_Tail_string,2,pCol);
+  
+  vUsageIncEncoded(pCol,2 + nTailBytes);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  //MemLib::vWordDump(aShocoLine,m_nHeadBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1300,8 +1361,7 @@ void RowCoder::vMetaCode(Column* pCol, eMC eMetaCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  i8 i_Col = pCol->iColumnNo();
-  m_aIntoHead->vMetaCode(i_Col,eMetaCode);
+  vMetaCode(m_aIntoHead,pCol,eMetaCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2077,8 +2137,8 @@ bool RowCoder::bTwiddleShocoDupe_3D(Column* pCol, i8 i_FromOffset)
   if (nShocoBytes < 8)
     return false;
   
-  HeadLine* aTestLine = nullptr;
-  byte* ayShoco_dup   = nullptr;
+  HeadLine* aPriorHeadLine = nullptr;
+  byte* ayShoco_prior   = nullptr;
   
   char acCur[2048];
   char acDup[2048];
@@ -2091,24 +2151,24 @@ bool RowCoder::bTwiddleShocoDupe_3D(Column* pCol, i8 i_FromOffset)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 i_Head;
+  i8 i_PriorHead;
   bool bFoundMatch = false;
-  for (i_Head = 0; i_Head < nHeads - 1; i_Head++) {
+  for (i_PriorHead = 0; i_PriorHead < nHeads - 1; i_PriorHead++) {
     
-    aTestLine   = m_pIntoNub->aGetHead(i_Head);
+    aPriorHeadLine = m_pIntoNub->aGetHead(i_PriorHead);
     
     //vDumpHead("vTwiddleFrom:: aTestLine"_Stz,aTestLine,m_pColVec);
 
-    ayShoco_dup = ayShoco(aTestLine, m_pColVec, pCol);
-    if (! ayShoco_dup)
+    ayShoco_prior = ayShoco(aPriorHeadLine, m_pColVec, pCol);
+    if (! ayShoco_prior)
       continue;
 
     Compress::iFromShoco(acDup,                 // decompressed dest
                          sizeof(acDup),         // max destination
-                         ayShoco_dup + _1B_C,   // compressed source
-                         *(u1*)ayShoco_dup);    // bytes compressed
+                         ayShoco_prior + _1B_C,   // compressed source
+                         *(u1*)ayShoco_prior);    // bytes compressed
     
-    if (! MemLib::bCompareBytes(ayShoco_dup, ayShoco_cur, nShocoBytes))
+    if (! MemLib::bCompareBytes(ayShoco_prior, ayShoco_cur, nShocoBytes))
       continue;
     
     bFoundMatch = true;
@@ -2127,8 +2187,8 @@ bool RowCoder::bTwiddleShocoDupe_3D(Column* pCol, i8 i_FromOffset)
   i8 i_Col = pCol->iColumnNo();
   m_aFromHead->vMetaCode(i_Col,MC_SHOCO_DUP_3D);
   
-  // 1) replace the 2B abs |FT| with 3B rel [DS]
-  i8 i_DiffShoco = nSub(ayShoco_dup,m_aIntoHead);
+  // 1) replace the 2B abs |FT| with 3B rel [DSR]
+  i8 i_DiffShoco = nSub(ayShoco_prior,m_aIntoHead);
   
   i8 nFromSize = m_aFromHead->nBytes(); //! could be optimised
   
@@ -4921,6 +4981,15 @@ TailLine* RowCoder::aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel)
   TailLine* aTail = RowNub::aGetTail(aHeadLine,i_Tail_rel);
   
   return aTail;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set meta encoding for column value                                         */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vMetaCode(HeadLine* aHeadLine, Column* pCol, eMC eMetaCode)
+{
+  i8 i_Col = pCol->iColumnNo();
+  aHeadLine->vMetaCode(i_Col,eMetaCode);
 }
 
 /*----------------------------------------------------------------------------*/
