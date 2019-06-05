@@ -125,7 +125,7 @@ Job_InflateRows::Job_InflateRows(Interface::Session* pSession)
   m_inLastBuffersScanned = 0;
   m_pRowOnce     = nullptr;
   
-  m_pRow         = nullptr;
+  //m_pRow         = nullptr;
   
   _checkInitialised_(CN_JOB_INFLATEROWS);
   
@@ -153,8 +153,8 @@ Job_InflateRows::~Job_InflateRows(void) noexcept(false)
     m_pRowOnce = nullptr;
   }
   
-  if (m_pRow)
-    delete m_pRow;
+  //if (m_pRow)
+  //  delete m_pRow;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -393,7 +393,7 @@ void Jobs::vJob_InflateRows_delete(Interface::Session* pSession, Job* pJob)
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
 void Jobs::vRetrieveRows(Job_InflateRows* pJob_InflateRows,
-                          FetchBuffer* pFetchBuffer)
+                          FetchBuffer* pFetchBuffer, Row* pRow)
 {
   ColumnVec* pColVec = pJob_InflateRows->m_pTable->pColumnVec();
   HV_Rec hvRec(pColVec);
@@ -407,11 +407,11 @@ void Jobs::vRetrieveRows(Job_InflateRows* pJob_InflateRows,
     HeadLine* aCompact = *aaCompactRow_cursor;
 
     // inflate compact row into row
-    RowCoder::vInflate(pJob_InflateRows->m_pRow,aCompact);
+    RowCoder::vInflate(pRow,aCompact);
     
     if (pJob_InflateRows->m_bPrint) {
       
-      hvRec->vAppend(pJob_InflateRows->m_pRow);
+      hvRec->vAppend(pRow);
       hvRec->vPrintRow();
     }
     

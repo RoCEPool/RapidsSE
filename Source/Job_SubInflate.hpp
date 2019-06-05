@@ -10,7 +10,8 @@ namespace Jobs
   {
   public:
     Job_InflateRows* m_pJobInflateRows; 
-        
+    Row*         m_pRow;                // row for retrieval
+    
     // must be last
     Footer m_xFooter;
   

@@ -576,7 +576,7 @@ void Step::vJob_SubInflateInflateRows(MP_Task mpTask)
   // retrieve
   
   // create a row for retrieval
-  pJob_InflateRows->m_pRow = new Row(pJob_InflateRows->m_pTable->pColumnVec());
+  pJob_SubInflate->m_pRow = new Row(pJob_InflateRows->m_pTable->pColumnVec());
   
   while ( *pJob_InflateRows->m_inLastBuffersScanned != pJob_InflateRows->m_nLastBuffers ) {
     
@@ -592,7 +592,7 @@ void Step::vJob_SubInflateInflateRows(MP_Task mpTask)
       pJob_InflateRows->m_inRowsProcessed += pFetchBuffer->nFetchedRows();
     }
     else {
-      vRetrieveRows(pJob_InflateRows, pFetchBuffer);
+      vRetrieveRows(pJob_InflateRows, pFetchBuffer, pJob_SubInflate->m_pRow);
       pJob_InflateRows->m_inRowsProcessed += pFetchBuffer->nFetchedRows();
     }
     

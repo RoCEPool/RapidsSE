@@ -113,6 +113,7 @@ Job_SubInflate::Job_SubInflate(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINFLATE,_FOOTER_);
     
   m_pJobInflateRows  = nullptr;
+  m_pRow             = nullptr;
   
   _checkInitialised_(CN_JOB_SUBINFLATE);
   
@@ -125,6 +126,9 @@ Job_SubInflate::Job_SubInflate(Interface::Session* pSession)
 Job_SubInflate::~Job_SubInflate(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINFLATE,_FOOTER_);
+  
+  if (m_pRow)
+    delete m_pRow;
 }
 
 /*----------------------------------------------------------------------------*/

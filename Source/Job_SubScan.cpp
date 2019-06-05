@@ -115,7 +115,7 @@ Job_SubScan::Job_SubScan(Interface::Session* pSession)
   m_pParentJob     = nullptr;
   m_pBufferQueue   = nullptr;
   
-  _checkInitialised_(CN_JOB_SubScan);
+  _checkInitialised_(CN_JOB_SUBSCAN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBSCAN,_FOOTER_);
 }
@@ -125,7 +125,7 @@ Job_SubScan::Job_SubScan(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 Job_SubScan::~Job_SubScan(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SubScan,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBSCAN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

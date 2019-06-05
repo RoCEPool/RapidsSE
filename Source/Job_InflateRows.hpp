@@ -57,7 +57,7 @@ namespace Jobs
   Job* pJob_InflateRows_pre(Interface::Session* pSession);
   void vJob_InflateRows_post(Interface::Session* pSession, Job* pJob);
   void vJob_InflateRows_delete(Interface::Session* pSession, Job* pJob);
-  void vRetrieveRows(Job_InflateRows* pJob_InflateRows, FetchBuffer* pFetchBuffer);
+  void vRetrieveRows(Job_InflateRows* pJob_InflateRows, FetchBuffer* pFetchBuffer, Row* pRow);
   void vRetrieveColumns(Job_InflateRows* pJob_InflateRows, FetchBuffer* pFetchBuffer);
   void vJob_InflateRows_show(Job* pJob);
   
