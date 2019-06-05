@@ -16,9 +16,8 @@ namespace Sprinting
     snIVL(void);
     ~snIVL(void) noexcept(false);
   
-    Stz* sz(i8 iIvl);
-    Stz* sz(i8 iIvl, i8 iScale);
-
+    i8 i(Stz* szIn);
+  
     Footer* aFooter(void);
   };
 }

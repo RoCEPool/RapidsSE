@@ -16,7 +16,7 @@ namespace Sprinting
     snTSP(void);
     ~snTSP(void) noexcept(false);
   
-    Stz* sz(i8 iTme);
+    i8 i(Stz* szIn);
   
     Footer* aFooter(void);
   };

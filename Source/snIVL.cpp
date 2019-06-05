@@ -12,9 +12,6 @@ snIVL::snIVL(void)
 {
   _precondition_(_MAGIC_,CN_SNIVL,_FOOTER_);
   
-  // set default Ivl format
-  vFormat(F_IVL);
-  
   _checkInitialised_(CN_SNIVL);
   
   _postcondition_(_MAGIC_,CN_SNIVL,_FOOTER_);
@@ -31,30 +28,6 @@ snIVL::~snIVL(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* sprint Ivl and return Stz* to result                                       */
-/*----------------------------------------------------------------------------*/
-Stz* snIVL::sz(i8 iIvl)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  return sz(iIvl,0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint Ivl and return Stz* to result                                       */
-/*----------------------------------------------------------------------------*/
-Stz* snIVL::sz(i8 iIvl, i8 iScale)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  StrLib::vSprint(m_caResult,
-                  (Stz*)m_caFormat,
-                  iIvl);
-
-  return (Stz*) &m_caResult[0];
-}
 
 
 /*----------------------------------------------------------------------------*/

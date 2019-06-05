@@ -16,8 +16,8 @@ namespace Sprinting
     snBOL(void);
     ~snBOL(void) noexcept(false);
   
-    Stz* sz(i8 iBol);
-
+    i8 i(Stz* szIn);
+  
     Footer* aFooter(void);
   };
 }

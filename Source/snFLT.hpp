@@ -16,8 +16,8 @@ namespace Sprinting
     snFLT(void);
     ~snFLT(void) noexcept(false);
   
-    Stz* sz(d8 dFlt);
-
+    d8 d(Stz* szIn);
+  
     Footer* aFooter(void);
   };
 }

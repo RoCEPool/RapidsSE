@@ -12,9 +12,6 @@ snDTE::snDTE(void)
 {
   _precondition_(_MAGIC_,CN_SNDTE,_FOOTER_);
   
-  // set default Dte format
-  vFormat(F_DTE);
-  
   _checkInitialised_(CN_SNDTE);
   
   _postcondition_(_MAGIC_,CN_SNDTE,_FOOTER_);
@@ -31,25 +28,6 @@ snDTE::~snDTE(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* sprint Dte and return Stz* to result                                       */
-/*----------------------------------------------------------------------------*/
-Stz* snDTE::sz(i8 iDte)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  Word wDte = iDte;
-  
-  StrLib::vSprint(m_caResult,
-                  (Stz*)m_caFormat,
-                  
-                  (i8)wDte.xEdt.m_uYearInEra + C_BASE_YEAR,
-                  (i8)wDte.xEdt.m_uMonth,
-                  (i8)wDte.xEdt.m_uDay);
-
-  return (Stz*) &m_caResult[0];
-}
 
 
 /*----------------------------------------------------------------------------*/

@@ -11,10 +11,7 @@ snFLT::snFLT(void)
 : Scan(CN_SNFLT)
 {
   _precondition_(_MAGIC_,CN_SNFLT,_FOOTER_);
-  
-  // set default Flt format
-  vFormat(F_FLT);
-  
+    
   _checkInitialised_(CN_SNFLT);
   
   _postcondition_(_MAGIC_,CN_SNFLT,_FOOTER_);
@@ -32,19 +29,6 @@ snFLT::~snFLT(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* sprint snFLT and return Stz* to result                                     */
-/*----------------------------------------------------------------------------*/
-Stz* snFLT::sz(d8 dFlt)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  StrLib::vSprint(m_caResult,
-                  (Stz*)m_caFormat,
-                  dFlt);
-
-  return (Stz*) &m_caResult[0];
-}
 
 
 /*----------------------------------------------------------------------------*/

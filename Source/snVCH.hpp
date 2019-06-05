@@ -17,9 +17,8 @@ namespace Sprinting
   public:
     snVCH(void);
     ~snVCH(void) noexcept(false);
-  
-    Stz* sz(char* azVch);
-    Stz* sz(Stz*  szVch);
+    
+    Stz* sz(Stz* szIn);
   
     Footer* aFooter(void);
   };

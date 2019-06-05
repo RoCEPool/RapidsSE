@@ -11,10 +11,7 @@ snBCD::snBCD(void)
 : Scan(CN_SNBCD)
 {
   _precondition_(_MAGIC_,CN_SNBCD,_FOOTER_);
-  
-  // set default Bcd format
-  vFormat(F_BCD_frac);
-  
+    
   _checkInitialised_(CN_SNBCD);
   
   _postcondition_(_MAGIC_,CN_SNBCD,_FOOTER_);
@@ -31,57 +28,6 @@ snBCD::~snBCD(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* sprint Bcd and return Stz* to result                                       */
-/*----------------------------------------------------------------------------*/
-Stz* snBCD::sz(i8 iBcd)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  return sz(iBcd,0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint Bcd and return Stz* to result                                       */
-/*----------------------------------------------------------------------------*/
-Stz* snBCD::sz(i8 iBcd, i8 iScale)
-{
-  //! refer: https://en.wikipedia.org/wiki/Fixed-point_arithmetic
-  
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  bool bNegative = false;
-  
-  i8 iPower = 1;
-  for (i8 i_Digit = 0; i_Digit < iScale; i_Digit++)
-    iPower *= 10;
-  
-  // 12.34
-  i8 iBcd_magn = iBcd / iPower; // 12
-  i8 iBcd_frac = iBcd % iPower; // 34
-  
-  if (iBcd_frac < 0 || iBcd_magn < 0) {
-    bNegative = true;
-    iBcd_frac = - iBcd_frac;
-    iBcd_magn = - iBcd_magn;
-  }
-  
-  if (iScale)
-    StrLib::vSprint(m_caResult,
-                    (Stz*)F_BCD_frac,
-                    bNegative ? "-" : "",
-                    iBcd_magn,
-                    iScale,
-                    iBcd_frac);
-  else
-    StrLib::vSprint(m_caResult,
-                    (Stz*)F_BCD,
-                    bNegative ? "-" : "",
-                    iBcd_magn);
-
-  return (Stz*) &m_caResult[0];
-}
 
 
 /*----------------------------------------------------------------------------*/

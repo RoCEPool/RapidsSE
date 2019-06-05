@@ -11,10 +11,7 @@ snINT::snINT(void)
 : Scan(CN_SNINT)
 {
   _precondition_(_MAGIC_,CN_SNINT,_FOOTER_);
-  
-  // set default Int format
-  vFormat(F_INT);
-  
+    
   _checkInitialised_(CN_SNINT);
   
   _postcondition_(_MAGIC_,CN_SNINT,_FOOTER_);
@@ -31,20 +28,6 @@ snINT::~snINT(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* sprint snINT and return Stz* to result                                     */
-/*----------------------------------------------------------------------------*/
-Stz* snINT::sz(i8 iInt)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  StrLib::vSprint(m_caResult,
-                  (Stz*)m_caFormat,
-                  iInt);
-
-  return (Stz*) &m_caResult[0];
-}
 
 
 /*----------------------------------------------------------------------------*/

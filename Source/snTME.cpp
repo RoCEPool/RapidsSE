@@ -12,9 +12,6 @@ snTME::snTME(void)
 {
   _precondition_(_MAGIC_,CN_SNTME,_FOOTER_);
   
-  // set default Tme format
-  vFormat(F_TME);
-  
   _checkInitialised_(CN_SNTME);
   
   _postcondition_(_MAGIC_,CN_SNTME,_FOOTER_);
@@ -31,41 +28,6 @@ snTME::~snTME(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* sprint Tme and return Stz* to result                                       */
-/*----------------------------------------------------------------------------*/
-Stz* snTME::sz(i8 iTme)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  Word wTme = iTme;
-  
-  if (wTme.xTme.m_uMicro) {
-    
-    char caFraction[16];
-    StrLib::vFormatFraction(caFraction,wTme.xTme.m_uMicro,6);
-    
-    StrLib::vSprint(m_caResult,
-                    (Stz*)F_TME_frac,
-
-                    (i8)wTme.xTme.m_uHour,
-                    (i8)wTme.xTme.m_uMinute,
-                    (i8)wTme.xTme.m_uSecond,
-                    
-                    caFraction);
-  }
-  else {
-    StrLib::vSprint(m_caResult,
-                    (Stz*)F_TME,
-
-                    (i8)wTme.xTme.m_uHour,
-                    (i8)wTme.xTme.m_uMinute,
-                    (i8)wTme.xTme.m_uSecond);
-  }
-
-  return (Stz*) &m_caResult[0];
-}
 
 
 /*----------------------------------------------------------------------------*/
