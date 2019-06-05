@@ -1426,6 +1426,8 @@ void RowCoder::vTwiddleFrom(void)
     eMC eFromEncoding = eGetFromEncoding(pCol,i_LastColumn,i_FromOffset);
  
     if (MC_STR_TAIL_2T == eFromEncoding) {
+      if (bTwiddleStringDupe(pCol,i_FromOffset))
+        continue;
       vTwiddleStringTail(pCol,i_FromOffset);
       continue;
     }
@@ -1926,14 +1928,15 @@ void RowCoder::vTwiddleShocoTail(Column* pCol, i8 i_FromOffset)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a string tail into the Into-Nub                                        */
+/* search and recode a duplicate string tail (any column)                     */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vTwiddleStringTail(Column* pCol, i8 i_FromOffset)
+bool RowCoder::bTwiddleStringDupe(Column* pCol, i8 i_FromOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
   /*
    Before:
-          -- From-Head (large) --                    -- From-Tail --
+             -- Into-Head --                         -- From-Tail --
    +================================+    +=====================================+
    | <W>{M}    ,MC_STR_TAIL_2T,     |    | <U><L><string...> ///////////////// |
    +================================+    +=====================================+
@@ -1943,9 +1946,9 @@ void RowCoder::vTwiddleStringTail(Column* pCol, i8 i_FromOffset)
    +--------------------------------+
    
    After:
-         -- From-Head (large) --                    -- Into-Tail --
+              -- Into-Head --                      -- Into-Tail -- (duplicate)
    +================================+    +=====================================+
-   | <W>{M}     ,MC_STR_TAIL_2T,    |    | <U><L><sstring...> //////////////// |
+   | <W>{M}     ,MC_STR_TAIL_2T,    |    | <U><L><string...> ///////////////// |
    +================================+    +=====================================+
    |                                |
    +--------------------------------+
@@ -1955,6 +1958,88 @@ void RowCoder::vTwiddleStringTail(Column* pCol, i8 i_FromOffset)
    where: MC_STR_TAIL_2T are the meta-bits for the column
          |FT| is 2B absolute index of the From-Tail line containing shoco
          [IT] is 2B relative index of the Into-Tail line containing shoco
+         <W> is one byte being the word length of head line
+         {M} is the set of metacodes
+         <U> is one byte being the unit length of a tail line
+         <L> is one byte being the length of the string
+         <string...> being the string bytes
+   */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // get From-Tail details using |FT| from Into-Head
+  // +--------------------------------+
+  // |                    |FT|        |
+  // +--------------------------------+
+  //                      ^m_i_IntoOffset
+  i8 i_FromTail = m_aFromHead->w8_2B(i_FromOffset);
+  TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // search for a possible duplicate of the From-Tail in the Into-Nub
+  // +=====================================+
+  // | <U><L><string...> ///////////////// |
+  // +=====================================+
+  i8 i_IntoTail_str = iFindTail(m_pIntoNub,aFromTail);
+  if (C_UNKNOWN == i_IntoTail_str)
+    return false;
+  TailLine* aIntoTail_Dup = m_pIntoNub->aGetTail(i_IntoTail_str);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // col data in Into-Head recoded as [IT] unit diff between Into-Head and -Tail
+  // +--------------------------------+
+  // |                    [IT]        |
+  // +--------------------------------+
+  //                      ^m_i_IntoOffset
+  i8 i_IntoTail_Rel = RowNub::iUnitDiff(m_aIntoHead,aIntoTail_Dup);
+  m_aFromHead->vPut(i_FromOffset,i_IntoTail_Rel,_2B_IT);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // metadata remains MC_STR_TAIL_2T
+  RASSERT(MC_STR_TAIL_2T == m_aFromHead->eMetaCode(pCol->iColumnNo()));
+  
+  // we recoded: sizeof([IT])
+  vUsageIncRecoded(pCol,_2B_FT);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a string tail into the Into-Nub                                        */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vTwiddleStringTail(Column* pCol, i8 i_FromOffset)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  /*
+   Before:
+        -- From-Head (large) --                      -- From-Tail --
+   +================================+    +=====================================+
+   | <W>{M}    ,MC_STR_TAIL_2T,     |    | <U><L><string...> ///////////////// |
+   +================================+    +=====================================+
+   |                                |
+   +--------------------------------+
+   |                    |FT|        |
+   +--------------------------------+
+   
+   After:
+        -- From-Head (large) --                    -- Into-Tail --
+   +================================+    +=====================================+
+   | <W>{M}     ,MC_STR_TAIL_2T,    |    | <U><L><string...> ///////////////// |
+   +================================+    +=====================================+
+   |                                |
+   +--------------------------------+
+   |                    [IT]        |
+   +--------------------------------+
+   
+   where: MC_STR_TAIL_2T are the meta-bits for the column
+         |FT| is 2B absolute index of the From-Tail line containing string
+         [IT] is 2B relative index of the Into-Tail line containing string
          <W> is one byte being the word length of head line
          {M} is the set of metacodes
          <U> is one byte being the unit length of a tail line
@@ -1988,7 +2073,7 @@ void RowCoder::vTwiddleStringTail(Column* pCol, i8 i_FromOffset)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // put the length of string bytes <L> into the new Into-Tail
+  // put the number of string bytes <L> into the new Into-Tail
   //     +=====================================+
   // it: | <U><L> //////////////////////////// |
   //     +=====================================+
@@ -1996,7 +2081,7 @@ void RowCoder::vTwiddleStringTail(Column* pCol, i8 i_FromOffset)
   
   // copy the string bytes <string...> into the Into-Tail
   //     +=====================================+
-  // it: | <U><C><shoco...> ////////////////// |
+  // it: | <U><L><string...> ///////////////// |
   //     +=====================================+
   byte* aString_into = (byte*)aIntoTail_new + _1B_U + _1B_C;
   byte* aString_from = (byte*)aFromTail + _1B_U + _1B_C;
