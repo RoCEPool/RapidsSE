@@ -17,6 +17,7 @@ using namespace Sprinting;
 
 //-----------------------------------------------------------------------------
 
+#include "Scan.hpp"
 #include "Sprint.hpp"
 
 #include "snBCD.hpp"
