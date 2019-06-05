@@ -8,7 +8,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 snDTE::snDTE(void)
-: Sprint(CN_SNDTE)
+: Scan(CN_SNDTE)
 {
   _precondition_(_MAGIC_,CN_SNDTE,_FOOTER_);
   

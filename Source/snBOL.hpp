@@ -5,7 +5,7 @@
 
 namespace Sprinting
 {
-  class snBOL : public Sprint
+  class snBOL : public Scan
   {
   public:
   

@@ -8,7 +8,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 snBCD::snBCD(void)
-: Sprint(CN_SNBCD)
+: Scan(CN_SNBCD)
 {
   _precondition_(_MAGIC_,CN_SNBCD,_FOOTER_);
   

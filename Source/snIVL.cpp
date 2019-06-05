@@ -8,7 +8,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 snIVL::snIVL(void)
-: Sprint(CN_SNIVL)
+: Scan(CN_SNIVL)
 {
   _precondition_(_MAGIC_,CN_SNIVL,_FOOTER_);
   

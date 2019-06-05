@@ -8,7 +8,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 snTSP::snTSP(void)
-: Sprint(CN_SNTSP)
+: Scan(CN_SNTSP)
 {
   _precondition_(_MAGIC_,CN_SNTSP,_FOOTER_);
   

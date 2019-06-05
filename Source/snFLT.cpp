@@ -8,7 +8,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 snFLT::snFLT(void)
-: Sprint(CN_SNFLT)
+: Scan(CN_SNFLT)
 {
   _precondition_(_MAGIC_,CN_SNFLT,_FOOTER_);
   

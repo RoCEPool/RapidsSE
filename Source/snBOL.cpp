@@ -8,7 +8,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 snBOL::snBOL(void)
-: Sprint(CN_SNBOL)
+: Scan(CN_SNBOL)
 {
   _precondition_(_MAGIC_,CN_SNBOL,_FOOTER_);
   

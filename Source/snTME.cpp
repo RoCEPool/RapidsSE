@@ -8,7 +8,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 snTME::snTME(void)
-: Sprint(CN_SNTME)
+: Scan(CN_SNTME)
 {
   _precondition_(_MAGIC_,CN_SNTME,_FOOTER_);
   

@@ -8,7 +8,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 snINT::snINT(void)
-: Sprint(CN_SNINT)
+: Scan(CN_SNINT)
 {
   _precondition_(_MAGIC_,CN_SNINT,_FOOTER_);
   

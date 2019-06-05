@@ -5,7 +5,7 @@
 
 namespace Sprinting
 {
-  class snVCH : public Sprint
+  class snVCH : public Scan
   {
   public:
   

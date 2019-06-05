@@ -8,7 +8,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 snVCH::snVCH(void)
-: Sprint(CN_SNVCH)
+: Scan(CN_SNVCH)
 {
   _precondition_(_MAGIC_,CN_SNVCH,_FOOTER_);
   
