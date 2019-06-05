@@ -256,6 +256,15 @@ enum eCN : u2 // Class Number
   /* 185 0xB9      288B Heap:I */ CN_SLOTS,
   /* 186 0xBA      232B Heap:I */ CN_SMALLPERSISTENT,
   /* 187 0xBB      232B Heap:I */ CN_SMALLTRANSIENT,
+  /*                           */ CN_SNBCD,
+  /*                           */ CN_SNBOL,
+  /*                           */ CN_SNDTE,
+  /*                           */ CN_SNFLT,
+  /*                           */ CN_SNINT,
+  /*                           */ CN_SNIVL,
+  /*                           */ CN_SNTME,
+  /*                           */ CN_SNTSP,
+  /*                           */ CN_SNVCH,
   /* 188 0xBC      176B Heap:S */ CN_SOCKET,
   /*                           */ CN_SPBCD,
   /*                           */ CN_SPBOL,
@@ -550,6 +559,15 @@ static Stz* aCN[]
   /* 185 0xB9 */ "SLOTS"_Stz,               // CN_SLOTS
   /* 186 0xBA */ "SMALLPERSISTENT"_Stz,     // CN_SMALLPERSISTENT
   /* 187 0xBB */ "SMALLTRANSIENT"_Stz,      // CN_SMALLTRANSIENT
+  /* 188 0xBC */ "SNBCD"_Stz,               // CN_SNBCD
+  /* 188 0xBC */ "SNBOL"_Stz,               // CN_SNBOL
+  /* 188 0xBC */ "SNDTE"_Stz,               // CN_SNDTE
+  /* 188 0xBC */ "SNFLT"_Stz,               // CN_SNFLT
+  /* 188 0xBC */ "SNINT"_Stz,               // CN_SNINT
+  /* 188 0xBC */ "SNIVL"_Stz,               // CN_SNIVL
+  /* 188 0xBC */ "SNTME"_Stz,               // CN_SNTME
+  /* 188 0xBC */ "SMTSP"_Stz,               // CN_SNTSP
+  /* 188 0xBC */ "SNVCH"_Stz,               // CN_SPVCH
   /* 188 0xBC */ "SOCKET"_Stz,              // CN_SOCKET
   /* 188 0xBC */ "SPBCD"_Stz,               // CN_SPBCD
   /* 188 0xBC */ "SPBOL"_Stz,               // CN_SPBOL

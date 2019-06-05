@@ -255,6 +255,15 @@ pFINALIZE *gpFinalize[]
   /*122 */ &Slots::vFinalize,             // CN_SLOTS
   /*123 */ &Finalize::vUndefined,         // SN_SMALLPERSISTENT
   /*124 */ &Finalize::vUndefined,         // SN_SMALLTRANSIENT
+  /*    */ &Finalize::vUndefined,         // CN_SNBCD
+  /*    */ &Finalize::vUndefined,         // CN_SNBOL
+  /*    */ &Finalize::vUndefined,         // CN_SNDTE
+  /*    */ &Finalize::vUndefined,         // CN_SNFLT
+  /*    */ &Finalize::vUndefined,         // CN_SNINT
+  /*    */ &Finalize::vUndefined,         // CN_SNIVL
+  /*    */ &Finalize::vUndefined,         // CN_SNTME
+  /*    */ &Finalize::vUndefined,         // CN_SNTSP
+  /*    */ &Finalize::vUndefined,         // CN_SNVCH
   /*125 */ &Finalize::vUndefined,         // CN_SOCKET
   /*    */ &Finalize::vUndefined,         // CN_SPBCD
   /*    */ &Finalize::vUndefined,         // CN_SPBOL

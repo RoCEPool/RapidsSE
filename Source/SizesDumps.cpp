@@ -260,6 +260,15 @@ pDUMPFUN *gpDump[]
   /*122 */ &Slots::vDump,           // CN_SLOTS
   /*123 */ &Heap::vDump,            // SN_SMALLPERSISTENT
   /*124 */ &Heap::vDump,            // SN_SMALLTRANSIENT
+  /*    */ &Dump::vInvalid,         // CN_SNBCD
+  /*    */ &Dump::vInvalid,         // CN_SNBOL
+  /*    */ &Dump::vInvalid,         // CN_SNDTE
+  /*    */ &Dump::vInvalid,         // CN_SNFLT
+  /*    */ &Dump::vInvalid,         // CN_SNINT
+  /*    */ &Dump::vInvalid,         // CN_SNIVL
+  /*    */ &Dump::vInvalid,         // CN_SNTME
+  /*    */ &Dump::vInvalid,         // CN_SNTSP
+  /*    */ &Dump::vInvalid,         // CN_SNVCH
   /*125 */ &Socket::vDump,          // CN_SOCKET
   /*    */ &Dump::vInvalid,         // CN_SPBCD
   /*    */ &Dump::vInvalid,         // CN_SPBOL
@@ -558,6 +567,15 @@ i8 giClassSize[]
   /*122 */ sizeof(Slots),              // CN_SLOTS
   /*123 */ sizeof(Heap), // correct    // SN_SMALLPERSISTENT
   /*124 */ sizeof(Heap), // correct    // SN_SMALLTRANSIENT
+  /*    */ 0,              // CN_SNBCD
+  /*    */ 0,              // CN_SNBOL
+  /*    */ 0,              // CN_SNDTE
+  /*    */ 0,              // CN_SNFLT
+  /*    */ 0,              // CN_SNINT
+  /*    */ 0,              // CN_SNIVL
+  /*    */ 0,              // CN_SNTME
+  /*    */ 0,              // CN_SNTSP
+  /*    */ 0,              // CN_SNVCH
   /*125 */ sizeof(Socket),             // CN_SOCKET
   /*    */ sizeof(spBCD),              // CN_SPBCD
   /*    */ sizeof(spBOL),              // CN_SPBOL
@@ -856,6 +874,15 @@ eHT geWhichHeap[]
   /*122 */ HT_INVALID,           // CN_SLOTS
   /*123 */ HT_INVALID,           // SN_SMALLPERSISTENT
   /*124 */ HT_INVALID,           // SN_SMALLTRANSIENT
+  /*125 */ HT_INVALID,           // CN_SNBCD
+  /*125 */ HT_INVALID,           // CN_SNBOL
+  /*125 */ HT_INVALID,           // CN_SNDTE
+  /*125 */ HT_INVALID,           // CN_SNFLT
+  /*125 */ HT_INVALID,           // CN_SNINT
+  /*125 */ HT_INVALID,           // CN_SNIVL
+  /*125 */ HT_INVALID,           // CN_SNTME
+  /*125 */ HT_INVALID,           // CN_SNTSP
+  /*125 */ HT_INVALID,           // CN_SNVCH
   /*125 */ HT_TRANSIENT_SMALL,   // CN_SOCKET
   /*125 */ HT_INVALID,           // CN_SPBCD
   /*125 */ HT_INVALID,           // CN_SPBOL
