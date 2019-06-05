@@ -159,6 +159,7 @@ namespace Data
     bool bTwiddleShocoDupe_3D(Column* pCol, i8 i_FromOffset);
     bool bTwiddleShocoFold(Column* pCol, i8 i_FromOffset);
     void vTwiddleShocoTail(Column* pCol, i8 i_FromOffset);
+    void vTwiddleStringTail(Column* pCol, i8 i_FromOffset);
 
     void vUsageIncEncoded(Column* pCol, i8 nBytes, eMC eMetaCode = MC_NULL);
     void vUsageIncEncoded(Column* pCol, Datum* pDatum, eMC eMetaCode = MC_NULL);
@@ -230,6 +231,8 @@ namespace Data
                                      Column* pCol, i8 i_Offset);
     static void vDecodeVchShocoTail(Datum* pDatum, HeadLine* aHeadLine,
                                      Column* pCol, i8 i_Offset);
+    static void vDecodeVchStringTail(Datum* pDatum, HeadLine* aHeadLine,
+                                    Column* pCol, i8 i_Offset);
     static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
                                      Column* pCol, i8 i_Offset);
     static void vDteIntoEdt(Datum* pDatum, i8& iEra_);

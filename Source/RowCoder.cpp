@@ -1114,11 +1114,14 @@ void RowCoder::vEncodeVchShoco(Datum* pSrcDatum, Column* pCol)
                        pSrcDatum->m_sVch.aChar(), // from uncompressed source
                        pSrcDatum->m_nChars);      // source bytes
   
-  // did it compress?
-//  if (nCompressed == pSrcDatum->m_nChars) {
-//    vEncodeVchTail_str(pSrcDatum,pCol);
-//    return;
-//  }
+  // did it not actually compress?
+  if (nCompressed == pSrcDatum->m_nChars) {
+    vEncodeVchTail_str(pSrcDatum,pCol);
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compressed
   
   // allot a tail line as per the diagram (U is put in by iAllotTail)
   i8 nTailBytes  = _1B_U + _1B_C + nCompressed;
@@ -1421,6 +1424,11 @@ void RowCoder::vTwiddleFrom(void)
       continue;
     
     eMC eFromEncoding = eGetFromEncoding(pCol,i_LastColumn,i_FromOffset);
+ 
+    if (MC_STR_TAIL_2T == eFromEncoding) {
+      vTwiddleStringTail(pCol,i_FromOffset);
+      continue;
+    }
     
     if (MC_SHOCO_TAIL_2T != eFromEncoding)
       continue;
@@ -1907,6 +1915,107 @@ void RowCoder::vTwiddleShocoTail(Column* pCol, i8 i_FromOffset)
   
   // metadata remains the same
   RASSERT(MC_SHOCO_TAIL_2T == m_aFromHead->eMetaCode(pCol->iColumnNo()));
+  
+  // we recoded: sizeof([IT]) + nIntoTailBytes
+  vUsageIncRecoded(pCol,C_2B + nIntoTailBytes);
+  
+  m_nTails++;
+  m_nTailUnits += nFromTailUnits;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a string tail into the Into-Nub                                        */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vTwiddleStringTail(Column* pCol, i8 i_FromOffset)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  /*
+   Before:
+          -- From-Head (large) --                    -- From-Tail --
+   +================================+    +=====================================+
+   | <W>{M}    ,MC_STR_TAIL_2T,     |    | <U><L><string...> ///////////////// |
+   +================================+    +=====================================+
+   |                                |
+   +--------------------------------+
+   |                    |FT|        |
+   +--------------------------------+
+   
+   After:
+         -- From-Head (large) --                    -- Into-Tail --
+   +================================+    +=====================================+
+   | <W>{M}     ,MC_STR_TAIL_2T,    |    | <U><L><sstring...> //////////////// |
+   +================================+    +=====================================+
+   |                                |
+   +--------------------------------+
+   |                    [IT]        |
+   +--------------------------------+
+   
+   where: MC_STR_TAIL_2T are the meta-bits for the column
+         |FT| is 2B absolute index of the From-Tail line containing shoco
+         [IT] is 2B relative index of the Into-Tail line containing shoco
+         <W> is one byte being the word length of head line
+         {M} is the set of metacodes
+         <U> is one byte being the unit length of a tail line
+         <L> is one byte being the number of string bytes
+         <string...> being the string bytes
+   */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // get From-Tail details using |FT| from From-Head (large)
+  //     +--------------------------------+
+  // fh: |                    |FT|        |
+  //     +--------------------------------+
+  //                          ^i_IntoOffset
+  i8 i_FromTail = m_aFromHead->w8_2B(i_FromOffset);
+  TailLine* aFromTail = m_pFromNub->aGetTail(i_FromTail);
+  i8 nFromTailUnits = aFromTail->w8_1B(C_OFFSET_UNITS);
+  i8 nFromStringBytes = aFromTail->w8_1B(C_OFFSET_COMPRESSED);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // allot a new Into-Tail in the Into-Nub (<U> is put in by iAllotTail)
+  //     +=====================================+
+  // it: | <U> /////////////////////////////// |
+  //     +=====================================+
+  i8 nIntoTailBytes = _1B_U + _1B_C + nFromStringBytes;
+  i8 i_IntoTail_new = m_pIntoNub->iAllotTail(nIntoTailBytes);
+  TailLine* aIntoTail_new = m_pIntoNub->aGetTail(i_IntoTail_new);
+  
+  RASSERT(MemLib::bOnBoundary(aIntoTail_new,sizeof(DoubleWord)));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // put the length of string bytes <L> into the new Into-Tail
+  //     +=====================================+
+  // it: | <U><L> //////////////////////////// |
+  //     +=====================================+
+  aIntoTail_new->v1B(C_OFFSET_COMPRESSED,nFromStringBytes);
+  
+  // copy the string bytes <string...> into the Into-Tail
+  //     +=====================================+
+  // it: | <U><C><shoco...> ////////////////// |
+  //     +=====================================+
+  byte* aString_into = (byte*)aIntoTail_new + _1B_U + _1B_C;
+  byte* aString_from = (byte*)aFromTail + _1B_U + _1B_C;
+  MemLib::vCopy(aString_into,aString_from,nFromStringBytes,CN_ROWCODER);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  //  From-Head recoded as [IT] unit diff between Into-Head and Into-Tail
+  //     +--------------------------------+
+  // fh: |                    [IT]        |
+  //     +--------------------------------+
+  //                          ^i_FromOffset
+  i8 i_IntoTail_rel = RowNub::iUnitDiff(m_aIntoHead,aIntoTail_new);
+  m_aFromHead->vPut(i_FromOffset,i_IntoTail_rel,_2B_IT);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // metadata remains the same
+  RASSERT(MC_STR_TAIL_2T == m_aFromHead->eMetaCode(pCol->iColumnNo()));
   
   // we recoded: sizeof([IT]) + nIntoTailBytes
   vUsageIncRecoded(pCol,C_2B + nIntoTailBytes);
@@ -2493,7 +2602,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
   i8   nLength;
   i8   nBytesPartA;
   i8   nBytesPartB;
-  char caShoco[C_4KB];
+  char caString[C_4KB];
   
   TailLine* aShocoTail;
   
@@ -3041,13 +3150,12 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
   
   i8   i_Tail_rel;
   i8   nCompressed;
-  i8   nDecompressed;
   i8   nLength;
   i8   nBytesPartA;
   i8   nBytesPartB;
-  char caShoco[C_4KB];
+  char caString[C_4KB];
   
-  TailLine* aShocoTail;
+  TailLine* aTail;
   
 #ifdef WITH_TRACE_DECODING
   static i8 nTotalRows = 0;
@@ -3347,6 +3455,17 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_STR_TAIL_2T:
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
+        i_Tail_rel = wWord.m_iI8;
+        aTail = aGetTailRel(aHeadLine,i_Tail_rel);
+        nLength = aTail->w8_1B(+ _1B_U);
+        MemLib::vCopy(acString,(byte*)aTail+_1B_U+_1B_L,nLength,CN_ROWCODER);
+        *(char**)(aiValue++) = acString;
+        acString += nLength;
+        *acString++ = '\0';
+        pRow->m_i_Wsp += nLength;
         break;
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3373,30 +3492,30 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[2] = *ayDataByte++;
         byte* ayShoco_dup = aAdd<byte*>(aHeadLine,( +  wWord.m_iI8 ));
         nCompressed = (i8)*(u1*)ayShoco_dup++;
-        nDecompressed =
+        nLength =
         Compress::iFromShoco(acString,                 // decompressed dest
-                             sizeof(caShoco),          // max destination
+                             sizeof(caString),          // max destination
                              ayShoco_dup,              // compressed source
                              nCompressed);             // bytes compressed
         *(char**)(aiValue++) = acString;
-        acString += nDecompressed;
+        acString += nLength;
         *acString++ = '\0';
-        pRow->m_i_Wsp += nDecompressed;
+        pRow->m_i_Wsp += nLength;
       }
        break;
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case MC_SHOCO_FIT_1C:
         nCompressed = (i8)*(u1*)ayDataByte++;
-        nDecompressed =
+        nLength =
         Compress::iFromShoco(acString,                 // decompressed dest
-                             sizeof(caShoco),          // max destination
+                             sizeof(caString),          // max destination
                              ayDataByte,               // compressed source
                              nCompressed);             // bytes compressed
         *(char**)(aiValue++) = acString;
-        acString += nDecompressed;
+        acString += nLength;
         *acString++ = '\0';
-        pRow->m_i_Wsp += nDecompressed;
+        pRow->m_i_Wsp += nLength;
         ayDataByte += nCompressed;
         break;
         
@@ -3408,19 +3527,19 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
         i_Tail_rel = wWord.m_iI8;
-        aShocoTail  = aGetTailRel(aHeadLine,i_Tail_rel);
-        nCompressed = aShocoTail->w8_1B(C_OFFSET_COMPRESSED);
-        nDecompressed =
+        aTail  = aGetTailRel(aHeadLine,i_Tail_rel);
+        nCompressed = aTail->w8_1B(C_OFFSET_COMPRESSED);
+        nLength =
         Compress::iFromShoco(acString,                 // decompressed dest
-                             sizeof(caShoco),          // max destination
-                             ((byte*)aShocoTail)       // compressed source
+                             sizeof(caString),          // max destination
+                             ((byte*)aTail)       // compressed source
                                + _1B_U
                                + _1B_C,
                              nCompressed);             // bytes compressed
         *(char**)(aiValue++) = acString;
-        acString += nDecompressed;
+        acString += nLength;
         *acString++ = '\0';
-        pRow->m_i_Wsp += nDecompressed;
+        pRow->m_i_Wsp += nLength;
         break;
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3429,27 +3548,27 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
         i_Tail_rel = wWord.m_iI8;
-        aShocoTail  = aGetTailRel(aHeadLine,i_Tail_rel);
+        aTail  = aGetTailRel(aHeadLine,i_Tail_rel);
         nCompressed = (i8)*(u1*)ayDataByte++;
         nBytesPartA = aHeadLine->nBytes() - (ayDataByte - (byte*)aHeadLine);
         nBytesPartB = nCompressed - nBytesPartA;
-        MemLib::vCopy((byte*)caShoco,
+        MemLib::vCopy((byte*)caString,
                       (byte*)ayDataByte,
                       nBytesPartA,
                       CN_ROWCODER);
-        MemLib::vCopy((byte*)caShoco+nBytesPartA,
-                      (byte*)aShocoTail+1,
+        MemLib::vCopy((byte*)caString+nBytesPartA,
+                      (byte*)aTail+1,
                       nBytesPartB,
                       CN_ROWCODER);
-        nDecompressed =
+        nLength =
         Compress::iFromShoco(acString,                 // decompressed dest
-                             sizeof(caShoco),          // max destination
-                             (byte*)caShoco,           // compressed source
+                             sizeof(caString),          // max destination
+                             (byte*)caString,           // compressed source
                              nCompressed);             // bytes compressed
         *(char**)(aiValue++) = acString;
-        acString += nDecompressed;
+        acString += nLength;
         *acString++ = '\0';
-        pRow->m_i_Wsp += nDecompressed;
+        pRow->m_i_Wsp += nLength;
         ayDataByte += nBytesPartA;
         break;
         
@@ -3976,6 +4095,9 @@ void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
   else if (MC_STR_FIT_1L == eEncoding)
     vDecodeVchSmall(pDatum,aHeadLine,pCol,i_Offset);
   
+  else if (MC_STR_TAIL_2T == eEncoding)
+    vDecodeVchStringTail(pDatum,aHeadLine,pCol,i_Offset);
+  
   else if (MC_SHOCO_FIT_1C == eEncoding)
     vDecodeVchShocoFit(pDatum,aHeadLine,pCol,i_Offset);
   
@@ -4169,6 +4291,41 @@ void RowCoder::vDecodeVchShocoTail(Datum* pDatum, HeadLine* aHeadLine,
                        nCompressed);             // bytes compressed
   ASSERT(nDecompressed);
   pDatum->m_nChars = nDecompressed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode MC_STRING_TAIL_2T tail line string                                 */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDecodeVchStringTail(Datum* pDatum, HeadLine* aHeadLine,
+                                    Column* pCol, i8 i_Offset)
+{
+  i8 i_Tail_rel = wGetLogical(aHeadLine,i_Offset,C_2B);
+  TailLine* aTail_str = aGetTailRel(aHeadLine,i_Tail_rel);
+  
+  //MemLib::vWordDump(aShocoTail,aShocoTail->nBytes());
+  
+  /*
+                -- String-Tail --
+   +=====================================+
+   | <U><L><string...> ///////////////// |
+   +=====================================+
+   
+   where: <U> is one byte being the unit length of the tail line
+          <L> is one byte being the length of the string
+          <string...> being the string
+   */
+  
+  i8 nLength = aTail_str->w8_1B(+ _1B_U);
+  byte* ayString = (byte*)aTail_str + _1B_U + _1B_L;
+  
+  MemLib::vCopy((byte*)pDatum->m_sVch.aChar(),
+                (byte*)ayString,
+                nLength,
+                CN_ROWCODER);
+
+  * (pDatum->m_sVch.aChar() + nLength) = '\0';
+  
+  pDatum->m_nChars = nLength;
 }
 
 /*----------------------------------------------------------------------------*/
