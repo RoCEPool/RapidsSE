@@ -2060,7 +2060,7 @@ bool RowCoder::bTwiddleShocoDupe_3D(Column* pCol, i8 i_FromOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  return false;
+  //return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -2135,10 +2135,12 @@ bool RowCoder::bTwiddleShocoDupe_3D(Column* pCol, i8 i_FromOffset)
   MemLib::vExpand(m_aFromHead,     // address of block to expand
                   nFromSize,       // size of block
                   i_FromOffset,    // offset in block to shift right
-                  1,               // bytes to add
+                  C_1B,            // bytes to add
                   CN_ROWCODER);
 
-  m_aFromHead->vPut(i_FromOffset,i_DiffShoco,_3B_DS);
+  m_aFromHead->vPut(i_FromOffset,i_DiffShoco,_3B_DSR);
+  
+  m_pFromNub->vHeadBytes_used(m_pFromNub->nHeadBytes_used() + C_1B);
   
   return true;
 }
@@ -3858,7 +3860,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
         wWord.m_yaByte[2] = *ayDataByte++;
-        byte* ayShoco_dup = aAdd<byte*>(aHeadLine, (-  wWord.m_iI8) );
+        byte* ayShoco_dup = aAdd<byte*>(aHeadLine,( +  wWord.m_iI8 ));
         nCompressed = (i8)*(u1*)ayShoco_dup++;
         nDecompressed =
         Compress::iFromShoco(acString,                 // decompressed dest
@@ -4486,7 +4488,48 @@ void RowCoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
 void RowCoder::vDecodeVchShocoDup(Datum* pDatum, HeadLine* aHeadLine,
                                   Column* pCol, i8 i_Offset)
 {
+  /*
+        -- Head-Line (with shoco) --
+   +================================+
+   | <W>{M}     ,MC_SHOCO_FIT_1C,   |
+   +================================+
+   |                                |
+   +--------------------------------+
+   |    <C><shoco...>               |
+   +--------------------------------+
+   
+        -- Head-Line (with dsr) --
+   +================================+
+   | <W>{M}     ,MC_SHOCO_DUP_3D,   |
+   +================================+
+   |                                |
+   +--------------------------------+
+   |    [DSR]                       |
+   +--------------------------------+
+
+   where: MC_SHOCO_FIT_1C are the meta-bits for the column which has the shoco
+          MC_SHOCO_DUP_3D are the meta-bits for the column which ref's the shoco
+          <W> is one byte being the word length of head line
+          {M} is the set of metacodes
+          <C> is one byte being the number of shoco compressed bytes
+          <shoco...> being the shoco compressed bytes
+          [DSR] is the 3B relative backwards address of <C><shoco>
+
+  */
   
+  i8 i_Dsr = wGetLogical(aHeadLine,i_Offset,_3B_DSR);
+  
+  byte* ayC_Shoco = aAdd<byte*>(aHeadLine,( + i_Dsr )); //! WARNING
+  
+  i8 nCompressed = *(u1*)ayC_Shoco;
+
+  i8 nDecompressed =
+  Compress::iFromShoco((char*)pDatum->m_sVch.aChar(),
+                       pDatum->m_sVch.nSpace(),
+                       ayC_Shoco + _1B_C,
+                       nCompressed);
+  ASSERT(nDecompressed > 0);
+  pDatum->m_nChars = nDecompressed;
 }
 
 /*----------------------------------------------------------------------------*/
