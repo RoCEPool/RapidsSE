@@ -64,11 +64,8 @@ EntryBuffer::EntryBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  m_okLock.vInitLock(LK_ENTRYBUFFER);
-  
-  m_pIndex        = nullptr;
-  
-  //m_aHeadEntry  = nullptr;
+  m_pIndex      = nullptr;
+  //m_xSkipRoots
   m_aLazyChain  = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
