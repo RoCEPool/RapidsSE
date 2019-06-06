@@ -11,7 +11,6 @@ namespace MiniHeaps
   
   protected:
     
-    i8       m_iBufferNo;        // this EntryBuffer's buffer number
     i8       m_nItems;           // number of items in this heap
     i2       m_iPartitionNo;     // partition no this buffer belongs to
     i2       m_iBufferHeight;    // buffer height in the tree
