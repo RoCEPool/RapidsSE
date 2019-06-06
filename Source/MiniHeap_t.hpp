@@ -5,7 +5,7 @@
 
 namespace MiniHeaps
 {
-  template <eCN CN, class ITEM>
+  template <class ITEM>
   class MiniHeap_t
   {
     static const i8 C_WSP_MINIHEAP = C_SIZE_LARGE_OBJECT - C_1KB;
@@ -44,8 +44,8 @@ namespace MiniHeaps
     void   vSetWilderness(void);
   };
   
-  template <eCN CN, class ITEM>
-  MiniHeap_t<CN,ITEM>* _pMiniHeap_t(void* aAddr);
+  template <class ITEM>
+  MiniHeap_t<ITEM>* _pMiniHeap_t(void* aAddr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,11 +55,11 @@ namespace MiniHeaps
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-MiniHeap_t<CN,ITEM>* MiniHeaps::_pMiniHeap_t(void* aAddr)
+template <class ITEM>
+MiniHeap_t<ITEM>* MiniHeaps::_pMiniHeap_t(void* aAddr)
 {
-  MiniHeap_t<CN,ITEM>* pBufferAbstract =
-    reinterpret_cast<MiniHeap_t<CN,ITEM>*>(aAddr);
+  MiniHeap_t<ITEM>* pBufferAbstract =
+    reinterpret_cast<MiniHeap_t<ITEM>*>(aAddr);
   
   return pBufferAbstract;
 }
@@ -67,8 +67,8 @@ MiniHeap_t<CN,ITEM>* MiniHeaps::_pMiniHeap_t(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-MiniHeap_t<CN,ITEM>::MiniHeap_t(i8 nMaxItems)
+template <class ITEM>
+MiniHeap_t<ITEM>::MiniHeap_t(i8 nMaxItems)
 {
   m_nItems = 0;
   m_nMaxItems = nMaxItems;
@@ -83,8 +83,8 @@ MiniHeap_t<CN,ITEM>::MiniHeap_t(i8 nMaxItems)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-MiniHeap_t<CN,ITEM>::~MiniHeap_t(void) noexcept(false)
+template <class ITEM>
+MiniHeap_t<ITEM>::~MiniHeap_t(void) noexcept(false)
 {
 }
 
@@ -95,8 +95,8 @@ MiniHeap_t<CN,ITEM>::~MiniHeap_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get item which is memory-wise the next item in the item area               */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-ITEM* MiniHeap_t<CN,ITEM>::aAdjacentItem(ITEM* aItem)
+template <class ITEM>
+ITEM* MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem)
 {
   i8 nItemBytes = aItem->nSizeItem_WithoutOffsets() + aItem->iNEOsize();
   
@@ -111,8 +111,8 @@ ITEM* MiniHeap_t<CN,ITEM>::aAdjacentItem(ITEM* aItem)
 /*----------------------------------------------------------------------------*/
 /* allot an item of nBytes in this buffer                                     */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-ITEM* MiniHeap_t<CN,ITEM>::aAllotItem(eCN eClassNo, i8 nBytes)
+template <class ITEM>
+ITEM* MiniHeap_t<ITEM>::aAllotItem(eCN eClassNo, i8 nBytes)
 {
   ITEM* aItem = reinterpret_cast<ITEM*>(aAllotSpace(nBytes));
   if (! aItem)
@@ -128,8 +128,8 @@ ITEM* MiniHeap_t<CN,ITEM>::aAllotItem(eCN eClassNo, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* allot an offset array in this buffer                                       */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-NEO* MiniHeap_t<CN,ITEM>::aAllotNEO(i8 nBytes)
+template <class ITEM>
+NEO* MiniHeap_t<ITEM>::aAllotNEO(i8 nBytes)
 {
   NEO* aNEO = reinterpret_cast<NEO*>(aAllotSpace(nBytes));
   
@@ -139,8 +139,8 @@ NEO* MiniHeap_t<CN,ITEM>::aAllotNEO(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* allot space for nBytes in this buffer                                      */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-char* MiniHeap_t<CN,ITEM>::aAllotSpace(i8 nBytes)
+template <class ITEM>
+char* MiniHeap_t<ITEM>::aAllotSpace(i8 nBytes)
 {
   // test  sufficient freespace
   if (nFreeBytes() < nBytes)
@@ -156,8 +156,8 @@ char* MiniHeap_t<CN,ITEM>::aAllotSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get decile full of the buffer                                              */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-i8 MiniHeap_t<CN,ITEM>::iDecile(void)
+template <class ITEM>
+i8 MiniHeap_t<ITEM>::iDecile(void)
 {
   i8 iDecile;
   
@@ -172,8 +172,8 @@ i8 MiniHeap_t<CN,ITEM>::iDecile(void)
 /*----------------------------------------------------------------------------*/
 /* decrement number of items in buffer                                        */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-void MiniHeap_t<CN,ITEM>::vDecItems(void)
+template <class ITEM>
+void MiniHeap_t<ITEM>::vDecItems(void)
 {
   m_nItems--;
 }
@@ -181,8 +181,8 @@ void MiniHeap_t<CN,ITEM>::vDecItems(void)
 /*----------------------------------------------------------------------------*/
 /* dump items in heap                                                         */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-void MiniHeap_t<CN,ITEM>::vDumpItems(void)
+template <class ITEM>
+void MiniHeap_t<ITEM>::vDumpItems(void)
 {
   i8 iItem = 0;
   
@@ -231,8 +231,8 @@ void MiniHeap_t<CN,ITEM>::vDumpItems(void)
 /*----------------------------------------------------------------------------*/
 /* first item                                                                 */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-ITEM* MiniHeap_t<CN,ITEM>::aFirstItem(void)
+template <class ITEM>
+ITEM* MiniHeap_t<ITEM>::aFirstItem(void)
 {
   if ( m_nItems == 0 )
     return nullptr;
@@ -245,8 +245,8 @@ ITEM* MiniHeap_t<CN,ITEM>::aFirstItem(void)
 /*----------------------------------------------------------------------------*/
 /* how much free space (in bytes) left in this buffer?                        */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-i8 MiniHeap_t<CN,ITEM>::nFreeBytes(void)
+template <class ITEM>
+i8 MiniHeap_t<ITEM>::nFreeBytes(void)
 {
   i8 nBytes = m_xWsp.nFree();
   
@@ -256,8 +256,8 @@ i8 MiniHeap_t<CN,ITEM>::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 /* add given entry to free chain                                              */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-void MiniHeap_t<CN,ITEM>::vFreeItem(ITEM* aItem)
+template <class ITEM>
+void MiniHeap_t<ITEM>::vFreeItem(ITEM* aItem)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add item to head of free chain
@@ -272,8 +272,8 @@ void MiniHeap_t<CN,ITEM>::vFreeItem(ITEM* aItem)
 /*----------------------------------------------------------------------------*/
 /* give space back to this buffer                                             */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-void MiniHeap_t<CN,ITEM>::vGiveSpace(i8 nBytes)
+template <class ITEM>
+void MiniHeap_t<ITEM>::vGiveSpace(i8 nBytes)
 {
   m_xWsp.vGive(nBytes);
 }
@@ -281,8 +281,8 @@ void MiniHeap_t<CN,ITEM>::vGiveSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* does buffer have space for nBytes ?                                        */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-bool MiniHeap_t<CN,ITEM>::bHasSpace(i8 nBytes)
+template <class ITEM>
+bool MiniHeap_t<ITEM>::bHasSpace(i8 nBytes)
 {
   i8 nFree = m_xWsp.nFree() - sizeof(Wilderness);
   
@@ -305,8 +305,8 @@ bool MiniHeap_t<CN,ITEM>::bHasSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-ITEM* MiniHeap_t<CN,ITEM>::aItemArea(void)
+template <class ITEM>
+ITEM* MiniHeap_t<ITEM>::aItemArea(void)
 {
   ITEM* aItemArea = (ITEM*)m_xWsp.aArea();
   
@@ -316,8 +316,8 @@ ITEM* MiniHeap_t<CN,ITEM>::aItemArea(void)
 /*----------------------------------------------------------------------------*/
 /* get number of items in the buffer                                          */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-i8 MiniHeap_t<CN,ITEM>::nItems(void)
+template <class ITEM>
+i8 MiniHeap_t<ITEM>::nItems(void)
 {
   return m_nItems;
 }
@@ -325,8 +325,8 @@ i8 MiniHeap_t<CN,ITEM>::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* set number of items in the buffer                                          */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-void MiniHeap_t<CN,ITEM>::vItems(i8 nItems)
+template <class ITEM>
+void MiniHeap_t<ITEM>::vItems(i8 nItems)
 {
   m_nItems = nItems;
 }
@@ -334,8 +334,8 @@ void MiniHeap_t<CN,ITEM>::vItems(i8 nItems)
 /*----------------------------------------------------------------------------*/
 /* reset used space                                                           */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-void MiniHeap_t<CN,ITEM>::vResetUsed(void)
+template <class ITEM>
+void MiniHeap_t<ITEM>::vResetUsed(void)
 {
   m_xWsp.vUsed(0);
   
@@ -347,8 +347,8 @@ void MiniHeap_t<CN,ITEM>::vResetUsed(void)
 /*----------------------------------------------------------------------------*/
 /* set used space (typically after a compaction)                              */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-void MiniHeap_t<CN,ITEM>::vSetUsed(ITEM* aUptil)
+template <class ITEM>
+void MiniHeap_t<ITEM>::vSetUsed(ITEM* aUptil)
 {
   i8 nUsedBytes = nSub(aUptil,aItemArea());
   
@@ -360,8 +360,8 @@ void MiniHeap_t<CN,ITEM>::vSetUsed(ITEM* aUptil)
 /*----------------------------------------------------------------------------*/
 /* calculate the absolute offset within workspace for given item              */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-i4 MiniHeap_t<CN,ITEM>::iToOffset(ITEM* aItem)
+template <class ITEM>
+i4 MiniHeap_t<ITEM>::iToOffset(ITEM* aItem)
 {
   i4 iOffset = static_cast<i4>(nSub(aItem,m_xWsp.aArea()));
   
@@ -373,8 +373,8 @@ i4 MiniHeap_t<CN,ITEM>::iToOffset(ITEM* aItem)
 /*----------------------------------------------------------------------------*/
 /* get bytes used                                                             */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-i8 MiniHeap_t<CN,ITEM>::nUsedBytes(void)
+template <class ITEM>
+i8 MiniHeap_t<ITEM>::nUsedBytes(void)
 {
   i8 nBytes = m_xWsp.nUsed();
   
@@ -388,8 +388,8 @@ i8 MiniHeap_t<CN,ITEM>::nUsedBytes(void)
 /*----------------------------------------------------------------------------*/
 /* set wilderness marker                                                      */
 /*----------------------------------------------------------------------------*/
-template <eCN CN, class ITEM>
-void MiniHeap_t<CN,ITEM>::vSetWilderness(void)
+template <class ITEM>
+void MiniHeap_t<ITEM>::vSetWilderness(void)
 {
   if (nFreeBytes() < (i8)sizeof(Wilderness))
     return;
