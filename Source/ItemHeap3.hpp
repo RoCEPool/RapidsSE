@@ -5,7 +5,7 @@
 
 namespace MiniHeaps
 {
-  class ItemHeap3
+  class ItemHeap3 : MiniHeap_t<Item>
   {
     static const i8 C_WSP_ITEMHEAP = C_SIZE_LARGE_OBJECT - C_1KB;
   
