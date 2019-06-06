@@ -38,8 +38,6 @@ ItemHeap::ItemHeap(eCN eClassNo)
 
   m_iPartitionNo  = -1;
   m_iBufferHeight = 0;
-
-  m_bIsLast       = false;
   
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(eClassNo);
@@ -281,25 +279,6 @@ bool ItemHeap::bHasSpace(i8 nBytes)
     else
       return true;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* set buffer is last                                                         */
-/*----------------------------------------------------------------------------*/
-void ItemHeap::vIsLast(bool bIsLast)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_bIsLast = bIsLast;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get if buffer is last                                                      */
-/*----------------------------------------------------------------------------*/
-bool ItemHeap::bIsLast(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  return m_bIsLast;
 }
 
 /*----------------------------------------------------------------------------*/

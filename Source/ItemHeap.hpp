@@ -21,8 +21,6 @@ namespace MiniHeaps
     ItemHeap* m_pHigherBuffer;    // higher level buffer that has entries
                                   // that point to this buffer
     Wsp_t<C_WSP_ITEMHEAP> m_xWsp; // workspace
-    
-    bool   m_bIsLast;             // is this the last buffer in sequence
   
   public:
     ItemHeap(eCN eClassNo);
@@ -40,8 +38,6 @@ namespace MiniHeaps
     void   vFreeItem(Item* aItem);
     void   vGiveSpace(i8 nBytes);
     bool   bHasSpace(i8 nBytes);
-    void   vIsLast(bool bIsLast);
-    bool   bIsLast(void);
     Item*  aItemArea(void);
     i8     nItems(void);
     void   vItems(i8 nItems);
