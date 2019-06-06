@@ -20,6 +20,7 @@ using namespace MiniHeaps;
 #include "Item.hpp"
 
 #include "FreeItem.hpp"
+#include "MiniHeap_t.hpp"
 #include "Wilderness.hpp"
 
 #include "ItemHeap.hpp"
