@@ -5,10 +5,10 @@
 
 namespace MiniHeaps
 {
-  class ItemHeap3 : MiniHeap_t<Item>
+  class ItemHeap3 : public MiniHeap_t<Item>
   {
   protected:
-    
+  
   public:
     ItemHeap3(void);
    ~ItemHeap3(void) noexcept(false);
