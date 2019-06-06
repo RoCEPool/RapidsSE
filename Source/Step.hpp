@@ -79,6 +79,7 @@ namespace Steps
     static void vAddSteps_JobFetchRows(void);
     static void vAddSteps_JobGenData(void);
     static void vAddSteps_JobGeneric(void);
+    static void vAddSteps_JobIndexJoin(void);
     static void vAddSteps_JobIngest(void);
     static void vAddSteps_JobInsertRows(void);
     static void vAddSteps_JobKidExport(void);

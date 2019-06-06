@@ -552,6 +552,16 @@
   static void vJob_GenerateGenerate(Tasks::MP_Task mpTask);
   static void vJob_GenerateTableStore(Tasks::MP_Task mpTask);
 
+  // job IndexJoin
+  static void vJob_IndexJoinLastBuffersStore(Tasks::MP_Task mpTask);
+  static void vJob_IndexJoinLeftIndexStore(Tasks::MP_Task mpTask);
+  static void vJob_IndexJoinLeftTableStore(Tasks::MP_Task mpTask);
+  static void vJob_IndexJoinRightIndexStore(Tasks::MP_Task mpTask);
+  static void vJob_IndexJoinRightIndexNameFetch(Tasks::MP_Task mpTask);
+  static void vJob_IndexJoinRightTableStore(Tasks::MP_Task mpTask);
+  static void vJob_IndexJoinRightTableNameFetch(Tasks::MP_Task mpTask);
+  static void vJob_IndexJoinSpawnSub(Tasks::MP_Task mpTask);
+
   // job inflate
   static void vJob_InflateRowsColumnNameFetch(Tasks::MP_Task mpTask);
   static void vJob_InflateRowsColumnStore(Tasks::MP_Task mpTask);
