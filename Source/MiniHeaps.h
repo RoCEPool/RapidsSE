@@ -24,7 +24,6 @@ using namespace MiniHeaps;
 
 #include "ItemHeap.hpp"
 #include "MiniHeap_t.hpp"
-#include "ItemHeap3.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
