@@ -8,36 +8,36 @@ namespace MiniHeaps
   template <eCN CN, class ITEM>
   class MiniHeap_t
   {
-    static const i8 C_WSP_ITEMHEAP = C_SIZE_LARGE_OBJECT - C_1KB;
+    static const i8 C_WSP_MINIHEAP = C_SIZE_LARGE_OBJECT - C_1KB;
   
   protected:
     
     i8 m_nItems;    // number of items in this mini-heap
     i8 m_nMaxItems; // max items allowed
-    Wsp_t<C_WSP_ITEMHEAP> m_xWsp; // workspace
+    Wsp_t<C_WSP_MINIHEAP> m_xWsp; // workspace
   
   public:
     MiniHeap_t(i8 nMaxItems);
    ~MiniHeap_t(void) noexcept(false);
   
-    Item*  aAdjacentItem(Item* aItem);
-    Item*  aAllotItem(eCN eClassNo, i8 nBytes);
+    ITEM*  aAdjacentItem(ITEM* aItem);
+    ITEM*  aAllotItem(eCN eClassNo, i8 nBytes);
     NEO*   aAllotNEO(i8 nBytes);
     char*  aAllotSpace(i8 nBytes);
     i8     iDecile(void);
     void   vDecItems(void);
     void   vDumpItems(void);
-    Item*  aFirstItem(void);
+    ITEM*  aFirstItem(void);
     i8     nFreeBytes(void);
-    void   vFreeItem(Item* aItem);
+    void   vFreeItem(ITEM* aItem);
     void   vGiveSpace(i8 nBytes);
     bool   bHasSpace(i8 nBytes);
-    Item*  aItemArea(void);
+    ITEM*  aItemArea(void);
     i8     nItems(void);
     void   vItems(i8 nItems);
     void   vResetUsed(void);
-    void   vSetUsed(Item* aUptil);
-    i4     iToOffset(Item* aItem);
+    void   vSetUsed(ITEM* aUptil);
+    i4     iToOffset(ITEM* aItem);
     i8     nUsedBytes(void);
 
   private:
@@ -96,11 +96,11 @@ MiniHeap_t<CN,ITEM>::~MiniHeap_t(void) noexcept(false)
 /* get item which is memory-wise the next item in the item area               */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class ITEM>
-Item* MiniHeap_t<CN,ITEM>::aAdjacentItem(Item* aItem)
+ITEM* MiniHeap_t<CN,ITEM>::aAdjacentItem(ITEM* aItem)
 {
   i8 nItemBytes = aItem->nSizeItem_WithoutOffsets() + aItem->iNEOsize();
   
-  Item* aAdjacent = aAdd<Item*>(aItem,nItemBytes);
+  ITEM* aAdjacent = aAdd<ITEM*>(aItem,nItemBytes);
   
   if ((char*)aAdjacent >= (char*)m_xWsp.aLatter())
     return nullptr;
@@ -112,13 +112,13 @@ Item* MiniHeap_t<CN,ITEM>::aAdjacentItem(Item* aItem)
 /* allot an item of nBytes in this buffer                                     */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class ITEM>
-Item* MiniHeap_t<CN,ITEM>::aAllotItem(eCN eClassNo, i8 nBytes)
+ITEM* MiniHeap_t<CN,ITEM>::aAllotItem(eCN eClassNo, i8 nBytes)
 {
-  Item* aItem = reinterpret_cast<Item*>(aAllotSpace(nBytes));
+  ITEM* aItem = reinterpret_cast<ITEM*>(aAllotSpace(nBytes));
   if (! aItem)
     return nullptr;
   
-  new(aItem) Item(eClassNo,nBytes);
+  new(aItem) ITEM(eClassNo,nBytes);
   
   m_nItems++;
   
@@ -186,9 +186,9 @@ void MiniHeap_t<CN,ITEM>::vDumpItems(void)
 {
   i8 iItem = 0;
   
-  Item* aItem = aFirstItem();
+  ITEM* aItem = aFirstItem();
   //  if (m_i4aItemOffsets)
-  //    aItem = aAdd<Item*>(aItem,sizeof(i4) * C_MAX_ITEMS);
+  //    aItem = aAdd<ITEM*>(aItem,sizeof(i4) * C_MAX_ITEMS);
   
   for (;
        aItem;
@@ -199,7 +199,7 @@ void MiniHeap_t<CN,ITEM>::vDumpItems(void)
     switch (eClass) {
         
       case CN_ENTRY: {
-        Item* aEntry = _aItem(aItem);
+        ITEM* aEntry = _aItem(aItem);
         vTrace("[%04lld:%06lld] CN_ENTRY: %lldB\n"_Stz,
                iItem,iOffset,aEntry->nSizeData());
         break;
@@ -232,12 +232,12 @@ void MiniHeap_t<CN,ITEM>::vDumpItems(void)
 /* first item                                                                 */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class ITEM>
-Item* MiniHeap_t<CN,ITEM>::aFirstItem(void)
+ITEM* MiniHeap_t<CN,ITEM>::aFirstItem(void)
 {
   if ( m_nItems == 0 )
     return nullptr;
   
-  Item* aFirst = reinterpret_cast<Item*>(m_xWsp.aArea());
+  ITEM* aFirst = reinterpret_cast<ITEM*>(m_xWsp.aArea());
   
   return aFirst;
 }
@@ -257,7 +257,7 @@ i8 MiniHeap_t<CN,ITEM>::nFreeBytes(void)
 /* add given entry to free chain                                              */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class ITEM>
-void MiniHeap_t<CN,ITEM>::vFreeItem(Item* aItem)
+void MiniHeap_t<CN,ITEM>::vFreeItem(ITEM* aItem)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add item to head of free chain
@@ -306,9 +306,9 @@ bool MiniHeap_t<CN,ITEM>::bHasSpace(i8 nBytes)
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class ITEM>
-Item* MiniHeap_t<CN,ITEM>::aItemArea(void)
+ITEM* MiniHeap_t<CN,ITEM>::aItemArea(void)
 {
-  Item* aItemArea = (Item*)m_xWsp.aArea();
+  ITEM* aItemArea = (ITEM*)m_xWsp.aArea();
   
   return aItemArea;
 }
@@ -348,7 +348,7 @@ void MiniHeap_t<CN,ITEM>::vResetUsed(void)
 /* set used space (typically after a compaction)                              */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class ITEM>
-void MiniHeap_t<CN,ITEM>::vSetUsed(Item* aUptil)
+void MiniHeap_t<CN,ITEM>::vSetUsed(ITEM* aUptil)
 {
   i8 nUsedBytes = nSub(aUptil,aItemArea());
   
@@ -361,7 +361,7 @@ void MiniHeap_t<CN,ITEM>::vSetUsed(Item* aUptil)
 /* calculate the absolute offset within workspace for given item              */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class ITEM>
-i4 MiniHeap_t<CN,ITEM>::iToOffset(Item* aItem)
+i4 MiniHeap_t<CN,ITEM>::iToOffset(ITEM* aItem)
 {
   i4 iOffset = static_cast<i4>(nSub(aItem,m_xWsp.aArea()));
   
