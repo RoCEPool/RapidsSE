@@ -17,7 +17,7 @@ namespace MiniHeaps
     Wsp_t<C_WSP_MINIHEAP> m_xWsp; // workspace
   
   public:
-    MiniHeap_t(i8 nMaxItems);
+    MiniHeap_t(void);
    ~MiniHeap_t(void) noexcept(false);
   
     ITEM*  aAdjacentItem(ITEM* aItem);
@@ -35,6 +35,8 @@ namespace MiniHeaps
     ITEM*  aItemArea(void);
     i8     nItems(void);
     void   vItems(i8 nItems);
+    i8     nMaxItems(void);
+    void   vMaxItems(i8 nMaxItems);
     void   vResetUsed(void);
     void   vSetUsed(ITEM* aUptil);
     i4     iToOffset(ITEM* aItem);
@@ -68,10 +70,10 @@ MiniHeap_t<ITEM>* MiniHeaps::_pMiniHeap_t(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-MiniHeap_t<ITEM>::MiniHeap_t(i8 nMaxItems)
+MiniHeap_t<ITEM>::MiniHeap_t(void)
 {
   m_nItems = 0;
-  m_nMaxItems = nMaxItems;
+  m_nMaxItems = 0;
   
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(CN_ROWTRAY);
@@ -329,6 +331,24 @@ template <class ITEM>
 void MiniHeap_t<ITEM>::vItems(i8 nItems)
 {
   m_nItems = nItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of items in the buffer                                          */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+i8 MiniHeap_t<ITEM>::nMaxItems(void)
+{
+  return m_nMaxItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of items in the buffer                                          */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void MiniHeap_t<ITEM>::vMaxItems(i8 nMaxItems)
+{
+  m_nItems = nMaxItems;
 }
 
 /*----------------------------------------------------------------------------*/
