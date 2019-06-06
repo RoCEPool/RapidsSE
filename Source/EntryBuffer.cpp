@@ -60,7 +60,7 @@ void EntryBuffer::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntryBuffer::EntryBuffer(void)
-: Object(CN_ENTRYBUFFER)
+: DataBuffer(CN_ENTRYBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   

@@ -11,8 +11,8 @@ namespace Data
   static const bool C_NOT_FINAL = false;
   static const bool C_FINAL     = true;
 
-  class EntryBuffer : public Object,
-                      public ItemHeap
+  class EntryBuffer : public DataBuffer,
+                      public ItemHeap2
   {
   friend class IndexTree;
 
