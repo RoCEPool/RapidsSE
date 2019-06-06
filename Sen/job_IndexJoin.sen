@@ -1,98 +1,96 @@
 /*============================================================================*/
-/* job_FetchRows.sen -- Job Fetch Rows                                        */
+/* job_IndexJoin.sen -- Job Fetch Rows                                        */
 /*============================================================================*/
 
-" job_FetchRows.sen" .verbose
+" job_IndexJoin.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* generate plan for the fetch                                                */
+/* spawn sub join jobs                                                        */
 /*----------------------------------------------------------------------------*/
-: generatePlan ( "<sWhere>" ^pTable -- ^pPlanner )
+: spawnSubJoin ( Job_IndexJoin -- )
 
-  0 0 locals| pPlanner pAccessPath pTable sWhere |
+  params| pJob_IndexJoin |
 
-  //sWhere "generatePlan" "%v %v" str.format .
-
-  ( cdt_0 ) planner::new to pPlanner
-  ( cdt_1 ) pTable pPlanner Planner.table!
-
-  ( cdt_2 ) sWhere pPlanner Planner.parseWhere  //"parseWheres" .
-
-  ( cdt_3 ) pPlanner Planner.genPaths           //"genPaths" .
-  ( cdt_4 ) pPlanner Planner.scorePaths         //"scorePaths" .
-  //( cdt_5 ) pPlanner Planner.showPaths
-
-  ( cdt_6 ) pPlanner Planner.matchPaths         //"matchPaths" .
-  //( cdt_6 ) pPlanner Planner.showPaths
-
-  ( cdt_7 ) pPlanner Planner.choosePaths        //"choosePaths" .
-
-  // return planner
-  pPlanner
-;
-
-/*----------------------------------------------------------------------------*/
-/* spawn sub fetch jobs                                                       */
-/*----------------------------------------------------------------------------*/
-: spawnSub ( phrase planner Job_FetchRows -- )
-
-  params| pJob_FetchRows pPlanner iPhrase |
-  pJob_FetchRows job_fetchRows.partition@ locals| iFetchPartition |
-
-  -1 iFetchPartition == if
-    // spawn a subFetch job for each partition
-    grid::slots 0
-    do
-      //I "Creating Job_SubFetch %v" fmt.print
-      I iPhrase pPlanner pJob_FetchRows job_fetchRows.spawnSub
-    loop
-  else
-    // spawn a sub fetch job for given partition
-    iFetchPartition grid::toSlot iPhrase pPlanner pJob_FetchRows job_fetchRows.spawnSub
-  then
+  // spawn a subFetch job for each partition
+  grid::slots 0
+  do
+    //I "Creating Job_SubFJoin %v" fmt.print
+    I pJob_IndexJoin job_IndexJoin.spawnSub
+  loop
 
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute checkFetchRows                                                     */
+/* execute checkIndexJoin                                                     */
 /*----------------------------------------------------------------------------*/
-: checkFetchRows ( "<sColumnNm>" "<tableNm>"  partition -- true | errorCode false )
+: checkIndexJoin ( "<sRightIndexNm" "<sRightTableNm>" "<sLeftIndexNm" "<sLeftTableNm>"  -- true | errorCode false )
 
-  params| iPartition sTableNm sColumnNm |
-  0 locals| pJob_FetchRows |
+  params| sLeftTableNm sLeftIndexNm sRightTableNm sRightIndexNm |
+  0 locals| pJob_IndexJoin |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the job from the task
-  task::this task.job@ to pJob_FetchRows
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check partition if specified (should belong to this node)
-  -1 iPartition != if
-    iPartition grid::partitions >= if EC_INVALID_PARTITION false exit then
-    iPartition grid::toNode grid::thisNode@ != if EC_INVALID_PARTITION false exit then
-  then
+  task::this task.job@ to pJob_IndexJoin
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
   checkInTables not if false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check table folder exists
-  sTableNm checkIsTableFolder not if false exit then
+  // check left table folder exists
+  sLeftTableNm checkIsTableFolder not if false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push table dictionary
-  sTableNm pushTable assert
+  // push left table dictionary
+  sLeftTableNm pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTable not if popTable false exit then
+  sLeftTableNm checkIsTable not if popTable false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // if retrieving column, check it is a valid column
-  "" sColumnNm str.equal not if
-    sColumnNm sTableNm checkIsColumn not if popTable false exit then
+  // push indexes folder
+  pushIndexes assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check left index exists
+  sLeftIndexNm checkIsIndex not if
+  popIndexes popTable assertInTables false exit
   then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop indexes and table folder
+  popIndexes
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table dictionary
+  popTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check right table folder exists
+  sRightTableNm checkIsTableFolder not if false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push left table dictionary
+  sRightTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check it is a table
+  sRightTableNm checkIsTable not if popTable false exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push indexes folder
+  pushIndexes assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check right index exists
+  sRightIndexNm checkIsIndex not if
+  popIndexes popTable assertInTables false exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop indexes and table folder
+  popIndexes
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary
@@ -107,15 +105,19 @@
 /*----------------------------------------------------------------------------*/
 /* fetch rows table request (on originating node)                             */
 /*----------------------------------------------------------------------------*/
-: fetchRows_req ( -- <R> )
+: IndexJoin_req ( -- <R> )
 
   >>am <SEED_REQ>
 
   100 apiState::senLoc
 
-  0 0 0 0 locals| iPhrases sTableNm sColumnNm sWhere |
-  0 0 0 0 locals| pJob_FetchRows pTask pPlanner pTable |
-  0 locals| iFetchPartition |
+  0 0 locals| sLeftTableNm sRightTableNm |
+  0 0 locals| sLeftIndexNm sRightIndexNm |
+
+  0 0 locals| pLeftTable pRightTable |
+  0 0 locals| pLeftIndex pRightIndex |
+
+  0 0 locals| pJob_IndexJoin pTask |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task
@@ -123,15 +125,15 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the job from the task
-  pTask task.job@ to pJob_FetchRows
+  pTask task.job@ to pJob_IndexJoin
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert correct job
-  CN_JOB_FETCHROWS pJob_FetchRows object.assertClass
+  CN_JOB_INDEXJOIN pJob_IndexJoin object.assertClass
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_FetchRows job.pushPath
+  pJob_IndexJoin job.pushPath
   task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -139,68 +141,57 @@
   ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the table name, column name  and partition
-  pJob_FetchRows job.objectName@ to sTableNm
-  pJob_FetchRows Job_FetchRows.columnName@ to sColumnNm
-  pJob_FetchRows job_fetchRows.partition@ to iFetchPartition
+  // get the left table name, left index name
+  pJob_IndexJoin job.objectName@ to sLeftTableNm
+  pJob_IndexJoin job.indexName@ to sLeftIndexNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the right table name, right index name
+  pJob_IndexJoin job_IndexJoin.rightTableName@ to sRightTableNm
+  pJob_IndexJoin job_IndexJoin.rightIndexName@ to sRightIndexNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can fetch rows
-  sColumnNm sTableNm iFetchPartition checkFetchRows not if pJob_FetchRows <ERROR_REQUEST> !!am exit then
+  sRightTableNm sRightIndexNm sLeftTableNm sLeftIndexNm checkIndexJoin not if pJob_IndexJoin <ERROR_REQUEST> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the table
-  sTableNm pushTable assert
-  sTableNm find execute to pTable
-  pTable pJob_FetchRows job_fetchRows.table!
+  // find the left table
+  sLeftTableNm pushTable assert
+  sLeftTableNm find execute to pLeftTable
+  pLeftTable pJob_IndexJoin job_IndexJoin.leftTable!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the column from the table and set it in the fetchRows job
-  "" sColumnNm str.equal not if
-    sColumnNm pTable table.findColumn pJob_FetchRows job_fetchRows.column!
-  then
+  // find the left index
+  pushIndexes assert
+  sLeftIndexNm find execute to pLeftIndex
+  pLeftIndex pJob_IndexJoin job_IndexJoin.leftIndex!
+
+  popIndexes
+  popTable
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the metadata string
-  args.metadata if
-    pTable table.getColumnsAsString "(%v)" str.format pJob_FetchRows job.metadata!
-  then
+  // find the right table
+  sRightTableNm pushTable assert
+  sRightTableNm find execute to pRightTable
+  pRightTable pJob_IndexJoin job_IndexJoin.rightTable!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the where clause from the job
-  pJob_FetchRows job_fetchRows.where@ to sWhere
+  // find the right index
+  pushIndexes assert
+  sRightIndexNm find execute to pRightIndex
+  pRightIndex pJob_IndexJoin job_IndexJoin.rightIndex!
 
-  400 apiState::senLoc
+  popIndexes
+  popTable
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the plan for the fetch
-  sWhere pTable generatePlan to pPlanner
-  pPlanner pJob_FetchRows job_fetchRows.planner!
-
-  //pPlanner planner.showPaths
-
-  // assert we have a plan
-  pPlanner assert
-  pPlanner planner.phrases@ to iPhrases
-
-  -1 iFetchPartition == if
-     // set the no of last buffers to no phrases * slots in the job
-     iPhrases grid::slots * pJob_FetchRows job_fetchRows.lastBuffers!
-  else
-    // set the no of last buffers to no phrases in the job
-    iPhrases pJob_FetchRows job_fetchRows.lastBuffers!
-  then
+  // set the no of last buffers to no phrases * slots in the job
+  grid::slots * pJob_IndexJoin job_IndexJoin.lastBuffers!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn the sub fetch jobs
-  iPhrases 0
-  do
-    I pPlanner pJob_FetchRows spawnSub
-  loop
+  pJob_IndexJoin spawnSub
 
-  popTable
-
-  pJob_FetchRows job.notice
+  pJob_IndexJoin job.notice
 
   900 apiState::senLoc
 

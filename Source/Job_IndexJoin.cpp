@@ -18,7 +18,7 @@ JobClass xJobClass_IndexJoin =
   "join"_Stz,                // the prompt command
   nullptr,                   // the second word
   nullptr,                   // the _run task seed
-  "FetchRows_req"_Stz,       // the _req task seed
+  "IndexJoin_req"_Stz,       // the _req task seed
   nullptr,                   // the _rcv task seed
   nullptr,                   // the _exe task seed
   nullptr,                   // the _end task seed
