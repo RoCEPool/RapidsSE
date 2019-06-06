@@ -68,6 +68,9 @@ EntryBuffer::EntryBuffer(void)
   //m_xSkipRoots
   m_aLazyChain  = nullptr;
   
+  if (gpAttachMap->m_nIndexEntries != 0)
+    vMaxItems(gpAttachMap->m_nIndexEntries);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   _checkInitialised_(CN_ENTRYBUFFER);

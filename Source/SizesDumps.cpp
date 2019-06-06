@@ -307,7 +307,7 @@ pDUMPFUN *gpDump[]
   /*148 */ &Dump::vUndefined,       // CN_TXSET
 
   /*149 */ &Dump::vInvalid,         // CN_WILDERNESS
-  /*150 */ &ForthWord::vDump,            // CN_WORD
+  /*150 */ &ForthWord::vDump,       // CN_WORD
   
   /*151 */ &Dump::vUndefined,       // CN_ZSMALL_
   /*152 */ &Dump::vUndefined,       // CN_ZMEDIUM_
