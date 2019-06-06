@@ -89,7 +89,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_IOCHUNK
   /*    */ &Dump::vDummy,           // CN_IOCOPY
   /* 57 */ &Dump::vInvalid,         // CN_ITEM
-  /* 58 */ &Dump::vInvalid,         // CN_ITEMBUFFER
   
   /*    */ &Dump::vDummy,           // CN_JOB__BEGUN
   /*    */ &Dump::vDummy,           // CN_JOB__CANCEL
@@ -397,7 +396,6 @@ i8 giClassSize[]
   /*    */ sizeof(IoChunk),            // CN_IOCHUNK
   /*    */ sizeof(IoCopy),             // CN_IOCOPY
   /* 57 */ sizeof(Item),               // CN_ITEM
-  /* 58 */ sizeof(ItemHeap),           // CN_ITEMHEAP
   
   /*    */ sizeof(Job__Begun),         // CN_JOB__BEGUN
   /*    */ sizeof(Job__Cancel),        // CN_JOB__CANCEL
@@ -705,7 +703,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_IOCHUNK
   /*    */ HT_TRANSIENT_SMALL,   // CN_IOCOPY
   /* 57 */ HT_INVALID,           // CN_ITEM
-  /* 58 */ HT_INVALID,           // CN_ITEMBUFFER
 
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB__BEGUN
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB__CANCEL
