@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ItemHeap.hpp -- Item Heap                                                  */
+/* ItemHeap.hpp -- Item Heap                                                 */
 /*============================================================================*/
 #pragma once
 
@@ -11,14 +11,7 @@ namespace MiniHeaps
   
   protected:
     
-    i8       m_nItems;           // number of items in this heap
-    i2       m_iPartitionNo;     // partition no this buffer belongs to
-    i2       m_iBufferHeight;    // buffer height in the tree
-    
-    ItemHeap* m_pNextBuffer;      // next buffer
-    ItemHeap* m_pPrevBuffer;      // prev buffer
-    ItemHeap* m_pHigherBuffer;    // higher level buffer that has entries
-                                  // that point to this buffer
+    i8 m_nItems; // number of items in this heap
     Wsp_t<C_WSP_ITEMHEAP> m_xWsp; // workspace
   
   public:
@@ -40,10 +33,6 @@ namespace MiniHeaps
     Item*  aItemArea(void);
     i8     nItems(void);
     void   vItems(i8 nItems);
-    void   vBufferHeight(i8 iBufferHeight);
-    i8     iBufferHeight(void);
-    void   vPartitionNo(i8 iPartitionNo);
-    i8     iPartitionNo(void);
     void   vResetUsed(void);
     void   vSetUsed(Item* aUptil);
     i4     iToOffset(Item* aItem);

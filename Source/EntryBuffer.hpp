@@ -12,7 +12,7 @@ namespace Data
   static const bool C_FINAL     = true;
 
   class EntryBuffer : public DataBuffer,
-                      public ItemHeap2
+                      public ItemHeap
   {
   friend class IndexTree;
 

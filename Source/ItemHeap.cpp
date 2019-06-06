@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ItemHeap.cpp -- Item Buffer                                                */
+/* ItemHeap.cpp -- Item Heap                                                  */
 /*============================================================================*/
 
 #include "MiniHeaps.h"
@@ -26,15 +26,7 @@ ItemHeap* MiniHeaps::_pItemHeap(void* aAddr)
 /*----------------------------------------------------------------------------*/
 ItemHeap::ItemHeap(void)
 {
-  
   m_nItems = 0;
-
-  m_pNextBuffer   = nullptr;
-  m_pPrevBuffer   = nullptr;
-  m_pHigherBuffer = nullptr;
-
-  m_iPartitionNo  = -1;
-  m_iBufferHeight = 0;
   
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(CN_ROWTRAY);
@@ -276,38 +268,6 @@ i8 ItemHeap::nItems(void)
 void ItemHeap::vItems(i8 nItems)
 {
   m_nItems = nItems;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set buffer level                                                           */
-/*----------------------------------------------------------------------------*/
-void ItemHeap::vBufferHeight(i8 iBufferHeight)
-{
-  m_iBufferHeight = iBufferHeight;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the buffer height                                                       */
-/*----------------------------------------------------------------------------*/
-i8 ItemHeap::iBufferHeight(void)
-{
-  return m_iBufferHeight;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set partition no                                                           */
-/*----------------------------------------------------------------------------*/
-void ItemHeap::vPartitionNo(i8 iPartitionNo)
-{
-  m_iPartitionNo = iPartitionNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get partition no                                                           */
-/*----------------------------------------------------------------------------*/
-i8 ItemHeap::iPartitionNo(void)
-{
-  return m_iPartitionNo;
 }
 
 /*----------------------------------------------------------------------------*/
