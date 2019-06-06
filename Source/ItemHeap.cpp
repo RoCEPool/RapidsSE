@@ -24,10 +24,8 @@ ItemHeap* MiniHeaps::_pItemHeap(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ItemHeap::ItemHeap(eCN eClassNo)
-: Object(eClassNo)
+ItemHeap::ItemHeap(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   m_nItems = 0;
 
@@ -39,14 +37,10 @@ ItemHeap::ItemHeap(eCN eClassNo)
   m_iBufferHeight = 0;
   
 #ifdef WITH_CHECK_INITIALISED
-  m_xWsp.vZero(eClassNo);
+  m_xWsp.vZero(CN_ROWTRAY);
 #endif
   
   vSetWilderness();
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
-  
-  //  _checkInitialised_(eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,7 +48,6 @@ ItemHeap::ItemHeap(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 ItemHeap::~ItemHeap(void) noexcept(false)
 {
-  //_precondition_(_ADDRESS_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,8 +59,6 @@ ItemHeap::~ItemHeap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Item* ItemHeap::aAdjacentItem(Item* aItem)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   i8 nItemBytes = aItem->nSizeItem_WithoutOffsets() + aItem->iNEOsize();
   
   Item* aAdjacent = aAdd<Item*>(aItem,nItemBytes);
@@ -83,9 +74,7 @@ Item* ItemHeap::aAdjacentItem(Item* aItem)
 /*----------------------------------------------------------------------------*/
 Item* ItemHeap::aAllotItem(eCN eClassNo, i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  Item* aItem = reinterpret_cast<Item*>(aAllotSpace(nBytes));  
+  Item* aItem = reinterpret_cast<Item*>(aAllotSpace(nBytes));
   if (! aItem)
     return nullptr;
   
@@ -101,8 +90,6 @@ Item* ItemHeap::aAllotItem(eCN eClassNo, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 NEO* ItemHeap::aAllotNEO(i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   NEO* aNEO = reinterpret_cast<NEO*>(aAllotSpace(nBytes));
   
   return aNEO;
@@ -113,8 +100,6 @@ NEO* ItemHeap::aAllotNEO(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 char* ItemHeap::aAllotSpace(i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   // test  sufficient freespace
   if (nFreeBytes() < nBytes)
     return nullptr;
@@ -131,7 +116,6 @@ char* ItemHeap::aAllotSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 i8 ItemHeap::iDecile(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
   i8 iDecile;
   
   if (gpAttachMap->m_nIndexEntries == 0)
@@ -147,8 +131,6 @@ i8 ItemHeap::iDecile(void)
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vDecItems(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-
   m_nItems--;
 }
 
@@ -157,8 +139,6 @@ void ItemHeap::vDecItems(void)
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vDumpItems(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-
   i8 iItem = 0;
 
   Item* aItem = aFirstItem();
@@ -208,8 +188,6 @@ void ItemHeap::vDumpItems(void)
 /*----------------------------------------------------------------------------*/
 Item* ItemHeap::aFirstItem(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   if ( m_nItems == 0 )
     return nullptr;
   
@@ -223,8 +201,6 @@ Item* ItemHeap::aFirstItem(void)
 /*----------------------------------------------------------------------------*/
 i8 ItemHeap::nFreeBytes(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   i8 nBytes = m_xWsp.nFree();
   
   return nBytes;
@@ -235,8 +211,6 @@ i8 ItemHeap::nFreeBytes(void)
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vFreeItem(Item* aItem)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add item to head of free chain
   
@@ -252,8 +226,6 @@ void ItemHeap::vFreeItem(Item* aItem)
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vGiveSpace(i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   m_xWsp.vGive(nBytes);
 }
 
@@ -285,8 +257,6 @@ bool ItemHeap::bHasSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 Item* ItemHeap::aItemArea(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   Item* aItemArea = (Item*)m_xWsp.aArea();
   
   return aItemArea;
@@ -297,8 +267,6 @@ Item* ItemHeap::aItemArea(void)
 /*----------------------------------------------------------------------------*/
 i8 ItemHeap::nItems(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   return m_nItems;
 }
 
@@ -307,8 +275,6 @@ i8 ItemHeap::nItems(void)
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vItems(i8 nItems)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   m_nItems = nItems;
 }
 
@@ -317,8 +283,6 @@ void ItemHeap::vItems(i8 nItems)
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vBufferHeight(i8 iBufferHeight)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   m_iBufferHeight = iBufferHeight;
 }
 
@@ -327,8 +291,6 @@ void ItemHeap::vBufferHeight(i8 iBufferHeight)
 /*----------------------------------------------------------------------------*/
 i8 ItemHeap::iBufferHeight(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   return m_iBufferHeight;
 }
 
@@ -337,7 +299,6 @@ i8 ItemHeap::iBufferHeight(void)
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vPartitionNo(i8 iPartitionNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
   m_iPartitionNo = iPartitionNo;
 }
 
@@ -346,7 +307,6 @@ void ItemHeap::vPartitionNo(i8 iPartitionNo)
 /*----------------------------------------------------------------------------*/
 i8 ItemHeap::iPartitionNo(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
   return m_iPartitionNo;
 }
 
@@ -355,8 +315,6 @@ i8 ItemHeap::iPartitionNo(void)
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vResetUsed(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   m_xWsp.vUsed(0);
   
   m_nItems = 0;
@@ -369,8 +327,6 @@ void ItemHeap::vResetUsed(void)
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vSetUsed(Item* aUptil)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-
   i8 nUsedBytes = nSub(aUptil,aItemArea());
   
   m_xWsp.vUsed(nUsedBytes);
@@ -383,8 +339,6 @@ void ItemHeap::vSetUsed(Item* aUptil)
 /*----------------------------------------------------------------------------*/
 i4 ItemHeap::iToOffset(Item* aItem)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   i4 iOffset = static_cast<i4>(nSub(aItem,m_xWsp.aArea()));
   
   ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
@@ -397,8 +351,6 @@ i4 ItemHeap::iToOffset(Item* aItem)
 /*----------------------------------------------------------------------------*/
 i8 ItemHeap::nUsedBytes(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   i8 nBytes = m_xWsp.nUsed();
   
   return nBytes;
@@ -413,8 +365,6 @@ i8 ItemHeap::nUsedBytes(void)
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vSetWilderness(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   if (nFreeBytes() < (i8)sizeof(Wilderness))
     return;
   

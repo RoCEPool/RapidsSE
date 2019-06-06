@@ -5,7 +5,7 @@
 
 namespace MiniHeaps
 {
-  class ItemHeap : public Object
+  class ItemHeap
   {
     static const i8 C_WSP_ITEMHEAP = C_SIZE_LARGE_OBJECT - C_1KB;
   
@@ -22,7 +22,7 @@ namespace MiniHeaps
     Wsp_t<C_WSP_ITEMHEAP> m_xWsp; // workspace
   
   public:
-    ItemHeap(eCN eClassNo);
+    ItemHeap(void);
    ~ItemHeap(void) noexcept(false);
   
     Item*  aAdjacentItem(Item* aItem);
