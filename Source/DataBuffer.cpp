@@ -33,10 +33,12 @@ DataBuffer::DataBuffer(eCN eClassNo)
   m_okLock.vInitLock(LK_ROWBUFFER);
   m_iBufferNo     = *nPoolBufferNo();
   m_iPartitionNo  = C_UNKNOWN;
+  m_iBufferHeight = 0;
   m_oWhenNewed.vNow();
 
   m_pNextBuffer   = nullptr;
   m_pPrevBuffer   = nullptr;
+  m_pHigherBuffer = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }
@@ -74,6 +76,26 @@ i8 DataBuffer::iAgeSsec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set buffer level                                                           */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vBufferHeight(i8 iBufferHeight)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iBufferHeight = iBufferHeight;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the buffer height                                                       */
+/*----------------------------------------------------------------------------*/
+i8 DataBuffer::iBufferHeight(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_iBufferHeight;
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop lock for write                                                        */
 /*----------------------------------------------------------------------------*/
 void DataBuffer::vDropWrite(void)
@@ -91,6 +113,26 @@ void DataBuffer::vGrabWrite(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_okLock.vGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get higher buffer                                                          */
+/*----------------------------------------------------------------------------*/
+DataBuffer* DataBuffer::pHigherBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return _pDataBuffer(m_pHigherBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set higher buffer                                                          */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vHigherBuffer(DataBuffer* pHigherBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pHigherBuffer = pHigherBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
