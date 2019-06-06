@@ -23,6 +23,7 @@ using namespace MiniHeaps;
 #include "Wilderness.hpp"
 
 #include "ItemHeap.hpp"
+#include "ItemHeap2.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
