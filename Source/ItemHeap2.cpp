@@ -26,15 +26,7 @@ ItemHeap2* MiniHeaps::_pItemHeap2(void* aAddr)
 /*----------------------------------------------------------------------------*/
 ItemHeap2::ItemHeap2(void)
 {
-  
   m_nItems = 0;
-
-  m_pNextBuffer   = nullptr;
-  m_pPrevBuffer   = nullptr;
-  m_pHigherBuffer = nullptr;
-
-  m_iPartitionNo  = -1;
-  m_iBufferHeight = 0;
   
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(CN_ROWTRAY);
@@ -276,38 +268,6 @@ i8 ItemHeap2::nItems(void)
 void ItemHeap2::vItems(i8 nItems)
 {
   m_nItems = nItems;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set buffer level                                                           */
-/*----------------------------------------------------------------------------*/
-void ItemHeap2::vBufferHeight(i8 iBufferHeight)
-{
-  m_iBufferHeight = iBufferHeight;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the buffer height                                                       */
-/*----------------------------------------------------------------------------*/
-i8 ItemHeap2::iBufferHeight(void)
-{
-  return m_iBufferHeight;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set partition no                                                           */
-/*----------------------------------------------------------------------------*/
-void ItemHeap2::vPartitionNo(i8 iPartitionNo)
-{
-  m_iPartitionNo = iPartitionNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get partition no                                                           */
-/*----------------------------------------------------------------------------*/
-i8 ItemHeap2::iPartitionNo(void)
-{
-  return m_iPartitionNo;
 }
 
 /*----------------------------------------------------------------------------*/
