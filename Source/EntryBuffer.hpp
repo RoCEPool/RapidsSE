@@ -35,6 +35,7 @@ namespace Data
     ~EntryBuffer(void) noexcept(false);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+    static Item* aGetNextEntry(EntryBuffer** ppEntryBuffer, Item* aPrevEntry);
     static EntryBuffer* pRefdEntryBuffer(Item* pItem);
     static EntryBuffer* pRefdEntryBuffer(Id& xId);
   

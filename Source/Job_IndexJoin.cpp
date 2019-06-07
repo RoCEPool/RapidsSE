@@ -256,7 +256,7 @@ void Jobs::vJob_IndexJoin_post(Interface::Session* pSession, Job* pJob)
   }
   
   //! to do
-  Pthread::vSleepMilli(1000000,CN_JOB_FETCHROWS);
+  Pthread::vSleepMilli(1000,CN_JOB_FETCHROWS);
 }
 
 /*----------------------------------------------------------------------------*/

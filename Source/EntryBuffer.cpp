@@ -100,6 +100,24 @@ void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* aGetNextLeft -- get the next left entry                                     */
+/*----------------------------------------------------------------------------*/
+Item* EntryBuffer::aGetNextEntry(EntryBuffer** ppEntryBuffer, Item* aPrevEntry)
+{
+  EntryBuffer* pEntryBuffer = *ppEntryBuffer;
+  
+  Item *aNextEntry = pEntryBuffer->aNextEntry(aPrevEntry, 0);
+  if (! aNextEntry ) {
+    pEntryBuffer = pEntryBuffer->pNextBuffer();
+    *ppEntryBuffer = pEntryBuffer;
+    if (pEntryBuffer)
+      aNextEntry = pEntryBuffer->aLeadEntry();
+  }
+  
+  return aNextEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pRefdEntryBuffer(Item* pItem)

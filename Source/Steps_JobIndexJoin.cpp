@@ -220,16 +220,131 @@ void Step::vJob_SubIndexJoinIndexJoin(MP_Task mpTask)
   // get the slot we are working in
   i8 iSlot = pJob_SubIndexJoin->m_i_Slot;
   
+  // get the buffer queue
+  Queue* pQueue = pJob_SubIndexJoin->m_pBufferQueue;
+  
   // get the Job_IndexJoin
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJob_SubIndexJoin->m_pParentJob);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a refBuffer for the results
+  // pRefBuffer = new RefBuffer();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the left table and left index
   Table* pLeftTable = pJob_IndexJoin->m_pLeftTable;
   Index* pLeftIndex = pJob_IndexJoin->m_pLeftIndex;
   
+  // get the left index tree
+  TablePtn* pLeftPartition = pLeftTable->pPartition(iSlot);
+  i8 iLeftIndexNo = pLeftIndex->iIndexNo();
+  IndexTree* pLeftIndexTree = pLeftPartition->pIndexTree(iLeftIndexNo);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the right table and right index
   Table* pRightTable = pJob_IndexJoin->m_pRightTable;
   Index* pRightIndex = pJob_IndexJoin->m_pRightIndex;
+  
+  // get the right index tree
+  TablePtn* pRightPartition = pRightTable->pPartition(iSlot);
+  i8 iRightIndexNo = pRightIndex->iIndexNo();
+  IndexTree* pRightIndexTree = pRightPartition->pIndexTree(iRightIndexNo);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the first left Buffer
+  EntryBuffer* pLeftBuffer = pLeftIndexTree->pRoot();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the right left Buffer
+  EntryBuffer* pRightBuffer = pRightIndexTree->pRoot();
+  
+  // get the lead entry of the left buffer
+  Item* aLeftEntry = pLeftBuffer->aLeadEntry();
+  
+  // get the lead entry of the right buffer
+  Item* aRightEntry = pRightBuffer->aLeadEntry();
+  
+  Formatters* pFormatters = &gpAttachMap->m_oFormatters;
+  
+  //Column* pLeftColumn0    = pLeftIndex->pIdxColVec()->pGet(0);
+  //Column* pRightColumn0   = pRightIndex->pIdxColVec()->pGet(0);
+  
+  bool bMoveLeft;
+  bool bMoveRight;
+  pLeftBuffer->vDump();
+  pRightBuffer->vDump();
+  
+  while (aLeftEntry || aRightEntry) {
+    
+    bMoveLeft = false;
+    bMoveRight = false;
+    
+//    if (aLeftEntry)
+//      pLeftBuffer->vShowEntry(aLeftEntry);
+//    if (aRightEntry)
+//      pRightBuffer->vShowEntry(aRightEntry);
+    
+    // we have a left entry
+    if (aLeftEntry) {
+    
+      // right entry ?
+      if (aRightEntry) {
+        
+        // compare the keys
+        eKC eCompare = KeyData::eCompare(aLeftEntry, aRightEntry);
+        
+        switch (eCompare) {
+          case KC_SAME:
+            // leftKey == rightKey
+            vTrace("Joining rows %p %p\n"_Stz, aLeftEntry, aRightEntry);
+            bMoveLeft = true;
+            bMoveRight = true;
+            break;
+          case KC_BEFORE:
+            // leftKey < rightKey
+            vTrace("Joining rows %p NULL\n"_Stz, aLeftEntry);
+            bMoveLeft = true;
+            break;
+          case KC_AFTER:
+            // leftKey > rightKey
+            vTrace("Joining rows NULL %p\n"_Stz, aRightEntry);
+            bMoveRight = true;
+            break;
+          default:
+            NEVER_REACH;
+        }
+      }
+      else {
+        // no right entry
+        vTrace("Joining rows %p NULL\n"_Stz, aLeftEntry);
+        bMoveLeft = true;
+      }
+    }
+    else {
+      // no left entry
+        
+      // right entry ?
+      if (aRightEntry) {
+        vTrace("Joining rows NULL %p\n"_Stz, aRightEntry);
+        bMoveRight = true;
+      }
+      
+    }
+    
+    if (bMoveLeft) {
+      // move to the next left
+      if (aLeftEntry) {
+        aLeftEntry = EntryBuffer::aGetNextEntry(&pLeftBuffer, aLeftEntry);
+      }
+    }
+  
+    if (bMoveRight) {
+      // move to the next right
+      if (aRightEntry) {
+        aRightEntry = EntryBuffer::aGetNextEntry(&pRightBuffer, aRightEntry);
+      }
+    }
+  }
   
   EXIT();
 }
