@@ -29,15 +29,15 @@ namespace MiniHeaps
     ~Item_tbd(void) noexcept(false);
   
     Item_tbd* aItemAfter(void);
-    i8    iNEOsize(void);
+    i8        nSizeData(void);
+    i8        nSizeItem_WithoutOffsets(void);
+
+  private:
     i8    nLevels(void);
+    NEO*  aNEO(void);
+    i8    iNEOsize(void);
   
     i8    nSizeItem_WithOffsets(void);
-    i8    nSizeItem_WithoutOffsets(void);
-    i8    nSizeData(void);
-  
-  private:
-    NEO*  aNEO(void);
  };
   
   /*--------------------------------------------------------------------------*/
