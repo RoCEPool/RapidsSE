@@ -80,7 +80,7 @@ FreeItem* FreeItem::aMorphFreeItem(void* aFree, i8 nSizeFree)
 /*----------------------------------------------------------------------------*/
 char* FreeItem::aAddressAfter(void)
 {
-  i8 nFreeEntryBytes = nSizeItem_WithoutOffsets();
+  i8 nFreeEntryBytes = nSizeItem();
   
   char* aAfter = aAdd<char*>(this,nFreeEntryBytes);
   

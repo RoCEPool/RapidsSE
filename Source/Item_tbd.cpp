@@ -32,7 +32,7 @@ void* Item_tbd::operator new(size_t, Item_tbd* aItem)
 Item_tbd::Item_tbd(eCN eClassNo, i8 nSizeItem)
 : Header(eClassNo)
 {
-  m_nSizeItem_WithoutOffsets = static_cast<i4>(nSizeItem);
+  m_nSizeItem = static_cast<i4>(nSizeItem);
   
 #ifdef WITH_DEBUG_VERSION
   m_iSkipNo = -1;
@@ -56,17 +56,9 @@ Item_tbd::~Item_tbd(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this item                                             */
 /*----------------------------------------------------------------------------*/
-i8 Item_tbd::nSizeData(void)
+i8 Item_tbd::nSizeItem(void)
 {
-  return (i8)(m_nSizeItem_WithoutOffsets - sizeof(Item_tbd));
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size in bytes of this item                                             */
-/*----------------------------------------------------------------------------*/
-i8 Item_tbd::nSizeItem_WithoutOffsets(void)
-{
-  return (i8)m_nSizeItem_WithoutOffsets;
+  return (i8)m_nSizeItem;
 }
 
 /*============================================================================*/
