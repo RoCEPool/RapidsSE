@@ -99,9 +99,13 @@ MiniHeap_t<ITEM>::~MiniHeap_t(void) noexcept(false)
 template <class ITEM>
 ITEM* MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem)
 {
-  i8 nItemBytes = aItem->nSizeItem();
+  ITEM* aAdjacent = nullptr;
   
-  ITEM* aAdjacent = aAdd<ITEM*>(aItem,nItemBytes);
+  i8 nItemBytes = (CN_FREEITEM == aItem->eClass())
+                    ? ((FreeItem*)aItem)->nSizeBytes()
+                    : aItem->nSizeItem();
+  
+  aAdjacent = aAdd<ITEM*>(aItem,nItemBytes);
   
   if ((char*)aAdjacent >= (char*)m_xWsp.ayLatter())
     return nullptr;
@@ -188,9 +192,9 @@ void MiniHeap_t<ITEM>::vDumpItems(void)
     eCN eClass = aItem->eClass();
     switch (eClass) {
         
-      case CN_ENTRY: {
+      case CN_ENT: {
         ITEM* aEntry = _aItem(aItem);
-        vTrace("[%04lld:%06lld] CN_ENTRY: %lldB\n"_Stz,
+        vTrace("[%04lld:%06lld] CN_ENT: %lldB\n"_Stz,
                iItem,iOffset,aEntry->nSizeData());
         break;
       }

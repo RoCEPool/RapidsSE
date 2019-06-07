@@ -106,9 +106,9 @@ void EntryBuffer::vQuickVerify(Item* aSeeEntry)
       if (! aCheckEntry)
         continue;
       
-      if (CN_ENTRY != aCheckEntry->eClass())
+      if (CN_ENT != aCheckEntry->eClass())
         vShow();
-      ASSERT(CN_ENTRY == aCheckEntry->eClass());
+      ASSERT(CN_ENT == aCheckEntry->eClass());
     }
     
   }
@@ -128,9 +128,9 @@ void EntryBuffer::vQuickVerify(Item* aSeeEntry)
   //      if (pTestEntry == pSeeEntry)
   //        int iDebug = 1;
   //
-  //      if (CN_ENTRY != pTestEntry->eClass())
+  //      if (CN_ENT != pTestEntry->eClass())
   //        vShow();
-  //      ASSERT(CN_ENTRY == pTestEntry->eClass());
+  //      ASSERT(CN_ENT == pTestEntry->eClass());
   //    }
   //  }
   
@@ -159,7 +159,7 @@ bool EntryBuffer::bQuickVerify(Item* aNotSeeEntry)
         return false;
       }
       
-      if (CN_ENTRY != aCheckEntry->eClass())
+      if (CN_ENT != aCheckEntry->eClass())
         return false;
     }
   }
@@ -478,7 +478,7 @@ bool EntryBuffer::bVerifyItems(void)
     
     switch (eClass) {
         
-      case CN_ENTRY: {
+      case CN_ENT: {
         if (! aItem->bValidItem()) {
           vShow();
           vVerifyFault();
@@ -720,7 +720,7 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
     Item* aTestEntry_sl = aNextEntry(aSkipRoots(),i_ScanLevel);
     while (aTestEntry_sl) {
       
-      if (CN_ENTRY != aTestEntry_sl->eClass()) {
+      if (CN_ENT != aTestEntry_sl->eClass()) {
         vVerifyFault();
         return false;
       }
@@ -728,19 +728,19 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
       switch (i_ScanLevel) {
         case 2:
           aNextEntry2 = aNextEntry(aTestEntry_sl,2);
-          if (aNextEntry2 && CN_ENTRY != aNextEntry2->eClass()) {
+          if (aNextEntry2 && CN_ENT != aNextEntry2->eClass()) {
             vVerifyFault();
             return false;
           }
         case 1:
           aNextEntry1 = aNextEntry(aTestEntry_sl,1);
-          if (aNextEntry1 && CN_ENTRY != aNextEntry1->eClass()) {
+          if (aNextEntry1 && CN_ENT != aNextEntry1->eClass()) {
             vVerifyFault();
             return false;
           }
         case 0:
           aNextEntry0 = aNextEntry(aTestEntry_sl,0);
-          if (aNextEntry0 && CN_ENTRY != aNextEntry0->eClass()) {
+          if (aNextEntry0 && CN_ENT != aNextEntry0->eClass()) {
             vVerifyFault();
             return false;
           }

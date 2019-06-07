@@ -25,7 +25,7 @@ SkipRoots* Data::_aSkipRoots(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SkipRoots::SkipRoots(void)
-: Item(CN_ENTRY,sizeof(SkipRoots))
+: Item(CN_ENT,sizeof(SkipRoots))
 {
   PoolBuffer* pBuffer = PoolBuffer::pGetPoolBuffer((Object*)this);
   bn nBufferNo = pBuffer->nPoolBufferNo();

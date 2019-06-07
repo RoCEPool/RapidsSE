@@ -160,7 +160,7 @@ Item* EntryBuffer::aAllotEntry(i8 nBytes_Without_Offsets)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  Item* aItem = aAllotItem(CN_ENTRY,nBytes_Without_Offsets);
+  Item* aItem = aAllotItem(CN_ENT,nBytes_Without_Offsets);
   if (! aItem)
     return nullptr;
   

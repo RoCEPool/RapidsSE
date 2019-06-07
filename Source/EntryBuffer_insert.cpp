@@ -132,7 +132,7 @@ void EntryBuffer::vCompact(void)
   
   // scan item is the working pointer
   Item* aScanItem = aFirstItem();
-  //ASSERT(aScanItem->eClass() == CN_ENTRY);
+  //ASSERT(aScanItem->eClass() == CN_ENT);
   
   // loop while we can still reclaim more space
   for (;;) {
@@ -172,12 +172,12 @@ void EntryBuffer::vCompact(void)
       
       eCN eClass = aItem->eClass();
       
-      RASSERT ((eClass == CN_ENTRY) ||
+      RASSERT ((eClass == CN_ENT) ||
                (eClass == CN_FREEITEM) ||
                (eClass == CN_WILDERNESS));
       
       
-      if (CN_ENTRY == eClass) {
+      if (CN_ENT == eClass) {
         aMoveEntry = static_cast<Item*>(aItem);
         break;
       }

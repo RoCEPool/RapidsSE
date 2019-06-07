@@ -342,7 +342,7 @@ void KeyWrk::vSetEntry(Item* pEntry)
   KeyData* aDstKey = _aKeyData(pEntry->aDataArea());
   i8 nKeySize  = this->nKeySize();
   
-  MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENTRY);
+  MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENT);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1056,7 +1056,7 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
         aItem = pEntryBuffer->aLeadEntry();
         *aaItem = aItem;
         RASSERT(aItem != nullptr);
-        RASSERT(aItem->eClass() == CN_ENTRY);
+        RASSERT(aItem->eClass() == CN_ENT);
         *aaEntryBuffer = pEntryBuffer;
         *aaRow = _aRowData(aItem->aDataArea());
         //vTrace("returning %p %p\n"_Stz, *aaEntryBuffer, *aaItem);
@@ -1076,7 +1076,7 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
     aItem = *((Item**)(aaItem));
     RASSERT(aItem != nullptr);
     //vTrace("got %p %p\n"_Stz, pEntryBuffer, aItem);
-    RASSERT(aItem->eClass() == CN_ENTRY);
+    RASSERT(aItem->eClass() == CN_ENT);
     API_LOC(360);
 
     // get the next entry
