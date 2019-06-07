@@ -14,8 +14,6 @@ void Step::vAddSteps_EntryBuffer(void)
   vAddStep("entryBuffer.dump"_Stz,        &Step::vEntryBufferDump);
   vAddStep("entryBuffer.index@"_Stz,      &Step::vEntryBufferIndexFetch);
   vAddStep("entryBuffer.index!"_Stz,      &Step::vEntryBufferIndexStore);
-  vAddStep("entryBuffer.isLast@"_Stz,     &Step::vEntryBufferIsLastFetch);
-  vAddStep("entryBuffer.isLast!"_Stz,     &Step::vEntryBufferIsLastStore);
   vAddStep("entryBuffer.nextBuffer"_Stz,  &Step::vEntryBufferNextBuffer);
   vAddStep("entryBuffer.partition@"_Stz,  &Step::vEntryBufferPartitionFetch);
   vAddStep("entryBuffer.partition!"_Stz,  &Step::vEntryBufferPartitionStore);
@@ -83,46 +81,6 @@ void Step::vEntryBufferIndexStore(MP_Task mpTask)
   ASSERT(CN_INDEX == pIndex->eClass());
   
   pIndexBuffer->vIndex(pIndex);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* entryBuffer.isLast@ -- get if buffer is last                               */
-/*----------------------------------------------------------------------------*/
-void Step::vEntryBufferIsLastFetch(MP_Task mpTask)
-{
-  ENTRY("vEntryBufferIsLastFetch"_Stz);
-  
-  Object* pPtrEntry = nullptr;
-  Object* pPtrIndexBuffer;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.isLast@"_Stz);
-  
-  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
-  
-  mpTask->m_pDataStack->vPushI8(pIndexBuffer->bIsLast());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* entryBuffer.isLast! -- set buffer is last                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vEntryBufferIsLastStore(MP_Task mpTask)
-{
-  ENTRY("vEntryBufferIsLastStore"_Stz);
-  
-  Object* pPtrEntry = nullptr;
-  Object* pPtrIndexBuffer;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.isLast!"_Stz);
-  
-  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
-  
-  pIndexBuffer->vIsLast(true);
   
   EXIT();
 }

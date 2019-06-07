@@ -207,6 +207,15 @@ i8 Item::nSizeData(void)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this item                                             */
 /*----------------------------------------------------------------------------*/
+i8 Item::nSizeItem_WithOffsets(void)
+{
+  i8 nBytes = nSizeItem_WithoutOffsets() + iNEOsize();
+  
+  return nBytes;
+}
+/*----------------------------------------------------------------------------*/
+/* get size in bytes of this item                                             */
+/*----------------------------------------------------------------------------*/
 i8 Item::nSizeItem_WithoutOffsets(void)
 {
   return (i8)m_nSizeItem_WithoutOffsets;

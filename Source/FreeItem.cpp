@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* FreeItem.cpp -- free entry in buffer                                      */
+/* FreeItem.cpp -- free entry in buffer                                       */
 /*============================================================================*/
 
 #include "MiniHeaps.h"
@@ -35,17 +35,9 @@ void* FreeItem::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* FreeItem::operator new(size_t, Item* aItem)
+void* FreeItem::operator new(size_t, void* aFree)
 {
-  return reinterpret_cast<FreeItem*>(aItem);
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* FreeItem::operator new(size_t, FreeItem* aFreeEntry)
-{
-  return aFreeEntry;
+  return reinterpret_cast<FreeItem*>(aFree);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,7 +46,6 @@ void* FreeItem::operator new(size_t, FreeItem* aFreeEntry)
 FreeItem::FreeItem(i8 nSizeItem)
 : Item(CN_FREEENTRY,nSizeItem)
 {
-  //m_aNextFree = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,13 +63,9 @@ FreeItem::~FreeItem(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert given entry into free entry                                        */
 /*----------------------------------------------------------------------------*/
-FreeItem* FreeItem::aMorphFreeItem(Item* aItem)
+FreeItem* FreeItem::aMorphFreeItem(void* aFree, i8 nSizeFree)
 {
-  i8 nSizeItem = aItem->nSizeItem_WithoutOffsets();
-  i8 nSizeNEO  = aItem->iNEOsize();
-  i8 nSizeFree = nSizeItem + nSizeNEO;
-  
-  FreeItem* aFreeItem = new(aItem) FreeItem(nSizeFree);
+  FreeItem* aFreeItem = new(aFree) FreeItem(nSizeFree);
   
   return aFreeItem;
 }
@@ -114,21 +101,6 @@ bool FreeItem::bValidFreeEntry(void)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get next free entry                                                        */
-/*----------------------------------------------------------------------------*/
-//FreeItem* FreeItem::aNextFree(void)
-//{
-//  return m_aNextFree;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* set next free entry                                                        */
-/*----------------------------------------------------------------------------*/
-//void FreeItem::vNextFree(FreeItem* aNextFree)
-//{
-//  m_aNextFree = aNextFree;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get address after this freeEntry                                           */

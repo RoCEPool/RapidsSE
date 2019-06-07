@@ -11,15 +11,15 @@ namespace Data
   static const bool C_NOT_FINAL = false;
   static const bool C_FINAL     = true;
 
-  class EntryBuffer : public ItemHeap
+  class EntryBuffer : public DataBuffer,
+                      public MiniHeap_t<Item>
   {
   friend class IndexTree;
 
   protected:
-    Lock      m_okLock;         // lock
-    Index*    m_pIndex;         // index this buffer belongs to
-    SkipRoots m_xSkipRoots;     // skip roots
-    Item*     m_aLazyChain;     // first lazy entry
+    Index*    m_pIndex;     // index this buffer belongs to
+    SkipRoots m_xSkipRoots; // skip roots
+    Item*     m_aLazyChain; // first lazy entry
   
     SeeMe m_xSeeMe;
   

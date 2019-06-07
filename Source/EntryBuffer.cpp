@@ -60,16 +60,16 @@ void EntryBuffer::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntryBuffer::EntryBuffer(void)
-: ItemHeap(CN_ENTRYBUFFER)
+: DataBuffer(CN_ENTRYBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  m_okLock.vInitLock(LK_ENTRYBUFFER);
-  
-  m_pIndex        = nullptr;
-  
-  //m_aHeadEntry  = nullptr;
+  m_pIndex      = nullptr;
+  //m_xSkipRoots
   m_aLazyChain  = nullptr;
+  
+  if (gpAttachMap->m_nIndexEntries != 0)
+    vMaxItems(gpAttachMap->m_nIndexEntries);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -262,7 +262,8 @@ void EntryBuffer::vDeleteEntry(Item** aaItem)
   
   vCutEntry(aItem,xPriorVec);
   
-  vFreeItem(aItem);
+  i8 nBytes = aItem->nSizeItem_WithOffsets();
+  vFreeItem(aItem,nBytes);
   
   // entry no longer exists, set the pointer to be null
   *aaItem = nullptr;
@@ -841,10 +842,7 @@ void EntryBuffer::vRestore(void)
   
   // get the buffer no
   bn nBuffer = nPoolBufferNo();
-  
-  // restore the bufferNo
-  m_iBufferNo = *nBuffer;
-  
+    
   // now restore the row id's to point to this buffer no
   for (Item* aItem = aLeadEntry();
        aItem != nullptr;

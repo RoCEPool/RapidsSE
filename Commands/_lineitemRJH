@@ -30,10 +30,9 @@ time create table LineItem                 // SF * 6,000,000 rows
 // 1,155190,7706,1,17,21168.23,0.04,0.02,N,O,1996-03-13,1996-02-12,1996-03-22,
 //   DELIVER IN PERSON,TRUCK,egular courts above the,
 
-
-//CREATE INDEX lineitem_idx1 ON lineitem(L_ORDERKEY);
-//CREATE INDEX lineitem_idx2 ON lineitem(L_SHIPDATE);
-//CREATE INDEX lineitem_idx3 ON lineitem(L_SUPPKEY);
+create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
+//create index Lineitem_idx2 ON LineItem(L_SHIPDATE);
+//create index Lineitem_idx3 ON LineItem(L_SUPPKEY);
 
 //nowait monitor 3;
 
