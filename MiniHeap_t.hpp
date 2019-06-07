@@ -21,7 +21,7 @@ namespace Structures
    ~MiniHeap_t(void) noexcept(false);
   
     ITEM*  aAdjacentItem(ITEM* aItem);
-    char*  aAllotBytes(i8 nBytes);
+    byte*  ayAllotBytes(i8 nBytes);
     ITEM*  aAllotItem(eCN eClassNo, i8 nBytes);
     i8     iDecile(void);
     void   vDecItems(void);
@@ -113,17 +113,17 @@ ITEM* MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem)
 /* allot space for nBytes in this buffer                                      */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-char* MiniHeap_t<ITEM>::aAllotBytes(i8 nBytes)
+byte* MiniHeap_t<ITEM>::ayAllotBytes(i8 nBytes)
 {
   // test sufficient free space
   if (nFreeBytes() < nBytes)
     return nullptr;
   
-  char* aSpace = m_xWsp.aAllot(nBytes);
+  byte* ayBytes = (byte*)m_xWsp.aAllot(nBytes);
   
   vSetWilderness();
   
-  return aSpace;
+  return ayBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,7 +132,7 @@ char* MiniHeap_t<ITEM>::aAllotBytes(i8 nBytes)
 template <class ITEM>
 ITEM* MiniHeap_t<ITEM>::aAllotItem(eCN eClassNo, i8 nBytes)
 {
-  ITEM* aItem = reinterpret_cast<ITEM*>(aAllotBytes(nBytes));
+  ITEM* aItem = reinterpret_cast<ITEM*>(ayAllotBytes(nBytes));
   if (! aItem)
     return nullptr;
   

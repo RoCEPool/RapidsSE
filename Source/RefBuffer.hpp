@@ -16,6 +16,8 @@ namespace Data
   public:
     RefBuffer(void);
     ~RefBuffer(void) noexcept(false);
+  
+    RefSet* aAllotRefSet(i8 nRowRefs);
 
   private:
     Footer* aFooter(void);

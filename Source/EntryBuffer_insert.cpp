@@ -1108,7 +1108,7 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
 /*----------------------------------------------------------------------------*/
 NEO* EntryBuffer::aAllotNEO(i8 nBytes)
 {
-  NEO* aNEO = reinterpret_cast<NEO*>(aAllotBytes(nBytes));
+  NEO* aNEO = reinterpret_cast<NEO*>(ayAllotBytes(nBytes));
   
   return aNEO;
 }

@@ -15,10 +15,11 @@ namespace Data
   public:
     void* operator new(size_t, void* aAddr);
     void  operator delete(void*);
-
+  
     RefSet(i8 nRowRefs);
     ~RefSet(void) noexcept(false);
   
+    static i8 nBytesReq(i8 nRowRefs);
   };
   
   RefSet* _pRefSet(void* aAddr);
