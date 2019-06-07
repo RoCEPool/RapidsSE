@@ -28,26 +28,10 @@ namespace MiniHeaps
     Item_tbd(eCN eClassNo, i8 nSizeItem);
     ~Item_tbd(void) noexcept(false);
   
-    i8        nSizeData(void);
-    i8        nSizeItem_WithoutOffsets(void);
-
-  private:
-    i8    nLevels(void);
-    NEO*  aNEO(void);
-    i8    iNEOsize(void);
+    i8 nSizeData(void);
+    i8 nSizeItem_WithoutOffsets(void);
+  };
   
-    i8    nSizeItem_WithOffsets(void);
- };
-  
-  /*--------------------------------------------------------------------------*/
-  /* safe cast                                                                */
-  /*--------------------------------------------------------------------------*/
-  inline Item_tbd* _aItem_tbd(void* aAddr)
-  {
-    Item_tbd* aItem_tbd = reinterpret_cast<Item_tbd*>(aAddr);
-    
-    return aItem_tbd;
-  }
 }
 
 /*============================================================================*/
