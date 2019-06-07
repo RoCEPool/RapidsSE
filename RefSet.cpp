@@ -46,7 +46,6 @@ RefSet::RefSet(i8 nRowRefs)
     m_iaRowRef[i_RowRef] = C_DATUM_NULL;
   
   _checkInitialised_(CN_REFSET);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,6 +99,16 @@ void RefSet::vRowRef(i8 i_RowRef, i8 iRowRef)
   ASSERT(i_RowRef < m_nRowRefs);
   
   m_iaRowRef[i_RowRef] = iRowRef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the size of the item                                                   */
+/*----------------------------------------------------------------------------*/
+i8 RefSet::nSizeItem(void)
+{
+  i8 nBytes = sizeof(RefSet) - sizeof(i8) + (m_nRowRefs * sizeof(i8));
+
+  return nBytes;
 }
 
 /*============================================================================*/

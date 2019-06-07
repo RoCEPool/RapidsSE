@@ -99,7 +99,7 @@ MiniHeap_t<ITEM>::~MiniHeap_t(void) noexcept(false)
 template <class ITEM>
 ITEM* MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem)
 {
-  i8 nItemBytes = aItem->nSizeItem_WithOffsets();
+  i8 nItemBytes = aItem->nSizeItem();
   
   ITEM* aAdjacent = aAdd<ITEM*>(aItem,nItemBytes);
   

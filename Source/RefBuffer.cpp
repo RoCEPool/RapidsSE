@@ -50,7 +50,7 @@ RefBuffer::~RefBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
+/* allot a ref set in this buffer (may return nulltpr)                        */
 /*----------------------------------------------------------------------------*/
 RefSet* RefBuffer::aAllotRefSet(i8 nRowRefs)
 {
@@ -61,6 +61,33 @@ RefSet* RefBuffer::aAllotRefSet(i8 nRowRefs)
   RefSet* aRefSet = new(ayRefSet) RefSet(nRowRefs);
   
   return aRefSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return first ref set in this buffer                                        */
+/*----------------------------------------------------------------------------*/
+RefSet* RefBuffer::aFirstRefSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
+  
+  RefSet* aRefSet = aFirstItem();
+  
+  return aRefSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return next ref set in this buffer                                         */
+/*----------------------------------------------------------------------------*/
+RefSet* RefBuffer::aNextRefSet(RefSet* aPriorRefSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
+
+  RefSet* aRefSet = aAdjacentItem(aPriorRefSet);
+  
+  if (aRefSet && CN_REFSET == aRefSet->eClass())
+    return aRefSet;
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
