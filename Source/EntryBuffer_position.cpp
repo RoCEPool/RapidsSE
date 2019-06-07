@@ -13,7 +13,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
 #ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
@@ -60,7 +60,7 @@ EntryBuffer* EntryBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
     // get the index buffer of the entry
     pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
     ASSERT(pEntryBuffer);
-    ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
+    ASSERT(pEntryBuffer->eClass() == CN_ENTBUFFER);
   }
   
   return pEntryBuffer;
@@ -71,7 +71,7 @@ EntryBuffer* EntryBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::pPositionPriorEntry(Item* aFindKey)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
 #ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
@@ -111,7 +111,7 @@ Item* EntryBuffer::pPositionPriorEntry(Item* aFindKey)
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::pPositionPriorEntry(KeyWrk& xFindKey)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
 #ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
@@ -152,7 +152,7 @@ Item* EntryBuffer::pPositionPriorEntry(KeyWrk& xFindKey)
 void EntryBuffer::vPositionPriorVecEntry(Item* aFindKey, Item* aPriorVec[],
                                          Item* aFindEntry)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   //ASSERT(0 == m_iBufferHeight);
   
@@ -216,7 +216,7 @@ void EntryBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
                                           Item* aPriorVec[],
                                           EntryBuffer* pRefdChildBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
   ASSERT(0 != m_iBufferHeight);
 
@@ -322,7 +322,7 @@ void EntryBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
 //void EntryBuffer::vPositionPriorVecBuffer(Item* aFindKey, Item* aPriorVec[],
 //                                          EntryBuffer* pToBuffer)
 //{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 //
 //  ASSERT(0 != m_iBufferHeight);
 //

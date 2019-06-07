@@ -60,7 +60,7 @@ enum eCN : u2 // Class Number
   /*  32 0x20      608B Heap:S */ CN_DIR,
   
   /*  33 0x21       40B Heap:I */ CN_ENT,
-  /*  34 0x22  1043848B Heap:L */ CN_ENTRYBUFFER,
+  /*  34 0x22  1043848B Heap:L */ CN_ENTBUFFER,
   /*                           */ CN_ENUMFLAGS,
   /*                           */ CN_EXPORTBUFFER,
 
@@ -363,7 +363,7 @@ static Stz* aCN[]
   /*  32 0x20 */ "DIR"_Stz,                 // CN_DIR
   
   /*  33 0x21 */ "ENT"_Stz,                 // CN_ENT
-  /*  34 0x22 */ "ENTRYBUFFER"_Stz,         // CN_ENTRYBUFFER
+  /*  34 0x22 */ "ENTBUFFER"_Stz,           // CN_ENTBUFFER
   /*          */ "ENUMFLAGS"_Stz,           // CN_ENUMFLAGS
   /*          */ "EXPORTBUFFER"_Stz,        // CN_EXPORTBUFFER
 

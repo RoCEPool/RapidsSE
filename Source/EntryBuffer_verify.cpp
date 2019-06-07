@@ -19,7 +19,7 @@ extern AttachMap* gpAttachMap;
 
 bool EntryBuffer::bCheckPriorVec(Item* aPriorVec[])
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   vNumberEntries();
   
@@ -64,7 +64,7 @@ bool EntryBuffer::bCheckPriorVec(Item* aPriorVec[])
 #ifdef WITH_DEBUG_VERSION
 void EntryBuffer::vNumberEntries(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // set entry no
   
@@ -84,7 +84,7 @@ void EntryBuffer::vNumberEntries(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vQuickVerify(Item* aSeeEntry)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   for (Item* aItem = aFirstItem();
        aItem != nullptr;
@@ -141,7 +141,7 @@ void EntryBuffer::vQuickVerify(Item* aSeeEntry)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bQuickVerify(Item* aNotSeeEntry)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   for (Item* aTestEntry = aNextEntry(aSkipRoots(),0);
        aTestEntry;
@@ -172,14 +172,14 @@ bool EntryBuffer::bQuickVerify(Item* aNotSeeEntry)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bValidEntryBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   if (! bValidMagic()) {
     vTrace("Not valid magic\n"_Stz);
     return false;
   }
   
-  if (CN_ENTRYBUFFER != eClass()) {
+  if (CN_ENTBUFFER != eClass()) {
     vTrace("Not valid class\n"_Stz);
     return false;
   }
@@ -197,7 +197,7 @@ bool EntryBuffer::bValidEntryBuffer(void)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerify(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   bool bValid = false;
   
@@ -215,7 +215,7 @@ bool EntryBuffer::bVerify(void)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerifyL0Other(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   RASSERT(0 == m_iBufferHeight);
   
@@ -255,7 +255,7 @@ bool EntryBuffer::bVerifyL0Other(void)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerifyLnAny(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   RASSERT(0 != m_iBufferHeight);
   
@@ -329,7 +329,7 @@ bool EntryBuffer::bVerifyLnAny(void)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerifyAdjacent(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   /*
    Every entry in an Ln buffer would point to a different buffer.  This
@@ -374,7 +374,7 @@ bool EntryBuffer::bVerifyAdjacent(void)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerifyBufferRefs(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   /*
    Every entry in an Ln buffer should reference an Ln-1 buffer. And
@@ -411,7 +411,7 @@ bool EntryBuffer::bVerifyBufferRefs(void)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerifyFirstKeys(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   /*
    The for each entry in an Ln buffer will match the first key in an
@@ -456,7 +456,7 @@ bool EntryBuffer::bVerifyFirstKeys(void)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerifyItems(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   /*
    The items in and entry buffer are some sequence of:
@@ -529,7 +529,7 @@ bool EntryBuffer::bVerifyItems(void)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerifyKeyBufferOrder(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   /*
    The entries in an Ln buffer should be in order of the child buffer list
@@ -573,7 +573,7 @@ bool EntryBuffer::bVerifyKeyBufferOrder(void)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerifyKeyOrder(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   /*
    Any Ln buffer or L0 buffer should have its keys in ascending
@@ -611,7 +611,7 @@ bool EntryBuffer::bVerifyKeyOrder(void)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerifyNextPrev(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   /*
    Any buffer should have a next whose prev point back to it; any prev should
@@ -664,7 +664,7 @@ bool EntryBuffer::bVerifyNextPrev(void)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerifyRowRefs(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   /*
    For this L0 index verify that its key entries referen a
@@ -697,7 +697,7 @@ bool EntryBuffer::bVerifyRowRefs(void)
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   /*
    Run thru each scan list level and verify we discover entries with
@@ -773,7 +773,7 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
 
 bool EntryBuffer::bVerifySkipListLevels(bool bShowKeys)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   /*
    Verify entries with skip offsets greater than one that they
@@ -838,7 +838,7 @@ bool EntryBuffer::bVerifySkipListLevels(bool bShowKeys)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vVerifyFault(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   vTrace("VerifyFault\n"_Stz);
   RASSERT(0);

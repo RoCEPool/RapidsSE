@@ -13,7 +13,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vBuildSkipList(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   if (! m_aLazyChain )
     return;
@@ -49,7 +49,7 @@ void EntryBuffer::vBuildSkipList(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vBuildSkipListSorted(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   //
   //  H:
@@ -115,7 +115,7 @@ void EntryBuffer::vBuildSkipListSorted(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vCompact(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
 #ifdef USE_EB_LAZY_CHAIN
   //RASSERT( ! m_aLazyChain );
@@ -213,7 +213,7 @@ void EntryBuffer::vCompact(void)
     + aMoveEntry->iNEOsize();
     
     // copy the move entry over the free entry
-    MemLib::vMove(aFreeItem, aMoveEntry, nCopyBytes, CN_ENTRYBUFFER);
+    MemLib::vMove(aFreeItem, aMoveEntry, nCopyBytes, CN_ENTBUFFER);
     
     // give the reclaimed space back to the buffer
     i8 nReclaimedBytes = nSub(aMoveEntry,aFreeItem);
@@ -256,7 +256,7 @@ void EntryBuffer::vCompact(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vCompactLeft(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
 #ifdef USE_EB_LAZY_CHAIN
   RASSERT(! m_aLazyChain);
@@ -322,7 +322,7 @@ void EntryBuffer::vCompactLeft(void)
 void EntryBuffer::vDeleteUpwards(Item* aDeleteKey,
                                  EntryBuffer** ppRootKeyBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
 #ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
@@ -380,7 +380,7 @@ void EntryBuffer::vHandleFirstInsert(Item* aInsertedKeyEntry,
                                      Item* aOriginalFirstEntry,
                                      EntryBuffer** ppRootKeyBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   if (aLeadEntry() != aInsertedKeyEntry)
     return;
@@ -412,7 +412,7 @@ void EntryBuffer::vHandleLeftInsert(Item* aInsertedKeyEntry,
                                     Item* aOriginalFirstEntry,
                                     EntryBuffer** ppRootKeyBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   if (! m_pHigherBuffer)
     return;
@@ -444,7 +444,7 @@ void EntryBuffer::vHandleLeftInsert(Item* aInsertedKeyEntry,
 EntryBuffer* EntryBuffer::pInsertableBuffer(KeyWrk& xKeyWrk,
                                             EntryBuffer** ppRootKeyBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
@@ -475,7 +475,7 @@ EntryBuffer* EntryBuffer::pInsertableBuffer(KeyWrk& xKeyWrk,
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::aInsertKeyAbs(KeyWrk& xKeyWrk)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   Item* aKeyEntry;
   
@@ -536,7 +536,7 @@ Item* EntryBuffer::aInsertKeyAbs(KeyWrk& xKeyWrk)
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::aInsertKeyAbsL0(KeyWrk& xKeyWrk, Item** aaPriorEntry)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // trace
@@ -629,7 +629,7 @@ Item* EntryBuffer::aInsertKeyTree(KeyWrk& xKeyWrk,
 /*----------------------------------------------------------------------------*/
 Item* EntryBuffer::aInsertKeyAbsLazy(KeyWrk& xKeyWrk)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // trace
@@ -684,7 +684,7 @@ Item* EntryBuffer::aInsertKeyAbsLazy(KeyWrk& xKeyWrk)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vInsertKeySkip(Item* aKeyEntry)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the entry after which the new entry will be inserted
@@ -723,7 +723,7 @@ void EntryBuffer::vInsertKeySkip(Item* aKeyEntry)
 Item* EntryBuffer::aInsertKeyBuffer(KeyWrk& xKeyWrk,
                                     EntryBuffer** ppRootKeyBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -760,7 +760,7 @@ Item* EntryBuffer::aInsertKeyBuffer(KeyWrk& xKeyWrk,
 Item* EntryBuffer::aInsertKeyUpwards(KeyWrk& xKeyWrk,
                                      EntryBuffer** ppRootKeyBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -800,7 +800,7 @@ Item* EntryBuffer::aInsertKeyUpwards(KeyWrk& xKeyWrk,
 /*----------------------------------------------------------------------------*/
 bool EntryBuffer::bKeyBeforeBuffer(KeyWrk& xKeyTest)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   Item* aFirstEntry = this->aLeadEntry();
   
@@ -814,7 +814,7 @@ bool EntryBuffer::bKeyBeforeBuffer(KeyWrk& xKeyTest)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vLazyBuild(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   EntryBuffer* pEntryBuffer = this;
   
@@ -835,7 +835,7 @@ void EntryBuffer::vLazyBuild(void)
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pNewHigherBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // create new buffer at one higher index level
   EntryBuffer* pNewBuffer = new EntryBuffer();
@@ -855,7 +855,7 @@ EntryBuffer* EntryBuffer::pNewHigherBuffer(void)
 EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets,
                                            EntryBuffer** ppRootKeyBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact this buffer
@@ -929,7 +929,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pNewNextBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // create new buffer at the same index level and link the two buffers
   EntryBuffer* pNewBuffer = new EntryBuffer();
@@ -959,7 +959,7 @@ EntryBuffer* EntryBuffer::pNewNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 EntryBuffer* EntryBuffer::pSplitBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   i8 iSplitRatio = 50;
   

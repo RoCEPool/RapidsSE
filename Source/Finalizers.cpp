@@ -57,7 +57,7 @@ pFINALIZE *gpFinalize[]
   /* 35 */ &Finalize::vUndefined,         // CN_DIR
   
   /* 36 */ &Finalize::vUndefined,         // CN_ENT
-  /* 37 */ &Finalize::vUndefined,         // CN_ENTRYBUFFER
+  /* 37 */ &Finalize::vUndefined,         // CN_ENTBUFFER
   /*    */ &Finalize::vUndefined,         // CN_ENUMFLAGS
   /*    */ &Finalize::vUndefined,         // CN_EXPORTBUFFER
 

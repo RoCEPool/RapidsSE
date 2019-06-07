@@ -1069,7 +1069,7 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // we have a buffer
     pEntryBuffer = *((EntryBuffer**)(aaEntryBuffer));
-    RASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
+    RASSERT(pEntryBuffer->eClass() == CN_ENTBUFFER);
     API_LOC(350);
 
     // we should have an entry

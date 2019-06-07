@@ -132,7 +132,7 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
   
   if (gpBufferPool->bDontFree()) {
     
-    if (CN_ENTRYBUFFER != eAllocClass) {
+    if (CN_ENTBUFFER != eAllocClass) {
       pObject->vSetClass(CN_FREEDNOT);
       return;
     }
