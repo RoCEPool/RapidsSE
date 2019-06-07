@@ -107,7 +107,7 @@ ForthWord::~ForthWord(void) noexcept(false)
   
   // invoke the finalize function for embedded objects
   if (m_eWordType == WT_OBJECT) {
-    Object* pEmbObject = reinterpret_cast<Object*>(m_xRoutine.aArea());
+    Object* pEmbObject = reinterpret_cast<Object*>(m_xRoutine.ayArea());
     eCN eClass = pEmbObject->eClass();
     pFINALIZE* pFinalizeFun = gpFinalize[eClass];
     (pFinalizeFun)(eClass, pEmbObject);
@@ -446,7 +446,7 @@ Cell* ForthWord::aFirstCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* aFirst = reinterpret_cast<Cell*>(m_xRoutine.aArea());
+  Cell* aFirst = reinterpret_cast<Cell*>(m_xRoutine.ayArea());
   
   return pPoolCheck<Cell*>(aFirst);
 }
@@ -523,7 +523,7 @@ Cell* ForthWord::aLastCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* aLast = reinterpret_cast<Cell*>(m_xRoutine.aLatter());
+  Cell* aLast = reinterpret_cast<Cell*>(m_xRoutine.ayLatter());
   
   return pPoolCheck<Cell*>(aLast);
 }
@@ -665,7 +665,7 @@ char* ForthWord::aWspArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* aBody = m_xRoutine.aArea();
+  char* aBody = (char*)m_xRoutine.ayArea();
   
   return pPoolCheck<char*>((void*)aBody);
 }

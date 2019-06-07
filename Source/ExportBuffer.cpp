@@ -72,7 +72,7 @@ char* ExportBuffer::aDataArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPORTBUFFER,_FOOTER_);
   
-  return m_xWsp.aArea();
+  return (char*)m_xWsp.ayArea();
 }
 
 /*----------------------------------------------------------------------------*/

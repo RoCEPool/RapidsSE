@@ -112,7 +112,7 @@ i8 FileChunk::nReadBytes(i8 nBytes)
   if (nBytes == C_WSP_DATACHUNK)
     nBytes -= 1;
   
-  m_nDataBytes = m_oFile.nReadBytes(m_xWsp.aArea(),nBytes);
+  m_nDataBytes = m_oFile.nReadBytes(m_xWsp.ayArea(),nBytes);
 
   if (! m_nDataBytes)
     return 0;
@@ -165,7 +165,7 @@ void FileChunk::vWriteData(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  bool bResult = m_oFile.bWriteBytes(m_xWsp.aArea(),m_nDataBytes);
+  bool bResult = m_oFile.bWriteBytes(m_xWsp.ayArea(),m_nDataBytes);
   RASSERT(bResult);
 }
 

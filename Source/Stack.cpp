@@ -1191,7 +1191,7 @@ Value* Stack::aStackBase(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  char* aBase = &m_xWsp.aArea()[C_WSP_STACK - 1];
+  char* aBase = (char*)&m_xWsp.ayArea()[C_WSP_STACK - 1];
   
   return pPoolCheck<Value*>(aBase);
 }
@@ -1203,7 +1203,7 @@ Value* Stack::aStackLimit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  char* aLimit = &m_xWsp.aArea()[0];
+  char* aLimit = (char*)&m_xWsp.ayArea()[0];
   
   return pPoolCheck<Value*>(aLimit);
 }

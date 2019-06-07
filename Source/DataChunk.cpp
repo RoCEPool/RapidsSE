@@ -66,7 +66,7 @@ void DataChunk::vCopy(DataChunk* pSource)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  MemLib::vCopy(m_xWsp.aArea(),
+  MemLib::vCopy(m_xWsp.ayArea(),
                 pSource->aDataArea(),
                 pSource->m_nDataBytes,
                 eClass());
@@ -81,7 +81,7 @@ char* DataChunk::aDataArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  char* aArea = m_xWsp.aArea();
+  char* aArea = (char*)m_xWsp.ayArea();
   
   return aArea;
 }

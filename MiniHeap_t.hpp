@@ -103,7 +103,7 @@ ITEM* MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem)
   
   ITEM* aAdjacent = aAdd<ITEM*>(aItem,nItemBytes);
   
-  if ((char*)aAdjacent >= (char*)m_xWsp.aLatter())
+  if ((char*)aAdjacent >= (char*)m_xWsp.ayLatter())
     return nullptr;
   
   return aAdjacent;
@@ -227,7 +227,7 @@ ITEM* MiniHeap_t<ITEM>::aFirstItem(void)
   if ( m_nItems == 0 )
     return nullptr;
   
-  ITEM* aFirst = reinterpret_cast<ITEM*>(m_xWsp.aArea());
+  ITEM* aFirst = reinterpret_cast<ITEM*>(m_xWsp.ayArea());
   
   return aFirst;
 }
@@ -298,7 +298,7 @@ bool MiniHeap_t<ITEM>::bHasSpace(i8 nBytes)
 template <class ITEM>
 ITEM* MiniHeap_t<ITEM>::aItemArea(void)
 {
-  ITEM* aItemArea = (ITEM*)m_xWsp.aArea();
+  ITEM* aItemArea = (ITEM*)m_xWsp.ayArea();
   
   return aItemArea;
 }
@@ -371,7 +371,7 @@ void MiniHeap_t<ITEM>::vSetUsed(ITEM* aUptil)
 template <class ITEM>
 i4 MiniHeap_t<ITEM>::iToOffset(ITEM* aItem)
 {
-  i4 iOffset = static_cast<i4>(nSub(aItem,m_xWsp.aArea()));
+  i4 iOffset = static_cast<i4>(nSub(aItem,m_xWsp.ayArea()));
   
   ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
   
@@ -402,7 +402,7 @@ void MiniHeap_t<ITEM>::vSetWilderness(void)
   if (nFreeBytes() < (i8)sizeof(Wilderness))
     return;
   
-  Wilderness* aWilderness = reinterpret_cast<Wilderness*>(m_xWsp.aLatter());
+  Wilderness* aWilderness = reinterpret_cast<Wilderness*>(m_xWsp.ayLatter());
   
   new(aWilderness) Wilderness;
 }

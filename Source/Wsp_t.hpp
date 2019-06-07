@@ -15,20 +15,21 @@ namespace Correctness
   class Wsp_t
   {
   private:
-    char m_caArea[LENGTH]; // fixed byte area
-    i8   m_nAreaUsed;      // bytes used in the area (must be after m_caArea)
+    byte m_ayByteArea[LENGTH]; // fixed byte area
+    i8   m_nAreaUsed;          // bytes used in the area
+                               //  (must be after m_ayByteArea)
   
   public:
     Wsp_t(void);
 
     byte* ayAllot(i8 nBytes);
     void  vAppend(void* aSrc, i8 nBytes, eCN eClassNo);
-    char* aArea(void);
+    byte* ayArea(void);
     void  vFill(char cByte, eCN eClassNo);
     i8    nFree(void);
     void  vGive(i8 nBytes);
     void  vInit(void);
-    char* aLatter(void);
+    byte* ayLatter(void);
     i8    nLength(void);
     i8    nSize(void);
     Stz*  aStz(void);
@@ -65,7 +66,7 @@ void Wsp_t<LENGTH>::vInit(void)
 template<int LENGTH>
 byte* Wsp_t<LENGTH>::ayAllot(i8 nBytes)
 {
-  byte* ayAllotted = (byte*)aLatter();
+  byte* ayAllotted = ayLatter();
   
   vTake(nBytes);
   
@@ -80,9 +81,9 @@ void Wsp_t<LENGTH>::vAppend(void* aSrc, i8 nBytes, eCN eClassNo)
 {
   ASSERT(nUsed() + nBytes <= LENGTH);
   
-  void* aDst = aLatter();
+  byte* ayDst = ayLatter();
 
-  MemLib::vCopy(aDst,aSrc,nBytes,eClassNo);
+  MemLib::vCopy(ayDst,aSrc,nBytes,eClassNo);
   
   vTake(nBytes);
 }
@@ -91,11 +92,11 @@ void Wsp_t<LENGTH>::vAppend(void* aSrc, i8 nBytes, eCN eClassNo)
 /* get address of byte area                                                   */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-char* Wsp_t<LENGTH>::aArea(void)
+byte* Wsp_t<LENGTH>::ayArea(void)
 {
-  char* aArea = m_caArea;
+  byte* ayArea = m_ayByteArea;
   
-  return aArea;
+  return ayArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -104,9 +105,9 @@ char* Wsp_t<LENGTH>::aArea(void)
 template<int LENGTH>
 void Wsp_t<LENGTH>::vFill(char cByte, eCN eClassNo)
 {
-  void* aDst = aArea();
+  byte* ayDst = ayArea();
   
-  MemLib::vSet(aDst,cByte,LENGTH,eClassNo);
+  MemLib::vSet(ayDst,cByte,LENGTH,eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -133,15 +134,15 @@ i8 Wsp_t<LENGTH>::nLength(void)
 /* get address of next available chunk in byte area                           */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-char* Wsp_t<LENGTH>::aLatter(void)
+byte* Wsp_t<LENGTH>::ayLatter(void)
 {
-  char* aNext = &aArea()[nUsed()];
+  byte* ayNext = &ayArea()[nUsed()];
   
-  return aNext;
+  return ayNext;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get total size of this Wsp_t                                              */
+/* get total size of this Wsp_t                                               */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
 i8 Wsp_t<LENGTH>::nSize(void)
@@ -150,12 +151,12 @@ i8 Wsp_t<LENGTH>::nSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of byte area                                                   */
+/* get byte area as Stz*                                                      */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
 Stz* Wsp_t<LENGTH>::aStz(void)
 {
-  char* aArea = m_caArea;
+  char* aArea = (char*)m_ayByteArea;
   
  return reinterpret_cast<Stz*>(aArea);
 }
@@ -208,9 +209,9 @@ i8 Wsp_t<LENGTH>::nUsed(void)
 template<int LENGTH>
 void Wsp_t<LENGTH>::vZero(eCN eClassNo)
 {
-  void* aDst = aArea();
+  byte* ayDst = ayArea();
   
-  MemLib::vZero(aDst,LENGTH,eClassNo);
+  MemLib::vZero(ayDst,LENGTH,eClassNo);
 }
 
 /*============================================================================*/

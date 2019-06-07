@@ -29,7 +29,7 @@ EntWrk::EntWrk(eCN eClassNo)
   
   m_xWsp.vInit();
   
-  m_aEmbedded = m_xWsp.aArea();
+  m_aEmbedded = (char*)m_xWsp.ayArea();
   
   _checkInitialisedSize_(sizeof(EntWrk));
   
@@ -151,7 +151,7 @@ void EntWrk::vItemNo(i8 iItemNo)
 /*----------------------------------------------------------------------------*/
 char* EntWrk::aLatter(void)
 {
-  return m_xWsp.aLatter();
+  return (char*)m_xWsp.ayLatter();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -207,7 +207,7 @@ void EntWrk::vReset(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_aEmbedded = m_xWsp.aArea();
+  m_aEmbedded = (char*)m_xWsp.ayArea();
 }
 
 /*----------------------------------------------------------------------------*/

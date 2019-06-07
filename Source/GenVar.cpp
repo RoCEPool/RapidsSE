@@ -271,7 +271,7 @@ Value* GenVar::aNestedValue(void)
 {
   _precondition_(_MAGIC_);
  
-  Value* aNestedValue = reinterpret_cast<Value*>(m_xWsp.aArea());
+  Value* aNestedValue = reinterpret_cast<Value*>(m_xWsp.ayArea());
 
   return aNestedValue;
 }
@@ -292,7 +292,7 @@ void GenVar::vGetString(Stz* zxStz)
 /*----------------------------------------------------------------------------*/
 char* GenVar::aWspArea(void)
 {
-  return m_xWsp.aArea();
+  return (char*)m_xWsp.ayArea();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -3260,7 +3260,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
   vDumpHead("aHeadLine"_Stz,aHeadLine,pRow->m_pColVec);
 #endif
   
-  char* acString = pRow->m_xWsp.aArea();
+  char* acString = (char*)pRow->m_xWsp.ayArea();
   
   i8 nCols = pRow->m_nColumns;
   

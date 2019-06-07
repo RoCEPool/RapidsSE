@@ -112,7 +112,7 @@ char* FetchBuffer::aDataArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  char* aStart = m_xWsp.aArea();
+  char* aStart = (char*)m_xWsp.ayArea();
   
   return aStart;
 }
@@ -161,7 +161,7 @@ HeadLine** FetchBuffer::aaFirstRowPtr(void)
   if (nUsedBytes() == 0)
     return nullptr;
   
-  HeadLine** aaFirstRow = reinterpret_cast<HeadLine**>(m_xWsp.aArea());
+  HeadLine** aaFirstRow = reinterpret_cast<HeadLine**>(m_xWsp.ayArea());
   
   return aaFirstRow;
 }
@@ -173,7 +173,7 @@ HeadLine* FetchBuffer::aLatter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
-  HeadLine* aHeadLine = (HeadLine*)m_xWsp.aLatter();
+  HeadLine* aHeadLine = (HeadLine*)m_xWsp.ayLatter();
   
   return aHeadLine;
 }
@@ -187,7 +187,7 @@ HeadLine** FetchBuffer::aaNextRowPtr(HeadLine** ppCurrentRow)
   
   HeadLine** aaNextRow = aAdd<HeadLine**>(ppCurrentRow,sizeof(CacheLine*));
   
-  if ((char**)aaNextRow >= (char**)m_xWsp.aLatter())
+  if ((char**)aaNextRow >= (char**)m_xWsp.ayLatter())
     return nullptr;
   
   return aaNextRow;
