@@ -57,22 +57,6 @@ Item_tbd::~Item_tbd(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get rowid                                                                  */
-/*----------------------------------------------------------------------------*/
-Id& Item_tbd::xId(void)
-{
-  return m_xId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get rowid                                                                  */
-/*----------------------------------------------------------------------------*/
-void Item_tbd::vId(Id xId)
-{
-  m_xId = xId;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get item in memory after this item                                         */
 /*----------------------------------------------------------------------------*/
 Item_tbd* Item_tbd::aItemAfter(void)
@@ -86,14 +70,6 @@ Item_tbd* Item_tbd::aItemAfter(void)
   Item_tbd* aAfter = aAdd<Item_tbd*>(this,nItemPlusNEO);
   
   return aAfter;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get item number                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Item_tbd::iItemNo(void)
-{
-  return m_xId.iItem();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,31 +167,6 @@ i8 Item_tbd::nSizeItem_WithOffsets(void)
 i8 Item_tbd::nSizeItem_WithoutOffsets(void)
 {
   return (i8)m_nSizeItem_WithoutOffsets;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for valid entry                                                       */
-/*----------------------------------------------------------------------------*/
-bool Item_tbd::bValidItem(void)
-{  
-  if (! bValidMagic()) {
-    vTrace("Not valid magic\n"_Stz);
-    return false;
-  }
-  
-  if ( ! (CN_ENTRY == eClass() || CN_FREEENTRY == eClass()) ) {
-    vTrace("Not valid class\n"_Stz);
-    return false;
-  }
-  
-#ifdef USE_LW_FOOOTER
-  if (! aFooter()->bValidFooter()) {
-    vTrace("Not valid footer\n"_Stz);
-    return false;
-  }
-#endif
-  
-  return true;
 }
 
 

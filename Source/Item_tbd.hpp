@@ -28,10 +28,7 @@ namespace MiniHeaps
     Item_tbd(eCN eClassNo, i8 nSizeItem);
     ~Item_tbd(void) noexcept(false);
   
-    Id&   xId(void);
-    void  vId(Id xId);
     Item_tbd* aItemAfter(void);
-    i8    iItemNo(void);
     i4    iNEO(i8 iLevel);
     void  vNEO(i8 iLevel, i4 iNEO);
     void  vNEOdump(void);
@@ -42,7 +39,6 @@ namespace MiniHeaps
     i8    nSizeItem_WithOffsets(void);
     i8    nSizeItem_WithoutOffsets(void);
     i8    nSizeData(void);
-    bool  bValidItem(void);
   
   private:
     NEO*  aNEO(void);
