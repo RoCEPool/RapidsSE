@@ -39,7 +39,6 @@ namespace MiniHeaps
     char* aDataArea(void);
     Id&   xId(void);
     void  vId(Id xId);
-    Item* aItemAfter(void);
     i8    iItemNo(void);
     i4    iNEO(i8 iLevel);
     void  vNEO(i8 iLevel, i4 iNEO);

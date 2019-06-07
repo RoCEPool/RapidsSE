@@ -101,22 +101,6 @@ void Item::vId(Id xId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get item in memory after this item                                         */
-/*----------------------------------------------------------------------------*/
-Item* Item::aItemAfter(void)
-{
-  i8 nItemBytes = nSizeItem_WithoutOffsets();
-  
-  i8 nNEObytes = iNEOsize();
-  
-  i8 nItemPlusNEO = nItemBytes + nNEObytes;
-  
-  Item* aAfter = aAdd<Item*>(this,nItemPlusNEO);
-  
-  return aAfter;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get item number                                                            */
 /*----------------------------------------------------------------------------*/
 i8 Item::iItemNo(void)

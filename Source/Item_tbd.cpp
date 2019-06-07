@@ -56,21 +56,6 @@ Item_tbd::~Item_tbd(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get item in memory after this item                                         */
-/*----------------------------------------------------------------------------*/
-Item_tbd* Item_tbd::aItemAfter(void)
-{
-  i8 nItemBytes = nSizeItem_WithoutOffsets();
-  
-  i8 nNEObytes = iNEOsize();
-  
-  i8 nItemPlusNEO = nItemBytes + nNEObytes;
-  
-  Item_tbd* aAfter = aAdd<Item_tbd*>(this,nItemPlusNEO);
-  
-  return aAfter;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get size of the NEO after this entry                                       */
