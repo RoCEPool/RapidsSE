@@ -73,22 +73,6 @@ Item_tbd* Item_tbd::aItemAfter(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a next entry offset                                                    */
-/*----------------------------------------------------------------------------*/
-i4 Item_tbd::iNEO(i8 iOffset)
-{
-  ASSERT(iOffset >= 0 && iOffset < nLevels());
-  
-  //NEO* aNEO = this->aNEO();
-  
-  //i4 iNEO = aNEO->m_iOffset[iOffset];
-  
-  i4 iNEO = *(aAdd<i4*>(this, nSizeItem_WithoutOffsets() + sizeof(i4) * iOffset));
-  
-  return iNEO;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get size of the NEO after this entry                                       */
 /*----------------------------------------------------------------------------*/
 i8 Item_tbd::iNEOsize(void)
@@ -119,10 +103,11 @@ i8 Item_tbd::nSizeData(void)
 /*----------------------------------------------------------------------------*/
 i8 Item_tbd::nSizeItem_WithOffsets(void)
 {
-  i8 nBytes = nSizeItem_WithoutOffsets() + iNEOsize();
+  i8 nBytes = m_nSizeItem_WithoutOffsets + iNEOsize();
   
   return nBytes;
 }
+
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this item                                             */
 /*----------------------------------------------------------------------------*/
