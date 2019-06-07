@@ -5,12 +5,11 @@
 
 namespace Data
 {
-  class RefSet : public Object
+  class RefSet : public Header
   {
   public:
-    i8    m_nRowRefs;
-  
-    i8    m_iaRowRef[1];
+    i8 m_nRowRefs;    // the number of row refs in this ref set
+    i8 m_iaRowRef[1]; // array of row refs
   
   public:
     void* operator new(size_t, void* aAddr);
@@ -20,6 +19,11 @@ namespace Data
     ~RefSet(void) noexcept(false);
   
     static i8 nBytesReq(i8 nRowRefs);
+  
+    i8   nRowRefs(void);
+  
+    i8   iRowRef(i8 i_RowRef);
+    void vRowRef(i8 i_RowRef, i8 iRowRef);
   };
   
   RefSet* _pRefSet(void* aAddr);

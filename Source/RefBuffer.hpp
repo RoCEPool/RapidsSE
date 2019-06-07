@@ -18,6 +18,9 @@ namespace Data
     ~RefBuffer(void) noexcept(false);
   
     RefSet* aAllotRefSet(i8 nRowRefs);
+  
+    RefSet* aFirstRefSet(void);
+    RefSet* aNextRefSet(RefSet* aPriorRefSet);
 
   private:
     Footer* aFooter(void);
