@@ -190,7 +190,7 @@ void EntBuffer::vCompact(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the prior vector to the entry being moved
     
-    //KeyData* aMoveKey = _aKeyData(aMoveEntry->aDataArea());
+    //Key* aMoveKey = _aKeyData(aMoveEntry->aDataArea());
     
     //aKey->vShow(pIdxColVec);
     //vTrace("\n"_Stz);
@@ -342,12 +342,12 @@ void EntBuffer::vDeleteUpwards(Ent* aDeleteKey,
   //         *nPoolBufferNo(),
   //         pEntryToBeDeleted->aKey()->iGetInt());
   
-  KeyData* aDeleteEntryKey = _aKeyData(aEntryToBeDeleted->aDataArea());
+  Key* aDeleteEntryKey = _aKeyData(aEntryToBeDeleted->aDataArea());
   
   //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   //if ( ! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec) ) {
-  if ( ! KeyData::bEqualTo(aEntryToBeDeleted, aDeleteKey) ) {
+  if ( ! Key::bEqualTo(aEntryToBeDeleted, aDeleteKey) ) {
     //vShow();
     
     //vShowTree();
@@ -386,14 +386,14 @@ void EntBuffer::vHandleFirstInsert(Ent* aInsertedKeyEntry,
     return;
   
   if (aOriginalFirstEntry) {
-    //KeyData* aOriginalFirstKey = _aKeyData(aOriginalFirstEntry->aDataArea());
+    //Key* aOriginalFirstKey = _aKeyData(aOriginalFirstEntry->aDataArea());
     
-    //KeyData* aInsertedFirstKey = _aKeyData(aInsertedKeyEntry->aDataArea());
+    //Key* aInsertedFirstKey = _aKeyData(aInsertedKeyEntry->aDataArea());
     
     IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
     
     //if (aInsertedFirstKey->bNotEqual(aOriginalFirstKey,pIdxColVec))
-    if (KeyData::bNotEqual(aInsertedKeyEntry, aOriginalFirstEntry))
+    if (Key::bNotEqual(aInsertedKeyEntry, aOriginalFirstEntry))
       vHandleLeftInsert(aInsertedKeyEntry,
                         aOriginalFirstEntry,
                         ppRootKeyBuffer);
@@ -420,7 +420,7 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (aOriginalFirstEntry) {
-    //KeyData* aDeleteKey = _aKeyData(aOriginalFirstEntry->aDataArea());
+    //Key* aDeleteKey = _aKeyData(aOriginalFirstEntry->aDataArea());
     EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
     //pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
     pHigherBuffer->vDeleteUpwards(aOriginalFirstEntry,ppRootKeyBuffer);
@@ -429,7 +429,7 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  //KeyData* aInsertKey = _aKeyData(aInsertedKeyEntry->aDataArea());
+  //Key* aInsertKey = _aKeyData(aInsertedKeyEntry->aDataArea());
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   KeyWrk xKeyWrkIns;
   xKeyWrkIns.vSetKey(aInsertedKeyEntry, *nPoolBufferNo(), 0, pIdxColVec);
@@ -691,7 +691,7 @@ void EntBuffer::vInsertKeySkip(Ent* aKeyEntry)
   
   Ent* xPriorVec[gpAttachMap->m_nIndexLevels];
   
-  //KeyData* aKey = _aKeyData(aKeyEntry->aDataArea());
+  //Key* aKey = _aKeyData(aKeyEntry->aDataArea());
   
   if (0 == m_iBufferHeight)
     vPositionPriorVecEntry(aKeyEntry, xPriorVec, nullptr);
@@ -804,7 +804,7 @@ bool EntBuffer::bKeyBeforeBuffer(KeyWrk& xKeyTest)
   
   Ent* aFirstEntry = this->aLeadEntry();
   
-  bool bLessEqual = KeyData::bLessEqual(xKeyTest,aFirstEntry);
+  bool bLessEqual = Key::bLessEqual(xKeyTest,aFirstEntry);
   
   return bLessEqual;
 }

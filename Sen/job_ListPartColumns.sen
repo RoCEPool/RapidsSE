@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* job_ListPartColumns.sen -- Job list Partition KeyData Columns                  */
+/* job_ListPartColumns.sen -- Job list Partition Key Columns                  */
 /*============================================================================*/
 
 " job_ListPartColumns.sen" .verbose

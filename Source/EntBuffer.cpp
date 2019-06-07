@@ -568,7 +568,7 @@ Ent* EntBuffer::pMoveToExactEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer** paEntB
   if (aEnt == pEntBuffer->aSkipRoots())
     aEnt = pEntBuffer->aNextEntry(aEnt,0);
   
-  eKC eCompare = KeyData::eCompare(aEnt, xKeyWrk);
+  eKC eCompare = Key::eCompare(aEnt, xKeyWrk);
   
   // have we reached the key?
   if (eCompare == KC_SAME)
@@ -605,7 +605,7 @@ Ent* EntBuffer::pMoveToGreaterThanEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer** 
     aEnt = pEntBuffer->aNextEntry(aEnt,0);
   
   while (aEnt) {
-    eKC eCompare = KeyData::eCompare(aEnt, xKeyWrk);
+    eKC eCompare = Key::eCompare(aEnt, xKeyWrk);
     
     // have we moved beyond ?
     if (eCompare == KC_AFTER)
@@ -640,7 +640,7 @@ Ent* EntBuffer::pMoveToGreaterEqualEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer**
     aEnt = pEntBuffer->aNextEntry(aEnt,0);
   
   while (aEnt) {
-    eKC eCompare = KeyData::eCompare(aEnt, xKeyWrk);
+    eKC eCompare = Key::eCompare(aEnt, xKeyWrk);
     
     // have we reached the key?
     if (eCompare == KC_SAME)
@@ -708,7 +708,7 @@ Ent* EntBuffer::pMoveToPrevEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer** paEntBu
   Ent* aEntPrev = aEnt;
   
   while (aEnt) {
-    eKC eCompare = KeyData::eCompare(aEnt, xKeyWrk);
+    eKC eCompare = Key::eCompare(aEnt, xKeyWrk);
     
     // have we reached the key?
     if (eCompare == KC_SAME)
@@ -888,7 +888,7 @@ void EntBuffer::vRestoreIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vShowEntry(Ent* aEnt)
 {
-  KeyData* aKey = _aKeyData(aEnt->aDataArea());
+  Key* aKey = _aKeyData(aEnt->aDataArea());
   i8 iOffset = iToOffset(aEnt);
   
   vTrace("%lld: Ent: %p Size: %llu Levels: %llu "_Stz,
@@ -989,7 +989,7 @@ void EntBuffer::vShowShort(void)
   while (iOffset > -1) {
     Ent* aEnt = aGetEntryOffset(iOffset);
     
-    KeyData* aKey = _aKeyData(aEnt->aDataArea())
+    Key* aKey = _aKeyData(aEnt->aDataArea())
     ;
     i8 iVal = aKey->iGetInt();
     

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* KeyWrk.cpp -- KeyData Working Ent                                         */
+/* KeyWrk.cpp -- Key Working Ent                                         */
 /*============================================================================*/
 
 #include "Data.h"
@@ -275,11 +275,11 @@ i8 KeyWrk::iHashKey(void)
 /*----------------------------------------------------------------------------*/
 /* get wsp area as key                                                        */
 /*----------------------------------------------------------------------------*/
-KeyData* KeyWrk::aKey(void)
+Key* KeyWrk::aKey(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  return reinterpret_cast<KeyData*>(aEmbedded());
+  return reinterpret_cast<Key*>(aEmbedded());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -338,8 +338,8 @@ void KeyWrk::vSetEntry(Ent* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into this entry
   
-  KeyData* aSrcKey = aKey();
-  KeyData* aDstKey = _aKeyData(pEntry->aDataArea());
+  Key* aSrcKey = aKey();
+  Key* aDstKey = _aKeyData(pEntry->aDataArea());
   i8 nKeySize  = this->nKeySize();
   
   MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENT);
@@ -362,7 +362,7 @@ void KeyWrk::vSetKey(Ent* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into this entry
   
-  KeyData* aKeyData = _aKeyData(pEntry->aDataArea());
+  Key* aKeyData = _aKeyData(pEntry->aDataArea());
   //i8 iKeySize = aKeyData->nKeySize(pIdxColVec);
   i8 iKeySize = pEntry->nSizeData();
   RASSERT(iKeySize % 8 == 0);
@@ -378,7 +378,7 @@ void KeyWrk::vShow(IdxColVec* pIdxColVec)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  KeyData* aKey = this->aKey();
+  Key* aKey = this->aKey();
   aKey->vShow(pIdxColVec);
   vTrace("\n"_Stz);
 }

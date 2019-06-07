@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* KeyData.cpp -- key part of an index entry                                      */
+/* Key.cpp -- key part of an index entry                                      */
 /*============================================================================*/
 
 #include "Data.h"
@@ -11,9 +11,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-KeyData* Data::_aKeyData(void* aAddr)
+Key* Data::_aKeyData(void* aAddr)
 {
-  KeyData* aKey = reinterpret_cast<KeyData*>(aAddr);
+  Key* aKey = reinterpret_cast<Key*>(aAddr);
   
   return aKey;
 }
@@ -21,9 +21,9 @@ KeyData* Data::_aKeyData(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* KeyData::operator new(size_t)
+void* Key::operator new(size_t)
 {
-  vFatal("fatal: KeyData class cannot be new'd\n"_Stz);
+  vFatal("fatal: Key class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -31,7 +31,7 @@ void* KeyData::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* KeyData::operator new(size_t, KeyData* aKey)
+void* Key::operator new(size_t, Key* aKey)
 {
   return aKey;
 }
@@ -39,7 +39,7 @@ void* KeyData::operator new(size_t, KeyData* aKey)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-KeyData::KeyData(KeyWrk& xKeyWrk)
+Key::Key(KeyWrk& xKeyWrk)
 {
   vKey(xKeyWrk);
 }
@@ -47,7 +47,7 @@ KeyData::KeyData(KeyWrk& xKeyWrk)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-KeyData::~KeyData(void) noexcept(false)
+Key::~Key(void) noexcept(false)
 {
 }
 
@@ -58,7 +58,7 @@ KeyData::~KeyData(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* operator <                                                                 */
 /*----------------------------------------------------------------------------*/
-bool KeyData::operator <(KeyData* aKeyArg)
+bool Key::operator <(Key* aKeyArg)
 {
   i8 iDatumA = *(i8*)aByteSequence();
   i8 iDatumB = *(i8*)aKeyArg->aByteSequence();
@@ -70,7 +70,7 @@ bool KeyData::operator <(KeyData* aKeyArg)
 /*----------------------------------------------------------------------------*/
 /* operator <=                                                                */
 /*----------------------------------------------------------------------------*/
-bool KeyData::operator <=(KeyData* aKeyArg)
+bool Key::operator <=(Key* aKeyArg)
 {
   i8 iDatumA = *(i8*)aByteSequence();
   i8 iDatumB = *(i8*)aKeyArg->aByteSequence();
@@ -83,7 +83,7 @@ bool KeyData::operator <=(KeyData* aKeyArg)
 /*----------------------------------------------------------------------------*/
 /* set key from given key workspace                                           */
 /*----------------------------------------------------------------------------*/
-void KeyData::vKey(KeyWrk& xKeyWrk)
+void Key::vKey(KeyWrk& xKeyWrk)
 {
   char* aDst = aByteSequence();
   char* aSrc = (char*)xKeyWrk.aKey();
@@ -95,7 +95,7 @@ void KeyData::vKey(KeyWrk& xKeyWrk)
 /*----------------------------------------------------------------------------*/
 /* get key size     :: TO BE REVIEWED                                         */
 /*----------------------------------------------------------------------------*/
-i8 KeyData::nKeySize(IdxColVec* pIdxColVec)
+i8 Key::nKeySize(IdxColVec* pIdxColVec)
 {
   
   // we should NEVER be calling this
@@ -118,13 +118,13 @@ i8 KeyData::nKeySize(IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
 /*----------------------------------------------------------------------------*/
-eKC KeyData::eCompare(Ent* aKeyItem1, KeyWrk& xKeyItem2)
+eKC Key::eCompare(Ent* aKeyItem1, KeyWrk& xKeyItem2)
 {  
   i8 nKeySize1 = aKeyItem1->nSizeData();
   i8 nKeySize2 = xKeyItem2.nKeySize();
   
-  KeyData* aKey1 = _aKeyData(aKeyItem1->aDataArea());
-  KeyData* aKey2 = xKeyItem2.aKey();
+  Key* aKey1 = _aKeyData(aKeyItem1->aDataArea());
+  Key* aKey2 = xKeyItem2.aKey();
   
   i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
   
@@ -153,13 +153,13 @@ eKC KeyData::eCompare(Ent* aKeyItem1, KeyWrk& xKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
 /*----------------------------------------------------------------------------*/
-eKC KeyData::eCompare(KeyWrk& xKeyItem1, KeyWrk& xKeyItem2)
+eKC Key::eCompare(KeyWrk& xKeyItem1, KeyWrk& xKeyItem2)
 {
   i8 nKeySize1 = xKeyItem1.nKeySize();
   i8 nKeySize2 = xKeyItem2.nKeySize();
   
-  KeyData* aKey1 = xKeyItem1.aKey();
-  KeyData* aKey2 = xKeyItem2.aKey();
+  Key* aKey1 = xKeyItem1.aKey();
+  Key* aKey2 = xKeyItem2.aKey();
   
   i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
   
@@ -180,13 +180,13 @@ eKC KeyData::eCompare(KeyWrk& xKeyItem1, KeyWrk& xKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
 /*----------------------------------------------------------------------------*/
-eKC KeyData::eCompare(KeyWrk& xKeyItem1, Ent* aKeyItem2)
+eKC Key::eCompare(KeyWrk& xKeyItem1, Ent* aKeyItem2)
 {
   i8 nKeySize1 = xKeyItem1.nKeySize();
   i8 nKeySize2 = aKeyItem2->nSizeData();
   
-  KeyData* aKey1 = xKeyItem1.aKey();
-  KeyData* aKey2 = _aKeyData(aKeyItem2->aDataArea());
+  Key* aKey1 = xKeyItem1.aKey();
+  Key* aKey2 = _aKeyData(aKeyItem2->aDataArea());
   
   i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
   
@@ -207,13 +207,13 @@ eKC KeyData::eCompare(KeyWrk& xKeyItem1, Ent* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
 /*----------------------------------------------------------------------------*/
-eKC KeyData::eCompare(Ent* aKeyItem1, Ent* aKeyItem2)
+eKC Key::eCompare(Ent* aKeyItem1, Ent* aKeyItem2)
 {
   i8 nKeySize1 = aKeyItem1->nSizeData();
   i8 nKeySize2 = aKeyItem2->nSizeData();
   
-  KeyData* aKey1 = _aKeyData(aKeyItem1->aDataArea());
-  KeyData* aKey2 = _aKeyData(aKeyItem2->aDataArea());
+  Key* aKey1 = _aKeyData(aKeyItem1->aDataArea());
+  Key* aKey2 = _aKeyData(aKeyItem2->aDataArea());
   
   i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
   
@@ -234,7 +234,7 @@ eKC KeyData::eCompare(Ent* aKeyItem1, Ent* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* get next element from key                                                  */
 /*----------------------------------------------------------------------------*/
-char* KeyData::aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor)
+char* Key::aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor)
 {
   char* aEachDatum = pColumn->aValue(nBytes,aaCursor);
   return aEachDatum;
@@ -243,7 +243,7 @@ char* KeyData::aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor)
 /*----------------------------------------------------------------------------*/
 /* if key1 is equal to key2 ?                                                 */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bEqualTo(Ent* aKeyItem1, Ent* aKeyItem2)
+bool Key::bEqualTo(Ent* aKeyItem1, Ent* aKeyItem2)
 {
   eKC eCmp = eCompare(aKeyItem1, aKeyItem2);
   return eCmp == KC_SAME ? true : false;
@@ -252,7 +252,7 @@ bool KeyData::bEqualTo(Ent* aKeyItem1, Ent* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* if key1 greater than key2 ?                                                */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bGreaterThan(Ent* aKeyItem1, Ent* aKeyItem2)
+bool Key::bGreaterThan(Ent* aKeyItem1, Ent* aKeyItem2)
 {
   eKC eCmp = eCompare(aKeyItem1, aKeyItem2);
   return eCmp == KC_AFTER ? true : false;
@@ -261,7 +261,7 @@ bool KeyData::bGreaterThan(Ent* aKeyItem1, Ent* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* if key1 greater than equal to key2 ?                                       */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bGreaterEqual(Ent* aKeyItem1, KeyWrk& xKeyItem2)
+bool Key::bGreaterEqual(Ent* aKeyItem1, KeyWrk& xKeyItem2)
 {
   eKC eCmp = eCompare(aKeyItem1, xKeyItem2);
   return eCmp == KC_AFTER || eCmp == KC_SAME ? true : false;
@@ -270,7 +270,7 @@ bool KeyData::bGreaterEqual(Ent* aKeyItem1, KeyWrk& xKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* if key1 greater than equal to key2 ?                                       */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bGreaterEqual(Ent* aKeyItem1, Ent* aKeyItem2)
+bool Key::bGreaterEqual(Ent* aKeyItem1, Ent* aKeyItem2)
 {
   eKC eCmp = eCompare(aKeyItem1, aKeyItem2);
   return eCmp == KC_AFTER || eCmp == KC_SAME ? true : false;
@@ -279,7 +279,7 @@ bool KeyData::bGreaterEqual(Ent* aKeyItem1, Ent* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* if key1 less than eqiual to key2 ?                                         */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bLessEqual(KeyWrk& xKeyItem1, Ent* aKeyItem2)
+bool Key::bLessEqual(KeyWrk& xKeyItem1, Ent* aKeyItem2)
 {
   eKC eCmp = eCompare(xKeyItem1, aKeyItem2);
   return eCmp == KC_BEFORE || eCmp == KC_SAME ? true : false;
@@ -288,7 +288,7 @@ bool KeyData::bLessEqual(KeyWrk& xKeyItem1, Ent* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* if key1 less than key2 ?                                                   */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bLessThan(KeyWrk& xKeyItem1, Ent* aKeyItem2)
+bool Key::bLessThan(KeyWrk& xKeyItem1, Ent* aKeyItem2)
 {
   eKC eCmp = eCompare(xKeyItem1, aKeyItem2);
   return eCmp == KC_BEFORE ? true : false;
@@ -297,7 +297,7 @@ bool KeyData::bLessThan(KeyWrk& xKeyItem1, Ent* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* if key1 not equal to key2 ?                                                */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bNotEqual(Ent* aKeyItem1, Ent* aKeyItem2)
+bool Key::bNotEqual(Ent* aKeyItem1, Ent* aKeyItem2)
 {
   eKC eCmp = eCompare(aKeyItem1, aKeyItem2);
   return eCmp != KC_SAME ? true : false;
@@ -306,7 +306,7 @@ bool KeyData::bNotEqual(Ent* aKeyItem1, Ent* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* show the contents of this key                                              */
 /*----------------------------------------------------------------------------*/
-void KeyData::vShow(IdxColVec* pIdxColVec)
+void Key::vShow(IdxColVec* pIdxColVec)
 {
   i8 nBytes;
   
@@ -336,7 +336,7 @@ void KeyData::vShow(IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* get first datum (assuming int)                                             */
 /*----------------------------------------------------------------------------*/
-i8 KeyData::iGetInt(void)
+i8 Key::iGetInt(void)
 {
   i8 iVal = *(i8*)aByteSequence();
   

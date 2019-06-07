@@ -11,7 +11,7 @@ namespace Data
     struct {
       u8 m_uBuffer : 45; // which buffer
       u8 m_uItem   : 16; // item in buffer
-      u8 m_uLevels:  3;  // number of levels
+      u8 m_uLevels :  3; // number of levels
     };            // 64
   
   public:

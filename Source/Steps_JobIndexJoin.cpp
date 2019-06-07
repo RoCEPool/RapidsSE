@@ -291,7 +291,7 @@ void Step::vJob_SubIndexJoinIndexJoin(MP_Task mpTask)
       if (aRightEntry) {
         
         // compare the keys
-        eKC eCompare = KeyData::eCompare(aLeftEntry, aRightEntry);
+        eKC eCompare = Key::eCompare(aLeftEntry, aRightEntry);
         
         switch (eCompare) {
           case KC_SAME:

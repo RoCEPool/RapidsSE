@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* KeyData.hpp -- key part of an index entry                                      */
+/* Key.hpp -- key part of an index entry                                      */
 /*============================================================================*/
 #pragma once
 
@@ -23,24 +23,24 @@ namespace Data
     /*  4 */ "ENUMS"_Stz,
   };
   
-  class KeyData
+  class Key
   {
   private:
   // ..data..   // variable data area
 
   public:
     void* operator new(size_t);
-    void* operator new(size_t, KeyData*);
+    void* operator new(size_t, Key*);
   
-    KeyData(KeyWrk& xKeyWrk);
-    ~KeyData(void) noexcept(false);
+    Key(KeyWrk& xKeyWrk);
+    ~Key(void) noexcept(false);
   
-    bool operator <(KeyData* aKeyArg);
-    bool operator <=(KeyData* aKeyArg);
+    bool operator <(Key* aKeyArg);
+    bool operator <=(Key* aKeyArg);
     
     void  vShow(IdxColVec* pIdxColVec);
   
-    void  vKey(KeyData& xKey);
+    void  vKey(Key& xKey);
     void  vKey(KeyWrk& xKeyWrk);
   
     i8    nKeySize(IdxColVec* pIdxColVec);
@@ -74,7 +74,7 @@ namespace Data
     
   };
   
-  KeyData* _aKeyData(void* aAddr);
+  Key* _aKeyData(void* aAddr);
 }
 
 /*============================================================================*/

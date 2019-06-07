@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* KeyWrk.hpp -- KeyData Working Ent                                            */
+/* KeyWrk.hpp -- Key Working Ent                                            */
 /*============================================================================*/
 #pragma once
 
 namespace Data
 {
   class EntBuffer;
-  class KeyData;
+  class Key;
   class Row;
   
   class KeyWrk : public EntWrk
@@ -30,7 +30,7 @@ namespace Data
     void vExtractKey(RowBuffer* pRowBuffer, i8 i_Row, IdxColVec* pIdxColVec);
     
     i8   iHashKey(void);
-    KeyData* aKey(void);
+    Key* aKey(void);
     i8   nKeySize(void);
     void vKeySize(i8 nKeySize);
     EntBuffer* pReferencedEntBuffer(void);

@@ -436,12 +436,12 @@ bool EntBuffer::bVerifyFirstKeys(void)
     Ent* aChildFirstEntry = pChildEntBuffer->aLeadEntry();
     
     // get keys of the two entries
-    //KeyData* aKeyParent = _aKeyData(aEnt->aDataArea());
-    //KeyData* aKeyChild  = _aKeyData(aChildFirstEntry->aDataArea());
+    //Key* aKeyParent = _aKeyData(aEnt->aDataArea());
+    //Key* aKeyChild  = _aKeyData(aChildFirstEntry->aDataArea());
     
     // the two keys should match
     //bool bEqual = aKeyChild->bEqualTo(aKeyParent,pIdxColVec);
-    bool bEqual = KeyData::bEqualTo(aChildFirstEntry, aEnt);
+    bool bEqual = Key::bEqualTo(aChildFirstEntry, aEnt);
     if (! bEqual) {
       vVerifyFault();
       return false;
@@ -590,12 +590,12 @@ bool EntBuffer::bVerifyKeyOrder(void)
       break;
     
     // get keys of the two entries
-    //KeyData* aKeyA = _aKeyData(aEnt->aDataArea());
-    //KeyData* aKeyB = _aKeyData(aNextEntry->aDataArea());
+    //Key* aKeyA = _aKeyData(aEnt->aDataArea());
+    //Key* aKeyB = _aKeyData(aNextEntry->aDataArea());
     
     // next keyB should be greater than or equal to keyA
     //bool bGreaterEqual = aKeyB->bGreaterEqual(aKeyA,pIdxColVec);
-    bool bGreaterEqual = KeyData::bGreaterEqual(aNextEntry, aEnt);
+    bool bGreaterEqual = Key::bGreaterEqual(aNextEntry, aEnt);
     if (! bGreaterEqual) {
       vDump();
       vVerifyFault();
@@ -748,7 +748,7 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
       }
       
       if (bShowKeys) {
-        KeyData* aTestKey = _aKeyData(aTestEntry_sl->aDataArea());
+        Key* aTestKey = _aKeyData(aTestEntry_sl->aDataArea());
         vTrace("Test %p: "_Stz,aTestEntry_sl);
         aTestKey->vShow(pIdxColVec);
         vTrace("\n"_Stz);

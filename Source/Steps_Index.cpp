@@ -673,7 +673,7 @@ void Step::vIndexRange(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if upperKey > lowerKey
-  eKC eCompare = KeyData::eCompare(xKeyWrkUpper, xKeyWrkLower);
+  eKC eCompare = Key::eCompare(xKeyWrkUpper, xKeyWrkLower);
   
   if (eCompare == KC_BEFORE) {
     goto LastBuffer;

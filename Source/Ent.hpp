@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Ent.hpp -- buffer item                                                    */
+/* Ent.hpp -- Index Entry                                                     */
 /*============================================================================*/
 #pragma once
 
@@ -9,7 +9,7 @@ namespace Data
   class NEO // next entry offset
   {
   public:
-    i4 m_iOffset[1];  // offset where the entry is
+    i4 m_iOffset[1];  // offset where the next entry is
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
