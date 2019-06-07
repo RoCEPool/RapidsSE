@@ -11,8 +11,6 @@ namespace Jobs
   public:
     Job*      m_pParentJob;     // fetch/inflate parent job that spawned this sub fetch
     Queue*    m_pBufferQueue;   // buffer queue into which to push fetch buffers
-    Planner*  m_pPlanner;       // planner
-    i8        m_iPhrase;        // phrase this sub fetch is working on
     
     // must be last
     Footer m_xFooter;

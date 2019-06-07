@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* spawn sub join jobs                                                        */
 /*----------------------------------------------------------------------------*/
-: spawnSubJoin ( Job_IndexJoin -- )
+: spawnSubIndexJoin ( Job_IndexJoin -- )
 
   params| pJob_IndexJoin |
 
@@ -49,21 +49,18 @@
   sLeftTableNm checkIsTable not if popTable false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push indexes folder
+  // push indexes and table folder
   pushIndexes assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check left index exists
   sLeftIndexNm checkIsIndex not if
-  popIndexes popTable assertInTables false exit
+    popIndexes popTable assertInTables false exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes and table folder
   popIndexes
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pop table dictionary
   popTable
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -85,15 +82,12 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check right index exists
   sRightIndexNm checkIsIndex not if
-  popIndexes popTable assertInTables false exit
+    popIndexes popTable assertInTables false exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes and table folder
   popIndexes
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pop table dictionary
   popTable
 
   // assert in tables
@@ -152,7 +146,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can fetch rows
-  sRightTableNm sRightIndexNm sLeftTableNm sLeftIndexNm checkIndexJoin not if pJob_IndexJoin <ERROR_REQUEST> !!am exit then
+  sRightIndexNm sRightTableNm sLeftIndexNm sLeftTableNm checkIndexJoin not if pJob_IndexJoin <ERROR_REQUEST> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the left table
@@ -185,11 +179,11 @@
   popTable
 
   // set the no of last buffers to no phrases * slots in the job
-  grid::slots * pJob_IndexJoin job_IndexJoin.lastBuffers!
+  grid::slots pJob_IndexJoin job_IndexJoin.lastBuffers!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn the sub fetch jobs
-  pJob_IndexJoin spawnSub
+  pJob_IndexJoin spawnSubIndexJoin
 
   pJob_IndexJoin job.notice
 

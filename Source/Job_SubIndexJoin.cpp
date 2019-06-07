@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_SubIndexJoin.cpp -- Sub Fetch Job                                          */
+/* Job_SubIndexJoin.cpp -- Sub Index Join Job                                 */
 /*============================================================================*/
 
 // Job Short: SubIndexJoin
@@ -17,7 +17,7 @@ JobClass xJobClass_SubIndexJoin =
   "sub-indexJoin"_Stz,       // comment about the job
   nullptr,                   // the prompt command
   nullptr,                   // the second word
-  "SubFetch_run"_Stz,        // the _run task seed
+  "SubIndexJoin_run"_Stz,    // the _run task seed
   nullptr,                   // the _req task seed
   nullptr,                   // the _rcv task seed
   nullptr,                   // the _exe task seed
@@ -32,13 +32,13 @@ JobClass xJobClass_SubIndexJoin =
   JF_NONE,                   // flags
 
   nullptr,                   // prompt check function
-  pJob_SubIndexJoin_pre,         // prompt pre-process function
+  pJob_SubIndexJoin_pre,     // prompt pre-process function
   vJob_post,                 // prompt post-process function
   nullptr,                   // job new function
-  vJob_SubIndexJoin_delete,      // job delete function
+  vJob_SubIndexJoin_delete,  // job delete function
   nullptr,                   // job pre-send function
   nullptr,                   // job post-receive function
-  vJob_SubIndexJoin_show,        // job show function
+  vJob_SubIndexJoin_show,    // job show function
   
   // help and example
   false,
@@ -114,8 +114,6 @@ Job_SubIndexJoin::Job_SubIndexJoin(Interface::Session* pSession)
   
   m_pParentJob     = nullptr;
   m_pBufferQueue   = nullptr;
-  m_pPlanner       = nullptr;
-  m_iPhrase        = -1;
   
   _checkInitialised_(CN_JOB_SUBINDEXJOIN);
   
