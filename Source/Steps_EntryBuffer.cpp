@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_EntryBuffer.cpp - entry buffer step group                            */
+/* Steps_EntBuffer.cpp - entry buffer step group                            */
 /*============================================================================*/
 
 #include "StorageEngine.h"
@@ -9,30 +9,30 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_EntryBuffer(void)
+void Step::vAddSteps_EntBuffer(void)
 {
-  vAddStep("entryBuffer.dump"_Stz,        &Step::vEntryBufferDump);
-  vAddStep("entryBuffer.index@"_Stz,      &Step::vEntryBufferIndexFetch);
-  vAddStep("entryBuffer.index!"_Stz,      &Step::vEntryBufferIndexStore);
-  vAddStep("entryBuffer.nextBuffer"_Stz,  &Step::vEntryBufferNextBuffer);
-  vAddStep("entryBuffer.partition@"_Stz,  &Step::vEntryBufferPartitionFetch);
-  vAddStep("entryBuffer.partition!"_Stz,  &Step::vEntryBufferPartitionStore);
-  vAddStep("entryBuffer::toEntryBuffer"_Stz,&Step::vEntryBufferToEntryBuffer);
+  vAddStep("entryBuffer.dump"_Stz,        &Step::vEntBufferDump);
+  vAddStep("entryBuffer.index@"_Stz,      &Step::vEntBufferIndexFetch);
+  vAddStep("entryBuffer.index!"_Stz,      &Step::vEntBufferIndexStore);
+  vAddStep("entryBuffer.nextBuffer"_Stz,  &Step::vEntBufferNextBuffer);
+  vAddStep("entryBuffer.partition@"_Stz,  &Step::vEntBufferPartitionFetch);
+  vAddStep("entryBuffer.partition!"_Stz,  &Step::vEntBufferPartitionStore);
+  vAddStep("entryBuffer::toEntBuffer"_Stz,&Step::vEntBufferToEntBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* entryBuffer.dump -- dump the index buffer                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vEntryBufferDump(MP_Task mpTask)
+void Step::vEntBufferDump(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferDump"_Stz);
+  ENTRY("vEntBufferDump"_Stz);
   
   Object* pPtrIndexBuffer = nullptr;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("entryBuffer.dump"_Stz);
   
-  EntBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
   pIndexBuffer->vShow();
   
@@ -42,9 +42,9 @@ void Step::vEntryBufferDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* entryBuffer.index@ -- get index from entry buffer                          */
 /*----------------------------------------------------------------------------*/
-void Step::vEntryBufferIndexFetch(MP_Task mpTask)
+void Step::vEntBufferIndexFetch(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferIndexFetch"_Stz);
+  ENTRY("vEntBufferIndexFetch"_Stz);
   
   Object* pPtrIndex;
   Object* pPtrIndexBuffer;
@@ -52,7 +52,7 @@ void Step::vEntryBufferIndexFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("entryBuffer.index@"_Stz);
   
-  EntBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
   mpTask->m_pDataStack->vPushPointer(pIndexBuffer->pIndex());
   
@@ -62,9 +62,9 @@ void Step::vEntryBufferIndexFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* entryBuffer.index! -- set index in entry buffer                            */
 /*----------------------------------------------------------------------------*/
-void Step::vEntryBufferIndexStore(MP_Task mpTask)
+void Step::vEntBufferIndexStore(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferIndexStore"_Stz);
+  ENTRY("vEntBufferIndexStore"_Stz);
   
   Object* pPtrIndex;
   Object* pPtrIndexBuffer;
@@ -72,7 +72,7 @@ void Step::vEntryBufferIndexStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("entryBuffer.isLast!"_Stz);
   
-  EntBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("entryBuffer.index@"_Stz);
@@ -88,9 +88,9 @@ void Step::vEntryBufferIndexStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* entryBuffer.nextBuffer -- get next buffer of this index buffer             */
 /*----------------------------------------------------------------------------*/
-void Step::vEntryBufferNextBuffer(MP_Task mpTask)
+void Step::vEntBufferNextBuffer(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferNextBuffer"_Stz);
+  ENTRY("vEntBufferNextBuffer"_Stz);
   
   Object* pPtrEntry = nullptr;
   Object* pPtrIndexBuffer;
@@ -98,7 +98,7 @@ void Step::vEntryBufferNextBuffer(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("entryBuffer.nextBuffer"_Stz);
   
-  EntBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
   if (pIndexBuffer->pNextBuffer()) {
     bn nBuffer = pIndexBuffer->pNextBuffer()->nPoolBufferNo();
@@ -112,9 +112,9 @@ void Step::vEntryBufferNextBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* entryBuffer.partition@ -- get partition no of this index buffer            */
 /*----------------------------------------------------------------------------*/
-void Step::vEntryBufferPartitionFetch(MP_Task mpTask)
+void Step::vEntBufferPartitionFetch(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferPartitionFetch"_Stz);
+  ENTRY("vEntBufferPartitionFetch"_Stz);
   
   Object* pPtrEntry = nullptr;
   Object* pPtrIndexBuffer;
@@ -122,7 +122,7 @@ void Step::vEntryBufferPartitionFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("entryBuffer.partition@"_Stz);
   
-  EntBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
   mpTask->m_pDataStack->vPushI8(pIndexBuffer->iPartitionNo());
   
@@ -132,9 +132,9 @@ void Step::vEntryBufferPartitionFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* entryBuffer.partition! -- set partition no of this index buffer            */
 /*----------------------------------------------------------------------------*/
-void Step::vEntryBufferPartitionStore(MP_Task mpTask)
+void Step::vEntBufferPartitionStore(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferPartitionStore"_Stz);
+  ENTRY("vEntBufferPartitionStore"_Stz);
   
   Object* pPtrEntry = nullptr;
   Object* pPtrIndexBuffer;
@@ -142,7 +142,7 @@ void Step::vEntryBufferPartitionStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("entryBuffer.partition!"_Stz);
   
-  EntBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
   i8 iPartitionNo;
   if ( ! mpTask->m_pDataStack->bPop(iPartitionNo) )
@@ -154,20 +154,20 @@ void Step::vEntryBufferPartitionStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* entryBuffer::toEntryBuffer -- convert string to entry buffer pointer       */
+/* entryBuffer::toEntBuffer -- convert string to entry buffer pointer       */
 /*----------------------------------------------------------------------------*/
-void Step::vEntryBufferToEntryBuffer(MP_Task mpTask)
+void Step::vEntBufferToEntBuffer(MP_Task mpTask)
 {
-  ENTRY("vEntryBufferToEntryBuffer"_Stz);
+  ENTRY("vEntBufferToEntBuffer"_Stz);
   
   s48K sString;
   
   if ( ! mpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("entryBuffer::toEntryBuffer"_Stz);
+    THROW_INVALID_DSTACK("entryBuffer::toEntBuffer"_Stz);
   
-  EntBuffer* pEntryBuffer = _pEntryBuffer((void*)sString.iToI8());
+  EntBuffer* pEntBuffer = _pEntBuffer((void*)sString.iToI8());
   
-  mpTask->m_pDataStack->vPushPointer(pEntryBuffer);
+  mpTask->m_pDataStack->vPushPointer(pEntBuffer);
   
   EXIT();
 }

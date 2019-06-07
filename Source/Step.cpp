@@ -69,7 +69,7 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_Encode();
   Step::vAddSteps_Enter();
-  Step::vAddSteps_EntryBuffer();
+  Step::vAddSteps_EntBuffer();
   Step::vAddSteps_Env();
   Step::vAddSteps_Error();
   Step::vAddSteps_Exit();

@@ -1013,14 +1013,14 @@ eEC RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
 //
 eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
                      i8* aiExpectedRows,
-                     void** aaEntryBuffer,
+                     void** aaEntBuffer,
                      void** aaItem, void** aaRow
                      )
 {
   API_SESSION_LEVEL();
   API_ENTER(AC_NextRow);
   API_NOTNULL(aiExpectedRows);
-  API_NOTNULL(aaEntryBuffer);
+  API_NOTNULL(aaEntBuffer);
   API_NOTNULL(aaItem);
   API_NOTNULL(aaRow);
   API_BEGIN();
@@ -1038,28 +1038,28 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
     // *piExpectedRows = (i8)(pJob_FetchRows->m_pBufferQueue->iCount() * C_ROWS_PER_BUFFER);
     
     Item* aItem = nullptr;
-    EntBuffer* pEntryBuffer = nullptr;
+    EntBuffer* pEntBuffer = nullptr;
     API_LOC(330);
 
     // do we have a buffer ?
-    if (! *aaEntryBuffer) {
+    if (! *aaEntBuffer) {
       // get first entry buffer
       TablePtn* pPartition = pTable->pPartition(iPartition);
       Index* pIndex = pTable->pHiddenIndex();
       IndexTree* pIndexTree = pPartition->pIndexTree(pIndex->iIndexNo());
-      pEntryBuffer = pIndexTree->pFirstH0Buffer();
-      //vTrace("Got first buffer %p\n"_Stz, pEntryBuffer);
-      if ( ! pEntryBuffer) {
+      pEntBuffer = pIndexTree->pFirstH0Buffer();
+      //vTrace("Got first buffer %p\n"_Stz, pEntBuffer);
+      if ( ! pEntBuffer) {
         *aaRow = nullptr;
         
       } else {
-        aItem = pEntryBuffer->aLeadEntry();
+        aItem = pEntBuffer->aLeadEntry();
         *aaItem = aItem;
         RASSERT(aItem != nullptr);
         RASSERT(aItem->eClass() == CN_ENT);
-        *aaEntryBuffer = pEntryBuffer;
+        *aaEntBuffer = pEntBuffer;
         *aaRow = _aRowData(aItem->aDataArea());
-        //vTrace("returning %p %p\n"_Stz, *aaEntryBuffer, *aaItem);
+        //vTrace("returning %p %p\n"_Stz, *aaEntBuffer, *aaItem);
       }
       
       API_RETURN();
@@ -1068,19 +1068,19 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // we have a buffer
-    pEntryBuffer = *((EntBuffer**)(aaEntryBuffer));
-    RASSERT(pEntryBuffer->eClass() == CN_ENTBUFFER);
+    pEntBuffer = *((EntBuffer**)(aaEntBuffer));
+    RASSERT(pEntBuffer->eClass() == CN_ENTBUFFER);
     API_LOC(350);
 
     // we should have an entry
     aItem = *((Item**)(aaItem));
     RASSERT(aItem != nullptr);
-    //vTrace("got %p %p\n"_Stz, pEntryBuffer, aItem);
+    //vTrace("got %p %p\n"_Stz, pEntBuffer, aItem);
     RASSERT(aItem->eClass() == CN_ENT);
     API_LOC(360);
 
     // get the next entry
-    aItem = pEntryBuffer->aNextEntry(aItem, 0);
+    aItem = pEntBuffer->aNextEntry(aItem, 0);
     API_LOC(370);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1088,18 +1088,18 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
     if ( ! aItem ) {
       //vTrace("didn't get next entry\n"_Stz);
       // get next buffer from the current indexBuffer
-      pEntryBuffer = pEntryBuffer->pNextBuffer();
+      pEntBuffer = pEntBuffer->pNextBuffer();
       
-      if ( pEntryBuffer ) {
-        //vTrace("got next buffer %p\n"_Stz, pEntryBuffer);
-        aItem = pEntryBuffer->aLeadEntry();
+      if ( pEntBuffer ) {
+        //vTrace("got next buffer %p\n"_Stz, pEntBuffer);
+        aItem = pEntBuffer->aLeadEntry();
 
       }
     }
     API_LOC(380);
 
     if (aItem) {
-      *aaEntryBuffer = pEntryBuffer;
+      *aaEntBuffer = pEntBuffer;
       *aaItem = aItem;
       *aaRow = _aRowData(aItem->aDataArea());
       //vTrace("Returning rowEntry %p\n"_Stz, aItem);
@@ -1119,12 +1119,12 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
 /* get first buffer                                                           */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetFirstBuffer(i8 iTrace, Session* pSession, void* aTable,
-                            i8 iPartition, void** aaEntryBuffer, i8* aiBufferNo, i8* aiRowCount
+                            i8 iPartition, void** aaEntBuffer, i8* aiBufferNo, i8* aiRowCount
                            )
 {
   API_SESSION_LEVEL();
   API_ENTER(AC_GetFirstBuffer);
-  API_NOTNULL(aaEntryBuffer);
+  API_NOTNULL(aaEntBuffer);
   API_NOTNULL(aiBufferNo);
   API_NOTNULL(aiRowCount);
   API_BEGIN();
@@ -1145,17 +1145,17 @@ eEC RapidsSE_GetFirstBuffer(i8 iTrace, Session* pSession, void* aTable,
     IndexTree* pIndexTree = pPartition->pIndexTree(pIndex->iIndexNo());
     API_LOC(330);
     
-    EntBuffer* pEntryBuffer = pIndexTree->pFirstH0Buffer();
+    EntBuffer* pEntBuffer = pIndexTree->pFirstH0Buffer();
     API_LOC(340);
     
     // return the first buffer
-    *aaEntryBuffer = pEntryBuffer;
+    *aaEntBuffer = pEntBuffer;
     
     // return no of rows
-    if (pEntryBuffer) {
-      //vTrace("Returning buffer %p %lld %lld \n"_Stz, pEntryBuffer, *pEntryBuffer->nBufferNo(), pEntryBuffer->nItems());
-      *aiRowCount = pEntryBuffer->nItems();
-      *aiBufferNo = *pEntryBuffer->nPoolBufferNo();
+    if (pEntBuffer) {
+      //vTrace("Returning buffer %p %lld %lld \n"_Stz, pEntBuffer, *pEntBuffer->nBufferNo(), pEntBuffer->nItems());
+      *aiRowCount = pEntBuffer->nItems();
+      *aiBufferNo = *pEntBuffer->nPoolBufferNo();
     }
     else {
       *aiRowCount = 0;
@@ -1174,26 +1174,26 @@ eEC RapidsSE_GetFirstBuffer(i8 iTrace, Session* pSession, void* aTable,
 /*----------------------------------------------------------------------------*/
 /* get next buffer                                                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetNextBuffer(i8 iTrace, Session* pSession, void** aaEntryBuffer, i8* aiBufferNo, i8* aiRowCount)
+eEC RapidsSE_GetNextBuffer(i8 iTrace, Session* pSession, void** aaEntBuffer, i8* aiBufferNo, i8* aiRowCount)
 {
   API_SESSION_LEVEL();
   API_ENTER(AC_GetNextBuffer);
-  API_NOTNULL(aaEntryBuffer);
+  API_NOTNULL(aaEntBuffer);
   API_NOTNULL(aiBufferNo);
   API_NOTNULL(aiRowCount);
   API_BEGIN();
   
   try {
     
-    //vTrace("last buffer %p\n"_Stz, *aaEntryBuffer);
-    EntBuffer* pEntryBuffer = _pEntryBuffer(*aaEntryBuffer);
+    //vTrace("last buffer %p\n"_Stz, *aaEntBuffer);
+    EntBuffer* pEntBuffer = _pEntBuffer(*aaEntBuffer);
     API_LOC(320);
     
-    EntBuffer* pNextBuffer = pEntryBuffer->pNextBuffer();
+    EntBuffer* pNextBuffer = pEntBuffer->pNextBuffer();
     API_LOC(330);
     
     // return the next buffer back
-    *aaEntryBuffer = pNextBuffer;
+    *aaEntBuffer = pNextBuffer;
     
     // return no of rows
     // return no of rows

@@ -363,7 +363,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     }
 
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-    //       pEntryBuffer,eClass,aCN[eClass],nObjectSize);
+    //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
     
     // restore the entryBuffer pointets (m_pHeadEntry etc)
     pRowBuffer->vRestore();
@@ -403,7 +403,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     }
     
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-    //       pEntryBuffer,eClass,aCN[eClass],nObjectSize);
+    //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
     
     // restore the entryBuffer pointets (m_pHeadEntry etc)
     pExportBuffer->vRecvPostCorrection();
@@ -440,7 +440,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
   
   i8 nFreeBuffer = gpBufferPool->nFreeCount();
   
-  bool bDiscardEntryBuffer = false;
+  bool bDiscardEntBuffer = false;
   
   Object* pSocketPtr;
   if ( ! mpTask->m_pDataStack->bPop(pSocketPtr) )
@@ -494,7 +494,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     Job_WriteBuffer* pJob_WriteBuffer =
       static_cast<Job_WriteBuffer*>(aLowBuff);
 
-    bDiscardEntryBuffer = pJob_WriteBuffer->m_pCurrentBuffer ? true : false;
+    bDiscardEntBuffer = pJob_WriteBuffer->m_pCurrentBuffer ? true : false;
 
     pJob_WriteBuffer->m_bLowMem = true;
     
@@ -513,7 +513,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
       pJob_WriteBuffer->m_pCurrentBuffer = nullptr;
     }
 
-    if (bDiscardEntryBuffer) {
+    if (bDiscardEntBuffer) {
 
       bResult = pSocket->bRecvBytes(aLowBuff,sizeof(EntBuffer),oSysCall);
       vTrace("Discarded EntBuffer under low mem\n"_Stz);
@@ -579,7 +579,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     }
     
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-    //       pEntryBuffer,eClass,aCN[eClass],nObjectSize);
+    //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
     
     mpTask->m_pDataStack->vPushPointer(pRowBuffer);
     mpTask->m_pDataStack->vPushBool(true);

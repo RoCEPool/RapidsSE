@@ -267,15 +267,15 @@
   static void vEntryToDataRow(Tasks::MP_Task mpTask);
 
   // entry buffer
-  static void vEntryBufferDump(Tasks::MP_Task mpTask);
-  static void vEntryBufferIndexFetch(Tasks::MP_Task mpTask);
-  static void vEntryBufferIndexStore(Tasks::MP_Task mpTask);
-  static void vEntryBufferIsLastFetch(Tasks::MP_Task mpTask);
-  static void vEntryBufferIsLastStore(Tasks::MP_Task mpTask);
-  static void vEntryBufferNextBuffer(Tasks::MP_Task mpTask);
-  static void vEntryBufferPartitionFetch(Tasks::MP_Task mpTask);
-  static void vEntryBufferPartitionStore(Tasks::MP_Task mpTask);
-  static void vEntryBufferToEntryBuffer(Tasks::MP_Task mpTask);
+  static void vEntBufferDump(Tasks::MP_Task mpTask);
+  static void vEntBufferIndexFetch(Tasks::MP_Task mpTask);
+  static void vEntBufferIndexStore(Tasks::MP_Task mpTask);
+  static void vEntBufferIsLastFetch(Tasks::MP_Task mpTask);
+  static void vEntBufferIsLastStore(Tasks::MP_Task mpTask);
+  static void vEntBufferNextBuffer(Tasks::MP_Task mpTask);
+  static void vEntBufferPartitionFetch(Tasks::MP_Task mpTask);
+  static void vEntBufferPartitionStore(Tasks::MP_Task mpTask);
+  static void vEntBufferToEntBuffer(Tasks::MP_Task mpTask);
 
   // env
   static void vEnvGet(Tasks::MP_Task mpTask);
@@ -441,7 +441,7 @@
   static void vJobFindParticipant(Tasks::MP_Task mpTask);
 
   static void vJobHasError(Tasks::MP_Task mpTask);
-  static void vJobHasEntryBuffer(Tasks::MP_Task mpTask);
+  static void vJobHasEntBuffer(Tasks::MP_Task mpTask);
   static void vJobHasSendWith(Tasks::MP_Task mpTask);
 
   static void vJobIdFetch(Tasks::MP_Task mpTask);
@@ -892,8 +892,8 @@
   static void vRowCursorBegin(Tasks::MP_Task mpTask);
   static void vRowCursorDelete(Tasks::MP_Task mpTask);
   static void vRowCursorEnd(Tasks::MP_Task mpTask);
-  static void vRowCursorEntryBufferFetch(Tasks::MP_Task mpTask);
-  static void vRowCursorEntryBufferStore(Tasks::MP_Task mpTask);
+  static void vRowCursorEntBufferFetch(Tasks::MP_Task mpTask);
+  static void vRowCursorEntBufferStore(Tasks::MP_Task mpTask);
   static void vRowCursorFirst(Tasks::MP_Task mpTask);
   static void vRowCursorInit(Tasks::MP_Task mpTask);
   static void vRowCursorNew(Tasks::MP_Task mpTask);

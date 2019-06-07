@@ -212,7 +212,7 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
   
   
   //vTrace("Slot %lld: published %lld rows\n"_Stz,
-  //       i_Slot, pEntryBuffer->nItems());
+  //       i_Slot, pEntBuffer->nItems());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

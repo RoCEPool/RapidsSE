@@ -43,7 +43,7 @@
 : receiver_loop ( -- )
 
   0 locals| pReceivedJob |
-  0 locals| pEntryBuffer |
+  0 locals| pEntBuffer |
   0 locals| pSendWith |
   0 locals| pOtherNode |
   0 locals| pSocket |
@@ -72,9 +72,9 @@
 
     pReceivedJob job.postRecv
 
-    pReceivedJob job.hasEntryBuffer if
-      pSocket socket.recvObject drop to pEntryBuffer
-      pEntryBuffer pReceivedJob job.rowBuffer!
+    pReceivedJob job.hasEntBuffer if
+      pSocket socket.recvObject drop to pEntBuffer
+      pEntBuffer pReceivedJob job.rowBuffer!
     then
 
     pReceivedJob job.hasSendWith if

@@ -166,7 +166,7 @@
 
     pJob pSocket socket.sendObject drop
 
-    pJob job.hasEntryBuffer if
+    pJob job.hasEntBuffer if
       //"job.send: Job has row buffer" .
        pJob job.rowBuffer@ pSocket socket.sendObject drop
     then

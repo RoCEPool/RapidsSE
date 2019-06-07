@@ -15,7 +15,7 @@ namespace Jobs
     Job_Walk* m_pJobWalk;
   
     IndexTree*   m_pIndexTree;
-    EntBuffer* m_pEntryBuffer;
+    EntBuffer* m_pEntBuffer;
     
     // must be last
     Footer m_xFooter;

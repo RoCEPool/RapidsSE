@@ -18,13 +18,13 @@ bool mbWatch = false;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-EntBuffer* Data::_pEntryBuffer(void* aAddress)
+EntBuffer* Data::_pEntBuffer(void* aAddress)
 {
-  EntBuffer* pEntryBuffer = reinterpret_cast<EntBuffer*>(aAddress);
+  EntBuffer* pEntBuffer = reinterpret_cast<EntBuffer*>(aAddress);
   
-  RASSERT_TYPE(pEntryBuffer,CN_ENTBUFFER);
+  RASSERT_TYPE(pEntBuffer,CN_ENTBUFFER);
   
-  return pEntryBuffer;
+  return pEntBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -32,10 +32,10 @@ EntBuffer* Data::_pEntryBuffer(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* EntBuffer::operator new(size_t)
 {
-  EntBuffer* pEntryBuffer =
+  EntBuffer* pEntBuffer =
     static_cast<EntBuffer*>(HeapMem::pAllocate(CN_ENTBUFFER));
   
-  return pEntryBuffer;
+  return pEntBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,9 +51,9 @@ void* EntBuffer::operator new(size_t, void* aAddress)
 /*----------------------------------------------------------------------------*/
 void EntBuffer::operator delete(void* aAddress)
 {
-  EntBuffer* pEntryBuffer = static_cast<EntBuffer*>(aAddress);
+  EntBuffer* pEntBuffer = static_cast<EntBuffer*>(aAddress);
   
-  HeapMem::vFree(pEntryBuffer);
+  HeapMem::vFree(pEntBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,24 +94,24 @@ EntBuffer::~EntBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  EntBuffer* pEntryBuffer = _pEntryBuffer(pObject);
+  EntBuffer* pEntBuffer = _pEntBuffer(pObject);
   
-  pEntryBuffer->vShow();
+  pEntBuffer->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
 /* aGetNextLeft -- get the next left entry                                     */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::aGetNextEntry(EntBuffer** ppEntryBuffer, Item* aPrevEntry)
+Item* EntBuffer::aGetNextEntry(EntBuffer** ppEntBuffer, Item* aPrevEntry)
 {
-  EntBuffer* pEntryBuffer = *ppEntryBuffer;
+  EntBuffer* pEntBuffer = *ppEntBuffer;
   
-  Item *aNextEntry = pEntryBuffer->aNextEntry(aPrevEntry, 0);
+  Item *aNextEntry = pEntBuffer->aNextEntry(aPrevEntry, 0);
   if (! aNextEntry ) {
-    pEntryBuffer = pEntryBuffer->pNextBuffer();
-    *ppEntryBuffer = pEntryBuffer;
-    if (pEntryBuffer)
-      aNextEntry = pEntryBuffer->aLeadEntry();
+    pEntBuffer = pEntBuffer->pNextBuffer();
+    *ppEntBuffer = pEntBuffer;
+    if (pEntBuffer)
+      aNextEntry = pEntBuffer->aLeadEntry();
   }
   
   return aNextEntry;
@@ -120,32 +120,32 @@ Item* EntBuffer::aGetNextEntry(EntBuffer** ppEntryBuffer, Item* aPrevEntry)
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pRefdEntryBuffer(Item* pItem)
+EntBuffer* EntBuffer::pRefdEntBuffer(Item* pItem)
 {
   Id xId = pItem->xId();
   
-  EntBuffer* pEntryBuffer = EntBuffer::pRefdEntryBuffer(xId);
+  EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(xId);
     
-  return pEntryBuffer;
+  return pEntBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pRefdEntryBuffer(Id& xId)
+EntBuffer* EntBuffer::pRefdEntBuffer(Id& xId)
 {
   bn nBufferNo = xId.iBuffer();
   
   HeapBuffer* pHeapBuffer =
   reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));
   
-  EntBuffer* pEntryBuffer =
+  EntBuffer* pEntBuffer =
   reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
   
-  ASSERT(pEntryBuffer);
-  ASSERT(pEntryBuffer->eClass() == CN_ENTBUFFER);
+  ASSERT(pEntBuffer);
+  ASSERT(pEntBuffer->eClass() == CN_ENTBUFFER);
   
-  return pEntryBuffer;
+  return pEntBuffer;
 }
 
 
@@ -196,12 +196,12 @@ void EntBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
          aItem = aNextEntry(aItem, 0)) {
       
       // get the index buffer from the entry
-      EntBuffer* pEntryBuffer = EntBuffer::pRefdEntryBuffer(aItem);
+      EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(aItem);
       
-      ASSERT(pEntryBuffer);
-      ASSERT(pEntryBuffer->eClass() == CN_ENTBUFFER);
+      ASSERT(pEntBuffer);
+      ASSERT(pEntBuffer->eClass() == CN_ENTBUFFER);
       
-      pEntryBuffer->vAnalyze(sAnalysis, bDetailed, iBuffers, iEntries);
+      pEntBuffer->vAnalyze(sAnalysis, bDetailed, iBuffers, iEntries);
       
     }
   }
@@ -211,7 +211,7 @@ void EntBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
 /*----------------------------------------------------------------------------*/
 /* assert valid entry buffer                                                  */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vAssertEntryBuffer(void)
+void EntBuffer::vAssertEntBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 }
@@ -238,7 +238,7 @@ void EntBuffer::vBufferCount(i8& nBuffers)
        aItem = aNextEntry(aItem, 0)) {
     
     // get the index buffer from the entry
-    pNextBuffer = EntBuffer::pRefdEntryBuffer(aItem);
+    pNextBuffer = EntBuffer::pRefdEntBuffer(aItem);
     
     ASSERT(pNextBuffer);
     ASSERT(pNextBuffer->eClass() == CN_ENTBUFFER);
@@ -315,12 +315,12 @@ void EntBuffer::vDump(void)
          aItem = aNextEntry(aItem, 0)) {
       
       // get the index buffer from the entry
-      EntBuffer* pEntryBuffer = EntBuffer::pRefdEntryBuffer(aItem);
+      EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(aItem);
       
-      ASSERT(pEntryBuffer);
-      ASSERT(pEntryBuffer->eClass() == CN_ENTBUFFER);
+      ASSERT(pEntBuffer);
+      ASSERT(pEntBuffer->eClass() == CN_ENTBUFFER);
       
-      pEntryBuffer->vDump();
+      pEntBuffer->vDump();
     }
   }
 }
@@ -362,9 +362,9 @@ EntBuffer* EntBuffer::pFirstChildBuffer(void)
 #endif
   
   Item* aFirstEntry = this->aLeadEntry();
-  EntBuffer* pChildEntryBuffer = EntBuffer::pRefdEntryBuffer(aFirstEntry);
+  EntBuffer* pChildEntBuffer = EntBuffer::pRefdEntBuffer(aFirstEntry);
   
-  return pChildEntryBuffer;
+  return pChildEntBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -428,7 +428,7 @@ EntBuffer* EntBuffer::pHigherBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  return _pEntryBuffer(m_pHigherBuffer);
+  return _pEntBuffer(m_pHigherBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -561,12 +561,12 @@ FreeItem* EntBuffer::aMakeFreeEntry(Item* aItem)
 /*----------------------------------------------------------------------------*/
 /* move to exact key entry                                                    */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntryBuffer)
+Item* EntBuffer::pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
 {
-  EntBuffer* pEntryBuffer = *paEntryBuffer;
+  EntBuffer* pEntBuffer = *paEntBuffer;
   
-  if (aItem == pEntryBuffer->aSkipRoots())
-    aItem = pEntryBuffer->aNextEntry(aItem,0);
+  if (aItem == pEntBuffer->aSkipRoots())
+    aItem = pEntBuffer->aNextEntry(aItem,0);
   
   eKC eCompare = KeyData::eCompare(aItem, xKeyWrk);
   
@@ -578,15 +578,15 @@ Item* EntBuffer::pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paE
   if (eCompare == KC_AFTER)
     return nullptr;
   
-  aItem = pEntryBuffer->aNextEntry(aItem,0);
+  aItem = pEntBuffer->aNextEntry(aItem,0);
   
   if ( ! aItem ) {
     
     // move to the next buffer
-    *paEntryBuffer = pEntryBuffer->pNextBuffer();
+    *paEntBuffer = pEntBuffer->pNextBuffer();
     
-    if (*paEntryBuffer) {
-      return pMoveToExactEntry((*paEntryBuffer)->aSkipRoots(), xKeyWrk, paEntryBuffer);
+    if (*paEntBuffer) {
+      return pMoveToExactEntry((*paEntBuffer)->aSkipRoots(), xKeyWrk, paEntBuffer);
     }
     
   }
@@ -597,12 +597,12 @@ Item* EntBuffer::pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paE
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntryBuffer)
+Item* EntBuffer::pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
 {
-  EntBuffer* pEntryBuffer = *paEntryBuffer;
+  EntBuffer* pEntBuffer = *paEntBuffer;
   
-  if (aItem == pEntryBuffer->aSkipRoots())
-    aItem = pEntryBuffer->aNextEntry(aItem,0);
+  if (aItem == pEntBuffer->aSkipRoots())
+    aItem = pEntBuffer->aNextEntry(aItem,0);
   
   while (aItem) {
     eKC eCompare = KeyData::eCompare(aItem, xKeyWrk);
@@ -611,15 +611,15 @@ Item* EntBuffer::pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer
     if (eCompare == KC_AFTER)
       break;
     
-    aItem = pEntryBuffer->aNextEntry(aItem,0);
+    aItem = pEntBuffer->aNextEntry(aItem,0);
     
     if ( ! aItem) {
       
       // move to the next buffer
-      *paEntryBuffer = pEntryBuffer->pNextBuffer();
+      *paEntBuffer = pEntBuffer->pNextBuffer();
       
-      if (*paEntryBuffer) {
-        return (*paEntryBuffer)->pMoveToGreaterThanEntry((*paEntryBuffer)->aSkipRoots(), xKeyWrk, paEntryBuffer);
+      if (*paEntBuffer) {
+        return (*paEntBuffer)->pMoveToGreaterThanEntry((*paEntBuffer)->aSkipRoots(), xKeyWrk, paEntBuffer);
       }
       else
         break;
@@ -632,12 +632,12 @@ Item* EntBuffer::pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntryBuffer)
+Item* EntBuffer::pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
 {
-  EntBuffer* pEntryBuffer = *paEntryBuffer;
+  EntBuffer* pEntBuffer = *paEntBuffer;
   
-  if (aItem == pEntryBuffer->aSkipRoots())
-    aItem = pEntryBuffer->aNextEntry(aItem,0);
+  if (aItem == pEntBuffer->aSkipRoots())
+    aItem = pEntBuffer->aNextEntry(aItem,0);
   
   while (aItem) {
     eKC eCompare = KeyData::eCompare(aItem, xKeyWrk);
@@ -650,15 +650,15 @@ Item* EntBuffer::pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffe
     if (eCompare == KC_AFTER)
       break;
     
-    aItem = pEntryBuffer->aNextEntry(aItem,0);
+    aItem = pEntBuffer->aNextEntry(aItem,0);
     
     if (!aItem) {
       
       // move to the next buffer
-      *paEntryBuffer = pEntryBuffer->pNextBuffer();
+      *paEntBuffer = pEntBuffer->pNextBuffer();
       
-      if (*paEntryBuffer) {
-        return pMoveToGreaterEqualEntry((*paEntryBuffer)->aSkipRoots(), xKeyWrk, paEntryBuffer);
+      if (*paEntBuffer) {
+        return pMoveToGreaterEqualEntry((*paEntBuffer)->aSkipRoots(), xKeyWrk, paEntBuffer);
       }
     }
     else
@@ -671,11 +671,11 @@ Item* EntBuffer::pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffe
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntryBuffer)
+Item* EntBuffer::pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
 {
-  EntBuffer* pEntryBuffer = *paEntryBuffer;
+  EntBuffer* pEntBuffer = *paEntBuffer;
   
-  aItem = pEntryBuffer->aNextEntry(aItem,0);
+  aItem = pEntBuffer->aNextEntry(aItem,0);
   
   if (aItem)
     return aItem;
@@ -683,10 +683,10 @@ Item* EntBuffer::pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEn
   while( ! aItem) {
     
     // move to the next buffer
-    *paEntryBuffer = pEntryBuffer->pNextBuffer();
+    *paEntBuffer = pEntBuffer->pNextBuffer();
     
-    if (*paEntryBuffer) {
-      return pMoveToNextEntry((*paEntryBuffer)->aSkipRoots(), xKeyWrk, paEntryBuffer);
+    if (*paEntBuffer) {
+      return pMoveToNextEntry((*paEntBuffer)->aSkipRoots(), xKeyWrk, paEntBuffer);
     }
     else
       break;
@@ -698,12 +698,12 @@ Item* EntBuffer::pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEn
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::pMoveToPrevEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntryBuffer)
+Item* EntBuffer::pMoveToPrevEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
 {
-  EntBuffer* pEntryBuffer = *paEntryBuffer;
+  EntBuffer* pEntBuffer = *paEntBuffer;
   
-  if (aItem == pEntryBuffer->aSkipRoots())
-    aItem = pEntryBuffer->aNextEntry(aItem,0);
+  if (aItem == pEntBuffer->aSkipRoots())
+    aItem = pEntBuffer->aNextEntry(aItem,0);
   
   Item* aItemPrev = aItem;
   
@@ -719,7 +719,7 @@ Item* EntBuffer::pMoveToPrevEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEn
       return aItemPrev;
     
     aItemPrev = aItem;
-    aItem = pEntryBuffer->aNextEntry(aItem,0);
+    aItem = pEntBuffer->aNextEntry(aItem,0);
     
     if ( ! aItem )
       return aItemPrev;
@@ -735,7 +735,7 @@ EntBuffer* EntBuffer::pNextBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  return _pEntryBuffer(m_pNextBuffer);
+  return _pEntBuffer(m_pNextBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -798,7 +798,7 @@ EntBuffer* EntBuffer::pPrevBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  return _pEntryBuffer(m_pPrevBuffer);
+  return _pEntBuffer(m_pPrevBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -994,9 +994,9 @@ void EntBuffer::vShowShort(void)
     i8 iVal = aKey->iGetInt();
     
     if (m_iBufferHeight)
-      vTrace("%lld(%lld)"_Stz,iVal,*EntBuffer::pRefdEntryBuffer(aItem)->nPoolBufferNo());
+      vTrace("%lld(%lld)"_Stz,iVal,*EntBuffer::pRefdEntBuffer(aItem)->nPoolBufferNo());
     else
-      vTrace("%lld|%lld|"_Stz,iVal,*EntBuffer::pRefdEntryBuffer(aItem)->nPoolBufferNo());
+      vTrace("%lld|%lld|"_Stz,iVal,*EntBuffer::pRefdEntBuffer(aItem)->nPoolBufferNo());
     
     iOffset = aItem->iNEO(0);
     if (iOffset > -1)
@@ -1142,7 +1142,7 @@ void EntBuffer::vTruncate(void)
          aItem = aNextEntry(aItem, 0)) {
       
       // get the index buffer from the entry
-      pNextBuffer = EntBuffer::pRefdEntryBuffer(aItem);
+      pNextBuffer = EntBuffer::pRefdEntBuffer(aItem);
       
       ASSERT(pNextBuffer);
       ASSERT(pNextBuffer->eClass() == CN_ENTBUFFER);

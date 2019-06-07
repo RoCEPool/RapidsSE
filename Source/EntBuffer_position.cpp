@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntryBuffer_position.cpp -- position related functions for EntBuffer     */
+/* EntBuffer_position.cpp -- position related functions for EntBuffer     */
 /*============================================================================*/
 
 #include "Data.h"
@@ -36,34 +36,34 @@ EntBuffer* EntBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
    */
   
   
-  EntBuffer* pEntryBuffer = this;
+  EntBuffer* pEntBuffer = this;
   
   i8 iBufferHeight;
   Item* aItem;
   
   while (true) {
     
-    iBufferHeight = pEntryBuffer->iBufferHeight();
+    iBufferHeight = pEntBuffer->iBufferHeight();
     if (iBufferHeight == 0)
       break;
     
     // get the entry
-    //aItem1 = pEntryBuffer->aPositionQuery(xGivenKey);
+    //aItem1 = pEntBuffer->aPositionQuery(xGivenKey);
     //ASSERT(aItem1);
     
-    aItem = pEntryBuffer->pPositionPriorEntry(xGivenKey);
+    aItem = pEntBuffer->pPositionPriorEntry(xGivenKey);
     ASSERT(aItem);
     
-    aItem = pEntryBuffer->pMoveToPrevEntry(aItem, xGivenKey, &pEntryBuffer);
+    aItem = pEntBuffer->pMoveToPrevEntry(aItem, xGivenKey, &pEntBuffer);
     ASSERT(aItem);
     
     // get the index buffer of the entry
-    pEntryBuffer = EntBuffer::pRefdEntryBuffer(aItem);
-    ASSERT(pEntryBuffer);
-    ASSERT(pEntryBuffer->eClass() == CN_ENTBUFFER);
+    pEntBuffer = EntBuffer::pRefdEntBuffer(aItem);
+    ASSERT(pEntBuffer);
+    ASSERT(pEntBuffer->eClass() == CN_ENTBUFFER);
   }
   
-  return pEntryBuffer;
+  return pEntBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,7 +298,7 @@ void EntBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
 
       // - keys are equal
 
-      if (pRefdChildBuffer != pRefdEntryBuffer(aNextEntry_sl)->pPrevBuffer()) {
+      if (pRefdChildBuffer != pRefdEntBuffer(aNextEntry_sl)->pPrevBuffer()) {
         // found key but haven't reached buffer, go right at this level
         aPriorVec[i_ScanLevel] = aNextEntry_sl;//aPriorEntry_sl;
         if (! aNextEntry(aNextEntry_sl,i_ScanLevel) )
@@ -394,7 +394,7 @@ void EntBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
 //        bool bKeysAreEqual = KeyData::bEqualTo(aNextEntry_sl, aFindKey);
 //
 //        if (bKeysAreEqual &&
-//            (pToBuffer == EntBuffer::pRefdEntryBuffer(aNextEntry_sl)->pPrevBuffer()))
+//            (pToBuffer == EntBuffer::pRefdEntBuffer(aNextEntry_sl)->pPrevBuffer()))
 //          break;
 //      }
 //

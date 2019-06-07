@@ -33,7 +33,7 @@ extern "C" eEC  RapidsSE_ExecuteCommand  (i8 iTrace, Session* pSession,
 extern "C" eEC  RapidsSE_InsertRow       (i8 iTrace, Session* pSession,
                                           Stz* pTable, Stz* sRecord);
 extern "C" eEC  RapidsSE_NextRow         (i8 iTrace, Session* pSession, void* aTable,
-                                          i8 iPartition, i8* aiExpectedRows, void** aaEntryBuffer,
+                                          i8 iPartition, i8* aiExpectedRows, void** aaEntBuffer,
                                           void** aaItem, void** aaRow);
 extern "C" eEC  RapidsSE_TranslateError  (i8 iTrace, Session* pSession,
                                           int iErrorCode, void** aaError);
@@ -50,13 +50,13 @@ extern "C" eEC  RapidsSE_EndSubInserter  (i8 iTrace, Session* pSession, void* aJ
 extern "C" eEC  RapidsSE_FetchNextBuffer (i8 iTrace, Session* pSession, void* aJob,
                                           void** aaFetchBuffer, i8* aiExepectedRows);
 extern "C" eEC  RapidsSE_FetchTable      (i8 iTrace, Session* pSession, Stz* aTable,
-                                          i8 iPartition, void** aaEntryBuffer, i8* aiRowCount);
+                                          i8 iPartition, void** aaEntBuffer, i8* aiRowCount);
 
 extern "C" eEC  RapidsSE_GetLoadResult   (i8 iTrace, Session* pSession, void* aJob,
                                           i8* aiValidRows, i8* aiInvalidRows, i8* aiSkippedRows);
 extern "C" eEC  RapidsSE_GetFirstBuffer  (i8 iTrace, Session* pSession, void* aTable,
-                                          i8 iPartition, void** aaEntryBuffer, i8* aiBufferNo, i8* aiRowCount);
-extern "C" eEC  RapidsSE_GetNextBuffer   (i8 iTrace, Session* pSession, void** aaEntryBuffer, i8* aiBufferNo, i8* aiRowCount);
+                                          i8 iPartition, void** aaEntBuffer, i8* aiBufferNo, i8* aiRowCount);
+extern "C" eEC  RapidsSE_GetNextBuffer   (i8 iTrace, Session* pSession, void** aaEntBuffer, i8* aiBufferNo, i8* aiRowCount);
 extern "C" eEC  RapidsSE_GetRecordBuffer (i8 iTrace, Session* pSession, void* aJob,
                                           void** aaBuffer);
 extern "C" eEC  RapidsSE_GetRow          (i8 iTrace, Session* pSession, void* aJob,

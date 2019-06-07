@@ -581,7 +581,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
   for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nSlotsPerNode; iPartition++) {
     IndexTree* pIndexTree = pPartition(iPartition)->pIndexTree(iIndexNo);
 
-    iBuffers += pIndexTree->nEntryBuffers();
+    iBuffers += pIndexTree->nEntBuffers();
   }
   
   return iBuffers;

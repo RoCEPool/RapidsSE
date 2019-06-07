@@ -35,9 +35,9 @@ namespace Data
     ~EntBuffer(void) noexcept(false);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static Item* aGetNextEntry(EntBuffer** ppEntryBuffer, Item* aPrevEntry);
-    static EntBuffer* pRefdEntryBuffer(Item* pItem);
-    static EntBuffer* pRefdEntryBuffer(Id& xId);
+    static Item* aGetNextEntry(EntBuffer** ppEntBuffer, Item* aPrevEntry);
+    static EntBuffer* pRefdEntBuffer(Item* pItem);
+    static EntBuffer* pRefdEntBuffer(Id& xId);
   
     void    vDropWrite(void);
     void    vGrabWrite(void);
@@ -68,17 +68,17 @@ namespace Data
     ////////////////////////////////////////////////////////////////////////////
   
   public:
-    void vAssertEntryBuffer(void);
-    bool bValidEntryBuffer(void);
+    void vAssertEntBuffer(void);
+    bool bValidEntBuffer(void);
     
     ////////////////////////////////////////////////////////////////////////////
     // static move functions
     
-    static Item* pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** pAEntryBuffer);
-    static Item* pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** pAEntryBuffer);
-    static Item* pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** pAEntryBuffer);
-    static Item* pMoveToPrevEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** pAEntryBuffer);
-    static Item* pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** pAEntryBuffer);
+    static Item* pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
+    static Item* pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
+    static Item* pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
+    static Item* pMoveToPrevEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
+    static Item* pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
     
     ////////////////////////////////////////////////////////////////////////////
     // key positioning functions
@@ -190,7 +190,7 @@ namespace Data
     Footer* aFooter(void);
   };
   
-  EntBuffer* _pEntryBuffer(void* aAddr);
+  EntBuffer* _pEntBuffer(void* aAddr);
 }
 
 /*============================================================================*/

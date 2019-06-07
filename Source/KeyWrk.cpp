@@ -305,13 +305,13 @@ void KeyWrk::vKeySize(i8 nKeySize)
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that this key references                              */
 /*----------------------------------------------------------------------------*/
-EntBuffer* KeyWrk::pReferencedEntryBuffer(void)
+EntBuffer* KeyWrk::pReferencedEntBuffer(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  EntBuffer* pEntryBuffer = EntBuffer::pRefdEntryBuffer(xId());
+  EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(xId());
 
-  return pEntryBuffer;
+  return pEntBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

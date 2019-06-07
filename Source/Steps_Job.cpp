@@ -40,7 +40,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job::findParticipant"_Stz, &Step::vJobFindParticipant);
   
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
-  vAddStep("job.hasEntryBuffer"_Stz,   &Step::vJobHasEntryBuffer);
+  vAddStep("job.hasEntBuffer"_Stz,   &Step::vJobHasEntBuffer);
   vAddStep("job.hasSendWith"_Stz,      &Step::vJobHasSendWith);
 
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch);
@@ -709,15 +709,15 @@ void Step::vJobHasError(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.hasEntryBuffer -- return true if job has a entry buffer                */
+/* job.hasEntBuffer -- return true if job has a entry buffer                */
 /*----------------------------------------------------------------------------*/
-void Step::vJobHasEntryBuffer(MP_Task mpTask)
+void Step::vJobHasEntBuffer(MP_Task mpTask)
 {
-  ENTRY("vJobHasEntryBuffer"_Stz);
+  ENTRY("vJobHasEntBuffer"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.hasEntryBuffer"_Stz);
+    THROW_INVALID_DSTACK("job.hasEntBuffer"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
   

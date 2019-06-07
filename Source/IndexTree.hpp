@@ -39,7 +39,7 @@ namespace Data
     void         vCopyLeftV2(EntBuffer** ppLeftL0, EntBuffer* pRightL0);
     void         vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0);
     void         vDump(bool bSameHeight);
-    i8           nEntryBuffers(void);
+    i8           nEntBuffers(void);
     EntBuffer* pFirstH0Buffer(void);
     Index*       pIndex(void);
     bool         bInsertEntry(RowBuffer* pRowBuffer, i8 i_Row, Id& xId);
@@ -56,7 +56,7 @@ namespace Data
     Footer*      aFooter(void);
     
   private:
-    void         vDumpLevel(EntBuffer* pEntryBuffer);
+    void         vDumpLevel(EntBuffer* pEntBuffer);
     EntBuffer* pFirstL1Buffer(void);
     EntBuffer* pPopSubList(EntBuffer** ppSubList);
   };

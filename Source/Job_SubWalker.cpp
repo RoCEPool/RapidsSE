@@ -114,7 +114,7 @@ Job_SubWalker::Job_SubWalker(Interface::Session* pSession)
     
   m_pJobWalk     = nullptr;
   m_pIndexTree   = nullptr;
-  m_pEntryBuffer = nullptr;
+  m_pEntBuffer = nullptr;
   
   _checkInitialised_(CN_JOB_SUBWALKER);
   
@@ -166,7 +166,7 @@ bool Job_SubWalker::bBegin(void)
 //
 //  m_pIndexTree = pTablePtn->pIndexTree(m_pJobWalk->m_pIndex->iIndexNo());
 //
-//  m_pEntryBuffer = m_pIndexTree->pFirstH0Buffer();
+//  m_pEntBuffer = m_pIndexTree->pFirstH0Buffer();
   
   return true;
 }
@@ -184,17 +184,17 @@ bool Job_SubWalker::bChunk(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBWALKER,_FOOTER_);
   
 #ifdef __APPLE__
-//  if (! m_pEntryBuffer)
+//  if (! m_pEntBuffer)
 //    return false;
 //
-//  for (Item* aItem = m_pEntryBuffer->aFirstItem();
+//  for (Item* aItem = m_pEntBuffer->aFirstItem();
 //       aItem;
-//       aItem = m_pEntryBuffer->aAdjacentItem(aItem))
+//       aItem = m_pEntBuffer->aAdjacentItem(aItem))
 //    {;}
 //
-//  //vTrace("SubWalker[%lld]: %p\n"_Stz,m_i_Slot,m_pEntryBuffer);
+//  //vTrace("SubWalker[%lld]: %p\n"_Stz,m_i_Slot,m_pEntBuffer);
 //
-//  m_pEntryBuffer = m_pEntryBuffer->pNextBuffer();
+//  m_pEntBuffer = m_pEntBuffer->pNextBuffer();
 //
 //  return true;
   

@@ -424,7 +424,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   Planner* pPlanner = pJob_SubFetch->m_pPlanner;
   Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   
-  EntBuffer* aLowerEntryBuffer;
+  EntBuffer* aLowerEntBuffer;
   Item* aLowerEntry = nullptr;
   eRO eLowerRelnOp;
   i8 iIndexNo = pIndex->iIndexNo();
@@ -454,23 +454,23 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at a level 0 buffer with keyLower
-  aLowerEntryBuffer = pIndexTree->pPositionH0Buffer(xKeyWrkLower);
+  aLowerEntBuffer = pIndexTree->pPositionH0Buffer(xKeyWrkLower);
   eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entry buffer ?
-  if (aLowerEntryBuffer) {
+  if (aLowerEntBuffer) {
     // position in the index buffer at an entry prior to the lower key
-    //aLowerEntry = aLowerEntryBuffer->aPositionQuery(xKeyWrkLower, eLowerRelnOp);
+    //aLowerEntry = aLowerEntBuffer->aPositionQuery(xKeyWrkLower, eLowerRelnOp);
     
-    aLowerEntry = aLowerEntryBuffer->pPositionPriorEntry(xKeyWrkLower);
+    aLowerEntry = aLowerEntBuffer->pPositionPriorEntry(xKeyWrkLower);
     
     if (eLowerRelnOp == RO_GREATER_THAN) {
-      aLowerEntry = EntBuffer::pMoveToGreaterThanEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
+      aLowerEntry = EntBuffer::pMoveToGreaterThanEntry(aLowerEntry, xKeyWrkLower, &aLowerEntBuffer);
     }
     else {
       RASSERT (eLowerRelnOp == RO_GREATER_EQUAL)
-      aLowerEntry = EntBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
+      aLowerEntry = EntBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xKeyWrkLower, &aLowerEntBuffer);
     }
   }
   
@@ -488,7 +488,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
     if ( ! Task::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows)) {
       
       // Buffer is Full;
-      // put this tempEntryBuffer in session bufferQueue
+      // put this tempEntBuffer in session bufferQueue
       pQueue->vAppend(pFetchBuffer);
       
       // create another fetchBuffer for the results
@@ -501,14 +501,14 @@ void Step::vIndexLowerBound(MP_Task mpTask)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move to next entry in the buffer
-    aLowerEntry = aLowerEntryBuffer->aNextEntry(aLowerEntry, 0);
+    aLowerEntry = aLowerEntBuffer->aNextEntry(aLowerEntry, 0);
     
     if ( ! aLowerEntry ) {
       // get next buffer from the current indexBuffer
-      aLowerEntryBuffer = aLowerEntryBuffer->pNextBuffer();
+      aLowerEntBuffer = aLowerEntBuffer->pNextBuffer();
       
-      if ( aLowerEntryBuffer )
-        aLowerEntry = aLowerEntryBuffer->aLeadEntry();
+      if ( aLowerEntBuffer )
+        aLowerEntry = aLowerEntBuffer->aLeadEntry();
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -613,8 +613,8 @@ void Step::vIndexRange(MP_Task mpTask)
     THROW_INVALID_DSTACK("index.range"_Stz);
   
   FetchBuffer* pFetchBuffer;
-  EntBuffer* aLowerEntryBuffer;
-  EntBuffer* aUpperEntryBuffer;
+  EntBuffer* aLowerEntBuffer;
+  EntBuffer* aUpperEntBuffer;
   
   Item* aLowerEntry = nullptr;
   Item* aUpperEntry = nullptr;
@@ -689,20 +689,20 @@ void Step::vIndexRange(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at a level 0 buffer with keyLower
-  aLowerEntryBuffer = pIndexTree->pPositionH0Buffer(xKeyWrkLower);
+  aLowerEntBuffer = pIndexTree->pPositionH0Buffer(xKeyWrkLower);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entry buffer ?
-  if (aLowerEntryBuffer) {
+  if (aLowerEntBuffer) {
     // position in the index buffer at the lower key
-    aLowerEntry = aLowerEntryBuffer->pPositionPriorEntry(xKeyWrkLower);
+    aLowerEntry = aLowerEntBuffer->pPositionPriorEntry(xKeyWrkLower);
     
     if (eLowerRelnOp == RO_GREATER_THAN) {
-      aLowerEntry = EntBuffer::pMoveToGreaterThanEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
+      aLowerEntry = EntBuffer::pMoveToGreaterThanEntry(aLowerEntry, xKeyWrkLower, &aLowerEntBuffer);
     }
     else {
       RASSERT (eLowerRelnOp == RO_GREATER_EQUAL)
-      aLowerEntry = EntBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
+      aLowerEntry = EntBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xKeyWrkLower, &aLowerEntBuffer);
     }
     
   }
@@ -714,19 +714,19 @@ void Step::vIndexRange(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now position at a level 0 buffer with keyUpper
-  aUpperEntryBuffer = pIndexTree->pPositionH0Buffer(xKeyWrkUpper);
+  aUpperEntBuffer = pIndexTree->pPositionH0Buffer(xKeyWrkUpper);
   
-  //aUpperEntryBuffer->vShow();
+  //aUpperEntBuffer->vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entry buffer ?
-  if (aUpperEntryBuffer) {
-    //aUpperEntry = aUpperEntryBuffer->aPositionQuery(xKeyWrkUpper, eUpperRelnOp);
-    aUpperEntry = aUpperEntryBuffer->pPositionPriorEntry(xKeyWrkUpper);
-    aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
+  if (aUpperEntBuffer) {
+    //aUpperEntry = aUpperEntBuffer->aPositionQuery(xKeyWrkUpper, eUpperRelnOp);
+    aUpperEntry = aUpperEntBuffer->pPositionPriorEntry(xKeyWrkUpper);
+    aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntBuffer);
     
     if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
-      aUpperEntry = EntBuffer::pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
+      aUpperEntry = EntBuffer::pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntBuffer);
     }
   }
   
@@ -747,7 +747,7 @@ void Step::vIndexRange(MP_Task mpTask)
     // if aLowerEntry is before aUpperEntry then append to result buffer
     if (bBefore) {
       
-      // insert row from entry in tempEntryBuffer
+      // insert row from entry in tempEntBuffer
       if ( ! Task::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows)) {
         
         // Buffer is Full
@@ -764,14 +764,14 @@ void Step::vIndexRange(MP_Task mpTask)
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move to next entry in the buffer
-      aLowerEntry = aLowerEntryBuffer->aNextEntry(aLowerEntry, 0);
+      aLowerEntry = aLowerEntBuffer->aNextEntry(aLowerEntry, 0);
       
       if ( ! aLowerEntry ) {
         // get next buffer from the current indexBuffer
-        aLowerEntryBuffer = aLowerEntryBuffer->pNextBuffer();
+        aLowerEntBuffer = aLowerEntBuffer->pNextBuffer();
         
-        if ( aLowerEntryBuffer )
-          aLowerEntry = aLowerEntryBuffer->aLeadEntry();
+        if ( aLowerEntBuffer )
+          aLowerEntry = aLowerEntBuffer->aLeadEntry();
       }
       else {
         // check if session exiting
@@ -967,8 +967,8 @@ void Step::vIndexUpperBound(MP_Task mpTask)
     THROW_INVALID_DSTACK("index.upperBound"_Stz);
   
   FetchBuffer* pFetchBuffer;
-  EntBuffer* pEntryBuffer;
-  EntBuffer* aUpperEntryBuffer;
+  EntBuffer* pEntBuffer;
+  EntBuffer* aUpperEntBuffer;
   
   Item* aUpperEntry = nullptr;
   Item* aItem      = nullptr;
@@ -1015,31 +1015,31 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at the first level 0 buffer
-  pEntryBuffer = pIndexTree->pFirstH0Buffer();
+  pEntBuffer = pIndexTree->pFirstH0Buffer();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entryBuffer ?
-  if ( ! pEntryBuffer) {
+  if ( ! pEntBuffer) {
     goto LastBuffer;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the first entry in the buffer
-  aItem = pEntryBuffer->aLeadEntry();
+  aItem = pEntBuffer->aLeadEntry();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now position at a level 0 buffer for the upper key
-  aUpperEntryBuffer = pIndexTree->pPositionH0Buffer(xKeyWrkUpper);
+  aUpperEntBuffer = pIndexTree->pPositionH0Buffer(xKeyWrkUpper);
   
   eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
   
-  if (aUpperEntryBuffer) {
+  if (aUpperEntBuffer) {
     
-    aUpperEntry = aUpperEntryBuffer->pPositionPriorEntry(xKeyWrkUpper);
-    aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
+    aUpperEntry = aUpperEntBuffer->pPositionPriorEntry(xKeyWrkUpper);
+    aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntBuffer);
     
     if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
-      aUpperEntry = EntBuffer::pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
+      aUpperEntry = EntBuffer::pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntBuffer);
     }
   }
   
@@ -1055,11 +1055,11 @@ void Step::vIndexUpperBound(MP_Task mpTask)
     
     if (bBefore) {
       
-      // insert row from entry in tempEntryBuffer
+      // insert row from entry in tempEntBuffer
       if ( ! Task::bAppendRow(pFetchBuffer,aItem, pJob_FetchRows)) {
         
         // Buffer is full
-        // put this tempEntryBuffer in session bufferQueue
+        // put this tempEntBuffer in session bufferQueue
         pQueue->vAppend(pFetchBuffer);
         
         // create another result buffer for the results
@@ -1072,14 +1072,14 @@ void Step::vIndexUpperBound(MP_Task mpTask)
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move to next entry in the buffer
-      aItem = pEntryBuffer->aNextEntry(aItem, 0);
+      aItem = pEntBuffer->aNextEntry(aItem, 0);
       
       if ( ! aItem ) {
         // get next buffer from the current indexBuffer
-        pEntryBuffer = pEntryBuffer->pNextBuffer();
+        pEntBuffer = pEntBuffer->pNextBuffer();
         
-        if ( pEntryBuffer )
-          aItem = pEntryBuffer->aLeadEntry();
+        if ( pEntBuffer )
+          aItem = pEntBuffer->aLeadEntry();
       }
     }
     else {

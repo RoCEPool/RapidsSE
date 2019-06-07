@@ -193,11 +193,11 @@ bool Job_SubPublish::bChunk(void)
  
   m_pRowAgg->vAggregate(m_i_Slot, m_pRowBuffer);
   
-  //vTrace("publish writing %p\n"_Stz,m_pEntryBuffer);
+  //vTrace("publish writing %p\n"_Stz,m_pEntBuffer);
   m_pJob_Publish->m_okLock.vGrabWrite();
   m_pRowAgg->vWriteOut(m_oOutputFile);
   m_pJob_Publish->m_okLock.vDropWrite();
-  //vTrace("publish written %p\n"_Stz,m_pEntryBuffer);
+  //vTrace("publish written %p\n"_Stz,m_pEntBuffer);
 
   return true;
 }

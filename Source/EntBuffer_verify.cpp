@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntryBuffer_verify.cpp -- verify related functions for Entry Buffer        */
+/* EntBuffer_verify.cpp -- verify related functions for Entry Buffer        */
 /*============================================================================*/
 
 #include "Data.h"
@@ -170,7 +170,7 @@ bool EntBuffer::bQuickVerify(Item* aNotSeeEntry)
 /*----------------------------------------------------------------------------*/
 /* test for valid entry buffer                                                */
 /*----------------------------------------------------------------------------*/
-bool EntBuffer::bValidEntryBuffer(void)
+bool EntBuffer::bValidEntBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -310,7 +310,7 @@ bool EntBuffer::bVerifyLnAny(void)
   
   for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
-    EntBuffer* pRefEntBuf = EntBuffer::pRefdEntryBuffer(aItem);
+    EntBuffer* pRefEntBuf = EntBuffer::pRefdEntBuffer(aItem);
     if (pRefEntBuf->m_iBufferHeight) {
       bValid = pRefEntBuf->bVerifyLnAny();
     }
@@ -347,18 +347,18 @@ bool EntBuffer::bVerifyAdjacent(void)
   for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     // get the buffer that this entry references
-    EntBuffer* pChildEntryBuffer = EntBuffer::pRefdEntryBuffer(aItem);
+    EntBuffer* pChildEntBuffer = EntBuffer::pRefdEntBuffer(aItem);
     
     // get the adjacent entry
     Item* aAdjacentEntry = aNextEntry(aItem,0);
     
     if (aAdjacentEntry) {
       // get the buffer that the adjacent entry references
-      EntBuffer* pAdjacentChildEntryBuffer =
-      EntBuffer::pRefdEntryBuffer(aAdjacentEntry);
+      EntBuffer* pAdjacentChildEntBuffer =
+      EntBuffer::pRefdEntBuffer(aAdjacentEntry);
       
       // the two child buffers should not be the same
-      if ( pChildEntryBuffer == pAdjacentChildEntryBuffer) {
+      if ( pChildEntBuffer == pAdjacentChildEntBuffer) {
         vShow();
         vVerifyFault();
         return false;
@@ -385,9 +385,9 @@ bool EntBuffer::bVerifyBufferRefs(void)
   
   for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
-    EntBuffer* pChildEntBuf = EntBuffer::pRefdEntryBuffer(aItem);
+    EntBuffer* pChildEntBuf = EntBuffer::pRefdEntBuffer(aItem);
     
-    if ( ! pChildEntBuf->bValidEntryBuffer() ) {
+    if ( ! pChildEntBuf->bValidEntBuffer() ) {
       vVerifyFault();
       return false;
     }
@@ -427,13 +427,13 @@ bool EntBuffer::bVerifyFirstKeys(void)
   for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     // get the entry buffer that this entry references
-    EntBuffer* pChildEntryBuffer = EntBuffer::pRefdEntryBuffer(aItem);
+    EntBuffer* pChildEntBuffer = EntBuffer::pRefdEntBuffer(aItem);
     
-    //pChildEntryBuffer->vShow();
+    //pChildEntBuffer->vShow();
     
     
     // get the first entry of the child buffer
-    Item* aChildFirstEntry = pChildEntryBuffer->aLeadEntry();
+    Item* aChildFirstEntry = pChildEntBuffer->aLeadEntry();
     
     // get keys of the two entries
     //KeyData* aKeyParent = _aKeyData(aItem->aDataArea());
@@ -547,8 +547,8 @@ bool EntBuffer::bVerifyKeyBufferOrder(void)
       break;
     
     // get the child entry buffers
-    EntBuffer* pChildBufferA = EntBuffer::pRefdEntryBuffer(aItem);
-    EntBuffer* pChildBufferB = EntBuffer::pRefdEntryBuffer(aNextEntry);
+    EntBuffer* pChildBufferA = EntBuffer::pRefdEntBuffer(aItem);
+    EntBuffer* pChildBufferB = EntBuffer::pRefdEntBuffer(aNextEntry);
     
     // child A should point to child B
     if (pChildBufferA->pNextBuffer() != pChildBufferB) {
@@ -621,7 +621,7 @@ bool EntBuffer::bVerifyNextPrev(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (m_pPrevBuffer) {
-    EntBuffer* pPrevBuffer = _pEntryBuffer(m_pPrevBuffer);
+    EntBuffer* pPrevBuffer = _pEntBuffer(m_pPrevBuffer);
     if (pPrevBuffer->pNextBuffer() != this) {
       vVerifyFault();
       return false;
@@ -635,7 +635,7 @@ bool EntBuffer::bVerifyNextPrev(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (m_pNextBuffer) {
-    EntBuffer* pNextBuffer = _pEntryBuffer(m_pNextBuffer);
+    EntBuffer* pNextBuffer = _pEntBuffer(m_pNextBuffer);
     if (pNextBuffer->pPrevBuffer() != this) {
       vVerifyFault();
       return false;
@@ -649,7 +649,7 @@ bool EntBuffer::bVerifyNextPrev(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (m_pHigherBuffer) {
-    EntBuffer* pHigherBuffer = _pEntryBuffer(m_pHigherBuffer);
+    EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
     if (pHigherBuffer->iBufferHeight() != m_iBufferHeight + 1) {
       vVerifyFault();
       return false;
