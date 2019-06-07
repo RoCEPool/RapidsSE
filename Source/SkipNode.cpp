@@ -28,7 +28,7 @@ void* SkipNode::operator new(size_t, i8 iLevel, SlabAllocator* pSlabAllocator)
   SkipNode* pSkipNode;
   
   if (pSlabAllocator) {
-    pSkipNode = (SkipNode*)pSlabAllocator->aAllotBytes(nBytes);
+    pSkipNode = (SkipNode*)pSlabAllocator->ayAllotBytes(nBytes);
   }
   else {
     pSkipNode = (SkipNode*)HeapMem::pAllocate(CN_SKIPNODE);

@@ -126,7 +126,7 @@ void EntryBuffer::vCompact(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  FreeItem* aFreeEntry;
+  FreeItem* aFreeItem;
   Item*     aMoveEntry;
   Item*     xPriorVec[gpAttachMap->m_nIndexLevels];
   
@@ -145,35 +145,35 @@ void EntryBuffer::vCompact(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // find the next free entry in buffer
     
-    aFreeEntry = nullptr;
+    aFreeItem = nullptr;
     for (;
          aScanItem != nullptr;
          aScanItem = aAdjacentItem(aScanItem)) {
       
       eCN eClass = aScanItem->eClass();
       
-      if (CN_FREEENTRY == eClass) {
-        aFreeEntry = _aFreeItem(aScanItem);
+      if (CN_FREEITEM == eClass) {
+        aFreeItem = _aFreeItem(aScanItem);
         break;
       }
     }
     
     // return if no more free entries
-    if (! aFreeEntry)
+    if (! aFreeItem)
       break;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // find the next entry in buffer after the free entry
     
     aMoveEntry = nullptr;
-    for (Item* aItem = aAdjacentItem((Item*)aFreeEntry);
+    for (Item* aItem = aAdjacentItem((Item*)aFreeItem);
          aItem != nullptr;
          aItem = aAdjacentItem(aItem)) {
       
       eCN eClass = aItem->eClass();
       
-      RASSERT ( (eClass == CN_ENTRY) ||
-               (eClass == CN_FREEENTRY) ||
+      RASSERT ((eClass == CN_ENTRY) ||
+               (eClass == CN_FREEITEM) ||
                (eClass == CN_WILDERNESS));
       
       
@@ -203,7 +203,7 @@ void EntryBuffer::vCompact(void)
     }
     
     i4 iWasOffset = iToOffset(aMoveEntry);
-    i4 iNowOffset = iToOffset((Item*)aFreeEntry);
+    i4 iNowOffset = iToOffset((Item*)aFreeItem);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // now copy move entry left onto free entry
@@ -213,17 +213,17 @@ void EntryBuffer::vCompact(void)
     + aMoveEntry->iNEOsize();
     
     // copy the move entry over the free entry
-    MemLib::vMove(aFreeEntry, aMoveEntry, nCopyBytes, CN_ENTRYBUFFER);
+    MemLib::vMove(aFreeItem, aMoveEntry, nCopyBytes, CN_ENTRYBUFFER);
     
     // give the reclaimed space back to the buffer
-    i8 nReclaimedBytes = nSub(aMoveEntry,aFreeEntry);
+    i8 nReclaimedBytes = nSub(aMoveEntry,aFreeItem);
     //vGiveSpace(nReclaimedBytes);
     
     // convert the moved entry to a free entry
-    FreeItem* aOpenedFreeEntry = aAdd<FreeItem*>(aFreeEntry,nCopyBytes);
+    FreeItem* aOpenedFreeEntry = aAdd<FreeItem*>(aFreeItem,nCopyBytes);
     new(aOpenedFreeEntry) FreeItem(nReclaimedBytes);
     
-    Item* aCheckEntry = reinterpret_cast<Item*>(aFreeEntry);
+    Item* aCheckEntry = reinterpret_cast<Item*>(aFreeItem);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the prior vector to the entry being moved
@@ -239,11 +239,11 @@ void EntryBuffer::vCompact(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move scan
     
-    aScanItem = (Item*)aFreeEntry;
+    aScanItem = (Item*)aFreeItem;
     
   } // for
   
-  ASSERT( ! aScanItem || CN_FREEENTRY == aScanItem->eClass() );
+  ASSERT( ! aScanItem || CN_FREEITEM == aScanItem->eClass() );
   
   if (aScanItem)
     vSetUsed(aScanItem);
@@ -1108,7 +1108,7 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
 /*----------------------------------------------------------------------------*/
 NEO* EntryBuffer::aAllotNEO(i8 nBytes)
 {
-  NEO* aNEO = reinterpret_cast<NEO*>(aAllotBytes(nBytes));
+  NEO* aNEO = reinterpret_cast<NEO*>(ayAllotBytes(nBytes));
   
   return aNEO;
 }

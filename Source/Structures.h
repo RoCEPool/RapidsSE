@@ -19,6 +19,8 @@ using namespace Structures;
 
 #include "ArrayNL_t.hpp"
 
+#include "FreeItem.hpp"
+
 #include "HashInsert.hpp"
 #include "HashEntry.hpp"
 #include "HashBuffer.hpp"
@@ -26,10 +28,11 @@ using namespace Structures;
 #include "HashCursor.hpp"
 
 #include "Link_t.hpp"
-
 #include "ListNode_t.hpp"
 #include "List_t.hpp"
 #include "ListNL_t.hpp"
+
+#include "NamedItem_t.hpp"
 
 #include "QueueBuffer.hpp"
 #include "Queue.hpp"
@@ -40,12 +43,12 @@ using namespace Structures;
 #include "SkipListNL.hpp"
 
 #include "VectorNL_t.hpp"
+#include "Wilderness.hpp"
 
 // - - -
 
-#include "NamedItem_t.hpp"
 #include "Folder_t.hpp"
-
+#include "MiniHeap_t.hpp"
 #include "TrayNL_t.hpp"
 
 /*============================================================================*/

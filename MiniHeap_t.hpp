@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace MiniHeaps
+namespace Structures
 {
   template <class ITEM>
   class MiniHeap_t
@@ -21,7 +21,7 @@ namespace MiniHeaps
    ~MiniHeap_t(void) noexcept(false);
   
     ITEM*  aAdjacentItem(ITEM* aItem);
-    char*  aAllotBytes(i8 nBytes);
+    byte*  ayAllotBytes(i8 nBytes);
     ITEM*  aAllotItem(eCN eClassNo, i8 nBytes);
     i8     iDecile(void);
     void   vDecItems(void);
@@ -57,7 +57,7 @@ namespace MiniHeaps
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-MiniHeap_t<ITEM>* MiniHeaps::_pMiniHeap_t(void* aAddr)
+MiniHeap_t<ITEM>* Structures::_pMiniHeap_t(void* aAddr)
 {
   MiniHeap_t<ITEM>* pBufferAbstract =
     reinterpret_cast<MiniHeap_t<ITEM>*>(aAddr);
@@ -99,7 +99,7 @@ MiniHeap_t<ITEM>::~MiniHeap_t(void) noexcept(false)
 template <class ITEM>
 ITEM* MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem)
 {
-  i8 nItemBytes = aItem->nSizeItem_WithOffsets();
+  i8 nItemBytes = aItem->nSizeItem();
   
   ITEM* aAdjacent = aAdd<ITEM*>(aItem,nItemBytes);
   
@@ -113,17 +113,17 @@ ITEM* MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem)
 /* allot space for nBytes in this buffer                                      */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-char* MiniHeap_t<ITEM>::aAllotBytes(i8 nBytes)
+byte* MiniHeap_t<ITEM>::ayAllotBytes(i8 nBytes)
 {
   // test sufficient free space
   if (nFreeBytes() < nBytes)
     return nullptr;
   
-  char* aSpace = m_xWsp.aAllot(nBytes);
+  byte* ayBytes = m_xWsp.ayAllot(nBytes);
   
   vSetWilderness();
   
-  return aSpace;
+  return ayBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,7 +132,7 @@ char* MiniHeap_t<ITEM>::aAllotBytes(i8 nBytes)
 template <class ITEM>
 ITEM* MiniHeap_t<ITEM>::aAllotItem(eCN eClassNo, i8 nBytes)
 {
-  ITEM* aItem = reinterpret_cast<ITEM*>(aAllotBytes(nBytes));
+  ITEM* aItem = reinterpret_cast<ITEM*>(ayAllotBytes(nBytes));
   if (! aItem)
     return nullptr;
   
@@ -195,17 +195,17 @@ void MiniHeap_t<ITEM>::vDumpItems(void)
         break;
       }
         
-      case CN_FREEENTRY: {
-        FreeItem* aFreeEntry = _aFreeItem(aItem);
-        vTrace("[%04lld:%06lld] CN_FREEENTRY: %lldB\n"_Stz,
-               iItem,iOffset,aFreeEntry->nSizeBytes());
+      case CN_FREEITEM: {
+        FreeItem* aFreeItem = _aFreeItem(aItem);
+        vTrace("[%04lld:%06lld] CN_FREEITEM: %lldB\n"_Stz,
+               iItem,iOffset,aFreeItem->nSizeBytes());
         break;
       }
         
       case CN_WILDERNESS: {
         Wilderness* aWilderness = _aWilderness(aItem);
         vTrace("[%04lld:%06lld] CN_WILDERNESS: %lldB\n"_Stz,
-               iItem,iOffset,aWilderness->nSizeData());
+               iItem,iOffset,aWilderness->nSizeBytes());
         break;
       }
       default:

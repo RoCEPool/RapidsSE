@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace MiniHeaps
+namespace Data
 {
   class Id
   {

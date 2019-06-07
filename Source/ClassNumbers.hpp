@@ -70,7 +70,7 @@ enum eCN : u2 // Class Number
   /*  38 0x26       32B Heap:I */ CN_FREEBUFFER,
   /*  39 0x27       24B Heap:I */ CN_FREECHUNK,
   /*  40 0x28        0B Heap:I */ CN_FREEDNOT,
-  /*  41 0x29        0B Heap:I */ CN_FREEENTRY,
+  /*  41 0x29        0B Heap:I */ CN_FREEITEM,
   
   /*  42 0x2A    64024B Heap:I */ CN_GENVAR,
   /*  43 0x2B     1224B Heap:L */ CN_GRID,
@@ -374,7 +374,7 @@ static Stz* aCN[]
   /*  38 0x26 */ "FREEBUFFER"_Stz,          // CN_FREEBUFFER
   /*  39 0x27 */ "FREECHUNK"_Stz,           // CN_FREECHUNK
   /*  40 0x28 */ "FREEDNOT"_Stz,            // CN_FREEDNOT
-  /*  41 0x29 */ "FREEENTRY"_Stz,           // CN_FREEENTRY
+  /*  41 0x29 */ "FREEITEM"_Stz,            // CN_FREEITEM
   
   /*  42 0x2A */ "GENVAR"_Stz,              // CN_GENVAR
   /*  43 0x2B */ "GRID"_Stz,                // CN_GRID

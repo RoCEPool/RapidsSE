@@ -56,7 +56,7 @@ Slab::~Slab(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* allot given number of bytes                                                */
 /*----------------------------------------------------------------------------*/
-char* Slab::aAllotBytes(i8 nBytes)
+byte* Slab::ayAllotBytes(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLAB,_FOOTER_);
   
@@ -65,9 +65,9 @@ char* Slab::aAllotBytes(i8 nBytes)
     return nullptr;
   
   // allot bytes in the wsp
-  char* aBytes = m_xWsp.aAllot(nBytes);
+  byte* ayBytes = m_xWsp.ayAllot(nBytes);
   
-  return aBytes;
+  return ayBytes;
 }
 
 /*----------------------------------------------------------------------------*/

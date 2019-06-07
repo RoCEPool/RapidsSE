@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace MiniHeaps
+namespace Data
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class NEO // next entry offset
@@ -18,7 +18,7 @@ namespace MiniHeaps
   protected:
     Id  m_xId;       // item id
     i4  m_nSizeItem_WithoutOffsets; // size of this item (not including offsets)
-    // ..data bytes..
+    // ..key bytes..
     // ..neo..
   
   public:
@@ -47,7 +47,7 @@ namespace MiniHeaps
     i8    nLevels(void);
     void  vLevels(i8 nLevels);
     
-    i8    nSizeItem_WithOffsets(void);
+    i8    nSizeItem(void);
     i8    nSizeItem_WithoutOffsets(void);
     i8    nSizeData(void);
     bool  bValidItem(void);

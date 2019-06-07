@@ -1,12 +1,8 @@
 /*============================================================================*/
-/* FreeItem.cpp -- free entry in buffer                                       */
+/* Wilderness.cpp -- wilderness marker                                        */
 /*============================================================================*/
 
-#include "MiniHeaps.h"
-
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
+#include "Structures.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -15,19 +11,21 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-FreeItem* MiniHeaps::_aFreeItem(void* aAddr)
+Wilderness* Structures::_aWilderness(void* aAddr)
 {
-  FreeItem* aFreeEntry = reinterpret_cast<FreeItem*>(aAddr);
+  Wilderness* aWilderness = reinterpret_cast<Wilderness*>(aAddr);
   
-  return aFreeEntry;
+  RASSERT_TYPE(aWilderness,CN_WILDERNESS);
+  
+  return aWilderness;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* FreeItem::operator new(size_t)
+void* Wilderness::operator new(size_t)
 {
-  vFatal("fatal: FreeItem class cannot be new'd\n"_Stz);
+  vFatal("fatal: Wilderness class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -35,76 +33,51 @@ void* FreeItem::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* FreeItem::operator new(size_t, void* aFree)
+void* Wilderness::operator new(size_t, Wilderness* pWilderness)
 {
-  return reinterpret_cast<FreeItem*>(aFree);
+  return pWilderness;
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-FreeItem::FreeItem(i8 nSizeBytes)
-: SizedHeader(CN_FREEENTRY,nSizeBytes)
+Wilderness::Wilderness(void)
+: SizedHeader(CN_WILDERNESS,sizeof(Wilderness))
 {
+  ASSERT(bValidWilderness());
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-FreeItem::~FreeItem(void) noexcept(false)
+Wilderness::~Wilderness(void) noexcept(false)
 {
+  ASSERT(bValidWilderness());
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* convert given entry into free entry                                        */
-/*----------------------------------------------------------------------------*/
-FreeItem* FreeItem::aMorphFreeItem(void* aFree, i8 nSizeBytes)
-{
-  FreeItem* aFreeItem = new(aFree) FreeItem(nSizeBytes);
-  
-  return aFreeItem;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get address after this freeEntry                                           */
+/* assert valid wilderness                                                    */
 /*----------------------------------------------------------------------------*/
-char* FreeItem::aAddressAfter(void)
+void Wilderness::vAssertWilderness(void)
 {
-  i8 nFreeEntryBytes = nSizeBytes();
-  
-  char* aAfter = aAdd<char*>(this,nFreeEntryBytes);
-  
-  return aAfter;
+  ASSERT(bValidWilderness());
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert valid free entry                                                    */
+/* test for valid wilderness                                                  */
 /*----------------------------------------------------------------------------*/
-void FreeItem::vAssertFreeEntry(void)
-{
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for valid free entry                                                  */
-/*----------------------------------------------------------------------------*/
-bool FreeItem::bValidFreeEntry(void)
-{
+bool Wilderness::bValidWilderness(void)
+{ 
   if (! bValidMagic())
     return false;
   
-  if (CN_FREEENTRY != eClass())
+  if (CN_WILDERNESS != eClass())
     return false;
-
+  
   return true;
 }
 

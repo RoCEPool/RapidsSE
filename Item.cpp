@@ -191,7 +191,7 @@ i8 Item::nSizeData(void)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this item                                             */
 /*----------------------------------------------------------------------------*/
-i8 Item::nSizeItem_WithOffsets(void)
+i8 Item::nSizeItem(void)
 {
   i8 nBytes = nSizeItem_WithoutOffsets() + iNEOsize();
   
@@ -215,7 +215,7 @@ bool Item::bValidItem(void)
     return false;
   }
   
-  if ( ! (CN_ENTRY == eClass() || CN_FREEENTRY == eClass()) ) {
+  if ( ! (CN_ENTRY == eClass() || CN_FREEITEM == eClass()) ) {
     vTrace("Not valid class\n"_Stz);
     return false;
   }

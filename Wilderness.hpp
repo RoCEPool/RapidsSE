@@ -1,29 +1,24 @@
 /*============================================================================*/
-/* FreeItem.hpp -- free item in item heap                                     */
+/* Wilderness.hpp -- wilderness marker                                        */
 /*============================================================================*/
 #pragma once
 
-namespace MiniHeaps
+namespace Structures
 {
-  class FreeItem : public SizedHeader
+  class Wilderness : public SizedHeader
   {
-  protected:
- 
   public:
     void* operator new(size_t);
-    void* operator new(size_t, void*);
+    void* operator new(size_t, Wilderness*);
   
-    FreeItem(i8 nSizeBytes);
-    ~FreeItem(void) noexcept(false);
+    Wilderness(void);
+    ~Wilderness(void) noexcept(false);
   
-    static FreeItem* aMorphFreeItem(void* aFree, i8 nSizeBytes);
-
-    char* aAddressAfter(void);
-    void  vAssertFreeEntry(void);
-    bool  bValidFreeEntry(void);
+    void vAssertWilderness(void);
+    bool bValidWilderness(void);
   };
   
-  FreeItem* _aFreeItem(void* aAddr);
+  Wilderness* _aWilderness(void* aAddr);
 }
 
 /*============================================================================*/

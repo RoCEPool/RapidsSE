@@ -72,7 +72,7 @@ namespace Forth
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static ForthWord* pToWord(void* aAddrInsideWsp);
 
-    char* aAllot(i8 iBytes);
+    byte* ayAllot(i8 iBytes);
     void* aAppend(Cell* aCell);
     void  vAppend(Cell* aCell);
     void* aAppend(i8 iInt);

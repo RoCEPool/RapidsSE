@@ -25,7 +25,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Pool::vCheckAssumptions();
   Persistence::vCheckAssumptions();
   Structures::vCheckAssumptions();
-  MiniHeaps::vCheckAssumptions();
   Chunks::vCheckAssumptions();
   Measurement::vCheckAssumptions();
   Maps::vCheckAssumptions();
