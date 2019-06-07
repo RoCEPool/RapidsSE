@@ -262,7 +262,8 @@ void EntryBuffer::vDeleteEntry(Item** aaItem)
   
   vCutEntry(aItem,xPriorVec);
   
-  vFreeItem(aItem);
+  i8 nBytes = aItem->nSizeItem_WithOffsets();
+  vFreeItem(aItem,nBytes);
   
   // entry no longer exists, set the pointer to be null
   *aaItem = nullptr;

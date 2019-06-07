@@ -35,22 +35,6 @@ void* FreeItem::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* FreeItem::operator new(size_t, Item* aItem)
-{
-  return reinterpret_cast<FreeItem*>(aItem);
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* FreeItem::operator new(size_t, FreeItem* aFreeEntry)
-{
-  return aFreeEntry;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
 void* FreeItem::operator new(size_t, void* aFree)
 {
   return reinterpret_cast<FreeItem*>(aFree);
@@ -75,21 +59,6 @@ FreeItem::~FreeItem(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* convert given entry into free entry                                        */
-/*----------------------------------------------------------------------------*/
-FreeItem* FreeItem::aMorphFreeItem(Item* aItem)
-{
-  i8 nSizeItem = aItem->nSizeItem_WithoutOffsets();
-  i8 nSizeNEO  = aItem->iNEOsize();
-  i8 nSizeFree = nSizeItem + nSizeNEO;
-  
-  //FreeItem* aFreeItem = new(aItem) FreeItem(nSizeFree);
-  FreeItem* aFreeItem = aMorphFreeItem(aItem,nSizeFree);
-
-  return aFreeItem;
-}
 
 /*----------------------------------------------------------------------------*/
 /* convert given entry into free entry                                        */

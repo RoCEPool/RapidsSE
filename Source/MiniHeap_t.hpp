@@ -29,7 +29,7 @@ namespace MiniHeaps
     void   vDumpItems(void);
     ITEM*  aFirstItem(void);
     i8     nFreeBytes(void);
-    void   vFreeItem(ITEM* aItem);
+    void   vFreeItem(ITEM* aItem, i8 nBytes);
     void   vGiveSpace(i8 nBytes);
     bool   bHasSpace(i8 nBytes);
     ITEM*  aItemArea(void);
@@ -259,12 +259,12 @@ i8 MiniHeap_t<ITEM>::nFreeBytes(void)
 /* add given entry to free chain                                              */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-void MiniHeap_t<ITEM>::vFreeItem(ITEM* aItem)
+void MiniHeap_t<ITEM>::vFreeItem(ITEM* aItem, i8 nBytes)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add item to head of free chain
   
-  FreeItem* aFreeItem = FreeItem::aMorphFreeItem(aItem);
+  FreeItem* aFreeItem = FreeItem::aMorphFreeItem(aItem,nBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decement the number of items in buffer
