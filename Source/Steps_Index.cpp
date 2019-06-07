@@ -424,7 +424,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   Planner* pPlanner = pJob_SubFetch->m_pPlanner;
   Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   
-  EntryBuffer* aLowerEntryBuffer;
+  EntBuffer* aLowerEntryBuffer;
   Item* aLowerEntry = nullptr;
   eRO eLowerRelnOp;
   i8 iIndexNo = pIndex->iIndexNo();
@@ -466,11 +466,11 @@ void Step::vIndexLowerBound(MP_Task mpTask)
     aLowerEntry = aLowerEntryBuffer->pPositionPriorEntry(xKeyWrkLower);
     
     if (eLowerRelnOp == RO_GREATER_THAN) {
-      aLowerEntry = EntryBuffer::pMoveToGreaterThanEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
+      aLowerEntry = EntBuffer::pMoveToGreaterThanEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
     }
     else {
       RASSERT (eLowerRelnOp == RO_GREATER_EQUAL)
-      aLowerEntry = EntryBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
+      aLowerEntry = EntBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
     }
   }
   
@@ -613,8 +613,8 @@ void Step::vIndexRange(MP_Task mpTask)
     THROW_INVALID_DSTACK("index.range"_Stz);
   
   FetchBuffer* pFetchBuffer;
-  EntryBuffer* aLowerEntryBuffer;
-  EntryBuffer* aUpperEntryBuffer;
+  EntBuffer* aLowerEntryBuffer;
+  EntBuffer* aUpperEntryBuffer;
   
   Item* aLowerEntry = nullptr;
   Item* aUpperEntry = nullptr;
@@ -698,11 +698,11 @@ void Step::vIndexRange(MP_Task mpTask)
     aLowerEntry = aLowerEntryBuffer->pPositionPriorEntry(xKeyWrkLower);
     
     if (eLowerRelnOp == RO_GREATER_THAN) {
-      aLowerEntry = EntryBuffer::pMoveToGreaterThanEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
+      aLowerEntry = EntBuffer::pMoveToGreaterThanEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
     }
     else {
       RASSERT (eLowerRelnOp == RO_GREATER_EQUAL)
-      aLowerEntry = EntryBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
+      aLowerEntry = EntBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xKeyWrkLower, &aLowerEntryBuffer);
     }
     
   }
@@ -723,10 +723,10 @@ void Step::vIndexRange(MP_Task mpTask)
   if (aUpperEntryBuffer) {
     //aUpperEntry = aUpperEntryBuffer->aPositionQuery(xKeyWrkUpper, eUpperRelnOp);
     aUpperEntry = aUpperEntryBuffer->pPositionPriorEntry(xKeyWrkUpper);
-    aUpperEntry = EntryBuffer::pMoveToNextEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
+    aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
     
     if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
-      aUpperEntry = EntryBuffer::pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
+      aUpperEntry = EntBuffer::pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
     }
   }
   
@@ -967,8 +967,8 @@ void Step::vIndexUpperBound(MP_Task mpTask)
     THROW_INVALID_DSTACK("index.upperBound"_Stz);
   
   FetchBuffer* pFetchBuffer;
-  EntryBuffer* pEntryBuffer;
-  EntryBuffer* aUpperEntryBuffer;
+  EntBuffer* pEntryBuffer;
+  EntBuffer* aUpperEntryBuffer;
   
   Item* aUpperEntry = nullptr;
   Item* aItem      = nullptr;
@@ -1036,10 +1036,10 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   if (aUpperEntryBuffer) {
     
     aUpperEntry = aUpperEntryBuffer->pPositionPriorEntry(xKeyWrkUpper);
-    aUpperEntry = EntryBuffer::pMoveToNextEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
+    aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
     
     if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
-      aUpperEntry = EntryBuffer::pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
+      aUpperEntry = EntBuffer::pMoveToGreaterThanEntry(aUpperEntry, xKeyWrkUpper, &aUpperEntryBuffer);
     }
   }
   

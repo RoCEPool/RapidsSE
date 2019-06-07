@@ -1038,7 +1038,7 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
     // *piExpectedRows = (i8)(pJob_FetchRows->m_pBufferQueue->iCount() * C_ROWS_PER_BUFFER);
     
     Item* aItem = nullptr;
-    EntryBuffer* pEntryBuffer = nullptr;
+    EntBuffer* pEntryBuffer = nullptr;
     API_LOC(330);
 
     // do we have a buffer ?
@@ -1068,7 +1068,7 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // we have a buffer
-    pEntryBuffer = *((EntryBuffer**)(aaEntryBuffer));
+    pEntryBuffer = *((EntBuffer**)(aaEntryBuffer));
     RASSERT(pEntryBuffer->eClass() == CN_ENTBUFFER);
     API_LOC(350);
 
@@ -1145,7 +1145,7 @@ eEC RapidsSE_GetFirstBuffer(i8 iTrace, Session* pSession, void* aTable,
     IndexTree* pIndexTree = pPartition->pIndexTree(pIndex->iIndexNo());
     API_LOC(330);
     
-    EntryBuffer* pEntryBuffer = pIndexTree->pFirstH0Buffer();
+    EntBuffer* pEntryBuffer = pIndexTree->pFirstH0Buffer();
     API_LOC(340);
     
     // return the first buffer
@@ -1186,10 +1186,10 @@ eEC RapidsSE_GetNextBuffer(i8 iTrace, Session* pSession, void** aaEntryBuffer, i
   try {
     
     //vTrace("last buffer %p\n"_Stz, *aaEntryBuffer);
-    EntryBuffer* pEntryBuffer = _pEntryBuffer(*aaEntryBuffer);
+    EntBuffer* pEntryBuffer = _pEntryBuffer(*aaEntryBuffer);
     API_LOC(320);
     
-    EntryBuffer* pNextBuffer = pEntryBuffer->pNextBuffer();
+    EntBuffer* pNextBuffer = pEntryBuffer->pNextBuffer();
     API_LOC(330);
     
     // return the next buffer back

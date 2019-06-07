@@ -159,7 +159,7 @@ void IndexTree::vCompact(void)
   // get the number of L1 buffers 
   
 #ifdef USE_IT_COMPACT_TRACE
-  EntryBuffer* pL1First = pFirstL1Buffer();
+  EntBuffer* pL1First = pFirstL1Buffer();
   i8 nP1Buffers = pL1First ? pL1First->iLengthList() : 0;
 #endif
   
@@ -168,7 +168,7 @@ void IndexTree::vCompact(void)
   
   i8 iL1BufferNo = -1;
   
-  for (EntryBuffer* pL1 = pFirstL1Buffer(); pL1; pL1 = pL1->pNextBuffer()) {
+  for (EntBuffer* pL1 = pFirstL1Buffer(); pL1; pL1 = pL1->pNextBuffer()) {
     
     iL1BufferNo++;
     
@@ -189,12 +189,12 @@ void IndexTree::vCompact(void)
     // get the first L0 and the sublist which follows
     
     // get the first L0 of current L1
-    EntryBuffer* pFirstL0 = pL1->pFirstChildBuffer();
+    EntBuffer* pFirstL0 = pL1->pFirstChildBuffer();
     
     TRACE_COMPACT( pFirstLeftL0->vShowSubList(); )
     
     // get the sublist after the first L0 of current L1
-    EntryBuffer* pL0SubList = pFirstL0->pUnlinkSubList();
+    EntBuffer* pL0SubList = pFirstL0->pUnlinkSubList();
     if (! pL0SubList)
       continue;
     
@@ -209,8 +209,8 @@ void IndexTree::vCompact(void)
     vCopyReInitL1(pL1,pFirstL0);
     
     // foreach right L0 in sublist
-    EntryBuffer* pLeftL0 = pFirstL0;
-    while (EntryBuffer* pRightL0 = pPopSubList(&pL0SubList)) {
+    EntBuffer* pLeftL0 = pFirstL0;
+    while (EntBuffer* pRightL0 = pPopSubList(&pL0SubList)) {
       
       TRACE_COMPACT( if (pSubList) pSubList->vShowSubList(); )
       
@@ -240,7 +240,7 @@ void IndexTree::vCompact(void)
 /*----------------------------------------------------------------------------*/
 /* reinitialise the L1 buffer with just the first key of the first L0 buffer  */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pFirstL0)
+void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
@@ -284,7 +284,7 @@ void IndexTree::vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pFirstL0)
 /*----------------------------------------------------------------------------*/
 /* copy all keys of right buffer to left buffer; create new left when needed  */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
+void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
@@ -298,10 +298,10 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert the parameters are sensible
   
-  EntryBuffer* pLeftL0 = *ppLeftL0;
+  EntBuffer* pLeftL0 = *ppLeftL0;
   ASSERT(0 == pLeftL0->iBufferHeight());
   ASSERT(0 == pRightL0->iBufferHeight());
-  EntryBuffer* pL1 = pLeftL0->pHigherBuffer();
+  EntBuffer* pL1 = pLeftL0->pHigherBuffer();
   ASSERT(1 == pL1->iBufferHeight());
   ASSERT(pRightL0->pHigherBuffer() == pLeftL0->pHigherBuffer());
   
@@ -362,7 +362,7 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
       //pLeftL0->vShow();
       
       // new left buffer
-      EntryBuffer* pNewLeftL0 = new EntryBuffer;
+      EntBuffer* pNewLeftL0 = new EntBuffer;
       pNewLeftL0->vIndex(m_pIndex);
       pNewLeftL0->vHigherBuffer(pL1);
       
@@ -423,7 +423,7 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
   
 }
 /*----------------------------------------------------------------------------*/
-void IndexTree::vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
+void IndexTree::vCopyLeftV2(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
@@ -437,10 +437,10 @@ void IndexTree::vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert the parameters are sensible
   
-  EntryBuffer* pLeftL0 = *ppLeftL0;
+  EntBuffer* pLeftL0 = *ppLeftL0;
   ASSERT(0 == pLeftL0->iBufferHeight());
   ASSERT(0 == pRightL0->iBufferHeight());
-  EntryBuffer* pL1 = pLeftL0->pHigherBuffer();
+  EntBuffer* pL1 = pLeftL0->pHigherBuffer();
   ASSERT(1 == pL1->iBufferHeight());
   ASSERT(pRightL0->pHigherBuffer() == pLeftL0->pHigherBuffer());
   
@@ -489,7 +489,7 @@ void IndexTree::vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     if (! pLeftL0->bHasSpace(nEntryPlusOffsets)) {
       
       // new left buffer
-      EntryBuffer* pNewLeftL0 = new EntryBuffer;
+      EntBuffer* pNewLeftL0 = new EntBuffer;
       pNewLeftL0->vIndex(m_pIndex);
       pNewLeftL0->vHigherBuffer(pL1);
       
@@ -558,7 +558,7 @@ void IndexTree::vDump(bool bSameHeight)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
 
   if (bSameHeight) {
-    EntryBuffer* pEntryBuffer = m_pRootBuffer;
+    EntBuffer* pEntryBuffer = m_pRootBuffer;
     
     while (pEntryBuffer) {
       pEntryBuffer->vShow();
@@ -575,11 +575,11 @@ void IndexTree::vDump(bool bSameHeight)
 /*----------------------------------------------------------------------------*/
 /* get the first L1 buffer                                                    */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* IndexTree::pFirstL1Buffer(void)
+EntBuffer* IndexTree::pFirstL1Buffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  EntryBuffer* pEntryBuffer = m_pRootBuffer;
+  EntBuffer* pEntryBuffer = m_pRootBuffer;
   
   if ( ! pEntryBuffer )
     return nullptr;
@@ -593,7 +593,7 @@ EntryBuffer* IndexTree::pFirstL1Buffer(void)
   while (pEntryBuffer) {
     
     Item* aFirstEntry = pEntryBuffer->aLeadEntry();
-    pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aFirstEntry);
+    pEntryBuffer = EntBuffer::pRefdEntryBuffer(aFirstEntry);
     
     if (pEntryBuffer->iBufferHeight() == 1) {
       return pEntryBuffer;
@@ -606,11 +606,11 @@ EntryBuffer* IndexTree::pFirstL1Buffer(void)
 /*----------------------------------------------------------------------------*/
 /* get the first L0 buffer                                                    */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* IndexTree::pFirstH0Buffer(void)
+EntBuffer* IndexTree::pFirstH0Buffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  EntryBuffer* pEntryBuffer = m_pRootBuffer;
+  EntBuffer* pEntryBuffer = m_pRootBuffer;
   
   if ( ! pEntryBuffer )
     return nullptr;
@@ -621,7 +621,7 @@ EntryBuffer* IndexTree::pFirstH0Buffer(void)
   while (pEntryBuffer) {
     
     Item* aFirstEntry = pEntryBuffer->aLeadEntry();
-    pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aFirstEntry);
+    pEntryBuffer = EntBuffer::pRefdEntryBuffer(aFirstEntry);
     
     if (pEntryBuffer->iBufferHeight() == 0) {
       return pEntryBuffer;
@@ -700,12 +700,12 @@ bool IndexTree::bInsertEntry(RowBuffer* pRowBuffer, i8 i_Row, Id& xId)
   //xKeyWrk.vShow(m_pIndex->pIdxColVec());
   
   if ( ! m_pRootBuffer ) {
-    m_pRootBuffer = new EntryBuffer;
+    m_pRootBuffer = new EntBuffer;
     m_pRootBuffer->vIndex(m_pIndex);
     m_pRootBuffer->vPartitionNo(m_iPartitionNo);
   }
   
-  Item* aKeyEntry = EntryBuffer::aInsertKeyTree(xKeyWrk,&m_pRootBuffer);
+  Item* aKeyEntry = EntBuffer::aInsertKeyTree(xKeyWrk,&m_pRootBuffer);
   ASSERT(aKeyEntry);
   
   //m_pRootBuffer->bVerify();
@@ -728,11 +728,11 @@ void IndexTree::vLazyBuild(void)
 /*----------------------------------------------------------------------------*/
 /* pop entry buffer from sub list                                             */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* IndexTree::pPopSubList(EntryBuffer** ppSubList)
+EntBuffer* IndexTree::pPopSubList(EntBuffer** ppSubList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
 
-  EntryBuffer* pTopBuffer = *ppSubList;
+  EntBuffer* pTopBuffer = *ppSubList;
   
   if (! pTopBuffer)
     return nullptr;
@@ -751,7 +751,7 @@ EntryBuffer* IndexTree::pPopSubList(EntryBuffer** ppSubList)
 /*----------------------------------------------------------------------------*/
 /* position the IndexTree at a particular height of index buffer              */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* IndexTree::pPositionH0Buffer(KeyWrk& xKeyWrk)
+EntBuffer* IndexTree::pPositionH0Buffer(KeyWrk& xKeyWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
@@ -764,7 +764,7 @@ EntryBuffer* IndexTree::pPositionH0Buffer(KeyWrk& xKeyWrk)
 /*----------------------------------------------------------------------------*/
 /* get root entry                                                             */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* IndexTree::pRoot(void)
+EntBuffer* IndexTree::pRoot(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
@@ -831,7 +831,7 @@ bool IndexTree::bVerifyIndex(void)
 /*----------------------------------------------------------------------------*/
 /* visualize the index                                                        */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vDumpLevel(EntryBuffer* pEntryBuffer)
+void IndexTree::vDumpLevel(EntBuffer* pEntryBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
@@ -841,7 +841,7 @@ void IndexTree::vDumpLevel(EntryBuffer* pEntryBuffer)
   while (aItem) {
     
     // get the index buffer the first enetry poinst to
-    EntryBuffer* pEntryEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
+    EntBuffer* pEntryEntryBuffer = EntBuffer::pRefdEntryBuffer(aItem);
     
     // print the decile of the buffer
     vTrace("%lld"_Stz, pEntryEntryBuffer->iDecile());
@@ -869,7 +869,7 @@ void IndexTree::vVisualize(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   // start with the root buffer
-  EntryBuffer* pEntryBuffer = m_pRootBuffer;
+  EntBuffer* pEntryBuffer = m_pRootBuffer;
   
   if ( ! pEntryBuffer)
     return;
@@ -893,7 +893,7 @@ void IndexTree::vVisualize(void)
 
     // if we are at level 1, iterate thru next buffers
     if (pEntryBuffer->iBufferHeight() == 1) {
-      pEntryBuffer = (EntryBuffer*)pEntryBuffer->pNextBuffer();
+      pEntryBuffer = (EntBuffer*)pEntryBuffer->pNextBuffer();
     }
     else {
       vTrace("\n"_Stz);
@@ -902,7 +902,7 @@ void IndexTree::vVisualize(void)
       Item* aItem = pEntryBuffer->aLeadEntry();
       
       // get the index buffer this entry points to
-      pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
+      pEntryBuffer = EntBuffer::pRefdEntryBuffer(aItem);
     }
   }
   

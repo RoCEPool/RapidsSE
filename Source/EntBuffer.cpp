@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntryBuffer.cpp -- Item Buffer                                            */
+/* EntBuffer.cpp -- Item Buffer                                            */
 /*============================================================================*/
 
 #include "Data.h"
@@ -18,9 +18,9 @@ bool mbWatch = false;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* Data::_pEntryBuffer(void* aAddress)
+EntBuffer* Data::_pEntryBuffer(void* aAddress)
 {
-  EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>(aAddress);
+  EntBuffer* pEntryBuffer = reinterpret_cast<EntBuffer*>(aAddress);
   
   RASSERT_TYPE(pEntryBuffer,CN_ENTBUFFER);
   
@@ -30,10 +30,10 @@ EntryBuffer* Data::_pEntryBuffer(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* EntryBuffer::operator new(size_t)
+void* EntBuffer::operator new(size_t)
 {
-  EntryBuffer* pEntryBuffer =
-    static_cast<EntryBuffer*>(HeapMem::pAllocate(CN_ENTBUFFER));
+  EntBuffer* pEntryBuffer =
+    static_cast<EntBuffer*>(HeapMem::pAllocate(CN_ENTBUFFER));
   
   return pEntryBuffer;
 }
@@ -41,7 +41,7 @@ void* EntryBuffer::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* EntryBuffer::operator new(size_t, void* aAddress)
+void* EntBuffer::operator new(size_t, void* aAddress)
 {
   return aAddress;
 }
@@ -49,9 +49,9 @@ void* EntryBuffer::operator new(size_t, void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* free an entry buffer back to the heap                                      */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::operator delete(void* aAddress)
+void EntBuffer::operator delete(void* aAddress)
 {
-  EntryBuffer* pEntryBuffer = static_cast<EntryBuffer*>(aAddress);
+  EntBuffer* pEntryBuffer = static_cast<EntBuffer*>(aAddress);
   
   HeapMem::vFree(pEntryBuffer);
 }
@@ -59,7 +59,7 @@ void EntryBuffer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EntryBuffer::EntryBuffer(void)
+EntBuffer::EntBuffer(void)
 : DataBuffer(CN_ENTBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
@@ -79,7 +79,7 @@ EntryBuffer::EntryBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-EntryBuffer::~EntryBuffer(void) noexcept(false)
+EntBuffer::~EntBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 }
@@ -92,9 +92,9 @@ EntryBuffer::~EntryBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump entry buffer                                                          */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void EntBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  EntryBuffer* pEntryBuffer = _pEntryBuffer(pObject);
+  EntBuffer* pEntryBuffer = _pEntryBuffer(pObject);
   
   pEntryBuffer->vShow();
 }
@@ -102,9 +102,9 @@ void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* aGetNextLeft -- get the next left entry                                     */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aGetNextEntry(EntryBuffer** ppEntryBuffer, Item* aPrevEntry)
+Item* EntBuffer::aGetNextEntry(EntBuffer** ppEntryBuffer, Item* aPrevEntry)
 {
-  EntryBuffer* pEntryBuffer = *ppEntryBuffer;
+  EntBuffer* pEntryBuffer = *ppEntryBuffer;
   
   Item *aNextEntry = pEntryBuffer->aNextEntry(aPrevEntry, 0);
   if (! aNextEntry ) {
@@ -120,11 +120,11 @@ Item* EntryBuffer::aGetNextEntry(EntryBuffer** ppEntryBuffer, Item* aPrevEntry)
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pRefdEntryBuffer(Item* pItem)
+EntBuffer* EntBuffer::pRefdEntryBuffer(Item* pItem)
 {
   Id xId = pItem->xId();
   
-  EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(xId);
+  EntBuffer* pEntryBuffer = EntBuffer::pRefdEntryBuffer(xId);
     
   return pEntryBuffer;
 }
@@ -132,15 +132,15 @@ EntryBuffer* EntryBuffer::pRefdEntryBuffer(Item* pItem)
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pRefdEntryBuffer(Id& xId)
+EntBuffer* EntBuffer::pRefdEntryBuffer(Id& xId)
 {
   bn nBufferNo = xId.iBuffer();
   
   HeapBuffer* pHeapBuffer =
   reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));
   
-  EntryBuffer* pEntryBuffer =
-  reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
+  EntBuffer* pEntryBuffer =
+  reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
   
   ASSERT(pEntryBuffer);
   ASSERT(pEntryBuffer->eClass() == CN_ENTBUFFER);
@@ -156,7 +156,7 @@ EntryBuffer* EntryBuffer::pRefdEntryBuffer(Id& xId)
 /*----------------------------------------------------------------------------*/
 /* allot an entry in this buffer                                              */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aAllotEntry(i8 nBytes_Without_Offsets)
+Item* EntBuffer::aAllotEntry(i8 nBytes_Without_Offsets)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -172,7 +172,7 @@ Item* EntryBuffer::aAllotEntry(i8 nBytes_Without_Offsets)
 /*----------------------------------------------------------------------------*/
 /* analyze this buffer                                                        */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
+void EntBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
                            i8& iBuffers, i8& iEntries)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
@@ -196,7 +196,7 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
          aItem = aNextEntry(aItem, 0)) {
       
       // get the index buffer from the entry
-      EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
+      EntBuffer* pEntryBuffer = EntBuffer::pRefdEntryBuffer(aItem);
       
       ASSERT(pEntryBuffer);
       ASSERT(pEntryBuffer->eClass() == CN_ENTBUFFER);
@@ -211,7 +211,7 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
 /*----------------------------------------------------------------------------*/
 /* assert valid entry buffer                                                  */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vAssertEntryBuffer(void)
+void EntBuffer::vAssertEntryBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 }
@@ -219,9 +219,9 @@ void EntryBuffer::vAssertEntryBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* return number of index buffers under this buffer                           */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vBufferCount(i8& nBuffers)
+void EntBuffer::vBufferCount(i8& nBuffers)
 {
-  EntryBuffer* pNextBuffer = nullptr;
+  EntBuffer* pNextBuffer = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // other index
@@ -238,7 +238,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
        aItem = aNextEntry(aItem, 0)) {
     
     // get the index buffer from the entry
-    pNextBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
+    pNextBuffer = EntBuffer::pRefdEntryBuffer(aItem);
     
     ASSERT(pNextBuffer);
     ASSERT(pNextBuffer->eClass() == CN_ENTBUFFER);
@@ -251,7 +251,7 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
 /*----------------------------------------------------------------------------*/
 /* cut entry from skip list                                                   */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vCutEntry(Item* aItem, Item* aPriorVec[])
+void EntBuffer::vCutEntry(Item* aItem, Item* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -266,7 +266,7 @@ void EntryBuffer::vCutEntry(Item* aItem, Item* aPriorVec[])
 /*----------------------------------------------------------------------------*/
 /* delete the given entry                                                     */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDeleteEntry(Item** aaItem)
+void EntBuffer::vDeleteEntry(Item** aaItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -290,7 +290,7 @@ void EntryBuffer::vDeleteEntry(Item** aaItem)
 /*----------------------------------------------------------------------------*/
 /* drop lock for write                                                        */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDropWrite(void)
+void EntBuffer::vDropWrite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -300,7 +300,7 @@ void EntryBuffer::vDropWrite(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDump(void)
+void EntBuffer::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -315,7 +315,7 @@ void EntryBuffer::vDump(void)
          aItem = aNextEntry(aItem, 0)) {
       
       // get the index buffer from the entry
-      EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
+      EntBuffer* pEntryBuffer = EntBuffer::pRefdEntryBuffer(aItem);
       
       ASSERT(pEntryBuffer);
       ASSERT(pEntryBuffer->eClass() == CN_ENTBUFFER);
@@ -328,7 +328,7 @@ void EntryBuffer::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* dump the given prior vector                                                */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDumpPriorVec(Item* aPriorVec[])
+void EntBuffer::vDumpPriorVec(Item* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -353,7 +353,7 @@ void EntryBuffer::vDumpPriorVec(Item* aPriorVec[])
 /*----------------------------------------------------------------------------*/
 /* get first child buffer                                                     */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pFirstChildBuffer(void)
+EntBuffer* EntBuffer::pFirstChildBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -362,7 +362,7 @@ EntryBuffer* EntryBuffer::pFirstChildBuffer(void)
 #endif
   
   Item* aFirstEntry = this->aLeadEntry();
-  EntryBuffer* pChildEntryBuffer = EntryBuffer::pRefdEntryBuffer(aFirstEntry);
+  EntBuffer* pChildEntryBuffer = EntBuffer::pRefdEntryBuffer(aFirstEntry);
   
   return pChildEntryBuffer;
 }
@@ -370,7 +370,7 @@ EntryBuffer* EntryBuffer::pFirstChildBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get an entry by offset                                                     */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aGetEntryOffset(i8 iOffset)
+Item* EntBuffer::aGetEntryOffset(i8 iOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -382,7 +382,7 @@ Item* EntryBuffer::aGetEntryOffset(i8 iOffset)
 /*----------------------------------------------------------------------------*/
 /* get split entry by split number                                            */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aGetEntrySplit(i8 iSplitEntryNo,Item** aaPriorEntry)
+Item* EntBuffer::aGetEntrySplit(i8 iSplitEntryNo,Item** aaPriorEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -414,7 +414,7 @@ Item* EntryBuffer::aGetEntrySplit(i8 iSplitEntryNo,Item** aaPriorEntry)
 /*----------------------------------------------------------------------------*/
 /* grab lock for write                                                        */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vGrabWrite(void)
+void EntBuffer::vGrabWrite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -424,7 +424,7 @@ void EntryBuffer::vGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 /* get the higher level index buffer                                          */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pHigherBuffer(void)
+EntBuffer* EntBuffer::pHigherBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -434,7 +434,7 @@ EntryBuffer* EntryBuffer::pHigherBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set the higher level index                                                 */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vHigherBuffer(EntryBuffer* pHigherBuffer)
+void EntBuffer::vHigherBuffer(EntBuffer* pHigherBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -444,7 +444,7 @@ void EntryBuffer::vHigherBuffer(EntryBuffer* pHigherBuffer)
 /*----------------------------------------------------------------------------*/
 /* set the index of the index buffer                                          */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vIndex(Index* pIndex)
+void EntBuffer::vIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -454,7 +454,7 @@ void EntryBuffer::vIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* get the index of the index buffer                                          */
 /*----------------------------------------------------------------------------*/
-Index* EntryBuffer::pIndex(void)
+Index* EntBuffer::pIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -464,7 +464,7 @@ Index* EntryBuffer::pIndex(void)
 /*----------------------------------------------------------------------------*/
 /* get last entry                                                             */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aLastEntry(void)
+Item* EntBuffer::aLastEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -490,7 +490,7 @@ Item* EntryBuffer::aLastEntry(void)
 /*----------------------------------------------------------------------------*/
 /* get lead entry (the entry after head entry                                 */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aLeadEntry(void)
+Item* EntBuffer::aLeadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -508,12 +508,12 @@ Item* EntryBuffer::aLeadEntry(void)
 /*----------------------------------------------------------------------------*/
 /* get length of list of buffers                                               */
 /*----------------------------------------------------------------------------*/
-i8 EntryBuffer::iLengthList(void)
+i8 EntBuffer::iLengthList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   i8 iLength = 0;
-  for (EntryBuffer* pLn = this; pLn; pLn = pLn->pNextBuffer())
+  for (EntBuffer* pLn = this; pLn; pLn = pLn->pNextBuffer())
     iLength++;
   
   return iLength;
@@ -522,16 +522,16 @@ i8 EntryBuffer::iLengthList(void)
 /*----------------------------------------------------------------------------*/
 /* get length of sublist of buffers                                           */
 /*----------------------------------------------------------------------------*/
-i8 EntryBuffer::iLengthSubList(void)
+i8 EntBuffer::iLengthSubList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   i8 iLength = 0;
   
-  EntryBuffer* pThisL0 = this;
-  EntryBuffer* pThisL1 = pThisL0->pHigherBuffer();
+  EntBuffer* pThisL0 = this;
+  EntBuffer* pThisL1 = pThisL0->pHigherBuffer();
   
-  EntryBuffer* pL0;
+  EntBuffer* pL0;
   for (pL0 = pThisL0;
        pL0 && pL0->pHigherBuffer() == pThisL1;
        pL0 = pL0->pNextBuffer()) {
@@ -545,7 +545,7 @@ i8 EntryBuffer::iLengthSubList(void)
 /*----------------------------------------------------------------------------*/
 /* convert given entry into free entry                                        */
 /*----------------------------------------------------------------------------*/
-FreeItem* EntryBuffer::aMakeFreeEntry(Item* aItem)
+FreeItem* EntBuffer::aMakeFreeEntry(Item* aItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -561,9 +561,9 @@ FreeItem* EntryBuffer::aMakeFreeEntry(Item* aItem)
 /*----------------------------------------------------------------------------*/
 /* move to exact key entry                                                    */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** paEntryBuffer)
+Item* EntBuffer::pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntryBuffer)
 {
-  EntryBuffer* pEntryBuffer = *paEntryBuffer;
+  EntBuffer* pEntryBuffer = *paEntryBuffer;
   
   if (aItem == pEntryBuffer->aSkipRoots())
     aItem = pEntryBuffer->aNextEntry(aItem,0);
@@ -597,9 +597,9 @@ Item* EntryBuffer::pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer**
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** paEntryBuffer)
+Item* EntBuffer::pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntryBuffer)
 {
-  EntryBuffer* pEntryBuffer = *paEntryBuffer;
+  EntBuffer* pEntryBuffer = *paEntryBuffer;
   
   if (aItem == pEntryBuffer->aSkipRoots())
     aItem = pEntryBuffer->aNextEntry(aItem,0);
@@ -632,9 +632,9 @@ Item* EntryBuffer::pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBu
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** paEntryBuffer)
+Item* EntBuffer::pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntryBuffer)
 {
-  EntryBuffer* pEntryBuffer = *paEntryBuffer;
+  EntBuffer* pEntryBuffer = *paEntryBuffer;
   
   if (aItem == pEntryBuffer->aSkipRoots())
     aItem = pEntryBuffer->aNextEntry(aItem,0);
@@ -671,9 +671,9 @@ Item* EntryBuffer::pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntryB
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** paEntryBuffer)
+Item* EntBuffer::pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntryBuffer)
 {
-  EntryBuffer* pEntryBuffer = *paEntryBuffer;
+  EntBuffer* pEntryBuffer = *paEntryBuffer;
   
   aItem = pEntryBuffer->aNextEntry(aItem,0);
   
@@ -698,9 +698,9 @@ Item* EntryBuffer::pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** 
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::pMoveToPrevEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** paEntryBuffer)
+Item* EntBuffer::pMoveToPrevEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntryBuffer)
 {
-  EntryBuffer* pEntryBuffer = *paEntryBuffer;
+  EntBuffer* pEntryBuffer = *paEntryBuffer;
   
   if (aItem == pEntryBuffer->aSkipRoots())
     aItem = pEntryBuffer->aNextEntry(aItem,0);
@@ -731,7 +731,7 @@ Item* EntryBuffer::pMoveToPrevEntry(Item* aItem, KeyWrk& xKeyWrk, EntryBuffer** 
 /*----------------------------------------------------------------------------*/
 /* get next buffer                                                            */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pNextBuffer(void)
+EntBuffer* EntBuffer::pNextBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -741,7 +741,7 @@ EntryBuffer* EntryBuffer::pNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set next buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vNextBuffer(EntryBuffer* pNextBuffer)
+void EntBuffer::vNextBuffer(EntBuffer* pNextBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -751,7 +751,7 @@ void EntryBuffer::vNextBuffer(EntryBuffer* pNextBuffer)
 /*----------------------------------------------------------------------------*/
 /* get next entry                                                             */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aNextEntry(Item* aCurrent, i8 iLevel)
+Item* EntBuffer::aNextEntry(Item* aCurrent, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -772,7 +772,7 @@ Item* EntryBuffer::aNextEntry(Item* aCurrent, i8 iLevel)
 /*----------------------------------------------------------------------------*/
 /* pop entry from lazy chain                                                  */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aPopLazyChain(void)
+Item* EntBuffer::aPopLazyChain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -794,7 +794,7 @@ Item* EntryBuffer::aPopLazyChain(void)
 /*----------------------------------------------------------------------------*/
 /* get prev buffer                                                            */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pPrevBuffer(void)
+EntBuffer* EntBuffer::pPrevBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -804,7 +804,7 @@ EntryBuffer* EntryBuffer::pPrevBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set prev buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPrevBuffer(EntryBuffer* pPrevBuffer)
+void EntBuffer::vPrevBuffer(EntBuffer* pPrevBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -814,7 +814,7 @@ void EntryBuffer::vPrevBuffer(EntryBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 /* reset/empty the buffer                                                     */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vReset(void)
+void EntBuffer::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -835,7 +835,7 @@ void EntryBuffer::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* restore the buffer after being received over a socket                      */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vRestore(void)
+void EntBuffer::vRestore(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -875,7 +875,7 @@ void EntryBuffer::vRestore(void)
 /*----------------------------------------------------------------------------*/
 /* restore the index of the index buffer                                      */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vRestoreIndex(Index* pIndex)
+void EntBuffer::vRestoreIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -886,7 +886,7 @@ void EntryBuffer::vRestoreIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* show entry                                                                 */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vShowEntry(Item* aItem)
+void EntBuffer::vShowEntry(Item* aItem)
 {
   KeyData* aKey = _aKeyData(aItem->aDataArea());
   i8 iOffset = iToOffset(aItem);
@@ -920,13 +920,13 @@ void EntryBuffer::vShowEntry(Item* aItem)
 /*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vShow(Item* aMarkEntry)
+void EntBuffer::vShow(Item* aMarkEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   s256 sHigherBuffer;
   if (m_pHigherBuffer)
-    StrLib::wToString((i8)((EntryBuffer*)m_pHigherBuffer)->m_iBufferHeight,
+    StrLib::wToString((i8)((EntBuffer*)m_pHigherBuffer)->m_iBufferHeight,
                       sHigherBuffer.aChar());
   else
     sHigherBuffer = "..."_Stz;
@@ -935,7 +935,7 @@ void EntryBuffer::vShow(Item* aMarkEntry)
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
   
-  vTrace("EntryBuffer: %p (buffer %lld): items: %lld used: %lld freespace %lld\n"_Stz,
+  vTrace("EntBuffer: %p (buffer %lld): items: %lld used: %lld freespace %lld\n"_Stz,
          this,*nPoolBufferNo(),nItems(),nUsedBytes(),nFreeBytes());
   
   vTrace("  higherBuffer %p (L%s) prevBuffer %p nextBuffer %p\n"_Stz,
@@ -977,7 +977,7 @@ void EntryBuffer::vShow(Item* aMarkEntry)
 /*----------------------------------------------------------------------------*/
 /* show short form of buffer                                                  */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vShowShort(void)
+void EntBuffer::vShowShort(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -994,9 +994,9 @@ void EntryBuffer::vShowShort(void)
     i8 iVal = aKey->iGetInt();
     
     if (m_iBufferHeight)
-      vTrace("%lld(%lld)"_Stz,iVal,*EntryBuffer::pRefdEntryBuffer(aItem)->nPoolBufferNo());
+      vTrace("%lld(%lld)"_Stz,iVal,*EntBuffer::pRefdEntryBuffer(aItem)->nPoolBufferNo());
     else
-      vTrace("%lld|%lld|"_Stz,iVal,*EntryBuffer::pRefdEntryBuffer(aItem)->nPoolBufferNo());
+      vTrace("%lld|%lld|"_Stz,iVal,*EntBuffer::pRefdEntryBuffer(aItem)->nPoolBufferNo());
     
     iOffset = aItem->iNEO(0);
     if (iOffset > -1)
@@ -1008,19 +1008,19 @@ void EntryBuffer::vShowShort(void)
 /*----------------------------------------------------------------------------*/
 /* show sublist of buffers                                                    */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vShowSubList(void)
+void EntBuffer::vShowSubList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  EntryBuffer* pThisL0 = this;
-  EntryBuffer* pThisL1 = pThisL0->pHigherBuffer();
+  EntBuffer* pThisL0 = this;
+  EntBuffer* pThisL1 = pThisL0->pHigherBuffer();
   
   vTrace("{"_Stz);
   
   if (pThisL0->pPrevBuffer())
     vTrace("<-"_Stz);
   
-  EntryBuffer* pL0;
+  EntBuffer* pL0;
   for (pL0 = pThisL0;
        pL0 && pL0->pHigherBuffer() == pThisL1;
        pL0 = pL0->pNextBuffer()) {
@@ -1040,7 +1040,7 @@ void EntryBuffer::vShowSubList(void)
 /*----------------------------------------------------------------------------*/
 /* show contents of all buffers in index tree                                 */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vShowTree(bool bDumpBuffer)
+void EntBuffer::vShowTree(bool bDumpBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -1049,7 +1049,7 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
   
   vTrace("L%lld"_Stz,m_iBufferHeight);
   
-  for (EntryBuffer* pBuffer = this;
+  for (EntBuffer* pBuffer = this;
        pBuffer;
        pBuffer = pBuffer->pNextBuffer()) {
     
@@ -1062,7 +1062,7 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
   vTrace("\n"_Stz);
   
   if (bDumpBuffer) {
-    for (EntryBuffer* pBuffer = this;
+    for (EntBuffer* pBuffer = this;
          pBuffer;
          pBuffer = pBuffer->pNextBuffer())
       pBuffer->vShow();
@@ -1082,15 +1082,15 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
   HeapBuffer* pHeapBuffer =
   reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBuffer));
   
-  EntryBuffer* pChildBuffer =
-  reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
+  EntBuffer* pChildBuffer =
+  reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
   
   pChildBuffer->vShowTree(bDumpBuffer);
 }
 /*----------------------------------------------------------------------------*/
 /* get root of skip list (was aka head entry                                  */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aSkipRoots(void)
+Item* EntBuffer::aSkipRoots(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -1101,12 +1101,12 @@ Item* EntryBuffer::aSkipRoots(void)
 /*----------------------------------------------------------------------------*/
 /* splice the given buffer after this buffer                                  */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vSpliceAfter(EntryBuffer* pSplicedBuffer)
+void EntBuffer::vSpliceAfter(EntBuffer* pSplicedBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  EntryBuffer* pThisBuffer = this;
-  EntryBuffer* pNextBuffer = pThisBuffer->pNextBuffer();
+  EntBuffer* pThisBuffer = this;
+  EntBuffer* pNextBuffer = pThisBuffer->pNextBuffer();
   
   // the spliced buffer is always inserted after this buffer
   pThisBuffer->vNextBuffer(pSplicedBuffer);
@@ -1128,11 +1128,11 @@ void EntryBuffer::vSpliceAfter(EntryBuffer* pSplicedBuffer)
 /*----------------------------------------------------------------------------*/
 /* truncate this buffer by removing all entries                               */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vTruncate(void)
+void EntBuffer::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  EntryBuffer* pNextBuffer;
+  EntBuffer* pNextBuffer;
   
   if (m_iBufferHeight != 0) {
     
@@ -1142,7 +1142,7 @@ void EntryBuffer::vTruncate(void)
          aItem = aNextEntry(aItem, 0)) {
       
       // get the index buffer from the entry
-      pNextBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
+      pNextBuffer = EntBuffer::pRefdEntryBuffer(aItem);
       
       ASSERT(pNextBuffer);
       ASSERT(pNextBuffer->eClass() == CN_ENTBUFFER);
@@ -1156,16 +1156,16 @@ void EntryBuffer::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 /* unlink the sublist of EB's following this L0 EB within this L1             */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pUnlinkSubList(void)
+EntBuffer* EntBuffer::pUnlinkSubList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   ASSERT(0 == m_iBufferHeight);
   
-  EntryBuffer* pThisL0 = this;
-  EntryBuffer* pThisL1 = pThisL0->pHigherBuffer();
-  EntryBuffer* pNextL0 = pThisL0->pNextBuffer();
-  EntryBuffer* pNextL1 = pThisL1->pNextBuffer();
+  EntBuffer* pThisL0 = this;
+  EntBuffer* pThisL1 = pThisL0->pHigherBuffer();
+  EntBuffer* pNextL0 = pThisL0->pNextBuffer();
+  EntBuffer* pNextL1 = pThisL1->pNextBuffer();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // circumstance (a) no more L0
@@ -1185,7 +1185,7 @@ EntryBuffer* EntryBuffer::pUnlinkSubList(void)
   //
   //----------------------------------------------------------------------------
   
-  EntryBuffer* pThisL0SubList = pNextL0;
+  EntBuffer* pThisL0SubList = pNextL0;
   
   // the sublist no longer points back to this L0
   pThisL0SubList->vPrevBuffer(nullptr);
@@ -1204,8 +1204,8 @@ EntryBuffer* EntryBuffer::pUnlinkSubList(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // circumstance (d) middle L1, there is a sublist
   
-  EntryBuffer* pFirstL0ofNextL1 = pNextL1->pFirstChildBuffer();
-  EntryBuffer* pLastL0ofThisL1 = pFirstL0ofNextL1->pPrevBuffer();
+  EntBuffer* pFirstL0ofNextL1 = pNextL1->pFirstChildBuffer();
+  EntBuffer* pLastL0ofThisL1 = pFirstL0ofNextL1->pPrevBuffer();
   
   // the next chain points to first L0 buffer of next L1
   pThisL0->vNextBuffer(pFirstL0ofNextL1);
@@ -1227,7 +1227,7 @@ EntryBuffer* EntryBuffer::pUnlinkSubList(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* EntryBuffer::aFooter(void)
+Footer* EntBuffer::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER);
   

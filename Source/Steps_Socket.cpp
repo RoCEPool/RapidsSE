@@ -515,8 +515,8 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
 
     if (bDiscardEntryBuffer) {
 
-      bResult = pSocket->bRecvBytes(aLowBuff,sizeof(EntryBuffer),oSysCall);
-      vTrace("Discarded EntryBuffer under low mem\n"_Stz);
+      bResult = pSocket->bRecvBytes(aLowBuff,sizeof(EntBuffer),oSysCall);
+      vTrace("Discarded EntBuffer under low mem\n"_Stz);
     }
     
     mpTask->m_pDataStack->vPushPointer(pJob_WriteBuffer);

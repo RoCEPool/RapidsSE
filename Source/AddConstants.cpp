@@ -598,7 +598,7 @@ void Axioms::vAddConstants(void)
   /* 33 */ vAddConstant("SIZEOF_QUEUE"_Stz,        sizeof(Queue));
   /* 34 */ vAddConstant("SIZEOF_QUEUEBUFFER"_Stz,  sizeof(QueueBuffer));
   /* 36 */ vAddConstant("SIZEOF_ROW"_Stz,          sizeof(Item));
-  /* 37 */ vAddConstant("SIZEOF_ROWBUFFER"_Stz,    sizeof(EntryBuffer));
+  /* 37 */ vAddConstant("SIZEOF_ROWBUFFER"_Stz,    sizeof(EntBuffer));
   /* 38 */ vAddConstant("SIZEOF_ROWCURSOR"_Stz,    (i8)0);
   
   /* 43 */ vAddConstant("SIZEOF_SESSION"_Stz,      sizeof(Session));

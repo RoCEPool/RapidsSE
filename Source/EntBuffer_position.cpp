@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntryBuffer_position.cpp -- position related functions for EntryBuffer     */
+/* EntryBuffer_position.cpp -- position related functions for EntBuffer     */
 /*============================================================================*/
 
 #include "Data.h"
@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at given height starting from this buffer      */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
+EntBuffer* EntBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -36,7 +36,7 @@ EntryBuffer* EntryBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
    */
   
   
-  EntryBuffer* pEntryBuffer = this;
+  EntBuffer* pEntryBuffer = this;
   
   i8 iBufferHeight;
   Item* aItem;
@@ -58,7 +58,7 @@ EntryBuffer* EntryBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
     ASSERT(aItem);
     
     // get the index buffer of the entry
-    pEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
+    pEntryBuffer = EntBuffer::pRefdEntryBuffer(aItem);
     ASSERT(pEntryBuffer);
     ASSERT(pEntryBuffer->eClass() == CN_ENTBUFFER);
   }
@@ -69,7 +69,7 @@ EntryBuffer* EntryBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and return entry prior to key                          */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::pPositionPriorEntry(Item* aFindKey)
+Item* EntBuffer::pPositionPriorEntry(Item* aFindKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -109,7 +109,7 @@ Item* EntryBuffer::pPositionPriorEntry(Item* aFindKey)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and return entry prior to key                          */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::pPositionPriorEntry(KeyWrk& xFindKey)
+Item* EntBuffer::pPositionPriorEntry(KeyWrk& xFindKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -149,7 +149,7 @@ Item* EntryBuffer::pPositionPriorEntry(KeyWrk& xFindKey)
 /* compute prior vector for find key, such that next of priorVec[0] is        */
 /* specifically the given find entry                                          */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPositionPriorVecEntry(Item* aFindKey, Item* aPriorVec[],
+void EntBuffer::vPositionPriorVecEntry(Item* aFindKey, Item* aPriorVec[],
                                          Item* aFindEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
@@ -212,9 +212,9 @@ void EntryBuffer::vPositionPriorVecEntry(Item* aFindKey, Item* aPriorVec[],
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
+void EntBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
                                           Item* aPriorVec[],
-                                          EntryBuffer* pRefdChildBuffer)
+                                          EntBuffer* pRefdChildBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
@@ -319,8 +319,8 @@ void EntryBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
 }
 
 /*----------------------------------------------------------------------------*/
-//void EntryBuffer::vPositionPriorVecBuffer(Item* aFindKey, Item* aPriorVec[],
-//                                          EntryBuffer* pToBuffer)
+//void EntBuffer::vPositionPriorVecBuffer(Item* aFindKey, Item* aPriorVec[],
+//                                          EntBuffer* pToBuffer)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 //
@@ -394,7 +394,7 @@ void EntryBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
 //        bool bKeysAreEqual = KeyData::bEqualTo(aNextEntry_sl, aFindKey);
 //
 //        if (bKeysAreEqual &&
-//            (pToBuffer == EntryBuffer::pRefdEntryBuffer(aNextEntry_sl)->pPrevBuffer()))
+//            (pToBuffer == EntBuffer::pRefdEntryBuffer(aNextEntry_sl)->pPrevBuffer()))
 //          break;
 //      }
 //

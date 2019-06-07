@@ -32,7 +32,7 @@ void Step::vEntryBufferDump(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("entryBuffer.dump"_Stz);
   
-  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  EntBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   
   pIndexBuffer->vShow();
   
@@ -52,7 +52,7 @@ void Step::vEntryBufferIndexFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("entryBuffer.index@"_Stz);
   
-  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  EntBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   
   mpTask->m_pDataStack->vPushPointer(pIndexBuffer->pIndex());
   
@@ -72,7 +72,7 @@ void Step::vEntryBufferIndexStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("entryBuffer.isLast!"_Stz);
   
-  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  EntBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("entryBuffer.index@"_Stz);
@@ -98,7 +98,7 @@ void Step::vEntryBufferNextBuffer(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("entryBuffer.nextBuffer"_Stz);
   
-  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  EntBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   
   if (pIndexBuffer->pNextBuffer()) {
     bn nBuffer = pIndexBuffer->pNextBuffer()->nPoolBufferNo();
@@ -122,7 +122,7 @@ void Step::vEntryBufferPartitionFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("entryBuffer.partition@"_Stz);
   
-  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  EntBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   
   mpTask->m_pDataStack->vPushI8(pIndexBuffer->iPartitionNo());
   
@@ -142,7 +142,7 @@ void Step::vEntryBufferPartitionStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
     THROW_INVALID_DSTACK("entryBuffer.partition!"_Stz);
   
-  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
+  EntBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   
   i8 iPartitionNo;
   if ( ! mpTask->m_pDataStack->bPop(iPartitionNo) )
@@ -165,7 +165,7 @@ void Step::vEntryBufferToEntryBuffer(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("entryBuffer::toEntryBuffer"_Stz);
   
-  EntryBuffer* pEntryBuffer = _pEntryBuffer((void*)sString.iToI8());
+  EntBuffer* pEntryBuffer = _pEntryBuffer((void*)sString.iToI8());
   
   mpTask->m_pDataStack->vPushPointer(pEntryBuffer);
   

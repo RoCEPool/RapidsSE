@@ -16,7 +16,7 @@ namespace Data
     Index*       m_pIndex;         // which index
     i8           m_iPartitionNo;   // which partition no
     
-    EntryBuffer* m_pRootBuffer;    // the root buffer
+    EntBuffer* m_pRootBuffer;    // the root buffer
 
     // must be last
     Footer m_xFooter;
@@ -35,18 +35,18 @@ namespace Data
   
     Stz*         pAnalyze(void);
     void         vCompact(void);
-    void         vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pLeftL0);
-    void         vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
-    void         vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0);
+    void         vCopyReInitL1(EntBuffer* pL1, EntBuffer* pLeftL0);
+    void         vCopyLeftV2(EntBuffer** ppLeftL0, EntBuffer* pRightL0);
+    void         vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0);
     void         vDump(bool bSameHeight);
     i8           nEntryBuffers(void);
-    EntryBuffer* pFirstH0Buffer(void);
+    EntBuffer* pFirstH0Buffer(void);
     Index*       pIndex(void);
     bool         bInsertEntry(RowBuffer* pRowBuffer, i8 i_Row, Id& xId);
     void         vInsertEntriesFromBuffer(RowBuffer* pRowBuffer);
     void         vLazyBuild(void);    
-    EntryBuffer* pPositionH0Buffer(KeyWrk& xKeyWrk);
-    EntryBuffer* pRoot(void);
+    EntBuffer* pPositionH0Buffer(KeyWrk& xKeyWrk);
+    EntBuffer* pRoot(void);
     void         vTidyUp(void);
     void         vTruncate(void);
     bool         bVerify(void);
@@ -56,9 +56,9 @@ namespace Data
     Footer*      aFooter(void);
     
   private:
-    void         vDumpLevel(EntryBuffer* pEntryBuffer);
-    EntryBuffer* pFirstL1Buffer(void);
-    EntryBuffer* pPopSubList(EntryBuffer** ppSubList);
+    void         vDumpLevel(EntBuffer* pEntryBuffer);
+    EntBuffer* pFirstL1Buffer(void);
+    EntBuffer* pPopSubList(EntBuffer** ppSubList);
   };
   
   IndexTree* _pIndexTree(void* pAddr);

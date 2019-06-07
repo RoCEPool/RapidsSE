@@ -252,11 +252,11 @@ void Step::vJob_SubIndexJoinIndexJoin(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the first left Buffer
-  EntryBuffer* pLeftBuffer = pLeftIndexTree->pRoot();
+  EntBuffer* pLeftBuffer = pLeftIndexTree->pRoot();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the right left Buffer
-  EntryBuffer* pRightBuffer = pRightIndexTree->pRoot();
+  EntBuffer* pRightBuffer = pRightIndexTree->pRoot();
   
   // get the lead entry of the left buffer
   Item* aLeftEntry = pLeftBuffer->aLeadEntry();
@@ -334,14 +334,14 @@ void Step::vJob_SubIndexJoinIndexJoin(MP_Task mpTask)
     if (bMoveLeft) {
       // move to the next left
       if (aLeftEntry) {
-        aLeftEntry = EntryBuffer::aGetNextEntry(&pLeftBuffer, aLeftEntry);
+        aLeftEntry = EntBuffer::aGetNextEntry(&pLeftBuffer, aLeftEntry);
       }
     }
   
     if (bMoveRight) {
       // move to the next right
       if (aRightEntry) {
-        aRightEntry = EntryBuffer::aGetNextEntry(&pRightBuffer, aRightEntry);
+        aRightEntry = EntBuffer::aGetNextEntry(&pRightBuffer, aRightEntry);
       }
     }
   }

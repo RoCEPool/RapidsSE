@@ -5,7 +5,7 @@
 
 namespace Data
 {
-  class EntryBuffer;
+  class EntBuffer;
   class KeyData;
   class Row;
   
@@ -33,7 +33,7 @@ namespace Data
     KeyData* aKey(void);
     i8   nKeySize(void);
     void vKeySize(i8 nKeySize);
-    EntryBuffer* pReferencedEntryBuffer(void);
+    EntBuffer* pReferencedEntryBuffer(void);
     void vReset(void);
     void vSetEntry(Item* pEntry);
     void vSetKey(Item* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec);

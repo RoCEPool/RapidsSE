@@ -261,7 +261,7 @@ bool RowBuffer::bHasSpace(i8 nBytes)
   
   i8 nFreeBytes = m_oRowTray.pNub()->nFreeAllotableBytes();
   
-  //! is this correct now that we have separated RowBuffer from EntryBuffer?
+  //! is this correct now that we have separated RowBuffer from EntBuffer?
   if (gpAttachMap->m_nIndexEntries > 0) {
     // has space calculation based on no of entries
     if (nRowCount() >= gpAttachMap->m_nIndexEntries)

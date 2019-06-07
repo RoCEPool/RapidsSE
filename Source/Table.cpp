@@ -197,7 +197,7 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed, i8 &nRows)
     
     i8 iPartition = TablePtn::iSlotToPartition(iSlot);
     
-    EntryBuffer *pIndexBuffer = pPartition(iSlot)->pIndexTree(pIndex->iIndexNo())->pRoot();
+    EntBuffer *pIndexBuffer = pPartition(iSlot)->pIndexTree(pIndex->iIndexNo())->pRoot();
     
     i8 nBuffers = 0;
     i8 nEntries = 0;
@@ -322,7 +322,7 @@ void Table::vLazyBuildIndexes(i8 iSlot)
     Index* pIndex = pNewIndexTree->pIndex();
     
     // get an L0 buffer
-    EntryBuffer *pIndexBuffer = pPartition->pIndexTree(pIndex->iIndexNo())->pFirstH0Buffer();
+    EntBuffer *pIndexBuffer = pPartition->pIndexTree(pIndex->iIndexNo())->pFirstH0Buffer();
     
     // build skip list for all L0 buffers
     if (pIndexBuffer)
@@ -371,7 +371,7 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, RowBuffer* pRowBuffer)
     // get index
     IndexTree* pNewIndexTree = pIndexTreeVec->pGet(i_Index);
 
-    // insert entries from EntryBuffer into the index
+    // insert entries from EntBuffer into the index
     pNewIndexTree->vInsertEntriesFromBuffer(pRowBuffer);
   }
 }
@@ -641,7 +641,7 @@ bool Table::bPurge(i8 iPartition, i8 iOlderThanSeconds)
 /*----------------------------------------------------------------------------*/
 /* get root buffer of given index                                             */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* Table::pRootBuffer(i8 i_Slot, i8 i_Index)
+EntBuffer* Table::pRootBuffer(i8 i_Slot, i8 i_Index)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -649,7 +649,7 @@ EntryBuffer* Table::pRootBuffer(i8 i_Slot, i8 i_Index)
   
   IndexTree* pIdxTree = pTblPtn->pIndexTree(i_Index);
   
-  EntryBuffer* pRootBuffer = pIdxTree->pRoot();
+  EntBuffer* pRootBuffer = pIdxTree->pRoot();
   
   return pRootBuffer;
 }
@@ -859,7 +859,7 @@ bool Table::bVerifyIndex(Index* pIndex)
     
     bool bVerify = true;
     
-    EntryBuffer *pIndexBuffer =
+    EntBuffer *pIndexBuffer =
       pPartition(iSlot)->pIndexTree(pIndex->iIndexNo())->pRoot();
     
     if (pIndexBuffer)

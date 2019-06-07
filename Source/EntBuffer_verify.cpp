@@ -17,7 +17,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_DEBUG_VERSION
 
-bool EntryBuffer::bCheckPriorVec(Item* aPriorVec[])
+bool EntBuffer::bCheckPriorVec(Item* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -62,7 +62,7 @@ bool EntryBuffer::bCheckPriorVec(Item* aPriorVec[])
 /* number entries                                                             */
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_DEBUG_VERSION
-void EntryBuffer::vNumberEntries(void)
+void EntBuffer::vNumberEntries(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -82,7 +82,7 @@ void EntryBuffer::vNumberEntries(void)
 /*----------------------------------------------------------------------------*/
 /* quick verify                                                               */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vQuickVerify(Item* aSeeEntry)
+void EntBuffer::vQuickVerify(Item* aSeeEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -139,7 +139,7 @@ void EntryBuffer::vQuickVerify(Item* aSeeEntry)
 /*----------------------------------------------------------------------------*/
 /* quick verify                                                               */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bQuickVerify(Item* aNotSeeEntry)
+bool EntBuffer::bQuickVerify(Item* aNotSeeEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -170,7 +170,7 @@ bool EntryBuffer::bQuickVerify(Item* aNotSeeEntry)
 /*----------------------------------------------------------------------------*/
 /* test for valid entry buffer                                                */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bValidEntryBuffer(void)
+bool EntBuffer::bValidEntryBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -195,7 +195,7 @@ bool EntryBuffer::bValidEntryBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* verify the structure of this buffer (and its children)                     */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerify(void)
+bool EntBuffer::bVerify(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -213,7 +213,7 @@ bool EntryBuffer::bVerify(void)
 /*----------------------------------------------------------------------------*/
 /* verify the structure of this L0 buffer                                     */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifyL0Other(void)
+bool EntBuffer::bVerifyL0Other(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -253,7 +253,7 @@ bool EntryBuffer::bVerifyL0Other(void)
 /*----------------------------------------------------------------------------*/
 /* verify the structure of this Ln buffer (any index)                         */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifyLnAny(void)
+bool EntBuffer::bVerifyLnAny(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -310,7 +310,7 @@ bool EntryBuffer::bVerifyLnAny(void)
   
   for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
-    EntryBuffer* pRefEntBuf = EntryBuffer::pRefdEntryBuffer(aItem);
+    EntBuffer* pRefEntBuf = EntBuffer::pRefdEntryBuffer(aItem);
     if (pRefEntBuf->m_iBufferHeight) {
       bValid = pRefEntBuf->bVerifyLnAny();
     }
@@ -327,7 +327,7 @@ bool EntryBuffer::bVerifyLnAny(void)
 /*----------------------------------------------------------------------------*/
 /* verify the adjacent entries not pointing to the same buffer                */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifyAdjacent(void)
+bool EntBuffer::bVerifyAdjacent(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -347,15 +347,15 @@ bool EntryBuffer::bVerifyAdjacent(void)
   for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     // get the buffer that this entry references
-    EntryBuffer* pChildEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
+    EntBuffer* pChildEntryBuffer = EntBuffer::pRefdEntryBuffer(aItem);
     
     // get the adjacent entry
     Item* aAdjacentEntry = aNextEntry(aItem,0);
     
     if (aAdjacentEntry) {
       // get the buffer that the adjacent entry references
-      EntryBuffer* pAdjacentChildEntryBuffer =
-      EntryBuffer::pRefdEntryBuffer(aAdjacentEntry);
+      EntBuffer* pAdjacentChildEntryBuffer =
+      EntBuffer::pRefdEntryBuffer(aAdjacentEntry);
       
       // the two child buffers should not be the same
       if ( pChildEntryBuffer == pAdjacentChildEntryBuffer) {
@@ -372,7 +372,7 @@ bool EntryBuffer::bVerifyAdjacent(void)
 /*----------------------------------------------------------------------------*/
 /* verify the buffer references in this Ln index buffer                       */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifyBufferRefs(void)
+bool EntBuffer::bVerifyBufferRefs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -385,7 +385,7 @@ bool EntryBuffer::bVerifyBufferRefs(void)
   
   for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
-    EntryBuffer* pChildEntBuf = EntryBuffer::pRefdEntryBuffer(aItem);
+    EntBuffer* pChildEntBuf = EntBuffer::pRefdEntryBuffer(aItem);
     
     if ( ! pChildEntBuf->bValidEntryBuffer() ) {
       vVerifyFault();
@@ -409,7 +409,7 @@ bool EntryBuffer::bVerifyBufferRefs(void)
 /*----------------------------------------------------------------------------*/
 /* verify the first key order of child buffers                                */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifyFirstKeys(void)
+bool EntBuffer::bVerifyFirstKeys(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -427,7 +427,7 @@ bool EntryBuffer::bVerifyFirstKeys(void)
   for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     // get the entry buffer that this entry references
-    EntryBuffer* pChildEntryBuffer = EntryBuffer::pRefdEntryBuffer(aItem);
+    EntBuffer* pChildEntryBuffer = EntBuffer::pRefdEntryBuffer(aItem);
     
     //pChildEntryBuffer->vShow();
     
@@ -454,7 +454,7 @@ bool EntryBuffer::bVerifyFirstKeys(void)
 /*----------------------------------------------------------------------------*/
 /* verify the items of this buffer                                            */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifyItems(void)
+bool EntBuffer::bVerifyItems(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -527,7 +527,7 @@ bool EntryBuffer::bVerifyItems(void)
 /*----------------------------------------------------------------------------*/
 /* verify that keys are in buffer order of the child buffers                  */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifyKeyBufferOrder(void)
+bool EntBuffer::bVerifyKeyBufferOrder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -547,8 +547,8 @@ bool EntryBuffer::bVerifyKeyBufferOrder(void)
       break;
     
     // get the child entry buffers
-    EntryBuffer* pChildBufferA = EntryBuffer::pRefdEntryBuffer(aItem);
-    EntryBuffer* pChildBufferB = EntryBuffer::pRefdEntryBuffer(aNextEntry);
+    EntBuffer* pChildBufferA = EntBuffer::pRefdEntryBuffer(aItem);
+    EntBuffer* pChildBufferB = EntBuffer::pRefdEntryBuffer(aNextEntry);
     
     // child A should point to child B
     if (pChildBufferA->pNextBuffer() != pChildBufferB) {
@@ -571,7 +571,7 @@ bool EntryBuffer::bVerifyKeyBufferOrder(void)
 /*----------------------------------------------------------------------------*/
 /* verify the key order of this buffer                                        */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifyKeyOrder(void)
+bool EntBuffer::bVerifyKeyOrder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -609,7 +609,7 @@ bool EntryBuffer::bVerifyKeyOrder(void)
 /*----------------------------------------------------------------------------*/
 /* verify the next, previous and higher pointers                              */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifyNextPrev(void)
+bool EntBuffer::bVerifyNextPrev(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -621,7 +621,7 @@ bool EntryBuffer::bVerifyNextPrev(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (m_pPrevBuffer) {
-    EntryBuffer* pPrevBuffer = _pEntryBuffer(m_pPrevBuffer);
+    EntBuffer* pPrevBuffer = _pEntryBuffer(m_pPrevBuffer);
     if (pPrevBuffer->pNextBuffer() != this) {
       vVerifyFault();
       return false;
@@ -635,7 +635,7 @@ bool EntryBuffer::bVerifyNextPrev(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (m_pNextBuffer) {
-    EntryBuffer* pNextBuffer = _pEntryBuffer(m_pNextBuffer);
+    EntBuffer* pNextBuffer = _pEntryBuffer(m_pNextBuffer);
     if (pNextBuffer->pPrevBuffer() != this) {
       vVerifyFault();
       return false;
@@ -649,7 +649,7 @@ bool EntryBuffer::bVerifyNextPrev(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (m_pHigherBuffer) {
-    EntryBuffer* pHigherBuffer = _pEntryBuffer(m_pHigherBuffer);
+    EntBuffer* pHigherBuffer = _pEntryBuffer(m_pHigherBuffer);
     if (pHigherBuffer->iBufferHeight() != m_iBufferHeight + 1) {
       vVerifyFault();
       return false;
@@ -662,7 +662,7 @@ bool EntryBuffer::bVerifyNextPrev(void)
 /*----------------------------------------------------------------------------*/
 /* verify the row references in this L0 index buffer                          */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifyRowRefs(void)
+bool EntBuffer::bVerifyRowRefs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -695,7 +695,7 @@ bool EntryBuffer::bVerifyRowRefs(void)
 /*----------------------------------------------------------------------------*/
 /* verify the skip list only contains only entries                            */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
+bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -771,7 +771,7 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_DEBUG_VERSION
 
-bool EntryBuffer::bVerifySkipListLevels(bool bShowKeys)
+bool EntBuffer::bVerifySkipListLevels(bool bShowKeys)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -836,7 +836,7 @@ bool EntryBuffer::bVerifySkipListLevels(bool bShowKeys)
 /*----------------------------------------------------------------------------*/
 /* verify has detected a fault                                                */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vVerifyFault(void)
+void EntBuffer::vVerifyFault(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
