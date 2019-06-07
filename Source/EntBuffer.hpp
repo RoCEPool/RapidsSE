@@ -74,11 +74,11 @@ namespace Data
     ////////////////////////////////////////////////////////////////////////////
     // static move functions
     
-    static Ent* pMoveToExactEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
-    static Ent* pMoveToGreaterThanEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
-    static Ent* pMoveToGreaterEqualEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
-    static Ent* pMoveToPrevEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
-    static Ent* pMoveToNextEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
+    static Ent* pMoveToExactEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
+    static Ent* pMoveToGreaterThanEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
+    static Ent* pMoveToGreaterEqualEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
+    static Ent* pMoveToPrevEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
+    static Ent* pMoveToNextEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
     
     ////////////////////////////////////////////////////////////////////////////
     // key positioning functions
@@ -99,7 +99,7 @@ namespace Data
   
     void        vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     void        vBuildSkipListSorted(void);
-    void        vDeleteEntry(Ent** aaItem);
+    void        vDeleteEntry(Ent** aaEnt);
     void        vDump(void);
     EntBuffer* pFirstChildBuffer(void);
     Ent*       aInsertKeyAbs(KeyWrk& xKeyWrk);
@@ -109,7 +109,7 @@ namespace Data
     void        vLazyBuild(void);
     i8          iLengthList(void);
     i8          iLengthSubList(void);
-    Ent*       aNextEntry(Ent* aItem, i8 i_Offset);
+    Ent*       aNextEntry(Ent* aEnt, i8 i_Offset);
     
     void        vReset(void);
     void        vRestore(void);
@@ -129,7 +129,7 @@ namespace Data
     void        vBuildSkipList(void);
     void        vCompact(void);
     void        vCompactLeft(void);
-    void        vCutEntry(Ent* aItem, Ent* aPriorVec[]);
+    void        vCutEntry(Ent* aEnt, Ent* aPriorVec[]);
     void        vDeleteUpwards(Ent* aDeleteKey,
                                 EntBuffer** ppRootKeyBuffer);
     void        vDumpPriorVec(Ent* aPriorVec[]);
@@ -151,7 +151,7 @@ namespace Data
     Ent*       aInsertKeyUpwards(KeyWrk& xKeyWrk,
                                    EntBuffer** ppRootKeyBuffer);
     bool         bKeyBeforeBuffer(KeyWrk& xKey);
-    FreeItem*    aMakeFreeEntry(Ent* aItem);
+    FreeItem*    aMakeFreeEntry(Ent* aEnt);
     EntBuffer* pNewHigherBuffer(void);
     EntBuffer* pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets,
                                   EntBuffer** ppRootKeyBuffer);

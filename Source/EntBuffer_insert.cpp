@@ -62,16 +62,16 @@ void EntBuffer::vBuildSkipListSorted(void)
    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
    // temp: clear out all l1 and l2 offsets for testing purpoes
    
-   for (Ent* aItem = aSkipRoots();
-   aItem != nullptr;
-   aItem = aNextEntry(aItem, 0)) {
+   for (Ent* aEnt = aSkipRoots();
+   aEnt != nullptr;
+   aEnt = aNextEntry(aEnt, 0)) {
    
    // get the number of offsets for this entry
-   i8 nOffsets = aItem->nOffsets();
+   i8 nOffsets = aEnt->nOffsets();
    
    // connect the dots
    for (i8 i_Offset = 1; i_Offset < nOffsets; i_Offset++)
-   aItem->vNEO(i_Offset,-1);
+   aEnt->vNEO(i_Offset,-1);
    }
    vShow();
    */
@@ -88,15 +88,15 @@ void EntBuffer::vBuildSkipListSorted(void)
   // go through each entry in L0 order and
   //   correct the prior offset to that entry for each level
   
-  for (Ent* aItem = aLeadEntry();
-       aItem != nullptr;
-       aItem = aNextEntry(aItem, 0)) {
+  for (Ent* aEnt = aLeadEntry();
+       aEnt != nullptr;
+       aEnt = aNextEntry(aEnt, 0)) {
     
     // where is this entry in the buffer (offset-wise)?
-    i4 iEntryOffset = iToOffset(aItem);
+    i4 iEntryOffset = iToOffset(aEnt);
     
     // get the number of offsets for this entry
-    i8 nLevels = aItem->nLevels();
+    i8 nLevels = aEnt->nLevels();
     
     // connect the dots
     for (i8 i_Level = 1; i_Level < nLevels; i_Level++) {
@@ -105,7 +105,7 @@ void EntBuffer::vBuildSkipListSorted(void)
       xPrevVec[i_Level]->vNEO(i_Level,iEntryOffset);
       
       // the previous entry at this level now becomes this entry
-      xPrevVec[i_Level] = aItem;
+      xPrevVec[i_Level] = aEnt;
     }
   }
 }
@@ -166,11 +166,11 @@ void EntBuffer::vCompact(void)
     // find the next entry in buffer after the free entry
     
     aMoveEntry = nullptr;
-    for (Ent* aItem = aAdjacentItem((Ent*)aFreeItem);
-         aItem != nullptr;
-         aItem = aAdjacentItem(aItem)) {
+    for (Ent* aEnt = aAdjacentItem((Ent*)aFreeItem);
+         aEnt != nullptr;
+         aEnt = aAdjacentItem(aEnt)) {
       
-      eCN eClass = aItem->eClass();
+      eCN eClass = aEnt->eClass();
       
       RASSERT ((eClass == CN_ENT) ||
                (eClass == CN_FREEITEM) ||
@@ -178,7 +178,7 @@ void EntBuffer::vCompact(void)
       
       
       if (CN_ENT == eClass) {
-        aMoveEntry = static_cast<Ent*>(aItem);
+        aMoveEntry = static_cast<Ent*>(aEnt);
         break;
       }
     }

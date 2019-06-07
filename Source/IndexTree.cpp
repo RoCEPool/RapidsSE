@@ -836,12 +836,12 @@ void IndexTree::vDumpLevel(EntBuffer* pEntBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   // get the first entry
-  Ent* aItem = pEntBuffer->aLeadEntry();
+  Ent* aEnt = pEntBuffer->aLeadEntry();
   
-  while (aItem) {
+  while (aEnt) {
     
     // get the index buffer the first enetry poinst to
-    EntBuffer* pEntryEntBuffer = EntBuffer::pRefdEntBuffer(aItem);
+    EntBuffer* pEntryEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
     
     // print the decile of the buffer
     vTrace("%lld"_Stz, pEntryEntBuffer->iDecile());
@@ -857,7 +857,7 @@ void IndexTree::vDumpLevel(EntBuffer* pEntBuffer)
     }
     
     // move to the next entry
-    aItem = pEntBuffer->aNextEntry(aItem, 0);
+    aEnt = pEntBuffer->aNextEntry(aEnt, 0);
   }
 }
 
@@ -899,10 +899,10 @@ void IndexTree::vVisualize(void)
       vTrace("\n"_Stz);
       
       // get the first entry of the buffer
-      Ent* aItem = pEntBuffer->aLeadEntry();
+      Ent* aEnt = pEntBuffer->aLeadEntry();
       
       // get the index buffer this entry points to
-      pEntBuffer = EntBuffer::pRefdEntBuffer(aItem);
+      pEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
     }
   }
   

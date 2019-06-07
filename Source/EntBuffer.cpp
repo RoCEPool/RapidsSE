@@ -160,13 +160,13 @@ Ent* EntBuffer::aAllotEntry(i8 nBytes_Without_Offsets)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  Ent* aItem = aAllotItem(CN_ENT,nBytes_Without_Offsets);
-  if (! aItem)
+  Ent* aEnt = aAllotItem(CN_ENT,nBytes_Without_Offsets);
+  if (! aEnt)
     return nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  return aItem;
+  return aEnt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,12 +191,12 @@ void EntBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
   // recursively dump the lower level buffers
   if (m_iBufferHeight != 0) {
     
-    for (Ent* aItem = aLeadEntry();
-         aItem != nullptr;
-         aItem = aNextEntry(aItem, 0)) {
+    for (Ent* aEnt = aLeadEntry();
+         aEnt != nullptr;
+         aEnt = aNextEntry(aEnt, 0)) {
       
       // get the index buffer from the entry
-      EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(aItem);
+      EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
       
       ASSERT(pEntBuffer);
       ASSERT(pEntBuffer->eClass() == CN_ENTBUFFER);
@@ -233,12 +233,12 @@ void EntBuffer::vBufferCount(i8& nBuffers)
   if (! m_iBufferHeight)
     return;
   
-  for (Ent* aItem = aLeadEntry();
-       aItem != nullptr;
-       aItem = aNextEntry(aItem, 0)) {
+  for (Ent* aEnt = aLeadEntry();
+       aEnt != nullptr;
+       aEnt = aNextEntry(aEnt, 0)) {
     
     // get the index buffer from the entry
-    pNextBuffer = EntBuffer::pRefdEntBuffer(aItem);
+    pNextBuffer = EntBuffer::pRefdEntBuffer(aEnt);
     
     ASSERT(pNextBuffer);
     ASSERT(pNextBuffer->eClass() == CN_ENTBUFFER);
@@ -251,14 +251,14 @@ void EntBuffer::vBufferCount(i8& nBuffers)
 /*----------------------------------------------------------------------------*/
 /* cut entry from skip list                                                   */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vCutEntry(Ent* aItem, Ent* aPriorVec[])
+void EntBuffer::vCutEntry(Ent* aEnt, Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  i8 nLevels = aItem->nLevels();
+  i8 nLevels = aEnt->nLevels();
   
   for (i8 i_Level = 0; i_Level < nLevels; i_Level++) {
-    i4 iNEO = aItem->iNEO(i_Level);
+    i4 iNEO = aEnt->iNEO(i_Level);
     aPriorVec[i_Level]->vNEO(i_Level,iNEO);
   }
 }
@@ -266,25 +266,25 @@ void EntBuffer::vCutEntry(Ent* aItem, Ent* aPriorVec[])
 /*----------------------------------------------------------------------------*/
 /* delete the given entry                                                     */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vDeleteEntry(Ent** aaItem)
+void EntBuffer::vDeleteEntry(Ent** aaEnt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Ent* aItem = *aaItem;
+  Ent* aEnt = *aaEnt;
   
   Ent* xPriorVec[gpAttachMap->m_nIndexLevels];
   
-  vPositionPriorVecEntry(aItem, xPriorVec, aItem);
+  vPositionPriorVecEntry(aEnt, xPriorVec, aEnt);
   
-  vCutEntry(aItem,xPriorVec);
+  vCutEntry(aEnt,xPriorVec);
   
-  i8 nBytes = aItem->nSizeItem();
-  vFreeItem(aItem,nBytes);
+  i8 nBytes = aEnt->nSizeItem();
+  vFreeItem(aEnt,nBytes);
   
   // entry no longer exists, set the pointer to be null
-  *aaItem = nullptr;
+  *aaEnt = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -310,12 +310,12 @@ void EntBuffer::vDump(void)
   // recursively dump the lower level buffers
   if (m_iBufferHeight != 0) {
     
-    for (Ent* aItem = aLeadEntry();
-         aItem != nullptr;
-         aItem = aNextEntry(aItem, 0)) {
+    for (Ent* aEnt = aLeadEntry();
+         aEnt != nullptr;
+         aEnt = aNextEntry(aEnt, 0)) {
       
       // get the index buffer from the entry
-      EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(aItem);
+      EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
       
       ASSERT(pEntBuffer);
       ASSERT(pEntBuffer->eClass() == CN_ENTBUFFER);
@@ -338,14 +338,14 @@ void EntBuffer::vDumpPriorVec(Ent* aPriorVec[])
          aPriorVec[0],aPriorVec[1],aPriorVec[2]);
   
   for (i8 i = 0; i < 3; i++) {
-    Ent* aItem = aPriorVec[i];
-    for (i8 i_Level = 0; i_Level < aItem->nLevels(); i_Level++) {
+    Ent* aEnt = aPriorVec[i];
+    for (i8 i_Level = 0; i_Level < aEnt->nLevels(); i_Level++) {
       vTrace("  i : %lld Ent : %p i_Offset : %lld offset : %lld pointsTo : %p\n"_Stz,
              i,
-             aItem,
+             aEnt,
              i_Level,
-             aItem->iNEO(i_Level),
-             aGetEntryOffset(aItem->iNEO(i_Level)));
+             aEnt->iNEO(i_Level),
+             aGetEntryOffset(aEnt->iNEO(i_Level)));
     }
   }
 }
@@ -374,9 +374,9 @@ Ent* EntBuffer::aGetEntryOffset(i8 iOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  Ent* aItem = aAdd<Ent*>(aItemArea(), iOffset);
+  Ent* aEnt = aAdd<Ent*>(aItemArea(), iOffset);
   
-  return aItem;
+  return aEnt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -545,15 +545,15 @@ i8 EntBuffer::iLengthSubList(void)
 /*----------------------------------------------------------------------------*/
 /* convert given entry into free entry                                        */
 /*----------------------------------------------------------------------------*/
-FreeItem* EntBuffer::aMakeFreeEntry(Ent* aItem)
+FreeItem* EntBuffer::aMakeFreeEntry(Ent* aEnt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  i8 nSizeItem = aItem->nSizeItem_WithoutOffsets();
-  i8 nSizeNEO  = aItem->iNEOsize();
+  i8 nSizeItem = aEnt->nSizeItem_WithoutOffsets();
+  i8 nSizeNEO  = aEnt->iNEOsize();
   i8 nSizeFree = nSizeItem + nSizeNEO;
   
-  FreeItem* aFreeItem = new(aItem) FreeItem(nSizeFree);
+  FreeItem* aFreeItem = new(aEnt) FreeItem(nSizeFree);
   
   return aFreeItem;
 }
@@ -561,26 +561,26 @@ FreeItem* EntBuffer::aMakeFreeEntry(Ent* aItem)
 /*----------------------------------------------------------------------------*/
 /* move to exact key entry                                                    */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pMoveToExactEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
+Ent* EntBuffer::pMoveToExactEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
 {
   EntBuffer* pEntBuffer = *paEntBuffer;
   
-  if (aItem == pEntBuffer->aSkipRoots())
-    aItem = pEntBuffer->aNextEntry(aItem,0);
+  if (aEnt == pEntBuffer->aSkipRoots())
+    aEnt = pEntBuffer->aNextEntry(aEnt,0);
   
-  eKC eCompare = KeyData::eCompare(aItem, xKeyWrk);
+  eKC eCompare = KeyData::eCompare(aEnt, xKeyWrk);
   
   // have we reached the key?
   if (eCompare == KC_SAME)
-    return aItem;
+    return aEnt;
   
   // have we moved beyond ?
   if (eCompare == KC_AFTER)
     return nullptr;
   
-  aItem = pEntBuffer->aNextEntry(aItem,0);
+  aEnt = pEntBuffer->aNextEntry(aEnt,0);
   
-  if ( ! aItem ) {
+  if ( ! aEnt ) {
     
     // move to the next buffer
     *paEntBuffer = pEntBuffer->pNextBuffer();
@@ -591,29 +591,29 @@ Ent* EntBuffer::pMoveToExactEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer** paEnt
     
   }
   
-  return aItem;
+  return aEnt;
 }
 
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pMoveToGreaterThanEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
+Ent* EntBuffer::pMoveToGreaterThanEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
 {
   EntBuffer* pEntBuffer = *paEntBuffer;
   
-  if (aItem == pEntBuffer->aSkipRoots())
-    aItem = pEntBuffer->aNextEntry(aItem,0);
+  if (aEnt == pEntBuffer->aSkipRoots())
+    aEnt = pEntBuffer->aNextEntry(aEnt,0);
   
-  while (aItem) {
-    eKC eCompare = KeyData::eCompare(aItem, xKeyWrk);
+  while (aEnt) {
+    eKC eCompare = KeyData::eCompare(aEnt, xKeyWrk);
     
     // have we moved beyond ?
     if (eCompare == KC_AFTER)
       break;
     
-    aItem = pEntBuffer->aNextEntry(aItem,0);
+    aEnt = pEntBuffer->aNextEntry(aEnt,0);
     
-    if ( ! aItem) {
+    if ( ! aEnt) {
       
       // move to the next buffer
       *paEntBuffer = pEntBuffer->pNextBuffer();
@@ -626,21 +626,21 @@ Ent* EntBuffer::pMoveToGreaterThanEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer**
     }
   }
   
-  return aItem;
+  return aEnt;
 }
 
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pMoveToGreaterEqualEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
+Ent* EntBuffer::pMoveToGreaterEqualEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
 {
   EntBuffer* pEntBuffer = *paEntBuffer;
   
-  if (aItem == pEntBuffer->aSkipRoots())
-    aItem = pEntBuffer->aNextEntry(aItem,0);
+  if (aEnt == pEntBuffer->aSkipRoots())
+    aEnt = pEntBuffer->aNextEntry(aEnt,0);
   
-  while (aItem) {
-    eKC eCompare = KeyData::eCompare(aItem, xKeyWrk);
+  while (aEnt) {
+    eKC eCompare = KeyData::eCompare(aEnt, xKeyWrk);
     
     // have we reached the key?
     if (eCompare == KC_SAME)
@@ -650,9 +650,9 @@ Ent* EntBuffer::pMoveToGreaterEqualEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer*
     if (eCompare == KC_AFTER)
       break;
     
-    aItem = pEntBuffer->aNextEntry(aItem,0);
+    aEnt = pEntBuffer->aNextEntry(aEnt,0);
     
-    if (!aItem) {
+    if (!aEnt) {
       
       // move to the next buffer
       *paEntBuffer = pEntBuffer->pNextBuffer();
@@ -665,22 +665,22 @@ Ent* EntBuffer::pMoveToGreaterEqualEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer*
       break;
   }
   
-  return aItem;
+  return aEnt;
 }
 
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pMoveToNextEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
+Ent* EntBuffer::pMoveToNextEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
 {
   EntBuffer* pEntBuffer = *paEntBuffer;
   
-  aItem = pEntBuffer->aNextEntry(aItem,0);
+  aEnt = pEntBuffer->aNextEntry(aEnt,0);
   
-  if (aItem)
-    return aItem;
+  if (aEnt)
+    return aEnt;
   
-  while( ! aItem) {
+  while( ! aEnt) {
     
     // move to the next buffer
     *paEntBuffer = pEntBuffer->pNextBuffer();
@@ -692,23 +692,23 @@ Ent* EntBuffer::pMoveToNextEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntB
       break;
   }
   
-  return aItem;
+  return aEnt;
 }
 
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pMoveToPrevEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
+Ent* EntBuffer::pMoveToPrevEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
 {
   EntBuffer* pEntBuffer = *paEntBuffer;
   
-  if (aItem == pEntBuffer->aSkipRoots())
-    aItem = pEntBuffer->aNextEntry(aItem,0);
+  if (aEnt == pEntBuffer->aSkipRoots())
+    aEnt = pEntBuffer->aNextEntry(aEnt,0);
   
-  Ent* aItemPrev = aItem;
+  Ent* aEntPrev = aEnt;
   
-  while (aItem) {
-    eKC eCompare = KeyData::eCompare(aItem, xKeyWrk);
+  while (aEnt) {
+    eKC eCompare = KeyData::eCompare(aEnt, xKeyWrk);
     
     // have we reached the key?
     if (eCompare == KC_SAME)
@@ -716,16 +716,16 @@ Ent* EntBuffer::pMoveToPrevEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntB
     
     // have we moved beyond ?
     if (eCompare == KC_AFTER)
-      return aItemPrev;
+      return aEntPrev;
     
-    aItemPrev = aItem;
-    aItem = pEntBuffer->aNextEntry(aItem,0);
+    aEntPrev = aEnt;
+    aEnt = pEntBuffer->aNextEntry(aEnt,0);
     
-    if ( ! aItem )
-      return aItemPrev;
+    if ( ! aEnt )
+      return aEntPrev;
   }
   
-  return aItemPrev;
+  return aEntPrev;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -762,11 +762,11 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
   if (-1 == i_Offset)
     return nullptr;
   
-  Ent* aItem = aAdd<Ent*>(aItemArea(), i_Offset);
+  Ent* aEnt = aAdd<Ent*>(aItemArea(), i_Offset);
   
-  RASSERT(! aItem || aItem->bValidItem());
+  RASSERT(! aEnt || aEnt->bValidItem());
   
-  return aItem;
+  return aEnt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -862,12 +862,12 @@ void EntBuffer::vRestore(void)
   bn nBuffer = nPoolBufferNo();
     
   // now restore the row id's to point to this buffer no
-  for (Ent* aItem = aLeadEntry();
-       aItem != nullptr;
-       aItem = aNextEntry(aItem, 0)) {
+  for (Ent* aEnt = aLeadEntry();
+       aEnt != nullptr;
+       aEnt = aNextEntry(aEnt, 0)) {
     
-    Id xId(*nBuffer, aItem->iItemNo(), aItem->nLevels());
-    aItem->vId(xId);
+    Id xId(*nBuffer, aEnt->iItemNo(), aEnt->nLevels());
+    aEnt->vId(xId);
   }
   
 }
@@ -886,21 +886,21 @@ void EntBuffer::vRestoreIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* show entry                                                                 */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vShowEntry(Ent* aItem)
+void EntBuffer::vShowEntry(Ent* aEnt)
 {
-  KeyData* aKey = _aKeyData(aItem->aDataArea());
-  i8 iOffset = iToOffset(aItem);
+  KeyData* aKey = _aKeyData(aEnt->aDataArea());
+  i8 iOffset = iToOffset(aEnt);
   
   vTrace("%lld: Ent: %p Size: %llu Levels: %llu "_Stz,
          iOffset,
-         aItem,
-         aItem->nSizeItem_WithoutOffsets(),
-         aItem->nLevels()
+         aEnt,
+         aEnt->nSizeItem_WithoutOffsets(),
+         aEnt->nLevels()
          );
   
   vTrace("Id: %3lli.%03lli "_Stz,
-         aItem->iBufferNo(),
-         aItem->iItemNo()
+         aEnt->iBufferNo(),
+         aEnt->iItemNo()
          );
   
   //vTrace("Tx: %lld.%03lld "_Stz,
@@ -911,8 +911,8 @@ void EntBuffer::vShowEntry(Ent* aItem)
   aKey->vShow(m_pIndex->pIdxColVec());
   
   vTrace(" offsets:"_Stz);
-  for (i8 i_Level = 0; i_Level < aItem->nLevels(); i_Level++)
-    vTrace(" %d"_Stz,aItem->iNEO(i_Level));
+  for (i8 i_Level = 0; i_Level < aEnt->nLevels(); i_Level++)
+    vTrace(" %d"_Stz,aEnt->iNEO(i_Level));
   
   vTrace("\n"_Stz);
 }
@@ -960,13 +960,13 @@ void EntBuffer::vShow(Ent* aMarkEntry)
   
   i8 iOffset = aSkipRoots()->iNEO(0);
   while (iOffset > -1) {
-    Ent* aItem = aGetEntryOffset(iOffset);
-    vShowEntry(aItem);
-    if (aMarkEntry == aItem)
+    Ent* aEnt = aGetEntryOffset(iOffset);
+    vShowEntry(aEnt);
+    if (aMarkEntry == aEnt)
       vTrace("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
              "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n"_Stz);
     
-    iOffset = aItem->iNEO(0);
+    iOffset = aEnt->iNEO(0);
   }
   
   vTrace("\n"_Stz);
@@ -987,18 +987,18 @@ void EntBuffer::vShowShort(void)
   
   i8 iOffset = aSkipRoots()->iNEO(0);
   while (iOffset > -1) {
-    Ent* aItem = aGetEntryOffset(iOffset);
+    Ent* aEnt = aGetEntryOffset(iOffset);
     
-    KeyData* aKey = _aKeyData(aItem->aDataArea())
+    KeyData* aKey = _aKeyData(aEnt->aDataArea())
     ;
     i8 iVal = aKey->iGetInt();
     
     if (m_iBufferHeight)
-      vTrace("%lld(%lld)"_Stz,iVal,*EntBuffer::pRefdEntBuffer(aItem)->nPoolBufferNo());
+      vTrace("%lld(%lld)"_Stz,iVal,*EntBuffer::pRefdEntBuffer(aEnt)->nPoolBufferNo());
     else
-      vTrace("%lld|%lld|"_Stz,iVal,*EntBuffer::pRefdEntBuffer(aItem)->nPoolBufferNo());
+      vTrace("%lld|%lld|"_Stz,iVal,*EntBuffer::pRefdEntBuffer(aEnt)->nPoolBufferNo());
     
-    iOffset = aItem->iNEO(0);
+    iOffset = aEnt->iNEO(0);
     if (iOffset > -1)
       vTrace(","_Stz);
   }
@@ -1137,12 +1137,12 @@ void EntBuffer::vTruncate(void)
   if (m_iBufferHeight != 0) {
     
     // recursively delete the lower level buffers
-    for (Ent* aItem = aLeadEntry();
-         aItem != nullptr;
-         aItem = aNextEntry(aItem, 0)) {
+    for (Ent* aEnt = aLeadEntry();
+         aEnt != nullptr;
+         aEnt = aNextEntry(aEnt, 0)) {
       
       // get the index buffer from the entry
-      pNextBuffer = EntBuffer::pRefdEntBuffer(aItem);
+      pNextBuffer = EntBuffer::pRefdEntBuffer(aEnt);
       
       ASSERT(pNextBuffer);
       ASSERT(pNextBuffer->eClass() == CN_ENTBUFFER);

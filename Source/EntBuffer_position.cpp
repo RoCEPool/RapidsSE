@@ -39,7 +39,7 @@ EntBuffer* EntBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
   EntBuffer* pEntBuffer = this;
   
   i8 iBufferHeight;
-  Ent* aItem;
+  Ent* aEnt;
   
   while (true) {
     
@@ -48,17 +48,17 @@ EntBuffer* EntBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
       break;
     
     // get the entry
-    //aItem1 = pEntBuffer->aPositionQuery(xGivenKey);
-    //ASSERT(aItem1);
+    //aEnt1 = pEntBuffer->aPositionQuery(xGivenKey);
+    //ASSERT(aEnt1);
     
-    aItem = pEntBuffer->pPositionPriorEntry(xGivenKey);
-    ASSERT(aItem);
+    aEnt = pEntBuffer->pPositionPriorEntry(xGivenKey);
+    ASSERT(aEnt);
     
-    aItem = pEntBuffer->pMoveToPrevEntry(aItem, xGivenKey, &pEntBuffer);
-    ASSERT(aItem);
+    aEnt = pEntBuffer->pMoveToPrevEntry(aEnt, xGivenKey, &pEntBuffer);
+    ASSERT(aEnt);
     
     // get the index buffer of the entry
-    pEntBuffer = EntBuffer::pRefdEntBuffer(aItem);
+    pEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
     ASSERT(pEntBuffer);
     ASSERT(pEntBuffer->eClass() == CN_ENTBUFFER);
   }

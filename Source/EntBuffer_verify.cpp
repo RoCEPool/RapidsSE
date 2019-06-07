@@ -86,9 +86,9 @@ void EntBuffer::vQuickVerify(Ent* aSeeEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  for (Ent* aItem = aFirstItem();
-       aItem != nullptr;
-       aItem = aAdjacentItem(aItem))
+  for (Ent* aEnt = aFirstItem();
+       aEnt != nullptr;
+       aEnt = aAdjacentItem(aEnt))
     {;}
   
   for (Ent* aTestEntry = aNextEntry(aSkipRoots(),0);
@@ -308,9 +308,9 @@ bool EntBuffer::bVerifyLnAny(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of child buffers
   
-  for (Ent* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
-    EntBuffer* pRefEntBuf = EntBuffer::pRefdEntBuffer(aItem);
+    EntBuffer* pRefEntBuf = EntBuffer::pRefdEntBuffer(aEnt);
     if (pRefEntBuf->m_iBufferHeight) {
       bValid = pRefEntBuf->bVerifyLnAny();
     }
@@ -344,13 +344,13 @@ bool EntBuffer::bVerifyAdjacent(void)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  for (Ent* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
     // get the buffer that this entry references
-    EntBuffer* pChildEntBuffer = EntBuffer::pRefdEntBuffer(aItem);
+    EntBuffer* pChildEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
     
     // get the adjacent entry
-    Ent* aAdjacentEntry = aNextEntry(aItem,0);
+    Ent* aAdjacentEntry = aNextEntry(aEnt,0);
     
     if (aAdjacentEntry) {
       // get the buffer that the adjacent entry references
@@ -383,9 +383,9 @@ bool EntBuffer::bVerifyBufferRefs(void)
   
   RASSERT(m_iBufferHeight >= 1);
   
-  for (Ent* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
-    EntBuffer* pChildEntBuf = EntBuffer::pRefdEntBuffer(aItem);
+    EntBuffer* pChildEntBuf = EntBuffer::pRefdEntBuffer(aEnt);
     
     if ( ! pChildEntBuf->bValidEntBuffer() ) {
       vVerifyFault();
@@ -424,10 +424,10 @@ bool EntBuffer::bVerifyFirstKeys(void)
   
   //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  for (Ent* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
     // get the entry buffer that this entry references
-    EntBuffer* pChildEntBuffer = EntBuffer::pRefdEntBuffer(aItem);
+    EntBuffer* pChildEntBuffer = EntBuffer::pRefdEntBuffer(aEnt);
     
     //pChildEntBuffer->vShow();
     
@@ -436,12 +436,12 @@ bool EntBuffer::bVerifyFirstKeys(void)
     Ent* aChildFirstEntry = pChildEntBuffer->aLeadEntry();
     
     // get keys of the two entries
-    //KeyData* aKeyParent = _aKeyData(aItem->aDataArea());
+    //KeyData* aKeyParent = _aKeyData(aEnt->aDataArea());
     //KeyData* aKeyChild  = _aKeyData(aChildFirstEntry->aDataArea());
     
     // the two keys should match
     //bool bEqual = aKeyChild->bEqualTo(aKeyParent,pIdxColVec);
-    bool bEqual = KeyData::bEqualTo(aChildFirstEntry, aItem);
+    bool bEqual = KeyData::bEqualTo(aChildFirstEntry, aEnt);
     if (! bEqual) {
       vVerifyFault();
       return false;
@@ -468,18 +468,18 @@ bool EntBuffer::bVerifyItems(void)
   
   i8 nEntryItems = 0;
   
-  for (Ent* aItem = aFirstItem();
-       aItem != nullptr;
-       aItem = aAdjacentItem(aItem)) {
+  for (Ent* aEnt = aFirstItem();
+       aEnt != nullptr;
+       aEnt = aAdjacentItem(aEnt)) {
     
     //vTrace("Verify item %p\n"_Stz,pItem);
     
-    eCN eClass = aItem->eClass();
+    eCN eClass = aEnt->eClass();
     
     switch (eClass) {
         
       case CN_ENT: {
-        if (! aItem->bValidItem()) {
+        if (! aEnt->bValidItem()) {
           vShow();
           vVerifyFault();
           return false;
@@ -489,7 +489,7 @@ bool EntBuffer::bVerifyItems(void)
       }
         
       case CN_FREEITEM: {
-        FreeItem* aFreeItem = _aFreeItem(aItem);
+        FreeItem* aFreeItem = _aFreeItem(aEnt);
         if (! aFreeItem->bValidFreeItem()) {
           vShow();
           vVerifyFault();
@@ -499,7 +499,7 @@ bool EntBuffer::bVerifyItems(void)
       }
         
       case CN_WILDERNESS: {
-        Wilderness* aWilderness = _aWilderness(aItem);
+        Wilderness* aWilderness = _aWilderness(aEnt);
         if (! aWilderness->bValidWilderness()) {
           vShow();
           vVerifyFault();
@@ -539,21 +539,21 @@ bool EntBuffer::bVerifyKeyBufferOrder(void)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  for (Ent* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
     // get next entry
-    Ent* aNextEntry = this->aNextEntry(aItem,0);
+    Ent* aNextEntry = this->aNextEntry(aEnt,0);
     if (! aNextEntry)
       break;
     
     // get the child entry buffers
-    EntBuffer* pChildBufferA = EntBuffer::pRefdEntBuffer(aItem);
+    EntBuffer* pChildBufferA = EntBuffer::pRefdEntBuffer(aEnt);
     EntBuffer* pChildBufferB = EntBuffer::pRefdEntBuffer(aNextEntry);
     
     // child A should point to child B
     if (pChildBufferA->pNextBuffer() != pChildBufferB) {
       vDump();
-      vShow(aItem);
+      vShow(aEnt);
       vVerifyFault();
       return false;
     }
@@ -582,20 +582,20 @@ bool EntBuffer::bVerifyKeyOrder(void)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  for (Ent* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
     // get next entry
-    Ent* aNextEntry = this->aNextEntry(aItem,0);
+    Ent* aNextEntry = this->aNextEntry(aEnt,0);
     if (! aNextEntry)
       break;
     
     // get keys of the two entries
-    //KeyData* aKeyA = _aKeyData(aItem->aDataArea());
+    //KeyData* aKeyA = _aKeyData(aEnt->aDataArea());
     //KeyData* aKeyB = _aKeyData(aNextEntry->aDataArea());
     
     // next keyB should be greater than or equal to keyA
     //bool bGreaterEqual = aKeyB->bGreaterEqual(aKeyA,pIdxColVec);
-    bool bGreaterEqual = KeyData::bGreaterEqual(aNextEntry, aItem);
+    bool bGreaterEqual = KeyData::bGreaterEqual(aNextEntry, aEnt);
     if (! bGreaterEqual) {
       vDump();
       vVerifyFault();
@@ -673,14 +673,14 @@ bool EntBuffer::bVerifyRowRefs(void)
   
   RASSERT(0 == m_iBufferHeight);
   
-  for (Ent* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
     // get the row buffer that this L0 key leaf references
-    Id xId = aItem->xId();
+    Id xId = aEnt->xId();
     RowBuffer* pRowBuffer = RowBuffer::pRefdRowBuffer(xId);
     
     // get the row entry from referenced entry buffer
-    i8 i_Item = aItem->iItemNo();
+    i8 i_Item = aEnt->iItemNo();
     HeadLine* aRowData = pRowBuffer->pRow(i_Item);
     
     if (! aRowData ) {

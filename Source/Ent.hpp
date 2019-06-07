@@ -59,11 +59,11 @@ namespace Data
   /*--------------------------------------------------------------------------*/
   /* safe cast                                                                */
   /*--------------------------------------------------------------------------*/
-  inline Ent* _aItem(void* aAddr)
+  inline Ent* _aEnt(void* aAddr)
   {
-    Ent* aItem = reinterpret_cast<Ent*>(aAddr);
+    Ent* aEnt = reinterpret_cast<Ent*>(aAddr);
     
-    return aItem;
+    return aEnt;
   }
 }
 
