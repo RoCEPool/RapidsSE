@@ -183,7 +183,7 @@ void Step::vJob_IndexJoinSpawnSub(MP_Task mpTask)
   
   Session* pSession = pJob_IndexJoin->m_pSession;
  /*
-  JobClass* pJobClass_SubFetch = JobClass::pFind(CN_JOB_SUBFETCH);
+  JobClass* pJobClass_SubFetch = JobClass::pFind(CN_JOB_SUBINDEXJOIN);
   
   Job_SubFetch* pJob_SubFetch =
   static_cast<Job_SubFetch*>(pJobClass_SubFetch->pPreJob(pSession));

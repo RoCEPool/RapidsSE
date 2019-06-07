@@ -1,0 +1,209 @@
+/*============================================================================*/
+/* Job_SubIndexJoin.cpp -- Sub Fetch Job                                          */
+/*============================================================================*/
+
+// Job Short: SubIndexJoin
+
+#include "Jobs.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
+
+JobClass xJobClass_SubIndexJoin =
+{
+  CN_JOB_SUBINDEXJOIN,       // class enum
+  JK_CHILD,                  // job kind
+  RK_NODE_ERRORS,            // response kind
+  "sub-indexJoin"_Stz,       // comment about the job
+  nullptr,                   // the prompt command
+  nullptr,                   // the second word
+  "SubFetch_run"_Stz,        // the _run task seed
+  nullptr,                   // the _req task seed
+  nullptr,                   // the _rcv task seed
+  nullptr,                   // the _exe task seed
+  nullptr,                   // the _end task seed
+  nullptr,                   // the _can task seed
+  false,                     // check resources?
+  false,                     // detached job?
+  false,                     // buffer attached?
+  JT_NONE,                   // job trace
+  DL_GRAB_READ,              // ddl lock model
+  PY_NORMAL,                 // priority
+  JF_NONE,                   // flags
+
+  nullptr,                   // prompt check function
+  pJob_SubIndexJoin_pre,         // prompt pre-process function
+  vJob_post,                 // prompt post-process function
+  nullptr,                   // job new function
+  vJob_SubIndexJoin_delete,      // job delete function
+  nullptr,                   // job pre-send function
+  nullptr,                   // job post-receive function
+  vJob_SubIndexJoin_show,        // job show function
+  
+  // help and example
+  false,
+  "<none>"_Stz,
+  "<none>"_Stz,
+
+  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass* Jobs::pJob_SubIndexJoin_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_SubInflate_class;
+  
+  return &xJobClass_SubIndexJoin;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Job_SubIndexJoin* Jobs::_pJob_SubIndexJoin(void* aAddress)
+{
+  Job_SubIndexJoin* pJob_SubIndexJoin = reinterpret_cast<Job_SubIndexJoin*>(aAddress);
+  
+  RASSERT_TYPE(pJob_SubIndexJoin,CN_JOB_SUBINDEXJOIN);
+  
+  return pJob_SubIndexJoin;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a new entry buffer from heap                                      */
+/*----------------------------------------------------------------------------*/
+void* Job_SubIndexJoin::operator new(size_t)
+{
+  Job_SubIndexJoin* pJob_SubIndexJoin =
+    static_cast<Job_SubIndexJoin*>(HeapMem::pAllocate(CN_JOB_SUBINDEXJOIN));
+  
+  return pJob_SubIndexJoin;
+}
+
+/*----------------------------------------------------------------------------*/
+/* perform new of entry buffer for given address                              */
+/*----------------------------------------------------------------------------*/
+void* Job_SubIndexJoin::operator new(size_t, void* aAddress)
+{
+  return aAddress;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an entry buffer back to the heap                                      */
+/*----------------------------------------------------------------------------*/
+void Job_SubIndexJoin::operator delete(void* aAddress)
+{
+  Job_SubIndexJoin* pJob_SubIndexJoin = static_cast<Job_SubIndexJoin*>(aAddress);
+  
+  HeapMem::vFree(pJob_SubIndexJoin);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Job_SubIndexJoin::Job_SubIndexJoin(Interface::Session* pSession)
+: Job(CN_JOB_SUBINDEXJOIN, pSession)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINDEXJOIN,_FOOTER_);
+  
+  m_pParentJob     = nullptr;
+  m_pBufferQueue   = nullptr;
+  m_pPlanner       = nullptr;
+  m_iPhrase        = -1;
+  
+  _checkInitialised_(CN_JOB_SUBINDEXJOIN);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINDEXJOIN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Job_SubIndexJoin::~Job_SubIndexJoin(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINDEXJOIN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_SubIndexJoin::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  Job_SubIndexJoin* pJob_SubIndexJoin = _pJob_SubIndexJoin(pObject);
+
+  pJob_SubIndexJoin->vShow();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Member Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_SubIndexJoin::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINDEXJOIN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Job_SubIndexJoin::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINDEXJOIN);
+  
+  return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Catalog Functions -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+Job* Jobs::pJob_SubIndexJoin_pre(Interface::Session* pSession)
+{
+  Job_SubIndexJoin* pJob_SubIndexJoin = new Job_SubIndexJoin(pSession);
+  
+  return pJob_SubIndexJoin;
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_SubIndexJoin_delete(Interface::Session* pSession, Job* pJob)
+{
+  Job_SubIndexJoin* pJob_SubIndexJoin = _pJob_SubIndexJoin(pJob);
+  
+  delete pJob_SubIndexJoin;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_SubIndexJoin_show(Job* pJob)
+{
+  Job_SubIndexJoin* pJob_SubIndexJoin = _pJob_SubIndexJoin(pJob);
+
+  pJob_SubIndexJoin->vShow();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
