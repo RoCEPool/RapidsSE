@@ -28,9 +28,6 @@ namespace MiniHeaps
     Item_tbd(eCN eClassNo, i8 nSizeItem);
     ~Item_tbd(void) noexcept(false);
   
-    i8    iBufferNo(void);
-    bn    nBufferNo(void);
-    char* aDataArea(void);
     Id&   xId(void);
     void  vId(Id xId);
     Item_tbd* aItemAfter(void);
