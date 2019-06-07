@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Key* Data::_aKeyData(void* aAddr)
+Key* Data::_aKey(void* aAddr)
 {
   Key* aKey = reinterpret_cast<Key*>(aAddr);
   
@@ -58,7 +58,7 @@ Key::~Key(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* operator <                                                                 */
 /*----------------------------------------------------------------------------*/
-bool Key::operator <(Key* aKeyArg)
+bool Key::operator < (Key* aKeyArg)
 {
   i8 iDatumA = *(i8*)aByteSequence();
   i8 iDatumB = *(i8*)aKeyArg->aByteSequence();
@@ -70,7 +70,7 @@ bool Key::operator <(Key* aKeyArg)
 /*----------------------------------------------------------------------------*/
 /* operator <=                                                                */
 /*----------------------------------------------------------------------------*/
-bool Key::operator <=(Key* aKeyArg)
+bool Key::operator <= (Key* aKeyArg)
 {
   i8 iDatumA = *(i8*)aByteSequence();
   i8 iDatumB = *(i8*)aKeyArg->aByteSequence();
@@ -93,29 +93,6 @@ void Key::vKey(KeyWrk& xKeyWrk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get key size     :: TO BE REVIEWED                                         */
-/*----------------------------------------------------------------------------*/
-i8 Key::nKeySize(IdxColVec* pIdxColVec)
-{
-  
-  // we should NEVER be calling this
-  RASSERT(0);
-  i8 nCols = pIdxColVec->nItems();
-  i8 nKeySize = 0;
-  i8 nBytes;
-  char* aCursor = aByteSequence();
-  
-  for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
-    Column* pColumn = pIdxColVec->pGet(i_Column);
-    
-    char* aElement = aEachDatum(pColumn, nBytes, &aCursor);
-    nKeySize += nBytes;
-  }
-  
-  return nKeySize;
-}
-
-/*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
 /*----------------------------------------------------------------------------*/
 eKC Key::eCompare(Ent* aKeyItem1, KeyWrk& xKeyItem2)
@@ -123,7 +100,7 @@ eKC Key::eCompare(Ent* aKeyItem1, KeyWrk& xKeyItem2)
   i8 nKeySize1 = aKeyItem1->nSizeData();
   i8 nKeySize2 = xKeyItem2.nKeySize();
   
-  Key* aKey1 = _aKeyData(aKeyItem1->aDataArea());
+  Key* aKey1 = _aKey(aKeyItem1->aDataArea());
   Key* aKey2 = xKeyItem2.aKey();
   
   i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
@@ -186,7 +163,7 @@ eKC Key::eCompare(KeyWrk& xKeyItem1, Ent* aKeyItem2)
   i8 nKeySize2 = aKeyItem2->nSizeData();
   
   Key* aKey1 = xKeyItem1.aKey();
-  Key* aKey2 = _aKeyData(aKeyItem2->aDataArea());
+  Key* aKey2 = _aKey(aKeyItem2->aDataArea());
   
   i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
   
@@ -212,8 +189,8 @@ eKC Key::eCompare(Ent* aKeyItem1, Ent* aKeyItem2)
   i8 nKeySize1 = aKeyItem1->nSizeData();
   i8 nKeySize2 = aKeyItem2->nSizeData();
   
-  Key* aKey1 = _aKeyData(aKeyItem1->aDataArea());
-  Key* aKey2 = _aKeyData(aKeyItem2->aDataArea());
+  Key* aKey1 = _aKey(aKeyItem1->aDataArea());
+  Key* aKey2 = _aKey(aKeyItem2->aDataArea());
   
   i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
   

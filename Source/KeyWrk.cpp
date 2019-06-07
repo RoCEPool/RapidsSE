@@ -339,7 +339,7 @@ void KeyWrk::vSetEntry(Ent* pEntry)
   // copy key into this entry
   
   Key* aSrcKey = aKey();
-  Key* aDstKey = _aKeyData(pEntry->aDataArea());
+  Key* aDstKey = _aKey(pEntry->aDataArea());
   i8 nKeySize  = this->nKeySize();
   
   MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENT);
@@ -362,7 +362,7 @@ void KeyWrk::vSetKey(Ent* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into this entry
   
-  Key* aKeyData = _aKeyData(pEntry->aDataArea());
+  Key* aKeyData = _aKey(pEntry->aDataArea());
   //i8 iKeySize = aKeyData->nKeySize(pIdxColVec);
   i8 iKeySize = pEntry->nSizeData();
   RASSERT(iKeySize % 8 == 0);

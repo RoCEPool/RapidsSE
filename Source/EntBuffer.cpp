@@ -888,7 +888,7 @@ void EntBuffer::vRestoreIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vShowEntry(Ent* aEnt)
 {
-  Key* aKey = _aKeyData(aEnt->aDataArea());
+  Key* aKey = _aKey(aEnt->aDataArea());
   i8 iOffset = iToOffset(aEnt);
   
   vTrace("%lld: Ent: %p Size: %llu Levels: %llu "_Stz,
@@ -989,7 +989,7 @@ void EntBuffer::vShowShort(void)
   while (iOffset > -1) {
     Ent* aEnt = aGetEntryOffset(iOffset);
     
-    Key* aKey = _aKeyData(aEnt->aDataArea())
+    Key* aKey = _aKey(aEnt->aDataArea())
     ;
     i8 iVal = aKey->iGetInt();
     

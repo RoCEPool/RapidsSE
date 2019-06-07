@@ -190,7 +190,7 @@ void EntBuffer::vCompact(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the prior vector to the entry being moved
     
-    //Key* aMoveKey = _aKeyData(aMoveEntry->aDataArea());
+    //Key* aMoveKey = _aKey(aMoveEntry->aDataArea());
     
     //aKey->vShow(pIdxColVec);
     //vTrace("\n"_Stz);
@@ -342,7 +342,7 @@ void EntBuffer::vDeleteUpwards(Ent* aDeleteKey,
   //         *nPoolBufferNo(),
   //         pEntryToBeDeleted->aKey()->iGetInt());
   
-  Key* aDeleteEntryKey = _aKeyData(aEntryToBeDeleted->aDataArea());
+  Key* aDeleteEntryKey = _aKey(aEntryToBeDeleted->aDataArea());
   
   //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
@@ -386,9 +386,9 @@ void EntBuffer::vHandleFirstInsert(Ent* aInsertedKeyEntry,
     return;
   
   if (aOriginalFirstEntry) {
-    //Key* aOriginalFirstKey = _aKeyData(aOriginalFirstEntry->aDataArea());
+    //Key* aOriginalFirstKey = _aKey(aOriginalFirstEntry->aDataArea());
     
-    //Key* aInsertedFirstKey = _aKeyData(aInsertedKeyEntry->aDataArea());
+    //Key* aInsertedFirstKey = _aKey(aInsertedKeyEntry->aDataArea());
     
     IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
     
@@ -420,7 +420,7 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (aOriginalFirstEntry) {
-    //Key* aDeleteKey = _aKeyData(aOriginalFirstEntry->aDataArea());
+    //Key* aDeleteKey = _aKey(aOriginalFirstEntry->aDataArea());
     EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
     //pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
     pHigherBuffer->vDeleteUpwards(aOriginalFirstEntry,ppRootKeyBuffer);
@@ -429,7 +429,7 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  //Key* aInsertKey = _aKeyData(aInsertedKeyEntry->aDataArea());
+  //Key* aInsertKey = _aKey(aInsertedKeyEntry->aDataArea());
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   KeyWrk xKeyWrkIns;
   xKeyWrkIns.vSetKey(aInsertedKeyEntry, *nPoolBufferNo(), 0, pIdxColVec);
@@ -691,7 +691,7 @@ void EntBuffer::vInsertKeySkip(Ent* aKeyEntry)
   
   Ent* xPriorVec[gpAttachMap->m_nIndexLevels];
   
-  //Key* aKey = _aKeyData(aKeyEntry->aDataArea());
+  //Key* aKey = _aKey(aKeyEntry->aDataArea());
   
   if (0 == m_iBufferHeight)
     vPositionPriorVecEntry(aKeyEntry, xPriorVec, nullptr);

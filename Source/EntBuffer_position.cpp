@@ -187,7 +187,7 @@ void EntBuffer::vPositionPriorVecEntry(Ent* aFindKey, Ent* aPriorVec[],
       if (aFindEntry == aNextEntry_sl)
         break;
       
-      Key* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
+      Key* aNextKey = _aKey(aNextEntry_sl->aDataArea());
       
       bIsJuxta = Key::bGreaterEqual(aNextEntry_sl, aFindKey);
       
@@ -368,7 +368,7 @@ void EntBuffer::vPositionPriorVecBuffer(Ent* aInsertingEntry,
 //    Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
 //    while (aNextEntry_sl) {
 //
-//      //Key* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());
+//      //Key* aNextKey = _aKey(aNextEntry_sl->aDataArea());
 //
 //      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
 //      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);

@@ -436,8 +436,8 @@ bool EntBuffer::bVerifyFirstKeys(void)
     Ent* aChildFirstEntry = pChildEntBuffer->aLeadEntry();
     
     // get keys of the two entries
-    //Key* aKeyParent = _aKeyData(aEnt->aDataArea());
-    //Key* aKeyChild  = _aKeyData(aChildFirstEntry->aDataArea());
+    //Key* aKeyParent = _aKey(aEnt->aDataArea());
+    //Key* aKeyChild  = _aKey(aChildFirstEntry->aDataArea());
     
     // the two keys should match
     //bool bEqual = aKeyChild->bEqualTo(aKeyParent,pIdxColVec);
@@ -590,8 +590,8 @@ bool EntBuffer::bVerifyKeyOrder(void)
       break;
     
     // get keys of the two entries
-    //Key* aKeyA = _aKeyData(aEnt->aDataArea());
-    //Key* aKeyB = _aKeyData(aNextEntry->aDataArea());
+    //Key* aKeyA = _aKey(aEnt->aDataArea());
+    //Key* aKeyB = _aKey(aNextEntry->aDataArea());
     
     // next keyB should be greater than or equal to keyA
     //bool bGreaterEqual = aKeyB->bGreaterEqual(aKeyA,pIdxColVec);
@@ -748,7 +748,7 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
       }
       
       if (bShowKeys) {
-        Key* aTestKey = _aKeyData(aTestEntry_sl->aDataArea());
+        Key* aTestKey = _aKey(aTestEntry_sl->aDataArea());
         vTrace("Test %p: "_Stz,aTestEntry_sl);
         aTestKey->vShow(pIdxColVec);
         vTrace("\n"_Stz);

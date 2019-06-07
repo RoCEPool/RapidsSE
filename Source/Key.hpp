@@ -26,7 +26,7 @@ namespace Data
   class Key
   {
   private:
-  // ..data..   // variable data area
+    // ..bytes..   // variable byte sequence of the key
 
   public:
     void* operator new(size_t);
@@ -35,16 +35,9 @@ namespace Data
     Key(KeyWrk& xKeyWrk);
     ~Key(void) noexcept(false);
   
-    bool operator <(Key* aKeyArg);
-    bool operator <=(Key* aKeyArg);
-    
-    void  vShow(IdxColVec* pIdxColVec);
+    bool operator <  (Key* aKeyArg);
+    bool operator <= (Key* aKeyArg);
   
-    void  vKey(Key& xKey);
-    void  vKey(KeyWrk& xKeyWrk);
-  
-    i8    nKeySize(IdxColVec* pIdxColVec);
-    
     static eKC eCompare(Ent* aKeyItem1, KeyWrk& xKeyItem2);
     static eKC eCompare(KeyWrk& xKeyItem1, KeyWrk& xKeyItem2);
     static eKC eCompare(KeyWrk& xKeyItem1, Ent* aKeyItem2);
@@ -60,21 +53,22 @@ namespace Data
     static bool bLessThan(KeyWrk& xKeyItem1, Ent* aKeyItem2);
     static bool bNotEqual(Ent* aKeyItem1, Ent* aKeyItem2);
   
+    i8   iGetInt(void);
+    void vKey(Key& xKey);
+    void vKey(KeyWrk& xKeyWrk);
+    void vShow(IdxColVec* pIdxColVec);
     void vSprintSortKey(s48K& sBuff, IdxColVec* pIdxColVec);
   
-    //char* aWspArea(void);
-    /*----------------------------------------------------------------------------*/
-    /* get wsp area                                                               */
-    /*----------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
+    /* getthis key as a byte sequence                                         */
+    /*------------------------------------------------------------------------*/
     inline char* aByteSequence(void)
     {
       return reinterpret_cast<char*>(this);
     }
-    i8 iGetInt(void);
-    
   };
   
-  Key* _aKeyData(void* aAddr);
+  Key* _aKey(void* aAddr);
 }
 
 /*============================================================================*/
