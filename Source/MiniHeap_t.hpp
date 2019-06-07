@@ -348,7 +348,7 @@ i8 MiniHeap_t<ITEM>::nMaxItems(void)
 template <class ITEM>
 void MiniHeap_t<ITEM>::vMaxItems(i8 nMaxItems)
 {
-  m_nItems = nMaxItems;
+  m_nMaxItems = nMaxItems;
 }
 
 /*----------------------------------------------------------------------------*/
