@@ -1,0 +1,28 @@
+/*============================================================================*/
+/* _ij -- index join                                                          */
+/*============================================================================*/
+startCluster;
+
+create table lt (
+  l_key   INTEGER NOT NULL,
+  l_name  VARCHAR(32) NOT NULL
+);
+create index li on lt(l_key);
+
+print "loading lt.csv..." ;
+ld lt "../JTEST/j10.csv" ;
+
+create table rt (
+r_key   INTEGER NOT NULL,
+r_name  VARCHAR(32) NOT NULL
+);
+create index ri on rt(r_key);
+
+print "loading rt.csv..." ;
+ld rt "../JTEST/j10.csv" ;
+
+join lt li rt ri;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
