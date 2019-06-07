@@ -20,6 +20,8 @@ void Step::vAddSteps_JobIndexJoin(void)
   vAddStep("Job_IndexJoin.rightTableName@"_Stz, &Step::vJob_IndexJoinRightTableNameFetch);
   
   vAddStep("Job_IndexJoin.spawnSub"_Stz,        &Step::vJob_IndexJoinSpawnSub);
+  
+  vAddStep("Job_SubIndexJoin.indexJoin"_Stz,    &Step::vJob_SubIndexJoinIndexJoin);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -182,28 +184,56 @@ void Step::vJob_IndexJoinSpawnSub(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_IndexJoin.spawnSub"_Stz);
   
   Session* pSession = pJob_IndexJoin->m_pSession;
- /*
-  JobClass* pJobClass_SubFetch = JobClass::pFind(CN_JOB_SUBINDEXJOIN);
+
+  JobClass* pJobClass_SubIndexJoin = JobClass::pFind(CN_JOB_SUBINDEXJOIN);
   
-  Job_SubFetch* pJob_SubFetch =
-  static_cast<Job_SubFetch*>(pJobClass_SubFetch->pPreJob(pSession));
+  Job_SubIndexJoin* pJob_SubIndexJoin =
+  static_cast<Job_SubIndexJoin*>(pJobClass_SubIndexJoin->pPreJob(pSession));
   
-  pJob_SubFetch->vSeed(SS_SEED_RUN);
+  pJob_SubIndexJoin->vSeed(SS_SEED_RUN);
   
-  pJob_SubFetch->m_iParentId    = pJob_IndexJoin->m_iJobId;
-  pJob_SubFetch->m_pParentJob   = pJob_IndexJoin;
-  pJob_SubFetch->m_sObjectName  = pJob_IndexJoin->m_sObjectName;
-  pJob_SubFetch->m_pPlanner     = pPlanner;
-  pJob_SubFetch->m_iPhrase      = iPhrase;
-  pJob_SubFetch->m_i_Slot       = iSlot;
-  pJob_SubFetch->m_pBufferQueue = pJob_IndexJoin->m_pBufferQueue;
+  pJob_SubIndexJoin->m_iParentId    = pJob_IndexJoin->m_iJobId;
+  pJob_SubIndexJoin->m_pParentJob   = pJob_IndexJoin;
+  pJob_SubIndexJoin->m_sObjectName  = pJob_IndexJoin->m_sObjectName;
+  pJob_SubIndexJoin->m_i_Slot       = iSlot;
+  pJob_SubIndexJoin->m_pBufferQueue = pJob_IndexJoin->m_pBufferQueue;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubFetch,SS_SEED_RUN));
-*/
+  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubIndexJoin,SS_SEED_RUN));
+
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* Job_SubIndexJoin.indexJoin -- execute the index join                       */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_SubIndexJoinIndexJoin(MP_Task mpTask)
+{
+  ENTRY("vJob_SubIndexJoinIndexJoin"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("Job_IndexJoin.spawnSub"_Stz);
+  Job_SubIndexJoin* pJob_SubIndexJoin = _pJob_SubIndexJoin(pJobPtr);
+  
+  // get the slot we are working in
+  i8 iSlot = pJob_SubIndexJoin->m_i_Slot;
+  
+  // get the Job_IndexJoin
+  Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJob_SubIndexJoin->m_pParentJob);
+  
+  // get the left table and left index
+  Table* pLeftTable = pJob_IndexJoin->m_pLeftTable;
+  Index* pLeftIndex = pJob_IndexJoin->m_pLeftIndex;
+  
+  // get the right table and right index
+  Table* pRightTable = pJob_IndexJoin->m_pRightTable;
+  Index* pRightIndex = pJob_IndexJoin->m_pRightIndex;
+  
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

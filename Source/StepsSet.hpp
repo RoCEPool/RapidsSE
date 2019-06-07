@@ -561,6 +561,7 @@
   static void vJob_IndexJoinRightTableStore(Tasks::MP_Task mpTask);
   static void vJob_IndexJoinRightTableNameFetch(Tasks::MP_Task mpTask);
   static void vJob_IndexJoinSpawnSub(Tasks::MP_Task mpTask);
+  static void vJob_SubIndexJoinIndexJoin(Tasks::MP_Task mpTask);
 
   // job inflate
   static void vJob_InflateRowsColumnNameFetch(Tasks::MP_Task mpTask);
