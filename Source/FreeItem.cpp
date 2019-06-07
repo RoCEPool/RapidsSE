@@ -43,8 +43,8 @@ void* FreeItem::operator new(size_t, void* aFree)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-FreeItem::FreeItem(i8 nSizeItem)
-: Item_tbd(CN_FREEENTRY,nSizeItem)
+FreeItem::FreeItem(i8 nSizeBytes)
+: SizedHeader(CN_FREEENTRY,nSizeBytes)
 {
 }
 
@@ -63,9 +63,9 @@ FreeItem::~FreeItem(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert given entry into free entry                                        */
 /*----------------------------------------------------------------------------*/
-FreeItem* FreeItem::aMorphFreeItem(void* aFree, i8 nSizeFree)
+FreeItem* FreeItem::aMorphFreeItem(void* aFree, i8 nSizeBytes)
 {
-  FreeItem* aFreeItem = new(aFree) FreeItem(nSizeFree);
+  FreeItem* aFreeItem = new(aFree) FreeItem(nSizeBytes);
   
   return aFreeItem;
 }
