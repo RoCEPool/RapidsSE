@@ -119,7 +119,7 @@ byte* MiniHeap_t<ITEM>::ayAllotBytes(i8 nBytes)
   if (nFreeBytes() < nBytes)
     return nullptr;
   
-  byte* ayBytes = (byte*)m_xWsp.aAllot(nBytes);
+  byte* ayBytes = m_xWsp.ayAllot(nBytes);
   
   vSetWilderness();
   

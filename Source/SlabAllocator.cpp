@@ -44,11 +44,11 @@ SlabAllocator::~SlabAllocator(void) noexcept(false)
 {
   _magic_();
   
-  Slab* pSlabTbd = m_pFirstSlab;
-  while (pSlabTbd) {
-    Slab* pSlabNxt = pSlabTbd->pNextSlab();
-    delete pSlabTbd;
-    pSlabTbd = pSlabNxt;
+  Slab* pSlab_tbd = m_pFirstSlab;
+  while (pSlab_tbd) {
+    Slab* pSlabNxt = pSlab_tbd->pNextSlab();
+    delete pSlab_tbd;
+    pSlab_tbd = pSlabNxt;
   }
   
   m_pFirstSlab = nullptr;
@@ -57,16 +57,16 @@ SlabAllocator::~SlabAllocator(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* allot given number of bytes                                                */
 /*----------------------------------------------------------------------------*/
-char* SlabAllocator::aAllotBytes(i8 nBytes)
+byte* SlabAllocator::ayAllotBytes(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLABALLOCATOR,_FOOTER_);
   
   if (! m_pFirstSlab)
     m_pFirstSlab = new Slab;
   
-  char* aBytes = m_pFirstSlab->aAllotBytes(nBytes);
-  if (aBytes)
-    return aBytes;
+  byte* ayBytes = m_pFirstSlab->ayAllotBytes(nBytes);
+  if (ayBytes)
+    return ayBytes;
   
   Slab* pNewFirstSlab = new Slab;
   pNewFirstSlab->vNextSlab(m_pFirstSlab);
@@ -74,10 +74,10 @@ char* SlabAllocator::aAllotBytes(i8 nBytes)
   
   m_pFirstSlab = pNewFirstSlab;
   
-  aBytes = m_pFirstSlab->aAllotBytes(nBytes);
-  ASSERT(aBytes);
+  ayBytes = m_pFirstSlab->ayAllotBytes(nBytes);
+  ASSERT(ayBytes);
   
-  return aBytes;
+  return ayBytes;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -159,17 +159,17 @@ ForthWord* ForthWord::pToWord(void* pBody)
 /*----------------------------------------------------------------------------*/
 /* allot data space                                                           */
 /*----------------------------------------------------------------------------*/
-char* ForthWord::aAllot(i8 nBytes)
+byte* ForthWord::ayAllot(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* aAddress = m_xRoutine.aAllot(nBytes);
+  byte* ayAddress = m_xRoutine.ayAllot(nBytes);
   
   _setFooter_();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return aAddress;
+  return ayAddress;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -190,7 +190,7 @@ void* ForthWord::aAppend(Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* aAllottedCell = (Cell*)aAllot(sizeof(aCell));
+  Cell* aAllottedCell = (Cell*)ayAllot(sizeof(aCell));
   
   aAllottedCell->m_aJumpTo = aCell;
   
@@ -215,7 +215,7 @@ void* ForthWord::aAppend(i8 iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  i8* aAllottedInt = (i8*)aAllot(sizeof(i8));
+  i8* aAllottedInt = (i8*)ayAllot(sizeof(i8));
   
   *aAllottedInt = iInt;
   
@@ -242,7 +242,7 @@ void* ForthWord::aAppend(Value* aValue)
 
   i8 iSize = aValue->nSize();
   
-  char* aValueAddress = aAllot(iSize);
+  char* aValueAddress = (char*)ayAllot(iSize);
   
   MemLib::vCopy(aValueAddress,aValue,iSize,CN_WORD);
   
@@ -267,7 +267,7 @@ void* ForthWord::aAppend(StepFp* afpStepFp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  StepFp** aafpStepFp = (StepFp**)aAllot(sizeof(StepFp*));
+  StepFp** aafpStepFp = (StepFp**)ayAllot(sizeof(StepFp*));
 
   *aafpStepFp = afpStepFp;
 

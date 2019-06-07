@@ -82,7 +82,7 @@ char* ExportBuffer::aAllotRecord(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPORTBUFFER,_FOOTER_);
   
-  char* aRecord = m_xWsp.aAllot(nBytes);
+  char* aRecord = (char*)m_xWsp.ayAllot(nBytes);
   if (aRecord)
     m_nRecords++;
   

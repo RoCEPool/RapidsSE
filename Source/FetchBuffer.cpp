@@ -257,7 +257,7 @@ HeadLine** FetchBuffer::aaAllotRowPtr(i8 nBytes)
   if (nFreeBytes() < nBytes)
     return nullptr;
   
-  HeadLine** aaCacheLine = reinterpret_cast<HeadLine**>(m_xWsp.aAllot(nBytes));
+  HeadLine** aaCacheLine = reinterpret_cast<HeadLine**>(m_xWsp.ayAllot(nBytes));
   
   m_nFetchedRows++;
   

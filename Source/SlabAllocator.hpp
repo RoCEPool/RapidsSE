@@ -21,7 +21,7 @@ namespace Pool
     SlabAllocator(void);
     ~SlabAllocator(void) noexcept(false);
         
-    char* aAllotBytes(i8 nBytes);
+    byte* ayAllotBytes(i8 nBytes);
   
     Footer* aFooter(void);
   };

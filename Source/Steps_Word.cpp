@@ -68,7 +68,7 @@ void Step::vAllot(MP_Task mpTask)
   
   ForthWord* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
-  char* aAddress = pCurrentWord->aAllot(iBytes);
+  byte* aAddress = pCurrentWord->ayAllot(iBytes);
   ASSERT(aAddress);
   
   EXIT();

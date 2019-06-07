@@ -21,7 +21,7 @@ namespace Correctness
   public:
     Wsp_t(void);
 
-    char* aAllot(i8 nBytes);
+    byte* ayAllot(i8 nBytes);
     void  vAppend(void* aSrc, i8 nBytes, eCN eClassNo);
     char* aArea(void);
     void  vFill(char cByte, eCN eClassNo);
@@ -63,13 +63,13 @@ void Wsp_t<LENGTH>::vInit(void)
 /* allot bytes from byte area                                                 */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-char* Wsp_t<LENGTH>::aAllot(i8 nBytes)
+byte* Wsp_t<LENGTH>::ayAllot(i8 nBytes)
 {
-  char* aAllotted = aLatter();
+  byte* ayAllotted = (byte*)aLatter();
   
   vTake(nBytes);
   
-  return aAllotted;
+  return ayAllotted;
 }
 
 /*----------------------------------------------------------------------------*/
