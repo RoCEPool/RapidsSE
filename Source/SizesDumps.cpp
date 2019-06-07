@@ -70,7 +70,7 @@ pDUMPFUN *gpDump[]
   /* 41 */ &Dump::vDummy,           // CN_FREEBUFFER
   /* 42 */ &Dump::vDummy,           // CN_FREECHUNK
   /* 43 */ &Dump::vDummy,           // CN_FREEDNOT
-  /* 44 */ &Dump::vDummy,           // CN_FREEENTRY
+  /* 44 */ &Dump::vDummy,           // CN_FREEITEM
   
   /*    */ &Dump::vInvalid,         // CN_GENVAR
   /* 48 */ &Grid::vDump,            // CN_GRID
@@ -379,7 +379,7 @@ i8 giClassSize[]
   /* 41 */ sizeof(PoolBuffer),         // CN_FREEBUFFER
   /* 42 */ sizeof(FreeChunk),          // CN_FREECHUNK
   /* 43 */ 0,                          // CN_FREEDNOT
-  /* 44 */ 0,                          // CN_FREEENTRY
+  /* 44 */ 0,                          // CN_FREEITEM
   
   /*    */ sizeof(GenVar),             // CN_GENVAR
   /* 48 */ sizeof(Grid),               // CN_GRID
@@ -687,7 +687,7 @@ eHT geWhichHeap[]
   /* 41 */ HT_INVALID,           // CN_FREEBUFFER
   /* 42 */ HT_INVALID,           // CN_FREECHUNK
   /* 43 */ HT_INVALID,           // CN_FREEDNOT
-  /* 44 */ HT_INVALID,           // CN_FREEENTRY
+  /* 44 */ HT_INVALID,           // CN_FREEITEM
   
   /*    */ HT_INVALID,           // CN_GENVAR
   /* 48 */ HT_TRANSIENT_LARGE,   // CN_GRID

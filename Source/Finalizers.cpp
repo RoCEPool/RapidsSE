@@ -67,7 +67,7 @@ pFINALIZE *gpFinalize[]
   /* 41 */ &Finalize::vUndefined,         // CN_FREEBUFFER
   /* 42 */ &Finalize::vUndefined,         // CN_FREECHUNK
   /* 43 */ &Finalize::vUndefined,         // CN_FREEDNOT
-  /* 44 */ &Finalize::vUndefined,         // CN_FREEENTRY
+  /* 44 */ &Finalize::vUndefined,         // CN_FREEITEM
   
   /*    */ &Finalize::vUndefined,         // CN_GENVAR
   /* 48 */ &Finalize::vUndefined,         // CN_GRID

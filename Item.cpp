@@ -215,7 +215,7 @@ bool Item::bValidItem(void)
     return false;
   }
   
-  if ( ! (CN_ENTRY == eClass() || CN_FREEENTRY == eClass()) ) {
+  if ( ! (CN_ENTRY == eClass() || CN_FREEITEM == eClass()) ) {
     vTrace("Not valid class\n"_Stz);
     return false;
   }

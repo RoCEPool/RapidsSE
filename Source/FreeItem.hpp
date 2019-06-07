@@ -19,8 +19,7 @@ namespace MiniHeaps
     static FreeItem* aMorphFreeItem(void* aFree, i8 nSizeBytes);
 
     char* aAddressAfter(void);
-    void  vAssertFreeEntry(void);
-    bool  bValidFreeEntry(void);
+    bool  bValidFreeItem(void);
   };
   
   FreeItem* _aFreeItem(void* aAddr);

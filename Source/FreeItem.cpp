@@ -44,7 +44,7 @@ void* FreeItem::operator new(size_t, void* aFree)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 FreeItem::FreeItem(i8 nSizeBytes)
-: SizedHeader(CN_FREEENTRY,nSizeBytes)
+: SizedHeader(CN_FREEITEM,nSizeBytes)
 {
 }
 
@@ -88,21 +88,14 @@ char* FreeItem::aAddressAfter(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert valid free entry                                                    */
-/*----------------------------------------------------------------------------*/
-void FreeItem::vAssertFreeEntry(void)
-{
-}
-
-/*----------------------------------------------------------------------------*/
 /* test for valid free entry                                                  */
 /*----------------------------------------------------------------------------*/
-bool FreeItem::bValidFreeEntry(void)
+bool FreeItem::bValidFreeItem(void)
 {
   if (! bValidMagic())
     return false;
   
-  if (CN_FREEENTRY != eClass())
+  if (CN_FREEITEM != eClass())
     return false;
 
   return true;

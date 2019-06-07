@@ -488,9 +488,9 @@ bool EntryBuffer::bVerifyItems(void)
         break;
       }
         
-      case CN_FREEENTRY: {
-        FreeItem* aFreeEntry = _aFreeItem(aItem);
-        if (! aFreeEntry->bValidFreeEntry()) {
+      case CN_FREEITEM: {
+        FreeItem* aFreeItem = _aFreeItem(aItem);
+        if (! aFreeItem->bValidFreeItem()) {
           vShow();
           vVerifyFault();
           return false;

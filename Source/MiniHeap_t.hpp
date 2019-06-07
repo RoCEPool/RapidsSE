@@ -195,10 +195,10 @@ void MiniHeap_t<ITEM>::vDumpItems(void)
         break;
       }
         
-      case CN_FREEENTRY: {
-        FreeItem* aFreeEntry = _aFreeItem(aItem);
-        vTrace("[%04lld:%06lld] CN_FREEENTRY: %lldB\n"_Stz,
-               iItem,iOffset,aFreeEntry->nSizeBytes());
+      case CN_FREEITEM: {
+        FreeItem* aFreeItem = _aFreeItem(aItem);
+        vTrace("[%04lld:%06lld] CN_FREEITEM: %lldB\n"_Stz,
+               iItem,iOffset,aFreeItem->nSizeBytes());
         break;
       }
         
