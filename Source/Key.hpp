@@ -54,10 +54,8 @@ namespace Data
     static bool bNotEqual(Ent* aKeyItem1, Ent* aKeyItem2);
   
     i8   iGetInt(void);
-    void vKey(Key& xKey);
     void vKey(KeyWrk& xKeyWrk);
     void vShow(IdxColVec* pIdxColVec);
-    void vSprintSortKey(s48K& sBuff, IdxColVec* pIdxColVec);
   
     /*------------------------------------------------------------------------*/
     /* getthis key as a byte sequence                                         */
