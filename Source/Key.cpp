@@ -118,7 +118,7 @@ i8 KeyData::nKeySize(IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
 /*----------------------------------------------------------------------------*/
-eKC KeyData::eCompare(Item* aKeyItem1, KeyWrk& xKeyItem2)
+eKC KeyData::eCompare(Ent* aKeyItem1, KeyWrk& xKeyItem2)
 {  
   i8 nKeySize1 = aKeyItem1->nSizeData();
   i8 nKeySize2 = xKeyItem2.nKeySize();
@@ -180,7 +180,7 @@ eKC KeyData::eCompare(KeyWrk& xKeyItem1, KeyWrk& xKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
 /*----------------------------------------------------------------------------*/
-eKC KeyData::eCompare(KeyWrk& xKeyItem1, Item* aKeyItem2)
+eKC KeyData::eCompare(KeyWrk& xKeyItem1, Ent* aKeyItem2)
 {
   i8 nKeySize1 = xKeyItem1.nKeySize();
   i8 nKeySize2 = aKeyItem2->nSizeData();
@@ -207,7 +207,7 @@ eKC KeyData::eCompare(KeyWrk& xKeyItem1, Item* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
 /*----------------------------------------------------------------------------*/
-eKC KeyData::eCompare(Item* aKeyItem1, Item* aKeyItem2)
+eKC KeyData::eCompare(Ent* aKeyItem1, Ent* aKeyItem2)
 {
   i8 nKeySize1 = aKeyItem1->nSizeData();
   i8 nKeySize2 = aKeyItem2->nSizeData();
@@ -243,7 +243,7 @@ char* KeyData::aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor)
 /*----------------------------------------------------------------------------*/
 /* if key1 is equal to key2 ?                                                 */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bEqualTo(Item* aKeyItem1, Item* aKeyItem2)
+bool KeyData::bEqualTo(Ent* aKeyItem1, Ent* aKeyItem2)
 {
   eKC eCmp = eCompare(aKeyItem1, aKeyItem2);
   return eCmp == KC_SAME ? true : false;
@@ -252,7 +252,7 @@ bool KeyData::bEqualTo(Item* aKeyItem1, Item* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* if key1 greater than key2 ?                                                */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bGreaterThan(Item* aKeyItem1, Item* aKeyItem2)
+bool KeyData::bGreaterThan(Ent* aKeyItem1, Ent* aKeyItem2)
 {
   eKC eCmp = eCompare(aKeyItem1, aKeyItem2);
   return eCmp == KC_AFTER ? true : false;
@@ -261,7 +261,7 @@ bool KeyData::bGreaterThan(Item* aKeyItem1, Item* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* if key1 greater than equal to key2 ?                                       */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bGreaterEqual(Item* aKeyItem1, KeyWrk& xKeyItem2)
+bool KeyData::bGreaterEqual(Ent* aKeyItem1, KeyWrk& xKeyItem2)
 {
   eKC eCmp = eCompare(aKeyItem1, xKeyItem2);
   return eCmp == KC_AFTER || eCmp == KC_SAME ? true : false;
@@ -270,7 +270,7 @@ bool KeyData::bGreaterEqual(Item* aKeyItem1, KeyWrk& xKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* if key1 greater than equal to key2 ?                                       */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bGreaterEqual(Item* aKeyItem1, Item* aKeyItem2)
+bool KeyData::bGreaterEqual(Ent* aKeyItem1, Ent* aKeyItem2)
 {
   eKC eCmp = eCompare(aKeyItem1, aKeyItem2);
   return eCmp == KC_AFTER || eCmp == KC_SAME ? true : false;
@@ -279,7 +279,7 @@ bool KeyData::bGreaterEqual(Item* aKeyItem1, Item* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* if key1 less than eqiual to key2 ?                                         */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bLessEqual(KeyWrk& xKeyItem1, Item* aKeyItem2)
+bool KeyData::bLessEqual(KeyWrk& xKeyItem1, Ent* aKeyItem2)
 {
   eKC eCmp = eCompare(xKeyItem1, aKeyItem2);
   return eCmp == KC_BEFORE || eCmp == KC_SAME ? true : false;
@@ -288,7 +288,7 @@ bool KeyData::bLessEqual(KeyWrk& xKeyItem1, Item* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* if key1 less than key2 ?                                                   */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bLessThan(KeyWrk& xKeyItem1, Item* aKeyItem2)
+bool KeyData::bLessThan(KeyWrk& xKeyItem1, Ent* aKeyItem2)
 {
   eKC eCmp = eCompare(xKeyItem1, aKeyItem2);
   return eCmp == KC_BEFORE ? true : false;
@@ -297,7 +297,7 @@ bool KeyData::bLessThan(KeyWrk& xKeyItem1, Item* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* if key1 not equal to key2 ?                                                */
 /*----------------------------------------------------------------------------*/
-bool KeyData::bNotEqual(Item* aKeyItem1, Item* aKeyItem2)
+bool KeyData::bNotEqual(Ent* aKeyItem1, Ent* aKeyItem2)
 {
   eKC eCmp = eCompare(aKeyItem1, aKeyItem2);
   return eCmp != KC_SAME ? true : false;

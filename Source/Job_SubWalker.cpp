@@ -187,7 +187,7 @@ bool Job_SubWalker::bChunk(void)
 //  if (! m_pEntBuffer)
 //    return false;
 //
-//  for (Item* aItem = m_pEntBuffer->aFirstItem();
+//  for (Ent* aItem = m_pEntBuffer->aFirstItem();
 //       aItem;
 //       aItem = m_pEntBuffer->aAdjacentItem(aItem))
 //    {;}

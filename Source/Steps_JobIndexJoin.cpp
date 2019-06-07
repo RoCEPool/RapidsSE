@@ -259,10 +259,10 @@ void Step::vJob_SubIndexJoinIndexJoin(MP_Task mpTask)
   EntBuffer* pRightBuffer = pRightIndexTree->pRoot();
   
   // get the lead entry of the left buffer
-  Item* aLeftEntry = pLeftBuffer->aLeadEntry();
+  Ent* aLeftEntry = pLeftBuffer->aLeadEntry();
   
   // get the lead entry of the right buffer
-  Item* aRightEntry = pRightBuffer->aLeadEntry();
+  Ent* aRightEntry = pRightBuffer->aLeadEntry();
   
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
   

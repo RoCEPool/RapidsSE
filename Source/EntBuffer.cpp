@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntBuffer.cpp -- Item Buffer                                            */
+/* EntBuffer.cpp -- Ent Buffer                                            */
 /*============================================================================*/
 
 #include "Data.h"
@@ -102,11 +102,11 @@ void EntBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* aGetNextLeft -- get the next left entry                                     */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::aGetNextEntry(EntBuffer** ppEntBuffer, Item* aPrevEntry)
+Ent* EntBuffer::aGetNextEntry(EntBuffer** ppEntBuffer, Ent* aPrevEntry)
 {
   EntBuffer* pEntBuffer = *ppEntBuffer;
   
-  Item *aNextEntry = pEntBuffer->aNextEntry(aPrevEntry, 0);
+  Ent *aNextEntry = pEntBuffer->aNextEntry(aPrevEntry, 0);
   if (! aNextEntry ) {
     pEntBuffer = pEntBuffer->pNextBuffer();
     *ppEntBuffer = pEntBuffer;
@@ -120,7 +120,7 @@ Item* EntBuffer::aGetNextEntry(EntBuffer** ppEntBuffer, Item* aPrevEntry)
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pRefdEntBuffer(Item* pItem)
+EntBuffer* EntBuffer::pRefdEntBuffer(Ent* pItem)
 {
   Id xId = pItem->xId();
   
@@ -156,11 +156,11 @@ EntBuffer* EntBuffer::pRefdEntBuffer(Id& xId)
 /*----------------------------------------------------------------------------*/
 /* allot an entry in this buffer                                              */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::aAllotEntry(i8 nBytes_Without_Offsets)
+Ent* EntBuffer::aAllotEntry(i8 nBytes_Without_Offsets)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  Item* aItem = aAllotItem(CN_ENT,nBytes_Without_Offsets);
+  Ent* aItem = aAllotItem(CN_ENT,nBytes_Without_Offsets);
   if (! aItem)
     return nullptr;
   
@@ -191,7 +191,7 @@ void EntBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
   // recursively dump the lower level buffers
   if (m_iBufferHeight != 0) {
     
-    for (Item* aItem = aLeadEntry();
+    for (Ent* aItem = aLeadEntry();
          aItem != nullptr;
          aItem = aNextEntry(aItem, 0)) {
       
@@ -233,7 +233,7 @@ void EntBuffer::vBufferCount(i8& nBuffers)
   if (! m_iBufferHeight)
     return;
   
-  for (Item* aItem = aLeadEntry();
+  for (Ent* aItem = aLeadEntry();
        aItem != nullptr;
        aItem = aNextEntry(aItem, 0)) {
     
@@ -251,7 +251,7 @@ void EntBuffer::vBufferCount(i8& nBuffers)
 /*----------------------------------------------------------------------------*/
 /* cut entry from skip list                                                   */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vCutEntry(Item* aItem, Item* aPriorVec[])
+void EntBuffer::vCutEntry(Ent* aItem, Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -266,15 +266,15 @@ void EntBuffer::vCutEntry(Item* aItem, Item* aPriorVec[])
 /*----------------------------------------------------------------------------*/
 /* delete the given entry                                                     */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vDeleteEntry(Item** aaItem)
+void EntBuffer::vDeleteEntry(Ent** aaItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Item* aItem = *aaItem;
+  Ent* aItem = *aaItem;
   
-  Item* xPriorVec[gpAttachMap->m_nIndexLevels];
+  Ent* xPriorVec[gpAttachMap->m_nIndexLevels];
   
   vPositionPriorVecEntry(aItem, xPriorVec, aItem);
   
@@ -310,7 +310,7 @@ void EntBuffer::vDump(void)
   // recursively dump the lower level buffers
   if (m_iBufferHeight != 0) {
     
-    for (Item* aItem = aLeadEntry();
+    for (Ent* aItem = aLeadEntry();
          aItem != nullptr;
          aItem = aNextEntry(aItem, 0)) {
       
@@ -328,7 +328,7 @@ void EntBuffer::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* dump the given prior vector                                                */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vDumpPriorVec(Item* aPriorVec[])
+void EntBuffer::vDumpPriorVec(Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -338,9 +338,9 @@ void EntBuffer::vDumpPriorVec(Item* aPriorVec[])
          aPriorVec[0],aPriorVec[1],aPriorVec[2]);
   
   for (i8 i = 0; i < 3; i++) {
-    Item* aItem = aPriorVec[i];
+    Ent* aItem = aPriorVec[i];
     for (i8 i_Level = 0; i_Level < aItem->nLevels(); i_Level++) {
-      vTrace("  i : %lld Item : %p i_Offset : %lld offset : %lld pointsTo : %p\n"_Stz,
+      vTrace("  i : %lld Ent : %p i_Offset : %lld offset : %lld pointsTo : %p\n"_Stz,
              i,
              aItem,
              i_Level,
@@ -361,7 +361,7 @@ EntBuffer* EntBuffer::pFirstChildBuffer(void)
   RASSERT( ! m_aLazyChain );
 #endif
   
-  Item* aFirstEntry = this->aLeadEntry();
+  Ent* aFirstEntry = this->aLeadEntry();
   EntBuffer* pChildEntBuffer = EntBuffer::pRefdEntBuffer(aFirstEntry);
   
   return pChildEntBuffer;
@@ -370,11 +370,11 @@ EntBuffer* EntBuffer::pFirstChildBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get an entry by offset                                                     */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::aGetEntryOffset(i8 iOffset)
+Ent* EntBuffer::aGetEntryOffset(i8 iOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  Item* aItem = aAdd<Item*>(aItemArea(), iOffset);
+  Ent* aItem = aAdd<Ent*>(aItemArea(), iOffset);
   
   return aItem;
 }
@@ -382,7 +382,7 @@ Item* EntBuffer::aGetEntryOffset(i8 iOffset)
 /*----------------------------------------------------------------------------*/
 /* get split entry by split number                                            */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::aGetEntrySplit(i8 iSplitEntryNo,Item** aaPriorEntry)
+Ent* EntBuffer::aGetEntrySplit(i8 iSplitEntryNo,Ent** aaPriorEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -397,7 +397,7 @@ Item* EntBuffer::aGetEntrySplit(i8 iSplitEntryNo,Item** aaPriorEntry)
   *aaPriorEntry = nullptr;
   
   i8 iEntryNo = 0;
-  for (Item* aSplitEntry = aNextEntry(aSkipRoots(),0);
+  for (Ent* aSplitEntry = aNextEntry(aSkipRoots(),0);
        aSplitEntry;
        aSplitEntry = aNextEntry(aSplitEntry,0)) {
     
@@ -464,7 +464,7 @@ Index* EntBuffer::pIndex(void)
 /*----------------------------------------------------------------------------*/
 /* get last entry                                                             */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::aLastEntry(void)
+Ent* EntBuffer::aLastEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -475,10 +475,10 @@ Item* EntBuffer::aLastEntry(void)
   //  vBuildSkipList();
 #endif
   
-  Item* aLast = aSkipRoots();
+  Ent* aLast = aSkipRoots();
   
   for (;;) {
-    Item* aNext = aNextEntry(aLast,0);
+    Ent* aNext = aNextEntry(aLast,0);
     if (! aNext)
       break;
     aLast = aNext;
@@ -490,7 +490,7 @@ Item* EntBuffer::aLastEntry(void)
 /*----------------------------------------------------------------------------*/
 /* get lead entry (the entry after head entry                                 */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::aLeadEntry(void)
+Ent* EntBuffer::aLeadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -498,7 +498,7 @@ Item* EntBuffer::aLeadEntry(void)
   RASSERT( ! m_aLazyChain );
 #endif
   
-  Item* aFirst = aNextEntry(aSkipRoots(),0);
+  Ent* aFirst = aNextEntry(aSkipRoots(),0);
   
   RASSERT(! aFirst || aFirst->bValidItem());
   
@@ -545,7 +545,7 @@ i8 EntBuffer::iLengthSubList(void)
 /*----------------------------------------------------------------------------*/
 /* convert given entry into free entry                                        */
 /*----------------------------------------------------------------------------*/
-FreeItem* EntBuffer::aMakeFreeEntry(Item* aItem)
+FreeItem* EntBuffer::aMakeFreeEntry(Ent* aItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -561,7 +561,7 @@ FreeItem* EntBuffer::aMakeFreeEntry(Item* aItem)
 /*----------------------------------------------------------------------------*/
 /* move to exact key entry                                                    */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
+Ent* EntBuffer::pMoveToExactEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
 {
   EntBuffer* pEntBuffer = *paEntBuffer;
   
@@ -597,7 +597,7 @@ Item* EntBuffer::pMoveToExactEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paE
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
+Ent* EntBuffer::pMoveToGreaterThanEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
 {
   EntBuffer* pEntBuffer = *paEntBuffer;
   
@@ -632,7 +632,7 @@ Item* EntBuffer::pMoveToGreaterThanEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
+Ent* EntBuffer::pMoveToGreaterEqualEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
 {
   EntBuffer* pEntBuffer = *paEntBuffer;
   
@@ -671,7 +671,7 @@ Item* EntBuffer::pMoveToGreaterEqualEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffe
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
+Ent* EntBuffer::pMoveToNextEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
 {
   EntBuffer* pEntBuffer = *paEntBuffer;
   
@@ -698,14 +698,14 @@ Item* EntBuffer::pMoveToNextEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEn
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::pMoveToPrevEntry(Item* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
+Ent* EntBuffer::pMoveToPrevEntry(Ent* aItem, KeyWrk& xKeyWrk, EntBuffer** paEntBuffer)
 {
   EntBuffer* pEntBuffer = *paEntBuffer;
   
   if (aItem == pEntBuffer->aSkipRoots())
     aItem = pEntBuffer->aNextEntry(aItem,0);
   
-  Item* aItemPrev = aItem;
+  Ent* aItemPrev = aItem;
   
   while (aItem) {
     eKC eCompare = KeyData::eCompare(aItem, xKeyWrk);
@@ -751,7 +751,7 @@ void EntBuffer::vNextBuffer(EntBuffer* pNextBuffer)
 /*----------------------------------------------------------------------------*/
 /* get next entry                                                             */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::aNextEntry(Item* aCurrent, i8 iLevel)
+Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -762,7 +762,7 @@ Item* EntBuffer::aNextEntry(Item* aCurrent, i8 iLevel)
   if (-1 == i_Offset)
     return nullptr;
   
-  Item* aItem = aAdd<Item*>(aItemArea(), i_Offset);
+  Ent* aItem = aAdd<Ent*>(aItemArea(), i_Offset);
   
   RASSERT(! aItem || aItem->bValidItem());
   
@@ -772,14 +772,14 @@ Item* EntBuffer::aNextEntry(Item* aCurrent, i8 iLevel)
 /*----------------------------------------------------------------------------*/
 /* pop entry from lazy chain                                                  */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::aPopLazyChain(void)
+Ent* EntBuffer::aPopLazyChain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   if (! m_aLazyChain )
     return nullptr;
   
-  Item* aPoppedLazyEntry = m_aLazyChain;
+  Ent* aPoppedLazyEntry = m_aLazyChain;
   
   i8 iNextLazyOffset = aPoppedLazyEntry->iNEO(0);
   
@@ -855,14 +855,14 @@ void EntBuffer::vRestore(void)
     PoolBuffer* pOriginalBuffer =
     pBitAnd<PoolBuffer*>(m_aLazyChain,C_OBJECT_TO_BUFFER_MASK);
     u8 uOffset = nSub(m_aLazyChain, pOriginalBuffer);
-    m_aLazyChain = pBitOr<Item*>(pThisBuffer,uOffset);
+    m_aLazyChain = pBitOr<Ent*>(pThisBuffer,uOffset);
   }
   
   // get the buffer no
   bn nBuffer = nPoolBufferNo();
     
   // now restore the row id's to point to this buffer no
-  for (Item* aItem = aLeadEntry();
+  for (Ent* aItem = aLeadEntry();
        aItem != nullptr;
        aItem = aNextEntry(aItem, 0)) {
     
@@ -886,12 +886,12 @@ void EntBuffer::vRestoreIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* show entry                                                                 */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vShowEntry(Item* aItem)
+void EntBuffer::vShowEntry(Ent* aItem)
 {
   KeyData* aKey = _aKeyData(aItem->aDataArea());
   i8 iOffset = iToOffset(aItem);
   
-  vTrace("%lld: Item: %p Size: %llu Levels: %llu "_Stz,
+  vTrace("%lld: Ent: %p Size: %llu Levels: %llu "_Stz,
          iOffset,
          aItem,
          aItem->nSizeItem_WithoutOffsets(),
@@ -920,7 +920,7 @@ void EntBuffer::vShowEntry(Item* aItem)
 /*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vShow(Item* aMarkEntry)
+void EntBuffer::vShow(Ent* aMarkEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -960,7 +960,7 @@ void EntBuffer::vShow(Item* aMarkEntry)
   
   i8 iOffset = aSkipRoots()->iNEO(0);
   while (iOffset > -1) {
-    Item* aItem = aGetEntryOffset(iOffset);
+    Ent* aItem = aGetEntryOffset(iOffset);
     vShowEntry(aItem);
     if (aMarkEntry == aItem)
       vTrace("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
@@ -987,7 +987,7 @@ void EntBuffer::vShowShort(void)
   
   i8 iOffset = aSkipRoots()->iNEO(0);
   while (iOffset > -1) {
-    Item* aItem = aGetEntryOffset(iOffset);
+    Ent* aItem = aGetEntryOffset(iOffset);
     
     KeyData* aKey = _aKeyData(aItem->aDataArea())
     ;
@@ -1071,7 +1071,7 @@ void EntBuffer::vShowTree(bool bDumpBuffer)
   if ( ! m_iBufferHeight )
     return;
   
-  Item* aFirstEntry = this->aLeadEntry();
+  Ent* aFirstEntry = this->aLeadEntry();
   if (! aFirstEntry)
     return;
   
@@ -1090,7 +1090,7 @@ void EntBuffer::vShowTree(bool bDumpBuffer)
 /*----------------------------------------------------------------------------*/
 /* get root of skip list (was aka head entry                                  */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::aSkipRoots(void)
+Ent* EntBuffer::aSkipRoots(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -1137,7 +1137,7 @@ void EntBuffer::vTruncate(void)
   if (m_iBufferHeight != 0) {
     
     // recursively delete the lower level buffers
-    for (Item* aItem = aLeadEntry();
+    for (Ent* aItem = aLeadEntry();
          aItem != nullptr;
          aItem = aNextEntry(aItem, 0)) {
       

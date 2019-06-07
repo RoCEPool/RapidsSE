@@ -425,7 +425,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   
   EntBuffer* aLowerEntBuffer;
-  Item* aLowerEntry = nullptr;
+  Ent* aLowerEntry = nullptr;
   eRO eLowerRelnOp;
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
@@ -616,8 +616,8 @@ void Step::vIndexRange(MP_Task mpTask)
   EntBuffer* aLowerEntBuffer;
   EntBuffer* aUpperEntBuffer;
   
-  Item* aLowerEntry = nullptr;
-  Item* aUpperEntry = nullptr;
+  Ent* aLowerEntry = nullptr;
+  Ent* aUpperEntry = nullptr;
   
   eRO eUpperRelnOp;
   eRO eLowerRelnOp;
@@ -970,8 +970,8 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   EntBuffer* pEntBuffer;
   EntBuffer* aUpperEntBuffer;
   
-  Item* aUpperEntry = nullptr;
-  Item* aItem      = nullptr;
+  Ent* aUpperEntry = nullptr;
+  Ent* aItem      = nullptr;
   
   eRO eUpperRelnOp;
   bool bBefore;
@@ -1160,7 +1160,7 @@ void Step::vIndexVisualize(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* append a row to a working buffer                                           */
 /*----------------------------------------------------------------------------*/
-bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Item* aItem, Job_FetchRows* pJob_FetchRows)
+bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Ent* aItem, Job_FetchRows* pJob_FetchRows)
 {
   
   Id xId = aItem->xId();

@@ -367,7 +367,7 @@ i8 giClassSize[]
   /* 34 */ sizeof(DicStack),           // CN_DICSTACK
   /* 35 */ sizeof(Dir),                // CN_DIR
   
-  /* 36 */ sizeof(Item),               // CN_ENT
+  /* 36 */ sizeof(Ent),               // CN_ENT
   /* 37 */ sizeof(EntBuffer),        // CN_ENTBUFFER
   /*    */ sizeof(EnumFlags),          // CN_ENUMFLAGS
   /* 32 */ sizeof(ExportBuffer),       // CN_EXPORTBUFFER

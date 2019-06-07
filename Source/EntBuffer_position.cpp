@@ -39,7 +39,7 @@ EntBuffer* EntBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
   EntBuffer* pEntBuffer = this;
   
   i8 iBufferHeight;
-  Item* aItem;
+  Ent* aItem;
   
   while (true) {
     
@@ -69,7 +69,7 @@ EntBuffer* EntBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and return entry prior to key                          */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::pPositionPriorEntry(Item* aFindKey)
+Ent* EntBuffer::pPositionPriorEntry(Ent* aFindKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -82,7 +82,7 @@ Item* EntBuffer::pPositionPriorEntry(Item* aFindKey)
   if (nItems() == 0)
     return aSkipRoots();
   
-  Item* aScanEntry_sl = aSkipRoots();
+  Ent* aScanEntry_sl = aSkipRoots();
   
   bool bKeyIsGreaterEqual;
   
@@ -90,7 +90,7 @@ Item* EntBuffer::pPositionPriorEntry(Item* aFindKey)
        i_ScanLevel >= 0;
        i_ScanLevel--) {
     
-    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
+    Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
       
       bKeyIsGreaterEqual = KeyData::bGreaterEqual(aNextEntry_sl, aFindKey);
@@ -109,7 +109,7 @@ Item* EntBuffer::pPositionPriorEntry(Item* aFindKey)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and return entry prior to key                          */
 /*----------------------------------------------------------------------------*/
-Item* EntBuffer::pPositionPriorEntry(KeyWrk& xFindKey)
+Ent* EntBuffer::pPositionPriorEntry(KeyWrk& xFindKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -121,7 +121,7 @@ Item* EntBuffer::pPositionPriorEntry(KeyWrk& xFindKey)
   if (nItems() == 0)
     return aSkipRoots();
   
-  Item* aScanEntry_sl = aSkipRoots();
+  Ent* aScanEntry_sl = aSkipRoots();
   
   bool bKeyIsGreaterEqual;
   
@@ -129,7 +129,7 @@ Item* EntBuffer::pPositionPriorEntry(KeyWrk& xFindKey)
        i_ScanLevel >= 0;
        i_ScanLevel--) {
     
-    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
+    Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
       
       bKeyIsGreaterEqual = KeyData::bGreaterEqual(aNextEntry_sl, xFindKey);
@@ -149,8 +149,8 @@ Item* EntBuffer::pPositionPriorEntry(KeyWrk& xFindKey)
 /* compute prior vector for find key, such that next of priorVec[0] is        */
 /* specifically the given find entry                                          */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPositionPriorVecEntry(Item* aFindKey, Item* aPriorVec[],
-                                         Item* aFindEntry)
+void EntBuffer::vPositionPriorVecEntry(Ent* aFindKey, Ent* aPriorVec[],
+                                         Ent* aFindEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -175,13 +175,13 @@ void EntBuffer::vPositionPriorVecEntry(Item* aFindKey, Item* aPriorVec[],
   i8 iFindLevels = aFindEntry ? aFindEntry->nLevels() - 1 : 2;
   
   bool bIsJuxta;
-  Item* aScanEntry_sl = aSkipRoots();
+  Ent* aScanEntry_sl = aSkipRoots();
   for (i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
        i_ScanLevel >= 0;
        i_ScanLevel--) {
     
     i8 iItemAtScanLevel = 0;
-    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
+    Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
       
       if (aFindEntry == aNextEntry_sl)
@@ -199,7 +199,7 @@ void EntBuffer::vPositionPriorVecEntry(Item* aFindKey, Item* aPriorVec[],
           break;
       }
       
-      Item* aPriorEntry_sl = aScanEntry_sl;
+      Ent* aPriorEntry_sl = aScanEntry_sl;
       aScanEntry_sl = aNextEntry_sl;
       aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
       iItemAtScanLevel++;
@@ -212,8 +212,8 @@ void EntBuffer::vPositionPriorVecEntry(Item* aFindKey, Item* aPriorVec[],
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
-                                          Item* aPriorVec[],
+void EntBuffer::vPositionPriorVecBuffer(Ent* aInsertingEntry,
+                                          Ent* aPriorVec[],
                                           EntBuffer* pRefdChildBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
@@ -264,11 +264,11 @@ void EntBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
-  Item* aPriorEntry_sl = aSkipRoots();
+  Ent* aPriorEntry_sl = aSkipRoots();
 
   for (; i_ScanLevel >= 0; i_ScanLevel--) {
 
-    while (Item* aNextEntry_sl = aNextEntry(aPriorEntry_sl,i_ScanLevel)) {
+    while (Ent* aNextEntry_sl = aNextEntry(aPriorEntry_sl,i_ScanLevel)) {
 
       // - key testing
 
@@ -319,7 +319,7 @@ void EntBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
 }
 
 /*----------------------------------------------------------------------------*/
-//void EntBuffer::vPositionPriorVecBuffer(Item* aFindKey, Item* aPriorVec[],
+//void EntBuffer::vPositionPriorVecBuffer(Ent* aFindKey, Ent* aPriorVec[],
 //                                          EntBuffer* pToBuffer)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
@@ -359,13 +359,13 @@ void EntBuffer::vPositionPriorVecBuffer(Item* aInsertingEntry,
 //
 //  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
 //  bool bNextKeyIsGreater;
-//  Item* aScanEntry_sl = aSkipRoots();
+//  Ent* aScanEntry_sl = aSkipRoots();
 //
 //  for (i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
 //       i_ScanLevel >= 0;
 //       i_ScanLevel--) {
 //
-//    Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
+//    Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
 //    while (aNextEntry_sl) {
 //
 //      //KeyData* aNextKey = _aKeyData(aNextEntry_sl->aDataArea());

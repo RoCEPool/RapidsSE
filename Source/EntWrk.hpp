@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntWrk.hpp -- Working Item (contains an embedded object)                  */
+/* EntWrk.hpp -- Working Ent (contains an embedded object)                  */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@ namespace Data
 {
   class EntWrk : public Object
   {
-  friend class Item;
+  friend class Ent;
   friend class Table;
   
   static const i8 C_WSP_ENTWRK = C_17KB;

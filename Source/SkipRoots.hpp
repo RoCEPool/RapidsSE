@@ -5,7 +5,7 @@
 
 namespace Data
 {
-  class SkipRoots : public Item
+  class SkipRoots : public Ent
   {
   private:
     i8 m_iPadding[4];

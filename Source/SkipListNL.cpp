@@ -133,7 +133,7 @@ bool SkipListNL::bDeleteAll(void)
   //
   //  while (true)
   //  {
-  //    Item* aItem = (Item*)pPop(&bWasRemoved,2);
+  //    Ent* aItem = (Ent*)pPop(&bWasRemoved,2);
   //
   //
   //    if (!aItem)

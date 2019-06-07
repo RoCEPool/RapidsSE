@@ -543,7 +543,7 @@ CACHE_LINE : 22nd March 2019
  
  
  
- sizeof(Item) 24
+ sizeof(Ent) 24
  RapidsSE v4.0.5 (Compiled Mar 22 2019 13:10:31 -- release) pid 41894
  Copyright (c) Borrui Data 2019
  Args:
@@ -787,7 +787,7 @@ CACHE_LINE : 22nd March 2019
  
  
  
- sizeof(Item) 24
+ sizeof(Ent) 24
  RapidsSE v4.0.5 (Compiled Mar 22 2019 13:10:31 -- release) pid 42180
  Copyright (c) Borrui Data 2019
  Args:

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* KeyWrk.hpp -- KeyData Working Item                                            */
+/* KeyWrk.hpp -- KeyData Working Ent                                            */
 /*============================================================================*/
 #pragma once
 
@@ -35,8 +35,8 @@ namespace Data
     void vKeySize(i8 nKeySize);
     EntBuffer* pReferencedEntBuffer(void);
     void vReset(void);
-    void vSetEntry(Item* pEntry);
-    void vSetKey(Item* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec);
+    void vSetEntry(Ent* pEntry);
+    void vSetKey(Ent* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec);
     void vShow(IdxColVec* pIdxColVec);
   };
 }

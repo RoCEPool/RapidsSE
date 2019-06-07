@@ -45,20 +45,20 @@ namespace Data
   
     i8    nKeySize(IdxColVec* pIdxColVec);
     
-    static eKC eCompare(Item* aKeyItem1, KeyWrk& xKeyItem2);
+    static eKC eCompare(Ent* aKeyItem1, KeyWrk& xKeyItem2);
     static eKC eCompare(KeyWrk& xKeyItem1, KeyWrk& xKeyItem2);
-    static eKC eCompare(KeyWrk& xKeyItem1, Item* aKeyItem2);
-    static eKC eCompare(Item* aKeyItem1, Item* aKeyItem2);
+    static eKC eCompare(KeyWrk& xKeyItem1, Ent* aKeyItem2);
+    static eKC eCompare(Ent* aKeyItem1, Ent* aKeyItem2);
     
     static char* aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor);
     
-    static bool bEqualTo(Item* aKeyItem1, Item* aKeyItem2);
-    static bool bGreaterThan(Item* aKeyItem1, Item* aKeyItem2);
-    static bool bGreaterEqual(Item* aKeyItem1, KeyWrk& xKeyItem2);
-    static bool bGreaterEqual(Item* aKeyItem1, Item* aKeyItem2);
-    static bool bLessEqual(KeyWrk& xKeyItem1, Item* aKeyItem2);
-    static bool bLessThan(KeyWrk& xKeyItem1, Item* aKeyItem2);
-    static bool bNotEqual(Item* aKeyItem1, Item* aKeyItem2);
+    static bool bEqualTo(Ent* aKeyItem1, Ent* aKeyItem2);
+    static bool bGreaterThan(Ent* aKeyItem1, Ent* aKeyItem2);
+    static bool bGreaterEqual(Ent* aKeyItem1, KeyWrk& xKeyItem2);
+    static bool bGreaterEqual(Ent* aKeyItem1, Ent* aKeyItem2);
+    static bool bLessEqual(KeyWrk& xKeyItem1, Ent* aKeyItem2);
+    static bool bLessThan(KeyWrk& xKeyItem1, Ent* aKeyItem2);
+    static bool bNotEqual(Ent* aKeyItem1, Ent* aKeyItem2);
   
     void vSprintSortKey(s48K& sBuff, IdxColVec* pIdxColVec);
   

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* KeyWrk.cpp -- KeyData Working Item                                         */
+/* KeyWrk.cpp -- KeyData Working Ent                                         */
 /*============================================================================*/
 
 #include "Data.h"
@@ -327,7 +327,7 @@ void KeyWrk::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* set entry using given key working entry                                    */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vSetEntry(Item* pEntry)
+void KeyWrk::vSetEntry(Ent* pEntry)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
@@ -348,7 +348,7 @@ void KeyWrk::vSetEntry(Item* pEntry)
 /*----------------------------------------------------------------------------*/
 /* set key using given working entry                                          */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vSetKey(Item* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec)
+void KeyWrk::vSetKey(Ent* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets

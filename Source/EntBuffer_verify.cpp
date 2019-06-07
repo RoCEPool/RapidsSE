@@ -17,19 +17,19 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_DEBUG_VERSION
 
-bool EntBuffer::bCheckPriorVec(Item* aPriorVec[])
+bool EntBuffer::bCheckPriorVec(Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   vNumberEntries();
   
-  Item* aPriorEntry_0 = aPriorVec[0];
-  Item* aPriorEntry_1 = aPriorVec[1];
-  Item* aPriorEntry_2 = aPriorVec[2];
+  Ent* aPriorEntry_0 = aPriorVec[0];
+  Ent* aPriorEntry_1 = aPriorVec[1];
+  Ent* aPriorEntry_2 = aPriorVec[2];
   
-  Item* aNextEntry_0  = aNextEntry(aPriorEntry_0,0);
-  Item* aNextEntry_1  = aNextEntry(aPriorEntry_1,1);
-  Item* aNextEntry_2  = aNextEntry(aPriorEntry_2,2);
+  Ent* aNextEntry_0  = aNextEntry(aPriorEntry_0,0);
+  Ent* aNextEntry_1  = aNextEntry(aPriorEntry_1,1);
+  Ent* aNextEntry_2  = aNextEntry(aPriorEntry_2,2);
  
   
   if (aNextEntry_0 && aNextEntry_1) {
@@ -70,7 +70,7 @@ void EntBuffer::vNumberEntries(void)
   
   i8 iEntryNo = 0;
   
-  for (Item* aTestEntry_0 = aNextEntry(aSkipRoots(),0);
+  for (Ent* aTestEntry_0 = aNextEntry(aSkipRoots(),0);
        aTestEntry_0;
        aTestEntry_0 = aNextEntry(aTestEntry_0,0))
 
@@ -82,16 +82,16 @@ void EntBuffer::vNumberEntries(void)
 /*----------------------------------------------------------------------------*/
 /* quick verify                                                               */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vQuickVerify(Item* aSeeEntry)
+void EntBuffer::vQuickVerify(Ent* aSeeEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  for (Item* aItem = aFirstItem();
+  for (Ent* aItem = aFirstItem();
        aItem != nullptr;
        aItem = aAdjacentItem(aItem))
     {;}
   
-  for (Item* aTestEntry = aNextEntry(aSkipRoots(),0);
+  for (Ent* aTestEntry = aNextEntry(aSkipRoots(),0);
        aTestEntry;
        aTestEntry = aNextEntry(aTestEntry,0)) {
     
@@ -102,7 +102,7 @@ void EntBuffer::vQuickVerify(Item* aSeeEntry)
       int iDebug = 1;
     
     for (i8 i_ScanLevel = aTestEntry->nLevels()-1; i_ScanLevel >= 0; i_ScanLevel--) {
-      Item* aCheckEntry = aNextEntry(aTestEntry,i_ScanLevel);
+      Ent* aCheckEntry = aNextEntry(aTestEntry,i_ScanLevel);
       if (! aCheckEntry)
         continue;
       
@@ -116,7 +116,7 @@ void EntBuffer::vQuickVerify(Item* aSeeEntry)
   //  ln i_ScanLevel;
   //  for (i_ScanLevel = 2; *i_ScanLevel >= 0; i_ScanLevel--) {
   //
-  //    for (Item* aTestEntry = aNextEntry(aSkipRoots(),*i_ScanLevel);
+  //    for (Ent* aTestEntry = aNextEntry(aSkipRoots(),*i_ScanLevel);
   //         pTestEntry;
   //         pTestEntry = aNextEntry(pTestEntry,*i_ScanLevel)) {
   //
@@ -139,17 +139,17 @@ void EntBuffer::vQuickVerify(Item* aSeeEntry)
 /*----------------------------------------------------------------------------*/
 /* quick verify                                                               */
 /*----------------------------------------------------------------------------*/
-bool EntBuffer::bQuickVerify(Item* aNotSeeEntry)
+bool EntBuffer::bQuickVerify(Ent* aNotSeeEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  for (Item* aTestEntry = aNextEntry(aSkipRoots(),0);
+  for (Ent* aTestEntry = aNextEntry(aSkipRoots(),0);
        aTestEntry;
        aTestEntry = aNextEntry(aTestEntry,0)) {
     
     for (i8 i_ScanLevel = aTestEntry->nLevels()-1; i_ScanLevel >= 0; i_ScanLevel--) {
       
-      Item* aCheckEntry = aNextEntry(aTestEntry,i_ScanLevel);
+      Ent* aCheckEntry = aNextEntry(aTestEntry,i_ScanLevel);
       if (! aCheckEntry)
         continue;
       
@@ -308,7 +308,7 @@ bool EntBuffer::bVerifyLnAny(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of child buffers
   
-  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Ent* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     EntBuffer* pRefEntBuf = EntBuffer::pRefdEntBuffer(aItem);
     if (pRefEntBuf->m_iBufferHeight) {
@@ -344,13 +344,13 @@ bool EntBuffer::bVerifyAdjacent(void)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Ent* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     // get the buffer that this entry references
     EntBuffer* pChildEntBuffer = EntBuffer::pRefdEntBuffer(aItem);
     
     // get the adjacent entry
-    Item* aAdjacentEntry = aNextEntry(aItem,0);
+    Ent* aAdjacentEntry = aNextEntry(aItem,0);
     
     if (aAdjacentEntry) {
       // get the buffer that the adjacent entry references
@@ -383,7 +383,7 @@ bool EntBuffer::bVerifyBufferRefs(void)
   
   RASSERT(m_iBufferHeight >= 1);
   
-  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Ent* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     EntBuffer* pChildEntBuf = EntBuffer::pRefdEntBuffer(aItem);
     
@@ -424,7 +424,7 @@ bool EntBuffer::bVerifyFirstKeys(void)
   
   //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Ent* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     // get the entry buffer that this entry references
     EntBuffer* pChildEntBuffer = EntBuffer::pRefdEntBuffer(aItem);
@@ -433,7 +433,7 @@ bool EntBuffer::bVerifyFirstKeys(void)
     
     
     // get the first entry of the child buffer
-    Item* aChildFirstEntry = pChildEntBuffer->aLeadEntry();
+    Ent* aChildFirstEntry = pChildEntBuffer->aLeadEntry();
     
     // get keys of the two entries
     //KeyData* aKeyParent = _aKeyData(aItem->aDataArea());
@@ -461,14 +461,14 @@ bool EntBuffer::bVerifyItems(void)
   /*
    The items in and entry buffer are some sequence of:
    
-   {[Item]|[FreeItem]...}[Wilderness]
+   {[Ent]|[FreeItem]...}[Wilderness]
    
    The number of Entries must match the number of items in the buffer
    */
   
   i8 nEntryItems = 0;
   
-  for (Item* aItem = aFirstItem();
+  for (Ent* aItem = aFirstItem();
        aItem != nullptr;
        aItem = aAdjacentItem(aItem)) {
     
@@ -539,10 +539,10 @@ bool EntBuffer::bVerifyKeyBufferOrder(void)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Ent* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     // get next entry
-    Item* aNextEntry = this->aNextEntry(aItem,0);
+    Ent* aNextEntry = this->aNextEntry(aItem,0);
     if (! aNextEntry)
       break;
     
@@ -582,10 +582,10 @@ bool EntBuffer::bVerifyKeyOrder(void)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Ent* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     // get next entry
-    Item* aNextEntry = this->aNextEntry(aItem,0);
+    Ent* aNextEntry = this->aNextEntry(aItem,0);
     if (! aNextEntry)
       break;
     
@@ -673,7 +673,7 @@ bool EntBuffer::bVerifyRowRefs(void)
   
   RASSERT(0 == m_iBufferHeight);
   
-  for (Item* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
+  for (Ent* aItem = aLeadEntry(); aItem; aItem = aNextEntry(aItem,0)) {
     
     // get the row buffer that this L0 key leaf references
     Id xId = aItem->xId();
@@ -706,9 +706,9 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  Item* aNextEntry2;
-  Item* aNextEntry1;
-  Item* aNextEntry0;
+  Ent* aNextEntry2;
+  Ent* aNextEntry1;
+  Ent* aNextEntry0;
   
   for (i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
        i_ScanLevel >= 0;
@@ -717,7 +717,7 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
     if (bShowKeys)
       vTrace("i_ScanLevel %lld\n"_Stz,i_ScanLevel);
     
-    Item* aTestEntry_sl = aNextEntry(aSkipRoots(),i_ScanLevel);
+    Ent* aTestEntry_sl = aNextEntry(aSkipRoots(),i_ScanLevel);
     while (aTestEntry_sl) {
       
       if (CN_ENT != aTestEntry_sl->eClass()) {
@@ -785,7 +785,7 @@ bool EntBuffer::bVerifySkipListLevels(bool bShowKeys)
   vNumberEntries();
   
   // run through all entries at level 0
-  Item* aTestEntry_0 = aNextEntry(aSkipRoots(),0);
+  Ent* aTestEntry_0 = aNextEntry(aSkipRoots(),0);
   while (aTestEntry_0) {
     
     // check if scan entry has more than one offset
@@ -800,13 +800,13 @@ bool EntBuffer::bVerifySkipListLevels(bool bShowKeys)
          i_SkipLevel > 0;
          i_SkipLevel--) {
       
-      Item* aScanEntry_sl = aNextEntry(aSkipRoots(),i_SkipLevel);
+      Ent* aScanEntry_sl = aNextEntry(aSkipRoots(),i_SkipLevel);
       while (aScanEntry_sl) {
         
         if (aScanEntry_sl == aTestEntry_0)
           break;
         
-        Item* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_SkipLevel);
+        Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_SkipLevel);
         
         // check we dont go backwwards
         if (aNextEntry_sl->m_iSkipNo < aScanEntry_sl->m_iSkipNo) {

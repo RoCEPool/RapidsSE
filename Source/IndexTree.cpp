@@ -258,7 +258,7 @@ void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reinsert the first key of the first L0 buffer back into the L1 buffer
   
-  Item* aFirstL0_Key = pFirstL0->aLeadEntry();
+  Ent* aFirstL0_Key = pFirstL0->aLeadEntry();
   
   Id xId = aFirstL0_Key->xId();
   KeyData* aKey = _aKeyData(aFirstL0_Key->aDataArea());
@@ -276,7 +276,7 @@ void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
   xL1_FirstKey.vKeySize(nKeySize);
   xL1_FirstKey.vLevels(nLevels);
   
-  Item* aFirstL1_Key = pL1->aInsertKeyAbs(xL1_FirstKey);
+  Ent* aFirstL1_Key = pL1->aInsertKeyAbs(xL1_FirstKey);
   
   //pL1->vShow();
 }
@@ -311,7 +311,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set up for using pInsertKeyAbsL0
   
-  Item* aPriorEntry = pLeftL0->aLastEntry();
+  Ent* aPriorEntry = pLeftL0->aLastEntry();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru each key in right L0
@@ -320,7 +320,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
 
   //pLeftL0->vShow();
   
-  for (Item* aRightL0_Key = pRightL0->aLeadEntry();
+  for (Ent* aRightL0_Key = pRightL0->aLeadEntry();
        aRightL0_Key;
        aRightL0_Key = pRightL0->aNextEntry(aRightL0_Key,0)) {
     
@@ -382,7 +382,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     // insert a copy of the right key into left buffer
     
     TRACE_COMPACT( pLeftL0->vShow(); )
-    Item* aLeftKeyEntryL0 = pLeftL0->aInsertKeyAbsL0(xLeftKeyWrk,&aPriorEntry);
+    Ent* aLeftKeyEntryL0 = pLeftL0->aInsertKeyAbsL0(xLeftKeyWrk,&aPriorEntry);
     TRACE_COMPACT( pLeftKeyEntryL0->vShow(0, m_pIndex, true); )
     TRACE_COMPACT( pLeftL0->vShow(); )
     
@@ -399,7 +399,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
       
       TRACE_COMPACT( pL1->vShow(); )
       //RASSERT(pL1->bVerifySkipListEntry());
-      Item* aLeftEntryL1 = pL1->aInsertKeyAbs(xLeftKeyWrk);
+      Ent* aLeftEntryL1 = pL1->aInsertKeyAbs(xLeftKeyWrk);
       //RASSERT(pL1->bVerifySkipListEntry());
       TRACE_COMPACT( pLeftEntryL1->vShow(0, m_pIndex, true); )
       TRACE_COMPACT( pL1->vShow(); )
@@ -452,7 +452,7 @@ void IndexTree::vCopyLeftV2(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
   
   TRACE_COMPACT( pRightL0->vShow(); )
   
-  for (Item* aRightL0_Key = pRightL0->aLeadEntry();
+  for (Ent* aRightL0_Key = pRightL0->aLeadEntry();
        aRightL0_Key;
        aRightL0_Key = pRightL0->aNextEntry(aRightL0_Key,0)) {
     
@@ -511,7 +511,7 @@ void IndexTree::vCopyLeftV2(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     // insert a copy of the right key into left buffer
     
     TRACE_COMPACT( pLeftL0->vShow(); )
-    Item* aLeftKeyEntryL0 = pLeftL0->aInsertKeyAbs(xLeftKeyWrk);
+    Ent* aLeftKeyEntryL0 = pLeftL0->aInsertKeyAbs(xLeftKeyWrk);
     TRACE_COMPACT( pLeftKeyEntryL0->vShow(0, m_pIndex, true); )
     TRACE_COMPACT( pLeftL0->vShow(); )
     
@@ -526,7 +526,7 @@ void IndexTree::vCopyLeftV2(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
       
       TRACE_COMPACT( pL1->vShow(); )
       //RASSERT(pL1->bVerifySkipListEntry());
-      Item* aLeftEntryL1 = pL1->aInsertKeyAbs(xLeftKeyWrk);
+      Ent* aLeftEntryL1 = pL1->aInsertKeyAbs(xLeftKeyWrk);
       //RASSERT(pL1->bVerifySkipListEntry());
       TRACE_COMPACT( pLeftEntryL1->vShow(0, m_pIndex, true); )
       TRACE_COMPACT( pL1->vShow(); )
@@ -592,7 +592,7 @@ EntBuffer* IndexTree::pFirstL1Buffer(void)
   
   while (pEntBuffer) {
     
-    Item* aFirstEntry = pEntBuffer->aLeadEntry();
+    Ent* aFirstEntry = pEntBuffer->aLeadEntry();
     pEntBuffer = EntBuffer::pRefdEntBuffer(aFirstEntry);
     
     if (pEntBuffer->iBufferHeight() == 1) {
@@ -620,7 +620,7 @@ EntBuffer* IndexTree::pFirstH0Buffer(void)
   
   while (pEntBuffer) {
     
-    Item* aFirstEntry = pEntBuffer->aLeadEntry();
+    Ent* aFirstEntry = pEntBuffer->aLeadEntry();
     pEntBuffer = EntBuffer::pRefdEntBuffer(aFirstEntry);
     
     if (pEntBuffer->iBufferHeight() == 0) {
@@ -705,7 +705,7 @@ bool IndexTree::bInsertEntry(RowBuffer* pRowBuffer, i8 i_Row, Id& xId)
     m_pRootBuffer->vPartitionNo(m_iPartitionNo);
   }
   
-  Item* aKeyEntry = EntBuffer::aInsertKeyTree(xKeyWrk,&m_pRootBuffer);
+  Ent* aKeyEntry = EntBuffer::aInsertKeyTree(xKeyWrk,&m_pRootBuffer);
   ASSERT(aKeyEntry);
   
   //m_pRootBuffer->bVerify();
@@ -836,7 +836,7 @@ void IndexTree::vDumpLevel(EntBuffer* pEntBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   // get the first entry
-  Item* aItem = pEntBuffer->aLeadEntry();
+  Ent* aItem = pEntBuffer->aLeadEntry();
   
   while (aItem) {
     
@@ -899,7 +899,7 @@ void IndexTree::vVisualize(void)
       vTrace("\n"_Stz);
       
       // get the first entry of the buffer
-      Item* aItem = pEntBuffer->aLeadEntry();
+      Ent* aItem = pEntBuffer->aLeadEntry();
       
       // get the index buffer this entry points to
       pEntBuffer = EntBuffer::pRefdEntBuffer(aItem);

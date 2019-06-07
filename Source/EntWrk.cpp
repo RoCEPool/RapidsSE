@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntWrk.cpp -- Working Item                                                */
+/* EntWrk.cpp -- Working Ent                                                */
 /*============================================================================*/
 
 #include "Data.h"
@@ -101,7 +101,7 @@ i8 EntWrk::nEntrySize(void)
   
   i8 nData = nDataSize();
   
-  i8 nBytes = sizeof(Item) + nData;
+  i8 nBytes = sizeof(Ent) + nData;
   
   return nBytes;
 }

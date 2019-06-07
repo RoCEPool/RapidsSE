@@ -25,14 +25,14 @@ SkipRoots* Data::_aSkipRoots(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SkipRoots::SkipRoots(void)
-: Item(CN_ENT,sizeof(SkipRoots))
+: Ent(CN_ENT,sizeof(SkipRoots))
 {
   PoolBuffer* pBuffer = PoolBuffer::pGetPoolBuffer((Object*)this);
   bn nBufferNo = pBuffer->nPoolBufferNo();
 
   m_xId.vBuffer(*nBufferNo);
   vLevels(3);
-  m_nSizeItem_WithoutOffsets = sizeof(Item);//sizeof(SkipRoots) - sizeof(m_iaNextOffset);
+  m_nSizeItem_WithoutOffsets = sizeof(Ent);//sizeof(SkipRoots) - sizeof(m_iaNextOffset);
   
   m_iPadding[0] = -1;
   m_iPadding[1] = -1;

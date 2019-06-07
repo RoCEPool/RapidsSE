@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Item.hpp -- buffer item                                                    */
+/* Ent.hpp -- buffer item                                                    */
 /*============================================================================*/
 #pragma once
 
@@ -13,7 +13,7 @@ namespace Data
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Item : public Header
+  class Ent : public Header
   {
   protected:
     Id  m_xId;       // item id
@@ -29,10 +29,10 @@ namespace Data
 
   public:
     void* operator new(size_t);
-    void* operator new(size_t, Item*);
+    void* operator new(size_t, Ent*);
   
-    Item(eCN eClassNo, i8 nSizeItem);
-    ~Item(void) noexcept(false);
+    Ent(eCN eClassNo, i8 nSizeItem);
+    ~Ent(void) noexcept(false);
   
     i8    iBufferNo(void);
     bn    nBufferNo(void);
@@ -59,9 +59,9 @@ namespace Data
   /*--------------------------------------------------------------------------*/
   /* safe cast                                                                */
   /*--------------------------------------------------------------------------*/
-  inline Item* _aItem(void* aAddr)
+  inline Ent* _aItem(void* aAddr)
   {
-    Item* aItem = reinterpret_cast<Item*>(aAddr);
+    Ent* aItem = reinterpret_cast<Ent*>(aAddr);
     
     return aItem;
   }

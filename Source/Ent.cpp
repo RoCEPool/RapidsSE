@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Item.cpp -- buffer item                                                    */
+/* Ent.cpp -- buffer item                                                    */
 /*============================================================================*/
 
 #include "Data.h"
@@ -15,9 +15,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Item::operator new(size_t)
+void* Ent::operator new(size_t)
 {
-  vFatal("fatal: Item class cannot be new'd\n"_Stz);
+  vFatal("fatal: Ent class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -25,7 +25,7 @@ void* Item::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Item::operator new(size_t, Item* aItem)
+void* Ent::operator new(size_t, Ent* aItem)
 {
   return aItem;
 }
@@ -33,7 +33,7 @@ void* Item::operator new(size_t, Item* aItem)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Item::Item(eCN eClassNo, i8 nSizeItem)
+Ent::Ent(eCN eClassNo, i8 nSizeItem)
 : Header(eClassNo)
 {
   m_nSizeItem_WithoutOffsets = static_cast<i4>(nSizeItem);
@@ -47,7 +47,7 @@ Item::Item(eCN eClassNo, i8 nSizeItem)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Item::~Item(void) noexcept(false)
+Ent::~Ent(void) noexcept(false)
 {
 }
 
@@ -59,7 +59,7 @@ Item::~Item(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get buffer no                                                              */
 /*----------------------------------------------------------------------------*/
-i8 Item::iBufferNo(void)
+i8 Ent::iBufferNo(void)
 {
   return m_xId.iBuffer();
 }
@@ -67,7 +67,7 @@ i8 Item::iBufferNo(void)
 /*----------------------------------------------------------------------------*/
 /* get bufferno from id of key                                                */
 /*----------------------------------------------------------------------------*/
-bn Item::nBufferNo(void)
+bn Ent::nBufferNo(void)
 {
   bn nBufferNo = m_xId.iBuffer();
   
@@ -77,9 +77,9 @@ bn Item::nBufferNo(void)
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
-char* Item::aDataArea(void)
+char* Ent::aDataArea(void)
 {
-  char* aData = aAdd<char*>(this,sizeof(Item));
+  char* aData = aAdd<char*>(this,sizeof(Ent));
   
   return pPoolCheck<char*>(aData);
 }
@@ -87,7 +87,7 @@ char* Item::aDataArea(void)
 /*----------------------------------------------------------------------------*/
 /* get rowid                                                                  */
 /*----------------------------------------------------------------------------*/
-Id& Item::xId(void)
+Id& Ent::xId(void)
 {
   return m_xId;
 }
@@ -95,7 +95,7 @@ Id& Item::xId(void)
 /*----------------------------------------------------------------------------*/
 /* get rowid                                                                  */
 /*----------------------------------------------------------------------------*/
-void Item::vId(Id xId)
+void Ent::vId(Id xId)
 {
   m_xId = xId;
 }
@@ -103,7 +103,7 @@ void Item::vId(Id xId)
 /*----------------------------------------------------------------------------*/
 /* get item number                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Item::iItemNo(void)
+i8 Ent::iItemNo(void)
 {
   return m_xId.iItem();
 }
@@ -111,7 +111,7 @@ i8 Item::iItemNo(void)
 /*----------------------------------------------------------------------------*/
 /* get a next entry offset                                                    */
 /*----------------------------------------------------------------------------*/
-i4 Item::iNEO(i8 iOffset)
+i4 Ent::iNEO(i8 iOffset)
 {
   ASSERT(iOffset >= 0 && iOffset < nLevels());
   
@@ -127,7 +127,7 @@ i4 Item::iNEO(i8 iOffset)
 /*----------------------------------------------------------------------------*/
 /* get size of the NEO after this entry                                       */
 /*----------------------------------------------------------------------------*/
-i8 Item::iNEOsize(void)
+i8 Ent::iNEOsize(void)
 {
   i8 nBytes = sizeof(i4) * nLevels();
   
@@ -137,7 +137,7 @@ i8 Item::iNEOsize(void)
 /*----------------------------------------------------------------------------*/
 /* set a next entry offset                                                    */
 /*----------------------------------------------------------------------------*/
-void Item::vNEO(i8 iOffset, i4 iNEO)
+void Ent::vNEO(i8 iOffset, i4 iNEO)
 {
   ASSERT(iOffset >= 0 && iOffset < nLevels());
   
@@ -152,10 +152,10 @@ void Item::vNEO(i8 iOffset, i4 iNEO)
 /*----------------------------------------------------------------------------*/
 /* dump the NEO after this entry                                              */
 /*----------------------------------------------------------------------------*/
-void Item::vNEOdump(void)
+void Ent::vNEOdump(void)
 {
   NEO* aNEO = this->aNEO();
-  vTrace("Item %p levels: %lld NEO: %p"_Stz,
+  vTrace("Ent %p levels: %lld NEO: %p"_Stz,
          this,nLevels(),aNEO);
   
   for (i8 i_Level = 0; i_Level < nLevels(); i_Level++)
@@ -167,7 +167,7 @@ void Item::vNEOdump(void)
 /*----------------------------------------------------------------------------*/
 /* get number of levels                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Item::nLevels(void)
+i8 Ent::nLevels(void)
 {
   return m_xId.nLevels();
 }
@@ -175,7 +175,7 @@ i8 Item::nLevels(void)
 /*----------------------------------------------------------------------------*/
 /* set number of levels                                                       */
 /*----------------------------------------------------------------------------*/
-void Item::vLevels(i8 nLevels)
+void Ent::vLevels(i8 nLevels)
 {
   m_xId.vLevels(nLevels);
 }
@@ -183,15 +183,15 @@ void Item::vLevels(i8 nLevels)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this item                                             */
 /*----------------------------------------------------------------------------*/
-i8 Item::nSizeData(void)
+i8 Ent::nSizeData(void)
 {
-  return (i8)(m_nSizeItem_WithoutOffsets - sizeof(Item));
+  return (i8)(m_nSizeItem_WithoutOffsets - sizeof(Ent));
 }
 
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this item                                             */
 /*----------------------------------------------------------------------------*/
-i8 Item::nSizeItem(void)
+i8 Ent::nSizeItem(void)
 {
   i8 nBytes = nSizeItem_WithoutOffsets() + iNEOsize();
   
@@ -200,7 +200,7 @@ i8 Item::nSizeItem(void)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this item                                             */
 /*----------------------------------------------------------------------------*/
-i8 Item::nSizeItem_WithoutOffsets(void)
+i8 Ent::nSizeItem_WithoutOffsets(void)
 {
   return (i8)m_nSizeItem_WithoutOffsets;
 }
@@ -208,7 +208,7 @@ i8 Item::nSizeItem_WithoutOffsets(void)
 /*----------------------------------------------------------------------------*/
 /* test for valid entry                                                       */
 /*----------------------------------------------------------------------------*/
-bool Item::bValidItem(void)
+bool Ent::bValidItem(void)
 {  
   if (! bValidMagic()) {
     vTrace("Not valid magic\n"_Stz);
@@ -238,7 +238,7 @@ bool Item::bValidItem(void)
 /*----------------------------------------------------------------------------*/
 /* get address of next entry offset array                                     */
 /*----------------------------------------------------------------------------*/
-NEO* Item::aNEO(void)
+NEO* Ent::aNEO(void)
 {
   NEO* aNEO = aAdd<NEO*>(this, nSizeItem_WithoutOffsets());
   
