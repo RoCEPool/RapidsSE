@@ -76,6 +76,18 @@ FreeItem* FreeItem::aMorphFreeItem(void* aFree, i8 nSizeFree)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get address after this freeEntry                                           */
+/*----------------------------------------------------------------------------*/
+char* FreeItem::aAddressAfter(void)
+{
+  i8 nFreeEntryBytes = nSizeItem_WithoutOffsets();
+  
+  char* aAfter = aAdd<char*>(this,nFreeEntryBytes);
+  
+  return aAfter;
+}
+
+/*----------------------------------------------------------------------------*/
 /* assert valid free entry                                                    */
 /*----------------------------------------------------------------------------*/
 void FreeItem::vAssertFreeEntry(void)
@@ -87,7 +99,6 @@ void FreeItem::vAssertFreeEntry(void)
 /*----------------------------------------------------------------------------*/
 bool FreeItem::bValidFreeEntry(void)
 {
-  
   if (! bValidMagic())
     return false;
   
@@ -95,23 +106,6 @@ bool FreeItem::bValidFreeEntry(void)
     return false;
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/* get address after this freeEntry                                           */
-/*----------------------------------------------------------------------------*/
-char* FreeItem::aAddressAfter(void)
-{
-  i8 nFreeEntryBytes = nSizeItem_WithoutOffsets();
-  
-  char* aAfter = aAdd<char*>(this,nFreeEntryBytes);
-  
-  return aAfter;
 }
 
 /*============================================================================*/
