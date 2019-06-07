@@ -174,10 +174,11 @@ eKC Key::eCompare(Ent* aKeyItem1, Ent* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* get next element from key                                                  */
 /*----------------------------------------------------------------------------*/
-char* Key::aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor)
+char* Key::aEachElm(Column* pColumn, i8& nBytes, char** aaCursor)
 {
-  char* aEachDatum = pColumn->aValue(nBytes,aaCursor);
-  return aEachDatum;
+  char* aEachElm = pColumn->aValue(nBytes,aaCursor);
+  
+  return aEachElm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -306,20 +307,20 @@ void Key::vShow(IdxColVec* pIdxColVec)
   
   char caLiteral[128];
   
-  for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
+  for (i8 i_Co = 0; i_Co < pIdxColVec->nItems(); i_Co++) {
     
-    Column* pColumn = pIdxColVec->pGet(i_Column);
+    Column* pColumn = pIdxColVec->pGet(i_Co);
     
-    char* aDatum = this->aEachDatum(pColumn,nBytes,&aCursor);
+    char* aElm = this->aEachElm(pColumn,nBytes,&aCursor);
     
     eDM eDatum = pColumn->eDatumType();
     
     if (eDatum == DM_VCH) {
-      nBytes = StrLib::iWordFlipBack(caLiteral, aDatum);
+      nBytes = StrLib::iWordFlipBack(caLiteral, aElm);
     }
     else
-      Record::vSprint(pColumn,(Stz*)caLiteral,(Stz*)aDatum);
-    vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Column,nBytes,caLiteral);
+      Record::vSprint(pColumn,(Stz*)caLiteral,(Stz*)aElm);
+    vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Co,nBytes,caLiteral);
   }
   
   //vTrace("%s)\n"_Stz, sKeyString.aStz());

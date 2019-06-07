@@ -43,7 +43,7 @@ namespace Data
     static eKC eCompare(KeyWrk& xKeyItem1, Ent* aKeyItem2);
     static eKC eCompare(Ent* aKeyItem1, Ent* aKeyItem2);
     
-    static char* aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor);
+    static char* aEachElm(Column* pColumn, i8& nBytes, char** aaCursor);
     
     static bool bEqualTo(Ent* aKeyItem1, Ent* aKeyItem2);
     static bool bGreaterThan(Ent* aKeyItem1, Ent* aKeyItem2);
