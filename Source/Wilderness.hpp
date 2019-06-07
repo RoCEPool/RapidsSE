@@ -1,0 +1,26 @@
+/*============================================================================*/
+/* Wilderness.hpp -- wilderness marker                                        */
+/*============================================================================*/
+#pragma once
+
+namespace Structures
+{
+  class Wilderness : public SizedHeader
+  {
+  public:
+    void* operator new(size_t);
+    void* operator new(size_t, Wilderness*);
+  
+    Wilderness(void);
+    ~Wilderness(void) noexcept(false);
+  
+    void vAssertWilderness(void);
+    bool bValidWilderness(void);
+  };
+  
+  Wilderness* _aWilderness(void* aAddr);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
