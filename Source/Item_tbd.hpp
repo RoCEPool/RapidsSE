@@ -30,11 +30,8 @@ namespace MiniHeaps
   
     Item_tbd* aItemAfter(void);
     i4    iNEO(i8 iLevel);
-    void  vNEO(i8 iLevel, i4 iNEO);
-    void  vNEOdump(void);
     i8    iNEOsize(void);
     i8    nLevels(void);
-    void  vLevels(i8 nLevels);
     
     i8    nSizeItem_WithOffsets(void);
     i8    nSizeItem_WithoutOffsets(void);

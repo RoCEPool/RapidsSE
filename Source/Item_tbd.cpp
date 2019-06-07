@@ -99,49 +99,11 @@ i8 Item_tbd::iNEOsize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set a next entry offset                                                    */
-/*----------------------------------------------------------------------------*/
-void Item_tbd::vNEO(i8 iOffset, i4 iNEO)
-{
-  ASSERT(iOffset >= 0 && iOffset < nLevels());
-  
-  //NEO* aNEO = this->aNEO();
-  
-  //aNEO->m_iOffset[iOffset] = iNEO;
-  
-  *(aAdd<i4*>(this, nSizeItem_WithoutOffsets() + sizeof(i4) * iOffset)) = iNEO;
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump the NEO after this entry                                              */
-/*----------------------------------------------------------------------------*/
-void Item_tbd::vNEOdump(void)
-{
-  NEO* aNEO = this->aNEO();
-  vTrace("Item_tbd %p levels: %lld NEO: %p"_Stz,
-         this,nLevels(),aNEO);
-  
-  for (i8 i_Level = 0; i_Level < nLevels(); i_Level++)
-    vTrace(" %lld: %d"_Stz,i_Level,aNEO->m_iOffset[i_Level]);
-  
-  vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of levels                                                       */
 /*----------------------------------------------------------------------------*/
 i8 Item_tbd::nLevels(void)
 {
   return m_xId.nLevels();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set number of levels                                                       */
-/*----------------------------------------------------------------------------*/
-void Item_tbd::vLevels(i8 nLevels)
-{
-  m_xId.vLevels(nLevels);
 }
 
 /*----------------------------------------------------------------------------*/
