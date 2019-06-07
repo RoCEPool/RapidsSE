@@ -1103,6 +1103,15 @@ EntryBuffer* EntryBuffer::pSplitBuffer(void)
   return pNewRightBuffer;
 }
 
+/*----------------------------------------------------------------------------*/
+/* allot an offset array in this buffer                                       */
+/*----------------------------------------------------------------------------*/
+NEO* EntryBuffer::aAllotNEO(i8 nBytes)
+{
+  NEO* aNEO = reinterpret_cast<NEO*>(aAllotBytes(nBytes));
+  
+  return aNEO;
+}
 
 /*============================================================================*/
 /* end                                                                        */
