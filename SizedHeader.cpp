@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Item_tbd.cpp -- buffer item                                                    */
+/* SizedHeader.cpp -- Sized Header                                            */
 /*============================================================================*/
 
-#include "Data.h"
+#include "Correctness.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,9 +11,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Item_tbd::operator new(size_t)
+void* SizedHeader::operator new(size_t)
 {
-  vFatal("fatal: Item_tbd class cannot be new'd\n"_Stz);
+  vFatal("fatal: SizedHeader class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -21,7 +21,7 @@ void* Item_tbd::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Item_tbd::operator new(size_t, Item_tbd* aItem)
+void* SizedHeader::operator new(size_t, SizedHeader* aItem)
 {
   return aItem;
 }
@@ -29,7 +29,7 @@ void* Item_tbd::operator new(size_t, Item_tbd* aItem)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Item_tbd::Item_tbd(eCN eClassNo, i8 nSizeBytes)
+SizedHeader::SizedHeader(eCN eClassNo, i8 nSizeBytes)
 : Header(eClassNo)
 {
   m_nSizeBytes = nSizeBytes;
@@ -38,10 +38,9 @@ Item_tbd::Item_tbd(eCN eClassNo, i8 nSizeBytes)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Item_tbd::~Item_tbd(void) noexcept(false)
+SizedHeader::~SizedHeader(void) noexcept(false)
 {
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -51,7 +50,7 @@ Item_tbd::~Item_tbd(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this item                                             */
 /*----------------------------------------------------------------------------*/
-i8 Item_tbd::nSizeBytes(void)
+i8 SizedHeader::nSizeBytes(void)
 {
   return m_nSizeBytes;
 }

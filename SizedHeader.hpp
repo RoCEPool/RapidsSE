@@ -1,25 +1,24 @@
 /*============================================================================*/
-/* Item_tbd.hpp -- buffer item                                                */
+/* SizedHeader.hpp -- Sized Header                                            */
 /*============================================================================*/
 #pragma once
 
-namespace MiniHeaps
+namespace Correctness
 {
-  class Item_tbd : public Header
+  class SizedHeader : public Header
   {
   protected:
     i8  m_nSizeBytes;
   
   public:
     void* operator new(size_t);
-    void* operator new(size_t, Item_tbd*);
+    void* operator new(size_t, SizedHeader*);
   
-    Item_tbd(eCN eClassNo, i8 m_nSizeBytes);
-    ~Item_tbd(void) noexcept(false);
+    SizedHeader(eCN eClassNo, i8 nSizeBytes);
+    ~SizedHeader(void) noexcept(false);
   
     i8 nSizeBytes(void);
   };
-  
 }
 
 /*============================================================================*/
