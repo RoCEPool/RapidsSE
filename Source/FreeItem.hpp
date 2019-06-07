@@ -5,7 +5,7 @@
 
 namespace MiniHeaps
 {
-  class FreeItem : public Item
+  class FreeItem : public Item_tbd
   {
   protected:
  

@@ -44,7 +44,7 @@ void* FreeItem::operator new(size_t, void* aFree)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 FreeItem::FreeItem(i8 nSizeItem)
-: Item(CN_FREEENTRY,nSizeItem)
+: Item_tbd(CN_FREEENTRY,nSizeItem)
 {
 }
 

@@ -166,7 +166,7 @@ void EntryBuffer::vCompact(void)
     // find the next entry in buffer after the free entry
     
     aMoveEntry = nullptr;
-    for (Item* aItem = aAdjacentItem(aFreeEntry);
+    for (Item* aItem = aAdjacentItem((Item*)aFreeEntry);
          aItem != nullptr;
          aItem = aAdjacentItem(aItem)) {
       
@@ -203,7 +203,7 @@ void EntryBuffer::vCompact(void)
     }
     
     i4 iWasOffset = iToOffset(aMoveEntry);
-    i4 iNowOffset = iToOffset(aFreeEntry);
+    i4 iNowOffset = iToOffset((Item*)aFreeEntry);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // now copy move entry left onto free entry
@@ -239,7 +239,7 @@ void EntryBuffer::vCompact(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move scan
     
-    aScanItem = aFreeEntry;
+    aScanItem = (Item*)aFreeEntry;
     
   } // for
   
