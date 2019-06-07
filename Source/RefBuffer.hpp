@@ -5,7 +5,8 @@
 
 namespace Data
 {
-  class RefBuffer : public DataBuffer
+  class RefBuffer : public DataBuffer,
+                    public MiniHeap_t<RefSet>
   {
   protected:
   
@@ -18,7 +19,6 @@ namespace Data
 
   private:
     Footer* aFooter(void);
-
   };
   
   RefBuffer* _pRefBuffer(void* aAddr);
