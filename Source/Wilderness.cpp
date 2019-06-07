@@ -42,7 +42,7 @@ void* Wilderness::operator new(size_t, Wilderness* pWilderness)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Wilderness::Wilderness(void)
-: Item(CN_WILDERNESS,sizeof(Wilderness))
+: SizedHeader(CN_WILDERNESS,sizeof(Wilderness))
 {
   ASSERT(bValidWilderness());
 }

@@ -5,7 +5,7 @@
 
 namespace MiniHeaps
 {
-  class Wilderness : public Item
+  class Wilderness : public SizedHeader
   {
   public:
     void* operator new(size_t);

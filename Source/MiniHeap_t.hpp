@@ -205,7 +205,7 @@ void MiniHeap_t<ITEM>::vDumpItems(void)
       case CN_WILDERNESS: {
         Wilderness* aWilderness = _aWilderness(aItem);
         vTrace("[%04lld:%06lld] CN_WILDERNESS: %lldB\n"_Stz,
-               iItem,iOffset,aWilderness->nSizeData());
+               iItem,iOffset,aWilderness->nSizeBytes());
         break;
       }
       default:
