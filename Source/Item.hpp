@@ -48,6 +48,7 @@ namespace MiniHeaps
     i8    nLevels(void);
     void  vLevels(i8 nLevels);
     
+    i8    nSizeItem_WithOffsets(void);
     i8    nSizeItem_WithoutOffsets(void);
     i8    nSizeData(void);
     bool  bValidItem(void);
