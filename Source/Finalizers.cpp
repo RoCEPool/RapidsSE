@@ -84,7 +84,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_INGESTCHUNK
   /*    */ &Finalize::vUndefined,         // CN_IOCHUNK
   /*    */ &Finalize::vUndefined,         // CN_IOCOPY
-  /* 57 */ &Finalize::vUndefined,         // CN_ITEM
   
   /*    */ &Finalize::vUndefined,         // CN_JOB__BEGUN
   /*    */ &Finalize::vUndefined,         // CN_JOB__CANCEL
