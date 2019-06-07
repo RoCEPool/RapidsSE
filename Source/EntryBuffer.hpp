@@ -159,6 +159,8 @@ namespace Data
 
     EntryBuffer* pSplitBuffer(void);
   
+    NEO*   aAllotNEO(i8 nBytes);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify functions
   

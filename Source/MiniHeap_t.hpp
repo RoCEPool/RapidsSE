@@ -21,9 +21,8 @@ namespace MiniHeaps
    ~MiniHeap_t(void) noexcept(false);
   
     ITEM*  aAdjacentItem(ITEM* aItem);
+    char*  aAllotBytes(i8 nBytes);
     ITEM*  aAllotItem(eCN eClassNo, i8 nBytes);
-    NEO*   aAllotNEO(i8 nBytes);
-    char*  aAllotSpace(i8 nBytes);
     i8     iDecile(void);
     void   vDecItems(void);
     void   vDumpItems(void);
@@ -100,7 +99,7 @@ MiniHeap_t<ITEM>::~MiniHeap_t(void) noexcept(false)
 template <class ITEM>
 ITEM* MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem)
 {
-  i8 nItemBytes = aItem->nSizeItem_WithoutOffsets() + aItem->iNEOsize();
+  i8 nItemBytes = aItem->nSizeItem_WithOffsets();
   
   ITEM* aAdjacent = aAdd<ITEM*>(aItem,nItemBytes);
   
@@ -111,40 +110,12 @@ ITEM* MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot an item of nBytes in this buffer                                     */
-/*----------------------------------------------------------------------------*/
-template <class ITEM>
-ITEM* MiniHeap_t<ITEM>::aAllotItem(eCN eClassNo, i8 nBytes)
-{
-  ITEM* aItem = reinterpret_cast<ITEM*>(aAllotSpace(nBytes));
-  if (! aItem)
-    return nullptr;
-  
-  new(aItem) ITEM(eClassNo,nBytes);
-  
-  m_nItems++;
-  
-  return aItem;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot an offset array in this buffer                                       */
-/*----------------------------------------------------------------------------*/
-template <class ITEM>
-NEO* MiniHeap_t<ITEM>::aAllotNEO(i8 nBytes)
-{
-  NEO* aNEO = reinterpret_cast<NEO*>(aAllotSpace(nBytes));
-  
-  return aNEO;
-}
-
-/*----------------------------------------------------------------------------*/
 /* allot space for nBytes in this buffer                                      */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-char* MiniHeap_t<ITEM>::aAllotSpace(i8 nBytes)
+char* MiniHeap_t<ITEM>::aAllotBytes(i8 nBytes)
 {
-  // test  sufficient freespace
+  // test sufficient free space
   if (nFreeBytes() < nBytes)
     return nullptr;
   
@@ -153,6 +124,23 @@ char* MiniHeap_t<ITEM>::aAllotSpace(i8 nBytes)
   vSetWilderness();
   
   return aSpace;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot an item of nBytes in this buffer                                     */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+ITEM* MiniHeap_t<ITEM>::aAllotItem(eCN eClassNo, i8 nBytes)
+{
+  ITEM* aItem = reinterpret_cast<ITEM*>(aAllotBytes(nBytes));
+  if (! aItem)
+    return nullptr;
+  
+  new(aItem) ITEM(eClassNo,nBytes);
+  
+  m_nItems++;
+  
+  return aItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -210,7 +198,7 @@ void MiniHeap_t<ITEM>::vDumpItems(void)
       case CN_FREEENTRY: {
         FreeItem* aFreeEntry = _aFreeItem(aItem);
         vTrace("[%04lld:%06lld] CN_FREEENTRY: %lldB\n"_Stz,
-               iItem,iOffset,aFreeEntry->nSizeData());
+               iItem,iOffset,aFreeEntry->nSizeBytes());
         break;
       }
         
