@@ -78,13 +78,13 @@ FreeItem* FreeItem::aMorphFreeItem(void* aFree, i8 nSizeBytes)
 /*----------------------------------------------------------------------------*/
 /* get address after this freeEntry                                           */
 /*----------------------------------------------------------------------------*/
-char* FreeItem::aAddressAfter(void)
+byte* FreeItem::ayAddressAfter(void)
 {
-  i8 nFreeEntryBytes = nSizeBytes();
+  i8 nThisBytes = nSizeBytes();
   
-  char* aAfter = aAdd<char*>(this,nFreeEntryBytes);
+  byte* ayAfter = aAdd<byte*>(this,nThisBytes);
   
-  return aAfter;
+  return ayAfter;
 }
 
 /*----------------------------------------------------------------------------*/
