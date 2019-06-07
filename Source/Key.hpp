@@ -43,7 +43,7 @@ namespace Data
     static eKC eCompare(KeyWrk& xKeyItem1, Ent* aKeyItem2);
     static eKC eCompare(Ent* aKeyItem1, Ent* aKeyItem2);
     
-    static char* aEachElm(Column* pColumn, i8& nBytes, char** aaCursor);
+    static byte* ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor);
     
     static bool bEqualTo(Ent* aKeyItem1, Ent* aKeyItem2);
     static bool bGreaterThan(Ent* aKeyItem1, Ent* aKeyItem2);
@@ -60,9 +60,9 @@ namespace Data
     /*------------------------------------------------------------------------*/
     /* getthis key as a byte sequence                                         */
     /*------------------------------------------------------------------------*/
-    inline char* aByteSequence(void)
+    inline byte* ayByteSequence(void)
     {
-      return reinterpret_cast<char*>(this);
+      return reinterpret_cast<byte*>(this);
     }
   };
   

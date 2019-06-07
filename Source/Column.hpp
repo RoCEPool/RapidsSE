@@ -143,7 +143,7 @@ namespace MetaData
 
     void vShow(void);
     
-    char* aValue(i8& nBytes, char** aaCursor);
+    byte* ayValue(i8& nBytes, byte** aayCursor);
   
     Footer* aFooter(void);
   

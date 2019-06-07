@@ -374,12 +374,12 @@ void Column::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* column value                                                               */
 /*----------------------------------------------------------------------------*/
-char* Column::aValue(i8& nBytes, char** aaCursor)
+byte* Column::ayValue(i8& nBytes, byte** aayCursor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 
-  Stz* aElem;
-  char* aValue = *aaCursor;
+  Stz* szElem;
+  byte* ayValue = *aayCursor;
   /*
   switch (m_eDatumType) {
       
@@ -436,21 +436,21 @@ char* Column::aValue(i8& nBytes, char** aaCursor)
   */
   
   if (DM_VCH == m_eDatumType) {
-    aElem = (Stz*)aValue;
+    szElem = (Stz*)ayValue;
     nBytes = 0;
     
-    while (*aElem->aChar() != '\0') {
+    while (*szElem->aChar() != '\0') {
       nBytes++;
-      aElem++;
+      szElem++;
     }
     nBytes++;    
   }
   else
     nBytes = sizeof(i8);
   
-  *aaCursor = aAdd<char*>(aValue,nBytes);
+  *aayCursor = aAdd<byte*>(ayValue,nBytes);
   
-  return aValue;
+  return ayValue;
 }
 
 /*----------------------------------------------------------------------------*/

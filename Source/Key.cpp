@@ -68,10 +68,10 @@ eKC Key::eCompare(Ent* aKeyItem1, KeyWrk& xKeyItem2)
   
   i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
   
-  char* aCursorThis = aKey1->aByteSequence();
-  char* aCursorThat = aKey2->aByteSequence();
+  byte* ayCursorThis = aKey1->ayByteSequence();
+  byte* ayCursorThat = aKey2->ayByteSequence();
   
-  i8 iCmp = MemLib::iCompareWords(aCursorThis, aCursorThat, iCmpBytes);
+  i8 iCmp = MemLib::iCompareWords(ayCursorThis, ayCursorThat, iCmpBytes);
   
   if (iCmp == 0) {
     if (nKeySize1 == nKeySize2)
@@ -103,10 +103,10 @@ eKC Key::eCompare(KeyWrk& xKeyItem1, KeyWrk& xKeyItem2)
   
   i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
   
-  char* aCursorThis = aKey1->aByteSequence();
-  char* aCursorThat = aKey2->aByteSequence();
+  byte* ayCursorThis = aKey1->ayByteSequence();
+  byte* ayCursorThat = aKey2->ayByteSequence();
   
-  i8 iCmp = MemLib::iCompareWords(aCursorThis, aCursorThat, iCmpBytes);
+  i8 iCmp = MemLib::iCompareWords(ayCursorThis, ayCursorThat, iCmpBytes);
   
   if (iCmp == 0)
     return KC_SAME;
@@ -130,10 +130,10 @@ eKC Key::eCompare(KeyWrk& xKeyItem1, Ent* aKeyItem2)
   
   i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
   
-  char* aCursorThis = aKey1->aByteSequence();
-  char* aCursorThat = aKey2->aByteSequence();
+  byte* ayCursorThis = aKey1->ayByteSequence();
+  byte* ayCursorThat = aKey2->ayByteSequence();
   
-  i8 iCmp = MemLib::iCompareWords(aCursorThis, aCursorThat, iCmpBytes);
+  i8 iCmp = MemLib::iCompareWords(ayCursorThis, ayCursorThat, iCmpBytes);
   
   if (iCmp == 0)
     return KC_SAME;
@@ -157,10 +157,10 @@ eKC Key::eCompare(Ent* aKeyItem1, Ent* aKeyItem2)
   
   i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
   
-  char* aCursorThis = aKey1->aByteSequence();
-  char* aCursorThat = aKey2->aByteSequence();
+  byte* ayCursorThis = aKey1->ayByteSequence();
+  byte* ayCursorThat = aKey2->ayByteSequence();
   
-  i8 iCmp = MemLib::iCompareWords(aCursorThis, aCursorThat, iCmpBytes);
+  i8 iCmp = MemLib::iCompareWords(ayCursorThis, ayCursorThat, iCmpBytes);
   
   if (iCmp == 0)
     return KC_SAME;
@@ -174,11 +174,11 @@ eKC Key::eCompare(Ent* aKeyItem1, Ent* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* get next element from key                                                  */
 /*----------------------------------------------------------------------------*/
-char* Key::aEachElm(Column* pColumn, i8& nBytes, char** aaCursor)
+byte* Key::ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor)
 {
-  char* aEachElm = pColumn->aValue(nBytes,aaCursor);
+  byte* ayElm = pColumn->ayValue(nBytes,aayCursor);
   
-  return aEachElm;
+  return ayElm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -254,8 +254,8 @@ bool Key::bNotEqual(Ent* aKeyItem1, Ent* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 bool Key::operator < (Key* aKeyArg)
 {
-  i8 iDatumA = *(i8*)aByteSequence();
-  i8 iDatumB = *(i8*)aKeyArg->aByteSequence();
+  i8 iDatumA = *(i8*)ayByteSequence();
+  i8 iDatumB = *(i8*)aKeyArg->ayByteSequence();
   bool b = iDatumA < iDatumB;
   
   return b;
@@ -266,8 +266,8 @@ bool Key::operator < (Key* aKeyArg)
 /*----------------------------------------------------------------------------*/
 bool Key::operator <= (Key* aKeyArg)
 {
-  i8 iDatumA = *(i8*)aByteSequence();
-  i8 iDatumB = *(i8*)aKeyArg->aByteSequence();
+  i8 iDatumA = *(i8*)ayByteSequence();
+  i8 iDatumB = *(i8*)aKeyArg->ayByteSequence();
   
   bool b = iDatumA <= iDatumB;
   
@@ -279,7 +279,7 @@ bool Key::operator <= (Key* aKeyArg)
 /*----------------------------------------------------------------------------*/
 i8 Key::iGetInt(void)
 {
-  i8 iVal = *(i8*)aByteSequence();
+  i8 iVal = *(i8*)ayByteSequence();
   
   return iVal;
 }
@@ -289,11 +289,11 @@ i8 Key::iGetInt(void)
 /*----------------------------------------------------------------------------*/
 void Key::vKey(KeyWrk& xKeyWrk)
 {
-  char* aDst = aByteSequence();
-  char* aSrc = (char*)xKeyWrk.aKey();
+  byte* ayDst = ayByteSequence();
+  byte* aySrc = (byte*)xKeyWrk.aKey();
   i8 nBytes  = xKeyWrk.nKeySize();
   
-  MemLib::vCopy(aDst,aSrc,nBytes,CN_KEY);
+  MemLib::vCopy(ayDst,aySrc,nBytes,CN_KEY);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -303,7 +303,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
 {
   i8 nBytes;
   
-  char* aCursor = aByteSequence();
+  byte* ayCursor = ayByteSequence();
   
   char caLiteral[128];
   
@@ -311,15 +311,15 @@ void Key::vShow(IdxColVec* pIdxColVec)
     
     Column* pColumn = pIdxColVec->pGet(i_Co);
     
-    char* aElm = this->aEachElm(pColumn,nBytes,&aCursor);
+    byte* ayElm = this->ayEachElm(pColumn,nBytes,&ayCursor);
     
     eDM eDatum = pColumn->eDatumType();
     
     if (eDatum == DM_VCH) {
-      nBytes = StrLib::iWordFlipBack(caLiteral, aElm);
+      nBytes = StrLib::iWordFlipBack(caLiteral, (char*)ayElm);
     }
     else
-      Record::vSprint(pColumn,(Stz*)caLiteral,(Stz*)aElm);
+      Record::vSprint(pColumn,(Stz*)caLiteral,(Stz*)ayElm);
     vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Co,nBytes,caLiteral);
   }
   
