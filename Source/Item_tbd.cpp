@@ -29,15 +29,10 @@ void* Item_tbd::operator new(size_t, Item_tbd* aItem)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Item_tbd::Item_tbd(eCN eClassNo, i8 nSizeItem)
+Item_tbd::Item_tbd(eCN eClassNo, i8 nSizeBytes)
 : Header(eClassNo)
 {
-  m_nSizeItem = static_cast<i4>(nSizeItem);
-  
-#ifdef WITH_DEBUG_VERSION
-  m_iSkipNo = -1;
-  //m_iIntKey = -1;
-#endif
+  m_nSizeBytes = nSizeBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,9 +51,9 @@ Item_tbd::~Item_tbd(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this item                                             */
 /*----------------------------------------------------------------------------*/
-i8 Item_tbd::nSizeItem(void)
+i8 Item_tbd::nSizeBytes(void)
 {
-  return (i8)m_nSizeItem;
+  return m_nSizeBytes;
 }
 
 /*============================================================================*/
