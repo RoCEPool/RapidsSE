@@ -289,7 +289,7 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
 
 #include "Id.hpp"
 #include "Ent.hpp"
-#include "KeyWrk.hpp"
+#include "EntWrk.hpp"
 #include "Key.hpp"
 
 #include "Extractor.hpp"

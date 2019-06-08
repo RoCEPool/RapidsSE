@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at given height starting from this buffer      */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pPositionH0Buffer(KeyWrk& xGivenKey)
+EntBuffer* EntBuffer::pPositionH0Buffer(EntWrk& xGivenKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -109,7 +109,7 @@ Ent* EntBuffer::pPositionPriorEntry(Ent* aFindKey)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and return entry prior to key                          */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pPositionPriorEntry(KeyWrk& xFindKey)
+Ent* EntBuffer::pPositionPriorEntry(EntWrk& xFindKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   

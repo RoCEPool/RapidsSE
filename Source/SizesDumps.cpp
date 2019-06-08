@@ -502,7 +502,7 @@ i8 giClassSize[]
   /* 60 */ sizeof(Heap), // correct    // CN_JUMBOTRANSIENT
   
   /* 61 */ sizeof(Key),                // CN_KEY
-  /* 64 */ sizeof(KeyWrk),             // CN_KEYWRK
+  /* 64 */ sizeof(EntWrk),             // CN_KEYWRK
   
   /* 65 */ sizeof(Heap), // correct    // CN_LARGEPERSISTENT
   /* 66 */ sizeof(Heap), // correct    // CN_LARGETRANSIENT

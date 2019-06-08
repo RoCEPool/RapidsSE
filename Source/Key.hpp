@@ -32,29 +32,29 @@ namespace Data
     void* operator new(size_t);
     void* operator new(size_t, Key*);
   
-    Key(KeyWrk& xKeyWrk);
+    Key(EntWrk& xEntWrk);
     ~Key(void) noexcept(false);
   
     bool operator <  (Key* aKeyArg);
     bool operator <= (Key* aKeyArg);
   
-    static eKC eCompare(Ent* aKeyItem1, KeyWrk& xKeyItem2);
-    static eKC eCompare(KeyWrk& xKeyItem1, KeyWrk& xKeyItem2);
-    static eKC eCompare(KeyWrk& xKeyItem1, Ent* aKeyItem2);
+    static eKC eCompare(Ent* aKeyItem1, EntWrk& xKeyItem2);
+    static eKC eCompare(EntWrk& xKeyItem1, EntWrk& xKeyItem2);
+    static eKC eCompare(EntWrk& xKeyItem1, Ent* aKeyItem2);
     static eKC eCompare(Ent* aKeyItem1, Ent* aKeyItem2);
     
     static byte* ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor);
     
     static bool bEqualTo(Ent* aKeyItem1, Ent* aKeyItem2);
     static bool bGreaterThan(Ent* aKeyItem1, Ent* aKeyItem2);
-    static bool bGreaterEqual(Ent* aKeyItem1, KeyWrk& xKeyItem2);
+    static bool bGreaterEqual(Ent* aKeyItem1, EntWrk& xKeyItem2);
     static bool bGreaterEqual(Ent* aKeyItem1, Ent* aKeyItem2);
-    static bool bLessEqual(KeyWrk& xKeyItem1, Ent* aKeyItem2);
-    static bool bLessThan(KeyWrk& xKeyItem1, Ent* aKeyItem2);
+    static bool bLessEqual(EntWrk& xKeyItem1, Ent* aKeyItem2);
+    static bool bLessThan(EntWrk& xKeyItem1, Ent* aKeyItem2);
     static bool bNotEqual(Ent* aKeyItem1, Ent* aKeyItem2);
   
     i8   iGetInt(void);
-    void vKey(KeyWrk& xKeyWrk);
+    void vKey(EntWrk& xEntWrk);
     void vShow(IdxColVec* pIdxColVec);
   
     /*------------------------------------------------------------------------*/

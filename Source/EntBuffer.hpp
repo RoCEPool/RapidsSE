@@ -74,17 +74,17 @@ namespace Data
     ////////////////////////////////////////////////////////////////////////////
     // static move functions
     
-    static Ent* pMoveToExactEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
-    static Ent* pMoveToGreaterThanEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
-    static Ent* pMoveToGreaterEqualEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
-    static Ent* pMoveToPrevEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
-    static Ent* pMoveToNextEntry(Ent* aEnt, KeyWrk& xKeyWrk, EntBuffer** pAEntBuffer);
+    static Ent* pMoveToExactEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** pAEntBuffer);
+    static Ent* pMoveToGreaterThanEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** pAEntBuffer);
+    static Ent* pMoveToGreaterEqualEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** pAEntBuffer);
+    static Ent* pMoveToPrevEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** pAEntBuffer);
+    static Ent* pMoveToNextEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** pAEntBuffer);
     
     ////////////////////////////////////////////////////////////////////////////
     // key positioning functions
     
-    EntBuffer* pPositionH0Buffer(KeyWrk& xGivenKey);
-    Ent*        pPositionPriorEntry(KeyWrk& xFindKey);
+    EntBuffer* pPositionH0Buffer(EntWrk& xGivenKey);
+    Ent*        pPositionPriorEntry(EntWrk& xFindKey);
     Ent*        pPositionPriorEntry(Ent* aFindKey);
     void         vPositionPriorVecEntry(Ent* aFindKey, Ent** aaPriorVec,
                                         Ent* aFindEntry);
@@ -102,9 +102,9 @@ namespace Data
     void        vDeleteEntry(Ent** aaEnt);
     void        vDump(void);
     EntBuffer* pFirstChildBuffer(void);
-    Ent*       aInsertKeyAbs(KeyWrk& xKeyWrk);
-    Ent*       aInsertKeyAbsL0(KeyWrk& xKeyWrk, Ent** aaPriorEntry);
-    static Ent* aInsertKeyTree(KeyWrk& xKeyWrk,
+    Ent*       aInsertKeyAbs(EntWrk& xEntWrk);
+    Ent*       aInsertKeyAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry);
+    static Ent* aInsertKeyTree(EntWrk& xEntWrk,
                                  EntBuffer** ppRootKeyBuffer);
     void        vLazyBuild(void);
     i8          iLengthList(void);
@@ -142,18 +142,18 @@ namespace Data
                                    Ent* aOriginalFirstEntry,
                                    EntBuffer** ppRootKeyBuffer);
     Ent*       aSkipRoots(void);
-    EntBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,
+    EntBuffer* pInsertableBuffer(EntWrk& xEntWrk,
                                    EntBuffer** ppRootKeyBuffer);
-    Ent*       aInsertKeyAbsLazy(KeyWrk& xKeyWrk);
+    Ent*       aInsertKeyAbsLazy(EntWrk& xEntWrk);
     void        vInsertKeySkip(Ent* aKeyEntry);
-    Ent*       aInsertKeyBuffer(KeyWrk& xKeyWrk,
+    Ent*       aInsertKeyBuffer(EntWrk& xEntWrk,
                                   EntBuffer** ppRootKeyBuffer);
-    Ent*       aInsertKeyUpwards(KeyWrk& xKeyWrk,
+    Ent*       aInsertKeyUpwards(EntWrk& xEntWrk,
                                    EntBuffer** ppRootKeyBuffer);
-    bool         bKeyBeforeBuffer(KeyWrk& xKey);
+    bool         bKeyBeforeBuffer(EntWrk& xKey);
     FreeItem*    aMakeFreeEntry(Ent* aEnt);
     EntBuffer* pNewHigherBuffer(void);
-    EntBuffer* pNewInsertBuffer(KeyWrk& xInsKey, i8 nEntryPlusOffsets,
+    EntBuffer* pNewInsertBuffer(EntWrk& xInsKey, i8 nEntryPlusOffsets,
                                   EntBuffer** ppRootKeyBuffer);
     EntBuffer* pNewNextBuffer(void);
     Ent*       aPopLazyChain(void);

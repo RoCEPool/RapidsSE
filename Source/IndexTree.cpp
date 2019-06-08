@@ -269,7 +269,7 @@ void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
   i8 iFirstL0_BufferNo = pFirstL0->iPoolBufferNo();
   xId.vBuffer(iFirstL0_BufferNo);
   
-  KeyWrk xL1_FirstKey;
+  EntWrk xL1_FirstKey;
   
   xL1_FirstKey.vId(xId);
   xL1_FirstKey.vEmbedded((byte*)aKey);
@@ -291,7 +291,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
   TRACE_COMPACT( vTrace("IndexTree::vCopyLeft (right %lld)\n"_Stz,
                         pRightL0->iBufferNo()); )
   
-  KeyWrk xLeftKeyWrk;
+  EntWrk xLeftEntWrk;
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
 
@@ -339,16 +339,16 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // form the working version of the left key
     
-    xLeftKeyWrk.vId(xId);
-    xLeftKeyWrk.vEmbedded((byte*)aKey);
-    xLeftKeyWrk.vKeySize(nKeySize);
-    xLeftKeyWrk.vLevels(nLevels);
+    xLeftEntWrk.vId(xId);
+    xLeftEntWrk.vEmbedded((byte*)aKey);
+    xLeftEntWrk.vKeySize(nKeySize);
+    xLeftEntWrk.vLevels(nLevels);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // compute the size of the left key
     
-    i8 nEntryBytes = xLeftKeyWrk.nEntrySize();
-    i8 nOffsetBytes = xLeftKeyWrk.nOffsetSize();
+    i8 nEntryBytes = xLeftEntWrk.nEntrySize();
+    i8 nOffsetBytes = xLeftEntWrk.nOffsetSize();
     i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -382,7 +382,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     // insert a copy of the right key into left buffer
     
     TRACE_COMPACT( pLeftL0->vShow(); )
-    Ent* aLeftKeyEntryL0 = pLeftL0->aInsertKeyAbsL0(xLeftKeyWrk,&aPriorEntry);
+    Ent* aLeftKeyEntryL0 = pLeftL0->aInsertKeyAbsL0(xLeftEntWrk,&aPriorEntry);
     TRACE_COMPACT( pLeftKeyEntryL0->vShow(0, m_pIndex, true); )
     TRACE_COMPACT( pLeftL0->vShow(); )
     
@@ -395,11 +395,11 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
       
       i8 iLeftL0BufferNo = pLeftL0->iPoolBufferNo();
       xId.vBuffer(iLeftL0BufferNo);
-      xLeftKeyWrk.vId(xId);
+      xLeftEntWrk.vId(xId);
       
       TRACE_COMPACT( pL1->vShow(); )
       //RASSERT(pL1->bVerifySkipListEntry());
-      Ent* aLeftEntryL1 = pL1->aInsertKeyAbs(xLeftKeyWrk);
+      Ent* aLeftEntryL1 = pL1->aInsertKeyAbs(xLeftEntWrk);
       //RASSERT(pL1->bVerifySkipListEntry());
       TRACE_COMPACT( pLeftEntryL1->vShow(0, m_pIndex, true); )
       TRACE_COMPACT( pL1->vShow(); )
@@ -430,7 +430,7 @@ void IndexTree::vCopyLeftV2(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
   TRACE_COMPACT( vTrace("IndexTree::vCopyLeft (right %lld)\n"_Stz,
                         pRightL0->iBufferNo()); )
   
-  KeyWrk xLeftKeyWrk;
+  EntWrk xLeftEntWrk;
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
@@ -471,16 +471,16 @@ void IndexTree::vCopyLeftV2(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // form the working version of the left key
     
-    xLeftKeyWrk.vId(xId);
-    xLeftKeyWrk.vEmbedded((byte*)aKey);
-    xLeftKeyWrk.vKeySize(nKeySize);
-    xLeftKeyWrk.vLevels(nLevels);
+    xLeftEntWrk.vId(xId);
+    xLeftEntWrk.vEmbedded((byte*)aKey);
+    xLeftEntWrk.vKeySize(nKeySize);
+    xLeftEntWrk.vLevels(nLevels);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // compute the size of the left key
     
-    i8 nEntryBytes = xLeftKeyWrk.nEntrySize();
-    i8 nOffsetBytes = xLeftKeyWrk.nOffsetSize();
+    i8 nEntryBytes = xLeftEntWrk.nEntrySize();
+    i8 nOffsetBytes = xLeftEntWrk.nOffsetSize();
     i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -511,7 +511,7 @@ void IndexTree::vCopyLeftV2(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     // insert a copy of the right key into left buffer
     
     TRACE_COMPACT( pLeftL0->vShow(); )
-    Ent* aLeftKeyEntryL0 = pLeftL0->aInsertKeyAbs(xLeftKeyWrk);
+    Ent* aLeftKeyEntryL0 = pLeftL0->aInsertKeyAbs(xLeftEntWrk);
     TRACE_COMPACT( pLeftKeyEntryL0->vShow(0, m_pIndex, true); )
     TRACE_COMPACT( pLeftL0->vShow(); )
     
@@ -522,11 +522,11 @@ void IndexTree::vCopyLeftV2(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
       
       i8 iLeftL0BufferNo = pLeftL0->iPoolBufferNo();
       xId.vBuffer(iLeftL0BufferNo);
-      xLeftKeyWrk.vId(xId);
+      xLeftEntWrk.vId(xId);
       
       TRACE_COMPACT( pL1->vShow(); )
       //RASSERT(pL1->bVerifySkipListEntry());
-      Ent* aLeftEntryL1 = pL1->aInsertKeyAbs(xLeftKeyWrk);
+      Ent* aLeftEntryL1 = pL1->aInsertKeyAbs(xLeftEntWrk);
       //RASSERT(pL1->bVerifySkipListEntry());
       TRACE_COMPACT( pLeftEntryL1->vShow(0, m_pIndex, true); )
       TRACE_COMPACT( pL1->vShow(); )
@@ -693,11 +693,11 @@ bool IndexTree::bInsertEntry(RowBuffer* pRowBuffer, i8 i_Row, Id& xId)
   
   m_okLock.vGrabWrite();
   
-  KeyWrk xKeyWrk;
-  xKeyWrk.vExtractKey(pRowBuffer,i_Row,m_pIndex->pIdxColVec());
-  xKeyWrk.vId(xId);
+  EntWrk xEntWrk;
+  xEntWrk.vExtractKey(pRowBuffer,i_Row,m_pIndex->pIdxColVec());
+  xEntWrk.vId(xId);
   
-  //xKeyWrk.vShow(m_pIndex->pIdxColVec());
+  //xEntWrk.vShow(m_pIndex->pIdxColVec());
   
   if ( ! m_pRootBuffer ) {
     m_pRootBuffer = new EntBuffer;
@@ -705,7 +705,7 @@ bool IndexTree::bInsertEntry(RowBuffer* pRowBuffer, i8 i_Row, Id& xId)
     m_pRootBuffer->vPartitionNo(m_iPartitionNo);
   }
   
-  Ent* aKeyEntry = EntBuffer::aInsertKeyTree(xKeyWrk,&m_pRootBuffer);
+  Ent* aKeyEntry = EntBuffer::aInsertKeyTree(xEntWrk,&m_pRootBuffer);
   ASSERT(aKeyEntry);
   
   //m_pRootBuffer->bVerify();
@@ -751,12 +751,12 @@ EntBuffer* IndexTree::pPopSubList(EntBuffer** ppSubList)
 /*----------------------------------------------------------------------------*/
 /* position the IndexTree at a particular height of index buffer              */
 /*----------------------------------------------------------------------------*/
-EntBuffer* IndexTree::pPositionH0Buffer(KeyWrk& xKeyWrk)
+EntBuffer* IndexTree::pPositionH0Buffer(EntWrk& xEntWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   if (m_pRootBuffer)
-    return m_pRootBuffer->pPositionH0Buffer(xKeyWrk);
+    return m_pRootBuffer->pPositionH0Buffer(xEntWrk);
   else
     return nullptr;
 }

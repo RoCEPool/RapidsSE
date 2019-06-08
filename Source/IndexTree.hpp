@@ -45,7 +45,7 @@ namespace Data
     bool         bInsertEntry(RowBuffer* pRowBuffer, i8 i_Row, Id& xId);
     void         vInsertEntriesFromBuffer(RowBuffer* pRowBuffer);
     void         vLazyBuild(void);    
-    EntBuffer* pPositionH0Buffer(KeyWrk& xKeyWrk);
+    EntBuffer* pPositionH0Buffer(EntWrk& xEntWrk);
     EntBuffer* pRoot(void);
     void         vTidyUp(void);
     void         vTruncate(void);

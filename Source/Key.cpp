@@ -39,9 +39,9 @@ void* Key::operator new(size_t, Key* aKey)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Key::Key(KeyWrk& xKeyWrk)
+Key::Key(EntWrk& xEntWrk)
 {
-  vKey(xKeyWrk);
+  vKey(xEntWrk);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,7 +58,7 @@ Key::~Key(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
 /*----------------------------------------------------------------------------*/
-eKC Key::eCompare(Ent* aKeyItem1, KeyWrk& xKeyItem2)
+eKC Key::eCompare(Ent* aKeyItem1, EntWrk& xKeyItem2)
 {
   i8 nKeySize1 = aKeyItem1->nSizeKey();
   i8 nKeySize2 = xKeyItem2.nKeySize();
@@ -93,7 +93,7 @@ eKC Key::eCompare(Ent* aKeyItem1, KeyWrk& xKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
 /*----------------------------------------------------------------------------*/
-eKC Key::eCompare(KeyWrk& xKeyItem1, KeyWrk& xKeyItem2)
+eKC Key::eCompare(EntWrk& xKeyItem1, EntWrk& xKeyItem2)
 {
   i8 nKeySize1 = xKeyItem1.nKeySize();
   i8 nKeySize2 = xKeyItem2.nKeySize();
@@ -120,7 +120,7 @@ eKC Key::eCompare(KeyWrk& xKeyItem1, KeyWrk& xKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
 /*----------------------------------------------------------------------------*/
-eKC Key::eCompare(KeyWrk& xKeyItem1, Ent* aKeyItem2)
+eKC Key::eCompare(EntWrk& xKeyItem1, Ent* aKeyItem2)
 {
   i8 nKeySize1 = xKeyItem1.nKeySize();
   i8 nKeySize2 = aKeyItem2->nSizeKey();
@@ -202,7 +202,7 @@ bool Key::bGreaterThan(Ent* aKeyItem1, Ent* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* if key1 greater than equal to key2 ?                                       */
 /*----------------------------------------------------------------------------*/
-bool Key::bGreaterEqual(Ent* aKeyItem1, KeyWrk& xKeyItem2)
+bool Key::bGreaterEqual(Ent* aKeyItem1, EntWrk& xKeyItem2)
 {
   eKC eCmp = eCompare(aKeyItem1, xKeyItem2);
   return eCmp == KC_AFTER || eCmp == KC_SAME ? true : false;
@@ -220,7 +220,7 @@ bool Key::bGreaterEqual(Ent* aKeyItem1, Ent* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* if key1 less than eqiual to key2 ?                                         */
 /*----------------------------------------------------------------------------*/
-bool Key::bLessEqual(KeyWrk& xKeyItem1, Ent* aKeyItem2)
+bool Key::bLessEqual(EntWrk& xKeyItem1, Ent* aKeyItem2)
 {
   eKC eCmp = eCompare(xKeyItem1, aKeyItem2);
   return eCmp == KC_BEFORE || eCmp == KC_SAME ? true : false;
@@ -229,7 +229,7 @@ bool Key::bLessEqual(KeyWrk& xKeyItem1, Ent* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 /* if key1 less than key2 ?                                                   */
 /*----------------------------------------------------------------------------*/
-bool Key::bLessThan(KeyWrk& xKeyItem1, Ent* aKeyItem2)
+bool Key::bLessThan(EntWrk& xKeyItem1, Ent* aKeyItem2)
 {
   eKC eCmp = eCompare(xKeyItem1, aKeyItem2);
   return eCmp == KC_BEFORE ? true : false;
@@ -287,11 +287,11 @@ i8 Key::iGetInt(void)
 /*----------------------------------------------------------------------------*/
 /* set key from given key workspace                                           */
 /*----------------------------------------------------------------------------*/
-void Key::vKey(KeyWrk& xKeyWrk)
+void Key::vKey(EntWrk& xEntWrk)
 {
   byte* ayDst = ayByteSequence();
-  byte* aySrc = (byte*)xKeyWrk.aKey();
-  i8 nBytes  = xKeyWrk.nKeySize();
+  byte* aySrc = (byte*)xEntWrk.aKey();
+  i8 nBytes  = xEntWrk.nKeySize();
   
   MemLib::vCopy(ayDst,aySrc,nBytes,CN_KEY);
 }
