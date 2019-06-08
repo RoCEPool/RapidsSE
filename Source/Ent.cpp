@@ -135,7 +135,7 @@ i4 Ent::iNEO(i8 iOffset)
   
   //i4 iNEO = aNEO->m_iOffset[iOffset];
   
-  i4 iNEO = *(aAdd<i4*>(this, nSizeItem_WithoutOffsets() + sizeof(i4) * iOffset));
+  i4 iNEO = *(aAdd<i4*>(this, m_nSizeItem_WithoutOffsets + sizeof(i4) * iOffset));
   
   return iNEO;
 }
@@ -151,7 +151,7 @@ void Ent::vNEO(i8 iOffset, i4 iNEO)
   
   //aNEO->m_iOffset[iOffset] = iNEO;
   
-  *(aAdd<i4*>(this, nSizeItem_WithoutOffsets() + sizeof(i4) * iOffset)) = iNEO;
+  *(aAdd<i4*>(this, m_nSizeItem_WithoutOffsets + sizeof(i4) * iOffset)) = iNEO;
   
 }
 
@@ -199,14 +199,6 @@ i8 Ent::nSizeKey(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size in bytes of this item                                             */
-/*----------------------------------------------------------------------------*/
-i8 Ent::nSizeItem_WithoutOffsets(void)
-{
-  return (i8)m_nSizeItem_WithoutOffsets;
-}
-
-/*----------------------------------------------------------------------------*/
 /* test for valid entry                                                       */
 /*----------------------------------------------------------------------------*/
 bool Ent::bValidItem(void)
@@ -241,7 +233,7 @@ bool Ent::bValidItem(void)
 /*----------------------------------------------------------------------------*/
 NEO* Ent::aNEO(void)
 {
-  NEO* aNEO = aAdd<NEO*>(this, nSizeItem_WithoutOffsets());
+  NEO* aNEO = aAdd<NEO*>(this, m_nSizeItem_WithoutOffsets);
   
   return aNEO;
 }
