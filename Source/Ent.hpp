@@ -49,10 +49,10 @@ namespace Data
     i4    iNEO(i8 iLevel);
     void  vNEO(i8 iLevel, i4 iNEO);
     void  vNEOdump(void);
-    i8    iNEOsize(void);
   
     i8    nSizeBytes(void);
     i8    nSizeKey(void);
+    i8    nSizeNeo(void);
 
     bool  bValidItem(void);
   

@@ -40,7 +40,6 @@ Ent::Ent(eCN eClassNo, i8 nSizeItem)
   
 #ifdef WITH_DEBUG_VERSION
   m_iSkipNo = -1;
-  //m_iIntKey = -1;
 #endif
 }
 
@@ -131,10 +130,6 @@ i4 Ent::iNEO(i8 iOffset)
 {
   ASSERT(iOffset >= 0 && iOffset < nLevels());
   
-  //NEO* aNEO = this->aNEO();
-  
-  //i4 iNEO = aNEO->m_iOffset[iOffset];
-  
   i4 iNEO = *(aAdd<i4*>(this, m_nSizeItem_WithoutOffsets + sizeof(i4) * iOffset));
   
   return iNEO;
@@ -147,12 +142,7 @@ void Ent::vNEO(i8 iOffset, i4 iNEO)
 {
   ASSERT(iOffset >= 0 && iOffset < nLevels());
   
-  //NEO* aNEO = this->aNEO();
-  
-  //aNEO->m_iOffset[iOffset] = iNEO;
-  
   *(aAdd<i4*>(this, m_nSizeItem_WithoutOffsets + sizeof(i4) * iOffset)) = iNEO;
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -173,7 +163,7 @@ void Ent::vNEOdump(void)
 /*----------------------------------------------------------------------------*/
 /* get size of the NEO after this entry                                       */
 /*----------------------------------------------------------------------------*/
-i8 Ent::iNEOsize(void)
+i8 Ent::nSizeNeo(void)
 {
   i8 nBytes = sizeof(i4) * nLevels();
   
@@ -185,7 +175,7 @@ i8 Ent::iNEOsize(void)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nSizeBytes(void)
 {
-  i8 nBytes = m_nSizeItem_WithoutOffsets + iNEOsize();
+  i8 nBytes = m_nSizeItem_WithoutOffsets + nSizeNeo();
   
   return nBytes;
 }
