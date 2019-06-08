@@ -296,6 +296,27 @@ void EntWrk::vExtractKey(RowBuffer* pRowBuffer, i8 i_Row, IdxColVec* pIdxColVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* form given entry from this working entry                                   */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vFormEntry(Ent* pEntry)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set entry id and levels
+  
+  pEntry->vId(xId());
+  pEntry->vLevels(nLevels());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy key into entry
+  
+  Key* aSrcKey  = aKey();
+  Key* aDstKey  = _aKey(pEntry->ayKeyBytes());
+  i8   nKeySize = this->nKeySize();
+  
+  MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENT);
+}
+
+/*----------------------------------------------------------------------------*/
 /* compute hash of key                                                        */
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::iHashKey(void)
@@ -445,27 +466,6 @@ void EntWrk::vReset(void)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   vKeySize(0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set entry using given key working entry                                    */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vSetEntry(Ent* pEntry)
-{
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set id, transaction and offsets
-  
-  pEntry->vId(xId());
-  pEntry->vLevels(nLevels());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy key into this entry
-  
-  Key* aSrcKey = aKey();
-  Key* aDstKey = _aKey(pEntry->ayKeyBytes());
-  i8 nKeySize  = this->nKeySize();
-  
-  MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENT);
 }
 
 /*----------------------------------------------------------------------------*/

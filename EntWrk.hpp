@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+//! entry work is used to form an entry which is then inserted into an index
+
 namespace Data
 {
   class Key;
@@ -46,6 +48,8 @@ namespace Data
     i8     nEntrySize(void);
     void   vExtractKey(RowBuffer* pRowBuffer, i8 i_Row, IdxColVec* pIdxColVec);
 
+    void   vFormEntry(Ent* pEntry);
+  
     i8     iHashKey(void);
   
     Id&    xId(void);
@@ -66,7 +70,6 @@ namespace Data
     EntBuffer* pReferencedEntBuffer(void);
     void   vReset(void);
 
-    void   vSetEntry(Ent* pEntry);
     void   vSetKey(Ent* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec);
     void   vShow(IdxColVec* pIdxColVec);
   
