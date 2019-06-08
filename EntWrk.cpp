@@ -81,7 +81,7 @@ void EntWrk::vAddElement(Row* pRow, Column* pCol)
   
   if (pRow->m_aiValue[pCol->iColumnNo()] == C_DATUM_NULL) {
     nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,&aSrc);
-    vTake(nBytes);
+    vIncKeyBytes(nBytes);
     return;
   }
   
@@ -92,7 +92,7 @@ void EntWrk::vAddElement(Row* pRow, Column* pCol)
     nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,&aSrc);
   }
   
-  vTake(nBytes);
+  vIncKeyBytes(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -157,7 +157,7 @@ void EntWrk::vAddElement(Stz* aSrc, Column* pCol, Formatters* pFormatters)
       NEVER_REACH;
   }
   
-  vTake(nBytes);
+  vIncKeyBytes(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,7 +171,7 @@ void EntWrk::vAddElement(w8 wWord)
   
   MemLib::vCopy(aDst, &wWord, sizeof(w8), CN_ENTWRK);
   
-  vTake(sizeof(w8));
+  vIncKeyBytes(sizeof(w8));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -186,7 +186,7 @@ void EntWrk::vAddMinusInfinity(void)
   i8 iInt = C_DATUM_MINUS_INFINITY;
   Int::nCopy(aDst,(void*)&iInt);
   
-  vTake(C_BYTES_PER_WORD);
+  vIncKeyBytes(C_BYTES_PER_WORD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,7 +201,7 @@ void EntWrk::vAddPlusInfinity(void)
   i8 iInt = C_DATUM_PLUS_INFINITY;
   Int::nCopy(aDst,(void*)&iInt);
   
-  vTake(C_BYTES_PER_WORD);
+  vIncKeyBytes(C_BYTES_PER_WORD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -506,14 +506,19 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
   vTrace("\n"_Stz);
 }
 
+
 /*----------------------------------------------------------------------------*/
-/* take chunk                                                                 */
+/*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void EntWrk::vTake(i8 iSize)
+
+/*----------------------------------------------------------------------------*/
+/* inc total key bytes by size of element                                     */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vIncKeyBytes(i8 nElementBytes)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xWsp.vTake(iSize);
+  m_xWsp.vTake(nElementBytes);
 }
 
 

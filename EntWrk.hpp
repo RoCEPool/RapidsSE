@@ -70,7 +70,8 @@ namespace Data
     void   vSetKey(Ent* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec);
     void   vShow(IdxColVec* pIdxColVec);
   
-    void   vTake(i8 iSize);
+  private:
+    void   vIncKeyBytes(i8 nElementBytes);
 
     Footer* aFooter(void);
   };
