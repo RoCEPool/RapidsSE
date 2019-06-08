@@ -43,7 +43,6 @@ namespace Data
     i8     nOffsetSize(void);
     void   vLevels(i8 nLevels);
     void   vRandomLevels(void);
-    void   vReset(void);
     void   vTake(i8 iSize);
 
     Footer* aFooter(void);
