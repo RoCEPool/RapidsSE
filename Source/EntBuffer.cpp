@@ -549,9 +549,7 @@ FreeItem* EntBuffer::aMakeFreeEntry(Ent* aEnt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  i8 nSizeItem = aEnt->nSizeItem_WithoutOffsets();
-  i8 nSizeNEO  = aEnt->iNEOsize();
-  i8 nSizeFree = nSizeItem + nSizeNEO;
+  i8 nSizeFree = aEnt->nSizeBytes();
   
   FreeItem* aFreeItem = new(aEnt) FreeItem(nSizeFree);
   
@@ -894,7 +892,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
   vTrace("%lld: Ent: %p Size: %llu Levels: %llu "_Stz,
          iOffset,
          aEnt,
-         aEnt->nSizeItem_WithoutOffsets(),
+         aEnt->nSizeBytes(),
          aEnt->nLevels()
          );
   
