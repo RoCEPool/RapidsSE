@@ -259,43 +259,6 @@ i8 EntWrk::nEntrySize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract an index key into EntWrk from this row using given index columns   */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vExtractKey(RowBuffer* pRowBuffer, i8 i_Row, IdxColVec* pIdxColVec)
-{
-  // create a row
-  HV_Row hRow(pRowBuffer->pColumnVec());
-  
-  i8 nCols = pIdxColVec->nItems();
-  hRow->m_bGetAll = false;
-  
-  for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
-    
-    // get the column from the index column vector
-    Column* pColumn = pIdxColVec->pGet(i_Column);
-    
-    // mark column to be retrieved
-    i8 iColumn = pColumn->iColumnNo();
-    hRow->m_abGetCol[iColumn] = true;
-    hRow->m_iLastCol = iColumn > hRow->m_iLastCol ? iColumn :  hRow->m_iLastCol;
-  }
-  
-  // get the inflated compact row
-  pRowBuffer->vGetRow(hRow, i_Row);
-  
-  for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
-    
-    Column* pColumn = pIdxColVec->pGet(i_Column);
-    
-    // add the column value to the key
-    vAddElement(hRow, pColumn);
-    
-    //vShow(pIdxColVec);
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* form given entry from this working entry                                   */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vFormEntry(Ent* pEntry)
