@@ -58,7 +58,6 @@ namespace Data
     i8     nKeySize(void);
     void   vKeySize(i8 nKeySize);
   
-    char*  aLatter(void);
     i8     nLevels(void);
     void   vLevels(i8 nLevels);
 

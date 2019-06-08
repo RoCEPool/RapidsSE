@@ -77,7 +77,7 @@ void KeyWrk::vAddDatum(Stz* aSrc, Column* pCol, Formatters* pFormatters)
   bool b;
   i8 nBytes;
   
-  char* pDst = aLatter();
+  char* pDst = (char*)m_xWsp.ayLatter();
   char* pSrc = (char*)aSrc;
   Datum xDatum;
   
@@ -142,7 +142,7 @@ void KeyWrk::vAddDatum(Datum& oDatum, Column* pCol)
   
   i8 nBytes;
   
-  char* aDst = aLatter();
+  char* aDst = (char*)m_xWsp.ayLatter();
   char* aSrc;
   
   if (DM_VCH == pCol->eDatumType()) {
@@ -166,7 +166,7 @@ void KeyWrk::vAddElement(Row* pRow, Column* pCol)
   
   i8 nBytes = 0;
   
-  char* aDst = aLatter();
+  char* aDst = (char*)m_xWsp.ayLatter();
   char* aSrc = (char*)pRow->m_aiValue[pCol->iColumnNo()];
   
   if (pRow->m_aiValue[pCol->iColumnNo()] == C_DATUM_NULL) {
@@ -192,7 +192,7 @@ void KeyWrk::vAddMinusInfinity(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  char* aDst = aLatter();
+  char* aDst = (char*)m_xWsp.ayLatter();
   
   i8 iInt = C_DATUM_MINUS_INFINITY;
   Int::nCopy(aDst,(void*)&iInt);
@@ -207,7 +207,7 @@ void KeyWrk::vAddPlusInfinity(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  char* aDst = aLatter();
+  char* aDst = (char*)m_xWsp.ayLatter();
   
   i8 iInt = C_DATUM_PLUS_INFINITY;
   Int::nCopy(aDst,(void*)&iInt);
@@ -222,7 +222,7 @@ void KeyWrk::vAddWord(w8 wWord)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  char* aDst = aLatter();
+  char* aDst = (char*)m_xWsp.ayLatter();
   
   MemLib::vCopy(aDst, &wWord, sizeof(w8), CN_KEYWRK);
   
@@ -400,14 +400,6 @@ void KeyWrk::vKeySize(i8 nKeySize)
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
   vDataSize(nKeySize);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of next available chunk                                        */
-/*----------------------------------------------------------------------------*/
-char* KeyWrk::aLatter(void)
-{
-  return (char*)m_xWsp.ayLatter();
 }
 
 /*----------------------------------------------------------------------------*/
