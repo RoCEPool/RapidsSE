@@ -411,16 +411,6 @@ void EntWrk::vRandomLevels(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset the key wsp                                                          */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vReset(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  vKeySize(0);
-}
-
-/*----------------------------------------------------------------------------*/
 /* set key using given working entry                                          */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vSetDetails(Ent* pEntry, i8 iBufferNo, i8 i_Item)

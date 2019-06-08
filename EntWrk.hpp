@@ -66,7 +66,6 @@ namespace Data
     i8     nOffsetSize(void);
   
     void   vRandomLevels(void);
-    void   vReset(void);
 
     void   vSetDetails(Ent* pEntry, i8 iBufferNo, i8 i_Item);
     void   vShow(IdxColVec* pIdxColVec);
