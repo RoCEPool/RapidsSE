@@ -70,7 +70,35 @@ EntWrk::~EntWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vAddDatum(Stz* aSrc, Column* pCol, Formatters* pFormatters)
+void EntWrk::vAddElement(Row* pRow, Column* pCol)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  i8 nBytes = 0;
+  
+  char* aDst = (char*)m_xWsp.ayLatter();
+  char* aSrc = (char*)pRow->m_aiValue[pCol->iColumnNo()];
+  
+  if (pRow->m_aiValue[pCol->iColumnNo()] == C_DATUM_NULL) {
+    nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,&aSrc);
+    vTake(nBytes);
+    return;
+  }
+  
+  if (DM_VCH == pCol->eDatumType()) {
+    nBytes = StrLib::iWordFlip(aDst, aSrc);
+  }
+  else {
+    nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,&aSrc);
+  }
+  
+  vTake(nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add element to key                                                         */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAddElement(Stz* aSrc, Column* pCol, Formatters* pFormatters)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
@@ -130,59 +158,20 @@ void EntWrk::vAddDatum(Stz* aSrc, Column* pCol, Formatters* pFormatters)
   }
   
   vTake(nBytes);
-  
 }
 
 /*----------------------------------------------------------------------------*/
-/* add element to key                                                         */
+/* add word to key workspace                                                  */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vAddDatum(Datum& oDatum, Column* pCol)
+void EntWrk::vAddElement(w8 wWord)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 nBytes;
-  
   char* aDst = (char*)m_xWsp.ayLatter();
-  char* aSrc;
   
-  if (DM_VCH == pCol->eDatumType()) {
-    aSrc = (char*)(oDatum.m_sVch.aStz());
-    nBytes = StrLib::iWordFlip(aDst, aSrc);
-  }
-  else {
-    aSrc = (char*)(&oDatum.m_iInt);
-    nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,aSrc);
-  }
+  MemLib::vCopy(aDst, &wWord, sizeof(w8), CN_ENTWRK);
   
-  vTake(nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add element to key                                                         */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vAddElement(Row* pRow, Column* pCol)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  i8 nBytes = 0;
-  
-  char* aDst = (char*)m_xWsp.ayLatter();
-  char* aSrc = (char*)pRow->m_aiValue[pCol->iColumnNo()];
-  
-  if (pRow->m_aiValue[pCol->iColumnNo()] == C_DATUM_NULL) {
-    nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,&aSrc);
-    vTake(nBytes);
-    return;
-  }
-  
-  if (DM_VCH == pCol->eDatumType()) {
-    nBytes = StrLib::iWordFlip(aDst, aSrc);
-  }
-  else {
-    nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,&aSrc);
-  }
-  
-  vTake(nBytes);
+  vTake(sizeof(w8));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -213,20 +202,6 @@ void EntWrk::vAddPlusInfinity(void)
   Int::nCopy(aDst,(void*)&iInt);
   
   vTake(C_BYTES_PER_WORD);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add word to key workspace                                                  */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vAddWord(w8 wWord)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  char* aDst = (char*)m_xWsp.ayLatter();
-  
-  MemLib::vCopy(aDst, &wWord, sizeof(w8), CN_ENTWRK);
-  
-  vTake(sizeof(w8));
 }
 
 /*----------------------------------------------------------------------------*/

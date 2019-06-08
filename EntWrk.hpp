@@ -32,12 +32,11 @@ namespace Data
      EntWrk(void);
     ~EntWrk(void) noexcept(false);
   
-     void  vAddDatum(Datum& oDatum, Column* pCol);
      void  vAddElement(Row* pRow, Column* pCol);
-     void  vAddDatum(Stz* aSrc, Column* pCol, Formatters* pFormatters);
+     void  vAddElement(Stz* aSrc, Column* pCol, Formatters* pFormatters);
+     void  vAddElement(w8 wWord);
      void  vAddMinusInfinity(void);
      void  vAddPlusInfinity(void);
-     void  vAddWord(w8 wWord);
   
     i8     iBufferNo(void);
     void   vBufferNo(i8 iBufferNo);
