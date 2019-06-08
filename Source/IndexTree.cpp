@@ -272,7 +272,7 @@ void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
   KeyWrk xL1_FirstKey;
   
   xL1_FirstKey.vId(xId);
-  xL1_FirstKey.vEmbedded((char*)aKey);
+  xL1_FirstKey.vEmbedded((byte*)aKey);
   xL1_FirstKey.vKeySize(nKeySize);
   xL1_FirstKey.vLevels(nLevels);
   
@@ -340,7 +340,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     // form the working version of the left key
     
     xLeftKeyWrk.vId(xId);
-    xLeftKeyWrk.vEmbedded((char*)aKey);
+    xLeftKeyWrk.vEmbedded((byte*)aKey);
     xLeftKeyWrk.vKeySize(nKeySize);
     xLeftKeyWrk.vLevels(nLevels);
     
@@ -472,7 +472,7 @@ void IndexTree::vCopyLeftV2(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     // form the working version of the left key
     
     xLeftKeyWrk.vId(xId);
-    xLeftKeyWrk.vEmbedded((char*)aKey);
+    xLeftKeyWrk.vEmbedded((byte*)aKey);
     xLeftKeyWrk.vKeySize(nKeySize);
     xLeftKeyWrk.vLevels(nLevels);
     

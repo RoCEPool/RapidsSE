@@ -15,11 +15,11 @@ namespace Data
   static const i8 C_WSP_ENTWRK = C_17KB;
   
   private:
-    Id    m_xId;       // id of row, or referenced entry in another buffer
+    Id    m_xId; // id of row, or referenced entry in another buffer
   
-    char* m_aEmbedded; // address of embedded object. this may be different
-                       // from m_xWsp.aArea() to allow for the object
-                       // not to have to be copied into the wsp
+    byte* m_ayEmbedded; // address of embedded object. this may be different
+                        // from m_xWsp.aArea() to allow for the object
+                        // not to have to be copied into the wsp
   
     Wsp_t<C_WSP_ENTWRK> m_xWsp; // key workspace
   
@@ -42,8 +42,8 @@ namespace Data
     i8     iBufferNo(void);
     void   vBufferNo(i8 iBufferNo);
   
-    char*  aEmbedded(void);
-    void   vEmbedded(char* aEmbedded);
+    byte*  ayEmbedded(void);
+    void   vEmbedded(byte* ayEmbedded);
     i8     nEntrySize(void);
     void   vExtractKey(RowBuffer* pRowBuffer, i8 i_Row, IdxColVec* pIdxColVec);
 

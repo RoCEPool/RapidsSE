@@ -47,7 +47,7 @@ KeyWrk::KeyWrk(void)
   
   m_xWsp.vInit();
   
-  m_aEmbedded = (char*)m_xWsp.ayArea();
+  m_ayEmbedded = m_xWsp.ayArea();
   
   _checkInitialisedSize_(sizeof(KeyWrk));
   
@@ -252,25 +252,21 @@ void KeyWrk::vBufferNo(i8 iBufferNo)
 /*----------------------------------------------------------------------------*/
 /* get address of embedded object                                             */
 /*----------------------------------------------------------------------------*/
-char* KeyWrk::aEmbedded(void)
+byte* KeyWrk::ayEmbedded(void)
 {  
   _precondition_(_MAGIC_,_FOOTER_);
   
-//  char* aData = m_xWsp.aArea();
-//  
-//  return aData;
-  
-  return m_aEmbedded;
+  return m_ayEmbedded;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set address of embedded object                                             */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vEmbedded(char* aEmbedded)
+void KeyWrk::vEmbedded(byte* ayEmbedded)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_aEmbedded = aEmbedded;
+  m_ayEmbedded = ayEmbedded;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -383,7 +379,7 @@ Key* KeyWrk::aKey(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  return reinterpret_cast<Key*>(aEmbedded());
+  return reinterpret_cast<Key*>(ayEmbedded());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -525,7 +521,7 @@ void KeyWrk::vSetKey(Ent* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec)
   i8 iKeySize = pEntry->nSizeData();
   RASSERT(iKeySize % 8 == 0);
   
-  vEmbedded((char*)aKeyData);
+  vEmbedded((byte*)aKeyData);
   vKeySize(iKeySize);
 }
 
