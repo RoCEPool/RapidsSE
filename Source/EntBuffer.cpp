@@ -500,7 +500,7 @@ Ent* EntBuffer::aLeadEntry(void)
   
   Ent* aFirst = aNextEntry(aSkipRoots(),0);
   
-  RASSERT(! aFirst || aFirst->bValidItem());
+  RASSERT(! aFirst || aFirst->bValidEnt());
   
   return aFirst;
 }
@@ -753,7 +753,7 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  RASSERT(aCurrent->bValidItem());
+  RASSERT(aCurrent->bValidEnt());
   
   i4 i_Offset = aCurrent->iNEO(iLevel);
   
@@ -762,7 +762,7 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
   
   Ent* aEnt = aAdd<Ent*>(aItemArea(), i_Offset);
   
-  RASSERT(! aEnt || aEnt->bValidItem());
+  RASSERT(! aEnt || aEnt->bValidEnt());
   
   return aEnt;
 }
@@ -897,7 +897,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
          );
   
   vTrace("Id: %3lli.%03lli "_Stz,
-         aEnt->iBufferNo(),
+         aEnt->xId().iBuffer(),
          aEnt->xId().iItem()
          );
   

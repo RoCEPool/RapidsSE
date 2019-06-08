@@ -33,9 +33,6 @@ namespace Data
     Ent(eCN eClassNo, i8 nSizeItem);
     ~Ent(void) noexcept(false);
   
-    i8    iBufferNo(void);
-    bn    nBufferNo(void);
-  
     Id&   xId(void);
     void  vId(Id xId);
   
@@ -52,7 +49,7 @@ namespace Data
     i8    nSizeKey(void);
     i8    nSizeNeo(void);
 
-    bool  bValidItem(void);
+    bool  bValidEnt(void);
   
   private:
     NEO*  aNEO(void);

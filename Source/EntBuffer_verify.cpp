@@ -479,7 +479,7 @@ bool EntBuffer::bVerifyItems(void)
     switch (eClass) {
         
       case CN_ENT: {
-        if (! aEnt->bValidItem()) {
+        if (! aEnt->bValidEnt()) {
           vShow();
           vVerifyFault();
           return false;
