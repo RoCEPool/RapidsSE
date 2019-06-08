@@ -73,10 +73,6 @@ namespace Data
     void   vTake(i8 iSize);
 
     Footer* aFooter(void);
-  
-  protected:
-    i8     nDataSize(void);
-    void   vDataSize(i8 nDataBytes);
   };
 }
 

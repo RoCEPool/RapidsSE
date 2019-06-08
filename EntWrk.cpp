@@ -251,7 +251,7 @@ i8 EntWrk::nEntrySize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  i8 nData = nDataSize();
+  i8 nData = nKeySize();
   
   i8 nBytes = sizeof(Ent) + nData;
   
@@ -364,7 +364,9 @@ i8 EntWrk::nKeySize(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  return nDataSize();
+  i8 nSize = m_xWsp.nUsed();
+  
+  return nSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -374,7 +376,7 @@ void EntWrk::vKeySize(i8 nKeySize)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  vDataSize(nKeySize);
+  m_xWsp.vUsed(nKeySize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -442,7 +444,7 @@ void EntWrk::vReset(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  vDataSize(0);
+  vKeySize(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -512,30 +514,6 @@ void EntWrk::vTake(i8 iSize)
   _precondition_(_MAGIC_,_FOOTER_);
   
   m_xWsp.vTake(iSize);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Protected ---------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get embedded object size                                                   */
-/*----------------------------------------------------------------------------*/
-i8 EntWrk::nDataSize(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  return m_xWsp.nUsed();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set embedded object size                                                   */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vDataSize(i8 nDataBytes)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  m_xWsp.vUsed(nDataBytes);
 }
 
 
