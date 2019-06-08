@@ -18,7 +18,6 @@ namespace Data
     void* operator new(size_t, KeyWrk*);
     
     KeyWrk(void);
-    ~KeyWrk(void) noexcept(false);
 
   };
 }
