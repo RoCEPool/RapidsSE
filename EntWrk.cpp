@@ -471,26 +471,26 @@ void EntWrk::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* set key using given working entry                                          */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vSetKey(Ent* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec)
+void EntWrk::vSetDetails(Ent* pEntry, i8 iBufferNo, i8 i_Item)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
   
-  i8 nOffsets = pEntry->nLevels();
-  vLevels(nOffsets);
+  i8 nLevels = pEntry->nLevels();
+  vLevels(nLevels);
   
-  Id xId(iBufferNo,iItem,nOffsets);
+  Id xId(iBufferNo,i_Item,nLevels);
   vId(xId);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into this entry
   
   Key* aKeyData = _aKey(pEntry->ayKeyBytes());
-  //i8 iKeySize = aKeyData->nKeySize(pIdxColVec);
-  i8 iKeySize = pEntry->nSizeKey();
+  i8 iKeySize   = pEntry->nSizeKey();
   RASSERT(iKeySize % 8 == 0);
   
   vEmbedded((byte*)aKeyData);
+  
   vKeySize(iKeySize);
 }
 

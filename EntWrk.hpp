@@ -70,7 +70,7 @@ namespace Data
     EntBuffer* pReferencedEntBuffer(void);
     void   vReset(void);
 
-    void   vSetKey(Ent* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec);
+    void   vSetDetails(Ent* pEntry, i8 iBufferNo, i8 i_Item);
     void   vShow(IdxColVec* pIdxColVec);
   
   private:

@@ -278,7 +278,7 @@ void EntBuffer::vCompactLeft(void)
     
     Id xId = aThisEntry->xId();
     
-    xEntWrk.vSetKey(aThisEntry, xId.iBuffer(), xId.iItem(), pIdxColVec);
+    xEntWrk.vSetDetails(aThisEntry, xId.iBuffer(), xId.iItem());
     pTempBuffer->aInsertKeyAbsL0(xEntWrk,&aPriorEntry);
   }
   
@@ -302,7 +302,7 @@ void EntBuffer::vCompactLeft(void)
     
     Id xId = aTempEntry->xId();
     
-    xEntWrk.vSetKey(aTempEntry, xId.iBuffer(), xId.iItem(), pIdxColVec);
+    xEntWrk.vSetDetails(aTempEntry, xId.iBuffer(), xId.iItem());
     pThisBuffer->aInsertKeyAbsL0(xEntWrk,&aPriorEntry);
   }
   
@@ -431,7 +431,7 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
   //Key* aInsertKey = _aKey(aInsertedKeyEntry->aDataArea());
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   EntWrk xEntWrkIns;
-  xEntWrkIns.vSetKey(aInsertedKeyEntry, *nPoolBufferNo(), 0, pIdxColVec);
+  xEntWrkIns.vSetDetails(aInsertedKeyEntry, *nPoolBufferNo(), 0);
   
   EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
   pHigherBuffer->aInsertKeyBuffer(xEntWrkIns,ppRootKeyBuffer);
@@ -887,15 +887,13 @@ EntBuffer* EntBuffer::pNewInsertBuffer(EntWrk& xInsKey, i8 nEntryPlusOffsets,
   // insert the first key of left buffer into higher buffer if higher buffer
   // was just created
   
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  
   if ( ! pHigherBuffer->nItems() ) {
     
     EntWrk xEntWrkLeft;
     Ent* aFirstKeyLeft  = pLeftBuffer->aLeadEntry();
 
     // initialize the keyWrk from the first left key
-    xEntWrkLeft.vSetKey(aFirstKeyLeft, *pLeftBuffer->nPoolBufferNo(), 0, pIdxColVec);
+    xEntWrkLeft.vSetDetails(aFirstKeyLeft, *pLeftBuffer->nPoolBufferNo(), 0);
     
     Ent* aNewKeyLeft =
       pHigherBuffer->aInsertKeyUpwards(xEntWrkLeft,ppRootKeyBuffer);
@@ -908,7 +906,7 @@ EntBuffer* EntBuffer::pNewInsertBuffer(EntWrk& xInsKey, i8 nEntryPlusOffsets,
   Ent* aFirstKeyRight = pRightBuffer->aLeadEntry();
   
   // initialize the keyWrk from the first left key
-  xEntWrkRight.vSetKey(aFirstKeyRight, *pRightBuffer->nPoolBufferNo(), 0, pIdxColVec);
+  xEntWrkRight.vSetDetails(aFirstKeyRight, *pRightBuffer->nPoolBufferNo(), 0);
   
   Ent* aNewKeyRight =
     pHigherBuffer->aInsertKeyUpwards(xEntWrkRight,ppRootKeyBuffer);
@@ -962,8 +960,6 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
   
   i8 iSplitRatio = 50;
   
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  
 #ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
@@ -1008,7 +1004,7 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
     
     // form the key
     Id xId = aCopyEntry->xId();
-    xEntWrk.vSetKey(aCopyEntry, xId.iBuffer(), xId.iItem(), pIdxColVec);
+    xEntWrk.vSetDetails(aCopyEntry, xId.iBuffer(), xId.iItem());
     
     Ent* aNewEntry = pNewRightBuffer->aInsertKeyAbsL0(xEntWrk,&aLastEntryRight);
     
