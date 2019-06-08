@@ -1467,6 +1467,82 @@ bool Extractor::bValidRecordEnd(char* aSrc, Formatters* pFormatters)
 }
 
 
- /*============================================================================*/
+
+
+/*----------------------------------------------------------------------------*/
+/* add element to key                                                         */
+/*----------------------------------------------------------------------------*/
+void Extractor::vAddElement(EntWrk* pEntWrk, Stz* aSrc,
+                            Column* pCol, Formatters* pFormatters)
+{
+  
+  bool b;
+  i8 nBytes;
+  
+  char* pDst = (char*)pEntWrk->ayKeyLatter();
+  char* pSrc = (char*)aSrc;
+  Datum xDatum;
+  
+  if (pCol->eDatumType() != DM_VCH) {
+    //b = Record::bExtractDatum(&xDatum,&pSrc,pCol,pFormatters);
+    b = Extractor::bExtractDatum(&xDatum,&pSrc,pCol,pFormatters);
+    RASSERT(b);
+  }
+  
+  switch(pCol->eDatumType()) {
+      
+    case DM_BCD:
+      nBytes = Bcd::nCopy((char*)pDst,(char*)&xDatum.m_iBcd);
+      break;
+      
+    case DM_BOL:
+      nBytes = Bol::nCopy((char*)pDst,(char*)&xDatum.m_iBol);
+      break;
+      
+    case DM_DTE:
+      nBytes = Dte::nCopy((char*)pDst,(char*)&xDatum.m_iDte);
+      break;
+      
+    case DM_INT:
+      nBytes = Int::nCopy(pDst,(void*)&xDatum.m_iDte);
+      break;
+      
+    case DM_IVL:
+      nBytes = Ivl::nCopy(pDst,(void*)&xDatum.m_iIvl);
+      break;
+      
+    case DM_FLT:
+      nBytes = Flt::nCopy(pDst,(void*)&xDatum.m_dFlt);
+      break;
+      
+    case DM_TME:
+      nBytes = Tme::nCopy(pDst,&xDatum.m_iTme);
+      break;
+      
+    case DM_TSP:
+      nBytes = Tsp::nCopy(pDst,&xDatum.m_iTsp);
+      break;
+      
+    case DM_VCH:
+      nBytes = StrLib::iWordFlip(pDst, pSrc);
+      break;
+      
+    default:
+      NEVER_REACH;
+  }
+  
+  pEntWrk->vIncKeyBytes(nBytes);
+}
+
+
+
+
+
+
+
+
+
+
+/*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

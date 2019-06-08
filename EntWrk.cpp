@@ -117,7 +117,7 @@ void EntWrk::vAddElement(Stz* aSrc, Column* pCol, Formatters* pFormatters)
   
   switch(pCol->eDatumType()) {
       
-    case DM_BCD:
+    case DM_BCD: 
       nBytes = Bcd::nCopy((char*)pDst,(char*)&xDatum.m_iBcd);
       break;
       
@@ -339,6 +339,16 @@ Key* EntWrk::aKey(void)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   return reinterpret_cast<Key*>(ayEmbedded());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get wsp area as key                                                        */
+/*----------------------------------------------------------------------------*/
+byte* EntWrk::ayKeyLatter(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  return m_xWsp.ayLatter();
 }
 
 /*----------------------------------------------------------------------------*/

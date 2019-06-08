@@ -57,6 +57,7 @@ namespace Data
     void   vItemNo(i8 iItemNo);
   
     Key*   aKey(void);
+    byte*  ayKeyLatter(void);
     i8     nKeySize(void);
     void   vKeySize(i8 nKeySize);
   
@@ -70,7 +71,7 @@ namespace Data
     void   vSetDetails(Ent* pEntry, i8 iBufferNo, i8 i_Item);
     void   vShow(IdxColVec* pIdxColVec);
   
-  private:
+//  private:
     void   vIncKeyBytes(i8 nElementBytes);
 
     Footer* aFooter(void);
