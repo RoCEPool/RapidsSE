@@ -60,7 +60,7 @@ Key::~Key(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 eKC Key::eCompare(Ent* aKeyItem1, KeyWrk& xKeyItem2)
 {
-  i8 nKeySize1 = aKeyItem1->nSizeData();
+  i8 nKeySize1 = aKeyItem1->nSizeKey();
   i8 nKeySize2 = xKeyItem2.nKeySize();
   
   Key* aKey1 = _aKey(aKeyItem1->aDataArea());
@@ -123,7 +123,7 @@ eKC Key::eCompare(KeyWrk& xKeyItem1, KeyWrk& xKeyItem2)
 eKC Key::eCompare(KeyWrk& xKeyItem1, Ent* aKeyItem2)
 {
   i8 nKeySize1 = xKeyItem1.nKeySize();
-  i8 nKeySize2 = aKeyItem2->nSizeData();
+  i8 nKeySize2 = aKeyItem2->nSizeKey();
   
   Key* aKey1 = xKeyItem1.aKey();
   Key* aKey2 = _aKey(aKeyItem2->aDataArea());
@@ -149,8 +149,8 @@ eKC Key::eCompare(KeyWrk& xKeyItem1, Ent* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 eKC Key::eCompare(Ent* aKeyItem1, Ent* aKeyItem2)
 {
-  i8 nKeySize1 = aKeyItem1->nSizeData();
-  i8 nKeySize2 = aKeyItem2->nSizeData();
+  i8 nKeySize1 = aKeyItem1->nSizeKey();
+  i8 nKeySize2 = aKeyItem2->nSizeKey();
   
   Key* aKey1 = _aKey(aKeyItem1->aDataArea());
   Key* aKey2 = _aKey(aKeyItem2->aDataArea());

@@ -109,6 +109,22 @@ i8 Ent::iItemNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of levels                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Ent::nLevels(void)
+{
+  return m_xId.nLevels();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of levels                                                       */
+/*----------------------------------------------------------------------------*/
+void Ent::vLevels(i8 nLevels)
+{
+  m_xId.vLevels(nLevels);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get a next entry offset                                                    */
 /*----------------------------------------------------------------------------*/
 i4 Ent::iNEO(i8 iOffset)
@@ -122,16 +138,6 @@ i4 Ent::iNEO(i8 iOffset)
   i4 iNEO = *(aAdd<i4*>(this, nSizeItem_WithoutOffsets() + sizeof(i4) * iOffset));
   
   return iNEO;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size of the NEO after this entry                                       */
-/*----------------------------------------------------------------------------*/
-i8 Ent::iNEOsize(void)
-{
-  i8 nBytes = sizeof(i4) * nLevels();
-  
-  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,25 +171,19 @@ void Ent::vNEOdump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of levels                                                       */
+/* get size of the NEO after this entry                                       */
 /*----------------------------------------------------------------------------*/
-i8 Ent::nLevels(void)
+i8 Ent::iNEOsize(void)
 {
-  return m_xId.nLevels();
+  i8 nBytes = sizeof(i4) * nLevels();
+  
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set number of levels                                                       */
+/* get size key                                                               */
 /*----------------------------------------------------------------------------*/
-void Ent::vLevels(i8 nLevels)
-{
-  m_xId.vLevels(nLevels);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size in bytes of this item                                             */
-/*----------------------------------------------------------------------------*/
-i8 Ent::nSizeData(void)
+i8 Ent::nSizeKey(void)
 {
   return (i8)(m_nSizeItem_WithoutOffsets - sizeof(Ent));
 }
@@ -193,10 +193,11 @@ i8 Ent::nSizeData(void)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nSizeItem(void)
 {
-  i8 nBytes = nSizeItem_WithoutOffsets() + iNEOsize();
+  i8 nBytes = m_nSizeItem_WithoutOffsets + iNEOsize();
   
   return nBytes;
 }
+
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this item                                             */
 /*----------------------------------------------------------------------------*/

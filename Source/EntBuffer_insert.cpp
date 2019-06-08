@@ -210,7 +210,7 @@ void EntBuffer::vCompact(void)
     
     // calculate the number of bytes to copy
     i8 nCopyBytes = aMoveEntry->nSizeItem_WithoutOffsets()
-    + aMoveEntry->iNEOsize();
+                      + aMoveEntry->iNEOsize();
     
     // copy the move entry over the free entry
     MemLib::vMove(aFreeItem, aMoveEntry, nCopyBytes, CN_ENTBUFFER);

@@ -263,7 +263,7 @@ void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
   Id xId = aFirstL0_Key->xId();
   Key* aKey = _aKey(aFirstL0_Key->aDataArea());
   //i8 nKeySize = aKey->nKeySize(pIdxColVec);
-  i8 nKeySize = aFirstL0_Key->nSizeData();
+  i8 nKeySize = aFirstL0_Key->nSizeKey();
   i8 nLevels = aFirstL0_Key->nLevels();
   
   i8 iFirstL0_BufferNo = pFirstL0->iPoolBufferNo();
@@ -333,7 +333,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     Key* aKey = _aKey(aRightL0_Key->aDataArea());
     
     //i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nKeySize = aRightL0_Key->nSizeData();
+    i8 nKeySize = aRightL0_Key->nSizeKey();
     i8 nLevels = aRightL0_Key->nLevels();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -465,7 +465,7 @@ void IndexTree::vCopyLeftV2(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     Key* aKey = _aKey(aRightL0_Key->aDataArea());
     
     //i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nKeySize = aRightL0_Key->nSizeData();
+    i8 nKeySize = aRightL0_Key->nSizeKey();
     i8 nLevels = aRightL0_Key->nLevels();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

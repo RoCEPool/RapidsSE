@@ -36,20 +36,25 @@ namespace Data
   
     i8    iBufferNo(void);
     bn    nBufferNo(void);
+  
     char* aDataArea(void);
+  
     Id&   xId(void);
     void  vId(Id xId);
     i8    iItemNo(void);
+  
+    i8    nLevels(void);
+    void  vLevels(i8 nLevels);
+  
     i4    iNEO(i8 iLevel);
     void  vNEO(i8 iLevel, i4 iNEO);
     void  vNEOdump(void);
     i8    iNEOsize(void);
-    i8    nLevels(void);
-    void  vLevels(i8 nLevels);
-    
+  
     i8    nSizeItem(void);
     i8    nSizeItem_WithoutOffsets(void);
-    i8    nSizeData(void);
+    i8    nSizeKey(void);
+  
     bool  bValidItem(void);
   
   private:

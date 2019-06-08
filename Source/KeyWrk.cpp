@@ -510,7 +510,7 @@ void KeyWrk::vSetKey(Ent* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec)
   
   Key* aKeyData = _aKey(pEntry->aDataArea());
   //i8 iKeySize = aKeyData->nKeySize(pIdxColVec);
-  i8 iKeySize = pEntry->nSizeData();
+  i8 iKeySize = pEntry->nSizeKey();
   RASSERT(iKeySize % 8 == 0);
   
   vEmbedded((byte*)aKeyData);
