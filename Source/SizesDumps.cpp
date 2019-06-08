@@ -61,6 +61,7 @@ pDUMPFUN *gpDump[]
   
   /* 36 */ &Dump::vDummy,           // CN_ENT
   /* 37 */ &Dump::vDummy,           // CN_ENTBUFFER
+  /* 64 */ &Dump::vInvalid,         // CN_ENTWRK
   /*    */ &Dump::vDummy,           // CN_ENUMFLAGS
   /*    */ &Dump::vDummy,           // CN_EXPORTBUFFER
 
@@ -195,7 +196,6 @@ pDUMPFUN *gpDump[]
   /* 60 */ &Heap::vDump,            // CN_JUMBOTRANSIENT
   
   /* 61 */ &Dump::vDummy,           // CN_KEY
-  /* 64 */ &Dump::vInvalid,         // CN_KEYWRK
   
   /* 65 */ &Heap::vDump,            // CN_LARGEPERSISTENT
   /* 66 */ &Heap::vDump,            // CN_LARGETRANSIENT
@@ -367,8 +367,9 @@ i8 giClassSize[]
   /* 34 */ sizeof(DicStack),           // CN_DICSTACK
   /* 35 */ sizeof(Dir),                // CN_DIR
   
-  /* 36 */ sizeof(Ent),               // CN_ENT
-  /* 37 */ sizeof(EntBuffer),        // CN_ENTBUFFER
+  /* 36 */ sizeof(Ent),                // CN_ENT
+  /* 37 */ sizeof(EntBuffer),          // CN_ENTBUFFER
+  /* 64 */ sizeof(EntWrk),             // CN_ENTWRK
   /*    */ sizeof(EnumFlags),          // CN_ENUMFLAGS
   /* 32 */ sizeof(ExportBuffer),       // CN_EXPORTBUFFER
 
@@ -502,7 +503,6 @@ i8 giClassSize[]
   /* 60 */ sizeof(Heap), // correct    // CN_JUMBOTRANSIENT
   
   /* 61 */ sizeof(Key),                // CN_KEY
-  /* 64 */ sizeof(EntWrk),             // CN_KEYWRK
   
   /* 65 */ sizeof(Heap), // correct    // CN_LARGEPERSISTENT
   /* 66 */ sizeof(Heap), // correct    // CN_LARGETRANSIENT
@@ -676,6 +676,7 @@ eHT geWhichHeap[]
 
   /* 36 */ HT_INVALID,           // CN_ENT
   /* 37 */ HT_TRANSIENT_LARGE,   // CN_ENTBUFFER
+  /* 64 */ HT_INVALID,           // CN_ENTWRK
   /*    */ HT_TRANSIENT_SMALL,   // CN_ENUMFLAGS
   /*    */ HT_TRANSIENT_LARGE,   // CN_EXPORTBUFFER
 
@@ -809,7 +810,6 @@ eHT geWhichHeap[]
   /* 60 */ HT_INVALID,           // CN_JUMBOTRANSIENT
   
   /* 61 */ HT_INVALID,           // CN_KEY
-  /* 64 */ HT_INVALID,           // CN_KEYWRK
 
   /* 65 */ HT_INVALID,           // CN_LARGEPERSISTENT
   /* 66 */ HT_INVALID,           // CN_LARGETRANSIENT

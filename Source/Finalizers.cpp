@@ -58,6 +58,7 @@ pFINALIZE *gpFinalize[]
   
   /* 36 */ &Finalize::vUndefined,         // CN_ENT
   /* 37 */ &Finalize::vUndefined,         // CN_ENTBUFFER
+  /* 64 */ &Finalize::vUndefined,         // CN_ENTWRK
   /*    */ &Finalize::vUndefined,         // CN_ENUMFLAGS
   /*    */ &Finalize::vUndefined,         // CN_EXPORTBUFFER
 
@@ -190,7 +191,6 @@ pFINALIZE *gpFinalize[]
   /* 60 */ &Finalize::vUndefined,         // CN_JUMBOTRANSIENT
   
   /* 61 */ &Finalize::vUndefined,         // CN_KEY
-  /* 64 */ &Finalize::vUndefined,         // CN_KEYWRK
   
   /* 65 */ &Finalize::vUndefined,         // CN_LARGEPERSISTENT
   /* 66 */ &Finalize::vUndefined,         // CN_LARGETRANSIENT

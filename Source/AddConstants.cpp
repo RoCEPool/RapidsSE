@@ -306,7 +306,7 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("CN_JUMBOPERSISTENT"_Stz, CN_JUMBOPERSISTENT);
   /*    */ vAddConstant("CN_JUMBOTRANSIENT"_Stz,  CN_JUMBOTRANSIENT);
   
-  /* 31 */ vAddConstant("CN_KEYWRK"_Stz,       CN_KEYWRK);
+  /* 31 */ vAddConstant("CN_ENTWRK"_Stz,       CN_ENTWRK);
   
   /*    */ vAddConstant("CN_LOADCHUNK"_Stz,    CN_LOADCHUNK);
   /* 35 */ vAddConstant("CN_LOADMAP"_Stz,      CN_LOADMAP);

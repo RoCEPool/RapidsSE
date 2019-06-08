@@ -61,6 +61,7 @@ enum eCN : u2 // Class Number
   
   /*  33 0x21       40B Heap:I */ CN_ENT,
   /*  34 0x22  1043848B Heap:L */ CN_ENTBUFFER,
+  /* 145 0x91    17448B Heap:I */ CN_ENTWRK,
   /*                           */ CN_ENUMFLAGS,
   /*                           */ CN_EXPORTBUFFER,
 
@@ -191,7 +192,6 @@ enum eCN : u2 // Class Number
   /* 143 0x8F      232B Heap:I */ CN_JUMBOTRANSIENT,
   
   /* 144 0x90        1B Heap:I */ CN_KEY,
-  /* 145 0x91    17448B Heap:I */ CN_KEYWRK,
   
   /* 146 0x92      232B Heap:I */ CN_LARGEPERSISTENT,
   /* 147 0x93      232B Heap:I */ CN_LARGETRANSIENT,
@@ -364,6 +364,7 @@ static Stz* aCN[]
   
   /*  33 0x21 */ "ENT"_Stz,                 // CN_ENT
   /*  34 0x22 */ "ENTBUFFER"_Stz,           // CN_ENTBUFFER
+  /* 145 0x91 */ "ENTWRK"_Stz,              // CN_ENTWRK
   /*          */ "ENUMFLAGS"_Stz,           // CN_ENUMFLAGS
   /*          */ "EXPORTBUFFER"_Stz,        // CN_EXPORTBUFFER
 
@@ -494,7 +495,6 @@ static Stz* aCN[]
   /* 143 0x8F */ "JUMBOTRANSIENT"_Stz,      // CN_JUMBOTRANSIENT
   
   /* 144 0x90 */ "KEY"_Stz,                 // CN_KEY
-  /* 145 0x91 */ "KEYWRK"_Stz,              // CN_KEYWRK
   
   /* 146 0x92 */ "LARGEPERSISTENT"_Stz,     // CN_LARGEPERSISTENT
   /* 147 0x93 */ "LARGETRANSIENT"_Stz,      // CN_LARGETRANSIENT

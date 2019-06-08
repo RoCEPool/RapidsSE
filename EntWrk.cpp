@@ -32,9 +32,9 @@ void* EntWrk::operator new(size_t, EntWrk* pEntWrk)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntWrk::EntWrk(void)
-: Object(CN_KEYWRK)
+: Object(CN_ENTWRK)
 {
-  _precondition_(_MAGIC_,CN_KEYWRK);
+  _precondition_(_MAGIC_,CN_ENTWRK);
   
   // check initialisation of rowid
   ASSERT(0 == m_xId.iBuffer() &&
@@ -42,7 +42,7 @@ EntWrk::EntWrk(void)
          0 == m_xId.nLevels());
   
 #ifdef WITH_CHECK_INITIALISED
-  m_xWsp.vZero(CN_KEYWRK);
+  m_xWsp.vZero(CN_ENTWRK);
 #endif
   
   m_xWsp.vInit();
@@ -51,7 +51,7 @@ EntWrk::EntWrk(void)
   
   _checkInitialisedSize_(sizeof(EntWrk));
   
-  _postcondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,7 +72,7 @@ EntWrk::~EntWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void EntWrk::vAddDatum(Stz* aSrc, Column* pCol, Formatters* pFormatters)
 {
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   bool b;
   i8 nBytes;
@@ -138,7 +138,7 @@ void EntWrk::vAddDatum(Stz* aSrc, Column* pCol, Formatters* pFormatters)
 /*----------------------------------------------------------------------------*/
 void EntWrk::vAddDatum(Datum& oDatum, Column* pCol)
 {
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   i8 nBytes;
   
@@ -162,7 +162,7 @@ void EntWrk::vAddDatum(Datum& oDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void EntWrk::vAddElement(Row* pRow, Column* pCol)
 {
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   i8 nBytes = 0;
   
@@ -190,7 +190,7 @@ void EntWrk::vAddElement(Row* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void EntWrk::vAddMinusInfinity(void)
 {
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   char* aDst = (char*)m_xWsp.ayLatter();
   
@@ -205,7 +205,7 @@ void EntWrk::vAddMinusInfinity(void)
 /*----------------------------------------------------------------------------*/
 void EntWrk::vAddPlusInfinity(void)
 {
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   char* aDst = (char*)m_xWsp.ayLatter();
   
@@ -220,11 +220,11 @@ void EntWrk::vAddPlusInfinity(void)
 /*----------------------------------------------------------------------------*/
 void EntWrk::vAddWord(w8 wWord)
 {
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   char* aDst = (char*)m_xWsp.ayLatter();
   
-  MemLib::vCopy(aDst, &wWord, sizeof(w8), CN_KEYWRK);
+  MemLib::vCopy(aDst, &wWord, sizeof(w8), CN_ENTWRK);
   
   vTake(sizeof(w8));
 }
@@ -325,7 +325,7 @@ void EntWrk::vExtractKey(RowBuffer* pRowBuffer, i8 i_Row, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::iHashKey(void)
 {
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   i8 iHash = HshLib::iHash((byte*)aKey(),nKeySize());
   
@@ -377,7 +377,7 @@ void EntWrk::vItemNo(i8 iItemNo)
 /*----------------------------------------------------------------------------*/
 Key* EntWrk::aKey(void)
 {
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   return reinterpret_cast<Key*>(ayEmbedded());
 }
@@ -387,7 +387,7 @@ Key* EntWrk::aKey(void)
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nKeySize(void)
 {
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   return nDataSize();
 }
@@ -397,7 +397,7 @@ i8 EntWrk::nKeySize(void)
 /*----------------------------------------------------------------------------*/
 void EntWrk::vKeySize(i8 nKeySize)
 {
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   vDataSize(nKeySize);
 }
@@ -453,7 +453,7 @@ void EntWrk::vRandomLevels(void)
 /*----------------------------------------------------------------------------*/
 EntBuffer* EntWrk::pReferencedEntBuffer(void)
 {
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(xId());
   
@@ -465,7 +465,7 @@ EntBuffer* EntWrk::pReferencedEntBuffer(void)
 /*----------------------------------------------------------------------------*/
 void EntWrk::vReset(void)
 {
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   vDataSize(0);
 }
@@ -522,7 +522,7 @@ void EntWrk::vSetKey(Ent* pEntry, i8 iBufferNo, i8 iItem, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 void EntWrk::vShow(IdxColVec* pIdxColVec)
 {
-  _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   Key* aKey = this->aKey();
   aKey->vShow(pIdxColVec);
