@@ -374,13 +374,14 @@ i8 EntWrk::nLevels(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get offset bytes                                                           */
+/* get the size of the next entry offset(s) in bytes                          */
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nOffsetSize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  i8 nBytes = sizeof(i4) * m_xId.nLevels();
+  i8 nLevels = m_xId.nLevels();
+  i8 nBytes  = sizeof(i4) * nLevels;
   
   return nBytes;
 }
@@ -407,18 +408,6 @@ void EntWrk::vRandomLevels(void)
   i8 nLevels = Random::iLogLevel(3,C_FLAT_FREQ + 1,pTask->i_NextRnd()) + 1;
 
   m_xId.vLevels(nLevels);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the entry buffer that this key references                              */
-/*----------------------------------------------------------------------------*/
-EntBuffer* EntWrk::pReferencedEntBuffer(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(xId());
-  
-  return pEntBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
