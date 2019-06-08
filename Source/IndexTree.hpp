@@ -52,6 +52,10 @@ namespace Data
     bool         bVerify(void);
     bool         bVerifyIndex(void);
     void         vVisualize(void);
+  
+  
+    void       vExtractKey(EntWrk* pEntWrk, RowBuffer* pRowBuffer, i8 i_Row);
+
     
     Footer*      aFooter(void);
     
