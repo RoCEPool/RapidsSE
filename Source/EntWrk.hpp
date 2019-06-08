@@ -14,7 +14,7 @@ namespace Data
   
   static const i8 C_WSP_ENTWRK = C_17KB;
   
-  private:
+  protected:
     Id    m_xId;       // id of row, or referenced entry in another buffer
   
     char* m_aEmbedded; // address of embedded object. this may be different

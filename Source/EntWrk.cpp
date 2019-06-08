@@ -35,23 +35,6 @@ EntWrk::EntWrk(eCN eClassNo)
 : Object(eClassNo)
 {
   _precondition_(_MAGIC_);
-
-  // check initialisation of rowid
-  ASSERT(0 == m_xId.iBuffer() &&
-         0 == m_xId.iItem()   &&
-         0 == m_xId.nLevels());
-  
-#ifdef WITH_CHECK_INITIALISED
-  m_xWsp.vZero(eClassNo);
-#endif
-  
-  m_xWsp.vInit();
-  
-  m_aEmbedded = (char*)m_xWsp.ayArea();
-  
-  _checkInitialisedSize_(sizeof(EntWrk));
-  
-  _postcondition_(_MAGIC_,eClassNo,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,11 +45,20 @@ KeyWrk::KeyWrk(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK);
   
-  _checkInitialisedSize_(sizeof(KeyWrk));
+  // check initialisation of rowid
+  ASSERT(0 == m_xId.iBuffer() &&
+         0 == m_xId.iItem()   &&
+         0 == m_xId.nLevels());
   
-  //#ifdef WITH_CHECK_INITIALISED
-  //m_xWsp.vFill(0,CN_KEYWRK);                                       ALKA!!!
-  //#endif
+#ifdef WITH_CHECK_INITIALISED
+  m_xWsp.vZero(CN_KEYWRK);
+#endif
+  
+  m_xWsp.vInit();
+  
+  m_aEmbedded = (char*)m_xWsp.ayArea();
+  
+  _checkInitialisedSize_(sizeof(KeyWrk));
   
   _postcondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
 }
