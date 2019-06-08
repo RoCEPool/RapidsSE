@@ -680,7 +680,7 @@ bool EntBuffer::bVerifyRowRefs(void)
     RowBuffer* pRowBuffer = RowBuffer::pRefdRowBuffer(xId);
     
     // get the row entry from referenced entry buffer
-    i8 i_Item = aEnt->iItemNo();
+    i8 i_Item = aEnt->xId().iItem();
     HeadLine* aRowData = pRowBuffer->pRow(i_Item);
     
     if (! aRowData ) {
@@ -748,7 +748,7 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
       }
       
       if (bShowKeys) {
-        Key* aTestKey = _aKey(aTestEntry_sl->aDataArea());
+        Key* aTestKey = _aKey(aTestEntry_sl->ayKeyBytes());
         vTrace("Test %p: "_Stz,aTestEntry_sl);
         aTestKey->vShow(pIdxColVec);
         vTrace("\n"_Stz);

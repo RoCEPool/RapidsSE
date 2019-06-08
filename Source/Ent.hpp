@@ -16,15 +16,14 @@ namespace Data
   class Ent : public Header
   {
   protected:
-    Id  m_xId;       // item id
+    Id  m_xId; // id
     i4  m_nSizeItem_WithoutOffsets; // size of this item (not including offsets)
     // ..key bytes..
     // ..neo..
   
   public:
 #ifdef WITH_DEBUG_VERSION
-  i8  m_iSkipNo;    // verify of order of skip items
-  //i8  m_iIntKey;    // key debug hack
+    i8  m_iSkipNo;    // verify of order of skip items
 #endif
 
   public:
@@ -37,11 +36,10 @@ namespace Data
     i8    iBufferNo(void);
     bn    nBufferNo(void);
   
-    char* aDataArea(void);
-  
     Id&   xId(void);
     void  vId(Id xId);
-    i8    iItemNo(void);
+  
+    byte* ayKeyBytes(void);
   
     i8    nLevels(void);
     void  vLevels(i8 nLevels);

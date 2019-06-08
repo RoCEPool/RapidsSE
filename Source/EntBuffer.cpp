@@ -864,7 +864,7 @@ void EntBuffer::vRestore(void)
        aEnt != nullptr;
        aEnt = aNextEntry(aEnt, 0)) {
     
-    Id xId(*nBuffer, aEnt->iItemNo(), aEnt->nLevels());
+    Id xId(*nBuffer, aEnt->xId().iItem(), aEnt->nLevels());
     aEnt->vId(xId);
   }
   
@@ -886,7 +886,7 @@ void EntBuffer::vRestoreIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vShowEntry(Ent* aEnt)
 {
-  Key* aKey = _aKey(aEnt->aDataArea());
+  Key* aKey = _aKey(aEnt->ayKeyBytes());
   i8 iOffset = iToOffset(aEnt);
   
   vTrace("%lld: Ent: %p Size: %llu Levels: %llu "_Stz,
@@ -898,7 +898,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
   
   vTrace("Id: %3lli.%03lli "_Stz,
          aEnt->iBufferNo(),
-         aEnt->iItemNo()
+         aEnt->xId().iItem()
          );
   
   //vTrace("Tx: %lld.%03lld "_Stz,
@@ -987,7 +987,7 @@ void EntBuffer::vShowShort(void)
   while (iOffset > -1) {
     Ent* aEnt = aGetEntryOffset(iOffset);
     
-    Key* aKey = _aKey(aEnt->aDataArea())
+    Key* aKey = _aKey(aEnt->ayKeyBytes())
     ;
     i8 iVal = aKey->iGetInt();
     

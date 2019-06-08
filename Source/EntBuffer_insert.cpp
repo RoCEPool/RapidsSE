@@ -341,7 +341,7 @@ void EntBuffer::vDeleteUpwards(Ent* aDeleteKey,
   //         *nPoolBufferNo(),
   //         pEntryToBeDeleted->aKey()->iGetInt());
   
-  Key* aDeleteEntryKey = _aKey(aEntryToBeDeleted->aDataArea());
+  Key* aDeleteEntryKey = _aKey(aEntryToBeDeleted->ayKeyBytes());
   
   //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
