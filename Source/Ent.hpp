@@ -51,10 +51,10 @@ namespace Data
     void  vNEOdump(void);
     i8    iNEOsize(void);
   
-    i8    nSizeItem(void);
+    i8    nSizeBytes(void);
     i8    nSizeItem_WithoutOffsets(void);
     i8    nSizeKey(void);
-  
+
     bool  bValidItem(void);
   
   private:

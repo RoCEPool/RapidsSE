@@ -103,7 +103,7 @@ ITEM* MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem)
   
   i8 nItemBytes = (CN_FREEITEM == aItem->eClass())
                     ? ((FreeItem*)aItem)->nSizeBytes()
-                    : aItem->nSizeItem();
+                    : aItem->nSizeBytes();
   
   aAdjacent = aAdd<ITEM*>(aItem,nItemBytes);
   

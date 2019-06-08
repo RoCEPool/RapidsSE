@@ -102,9 +102,9 @@ void RefSet::vRowRef(i8 i_RowRef, i8 iRowRef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the size of the item                                                   */
+/* get size of this RefSet                                                    */
 /*----------------------------------------------------------------------------*/
-i8 RefSet::nSizeItem(void)
+i8 RefSet::nSizeBytes(void)
 {
   i8 nBytes = sizeof(RefSet) - sizeof(i8) + (m_nRowRefs * sizeof(i8));
 

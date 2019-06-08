@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntBuffer.cpp -- Ent Buffer                                            */
+/* EntBuffer.cpp -- Index Entry Buffer                                        */
 /*============================================================================*/
 
 #include "Data.h"
@@ -280,7 +280,7 @@ void EntBuffer::vDeleteEntry(Ent** aaEnt)
   
   vCutEntry(aEnt,xPriorVec);
   
-  i8 nBytes = aEnt->nSizeItem();
+  i8 nBytes = aEnt->nSizeBytes();
   vFreeItem(aEnt,nBytes);
   
   // entry no longer exists, set the pointer to be null

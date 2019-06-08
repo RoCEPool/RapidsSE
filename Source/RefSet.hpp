@@ -25,7 +25,7 @@ namespace Data
     i8   iRowRef(i8 i_RowRef);
     void vRowRef(i8 i_RowRef, i8 iRowRef);
   
-    i8   nSizeItem(void);
+    i8   nSizeBytes(void);
   };
   
   RefSet* _pRefSet(void* aAddr);
