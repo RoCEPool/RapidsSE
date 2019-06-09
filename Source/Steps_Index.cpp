@@ -446,7 +446,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
   StrVal* aStrVal = _aStrVal(xVariable.aNestedStrVal());
   
-  xEntWrkLower.vAddElement(aStrVal->aStz(),pColumn0,pFormatters);
+  Extractor::vAddElement(&xEntWrkLower,aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     xEntWrkLower.vAddMinusInfinity();
   }
@@ -653,7 +653,8 @@ void Step::vIndexRange(MP_Task mpTask)
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
   StrVal* aStrVal = _aStrVal(xValWrkLwr.aNestedStrVal());
   
-  xEntWrkLower.vAddElement(aStrVal->aStz(),pColumn0,pFormatters);
+  Extractor::vAddElement(&xEntWrkLower,aStrVal->aStz(),pColumn0,pFormatters);
+
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     xEntWrkLower.vAddMinusInfinity();
   }
@@ -665,7 +666,7 @@ void Step::vIndexRange(MP_Task mpTask)
   pColumn0 = pIndex->pIdxColVec()->pGet(0);
   aStrVal = _aStrVal(xValWrkUpr.aNestedStrVal());
   
-  xEntWrkUpper.vAddElement(aStrVal->aStz(),pColumn0,pFormatters);
+  Extractor::vAddElement(&xEntWrkUpper,aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     xEntWrkUpper.vAddPlusInfinity();
   }
@@ -1007,7 +1008,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
   StrVal* aStrVal = _aStrVal(xVariable.aNestedStrVal());
   
-  xEntWrkUpper.vAddElement(aStrVal->aStz(),pColumn0,pFormatters);
+  Extractor::vAddElement(&xEntWrkUpper,aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     xEntWrkUpper.vAddPlusInfinity();
   }

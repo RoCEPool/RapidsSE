@@ -96,71 +96,6 @@ void EntWrk::vAddElement(Row* pRow, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add element to key                                                         */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vAddElement(Stz* aSrc, Column* pCol, Formatters* pFormatters)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  bool b;
-  i8 nBytes;
-  
-  char* pDst = (char*)m_xWsp.ayLatter();
-  char* pSrc = (char*)aSrc;
-  Datum xDatum;
-  
-  if (pCol->eDatumType() != DM_VCH) {
-    //b = Record::bExtractDatum(&xDatum,&pSrc,pCol,pFormatters);
-    b = Extractor::bExtractDatum(&xDatum,&pSrc,pCol,pFormatters);
-    RASSERT(b);
-  }
-  
-  switch(pCol->eDatumType()) {
-      
-    case DM_BCD: 
-      nBytes = Bcd::nCopy((char*)pDst,(char*)&xDatum.m_iBcd);
-      break;
-      
-    case DM_BOL:
-      nBytes = Bol::nCopy((char*)pDst,(char*)&xDatum.m_iBol);
-      break;
-      
-    case DM_DTE:
-      nBytes = Dte::nCopy((char*)pDst,(char*)&xDatum.m_iDte);
-      break;
-      
-    case DM_INT:
-      nBytes = Int::nCopy(pDst,(void*)&xDatum.m_iDte);
-      break;
-      
-    case DM_IVL:
-      nBytes = Ivl::nCopy(pDst,(void*)&xDatum.m_iIvl);
-      break;
-      
-    case DM_FLT:
-      nBytes = Flt::nCopy(pDst,(void*)&xDatum.m_dFlt);
-      break;
-      
-    case DM_TME:
-      nBytes = Tme::nCopy(pDst,&xDatum.m_iTme);
-      break;
-      
-    case DM_TSP:
-      nBytes = Tsp::nCopy(pDst,&xDatum.m_iTsp);
-      break;
-      
-    case DM_VCH:
-      nBytes = StrLib::iWordFlip(pDst, pSrc);
-      break;
-      
-    default:
-      NEVER_REACH;
-  }
-  
-  vIncKeyBytes(nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
 /* add word to key workspace                                                  */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vAddElement(w8 wWord)
@@ -312,6 +247,16 @@ void EntWrk::vId(Id& xId)
 }
 
 /*----------------------------------------------------------------------------*/
+/* inc total key bytes by size of element                                     */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vIncKeyBytes(i8 nElementBytes)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  m_xWsp.vTake(nElementBytes);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get item no from id                                                        */
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::iItemNo(void)
@@ -324,11 +269,11 @@ i8 EntWrk::iItemNo(void)
 /*----------------------------------------------------------------------------*/
 /* set item no in id                                                          */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vItemNo(i8 iItemNo)
+void EntWrk::vItemNo(i8 i_Item)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xId.vItem(iItemNo);
+  m_xId.vItem(i_Item);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -421,9 +366,9 @@ void EntWrk::vRandomLevels(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set key using given working entry                                          */
+/* set this entwrk using given details                                        */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vSetDetails(Ent* pEntry, i8 iBufferNo, i8 i_Item)
+void EntWrk::vSetWrk(i8 iBufferNo, i8 i_Item, Ent* pEntry)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
@@ -462,16 +407,6 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* inc total key bytes by size of element                                     */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vIncKeyBytes(i8 nElementBytes)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  m_xWsp.vTake(nElementBytes);
-}
 
 
 /*----------------------------------------------------------------------------*/

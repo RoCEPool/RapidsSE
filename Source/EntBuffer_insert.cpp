@@ -278,7 +278,7 @@ void EntBuffer::vCompactLeft(void)
     
     Id xId = aThisEntry->xId();
     
-    xEntWrk.vSetDetails(aThisEntry, xId.iBuffer(), xId.iItem());
+    xEntWrk.vSetWrk(xId.iBuffer(), xId.iItem(), aThisEntry);
     pTempBuffer->aInsertKeyAbsL0(xEntWrk,&aPriorEntry);
   }
   
@@ -302,7 +302,7 @@ void EntBuffer::vCompactLeft(void)
     
     Id xId = aTempEntry->xId();
     
-    xEntWrk.vSetDetails(aTempEntry, xId.iBuffer(), xId.iItem());
+    xEntWrk.vSetWrk(xId.iBuffer(), xId.iItem(), aTempEntry);
     pThisBuffer->aInsertKeyAbsL0(xEntWrk,&aPriorEntry);
   }
   
@@ -431,7 +431,7 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
   //Key* aInsertKey = _aKey(aInsertedKeyEntry->aDataArea());
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   EntWrk xEntWrkIns;
-  xEntWrkIns.vSetDetails(aInsertedKeyEntry, *nPoolBufferNo(), 0);
+  xEntWrkIns.vSetWrk(*nPoolBufferNo(), 0, aInsertedKeyEntry);
   
   EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
   pHigherBuffer->aInsertKeyBuffer(xEntWrkIns,ppRootKeyBuffer);
@@ -893,7 +893,7 @@ EntBuffer* EntBuffer::pNewInsertBuffer(EntWrk& xInsKey, i8 nEntryPlusOffsets,
     Ent* aFirstKeyLeft  = pLeftBuffer->aLeadEntry();
 
     // initialize the keyWrk from the first left key
-    xEntWrkLeft.vSetDetails(aFirstKeyLeft, *pLeftBuffer->nPoolBufferNo(), 0);
+    xEntWrkLeft.vSetWrk(*pLeftBuffer->nPoolBufferNo(), 0, aFirstKeyLeft);
     
     Ent* aNewKeyLeft =
       pHigherBuffer->aInsertKeyUpwards(xEntWrkLeft,ppRootKeyBuffer);
@@ -906,7 +906,7 @@ EntBuffer* EntBuffer::pNewInsertBuffer(EntWrk& xInsKey, i8 nEntryPlusOffsets,
   Ent* aFirstKeyRight = pRightBuffer->aLeadEntry();
   
   // initialize the keyWrk from the first left key
-  xEntWrkRight.vSetDetails(aFirstKeyRight, *pRightBuffer->nPoolBufferNo(), 0);
+  xEntWrkRight.vSetWrk(0, *pRightBuffer->nPoolBufferNo(), aFirstKeyRight);
   
   Ent* aNewKeyRight =
     pHigherBuffer->aInsertKeyUpwards(xEntWrkRight,ppRootKeyBuffer);
@@ -1004,7 +1004,7 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
     
     // form the key
     Id xId = aCopyEntry->xId();
-    xEntWrk.vSetDetails(aCopyEntry, xId.iBuffer(), xId.iItem());
+    xEntWrk.vSetWrk(xId.iBuffer(), xId.iItem(), aCopyEntry);
     
     Ent* aNewEntry = pNewRightBuffer->aInsertKeyAbsL0(xEntWrk,&aLastEntryRight);
     

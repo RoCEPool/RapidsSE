@@ -28,52 +28,49 @@ namespace Data
     Footer m_xFooter;
   
   public:
-     void* operator new(size_t);
-     void* operator new(size_t, EntWrk*);
+    void* operator new(size_t);
+    void* operator new(size_t, EntWrk*);
+
+    EntWrk(void);
+   ~EntWrk(void) noexcept(false);
+
+    void  vAddElement(Row* pRow, Column* pCol);
+    void  vAddElement(w8 wWord);
+    void  vAddMinusInfinity(void);
+    void  vAddPlusInfinity(void);
   
-     EntWrk(void);
-    ~EntWrk(void) noexcept(false);
+    i8    iBufferNo(void);
+    void  vBufferNo(i8 iBufferNo);
   
-     void  vAddElement(Row* pRow, Column* pCol);
-     void  vAddElement(Stz* aSrc, Column* pCol, Formatters* pFormatters);
-     void  vAddElement(w8 wWord);
-     void  vAddMinusInfinity(void);
-     void  vAddPlusInfinity(void);
-  
-    i8     iBufferNo(void);
-    void   vBufferNo(i8 iBufferNo);
-  
-    byte*  ayEmbedded(void);
-    void   vEmbedded(byte* ayEmbedded);
-    i8     nEntrySize(void);
+    byte* ayEmbedded(void);
+    void  vEmbedded(byte* ayEmbedded);
+    i8    nEntrySize(void);
  
-    void   vFormEntry(Ent* pEntry);
+    void  vFormEntry(Ent* pEntry);
   
-    i8     iHashKey(void);
+    i8    iHashKey(void);
   
-    Id&    xId(void);
-    void   vId(Id& xId);
-    i8     iItemNo(void);
-    void   vItemNo(i8 iItemNo);
+    Id&   xId(void);
+    void  vId(Id& xId);
+    void  vIncKeyBytes(i8 nElementBytes);
+    i8    iItemNo(void);
+    void  vItemNo(i8 i_Item);
   
-    Key*   aKey(void);
-    byte*  ayKeyLatter(void);
-    i8     nKeySize(void);
-    void   vKeySize(i8 nKeySize);
+    Key*  aKey(void);
+    byte* ayKeyLatter(void);
+    i8    nKeySize(void);
+    void  vKeySize(i8 nKeySize);
   
-    i8     nLevels(void);
-    void   vLevels(i8 nLevels);
+    i8    nLevels(void);
+    void  vLevels(i8 nLevels);
 
-    i8     nOffsetSize(void);
+    i8    nOffsetSize(void);
   
-    void   vRandomLevels(void);
+    void  vRandomLevels(void);
 
-    void   vSetDetails(Ent* pEntry, i8 iBufferNo, i8 i_Item);
-    void   vShow(IdxColVec* pIdxColVec);
+    void  vSetWrk(i8 iBufferNo, i8 i_Item, Ent* pEntry);
+    void  vShow(IdxColVec* pIdxColVec);
   
-//  private:
-    void   vIncKeyBytes(i8 nElementBytes);
-
     Footer* aFooter(void);
   };
 }
