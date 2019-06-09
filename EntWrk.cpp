@@ -96,20 +96,6 @@ void EntWrk::vAddElement(Row* pRow, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add word to key workspace                                                  */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vAddElement(w8 wWord)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  char* aDst = (char*)m_xWsp.ayLatter();
-  
-  MemLib::vCopy(aDst, &wWord, sizeof(w8), CN_ENTWRK);
-  
-  vIncKeyBytes(sizeof(w8));
-}
-
-/*----------------------------------------------------------------------------*/
 /* add min lower value to key                                                 */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vAddMinusInfinity(void)
@@ -146,7 +132,9 @@ i8 EntWrk::iBufferNo(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return m_xId.iBuffer();
+  i8 iBuffer = m_xId.iBuffer();
+  
+  return iBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -172,7 +160,7 @@ byte* EntWrk::ayEmbedded(void)
 /*----------------------------------------------------------------------------*/
 /* set address of embedded object                                             */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vEmbedded(byte* ayEmbedded)
+void EntWrk::vEmbedded(byte* ayEmbedded)     //! i'd like to get rid of this fun
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -331,7 +319,7 @@ i8 EntWrk::nLevels(void)
 /*----------------------------------------------------------------------------*/
 /* get the size of the next entry offset(s) in bytes                          */
 /*----------------------------------------------------------------------------*/
-i8 EntWrk::nOffsetSize(void)
+i8 EntWrk::nOffsetsSize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   

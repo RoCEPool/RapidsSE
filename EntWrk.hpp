@@ -35,7 +35,6 @@ namespace Data
    ~EntWrk(void) noexcept(false);
 
     void  vAddElement(Row* pRow, Column* pCol);
-    void  vAddElement(w8 wWord);
     void  vAddMinusInfinity(void);
     void  vAddPlusInfinity(void);
   
@@ -64,7 +63,7 @@ namespace Data
     i8    nLevels(void);
     void  vLevels(i8 nLevels);
 
-    i8    nOffsetSize(void);
+    i8    nOffsetsSize(void);
   
     void  vRandomLevels(void);
 
