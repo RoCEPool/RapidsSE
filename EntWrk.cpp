@@ -324,7 +324,7 @@ i8 EntWrk::nOffsetsSize(void)
   _precondition_(_MAGIC_,_FOOTER_);
   
   i8 nLevels = m_xId.nLevels();
-  i8 nBytes  = sizeof(i4) * nLevels;
+  i8 nBytes  = C_NEO_SIZE * nLevels;
   
   return nBytes;
 }

@@ -5,6 +5,8 @@
 
 namespace Data
 {
+  static const i8 C_NEO_SIZE = sizeof(i4);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class NEO // next entry offset
   {
@@ -41,8 +43,8 @@ namespace Data
     i8    nLevels(void);
     void  vLevels(i8 nLevels);
   
-    i4    iNEO(i8 iLevel);
-    void  vNEO(i8 iLevel, i4 iNEO);
+    i4    iNEO(i8 i_Level);
+    void  vNEO(i8 i_Level, i4 i_Offset);
     void  vNEOdump(void);
   
     i8    nSizeBytes(void);

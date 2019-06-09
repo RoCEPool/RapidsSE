@@ -100,11 +100,11 @@ void Ent::vLevels(i8 nLevels)
 /*----------------------------------------------------------------------------*/
 /* get a next entry offset                                                    */
 /*----------------------------------------------------------------------------*/
-i4 Ent::iNEO(i8 iOffset)
+i4 Ent::iNEO(i8 i_Level)
 {
-  ASSERT(iOffset >= 0 && iOffset < nLevels());
+  ASSERT(i_Level >= 0 && i_Level < nLevels());
   
-  i4 iNEO = *(aAdd<i4*>(this, m_nSizeItem_WithoutOffsets + sizeof(i4) * iOffset));
+  i4 iNEO = *(aAdd<i4*>(this, m_nSizeItem_WithoutOffsets + C_NEO_SIZE * i_Level));
   
   return iNEO;
 }
@@ -112,11 +112,11 @@ i4 Ent::iNEO(i8 iOffset)
 /*----------------------------------------------------------------------------*/
 /* set a next entry offset                                                    */
 /*----------------------------------------------------------------------------*/
-void Ent::vNEO(i8 iOffset, i4 iNEO)
+void Ent::vNEO(i8 i_Level, i4 i_Offset)
 {
-  ASSERT(iOffset >= 0 && iOffset < nLevels());
+  ASSERT(i_Level >= 0 && i_Level < nLevels());
   
-  *(aAdd<i4*>(this, m_nSizeItem_WithoutOffsets + sizeof(i4) * iOffset)) = iNEO;
+  *(aAdd<i4*>(this, m_nSizeItem_WithoutOffsets + C_NEO_SIZE * i_Level)) = i_Offset;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -157,7 +157,8 @@ i8 Ent::nSizeKey(void)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nSizeNeo(void)
 {
-  i8 nBytes = sizeof(i4) * nLevels();
+  i8 nLvls  = nLevels();
+  i8 nBytes = C_NEO_SIZE * nLvls;
   
   return nBytes;
 }
