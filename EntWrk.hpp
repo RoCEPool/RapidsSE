@@ -43,7 +43,7 @@ namespace Data
   
     byte* ayEmbedded(void);
     void  vEmbedded(byte* ayEmbedded);
-    i8    nEntrySize(void);
+    i8    nEntKeySize(void);
  
     void  vFormEntry(Ent* pEntry);
   

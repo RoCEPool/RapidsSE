@@ -150,7 +150,7 @@ void EntWrk::vBufferNo(i8 iBufferNo)
 /*----------------------------------------------------------------------------*/
 /* get address of embedded object                                             */
 /*----------------------------------------------------------------------------*/
-byte* EntWrk::ayEmbedded(void)
+byte* EntWrk::ayEmbedded(void)               //! i'd like to get rid of this fun
 {  
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -168,15 +168,15 @@ void EntWrk::vEmbedded(byte* ayEmbedded)     //! i'd like to get rid of this fun
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the size of the entry required to contain the embedded object          */
+/* get the size {Ent,keyBytes}                                                */
 /*----------------------------------------------------------------------------*/
-i8 EntWrk::nEntrySize(void)
+i8 EntWrk::nEntKeySize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  i8 nData = nKeySize();
+  i8 nKeyBytes = nKeySize();
   
-  i8 nBytes = sizeof(Ent) + nData;
+  i8 nBytes = sizeof(Ent) + nKeyBytes;
   
   return nBytes;
 }
