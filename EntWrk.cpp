@@ -182,6 +182,21 @@ i8 EntWrk::nEntKeySize(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the size {Ent,keyBytes,Neo}                                            */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::nEntKeyNeoSize(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  i8 nKeyBytes = nKeySize();
+  i8 nNeoBytes = nOffsetsSize();
+
+  i8 nBytes = sizeof(Ent) + nKeyBytes + nNeoBytes;
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* form given entry from this working entry                                   */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vFormEntry(Ent* pEntry)

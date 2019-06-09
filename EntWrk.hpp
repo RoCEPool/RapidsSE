@@ -44,7 +44,8 @@ namespace Data
     byte* ayEmbedded(void);
     void  vEmbedded(byte* ayEmbedded);
     i8    nEntKeySize(void);
- 
+    i8    nEntKeyNeoSize(void);
+
     void  vFormEntry(Ent* pEntry);
   
     i8    iHashKey(void);
