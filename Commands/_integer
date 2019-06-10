@@ -23,10 +23,119 @@ int_col15  INTEGER
 );
 
 ld intTbl "/DATA/Encoding/integer.csv" ;
+ld intTbl "/DATA/Encoding/integer.csv" ;
+ld intTbl "/DATA/Encoding/integer.csv" ;
+ld intTbl "/DATA/Encoding/integer.csv" ;
+ld intTbl "/DATA/Encoding/integer.csv" ;
+ld intTbl "/DATA/Encoding/integer.csv" ;
+ld intTbl "/DATA/Encoding/integer.csv" ;
+ld intTbl "/DATA/Encoding/integer.csv" ;
+ld intTbl "/DATA/Encoding/integer.csv" ;
+ld intTbl "/DATA/Encoding/integer.csv" ;
 
-print "Fetching intTbl noPrint";
+print "\n fetch noPrint";
 time fetch intTbl noPrint;
+
+print "\nInflate 1 thread";
+time inflate intTbl;
+
+print "\nInflate 2 thread";
+time inflate intTbl 2;
+
+print "\nInflate 4 thread";
+time inflate intTbl 4;
+
+sleep 3;
+
+print "\nInflate 6 thread";
+time inflate intTbl 6;
+
+sleep 3;
+
+print "\nInflate 8 thread";
+time inflate intTbl 8;
+
+sleep 3;
+
+print "\nInflate 10 thread";
+time inflate intTbl 10;
+
+sleep 3;
+
+print "\nInflate 12 thread";
+time inflate intTbl 12;
+
 /*
+ 
+ 1 Partition:
+ 
+ Inflate 1 thread
+ success: 1000000 rows affected
+ time 190ms
+ 
+ Inflate 2 thread
+ success: 1000000 rows affected
+ time 97ms
+ 
+ Inflate 4 thread
+ success: 1000000 rows affected
+ time 49ms
+ 
+ Inflate 6 thread
+ success: 1000000 rows affected
+ time 34ms
+ 
+ Inflate 8 thread
+ success: 1000000 rows affected
+ time 30ms
+
+ 
+June 5th 2019
+ Inflate with rowBuffers in the queue:
+ [N0/1 NODE1 63296] se 4.0.6r has> time inflate intTbl;
+ success: 1000000 rows affected
+ time 206ms
+ [N0/1 NODE1 63296] se 4.0.6r has> time inflate intTbl 2;
+ success: 1000000 rows affected
+ time 105ms
+ [N0/1 NODE1 63296] se 4.0.6r has> time inflate intTbl 3;
+ success: 1000000 rows affected
+ time 71ms
+ [N0/1 NODE1 63296] se 4.0.6r has> time inflate intTbl 4;
+ success: 1000000 rows affected
+ time 55ms
+ [N0/1 NODE1 63296] se 4.0.6r has> time inflate intTbl 5;
+ success: 1000000 rows affected
+ time 45ms
+ [N0/1 NODE1 63296] se 4.0.6r has> time inflate intTbl 6;
+ success: 1000000 rows affected
+ time 38ms
+ [N0/1 NODE1 63296] se 4.0.6r has>
+ 
+June 5th 2019
+ Inflate with fetchbuffers and copying row references:
+ success: 1000000 rows fetched
+ time 231ms
+ [N0/1 NODE1 51251] se 4.0.6r has> time inflate intTbl;
+ success: 1000000 rows affected
+ time 202ms
+ [N0/1 NODE1 51251] se 4.0.6r has> time inflate intTbl 2;
+ success: 1000000 rows affected
+ time 107ms
+ [N0/1 NODE1 51251] se 4.0.6r has> time inflate intTbl 3;
+ success: 1000000 rows affected
+ time 81ms
+ [N0/1 NODE1 51251] se 4.0.6r has> time inflate intTbl 4;
+ success: 1000000 rows affected
+ time 61ms
+ [N0/1 NODE1 51251] se 4.0.6r has> time inflate intTbl 5;
+ success: 1000000 rows affected
+ time 61ms
+ [N0/1 NODE1 51251] se 4.0.6r has> time inflate intTbl 6;
+ success: 1000000 rows affected
+ time 60ms
+ [N0/1 NODE1 51251] se 4.0.6r has>
+ 
 May 30th 2019
 print "Fetching intTbl noPrint";
 166ms
