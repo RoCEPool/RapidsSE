@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "MetaData.h"
+#include "Transform.h"
 
 namespace Indexes
 {  
@@ -11,6 +11,8 @@ namespace Indexes
 }
 
 using namespace Indexes;
+
+#include "Id.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

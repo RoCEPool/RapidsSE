@@ -178,10 +178,6 @@ namespace Tasks
     void  vCompileConstant(s48K& sDefinition);
 
     /*------------------------------------------------------------------------*/
-
-  public:
-    static bool   bAppendRow(FetchBuffer* pFetchBuffer, Ent* aItem, Job_FetchRows* pJob_FetchRows);
-    /*------------------------------------------------------------------------*/
     
   private:
     Footer* aFooter(void);

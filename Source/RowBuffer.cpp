@@ -91,6 +91,25 @@ void RowBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the entry buffer that given id references                              */
+/*----------------------------------------------------------------------------*/
+RowBuffer* RowBuffer::pRefdRowBuffer(Id& xId)
+{
+  bn nBufferNo = xId.iBuffer();
+  
+  HeapBuffer* pHeapBuffer =
+  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));
+  
+  RowBuffer* pRowBuffer =
+  reinterpret_cast<RowBuffer*>(pHeapBuffer->aFirstChunk());
+  
+  ASSERT(pRowBuffer);
+  ASSERT(pRowBuffer->eClass() == CN_ROWBUFFER);
+  
+  return pRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the row buffer that contains the given address                         */
 /*----------------------------------------------------------------------------*/
 RowBuffer* RowBuffer::pToRowBuffer(void* aAddr)

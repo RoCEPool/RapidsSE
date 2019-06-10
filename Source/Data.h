@@ -256,7 +256,6 @@ namespace Data
   static const i8 C_ERA_2 = 99; // 1999
 
   class Record;
-  class Row;
 }
 
 using namespace Data;
@@ -287,14 +286,12 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
 
 //------------------------------------------------------------------------------
 
-#include "Id.hpp"
 #include "Ent.hpp"
 #include "EntWrk.hpp"
 #include "Key.hpp"
 
 #include "Extractor.hpp"
 #include "Record.hpp"
-#include "Row.hpp"
 #include "SkipRoots.hpp"
 
 #include "DataBuffer.hpp"

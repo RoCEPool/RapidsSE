@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data
+namespace Indexes
 {
   class Id
   {
@@ -23,8 +23,6 @@ namespace Data
     Id(u8 uBuffer, u8 uItem, u8 uOffsets);
     ~Id(void) noexcept(false);
     
-    static RowBuffer* pRefdRowBuffer(Id& xId);
-  
     void operator =(Id& xId); // assignment
   
     i8    iAsI8(void);

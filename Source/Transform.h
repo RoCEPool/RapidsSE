@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Datums.h"
+#include "MetaData.h"
 
 //-----------------------------------------------------------------------------
 
@@ -19,6 +19,8 @@ using namespace Transform;
 
 #include "Scan.hpp"
 #include "Sprint.hpp"
+
+#include "Row.hpp"
 
 #include "snBCD.hpp"
 #include "snBOL.hpp"

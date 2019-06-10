@@ -42,6 +42,9 @@ namespace Jobs
     Job_FetchRows(Interface::Session* pSession);
     ~Job_FetchRows(void) noexcept(false);
   
+    static bool   bAppendRow(FetchBuffer* pFetchBuffer, Ent* aItem,
+                             Job_FetchRows* pJob_FetchRows);
+
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
