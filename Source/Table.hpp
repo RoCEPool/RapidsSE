@@ -3,10 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data {
-  class TablePtn;
-}
-
 namespace MetaData
 {
   class Index;
@@ -77,7 +73,7 @@ namespace MetaData
     bool  bIsLoading(void);
     bool  bIsValidIndexColumns(Jobs::Job_CreateIndex* pJob);
     void  vMarkTable(void);
-    Data::TablePtn* pPartition(i8 iSlot);
+    Partitioning::TablePtn* pPartition(i8 iSlot);
     bool bPopulateIndex(i8 iIndexNo);
     void vRemoveIndex(Index* pIndex);
     i8   nIndexBuffers(i8 iIndexNo);

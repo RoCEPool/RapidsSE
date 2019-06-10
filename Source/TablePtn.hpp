@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data
+namespace Partitioning
 {
   
   typedef VectorNL_t  <CN_INDEXTREEVEC, IndexTree,
