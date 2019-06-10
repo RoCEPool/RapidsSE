@@ -906,7 +906,7 @@ EntBuffer* EntBuffer::pNewInsertBuffer(EntWrk& xInsKey, i8 nEntryPlusOffsets,
   Ent* aFirstKeyRight = pRightBuffer->aLeadEntry();
   
   // initialize the keyWrk from the first left key
-  xEntWrkRight.vSetWrk(0, *pRightBuffer->nPoolBufferNo(), aFirstKeyRight);
+  xEntWrkRight.vSetWrk(*pRightBuffer->nPoolBufferNo(), 0, aFirstKeyRight);
   
   Ent* aNewKeyRight =
     pHigherBuffer->aInsertKeyUpwards(xEntWrkRight,ppRootKeyBuffer);
