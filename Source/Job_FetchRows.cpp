@@ -221,7 +221,7 @@ bool Job_FetchRows::bAppendRow(FetchBuffer* pFetchBuffer, Ent* aItem,
   }
   
   // get the rowBuffer
-  RowBuffer* pRowBuffer = Id::pRefdRowBuffer(xId);
+  RowBuffer* pRowBuffer = RowBuffer::pRefdRowBuffer(xId);
   
   // get the dataRow
   HeadLine* aRowData = pRowBuffer->pRow(xId.iItem());

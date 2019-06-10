@@ -66,25 +66,6 @@ Id::~Id(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get the entry buffer that given id references                              */
-/*----------------------------------------------------------------------------*/
-RowBuffer* Id::pRefdRowBuffer(Id& xId)
-{
-  bn nBufferNo = xId.iBuffer();
-  
-  HeapBuffer* pHeapBuffer =
-  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));
-  
-  RowBuffer* pRowBuffer =
-  reinterpret_cast<RowBuffer*>(pHeapBuffer->aFirstChunk());
-  
-  ASSERT(pRowBuffer);
-  ASSERT(pRowBuffer->eClass() == CN_ROWBUFFER);
-  
-  return pRowBuffer;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

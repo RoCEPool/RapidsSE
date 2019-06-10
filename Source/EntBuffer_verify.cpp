@@ -677,7 +677,7 @@ bool EntBuffer::bVerifyRowRefs(void)
     
     // get the row buffer that this L0 key leaf references
     Id xId = aEnt->xId();
-    RowBuffer* pRowBuffer = Id::pRefdRowBuffer(xId);
+    RowBuffer* pRowBuffer = RowBuffer::pRefdRowBuffer(xId);
     
     // get the row entry from referenced entry buffer
     i8 i_Item = aEnt->xId().iItem();
