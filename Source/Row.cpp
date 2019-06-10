@@ -2,7 +2,7 @@
 /* Row.cpp -- Computable form of Row                                          */
 /*============================================================================*/
 
-#include "Data.h"
+#include "Transform.h"
 
 #include "StorageEngine.h"
 
@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Row* Data::_pRow(void* aAddr)
+Row* Transform::_pRow(void* aAddr)
 {
   Row* pRow = reinterpret_cast<Row*>(aAddr);
   

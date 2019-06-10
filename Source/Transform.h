@@ -20,6 +20,8 @@ using namespace Transform;
 #include "Scan.hpp"
 #include "Sprint.hpp"
 
+#include "Row.hpp"
+
 #include "snBCD.hpp"
 #include "snBOL.hpp"
 #include "snDTE.hpp"
