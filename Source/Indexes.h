@@ -16,6 +16,7 @@ using namespace Indexes;
 #include "Ent.hpp"
 #include "EntWrk.hpp"
 #include "Key.hpp"
+#include "SkipRoots.hpp"
 
 
 /*============================================================================*/
