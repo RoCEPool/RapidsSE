@@ -259,8 +259,10 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
 void TablePtn::vAppendRow(RowCoder* pRowCoder, RowParts& oRowParts)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
+#endif
   
   RASSERT(m_okLock.bIsLocked());
   //m_okLock.vGrabWrite();
@@ -316,8 +318,10 @@ void TablePtn::vAppendRow(RowCoder* pRowCoder, RowParts& oRowParts)
 void TablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
+#endif
   
   RASSERT(m_okLock.bIsLocked());
   //m_okLock.vGrabWrite();
@@ -658,8 +662,10 @@ bool TablePtn::bPurge(i8 iOlderThanSeconds)
   
   // delete the root buffer
   delete pRowBuffer;
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.IndexTree.m_nBuffersPurged++;
+#endif
   
   return true;
 }

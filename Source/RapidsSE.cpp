@@ -153,8 +153,11 @@ eEC RapidsSE_OpenPool(i8 iTrace, Stz* sRegion, void** aaAttachMap)
     
     ActivityMap::vOpenByApi();
     
+#ifdef WITH_STATISTICS_COUNTERS
     if (gpAttachMap)
       gpAttachMap->m_oStatistics.Api.m_nPoolOpen++;
+#endif
+      
   }
   catch (Error* pError) { API_CATCH(pError); }
   catch (...) { Error* pError = nullptr; API_CATCH(pError); }

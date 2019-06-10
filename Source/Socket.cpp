@@ -248,7 +248,10 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
   
   socklen_t iSize = sizeof(struct sockaddr_in);
   
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Socket.m_nAccepts++;
+#endif
+  
   iSocketId = accept(m_iSocketId
                          ,(struct sockaddr*)&xClientAddr
                          ,&iSize
@@ -281,8 +284,11 @@ bool Socket::bClose(SysCall& SysCall)
     SysCall.vError(errno);
     return false;
   }
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Socket.m_nCloses++;
+#endif
+  
   iError = close(m_iSocketId);
   if (iError) {
     SysCall.vError(errno);
@@ -348,7 +354,10 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
     vTrace("getaddrinfo: error %lld"_Stz, iReturn);
   }
 
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Socket.m_nConnects++;
+#endif
+  
   iResult = connect(m_iSocketId,(struct sockaddr*)pAddrInfo->ai_addr,sizeof(struct sockaddr));
   
   if (iResult != 0) {
@@ -409,8 +418,11 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
     SysCall.vError(errno);
     return false;
   }
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Socket.m_nListens++;
+#endif
+  
   iResult = listen(m_iSocketId,4);
   if (iResult != 0) {
     SysCall.vError(errno);
@@ -467,8 +479,11 @@ bool Socket::bRecvBytes(void* pWS, i8 nBytes, SysCall& SysCall)
   while (nSoFar != nBytes)
   {
     pSoFar = (char*)pWS + nSoFar;
-    
+ 
+#ifdef WITH_STATISTICS_COUNTERS
     gpAttachMap->m_oStatistics.Socket.m_nRecvs++;
+#endif
+    
     i8 nRecvBytes = recv(m_iSocketId,pSoFar,nMore,0);
     
     if (-1 == nRecvBytes) {
@@ -486,7 +501,11 @@ bool Socket::bRecvBytes(void* pWS, i8 nBytes, SysCall& SysCall)
     
     nSoFar += nRecvBytes;
     nMore -= nRecvBytes;
+    
+#ifdef WITH_STATISTICS_COUNTERS
     gpAttachMap->m_oStatistics.Socket.m_nRecvBytes += nRecvBytes;
+#endif
+    
     if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_SOCKET])
       ActivityMap::vMarkRes(SR_SOCKET,"SysRes: Socket received %lld bytes"_Stz,
                          nRecvBytes);
@@ -507,14 +526,20 @@ bool Socket::bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall)
   
   SysCall.vClear();
   
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Socket.m_nSends++;
+#endif
+  
   i8 nSentBytes = send(m_iSocketId,pBuffer,nBytes,0);
   if (-1 == nSentBytes) {
     SysCall.vError(errno);
     return false;
   }
   
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Socket.m_nSendBytes += nSentBytes;
+#endif
+  
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_SOCKET])
     ActivityMap::vMarkRes(SR_SOCKET,"SysRes: Socket set %lld bytes"_Stz,
                       nSentBytes);
@@ -572,7 +597,11 @@ bool Socket::bTestForData(SysCall& SysCall)
   SysCall.vClear();
   
   char cc;
+  
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Socket.m_nPeeks++;
+#endif
+  
   i8 nRecv = recv(m_iSocketId,&cc,1,MSG_PEEK);
   
   if (-1 == nRecv && EAGAIN == errno) {
@@ -600,14 +629,20 @@ bool Socket::bWriteVch(Stz* aChar, SysCall& SysCall)
   SysCall.vClear();
   
   i8 nBytes = aChar->iLength();
-  
+ 
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Socket.m_nSends++;
+#endif
+  
   i8 nSent = send(m_iSocketId, aChar->aChar(), nBytes,0);
   
   if (nSent != nBytes)
     return false;
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Socket.m_nSendBytes += nSent;
+#endif
+  
   SysCall.vSuccess();
   return true;
 }
@@ -792,8 +827,11 @@ bool Socket::bSendTo(void* pBuffer, i8 nBytes, SysCall& SysCall)
     vTrace("sendto() sending 0 bytes\n"_Stz);
     RASSERT(nBytes == 0);
   }
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Socket.m_nSendTos++;
+#endif
+  
   i8 nBytesSent = sendto(m_iSocketId
                        ,pBuffer
                        ,nBytes
@@ -813,8 +851,10 @@ bool Socket::bSendTo(void* pBuffer, i8 nBytes, SysCall& SysCall)
     SysCall.vError(errno);
     return false;
   }
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Socket.m_nSendBytes += nBytesSent;
+#endif
   
   if (nBytesSent < nBytes)
   {
@@ -841,8 +881,11 @@ bool Socket::bRecvFrom(void* pBuffer, i8 nBytes, i8* pRecv, SysCall& SysCall)
   socklen_t iRemoteLen = sizeof(xRemoteAddr);
   
   SysCall.vClear();
-  
+ 
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Socket.m_nRecvFroms++;
+#endif
+  
   i8 nBytesRecv = recvfrom(m_iSocketId
                          ,pBuffer
                          ,nBytes
@@ -856,8 +899,10 @@ bool Socket::bRecvFrom(void* pBuffer, i8 nBytes, i8* pRecv, SysCall& SysCall)
     SysCall.vError(errno);
     return false;
   }
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Socket.m_nRecvBytes += nBytesRecv;
+#endif
   
   *pRecv = nBytesRecv;
   

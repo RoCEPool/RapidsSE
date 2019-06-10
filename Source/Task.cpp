@@ -259,6 +259,7 @@ void Task::vMonitorProfile_stats(s48K& sPortrait)
                     pStats->Task.m_nWaiting,
                     pStats->Task.m_nYielded
                     );
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -802,7 +803,8 @@ eTK Task::eState(void)
 void Task::vState(eTK eState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   Statistics* pStats = &gpAttachMap->m_oStatistics;
   
   switch (eState) {
@@ -816,6 +818,7 @@ void Task::vState(eTK eState)
     default:
       NEVER_REACH;
   }
+#endif
   
   m_eState = eState;
 }

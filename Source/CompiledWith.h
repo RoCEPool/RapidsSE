@@ -60,12 +60,14 @@
 #define WITH_ENCODING_BCD_DIGIT // encode bcd as digit if possible
 #define WITH_ENCODING_INT_DIGIT // encode int as digit if possible
 #define WITH_ENCODING_VCH_SMALL // encode vch small
-#define WITH_ENCODING_XCHECK    // encode cross check
+//#define WITH_ENCODING_XCHECK    // encode cross check
+//#define WITH_STATISTICS_COUNTERS  // statistics
 //#define WITH_SHOCO_DUPLICATES   // test for duplicate shoco values
 //#define WITH_TRACE_DECODING     // code for tracing decoding compiled in
 //#define WITH_ANALYSE_FREE       // analyze free space during load
 //#define WITH_VERIFY_TAILS       // verify tails
 //#define WITH_QUICKER_INFLATE    // quicker inflate test
+
 
 /*============================================================================*/
 /* end                                                                        */

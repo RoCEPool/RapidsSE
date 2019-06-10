@@ -91,7 +91,11 @@ Mutex::Mutex()
   RASSERT(! iResult);
 
   if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncMutexOpen();
+  
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Mutex.m_nInits++;
+#endif
+  
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
     ActivityMap::vMarkRes(SR_MUTEX,"SysRes: Mutex created : %p"_Stz,this);
 
@@ -120,7 +124,11 @@ Mutex::~Mutex(void) noexcept(false)
   RASSERT(! iResult);
 
   if (gpAttachMap) gpAttachMap->m_oResourceTracker.vDecMutexOpen();
+    
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Mutex.m_nDestroys++;
+#endif
+  
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
     ActivityMap::vMarkRes(SR_MUTEX,"SysRes: Mutex destroyed : %p"_Stz,this);
 }
@@ -161,8 +169,10 @@ void Mutex::vCondBroadcast(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   i8 rCode = pthread_cond_broadcast(&m_xCond);
-  
+ 
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Mutex.m_nBroadcasts++;
+#endif
   
   if (0 == rCode)
     return;
@@ -187,7 +197,10 @@ void Mutex::vCondSignal(void)
   
   i8 rCode = pthread_cond_signal(&m_xCond);
   
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Mutex.m_nSignals++;
+#endif
+  
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
     ActivityMap::vMarkRes(SR_MUTEX,"SysRes: Mutex signaled : %p"_Stz,this);
 
@@ -219,13 +232,19 @@ void Mutex::vCondWait(void)
   // clear this threads tracking of the mutex
   m_bLocked = false;
   
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Mutex.m_nWaits++;
+#endif
+  
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
     ActivityMap::vMarkRes(SR_MUTEX,"SysRes: Mutex wait : %p"_Stz,this);
 
   i8 rCode = pthread_cond_wait(&m_xCond,&m_xMutex);
-  
+ 
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
+#endif
+  
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
     ActivityMap::vMarkRes(SR_MUTEX,"SysRes: Mutex unblocked : %p"_Stz,this);
 
@@ -262,7 +281,10 @@ void Mutex::vCondWait_Timed(i8 iMicroSeconds)
   // clear this threads tracking of the mutex
   m_bLocked = false;
   
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Mutex.m_nTimedWaits++;
+#endif
+  
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
     ActivityMap::vMarkRes(SR_MUTEX,"SysRes: Mutex timedwait : %p %lldus"_Stz,
                        this,iMicroSeconds);
@@ -272,7 +294,11 @@ void Mutex::vCondWait_Timed(i8 iMicroSeconds)
   
   if (0 == rCode) {
     RASSERT(! m_bLocked);
+    
+#ifdef WITH_STATISTICS_COUNTERS
     gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
+#endif
+    
     if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
       ActivityMap::vMarkRes(SR_MUTEX,"SysRes: Mutex timed unblock : %p %lldus"_Stz,
                          this,iMicroSeconds);
@@ -281,7 +307,11 @@ void Mutex::vCondWait_Timed(i8 iMicroSeconds)
   }
   if (ETIMEDOUT == rCode) {
     RASSERT(! m_bLocked);
+    
+#ifdef WITH_STATISTICS_COUNTERS
     gpAttachMap->m_oStatistics.Mutex.m_nTimeOuts++;
+#endif
+    
     if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
       ActivityMap::vMarkRes(SR_MUTEX,"SysRes: Mutex timeout : %p %lldus"_Stz,
                          this,iMicroSeconds);

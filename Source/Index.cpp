@@ -62,8 +62,10 @@ Index::Index(void)
 : Object(CN_INDEX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Index.m_nCreates++;
+#endif
   
   ForthWord* pWord = ForthWord::pToWord(this);
   
@@ -91,8 +93,10 @@ Index::Index(void)
 Index::~Index(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Index.m_nDrops++;
+#endif
   
   vTidyUp();
 }

@@ -228,10 +228,10 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   m_nTotalHeads++;
 
   
-//#ifdef WITH_TRACE_ENCODING
+#ifdef WITH_TRACE_ENCODING
   if (m_nTotalHeads <= 10)
     vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
-//#endif
+#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyse free space in the into head

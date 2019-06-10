@@ -54,9 +54,11 @@ void Step::vTaskAck(MP_Task mpTask)
   
   bool bWasQueued = Handlers::bAckTask(pTaskBeingAcked,*mpTask);
   
+#ifdef WITH_STATISTICS_COUNTERS
   if (bWasQueued)
     gpAttachMap->m_oStatistics.Task.m_nAcks++;
-
+#endif
+  
   EXIT();
 }
 

@@ -89,11 +89,14 @@ void MemLib::vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
   RASSERT(nBytes >= 0);
   
   memcpy(pDst,pSrc,nBytes);
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   if (gpAttachMap) {
     gpAttachMap->m_oStatistics.Memory.m_iCopyTotal += nBytes;
     gpAttachMap->m_oStatistics.Memory.m_iaCopy[eClassNo] += nBytes;
   }
+#endif
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -532,11 +535,14 @@ void* MemLib::aMallocBlock(i8 nBytes)
 void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 {
   memmove(pDst,pSrc,nBytes);
-  
+ 
+#ifdef WITH_STATISTICS_COUNTERS
   if (gpAttachMap) {
     gpAttachMap->m_oStatistics.Memory.m_iMoveTotal += nBytes;
     gpAttachMap->m_oStatistics.Memory.m_iaMove[eClassNo] += nBytes;
   }
+#endif
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -624,11 +630,14 @@ void MemLib::vScribble(void* aAddress, i8 nBytes, eCN eClassNo)
   
   for (i8 i_Word = 0; i_Word < nWords; i_Word++)
     *pMchWord++ = C_SCRIBBLE_PATTERN;
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   if (gpAttachMap) {
     gpAttachMap->m_oStatistics.Memory.m_iScribbleTotal += nBytes;
     gpAttachMap->m_oStatistics.Memory.m_iaScribble[eClassNo] += nBytes;
   }
+#endif
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -637,11 +646,14 @@ void MemLib::vScribble(void* aAddress, i8 nBytes, eCN eClassNo)
 void MemLib::vSet(void* pDst, char iByte, i8 nBytes, eCN eClassNo)
 {
   memset(pDst,iByte,nBytes);
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   if (gpAttachMap) {
     gpAttachMap->m_oStatistics.Memory.m_iSetTotal += nBytes;
     gpAttachMap->m_oStatistics.Memory.m_iaSet[eClassNo] += nBytes;
   }
+#endif
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -891,11 +903,14 @@ void MemLib::vWordFlip(w8* aWord)
 void MemLib::vZero(void* pDst, i8 nBytes, eCN eClassNo)
 {
   vSet(pDst,(char)0,nBytes,eClassNo);
-  
+ 
+#ifdef WITH_STATISTICS_COUNTERS
   if (gpAttachMap) {
     gpAttachMap->m_oStatistics.Memory.m_iZeroTotal += nBytes;
     gpAttachMap->m_oStatistics.Memory.m_iaZero[eClassNo] += nBytes;
   }
+#endif
+  
 }
 
 /*----------------------------------------------------------------------------*/

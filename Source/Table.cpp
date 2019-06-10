@@ -58,8 +58,10 @@ Table::Table(void)
 : Object(CN_TABLE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Table.m_nCreates++;
+#endif
   
   ForthWord* pWord = ForthWord::pToWord(this);
   
@@ -92,8 +94,10 @@ Table::Table(void)
 Table::~Table(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Table.m_nDrops++;
+#endif
   
   vTidyUp();
 }

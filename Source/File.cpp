@@ -215,8 +215,11 @@ void File::vClose(void)
     vWarn("File::vClose: file not open: %s"_Stz,m_sFilePath.aChar());
     return;
   }
-  
+ 
+#ifdef WITH_STATISTICS_COUNTERS
   if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nCloses++;
+#endif
+  
   i8 iResult = fclose(m_aFile);
   
   if ((char)EOF == iResult) {
@@ -268,8 +271,11 @@ void File::vFlush(void)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
   m_oSysCall.vClear();
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.File.m_nFlushes++;
+#endif
+  
   i8 iResult = fflush(m_aFile);
 
   if ((char)EOF == iResult) {
@@ -291,7 +297,10 @@ char File::cGetChar(void)
   if ( ! m_aFile )
     return 0;
 
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.File.m_nGetcs++;
+#endif
+  
   char cChar = getc(m_aFile);
   if ((char)EOF == cChar)
     cChar = 0;
@@ -390,7 +399,10 @@ bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
   m_sFilePath   = aFilePath;
   m_sOpenMode   = aOpenMode;
 
+#ifdef WITH_STATISTICS_COUNTERS
   if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nOpens++;
+#endif
+  
   m_aFile = fopen(m_sFilePath.aChar(),m_sOpenMode.aChar());
   
   if ( ! m_aFile ) {
@@ -444,9 +456,17 @@ void File::vPrint(Stz* aFormat, ...)
   va_list args;
 
   va_start(args,aFormat);
+  
+#ifdef WITH_STATISTICS_COUNTERS
   if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrints++;
+#endif
+  
   i8 nPrinted = vfprintf(m_aFile,aFormat->aChar(),args);
+
+#ifdef WITH_STATISTICS_COUNTERS
   if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrintBytes += nPrinted;
+#endif
+  
   va_end(args);
 
   if (-1 == nPrinted) {
@@ -466,10 +486,16 @@ i8 File::nReadBytes(void* aDst, i8 nBytes)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
   m_oSysCall.vClear();
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.File.m_nReads++;
+#endif
+  
   i8 nBytesRead = fread(aDst,1,nBytes,m_aFile);
+  
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.File.m_nReadBytes += nBytesRead;
+#endif
 
   return nBytesRead;
 }
@@ -491,7 +517,9 @@ bool File::bReadLine(Stz* aDst)
     
     // get next char
     char cNextChar = getc(m_aFile);
+  #ifdef WITH_STATISTICS_COUNTERS
     gpAttachMap->m_oStatistics.File.m_nGetcs++;
+#endif
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for \n
@@ -553,7 +581,10 @@ void File::vSeek(i8 iOffset)
 
   m_oSysCall.vClear();
   
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.File.m_nSeeks++;
+#endif
+  
   i8 iResult = fseeko(m_aFile,iOffset,SEEK_SET);
   
   if (iResult) {
@@ -574,7 +605,10 @@ void File::vSeekStart(void)
   
   m_oSysCall.vClear();
   
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.File.m_nSeeks++;
+#endif
+  
   i8 iResult = fseeko(m_aFile,0,SEEK_SET);
   
   if (iResult) {
@@ -594,8 +628,11 @@ void File::vSeekEnd(void)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
   m_oSysCall.vClear();
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.File.m_nSeeks++;
+#endif
+  
   i8 iResult = fseeko(m_aFile,0,SEEK_END);
   
   if (iResult) {
@@ -646,8 +683,11 @@ i8 File::iTell(void)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
   m_oSysCall.vClear();
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.File.m_nTells++;
+#endif
+  
   i8 iResult = ftello(m_aFile);
   
   if (-1 == iResult) {
@@ -670,8 +710,11 @@ void File::vUngetChar(char cChar)
 
   if ( ! m_aFile )
     return;
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.File.m_nUngetcs++;
+#endif
+  
   i8 iResult = ungetc(cChar,m_aFile);
   
   if ((char)EOF == iResult)
@@ -724,10 +767,16 @@ bool File::bWriteBytes(void* pBuffer, i8 nBytes)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
   m_oSysCall.vClear();
-  
+ 
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.File.m_nWrites++;
+#endif
+  
   i8 nBytesWritten = fwrite(pBuffer, 1, nBytes, m_aFile);
+  
+#ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.File.m_nWriteBytes += nBytesWritten;
+#endif
 
   if (nBytesWritten != nBytes) {
     vWarn("File::vWriteBytes: fwrite(%s) error; errno=%d\n"_Stz,

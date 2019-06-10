@@ -163,9 +163,11 @@ void Job_LoadTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
 bool Job_LoadTable::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
-  
-  gpAttachMap->m_oStatistics.Table.m_nLoads++;
 
+#ifdef WITH_STATISTICS_COUNTERS
+  gpAttachMap->m_oStatistics.Table.m_nLoads++;
+#endif
+  
   m_pLoadMap = new LoadMap;
   
   bool bOpened = m_pLoadMap->bOpenRead(m_sFilePath);

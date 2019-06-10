@@ -637,12 +637,14 @@ void Pthread::vSleepMicro(i8 nMicroSeconds, eCN eCallingClass)
     xReq.tv_nsec = nMicroSeconds * C_1K;
     xReq.tv_sec  = 0;
   }
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   Statistics* pStats = &gpAttachMap->m_oStatistics;
   pStats->Thread.m_nSleeps++;
   pStats->Thread.m_iaSleeps[eCallingClass]++;
   pStats->Thread.m_iaDuration[eCallingClass] += nMicroSeconds * C_1K;
-
+#endif
+  
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
@@ -667,11 +669,13 @@ void Pthread::vSleepMilli(i8 nMilliSeconds, eCN eCallingClass)
     xReq.tv_sec  = 0;
   }
   
+#ifdef WITH_STATISTICS_COUNTERS
   Statistics* pStats = &gpAttachMap->m_oStatistics;
   pStats->Thread.m_nSleeps++;
   pStats->Thread.m_iaSleeps[eCallingClass]++;
   pStats->Thread.m_iaDuration[eCallingClass] += nMilliSeconds * C_1M;
-
+#endif
+  
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
@@ -695,12 +699,14 @@ void Pthread::vSleepNano(i8 nNanoSeconds, eCN eCallingClass)
     xReq.tv_nsec = nNanoSeconds;
     xReq.tv_sec  = 0;
   }
-  
+
+#ifdef WITH_STATISTICS_COUNTERS
   Statistics* pStats = &gpAttachMap->m_oStatistics;
   pStats->Thread.m_nSleeps++;
   pStats->Thread.m_iaSleeps[eCallingClass]++;
   pStats->Thread.m_iaDuration[eCallingClass] += nNanoSeconds;
-
+#endif
+  
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
@@ -713,11 +719,14 @@ void Pthread::vSleepNano(i8 nNanoSeconds, eCN eCallingClass)
 /*----------------------------------------------------------------------------*/
 void Pthread::vSleepSec(i8 nSeconds, eCN eCallingClass)
 {
+  
+#ifdef WITH_STATISTICS_COUNTERS
   Statistics* pStats = &gpAttachMap->m_oStatistics;
   pStats->Thread.m_nSleeps++;
   pStats->Thread.m_iaSleeps[eCallingClass]++;
   pStats->Thread.m_iaDuration[eCallingClass] += nSeconds * C_1G;
-
+#endif
+  
   sleep((unsigned)nSeconds);
 }
 
