@@ -251,31 +251,6 @@ bool Key::bNotEqual(Ent* aKeyItem1, Ent* aKeyItem2)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* operator <                                                                 */
-/*----------------------------------------------------------------------------*/
-bool Key::operator < (Key* aKeyArg)
-{
-  i8 iDatumA = *(i8*)ayByteSequence();
-  i8 iDatumB = *(i8*)aKeyArg->ayByteSequence();
-  bool b = iDatumA < iDatumB;
-  
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator <=                                                                */
-/*----------------------------------------------------------------------------*/
-bool Key::operator <= (Key* aKeyArg)
-{
-  i8 iDatumA = *(i8*)ayByteSequence();
-  i8 iDatumB = *(i8*)aKeyArg->ayByteSequence();
-  
-  bool b = iDatumA <= iDatumB;
-  
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get first element as int (assuming int)                                    */
 /*----------------------------------------------------------------------------*/
 i8 Key::iGetInt(void)

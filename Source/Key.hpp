@@ -34,10 +34,7 @@ namespace Indexes
   
     Key(void);
     ~Key(void) noexcept(false);
-  
-    bool operator <  (Key* aKeyArg);
-    bool operator <= (Key* aKeyArg);
-  
+    
     static eKC eCompare(Ent* aKeyItem1, EntWrk& xKeyItem2);
     static eKC eCompare(EntWrk& xKeyItem1, EntWrk& xKeyItem2);
     static eKC eCompare(EntWrk& xKeyItem1, Ent* aKeyItem2);
