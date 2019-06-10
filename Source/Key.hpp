@@ -32,7 +32,7 @@ namespace Indexes
     void* operator new(size_t);
     void* operator new(size_t, Key*);
   
-    Key(EntWrk& xEntWrk);
+    Key(void);
     ~Key(void) noexcept(false);
   
     bool operator <  (Key* aKeyArg);
@@ -54,7 +54,6 @@ namespace Indexes
     static bool bNotEqual(Ent* aKeyItem1, Ent* aKeyItem2);
   
     i8   iGetInt(void);
-    void vKey(EntWrk& xEntWrk);
     void vShow(IdxColVec* pIdxColVec);
   
     /*------------------------------------------------------------------------*/

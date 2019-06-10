@@ -41,9 +41,8 @@ void* Key::operator new(size_t, Key* aKey)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Key::Key(EntWrk& xEntWrk)
+Key::Key(void)
 {
-  vKey(xEntWrk);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -277,25 +276,13 @@ bool Key::operator <= (Key* aKeyArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get first datum (assuming int)                                             */
+/* get first element as int (assuming int)                                    */
 /*----------------------------------------------------------------------------*/
 i8 Key::iGetInt(void)
 {
   i8 iVal = *(i8*)ayByteSequence();
   
   return iVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set key from given key workspace                                           */
-/*----------------------------------------------------------------------------*/
-void Key::vKey(EntWrk& xEntWrk)
-{
-  byte* ayDst = ayByteSequence();
-  byte* aySrc = (byte*)xEntWrk.aKey();
-  i8 nBytes  = xEntWrk.nKeySize();
-  
-  MemLib::vCopy(ayDst,aySrc,nBytes,CN_KEY);
 }
 
 /*----------------------------------------------------------------------------*/
