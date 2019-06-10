@@ -56,6 +56,26 @@ sleep 3;
 print "\nInflate 12 thread";
 time inflate intTbl 12;
 
+sleep 3;
+
+print "\nInflate 14 thread";
+time inflate intTbl 14;
+
+sleep 3;
+
+print "\nInflate 16 thread";
+time inflate intTbl 16;
+
+sleep 3;
+
+print "\nInflate 18 thread";
+time inflate intTbl 18;
+
+sleep 3;
+
+print "\nInflate 20 thread";
+time inflate intTbl 20;
+
 /*
  
  1 Partition:

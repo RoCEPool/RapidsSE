@@ -311,49 +311,49 @@
 /* generate the boolean data files                                            */
 /*----------------------------------------------------------------------------*/
 : booleanData
-"../DATA/Encoding/boolean.csv"    1000000      booleanDataFile
+  "/DATA/Encoding/boolean.csv"    1000000      booleanDataFile
 ;
 
 /*----------------------------------------------------------------------------*/
 /* generate the date data files                                               */
 /*----------------------------------------------------------------------------*/
 : dateData
-  "../DATA/Encoding/date.csv"    1000000      dateDataFile
+  "/DATA/Encoding/date.csv"    1000000      dateDataFile
 ;
 
 /*----------------------------------------------------------------------------*/
 /* generate the decimal data files                                            */
 /*----------------------------------------------------------------------------*/
 : decimalData
-  "../DATA/Encoding/decimal.csv"    1000000      decimalDataFile
+  "/DATA/Encoding/decimal.csv"    1000000      decimalDataFile
 ;
 
 /*----------------------------------------------------------------------------*/
 /* generate the integer data files                                            */
 /*----------------------------------------------------------------------------*/
 : integerData
-  "../DATA/Encoding/integer.csv"    1000000      integerDataFile
+  "/DATA/Encoding/integer.csv"    1000000      integerDataFile
 ;
 
 /*----------------------------------------------------------------------------*/
 /* generate the integer data files                                            */
 /*----------------------------------------------------------------------------*/
 : integerData10M
-  "../DATA/Encoding/integer10M.csv"    10000000      integerDataFile
+  "/DATA/Encoding/integer10M.csv"    10000000      integerDataFile
 ;
 
 /*----------------------------------------------------------------------------*/
 /* generate the integer data files                                            */
 /*----------------------------------------------------------------------------*/
 : integerData100M
-  "../DATA/Encoding/integer100M.csv"    100000000      integerDataFile
+  "/DATA/Encoding/integer100M.csv"    100000000      integerDataFile
 ;
 
 /*----------------------------------------------------------------------------*/
 /* generate the varchar data files                                            */
 /*----------------------------------------------------------------------------*/
 : varcharData
-  "../DATA/Encoding/varchar.csv"    1000000     varcharDataFile
+  "/DATA/Encoding/varchar.csv"    1000000     varcharDataFile
 ;
 
 
