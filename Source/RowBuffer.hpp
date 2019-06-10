@@ -28,7 +28,6 @@ namespace Data
     ~RowBuffer(void) noexcept(false);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static RowBuffer* pRefdRowBuffer(Id& xId);
     static RowBuffer* pToRowBuffer(void* aAddr);
   
     ColumnVec* pColumnVec(void);
