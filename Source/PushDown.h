@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Data.h"
+#include "Partitioning.h"
 
 namespace PushDown
 {
