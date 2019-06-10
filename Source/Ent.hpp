@@ -18,10 +18,10 @@ namespace Data
   class Ent : public Header
   {
   protected:
-    Id  m_xId; // id
-    i4  m_nSizeItem_WithoutOffsets; // size of this item (not including offsets)
-    // ..key bytes..
-    // ..neo..
+    Id  m_xId; // id (child index buffer, or row reference at H0 leaf buffers)
+    i4  m_nSizeItem_WithoutOffsets; // size of this entry (not including offsets)
+    // ..key bytes.. (the concatenated bytes which are the key value)
+    // ..neo..       (0, 1 or 2 next entry offsets)
   
   public:
 #ifdef WITH_DEBUG_VERSION
