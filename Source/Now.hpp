@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Sprinting
+namespace Transform
 {
   class Now : public Sprint
   {
