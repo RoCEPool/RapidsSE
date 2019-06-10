@@ -10,7 +10,7 @@ create table lt (
 create index li on lt(l_key);
 
 print "loading lt.csv..." ;
-ld lt "../JTEST/lelftTable.csv" ;
+ld lt "../JTEST/leftTable.csv" ;
 
 create table rt (
 r_key   INTEGER NOT NULL,
