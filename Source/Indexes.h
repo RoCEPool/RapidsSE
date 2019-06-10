@@ -1,15 +1,16 @@
 /*============================================================================*/
-/* Sprint.cpp -- Sprint namespace functions                                   */
+/* Indexes.h -- Indexes namespace                                             */
 /*============================================================================*/
+#pragma once
 
-#include "Sprinting.h"
+#include "Data.h"
 
-/*----------------------------------------------------------------------------*/
-/* things to check at boot time                                               */
-/*----------------------------------------------------------------------------*/
-void Sprinting::vCheckAssumptions(void)
-{
+namespace Indexes
+{  
+  void vCheckAssumptions(void);
 }
+
+using namespace Indexes;
 
 /*============================================================================*/
 /* end                                                                        */
