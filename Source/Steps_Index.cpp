@@ -485,7 +485,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   while (aLowerEntry) {
     
     // insert row from entry in fetchBuffer
-    if ( ! Task::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows)) {
+    if ( ! Job_FetchRows::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows)) {
       
       // Buffer is Full;
       // put this tempEntBuffer in session bufferQueue
@@ -495,7 +495,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
       pFetchBuffer = new FetchBuffer(pTable, iSlot);
       
       // insert row from entry in fetchBuffer
-      bool bResult = Task::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows);
+      bool bResult = Job_FetchRows::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows);
       RASSERT(bResult);
     }
     
@@ -749,7 +749,7 @@ void Step::vIndexRange(MP_Task mpTask)
     if (bBefore) {
       
       // insert row from entry in tempEntBuffer
-      if ( ! Task::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows)) {
+      if ( ! Job_FetchRows::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows)) {
         
         // Buffer is Full
         // put this fetchBuffer in session bufferQueue
@@ -759,7 +759,7 @@ void Step::vIndexRange(MP_Task mpTask)
         pFetchBuffer = new FetchBuffer(pTable, iSlot);
         
         // insert row from entry in temporary buffer
-        bool bResult = Task::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows);
+        bool bResult = Job_FetchRows::bAppendRow(pFetchBuffer, aLowerEntry, pJob_FetchRows);
         RASSERT(bResult);
       }
       
@@ -1057,7 +1057,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
     if (bBefore) {
       
       // insert row from entry in tempEntBuffer
-      if ( ! Task::bAppendRow(pFetchBuffer,aItem, pJob_FetchRows)) {
+      if ( ! Job_FetchRows::bAppendRow(pFetchBuffer,aItem, pJob_FetchRows)) {
         
         // Buffer is full
         // put this tempEntBuffer in session bufferQueue
@@ -1067,7 +1067,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
         pFetchBuffer = new FetchBuffer(pTable, iSlot);
         
         // insert row from entry in temporary buffer
-        bool bResult = Task::bAppendRow(pFetchBuffer, aItem, pJob_FetchRows);
+        bool bResult = Job_FetchRows::bAppendRow(pFetchBuffer, aItem, pJob_FetchRows);
         RASSERT(bResult);
       }
       
@@ -1153,36 +1153,6 @@ void Step::vIndexVisualize(MP_Task mpTask)
   }
   
   EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/*    PRIVATE                                                                 */
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/* append a row to a working buffer                                           */
-/*----------------------------------------------------------------------------*/
-bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Ent* aItem, Job_FetchRows* pJob_FetchRows)
-{
-  
-  Id xId = aItem->xId();
-  
-  if (pJob_FetchRows && pJob_FetchRows->bRowSeen(xId)) {
-    // row already inserted
-    //vTrace("RowData already inserted %p \n"_Stz, aItem);
-    return true;
-  }
-  
-  // get the rowBuffer
-  RowBuffer* pRowBuffer = Id::pRefdRowBuffer(xId);
-  
-  // get the dataRow
-  HeadLine* aRowData = pRowBuffer->pRow(xId.iItem());
-
-  if (pFetchBuffer->bAppendRow(aRowData))
-    return true;
-  else
-    return false;
-  
 }
 
 /*============================================================================*/

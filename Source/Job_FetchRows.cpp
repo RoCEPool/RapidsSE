@@ -207,6 +207,32 @@ Job_FetchRows::~Job_FetchRows(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* append a row to a working buffer                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_FetchRows::bAppendRow(FetchBuffer* pFetchBuffer, Ent* aItem,
+                               Job_FetchRows* pJob_FetchRows)
+{
+  Id xId = aItem->xId();
+  
+  if (pJob_FetchRows && pJob_FetchRows->bRowSeen(xId)) {
+    // row already inserted
+    //vTrace("RowData already inserted %p \n"_Stz, aItem);
+    return true;
+  }
+  
+  // get the rowBuffer
+  RowBuffer* pRowBuffer = Id::pRefdRowBuffer(xId);
+  
+  // get the dataRow
+  HeadLine* aRowData = pRowBuffer->pRow(xId.iItem());
+  
+  if (pFetchBuffer->bAppendRow(aRowData))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_FetchRows::vDump(eCN eClass, Object* pObject, Stz* aTab)
