@@ -82,24 +82,6 @@ void MemLib::vCheckInitialised(void* aAddress, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy from src to dst                                                       */
-/*----------------------------------------------------------------------------*/
-void MemLib::vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
-{
-  RASSERT(nBytes >= 0);
-  
-  memcpy(pDst,pSrc,nBytes);
-
-#ifdef WITH_STATISTICS_COUNTERS
-  if (gpAttachMap) {
-    gpAttachMap->m_oStatistics.Memory.m_iCopyTotal += nBytes;
-    gpAttachMap->m_oStatistics.Memory.m_iaCopy[eClassNo] += nBytes;
-  }
-#endif
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* byte compare of arg1 with arg2                                             */
 /*----------------------------------------------------------------------------*/
 bool MemLib::bCompareBytes(const void* aArg1, const void* aArg2, i8 nBytes)

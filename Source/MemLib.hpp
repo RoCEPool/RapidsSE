@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MemLib.cpp -- Memory Library                                               */
+/* MemLib.hpp -- Memory Library                                               */
 /*============================================================================*/
 #pragma once
 
@@ -38,7 +38,7 @@ namespace Base
     static void  vAsciiDump(Stz* aText, i8 nBytes);
     static void  vCheckInitialised(void* aAddress, eCN eClass);
     static void  vCheckInitialised(void* aAddress, i8 nBytes);
-    static void  vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo);
+    //static void  vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo);
     static bool  bCompareBytes(const void* aVal1, const void* aVal2, i8 nBytes);
     static i8    iCompareBytes(const void* aVal1, const void* aVal2, i8 nBytes);
     static bool  bCompareWords(const void* aVal1, const void* aVal2, i8 nBytes);
@@ -94,6 +94,24 @@ namespace Base
       }
       
       return 0;
+    }
+  
+    /*----------------------------------------------------------------------------*/
+    /* copy from src to dst                                                       */
+    /*----------------------------------------------------------------------------*/
+    static inline void vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
+    {
+      //RASSERT(nBytes >= 0);
+      
+      memcpy(pDst,pSrc,nBytes);
+      
+  #ifdef WITH_STATISTICS_COUNTERS
+      if (gpAttachMap) {
+        gpAttachMap->m_oStatistics.Memory.m_iCopyTotal += nBytes;
+        gpAttachMap->m_oStatistics.Memory.m_iaCopy[eClassNo] += nBytes;
+      }
+  #endif
+      
     }
   };
 }
