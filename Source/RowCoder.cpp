@@ -3313,7 +3313,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
           break;
           
         case MC_OVERFLOW_2T: {
-          vDebugPoint();
+          //vDebugPoint();
           i8 i_Over_rel = aHeadLine->iOverflow2B();
           OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
           //MemLib::vWordDump(aOverLine,32);
