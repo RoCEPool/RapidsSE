@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data
+namespace MetaData
 {
   class SkipRoots : public Ent
   {

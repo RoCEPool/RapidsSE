@@ -3,14 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data
+namespace Partitioning
 {
   
-  typedef VectorNL_t<CN_INDEXTREEVEC,
-  IndexTree,
-  CN_INDEXTREE,
-  C_INDEXES_PER_TABLE,
-  u8> IndexTreeVec;
+  typedef VectorNL_t  <CN_INDEXTREEVEC, IndexTree,
+                       CN_INDEXTREE,    C_INDEXES_PER_TABLE, u8>  IndexTreeVec;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -32,7 +29,7 @@ namespace Data
     RowBuffer* m_pRootRowBuffer;      // the data root buffer
     RowBuffer* m_pCurrentRowBuffer;   // the data current buffer for insert
     
-    Data::IndexTreeVec* m_pIndexTreeVec; // vector of index trees
+    IndexTreeVec* m_pIndexTreeVec; // vector of index trees
   
     // must be last
     Footer m_xFooter;
@@ -66,8 +63,8 @@ namespace Data
     bool bGrabRead(void);
     bool bGrabWrite(void);
     void vIncBuffersWritten(void);
-    Data::IndexTree* pIndexTree(i8 iIndexNo);
-    Data::IndexTreeVec* pIndexTreeVec(void);
+    IndexTree* pIndexTree(i8 iIndexNo);
+    IndexTreeVec* pIndexTreeVec(void);
     bool bIsLocked(void);
     void vParentJobId(i8 iJobId);
     i8   iParentJobId(void);

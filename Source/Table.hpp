@@ -3,13 +3,10 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data {
-  class tablePtn;
-}
-
 namespace MetaData
 {
   class Index;
+  class EntBuffer;
   
   enum eTT // Table Type
   {
@@ -76,14 +73,14 @@ namespace MetaData
     bool  bIsLoading(void);
     bool  bIsValidIndexColumns(Jobs::Job_CreateIndex* pJob);
     void  vMarkTable(void);
-    Data::TablePtn* pPartition(i8 iSlot);
+    Partitioning::TablePtn* pPartition(i8 iSlot);
     bool bPopulateIndex(i8 iIndexNo);
     void vRemoveIndex(Index* pIndex);
     i8   nIndexBuffers(i8 iIndexNo);
     PtnColVec*  pPtnColVec(void);
     void vPublish(i8 iPartitionNo);
     bool bPurge(i8 iPartitionNo, i8 iOlderThanSeconds);
-    Data::EntBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
+    EntBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
     i8   iRowPartition(i8 iHash);
 
     i8   nRowBuffers(void);

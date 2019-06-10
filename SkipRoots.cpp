@@ -14,7 +14,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SkipRoots* Data::_aSkipRoots(void* aAddr)
+SkipRoots* MetaData::_aSkipRoots(void* aAddr)
 {
   SkipRoots* aFreeEntry = reinterpret_cast<SkipRoots*>(aAddr);
   

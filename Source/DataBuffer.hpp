@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data
+namespace MetaData
 {
   class DataBuffer : public Object
   {

@@ -2,7 +2,7 @@
 /* DataBuffer.cpp -- Data Buffer                                              */
 /*============================================================================*/
 
-#include "Data.h"
+#include "MetaData.h"
 
 #include "StorageEngine.h"
 
@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-DataBuffer* Data::_pDataBuffer(void* aAddress)
+DataBuffer* MetaData::_pDataBuffer(void* aAddress)
 {
   DataBuffer* pDataBuffer = reinterpret_cast<DataBuffer*>(aAddress);
   

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data
+namespace Indexes
 {
   static const i8 C_NEO_SIZE = sizeof(i4);
   

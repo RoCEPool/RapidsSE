@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data
+namespace Indexes
 {
   enum eKC // KeyCompare
   {

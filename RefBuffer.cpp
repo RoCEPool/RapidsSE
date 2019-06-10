@@ -2,7 +2,7 @@
 /* RefBuffer.cpp -- Reference Buffer                                          */
 /*============================================================================*/
 
-#include "Data.h"
+#include "PushDown.h"
 
 #include "StorageEngine.h"
 
@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RefBuffer* Data::_pRefBuffer(void* aAddress)
+RefBuffer* PushDown::_pRefBuffer(void* aAddress)
 {
   RefBuffer* pRefBuffer = reinterpret_cast<RefBuffer*>(aAddress);
   

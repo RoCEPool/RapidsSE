@@ -2,7 +2,7 @@
 /* TablePtn.cpp -- Table Partition                                            */
 /*============================================================================*/
 
-#include "MetaData.h"
+#include "Partitioning.h"
 #include "StorageEngine.h"
 
 extern AttachMap*  gpAttachMap;
@@ -14,7 +14,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TablePtn* Data::_pTablePtn(void* aAddr)
+TablePtn* Partitioning::_pTablePtn(void* aAddr)
 {
   TablePtn* pTablePtn = reinterpret_cast<TablePtn*>(aAddr);
   

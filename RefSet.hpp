@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data
+namespace PushDown
 {
   class RefSet : public Header
   {

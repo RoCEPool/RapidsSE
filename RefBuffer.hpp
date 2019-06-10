@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data
+namespace PushDown
 {
   class RefBuffer : public DataBuffer,
                     public MiniHeap_t<RefSet>
