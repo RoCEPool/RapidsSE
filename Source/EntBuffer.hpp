@@ -6,7 +6,7 @@
 #define USE_EB_LAZY_CHAIN
 //#define USE_EB_WATCH
 
-namespace Data
+namespace MetaData
 {
   static const bool C_NOT_FINAL = false;
   static const bool C_FINAL     = true;

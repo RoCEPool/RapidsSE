@@ -18,6 +18,7 @@ using namespace Indexes;
 #include "Key.hpp"
 #include "SkipRoots.hpp"
 
+#include "EntBuffer.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

@@ -2,7 +2,7 @@
 /* EntBuffer.cpp -- Index Entry Buffer                                        */
 /*============================================================================*/
 
-#include "Data.h"
+#include "Indexes.h"
 
 #include "StorageEngine.h"
 
@@ -18,7 +18,7 @@ bool mbWatch = false;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-EntBuffer* Data::_pEntBuffer(void* aAddress)
+EntBuffer* MetaData::_pEntBuffer(void* aAddress)
 {
   EntBuffer* pEntBuffer = reinterpret_cast<EntBuffer*>(aAddress);
   

@@ -7,8 +7,8 @@
 #include "Forth.h"
 
 
-namespace Jobs      { class Job_CreateTable; class Job_CreateIndex; }
-namespace Data { class EntBuffer; class IndexTree; class RowBuffer; }
+namespace Jobs { class Job_CreateTable; class Job_CreateIndex; }
+namespace Data { class IndexTree;       class RowBuffer;       }
 
 namespace MetaData
 {
