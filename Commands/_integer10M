@@ -103,173 +103,143 @@ time inflate intTbl 30;
 
 /*
  
- 1 Partition:
+ 
+ //******************************************************************************
+   LINUX --threads 40 1 PARTITION
+ //******************************************************************************
  
  Inflate 1 thread
- success: 1000000 rows affected
- time 190ms
+ success: 10000000 rows affected
+ time 1615ms
  
  Inflate 2 thread
- success: 1000000 rows affected
- time 97ms
+ success: 10000000 rows affected
+ time 821ms
  
  Inflate 4 thread
- success: 1000000 rows affected
- time 49ms
+ success: 10000000 rows affected
+ time 422ms
  
  Inflate 6 thread
- success: 1000000 rows affected
- time 34ms
+ success: 10000000 rows affected
+ time 302ms
  
  Inflate 8 thread
- success: 1000000 rows affected
- time 30ms
-
+ success: 10000000 rows affected
+ time 240ms
  
-June 5th 2019
- Inflate with rowBuffers in the queue:
- [N0/1 NODE1 63296] se 4.0.6r has> time inflate intTbl;
- success: 1000000 rows affected
- time 206ms
- [N0/1 NODE1 63296] se 4.0.6r has> time inflate intTbl 2;
- success: 1000000 rows affected
- time 105ms
- [N0/1 NODE1 63296] se 4.0.6r has> time inflate intTbl 3;
- success: 1000000 rows affected
- time 71ms
- [N0/1 NODE1 63296] se 4.0.6r has> time inflate intTbl 4;
- success: 1000000 rows affected
- time 55ms
- [N0/1 NODE1 63296] se 4.0.6r has> time inflate intTbl 5;
- success: 1000000 rows affected
- time 45ms
- [N0/1 NODE1 63296] se 4.0.6r has> time inflate intTbl 6;
- success: 1000000 rows affected
- time 38ms
- [N0/1 NODE1 63296] se 4.0.6r has>
+ Inflate 10 thread
+ success: 10000000 rows affected
+ time 204ms
  
-June 5th 2019
- Inflate with fetchbuffers and copying row references:
- success: 1000000 rows fetched
- time 231ms
- [N0/1 NODE1 51251] se 4.0.6r has> time inflate intTbl;
- success: 1000000 rows affected
- time 202ms
- [N0/1 NODE1 51251] se 4.0.6r has> time inflate intTbl 2;
- success: 1000000 rows affected
- time 107ms
- [N0/1 NODE1 51251] se 4.0.6r has> time inflate intTbl 3;
- success: 1000000 rows affected
- time 81ms
- [N0/1 NODE1 51251] se 4.0.6r has> time inflate intTbl 4;
- success: 1000000 rows affected
- time 61ms
- [N0/1 NODE1 51251] se 4.0.6r has> time inflate intTbl 5;
- success: 1000000 rows affected
- time 61ms
- [N0/1 NODE1 51251] se 4.0.6r has> time inflate intTbl 6;
- success: 1000000 rows affected
- time 60ms
- [N0/1 NODE1 51251] se 4.0.6r has>
+ Inflate 12 thread
+ success: 10000000 rows affected
+ time 169ms
  
-May 30th 2019
-print "Fetching intTbl noPrint";
-166ms
+ Inflate 14 thread
+ success: 10000000 rows affected
+ time 150ms
  
-print "Retrieving col0";
-time fetch retrieve intTbl int_col0;
-
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col2;
-time fetch retrieve intTbl int_col3;
-time fetch retrieve intTbl int_col4;
-time fetch retrieve intTbl int_col5;
-time fetch retrieve intTbl int_col6;
-time fetch retrieve intTbl int_col7;
-time fetch retrieve intTbl int_col8;
-time fetch retrieve intTbl int_col9;
-time fetch retrieve intTbl int_col10;
-time fetch retrieve intTbl int_col11;
-time fetch retrieve intTbl int_col12;
-time fetch retrieve intTbl int_col13;
-time fetch retrieve intTbl int_col14;
-time fetch retrieve intTbl int_col15;
+ Inflate 16 thread
+ success: 10000000 rows affected
+ time 130ms
+ 
+ Inflate 18 thread
+ success: 10000000 rows affected
+ time 121ms
+ 
+ Inflate 20 thread
+ success: 10000000 rows affected
+ time 121ms
+ 
+ Inflate 22 thread
+ success: 10000000 rows affected
+ time 108ms
+ 
+ Inflate 24 thread
+ success: 10000000 rows affected
+ time 103ms
+ 
+ Inflate 26 thread
+ success: 10000000 rows affected
+ time 93ms
+ 
+ Inflate 28 thread
+ success: 10000000 rows affected
+ time 89ms
+ 
+ Inflate 30 thread
+ success: 10000000 rows affected
+ time 82ms
+ se>
 
 
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-time fetch retrieve intTbl int_col1;
-*/
-/*
-19/5/2019
-retrieves go via decode and not decodeFast
-Rows: 9s cnt 1,000,000 sum 1000000 min 1 max 1 avg 1 var 0 dev 0 skw nan krt nan
-success: 1000000 rows loaded (0 invalid rows 0 skipped rows)
-Fetching intTbl noPrint
-metadata: (int_col0 INTEGER,int_col1 INTEGER,int_col2 INTEGER,int_col3 INTEGER,int_col4 INTEGER,int_col5 INTEGER,int_col6 INTEGER,int_col7 INTEGER,int_col8 INTEGER,int_col9 INTEGER,int_col10 INTEGER,int_col11 INTEGER,int_col12 INTEGER,int_col13 INTEGER,int_col14 INTEGER,int_col15 INTEGER)
-success: 1000000 rows fetched
-time 978ms
-Retrieving col0
-success: 1000000 rows affected
-time 46ms
-success: 1000000 rows affected
-time 47ms
-success: 1000000 rows affected
-time 69ms
-success: 1000000 rows affected
-time 91ms
-success: 1000000 rows affected
-time 106ms
-success: 1000000 rows affected
-time 119ms
-success: 1000000 rows affected
-time 131ms
-success: 1000000 rows affected
-time 152ms
-success: 1000000 rows affected
-time 166ms
-success: 1000000 rows affected
-time 179ms
-success: 1000000 rows affected
-time 195ms
-success: 1000000 rows affected
-time 209ms
-success: 1000000 rows affected
-time 221ms
-success: 1000000 rows affected
-time 242ms
-success: 1000000 rows affected
-time 259ms
-success: 1000000 rows affected
-time 260ms
-success: 1000000 rows affected
-time 48ms
-success: 1000000 rows affected
-time 48ms
-success: 1000000 rows affected
-time 47ms
-success: 1000000 rows affected
-time 48ms
-success: 1000000 rows affected
-time 48ms
-success: 1000000 rows affected
-time 48ms
-success: 1000000 rows affected
-time 47ms
-success: 1000000 rows affected
-time 48ms
-success: 1000000 rows affected
-time 47ms
-success: 1000000 rows affected
-time 47ms
-[N0/1 NODE1 9678] se 4.0.5r has>
+ 4 PARTITIONS
+ 
+ Inflate 1 thread
+ success: 10000000 rows affected
+ time 1591ms
+ 
+ Inflate 2 thread
+ success: 10000000 rows affected
+ time 801ms
+ 
+ Inflate 4 thread
+ success: 10000000 rows affected
+ time 404ms
+ 
+ Inflate 6 thread
+ success: 10000000 rows affected
+ time 307ms
+ 
+ Inflate 8 thread
+ success: 10000000 rows affected
+ time 234ms
+ 
+ Inflate 10 thread
+ success: 10000000 rows affected
+ time 188ms
+ 
+ Inflate 12 thread
+ success: 10000000 rows affected
+ time 155ms
+ 
+ Inflate 14 thread
+ success: 10000000 rows affected
+ time 141ms
+ 
+ Inflate 16 thread
+ success: 10000000 rows affected
+ time 126ms
+ 
+ Inflate 18 thread
+ success: 10000000 rows affected
+ time 110ms
+ 
+ Inflate 20 thread
+ success: 10000000 rows affected
+ time 108ms
+ 
+ Inflate 22 thread
+ success: 10000000 rows affected
+ time 113ms
+ 
+ Inflate 24 thread
+ success: 10000000 rows affected
+ time 108ms
+ 
+ Inflate 26 thread
+ success: 10000000 rows affected
+ time 85ms
+ 
+ Inflate 28 thread
+ success: 10000000 rows affected
+ time 91ms
+ 
+ Inflate 30 thread
+ success: 10000000 rows affected
+ time 89ms
+
 */
 //*============================================================================*/
 /* end                                                                        */
