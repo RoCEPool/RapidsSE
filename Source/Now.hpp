@@ -3,12 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace Measurement
 {
-  class Now : public Sprint
+  class Now : public Object
   {
   public:
-    Tsp m_oTsp;
+    char m_caResult[32];
+    Tsp  m_oTsp;
 
     // must be last
     Footer m_xFooter;
