@@ -76,7 +76,63 @@ sleep 3;
 print "\nInflate 20 thread";
 time inflate intTbl 20;
 
+
+
 /*
+//******************************************************************************
+  LINUX --threads 40 1 PARTITION
+//******************************************************************************
+Inflate 1 thread
+success: 1000000 rows affected
+time 163ms
+
+Inflate 2 thread
+success: 1000000 rows affected
+time 85ms
+
+Inflate 4 thread
+success: 1000000 rows affected
+time 42ms
+
+Inflate 6 thread
+success: 1000000 rows affected
+time 34ms
+
+Inflate 8 thread
+success: 1000000 rows affected
+time 32ms
+
+Inflate 10 thread
+success: 1000000 rows affected
+time 24ms
+
+Inflate 12 thread
+success: 1000000 rows affected
+time 22ms
+
+Inflate 14 thread
+success: 1000000 rows affected
+time 21ms
+
+Inflate 16 thread
+success: 1000000 rows affected
+time 22ms
+
+Inflate 18 thread
+success: 1000000 rows affected
+time 22ms
+
+Inflate 20 thread
+success: 1000000 rows affected
+time 22ms
+se>
+
+
+
+//******************************************************************************
+  MAC
+//******************************************************************************
+
  
  1 Partition:
  
