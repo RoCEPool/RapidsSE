@@ -380,7 +380,7 @@ void Step::vTableInflateScan(MP_Task mpTask)
     THROW_INVALID_DSTACK("table.inflateScan"_Stz);
   
   Job_SubScan* pJob_SubScan = _pJob_SubScan(pPtrJob);
-  ASSERT(CN_JOB_SUBINFLATE == pJob_SubScan->eClass());
+  ASSERT(CN_JOB_SUBSCAN == pJob_SubScan->eClass());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
