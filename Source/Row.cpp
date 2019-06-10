@@ -106,6 +106,7 @@ void Row::vDontDecodeVch(void)
     }
     else
       m_abGetCol[i_Col] = true;
+      m_iLastCol = i_Col;
   }
 }
 
