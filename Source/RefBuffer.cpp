@@ -23,6 +23,27 @@ RefBuffer* PushDown::_pRefBuffer(void* aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allocate a new ref buffer from heap                                        */
+/*----------------------------------------------------------------------------*/
+void* RefBuffer::operator new(size_t)
+{
+  RefBuffer* pRefBuffer =
+    static_cast<RefBuffer*>(HeapMem::pAllocate(CN_REFBUFFER));
+  
+  return pRefBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free a ref buffer back to the heap                                         */
+/*----------------------------------------------------------------------------*/
+void RefBuffer::operator delete(void* aAddress)
+{
+  RefBuffer* pRefBuffer = static_cast<RefBuffer*>(aAddress);
+  
+  HeapMem::vFree(pRefBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RefBuffer::RefBuffer(void)
@@ -56,7 +77,13 @@ RefSet* RefBuffer::aAllotRefSet(i8 nRowRefs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
   
+  // allot using bytes as we don't know the size of the item
   byte* ayRefSet = ayAllotBytes(RefSet::nBytesReq(nRowRefs));
+  
+  if (! ayRefSet)
+    return nullptr;
+  
+  vIncItems();
   
   RefSet* aRefSet = new(ayRefSet) RefSet(nRowRefs);
   

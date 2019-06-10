@@ -31,6 +31,7 @@ namespace Structures
     void   vFreeItem(ITEM* aItem, i8 nBytes);
     void   vGiveSpace(i8 nBytes);
     bool   bHasSpace(i8 nBytes);
+    void   vIncItems(void);
     ITEM*  aItemArea(void);
     i8     nItems(void);
     void   vItems(i8 nItems);
@@ -294,6 +295,15 @@ bool MiniHeap_t<ITEM>::bHasSpace(i8 nBytes)
     else
       return true;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment number of items in buffer                                        */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void MiniHeap_t<ITEM>::vIncItems(void)
+{
+  m_nItems++;
 }
 
 /*----------------------------------------------------------------------------*/

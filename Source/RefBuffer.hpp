@@ -14,6 +14,9 @@ namespace PushDown
     Footer m_xFooter;
   
   public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
     RefBuffer(void);
     ~RefBuffer(void) noexcept(false);
   

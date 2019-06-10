@@ -193,10 +193,14 @@ void vTest5(void)
 /*----------------------------------------------------------------------------*/
 void vTest6(void)
 {
-//  printf("Stack base %llx size %lld pointer %llx\n",
-//         Pthread::aStackBase(),
-//         Pthread::iStackSize(),
-//         Pthread::aStackPointer());
+  RefBuffer* pRefBuffer = new RefBuffer;
+  
+  while (pRefBuffer->aAllotRefSet(2))
+    {;}
+  
+  vDebugPoint();
+  
+  delete pRefBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
