@@ -286,10 +286,6 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
 
 //------------------------------------------------------------------------------
 
-#include "Ent.hpp"
-#include "EntWrk.hpp"
-#include "Key.hpp"
-
 #include "Extractor.hpp"
 #include "Record.hpp"
 #include "SkipRoots.hpp"
