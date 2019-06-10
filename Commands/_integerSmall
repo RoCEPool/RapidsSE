@@ -27,6 +27,9 @@ ld intTbl "/DATA/Encoding/integerSmall.csv" ;
 print "Fetching intTbl noPrint";
 time fetch intTbl noPrint;
 
+time inflate intTbl 1;
+time inflate inttbl print 1;
+
 /*
 print "Retrieving col0";
 time fetch retrieve intTbl int_col0;

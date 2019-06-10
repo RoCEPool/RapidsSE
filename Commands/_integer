@@ -23,15 +23,6 @@ int_col15  INTEGER
 );
 
 ld intTbl "/DATA/Encoding/integer.csv" ;
-ld intTbl "/DATA/Encoding/integer.csv" ;
-ld intTbl "/DATA/Encoding/integer.csv" ;
-ld intTbl "/DATA/Encoding/integer.csv" ;
-ld intTbl "/DATA/Encoding/integer.csv" ;
-ld intTbl "/DATA/Encoding/integer.csv" ;
-ld intTbl "/DATA/Encoding/integer.csv" ;
-ld intTbl "/DATA/Encoding/integer.csv" ;
-ld intTbl "/DATA/Encoding/integer.csv" ;
-ld intTbl "/DATA/Encoding/integer.csv" ;
 
 print "\n fetch noPrint";
 time fetch intTbl noPrint;

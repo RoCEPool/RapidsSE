@@ -53,7 +53,7 @@ print "loading lineitem.csv..." ;
 
 space;
 timerStart;
-ld lineitem "/tpch/SF1/lineitem.csv" ;
+time ld lineitem "/tpch/SF1/lineitem.csv" ;
 //time ld lineitem "/DATA/tpch/lineitem10.csv" max_errors 100;
 //ld lineitem "/tpch/SF10/lineitem.csv" ;
 timerEnd;
@@ -61,8 +61,234 @@ space;
 
 szTbl lineitem;
 
-//fetch lineitem;
+//print "\n fetch noPrint";
+//time fetch lineitem noPrint;
 
+print "\nInflate 1 thread";
+time inflate lineitem;
+
+sleep 3;
+
+print "\nInflate 2 thread";
+time inflate lineitem 2;
+
+sleep 3;
+
+print "\nInflate 4 thread";
+time inflate lineitem 4;
+
+sleep 3;
+
+print "\nInflate 6 thread";
+time inflate lineitem 6;
+
+sleep 3;
+
+print "\nInflate 8 thread";
+time inflate lineitem 8;
+
+sleep 3;
+
+print "\nInflate 10 thread";
+time inflate lineitem 10;
+
+sleep 3;
+
+print "\nInflate 12 thread";
+time inflate lineitem 12;
+
+//fetch lineitem;
+/*
+ 
+ 1 PARTITION (NO WITH_STATISTICS_COUNTER)
+ 
+ Inflate 1 thread
+ success: 6001215 rows affected
+ time 2471ms
+ 
+ Inflate 2 thread
+ success: 6001215 rows affected
+ time 1258ms
+ 
+ Inflate 4 thread
+ success: 6001215 rows affected
+ time 626ms
+ 
+ Inflate 6 thread
+ success: 6001215 rows affected
+ time 432ms
+ 
+ Inflate 8 thread
+ success: 6001215 rows affected
+ time 334ms
+ 
+ Inflate 10 thread
+ success: 6001215 rows affected
+ time 322ms
+ 
+ Inflate 12 thread
+ success: 6001215 rows affected
+ time 289ms
+
+ 
+ 1 PARTITION (NO DECODING OF VCH)
+ 
+ Inflate 1 thread
+ success: 6001215 rows affected
+ time 986ms
+ 
+ Inflate 2 thread
+ success: 6001215 rows affected
+ time 493ms
+ 
+ Inflate 4 thread
+ success: 6001215 rows affected
+ time 252ms
+ 
+ Inflate 6 thread
+ success: 6001215 rows affected
+ time 173ms
+ 
+ Inflate 8 thread
+ success: 6001215 rows affected
+ time 138ms
+ 
+ Inflate 10 thread
+ success: 6001215 rows affected
+ time 128ms
+ 
+ Inflate 12 thread
+ success: 6001215 rows affected
+ time 122ms
+ [N0/1 NODE1 9305] se 4.0.6r has>
+ 
+ 
+ 1 PARTITION (with all cols)
+ 
+ Inflate 1 thread
+ success: 6001215 rows affected
+ time 2533ms
+ 
+ Inflate 2 thread
+ success: 6001215 rows affected
+ time 1262ms
+ 
+ Inflate 4 thread
+ success: 6001215 rows affected
+ time 641ms
+ 
+ Inflate 6 thread
+ success: 6001215 rows affected
+ time 438ms
+ 
+ Inflate 8 thread
+ success: 6001215 rows affected
+ time 342ms
+ 
+ Inflate 10 thread
+ success: 6001215 rows affected
+ time 310ms
+ 
+ Inflate 12 thread
+ success: 6001215 rows affected
+ time 285ms
+ [N0/1 NODE1 5588] se 4.0.6r has>
+ 
+ 1 PARTITION (no stats for memCopy)
+ 
+ Inflate 1 thread
+ success: 6001215 rows affected
+ time 2569ms
+ 
+ Inflate 2 thread
+ success: 6001215 rows affected
+ time 1292ms
+ 
+ Inflate 4 thread
+ success: 6001215 rows affected
+ time 659ms
+ 
+ Inflate 6 thread
+ success: 6001215 rows affected
+ time 451ms
+ 
+ Inflate 8 thread
+ success: 6001215 rows affected
+ time 349ms
+ 
+ Inflate 10 thread
+ success: 6001215 rows affected
+ time 317ms
+ 
+ Inflate 12 thread
+ success: 6001215 rows affected
+ time 285ms
+
+ 
+ 1 PARTITION (no vDebugPoint) :
+ 
+ Inflate 1 thread
+ success: 6001215 rows affected
+ time 2764ms
+ 
+ Inflate 2 thread
+ success: 6001215 rows affected
+ time 1984ms
+ 
+ Inflate 4 thread
+ success: 6001215 rows affected
+ time 1980ms
+ 
+ Inflate 6 thread
+ success: 6001215 rows affected
+ time 2087ms
+ 
+ Inflate 8 thread
+ success: 6001215 rows affected
+ time 1957ms
+ 
+ Inflate 10 thread
+ success: 6001215 rows affected
+ time 1641ms
+ 
+ Inflate 12 thread
+ success: 6001215 rows affected
+ time 1388ms
+
+ 
+ 
+ 1 PARTITION:
+ 
+ Inflate 1 thread
+ success: 6001215 rows affected
+ time 10543ms
+ 
+ Inflate 2 thread
+ success: 6001215 rows affected
+ time 6230ms
+ 
+ Inflate 4 thread
+ success: 6001215 rows affected
+ time 4016ms
+ 
+ Inflate 6 thread
+ success: 6001215 rows affected
+ time 3731ms
+ 
+ Inflate 8 thread
+ success: 6001215 rows affected
+ time 4641ms
+ 
+ Inflate 10 thread
+ success: 6001215 rows affected
+ time 4971ms
+ 
+ Inflate 12 thread
+ success: 6001215 rows affected
+ time 5181ms
+ [N0/1 NODE1 2975] se 4.0.6r has> Program ended with exit code: 9
+ 
+ 
 fetch retrieve lineitem x;
 time fetch retrieve lineitem L_ORDERKEY;
 time fetch retrieve lineitem L_PARTKEY;
@@ -80,7 +306,7 @@ time fetch retrieve lineitem L_RECEIPTDATE;
 time fetch retrieve lineitem L_SHIPINSTRUCT;
 time fetch retrieve lineitem L_SHIPMODE;
 time fetch retrieve lineitem L_COMMENT;
-
+*/
 //fetch retrieve lineitem l_orderkey;
 
 //time fetch lineitem noPrint;
