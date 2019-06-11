@@ -108,7 +108,7 @@ i4 Ent::iNEO(i8 i_Level)
   ASSERT(i_Level >= 0 && i_Level < nLevels());
   RASSERT(m_nKeyBytes == m_xKey.nSizeKey());
 
-  i8 i_NEO = sizeof(Ent) + m_nKeyBytes + (C_NEO_SIZE * i_Level);
+  i8 i_NEO = sizeof(Ent) + m_xKey.nSizeKey() + (C_NEO_SIZE * i_Level);
   
   i4 iNEO = * (aAdd<i4*>(this,i_NEO));
   
@@ -123,7 +123,7 @@ void Ent::vNEO(i8 i_Level, i4 i_Offset)
   ASSERT(i_Level >= 0 && i_Level < nLevels());
   RASSERT(m_nKeyBytes == m_xKey.nSizeKey());
 
-  i8 i_NEO = sizeof(Ent) + m_nKeyBytes + (C_NEO_SIZE * i_Level);
+  i8 i_NEO = sizeof(Ent) + m_xKey.nSizeKey() + (C_NEO_SIZE * i_Level);
 
   * (aAdd<i4*>(this,i_NEO)) = i_Offset;
 }
@@ -150,7 +150,7 @@ i8 Ent::nSizeBytes(void)
 {
   RASSERT(m_nKeyBytes == m_xKey.nSizeKey());
   
-  i8 nBytes = sizeof(Ent) + m_nKeyBytes + nSizeNeo();
+  i8 nBytes = sizeof(Ent) + m_xKey.nSizeKey() + nSizeNeo();
 
   return nBytes;
 }
@@ -160,7 +160,10 @@ i8 Ent::nSizeBytes(void)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nSizeKey(void)
 {
-  return m_nKeyBytes;
+  RASSERT(m_nKeyBytes == m_xKey.nSizeKey());
+  
+  i8 nBytes = m_xKey.nSizeKey();
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
