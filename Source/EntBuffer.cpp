@@ -156,11 +156,11 @@ EntBuffer* EntBuffer::pRefdEntBuffer(Id& xId)
 /*----------------------------------------------------------------------------*/
 /* allot an entry in this buffer                                              */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aAllotEntry(i8 nBytes_Without_Offsets)
+Ent* EntBuffer::aAllotEntry(i8 nEntBytes_Without_NEO)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  Ent* aEnt = aAllotItem(CN_ENT,nBytes_Without_Offsets);
+  Ent* aEnt = aAllotItem(CN_ENT,nEntBytes_Without_NEO);
   if (! aEnt)
     return nullptr;
   

@@ -63,7 +63,7 @@ namespace MetaData
     void  vShowEntry(Ent* pEntry);
   
   private:
-    Ent* aAllotEntry(i8 nBytes_Without_Offsets);
+    Ent* aAllotEntry(i8 nSizeEnt_Without_NEO);
     
     ////////////////////////////////////////////////////////////////////////////
   

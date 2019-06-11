@@ -20,8 +20,8 @@ namespace Indexes
   protected:
     Id  m_xId; // id (child index buffer, or row reference at H0 leaf buffers)
   
-    i4  m_nSizeEnt_WithoutOffsets; // size of this entry (not including offsets)
-    i4  m_nKeySize; // size of key (in bytes)
+    i4  m_nSizeEnt_Without_NEO; // size of this entry (not including offsets)
+    i4  m_nKeyBytes; // size of key (in bytes)
   
     // ..key bytes.. (the concatenated bytes which are the key value)
     // ..neo..       (0, 1 or 2 next entry offsets)
