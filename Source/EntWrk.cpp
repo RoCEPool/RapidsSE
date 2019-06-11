@@ -88,7 +88,7 @@ eKC EntWrk::eCompare(Ent* aEnt1, EntWrk& xEntWrk2)
   i8 nKeySize2 = xEntWrk2.nKeySize();
   
   Key* aKey1 = _aKey(aEnt1->ayKeyBytes());
-  Key* aKey2 = xEntWrk2.aKey_();
+  Key* aKey2 = xEntWrk2.aKey_ayEmbedded();
   
   i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
   
@@ -122,8 +122,8 @@ eKC EntWrk::eCompare(EntWrk& xEntWrk1, EntWrk& xEntWrk2)
   i8 nKeySize1 = xEntWrk1.nKeySize();
   i8 nKeySize2 = xEntWrk2.nKeySize();
   
-  Key* aKey1 = xEntWrk1.aKey_();
-  Key* aKey2 = xEntWrk2.aKey_();
+  Key* aKey1 = xEntWrk1.aKey_ayEmbedded();
+  Key* aKey2 = xEntWrk2.aKey_ayEmbedded();
   
   i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
   
@@ -149,7 +149,7 @@ eKC EntWrk::eCompare(EntWrk& xEntWrk1, Ent* aEnt2)
   i8 nKeySize1 = xEntWrk1.nKeySize();
   i8 nKeySize2 = aEnt2->nSizeKey();
   
-  Key* aKey1 = xEntWrk1.aKey_();
+  Key* aKey1 = xEntWrk1.aKey_ayEmbedded();
   Key* aKey2 = _aKey(aEnt2->ayKeyBytes());
   
   i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
@@ -419,7 +419,7 @@ void EntWrk::vFormEntry(Ent* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into entry
   
-  Key* aSrcKey  = aKey_();
+  Key* aSrcKey  = aKey_ayEmbedded();
   Key* aDstKey  = _aKey(pEntry->ayKeyBytes());
   i8   nKeySize = this->nKeySize();
   
@@ -433,7 +433,7 @@ i8 EntWrk::iHashKey(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 iHash = HshLib::iHash((byte*)aKey_(),nKeySize());
+  i8 iHash = HshLib::iHash((byte*)aKey_ayEmbedded(),nKeySize());
   
   return iHash;
 }
@@ -491,7 +491,7 @@ void EntWrk::vItemNo(i8 i_Item)
 /*----------------------------------------------------------------------------*/
 /* get wsp area as key                                                        */
 /*----------------------------------------------------------------------------*/
-Key* EntWrk::aKey_(void)
+Key* EntWrk::aKey_ayEmbedded(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
@@ -630,7 +630,7 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  Key* aKey = this->aKey_();
+  Key* aKey = this->aKey_ayEmbedded();
   aKey->vShow(pIdxColVec);
   vTrace("\n"_Stz);
 }

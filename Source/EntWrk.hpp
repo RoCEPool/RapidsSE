@@ -75,7 +75,7 @@ namespace Indexes
     i8    iItemNo(void);
     void  vItemNo(i8 i_Item);
   
-    Key*  aKey_(void);
+    Key*  aKey_ayEmbedded(void);
     byte* ayKeyBytes(void);
     void  vKeyBytes(i8 nKeySize, byte* ayKeyBytes);
 
