@@ -18,7 +18,11 @@ namespace Indexes
   class Ent : public Header
   {
   protected:
-    Id  m_xId; // id (child index buffer, or row reference at H0 leaf buffers)
+    Id  m_xId;       // id (child index buffer, or row ref at H0 leaf buffers)
+  
+#ifdef WITH_DEBUG_VERSION
+    i8  m_iSkipNo;   // verify of order of skip items
+#endif
   
     i4  m_nKeyBytes; // size of key (in bytes)
   
@@ -26,9 +30,6 @@ namespace Indexes
     // ..neo..       (0, 1 or 2 next entry offsets)
   
   public:
-#ifdef WITH_DEBUG_VERSION
-    i8  m_iSkipNo;    // verify of order of skip items
-#endif
 
   public:
     void* operator new(size_t);
@@ -52,6 +53,9 @@ namespace Indexes
     i8    nSizeBytes(void);
     i8    nSizeKey(void);
     i8    nSizeNeo(void);
+
+    i8    iSkipNo(void);
+    void  vSkipNo(i8 iSkipNo);
 
     bool  bValidEnt(void);
   
