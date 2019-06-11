@@ -36,9 +36,10 @@ void* Ent::operator new(size_t, Ent* aEnt)
 Ent::Ent(eCN eClassNo, i8 nSizeEnt_Without_NEO)
 : Header(eClassNo)
 {
-  m_nKeyBytes = static_cast<i4>(nSizeEnt_Without_NEO - sizeof(Ent));
+  i8 nKeyBytes = static_cast<i4>(nSizeEnt_Without_NEO - sizeof(Ent));
+  m_nKeyBytes = (i4)nKeyBytes;
   
-  m_xKey.vSizeKey(m_nKeyBytes);
+  m_xKey.vSizeKey(nKeyBytes);
   
 #ifdef WITH_DEBUG_VERSION
   m_iSkipNo = -1;
