@@ -34,21 +34,21 @@ namespace Indexes
   
     Key(void);
     ~Key(void) noexcept(false);
-    
-    static eKC eCompare(Ent* aKeyItem1, EntWrk& xKeyItem2);
-    static eKC eCompare(EntWrk& xKeyItem1, EntWrk& xKeyItem2);
-    static eKC eCompare(EntWrk& xKeyItem1, Ent* aKeyItem2);
-    static eKC eCompare(Ent* aKeyItem1, Ent* aKeyItem2);
+  
+    static eKC eCompare(Ent* aEnt1, EntWrk& xEntWrk2);
+    static eKC eCompare(EntWrk& xEntWrk1, EntWrk& xEntWrk2);
+    static eKC eCompare(EntWrk& xEntWrk1, Ent* aEnt2);
+    static eKC eCompare(Ent* aEnt1, Ent* aEnt2);
     
     static byte* ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor);
     
-    static bool bEqualTo(Ent* aKeyItem1, Ent* aKeyItem2);
-    static bool bGreaterThan(Ent* aKeyItem1, Ent* aKeyItem2);
-    static bool bGreaterEqual(Ent* aKeyItem1, EntWrk& xKeyItem2);
-    static bool bGreaterEqual(Ent* aKeyItem1, Ent* aKeyItem2);
-    static bool bLessEqual(EntWrk& xKeyItem1, Ent* aKeyItem2);
-    static bool bLessThan(EntWrk& xKeyItem1, Ent* aKeyItem2);
-    static bool bNotEqual(Ent* aKeyItem1, Ent* aKeyItem2);
+    static bool bEqualTo(Ent* aEnt1, Ent* aEnt2);
+    static bool bGreaterThan(Ent* aEnt1, Ent* aEnt2);
+    static bool bGreaterEqual(Ent* aEnt1, EntWrk& xEntWrk2);
+    static bool bGreaterEqual(Ent* aEnt1, Ent* aEnt2);
+    static bool bLessEqual(EntWrk& xEntWrk1, Ent* aEnt2);
+    static bool bLessThan(EntWrk& xEntWrk1, Ent* aEnt2);
+    static bool bNotEqual(Ent* aEnt1, Ent* aEnt2);
   
     i8   iGetInt(void);
     void vShow(IdxColVec* pIdxColVec);
