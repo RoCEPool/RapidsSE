@@ -372,16 +372,6 @@ void EntWrk::vBufferNo(i8 iBufferNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of embedded object                                             */
-/*----------------------------------------------------------------------------*/
-byte* EntWrk::ayEmbedded(void)               //! i'd like to get rid of this fun
-{  
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  return m_ayEmbedded;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set address of embedded object                                             */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vEmbedded(byte* ayEmbedded)     //! i'd like to get rid of this fun
@@ -510,7 +500,7 @@ Key* EntWrk::aKey_ayEmbedded(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  return reinterpret_cast<Key*>(ayEmbedded());
+  return reinterpret_cast<Key*>(m_ayEmbedded);
 }
 
 /*----------------------------------------------------------------------------*/
