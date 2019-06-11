@@ -106,7 +106,12 @@ i4 Ent::iNEO(i8 i_Level)
 {
   ASSERT(i_Level >= 0 && i_Level < nLevels());
   
-  i4 iNEO = *(aAdd<i4*>(this, m_nSizeEnt_Without_NEO + C_NEO_SIZE * i_Level));
+  //i8 i_NEO = m_nSizeEnt_Without_NEO + (C_NEO_SIZE * i_Level);
+  //RASSERT(i_NEO == sizeof(Ent) + m_nKeyBytes + (C_NEO_SIZE * i_Level));
+  
+  i8 i_NEO = sizeof(Ent) + m_nKeyBytes + (C_NEO_SIZE * i_Level);
+  
+  i4 iNEO = * (aAdd<i4*>(this,i_NEO));
   
   return iNEO;
 }
@@ -118,7 +123,12 @@ void Ent::vNEO(i8 i_Level, i4 i_Offset)
 {
   ASSERT(i_Level >= 0 && i_Level < nLevels());
   
-  *(aAdd<i4*>(this, m_nSizeEnt_Without_NEO + C_NEO_SIZE * i_Level)) = i_Offset;
+  //i8 i_NEO = m_nSizeEnt_Without_NEO + (C_NEO_SIZE * i_Level);
+  //RASSERT(i_NEO == sizeof(Ent) + m_nKeyBytes + (C_NEO_SIZE * i_Level));
+
+  i8 i_NEO = sizeof(Ent) + m_nKeyBytes + (C_NEO_SIZE * i_Level);
+
+  * (aAdd<i4*>(this,i_NEO)) = i_Offset;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +152,8 @@ void Ent::vNEOdump(void)
 i8 Ent::nSizeBytes(void)
 {
   i8 nBytes = m_nSizeEnt_Without_NEO + nSizeNeo();
-  
+  //RASSERT(nBytes == sizeof(Ent) + m_nKeyBytes + nSizeNeo());
+
   return nBytes;
 }
 
@@ -153,7 +164,7 @@ i8 Ent::nSizeKey(void)
 {
   RASSERT(m_nKeyBytes == m_nSizeEnt_Without_NEO - sizeof(Ent));
   
-  return (i8)(m_nSizeEnt_Without_NEO - sizeof(Ent));
+  return (i8)(m_nKeyBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -202,7 +213,9 @@ bool Ent::bValidEnt(void)
 /*----------------------------------------------------------------------------*/
 NEO* Ent::aNEO(void)
 {
-  NEO* aNEO = aAdd<NEO*>(this, m_nSizeEnt_Without_NEO);
+  i8 i_NEO = sizeof(Ent) + m_nKeyBytes;
+
+  NEO* aNEO = aAdd<NEO*>(this,i_NEO);
   
   return aNEO;
 }
