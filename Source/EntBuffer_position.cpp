@@ -93,7 +93,7 @@ Ent* EntBuffer::pPositionPriorEntry(Ent* aFindKey)
     Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
       
-      bKeyIsGreaterEqual = Key::bGreaterEqual(aNextEntry_sl, aFindKey);
+      bKeyIsGreaterEqual = EntWrk::bGreaterEqual(aNextEntry_sl, aFindKey);
       
       if (bKeyIsGreaterEqual)
         break;
@@ -132,7 +132,7 @@ Ent* EntBuffer::pPositionPriorEntry(EntWrk& xFindKey)
     Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
       
-      bKeyIsGreaterEqual = Key::bGreaterEqual(aNextEntry_sl, xFindKey);
+      bKeyIsGreaterEqual = EntWrk::bGreaterEqual(aNextEntry_sl, xFindKey);
       
       if (bKeyIsGreaterEqual)
         break;
@@ -189,7 +189,7 @@ void EntBuffer::vPositionPriorVecEntry(Ent* aFindKey, Ent* aPriorVec[],
       
       Key* aNextKey = _aKey(aNextEntry_sl->ayKeyBytes());
       
-      bIsJuxta = Key::bGreaterEqual(aNextEntry_sl, aFindKey);
+      bIsJuxta = EntWrk::bGreaterEqual(aNextEntry_sl, aFindKey);
       
       if (bIsJuxta) {
         if (! aFindEntry || aNextEntry_sl == aFindEntry)
@@ -278,7 +278,7 @@ void EntBuffer::vPositionPriorVecBuffer(Ent* aInsertingEntry,
 //        vShowEntry(aInsertingEntry);
 //       }
       
-      bool bNextKeyIsGreater = Key::bGreaterThan(aNextEntry_sl,aInsertingEntry);
+      bool bNextKeyIsGreater = EntWrk::bGreaterThan(aNextEntry_sl,aInsertingEntry);
       if (bNextKeyIsGreater) {
         // nextEntry[sl] > aInsertingEntry, insert at this level after prior entry
         aPriorVec[i_ScanLevel] = aPriorEntry_sl;
@@ -286,7 +286,7 @@ void EntBuffer::vPositionPriorVecBuffer(Ent* aInsertingEntry,
         break;
       }
 
-      bool bKeysAreEqual = Key::bEqualTo(aNextEntry_sl,aInsertingEntry);
+      bool bKeysAreEqual = EntWrk::bEqualTo(aNextEntry_sl,aInsertingEntry);
       if (! bKeysAreEqual) {
         // haven't found key at this level yet, go right at this level
         aPriorVec[i_ScanLevel] = aNextEntry_sl;//aPriorEntry_sl;

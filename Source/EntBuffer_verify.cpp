@@ -441,7 +441,7 @@ bool EntBuffer::bVerifyFirstKeys(void)
     
     // the two keys should match
     //bool bEqual = aKeyChild->bEqualTo(aKeyParent,pIdxColVec);
-    bool bEqual = Key::bEqualTo(aChildFirstEntry, aEnt);
+    bool bEqual = EntWrk::bEqualTo(aChildFirstEntry, aEnt);
     if (! bEqual) {
       vVerifyFault();
       return false;
@@ -595,7 +595,7 @@ bool EntBuffer::bVerifyKeyOrder(void)
     
     // next keyB should be greater than or equal to keyA
     //bool bGreaterEqual = aKeyB->bGreaterEqual(aKeyA,pIdxColVec);
-    bool bGreaterEqual = Key::bGreaterEqual(aNextEntry, aEnt);
+    bool bGreaterEqual = EntWrk::bGreaterEqual(aNextEntry, aEnt);
     if (! bGreaterEqual) {
       vDump();
       vVerifyFault();

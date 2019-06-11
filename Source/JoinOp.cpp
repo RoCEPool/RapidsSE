@@ -53,7 +53,7 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
       if (aRightEntry) {
         
         // compare the keys
-        eKC eCompare = Key::eCompare(aLeftEntry, aRightEntry);
+        eKC eCompare = EntWrk::eCompare(aLeftEntry, aRightEntry);
         
         switch (eCompare) {
           case KC_SAME:
@@ -177,7 +177,7 @@ void JoinOp::vIndexJoin_v2(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree
     if (aLeftEntry && aRightEntry) {
       
       // compare the two keys
-      eKC eCompare = Key::eCompare(aLeftEntry,aRightEntry);
+      eKC eCompare = EntWrk::eCompare(aLeftEntry,aRightEntry);
 
       // how do they compare?
       switch (eCompare) {
