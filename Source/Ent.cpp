@@ -38,6 +38,8 @@ Ent::Ent(eCN eClassNo, i8 nSizeEnt_Without_NEO)
 {
   m_nKeyBytes = static_cast<i4>(nSizeEnt_Without_NEO - sizeof(Ent));
   
+  m_xKey.vSizeKey(m_nKeyBytes);
+  
 #ifdef WITH_DEBUG_VERSION
   m_iSkipNo = -1;
 #endif
