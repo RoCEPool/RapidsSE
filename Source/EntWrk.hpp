@@ -33,6 +33,21 @@ namespace Indexes
 
     EntWrk(void);
    ~EntWrk(void) noexcept(false);
+  
+    static eKC eCompare(Ent* aEnt1, EntWrk& xEntWrk2);
+    static eKC eCompare(EntWrk& xEntWrk1, EntWrk& xEntWrk2);
+    static eKC eCompare(EntWrk& xEntWrk1, Ent* aEnt2);
+    static eKC eCompare(Ent* aEnt1, Ent* aEnt2);
+  
+    static byte* ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor);
+  
+    static bool bEqualTo(Ent* aEnt1, Ent* aEnt2);
+    static bool bGreaterThan(Ent* aEnt1, Ent* aEnt2);
+    static bool bGreaterEqual(Ent* aEnt1, EntWrk& xEntWrk2);
+    static bool bGreaterEqual(Ent* aEnt1, Ent* aEnt2);
+    static bool bLessEqual(EntWrk& xEntWrk1, Ent* aEnt2);
+    static bool bLessThan(EntWrk& xEntWrk1, Ent* aEnt2);
+    static bool bNotEqual(Ent* aEnt1, Ent* aEnt2);
 
     void  vAddElement(Row* pRow, Column* pCol);
     void  vAddMinusInfinity(void);
@@ -70,6 +85,7 @@ namespace Indexes
 
     void  vSetWrk(i8 iBufferNo, i8 i_Item, Ent* pEntry);
     void  vShow(IdxColVec* pIdxColVec);
+  
   
     Footer* aFooter(void);
   };
