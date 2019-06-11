@@ -8,7 +8,7 @@ namespace Indexes
   class Key
   {
   private:
-    i4  m_nKeyBytes; // size of key (in bytes)
+    i8  m_nKeyBytes; // size of key (in bytes)
     // ..bytes..     // variable byte sequence of the key
 
   public:
@@ -29,7 +29,7 @@ namespace Indexes
     /*------------------------------------------------------------------------*/
     /* getthis key as a byte sequence                                         */
     /*------------------------------------------------------------------------*/
-    inline byte* ayByteSequence(void)
+    inline byte* ayKeyBytes(void)
     {
       return reinterpret_cast<byte*>(this);
     }

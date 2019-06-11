@@ -74,7 +74,7 @@ Key::~Key(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 i8 Key::iGetInt(void)
 {
-  i8 iVal = *(i8*)ayByteSequence();
+  i8 iVal = *(i8*)ayKeyBytes();
   
   return iVal;
 }
@@ -86,7 +86,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
 {
   i8 nBytes;
   
-  byte* ayCursor = ayByteSequence();
+  byte* ayCursor = ayKeyBytes();
   
   char caLiteral[128];
   
