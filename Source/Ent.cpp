@@ -151,8 +151,10 @@ void Ent::vNEOdump(void)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nSizeBytes(void)
 {
-  i8 nBytes = m_nSizeEnt_Without_NEO + nSizeNeo();
+  //i8 nBytes = m_nSizeEnt_Without_NEO + nSizeNeo();
   //RASSERT(nBytes == sizeof(Ent) + m_nKeyBytes + nSizeNeo());
+
+  i8 nBytes = sizeof(Ent) + m_nKeyBytes + nSizeNeo();
 
   return nBytes;
 }
