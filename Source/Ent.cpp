@@ -236,7 +236,9 @@ bool Ent::bValidEnt(void)
 /*----------------------------------------------------------------------------*/
 NEO* Ent::aNEO(void)
 {
-  i8 i_NEO = sizeof(Ent) + m_nKeyBytes;
+  RASSERT(m_nKeyBytes == m_xKey.nSizeKey());
+  
+  i8 i_NEO = sizeof(Ent) + m_xKey.nSizeKey();
 
   NEO* aNEO = aAdd<NEO*>(this,i_NEO);
   
