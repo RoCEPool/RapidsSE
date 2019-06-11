@@ -32,6 +32,7 @@ namespace Indexes
 using namespace Indexes;
 
 #include "Id.hpp"
+#include "Key2.hpp"
 #include "Ent.hpp"
 #include "EntWrk.hpp"
 #include "Key.hpp"

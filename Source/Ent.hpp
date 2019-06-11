@@ -18,14 +18,14 @@ namespace Indexes
   class Ent : public Header
   {
   protected:
-    Id  m_xId;       // id (child index buffer, or row ref at H0 leaf buffers)
+    Id   m_xId;       // id (child index buffer, or row ref at H0 leaf buffers)
   
 #ifdef WITH_DEBUG_VERSION
-    i8  m_iSkipNo;   // verify of order of skip items
+    i8   m_iSkipNo;   // verify of order of skip items
 #endif
   
-    i4  m_nKeyBytes; // size of key (in bytes)
-  
+    i4   m_nKeyBytes; // size of key (in bytes)
+    
     // ..key bytes.. (the concatenated bytes which are the key value)
     // ..neo..       (0, 1 or 2 next entry offsets)
   
