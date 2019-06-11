@@ -27,6 +27,8 @@ namespace Indexes
                         // from m_xWsp.aArea() to allow for the object
                         // not to have to be copied into the wsp
   
+    byte* m_ayElementCrs; // where to add next element
+  
     Footer m_xFooter;
   
   public:

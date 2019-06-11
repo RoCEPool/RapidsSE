@@ -49,8 +49,9 @@ EntWrk::EntWrk(void)
   
   m_xWsp.vInit();
   
-  m_ayEmbedded = m_xWsp.ayArea();
-  
+  m_ayEmbedded   = m_xWsp.ayArea();
+  m_ayElementCrs = m_xWsp.ayArea();
+
   _checkInitialisedSize_(sizeof(EntWrk));
   
   _postcondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
@@ -603,11 +604,11 @@ void EntWrk::vSetWrk(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into this entry
   
-  Key* aKeyData = _aKey(pEntry->ayKeyBytes());
+  byte* aKeyBytes = pEntry->ayKeyBytes();
   i8 iKeySize   = pEntry->nSizeKey();
   RASSERT(iKeySize % 8 == 0);
   
-  vEmbedded((byte*)aKeyData);
+  vEmbedded(aKeyBytes);
   
   vKeySize(iKeySize);
 }

@@ -9,11 +9,12 @@ static const i8 C_SLOTS_PER_NODE = 128;
 static const i8 C_MAX_NODES      = 128;
 static const i8 C_MAX_PARTITIONS = C_SLOTS_PER_NODE * C_MAX_NODES;
 
-static const i8 C_MAX_RECORD     = C_16KB;
 static const i8 C_MAX_COLUMNS    = 150;
+static const i8 C_MAX_KEY        = 256;
 static const i8 C_PATH_MAX       = 256;
-static const i8 C_MAX_VCH        = C_4KB;
+static const i8 C_MAX_RECORD     = C_16KB;
 static const i8 C_MAX_SESSIONS   = 1024;
+static const i8 C_MAX_VCH        = C_4KB;
 
 static const i8 C_MAX_PRECISION_BCD = 19;
 static const i8 C_MAX_PRECISION_FLT = 19;
