@@ -42,7 +42,7 @@
   // check if max indexes already on table
   sTableNm find execute to pTable
   pTable table.indexCount
-  C_INDEXES_PER_TABLE == if EC_MAX_INDEXES popTable assertInTables false exit then
+  C_MAX_INDEXES == if EC_MAX_INDEXES popTable assertInTables false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes

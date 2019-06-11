@@ -81,8 +81,8 @@ void Axioms::vAddConstants(void)
   vAddConstant("C_64KB"_Stz,  C_64KB);
   vAddConstant("C_256KB"_Stz, C_256KB);
   
-  vAddConstant("C_INDEXES_PER_TABLE"_Stz, C_INDEXES_PER_TABLE);
-  vAddConstant("C_SLOTS_PER_NODE"_Stz,    C_SLOTS_PER_NODE);
+  vAddConstant("C_MAX_INDEXES"_Stz, C_MAX_INDEXES);
+  vAddConstant("C_MAX_SLOTS"_Stz,    C_MAX_SLOTS);
   vAddConstant("C_MAX_NODES"_Stz,         C_MAX_NODES);
   vAddConstant("C_MAX_PARTITIONS"_Stz,    C_MAX_PARTITIONS);
 
@@ -90,7 +90,7 @@ void Axioms::vAddConstants(void)
   vAddConstant("C_MAX_PRECISION_BCD"_Stz, C_MAX_PRECISION_BCD);
   vAddConstant("C_MAX_COLUMNS"_Stz,       C_MAX_COLUMNS);
   vAddConstant("C_MAX_RECORD"_Stz,        C_MAX_RECORD);
-  vAddConstant("C_PATH_MAX"_Stz,          C_PATH_MAX);
+  vAddConstant("C_MAX_PATH"_Stz,          C_MAX_PATH);
   vAddConstant("C_SIZE_POOL_BUFFER"_Stz,  C_SIZE_POOL_BUFFER);
   
   // OPEN_ : file open argument

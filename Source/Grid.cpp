@@ -81,7 +81,7 @@ void Grid::vInit(i8 nNodes, i8 nSlotsPerNode)
   m_nPartitions   = m_nSlotsPerNode * m_nNodes;
     
   // initialize the partition array
-  for (i8 i_Partition = 0; i_Partition < C_SLOTS_PER_NODE; i_Partition++) {
+  for (i8 i_Partition = 0; i_Partition < C_MAX_SLOTS; i_Partition++) {
     m_iPartition[i_Partition] = C_UNKNOWN;
   }
     

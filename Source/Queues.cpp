@@ -60,7 +60,7 @@ Queues::Queues(void)
   m_pReadyQueue    = new TaskList(QK_READY_QUEUE);
   m_pReadyQueueLP  = new TaskList(QK_READY_QUEUE_LP);
   
-  for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
+  for (i8 i_Slot = 0; i_Slot < C_MAX_SLOTS; i_Slot++)
     m_pReadySlotQueues[i_Slot] = nullptr;
   for (i8 i_Slot = 0; i_Slot < gpAttachMap->Arg.m_nSlotsPerNode; i_Slot++)
     m_pReadySlotQueues[i_Slot] = new TaskList(QK_READY_SLOT_QUEUE);
@@ -378,7 +378,7 @@ void Queues::vAddToSendQueue_NL(Task* pTask)
   // get send node from the task
   i8 iSendNode = pTask->pSendNode()->iNodeNo();
   
-  pTask->vQueue((eQR)(C_SLOTS_PER_NODE + iSendNode));
+  pTask->vQueue((eQR)(C_MAX_SLOTS + iSendNode));
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMarkActivity)

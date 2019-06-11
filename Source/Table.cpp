@@ -78,7 +78,7 @@ Table::Table(void)
   
   m_pColumnVec = new ColumnVec;
   
-  for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
+  for (i8 i_Slot = 0; i_Slot < C_MAX_SLOTS; i_Slot++)
     m_ixSubLoaders[i_Slot] = 0;
   
   m_bIsLoading = false;
@@ -764,7 +764,7 @@ void Table::vSubLoaders(i8 iSubLoaders)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
+  for (i8 i_Slot = 0; i_Slot < C_MAX_SLOTS; i_Slot++)
     m_ixSubLoaders[i_Slot] = iSubLoaders;
   
 }

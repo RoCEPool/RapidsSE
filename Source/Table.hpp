@@ -23,7 +23,7 @@ namespace MetaData
   static const char* C_SORT_REGION_BASE  = (char*)0x409600000000;
   static const i8    C_SORT_REGION_DELTA = C_1GB * 128;
 
-  typedef VectorNL_t<CN_IDXVEC,Index,CN_INDEX,C_INDEXES_PER_TABLE,u8> IdxVec;
+  typedef VectorNL_t<CN_IDXVEC,Index,CN_INDEX,C_MAX_INDEXES,u8> IdxVec;
   
   class Table : public Object
   {
@@ -37,7 +37,7 @@ namespace MetaData
     IdxVec*    m_pIdxVec;    // index vector
     ColumnVec* m_pColumnVec; // column vector
 
-    Atomic     m_ixSubLoaders[C_SLOTS_PER_NODE];  // subloader*slot count
+    Atomic     m_ixSubLoaders[C_MAX_SLOTS];  // subloader*slot count
     bool       m_bIsLoading;   // data is loading
     
     // must be last

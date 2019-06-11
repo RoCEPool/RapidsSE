@@ -3567,7 +3567,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "  // check if max indexes already on table\n"
     "  sTableNm find execute to pTable\n"
     "  pTable table.indexCount\n"
-    "  C_INDEXES_PER_TABLE == if EC_MAX_INDEXES popTable assertInTables false exit then\n"
+    "  C_MAX_INDEXES == if EC_MAX_INDEXES popTable assertInTables false exit then\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // push indexes\n"

@@ -279,9 +279,9 @@ bool Arguments::bParse(int argc, Stz* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--partitionsPerNode"_Stz)) {
       m_nSlotsPerNode = argv[++i_Arg]->iToI8();
-      if (m_nSlotsPerNode > C_SLOTS_PER_NODE) {
+      if (m_nSlotsPerNode > C_MAX_SLOTS) {
         vWarn("Maximum number of partitions allowed per node is %lld\n"_Stz,
-          C_SLOTS_PER_NODE);
+          C_MAX_SLOTS);
         return false;
       }
       

@@ -30,7 +30,7 @@ namespace Threads
   
     TaskList*  m_pReadyQueueLP;    //  set of low priority queued tasks ready to run
     
-    TaskList* m_pReadySlotQueues[C_SLOTS_PER_NODE];
+    TaskList* m_pReadySlotQueues[C_MAX_SLOTS];
     // QR_READY_QUEUE + 1 ..       // tasks queued for partitioned execution
     //   gxArguments.m_nSlotsPerNode - 1  // (ordered by arrival)
   

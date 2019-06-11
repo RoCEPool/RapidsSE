@@ -35,8 +35,8 @@ bool Prompt::bPrompt_constants(SePrompt* pPrompt)
   vTrace("  C_MAX_SESSION       = %lld\n"_Stz,C_MAX_SESSIONS);
   vTrace("  C_MIN_REGION        = %lld\n"_Stz,C_MIN_REGION);
   vTrace("  C_MEMORY_PERCENT    = %lld\n"_Stz,C_MEMORY_PERCENT);
-  vTrace("  C_PATH_MAX          = %lld\n"_Stz,C_PATH_MAX);
-  vTrace("  C_SLOTS_PER_NODE    = %lld\n"_Stz,C_SLOTS_PER_NODE);
+  vTrace("  C_MAX_PATH          = %lld\n"_Stz,C_MAX_PATH);
+  vTrace("  C_MAX_SLOTS    = %lld\n"_Stz,C_MAX_SLOTS);
   vTrace("  C_WSP_DATACHUNK     = %lld\n"_Stz,C_WSP_DATACHUNK);
   vTrace("  C_WSP_STACK         = %lld\n"_Stz,C_WSP_STACK);
   vTrace("  C_TOKENS            = %lld\n"_Stz,C_TOKENS);

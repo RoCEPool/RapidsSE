@@ -98,7 +98,7 @@ bool Dir::bChangeCurrent(Stz* aDirPath)
 /*----------------------------------------------------------------------------*/
 bool Dir::bGetCurrent(Stz* aDirPath)
 {
-  char* aCurrPath = getcwd(aDirPath->aChar(),C_PATH_MAX);
+  char* aCurrPath = getcwd(aDirPath->aChar(),C_MAX_PATH);
   
   if ( ! aCurrPath ) {
     vWarn("Dir::bGet: getcwd() error; errno=%d"_Stz,errno);

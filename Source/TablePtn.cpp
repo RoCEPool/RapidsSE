@@ -169,7 +169,7 @@ void TablePtn::vAddIndex(IndexTree* pIndexTree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  ASSERT(m_pIndexTreeVec->nItems() < C_INDEXES_PER_TABLE);
+  ASSERT(m_pIndexTreeVec->nItems() < C_MAX_INDEXES);
   m_pIndexTreeVec->vAdd(pIndexTree);
 }
 

@@ -13,7 +13,7 @@ namespace MetaData
   /* TablePtnVec -- Table Partition Vector                                    */
   /*--------------------------------------------------------------------------*/
   typedef VectorNL_t  <CN_TABLEPTNVEC,Partitioning::TablePtn,
-                       CN_TABLEPTN,   C_SLOTS_PER_NODE,u8>         TablePtnVec;
+                       CN_TABLEPTN,   C_MAX_SLOTS,u8>         TablePtnVec;
   
   class Slots : public Object
   {

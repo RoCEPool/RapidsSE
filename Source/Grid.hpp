@@ -17,7 +17,7 @@ namespace Grids
     i8     m_nPartitions;  // total no of partitions in the grid
     
     // NOT HAPPY WITH NAME - alka
-    i8     m_iPartition[C_SLOTS_PER_NODE]; // partition no's on this node
+    i8     m_iPartition[C_MAX_SLOTS]; // partition no's on this node
   
     Node*  m_pNodes[C_MAX_NODES]; // array of nodes
   

@@ -5,23 +5,23 @@
 
 //! review these with Alka
 
-static const i8 C_SLOTS_PER_NODE = 128;
-static const i8 C_MAX_NODES      = 128;
-static const i8 C_MAX_PARTITIONS = C_SLOTS_PER_NODE * C_MAX_NODES;
+static const i8 C_MAX_SLOTS      = 128;    // max slots per node
+static const i8 C_MAX_NODES      = 128;    // max nodes in a grid
+static const i8 C_MAX_PARTITIONS           // max partitions in a grid
+                  = C_MAX_SLOTS * C_MAX_NODES;
+static const i8 C_MAX_COLUMNS    = 150;    // max columns per table
+static const i8 C_MAX_INDEXES    = 1025;   // max indexes per table
+static const i8 C_MAX_KEY        = 256;    // max length of index entry key
+static const i8 C_MAX_PATH       = 256;    // max length of file path
+static const i8 C_MAX_RECORD     = C_16KB; // max length of record
+static const i8 C_MAX_SESSIONS   = 1024;   // max number of sessions
+static const i8 C_MAX_VCH        = C_4KB;  // max length of a vch value
 
-static const i8 C_MAX_COLUMNS    = 150;
-static const i8 C_MAX_KEY        = 256;
-static const i8 C_PATH_MAX       = 256;
-static const i8 C_MAX_RECORD     = C_16KB;
-static const i8 C_MAX_SESSIONS   = 1024;
-static const i8 C_MAX_VCH        = C_4KB;
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 static const i8 C_MAX_PRECISION_BCD = 19;
 static const i8 C_MAX_PRECISION_FLT = 19;
 static const i8 C_MAX_PRECISION_INT = 19;
-
-// allow for maximum 1025 indexes per table
-static const i8 C_INDEXES_PER_TABLE = 1025;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
