@@ -82,7 +82,7 @@ Key* Ent::aKey(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of key byte                                                    */
+/* get address of key bytes                                                   */
 /*----------------------------------------------------------------------------*/
 byte* Ent::ayKeyBytes(void)
 {
@@ -108,7 +108,7 @@ void Ent::vLevels(i8 nLevels)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a next entry offset                                                    */
+/* get next entry offset for given level                                      */
 /*----------------------------------------------------------------------------*/
 i4 Ent::iNEO(i8 i_Level)
 {
@@ -122,7 +122,7 @@ i4 Ent::iNEO(i8 i_Level)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set a next entry offset                                                    */
+/* set next entry offset for given level                                      */
 /*----------------------------------------------------------------------------*/
 void Ent::vNEO(i8 i_Level, i4 i_Offset)
 {
@@ -134,15 +134,17 @@ void Ent::vNEO(i8 i_Level, i4 i_Offset)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump the NEO after this entry                                              */
+/* dump the NEO associated with this entry                                    */
 /*----------------------------------------------------------------------------*/
 void Ent::vNEOdump(void)
 {
   NEO* aNEO = this->aNEO();
-  vTrace("Ent %p levels: %lld NEO: %p"_Stz,
-         this,nLevels(),aNEO);
+  i8 nLvls  = nLevels();
   
-  for (i8 i_Level = 0; i_Level < nLevels(); i_Level++)
+  vTrace("Ent %p levels: %lld NEO: %p"_Stz,
+         this,nLvls,aNEO);
+  
+  for (i8 i_Level = 0; i_Level < nLvls; i_Level++)
     vTrace(" %lld: %d"_Stz,i_Level,aNEO->m_iOffset[i_Level]);
   
   vTrace("\n"_Stz);
@@ -243,7 +245,7 @@ bool Ent::bValidEnt(void)
 /*----------------------------------------------------------------------------*/
 NEO* Ent::aNEO(void)
 {
-   i8 i_NEO = sizeof(Ent) + m_xKey.nSizeKey();
+  i8 i_NEO = sizeof(Ent) + m_xKey.nSizeKey();
 
   NEO* aNEO = aAdd<NEO*>(this,i_NEO);
   
