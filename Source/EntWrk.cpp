@@ -45,6 +45,8 @@ EntWrk::EntWrk(void)
   m_xWsp.vZero(CN_ENTWRK);
 #endif
   
+  m_xKey.vSizeKey(C_UNKNOWN);
+  
   m_xWsp.vInit();
   
   m_ayEmbedded = m_xWsp.ayArea();
@@ -493,6 +495,16 @@ Key* EntWrk::aKey(void)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   return reinterpret_cast<Key*>(ayEmbedded());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set key                                                                    */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vKeyBytes(i8 nKeySize, byte* ayKeyBytes)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  MemLib::vCopy(m_xWsp.ayArea(),ayKeyBytes,nKeySize,CN_ENTWRK);
 }
 
 /*----------------------------------------------------------------------------*/

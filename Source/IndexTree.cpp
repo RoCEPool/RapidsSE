@@ -258,25 +258,24 @@ void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reinsert the first key of the first L0 buffer back into the L1 buffer
   
-  Ent* aFirstL0_Key = pFirstL0->aLeadEntry();
+  Ent* aFirstL0_ent = pFirstL0->aLeadEntry();
   
-  Id xId = aFirstL0_Key->xId();
-  byte* aKeyBytes = aFirstL0_Key->ayKeyBytes();
-  //i8 nKeySize = aKey->nKeySize(pIdxColVec);
-  i8 nKeySize = aFirstL0_Key->nSizeKey();
-  i8 nLevels = aFirstL0_Key->nLevels();
+  Id xId = aFirstL0_ent->xId();
+  byte* aKeyBytes = aFirstL0_ent->ayKeyBytes();
+  i8 nKeySize = aFirstL0_ent->nSizeKey();
+  i8 nLevels = aFirstL0_ent->nLevels();
   
   i8 iFirstL0_BufferNo = pFirstL0->iPoolBufferNo();
   xId.vBuffer(iFirstL0_BufferNo);
   
-  EntWrk xL1_FirstKey;
+  EntWrk xFirstL1_ent;
   
-  xL1_FirstKey.vId(xId);
-  xL1_FirstKey.vEmbedded(aKeyBytes);
-  xL1_FirstKey.vKeySize(nKeySize);
-  xL1_FirstKey.vLevels(nLevels);
+  xFirstL1_ent.vId(xId);
+  xFirstL1_ent.vEmbedded(aKeyBytes);
+  xFirstL1_ent.vKeySize(nKeySize);
+  xFirstL1_ent.vLevels(nLevels);
   
-  Ent* aFirstL1_Key = pL1->aInsertKeyAbs(xL1_FirstKey);
+  Ent* aFirstL1_Key = pL1->aInsertKeyAbs(xFirstL1_ent);
   
   //pL1->vShow();
 }
@@ -452,21 +451,21 @@ void IndexTree::vCopyLeftV2(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
   
   TRACE_COMPACT( pRightL0->vShow(); )
   
-  for (Ent* aRightL0_Key = pRightL0->aLeadEntry();
-       aRightL0_Key;
-       aRightL0_Key = pRightL0->aNextEntry(aRightL0_Key,0)) {
+  for (Ent* aRightL0_ent = pRightL0->aLeadEntry();
+       aRightL0_ent;
+       aRightL0_ent = pRightL0->aNextEntry(aRightL0_ent,0)) {
     
     TRACE_COMPACT( pRightKeyEntryL0->vShow(0, m_pIndex, true); )
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the elements of the right key
     
-    Id xId = aRightL0_Key->xId();
-    byte* ayKeyBytes = aRightL0_Key->ayKeyBytes();
+    Id xId = aRightL0_ent->xId();
+    byte* ayKeyBytes = aRightL0_ent->ayKeyBytes();
     
     //i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nKeySize = aRightL0_Key->nSizeKey();
-    i8 nLevels = aRightL0_Key->nLevels();
+    i8 nKeySize = aRightL0_ent->nSizeKey();
+    i8 nLevels = aRightL0_ent->nLevels();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // form the working version of the left key

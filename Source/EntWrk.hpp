@@ -17,13 +17,15 @@ namespace Indexes
   static const i8 C_WSP_ENTWRK = C_17KB;
   
   private:
-    Id    m_xId; // id of row, or referenced entry in another buffer
+    Id    m_xId;  // id (child index buffer, or row ref at H0 leaf buffers)
+  
+    Key   m_xKey; // the key
+  
+    Wsp_t<C_WSP_ENTWRK> m_xWsp; // key workspace
   
     byte* m_ayEmbedded; // address of embedded object. this may be different
                         // from m_xWsp.aArea() to allow for the object
                         // not to have to be copied into the wsp
-  
-    Wsp_t<C_WSP_ENTWRK> m_xWsp; // key workspace
   
     Footer m_xFooter;
   
@@ -72,6 +74,8 @@ namespace Indexes
     void  vItemNo(i8 i_Item);
   
     Key*  aKey(void);
+    void  vKeyBytes(i8 nKeySize, byte* ayKeyBytes);
+
     byte* ayKeyLatter(void);
     i8    nKeySize(void);
     void  vKeySize(i8 nKeySize);
