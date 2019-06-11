@@ -117,27 +117,48 @@ eKC EntWrk::eCompare(Ent* aEnt1, EntWrk& xEntWrk2)
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
 /*----------------------------------------------------------------------------*/
+//eKC EntWrk::eCompare(EntWrk& xEntWrk1, EntWrk& xEntWrk2)
+//{
+//  i8 nKeySize1 = xEntWrk1.nKeySize();
+//  i8 nKeySize2 = xEntWrk2.nKeySize();
+//
+//  byte* ayKeyBytes1 = xEntWrk1.ayKeyBytes();
+//  byte* ayKeyBytes2 = xEntWrk2.ayKeyBytes();
+//
+//  i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
+//
+//  i8 iCmp = MemLib::iCompareWords(ayKeyBytes1,ayKeyBytes2,iCmpBytes);
+//
+//  if (iCmp == 0)
+//    return KC_SAME;
+//
+//  if (iCmp < 0)
+//    return KC_BEFORE;
+//
+//  return KC_AFTER;
+//}
+/*----------------------------------------------------------------------------*/
 eKC EntWrk::eCompare(EntWrk& xEntWrk1, EntWrk& xEntWrk2)
 {
   i8 nKeySize1 = xEntWrk1.nKeySize();
   i8 nKeySize2 = xEntWrk2.nKeySize();
-  
+
   Key* aKey1 = xEntWrk1.aKey_ayEmbedded();
   Key* aKey2 = xEntWrk2.aKey_ayEmbedded();
-  
+
   i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
-  
+
   byte* ayCursorThis = aKey1->ayKeyBytes();
   byte* ayCursorThat = aKey2->ayKeyBytes();
-  
+
   i8 iCmp = MemLib::iCompareWords(ayCursorThis, ayCursorThat, iCmpBytes);
-  
+
   if (iCmp == 0)
     return KC_SAME;
-  
+
   if (iCmp < 0)
     return KC_BEFORE;
-  
+
   return KC_AFTER;
 }
 
