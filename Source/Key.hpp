@@ -35,11 +35,14 @@ namespace Indexes
     Key(void);
     ~Key(void) noexcept(false);
   
+    //! this is the final (one and only) function we should aim for
+    //static eKC eCompare(Key* aLeft, Key* aRight);
+  
     static eKC eCompare(Ent* aEnt1, EntWrk& xEntWrk2);
     static eKC eCompare(EntWrk& xEntWrk1, EntWrk& xEntWrk2);
     static eKC eCompare(EntWrk& xEntWrk1, Ent* aEnt2);
     static eKC eCompare(Ent* aEnt1, Ent* aEnt2);
-    
+  
     static byte* ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor);
     
     static bool bEqualTo(Ent* aEnt1, Ent* aEnt2);
