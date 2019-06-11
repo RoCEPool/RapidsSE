@@ -32,10 +32,9 @@ namespace Indexes
 using namespace Indexes;
 
 #include "Id.hpp"
-#include "Key2.hpp"
+#include "Key.hpp"
 #include "Ent.hpp"
 #include "EntWrk.hpp"
-#include "Key.hpp"
 #include "SkipRoots.hpp"
 
 #include "EntBuffer.hpp"
