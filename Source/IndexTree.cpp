@@ -261,7 +261,7 @@ void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
   Ent* aFirstL0_Key = pFirstL0->aLeadEntry();
   
   Id xId = aFirstL0_Key->xId();
-  Key* aKey = _aKey(aFirstL0_Key->ayKeyBytes());
+  byte* aKeyBytes = aFirstL0_Key->ayKeyBytes();
   //i8 nKeySize = aKey->nKeySize(pIdxColVec);
   i8 nKeySize = aFirstL0_Key->nSizeKey();
   i8 nLevels = aFirstL0_Key->nLevels();
@@ -272,7 +272,7 @@ void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
   EntWrk xL1_FirstKey;
   
   xL1_FirstKey.vId(xId);
-  xL1_FirstKey.vEmbedded((byte*)aKey);
+  xL1_FirstKey.vEmbedded(aKeyBytes);
   xL1_FirstKey.vKeySize(nKeySize);
   xL1_FirstKey.vLevels(nLevels);
   
@@ -330,7 +330,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     // get the elements of the right key
     
     Id xId = aRightL0_Key->xId();
-    Key* aKey = _aKey(aRightL0_Key->ayKeyBytes());
+    byte* aKeyBytes = aRightL0_Key->ayKeyBytes();
     
     //i8 nKeySize = aKey->nKeySize(pIdxColVec);
     i8 nKeySize = aRightL0_Key->nSizeKey();
@@ -340,7 +340,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     // form the working version of the left key
     
     xLeftEntWrk.vId(xId);
-    xLeftEntWrk.vEmbedded((byte*)aKey);
+    xLeftEntWrk.vEmbedded(aKeyBytes);
     xLeftEntWrk.vKeySize(nKeySize);
     xLeftEntWrk.vLevels(nLevels);
     
@@ -462,7 +462,7 @@ void IndexTree::vCopyLeftV2(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     // get the elements of the right key
     
     Id xId = aRightL0_Key->xId();
-    Key* aKey = _aKey(aRightL0_Key->ayKeyBytes());
+    byte* ayKeyBytes = aRightL0_Key->ayKeyBytes();
     
     //i8 nKeySize = aKey->nKeySize(pIdxColVec);
     i8 nKeySize = aRightL0_Key->nSizeKey();
@@ -472,7 +472,7 @@ void IndexTree::vCopyLeftV2(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     // form the working version of the left key
     
     xLeftEntWrk.vId(xId);
-    xLeftEntWrk.vEmbedded((byte*)aKey);
+    xLeftEntWrk.vEmbedded(ayKeyBytes);
     xLeftEntWrk.vKeySize(nKeySize);
     xLeftEntWrk.vLevels(nLevels);
     

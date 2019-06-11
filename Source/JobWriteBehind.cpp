@@ -130,12 +130,7 @@ eEC JobWriteBehind::eInsertRow(RowNub* pRowNub)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the entry buffer for the partition
     RowBuffer* pRowBuffer = m_pRowBuffer[i_Ptn];
-    
-    //RowWrk xRowWrk;
-    
-    //xRowWrk.vEmbedded(aRow_Data->aChar());
-    //xRowWrk.vRowDataSize(nRowBytes);
-    
+        
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert row into working buffer
     pRowBuffer->vGrabWrite();
