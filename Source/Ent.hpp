@@ -54,6 +54,7 @@ namespace Indexes
   
     i8    nSizeBytes(void);
     i8    nSizeKey(void);
+    void  vSizeKey(i8 nSizeKey);
     i8    nSizeNeo(void);
 
     i8    iSkipNo(void);

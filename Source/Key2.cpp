@@ -98,11 +98,11 @@ void Key2::vShow(IdxColVec* pIdxColVec)
     
     eDM eDatum = pColumn->eDatumType();
     
-    if (eDatum == DM_VCH) {
+    if (eDatum == DM_VCH)
       nBytes = StrLib::iWordFlipBack(caLiteral, (char*)ayElm);
-    }
     else
       Record::vSprint(pColumn,(Stz*)caLiteral,(Stz*)ayElm);
+    
     vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Co,nBytes,caLiteral);
   }
   
@@ -122,7 +122,7 @@ i8 Key2::nSizeKey(void)
 /*----------------------------------------------------------------------------*/
 void Key2::vSizeKey(i8 nSizeKey)
 {
-  m_nKeyBytes = nSizeKey;
+  m_nKeyBytes = (i4)nSizeKey;
 }
 
 /*============================================================================*/
