@@ -32,7 +32,7 @@ SkipRoots::SkipRoots(void)
 
   m_xId.vBuffer(*nBufferNo);
   vLevels(3);
-  m_nSizeItem_WithoutOffsets = sizeof(Ent);//sizeof(SkipRoots) - sizeof(m_iaNextOffset);
+  m_nSizeEnt_WithoutOffsets = sizeof(Ent);//sizeof(SkipRoots) - sizeof(m_iaNextOffset);
   
   m_iPadding[0] = -1;
   m_iPadding[1] = -1;

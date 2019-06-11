@@ -33,10 +33,12 @@ void* Ent::operator new(size_t, Ent* aEnt)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Ent::Ent(eCN eClassNo, i8 nSizeItem)
+Ent::Ent(eCN eClassNo, i8 nSizeEnt)
 : Header(eClassNo)
 {
-  m_nSizeItem_WithoutOffsets = static_cast<i4>(nSizeItem);
+  m_nSizeEnt_WithoutOffsets = static_cast<i4>(nSizeEnt);
+  
+  m_nKeySize = C_UNKNOWN;
   
 #ifdef WITH_DEBUG_VERSION
   m_iSkipNo = -1;
@@ -104,7 +106,7 @@ i4 Ent::iNEO(i8 i_Level)
 {
   ASSERT(i_Level >= 0 && i_Level < nLevels());
   
-  i4 iNEO = *(aAdd<i4*>(this, m_nSizeItem_WithoutOffsets + C_NEO_SIZE * i_Level));
+  i4 iNEO = *(aAdd<i4*>(this, m_nSizeEnt_WithoutOffsets + C_NEO_SIZE * i_Level));
   
   return iNEO;
 }
@@ -116,7 +118,7 @@ void Ent::vNEO(i8 i_Level, i4 i_Offset)
 {
   ASSERT(i_Level >= 0 && i_Level < nLevels());
   
-  *(aAdd<i4*>(this, m_nSizeItem_WithoutOffsets + C_NEO_SIZE * i_Level)) = i_Offset;
+  *(aAdd<i4*>(this, m_nSizeEnt_WithoutOffsets + C_NEO_SIZE * i_Level)) = i_Offset;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -139,7 +141,7 @@ void Ent::vNEOdump(void)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nSizeBytes(void)
 {
-  i8 nBytes = m_nSizeItem_WithoutOffsets + nSizeNeo();
+  i8 nBytes = m_nSizeEnt_WithoutOffsets + nSizeNeo();
   
   return nBytes;
 }
@@ -149,7 +151,7 @@ i8 Ent::nSizeBytes(void)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nSizeKey(void)
 {
-  return (i8)(m_nSizeItem_WithoutOffsets - sizeof(Ent));
+  return (i8)(m_nSizeEnt_WithoutOffsets - sizeof(Ent));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -198,7 +200,7 @@ bool Ent::bValidEnt(void)
 /*----------------------------------------------------------------------------*/
 NEO* Ent::aNEO(void)
 {
-  NEO* aNEO = aAdd<NEO*>(this, m_nSizeItem_WithoutOffsets);
+  NEO* aNEO = aAdd<NEO*>(this, m_nSizeEnt_WithoutOffsets);
   
   return aNEO;
 }
