@@ -8,10 +8,10 @@ namespace Indexes
   static const i8 C_NEO_SIZE = sizeof(i4);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class NEO // next entry offset
+  class NEO // next entry offset array
   {
   public:
-    i4 m_iOffset[1];  // offset where the next entry is
+    i4 m_iOffset[1];  // offset in buffer where the next entry is
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -40,6 +40,7 @@ namespace Indexes
     Id&   xId(void);
     void  vId(Id xId);
   
+    Key*  aKey(void);
     byte* ayKeyBytes(void);
   
     i8    nLevels(void);
