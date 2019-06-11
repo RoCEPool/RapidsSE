@@ -332,21 +332,21 @@
 /* generate the integer data files                                            */
 /*----------------------------------------------------------------------------*/
 : integerData
-  "/DATA/Encoding/integer.csv"    1000000      integerDataFile
+  "/home/rapids/SE_SCALE/integer.csv"    1000000      integerDataFile
 ;
 
 /*----------------------------------------------------------------------------*/
 /* generate the integer data files                                            */
 /*----------------------------------------------------------------------------*/
 : integerData10M
-  "/DATA/Encoding/integer10M.csv"    10000000      integerDataFile
+  "/home/rapids/SE_SCALE/integer10M.csv"    10000000      integerDataFile
 ;
 
 /*----------------------------------------------------------------------------*/
 /* generate the integer data files                                            */
 /*----------------------------------------------------------------------------*/
 : integerData100M
-  "/DATA/Encoding/integer100M.csv"    100000000      integerDataFile
+  "/home/rapids/SE_SCALE/integer100M.csv"    100000000      integerDataFile
 ;
 
 /*----------------------------------------------------------------------------*/
