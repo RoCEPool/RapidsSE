@@ -37,7 +37,6 @@ Ent::Ent(eCN eClassNo, i8 nSizeEnt_Without_NEO)
 : Header(eClassNo)
 {
   i8 nKeyBytes = static_cast<i4>(nSizeEnt_Without_NEO - sizeof(Ent));
-  m_nKeyBytes = (i4)nKeyBytes;
   
   m_xKey.vSizeKey(nKeyBytes);
   
@@ -106,7 +105,6 @@ void Ent::vLevels(i8 nLevels)
 i4 Ent::iNEO(i8 i_Level)
 {
   ASSERT(i_Level >= 0 && i_Level < nLevels());
-  RASSERT(m_nKeyBytes == m_xKey.nSizeKey());
 
   i8 i_NEO = sizeof(Ent) + m_xKey.nSizeKey() + (C_NEO_SIZE * i_Level);
   
@@ -121,7 +119,6 @@ i4 Ent::iNEO(i8 i_Level)
 void Ent::vNEO(i8 i_Level, i4 i_Offset)
 {
   ASSERT(i_Level >= 0 && i_Level < nLevels());
-  RASSERT(m_nKeyBytes == m_xKey.nSizeKey());
 
   i8 i_NEO = sizeof(Ent) + m_xKey.nSizeKey() + (C_NEO_SIZE * i_Level);
 
@@ -148,8 +145,6 @@ void Ent::vNEOdump(void)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nSizeBytes(void)
 {
-  RASSERT(m_nKeyBytes == m_xKey.nSizeKey());
-  
   i8 nBytes = sizeof(Ent) + m_xKey.nSizeKey() + nSizeNeo();
 
   return nBytes;
@@ -160,8 +155,6 @@ i8 Ent::nSizeBytes(void)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nSizeKey(void)
 {
-  RASSERT(m_nKeyBytes == m_xKey.nSizeKey());
-  
   i8 nBytes = m_xKey.nSizeKey();
   return nBytes;
 }
@@ -171,7 +164,6 @@ i8 Ent::nSizeKey(void)
 /*----------------------------------------------------------------------------*/
 void Ent::vSizeKey(i8 nSizeKey)
 {
-  m_nKeyBytes = (i4)nSizeKey;
   m_xKey.vSizeKey(nSizeKey);
 }
 
@@ -243,9 +235,7 @@ bool Ent::bValidEnt(void)
 /*----------------------------------------------------------------------------*/
 NEO* Ent::aNEO(void)
 {
-  RASSERT(m_nKeyBytes == m_xKey.nSizeKey());
-  
-  i8 i_NEO = sizeof(Ent) + m_xKey.nSizeKey();
+   i8 i_NEO = sizeof(Ent) + m_xKey.nSizeKey();
 
   NEO* aNEO = aAdd<NEO*>(this,i_NEO);
   

@@ -32,7 +32,6 @@ SkipRoots::SkipRoots(void)
 
   m_xId.vBuffer(*nBufferNo);
   vLevels(3);
-  m_nKeyBytes = 0;
   vSizeKey(0);
 
   m_iPadding[0] = -1;
