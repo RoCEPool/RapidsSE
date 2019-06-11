@@ -40,8 +40,9 @@ namespace Indexes
   
   class Key2
   {
-  private:
-    // ..bytes..   // variable byte sequence of the key
+  protected:
+    i4  m_nKeyBytes; // size of key (in bytes)
+    // ..bytes..     // variable byte sequence of the key
   
   public:
     void* operator new(size_t);
@@ -55,13 +56,15 @@ namespace Indexes
   
     i8   iGetInt(void);
     void vShow(IdxColVec* pIdxColVec);
-  
+    i8   nSizeKey(void);
+    void vSizeKey(i8 nSizeKey);
+
     /*------------------------------------------------------------------------*/
     /* getthis key as a byte sequence                                         */
     /*------------------------------------------------------------------------*/
     inline byte* ayByteSequence(void)
     {
-      return reinterpret_cast<byte*>(this);
+      return reinterpret_cast<byte*>(this + sizeof(m_nKeyBytes));
     }
   };
   
