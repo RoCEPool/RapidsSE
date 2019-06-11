@@ -20,11 +20,14 @@ namespace PushDown
     RefBuffer(void);
     ~RefBuffer(void) noexcept(false);
   
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+    
     RefSet* aAllotRefSet(i8 nRowRefs);
   
     RefSet* aFirstRefSet(void);
     RefSet* aNextRefSet(RefSet* aPriorRefSet);
-
+    void    vShow(void);
+    
   private:
     Footer* aFooter(void);
   };

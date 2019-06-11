@@ -10,8 +10,8 @@ namespace PushDown
   private:
   
   public:
+    static void vIndexJoin_v1(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree);
     static void vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree);
-    static void vIndexJoin_v2(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree);
   };
 
   JoinOp* _pJoinOp(void* aAddr);

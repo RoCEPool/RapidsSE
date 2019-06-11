@@ -65,6 +65,19 @@ RefBuffer::~RefBuffer(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump reference buffer                                                      */
+/*----------------------------------------------------------------------------*/
+void RefBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  RefBuffer* pRefBuffer = _pRefBuffer(pObject);
+  
+  pRefBuffer->vShow();
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -115,6 +128,27 @@ RefSet* RefBuffer::aNextRefSet(RefSet* aPriorRefSet)
     return aRefSet;
 
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show contents of buffer                                                    */
+/*----------------------------------------------------------------------------*/
+void RefBuffer::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
+  
+  i8 nRefSets = nItems();
+  
+  vTrace("RefBuffer: %p (buffer %lld): rows: %lld\n"_Stz,
+         this,m_iBufferNo,nRefSets);
+  
+  vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
+         m_pPrevBuffer,m_pNextBuffer);
+  
+  vTrace("  partition: %lld \n"_Stz, m_iPartitionNo);
+  
+  vTrace("--------------------------------------------------"
+         "--------------------------------------------------\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
