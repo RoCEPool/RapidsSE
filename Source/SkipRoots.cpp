@@ -30,7 +30,7 @@ SkipRoots::SkipRoots(void)
   PoolBuffer* pBuffer = PoolBuffer::pGetPoolBuffer((Object*)this);
   bn nBufferNo = pBuffer->nPoolBufferNo();
 
-  m_xId.vBuffer(*nBufferNo);
+  vBuffer(*nBufferNo);
   vLevels(3);
   vSizeKey(0);
 
