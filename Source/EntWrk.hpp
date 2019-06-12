@@ -59,9 +59,9 @@ namespace Indexes
     void  vItem(i8 iItem);
   
     byte* ayKeyBytes(void);
-    void  vKeyBytes(i8 nKeySize, byte* ayKeyBytes);
-    i8    nKeySize(void);
-    void  vKeySize(i8 nKeySize);
+    void  vKeyBytes(i8 nKeyBytes, byte* ayKeyBytes);
+    i8    nKeyBytes(void);
+    void  vKeyBytes(i8 nKeyBytes);
   
     i8    nLevels(void);
     void  vLevels(i8 nLevels);

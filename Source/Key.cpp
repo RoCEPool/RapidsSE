@@ -107,7 +107,7 @@ i8 Key::iGetInt(void)
 /*----------------------------------------------------------------------------*/
 /* increment the key size                                                     */
 /*----------------------------------------------------------------------------*/
-void Key::vIncSize(i8 nDeltaBytes)
+void Key::vIncKeyBytes(i8 nDeltaBytes)
 {
   m_nKeyBytes += nDeltaBytes;
 }

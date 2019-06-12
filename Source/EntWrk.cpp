@@ -73,7 +73,7 @@ EntWrk::~EntWrk(void) noexcept(false)
 eKC EntWrk::eCompare(Ent* aEnt1, EntWrk& xEntWrk2)
 {
   i8 nKeySize1 = aEnt1->nKeyBytes();
-  i8 nKeySize2 = xEntWrk2.nKeySize();
+  i8 nKeySize2 = xEntWrk2.nKeyBytes();
 
   i8 nCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
 
@@ -104,8 +104,8 @@ eKC EntWrk::eCompare(Ent* aEnt1, EntWrk& xEntWrk2)
 /*----------------------------------------------------------------------------*/
 eKC EntWrk::eCompare(EntWrk& xEntWrk1, EntWrk& xEntWrk2)
 {
-  i8 nKey1Size = xEntWrk1.nKeySize();
-  i8 nKey2Size = xEntWrk2.nKeySize();
+  i8 nKey1Size = xEntWrk1.nKeyBytes();
+  i8 nKey2Size = xEntWrk2.nKeyBytes();
   
   i8 nCmpBytes = nKey1Size < nKey2Size ? nKey1Size : nKey2Size;
   
@@ -128,7 +128,7 @@ eKC EntWrk::eCompare(EntWrk& xEntWrk1, EntWrk& xEntWrk2)
 /*----------------------------------------------------------------------------*/
 eKC EntWrk::eCompare(EntWrk& xEntWrk1, Ent* aEnt2)
 {
-  i8 nKeySize1 = xEntWrk1.nKeySize();
+  i8 nKeySize1 = xEntWrk1.nKeyBytes();
   i8 nKeySize2 = aEnt2->nKeyBytes();
   
   i8 nCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
@@ -353,7 +353,7 @@ i8 EntWrk::nEntKeySize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  i8 nKeyBytes = nKeySize();
+  i8 nKeyBytes = this->nKeyBytes();
   
   i8 nBytes = sizeof(Ent) + nKeyBytes;
   
@@ -367,7 +367,7 @@ i8 EntWrk::nEntKeyNeoSize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  i8 nKeyBytes = nKeySize();
+  i8 nKeyBytes = this->nKeyBytes();
   i8 nNeoBytes = nOffsetsSize();
 
   i8 nBytes = sizeof(Ent) + nKeyBytes + nNeoBytes;
@@ -391,7 +391,7 @@ void EntWrk::vFormEntry(Ent* pEntry)
   
   Key* aSrcKey  = reinterpret_cast<Key*>(ayKeyBytes());
   Key* aDstKey  = _aKey(pEntry->ayKeyBytes());
-  i8   nKeySize = this->nKeySize();
+  i8   nKeySize = this->nKeyBytes();
   
   MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENT);
 }
@@ -403,7 +403,7 @@ i8 EntWrk::iHashKey(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 iHash = HshLib::iHash(ayKeyBytes(),nKeySize());
+  i8 iHash = HshLib::iHash(ayKeyBytes(),nKeyBytes());
   
   return iHash;
 }
@@ -415,7 +415,7 @@ void EntWrk::vIncKeyBytes(i8 nElementBytes)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xEnt.aKey()->vIncSize(nElementBytes);
+  m_xEnt.aKey()->vIncKeyBytes(nElementBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -463,7 +463,7 @@ void EntWrk::vKeyBytes(i8 nKeySize, byte* ayKeyBytes)
 /*----------------------------------------------------------------------------*/
 /* get key size                                                               */
 /*----------------------------------------------------------------------------*/
-i8 EntWrk::nKeySize(void)
+i8 EntWrk::nKeyBytes(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
@@ -475,11 +475,11 @@ i8 EntWrk::nKeySize(void)
 /*----------------------------------------------------------------------------*/
 /* set key size                                                               */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vKeySize(i8 nKeySize)
+void EntWrk::vKeyBytes(i8 nKeyBytes)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  m_xEnt.vKeyBytes(nKeySize);
+  m_xEnt.vKeyBytes(nKeyBytes);
 }
 
 /*----------------------------------------------------------------------------*/
