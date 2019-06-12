@@ -268,7 +268,7 @@ void EntWrk::vAddElement(Row* pRow, Column* pCol)
   
   i8 nBytes = 0;
   
-  char* aDst = (char*)m_xWsp.ayLatter();
+  char* aDst = (char*)ayElementCrs();
   char* aSrc = (char*)pRow->m_aiValue[pCol->iColumnNo()];
   
   if (pRow->m_aiValue[pCol->iColumnNo()] == C_DATUM_NULL) {
@@ -294,7 +294,7 @@ void EntWrk::vAddMinusInfinity(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  char* aDst = (char*)m_xWsp.ayLatter();
+  char* aDst = (char*)ayElementCrs();
   
   i8 iInt = C_DATUM_MINUS_INFINITY;
   Int::nCopy(aDst,(void*)&iInt);
@@ -309,7 +309,7 @@ void EntWrk::vAddPlusInfinity(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  char* aDst = (char*)m_xWsp.ayLatter();
+  char* aDst = (char*)ayElementCrs();
   
   i8 iInt = C_DATUM_PLUS_INFINITY;
   Int::nCopy(aDst,(void*)&iInt);
