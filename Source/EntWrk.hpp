@@ -22,9 +22,7 @@ namespace Indexes
     Key   m_xKey; // the key
   
     Wsp_t<C_WSP_ENTWRK> m_xWsp; // key workspace
-  
-    byte* m_ayElementCrs; // where to add next element
-  
+    
     Footer m_xFooter;
   
   public:

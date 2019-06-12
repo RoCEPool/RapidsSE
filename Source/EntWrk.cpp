@@ -49,8 +49,6 @@ EntWrk::EntWrk(void)
   
   m_xWsp.vInit();
   
-  m_ayElementCrs = m_xWsp.ayArea();
-
   _checkInitialisedSize_(sizeof(EntWrk));
   
   _postcondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
@@ -348,7 +346,11 @@ byte* EntWrk::ayElementCrs(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  return m_xWsp.ayLatter();
+  i8 nBytesUsed = m_xWsp.nUsed();
+  
+  byte* ayNext = aAdd<byte*>(m_xWsp.ayArea(),nBytesUsed);
+
+  return ayNext;
 }
 
 /*----------------------------------------------------------------------------*/
