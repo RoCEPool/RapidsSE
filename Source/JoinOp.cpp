@@ -64,34 +64,21 @@ void JoinOp::vIndexJoin(Queue* pQueue, IndexTree* pLeftIndexTree, IndexTree* pRi
   EntBuffer* pLeftBuffer  = pLeftIndexTree->pRoot();
   EntBuffer* pRightBuffer = pRightIndexTree->pRoot();
 
-  // check for null buffers
-  if ( ! pLeftBuffer ) {
-    RASSERT( ! pRightBuffer );
-    return;
-  }
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a reference buffer
   
   RefBuffer* pRefBuffer = new RefBuffer;
   
-  RefSet* pRefSet;
-  
-  // dump the first buffers
-  pLeftBuffer->vDump();
-  pRightBuffer->vDump();
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // join loop
 
-  Ent* aLeftEntry  = pLeftBuffer->aLeadEntry();
-  Ent* aRightEntry = pRightBuffer->aLeadEntry();
-  
+  Ent* aLeftEntry  = pLeftBuffer ? pLeftBuffer->aLeadEntry() : nullptr;
+  Ent* aRightEntry = pRightBuffer ? pRightBuffer->aLeadEntry() : nullptr;
+
   eNE eNextEnt = NE_NEXT_NONE;
   
   Ent* aFirstRightMatch = nullptr;
   Ent* aFirstLeftMatch  = nullptr;
-  
   EntBuffer* pFirstRightBuffer = nullptr;
   
   while (NE_NEXT_EXIT != eNextEnt) {
@@ -212,6 +199,7 @@ void JoinOp::vIndexJoin(Queue* pQueue, IndexTree* pLeftIndexTree, IndexTree* pRi
     // (d) neither
     eNextEnt = NE_NEXT_EXIT;
   }
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // join completed
