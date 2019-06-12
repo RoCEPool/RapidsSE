@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* add row refs                                                                 */
 /*----------------------------------------------------------------------------*/
-RefBuffer* JoinOp::pAddRowRefs(RefBuffer* pRefBuffer, Ent* aLeftEntry, Ent* aRightEntry)
+RefBuffer* JoinOp::pAddRowRefs(Queue* pQueue, RefBuffer* pRefBuffer, Ent* aLeftEntry, Ent* aRightEntry)
 {
   
   // allot a refSet
@@ -24,7 +24,7 @@ RefBuffer* JoinOp::pAddRowRefs(RefBuffer* pRefBuffer, Ent* aLeftEntry, Ent* aRig
     RASSERT(0);
     
     // put this refBuffer in session bufferQueue
-    //pQueue->vAppend(pRefBuffer);
+    pQueue->vAppend(pRefBuffer);
     
     // create another refBuffer for the refEnt's
     pRefBuffer = new RefBuffer;
@@ -52,7 +52,7 @@ RefBuffer* JoinOp::pAddRowRefs(RefBuffer* pRefBuffer, Ent* aLeftEntry, Ent* aRig
 /*----------------------------------------------------------------------------*/
 /* index join                                                                 */
 /*----------------------------------------------------------------------------*/
-void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
+void JoinOp::vIndexJoin(Queue* pQueue, IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
 {
   vTrace("Joining: L(%s) ⋈ R(%s)\n"_Stz,
          pLeftIndexTree->pIndex()->pTable()->aTableName(),
@@ -148,7 +148,7 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
       switch (eCompare) {
         case KC_SAME:   // leftKey == rightKey
           vTrace("Joining: L(%p) ⋈ R(%p)\n"_Stz,aLeftEntry,aRightEntry);
-          pRefBuffer = pAddRowRefs(pRefBuffer, aLeftEntry, aRightEntry);
+          pRefBuffer = pAddRowRefs(pQueue, pRefBuffer, aLeftEntry, aRightEntry);
           eNextEnt = NE_NEXT_RIGHT;
           
           // save first right
@@ -166,14 +166,14 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
         case KC_BEFORE: // leftKey < rightKey
           if ( ! aFirstRightMatch ) {
             vTrace("Joining: L(%p) ⋈ R(NULL)\n"_Stz,aLeftEntry);
-            pRefBuffer = pAddRowRefs(pRefBuffer, aLeftEntry, nullptr);
+            pRefBuffer = pAddRowRefs(pQueue, pRefBuffer, aLeftEntry, nullptr);
           }
           eNextEnt = NE_NEXT_LEFT;
           break;
           
         case KC_AFTER:  // leftKey > rightKey
           vTrace("Joining: L(NULL) ⋈ R(%p)\n"_Stz,aRightEntry);
-          pRefBuffer = pAddRowRefs(pRefBuffer, aLeftEntry, aRightEntry);
+          pRefBuffer = pAddRowRefs(pQueue, pRefBuffer, aLeftEntry, aRightEntry);
           eNextEnt = NE_NEXT_RIGHT;
           break;
           
@@ -190,7 +190,7 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
       // no previous first right ?
       if ( ! aFirstRightMatch ) {
         vTrace("Joining: L(%p) ⋈ R(NULL)\n"_Stz,aLeftEntry);
-        pRefBuffer = pAddRowRefs(pRefBuffer, aLeftEntry, nullptr);
+        pRefBuffer = pAddRowRefs(pQueue, pRefBuffer, aLeftEntry, nullptr);
       }
       
       // get next left
@@ -202,7 +202,7 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
     if (aRightEntry) {
       
       vTrace("Joining: L(NULL) ⋈ R(%p)\n"_Stz,aRightEntry);
-      pRefBuffer = pAddRowRefs(pRefBuffer, nullptr, aRightEntry);
+      pRefBuffer = pAddRowRefs(pQueue, pRefBuffer, nullptr, aRightEntry);
   
       // get next right
       eNextEnt = NE_NEXT_RIGHT;
@@ -216,50 +216,16 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // join completed
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // mark last buffer as the last buffer
+  pRefBuffer->vIsLast(true);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // put the buffer in the session bufferQueue
+  pQueue->vAppend(pRefBuffer);
+  
   vTrace("Joined\n"_Stz);
   
-  pRefBuffer->vShow();
-  
-  vTrace("Rows (by reference):\n"_Stz);
-  
-  ColumnVec* pLeftColVec  = pLeftIndexTree->pIndex()->pTable()->pColumnVec();
-  ColumnVec* pRightColVec = pRightIndexTree->pIndex()->pTable()->pColumnVec();
-  
-  i8 nJoinRows = pRefBuffer->nItems();
-  pRefSet = pRefBuffer->aFirstRefSet();
-  
-  HV_Rec hvRecLeft(pLeftColVec);
-  HV_Rec hvRecRight(pRightColVec);
-  
-  // create a left and a right row
-  HV_Row hLeftRow(pLeftColVec);
-  HV_Row hRightRow(pRightColVec);
-  
-  while (nJoinRows-- > 0) {
-    
-    // get the left and right rows from the refSet
-    HeadLine* aLeftRow = (HeadLine*)pRefSet->iRowRef(0);
-    HeadLine* aRightRow = (HeadLine*)pRefSet->iRowRef(1);
-    
-    // inflate left row
-    if (aLeftRow) {
-      RowCoder::vInflate(hLeftRow,aLeftRow);
-      hvRecLeft->vAppend(hLeftRow);
-    }
-  
-    // inflate right row
-    if (aRightRow) {
-      RowCoder::vInflate(hRightRow,aRightRow);
-      hvRecRight->vAppend(hRightRow);
-    }
-  
-    vTrace("row: (%s) ⋈ (%s)\n"_Stz,
-           aLeftRow  ? hvRecLeft->szRecStr()  : "NULL"_Stz,
-           aRightRow ? hvRecRight->szRecStr() : "NULL"_Stz);
-    
-    // get next row ref
-    pRefSet = pRefBuffer->aNextRefSet(pRefSet);
-  }
   
   vTrace("\n"_Stz);
   vTrace("=================================================="

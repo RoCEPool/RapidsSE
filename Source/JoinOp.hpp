@@ -32,10 +32,11 @@ namespace PushDown
   private:
   
   public:
-    static void vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree);
+    static void vIndexJoin(Queue* pQueue, IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree);
     
   private:
-    static RefBuffer* pAddRowRefs(RefBuffer* pRefBuffer, Ent* aLeftEntry, Ent* aRightEntry);
+    static RefBuffer* pAddRowRefs(Queue* pQueue, RefBuffer* pRefBuffer,
+                                  Ent* aLeftEntry, Ent* aRightEntry);
   };
 
   JoinOp* _pJoinOp(void* aAddr);

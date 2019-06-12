@@ -227,10 +227,6 @@ void Step::vJob_SubIndexJoinIndexJoin(MP_Task mpTask)
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJob_SubIndexJoin->m_pParentJob);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a refBuffer for the results
-  // pRefBuffer = new RefBuffer();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the left table and left index
   Table* pLeftTable = pJob_IndexJoin->m_pLeftTable;
   Index* pLeftIndex = pJob_IndexJoin->m_pLeftIndex;
@@ -252,7 +248,7 @@ void Step::vJob_SubIndexJoinIndexJoin(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the index join on the two tables
-  JoinOp::vIndexJoin(pLeftIndexTree, pRightIndexTree);
+  JoinOp::vIndexJoin(pQueue, pLeftIndexTree, pRightIndexTree);
   
   EXIT();
 }
