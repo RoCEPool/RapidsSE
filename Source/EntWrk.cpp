@@ -45,7 +45,7 @@ EntWrk::EntWrk(void)
   m_xWsp.vZero(CN_ENTWRK);
 #endif
   
-  m_xKey.vSizeKey(C_UNKNOWN);
+  m_xKey.vSizeKey(0);
   
   m_xWsp.vInit();
   
@@ -347,7 +347,8 @@ byte* EntWrk::ayElementCrs(void)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   i8 nBytesUsed = m_xWsp.nUsed();
-  
+  RASSERT(m_xKey.nSizeKey() == nBytesUsed);
+
   byte* ayNext = aAdd<byte*>(m_xWsp.ayArea(),nBytesUsed);
 
   return ayNext;
@@ -442,6 +443,8 @@ void EntWrk::vIncKeyBytes(i8 nElementBytes)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
+  m_xKey.vIncSize(nElementBytes);
+  
   m_xWsp.vTake(nElementBytes);
 }
 
@@ -482,7 +485,9 @@ void EntWrk::vKeyBytes(i8 nKeySize, byte* ayKeyBytes)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-   m_xWsp.vUsed(nKeySize);
+  m_xKey.vSizeKey(nKeySize);
+  
+  m_xWsp.vUsed(nKeySize);
   
   MemLib::vCopy(m_xWsp.ayArea(),ayKeyBytes,nKeySize,CN_ENTWRK);
 }
@@ -495,6 +500,7 @@ i8 EntWrk::nKeySize(void)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   i8 nSize = m_xWsp.nUsed();
+  RASSERT(m_xKey.nSizeKey() == nSize);
   
   return nSize;
 }
@@ -505,6 +511,8 @@ i8 EntWrk::nKeySize(void)
 void EntWrk::vKeySize(i8 nKeySize)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  m_xKey.vSizeKey(nKeySize);
   
   m_xWsp.vUsed(nKeySize);
 }
