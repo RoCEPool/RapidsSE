@@ -26,6 +26,8 @@ namespace Indexes
   
     Key  m_xKey;    // the key
   
+    // ..bytes of key
+  
     // ..neo..      // (0, 1 or 2 next entry offsets)
   
   public:
