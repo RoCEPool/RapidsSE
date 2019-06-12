@@ -56,6 +56,7 @@ fileCat "/tpch/SF0/lineitem_10.csv" 10;
 //fileCat "/tpch/SF0/lineitem_100k.csv" 10;
 //fileCat "/tpch/SF1/lineitem.csv" 10;
 
+compactidx LineItem LineItem_Idx1;
 
 /*
 time fetch lineitem

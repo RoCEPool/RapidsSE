@@ -491,7 +491,10 @@ void EntWrk::vKeyBytes(i8 nKeySize, byte* ayKeyBytes)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  MemLib::vCopy(m_xWsp.ayArea(),ayKeyBytes,nKeySize,CN_ENTWRK);
+  m_ayEmbedded = ayKeyBytes;
+  m_xWsp.vUsed(nKeySize);
+
+  //MemLib::vCopy(m_xWsp.ayArea(),ayKeyBytes,nKeySize,CN_ENTWRK);
 }
 
 /*----------------------------------------------------------------------------*/
