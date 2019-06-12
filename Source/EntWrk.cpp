@@ -49,7 +49,6 @@ EntWrk::EntWrk(void)
   
   m_xWsp.vInit();
   
-  m_ayEmbedded   = m_xWsp.ayArea();
   m_ayElementCrs = m_xWsp.ayArea();
 
   _checkInitialisedSize_(sizeof(EntWrk));
@@ -395,7 +394,7 @@ void EntWrk::vFormEntry(Ent* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into entry
   
-  Key* aSrcKey  = reinterpret_cast<Key*>(m_ayEmbedded);
+  Key* aSrcKey  = reinterpret_cast<Key*>(m_xWsp.ayArea());
   Key* aDstKey  = _aKey(pEntry->ayKeyBytes());
   i8   nKeySize = this->nKeySize();
   
@@ -409,7 +408,7 @@ i8 EntWrk::iHashKey(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 iHash = HshLib::iHash(m_ayEmbedded,nKeySize());
+  i8 iHash = HshLib::iHash(m_xWsp.ayArea(),nKeySize());
   
   return iHash;
 }
@@ -471,7 +470,7 @@ byte* EntWrk::ayKeyBytes(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  return m_ayEmbedded;
+  return m_xWsp.ayArea();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -481,10 +480,9 @@ void EntWrk::vKeyBytes(i8 nKeySize, byte* ayKeyBytes)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  m_ayEmbedded = ayKeyBytes;
-  m_xWsp.vUsed(nKeySize);
-
-  //MemLib::vCopy(m_xWsp.ayArea(),ayKeyBytes,nKeySize,CN_ENTWRK);
+   m_xWsp.vUsed(nKeySize);
+  
+  MemLib::vCopy(m_xWsp.ayArea(),ayKeyBytes,nKeySize,CN_ENTWRK);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -574,12 +572,10 @@ void EntWrk::vSetWrk(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   // copy key into this entry
   
   byte* aKeyBytes = pEntry->ayKeyBytes();
-  i8 iKeySize   = pEntry->nSizeKey();
-  RASSERT(iKeySize % 8 == 0);
+  i8 nKeySize = pEntry->nSizeKey();
+  RASSERT(nKeySize % 8 == 0);
   
-  m_ayEmbedded = aKeyBytes;
-  
-  vKeySize(iKeySize);
+  vKeyBytes(nKeySize,aKeyBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -589,7 +585,7 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  Key* aKey = reinterpret_cast<Key*>(m_ayEmbedded);
+  Key* aKey = reinterpret_cast<Key*>(m_xWsp.ayArea());
   aKey->vShow(pIdxColVec);
   vTrace("\n"_Stz);
 }
