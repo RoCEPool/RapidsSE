@@ -22,6 +22,7 @@ namespace Indexes
     //static eKC eCompare(Key* aLeft, Key* aRight);
   
     i8   iGetInt(void);
+    void vIncSize(i8 nDeltaBytes);
     void vShow(IdxColVec* pIdxColVec);
     i8   nSizeKey(void);
     void vSizeKey(i8 nSizeKey);
