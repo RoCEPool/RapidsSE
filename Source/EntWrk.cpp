@@ -43,6 +43,8 @@ EntWrk::EntWrk(void)
   
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(CN_ENTWRK);
+  
+  MemLib::vZero(m_yaKeyBytes,sizeof(m_yaKeyBytes),CN_ENTWRK);
 #endif
   
   m_xKey.vSizeKey(0);

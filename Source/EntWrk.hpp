@@ -21,8 +21,10 @@ namespace Indexes
   
     Key   m_xKey; // the key
   
+    byte  m_yaKeyBytes[C_MAX_KEY]; // the bytes of the key
+  
     Wsp_t<C_WSP_ENTWRK> m_xWsp; // key workspace
-    
+  
     Footer m_xFooter;
   
   public:
