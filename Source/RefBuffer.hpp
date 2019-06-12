@@ -10,6 +10,8 @@ namespace PushDown
   {
   protected:
   
+    bool   m_bIsLast;      // is this the last buffer in its sequence?
+  
     // must be last
     Footer m_xFooter;
   
@@ -25,6 +27,8 @@ namespace PushDown
     RefSet* aAllotRefSet(i8 nRowRefs);
   
     RefSet* aFirstRefSet(void);
+    void    vIsLast(bool bIsLast);
+    bool    bIsLast(void);
     RefSet* aNextRefSet(RefSet* aPriorRefSet);
     void    vShow(void);
     

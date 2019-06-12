@@ -51,6 +51,7 @@ RefBuffer::RefBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
   
+  m_bIsLast = false;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
   
@@ -113,6 +114,26 @@ RefSet* RefBuffer::aFirstRefSet(void)
   RefSet* aRefSet = aFirstItem();
   
   return aRefSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set buffer is last                                                         */
+/*----------------------------------------------------------------------------*/
+void RefBuffer::vIsLast(bool bIsLast)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
+  
+  m_bIsLast = bIsLast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get if buffer is last                                                      */
+/*----------------------------------------------------------------------------*/
+bool RefBuffer::bIsLast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
+  
+  return m_bIsLast;
 }
 
 /*----------------------------------------------------------------------------*/
