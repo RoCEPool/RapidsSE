@@ -353,16 +353,6 @@ byte* EntWrk::ayElementCrs(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set address of embedded object                                             */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vEmbedded(byte* ayEmbedded)     //! i'd like to get rid of this fun
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  m_ayEmbedded = ayEmbedded;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the size {Ent,keyBytes}                                                */
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nEntKeySize(void)
@@ -587,7 +577,7 @@ void EntWrk::vSetWrk(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   i8 iKeySize   = pEntry->nSizeKey();
   RASSERT(iKeySize % 8 == 0);
   
-  vEmbedded(aKeyBytes);
+  m_ayEmbedded = aKeyBytes;
   
   vKeySize(iKeySize);
 }
