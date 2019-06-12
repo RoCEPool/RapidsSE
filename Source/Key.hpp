@@ -18,8 +18,7 @@ namespace Indexes
     Key(void);
     ~Key(void) noexcept(false);
   
-    //! this is the final (one and only) function we should aim for
-    //static eKC eCompare(Key* aLeft, Key* aRight);
+    static eKC eCompare(Key* aLeft, Key* aRight);
   
     i8   iGetInt(void);
     void vIncSize(i8 nDeltaBytes);

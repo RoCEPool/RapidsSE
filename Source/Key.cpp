@@ -60,9 +60,34 @@ Key::~Key(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* compare left key with right key                                            */
 /*----------------------------------------------------------------------------*/
-//eKC Key::eCompare(Key* aLeft, Key* aRight)
-//{
-//}
+eKC Key::eCompare(Key* aLeft, Key* aRight)
+{
+  i8 nKeySize_l = aLeft->nSizeKey();
+  i8 nKeySize_r = aRight->nSizeKey();
+  
+  byte* ayKeyBytes_l  = aLeft->ayKeyBytes();
+  byte* ayKeyBytes_r = aRight->ayKeyBytes();
+  
+  i8 nCmpBytes = nKeySize_l < nKeySize_r ? nKeySize_l : nKeySize_r;
+  
+  i8 iCmp = MemLib::iCompareWords(ayKeyBytes_l,ayKeyBytes_r,nCmpBytes);
+  
+  if (iCmp < 0)
+    return KC_BEFORE;
+  
+  if (iCmp == 0) {
+    if (nKeySize_l < nKeySize_r)
+      return KC_BEFORE;
+    
+    if (nKeySize_l == nKeySize_r)
+      return KC_SAME;
+    
+    if (nKeySize_l > nKeySize_r)
+      return KC_AFTER;
+  }
+  
+  return KC_AFTER;
+}
 
 
 /*----------------------------------------------------------------------------*/
