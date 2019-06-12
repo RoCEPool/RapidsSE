@@ -62,13 +62,13 @@ Key::~Key(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 eKC Key::eCompare(Key* aLeft, Key* aRight)
 {
-  i8 nKeySize_l = aLeft->nSizeKey();
-  i8 nKeySize_r = aRight->nSizeKey();
+  i8 nKeyBytes_l = aLeft->nKeyBytes();
+  i8 nKeyBytes_r = aRight->nKeyBytes();
   
   byte* ayKeyBytes_l  = aLeft->ayKeyBytes();
   byte* ayKeyBytes_r = aRight->ayKeyBytes();
   
-  i8 nCmpBytes = nKeySize_l < nKeySize_r ? nKeySize_l : nKeySize_r;
+  i8 nCmpBytes = nKeyBytes_l < nKeyBytes_r ? nKeyBytes_l : nKeyBytes_r;
   
   i8 iCmp = MemLib::iCompareWords(ayKeyBytes_l,ayKeyBytes_r,nCmpBytes);
   
@@ -76,13 +76,13 @@ eKC Key::eCompare(Key* aLeft, Key* aRight)
     return KC_BEFORE;
   
   if (iCmp == 0) {
-    if (nKeySize_l < nKeySize_r)
+    if (nKeyBytes_l < nKeyBytes_r)
       return KC_BEFORE;
     
-    if (nKeySize_l == nKeySize_r)
+    if (nKeyBytes_l == nKeyBytes_r)
       return KC_SAME;
     
-    if (nKeySize_l > nKeySize_r)
+    if (nKeyBytes_l > nKeyBytes_r)
       return KC_AFTER;
   }
   
@@ -113,6 +113,22 @@ void Key::vIncSize(i8 nDeltaBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get size of key                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Key::nKeyBytes(void)
+{
+  return m_nKeyBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set size of key                                                            */
+/*----------------------------------------------------------------------------*/
+void Key::vKeyBytes(i8 nKeyBytes)
+{
+  m_nKeyBytes = (i4)nKeyBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show the elements of this key                                              */
 /*----------------------------------------------------------------------------*/
 void Key::vShow(IdxColVec* pIdxColVec)
@@ -140,22 +156,6 @@ void Key::vShow(IdxColVec* pIdxColVec)
   }
   
   //vTrace("%s)\n"_Stz, sKeyString.aStz());
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size of key                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Key::nSizeKey(void)
-{
-  return m_nKeyBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set size of key                                                            */
-/*----------------------------------------------------------------------------*/
-void Key::vSizeKey(i8 nSizeKey)
-{
-  m_nKeyBytes = (i4)nSizeKey;
 }
 
 

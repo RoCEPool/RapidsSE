@@ -38,7 +38,7 @@ Ent::Ent(eCN eClassNo, i8 nSizeEnt_Without_NEO)
 {
   i8 nKeyBytes = static_cast<i4>(nSizeEnt_Without_NEO - sizeof(Ent));
   
-  m_xKey.vSizeKey(nKeyBytes);
+  m_xKey.vKeyBytes(nKeyBytes);
   
 #ifdef WITH_DEBUG_VERSION
   m_iSkipNo = -1;
@@ -78,7 +78,7 @@ void Ent::vBuffer(i8 iBuffer)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nEntSize(void)
 {
-  i8 nBytes = sizeof(Ent) + m_xKey.nSizeKey() + nNEOsize();
+  i8 nBytes = sizeof(Ent) + m_xKey.nKeyBytes() + nNEOsize();
   
   return nBytes;
 }
@@ -122,16 +122,16 @@ byte* Ent::ayKeyBytes(void)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nKeySize(void)
 {
-  i8 nBytes = m_xKey.nSizeKey();
+  i8 nBytes = m_xKey.nKeyBytes();
   return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set size key                                                               */
 /*----------------------------------------------------------------------------*/
-void Ent::vKeySize(i8 nKeySize)
+void Ent::vKeySize(i8 nKeyBytes)
 {
-  m_xKey.vSizeKey(nKeySize);
+  m_xKey.vKeyBytes(nKeyBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -157,7 +157,7 @@ i4 Ent::iNEO(i8 i_Level)
 {
   ASSERT(i_Level >= 0 && i_Level < nLevels());
 
-  i8 i_NEO = sizeof(Ent) + m_xKey.nSizeKey() + (C_NEO_SIZE * i_Level);
+  i8 i_NEO = sizeof(Ent) + m_xKey.nKeyBytes() + (C_NEO_SIZE * i_Level);
   
   i4 iNEO = * (aAdd<i4*>(this,i_NEO));
   
@@ -171,7 +171,7 @@ void Ent::vNEO(i8 i_Level, i4 i_Offset)
 {
   ASSERT(i_Level >= 0 && i_Level < nLevels());
 
-  i8 i_NEO = sizeof(Ent) + m_xKey.nSizeKey() + (C_NEO_SIZE * i_Level);
+  i8 i_NEO = sizeof(Ent) + m_xKey.nKeyBytes() + (C_NEO_SIZE * i_Level);
 
   * (aAdd<i4*>(this,i_NEO)) = i_Offset;
 }
@@ -287,7 +287,7 @@ bool Ent::bValidEnt(void)
 /*----------------------------------------------------------------------------*/
 NEO* Ent::aNEO(void)
 {
-  i8 i_NEO = sizeof(Ent) + m_xKey.nSizeKey();
+  i8 i_NEO = sizeof(Ent) + m_xKey.nKeyBytes();
 
   NEO* aNEO = aAdd<NEO*>(this,i_NEO);
   

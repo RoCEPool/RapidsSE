@@ -22,9 +22,9 @@ namespace Indexes
   
     i8   iGetInt(void);
     void vIncSize(i8 nDeltaBytes);
+    i8   nKeyBytes(void);
+    void vKeyBytes(i8 nKeyBytes);
     void vShow(IdxColVec* pIdxColVec);
-    i8   nSizeKey(void);
-    void vSizeKey(i8 nSizeKey);
 
     /*------------------------------------------------------------------------*/
     /* getthis key as a byte sequence                                         */
