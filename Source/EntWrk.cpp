@@ -395,7 +395,7 @@ void EntWrk::vFormEntry(Ent* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into entry
   
-  Key* aSrcKey  = aKey_ayEmbedded();
+  Key* aSrcKey  = reinterpret_cast<Key*>(m_ayEmbedded);
   Key* aDstKey  = _aKey(pEntry->ayKeyBytes());
   i8   nKeySize = this->nKeySize();
   
@@ -409,7 +409,7 @@ i8 EntWrk::iHashKey(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 iHash = HshLib::iHash((byte*)aKey_ayEmbedded(),nKeySize());
+  i8 iHash = HshLib::iHash(m_ayEmbedded,nKeySize());
   
   return iHash;
 }
@@ -462,16 +462,6 @@ void EntWrk::vItemNo(i8 i_Item)
   _precondition_(_MAGIC_,_FOOTER_);
   
   m_xId.vItem(i_Item);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get wsp area as key                                                        */
-/*----------------------------------------------------------------------------*/
-Key* EntWrk::aKey_ayEmbedded(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  return reinterpret_cast<Key*>(m_ayEmbedded);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -606,7 +596,7 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  Key* aKey = this->aKey_ayEmbedded();
+  Key* aKey = reinterpret_cast<Key*>(m_ayEmbedded);
   aKey->vShow(pIdxColVec);
   vTrace("\n"_Stz);
 }
