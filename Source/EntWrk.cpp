@@ -409,26 +409,6 @@ i8 EntWrk::iHashKey(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get row id                                                                 */
-/*----------------------------------------------------------------------------*/
-Id& EntWrk::xRef(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  return m_xEnt.xRef();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set row id                                                                 */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vRef(Id& xRef)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  m_xEnt.vRef(xRef);
-}
-
-/*----------------------------------------------------------------------------*/
 /* inc total key bytes by size of element                                     */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vIncKeyBytes(i8 nElementBytes)
@@ -547,6 +527,26 @@ void EntWrk::vRandomLevels(void)
   i8 nLevels = Random::iLogLevel(3,C_FLAT_FREQ + 1,pTask->i_NextRnd()) + 1;
 
   m_xEnt.vLevels(nLevels);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ref (sub-ref to child entBuffer or row-ref at H0 leaf buffers to row)  */
+/*----------------------------------------------------------------------------*/
+Id& EntWrk::xRef(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  return m_xEnt.xRef();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set reference                                                              */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vRef(Id& xRef)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  m_xEnt.vRef(xRef);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -54,8 +54,6 @@ namespace Indexes
   
     i8    iHashKey(void);
   
-    Id&   xRef(void);
-    void  vRef(Id& xRef);
     void  vIncKeyBytes(i8 nElementBytes);
     i8    iItemNo(void);
     void  vItemNo(i8 i_Item);
@@ -72,6 +70,8 @@ namespace Indexes
     i8    nOffsetsSize(void);
   
     void  vRandomLevels(void);
+    Id&   xRef(void);
+    void  vRef(Id& xRef);
 
     void  vSetWrk(i8 iBufferNo, i8 i_Item, Ent* pEntry);
     void  vShow(IdxColVec* pIdxColVec);

@@ -43,9 +43,6 @@ namespace Indexes
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
   
-    Id&   xRef(void);
-    void  vRef(Id xRef);
-
     i8    iItem(void);
     void  vItem(i8 item);
 
@@ -58,6 +55,9 @@ namespace Indexes
     i4    iNEO(i8 i_Level);
     void  vNEO(i8 i_Level, i4 i_Offset);
     void  vNEOdump(void);
+  
+    Id&   xRef(void);
+    void  vRef(Id xRef);
   
     i8    nSizeBytes(void);
     i8    nSizeKey(void);
