@@ -346,8 +346,7 @@ byte* EntWrk::ayElementCrs(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 nBytesUsed = m_xWsp.nUsed();
-  RASSERT(m_xKey.nSizeKey() == nBytesUsed);
+  i8 nBytesUsed = m_xKey.nSizeKey();
 
   byte* ayNext = aAdd<byte*>(m_xWsp.ayArea(),nBytesUsed);
 
@@ -499,8 +498,7 @@ i8 EntWrk::nKeySize(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 nSize = m_xWsp.nUsed();
-  RASSERT(m_xKey.nSizeKey() == nSize);
+  i8 nSize = m_xKey.nSizeKey();
   
   return nSize;
 }
