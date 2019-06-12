@@ -120,7 +120,7 @@ byte* Ent::ayKeyBytes(void)
 {
   byte* ayKey = aAdd<byte*>(this,sizeof(Ent));
   
-  return pPoolCheck<byte*>(ayKey);
+  return ayKey;
 }
 
 /*----------------------------------------------------------------------------*/

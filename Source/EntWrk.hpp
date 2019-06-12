@@ -7,19 +7,13 @@
 
 namespace Indexes
 {
-  class Key;
-  
   class EntWrk : public Object
   {
-  friend class Ent;
-  friend class Table;
-  
   private:
-    Id    m_xId;  // sub ref (child index buffer), or row ref (H0 leaf buffers)
+
+    Ent    m_xEnt;
   
-    Key   m_xKey; // the key
-  
-    byte  m__KeyBytes[C_MAX_KEY]; // the bytes of the key
+    byte   m__KeyBytes[C_MAX_KEY]; // the bytes of the key
   
     Footer m_xFooter;
   

@@ -32,16 +32,16 @@ void* EntWrk::operator new(size_t, EntWrk* pEntWrk)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntWrk::EntWrk(void)
-: Object(CN_ENTWRK)
+: Object(CN_ENTWRK),
+  m_xEnt(CN_ENT,sizeof(Ent))
 {
   _precondition_(_MAGIC_,CN_ENTWRK);
+
+  m_xEnt.vBuffer(0);
+  m_xEnt.vItem(0);
+  m_xEnt.vLevels(0);
   
-  // check initialisation of rowid
-  ASSERT(0 == m_xId.iBuffer() &&
-         0 == m_xId.iItem()   &&
-         0 == m_xId.nLevels());
-  
-  m_xKey.vSizeKey(0);
+  m_xEnt.vSizeKey(0);
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m__KeyBytes,sizeof(m__KeyBytes),CN_ENTWRK);
@@ -324,7 +324,7 @@ i8 EntWrk::iBufferNo(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  i8 iBuffer = m_xId.iBuffer();
+  i8 iBuffer = m_xEnt.iBuffer();
   
   return iBuffer;
 }
@@ -336,7 +336,7 @@ void EntWrk::vBufferNo(i8 iBufferNo)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xId.vBuffer(iBufferNo);
+  m_xEnt.vBuffer(iBufferNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -346,7 +346,7 @@ byte* EntWrk::ayElementCrs(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 nBytesUsed = m_xKey.nSizeKey();
+  i8 nBytesUsed = m_xEnt.nSizeKey();
 
   byte* ayNext = aAdd<byte*>(ayKeyBytes(),nBytesUsed);
 
@@ -422,7 +422,7 @@ Id& EntWrk::xId(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return m_xId;
+  return m_xEnt.xId();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -432,7 +432,7 @@ void EntWrk::vId(Id& xId)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xId = xId;
+  m_xEnt.vId(xId);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -442,7 +442,7 @@ void EntWrk::vIncKeyBytes(i8 nElementBytes)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xKey.vIncSize(nElementBytes);
+  m_xEnt.aKey()->vIncSize(nElementBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -452,7 +452,7 @@ i8 EntWrk::iItemNo(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return m_xId.iItem();
+  return m_xEnt.iItem();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -462,7 +462,7 @@ void EntWrk::vItemNo(i8 i_Item)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xId.vItem(i_Item);
+  m_xEnt.vItem(i_Item);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -472,7 +472,7 @@ byte* EntWrk::ayKeyBytes(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  return m_xKey.ayKeyBytes();
+  return m_xEnt.ayKeyBytes();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -482,7 +482,7 @@ void EntWrk::vKeyBytes(i8 nKeySize, byte* ayKeyBytes)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  m_xKey.vSizeKey(nKeySize);
+  m_xEnt.vSizeKey(nKeySize);
   
   MemLib::vCopy(this->ayKeyBytes(),ayKeyBytes,nKeySize,CN_ENTWRK);
 }
@@ -494,7 +494,7 @@ i8 EntWrk::nKeySize(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 nSize = m_xKey.nSizeKey();
+  i8 nSize = m_xEnt.nSizeKey();
   
   return nSize;
 }
@@ -506,7 +506,7 @@ void EntWrk::vKeySize(i8 nKeySize)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  m_xKey.vSizeKey(nKeySize);
+  m_xEnt.vSizeKey(nKeySize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -516,17 +516,17 @@ i8 EntWrk::nLevels(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return m_xId.nLevels();
+  return m_xEnt.nLevels();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the size of the next entry offset(s) in bytes                          */
 /*----------------------------------------------------------------------------*/
-i8 EntWrk::nOffsetsSize(void)
+i8 EntWrk::nOffsetsSize(void) //! nNEOsize
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  i8 nLevels = m_xId.nLevels();
+  i8 nLevels = m_xEnt.nLevels();
   i8 nBytes  = C_NEO_SIZE * nLevels;
   
   return nBytes;
@@ -539,7 +539,7 @@ void EntWrk::vLevels(i8 nLevels)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xId.vLevels(nLevels);
+  m_xEnt.vLevels(nLevels);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -553,7 +553,7 @@ void EntWrk::vRandomLevels(void)
   
   i8 nLevels = Random::iLogLevel(3,C_FLAT_FREQ + 1,pTask->i_NextRnd()) + 1;
 
-  m_xId.vLevels(nLevels);
+  m_xEnt.vLevels(nLevels);
 }
 
 /*----------------------------------------------------------------------------*/
