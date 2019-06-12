@@ -13,17 +13,13 @@ namespace Indexes
   {
   friend class Ent;
   friend class Table;
-  
-  static const i8 C_WSP_ENTWRK = C_17KB;
-  
+    
   private:
     Id    m_xId;  // sub ref (child index buffer), or row ref (H0 leaf buffers)
   
     Key   m_xKey; // the key
   
     byte  m_yaKeyBytes[C_MAX_KEY]; // the bytes of the key
-  
-    Wsp_t<C_WSP_ENTWRK> m_xWsp; // key workspace
   
     Footer m_xFooter;
   

@@ -42,14 +42,12 @@ EntWrk::EntWrk(void)
          0 == m_xId.nLevels());
   
 #ifdef WITH_CHECK_INITIALISED
-  m_xWsp.vZero(CN_ENTWRK);
-  
   MemLib::vZero(m_yaKeyBytes,sizeof(m_yaKeyBytes),CN_ENTWRK);
+#else
+  m_yaKeyBytes[0] = '\0';
 #endif
   
   m_xKey.vSizeKey(0);
-  
-  m_xWsp.vInit();
   
   _checkInitialisedSize_(sizeof(EntWrk));
   
@@ -475,7 +473,6 @@ byte* EntWrk::ayKeyBytes(void)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   return m_yaKeyBytes;
-  //return m_xWsp.ayArea();
 }
 
 /*----------------------------------------------------------------------------*/
