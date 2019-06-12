@@ -383,7 +383,7 @@ void EntWrk::vFormEntry(Ent* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set entry id and levels
   
-  pEntry->vRef(xId());
+  pEntry->vRef(xRef());
   pEntry->vLevels(nLevels());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -411,7 +411,7 @@ i8 EntWrk::iHashKey(void)
 /*----------------------------------------------------------------------------*/
 /* get row id                                                                 */
 /*----------------------------------------------------------------------------*/
-Id& EntWrk::xId(void)
+Id& EntWrk::xRef(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -421,11 +421,11 @@ Id& EntWrk::xId(void)
 /*----------------------------------------------------------------------------*/
 /* set row id                                                                 */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vId(Id& xId)
+void EntWrk::vRef(Id& xRef)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xEnt.vRef(xId);
+  m_xEnt.vRef(xRef);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -560,8 +560,8 @@ void EntWrk::vSetWrk(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   i8 nLevels = pEntry->nLevels();
   vLevels(nLevels);
   
-  Id xId(iBufferNo,i_Item,nLevels);
-  vId(xId);
+  Id xRef(iBufferNo,i_Item,nLevels);
+  vRef(xRef);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into this entry

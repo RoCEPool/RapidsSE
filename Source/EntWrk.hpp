@@ -54,8 +54,8 @@ namespace Indexes
   
     i8    iHashKey(void);
   
-    Id&   xId(void);
-    void  vId(Id& xId);
+    Id&   xRef(void);
+    void  vRef(Id& xRef);
     void  vIncKeyBytes(i8 nElementBytes);
     i8    iItemNo(void);
     void  vItemNo(i8 i_Item);

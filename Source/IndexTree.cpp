@@ -262,7 +262,7 @@ void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
   
   EntWrk xFirstL1_ent;
   
-  xFirstL1_ent.vId(xRef);
+  xFirstL1_ent.vRef(xRef);
   
   xFirstL1_ent.vKeyBytes(nKeySize,aKeyBytes);
 
@@ -331,7 +331,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // form the working version of the left key
     
-    xLeftEntWrk.vId(xRef);
+    xLeftEntWrk.vRef(xRef);
     
     xLeftEntWrk.vKeyBytes(nKeySize,aKeyBytes);
 
@@ -388,7 +388,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
       
       i8 iLeftL0BufferNo = pLeftL0->iPoolBufferNo();
       xRef.vBuffer(iLeftL0BufferNo);
-      xLeftEntWrk.vId(xRef);
+      xLeftEntWrk.vRef(xRef);
       
       TRACE_COMPACT( pL1->vShow(); )
       //RASSERT(pL1->bVerifySkipListEntry());
@@ -552,7 +552,7 @@ void IndexTree::vInsertEntriesFromBuffer(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-bool IndexTree::bInsertEntry(RowBuffer* pRowBuffer, i8 i_Row, Id& xId)
+bool IndexTree::bInsertEntry(RowBuffer* pRowBuffer, i8 i_Row, Id& xRowRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
@@ -560,7 +560,7 @@ bool IndexTree::bInsertEntry(RowBuffer* pRowBuffer, i8 i_Row, Id& xId)
   
   EntWrk xEntWrk;
   vExtractKey(&xEntWrk,pRowBuffer,i_Row);
-  xEntWrk.vId(xId);
+  xEntWrk.vRef(xRowRef);
   
   //xEntWrk.vShow(m_pIndex->pIdxColVec());
   
