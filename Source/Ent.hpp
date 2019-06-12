@@ -39,9 +39,15 @@ namespace Indexes
     Ent(eCN eClassNo, i8 nSizeEnt);
     ~Ent(void) noexcept(false);
   
+    i8    iBuffer(void);
+    void  vBuffer(i8 iBuffer);
+  
     Id&   xId(void);
     void  vId(Id xId);
-  
+
+    i8    iItem(void);
+    void  vItem(i8 item);
+
     Key*  aKey(void);
     byte* ayKeyBytes(void);
   

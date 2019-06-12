@@ -35,8 +35,8 @@ using namespace Indexes;
 #include "Key.hpp"
 #include "Ent.hpp"
 #include "EntWrk.hpp"
-#include "SkipRoots.hpp"
 
+#include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 
 /*============================================================================*/
