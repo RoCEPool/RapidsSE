@@ -343,6 +343,16 @@ void EntWrk::vBufferNo(i8 iBufferNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get element cursor (where to add next element)                             */
+/*----------------------------------------------------------------------------*/
+byte* EntWrk::ayElementCrs(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  return m_xWsp.ayLatter();
+}
+
+/*----------------------------------------------------------------------------*/
 /* set address of embedded object                                             */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vEmbedded(byte* ayEmbedded)     //! i'd like to get rid of this fun
@@ -482,16 +492,6 @@ void EntWrk::vKeyBytes(i8 nKeySize, byte* ayKeyBytes)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   MemLib::vCopy(m_xWsp.ayArea(),ayKeyBytes,nKeySize,CN_ENTWRK);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get wsp area as key                                                        */
-/*----------------------------------------------------------------------------*/
-byte* EntWrk::ayKeyLatter(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  return m_xWsp.ayLatter();
 }
 
 /*----------------------------------------------------------------------------*/

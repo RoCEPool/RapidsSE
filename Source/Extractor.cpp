@@ -1479,7 +1479,7 @@ void Extractor::vAddElement(EntWrk* pEntWrk, Stz* aSrc,
   bool b;
   i8 nBytes;
   
-  char* pDst = (char*)pEntWrk->ayKeyLatter();
+  char* pDst = (char*)pEntWrk->ayElementCrs();
   char* pSrc = (char*)aSrc;
   Datum xDatum;
   

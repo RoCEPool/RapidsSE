@@ -60,6 +60,7 @@ namespace Indexes
     i8    iBufferNo(void);
     void  vBufferNo(i8 iBufferNo);
   
+    byte* ayElementCrs(void);
     void  vEmbedded(byte* ayEmbedded);
     i8    nEntKeySize(void);
     i8    nEntKeyNeoSize(void);
@@ -77,7 +78,6 @@ namespace Indexes
     byte* ayKeyBytes(void);
     void  vKeyBytes(i8 nKeySize, byte* ayKeyBytes);
 
-    byte* ayKeyLatter(void);
     i8    nKeySize(void);
     void  vKeySize(i8 nKeySize);
   
