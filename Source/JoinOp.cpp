@@ -8,11 +8,6 @@
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-#define NEXT_LEFT       0  // probably make these constants or an enum
-#define NEXT_RIGHT      1
-#define NEXT_LEFT_RIGHT 2
-#define NEXT_NONE       3
-#define NEXT_EXIT       4
 
 /*----------------------------------------------------------------------------*/
 /* index join                                                                 */
@@ -49,7 +44,7 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
   Ent* aLeftEntry  = pLeftBuffer->aLeadEntry();
   Ent* aRightEntry = pRightBuffer->aLeadEntry();
   
-  i8 iNextEnt = NEXT_NONE;
+  eNE eNextEnt = NE_NEXT_NONE;
   
   RowBuffer* pLeftRowBuffer = RowBuffer::pRefdRowBuffer(aLeftEntry->xId());
   RowBuffer* pRightRowBuffer = RowBuffer::pRefdRowBuffer(aRightEntry->xId());
@@ -62,12 +57,12 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
   
   EntBuffer* pFirstRightBuffer = nullptr;
   
-  while (NEXT_EXIT != iNextEnt) {
+  while (NE_NEXT_EXIT != eNextEnt) {
     
     // get next left entry, right, both, or none
-    switch (iNextEnt) {
+    switch (eNextEnt) {
         
-      case NEXT_LEFT: // get next left entry
+      case NE_NEXT_LEFT: // get next left entry
         aLeftEntry  = EntBuffer::aGetNextEntry(&pLeftBuffer,aLeftEntry);
         
         // check if it matches a first left
@@ -86,16 +81,16 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
         }
         break;
         
-      case NEXT_RIGHT: // get next right entry
+      case NE_NEXT_RIGHT: // get next right entry
         aRightEntry = EntBuffer::aGetNextEntry(&pRightBuffer,aRightEntry);
         break;
 
-      case NEXT_LEFT_RIGHT: // get next left and right entry
+      case NE_NEXT_LEFT_RIGHT: // get next left and right entry
         aLeftEntry  = EntBuffer::aGetNextEntry(&pLeftBuffer,aLeftEntry);
         aRightEntry = EntBuffer::aGetNextEntry(&pRightBuffer,aRightEntry);
         break;
           
-      case NEXT_NONE: // get neither, fall thru
+      case NE_NEXT_NONE: // get neither, fall thru
         break;
         
       default:
@@ -126,7 +121,7 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
           aRightRowData = pRightRowBuffer->pRow(aRightEntry->xId().iItem());
           pRefSet->vRowRef(0, (i8)aLeftRowData);
           pRefSet->vRowRef(1, (i8)aRightRowData);
-          iNextEnt = NEXT_RIGHT;
+          eNextEnt = NE_NEXT_RIGHT;
           
           // save first right
           if ( ! aFirstRightMatch ) {
@@ -153,7 +148,7 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
             pRefSet->vRowRef(0, (i8)aLeftRowData);
             pRefSet->vRowRef(1, (i8)nullptr);
           }
-          iNextEnt = NEXT_LEFT;
+          eNextEnt = NE_NEXT_LEFT;
           break;
           
         case KC_AFTER:  // leftKey > rightKey
@@ -168,7 +163,7 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
           pRefSet->vRowRef(0, (i8)nullptr);
           pRefSet->vRowRef(1, (i8)aRightRowData);
           
-          iNextEnt = NEXT_RIGHT;
+          eNextEnt = NE_NEXT_RIGHT;
           break;
         default:
           NEVER_REACH;
@@ -195,7 +190,7 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
       }
       
       // get next left
-      iNextEnt = NEXT_LEFT;
+      eNextEnt = NE_NEXT_LEFT;
       continue;
     }
 
@@ -213,12 +208,12 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
       pRefSet->vRowRef(1, (i8)aRightRowData);
   
       // get next right
-      iNextEnt = NEXT_RIGHT;
+      eNextEnt = NE_NEXT_RIGHT;
       continue;
     }
 
     // (d) neither
-    iNextEnt = NEXT_EXIT;
+    eNextEnt = NE_NEXT_EXIT;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
