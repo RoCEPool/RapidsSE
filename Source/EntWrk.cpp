@@ -474,7 +474,8 @@ byte* EntWrk::ayKeyBytes(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  return m_xWsp.ayArea();
+  return m_yaKeyBytes;
+  //return m_xWsp.ayArea();
 }
 
 /*----------------------------------------------------------------------------*/
