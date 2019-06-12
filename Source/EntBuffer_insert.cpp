@@ -276,9 +276,9 @@ void EntBuffer::vCompactLeft(void)
        aThisEntry != nullptr;
        aThisEntry = pThisBuffer->aNextEntry(aThisEntry, 0)) {
     
-    Id xId = aThisEntry->xId();
+    Id xRef = aThisEntry->xRef();
     
-    xEntWrk.vSetWrk(xId.iBuffer(), xId.iItem(), aThisEntry);
+    xEntWrk.vSetWrk(xRef.iBuffer(), xRef.iItem(), aThisEntry);
     pTempBuffer->aInsertKeyAbsL0(xEntWrk,&aPriorEntry);
   }
   
@@ -300,9 +300,9 @@ void EntBuffer::vCompactLeft(void)
        aTempEntry != nullptr;
        aTempEntry = pTempBuffer->aNextEntry(aTempEntry, 0)) {
     
-    Id xId = aTempEntry->xId();
+    Id xRef = aTempEntry->xRef();
     
-    xEntWrk.vSetWrk(xId.iBuffer(), xId.iItem(), aTempEntry);
+    xEntWrk.vSetWrk(xRef.iBuffer(), xRef.iItem(), aTempEntry);
     pThisBuffer->aInsertKeyAbsL0(xEntWrk,&aPriorEntry);
   }
   
@@ -774,8 +774,8 @@ Ent* EntBuffer::aInsertKeyUpwards(EntWrk& xEntWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pInsertIntoBuffer->m_iBufferHeight) {
-    Id xId = aInsertedKeyEntry->xId();
-    i8 nBuffer = xId.iBuffer();
+    Id xRef = aInsertedKeyEntry->xRef();
+    i8 nBuffer = xRef.iBuffer();
     
     HeapBuffer* pHeapBuffer =
     reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBuffer));
@@ -1003,8 +1003,8 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
     aNextEntry = this->aNextEntry(aCopyEntry,0);
     
     // form the key
-    Id xId = aCopyEntry->xId();
-    xEntWrk.vSetWrk(xId.iBuffer(), xId.iItem(), aCopyEntry);
+    Id xRef = aCopyEntry->xRef();
+    xEntWrk.vSetWrk(xRef.iBuffer(), xRef.iItem(), aCopyEntry);
     
     Ent* aNewEntry = pNewRightBuffer->aInsertKeyAbsL0(xEntWrk,&aLastEntryRight);
     
@@ -1017,7 +1017,7 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
     ASSERT(! m_iBufferHeight ||
            EntBuffer::pRefdEntBuffer(aNewEntry)->m_pHigherBuffer == pThisLeftBuffer);
     
-    i8 nBuffer = xId.iBuffer();
+    i8 nBuffer = xRef.iBuffer();
     HeapBuffer* pHeapBuffer =
     reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBuffer));
     
@@ -1063,14 +1063,14 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
   // the child buffer of any moved entry needs to have its higher buffer
   // corrected to the new right buffer
   
-  Id xId;
+  Id xRef;
   if (m_iBufferHeight != 0)  {
     for (Ent* aMovedEntry = pNewRightBuffer->aLeadEntry();
          aMovedEntry;
          aMovedEntry = pNewRightBuffer->aNextEntry(aMovedEntry, 0)) {
       
-      xId = aMovedEntry->xId();
-      i8 nBuffer = xId.iBuffer();
+      xRef = aMovedEntry->xRef();
+      i8 nBuffer = xRef.iBuffer();
       
       HeapBuffer* pHeapBuffer =
       reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBuffer));

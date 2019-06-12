@@ -212,19 +212,19 @@ Job_FetchRows::~Job_FetchRows(void) noexcept(false)
 bool Job_FetchRows::bAppendRow(FetchBuffer* pFetchBuffer, Ent* aItem,
                                Job_FetchRows* pJob_FetchRows)
 {
-  Id xId = aItem->xId();
+  Id xRef = aItem->xRef();
   
-  if (pJob_FetchRows && pJob_FetchRows->bRowSeen(xId)) {
+  if (pJob_FetchRows && pJob_FetchRows->bRowSeen(xRef)) {
     // row already inserted
     //vTrace("RowData already inserted %p \n"_Stz, aItem);
     return true;
   }
   
   // get the rowBuffer
-  RowBuffer* pRowBuffer = RowBuffer::pRefdRowBuffer(xId);
+  RowBuffer* pRowBuffer = RowBuffer::pRefdRowBuffer(xRef);
   
   // get the dataRow
-  HeadLine* aRowData = pRowBuffer->pRow(xId.iItem());
+  HeadLine* aRowData = pRowBuffer->pRow(xRef.iItem());
   
   if (pFetchBuffer->bAppendRow(aRowData))
     return true;

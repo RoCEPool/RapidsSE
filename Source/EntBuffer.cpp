@@ -122,9 +122,9 @@ Ent* EntBuffer::aGetNextEntry(EntBuffer** ppEntBuffer, Ent* aPrevEntry)
 /*----------------------------------------------------------------------------*/
 EntBuffer* EntBuffer::pRefdEntBuffer(Ent* pItem)
 {
-  Id xId = pItem->xId();
+  Id xRef = pItem->xRef();
   
-  EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(xId);
+  EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(xRef);
     
   return pEntBuffer;
 }
@@ -864,8 +864,8 @@ void EntBuffer::vRestore(void)
        aEnt != nullptr;
        aEnt = aNextEntry(aEnt, 0)) {
     
-    Id xId(*nBuffer, aEnt->xId().iItem(), aEnt->nLevels());
-    aEnt->vId(xId);
+    Id xRef(*nBuffer, aEnt->xRef().iItem(), aEnt->nLevels());
+    aEnt->vRef(xRef);
   }
   
 }
@@ -897,8 +897,8 @@ void EntBuffer::vShowEntry(Ent* aEnt)
          );
   
   vTrace("Id: %3lli.%03lli "_Stz,
-         aEnt->xId().iBuffer(),
-         aEnt->xId().iItem()
+         aEnt->xRef().iBuffer(),
+         aEnt->xRef().iItem()
          );
   
   //vTrace("Tx: %lld.%03lld "_Stz,
@@ -1073,9 +1073,9 @@ void EntBuffer::vShowTree(bool bDumpBuffer)
   if (! aFirstEntry)
     return;
   
-  Id xId;
-  xId = aFirstEntry->xId();
-  bn nBuffer = xId.iBuffer();
+  Id xRef;
+  xRef = aFirstEntry->xRef();
+  bn nBuffer = xRef.iBuffer();
   
   HeapBuffer* pHeapBuffer =
   reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBuffer));

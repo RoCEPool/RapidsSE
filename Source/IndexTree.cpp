@@ -252,17 +252,17 @@ void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
   
   Ent* aFirstL0_ent = pFirstL0->aLeadEntry();
   
-  Id xId = aFirstL0_ent->xId();
+  Id xRef = aFirstL0_ent->xRef();
   byte* aKeyBytes = aFirstL0_ent->ayKeyBytes();
   i8 nKeySize = aFirstL0_ent->nSizeKey();
   i8 nLevels = aFirstL0_ent->nLevels();
   
   i8 iFirstL0_BufferNo = pFirstL0->iPoolBufferNo();
-  xId.vBuffer(iFirstL0_BufferNo);
+  xRef.vBuffer(iFirstL0_BufferNo);
   
   EntWrk xFirstL1_ent;
   
-  xFirstL1_ent.vId(xId);
+  xFirstL1_ent.vId(xRef);
   
   xFirstL1_ent.vKeyBytes(nKeySize,aKeyBytes);
 
@@ -321,7 +321,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the elements of the right key
     
-    Id xId = aRightL0_Key->xId();
+    Id xRef = aRightL0_Key->xRef();
     byte* aKeyBytes = aRightL0_Key->ayKeyBytes();
     
     //i8 nKeySize = aKey->nKeySize(pIdxColVec);
@@ -331,7 +331,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // form the working version of the left key
     
-    xLeftEntWrk.vId(xId);
+    xLeftEntWrk.vId(xRef);
     
     xLeftEntWrk.vKeyBytes(nKeySize,aKeyBytes);
 
@@ -387,8 +387,8 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     if (1 == pLeftL0->nItems()) {
       
       i8 iLeftL0BufferNo = pLeftL0->iPoolBufferNo();
-      xId.vBuffer(iLeftL0BufferNo);
-      xLeftEntWrk.vId(xId);
+      xRef.vBuffer(iLeftL0BufferNo);
+      xLeftEntWrk.vId(xRef);
       
       TRACE_COMPACT( pL1->vShow(); )
       //RASSERT(pL1->bVerifySkipListEntry());

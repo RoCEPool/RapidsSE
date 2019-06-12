@@ -676,11 +676,11 @@ bool EntBuffer::bVerifyRowRefs(void)
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
     // get the row buffer that this L0 key leaf references
-    Id xId = aEnt->xId();
-    RowBuffer* pRowBuffer = RowBuffer::pRefdRowBuffer(xId);
+    Id xRef = aEnt->xRef();
+    RowBuffer* pRowBuffer = RowBuffer::pRefdRowBuffer(xRef);
     
     // get the row entry from referenced entry buffer
-    i8 i_Item = aEnt->xId().iItem();
+    i8 i_Item = aEnt->xRef().iItem();
     HeadLine* aRowData = pRowBuffer->pRow(i_Item);
     
     if (! aRowData ) {

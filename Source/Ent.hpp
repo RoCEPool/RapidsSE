@@ -18,7 +18,8 @@ namespace Indexes
   class Ent : public Header
   {
   protected:
-    Id  m_xRef;  // reference (sub-ref to index buffer, or row-ref at H0 leaf buffers)
+    Id  m_xRef;  // reference (this is either a sub-ref to child entBuffer,
+                 //            or a row-ref at H0 leaf buffers to row)
   
 #ifdef WITH_DEBUG_VERSION
     i8  m_iSkipNo; // verify of order of skip items
@@ -42,8 +43,8 @@ namespace Indexes
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
   
-    Id&   xId(void);
-    void  vId(Id xId);
+    Id&   xRef(void);
+    void  vRef(Id xRef);
 
     i8    iItem(void);
     void  vItem(i8 item);

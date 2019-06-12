@@ -383,7 +383,7 @@ void EntWrk::vFormEntry(Ent* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set entry id and levels
   
-  pEntry->vId(xId());
+  pEntry->vRef(xId());
   pEntry->vLevels(nLevels());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -415,7 +415,7 @@ Id& EntWrk::xId(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return m_xEnt.xId();
+  return m_xEnt.xRef();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -425,7 +425,7 @@ void EntWrk::vId(Id& xId)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xEnt.vId(xId);
+  m_xEnt.vRef(xId);
 }
 
 /*----------------------------------------------------------------------------*/
