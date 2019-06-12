@@ -36,7 +36,6 @@ namespace Data
     Stz*         pAnalyze(void);
     void         vCompact(void);
     void         vCopyReInitL1(EntBuffer* pL1, EntBuffer* pLeftL0);
-    void         vCopyLeftV2(EntBuffer** ppLeftL0, EntBuffer* pRightL0);
     void         vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0);
     void         vDump(bool bSameHeight);
     i8           nEntBuffers(void);
