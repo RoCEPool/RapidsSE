@@ -41,17 +41,14 @@ EntWrk::EntWrk(void)
          0 == m_xId.iItem()   &&
          0 == m_xId.nLevels());
   
+  m_xKey.vSizeKey(0);
+
 #ifdef WITH_CHECK_INITIALISED
-  m_xWsp.vZero(CN_ENTWRK);
+  MemLib::vZero(m__KeyBytes,sizeof(m__KeyBytes),CN_ENTWRK);
+#else
+  m__KeyBytes[0] = '\0';
 #endif
   
-  m_xKey.vSizeKey(C_UNKNOWN);
-  
-  m_xWsp.vInit();
-  
-  m_ayEmbedded   = m_xWsp.ayArea();
-  m_ayElementCrs = m_xWsp.ayArea();
-
   _checkInitialisedSize_(sizeof(EntWrk));
   
   _postcondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
@@ -271,7 +268,7 @@ void EntWrk::vAddElement(Row* pRow, Column* pCol)
   
   i8 nBytes = 0;
   
-  char* aDst = (char*)m_xWsp.ayLatter();
+  char* aDst = (char*)ayElementCrs();
   char* aSrc = (char*)pRow->m_aiValue[pCol->iColumnNo()];
   
   if (pRow->m_aiValue[pCol->iColumnNo()] == C_DATUM_NULL) {
@@ -297,7 +294,7 @@ void EntWrk::vAddMinusInfinity(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  char* aDst = (char*)m_xWsp.ayLatter();
+  char* aDst = (char*)ayElementCrs();
   
   i8 iInt = C_DATUM_MINUS_INFINITY;
   Int::nCopy(aDst,(void*)&iInt);
@@ -312,7 +309,7 @@ void EntWrk::vAddPlusInfinity(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  char* aDst = (char*)m_xWsp.ayLatter();
+  char* aDst = (char*)ayElementCrs();
   
   i8 iInt = C_DATUM_PLUS_INFINITY;
   Int::nCopy(aDst,(void*)&iInt);
@@ -349,7 +346,11 @@ byte* EntWrk::ayElementCrs(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  return m_xWsp.ayLatter();
+  i8 nBytesUsed = m_xKey.nSizeKey();
+
+  byte* ayNext = aAdd<byte*>(ayKeyBytes(),nBytesUsed);
+
+  return ayNext;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -395,7 +396,7 @@ void EntWrk::vFormEntry(Ent* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into entry
   
-  Key* aSrcKey  = reinterpret_cast<Key*>(m_ayEmbedded);
+  Key* aSrcKey  = reinterpret_cast<Key*>(ayKeyBytes());
   Key* aDstKey  = _aKey(pEntry->ayKeyBytes());
   i8   nKeySize = this->nKeySize();
   
@@ -409,7 +410,7 @@ i8 EntWrk::iHashKey(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 iHash = HshLib::iHash(m_ayEmbedded,nKeySize());
+  i8 iHash = HshLib::iHash(ayKeyBytes(),nKeySize());
   
   return iHash;
 }
@@ -441,7 +442,7 @@ void EntWrk::vIncKeyBytes(i8 nElementBytes)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xWsp.vTake(nElementBytes);
+  m_xKey.vIncSize(nElementBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -471,7 +472,7 @@ byte* EntWrk::ayKeyBytes(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  return m_ayEmbedded;
+  return m_xKey.ayKeyBytes();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -481,10 +482,9 @@ void EntWrk::vKeyBytes(i8 nKeySize, byte* ayKeyBytes)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  m_ayEmbedded = ayKeyBytes;
-  m_xWsp.vUsed(nKeySize);
-
-  //MemLib::vCopy(m_xWsp.ayArea(),ayKeyBytes,nKeySize,CN_ENTWRK);
+  m_xKey.vSizeKey(nKeySize);
+  
+  MemLib::vCopy(this->ayKeyBytes(),ayKeyBytes,nKeySize,CN_ENTWRK);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -494,7 +494,7 @@ i8 EntWrk::nKeySize(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 nSize = m_xWsp.nUsed();
+  i8 nSize = m_xKey.nSizeKey();
   
   return nSize;
 }
@@ -506,7 +506,7 @@ void EntWrk::vKeySize(i8 nKeySize)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  m_xWsp.vUsed(nKeySize);
+  m_xKey.vSizeKey(nKeySize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -574,12 +574,10 @@ void EntWrk::vSetWrk(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   // copy key into this entry
   
   byte* aKeyBytes = pEntry->ayKeyBytes();
-  i8 iKeySize   = pEntry->nSizeKey();
-  RASSERT(iKeySize % 8 == 0);
+  i8 nKeySize = pEntry->nSizeKey();
+  RASSERT(nKeySize % 8 == 0);
   
-  m_ayEmbedded = aKeyBytes;
-  
-  vKeySize(iKeySize);
+  vKeyBytes(nKeySize,aKeyBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -589,7 +587,7 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  Key* aKey = reinterpret_cast<Key*>(m_ayEmbedded);
+  Key* aKey = reinterpret_cast<Key*>(ayKeyBytes());
   aKey->vShow(pIdxColVec);
   vTrace("\n"_Stz);
 }
