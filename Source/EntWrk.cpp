@@ -443,8 +443,6 @@ void EntWrk::vIncKeyBytes(i8 nElementBytes)
   _precondition_(_MAGIC_,_FOOTER_);
   
   m_xKey.vIncSize(nElementBytes);
-  
-  m_xWsp.vTake(nElementBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -486,8 +484,6 @@ void EntWrk::vKeyBytes(i8 nKeySize, byte* ayKeyBytes)
   
   m_xKey.vSizeKey(nKeySize);
   
-  m_xWsp.vUsed(nKeySize);
-  
   MemLib::vCopy(m_xWsp.ayArea(),ayKeyBytes,nKeySize,CN_ENTWRK);
 }
 
@@ -511,8 +507,6 @@ void EntWrk::vKeySize(i8 nKeySize)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   m_xKey.vSizeKey(nKeySize);
-  
-  m_xWsp.vUsed(nKeySize);
 }
 
 /*----------------------------------------------------------------------------*/
