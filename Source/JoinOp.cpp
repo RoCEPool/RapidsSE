@@ -10,6 +10,46 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add row refs                                                                 */
+/*----------------------------------------------------------------------------*/
+RefBuffer* JoinOp::pAddRowRefs(RefBuffer* pRefBuffer, Ent* aLeftEntry, Ent* aRightEntry)
+{
+  
+  // allot a refSet
+  RefSet* pRefSet = pRefBuffer->aAllotRefSet(2);
+  
+  if ( ! pRefSet )  {
+    // Reference Buffer is full
+    
+    RASSERT(0);
+    
+    // put this refBuffer in session bufferQueue
+    //pQueue->vAppend(pRefBuffer);
+    
+    // create another refBuffer for the refEnt's
+    pRefBuffer = new RefBuffer;
+    
+    // insert row from entry in temporary buffer
+    pRefSet = pRefBuffer->aAllotRefSet(2);
+    RASSERT(pRefSet);
+  }
+  
+  // get the row buffers
+  RowBuffer* pLeftRowBuffer = aLeftEntry ? RowBuffer::pRefdRowBuffer(aLeftEntry->xId()) : nullptr;
+  RowBuffer* pRightRowBuffer = aRightEntry ? RowBuffer::pRefdRowBuffer(aRightEntry->xId()) : nullptr;
+  
+  // set the rowRefs
+  HeadLine* aLeftRowData = aLeftEntry ? pLeftRowBuffer->pRow(aLeftEntry->xId().iItem()) : nullptr;
+  HeadLine* aRightRowData = aRightEntry ? pRightRowBuffer->pRow(aRightEntry->xId().iItem()) : nullptr;
+  
+  // set the rowData in the refSet
+  pRefSet->vRowRef(0, (i8)aLeftRowData);
+  pRefSet->vRowRef(1, (i8)aRightRowData);
+  
+  return pRefBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* index join                                                                 */
 /*----------------------------------------------------------------------------*/
 void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
@@ -36,7 +76,6 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
   RefBuffer* pRefBuffer = new RefBuffer;
   
   RefSet* pRefSet;
-  i8 nRowRefs = 2;
   
   // dump the first buffers
   pLeftBuffer->vDump();
@@ -49,12 +88,6 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
   Ent* aRightEntry = pRightBuffer->aLeadEntry();
   
   eNE eNextEnt = NE_NEXT_NONE;
-  
-  RowBuffer* pLeftRowBuffer = RowBuffer::pRefdRowBuffer(aLeftEntry->xId());
-  RowBuffer* pRightRowBuffer = RowBuffer::pRefdRowBuffer(aRightEntry->xId());
-  
-  HeadLine* aLeftRowData;
-  HeadLine* aRightRowData;
   
   Ent* aFirstRightMatch = nullptr;
   Ent* aFirstLeftMatch  = nullptr;
@@ -114,17 +147,8 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
       // how do they compare?
       switch (eCompare) {
         case KC_SAME:   // leftKey == rightKey
-          
-          // allot a refSet
-          pRefSet = pRefBuffer->aAllotRefSet(nRowRefs);
-          
           vTrace("Joining: L(%p) ⋈ R(%p)\n"_Stz,aLeftEntry,aRightEntry);
-          
-          // set the rowRefs
-          aLeftRowData = pLeftRowBuffer->pRow(aLeftEntry->xId().iItem());
-          aRightRowData = pRightRowBuffer->pRow(aRightEntry->xId().iItem());
-          pRefSet->vRowRef(0, (i8)aLeftRowData);
-          pRefSet->vRowRef(1, (i8)aRightRowData);
+          pRefBuffer = pAddRowRefs(pRefBuffer, aLeftEntry, aRightEntry);
           eNextEnt = NE_NEXT_RIGHT;
           
           // save first right
@@ -141,34 +165,18 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
           
         case KC_BEFORE: // leftKey < rightKey
           if ( ! aFirstRightMatch ) {
-            
-            // allot a refSet
-            pRefSet = pRefBuffer->aAllotRefSet(nRowRefs);
-            
             vTrace("Joining: L(%p) ⋈ R(NULL)\n"_Stz,aLeftEntry);
-            
-            // set the rowRefs
-            aLeftRowData = pLeftRowBuffer->pRow(aLeftEntry->xId().iItem());
-            pRefSet->vRowRef(0, (i8)aLeftRowData);
-            pRefSet->vRowRef(1, (i8)nullptr);
+            pRefBuffer = pAddRowRefs(pRefBuffer, aLeftEntry, nullptr);
           }
           eNextEnt = NE_NEXT_LEFT;
           break;
           
         case KC_AFTER:  // leftKey > rightKey
-          
-          // allot a refSet
-          pRefSet = pRefBuffer->aAllotRefSet(nRowRefs);
-          
           vTrace("Joining: L(NULL) ⋈ R(%p)\n"_Stz,aRightEntry);
-          
-          // set the rowRefs
-          aRightRowData = pRightRowBuffer->pRow(aRightEntry->xId().iItem());
-          pRefSet->vRowRef(0, (i8)nullptr);
-          pRefSet->vRowRef(1, (i8)aRightRowData);
-          
+          pRefBuffer = pAddRowRefs(pRefBuffer, aLeftEntry, aRightEntry);
           eNextEnt = NE_NEXT_RIGHT;
           break;
+          
         default:
           NEVER_REACH;
       }
@@ -181,16 +189,8 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
       
       // no previous first right ?
       if ( ! aFirstRightMatch ) {
-        
         vTrace("Joining: L(%p) ⋈ R(NULL)\n"_Stz,aLeftEntry);
-        
-        // allot a refSet
-        pRefSet = pRefBuffer->aAllotRefSet(nRowRefs);
-        
-        // set the rowRefs
-        aLeftRowData = pLeftRowBuffer->pRow(aLeftEntry->xId().iItem());
-        pRefSet->vRowRef(0, (i8)aLeftRowData);
-        pRefSet->vRowRef(1, (i8)nullptr);
+        pRefBuffer = pAddRowRefs(pRefBuffer, aLeftEntry, nullptr);
       }
       
       // get next left
@@ -202,14 +202,7 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
     if (aRightEntry) {
       
       vTrace("Joining: L(NULL) ⋈ R(%p)\n"_Stz,aRightEntry);
-      
-      // allot a refSet
-      pRefSet = pRefBuffer->aAllotRefSet(nRowRefs);
-      
-      // set the rowRefs
-      aRightRowData = pRightRowBuffer->pRow(aRightEntry->xId().iItem());
-      pRefSet->vRowRef(0, (i8)nullptr);
-      pRefSet->vRowRef(1, (i8)aRightRowData);
+      pRefBuffer = pAddRowRefs(pRefBuffer, nullptr, aRightEntry);
   
       // get next right
       eNextEnt = NE_NEXT_RIGHT;

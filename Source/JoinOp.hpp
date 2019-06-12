@@ -5,6 +5,8 @@
 
 namespace PushDown
 {
+  class RefBuffer;
+  
   enum eNE // next entry
   {
     /*  0 */ NE_NEXT_LEFT=0,
@@ -30,8 +32,10 @@ namespace PushDown
   private:
   
   public:
-    static void vIndexJoin_v1(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree);
     static void vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree);
+    
+  private:
+    static RefBuffer* pAddRowRefs(RefBuffer* pRefBuffer, Ent* aLeftEntry, Ent* aRightEntry);
   };
 
   JoinOp* _pJoinOp(void* aAddr);
