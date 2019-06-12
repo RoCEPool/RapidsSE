@@ -255,8 +255,40 @@ void Jobs::vJob_IndexJoin_post(Interface::Session* pSession, Job* pJob)
     return;
   }
   
-  //! to do
-  Pthread::vSleepMilli(1000,CN_JOB_FETCHROWS);
+  i8 nLastBuffersScanned = 0;
+  i8 nRowsProcessed = 0;
+  
+  RefBuffer* pRefBuffer = nullptr;
+  bool bDone = false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fetch
+  if (gpAttachMap->m_bMetadata) {
+    vTrace("metadata: %s\n"_Stz, pJob_IndexJoin->m_sMetadata.aStz());
+  }
+  
+  while ( nLastBuffersScanned != pJob_IndexJoin->m_nLastBuffers ) {
+    
+    pRefBuffer = _pRefBuffer(pJob_IndexJoin->m_pBufferQueue->pPop());
+    if (! pRefBuffer) {
+      //Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
+      Pthread::vSleepMicro(250,CN_JOB_FETCHROWS);
+      continue;
+    }
+    
+    //if (pJob_IndexJoin->m_bDisplay) {
+      vIterateBuffer(pJob_IndexJoin, pRefBuffer);
+    //}
+    
+    nRowsProcessed += pRefBuffer->nItems();
+    
+    if (pRefBuffer->bIsLast()) {
+      nLastBuffersScanned++;
+    }
+    delete pRefBuffer;
+    pRefBuffer = nullptr;
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -267,6 +299,59 @@ void Jobs::vJob_IndexJoin_delete(Interface::Session* pSession, Job* pJob)
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJob);
   
   delete pJob_IndexJoin;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void Jobs::vIterateBuffer(Job_IndexJoin* pJob_IndexJoin,
+                          RefBuffer* pRefBuffer)
+{
+  // dump reference buffer
+  //pRefBuffer->vShow();
+  
+  //vTrace("Rows (by reference):\n"_Stz);
+  
+  ColumnVec* pLeftColVec  = pJob_IndexJoin->m_pLeftTable->pColumnVec();
+  ColumnVec* pRightColVec = pJob_IndexJoin->m_pRightTable->pColumnVec();
+  
+  i8 nJoinRows = pRefBuffer->nItems();
+  RefSet* pRefSet = pRefBuffer->aFirstRefSet();
+  
+  HV_Rec hvRecLeft(pLeftColVec);
+  HV_Rec hvRecRight(pRightColVec);
+  
+  // create a left and a right row
+  HV_Row hLeftRow(pLeftColVec);
+  HV_Row hRightRow(pRightColVec);
+  
+  while (nJoinRows-- > 0) {
+    
+    // get the left and right rows from the refSet
+    HeadLine* aLeftRow = (HeadLine*)pRefSet->iRowRef(0);
+    HeadLine* aRightRow = (HeadLine*)pRefSet->iRowRef(1);
+    
+    // inflate left row
+    if (aLeftRow) {
+      RowCoder::vInflate(hLeftRow,aLeftRow);
+      hvRecLeft->vAppend(hLeftRow);
+    }
+    
+    // inflate right row
+    if (aRightRow) {
+      RowCoder::vInflate(hRightRow,aRightRow);
+      hvRecRight->vAppend(hRightRow);
+    }
+    
+    vTrace("row: (%s) ⋈ (%s)\n"_Stz,
+           aLeftRow  ? hvRecLeft->szRecStr()  : "NULL"_Stz,
+           aRightRow ? hvRecRight->szRecStr() : "NULL"_Stz);
+    
+    // get next row ref
+    pRefSet = pRefBuffer->aNextRefSet(pRefSet);
+  }
+  
+  return;
 }
 
 /*----------------------------------------------------------------------------*/

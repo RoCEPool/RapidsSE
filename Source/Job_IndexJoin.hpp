@@ -52,8 +52,8 @@ namespace Jobs
   Job* pJob_IndexJoin_pre(Interface::Session* pSession);
   void vJob_IndexJoin_post(Interface::Session* pSession, Job* pJob);
   void vJob_IndexJoin_delete(Interface::Session* pSession, Job* pJob);
-  void vIterateBuffer(Job_IndexJoin* pJob_IndexJoin, FetchBuffer* pFetchBuffer, i8& iRowsPrinted);
-  void vRetrieveColumn(Job_IndexJoin* pJob_IndexJoin, FetchBuffer* pFetchBuffer);
+  void vIterateBuffer(Job_IndexJoin* pJob_IndexJoin, RefBuffer* pRefBuffer);
+  void vRetrieveColumn(Job_IndexJoin* pJob_IndexJoin, RefBuffer* pRefBuffer);
   void vJob_IndexJoin_show(Job* pJob);
   
   JobClass* pJob_IndexJoin_class(pFUN** aaFun);
