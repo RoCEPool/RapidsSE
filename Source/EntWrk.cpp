@@ -347,35 +347,6 @@ byte* EntWrk::ayElementCrs(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the size {Ent,keyBytes}                                                */
-/*----------------------------------------------------------------------------*/
-i8 EntWrk::nEntKeySize(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  i8 nKeyBytes = this->nKeyBytes();
-  
-  i8 nBytes = sizeof(Ent) + nKeyBytes;
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the size {Ent,keyBytes,Neo}                                            */
-/*----------------------------------------------------------------------------*/
-i8 EntWrk::nEntKeyNeoSize(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  i8 nKeyBytes = this->nKeyBytes();
-  i8 nNeoBytes = nNEOsize();
-
-  i8 nBytes = sizeof(Ent) + nKeyBytes + nNeoBytes;
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* form given entry from this working entry                                   */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vFormEntry(Ent* pEntry)
@@ -582,6 +553,36 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
   Key* aKey = reinterpret_cast<Key*>(ayKeyBytes());
   aKey->vShow(pIdxColVec);
   vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the size {Ent,Key}                                                     */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::nSize_EntKey(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  i8 nKeyBytes = this->nKeyBytes();
+  
+  i8 nBytes = sizeof(Ent) + nKeyBytes;
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the size {Ent,Key,Neo}                                                 */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::nSize_EntKeyNeo(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  i8 nKeyBytes = this->nKeyBytes();
+  
+  i8 nNeoBytes = nNEOsize();
+  
+  i8 nBytes = sizeof(Ent) + nKeyBytes + nNeoBytes;
+  
+  return nBytes;
 }
 
 

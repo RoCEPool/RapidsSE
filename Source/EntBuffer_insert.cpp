@@ -450,7 +450,7 @@ EntBuffer* EntBuffer::pInsertableBuffer(EntWrk& xEntWrk,
   
   RASSERT(xEntWrk.nLevels());
   
-  i8 nEntryBytes = xEntWrk.nEntKeySize();
+  i8 nEntryBytes = xEntWrk.nSize_EntKey();
   i8 nOffsetBytes = xEntWrk.nNEOsize();
   i8 nEntryPlusOffsetsBytes = nEntryBytes+nOffsetBytes;
   
@@ -500,7 +500,7 @@ Ent* EntBuffer::aInsertKeyAbs(EntWrk& xEntWrk)
   
   RASSERT(xEntWrk.nLevels());
   
-  i8 nEntryBytes = xEntWrk.nEntKeySize();
+  i8 nEntryBytes = xEntWrk.nSize_EntKey();
   i8 nOffsetBytes = xEntWrk.nNEOsize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
@@ -549,7 +549,7 @@ Ent* EntBuffer::aInsertKeyAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry)
   
   RASSERT(xEntWrk.nLevels());
   
-  i8 nEntryBytes = xEntWrk.nEntKeySize();
+  i8 nEntryBytes = xEntWrk.nSize_EntKey();
   i8 nOffsetBytes = xEntWrk.nNEOsize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
@@ -642,7 +642,7 @@ Ent* EntBuffer::aInsertKeyAbsLazy(EntWrk& xEntWrk)
   
   RASSERT(xEntWrk.nLevels());
   
-  i8 nEntryBytes = xEntWrk.nEntKeySize();
+  i8 nEntryBytes = xEntWrk.nSize_EntKey();
   i8 nOffsetBytes = xEntWrk.nNEOsize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   

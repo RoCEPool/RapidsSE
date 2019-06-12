@@ -47,8 +47,6 @@ namespace Indexes
     void  vBuffer(i8 iBuffer);
   
     byte* ayElementCrs(void);
-    i8    nEntKeySize(void);
-    i8    nEntKeyNeoSize(void);
 
     void  vFormEntry(Ent* pEntry);
   
@@ -74,6 +72,8 @@ namespace Indexes
 
     void  vSetWrk(i8 iBufferNo, i8 i_Item, Ent* pEntry);
     void  vShow(IdxColVec* pIdxColVec);
+    i8    nSize_EntKey(void);
+    i8    nSize_EntKeyNeo(void);
 
     Footer* aFooter(void);
   };
