@@ -254,7 +254,7 @@ void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
   
   Id xRef = aFirstL0_ent->xRef();
   byte* aKeyBytes = aFirstL0_ent->ayKeyBytes();
-  i8 nKeySize = aFirstL0_ent->nSizeKey();
+  i8 nKeySize = aFirstL0_ent->nKeySize();
   i8 nLevels = aFirstL0_ent->nLevels();
   
   i8 iFirstL0_BufferNo = pFirstL0->iPoolBufferNo();
@@ -325,7 +325,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     byte* aKeyBytes = aRightL0_Key->ayKeyBytes();
     
     //i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nKeySize = aRightL0_Key->nSizeKey();
+    i8 nKeySize = aRightL0_Key->nKeySize();
     i8 nLevels = aRightL0_Key->nLevels();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

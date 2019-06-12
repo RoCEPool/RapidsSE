@@ -32,7 +32,7 @@ SkipRoots::SkipRoots(void)
 
   vBuffer(*nBufferNo);
   vLevels(3);
-  vSizeKey(0);
+  vKeySize(0);
 
   m_iPadding[0] = -1;
   m_iPadding[1] = -1;

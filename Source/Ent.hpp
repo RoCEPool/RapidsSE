@@ -43,12 +43,16 @@ namespace Indexes
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
   
+    i8    nEntSize(void);
+  
     i8    iItem(void);
-    void  vItem(i8 item);
+    void  vItem(i8 iItem);
 
     Key*  aKey(void);
     byte* ayKeyBytes(void);
-  
+    i8    nKeySize(void);
+    void  vKeySize(i8 nKeySize);
+
     i8    nLevels(void);
     void  vLevels(i8 nLevels);
   
@@ -60,8 +64,6 @@ namespace Indexes
     void  vRef(Id xRef);
   
     i8    nSizeBytes(void);
-    i8    nSizeKey(void);
-    void  vSizeKey(i8 nSizeKey);
     i8    nSizeNeo(void);
 
     i8    iSkipNo(void);

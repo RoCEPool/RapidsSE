@@ -43,8 +43,8 @@ namespace Indexes
     void  vAddMinusInfinity(void);
     void  vAddPlusInfinity(void);
   
-    i8    iBufferNo(void);
-    void  vBufferNo(i8 iBufferNo);
+    i8    iBuffer(void);
+    void  vBuffer(i8 iBuffer);
   
     byte* ayElementCrs(void);
     i8    nEntKeySize(void);
@@ -55,12 +55,11 @@ namespace Indexes
     i8    iHashKey(void);
   
     void  vIncKeyBytes(i8 nElementBytes);
-    i8    iItemNo(void);
-    void  vItemNo(i8 i_Item);
+    i8    iItem(void);
+    void  vItem(i8 iItem);
   
     byte* ayKeyBytes(void);
     void  vKeyBytes(i8 nKeySize, byte* ayKeyBytes);
-
     i8    nKeySize(void);
     void  vKeySize(i8 nKeySize);
   
@@ -75,8 +74,7 @@ namespace Indexes
 
     void  vSetWrk(i8 iBufferNo, i8 i_Item, Ent* pEntry);
     void  vShow(IdxColVec* pIdxColVec);
-  
-  
+
     Footer* aFooter(void);
   };
 }

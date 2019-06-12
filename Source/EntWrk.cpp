@@ -41,7 +41,7 @@ EntWrk::EntWrk(void)
   m_xEnt.vItem(0);
   m_xEnt.vLevels(0);
   
-  m_xEnt.vSizeKey(0);
+  m_xEnt.vKeySize(0);
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m__KeyBytes,sizeof(m__KeyBytes),CN_ENTWRK);
@@ -72,7 +72,7 @@ EntWrk::~EntWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 eKC EntWrk::eCompare(Ent* aEnt1, EntWrk& xEntWrk2)
 {
-  i8 nKeySize1 = aEnt1->nSizeKey();
+  i8 nKeySize1 = aEnt1->nKeySize();
   i8 nKeySize2 = xEntWrk2.nKeySize();
 
   i8 nCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
@@ -129,7 +129,7 @@ eKC EntWrk::eCompare(EntWrk& xEntWrk1, EntWrk& xEntWrk2)
 eKC EntWrk::eCompare(EntWrk& xEntWrk1, Ent* aEnt2)
 {
   i8 nKeySize1 = xEntWrk1.nKeySize();
-  i8 nKeySize2 = aEnt2->nSizeKey();
+  i8 nKeySize2 = aEnt2->nKeySize();
   
   i8 nCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
   
@@ -152,8 +152,8 @@ eKC EntWrk::eCompare(EntWrk& xEntWrk1, Ent* aEnt2)
 /*----------------------------------------------------------------------------*/
 eKC EntWrk::eCompare(Ent* aEnt1, Ent* aEnt2)
 {
-  i8 nKeySize1 = aEnt1->nSizeKey();
-  i8 nKeySize2 = aEnt2->nSizeKey();
+  i8 nKeySize1 = aEnt1->nKeySize();
+  i8 nKeySize2 = aEnt2->nKeySize();
   
   i8 nCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
   
@@ -313,7 +313,7 @@ void EntWrk::vAddPlusInfinity(void)
 /*----------------------------------------------------------------------------*/
 /* get buffer no from id                                                      */
 /*----------------------------------------------------------------------------*/
-i8 EntWrk::iBufferNo(void)
+i8 EntWrk::iBuffer(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -325,11 +325,11 @@ i8 EntWrk::iBufferNo(void)
 /*----------------------------------------------------------------------------*/
 /* set buffer no in id                                                        */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vBufferNo(i8 iBufferNo)
+void EntWrk::vBuffer(i8 iBuffer)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xEnt.vBuffer(iBufferNo);
+  m_xEnt.vBuffer(iBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -339,7 +339,7 @@ byte* EntWrk::ayElementCrs(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 nBytesUsed = m_xEnt.nSizeKey();
+  i8 nBytesUsed = m_xEnt.nKeySize();
 
   byte* ayNext = aAdd<byte*>(ayKeyBytes(),nBytesUsed);
 
@@ -421,7 +421,7 @@ void EntWrk::vIncKeyBytes(i8 nElementBytes)
 /*----------------------------------------------------------------------------*/
 /* get item no from id                                                        */
 /*----------------------------------------------------------------------------*/
-i8 EntWrk::iItemNo(void)
+i8 EntWrk::iItem(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -431,11 +431,11 @@ i8 EntWrk::iItemNo(void)
 /*----------------------------------------------------------------------------*/
 /* set item no in id                                                          */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vItemNo(i8 i_Item)
+void EntWrk::vItem(i8 iItem)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xEnt.vItem(i_Item);
+  m_xEnt.vItem(iItem);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -455,7 +455,7 @@ void EntWrk::vKeyBytes(i8 nKeySize, byte* ayKeyBytes)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  m_xEnt.vSizeKey(nKeySize);
+  m_xEnt.vKeySize(nKeySize);
   
   MemLib::vCopy(this->ayKeyBytes(),ayKeyBytes,nKeySize,CN_ENTWRK);
 }
@@ -467,7 +467,7 @@ i8 EntWrk::nKeySize(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 nSize = m_xEnt.nSizeKey();
+  i8 nSize = m_xEnt.nKeySize();
   
   return nSize;
 }
@@ -479,7 +479,7 @@ void EntWrk::vKeySize(i8 nKeySize)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  m_xEnt.vSizeKey(nKeySize);
+  m_xEnt.vKeySize(nKeySize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -567,7 +567,7 @@ void EntWrk::vSetWrk(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   // copy key into this entry
   
   byte* aKeyBytes = pEntry->ayKeyBytes();
-  i8 nKeySize = pEntry->nSizeKey();
+  i8 nKeySize = pEntry->nKeySize();
   RASSERT(nKeySize % 8 == 0);
   
   vKeyBytes(nKeySize,aKeyBytes);
