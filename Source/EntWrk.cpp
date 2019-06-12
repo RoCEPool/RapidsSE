@@ -368,7 +368,7 @@ i8 EntWrk::nEntKeyNeoSize(void)
   _precondition_(_MAGIC_,_FOOTER_);
   
   i8 nKeyBytes = this->nKeyBytes();
-  i8 nNeoBytes = nOffsetsSize();
+  i8 nNeoBytes = nNEOsize();
 
   i8 nBytes = sizeof(Ent) + nKeyBytes + nNeoBytes;
   
@@ -493,19 +493,6 @@ i8 EntWrk::nLevels(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the size of the next entry offset(s) in bytes                          */
-/*----------------------------------------------------------------------------*/
-i8 EntWrk::nOffsetsSize(void) //! nNEOsize
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  i8 nLevels = m_xEnt.nLevels();
-  i8 nBytes  = C_NEO_SIZE * nLevels;
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set number of levels                                                       */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vLevels(i8 nLevels)
@@ -513,6 +500,18 @@ void EntWrk::vLevels(i8 nLevels)
   _precondition_(_MAGIC_,_FOOTER_);
   
   m_xEnt.vLevels(nLevels);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the size of the next entry offset(s) in bytes                          */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::nNEOsize(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  i8 nBytes = m_xEnt.nNEOsize();
+  
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/

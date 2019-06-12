@@ -66,7 +66,7 @@ namespace Indexes
     i8    nLevels(void);
     void  vLevels(i8 nLevels);
 
-    i8    nOffsetsSize(void);
+    i8    nNEOsize(void);
   
     void  vRandomLevels(void);
     Id&   xRef(void);

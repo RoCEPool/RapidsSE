@@ -341,7 +341,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     // compute the size of the left key
     
     i8 nEntryBytes = xLeftEntWrk.nEntKeySize();
-    i8 nOffsetBytes = xLeftEntWrk.nOffsetsSize();
+    i8 nOffsetBytes = xLeftEntWrk.nNEOsize();
     i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
