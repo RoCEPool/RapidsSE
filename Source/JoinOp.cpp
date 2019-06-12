@@ -24,7 +24,11 @@ void JoinOp::vIndexJoin(IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
   EntBuffer* pLeftBuffer  = pLeftIndexTree->pRoot();
   EntBuffer* pRightBuffer = pRightIndexTree->pRoot();
 
-  // possible null pLeftBuffer / pRightBuffer
+  // check for null buffers
+  if ( ! pLeftBuffer ) {
+    RASSERT( ! pRightBuffer );
+    return;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a reference buffer
