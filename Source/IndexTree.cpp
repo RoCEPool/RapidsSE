@@ -12,8 +12,6 @@ extern AttachMap* gpAttachMap;
 
 bool mbCheckPriorVec = false;
 
-#define USE_IT_COPYLEFTV3
-
 #define USE_IT_COMPACT_TRACE 10
 
 /*----------------------------------------------------------------------------*/
@@ -217,20 +215,14 @@ void IndexTree::vCompact(void)
       //vTrace("Sublist: %lld\n"_Stz,--iSubListLength);
       
       // copy contents of right L0 leftwards
-#ifdef USE_IT_COPYLEFTV3
       vCopyLeftV3(&pLeftL0,pRightL0);
-#else
-      RASSERT(0);
-#endif
       
       // delete the right L0
       delete pRightL0;
       
     }
-#ifdef USE_IT_COPYLEFTV3
     // build the skip list for dangling left L0
     pLeftL0->vBuildSkipListSorted();
-#endif
     
     //pL1->bVerifyKeyBufferOrder();
   }
