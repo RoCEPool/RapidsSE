@@ -348,7 +348,7 @@ byte* EntWrk::ayElementCrs(void)
   
   i8 nBytesUsed = m_xKey.nSizeKey();
 
-  byte* ayNext = aAdd<byte*>(m_xWsp.ayArea(),nBytesUsed);
+  byte* ayNext = aAdd<byte*>(ayKeyBytes(),nBytesUsed);
 
   return ayNext;
 }
@@ -396,7 +396,7 @@ void EntWrk::vFormEntry(Ent* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into entry
   
-  Key* aSrcKey  = reinterpret_cast<Key*>(m_xWsp.ayArea());
+  Key* aSrcKey  = reinterpret_cast<Key*>(ayKeyBytes());
   Key* aDstKey  = _aKey(pEntry->ayKeyBytes());
   i8   nKeySize = this->nKeySize();
   
@@ -410,7 +410,7 @@ i8 EntWrk::iHashKey(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 iHash = HshLib::iHash(m_xWsp.ayArea(),nKeySize());
+  i8 iHash = HshLib::iHash(ayKeyBytes(),nKeySize());
   
   return iHash;
 }
@@ -484,7 +484,7 @@ void EntWrk::vKeyBytes(i8 nKeySize, byte* ayKeyBytes)
   
   m_xKey.vSizeKey(nKeySize);
   
-  MemLib::vCopy(m_xWsp.ayArea(),ayKeyBytes,nKeySize,CN_ENTWRK);
+  MemLib::vCopy(this->ayKeyBytes(),ayKeyBytes,nKeySize,CN_ENTWRK);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -587,7 +587,7 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  Key* aKey = reinterpret_cast<Key*>(m_xWsp.ayArea());
+  Key* aKey = reinterpret_cast<Key*>(ayKeyBytes());
   aKey->vShow(pIdxColVec);
   vTrace("\n"_Stz);
 }
