@@ -522,7 +522,7 @@ void EntWrk::vRef(Id& xRef)
 /*----------------------------------------------------------------------------*/
 /* set this entwrk using given details                                        */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vSetWrk(i8 iBufferNo, i8 i_Item, Ent* pEntry)
+void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
