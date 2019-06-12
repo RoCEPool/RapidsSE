@@ -120,7 +120,7 @@ byte* Ent::ayKeyBytes(void)
 /*----------------------------------------------------------------------------*/
 /* get size key                                                               */
 /*----------------------------------------------------------------------------*/
-i8 Ent::nKeySize(void)
+i8 Ent::nKeyBytes(void)
 {
   i8 nBytes = m_xKey.nKeyBytes();
   return nBytes;
@@ -129,7 +129,7 @@ i8 Ent::nKeySize(void)
 /*----------------------------------------------------------------------------*/
 /* set size key                                                               */
 /*----------------------------------------------------------------------------*/
-void Ent::vKeySize(i8 nKeyBytes)
+void Ent::vKeyBytes(i8 nKeyBytes)
 {
   m_xKey.vKeyBytes(nKeyBytes);
 }
