@@ -41,13 +41,13 @@ EntWrk::EntWrk(void)
          0 == m_xId.iItem()   &&
          0 == m_xId.nLevels());
   
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_yaKeyBytes,sizeof(m_yaKeyBytes),CN_ENTWRK);
-#else
-  m_yaKeyBytes[0] = '\0';
-#endif
-  
   m_xKey.vSizeKey(0);
+
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m__KeyBytes,sizeof(m__KeyBytes),CN_ENTWRK);
+#else
+  m__KeyBytes[0] = '\0';
+#endif
   
   _checkInitialisedSize_(sizeof(EntWrk));
   
@@ -472,7 +472,7 @@ byte* EntWrk::ayKeyBytes(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  return m_yaKeyBytes;
+  return m_xKey.ayKeyBytes();
 }
 
 /*----------------------------------------------------------------------------*/

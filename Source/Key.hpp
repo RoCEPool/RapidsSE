@@ -32,7 +32,7 @@ namespace Indexes
     /*------------------------------------------------------------------------*/
     inline byte* ayKeyBytes(void)
     {
-      return reinterpret_cast<byte*>(this);
+      return aAdd<byte*>(this,sizeof(m_nKeyBytes));
     }
   };
   

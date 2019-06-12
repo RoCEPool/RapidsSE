@@ -13,13 +13,13 @@ namespace Indexes
   {
   friend class Ent;
   friend class Table;
-    
+  
   private:
     Id    m_xId;  // sub ref (child index buffer), or row ref (H0 leaf buffers)
   
     Key   m_xKey; // the key
   
-    byte  m_yaKeyBytes[C_MAX_KEY]; // the bytes of the key
+    byte  m__KeyBytes[C_MAX_KEY]; // the bytes of the key
   
     Footer m_xFooter;
   
