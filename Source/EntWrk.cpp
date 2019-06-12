@@ -77,42 +77,8 @@ EntWrk::~EntWrk(void) noexcept(false)
 //{
 //}
 
-
-
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
-/*----------------------------------------------------------------------------*/
-//eKC EntWrk::eCompare(Ent* aEnt1, EntWrk& xEntWrk2)
-//{
-//  i8 nKeySize1 = aEnt1->nSizeKey();
-//  i8 nKeySize2 = xEntWrk2.nKeySize();
-//
-//  Key* aKey1 = _aKey(aEnt1->ayKeyBytes());
-//  Key* aKey2 = xEntWrk2.aKey_ayEmbedded();
-//
-//  i8 iCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
-//
-//  byte* ayCursorThis = aKey1->ayKeyBytes();
-//  byte* ayCursorThat = aKey2->ayKeyBytes();
-//
-//  i8 iCmp = MemLib::iCompareWords(ayCursorThis, ayCursorThat, iCmpBytes);
-//
-//  if (iCmp == 0) {
-//    if (nKeySize1 == nKeySize2)
-//      return KC_SAME;
-//
-//    if (nKeySize1 < nKeySize2)
-//      return KC_BEFORE;
-//
-//    if (nKeySize1 > nKeySize2)
-//      return KC_AFTER;
-//  }
-//
-//  if (iCmp < 0)
-//    return KC_BEFORE;
-//
-//  return KC_AFTER;
-//}
 /*----------------------------------------------------------------------------*/
 eKC EntWrk::eCompare(Ent* aEnt1, EntWrk& xEntWrk2)
 {
