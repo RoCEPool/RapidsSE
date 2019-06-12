@@ -78,7 +78,7 @@ void Ent::vBuffer(i8 iBuffer)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nEntSize(void)
 {
-  i8 nBytes = sizeof(Ent) + m_xKey.nSizeKey() + nSizeNeo();
+  i8 nBytes = sizeof(Ent) + m_xKey.nSizeKey() + nNEOsize();
   
   return nBytes;
 }
@@ -222,7 +222,7 @@ i8 Ent::nSizeBytes(void)
 /*----------------------------------------------------------------------------*/
 /* get size of the NEO after this entry                                       */
 /*----------------------------------------------------------------------------*/
-i8 Ent::nSizeNeo(void)
+i8 Ent::nNEOsize(void)
 {
   i8 nLvls  = nLevels();
   i8 nBytes = C_NEO_SIZE * nLvls;

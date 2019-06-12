@@ -59,12 +59,12 @@ namespace Indexes
     i4    iNEO(i8 i_Level);
     void  vNEO(i8 i_Level, i4 i_Offset);
     void  vNEOdump(void);
-  
+    i8    nNEOsize(void);
+
     Id&   xRef(void);
     void  vRef(Id xRef);
   
     i8    nSizeBytes(void);
-    i8    nSizeNeo(void);
 
     i8    iSkipNo(void);
     void  vSkipNo(i8 iSkipNo);
