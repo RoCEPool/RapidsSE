@@ -102,6 +102,8 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
   ColumnVec* pColVec = pTable()->pColumnVec();
   i8 nColumns = pColVec->nItems();
 
+  
+  //! this should probably a member in JobEncodeRow
   HV_Row hvRow(pColVec);
   
   

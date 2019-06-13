@@ -22,6 +22,8 @@ using namespace Transform;
 
 #include "Row.hpp"
 
+#include "hpRow.hpp"
+
 #include "snBCD.hpp"
 #include "snBOL.hpp"
 #include "snDTE.hpp"
