@@ -8,12 +8,10 @@ namespace Data
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Extractor
   {
-  private:
-  
   public:
   
-    static bool bExtractElement(Datum* pDatum, char** acRecCrs,
-                                Column* pCol, Formatters* pRecFmt);
+    static void vAddElement(EntWrk* pEntWrk, Stz* aSrc,
+                           Column* pCol, Formatters* pRecFmt);
   
     static bool bExtractNext(Row* pRow, char** acRecCrs,
                              ColumnVec* pColVec, Formatters* pRecFmt,
@@ -21,6 +19,10 @@ namespace Data
   
     static Column* pExtractRow(Row* pRow, char** acRecCrs,
                                ColumnVec* pColVec, Formatters* pRecFmt);
+  
+  private:
+    static bool bExtractElement(Datum* pDatum, char** acRecCrs,
+                                Column* pCol, Formatters* pRecFmt);
   
     static bool bExtractBcdDefault(Datum* pDatum, char** acRecCrs,
                                    Column* pCol, Formatters* pRecFmt);
@@ -59,10 +61,10 @@ namespace Data
     static bool bExtractVchSupplied(Datum* pDatum, char** acRecCrs,
                                     Column* pCol, Formatters* pRecFmt);
   
-  
-    static bool bIsEnclosed(char** acRecCrs, Formatters* pRecFmt);
+    static bool bIsEnclosedString(char** acRecCrs, Formatters* pRecFmt);
     static bool bIsThereFieldData(char* aSrc, Formatters* pRecFmt);
     static bool bIsThereRecordData(char* aSrc, Formatters* pRecFmt);
+  
     static bool bTestForNull(Column* pCol,
                              char** acRecCrs,
                              Formatters* pRecFmt,
@@ -73,14 +75,10 @@ namespace Data
                                     Formatters* pRecFmt,
                                     bool& bValidNull,
                                     bool bSkipTrailingSpaces=true);
+  
     static bool bValidFieldEnd(char* aSrc, Formatters* pRecFmt);
     static bool bValidFieldEndDefault(char* aSrc, Formatters* pRecFmt);
     static bool bValidRecordEnd(char* aSrc, Formatters* pRecFmt);
-  
-  
-    static void vAddElement(EntWrk* pEntWrk, Stz* aSrc,
-                            Column* pCol, Formatters* pRecFmt);
-
   };
   
 }
