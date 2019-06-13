@@ -79,7 +79,8 @@ enum eCN : u2 // Class Number
   /*                           */ CN_HASHBUFFER,
   /*                           */ CN_HASHMAP,
   /*  44 0x2C       48B Heap:I */ CN_HEAPBUFFER,
-  
+  /*                           */ CN_HPROW,
+
   /*  45 0x2D      368B Heap:I */ CN_INDEX,
   /*  46 0x2E      184B Heap:S */ CN_INDEXTREE,
   /*  47 0x2F     8224B Heap:M */ CN_INDEXTREEVEC,
@@ -382,7 +383,8 @@ static Stz* aCN[]
   /*          */ "HASHBUFFER"_Stz,          // CN_HASHBUFFER
   /*          */ "HASHMAP"_Stz,             // CN_HASHMAP
   /*  44 0x2C */ "HEAPBUFFER"_Stz,          // CN_HEAPBUFFER
-  
+  /*          */ "HPROW"_Stz,               // CN_HPROW
+
   /*  45 0x2D */ "INDEX"_Stz,               // CN_INDEX
   /*  46 0x2E */ "INDEXTREE"_Stz,           // CN_INDEXTREE
   /*  47 0x2F */ "INDEXTREEVEC"_Stz,        // CN_INDEXTREEVEC

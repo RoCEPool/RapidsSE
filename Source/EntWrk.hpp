@@ -11,7 +11,7 @@ namespace Indexes
   {
   private:
 
-    Ent    m_xEnt;
+    Ent    m_xEnt; // the entry being formed
   
     byte   m__KeyBytes[C_MAX_KEY]; // the bytes of the key
   

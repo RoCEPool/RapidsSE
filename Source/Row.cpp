@@ -88,6 +88,31 @@ Row::~Row(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*----------------------------------------------------------------------------*/
+/* append column value to row                                                 */
+/*----------------------------------------------------------------------------*/
+void Row::vAppendValue(Data::Datum* pDatum, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+
+  i8 i_Col = pCol->iColumnNo();
+  
+  if (DM_VCH == pCol->eDatumType()) {
+    
+    char* acDstString = (char*)m_xWsp.ayArea() + m_i_Wsp;
+    char* acSrcString = (char*)pDatum->m_sVch.aChar();
+
+    i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
+
+    m_i_Wsp += (nSrcLength + 1);
+    
+    return;
+  }
+  
+  m_aiValue[i_Col] = pDatum->m_iInt;
+}
+
 /*----------------------------------------------------------------------------*/
 /* don't decode vch                                                           */
 /*----------------------------------------------------------------------------*/
@@ -106,9 +131,27 @@ void Row::vDontDecodeVch(void)
     }
     else
       m_abGetCol[i_Col] = true;
-      m_iLastCol = i_Col;
+    m_iLastCol = i_Col;
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/* reset all column values                                                    */
+/*----------------------------------------------------------------------------*/
+void Row::vResetValues(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  
+  m_i_Wsp = 0;
+  
+#ifdef WITH_CHECK_INITIALISED
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    m_aiValue[i_Col] = 0;
+  }
+  
+#endif
+}
+
 
 
 /*----------------------------------------------------------------------------*/

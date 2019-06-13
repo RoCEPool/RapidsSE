@@ -80,7 +80,8 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_HASHMAP
 
   /* 50 */ &HeapBuffer::vDump,      // CN_HEAPBUFFER
-  
+  /* 51 */ &Dump::vDummy,           // CN_HPROW
+
   /* 51 */ &Dump::vDummy,           // CN_INDEX
   /* 52 */ &Dump::vDummy,           // CN_INDEXTREE
   /* 53 */ &Dump::vDummy,           // CN_INDEXTREEVEC
@@ -387,7 +388,8 @@ i8 giClassSize[]
   /*    */ sizeof(HashBuffer),         // CN_HASHBUFFER
   /*    */ sizeof(HashMap),            // CN_HASHMAP
   /* 50 */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
-  
+  /* 50 */ sizeof(hpRow),              // CN_HPROW
+
   /* 51 */ sizeof(Index),              // CN_INDEX
   /* 52 */ sizeof(IndexTree),          // CN_INDEXTREE
   /* 53 */ sizeof(IndexTreeVec),       // CN_INDEXTREEVEC
@@ -694,7 +696,8 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_HASHBUFFER
   /*    */ HT_TRANSIENT_SMALL,   // CN_HASHMAP
   /* 50 */ HT_INVALID,           // CN_HEAPBUFFER
-  
+  /* 50 */ HT_INVALID,           // CN_HPROW
+
   /* 51 */ HT_INVALID,           // CN_INDEX
   /* 52 */ HT_TRANSIENT_SMALL,   // CN_INDEXTREE
   /* 53 */ HT_TRANSIENT_MEDIUM,  // CN_INDEXTREEVEC
