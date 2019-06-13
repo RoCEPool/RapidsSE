@@ -557,42 +557,6 @@ FreeItem* EntBuffer::aMakeFreeEntry(Ent* aEnt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* move to exact key entry                                                    */
-/*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pMoveToExactEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** paEntBuffer)
-{
-  EntBuffer* pEntBuffer = *paEntBuffer;
-  
-  if (aEnt == pEntBuffer->aSkipRoots())
-    aEnt = pEntBuffer->aNextEntry(aEnt,0);
-  
-  eKC eCompare = EntWrk::eCompare(aEnt, xEntWrk.aEnt());
-  
-  // have we reached the key?
-  if (eCompare == KC_SAME)
-    return aEnt;
-  
-  // have we moved beyond ?
-  if (eCompare == KC_AFTER)
-    return nullptr;
-  
-  aEnt = pEntBuffer->aNextEntry(aEnt,0);
-  
-  if ( ! aEnt ) {
-    
-    // move to the next buffer
-    *paEntBuffer = pEntBuffer->pNextBuffer();
-    
-    if (*paEntBuffer) {
-      return pMoveToExactEntry((*paEntBuffer)->aSkipRoots(), xEntWrk, paEntBuffer);
-    }
-    
-  }
-  
-  return aEnt;
-}
-
-/*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
 Ent* EntBuffer::pMoveToGreaterThanEntry(Ent* aEnt, Ent* aGivenKey, EntBuffer** paEntBuffer)
