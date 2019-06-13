@@ -105,6 +105,8 @@ void Row::vAppendValue(Data::Datum* pDatum, Column* pCol)
 
     i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
 
+    m_aiValue[i_Col] = (i8)acDstString;
+    
     m_i_Wsp += (nSrcLength + 1);
     
     return;

@@ -151,6 +151,9 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
       
   } // for each column
   
+  //hpRow hp_Row;
+  //vTrace("%s\n"_Stz,hp_Row.sz(hvRow));
+  
   m_pRowCoder_Encode->vEncodeEnd();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

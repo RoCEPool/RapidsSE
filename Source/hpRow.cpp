@@ -45,7 +45,83 @@ void hpRow::vRow(Row* pRow)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
+  char* szCrs = &m_caRow[0];
+  
+  for (i8 i_Col = 0; i_Col < pRow->m_nColumns; i_Col++) {
+  
+    Column* pCol = pRow->m_pColVec->pGet(i_Col);
+    eDM eDatum   = pCol->eDatumType();
+    Stz* szDatum = (Stz*)aDM[eDatum];
 
+    StrLib::vAppendString(&szCrs,(char*)"  "_Stz);
+
+    StrLib::vAppendString(&szCrs,(char*)pCol->szColNm());
+    StrLib::vAppendString(&szCrs,(char*)" "_Stz);
+    StrLib::vAppendString(&szCrs,(char*)szDatum);
+    StrLib::vAppendString(&szCrs,(char*)" "_Stz);
+
+    switch (eDatum) {
+      case DM_BCD: {
+        spBCD spBcd;
+        StrLib::vAppendString(&szCrs,(char*)spBcd.sz(pRow->m_aiValue[i_Col]));
+        break;
+      }
+
+      case DM_BOL: {
+        spBOL spBol;
+        StrLib::vAppendString(&szCrs,(char*)spBol.sz(pRow->m_aiValue[i_Col]));
+        break;
+      }
+        
+      case DM_DTE: {
+        spDTE spDte;
+        StrLib::vAppendString(&szCrs,(char*)spDte.sz(pRow->m_aiValue[i_Col]));
+        break;
+      }
+        
+      case DM_FLT: {
+        spFLT spFlt;
+        StrLib::vAppendString(&szCrs,(char*)spFlt.sz(pRow->m_aiValue[i_Col]));
+        break;
+      }
+        
+      case DM_INT: {
+        spINT spInt;
+        StrLib::vAppendString(&szCrs,(char*)spInt.sz(pRow->m_aiValue[i_Col]));
+        break;
+      }
+        
+      case DM_IVL: {
+        spIVL spIvl;
+        StrLib::vAppendString(&szCrs,(char*)spIvl.sz(pRow->m_aiValue[i_Col]));
+        break;
+      }
+        
+      case DM_TME: {
+        spTME spTme;
+        StrLib::vAppendString(&szCrs,(char*)spTme.sz(pRow->m_aiValue[i_Col]));
+        break;
+      }
+        
+      case DM_TSP: {
+        spTSP spTsp;
+        StrLib::vAppendString(&szCrs,(char*)spTsp.sz(pRow->m_aiValue[i_Col]));
+        break;
+      }
+        
+      case DM_VCH: {
+        spVCH spVch;
+        StrLib::vAppendString(&szCrs,(char*)spVch.sz((char*)pRow->m_aiValue[i_Col]));
+        break;
+      }
+        
+      default:
+        NEVER_REACH;
+    }
+
+    StrLib::vAppendString(&szCrs,(char*)"\n"_Stz);
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
