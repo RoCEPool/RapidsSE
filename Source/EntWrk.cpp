@@ -70,34 +70,34 @@ EntWrk::~EntWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
 /*----------------------------------------------------------------------------*/
-eKC EntWrk::eCompare(Ent* aEnt1, EntWrk& xEntWrk2)
-{
-  i8 nKeySize1 = aEnt1->nKeyBytes();
-  i8 nKeySize2 = xEntWrk2.nKeyBytes();
-
-  i8 nCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
-
-  byte* ayKey1Bytes = aEnt1->ayByteSeq();
-  byte* ayKey2Bytes = xEntWrk2.ayByteSeq();
-
-  i8 iCmp = MemLib::iCompareWords(ayKey1Bytes,ayKey2Bytes,nCmpBytes);
-
-  if (iCmp == 0) {
-    if (nKeySize1 == nKeySize2)
-      return KC_SAME;
-
-    if (nKeySize1 < nKeySize2)
-      return KC_BEFORE;
-
-    if (nKeySize1 > nKeySize2)
-      return KC_AFTER;
-  }
-
-  if (iCmp < 0)
-    return KC_BEFORE;
-
-  return KC_AFTER;
-}
+//eKC EntWrk::eCompare(Ent* aEnt1, EntWrk& xEntWrk2)
+//{
+//  i8 nKeySize1 = aEnt1->nKeyBytes();
+//  i8 nKeySize2 = xEntWrk2.nKeyBytes();
+//
+//  i8 nCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
+//
+//  byte* ayKey1Bytes = aEnt1->ayByteSeq();
+//  byte* ayKey2Bytes = xEntWrk2.ayByteSeq();
+//
+//  i8 iCmp = MemLib::iCompareWords(ayKey1Bytes,ayKey2Bytes,nCmpBytes);
+//
+//  if (iCmp == 0) {
+//    if (nKeySize1 == nKeySize2)
+//      return KC_SAME;
+//
+//    if (nKeySize1 < nKeySize2)
+//      return KC_BEFORE;
+//
+//    if (nKeySize1 > nKeySize2)
+//      return KC_AFTER;
+//  }
+//
+//  if (iCmp < 0)
+//    return KC_BEFORE;
+//
+//  return KC_AFTER;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
@@ -204,7 +204,7 @@ bool EntWrk::bGreaterThan(Ent* aEnt1, Ent* aEnt2)
 /*----------------------------------------------------------------------------*/
 bool EntWrk::bGreaterEqual(Ent* aEnt1, EntWrk& xEntWrk2)
 {
-  eKC eCmp = eCompare(aEnt1, xEntWrk2);
+  eKC eCmp = eCompare(aEnt1, &xEntWrk2.m_xEnt);
   return eCmp == KC_AFTER || eCmp == KC_SAME ? true : false;
 }
 
@@ -364,6 +364,16 @@ byte* EntWrk::ayElementCrs(void)
   byte* ayNextElm = aAdd<byte*>(ayByteSeq(),nKeyBytes);
 
   return ayNextElm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get entry pointer                                                          */
+/*----------------------------------------------------------------------------*/
+Ent* EntWrk::aEnt(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  return &m_xEnt;
 }
 
 /*----------------------------------------------------------------------------*/

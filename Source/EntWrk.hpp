@@ -24,9 +24,10 @@ namespace Indexes
     EntWrk(void);
    ~EntWrk(void) noexcept(false);
   
-    static eKC eCompare(Ent* aEnt1, EntWrk& xEntWrk2);
+    //static eKC eCompare(Ent* aEnt1, EntWrk& xEntWrk2);
     static eKC eCompare(EntWrk& xEntWrk1, EntWrk& xEntWrk2);
     static eKC eCompare(EntWrk& xEntWrk1, Ent* aEnt2);
+    
     static eKC eCompare(Ent* aEnt1, Ent* aEnt2);
   
     static byte* ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor);
@@ -49,7 +50,8 @@ namespace Indexes
     void  vByteSeq(i8 nKeyBytes, byte* ayByteSeq);
 
     byte* ayElementCrs(void);
-
+    Ent*  aEnt(void);
+    
     void  vFormEntry(Ent* pEntry);
   
     i8    iHashKey(void);
