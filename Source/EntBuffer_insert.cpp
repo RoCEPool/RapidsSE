@@ -803,7 +803,7 @@ bool EntBuffer::bKeyBeforeBuffer(EntWrk& xKeyTest)
   
   Ent* aFirstEntry = this->aLeadEntry();
   
-  bool bLessEqual = EntWrk::bLessEqual(xKeyTest,aFirstEntry);
+  bool bLessEqual = EntWrk::bLessEqual(xKeyTest.aEnt(),aFirstEntry);
   
   return bLessEqual;
 }
