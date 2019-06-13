@@ -42,16 +42,16 @@ namespace Indexes
   
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
-  
+    byte* ayByteSeq(void);
+    void  vByteSeq(i8 ayByteSeq);
+
     i8    nEntSize(void);
   
     i8    iItem(void);
     void  vItem(i8 iItem);
 
     Key*  aKey(void);
-    byte* ayKeyBytes(void);
     i8    nKeyBytes(void);
-    void  vKeyBytes(i8 nKeyBytes);
 
     i8    nLevels(void);
     void  vLevels(i8 nLevels);

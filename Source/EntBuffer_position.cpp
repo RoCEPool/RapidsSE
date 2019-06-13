@@ -187,7 +187,7 @@ void EntBuffer::vPositionPriorVecEntry(Ent* aFindKey, Ent* aPriorVec[],
       if (aFindEntry == aNextEntry_sl)
         break;
       
-      Key* aNextKey = _aKey(aNextEntry_sl->ayKeyBytes());
+      Key* aNextKey = _aKey(aNextEntry_sl->ayByteSeq());
       
       bIsJuxta = EntWrk::bGreaterEqual(aNextEntry_sl, aFindKey);
       

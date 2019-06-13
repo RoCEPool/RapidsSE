@@ -45,7 +45,9 @@ namespace Indexes
   
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
-  
+    byte* ayByteSeq(void);
+    void  vByteSeq(i8 nKeyBytes, byte* ayByteSeq);
+
     byte* ayElementCrs(void);
 
     void  vFormEntry(Ent* pEntry);
@@ -56,10 +58,8 @@ namespace Indexes
     i8    iItem(void);
     void  vItem(i8 iItem);
   
-    byte* ayKeyBytes(void);
-    void  vKeyBytes(i8 nKeyBytes, byte* ayKeyBytes);
     i8    nKeyBytes(void);
-    void  vKeyBytes(i8 nKeyBytes);
+    void  vByteSeq(i8 nKeyBytes);
   
     i8    nLevels(void);
     void  vLevels(i8 nLevels);

@@ -8,8 +8,9 @@ namespace Indexes
   class Key
   {
   private:
-    i8  m_nKeyBytes; // size of key (in bytes)
-    // ..bytes..     // variable byte sequence of the key
+    i8 m_nKeyBytes; // size of key (in bytes)
+  
+    // ..byte sequence (of the key)
 
   public:
     void* operator new(size_t);
@@ -23,13 +24,13 @@ namespace Indexes
     i8   iGetInt(void);
     void vIncKeyBytes(i8 nDeltaBytes);
     i8   nKeyBytes(void);
-    void vKeyBytes(i8 nKeyBytes);
+    void vByteSeq(i8 nKeyBytes);
     void vShow(IdxColVec* pIdxColVec);
 
     /*------------------------------------------------------------------------*/
-    /* getthis key as a byte sequence                                         */
+    /* get the byte sequence of the key                                       */
     /*------------------------------------------------------------------------*/
-    inline byte* ayKeyBytes(void)
+    inline byte* ayByteSeq(void)
     {
       return aAdd<byte*>(this,sizeof(m_nKeyBytes));
     }

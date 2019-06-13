@@ -65,8 +65,8 @@ eKC Key::eCompare(Key* aLeft, Key* aRight)
   i8 nKeyBytes_l = aLeft->nKeyBytes();
   i8 nKeyBytes_r = aRight->nKeyBytes();
   
-  byte* ayKeyBytes_l  = aLeft->ayKeyBytes();
-  byte* ayKeyBytes_r = aRight->ayKeyBytes();
+  byte* ayKeyBytes_l  = aLeft->ayByteSeq();
+  byte* ayKeyBytes_r = aRight->ayByteSeq();
   
   i8 nCmpBytes = nKeyBytes_l < nKeyBytes_r ? nKeyBytes_l : nKeyBytes_r;
   
@@ -99,7 +99,7 @@ eKC Key::eCompare(Key* aLeft, Key* aRight)
 /*----------------------------------------------------------------------------*/
 i8 Key::iGetInt(void)
 {
-  i8 iVal = *(i8*)ayKeyBytes();
+  i8 iVal = *(i8*)ayByteSeq();
   
   return iVal;
 }
@@ -123,7 +123,7 @@ i8 Key::nKeyBytes(void)
 /*----------------------------------------------------------------------------*/
 /* set size of key                                                            */
 /*----------------------------------------------------------------------------*/
-void Key::vKeyBytes(i8 nKeyBytes)
+void Key::vByteSeq(i8 nKeyBytes)
 {
   m_nKeyBytes = (i4)nKeyBytes;
 }
@@ -135,7 +135,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
 {
   i8 nBytes;
   
-  byte* ayCursor = ayKeyBytes();
+  byte* ayCursor = ayByteSeq();
   
   char caLiteral[128];
   

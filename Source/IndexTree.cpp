@@ -253,7 +253,7 @@ void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
   Ent* aFirstL0_ent = pFirstL0->aLeadEntry();
   
   Id xRef = aFirstL0_ent->xRef();
-  byte* aKeyBytes = aFirstL0_ent->ayKeyBytes();
+  byte* aKeyBytes = aFirstL0_ent->ayByteSeq();
   i8 nKeyBytes = aFirstL0_ent->nKeyBytes();
   i8 nLevels = aFirstL0_ent->nLevels();
   
@@ -264,7 +264,7 @@ void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
   
   xFirstL1_ent.vRef(xRef);
   
-  xFirstL1_ent.vKeyBytes(nKeyBytes,aKeyBytes);
+  xFirstL1_ent.vByteSeq(nKeyBytes,aKeyBytes);
 
   xFirstL1_ent.vLevels(nLevels);
   
@@ -322,7 +322,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     // get the elements of the right key
     
     Id xRef = aRightL0_Key->xRef();
-    byte* aKeyBytes = aRightL0_Key->ayKeyBytes();
+    byte* aKeyBytes = aRightL0_Key->ayByteSeq();
     
     //i8 nKeySize = aKey->nKeySize(pIdxColVec);
     i8 nKeySize = aRightL0_Key->nKeyBytes();
@@ -333,7 +333,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     
     xLeftEntWrk.vRef(xRef);
     
-    xLeftEntWrk.vKeyBytes(nKeySize,aKeyBytes);
+    xLeftEntWrk.vByteSeq(nKeySize,aKeyBytes);
 
     xLeftEntWrk.vLevels(nLevels);
     

@@ -41,7 +41,7 @@ EntWrk::EntWrk(void)
   m_xEnt.vItem(0);
   m_xEnt.vLevels(0);
   
-  m_xEnt.vKeyBytes(0);
+  m_xEnt.vByteSeq(0);
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m__KeyBytes,sizeof(m__KeyBytes),CN_ENTWRK);
@@ -59,7 +59,7 @@ EntWrk::EntWrk(void)
 /*----------------------------------------------------------------------------*/
 EntWrk::~EntWrk(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
 }
 
 
@@ -77,8 +77,8 @@ eKC EntWrk::eCompare(Ent* aEnt1, EntWrk& xEntWrk2)
 
   i8 nCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
 
-  byte* ayKey1Bytes = aEnt1->ayKeyBytes();
-  byte* ayKey2Bytes = xEntWrk2.ayKeyBytes();
+  byte* ayKey1Bytes = aEnt1->ayByteSeq();
+  byte* ayKey2Bytes = xEntWrk2.ayByteSeq();
 
   i8 iCmp = MemLib::iCompareWords(ayKey1Bytes,ayKey2Bytes,nCmpBytes);
 
@@ -109,8 +109,8 @@ eKC EntWrk::eCompare(EntWrk& xEntWrk1, EntWrk& xEntWrk2)
   
   i8 nCmpBytes = nKey1Size < nKey2Size ? nKey1Size : nKey2Size;
   
-  byte* ayKey1Bytes = xEntWrk1.ayKeyBytes();
-  byte* ayKey2Bytes = xEntWrk2.ayKeyBytes();
+  byte* ayKey1Bytes = xEntWrk1.ayByteSeq();
+  byte* ayKey2Bytes = xEntWrk2.ayByteSeq();
   
   i8 iCmp = MemLib::iCompareWords(ayKey1Bytes,ayKey2Bytes,nCmpBytes);
   
@@ -133,8 +133,8 @@ eKC EntWrk::eCompare(EntWrk& xEntWrk1, Ent* aEnt2)
   
   i8 nCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
   
-  byte* ayKey1Bytes = xEntWrk1.ayKeyBytes();
-  byte* ayKey2Bytes = aEnt2->ayKeyBytes();
+  byte* ayKey1Bytes = xEntWrk1.ayByteSeq();
+  byte* ayKey2Bytes = aEnt2->ayByteSeq();
   
   i8 iCmp = MemLib::iCompareWords(ayKey1Bytes,ayKey2Bytes,nCmpBytes);
   
@@ -157,8 +157,8 @@ eKC EntWrk::eCompare(Ent* aEnt1, Ent* aEnt2)
   
   i8 nCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
   
-  byte* ayKey1Bytes = aEnt1->ayKeyBytes();
-  byte* ayKey2Bytes = aEnt2->ayKeyBytes();
+  byte* ayKey1Bytes = aEnt1->ayByteSeq();
+  byte* ayKey2Bytes = aEnt2->ayByteSeq();
   
   i8 iCmp = MemLib::iCompareWords(ayKey1Bytes,ayKey2Bytes,nCmpBytes);
   
@@ -270,12 +270,10 @@ void EntWrk::vAddElement(Row* pRow, Column* pCol)
     return;
   }
   
-  if (DM_VCH == pCol->eDatumType()) {
+  if (DM_VCH == pCol->eDatumType())
     nBytes = StrLib::iWordFlip(aDst, aSrc);
-  }
-  else {
+  else
     nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,&aSrc);
-  }
   
   vIncKeyBytes(nBytes);
 }
@@ -311,11 +309,11 @@ void EntWrk::vAddPlusInfinity(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get buffer no from id                                                      */
+/* get buffer no from ref                                                     */
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::iBuffer(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   i8 iBuffer = m_xEnt.iBuffer();
   
@@ -323,13 +321,35 @@ i8 EntWrk::iBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set buffer no in id                                                        */
+/* set buffer no in re                                                        */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vBuffer(i8 iBuffer)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   m_xEnt.vBuffer(iBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get byte sequence of key                                                   */
+/*----------------------------------------------------------------------------*/
+byte* EntWrk::ayByteSeq(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  return m_xEnt.ayByteSeq();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set byte sequence of key                                                   */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vByteSeq(i8 nKeyBytes, byte* ayByteSeq)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  m_xEnt.vByteSeq(nKeyBytes);
+  
+  MemLib::vCopy(this->ayByteSeq(),ayByteSeq,nKeyBytes,CN_ENTWRK);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -339,11 +359,11 @@ byte* EntWrk::ayElementCrs(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 nBytesUsed = m_xEnt.nKeyBytes();
+  i8 nKeyBytes = m_xEnt.nKeyBytes();
 
-  byte* ayNext = aAdd<byte*>(ayKeyBytes(),nBytesUsed);
+  byte* ayNextElm = aAdd<byte*>(ayByteSeq(),nKeyBytes);
 
-  return ayNext;
+  return ayNextElm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -351,6 +371,8 @@ byte* EntWrk::ayElementCrs(void)
 /*----------------------------------------------------------------------------*/
 void EntWrk::vFormEntry(Ent* pEntry)
 {
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set entry id and levels
   
@@ -360,75 +382,53 @@ void EntWrk::vFormEntry(Ent* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into entry
   
-  Key* aSrcKey  = reinterpret_cast<Key*>(ayKeyBytes());
-  Key* aDstKey  = _aKey(pEntry->ayKeyBytes());
+  byte* aSrcKey = ayByteSeq();
+  byte* aDstKey = pEntry->ayByteSeq();
   i8   nKeySize = this->nKeyBytes();
   
   MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENT);
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute hash of key                                                        */
+/* compute hash of key byte sequence                                          */
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::iHashKey(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 iHash = HshLib::iHash(ayKeyBytes(),nKeyBytes());
+  i8 iHash = HshLib::iHash(ayByteSeq(),nKeyBytes());
   
   return iHash;
 }
 
 /*----------------------------------------------------------------------------*/
-/* inc total key bytes by size of element                                     */
+/* inc total key bytes by the size of element                                 */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vIncKeyBytes(i8 nElementBytes)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   m_xEnt.aKey()->vIncKeyBytes(nElementBytes);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get item no from id                                                        */
+/* get item no from entry reference                                           */
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::iItem(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   return m_xEnt.iItem();
 }
 
 /*----------------------------------------------------------------------------*/
-/* set item no in id                                                          */
+/* set item no in entry reference                                             */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vItem(i8 iItem)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   m_xEnt.vItem(iItem);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get key bytes                                                              */
-/*----------------------------------------------------------------------------*/
-byte* EntWrk::ayKeyBytes(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  return m_xEnt.ayKeyBytes();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set key                                                                    */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vKeyBytes(i8 nKeySize, byte* ayKeyBytes)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  m_xEnt.vKeyBytes(nKeySize);
-  
-  MemLib::vCopy(this->ayKeyBytes(),ayKeyBytes,nKeySize,CN_ENTWRK);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -444,21 +444,21 @@ i8 EntWrk::nKeyBytes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set key size                                                               */
+/* set key byte sequence                                                      */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vKeyBytes(i8 nKeyBytes)
+void EntWrk::vByteSeq(i8 nKeyBytes)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  m_xEnt.vKeyBytes(nKeyBytes);
+  m_xEnt.vByteSeq(nKeyBytes);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get nLevel                                                                 */
+/* get number of levels                                                       */
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nLevels(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   return m_xEnt.nLevels();
 }
@@ -468,7 +468,7 @@ i8 EntWrk::nLevels(void)
 /*----------------------------------------------------------------------------*/
 void EntWrk::vLevels(i8 nLevels)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   m_xEnt.vLevels(nLevels);
 }
@@ -478,7 +478,7 @@ void EntWrk::vLevels(i8 nLevels)
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nNEOsize(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   i8 nBytes = m_xEnt.nNEOsize();
   
@@ -490,7 +490,7 @@ i8 EntWrk::nNEOsize(void)
 /*----------------------------------------------------------------------------*/
 void EntWrk::vRandomLevels(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   Task* pTask = Task::pExecutingTask();
   
@@ -504,17 +504,17 @@ void EntWrk::vRandomLevels(void)
 /*----------------------------------------------------------------------------*/
 Id& EntWrk::xRef(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   return m_xEnt.xRef();
 }
 
 /*----------------------------------------------------------------------------*/
-/* set reference                                                              */
+/* set ref (sub-ref to child entBuffer or row-ref at H0 leaf buffers to row)  */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vRef(Id& xRef)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   m_xEnt.vRef(xRef);
 }
@@ -524,6 +524,8 @@ void EntWrk::vRef(Id& xRef)
 /*----------------------------------------------------------------------------*/
 void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
 {
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
   
@@ -534,13 +536,13 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   vRef(xRef);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy key into this entry
+  // copy key byte sequence into this entry
   
-  byte* aKeyBytes = pEntry->ayKeyBytes();
-  i8 nKeySize = pEntry->nKeyBytes();
-  RASSERT(nKeySize % 8 == 0);
+  byte* ayByteSeq = pEntry->ayByteSeq();
+  i8 nKeyBytes = pEntry->nKeyBytes();
+  RASSERT(nKeyBytes % 8 == 0);
   
-  vKeyBytes(nKeySize,aKeyBytes);
+  vByteSeq(nKeyBytes,ayByteSeq);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -550,17 +552,17 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  Key* aKey = reinterpret_cast<Key*>(ayKeyBytes());
+  Key* aKey = reinterpret_cast<Key*>(ayByteSeq());
   aKey->vShow(pIdxColVec);
   vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the size {Ent,Key}                                                     */
+/* get the size of this (Ent+Key)                                             */
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nSize_EntKey(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   i8 nKeyBytes = this->nKeyBytes();
   
@@ -570,11 +572,11 @@ i8 EntWrk::nSize_EntKey(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the size {Ent,Key,Neo}                                                 */
+/* get the size this (Ent+Key+Neo)                                           */
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nSize_EntKeyNeo(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   i8 nKeyBytes = this->nKeyBytes();
   

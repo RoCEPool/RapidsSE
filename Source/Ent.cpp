@@ -38,7 +38,7 @@ Ent::Ent(eCN eClassNo, i8 nSizeEnt_Without_NEO)
 {
   i8 nKeyBytes = static_cast<i4>(nSizeEnt_Without_NEO - sizeof(Ent));
   
-  m_xKey.vKeyBytes(nKeyBytes);
+  m_xKey.vByteSeq(nKeyBytes);
   
 #ifdef WITH_DEBUG_VERSION
   m_iSkipNo = -1;
@@ -71,6 +71,24 @@ i8 Ent::iBuffer(void)
 void Ent::vBuffer(i8 iBuffer)
 {
   m_xRef.vItem(iBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of key bytes                                                   */
+/*----------------------------------------------------------------------------*/
+byte* Ent::ayByteSeq(void)
+{
+  byte* ayKey = aAdd<byte*>(this,sizeof(Ent));
+  
+  return ayKey;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set size key                                                               */
+/*----------------------------------------------------------------------------*/
+void Ent::vByteSeq(i8 nKeyBytes)
+{
+  m_xKey.vByteSeq(nKeyBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,30 +126,12 @@ Key* Ent::aKey(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of key bytes                                                   */
-/*----------------------------------------------------------------------------*/
-byte* Ent::ayKeyBytes(void)
-{
-  byte* ayKey = aAdd<byte*>(this,sizeof(Ent));
-  
-  return ayKey;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get size key                                                               */
 /*----------------------------------------------------------------------------*/
 i8 Ent::nKeyBytes(void)
 {
   i8 nBytes = m_xKey.nKeyBytes();
   return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set size key                                                               */
-/*----------------------------------------------------------------------------*/
-void Ent::vKeyBytes(i8 nKeyBytes)
-{
-  m_xKey.vKeyBytes(nKeyBytes);
 }
 
 /*----------------------------------------------------------------------------*/
