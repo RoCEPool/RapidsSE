@@ -275,47 +275,6 @@ void RowCoder::vEncodeBegin(RowNub* pIntoNub)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode given datum into current row nub                                    */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vEncodeDatum(Datum* pSrcDatum, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-  RASSERT(m_bEncoding);
-  
-  i8 i_Col = pCol->iColumnNo();
-  if (0 == i_Col)
-    m_nTotalHeads++;
-  
-  //  if (1 == i_Col)
-  //    oNumBat.vAdd(pDatum->m_iInt);
-  
-  // record the extended datum for this column
-  // nb. encodeBegin(), encodeDatum(), encodeEnd() is done for each row
-  eDM eDatum = pCol->eDatumType();
-  
-  // hash the column if its part of the partition key
-  vHashColumn(pSrcDatum,pCol);
-  
-  // encode the datum into the row
-  switch (eDatum) {
-    case DM_BCD: vEncodeBcd(pSrcDatum,pCol); break;
-    case DM_BOL: vEncodeBol(pSrcDatum,pCol); break;
-    case DM_DTE: vEncodeDte(pSrcDatum,pCol); break;
-    case DM_FLT: vEncodeFlt(pSrcDatum,pCol); break;
-    case DM_INT: vEncodeInt(pSrcDatum,pCol); break;
-    case DM_IVL: vEncodeIvl(pSrcDatum,pCol); break;
-    case DM_TME: vEncodeTme(pSrcDatum,pCol); break;
-    case DM_TSP: vEncodeTsp(pSrcDatum,pCol); break;
-    case DM_VCH: vEncodeVch(pSrcDatum,pCol); break;
-    default:
-      NEVER_REACH;
-  }
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* end encoding of row                                                        */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vEncodeEnd(void)

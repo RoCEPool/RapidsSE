@@ -121,14 +121,14 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
     Column* pCol = pColVec->pGet(i_Col);
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-    // extract datum from record
+    // extract field from record
 
-    bool bValidDatum = Extractor::bExtract(m_pRow,&oDatum,&aSrc,pCol,&m_oFormatters);
+    bool bValidField = Extractor::bExtract(m_pRow,&oDatum,&aSrc,pCol,&m_oFormatters);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-    // is the datum valid ?
+    // is the field valid ?
     
-    if (! bValidDatum) {
+    if (! bValidField) {
       if (! gpAttachMap->m_bMetadata) {
         vWarn("Skipping row - invalid field %s in record: "_Stz,
               pCol->sColumnName().aChar());
@@ -144,16 +144,6 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
     
     m_pRow->vAppendValue(&oDatum,pCol);
     
-    
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-    // encode datum into cache line
-    //m_pRowCoder_Encode->vEncodeDatum(&oDatum,pCol);
-    
-    //if (m_pRowCoder_Encode->m_i_IntoOffset > m_pRowCoder_Encode->nHeadBytes(pColVec)) {
-    //  bResult = false;
-    //  break;
-    //}
-      
   } // for each column
   
   hpRow hp_Row;

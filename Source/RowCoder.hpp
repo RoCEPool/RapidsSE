@@ -104,7 +104,6 @@ namespace Data
     bool bCopyRow(RowNub* pFromNub);
     
     void vEncodeBegin(RowNub* pIntoNub);
-    void vEncodeDatum(Datum* pSrcDatum, Column* pCol); //! to be deleted
     void vEncodeEnd(void);
     void vEncodeRow(Row* pRow);
 
