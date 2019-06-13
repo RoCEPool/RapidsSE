@@ -47,7 +47,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* dereference                                                            */
     /*------------------------------------------------------------------------*/
-    operator CLASS*(void)
+    operator CLASS *(void)
     {
       return m_pObject;
     }

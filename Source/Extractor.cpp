@@ -19,7 +19,8 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* extract                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Extractor::bExtract(Datum* pDatum, char** aaSrc, Column* pCol, Formatters* pFmt)
+bool Extractor::bExtract(Row* pRow,
+                         Datum* pDatum, char** aaSrc, Column* pCol, Formatters* pFmt)
 {
   bool b = false;
   eDM eDatum = pCol->eDatumType();
@@ -88,6 +89,8 @@ bool Extractor::bExtract(Datum* pDatum, char** aaSrc, Column* pCol, Formatters* 
       // did not see a field delimiter after non-last field (incorrect)
       b = false;
   }
+  
+  pRow->vAppendValue(pDatum,pCol);
   
   return b;
 }
