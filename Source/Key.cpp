@@ -113,7 +113,7 @@ void Key::vIncKeyBytes(i8 nDeltaBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size of key                                                            */
+/* get number of bytes in key byte sequence                                   */
 /*----------------------------------------------------------------------------*/
 i8 Key::nKeyBytes(void)
 {
@@ -121,9 +121,9 @@ i8 Key::nKeyBytes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set size of key                                                            */
+/* set number of bytes in key byte sequence                                   */
 /*----------------------------------------------------------------------------*/
-void Key::vByteSeq(i8 nKeyBytes)
+void Key::vKeyBytes(i8 nKeyBytes)
 {
   m_nKeyBytes = (i4)nKeyBytes;
 }
@@ -139,9 +139,9 @@ void Key::vShow(IdxColVec* pIdxColVec)
   
   char caLiteral[128];
   
-  for (i8 i_Co = 0; i_Co < pIdxColVec->nItems(); i_Co++) {
+  for (i8 i_Col = 0; i_Col < pIdxColVec->nItems(); i_Col++) {
     
-    Column* pColumn = pIdxColVec->pGet(i_Co);
+    Column* pColumn = pIdxColVec->pGet(i_Col);
     
     byte* ayElm = EntWrk::ayEachElm(pColumn,nBytes,&ayCursor);
     
@@ -152,7 +152,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
     }
     else
       Record::vSprint(pColumn,(Stz*)caLiteral,(Stz*)ayElm);
-    vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Co,nBytes,caLiteral);
+    vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Col,nBytes,caLiteral);
   }
   
   //vTrace("%s)\n"_Stz, sKeyString.aStz());

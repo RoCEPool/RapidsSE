@@ -448,7 +448,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   
   Extractor::vAddElement(&xEntWrkLower,aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-    xEntWrkLower.vAddMinusInfinity();
+    xEntWrkLower.vAppendMinusInfinity();
   }
   //xEntWrk.vShow();
   
@@ -656,7 +656,7 @@ void Step::vIndexRange(MP_Task mpTask)
   Extractor::vAddElement(&xEntWrkLower,aStrVal->aStz(),pColumn0,pFormatters);
 
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-    xEntWrkLower.vAddMinusInfinity();
+    xEntWrkLower.vAppendMinusInfinity();
   }
   //xEntWrkLower.vShow(pIndex->pIdxColVec());
   
@@ -668,7 +668,7 @@ void Step::vIndexRange(MP_Task mpTask)
   
   Extractor::vAddElement(&xEntWrkUpper,aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-    xEntWrkUpper.vAddPlusInfinity();
+    xEntWrkUpper.vAppendPlusInfinity();
   }
   //xEntWrkUpper.vShow();
   
@@ -1010,7 +1010,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   
   Extractor::vAddElement(&xEntWrkUpper,aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
-    xEntWrkUpper.vAddPlusInfinity();
+    xEntWrkUpper.vAppendPlusInfinity();
   }
   //xEntWrkUpper.vShow();
   

@@ -41,7 +41,7 @@ EntWrk::EntWrk(void)
   m_xEnt.vItem(0);
   m_xEnt.vLevels(0);
   
-  m_xEnt.vByteSeq(0);
+  m_xEnt.vKeyBytes(0);
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m__KeyBytes,sizeof(m__KeyBytes),CN_ENTWRK);
@@ -255,7 +255,7 @@ bool EntWrk::bNotEqual(Ent* aEnt1, Ent* aEnt2)
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vAddElement(Row* pRow, Column* pCol)
+void EntWrk::vAppendElement(Row* pRow, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
@@ -281,7 +281,7 @@ void EntWrk::vAddElement(Row* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* add min lower value to key                                                 */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vAddMinusInfinity(void)
+void EntWrk::vAppendMinusInfinity(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
@@ -296,7 +296,7 @@ void EntWrk::vAddMinusInfinity(void)
 /*----------------------------------------------------------------------------*/
 /* add max upper value to key                                                 */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vAddPlusInfinity(void)
+void EntWrk::vAppendPlusInfinity(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
@@ -347,7 +347,7 @@ void EntWrk::vByteSeq(i8 nKeyBytes, byte* ayByteSeq)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  m_xEnt.vByteSeq(nKeyBytes);
+  m_xEnt.vKeyBytes(nKeyBytes);
   
   MemLib::vCopy(this->ayByteSeq(),ayByteSeq,nKeyBytes,CN_ENTWRK);
 }
@@ -446,11 +446,11 @@ i8 EntWrk::nKeyBytes(void)
 /*----------------------------------------------------------------------------*/
 /* set key byte sequence                                                      */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vByteSeq(i8 nKeyBytes)
+void EntWrk::vKeyBytes(i8 nKeyBytes)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  m_xEnt.vByteSeq(nKeyBytes);
+  m_xEnt.vKeyBytes(nKeyBytes);
 }
 
 /*----------------------------------------------------------------------------*/

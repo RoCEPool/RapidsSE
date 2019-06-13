@@ -39,9 +39,9 @@ namespace Indexes
     static bool bLessThan(EntWrk& xEntWrk1, Ent* aEnt2);
     static bool bNotEqual(Ent* aEnt1, Ent* aEnt2);
 
-    void  vAddElement(Row* pRow, Column* pCol);
-    void  vAddMinusInfinity(void);
-    void  vAddPlusInfinity(void);
+    void  vAppendElement(Row* pRow, Column* pCol);
+    void  vAppendMinusInfinity(void);
+    void  vAppendPlusInfinity(void);
   
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
@@ -59,7 +59,7 @@ namespace Indexes
     void  vItem(i8 iItem);
   
     i8    nKeyBytes(void);
-    void  vByteSeq(i8 nKeyBytes);
+    void  vKeyBytes(i8 nKeyBytes);
   
     i8    nLevels(void);
     void  vLevels(i8 nLevels);

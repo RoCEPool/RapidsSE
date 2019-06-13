@@ -38,7 +38,7 @@ Ent::Ent(eCN eClassNo, i8 nSizeEnt_Without_NEO)
 {
   i8 nKeyBytes = static_cast<i4>(nSizeEnt_Without_NEO - sizeof(Ent));
   
-  m_xKey.vByteSeq(nKeyBytes);
+  m_xKey.vKeyBytes(nKeyBytes);
   
 #ifdef WITH_DEBUG_VERSION
   m_iSkipNo = -1;
@@ -84,14 +84,6 @@ byte* Ent::ayByteSeq(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set size key                                                               */
-/*----------------------------------------------------------------------------*/
-void Ent::vByteSeq(i8 nKeyBytes)
-{
-  m_xKey.vByteSeq(nKeyBytes);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get size of entry with neo                                                 */
 /*----------------------------------------------------------------------------*/
 i8 Ent::nEntSize(void)
@@ -132,6 +124,14 @@ i8 Ent::nKeyBytes(void)
 {
   i8 nBytes = m_xKey.nKeyBytes();
   return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set size key                                                               */
+/*----------------------------------------------------------------------------*/
+void Ent::vKeyBytes(i8 nKeyBytes)
+{
+  m_xKey.vKeyBytes(nKeyBytes);
 }
 
 /*----------------------------------------------------------------------------*/

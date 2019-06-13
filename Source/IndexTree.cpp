@@ -723,7 +723,7 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, RowBuffer* pRowBuffer, i8 i_Row)
     Column* pColumn = pIdxColVec->pGet(i_Column);
     
     // add the column value to the key
-    pEntWrk->vAddElement(hRow, pColumn);
+    pEntWrk->vAppendElement(hRow, pColumn);
     
     //vShow(pIdxColVec);
   }

@@ -24,7 +24,7 @@ namespace Indexes
     i8   iGetInt(void);
     void vIncKeyBytes(i8 nDeltaBytes);
     i8   nKeyBytes(void);
-    void vByteSeq(i8 nKeyBytes);
+    void vKeyBytes(i8 nKeyBytes);
     void vShow(IdxColVec* pIdxColVec);
 
     /*------------------------------------------------------------------------*/
