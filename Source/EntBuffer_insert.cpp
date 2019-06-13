@@ -797,13 +797,13 @@ Ent* EntBuffer::aInsertKeyUpwards(EntWrk& xEntWrk,
 /*----------------------------------------------------------------------------*/
 /* is given key before the first key of this buffer                           */
 /*----------------------------------------------------------------------------*/
-bool EntBuffer::bKeyBeforeBuffer(EntWrk& xKeyTest)
+bool EntBuffer::bKeyBeforeBuffer(Ent* aKeyTest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   Ent* aFirstEntry = this->aLeadEntry();
   
-  bool bLessEqual = EntWrk::bLessEqual(xKeyTest.aEnt(),aFirstEntry);
+  bool bLessEqual = EntWrk::bLessEqual(aKeyTest,aFirstEntry);
   
   return bLessEqual;
 }
@@ -852,7 +852,7 @@ EntBuffer* EntBuffer::pNewHigherBuffer(void)
 /* create a new insert buffer (adjusting higher buffers accordingly)          */
 /*----------------------------------------------------------------------------*/
 EntBuffer* EntBuffer::pNewInsertBuffer(EntWrk& xInsKey, i8 nEntryPlusOffsets,
-                                           EntBuffer** ppRootKeyBuffer)
+                                      EntBuffer** ppRootKeyBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -915,7 +915,7 @@ EntBuffer* EntBuffer::pNewInsertBuffer(EntWrk& xInsKey, i8 nEntryPlusOffsets,
   
   //ASSERT( (* ppRootKeyBuffer)->bVerify() );
   
-  if ( pRightBuffer->bKeyBeforeBuffer(xInsKey) )
+  if ( pRightBuffer->bKeyBeforeBuffer(xInsKey.aEnt()) )
     return pLeftBuffer;
   else
     return pRightBuffer;
