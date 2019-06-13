@@ -124,6 +124,8 @@ bool Extractor::bExtractNext(Row* pRow, char** aacRecCrs,
 {
   char* acRec = *aacRecCrs;
   
+  bBlankLine_ = false;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // leading blanks and blank lines
   
@@ -152,7 +154,7 @@ bool Extractor::bExtractNext(Row* pRow, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // extract row from record
   
-  Column* pBadCol = Extractor::pExtractRow(pRow,aacRecCrs,pColVec,pRecFmt);
+  Column* pBadCol = pExtractRow(pRow,aacRecCrs,pColVec,pRecFmt);
   
   // any invalid field?
   if (pBadCol) {
