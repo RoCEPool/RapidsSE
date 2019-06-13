@@ -18,7 +18,7 @@ hpRow::hpRow(void)
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caRow,sizeof(m_caRow),CN_ROW);
 #else
-  m_caVch[0] = '\0';
+  m_caRow[0] = '\0';
 #endif
   
   _checkInitialised_(CN_ROW);
