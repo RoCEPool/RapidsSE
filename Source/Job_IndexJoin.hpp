@@ -20,6 +20,8 @@ namespace Jobs
     
     i8           m_iPartition;          // partition this join task to work on
     
+    bool         m_bPrint;              // print
+    
     Queue*       m_pBufferQueue;        // buffer queue where join buffers are pushed
     i8           m_nLastBuffers;        // expected last buffers
     i8           m_nLastBuffersScanned; // last buffers scanned so far.

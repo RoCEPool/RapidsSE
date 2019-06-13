@@ -118,6 +118,7 @@ Job_IndexJoin::Job_IndexJoin(Interface::Session* pSession)
   m_pRightTable  = nullptr;
   m_pLeftIndex   = nullptr;
   m_pRightIndex  = nullptr;
+  m_bPrint       = false;
   m_iPartition   = -1;
   m_pBufferQueue = new Queue;
   m_nLastBuffers = 0;
@@ -174,7 +175,7 @@ bool Job_IndexJoin::bPopulateJob(TokenVec* pTokenVec)
   // - - - - - - - - - - - - - - - - - - - - -
   // join T1 T1_idx1 T2 T2_idx2
   
-  if (iNumTokens != 5)
+  if (iNumTokens != 5 && iNumTokens != 6)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - -
@@ -193,6 +194,16 @@ bool Job_IndexJoin::bPopulateJob(TokenVec* pTokenVec)
   // set the right index name
   m_sRightIndex = pTokenVec->pGet(4)->aText();
 
+  if (iNumTokens == 6) {
+    if (pTokenVec->pGet(5)->eToken() == TN_NAME) {
+      if (pTokenVec->pGet(5)->aText()->bSame("print"_Stz)) {
+        m_bPrint = true;
+        return true;
+      }
+    }
+    return false;
+  }
+  
   return true;
 }
 
@@ -259,7 +270,6 @@ void Jobs::vJob_IndexJoin_post(Interface::Session* pSession, Job* pJob)
   i8 nRowsProcessed = 0;
   
   RefBuffer* pRefBuffer = nullptr;
-  bool bDone = false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fetch
@@ -276,9 +286,9 @@ void Jobs::vJob_IndexJoin_post(Interface::Session* pSession, Job* pJob)
       continue;
     }
     
-    //if (pJob_IndexJoin->m_bDisplay) {
+    if (pJob_IndexJoin->m_bPrint) {
       vIterateBuffer(pJob_IndexJoin, pRefBuffer);
-    //}
+    }
     
     nRowsProcessed += pRefBuffer->nItems();
     
@@ -289,6 +299,10 @@ void Jobs::vJob_IndexJoin_post(Interface::Session* pSession, Job* pJob)
     pRefBuffer = nullptr;
   }
   
+  if (pJob_IndexJoin->m_bPrint)
+    vTrace("success: %lld rows fetched\n"_Stz,nRowsProcessed);
+  else
+    vTrace("success: %lld rows affected\n"_Stz,nRowsProcessed);
 }
 
 /*----------------------------------------------------------------------------*/
