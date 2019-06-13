@@ -105,40 +105,32 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   ColumnVec* pColVec = pTable()->pColumnVec();
-  i8 nCols = pColVec->nItems();
 
   if (m_pRow)
     m_pRow->vResetValues();
   else
     m_pRow = new Row(pColVec);
-
   
   m_pRowCoder_Encode->vEncodeBegin(m_oRowParts.pNub());
   
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    
-    Column* pCol = pColVec->pGet(i_Col);
-    
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-    // extract field from record
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  // extract row from record
 
-    bool bValidField = Extractor::bExtract(m_pRow,&acRecCrs,pColVec,pCol,&m_oFormatters);
+  Column* pInvalidCol = Extractor::pExtract(m_pRow,&acRecCrs,pColVec,&m_oFormatters);
 
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-    // is the field valid ?
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  // any field valid ?
     
-    if (! bValidField) {
-      if (! gpAttachMap->m_bMetadata) {
-        vWarn("Skipping row - invalid field %s in record: "_Stz,
-              pCol->sColumnName().aChar());
-        for (char* a = (char*)szRecStr; *a && '\n' != *a && '\r' != *a; a++)
-          vTrace("%c"_Stz,*a);
-        vTrace("\n"_Stz);
-      }
-      return false;
+  if (pInvalidCol) {
+    if (! gpAttachMap->m_bMetadata) {
+      vWarn("Skipping row - invalid field %s in record: "_Stz,
+            pInvalidCol->sColumnName().aChar());
+      for (char* a = (char*)szRecStr; *a && '\n' != *a && '\r' != *a; a++)
+        vTrace("%c"_Stz,*a);
+      vTrace("\n"_Stz);
     }
-    
-  } // for each column
+    return false;
+  }
   
   hpRow hp_Row;
   vTrace("%s\n"_Stz,hp_Row.sz(m_pRow));
@@ -156,6 +148,97 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
 
   return bResult;
 }
+/*----------------------------------------------------------------------------*/
+//bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
+//{
+//  bBlankLine = false;
+//
+//#ifdef WITH_ANALYSE_FREE
+//  static Peruse xRows("Rows:"_Stz);
+//  xRows.vAdd(1,"\n"_Stz);
+//#endif
+//
+//  bool bResult = true;
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  char* acRecCrs = szRecStr->aChar();
+//
+//  // skip leading spaces
+//  if (m_oFormatters.m_cRecordTerminator)
+//    StrLib::vSkipWhite(&acRecCrs);
+//  else
+//    StrLib::vSkipSpaces(&acRecCrs);
+//
+//  // ignore blank lines
+//  if (! Extractor::bIsThereRecordData(acRecCrs,&m_oFormatters) ) {
+//    bBlankLine = true;
+//    return false;
+//  }
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // debug
+//#ifdef WITH_TRACE_ENCODING
+//  char caRecord[C_16KB];
+//  StrLib::vCopyTill(caRecord,aSrc,'\n');
+//  vTrace("\n--------------------------------------------------------------------------\n"_Stz);
+//  vTrace("\nFormatting record: %s\n"_Stz,caRecord);
+//#endif
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  ColumnVec* pColVec = pTable()->pColumnVec();
+//  i8 nCols = pColVec->nItems();
+//
+//  if (m_pRow)
+//    m_pRow->vResetValues();
+//  else
+//    m_pRow = new Row(pColVec);
+//
+//
+//  m_pRowCoder_Encode->vEncodeBegin(m_oRowParts.pNub());
+//
+//  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+//
+//    Column* pCol = pColVec->pGet(i_Col);
+//
+//    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+//    // extract field from record
+//
+//    bool bValidField = Extractor::bExtract(m_pRow,&acRecCrs,pColVec,pCol,&m_oFormatters);
+//
+//    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+//    // is the field valid ?
+//
+//    if (! bValidField) {
+//      if (! gpAttachMap->m_bMetadata) {
+//        vWarn("Skipping row - invalid field %s in record: "_Stz,
+//              pCol->sColumnName().aChar());
+//        for (char* a = (char*)szRecStr; *a && '\n' != *a && '\r' != *a; a++)
+//          vTrace("%c"_Stz,*a);
+//        vTrace("\n"_Stz);
+//      }
+//      return false;
+//    }
+//
+//  } // for each column
+//
+//  hpRow hp_Row;
+//  vTrace("%s\n"_Stz,hp_Row.sz(m_pRow));
+//
+//  m_pRowCoder_Encode->vEncodeRow(m_pRow);
+//
+//  m_pRowCoder_Encode->vEncodeEnd();
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // debug
+//
+//  //  HV_Rec hvRec;
+//  //  RowCoder::vRecord(hvRec,m_oRowParts,0);
+//  //  hvRec->vPrintRow();
+//
+//  return bResult;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get table                                                                  */
