@@ -14,6 +14,8 @@ namespace Jobs
   
     RowCoder*   m_pRowCoder_Encode;
     RowCoder*   m_paRowCoder_Copy[C_MAX_PARTITIONS];
+  
+    Row*        m_pRow;
 
   public:
     void* operator new(size_t);

@@ -36,6 +36,9 @@ JobEncodeRow::JobEncodeRow(void)
   for (i8 i_Ptn = 0; i_Ptn < gpAttachMap->m_pGrid->m_nPartitions; i_Ptn++) {
     m_paRowCoder_Copy[i_Ptn] = new RowCoder;
   }
+  
+  //ColumnVec* pColVec = pTable()->pColumnVec();
+  m_pRow = nullptr; //new Row(pColVec);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,6 +55,8 @@ JobEncodeRow::~JobEncodeRow(void) noexcept(false)
     delete m_paRowCoder_Copy[i_Ptn];
   }
   delete m_pRowCoder_Encode;
+  
+  delete m_pRow;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,24 +105,25 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   ColumnVec* pColVec = pTable()->pColumnVec();
-  i8 nColumns = pColVec->nItems();
+  i8 nCols = pColVec->nItems();
 
-  
-  //! this should probably a member in JobEncodeRow
-  HV_Row hvRow(pColVec);
-  
+  if (m_pRow)
+    m_pRow->vResetValues();
+  else
+    m_pRow = new Row(pColVec);
+
   
   m_pRowCoder_Encode->vEncodeBegin(m_oRowParts.pNub());
   
-  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
     Datum oDatum;
-    Column* pCol = pColVec->pGet(i_Column);
+    Column* pCol = pColVec->pGet(i_Col);
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // extract datum from record
 
-    bool bValidDatum = Extractor::bExtract(hvRow,&oDatum,&aSrc,pCol,&m_oFormatters);
+    bool bValidDatum = Extractor::bExtract(m_pRow,&oDatum,&aSrc,pCol,&m_oFormatters);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // is the datum valid ?
@@ -136,7 +142,7 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // append datum into row
     
-    hvRow->vAppendValue(&oDatum,pCol);
+    m_pRow->vAppendValue(&oDatum,pCol);
     
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -150,10 +156,10 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
       
   } // for each column
   
-  //hpRow hp_Row;
-  //vTrace("%s\n"_Stz,hp_Row.sz(hvRow));
+  hpRow hp_Row;
+  vTrace("%s\n"_Stz,hp_Row.sz(m_pRow));
   
-  m_pRowCoder_Encode->vEncodeRow(hvRow);
+  m_pRowCoder_Encode->vEncodeRow(m_pRow);
   
   m_pRowCoder_Encode->vEncodeEnd();
 

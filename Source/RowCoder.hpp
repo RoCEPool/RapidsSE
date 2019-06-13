@@ -128,6 +128,16 @@ namespace Data
     void vDataNeed(i8 nBytes, Column* pCol);
     void vDataAdd(Datum* pDatum, Column* pCol);
     
+    void vDatumBol(Datum* pTgtDatum, Row* pRow, Column* pCol);
+    void vDatumBcd(Datum* pTgtDatum, Row* pRow, Column* pCol);
+    void vDatumDte(Datum* pTgtDatum, Row* pRow, Column* pCol);
+    void vDatumFlt(Datum* pTgtDatum, Row* pRow, Column* pCol);
+    void vDatumInt(Datum* pTgtDatum, Row* pRow, Column* pCol);
+    void vDatumIvl(Datum* pTgtDatum, Row* pRow, Column* pCol);
+    void vDatumTme(Datum* pTgtDatum, Row* pRow, Column* pCol);
+    void vDatumTsp(Datum* pTgtDatum, Row* pRow, Column* pCol);
+    void vDatumVch(Datum* pTgtDatum, Row* pRow, Column* pCol);
+
     void vEraDatePut(Datum* pDatum);
     void vEncodeBol(Datum* pSrcDatum, Column* pCol);
     void vEncodeBcd(Datum* pSrcDatum, Column* pCol);

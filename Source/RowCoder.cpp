@@ -351,6 +351,32 @@ void RowCoder::vEncodeEnd(void)
 void RowCoder::vEncodeRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  return;
+  
+  i8 nCols = m_pColVec->nItems();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+
+    Datum oDatum;
+    
+    Column* pCol = m_pColVec->pGet(i_Col);
+    eDM eDatum = pCol->eDatumType();
+
+    switch (eDatum) {
+      case DM_BCD: vDatumBcd(&oDatum,pRow,pCol); vEncodeBcd(&oDatum,pCol); break;
+      case DM_BOL: vDatumBol(&oDatum,pRow,pCol); vEncodeBol(&oDatum,pCol); break;
+      case DM_DTE: vDatumDte(&oDatum,pRow,pCol); vEncodeDte(&oDatum,pCol); break;
+      case DM_FLT: vDatumFlt(&oDatum,pRow,pCol); vEncodeFlt(&oDatum,pCol); break;
+      case DM_INT: vDatumInt(&oDatum,pRow,pCol); vEncodeInt(&oDatum,pCol); break;
+      case DM_IVL: vDatumIvl(&oDatum,pRow,pCol); vEncodeIvl(&oDatum,pCol); break;
+      case DM_TME: vDatumTme(&oDatum,pRow,pCol); vEncodeTme(&oDatum,pCol); break;
+      case DM_TSP: vDatumTsp(&oDatum,pRow,pCol); vEncodeTsp(&oDatum,pCol); break;
+      case DM_VCH: vDatumVch(&oDatum,pRow,pCol); vEncodeVch(&oDatum,pCol); break;
+      default:
+        NEVER_REACH;
+    }
+
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -931,6 +957,127 @@ void RowCoder::vDataAdd(Datum* pEncodedDatum, Column* pCol)
   vHeadAdd(pEncodedDatum->m_wWord,
            pEncodedDatum->m_nEncodedBytes,
            pCol);
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy column value from row into datum                                      */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDatumBol(Datum* pTgtDatum, Row* pRow, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  i8 i_Col = pCol->iColumnNo();
+ 
+  pTgtDatum->m_eDatum = DM_BOL;
+  pTgtDatum->m_iBol   = pRow->m_aiValue[i_Col];
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy column value from row into datum                                      */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDatumBcd(Datum* pTgtDatum, Row* pRow, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  i8 i_Col = pCol->iColumnNo();
+  
+  pTgtDatum->m_eDatum = DM_BCD;
+  pTgtDatum->m_iBcd   = pRow->m_aiValue[i_Col];
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy column value from row into datum                                      */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDatumDte(Datum* pTgtDatum, Row* pRow, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  i8 i_Col = pCol->iColumnNo();
+  
+  pTgtDatum->m_eDatum = DM_DTE;
+  pTgtDatum->m_iDte   = pRow->m_aiValue[i_Col];
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy column value from row into datum                                      */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDatumFlt(Datum* pTgtDatum, Row* pRow, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  i8 i_Col = pCol->iColumnNo();
+  
+  pTgtDatum->m_eDatum = DM_FLT;
+  pTgtDatum->m_dFlt   = (d8)pRow->m_aiValue[i_Col];
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy column value from row into datum                                      */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDatumInt(Datum* pTgtDatum, Row* pRow, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  i8 i_Col = pCol->iColumnNo();
+  
+  pTgtDatum->m_eDatum = DM_INT;
+  pTgtDatum->m_iInt   = pRow->m_aiValue[i_Col];
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy column value from row into datum                                      */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDatumIvl(Datum* pTgtDatum, Row* pRow, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  i8 i_Col = pCol->iColumnNo();
+  
+  pTgtDatum->m_eDatum = DM_IVL;
+  pTgtDatum->m_iIvl   = pRow->m_aiValue[i_Col];
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy column value from row into datum                                      */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDatumTme(Datum* pTgtDatum, Row* pRow, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  i8 i_Col = pCol->iColumnNo();
+  
+  pTgtDatum->m_eDatum = DM_TME;
+  pTgtDatum->m_iTme   = pRow->m_aiValue[i_Col];
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy column value from row into datum                                      */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDatumTsp(Datum* pTgtDatum, Row* pRow, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  i8 i_Col = pCol->iColumnNo();
+  
+  pTgtDatum->m_eDatum = DM_TSP;
+  pTgtDatum->m_iTsp   = pRow->m_aiValue[i_Col];
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy column value from row into datum                                      */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDatumVch(Datum* pTgtDatum, Row* pRow, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+  
+  i8 i_Col = pCol->iColumnNo();
+  
+  pTgtDatum->m_eDatum = DM_VCH;
+  
+  if (C_DATUM_NULL == pRow->m_aiValue[i_Col])
+    return;
+  
+  pTgtDatum->m_sVch = (Stz*)pRow->m_aiValue[i_Col];
 }
 
 /*----------------------------------------------------------------------------*/
