@@ -12,8 +12,8 @@ namespace Data
   
   public:
   
-    static bool bExtractDatum(Datum* pDatum, char** acRecCrs,
-                              Column* pCol, Formatters* pRecFmt);
+    static bool bExtractElement(Datum* pDatum, char** acRecCrs,
+                                Column* pCol, Formatters* pRecFmt);
   
     static bool bExtractNext(Row* pRow, char** acRecCrs,
                              ColumnVec* pColVec, Formatters* pRecFmt,

@@ -19,7 +19,8 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* extract                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Extractor::bExtractDatum(Datum* pDatum, char** acRecCrs, Column* pCol, Formatters* pRecFmt)
+bool Extractor::bExtractElement(Datum* pDatum, char** acRecCrs,
+                                Column* pCol, Formatters* pRecFmt)
 {
   bool b = false;
   eDM eDatum = pCol->eDatumType();
@@ -109,7 +110,7 @@ bool Extractor::bExtractDatum(Datum* pDatum, char** acRecCrs, Column* pCol, Form
       break;
       
     default:
-      vFatal("Extractor::bExtractDatum: Invalid eDatum : %lld\n"_Stz,eDatum);
+      vFatal("Extractor::bExtractElement: Invalid eDatum : %lld\n"_Stz,eDatum);
   }
   
   return b;
@@ -1554,8 +1555,8 @@ void Extractor::vAddElement(EntWrk* pEntWrk, Stz* aSrc,
   Datum xDatum;
   
   if (pCol->eDatumType() != DM_VCH) {
-    //b = Record::bExtractDatum(&xDatum,&pSrc,pCol,pFormatters);
-    b = Extractor::bExtractDatum(&xDatum,&pSrc,pCol,pFormatters);
+    //b = Record::bExtractElement(&xDatum,&pSrc,pCol,pFormatters);
+    b = Extractor::bExtractElement(&xDatum,&pSrc,pCol,pFormatters);
     RASSERT(b);
   }
   
@@ -1603,15 +1604,6 @@ void Extractor::vAddElement(EntWrk* pEntWrk, Stz* aSrc,
   
   pEntWrk->vIncKeyBytes(nBytes);
 }
-
-
-
-
-
-
-
-
-
 
 /*============================================================================*/
 /* end                                                                        */
