@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+namespace Data { class Datum; } //! TEMP
+
 namespace Transform
 {
   class Row : public Object
@@ -27,10 +29,12 @@ namespace Transform
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Row(ColumnVec* pColumnVec);
+    Row(ColumnVec* pColVec);
     ~Row(void) noexcept(false);
   
+    void vAppendValue(Data::Datum* pDatum, Column* pCol);
     void vDontDecodeVch(void);
+    void vResetValues(void);
   
   private:
     Footer* aFooter(void);

@@ -101,19 +101,22 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
   
   ColumnVec* pColVec = pTable()->pColumnVec();
   i8 nColumns = pColVec->nItems();
+
+  HV_Row hvRow(pColVec);
+  
   
   m_pRowCoder_Encode->vEncodeBegin(m_oRowParts.pNub());
   
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
     
     Datum oDatum;
-    Column* pColumn = pColVec->pGet(i_Column);
+    Column* pCol = pColVec->pGet(i_Column);
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // extract datum from record
 
     //bool bValidDatum = Record::bExtract(&oDatum,&aSrc,pColumn,&m_oFormatters);
-    bool bValidDatum = Extractor::bExtract(&oDatum,&aSrc,pColumn,&m_oFormatters);
+    bool bValidDatum = Extractor::bExtract(&oDatum,&aSrc,pCol,&m_oFormatters);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // is the datum valid ?
@@ -121,17 +124,23 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
     if (! bValidDatum) {
       if (! gpAttachMap->m_bMetadata) {
         vWarn("Skipping row - invalid field %s in record: "_Stz,
-              pColumn->sColumnName().aChar());
+              pCol->sColumnName().aChar());
         for (char* a = (char*)szRecStr; *a && '\n' != *a && '\r' != *a; a++)
           vTrace("%c"_Stz,*a);
         vTrace("\n"_Stz);
       }
       return false;
     }
+
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    // append datum into row
+    
+    hvRow->vAppendValue(&oDatum,pCol);
+    
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // encode datum into cache line
-    m_pRowCoder_Encode->vEncodeDatum(&oDatum,pColumn);
+    m_pRowCoder_Encode->vEncodeDatum(&oDatum,pCol);
     
     //if (m_pRowCoder_Encode->m_i_IntoOffset > m_pRowCoder_Encode->nHeadBytes(pColVec)) {
     //  bResult = false;
