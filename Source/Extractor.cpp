@@ -17,91 +17,10 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* extract                                                                    */
+/* extract record into row (returning first column which has invalid field)   */
 /*----------------------------------------------------------------------------*/
-bool Extractor::bExtract(Row* pRow, char** acRecCrs,
-                         ColumnVec* pColVec, Column* pCol, Formatters* pFmt)
-{
-  Datum oDatum;
-
-  bool b = false;
-  eDM eDatum = pCol->eDatumType();
-  
-  if (pFmt->m_bDefault) {
-    switch (eDatum) {
-      case DM_BCD: b = bExtractBcdDefault(&oDatum,acRecCrs,pCol,pFmt); break;
-      case DM_BOL: b = bExtractBolDefault(&oDatum,acRecCrs,pCol,pFmt); break;
-      case DM_CHR: b = bExtractVchDefault(&oDatum,acRecCrs,pCol,pFmt); break;
-      case DM_DTE: b = bExtractDteDefault(&oDatum,acRecCrs,pCol,pFmt); break;
-      case DM_FLT: b = bExtractFltDefault(&oDatum,acRecCrs,pCol,pFmt); break;
-      case DM_INT: b = bExtractIntDefault(&oDatum,acRecCrs,pCol,pFmt); break;
-      case DM_IVL: b = bExtractIvlDefault(&oDatum,acRecCrs,pCol,pFmt); break;
-      case DM_TME: b = bExtractTmeDefault(&oDatum,acRecCrs,pCol,pFmt); break;
-      case DM_TSP: b = bExtractTspDefault(&oDatum,acRecCrs,pCol,pFmt); break;
-      case DM_VCH: b = bExtractVchDefault(&oDatum,acRecCrs,pCol,pFmt); break;
-      default:
-        vFatal("Extractor::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
-    }
-  }
-  else {
-    switch (eDatum) {
-      case DM_BCD: b = bExtractBcdSupplied(&oDatum,acRecCrs,pCol,pFmt); break;
-      case DM_BOL: b = bExtractBolSupplied(&oDatum,acRecCrs,pCol,pFmt); break;
-      case DM_CHR: b = bExtractVchSupplied(&oDatum,acRecCrs,pCol,pFmt); break;
-      case DM_DTE: b = bExtractDteSupplied(&oDatum,acRecCrs,pCol,pFmt); break;
-      case DM_FLT: b = bExtractFltSupplied(&oDatum,acRecCrs,pCol,pFmt); break;
-      case DM_INT: b = bExtractIntSupplied(&oDatum,acRecCrs,pCol,pFmt); break;
-      case DM_IVL: b = bExtractIvlSupplied(&oDatum,acRecCrs,pCol,pFmt); break;
-      case DM_TME: b = bExtractTmeSupplied(&oDatum,acRecCrs,pCol,pFmt); break;
-      case DM_TSP: b = bExtractTspSupplied(&oDatum,acRecCrs,pCol,pFmt); break;
-      case DM_VCH: b = bExtractVchSupplied(&oDatum,acRecCrs,pCol,pFmt); break;
-      default:
-        vFatal("Extractor::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
-    }
-  }
-  
-  //pDatum->m_ayDatum = (byte*)szDst->aChar();
-  
-  // move past the field delimiter
-  //   (but not past the Extractor terminator or Extractor ends)
-  
-  if (pCol->bIsLastColumn()) {
-    // do not expect to see a field delimiter
-    if ( pFmt->m_cFieldDelimiter &&
-        pFmt->m_cRecordTerminator &&
-        pFmt->m_cFieldDelimiter != pFmt->m_cRecordTerminator &&
-        *(*acRecCrs) == pFmt->m_cFieldDelimiter ) {
-      // saw a field delimiter after last field (incorrect)
-      b = false;
-    }
-    /*
-     // did not see a field delimiter (correct)
-     if ( pFormatters->m_cFieldDelimiter &&
-     *(*acRecCrs) == pFormatters->m_cFieldDelimiter )
-     (*acRecCrs)++;
-     */
-  }
-  else {
-    // expect to see a field delimiter
-    if ( pFmt->m_cFieldDelimiter &&
-        *(*acRecCrs) == pFmt->m_cFieldDelimiter )
-      // saw a field delimiter after non-last field (correct)
-      (*acRecCrs)++;
-    else
-      // did not see a field delimiter after non-last field (incorrect)
-      b = false;
-  }
-  
-  pRow->vAppendValue(&oDatum,pCol);
-  
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract                                                                    */
-/*----------------------------------------------------------------------------*/
-Column* Extractor::pExtract(Row* pRow, char** aacRecCrs,
-                            ColumnVec* pColVec, Formatters* pFmt)
+Column* Extractor::pExtractRow(Row* pRow, char** aacRecCrs,
+                               ColumnVec* pColVec, Formatters* pFmt)
 {
   i8 nCols = pColVec->nItems();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
