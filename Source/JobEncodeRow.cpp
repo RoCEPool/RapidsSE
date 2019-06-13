@@ -117,8 +117,7 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // extract datum from record
 
-    //bool bValidDatum = Record::bExtract(&oDatum,&aSrc,pColumn,&m_oFormatters);
-    bool bValidDatum = Extractor::bExtract(&oDatum,&aSrc,pCol,&m_oFormatters);
+    bool bValidDatum = Extractor::bExtract(hvRow,&oDatum,&aSrc,pCol,&m_oFormatters);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // is the datum valid ?
@@ -150,6 +149,11 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
     //}
       
   } // for each column
+  
+  //hpRow hp_Row;
+  //vTrace("%s\n"_Stz,hp_Row.sz(hvRow));
+  
+  m_pRowCoder_Encode->vEncodeRow(hvRow);
   
   m_pRowCoder_Encode->vEncodeEnd();
 

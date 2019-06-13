@@ -346,6 +346,14 @@ void RowCoder::vEncodeEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* encode given row into current row nub                                      */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vEncodeRow(Row* pRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* usage report                                                               */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vReport(RowCoder* pRowCoder_Encode)

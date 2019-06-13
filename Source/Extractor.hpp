@@ -15,7 +15,8 @@ namespace Data
     static bool bExtractDatum(Datum* pDatum, char** aaSrc,
                               Column* pCol, Formatters* pFormatters);
     
-    static bool bExtract(Datum* pDatum, char** aaSrc,
+    static bool bExtract(Row* pRow,
+                         Datum* pDatum, char** aaSrc,
                          Column* pCol, Formatters* pFormatters);
   
     static bool bExtractBcdDefault(Datum* pDatum, char** aaSrc,
