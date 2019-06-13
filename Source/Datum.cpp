@@ -51,7 +51,9 @@ Datum::Datum(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
+  m_pCol   = nullptr;
   m_eDatum = DM_NONE;
+  
   m_wWord  = C_UNKNOWN;
   //m_sVch
   m_nChars = 0;

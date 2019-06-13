@@ -10,6 +10,8 @@ namespace Data
   {
   public:
   
+    Column* m_pCol;
+  
     eDM m_eDatum;
   
     union {

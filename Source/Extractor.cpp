@@ -22,7 +22,6 @@ extern AttachMap* gpAttachMap;
 void Extractor::vAddElement(EntWrk* pEntWrk, Stz* aSrc,
                             Column* pCol, Formatters* pFormatters)
 {
-  
   bool b;
   i8 nBytes;
   
@@ -259,7 +258,6 @@ bool Extractor::bExtractElement(Datum* pDatum, char** aacRecCrs,
       break;
       
     case DM_DTE:
-      i8 iYear, iMonth, iDay;
       b = StrLib::bExtractDate2(aacRecCrs, iYear, iMonth, iDay,
                                 pRecFmt->m_eDateComponent,
                                 pRecFmt->m_cDateSeparator);
@@ -335,7 +333,7 @@ bool Extractor::bExtractElement(Datum* pDatum, char** aacRecCrs,
 /* extract a decimal field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractBcdSupplied(Datum* pDatum, char** aacRecCrs,
-                                 Column* pColumn, Formatters* pFormatters)
+                                    Column* pColumn, Formatters* pFormatters)
 {
   pDatum->m_eDatum = DM_BCD;
   

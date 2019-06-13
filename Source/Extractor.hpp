@@ -9,7 +9,6 @@ namespace Data
   class Extractor
   {
   public:
-  
     static void vAddElement(EntWrk* pEntWrk, Stz* aSrc,
                            Column* pCol, Formatters* pRecFmt);
   
