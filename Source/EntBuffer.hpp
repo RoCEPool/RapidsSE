@@ -84,13 +84,12 @@ namespace MetaData
     // key positioning functions
     
     EntBuffer* pPositionH0Buffer(EntWrk& xGivenKey);
-    Ent*        pPositionPriorEntry(EntWrk& xFindKey);
-    Ent*        pPositionPriorEntry(Ent* aFindKey);
-    void         vPositionPriorVecEntry(Ent* aFindKey, Ent** aaPriorVec,
-                                        Ent* aFindEntry);
+    Ent*       pPositionPriorEntry(Ent* aFindKey);
+    void       vPositionPriorVecEntry(Ent* aFindKey, Ent** aaPriorVec,
+                                      Ent* aFindEntry);
     
-    void         vPositionPriorVecBuffer(Ent* aFindKey, Ent** aaPriorVec,
-                                         EntBuffer* pToBuffer);
+    void       vPositionPriorVecBuffer(Ent* aFindKey, Ent** aaPriorVec,
+                                       EntBuffer* pToBuffer);
     
     ////////////////////////////////////////////////////////////////////////////
     
@@ -101,9 +100,9 @@ namespace MetaData
     void        vBuildSkipListSorted(void);
     void        vDeleteEntry(Ent** aaEnt);
     void        vDump(void);
-    EntBuffer* pFirstChildBuffer(void);
-    Ent*       aInsertKeyAbs(EntWrk& xEntWrk);
-    Ent*       aInsertKeyAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry);
+    EntBuffer*  pFirstChildBuffer(void);
+    Ent*        aInsertKeyAbs(EntWrk& xEntWrk);
+    Ent*        aInsertKeyAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry);
     static Ent* aInsertKeyTree(EntWrk& xEntWrk,
                                  EntBuffer** ppRootKeyBuffer);
     void        vLazyBuild(void);

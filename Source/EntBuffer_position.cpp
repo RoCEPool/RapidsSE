@@ -51,7 +51,7 @@ EntBuffer* EntBuffer::pPositionH0Buffer(EntWrk& xGivenKey)
     //aEnt1 = pEntBuffer->aPositionQuery(xGivenKey);
     //ASSERT(aEnt1);
     
-    aEnt = pEntBuffer->pPositionPriorEntry(xGivenKey);
+    aEnt = pEntBuffer->pPositionPriorEntry(xGivenKey.aEnt());
     ASSERT(aEnt);
     
     aEnt = pEntBuffer->pMoveToPrevEntry(aEnt, xGivenKey, &pEntBuffer);
@@ -94,45 +94,6 @@ Ent* EntBuffer::pPositionPriorEntry(Ent* aFindKey)
     while (aNextEntry_sl) {
       
       bKeyIsGreaterEqual = EntWrk::bGreaterEqual(aNextEntry_sl, aFindKey);
-      
-      if (bKeyIsGreaterEqual)
-        break;
-      
-      aScanEntry_sl = aNextEntry_sl;
-      aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
-    }
-  }
-  
-  return aScanEntry_sl;
-}
-
-/*----------------------------------------------------------------------------*/
-/* scan thru skip list and return entry prior to key                          */
-/*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pPositionPriorEntry(EntWrk& xFindKey)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-#ifdef USE_EB_LAZY_CHAIN
-  RASSERT( ! m_aLazyChain );
-#endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if (nItems() == 0)
-    return aSkipRoots();
-  
-  Ent* aScanEntry_sl = aSkipRoots();
-  
-  bool bKeyIsGreaterEqual;
-  
-  for (i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
-       i_ScanLevel >= 0;
-       i_ScanLevel--) {
-    
-    Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
-    while (aNextEntry_sl) {
-      
-      bKeyIsGreaterEqual = EntWrk::bGreaterEqual(aNextEntry_sl, xFindKey.aEnt());
       
       if (bKeyIsGreaterEqual)
         break;
