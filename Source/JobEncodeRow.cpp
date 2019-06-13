@@ -79,16 +79,16 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  char* aSrc = szRecStr->aChar();
+  char* acRecCrs = szRecStr->aChar();
 
   // skip leading spaces
   if (m_oFormatters.m_cRecordTerminator)
-    StrLib::vSkipWhite(&aSrc);
+    StrLib::vSkipWhite(&acRecCrs);
   else
-    StrLib::vSkipSpaces(&aSrc);
+    StrLib::vSkipSpaces(&acRecCrs);
   
   // ignore blank lines
-  if (! Extractor::bIsThereRecordData(aSrc,&m_oFormatters) ) {
+  if (! Extractor::bIsThereRecordData(acRecCrs,&m_oFormatters) ) {
     bBlankLine = true;
     return false;
   }
@@ -117,13 +117,12 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    Datum oDatum;
     Column* pCol = pColVec->pGet(i_Col);
     
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // extract field from record
 
-    bool bValidField = Extractor::bExtract(m_pRow,&oDatum,&aSrc,pCol,&m_oFormatters);
+    bool bValidField = Extractor::bExtract(m_pRow,&acRecCrs,pColVec,pCol,&m_oFormatters);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // is the field valid ?
@@ -138,11 +137,6 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
       }
       return false;
     }
-
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-    // append datum into row
-    
-    m_pRow->vAppendValue(&oDatum,pCol);
     
   } // for each column
   

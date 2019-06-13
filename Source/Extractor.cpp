@@ -19,40 +19,42 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* extract                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Extractor::bExtract(Row* pRow,
-                         Datum* pDatum, char** aaSrc, Column* pCol, Formatters* pFmt)
+bool Extractor::bExtract(Row* pRow, char** aaSrc,
+                         ColumnVec* pColVec, Column* pCol, Formatters* pFmt)
 {
+  Datum oDatum;
+
   bool b = false;
   eDM eDatum = pCol->eDatumType();
   
   if (pFmt->m_bDefault) {
     switch (eDatum) {
-      case DM_BCD: b = bExtractBcdDefault(pDatum,aaSrc,pCol,pFmt); break;
-      case DM_BOL: b = bExtractBolDefault(pDatum,aaSrc,pCol,pFmt); break;
-      case DM_CHR: b = bExtractVchDefault(pDatum,aaSrc,pCol,pFmt); break;
-      case DM_DTE: b = bExtractDteDefault(pDatum,aaSrc,pCol,pFmt); break;
-      case DM_FLT: b = bExtractFltDefault(pDatum,aaSrc,pCol,pFmt); break;
-      case DM_INT: b = bExtractIntDefault(pDatum,aaSrc,pCol,pFmt); break;
-      case DM_IVL: b = bExtractIvlDefault(pDatum,aaSrc,pCol,pFmt); break;
-      case DM_TME: b = bExtractTmeDefault(pDatum,aaSrc,pCol,pFmt); break;
-      case DM_TSP: b = bExtractTspDefault(pDatum,aaSrc,pCol,pFmt); break;
-      case DM_VCH: b = bExtractVchDefault(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_BCD: b = bExtractBcdDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_BOL: b = bExtractBolDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_CHR: b = bExtractVchDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_DTE: b = bExtractDteDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_FLT: b = bExtractFltDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_INT: b = bExtractIntDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_IVL: b = bExtractIvlDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_TME: b = bExtractTmeDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_TSP: b = bExtractTspDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_VCH: b = bExtractVchDefault(&oDatum,aaSrc,pCol,pFmt); break;
       default:
         vFatal("Extractor::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
     }
   }
   else {
     switch (eDatum) {
-      case DM_BCD: b = bExtractBcdSupplied(pDatum,aaSrc,pCol,pFmt); break;
-      case DM_BOL: b = bExtractBolSupplied(pDatum,aaSrc,pCol,pFmt); break;
-      case DM_CHR: b = bExtractVchSupplied(pDatum,aaSrc,pCol,pFmt); break;
-      case DM_DTE: b = bExtractDteSupplied(pDatum,aaSrc,pCol,pFmt); break;
-      case DM_FLT: b = bExtractFltSupplied(pDatum,aaSrc,pCol,pFmt); break;
-      case DM_INT: b = bExtractIntSupplied(pDatum,aaSrc,pCol,pFmt); break;
-      case DM_IVL: b = bExtractIvlSupplied(pDatum,aaSrc,pCol,pFmt); break;
-      case DM_TME: b = bExtractTmeSupplied(pDatum,aaSrc,pCol,pFmt); break;
-      case DM_TSP: b = bExtractTspSupplied(pDatum,aaSrc,pCol,pFmt); break;
-      case DM_VCH: b = bExtractVchSupplied(pDatum,aaSrc,pCol,pFmt); break;
+      case DM_BCD: b = bExtractBcdSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_BOL: b = bExtractBolSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_CHR: b = bExtractVchSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_DTE: b = bExtractDteSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_FLT: b = bExtractFltSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_INT: b = bExtractIntSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_IVL: b = bExtractIvlSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_TME: b = bExtractTmeSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_TSP: b = bExtractTspSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_VCH: b = bExtractVchSupplied(&oDatum,aaSrc,pCol,pFmt); break;
       default:
         vFatal("Extractor::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
     }
@@ -90,9 +92,90 @@ bool Extractor::bExtract(Row* pRow,
       b = false;
   }
   
-  pRow->vAppendValue(pDatum,pCol);
+  pRow->vAppendValue(&oDatum,pCol);
   
   return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract                                                                    */
+/*----------------------------------------------------------------------------*/
+Column* Extractor::pExtract(Row* pRow, char** aaSrc,
+                            ColumnVec* pColVec, Column* pCol, Formatters* pFmt)
+{
+  Datum oDatum;
+  
+  bool b = false;
+  eDM eDatum = pCol->eDatumType();
+  
+  if (pFmt->m_bDefault) {
+    switch (eDatum) {
+      case DM_BCD: b = bExtractBcdDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_BOL: b = bExtractBolDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_CHR: b = bExtractVchDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_DTE: b = bExtractDteDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_FLT: b = bExtractFltDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_INT: b = bExtractIntDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_IVL: b = bExtractIvlDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_TME: b = bExtractTmeDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_TSP: b = bExtractTspDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_VCH: b = bExtractVchDefault(&oDatum,aaSrc,pCol,pFmt); break;
+      default:
+        vFatal("Extractor::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
+    }
+  }
+  else {
+    switch (eDatum) {
+      case DM_BCD: b = bExtractBcdSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_BOL: b = bExtractBolSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_CHR: b = bExtractVchSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_DTE: b = bExtractDteSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_FLT: b = bExtractFltSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_INT: b = bExtractIntSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_IVL: b = bExtractIvlSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_TME: b = bExtractTmeSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_TSP: b = bExtractTspSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      case DM_VCH: b = bExtractVchSupplied(&oDatum,aaSrc,pCol,pFmt); break;
+      default:
+        vFatal("Extractor::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
+    }
+  }
+  
+  //pDatum->m_ayDatum = (byte*)szDst->aChar();
+  
+  // move past the field delimiter
+  //   (but not past the Extractor terminator or Extractor ends)
+  
+  if (pCol->bIsLastColumn()) {
+    // do not expect to see a field delimiter
+    if ( pFmt->m_cFieldDelimiter &&
+        pFmt->m_cRecordTerminator &&
+        pFmt->m_cFieldDelimiter != pFmt->m_cRecordTerminator &&
+        *(*aaSrc) == pFmt->m_cFieldDelimiter ) {
+      // saw a field delimiter after last field (incorrect)
+      b = false;
+    }
+    /*
+     // did not see a field delimiter (correct)
+     if ( pFormatters->m_cFieldDelimiter &&
+     *(*aaSrc) == pFormatters->m_cFieldDelimiter )
+     (*aaSrc)++;
+     */
+  }
+  else {
+    // expect to see a field delimiter
+    if ( pFmt->m_cFieldDelimiter &&
+        *(*aaSrc) == pFmt->m_cFieldDelimiter )
+      // saw a field delimiter after non-last field (correct)
+      (*aaSrc)++;
+    else
+      // did not see a field delimiter after non-last field (incorrect)
+      b = false;
+  }
+  
+  pRow->vAppendValue(&oDatum,pCol);
+  
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
