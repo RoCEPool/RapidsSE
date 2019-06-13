@@ -33,33 +33,33 @@ namespace Data
     static void vFinalize(eCN eClass, Object* pObject);
     static void vMonitorPortrait(s48K& sPortrait);
   
-    Stz*         pAnalyze(void);
-    void         vCompact(void);
-    void         vCopyReInitL1(EntBuffer* pL1, EntBuffer* pLeftL0);
-    void         vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0);
-    void         vDump(bool bSameHeight);
-    i8           nEntBuffers(void);
+    Stz*       pAnalyze(void);
+    void       vCompact(void);
+    void       vCopyReInitL1(EntBuffer* pL1, EntBuffer* pLeftL0);
+    void       vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0);
+    void       vDump(bool bSameHeight);
+    i8         nEntBuffers(void);
     EntBuffer* pFirstH0Buffer(void);
-    Index*       pIndex(void);
-    bool         bInsertEntry(RowBuffer* pRowBuffer, i8 i_Row, Id& xId);
-    void         vInsertEntriesFromBuffer(RowBuffer* pRowBuffer);
-    void         vLazyBuild(void);    
-    EntBuffer* pPositionH0Buffer(EntWrk& xEntWrk);
+    Index*     pIndex(void);
+    bool       bInsertEntry(RowBuffer* pRowBuffer, i8 i_Row, Id& xId);
+    void       vInsertEntriesFromBuffer(RowBuffer* pRowBuffer);
+    void       vLazyBuild(void);
+    EntBuffer* pPositionH0Buffer(Ent* aEnt);
     EntBuffer* pRoot(void);
-    void         vTidyUp(void);
-    void         vTruncate(void);
-    bool         bVerify(void);
-    bool         bVerifyIndex(void);
-    void         vVisualize(void);
+    void       vTidyUp(void);
+    void       vTruncate(void);
+    bool       bVerify(void);
+    bool       bVerifyIndex(void);
+    void       vVisualize(void);
   
   
-    void       vExtractKey(EntWrk* pEntWrk, RowBuffer* pRowBuffer, i8 i_Row);
+    void      vExtractKey(EntWrk* pEntWrk, RowBuffer* pRowBuffer, i8 i_Row);
 
     
-    Footer*      aFooter(void);
+    Footer*   aFooter(void);
     
   private:
-    void         vDumpLevel(EntBuffer* pEntBuffer);
+    void       vDumpLevel(EntBuffer* pEntBuffer);
     EntBuffer* pFirstL1Buffer(void);
     EntBuffer* pPopSubList(EntBuffer** ppSubList);
   };

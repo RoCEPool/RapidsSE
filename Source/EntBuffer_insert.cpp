@@ -608,7 +608,7 @@ Ent* EntBuffer::aInsertKeyTree(EntWrk& xEntWrk,
   // position on an H0 buffer which we will try and insert into
   
   EntBuffer* pPositionedBuffer =
-    pRootKeyBuffer->pPositionH0Buffer(xEntWrk);
+    pRootKeyBuffer->pPositionH0Buffer(xEntWrk.aEnt());
   
   ASSERT(0 == pPositionedBuffer->iBufferHeight());
   

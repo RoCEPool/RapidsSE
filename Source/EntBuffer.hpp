@@ -75,15 +75,15 @@ namespace MetaData
     // static move functions
     
     static Ent* pMoveToExactEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** pAEntBuffer);
-    static Ent* pMoveToGreaterThanEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** pAEntBuffer);
-    static Ent* pMoveToGreaterEqualEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** pAEntBuffer);
-    static Ent* pMoveToPrevEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** pAEntBuffer);
-    static Ent* pMoveToNextEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** pAEntBuffer);
+    static Ent* pMoveToGreaterThanEntry(Ent* aEnt, Ent* aGivenKey, EntBuffer** pAEntBuffer);
+    static Ent* pMoveToGreaterEqualEntry(Ent* aEnt, Ent* aGivenKey, EntBuffer** pAEntBuffer);
+    static Ent* pMoveToPrevEntry(Ent* aEnt, Ent* aGivenKey, EntBuffer** pAEntBuffer);
+    static Ent* pMoveToNextEntry(Ent* aEnt, Ent* aGivenKey, EntBuffer** pAEntBuffer);
     
     ////////////////////////////////////////////////////////////////////////////
     // key positioning functions
     
-    EntBuffer* pPositionH0Buffer(EntWrk& xGivenKey);
+    EntBuffer* pPositionH0Buffer(Ent* aGivenKey);
     Ent*       pPositionPriorEntry(Ent* aFindKey);
     void       vPositionPriorVecEntry(Ent* aFindKey, Ent** aaPriorVec,
                                       Ent* aFindEntry);

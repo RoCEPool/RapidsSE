@@ -595,7 +595,7 @@ Ent* EntBuffer::pMoveToExactEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** paEntB
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pMoveToGreaterThanEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** paEntBuffer)
+Ent* EntBuffer::pMoveToGreaterThanEntry(Ent* aEnt, Ent* aGivenKey, EntBuffer** paEntBuffer)
 {
   EntBuffer* pEntBuffer = *paEntBuffer;
   
@@ -603,7 +603,7 @@ Ent* EntBuffer::pMoveToGreaterThanEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** 
     aEnt = pEntBuffer->aNextEntry(aEnt,0);
   
   while (aEnt) {
-    eKC eCompare = EntWrk::eCompare(aEnt, xEntWrk.aEnt());
+    eKC eCompare = EntWrk::eCompare(aEnt, aGivenKey);
     
     // have we moved beyond ?
     if (eCompare == KC_AFTER)
@@ -617,7 +617,7 @@ Ent* EntBuffer::pMoveToGreaterThanEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** 
       *paEntBuffer = pEntBuffer->pNextBuffer();
       
       if (*paEntBuffer) {
-        return (*paEntBuffer)->pMoveToGreaterThanEntry((*paEntBuffer)->aSkipRoots(), xEntWrk, paEntBuffer);
+        return (*paEntBuffer)->pMoveToGreaterThanEntry((*paEntBuffer)->aSkipRoots(), aGivenKey, paEntBuffer);
       }
       else
         break;
@@ -630,7 +630,7 @@ Ent* EntBuffer::pMoveToGreaterThanEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** 
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pMoveToGreaterEqualEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** paEntBuffer)
+Ent* EntBuffer::pMoveToGreaterEqualEntry(Ent* aEnt, Ent* aGivenKey, EntBuffer** paEntBuffer)
 {
   EntBuffer* pEntBuffer = *paEntBuffer;
   
@@ -638,7 +638,7 @@ Ent* EntBuffer::pMoveToGreaterEqualEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer**
     aEnt = pEntBuffer->aNextEntry(aEnt,0);
   
   while (aEnt) {
-    eKC eCompare = EntWrk::eCompare(aEnt, xEntWrk.aEnt());
+    eKC eCompare = EntWrk::eCompare(aEnt, aGivenKey);
     
     // have we reached the key?
     if (eCompare == KC_SAME)
@@ -656,7 +656,7 @@ Ent* EntBuffer::pMoveToGreaterEqualEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer**
       *paEntBuffer = pEntBuffer->pNextBuffer();
       
       if (*paEntBuffer) {
-        return pMoveToGreaterEqualEntry((*paEntBuffer)->aSkipRoots(), xEntWrk, paEntBuffer);
+        return pMoveToGreaterEqualEntry((*paEntBuffer)->aSkipRoots(), aGivenKey, paEntBuffer);
       }
     }
     else
@@ -669,7 +669,7 @@ Ent* EntBuffer::pMoveToGreaterEqualEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer**
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pMoveToNextEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** paEntBuffer)
+Ent* EntBuffer::pMoveToNextEntry(Ent* aEnt, Ent* aGivenKey, EntBuffer** paEntBuffer)
 {
   EntBuffer* pEntBuffer = *paEntBuffer;
   
@@ -684,7 +684,7 @@ Ent* EntBuffer::pMoveToNextEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** paEntBu
     *paEntBuffer = pEntBuffer->pNextBuffer();
     
     if (*paEntBuffer) {
-      return pMoveToNextEntry((*paEntBuffer)->aSkipRoots(), xEntWrk, paEntBuffer);
+      return pMoveToNextEntry((*paEntBuffer)->aSkipRoots(), aGivenKey, paEntBuffer);
     }
     else
       break;
@@ -696,7 +696,7 @@ Ent* EntBuffer::pMoveToNextEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** paEntBu
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pMoveToPrevEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** paEntBuffer)
+Ent* EntBuffer::pMoveToPrevEntry(Ent* aEnt, Ent* aGivenKey, EntBuffer** paEntBuffer)
 {
   EntBuffer* pEntBuffer = *paEntBuffer;
   
@@ -706,7 +706,7 @@ Ent* EntBuffer::pMoveToPrevEntry(Ent* aEnt, EntWrk& xEntWrk, EntBuffer** paEntBu
   Ent* aEntPrev = aEnt;
   
   while (aEnt) {
-    eKC eCompare = EntWrk::eCompare(aEnt, xEntWrk.aEnt());
+    eKC eCompare = EntWrk::eCompare(aEnt, aGivenKey);
     
     // have we reached the key?
     if (eCompare == KC_SAME)

@@ -616,12 +616,12 @@ EntBuffer* IndexTree::pPopSubList(EntBuffer** ppSubList)
 /*----------------------------------------------------------------------------*/
 /* position the IndexTree at a particular height of index buffer              */
 /*----------------------------------------------------------------------------*/
-EntBuffer* IndexTree::pPositionH0Buffer(EntWrk& xEntWrk)
+EntBuffer* IndexTree::pPositionH0Buffer(Ent* aEnt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   if (m_pRootBuffer)
-    return m_pRootBuffer->pPositionH0Buffer(xEntWrk);
+    return m_pRootBuffer->pPositionH0Buffer(aEnt);
   else
     return nullptr;
 }
