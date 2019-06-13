@@ -23,10 +23,6 @@ namespace Indexes
 
     EntWrk(void);
    ~EntWrk(void) noexcept(false);
-  
-    //static eKC eCompare(Ent* aEnt1, EntWrk& xEntWrk2);
-    //static eKC eCompare(EntWrk& xEntWrk1, EntWrk& xEntWrk2);
-    //static eKC eCompare(EntWrk& xEntWrk1, Ent* aEnt2);
     
     static eKC eCompare(Ent* aEnt1, Ent* aEnt2);
   
@@ -34,7 +30,6 @@ namespace Indexes
   
     static bool bEqualTo(Ent* aEnt1, Ent* aEnt2);
     static bool bGreaterThan(Ent* aEnt1, Ent* aEnt2);
-    //static bool bGreaterEqual(Ent* aEnt1, EntWrk& xEntWrk2);
     static bool bGreaterEqual(Ent* aEnt1, Ent* aEnt2);
     static bool bLessEqual(Ent* aEnt1, Ent* aEnt2);
     static bool bLessThan(Ent* aEnt1, Ent* aEnt2);

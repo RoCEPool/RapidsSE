@@ -70,86 +70,6 @@ EntWrk::~EntWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
 /*----------------------------------------------------------------------------*/
-//eKC EntWrk::eCompare(Ent* aEnt1, EntWrk& xEntWrk2)
-//{
-//  i8 nKeySize1 = aEnt1->nKeyBytes();
-//  i8 nKeySize2 = xEntWrk2.nKeyBytes();
-//
-//  i8 nCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
-//
-//  byte* ayKey1Bytes = aEnt1->ayByteSeq();
-//  byte* ayKey2Bytes = xEntWrk2.ayByteSeq();
-//
-//  i8 iCmp = MemLib::iCompareWords(ayKey1Bytes,ayKey2Bytes,nCmpBytes);
-//
-//  if (iCmp == 0) {
-//    if (nKeySize1 == nKeySize2)
-//      return KC_SAME;
-//
-//    if (nKeySize1 < nKeySize2)
-//      return KC_BEFORE;
-//
-//    if (nKeySize1 > nKeySize2)
-//      return KC_AFTER;
-//  }
-//
-//  if (iCmp < 0)
-//    return KC_BEFORE;
-//
-//  return KC_AFTER;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* compare key1 and key2                                                      */
-/*----------------------------------------------------------------------------*/
-//eKC EntWrk::eCompare(EntWrk& xEntWrk1, EntWrk& xEntWrk2)
-//{
-//  i8 nKey1Size = xEntWrk1.nKeyBytes();
-//  i8 nKey2Size = xEntWrk2.nKeyBytes();
-//
-//  i8 nCmpBytes = nKey1Size < nKey2Size ? nKey1Size : nKey2Size;
-//
-//  byte* ayKey1Bytes = xEntWrk1.ayByteSeq();
-//  byte* ayKey2Bytes = xEntWrk2.ayByteSeq();
-//
-//  i8 iCmp = MemLib::iCompareWords(ayKey1Bytes,ayKey2Bytes,nCmpBytes);
-//
-//  if (iCmp == 0)
-//    return KC_SAME;
-//
-//  if (iCmp < 0)
-//    return KC_BEFORE;
-//
-//  return KC_AFTER;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* compare key1 and key2                                                      */
-/*----------------------------------------------------------------------------*/
-//eKC EntWrk::eCompare(EntWrk& xEntWrk1, Ent* aEnt2)
-//{
-//  i8 nKeySize1 = xEntWrk1.nKeyBytes();
-//  i8 nKeySize2 = aEnt2->nKeyBytes();
-//
-//  i8 nCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
-//
-//  byte* ayKey1Bytes = xEntWrk1.ayByteSeq();
-//  byte* ayKey2Bytes = aEnt2->ayByteSeq();
-//
-//  i8 iCmp = MemLib::iCompareWords(ayKey1Bytes,ayKey2Bytes,nCmpBytes);
-//
-//  if (iCmp == 0)
-//    return KC_SAME;
-//
-//  if (iCmp < 0)
-//    return KC_BEFORE;
-//
-//  return KC_AFTER;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* compare key1 and key2                                                      */
-/*----------------------------------------------------------------------------*/
 eKC EntWrk::eCompare(Ent* aEnt1, Ent* aEnt2)
 {
   i8 nKeySize1 = aEnt1->nKeyBytes();
@@ -198,15 +118,6 @@ bool EntWrk::bGreaterThan(Ent* aEnt1, Ent* aEnt2)
   eKC eCmp = eCompare(aEnt1, aEnt2);
   return eCmp == KC_AFTER ? true : false;
 }
-
-/*----------------------------------------------------------------------------*/
-/* if key1 greater than equal to key2 ?                                       */
-/*----------------------------------------------------------------------------*/
-//bool EntWrk::bGreaterEqual(Ent* aEnt1, EntWrk& xEntWrk2)
-//{
-//  eKC eCmp = eCompare(aEnt1, &xEntWrk2.m_xEnt);
-//  return eCmp == KC_AFTER || eCmp == KC_SAME ? true : false;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* if key1 greater than equal to key2 ?                                       */
