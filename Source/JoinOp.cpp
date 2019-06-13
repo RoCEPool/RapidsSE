@@ -21,8 +21,6 @@ RefBuffer* JoinOp::pAddRowRefs(Queue* pQueue, RefBuffer* pRefBuffer, Ent* aLeftE
   if ( ! pRefSet )  {
     // Reference Buffer is full
     
-    RASSERT(0);
-    
     // put this refBuffer in session bufferQueue
     pQueue->vAppend(pRefBuffer);
     
@@ -49,20 +47,24 @@ RefBuffer* JoinOp::pAddRowRefs(Queue* pQueue, RefBuffer* pRefBuffer, Ent* aLeftE
   return pRefBuffer;
 }
 
+//#define TRACE_JOIN
+
 /*----------------------------------------------------------------------------*/
 /* index join                                                                 */
 /*----------------------------------------------------------------------------*/
 void JoinOp::vIndexJoin(Queue* pQueue, IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree)
 {
-//  vTrace("Joining: L(%s) ⋈ R(%s)\n"_Stz,
-//         pLeftIndexTree->pIndex()->pTable()->aTableName(),
-//         pRightIndexTree->pIndex()->pTable()->aTableName());
-
+#ifdef TRACE_JOIN
+  vTrace("Joining: L(%s) ⋈ R(%s)\n"_Stz,
+         pLeftIndexTree->pIndex()->pTable()->aTableName(),
+         pRightIndexTree->pIndex()->pTable()->aTableName());
+#endif
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get initial buffers
   
-  EntBuffer* pLeftBuffer  = pLeftIndexTree->pRoot();
-  EntBuffer* pRightBuffer = pRightIndexTree->pRoot();
+  EntBuffer* pLeftBuffer  = pLeftIndexTree->pFirstH0Buffer();
+  EntBuffer* pRightBuffer = pRightIndexTree->pFirstH0Buffer();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a reference buffer
@@ -134,7 +136,9 @@ void JoinOp::vIndexJoin(Queue* pQueue, IndexTree* pLeftIndexTree, IndexTree* pRi
       // how do they compare?
       switch (eCompare) {
         case KC_SAME:   // leftKey == rightKey
-          //vTrace("Joining: L(%p) ⋈ R(%p)\n"_Stz,aLeftEntry,aRightEntry);
+#ifdef TRACE_JOIN
+          vTrace("Joining: L(%p) ⋈ R(%p)\n"_Stz,aLeftEntry,aRightEntry);
+#endif
           pRefBuffer = pAddRowRefs(pQueue, pRefBuffer, aLeftEntry, aRightEntry);
           eNextEnt = NE_NEXT_RIGHT;
           
@@ -152,14 +156,18 @@ void JoinOp::vIndexJoin(Queue* pQueue, IndexTree* pLeftIndexTree, IndexTree* pRi
           
         case KC_BEFORE: // leftKey < rightKey
           if ( ! aFirstRightMatch ) {
-            //vTrace("Joining: L(%p) ⋈ R(NULL)\n"_Stz,aLeftEntry);
+#ifdef TRACE_JOIN
+            vTrace("Joining: L(%p) ⋈ R(NULL)\n"_Stz,aLeftEntry);
+#endif
             pRefBuffer = pAddRowRefs(pQueue, pRefBuffer, aLeftEntry, nullptr);
           }
           eNextEnt = NE_NEXT_LEFT;
           break;
           
         case KC_AFTER:  // leftKey > rightKey
-          //vTrace("Joining: L(NULL) ⋈ R(%p)\n"_Stz,aRightEntry);
+#ifdef TRACE_JOIN
+          vTrace("Joining: L(NULL) ⋈ R(%p)\n"_Stz,aRightEntry);
+#endif
           pRefBuffer = pAddRowRefs(pQueue, pRefBuffer, aLeftEntry, aRightEntry);
           eNextEnt = NE_NEXT_RIGHT;
           break;
@@ -176,7 +184,9 @@ void JoinOp::vIndexJoin(Queue* pQueue, IndexTree* pLeftIndexTree, IndexTree* pRi
       
       // no previous first right ?
       if ( ! aFirstRightMatch ) {
-        //vTrace("Joining: L(%p) ⋈ R(NULL)\n"_Stz,aLeftEntry);
+#ifdef TRACE_JOIN
+        vTrace("Joining: L(%p) ⋈ R(NULL)\n"_Stz,aLeftEntry);
+#endif
         pRefBuffer = pAddRowRefs(pQueue, pRefBuffer, aLeftEntry, nullptr);
       }
       
@@ -187,8 +197,9 @@ void JoinOp::vIndexJoin(Queue* pQueue, IndexTree* pLeftIndexTree, IndexTree* pRi
 
     // (c) right entry only
     if (aRightEntry) {
-      
-      //vTrace("Joining: L(NULL) ⋈ R(%p)\n"_Stz,aRightEntry);
+#ifdef TRACE_JOIN
+      vTrace("Joining: L(NULL) ⋈ R(%p)\n"_Stz,aRightEntry);
+#endif
       pRefBuffer = pAddRowRefs(pQueue, pRefBuffer, nullptr, aRightEntry);
   
       // get next right
