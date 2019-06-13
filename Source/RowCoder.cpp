@@ -352,7 +352,7 @@ void RowCoder::vEncodeRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  return;
+  //return;
   
   i8 nCols = m_pColVec->nItems();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
@@ -1074,10 +1074,13 @@ void RowCoder::vDatumVch(Datum* pTgtDatum, Row* pRow, Column* pCol)
   
   pTgtDatum->m_eDatum = DM_VCH;
   
-  if (C_DATUM_NULL == pRow->m_aiValue[i_Col])
-    return;
+  if (C_DATUM_NULL == pRow->m_aiValue[i_Col]) {
+    pTgtDatum->m_iInt = C_DATUM_NULL;
+   return;
+  }
   
   pTgtDatum->m_sVch = (Stz*)pRow->m_aiValue[i_Col];
+  pTgtDatum->m_nChars = pTgtDatum->m_sVch.iLength();
 }
 
 /*----------------------------------------------------------------------------*/
