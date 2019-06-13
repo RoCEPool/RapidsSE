@@ -132,7 +132,7 @@ Ent* EntBuffer::pPositionPriorEntry(EntWrk& xFindKey)
     Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
       
-      bKeyIsGreaterEqual = EntWrk::bGreaterEqual(aNextEntry_sl, xFindKey);
+      bKeyIsGreaterEqual = EntWrk::bGreaterEqual(aNextEntry_sl, xFindKey.aEnt());
       
       if (bKeyIsGreaterEqual)
         break;

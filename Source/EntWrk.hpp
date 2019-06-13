@@ -34,7 +34,7 @@ namespace Indexes
   
     static bool bEqualTo(Ent* aEnt1, Ent* aEnt2);
     static bool bGreaterThan(Ent* aEnt1, Ent* aEnt2);
-    static bool bGreaterEqual(Ent* aEnt1, EntWrk& xEntWrk2);
+    //static bool bGreaterEqual(Ent* aEnt1, EntWrk& xEntWrk2);
     static bool bGreaterEqual(Ent* aEnt1, Ent* aEnt2);
     static bool bLessEqual(EntWrk& xEntWrk1, Ent* aEnt2);
     static bool bLessThan(EntWrk& xEntWrk1, Ent* aEnt2);

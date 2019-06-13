@@ -202,11 +202,11 @@ bool EntWrk::bGreaterThan(Ent* aEnt1, Ent* aEnt2)
 /*----------------------------------------------------------------------------*/
 /* if key1 greater than equal to key2 ?                                       */
 /*----------------------------------------------------------------------------*/
-bool EntWrk::bGreaterEqual(Ent* aEnt1, EntWrk& xEntWrk2)
-{
-  eKC eCmp = eCompare(aEnt1, &xEntWrk2.m_xEnt);
-  return eCmp == KC_AFTER || eCmp == KC_SAME ? true : false;
-}
+//bool EntWrk::bGreaterEqual(Ent* aEnt1, EntWrk& xEntWrk2)
+//{
+//  eKC eCmp = eCompare(aEnt1, &xEntWrk2.m_xEnt);
+//  return eCmp == KC_AFTER || eCmp == KC_SAME ? true : false;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* if key1 greater than equal to key2 ?                                       */
