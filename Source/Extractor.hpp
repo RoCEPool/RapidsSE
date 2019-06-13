@@ -15,8 +15,11 @@ namespace Data
     static bool bExtractDatum(Datum* pDatum, char** acRecCrs,
                               Column* pCol, Formatters* pFormatters);
   
+    static bool bExtractNext(Row* pRow, char** acRecCrs,
+                             ColumnVec* pColVec, Formatters* pFormatters);
+  
     static Column* pExtractRow(Row* pRow, char** acRecCrs,
-                            ColumnVec* pColVec, Formatters* pFormatters);
+                               ColumnVec* pColVec, Formatters* pFormatters);
   
     static bool bExtractBcdDefault(Datum* pDatum, char** acRecCrs,
                                    Column* pCol, Formatters* pFormatters);

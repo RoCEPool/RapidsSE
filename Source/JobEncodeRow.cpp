@@ -68,19 +68,22 @@ JobEncodeRow::~JobEncodeRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
 {
-  bBlankLine = false;
+  ColumnVec* pColVec = pTable()->pColumnVec();
   
-#ifdef WITH_ANALYSE_FREE
-  static Peruse xRows("Rows:"_Stz);
-  xRows.vAdd(1,"\n"_Stz);
-#endif
+  char* acRecCrs = szRecStr->aChar();
   
   bool bResult = true;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (m_pRow)
+    m_pRow->vResetValues();
+  else
+    m_pRow = new Row(pColVec);
   
-  char* acRecCrs = szRecStr->aChar();
+  bBlankLine = false;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // leading blanks and blank lines
+  
   // skip leading spaces
   if (m_oFormatters.m_cRecordTerminator)
     StrLib::vSkipWhite(&acRecCrs);
@@ -95,21 +98,13 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // debug
+  
 #ifdef WITH_TRACE_ENCODING
   char caRecord[C_16KB];
   StrLib::vCopyTill(caRecord,aSrc,'\n');
   vTrace("\n--------------------------------------------------------------------------\n"_Stz);
   vTrace("\nFormatting record: %s\n"_Stz,caRecord);
 #endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  ColumnVec* pColVec = pTable()->pColumnVec();
-
-  if (m_pRow)
-    m_pRow->vResetValues();
-  else
-    m_pRow = new Row(pColVec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // extract row from record
@@ -136,13 +131,6 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
   m_pRowCoder_Encode->vEncodeRow(m_pRow);
   
   m_pRowCoder_Encode->vEncodeEnd();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // debug
-  
-//  HV_Rec hvRec;
-//  RowCoder::vRecord(hvRec,m_oRowParts,0);
-//  hvRec->vPrintRow();
 
   return bResult;
 }
