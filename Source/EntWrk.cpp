@@ -126,26 +126,26 @@ EntWrk::~EntWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
 /*----------------------------------------------------------------------------*/
-eKC EntWrk::eCompare(EntWrk& xEntWrk1, Ent* aEnt2)
-{
-  i8 nKeySize1 = xEntWrk1.nKeyBytes();
-  i8 nKeySize2 = aEnt2->nKeyBytes();
-  
-  i8 nCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
-  
-  byte* ayKey1Bytes = xEntWrk1.ayByteSeq();
-  byte* ayKey2Bytes = aEnt2->ayByteSeq();
-  
-  i8 iCmp = MemLib::iCompareWords(ayKey1Bytes,ayKey2Bytes,nCmpBytes);
-  
-  if (iCmp == 0)
-    return KC_SAME;
-  
-  if (iCmp < 0)
-    return KC_BEFORE;
-  
-  return KC_AFTER;
-}
+//eKC EntWrk::eCompare(EntWrk& xEntWrk1, Ent* aEnt2)
+//{
+//  i8 nKeySize1 = xEntWrk1.nKeyBytes();
+//  i8 nKeySize2 = aEnt2->nKeyBytes();
+//
+//  i8 nCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
+//
+//  byte* ayKey1Bytes = xEntWrk1.ayByteSeq();
+//  byte* ayKey2Bytes = aEnt2->ayByteSeq();
+//
+//  i8 iCmp = MemLib::iCompareWords(ayKey1Bytes,ayKey2Bytes,nCmpBytes);
+//
+//  if (iCmp == 0)
+//    return KC_SAME;
+//
+//  if (iCmp < 0)
+//    return KC_BEFORE;
+//
+//  return KC_AFTER;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
@@ -222,7 +222,7 @@ bool EntWrk::bGreaterEqual(Ent* aEnt1, Ent* aEnt2)
 /*----------------------------------------------------------------------------*/
 bool EntWrk::bLessEqual(EntWrk& xEntWrk1, Ent* aEnt2)
 {
-  eKC eCmp = eCompare(xEntWrk1, aEnt2);
+  eKC eCmp = eCompare(xEntWrk1.aEnt(), aEnt2);
   return eCmp == KC_BEFORE || eCmp == KC_SAME ? true : false;
 }
 
@@ -231,7 +231,7 @@ bool EntWrk::bLessEqual(EntWrk& xEntWrk1, Ent* aEnt2)
 /*----------------------------------------------------------------------------*/
 bool EntWrk::bLessThan(EntWrk& xEntWrk1, Ent* aEnt2)
 {
-  eKC eCmp = eCompare(xEntWrk1, aEnt2);
+  eKC eCmp = eCompare(xEntWrk1.aEnt(), aEnt2);
   return eCmp == KC_BEFORE ? true : false;
 }
 
