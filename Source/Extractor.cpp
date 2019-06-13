@@ -19,7 +19,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* extract                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Extractor::bExtractDatum(Datum* pDatum, char** acRecCrs, Column* pCol, Formatters* pFmt)
+bool Extractor::bExtractDatum(Datum* pDatum, char** acRecCrs, Column* pCol, Formatters* pRecFmt)
 {
   bool b = false;
   eDM eDatum = pCol->eDatumType();
@@ -39,14 +39,14 @@ bool Extractor::bExtractDatum(Datum* pDatum, char** acRecCrs, Column* pCol, Form
       break;
       
     case DM_CHR:
-      b = bExtractVchDefault(pDatum,acRecCrs,pCol,pFmt);
+      b = bExtractVchDefault(pDatum,acRecCrs,pCol,pRecFmt);
       break;
       
     case DM_DTE:
       i8 iYear, iMonth, iDay;
       b = StrLib::bExtractDate2(acRecCrs, iYear, iMonth, iDay,
-                                pFmt->m_eDateComponent,
-                                pFmt->m_cDateSeparator);
+                                pRecFmt->m_eDateComponent,
+                                pRecFmt->m_cDateSeparator);
       if (!b)
         break;
       
@@ -85,8 +85,8 @@ bool Extractor::bExtractDatum(Datum* pDatum, char** acRecCrs, Column* pCol, Form
     case DM_TSP:
       b = StrLib::bExtractTimestamp2(acRecCrs, iYear, iMonth, iDay,
                                      iHour, iMinute, iSecond, iMicro,
-                                     pFmt->m_eDateComponent,
-                                     pFmt->m_cDateSeparator);
+                                     pRecFmt->m_eDateComponent,
+                                     pRecFmt->m_cDateSeparator);
       
       if (!b)
         break;
@@ -119,8 +119,56 @@ bool Extractor::bExtractDatum(Datum* pDatum, char** acRecCrs, Column* pCol, Form
 /* extract record into row (returning first column which has invalid field)   */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractNext(Row* pRow, char** aacRecCrs,
-                             ColumnVec* pColVec, Formatters* pFmt)
+                             ColumnVec* pColVec, Formatters* pRecFmt,
+                             bool& bBlankLine_)
 {
+  char* acRec = *aacRecCrs;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // leading blanks and blank lines
+  
+  // skip leading spaces
+  if (pRecFmt->m_cRecordTerminator)
+    StrLib::vSkipWhite(aacRecCrs);
+  else
+    StrLib::vSkipSpaces(aacRecCrs);
+  
+  // ignore blank lines
+  if (! bIsThereRecordData(*aacRecCrs,pRecFmt) ) {
+    bBlankLine_ = true;
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // debug
+  
+#ifdef WITH_TRACE_ENCODING
+  char caRecord[C_16KB];
+  StrLib::vCopyTill(caRecord,aSrc,'\n');
+  vTrace("\n--------------------------------------------------------------------------\n"_Stz);
+  vTrace("\nFormatting record: %s\n"_Stz,caRecord);
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // extract row from record
+  
+  Column* pBadCol = Extractor::pExtractRow(pRow,aacRecCrs,pColVec,pRecFmt);
+  
+  // any invalid field?
+  if (pBadCol) {
+    if (! gpAttachMap->m_bMetadata) {
+      vWarn("Skipping row - invalid field %s in record: "_Stz,
+            pBadCol->szColNm());
+      for (char* ac = acRec; ( *ac && '\n' != *ac && '\r' != *ac ); ac++)
+        vTrace("%c"_Stz,*ac);
+      vTrace("\n"_Stz);
+    }
+    return false;
+  }
+  
+  hpRow hp_Row;
+  vTrace("%s\n"_Stz,hp_Row.sz(pRow));
+  
   return true;
 }
 
@@ -128,7 +176,7 @@ bool Extractor::bExtractNext(Row* pRow, char** aacRecCrs,
 /* extract record into row (returning first column which has invalid field)   */
 /*----------------------------------------------------------------------------*/
 Column* Extractor::pExtractRow(Row* pRow, char** aacRecCrs,
-                               ColumnVec* pColVec, Formatters* pFmt)
+                               ColumnVec* pColVec, Formatters* pRecFmt)
 {
   i8 nCols = pColVec->nItems();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
@@ -140,34 +188,34 @@ Column* Extractor::pExtractRow(Row* pRow, char** aacRecCrs,
     bool b = false;
     eDM eDatum = pCol->eDatumType();
     
-    if (pFmt->m_bDefault) {
+    if (pRecFmt->m_bDefault) {
       switch (eDatum) {
-        case DM_BCD: b = bExtractBcdDefault(&oDatum,aacRecCrs,pCol,pFmt); break;
-        case DM_BOL: b = bExtractBolDefault(&oDatum,aacRecCrs,pCol,pFmt); break;
-        case DM_CHR: b = bExtractVchDefault(&oDatum,aacRecCrs,pCol,pFmt); break;
-        case DM_DTE: b = bExtractDteDefault(&oDatum,aacRecCrs,pCol,pFmt); break;
-        case DM_FLT: b = bExtractFltDefault(&oDatum,aacRecCrs,pCol,pFmt); break;
-        case DM_INT: b = bExtractIntDefault(&oDatum,aacRecCrs,pCol,pFmt); break;
-        case DM_IVL: b = bExtractIvlDefault(&oDatum,aacRecCrs,pCol,pFmt); break;
-        case DM_TME: b = bExtractTmeDefault(&oDatum,aacRecCrs,pCol,pFmt); break;
-        case DM_TSP: b = bExtractTspDefault(&oDatum,aacRecCrs,pCol,pFmt); break;
-        case DM_VCH: b = bExtractVchDefault(&oDatum,aacRecCrs,pCol,pFmt); break;
+        case DM_BCD: b = bExtractBcdDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_BOL: b = bExtractBolDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_CHR: b = bExtractVchDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_DTE: b = bExtractDteDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_FLT: b = bExtractFltDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_INT: b = bExtractIntDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_IVL: b = bExtractIvlDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_TME: b = bExtractTmeDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_TSP: b = bExtractTspDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_VCH: b = bExtractVchDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
         default:
           vFatal("Extractor::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
       }
     }
     else {
       switch (eDatum) {
-        case DM_BCD: b = bExtractBcdSupplied(&oDatum,aacRecCrs,pCol,pFmt); break;
-        case DM_BOL: b = bExtractBolSupplied(&oDatum,aacRecCrs,pCol,pFmt); break;
-        case DM_CHR: b = bExtractVchSupplied(&oDatum,aacRecCrs,pCol,pFmt); break;
-        case DM_DTE: b = bExtractDteSupplied(&oDatum,aacRecCrs,pCol,pFmt); break;
-        case DM_FLT: b = bExtractFltSupplied(&oDatum,aacRecCrs,pCol,pFmt); break;
-        case DM_INT: b = bExtractIntSupplied(&oDatum,aacRecCrs,pCol,pFmt); break;
-        case DM_IVL: b = bExtractIvlSupplied(&oDatum,aacRecCrs,pCol,pFmt); break;
-        case DM_TME: b = bExtractTmeSupplied(&oDatum,aacRecCrs,pCol,pFmt); break;
-        case DM_TSP: b = bExtractTspSupplied(&oDatum,aacRecCrs,pCol,pFmt); break;
-        case DM_VCH: b = bExtractVchSupplied(&oDatum,aacRecCrs,pCol,pFmt); break;
+        case DM_BCD: b = bExtractBcdSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_BOL: b = bExtractBolSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_CHR: b = bExtractVchSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_DTE: b = bExtractDteSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_FLT: b = bExtractFltSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_INT: b = bExtractIntSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_IVL: b = bExtractIvlSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_TME: b = bExtractTmeSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_TSP: b = bExtractTspSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_VCH: b = bExtractVchSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
         default:
           vFatal("Extractor::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
       }
@@ -180,10 +228,10 @@ Column* Extractor::pExtractRow(Row* pRow, char** aacRecCrs,
     
     if (pCol->bIsLastColumn()) {
       // do not expect to see a field delimiter
-      if ( pFmt->m_cFieldDelimiter &&
-          pFmt->m_cRecordTerminator &&
-          pFmt->m_cFieldDelimiter != pFmt->m_cRecordTerminator &&
-          *(*aacRecCrs) == pFmt->m_cFieldDelimiter ) {
+      if ( pRecFmt->m_cFieldDelimiter &&
+          pRecFmt->m_cRecordTerminator &&
+          pRecFmt->m_cFieldDelimiter != pRecFmt->m_cRecordTerminator &&
+          *(*aacRecCrs) == pRecFmt->m_cFieldDelimiter ) {
         // saw a field delimiter after last field (incorrect)
         return pCol;
       }
@@ -196,8 +244,8 @@ Column* Extractor::pExtractRow(Row* pRow, char** aacRecCrs,
     }
     else {
       // expect to see a field delimiter
-      if ( pFmt->m_cFieldDelimiter &&
-          *(*aacRecCrs) == pFmt->m_cFieldDelimiter )
+      if ( pRecFmt->m_cFieldDelimiter &&
+          *(*aacRecCrs) == pRecFmt->m_cFieldDelimiter )
         // saw a field delimiter after non-last field (correct)
         (*aacRecCrs)++;
       else
