@@ -220,18 +220,18 @@ bool EntWrk::bGreaterEqual(Ent* aEnt1, Ent* aEnt2)
 /*----------------------------------------------------------------------------*/
 /* if key1 less than eqiual to key2 ?                                         */
 /*----------------------------------------------------------------------------*/
-bool EntWrk::bLessEqual(EntWrk& xEntWrk1, Ent* aEnt2)
+bool EntWrk::bLessEqual(Ent* aEnt1, Ent* aEnt2)
 {
-  eKC eCmp = eCompare(xEntWrk1.aEnt(), aEnt2);
+  eKC eCmp = eCompare(aEnt1, aEnt2);
   return eCmp == KC_BEFORE || eCmp == KC_SAME ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
 /* if key1 less than key2 ?                                                   */
 /*----------------------------------------------------------------------------*/
-bool EntWrk::bLessThan(EntWrk& xEntWrk1, Ent* aEnt2)
+bool EntWrk::bLessThan(Ent* aEnt1, Ent* aEnt2)
 {
-  eKC eCmp = eCompare(xEntWrk1.aEnt(), aEnt2);
+  eKC eCmp = eCompare(aEnt1, aEnt2);
   return eCmp == KC_BEFORE ? true : false;
 }
 
@@ -243,10 +243,6 @@ bool EntWrk::bNotEqual(Ent* aEnt1, Ent* aEnt2)
   eKC eCmp = eCompare(aEnt1, aEnt2);
   return eCmp != KC_SAME ? true : false;
 }
-
-
-
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

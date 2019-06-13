@@ -36,8 +36,8 @@ namespace Indexes
     static bool bGreaterThan(Ent* aEnt1, Ent* aEnt2);
     //static bool bGreaterEqual(Ent* aEnt1, EntWrk& xEntWrk2);
     static bool bGreaterEqual(Ent* aEnt1, Ent* aEnt2);
-    static bool bLessEqual(EntWrk& xEntWrk1, Ent* aEnt2);
-    static bool bLessThan(EntWrk& xEntWrk1, Ent* aEnt2);
+    static bool bLessEqual(Ent* aEnt1, Ent* aEnt2);
+    static bool bLessThan(Ent* aEnt1, Ent* aEnt2);
     static bool bNotEqual(Ent* aEnt1, Ent* aEnt2);
 
     void  vAppendElement(Row* pRow, Column* pCol);
