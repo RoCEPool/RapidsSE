@@ -102,26 +102,26 @@ EntWrk::~EntWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
 /*----------------------------------------------------------------------------*/
-eKC EntWrk::eCompare(EntWrk& xEntWrk1, EntWrk& xEntWrk2)
-{
-  i8 nKey1Size = xEntWrk1.nKeyBytes();
-  i8 nKey2Size = xEntWrk2.nKeyBytes();
-  
-  i8 nCmpBytes = nKey1Size < nKey2Size ? nKey1Size : nKey2Size;
-  
-  byte* ayKey1Bytes = xEntWrk1.ayByteSeq();
-  byte* ayKey2Bytes = xEntWrk2.ayByteSeq();
-  
-  i8 iCmp = MemLib::iCompareWords(ayKey1Bytes,ayKey2Bytes,nCmpBytes);
-  
-  if (iCmp == 0)
-    return KC_SAME;
-  
-  if (iCmp < 0)
-    return KC_BEFORE;
-  
-  return KC_AFTER;
-}
+//eKC EntWrk::eCompare(EntWrk& xEntWrk1, EntWrk& xEntWrk2)
+//{
+//  i8 nKey1Size = xEntWrk1.nKeyBytes();
+//  i8 nKey2Size = xEntWrk2.nKeyBytes();
+//
+//  i8 nCmpBytes = nKey1Size < nKey2Size ? nKey1Size : nKey2Size;
+//
+//  byte* ayKey1Bytes = xEntWrk1.ayByteSeq();
+//  byte* ayKey2Bytes = xEntWrk2.ayByteSeq();
+//
+//  i8 iCmp = MemLib::iCompareWords(ayKey1Bytes,ayKey2Bytes,nCmpBytes);
+//
+//  if (iCmp == 0)
+//    return KC_SAME;
+//
+//  if (iCmp < 0)
+//    return KC_BEFORE;
+//
+//  return KC_AFTER;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* compare key1 and key2                                                      */
