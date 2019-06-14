@@ -27,46 +27,46 @@ void Extractor::vAddElement(EntWrk* pEntWrk, Stz* aSrc,
   
   char* pDst = (char*)pEntWrk->ayElementCrs();
   char* pSrc = (char*)aSrc;
-  Datum xDatum;
+  Datum oDatum;
+  oDatum.m_pCol = pCol;
   
   if (pCol->eDatumType() != DM_VCH) {
-    //b = Record::bExtractElement(&xDatum,&pSrc,pCol,pFormatters);
-    b = Extractor::bExtractElement(&xDatum,&pSrc,pCol,pFormatters);
+    b = Extractor::bExtractElement(&oDatum,&pSrc,pCol,pFormatters);
     RASSERT(b);
   }
   
   switch(pCol->eDatumType()) {
       
     case DM_BCD:
-      nBytes = Bcd::nCopy((char*)pDst,(char*)&xDatum.m_iBcd);
+      nBytes = Bcd::nCopy((char*)pDst,(char*)&oDatum.m_iBcd);
       break;
       
     case DM_BOL:
-      nBytes = Bol::nCopy((char*)pDst,(char*)&xDatum.m_iBol);
+      nBytes = Bol::nCopy((char*)pDst,(char*)&oDatum.m_iBol);
       break;
       
     case DM_DTE:
-      nBytes = Dte::nCopy((char*)pDst,(char*)&xDatum.m_iDte);
+      nBytes = Dte::nCopy((char*)pDst,(char*)&oDatum.m_iDte);
       break;
       
     case DM_INT:
-      nBytes = Int::nCopy(pDst,(void*)&xDatum.m_iDte);
+      nBytes = Int::nCopy(pDst,(void*)&oDatum.m_iDte);
       break;
       
     case DM_IVL:
-      nBytes = Ivl::nCopy(pDst,(void*)&xDatum.m_iIvl);
+      nBytes = Ivl::nCopy(pDst,(void*)&oDatum.m_iIvl);
       break;
       
     case DM_FLT:
-      nBytes = Flt::nCopy(pDst,(void*)&xDatum.m_dFlt);
+      nBytes = Flt::nCopy(pDst,(void*)&oDatum.m_dFlt);
       break;
       
     case DM_TME:
-      nBytes = Tme::nCopy(pDst,&xDatum.m_iTme);
+      nBytes = Tme::nCopy(pDst,&oDatum.m_iTme);
       break;
       
     case DM_TSP:
-      nBytes = Tsp::nCopy(pDst,&xDatum.m_iTsp);
+      nBytes = Tsp::nCopy(pDst,&oDatum.m_iTsp);
       break;
       
     case DM_VCH:
@@ -151,44 +151,46 @@ Column* Extractor::pExtractRow(Row* pRow, char** aacRecCrs,
     Column* pCol = pColVec->pGet(i_Col);
   
     Datum oDatum;
+    oDatum.m_pCol = pCol;
     
     bool b = false;
     eDM eDatum = pCol->eDatumType();
     
     if (pRecFmt->m_bDefault) {
       switch (eDatum) {
-        case DM_BCD: b = bExtractBcdDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
-        case DM_BOL: b = bExtractBolDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
-        case DM_CHR: b = bExtractVchDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
-        case DM_DTE: b = bExtractDteDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
-        case DM_FLT: b = bExtractFltDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
-        case DM_INT: b = bExtractIntDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
-        case DM_IVL: b = bExtractIvlDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
-        case DM_TME: b = bExtractTmeDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
-        case DM_TSP: b = bExtractTspDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
-        case DM_VCH: b = bExtractVchDefault(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_BCD: b = bExtractBcdDefault(&oDatum,aacRecCrs,pRecFmt); break;
+        case DM_BOL: b = bExtractBolDefault(&oDatum,aacRecCrs,pRecFmt); break;
+        case DM_CHR: b = bExtractVchDefault(&oDatum,aacRecCrs,pRecFmt); break;
+        case DM_DTE: b = bExtractDteDefault(&oDatum,aacRecCrs,pRecFmt); break;
+        case DM_FLT: b = bExtractFltDefault(&oDatum,aacRecCrs,pRecFmt); break;
+        case DM_INT: b = bExtractIntDefault(&oDatum,aacRecCrs,pRecFmt); break;
+        case DM_IVL: b = bExtractIvlDefault(&oDatum,aacRecCrs,pRecFmt); break;
+        case DM_TME: b = bExtractTmeDefault(&oDatum,aacRecCrs,pRecFmt); break;
+        case DM_TSP: b = bExtractTspDefault(&oDatum,aacRecCrs,pRecFmt); break;
+        case DM_VCH: b = bExtractVchDefault(&oDatum,aacRecCrs,pRecFmt); break;
         default:
           vFatal("Extractor::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
       }
     }
     else {
       switch (eDatum) {
-        case DM_BCD: b = bExtractBcdSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
-        case DM_BOL: b = bExtractBolSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
-        case DM_CHR: b = bExtractVchSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
-        case DM_DTE: b = bExtractDteSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
-        case DM_FLT: b = bExtractFltSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
-        case DM_INT: b = bExtractIntSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
-        case DM_IVL: b = bExtractIvlSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
-        case DM_TME: b = bExtractTmeSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
-        case DM_TSP: b = bExtractTspSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
-        case DM_VCH: b = bExtractVchSupplied(&oDatum,aacRecCrs,pCol,pRecFmt); break;
+        case DM_BCD: b = bExtractBcdSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+        case DM_BOL: b = bExtractBolSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+        case DM_CHR: b = bExtractVchSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+        case DM_DTE: b = bExtractDteSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+        case DM_FLT: b = bExtractFltSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+        case DM_INT: b = bExtractIntSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+        case DM_IVL: b = bExtractIvlSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+        case DM_TME: b = bExtractTmeSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+        case DM_TSP: b = bExtractTspSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+        case DM_VCH: b = bExtractVchSupplied(&oDatum,aacRecCrs,pRecFmt); break;
         default:
           vFatal("Extractor::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
       }
     }
     
-    //pDatum->m_ayDatum = (byte*)szDst->aChar();
+    if (! b)
+      return pCol;
     
     // move past the field delimiter
     //   (but not past the Extractor terminator or Extractor ends)
@@ -239,6 +241,8 @@ bool Extractor::bExtractElement(Datum* pDatum, char** aacRecCrs,
   bool b = false;
   eDM eDatum = pCol->eDatumType();
   
+  pDatum->m_pCol = pCol;
+  
   i8 iYear, iMonth, iDay;
   i8 iHour, iMinute, iSecond, iMicro, iMilli;
   
@@ -254,7 +258,7 @@ bool Extractor::bExtractElement(Datum* pDatum, char** aacRecCrs,
       break;
       
     case DM_CHR:
-      b = bExtractVchDefault(pDatum,aacRecCrs,pCol,pRecFmt);
+      b = bExtractVchDefault(pDatum,aacRecCrs,pRecFmt);
       break;
       
     case DM_DTE:
@@ -333,8 +337,10 @@ bool Extractor::bExtractElement(Datum* pDatum, char** aacRecCrs,
 /* extract a decimal field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractBcdSupplied(Datum* pDatum, char** aacRecCrs,
-                                    Column* pColumn, Formatters* pFormatters)
+                                    Formatters* pFormatters)
 {
+  Column* pColumn = pDatum->m_pCol;
+  
   pDatum->m_eDatum = DM_BCD;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -380,8 +386,10 @@ bool Extractor::bExtractBcdSupplied(Datum* pDatum, char** aacRecCrs,
 /* extract a decimal field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractBcdDefault(Datum* pDatum, char** aacRecCrs,
-                                Column* pColumn, Formatters* pFormatters)
+                                   Formatters* pFormatters)
 {
+  Column* pColumn = pDatum->m_pCol;
+  
   pDatum->m_eDatum = DM_BCD;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -423,8 +431,10 @@ bool Extractor::bExtractBcdDefault(Datum* pDatum, char** aacRecCrs,
 /* extract a boolean field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractBolSupplied(Datum* pDatum, char** aacRecCrs,
-                                 Column* pColumn, Formatters* pFormatters)
+                                    Formatters* pFormatters)
 {
+  Column* pColumn = pDatum->m_pCol;
+  
   pDatum->m_eDatum = DM_BOL;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -469,8 +479,10 @@ bool Extractor::bExtractBolSupplied(Datum* pDatum, char** aacRecCrs,
 /* extract a boolean field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractBolDefault(Datum* pDatum, char** aacRecCrs,
-                                Column* pColumn, Formatters* pFormatters)
+                                   Formatters* pFormatters)
 {
+  Column* pColumn = pDatum->m_pCol;
+  
   pDatum->m_eDatum = DM_BOL;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -511,9 +523,11 @@ bool Extractor::bExtractBolDefault(Datum* pDatum, char** aacRecCrs,
 /* extract a date field from csv substr                           yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractDteSupplied(Datum* pDatum, char** aacRecCrs,
-                                 Column* pColumn, Formatters* pFormatters)
+                                    Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  Column* pColumn = pDatum->m_pCol;
   
   pDatum->m_eDatum = DM_DTE;
   
@@ -568,9 +582,11 @@ bool Extractor::bExtractDteSupplied(Datum* pDatum, char** aacRecCrs,
 /* extract a date field from csv substr                           yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractDteDefault(Datum* pDatum, char** aacRecCrs,
-                                Column* pColumn, Formatters* pFormatters)
+                                   Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  Column* pColumn = pDatum->m_pCol;
   
   pDatum->m_eDatum = DM_DTE;
   
@@ -621,8 +637,10 @@ bool Extractor::bExtractDteDefault(Datum* pDatum, char** aacRecCrs,
 /* extract a float field from csv substr                                      */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractFltSupplied(Datum* pDatum, char** aacRecCrs,
-                                 Column* pColumn, Formatters* pFormatters)
+                                    Formatters* pFormatters)
 {
+  Column* pColumn = pDatum->m_pCol;
+  
   pDatum->m_eDatum = DM_FLT;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -667,8 +685,10 @@ bool Extractor::bExtractFltSupplied(Datum* pDatum, char** aacRecCrs,
 /* extract a float field from csv substr                                      */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractFltDefault(Datum* pDatum, char** aacRecCrs,
-                                Column* pColumn, Formatters* pFormatters)
+                                   Formatters* pFormatters)
 {
+  Column* pColumn = pDatum->m_pCol;
+  
   pDatum->m_eDatum = DM_FLT;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -709,8 +729,10 @@ bool Extractor::bExtractFltDefault(Datum* pDatum, char** aacRecCrs,
 /* extract an integer field from csv substr                                   */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractIntSupplied(Datum* pDatum, char** aacRecCrs,
-                                 Column* pColumn, Formatters* pFormatters)
+                                    Formatters* pFormatters)
 {
+  Column* pColumn = pDatum->m_pCol;
+  
   pDatum->m_eDatum = DM_INT;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -764,8 +786,10 @@ bool Extractor::bExtractIntSupplied(Datum* pDatum, char** aacRecCrs,
 /* extract an integer field from csv substr                                   */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractIntDefault(Datum* pDatum, char** aacRecCrs,
-                                Column* pColumn, Formatters* pFormatters)
+                                   Formatters* pFormatters)
 {
+  Column* pColumn = pDatum->m_pCol;
+  
   pDatum->m_eDatum = DM_INT;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -815,8 +839,10 @@ bool Extractor::bExtractIntDefault(Datum* pDatum, char** aacRecCrs,
 /* extract an interval field from csv substr                                  */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractIvlSupplied(Datum* pDatum, char** aacRecCrs,
-                                 Column* pColumn, Formatters* pFormatters)
+                                    Formatters* pFormatters)
 {
+  Column* pColumn = pDatum->m_pCol;
+  
   pDatum->m_eDatum = DM_IVL;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -866,8 +892,10 @@ bool Extractor::bExtractIvlSupplied(Datum* pDatum, char** aacRecCrs,
 /* extract an interval field from csv substr                                  */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractIvlDefault(Datum* pDatum, char** aacRecCrs,
-                                Column* pColumn, Formatters* pFormatters)
+                                   Formatters* pFormatters)
 {
+  Column* pColumn = pDatum->m_pCol;
+  
   pDatum->m_eDatum = DM_IVL;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -913,9 +941,11 @@ bool Extractor::bExtractIvlDefault(Datum* pDatum, char** aacRecCrs,
 /* extract a time field from csv substr                         hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractTmeSupplied(Datum* pDatum, char** aacRecCrs,
-                                 Column* pColumn, Formatters* pFormatters)
+                                    Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  Column* pColumn = pDatum->m_pCol;
   
   pDatum->m_eDatum = DM_TME;
   
@@ -969,9 +999,11 @@ bool Extractor::bExtractTmeSupplied(Datum* pDatum, char** aacRecCrs,
 /* extract a time field from csv substr                         hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractTmeDefault(Datum* pDatum, char** aacRecCrs,
-                                Column* pColumn, Formatters* pFormatters)
+                                   Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  Column* pColumn = pDatum->m_pCol;
   
   pDatum->m_eDatum = DM_TME;
   
@@ -1021,9 +1053,11 @@ bool Extractor::bExtractTmeDefault(Datum* pDatum, char** aacRecCrs,
 /* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractTspSupplied(Datum* pDatum, char** aacRecCrs,
-                                 Column* pColumn, Formatters* pFormatters)
+                                    Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  Column* pColumn = pDatum->m_pCol;
   
   pDatum->m_eDatum = DM_TSP;
   
@@ -1084,9 +1118,11 @@ bool Extractor::bExtractTspSupplied(Datum* pDatum, char** aacRecCrs,
 /* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractTspDefault(Datum* pDatum, char** aacRecCrs,
-                                Column* pColumn, Formatters* pFormatters)
+                                   Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  Column* pColumn = pDatum->m_pCol;
   
   pDatum->m_eDatum = DM_TSP;
   
@@ -1143,8 +1179,10 @@ bool Extractor::bExtractTspDefault(Datum* pDatum, char** aacRecCrs,
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractVchSupplied(Datum* pDatum, char** aacRecCrs,
-                                 Column* pColumn, Formatters* pFormatters)
+                                    Formatters* pFormatters)
 {
+  Column* pColumn = pDatum->m_pCol;
+  
   pDatum->m_eDatum = DM_VCH;
   
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1209,8 +1247,10 @@ bool Extractor::bExtractVchSupplied(Datum* pDatum, char** aacRecCrs,
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractVchDefault(Datum* pDatum, char** aacRecCrs,
-                                Column* pColumn, Formatters* pFormatters)
+                                   Formatters* pFormatters)
 {
+  Column* pColumn = pDatum->m_pCol;
+  
   pDatum->m_eDatum = DM_VCH;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

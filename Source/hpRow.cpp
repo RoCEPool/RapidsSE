@@ -81,7 +81,7 @@ void hpRow::vRow(Row* pRow)
         
       case DM_FLT: {
         spFLT spFlt;
-        StrLib::vAppendString(&szCrs,(char*)spFlt.sz(pRow->m_aiValue[i_Col]));
+        StrLib::vAppendString(&szCrs,(char*)spFlt.sz(*(d8*)&pRow->m_aiValue[i_Col]));
         break;
       }
         

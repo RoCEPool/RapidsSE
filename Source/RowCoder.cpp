@@ -967,7 +967,7 @@ void RowCoder::vDatumFlt(Datum* pTgtDatum, Row* pRow, Column* pCol)
   i8 i_Col = pCol->iColumnNo();
   
   pTgtDatum->m_eDatum = DM_FLT;
-  pTgtDatum->m_dFlt   = (d8)pRow->m_aiValue[i_Col];
+  pTgtDatum->m_dFlt   = *(d8*)&pRow->m_aiValue[i_Col];
 }
 
 /*----------------------------------------------------------------------------*/
