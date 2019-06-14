@@ -63,23 +63,6 @@ void Vch::vSetNull(void)
   //vTrace("%lld\n"_Stz,*((i8*)this));
 }
 
-/*----------------------------------------------------------------------------*/
-/* copy str datum                                                             */
-/*----------------------------------------------------------------------------*/
-i8 Vch::nCopy(void* pDst, void* pSrc)
-{
-  if (((Vch*)pSrc)->bIsNull()) {
-    ((Vch*)pDst)->vSetNull();
-    return sizeof(i8);
-  }
-  
-  i8 nBytes = StrLib::iSize((char*)pSrc);
-  
-  StrLib::vCopyLen((char*)pDst,(char*)pSrc, nBytes);     //! could return length
-  
-  return nBytes;
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
