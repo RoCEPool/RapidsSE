@@ -391,6 +391,52 @@ void vTest11(void)
    swap A[i] with A[j]
  */
 
+i8 iPartition(i8* A, i8 iLow, i8 iHigh) {
+  
+  i8 iPivot = A[iLow + (iHigh - iLow) / 2];
+  i8 i = iLow - 1;
+  i8 j = iHigh + 1;
+  
+  while (true) {
+    do {
+      i++;
+    } while (A[i] < iPivot);
+
+    do {
+      j--;
+    } while (A[j] > iPivot);
+    
+    if ( i >= j)
+      return j;
+    
+    // swap A[i} and A[j]
+    i8 iTemp = A[j];
+    A[j] = A[i];
+    A[i] = iTemp;
+  }
+}
+
+void vQuickSort(i8* A, i8 iLow, i8 iHigh) {
+  
+  if (iLow < iHigh) {
+    i8 iPivot = iPartition(A, iLow, iHigh);
+    vQuickSort(A, iLow, iPivot);
+    
+//    vTrace("Sorted %lld %lld\n"_Stz, iLow, iPivot);
+//
+//    for (i8 i = 0; i < 3; i++)
+//      vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+    
+    vQuickSort(A, iPivot + 1, iHigh);
+    
+//    vTrace("Sorted %lld %lld\n"_Stz, iPivot + 1, iHigh);
+//
+//    for (i8 i = 0; i < 3; i++)
+//      vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+
+  }
+  
+}
 /*----------------------------------------------------------------------------*/
 /* test11                                                                     */
 /*----------------------------------------------------------------------------*/
@@ -398,8 +444,22 @@ void vTest12(void)
 {
   vTrace("Quicksort: Hoare partition scheme\n"_Stz);
   
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create an array of integers
+  i8 A[100];
   
+  for (i8 i = 0; i < 100; i ++) {
+    A[i] = Random::iInteger(0,1000);
+    vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+  }
+  
+  vQuickSort(A, 0, 100 - 1);
+  
+  vTrace("\nSorted array:\n"_Stz);
+  for (i8 i = 0; i < 100; i++)
+    vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
 }
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
