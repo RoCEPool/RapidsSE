@@ -38,6 +38,7 @@ using namespace Base;
 #include "StrLib.hpp"
 #include "Word.hpp"
 
+#include "AxiomaticConstants.h"
 #include "LimitsFormats.h"
 #include "Structs.h"
 
