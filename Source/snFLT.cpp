@@ -32,7 +32,7 @@ snFLT::~snFLT(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-d8 snFLT::d(Stz* szIn)
+d8 snFLT::d(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNFLT);
   

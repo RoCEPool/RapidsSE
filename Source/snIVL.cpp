@@ -32,7 +32,7 @@ snIVL::~snIVL(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-i8 snIVL::i(Stz* szIn)
+i8 snIVL::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNIVL);
   

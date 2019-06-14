@@ -553,7 +553,8 @@ bool Extractor::bExtractDteSupplied(Datum* pDatum, char** aacRecCrs,
   
   i8 iYear, iMonth, iDay;
   
-  if ( ! StrLib::bExtractDate2(aacRecCrs, iYear, iMonth, iDay,
+  if ( ! StrLib::bExtractDate2(aacRecCrs,
+                               iYear, iMonth, iDay,
                                pFormatters->m_eDateComponent,
                                pFormatters->m_cDateSeparator) )
     return false;

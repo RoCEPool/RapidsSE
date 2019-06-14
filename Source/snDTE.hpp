@@ -16,7 +16,7 @@ namespace Transform
     snDTE(void);
     ~snDTE(void) noexcept(false);
   
-    i8 i(Stz* szIn);
+    i8 i(char** aacCrs, Column* pCol, Formatters* pScnFmt);
   
     Footer* aFooter(void);
   };

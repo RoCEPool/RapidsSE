@@ -18,7 +18,12 @@ namespace Transform
     snVCH(void);
     ~snVCH(void) noexcept(false);
     
-    Stz* sz(Stz* szIn);
+    Stz* sz(char** aacCrs,
+            Column* pCol,
+            Formatters* pScnFmt,
+            i8 iMaxLength,
+            bool bSawLeadingEnclosed,
+            i8& nChars_);
   
     Footer* aFooter(void);
   };
