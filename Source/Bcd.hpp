@@ -24,7 +24,6 @@ namespace Datums
     
     i8   iAsI8(void);
     void vAsI8(i8 iAsI8);
-    void vInitZero(void);
     bool bIsNull(void);
     void vSetNull(void);
     void vSprint(Stz* aDst, MetaData::Column* pColumn);

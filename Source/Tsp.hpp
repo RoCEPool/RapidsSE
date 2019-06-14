@@ -35,7 +35,6 @@ namespace Datums
     Tsp(void);
     ~Tsp(void) noexcept(false);
       
-    void vInitZero(void);
     i8   iAsI8(void);
     void vAsI8(i8 iAsI8);
     bool bIsNull(void);

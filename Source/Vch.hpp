@@ -18,7 +18,6 @@ namespace Datums
     Vch(void);
     ~Vch(void) noexcept(false);
       
-    void vInitZero(void);
     bool bIsNull(void);
     void vSetNull(void);
     void vSprint(Stz* aDst, Stz* aSrc, bool bQuoted);
