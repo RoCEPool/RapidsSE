@@ -37,7 +37,6 @@ namespace Datums
     void vAsI8(i8 iAsI8);
     bool bIsNull(void);
     void vSet(Tsp* aTspArg);
-    void vSetAsNow(void);
     void vSetNull(void);
 
     i8   iYear(void);
