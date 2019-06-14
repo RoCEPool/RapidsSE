@@ -476,14 +476,22 @@ void Action::vWrite_Proot(File* pFile)
   vWriteRefer(pFile);
   vWriteJob(pFile);
   
-  Tsp wTsp;
-  wTsp.vSet((Tsp*)&m_iArg0);
   
-  s32 sTsp;
-  wTsp.vSprint(sTsp);
+  Tsp* aTsp = (Tsp*)&m_iArg0;
+  
+  spTSP spTsp;
   pFile->vPrint(".%s(%s) "_Stz,
                 aAN[m_eAction],
-                sTsp.aStz());
+                spTsp.sz(aTsp->m_iValue));
+  
+//  Tsp wTsp;
+//  wTsp.vSet((Tsp*)&m_iArg0);
+//  
+//  s32 sTsp;
+//  wTsp.vSprint(sTsp);
+//  pFile->vPrint(".%s(%s) "_Stz,
+//                aAN[m_eAction],
+//                sTsp.aStz());
   
   pFile->vPrint("\n"_Stz);
 }

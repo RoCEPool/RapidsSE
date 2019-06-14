@@ -39,7 +39,6 @@ namespace Datums
     void vSet(Tsp* aTspArg);
     void vSetAsNow(void);
     void vSetNull(void);
-    void vSprint(Stz* szDst);
 
     i8   iYear(void);
     i8   iMonth(void);
@@ -51,9 +50,6 @@ namespace Datums
  
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
-    static void vSprint(Stz* aDst, Stz* aSrc);
-    static void vSprintEscaped(Stz* aDst, Stz* aSrc);
-    static void vSprintNonSQL(Stz* aDst, Stz* aSrc);
   };
 }
 
