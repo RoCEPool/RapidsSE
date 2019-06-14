@@ -109,12 +109,12 @@ bool Extractor::bExtractNext(Row* pRow, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // debug
   
-#ifdef WITH_TRACE_ENCODING
+//#ifdef WITH_TRACE_ENCODING
   char caRecord[C_16KB];
-  StrLib::vCopyTill(caRecord,aSrc,'\n');
+  StrLib::vCopyTill(caRecord,acRec,'\n');
   vTrace("\n--------------------------------------------------------------------------\n"_Stz);
   vTrace("\nFormatting record: %s\n"_Stz,caRecord);
-#endif
+//#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // extract row from record
@@ -1084,7 +1084,8 @@ bool Extractor::bExtractTspSupplied(Datum* pDatum, char** aacRecCrs,
   i8 iYear, iMonth, iDay;
   i8 iHour, iMinute, iSecond, iMicro;
   
-  if ( ! StrLib::bExtractTimestamp2(aacRecCrs, iYear, iMonth, iDay,
+  if ( ! StrLib::bExtractTimestamp2(aacRecCrs,
+                                    iYear, iMonth, iDay,
                                     iHour, iMinute, iSecond, iMicro,
                                     pFormatters->m_eDateComponent,
                                     pFormatters->m_cDateSeparator) )
@@ -1148,7 +1149,8 @@ bool Extractor::bExtractTspDefault(Datum* pDatum, char** aacRecCrs,
   i8 iYear, iMonth, iDay;
   i8 iHour, iMinute, iSecond, iMicro;
   
-  if ( ! StrLib::bExtractTimestamp2(aacRecCrs, iYear, iMonth, iDay,
+  if ( ! StrLib::bExtractTimestamp2(aacRecCrs,
+                                    iYear, iMonth, iDay,
                                     iHour, iMinute, iSecond, iMicro,
                                     pFormatters->m_eDateComponent,
                                     pFormatters->m_cDateSeparator) )
