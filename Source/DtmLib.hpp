@@ -10,7 +10,10 @@ namespace Datums
   private:
   
   public:
-    static i8   nCopy(eDM eDatum, void* pDst, void* pSrc);
+    static i8   nCopy(byte* ayDst, byte* aySrc);
+    static void vCopy(byte* ayDst, byte* aySrc);
+  
+    static i8 nCopy(eDM eDatum, void* pDst, void* pSrc);
   
   };
 }

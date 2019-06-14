@@ -168,20 +168,22 @@ void EntWrk::vAppendElement(Row* pRow, Column* pCol)
   
   i8 nBytes = 0;
   
-  char* aDst = (char*)ayElementCrs();
-  char* aSrc = (char*)pRow->m_aiValue[pCol->iColumnNo()];
-  
   if (pRow->m_aiValue[pCol->iColumnNo()] == C_DATUM_NULL) {
-    nBytes = Null::nCopy((byte*)aDst);
+    byte* ayDst = (byte*)ayElementCrs();
+    nBytes = Null::nCopy(ayDst);
     vIncKeyBytes(nBytes);
     return;
   }
   
-  if (DM_VCH == pCol->eDatumType())
-    nBytes = StrLib::iWordFlip(aDst, aSrc);
-  else
-    nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,&aSrc);
+  char* aDst = (char*)ayElementCrs();
+  char* aSrc = (char*)pRow->m_aiValue[pCol->iColumnNo()];
   
+  if (DM_VCH == pCol->eDatumType()) {
+    nBytes = StrLib::iWordFlip(aDst, aSrc);
+    vIncKeyBytes(nBytes);
+  }
+  
+  nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,&aSrc);
   vIncKeyBytes(nBytes);
 }
 
