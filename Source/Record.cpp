@@ -372,6 +372,27 @@ void Record::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* s-print                                                                    */
 /*----------------------------------------------------------------------------*/
+//void Record::vSprint(Column* pColumn, Stz* aDst, Stz* aSrc)
+//{
+//  eDM eDatum = pColumn->eDatumType();
+//
+//  switch (eDatum) {
+//    case DM_BCD: break;
+//    case DM_BOL: break;
+//    case DM_CHR: break;
+//    case DM_DTE: break;
+//    case DM_FLT: break;
+//    case DM_INT: break;
+//    case DM_IVL: break;
+//    case DM_TME: break;
+//    case DM_TSP: break;
+//    case DM_VCH: break;
+//    default:
+//      vFatal("Record::vSprint: Invalid aDatum argument: %lld\n"_Stz,
+//             eDatum);
+//  }
+//}
+/*----------------------------------------------------------------------------*/
 void Record::vSprint(Column* pColumn, Stz* aDst, Stz* aSrc)
 {
   eDM eDatum = pColumn->eDatumType();

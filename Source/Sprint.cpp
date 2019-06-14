@@ -29,6 +29,92 @@ Sprint::~Sprint(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* sprint into target                                                         */
+/*----------------------------------------------------------------------------*/
+void Sprint::vInto(Stz *szTgt, void *avSrc, Column *pCol)
+{
+  eDM eDatum = pCol->eDatumType();
+  char* az   = (char*)szTgt;
+  i8 iValue  = *(i8*)avSrc;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  if (C_DATUM_NULL == iValue) {
+    StrLib::vCopy(az,(char*)"null"_Stz);
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  switch (eDatum) {
+      
+    case DM_BCD: {
+      spBCD spBcd;
+      StrLib::vCopy(az,(char*)spBcd.sz(iValue));
+      break;
+    }
+      
+    case DM_BOL: {
+      spBOL spBol;
+      StrLib::vCopy(az,(char*)spBol.sz(iValue));
+      break;
+    }
+      
+    case DM_DTE: {
+      spDTE spDte;
+      StrLib::vCopy(az,(char*)spDte.sz(iValue));
+      break;
+    }
+      
+    case DM_FLT: {
+      spFLT spFlt;
+      StrLib::vCopy(az,(char*)spFlt.sz(*(d8*)avSrc));
+      break;
+    }
+      
+    case DM_INT: {
+      spINT spInt;
+      StrLib::vCopy(az,(char*)spInt.sz(iValue));
+      break;
+    }
+      
+    case DM_IVL: {
+      spIVL spIvl;
+      StrLib::vCopy(az,(char*)spIvl.sz(iValue));
+      break;
+    }
+      
+    case DM_TME: {
+      spTME spTme;
+      StrLib::vCopy(az,(char*)spTme.sz(iValue));
+      break;
+    }
+      
+    case DM_TSP: {
+      spTSP spTsp;
+      StrLib::vCopy(az,(char*)spTsp.sz(iValue));
+      break;
+    }
+      
+    case DM_VCH: {
+      spVCH spVch;
+      StrLib::vCopy(az,(char*)spVch.sz((char*)avSrc));
+      break;
+    }
+      
+    default:
+      vFatal("Sprint::Into: Invalid eDatum: %lld\n"_Stz,
+             eDatum);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

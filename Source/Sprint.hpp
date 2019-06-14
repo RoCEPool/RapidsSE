@@ -22,6 +22,8 @@ namespace Transform
     Sprint(eCN eClass);
     ~Sprint(void) noexcept(false);
   
+    static void vInto(Stz* szTgt, void* avSrc, Column* pCol);
+
     Stz* sz(void);
   
     Stz* szFormat(void);
