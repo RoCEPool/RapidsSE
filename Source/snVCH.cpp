@@ -33,7 +33,6 @@ snVCH::~snVCH(void) noexcept(false)
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
 Stz* snVCH::sz(char** aacCrs, Column* pCol, Formatters* pScnFmt,
-               i8 iMaxLength,
                bool bSawLeadingEnclosed,
                i8& nChars_)
 {

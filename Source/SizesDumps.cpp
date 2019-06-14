@@ -569,15 +569,15 @@ i8 giClassSize[]
   /*122 */ sizeof(Slots),              // CN_SLOTS
   /*123 */ sizeof(Heap), // correct    // SN_SMALLPERSISTENT
   /*124 */ sizeof(Heap), // correct    // SN_SMALLTRANSIENT
-  /*    */ 0,              // CN_SNBCD
-  /*    */ 0,              // CN_SNBOL
-  /*    */ 0,              // CN_SNDTE
-  /*    */ 0,              // CN_SNFLT
-  /*    */ 0,              // CN_SNINT
-  /*    */ 0,              // CN_SNIVL
-  /*    */ 0,              // CN_SNTME
-  /*    */ 0,              // CN_SNTSP
-  /*    */ 0,              // CN_SNVCH
+  /*    */ sizeof(snBCD),              // CN_SNBCD
+  /*    */ sizeof(snBOL),              // CN_SNBOL
+  /*    */ sizeof(snDTE),              // CN_SNDTE
+  /*    */ sizeof(snFLT),              // CN_SNFLT
+  /*    */ sizeof(snINT),              // CN_SNINT
+  /*    */ sizeof(snIVL),              // CN_SNIVL
+  /*    */ sizeof(snTME),              // CN_SNTME
+  /*    */ sizeof(snTSP),              // CN_SNTSP
+  /*    */ sizeof(snVCH),              // CN_SNVCH
   /*125 */ sizeof(Socket),             // CN_SOCKET
   /*    */ sizeof(spBCD),              // CN_SPBCD
   /*    */ sizeof(spBOL),              // CN_SPBOL

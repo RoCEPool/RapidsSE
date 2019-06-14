@@ -21,7 +21,6 @@ namespace Transform
     Stz* sz(char** aacCrs,
             Column* pCol,
             Formatters* pScnFmt,
-            i8 iMaxLength,
             bool bSawLeadingEnclosed,
             i8& nChars_);
   

@@ -11,7 +11,7 @@ snINT::snINT(void)
 : Scan(CN_SNINT)
 {
   _precondition_(_MAGIC_,CN_SNINT,_FOOTER_);
-    
+  
   _checkInitialised_(CN_SNINT);
   
   _postcondition_(_MAGIC_,CN_SNINT,_FOOTER_);
@@ -40,7 +40,7 @@ i8 snINT::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
                                  true/*bWithSign*/) )
     throw C_UNKNOWN;
 
-  return C_UNKNOWN;
+  return m_iValue;
 }
 
 
