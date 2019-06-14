@@ -19,6 +19,16 @@ i8 DtmLib::nCopy(byte* ayDst, byte* aySrc)
 /*----------------------------------------------------------------------------*/
 /* copy datum (return the number of bytes copied)                             */
 /*----------------------------------------------------------------------------*/
+i8 DtmLib::nCopy(byte* ayDst, i8 iValue)
+{
+  * (i8*)ayDst = iValue;
+  
+  return sizeof(i8);
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy datum (return the number of bytes copied)                             */
+/*----------------------------------------------------------------------------*/
 void DtmLib::vCopy(byte* ayDst, byte* aySrc)
 {
   * (i8*)ayDst = * (i8*)aySrc;
