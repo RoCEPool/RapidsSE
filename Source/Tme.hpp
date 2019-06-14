@@ -33,7 +33,6 @@ namespace Datums
     void vAsI8(i8 iAsI8);
     bool bIsNull(void);
     void vSetNull(void);
-    void vSprint(Stz* szDst);
 
     i8   iHour(void);
     i8   iMinute(void);
@@ -42,8 +41,6 @@ namespace Datums
 
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
-    static void vSprint(Stz* aDst, Stz* aSrc);
-    static void vSprintEscaped(Stz* aDst, Stz* aSrc);
   };
 }
 

@@ -22,8 +22,6 @@ namespace Datums
     bool bIsNull(void);
 
     static i8   nCopy(void* aDst, void* aSrc);
-
-    static void vSprint(Stz* aDst, Stz* aSrc);
   };
 }
 

@@ -111,39 +111,6 @@ void Tme::vSetNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sprint tme datum                                                           */
-/*----------------------------------------------------------------------------*/
-void Tme::vSprint(Stz* aDst)
-{
-  if (bIsNull()) {
-    StrLib::vSprint(aDst,"null%c"_Stz,
-                    '\0');
-    return;
-  }
-  
-  u8 uMicro = x.m_uMicro;
-
-  if (uMicro) {
-    char caFraction[16];
-    StrLib::vFormatFraction(caFraction,uMicro,6);
-    
-    StrLib::vSprint(aDst,"%02lld:%02lld:%02lld.%s%c"_Stz,
-                    (i8)x.m_uHour,
-                    (i8)x.m_uMinute,
-                    (i8)x.m_uSecond,
-                    caFraction,
-                    '\0');
-    return;
-  }
-  
-  StrLib::vSprint(aDst,"%02lld:%02lld:%02lld%c"_Stz,
-                  (i8)x.m_uHour,
-                  (i8)x.m_uMinute,
-                  (i8)x.m_uSecond,
-                  '\0');
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Extract and Sprint ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -163,74 +130,6 @@ i8 Tme::nCopy(void* aDst, void* aSrc)
 void Tme::vCopy(void* aDst, void* aSrc)
 {
   *(i8*)aDst = *(i8*)aSrc;
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint tme datum                                                           */
-/*----------------------------------------------------------------------------*/
-void Tme::vSprint(Stz* aDst, Stz* aSrc)
-{
-  Tme* aTme = (Tme*)aSrc;
-  u8 uMicro = (i8)aTme->x.m_uMicro;
-  
-  if (aTme->bIsNull()) {
-    StrLib::vSprint(aDst,"null%c"_Stz,
-                    '\0');
-    return;
-  }
-  
-  if (uMicro) {
-    char caFraction[16];
-    StrLib::vFormatFraction(caFraction,uMicro,6);
-    
-    StrLib::vSprint(aDst,"%02lld:%02lld:%02lld.%s%c"_Stz,
-                    aTme->x.m_uHour,
-                    aTme->x.m_uMinute,
-                    aTme->x.m_uSecond,
-                    caFraction,
-                    '\0');
-    return;
-  }
-
-  StrLib::vSprint(aDst,"%02lld:%02lld:%02lld%c"_Stz,
-                  aTme->x.m_uHour,
-                  aTme->x.m_uMinute,
-                  aTme->x.m_uSecond,
-                  '\0');
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint tme datum                                                           */
-/*----------------------------------------------------------------------------*/
-void Tme::vSprintEscaped(Stz* aDst, Stz* aSrc)
-{
-  Tme* aTme = (Tme*)aSrc;
-  u8 uMicro = (i8)aTme->x.m_uMicro;
-  
-  if (aTme->bIsNull()) {
-    StrLib::vSprint(aDst,"null%c"_Stz,
-                    '\0');
-    return;
-  }
-  
-  if (uMicro) {
-    char caFraction[16];
-    StrLib::vFormatFraction(caFraction,uMicro,6);
-    
-    StrLib::vSprint(aDst,"%02lld:%02lld:%02lld.%s%c"_Stz,
-                    aTme->x.m_uHour,
-                    aTme->x.m_uMinute,
-                    aTme->x.m_uSecond,
-                    caFraction,
-                    '\0');
-    return;
-  }
-  
-  StrLib::vSprint(aDst,"%02lld:%02lld:%02lld%c"_Stz,
-                  aTme->x.m_uHour,
-                  aTme->x.m_uMinute,
-                  aTme->x.m_uSecond,
-                  '\0');
 }
 
 /*============================================================================*/

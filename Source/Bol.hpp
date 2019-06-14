@@ -26,7 +26,6 @@ namespace Datums
 
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
-    static void vSprint(Stz* aDst, Stz* aSrc);
   };
 }
 

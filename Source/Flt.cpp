@@ -72,17 +72,6 @@ void Flt::vSetNull(void)
   m_dFlt = C_DATUM_NULL;
 }
 
-/*----------------------------------------------------------------------------*/
-/* sprint flt datum                                                           */
-/*----------------------------------------------------------------------------*/
-void Flt::vSprint(Stz* aDst)
-{
-  if (bIsNull())
-    StrLib::vSprint(aDst,"null"_Stz);
-  else
-    StrLib::vSprint(aDst,"%g"_Stz,m_dFlt);
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Extract and Sprint ------------------------------------------------------*/
@@ -106,25 +95,6 @@ void Flt::vCopy(void* aDst, void* aSrc)
   *(d8*)aDst = *(d8*)aSrc;
 }
 
-/*----------------------------------------------------------------------------*/
-/* sprint flt datum                                                           */
-/*----------------------------------------------------------------------------*/
-void Flt::vSprint(Stz* aDst, Stz* aSrc)
-{
-  Flt* aFlt = (Flt*)aSrc;
-  
-  if (aFlt->bIsNull())
-    StrLib::vSprint(aDst,"null%c"_Stz,
-                    '\0');
-  else
-//    StrLib::vSprint(aDst,"%.15f%c"_Stz,
-//                    aFlt->m_dFlt,
-//                    '\0');
-    StrLib::vSprint(aDst,"%g%c"_Stz,
-                    aFlt->m_dFlt,
-                    '\0');
-  //vTrace("%f %s\n"_Stz, aFlt->m_dFlt, aDst);
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Embedded Comparators ----------------------------------------------------*/

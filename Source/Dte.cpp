@@ -101,24 +101,6 @@ void Dte::vSetNull(void)
 {
   m_iValue = C_DATUM_NULL;
 }
-
-/*----------------------------------------------------------------------------*/
-/* sprint dte datum                                                           */
-/*----------------------------------------------------------------------------*/
-void Dte::vSprint(Stz* aDst)
-{
-  if (bIsNull()) {
-    StrLib::vSprint(aDst,"null%c"_Stz,'\0');
-    return;
-  }
-  
-  StrLib::vSprint(aDst,"%02lld-%02lld-%02lld%c"_Stz,
-                  (i8)x.m_uYearDelta + C_BASE_YEAR,
-                  (i8)x.m_uMonth,
-                  (i8)x.m_uDay,
-                  '\0');
-}
-
 /*----------------------------------------------------------------------------*/
 /*-- Extract and Sprint ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -139,42 +121,6 @@ i8 Dte::nCopy(void* aDst, void* aSrc)
 void Dte::vCopy(void* aDst, void* aSrc)
 {
   *(i8*)aDst = *(i8*)aSrc;
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint dte datum                                                           */
-/*----------------------------------------------------------------------------*/
-void Dte::vSprint(Stz* aDst, Stz* aSrc)
-{
-  Dte* aDte = (Dte*)aSrc;
-  
-  if (aDte->bIsNull())
-    StrLib::vSprint(aDst,"null%c"_Stz,
-                    '\0');
-  else
-    StrLib::vSprint(aDst,"%02lld-%02lld-%02lld%c"_Stz,
-                    aDte->x.m_uYearDelta + C_BASE_YEAR,
-                    aDte->x.m_uMonth,
-                    aDte->x.m_uDay,
-                    '\0');
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint dte datum                                                           */
-/*----------------------------------------------------------------------------*/
-void Dte::vSprintEscaped(Stz* aDst, Stz* aSrc)
-{
-  Dte* aDte = (Dte*)aSrc;
-  
-  if (aDte->bIsNull())
-    StrLib::vSprint(aDst,"null%c"_Stz,
-                    '\0');
-  else
-    StrLib::vSprint(aDst,"%02lld-%02lld-%02lld%c"_Stz,
-                    aDte->x.m_uYearDelta + C_BASE_YEAR,
-                    aDte->x.m_uMonth,
-                    aDte->x.m_uDay,
-                    '\0');
 }
 
 /*============================================================================*/

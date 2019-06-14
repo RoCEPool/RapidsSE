@@ -71,17 +71,6 @@ void Bol::vSetNull(void)
   m_bBol = C_DATUM_NULL;
 }
 
-/*----------------------------------------------------------------------------*/
-/* sprint bol datum                                                           */
-/*----------------------------------------------------------------------------*/
-void Bol::vSprint(Stz* aDst)
-{
-  if (bIsNull())
-    StrLib::vSprint(aDst,"null"_Stz);
-  else
-    StrLib::vSprint(aDst,"%s"_Stz,m_bBol ? "true" : "false");
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Extract and Sprint ------------------------------------------------------*/
@@ -112,19 +101,6 @@ void Bol::vCopy(void* aDst, void* aSrc)
  12ab,zero,100,0,0.000,1000.000,1900-01-01 00:00:00,true
  */
 
-/*----------------------------------------------------------------------------*/
-/* sprint bol datum                                                           */
-/*----------------------------------------------------------------------------*/
-void Bol::vSprint(Stz* aDst, Stz* aSrc)
-{
-  Bol* aBol = (Bol*)aSrc;
-  
-  if (aBol->bIsNull())
-    StrLib::vSprint(aDst,"null%c"_Stz,
-                    '\0');
-  else
-    StrLib::vSprint(aDst,"%s%c"_Stz,*(i8*)aSrc ? "true" : "false",'\0');
-}
 
 /*============================================================================*/
 /* end                                                                        */

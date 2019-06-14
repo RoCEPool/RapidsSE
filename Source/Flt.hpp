@@ -25,11 +25,9 @@ namespace Datums
     d8   dAsD8(void);
     bool bIsNull(void);
     void vSetNull(void);
-    void vSprint(Stz* aDst);
-
+ 
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
-    static void vSprint(Stz* aDst, Stz* aSrc);
     static bool bIsValidSize(i8 iPrecision);
   };
 }

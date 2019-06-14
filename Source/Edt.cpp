@@ -102,22 +102,6 @@ void Edt::vSetNull(void)
   m_iValue = C_DATUM_NULL;
 }
 
-/*----------------------------------------------------------------------------*/
-/* sprint Edt datum                                                           */
-/*----------------------------------------------------------------------------*/
-void Edt::vSprint(Stz* aDst)
-{
-  if (bIsNull()) {
-    StrLib::vSprint(aDst,"null%c"_Stz,'\0');
-    return;
-  }
-  
-  StrLib::vSprint(aDst,"%02lld-%02lld-%02lld%c"_Stz,
-                  (i8)x.m_uYearInEra + C_BASE_YEAR,
-                  (i8)x.m_uMonth,
-                  (i8)x.m_uDay,
-                  '\0');
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Extract and Sprint ------------------------------------------------------*/
@@ -139,42 +123,6 @@ i8 Edt::nCopy(void* aDst, void* aSrc)
 void Edt::vCopy(void* aDst, void* aSrc)
 {
   *(i8*)aDst = *(i8*)aSrc;
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint Edt datum                                                           */
-/*----------------------------------------------------------------------------*/
-void Edt::vSprint(Stz* aDst, Stz* aSrc)
-{
-  Edt* aEdt = (Edt*)aSrc;
-  
-  if (aEdt->bIsNull())
-    StrLib::vSprint(aDst,"null%c"_Stz,
-                    '\0');
-  else
-    StrLib::vSprint(aDst,"%02lld-%02lld-%02lld%c"_Stz,
-                    aEdt->x.m_uYearInEra + C_BASE_YEAR,
-                    aEdt->x.m_uMonth,
-                    aEdt->x.m_uDay,
-                    '\0');
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint Edt datum                                                           */
-/*----------------------------------------------------------------------------*/
-void Edt::vSprintEscaped(Stz* aDst, Stz* aSrc)
-{
-  Edt* aEdt = (Edt*)aSrc;
-  
-  if (aEdt->bIsNull())
-    StrLib::vSprint(aDst,"null%c"_Stz,
-                    '\0');
-  else
-    StrLib::vSprint(aDst,"%02lld-%02lld-%02lld%c"_Stz,
-                    aEdt->x.m_uYearInEra + C_BASE_YEAR,
-                    aEdt->x.m_uMonth,
-                    aEdt->x.m_uDay,
-                    '\0');
 }
 
 /*============================================================================*/
