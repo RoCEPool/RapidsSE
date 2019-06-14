@@ -48,8 +48,6 @@ namespace Data
 
     //! REVIEW WHICH FUNCTIONS USE THESE
     static void vSprint(Column* pColumn, Stz* aDst, Stz* aSrc);
-    static void vSprintQuotes(Column* pColumn, Stz* aDst, Stz* aSrc);
-    static void vSprintEscaped(Column* pColumn, Stz* aDst, Stz* aSrc);
   
   private:
     Footer* aFooter(void);

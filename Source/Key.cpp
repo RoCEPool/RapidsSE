@@ -152,10 +152,9 @@ void Key::vShow(IdxColVec* pIdxColVec)
     }
     else
       Record::vSprint(pColumn,(Stz*)caLiteral,(Stz*)ayElm);
-    vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Col,nBytes,caLiteral);
+    
+    vTrace("Elm[%lld %lldB] %s "_Stz,i_Col,nBytes,caLiteral);
   }
-  
-  //vTrace("%s)\n"_Stz, sKeyString.aStz());
 }
 
 

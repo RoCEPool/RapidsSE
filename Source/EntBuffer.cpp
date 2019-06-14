@@ -850,7 +850,7 @@ void EntBuffer::vRestoreIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vShowEntry(Ent* aEnt)
 {
-  Key* aKey = _aKey(aEnt->ayByteSeq());
+  Key* aKey = aEnt->aKey();
   i8 iOffset = iToOffset(aEnt);
   
   vTrace("%lld: Ent: %p Size: %llu Levels: %llu "_Stz,
