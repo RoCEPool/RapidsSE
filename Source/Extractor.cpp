@@ -363,10 +363,6 @@ bool Extractor::bExtractBcdSupplied(Datum* pDatum, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decimal field processing
   
-//  if ( ! StrLib::bExtractDecimal(aacRecCrs,pDatum->m_iBcd,
-//                                 pColumn->iColumnLength(),pColumn->iColumnScale()) )
-//    return false;
-
   snBCD snBcd;
   try {
     pDatum->m_iBcd = snBcd.i(aacRecCrs,pColumn,pFormatters);
@@ -419,10 +415,6 @@ bool Extractor::bExtractBcdDefault(Datum* pDatum, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decimal field processing
   
-//  if ( ! StrLib::bExtractDecimal(aacRecCrs,pDatum->m_iBcd,
-//                                 pColumn->iColumnLength(),pColumn->iColumnScale()) )
-//    return false;
-
   snBCD snBcd;
   try {
     pDatum->m_iBcd = snBcd.i(aacRecCrs,pColumn,pFormatters);
@@ -472,9 +464,6 @@ bool Extractor::bExtractBolSupplied(Datum* pDatum, char** aacRecCrs,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // boolean field processing
-  
-//  if ( ! StrLib::bExtractBoolean(aacRecCrs,pDatum->m_iBol) )
-//    return false;
   
   snBOL snBol;
   try {
@@ -528,9 +517,6 @@ bool Extractor::bExtractBolDefault(Datum* pDatum, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // boolean field processing
   
-//  if ( ! StrLib::bExtractBoolean(aacRecCrs,pDatum->m_iBol) )
-//    return false;
-
   snBOL snBol;
   try {
     pDatum->m_iBol = snBol.i(aacRecCrs,pColumn,pFormatters);
@@ -583,19 +569,6 @@ bool Extractor::bExtractDteSupplied(Datum* pDatum, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // date field processing
   
-//  i8 iYear, iMonth, iDay;
-//
-//  if ( ! StrLib::bExtractDate2(aacRecCrs,
-//                               iYear, iMonth, iDay,
-//                               pFormatters->m_eDateComponent,
-//                               pFormatters->m_cDateSeparator) )
-//    return false;
-//
-//  pDatum->xDte.m_uYearDelta  = iYear - C_BASE_YEAR;
-//  pDatum->xDte.m_uMonth = iMonth;
-//  pDatum->xDte.m_uDay   = iDay;
-//  pDatum->xDte.m_uSpare = 0;
-
   snDTE snDte;
   try {
     pDatum->m_iDte = snDte.i(aacRecCrs,pColumn,pFormatters);
@@ -650,18 +623,6 @@ bool Extractor::bExtractDteDefault(Datum* pDatum, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // date field processing
   
-//  i8 iYear, iMonth, iDay;
-//
-//  if ( ! StrLib::bExtractDate2(aacRecCrs, iYear, iMonth, iDay,
-//                               pFormatters->m_eDateComponent,
-//                               pFormatters->m_cDateSeparator) )
-//    return false;
-//
-//  pDatum->xDte.m_uYearDelta  = iYear - C_BASE_YEAR;
-//  pDatum->xDte.m_uMonth = iMonth;
-//  pDatum->xDte.m_uDay   = iDay;
-//  pDatum->xDte.m_uSpare = 0;
-
   snDTE snDte;
   try {
     pDatum->m_iDte = snDte.i(aacRecCrs,pColumn,pFormatters);
@@ -711,9 +672,6 @@ bool Extractor::bExtractFltSupplied(Datum* pDatum, char** aacRecCrs,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // float field processing
-  
-//  if ( ! StrLib::bExtractFloat(aacRecCrs,pDatum->m_dFlt) )
-//    return false;
   
   snFLT snFlt;
   try {
@@ -767,9 +725,6 @@ bool Extractor::bExtractFltDefault(Datum* pDatum, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // float field processing
   
-//  if ( ! StrLib::bExtractFloat(aacRecCrs,pDatum->m_dFlt) )
-//    return false;
-  
   snFLT snFlt;
   try {
     pDatum->m_dFlt = snFlt.d(aacRecCrs,pColumn,pFormatters);
@@ -819,10 +774,6 @@ bool Extractor::bExtractIntSupplied(Datum* pDatum, char** aacRecCrs,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // integer field processing
-  
-//  if ( ! StrLib::bExtractInteger(aacRecCrs,&pDatum->m_iInt,
-//                                 true/*bWithSign*/) )
-//    return false;
   
   snINT snInt;
   try {
@@ -884,10 +835,6 @@ bool Extractor::bExtractIntDefault(Datum* pDatum, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // integer field processing
   
-//  if ( ! StrLib::bExtractInteger(aacRecCrs,&pDatum->m_iInt,
-//                                 true/*bWithSign*/) )
-//    return false;
-  
   snINT snInt;
   try {
     pDatum->m_iInt = snInt.i(aacRecCrs,pColumn,pFormatters);
@@ -946,14 +893,6 @@ bool Extractor::bExtractIvlSupplied(Datum* pDatum, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // interval field processing
   
-//  i8 iSecond, iMilli;
-//
-//  if ( ! StrLib::bExtractInterval(aacRecCrs, iSecond, iMilli) )
-//    return false;
-//
-//  pDatum->xIvl.m_uSecond = iSecond;
-//  pDatum->xIvl.m_uMilli  = iMilli;
-  
   snIVL snIvl;
   try {
     pDatum->m_iIvl = snIvl.i(aacRecCrs,pColumn,pFormatters);
@@ -1006,15 +945,6 @@ bool Extractor::bExtractIvlDefault(Datum* pDatum, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // interval field processing
   
-//  i8 iSecond, iMilli;
-//
-//  if ( ! StrLib::bExtractInterval(aacRecCrs, iSecond, iMilli) )
-//    return false;
-//
-//  pDatum->xIvl.m_uSecond = iSecond;
-//  pDatum->xIvl.m_uMilli  = iMilli;
-
-  
   snIVL snIvl;
   try {
     pDatum->m_iIvl = snIvl.i(aacRecCrs,pColumn,pFormatters);
@@ -1066,17 +996,6 @@ bool Extractor::bExtractTmeSupplied(Datum* pDatum, char** aacRecCrs,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // time field processing
-  
-//  i8 iHour, iMinute, iSecond, iMicro;
-//
-//  if ( ! StrLib::bExtractTime(aacRecCrs, iHour, iMinute, iSecond, iMicro) )
-//    return false;
-//
-//  pDatum->xTme.m_uHour   = iHour;
-//  pDatum->xTme.m_uMinute = iMinute;
-//  pDatum->xTme.m_uSecond = iSecond;
-//  pDatum->xTme.m_uMicro  = iMicro;
-//  pDatum->xTme.m_uSpare  = 0;
   
   snTSP snTsp;
   try {
@@ -1132,17 +1051,6 @@ bool Extractor::bExtractTmeDefault(Datum* pDatum, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // time field processing
   
-//  i8 iHour, iMinute, iSecond, iMicro;
-//
-//  if ( ! StrLib::bExtractTime(aacRecCrs, iHour, iMinute, iSecond, iMicro) )
-//    return false;
-//
-//  pDatum->xTme.m_uHour   = iHour;
-//  pDatum->xTme.m_uMinute = iMinute;
-//  pDatum->xTme.m_uSecond = iSecond;
-//  pDatum->xTme.m_uMicro  = iMicro;
-//  pDatum->xTme.m_uSpare  = 0;
-
   snTSP snTsp;
   try {
     pDatum->m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
@@ -1194,25 +1102,6 @@ bool Extractor::bExtractTspSupplied(Datum* pDatum, char** aacRecCrs,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // timestamp field processing
-  
-//  i8 iYear, iMonth, iDay;
-//  i8 iHour, iMinute, iSecond, iMicro;
-//
-//  if ( ! StrLib::bExtractTimestamp2(aacRecCrs,
-//                                    iYear, iMonth, iDay,
-//                                    iHour, iMinute, iSecond, iMicro,
-//                                    pFormatters->m_eDateComponent,
-//                                    pFormatters->m_cDateSeparator) )
-//    return false;
-//
-//  pDatum->xTsp.m_uYearDelta   = iYear - C_BASE_YEAR;
-//  pDatum->xTsp.m_uMonth  = iMonth;
-//  pDatum->xTsp.m_uDay    = iDay;
-//  pDatum->xTsp.m_uHour   = iHour;
-//  pDatum->xTsp.m_uMinute = iMinute;
-//  pDatum->xTsp.m_uSecond = iSecond;
-//  pDatum->xTsp.m_uMicro  = iMicro;
-//  pDatum->xTsp.m_uSpare  = 0;
   
   snTSP snTsp;
   try {
@@ -1268,25 +1157,6 @@ bool Extractor::bExtractTspDefault(Datum* pDatum, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // timestamp field processing
   
-//  i8 iYear, iMonth, iDay;
-//  i8 iHour, iMinute, iSecond, iMicro;
-//
-//  if ( ! StrLib::bExtractTimestamp2(aacRecCrs,
-//                                    iYear, iMonth, iDay,
-//                                    iHour, iMinute, iSecond, iMicro,
-//                                    pFormatters->m_eDateComponent,
-//                                    pFormatters->m_cDateSeparator) )
-//    return false;
-//
-//  pDatum->xTsp.m_uYearDelta   = iYear - C_BASE_YEAR;
-//  pDatum->xTsp.m_uMonth  = iMonth;
-//  pDatum->xTsp.m_uDay    = iDay;
-//  pDatum->xTsp.m_uHour   = iHour;
-//  pDatum->xTsp.m_uMinute = iMinute;
-//  pDatum->xTsp.m_uSecond = iSecond;
-//  pDatum->xTsp.m_uMicro  = iMicro;
-//  pDatum->xTsp.m_uSpare  = 0;
-
   snTSP snTsp;
   try {
     pDatum->m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
@@ -1335,21 +1205,6 @@ bool Extractor::bExtractVchSupplied(Datum* pDatum, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // varchar field processing
   
-//  i8 iColumnLength = pColumn->iColumnLength();
-//  i8 nChars;
-//  if ( ! StrLib::bExtractVarchar(aacRecCrs,
-//                                 pDatum->m_sVch.aChar(),
-//                                 iColumnLength,
-//                                 bSawEnclosedLeading,
-//                                 pFormatters->m_cEnclosedBy_Leading,
-//                                 pFormatters->m_cEnclosedBy_Trailing,
-//                                 pFormatters->m_cEscapeChar,
-//                                 pFormatters->m_cFieldDelimiter,
-//                                 pFormatters->m_cRecordTerminator,
-//                                 pFormatters->m_bAllowNonPrintable,
-//                                 pDatum->m_nChars) )
-//    return false;
-  
   snVCH snVch;
   try {
     pDatum->m_sVch = snVch.sz(aacRecCrs,pColumn,pFormatters,
@@ -1359,15 +1214,6 @@ bool Extractor::bExtractVchSupplied(Datum* pDatum, char** aacRecCrs,
     return false;
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // shoco test
-  
-  //  char caCompressed[1024];
-  //  i8 iLen = StrLib::iLength((char*)aVch);
-  //  i8 iLenCompressed = shoco_compress((char*)aVch, iLen,
-  //                                     caCompressed, sizeof(caCompressed));
-  //  vTrace("%2lld -> %2lld: %s\n"_Stz,iLen,iLenCompressed,(char*)aVch);
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
@@ -1406,19 +1252,8 @@ bool Extractor::bExtractVchDefault(Datum* pDatum, char** aacRecCrs,
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for enclosed
-  //bool bSawEnclosedLeading = bIsEnclosedString(aacRecCrs,pFormatters);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // varchar field processing
   
-//  i8 iColumnLength = pColumn->iColumnLength();
-//  if ( ! StrLib::bExtractVarcharDefault(aacRecCrs,
-//                                        pDatum->m_sVch.aChar(),
-//                                        iColumnLength,
-//                                        pDatum->m_nChars) )
-//    return false;
-
   snVCH snVch;
   try {
     pDatum->m_sVch = snVch.sz(aacRecCrs,pColumn,pFormatters,
@@ -1432,11 +1267,6 @@ bool Extractor::bExtractVchDefault(Datum* pDatum, char** aacRecCrs,
   // tail processing
   
   StrLib::vSkipSpaces(aacRecCrs);
-  
-  //bool bSawEnclosedTrailing =
-  //StrLib::bSkipTrailing(aacRecCrs,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
-  //if (! bSawEnclosedTrailing)
-  //  return false;
   
   // should see a valid field end
   if ( ! bValidFieldEndDefault(*aacRecCrs,pFormatters) )
