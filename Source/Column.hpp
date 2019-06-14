@@ -100,6 +100,10 @@ namespace MetaData
     Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo);
     ~Column(void) noexcept(false);
   
+    static bool bValidBcd(i8 iPrecision, i8 iScale);
+    static bool bValidFlt(i8 iSize);
+    static bool bValidVch(i8 iSize);
+  
     i8   iColumnLength(void);
     void vColumnLength(i8 iColumnLength);
   
@@ -142,7 +146,8 @@ namespace MetaData
     void vIsPartitionKey(bool bIsPartitionKey);
 
     void vShow(void);
-    
+  
+
     byte* ayValue(i8& nBytes, byte** aayCursor);
   
     Footer* aFooter(void);

@@ -31,8 +31,6 @@ namespace Datums
   
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
-
-    static bool bIsValidSize(i8 iPrecision, i8 iScale);
   };
 }
 

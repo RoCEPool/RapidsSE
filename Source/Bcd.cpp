@@ -100,23 +100,6 @@ void Bcd::vCopy(void* aDst, void* aSrc)
   *(i8*)aDst = *(i8*)aSrc;
 }
 
-/*----------------------------------------------------------------------------*/
-/* is the size valid ?                                                        */
-/*----------------------------------------------------------------------------*/
-bool Bcd::bIsValidSize(i8 iPrecision, i8 iScale)
-{
-  if (iPrecision > C_MAX_PRECISION_BCD)
-    return false;
-  
-  if (iScale > iPrecision)
-    return false;
-  
-  if (iScale > C_MAX_PRECISION_BCD)
-    return false;
-  
-  return true;
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

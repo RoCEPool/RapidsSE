@@ -417,7 +417,7 @@ bool Job_CreateTable::bExtractDecimal(TokenVec* pTokenVec, i8 iColumn, i8& iCurr
     if (!pTokenVec->pGet(iCurrentToken++)->bSame(")"_Stz))
       return false;
     
-    if (!Bcd::bIsValidSize(iPrecision, iScale))
+    if (! Column::bValidBcd(iPrecision, iScale))
       return false;
   }
   
@@ -458,7 +458,7 @@ bool Job_CreateTable::bExtractFloat(TokenVec* pTokenVec, i8 iColumn, i8& iCurren
       return false;
     }
     
-    if (!Flt::bIsValidSize(iSize)) {
+    if (! Column::bValidFlt(iSize)) {
       return false;
     }
   }
@@ -501,7 +501,7 @@ bool Job_CreateTable::bExtractVarchar(TokenVec* pTokenVec, i8 iColumn, i8& iCurr
       return false;
     
     // valid the size
-    if (!Vch::bIsValidSize(iSize)) {
+    if (! Column::bValidVch(iSize)) {
       return false;
     }
   }
