@@ -54,15 +54,6 @@ namespace Datums
     static void vCopy(void* aDst, void* aSrc);
     static void vSprint(Stz* aDst, Stz* aSrc);
     static void vSprintEscaped(Stz* aDst, Stz* aSrc);
-    
-    static bool bLessThan(char* aArgA, char* aArgB);
-    static bool bLessEqual(char* aArgA, char* aArgB);
-    static bool bEqualTo(char* aArgA, char* aArgB);
-    static bool bNotEqual(char* aArgA, char* aArgB);
-    static bool bGreaterEqual(char* aArgA, char* aArgB);
-    static bool bGreaterThan(char* aArgA, char* aArgB);
-    
-    static i8 iCmp(char* aArgA, char* aArgB);
   };
 }
 
