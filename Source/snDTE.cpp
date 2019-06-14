@@ -36,7 +36,24 @@ i8 snDTE::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNDTE);
   
-  return C_UNKNOWN;
+  i8 iYear, iMonth, iDay;
+  
+  if ( ! StrLib::bExtractDate2(aacCrs,
+                               iYear, iMonth, iDay,
+                               pScnFmt->m_eDateComponent,
+                               pScnFmt->m_cDateSeparator) )
+    throw C_UNKNOWN;
+
+  Dte xDte;
+  
+  xDte.x.m_uYearDelta  = iYear - C_BASE_YEAR;
+  xDte.x.m_uMonth = iMonth;
+  xDte.x.m_uDay   = iDay;
+  xDte.x.m_uSpare = 0;
+
+  m_iValue = xDte.iAsI8();
+  
+  return m_iValue;
 }
 
 

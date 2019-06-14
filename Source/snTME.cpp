@@ -36,7 +36,22 @@ i8 snTME::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNTME);
   
-  return C_UNKNOWN;
+  i8 iHour, iMinute, iSecond, iMicro;
+  
+  if ( ! StrLib::bExtractTime(aacCrs, iHour, iMinute, iSecond, iMicro) )
+    throw C_UNKNOWN;
+  
+  Tme xTme;
+  
+  xTme.x.m_uHour   = iHour;
+  xTme.x.m_uMinute = iMinute;
+  xTme.x.m_uSecond = iSecond;
+  xTme.x.m_uMicro  = iMicro;
+  xTme.x.m_uSpare  = 0;
+
+  m_iValue = xTme.iAsI8();
+  
+  return m_iValue;
 }
 
 

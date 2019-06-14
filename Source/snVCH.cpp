@@ -39,7 +39,20 @@ Stz* snVCH::sz(char** aacCrs, Column* pCol, Formatters* pScnFmt,
 {
   _precondition_(_MAGIC_,CN_SNVCH);
   
-  return nullptr;
+  if ( ! StrLib::bExtractVarchar(aacCrs,
+                                 m_caVch,
+                                 pCol->iColumnLength(),
+                                 bSawLeadingEnclosed,
+                                 pScnFmt->m_cEnclosedBy_Leading,
+                                 pScnFmt->m_cEnclosedBy_Trailing,
+                                 pScnFmt->m_cEscapeChar,
+                                 pScnFmt->m_cFieldDelimiter,
+                                 pScnFmt->m_cRecordTerminator,
+                                 pScnFmt->m_bAllowNonPrintable,
+                                 nChars_) )
+    throw C_UNKNOWN;
+
+  return (Stz*) &m_caVch[0];
 }
 
 

@@ -9,6 +9,8 @@ namespace Transform
   {
   public:
   
+    i8 m_iValue;
+  
     // must be last
     Footer m_xFooter;
     

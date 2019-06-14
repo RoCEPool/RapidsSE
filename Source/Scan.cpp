@@ -10,8 +10,8 @@
 Scan::Scan(eCN eClass)
 : Object(eClass)
 {
-
- }
+  m_iValue = C_UNKNOWN;
+}
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */

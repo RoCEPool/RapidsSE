@@ -36,7 +36,19 @@ i8 snIVL::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNIVL);
   
-  return C_UNKNOWN;
+  i8 iSecond, iMilli;
+  
+  if ( ! StrLib::bExtractInterval(aacCrs, iSecond, iMilli) )
+    throw C_UNKNOWN;
+  
+  Ivl xIvl;
+  
+  xIvl.x.m_uSecond = iSecond;
+  xIvl.x.m_uMilli  = iMilli;
+
+  m_iValue = xIvl.iAsI8();
+  
+  return m_iValue;
 }
 
 
