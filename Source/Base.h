@@ -32,6 +32,7 @@ using namespace Base;
 #include "i3.hpp"
 #include "Magnitudes.hpp"
 #include "MemLib.hpp"
+#include "Null.hpp"
 #include "QuadWord.hpp"
 #include "SpaceUnit.hpp"
 #include "Stz.hpp"
