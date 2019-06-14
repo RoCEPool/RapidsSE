@@ -40,7 +40,6 @@ namespace Datums
     i8   iMicroseconds(void);
 
     static i8   nCopy(void* aDst, void* aSrc);
-    static void vCopy(void* aDst, void* aSrc);
   };
 }
 
