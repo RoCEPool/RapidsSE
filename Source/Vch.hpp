@@ -17,14 +17,10 @@ namespace Datums
       
     bool bIsNull(void);
     void vSetNull(void);
-    void vSprint(Stz* aDst, Stz* aSrc, bool bQuoted);
 
     static i8   nCopy(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
     static i8   iSize(char* aSrc);
-    static void vSprint(Stz* aDst, Stz* aSrc);
-    static void vSprintQuotes(Stz* aDst, Stz* aSrc);
-    static void vSprintEscaped(Stz* aDst, Stz* aSrc);
     static bool bIsValidSize(i8 iSize);
   };
 }
