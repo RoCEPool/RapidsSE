@@ -10,11 +10,12 @@ namespace Datums
   
   class Flt
   {
-  friend class DtmLib;
-    
   public:
-    d8 m_dFlt;
-  
+    union {
+      d8 m_dFlt;
+      i8 m_iValue;
+    };
+
   public:
     void* operator new(size_t);
   

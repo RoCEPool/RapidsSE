@@ -9,9 +9,6 @@ namespace Datums
   
   class Vch
   {
-  friend class DtmLib;
-  private:
-    
   public:
     void* operator new(size_t);
   

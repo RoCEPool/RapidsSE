@@ -3,20 +3,16 @@
 /*============================================================================*/
 #pragma once
 
-namespace MetaData
-{
-  class Column;
-}
-
 namespace Datums
 {  
   class Int
   {
-  friend class DtmLib;
-  
   public:
+    union {
     i8 m_iInt;
-  
+      i8 m_iValue;
+    };
+
   public:
     void* operator new(size_t);
   

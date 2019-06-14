@@ -12,10 +12,12 @@ namespace Datums
 {
   class Bcd
   {
-    
   public:
-    i8 m_iBcd;
-  
+    union {
+      i8 m_iBcd;
+      i8 m_iValue;
+    };
+
   public:
     void* operator new(size_t);
   

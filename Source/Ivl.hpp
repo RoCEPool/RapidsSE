@@ -7,8 +7,6 @@ namespace Datums
 {
   class Ivl
   {
-  friend class DtmLib;
-  
   public:
     union {
       struct {

@@ -7,11 +7,12 @@ namespace Datums
 {
   class Bol
   {
-  friend class DtmLib;
-  
   public:
-    i8 m_bBol;
-  
+    union {
+      i8 m_bBol;
+      i8 m_iValue;
+    };
+
   public:
     void* operator new(size_t);
   
