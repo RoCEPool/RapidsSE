@@ -365,6 +365,41 @@ void vTest11(void)
   
 }
 
+/*
+ algorithm quicksort(A, lo, hi) is
+ if lo < hi then
+   p := partition(A, lo, hi)
+   quicksort(A, lo, p)
+   quicksort(A, p + 1, hi)
+ 
+ algorithm partition(A, lo, hi) is
+ pivot := A[lo + (hi - lo) / 2]
+ i := lo - 1
+ j := hi + 1
+ loop forever
+   do
+      i := i + 1
+   while A[i] < pivot
+ 
+   do
+      j := j - 1
+   while A[j] > pivot
+ 
+   if i >= j then
+      return j
+ 
+   swap A[i] with A[j]
+ */
+
+/*----------------------------------------------------------------------------*/
+/* test11                                                                     */
+/*----------------------------------------------------------------------------*/
+void vTest12(void)
+{
+  vTrace("Quicksort: Hoare partition scheme\n"_Stz);
+  
+  
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -32,6 +32,7 @@
 : test9 prompt test::test9 ;
 : test10 prompt test::test10 ;
 : test11 prompt test::test11 ;
+: test12 prompt test::test12 ;
 
 : llc test::test0 ;
 
