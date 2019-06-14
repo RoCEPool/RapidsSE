@@ -109,12 +109,12 @@ bool Extractor::bExtractNext(Row* pRow, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // debug
   
-//#ifdef WITH_TRACE_ENCODING
+#ifdef WITH_TRACE_ENCODING
   char caRecord[C_16KB];
   StrLib::vCopyTill(caRecord,acRec,'\n');
   vTrace("\n--------------------------------------------------------------------------\n"_Stz);
   vTrace("\nFormatting record: %s\n"_Stz,caRecord);
-//#endif
+#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // extract row from record
@@ -133,8 +133,8 @@ bool Extractor::bExtractNext(Row* pRow, char** aacRecCrs,
     return false;
   }
   
-  hpRow hp_Row;
-  vTrace("%s\n"_Stz,hp_Row.sz(pRow));
+  //hpRow hp_Row;
+  //vTrace("%s\n"_Stz,hp_Row.sz(pRow));
   
   return true;
 }

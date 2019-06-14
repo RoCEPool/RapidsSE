@@ -59,7 +59,12 @@ void hpRow::vRow(Row* pRow)
     StrLib::vAppendString(&szCrs,(char*)" "_Stz);
     StrLib::vAppendString(&szCrs,(char*)szDatum);
     StrLib::vAppendString(&szCrs,(char*)" "_Stz);
-
+    
+    if (C_DATUM_NULL == pRow->m_aiValue[i_Col]) {
+      StrLib::vAppendString(&szCrs,(char*)"null"_Stz);
+      return;
+    }
+      
     switch (eDatum) {
       case DM_BCD: {
         spBCD spBcd;

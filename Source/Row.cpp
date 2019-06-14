@@ -98,7 +98,15 @@ void Row::vAppendValue(Data::Datum* pDatum, Column* pCol)
 
   i8 i_Col = pCol->iColumnNo();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // vch
+  
   if (DM_VCH == pCol->eDatumType()) {
+    
+    if (pDatum->bIsNull()) {
+      m_aiValue[i_Col] = C_DATUM_NULL;
+      return;
+    }
     
     char* acDstString = (char*)m_xWsp.ayArea() + m_i_Wsp;
     char* acSrcString = (char*)pDatum->m_sVch.aChar();
@@ -111,6 +119,9 @@ void Row::vAppendValue(Data::Datum* pDatum, Column* pCol)
     
     return;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // all others
   
   m_aiValue[i_Col] = pDatum->m_iInt;
 }
