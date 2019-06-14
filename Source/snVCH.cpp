@@ -32,7 +32,10 @@ snVCH::~snVCH(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-Stz* snVCH::sz(Stz* szIn)
+Stz* snVCH::sz(char** aacCrs, Column* pCol, Formatters* pScnFmt,
+               i8 iMaxLength,
+               bool bSawLeadingEnclosed,
+               i8& nChars_)
 {
   _precondition_(_MAGIC_,CN_SNVCH);
   

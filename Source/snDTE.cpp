@@ -32,7 +32,7 @@ snDTE::~snDTE(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-i8 snDTE::i(Stz* szIn)
+i8 snDTE::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNDTE);
   

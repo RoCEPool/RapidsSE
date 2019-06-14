@@ -32,7 +32,7 @@ snBOL::~snBOL(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-i8 snBOL::i(Stz* szIn)
+i8 snBOL::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNBOL);
   
