@@ -141,17 +141,17 @@ void Key::vShow(IdxColVec* pIdxColVec)
   
   for (i8 i_Col = 0; i_Col < pIdxColVec->nItems(); i_Col++) {
     
-    Column* pColumn = pIdxColVec->pGet(i_Col);
+    Column* pCol = pIdxColVec->pGet(i_Col);
     
-    byte* ayElm = EntWrk::ayEachElm(pColumn,nBytes,&ayCursor);
+    byte* ayElm = EntWrk::ayEachElm(pCol,nBytes,&ayCursor);
     
-    eDM eDatum = pColumn->eDatumType();
+    eDM eDatum = pCol->eDatumType();
     
-    if (eDatum == DM_VCH) {
+    if (eDatum == DM_VCH)
       nBytes = StrLib::iWordFlipBack(caLiteral, (char*)ayElm);
-    }
     else
-      Record::vSprint(pColumn,(Stz*)caLiteral,(Stz*)ayElm);
+      //Record::vSprint(pColumn,(Stz*)caLiteral,(Stz*)ayElm);
+      Sprint::vInto((Stz*)caLiteral,ayElm,pCol);
     
     vTrace("Elm[%lld %lldB] %s "_Stz,i_Col,nBytes,caLiteral);
   }
