@@ -16,6 +16,8 @@ void vTest10(void);
 void vTest11(void);
 void vTest12(void);
 
+i8 iPartition(i8* A, i8 iLow, i8 iHigh);
+void vQuickSort(i8* A, i8 iLow, i8 iHigh);
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
