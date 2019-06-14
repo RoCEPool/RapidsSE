@@ -9,6 +9,8 @@ namespace Transform
   {
   public:
   
+    Tsp m_xTsp;
+  
     // must be last
     Footer m_xFooter;
     

@@ -9,6 +9,8 @@ namespace Transform
   {
   public:
   
+    Flt m_xFlt;
+  
     // must be last
     Footer m_xFooter;
     

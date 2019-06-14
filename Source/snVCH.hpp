@@ -9,6 +9,8 @@ namespace Transform
   {
   public:
   
+    Vch m_xVch;
+  
     char m_caVch[C_MAX_VCH];
   
     // must be last
