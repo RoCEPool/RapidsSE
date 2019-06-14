@@ -361,59 +361,6 @@ void Record::vReset(void)
 }
 
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
-//!                     REVIEW WHICH FUNCTIONS USE THESE                     !//
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
-
-/*----------------------------------------------------------------------------*/
-/*-- Sprint ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* s-print                                                                    */
-/*----------------------------------------------------------------------------*/
-//void Record::vSprint(Column* pColumn, Stz* aDst, Stz* aSrc)
-//{
-//  eDM eDatum = pColumn->eDatumType();
-//
-//  switch (eDatum) {
-//    case DM_BCD: break;
-//    case DM_BOL: break;
-//    case DM_CHR: break;
-//    case DM_DTE: break;
-//    case DM_FLT: break;
-//    case DM_INT: break;
-//    case DM_IVL: break;
-//    case DM_TME: break;
-//    case DM_TSP: break;
-//    case DM_VCH: break;
-//    default:
-//      vFatal("Record::vSprint: Invalid aDatum argument: %lld\n"_Stz,
-//             eDatum);
-//  }
-//}
-/*----------------------------------------------------------------------------*/
-void Record::vSprint(Column* pColumn, Stz* aDst, Stz* aSrc)
-{
-  eDM eDatum = pColumn->eDatumType();
-
-  switch (eDatum) {
-    case DM_BCD: Bcd::vSprint(aDst,aSrc,pColumn); break;
-    case DM_BOL: Bol::vSprint(aDst,aSrc); break;
-    case DM_CHR: Vch::vSprint(aDst,aSrc); break;
-    case DM_DTE: Dte::vSprint(aDst,aSrc); break;
-    case DM_FLT: Flt::vSprint(aDst,aSrc); break;
-    case DM_INT: Int::vSprint(aDst,aSrc); break;
-    case DM_IVL: Ivl::vSprint(aDst,aSrc); break;
-    case DM_TME: Tme::vSprint(aDst,aSrc); break;
-    case DM_TSP: Tsp::vSprint(aDst,aSrc); break;
-    case DM_VCH: Vch::vSprint(aDst,aSrc); break;
-    default:
-      vFatal("DtmLib::vSprint: Invalid aDatum argument: %lld\n"_Stz,
-             eDatum);
-  }
-}
-
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

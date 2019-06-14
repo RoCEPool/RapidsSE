@@ -45,9 +45,6 @@ namespace Data
     Stz* szRecStr(void);
   
     void vReset(void);
-
-    //! REVIEW WHICH FUNCTIONS USE THESE
-    static void vSprint(Column* pColumn, Stz* aDst, Stz* aSrc);
   
   private:
     Footer* aFooter(void);
