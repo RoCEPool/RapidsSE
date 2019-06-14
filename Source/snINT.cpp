@@ -36,11 +36,11 @@ i8 snINT::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNINT);
   
-  if ( ! StrLib::bExtractInteger(aacCrs,&m_iValue,
+  if ( ! StrLib::bExtractInteger(aacCrs,&m_xInt.m_iInt,
                                  true/*bWithSign*/) )
     throw C_UNKNOWN;
 
-  return m_iValue;
+  return m_xInt.m_iInt;
 }
 
 

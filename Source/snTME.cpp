@@ -41,17 +41,13 @@ i8 snTME::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
   if ( ! StrLib::bExtractTime(aacCrs, iHour, iMinute, iSecond, iMicro) )
     throw C_UNKNOWN;
   
-  Tme xTme;
+  m_xTme.x.m_uHour   = iHour;
+  m_xTme.x.m_uMinute = iMinute;
+  m_xTme.x.m_uSecond = iSecond;
+  m_xTme.x.m_uMicro  = iMicro;
+  m_xTme.x.m_uSpare  = 0;
   
-  xTme.x.m_uHour   = iHour;
-  xTme.x.m_uMinute = iMinute;
-  xTme.x.m_uSecond = iSecond;
-  xTme.x.m_uMicro  = iMicro;
-  xTme.x.m_uSpare  = 0;
-
-  m_iValue = xTme.iAsI8();
-  
-  return m_iValue;
+  return m_xTme.m_iValue;
 }
 
 

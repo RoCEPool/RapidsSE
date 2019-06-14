@@ -36,10 +36,10 @@ i8 snBOL::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNBOL);
   
-  if ( ! StrLib::bExtractBoolean(aacCrs,m_iValue) )
+  if ( ! StrLib::bExtractBoolean(aacCrs,m_xBol.m_bBol) )
     throw C_UNKNOWN;
   
-  return m_iValue;
+  return m_xBol.m_bBol;
 }
 
 

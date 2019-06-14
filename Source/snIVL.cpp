@@ -41,14 +41,10 @@ i8 snIVL::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
   if ( ! StrLib::bExtractInterval(aacCrs, iSecond, iMilli) )
     throw C_UNKNOWN;
   
-  Ivl xIvl;
+  m_xIvl.x.m_uSecond = iSecond;
+  m_xIvl.x.m_uMilli  = iMilli;
   
-  xIvl.x.m_uSecond = iSecond;
-  xIvl.x.m_uMilli  = iMilli;
-
-  m_iValue = xIvl.iAsI8();
-  
-  return m_iValue;
+  return m_xIvl.m_iValue;
 }
 
 

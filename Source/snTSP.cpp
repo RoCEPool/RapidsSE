@@ -36,7 +36,7 @@ i8 snTSP::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNTSP);
   
-  i8 iYear, iMonth, iDay;
+  i8 iYear, iMonth,  iDay;
   i8 iHour, iMinute, iSecond, iMicro;
   
   if ( ! StrLib::bExtractTimestamp2(aacCrs,
@@ -46,20 +46,16 @@ i8 snTSP::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
                                     pScnFmt->m_cDateSeparator) )
     throw C_UNKNOWN;
   
-  Tsp xTsp;
+  m_xTsp.x.m_uYearDelta = iYear - C_BASE_YEAR;
+  m_xTsp.x.m_uMonth     = iMonth;
+  m_xTsp.x.m_uDay       = iDay;
+  m_xTsp.x.m_uHour      = iHour;
+  m_xTsp.x.m_uMinute    = iMinute;
+  m_xTsp.x.m_uSecond    = iSecond;
+  m_xTsp.x.m_uMicro     = iMicro;
+  m_xTsp.x.m_uSpare     = 0;
   
-  xTsp.x.m_uYearDelta   = iYear - C_BASE_YEAR;
-  xTsp.x.m_uMonth  = iMonth;
-  xTsp.x.m_uDay    = iDay;
-  xTsp.x.m_uHour   = iHour;
-  xTsp.x.m_uMinute = iMinute;
-  xTsp.x.m_uSecond = iSecond;
-  xTsp.x.m_uMicro  = iMicro;
-  xTsp.x.m_uSpare  = 0;
-
-  m_iValue = xTsp.iAsI8();
-  
-  return m_iValue;
+  return m_xTsp.m_iValue;
 }
 
 
