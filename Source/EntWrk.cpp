@@ -172,7 +172,7 @@ void EntWrk::vAppendElement(Row* pRow, Column* pCol)
   char* aSrc = (char*)pRow->m_aiValue[pCol->iColumnNo()];
   
   if (pRow->m_aiValue[pCol->iColumnNo()] == C_DATUM_NULL) {
-    nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,&aSrc);
+    nBytes = Null::nCopy((byte*)aDst);
     vIncKeyBytes(nBytes);
     return;
   }
