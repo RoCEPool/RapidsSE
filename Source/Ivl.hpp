@@ -27,13 +27,6 @@ namespace Datums
     Ivl(void);
     ~Ivl(void) noexcept(false);
   
-    bool operator <  (Ivl& xIvl);
-    bool operator <= (Ivl& xIvl);
-    bool operator == (Ivl& xIvl);
-    bool operator != (Ivl& xIvl);
-    bool operator >= (Ivl& xIvl);
-    bool operator >  (Ivl& xIvl);
-
     void vInitZero(void);
     i8   iAsI8(void);
     bool bIsNull(void);

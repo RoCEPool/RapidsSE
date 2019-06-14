@@ -30,13 +30,6 @@ namespace Datums
     Edt(void);
     ~Edt(void) noexcept(false);
   
-    bool operator <  (Edt& xEdt);
-    bool operator <= (Edt& xEdt);
-    bool operator == (Edt& xEdt);
-    bool operator != (Edt& xEdt);
-    bool operator >= (Edt& xEdt);
-    bool operator >  (Edt& xEdt);
-  
     void vInitZero(void);
     i8   iAsI8(void);
     void vAsI8(i8 iAsI8);

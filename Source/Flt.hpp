@@ -20,14 +20,7 @@ namespace Datums
   
     Flt(void);
     ~Flt(void) noexcept(false);
-  
-    bool operator <  (Flt& xFlt);
-    bool operator <= (Flt& xFlt);
-    bool operator == (Flt& xFlt);
-    bool operator != (Flt& xFlt);
-    bool operator >= (Flt& xFlt);
-    bool operator >  (Flt& xFlt);
-  
+    
     void vInitZero(void);
     d8   dAsD8(void);
     bool bIsNull(void);

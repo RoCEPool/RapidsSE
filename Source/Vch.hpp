@@ -17,14 +17,7 @@ namespace Datums
   
     Vch(void);
     ~Vch(void) noexcept(false);
-  
-    bool operator <  (Vch& xVch);
-    bool operator <= (Vch& xVch);
-    bool operator == (Vch& xVch);
-    bool operator != (Vch& xVch);
-    bool operator >= (Vch& xVch);
-    bool operator >  (Vch& xVch);
-    
+      
     void vInitZero(void);
     bool bIsNull(void);
     void vSetNull(void);

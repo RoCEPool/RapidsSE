@@ -21,14 +21,7 @@ namespace Datums
   
     Bcd(void);
     ~Bcd(void) noexcept(false);
-  
-    bool operator <  (Bcd& xBcd);
-    bool operator <= (Bcd& xBcd);
-    bool operator == (Bcd& xBcd);
-    bool operator != (Bcd& xBcd);
-    bool operator >= (Bcd& xBcd);
-    bool operator >  (Bcd& xBcd);
-  
+    
     i8   iAsI8(void);
     void vAsI8(i8 iAsI8);
     void vInitZero(void);

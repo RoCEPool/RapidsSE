@@ -34,14 +34,7 @@ namespace Datums
   
     Tsp(void);
     ~Tsp(void) noexcept(false);
-  
-    bool operator <  (Tsp& xTsp);
-    bool operator <= (Tsp& xTsp);
-    bool operator == (Tsp& xTsp);
-    bool operator != (Tsp& xTsp);
-    bool operator >= (Tsp& xTsp);
-    bool operator >  (Tsp& xTsp);
-    
+      
     void vInitZero(void);
     i8   iAsI8(void);
     void vAsI8(i8 iAsI8);

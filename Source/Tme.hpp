@@ -30,14 +30,7 @@ namespace Datums
   
     Tme(void);
     ~Tme(void) noexcept(false);
- 
-    bool operator <  (Tme& xTme);
-    bool operator <= (Tme& xTme);
-    bool operator == (Tme& xTme);
-    bool operator != (Tme& xTme);
-    bool operator >= (Tme& xTme);
-    bool operator >  (Tme& xTme);
-    
+     
     void vInitZero(void);
     i8   iAsI8(void);
     void vAsI8(i8 iAsI8);
