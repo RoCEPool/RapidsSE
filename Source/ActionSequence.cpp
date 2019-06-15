@@ -304,13 +304,10 @@ void ActionSequence::vRoot(Jobs::Job* pJob)
   pRoot->m_bWasRecv   = pJob->m_bWasReceived;
   pRoot->m_i_Activity = pJob->m_i_Activity;
   
-  //Tsp wTspNow;
-  //wTspNow.vSetAsNow();
-  
   Now xNow;
   
   pRoot->m_eAction  = AN_ROOT;
-  pRoot->m_iArg0    = xNow.m_oTsp.iAsI8(); //wTspNow.iAsI8();
+  pRoot->m_iArg0    = xNow.m_oTsp.iAsI8();
   pRoot->m_iArg1    = 0;
   
   pRoot->m_aJob     = pJob;
@@ -343,14 +340,11 @@ void ActionSequence::vEnd(Jobs::Job* pJob)
   pEnd->m_iParentId  = pJob->m_iParentId;
   pEnd->m_bWasRecv   = pJob->m_bWasReceived;
   pEnd->m_i_Activity = pJob->m_i_Activity;
-
-  //Tsp wTspNow;
-  //wTspNow.vSetAsNow();
   
   Now xNow;
 
   pEnd->m_eAction  = AN_END;
-  pEnd->m_iArg0    = xNow.m_oTsp.iAsI8(); //wTspNow.iAsI8();
+  pEnd->m_iArg0    = xNow.m_oTsp.iAsI8();
   pEnd->m_iArg1    = 0;
   
   pEnd->m_aJob     = pJob;

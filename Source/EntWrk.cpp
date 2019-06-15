@@ -197,11 +197,6 @@ void EntWrk::vAppendMinusInfinity(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  //char* aDst = (char*)ayElementCrs();
-  
-  //i8 iInt = C_DATUM_MINUS_INFINITY;
-  //Int::nCopy(aDst,(void*)&iInt);
-  
   byte* ayDst = ayElementCrs();
   DtmLib::vCopy(ayDst,(i8)C_DATUM_MINUS_INFINITY);
 
@@ -214,12 +209,7 @@ void EntWrk::vAppendMinusInfinity(void)
 void EntWrk::vAppendPlusInfinity(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  //char* aDst = (char*)ayElementCrs();
-  
-  //i8 iInt = C_DATUM_PLUS_INFINITY;
-  //Int::nCopy(aDst,(void*)&iInt);
-  
+   
   byte* ayDst = ayElementCrs();
   DtmLib::vCopy(ayDst,(i8)C_DATUM_PLUS_INFINITY);
   

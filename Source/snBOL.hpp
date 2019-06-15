@@ -9,7 +9,7 @@ namespace Transform
   {
   public:
   
-    Bol m_xBol;
+    Dtm m_xBol;
   
    // must be last
     Footer m_xFooter;
