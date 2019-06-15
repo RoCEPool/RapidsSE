@@ -40,7 +40,7 @@ BcdVal::BcdVal(void)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void BcdVal::operator =(Bcd xBcd)
+void BcdVal::operator =(Dtm xBcd)
 {
   //vTrace("BcdVal: diff %lld\n"_Stz,nSub(&m_iBcd,this));
   

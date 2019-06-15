@@ -15,7 +15,7 @@ namespace Values
     
     BcdVal(void);
     
-    void operator =(Bcd xBcd);
+    void operator =(Dtm xBcd);
     void operator =(i8 iVal);
     
     i8 nSize(void) const;
