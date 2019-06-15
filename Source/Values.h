@@ -18,6 +18,7 @@ using namespace Values;
 //-----------------------------------------------------------------------------
 
 
+#include "Dtm.hpp"
 #include "Value.hpp"
 
 #include "BcdVal.hpp"

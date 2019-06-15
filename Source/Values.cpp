@@ -10,7 +10,8 @@
 void Values::vCheckAssumptions(void)
 {
   ASSERT(8 == sizeof(Value));
-  
+  RASSERT(sizeof(Dtm) == sizeof(Word));
+
   ASSERT(sizeof(Value) + sizeof(i8)     == sizeof(IntVal));
   ASSERT(sizeof(Value) + sizeof(void*)  == sizeof(FipVal));
   ASSERT(sizeof(Value) + sizeof(void*)  == sizeof(PtrVal));
