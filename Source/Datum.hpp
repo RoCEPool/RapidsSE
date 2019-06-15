@@ -31,16 +31,6 @@ namespace Data
       _Tme xTme;
       _Tsp xTsp;
 
-      Bcd  m_wBcd;
-      Bol  m_wBol;
-      Dte  m_wDte;
-      Edt  m_wEdt;
-      Flt  m_wFlt;
-      Int  m_wInt;
-      Ivl  m_wIvl;
-      Tme  m_wTme;
-      Tsp  m_wTsp;
-
       w8   m_wWord;
       byte m_yaByte[C_BYTES_PER_WORD];
     };

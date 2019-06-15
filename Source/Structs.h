@@ -20,8 +20,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // era-based date
   struct _Edt {
-    
-    
     u8 m_uDay       :  5 ; // 0..31
     u8 m_uMonth     :  4 ; // 0..15
     u8 m_uYearInEra :  7 ; // 0..127  16b (eraBase+7b == 127)
