@@ -16,7 +16,7 @@ namespace Values
     IvlVal(void);
     
     void operator =(i8 iVal);
-    void operator =(Ivl xIvl);
+    void operator =(Dtm xIvl);
   
     i8 nSize(void);
     i8* aInt(void);

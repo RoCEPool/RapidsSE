@@ -48,7 +48,7 @@ i8* BolVal::aInt(void)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void BolVal::operator =(Bol xBol)
+void BolVal::operator =(Dtm xBol)
 {
   //vTrace("IvlVal: diff %lld\n"_Stz,nSub(&m_iIvl,this));
   

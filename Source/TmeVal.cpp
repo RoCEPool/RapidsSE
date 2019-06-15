@@ -49,7 +49,7 @@ void TmeVal::operator =(i8 iTme)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void TmeVal::operator =(Tme xTme)
+void TmeVal::operator =(Dtm xTme)
 {
   //vTrace("IvlVal: diff %lld\n"_Stz,nSub(&m_iIvl,this));
   

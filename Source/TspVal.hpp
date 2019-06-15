@@ -16,7 +16,7 @@ namespace Values
     TspVal(void);
     
     void operator =(i8 iVal);
-    void operator =(Tsp xTsp);
+    void operator =(Dtm xTsp);
   
     i8 nSize(void);
     i8* aInt(void);

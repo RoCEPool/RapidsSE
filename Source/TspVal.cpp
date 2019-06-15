@@ -48,7 +48,7 @@ void TspVal::operator =(i8 iTsp)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void TspVal::operator =(Tsp xTsp)
+void TspVal::operator =(Dtm xTsp)
 {
   //vTrace("IvlVal: diff %lld\n"_Stz,nSub(&m_iIvl,this));
   

@@ -15,7 +15,7 @@ namespace Values
     
     BolVal(void);
     
-    void operator =(Bol xBol);
+    void operator =(Dtm xBol);
     void operator =(i8 iVal);
     
     i8 nSize(void) const;

@@ -15,7 +15,7 @@ namespace Values
     
     DteVal(void);
     
-    void operator =(Dte xDte);
+    void operator =(Dtm xDte);
     void operator =(i8 iVal);
   
     i8 nSize(void) const;

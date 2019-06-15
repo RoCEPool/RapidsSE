@@ -39,7 +39,7 @@ DteVal::DteVal(void)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void DteVal::operator =(Dte xDte)
+void DteVal::operator =(Dtm xDte)
 {
   //vTrace("IvlVal: diff %lld\n"_Stz,nSub(&m_iIvl,this));
   
