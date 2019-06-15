@@ -60,44 +60,44 @@ GenVar::~GenVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* assign/copy a bcd into workspace                                           */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Bcd wBcd)
-{
-  BcdVal* aNestedBcdVal = (BcdVal*)aNestedValue();
-  
-  // set nested class
-  aNestedBcdVal->vSetClass(CN_BCDVAL);
-  
-  // put the bcd word into the nested bcdval
-  *aNestedBcdVal = wBcd;
-}
+//void GenVar::operator =(Bcd wBcd)
+//{
+//  BcdVal* aNestedBcdVal = (BcdVal*)aNestedValue();
+//
+//  // set nested class
+//  aNestedBcdVal->vSetClass(CN_BCDVAL);
+//
+//  // put the bcd word into the nested bcdval
+//  *aNestedBcdVal = wBcd;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* assign/copy a boolean into workspace                                       */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Bol wBol)
-{
-  BolVal* aNestedBolVal = (BolVal*)aNestedValue();
-  
-  // set nested class
-  aNestedBolVal->vSetClass(CN_BOLVAL);
-  
-  // put the bol word into the nested bolval
-  *aNestedBolVal = wBol;
-}
+//void GenVar::operator =(Bol wBol)
+//{
+//  BolVal* aNestedBolVal = (BolVal*)aNestedValue();
+//
+//  // set nested class
+//  aNestedBolVal->vSetClass(CN_BOLVAL);
+//
+//  // put the bol word into the nested bolval
+//  *aNestedBolVal = wBol;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* assign/copy a date into workspace                                          */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Dte wDte)
-{
-  DteVal* aNestedDteVal = (DteVal*)aNestedValue();
-  
-  // set nested class
-  aNestedDteVal->vSetClass(CN_DTEVAL);
-  
-  // put the dte word into the nested dteval
-  *aNestedDteVal = wDte;
-}
+//void GenVar::operator =(Dte wDte)
+//{
+//  DteVal* aNestedDteVal = (DteVal*)aNestedValue();
+//
+//  // set nested class
+//  aNestedDteVal->vSetClass(CN_DTEVAL);
+//
+//  // put the dte word into the nested dteval
+//  *aNestedDteVal = wDte;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* assign/copy a float into workspace                                         */
@@ -130,16 +130,16 @@ void GenVar::operator =(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* assign/copy an interval into workspace                                     */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Ivl wIvl)
-{
-  IvlVal* aNestedIvlVal = (IvlVal*)aNestedValue();
-  
-  // set nested class
-  aNestedIvlVal->vSetClass(CN_IVLVAL);
-  
-  // put the ivl word into the nested ivlval
-  *aNestedIvlVal = wIvl;
-}
+//void GenVar::operator =(Ivl wIvl)
+//{
+//  IvlVal* aNestedIvlVal = (IvlVal*)aNestedValue();
+//
+//  // set nested class
+//  aNestedIvlVal->vSetClass(CN_IVLVAL);
+//
+//  // put the ivl word into the nested ivlval
+//  *aNestedIvlVal = wIvl;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* assign/copy a pointer to a proper object into workspace                    */
@@ -186,30 +186,30 @@ void GenVar::operator =(Stz* aStz)
 /*----------------------------------------------------------------------------*/
 /* assign/copy a time into workspace                                          */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Tme wTme)
-{
-  TmeVal* aNestedTmeVal = (TmeVal*)aNestedValue();
-  
-  // set nested class
-  aNestedTmeVal->vSetClass(CN_TMEVAL);
-  
-  // put the tme word into the nested tmeval
-  *aNestedTmeVal = wTme;
-}
+//void GenVar::operator =(Tme wTme)
+//{
+//  TmeVal* aNestedTmeVal = (TmeVal*)aNestedValue();
+//
+//  // set nested class
+//  aNestedTmeVal->vSetClass(CN_TMEVAL);
+//
+//  // put the tme word into the nested tmeval
+//  *aNestedTmeVal = wTme;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* assign/copy an timestamp into workspace                                    */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Tsp wTsp)
-{
-  TspVal* aNestedTspVal = (TspVal*)aNestedValue();
-  
-  // set nested class
-  aNestedTspVal->vSetClass(CN_TSPVAL);
-  
-  // put the tsp word into the nested tmeval
-  *aNestedTspVal = wTsp;
-}
+//void GenVar::operator =(Tsp wTsp)
+//{
+//  TspVal* aNestedTspVal = (TspVal*)aNestedValue();
+//  
+//  // set nested class
+//  aNestedTspVal->vSetClass(CN_TSPVAL);
+//  
+//  // put the tsp word into the nested tmeval
+//  *aNestedTspVal = wTsp;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

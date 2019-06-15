@@ -41,17 +41,11 @@ namespace Forth
     GenVar(void);
     ~GenVar(void) noexcept(false);
   
-    void operator =(Bcd xBcd);
-    void operator =(Bol xBol);
-    void operator =(Dte xDte);
     void operator =(d8  dFlt);
     void operator =(i8  iInt);
-    void operator =(Ivl wIvl);
     void operator =(Object* pObject);
     void operator =(Value*  aValue);
     void operator =(Stz* aStr);
-    void operator =(Tme wTme);
-    void operator =(Tsp wTsp);
     
     i8      iNestedAsInt(void);
     IntVal* aNestedIntVal(void);
