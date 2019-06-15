@@ -58,17 +58,6 @@ using namespace Datums;
 
 #include "Dtm.hpp"
 
-#include "Bcd.hpp"
-#include "Bol.hpp"
-#include "Dte.hpp"
-#include "Edt.hpp"
-#include "Flt.hpp"
-#include "Int.hpp"
-#include "Ivl.hpp"
-#include "Tme.hpp"
-#include "Tsp.hpp"
-#include "Vch.hpp"
-
 #include "DtmLib.hpp"
 
 typedef String_t<C_MAX_VCH> sVCH;
