@@ -143,7 +143,7 @@ bool Column::bValidFlt(i8 iPrecision)
 /*----------------------------------------------------------------------------*/
 bool Column::bValidVch(i8 iSize)
 {
-  if (iSize > C_MAX_SIZE_VCH)
+  if (iSize > C_MAX_PRECISION_VCH)
     return false;
   
   return true;
