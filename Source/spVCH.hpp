@@ -21,6 +21,11 @@ namespace Transform
     Stz* sz(char* azVch);
     Stz* sz(Stz*  szVch);
   
+    Stz* szMax(void);
+    Stz* szMid(void);
+    Stz* szMin(void);
+    Stz* szNull(void);
+  
     Footer* aFooter(void);
   };
 }

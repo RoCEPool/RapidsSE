@@ -31,6 +31,8 @@ namespace Transform
 
     Stz* szResult(void);
     void vResult(const Stz* szResult);
+  
+    Stz* szNull(void);
 
     Footer* aFooter(void);
   };

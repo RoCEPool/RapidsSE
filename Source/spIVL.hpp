@@ -19,6 +19,11 @@ namespace Transform
     Stz* sz(i8 iIvl);
     Stz* sz(i8 iIvl, i8 iScale);
 
+    Stz* szMax(void);
+    Stz* szMid(void);
+    Stz* szMin(void);
+    Stz* szNull(void);
+  
     Footer* aFooter(void);
   };
 }
