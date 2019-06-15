@@ -356,21 +356,16 @@ void Job_Generate::vAddBcd(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  BcdVal xVal;
-  
+  spBCD sp;
+
   switch (iState) {
-    case C_GEN_MIN: xVal.vMinValue();  break;
-    case C_GEN_MID: xVal.vMidValue();  break;
-    case C_GEN_MAX: xVal.vMaxValue();  break;
-    case C_GEN_NUL: xVal.vNullValue(); break;
+    case C_GEN_MIN: m_sRecord.vConcat(sp.szMin());  break;
+    case C_GEN_MID: m_sRecord.vConcat(sp.szMid());  break;
+    case C_GEN_MAX: m_sRecord.vConcat(sp.szMax());  break;
+    case C_GEN_NUL: m_sRecord.vConcat(sp.szNull()); break;
     default:
       NEVER_REACH;
   }
-  
-  s32 sWsp;
-  xVal.vToString(sWsp);
-  
-  m_sRecord.vConcat(sWsp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -380,21 +375,16 @@ void Job_Generate::vAddBol(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  BolVal xVal;
+  spBOL sp;
   
   switch (iState) {
-    case C_GEN_MIN: xVal.vMinValue();  break;
-    case C_GEN_MID: xVal.vMidValue();  break;
-    case C_GEN_MAX: xVal.vMaxValue();  break;
-    case C_GEN_NUL: xVal.vNullValue(); break;
+    case C_GEN_MIN: m_sRecord.vConcat(sp.szMin());  break;
+    case C_GEN_MID: m_sRecord.vConcat(sp.szMid());  break;
+    case C_GEN_MAX: m_sRecord.vConcat(sp.szMax());  break;
+    case C_GEN_NUL: m_sRecord.vConcat(sp.szNull()); break;
     default:
       NEVER_REACH;
   }
-  
-  s32 sWsp;
-  xVal.vToString(sWsp);
-  
-  m_sRecord.vConcat(sWsp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -404,21 +394,16 @@ void Job_Generate::vAddDte(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  DteVal xVal;
+  spDTE sp;
   
   switch (iState) {
-    case C_GEN_MIN: xVal.vMinValue();  break;
-    case C_GEN_MID: xVal.vMidValue();  break;
-    case C_GEN_MAX: xVal.vMaxValue();  break;
-    case C_GEN_NUL: xVal.vNullValue(); break;
+    case C_GEN_MIN: m_sRecord.vConcat(sp.szMin());  break;
+    case C_GEN_MID: m_sRecord.vConcat(sp.szMid());  break;
+    case C_GEN_MAX: m_sRecord.vConcat(sp.szMax());  break;
+    case C_GEN_NUL: m_sRecord.vConcat(sp.szNull()); break;
     default:
       NEVER_REACH;
   }
-  
-  s32 sWsp;
-  xVal.vToString(sWsp);
-  
-  m_sRecord.vConcat(sWsp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -428,21 +413,16 @@ void Job_Generate::vAddFlt(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  FltVal xVal;
+  spFLT sp;
   
   switch (iState) {
-    case C_GEN_MIN: xVal.vMinValue();  break;
-    case C_GEN_MID: xVal.vMidValue();  break;
-    case C_GEN_MAX: xVal.vMaxValue();  break;
-    case C_GEN_NUL: xVal.vNullValue(); break;
+    case C_GEN_MIN: m_sRecord.vConcat(sp.szMin());  break;
+    case C_GEN_MID: m_sRecord.vConcat(sp.szMid());  break;
+    case C_GEN_MAX: m_sRecord.vConcat(sp.szMax());  break;
+    case C_GEN_NUL: m_sRecord.vConcat(sp.szNull()); break;
     default:
       NEVER_REACH;
   }
-  
-  s32 sWsp;
-  xVal.vToString(sWsp);
-  
-  m_sRecord.vConcat(sWsp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -452,21 +432,16 @@ void Job_Generate::vAddInt(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  IntVal xVal;
-
+  spINT sp;
+  
   switch (iState) {
-    case C_GEN_MIN: xVal.vMinValue();  break;
-    case C_GEN_MID: xVal.vMidValue();  break;
-    case C_GEN_MAX: xVal.vMaxValue();  break;
-    case C_GEN_NUL: xVal.vNullValue(); break;
+    case C_GEN_MIN: m_sRecord.vConcat(sp.szMin());  break;
+    case C_GEN_MID: m_sRecord.vConcat(sp.szMid());  break;
+    case C_GEN_MAX: m_sRecord.vConcat(sp.szMax());  break;
+    case C_GEN_NUL: m_sRecord.vConcat(sp.szNull()); break;
     default:
       NEVER_REACH;
   }
-  
-  s32 sWsp;
-  xVal.vToString(sWsp);
-  
-  m_sRecord.vConcat(sWsp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -476,21 +451,16 @@ void Job_Generate::vAddIvl(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  IvlVal xVal;
+  spIVL sp;
   
   switch (iState) {
-    case C_GEN_MIN: xVal.vMinValue();  break;
-    case C_GEN_MID: xVal.vMidValue();  break;
-    case C_GEN_MAX: xVal.vMaxValue();  break;
-    case C_GEN_NUL: xVal.vNullValue(); break;
+    case C_GEN_MIN: m_sRecord.vConcat(sp.szMin());  break;
+    case C_GEN_MID: m_sRecord.vConcat(sp.szMid());  break;
+    case C_GEN_MAX: m_sRecord.vConcat(sp.szMax());  break;
+    case C_GEN_NUL: m_sRecord.vConcat(sp.szNull()); break;
     default:
       NEVER_REACH;
   }
-  
-  s32 sWsp;
-  xVal.vToString(sWsp);
-  
-  m_sRecord.vConcat(sWsp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -500,20 +470,16 @@ void Job_Generate::vAddStr(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  s32 xVal;
+  spVCH sp;
   
   switch (iState) {
-    case C_GEN_MIN: xVal.vMinValue();  break;
-    case C_GEN_MID: xVal.vMidValue();  break;
-    case C_GEN_MAX: xVal.vMaxValue();  break;
-    case C_GEN_NUL:
-      m_sRecord.vConcat("null"_Stz);
-      return;
+    case C_GEN_MIN: m_sRecord.vConcat(sp.szMin());  break;
+    case C_GEN_MID: m_sRecord.vConcat(sp.szMid());  break;
+    case C_GEN_MAX: m_sRecord.vConcat(sp.szMax());  break;
+    case C_GEN_NUL: m_sRecord.vConcat(sp.szNull()); break;
     default:
       NEVER_REACH;
   }
-  
-  m_sRecord.vConcat(xVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -523,21 +489,16 @@ void Job_Generate::vAddTme(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  TmeVal xVal;
+  spTME sp;
   
   switch (iState) {
-    case C_GEN_MIN: xVal.vMinValue();  break;
-    case C_GEN_MID: xVal.vMidValue();  break;
-    case C_GEN_MAX: xVal.vMaxValue();  break;
-    case C_GEN_NUL: xVal.vNullValue(); break;
+    case C_GEN_MIN: m_sRecord.vConcat(sp.szMin());  break;
+    case C_GEN_MID: m_sRecord.vConcat(sp.szMid());  break;
+    case C_GEN_MAX: m_sRecord.vConcat(sp.szMax());  break;
+    case C_GEN_NUL: m_sRecord.vConcat(sp.szNull()); break;
     default:
       NEVER_REACH;
   }
-  
-  s32 sWsp;
-  xVal.vToString(sWsp);
-  
-  m_sRecord.vConcat(sWsp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -547,21 +508,16 @@ void Job_Generate::vAddTsp(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  TspVal xVal;
+  spTSP sp;
   
   switch (iState) {
-    case C_GEN_MIN: xVal.vMinValue();  break;
-    case C_GEN_MID: xVal.vMidValue();  break;
-    case C_GEN_MAX: xVal.vMaxValue();  break;
-    case C_GEN_NUL: xVal.vNullValue(); break;
+    case C_GEN_MIN: m_sRecord.vConcat(sp.szMin());  break;
+    case C_GEN_MID: m_sRecord.vConcat(sp.szMid());  break;
+    case C_GEN_MAX: m_sRecord.vConcat(sp.szMax());  break;
+    case C_GEN_NUL: m_sRecord.vConcat(sp.szNull()); break;
     default:
       NEVER_REACH;
   }
-  
-  s32 sWsp;
-  xVal.vToString(sWsp);
-  
-  m_sRecord.vConcat(sWsp);
 }
 
 /*----------------------------------------------------------------------------*/
