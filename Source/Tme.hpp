@@ -5,23 +5,9 @@
 
 namespace Datums
 {
-  class Tme
+  class Tme : public Dtm
   {
   public:
-    union {
-      struct {
-        u8 m_uSpare  : 27 ; //
-        
-        u8 m_uMicro  : 20 ; // 0..1M
-        u8 m_uSecond :  6 ; // 0..63
-        u8 m_uMinute :  6 ; // 0..63
-        u8 m_uHour   :  5 ; // 0..31
-        //            ---
-        //             64
-        //            ===
-      } x;
-      i8 m_iValue;
-    };
   
   public:
     void* operator new(size_t);

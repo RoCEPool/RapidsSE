@@ -5,13 +5,9 @@
 
 namespace Datums
 {
-  class Bol
+  class Bol : public Dtm
   {
   public:
-    union {
-      i8 m_bBol;
-      i8 m_iValue;
-    };
 
   public:
     void* operator new(size_t);

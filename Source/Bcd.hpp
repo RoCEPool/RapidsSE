@@ -10,13 +10,9 @@ namespace MetaData
 
 namespace Datums
 {
-  class Bcd
+  class Bcd : public Dtm
   {
   public:
-    union {
-      i8 m_iBcd;
-      i8 m_iValue;
-    };
 
   public:
     void* operator new(size_t);

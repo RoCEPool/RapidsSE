@@ -76,7 +76,7 @@ i8 TspVal::nSize(void)
 /*----------------------------------------------------------------------------*/
 i8* TspVal::aInt(void)
 {
-  return (i8*)&x;
+  return (i8*)&xTsp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,13 +91,13 @@ void TspVal::vToString(Stz* aWorkspace)
 
   StrLib::vSprint(aWorkspace,
                   "%ll04d-%ll02d-%ll02d %ll02d:%ll02d:%ll02d.%lld"_Stz,
-                  (i8)x.m_uYearDelta + C_BASE_YEAR,
-                  (i8)x.m_uMonth,
-                  (i8)x.m_uDay,
-                  (i8)x.m_uHour,
-                  (i8)x.m_uMinute,
-                  (i8)x.m_uSecond,
-                  (i8)x.m_uMicro
+                  (i8)xTsp.m_uYearDelta + C_BASE_YEAR,
+                  (i8)xTsp.m_uMonth,
+                  (i8)xTsp.m_uDay,
+                  (i8)xTsp.m_uHour,
+                  (i8)xTsp.m_uMinute,
+                  (i8)xTsp.m_uSecond,
+                  (i8)xTsp.m_uMicro
                   );
 }
 
@@ -110,16 +110,16 @@ void TspVal::vToString(Stz* aWorkspace)
 /*----------------------------------------------------------------------------*/
 void TspVal::vMaxValue(void)
 {
-  x.m_uSpare = 0;
+  xTsp.m_uSpare = 0;
   
-  x.m_uMicro  = 999999;
-  x.m_uSecond = 59;
-  x.m_uMinute = 59;
-  x.m_uHour   = 23;
+  xTsp.m_uMicro  = 999999;
+  xTsp.m_uSecond = 59;
+  xTsp.m_uMinute = 59;
+  xTsp.m_uHour   = 23;
   
-  x.m_uDay   = 31;
-  x.m_uMonth = 12;
-  x.m_uYearDelta  = C_BASE_YEAR + C_YEAR_RANGE;
+  xTsp.m_uDay   = 31;
+  xTsp.m_uMonth = 12;
+  xTsp.m_uYearDelta  = C_BASE_YEAR + C_YEAR_RANGE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,16 +127,16 @@ void TspVal::vMaxValue(void)
 /*----------------------------------------------------------------------------*/
 void TspVal::vMidValue(void)
 {
-  x.m_uSpare = 0;
+  xTsp.m_uSpare = 0;
   
-  x.m_uMicro  = 1;
-  x.m_uSecond = 2;
-  x.m_uMinute = 3;
-  x.m_uHour   = 4;
+  xTsp.m_uMicro  = 1;
+  xTsp.m_uSecond = 2;
+  xTsp.m_uMinute = 3;
+  xTsp.m_uHour   = 4;
   
-  x.m_uDay   = 1;
-  x.m_uMonth = 2;
-  x.m_uYearDelta  = 2018 - C_BASE_YEAR;
+  xTsp.m_uDay   = 1;
+  xTsp.m_uMonth = 2;
+  xTsp.m_uYearDelta  = 2018 - C_BASE_YEAR;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -144,16 +144,16 @@ void TspVal::vMidValue(void)
 /*----------------------------------------------------------------------------*/
 void TspVal::vMinValue(void)
 {
-  x.m_uSpare = 0;
+  xTsp.m_uSpare = 0;
   
-  x.m_uMicro  = 0;
-  x.m_uSecond = 0;
-  x.m_uMinute = 0;
-  x.m_uHour   = 0;
+  xTsp.m_uMicro  = 0;
+  xTsp.m_uSecond = 0;
+  xTsp.m_uMinute = 0;
+  xTsp.m_uHour   = 0;
   
-  x.m_uDay   = 1;
-  x.m_uMonth = 1;
-  x.m_uYearDelta  = C_BASE_YEAR - C_BASE_YEAR; // silly I know, but it reminds us
+  xTsp.m_uDay   = 1;
+  xTsp.m_uMonth = 1;
+  xTsp.m_uYearDelta  = C_BASE_YEAR - C_BASE_YEAR; // silly I know, but it reminds us
                                           // that year is delta from a base
 }
 

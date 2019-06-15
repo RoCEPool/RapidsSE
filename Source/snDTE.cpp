@@ -44,10 +44,10 @@ i8 snDTE::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
                                pScnFmt->m_cDateSeparator) )
     throw C_UNKNOWN;
   
-  m_xDte.x.m_uYearDelta  = iYear - C_BASE_YEAR;
-  m_xDte.x.m_uMonth = iMonth;
-  m_xDte.x.m_uDay   = iDay;
-  m_xDte.x.m_uSpare = 0;
+  m_xDte.xDte.m_uYearDelta  = iYear - C_BASE_YEAR;
+  m_xDte.xDte.m_uMonth = iMonth;
+  m_xDte.xDte.m_uDay   = iDay;
+  m_xDte.xDte.m_uSpare = 0;
   
   return m_xDte.m_iValue;
 }

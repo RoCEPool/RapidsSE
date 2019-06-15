@@ -77,7 +77,7 @@ i8 TmeVal::nSize(void)
 /*----------------------------------------------------------------------------*/
 i8* TmeVal::aInt(void)
 {
-  return (i8*)&x;
+  return (i8*)&xTme;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,10 +92,10 @@ void TmeVal::vToString(Stz* aWorkspace)
   
   StrLib::vSprint(aWorkspace,
                   "%ll02d:%ll02d:%ll02d.%lld"_Stz,
-                  (i8)x.m_uHour,
-                  (i8)x.m_uMinute,
-                  (i8)x.m_uSecond,
-                  (i8)x.m_uMicro
+                  (i8)xTme.m_uHour,
+                  (i8)xTme.m_uMinute,
+                  (i8)xTme.m_uSecond,
+                  (i8)xTme.m_uMicro
                   );
 }
 
@@ -108,12 +108,12 @@ void TmeVal::vToString(Stz* aWorkspace)
 /*----------------------------------------------------------------------------*/
 void TmeVal::vMaxValue(void)
 {
-  x.m_uSpare = 0;
+  xTme.m_uSpare = 0;
   
-  x.m_uMicro  = 999999;
-  x.m_uSecond = 59;
-  x.m_uMinute = 59;
-  x.m_uHour   = 23;
+  xTme.m_uMicro  = 999999;
+  xTme.m_uSecond = 59;
+  xTme.m_uMinute = 59;
+  xTme.m_uHour   = 23;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,12 +121,12 @@ void TmeVal::vMaxValue(void)
 /*----------------------------------------------------------------------------*/
 void TmeVal::vMidValue(void)
 {
-  x.m_uSpare = 0;
+  xTme.m_uSpare = 0;
   
-  x.m_uMicro  = 1;
-  x.m_uSecond = 2;
-  x.m_uMinute = 3;
-  x.m_uHour   = 4;
+  xTme.m_uMicro  = 1;
+  xTme.m_uSecond = 2;
+  xTme.m_uMinute = 3;
+  xTme.m_uHour   = 4;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,12 +134,12 @@ void TmeVal::vMidValue(void)
 /*----------------------------------------------------------------------------*/
 void TmeVal::vMinValue(void)
 {
-  x.m_uSpare = 0;
+  xTme.m_uSpare = 0;
   
-  x.m_uMicro  = 0;
-  x.m_uSecond = 0;
-  x.m_uMinute = 0;
-  x.m_uHour   = 0;
+  xTme.m_uMicro  = 0;
+  xTme.m_uSecond = 0;
+  xTme.m_uMinute = 0;
+  xTme.m_uHour   = 0;
 }
 
 /*----------------------------------------------------------------------------*/

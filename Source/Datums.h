@@ -62,6 +62,8 @@ using namespace Datums;
 #include "Formatters.hpp"
 #include "HshLib.hpp"
 
+#include "Dtm.hpp"
+
 #include "Bcd.hpp"
 #include "Bol.hpp"
 #include "Dte.hpp"
@@ -73,7 +75,6 @@ using namespace Datums;
 #include "Tsp.hpp"
 #include "Vch.hpp"
 
-#include "Dtm.hpp"
 #include "DtmLib.hpp"
 #include "DatumUnion.hpp"
 

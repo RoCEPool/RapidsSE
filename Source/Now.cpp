@@ -21,29 +21,29 @@ Now::Now(void)
   if (! aLocalDateTime)
     vWarn("localtime() error; errno=%d"_Stz,errno);
   
-  m_oTsp.x.m_uYearDelta = aLocalDateTime->tm_year;
-  m_oTsp.x.m_uMonth     = aLocalDateTime->tm_mon + 1;
-  m_oTsp.x.m_uDay       = aLocalDateTime->tm_mday;
-  m_oTsp.x.m_uHour      = aLocalDateTime->tm_hour;
-  m_oTsp.x.m_uMinute    = aLocalDateTime->tm_min;
-  m_oTsp.x.m_uSecond    = aLocalDateTime->tm_sec;
-  m_oTsp.x.m_uMicro     = 0;
+  m_oTsp.xTsp.m_uYearDelta = aLocalDateTime->tm_year;
+  m_oTsp.xTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;
+  m_oTsp.xTsp.m_uDay       = aLocalDateTime->tm_mday;
+  m_oTsp.xTsp.m_uHour      = aLocalDateTime->tm_hour;
+  m_oTsp.xTsp.m_uMinute    = aLocalDateTime->tm_min;
+  m_oTsp.xTsp.m_uSecond    = aLocalDateTime->tm_sec;
+  m_oTsp.xTsp.m_uMicro     = 0;
   
-  if (m_oTsp.x.m_uMicro) {
+  if (m_oTsp.xTsp.m_uMicro) {
     
     char caFraction[16];
-    StrLib::vFormatFraction(caFraction,m_oTsp.x.m_uMicro,6);
+    StrLib::vFormatFraction(caFraction,m_oTsp.xTsp.m_uMicro,6);
     
     StrLib::vSprint(m_caResult,
                     (Stz*)F_TSP_frac,
                     
-                    (i8)m_oTsp.x.m_uYearDelta + C_BASE_YEAR,
-                    (i8)m_oTsp.x.m_uMonth,
-                    (i8)m_oTsp.x.m_uDay,
+                    (i8)m_oTsp.xTsp.m_uYearDelta + C_BASE_YEAR,
+                    (i8)m_oTsp.xTsp.m_uMonth,
+                    (i8)m_oTsp.xTsp.m_uDay,
                     
-                    (i8)m_oTsp.x.m_uHour,
-                    (i8)m_oTsp.x.m_uMinute,
-                    (i8)m_oTsp.x.m_uSecond,
+                    (i8)m_oTsp.xTsp.m_uHour,
+                    (i8)m_oTsp.xTsp.m_uMinute,
+                    (i8)m_oTsp.xTsp.m_uSecond,
                     
                     caFraction);
   }
@@ -51,13 +51,13 @@ Now::Now(void)
     StrLib::vSprint(m_caResult,
                     (Stz*)F_TSP,
                     
-                    (i8)m_oTsp.x.m_uYearDelta + C_BASE_YEAR,
-                    (i8)m_oTsp.x.m_uMonth,
-                    (i8)m_oTsp.x.m_uDay,
+                    (i8)m_oTsp.xTsp.m_uYearDelta + C_BASE_YEAR,
+                    (i8)m_oTsp.xTsp.m_uMonth,
+                    (i8)m_oTsp.xTsp.m_uDay,
                     
-                    (i8)m_oTsp.x.m_uHour,
-                    (i8)m_oTsp.x.m_uMinute,
-                    (i8)m_oTsp.x.m_uSecond);
+                    (i8)m_oTsp.xTsp.m_uHour,
+                    (i8)m_oTsp.xTsp.m_uMinute,
+                    (i8)m_oTsp.xTsp.m_uSecond);
   }
 
 

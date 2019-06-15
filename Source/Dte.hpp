@@ -5,24 +5,11 @@
 
 namespace Datums
 {
-  class Dte
+  class Dte : public Dtm
   {
   friend class DtmLib;
   
   public:
-    union {
-      struct {
-        u8 m_uSpare      : 47 ; //
-        
-        u8 m_uDay        :  5 ; // 0..31
-        u8 m_uMonth      :  4 ; // 0..15
-        u8 m_uYearDelta  :  8 ; // 0..255  (1900+8b == 2155)
-        //                 ---
-        //                  64
-        //                 ===
-      } x;
-      i8 m_iValue;
-    };
   
   public:
     void* operator new(size_t);

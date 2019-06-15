@@ -46,14 +46,14 @@ i8 snTSP::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
                                     pScnFmt->m_cDateSeparator) )
     throw C_UNKNOWN;
   
-  m_xTsp.x.m_uYearDelta = iYear - C_BASE_YEAR;
-  m_xTsp.x.m_uMonth     = iMonth;
-  m_xTsp.x.m_uDay       = iDay;
-  m_xTsp.x.m_uHour      = iHour;
-  m_xTsp.x.m_uMinute    = iMinute;
-  m_xTsp.x.m_uSecond    = iSecond;
-  m_xTsp.x.m_uMicro     = iMicro;
-  m_xTsp.x.m_uSpare     = 0;
+  m_xTsp.xTsp.m_uYearDelta = iYear - C_BASE_YEAR;
+  m_xTsp.xTsp.m_uMonth     = iMonth;
+  m_xTsp.xTsp.m_uDay       = iDay;
+  m_xTsp.xTsp.m_uHour      = iHour;
+  m_xTsp.xTsp.m_uMinute    = iMinute;
+  m_xTsp.xTsp.m_uSecond    = iSecond;
+  m_xTsp.xTsp.m_uMicro     = iMicro;
+  m_xTsp.xTsp.m_uSpare     = 0;
   
   return m_xTsp.m_iValue;
 }

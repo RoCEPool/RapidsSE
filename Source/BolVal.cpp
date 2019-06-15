@@ -32,7 +32,7 @@ void* BolVal::operator new(size_t)
 BolVal::BolVal(void)
 : Value(CN_BOLVAL)
 {
-  m_bBol = 0;
+  m_iBol = 0;
   
   _checkInitialised_(CN_BOLVAL);
 }
@@ -42,7 +42,7 @@ BolVal::BolVal(void)
 /*----------------------------------------------------------------------------*/
 i8* BolVal::aInt(void)
 {
-  return (i8*)&m_bBol;
+  return (i8*)&m_iBol;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,7 +62,7 @@ void BolVal::operator =(i8 iBol)
 {
   //vTrace("BolVal: diff %lld\n"_Stz,nSub(&m_iBol,this));
   
-  m_bBol = iBol;
+  m_iBol = iBol;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +70,7 @@ void BolVal::operator =(i8 iBol)
 /*----------------------------------------------------------------------------*/
 i8 BolVal::iBol(void) const
 {
-  return m_bBol;
+  return m_iBol;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,7 +91,7 @@ void BolVal::vToString(Stz* aWorkspace)
     return;
   }
 
-  if (m_bBol) {
+  if (m_iBol) {
     aWorkspace->vConcat("true"_Stz);
     return;
   }
@@ -108,7 +108,7 @@ void BolVal::vToString(Stz* aWorkspace)
 /*----------------------------------------------------------------------------*/
 void BolVal::vMaxValue(void)
 {
-  m_bBol = true;
+  m_iBol = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,7 +116,7 @@ void BolVal::vMaxValue(void)
 /*----------------------------------------------------------------------------*/
 void BolVal::vMidValue(void)
 {
-  m_bBol = true;
+  m_iBol = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,7 +124,7 @@ void BolVal::vMidValue(void)
 /*----------------------------------------------------------------------------*/
 void BolVal::vMinValue(void)
 {
-  m_bBol = false;
+  m_iBol = false;
 }
 
 /*----------------------------------------------------------------------------*/

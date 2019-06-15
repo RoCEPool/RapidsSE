@@ -61,7 +61,7 @@ void DteVal::operator =(Dte xDte)
 /*----------------------------------------------------------------------------*/
 i8* DteVal::aInt(void)
 {
-  return (i8*)&x;
+  return (i8*)&xDte;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,9 +92,9 @@ void DteVal::vToString(Stz* aWorkspace)
   
   StrLib::vSprint(aWorkspace,
                   "%ll04d-%ll02d-%ll02d"_Stz,
-                  (i8)x.m_uYearDelta + C_BASE_YEAR,
-                  (i8)x.m_uMonth,
-                  (i8)x.m_uDay
+                  (i8)xDte.m_uYearDelta + C_BASE_YEAR,
+                  (i8)xDte.m_uMonth,
+                  (i8)xDte.m_uDay
                   );
 }
 
@@ -107,10 +107,10 @@ void DteVal::vToString(Stz* aWorkspace)
 /*----------------------------------------------------------------------------*/
 void DteVal::vMaxValue(void)
 {
-  x.m_uSpare = 0;
-  x.m_uDay   = 31;
-  x.m_uMonth = 12;
-  x.m_uYearDelta  = C_BASE_YEAR + C_YEAR_RANGE;
+  xDte.m_uSpare = 0;
+  xDte.m_uDay   = 31;
+  xDte.m_uMonth = 12;
+  xDte.m_uYearDelta  = C_BASE_YEAR + C_YEAR_RANGE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,10 +118,10 @@ void DteVal::vMaxValue(void)
 /*----------------------------------------------------------------------------*/
 void DteVal::vMidValue(void)
 {
-  x.m_uSpare = 0;
-  x.m_uDay   = 1;
-  x.m_uMonth = 2;
-  x.m_uYearDelta  = 2018 - C_BASE_YEAR;
+  xDte.m_uSpare = 0;
+  xDte.m_uDay   = 1;
+  xDte.m_uMonth = 2;
+  xDte.m_uYearDelta  = 2018 - C_BASE_YEAR;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,10 +129,10 @@ void DteVal::vMidValue(void)
 /*----------------------------------------------------------------------------*/
 void DteVal::vMinValue(void)
 {
-  x.m_uSpare = 0;
-  x.m_uDay   = 1;
-  x.m_uMonth = 1;
-  x.m_uYearDelta  = C_BASE_YEAR - C_BASE_YEAR; // silly I know, but it reminds us
+  xDte.m_uSpare = 0;
+  xDte.m_uDay   = 1;
+  xDte.m_uMonth = 1;
+  xDte.m_uYearDelta  = C_BASE_YEAR - C_BASE_YEAR; // silly I know, but it reminds us
                                           // that year is delta from a base
 }
 

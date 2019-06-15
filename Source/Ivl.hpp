@@ -5,19 +5,9 @@
 
 namespace Datums
 {
-  class Ivl
+  class Ivl : public Dtm
   {
   public:
-    union {
-      struct {
-        u8 m_uMilli  : 10 ; // 0..1023
-        u8 m_uSecond : 54 ; // 0..1.8E16
-        //            ---
-        //             64
-        //            ===
-      } x;
-      i8 m_iValue;
-    };
   
   public:
     void* operator new(size_t);

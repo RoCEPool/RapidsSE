@@ -77,7 +77,7 @@ i8 IvlVal::nSize(void)
 /*----------------------------------------------------------------------------*/
 i8* IvlVal::aInt(void)
 {
-  return (i8*)&x;
+  return (i8*)&xIvl;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,8 +92,8 @@ void IvlVal::vToString(Stz* aWorkspace)
 
   StrLib::vSprint(aWorkspace,
                   "%lld.%lld"_Stz,
-                  (i8)x.m_uSecond,
-                  (i8)x.m_uMilli
+                  (i8)xIvl.m_uSecond,
+                  (i8)xIvl.m_uMilli
                   );
 }
 
@@ -106,8 +106,8 @@ void IvlVal::vToString(Stz* aWorkspace)
 /*----------------------------------------------------------------------------*/
 void IvlVal::vMaxValue(void)
 {
-  x.m_uMilli  = 1023;
-  x.m_uSecond = 0x1UL << 53;
+  xIvl.m_uMilli  = 1023;
+  xIvl.m_uSecond = 0x1UL << 53;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -115,8 +115,8 @@ void IvlVal::vMaxValue(void)
 /*----------------------------------------------------------------------------*/
 void IvlVal::vMidValue(void)
 {
-  x.m_uMilli  = 73;
-  x.m_uSecond = 73;
+  xIvl.m_uMilli  = 73;
+  xIvl.m_uSecond = 73;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,8 +124,8 @@ void IvlVal::vMidValue(void)
 /*----------------------------------------------------------------------------*/
 void IvlVal::vMinValue(void)
 {
-  x.m_uMilli  = 0;
-  x.m_uSecond = 0;
+  xIvl.m_uMilli  = 0;
+  xIvl.m_uSecond = 0;
 }
 
 /*----------------------------------------------------------------------------*/
