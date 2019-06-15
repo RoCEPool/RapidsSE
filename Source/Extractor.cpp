@@ -19,66 +19,96 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add element to entwrk key                                                  */
 /*----------------------------------------------------------------------------*/
-void Extractor::vAddElement(EntWrk* pEntWrk, Stz* aSrc,
+void Extractor::vAddElement(EntWrk* pEntWrk, Stz* szSrc,
                             Column* pCol, Formatters* pFormatters)
 {
-  bool b;
   i8 nBytes;
-  
-  char* pDst = (char*)pEntWrk->ayElementCrs();
-  char* pSrc = (char*)aSrc;
+
+  char* aSrc = (char*)szSrc;
+  char* aDst = (char*)pEntWrk->ayElementCrs();
+
+  if (DM_VCH == pCol->eDatumType()) {
+    nBytes = StrLib::iWordFlip(aDst,aSrc);
+    pEntWrk->vIncKeyBytes(nBytes);
+    return;
+  }
+
   Datum oDatum;
   oDatum.m_pCol = pCol;
-  
-  if (pCol->eDatumType() != DM_VCH) {
-    b = Extractor::bExtractElement(&oDatum,&pSrc,pCol,pFormatters);
-    RASSERT(b);
+
+  bool b = Extractor::bExtractElement(&oDatum,&aSrc,pCol,pFormatters);
+  ASSERT(b);
+
+  if (oDatum.bIsNull()) {
+    nBytes = Null::nCopy((byte*)aDst);
+    pEntWrk->vIncKeyBytes(nBytes);
+    return;
   }
-  
-  switch(pCol->eDatumType()) {
-      
-    case DM_BCD:
-      nBytes = Bcd::nCopy((char*)pDst,(char*)&oDatum.m_iBcd);
-      break;
-      
-    case DM_BOL:
-      nBytes = Bol::nCopy((char*)pDst,(char*)&oDatum.m_iBol);
-      break;
-      
-    case DM_DTE:
-      nBytes = Dte::nCopy((char*)pDst,(char*)&oDatum.m_iDte);
-      break;
-      
-    case DM_INT:
-      nBytes = Int::nCopy(pDst,(void*)&oDatum.m_iDte);
-      break;
-      
-    case DM_IVL:
-      nBytes = Ivl::nCopy(pDst,(void*)&oDatum.m_iIvl);
-      break;
-      
-    case DM_FLT:
-      nBytes = Flt::nCopy(pDst,(void*)&oDatum.m_dFlt);
-      break;
-      
-    case DM_TME:
-      nBytes = Tme::nCopy(pDst,&oDatum.m_iTme);
-      break;
-      
-    case DM_TSP:
-      nBytes = Tsp::nCopy(pDst,&oDatum.m_iTsp);
-      break;
-      
-    case DM_VCH:
-      nBytes = StrLib::iWordFlip(pDst, pSrc);
-      break;
-      
-    default:
-      NEVER_REACH;
-  }
-  
+
+  nBytes = DtmLib::nCopy((byte*)aDst,oDatum.m_iInt);
   pEntWrk->vIncKeyBytes(nBytes);
 }
+/*----------------------------------------------------------------------------*/
+//void Extractor::vAddElement(EntWrk* pEntWrk, Stz* aSrc,
+//                            Column* pCol, Formatters* pFormatters)
+//{
+//  bool b;
+//  i8 nBytes;
+//
+//  char* pDst = (char*)pEntWrk->ayElementCrs();
+//  char* pSrc = (char*)aSrc;
+//  Datum oDatum;
+//  oDatum.m_pCol = pCol;
+//
+//  if (pCol->eDatumType() != DM_VCH) {
+//    b = Extractor::bExtractElement(&oDatum,&pSrc,pCol,pFormatters);
+//    RASSERT(b);
+//  }
+//
+//  switch(pCol->eDatumType()) {
+//
+//    case DM_BCD:
+//      nBytes = Bcd::nCopy((char*)pDst,(char*)&oDatum.m_iBcd);
+//      break;
+//
+//    case DM_BOL:
+//      nBytes = Bol::nCopy((char*)pDst,(char*)&oDatum.m_iBol);
+//      break;
+//
+//    case DM_DTE:
+//      nBytes = Dte::nCopy((char*)pDst,(char*)&oDatum.m_iDte);
+//      break;
+//
+//    case DM_INT:
+//      nBytes = Int::nCopy(pDst,(void*)&oDatum.m_iDte);
+//      break;
+//
+//    case DM_IVL:
+//      nBytes = Ivl::nCopy(pDst,(void*)&oDatum.m_iIvl);
+//      break;
+//
+//    case DM_FLT:
+//      nBytes = Flt::nCopy(pDst,(void*)&oDatum.m_dFlt);
+//      break;
+//
+//    case DM_TME:
+//      nBytes = Tme::nCopy(pDst,&oDatum.m_iTme);
+//      break;
+//
+//    case DM_TSP:
+//      nBytes = Tsp::nCopy(pDst,&oDatum.m_iTsp);
+//      break;
+//
+//    case DM_VCH:
+//      nBytes = StrLib::iWordFlip(pDst, pSrc);
+//      break;
+//
+//    default:
+//      NEVER_REACH;
+//  }
+//
+//  pEntWrk->vIncKeyBytes(nBytes);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* extract record into row (returning first column which has invalid field)   */
