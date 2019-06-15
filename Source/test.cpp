@@ -36,23 +36,6 @@ void vTest1(void)
 /*----------------------------------------------------------------------------*/
 void vTest2(void)
 {
-  vTrace("-------------------------vTest2--------------------------\n"_Stz);
-
-  Since oStart;
-  Since oEnd;
-  
-  oStart.vNow();
-  Pthread::vSleepMilli(3500,CN_NONE);
-  oEnd.vNow();
-  
-  //Ivl wDiff = oEnd.wSubtract(oStart);
-  //Ivl wDiff = oStart.wSubtract(oEnd);
-  //Ivl wDiff = oStart.wSubtract(oStart);
-  Ivl wDiff = oEnd.wSubtract(oEnd);
-
-  vTrace("Diff: %llds%lldus\n"_Stz,wDiff.iSecond(),wDiff.iMilli());
-  
-  vTrace("-----------------------End vTest2------------------------\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

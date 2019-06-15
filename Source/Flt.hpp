@@ -15,7 +15,6 @@ namespace Datums
     Flt(void);
     ~Flt(void) noexcept(false);
     
-    d8   dAsD8(void);
     bool bIsNull(void);
     void vSetNull(void);
   };

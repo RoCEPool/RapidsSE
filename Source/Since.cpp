@@ -256,7 +256,9 @@ Ivl Since::wSubtract(Since& oArg)
   }
   
   iMilliseconds = iMicroseconds / C_1K;
-  wDiff.vSet(iSeconds,iMilliseconds);
+
+  wDiff.xIvl.m_uSecond = iSeconds;
+  wDiff.xIvl.m_uMilli  = iMilliseconds;
 
   return wDiff;
 }

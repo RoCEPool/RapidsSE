@@ -21,10 +21,6 @@ namespace Datums
     void vAsI8(i8 iAsI8);
     bool bIsNull(void);
     void vSetNull(void);
- 
-    i8   iYear(void);
-    i8   iMonth(void);
-    i8   iDay(void);
   };
 }
 

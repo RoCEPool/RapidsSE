@@ -70,7 +70,7 @@ i8 DataBuffer::iAgeSsec(void)
   
   wDiff = oSince.wSubtract(m_oWhenNewed);
   
-  i8 iAge = wDiff.iSecond();
+  i8 iAge = wDiff.xIvl.m_uSecond;
   
   return iAge;
 }
