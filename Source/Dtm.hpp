@@ -96,6 +96,11 @@ namespace Datums
     };
   
   public:
+    void* operator new(size_t);
+  
+    Dtm(void);
+   ~Dtm(void) noexcept(false);
+  
     static i8 iDte(i8 iYear, i8 iMonth, i8 iDay);
     static i8 iIvl(i8 iSecond, i8 iMilli);
     static i8 iTme(i8 iHour, i8 iSecond, i8 iMinute, i8 iMicro);
