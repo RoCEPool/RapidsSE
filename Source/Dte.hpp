@@ -16,11 +16,6 @@ namespace Datums
   
     Dte(void);
     ~Dte(void) noexcept(false);
-  
-    i8   iAsI8(void);
-    void vAsI8(i8 iAsI8);
-    bool bIsNull(void);
-    void vSetNull(void);
   };
 }
 

@@ -14,10 +14,6 @@ namespace Datums
   
     Ivl(void);
     ~Ivl(void) noexcept(false);
-  
-    i8   iAsI8(void);
-    bool bIsNull(void);
-    void vSetNull(void);
   };
 }
 

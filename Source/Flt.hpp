@@ -14,9 +14,6 @@ namespace Datums
   
     Flt(void);
     ~Flt(void) noexcept(false);
-    
-    bool bIsNull(void);
-    void vSetNull(void);
   };
 }
 

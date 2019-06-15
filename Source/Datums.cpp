@@ -10,6 +10,8 @@
 void Datums::vCheckAssumptions(void)
 {
   RASSERT(8 == sizeof(Word));
+  RASSERT(sizeof(Dtm) == sizeof(Word));
+  
   RASSERT(sizeof(Bcd) == sizeof(Word));
   RASSERT(sizeof(Bol) == sizeof(Word));
   RASSERT(sizeof(Dte) == sizeof(Word));

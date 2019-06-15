@@ -12,9 +12,6 @@ namespace Datums
   
     Vch(void);
     ~Vch(void) noexcept(false);
-      
-    bool bIsNull(void);
-    void vSetNull(void);
   };
 }
 
