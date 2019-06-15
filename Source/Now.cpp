@@ -21,45 +21,34 @@ Now::Now(void)
   if (! aLocalDateTime)
     vWarn("localtime() error; errno=%d"_Stz,errno);
   
-  m_oTsp.xTsp.m_uYearDelta = aLocalDateTime->tm_year;
-  m_oTsp.xTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;
-  m_oTsp.xTsp.m_uDay       = aLocalDateTime->tm_mday;
-  m_oTsp.xTsp.m_uHour      = aLocalDateTime->tm_hour;
-  m_oTsp.xTsp.m_uMinute    = aLocalDateTime->tm_min;
-  m_oTsp.xTsp.m_uSecond    = aLocalDateTime->tm_sec;
-  m_oTsp.xTsp.m_uMicro     = 0;
+  _Tsp xTsp;
   
-  if (m_oTsp.xTsp.m_uMicro) {
-    
-    char caFraction[16];
-    StrLib::vFormatFraction(caFraction,m_oTsp.xTsp.m_uMicro,6);
-    
-    StrLib::vSprint(m_caResult,
-                    (Stz*)F_TSP_frac,
-                    
-                    (i8)m_oTsp.xTsp.m_uYearDelta + C_YEAR_BASE,
-                    (i8)m_oTsp.xTsp.m_uMonth,
-                    (i8)m_oTsp.xTsp.m_uDay,
-                    
-                    (i8)m_oTsp.xTsp.m_uHour,
-                    (i8)m_oTsp.xTsp.m_uMinute,
-                    (i8)m_oTsp.xTsp.m_uSecond,
-                    
-                    caFraction);
-  }
-  else {
-    StrLib::vSprint(m_caResult,
-                    (Stz*)F_TSP,
-                    
-                    (i8)m_oTsp.xTsp.m_uYearDelta + C_YEAR_BASE,
-                    (i8)m_oTsp.xTsp.m_uMonth,
-                    (i8)m_oTsp.xTsp.m_uDay,
-                    
-                    (i8)m_oTsp.xTsp.m_uHour,
-                    (i8)m_oTsp.xTsp.m_uMinute,
-                    (i8)m_oTsp.xTsp.m_uSecond);
-  }
-
+  xTsp.m_uYearDelta = aLocalDateTime->tm_year;
+  xTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;
+  xTsp.m_uDay       = aLocalDateTime->tm_mday;
+  xTsp.m_uHour      = aLocalDateTime->tm_hour;
+  xTsp.m_uMinute    = aLocalDateTime->tm_min;
+  xTsp.m_uSecond    = aLocalDateTime->tm_sec;
+  xTsp.m_uMicro     = 0;
+  
+  m_iTsp = Dtm::iTsp(xTsp.m_uYearDelta+  C_YEAR_BASE,
+                     xTsp.m_uMonth,
+                     xTsp.m_uDay,
+                     xTsp.m_uHour,
+                     xTsp.m_uMinute,
+                     xTsp.m_uSecond,
+                     xTsp.m_uMicro);
+  
+  StrLib::vSprint(m_caResult,
+                  (Stz*)F_TSP,
+                  
+                  (i8)xTsp.m_uYearDelta + C_YEAR_BASE,
+                  (i8)xTsp.m_uMonth,
+                  (i8)xTsp.m_uDay,
+                  
+                  (i8)xTsp.m_uHour,
+                  (i8)xTsp.m_uMinute,
+                  (i8)xTsp.m_uSecond);
 
   _checkInitialised_(CN_NOW);
   

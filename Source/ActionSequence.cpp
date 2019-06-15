@@ -307,7 +307,7 @@ void ActionSequence::vRoot(Jobs::Job* pJob)
   Now xNow;
   
   pRoot->m_eAction  = AN_ROOT;
-  pRoot->m_iArg0    = xNow.m_oTsp.iAsI8();
+  pRoot->m_iArg0    = xNow.m_iTsp;
   pRoot->m_iArg1    = 0;
   
   pRoot->m_aJob     = pJob;
@@ -344,7 +344,7 @@ void ActionSequence::vEnd(Jobs::Job* pJob)
   Now xNow;
 
   pEnd->m_eAction  = AN_END;
-  pEnd->m_iArg0    = xNow.m_oTsp.iAsI8();
+  pEnd->m_iArg0    = xNow.m_iTsp;
   pEnd->m_iArg1    = 0;
   
   pEnd->m_aJob     = pJob;

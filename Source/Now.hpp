@@ -9,7 +9,7 @@ namespace Measurement
   {
   public:
     char m_caResult[32];
-    Dtm  m_oTsp;
+    i8   m_iTsp;
 
     // must be last
     Footer m_xFooter;
