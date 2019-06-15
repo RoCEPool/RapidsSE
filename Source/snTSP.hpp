@@ -9,7 +9,7 @@ namespace Transform
   {
   public:
   
-    Tsp m_xTsp;
+    Dtm m_xTsp;
   
     // must be last
     Footer m_xFooter;

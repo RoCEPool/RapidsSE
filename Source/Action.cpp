@@ -477,7 +477,7 @@ void Action::vWrite_Proot(File* pFile)
   vWriteJob(pFile);
   
   
-  Tsp* aTsp = (Tsp*)&m_iArg0;
+  Dtm* aTsp = (Tsp*)&m_iArg0;
   
   spTSP spTsp;
   pFile->vPrint(".%s(%s) "_Stz,
