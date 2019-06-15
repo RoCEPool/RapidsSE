@@ -222,12 +222,10 @@ void Since::vSet(i8 iSeconds, i8 iMicroseconds)
 /*----------------------------------------------------------------------------*/
 /* subtract given since argument                                              */
 /*----------------------------------------------------------------------------*/
-Ivl Since::wSubtract(Since& oArg)
+i8 Since::iSubtract(Since& oArg)
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
-  
-  Ivl wDiff;
-  
+    
   Since* pGreater;
   Since* pSmaller;
 
@@ -257,10 +255,7 @@ Ivl Since::wSubtract(Since& oArg)
   
   iMilliseconds = iMicroseconds / C_1K;
 
-  wDiff.xIvl.m_uSecond = iSeconds;
-  wDiff.xIvl.m_uMilli  = iMilliseconds;
-
-  return wDiff;
+  return iSeconds;
 }
 
 /*----------------------------------------------------------------------------*/

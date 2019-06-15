@@ -33,7 +33,7 @@ namespace System
     void  vNow(void);
     void  vSetUTC(Time* pTime);
     void  vSet(i8 iSeconds, i8 iMicroseconds);
-    Ivl   wSubtract(Since& oArg);
+    i8    iSubtract(Since& oArg);
 
     i8    iSeconds(void);
     i8    iMicroseconds(void);
