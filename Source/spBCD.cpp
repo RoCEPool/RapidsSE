@@ -94,7 +94,7 @@ Stz* spBCD::szMax(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz(C_I8_MAX);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -104,7 +104,7 @@ Stz* spBCD::szMid(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz(73);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -114,7 +114,7 @@ Stz* spBCD::szMin(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz(C_I8_MIN);
 }
 
 

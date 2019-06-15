@@ -58,7 +58,7 @@ Stz* spFLT::szMax(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz(C_D8_MAX);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,7 +68,7 @@ Stz* spFLT::szMid(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz(73.0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +78,7 @@ Stz* spFLT::szMin(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz(C_D8_MIN);
 }
 
 

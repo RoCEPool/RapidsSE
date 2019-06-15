@@ -68,7 +68,7 @@ Stz* spIVL::szMax(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz(0x1UL << 53,1023);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +78,7 @@ Stz* spIVL::szMid(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz(73,73);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,7 +88,7 @@ Stz* spIVL::szMin(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz(0,0);
 }
 
 

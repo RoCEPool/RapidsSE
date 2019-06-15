@@ -96,7 +96,7 @@ Stz* spVCH::szMax(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz("A"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,7 +106,7 @@ Stz* spVCH::szMid(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz("M"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,7 +116,7 @@ Stz* spVCH::szMin(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz("A"_Stz);
 }
 
 

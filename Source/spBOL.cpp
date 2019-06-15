@@ -56,7 +56,7 @@ Stz* spBOL::szMax(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,7 +66,7 @@ Stz* spBOL::szMid(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,7 +76,7 @@ Stz* spBOL::szMin(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz(false);
 }
 
 
