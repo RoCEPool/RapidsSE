@@ -5,6 +5,83 @@
 #include "Datums.h"
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* compute date as i8                                                         */
+/*----------------------------------------------------------------------------*/
+i8 Dtm::iDte(i8 iYear, i8 iMonth, i8 iDay)
+{
+  Dtm xDtm;
+  
+  xDtm.xDte.m_uYearDelta = iYear - C_BASE_YEAR;
+  xDtm.xDte.m_uMonth     = iMonth;
+  xDtm.xDte.m_uDay       = iDay;
+  
+  xDtm.xDte.m_uSpare     = 0;
+
+  return xDtm.m_iValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute interval as i8                                                     */
+/*----------------------------------------------------------------------------*/
+i8 Dtm::iIvl(i8 iSecond, i8 iMilli)
+{
+  Dtm xDtm;
+  
+  xDtm.xIvl.m_uSecond = iSecond;
+  xDtm.xIvl.m_uMilli  = iMilli;
+  
+  return xDtm.m_iValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute time as i8                                                         */
+/*----------------------------------------------------------------------------*/
+i8 Dtm::iTme(i8 iHour, i8 iSecond, i8 iMinute, i8 iMicro)
+{
+  Dtm xDtm;
+  
+  xDtm.xTme.m_uHour   = iHour;
+  xDtm.xTme.m_uSecond = iSecond;
+  xDtm.xTme.m_uMinute = iMinute;
+  xDtm.xTme.m_uMicro  = iMicro;
+  
+  xDtm.xTme.m_uSpare  = 0;
+  
+  return xDtm.m_iValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute timestamp as i8                                                    */
+/*----------------------------------------------------------------------------*/
+i8 Dtm::iTsp(i8 iYear, i8 iMonth,  i8 iDay,
+             i8 iHour, i8 iSecond, i8 iMinute, i8 iMicro)
+{
+  Dtm xDtm;
+  
+  xDtm.xTsp.m_uYearDelta = iYear - C_BASE_YEAR;
+  xDtm.xTsp.m_uMonth     = iMonth;
+  xDtm.xTsp.m_uDay       = iDay;
+  
+  xDtm.xTsp.m_uHour      = iHour;
+  xDtm.xTsp.m_uSecond    = iSecond;
+  xDtm.xTsp.m_uMinute    = iMinute;
+  xDtm.xTsp.m_uMicro     = iMicro;
+  
+  xDtm.xTsp.m_uSpare     = 0;
+  
+  return xDtm.m_iValue;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* get as i8                                                                  */
 /*----------------------------------------------------------------------------*/
 i8 Dtm::iAsI8(void)

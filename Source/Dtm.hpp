@@ -96,6 +96,12 @@ namespace Datums
     };
   
   public:
+    static i8 iDte(i8 iYear, i8 iMonth, i8 iDay);
+    static i8 iIvl(i8 iSecond, i8 iMilli);
+    static i8 iTme(i8 iHour, i8 iSecond, i8 iMinute, i8 iMicro);
+    static i8 iTsp(i8 iYear, i8 iMonth,  i8 iDay,
+                   i8 iHour, i8 iSecond, i8 iMinute, i8 iMicro);
+  
     i8   iAsI8(void);
     void vAsI8(i8 iAsI8);
     bool bIsNull(void);
