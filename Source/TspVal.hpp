@@ -6,7 +6,7 @@
 namespace Values
 {
   class TspVal : public Value,
-                 public Tsp
+                 public Dtm
   {
   private:
     

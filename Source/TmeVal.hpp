@@ -6,7 +6,7 @@
 namespace Values
 {
   class TmeVal : public Value,
-                 public Tme
+                 public Dtm
   {
   private:
     

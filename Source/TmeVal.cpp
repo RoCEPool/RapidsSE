@@ -30,7 +30,7 @@ void* TmeVal::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TmeVal::TmeVal(void)
-: Value(CN_INTVAL)
+: Value(CN_TMEVAL)
 {
   
   _checkInitialised_(CN_TMEVAL);

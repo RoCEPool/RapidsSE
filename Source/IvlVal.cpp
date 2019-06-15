@@ -30,7 +30,7 @@ void* IvlVal::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IvlVal::IvlVal(void)
-: Value(CN_INTVAL)
+: Value(CN_IVLVAL)
 {
   
   _checkInitialised_(CN_IVLVAL);

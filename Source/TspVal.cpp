@@ -30,7 +30,7 @@ void* TspVal::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TspVal::TspVal(void)
-: Value(CN_INTVAL)
+: Value(CN_TSPVAL)
 {
   _checkInitialised_(CN_TSPVAL);
 }
