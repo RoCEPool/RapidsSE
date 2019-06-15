@@ -73,6 +73,7 @@ using namespace Datums;
 #include "Tsp.hpp"
 #include "Vch.hpp"
 
+#include "Dtm.hpp"
 #include "DtmLib.hpp"
 #include "DatumUnion.hpp"
 
