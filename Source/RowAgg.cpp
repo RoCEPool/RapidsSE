@@ -126,8 +126,8 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s48K sRowString;
   
-  Int xKey;
-  Int xVal;
+  Dtm xKey;
+  Dtm xVal;
   Column* pAggColumn;
   i8 i_Col;
   

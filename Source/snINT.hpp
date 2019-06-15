@@ -9,7 +9,7 @@ namespace Transform
   {
   public:
   
-    Int m_xInt;
+    Dtm m_xInt;
   
    // must be last
     Footer m_xFooter;
