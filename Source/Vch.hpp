@@ -5,7 +5,7 @@
 
 namespace Datums
 {
-  class Vch
+  class Vch : public Dtm
   {
   public:
     void* operator new(size_t);
