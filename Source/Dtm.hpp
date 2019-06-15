@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Datums
+namespace Values
 {
   class Dtm
   {

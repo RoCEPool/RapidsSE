@@ -18,7 +18,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Debugging::vCheckAssumptions();
   // third party??
   Correctness::vCheckAssumptions();
-  Datums::vCheckAssumptions();
   Transform::vCheckAssumptions();
   Values::vCheckAssumptions();
   Assembler::vCheckAssumptions();
