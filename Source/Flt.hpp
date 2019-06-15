@@ -25,8 +25,6 @@ namespace Datums
     d8   dAsD8(void);
     bool bIsNull(void);
     void vSetNull(void);
- 
-    static i8   nCopy(void* aDst, void* aSrc);
   };
 }
 

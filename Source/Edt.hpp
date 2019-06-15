@@ -38,8 +38,6 @@ namespace Datums
     i8   iYear(void);
     i8   iMonth(void);
     i8   iDay(void);
-  
-    static i8   nCopy(void* aDst, void* aSrc);
   };
 }
 

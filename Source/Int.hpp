@@ -20,8 +20,6 @@ namespace Datums
     ~Int(void) noexcept(false);
   
     bool bIsNull(void);
-
-    static i8   nCopy(void* aDst, void* aSrc);
   };
 }
 

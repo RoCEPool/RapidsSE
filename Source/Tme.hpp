@@ -38,8 +38,6 @@ namespace Datums
     i8   iMinute(void);
     i8   iSecond(void);
     i8   iMicroseconds(void);
-
-    static i8   nCopy(void* aDst, void* aSrc);
   };
 }
 

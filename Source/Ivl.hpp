@@ -33,8 +33,6 @@ namespace Datums
     i8   iMilli(void);
   
     void vSet(u8 uSecond, u8 uMilli);
-
-    static i8   nCopy(void* aDst, void* aSrc);
   };
 }
 
