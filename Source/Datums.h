@@ -58,8 +58,6 @@ using namespace Datums;
 
 #include "Dtm.hpp"
 
-#include "DtmLib.hpp"
-
 typedef String_t<C_MAX_VCH> sVCH;
 
 /*============================================================================*/

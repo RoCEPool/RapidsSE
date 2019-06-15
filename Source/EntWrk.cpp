@@ -186,7 +186,7 @@ void EntWrk::vAppendElement(Row* pRow, Column* pCol)
   }
   
   byte* ayDst = ayElementCrs();
-  nBytes = DtmLib::nCopy(ayDst,iValue);
+  nBytes = Dtm::nCopy(ayDst,iValue);
   vIncKeyBytes(nBytes);
 }
 
@@ -198,7 +198,7 @@ void EntWrk::vAppendMinusInfinity(void)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   byte* ayDst = ayElementCrs();
-  DtmLib::vCopy(ayDst,(i8)C_DATUM_MINUS_INFINITY);
+  Dtm::vCopy(ayDst,(i8)C_DATUM_MINUS_INFINITY);
 
   vIncKeyBytes(C_BYTES_PER_WORD);
 }
@@ -211,7 +211,7 @@ void EntWrk::vAppendPlusInfinity(void)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
    
   byte* ayDst = ayElementCrs();
-  DtmLib::vCopy(ayDst,(i8)C_DATUM_PLUS_INFINITY);
+  Dtm::vCopy(ayDst,(i8)C_DATUM_PLUS_INFINITY);
   
   vIncKeyBytes(C_BYTES_PER_WORD);
 }

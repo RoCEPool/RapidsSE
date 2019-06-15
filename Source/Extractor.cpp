@@ -45,7 +45,7 @@ void Extractor::vAddElement(EntWrk* pEntWrk, Stz* szSrc,
     return;
   }
 
-  nBytes = DtmLib::nCopy((byte*)aDst,oDatum.m_iInt);
+  nBytes = Dtm::nCopy((byte*)aDst,oDatum.m_iInt);
   pEntWrk->vIncKeyBytes(nBytes);
 }
 

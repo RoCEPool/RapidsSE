@@ -101,6 +101,11 @@ namespace Datums
     Dtm(void);
    ~Dtm(void) noexcept(false);
   
+    static i8   nCopy(byte* ayDst, byte* aySrc);
+    static i8   nCopy(byte* ayDst, i8 iValue);
+    static void vCopy(byte* ayDst, byte* aySrc);
+    static void vCopy(byte* ayDst, i8 iValue);
+
     static i8 iDte(i8 iYear, i8 iMonth, i8 iDay);
     static i8 iIvl(i8 iSecond, i8 iMilli);
     static i8 iTme(i8 iHour, i8 iSecond, i8 iMinute, i8 iMicro);
