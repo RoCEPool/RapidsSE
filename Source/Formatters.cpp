@@ -2,7 +2,7 @@
 /* Formatters.cpp -- set of formatting characters                             */
 /*============================================================================*/
 
-#include "Data.h"
+#include "Chunks.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -14,7 +14,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Formatters* Datums::_pFormatters(void* aAddr)
+Formatters* Chunks::_pFormatters(void* aAddr)
 {
   Formatters* pFormatters = reinterpret_cast<Formatters*>(aAddr);
   

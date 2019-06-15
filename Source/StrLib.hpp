@@ -4,9 +4,7 @@
 
 #pragma once
 
-namespace Datums {
-  class Formatters;
-}
+namespace Chunks { class Formatters; }
 
 namespace Base
 {
