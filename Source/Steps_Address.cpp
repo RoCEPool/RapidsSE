@@ -62,7 +62,7 @@ void Step::vAddressFetch(MP_Task mpTask)
       break;
       
     case CN_STRVAL:
-      xValFetched = _aStrVal(aValue);
+      xValFetched = _aStrVal(aValue)->aStz();
       break;
       
     case CN_PTRVAL:

@@ -102,23 +102,9 @@ void GenVar::operator =(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign/copy the address of a non-proper object instance into workspace     */
-/*----------------------------------------------------------------------------*/
-void GenVar::operator =(Value* aValue)
-{
-  PtrVal* aNestedPtrVal = (PtrVal*)aNestedValue();
-  
-  // set nested class
-  aNestedPtrVal->vSetClass(CN_PTRVAL);
-  
-  // put the address into the nested ptrval
-  *aNestedPtrVal = aValue;
-}
-
-/*----------------------------------------------------------------------------*/
 /* assign/copy a string into workspace                                        */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Stz* aStz)
+void GenVar::operator =(Stz* szStz)
 {
   StrVal* aNestedStrVal = (StrVal*)aNestedValue();
   
@@ -126,7 +112,7 @@ void GenVar::operator =(Stz* aStz)
   aNestedStrVal->vSetClass(CN_STRVAL);
   
   // copy the stz into the nested ptrval
-  aNestedStrVal->vAssign(aStz);
+  aNestedStrVal->vAssign(szStz);
 }
 
 

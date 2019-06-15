@@ -20,10 +20,10 @@ namespace Forth
     } ;
   };
   
+  static const i8 C_WSP_GENVAR = C_64K;
+  
   class GenVar : public Object
   {
-    static const i8 C_WSP_GENVAR = C_64K;
-  
   private:
     union {
       
@@ -39,13 +39,12 @@ namespace Forth
     void* operator new(size_t);
   
     GenVar(void);
-    ~GenVar(void) noexcept(false);
+   ~GenVar(void) noexcept(false);
   
-    void operator =(d8  dFlt);
-    void operator =(i8  iInt);
+    void operator =(d8 dFlt);
+    void operator =(i8 iInt);
     void operator =(Object* pObject);
-    void operator =(Value*  aValue);
-    void operator =(Stz* aStr);
+    void operator =(Stz* szStr);
     
     i8      iNestedAsInt(void);
     IntVal* aNestedIntVal(void);
@@ -58,7 +57,7 @@ namespace Forth
   
     Footer* aFooter(void);
   };
-  
+
   GenVar* _pGenVar(void* aAddr);
 }
 
