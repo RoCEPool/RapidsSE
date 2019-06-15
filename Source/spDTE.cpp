@@ -44,7 +44,7 @@ Stz* spDTE::sz(i8 iDte)
   StrLib::vSprint(m_caResult,
                   (Stz*)m_caFormat,
                   
-                  (i8)wDte.xEdt.m_uYearInEra + C_BASE_YEAR,
+                  (i8)wDte.xEdt.m_uYearInEra + C_YEAR_BASE,
                   (i8)wDte.xEdt.m_uMonth,
                   (i8)wDte.xEdt.m_uDay);
 
@@ -63,7 +63,7 @@ Stz* spDTE::szMax(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz( Dtm::iDte(C_YEAR_MAX,C_12_DEC,31) );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +73,7 @@ Stz* spDTE::szMid(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz( Dtm::iDte(2018,C_02_FEB,1) );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,7 +83,7 @@ Stz* spDTE::szMin(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz( Dtm::iDte(C_YEAR_MIN,C_01_JAN,1) );
 }
 
 

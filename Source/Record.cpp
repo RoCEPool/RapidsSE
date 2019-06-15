@@ -235,7 +235,7 @@ void Record::vAppendDte(Column* pCol, Datum* pDatum)
   
   StrLib::vSprint(sAscii.aChar(),
                   "%02lld-%02lld-%02lld"_Stz,
-                  (i8)pDatum->xDte.m_uYearDelta + C_BASE_YEAR,
+                  (i8)pDatum->xDte.m_uYearDelta + C_YEAR_BASE,
                   (i8)pDatum->xDte.m_uMonth,
                   (i8)pDatum->xDte.m_uDay);
 

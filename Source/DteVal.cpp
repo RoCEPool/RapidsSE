@@ -64,7 +64,7 @@ void DteVal::vToString(Stz* aWorkspace)
   
   StrLib::vSprint(aWorkspace,
                   "%ll04d-%ll02d-%ll02d"_Stz,
-                  (i8)xDte.m_uYearDelta + C_BASE_YEAR,
+                  (i8)xDte.m_uYearDelta + C_YEAR_BASE,
                   (i8)xDte.m_uMonth,
                   (i8)xDte.m_uDay
                   );
@@ -82,7 +82,7 @@ void DteVal::vMaxValue(void)
   xDte.m_uSpare = 0;
   xDte.m_uDay   = 31;
   xDte.m_uMonth = 12;
-  xDte.m_uYearDelta  = C_BASE_YEAR + C_YEAR_RANGE;
+  xDte.m_uYearDelta  = 0 + C_YEAR_RANGE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,7 +93,7 @@ void DteVal::vMidValue(void)
   xDte.m_uSpare = 0;
   xDte.m_uDay   = 1;
   xDte.m_uMonth = 2;
-  xDte.m_uYearDelta  = 2018 - C_BASE_YEAR;
+  xDte.m_uYearDelta  = 2018 - C_YEAR_BASE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -104,7 +104,7 @@ void DteVal::vMinValue(void)
   xDte.m_uSpare = 0;
   xDte.m_uDay   = 1;
   xDte.m_uMonth = 1;
-  xDte.m_uYearDelta  = C_BASE_YEAR - C_BASE_YEAR; // silly I know, but it reminds us
+  xDte.m_uYearDelta  = C_YEAR_BASE - C_YEAR_BASE; // silly I know, but it reminds us
                                           // that year is delta from a base
 }
 

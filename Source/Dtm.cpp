@@ -15,7 +15,7 @@ i8 Dtm::iDte(i8 iYear, i8 iMonth, i8 iDay)
 {
   Dtm xDtm;
   
-  xDtm.xDte.m_uYearDelta = iYear - C_BASE_YEAR;
+  xDtm.xDte.m_uYearDelta = iYear - C_YEAR_BASE;
   xDtm.xDte.m_uMonth     = iMonth;
   xDtm.xDte.m_uDay       = iDay;
   
@@ -62,7 +62,7 @@ i8 Dtm::iTsp(i8 iYear, i8 iMonth,  i8 iDay,
 {
   Dtm xDtm;
   
-  xDtm.xTsp.m_uYearDelta = iYear - C_BASE_YEAR;
+  xDtm.xTsp.m_uYearDelta = iYear - C_YEAR_BASE;
   xDtm.xTsp.m_uMonth     = iMonth;
   xDtm.xTsp.m_uDay       = iDay;
   

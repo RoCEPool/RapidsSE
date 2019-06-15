@@ -79,7 +79,7 @@ void TspVal::vToString(Stz* aWorkspace)
 
   StrLib::vSprint(aWorkspace,
                   "%ll04d-%ll02d-%ll02d %ll02d:%ll02d:%ll02d.%lld"_Stz,
-                  (i8)xTsp.m_uYearDelta + C_BASE_YEAR,
+                  (i8)xTsp.m_uYearDelta + C_YEAR_BASE,
                   (i8)xTsp.m_uMonth,
                   (i8)xTsp.m_uDay,
                   (i8)xTsp.m_uHour,
@@ -107,7 +107,7 @@ void TspVal::vMaxValue(void)
   
   xTsp.m_uDay   = 31;
   xTsp.m_uMonth = 12;
-  xTsp.m_uYearDelta  = C_BASE_YEAR + C_YEAR_RANGE;
+  xTsp.m_uYearDelta  = C_YEAR_BASE + C_YEAR_RANGE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,7 +124,7 @@ void TspVal::vMidValue(void)
   
   xTsp.m_uDay   = 1;
   xTsp.m_uMonth = 2;
-  xTsp.m_uYearDelta  = 2018 - C_BASE_YEAR;
+  xTsp.m_uYearDelta  = 2018 - C_YEAR_BASE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,7 +141,7 @@ void TspVal::vMinValue(void)
   
   xTsp.m_uDay   = 1;
   xTsp.m_uMonth = 1;
-  xTsp.m_uYearDelta  = C_BASE_YEAR - C_BASE_YEAR; // silly I know, but it reminds us
+  xTsp.m_uYearDelta  = C_YEAR_BASE - C_YEAR_BASE; // silly I know, but it reminds us
                                           // that year is delta from a base
 }
 

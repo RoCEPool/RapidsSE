@@ -43,7 +43,6 @@ using namespace Base;
 #include "LimitsFormats.h"
 #include "Structs.h"
 
-const i8 C_UNKNOWN = -1;
 
 /*============================================================================*/
 /* end                                                                        */

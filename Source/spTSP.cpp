@@ -40,7 +40,7 @@ Stz* spTSP::szMax(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz( Dtm::iTsp(C_YEAR_MAX,C_12_DEC,31, 23,59,59,999999) );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,7 +50,7 @@ Stz* spTSP::szMid(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz( Dtm::iTsp(2018,C_02_FEB,1, 4,3,2,1) );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ Stz* spTSP::szMin(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz( Dtm::iTsp(C_YEAR_MIN,C_01_JAN,1, 0,0,0,0) );
 }
 
 
@@ -85,7 +85,7 @@ Stz* spTSP::sz(i8 iTsp)
     StrLib::vSprint(m_caResult,
                     (Stz*)F_TSP_frac,
 
-                    (i8)wTsp.xTsp.m_uYearDelta + C_BASE_YEAR,
+                    (i8)wTsp.xTsp.m_uYearDelta + C_YEAR_BASE,
                     (i8)wTsp.xTsp.m_uMonth,
                     (i8)wTsp.xTsp.m_uDay,
                     
@@ -99,7 +99,7 @@ Stz* spTSP::sz(i8 iTsp)
     StrLib::vSprint(m_caResult,
                     (Stz*)F_TSP,
 
-                    (i8)wTsp.xTsp.m_uYearDelta + C_BASE_YEAR,
+                    (i8)wTsp.xTsp.m_uYearDelta + C_YEAR_BASE,
                     (i8)wTsp.xTsp.m_uMonth,
                     (i8)wTsp.xTsp.m_uDay,
                     

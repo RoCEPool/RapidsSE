@@ -79,7 +79,7 @@ Stz* spTME::szMax(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz( Dtm::iTme(23,59,59,999999) );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,7 +89,7 @@ Stz* spTME::szMid(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz( Dtm::iTme(3,3,2,1) );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,7 +99,7 @@ Stz* spTME::szMin(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz( Dtm::iTme(0,0,0,0) );
 }
 
 

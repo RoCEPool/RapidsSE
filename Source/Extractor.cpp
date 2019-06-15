@@ -237,7 +237,7 @@ bool Extractor::bExtractElement(Datum* pDatum, char** aacRecCrs,
       if (!b)
         break;
       
-      pDatum->xDte.m_uYearDelta  = iYear - C_BASE_YEAR;
+      pDatum->xDte.m_uYearDelta  = iYear - C_YEAR_BASE;
       pDatum->xDte.m_uMonth = iMonth;
       pDatum->xDte.m_uDay   = iDay;
       pDatum->xDte.m_uSpare = 0;
@@ -278,7 +278,7 @@ bool Extractor::bExtractElement(Datum* pDatum, char** aacRecCrs,
       if (!b)
         break;
       
-      pDatum->xTsp.m_uYearDelta   = iYear - C_BASE_YEAR;
+      pDatum->xTsp.m_uYearDelta   = iYear - C_YEAR_BASE;
       pDatum->xTsp.m_uMonth  = iMonth;
       pDatum->xTsp.m_uDay    = iDay;
       pDatum->xTsp.m_uHour   = iHour;

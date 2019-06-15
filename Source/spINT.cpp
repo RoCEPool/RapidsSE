@@ -58,7 +58,7 @@ Stz* spINT::szMax(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz(C_I8_MAX);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,7 +68,7 @@ Stz* spINT::szMid(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz(73);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +78,7 @@ Stz* spINT::szMin(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caResult[0];
+  return sz(C_I8_MIN);
 }
 
 

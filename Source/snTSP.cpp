@@ -46,7 +46,7 @@ i8 snTSP::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
                                     pScnFmt->m_cDateSeparator) )
     throw C_UNKNOWN;
   
-  m_xTsp.xTsp.m_uYearDelta = iYear - C_BASE_YEAR;
+  m_xTsp.xTsp.m_uYearDelta = iYear - C_YEAR_BASE;
   m_xTsp.xTsp.m_uMonth     = iMonth;
   m_xTsp.xTsp.m_uDay       = iDay;
   m_xTsp.xTsp.m_uHour      = iHour;

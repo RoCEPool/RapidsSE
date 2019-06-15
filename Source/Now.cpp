@@ -37,7 +37,7 @@ Now::Now(void)
     StrLib::vSprint(m_caResult,
                     (Stz*)F_TSP_frac,
                     
-                    (i8)m_oTsp.xTsp.m_uYearDelta + C_BASE_YEAR,
+                    (i8)m_oTsp.xTsp.m_uYearDelta + C_YEAR_BASE,
                     (i8)m_oTsp.xTsp.m_uMonth,
                     (i8)m_oTsp.xTsp.m_uDay,
                     
@@ -51,7 +51,7 @@ Now::Now(void)
     StrLib::vSprint(m_caResult,
                     (Stz*)F_TSP,
                     
-                    (i8)m_oTsp.xTsp.m_uYearDelta + C_BASE_YEAR,
+                    (i8)m_oTsp.xTsp.m_uYearDelta + C_YEAR_BASE,
                     (i8)m_oTsp.xTsp.m_uMonth,
                     (i8)m_oTsp.xTsp.m_uDay,
                     

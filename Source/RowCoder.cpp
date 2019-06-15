@@ -3147,7 +3147,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
                i_Col,
                pCol->szColNm(),
                wWord.m_iDte,
-               (i8)wWord.xEdt.m_uYearInEra + C_ERA_0 + C_BASE_YEAR,
+               (i8)wWord.xEdt.m_uYearInEra + C_ERA_0 + C_YEAR_BASE,
                (i8)wWord.xEdt.m_uMonth,
                (i8)wWord.xEdt.m_uDay);
 #endif
@@ -3164,7 +3164,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
                i_Col,
                pCol->szColNm(),
                wWord.m_iDte,
-               (i8)wWord.xEdt.m_uYearInEra + C_ERA_1 + C_BASE_YEAR,
+               (i8)wWord.xEdt.m_uYearInEra + C_ERA_1 + C_YEAR_BASE,
                (i8)wWord.xEdt.m_uMonth,
                (i8)wWord.xEdt.m_uDay);
 #endif
@@ -3181,7 +3181,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
                i_Col,
                pCol->szColNm(),
                wWord.m_iDte,
-               (i8)wWord.xEdt.m_uYearInEra + C_ERA_2 + C_BASE_YEAR,
+               (i8)wWord.xEdt.m_uYearInEra + C_ERA_2 + C_YEAR_BASE,
                (i8)wWord.xEdt.m_uMonth,
                (i8)wWord.xEdt.m_uDay);
 #endif
@@ -3850,7 +3850,7 @@ void RowCoder::vInflate(Row* pRow, HeadLine* aHeadLine)
                i_Col,
                pCol->szColNm(),
                wWord.m_iDte,
-               (i8)wWord.xDte.m_uYearDelta + C_BASE_YEAR,
+               (i8)wWord.xDte.m_uYearDelta + C_YEAR_BASE,
                (i8)wWord.xDte.m_uMonth,
                (i8)wWord.xDte.m_uDay);
         break;

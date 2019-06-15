@@ -5,8 +5,6 @@
 
 namespace System
 {
-  static const i8 C_YEAR_BASE = 1900;
-  
   class Since;
   
   class Time : public Object
