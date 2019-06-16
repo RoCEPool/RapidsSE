@@ -225,7 +225,6 @@
   static void vDstackDepth(Tasks::MP_Task mpTask);
   static void vDstackDrop(Tasks::MP_Task mpTask);
   static void vDstackDropTwo(Tasks::MP_Task mpTask);
-  static void vDstackDump(Tasks::MP_Task mpTask);
   static void vDstackDup(Tasks::MP_Task mpTask);
   static void vDstackDupNonZero(Tasks::MP_Task mpTask);
   static void vDstackNip(Tasks::MP_Task mpTask);

@@ -105,14 +105,10 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
   
   GenVar xVariable;
   
-  s48K sString;
-  
   i8 nValues = this->nValues();
   for (i8 iVal = 0; iVal < nValues; iVal++) {
     
     vPeekValue(iVal,xVariable);
-    
-    xVariable.vGetString(sString);
     
     Value* aNestedValue = xVariable.aNestedValue();
     eCN eClass = aNestedValue->eClass();
@@ -136,8 +132,8 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
         PtrVal* aPtrVal = xVariable.aNestedPtrVal();
         Object* pObject = aPtrVal->pObj();
         eCN ePtdClass   = pObject->eClass();
-        vTrace("[%s] [%2lld] [%s] %s (%s)\n"_Stz,
-               aPrefix,iVal,aCN[eClass],sString.aChar(),aCN[ePtdClass]);
+        vTrace("[%s] [%2lld] [%s] %p (%s)\n"_Stz,
+               aPrefix,iVal,aCN[eClass],pObject,aCN[ePtdClass]);
         break;
       }
         
@@ -148,8 +144,8 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
       }
         
       default: {
-        vTrace("[%s] [%2lld] [%s]  %s (%s)\n"_Stz,
-               aPrefix,iVal,aCN[eClass],sString.aChar(),aCN[eClass]);
+        vTrace("[%s] [%2lld] [%s]\n"_Stz,
+               aPrefix,iVal,aCN[eClass]);
         break;
       }
         

@@ -15,7 +15,6 @@ void Step::vAddSteps_Dstack(void)
   vAddStep("depth"_Stz,           &Step::vDstackDepth);
   vAddStep("drop"_Stz,            &Step::vDstackDrop);
   vAddStep("2drop"_Stz,           &Step::vDstackDropTwo);
-  //vAddStep("dump"_Stz,            &Step::vDstackDump);
   vAddStep("dup"_Stz,             &Step::vDstackDup);
   vAddStep("?dup"_Stz,            &Step::vDstackDupNonZero);
   vAddStep("nip"_Stz,             &Step::vDstackNip);
@@ -168,49 +167,6 @@ void Step::vDstackDupNonZero(MP_Task mpTask)
   }
   else
     mpTask->m_pDataStack->vPushBool(false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump -- dump top of data stack                                             */
-/*----------------------------------------------------------------------------*/
-void Step::vDstackDump(MP_Task mpTask)
-{
-  ENTRY("vDstackDump"_Stz);
-  
-  GenVar xVariable;
-  if ( ! mpTask->m_pDataStack->bPop(xVariable) )
-    THROW_INVALID_DSTACK("dump"_Stz);
-  
-  s48K sString;
-  xVariable.vGetString(sString);
-  Stz* aClass = aCN[xVariable.eClass()];
-  
-  eCN eClass = xVariable.eClass();
-  
-  if (CN_PTRVAL == eClass) {
-    PtrVal* aPtrVal = _aPtrVal(&xVariable);
-    Object* pObject = aPtrVal->pObj();
-    eCN ePtdClass   = pObject->eClass();
-    vTrace("[%s] %s (%s %s)\n"_Stz,
-           mpTask->aJobName(),
-           sString.aChar(),
-           aClass,
-           aCN[ePtdClass]);
-  }
-  else if (CN_FIPVAL == eClass) {                                         //RAY??
-    FipVal* aFipVal = _aFipVal(&xVariable);
-    Cell* aCell = aFipVal->aIpPtr();
-    vTrace("[%s] nullptr\n"_Stz,
-           mpTask->aJobName());    //RAY: should trace pFipVal
-  }
-  else {
-    vTrace("[%s] %s (%s)\n"_Stz,
-           mpTask->aJobName(),
-           sString.aChar(),
-           aClass);
-  }
   
   EXIT();
 }
