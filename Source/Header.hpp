@@ -19,6 +19,7 @@ namespace Correctness
     bool m_bWordBody;
   
   public:
+    Header(void);
     Header(eCN eClass);
    ~Header(void) noexcept(false);
 

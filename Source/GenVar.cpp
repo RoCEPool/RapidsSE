@@ -178,7 +178,7 @@ Value* GenVar::aNestedValue(void)
 {
   _precondition_(_MAGIC_);
  
-  Value* aNestedValue = reinterpret_cast<Value*>(m_xWsp.ayArea());
+  Value* aNestedValue = reinterpret_cast<Value*>(&xValue);
 
   return aNestedValue;
 }

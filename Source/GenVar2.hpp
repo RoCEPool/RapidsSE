@@ -5,6 +5,8 @@
 
 namespace Forth
 {
+  static const i8 C_WSP_GENVAR = C_64K;
+  
   class GenVar2 : public Object
   {
   private:

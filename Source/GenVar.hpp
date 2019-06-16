@@ -20,17 +20,22 @@ namespace Forth
     } ;
   };
   
-  static const i8 C_WSP_GENVAR = C_64K;
-  
   class GenVar : public Object
   {
   private:
-    union {
+    struct {
       
-      Wsp_t<C_WSP_GENVAR> m_xWsp; // workspace
+      Header m_xHeader;  // header
+      union {
+        i8      m_nSize; // size of str
+        i8      m_iInt;  // value contents as iInt
+        Object* m_pObj;  // value contents as pPtr
+        Value*  m_aVal;  // value contents as pPtr
+      } ;
       
-      ValSee m_xNestedValue;      // inspector
-    } ;
+      char m_caStr[C_MAX_VCH];
+      
+    } xValue;
   
     // must be last
     Footer m_xFooter;
