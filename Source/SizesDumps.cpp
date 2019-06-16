@@ -321,9 +321,9 @@ i8 giClassSize[]
   /*  0 */ 0,                          // CN_NONE
   
   /*    */ sizeof(FipVal),             // CN_FIPVAL
-  /*  6 */ sizeof(FltVal),             // CN_FLTVAL
+  /*  6 */ 0,                          // CN_FLTVAL
   /*  7 */ sizeof(IntVal),             // CN_INTVAL
-  /*  9 */ sizeof(IvlVal),             // CN_IVLVAL
+  /*  9 */ 0,                          // CN_IVLVAL
   /* 11 */ sizeof(PtrVal),             // CN_PTRVAL
   /* 12 */ sizeof(StrVal),             // CN_STRVAL
   
