@@ -31,8 +31,6 @@ namespace Forth
     StrVal* aNestedStrVal(void);
     Value*  aNestedValue(void);
 
-    void    vGetString(Stz* aStz);
-
     Footer* aFooter(void);
   };
 
