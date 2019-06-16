@@ -30,6 +30,8 @@ namespace Forth
         i8      m_nSize; // size of str
         i8      m_iInt;  // value contents as iInt
         Object* m_pObj;  // value contents as pPtr
+        
+        _Dtm    m_xDtm;  // datum 
       } ;
       
       char m_caStr[C_MAX_VCH];
