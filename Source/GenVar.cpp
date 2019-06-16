@@ -36,14 +36,12 @@ void* GenVar::operator new(size_t)
 GenVar::GenVar(void)
 : Object(CN_GENVAR)
 {
-  _precondition_(_MAGIC_,CN_GENVAR);                    //! need to add _FOOTER_
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  Value* aNestedValue = this->aNestedValue();
+  xValue.m_xHeader.vSetMagic();
+  xValue.m_xHeader.vSetClass(CN_NONE);
   
-  aNestedValue->vSetMagic();
-  aNestedValue->vSetClass(CN_NONE);
-  
-  _postcondition_(_MAGIC_,CN_GENVAR);
+  _postcondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,6 +49,8 @@ GenVar::GenVar(void)
 /*----------------------------------------------------------------------------*/
 GenVar::~GenVar(void) noexcept(false)
 {
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,6 +63,8 @@ GenVar::~GenVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(d8 dFlt)
 {
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
   xValue.m_xHeader.vSetClass(CN_FLTVAL);
   xValue.m_xDtm.m_dFlt = dFlt;
 }
@@ -72,6 +74,8 @@ void GenVar::operator =(d8 dFlt)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(i8 iInt)
 {
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
   xValue.m_xHeader.vSetClass(CN_INTVAL);
   xValue.m_xDtm.m_iInt = iInt;
 }
@@ -82,6 +86,8 @@ void GenVar::operator =(i8 iInt)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Object* pObject)
 {
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
   xValue.m_xHeader.vSetClass(CN_PTRVAL);
   xValue.m_xDtm.m_pObject = pObject;
 }
@@ -91,6 +97,8 @@ void GenVar::operator =(Object* pObject)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Stz* szStz)
 {
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
   StrVal* aStrVal = (StrVal*)aNestedValue();
   
   // set nested class
@@ -109,7 +117,7 @@ void GenVar::operator =(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 i8 GenVar::iInt(void)
 {
-  _precondition_(_MAGIC_);
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
   IntVal* aNestedIntVal = reinterpret_cast<IntVal*>(aNestedValue());
   
@@ -123,7 +131,7 @@ i8 GenVar::iInt(void)
 /*----------------------------------------------------------------------------*/
 IntVal* GenVar::aNestedIntVal(void)
 {
-  _precondition_(_MAGIC_);
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
   IntVal* aNestedIntVal = reinterpret_cast<IntVal*>(aNestedValue());
   
@@ -135,7 +143,7 @@ IntVal* GenVar::aNestedIntVal(void)
 /*----------------------------------------------------------------------------*/
 PtrVal* GenVar::aNestedPtrVal(void)
 {
-  _precondition_(_MAGIC_);
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
   PtrVal* aNestedPtrVal = reinterpret_cast<PtrVal*>(aNestedValue());
   
@@ -147,7 +155,7 @@ PtrVal* GenVar::aNestedPtrVal(void)
 /*----------------------------------------------------------------------------*/
 Stz* GenVar::szStz(void)
 {
-  _precondition_(_MAGIC_);
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
   Stz* sz = (Stz*)xValue.m_caStr;
 
@@ -159,7 +167,7 @@ Stz* GenVar::szStz(void)
 /*----------------------------------------------------------------------------*/
 Value* GenVar::aNestedValue(void)
 {
-  _precondition_(_MAGIC_);
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
  
   Value* aNestedValue = reinterpret_cast<Value*>(&xValue);
 
