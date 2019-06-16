@@ -122,7 +122,7 @@ void GenVar2::operator =(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* get integer (ignoring type)                                                */
 /*----------------------------------------------------------------------------*/
-i8 GenVar2::iNestedAsInt(void)
+i8 GenVar2::iInt(void)
 {
   _precondition_(_MAGIC_);
   

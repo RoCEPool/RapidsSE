@@ -25,7 +25,7 @@ namespace Forth
     void operator =(Object* pObject);
     void operator =(Stz* szStr);
 
-    i8      iNestedAsInt(void);
+    i8      iInt(void);
     IntVal* aNestedIntVal(void);
     PtrVal* aNestedPtrVal(void);
     StrVal* aNestedStrVal(void);

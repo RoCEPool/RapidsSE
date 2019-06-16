@@ -124,7 +124,7 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
       }
         
       case CN_INTVAL: {
-        IntVal *aIntVal = _aIntVal(aNestedValue); //xVariable.iNestedAsInt();
+        IntVal *aIntVal = _aIntVal(aNestedValue); //xVariable.iInt();
         i8 iInt = aIntVal->iInt();
         vTrace("[%s] [%2lld] [%s] %lld\n"_Stz,
                aPrefix,iVal,aCN[eClass],iInt);
@@ -824,7 +824,7 @@ bool Stack::bPopAsInt(i8& iArg)
   GenVar xGenVar;
   vPopVal(xGenVar.aNestedValue());
   
-  iArg = xGenVar.iNestedAsInt();
+  iArg = xGenVar.iInt();
   
   return true;
 }
