@@ -444,9 +444,9 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   EntWrk xEntWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
-  StrVal* aStrVal = _aStrVal(xVariable.aStrVal());
+  Stz* szStz = xVariable.szStz();
   
-  Extractor::vAddElement(&xEntWrkLower,aStrVal->aStz(),pColumn0,pFormatters);
+  Extractor::vAddElement(&xEntWrkLower,szStz,pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     xEntWrkLower.vAppendMinusInfinity();
   }
@@ -651,9 +651,9 @@ void Step::vIndexRange(MP_Task mpTask)
   EntWrk xEntWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
-  StrVal* aStrVal = _aStrVal(xValWrkLwr.aStrVal());
+  Stz* szStz = xValWrkLwr.szStz();
   
-  Extractor::vAddElement(&xEntWrkLower,aStrVal->aStz(),pColumn0,pFormatters);
+  Extractor::vAddElement(&xEntWrkLower,szStz,pColumn0,pFormatters);
 
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     xEntWrkLower.vAppendMinusInfinity();
@@ -664,9 +664,9 @@ void Step::vIndexRange(MP_Task mpTask)
   // make the upper key
   EntWrk xEntWrkUpper;
   pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  aStrVal = _aStrVal(xValWrkUpr.aStrVal());
+  szStz = xValWrkUpr.szStz();
   
-  Extractor::vAddElement(&xEntWrkUpper,aStrVal->aStz(),pColumn0,pFormatters);
+  Extractor::vAddElement(&xEntWrkUpper,szStz,pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     xEntWrkUpper.vAppendPlusInfinity();
   }
@@ -1006,9 +1006,9 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   EntWrk xEntWrkUpper;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
-  StrVal* aStrVal = _aStrVal(xVariable.aStrVal());
+  Stz* szStz = xVariable.szStz();
   
-  Extractor::vAddElement(&xEntWrkUpper,aStrVal->aStz(),pColumn0,pFormatters);
+  Extractor::vAddElement(&xEntWrkUpper,szStz,pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     xEntWrkUpper.vAppendPlusInfinity();
   }
