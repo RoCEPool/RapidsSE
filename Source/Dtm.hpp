@@ -34,25 +34,27 @@ namespace Values
   public:
     union {
       
-      i8   m_iValue;
+      Object* m_pObject;
+      i8      m_nSize;    // size of str
+      i8      m_iValue;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      i8      m_iBcd;
+      i8      m_iBol;
+      i8      m_iDte;
+      i8      m_iEdt;
+      d8      m_dFlt;
+      i8      m_iInt;
+      i8      m_iIvl;
+      i8      m_iTme;
+      i8      m_iTsp;
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      i8   m_iBcd;
-      i8   m_iBol;
-      i8   m_iDte;
-      i8   m_iEdt;
-      d8   m_dFlt;
-      i8   m_iInt;
-      i8   m_iIvl;
-      i8   m_iTme;
-      i8   m_iTsp;
-      
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      _Dte xDte;
-      _Edt xEdt;
-      _Ivl xIvl;
-      _Tme xTme;
-      _Tsp xTsp;
+      _Dte    xDte;
+      _Edt    xEdt;
+      _Ivl    xIvl;
+      _Tme    xTme;
+      _Tsp    xTsp;
     };
   
   public:

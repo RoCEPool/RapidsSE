@@ -4,22 +4,15 @@
 #pragma once
 
 namespace Forth
-{  
+{
   class GenVar : public Object
   {
   private:
     struct {
       
-      Header m_xHeader;  // header
-      union {
-        i8      m_nSize; // size of str
-        i8      m_iInt;  // value contents as iInt
-        Object* m_pObj;  // value contents as pPtr
-        
-        _Dtm    m_xDtm;  // datum
-      } ;
-      
-      char m_caStr[C_MAX_VCH];
+      Header m_xHeader;
+      _Dtm   m_xDtm;
+      char   m_caStr[C_MAX_VCH];
       
     } xValue;
   
