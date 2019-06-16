@@ -17,12 +17,13 @@ pDUMPFUN *gpDump[]
   /*  0 */ &Dump::vInvalid,         // CN_NONE
   
   /*    */ &Dump::vInvalid,         // CN_FIPVAL
-  /*  6 */ &Dump::vInvalid,         // CN_FLTVAL
   /*  7 */ &Dump::vInvalid,         // CN_INTVAL
-  /*  9 */ &Dump::vInvalid,         // CN_IVLVAL
   /* 11 */ &Dump::vInvalid,         // CN_PTRVAL
   /* 12 */ &Dump::vInvalid,         // CN_STRVAL
-  
+
+  /*  6 */ &Dump::vInvalid,         // CN_FLTVAL
+  /*  9 */ &Dump::vInvalid,         // CN_IVLVAL
+
   /* 19 */ &Dump::vInvalid,         // CN_ACCESSPATH
   /*    */ &Dump::vDummy,           // CN_ACTION
   /*    */ &Dump::vDummy,           // CN_ACTIONSEQUENCE
@@ -321,12 +322,13 @@ i8 giClassSize[]
   /*  0 */ 0,                          // CN_NONE
   
   /*    */ sizeof(FipVal),             // CN_FIPVAL
-  /*  6 */ 0,                          // CN_FLTVAL
   /*  7 */ sizeof(IntVal),             // CN_INTVAL
-  /*  9 */ 0,                          // CN_IVLVAL
   /* 11 */ sizeof(PtrVal),             // CN_PTRVAL
   /* 12 */ sizeof(StrVal),             // CN_STRVAL
-  
+ 
+  /*  6 */ 0,                          // CN_FLTVAL
+  /*  9 */ 0,                          // CN_IVLVAL
+
   /* 19 */ sizeof(AccessPath),         // CN_ACCESSPATH
   /*    */ sizeof(Action),             // CN_ACTION
   /*    */ sizeof(ActionSequence),     // CN_ACTIONSEQUENCE
@@ -624,12 +626,13 @@ eHT geWhichHeap[]
   /*  0 */ HT_INVALID,           // CN_NONE
   
   /*  8 */ HT_INVALID,           // CN_FIPVAL
-  /*  6 */ HT_INVALID,           // CN_FLTVAL
   /*  7 */ HT_INVALID,           // CN_INTVAL
-  /*  9 */ HT_INVALID,           // CN_IVLVAL
   /* 11 */ HT_INVALID,           // CN_PTRVAL
   /* 12 */ HT_INVALID,           // CN_STRVAL
-  
+
+  /*  6 */ HT_INVALID,           // CN_FLTVAL
+  /*  9 */ HT_INVALID,           // CN_IVLVAL
+
   /* 19 */ HT_TRANSIENT_MEDIUM,  // CN_ACCESSPATH
   /*    */ HT_INVALID,           // CN_ACTION
   /*    */ HT_INVALID,           // CN_ACTIONSEQUENCE

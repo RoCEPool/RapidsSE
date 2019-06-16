@@ -18,12 +18,13 @@ enum eCN : u2 // Class Number
   /*   0 0x00        0B Heap:I */ CN_NONE,
   
   /*   4 0x04       16B Heap:I */ CN_FIPVAL,
-  /*   5 0x05       16B Heap:I */ CN_FLTVAL,     //! TO BE DELETED
   /*   6 0x06       16B Heap:I */ CN_INTVAL,
-  /*   7 0x07       16B Heap:I */ CN_IVLVAL,     //! TO BE DELETED
   /*   8 0x08       16B Heap:I */ CN_PTRVAL,
   /*   9 0x09      272B Heap:I */ CN_STRVAL,
-  
+ 
+  /*   5 0x05       16B Heap:I */ CN_FLTVAL__,     //! TO BE DELETED
+  /*   7 0x07       16B Heap:I */ CN_IVLVAL__,     //! TO BE DELETED
+
   /*  12 0x0C       80B Heap:M */ CN_ACCESSPATH,
   /*                           */ CN_ACTION,
   /*                           */ CN_ACTIONSEQUENCE,
@@ -318,12 +319,13 @@ static Stz* aCN[]
   /*   0 0x00 */ "NONE"_Stz,                // CN_NONE
   
   /*   4 0x04 */ "FIPVAL"_Stz,              // CN_FIPVAL
-  /*   5 0x05 */ "FLTVAL"_Stz,              // CN_FLTVAL
   /*   6 0x06 */ "INTVAL"_Stz,              // CN_INTVAL
-  /*   7 0x07 */ "IVLVAL"_Stz,              // CN_IVLVAL
   /*   8 0x08 */ "PTRVAL"_Stz,              // CN_PTRVAL
   /*   9 0x09 */ "STRVAL"_Stz,              // CN_STRVAL
-  
+
+  /*   5 0x05 */ "FLTVAL"_Stz,              // CN_FLTVAL
+  /*   7 0x07 */ "IVLVAL"_Stz,              // CN_IVLVAL
+
   /*  12 0x0C */ "ACCESSPATH"_Stz,          // CN_ACCESSPATH
   /*          */ "ACTION"_Stz,              // CN_ACTION
   /*          */ "ACTIONJSEQUENCE"_Stz,     // CN_ACTIONSEQUENCE

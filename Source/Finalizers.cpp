@@ -14,12 +14,13 @@ pFINALIZE *gpFinalize[]
   /*  0 */ &Finalize::vUndefined,         // CN_NONE
   
   /*    */ &Finalize::vUndefined,         // CN_FIPVAL
-  /*  6 */ &Finalize::vUndefined,         // CN_FLTVAL
   /*  7 */ &Finalize::vUndefined,         // CN_INTVAL
-  /*  9 */ &Finalize::vUndefined,         // CN_IVLVAL
   /* 11 */ &Finalize::vUndefined,         // CN_PTRVAL
   /* 12 */ &Finalize::vUndefined,         // CN_STRVAL
-  
+
+  /*  6 */ &Finalize::vUndefined,         // CN_FLTVAL
+  /*  9 */ &Finalize::vUndefined,         // CN_IVLVAL
+
   /* 19 */ &Finalize::vUndefined,         // CN_ACCESSPATH
   /*    */ &Finalize::vUndefined,         // CN_ACTION
   /*    */ &Finalize::vUndefined,         // CN_ACTIONSEQUENCE
