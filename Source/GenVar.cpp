@@ -164,10 +164,8 @@ Stz* GenVar::szStz(void)
 {
   _precondition_(_MAGIC_);
   
-  StrVal* aStrVal = reinterpret_cast<StrVal*>(aNestedValue());
-  
-  Stz* sz = aStrVal->aStz();
-  
+  Stz* sz = (Stz*)xValue.m_caStr;
+
   return sz;
 }
 
