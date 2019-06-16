@@ -50,13 +50,12 @@ GenVar::GenVar(void)
 GenVar::~GenVar(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
-  
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
 
 /*----------------------------------------------------------------------------*/
 /* assign/copy a float into workspace                                         */
@@ -79,7 +78,6 @@ void GenVar::operator =(i8 iInt)
   xValue.m_xHeader.vSetClass(CN_INTVAL);
   xValue.m_xDtm.m_iInt = iInt;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* assign/copy a pointer to a proper object into workspace                    */
@@ -108,7 +106,6 @@ void GenVar::operator =(Stz* szStz)
   aStrVal->vAssign(szStz);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -119,9 +116,7 @@ i8 GenVar::iInt(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  IntVal* aNestedIntVal = reinterpret_cast<IntVal*>(aNestedValue());
-  
-  i8 iInt = aNestedIntVal->iInt();
+  i8 iInt = xValue.m_xDtm.m_iInt;
   
   return iInt;
 }
@@ -174,9 +169,6 @@ Value* GenVar::aNestedValue(void)
   return aNestedValue;
 }
 
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
@@ -187,7 +179,7 @@ Value* GenVar::aNestedValue(void)
 /*----------------------------------------------------------------------------*/
 Footer* GenVar::aFooter(void)
 {
-  _precondition_(_MAGIC_);
+  _precondition_(_MAGIC_,CN_GENVAR);
   
   return &m_xFooter;
 }
