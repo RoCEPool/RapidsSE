@@ -22,15 +22,18 @@ namespace Values
   class PtrVal;
   class StrVal;
   
-  class Value : public Header
+  class Value //: public Header
   {
   public:
     void* operator new(size_t);
     
-    Value(eCN eClass);
+    Header m_xHeader;
+    //Value(eCN eClass);
   
     i8   nSize(void);
     void vToString(Stz* aString);
+  
+    eCN  eClass(void);
   };
 }
 

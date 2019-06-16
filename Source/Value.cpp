@@ -18,11 +18,11 @@ void* Value::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Value::Value(eCN eClass)
-: Header(eClass)
-{
-  _checkInitialisedSize_(sizeof(Value));
-}
+//Value::Value(eCN eClass)
+//: Header(eClass)
+//{
+//  _checkInitialisedSize_(sizeof(Value));
+//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -31,11 +31,21 @@ Value::Value(eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* get size (in bytes) of value                                               */
 /*----------------------------------------------------------------------------*/
+eCN Value::eClass(void)
+{
+  eCN eClass = m_xHeader.eClass();
+  
+  return eClass;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size (in bytes) of value                                               */
+/*----------------------------------------------------------------------------*/
 i8 Value::nSize(void)
 {
   i8 nBytes = 0;
   
-  eCN eClassNo = this->eClass();
+  eCN eClassNo = eClass();
   
   switch (eClassNo) {
       

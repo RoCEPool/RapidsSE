@@ -18,8 +18,10 @@ void* IntVal::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IntVal::IntVal(void)
-: Value(CN_INTVAL)
+//: Value(CN_INTVAL)
 {
+  m_xHeader.vSetClass(CN_INTVAL);
+  
   m_iInt = 0;
   
   _checkInitialised_(CN_INTVAL);
