@@ -97,13 +97,8 @@ void GenVar::operator =(Stz* szStz)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  StrVal* aStrVal = (StrVal*)aNestedValue();
-  
-  // set nested class
-  aStrVal->vSetClass(CN_STRVAL);
-  
-  // copy the stz into the nested ptrval
-  aStrVal->vAssign(szStz);
+  xValue.m_xHeader.vSetClass(CN_STRVAL);
+  xValue.m_xDtm.m_nSize = StrLib::nCopy(xValue.m_caStr,szStz->aChar()) + 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,6 +115,23 @@ i8 GenVar::iInt(void)
   
   return iInt;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get stz in the wsp area                                                    */
+/*----------------------------------------------------------------------------*/
+Stz* GenVar::szStz(void)
+{
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
+  Stz* sz = (Stz*)xValue.m_caStr;
+  
+  return sz;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 
 /*----------------------------------------------------------------------------*/
 /* get address of the intval in the wsp area                                  */
@@ -143,18 +155,6 @@ PtrVal* GenVar::aNestedPtrVal(void)
   PtrVal* aNestedPtrVal = reinterpret_cast<PtrVal*>(aNestedValue());
   
   return aNestedPtrVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stz in the wsp area                                                    */
-/*----------------------------------------------------------------------------*/
-Stz* GenVar::szStz(void)
-{
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
-  
-  Stz* sz = (Stz*)xValue.m_caStr;
-
-  return sz;
 }
 
 /*----------------------------------------------------------------------------*/
