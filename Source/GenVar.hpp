@@ -37,7 +37,6 @@ namespace Forth
   
   
   private:
-    IntVal* aNestedIntVal(void);
     PtrVal* aNestedPtrVal(void);
   
     Footer* aFooter(void);
