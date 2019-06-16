@@ -17,10 +17,8 @@ namespace Values
     
     void operator =(i8 iVal);
     
-    i8 nSize(void) const;
-    i8* aInt(void);
-    i8 iInt(void) const;
-    
+    i8   iInt(void) const;
+    i8   nSize(void) const;
     void vToString(Stz* aWorkspace);
   };
   
@@ -35,7 +33,6 @@ namespace Values
   
     return aIntVal;
   }
-  
 }
 
 /*============================================================================*/
