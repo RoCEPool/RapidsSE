@@ -82,13 +82,8 @@ void GenVar::operator =(i8 iInt)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Object* pObject)
 {
-  PtrVal* aNestedPtrVal = (PtrVal*)aNestedValue();
-  
-  // set nested class
-  aNestedPtrVal->vSetClass(CN_PTRVAL);
-  
-  // put the pointer into the nested ptrval
-  *aNestedPtrVal = pObject;
+  xValue.m_xHeader.vSetClass(CN_PTRVAL);
+  xValue.m_xDtm.m_pObject = pObject;
 }
 
 /*----------------------------------------------------------------------------*/

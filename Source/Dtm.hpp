@@ -7,8 +7,10 @@ namespace Values
 {
   union _Dtm {
     
-    i8   m_iValue;
-    
+    Object* m_pObject;
+    i8      m_nSize;    // size of str
+    i8      m_iValue;
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     i8   m_iBcd;
     i8   m_iBol;
