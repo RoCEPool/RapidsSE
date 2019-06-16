@@ -68,11 +68,7 @@ StrVal::operator Stz&(void)
 /*----------------------------------------------------------------------------*/
 void StrVal::vAssign(Stz* aStz)
 {
-  StrLib::vCopy(aChar(),aStz->aChar());
-
-  i8 nBytes = StrLib::iSize(aChar());
-  
-  m_nBytesFollowing = nBytes;
+  m_nBytesFollowing = StrLib::nCopy(m_caBytes,aStz->aChar()) + 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,9 +76,7 @@ void StrVal::vAssign(Stz* aStz)
 /*----------------------------------------------------------------------------*/
 char* StrVal::aChar(void)
 {
-  char* aArea = aAdd<char*>(&m_nBytesFollowing,sizeof(m_nBytesFollowing));
-  
-  return aArea;
+  return m_caBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,7 +85,7 @@ char* StrVal::aChar(void)
 i8 StrVal::nSize(void)
 {
   i8 nBytes = sizeof(StrVal)
-                - sizeof(m_caByteGlass)
+                - sizeof(m_caBytes)
                 + m_nBytesFollowing;
   
   return nBytes;
@@ -102,9 +96,7 @@ i8 StrVal::nSize(void)
 /*----------------------------------------------------------------------------*/
 Stz* StrVal::aStz(void)
 {
-  char* aAddr = aChar();
-  
-  return reinterpret_cast<Stz*>(aAddr);
+  return reinterpret_cast<Stz*>(m_caBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,7 +104,7 @@ Stz* StrVal::aStz(void)
 /*----------------------------------------------------------------------------*/
 void StrVal::vToString(Stz* aStz)
 {
-  StrLib::vCopy(aStz->aChar(),aChar());
+  StrLib::vCopy(aStz->aChar(),m_caBytes);
 }
 
 /*============================================================================*/

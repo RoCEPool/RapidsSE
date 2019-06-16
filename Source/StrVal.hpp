@@ -8,10 +8,8 @@ namespace Values
   class StrVal : public Value
   {
   protected:
-    i8 m_nBytesFollowing;
-  
-    // ..bytes..
-    char m_caByteGlass[256];
+    i8   m_nBytesFollowing;
+    char m_caBytes[256];
   
   public:
     void* operator new(size_t);
