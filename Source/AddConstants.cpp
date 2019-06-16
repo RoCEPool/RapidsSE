@@ -9,28 +9,28 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add constant to main dictionary                                            */
 /*----------------------------------------------------------------------------*/
-void Axioms::vAddConstant(Stz* aName, i8 iVal)
+void Axioms::vAddConstant(Stz* szName, i8 iVal)
 {
-  ForthWord* pNewWord = new(&gpAttachMap->m_oRootDic) ForthWord(aName);
+  ForthWord* pNewWord = new(&gpAttachMap->m_oRootDic) ForthWord(szName);
   
-  IntVal xIntVal;
-  xIntVal = iVal;
-  
-  pNewWord->vEncode("pushValue"_Stz,&xIntVal);
+  GenVar xVar;
+  xVar = iVal;
+
+  pNewWord->vEncode("pushValue"_Stz,&xVar);
   pNewWord->vEncode("exit"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add constant to main dictionary                                            */
 /*----------------------------------------------------------------------------*/
-void Axioms::vAddConstant(Stz* aName, Stz* aValue)
+void Axioms::vAddConstant(Stz* szName, Stz* szVal)
 {
-  ForthWord* pNewWord = new(&gpAttachMap->m_oRootDic) ForthWord(aName);
+  ForthWord* pNewWord = new(&gpAttachMap->m_oRootDic) ForthWord(szName);
   
-  GenVar xWspStr;
-  xWspStr = aValue;
+  GenVar xVar;
+  xVar = szVal;
   
-  pNewWord->vEncode("pushValue"_Stz,&xWspStr);
+  pNewWord->vEncode("pushValue"_Stz,&xVar);
   pNewWord->vEncode("exit"_Stz);
 }
 
