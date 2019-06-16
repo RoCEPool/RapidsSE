@@ -18,11 +18,13 @@ void* Value::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-//Value::Value(eCN eClass)
+Value::Value(eCN eClass)
 //: Header(eClass)
-//{
-//  _checkInitialisedSize_(sizeof(Value));
-//}
+{
+  m_xHeader.vSetClass(eClass);
+  
+  _checkInitialisedSize_(sizeof(Value));
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

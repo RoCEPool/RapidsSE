@@ -24,16 +24,17 @@ namespace Values
   
   class Value //: public Header
   {
+  protected:
+    Header m_xHeader;
+  
   public:
     void* operator new(size_t);
-    
-    Header m_xHeader;
-    //Value(eCN eClass);
+    Value(eCN eClass);
   
+    eCN  eClass(void);
     i8   nSize(void);
     void vToString(Stz* aString);
   
-    eCN  eClass(void);
   };
 }
 

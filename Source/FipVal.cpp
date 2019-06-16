@@ -31,7 +31,7 @@ void* FipVal::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 FipVal::FipVal(void)
-//: Value(CN_FIPVAL)
+: Value(CN_FIPVAL)
 {
   m_xHeader.vSetClass(CN_FIPVAL);
   

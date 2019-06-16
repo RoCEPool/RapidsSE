@@ -34,7 +34,7 @@ void* StrVal::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StrVal::StrVal(void)
-//: Value(CN_STRVAL)
+: Value(CN_STRVAL)
 {
   m_xHeader.vSetClass(CN_STRVAL);
   vFatal("fatal: StrVal class cannot be a local variable\n"_Stz);
