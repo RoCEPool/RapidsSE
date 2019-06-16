@@ -25,7 +25,6 @@ namespace Forth
     GenVar(void);
    ~GenVar(void) noexcept(false);
   
-    void operator =(d8 dFlt);
     void operator =(i8 iInt);
     void operator =(Object* pObject);
     void operator =(Stz* szStr);

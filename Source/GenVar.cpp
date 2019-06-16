@@ -58,17 +58,6 @@ GenVar::~GenVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* assign/copy a float into workspace                                         */
-/*----------------------------------------------------------------------------*/
-void GenVar::operator =(d8 dFlt)
-{
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
-  
-  xValue.m_xHeader.vSetClass(CN_FLTVAL);
-  xValue.m_xDtm.m_dFlt = dFlt;
-}
-
-/*----------------------------------------------------------------------------*/
 /* assign/copy an integer into workspace                                      */
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(i8 iInt)
