@@ -215,41 +215,7 @@ Object* QueueBuffer::pPop(bool& bDiscardable)
   
   return pObject;
 }
-/*----------------------------------------------------------------------------*/
-//Object* QueueBuffer::pPop(bool& bDiscardable)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
-//
-//  bDiscardable = false;
-//
-//  if (0 == m_nPointers) {
-//    //ASSERT(m_aTopValue == m_aNextFree);
-//    return nullptr;
-//  }
-//
-//  i8 nBytes = m_aTopValue->nSize();
-//  ASSERT(nBytes == sizeof(PtrVal));
-//
-//  //MemLib::vCopy(pValWrk->aNestedValue(),m_aTopValue,nBytes,CN_QUEUEBUFFER);
-//  Object* pObject = _aPtrVal(m_aTopValue)->pObj();
-//
-//  //m_aTopValue = pNextValue(m_aTopValue);
-//  m_aTopValue = aAdd<Value*>(m_aTopValue,nBytes);
-//
-//  m_nPointers--;
-//
-//  if (0 == m_nPointers) {
-//    if (m_pNext) {
-//      bDiscardable = true;
-//    }
-//    else {
-//      m_aTopValue = aFirstValue();
-//      m_aNextFree = m_aTopValue;
-//    }
-//  }
-//
-//  return pObject;
-//}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
