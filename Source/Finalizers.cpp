@@ -13,7 +13,6 @@ pFINALIZE *gpFinalize[]
 {
   /*  0 */ &Finalize::vUndefined,         // CN_NONE
   
-  /*  4 */ &Finalize::vUndefined,         // CN_DTEVAL
   /*    */ &Finalize::vUndefined,         // CN_FIPVAL
   /*  6 */ &Finalize::vUndefined,         // CN_FLTVAL
   /*  7 */ &Finalize::vUndefined,         // CN_INTVAL
