@@ -28,7 +28,7 @@ namespace Forth
     i8      iInt(void);
     IntVal* aNestedIntVal(void);
     PtrVal* aNestedPtrVal(void);
-    StrVal* aNestedStrVal(void);
+    StrVal* aStrVal(void);
     Value*  aNestedValue(void);
 
     Footer* aFooter(void);

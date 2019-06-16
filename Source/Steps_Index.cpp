@@ -444,7 +444,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   EntWrk xEntWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
-  StrVal* aStrVal = _aStrVal(xVariable.aNestedStrVal());
+  StrVal* aStrVal = _aStrVal(xVariable.aStrVal());
   
   Extractor::vAddElement(&xEntWrkLower,aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
@@ -651,7 +651,7 @@ void Step::vIndexRange(MP_Task mpTask)
   EntWrk xEntWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
-  StrVal* aStrVal = _aStrVal(xValWrkLwr.aNestedStrVal());
+  StrVal* aStrVal = _aStrVal(xValWrkLwr.aStrVal());
   
   Extractor::vAddElement(&xEntWrkLower,aStrVal->aStz(),pColumn0,pFormatters);
 
@@ -664,7 +664,7 @@ void Step::vIndexRange(MP_Task mpTask)
   // make the upper key
   EntWrk xEntWrkUpper;
   pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  aStrVal = _aStrVal(xValWrkUpr.aNestedStrVal());
+  aStrVal = _aStrVal(xValWrkUpr.aStrVal());
   
   Extractor::vAddElement(&xEntWrkUpper,aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
@@ -1006,7 +1006,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   EntWrk xEntWrkUpper;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_oFormatters;
-  StrVal* aStrVal = _aStrVal(xVariable.aNestedStrVal());
+  StrVal* aStrVal = _aStrVal(xVariable.aStrVal());
   
   Extractor::vAddElement(&xEntWrkUpper,aStrVal->aStz(),pColumn0,pFormatters);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {

@@ -106,13 +106,13 @@ void GenVar2::operator =(Object* pObject)
 /*----------------------------------------------------------------------------*/
 void GenVar2::operator =(Stz* szStz)
 {
-  StrVal* aNestedStrVal = (StrVal*)aNestedValue();
+  StrVal* aStrVal = (StrVal*)aNestedValue();
   
   // set nested class
-  aNestedStrVal->vSetClass(CN_STRVAL);
+  aStrVal->vSetClass(CN_STRVAL);
   
   // copy the stz into the nested ptrval
-  aNestedStrVal->vAssign(szStz);
+  aStrVal->vAssign(szStz);
 }
 
 
@@ -160,13 +160,13 @@ PtrVal* GenVar2::aNestedPtrVal(void)
 /*----------------------------------------------------------------------------*/
 /* get address of the strval in the wsp area                                  */
 /*----------------------------------------------------------------------------*/
-StrVal* GenVar2::aNestedStrVal(void)
+StrVal* GenVar2::aStrVal(void)
 {
   _precondition_(_MAGIC_);
   
-  StrVal* aNestedStrVal = reinterpret_cast<StrVal*>(aNestedValue());
+  StrVal* aStrVal = reinterpret_cast<StrVal*>(aNestedValue());
   
-  return aNestedStrVal;
+  return aStrVal;
 }
 
 /*----------------------------------------------------------------------------*/
