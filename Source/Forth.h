@@ -32,7 +32,6 @@ using namespace Forth;
 #include "DicPath.hpp"
 #include "DicStack.hpp"
 #include "GenVar.hpp"
-#include "GenVar2.hpp"
 #include "Local.hpp"
 #include "LocalSet.hpp"
 #include "Routine.hpp"
