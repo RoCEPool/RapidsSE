@@ -34,10 +34,8 @@ namespace Forth
     Stz*    szStz(void);
 
     Value*  aNestedValue(void);
-  
-  
+    
   private:
-    PtrVal* aNestedPtrVal(void);
   
     Footer* aFooter(void);
   };
