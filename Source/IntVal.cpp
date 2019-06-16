@@ -56,7 +56,7 @@ i8 IntVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 void IntVal::vToString(Stz* aWorkspace)
 {
-  if (bIsNull()) {
+  if (C_DATUM_NULL == m_iInt) {
     aWorkspace->vConcat("null"_Stz);
     return;
   }

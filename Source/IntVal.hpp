@@ -5,11 +5,11 @@
 
 namespace Values
 {
-  class IntVal : public Value,
-                 public Dtm
+  class IntVal : public Value
   {
   private:
-    
+    i8  m_iInt;
+  
   public:
     void* operator new(size_t);
     
