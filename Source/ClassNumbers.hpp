@@ -18,9 +18,9 @@ enum eCN : u2 // Class Number
   /*   0 0x00        0B Heap:I */ CN_NONE,
   
   /*   4 0x04       16B Heap:I */ CN_FIPVAL,
-  /*   5 0x05       16B Heap:I */ CN_FLTVAL,
+  /*   5 0x05       16B Heap:I */ CN_FLTVAL,     //! TO BE DELETED
   /*   6 0x06       16B Heap:I */ CN_INTVAL,
-  /*   7 0x07       16B Heap:I */ CN_IVLVAL,
+  /*   7 0x07       16B Heap:I */ CN_IVLVAL,     //! TO BE DELETED
   /*   8 0x08       16B Heap:I */ CN_PTRVAL,
   /*   9 0x09      272B Heap:I */ CN_STRVAL,
   
