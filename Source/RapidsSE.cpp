@@ -649,28 +649,8 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
     }
     API_LOC(330);
 
-    
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     
-//    // pop an entryBuffer off the queue
-//    GenVar xVariable;
-//    while (!pJob_FetchRows->m_pBufferQueue->bPop(&xVariable)) {
-//      //vTrace("SLEEPING\n"_Stz);
-//      Pthread::vSleepMilli(1);
-//    }
-//
-//    //vTrace("Buffers remaining %lld\n"_Stz, pJob_FetchRows->m_pBufferQueue->iCount());
-//
-//    *piExpectedRows = (i8)(pJob_FetchRows->m_pBufferQueue->iCount() * C_ROWS_PER_BUFFER);
-//
-//    // get entry buffer
-//    PtrVal* aPtrVal = xVariable.aNestedPtrVal();
-//    pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(aPtrVal->pObj());
-//    //vTrace("Expected rows per buffer %lld %lld\n"_Stz, rowsPerBuffer, pJob_FetchRows->m_pFetchBuffer->nFetchedRows());
-//    //vTrace("Got buffer %p %lld\n"_Stz, pJob_FetchRows->m_pFetchBuffer, pJob_FetchRows->m_iPartition);
-    
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
     FetchBuffer* pFetchBuffer;
     for (;;) {
       pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());

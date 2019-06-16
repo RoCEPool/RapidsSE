@@ -118,18 +118,21 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
       case CN_FIPVAL: {
         FipVal* aFipVal = _aFipVal(aNestedValue);
         Cell* aCell = aFipVal->aIpPtr();
-        vTrace("[%s] [%2lld] [%s] %p\n"_Stz,aPrefix,iVal,aCN[eClass],aCell);
+        vTrace("[%s] [%2lld] [%s] %p\n"_Stz,
+               aPrefix,iVal,aCN[eClass],aCell);
         break;
       }
         
       case CN_INTVAL: {
-        i8 iIntVal = xVariable.iNestedAsInt();
-        vTrace("[%s] [%2lld] [%s] %lld\n"_Stz,aPrefix,iVal,aCN[eClass],iIntVal);
+        IntVal *aIntVal = _aIntVal(aNestedValue); //xVariable.iNestedAsInt();
+        i8 iInt = aIntVal->iInt();
+        vTrace("[%s] [%2lld] [%s] %lld\n"_Stz,
+               aPrefix,iVal,aCN[eClass],iInt);
         break;
       }
         
       case CN_PTRVAL: {
-        PtrVal* aPtrVal = xVariable.aNestedPtrVal();
+        PtrVal* aPtrVal = _aPtrVal(aNestedValue);
         Object* pObject = aPtrVal->pObj();
         eCN ePtdClass   = pObject->eClass();
         vTrace("[%s] [%2lld] [%s] %p (%s)\n"_Stz,
@@ -139,7 +142,8 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
         
       case CN_STRVAL: {
         StrVal* aStrVal = _aStrVal(aNestedValue);
-        vTrace("[%s] [%2lld] [%s] %s\n"_Stz,aPrefix,iVal,aCN[eClass],aStrVal->aChar());
+        vTrace("[%s] [%2lld] [%s] %s\n"_Stz,
+               aPrefix,iVal,aCN[eClass],aStrVal->aChar());
         break;
       }
         

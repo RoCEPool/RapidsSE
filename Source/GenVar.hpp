@@ -46,12 +46,14 @@ namespace Forth
     void operator =(Object* pObject);
     void operator =(Stz* szStr);
     
+    Value*  aNestedValue(void);
+  
     i8      iNestedAsInt(void);
     IntVal* aNestedIntVal(void);
     PtrVal* aNestedPtrVal(void);
     StrVal* aNestedStrVal(void);
-    Value*  aNestedValue(void);
   
+  private:
     Footer* aFooter(void);
   };
 

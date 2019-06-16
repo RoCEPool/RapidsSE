@@ -50,19 +50,6 @@ void Api::vDeleteJobs(Session* pSession)
         // pop an entryBuffer off the queue
         ApiState::vMarkApiLoc(pSession,300);
         
-        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-        //        GenVar xVariable;
-        //        while (!pJob_FetchRows->m_pBufferQueue->bPop(&xVariable)) {
-        //          Pthread::vSleepMilli(1);
-        //          ApiState::vMarkLocation(pSession,400);
-        //          continue;
-        //        }
-        
-        //        ApiState::vMarkLocation(pSession,500);
-        //
-        //        PtrVal* aPtrVal = xVariable.aNestedPtrVal();
-        //        pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(aPtrVal->pObj());
-        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
         FetchBuffer* pFetchBuffer;
         for (;;) {
           pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
