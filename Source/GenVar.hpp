@@ -47,7 +47,6 @@ namespace Forth
     void operator =(Stz* szStr);
 
     i8      iInt(void);
-    StrVal* aStrVal(void);
     Stz*    szStz(void);
 
     Value*  aNestedValue(void);
