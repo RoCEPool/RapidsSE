@@ -24,8 +24,6 @@ enum eCN : u2 // Class Number
   /*   7 0x07       16B Heap:I */ CN_IVLVAL,
   /*   8 0x08       16B Heap:I */ CN_PTRVAL,
   /*   9 0x09      272B Heap:I */ CN_STRVAL,
-  /*  10 0x0A       16B Heap:I */ CN_TMEVAL,
-  /*  11 0x0B       16B Heap:I */ CN_TSPVAL,
   
   /*  12 0x0C       80B Heap:M */ CN_ACCESSPATH,
   /*                           */ CN_ACTION,
@@ -327,8 +325,6 @@ static Stz* aCN[]
   /*   7 0x07 */ "IVLVAL"_Stz,              // CN_IVLVAL
   /*   8 0x08 */ "PTRVAL"_Stz,              // CN_PTRVAL
   /*   9 0x09 */ "STRVAL"_Stz,              // CN_STRVAL
-  /*  10 0x0A */ "TMEVAL"_Stz,              // CN_TMEVAL
-  /*  11 0x0B */ "TSPVAL"_Stz,              // CN_TSPVAL
   
   /*  12 0x0C */ "ACCESSPATH"_Stz,          // CN_ACCESSPATH
   /*          */ "ACTION"_Stz,              // CN_ACTION

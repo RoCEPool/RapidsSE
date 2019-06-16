@@ -67,8 +67,6 @@ typedef String_t<C_MAX_VCH> sVCH;
 #include "IvlVal.hpp"
 #include "PtrVal.hpp"
 #include "StrVal.hpp"
-#include "TmeVal.hpp"
-#include "TspVal.hpp"
 
 
 /*============================================================================*/
