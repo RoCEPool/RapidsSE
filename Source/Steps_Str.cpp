@@ -266,9 +266,10 @@ void Step::vStrPrepend(MP_Task mpTask)
   
   // If received INTEGER convert to STRING
   if (xValA.eClass() == CN_INTVAL) {
-    s48K xString;
-    xValA.vGetString(xString);
-    xStrA = xString;
+    ASSERT(0);
+//    s48K xString;
+//    xValA.vGetString(xString);
+//    xStrA = _aStrVal(xValA.aNestedValue())->aStz();
   }
   else {
     xStrA = _aStrVal(xValA.aNestedValue())->aStz();                          //! need to simplify this
@@ -276,9 +277,10 @@ void Step::vStrPrepend(MP_Task mpTask)
   
   // If received INTEGER convert to STRING
   if (xValB.eClass() == CN_INTVAL) {
-    s48K xString;
-    xValB.vGetString(xString);
-    xStrB = xString;
+    ASSERT(0);
+//    s48K xString;
+//    xValB.vGetString(xString);
+//    xStrB = xString;
   }
   else {
     xStrB = _aStrVal(xValB.aNestedValue())->aStz();

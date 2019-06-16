@@ -48,7 +48,7 @@ Local::Local(void)
 /*----------------------------------------------------------------------------*/
 /* get address of value nested in the wsp                                     */
 /*----------------------------------------------------------------------------*/
-Value* Local::aNestedValue(void)
+Value* Local::aLocalValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCAL,_FOOTER_);
   

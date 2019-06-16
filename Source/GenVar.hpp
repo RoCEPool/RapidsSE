@@ -53,7 +53,6 @@ namespace Forth
     Value*  aNestedValue(void);
 
     void    vGetString(Stz* aStz);
-    char*   aWspArea(void);
   
     Footer* aFooter(void);
   };

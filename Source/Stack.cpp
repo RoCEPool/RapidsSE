@@ -980,7 +980,7 @@ void Stack::vPushLocal(Local* pLocal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Value* aValue = pLocal->aNestedValue();
+  Value* aValue = pLocal->aLocalValue();
   
   vPushValue(aValue);
 
@@ -1121,7 +1121,7 @@ void Stack::vPopReg(Local* aLocal)
   
   i8 iSize = aPeekValue()->nSize();
   
-  MemLib::vCopy(aLocal->aNestedValue(),m_aTop,iSize,CN_STACK);
+  MemLib::vCopy(aLocal->aLocalValue(),m_aTop,iSize,CN_STACK);
   vPopBy(iSize);
   m_nValues--;
   

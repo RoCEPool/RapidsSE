@@ -15,7 +15,7 @@ void Step::vAddSteps_Dstack(void)
   vAddStep("depth"_Stz,           &Step::vDstackDepth);
   vAddStep("drop"_Stz,            &Step::vDstackDrop);
   vAddStep("2drop"_Stz,           &Step::vDstackDropTwo);
-  vAddStep("dump"_Stz,            &Step::vDstackDump);
+  //vAddStep("dump"_Stz,            &Step::vDstackDump);
   vAddStep("dup"_Stz,             &Step::vDstackDup);
   vAddStep("?dup"_Stz,            &Step::vDstackDupNonZero);
   vAddStep("nip"_Stz,             &Step::vDstackNip);
