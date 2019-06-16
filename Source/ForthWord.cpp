@@ -225,6 +225,29 @@ void* ForthWord::aAppend(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* append a value  (the entire value, not the pointer to it)                  */
 /*----------------------------------------------------------------------------*/
+void ForthWord::vAppend(GenVar* pGenVar)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  void* aAddress = aAppend(pGenVar);
+  ASSERT(aAddress);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append a value  (the entire value, not the pointer to it)                  */
+/*----------------------------------------------------------------------------*/
+void* ForthWord::aAppend(GenVar* pGenVar)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  void* aValueAddress = aAppend(pGenVar->aNestedValue());
+  
+  return aValueAddress;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append a value  (the entire value, not the pointer to it)                  */
+/*----------------------------------------------------------------------------*/
 void ForthWord::vAppend(Value* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
@@ -395,38 +418,26 @@ void ForthWord::vEncode(Stz* aWordNm, Cell* aCell)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a value argument                       */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vEncode(Stz* aWordNm, Value* aValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-
-  vEncode(aWordNm);
-    
-  vAppend(aValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode call to named word which has a value argument                       */
-/*----------------------------------------------------------------------------*/
 void ForthWord::vEncode(Stz* aWordNm, GenVar* pGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   vEncode(aWordNm);
   
-  vAppend(pGenVar->aNestedValue());
+  vAppend(pGenVar);
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a word* argument                       */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vEncode(Stz* aWordNm, ForthWord* pWord)
+void ForthWord::vEncode(Stz* aWordNm, ForthWord* pCalledWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  PtrVal xPtrWord;
-  xPtrWord = pWord;
+  GenVar xVar;
+  xVar = pCalledWord;
   
-  vEncode(aWordNm,&xPtrWord);
+  vEncode(aWordNm,&xVar);
 }
 
 /*----------------------------------------------------------------------------*/

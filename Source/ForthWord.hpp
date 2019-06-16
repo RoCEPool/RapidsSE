@@ -75,6 +75,8 @@ namespace Forth
     byte* ayAllot(i8 iBytes);
     void* aAppend(Cell* aCell);
     void  vAppend(Cell* aCell);
+    void* aAppend(GenVar* pGenVar);
+    void  vAppend(GenVar* pGenVar);
     void* aAppend(i8 iInt);
     void  vAppend(i8 iInt);
     void* aAppend(StepFp* afpStep);
@@ -91,8 +93,7 @@ namespace Forth
     StepFp* afpEntryStep(void);
     void  vEncode(Stz* aWordNm);
     void  vEncode(Stz* aWordNm, Cell* aCell);
-    void  vEncode(Stz* aWordNm, ForthWord* pWord);
-    void  vEncode(Stz* aWordNm, Value* aValue);
+    void  vEncode(Stz* aWordNm, ForthWord* pCalledWord);
     void  vEncode(Stz* aWordNm, GenVar* pGenVar);
     void  vEncode(StepFp* afpEntryStep);
     Cell* aFirstCell(void);
