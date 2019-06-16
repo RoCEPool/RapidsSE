@@ -8,10 +8,7 @@ namespace Values
   class PtrVal : public Value
   {
   private:
-    union {
-      Object* m_pObj;
-      Value*  m_aValue;
-    };
+    Object* m_pObj;
 
   public:
     void* operator new(size_t);
@@ -19,8 +16,7 @@ namespace Values
     PtrVal(void);
     
     void operator =(Object* pObject);
-    void operator =(Value* aValue);
-
+ 
     i8      nSize(void) const;
     Object* pObj(void) const;
     i8      iAsInt(void);

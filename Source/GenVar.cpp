@@ -141,9 +141,9 @@ Value* GenVar::aNestedValue(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
  
-  Value* aNestedValue = reinterpret_cast<Value*>(&xValue);
+  Value* aValue = reinterpret_cast<Value*>(&xValue);
 
-  return aNestedValue;
+  return aValue;
 }
 
 
