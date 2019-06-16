@@ -63,13 +63,8 @@ GenVar::~GenVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(d8 dFlt)
 {
-  FltVal* aNestedFltVal = (FltVal*)aNestedValue();
-  
-  // set nested class
-  aNestedFltVal->vSetClass(CN_FLTVAL);
-  
-  // put the flt word into the nested fltval
-  *aNestedFltVal = dFlt;
+  xValue.m_xHeader.vSetClass(CN_FLTVAL);
+  xValue.m_xDtm.m_dFlt = dFlt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,13 +72,8 @@ void GenVar::operator =(d8 dFlt)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(i8 iInt)
 {
-  IntVal* aNestedIntVal = (IntVal*)aNestedValue();
-  
-  // set nested class
-  aNestedIntVal->vSetClass(CN_INTVAL);
-  
-  // put the int word into the nested intval
-  *aNestedIntVal = iInt;
+  xValue.m_xHeader.vSetClass(CN_INTVAL);
+  xValue.m_xDtm.m_iInt = iInt;
 }
 
 
