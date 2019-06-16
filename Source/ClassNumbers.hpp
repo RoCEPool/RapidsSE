@@ -16,8 +16,7 @@ namespace Base
 enum eCN : u2 // Class Number
 {
   /*   0 0x00        0B Heap:I */ CN_NONE,
-  /*   1 0x01       16B Heap:I */ CN_BCDVAL,
-  /*   2 0x02       16B Heap:I */ CN_BOLVAL,
+  
   /*   3 0x03       16B Heap:I */ CN_DTEVAL,
   /*   4 0x04       16B Heap:I */ CN_FIPVAL,
   /*   5 0x05       16B Heap:I */ CN_FLTVAL,
@@ -320,8 +319,7 @@ enum eCN : u2 // Class Number
 static Stz* aCN[]
 {
   /*   0 0x00 */ "NONE"_Stz,                // CN_NONE
-  /*   1 0x01 */ "BCDVAL"_Stz,              // CN_BCDVAL
-  /*   2 0x02 */ "BOLVAL"_Stz,              // CN_BOLVAL
+  
   /*   3 0x03 */ "DTEVAL"_Stz,              // CN_DTEVAL
   /*   4 0x04 */ "FIPVAL"_Stz,              // CN_FIPVAL
   /*   5 0x05 */ "FLTVAL"_Stz,              // CN_FLTVAL

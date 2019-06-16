@@ -32,15 +32,9 @@ bool Prompt::bPrompt_sizes(SePrompt* pPrompt)
   vTrace("  sizeof(PoolBuffer) = %lu; \n"_Stz, sizeof(PoolBuffer));
   
   vTrace("\n"_Stz);
-  vTrace("  sizeof(BolVal) = %lu; \n"_Stz, sizeof(BolVal));
-  vTrace("  sizeof(DteVal) = %lu; \n"_Stz, sizeof(DteVal));
-  vTrace("  sizeof(FltVal) = %lu; \n"_Stz, sizeof(FltVal));
   vTrace("  sizeof(IntVal) = %lu; \n"_Stz, sizeof(IntVal));
-  vTrace("  sizeof(IvlVal) = %lu; \n"_Stz, sizeof(IvlVal));
   vTrace("  sizeof(PtrVal) = %lu; \n"_Stz, sizeof(PtrVal));
   vTrace("  sizeof(StrVal) = %lu; \n"_Stz, sizeof(StrVal));
-  vTrace("  sizeof(TmeVal) = %lu; \n"_Stz, sizeof(TmeVal));
-  vTrace("  sizeof(TspVal) = %lu; \n"_Stz, sizeof(TspVal));
   vTrace("\n"_Stz);
   
   vTrace("  sizeof(Task)   = %lu; \n"_Stz, sizeof(Task));

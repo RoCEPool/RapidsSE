@@ -60,8 +60,6 @@ typedef String_t<C_MAX_VCH> sVCH;
 #include "Dtm.hpp"
 #include "Value.hpp"
 
-#include "BcdVal.hpp"
-#include "BolVal.hpp"
 #include "DteVal.hpp"
 #include "FipVal.hpp"
 #include "FltVal.hpp"
