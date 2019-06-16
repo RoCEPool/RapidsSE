@@ -170,6 +170,20 @@ StrVal* GenVar::aStrVal(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get stz in the wsp area                                                    */
+/*----------------------------------------------------------------------------*/
+Stz* GenVar::szStz(void)
+{
+  _precondition_(_MAGIC_);
+  
+  StrVal* aStrVal = reinterpret_cast<StrVal*>(aNestedValue());
+  
+  Stz* sz = aStrVal->aStz();
+  
+  return sz;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get address of the value in the wsp area                                   */
 /*----------------------------------------------------------------------------*/
 Value* GenVar::aNestedValue(void)
