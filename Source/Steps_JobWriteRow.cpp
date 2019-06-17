@@ -68,8 +68,7 @@ void Step::vJob_WriteRowEncodeRow(MP_Task mpTask)
   else {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // use row hash to get partition
-    i8 iHash = pJob_WriteRow->m_oRowParts.pNub()->iHash();
-    ASSERT(pJob_WriteRow->m_pRow->m_iHash == iHash);
+    i8 iHash = pJob_WriteRow->m_pRow->m_iHash;
     Table* pTable = pJob_WriteRow->pTable();
     pJob_WriteRow->m_iPartitionId = pTable->iRowPartition(iHash);
     pJob_InsertRow->m_iPartitionId = pJob_WriteRow->m_iPartitionId ;

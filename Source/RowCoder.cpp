@@ -357,8 +357,6 @@ void RowCoder::vEncodeRow(Row* pRow)
     if (! pCol->bIsPartitionKey())
       pRow->m_iHash += iHashColumn(&oDatum,pCol);
   }
-  
-  ASSERT(pRow->m_iHash == m_pIntoNub->iHash());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1469,15 +1467,11 @@ i8 RowCoder::iHashColumn(Datum* pSrcDatum, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  // compute hash of this value
   i8 iHash;
   if (DM_VCH == pCol->eDatumType())
     iHash = HshLib::iHash((byte*)pSrcDatum->m_sVch.aChar(),sizeof(w8));
   else
     iHash = HshLib::iHash((byte*)&pSrcDatum->m_iInt,sizeof(w8));
-  
-  // inc it to the running hash
-  m_pIntoNub->vHashInc(iHash);
   
   return iHash;
 }

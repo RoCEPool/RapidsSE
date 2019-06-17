@@ -36,8 +36,6 @@ namespace Structures
 
     DESC* m_pDesc;    // object describing the items
   
-    i8 m_iHash;       // encoding hash
-
     SpaceUnit* m_axaUnits; // array of space units
     Word*      m_axaWords; // array of space units as word units
   
@@ -70,8 +68,6 @@ namespace Structures
     i8    nHeadBytes(void);
     i8    nHeadBytes_used(void);
     void  vHeadBytes_used(i8 nBytes);
-    i8    iHash(void);
-    void  vHashInc(i8 iDelta);
     bool  bHasSpace(i8 nBytes);
     i8    nItems(void);
     i8    iLastTail(void);
@@ -162,8 +158,6 @@ Nub_t<CN,HEAD,OVER,TAIL,DESC>::Nub_t(void)
 
   m_axaUnits    = nullptr;
   m_axaWords    = nullptr;
-
-  m_iHash       = 0;
 
   i8 nBytes = sizeof(Nub_t<CN,HEAD,OVER,TAIL,DESC>);
   _checkInitialisedSize_(nBytes);
@@ -457,28 +451,6 @@ TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetTail(i8 i_Tail)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get encoding hash                                                          */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
-i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iHash(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  return m_iHash;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc encoding hash                                                          */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
-void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vHashInc(i8 iDelta)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  m_iHash += iDelta;
-}
-
-/*----------------------------------------------------------------------------*/
 /* does buffer have space to allot nBytes ?                                   */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
@@ -605,8 +577,6 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vReset(void)
   m_nTailBytes = 0;
   
   MemLib::vZero(m_axaUnits,(C_SPACEUNIT_QUANTA * m_nSpaceUnits),CN);
-  
-  m_iHash      = 0;
 }
 
 /*----------------------------------------------------------------------------*/
