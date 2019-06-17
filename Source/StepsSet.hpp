@@ -729,7 +729,7 @@
 
   // Job WriteRow
   static void vJob_WriteRowParentJobIdFetch(Tasks::MP_Task mpTask);
-  static void vJob_WriteRowHashRow(Tasks::MP_Task mpTask);
+  static void vJob_WriteRowEncodeRow(Tasks::MP_Task mpTask);
   static void vJob_WriteRowInsertRow(Tasks::MP_Task mpTask);
   static void vJob_WriteRowPartitionFetch(Tasks::MP_Task mpTask);
   static void vJob_WriteRowTableStore(Tasks::MP_Task mpTask);

@@ -13,7 +13,7 @@ void Step::vAddSteps_JobWriteRow(void)
 {
   vAddStep("job_writeRow.parentJobId@"_Stz,  &Step::vJob_WriteRowParentJobIdFetch);
   vAddStep("job_writeRow.insertRow"_Stz,     &Step::vJob_WriteRowInsertRow);
-  vAddStep("job_writeRow.hashRow"_Stz,       &Step::vJob_WriteRowHashRow);
+  vAddStep("job_writeRow.encodeRow"_Stz,     &Step::vJob_WriteRowEncodeRow);
   vAddStep("job_WriteRow.partition@"_Stz,    &Step::vJob_WriteRowPartitionFetch);
   vAddStep("job_WriteRow.table!"_Stz,        &Step::vJob_WriteRowTableStore);
 }
@@ -39,20 +39,20 @@ void Step::vJob_WriteRowParentJobIdFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_WriteRow.hashRow -- hash row to a partition                            */
+/* job_writeRow.encodeRow -- hash row to a partition                            */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteRowHashRow(MP_Task mpTask)
+void Step::vJob_WriteRowEncodeRow(MP_Task mpTask)
 {
-  ENTRY("vJob_WriteRowHashRow"_Stz);
+  ENTRY("vJob_WriteRowEncodeRow"_Stz);
   
   Object* pJobWriteRowPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobWriteRowPtr) )
-    THROW_INVALID_DSTACK("job_WriteRow.hashRow"_Stz);
+    THROW_INVALID_DSTACK("job_writeRow.encodeRow"_Stz);
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobWriteRowPtr);
   
   Object* pJobInsertRowPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobInsertRowPtr) )
-    THROW_INVALID_DSTACK("job_WriteRow.hashRow"_Stz);
+    THROW_INVALID_DSTACK("job_writeRow.encodeRow"_Stz);
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobInsertRowPtr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

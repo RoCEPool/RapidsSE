@@ -7237,7 +7237,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // hash the row\n"
-    "  pJob_InsertRow pJob_WriteRow job_writeRow.HashRow locals| bResult |\n"
+    "  pJob_InsertRow pJob_WriteRow job_writeRow.encodeRow locals| bResult |\n"
     "\n"
     "  bResult not if EC_INVALID_VALUE pJob_InsertRow <ERROR_JOB> !!am <DONE_REQ> then\n"
     "\n"

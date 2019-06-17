@@ -59,8 +59,8 @@
   pTable pJob_InsertRow job_insertRow.NewJobWriteRow locals| pJob_WriteRow |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // hash the row
-  pJob_InsertRow pJob_WriteRow job_writeRow.HashRow locals| bResult |
+  // encode the row
+  pJob_InsertRow pJob_WriteRow job_writeRow.encodeRow locals| bResult |
 
   bResult not if EC_INVALID_VALUE pJob_InsertRow <ERROR_JOB> !!am <DONE_REQ> then
 
