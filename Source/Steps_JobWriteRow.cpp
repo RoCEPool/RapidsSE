@@ -56,7 +56,7 @@ void Step::vJob_WriteRowEncodeRow(MP_Task mpTask)
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobInsertRowPtr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // first format the row
+  // first encode the row
   bool bBlankLine;
   //vTrace("sRecord %s\n"_Stz, pJob_InsertRow->m_pRecord->szRecStr());
   bool bResult = pJob_WriteRow->bEncodeRow(pJob_InsertRow->m_pRecord->szRecStr(),
@@ -67,8 +67,9 @@ void Step::vJob_WriteRowEncodeRow(MP_Task mpTask)
     mpTask->m_pDataStack->vPushI8(0);
   else {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // hash the record to a partition
+    // use row hash to get partition
     i8 iHash = pJob_WriteRow->m_oRowParts.pNub()->iHash();
+    ASSERT(pJob_WriteRow->m_pRow->m_iHash == iHash);
     Table* pTable = pJob_WriteRow->pTable();
     pJob_WriteRow->m_iPartitionId = pTable->iRowPartition(iHash);
     pJob_InsertRow->m_iPartitionId = pJob_WriteRow->m_iPartitionId ;

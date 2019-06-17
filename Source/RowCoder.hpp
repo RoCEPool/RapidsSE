@@ -158,7 +158,7 @@ namespace Data
 
     eMC  eGetFromEncoding(Column* pCol, i8& i_PriorColumn_, i8& i_Offset_);
 
-    void vHashColumn(Datum* pSrcDatum, Column* pCol);
+    i8   iHashColumn(Datum* pSrcDatum, Column* pCol);
     void vHeadAdd(w8 wBytes, i8 nBytes, Column* pCol);
 
     void vMetaCode(Column* pCol, eMC eMetaCode);

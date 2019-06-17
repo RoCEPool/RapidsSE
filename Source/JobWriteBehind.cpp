@@ -181,15 +181,15 @@ eEC JobWriteBehind::eProcessRecord(Stz* szRecStr, i8 nBytes)
     return EC_MAX_ROW_LENGTH;
   }
 
-  bool bFormat = bEncodeRow(szRecStr, nBytes, bBlankLine);
+  bool bValid = bEncodeRow(szRecStr, nBytes, bBlankLine);
   
   if (bBlankLine)
     return EC_BLANKLINE;
 
-  if ( ! bFormat )
+  if (! bValid)
     return EC_INVALID_VALUE;
 
-  // attempt to add record into a write-behind buffer
+  // attempt to add row into a write-behind buffer
   eEC eError = eInsertRow(m_pRow);
 
   // was there an error ?

@@ -353,10 +353,12 @@ void RowCoder::vEncodeRow(Row* pRow)
         NEVER_REACH;
     }
     
-    vHashColumn(&oDatum,pCol);
+    // hash the column value only if part of partition key
+    if (! pCol->bIsPartitionKey())
+      pRow->m_iHash += iHashColumn(&oDatum,pCol);
   }
   
-  pRow->m_iHash = m_pIntoNub->iHash();
+  ASSERT(pRow->m_iHash == m_pIntoNub->iHash());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1463,13 +1465,9 @@ eMC RowCoder::eGetFromEncoding(Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* hash a partion key column into running hash                                */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vHashColumn(Datum* pSrcDatum, Column* pCol)
+i8 RowCoder::iHashColumn(Datum* pSrcDatum, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
-  
-  // hash the column value only if part of partition key
-  if (! pCol->bIsPartitionKey())
-    return;
   
   // compute hash of this value
   i8 iHash;
@@ -1480,6 +1478,8 @@ void RowCoder::vHashColumn(Datum* pSrcDatum, Column* pCol)
   
   // inc it to the running hash
   m_pIntoNub->vHashInc(iHash);
+  
+  return iHash;
 }
 
 /*----------------------------------------------------------------------------*/
