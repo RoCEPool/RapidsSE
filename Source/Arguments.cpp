@@ -62,7 +62,7 @@ Arguments::Arguments(void)
   m_bDeveloper       = false;
   m_bDontFree        = false;
   m_nEntries         = 0;
-  m_bFreeRB          = false;
+  m_bFreeCB          = false;
   m_bLock            = false;
   m_bHugePages       = false;
   m_bKillPrev        = false;
@@ -136,7 +136,7 @@ void Arguments::vAddConstants(void)
   vAddConstant("args.config"_Stz,            m_bConfig);
   vAddConstant("args.developer"_Stz,         m_bDeveloper);
   vAddConstant("args.dontFree"_Stz,          m_bDontFree);
-  vAddConstant("args.freeRB"_Stz,            m_bFreeRB);
+  vAddConstant("args.freeCB"_Stz,            m_bFreeCB);
   vAddConstant("args.help"_Stz,              m_bHelp);
   vAddConstant("args.hugePages"_Stz,         m_bHugePages);
   vAddConstant("args.jumboBuffers"_Stz,      m_nJumboBuffers);
@@ -618,8 +618,8 @@ bool Arguments::bParse(int argc, Stz* argv[])
       continue;
     }
     
-    if (argv[i_Arg]->bSame("--freeRB"_Stz)) {
-      m_bFreeRB = true;
+    if (argv[i_Arg]->bSame("--freeCB"_Stz)) {
+      m_bFreeCB = true;
       continue;
     }
     

@@ -14,7 +14,7 @@ namespace Pool
                         void *aRegionAddr, i8 iRegionSize,
                         i8 iJumboTook, bool bTouch, bool bProgress,
                         bool bLock, bool bRestart,
-                        bool bDontFree, bool bFreeRB);
+                        bool bDontFree, bool bFreeCB);
     static bool bTest(s32& sRegionName);
     static void vUnlink(s32& sRegionName);
     

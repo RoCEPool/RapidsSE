@@ -21,7 +21,7 @@ namespace Pool
     PoolBuffer* m_pJumbo; // starting address of jumbo section
     PoolBuffer* m_pLimit; // address after pool
     bool    m_bDontFree;  // dont actually free objects back to heap
-    bool    m_bFreeRB;    // but actually free RowBuffers back to heap
+    bool    m_bFreeCB;    // but actually free CrwBuffers back to heap
 
     s32  m_sShmName;      // shared memory region name
     int  m_iShmFD;        // shared memory file descriptor
@@ -44,13 +44,13 @@ namespace Pool
     
     BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
                bool bTouch, bool bProgress,
-               bool bDontFree, bool bFreeRB);
+               bool bDontFree, bool bFreeCB);
     ~BufferPool(void) noexcept(false);
   
     static void vReport(void);
     
     PoolBuffer* pAllocAttachMapBuffer(void);
-    i8      nAllocCount(void);
+    i8          nAllocCount(void);
     PoolBuffer* pAllocHeapBuffer(void);
     PoolBuffer* pAllocOtherBuffer(void);
     PoolBuffer* pBase(void);
@@ -67,7 +67,7 @@ namespace Pool
     void vFreeHeapBuffer(PoolBuffer* pPoolBuffer);
     i8   nFreeCount(void);
     i8   iFreePercent(void);
-    bool bFreeRB(void);
+    bool bFreeCB(void);
     i8   iFreeSpace(void);
     bool bHasDataSpace(void);
     void vInitialise(bool bTouch, bool bProgress);

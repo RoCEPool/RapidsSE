@@ -33,7 +33,7 @@ void BufferPool::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
                        bool bTouch, bool bProgress,
-                       bool bDontFree, bool bFreeRB)
+                       bool bDontFree, bool bFreeCB)
 : Object(CN_BUFFERPOOL)
 {
   gpBufferPool = this;
@@ -45,7 +45,7 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
   m_pLimit = (PoolBuffer*)aAdd<void*>(m_pBase,iRegionSize);
   m_pJumbo = (PoolBuffer*)aAdd<void*>(m_pLimit,-(iJumboTook * C_SIZE_POOL_BUFFER));
   m_bDontFree = bDontFree;
-  m_bFreeRB = bFreeRB;
+  m_bFreeCB = bFreeCB;
   
   m_sShmName = aRegionName;
   m_iShmFD   = 0;
@@ -359,13 +359,13 @@ i8 BufferPool::iFreePercent(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free RowBuffers back to heap?                                              */
+/* free CrwBuffers back to heap?                                              */
 /*----------------------------------------------------------------------------*/
-bool BufferPool::bFreeRB(void)
+bool BufferPool::bFreeCB(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  return m_bFreeRB;
+  return m_bFreeCB;
 }
 
 /*----------------------------------------------------------------------------*/

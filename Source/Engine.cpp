@@ -533,7 +533,7 @@ void Engine::vOpenPool(void)
                     gxArguments.m_bLock,
                     gxArguments.m_bRestart,
                     gxArguments.m_bDontFree,
-                    gxArguments.m_bFreeRB);
+                    gxArguments.m_bFreeCB);
     
     if (gxArguments.m_bVerbose)
       vInfo("\n*\n* Create AttachMap\n*\n"_Stz);

@@ -15,11 +15,11 @@ void* SlabAllocator::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return a row buffer to the buffer pool                                     */
+/* return a crw buffer to the buffer pool                                     */
 /*----------------------------------------------------------------------------*/
-void SlabAllocator::operator delete(void* pRowBufferAddress)
+void SlabAllocator::operator delete(void* pCrwBufferAddress)
 {
-  PoolBuffer* pBuffer = static_cast<PoolBuffer*>(pRowBufferAddress);
+  PoolBuffer* pBuffer = static_cast<PoolBuffer*>(pCrwBufferAddress);
   
   HeapMem::vFree(pBuffer);
 }

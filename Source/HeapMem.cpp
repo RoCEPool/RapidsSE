@@ -137,7 +137,7 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
       return;
     }
     
-    if ( ! gpBufferPool->bFreeRB() ) {
+    if ( ! gpBufferPool->bFreeCB() ) {
       pObject->vSetClass(CN_FREEDNOT);
       return;
     }
