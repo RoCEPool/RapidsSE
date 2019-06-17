@@ -40,7 +40,7 @@
   args.tracepoint  if " --tracepoint "  str.cat then
   args.verbose     if " --verbose "     str.cat then
   args.dontFree    if " --dontFree "    str.cat then
-  args.freeRB      if " --freeRB "      str.cat then
+  args.freeCB      if " --freeCB "      str.cat then
   args.metadata    if " --metadata "    str.cat then
   args.activityMap if " --activityMap " str.cat then
 
