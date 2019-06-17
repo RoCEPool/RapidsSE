@@ -27,6 +27,7 @@ namespace Transform
   
   public:
     void* operator new(size_t);
+    void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
 
     Row(ColumnVec* pColVec);
@@ -35,7 +36,8 @@ namespace Transform
     void vAppendValue(Data::Datum* pDatum, Column* pCol);
     void vDontDecodeVch(void);
     void vResetValues(void);
-  
+    i8   nSizeBytes(void);
+
   private:
     Footer* aFooter(void);
   };

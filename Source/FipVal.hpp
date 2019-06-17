@@ -13,7 +13,7 @@ namespace Values
   class FipVal : public Value
   {
   private:
-    Forth::Cell* m_aCell;
+    Forth::Cell* m_aFip;
         
   public:
     void* operator new(size_t);
@@ -22,9 +22,8 @@ namespace Values
     
     void operator =(Forth::Cell* aCell);
     
-    i8      nSize(void) const;
-    Forth::Cell* aIpPtr(void) const;
-    
+    Forth::Cell* aFipPtr(void);
+    i8   nSize(void);
     void vToString(Stz* aWorkspace);
   };
   
