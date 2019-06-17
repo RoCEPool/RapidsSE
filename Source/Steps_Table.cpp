@@ -396,7 +396,7 @@ void Step::vTableInflateScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the first row buffer
- CrwBuffer* pCrwBuffer = pPartition->pFirstCrwBuffer();
+ CrwBuffer* pCrwBuffer = pPartition->pRootCrwBuffer();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entryBuffer ?
@@ -673,7 +673,7 @@ void Step::vTableScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // position in the first row buffer
-  CrwBuffer* pCrwBuffer = pPartition->pFirstCrwBuffer();
+  CrwBuffer* pCrwBuffer = pPartition->pRootCrwBuffer();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a result buffer for the results

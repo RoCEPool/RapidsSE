@@ -422,16 +422,6 @@ void TablePtn::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the first row buffer                                                   */
-/*----------------------------------------------------------------------------*/
-CrwBuffer* TablePtn::pFirstCrwBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_pRootCrwBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set endInsert jobid                                                        */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vParentJobId(i8 iJobId)
