@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* GenVar.cpp -- Generic Variable                                             */
+/* GenVar.cpp - Generic Variable  (which contains a nested value)             */
 /*============================================================================*/
 
 #include "Forth.h"
@@ -38,8 +38,8 @@ GenVar::GenVar(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  xValue.m_xHeader.vSetMagic();
-  xValue.m_xHeader.vSetClass(CN_NONE);
+  xNestedValue.m_xHeader.vSetMagic();
+  xNestedValue.m_xHeader.vSetClass(CN_NONE);
   
   _postcondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
 }
@@ -64,8 +64,8 @@ void GenVar::operator =(i8 iInt)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  xValue.m_xHeader.vSetClass(CN_INTVAL);
-  xValue.m_xDtm.m_iInt = iInt;
+  xNestedValue.m_xHeader.vSetClass(CN_INTVAL);
+  xNestedValue.m_wWord = iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,8 +75,8 @@ void GenVar::operator =(Object* pObject)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  xValue.m_xHeader.vSetClass(CN_PTRVAL);
-  xValue.m_xDtm.m_pObject = pObject;
+  xNestedValue.m_xHeader.vSetClass(CN_PTRVAL);
+  xNestedValue.m_wWord = (w8)pObject;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,53 +86,71 @@ void GenVar::operator =(Stz* szStz)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  xValue.m_xHeader.vSetClass(CN_STRVAL);
-  xValue.m_xDtm.m_nSize = StrLib::nCopy(xValue.m_caStr,szStz->aChar()) + 1;
+  xNestedValue.m_xHeader.vSetClass(CN_STRVAL);
+  xNestedValue.m_wWord = StrLib::nCopy(xNestedValue.m_caStr,szStz->aChar()) + 1;
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get integer (ignoring type)                                                */
+/* get integer from nested value                                              */
 /*----------------------------------------------------------------------------*/
 i8 GenVar::iInt(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  i8 iInt = xValue.m_xDtm.m_iInt;
+  i8 iInt = xNestedValue.m_wWord;
   
   return iInt;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stz in the wsp area                                                    */
+/* get address of the nested value                                            */
+/*----------------------------------------------------------------------------*/
+Value* GenVar::aNestedValue(void)
+{
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
+  Value* aValue = reinterpret_cast<Value*>(&xNestedValue);
+  
+  return aValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object address from nested value                                       */
+/*----------------------------------------------------------------------------*/
+Object* GenVar::pObject(void)
+{
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
+  Object* pObj = (Object*)xNestedValue.m_wWord.m_iInt;
+  
+  return pObj;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of string in nested value                                         */
+/*----------------------------------------------------------------------------*/
+i8 GenVar::nSize(void)
+{
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
+  i8 nSize = xNestedValue.m_wWord;
+  
+  return nSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stz from the nested value                                              */
 /*----------------------------------------------------------------------------*/
 Stz* GenVar::szStz(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  Stz* sz = (Stz*)xValue.m_caStr;
+  Stz* sz = (Stz*)xNestedValue.m_caStr;
   
   return sz;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-
-
-/*----------------------------------------------------------------------------*/
-/* get address of the value in the wsp area                                   */
-/*----------------------------------------------------------------------------*/
-Value* GenVar::aNestedValue(void)
-{
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
- 
-  Value* aValue = reinterpret_cast<Value*>(&xValue);
-
-  return aValue;
 }
 
 

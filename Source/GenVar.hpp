@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* GenVar.hpp - Generic Variable                                              */
+/* GenVar.hpp - Generic Variable  (which contains a nested value)             */
 /*============================================================================*/
 #pragma once
 
@@ -9,12 +9,10 @@ namespace Forth
   {
   private:
     struct {
-      
       Header m_xHeader;
-      _Dtm   m_xDtm;
+      Word   m_wWord;
       char   m_caStr[C_MAX_VCH];
-      
-    } xValue;
+    } xNestedValue;
   
     // must be last
     Footer m_xFooter;
@@ -27,15 +25,15 @@ namespace Forth
   
     void operator =(i8 iInt);
     void operator =(Object* pObject);
-    void operator =(Stz* szStr);
+    void operator =(Stz* szStz);
 
     i8      iInt(void);
-    Stz*    szStz(void);
-
     Value*  aNestedValue(void);
-    
-  private:
+    Object* pObject(void);
+    i8      nSize(void);
+    Stz*    szStz(void);
   
+  private:
     Footer* aFooter(void);
   };
 
