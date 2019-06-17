@@ -352,8 +352,11 @@ void RowCoder::vEncodeRow(Row* pRow)
       default:
         NEVER_REACH;
     }
-
+    
+    vHashColumn(&oDatum,pCol);
   }
+  
+  pRow->m_iHash = m_pIntoNub->iHash();
 }
 
 /*----------------------------------------------------------------------------*/

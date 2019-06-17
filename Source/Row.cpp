@@ -63,16 +63,18 @@ Row::Row(ColumnVec* pColVec)
   m_nColumns    = m_pColVec->nItems();
   m_iBaseOffset = RowCoder::iBaseOffset(m_pColVec);
   m_bGetAll     = true;
-  m_iLastCol    = C_UNKNOWN;
-  
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
     m_abGetCol[i_Col] = false;
+  m_iLastCol    = C_UNKNOWN;
   m_i_Wsp       = 0;
+  
+  // - - - - - - - - - - - - - - - - - -
+
+  m_iHash = 0;
   
 #ifdef WITH_CHECK_INITIALISED
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
     m_aiValue[i_Col] = 0;
-  
   m_xWsp.vZero(CN_ROW);
   
 #else
@@ -165,11 +167,13 @@ void Row::vResetValues(void)
   
   m_i_Wsp = 0;
   
-#ifdef WITH_CHECK_INITIALISED
-  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    m_aiValue[i_Col] = 0;
-  }
+  // - - - - - - - - - - - - - - - - - -
+
+  m_iHash = 0;
   
+#ifdef WITH_CHECK_INITIALISED
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++)
+    m_aiValue[i_Col] = 0;  
 #endif
 }
 

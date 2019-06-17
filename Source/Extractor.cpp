@@ -50,7 +50,7 @@ void Extractor::vAddElement(EntWrk* pEntWrk, Stz* szSrc,
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract record into row (returning first column which has invalid field)   */
+/* extract row from record (returning first column which has invalid field)   */
 /*----------------------------------------------------------------------------*/
 bool Extractor::bExtractNext(Row* pRow, char** aacRecCrs,
                              ColumnVec* pColVec, Formatters* pRecFmt,

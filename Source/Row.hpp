@@ -16,10 +16,12 @@ namespace Transform
     bool       m_bGetAll;
     bool       m_abGetCol[C_MAX_COLUMNS];
     i8         m_iLastCol;
-    
-    i8 m_aiValue[C_MAX_COLUMNS];
+    i8         m_i_Wsp;
+
+    // - - - - - - - - - - - - - - - - - -
   
-    i8 m_i_Wsp;
+    i8 m_iHash;
+    i8 m_aiValue[C_MAX_COLUMNS];
     Wsp_t<C_MAX_RECORD> m_xWsp;
 
     // must be last
