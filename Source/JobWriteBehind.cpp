@@ -94,15 +94,15 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobWriteBehind::eInsertRow(void)
+eEC JobWriteBehind::eInsertRow(Row* pRow)
 {
-  return eInsertRow(m_oRowParts.pNub());
+  return eInsertRow(pRow,m_oRowParts.pNub());
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobWriteBehind::eInsertRow(RowNub* pFromRowNub)
+eEC JobWriteBehind::eInsertRow(Row* pRow, RowNub* pFromRowNub)
 {
   // insert the row in a working buffer
   while (true) {
@@ -134,7 +134,7 @@ eEC JobWriteBehind::eInsertRow(RowNub* pFromRowNub)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert row into working buffer
     pCrwBuffer->vGrabWrite();
-    bool bRowAppended = pCrwBuffer->bAppendRow(m_paRowCoder_Copy[i_Ptn],pFromRowNub);
+    bool bRowAppended = pCrwBuffer->bAppendRow(m_paRowCoder_Copy[i_Ptn],pRow,pFromRowNub);
     pCrwBuffer->vDropWrite();
     
     //pCrwBuffer->vDump();
@@ -190,7 +190,7 @@ eEC JobWriteBehind::eProcessRecord(Stz* szRecStr, i8 nBytes)
     return EC_INVALID_VALUE;
 
   // attempt to add record into a write-behind buffer
-  eEC eError = eInsertRow();
+  eEC eError = eInsertRow(m_pRow);
 
   // was there an error ?
   if (eError != EC_NONE) {

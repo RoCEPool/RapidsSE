@@ -193,7 +193,7 @@ void RowCoder::vCopyEnd(void)
 /*----------------------------------------------------------------------------*/
 /* copy (& recode) given encoded row from given nub into current nub          */
 /*----------------------------------------------------------------------------*/
-bool RowCoder::bCopyRow(RowNub* pFromNub)
+bool RowCoder::bCopyRow(Row* pRow, RowNub* pFromNub)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
@@ -227,10 +227,11 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   m_bCopyOver    = false;
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-
-  Row* pRow = m_pRowSamples->aAllotRow(m_pColVec);
-  if (! pRow)
-    vTrace("No sample space\n"_Stz);
+  // Mark IV
+  
+  Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec);
+  //if (! pSampleRow)
+  //  vTrace("No sample space\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy & recode row

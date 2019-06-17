@@ -105,7 +105,7 @@ namespace Data
     
     void vCopyBegin(CrwBuffer* pCrwBuffer);
     void vCopyEnd(void);
-    bool bCopyRow(RowNub* pFromNub);
+    bool bCopyRow(Row* pRow, RowNub* pFromNub);
     
     void vEncodeBegin(RowNub* pIntoNub);
     void vEncodeEnd(void);
