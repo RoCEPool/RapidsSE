@@ -16,9 +16,6 @@ namespace Values
   
     StrVal(void);
   
-    operator Stz&(void);
-    operator Stz*(void);
-  
   public:
     void  vAssign(Stz* aStr);
     char* aChar(void);

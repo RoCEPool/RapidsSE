@@ -37,25 +37,6 @@ StrVal::StrVal(void)
 : Value(CN_STRVAL)
 {
   m_xHeader.vSetClass(CN_STRVAL);
-  vFatal("fatal: StrVal class cannot be a local variable\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of Stz area                                                    */
-/*----------------------------------------------------------------------------*/
-StrVal::operator Stz*(void)
-{
-  // return address to char byte area
-  return aStz();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get reference to Stz area                                                  */
-/*----------------------------------------------------------------------------*/
-StrVal::operator Stz&(void)
-{
-  // return reference to char byte area
-  return reinterpret_cast<Stz&>(*aStz());
 }
 
 
