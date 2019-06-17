@@ -717,7 +717,7 @@ eEC  RapidsSE_FetchTable (i8 iTrace, Session* pSession, Stz* aTable,
     TablePtn* pPartition = pTable->pPartition(TablePtn::iPartitionToSlot(iPartition));
     API_LOC(330);
     
-    CrwBuffer* pCrwBuffer = pPartition->pFirstCrwBuffer();
+    CrwBuffer* pCrwBuffer = pPartition->pRootCrwBuffer();
     API_LOC(340);
     
     // return the first buffer
