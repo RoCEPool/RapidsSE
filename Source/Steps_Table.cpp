@@ -392,7 +392,7 @@ void Step::vTableInflateScan(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set buffer count in the inflate job
   //Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJob_SubScan->m_pParentJob);
-  //pJob_InflateRows->m_inBufferCount += pPartition->nRowBuffers();
+  //pJob_InflateRows->m_inBufferCount += pPartition->nCrwBuffers();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the first row buffer
@@ -834,7 +834,7 @@ void Step::vTableSpace(MP_Task mpTask)
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  i8 iBuffers = pTable->nRowBuffers();
+  i8 iBuffers = pTable->nCrwBuffers();
   i8 iSpace = iBuffers * C_SIZE_POOL_BUFFER;
   mpTask->m_pDataStack->vPushI8(iSpace);
   

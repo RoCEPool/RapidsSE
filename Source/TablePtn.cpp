@@ -699,7 +699,7 @@ CrwBuffer* TablePtn::pRootCrwBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get the row buffers used                                                   */
 /*----------------------------------------------------------------------------*/
-i8 TablePtn::nRowBuffers(void)
+i8 TablePtn::nCrwBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   

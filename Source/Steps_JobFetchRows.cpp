@@ -331,7 +331,7 @@ void Step::vJob_InflateRowsSpawnSubInflate(MP_Task mpTask)
   pJob_SubInflate->m_pJobInflateRows = pJob_InflateRows;
   
   // before spawning the sub inflate jobs set the m_nBufferCount
-  pJob_InflateRows->m_inBufferCount = pJob_InflateRows->m_pTable->nRowBuffers();
+  pJob_InflateRows->m_inBufferCount = pJob_InflateRows->m_pTable->nCrwBuffers();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

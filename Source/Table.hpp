@@ -83,7 +83,7 @@ namespace MetaData
     EntBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
     i8   iRowPartition(i8 iHash);
 
-    i8   nRowBuffers(void);
+    i8   nCrwBuffers(void);
     void vShowColumnVec(void);
     Dic* pSubDic(void);
     void vSubLoaders(i8 iSubLoaders);

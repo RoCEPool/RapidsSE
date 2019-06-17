@@ -75,7 +75,7 @@ namespace Partitioning
     bool bPurge(i8 iOlderThanSeconds);
     void vResetWrite(void);
     CrwBuffer* pRootCrwBuffer(void);
-    i8   nRowBuffers(void);
+    i8   nCrwBuffers(void);
     void vTable(Table* pTable);
     Table* pTable(void);
     void vTidyUp(void);

@@ -113,7 +113,7 @@ Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
     
   m_pJobExport = nullptr;
-  m_nRowBuffers = C_UNKNOWN;
+  m_nCrwBuffers = C_UNKNOWN;
   m_iRowBuffer  = 0;
   
   m_pCrwBuffer = nullptr;
@@ -165,16 +165,16 @@ bool Job_SubExporter::bBegin(void)
   TablePtn* pTblPtn = pTable->pPartition(m_i_Slot);
   
   m_pCrwBuffer = pTblPtn->pRootCrwBuffer();
-  m_nRowBuffers = pTblPtn->nRowBuffers();
+  m_nCrwBuffers = pTblPtn->nCrwBuffers();
   
   if (m_bMarkActivity)
     ActivityMap::vMarkJob(this,
                           "TableTpn[%lld] for table %s has %lld buffers"_Stz,
                           m_i_Slot,
                           pTable->aTableName(),
-                          m_nRowBuffers);
+                          m_nCrwBuffers);
   
-  ActionSequence::vAdd(this,AN_JOB_BEGIN,m_nRowBuffers);
+  ActionSequence::vAdd(this,AN_JOB_BEGIN,m_nCrwBuffers);
   
   return true;
 }
@@ -194,7 +194,7 @@ bool Job_SubExporter::bChunk(void)
                           "Exporting Table %s RowBuffer[%lld/%lld] %p"_Stz,
                           m_pJobExport->m_pTable->aTableName(),
                           m_iRowBuffer,
-                          m_nRowBuffers,
+                          m_nCrwBuffers,
                           m_pCrwBuffer);
   
   ActionSequence::vAdd(this,AN_JOB_CHUNK,m_iRowBuffer);

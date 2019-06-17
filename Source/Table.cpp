@@ -711,14 +711,14 @@ i8 Table::iRowPartition(Stz* aRow_Data)
 /*----------------------------------------------------------------------------*/
 /* get number of row buffers in this table                                    */
 /*----------------------------------------------------------------------------*/
-i8 Table::nRowBuffers(void)
+i8 Table::nCrwBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   i8 iBuffers = 0;
   
   for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nSlotsPerNode; iPartition++) {
-    iBuffers += pPartition(iPartition)->nRowBuffers();
+    iBuffers += pPartition(iPartition)->nCrwBuffers();
   }
   
   return iBuffers;
