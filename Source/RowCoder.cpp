@@ -73,6 +73,10 @@ RowCoder::RowCoder(void)
   m_eFromEncoding  = MC_NULL;
   m_nFromDataBytes = 0;
   
+  // + + +
+  
+  m_pRowSamples    = nullptr;
+
   //m_oEncodedDatum
   
   //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -146,6 +150,9 @@ void RowCoder::vCopyBegin(CrwBuffer* pCrwBuffer)
   m_nMetaData    = nMetaData(m_pColVec);
   m_i_BaseOffset = iBaseOffset(m_pColVec);
   m_bCopyOver    = false;
+  
+  // + + +
+  m_pRowSamples  = new IrwBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,6 +184,10 @@ void RowCoder::vCopyEnd(void)
   m_i_FromOffset  = C_UNKNOWN;
   m_eFromEncoding = MC_NULL;
   m_nFromDataBytes = 0;
+  
+  // + + +
+  delete m_pRowSamples;
+  m_pRowSamples  = nullptr;;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,6 +225,12 @@ bool RowCoder::bCopyRow(RowNub* pFromNub)
   m_aIntoOver    = nullptr;
   m_nOverBytes   = C_UNKNOWN;
   m_bCopyOver    = false;
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+  Row* pRow = m_pRowSamples->aAllotRow(m_pColVec);
+  if (! pRow)
+    vTrace("No sample space\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy & recode row

@@ -102,7 +102,7 @@ eEC JobWriteBehind::eInsertRow(void)
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobWriteBehind::eInsertRow(RowNub* pRowNub)
+eEC JobWriteBehind::eInsertRow(RowNub* pFromRowNub)
 {
   // insert the row in a working buffer
   while (true) {
@@ -134,7 +134,7 @@ eEC JobWriteBehind::eInsertRow(RowNub* pRowNub)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert row into working buffer
     pCrwBuffer->vGrabWrite();
-    bool bRowAppended = pCrwBuffer->bAppendRow(m_paRowCoder_Copy[i_Ptn],pRowNub);
+    bool bRowAppended = pCrwBuffer->bAppendRow(m_paRowCoder_Copy[i_Ptn],pFromRowNub);
     pCrwBuffer->vDropWrite();
     
     //pCrwBuffer->vDump();
@@ -157,6 +157,9 @@ eEC JobWriteBehind::eInsertRow(RowNub* pRowNub)
                                           i_Ptn,
                                           C_NOT_FINAL,
                                           0);
+    
+    // repeat, try-again
+    // ...
   }
   
   return EC_NONE;

@@ -28,7 +28,7 @@ IrwBuffer* Transform::_pIrwBuffer(void* aAddress)
 void* IrwBuffer::operator new(size_t)
 {
   IrwBuffer* pIrwBuffer =
-    static_cast<IrwBuffer*>(HeapMem::pAllocate(CN_REFBUFFER));
+    static_cast<IrwBuffer*>(HeapMem::pAllocate(CN_IRWBUFFER));
   
   return pIrwBuffer;
 }
@@ -47,13 +47,13 @@ void IrwBuffer::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IrwBuffer::IrwBuffer(void)
-: DataBuffer(CN_REFBUFFER)
+: DataBuffer(CN_IRWBUFFER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
   
-  _checkInitialised_(CN_REFBUFFER);
+  _checkInitialised_(CN_IRWBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +61,7 @@ IrwBuffer::IrwBuffer(void)
 /*----------------------------------------------------------------------------*/
 IrwBuffer::~IrwBuffer(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,7 +87,7 @@ void IrwBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 Row* IrwBuffer::aAllotRow(ColumnVec* pColVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
   
   // allot using bytes as we don't know the size of the item
   byte* ayRow = ayAllotBytes(sizeof(Row));
@@ -107,7 +107,7 @@ Row* IrwBuffer::aAllotRow(ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 Row* IrwBuffer::aFirstRow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
   
   Row* aRow = aFirstItem();
   
@@ -119,7 +119,7 @@ Row* IrwBuffer::aFirstRow(void)
 /*----------------------------------------------------------------------------*/
 Row* IrwBuffer::aNextRow(Row* aPriorRow)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
 
   Row* aRow = aAdjacentItem(aPriorRow);
   
@@ -134,7 +134,7 @@ Row* IrwBuffer::aNextRow(Row* aPriorRow)
 /*----------------------------------------------------------------------------*/
 void IrwBuffer::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
   
   i8 nRows = nItems();
   
@@ -159,7 +159,7 @@ void IrwBuffer::vShow(void)
 /*----------------------------------------------------------------------------*/
 Footer* IrwBuffer::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER);
   
   return &m_xFooter;
 }

@@ -87,7 +87,8 @@ enum eCN : u2 // Class Number
   /*  50 0x32  1000096B Heap:L */ CN_INGESTCHUNK,
   /*  51 0x33  1000440B Heap:L */ CN_IOCHUNK,
   /*  52 0x34       32B Heap:S */ CN_IOCOPY,
-  
+  /*                           */ CN_IRWBUFFER,
+
   /*  55 0x37    70600B Heap:L */ CN_JOB__BEGUN,
   /*  56 0x38    70592B Heap:L */ CN_JOB__CANCEL,
   /*  57 0x39    70600B Heap:L */ CN_JOB__CANCELLED,
@@ -388,7 +389,8 @@ static Stz* aCN[]
   /*  50 0x32 */ "INGESTCHUNK"_Stz,         // CN_INGESTCHUNK
   /*  51 0x33 */ "IOCHUNK"_Stz,             // CN_IOCHUNK
   /*  52 0x34 */ "IOCOPY"_Stz,              // CN_IOCOPY
-  
+  /*          */ "IRWBUFFER"_Stz,           // CN_IRWBUFFER
+
   /*  55 0x37 */ "JOB__BEGUN"_Stz,          // CN_JOB__BEGUN
   /*  56 0x38 */ "JOB__CANCEL"_Stz,         // CN_JOB__CANCEL
   /*  57 0x39 */ "JOB__CANCELLED"_Stz,      // CN_JOB__CANCELLED

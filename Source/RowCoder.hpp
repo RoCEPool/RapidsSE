@@ -54,6 +54,10 @@ namespace Data
   
     Datum      m_oEncodedDatum; // the encoded datum
 
+    // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+    
+    IrwBuffer* m_pRowSamples; // the set of sample rows
+
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
   
     struct {
