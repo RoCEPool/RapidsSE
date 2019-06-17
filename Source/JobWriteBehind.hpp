@@ -13,7 +13,7 @@ namespace Jobs
     Job* m_pParentJob;  // parent job
     eDS  m_eDataSource; // data source of this writeBehind
 
-    RowBuffer* m_pRowBuffer[C_MAX_PARTITIONS];  // row buffers
+    CrwBuffer* m_pCrwBuffer[C_MAX_PARTITIONS];  // row buffers
     i8 m_nWriteBehindBuffers[C_MAX_PARTITIONS]; // how many buffers
     
   public:

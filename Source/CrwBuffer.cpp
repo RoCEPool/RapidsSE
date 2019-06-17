@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowBuffer.cpp -- Row Buffer                                                */
+/* CrwBuffer.cpp -- Compact Row Buffer                                        */
 /*============================================================================*/
 
 #include "Data.h"
@@ -15,30 +15,30 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RowBuffer* Data::_pRowBuffer(void* aAddress)
+CrwBuffer* Data::_pCrwBuffer(void* aAddress)
 {
-  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(aAddress);
+  CrwBuffer* pCrwBuffer = reinterpret_cast<CrwBuffer*>(aAddress);
   
-  RASSERT_TYPE(pRowBuffer,CN_ROWBUFFER);
+  RASSERT_TYPE(pCrwBuffer,CN_CRWBUFFER);
   
-  return pRowBuffer;
+  return pCrwBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate a new row buffer from heap                                        */
 /*----------------------------------------------------------------------------*/
-void* RowBuffer::operator new(size_t)
+void* CrwBuffer::operator new(size_t)
 {
-  RowBuffer* pRowBuffer =
-    static_cast<RowBuffer*>(HeapMem::pAllocate(CN_ROWBUFFER));
+  CrwBuffer* pCrwBuffer =
+    static_cast<CrwBuffer*>(HeapMem::pAllocate(CN_CRWBUFFER));
   
-  return pRowBuffer;
+  return pCrwBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* perform new of row buffer for given address                                */
 /*----------------------------------------------------------------------------*/
-void* RowBuffer::operator new(size_t, void* aAddress)
+void* CrwBuffer::operator new(size_t, void* aAddress)
 {
   return aAddress;
 }
@@ -46,33 +46,33 @@ void* RowBuffer::operator new(size_t, void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* free a row buffer back to the heap                                         */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::operator delete(void* aAddress)
+void CrwBuffer::operator delete(void* aAddress)
 {
-  RowBuffer* pRowBuffer = static_cast<RowBuffer*>(aAddress);
+  CrwBuffer* pCrwBuffer = static_cast<CrwBuffer*>(aAddress);
   
-  HeapMem::vFree(pRowBuffer);
+  HeapMem::vFree(pCrwBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RowBuffer::RowBuffer(void)
-: DataBuffer(CN_ROWBUFFER)
+CrwBuffer::CrwBuffer(void)
+: DataBuffer(CN_CRWBUFFER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  _checkInitialised_(CN_ROWBUFFER);
+  _checkInitialised_(CN_CRWBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-RowBuffer::~RowBuffer(void) noexcept(false)
+CrwBuffer::~CrwBuffer(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
 }
 
 
@@ -83,36 +83,36 @@ RowBuffer::~RowBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump entry buffer                                                          */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void CrwBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RowBuffer* pRowBuffer = _pRowBuffer(pObject);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(pObject);
   
-  pRowBuffer->vShow();
+  pCrwBuffer->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
-RowBuffer* RowBuffer::pRefdRowBuffer(Id& xId)
+CrwBuffer* CrwBuffer::pRefdCrwBuffer(Id& xId)
 {
   bn nBufferNo = xId.iBuffer();
   
   HeapBuffer* pHeapBuffer =
   reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));
   
-  RowBuffer* pRowBuffer =
-  reinterpret_cast<RowBuffer*>(pHeapBuffer->aFirstChunk());
+  CrwBuffer* pCrwBuffer =
+  reinterpret_cast<CrwBuffer*>(pHeapBuffer->aFirstChunk());
   
-  ASSERT(pRowBuffer);
-  ASSERT(pRowBuffer->eClass() == CN_ROWBUFFER);
+  ASSERT(pCrwBuffer);
+  ASSERT(pCrwBuffer->eClass() == CN_CRWBUFFER);
   
-  return pRowBuffer;
+  return pCrwBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the row buffer that contains the given address                         */
 /*----------------------------------------------------------------------------*/
-RowBuffer* RowBuffer::pToRowBuffer(void* aAddr)
+CrwBuffer* CrwBuffer::pToCrwBuffer(void* aAddr)
 {
   PoolBuffer* pPoolBuffer =
     PoolBuffer::pGetPoolBuffer((Object*)aAddr);
@@ -120,12 +120,12 @@ RowBuffer* RowBuffer::pToRowBuffer(void* aAddr)
   HeapBuffer* pHeapBuffer =
     reinterpret_cast<HeapBuffer*>(pPoolBuffer);
 
-  RowBuffer* pRowBuffer =
-    reinterpret_cast<RowBuffer*>(pHeapBuffer->aFirstChunk());
+  CrwBuffer* pCrwBuffer =
+    reinterpret_cast<CrwBuffer*>(pHeapBuffer->aFirstChunk());
   
-  RASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
+  RASSERT(CN_CRWBUFFER == pCrwBuffer->eClass());
   
-  return pRowBuffer;
+  return pCrwBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,12 +135,12 @@ RowBuffer* RowBuffer::pToRowBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* analyze this buffer                                                        */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
+void CrwBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
                            i8& iBuffers, i8& iRows)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
     
-  RowBuffer* pNextBuffer = this;
+  CrwBuffer* pNextBuffer = this;
   
   do {
     
@@ -163,9 +163,9 @@ void RowBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
 /*----------------------------------------------------------------------------*/
 /* append a row entry into this buffer                                        */
 /*----------------------------------------------------------------------------*/
-bool RowBuffer::bAppendRow(RowCoder* pRowCoder, RowNub* pFromRowNub)
+bool CrwBuffer::bAppendRow(RowCoder* pRowCoder, RowNub* pFromRowNub)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
     
 #ifdef WITH_TRACE_ENCODING
   vTrace("Partition:%lld\n"_Stz, m_iPartitionNo);
@@ -179,17 +179,17 @@ bool RowBuffer::bAppendRow(RowCoder* pRowCoder, RowNub* pFromRowNub)
 /*----------------------------------------------------------------------------*/
 /* assert valid row buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vAssertRowBuffer(void)
+void CrwBuffer::vAssertCrwBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* return number of row buffers under this buffer                             */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vBufferCount(i8& nBuffers)
+void CrwBuffer::vBufferCount(i8& nBuffers)
 {
-  RowBuffer* pNextBuffer = nullptr;
+  CrwBuffer* pNextBuffer = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // table ?
@@ -208,9 +208,9 @@ void RowBuffer::vBufferCount(i8& nBuffers)
 /*----------------------------------------------------------------------------*/
 /* get the column vector                                                      */
 /*----------------------------------------------------------------------------*/
-ColumnVec* RowBuffer::pColumnVec(void)
+ColumnVec* CrwBuffer::pColumnVec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   return pTable()->pColumnVec();
 }
@@ -218,9 +218,9 @@ ColumnVec* RowBuffer::pColumnVec(void)
 /*----------------------------------------------------------------------------*/
 /* get decile full of the buffer                                              */
 /*----------------------------------------------------------------------------*/
-i8 RowBuffer::iDecile(void)
+i8 CrwBuffer::iDecile(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   i8 iDecile;
   i8 iCachLinesUsed = m_oRowTray.pNub()->nHeads()
@@ -234,9 +234,9 @@ i8 RowBuffer::iDecile(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vDump(void)
+void CrwBuffer::vDump(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   // show this buffer
   vShow();
@@ -245,7 +245,7 @@ void RowBuffer::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* get the compact row from the buffer                                        */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vGetRow(Row* pRow, i8 i_Row)
+void CrwBuffer::vGetRow(Row* pRow, i8 i_Row)
 {
   HeadLine* aCompactRow = m_oRowTray.pNub()->aGetHead(i_Row);
   RowCoder::vInflate(pRow,aCompactRow);
@@ -255,13 +255,13 @@ void RowBuffer::vGetRow(Row* pRow, i8 i_Row)
 /*----------------------------------------------------------------------------*/
 /* does buffer have space for nBytes ?                                        */
 /*----------------------------------------------------------------------------*/
-bool RowBuffer::bHasSpace(i8 nBytes)
+bool CrwBuffer::bHasSpace(i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   i8 nFreeBytes = m_oRowTray.pNub()->nFreeAllotableBytes();
   
-  //! is this correct now that we have separated RowBuffer from EntBuffer?
+  //! is this correct now that we have separated CrwBuffer from EntBuffer?
   if (gpAttachMap->m_nIndexEntries > 0) {
     // has space calculation based on no of entries
     if (nRowCount() >= gpAttachMap->m_nIndexEntries)
@@ -281,12 +281,12 @@ bool RowBuffer::bHasSpace(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get length of list of buffers                                               */
 /*----------------------------------------------------------------------------*/
-i8 RowBuffer::iLengthList(void)
+i8 CrwBuffer::iLengthList(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   i8 iLength = 0;
-  for (RowBuffer* pLn = this; pLn; pLn = pLn->pNextBuffer())
+  for (CrwBuffer* pLn = this; pLn; pLn = pLn->pNextBuffer())
     iLength++;
   
   return iLength;
@@ -295,9 +295,9 @@ i8 RowBuffer::iLengthList(void)
 /*----------------------------------------------------------------------------*/
 /* set the table of the row buffer                                            */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vTable(Table* pTable)
+void CrwBuffer::vTable(Table* pTable)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   //RASSERT(pTable);
   m_oRowTray.pNub()->vDesc(pTable);
@@ -306,9 +306,9 @@ void RowBuffer::vTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* get the table of the index buffer                                          */
 /*----------------------------------------------------------------------------*/
-Table* RowBuffer::pTable(void)
+Table* CrwBuffer::pTable(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   return m_oRowTray.pNub()->pDesc();
 }
@@ -316,19 +316,19 @@ Table* RowBuffer::pTable(void)
 /*----------------------------------------------------------------------------*/
 /* get next buffer                                                            */
 /*----------------------------------------------------------------------------*/
-RowBuffer* RowBuffer::pNextBuffer(void)
+CrwBuffer* CrwBuffer::pNextBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  return _pRowBuffer(m_pNextBuffer);
+  return _pCrwBuffer(m_pNextBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* set next buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vNextBuffer(RowBuffer* pNextBuffer)
+void CrwBuffer::vNextBuffer(CrwBuffer* pNextBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   m_pNextBuffer = pNextBuffer;
 }
@@ -336,19 +336,19 @@ void RowBuffer::vNextBuffer(RowBuffer* pNextBuffer)
 /*----------------------------------------------------------------------------*/
 /* get prev buffer                                                            */
 /*----------------------------------------------------------------------------*/
-RowBuffer* RowBuffer::pPrevBuffer(void)
+CrwBuffer* CrwBuffer::pPrevBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  return _pRowBuffer(m_pPrevBuffer);
+  return _pCrwBuffer(m_pPrevBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* set prev buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vPrevBuffer(RowBuffer* pPrevBuffer)
+void CrwBuffer::vPrevBuffer(CrwBuffer* pPrevBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   m_pPrevBuffer = pPrevBuffer;
 }
@@ -356,9 +356,9 @@ void RowBuffer::vPrevBuffer(RowBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 /* get row                                                                    */
 /*----------------------------------------------------------------------------*/
-HeadLine* RowBuffer::pRow(i8 iRowNo)
+HeadLine* CrwBuffer::pRow(i8 iRowNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   return m_oRowTray.pNub()->aGetHead(iRowNo);
 }
@@ -366,9 +366,9 @@ HeadLine* RowBuffer::pRow(i8 iRowNo)
 /*----------------------------------------------------------------------------*/
 /* get the no of rows in the buffer                                           */
 /*----------------------------------------------------------------------------*/
-i8 RowBuffer::nRowCount(void)
+i8 CrwBuffer::nRowCount(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   return m_oRowTray.pNub()->nHeads();
 }
@@ -376,9 +376,9 @@ i8 RowBuffer::nRowCount(void)
 /*----------------------------------------------------------------------------*/
 /* restore the buffer after being received over a socket                      */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vRestore(void)
+void CrwBuffer::vRestore(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   RASSERT( ! m_pNextBuffer );
   RASSERT( ! m_pPrevBuffer );
@@ -396,9 +396,9 @@ void RowBuffer::vRestore(void)
 /*----------------------------------------------------------------------------*/
 /* restore the table of the row buffer                                        */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vRestoreTable(Table* pTable)
+void CrwBuffer::vRestoreTable(Table* pTable)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   //RASSERT( ! m_pTable );
   vTable(pTable);
@@ -407,7 +407,7 @@ void RowBuffer::vRestoreTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* show entry                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vShowRow(i8 i_Row)
+void CrwBuffer::vShowRow(i8 i_Row)
 {
   vTrace("Id: %3lli.%03lli "_Stz,m_iBufferNo,i_Row);
   
@@ -432,13 +432,13 @@ void RowBuffer::vShowRow(i8 i_Row)
 /*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vShow(void)
+void CrwBuffer::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   i8 nRows = nRowCount();
   
-  vTrace("RowBuffer: %p (buffer %lld): rows: %lld headItems: %lld tailItems: %lld free: %lldB\n"_Stz,
+  vTrace("CrwBuffer: %p (buffer %lld): rows: %lld headItems: %lld tailItems: %lld free: %lldB\n"_Stz,
          this,m_iBufferNo,nRows,
          m_oRowTray.pNub()->nHeads(),
          m_oRowTray.pNub()->nTails(),
@@ -466,18 +466,18 @@ void RowBuffer::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* truncate this buffer by removing all entries                               */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vTruncate(void)
+void CrwBuffer::vTruncate(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  RowBuffer* pNextBuffer;
+  CrwBuffer* pNextBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   pNextBuffer = this->pNextBuffer();
   
   while (pNextBuffer) {
-    RowBuffer* pThisBuffer = pNextBuffer;
+    CrwBuffer* pThisBuffer = pNextBuffer;
     pNextBuffer = pNextBuffer->pNextBuffer();
     delete pThisBuffer;
   }
@@ -488,16 +488,16 @@ void RowBuffer::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 /* test for valid row buffer                                                  */
 /*----------------------------------------------------------------------------*/
-bool RowBuffer::bValidRowBuffer(void)
+bool CrwBuffer::bValidCrwBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   if (! bValidMagic()) {
     vTrace("Not valid magic\n"_Stz);
     return false;
   }
   
-  if (CN_ROWBUFFER != eClass()) {
+  if (CN_CRWBUFFER != eClass()) {
     vTrace("Not valid class\n"_Stz);
     return false;
   }
@@ -513,9 +513,9 @@ bool RowBuffer::bValidRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* verify the structure of this row buffer                                    */
 /*----------------------------------------------------------------------------*/
-bool RowBuffer::bVerify(void)
+bool CrwBuffer::bVerify(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of this buffer
@@ -536,9 +536,9 @@ bool RowBuffer::bVerify(void)
 /*----------------------------------------------------------------------------*/
 /* verify has detected a fault                                                */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vVerifyFault(void)
+void CrwBuffer::vVerifyFault(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   vTrace("VerifyFault\n"_Stz);
   RASSERT(0);
@@ -548,9 +548,9 @@ void RowBuffer::vVerifyFault(void)
 /*----------------------------------------------------------------------------*/
 /* verify the rows of this buffer                                             */
 /*----------------------------------------------------------------------------*/
-bool RowBuffer::bVerifyRows(void)
+bool CrwBuffer::bVerifyRows(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   i8 nRows = nRowCount();
   
@@ -565,9 +565,9 @@ bool RowBuffer::bVerifyRows(void)
 /*----------------------------------------------------------------------------*/
 /* verify the next, previous pointers                                         */
 /*----------------------------------------------------------------------------*/
-bool RowBuffer::bVerifyNextPrev(void)
+bool CrwBuffer::bVerifyNextPrev(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   /*
    Any buffer should have a next whose prev point back to it; any prev should
@@ -577,7 +577,7 @@ bool RowBuffer::bVerifyNextPrev(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (m_pPrevBuffer) {
-    RowBuffer* pPrevBuffer = _pRowBuffer(m_pPrevBuffer);
+    CrwBuffer* pPrevBuffer = _pCrwBuffer(m_pPrevBuffer);
     if (pPrevBuffer->pNextBuffer() != this) {
       vVerifyFault();
       return false;
@@ -587,7 +587,7 @@ bool RowBuffer::bVerifyNextPrev(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (m_pNextBuffer) {
-    RowBuffer* pNextBuffer = _pRowBuffer(m_pNextBuffer);
+    CrwBuffer* pNextBuffer = _pCrwBuffer(m_pNextBuffer);
     if (pNextBuffer->pPrevBuffer() != this) {
       vVerifyFault();
       return false;
@@ -605,9 +605,9 @@ bool RowBuffer::bVerifyNextPrev(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* RowBuffer::aFooter(void)
+Footer* CrwBuffer::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER);
   
   return &m_xFooter;
 }

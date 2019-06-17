@@ -134,11 +134,11 @@ RowCoder::~RowCoder(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* begin copying rows into given row nub                                      */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vCopyBegin(RowBuffer* pRowBuffer)
+void RowCoder::vCopyBegin(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
-  m_pIntoNub     = pRowBuffer->m_oRowTray.pNub();
+  m_pIntoNub     = pCrwBuffer->m_oRowTray.pNub();
 
   m_bEncoding    = false;
   m_pColVec      = m_pIntoNub->pDesc()->pColumnVec();
@@ -815,7 +815,7 @@ void RowCoder::vCopyHead(void)
   MemLib::vCopy((byte*)m_aIntoHead + _1B_W,
                 (byte*)m_aFromHead + _1B_W,
                 nBytesToCopy,
-                CN_ROWBUFFER);
+                CN_CRWBUFFER);
   
 #ifdef WITH_TRACE_ENCODING
   vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
@@ -848,7 +848,7 @@ void RowCoder::vCopyOver(void)
   MemLib::vCopy((byte*)m_aIntoOver + _1B_U,
                 (byte*)ayFromHead_over,
                 (m_nOverBytes + 1 - _1B_U),
-                CN_ROWBUFFER);
+                CN_CRWBUFFER);
 
   i8 nIntoOver_bytes = m_aIntoOver->nBytes();
   //MemLib::vWordDump(m_aIntoOver,nIntoOver_bytes);

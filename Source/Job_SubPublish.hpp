@@ -15,7 +15,7 @@ namespace Jobs
   
 
     Table*       m_pTable;       // table
-    RowBuffer*   m_pRowBuffer;   // the buffer being aggregated
+    CrwBuffer*   m_pCrwBuffer;   // the buffer being aggregated
     RowAgg*      m_pRowAgg;      // the row aggregator
   
     File         m_oOutputFile;  // output file

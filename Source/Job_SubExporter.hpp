@@ -14,7 +14,7 @@ namespace Jobs
     i8           m_nRowBuffers;
     i8           m_iRowBuffer;
   
-    RowBuffer* m_pRowBuffer;
+    CrwBuffer*   m_pCrwBuffer;
   
     i8 m_nExportBuffers;
     ExportBuffer* m_pExportBuffer;

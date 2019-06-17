@@ -253,13 +253,13 @@ Stz* Table::pAnalyzeTable(bool bDetailed, i8 &nRows)
     
     TablePtn *pPartition = this->pPartition(iSlot);
     
-    RowBuffer* pRowBuffer = pPartition->pRootRowBuffer();
+    CrwBuffer* pCrwBuffer = pPartition->pRootCrwBuffer();
     
     i8 nBuffers = 0;
     i8 nRows    = 0;
     
-    if (pRowBuffer)
-      pRowBuffer->vAnalyze(sAnalysis, bDetailed, nBuffers, nRows);
+    if (pCrwBuffer)
+      pCrwBuffer->vAnalyze(sAnalysis, bDetailed, nBuffers, nRows);
     
     nRowsTotal += nRows;
     nBuffersTotal += nBuffers;
@@ -337,7 +337,7 @@ void Table::vLazyBuildIndexes(i8 iSlot)
 /*----------------------------------------------------------------------------*/
 /* insert entries from a row buffer into the table indexes                    */
 /*----------------------------------------------------------------------------*/
-void Table::vInsertEntries(i8 iTxId, i8 iSlot, RowBuffer* pRowBuffer)
+void Table::vInsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
 { //# indexTuning
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -349,8 +349,8 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, RowBuffer* pRowBuffer)
   ASSERT(iSlot < gpAttachMap->m_pGrid->m_nSlotsPerNode);
 
   // if buffer has 0 entries (only head) then should be last buffer
-  if (pRowBuffer->nRowCount() == 0) {
-    delete pRowBuffer;
+  if (pCrwBuffer->nRowCount() == 0) {
+    delete pCrwBuffer;
     return;
   }
 
@@ -360,10 +360,10 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, RowBuffer* pRowBuffer)
   
   //----------------------------------------------------------------------------
   // append the buffer to the data row buffers
-  pPartition->vAppendBuffer(pRowBuffer);
+  pPartition->vAppendBuffer(pCrwBuffer);
   
   //----------------------------------------------------------------------------
-  // (2) insert entries from rowBuffer into all indexes of the table
+  // (2) insert entries from crwBuffer into all indexes of the table
 
   // get no of indexes of the table
   IndexTreeVec* pIndexTreeVec = pPartition->pIndexTreeVec();
@@ -376,7 +376,7 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, RowBuffer* pRowBuffer)
     IndexTree* pNewIndexTree = pIndexTreeVec->pGet(i_Index);
 
     // insert entries from EntBuffer into the index
-    pNewIndexTree->vInsertEntriesFromBuffer(pRowBuffer);
+    pNewIndexTree->vInsertEntriesFromBuffer(pCrwBuffer);
   }
 }
 

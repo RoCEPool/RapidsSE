@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowBuffer.hpp -- Row Buffer                                                */
+/* CrwBuffer.hpp -- Compact Row Buffer                                        */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@ namespace Data
 {
   class RowCoder;
 
-  class RowBuffer : public DataBuffer
+  class CrwBuffer : public DataBuffer
   {
   friend class IndexTree;
   friend class RowCoder;
@@ -24,12 +24,12 @@ namespace Data
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    RowBuffer(void);
-    ~RowBuffer(void) noexcept(false);
+    CrwBuffer(void);
+    ~CrwBuffer(void) noexcept(false);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static RowBuffer* pRefdRowBuffer(Id& xId);
-    static RowBuffer* pToRowBuffer(void* aAddr);
+    static CrwBuffer* pRefdCrwBuffer(Id& xId);
+    static CrwBuffer* pToCrwBuffer(void* aAddr);
   
     ColumnVec* pColumnVec(void);
     void       vTable(Table* pTable);
@@ -41,10 +41,10 @@ namespace Data
     void        vBufferCount(i8& nBufferCount);
     i8          iDecile(void);
     i8          iLengthList(void);
-    RowBuffer*  pNextBuffer(void);
-    void        vNextBuffer(RowBuffer* pNextBuffer);
-    RowBuffer*  pPrevBuffer(void);
-    void        vPrevBuffer(RowBuffer* pPrevBuffer);
+    CrwBuffer*  pNextBuffer(void);
+    void        vNextBuffer(CrwBuffer* pNextBuffer);
+    CrwBuffer*  pPrevBuffer(void);
+    void        vPrevBuffer(CrwBuffer* pPrevBuffer);
     void        vTruncate(void);
     
     ////////////////////////////////////////////////////////////////////////////
@@ -64,8 +64,8 @@ namespace Data
     ////////////////////////////////////////////////////////////////////////////
   
   public:
-    void vAssertRowBuffer(void);
-    bool bValidRowBuffer(void);
+    void vAssertCrwBuffer(void);
+    bool bValidCrwBuffer(void);
   
     
     ////////////////////////////////////////////////////////////////////////////
@@ -95,9 +95,9 @@ namespace Data
     /*----------------------------------------------------------------------------*/
     /* check if the row buffer contains the given address                         */
     /*----------------------------------------------------------------------------*/
-    inline static bool bCheckAddress(RowBuffer* pRowBuffer, void* aAddr)
+    inline static bool bCheckAddress(CrwBuffer* pCrwBuffer, void* aAddr)
     {
-      PoolBuffer* pRowPoolBuffer  = PoolBuffer::pGetPoolBuffer(pRowBuffer);
+      PoolBuffer* pRowPoolBuffer  = PoolBuffer::pGetPoolBuffer(pCrwBuffer);
       PoolBuffer* pAddrPoolBuffer = PoolBuffer::pGetPoolBuffer((Object*)aAddr);
     
       if (pAddrPoolBuffer == pRowPoolBuffer)
@@ -108,7 +108,7 @@ namespace Data
   
   };
   
-  RowBuffer* _pRowBuffer(void* aAddr);
+  CrwBuffer* _pCrwBuffer(void* aAddr);
 }
 
 /*============================================================================*/

@@ -116,7 +116,7 @@ Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
   m_nRowBuffers = C_UNKNOWN;
   m_iRowBuffer  = 0;
   
-  m_pRowBuffer = nullptr;
+  m_pCrwBuffer = nullptr;
   
   m_nExportBuffers = 0;
   m_pExportBuffer = nullptr;
@@ -164,7 +164,7 @@ bool Job_SubExporter::bBegin(void)
   Table* pTable = m_pJobExport->m_pTable;
   TablePtn* pTblPtn = pTable->pPartition(m_i_Slot);
   
-  m_pRowBuffer = pTblPtn->pRootRowBuffer();
+  m_pCrwBuffer = pTblPtn->pRootCrwBuffer();
   m_nRowBuffers = pTblPtn->nRowBuffers();
   
   if (m_bMarkActivity)
@@ -186,7 +186,7 @@ bool Job_SubExporter::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
   
-  if (! m_pRowBuffer)
+  if (! m_pCrwBuffer)
     return false;
   
   if (m_bMarkActivity)
@@ -195,15 +195,15 @@ bool Job_SubExporter::bChunk(void)
                           m_pJobExport->m_pTable->aTableName(),
                           m_iRowBuffer,
                           m_nRowBuffers,
-                          m_pRowBuffer);
+                          m_pCrwBuffer);
   
   ActionSequence::vAdd(this,AN_JOB_CHUNK,m_iRowBuffer);
 
-  if (m_pRowBuffer->nRowCount())
+  if (m_pCrwBuffer->nRowCount())
     vSprintRows();
   
   m_iRowBuffer++;
-  m_pRowBuffer = m_pRowBuffer->pNextBuffer();
+  m_pCrwBuffer = m_pCrwBuffer->pNextBuffer();
 
   return true;
 }
@@ -273,8 +273,8 @@ void Job_SubExporter::vSprintRows(void)
   char* aRecord = nullptr;
   i8 nBytes = 0;
 
-  i8 nRowCount = m_pRowBuffer->nRowCount();
-  ColumnVec* pColVec = m_pRowBuffer->pTable()->pColumnVec();
+  i8 nRowCount = m_pCrwBuffer->nRowCount();
+  ColumnVec* pColVec = m_pCrwBuffer->pTable()->pColumnVec();
   HV_Rec hvRec(pColVec);
   
   // create a row for retrieval the data
@@ -283,7 +283,7 @@ void Job_SubExporter::vSprintRows(void)
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
     // get the inflated compact row
-    m_pRowBuffer->vGetRow(hRow, i_Row);
+    m_pCrwBuffer->vGetRow(hRow, i_Row);
     
     // append the row to the record
     hvRec->vAppend(hRow);

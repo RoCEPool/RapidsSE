@@ -330,18 +330,18 @@ void Jobs::vJob_InflateRows_delete(Interface::Session* pSession, Job* pJob)
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
 void Jobs::vRetrieveRows(Job_InflateRows* pJob_InflateRows,
-                          RowBuffer* pRowBuffer, Row* pRow)
+                          CrwBuffer* pCrwBuffer, Row* pRow)
 {
   ColumnVec* pColVec = pJob_InflateRows->m_pTable->pColumnVec();
   HV_Rec hvRec(pColVec);
   
   //pJob_InflateRows->m_pRow->vDontDecodeVch();
   
-  i8 nRowCount = pRowBuffer->nRowCount();
+  i8 nRowCount = pCrwBuffer->nRowCount();
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
     // get the inflated compact row
-    pRowBuffer->vGetRow(pRow, i_Row);
+    pCrwBuffer->vGetRow(pRow, i_Row);
     
     if (pJob_InflateRows->m_bPrint) {
       
@@ -355,7 +355,7 @@ void Jobs::vRetrieveRows(Job_InflateRows* pJob_InflateRows,
 /* iterate and retrieve column from rows in the buffer                        */
 /*----------------------------------------------------------------------------*/
 void Jobs::vRetrieveColumns(Job_InflateRows* pJob_InflateRows,
-                            RowBuffer* pRowBuffer, Row* pRow)
+                            CrwBuffer* pCrwBuffer, Row* pRow)
 {
   ColumnVec* pColVec = pJob_InflateRows->m_pTable->pColumnVec();
   Column* pCol = pJob_InflateRows->m_pColumn;
@@ -364,11 +364,11 @@ void Jobs::vRetrieveColumns(Job_InflateRows* pJob_InflateRows,
   pRow->m_abGetCol[pCol->iColumnNo()] = true;
   pRow->m_iLastCol = pCol->iColumnNo();
   
-  i8 nRowCount = pRowBuffer->nRowCount();
+  i8 nRowCount = pCrwBuffer->nRowCount();
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
     // get the inflated compact row
-    pRowBuffer->vGetRow(pRow, i_Row);
+    pCrwBuffer->vGetRow(pRow, i_Row);
     
     if (pJob_InflateRows->m_bPrint) {
       HV_Rec hvRec(pColVec);

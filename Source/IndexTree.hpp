@@ -41,8 +41,8 @@ namespace Data
     i8         nEntBuffers(void);
     EntBuffer* pFirstH0Buffer(void);
     Index*     pIndex(void);
-    bool       bInsertEntry(RowBuffer* pRowBuffer, i8 i_Row, Id& xId);
-    void       vInsertEntriesFromBuffer(RowBuffer* pRowBuffer);
+    bool       bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Id& xId);
+    void       vInsertEntriesFromBuffer(CrwBuffer* pCrwBuffer);
     void       vLazyBuild(void);
     EntBuffer* pPositionH0Buffer(Ent* aEnt);
     EntBuffer* pRoot(void);
@@ -53,7 +53,7 @@ namespace Data
     void       vVisualize(void);
   
   
-    void      vExtractKey(EntWrk* pEntWrk, RowBuffer* pRowBuffer, i8 i_Row);
+    void      vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row);
 
     
     Footer*   aFooter(void);

@@ -195,7 +195,7 @@ namespace Jobs
   
     i8  m_iParticipantNode;    // participant node no (FromNodeNo?)
   
-    RowBuffer* m_pCurrentBuffer;   // row buffer
+    CrwBuffer* m_pCurrentBuffer;   // row buffer
   
     Object* m_pSendWith; // object which is to be sent with this job
   

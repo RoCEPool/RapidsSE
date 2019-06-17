@@ -293,7 +293,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   i8 nObjectSize = giClassSize[eClass];
 
   RASSERT(_bIsValidJob(eClass) ||
-          CN_ROWBUFFER  == eClass ||
+          CN_CRWBUFFER  == eClass ||
           CN_EXPORTBUFFER == eClass);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -349,14 +349,14 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of row buffer
   
-  if (eClass == CN_ROWBUFFER) {
+  if (eClass == CN_CRWBUFFER) {
     
-   RowBuffer* pRowBuffer = new RowBuffer();
+   CrwBuffer* pCrwBuffer = new CrwBuffer();
     
-    MemLib::vCopy(pRowBuffer,pObject,sizeof(Object),CN_ROWBUFFER);
+    MemLib::vCopy(pCrwBuffer,pObject,sizeof(Object),CN_CRWBUFFER);
 
-    void* aBody = aAdd<void*>(pRowBuffer,sizeof(Object));
-    i8 nRemainingBytes = giClassSize[CN_ROWBUFFER] - sizeof(Object);
+    void* aBody = aAdd<void*>(pCrwBuffer,sizeof(Object));
+    i8 nRemainingBytes = giClassSize[CN_CRWBUFFER] - sizeof(Object);
     
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
@@ -369,16 +369,16 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
     
     // restore the entryBuffer pointets (m_pHeadEntry etc)
-    pRowBuffer->vRestore();
+    pCrwBuffer->vRestore();
     
     if (gpAttachMap->m_bMarkResource[SR_SOCKET] ||
         gpAttachMap->m_bMarkResourceAll) {
       ActivityMap::vMarkRes(SR_SOCKET,
-                            "Recv RowBuffer: %p"_Stz,
-                            pRowBuffer);
+                            "Recv CrwBuffer: %p"_Stz,
+                            pCrwBuffer);
     }
 
-    mpTask->m_pDataStack->vPushPointer(pRowBuffer);
+    mpTask->m_pDataStack->vPushPointer(pCrwBuffer);
     mpTask->m_pDataStack->vPushBool(true);
     EXIT();
     return;
@@ -473,7 +473,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
   eCN eClass = pObject->eClass();
   i8 nObjectSize = giClassSize[eClass];
   
-  RASSERT(_bIsValidJob(eClass) || CN_ROWBUFFER == eClass);
+  RASSERT(_bIsValidJob(eClass) || CN_CRWBUFFER == eClass);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle the specific case of job_writeBuffer under low memory condition
@@ -565,14 +565,14 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of row buffer
   
-  if (eClass == CN_ROWBUFFER) {
+  if (eClass == CN_CRWBUFFER) {
     
-    RowBuffer* pRowBuffer = new RowBuffer();
+    CrwBuffer* pCrwBuffer = new CrwBuffer();
     
-    MemLib::vCopy(pRowBuffer,pObject,sizeof(Object),CN_ROWBUFFER);
+    MemLib::vCopy(pCrwBuffer,pObject,sizeof(Object),CN_CRWBUFFER);
     
-    void* aBody = aAdd<void*>(pRowBuffer,sizeof(Object));
-    i8 nRemainingBytes = giClassSize[CN_ROWBUFFER] - sizeof(Object);
+    void* aBody = aAdd<void*>(pCrwBuffer,sizeof(Object));
+    i8 nRemainingBytes = giClassSize[CN_CRWBUFFER] - sizeof(Object);
     
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
@@ -584,7 +584,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
     
-    mpTask->m_pDataStack->vPushPointer(pRowBuffer);
+    mpTask->m_pDataStack->vPushPointer(pCrwBuffer);
     mpTask->m_pDataStack->vPushBool(true);
     EXIT();
     return;
@@ -633,7 +633,7 @@ void Step::vSocketSendObject(MP_Task mpTask)
   }
 
   RASSERT(_bIsValidJob(eClass) ||
-          CN_ROWBUFFER  == eClass ||
+          CN_CRWBUFFER  == eClass ||
           CN_EXPORTBUFFER == eClass);
     
   SysCall oSysCall;

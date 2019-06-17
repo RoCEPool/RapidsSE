@@ -1029,8 +1029,8 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
              EntBuffer::pRefdEntBuffer(aNewEntry)->m_pHigherBuffer);
     }
     else {
-      RowBuffer* pChildBuffer =
-      reinterpret_cast<RowBuffer*>(pHeapBuffer->aFirstChunk());
+      CrwBuffer* pChildBuffer =
+      reinterpret_cast<CrwBuffer*>(pHeapBuffer->aFirstChunk());
       RASSERT(pChildBuffer);
     }
   }

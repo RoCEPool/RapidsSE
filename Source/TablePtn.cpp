@@ -110,8 +110,8 @@ TablePtn::TablePtn(void)
   
   m_iParentJobId = C_UNKNOWN;
   
-  m_pRootRowBuffer  = nullptr;
-  m_pCurrentRowBuffer = nullptr;
+  m_pRootCrwBuffer  = nullptr;
+  m_pCurrentCrwBuffer = nullptr;
   
   m_pIndexTreeVec = new IndexTreeVec;
   
@@ -267,32 +267,32 @@ void TablePtn::vAppendRow(RowCoder* pRowCoder, RowParts& oRowParts)
   RASSERT(m_okLock.bIsLocked());
   //m_okLock.vGrabWrite();
   
-  if (m_pRootRowBuffer == nullptr) {
-    ASSERT( ! m_pCurrentRowBuffer )
-    m_pRootRowBuffer = new RowBuffer;
-    m_pRootRowBuffer->vTable(m_pTable);
-    m_pRootRowBuffer->vPartitionNo(m_iPartitionId);
-    m_pCurrentRowBuffer = m_pRootRowBuffer;
+  if (m_pRootCrwBuffer == nullptr) {
+    ASSERT( ! m_pCurrentCrwBuffer )
+    m_pRootCrwBuffer = new CrwBuffer;
+    m_pRootCrwBuffer->vTable(m_pTable);
+    m_pRootCrwBuffer->vPartitionNo(m_iPartitionId);
+    m_pCurrentCrwBuffer = m_pRootCrwBuffer;
   }
   
-  bool bAppended = m_pCurrentRowBuffer->bAppendRow(pRowCoder,oRowParts.pNub());
+  bool bAppended = m_pCurrentCrwBuffer->bAppendRow(pRowCoder,oRowParts.pNub());
   
   if ( ! bAppended ) {
-    RowBuffer* pRowBuffer = new RowBuffer;
-    m_pRootRowBuffer->vTable(m_pTable);
-    m_pRootRowBuffer->vPartitionNo(m_iPartitionId);
-    pRowBuffer->vNextBuffer(m_pCurrentRowBuffer->pNextBuffer());
-    pRowBuffer->vPrevBuffer(m_pCurrentRowBuffer);
-    m_pCurrentRowBuffer->vNextBuffer(pRowBuffer);
-    m_pCurrentRowBuffer = pRowBuffer;
+    CrwBuffer* pCrwBuffer = new CrwBuffer;
+    m_pRootCrwBuffer->vTable(m_pTable);
+    m_pRootCrwBuffer->vPartitionNo(m_iPartitionId);
+    pCrwBuffer->vNextBuffer(m_pCurrentCrwBuffer->pNextBuffer());
+    pCrwBuffer->vPrevBuffer(m_pCurrentCrwBuffer);
+    m_pCurrentCrwBuffer->vNextBuffer(pCrwBuffer);
+    m_pCurrentCrwBuffer = pCrwBuffer;
     
-    bAppended = m_pCurrentRowBuffer->bAppendRow(pRowCoder,oRowParts.pNub());
+    bAppended = m_pCurrentCrwBuffer->bAppendRow(pRowCoder,oRowParts.pNub());
     RASSERT(bAppended);
   }
   
   // get the row from the buffer
   Id xId;
-  i8 iRow = m_pCurrentRowBuffer->nRowCount();
+  i8 iRow = m_pCurrentCrwBuffer->nRowCount();
   xId.vItem(iRow);
   
   // get no of indexes of the table
@@ -305,7 +305,7 @@ void TablePtn::vAppendRow(RowCoder* pRowCoder, RowParts& oRowParts)
     IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
     
     // insert entry into other indexes
-    bool bResult = pIndexTree->bInsertEntry(m_pCurrentRowBuffer,iRow,xId);
+    bool bResult = pIndexTree->bInsertEntry(m_pCurrentCrwBuffer,iRow,xId);
     RASSERT(bResult);
   }
   
@@ -315,7 +315,7 @@ void TablePtn::vAppendRow(RowCoder* pRowCoder, RowParts& oRowParts)
 /*----------------------------------------------------------------------------*/
 /* append a row buffer into the TablePtn                                      */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
+void TablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
 
@@ -326,17 +326,17 @@ void TablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
   RASSERT(m_okLock.bIsLocked());
   //m_okLock.vGrabWrite();
 
-  if (m_pRootRowBuffer == nullptr) {
-    ASSERT( ! m_pCurrentRowBuffer )
-    m_pRootRowBuffer = pRowBuffer;
+  if (m_pRootCrwBuffer == nullptr) {
+    ASSERT( ! m_pCurrentCrwBuffer )
+    m_pRootCrwBuffer = pCrwBuffer;
   }
   else {
-    pRowBuffer->vNextBuffer(m_pCurrentRowBuffer->pNextBuffer());
-    pRowBuffer->vPrevBuffer(m_pCurrentRowBuffer);
-    m_pCurrentRowBuffer->vNextBuffer(pRowBuffer);
+    pCrwBuffer->vNextBuffer(m_pCurrentCrwBuffer->pNextBuffer());
+    pCrwBuffer->vPrevBuffer(m_pCurrentCrwBuffer);
+    m_pCurrentCrwBuffer->vNextBuffer(pCrwBuffer);
   }
   
-  m_pCurrentRowBuffer = pRowBuffer;
+  m_pCurrentCrwBuffer = pCrwBuffer;
   
   //m_okLock.vDropWrite();
 }
@@ -412,11 +412,11 @@ void TablePtn::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  RowBuffer* pRowBuffer = m_pRootRowBuffer;
+  CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
     
-  while (pRowBuffer) {
-    pRowBuffer->vShow();
-    pRowBuffer = pRowBuffer->pNextBuffer();
+  while (pCrwBuffer) {
+    pCrwBuffer->vShow();
+    pCrwBuffer = pCrwBuffer->pNextBuffer();
   }
 
 }
@@ -424,11 +424,11 @@ void TablePtn::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* get the first row buffer                                                   */
 /*----------------------------------------------------------------------------*/
-RowBuffer* TablePtn::pFirstRowBuffer(void)
+CrwBuffer* TablePtn::pFirstCrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  return m_pRootRowBuffer;
+  return m_pRootCrwBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -551,11 +551,11 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
   
   IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
   
-  RowBuffer* pRowBuffer = m_pRootRowBuffer;
+  CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
   
-  while (pRowBuffer) {
-    pIndexTree->vInsertEntriesFromBuffer(pRowBuffer);
-    pRowBuffer = pRowBuffer->pNextBuffer();
+  while (pCrwBuffer) {
+    pIndexTree->vInsertEntriesFromBuffer(pCrwBuffer);
+    pCrwBuffer = pCrwBuffer->pNextBuffer();
   }
 
   return true;
@@ -568,29 +568,29 @@ void TablePtn::vPublish(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  if ( ! m_pRootRowBuffer)
+  if ( ! m_pRootCrwBuffer)
     return;
   
   m_okLock.vGrabWrite();
   
   // is there a current buffer ?
-  if ( ! m_pCurrentRowBuffer) {
+  if ( ! m_pCurrentCrwBuffer) {
     m_okLock.vDropWrite();
     return;
   }
   
-  ColumnVec* pColVec = m_pCurrentRowBuffer->pTable()->pColumnVec();
+  ColumnVec* pColVec = m_pCurrentCrwBuffer->pTable()->pColumnVec();
   HV_Rec hvRec(pColVec);
   
   // create a row for retrieving the row
   HV_Row hRow(pColVec);
   
   // publish the current buffer (last buffer that was added)
-  i8 nRowCount = m_pCurrentRowBuffer->nRowCount();
+  i8 nRowCount = m_pCurrentCrwBuffer->nRowCount();
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {
     
     // get the inflated compact row
-    m_pCurrentRowBuffer->vGetRow(hRow, i_Row);
+    m_pCurrentCrwBuffer->vGetRow(hRow, i_Row);
     
     // append the row to the record
     hvRec->vAppend(hRow);
@@ -599,7 +599,7 @@ void TablePtn::vPublish(void)
   }
   
   vTrace("Partition%lld: published %lld rows\n"_Stz,m_iPartitionId,
-         m_pCurrentRowBuffer->nRowCount());
+         m_pCurrentCrwBuffer->nRowCount());
   
   m_okLock.vDropWrite();
   
@@ -615,12 +615,12 @@ bool TablePtn::bPurge(i8 iOlderThanSeconds)
   static i8 iMaxAge = 0;
   static i8 nMaxBuffers = 0;
   
-  if (! m_pRootRowBuffer)
+  if (! m_pRootCrwBuffer)
     return false;
   
   m_okLock.vGrabWrite();
   
-  i8 iAge = m_pRootRowBuffer->iAgeSsec();
+  i8 iAge = m_pRootCrwBuffer->iAgeSsec();
   
   //  if (iAge <= 1) {
   //    vTrace("Purge: age is %llds\n"_Stz,iMaxAge);
@@ -631,7 +631,7 @@ bool TablePtn::bPurge(i8 iOlderThanSeconds)
     //    vTrace("Purge: max age now %llds\n"_Stz,iMaxAge);
   }
   
-  i8 iLengthList = m_pRootRowBuffer->iLengthList();
+  i8 iLengthList = m_pRootCrwBuffer->iLengthList();
   if (iLengthList > nMaxBuffers) {
     nMaxBuffers = iLengthList;
     //vTrace("Purge: max buffer chain now %lld buffers\n"_Stz,nMaxBuffers);
@@ -644,24 +644,24 @@ bool TablePtn::bPurge(i8 iOlderThanSeconds)
   }
   
   // is currentBuffer same as rootBuffer ?
-  if (m_pCurrentRowBuffer == m_pRootRowBuffer)
-    m_pCurrentRowBuffer = nullptr;
+  if (m_pCurrentCrwBuffer == m_pRootCrwBuffer)
+    m_pCurrentCrwBuffer = nullptr;
   
-  RowBuffer* pRowBuffer = m_pRootRowBuffer;
+  CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
   
   // get next entry buffer
-  m_pRootRowBuffer = m_pRootRowBuffer->pNextBuffer();
+  m_pRootCrwBuffer = m_pRootCrwBuffer->pNextBuffer();
   
   // set prev pointer to null
-  if (m_pRootRowBuffer) {
-    ASSERT(pRowBuffer ==  m_pRootRowBuffer->pPrevBuffer());
-    m_pRootRowBuffer->vPrevBuffer(nullptr);
+  if (m_pRootCrwBuffer) {
+    ASSERT(pCrwBuffer ==  m_pRootCrwBuffer->pPrevBuffer());
+    m_pRootCrwBuffer->vPrevBuffer(nullptr);
   }
   
   m_okLock.vDropWrite();
   
   // delete the root buffer
-  delete pRowBuffer;
+  delete pCrwBuffer;
 
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.IndexTree.m_nBuffersPurged++;
@@ -689,11 +689,11 @@ void TablePtn::vResetWrite(void)
 /*----------------------------------------------------------------------------*/
 /* get the root row buffer                                                    */
 /*----------------------------------------------------------------------------*/
-RowBuffer* TablePtn::pRootRowBuffer(void)
+CrwBuffer* TablePtn::pRootCrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  return m_pRootRowBuffer;
+  return m_pRootCrwBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -705,8 +705,8 @@ i8 TablePtn::nRowBuffers(void)
   
   i8 nBufferCount = 0;
   
-  if (m_pRootRowBuffer)
-    m_pRootRowBuffer->vBufferCount(nBufferCount);
+  if (m_pRootCrwBuffer)
+    m_pRootCrwBuffer->vBufferCount(nBufferCount);
   
   return nBufferCount;
 }
@@ -763,11 +763,11 @@ void TablePtn::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  if (m_pRootRowBuffer)
-    m_pRootRowBuffer->vTruncate();
+  if (m_pRootCrwBuffer)
+    m_pRootCrwBuffer->vTruncate();
   
-  m_pRootRowBuffer    = nullptr;
-  m_pCurrentRowBuffer = nullptr;
+  m_pRootCrwBuffer    = nullptr;
+  m_pCurrentCrwBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -777,14 +777,14 @@ bool TablePtn::bVerifyTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  RowBuffer* pRowBuffer = m_pRootRowBuffer;
+  CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
   bool bVerify = true;
   
-  while (pRowBuffer) {
-    bVerify = pRowBuffer->bVerify();
+  while (pCrwBuffer) {
+    bVerify = pCrwBuffer->bVerify();
     if (! bVerify )
       break;
-    pRowBuffer = pRowBuffer->pNextBuffer();
+    pCrwBuffer = pCrwBuffer->pNextBuffer();
   }
   
   return bVerify;
@@ -796,13 +796,13 @@ void TablePtn::vVisualizeTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  RowBuffer* pRowBuffer = m_pRootRowBuffer;
+  CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
   bool bVerify = true;
   
-  while (pRowBuffer) {
+  while (pCrwBuffer) {
     // print the decile of the this buffer
-    vTrace("%lld"_Stz, pRowBuffer->iDecile());
-    pRowBuffer = pRowBuffer->pNextBuffer();
+    vTrace("%lld"_Stz, pCrwBuffer->iDecile());
+    pCrwBuffer = pCrwBuffer->pNextBuffer();
   }
   vTrace("\n"_Stz);
 }

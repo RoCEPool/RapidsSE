@@ -47,6 +47,7 @@ enum eCN : u2 // Class Number
   /*  26 0x1A       24B Heap:M */ CN_COMMAND,
   /*  27 0x1B       64B Heap:M */ CN_COMPILER,
   /*                           */ CN_COMPLETER,
+  /*                    Heap:L */ CN_CRWBUFFER,
 
   /*                           */ CN_DATUM,
   /*                           */ CN_DECACNT,
@@ -235,7 +236,6 @@ enum eCN : u2 // Class Number
   /*                           */ CN_RESPONSEVEC,
   /*                           */ CN_ROW,
   /* 173 0xAD      896B Heap:M */ CN_ROWAGG,
-  /*                    Heap:L */ CN_ROWBUFFER,
   /*                           */ CN_ROWCODER,
   /* 174 0xAE      152B Heap:S */ CN_ROWONCE,
   /*                           */ CN_ROWTRAY,
@@ -348,6 +348,7 @@ static Stz* aCN[]
   /*  26 0x1A */ "COMMAND"_Stz,             // CN_COMMAND
   /*  27 0x1B */ "COMPILER"_Stz,            // CN_COMPILER
   /*          */ "COMPLETER"_Stz,           // CN_COMPLETER
+  /*          */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
 
   /*          */ "DATUM"_Stz,               // CN_DATUM
   /*          */ "DECACNT"_Stz,             // CN_DECACNT
@@ -536,7 +537,6 @@ static Stz* aCN[]
   /*          */ "RESPONSEVEC"_Stz,         // CN_RESPONSEVEC
   /*          */ "ROW"_Stz,                 // CN_ROW
   /* 173 0xAD */ "ROWAGG"_Stz,              // CN_ROWAGG
-  /*          */ "ROWBUFFER"_Stz,           // CN_ROWBUFFER
   /*          */ "ROWCODER"_Stz,            // CN_ROWCODER
   /* 174 0xAE */ "ROWONCE"_Stz,             // CN_ROWONCE
   /*          */ "ROWTRAY"_Stz,             // CN_ROWTRAY

@@ -696,12 +696,12 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
 /* fetch table                                                                */
 /*----------------------------------------------------------------------------*/
 eEC  RapidsSE_FetchTable (i8 iTrace, Session* pSession, Stz* aTable,
-                          i8 iPartition, void** aaRowBuffer, i8* aiRowCount)
+                          i8 iPartition, void** aaCrwBuffer, i8* aiRowCount)
 {
 
   API_SESSION_LEVEL();
   API_ENTER(AC_FetchTable);
-  API_NOTNULL(aaRowBuffer);
+  API_NOTNULL(aaCrwBuffer);
   //API_NOTNULL(aiBufferNo);
   API_NOTNULL(aiRowCount);
   API_BEGIN();
@@ -717,18 +717,18 @@ eEC  RapidsSE_FetchTable (i8 iTrace, Session* pSession, Stz* aTable,
     TablePtn* pPartition = pTable->pPartition(TablePtn::iPartitionToSlot(iPartition));
     API_LOC(330);
     
-    RowBuffer* pRowBuffer = pPartition->pFirstRowBuffer();
+    CrwBuffer* pCrwBuffer = pPartition->pFirstCrwBuffer();
     API_LOC(340);
     
     // return the first buffer
-    *aaRowBuffer = pRowBuffer;
+    *aaCrwBuffer = pCrwBuffer;
     
     i8 iRowCount = 0;
-    while (pRowBuffer) {
+    while (pCrwBuffer) {
       
-      iRowCount += pRowBuffer->nRowCount();
+      iRowCount += pCrwBuffer->nRowCount();
       
-      pRowBuffer = pRowBuffer->pNextBuffer();
+      pCrwBuffer = pCrwBuffer->pNextBuffer();
     }
     
     // return table row count

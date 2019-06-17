@@ -523,7 +523,7 @@ i8 IndexTree::nEntBuffers(void)
 /*----------------------------------------------------------------------------*/
 /* insert entries from entryBuffer into this index at level 0                 */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vInsertEntriesFromBuffer(RowBuffer* pRowBuffer)
+void IndexTree::vInsertEntriesFromBuffer(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
@@ -532,15 +532,15 @@ void IndexTree::vInsertEntriesFromBuffer(RowBuffer* pRowBuffer)
   //pEntBuffer->vShow();
 
   Id xId;
-  xId.vBuffer(*pRowBuffer->nPoolBufferNo());
+  xId.vBuffer(*pCrwBuffer->nPoolBufferNo());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru the buffer till no more entries
-  for (i8 i_Row = 0; i_Row < pRowBuffer->nRowCount(); i_Row++) {
+  for (i8 i_Row = 0; i_Row < pCrwBuffer->nRowCount(); i_Row++) {
 
     xId.vItem(i_Row);
     
-    bool bInserted = bInsertEntry(pRowBuffer,i_Row,xId);
+    bool bInserted = bInsertEntry(pCrwBuffer,i_Row,xId);
     
     //bVerify();
     ASSERT(bInserted);
@@ -552,14 +552,14 @@ void IndexTree::vInsertEntriesFromBuffer(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-bool IndexTree::bInsertEntry(RowBuffer* pRowBuffer, i8 i_Row, Id& xRowRef)
+bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Id& xRowRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   m_okLock.vGrabWrite();
   
   EntWrk xEntWrk;
-  vExtractKey(&xEntWrk,pRowBuffer,i_Row);
+  vExtractKey(&xEntWrk,pCrwBuffer,i_Row);
   xEntWrk.vRef(xRowRef);
   
   //xEntWrk.vShow(m_pIndex->pIdxColVec());
@@ -694,10 +694,10 @@ bool IndexTree::bVerifyIndex(void)
 /*----------------------------------------------------------------------------*/
 /* extract an index key into EntWrk from this row using given index columns   */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vExtractKey(EntWrk* pEntWrk, RowBuffer* pRowBuffer, i8 i_Row)
+void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
 {
   // create a row
-  HV_Row hRow(pRowBuffer->pColumnVec());
+  HV_Row hRow(pCrwBuffer->pColumnVec());
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
@@ -716,7 +716,7 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, RowBuffer* pRowBuffer, i8 i_Row)
   }
   
   // get the inflated compact row
-  pRowBuffer->vGetRow(hRow, i_Row);
+  pCrwBuffer->vGetRow(hRow, i_Row);
   
   for (i8 i_Column = 0; i_Column < nIdxCols; i_Column++) {
     

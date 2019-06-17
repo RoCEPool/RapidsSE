@@ -26,8 +26,8 @@ namespace Partitioning
     i8 m_nSubInsertersDone;      // number of subInserters which have completed
     i8 m_iParentJobId;           // parent jobid
     
-    RowBuffer* m_pRootRowBuffer;      // the data root buffer
-    RowBuffer* m_pCurrentRowBuffer;   // the data current buffer for insert
+    CrwBuffer* m_pRootCrwBuffer;      // the data root buffer
+    CrwBuffer* m_pCurrentCrwBuffer;   // the data current buffer for insert
     
     IndexTreeVec* m_pIndexTreeVec; // vector of index trees
   
@@ -50,7 +50,7 @@ namespace Partitioning
     void vAddInsertWriteBehindBuffers(i8 nBuffersInsertable);
     void vAddIndex(Data::IndexTree* pIndexTree);
     bool bAllBuffersWritten(eDS eDataSource);
-    void vAppendBuffer(RowBuffer* pRowBuffer);
+    void vAppendBuffer(CrwBuffer* pCrwBuffer);
     void vAppendRow(RowCoder* pRowCoder, RowParts& oRowParts);
     void vDump(void);
     void vWriteBehindBuffers(i8 nWriteBehindBuffers);
@@ -59,7 +59,7 @@ namespace Partitioning
     i8   nBuffersWritten(void);
     void vDropRead(void);
     void vDropWrite();
-    RowBuffer* pFirstRowBuffer(void);
+    CrwBuffer* pFirstCrwBuffer(void);
     bool bGrabRead(void);
     bool bGrabWrite(void);
     void vIncBuffersWritten(void);
@@ -74,7 +74,7 @@ namespace Partitioning
     void vPublish(void);
     bool bPurge(i8 iOlderThanSeconds);
     void vResetWrite(void);
-    RowBuffer* pRootRowBuffer(void);
+    CrwBuffer* pRootCrwBuffer(void);
     i8   nRowBuffers(void);
     void vTable(Table* pTable);
     Table* pTable(void);
