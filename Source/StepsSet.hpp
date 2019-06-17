@@ -933,20 +933,6 @@
   static void vSessionTxFetch(Tasks::MP_Task mpTask);
   static void vSessionTxStore(Tasks::MP_Task mpTask);
 
-  // selCursor
-  static void vSelCursorBegin(Tasks::MP_Task mpTask);
-  static void vSelCursorDelete(Tasks::MP_Task mpTask);
-  static void vSelCursorEnd(Tasks::MP_Task mpTask);
-  static void vSelCursorFirst(Tasks::MP_Task mpTask);
-  static void vSelCursorGet(Tasks::MP_Task mpTask);
-  static void vSelCursorHasRow(Tasks::MP_Task mpTask);
-  static void vSelCursorInit(Tasks::MP_Task mpTask);
-  static void vSelCursorNew(Tasks::MP_Task mpTask);
-  static void vSelCursorNext(Tasks::MP_Task mpTask);
-  static void vSelCursorRowBuffer(Tasks::MP_Task mpTask);
-  static void vSelCursorTableFetch(Tasks::MP_Task mpTask);
-  static void vSelCursorTableStore(Tasks::MP_Task mpTask);
-
   // shell
   static void vShellExecute(Tasks::MP_Task mpTask);
 
