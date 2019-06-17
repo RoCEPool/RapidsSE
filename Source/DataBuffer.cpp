@@ -30,7 +30,7 @@ DataBuffer::DataBuffer(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  m_okLock.vInitLock(LK_ROWBUFFER);
+  m_okLock.vInitLock(LK_CRWBUFFER);
   m_iBufferNo     = *nPoolBufferNo();
   m_iPartitionNo  = C_UNKNOWN;
   m_iBufferHeight = 0;
