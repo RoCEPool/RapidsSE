@@ -882,10 +882,6 @@
   static void vRbCursorTableFetch(Tasks::MP_Task mpTask);
   static void vRbCursorTableStore(Tasks::MP_Task mpTask);
 
-  // rowBuffer
-  static void vRowBufferDump(Tasks::MP_Task mpTask);
-  static void vRowBufferNew(Tasks::MP_Task mpTask);
-
   // rowCursor
   static void vRowCursorBegin(Tasks::MP_Task mpTask);
   static void vRowCursorDelete(Tasks::MP_Task mpTask);

@@ -68,7 +68,7 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
   for (i8 i_Ptn = 0; i_Ptn < gpAttachMap->m_pGrid->m_nPartitions; i_Ptn++) {
 
     if ( ! m_pCrwBuffer[i_Ptn] )
-      vNewRowBuffer(i_Ptn);
+      vNewCrwBuffer(i_Ptn);
     else
       m_paRowCoder_Copy[i_Ptn]->vCopyEnd();
 
@@ -115,8 +115,8 @@ eEC JobWriteBehind::eInsertRow(RowNub* pRowNub)
     // check for row buffer
     if (! m_pCrwBuffer[i_Ptn]) {
       
-      // create a new row buffer for this partition
-      vNewRowBuffer(i_Ptn);
+      // create a new crw buffer for this partition
+      vNewCrwBuffer(i_Ptn);
       
       if (! m_pCrwBuffer[i_Ptn]) {
         vTrace("RowBuffer allocation failed\n"_Stz);
@@ -203,9 +203,9 @@ eEC JobWriteBehind::eProcessRecord(Stz* szRecStr, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create a new row buffer                                                    */
+/* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void JobWriteBehind::vNewRowBuffer( i8 i_Ptn)
+void JobWriteBehind::vNewCrwBuffer( i8 i_Ptn)
 {
   m_pCrwBuffer[i_Ptn] = new CrwBuffer();
   

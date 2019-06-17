@@ -29,7 +29,7 @@ namespace Jobs
     eEC  eProcessRecord(Stz* aRecord,  i8 nBytes);
   
   private:
-    void vNewRowBuffer(i8 iPartition);
+    void vNewCrwBuffer(i8 iPartition);
   };
 }
 
