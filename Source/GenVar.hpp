@@ -23,10 +23,12 @@ namespace Forth
     GenVar(void);
    ~GenVar(void) noexcept(false);
   
+    void operator =(Cell* aFipPtr);
     void operator =(i8 iInt);
     void operator =(Object* pObject);
     void operator =(Stz* szStz);
 
+    Cell*   aFipPtr(void);
     i8      iInt(void);
     Value*  aNestedValue(void);
     Object* pObject(void);
