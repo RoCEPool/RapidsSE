@@ -116,7 +116,7 @@ Job_SubPublish::Job_SubPublish(Interface::Session* pSession)
   
   m_pJob_Publish  = nullptr;
   m_pTable        = nullptr;
-  m_pRowBuffer    = nullptr;
+  m_pCrwBuffer    = nullptr;
   m_pRowAgg       = new RowAgg;
   
   _checkInitialised_(CN_JOB_SUBPUBLISH);
@@ -179,19 +179,19 @@ bool Job_SubPublish::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPUBLISH,_FOOTER_);
   
-  if (! m_pRowBuffer) {
+  if (! m_pCrwBuffer) {
     TablePtn* pPartition = m_pTable->pPartition(m_i_Slot);
-    m_pRowBuffer = pPartition->pRootRowBuffer();
-    if (! m_pRowBuffer)
+    m_pCrwBuffer = pPartition->pRootCrwBuffer();
+    if (! m_pCrwBuffer)
       return false;
   }
   else {
-    if (! m_pRowBuffer->pNextBuffer())
+    if (! m_pCrwBuffer->pNextBuffer())
       return false;
-    m_pRowBuffer = m_pRowBuffer->pNextBuffer();
+    m_pCrwBuffer = m_pCrwBuffer->pNextBuffer();
   }
  
-  m_pRowAgg->vAggregate(m_i_Slot, m_pRowBuffer);
+  m_pRowAgg->vAggregate(m_i_Slot, m_pCrwBuffer);
   
   //vTrace("publish writing %p\n"_Stz,m_pEntBuffer);
   m_pJob_Publish->m_okLock.vGrabWrite();

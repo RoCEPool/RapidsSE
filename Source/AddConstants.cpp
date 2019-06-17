@@ -189,6 +189,8 @@ void Axioms::vAddConstants(void)
   /* 16 */ vAddConstant("CN_BUFFERPOOL"_Stz,   CN_BUFFERPOOL);
   /* 16 */ vAddConstant("CN_BYTERATE"_Stz,     CN_BYTERATE);
 
+  /*    */ vAddConstant("CN_CRWBUFFER"_Stz,    CN_CRWBUFFER);
+  
   /* 18 */ vAddConstant("CN_DIC"_Stz,          CN_DIC);
   /*    */ vAddConstant("CN_DICPATH"_Stz,      CN_DICPATH);
   /* 19 */ vAddConstant("CN_DICSTACK"_Stz,     CN_DICSTACK);
@@ -332,7 +334,6 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("CN_RECORDBUFFER"_Stz, CN_RECORDBUFFER);
   /*    */ vAddConstant("CN_RESPONSE"_Stz,     CN_RESPONSE);
   /*    */ vAddConstant("CN_RESPONSEVEC"_Stz,  CN_RESPONSEVEC);
-  /*    */ vAddConstant("CN_ROWBUFFER"_Stz,    CN_ROWBUFFER);
 
   /* 57 */ vAddConstant("CN_SESSION"_Stz,      CN_SESSION);
   /* 57 */ vAddConstant("CN_SESSIONSTATE"_Stz, CN_SESSIONSTATE);
@@ -581,6 +582,7 @@ void Axioms::vAddConstants(void)
   /* 14 */ vAddConstant("SIZEOF_DIC"_Stz,          sizeof(Dic));
   /* 15 */ vAddConstant("SIZEOF_DICSTACK"_Stz,     sizeof(DicStack));
   /* 16 */ vAddConstant("SIZEOF_DIR"_Stz,          sizeof(Dir));
+  /*    */ vAddConstant("SIZEOF_EntBUFFER"_Stz,    sizeof(EntBuffer));
   /* 17 */ vAddConstant("SIZEOF_FILE"_Stz,         sizeof(File));
   /* 18 */ vAddConstant("SIZEOF_FREECHUNK"_Stz,    sizeof(FreeChunk));
   /* 19 */ vAddConstant("SIZEOF_GRID"_Stz,         sizeof(Grid));
@@ -597,7 +599,7 @@ void Axioms::vAddConstants(void)
   /* 33 */ vAddConstant("SIZEOF_QUEUE"_Stz,        sizeof(Queue));
   /* 34 */ vAddConstant("SIZEOF_QUEUEBUFFER"_Stz,  sizeof(QueueBuffer));
   /* 36 */ vAddConstant("SIZEOF_ROW"_Stz,          sizeof(Ent));
-  /* 37 */ vAddConstant("SIZEOF_ROWBUFFER"_Stz,    sizeof(EntBuffer));
+  /* 37 */ vAddConstant("SIZEOF_CRWBUFFER"_Stz,    sizeof(CrwBuffer));
   /* 38 */ vAddConstant("SIZEOF_ROWCURSOR"_Stz,    (i8)0);
   
   /* 43 */ vAddConstant("SIZEOF_SESSION"_Stz,      sizeof(Session));

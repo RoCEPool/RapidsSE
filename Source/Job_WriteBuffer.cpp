@@ -170,7 +170,7 @@ bool Job_WriteBuffer::bInsertRows(void)
 
   TablePtn* pPartition = m_pTable->pPartition(iSlot);
   RASSERT_TYPE(pPartition,CN_TABLEPTN);
-  RASSERT_TYPE(m_pCurrentBuffer,CN_ROWBUFFER);
+  RASSERT_TYPE(m_pCurrentBuffer,CN_CRWBUFFER);
 
 //  if (gpAttachMap->m_bVerbose)
 //    vTrace("Job_WriteBuffer %lld %lld %s\n"_Stz,
@@ -354,7 +354,7 @@ void Job_WriteBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
                                            Stz* sTableName,
                                            eDS eDataSource,
-                                           RowBuffer* pRowBuffer,
+                                           CrwBuffer* pCrwBuffer,
                                            i8 iParentJobId,
                                            i8 iPartition,
                                            bool bFinal,
@@ -382,8 +382,8 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   pJob_WriteBuffer->m_iParentJobId  = iParentJobId;
   pJob_WriteBuffer->m_sObjectName   = sTableName;
   pJob_WriteBuffer->m_iPartitionId  = iPartition;
-  pJob_WriteBuffer->m_pCurrentBuffer = pRowBuffer;
-  pJob_WriteBuffer->m_nRows = pRowBuffer->nRowCount();
+  pJob_WriteBuffer->m_pCurrentBuffer = pCrwBuffer;
+  pJob_WriteBuffer->m_nRows = pCrwBuffer->nRowCount();
   
   if (bFinal) {
     ASSERT(C_UNKNOWN != nWriteBehindBuffers);

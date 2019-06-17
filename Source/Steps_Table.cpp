@@ -396,11 +396,11 @@ void Step::vTableInflateScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the first row buffer
-  RowBuffer* pRowBuffer = pPartition->pFirstRowBuffer();
+ CrwBuffer* pCrwBuffer = pPartition->pFirstCrwBuffer();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entryBuffer ?
-  if (! pRowBuffer) {
+  if (! pCrwBuffer) {
     
     EXIT();
     return;
@@ -408,14 +408,14 @@ void Step::vTableInflateScan(MP_Task mpTask)
   
   i8 nBufferCount = 0;
   
-  while (pRowBuffer) {
+  while (pCrwBuffer) {
     
     // put this FetchBuffer in session bufferQueue
-    pQueue->vAppend(pRowBuffer);
+    pQueue->vAppend(pCrwBuffer);
     nBufferCount++;
     
     // get next buffer from the current indexBuffer
-    pRowBuffer = pRowBuffer->pNextBuffer();
+    pCrwBuffer = pCrwBuffer->pNextBuffer();
     
   }
   
@@ -673,7 +673,7 @@ void Step::vTableScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // position in the first row buffer
-  RowBuffer* pRowBuffer = pPartition->pFirstRowBuffer();
+  CrwBuffer* pCrwBuffer = pPartition->pFirstCrwBuffer();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a result buffer for the results
@@ -681,7 +681,7 @@ void Step::vTableScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entryBuffer ?
-  if (! pRowBuffer) {
+  if (! pCrwBuffer) {
     // mark this buffer as the last buffer
     pFetchBuffer->vIsLast(true);
     
@@ -693,14 +693,14 @@ void Step::vTableScan(MP_Task mpTask)
   }
   
   
-  while (pRowBuffer) {
+  while (pCrwBuffer) {
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // iterate thru the buffer till no more entries
-    for (i8 iRow = 0; iRow < pRowBuffer->nRowCount(); iRow++) {
+    for (i8 iRow = 0; iRow < pCrwBuffer->nRowCount(); iRow++) {
       
       // get the row from the buffer
-      HeadLine* aRowData = pRowBuffer->pRow(iRow);
+      HeadLine* aRowData = pCrwBuffer->pRow(iRow);
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // insert row from entry in FetchBuffer
@@ -721,11 +721,11 @@ void Step::vTableScan(MP_Task mpTask)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // check if session exiting
       if (pSession->m_bSessionExiting)
-        pRowBuffer = nullptr;
+        pCrwBuffer = nullptr;
     }
     
     // get next buffer from the current indexBuffer
-    pRowBuffer = pRowBuffer->pNextBuffer();
+    pCrwBuffer = pCrwBuffer->pNextBuffer();
     
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

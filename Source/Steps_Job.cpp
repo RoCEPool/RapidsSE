@@ -1501,12 +1501,12 @@ void Step::vJobRowBufferStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.rowBuffer!"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  Object* pRowBufferPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pRowBufferPtr) )
+  Object* pCrwBufferPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pCrwBufferPtr) )
     THROW_INVALID_DSTACK("job.rowBuffer!"_Stz);
-  RowBuffer* pRowBuffer = _pRowBuffer(pRowBufferPtr);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(pCrwBufferPtr);
   
-  pJob->m_pCurrentBuffer = pRowBuffer;
+  pJob->m_pCurrentBuffer = pCrwBuffer;
   
   EXIT();
 }

@@ -502,7 +502,7 @@ void Step::vJob_SubInflateInflateRows(MP_Task mpTask)
   // get the buffer queue
   Queue* pBufferQueue = pJob_InflateRows->m_pBufferQueue;
   
-  RowBuffer* pRowBuffer = nullptr;
+  CrwBuffer* CrwBuffer = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for errors
@@ -520,19 +520,19 @@ void Step::vJob_SubInflateInflateRows(MP_Task mpTask)
   
   while ( *pJob_InflateRows->m_inBuffersScanned != *pJob_InflateRows->m_inBufferCount ) {
     
-    pRowBuffer = _pRowBuffer(pJob_InflateRows->m_pBufferQueue->pPop());
-    if (! pRowBuffer) {
+    CrwBuffer = _pCrwBuffer(pJob_InflateRows->m_pBufferQueue->pPop());
+    if (! CrwBuffer) {
       //Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
       Pthread::vSleepMicro(250,CN_JOB_FETCHROWS);
       continue;
     }
     
     if (pJob_InflateRows->m_pColumn)
-      vRetrieveColumns(pJob_InflateRows, pRowBuffer, pJob_SubInflate->m_pRow);
+      vRetrieveColumns(pJob_InflateRows, CrwBuffer, pJob_SubInflate->m_pRow);
     else
-      vRetrieveRows(pJob_InflateRows, pRowBuffer, pJob_SubInflate->m_pRow);
+      vRetrieveRows(pJob_InflateRows, CrwBuffer, pJob_SubInflate->m_pRow);
   
-    pJob_InflateRows->m_inRowsProcessed += pRowBuffer->nRowCount();
+    pJob_InflateRows->m_inRowsProcessed += CrwBuffer->nRowCount();
     ++pJob_InflateRows->m_inBuffersScanned;
   }
 

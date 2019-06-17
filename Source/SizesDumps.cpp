@@ -46,6 +46,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_COMMAND
   /*    */ &Dump::vDummy,           // CN_COMPILER
   /*    */ &Dump::vDummy,           // CN_COMPLETER
+  /*    */ &Dump::vUndefined,       // CN_CRWBUFFER
 
   /*    */ &Dump::vDummy,           // CN_DATUM
   /*    */ &Dump::vDummy,           // CN_DECACNT
@@ -238,7 +239,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_RESPONSEVEC
   /*    */ &Dump::vUndefined,       // CN_ROW
   /*102 */ &Dump::vUndefined,       // CN_ROWAGG
-  /*    */ &Dump::vUndefined,       // CN_ROWBUFFER
   /*    */ &Dump::vUndefined,       // CN_ROWCODER
   /*105 */ &Dump::vUndefined,       // CN_ROWONCE
   /*    */ &Dump::vUndefined,       // CN_ROWTRAY
@@ -351,6 +351,7 @@ i8 giClassSize[]
   /* 32 */ sizeof(Command),            // CN_COMMAND
   /* 32 */ sizeof(Compiler),           // CN_COMPILER
   /* 32 */ sizeof(Completer),          // CN_COMPLETER
+  /*    */ sizeof(CrwBuffer),          // CN_CRWBUFFER
 
   /*    */ sizeof(Datum),              // CN_DATUM
   /*    */ sizeof(DecaCnt),            // CN_DECACNT
@@ -542,7 +543,6 @@ i8 giClassSize[]
   /*    */ sizeof(ResponseVec),        // CN_RESPONSEVEC
   /*    */ sizeof(Row),                // CN_ROW
   /*102 */ sizeof(RowAgg),             // CN_ROWAGG
-  /*    */ sizeof(RowBuffer),          // CN_ROWBUFFER
   /*    */ sizeof(RowCoder),           // CN_ROWCODER
   /*105 */ sizeof(RowOnce),            // CN_ROWONCE
   /*105 */ sizeof(RowTray),            // CN_ROWTRAY
@@ -655,6 +655,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_COMMAND
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_COMPILER
   /*    */ HT_TRANSIENT_SMALL,   // CN_COMPLETER
+  /*    */ HT_TRANSIENT_LARGE,   // CN_CRWBUFFER
 
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_DATUM
   /*    */ HT_TRANSIENT_SMALL,   // CN_DECACNT
@@ -846,7 +847,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_RESPONSEVEC
   /*    */ HT_TRANSIENT_LARGE,   // CN_ROW
   /*102 */ HT_TRANSIENT_MEDIUM,  // CN_ROWAGG
-  /*    */ HT_TRANSIENT_LARGE,   // CN_ROWBUFFER
   /*    */ HT_TRANSIENT_LARGE,   // CN_ROWCODER
   /*105 */ HT_TRANSIENT_SMALL,   // CN_ROWONCE
   /*    */ HT_TRANSIENT_LARGE,   // CN_ROWTRAY

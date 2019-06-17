@@ -43,7 +43,8 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_COMMAND
   /*    */ &Finalize::vUndefined,         // CN_COMPILER
   /*    */ &Finalize::vUndefined,         // CN_COMPLETER
-
+  /*    */ &Finalize::vUndefined,         // CN_CRWBUFFER
+  
   /*    */ &Finalize::vUndefined,         // CN_DATUM
   /*    */ &Finalize::vUndefined,         // CN_DECACNT
   /*    */ &Finalize::vUndefined,         // CN_DECIDER
@@ -233,7 +234,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_RESPONSEVEC
   /*    */ &Finalize::vUndefined,         // CN_ROW
   /*102 */ &Finalize::vUndefined,         // CN_ROWAGG
-  /*    */ &Finalize::vUndefined,         // CN_ROWBUFFER
   /*    */ &Finalize::vUndefined,         // CN_ROWCODER
   /*105 */ &Finalize::vUndefined,         // CN_ROWONCE
   /*    */ &Finalize::vUndefined,         // CN_ROWTRAY

@@ -221,10 +221,10 @@ bool Job_FetchRows::bAppendRow(FetchBuffer* pFetchBuffer, Ent* aItem,
   }
   
   // get the rowBuffer
-  RowBuffer* pRowBuffer = RowBuffer::pRefdRowBuffer(xRef);
+  CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(xRef);
   
   // get the dataRow
-  HeadLine* aRowData = pRowBuffer->pRow(xRef.iItem());
+  HeadLine* aRowData = pCrwBuffer->pRow(xRef.iItem());
   
   if (pFetchBuffer->bAppendRow(aRowData))
     return true;
@@ -810,7 +810,7 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
                            FetchBuffer* pFetchBuffer)
 {
   //Datum oDatum;
-  RowBuffer* pRowBuffer = nullptr;
+  CrwBuffer* pCrwBuffer = nullptr;
   
   ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
   Column* pCol = pJob_FetchRows->m_pColumn;
@@ -831,8 +831,8 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
     HeadLine* aHeadLine = *aaHeadLine;
     
     // check if aHeadLine is from the last rowBuffer
-    if (! RowBuffer::bCheckAddress(pRowBuffer,aHeadLine)) {
-      pRowBuffer = RowBuffer::pToRowBuffer(aHeadLine);
+    if (! CrwBuffer::bCheckAddress(pCrwBuffer,aHeadLine)) {
+      pCrwBuffer = CrwBuffer::pToCrwBuffer(aHeadLine);
     }
     
     RowCoder::vInflate(pJob_FetchRows->m_pRow,aHeadLine);

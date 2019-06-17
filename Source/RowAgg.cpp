@@ -119,7 +119,7 @@ void RowAgg::vAdd(RowAgg* pAggArg)
 /*----------------------------------------------------------------------------*/
 /* aggregate an entry buffer                                                  */
 /*----------------------------------------------------------------------------*/
-void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
+void RowAgg::vAggregate(i8 i_Slot, CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
   
@@ -135,10 +135,10 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
   
   vReset();
   
-  m_oSince = pRowBuffer->oWhenNewed();
+  m_oSince = pCrwBuffer->oWhenNewed();
   
   // aggregate the buffer
-  i8 nRowCount = pRowBuffer->nRowCount();
+  i8 nRowCount = pCrwBuffer->nRowCount();
   HV_Row hRow(m_pTable->pColumnVec());
   i8 iKeyCol = m_pKeyColumn->iColumnNo();
   
@@ -159,7 +159,7 @@ void RowAgg::vAggregate(i8 i_Slot, RowBuffer* pRowBuffer)
     hRow->m_iLastCol = iKeyCol > iAggCol ? iKeyCol : iAggCol;
     
     // get the inflated row
-    pRowBuffer->vGetRow(hRow, i_Row);
+    pCrwBuffer->vGetRow(hRow, i_Row);
     
     // get the key value from the row
     xKey.m_iInt = hRow->m_aiValue[m_pKeyColumn->iColumnNo()];

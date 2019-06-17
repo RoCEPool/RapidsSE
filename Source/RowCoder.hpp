@@ -99,7 +99,7 @@ namespace Data
     RowCoder(void);
     ~RowCoder(void) noexcept(false);
     
-    void vCopyBegin(RowBuffer* pRowBuffer);
+    void vCopyBegin(CrwBuffer* pCrwBuffer);
     void vCopyEnd(void);
     bool bCopyRow(RowNub* pFromNub);
     
@@ -193,7 +193,7 @@ namespace Data
     static void vAnalyse(RowNub* pNub);
   
     //! alka
-    static HeadLine* aCompactRow(RowBuffer* pRowBuffer, i8 i_Row);
+    static HeadLine* aCompactRow(CrwBuffer* pCrwBuffer, i8 i_Row);
   
     static void vDumpHead(Stz* szTitle,
                           HeadLine* aHeadLine,
