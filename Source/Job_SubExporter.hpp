@@ -12,7 +12,7 @@ namespace Jobs
     Job_Export*  m_pJobExport;     // export job that spawned this sub export
   
     i8           m_nCrwBuffers;
-    i8           m_iRowBuffer;
+    i8           m_iCrwBuffer;
   
     CrwBuffer*   m_pCrwBuffer;
   

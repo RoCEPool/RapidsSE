@@ -114,7 +114,7 @@ Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
     
   m_pJobExport = nullptr;
   m_nCrwBuffers = C_UNKNOWN;
-  m_iRowBuffer  = 0;
+  m_iCrwBuffer  = 0;
   
   m_pCrwBuffer = nullptr;
   
@@ -191,18 +191,18 @@ bool Job_SubExporter::bChunk(void)
   
   if (m_bMarkActivity)
     ActivityMap::vMarkJob(this,
-                          "Exporting Table %s RowBuffer[%lld/%lld] %p"_Stz,
+                          "Exporting Table %s CrwBuffer[%lld/%lld] %p"_Stz,
                           m_pJobExport->m_pTable->aTableName(),
-                          m_iRowBuffer,
+                          m_iCrwBuffer,
                           m_nCrwBuffers,
                           m_pCrwBuffer);
   
-  ActionSequence::vAdd(this,AN_JOB_CHUNK,m_iRowBuffer);
+  ActionSequence::vAdd(this,AN_JOB_CHUNK,m_iCrwBuffer);
 
   if (m_pCrwBuffer->nRowCount())
     vSprintRows();
   
-  m_iRowBuffer++;
+  m_iCrwBuffer++;
   m_pCrwBuffer = m_pCrwBuffer->pNextBuffer();
 
   return true;
@@ -218,7 +218,7 @@ void Job_SubExporter::vEnd(void)
   if (m_pExportBuffer)
     vSpawnKidExport(true);
   
-  ActionSequence::vAdd(this,AN_JOB_END,m_iRowBuffer);
+  ActionSequence::vAdd(this,AN_JOB_END,m_iCrwBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

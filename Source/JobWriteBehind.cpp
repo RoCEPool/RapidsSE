@@ -119,7 +119,7 @@ eEC JobWriteBehind::eInsertRow(RowNub* pRowNub)
       vNewCrwBuffer(i_Ptn);
       
       if (! m_pCrwBuffer[i_Ptn]) {
-        vTrace("RowBuffer allocation failed\n"_Stz);
+        vTrace("CrwBuffer allocation failed\n"_Stz);
         return EC_LOW_MEMORY;
       }
 
@@ -137,7 +137,7 @@ eEC JobWriteBehind::eInsertRow(RowNub* pRowNub)
     bool bRowAppended = pCrwBuffer->bAppendRow(m_paRowCoder_Copy[i_Ptn],pRowNub);
     pCrwBuffer->vDropWrite();
     
-    //pRowBuffer->vDump();
+    //pCrwBuffer->vDump();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // appended ?
