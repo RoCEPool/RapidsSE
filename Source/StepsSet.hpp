@@ -426,6 +426,8 @@
   static void vJobColumnIsPartKey(Tasks::MP_Task mpTask);
   static void vJobColumnTypeFetch(Tasks::MP_Task mpTask);
   static void vJobCreateResponseVec(Tasks::MP_Task mpTask);
+  static void vJobCrwBufferFetch(Tasks::MP_Task mpTask);
+  static void vJobCrwBufferStore(Tasks::MP_Task mpTask);
 
   static void vJobDecAcksRemaining(Tasks::MP_Task mpTask);
   static void vJobDelete(Tasks::MP_Task mpTask);
@@ -482,8 +484,6 @@
   static void vJobRemoveParticipant(Tasks::MP_Task mpTask);
   static void vJobResponseStore(Tasks::MP_Task mpTask);
   static void vJobResponseFetch(Tasks::MP_Task mpTask);
-  static void vJobRowBufferFetch(Tasks::MP_Task mpTask);
-  static void vJobRowBufferStore(Tasks::MP_Task mpTask);
   static void vJobRowsInvalidFetch(Tasks::MP_Task mpTask);
   static void vJobRowsInvalidStore(Tasks::MP_Task mpTask);
   static void vJobRowsProcessedFetch(Tasks::MP_Task mpTask);
@@ -879,7 +879,6 @@
   static void vRbCursorInit(Tasks::MP_Task mpTask);
   static void vRbCursorNew(Tasks::MP_Task mpTask);
   static void vRbCursorNext(Tasks::MP_Task mpTask);
-  static void vRbCursorRowBuffer(Tasks::MP_Task mpTask);
   static void vRbCursorTableFetch(Tasks::MP_Task mpTask);
   static void vRbCursorTableStore(Tasks::MP_Task mpTask);
 

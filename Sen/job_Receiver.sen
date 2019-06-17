@@ -74,7 +74,7 @@
 
     pReceivedJob job.hasEntBuffer if
       pSocket socket.recvObject drop to pEntBuffer
-      pEntBuffer pReceivedJob job.rowBuffer!
+      pEntBuffer pReceivedJob job.crwBuffer!
     then
 
     pReceivedJob job.hasSendWith if

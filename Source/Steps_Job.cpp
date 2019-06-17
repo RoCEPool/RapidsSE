@@ -26,6 +26,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.columnName@"_Stz,      &Step::vJobColumnNameFetch);
   vAddStep("job.columnType@"_Stz,      &Step::vJobColumnTypeFetch);
   vAddStep("job.createResponseVec"_Stz,&Step::vJobCreateResponseVec);
+  vAddStep("job.CrwBuffer@"_Stz,       &Step::vJobCrwBufferFetch);
+  vAddStep("job.CrwBuffer!"_Stz,       &Step::vJobCrwBufferStore);
   
   vAddStep("job.decAcksRemaining"_Stz, &Step::vJobDecAcksRemaining);
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
@@ -82,8 +84,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
   vAddStep("job.response@"_Stz,        &Step::vJobResponseFetch);
   vAddStep("job.response!"_Stz,        &Step::vJobResponseStore);
-  vAddStep("job.RowBuffer@"_Stz,       &Step::vJobRowBufferFetch);
-  vAddStep("job.RowBuffer!"_Stz,       &Step::vJobRowBufferStore);
   vAddStep("job.rowsInvalid@"_Stz,     &Step::vJobRowsInvalidFetch);
   vAddStep("job.rowsInvalid!"_Stz,     &Step::vJobRowsInvalidStore);
   vAddStep("job.rowsProcessed@"_Stz,   &Step::vJobRowsProcessedFetch);
@@ -372,6 +372,25 @@ void Step::vJobAssertReceived(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.class -- get the class of the job                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJobClass(MP_Task mpTask)
+{
+  ENTRY("vJobClass"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.class"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  eCN eClass = pJob->eClass();
+  
+  mpTask->m_pDataStack->vPushI8(eClass);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.columnCount@ -- fetch the no of columns of the create table job        */
 /*----------------------------------------------------------------------------*/
 void Step::vJobColumnCountFetch(MP_Task mpTask)
@@ -470,20 +489,40 @@ void Step::vJobCreateResponseVec(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.class -- get the class of the job                                      */
+/* job.crwBuffer@ -- fetch crw buffer from job                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClass(MP_Task mpTask)
+void Step::vJobCrwBufferFetch(MP_Task mpTask)
 {
-  ENTRY("vJobClass"_Stz);
+  ENTRY("vJobCrwBufferFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.class"_Stz);
+    THROW_INVALID_DSTACK("job.crwBuffer@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  eCN eClass = pJob->eClass();
+  mpTask->m_pDataStack->vPushPointer(pJob->m_pCurrentBuffer);
   
-  mpTask->m_pDataStack->vPushI8(eClass);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.crwBuffer! -- store crw buffer in the job                              */
+/*----------------------------------------------------------------------------*/
+void Step::vJobCrwBufferStore(MP_Task mpTask)
+{
+  ENTRY("vJobCrwBufferStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.crwBuffer!"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  Object* pCrwBufferPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pCrwBufferPtr) )
+    THROW_INVALID_DSTACK("job.crwBuffer!"_Stz);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(pCrwBufferPtr);
+  
+  pJob->m_pCurrentBuffer = pCrwBuffer;
   
   EXIT();
 }
@@ -1468,45 +1507,6 @@ void Step::vJobResponseStore(MP_Task mpTask)
   
   //pJob->m_xNode[iNode].m_sResponse = sResponse;
   pJob->m_xResponse.m_sResponse = sResponse;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.rowBuffer@ -- fetch row buffer from job                                */
-/*----------------------------------------------------------------------------*/
-void Step::vJobRowBufferFetch(MP_Task mpTask)
-{
-  ENTRY("vJobRowBufferFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.rowBuffer@"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushPointer(pJob->m_pCurrentBuffer);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.rowBuffer! -- store row buffer in the job                              */
-/*----------------------------------------------------------------------------*/
-void Step::vJobRowBufferStore(MP_Task mpTask)
-{
-  ENTRY("vJobRowBufferStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.rowBuffer!"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  Object* pCrwBufferPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pCrwBufferPtr) )
-    THROW_INVALID_DSTACK("job.rowBuffer!"_Stz);
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(pCrwBufferPtr);
-  
-  pJob->m_pCurrentBuffer = pCrwBuffer;
   
   EXIT();
 }
