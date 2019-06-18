@@ -114,7 +114,6 @@ Job_InsertRow::Job_InsertRow(Interface::Session* pSession)
   m_pTable = nullptr;
   
   m_pRecord = new Record;
-  m_nRawDataBytes = C_UNKNOWN;
   m_iPartitionId = C_UNKNOWN;
   
   _checkInitialised_(CN_JOB_INSERTROW);

@@ -181,7 +181,9 @@ eEC JobWriteBehind::eProcessRecord(Stz* szRecStr, i8 nBytes)
     return EC_MAX_ROW_LENGTH;
   }
 
-  bool bValid = bEncodeRow(szRecStr, nBytes, bBlankLine);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  bool bValid = bEncodeRow(szRecStr, bBlankLine);
   
   if (bBlankLine)
     return EC_BLANKLINE;

@@ -13,7 +13,6 @@ namespace Jobs
   public:
     Table*     m_pTable;             // table pointer
     Record*    m_pRecord;            // raw record
-    i8         m_nRawDataBytes;      // length of record
     i8         m_iPartitionId;       // partition
     
     // must be last

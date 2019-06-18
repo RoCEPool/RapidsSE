@@ -62,7 +62,7 @@ JobEncodeRow::~JobEncodeRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* Encode row from given record string                                        */
 /*----------------------------------------------------------------------------*/
-bool JobEncodeRow::bEncodeRow(Stz* szRecStr, i8 nBytes, bool &bBlankLine)
+bool JobEncodeRow::bEncodeRow(Stz* szRecStr, bool &bBlankLine)
 {
   ColumnVec* pColVec = pTable()->pColumnVec();
   

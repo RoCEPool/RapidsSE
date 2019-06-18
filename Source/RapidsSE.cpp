@@ -366,7 +366,7 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     pJob_InsertRow->m_sObjectName = sTableName;
     pJob_InsertRow->m_pRecord->vRecStr(sRecord);
     
-    pJob_InsertRow->m_nRawDataBytes = iRawDataLength;
+    //pJob_InsertRow->m_nRawDataBytes = iRawDataLength;
     API_LOC(370);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

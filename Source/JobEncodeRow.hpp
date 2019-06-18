@@ -24,7 +24,7 @@ namespace Jobs
    ~JobEncodeRow(void) noexcept(false);
     
   public:
-    bool bEncodeRow(Stz* aRecord, i8 nBytes, bool &bBlankLine);
+    bool bEncodeRow(Stz* aRecord, bool &bBlankLine);
   
     Table* pTable(void);
     void vTable(Table* pTable);
