@@ -96,16 +96,17 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
 /*----------------------------------------------------------------------------*/
 eEC JobWriteBehind::eInsertRow(Row* pRow)
 {
-  return eInsertRow(pRow,m_oRowParts.pNub());
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert row into working buffer                                             */
-/*----------------------------------------------------------------------------*/
-eEC JobWriteBehind::eInsertRow(Row* pRow, RowNub* pFromRowNub)
-{
+//  return eInsertRow(pRow,m_oRowParts.pNub());
+//}
+//
+///*----------------------------------------------------------------------------*/
+///* insert row into working buffer                                             */
+///*----------------------------------------------------------------------------*/
+//eEC JobWriteBehind::eInsertRow(Row* pRow, RowNub* )
+//{
   ASSERT(pRow == m_pRow);
-  ASSERT(pFromRowNub == m_oRowParts.pNub());
+  //ASSERT(pFromRowNub == m_oRowParts.pNub());
+  RowNub* pFromRowNub = m_oRowParts.pNub();
   
   // use row hash to get partition
   i8 i_Ptn = pTable()->iRowPartition(pRow->m_iHash);
@@ -140,7 +141,7 @@ eEC JobWriteBehind::eInsertRow(Row* pRow, RowNub* pFromRowNub)
       pCrwBuffer->bAppendRow(m_paRowCoder_Copy[i_Ptn],m_pRow,
                              pFromRowNub // to be removed
                              );
-    //pCrwBuffer->vDropWrite();    
+    //pCrwBuffer->vDropWrite();
     //pCrwBuffer->vDump();
     
     // appended ?
