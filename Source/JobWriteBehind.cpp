@@ -70,7 +70,7 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
     if ( ! m_pCrwBuffer[i_Ptn] )
       vNewCrwBuffer(i_Ptn);
     else
-      m_paRowCoder_Copy[i_Ptn]->vCopyEnd();
+      m_paRowCompactor[i_Ptn]->vCopyEnd();
 
     // get the entry buffer
     CrwBuffer* pCrwBuffer = m_pCrwBuffer[i_Ptn];
@@ -116,7 +116,7 @@ eEC JobWriteBehind::eInsertRow(void)
       }
 
       CrwBuffer* pCrwBuffer = m_pCrwBuffer[i_Ptn];
-      m_paRowCoder_Copy[i_Ptn]->vCopyBegin(pCrwBuffer);
+      m_paRowCompactor[i_Ptn]->vCopyBegin(pCrwBuffer);
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -126,7 +126,7 @@ eEC JobWriteBehind::eInsertRow(void)
 
     //pCrwBuffer->vGrabWrite();
     bool bWasAppended =
-      pCrwBuffer->bAppendRow(m_paRowCoder_Copy[i_Ptn],m_pRow);
+      pCrwBuffer->bAppendRow(m_paRowCompactor[i_Ptn],m_pRow);
     //pCrwBuffer->vDropWrite();
     //pCrwBuffer->vDump();
     
@@ -140,7 +140,7 @@ eEC JobWriteBehind::eInsertRow(void)
 
     m_pCrwBuffer[i_Ptn] = nullptr;
 
-    m_paRowCoder_Copy[i_Ptn]->vCopyEnd();
+    m_paRowCompactor[i_Ptn]->vCopyEnd();
     Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession,
                                           m_pTable->aTableName(),
                                           m_eDataSource,

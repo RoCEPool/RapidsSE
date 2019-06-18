@@ -31,10 +31,10 @@ JobExtractRow::JobExtractRow(void)
   m_pTable = nullptr;
   
   for (i8 i_Ptn = 0; i_Ptn < C_MAX_PARTITIONS; i_Ptn++)
-    m_paRowCoder_Copy[i_Ptn] = nullptr;
+    m_paRowCompactor[i_Ptn] = nullptr;
   
   for (i8 i_Ptn = 0; i_Ptn < gpAttachMap->m_pGrid->m_nPartitions; i_Ptn++)
-    m_paRowCoder_Copy[i_Ptn] = new RowCompactor;
+    m_paRowCompactor[i_Ptn] = new RowCompactor;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,10 +47,10 @@ JobExtractRow::~JobExtractRow(void) noexcept(false)
   for (i8 i_Ptn = 0; i_Ptn < gpAttachMap->m_pGrid->m_nPartitions; i_Ptn++) {
     
 #ifdef WITH_ANALYSE_FREE
-    //m_paRowCoder_Copy[i_Ptn]->vReport(m_pRowCoder_Encode);
+    //m_paRowCompactor[i_Ptn]->vReport(m_pRowCoder_Encode);
 #endif
     
-    delete m_paRowCoder_Copy[i_Ptn];
+    delete m_paRowCompactor[i_Ptn];
   }
 
 }
