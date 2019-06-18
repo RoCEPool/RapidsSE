@@ -16,9 +16,9 @@ static Numbat oNumBat("partKey"_Stz);
 /*----------------------------------------------------------------------------*/
 RowCompactor* Data::_pRowCoder(void* aAddr)
 {
-  RowCompactor* pRowCoder = reinterpret_cast<RowCompactor*>(aAddr);
+  RowCompactor* pRowCompactor = reinterpret_cast<RowCompactor*>(aAddr);
   
-  return pRowCoder;
+  return pRowCompactor;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,9 +36,9 @@ void* RowCompactor::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void RowCompactor::operator delete(void* aAddr)
 {
-  RowCompactor* pRowCoder = reinterpret_cast<RowCompactor*>(aAddr);
+  RowCompactor* pRowCompactor = reinterpret_cast<RowCompactor*>(aAddr);
   
-  HeapMem::vFree(pRowCoder);
+  HeapMem::vFree(pRowCompactor);
 }
 
 /*----------------------------------------------------------------------------*/
