@@ -195,20 +195,31 @@ void RowCoder::vCopyEnd(void)
 /*----------------------------------------------------------------------------*/
 /* copy (& recode) given encoded row from given nub into current nub          */
 /*----------------------------------------------------------------------------*/
-bool RowCoder::bCopyRow(Row* pRow, RowNub* pFromNub)
+bool RowCoder::bCopyRow(Row* pRow, RowNub* pFromNub_IGNORE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   
   RASSERT(! m_bEncoding);
   
+  //RASSERT(m_pColVec == pFromNub->pDesc()->pColumnVec());
+  
   // + + + + + + + + + + + + + + + + + + +
+  
+  RowParts* pRowParts = new RowParts;
+  pRowParts->pNub()->vDesc(m_pIntoNub->pDesc());
+  RowNub* pFromNub = pRowParts->pNub();
   m_pRowEncoder = new RowCoder;
   
   m_pRowEncoder->vEncodeBegin(pFromNub);
   m_pRowEncoder->vEncodeRow(pRow);
   m_pRowEncoder->vEncodeEnd();
 
-  delete m_pRowEncoder;
+  // + + + + + + + + + + + + + + + + + + +
+
+//  delete m_pRowEncoder;
+//
+//  delete pRowParts;
+  
   // + + + + + + + + + + + + + + + + + + +
 
   // check for space in target nub
@@ -218,6 +229,12 @@ bool RowCoder::bCopyRow(Row* pRow, RowNub* pFromNub)
   if (! m_pIntoNub->bHasSpace(nSpaceNeeded)) {
     m_nTotalBuffers++;
     //oNumBat.vPrint();
+    
+    // + + + + + + + + + + + + + + + + + + +
+    delete m_pRowEncoder;
+    delete pRowParts;
+    // + + + + + + + + + + + + + + + + + + +
+    
     return false;
   }
   
@@ -272,6 +289,11 @@ bool RowCoder::bCopyRow(Row* pRow, RowNub* pFromNub)
 #ifdef WITH_VERIFY_TAILS
   m_pIntoNub->vVerifyTails(C_UNKNOWN);
 #endif
+  
+  // + + + + + + + + + + + + + + + + + + +
+  delete m_pRowEncoder;
+  delete pRowParts;
+  // + + + + + + + + + + + + + + + + + + +
   
   return true;
 }
