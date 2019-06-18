@@ -33,13 +33,13 @@ public:
   ~Cursor(void) { }
   
   // incremnet
-  void vInc()
+  void vNext()
   {
     m_aElement++;
   }
   
   // decreement
-  void vDec()
+  void vPrevious()
   {
     m_aElement--;
   }

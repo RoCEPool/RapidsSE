@@ -383,7 +383,7 @@ void vTest11(void)
 /*----------------------------------------------------------------------------*/
 /* Partition                                                                  */
 /*----------------------------------------------------------------------------*/
-void vPartition(i8* A, Cursor& xLowCursor, Cursor& xHighCursor, Cursor& xPartitionCursor)
+void vPartition_MarkI(i8* A, Cursor& xLowCursor, Cursor& xHighCursor, Cursor& xPartitionCursor)
 {
   
   // point a cusror at the pivot point
@@ -399,10 +399,10 @@ void vPartition(i8* A, Cursor& xLowCursor, Cursor& xHighCursor, Cursor& xPartiti
   Cursor xEnd(xHighCursor);
   
   // step back with the start position
-  xStart.vDec();
+  xStart.vPrevious();
   
   // step ahead with the end position
-  xEnd.vInc();
+  xEnd.vNext();
   
   // get the pivot element value
   i8 iPivot = *xPivotCursor;
@@ -415,13 +415,71 @@ void vPartition(i8* A, Cursor& xLowCursor, Cursor& xHighCursor, Cursor& xPartiti
     
     // move start cursor forward till we go beyond the pivot value
     do {
-      xStart.vInc();
+      xStart.vNext();
     } while (xStart < iPivot);
-    
+
     // move end cursor backward till pivot value is beyond it
     do {
-      xEnd.vDec();
+      xEnd.vPrevious();
     } while (xEnd > iPivot);
+
+    // crossed
+    if ( xStart >= xEnd) {
+      xPartitionCursor.vSet(xEnd);
+      vTrace("Returning %lld\n"_Stz, *xEnd);
+      return;
+    }
+    
+    // swap the inverted elements
+    vTrace("Swapping %lld %lld\n"_Stz, *xStart, *xEnd);
+    // swap A[i] and A[j]
+    xStart.vSwap(xEnd);
+    
+    for (i8 i = 0; i < ELEMENTS; i ++) {
+      vTrace("A[%lld] = %lld %x\n"_Stz, i, A[i], &A[i]);
+    }
+    
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Partition                                                                  */
+/*----------------------------------------------------------------------------*/
+void vPartition(i8* A, Cursor& xLowCursor, Cursor& xHighCursor, Cursor& xPartitionCursor)
+{
+  
+  // point a cusror at the pivot point
+  Cursor xPivotCursor(xLowCursor, xHighCursor);
+  
+  vTrace("iPivot %lld Low %lld High %lld\n"_Stz,
+         *xPivotCursor,
+         *xLowCursor.m_aElement,
+         *xHighCursor.m_aElement);
+  
+  // define the start and end positions
+  Cursor xStart(xLowCursor);
+  Cursor xEnd(xHighCursor);
+  
+  // get the pivot element value
+  i8 iPivot = *xPivotCursor;
+  
+  // Move start and end toward each other, until they detect an inversion:
+  // a pair of elements, one greater than or equal to the pivot,
+  // one lesser or equal, that are in the wrong order relative to each other.
+  
+  while (true) {
+    
+    vTrace("A: Start %lld End %lld\n"_Stz, *xStart, *xEnd);
+    
+    // move start cursor forward till we go beyond the pivot value
+    while (xStart < iPivot) {
+      xStart.vNext();
+    }
+    
+    // move end cursor backward till pivot value is beyond it
+    while (xEnd > iPivot) {
+      xEnd.vPrevious();
+    }
     
     // crossed
     if ( xStart >= xEnd) {
@@ -438,6 +496,12 @@ void vPartition(i8* A, Cursor& xLowCursor, Cursor& xHighCursor, Cursor& xPartiti
     for (i8 i = 0; i < ELEMENTS; i ++) {
       vTrace("A[%lld] = %lld %x\n"_Stz, i, A[i], &A[i]);
     }
+    
+    // move start cursor forward
+    xStart.vNext();
+    
+    // move end cursor backward
+    xEnd.vPrevious();
   }
 }
 
@@ -600,14 +664,14 @@ void vTest12(void)
   // create an array of integers
   i8 A[100];
   
-  for (i8 iLoop = 0; iLoop < 10; iLoop++ ) {
+  //for (i8 iLoop = 0; iLoop < 10; iLoop++ ) {
   
     vTrace("\nSorting array\n"_Stz);
     
-    for (i8 i = 0; i < ELEMENTS; i ++) {
-      A[i] = Random::iInteger(0,1000);
-      vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
-    }
+//    for (i8 i = 0; i < ELEMENTS; i ++) {
+//      A[i] = Random::iInteger(0,1000);
+//      vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+//    }
 
     //--------------------------------------------------------------------------
     // EXPERIMENT 1: SORING USING INDEXES
@@ -619,6 +683,17 @@ void vTest12(void)
     // vTrace("SORTING USING ARRAY ELEMENT POINTERS\n"_Stz);
     // vQuickSort(A, &A[0], &A[ELEMENTS - 1]);
 
+    A[0] = 901;
+    A[1] = 37;
+    A[2] = 693;
+    A[3] = 747;
+    A[4] = 828;
+    A[5] = 502;
+    A[6] = 966;
+    A[7] = 991;
+    A[8] = 693;
+    A[9] = 334;
+    
     //--------------------------------------------------------------------------
     // EXPERIMENT 3: SORTING USING CURSORS
     vTrace("SORTING USING CUSRORS\n"_Stz);
@@ -639,7 +714,7 @@ void vTest12(void)
       if (i)
         RASSERT(A[i] >= A[i-1]);
     }
-  }
+  //}
 
 }
 
