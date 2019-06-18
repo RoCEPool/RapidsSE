@@ -107,11 +107,6 @@ eEC JobWriteBehind::eInsertRow(Row* pRow, RowNub* pFromRowNub)
   ASSERT(pRow == m_pRow);
   ASSERT(pFromRowNub == m_oRowParts.pNub());
   
-//  m_pRowCoder_Encode->vEncodeBegin(m_oRowParts.pNub());
-//  m_pRowCoder_Encode->vEncodeRow(m_pRow);
-//  m_pRowCoder_Encode->vEncodeEnd();
-
-  
   // use row hash to get partition
   i8 i_Ptn = pTable()->iRowPartition(pRow->m_iHash);
 
@@ -141,13 +136,15 @@ eEC JobWriteBehind::eInsertRow(Row* pRow, RowNub* pFromRowNub)
     CrwBuffer* pCrwBuffer = m_pCrwBuffer[i_Ptn];
 
     //pCrwBuffer->vGrabWrite();
-    bool bRowAppended = pCrwBuffer->bAppendRow(m_paRowCoder_Copy[i_Ptn],pRow,pFromRowNub);
-    //pCrwBuffer->vDropWrite();
-    
+    bool bWasAppended =
+      pCrwBuffer->bAppendRow(m_paRowCoder_Copy[i_Ptn],m_pRow,
+                             pFromRowNub // to be removed
+                             );
+    //pCrwBuffer->vDropWrite();    
     //pCrwBuffer->vDump();
     
     // appended ?
-    if (bRowAppended)
+    if (bWasAppended)
       return EC_NONE;
     
     
