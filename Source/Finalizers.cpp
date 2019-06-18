@@ -235,7 +235,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_RESPONSEVEC
   /*    */ &Finalize::vUndefined,         // CN_ROW
   /*102 */ &Finalize::vUndefined,         // CN_ROWAGG
-  /*    */ &Finalize::vUndefined,         // CN_ROWCODER
+  /*    */ &Finalize::vUndefined,         // CN_ROWCOMPACTOR
   /*105 */ &Finalize::vUndefined,         // CN_ROWONCE
   /*    */ &Finalize::vUndefined,         // CN_ROWTRAY
   

@@ -163,7 +163,7 @@ void CrwBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
 /*----------------------------------------------------------------------------*/
 /* append a row entry into this buffer                                        */
 /*----------------------------------------------------------------------------*/
-bool CrwBuffer::bAppendRow(RowCoder* pRowCoder, Row* pRow)
+bool CrwBuffer::bAppendRow(RowCompactor* pRowCoder, Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
     

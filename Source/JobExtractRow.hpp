@@ -12,7 +12,7 @@ namespace Jobs
     Table*      m_pTable;       // table
     Formatters  m_oFormatters;  // formatters
   
-    RowCoder*   m_paRowCoder_Copy[C_MAX_PARTITIONS];
+    RowCompactor*   m_paRowCoder_Copy[C_MAX_PARTITIONS];
   
   public:
     void* operator new(size_t);

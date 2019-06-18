@@ -5,12 +5,12 @@
 
 namespace Data
 {
-  class RowCoder;
+  class RowCompactor;
 
   class CrwBuffer : public DataBuffer
   {
   friend class IndexTree;
-  friend class RowCoder;
+  friend class RowCompactor;
 
   protected:
     RowTray m_oRowTray;  // tray of rows
@@ -56,7 +56,7 @@ namespace Data
 
     ////////////////////////////////////////////////////////////////////////////
     // row functions
-    bool bAppendRow(RowCoder* pRowCoder, Row* pRow);
+    bool bAppendRow(RowCompactor* pRowCoder, Row* pRow);
   
   private:
     bool       bHasSpace(i8 nBytes);

@@ -34,7 +34,7 @@ JobExtractRow::JobExtractRow(void)
     m_paRowCoder_Copy[i_Ptn] = nullptr;
   
   for (i8 i_Ptn = 0; i_Ptn < gpAttachMap->m_pGrid->m_nPartitions; i_Ptn++)
-    m_paRowCoder_Copy[i_Ptn] = new RowCoder;
+    m_paRowCoder_Copy[i_Ptn] = new RowCompactor;
 }
 
 /*----------------------------------------------------------------------------*/

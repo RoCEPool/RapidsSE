@@ -51,7 +51,7 @@ namespace Partitioning
     void vAddIndex(Data::IndexTree* pIndexTree);
     bool bAllBuffersWritten(eDS eDataSource);
     void vAppendBuffer(CrwBuffer* pCrwBuffer);
-    void vAppendRow(RowCoder* pRowCoder, Row* pRow);
+    void vAppendRow(RowCompactor* pRowCoder, Row* pRow);
     void vDump(void);
     void vWriteBehindBuffers(i8 nWriteBehindBuffers);
     void vBuffersWritten(i8 m_nBuffersWritten);
