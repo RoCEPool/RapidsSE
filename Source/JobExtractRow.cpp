@@ -75,7 +75,7 @@ bool JobExtractRow::bExtractRow(Stz* szRecStr, bool &bBlankLine)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bool bResult = Extractor::bExtractNext(m_pRow,&acRecCrs,pColVec,
+  bool bResult = RowExtractor::bExtractNext(m_pRow,&acRecCrs,pColVec,
                                          &m_oFormatters,bBlankLine);
   if (! bResult)
     return false;

@@ -286,7 +286,7 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
 
 //------------------------------------------------------------------------------
 
-#include "Extractor.hpp"
+#include "RowExtractor.hpp"
 #include "Record.hpp"
 
 #include "CrwBuffer.hpp"
