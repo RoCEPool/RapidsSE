@@ -59,8 +59,8 @@ void Step::vJob_WriteRowEncodeRow(MP_Task mpTask)
   // first encode the row
   bool bBlankLine;
   //vTrace("sRecord %s\n"_Stz, pJob_InsertRow->m_pRecord->szRecStr());
-  bool bResult = pJob_WriteRow->bEncodeRow(pJob_InsertRow->m_pRecord->szRecStr(),
-                                           bBlankLine);
+  bool bResult = pJob_WriteRow->bExtractRow(pJob_InsertRow->m_pRecord->szRecStr(),
+                                            bBlankLine);
   
   if ( ! bResult )
     mpTask->m_pDataStack->vPushI8(0);

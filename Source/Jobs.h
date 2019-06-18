@@ -50,7 +50,7 @@ static Stz* aJL[]
 
 #include "Response.hpp"
 #include "JobDicPath.hpp"
-#include "JobEncodeRow.hpp"
+#include "JobExtractRow.hpp"
 #include "JobFilePath.hpp"
 #include "JobObjectName.hpp"
 #include "JobResult.hpp"

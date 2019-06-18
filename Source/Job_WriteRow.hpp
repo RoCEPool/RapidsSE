@@ -8,7 +8,7 @@ namespace Jobs
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_WriteRow : public Job,
-                       public JobEncodeRow
+                       public JobExtractRow
   {
   public:
     i8         m_iPartitionId;    // partition id

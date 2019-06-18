@@ -175,7 +175,7 @@ eEC JobWriteBehind::eProcessRecord(Stz* szRecStr, i8 nBytes)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bool bValid = bEncodeRow(szRecStr, bBlankLine);
+  bool bValid = bExtractRow(szRecStr, bBlankLine);
   
   if (bBlankLine)
     return EC_BLANKLINE;

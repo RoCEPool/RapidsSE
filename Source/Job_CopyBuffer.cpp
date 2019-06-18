@@ -181,7 +181,7 @@ void Job_CopyBuffer::vCopy(void)
     bool bBlankLine;
     Stz* szRecStr = aAdd<Stz*>(aRecord, 4);
     
-    bool bValid = bEncodeRow(szRecStr, bBlankLine);
+    bool bValid = bExtractRow(szRecStr, bBlankLine);
     
     // is the record invalid ?
     if (! bValid) {
