@@ -202,16 +202,21 @@ namespace Data
     //! alka
     static HeadLine* aCompactRow(CrwBuffer* pCrwBuffer, i8 i_Row);
   
+    static i8   nDataBytes(eMC eMetaCode);
+  
+    static void vDteIntoEdt(Datum* pDatum, i8& iEra_);
+    static void vDteFromEdt(Datum* pDatum, i8 iEra);
+    static void vDteFromEdt(Word* aWord, i8 iEra);
+    
     static void vDumpHead(Stz* szTitle,
                           HeadLine* aHeadLine,
                           ColumnVec* pColVec);
     
-   static void vInflate(Row* pRow, HeadLine* aHeadLine);
+    static TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
+    static void vInflate(Row* pRow, HeadLine* aHeadLine);
   
   private:
   
-    static i8   nDataBytes(eMC eMetaCode);
-
     static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
                         i8& i_LastColumn, i8& i_LastOffset);
     static void vDecode(Datum* pDatum, HeadLine* aHeadLine,
@@ -253,9 +258,6 @@ namespace Data
                                     Column* pCol, i8 i_Offset);
     static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
                                      Column* pCol, i8 i_Offset);
-    static void vDteIntoEdt(Datum* pDatum, i8& iEra_);
-    static void vDteFromEdt(Datum* pDatum, i8 iEra);
-    static void vDteFromEdt(Word* aWord, i8 iEra);
                                      
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
   
@@ -267,8 +269,7 @@ namespace Data
 
     static OverLine* aGetOver(HeadLine* aHeadLine);
     static OverLine* aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel);
-    static TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
-
+ 
     static void vMetaCode(HeadLine* aHeadLine, Column* pCol, eMC eMetaCode);
 
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
