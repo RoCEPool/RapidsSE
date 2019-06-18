@@ -104,15 +104,15 @@ eEC JobWriteBehind::eInsertRow(Row* pRow)
 /*----------------------------------------------------------------------------*/
 eEC JobWriteBehind::eInsertRow(Row* pRow, RowNub* pFromRowNub)
 {
+  // use row hash to get partition
+  i8 i_Ptn = pTable()->iRowPartition(pRow->m_iHash);
+  
   // insert the row in a working buffer
   while (true) {
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // use row hash to get partition
-    i8 i_Ptn = pTable()->iRowPartition(pRow->m_iHash);
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check for row buffer
+
     if (! m_pCrwBuffer[i_Ptn]) {
       
       // create a new crw buffer for this partition
@@ -127,27 +127,27 @@ eEC JobWriteBehind::eInsertRow(Row* pRow, RowNub* pFromRowNub)
       m_paRowCoder_Copy[i_Ptn]->vCopyBegin(pCrwBuffer);
     }
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // get the entry buffer for the partition
-    CrwBuffer* pCrwBuffer = m_pCrwBuffer[i_Ptn];
-        
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert row into working buffer
+
+    CrwBuffer* pCrwBuffer = m_pCrwBuffer[i_Ptn];
+
     pCrwBuffer->vGrabWrite();
     bool bRowAppended = pCrwBuffer->bAppendRow(m_paRowCoder_Copy[i_Ptn],pRow,pFromRowNub);
     pCrwBuffer->vDropWrite();
     
     //pCrwBuffer->vDump();
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // appended ?
     if (bRowAppended)
       return EC_NONE;
     
-    m_pCrwBuffer[i_Ptn] = nullptr;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn a write buffer job
+
+    m_pCrwBuffer[i_Ptn] = nullptr;
+
     m_paRowCoder_Copy[i_Ptn]->vCopyEnd();
     Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession,
                                           pTable()->aTableName(),
