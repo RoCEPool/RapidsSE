@@ -150,12 +150,12 @@ void Job_WriteRow::vInsertRow(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // convert partition to node slot
-  i8 iSlot = TablePtn::iPartitionToSlot(m_iPartitionId);
+  i8 i_Slot = TablePtn::iPartitionToSlot(m_iPartitionId);
   
-  TablePtn* pPartition = pTable()->pPartition(iSlot);
+  TablePtn* pPartition = pTable()->pPartition(i_Slot);
   
   // append the row to the partition and all its indexes
-  pPartition->vAppendRow(m_pRowCoder_Encode,m_pRow);
+  pPartition->vAppendRow(m_paRowCoder_Copy[i_Slot],m_pRow);
 }
 
 /*----------------------------------------------------------------------------*/

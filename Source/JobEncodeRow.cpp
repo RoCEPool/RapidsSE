@@ -26,7 +26,6 @@ void* JobEncodeRow::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 JobEncodeRow::JobEncodeRow(void)
 {
-  m_pRowCoder_Encode = new RowCoder;
   for (i8 i_Ptn = 0; i_Ptn < C_MAX_PARTITIONS; i_Ptn++) {
     m_paRowCoder_Copy[i_Ptn] = nullptr;
   }
@@ -45,12 +44,11 @@ JobEncodeRow::~JobEncodeRow(void) noexcept(false)
   for (i8 i_Ptn = 0; i_Ptn < gpAttachMap->m_pGrid->m_nPartitions; i_Ptn++) {
     
 #ifdef WITH_ANALYSE_FREE
-    m_paRowCoder_Copy[i_Ptn]->vReport(m_pRowCoder_Encode);
+    //m_paRowCoder_Copy[i_Ptn]->vReport(m_pRowCoder_Encode);
 #endif
     
     delete m_paRowCoder_Copy[i_Ptn];
   }
-  delete m_pRowCoder_Encode;
   
   delete m_pRow;
 }
