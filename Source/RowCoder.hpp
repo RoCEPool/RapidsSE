@@ -109,10 +109,12 @@ namespace Data
     void vCopyEnd(void);
     bool bCopyRow(Row* pRow, RowNub* pFromNub);
     
+  private:
     void vEncodeBegin(RowNub* pIntoNub);
     void vEncodeEnd(void);
     void vEncodeRow(Row* pRow);
 
+  public:
     void vReport(RowCoder* pRowCoder_Encode);
   
   private:
