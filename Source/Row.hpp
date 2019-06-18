@@ -37,6 +37,7 @@ namespace Transform
   
     void vAppendValue(Data::Datum* pDatum, Column* pCol);
     void vDontDecodeVch(void);
+    i8   iHashColumn(Column* pCol);
     void vResetValues(void);
     i8   nSizeBytes(void);
 

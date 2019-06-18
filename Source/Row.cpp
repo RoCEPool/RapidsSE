@@ -127,6 +127,9 @@ void Row::vAppendValue(Data::Datum* pDatum, Column* pCol)
     
     m_i_Wsp += (nSrcLength + 1);
     
+    if (pCol->bIsPartitionKey())
+      m_iHash += iHashColumn(pCol);
+    
     return;
   }
   
@@ -134,6 +137,9 @@ void Row::vAppendValue(Data::Datum* pDatum, Column* pCol)
   // all others
   
   m_aiValue[i_Col] = pDatum->m_iInt;
+
+  if (pCol->bIsPartitionKey())
+    m_iHash += iHashColumn(pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -156,6 +162,24 @@ void Row::vDontDecodeVch(void)
       m_abGetCol[i_Col] = true;
     m_iLastCol = i_Col;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* hash a partion key column into running hash                                */
+/*----------------------------------------------------------------------------*/
+i8 Row::iHashColumn(Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  
+  i8 i_Col = pCol->iColumnNo();
+  
+  i8 iHash;
+  if (DM_VCH == pCol->eDatumType())
+    iHash = HshLib::iHash((byte*)m_aiValue[i_Col],sizeof(w8));
+  else
+    iHash = HshLib::iHash((byte*)&m_aiValue[i_Col],sizeof(w8));
+  
+  return iHash;
 }
 
 /*----------------------------------------------------------------------------*/

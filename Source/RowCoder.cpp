@@ -354,8 +354,8 @@ void RowCoder::vEncodeRow(Row* pRow)
     }
     
     // hash the column value only if part of partition key
-    if (pCol->bIsPartitionKey())
-      pRow->m_iHash += iHashColumn(&oDatum,pCol);
+    //if (pCol->bIsPartitionKey())
+    //  pRow->m_iHash += iHashColumn(&oDatum,pCol);
   }
 }
 
