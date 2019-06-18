@@ -5,8 +5,6 @@
 
 namespace Jobs
 {
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class JobWriteBehind : public JobExtractRow
   {
   public:
@@ -25,7 +23,6 @@ namespace Jobs
   public:
     void vHandleDanglingBuffers(void);
     eEC  eInsertRow(void); //Row* pRow);
-    //eEC  eInsertRow(Row* pRow, RowNub* pFromRowNub);
     eEC  eProcessRecord(Stz* aRecord,  i8 nBytes);
   
   private:

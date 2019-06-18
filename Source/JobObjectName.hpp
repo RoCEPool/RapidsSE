@@ -5,7 +5,6 @@
 
 namespace Jobs
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class JobObjectName
   {
   public:

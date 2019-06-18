@@ -5,7 +5,6 @@
 
 namespace Jobs
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class JobFilePath
   {
   public:
