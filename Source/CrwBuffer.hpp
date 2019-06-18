@@ -60,7 +60,7 @@ namespace Data
     // row functions
     void vAppendClose(void);
     void vAppendOpen(RowCompactor* pRowCompactor);
-    bool bAppendRow(Row* pRow, RowCompactor* pRowCompactor);
+    bool bAppendRow(Row* pRow);
   
   private:
     bool       bHasSpace(i8 nBytes);

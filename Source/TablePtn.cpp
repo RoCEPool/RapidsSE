@@ -275,7 +275,7 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, Row* pRow)
     m_pCurrentCrwBuffer = m_pRootCrwBuffer;
   }
   
-  bool bAppended = m_pCurrentCrwBuffer->bAppendRow(pRow,pRowCompactor);
+  bool bAppended = m_pCurrentCrwBuffer->bAppendRow(pRow);
   
   if ( ! bAppended ) {
     CrwBuffer* pCrwBuffer = new CrwBuffer;
@@ -286,7 +286,7 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, Row* pRow)
     m_pCurrentCrwBuffer->vNextBuffer(pCrwBuffer);
     m_pCurrentCrwBuffer = pCrwBuffer;
     
-    bAppended = m_pCurrentCrwBuffer->bAppendRow(pRow,pRowCompactor);
+    bAppended = m_pCurrentCrwBuffer->bAppendRow(pRow);
     RASSERT(bAppended);
   }
   

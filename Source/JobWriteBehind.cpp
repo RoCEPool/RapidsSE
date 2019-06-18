@@ -116,7 +116,7 @@ eEC JobWriteBehind::eInsertRow(void)
       }
 
       CrwBuffer* pCrwBuffer = m_pCrwBuffer[i_Ptn];
-      m_paRowCompactor[i_Ptn]->vCompactBegin(pCrwBuffer);
+      pCrwBuffer->vAppendOpen(m_paRowCompactor[i_Ptn]);
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -126,7 +126,7 @@ eEC JobWriteBehind::eInsertRow(void)
 
     //pCrwBuffer->vGrabWrite();
     bool bWasAppended =
-      pCrwBuffer->bAppendRow(m_pRow,m_paRowCompactor[i_Ptn]);
+      pCrwBuffer->bAppendRow(m_pRow);
     //pCrwBuffer->vDropWrite();
     //pCrwBuffer->vDump();
     
@@ -139,8 +139,8 @@ eEC JobWriteBehind::eInsertRow(void)
     // spawn a write buffer job
 
     m_pCrwBuffer[i_Ptn] = nullptr;
-
-    m_paRowCompactor[i_Ptn]->vCompactEnd();
+    pCrwBuffer->vAppendClose();
+    
     Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession,
                                           m_pTable->aTableName(),
                                           m_eDataSource,

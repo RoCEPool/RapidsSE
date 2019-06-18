@@ -168,6 +168,8 @@ void CrwBuffer::vAppendClose(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
+  m_pRowCompactor->vCompactEnd();
+
   m_pRowCompactor = nullptr;
 }
 
@@ -181,12 +183,14 @@ void CrwBuffer::vAppendOpen(RowCompactor* pRowCompactor)
   ASSERT(! m_pRowCompactor);
   
   m_pRowCompactor = pRowCompactor;
+  
+  m_pRowCompactor->vCompactBegin(this);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append a row entry into this buffer                                        */
 /*----------------------------------------------------------------------------*/
-bool CrwBuffer::bAppendRow(Row* pRow, RowCompactor* pRowCompactor)
+bool CrwBuffer::bAppendRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
     
@@ -194,7 +198,7 @@ bool CrwBuffer::bAppendRow(Row* pRow, RowCompactor* pRowCompactor)
   vTrace("Partition:%lld\n"_Stz, m_iPartitionNo);
 #endif
   
-  bool bCopied = pRowCompactor->bCompactRow(pRow);
+  bool bCopied = m_pRowCompactor->bCompactRow(pRow);
   
   return bCopied;
 }
