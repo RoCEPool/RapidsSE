@@ -64,7 +64,7 @@ JobExtractRow::~JobExtractRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool JobExtractRow::bExtractRow(Stz* szRecStr, bool &bBlankLine)
 {
-  ColumnVec* pColVec = pTable()->pColumnVec();
+  ColumnVec* pColVec = m_pTable->pColumnVec();
   
   if (m_pRow)
     m_pRow->vResetValues();
@@ -86,22 +86,6 @@ bool JobExtractRow::bExtractRow(Stz* szRecStr, bool &bBlankLine)
   //vTrace("%s\n"_Stz,hp_Row.sz(m_pRow));
 
   return bResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get table                                                                  */
-/*----------------------------------------------------------------------------*/
-Table* JobExtractRow::pTable(void)
-{
-  return m_pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set table                                                                  */
-/*----------------------------------------------------------------------------*/
-void JobExtractRow::vTable(Table* pTable)
-{
-  m_pTable = pTable;
 }
 
 /*============================================================================*/

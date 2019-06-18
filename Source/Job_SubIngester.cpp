@@ -176,7 +176,7 @@ bool Job_SubIngester::bBegin(void)
   
   // set the table and parentJob in the writeBehind Job
   Table* pTable = m_pJob_Ingest->pTable();
-  JobWriteBehind::vTable(pTable);
+  JobWriteBehind::m_pTable = pTable;
   JobWriteBehind::m_pParentJob = m_pJob_Ingest;
   
   return true;

@@ -68,7 +68,7 @@ void Step::vJob_WriteRowEncodeRow(MP_Task mpTask)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // use row hash to get partition
     i8 iHash = pJob_WriteRow->m_pRow->m_iHash;
-    Table* pTable = pJob_WriteRow->pTable();
+    Table* pTable = pJob_WriteRow->m_pTable;
     pJob_WriteRow->m_iPartitionId = pTable->iRowPartition(iHash);
     pJob_InsertRow->m_iPartitionId = pJob_WriteRow->m_iPartitionId ;
 
@@ -129,7 +129,7 @@ void Step::vJob_WriteRowTableStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_WriteRow.table!"_Stz);
   Table* pTable = _pTable(pTablePtr);
   
-  pJob_WriteRow->vTable(pTable);
+  pJob_WriteRow->m_pTable = pTable;
   
   EXIT();
 }

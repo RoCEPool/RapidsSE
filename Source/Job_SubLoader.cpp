@@ -187,7 +187,7 @@ bool Job_SubLoader::bBegin(void)
   bool bOpened = m_pLoadChunk->bOpenRead(sPath);
   
   // set the table and parentJob in the writeBehind Job
-  JobWriteBehind::vTable(m_pJob_LoadTable->m_pTable);
+  JobWriteBehind::m_pTable = m_pJob_LoadTable->m_pTable;
   JobWriteBehind::m_pParentJob = (Job*)m_pJob_LoadTable;
   JobWriteBehind::m_oFormatters.vSet(&m_pJob_LoadTable->m_oFormatters);
   

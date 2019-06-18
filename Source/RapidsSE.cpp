@@ -464,7 +464,7 @@ eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
     API_LOC(350);
 
     // set the table pointer (THIS CAN GO ????)
-    pJob_SubInserter->vTable(pJob_InsertTable->m_pTable);
+    pJob_SubInserter->m_pTable = pJob_InsertTable->m_pTable;
     API_LOC(360);
 
     // return the sub_inserter job
@@ -513,7 +513,7 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
 
     // set the pJob_SubInserter and table in the pJob_CopyBuffer
     pJob_CopyBuffer->m_pJob_SubInserter = pJob_SubInserter;
-    pJob_CopyBuffer->vTable(pJob_SubInserter->pTable());
+    pJob_CopyBuffer->m_pTable = pJob_SubInserter->m_pTable;
     API_LOC(360);
 
     // move the recordBuffer from the subInsert into CopyBuffer

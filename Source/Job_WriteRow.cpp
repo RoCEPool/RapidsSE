@@ -116,7 +116,7 @@ Job_WriteRow::Job_WriteRow(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEROW,_FOOTER_);
   
-  vTable(nullptr);
+  m_pTable = nullptr;
   m_iPartitionId = C_UNKNOWN;
   m_iParentJobId = C_UNKNOWN;
   
@@ -152,7 +152,7 @@ void Job_WriteRow::vInsertRow(void)
   // convert partition to node slot
   i8 i_Slot = TablePtn::iPartitionToSlot(m_iPartitionId);
   
-  TablePtn* pPartition = pTable()->pPartition(i_Slot);
+  TablePtn* pPartition = m_pTable->pPartition(i_Slot);
   
   // append the row to the partition and all its indexes
   pPartition->vAppendRow(m_paRowCoder_Copy[i_Slot],m_pRow);
@@ -193,7 +193,7 @@ Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Interface::Session* pSession,
 
   pJob_WriteRow->m_iParentJobId = iParentJobId;
   pJob_WriteRow->m_sObjectName  = sTableName;
-  pJob_WriteRow->vTable(pTable);
+  pJob_WriteRow->m_pTable = pTable;
   pJob_WriteRow->m_iPartitionId = C_UNKNOWN;
 
   return pJob_WriteRow;

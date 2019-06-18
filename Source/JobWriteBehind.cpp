@@ -81,7 +81,7 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // create a write buffer job for load
     Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession,
-                                          pTable()->aTableName(),
+                                          m_pTable->aTableName(),
                                           m_eDataSource,
                                           pCrwBuffer,
                                           m_pParentJob->iJobId(),
@@ -97,7 +97,7 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
 eEC JobWriteBehind::eInsertRow(void)
 {
   // use row hash to get partition
-  i8 i_Ptn = pTable()->iRowPartition(m_pRow->m_iHash);
+  i8 i_Ptn = m_pTable->iRowPartition(m_pRow->m_iHash);
 
   // insert the row in a working buffer
   while (true) {
@@ -142,7 +142,7 @@ eEC JobWriteBehind::eInsertRow(void)
 
     m_paRowCoder_Copy[i_Ptn]->vCopyEnd();
     Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession,
-                                          pTable()->aTableName(),
+                                          m_pTable->aTableName(),
                                           m_eDataSource,
                                           pCrwBuffer,
                                           m_pParentJob->iJobId(),
@@ -206,7 +206,7 @@ void JobWriteBehind::vNewCrwBuffer( i8 i_Ptn)
 {
   m_pCrwBuffer[i_Ptn] = new CrwBuffer();
   
-  m_pCrwBuffer[i_Ptn]->vTable(pTable());
+  m_pCrwBuffer[i_Ptn]->vTable(m_pTable);
   m_pCrwBuffer[i_Ptn]->vPartitionNo(i_Ptn);
   //m_pCrwBuffer[i_Ptn]->vDump();
   

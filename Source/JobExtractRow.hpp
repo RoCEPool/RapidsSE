@@ -22,9 +22,6 @@ namespace Jobs
     
   public:
     bool bExtractRow(Stz* szRecStr, bool &bBlankLine);
-  
-    Table* pTable(void);
-    void   vTable(Table* pTable);
   };
 }
 
