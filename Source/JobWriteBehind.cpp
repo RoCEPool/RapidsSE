@@ -94,22 +94,10 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobWriteBehind::eInsertRow(Row* pRow)
+eEC JobWriteBehind::eInsertRow(void)
 {
-//  return eInsertRow(pRow,m_oRowParts.pNub());
-//}
-//
-///*----------------------------------------------------------------------------*/
-///* insert row into working buffer                                             */
-///*----------------------------------------------------------------------------*/
-//eEC JobWriteBehind::eInsertRow(Row* pRow, RowNub* )
-//{
-  ASSERT(pRow == m_pRow);
-  //ASSERT(pFromRowNub == m_oRowParts.pNub());
-  RowNub* pFromRowNub = m_oRowParts.pNub();
-  
   // use row hash to get partition
-  i8 i_Ptn = pTable()->iRowPartition(pRow->m_iHash);
+  i8 i_Ptn = pTable()->iRowPartition(m_pRow->m_iHash);
 
   // insert the row in a working buffer
   while (true) {
@@ -139,7 +127,7 @@ eEC JobWriteBehind::eInsertRow(Row* pRow)
     //pCrwBuffer->vGrabWrite();
     bool bWasAppended =
       pCrwBuffer->bAppendRow(m_paRowCoder_Copy[i_Ptn],m_pRow,
-                             pFromRowNub // to be removed
+                             m_oRowParts.pNub() // to be removed
                              );
     //pCrwBuffer->vDropWrite();
     //pCrwBuffer->vDump();
@@ -198,7 +186,7 @@ eEC JobWriteBehind::eProcessRecord(Stz* szRecStr, i8 nBytes)
     return EC_INVALID_VALUE;
 
   // attempt to add row into a write-behind buffer
-  eEC eError = eInsertRow(m_pRow);
+  eEC eError = eInsertRow(); //m_pRow);
 
   // was there an error ?
   if (eError != EC_NONE) {
