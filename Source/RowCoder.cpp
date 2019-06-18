@@ -193,9 +193,9 @@ void RowCoder::vCopyEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy (& recode) given encoded row from given nub into current nub          */
+/* copy (& recode) given row into current nub                                 */
 /*----------------------------------------------------------------------------*/
-bool RowCoder::bCopyRow(Row* pRow, RowNub* pFromNub_IGNORE)
+bool RowCoder::bCopyRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCODER,_FOOTER_);
   

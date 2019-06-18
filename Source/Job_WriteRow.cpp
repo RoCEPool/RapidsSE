@@ -155,7 +155,7 @@ void Job_WriteRow::vInsertRow(void)
   TablePtn* pPartition = pTable()->pPartition(iSlot);
   
   // append the row to the partition and all its indexes
-  pPartition->vAppendRow(m_pRowCoder_Encode,m_pRow,m_oRowParts);
+  pPartition->vAppendRow(m_pRowCoder_Encode,m_pRow);
 }
 
 /*----------------------------------------------------------------------------*/

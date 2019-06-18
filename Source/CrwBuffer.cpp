@@ -163,7 +163,7 @@ void CrwBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
 /*----------------------------------------------------------------------------*/
 /* append a row entry into this buffer                                        */
 /*----------------------------------------------------------------------------*/
-bool CrwBuffer::bAppendRow(RowCoder* pRowCoder, Row* pRow, RowNub* pFromRowNub)
+bool CrwBuffer::bAppendRow(RowCoder* pRowCoder, Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
     
@@ -171,7 +171,7 @@ bool CrwBuffer::bAppendRow(RowCoder* pRowCoder, Row* pRow, RowNub* pFromRowNub)
   vTrace("Partition:%lld\n"_Stz, m_iPartitionNo);
 #endif
   
-  bool bCopied = pRowCoder->bCopyRow(pRow, pFromRowNub);
+  bool bCopied = pRowCoder->bCopyRow(pRow);
   
   return bCopied;
 }
