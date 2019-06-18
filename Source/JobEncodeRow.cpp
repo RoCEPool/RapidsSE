@@ -26,6 +26,8 @@ void* JobEncodeRow::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 JobEncodeRow::JobEncodeRow(void)
 {
+  m_pTable = nullptr;
+  
   for (i8 i_Ptn = 0; i_Ptn < C_MAX_PARTITIONS; i_Ptn++) {
     m_paRowCoder_Copy[i_Ptn] = nullptr;
   }
@@ -93,7 +95,7 @@ Table* JobEncodeRow::pTable(void)
 {
   Table* pTable = m_oRowParts.pNub()->pDesc();
   
-  return pTable;
+  return m_pTable;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,6 +103,8 @@ Table* JobEncodeRow::pTable(void)
 /*----------------------------------------------------------------------------*/
 void JobEncodeRow::vTable(Table* pTable)
 {
+  m_pTable = pTable;
+  
   m_oRowParts.pNub()->vDesc(pTable);
 }
 

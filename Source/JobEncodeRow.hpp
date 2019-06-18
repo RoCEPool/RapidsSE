@@ -10,6 +10,8 @@ namespace Jobs
   {
   public:
     RowParts    m_oRowParts;    // tray of row parts
+  
+    Table*      m_pTable;       // table
     Formatters  m_oFormatters;  // formatters
   
     RowCoder*   m_paRowCoder_Copy[C_MAX_PARTITIONS];
@@ -23,7 +25,7 @@ namespace Jobs
    ~JobEncodeRow(void) noexcept(false);
     
   public:
-    bool bEncodeRow(Stz* aRecord, bool &bBlankLine);
+    bool bEncodeRow(Stz* szRecStr, bool &bBlankLine);
   
     Table* pTable(void);
     void vTable(Table* pTable);
