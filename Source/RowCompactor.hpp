@@ -105,9 +105,9 @@ namespace Data
     RowCompactor(void);
     ~RowCompactor(void) noexcept(false);
     
-    void vCopyBegin(CrwBuffer* pCrwBuffer);
-    void vCopyEnd(void);
-    bool bCopyRow(Row* pRow);
+    void vCompactBegin(CrwBuffer* pCrwBuffer);
+    void vCompactEnd(void);
+    bool bCompactRow(Row* pRow);
     
   private:
     void vEncodeBegin(RowNub* pIntoNub);

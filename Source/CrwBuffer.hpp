@@ -56,7 +56,7 @@ namespace Data
 
     ////////////////////////////////////////////////////////////////////////////
     // row functions
-    bool bAppendRow(RowCompactor* pRowCompactor, Row* pRow);
+    bool bAppendRow(Row* pRow, RowCompactor* pRowCompactor);
   
   private:
     bool       bHasSpace(i8 nBytes);

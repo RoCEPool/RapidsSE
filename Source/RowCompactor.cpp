@@ -140,7 +140,7 @@ RowCompactor::~RowCompactor(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* begin copying rows into given row nub                                      */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vCopyBegin(CrwBuffer* pCrwBuffer)
+void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -160,7 +160,7 @@ void RowCompactor::vCopyBegin(CrwBuffer* pCrwBuffer)
 /*----------------------------------------------------------------------------*/
 /* end copying rows into row nub                                              */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vCopyEnd(void)
+void RowCompactor::vCompactEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -195,7 +195,7 @@ void RowCompactor::vCopyEnd(void)
 /*----------------------------------------------------------------------------*/
 /* copy (& recode) given row into current nub                                 */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bCopyRow(Row* pRow)
+bool RowCompactor::bCompactRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
