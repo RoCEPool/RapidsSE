@@ -93,8 +93,6 @@ bool JobEncodeRow::bEncodeRow(Stz* szRecStr, bool &bBlankLine)
 /*----------------------------------------------------------------------------*/
 Table* JobEncodeRow::pTable(void)
 {
-  Table* pTable = m_oRowParts.pNub()->pDesc();
-  
   return m_pTable;
 }
 
@@ -104,8 +102,6 @@ Table* JobEncodeRow::pTable(void)
 void JobEncodeRow::vTable(Table* pTable)
 {
   m_pTable = pTable;
-  
-  m_oRowParts.pNub()->vDesc(pTable);
 }
 
 /*============================================================================*/
