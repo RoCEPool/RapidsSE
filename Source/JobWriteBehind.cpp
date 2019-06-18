@@ -107,9 +107,9 @@ eEC JobWriteBehind::eInsertRow(Row* pRow, RowNub* pFromRowNub)
   ASSERT(pRow == m_pRow);
   ASSERT(pFromRowNub == m_oRowParts.pNub());
   
-  m_pRowCoder_Encode->vEncodeBegin(m_oRowParts.pNub());
-  m_pRowCoder_Encode->vEncodeRow(m_pRow);
-  m_pRowCoder_Encode->vEncodeEnd();
+//  m_pRowCoder_Encode->vEncodeBegin(m_oRowParts.pNub());
+//  m_pRowCoder_Encode->vEncodeRow(m_pRow);
+//  m_pRowCoder_Encode->vEncodeEnd();
 
   
   // use row hash to get partition

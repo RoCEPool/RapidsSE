@@ -73,9 +73,11 @@ RowCoder::RowCoder(void)
   m_eFromEncoding  = MC_NULL;
   m_nFromDataBytes = 0;
   
-  // + + +
+  // + + + + + + + + + + + + + +
   
   m_pRowSamples    = nullptr;
+  
+  m_pRowEncoder    = nullptr;
 
   //m_oEncodedDatum
   
@@ -199,6 +201,16 @@ bool RowCoder::bCopyRow(Row* pRow, RowNub* pFromNub)
   
   RASSERT(! m_bEncoding);
   
+  // + + + + + + + + + + + + + + + + + + +
+  m_pRowEncoder = new RowCoder;
+  
+  m_pRowEncoder->vEncodeBegin(pFromNub);
+  m_pRowEncoder->vEncodeRow(pRow);
+  m_pRowEncoder->vEncodeEnd();
+
+  delete m_pRowEncoder;
+  // + + + + + + + + + + + + + + + + + + +
+
   // check for space in target nub
   
   i8 nSpaceNeeded = pFromNub->nAllotedBytes();

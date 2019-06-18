@@ -57,6 +57,8 @@ namespace Data
     // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
     
     IrwBuffer* m_pRowSamples; // the set of sample rows
+    
+    RowCoder*  m_pRowEncoder;
 
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
   
