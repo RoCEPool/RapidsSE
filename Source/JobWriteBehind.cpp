@@ -105,15 +105,18 @@ eEC JobWriteBehind::eInsertRow(Row* pRow)
 eEC JobWriteBehind::eInsertRow(Row* pRow, RowNub* pFromRowNub)
 {
   ASSERT(pRow == m_pRow);
+  ASSERT(pFromRowNub == m_oRowParts.pNub());
+  
   m_pRowCoder_Encode->vEncodeBegin(m_oRowParts.pNub());
   m_pRowCoder_Encode->vEncodeRow(m_pRow);
   m_pRowCoder_Encode->vEncodeEnd();
+
   
+  // use row hash to get partition
+  i8 i_Ptn = pTable()->iRowPartition(pRow->m_iHash);
+
   // insert the row in a working buffer
   while (true) {
-    
-    // use row hash to get partition
-    i8 i_Ptn = pTable()->iRowPartition(pRow->m_iHash);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check for row buffer
