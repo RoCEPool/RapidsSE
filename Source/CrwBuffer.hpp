@@ -14,7 +14,9 @@ namespace Data
 
   protected:
     RowTray m_oRowTray;  // tray of rows
-    SeeMe m_xSeeMe;
+    SeeMe   m_xSeeMe;
+  
+    RowCompactor* m_pRowCompactor;
   
     // must be last
     Footer m_xFooter;
@@ -56,6 +58,8 @@ namespace Data
 
     ////////////////////////////////////////////////////////////////////////////
     // row functions
+    void vAppendClose(void);
+    void vAppendOpen(RowCompactor* pRowCompactor);
     bool bAppendRow(Row* pRow, RowCompactor* pRowCompactor);
   
   private:

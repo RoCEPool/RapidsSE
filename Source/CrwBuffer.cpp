@@ -61,6 +61,7 @@ CrwBuffer::CrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
+  m_pRowCompactor = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
@@ -158,6 +159,28 @@ void CrwBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
     
   } while (pNextBuffer);
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* close this buffer for append                                               */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vAppendClose(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  m_pRowCompactor = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* open this buffer for append                                                */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vAppendOpen(RowCompactor* pRowCompactor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+ 
+  ASSERT(! m_pRowCompactor);
+  
+  m_pRowCompactor = pRowCompactor;
 }
 
 /*----------------------------------------------------------------------------*/
