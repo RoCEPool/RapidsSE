@@ -198,9 +198,9 @@ bool CrwBuffer::bAppendRow(Row* pRow)
   vTrace("Partition:%lld\n"_Stz, m_iPartitionNo);
 #endif
   
-  bool bCopied = m_pRowCompactor->bCompactRow(pRow);
+  bool bAppended = m_pRowCompactor->bCompactRow(pRow);
   
-  return bCopied;
+  return bAppended;
 }
 
 /*----------------------------------------------------------------------------*/

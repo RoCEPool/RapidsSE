@@ -125,8 +125,7 @@ eEC JobWriteBehind::eInsertRow(void)
     CrwBuffer* pCrwBuffer = m_pCrwBuffer[i_Ptn];
 
     //pCrwBuffer->vGrabWrite();
-    bool bWasAppended =
-      pCrwBuffer->bAppendRow(m_pRow);
+    bool bWasAppended = pCrwBuffer->bAppendRow(m_pRow);
     //pCrwBuffer->vDropWrite();
     //pCrwBuffer->vDump();
     
