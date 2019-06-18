@@ -347,13 +347,13 @@ void Jobs::vIterateBuffer(Job_IndexJoin* pJob_IndexJoin,
     
     // inflate left row
     if (aLeftRow) {
-      RowCoder::vInflate(hLeftRow,aLeftRow);
+      RowInflator::vInflate(hLeftRow,aLeftRow);
       hvRecLeft->vAppend(hLeftRow);
     }
     
     // inflate right row
     if (aRightRow) {
-      RowCoder::vInflate(hRightRow,aRightRow);
+      RowInflator::vInflate(hRightRow,aRightRow);
       hvRecRight->vAppend(hRightRow);
     }
     

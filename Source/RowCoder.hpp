@@ -213,7 +213,6 @@ namespace Data
                           ColumnVec* pColVec);
     
     static TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
-    static void vInflate(Row* pRow, HeadLine* aHeadLine);
   
   private:
   

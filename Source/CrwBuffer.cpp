@@ -248,7 +248,7 @@ void CrwBuffer::vDump(void)
 void CrwBuffer::vGetRow(Row* pRow, i8 i_Row)
 {
   HeadLine* aCompactRow = m_oRowTray.pNub()->aGetHead(i_Row);
-  RowCoder::vInflate(pRow,aCompactRow);
+  RowInflator::vInflate(pRow,aCompactRow);
 }
 
 
@@ -421,7 +421,7 @@ void CrwBuffer::vShowRow(i8 i_Row)
   HeadLine* aCompactRow = m_oRowTray.pNub()->aGetHead(i_Row);
 
   // inflate compact row into row
-  RowCoder::vInflate(hRow,aCompactRow);
+  RowInflator::vInflate(hRow,aCompactRow);
   
   // append the row to the record
   hvRec->vAppend(hRow);
