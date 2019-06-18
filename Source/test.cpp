@@ -348,35 +348,200 @@ void vTest11(void)
   
 }
 
+//****************************************************************************//
+/* QUICKSORT using cursor with pointers to array elements                     */
+//****************************************************************************//
+
 /*
  algorithm quicksort(A, lo, hi) is
  if lo < hi then
-   p := partition(A, lo, hi)
-   quicksort(A, lo, p)
-   quicksort(A, p + 1, hi)
+ p := partition(A, lo, hi)
+ quicksort(A, lo, p)
+ quicksort(A, p + 1, hi)
  
  algorithm partition(A, lo, hi) is
  pivot := A[lo + (hi - lo) / 2]
  i := lo - 1
  j := hi + 1
  loop forever
-   do
-      i := i + 1
-   while A[i] < pivot
+ do
+ i := i + 1
+ while A[i] < pivot
  
-   do
-      j := j - 1
-   while A[j] > pivot
+ do
+ j := j - 1
+ while A[j] > pivot
  
-   if i >= j then
-      return j
+ if i >= j then
+ return j
  
-   swap A[i] with A[j]
+ swap A[i] with A[j]
  */
 
-i8 iPartition(i8* A, i8 iLow, i8 iHigh) {
+#define ELEMENTS 10
+
+/*----------------------------------------------------------------------------*/
+/* Partition                                                                  */
+/*----------------------------------------------------------------------------*/
+void vPartition(i8* A, Cursor& xLowCursor, Cursor& xHighCursor, Cursor& xPartitionCursor)
+{
   
+  // point a cusror at the pivot point
+  Cursor xPivotCursor(xLowCursor, xHighCursor);
+  
+  vTrace("iPivot %lld Low %lld High %lld\n"_Stz,
+         *xPivotCursor,
+         *xLowCursor.m_aElement,
+         *xHighCursor.m_aElement);
+  
+  // define the start and end positions
+  Cursor xStart(xLowCursor);
+  Cursor xEnd(xHighCursor);
+  
+  // step back with the start position
+  xStart.vDec();
+  
+  // step ahead with the end position
+  xEnd.vInc();
+  
+  // get the pivot element value
+  i8 iPivot = *xPivotCursor;
+  
+  // Move start and end toward each other, until they detect an inversion:
+  // a pair of elements, one greater than or equal to the pivot,
+  // one lesser or equal, that are in the wrong order relative to each other.
+  
+  while (true) {
+    
+    // move start cursor forward till we go beyond the pivot value
+    do {
+      xStart.vInc();
+    } while (xStart < iPivot);
+    
+    // move end cursor backward till pivot value is beyond it
+    do {
+      xEnd.vDec();
+    } while (xEnd > iPivot);
+    
+    // crossed
+    if ( xStart >= xEnd) {
+      xPartitionCursor.vSet(xEnd);
+      vTrace("Returning %lld\n"_Stz, *xEnd);
+      return;
+    }
+    
+    // swap the inverted elements
+    vTrace("Swapping %lld %lld\n"_Stz, *xStart, *xEnd);
+    // swap A[i] and A[j]
+    xStart.vSwap(xEnd);
+    
+    for (i8 i = 0; i < ELEMENTS; i ++) {
+      vTrace("A[%lld] = %lld %x\n"_Stz, i, A[i], &A[i]);
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* QuickSort                                                                  */
+/*----------------------------------------------------------------------------*/
+void vQuickSort(i8* A, Cursor& xLowCursor, Cursor& xHighCursor)
+{
+  
+  // create a Partition cursor intially with a nullptr element
+  Cursor xPartitionCursor(nullptr);
+  
+  if (xLowCursor < xHighCursor) {
+    vPartition(A, xLowCursor, xHighCursor, xPartitionCursor);
+    
+    vTrace("PIVOT %lld\n"_Stz, *xPartitionCursor.m_aElement);
+    
+    for (i8 i = 0; i < ELEMENTS; i ++) {
+      vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+    }
+    
+    // quick sort from low to partition
+    vQuickSort(A, xLowCursor, xPartitionCursor);
+    
+    // quick sort from partition+1 to high
+    Cursor xPartitionNext(xPartitionCursor.m_aElement + 1);
+    vQuickSort(A, xPartitionNext, xHighCursor);
+  }
+  
+}
+
+//****************************************************************************//
+/* QUICKSORT using pointers to array elements                                 */
+//****************************************************************************//
+
+/*----------------------------------------------------------------------------*/
+/* Partition                                                                  */
+/*----------------------------------------------------------------------------*/
+i8* aPartition(i8* A, i8* aLow, i8* aHigh)
+{
+  
+  i8* aPivot = aLow + (aHigh - aLow) / 2;
+  i8 iPivot = *aPivot;
+  vTrace("aPivot %lld Low %lld High %lld\n"_Stz, *aPivot, *aLow, *aHigh);
+  
+  i8* i = aLow - 1;
+  i8* j = aHigh + 1;
+  
+  while (true) {
+    do {
+      i++;
+    } while (*i < iPivot);
+    
+    do {
+      j--;
+    } while (*j > iPivot);
+    
+    if ( i >= j) {
+      vTrace("Returning j 0x%x\n"_Stz, j);
+      return j;
+    }
+    
+    // swap A[i} and A[j]
+    vTrace("Swapping %lld %lld\n"_Stz, *i, *j);
+    i8 iTemp = *j;
+    *j = *i;
+    *i = iTemp;
+    
+    for (i8 i = 0; i < ELEMENTS; i ++) {
+      vTrace("A[%lld] = %lld %x\n"_Stz, i, A[i], &A[i]);
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* QuickSort                                                                  */
+/*----------------------------------------------------------------------------*/
+void vQuickSort(i8* A, i8* aLow, i8* aHigh) {
+  
+  if (aLow < aHigh) {
+    i8* aPivot = aPartition(A, aLow, aHigh);
+    
+    vTrace("PIVOT %lld\n"_Stz, *aPivot);
+    
+    for (i8 i = 0; i < ELEMENTS; i ++) {
+      vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+    }
+    
+    vQuickSort(A, aLow, aPivot);
+    vQuickSort(A, aPivot+1, aHigh);
+  }
+  
+}
+
+//****************************************************************************//
+/* QUICKSORT using indexes to array elements                                  */
+//****************************************************************************//
+/*----------------------------------------------------------------------------*/
+/* Partition                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 iPartition(i8* A, i8 iLow, i8 iHigh)
+{
   i8 iPivot = A[iLow + (iHigh - iLow) / 2];
+  
   i8 i = iLow - 1;
   i8 j = iHigh + 1;
   
@@ -389,58 +554,93 @@ i8 iPartition(i8* A, i8 iLow, i8 iHigh) {
       j--;
     } while (A[j] > iPivot);
     
-    if ( i >= j)
+    if ( i >= j) {
+      vTrace("Returning j %lld\n"_Stz, j);
       return j;
+    }
     
     // swap A[i} and A[j]
     i8 iTemp = A[j];
     A[j] = A[i];
     A[i] = iTemp;
+    
+    vTrace("Swapping \n"_Stz);
+    for (i8 i = 0; i < ELEMENTS; i ++) {
+      vTrace("A[%lld] = %lld %x\n"_Stz, i, A[i], &A[i]);
+    }
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* QuickSort                                                                  */
+/*----------------------------------------------------------------------------*/
 void vQuickSort(i8* A, i8 iLow, i8 iHigh) {
   
   if (iLow < iHigh) {
     i8 iPivot = iPartition(A, iLow, iHigh);
+    vTrace("PIVOT %lld\n"_Stz, A[iPivot]);
+    
+    for (i8 i = 0; i < ELEMENTS; i ++) {
+      vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+    }
     vQuickSort(A, iLow, iPivot);
-    
-//    vTrace("Sorted %lld %lld\n"_Stz, iLow, iPivot);
-//
-//    for (i8 i = 0; i < 3; i++)
-//      vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
-    
     vQuickSort(A, iPivot + 1, iHigh);
-    
-//    vTrace("Sorted %lld %lld\n"_Stz, iPivot + 1, iHigh);
-//
-//    for (i8 i = 0; i < 3; i++)
-//      vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
-
   }
   
 }
+
 /*----------------------------------------------------------------------------*/
-/* test11                                                                     */
+/* test12                                                                     */
 /*----------------------------------------------------------------------------*/
 void vTest12(void)
 {
   vTrace("Quicksort: Hoare partition scheme\n"_Stz);
-  
+
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create an array of integers
   i8 A[100];
   
-  for (i8 i = 0; i < 100; i ++) {
-    A[i] = Random::iInteger(0,1000);
-    vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+  for (i8 iLoop = 0; iLoop < 10; iLoop++ ) {
+  
+    vTrace("\nSorting array\n"_Stz);
+    
+    for (i8 i = 0; i < ELEMENTS; i ++) {
+      A[i] = Random::iInteger(0,1000);
+      vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+    }
+
+    //--------------------------------------------------------------------------
+    // EXPERIMENT 1: SORING USING INDEXES
+    // vTrace("SORTING USING ARRAY INDEXES\n"_Stz);
+    // vQuickSort(A, 0, ELEMENTS - 1);
+    
+    //--------------------------------------------------------------------------
+    // EXPERIMENT 2: SORTING USING ARRAY ELEMENT POINTERS
+    // vTrace("SORTING USING ARRAY ELEMENT POINTERS\n"_Stz);
+    // vQuickSort(A, &A[0], &A[ELEMENTS - 1]);
+
+    //--------------------------------------------------------------------------
+    // EXPERIMENT 3: SORTING USING CURSORS
+    vTrace("SORTING USING CUSRORS\n"_Stz);
+
+    // create a Low cursor pointing to the first element in the array
+    Cursor xLow(&A[0]);
+
+    // create a High cursor pointing to the first element in the array
+    Cursor xHigh(&A[ELEMENTS-1]);
+
+    // call quick sort (recursive call)
+    vQuickSort(A, xLow, xHigh);
+
+    vTrace("\nSorted array:\n"_Stz);
+    
+    for (i8 i = 0; i < ELEMENTS; i++) {
+      vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+      if (i)
+        RASSERT(A[i] >= A[i-1]);
+    }
   }
-  
-  vQuickSort(A, 0, 100 - 1);
-  
-  vTrace("\nSorted array:\n"_Stz);
-  for (i8 i = 0; i < 100; i++)
-    vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+
 }
 
 /*============================================================================*/
