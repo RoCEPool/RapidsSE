@@ -74,7 +74,7 @@ Row::Row(ColumnVec* pColVec)
   
 #ifdef WITH_CHECK_INITIALISED
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
-    m_aiValue[i_Col] = 0;
+    m_iaColVal[i_Col] = 0;
   m_xWsp.vZero(CN_ROW);
   
 #else
@@ -114,7 +114,7 @@ void Row::vAppendValue(Data::Datum* pDatum, Column* pCol)
   if (DM_VCH == pCol->eDatumType()) {
     
     if (pDatum->bIsNull()) {
-      m_aiValue[i_Col] = C_DATUM_NULL;
+      m_iaColVal[i_Col] = C_DATUM_NULL;
       return;
     }
     
@@ -123,7 +123,7 @@ void Row::vAppendValue(Data::Datum* pDatum, Column* pCol)
 
     i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
 
-    m_aiValue[i_Col] = (i8)acDstString;
+    m_iaColVal[i_Col] = (i8)acDstString;
     
     m_i_Wsp += (nSrcLength + 1);
     
@@ -136,7 +136,7 @@ void Row::vAppendValue(Data::Datum* pDatum, Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all others
   
-  m_aiValue[i_Col] = pDatum->m_iInt;
+  m_iaColVal[i_Col] = pDatum->m_iInt;
 
   if (pCol->bIsPartitionKey())
     m_iHash += iHashColumn(pCol);
@@ -175,9 +175,9 @@ i8 Row::iHashColumn(Column* pCol)
   
   i8 iHash;
   if (DM_VCH == pCol->eDatumType())
-    iHash = HshLib::iHash((byte*)m_aiValue[i_Col],sizeof(w8));
+    iHash = HshLib::iHash((byte*)m_iaColVal[i_Col],sizeof(w8));
   else
-    iHash = HshLib::iHash((byte*)&m_aiValue[i_Col],sizeof(w8));
+    iHash = HshLib::iHash((byte*)&m_iaColVal[i_Col],sizeof(w8));
   
   return iHash;
 }
@@ -197,7 +197,7 @@ void Row::vResetValues(void)
   
 #ifdef WITH_CHECK_INITIALISED
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++)
-    m_aiValue[i_Col] = 0;  
+    m_iaColVal[i_Col] = 0;  
 #endif
 }
 

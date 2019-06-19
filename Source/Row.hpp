@@ -20,9 +20,9 @@ namespace Transform
 
     // - - - - - - - - - - - - - - - - - -
   
-    i8 m_iHash;
-    i8 m_aiValue[C_MAX_COLUMNS];
-    Wsp_t<C_MAX_RECORD> m_xWsp;
+    i8 m_iHash; // hash of partition column values
+    i8 m_iaColVal[C_MAX_COLUMNS]; // column value array
+    Wsp_t<C_MAX_RECORD> m_xWsp; // sz workspace
 
     // must be last
     Footer m_xFooter;

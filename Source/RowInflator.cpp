@@ -35,7 +35,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
   
   byte* aMetaCode = (byte*)aHeadLine + _1B_W;
   byte* aDataByte = (byte*)aHeadLine + pRow->m_iBaseOffset;
-  byte* aValue    = (byte*)&pRow->m_aiValue[0];
+  byte* aValue    = (byte*)&pRow->m_iaColVal[0];
   
   bool  bGetAll   = pRow->m_bGetAll;
   i8    iLastCol  = pRow->m_iLastCol;
@@ -586,7 +586,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
   
   eMC*  aeMetaCode = aAdd<eMC*>(aHeadLine,_1B_W);
   byte* ayDataByte = (byte*)aHeadLine + pRow->m_iBaseOffset;
-  i8*   aiValue    = & pRow->m_aiValue[0];
+  i8*   aiValue    = & pRow->m_iaColVal[0];
   
   bool  bGetAll    = pRow->m_bGetAll;
   i8    iLastCol   = pRow->m_iLastCol;

@@ -168,7 +168,7 @@ void EntWrk::vAppendElement(Row* pRow, Column* pCol)
   
   i8 nBytes = 0;
   
-  i8 iValue = pRow->m_aiValue[pCol->iColumnNo()];
+  i8 iValue = pRow->m_iaColVal[pCol->iColumnNo()];
   
   if (Null::bIsNull(iValue)) {
     byte* ayDst = (byte*)ayElementCrs();
