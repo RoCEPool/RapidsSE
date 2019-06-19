@@ -30,15 +30,16 @@ time create table LineItem                 // SF * 6,000,000 rows
 // 1,155190,7706,1,17,21168.23,0.04,0.02,N,O,1996-03-13,1996-02-12,1996-03-22,
 //   DELIVER IN PERSON,TRUCK,egular courts above the,
 
-create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
+//create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
 //create index Lineitem_idx2 ON LineItem(L_SHIPDATE);
 //create index Lineitem_idx3 ON LineItem(L_SUPPKEY);
 
 //nowait monitor 3;
 
 space;
-//time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
-time ld lineitem "/tpch/SF0/lineitem_10.csv" max_errors 100;
+fileCat "/tpch/SF0/lineitem_1.csv" 1;
+time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
+//time ld lineitem "/tpch/SF0/lineitem_10.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_100.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_1k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_10k.csv" max_errors 100;
@@ -48,15 +49,15 @@ space;
 sztbl lineitem;
 fetch lineitem limit 10;
 time fetch lineitem noPrint;
-//fileCat "/tpch/SF0/lineitem_1.csv" 10;
-fileCat "/tpch/SF0/lineitem_10.csv" 10;
+fileCat "/tpch/SF0/lineitem_1.csv" 1;
+//fileCat "/tpch/SF0/lineitem_10.csv" 10;
 //fileCat "/tpch/SF0/lineitem_100.csv" 10;
 //fileCat "/tpch/SF0/lineitem_1k.csv" 10;
 //fileCat "/tpch/SF0/lineitem_10k.csv" 10;
 //fileCat "/tpch/SF0/lineitem_100k.csv" 10;
 //fileCat "/tpch/SF1/lineitem.csv" 10;
 
-compactidx LineItem LineItem_Idx1;
+//compactidx LineItem LineItem_Idx1;
 
 /*
 time fetch lineitem

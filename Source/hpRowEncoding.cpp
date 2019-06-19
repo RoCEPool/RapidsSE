@@ -55,6 +55,9 @@ void hpRowEncoding::vRowEncoding(RowEncoding* pEncRow)
 
     StrLib::vAppendString(&szCrs,(char*)"  "_Stz);
 
+    StrLib::vAppendDecimal(&szCrs,pEncRow->xEncode[i_Col].m_nOffset);
+    StrLib::vAppendString(&szCrs,(char*)" "_Stz);
+
     StrLib::vAppendString(&szCrs,(char*)pCol->szColNm());
     StrLib::vAppendString(&szCrs,(char*)" "_Stz);
     StrLib::vAppendString(&szCrs,(char*)szDatum);
@@ -63,8 +66,9 @@ void hpRowEncoding::vRowEncoding(RowEncoding* pEncRow)
     StrLib::vAppendString(&szCrs,(char*)aMC[pEncRow->xEncode[i_Col].m_eMetaCode]);
     StrLib::vAppendString(&szCrs,(char*)" "_Stz);
     
+    StrLib::vAppendString(&szCrs,(char*)"C_"_Stz);
     StrLib::vAppendDecimal(&szCrs,pEncRow->xEncode[i_Col].m_nDataBytes);
-    StrLib::vAppendString(&szCrs,(char*)" "_Stz);
+    StrLib::vAppendString(&szCrs,(char*)"B "_Stz);
 
     if (C_DATUM_NULL == pEncRow->xEncode[i_Col].m_wDataCode.m_iInt) {
       StrLib::vAppendString(&szCrs,(char*)"null"_Stz);

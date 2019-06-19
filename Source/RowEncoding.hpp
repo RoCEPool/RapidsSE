@@ -17,6 +17,7 @@ namespace Data
       eMC m_eMetaCode;
       Dtm m_wDataCode;
       i8  m_nDataBytes;
+      i8  m_nOffset;
     } xEncode[C_MAX_COLUMNS];
 
     Wsp_t<C_MAX_RECORD> m_xWsp;  // sz workspace

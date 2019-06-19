@@ -213,17 +213,17 @@ bool RowCompactor::bCompactRow(Row* pRow)
 
   // + + + + + + + + + + + + + + + + + + +
 
-//  hpRow hp_Row;
-//  vTrace("%s\n"_Stz,hp_Row.sz(pRow));
-//
-//  RowEncoding* pRowEncoding = new RowEncoding(m_pColVec);
-//
-//  pRowEncoding->vEncode(pRow);
-//
-//  hpRowEncoding hp_RowEnc;
-//  vTrace("%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
-//
-//  delete pRowEncoding;
+  hpRow hp_Row;
+  vTrace("%s\n"_Stz,hp_Row.sz(pRow));
+
+  RowEncoding* pRowEncoding = new RowEncoding(m_pColVec);
+
+  pRowEncoding->vEncode(pRow);
+
+  hpRowEncoding hp_RowEnc;
+  vTrace("%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
+
+  delete pRowEncoding;
   
   // + + + + + + + + + + + + + + + + + + +
   

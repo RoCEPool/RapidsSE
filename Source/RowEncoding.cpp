@@ -66,8 +66,9 @@ RowEncoding::RowEncoding(ColumnVec* pColVec)
 
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     xEncode[i_Col].m_eMetaCode  = MC_NULL;
-    xEncode[i_Col].m_wDataCode  = (i8)0;
-    xEncode[i_Col].m_nDataBytes = 0;
+    xEncode[i_Col].m_wDataCode  = C_UNKNOWN;
+    xEncode[i_Col].m_nDataBytes = C_UNKNOWN;
+    xEncode[i_Col].m_nOffset    = C_UNKNOWN;
   }
   
 #ifdef WITH_CHECK_INITIALISED
@@ -204,7 +205,7 @@ void RowEncoding::vEncode(Row* pRow)
         break;
         
       case DM_VCH:
-        xEncode[i_Col].m_wDataCode = (i8)m_xWsp.ayArea();
+        xEncode[i_Col].m_wDataCode = (i8)m_xWsp.ayLatter();
         
         vCodeVch(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
@@ -216,9 +217,17 @@ void RowEncoding::vEncode(Row* pRow)
         
       default:
         NEVER_REACH;
-    }
+        
+    } // switch eDatum
     
-  }
+    if (i_Col)
+      xEncode[i_Col].m_nOffset =
+        xEncode[i_Col - 1].m_nOffset
+          + RowCompactor::nDataBytes(xEncode[i_Col - 1].m_eMetaCode);
+    else
+      xEncode[i_Col].m_nOffset = 0;
+
+  } // for i_Col
 
 }
 
@@ -511,8 +520,9 @@ void RowEncoding::vReset(void)
   
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     xEncode[i_Col].m_eMetaCode  = MC_NULL;
-    xEncode[i_Col].m_wDataCode  = (i8)0;
-    xEncode[i_Col].m_nDataBytes = 0;
+    xEncode[i_Col].m_wDataCode  = C_UNKNOWN;
+    xEncode[i_Col].m_nDataBytes = C_UNKNOWN;
+    xEncode[i_Col].m_nOffset    = C_UNKNOWN;
   }
   
 #ifdef WITH_CHECK_INITIALISED
