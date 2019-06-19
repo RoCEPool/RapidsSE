@@ -15,6 +15,19 @@ void vTest9(void);
 void vTest10(void);
 void vTest11(void);
 void vTest12(void);
+void vTest13(void);
+void vTest14(void);
+void vTest15(void);
+void vTest16(void);
+void vTest17(void);
+void vTest18(void);
+void vTest19(void);
+void vTest20(void);
+void vTest21(void);
+void vTest22(void);
+void vTest23(void);
+void vTest24(void);
+void vTest25(void);
 
 /*----------------------------------------------------------------------------*/
 /* buffer of arrays                                                           */
