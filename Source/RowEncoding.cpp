@@ -90,9 +90,46 @@ RowEncoding::~RowEncoding(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/*-- Static Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* convert a Dte into an Edt                                                  */
+/*----------------------------------------------------------------------------*/
+void RowEncoding::vDteIntoEdt(Dtm wDte, Dtm& wEdt_, i8& iEra_)
+{
+  i8 iYearDelta;
+  i8 iYearInEra;
+  i8 iMonth;
+  i8 iDay;
+  
+  iYearDelta = wDte.xDte.m_uYearDelta;
+  iMonth     = wDte.xDte.m_uMonth;
+  iDay       = wDte.xDte.m_uDay;
+  
+  if (iYearDelta < C_ERA_1) {
+    iEra_ = C_ERA_0;
+    iYearInEra = iYearDelta - C_ERA_0;
+  }
+  else if (iYearDelta < C_ERA_2) {
+    iEra_ = C_ERA_1;
+    iYearInEra = iYearDelta - C_ERA_1;
+  }
+  else {
+    iEra_ = C_ERA_2;
+    iYearInEra = iYearDelta - C_ERA_2;
+  }
+  
+  wEdt_.m_iEdt = 0;
+  wEdt_.xEdt.m_uYearInEra = iYearInEra;
+  wEdt_.xEdt.m_uMonth     = iMonth;
+  wEdt_.xEdt.m_uDay       = iDay;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* encode row                                                                 */
@@ -265,6 +302,23 @@ void RowEncoding::vCodeDte(Dtm wDte,
                            Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  
+  wCoded_.m_iDte = wDte.m_iDte;
+
+  if (wDte.bIsNull()) {
+    eMetaCode_  = MC_NULL;
+    nDataBytes_ = C_0B;
+    return;
+  }
+  
+  i8 iEra = 0;
+  vDteIntoEdt(wDte,wCoded_,iEra);
+  
+       if (C_ERA_0 == iEra) eMetaCode_ = MC_DATE_E0_2B;
+  else if (C_ERA_1 == iEra) eMetaCode_ = MC_DATE_E1_2B;
+  else                      eMetaCode_ = MC_DATE_E2_2B;
+  
+  nDataBytes_ = C_2B;
 }
 
 /*----------------------------------------------------------------------------*/
