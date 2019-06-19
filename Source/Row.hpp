@@ -12,6 +12,7 @@ namespace Transform
   public:
     ColumnVec* m_pColVec;
     i8         m_nColumns;
+  
     i8         m_iBaseOffset;
     bool       m_bGetAll;
     bool       m_abGetCol[C_MAX_COLUMNS];

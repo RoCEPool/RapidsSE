@@ -329,8 +329,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         *(char**)(aiColVal++) = acString;
         acString += nLength;
         *acString++ = '\0';
-        pRow->m_i_Wsp += nLength;
-        break;
+         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_STR_SPLIT_2T1L:
@@ -364,7 +363,6 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         *(char**)(aiColVal++) = acString;
         acString += nLength;
         *acString++ = '\0';
-        pRow->m_i_Wsp += nLength;
       }
        break;
         
@@ -379,8 +377,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         *(char**)(aiColVal++) = acString;
         acString += nLength;
         *acString++ = '\0';
-        pRow->m_i_Wsp += nLength;
-        ayDataByte += nCompressed;
+         ayDataByte += nCompressed;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -403,7 +400,6 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         *(char**)(aiColVal++) = acString;
         acString += nLength;
         *acString++ = '\0';
-        pRow->m_i_Wsp += nLength;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -432,7 +428,6 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         *(char**)(aiColVal++) = acString;
         acString += nLength;
         *acString++ = '\0';
-        pRow->m_i_Wsp += nLength;
         ayDataByte += nBytesPartA;
         break;
         
