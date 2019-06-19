@@ -294,6 +294,7 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
 #include "CrwBuffer.hpp"
 #include "RowCompactor.hpp"
 #include "IndexTree.hpp"
+#include "IntBuffer.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

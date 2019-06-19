@@ -903,6 +903,24 @@ void vTest15(void)
 void vTest16(void)
 {
   
+  vTrace("Quicksort: Hoare partition scheme\n"_Stz);
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create aan IntBuffer
+  IntBuffer* pIntBuffer = new IntBuffer();
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Add values to the buffer till the buffer is full
+  while (true) {
+    i8 iRandom = Random::iInteger(0,1000);
+    if (pIntBuffer->bHasSpace())
+      pIntBuffer->vAppendValue(iRandom);
+    else
+      break;
+  }
+  
+  vTrace("\nSorting buffer:\n"_Stz);
+  pIntBuffer->vDump();
 }
 
 /*----------------------------------------------------------------------------*/
