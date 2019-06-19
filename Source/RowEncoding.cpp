@@ -397,6 +397,11 @@ void RowEncoding::vCodeTme(Dtm wTme,
                            Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  
+  wCoded_.m_iTme = wTme.m_iTme;
+  
+  eMetaCode_  = (eMC)IntLib::iByteMagNull(wTme.m_iTme);
+  nDataBytes_ = eMetaCode_;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -406,6 +411,11 @@ void RowEncoding::vCodeTsp(Dtm wTsp,
                            Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  
+  wCoded_.m_iTsp = wTsp.m_iTsp;
+  
+  eMetaCode_  = (eMC)IntLib::iByteMagNull(wTsp.m_iTsp);
+  nDataBytes_ = eMetaCode_;
 }
 
 /*----------------------------------------------------------------------------*/
