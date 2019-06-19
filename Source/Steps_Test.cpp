@@ -25,6 +25,20 @@ void Step::vAddSteps_Test(void)
   vAddStep("test::test10"_Stz, &Step::vTestTest10);
   vAddStep("test::test11"_Stz, &Step::vTestTest11);
   vAddStep("test::test12"_Stz, &Step::vTestTest12);
+  vAddStep("test::test13"_Stz, &Step::vTestTest13);
+  vAddStep("test::test14"_Stz, &Step::vTestTest14);
+  vAddStep("test::test15"_Stz, &Step::vTestTest15);
+  vAddStep("test::test16"_Stz, &Step::vTestTest16);
+  vAddStep("test::test17"_Stz, &Step::vTestTest17);
+  vAddStep("test::test18"_Stz, &Step::vTestTest18);
+  vAddStep("test::test19"_Stz, &Step::vTestTest19);
+  vAddStep("test::test20"_Stz, &Step::vTestTest20);
+  vAddStep("test::test21"_Stz, &Step::vTestTest21);
+  vAddStep("test::test22"_Stz, &Step::vTestTest22);
+  vAddStep("test::test23"_Stz, &Step::vTestTest23);
+  vAddStep("test::test24"_Stz, &Step::vTestTest24);
+  vAddStep("test::test25"_Stz, &Step::vTestTest25);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -180,6 +194,163 @@ void Step::vTestTest12(MP_Task mpTask)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* test::test13 -- test13                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vTestTest13(MP_Task mpTask)
+{
+  ENTRY("vTestTest13 "_Stz);
+  
+  vTest13();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* test::test14 -- test14                                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vTestTest14(MP_Task mpTask)
+{
+  ENTRY("vTestTest14 "_Stz);
+  
+  vTest14();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* test::test15 -- test15                                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vTestTest15(MP_Task mpTask)
+{
+  ENTRY("vTestTest15 "_Stz);
+  
+  vTest15();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* test::test16 -- test16                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vTestTest16(MP_Task mpTask)
+{
+  ENTRY("vTestTest16 "_Stz);
+  
+  vTest16();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* test::test17 -- test17                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vTestTest17(MP_Task mpTask)
+{
+  ENTRY("vTestTest17 "_Stz);
+  
+  vTest17();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* test::test18 -- test18                                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vTestTest18(MP_Task mpTask)
+{
+  ENTRY("vTestTest18 "_Stz);
+  
+  vTest18();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* test::test19 -- test19                                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vTestTest19(MP_Task mpTask)
+{
+  ENTRY("vTestTest19 "_Stz);
+  
+  vTest19();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* test::test20 -- test20                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vTestTest20(MP_Task mpTask)
+{
+  ENTRY("vTestTest20 "_Stz);
+  
+  vTest20();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* test::test21 -- test21                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vTestTest21(MP_Task mpTask)
+{
+  ENTRY("vTestTest21 "_Stz);
+  
+  vTest21();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* test::test22 -- test22                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vTestTest22(MP_Task mpTask)
+{
+  ENTRY("vTestTest22 "_Stz);
+  
+  vTest22();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* test::test23 -- test23                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vTestTest23(MP_Task mpTask)
+{
+  ENTRY("vTestTest23 "_Stz);
+  
+  vTest23();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* test::test24 -- test24                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vTestTest24(MP_Task mpTask)
+{
+  ENTRY("vTestTest24 "_Stz);
+  
+  vTest24();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* test::test25 -- test25                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vTestTest25(MP_Task mpTask)
+{
+  ENTRY("vTestTest25 "_Stz);
+  
+  vTest25();
+  
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

@@ -33,6 +33,19 @@
 : test10 prompt test::test10 ;
 : test11 prompt test::test11 ;
 : test12 prompt test::test12 ;
+: test13 prompt test::test13 ;
+: test14 prompt test::test14 ;
+: test15 prompt test::test15 ;
+: test16 prompt test::test16 ;
+: test17 prompt test::test17 ;
+: test18 prompt test::test18 ;
+: test19 prompt test::test19 ;
+: test20 prompt test::test20 ;
+: test21 prompt test::test21 ;
+: test22 prompt test::test22 ;
+: test23 prompt test::test23 ;
+: test24 prompt test::test24 ;
+: test25 prompt test::test25 ;
 
 : llc test::test0 ;
 

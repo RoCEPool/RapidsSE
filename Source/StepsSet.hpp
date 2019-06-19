@@ -1066,6 +1066,20 @@
   static void vTestTest10(Tasks::MP_Task mpTask);
   static void vTestTest11(Tasks::MP_Task mpTask);
   static void vTestTest12(Tasks::MP_Task mpTask);
+  static void vTestTest13(Tasks::MP_Task mpTask);
+  static void vTestTest14(Tasks::MP_Task mpTask);
+  static void vTestTest15(Tasks::MP_Task mpTask);
+  static void vTestTest16(Tasks::MP_Task mpTask);
+  static void vTestTest17(Tasks::MP_Task mpTask);
+  static void vTestTest18(Tasks::MP_Task mpTask);
+  static void vTestTest19(Tasks::MP_Task mpTask);
+  static void vTestTest20(Tasks::MP_Task mpTask);
+  static void vTestTest21(Tasks::MP_Task mpTask);
+  static void vTestTest22(Tasks::MP_Task mpTask);
+  static void vTestTest23(Tasks::MP_Task mpTask);
+  static void vTestTest24(Tasks::MP_Task mpTask);
+  static void vTestTest25(Tasks::MP_Task mpTask);
+
 
   // thread
   static void vThreadBind(Tasks::MP_Task mpTask);
