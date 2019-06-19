@@ -147,7 +147,7 @@ void Record::vAppend(Column* pCol, Row* pRow)
   Datum oDatum;
   i8 i_Col = pCol->iColumnNo();
   
-  oDatum.m_iInt = pRow->m_iaColVal[i_Col].m_iInt;
+  oDatum.m_iInt = pRow->m_waColVal[i_Col].m_iInt;
   
   if (oDatum.bIsNull()) {
     m_sRecStr.vAppend(&m_azAppendCursor,"null"_Stz);

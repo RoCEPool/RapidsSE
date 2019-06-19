@@ -21,7 +21,7 @@ namespace Transform
     // - - - - - - - - - - - - - - - - - -
   
     i8  m_iHash; // hash of partition column values
-    Dtm m_iaColVal[C_MAX_COLUMNS]; // column value array
+    Dtm m_waColVal[C_MAX_COLUMNS]; // column value array
     Wsp_t<C_MAX_RECORD> m_xWsp; // sz workspace
 
     // must be last
