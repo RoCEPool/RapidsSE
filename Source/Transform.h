@@ -21,6 +21,7 @@ using namespace Transform;
 #include "Sprint.hpp"
 
 #include "Row.hpp"
+#include "RowEncoding.hpp"
 #include "IrwBuffer.hpp"
 
 #include "hpRow.hpp"
