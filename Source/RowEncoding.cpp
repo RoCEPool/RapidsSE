@@ -246,11 +246,11 @@ void RowEncoding::vEncodeVch(Row* pRow, Column* pCol)
 /* code Bcd                                                                   */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vCodeBcd(Dtm wBcd,
-                           Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_)
+                           eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
   
-  wCoded_.m_iBcd = wBcd.m_iBcd;
+  wDataCode_.m_iBcd = wBcd.m_iBcd;
 
   eMetaCode_ = (eMC)IntLib::iByteMagNull(wBcd.m_iBcd);
   
@@ -279,11 +279,11 @@ void RowEncoding::vCodeBcd(Dtm wBcd,
 /* code Bol                                                                   */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vCodeBol(Dtm wBol,
-                           Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_)
+                           eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
   
-  wCoded_.m_iBol = wBol.m_iBol;
+  wDataCode_.m_iBol = wBol.m_iBol;
 
   if (wBol.bIsNull())
     eMetaCode_ = MC_NULL;
@@ -299,11 +299,11 @@ void RowEncoding::vCodeBol(Dtm wBol,
 /* code Dte                                                                   */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vCodeDte(Dtm wDte,
-                           Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_)
+                           eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
   
-  wCoded_.m_iDte = wDte.m_iDte;
+  wDataCode_.m_iDte = wDte.m_iDte;
 
   if (wDte.bIsNull()) {
     eMetaCode_  = MC_NULL;
@@ -312,7 +312,7 @@ void RowEncoding::vCodeDte(Dtm wDte,
   }
   
   i8 iEra = 0;
-  vDteIntoEdt(wDte,wCoded_,iEra);
+  vDteIntoEdt(wDte,wDataCode_,iEra);
   
        if (C_ERA_0 == iEra) eMetaCode_ = MC_DATE_E0_2B;
   else if (C_ERA_1 == iEra) eMetaCode_ = MC_DATE_E1_2B;
@@ -325,11 +325,11 @@ void RowEncoding::vCodeDte(Dtm wDte,
 /* code Flt                                                                   */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vCodeFlt(Dtm wFlt,
-                           Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_)
+                           eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
   
-  wCoded_.m_dFlt = wFlt.m_dFlt;
+  wDataCode_.m_dFlt = wFlt.m_dFlt;
 
   eMetaCode_ = (eMC)IntLib::iByteMagNull(wFlt.m_iInt);
   
@@ -340,11 +340,11 @@ void RowEncoding::vCodeFlt(Dtm wFlt,
 /* code Int                                                                   */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vCodeInt(Dtm wInt,
-                           Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_)
+                           eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
   
-  wCoded_.m_iInt = wInt.m_iInt;
+  wDataCode_.m_iInt = wInt.m_iInt;
   
   eMetaCode_ = (eMC)IntLib::iByteMagNull(wInt.m_iInt);
   
@@ -380,11 +380,11 @@ void RowEncoding::vCodeInt(Dtm wInt,
 /* code Ivl                                                                   */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vCodeIvl(Dtm wIvl,
-                           Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_)
+                           eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
   
-  wCoded_.m_iIvl = wIvl.m_iIvl;
+  wDataCode_.m_iIvl = wIvl.m_iIvl;
 
   eMetaCode_  = (eMC)IntLib::iByteMagNull(wIvl.m_iIvl);
   nDataBytes_ = eMetaCode_;
@@ -394,11 +394,11 @@ void RowEncoding::vCodeIvl(Dtm wIvl,
 /* code Tme                                                                   */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vCodeTme(Dtm wTme,
-                           Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_)
+                           eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
   
-  wCoded_.m_iTme = wTme.m_iTme;
+  wDataCode_.m_iTme = wTme.m_iTme;
   
   eMetaCode_  = (eMC)IntLib::iByteMagNull(wTme.m_iTme);
   nDataBytes_ = eMetaCode_;
@@ -408,11 +408,11 @@ void RowEncoding::vCodeTme(Dtm wTme,
 /* code Tsp                                                                   */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vCodeTsp(Dtm wTsp,
-                           Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_)
+                           eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
   
-  wCoded_.m_iTsp = wTsp.m_iTsp;
+  wDataCode_.m_iTsp = wTsp.m_iTsp;
   
   eMetaCode_  = (eMC)IntLib::iByteMagNull(wTsp.m_iTsp);
   nDataBytes_ = eMetaCode_;
@@ -422,7 +422,7 @@ void RowEncoding::vCodeTsp(Dtm wTsp,
 /* code Vch                                                                   */
 /*----------------------------------------------------------------------------*/
 void RowEncoding::vCodeVch(Dtm wVch,
-                           Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_)
+                           eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
 }

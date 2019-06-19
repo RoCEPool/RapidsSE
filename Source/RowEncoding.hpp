@@ -45,15 +45,15 @@ namespace Data
     void vEncodeTsp(Row* pRow, Column* pCol);
     void vEncodeVch(Row* pRow, Column* pCol);
 
-    void vCodeBol(Dtm wBol, Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_);
-    void vCodeBcd(Dtm wBcd, Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_);
-    void vCodeDte(Dtm wDte, Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_);
-    void vCodeFlt(Dtm wFlt, Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_);
-    void vCodeInt(Dtm wInt, Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_);
-    void vCodeIvl(Dtm wIvl, Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_);
-    void vCodeTme(Dtm wTme, Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_);
-    void vCodeTsp(Dtm wTsp, Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_);
-    void vCodeVch(Dtm wVch, Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_);
+    void vCodeBol(Dtm wBol, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
+    void vCodeBcd(Dtm wBcd, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
+    void vCodeDte(Dtm wDte, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
+    void vCodeFlt(Dtm wFlt, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
+    void vCodeInt(Dtm wInt, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
+    void vCodeIvl(Dtm wIvl, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
+    void vCodeTme(Dtm wTme, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
+    void vCodeTsp(Dtm wTsp, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
+    void vCodeVch(Dtm wVch, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
   
  
 
