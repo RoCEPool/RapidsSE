@@ -13,14 +13,14 @@ namespace Data
   
     // - - - - - - - - - - - - - - - - - -
   
-    Dtm m_waColVal[C_MAX_COLUMNS]; // column value array
-    Wsp_t<C_MAX_RECORD> m_xWsp;    // sz workspace
-  
     struct {
-      eMC m_eEncoding;
-      i8  m_nEncodedBytes;
+      eMC m_eMetaCode;
+      Dtm m_wColVal;
+      i8  m_nDataBytes;
     } xEncode[C_MAX_COLUMNS];
 
+    Wsp_t<C_MAX_RECORD> m_xWsp;  // sz workspace
+  
     // must be last
     Footer m_xFooter;
   

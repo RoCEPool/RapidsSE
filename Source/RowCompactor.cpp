@@ -203,8 +203,8 @@ bool RowCompactor::bCompactRow(Row* pRow)
   
   //RASSERT(m_pColVec == pFromNub->pDesc()->pColumnVec());
   
-  // + + + + + + + + + + + + + + + + + + +
   
+  // + + + + + + + + + + + + + + + + + + +
   RowParts* pRowParts = new RowParts;
   pRowParts->pNub()->vDesc(m_pIntoNub->pDesc());
   RowNub* pFromNub = pRowParts->pNub();
@@ -216,6 +216,20 @@ bool RowCompactor::bCompactRow(Row* pRow)
 
   // + + + + + + + + + + + + + + + + + + +
 
+//  hpRow hp_Row;
+//  vTrace("%s\n"_Stz,hp_Row.sz(pRow));
+//  
+//  RowEncoding* pRowEncoding = new RowEncoding(m_pColVec);
+//  
+//  pRowEncoding->vEncode(pRow);
+//  
+//  hpRowEncoding hp_RowEnc;
+//  vTrace("%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
+//  
+//  delete pRowEncoding;
+  
+  // + + + + + + + + + + + + + + + + + + +
+  
 //  delete m_pRowEncoder;
 //
 //  delete pRowParts;

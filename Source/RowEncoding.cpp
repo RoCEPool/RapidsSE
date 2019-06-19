@@ -65,9 +65,9 @@ RowEncoding::RowEncoding(ColumnVec* pColVec)
   // - - - - - - - - - - - - - - - - - -
 
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
-    m_waColVal[i_Col].m_iInt       = 0;
-    xEncode[i_Col].m_eEncoding     = MC_NULL;
-    xEncode[i_Col].m_nEncodedBytes = 0;
+    xEncode[i_Col].m_wColVal    = 0;
+    xEncode[i_Col].m_eMetaCode  = MC_NULL;
+    xEncode[i_Col].m_nDataBytes = 0;
   }
   
 #ifdef WITH_CHECK_INITIALISED
@@ -143,19 +143,73 @@ void RowEncoding::vEncode(Row* pRow)
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     
     Column* pCol = m_pColVec->pGet(i_Col);
-    eDM eDatum  = pCol->eDatumType();
+    eDM eDatum   = pCol->eDatumType();
     
     switch (eDatum) {
       
-      case DM_BCD: vEncodeBcd(pRow,pCol); break;
-      case DM_BOL: vEncodeBol(pRow,pCol); break;
-      case DM_DTE: vEncodeDte(pRow,pCol); break;
-      case DM_FLT: vEncodeFlt(pRow,pCol); break;
-      case DM_INT: vEncodeInt(pRow,pCol); break;
-      case DM_IVL: vEncodeIvl(pRow,pCol); break;
-      case DM_TME: vEncodeTme(pRow,pCol); break;
-      case DM_TSP: vEncodeTsp(pRow,pCol); break;
-      case DM_VCH: vEncodeVch(pRow,pCol); break;
+      case DM_BCD:
+        vCodeBcd(pRow->m_waColVal[i_Col],
+                   xEncode[i_Col].m_eMetaCode,
+                   xEncode[i_Col].m_wColVal,
+                   xEncode[i_Col].m_nDataBytes);
+        break;
+        
+      case DM_BOL:
+        vCodeBol(pRow->m_waColVal[i_Col],
+                   xEncode[i_Col].m_eMetaCode,
+                   xEncode[i_Col].m_wColVal,
+                   xEncode[i_Col].m_nDataBytes);
+        break;
+        
+      case DM_DTE:
+        vCodeDte(pRow->m_waColVal[i_Col],
+                   xEncode[i_Col].m_eMetaCode,
+                   xEncode[i_Col].m_wColVal,
+                   xEncode[i_Col].m_nDataBytes);
+        break;
+        
+      case DM_FLT:
+        vCodeFlt(pRow->m_waColVal[i_Col],
+                   xEncode[i_Col].m_eMetaCode,
+                   xEncode[i_Col].m_wColVal,
+                   xEncode[i_Col].m_nDataBytes);
+        break;
+        
+      case DM_INT:
+        vCodeInt(pRow->m_waColVal[i_Col],
+                   xEncode[i_Col].m_eMetaCode,
+                   xEncode[i_Col].m_wColVal,
+                   xEncode[i_Col].m_nDataBytes);
+        break;
+        
+      case DM_IVL:
+        vCodeIvl(pRow->m_waColVal[i_Col],
+                   xEncode[i_Col].m_eMetaCode,
+                   xEncode[i_Col].m_wColVal,
+                   xEncode[i_Col].m_nDataBytes);
+        break;
+        
+      case DM_TME:
+        vCodeTme(pRow->m_waColVal[i_Col],
+                   xEncode[i_Col].m_eMetaCode,
+                   xEncode[i_Col].m_wColVal,
+                   xEncode[i_Col].m_nDataBytes);
+        break;
+        
+      case DM_TSP:
+        vCodeTsp(pRow->m_waColVal[i_Col],
+                   xEncode[i_Col].m_eMetaCode,
+                   xEncode[i_Col].m_wColVal,
+                   xEncode[i_Col].m_nDataBytes);
+        break;
+        
+      case DM_VCH:
+        
+        vCodeVch(pRow->m_waColVal[i_Col],
+                   xEncode[i_Col].m_eMetaCode,
+                   xEncode[i_Col].m_wColVal,
+                   xEncode[i_Col].m_nDataBytes);
+        break;
         
       default:
         NEVER_REACH;
@@ -453,9 +507,9 @@ void RowEncoding::vReset(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
   
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
-    m_waColVal[i_Col].m_iInt       = 0;
-    xEncode[i_Col].m_eEncoding     = MC_NULL;
-    xEncode[i_Col].m_nEncodedBytes = 0;
+    xEncode[i_Col].m_wColVal    = 0;
+    xEncode[i_Col].m_eMetaCode  = MC_NULL;
+    xEncode[i_Col].m_nDataBytes = 0;
   }
   
 #ifdef WITH_CHECK_INITIALISED
