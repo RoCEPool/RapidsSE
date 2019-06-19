@@ -215,16 +215,15 @@ void RowEncoding::vCodeBcd(Dtm wBcd,
   
   wCoded_.m_iBcd = wBcd.m_iBcd;
 
-  eMC eEncoding = (eMC)IntLib::iByteMagNull(wBcd.m_iBcd);
+  eMetaCode_ = (eMC)IntLib::iByteMagNull(wBcd.m_iBcd);
   
-  if (MC_NULL == eEncoding) {
-    eMetaCode_  = MC_NULL;
-    nDataBytes_ = C_0B;
+  if (MC_NULL == eMetaCode_) {
+     nDataBytes_ = C_0B;
     return;
   }
   
 #ifdef WITH_ENCODING_BCD_DIGIT
-  if (MC_1B == eEncoding) {
+  if (MC_1B == eMetaCode_) {
     
     i8 iBcd1B = wBcd.m_iBcd;
     if (iBcd1B >= 0 && iBcd1B <= 10) {
@@ -236,8 +235,7 @@ void RowEncoding::vCodeBcd(Dtm wBcd,
   }
 #endif
   
-  eMetaCode_  = eEncoding;
-  nDataBytes_ = eEncoding;
+  nDataBytes_ = eMetaCode_;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -247,6 +245,17 @@ void RowEncoding::vCodeBol(Dtm wBol,
                            Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  
+  wCoded_.m_iBol = wBol.m_iBol;
+
+  if (wBol.bIsNull())
+    eMetaCode_ = MC_NULL;
+  else if (wBol.m_iBol)
+    eMetaCode_ = MC_TRUE;
+  else
+    eMetaCode_ = MC_FALSE;
+  
+  nDataBytes_ = C_0B;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -265,6 +274,12 @@ void RowEncoding::vCodeFlt(Dtm wFlt,
                            Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  
+  wCoded_.m_dFlt = wFlt.m_dFlt;
+
+  eMetaCode_ = (eMC)IntLib::iByteMagNull(wFlt.m_iInt);
+  
+  nDataBytes_ = eMetaCode_;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -277,10 +292,9 @@ void RowEncoding::vCodeInt(Dtm wInt,
   
   wCoded_.m_iInt = wInt.m_iInt;
   
-  eMC eEncoding = (eMC)IntLib::iByteMagNull(wInt.m_iInt);
+  eMetaCode_ = (eMC)IntLib::iByteMagNull(wInt.m_iInt);
   
-  if (MC_NULL == eEncoding) {
-    eMetaCode_  = MC_NULL;
+  if (MC_NULL == eMetaCode_) {
     nDataBytes_ = C_0B;
     return;
   }
@@ -293,7 +307,7 @@ void RowEncoding::vCodeInt(Dtm wInt,
     return;
   }
   
-  if (MC_1B == eEncoding) {
+  if (MC_1B == eMetaCode_) {
     
     i8 i1BInt = wInt.m_iInt;
     if (i1BInt >= 0 && i1BInt <= 10) {
@@ -305,8 +319,7 @@ void RowEncoding::vCodeInt(Dtm wInt,
   }
 #endif
   
-  eMetaCode_  = eEncoding;
-  nDataBytes_ = eEncoding;
+  nDataBytes_ = eMetaCode_;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -316,6 +329,11 @@ void RowEncoding::vCodeIvl(Dtm wIvl,
                            Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  
+  wCoded_.m_iIvl = wIvl.m_iIvl;
+
+  eMetaCode_  = (eMC)IntLib::iByteMagNull(wIvl.m_iIvl);
+  nDataBytes_ = eMetaCode_;
 }
 
 /*----------------------------------------------------------------------------*/
