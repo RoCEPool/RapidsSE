@@ -425,6 +425,20 @@ void RowEncoding::vCodeVch(Dtm wVch,
                            eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null case
+  
+  if (wVch.bIsNull()) {
+    eMetaCode_  = MC_NULL;
+    nDataBytes_ = C_0B;
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  eMetaCode_  = MC_STR_TAIL_2T;
+  nDataBytes_ = StrLib::nCopy((char*)wDataCode_.m_szVch,(char*)wVch.m_szVch) + 1;
 }
 
 /*----------------------------------------------------------------------------*/
