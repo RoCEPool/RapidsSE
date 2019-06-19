@@ -980,7 +980,7 @@ void RowCompactor::vDatumBol(Datum* pTgtDatum, Row* pRow, Column* pCol)
   i8 i_Col = pCol->iColumnNo();
  
   pTgtDatum->m_eDatum = DM_BOL;
-  pTgtDatum->m_iBol   = pRow->m_iaColVal[i_Col];
+  pTgtDatum->m_iBol   = pRow->m_iaColVal[i_Col].m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -993,7 +993,7 @@ void RowCompactor::vDatumBcd(Datum* pTgtDatum, Row* pRow, Column* pCol)
   i8 i_Col = pCol->iColumnNo();
   
   pTgtDatum->m_eDatum = DM_BCD;
-  pTgtDatum->m_iBcd   = pRow->m_iaColVal[i_Col];
+  pTgtDatum->m_iBcd   = pRow->m_iaColVal[i_Col].m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1006,7 +1006,7 @@ void RowCompactor::vDatumDte(Datum* pTgtDatum, Row* pRow, Column* pCol)
   i8 i_Col = pCol->iColumnNo();
   
   pTgtDatum->m_eDatum = DM_DTE;
-  pTgtDatum->m_iDte   = pRow->m_iaColVal[i_Col];
+  pTgtDatum->m_iDte   = pRow->m_iaColVal[i_Col].m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1032,7 +1032,7 @@ void RowCompactor::vDatumInt(Datum* pTgtDatum, Row* pRow, Column* pCol)
   i8 i_Col = pCol->iColumnNo();
   
   pTgtDatum->m_eDatum = DM_INT;
-  pTgtDatum->m_iInt   = pRow->m_iaColVal[i_Col];
+  pTgtDatum->m_iInt   = pRow->m_iaColVal[i_Col].m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1045,7 +1045,7 @@ void RowCompactor::vDatumIvl(Datum* pTgtDatum, Row* pRow, Column* pCol)
   i8 i_Col = pCol->iColumnNo();
   
   pTgtDatum->m_eDatum = DM_IVL;
-  pTgtDatum->m_iIvl   = pRow->m_iaColVal[i_Col];
+  pTgtDatum->m_iIvl   = pRow->m_iaColVal[i_Col].m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1058,7 +1058,7 @@ void RowCompactor::vDatumTme(Datum* pTgtDatum, Row* pRow, Column* pCol)
   i8 i_Col = pCol->iColumnNo();
   
   pTgtDatum->m_eDatum = DM_TME;
-  pTgtDatum->m_iTme   = pRow->m_iaColVal[i_Col];
+  pTgtDatum->m_iTme   = pRow->m_iaColVal[i_Col].m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1071,7 +1071,7 @@ void RowCompactor::vDatumTsp(Datum* pTgtDatum, Row* pRow, Column* pCol)
   i8 i_Col = pCol->iColumnNo();
   
   pTgtDatum->m_eDatum = DM_TSP;
-  pTgtDatum->m_iTsp   = pRow->m_iaColVal[i_Col];
+  pTgtDatum->m_iTsp   = pRow->m_iaColVal[i_Col].m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1085,12 +1085,12 @@ void RowCompactor::vDatumVch(Datum* pTgtDatum, Row* pRow, Column* pCol)
   
   pTgtDatum->m_eDatum = DM_VCH;
   
-  if (C_DATUM_NULL == pRow->m_iaColVal[i_Col]) {
+  if (C_DATUM_NULL == pRow->m_iaColVal[i_Col].m_iInt) {
     pTgtDatum->m_iInt = C_DATUM_NULL;
    return;
   }
   
-  pTgtDatum->m_sVch = (Stz*)pRow->m_iaColVal[i_Col];
+  pTgtDatum->m_sVch = (Stz*)pRow->m_iaColVal[i_Col].m_iInt;
   pTgtDatum->m_nChars = pTgtDatum->m_sVch.iLength();
 }
 

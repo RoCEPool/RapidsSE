@@ -60,7 +60,7 @@ void hpRow::vRow(Row* pRow)
     StrLib::vAppendString(&szCrs,(char*)szDatum);
     StrLib::vAppendString(&szCrs,(char*)" "_Stz);
     
-    if (C_DATUM_NULL == pRow->m_iaColVal[i_Col]) {
+    if (C_DATUM_NULL == pRow->m_iaColVal[i_Col].m_iInt) {
       StrLib::vAppendString(&szCrs,(char*)"null"_Stz);
       return;
     }
@@ -68,55 +68,64 @@ void hpRow::vRow(Row* pRow)
     switch (eDatum) {
       case DM_BCD: {
         spBCD spBcd;
-        StrLib::vAppendString(&szCrs,(char*)spBcd.sz(pRow->m_iaColVal[i_Col]));
+        StrLib::vAppendString(&szCrs,
+                              (char*)spBcd.sz(pRow->m_iaColVal[i_Col].m_iBcd));
         break;
       }
 
       case DM_BOL: {
         spBOL spBol;
-        StrLib::vAppendString(&szCrs,(char*)spBol.sz(pRow->m_iaColVal[i_Col]));
+        StrLib::vAppendString(&szCrs,
+                              (char*)spBol.sz(pRow->m_iaColVal[i_Col].m_iBol));
         break;
       }
         
       case DM_DTE: {
         spDTE spDte;
-        StrLib::vAppendString(&szCrs,(char*)spDte.sz(pRow->m_iaColVal[i_Col]));
+        StrLib::vAppendString(&szCrs,
+                              (char*)spDte.sz(pRow->m_iaColVal[i_Col].m_iDte));
         break;
       }
         
       case DM_FLT: {
         spFLT spFlt;
-        StrLib::vAppendString(&szCrs,(char*)spFlt.sz(*(d8*)&pRow->m_iaColVal[i_Col]));
+        StrLib::vAppendString(&szCrs,
+                              (char*)spFlt.sz(*(d8*)&pRow->m_iaColVal[i_Col].m_iInt));
         break;
       }
         
       case DM_INT: {
         spINT spInt;
-        StrLib::vAppendString(&szCrs,(char*)spInt.sz(pRow->m_iaColVal[i_Col]));
+        StrLib::vAppendString(&szCrs,
+                              (char*)spInt.sz(pRow->m_iaColVal[i_Col].m_iInt));
         break;
       }
         
       case DM_IVL: {
         spIVL spIvl;
-        StrLib::vAppendString(&szCrs,(char*)spIvl.sz(pRow->m_iaColVal[i_Col]));
+        StrLib::vAppendString(&szCrs,
+                              (char*)spIvl.sz(pRow->m_iaColVal[i_Col].m_iIvl));
         break;
       }
         
       case DM_TME: {
         spTME spTme;
-        StrLib::vAppendString(&szCrs,(char*)spTme.sz(pRow->m_iaColVal[i_Col]));
+        StrLib::vAppendString(&szCrs,
+                              (char*)spTme.sz(pRow->m_iaColVal[i_Col].m_iTme));
         break;
       }
         
       case DM_TSP: {
         spTSP spTsp;
-        StrLib::vAppendString(&szCrs,(char*)spTsp.sz(pRow->m_iaColVal[i_Col]));
+        StrLib::vAppendString(&szCrs,
+                              (char*)spTsp.sz(pRow->m_iaColVal[i_Col].m_iTsp));
         break;
       }
         
       case DM_VCH: {
         spVCH spVch;
-        StrLib::vAppendString(&szCrs,(char*)spVch.sz((char*)pRow->m_iaColVal[i_Col]));
+        StrLib::vAppendString(&szCrs,
+                              (char*)spVch.sz((char*)pRow->m_iaColVal[i_Col].m_iInt));
         break;
       }
         

@@ -162,7 +162,7 @@ void RowAgg::vAggregate(i8 i_Slot, CrwBuffer* pCrwBuffer)
     pCrwBuffer->vGetRow(hRow, i_Row);
     
     // get the key value from the row
-    xKey.m_iInt = hRow->m_iaColVal[m_pKeyColumn->iColumnNo()];
+    xKey.m_iInt = hRow->m_iaColVal[m_pKeyColumn->iColumnNo()].m_iInt;
     
     // for each agg column
     for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
@@ -170,7 +170,7 @@ void RowAgg::vAggregate(i8 i_Slot, CrwBuffer* pCrwBuffer)
       pAggColumn = m_pAggColVec->pGet(i_AggCol);
       i_Col = pAggColumn->iColumnNo();
       
-      xVal.m_iInt = hRow->m_iaColVal[i_Col];
+      xVal.m_iInt = hRow->m_iaColVal[i_Col].m_iInt;
       
       if (xVal.m_iInt < m_iaMinVal[i_AggCol]) {
         m_iaMinVal[i_AggCol] = xVal.m_iInt;
