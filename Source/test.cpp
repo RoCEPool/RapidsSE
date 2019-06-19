@@ -383,6 +383,98 @@ void vTest11(void)
 /*----------------------------------------------------------------------------*/
 /* Partition                                                                  */
 /*----------------------------------------------------------------------------*/
+void vPartitionBuffer(ArrayBuffer* pArrayBuffer, BufferCursor& xLowCursor,
+                      BufferCursor& xHighCursor, BufferCursor& xPartitionCursor)
+{
+  
+  // point a cusror at the pivot point
+  BufferCursor xPivotCursor(xLowCursor, xHighCursor);
+  
+  vTrace("iPivot %lld Low %lld High %lld\n"_Stz,
+         *xPivotCursor,
+         *xLowCursor.m_aElement,
+         *xHighCursor.m_aElement);
+  
+  // define the start and end positions
+  BufferCursor xLeft(xLowCursor);
+  BufferCursor xRight(xHighCursor);
+  
+  // get the pivot element value
+  i8 iPivotValue = *xPivotCursor;
+  
+  // Move start and end toward each other, until they detect an inversion:
+  // a pair of elements, one greater than or equal to the pivotValue,
+  // one lesser or equal, that are in the wrong order relative to each other.
+  
+  while (true) {
+    
+    vTrace("A: Start %lld End %lld\n"_Stz, *xLeft, *xRight);
+    
+    // move start cursor forward till we go beyond the pivot value
+    while (xLeft < iPivotValue) {
+      xLeft.vNext();
+    }
+    
+    // move end cursor backward till pivot value is beyond it
+    while (xRight > iPivotValue) {
+      xRight.vPrevious();
+    }
+    
+    // crossed
+    if ( xLeft >= xRight) {
+      xPartitionCursor.vSet(xRight);
+      vTrace("Returning %lld\n"_Stz, *xRight);
+      return;
+    }
+    
+    // swap the inverted elements
+    vTrace("Swapping %lld %lld\n"_Stz, *xLeft, *xRight);
+    // swap A[i] and A[j]
+    xLeft.vSwap(xRight);
+    
+    for (i8 i = 0; i < ELEMENTS; i ++) {
+      vTrace("A[%lld] = %lld\n"_Stz, i, pArrayBuffer->A[i]);
+    }
+    
+    // move start cursor forward
+    xLeft.vNext();
+    
+    // move end cursor backward
+    xRight.vPrevious();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* QuickSort                                                                  */
+/*----------------------------------------------------------------------------*/
+void vQuickSortBuffer(ArrayBuffer* pArrayBuffer, BufferCursor& xLowCursor, BufferCursor& xHighCursor)
+{
+  
+  // create a Partition cursor intially with a nullptr element
+  BufferCursor xPartitionCursor(nullptr, C_UNKNOWN);
+  
+  if (xLowCursor < xHighCursor) {
+    vPartitionBuffer(pArrayBuffer, xLowCursor, xHighCursor, xPartitionCursor);
+    
+    vTrace("PIVOT %lld\n"_Stz, *xPartitionCursor.m_aElement);
+    
+//    for (i8 i = 0; i < ELEMENTS; i ++) {
+//      vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+//    }
+    
+    // quick sort from low to partition
+    vQuickSortBuffer(pArrayBuffer, xLowCursor, xPartitionCursor);
+    
+    // quick sort from partition+1 to high
+    BufferCursor xPartitionNext(xPartitionCursor.m_pArrayBuffer, xPartitionCursor.m_aElement + 1);
+    vQuickSortBuffer(pArrayBuffer, xPartitionNext, xHighCursor);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* Partition                                                                  */
+/*----------------------------------------------------------------------------*/
 void vPartition_MarkI(i8* A, Cursor& xLowCursor, Cursor& xHighCursor, Cursor& xPartitionCursor)
 {
   
@@ -683,37 +775,51 @@ void vTest12(void)
     // vTrace("SORTING USING ARRAY ELEMENT POINTERS\n"_Stz);
     // vQuickSort(A, &A[0], &A[ELEMENTS - 1]);
 
-    A[0] = 901;
-    A[1] = 37;
-    A[2] = 693;
-    A[3] = 747;
-    A[4] = 828;
-    A[5] = 502;
-    A[6] = 966;
-    A[7] = 991;
-    A[8] = 693;
-    A[9] = 334;
-    
     //--------------------------------------------------------------------------
     // EXPERIMENT 3: SORTING USING CURSORS
-    vTrace("SORTING USING CUSRORS\n"_Stz);
-
-    // create a Low cursor pointing to the first element in the array
-    Cursor xLow(&A[0]);
-
-    // create a High cursor pointing to the first element in the array
-    Cursor xHigh(&A[ELEMENTS-1]);
-
-    // call quick sort (recursive call)
-    vQuickSort(A, xLow, xHigh);
-
-    vTrace("\nSorted array:\n"_Stz);
-    
-    for (i8 i = 0; i < ELEMENTS; i++) {
-      vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
-      if (i)
-        RASSERT(A[i] >= A[i-1]);
-    }
+//    vTrace("SORTING USING CUSRORS\n"_Stz);
+//
+//    // create a Low cursor pointing to the first element in the array
+//    Cursor xLow(&A[0]);
+//
+//    // create a High cursor pointing to the first element in the array
+//    Cursor xHigh(&A[ELEMENTS-1]);
+//
+//    // call quick sort (recursive call)
+//    vQuickSort(A, xLow, xHigh);
+//
+//    vTrace("\nSorted array:\n"_Stz);
+//
+//    for (i8 i = 0; i < ELEMENTS; i++) {
+//      vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+//      if (i)
+//        RASSERT(A[i] >= A[i-1]);
+//    }
+  
+  
+  //--------------------------------------------------------------------------
+  // EXPERIMENT 4: SORTING USING CURSORS INTO BUFFER OF ARRAY
+  vTrace("SORTING USING CUSRORS INTO BUFFER OF ARRAY\n"_Stz);
+  
+  ArrayBuffer xBuffer;
+  
+  // create a Low cursor pointing to the first element in the array
+  BufferCursor xLow(&xBuffer, (i8)0);
+  
+  // create a High cursor pointing to the first element in the array
+  BufferCursor xHigh(&xBuffer, ELEMENTS-1);
+  
+  // call quick sort (recursive call)
+  vQuickSortBuffer(&xBuffer, xLow, xHigh);
+  
+  vTrace("\nSorted array:\n"_Stz);
+  
+  for (i8 i = 0; i < ELEMENTS; i++) {
+    vTrace("A[%lld] = %lld\n"_Stz, i, xBuffer.A[i]);
+    if (i)
+      RASSERT(xBuffer.A[i] >= xBuffer.A[i-1]);
+  }
+  
   //}
 
 }
