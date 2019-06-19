@@ -199,7 +199,7 @@ void Row::vResetValues(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size of row                                                            */
+/* get size of row (needed for MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem))  */
 /*----------------------------------------------------------------------------*/
 i8 Row::nSizeBytes(void)
 {

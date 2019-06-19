@@ -61,21 +61,14 @@ RowEncoding::RowEncoding(ColumnVec* pColVec)
   
   m_pColVec     = pColVec;
   m_nColumns    = m_pColVec->nItems();
-  m_iBaseOffset = RowCompactor::iBaseOffset(m_pColVec);
-  m_bGetAll     = true;
-  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
-    m_abGetCol[i_Col] = false;
-  m_iLastCol    = C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - -
 
-  m_iHash = 0;
-  
-#ifdef WITH_CHECK_INITIALISED
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
     m_waColVal[i_Col].m_iInt = 0;
-  m_xWsp.vZero(CN_ROWENCODING);
   
+#ifdef WITH_CHECK_INITIALISED
+  m_xWsp.vZero(CN_ROWENCODING);
 #else
   // m_xWsp
 #endif
@@ -101,84 +94,10 @@ RowEncoding::~RowEncoding(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append column value to row                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vAppendValue(Data::Datum* pDatum, Column* pCol)
+void RowEncoding::vEncodeRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
 
-  i8 i_Col = pCol->iColumnNo();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // vch
-  
-  if (DM_VCH == pCol->eDatumType()) {
-    
-    if (pDatum->bIsNull()) {
-      m_waColVal[i_Col].m_iInt = C_DATUM_NULL;
-      return;
-    }
-    
-    char* acDstString = (char*)m_xWsp.ayLatter();
-    char* acSrcString = (char*)pDatum->m_sVch.aChar();
-
-    i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
-
-    m_waColVal[i_Col].m_iInt = (i8)acDstString;
-    
-    m_xWsp.vTake(nSrcLength + 1);
-
-    if (pCol->bIsPartitionKey())
-      m_iHash += iHashColumn(pCol);
-    
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // all others
-  
-  m_waColVal[i_Col].m_iInt = pDatum->m_iInt;
-
-  if (pCol->bIsPartitionKey())
-    m_iHash += iHashColumn(pCol);
-}
-
-/*----------------------------------------------------------------------------*/
-/* don't decode vch                                                           */
-/*----------------------------------------------------------------------------*/
-void RowEncoding::vDontDecodeVch(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
-
-  m_bGetAll = false;
-  
-  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    
-    Column* pCol = m_pColVec->pGet(i_Col);
-    
-    if (DM_VCH == pCol->eDatumType()) {
-      m_abGetCol[i_Col] = false;
-    }
-    else
-      m_abGetCol[i_Col] = true;
-    m_iLastCol = i_Col;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* hash a partion key column into running hash                                */
-/*----------------------------------------------------------------------------*/
-i8 RowEncoding::iHashColumn(Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
-  
-  i8 i_Col = pCol->iColumnNo();
-  
-  i8 iHash;
-  if (DM_VCH == pCol->eDatumType())
-    iHash = HshLib::iHash((byte*)m_waColVal[i_Col].m_iInt,sizeof(w8));
-  else
-    iHash = HshLib::iHash((byte*)&m_waColVal[i_Col].m_iInt,sizeof(w8));
-  
-  return iHash;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -188,24 +107,12 @@ void RowEncoding::vResetValues(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
   
-  m_iHash = 0;
-  
 #ifdef WITH_CHECK_INITIALISED
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++)
     m_waColVal[i_Col].m_iInt = 0;
 #endif
   
   m_xWsp.vInit();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size of row                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowEncoding::nSizeBytes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
-  
-  return sizeof(RowEncoding);
 }
 
 /*----------------------------------------------------------------------------*/
