@@ -274,6 +274,12 @@ void RowEncoding::vCodeFlt(Dtm wFlt,
                            Dtm& wCoded_, eMC& eMetaCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  
+  wCoded_.m_dFlt = wFlt.m_dFlt;
+
+  eMetaCode_ = (eMC)IntLib::iByteMagNull(wFlt.m_iInt);
+  
+  nDataBytes_ = eMetaCode_;
 }
 
 /*----------------------------------------------------------------------------*/
