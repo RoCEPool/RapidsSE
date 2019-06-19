@@ -15,7 +15,7 @@ namespace Data
   
     struct {
       eMC m_eMetaCode;
-      Dtm m_wColVal;
+      Dtm m_wDataCode;
       i8  m_nDataBytes;
     } xEncode[C_MAX_COLUMNS];
 
@@ -55,8 +55,6 @@ namespace Data
     void vCodeTsp(Dtm wTsp, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
     void vCodeVch(Dtm wVch, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
   
- 
-
     void vReset(void);
 
   private:

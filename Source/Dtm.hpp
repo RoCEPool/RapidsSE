@@ -58,13 +58,9 @@ namespace Values
     bool bIsNull(void);
     void vSetNull(void);
   
-    void operator =(i8 iInt)
-    {
-      m_iInt = iInt;
-    }
-
+    void operator =(i8 iInt)    { m_iInt  = iInt;  }
+    void operator =(Stz* szVch) { m_szVch = szVch; }
   };
-  
 }
 
 /*============================================================================*/
