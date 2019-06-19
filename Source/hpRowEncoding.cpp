@@ -45,34 +45,44 @@ void hpRowEncoding::vRowEncoding(RowEncoding* pEncRow)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  char* szCrs = &m_caRow[0];
-  
+  char caLine[256];
+
   for (i8 i_Col = 0; i_Col < pEncRow->m_nColumns; i_Col++) {
   
+    char* szCrs = &caLine[0];
+    
     Column* pCol = pEncRow->m_pColVec->pGet(i_Col);
     eDM eDatum   = pCol->eDatumType();
     Stz* szDatum = (Stz*)aDM[eDatum];
-
-    StrLib::vAppendString(&szCrs,(char*)"  "_Stz);
-
-    StrLib::vAppendDecimal(&szCrs,pEncRow->xEncode[i_Col].m_nOffset);
-    StrLib::vAppendString(&szCrs,(char*)" "_Stz);
-
-    StrLib::vAppendString(&szCrs,(char*)pCol->szColNm());
-    StrLib::vAppendString(&szCrs,(char*)" "_Stz);
-    StrLib::vAppendString(&szCrs,(char*)szDatum);
-    StrLib::vAppendString(&szCrs,(char*)" "_Stz);
- 
-    StrLib::vAppendString(&szCrs,(char*)aMC[pEncRow->xEncode[i_Col].m_eMetaCode]);
-    StrLib::vAppendString(&szCrs,(char*)" "_Stz);
     
+    StrLib::vAppendString(&szCrs,(char*)" "_Stz);
+
+    StrLib::vAppendPad(&szCrs,caLine,2);
+    StrLib::vAppendChar(&szCrs,'[');
+    StrLib::vAppendDecimal(&szCrs,pEncRow->xEncode[i_Col].m_nOffset);
+    StrLib::vAppendChar(&szCrs,']');
+
+    StrLib::vAppendPad(&szCrs,caLine,8);
+    StrLib::vAppendString(&szCrs,(char*)pCol->szColNm());
+    
+    StrLib::vAppendPad(&szCrs,caLine,27);
+    StrLib::vAppendString(&szCrs,(char*)szDatum);
+    
+    StrLib::vAppendPad(&szCrs,caLine,32);
+    StrLib::vAppendString(&szCrs,(char*)aMC[pEncRow->xEncode[i_Col].m_eMetaCode]);
+    
+    StrLib::vAppendPad(&szCrs,caLine,48);
     StrLib::vAppendString(&szCrs,(char*)"C_"_Stz);
     StrLib::vAppendDecimal(&szCrs,pEncRow->xEncode[i_Col].m_nDataBytes);
-    StrLib::vAppendString(&szCrs,(char*)"B "_Stz);
-
-    if (C_DATUM_NULL == pEncRow->xEncode[i_Col].m_wDataCode.m_iInt) {
+    StrLib::vAppendString(&szCrs,(char*)"B"_Stz);
+    
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    
+    StrLib::vAppendPad(&szCrs,caLine,55);
+    
+   if (C_DATUM_NULL == pEncRow->xEncode[i_Col].m_wDataCode.m_iInt) {
       StrLib::vAppendString(&szCrs,(char*)"null"_Stz);
-      return;
+      continue;
     }
       
     switch (eDatum) {
@@ -144,6 +154,9 @@ void hpRowEncoding::vRowEncoding(RowEncoding* pEncRow)
     }
 
     StrLib::vAppendString(&szCrs,(char*)"\n"_Stz);
+    
+    StrLib::vConcat(m_caRow,caLine);
+    
   }
   
 }

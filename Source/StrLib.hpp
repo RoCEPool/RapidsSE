@@ -126,6 +126,7 @@ namespace Base
     static void  vAppendDecimal(char** pz, i8 i);
     static void  vAppendHex(char** pz, i8 i);
     static void  vAppendNull(char** pz);
+    static void  vAppendPad(char** pz, const char* s, i8 nLength);
     static void  vAppendString(char** pz, const char* s);
     static char* azAscii(i8 i_Char);
     

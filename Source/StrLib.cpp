@@ -37,6 +37,8 @@ char* StrLib::wAllocate(const char* s)
 void StrLib::vAppendChar(char** pz, char cChar)
 {
   *(*pz)++ = cChar;
+  
+  *(*pz) = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -64,6 +66,8 @@ void StrLib::vAppendDecimal(char** pz, i8 iNumber)
     *pFwd++ = cTmp;
   }
   
+  *pEnd = '\0';
+  
   *pz = pEnd;
 }
 
@@ -90,8 +94,29 @@ void StrLib::vAppendHex(char** pz, i8 iNumber)
     *pBwd = *pFwd;
     *pFwd++ = cTmp;
   }
-  
+
+  *pEnd = '\0';
+
   *pz = pEnd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* vAppendPad: pad to given length                                            */
+/*----------------------------------------------------------------------------*/
+void StrLib::vAppendPad(char** pz, const char* pString, i8 nLength)
+{
+  i8 nCurLen = StrLib::iLength(pString);
+  
+  if (nCurLen >= nLength)
+    return;
+  
+  char *z = *pz;
+  
+  while (nCurLen++ < nLength)
+    *z++ = ' ';
+  *z = '\0';
+  
+  *pz = z;
 }
 
 /*----------------------------------------------------------------------------*/
