@@ -66,7 +66,6 @@
 //#define WITH_TRACE_DECODING     // code for tracing decoding compiled in
 //#define WITH_ANALYSE_FREE       // analyze free space during load
 //#define WITH_VERIFY_TAILS       // verify tails
-//#define WITH_QUICKER_INFLATE    // quicker inflate test
 
 
 /*============================================================================*/
