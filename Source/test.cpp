@@ -780,9 +780,43 @@ void vTest12(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test13                                                                     */
+/* test13 --  SORING INT ARRAY USING POINTERS TO ELEMENTS IN THE ARRAY        */
 /*----------------------------------------------------------------------------*/
 void vTest13(void)
+{
+  vTrace("Quicksort: Hoare partition scheme\n"_Stz);
+  
+  #define ARRAY_ELEMENTS 100
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create an array of integers
+  i8 A[100];
+  
+  vTrace("\nSorting array\n"_Stz);
+  
+  for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
+    A[i] = Random::iInteger(0,1000);
+    vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+  }
+  
+  //--------------------------------------------------------------------------
+  // EXPERIMENT 2: SORTING USING ARRAY ELEMENT POINTERS
+  vQuickSort(A, &A[0], &A[ARRAY_ELEMENTS - 1]);
+  
+  vTrace("\nSorted array:\n"_Stz);
+  
+  for (i8 i = 0; i < ARRAY_ELEMENTS; i++) {
+    vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+    if (i)
+      RASSERT(A[i] >= A[i-1]);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* test14                                                                     */
+/*----------------------------------------------------------------------------*/
+void vTest14(void)
 {
   vTrace("Quicksort: Hoare partition scheme\n"_Stz);
   
@@ -856,14 +890,6 @@ void vTest13(void)
   
   //}
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* test14                                                                     */
-/*----------------------------------------------------------------------------*/
-void vTest14(void)
-{
-  
 }
 
 /*----------------------------------------------------------------------------*/
