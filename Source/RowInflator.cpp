@@ -33,7 +33,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
   
   eMC*  aeMetaCode = aAdd<eMC*>(aHeadLine,_1B_W);
   byte* ayDataByte = (byte*)aHeadLine + pRow->m_iBaseOffset;
-  i8*   aiValue    = & pRow->m_iaColVal[0];
+  i8*   aiColVal   = & pRow->m_iaColVal[0];
   
   bool  bGetAll    = pRow->m_bGetAll;
   i8    iLastCol   = pRow->m_iLastCol;
@@ -54,7 +54,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
     //! temp experiment
     if ( ! ( bGetAll || pRow->m_abGetCol[i_Col] ) ) {
       
-      *aiValue++ = C_UNKNOWN;
+      *aiColVal++ = C_UNKNOWN;
       
     L_SkipCodeSwitch:
       
@@ -66,13 +66,13 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
           ayDataByte += nLength;
           break;
           
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         case MC_SHOCO_FIT_1C:
           nCompressed = (i8)*(u1*)ayDataByte++;
           ayDataByte += nCompressed;
           break;
           
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         case MC_SHOCO_SPLIT_2T1C:
           nCompressed = (i8)*(u1*)ayDataByte++;
           nBytesPartA = aHeadLine->nBytes() - (ayDataByte - (byte*)aHeadLine);
@@ -91,7 +91,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
           break;
         }
           
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         default: ayDataByte += RowCompactor::nDataBytes(eMetaCode); break;
       }
       
@@ -101,39 +101,39 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
   L_MetaCodeSwitch:
     switch (eMetaCode) {
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_NULL:
-        *aiValue++ = C_DATUM_NULL;
+        *aiColVal++ = C_DATUM_NULL;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_1B:
-        *aiValue++ = *(u1*)(ayDataByte);
+        *aiColVal++ = *(u1*)(ayDataByte);
         ayDataByte += C_1B;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_2B:
-        *aiValue++ = *(u2*)(ayDataByte);
+        *aiColVal++ = *(u2*)(ayDataByte);
         ayDataByte += C_2B;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_3B:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
         wWord.m_yaByte[2] = *ayDataByte++;
-        *aiValue++ = wWord.m_iI8;
+        *aiColVal++ = wWord.m_iI8;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_4B:
-        *aiValue++ = *(u4*)(ayDataByte);
+        *aiColVal++ = *(u4*)(ayDataByte);
         ayDataByte += C_4B;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_5B:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
@@ -141,10 +141,10 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[2] = *ayDataByte++;
         wWord.m_yaByte[3] = *ayDataByte++;
         wWord.m_yaByte[4] = *ayDataByte++;
-        *aiValue++ = wWord.m_iI8;
+        *aiColVal++ = wWord.m_iI8;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_6B:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
@@ -153,10 +153,10 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[3] = *ayDataByte++;
         wWord.m_yaByte[4] = *ayDataByte++;
         wWord.m_yaByte[5] = *ayDataByte++;
-        *aiValue++ = wWord.m_iI8;
+        *aiColVal++ = wWord.m_iI8;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_7B:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
@@ -166,158 +166,158 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[4] = *ayDataByte++;
         wWord.m_yaByte[5] = *ayDataByte++;
         wWord.m_yaByte[6] = *ayDataByte++;
-        *aiValue++ = wWord.m_iI8;
+        *aiColVal++ = wWord.m_iI8;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_8B:
-        *aiValue++ = *(u8*)(ayDataByte);
+        *aiColVal++ = *(u8*)(ayDataByte);
         ayDataByte += C_8B;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_MINUS_ONE:
-        *aiValue++ = -1;
+        *aiColVal++ = -1;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_ZERO:
-        *aiValue++ =  0;
+        *aiColVal++ =  0;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_ONE:
-        *aiValue++ =  1;
+        *aiColVal++ =  1;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_TWO:
-        *aiValue++ =  2;
+        *aiColVal++ =  2;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_THREE:
-        *aiValue++ =  3;
+        *aiColVal++ =  3;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_FOUR:
-        *aiValue++ =  4;
+        *aiColVal++ =  4;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_FIVE:
-        *aiValue++ =  5;
+        *aiColVal++ =  5;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_SIX:
-        *aiValue++ =  6;
+        *aiColVal++ =  6;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_SEVEN:
-        *aiValue++ =  7;
+        *aiColVal++ =  7;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_EIGHT:
-        *aiValue++ =  8;
+        *aiColVal++ =  8;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_NINE:
-        *aiValue++ =  9;
+        *aiColVal++ =  9;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_TEN:
-        *aiValue++ = 10;
+        *aiColVal++ = 10;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_SAME:
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_ADD_1B:
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_ADD_2B:
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_SUB_1B:
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_SUB_2B:
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_FALSE:
-        *aiValue++ =  0;
+        *aiColVal++ =  0;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_TRUE:
-        *aiValue++ =  1;
+        *aiColVal++ =  1;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_DATE_E0_2B:
-        *aiValue++ = *(u2*)ayDataByte;
+        *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        RowCompactor::vDteFromEdt((Word*)(aiValue-1),C_ERA_0);
+        RowCompactor::vDteFromEdt((Word*)(aiColVal-1),C_ERA_0);
         break;
         
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_DATE_E1_2B:
-        *aiValue++ = *(u2*)ayDataByte;
+        *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        RowCompactor::vDteFromEdt((Word*)(aiValue-1),C_ERA_1);
+        RowCompactor::vDteFromEdt((Word*)(aiColVal-1),C_ERA_1);
         break;
         
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_DATE_E2_2B:
-        *aiValue++ = *(u2*)ayDataByte;
+        *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        RowCompactor::vDteFromEdt((Word*)(aiValue-1),C_ERA_2);
+        RowCompactor::vDteFromEdt((Word*)(aiColVal-1),C_ERA_2);
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_DAYS_ADD_1B:
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_DAYS_SUB_1B:
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_STR_EMPTY:
-        *(char**)(aiValue++) = acString;
+        *(char**)(aiColVal++) = acString;
         *acString++ = '\0';
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_STR_DUP_2H:
         break;
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_STR_FIT_1L:
         nLength = *(u1*)ayDataByte++;
         MemLib::vCopy((byte*)acString,
                       (byte*)ayDataByte,
                       nLength,
                       CN_ROWCOMPACTOR);
-        *(char**)(aiValue++) = acString;
+        *(char**)(aiColVal++) = acString;
         ayDataByte += nLength;
         acString   += nLength;
         *acString++ = '\0';
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_STR_TAIL_2T:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
@@ -326,29 +326,29 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         aTail = RowCompactor::aGetTailRel(aHeadLine,i_Tail_rel);
         nLength = aTail->w8_1B(+ _1B_U);
         MemLib::vCopy(acString,(byte*)aTail+_1B_U+_1B_L,nLength,CN_ROWCOMPACTOR);
-        *(char**)(aiValue++) = acString;
+        *(char**)(aiColVal++) = acString;
         acString += nLength;
         *acString++ = '\0';
         pRow->m_i_Wsp += nLength;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_STR_SPLIT_2T1L:
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BSTR_FIT_2L:
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BSTR_TAIL_2T:
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BSTR_SPLIT_2T2L:
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_SHOCO_DUP_3D: {
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
@@ -361,14 +361,14 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
                              sizeof(caString),          // max destination
                              ayShoco_dup,              // compressed source
                              nCompressed);             // bytes compressed
-        *(char**)(aiValue++) = acString;
+        *(char**)(aiColVal++) = acString;
         acString += nLength;
         *acString++ = '\0';
         pRow->m_i_Wsp += nLength;
       }
        break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_SHOCO_FIT_1C:
         nCompressed = (i8)*(u1*)ayDataByte++;
         nLength =
@@ -376,14 +376,14 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
                              sizeof(caString),          // max destination
                              ayDataByte,               // compressed source
                              nCompressed);             // bytes compressed
-        *(char**)(aiValue++) = acString;
+        *(char**)(aiColVal++) = acString;
         acString += nLength;
         *acString++ = '\0';
         pRow->m_i_Wsp += nLength;
         ayDataByte += nCompressed;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_SHOCO_TAIL_2T:
         //i_Tail_rel  = (i8)*(i2*)aDataByte;
         //aDataByte  += 2;
@@ -400,13 +400,13 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
                                + _1B_U
                                + _1B_C,
                              nCompressed);             // bytes compressed
-        *(char**)(aiValue++) = acString;
+        *(char**)(aiColVal++) = acString;
         acString += nLength;
         *acString++ = '\0';
         pRow->m_i_Wsp += nLength;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_SHOCO_SPLIT_2T1C:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
@@ -429,42 +429,42 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
                              sizeof(caString),          // max destination
                              (byte*)caString,           // compressed source
                              nCompressed);             // bytes compressed
-        *(char**)(aiValue++) = acString;
+        *(char**)(aiColVal++) = acString;
         acString += nLength;
         *acString++ = '\0';
         pRow->m_i_Wsp += nLength;
         ayDataByte += nBytesPartA;
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_TWOS_1B:
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_TWOS_2B:
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_TWOS_3B:
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_TWOS_4B:
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_TWOS_5B:
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_TWOS_6B:
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_TWOS_7B:
         break;
         
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_OVERFLOW_2T: {
         //vDebugPoint();
         i8 i_Over_rel = aHeadLine->iOverflow2B();
@@ -481,6 +481,8 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         RASSERT(0);
     }
     
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #ifdef WITH_TRACE_DECODING
     if (C_DATUM_NULL == *(aiValue-1)) {
       vTrace(" [%lld %15s] null\n"_Stz,i_Col,pCol->szColNm());
