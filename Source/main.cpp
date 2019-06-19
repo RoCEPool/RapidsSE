@@ -11,6 +11,22 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
+//  Timer xTimer;
+//  
+//  xTimer.vStart();
+//  i8 iSum = 0;
+//  d8 dProd = 1.0;
+//  for (i8 i = 1; i < C_1G; i++) {
+//    iSum  += i;
+//    dProd *= 10;
+//    if (dProd > C_1G)
+//      dProd = 1.0;
+//  }
+//  xTimer.vUpdate();
+//  vTrace("Time %lld; Sum %lld; iProd %g\n"_Stz,xTimer.iSeconds(),iSum,dProd);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   // parse the command line arguments
   if ( ! gxArguments.bParse(argc,(Stz**)argv) )
     Process::vExit(EXIT_FAILURE);
