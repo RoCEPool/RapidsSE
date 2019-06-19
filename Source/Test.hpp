@@ -38,7 +38,7 @@ public:
     m_aElement++;
   }
   
-  // decreement
+  // decrement
   void vPrevious()
   {
     m_aElement--;
