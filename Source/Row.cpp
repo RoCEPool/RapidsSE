@@ -66,7 +66,6 @@ Row::Row(ColumnVec* pColVec)
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
     m_abGetCol[i_Col] = false;
   m_iLastCol    = C_UNKNOWN;
-  m_i_Wsp       = 0;
   
   // - - - - - - - - - - - - - - - - - -
 
@@ -118,15 +117,15 @@ void Row::vAppendValue(Data::Datum* pDatum, Column* pCol)
       return;
     }
     
-    char* acDstString = (char*)m_xWsp.ayArea() + m_i_Wsp;
+    char* acDstString = (char*)m_xWsp.ayLatter();
     char* acSrcString = (char*)pDatum->m_sVch.aChar();
 
     i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
 
     m_iaColVal[i_Col] = (i8)acDstString;
     
-    m_i_Wsp += (nSrcLength + 1);
-    
+    m_xWsp.vTake(nSrcLength + 1);
+
     if (pCol->bIsPartitionKey())
       m_iHash += iHashColumn(pCol);
     
@@ -189,16 +188,14 @@ void Row::vResetValues(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
-  m_i_Wsp = 0;
-  
-  // - - - - - - - - - - - - - - - - - -
-
   m_iHash = 0;
   
 #ifdef WITH_CHECK_INITIALISED
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++)
     m_iaColVal[i_Col] = 0;  
 #endif
+  
+  m_xWsp.vInit();
 }
 
 /*----------------------------------------------------------------------------*/

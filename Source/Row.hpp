@@ -17,7 +17,6 @@ namespace Transform
     bool       m_bGetAll;
     bool       m_abGetCol[C_MAX_COLUMNS];
     i8         m_iLastCol;
-    i8         m_i_Wsp;
 
     // - - - - - - - - - - - - - - - - - -
   
