@@ -814,9 +814,51 @@ void vTest13(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test14                                                                     */
+/* test14 -- SORTING AN ARRAY OF INTEGERS USING CURSORS                       */
 /*----------------------------------------------------------------------------*/
 void vTest14(void)
+{
+  vTrace("Quicksort: Hoare partition scheme\n"_Stz);
+  
+  #define ARRAY_ELEMENTS 100
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create an array of integers
+  i8 A[ARRAY_ELEMENTS];
+  
+  vTrace("\nSorting array\n"_Stz);
+  
+  for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
+    A[i] = Random::iInteger(0,1000);
+    vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+  }
+  
+  //--------------------------------------------------------------------------
+  // EXPERIMENT 3: SORTING USING CURSORS
+  
+  // create a Low cursor pointing to the first element in the array
+  Cursor xLow(&A[0]);
+
+  // create a High cursor pointing to the first element in the array
+  Cursor xHigh(&A[ARRAY_ELEMENTS-1]);
+
+  // call quick sort (recursive call)
+  vQuickSort(A, xLow, xHigh);
+
+  vTrace("\nSorted array:\n"_Stz);
+  
+  for (i8 i = 0; i < ARRAY_ELEMENTS; i++) {
+    vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+    if (i)
+      RASSERT(A[i] >= A[i-1]);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* test15                                                                     */
+/*----------------------------------------------------------------------------*/
+void vTest15(void)
 {
   vTrace("Quicksort: Hoare partition scheme\n"_Stz);
   
@@ -889,15 +931,6 @@ void vTest14(void)
   }
   
   //}
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* test15                                                                     */
-/*----------------------------------------------------------------------------*/
-void vTest15(void)
-{
-  
 }
 
 /*----------------------------------------------------------------------------*/
