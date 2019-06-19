@@ -746,55 +746,165 @@ void vQuickSort(i8* A, i8 iLow, i8 iHigh) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* test12                                                                     */
+/* test12 : SORING INT ARRAY USING INDEXES INTO THE ARRAY                     */
 /*----------------------------------------------------------------------------*/
 void vTest12(void)
 {
-  vTrace("Quicksort: Hoare partition scheme\n"_Stz);
+  vTrace("Quicksort: Hoare partition scheme (INDEXES)\n"_Stz);
 
+  #define ARRAY_ELEMENTS 100
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create an array of integers
+  i8 A[100];
+  
+  vTrace("\nSorting array\n"_Stz);
+    
+  for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
+    A[i] = Random::iInteger(0,1000);
+    vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+  }
+
+  //--------------------------------------------------------------------------
+  // EXPERIMENT 1:
+  vTrace("SORTING USING ARRAY INDEXES\n"_Stz);
+   vQuickSort(A, 0, ARRAY_ELEMENTS - 1);
+
+  vTrace("\nSorted array:\n"_Stz);
+
+  for (i8 i = 0; i < ARRAY_ELEMENTS; i++) {
+    vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+    if (i)
+      RASSERT(A[i] >= A[i-1]);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* test13 --  SORING INT ARRAY USING POINTERS TO ELEMENTS IN THE ARRAY        */
+/*----------------------------------------------------------------------------*/
+void vTest13(void)
+{
+  vTrace("Quicksort: Hoare partition scheme\n"_Stz);
+  
+  #define ARRAY_ELEMENTS 100
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create an array of integers
+  i8 A[100];
+  
+  vTrace("\nSorting array\n"_Stz);
+  
+  for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
+    A[i] = Random::iInteger(0,1000);
+    vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+  }
+  
+  //--------------------------------------------------------------------------
+  // EXPERIMENT 2: SORTING USING ARRAY ELEMENT POINTERS
+  vQuickSort(A, &A[0], &A[ARRAY_ELEMENTS - 1]);
+  
+  vTrace("\nSorted array:\n"_Stz);
+  
+  for (i8 i = 0; i < ARRAY_ELEMENTS; i++) {
+    vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+    if (i)
+      RASSERT(A[i] >= A[i-1]);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* test14 -- SORTING AN ARRAY OF INTEGERS USING CURSORS                       */
+/*----------------------------------------------------------------------------*/
+void vTest14(void)
+{
+  vTrace("Quicksort: Hoare partition scheme\n"_Stz);
+  
+  #define ARRAY_ELEMENTS 100
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create an array of integers
+  i8 A[ARRAY_ELEMENTS];
+  
+  vTrace("\nSorting array\n"_Stz);
+  
+  for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
+    A[i] = Random::iInteger(0,1000);
+    vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+  }
+  
+  //--------------------------------------------------------------------------
+  // EXPERIMENT 3: SORTING USING CURSORS
+  
+  // create a Low cursor pointing to the first element in the array
+  Cursor xLow(&A[0]);
+
+  // create a High cursor pointing to the first element in the array
+  Cursor xHigh(&A[ARRAY_ELEMENTS-1]);
+
+  // call quick sort (recursive call)
+  vQuickSort(A, xLow, xHigh);
+
+  vTrace("\nSorted array:\n"_Stz);
+  
+  for (i8 i = 0; i < ARRAY_ELEMENTS; i++) {
+    vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+    if (i)
+      RASSERT(A[i] >= A[i-1]);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* test15                                                                     */
+/*----------------------------------------------------------------------------*/
+void vTest15(void)
+{
+  vTrace("Quicksort: Hoare partition scheme\n"_Stz);
+  
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create an array of integers
   i8 A[100];
   
   //for (i8 iLoop = 0; iLoop < 10; iLoop++ ) {
   
-    vTrace("\nSorting array\n"_Stz);
-    
-//    for (i8 i = 0; i < ELEMENTS; i ++) {
-//      A[i] = Random::iInteger(0,1000);
-//      vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
-//    }
-
-    //--------------------------------------------------------------------------
-    // EXPERIMENT 1: SORING USING INDEXES
-    // vTrace("SORTING USING ARRAY INDEXES\n"_Stz);
-    // vQuickSort(A, 0, ELEMENTS - 1);
-    
-    //--------------------------------------------------------------------------
-    // EXPERIMENT 2: SORTING USING ARRAY ELEMENT POINTERS
-    // vTrace("SORTING USING ARRAY ELEMENT POINTERS\n"_Stz);
-    // vQuickSort(A, &A[0], &A[ELEMENTS - 1]);
-
-    //--------------------------------------------------------------------------
-    // EXPERIMENT 3: SORTING USING CURSORS
-//    vTrace("SORTING USING CUSRORS\n"_Stz);
-//
-//    // create a Low cursor pointing to the first element in the array
-//    Cursor xLow(&A[0]);
-//
-//    // create a High cursor pointing to the first element in the array
-//    Cursor xHigh(&A[ELEMENTS-1]);
-//
-//    // call quick sort (recursive call)
-//    vQuickSort(A, xLow, xHigh);
-//
-//    vTrace("\nSorted array:\n"_Stz);
-//
-//    for (i8 i = 0; i < ELEMENTS; i++) {
-//      vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
-//      if (i)
-//        RASSERT(A[i] >= A[i-1]);
-//    }
+  vTrace("\nSorting array\n"_Stz);
+  
+  //    for (i8 i = 0; i < ELEMENTS; i ++) {
+  //      A[i] = Random::iInteger(0,1000);
+  //      vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+  //    }
+  
+  //--------------------------------------------------------------------------
+  // EXPERIMENT 1: SORING USING INDEXES
+  // vTrace("SORTING USING ARRAY INDEXES\n"_Stz);
+  // vQuickSort(A, 0, ELEMENTS - 1);
+  
+  //--------------------------------------------------------------------------
+  // EXPERIMENT 2: SORTING USING ARRAY ELEMENT POINTERS
+  // vTrace("SORTING USING ARRAY ELEMENT POINTERS\n"_Stz);
+  // vQuickSort(A, &A[0], &A[ELEMENTS - 1]);
+  
+  //--------------------------------------------------------------------------
+  // EXPERIMENT 3: SORTING USING CURSORS
+  //    vTrace("SORTING USING CUSRORS\n"_Stz);
+  //
+  //    // create a Low cursor pointing to the first element in the array
+  //    Cursor xLow(&A[0]);
+  //
+  //    // create a High cursor pointing to the first element in the array
+  //    Cursor xHigh(&A[ELEMENTS-1]);
+  //
+  //    // call quick sort (recursive call)
+  //    vQuickSort(A, xLow, xHigh);
+  //
+  //    vTrace("\nSorted array:\n"_Stz);
+  //
+  //    for (i8 i = 0; i < ELEMENTS; i++) {
+  //      vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
+  //      if (i)
+  //        RASSERT(A[i] >= A[i-1]);
+  //    }
   
   
   //--------------------------------------------------------------------------
@@ -821,31 +931,6 @@ void vTest12(void)
   }
   
   //}
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* test13                                                                     */
-/*----------------------------------------------------------------------------*/
-void vTest13(void)
-{
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* test14                                                                     */
-/*----------------------------------------------------------------------------*/
-void vTest14(void)
-{
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* test15                                                                     */
-/*----------------------------------------------------------------------------*/
-void vTest15(void)
-{
-  
 }
 
 /*----------------------------------------------------------------------------*/
