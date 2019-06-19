@@ -457,51 +457,51 @@ void vPartition(i8* A, Cursor& xLowCursor, Cursor& xHighCursor, Cursor& xPartiti
          *xHighCursor.m_aElement);
   
   // define the start and end positions
-  Cursor xStart(xLowCursor);
-  Cursor xEnd(xHighCursor);
+  Cursor xLeft(xLowCursor);
+  Cursor xRight(xHighCursor);
   
   // get the pivot element value
-  i8 iPivot = *xPivotCursor;
+  i8 iPivotValue = *xPivotCursor;
   
   // Move start and end toward each other, until they detect an inversion:
-  // a pair of elements, one greater than or equal to the pivot,
+  // a pair of elements, one greater than or equal to the pivotValue,
   // one lesser or equal, that are in the wrong order relative to each other.
   
   while (true) {
     
-    vTrace("A: Start %lld End %lld\n"_Stz, *xStart, *xEnd);
+    vTrace("A: Start %lld End %lld\n"_Stz, *xLeft, *xRight);
     
     // move start cursor forward till we go beyond the pivot value
-    while (xStart < iPivot) {
-      xStart.vNext();
+    while (xLeft < iPivotValue) {
+      xLeft.vNext();
     }
     
     // move end cursor backward till pivot value is beyond it
-    while (xEnd > iPivot) {
-      xEnd.vPrevious();
+    while (xRight > iPivotValue) {
+      xRight.vPrevious();
     }
     
     // crossed
-    if ( xStart >= xEnd) {
-      xPartitionCursor.vSet(xEnd);
-      vTrace("Returning %lld\n"_Stz, *xEnd);
+    if ( xLeft >= xRight) {
+      xPartitionCursor.vSet(xRight);
+      vTrace("Returning %lld\n"_Stz, *xRight);
       return;
     }
     
     // swap the inverted elements
-    vTrace("Swapping %lld %lld\n"_Stz, *xStart, *xEnd);
+    vTrace("Swapping %lld %lld\n"_Stz, *xLeft, *xRight);
     // swap A[i] and A[j]
-    xStart.vSwap(xEnd);
+    xLeft.vSwap(xRight);
     
     for (i8 i = 0; i < ELEMENTS; i ++) {
       vTrace("A[%lld] = %lld %x\n"_Stz, i, A[i], &A[i]);
     }
     
     // move start cursor forward
-    xStart.vNext();
+    xLeft.vNext();
     
     // move end cursor backward
-    xEnd.vPrevious();
+    xRight.vPrevious();
   }
 }
 
