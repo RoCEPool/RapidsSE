@@ -117,16 +117,6 @@ namespace Data
   private:
     void vAnalyseFree(void);
     
-    void vCodeBol(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeBcd(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeDte(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeFlt(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeInt(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeIvl(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeTme(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeTsp(Datum* pTgtDatum, Datum* pSrcDatum);
-    void vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum);
-    
     void vCompact(RowEncoding* pRowEncoding);
     
     void vCopyHead(void);
@@ -134,16 +124,6 @@ namespace Data
 
     void vDataNeed(i8 nBytes, Column* pCol);
     void vDataAdd(Datum* pDatum, Column* pCol);
-
-    void vDatumBol(Datum* pTgtDatum, Row* pRow, Column* pCol);
-    void vDatumBcd(Datum* pTgtDatum, Row* pRow, Column* pCol);
-    void vDatumDte(Datum* pTgtDatum, Row* pRow, Column* pCol);
-    void vDatumFlt(Datum* pTgtDatum, Row* pRow, Column* pCol);
-    void vDatumInt(Datum* pTgtDatum, Row* pRow, Column* pCol);
-    void vDatumIvl(Datum* pTgtDatum, Row* pRow, Column* pCol);
-    void vDatumTme(Datum* pTgtDatum, Row* pRow, Column* pCol);
-    void vDatumTsp(Datum* pTgtDatum, Row* pRow, Column* pCol);
-    void vDatumVch(Datum* pTgtDatum, Row* pRow, Column* pCol);
 
     void vEraDatePut(Datum* pDatum);
     void vExtendIntoHead(i8 nBytes, Column* pCol);
