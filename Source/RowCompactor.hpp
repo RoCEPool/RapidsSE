@@ -119,9 +119,6 @@ namespace Data
     
     void vCompact(RowEncoding* pRowEncoding);
     
-    void vCopyHead(void);
-    void vCopyOver(void);
-
     void vDataNeed(i8 nBytes, Column* pCol);
     void vDataAdd(Datum* pDatum, Column* pCol);
 
@@ -143,7 +140,7 @@ namespace Data
     void vUsageIncRecoded(Column* pCol, i8 nBytes, eMC eMetaCode = MC_NULL);
     void vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss, eMC eMetaCode = MC_NULL);
     void vUsageReset(void);
-      
+    
   public:
     static void vAnalyse(RowNub* pNub);
   
