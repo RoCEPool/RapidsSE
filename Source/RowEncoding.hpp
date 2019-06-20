@@ -34,8 +34,6 @@ namespace Data
     RowEncoding(ColumnVec* pColVec);
     ~RowEncoding(void) noexcept(false);
   
-    static void vDteIntoEdt(Dtm wDte, Dtm& wEdt_, i8& iEra_);
-
     void vEncode(Row* pRow);
     void vEncodeBol(Row* pRow, Column* pCol);
     void vEncodeBcd(Row* pRow, Column* pCol);

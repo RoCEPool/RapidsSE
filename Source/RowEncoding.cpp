@@ -91,44 +91,6 @@ RowEncoding::~RowEncoding(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/*-- Static Functions --------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* convert a Dte into an Edt                                                  */
-/*----------------------------------------------------------------------------*/
-void RowEncoding::vDteIntoEdt(Dtm wDte, Dtm& wEdt_, i8& iEra_)
-{
-  i8 iYearDelta;
-  i8 iYearInEra;
-  i8 iMonth;
-  i8 iDay;
-  
-  iYearDelta = wDte.xDte.m_uYearDelta;
-  iMonth     = wDte.xDte.m_uMonth;
-  iDay       = wDte.xDte.m_uDay;
-  
-  if (iYearDelta < C_ERA_1) {
-    iEra_ = C_ERA_0;
-    iYearInEra = iYearDelta - C_ERA_0;
-  }
-  else if (iYearDelta < C_ERA_2) {
-    iEra_ = C_ERA_1;
-    iYearInEra = iYearDelta - C_ERA_1;
-  }
-  else {
-    iEra_ = C_ERA_2;
-    iYearInEra = iYearDelta - C_ERA_2;
-  }
-  
-  wEdt_.m_iEdt = 0;
-  wEdt_.xEdt.m_uYearInEra = iYearInEra;
-  wEdt_.xEdt.m_uMonth     = iMonth;
-  wEdt_.xEdt.m_uDay       = iDay;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
