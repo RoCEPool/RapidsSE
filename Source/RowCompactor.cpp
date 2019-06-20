@@ -199,6 +199,14 @@ bool RowCompactor::bCompactRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
+  //return bCompactRow_new(pRow);
+  return bCompactRow_original(pRow);
+}
+/*----------------------------------------------------------------------------*/
+bool RowCompactor::bCompactRow_new(Row* pRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
   RASSERT(! m_bEncoding);
   
   // + + + + + + + + + + + + + + + + + + +
@@ -296,6 +304,125 @@ bool RowCompactor::bCompactRow(Row* pRow)
     vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
 #endif
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // analyse free space in the into head
+#ifdef WITH_ANALYSE_FREE
+  vAnalyseFree();
+#endif
+  
+#ifdef WITH_VERIFY_TAILS
+  m_pIntoNub->vVerifyTails(C_UNKNOWN);
+#endif
+  
+  // + + + + + + + + + + + + + + + + + + +
+  delete m_pRowEncoder;
+  delete pRowParts;
+  // + + + + + + + + + + + + + + + + + + +
+  
+  return true;
+}
+/*----------------------------------------------------------------------------*/
+bool RowCompactor::bCompactRow_original(Row* pRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  RASSERT(! m_bEncoding);
+  
+  // + + + + + + + + + + + + + + + + + + +
+  RowParts* pRowParts = new RowParts;
+  pRowParts->pNub()->vDesc(m_pIntoNub->pDesc());
+  RowNub* pFromNub = pRowParts->pNub();
+  m_pRowEncoder = new RowCompactor;
+  
+  m_pRowEncoder->vEncodeBegin(pFromNub);
+  m_pRowEncoder->vEncodeRow(pRow);
+  m_pRowEncoder->vEncodeEnd();
+  
+  // + + + + + + + + + + + + + + + + + + +
+  
+  hpRow hp_Row;
+  vTrace("%s\n"_Stz,hp_Row.sz(pRow));
+  
+  RowEncoding* pRowEncoding = new RowEncoding(m_pColVec);
+  
+  pRowEncoding->vEncode(pRow);
+  
+  
+  hpRowEncoding hp_RowEnc;
+  vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
+  
+  pRowEncoding->vSplitOver(32,16);
+  
+  vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
+  
+  delete pRowEncoding;
+  
+  // + + + + + + + + + + + + + + + + + + +
+  
+  //  delete m_pRowEncoder;
+  //
+  //  delete pRowParts;
+  
+  // + + + + + + + + + + + + + + + + + + +
+  
+  // check for space in target nub
+  
+  i8 nSpaceNeeded = pFromNub->nAllotedBytes();
+  
+  if (! m_pIntoNub->bHasSpace(nSpaceNeeded)) {
+    m_nTotalBuffers++;
+    //oNumBat.vPrint();
+    
+    // + + + + + + + + + + + + + + + + + + +
+    delete m_pRowEncoder;
+    delete pRowParts;
+    // + + + + + + + + + + + + + + + + + + +
+    
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // initialise copy
+  
+  m_pFromNub     = pFromNub;
+  m_i_FromHead   = 0;
+  m_aFromHead    = m_pFromNub->aGetHead(m_i_FromHead);
+  m_i_FromOffset = m_i_BaseOffset;
+  
+  m_i_IntoHead   = m_pIntoNub->iAllotHead(m_nHeadBytes);
+  m_aIntoHead    = m_pIntoNub->aGetHead(m_i_IntoHead);
+  m_i_IntoOffset = m_i_BaseOffset;
+  //---
+  m_i_IntoOver   = C_UNKNOWN;
+  m_aIntoOver    = nullptr;
+  m_nOverBytes   = C_UNKNOWN;
+  m_bCopyOver    = false;
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  // Mark IV
+  
+  Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec);
+  //if (! pSampleRow)
+  //  vTrace("No sample space\n"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy & recode row
+  
+  //if (m_nTotalHeads <= 10)
+  //  vDumpHead("m_aFromHead"_Stz,m_aFromHead,m_pColVec);
+  
+  vTwiddleFrom();
+  vCopyHead();
+  vCopyOver();
+  
+  m_nTotalHeads++;
+  
+  
+#ifdef WITH_TRACE_ENCODING
+  if (m_nTotalHeads <= 10)
+    vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
+#endif
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyse free space in the into head
 #ifdef WITH_ANALYSE_FREE

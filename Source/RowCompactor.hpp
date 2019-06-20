@@ -109,7 +109,9 @@ namespace Data
     void vCompactBegin(CrwBuffer* pCrwBuffer);
     void vCompactEnd(void);
     bool bCompactRow(Row* pRow);
-    
+    bool bCompactRow_new(Row* pRow);
+    bool bCompactRow_original(Row* pRow);
+
   private:
     void vEncodeBegin(RowNub* pIntoNub);
     void vEncodeEnd(void);
