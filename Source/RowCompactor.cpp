@@ -1573,39 +1573,6 @@ void RowCompactor::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert a Dte into an Edt                                                  */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vDteIntoEdt(Datum* pDatum, i8& iEra_)
-{
-  i8 iYearDelta;
-  i8 iYearInEra;
-  i8 iMonth;
-  i8 iDay;
-  
-  iYearDelta = pDatum->xDte.m_uYearDelta;
-  iMonth     = pDatum->xDte.m_uMonth;
-  iDay       = pDatum->xDte.m_uDay;
-  
-  if (iYearDelta < C_ERA_1) {
-    iEra_ = C_ERA_0;
-    iYearInEra = iYearDelta - C_ERA_0;
-  }
-  else if (iYearDelta < C_ERA_2) {
-    iEra_ = C_ERA_1;
-    iYearInEra = iYearDelta - C_ERA_1;
-  }
-  else {
-    iEra_ = C_ERA_2;
-    iYearInEra = iYearDelta - C_ERA_2;
-  }
-  
-  pDatum->m_iDte = 0;
-  pDatum->xEdt.m_uYearInEra = iYearInEra;
-  pDatum->xEdt.m_uMonth     = iMonth;
-  pDatum->xEdt.m_uDay       = iDay;
-}
-
-/*----------------------------------------------------------------------------*/
 /* compute an Edt into a Dte                                                  */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vDteFromEdt(Datum* pDatum, i8 iEraBaseYear)
