@@ -67,7 +67,7 @@ RowEncoding::RowEncoding(ColumnVec* pColVec)
     xEncode[i_Col].m_eMetaCode  = MC_NULL;
     xEncode[i_Col].m_wDataCode  = C_UNKNOWN;
     xEncode[i_Col].m_nDataBytes = C_UNKNOWN;
-    xEncode[i_Col].m_nOffset    = C_UNKNOWN;
+    xEncode[i_Col].m_nOffset    = 0;
   }
   
 #ifdef WITH_CHECK_INITIALISED
@@ -191,7 +191,7 @@ void RowEncoding::vEncode(Row* pRow)
         + nDataBytes(xEncode[i_Col - 1].m_eMetaCode);
 
     if ( bIsFit(xEncode[i_Col - 1].m_eMetaCode) )
-      xEncode[i_Col].m_nOffset += xEncode[i_Col].m_nDataBytes;
+      xEncode[i_Col].m_nOffset += xEncode[i_Col - 1].m_nDataBytes;
     
   } // for i_Col
 
@@ -395,8 +395,8 @@ void RowEncoding::vEncodeVch(Dtm wVch,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  eMetaCode_  = MC_STR_TAIL_2T;
-  nDataBytes_ = StrLib::nCopy((char*)wDataCode_.m_szVch,(char*)wVch.m_szVch) + 1;
+  eMetaCode_  = MC_STR_FIT_1L;
+  nDataBytes_ = StrLib::nCopy((char*)wDataCode_.m_szVch,(char*)wVch.m_szVch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -413,7 +413,7 @@ void RowEncoding::vReset(void)
     xEncode[i_Col].m_eMetaCode  = MC_NULL;
     xEncode[i_Col].m_wDataCode  = C_UNKNOWN;
     xEncode[i_Col].m_nDataBytes = C_UNKNOWN;
-    xEncode[i_Col].m_nOffset    = C_UNKNOWN;
+    xEncode[i_Col].m_nOffset    = 0;
   }
   
 #ifdef WITH_CHECK_INITIALISED
