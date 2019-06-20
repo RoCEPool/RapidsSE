@@ -199,8 +199,8 @@ bool RowCompactor::bCompactRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  //return bCompactRow_new(pRow);
-  return bCompactRow_original(pRow);
+  return bCompactRow_new(pRow);
+  //return bCompactRow_original(pRow);
 }
 /*----------------------------------------------------------------------------*/
 bool RowCompactor::bCompactRow_new(Row* pRow)
@@ -221,18 +221,18 @@ bool RowCompactor::bCompactRow_new(Row* pRow)
 
   // + + + + + + + + + + + + + + + + + + +
 
-  hpRow hp_Row;
-  vTrace("%s\n"_Stz,hp_Row.sz(pRow));
+  //hpRow hp_Row;
+  //vTrace("%s\n"_Stz,hp_Row.sz(pRow));
 
   RowEncoding* pRowEncoding = new RowEncoding(m_pColVec);
 
   pRowEncoding->vEncode(pRow);
   
 
-  hpRowEncoding hp_RowEnc;
-  vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
+  //hpRowEncoding hp_RowEnc;
+  //vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
 
-  //pRowEncoding->vSplitOver(32,16);
+  pRowEncoding->vSplitOver(256,m_pColVec->nItems());
 
   //vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
 
@@ -1012,11 +1012,11 @@ void RowCompactor::vCompact(RowEncoding* pRowEncoding)
     Dtm wDataCode = pRowEncoding->xEncode[i_Col].m_wDataCode;
     i8  nDataByte = pRowEncoding->xEncode[i_Col].m_nDataBytes;
     
-    vDumpHead("vHeadCode a"_Stz,m_aIntoHead,m_pColVec);
+    //vDumpHead("vHeadCode a"_Stz,m_aIntoHead,m_pColVec);
     if (8 == i_Col)
       vDebugPoint();
     vHeadCode(eMetaCode,wDataCode,nDataByte,pCol);
-    vDumpHead("vHeadCode b"_Stz,m_aIntoHead,m_pColVec);
+    //vDumpHead("vHeadCode b"_Stz,m_aIntoHead,m_pColVec);
   }
 }
 
