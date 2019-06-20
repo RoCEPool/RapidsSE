@@ -110,13 +110,8 @@ namespace Data
     
     void vCompact(RowEncoding* pRowEncoding);
     
-    void vDataNeed(i8 nBytes, Column* pCol);
-    void vDataAdd(Datum* pDatum, Column* pCol);
-
-    void vEraDatePut(Datum* pDatum);
     void vExtendIntoHead(i8 nBytes, Column* pCol);
 
-    void vHeadAdd(w8 wBytes, i8 nBytes, Column* pCol);
     void vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol);
 
     void vMetaCode(Column* pCol, eMC eMetaCode);

@@ -448,55 +448,6 @@ void RowCompactor::vCompact(RowEncoding* pRowEncoding)
 }
 
 /*----------------------------------------------------------------------------*/
-/* check there is enough space for nBytes of data                             */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vDataNeed(i8 nBytes, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  RASSERT(0);
-  
-  // already extended?
-  if (m_aIntoHead->bHasOverflow())
-    return;
-  
-  // last column?
-  
-  i8 nFree = 0;
-  if (m_i_IntoOffset < m_nHeadBytes)
-    nFree = m_nHeadBytes - m_i_IntoOffset;
-  else
-    nFree = (m_nHeadBytes + m_nOverBytes) - m_i_IntoOffset;
-
-  
-  if (pCol->bIsLastColumn()) {
-    if (nFree < nBytes)
-      vExtendIntoHead(sizeof(CacheLine) - 1,pCol);
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // not last column
-  
-  // need (nBytes + _2B_OT)
-  i8 nNeed = nBytes + _2B_OT;
-  if (nFree < nNeed)
-    vExtendIntoHead(4*sizeof(CacheLine) - 1,pCol);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add encoded datum onto the end of into-head                                */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vDataAdd(Datum* pEncodedDatum, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-
-  vHeadAdd(pEncodedDatum->m_wWord,
-           pEncodedDatum->m_nEncodedBytes,
-           pCol);
-}
-
-/*----------------------------------------------------------------------------*/
 /* extend the into head by alloting an nByte overflow tail line               */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vExtendIntoHead(i8 nBytes, Column* pCol)
@@ -557,26 +508,6 @@ void RowCompactor::vExtendIntoHead(i8 nBytes, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add bytes onto m_aIntoHead at m_i_IntoOffset, increment m_i_IntoOffset     */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vHeadAdd(w8 wBytes, i8 nBytes, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  if (! nBytes)
-    return;
-  
-  //vDataNeed(nBytes,pCol);
-  
-  vPutLogical(m_aIntoHead,
-              m_i_IntoOffset,
-              nBytes,
-              wBytes);
-  
-  m_i_IntoOffset += nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* add encoded datum onto the end of into-head                                */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol)
@@ -585,8 +516,17 @@ void RowCompactor::vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol)
   
   vMetaCode(pCol,eMetaCode);
   
+  if (! nBytes)
+    return;
+  
   if (DM_VCH != pCol->eDatumType()) {
-    vHeadAdd(wBytes.m_iInt,nBytes,pCol);
+    
+    vPutLogical(m_aIntoHead,
+                m_i_IntoOffset,
+                nBytes,
+                (w8)wBytes.m_iInt);
+    
+    m_i_IntoOffset += nBytes;
     return;
   }
   
