@@ -132,12 +132,14 @@ namespace Data
     void vCodeTme(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeTsp(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum);
+    
+    void vCompact(RowEncoding* pRowEncoding);
+    
     void vCopyHead(void);
     void vCopyOver(void);
 
     void vDataNeed(i8 nBytes, Column* pCol);
     void vDataAdd(Datum* pDatum, Column* pCol);
-    void vDataAdd(w8 wBytes, i8 nBytes, Column* pCol);
 
     void vDatumBol(Datum* pTgtDatum, Row* pRow, Column* pCol);
     void vDatumBcd(Datum* pTgtDatum, Row* pRow, Column* pCol);
@@ -167,6 +169,7 @@ namespace Data
     eMC  eGetFromEncoding(Column* pCol, i8& i_PriorColumn_, i8& i_Offset_);
 
     void vHeadAdd(w8 wBytes, i8 nBytes, Column* pCol);
+    void vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol);
 
     void vMetaCode(Column* pCol, eMC eMetaCode);
     void vMetaPut(Datum* pDatum, Column* pCol);
@@ -402,7 +405,8 @@ namespace Data
       //nBytes     = 24;
       //nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(Word));
 
-      i8 nBytesHead = nHeadWords * (i8)C_BYTES_PER_WORD;
+      //i8 nBytesHead = nHeadWords * (i8)C_BYTES_PER_WORD;
+      i8 nBytesHead = 80;
       RASSERT(nBytesHead >= C_HEAD_MIN_BYTES);
       
       return nBytesHead;
