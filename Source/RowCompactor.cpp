@@ -65,21 +65,12 @@ RowCompactor::RowCompactor(void)
   m_bCopyOver      = false;
   //---
   m_i_IntoOffset   = C_UNKNOWN;
-
-  m_pFromNub       = nullptr;
-  m_i_FromHead     = C_UNKNOWN;
-  m_aFromHead      = nullptr;
-  m_i_FromOffset   = C_UNKNOWN;
-  m_eFromEncoding  = MC_NULL;
-  m_nFromDataBytes = 0;
   
   // + + + + + + + + + + + + + +
   
   m_pRowSamples    = nullptr;
   
   m_pRowEncoder    = nullptr;
-
-  //m_oEncodedDatum
   
   //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 
@@ -180,13 +171,6 @@ void RowCompactor::vCompactEnd(void)
   m_aIntoHead     = nullptr;
   m_i_IntoOffset  = C_UNKNOWN;
   
-  m_pFromNub      = nullptr;
-  m_i_FromHead    = C_UNKNOWN;
-  m_aFromHead     = nullptr;
-  m_i_FromOffset  = C_UNKNOWN;
-  m_eFromEncoding = MC_NULL;
-  m_nFromDataBytes = 0;
-  
   // + + +
   delete m_pRowSamples;
   m_pRowSamples  = nullptr;;
@@ -232,11 +216,6 @@ bool RowCompactor::bCompactRow(Row* pRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initialise copy
   
-//  m_pFromNub     = pFromNub;
-//  m_i_FromHead   = 0;
-//  m_aFromHead    = m_pFromNub->aGetHead(m_i_FromHead);
-//  m_i_FromOffset = m_i_BaseOffset;
-
   m_i_IntoHead   = m_pIntoNub->iAllotHead(m_nHeadBytes);
   m_aIntoHead    = m_pIntoNub->aGetHead(m_i_IntoHead);
   m_i_IntoOffset = m_i_BaseOffset;
@@ -256,9 +235,6 @@ bool RowCompactor::bCompactRow(Row* pRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact encoded row into a crw
 
-  //if (m_nTotalHeads <= 10)
-  //  vDumpHead("m_aFromHead"_Stz,m_aFromHead,m_pColVec);
-  
   vCompact(pRowEncoding);
   m_nTotalHeads++;
 
@@ -578,23 +554,6 @@ void RowCompactor::vExtendIntoHead(i8 nBytes, Column* pCol)
   //!
   //! we now move m_iIntoOffset being logical
   m_i_IntoOffset = m_nHeadBytes + _1B_U + _1B_M;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the encoding (and offset) of a column datum                            */
-/*----------------------------------------------------------------------------*/
-eMC RowCompactor::eGetFromEncoding(Column* pCol,
-                               i8& i_PriorColumn_, i8& i_FromOffset_)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  eMC eEncoding = eGetEncoding(m_aFromHead,
-                               pCol,
-                               m_pColVec,
-                               i_PriorColumn_,
-                               i_FromOffset_);
-  
-  return eEncoding;
 }
 
 /*----------------------------------------------------------------------------*/

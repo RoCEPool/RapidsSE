@@ -45,16 +45,7 @@ namespace Data
     bool       m_bCopyOver;    // is there a overflow portion to be copied?
     //---
     i8         m_i_IntoOffset; // encoding offset
-
-    RowNub*    m_pFromNub;
-    i8         m_i_FromHead;
-    HeadLine*  m_aFromHead;
-    i8         m_i_FromOffset; // encoding offset
-    eMC        m_eFromEncoding;
-    i8         m_nFromDataBytes;
-  
-    Datum      m_oEncodedDatum; // the encoded datum
-
+    
     // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
     
     IrwBuffer* m_pRowSamples; // the set of sample rows
@@ -124,8 +115,6 @@ namespace Data
 
     void vEraDatePut(Datum* pDatum);
     void vExtendIntoHead(i8 nBytes, Column* pCol);
-
-    eMC  eGetFromEncoding(Column* pCol, i8& i_PriorColumn_, i8& i_Offset_);
 
     void vHeadAdd(w8 wBytes, i8 nBytes, Column* pCol);
     void vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol);
