@@ -199,12 +199,17 @@ bool RowCompactor::bCompactRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
+  //return bCompactRow_new(pRow);
+  return bCompactRow_original(pRow);
+}
+/*----------------------------------------------------------------------------*/
+bool RowCompactor::bCompactRow_new(Row* pRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
   RASSERT(! m_bEncoding);
   
-  //RASSERT(m_pColVec == pFromNub->pDesc()->pColumnVec());
-  
   // + + + + + + + + + + + + + + + + + + +
-  
   RowParts* pRowParts = new RowParts;
   pRowParts->pNub()->vDesc(m_pIntoNub->pDesc());
   RowNub* pFromNub = pRowParts->pNub();
@@ -216,6 +221,24 @@ bool RowCompactor::bCompactRow(Row* pRow)
 
   // + + + + + + + + + + + + + + + + + + +
 
+  hpRow hp_Row;
+  vTrace("%s\n"_Stz,hp_Row.sz(pRow));
+
+  RowEncoding* pRowEncoding = new RowEncoding(m_pColVec);
+
+  pRowEncoding->vEncode(pRow);
+  
+
+  hpRowEncoding hp_RowEnc;
+  vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
+
+  //pRowEncoding->vSplitOver(32,16);
+
+  //vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
+
+  
+  // + + + + + + + + + + + + + + + + + + +
+  
 //  delete m_pRowEncoder;
 //
 //  delete pRowParts;
@@ -224,7 +247,7 @@ bool RowCompactor::bCompactRow(Row* pRow)
 
   // check for space in target nub
   
-  i8 nSpaceNeeded = pFromNub->nAllotedBytes();
+  i8 nSpaceNeeded = pRowEncoding->nBytesNeeded();
   
   if (! m_pIntoNub->bHasSpace(nSpaceNeeded)) {
     m_nTotalBuffers++;
@@ -268,10 +291,8 @@ bool RowCompactor::bCompactRow(Row* pRow)
   //if (m_nTotalHeads <= 10)
   //  vDumpHead("m_aFromHead"_Stz,m_aFromHead,m_pColVec);
   
-  vTwiddleFrom();
-  vCopyHead();
-  vCopyOver();
-
+  vCompact(pRowEncoding);
+  
   m_nTotalHeads++;
 
   
@@ -280,6 +301,127 @@ bool RowCompactor::bCompactRow(Row* pRow)
     vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
 #endif
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // analyse free space in the into head
+#ifdef WITH_ANALYSE_FREE
+  vAnalyseFree();
+#endif
+  
+#ifdef WITH_VERIFY_TAILS
+  m_pIntoNub->vVerifyTails(C_UNKNOWN);
+#endif
+  
+  // + + + + + + + + + + + + + + + + + + +
+  delete m_pRowEncoder;
+  delete pRowParts;
+  // + + + + + + + + + + + + + + + + + + +
+  
+  delete pRowEncoding;
+
+  return true;
+}
+/*----------------------------------------------------------------------------*/
+bool RowCompactor::bCompactRow_original(Row* pRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  RASSERT(! m_bEncoding);
+  
+  // + + + + + + + + + + + + + + + + + + +
+  RowParts* pRowParts = new RowParts;
+  pRowParts->pNub()->vDesc(m_pIntoNub->pDesc());
+  RowNub* pFromNub = pRowParts->pNub();
+  m_pRowEncoder = new RowCompactor;
+  
+  m_pRowEncoder->vEncodeBegin(pFromNub);
+  m_pRowEncoder->vEncodeRow(pRow);
+  m_pRowEncoder->vEncodeEnd();
+  
+  // + + + + + + + + + + + + + + + + + + +
+  
+  hpRow hp_Row;
+  vTrace("%s\n"_Stz,hp_Row.sz(pRow));
+  
+  RowEncoding* pRowEncoding = new RowEncoding(m_pColVec);
+  
+  pRowEncoding->vEncode(pRow);
+  
+  
+  hpRowEncoding hp_RowEnc;
+  vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
+  
+  pRowEncoding->vSplitOver(32,16);
+  
+  vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
+  
+  delete pRowEncoding;
+  
+  // + + + + + + + + + + + + + + + + + + +
+  
+  //  delete m_pRowEncoder;
+  //
+  //  delete pRowParts;
+  
+  // + + + + + + + + + + + + + + + + + + +
+  
+  // check for space in target nub
+  
+  i8 nSpaceNeeded = pFromNub->nAllotedBytes();
+  
+  if (! m_pIntoNub->bHasSpace(nSpaceNeeded)) {
+    m_nTotalBuffers++;
+    //oNumBat.vPrint();
+    
+    // + + + + + + + + + + + + + + + + + + +
+    delete m_pRowEncoder;
+    delete pRowParts;
+    // + + + + + + + + + + + + + + + + + + +
+    
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // initialise copy
+  
+  m_pFromNub     = pFromNub;
+  m_i_FromHead   = 0;
+  m_aFromHead    = m_pFromNub->aGetHead(m_i_FromHead);
+  m_i_FromOffset = m_i_BaseOffset;
+  
+  m_i_IntoHead   = m_pIntoNub->iAllotHead(m_nHeadBytes);
+  m_aIntoHead    = m_pIntoNub->aGetHead(m_i_IntoHead);
+  m_i_IntoOffset = m_i_BaseOffset;
+  //---
+  m_i_IntoOver   = C_UNKNOWN;
+  m_aIntoOver    = nullptr;
+  m_nOverBytes   = C_UNKNOWN;
+  m_bCopyOver    = false;
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  // Mark IV
+  
+  Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec);
+  //if (! pSampleRow)
+  //  vTrace("No sample space\n"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy & recode row
+  
+  //if (m_nTotalHeads <= 10)
+  //  vDumpHead("m_aFromHead"_Stz,m_aFromHead,m_pColVec);
+  
+  vTwiddleFrom();
+  vCopyHead();
+  vCopyOver();
+  
+  m_nTotalHeads++;
+  
+  
+#ifdef WITH_TRACE_ENCODING
+  if (m_nTotalHeads <= 10)
+    vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
+#endif
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyse free space in the into head
 #ifdef WITH_ANALYSE_FREE
@@ -852,6 +994,26 @@ void RowCompactor::vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum)
   }
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* compact the encoding                                                       */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vCompact(RowEncoding* pRowEncoding)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  i8 nCols = m_pColVec->nItems();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    Column* pCol = m_pColVec->pGet(i_Col);
+    
+    eMC eMetaCode = pRowEncoding->xEncode[i_Col].m_eMetaCode;
+    Dtm wDataCode = pRowEncoding->xEncode[i_Col].m_wDataCode;
+    i8  nDataByte = pRowEncoding->xEncode[i_Col].m_nDataBytes;
+    
+    vHeadCode(eMetaCode,wDataCode,nDataByte,pCol);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1507,6 +1669,28 @@ void RowCompactor::vHeadAdd(w8 wBytes, i8 nBytes, Column* pCol)
               m_i_IntoOffset,
               nBytes,
               wBytes);
+  
+  m_i_IntoOffset += nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add encoded datum onto the end of into-head                                */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  vMetaCode(pCol,eMetaCode);
+  
+  if (DM_VCH != pCol->eDatumType()) {
+    vHeadAdd(wBytes.m_iInt,nBytes,pCol);
+    return;
+  }
+  
+  MemLib::vCopy(m_aIntoHead,
+                wBytes.m_szVch,
+                nBytes,
+                CN_ROWCOMPACTOR);
   
   m_i_IntoOffset += nBytes;
 }
@@ -2837,90 +3021,6 @@ void RowCompactor::vDumpHead(Stz* szTitle,
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* how many bytes does given encoding occupy in the data portion of a head?   */
-/*----------------------------------------------------------------------------*/
-i8 RowCompactor::nDataBytes(eMC eMetaCode)
-{
-  switch (eMetaCode) {
-      
-    case MC_NULL:
-    case MC_1B:
-    case MC_2B:
-    case MC_3B:
-    case MC_4B:
-    case MC_5B:
-    case MC_6B:
-    case MC_7B:
-    case MC_8B:
-      return eMetaCode;
-      
-    case MC_MINUS_ONE:
-    case MC_ZERO:
-    case MC_ONE:
-    case MC_TWO:
-    case MC_THREE:
-    case MC_FOUR:
-    case MC_FIVE:
-    case MC_SIX:
-    case MC_SEVEN:
-    case MC_EIGHT:
-    case MC_NINE:
-    case MC_TEN:
-    case MC_SAME:
-      return 0;
-     
-    case MC_ADD_1B:  return 1;
-    case MC_ADD_2B:  return 2;
-    case MC_SUB_1B:  return 1;
-    case MC_SUB_2B:  return 2;
-      
-    case MC_FALSE:
-    case MC_TRUE:
-      return 0;
-      
-    case MC_DATE_E0_2B:
-    case MC_DATE_E1_2B:
-    case MC_DATE_E2_2B:
-      return 2;
-      
-    case MC_DAYS_ADD_1B:
-    case MC_DAYS_SUB_1B:
-      return 1;
-      
-    case MC_STR_EMPTY:        return 0;
-      
-    case MC_STR_DUP_2H:       return 2;
-    case MC_STR_FIT_1L:       return 1;
-    case MC_STR_TAIL_2T:      return 2;
-    case MC_STR_SPLIT_2T1L:   return 3;
-      
-    case MC_BSTR_FIT_2L:      return 2;
-    case MC_BSTR_TAIL_2T:     return 2;
-    case MC_BSTR_SPLIT_2T2L:  return 4;
-      
-    case MC_SHOCO_DUP_3D:     return 3;
-    case MC_SHOCO_FIT_1C:     return 1;
-    case MC_SHOCO_TAIL_2T:    return 2;
-    case MC_SHOCO_SPLIT_2T1C: return 3;
-      
-    case MC_TWOS_1B: return 1;
-    case MC_TWOS_2B: return 2;
-    case MC_TWOS_3B: return 3;
-    case MC_TWOS_4B: return 4;
-    case MC_TWOS_5B: return 5;
-    case MC_TWOS_6B: return 6;
-    case MC_TWOS_7B: return 7;
-      
-    case MC_OVERFLOW_2T:
-      return 2;
-      
-    default:
-      NEVER_REACH;
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* get encoded datum from row                                                 */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
@@ -3743,16 +3843,6 @@ OverLine* RowCompactor::aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel)
   OverLine* aOver = RowNub::aGetOver(aHeadLine,i_Over_rel);
   
   return aOver;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get tail line using relative index [FT]                                    */
-/*----------------------------------------------------------------------------*/
-TailLine* RowCompactor::aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel)
-{
-  TailLine* aTail = RowNub::aGetTail(aHeadLine,i_Tail_rel);
-  
-  return aTail;
 }
 
 /*----------------------------------------------------------------------------*/

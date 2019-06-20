@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* RowExtractor.hpp -- RowExtractor                                                 */
+/* RowExtractor.hpp -- Row Extractor                                          */
 /*============================================================================*/
 #pragma once
 
 namespace Data
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class RowExtractor
+  class RowExtractor : private RowCoder
   {
   public:
     static void vAddElement(EntWrk* pEntWrk, Stz* aSrc,

@@ -24,7 +24,8 @@ namespace Data
 
   /*----------------------------------------------------------------------------*/
   
-  class RowCompactor : public Object
+  class RowCompactor : public Object,
+                       private RowCoder
   {
   public:
   
@@ -108,7 +109,9 @@ namespace Data
     void vCompactBegin(CrwBuffer* pCrwBuffer);
     void vCompactEnd(void);
     bool bCompactRow(Row* pRow);
-    
+    bool bCompactRow_new(Row* pRow);
+    bool bCompactRow_original(Row* pRow);
+
   private:
     void vEncodeBegin(RowNub* pIntoNub);
     void vEncodeEnd(void);
@@ -129,12 +132,15 @@ namespace Data
     void vCodeTme(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeTsp(Datum* pTgtDatum, Datum* pSrcDatum);
     void vCodeVch(Datum* pTgtDatum, Datum* pSrcDatum);
+    
+    void vCompact(RowEncoding* pRowEncoding);
+    
     void vCopyHead(void);
     void vCopyOver(void);
 
     void vDataNeed(i8 nBytes, Column* pCol);
     void vDataAdd(Datum* pDatum, Column* pCol);
-    
+
     void vDatumBol(Datum* pTgtDatum, Row* pRow, Column* pCol);
     void vDatumBcd(Datum* pTgtDatum, Row* pRow, Column* pCol);
     void vDatumDte(Datum* pTgtDatum, Row* pRow, Column* pCol);
@@ -163,6 +169,7 @@ namespace Data
     eMC  eGetFromEncoding(Column* pCol, i8& i_PriorColumn_, i8& i_Offset_);
 
     void vHeadAdd(w8 wBytes, i8 nBytes, Column* pCol);
+    void vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol);
 
     void vMetaCode(Column* pCol, eMC eMetaCode);
     void vMetaPut(Datum* pDatum, Column* pCol);
@@ -201,9 +208,7 @@ namespace Data
   
     //! alka
     static HeadLine* aCompactRow(CrwBuffer* pCrwBuffer, i8 i_Row);
-  
-    static i8   nDataBytes(eMC eMetaCode);
-  
+    
     static void vDteIntoEdt(Datum* pDatum, i8& iEra_);
     static void vDteFromEdt(Datum* pDatum, i8 iEra);
     static void vDteFromEdt(Word* aWord, i8 iEra);
@@ -212,7 +217,6 @@ namespace Data
                           HeadLine* aHeadLine,
                           ColumnVec* pColVec);
     
-    static TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
   
   private:
   
@@ -401,7 +405,8 @@ namespace Data
       //nBytes     = 24;
       //nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(Word));
 
-      i8 nBytesHead = nHeadWords * (i8)C_BYTES_PER_WORD;
+      //i8 nBytesHead = nHeadWords * (i8)C_BYTES_PER_WORD;
+      i8 nBytesHead = 80;
       RASSERT(nBytesHead >= C_HEAD_MIN_BYTES);
       
       return nBytesHead;

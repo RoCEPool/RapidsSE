@@ -57,8 +57,10 @@ namespace Values
     void vAsI8(i8 iAsI8);
     bool bIsNull(void);
     void vSetNull(void);
-  };
   
+    void operator =(i8 iInt)    { m_iInt  = iInt;  }
+    void operator =(Stz* szVch) { m_szVch = szVch; }
+  };
 }
 
 /*============================================================================*/
