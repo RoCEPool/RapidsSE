@@ -146,18 +146,6 @@ namespace Data
     void vDatumVch(Datum* pTgtDatum, Row* pRow, Column* pCol);
 
     void vEraDatePut(Datum* pDatum);
-    void vEncodeBol(Datum* pSrcDatum, Column* pCol);
-    void vEncodeBcd(Datum* pSrcDatum, Column* pCol);
-    void vEncodeDte(Datum* pSrcDatum, Column* pCol);
-    void vEncodeFlt(Datum* pSrcDatum, Column* pCol);
-    void vEncodeInt(Datum* pSrcDatum, Column* pCol);
-    void vEncodeIvl(Datum* pSrcDatum, Column* pCol);
-    void vEncodeTme(Datum* pSrcDatum, Column* pCol);
-    void vEncodeTsp(Datum* pSrcDatum, Column* pCol);
-    void vEncodeVch(Datum* pSrcDatum, Column* pCol);
-    void vEncodeVchShoco(Datum* pSrcDatum, Column* pCol);
-    void vEncodeVchSmall(Datum* pSrcDatum, Column* pCol);
-    void vEncodeVchTail_str(Datum* pSrcDatum, Column* pCol);
     void vExtendIntoHead(i8 nBytes, Column* pCol);
 
     eMC  eGetFromEncoding(Column* pCol, i8& i_PriorColumn_, i8& i_Offset_);
@@ -170,16 +158,6 @@ namespace Data
 
     byte* ayShoco(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
     
-    void vTwiddleFrom(void);
-    i8   iTwiddleShiftCol(i8& i_Offset_data_);
-    void vTwiddleShiftRight(void);
-    bool bTwiddleShocoDupe(Column* pCol, i8 i_FromOffset);
-    bool bTwiddleShocoDupe_3D(Column* pCol, i8 i_FromOffset);
-    bool bTwiddleShocoFold(Column* pCol, i8 i_FromOffset);
-    void vTwiddleShocoTail(Column* pCol, i8 i_FromOffset);
-    bool bTwiddleStringDupe(Column* pCol, i8 i_FromOffset);
-    void vTwiddleStringTail(Column* pCol, i8 i_FromOffset);
-
     void vUsageIncEncoded(Column* pCol, i8 nBytes, eMC eMetaCode = MC_NULL);
     void vUsageIncEncoded(Column* pCol, Datum* pDatum, eMC eMetaCode = MC_NULL);
     void vUsageIncRecoded(Column* pCol, i8 nBytes, eMC eMetaCode = MC_NULL);
