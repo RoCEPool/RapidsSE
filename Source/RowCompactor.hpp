@@ -211,7 +211,6 @@ namespace Data
                           HeadLine* aHeadLine,
                           ColumnVec* pColVec);
     
-    static TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
   
   private:
   

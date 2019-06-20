@@ -3673,16 +3673,6 @@ OverLine* RowCompactor::aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get tail line using relative index [FT]                                    */
-/*----------------------------------------------------------------------------*/
-TailLine* RowCompactor::aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel)
-{
-  TailLine* aTail = RowNub::aGetTail(aHeadLine,i_Tail_rel);
-  
-  return aTail;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set meta encoding for column value                                         */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vMetaCode(HeadLine* aHeadLine, Column* pCol, eMC eMetaCode)

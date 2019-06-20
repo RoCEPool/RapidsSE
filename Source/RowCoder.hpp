@@ -8,7 +8,9 @@ namespace Data
   class RowCoder
   {
   public:
-    static i8   nDataBytes(eMC eMetaCode);
+    static i8 nDataBytes(eMC eMetaCode);
+  
+    static TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
   };
 }
 

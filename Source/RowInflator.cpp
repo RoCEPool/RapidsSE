@@ -323,7 +323,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
         i_Tail_rel = wWord.m_iI8;
-        aTail = RowCompactor::aGetTailRel(aHeadLine,i_Tail_rel);
+        aTail = aGetTailRel(aHeadLine,i_Tail_rel);
         nLength = aTail->w8_1B(+ _1B_U);
         MemLib::vCopy(acString,(byte*)aTail+_1B_U+_1B_L,nLength,CN_ROWCOMPACTOR);
         *(char**)(aiColVal++) = acString;
@@ -388,7 +388,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
         i_Tail_rel = wWord.m_iI8;
-        aTail  = RowCompactor::aGetTailRel(aHeadLine,i_Tail_rel);
+        aTail  = aGetTailRel(aHeadLine,i_Tail_rel);
         nCompressed = aTail->w8_1B(C_OFFSET_COMPRESSED);
         nLength =
         Compress::iFromShoco(acString,                 // decompressed dest
@@ -408,7 +408,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
         i_Tail_rel = wWord.m_iI8;
-        aTail  = RowCompactor::aGetTailRel(aHeadLine,i_Tail_rel);
+        aTail  = aGetTailRel(aHeadLine,i_Tail_rel);
         nCompressed = (i8)*(u1*)ayDataByte++;
         nBytesPartA = aHeadLine->nBytes() - (ayDataByte - (byte*)aHeadLine);
         nBytesPartB = nCompressed - nBytesPartA;

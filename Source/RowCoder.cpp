@@ -88,6 +88,16 @@ i8 RowCoder::nDataBytes(eMC eMetaCode)
   
 }
 
+/*----------------------------------------------------------------------------*/
+/* get tail line using relative index [FT]                                    */
+/*----------------------------------------------------------------------------*/
+TailLine* RowCoder::aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel)
+{
+  TailLine* aTail = RowNub::aGetTail(aHeadLine,i_Tail_rel);
+  
+  return aTail;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
