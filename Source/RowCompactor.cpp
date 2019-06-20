@@ -1012,7 +1012,11 @@ void RowCompactor::vCompact(RowEncoding* pRowEncoding)
     Dtm wDataCode = pRowEncoding->xEncode[i_Col].m_wDataCode;
     i8  nDataByte = pRowEncoding->xEncode[i_Col].m_nDataBytes;
     
+    vDumpHead("vHeadCode a"_Stz,m_aIntoHead,m_pColVec);
+    if (8 == i_Col)
+      vDebugPoint();
     vHeadCode(eMetaCode,wDataCode,nDataByte,pCol);
+    vDumpHead("vHeadCode b"_Stz,m_aIntoHead,m_pColVec);
   }
 }
 
@@ -1687,8 +1691,13 @@ void RowCompactor::vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol)
     return;
   }
   
-  MemLib::vCopy(m_aIntoHead,
-                wBytes.m_szVch,
+  m_aIntoHead->vPut(m_i_IntoOffset,nBytes,C_1B);
+  m_i_IntoOffset++;
+  
+  char* acSrc = (char*)wBytes.m_szVch;
+  byte* ayDst = (byte*)m_aIntoHead + m_i_IntoOffset;
+  MemLib::vCopy(ayDst,
+                acSrc,
                 nBytes,
                 CN_ROWCOMPACTOR);
   
