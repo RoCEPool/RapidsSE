@@ -45,11 +45,6 @@ JobExtractRow::~JobExtractRow(void) noexcept(false)
   delete m_pRow;
   
   for (i8 i_Ptn = 0; i_Ptn < gpAttachMap->m_pGrid->m_nPartitions; i_Ptn++) {
-    
-#ifdef WITH_ANALYSE_FREE
-    //m_paRowCompactor[i_Ptn]->vReport(m_pRowCoder_Encode);
-#endif
-    
     delete m_paRowCompactor[i_Ptn];
   }
 

@@ -100,10 +100,6 @@ namespace Data
     void vCompactBegin(CrwBuffer* pCrwBuffer);
     void vCompactEnd(void);
     bool bCompactRow(Row* pRow);
-
-
-  public:
-    void vReport(RowCompactor* pRowCoder_Encode);
   
   private:
     void vAnalyseFree(void);
