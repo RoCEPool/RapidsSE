@@ -59,32 +59,32 @@ public:
 /*----------------------------------------------------------------------------*/
 /* cursor used by quicksort                                                   */
 /*----------------------------------------------------------------------------*/
-class BufferCursor {
+class BufCursor {
 public:
   ArrayBuffer* m_pArrayBuffer;  // array buffer
   i8*          m_aElement;      // element in the array buffer
   
 public:
-  BufferCursor(ArrayBuffer* pBuffer, i8 iElement) {
+  BufCursor(ArrayBuffer* pBuffer, i8 iElement) {
     m_pArrayBuffer = pBuffer;
     m_aElement = pBuffer->aElement(iElement);
   }
   
-  BufferCursor(ArrayBuffer* pBuffer, i8* aElement) {
+  BufCursor(ArrayBuffer* pBuffer, i8* aElement) {
     m_pArrayBuffer = pBuffer;
     m_aElement = aElement;
   }
   
-  BufferCursor(BufferCursor& xBufferCursor) {
-    m_pArrayBuffer = xBufferCursor.m_pArrayBuffer;
-    m_aElement = xBufferCursor.m_aElement;
+  BufCursor(BufCursor& xBufCursor) {
+    m_pArrayBuffer = xBufCursor.m_pArrayBuffer;
+    m_aElement = xBufCursor.m_aElement;
   }
   
-  BufferCursor(BufferCursor& xLowCursor, BufferCursor& xHighCursor) {
+  BufCursor(BufCursor& xLowCursor, BufCursor& xHighCursor) {
     m_aElement = xLowCursor.m_aElement + (xHighCursor.m_aElement - xLowCursor.m_aElement) / 2;
   }
   
-  BufferCursor(void) { }
+  BufCursor(void) { }
   
   // incremnet
   void vNext()
@@ -99,12 +99,12 @@ public:
   }
   
   // set value
-  void vSet(BufferCursor& xCursor) {
+  void vSet(BufCursor& xCursor) {
     m_aElement = xCursor.m_aElement;
   }
   
   // swap elements of cursor
-  void vSwap(BufferCursor& xCursor) {
+  void vSwap(BufCursor& xCursor) {
     i8 iTemp = *xCursor.m_aElement;
     *xCursor.m_aElement = *m_aElement;
     *m_aElement = iTemp;
@@ -117,27 +117,27 @@ public:
   }
   
   // less than
-  bool operator <(BufferCursor xBufferCursor)
+  bool operator <(BufCursor xBufCursor)
   {
-    if (m_aElement < xBufferCursor.m_aElement)
+    if (m_aElement < xBufCursor.m_aElement)
       return true;
     else
       return false;
   }
   
   // greater than
-  bool operator >(BufferCursor xBufferCursor)
+  bool operator >(BufCursor xBufCursor)
   {
-    if (m_aElement > xBufferCursor.m_aElement)
+    if (m_aElement > xBufCursor.m_aElement)
       return true;
     else
       return false;
   }
   
   // greater than equal to
-  bool operator >=(BufferCursor xBufferCursor)
+  bool operator >=(BufCursor xBufCursor)
   {
-    if (m_aElement >= xBufferCursor.m_aElement)
+    if (m_aElement >= xBufCursor.m_aElement)
       return true;
     else
       return false;
@@ -256,22 +256,31 @@ public:
   
 };
 
-// Quicksort using cursor into an array buffer
-void vPartitionBuffer(ArrayBuffer* pArrayBuffer, BufferCursor& xLow, BufferCursor& xHigh, BufferCursor& xPivotCursor);
-void vQuickSortBuffer(ArrayBuffer* pArrayBuffer, BufferCursor& xLow, BufferCursor& xHigh);
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Quicksort using indexes to array elements
+i8 iPartition(i8* A, i8 iLow, i8 iHigh);
+void vQuickSort(i8* A, i8 iLow, i8 iHigh);
 
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Quicksort using pointers to array elements
+i8* aPartition(i8* A, i8* aLow, i8* aHigh);
+void vQuickSort(i8* A, i8* aLow, i8* aHigh);
+
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Quicksort using cursor
 void vPartition(i8* A, Cursor& xLow, Cursor& xHigh, Cursor& xPivotCursor);
 void vPartition_MarkI(i8* A, Cursor& xLowCursor, Cursor& xHighCursor, Cursor& xPartitionCursor);
 void vQuickSort(i8* A, Cursor& xLow, Cursor& xHigh);
 
-// Quicksort using pointers to array elements
-i8* aPartition(i8* A, i8* aLow, i8* aHigh);
-void vQuickSort(i8* A, i8* aLow, i8* aHigh);
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Quicksort using cursor into an array buffer
+void vPartitionBuffer(ArrayBuffer* pArrayBuffer, BufCursor& xLow, BufCursor& xHigh, BufCursor& xPivotCursor);
+void vQuickSortBuffer(ArrayBuffer* pArrayBuffer, BufCursor& xLow, BufCursor& xHigh);
 
-// Quicksort using indexes to array elements
-i8 iPartition(i8* A, i8 iLow, i8 iHigh);
-void vQuickSort(i8* A, i8 iLow, i8 iHigh);
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Quicksort using cursor into an intbuffer
+BufferCursor* pPartitionBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor);
+void vQuickSortBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor);
 
 /*============================================================================*/
 /* end                                                                        */
