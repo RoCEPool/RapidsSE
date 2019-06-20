@@ -201,26 +201,16 @@ bool RowCompactor::bCompactRow(Row* pRow)
   
   RASSERT(! m_bEncoding);
   
-  // + + + + + + + + + + + + + + + + + + +
-  //RowParts* pRowParts = new RowParts;
-  //pRowParts->pNub()->vDesc(m_pIntoNub->pDesc());
-  //RowNub* pFromNub = pRowParts->pNub();
-  //m_pRowEncoder = new RowCompactor;
-  
-  //m_pRowEncoder->vEncodeBegin(pFromNub);
-  //m_pRowEncoder->vEncodeRow(pRow);
-  //m_pRowEncoder->vEncodeEnd();
-
-  // + + + + + + + + + + + + + + + + + + +
-
   //hpRow hp_Row;
   //vTrace("%s\n"_Stz,hp_Row.sz(pRow));
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // encode the row
+  
   RowEncoding* pRowEncoding = new RowEncoding(m_pColVec);
 
   pRowEncoding->vEncode(pRow);
   
-
   //hpRowEncoding hp_RowEnc;
   //vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
 
@@ -228,28 +218,14 @@ bool RowCompactor::bCompactRow(Row* pRow)
 
   //vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
 
-  
-  // + + + + + + + + + + + + + + + + + + +
-  
-//  delete m_pRowEncoder;
-//
-//  delete pRowParts;
-  
-  // + + + + + + + + + + + + + + + + + + +
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for space in target nub
   
   i8 nSpaceNeeded = pRowEncoding->nBytesNeeded();
   
   if (! m_pIntoNub->bHasSpace(nSpaceNeeded)) {
     m_nTotalBuffers++;
-    //oNumBat.vPrint();
-    
-    // + + + + + + + + + + + + + + + + + + +
     delete m_pRowEncoder;
-    //delete pRowParts;
-    // + + + + + + + + + + + + + + + + + + +
-    
     return false;
   }
   
@@ -270,24 +246,22 @@ bool RowCompactor::bCompactRow(Row* pRow)
   m_nOverBytes   = C_UNKNOWN;
   m_bCopyOver    = false;
   
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  // Mark IV
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Mark IV samples
   
   Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec);
   //if (! pSampleRow)
   //  vTrace("No sample space\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy & recode row
+  // compact encoded row into a crw
 
   //if (m_nTotalHeads <= 10)
   //  vDumpHead("m_aFromHead"_Stz,m_aFromHead,m_pColVec);
   
   vCompact(pRowEncoding);
-  
   m_nTotalHeads++;
 
-  
 #ifdef WITH_TRACE_ENCODING
   if (m_nTotalHeads <= 10)
     vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
@@ -295,6 +269,7 @@ bool RowCompactor::bCompactRow(Row* pRow)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyse free space in the into head
+  
 #ifdef WITH_ANALYSE_FREE
   vAnalyseFree();
 #endif
@@ -303,11 +278,9 @@ bool RowCompactor::bCompactRow(Row* pRow)
   m_pIntoNub->vVerifyTails(C_UNKNOWN);
 #endif
   
-  // + + + + + + + + + + + + + + + + + + +
-  delete m_pRowEncoder;
-  //delete pRowParts;
-  // + + + + + + + + + + + + + + + + + + +
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  delete m_pRowEncoder;
   delete pRowEncoding;
 
   return true;
