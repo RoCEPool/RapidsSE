@@ -50,7 +50,6 @@ void RowEncoding::operator delete(void* aAddr)
   HeapMem::vFree(pRow);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -111,56 +110,56 @@ void RowEncoding::vEncode(Row* pRow)
     switch (eDatum) {
       
       case DM_BCD:
-        vCodeBcd(pRow->m_waColVal[i_Col],
+        vEncodeBcd(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
                    xEncode[i_Col].m_wDataCode,
                    xEncode[i_Col].m_nDataBytes);
         break;
         
       case DM_BOL:
-        vCodeBol(pRow->m_waColVal[i_Col],
+        vEncodeBol(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
                    xEncode[i_Col].m_wDataCode,
                    xEncode[i_Col].m_nDataBytes);
         break;
         
       case DM_DTE:
-        vCodeDte(pRow->m_waColVal[i_Col],
+        vEncodeDte(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
                    xEncode[i_Col].m_wDataCode,
                    xEncode[i_Col].m_nDataBytes);
         break;
         
       case DM_FLT:
-        vCodeFlt(pRow->m_waColVal[i_Col],
+        vEncodeFlt(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
                    xEncode[i_Col].m_wDataCode,
                    xEncode[i_Col].m_nDataBytes);
         break;
         
       case DM_INT:
-        vCodeInt(pRow->m_waColVal[i_Col],
+        vEncodeInt(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
                    xEncode[i_Col].m_wDataCode,
                    xEncode[i_Col].m_nDataBytes);
         break;
         
       case DM_IVL:
-        vCodeIvl(pRow->m_waColVal[i_Col],
+        vEncodeIvl(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
                    xEncode[i_Col].m_wDataCode,
                    xEncode[i_Col].m_nDataBytes);
         break;
         
       case DM_TME:
-        vCodeTme(pRow->m_waColVal[i_Col],
+        vEncodeTme(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
                    xEncode[i_Col].m_wDataCode,
                    xEncode[i_Col].m_nDataBytes);
         break;
         
       case DM_TSP:
-        vCodeTsp(pRow->m_waColVal[i_Col],
+        vEncodeTsp(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
                    xEncode[i_Col].m_wDataCode,
                    xEncode[i_Col].m_nDataBytes);
@@ -169,7 +168,7 @@ void RowEncoding::vEncode(Row* pRow)
       case DM_VCH:
         xEncode[i_Col].m_wDataCode = (i8)m_xWsp.ayLatter();
         
-        vCodeVch(pRow->m_waColVal[i_Col],
+        vEncodeVch(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
                    xEncode[i_Col].m_wDataCode,
                    xEncode[i_Col].m_nDataBytes);
@@ -199,86 +198,12 @@ void RowEncoding::vEncode(Row* pRow)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* encode Bcd                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeBcd(Row* pRow, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode Bol                                                                 */
-/*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeBol(Row* pRow, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode Dte                                                                 */
-/*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeDte(Row* pRow, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode Flt                                                                 */
-/*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeFlt(Row* pRow, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode Int                                                                 */
-/*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeInt(Row* pRow, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode Ivl                                                                 */
-/*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeIvl(Row* pRow, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode Tme                                                                 */
-/*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeTme(Row* pRow, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode Tsp                                                                 */
-/*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeTsp(Row* pRow, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode Vch                                                                 */
-/*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeVch(Row* pRow, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* code Bcd                                                                   */
-/*----------------------------------------------------------------------------*/
-void RowEncoding::vCodeBcd(Dtm wBcd,
+void RowEncoding::vEncodeBcd(Dtm wBcd,
                            eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -309,9 +234,9 @@ void RowEncoding::vCodeBcd(Dtm wBcd,
 }
 
 /*----------------------------------------------------------------------------*/
-/* code Bol                                                                   */
+/* encode Bol                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vCodeBol(Dtm wBol,
+void RowEncoding::vEncodeBol(Dtm wBol,
                            eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -329,9 +254,9 @@ void RowEncoding::vCodeBol(Dtm wBol,
 }
 
 /*----------------------------------------------------------------------------*/
-/* code Dte                                                                   */
+/* encode Dte                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vCodeDte(Dtm wDte,
+void RowEncoding::vEncodeDte(Dtm wDte,
                            eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -355,9 +280,9 @@ void RowEncoding::vCodeDte(Dtm wDte,
 }
 
 /*----------------------------------------------------------------------------*/
-/* code Flt                                                                   */
+/* encode Flt                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vCodeFlt(Dtm wFlt,
+void RowEncoding::vEncodeFlt(Dtm wFlt,
                            eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -370,9 +295,9 @@ void RowEncoding::vCodeFlt(Dtm wFlt,
 }
 
 /*----------------------------------------------------------------------------*/
-/* code Int                                                                   */
+/* encode Int                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vCodeInt(Dtm wInt,
+void RowEncoding::vEncodeInt(Dtm wInt,
                            eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -410,9 +335,9 @@ void RowEncoding::vCodeInt(Dtm wInt,
 }
 
 /*----------------------------------------------------------------------------*/
-/* code Ivl                                                                   */
+/* encode Ivl                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vCodeIvl(Dtm wIvl,
+void RowEncoding::vEncodeIvl(Dtm wIvl,
                            eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -424,9 +349,9 @@ void RowEncoding::vCodeIvl(Dtm wIvl,
 }
 
 /*----------------------------------------------------------------------------*/
-/* code Tme                                                                   */
+/* encode Tme                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vCodeTme(Dtm wTme,
+void RowEncoding::vEncodeTme(Dtm wTme,
                            eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -438,9 +363,9 @@ void RowEncoding::vCodeTme(Dtm wTme,
 }
 
 /*----------------------------------------------------------------------------*/
-/* code Tsp                                                                   */
+/* encode Tsp                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vCodeTsp(Dtm wTsp,
+void RowEncoding::vEncodeTsp(Dtm wTsp,
                            eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -452,9 +377,9 @@ void RowEncoding::vCodeTsp(Dtm wTsp,
 }
 
 /*----------------------------------------------------------------------------*/
-/* code Vch                                                                   */
+/* encode Vch                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vCodeVch(Dtm wVch,
+void RowEncoding::vEncodeVch(Dtm wVch,
                            eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -477,7 +402,6 @@ void RowEncoding::vCodeVch(Dtm wVch,
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
 /*----------------------------------------------------------------------------*/
 /* reset all encodings                                                        */
 /*----------------------------------------------------------------------------*/
@@ -498,6 +422,7 @@ void RowEncoding::vReset(void)
   m_xWsp.vInit();
 #endif
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
