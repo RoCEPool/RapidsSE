@@ -553,15 +553,6 @@ void RowCompactor::vMetaCode(Column* pCol, eMC eMetaCode)
   vMetaCode(m_aIntoHead,pCol,eMetaCode);
 }
 
-/*----------------------------------------------------------------------------*/
-/* set the meta bits for encoded column value                                 */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vMetaPut(Datum* pDatum, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  vMetaCode(pCol,pDatum->m_eEncoding);
-}
 
 /*----------------------------------------------------------------------------*/
 /* get address of given shoco column from head line                           */
@@ -1577,26 +1568,7 @@ void RowCompactor::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vDteFromEdt(Datum* pDatum, i8 iEraBaseYear)
 {
-  vDteFromEdt((Word*)&pDatum->m_wWord,iEraBaseYear);
-}
-
-/*----------------------------------------------------------------------------*/
-/* compute date w.r.t the base date                                           */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vDteFromEdt(Word* aWord, i8 iEraBaseYear)
-{
-  i8 iYearInEra;
-  i8 iMonth;
-  i8 iDay;
-  
-  iYearInEra = aWord->xEdt.m_uYearInEra;
-  iMonth     = aWord->xEdt.m_uMonth;
-  iDay       = aWord->xEdt.m_uDay;
-  
-  aWord->m_iDte = 0;
-  aWord->xDte.m_uYearDelta = iYearInEra + iEraBaseYear;
-  aWord->xDte.m_uMonth     = iMonth;
-  aWord->xDte.m_uDay       = iDay;
+  RowCoder::vDteFromEdt((Word*)&pDatum->m_wWord,iEraBaseYear);
 }
 
 /*----------------------------------------------------------------------------*/

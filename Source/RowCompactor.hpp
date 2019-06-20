@@ -115,7 +115,6 @@ namespace Data
     void vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol);
 
     void vMetaCode(Column* pCol, eMC eMetaCode);
-    void vMetaPut(Datum* pDatum, Column* pCol);
 
     byte* ayShoco(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
     
@@ -132,7 +131,6 @@ namespace Data
     static HeadLine* aCompactRow(CrwBuffer* pCrwBuffer, i8 i_Row);
     
     static void vDteFromEdt(Datum* pDatum, i8 iEra);
-    static void vDteFromEdt(Word* aWord, i8 iEra);
     
     static void vDumpHead(Stz* szTitle,
                           HeadLine* aHeadLine,

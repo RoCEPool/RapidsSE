@@ -269,21 +269,21 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
       case MC_DATE_E0_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        RowCompactor::vDteFromEdt((Word*)(aiColVal-1),C_ERA_0);
+        vDteFromEdt((Word*)(aiColVal-1),C_ERA_0);
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_DATE_E1_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        RowCompactor::vDteFromEdt((Word*)(aiColVal-1),C_ERA_1);
+        vDteFromEdt((Word*)(aiColVal-1),C_ERA_1);
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_DATE_E2_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        RowCompactor::vDteFromEdt((Word*)(aiColVal-1),C_ERA_2);
+        vDteFromEdt((Word*)(aiColVal-1),C_ERA_2);
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
