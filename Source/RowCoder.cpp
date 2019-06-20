@@ -137,6 +137,19 @@ TailLine* RowCoder::aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel)
   return aTail;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is meta code a MC_Xyz_FIT_ ?                                               */
+/*----------------------------------------------------------------------------*/
+bool RowCoder::bIsFit(eMC eMetaCode)
+{
+  if ( MC_STR_FIT_1L   == eMetaCode ||
+       MC_BSTR_FIT_2L  == eMetaCode ||
+       MC_SHOCO_FIT_1C == eMetaCode   )
+    return true;
+  
+  return false;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

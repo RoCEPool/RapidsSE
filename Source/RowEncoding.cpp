@@ -182,13 +182,18 @@ void RowEncoding::vEncode(Row* pRow)
         
     } // switch eDatum
     
-    if (i_Col)
-      xEncode[i_Col].m_nOffset =
-        xEncode[i_Col - 1].m_nOffset
-          + nDataBytes(xEncode[i_Col - 1].m_eMetaCode);
-    else
-      xEncode[i_Col].m_nOffset = 0;
+    if (! i_Col)
+      continue;
+    
+    // compute offset location
+    
+    xEncode[i_Col].m_nOffset =
+      xEncode[i_Col - 1].m_nOffset
+        + nDataBytes(xEncode[i_Col - 1].m_eMetaCode);
 
+    if ( bIsFit(xEncode[i_Col - 1].m_eMetaCode) )
+      xEncode[i_Col].m_nOffset += xEncode[i_Col].m_nDataBytes;
+    
   } // for i_Col
 
 }
