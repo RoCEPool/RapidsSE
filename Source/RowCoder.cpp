@@ -94,6 +94,25 @@ i8 RowCoder::nDataBytes(eMC eMetaCode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert a Edt into an Dte                                                  */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDteFromEdt(Word* aWord, i8 iEraBaseYear)
+{
+  i8 iYearInEra;
+  i8 iMonth;
+  i8 iDay;
+  
+  iYearInEra = aWord->xEdt.m_uYearInEra;
+  iMonth     = aWord->xEdt.m_uMonth;
+  iDay       = aWord->xEdt.m_uDay;
+  
+  aWord->m_iDte = 0;
+  aWord->xDte.m_uYearDelta = iYearInEra + iEraBaseYear;
+  aWord->xDte.m_uMonth     = iMonth;
+  aWord->xDte.m_uDay       = iDay;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert a Dte into an Edt                                                  */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDteIntoEdt(Dtm wDte,
