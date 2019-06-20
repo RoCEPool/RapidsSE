@@ -143,18 +143,7 @@ namespace Data
     void vUsageIncRecoded(Column* pCol, i8 nBytes, eMC eMetaCode = MC_NULL);
     void vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss, eMC eMetaCode = MC_NULL);
     void vUsageReset(void);
-  
-    void vXchkBcd(Datum* pDatum, Column* pCol, i8 iRow);
-    void vXchkBol(Datum* pDatum, Column* pCol, i8 iRow);
-    void vXchkDte(Datum* pDatum, Column* pCol, i8 iRow);
-    void vXchkFlt(Datum* pDatum, Column* pCol, i8 iRow);
-    void vXchkInt(Datum* pDatum, Column* pCol, i8 iRow);
-    void vXchkIvl(Datum* pDatum, Column* pCol, i8 iRow);
-    void vXchkTme(Datum* pDatum, Column* pCol, i8 iRow);
-    void vXchkTsp(Datum* pDatum, Column* pCol, i8 iRow);
-    void vXchkVch(Datum* pDatum, Column* pCol, i8 iRow);
-    void vXchkVchRecode(Column* pCol);
-    
+      
   public:
     static void vAnalyse(RowNub* pNub);
   
