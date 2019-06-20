@@ -60,6 +60,7 @@ RowEncoding::RowEncoding(ColumnVec* pColVec)
   
   m_pColVec  = pColVec;
   m_nColumns = m_pColVec->nItems();
+  m_nBytesNeeded = C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - -
 
@@ -93,6 +94,16 @@ RowEncoding::~RowEncoding(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* encode row                                                                 */
+/*----------------------------------------------------------------------------*/
+i8 RowEncoding::nBytesNeeded(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  
+  return m_nBytesNeeded;
+}
 
 /*----------------------------------------------------------------------------*/
 /* encode row                                                                 */
@@ -216,8 +227,11 @@ void RowEncoding::vSplitOver(i8 nHeadSize, i8 nMetaBytes)
       break;
   }
   
-  if (i_Col >= m_nColumns)
+  if (i_Col >= m_nColumns) {
+    m_nBytesNeeded = xEncode[m_nColumns - 1].m_nOffset
+                       + xEncode[m_nColumns - 1].m_nDataBytes;
     return;
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -238,6 +252,8 @@ void RowEncoding::vSplitOver(i8 nHeadSize, i8 nMetaBytes)
   for ( ; i_Col < m_nColumns; i_Col++)
     xEncode[i_Col].m_nOffset += nShiftBy;
   
+  m_nBytesNeeded = xEncode[m_nColumns - 1].m_nOffset
+                     + xEncode[m_nColumns - 1].m_nDataBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -452,6 +468,8 @@ void RowEncoding::vEncodeVch(Dtm wVch,
 void RowEncoding::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  
+  m_nBytesNeeded = C_UNKNOWN;
   
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     xEncode[i_Col].m_eMetaCode  = MC_NULL;

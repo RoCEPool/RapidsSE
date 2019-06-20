@@ -11,6 +11,8 @@ namespace Data
   public:
     ColumnVec* m_pColVec;
     i8         m_nColumns;
+    i8         m_nBytesNeeded;
+  
   
     // - - - - - - - - - - - - - - - - - -
   
@@ -35,6 +37,7 @@ namespace Data
     RowEncoding(ColumnVec* pColVec);
     ~RowEncoding(void) noexcept(false);
   
+    i8   nBytesNeeded(void);
     void vEncode(Row* pRow);
     void vSplitOver(i8 nHeadSize, i8 nMetaBytes);
 
