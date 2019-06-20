@@ -987,6 +987,16 @@ void RowCompactor::vDataAdd(Datum* pEncodedDatum, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add encoded datum onto the end of into-head                                */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vDataAdd(w8 wBytes, i8 nBytes, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  vHeadAdd(wBytes,nBytes,pCol);
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy column value from row into datum                                      */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vDatumBol(Datum* pTgtDatum, Row* pRow, Column* pCol)

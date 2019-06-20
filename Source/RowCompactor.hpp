@@ -135,7 +135,8 @@ namespace Data
 
     void vDataNeed(i8 nBytes, Column* pCol);
     void vDataAdd(Datum* pDatum, Column* pCol);
-    
+    void vDataAdd(w8 wBytes, i8 nBytes, Column* pCol);
+
     void vDatumBol(Datum* pTgtDatum, Row* pRow, Column* pCol);
     void vDatumBcd(Datum* pTgtDatum, Row* pRow, Column* pCol);
     void vDatumDte(Datum* pTgtDatum, Row* pRow, Column* pCol);
