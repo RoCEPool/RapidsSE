@@ -110,10 +110,6 @@ namespace Data
     void vCompactEnd(void);
     bool bCompactRow(Row* pRow);
 
-  private:
-    void vEncodeBegin(RowNub* pIntoNub);
-    void vEncodeEnd(void);
-    void vEncodeRow(Row* pRow);
 
   public:
     void vReport(RowCompactor* pRowCoder_Encode);

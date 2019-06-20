@@ -285,97 +285,6 @@ bool RowCompactor::bCompactRow(Row* pRow)
 
   return true;
 }
-/*----------------------------------------------------------------------------*/
-/* begin encoding of a row into given row nub                                 */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeBegin(RowNub* pIntoNub)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  // set up
-  
-  m_bEncoding    = true;
-  m_pColVec      = pIntoNub->pDesc()->pColumnVec();
-  m_nHeadBytes   = nHeadBytes(m_pColVec);
-  m_nMetaData    = nMetaData(m_pColVec);
-  m_i_BaseOffset = iBaseOffset(m_pColVec);
-
-  m_pIntoNub     = pIntoNub;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // initialise the into row
-  
-  m_pIntoNub->vReset();
-  m_i_IntoHead = m_pIntoNub->iAllotHead(C_LARGEHEAD);
-  ASSERT(0 == m_i_IntoHead);
-
-  m_aIntoHead    = m_pIntoNub->aGetHead();
-  m_i_IntoOffset = iBaseOffset(m_pColVec);
-}
-
-/*----------------------------------------------------------------------------*/
-/* end encoding of row                                                        */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeEnd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-//  HV_Rec hvRec;
-//  vRecord(hvRec,m_aIntoHead,m_pColVec);
-//  vTrace("encoded: (%s)\n"_Stz,hvRec->szRecStr());
-//  
-//  vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
-
-  //vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
-  //vDebugPoint();
-
-  m_pIntoNub->vHeadBytes_used(m_i_IntoOffset);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  m_bEncoding    = false;
-
-  //m_pColVec      = nullptr;
-  
-  m_pIntoNub     = nullptr;
-  m_i_IntoHead   = C_UNKNOWN;
-  m_aIntoHead    = nullptr;
-  m_i_IntoOffset = C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode given row into current row nub                                      */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vEncodeRow(Row* pRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  //return;
-  
-  i8 nCols = m_pColVec->nItems();
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-
-    Datum oDatum;
-    
-    Column* pCol = m_pColVec->pGet(i_Col);
-    eDM eDatum = pCol->eDatumType();
-
-    switch (eDatum) {
-      case DM_BCD: vDatumBcd(&oDatum,pRow,pCol); vEncodeBcd(&oDatum,pCol); break;
-      case DM_BOL: vDatumBol(&oDatum,pRow,pCol); vEncodeBol(&oDatum,pCol); break;
-      case DM_DTE: vDatumDte(&oDatum,pRow,pCol); vEncodeDte(&oDatum,pCol); break;
-      case DM_FLT: vDatumFlt(&oDatum,pRow,pCol); vEncodeFlt(&oDatum,pCol); break;
-      case DM_INT: vDatumInt(&oDatum,pRow,pCol); vEncodeInt(&oDatum,pCol); break;
-      case DM_IVL: vDatumIvl(&oDatum,pRow,pCol); vEncodeIvl(&oDatum,pCol); break;
-      case DM_TME: vDatumTme(&oDatum,pRow,pCol); vEncodeTme(&oDatum,pCol); break;
-      case DM_TSP: vDatumTsp(&oDatum,pRow,pCol); vEncodeTsp(&oDatum,pCol); break;
-      case DM_VCH: vDatumVch(&oDatum,pRow,pCol); vEncodeVch(&oDatum,pCol); break;
-      default:
-        NEVER_REACH;
-    }
-    
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* usage report                                                               */
@@ -2890,15 +2799,12 @@ void RowCompactor::vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
 /* get encoded datum from row                                                 */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vDecode(Datum* pDatum, HeadLine* aHeadLine,
-                       ColumnVec* pColVec, Column* pCol,
-                       i8& i_LastColumn, i8& i_LastOffset)
+                           ColumnVec* pColVec, Column* pCol,
+                           i8& i_LastColumn, i8& i_LastOffset)
 {
   eDM eDatum = pCol->eDatumType();
   
   switch (eDatum) {
-      
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // the regular datums
       
     case DM_BCD:
       vDecodeBcd(pDatum,aHeadLine,pColVec,pCol,i_LastColumn,i_LastOffset);
