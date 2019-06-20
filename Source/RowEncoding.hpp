@@ -15,10 +15,11 @@ namespace Data
     // - - - - - - - - - - - - - - - - - -
   
     struct {
-      eMC m_eMetaCode;
-      Dtm m_wDataCode;
-      i8  m_nDataBytes;
-      i8  m_nOffset;
+      eMC  m_eMetaCode;
+      Dtm  m_wDataCode;
+      i8   m_nDataBytes;
+      i8   m_nOffset;
+      bool m_bSplit;
     } xEncode[C_MAX_COLUMNS];
 
     Wsp_t<C_MAX_RECORD> m_xWsp;  // sz workspace

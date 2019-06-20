@@ -219,9 +219,14 @@ bool RowCompactor::bCompactRow(Row* pRow)
   RowEncoding* pRowEncoding = new RowEncoding(m_pColVec);
 
   pRowEncoding->vEncode(pRow);
+  
 
   hpRowEncoding hp_RowEnc;
-  vTrace("%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
+  vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
+
+  pRowEncoding->vSplitOver(32,16);
+
+  vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
 
   delete pRowEncoding;
   

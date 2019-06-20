@@ -68,6 +68,7 @@ RowEncoding::RowEncoding(ColumnVec* pColVec)
     xEncode[i_Col].m_wDataCode  = C_UNKNOWN;
     xEncode[i_Col].m_nDataBytes = C_UNKNOWN;
     xEncode[i_Col].m_nOffset    = 0;
+    xEncode[i_Col].m_bSplit     = false;
   }
   
 #ifdef WITH_CHECK_INITIALISED
@@ -233,6 +234,7 @@ void RowEncoding::vSplitOver(i8 nHeadSize, i8 nMetaBytes)
     i_Col--;
   }
   
+  xEncode[i_Col].m_bSplit = true;
   for ( ; i_Col < m_nColumns; i_Col++)
     xEncode[i_Col].m_nOffset += nShiftBy;
   
