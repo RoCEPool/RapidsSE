@@ -35,7 +35,9 @@ namespace Data
     ~RowEncoding(void) noexcept(false);
   
     void vEncode(Row* pRow);
+    void vSplitOver(i8 nHeadSize, i8 nMetaBytes);
 
+  private:
     void vEncodeBol(Dtm wBol, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
     void vEncodeBcd(Dtm wBcd, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
     void vEncodeDte(Dtm wDte, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
@@ -47,7 +49,7 @@ namespace Data
     void vEncodeVch(Dtm wVch, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
   
     void vReset(void);
-
+  
   private:
     Footer* aFooter(void);
   };
