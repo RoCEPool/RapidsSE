@@ -5,14 +5,12 @@
 
 namespace Data
 {
-  const i8 ARRAY_ELEMENTS = 100; //(C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(i8);
+  const i8 ARRAY_ELEMENTS = 10; //(C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(i8);
   
   class IntBuffer : public DataBuffer
   {
-  friend class IndexTree;
-  friend class RowCompactor;
 
-  protected:
+  public:
     i8 m_nInts;
     i8 m_iIntArray[ARRAY_ELEMENTS];
   
@@ -35,6 +33,7 @@ namespace Data
     void       vDump(void);
     void       vBufferCount(i8& nBuffers);
     i8         iGetValue(i8 iIndex);
+    i8*        aGetElement(i8 iIndex);
     bool       bHasSpace(void);
     IntBuffer* pNextBuffer(void);
     void       vNextBuffer(IntBuffer* pNextBuffer);

@@ -135,13 +135,23 @@ void IntBuffer::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the compact row from the buffer                                        */
+/* get the value at index from the buffer                                     */
 /*----------------------------------------------------------------------------*/
 i8 IntBuffer::iGetValue(i8 i_Index)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTBUFFER,_FOOTER_);
   
   return m_iIntArray[i_Index];
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the element at index from the buffer                                   */
+/*----------------------------------------------------------------------------*/
+i8* IntBuffer::aGetElement(i8 i_Index)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTBUFFER,_FOOTER_);
+  
+  return &m_iIntArray[i_Index];
 }
 
 /*----------------------------------------------------------------------------*/

@@ -291,6 +291,8 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
 #include "RowInflator.hpp"
 #include "Record.hpp"
 
+#include "BufferCursor.hpp"
+
 #include "CrwBuffer.hpp"
 #include "RowCompactor.hpp"
 #include "IndexTree.hpp"

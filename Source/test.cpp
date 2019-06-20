@@ -760,15 +760,15 @@ void vTest14(void)
 //****************************************************************************//
 /* QUICKSORT using cursors to a buffer of array elements                      */
 //****************************************************************************//
+
 /*----------------------------------------------------------------------------*/
 /* Partition                                                                  */
 /*----------------------------------------------------------------------------*/
-void vPartitionBuffer(ArrayBuffer* pArrayBuffer, BufferCursor& xLowCursor,
-                      BufferCursor& xHighCursor, BufferCursor& xPartitionCursor)
+void vPartitionBuffer(ArrayBuffer* pArrayBuffer, BufCursor& xLowCursor, BufCursor& xHighCursor, BufCursor& xPivotCursor)
 {
   
-  // point a cusror at the pivot point
-  BufferCursor xPivotCursor(xLowCursor, xHighCursor);
+  // point a cursor at the pivot point
+  BufCursor xPartitionCursor(xLowCursor, xHighCursor);
   
   vTrace("iPivot %lld Low %lld High %lld\n"_Stz,
          *xPivotCursor,
@@ -776,8 +776,8 @@ void vPartitionBuffer(ArrayBuffer* pArrayBuffer, BufferCursor& xLowCursor,
          *xHighCursor.m_aElement);
   
   // define the start and end positions
-  BufferCursor xLeft(xLowCursor);
-  BufferCursor xRight(xHighCursor);
+  BufCursor xLeft(xLowCursor);
+  BufCursor xRight(xHighCursor);
   
   // get the pivot element value
   i8 iPivotValue = *xPivotCursor;
@@ -827,11 +827,11 @@ void vPartitionBuffer(ArrayBuffer* pArrayBuffer, BufferCursor& xLowCursor,
 /*----------------------------------------------------------------------------*/
 /* QuickSort                                                                  */
 /*----------------------------------------------------------------------------*/
-void vQuickSortBuffer(ArrayBuffer* pArrayBuffer, BufferCursor& xLowCursor, BufferCursor& xHighCursor)
+void vQuickSortBuffer(ArrayBuffer* pArrayBuffer, BufCursor& xLowCursor, BufCursor& xHighCursor)
 {
   
   // create a Partition cursor intially with a nullptr element
-  BufferCursor xPartitionCursor(nullptr, C_UNKNOWN);
+  BufCursor xPartitionCursor(nullptr, C_UNKNOWN);
   
   if (xLowCursor < xHighCursor) {
     vPartitionBuffer(pArrayBuffer, xLowCursor, xHighCursor, xPartitionCursor);
@@ -846,12 +846,11 @@ void vQuickSortBuffer(ArrayBuffer* pArrayBuffer, BufferCursor& xLowCursor, Buffe
     vQuickSortBuffer(pArrayBuffer, xLowCursor, xPartitionCursor);
     
     // quick sort from partition+1 to high
-    BufferCursor xPartitionNext(xPartitionCursor.m_pArrayBuffer, xPartitionCursor.m_aElement + 1);
+    BufCursor xPartitionNext(xPartitionCursor.m_pArrayBuffer, xPartitionCursor.m_aElement + 1);
     vQuickSortBuffer(pArrayBuffer, xPartitionNext, xHighCursor);
   }
   
 }
-
 /*----------------------------------------------------------------------------*/
 /* test15                                                                     */
 /*----------------------------------------------------------------------------*/
@@ -872,17 +871,17 @@ void vTest15(void)
     vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
   }
   
-  //--------------------------------------------------------------------------
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // EXPERIMENT 4: SORTING USING CURSORS INTO BUFFER OF ARRAY
   vTrace("SORTING USING CUSRORS INTO BUFFER OF ARRAY\n"_Stz);
   
   ArrayBuffer xBuffer;
   
   // create a Low cursor pointing to the first element in the array
-  BufferCursor xLow(&xBuffer, (i8)0);
+  BufCursor xLow(&xBuffer, (i8)0);
   
   // create a High cursor pointing to the first element in the array
-  BufferCursor xHigh(&xBuffer, ARRAY_ELEMENTS-1);
+  BufCursor xHigh(&xBuffer, ARRAY_ELEMENTS-1);
   
   // call quick sort (recursive call)
   vQuickSortBuffer(&xBuffer, xLow, xHigh);
@@ -897,20 +896,122 @@ void vTest15(void)
   
 }
 
+//****************************************************************************//
+/* QUICKSORT using cursors to a buffer of int elements                        */
+//****************************************************************************//
+
+/*----------------------------------------------------------------------------*/
+/* Partition                                                                  */
+/*----------------------------------------------------------------------------*/
+BufferCursor* pPartitionBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor,
+                      BufferCursor* pHighCursor)
+{
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // point a cusror at the pivot point
+  BufferCursor* pPivotCursor = new BufferCursor(pLowCursor, pHighCursor);
+  
+  vTrace("iPivot %lld Low %lld High %lld\n"_Stz,
+         *pPivotCursor->m_aElement,
+         *pLowCursor->m_aElement,
+         *pHighCursor->m_aElement);
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // define the start and end positions
+  BufferCursor* pLeft = new BufferCursor(pLowCursor);
+  BufferCursor* pRight = new BufferCursor(pHighCursor);
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the pivot element value
+  i8 iPivotValue = *pPivotCursor->m_aElement;
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Move start and end toward each other, until they detect an inversion:
+  // a pair of elements, one greater than or equal to the pivotValue,
+  // one lesser or equal, that are in the wrong order relative to each other.
+  
+  while (true) {
+    
+    vTrace("\nLeft %lld Right %lld\n"_Stz, *pLeft->m_aElement, *pRight->m_aElement);
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - -
+    // move start cursor forward till we go beyond the pivot value
+    while (pLeft->bIsLessThan(iPivotValue)) {
+      pLeft->vMoveRight();
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // move end cursor backward till pivot value is beyond it
+    while (pRight->bIsGreaterThan(iPivotValue)) {
+      pRight->vMoveLeft();
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // crossed
+    if (pLeft->bIsAfterOrSame(pRight)) {
+      // create a Partition cursor intially with a nullptr element
+      BufferCursor* pPartitionCursor = new BufferCursor(pRight);
+      vTrace("Returning %lld\n"_Stz, *pRight->m_aElement);
+      return pPartitionCursor;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - -
+    // swap the inverted eIright and left) lements
+    vTrace("Swapping %lld %lld\n"_Stz, *pLeft->m_aElement, *pRight->m_aElement);
+    pLeft->vSwap(pRight);
+    pIntBuffer->vDump();
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // move start cursor forward
+    pLeft->vMoveRight();
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // move end cursor backward
+    pRight->vMoveLeft();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* QuickSort                                                                  */
+/*----------------------------------------------------------------------------*/
+void vQuickSortBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor)
+{
+  
+  if (pLowCursor->bIsBefore(pHighCursor)) {
+    BufferCursor* pPartitionCursor = pPartitionBuffer(pIntBuffer, pLowCursor, pHighCursor);
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // quick sort from low to partition
+    vQuickSortBuffer(pIntBuffer, pLowCursor, pPartitionCursor);
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // quick sort from partition+1 to high
+    BufferCursor* pPartitionNext = new BufferCursor(pPartitionCursor->m_pIntBuffer,
+                                                    pPartitionCursor->m_aElement + 1);
+    vQuickSortBuffer(pIntBuffer, pPartitionNext, pHighCursor);
+  }
+  
+}
+
 /*----------------------------------------------------------------------------*/
 /* test16                                                                     */
 /*----------------------------------------------------------------------------*/
 void vTest16(void)
 {
   
-  vTrace("Quicksort: Hoare partition scheme\n"_Stz);
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // EXPERIMENT 5: SORTING BUFFER OF INTEGERS USING A BUFFER CURSOR
+  vTrace("\n\n**************************************************"_Stz);
+  vTrace("\nQUICKSORT: HOARE PARTITION SCHEME\n"_Stz);
+  vTrace("SORTING USING CUSRORS INTO BUFFER OF INTEGER ARRAY\n"_Stz);
+  vTrace("**************************************************"_Stz);
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create aan IntBuffer
+  // create an IntBuffer
   IntBuffer* pIntBuffer = new IntBuffer();
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Add values to the buffer till the buffer is full
+  // Add random integer values to the buffer till the buffer is full
   while (true) {
     i8 iRandom = Random::iInteger(0,1000);
     if (pIntBuffer->bHasSpace())
@@ -919,8 +1020,38 @@ void vTest16(void)
       break;
   }
   
-  vTrace("\nSorting buffer:\n"_Stz);
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dump the buffer
+  vTrace("\n\nSorting buffer:\n"_Stz);
   pIntBuffer->vDump();
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a Low cursor pointing to the first element in the array
+  BufferCursor* pLowCursor = new BufferCursor(pIntBuffer, pIntBuffer->aGetElement(0));
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a High cursor pointing to the first element in the array
+  BufferCursor* pHighCursor = new BufferCursor(pIntBuffer, pIntBuffer->aGetElement(pIntBuffer->nCount() - 1));
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // call quick sort (recursive call)
+  vQuickSortBuffer(pIntBuffer, pLowCursor, pHighCursor);
+
+  vTrace("\nSorted buffer:\n"_Stz);
+  pIntBuffer->vDump();
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify that the data is sorted
+  RASSERT(pIntBuffer->bVerifyOrder());
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete the bufferCursors
+  delete pLowCursor;
+  delete pHighCursor;
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete the intBuffer
+  delete pIntBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

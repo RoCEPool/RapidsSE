@@ -37,6 +37,7 @@ enum eCN : u2 // Class Number
   /*  19 0x13    19672B Heap:I */ CN_ATTACHMAP,
 
   /*  20 0x14        1B Heap:I */ CN_BPA,
+  /*                           */ CN_BUFFERCURSOR,
   /*  21 0x15      312B Heap:I */ CN_BUFFERPOOL,
   /*  22 0x16      120B Heap:S */ CN_BYTERATE,
   
@@ -341,6 +342,7 @@ static Stz* aCN[]
   /*  19 0x13 */ "ATTACHMAP"_Stz,           // CN_ATTACHMAP
 
   /*  20 0x14 */ "BPA"_Stz,                 // CN_BPA
+  /*          */ "BUFFERCURSOR"_Stz,        // CN_BUFFERCURSOR
   /*  21 0x15 */ "BUFFERPOOL"_Stz,          // CN_BUFFERPOOL
   /*  22 0x16 */ "BYTERATE"_Stz,            // CN_BYTERATE
   
