@@ -24,7 +24,8 @@ namespace Data
 
   /*----------------------------------------------------------------------------*/
   
-  class RowCompactor : public Object
+  class RowCompactor : public Object,
+                       public RowCoder
   {
   public:
   

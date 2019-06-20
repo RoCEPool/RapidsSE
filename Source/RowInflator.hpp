@@ -5,7 +5,7 @@
 
 namespace Data
 {
-  class RowInflator
+  class RowInflator : public RowCoder
   {
   public:
     static void vInflate(Row* pRow, HeadLine* aHeadLine);

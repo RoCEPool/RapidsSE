@@ -5,7 +5,8 @@
 
 namespace Data
 {
-  class RowEncoding : public Object
+  class RowEncoding : public Object,
+                      public RowCoder
   {
   public:
     ColumnVec* m_pColVec;

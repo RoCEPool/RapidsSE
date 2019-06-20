@@ -6,7 +6,7 @@
 namespace Data
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class RowExtractor
+  class RowExtractor : public RowCoder
   {
   public:
     static void vAddElement(EntWrk* pEntWrk, Stz* aSrc,
