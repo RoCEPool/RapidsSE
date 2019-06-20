@@ -8,6 +8,7 @@ namespace Data
   class RowCoder
   {
   public:
+    static i8   nDataBytes(eMC eMetaCode);
   };
 }
 

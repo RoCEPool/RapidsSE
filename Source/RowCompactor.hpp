@@ -25,7 +25,7 @@ namespace Data
   /*----------------------------------------------------------------------------*/
   
   class RowCompactor : public Object,
-                       public RowCoder
+                       private RowCoder
   {
   public:
   
@@ -202,9 +202,7 @@ namespace Data
   
     //! alka
     static HeadLine* aCompactRow(CrwBuffer* pCrwBuffer, i8 i_Row);
-  
-    static i8   nDataBytes(eMC eMetaCode);
-  
+    
     static void vDteIntoEdt(Datum* pDatum, i8& iEra_);
     static void vDteFromEdt(Datum* pDatum, i8 iEra);
     static void vDteFromEdt(Word* aWord, i8 iEra);

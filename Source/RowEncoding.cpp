@@ -223,7 +223,7 @@ void RowEncoding::vEncode(Row* pRow)
     if (i_Col)
       xEncode[i_Col].m_nOffset =
         xEncode[i_Col - 1].m_nOffset
-          + RowCompactor::nDataBytes(xEncode[i_Col - 1].m_eMetaCode);
+          + nDataBytes(xEncode[i_Col - 1].m_eMetaCode);
     else
       xEncode[i_Col].m_nOffset = 0;
 
