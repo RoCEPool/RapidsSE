@@ -237,10 +237,10 @@ bool RowExtractor::bExtractElement(Datum* pDatum, char** aacRecCrs,
       if (!b)
         break;
       
-      pDatum->xDte.m_uYearDelta  = iYear - C_YEAR_BASE;
-      pDatum->xDte.m_uMonth = iMonth;
-      pDatum->xDte.m_uDay   = iDay;
-      pDatum->xDte.m_uSpare = 0;
+      pDatum->m_wDtm.xDte.m_uYearDelta  = iYear - C_YEAR_BASE;
+      pDatum->m_wDtm.xDte.m_uMonth = iMonth;
+      pDatum->m_wDtm.xDte.m_uDay   = iDay;
+      pDatum->m_wDtm.xDte.m_uSpare = 0;
       break;
       
     case DM_FLT:
@@ -261,11 +261,11 @@ bool RowExtractor::bExtractElement(Datum* pDatum, char** aacRecCrs,
       if (!b)
         break;
       
-      pDatum->xTme.m_uHour   = iHour;
-      pDatum->xTme.m_uMinute = iMinute;
-      pDatum->xTme.m_uSecond = iSecond;
-      pDatum->xTme.m_uMicro  = iMicro;
-      pDatum->xTme.m_uSpare  = 0;
+      pDatum->m_wDtm.xTme.m_uHour   = iHour;
+      pDatum->m_wDtm.xTme.m_uMinute = iMinute;
+      pDatum->m_wDtm.xTme.m_uSecond = iSecond;
+      pDatum->m_wDtm.xTme.m_uMicro  = iMicro;
+      pDatum->m_wDtm.xTme.m_uSpare  = 0;
       
       break;
       
@@ -278,14 +278,14 @@ bool RowExtractor::bExtractElement(Datum* pDatum, char** aacRecCrs,
       if (!b)
         break;
       
-      pDatum->xTsp.m_uYearDelta   = iYear - C_YEAR_BASE;
-      pDatum->xTsp.m_uMonth  = iMonth;
-      pDatum->xTsp.m_uDay    = iDay;
-      pDatum->xTsp.m_uHour   = iHour;
-      pDatum->xTsp.m_uMinute = iMinute;
-      pDatum->xTsp.m_uSecond = iSecond;
-      pDatum->xTsp.m_uMicro  = iMicro;
-      pDatum->xTsp.m_uSpare  = 0;
+      pDatum->m_wDtm.xTsp.m_uYearDelta   = iYear - C_YEAR_BASE;
+      pDatum->m_wDtm.xTsp.m_uMonth  = iMonth;
+      pDatum->m_wDtm.xTsp.m_uDay    = iDay;
+      pDatum->m_wDtm.xTsp.m_uHour   = iHour;
+      pDatum->m_wDtm.xTsp.m_uMinute = iMinute;
+      pDatum->m_wDtm.xTsp.m_uSecond = iSecond;
+      pDatum->m_wDtm.xTsp.m_uMicro  = iMicro;
+      pDatum->m_wDtm.xTsp.m_uSpare  = 0;
       break;
       
     case DM_VCH:

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Datum.hpp -- Datum                                                         */
+/* Datum.hpp -- Datum (column value outside of row)                           */
 /*============================================================================*/
 #pragma once
 
@@ -9,21 +9,13 @@ namespace Data
   {
   public:
   
-    Column* m_pCol;
-    eDM     m_eDatum;
+    Column* m_pCol;   // which column
+    eDM     m_eDatum; // the kind of datum
+    Dtm     m_wDtm;   // the value
   
-    union {
-      _Dte xDte;
-      _Edt xEdt;
-      _Ivl xIvl;
-      _Tme xTme;
-      _Tsp xTsp;
-      
-      Dtm  m_wDtm;
-    };
-  
-    i8   m_nChars;
-    sVCH m_sVch;
+    // - - - - - - -
+    i8      m_nChars; // number of chars
+    sVCH    m_sVch;   // vch value
 
     // must be last
     Footer m_xFooter;
