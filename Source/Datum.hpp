@@ -5,14 +5,12 @@
 
 namespace Data
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Datum : public Object
   {
   public:
   
     Column* m_pCol;
-  
-    eDM m_eDatum;
+    eDM     m_eDatum;
   
     union {
       i8   m_iBcd;
@@ -30,15 +28,12 @@ namespace Data
       _Ivl xIvl;
       _Tme xTme;
       _Tsp xTsp;
-
-      w8   m_wWord;
-      byte m_yaByte[C_BYTES_PER_WORD];
       
       Dtm  m_wDtm;
     };
   
+    i8   m_nChars;
     sVCH m_sVch;
-    i8 m_nChars;
 
     // must be last
     Footer m_xFooter;
@@ -59,6 +54,7 @@ namespace Data
   
   Datum* _pDatum(void* aAddr);
 }
+
 
 #pragma pack(push, 1)
 class Nibbler1 {

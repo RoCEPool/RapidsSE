@@ -53,10 +53,10 @@ Datum::Datum(void)
   
   m_pCol   = nullptr;
   m_eDatum = DM_NONE;
-  
-  m_wWord  = C_UNKNOWN;
-  //m_sVch
+  m_iInt   = C_UNKNOWN;
   m_nChars = 0;
+
+  //m_sVch
   
   _checkInitialised_(CN_DATUM);
   

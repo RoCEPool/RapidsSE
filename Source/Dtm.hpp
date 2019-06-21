@@ -35,6 +35,9 @@ namespace Values
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       Stz*    m_szVch;
+      
+      byte    m_yaByte[C_BYTES_PER_WORD];
+
     };
   
   public:
