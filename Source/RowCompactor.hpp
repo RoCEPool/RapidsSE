@@ -102,7 +102,6 @@ namespace Data
   private:
     void vAnalyseFree(void);
     void vCompact(RowEncoding* pRowEncoding);
-    void vExtendIntoHead(i8 nBytes, Column* pCol);
     void vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol);
     byte* ayShoco(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
     
@@ -113,7 +112,6 @@ namespace Data
     void vUsageReset(void);
     
   public:
-    static void vAnalyse(RowNub* pNub);
     static HeadLine* aCompactRow(CrwBuffer* pCrwBuffer, i8 i_Row);
     static void vDumpHead(Stz* szTitle,
                           HeadLine* aHeadLine,
@@ -123,9 +121,7 @@ namespace Data
                              ColumnVec* pColVec);
   
   private:
-    static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
     static i8 nHeadBytes_(ColumnVec* pColVec);
-    static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
     
   private:
     Footer* aFooter(void);

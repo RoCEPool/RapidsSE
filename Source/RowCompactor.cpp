@@ -120,9 +120,6 @@ RowCompactor::~RowCompactor(void) noexcept(false)
 {
 }
 
-////////////////////////////////////////////////////////////////////////////////
-//                            Non-Static Functions                            //
-////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /*-- Public Non-Static -------------------------------------------------------*/
@@ -312,66 +309,6 @@ void RowCompactor::vCompact(RowEncoding* pRowEncoding)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extend the into head by alloting an nByte overflow tail line               */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vExtendIntoHead(i8 nBytes, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  RASSERT(0);
-
-  /*
-             -- Into-Head --                        -- Over-Tail --
-   +================================+    +================================+
-   | <W>{M}                         |    | <U> ////////////////////////// |
-   +================================+    +================================+
-   |                                |
-   +--------------------------------+
-   |                           [OT] |
-   +--------------------------------+
-
-   where: [OT] is 2B relative index of the Over-Tail line
-          <W> is one byte being the word length of head line
-          {M} is the set of metacodes
-
-   */
-
-  // allot an overline
-  m_nOverBytes = _1B_U + nBytes;
-  i8 m_i_IntoOver = m_pIntoNub->iAllotOver(m_nOverBytes);
-  OverLine* m_aIntoOver = m_pIntoNub->aGetOver(m_i_IntoOver);
-  
-  // compute [OT] relative difference in units
-  i8 i_OverTail_rel = RowNub::iUnitDiff(m_aIntoHead,(TailLine*)m_aIntoOver);
-
-  // the [OT] relative difference goes into the last 2B of headline
-  i8 i_Offset_over = m_nHeadBytes - _2B_OT;
-  
-  // put [OT] relative difference into last 2B of headline
-  m_aIntoHead->vPut(i_Offset_over,i_OverTail_rel,_2B_OT);
-  
-  i8 iRevised_W = m_aIntoHead->nWords() + 128;
-  
-  m_aIntoHead->v1B(0,iRevised_W);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // get the metacode <M> for the column
-  i8 i_Col = pCol->iColumnNo();
-  eMC eDisplacedMetaCode = (eMC)m_aIntoHead->w8_1B(_1B_W + i_Col);
-
-  // the 1B mc for the column in the head line becomes MC_OVERFLOW_2T
-  m_aIntoHead->v1B((_1B_W + i_Col),MC_OVERFLOW_2T);
-  
-  // we put the original 1B mc for the column into the overflow line <U><M>
-  m_aIntoOver->v1B(_1B_U,eDisplacedMetaCode);
-
-  //!
-  //! we now move m_iIntoOffset being logical
-  m_i_IntoOffset = m_nHeadBytes + _1B_U + _1B_M;
-}
-
-/*----------------------------------------------------------------------------*/
 /* add encoded datum onto the end of into-head                                */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol)
@@ -516,89 +453,6 @@ void RowCompactor::vUsageReset(void)
 /*-- Public Static -----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* analyse nub                                                                */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vAnalyse(RowNub* pNub)
-{
-  i8 nTails = 0;
-  i8 iSumTail = 0;
-  i8 iMinTail = C_I8_MAX;
-  i8 iMaxTail = C_I8_MIN;
-  
-  i8 nHeads = 0;
-  i8 iSumHead = 0;
-  i8 iMinHead = C_I8_MAX;
-  i8 iMaxHead = C_I8_MIN;
-  
-  i8 nWouldReduce = 0;
-  
-  for (i8 i_Tail = pNub->iLastTail();
-       i_Tail != C_UNKNOWN;
-       i_Tail = pNub->iPrevTail(i_Tail)) {
-    
-    TailLine* aTail = pNub->aGetTail(i_Tail);
-    
-    i8 iLenTail = aTail->w8_1B(1);
-    RASSERT(iLenTail <= 56);
-    iSumTail += iLenTail;
-    nTails++;
-    
-    if (iLenTail < iMinTail)
-      iMinTail = iLenTail;
-    if (iLenTail > iMaxTail)
-      iMaxTail = iLenTail;
-  }
-  
-  for (i8 i_Head = 0; i_Head < pNub->nHeads();  i_Head++) {
-    
-    HeadLine* aHeadLine = pNub->aGetHead(i_Head);
-    
-    ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
-    
-    i8 nHeadFree = nFreeSpaceHead(aHeadLine,pColVec);
-    iSumHead += nHeadFree;
-    nHeads++;
-    
-    if (nHeadFree < iMinHead)
-      iMinHead = nHeadFree;
-    if (nHeadFree > iMaxHead)
-      iMaxHead = nHeadFree;
-    
-    i8 nTailUsed = nShocoTailSize(pNub,aHeadLine);
-    
-    if (nTailUsed != C_UNKNOWN) {
-      
-      i8 nRemainder = nTailUsed - nHeadFree;
-      
-      i8 nUnitsTail = pNub->nUnits(nTailUsed);
-      i8 nUnitsRemainder = pNub->nUnits(nRemainder);
-      
-      if (nUnitsRemainder < nUnitsTail)
-        nWouldReduce++;
-      
-    }
-  }
-  
-  vTrace("Heads %lld Tails %lld; "
-         "Avg head free %lldB Min %lldB Max %lldB; "
-         "Avg tail use %lldB Min %lldB Max %lldB; "
-         "WouldReduce %lld\n"_Stz,
-         
-         pNub->nHeads(),
-         pNub->nTails(),
-         
-         nHeads ? iSumHead/nHeads : 0,
-         iMinHead,
-         iMaxHead,
-         
-         nTails ? iSumTail/nTails : 0,
-         iMinTail,
-         iMaxTail,
-         
-         nWouldReduce
-         );
-}
 
 /*----------------------------------------------------------------------------*/
 /* dump head line                                                             */
@@ -974,47 +828,13 @@ void RowCompactor::vDumpHead_IV(Stz* szTitle,
 
 
 /*----------------------------------------------------------------------------*/
-/* search for duplicate tail line                                             */
-/*----------------------------------------------------------------------------*/
-i8 RowCompactor::iFindTail(RowNub* pNub, TailLine* aFindLine)
-{
-  static i8 nFound = 0;
-  static i8 nNotFound = 0;
-  
-  for (i8 i_Tail = pNub->iLastTail();
-       i_Tail != C_UNKNOWN;
-       i_Tail = pNub->iPrevTail(i_Tail)) {
-        
-    TailLine* aTailLine = pNub->aGetTail(i_Tail);
-    i8 nTailUnits = aTailLine->w8_1B(C_OFFSET_UNITS);
-    //RASSERT(nTailUnits <= 4);
-    
-    //MemLib::vWordDump(aFindLine,m_nHeadBytes);
-    //MemLib::vWordDump(aTailLine,m_nHeadBytes);
-    
-    if (0 == MemLib::iCompareWords(aTailLine,aFindLine,nTailUnits*sizeof(SpaceUnit))) {
-      nFound++;
-      //      if (IntLib::bIsDecaCycle(nFound))
-      //        vTrace("%lld dupe tail found\n"_Stz,nFound);
-      return i_Tail;
-    }
-    
-  }
-  
-  nNotFound++;
-  //  if (IntLib::bIsDecaCycle(nNotFound))
-  //    vTrace("%lld dupe tail NOT found\n"_Stz,nNotFound);
-  return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
 /* calc size of the head line for column vector                               */
 /*----------------------------------------------------------------------------*/
 i8 RowCompactor::nHeadBytes_(ColumnVec* pColVec)
 {
   // experiment 1
-  i8 nBytes = sizeof(CacheLine) + (1 * C_BYTES_PER_WORD);
-  i8 nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  //i8 nBytes = sizeof(CacheLine) + (1 * C_BYTES_PER_WORD);
+  //i8 nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(Word));
   
   // experiment 2
   //i8 nBytes = pColVec->nItems() * 4;
@@ -1040,41 +860,6 @@ i8 RowCompactor::nHeadBytes_(ColumnVec* pColVec)
   RASSERT(nBytesHead >= C_HEAD_MIN_BYTES);
   
   return nBytesHead;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get length of tail associate with a head line                              */
-/*----------------------------------------------------------------------------*/
-i8 RowCompactor::nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine)
-{
-  //MemLib::vWordDump(aHeadLine,m_nHeadBytes);
-  
-  ColumnVec* pColVec = pNub->pDesc()->pColumnVec();
-
-  Column* pLastCol = pColVec->pGet(pColVec->nItems() - 1);
-  ASSERT(pLastCol->bIsLastColumn());
-  
-  i8 i_Offset = iBaseOffset(pColVec);
-  i8 i_LastColumn = 0;
-  
-  eMC eEncoding = eGetEncoding(aHeadLine,
-                                   pLastCol,pColVec,
-                                   i_LastColumn,i_Offset);
-  
-  if (MC_SHOCO_TAIL_2T != eEncoding)
-    return C_UNKNOWN;
-  
-  i8 i_Tail_rel = wGetLogical(aHeadLine,i_Offset,C_2B);
-  TailLine* aShocoTail = aGetTailRel(aHeadLine,i_Tail_rel);
-
-  i8 nCompressed = aShocoTail->w8_1B(C_OFFSET_COMPRESSED);
-  //RASSERT(nCompressed <= 56);
-  i8 nTailSize = nCompressed + 1;
-  
-  //MemLib::vWordDump(aHeadLine,m_nHeadBytes);
-
-
-  return nTailSize;
 }
 
 
