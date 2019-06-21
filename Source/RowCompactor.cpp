@@ -49,20 +49,20 @@ RowCompactor::RowCompactor(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_pIntoNub      = nullptr;
+  m_pCrwNub       = nullptr;
   m_pColVec       = nullptr;
-  m_nHeadBytes    = C_UNKNOWN;
-  m_nMetaData     = C_UNKNOWN;
+  m_nHeadSize     = C_UNKNOWN;
+  m_nMetaSize     = C_UNKNOWN;
   m_i_BaseOffset  = C_UNKNOWN;
 
-  m_i_IntoHead    = C_UNKNOWN;
-  m_aIntoHead     = nullptr;
-  m_i_IntoOffset  = C_UNKNOWN;
+  m_i_Crw         = C_UNKNOWN;
+  m_aCrw          = nullptr;
+  m_i_DataOffset  = C_UNKNOWN;
   
   m_pRowSamples   = nullptr;
   
   m_nTotalBuffers = 0;
-  m_nTotalHeads   = 0;
+  m_nTotalCrws    = 0;
   
   _checkInitialised_(CN_ROWCOMPACTOR);
   
@@ -88,11 +88,11 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_pIntoNub     = pCrwBuffer->m_oRowTray.pNub();
+  m_pCrwNub      = pCrwBuffer->m_oRowTray.pNub();
 
-  m_pColVec      = m_pIntoNub->pDesc()->pColumnVec();
-  m_nHeadBytes   = nHeadBytes(m_pColVec);
-  m_nMetaData    = nMetaData(m_pColVec);
+  m_pColVec      = m_pCrwNub->pDesc()->pColumnVec();
+  m_nHeadSize    = nHeadBytes(m_pColVec);
+  m_nMetaSize    = nMetaData(m_pColVec);
   m_i_BaseOffset = iBaseOffset(m_pColVec);
   
   // + + +
@@ -107,15 +107,15 @@ void RowCompactor::vCompactEnd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   //m_pColVec     = nullptr;
-  m_nHeadBytes    = C_UNKNOWN;
-  m_nMetaData     = C_UNKNOWN;
+  m_nHeadSize     = C_UNKNOWN;
+  m_nMetaSize     = C_UNKNOWN;
   m_i_BaseOffset  = C_UNKNOWN;
 
 
-  m_pIntoNub      = nullptr;
-  m_i_IntoHead    = C_UNKNOWN;
-  m_aIntoHead     = nullptr;
-  m_i_IntoOffset  = C_UNKNOWN;
+  m_pCrwNub       = nullptr;
+  m_i_Crw         = C_UNKNOWN;
+  m_aCrw          = nullptr;
+  m_i_DataOffset  = C_UNKNOWN;
   
   // + + +
   delete m_pRowSamples;
@@ -151,7 +151,7 @@ bool RowCompactor::bCompactRow(Row* pRow)
   
   i8 nSpaceNeeded = pErwRow->nBytesNeeded();
   
-  if (! m_pIntoNub->bHasSpace(nSpaceNeeded)) {
+  if (! m_pCrwNub->bHasSpace(nSpaceNeeded)) {
     m_nTotalBuffers++;
     delete pErwRow;
     return false;
@@ -160,9 +160,9 @@ bool RowCompactor::bCompactRow(Row* pRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initialise copy
   
-  m_i_IntoHead   = m_pIntoNub->iAllotHead(m_nHeadBytes);
-  m_aIntoHead    = m_pIntoNub->aGetHead(m_i_IntoHead);
-  m_i_IntoOffset = m_i_BaseOffset;
+  m_i_Crw   = m_pCrwNub->iAllotHead(m_nHeadSize);
+  m_aCrw    = m_pCrwNub->aGetHead(m_i_Crw);
+  m_i_DataOffset = m_i_BaseOffset;
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -176,11 +176,11 @@ bool RowCompactor::bCompactRow(Row* pRow)
   // compact encoded row into a crw
 
   vCompactEncoded(pErwRow);
-  m_nTotalHeads++;
+  m_nTotalCrws++;
 
 //#ifdef WITH_TRACE_ENCODING
-  if (m_nTotalHeads <= 10)
-    HeadLine::vDumpHead("m_aIntoHead"_Stz,m_aIntoHead,m_pColVec);
+  if (m_nTotalCrws <= 10)
+    HeadLine::vDumpHead("m_aCrw"_Stz,m_aCrw,m_pColVec);
 //#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -191,7 +191,7 @@ bool RowCompactor::bCompactRow(Row* pRow)
 #endif
   
 #ifdef WITH_VERIFY_TAILS
-  m_pIntoNub->vVerifyTails(C_UNKNOWN);
+  m_pCrwNub->vVerifyTails(C_UNKNOWN);
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -212,7 +212,7 @@ void RowCompactor::vAnalyseFree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
 
-  //i8 nFreeBytes = nFreeSpaceHead(m_aIntoHead,m_pColVec);
+  //i8 nFreeBytes = nFreeSpaceHead(m_aCrw,m_pColVec);
   //m_oFreq.vAdd(nFreeBytes);
 }
 
@@ -232,48 +232,59 @@ void RowCompactor::vCompactEncoded(RowEncoding* pRowEncoding)
     Dtm wDataCode = pRowEncoding->xEncode[i_Col].m_wDataCode;
     i8  nDataByte = pRowEncoding->xEncode[i_Col].m_nDataBytes;
     
-    //vDumpHead("vHeadCode a"_Stz,m_aIntoHead,m_pColVec);
+    //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);
     if (8 == i_Col)
       vDebugPoint();
     vDtmCode(eMetaCode,wDataCode,nDataByte,pCol);
-    //vDumpHead("vHeadCode b"_Stz,m_aIntoHead,m_pColVec);
+    //vDumpHead("vHeadCode b"_Stz,m_aCrw,m_pColVec);
   }
 }
 
 /*----------------------------------------------------------------------------*/
-/* add encoded datum onto the end of into-head                                */
+/* add encoded datum onto the end of crw                                      */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vDtmCode(eMC eMetaCode, Dtm wDataCode, i8 nDataByte, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  vMetaCode(m_aIntoHead,pCol,eMetaCode);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // meta code
+
+  vMetaCode(m_aCrw,pCol,eMetaCode);
   
   if (! nDataByte)
     return;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // data bytes
+  
+  // non-vch
   if (DM_VCH != pCol->eDatumType()) {
     
-    vPutLogical(m_aIntoHead,
-                m_i_IntoOffset,
+    vPutLogical(m_aCrw,
+                m_i_DataOffset,
                 nDataByte,
                 (w8)wDataCode.m_iInt);
     
-    m_i_IntoOffset += nDataByte;
+    m_i_DataOffset += nDataByte;
     return;
   }
   
-  m_aIntoHead->vPut(m_i_IntoOffset,nDataByte,C_1B);
-  m_i_IntoOffset++;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // vch
+  m_aCrw->vPut(m_i_DataOffset,nDataByte,C_1B);
+  m_i_DataOffset++;
   
+  byte* ayDst = (byte*)m_aCrw + m_i_DataOffset;
   char* acSrc = (char*)wDataCode.m_szVch;
-  byte* ayDst = (byte*)m_aIntoHead + m_i_IntoOffset;
+
   MemLib::vCopy(ayDst,
                 acSrc,
                 nDataByte,
                 CN_ROWCOMPACTOR);
   
-  m_i_IntoOffset += nDataByte;
+  m_i_DataOffset += nDataByte;
 }
 
 
@@ -290,7 +301,6 @@ Footer* RowCompactor::aFooter(void)
   
   return &m_xFooter;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

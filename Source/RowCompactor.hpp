@@ -28,24 +28,24 @@ namespace Data
                        private RowCoder
   {
   public:
-    RowNub*    m_pIntoNub;
-    ColumnVec* m_pColVec;
-    i8         m_nHeadBytes;   // size of head line for this colvec/table
-    i8         m_nMetaData;    // size of meta data for this colvec/table
+    RowNub*    m_pCrwNub;      // nub of crw buffer
+    ColumnVec* m_pColVec;      // column vector
+    i8         m_nHeadSize;    // size of head line for this colvec/table
+    i8         m_nMetaSize;    // size of meta data for this colvec/table
     i8         m_i_BaseOffset; // base offset for this colvec/table
   
     // - - - - - - - - - - - -
-    i8         m_i_IntoHead;
-    HeadLine*  m_aIntoHead;
-    i8         m_i_IntoOffset; // encoding offset
+    i8         m_i_Crw;        // index of comapct row in crw nub
+    HeadLine*  m_aCrw;         // compact row being formed
+    i8         m_i_DataOffset; // offset where next data bytes go
     
     // - - - - - - - - - - - -
 
-    IrwBuffer* m_pRowSamples; // the set of sample rows
+    IrwBuffer* m_pRowSamples;  // the set of sample rows
     
     // - - - - - - - - - - - -
-    i8 m_nTotalBuffers;
-    i8 m_nTotalHeads;
+    i8 m_nTotalBuffers;        // total number of crw buffers created
+    i8 m_nTotalCrws;           // total number of rows compacted
 
 //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 //    i8 m_nHeadFreeBytes;
