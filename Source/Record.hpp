@@ -29,14 +29,14 @@ namespace Data
     
     void vAppend(Column* pCol, Datum* pDatum);
     void vAppend(Column* pCol, Row* pRow);
-    void vAppendBcd(Column* pCol, Dtm wDtm);
-    void vAppendBol(Column* pCol, Dtm wDtm);
-    void vAppendDte(Column* pCol, Dtm wDtm);
-    void vAppendFlt(Column* pCol, Dtm wDtm);
-    void vAppendInt(Column* pCol, Dtm wDtm);
-    void vAppendIvl(Column* pCol, Dtm wDtm);
-    void vAppendTme(Column* pCol, Dtm wDtm);
-    void vAppendTsp(Column* pCol, Dtm wDtm);
+    void vAppendBcd(Column* pCol, Datum* pDatum);
+    void vAppendBol(Column* pCol, Datum* pDatum);
+    void vAppendDte(Column* pCol, Datum* pDatum);
+    void vAppendFlt(Column* pCol, Datum* pDatum);
+    void vAppendInt(Column* pCol, Datum* pDatum);
+    void vAppendIvl(Column* pCol, Datum* pDatum);
+    void vAppendTme(Column* pCol, Datum* pDatum);
+    void vAppendTsp(Column* pCol, Datum* pDatum);
     void vAppendVch(Column* pCol, Datum* pDatum);
 
     void vPrintRow(void);
