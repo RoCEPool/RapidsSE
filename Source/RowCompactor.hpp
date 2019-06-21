@@ -124,7 +124,6 @@ namespace Data
   public:
     static void vAnalyse(RowNub* pNub);
   
-    //! alka
     static HeadLine* aCompactRow(CrwBuffer* pCrwBuffer, i8 i_Row);
     
     static void vDumpHead(Stz* szTitle,
@@ -137,8 +136,6 @@ namespace Data
   private:
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
     
-    static OverLine* aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel);
- 
     static i8 nHeadBytes_(ColumnVec* pColVec);
     
     static void vMetaCode(HeadLine* aHeadLine, Column* pCol, eMC eMetaCode);

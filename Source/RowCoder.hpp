@@ -25,6 +25,7 @@ namespace Data
 
     static w8   wGetLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes);
     static OverLine* aGetOver(HeadLine* aHeadLine);
+    static OverLine* aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel);
     static TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
 
     static bool bIsFit(eMC eMetaCode);

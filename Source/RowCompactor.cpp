@@ -1019,16 +1019,6 @@ i8 RowCompactor::iFindTail(RowNub* pNub, TailLine* aFindLine)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get overflow line using relative index [OT]                                */
-/*----------------------------------------------------------------------------*/
-OverLine* RowCompactor::aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel)
-{
-  OverLine* aOver = RowNub::aGetOver(aHeadLine,i_Over_rel);
-
-  return aOver;
-}
-
-/*----------------------------------------------------------------------------*/
 /* calc size of the head line for column vector                               */
 /*----------------------------------------------------------------------------*/
 i8 RowCompactor::nHeadBytes_(ColumnVec* pColVec)
