@@ -47,14 +47,14 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_COMPLETER
   /*    */ &Finalize::vUndefined,         // CN_CRWBUFFER
   
-  /*    */ &Finalize::vUndefined,         // CN_DATUM
   /*    */ &Finalize::vUndefined,         // CN_DECACNT
   /*    */ &Finalize::vUndefined,         // CN_DECIDER
   /* 33 */ &Dic::vFinalize,               // CN_DIC
   /*    */ &Finalize::vUndefined,         // CN_DICPATH
   /* 34 */ &Finalize::vUndefined,         // CN_DICSTACK
   /* 35 */ &Finalize::vUndefined,         // CN_DIR
-  
+  /*    */ &Finalize::vUndefined,         // CN_DTMVAL
+
   /* 36 */ &Finalize::vUndefined,         // CN_ENT
   /* 37 */ &Finalize::vUndefined,         // CN_ENTBUFFER
   /* 64 */ &Finalize::vUndefined,         // CN_ENTWRK

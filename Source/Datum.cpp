@@ -27,7 +27,7 @@ Datum* Data::_pDatum(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Datum::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_DATUM);
+  void* pObject = HeapMem::pAllocate(CN_DTMVAL);
   
   return pObject;
 }
@@ -47,9 +47,9 @@ void Datum::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Datum::Datum(void)
-: Object(CN_DATUM)
+: Object(CN_DTMVAL)
 {
-  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DTMVAL,_FOOTER_);
   
   m_pCol   = nullptr;
   m_eDatum = DM_NONE;
@@ -58,9 +58,9 @@ Datum::Datum(void)
 
   //m_sVch
   
-  _checkInitialised_(CN_DATUM);
+  _checkInitialised_(CN_DTMVAL);
   
-  _postcondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_DTMVAL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,7 +79,7 @@ Datum::~Datum(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool Datum::bIsNull(void)
 {
-  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DTMVAL,_FOOTER_);
 
   if (m_wDtm.m_iInt == C_DATUM_NULL)
     return true;
@@ -92,7 +92,7 @@ bool Datum::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Datum::vSetNull(void)
 {
-  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DTMVAL,_FOOTER_);
 
   m_wDtm.m_iInt = C_DATUM_NULL;
 }
@@ -106,7 +106,7 @@ void Datum::vSetNull(void)
 /*----------------------------------------------------------------------------*/
 Footer* Datum::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_DATUM);
+  _precondition_(_MAGIC_,CN_DTMVAL);
   
   return &m_xFooter;
 }

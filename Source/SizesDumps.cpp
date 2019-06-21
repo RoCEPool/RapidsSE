@@ -50,14 +50,14 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_COMPLETER
   /*    */ &Dump::vUndefined,       // CN_CRWBUFFER
 
-  /*    */ &Dump::vDummy,           // CN_DATUM
   /*    */ &Dump::vDummy,           // CN_DECACNT
   /*    */ &Dump::vDummy,           // CN_DECIDER
   /* 33 */ &Dic::vDump,             // CN_DIC
   /*    */ &Dump::vDummy,           // CN_DICPATH
   /* 34 */ &DicStack::vDump,        // CN_DICSTACK
   /* 35 */ &Dump::vInvalid,         // CN_DIR
-  
+  /*    */ &Dump::vDummy,           // CN_DTMVAL
+
   /* 36 */ &Dump::vDummy,           // CN_ENT
   /* 37 */ &Dump::vDummy,           // CN_ENTBUFFER
   /* 64 */ &Dump::vInvalid,         // CN_ENTWRK
@@ -360,14 +360,14 @@ i8 giClassSize[]
   /* 32 */ sizeof(Completer),          // CN_COMPLETER
   /*    */ sizeof(CrwBuffer),          // CN_CRWBUFFER
 
-  /*    */ sizeof(Datum),              // CN_DATUM
   /*    */ sizeof(DecaCnt),            // CN_DECACNT
   /*    */ sizeof(Decider),            // CN_DECIDER
   /* 33 */ sizeof(Dic),                // CN_DIC
   /* 34 */ sizeof(DicPath),            // CN_DICPATH
   /* 34 */ sizeof(DicStack),           // CN_DICSTACK
   /* 35 */ sizeof(Dir),                // CN_DIR
-  
+  /*    */ sizeof(Datum),              // CN_DTMVAL
+
   /* 36 */ sizeof(Ent),                // CN_ENT
   /* 37 */ sizeof(EntBuffer),          // CN_ENTBUFFER
   /* 64 */ sizeof(EntWrk),             // CN_ENTWRK
@@ -669,13 +669,13 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_COMPLETER
   /*    */ HT_TRANSIENT_LARGE,   // CN_CRWBUFFER
 
-  /*    */ HT_TRANSIENT_MEDIUM,  // CN_DATUM
   /*    */ HT_TRANSIENT_SMALL,   // CN_DECACNT
   /*    */ HT_TRANSIENT_SMALL,   // CN_DECIDER
   /* 33 */ HT_TRANSIENT_MEDIUM,  // CN_DIC
   /*    */ HT_TRANSIENT_SMALL,   // CN_DICPATH
   /* 34 */ HT_TRANSIENT_SMALL,   // CN_DICSTACK
   /* 35 */ HT_TRANSIENT_SMALL,   // CN_DIR
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_DTMVAL
 
   /* 36 */ HT_INVALID,           // CN_ENT
   /* 37 */ HT_TRANSIENT_LARGE,   // CN_ENTBUFFER

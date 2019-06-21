@@ -51,14 +51,14 @@ enum eCN : u2 // Class Number
   /*                           */ CN_COMPLETER,
   /*                    Heap:L */ CN_CRWBUFFER,
 
-  /*                           */ CN_DATUM,
   /*                           */ CN_DECACNT,
   /*  28 0x1C       24B Heap:S */ CN_DECIDER,
   /*  29 0x1D      248B Heap:M */ CN_DIC,
   /*  30 0x1E      792B Heap:S */ CN_DICPATH,
   /*  31 0x1F      152B Heap:S */ CN_DICSTACK,
   /*  32 0x20      608B Heap:S */ CN_DIR,
-  
+  /*                           */ CN_DTMVAL,
+
   /*  33 0x21       40B Heap:I */ CN_ENT,
   /*  34 0x22  1043848B Heap:L */ CN_ENTBUFFER,
   /* 145 0x91    17448B Heap:I */ CN_ENTWRK,
@@ -357,14 +357,14 @@ static Stz* aCN[]
   /*          */ "COMPLETER"_Stz,           // CN_COMPLETER
   /*          */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
 
-  /*          */ "DATUM"_Stz,               // CN_DATUM
   /*          */ "DECACNT"_Stz,             // CN_DECACNT
   /*  28 0x1C */ "DECIDER"_Stz,             // CN_DECIDER
   /*  29 0x1D */ "DIC"_Stz,                 // CN_DIC
   /*  30 0x1E */ "DICPATH"_Stz,             // CN_DICPATH
   /*  31 0x1F */ "DICSTACK"_Stz,            // CN_DICSTACK
   /*  32 0x20 */ "DIR"_Stz,                 // CN_DIR
-  
+  /*          */ "DTMVAL"_Stz,              // CN_DTMVAL
+
   /*  33 0x21 */ "ENT"_Stz,                 // CN_ENT
   /*  34 0x22 */ "ENTBUFFER"_Stz,           // CN_ENTBUFFER
   /* 145 0x91 */ "ENTWRK"_Stz,              // CN_ENTWRK
