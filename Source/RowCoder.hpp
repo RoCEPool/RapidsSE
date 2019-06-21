@@ -32,8 +32,7 @@ namespace Data
     static i8   iBaseOffset(ColumnVec* pColVec);
   
     static i8   nDataBytes(eMC eMetaCode);
-    static void vDteFromEdt(Datum* pDatum, i8 iEra);
-    static void vDteFromEdt(Word* aWord, i8 iEra);
+    static void vDteFromEdt(Dtm* aDte, i8 iEra);
     static void vDteIntoEdt(Dtm wDte, Dtm& wEdt_, i8& iEra_);
 
     static i8   nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec);
