@@ -143,6 +143,7 @@ namespace Data
     static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
                                  ColumnVec* pColVec, Column* pCol, 
                                  i8& i_LastColumn, i8& i_LastOffset);
+    static void vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,Column* pCol);
     static void vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
                                  ColumnVec* pColVec, Column* pCol,
                                  i8& i_LastColumn, i8& i_LastOffset);
@@ -199,38 +200,6 @@ namespace Data
     
   public:
   
-    /*----------------------------------------------------------------------------*/
-    /* decode boolean from given head line                                        */
-    /*----------------------------------------------------------------------------*/
-    static inline void vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,Column* pCol)
-    {
-      pDatum->m_eDatum = DM_BOL;
-      
-      //eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
-      
-      i8 i_Column = pCol->iColumnNo();
-      eMC eEncoding = aHeadLine->eMetaCode(i_Column);
-      
-      if (MC_FALSE == eEncoding)
-        pDatum->m_iInt = 0;
-      else if (MC_TRUE == eEncoding)
-        pDatum->m_iInt = 1;
-      else
-        pDatum->m_iInt = C_DATUM_NULL;
-        
-     /*
-      switch (eEncoding) {
-        
-        case MC_NULL:  pDatum->m_iInt = C_DATUM_NULL; break;
-        case MC_FALSE: pDatum->m_iInt = (i8)0;        break;
-        case MC_TRUE:  pDatum->m_iInt = (i8)1;        break;
-        
-        default:
-        NEVER_REACH;
-      }
-      */
-    }
-
     /*----------------------------------------------------------------------------*/
     /* get the encoding (and offset) of a column datum                            */
     /*----------------------------------------------------------------------------*/
