@@ -139,7 +139,7 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer)
 
   m_bEncoding    = false;
   m_pColVec      = m_pIntoNub->pDesc()->pColumnVec();
-  m_nHeadBytes   = nHeadBytes(m_pColVec);
+  m_nHeadBytes   = nHeadBytes_(m_pColVec);
   m_nMetaData    = nMetaData(m_pColVec);
   m_i_BaseOffset = iBaseOffset(m_pColVec);
   m_bCopyOver    = false;
@@ -1127,6 +1127,41 @@ OverLine* RowCompactor::aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel)
   OverLine* aOver = RowNub::aGetOver(aHeadLine,i_Over_rel);
   
   return aOver;
+}
+
+/*----------------------------------------------------------------------------*/
+/* calc size of the head line for column vector                               */
+/*----------------------------------------------------------------------------*/
+i8 RowCompactor::nHeadBytes_(ColumnVec* pColVec)
+{
+  // experiment 1
+  i8 nBytes = sizeof(CacheLine) + (1 * C_BYTES_PER_WORD);
+  i8 nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  
+  // experiment 2
+  //i8 nBytes = pColVec->nItems() * 4;
+  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  
+  // experiment 3
+  //i8 nBytes = pColVec->nItems() * 5;
+  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  
+  // experiment 4
+  //i8 nBytes = pColVec->nItems() * 6;
+  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  
+  // seth
+  //i8 nBytes = pColVec->nItems() * 10;
+  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  
+  //nBytes     = 24;
+  //nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  
+  //i8 nBytesHead = nHeadWords * (i8)C_BYTES_PER_WORD;
+  i8 nBytesHead = 256;
+  RASSERT(nBytesHead >= C_HEAD_MIN_BYTES);
+  
+  return nBytesHead;
 }
 
 /*----------------------------------------------------------------------------*/

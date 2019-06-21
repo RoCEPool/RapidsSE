@@ -147,6 +147,7 @@ namespace Data
     static OverLine* aGetOver(HeadLine* aHeadLine);
     static OverLine* aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel);
  
+    static i8 nHeadBytes_(ColumnVec* pColVec);
     static void vMetaCode(HeadLine* aHeadLine, Column* pCol, eMC eMetaCode);
 
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
@@ -157,119 +158,6 @@ namespace Data
 
     
   public:
-  
-    /*----------------------------------------------------------------------------*/
-    /* get the encoding (and offset) of a column datum                            */
-    /*----------------------------------------------------------------------------*/
-    static inline eMC eGetEncoding(HeadLine* aHeadLine, Column* pCol,
-                                   ColumnVec* pColVec,
-                                   i8& i_PriorColumn_, i8& i_Offset_)
-    {
-      i8 i_ForCol = pCol->iColumnNo();
-      
-      if (i_ForCol < i_PriorColumn_) {
-        i_PriorColumn_ = 0;
-        i_Offset_ = iBaseOffset(pColVec);
-      }
-      
-      for (i8 i_Col = i_PriorColumn_; i_Col < i_ForCol; i_Col++) {
-        
-        eMC eEncoding = aHeadLine->eMetaCode(i_Col);
-        
-        if (MC_OVERFLOW_2T == eEncoding) {
-          i_Offset_ = aHeadLine->nBytes() + _1B_U;
-          eEncoding = (eMC)wGetLogical(aHeadLine,i_Offset_++,C_1B);
-          i_Offset_ += nDataBytes(eEncoding);
-        }
-        else {
-          i_Offset_ += nDataBytes(eEncoding);
-        }
-        
-        if (MC_STR_FIT_1L == eEncoding) {
-          i_Offset_ += wGetLogical(aHeadLine,(i_Offset_ - 1),C_1B);
-        }
-        else if (MC_SHOCO_FIT_1C == eEncoding) {
-          i_Offset_ += wGetLogical(aHeadLine,(i_Offset_ - 1),C_1B);
-        }
-      }
-      
-      eMC eEncoding = aHeadLine->eMetaCode(i_ForCol);
-      if (MC_OVERFLOW_2T == eEncoding) {
-        i_Offset_ = aHeadLine->nBytes() + _1B_U + _1B_M;
-        OverLine* aOverLine = aGetOver(aHeadLine);
-        eEncoding = (eMC)aOverLine->w8_1B(1);
-      }
-      i_PriorColumn_ = i_ForCol;
-      
-      return eEncoding;
-    }
-  
-    /*----------------------------------------------------------------------------*/
-    /* calc size of the meta tape needed for given column vector                  */
-    /*----------------------------------------------------------------------------*/
-    static inline i8 nMetaData(ColumnVec* pColVec)
-    {
-      i8 nColumns = pColVec->nItems();
-    
-      i8 nBits = (i8)C_BITS_PER_BYTE + (nColumns * (i8)C_METABITS);
-    
-      i8 nMetaBytes = nBits / (i8)C_BITS_PER_BYTE
-                        + (nBits % (i8)C_BITS_PER_BYTE ? 1 : 0);
-    
-      return nMetaBytes;
-    }
-  
-    /*----------------------------------------------------------------------------*/
-    /* calc size of the head line for column vector                               */
-    /*----------------------------------------------------------------------------*/
-    static inline i8 nHeadBytes(ColumnVec* pColVec)
-    {
-      // experiment 1
-      i8 nBytes = sizeof(CacheLine) + (1 * C_BYTES_PER_WORD);
-      i8 nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(Word));
-      
-      // experiment 2
-      //i8 nBytes = pColVec->nItems() * 4;
-      //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
-      
-      // experiment 3
-      //i8 nBytes = pColVec->nItems() * 5;
-      //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
-      
-      // experiment 4
-      //i8 nBytes = pColVec->nItems() * 6;
-      //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
-      
-      // seth
-      //i8 nBytes = pColVec->nItems() * 10;
-      //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
-      
-      //nBytes     = 24;
-      //nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(Word));
-
-      //i8 nBytesHead = nHeadWords * (i8)C_BYTES_PER_WORD;
-      i8 nBytesHead = 256;
-      RASSERT(nBytesHead >= C_HEAD_MIN_BYTES);
-      
-      return nBytesHead;
-    }
-  
-    /*----------------------------------------------------------------------------*/
-    /* calc base offset for column vector                                         */
-    /*----------------------------------------------------------------------------*/
-    static inline i8 iBaseOffset(ColumnVec* pColVec)
-    {
-      i8 nColumns = pColVec->nItems();
-    
-      i8 iOffset  = nMetaData(pColVec);
-    
-      //! temporary                                                          FIX
-      if (iOffset < 8)
-        iOffset = 8;
-    
-      return iOffset;
-    }
-
   
   };
 

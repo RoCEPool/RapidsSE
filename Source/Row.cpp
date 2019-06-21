@@ -61,7 +61,7 @@ Row::Row(ColumnVec* pColVec)
   
   m_pColVec     = pColVec;
   m_nColumns    = m_pColVec->nItems();
-  m_iBaseOffset = RowCompactor::iBaseOffset(m_pColVec);
+  m_iBaseOffset = RowCoder::iBaseOffset(m_pColVec);
   m_bGetAll     = true;
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
     m_abGetCol[i_Col] = false;
