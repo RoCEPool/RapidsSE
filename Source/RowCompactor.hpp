@@ -91,9 +91,7 @@ namespace Data
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-  
-  void extracted();
-  
+    
     RowCompactor(void);
     ~RowCompactor(void) noexcept(false);
     
@@ -103,13 +101,9 @@ namespace Data
   
   private:
     void vAnalyseFree(void);
-    
     void vCompact(RowEncoding* pRowEncoding);
-    
     void vExtendIntoHead(i8 nBytes, Column* pCol);
-
     void vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol);
-
     byte* ayShoco(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
     
     void vUsageIncEncoded(Column* pCol, i8 nBytes, eMC eMetaCode = MC_NULL);
@@ -118,12 +112,9 @@ namespace Data
     void vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss, eMC eMetaCode = MC_NULL);
     void vUsageReset(void);
     
-    
   public:
     static void vAnalyse(RowNub* pNub);
-  
     static HeadLine* aCompactRow(CrwBuffer* pCrwBuffer, i8 i_Row);
-    
     static void vDumpHead(Stz* szTitle,
                           HeadLine* aHeadLine,
                           ColumnVec* pColVec);
@@ -133,9 +124,7 @@ namespace Data
   
   private:
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
-    
     static i8 nHeadBytes_(ColumnVec* pColVec);
-    
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
     
   private:
