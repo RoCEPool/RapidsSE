@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 Dtm::Dtm(void)
 {
-  m_iValue = 0;
+  m_iI8 = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,7 +77,7 @@ i8 Dtm::iDte(i8 iYear, i8 iMonth, i8 iDay)
   
   xDtm.xDte.m_uSpare     = 0;
 
-  return xDtm.m_iValue;
+  return xDtm.m_iI8;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,7 +90,7 @@ i8 Dtm::iIvl(i8 iSecond, i8 iMilli)
   xDtm.xIvl.m_uSecond = iSecond;
   xDtm.xIvl.m_uMilli  = iMilli;
   
-  return xDtm.m_iValue;
+  return xDtm.m_iI8;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,7 +107,7 @@ i8 Dtm::iTme(i8 iHour, i8 iSecond, i8 iMinute, i8 iMicro)
   
   xDtm.xTme.m_uSpare  = 0;
   
-  return xDtm.m_iValue;
+  return xDtm.m_iI8;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,7 +129,7 @@ i8 Dtm::iTsp(i8 iYear, i8 iMonth,  i8 iDay,
   
   xDtm.xTsp.m_uSpare     = 0;
   
-  return xDtm.m_iValue;
+  return xDtm.m_iI8;
 }
 
 
@@ -142,7 +142,7 @@ i8 Dtm::iTsp(i8 iYear, i8 iMonth,  i8 iDay,
 /*----------------------------------------------------------------------------*/
 i8 Dtm::iAsI8(void)
 {
-  return m_iValue;
+  return m_iI8;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,7 +150,7 @@ i8 Dtm::iAsI8(void)
 /*----------------------------------------------------------------------------*/
 void Dtm::vAsI8(i8 iAsI8)
 {
-  m_iValue = iAsI8;
+  m_iI8 = iAsI8;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,7 +158,7 @@ void Dtm::vAsI8(i8 iAsI8)
 /*----------------------------------------------------------------------------*/
 bool Dtm::bIsNull(void)
 {
-  if (C_DATUM_NULL == m_iValue)
+  if (C_DATUM_NULL == m_iI8)
     return true;
   else
     return false;
@@ -169,7 +169,7 @@ bool Dtm::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Dtm::vSetNull(void)
 {
-  m_iValue = C_DATUM_NULL;
+  m_iI8 = C_DATUM_NULL;
 }
 
 /*============================================================================*/

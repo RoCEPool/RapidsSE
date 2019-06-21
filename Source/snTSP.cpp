@@ -55,7 +55,7 @@ i8 snTSP::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
   m_xTsp.xTsp.m_uMicro     = iMicro;
   m_xTsp.xTsp.m_uSpare     = 0;
   
-  return m_xTsp.m_iValue;
+  return m_xTsp.m_iI8;
 }
 
 

@@ -44,7 +44,7 @@ i8 snIVL::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
   m_xIvl.xIvl.m_uSecond = iSecond;
   m_xIvl.xIvl.m_uMilli  = iMilli;
   
-  return m_xIvl.m_iValue;
+  return m_xIvl.m_iI8;
 }
 
 

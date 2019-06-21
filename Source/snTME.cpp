@@ -47,7 +47,7 @@ i8 snTME::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
   m_xTme.xTme.m_uMicro  = iMicro;
   m_xTme.xTme.m_uSpare  = 0;
   
-  return m_xTme.m_iValue;
+  return m_xTme.m_iI8;
 }
 
 
