@@ -75,17 +75,6 @@ RowCompactor::RowCompactor(void)
   //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 
   m_nTotalHeads = 0;
-
-  m_nHeadFreeBytes = 0;
-  m_nHeadFreeBytes_0_7   = 0;
-  m_nHeadFreeBytes_8_15  = 0;
-  m_nHeadFreeBytes_16_23 = 0;
-  m_nHeadFreeBytes_24_31 = 0;
-  m_nHeadFreeBytes_32_39 = 0;
-  m_nHeadFreeBytes_40_47 = 0;
-  m_nHeadFreeBytes_48_55 = 0;
-  m_nHeadFreeBytes_56_63 = 0;
-  m_nHeadFreeBytes_64_   = 0;
   
   m_nTails     = 0;
   m_nTailUnits = 0;
@@ -216,7 +205,7 @@ bool RowCompactor::bCompactRow(Row* pRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact encoded row into a crw
 
-  vCompact(pRowEncoding);
+  vCompactEncoded(pRowEncoding);
   m_nTotalHeads++;
 
 //#ifdef WITH_TRACE_ENCODING
@@ -254,24 +243,14 @@ void RowCompactor::vAnalyseFree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
 
-  i8 nFreeBytes = nFreeSpaceHead(m_aIntoHead,m_pColVec);
-  m_nHeadFreeBytes  += nFreeBytes;
-  
-       if (nFreeBytes <= 7 ) m_nHeadFreeBytes_0_7++;
-  else if (nFreeBytes <= 15) m_nHeadFreeBytes_8_15++;
-  else if (nFreeBytes <= 23) m_nHeadFreeBytes_16_23++;
-  else if (nFreeBytes <= 31) m_nHeadFreeBytes_24_31++;
-  else if (nFreeBytes <= 39) m_nHeadFreeBytes_32_39++;
-  else if (nFreeBytes <= 47) m_nHeadFreeBytes_40_47++;
-  else if (nFreeBytes <= 55) m_nHeadFreeBytes_48_55++;
-  else if (nFreeBytes <= 63) m_nHeadFreeBytes_56_63++;
-  else                       m_nHeadFreeBytes_64_++;
+  //i8 nFreeBytes = nFreeSpaceHead(m_aIntoHead,m_pColVec);
+  //m_oFreq.vAdd(nFreeBytes);
 }
 
 /*----------------------------------------------------------------------------*/
 /* compact the encoding                                                       */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vCompact(RowEncoding* pRowEncoding)
+void RowCompactor::vCompactEncoded(RowEncoding* pRowEncoding)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   

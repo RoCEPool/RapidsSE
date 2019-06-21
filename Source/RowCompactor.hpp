@@ -57,17 +57,17 @@ namespace Data
 
     i8 m_nTotalHeads;
 
-    i8 m_nHeadFreeBytes;
-    i8 m_nHeadFreeBytes_0_7;
-    i8 m_nHeadFreeBytes_8_15;
-    i8 m_nHeadFreeBytes_16_23;
-    i8 m_nHeadFreeBytes_24_31;
-    i8 m_nHeadFreeBytes_32_39;
-    i8 m_nHeadFreeBytes_40_47;
-    i8 m_nHeadFreeBytes_48_55;
-    i8 m_nHeadFreeBytes_56_63;
-    i8 m_nHeadFreeBytes_64_;
-    
+//    i8 m_nHeadFreeBytes;
+//    i8 m_nHeadFreeBytes_0_7;
+//    i8 m_nHeadFreeBytes_8_15;
+//    i8 m_nHeadFreeBytes_16_23;
+//    i8 m_nHeadFreeBytes_24_31;
+//    i8 m_nHeadFreeBytes_32_39;
+//    i8 m_nHeadFreeBytes_40_47;
+//    i8 m_nHeadFreeBytes_48_55;
+//    i8 m_nHeadFreeBytes_56_63;
+//    i8 m_nHeadFreeBytes_64_;
+
 //    Freq m_xFreq;
 //
 //    //---
@@ -105,7 +105,7 @@ namespace Data
   
   private:
     void vAnalyseFree(void);
-    void vCompact(RowEncoding* pRowEncoding);
+    void vCompactEncoded(RowEncoding* pRowEncoding);
     void vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol);
     
   private:
