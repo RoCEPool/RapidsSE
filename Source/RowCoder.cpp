@@ -10,6 +10,21 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* calc base offset for column vector                                         */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iBaseOffset(ColumnVec* pColVec)
+{
+  i8 nColumns = pColVec->nItems();
+  
+  i8 iOffset  = nMetaData(pColVec);
+  
+  //! temporary                                                          FIX
+  if (iOffset < 8)
+    iOffset = 8;
+  
+  return iOffset;
+}
+/*----------------------------------------------------------------------------*/
 /* how many bytes does given encoding occupy in the data portion of a head?   */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::nDataBytes(eMC eMetaCode)
@@ -94,6 +109,14 @@ i8 RowCoder::nDataBytes(eMC eMetaCode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compute an Edt into a Dte                                                  */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDteFromEdt(Datum* pDatum, i8 iEraBaseYear)
+{
+  RowCoder::vDteFromEdt((Word*)&pDatum->m_wWord,iEraBaseYear);
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert a Edt into an Dte                                                  */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDteFromEdt(Word* aWord, i8 iEraBaseYear)
@@ -147,6 +170,145 @@ void RowCoder::vDteIntoEdt(Dtm wDte,
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of a byte from logicalRow : head[+over]                        */
+/*----------------------------------------------------------------------------*/
+byte* RowCoder::ayAdrLogical(HeadLine* aLogicalRow, i8 i_Offset)
+{
+  HeadLine* aHeadLine = aLogicalRow;
+  
+  // scenario 1: simple case (no overflow), getting address from head
+  if (! aHeadLine->bHasOverflow()) {
+    byte* ayAdr = (byte*)aHeadLine + i_Offset;
+    return ayAdr;
+  }
+  
+  // scenario 2: there is an overflow, but getting address from head
+  i8 nHeadBytes = aLogicalRow->nBytes();
+  if (i_Offset < nHeadBytes - 2) {
+    byte* ayAdr = (byte*)aHeadLine + i_Offset;
+    return ayAdr;
+  }
+  
+  // scenario 3: there is an overflow, and getting address from overflow
+  OverLine* aOverLine = aGetOver(aHeadLine);
+  i8 i_Offset_over = i_Offset - nHeadBytes;
+  byte* ayAdr = (byte*)aOverLine + i_Offset_over;
+  return ayAdr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get some bytes from logicalRow : head[+over]                               */
+/*----------------------------------------------------------------------------*/
+w8 RowCoder::wGetLogical(HeadLine* aLogicalRow, i8 i_Offset, i8 nBytes)
+{
+  HeadLine* aHeadLine = aLogicalRow;
+  w8 wSomeBytes = 0;
+  
+  // scenario 1: simple case (no overflow), getting bytes from head
+  if (! aHeadLine->bHasOverflow()) {
+    wSomeBytes = aHeadLine->wGet(i_Offset,nBytes);
+    return wSomeBytes;
+  }
+  
+  // scenario 2: there is an overflow, but getting bytes from head
+  i8 nHeadBytes = aLogicalRow->nBytes();
+  if (i_Offset < nHeadBytes - 2) {
+    wSomeBytes = aHeadLine->wGet(i_Offset,nBytes);
+    return wSomeBytes;
+  }
+  
+  // scenario 3: there is an overflow, and getting bytes from overflow
+  OverLine* aOverLine = aGetOver(aHeadLine);
+  i8 i_Offset_over = i_Offset - nHeadBytes;
+  wSomeBytes = aOverLine->wGet(i_Offset_over,nBytes);
+  return wSomeBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* put some bytes into logicalRow : head[+over]                               */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vPutLogical(HeadLine* aLogicalRow, i8 i_Offset, i8 nBytes, w8 wBytes)
+{
+  HeadLine* aHeadLine = aLogicalRow;
+  
+  // scenario 1: simple case (no overflow), putting bytes into head
+  if (! aHeadLine->bHasOverflow()) {
+    aHeadLine->vPut(i_Offset,wBytes,nBytes);
+    return;
+  }
+  
+  // scenario 2: there is an overflow, but putting bytes into head
+  i8 nHeadBytes = aHeadLine->nBytes();
+  if (i_Offset < nHeadBytes - 2) {
+    aHeadLine->vPut(i_Offset,wBytes,nBytes);
+    return;
+  }
+  
+  // scenario 3: there is an overflow, and putting bytes into overflow
+  
+  OverLine* aOverLine = aGetOver(aHeadLine);
+  i8 i_Offset_over = i_Offset - nHeadBytes;
+  aOverLine->vPut(i_Offset_over,wBytes,nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the encoding (and offset) of a column datum                            */
+/*----------------------------------------------------------------------------*/
+eMC RowCoder::eGetEncoding(HeadLine* aHeadLine, Column* pCol,
+                           ColumnVec* pColVec,
+                           i8& i_PriorColumn_, i8& i_Offset_)
+{
+  i8 i_ForCol = pCol->iColumnNo();
+  
+  if (i_ForCol < i_PriorColumn_) {
+    i_PriorColumn_ = 0;
+    i_Offset_ = iBaseOffset(pColVec);
+  }
+  
+  for (i8 i_Col = i_PriorColumn_; i_Col < i_ForCol; i_Col++) {
+    
+    eMC eEncoding = aHeadLine->eMetaCode(i_Col);
+    
+    if (MC_OVERFLOW_2T == eEncoding) {
+      i_Offset_ = aHeadLine->nBytes() + _1B_U;
+      eEncoding = (eMC)wGetLogical(aHeadLine,i_Offset_++,C_1B);
+      i_Offset_ += nDataBytes(eEncoding);
+    }
+    else {
+      i_Offset_ += nDataBytes(eEncoding);
+    }
+    
+    if (MC_STR_FIT_1L == eEncoding) {
+      i_Offset_ += wGetLogical(aHeadLine,(i_Offset_ - 1),C_1B);
+    }
+    else if (MC_SHOCO_FIT_1C == eEncoding) {
+      i_Offset_ += wGetLogical(aHeadLine,(i_Offset_ - 1),C_1B);
+    }
+  }
+  
+  eMC eEncoding = aHeadLine->eMetaCode(i_ForCol);
+  if (MC_OVERFLOW_2T == eEncoding) {
+    i_Offset_ = aHeadLine->nBytes() + _1B_U + _1B_M;
+    OverLine* aOverLine = aGetOver(aHeadLine);
+    eEncoding = (eMC)aOverLine->w8_1B(1);
+  }
+  i_PriorColumn_ = i_ForCol;
+  
+  return eEncoding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get overflow line using relative index [OT]                                */
+/*----------------------------------------------------------------------------*/
+OverLine* RowCoder::aGetOver(HeadLine* aHeadLine)
+{
+  i8 i_Over_rel = aHeadLine->iOverflow2B();
+  OverLine* aOver = RowNub::aGetOver(aHeadLine,i_Over_rel);
+  
+  return aOver;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get tail line using relative index [FT]                                    */
 /*----------------------------------------------------------------------------*/
 TailLine* RowCoder::aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel)
@@ -169,6 +331,20 @@ bool RowCoder::bIsFit(eMC eMetaCode)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* calc size of the meta tape needed for given column vector                  */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::nMetaData(ColumnVec* pColVec)
+{
+  i8 nColumns = pColVec->nItems();
+  
+  i8 nBits = (i8)C_BITS_PER_BYTE + (nColumns * (i8)C_METABITS);
+  
+  i8 nMetaBytes = nBits / (i8)C_BITS_PER_BYTE
+  + (nBits % (i8)C_BITS_PER_BYTE ? 1 : 0);
+  
+  return nMetaBytes;
+}
 
 /*============================================================================*/
 /* end                                                                        */
