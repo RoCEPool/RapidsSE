@@ -2,7 +2,7 @@
 /* ForthValue.cpp --Base Class for Self-Describing Values                          */
 /*============================================================================*/
 
-#include "Values.h"
+#include "Forth.h"
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
