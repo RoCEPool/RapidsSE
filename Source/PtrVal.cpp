@@ -2,13 +2,13 @@
 /* PtrVal.cpp - pointer value                                                 */
 /*============================================================================*/
 
-#include "Values.h"
+#include "Forth.h"
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-PtrVal* Values::_aPtrVal(void* aAddr)
+PtrVal* Forth::_aPtrVal(void* aAddr)
 {
   PtrVal* aPtrVal = reinterpret_cast<PtrVal*>(aAddr);
   

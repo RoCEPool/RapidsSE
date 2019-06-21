@@ -8,7 +8,7 @@ namespace Forth
   class Cell;
 }
 
-namespace Values
+namespace Forth
 {
   class FipVal : public ForthValue
   {

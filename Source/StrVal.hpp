@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Values
+namespace Forth
 {
   class StrVal : public ForthValue
   {

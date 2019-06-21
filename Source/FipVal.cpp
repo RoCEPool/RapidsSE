@@ -2,13 +2,13 @@
 /* FipVal.cpp - Forth Instruction Pointer ForthValue                               */
 /*============================================================================*/
 
-#include "Values.h"
+#include "Forth.h"
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-FipVal* Values::_aFipVal(void* aAddr)
+FipVal* Forth::_aFipVal(void* aAddr)
 {
   FipVal* aFipVal = reinterpret_cast<FipVal*>(aAddr);
   

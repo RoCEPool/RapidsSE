@@ -27,6 +27,13 @@ using namespace Forth;
 
 //-----------------------------------------------------------------------------
 
+#include "ForthValue.hpp"
+
+#include "FipVal.hpp"
+#include "IntVal.hpp"
+#include "PtrVal.hpp"
+#include "StrVal.hpp"
+
 #include "Cell.hpp"
 #include "Compiler.hpp"
 #include "Dic.hpp"

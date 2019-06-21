@@ -19,12 +19,6 @@ using namespace Values;
 
 typedef String_t<C_MAX_VCH> sVCH;
 
-#include "ForthValue.hpp"
-
-#include "FipVal.hpp"
-#include "IntVal.hpp"
-#include "PtrVal.hpp"
-#include "StrVal.hpp"
 
 
 /*============================================================================*/
