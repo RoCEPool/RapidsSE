@@ -378,7 +378,7 @@ void RowCompactor::vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  vMetaCode(pCol,eMetaCode);
+  vMetaCode(m_aIntoHead,pCol,eMetaCode);
   
   if (! nBytes)
     return;
@@ -405,16 +405,6 @@ void RowCompactor::vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol)
                 CN_ROWCOMPACTOR);
   
   m_i_IntoOffset += nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set meta encoding for column value                                         */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vMetaCode(Column* pCol, eMC eMetaCode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  RowCoder::vMetaCode(m_aIntoHead,pCol,eMetaCode);
 }
 
 /*----------------------------------------------------------------------------*/

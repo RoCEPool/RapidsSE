@@ -110,8 +110,6 @@ namespace Data
 
     void vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol);
 
-    void vMetaCode(Column* pCol, eMC eMetaCode);
-
     byte* ayShoco(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
     
     void vUsageIncEncoded(Column* pCol, i8 nBytes, eMC eMetaCode = MC_NULL);
