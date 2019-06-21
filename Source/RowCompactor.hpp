@@ -108,12 +108,6 @@ namespace Data
     void vCompact(RowEncoding* pRowEncoding);
     void vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol);
     
-  public:
-    static HeadLine* aCompactRow(CrwBuffer* pCrwBuffer, i8 i_Row);
-  
-  private:
-    static i8 nHeadBytes_(ColumnVec* pColVec);
-    
   private:
     Footer* aFooter(void);
   };
