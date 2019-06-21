@@ -3,11 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-namespace Tasks {
-  class Task;
-  typedef MP<Task,CN_TASK> MP_Task;
-}
-
 namespace Forth {
   class Cell;
   class ForthWord;
@@ -15,11 +10,6 @@ namespace Forth {
 
 namespace Values
 {
-  class IntVal;
-  class FipVal;
-  class PtrVal;
-  class StrVal;
-  
   class ForthValue
   {
   protected:
@@ -32,7 +22,6 @@ namespace Values
     eCN  eClass(void);
     i8   nSize(void);
     void vToString(Stz* aString);
-  
   };
 }
 
