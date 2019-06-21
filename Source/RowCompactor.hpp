@@ -28,35 +28,26 @@ namespace Data
                        private RowCoder
   {
   public:
-  
-    bool       m_bEncoding;    // are we encoding (or copying) ?
+    RowNub*    m_pIntoNub;
     ColumnVec* m_pColVec;
+    i8         m_nHeadBytes;   // size of head line for this colvec/table
     i8         m_nMetaData;    // size of meta data for this colvec/table
     i8         m_i_BaseOffset; // base offset for this colvec/table
   
-    RowNub*    m_pIntoNub;
+    // - - - - - - - - - - - -
     i8         m_i_IntoHead;
     HeadLine*  m_aIntoHead;
-    i8         m_nHeadBytes;   // size of head line for this colvec/table
-    //---
-    i8         m_i_IntoOver;
-    OverLine*  m_aIntoOver;
-    i8         m_nOverBytes;
-    bool       m_bCopyOver;    // is there a overflow portion to be copied?
-    //---
     i8         m_i_IntoOffset; // encoding offset
     
-    // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-    
+    // - - - - - - - - - - - -
+
     IrwBuffer* m_pRowSamples; // the set of sample rows
     
-    RowCompactor*  m_pRowEncoder;
-
-    //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-  
-
+    // - - - - - - - - - - - -
+    i8 m_nTotalBuffers;
     i8 m_nTotalHeads;
 
+//  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 //    i8 m_nHeadFreeBytes;
 //    i8 m_nHeadFreeBytes_0_7;
 //    i8 m_nHeadFreeBytes_8_15;
@@ -82,12 +73,7 @@ namespace Data
 //    m_xFreq.iDist(i_Bucket)
 //    m_xFreq.nSamples();
 //    m_xFreq.nSum();
-    //---
 
-    i8 m_nTails;
-    i8 m_nTailUnits;
-
-    i8 m_nTotalBuffers;
 
     // must be last
     Footer m_xFooter;

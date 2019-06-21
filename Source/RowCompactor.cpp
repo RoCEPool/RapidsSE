@@ -49,38 +49,21 @@ RowCompactor::RowCompactor(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_bEncoding      = false;
-  m_pColVec        = nullptr;
-  m_nMetaData      = C_UNKNOWN;
-  m_i_BaseOffset   = C_UNKNOWN;
+  m_pIntoNub      = nullptr;
+  m_pColVec       = nullptr;
+  m_nHeadBytes    = C_UNKNOWN;
+  m_nMetaData     = C_UNKNOWN;
+  m_i_BaseOffset  = C_UNKNOWN;
 
-  m_pIntoNub       = nullptr;
-  m_i_IntoHead     = C_UNKNOWN;
-  m_aIntoHead      = nullptr;
-  m_nHeadBytes     = C_UNKNOWN;
-  //---
-  m_i_IntoOver     = C_UNKNOWN;
-  m_aIntoOver      = nullptr;
-  m_nOverBytes     = C_UNKNOWN;
-  m_bCopyOver      = false;
-  //---
-  m_i_IntoOffset   = C_UNKNOWN;
+  m_i_IntoHead    = C_UNKNOWN;
+  m_aIntoHead     = nullptr;
+  m_i_IntoOffset  = C_UNKNOWN;
   
-  // + + + + + + + + + + + + + +
-  
-  m_pRowSamples    = nullptr;
-  
-  m_pRowEncoder    = nullptr;
-  
-  //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-
-  m_nTotalHeads = 0;
-  
-  m_nTails     = 0;
-  m_nTailUnits = 0;
+  m_pRowSamples   = nullptr;
   
   m_nTotalBuffers = 0;
-
+  m_nTotalHeads   = 0;
+  
   _checkInitialised_(CN_ROWCOMPACTOR);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
@@ -107,12 +90,10 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer)
   
   m_pIntoNub     = pCrwBuffer->m_oRowTray.pNub();
 
-  m_bEncoding    = false;
   m_pColVec      = m_pIntoNub->pDesc()->pColumnVec();
   m_nHeadBytes   = nHeadBytes(m_pColVec);
   m_nMetaData    = nMetaData(m_pColVec);
   m_i_BaseOffset = iBaseOffset(m_pColVec);
-  m_bCopyOver    = false;
   
   // + + +
   m_pRowSamples  = new IrwBuffer;
@@ -125,16 +106,11 @@ void RowCompactor::vCompactEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_bEncoding     = false;
   //m_pColVec     = nullptr;
   m_nHeadBytes    = C_UNKNOWN;
   m_nMetaData     = C_UNKNOWN;
   m_i_BaseOffset  = C_UNKNOWN;
-  //---
-  m_i_IntoOver    = C_UNKNOWN;
-  m_aIntoOver     = nullptr;
-  m_nOverBytes    = C_UNKNOWN;
-  m_bCopyOver     = false;
+
 
   m_pIntoNub      = nullptr;
   m_i_IntoHead    = C_UNKNOWN;
@@ -152,8 +128,6 @@ void RowCompactor::vCompactEnd(void)
 bool RowCompactor::bCompactRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  RASSERT(! m_bEncoding);
   
   //hpRow hp_Row;
   //vTrace("%s\n"_Stz,hp_Row.sz(pRow));
@@ -179,7 +153,7 @@ bool RowCompactor::bCompactRow(Row* pRow)
   
   if (! m_pIntoNub->bHasSpace(nSpaceNeeded)) {
     m_nTotalBuffers++;
-    delete m_pRowEncoder;
+    delete pErwRow;
     return false;
   }
   
@@ -190,11 +164,6 @@ bool RowCompactor::bCompactRow(Row* pRow)
   m_aIntoHead    = m_pIntoNub->aGetHead(m_i_IntoHead);
   m_i_IntoOffset = m_i_BaseOffset;
   
-  //---
-  m_i_IntoOver   = C_UNKNOWN;
-  m_aIntoOver    = nullptr;
-  m_nOverBytes   = C_UNKNOWN;
-  m_bCopyOver    = false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Mark IV samples
@@ -227,7 +196,6 @@ bool RowCompactor::bCompactRow(Row* pRow)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  delete m_pRowEncoder;
   delete pErwRow;
 
   return true;
