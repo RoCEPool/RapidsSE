@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Values
+namespace Base
 {
   class Dtm
   {
@@ -11,7 +11,6 @@ namespace Values
     union {
       
       char*   m_azString;
-      Object* m_pObject;
       i8      m_nSize;    // size of vch
       i8      m_iValue;
 
@@ -41,8 +40,6 @@ namespace Values
     };
   
   public:
-    void* operator new(size_t);
-  
     Dtm(void);
    ~Dtm(void) noexcept(false);
   
