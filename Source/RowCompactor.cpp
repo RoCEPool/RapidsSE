@@ -328,26 +328,6 @@ void RowCompactor::vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol)
   m_i_IntoOffset += nBytes;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get address of given shoco column from head line                           */
-/*----------------------------------------------------------------------------*/
-byte* RowCompactor::ayShoco(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol)
-{
-  i8 i_LastOffset = m_i_BaseOffset;
-  i8 i_LastColumn = 0;
-  
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,
-                               i_LastColumn,i_LastOffset);
-  
-  if (MC_SHOCO_FIT_1C != eEncoding)
-    return nullptr;
-  
-  // get address of <C><shoco...>
-  byte* ayAddress = ayAdrLogical(aHeadLine,i_LastOffset);
-  
-  return ayAddress;
-}
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                Static Functions                            //
@@ -357,6 +337,67 @@ byte* RowCompactor::ayShoco(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCo
 /*-- Public Static -----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*----------------------------------------------------------------------------*/
+/*-- Private Static ----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* calc size of the head line for column vector                               */
+/*----------------------------------------------------------------------------*/
+i8 RowCompactor::nHeadBytes_(ColumnVec* pColVec)
+{
+  // experiment 1
+  //i8 nBytes = sizeof(CacheLine) + (1 * C_BYTES_PER_WORD);
+  //i8 nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  
+  // experiment 2
+  //i8 nBytes = pColVec->nItems() * 4;
+  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  
+  // experiment 3
+  //i8 nBytes = pColVec->nItems() * 5;
+  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  
+  // experiment 4
+  //i8 nBytes = pColVec->nItems() * 6;
+  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  
+  // seth
+  //i8 nBytes = pColVec->nItems() * 10;
+  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  
+  //nBytes     = 24;
+  //nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  
+  //i8 nBytesHead = nHeadWords * (i8)C_BYTES_PER_WORD;
+  i8 nBytesHead = 256;
+  RASSERT(nBytesHead >= C_HEAD_MIN_BYTES);
+  
+  return nBytesHead;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* RowCompactor::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR);
+  
+  return &m_xFooter;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//                           move into headline?                              //
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* dump head line                                                             */
@@ -370,21 +411,21 @@ void RowCompactor::vDumpHead(Stz* szTitle,
   
   i8 nHeadBytes = aHeadLine->nBytes();
   i8 nHeadWords = aHeadLine->nWords();
-
+  
   OverLine* aOverLine = nullptr;
   i8 i_Over_rel = aHeadLine->iOverflow2B();
   i8 nOverBytes = C_UNKNOWN;
   i8 nOverUnits = C_UNKNOWN;
-
+  
   if (aHeadLine->bHasOverflow()) {
     vTrace("\n%s HeadDump %p :\n"_Stz,szTitle,aHeadLine);
     
     MemLib::vWordDump(aHeadLine,nHeadBytes);
-
+    
     aOverLine  = aGetOverRel(aHeadLine,i_Over_rel);
     nOverBytes = aOverLine->nBytes();
     nOverUnits = aOverLine->nUnits();
-
+    
     vTrace("\n%s OverLine %p (diff %lldB %lldU):\n"_Stz,
            szTitle,aOverLine,
            nSub(aOverLine,aHeadLine),
@@ -398,7 +439,7 @@ void RowCompactor::vDumpHead(Stz* szTitle,
     w8* awLastWord  = MemLib::awFindNonZeroEnd(aHeadLine,nHeadWords);
     i8 nWords = (awLastWord - (w8*)aHeadLine) + 1;
     i8 nBytes_clipped = nWords * C_BYTES_PER_WORD;
-
+    
     MemLib::vWordDump(aHeadLine,nBytes_clipped);
   }
   else {
@@ -406,7 +447,7 @@ void RowCompactor::vDumpHead(Stz* szTitle,
     
     MemLib::vWordDump(aHeadLine,nHeadBytes);
   }
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get no of columns
@@ -415,7 +456,7 @@ void RowCompactor::vDumpHead(Stz* szTitle,
   i8 nFreeBytes = nFreeSpaceHead(aHeadLine,pColVec);
   if (nFreeBytes < 0)
     nFreeBytes = 0;
-
+  
   if (aHeadLine->bHasOverflow()) {
     i8 i_Over_rel = aHeadLine->iOverflow2B();
     OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
@@ -424,8 +465,8 @@ void RowCompactor::vDumpHead(Stz* szTitle,
     for (i_Col_over = 0; i_Col_over < nColumns; i_Col_over++)
       if (MC_OVERFLOW_2T == aHeadLine->eMetaCode(i_Col_over))
         break;
-
-
+    
+    
     vTrace("HL: 0x%012llx <W>=%lld%s {M}=%lld [OT]=%04x @ col %lld %s FreeBytes %lld\n"
            "OT: 0x%012llx <U>=%lld <M>=%ll02x %s\n"_Stz,
            aHeadLine,
@@ -436,12 +477,12 @@ void RowCompactor::vDumpHead(Stz* szTitle,
            i_Col_over,
            pColVec->pGet(i_Col_over)->szColNm(),
            nFreeBytes,
-
+           
            aOverLine,
            nOverUnits,
            eOverMeta,
            aMC[eOverMeta]
-          );
+           );
   }
   else {
     vTrace("HL: 0x%012llx <W>=%lld%s FreeBytes %lld; "
@@ -451,9 +492,9 @@ void RowCompactor::vDumpHead(Stz* szTitle,
            aHeadLine->bIsLargeHead() ? " LARGEHEAD"_Stz : ""_Stz,
            nFreeBytes);
   }
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  
   HV_Rec hvRec(pColVec);
   Datum oDatum;
   
@@ -469,11 +510,11 @@ void RowCompactor::vDumpHead(Stz* szTitle,
   Stz*  szMetaCode;
   byte* ayAddr;
   i8    nBytes;
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   
- // for each column
+  // for each column
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
     
     // get the column at index
@@ -510,7 +551,7 @@ void RowCompactor::vDumpHead(Stz* szTitle,
       RASSERT(1 == nBytes);
       nBytes += wGetLogical(aHeadLine,i_Offset,C_1B);
     }
-
+    
     //      colNo colNm Dtm  MC   aMC   Ofset Addr   Bytes
     vTrace("%3lld %-15s %-3s %02x %-19s %2lld %012llx %2lld "_Stz,
            i_Col,
@@ -726,60 +767,6 @@ void RowCompactor::vDumpHead_IV(Stz* szTitle,
   delete pRow;
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- Private Static ----------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/* calc size of the head line for column vector                               */
-/*----------------------------------------------------------------------------*/
-i8 RowCompactor::nHeadBytes_(ColumnVec* pColVec)
-{
-  // experiment 1
-  //i8 nBytes = sizeof(CacheLine) + (1 * C_BYTES_PER_WORD);
-  //i8 nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(Word));
-  
-  // experiment 2
-  //i8 nBytes = pColVec->nItems() * 4;
-  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
-  
-  // experiment 3
-  //i8 nBytes = pColVec->nItems() * 5;
-  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
-  
-  // experiment 4
-  //i8 nBytes = pColVec->nItems() * 6;
-  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
-  
-  // seth
-  //i8 nBytes = pColVec->nItems() * 10;
-  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
-  
-  //nBytes     = 24;
-  //nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(Word));
-  
-  //i8 nBytesHead = nHeadWords * (i8)C_BYTES_PER_WORD;
-  i8 nBytesHead = 256;
-  RASSERT(nBytesHead >= C_HEAD_MIN_BYTES);
-  
-  return nBytesHead;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* RowCompactor::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR);
-  
-  return &m_xFooter;
-}
 
 /*============================================================================*/
 /* end                                                                        */

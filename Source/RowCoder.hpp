@@ -33,6 +33,8 @@ namespace Data
     static void vMetaCode(HeadLine* aHeadLine, Column* pCol, eMC eMetaCode);
     static i8   nMetaData(ColumnVec* pColVec);
     static void vPutLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes, w8 wBytes);
+    static byte* ayShoco(HeadLine* aHeadLine, i8 iBaseOffset,
+                         ColumnVec* pColVec, Column* pCol);
   };
 }
 

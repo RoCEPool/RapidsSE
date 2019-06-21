@@ -91,22 +91,20 @@ namespace Data
     void vAnalyseFree(void);
     void vCompact(RowEncoding* pRowEncoding);
     void vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol);
-    byte* ayShoco(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-        
+    
   public:
     static HeadLine* aCompactRow(CrwBuffer* pCrwBuffer, i8 i_Row);
-    static void vDumpHead(Stz* szTitle,
-                          HeadLine* aHeadLine,
-                          ColumnVec* pColVec);
-    static void vDumpHead_IV(Stz* szTitle,
-                             HeadLine* aHeadLine,
-                             ColumnVec* pColVec);
   
   private:
     static i8 nHeadBytes_(ColumnVec* pColVec);
     
   private:
     Footer* aFooter(void);
+    
+  // move
+  public:
+    static void vDumpHead(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec);
+    static void vDumpHead_IV(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec);
   };
 
   RowCompactor* _pRowCoder(void* aAddr);

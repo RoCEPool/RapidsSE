@@ -399,6 +399,26 @@ void RowCoder::vPutLogical(HeadLine* aLogicalRow, i8 i_Offset, i8 nBytes, w8 wBy
   aOverLine->vPut(i_Offset_over,wBytes,nBytes);
 }
 
+/*----------------------------------------------------------------------------*/
+/* get address of given shoco column from head line                           */
+/*----------------------------------------------------------------------------*/
+byte* RowCoder::ayShoco(HeadLine* aHeadLine, i8 i_BaseOffset,
+                        ColumnVec* pColVec, Column* pCol)
+{
+  i8 i_LastOffset = i_BaseOffset;
+  i8 i_LastColumn = 0;
+  
+  eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,
+                               i_LastColumn,i_LastOffset);
+  
+  if (MC_SHOCO_FIT_1C != eEncoding)
+    return nullptr;
+  
+  // get address of <C><shoco...>
+  byte* ayAddress = ayAdrLogical(aHeadLine,i_LastOffset);
+  
+  return ayAddress;
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
