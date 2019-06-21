@@ -279,9 +279,6 @@ typedef       HV <Row,   ColumnVec>                            HV_Row;
 typedef    Nub_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table> RowNub;
 
 typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
-                  (C_TRAY_ROWS * sizeof(HeadLine)) / 2>        RowParts;
-
-typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
                   (C_TRAY_ROWS * sizeof(HeadLine))>            RowTray;
 
 //------------------------------------------------------------------------------
