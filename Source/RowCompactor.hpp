@@ -131,12 +131,12 @@ namespace Data
     static void vDumpHead(Stz* szTitle,
                           HeadLine* aHeadLine,
                           ColumnVec* pColVec);
-    
+    static void vDumpHead_IV(Stz* szTitle,
+                             HeadLine* aHeadLine,
+                             ColumnVec* pColVec);
   
   private:
   
-    static void vDecode(Datum* pDatum, RowNub* pNub, i8 i_Row, Column* pCol,
-                        i8& i_LastColumn, i8& i_LastOffset);
     static void vDecode(Datum* pDatum, HeadLine* aHeadLine,
                         ColumnVec* pColVec, Column* pCol,
                         i8& i_LastColumn, i8& i_LastOffset);
