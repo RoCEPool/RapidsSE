@@ -21,7 +21,6 @@ namespace Data
     i8         m_i_DataOffset; // offset where next data bytes go
     
     // - - - - - - - - - - - -
-
     IrwBuffer* m_pRowSamples;  // the set of sample rows
     
     // - - - - - - - - - - - -

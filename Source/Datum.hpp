@@ -33,6 +33,8 @@ namespace Data
 
       w8   m_wWord;
       byte m_yaByte[C_BYTES_PER_WORD];
+      
+      Dtm  m_wDtm;
     };
   
     sVCH m_sVch;

@@ -263,6 +263,9 @@ void RowCompactor::vCompactEncoded(RowEncoding* pRowEncoding)
 /*----------------------------------------------------------------------------*/
 /* add encoded datum onto the end of crw                                      */
 /*----------------------------------------------------------------------------*/
+
+//! this should be in crwHead
+
 void RowCompactor::vDtmCode(eMC eMetaCode, Dtm wDataCode, i8 nDataSize, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);

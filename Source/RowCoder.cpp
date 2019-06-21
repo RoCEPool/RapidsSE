@@ -135,30 +135,19 @@ i8 RowCoder::nDataBytes(eMC eMetaCode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute an Edt into a Dte                                                  */
+/* convert a Edt into an Dte (in situ)                                        */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDteFromEdt(Datum* pDatum, i8 iEraBaseYear)
+void RowCoder::vDteFromEdt(Dtm* aDte, i8 iEraBaseYear)
 {
-  RowCoder::vDteFromEdt((Word*)&pDatum->m_wWord,iEraBaseYear);
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert a Edt into an Dte                                                  */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDteFromEdt(Word* aWord, i8 iEraBaseYear)
-{
-  i8 iYearInEra;
-  i8 iMonth;
-  i8 iDay;
+  i8 iYearInEra = aDte->xEdt.m_uYearInEra;
+  i8 iMonth     = aDte->xEdt.m_uMonth;
+  i8 iDay       = aDte->xEdt.m_uDay;
   
-  iYearInEra = aWord->xEdt.m_uYearInEra;
-  iMonth     = aWord->xEdt.m_uMonth;
-  iDay       = aWord->xEdt.m_uDay;
+  aDte->m_iDte = 0;
   
-  aWord->m_iDte = 0;
-  aWord->xDte.m_uYearDelta = iYearInEra + iEraBaseYear;
-  aWord->xDte.m_uMonth     = iMonth;
-  aWord->xDte.m_uDay       = iDay;
+  aDte->xDte.m_uYearDelta = iYearInEra + iEraBaseYear;
+  aDte->xDte.m_uMonth     = iMonth;
+  aDte->xDte.m_uDay       = iDay;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,14 +156,11 @@ void RowCoder::vDteFromEdt(Word* aWord, i8 iEraBaseYear)
 void RowCoder::vDteIntoEdt(Dtm wDte,
                            Dtm& wEdt_, i8& iEra_)
 {
-  i8 iYearDelta;
-  i8 iYearInEra;
-  i8 iMonth;
-  i8 iDay;
+  i8 iYearDelta = wDte.xDte.m_uYearDelta;
+  i8 iMonth     = wDte.xDte.m_uMonth;
+  i8 iDay       = wDte.xDte.m_uDay;
   
-  iYearDelta = wDte.xDte.m_uYearDelta;
-  iMonth     = wDte.xDte.m_uMonth;
-  iDay       = wDte.xDte.m_uDay;
+  i8 iYearInEra;
   
   if (iYearDelta < C_ERA_1) {
     iEra_ = C_ERA_0;
