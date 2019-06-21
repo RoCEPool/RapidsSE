@@ -67,6 +67,22 @@ namespace Data
     i8 m_nHeadFreeBytes_48_55;
     i8 m_nHeadFreeBytes_56_63;
     i8 m_nHeadFreeBytes_64_;
+    
+//    Freq m_xFreq;
+//
+//    //---
+//
+//    m_xFreq.vInit(7,15,23,31,39,47,55,63,-1);
+//
+//
+//    m_xFreq.vAdd(nBytes);
+//
+//    m_xFreq.nBuckets();
+//    m_xFreq.iBucket(i_Bucket);
+//    m_xFreq.iDist(i_Bucket)
+//    m_xFreq.nSamples();
+//    m_xFreq.nSum();
+    //---
 
     i8 m_nTails;
     i8 m_nTailUnits;
@@ -100,11 +116,6 @@ namespace Data
     
   private:
     Footer* aFooter(void);
-    
-  // move
-  public:
-    static void vDumpHead(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec);
-    static void vDumpHead_IV(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec);
   };
 
   RowCompactor* _pRowCoder(void* aAddr);

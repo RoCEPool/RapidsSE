@@ -16,6 +16,9 @@ namespace Data
     HeadLine(void);
     ~HeadLine(void) noexcept(false);
   
+    static void vDumpHead(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec);
+    static void vDumpHead_IV(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec);
+
     void vMetaCode(i8 i_Meta, w8 wArg);
     
     i8   nBytes(void);
