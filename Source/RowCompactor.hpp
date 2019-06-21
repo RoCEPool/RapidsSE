@@ -54,18 +54,6 @@ namespace Data
 
     //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
   
-    struct {
-      i8   m_nEncoded;       // no of times the column has originally encoded
-      i8   m_nEncodedBytes;  // bytes originally encoded
-      i8   m_nRecoded;       // no of times able to succesfully recode
-      i8   m_nRecodedBytes;  // bytes succesfully recoded
-      i8   m_nOops;          // no of times unable to succesfully recode
-      i8   m_nOopsBytes;     // oops bytes
-      i8   m_nOopsMiss;      // oops miss
-
-    } m_xaUsage[C_MAX_COLUMNS];
-  
-    i8 m_anMetaCode[MC_ENUMS];
 
     i8 m_nTotalHeads;
 
@@ -104,13 +92,7 @@ namespace Data
     void vCompact(RowEncoding* pRowEncoding);
     void vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol);
     byte* ayShoco(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCol);
-    
-    void vUsageIncEncoded(Column* pCol, i8 nBytes, eMC eMetaCode = MC_NULL);
-    void vUsageIncEncoded(Column* pCol, Datum* pDatum, eMC eMetaCode = MC_NULL);
-    void vUsageIncRecoded(Column* pCol, i8 nBytes, eMC eMetaCode = MC_NULL);
-    void vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss, eMC eMetaCode = MC_NULL);
-    void vUsageReset(void);
-    
+        
   public:
     static HeadLine* aCompactRow(CrwBuffer* pCrwBuffer, i8 i_Row);
     static void vDumpHead(Stz* szTitle,

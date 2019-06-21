@@ -74,22 +74,6 @@ RowCompactor::RowCompactor(void)
   
   //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 
-  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
-    
-    m_xaUsage[i_Col].m_nEncoded = 0;
-    m_xaUsage[i_Col].m_nEncodedBytes = C_0B;
-    
-    m_xaUsage[i_Col].m_nRecoded = 0;
-    m_xaUsage[i_Col].m_nRecodedBytes = C_0B;
-
-    m_xaUsage[i_Col].m_nOops = 0;
-    m_xaUsage[i_Col].m_nOopsBytes = C_0B;
-    m_xaUsage[i_Col].m_nOopsMiss = C_0B;
-  }
-  
-  for (i8 i_Code = 0; i_Code < MC_ENUMS; i_Code++)
-    m_anMetaCode[i_Code] = 0;
-  
   m_nTotalHeads = 0;
 
   m_nHeadFreeBytes = 0;
@@ -364,86 +348,6 @@ byte* RowCompactor::ayShoco(HeadLine* aHeadLine, ColumnVec* pColVec, Column* pCo
   return ayAddress;
 }
 
-/*----------------------------------------------------------------------------*/
-/* inc column usage                                                           */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vUsageIncEncoded(Column* pCol, i8 nBytes, eMC eMetaCode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  i8 i_Col = pCol->iColumnNo();
-  
-  m_xaUsage[i_Col].m_nEncodedBytes += nBytes;
-  m_xaUsage[i_Col].m_nEncoded++;
-  
-  m_anMetaCode[eMetaCode]++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc column usage                                                           */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vUsageIncEncoded(Column* pCol, Datum* pDatum, eMC eMetaCode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  vUsageIncEncoded(pCol,pDatum->m_nEncodedBytes);
-  
-  m_anMetaCode[eMetaCode]++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc column usage                                                           */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vUsageIncRecoded(Column* pCol, i8 nBytes, eMC eMetaCode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  i8 i_Col = pCol->iColumnNo();
-  
-  m_xaUsage[i_Col].m_nRecodedBytes += nBytes;
-  m_xaUsage[i_Col].m_nRecoded++;
-  
-  m_anMetaCode[eMetaCode]++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc column usage                                                           */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss, eMC eMetaCode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  i8 i_Col = pCol->iColumnNo();
-  
-  m_xaUsage[i_Col].m_nOopsBytes += nBytes;
-  m_xaUsage[i_Col].m_nOopsMiss  += nMiss;
-  m_xaUsage[i_Col].m_nOops++;
-  
-  m_anMetaCode[eMetaCode]++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset usage                                                                */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vUsageReset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
-    
-    m_xaUsage[i_Col].m_nEncoded = 0;
-    m_xaUsage[i_Col].m_nEncodedBytes = C_0B;
-    
-    m_xaUsage[i_Col].m_nRecoded = 0;
-    m_xaUsage[i_Col].m_nRecodedBytes = C_0B;
-    
-    m_xaUsage[i_Col].m_nOops = 0;
-    m_xaUsage[i_Col].m_nOopsBytes = C_0B;
-  }
-  
-  for (i8 i_Code = 0; i_Code < MC_ENUMS; i_Code++)
-    m_anMetaCode[i_Code] = 0;
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                Static Functions                            //
