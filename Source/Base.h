@@ -25,26 +25,28 @@ using namespace Base;
 
 #include "BitLib.hpp"
 #include "ByteLiterals.hpp"
-#include "CacheLine.hpp"
 #include "ClassNumbers.hpp"
-#include "DoubleWord.hpp"
 #include "IntLib.hpp"
 #include "i3.hpp"
 #include "Magnitudes.hpp"
 #include "MemLib.hpp"
 #include "Null.hpp"
-#include "QuadWord.hpp"
-#include "SpaceUnit.hpp"
 #include "Stz.hpp"
 #include "StrLib.hpp"
-#include "Word.hpp"
+
 
 #include "AxiomaticConstants.h"
 #include "LimitsFormats.h"
 #include "Structs.h"
 
+
 #include "Dtm.hpp"
 
+#include "Word.hpp"
+#include "DoubleWord.hpp"
+#include "QuadWord.hpp"
+#include "CacheLine.hpp"
+#include "SpaceUnit.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

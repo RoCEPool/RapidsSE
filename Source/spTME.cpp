@@ -41,17 +41,17 @@ Stz* spTME::sz(i8 iTme)
   
   Word wTme = iTme;
   
-  if (wTme.xTme.m_uMicro) {
+  if (wTme.m_wDtm.xTme.m_uMicro) {
     
     char caFraction[16];
-    StrLib::vFormatFraction(caFraction,wTme.xTme.m_uMicro,6);
+    StrLib::vFormatFraction(caFraction,wTme.m_wDtm.xTme.m_uMicro,6);
     
     StrLib::vSprint(m_caResult,
                     (Stz*)F_TME_frac,
 
-                    (i8)wTme.xTme.m_uHour,
-                    (i8)wTme.xTme.m_uMinute,
-                    (i8)wTme.xTme.m_uSecond,
+                    (i8)wTme.m_wDtm.xTme.m_uHour,
+                    (i8)wTme.m_wDtm.xTme.m_uMinute,
+                    (i8)wTme.m_wDtm.xTme.m_uSecond,
                     
                     caFraction);
   }
@@ -59,9 +59,9 @@ Stz* spTME::sz(i8 iTme)
     StrLib::vSprint(m_caResult,
                     (Stz*)F_TME,
 
-                    (i8)wTme.xTme.m_uHour,
-                    (i8)wTme.xTme.m_uMinute,
-                    (i8)wTme.xTme.m_uSecond);
+                    (i8)wTme.m_wDtm.xTme.m_uHour,
+                    (i8)wTme.m_wDtm.xTme.m_uMinute,
+                    (i8)wTme.m_wDtm.xTme.m_uSecond);
   }
 
   return (Stz*) &m_caResult[0];

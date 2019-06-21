@@ -44,9 +44,9 @@ Stz* spDTE::sz(i8 iDte)
   StrLib::vSprint(m_caResult,
                   (Stz*)m_caFormat,
                   
-                  (i8)wDte.xEdt.m_uYearInEra + C_YEAR_BASE,
-                  (i8)wDte.xEdt.m_uMonth,
-                  (i8)wDte.xEdt.m_uDay);
+                  (i8)wDte.m_wDtm.xDte.m_uYearDelta + C_YEAR_BASE,
+                  (i8)wDte.m_wDtm.xDte.m_uMonth,
+                  (i8)wDte.m_wDtm.xDte.m_uDay);
 
   return (Stz*) &m_caResult[0];
 }
