@@ -101,7 +101,7 @@ bool QueueBuffer::bAppend(Object* pObject)
 //  PtrVal xPtrVal;
 //  xPtrVal = pObject;
 //
-//  Value* aValue = &xPtrVal;
+//  ForthValue* aValue = &xPtrVal;
 //
 //  i8 nBytes = aValue->nSize();
 //
@@ -112,7 +112,7 @@ bool QueueBuffer::bAppend(Object* pObject)
 //
 //  MemLib::vCopy(m_aNextFree,aValue,nBytes,CN_QUEUEBUFFER);
 //
-//  m_aNextFree = aAdd<Value*>(m_aNextFree,nBytes);
+//  m_aNextFree = aAdd<ForthValue*>(m_aNextFree,nBytes);
 //
 //  m_nPointers++;
 //

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* FipVal.cpp - Forth Instruction Pointer Value                               */
+/* FipVal.cpp - Forth Instruction Pointer ForthValue                               */
 /*============================================================================*/
 
 #include "Values.h"
@@ -31,7 +31,7 @@ void* FipVal::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 FipVal::FipVal(void)
-: Value(CN_FIPVAL)
+: ForthValue(CN_FIPVAL)
 {
   m_xHeader.vSetClass(CN_FIPVAL);
   

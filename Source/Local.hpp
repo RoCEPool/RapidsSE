@@ -19,7 +19,7 @@ namespace Forth
     void* operator new(size_t);
     Local(void);
       
-    Value* aLocalValue(void);
+    ForthValue* aLocalValue(void);
   
   private:
     Footer* aFooter(void);

@@ -723,7 +723,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
     
     sStackContents.vCatSprint(" "_Stz);
     
-    Value* aValue = pStack->aPeekValue(iValue);
+    ForthValue* aValue = pStack->aPeekValue(iValue);
     
     eCN eClass = aValue->eClass();
     
@@ -1051,7 +1051,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
     // should be %v or %V
     ASSERT('v' == *pf || 'V' == *pf);
     
-    Value* aValue0 = m_pDataStack->aPeekValue(0);
+    ForthValue* aValue0 = m_pDataStack->aPeekValue(0);
     eCN eClass = aValue0->eClass();
     
     // test for StrVal

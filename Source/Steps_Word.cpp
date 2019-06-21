@@ -563,7 +563,7 @@ void Step::vSee(MP_Task mpTask)
       
       aDoesCell++;
       
-      Value* aValue = reinterpret_cast<Value*>(aDoesCell);
+      ForthValue* aValue = reinterpret_cast<ForthValue*>(aDoesCell);
       
       if (CN_STRVAL == aValue->eClass()) {
         vTrace(" \"%s\"\n"_Stz,_aStrVal(aValue)->aChar());

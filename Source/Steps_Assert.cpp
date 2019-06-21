@@ -58,7 +58,7 @@ void Step::vAssertClass(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class"_Stz);
   
-  Value* aValue = mpTask->m_pDataStack->aPeekValue();
+  ForthValue* aValue = mpTask->m_pDataStack->aPeekValue();
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aValue->eClass();
@@ -85,7 +85,7 @@ void Step::vAssertClass_0(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_0"_Stz);
   
-  Value* aValue = mpTask->m_pDataStack->aPeekValue(0);
+  ForthValue* aValue = mpTask->m_pDataStack->aPeekValue(0);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aValue->eClass();
@@ -112,7 +112,7 @@ void Step::vAssertClass_1(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_1"_Stz);
   
-  Value* aValue = mpTask->m_pDataStack->aPeekValue(1);
+  ForthValue* aValue = mpTask->m_pDataStack->aPeekValue(1);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aValue->eClass();
@@ -139,7 +139,7 @@ void Step::vAssertClass_2(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_2"_Stz);
   
-  Value* aValue = mpTask->m_pDataStack->aPeekValue(2);
+  ForthValue* aValue = mpTask->m_pDataStack->aPeekValue(2);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aValue->eClass();
@@ -166,7 +166,7 @@ void Step::vAssertClass_3(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_3"_Stz);
   
-  Value* aValue = mpTask->m_pDataStack->aPeekValue(3);
+  ForthValue* aValue = mpTask->m_pDataStack->aPeekValue(3);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aValue->eClass();
@@ -193,7 +193,7 @@ void Step::vAssertClass_4(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_INVALID_DSTACK("assert::class_4"_Stz);
   
-  Value* aValue = mpTask->m_pDataStack->aPeekValue(4);
+  ForthValue* aValue = mpTask->m_pDataStack->aPeekValue(4);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aValue->eClass();

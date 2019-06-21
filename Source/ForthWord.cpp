@@ -248,7 +248,7 @@ void* ForthWord::aAppend(GenVar* pGenVar)
 /*----------------------------------------------------------------------------*/
 /* append a value  (the entire value, not the pointer to it)                  */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vAppend(Value* aValue)
+void ForthWord::vAppend(ForthValue* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
@@ -259,7 +259,7 @@ void ForthWord::vAppend(Value* aValue)
 /*----------------------------------------------------------------------------*/
 /* append a value  (the entire value, not the pointer to it)                  */
 /*----------------------------------------------------------------------------*/
-void* ForthWord::aAppend(Value* aValue)
+void* ForthWord::aAppend(ForthValue* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 

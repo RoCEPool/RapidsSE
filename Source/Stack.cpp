@@ -110,7 +110,7 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
     
     vPeekValue(iVal,xVariable);
     
-    Value* aNestedValue = xVariable.aNestedValue();
+    ForthValue* aNestedValue = xVariable.aNestedValue();
     eCN eClass = aNestedValue->eClass();
     
     switch(eClass) {
@@ -167,7 +167,7 @@ void Stack::vDiscard(void)
   //m_xHazard.vAssertFooter();
   _hazard_();
   
-  Value* aValue = reinterpret_cast<Value*>(m_aTop);
+  ForthValue* aValue = reinterpret_cast<ForthValue*>(m_aTop);
   i8 iSize = aValue->nSize();
   
   vPopBy(iSize);
@@ -200,7 +200,7 @@ bool Stack::bGuard(eCN eClass0)
   if (nValues() < 1)
     return false;
   
-  Value* aValue0 = aPeekValue(0);
+  ForthValue* aValue0 = aPeekValue(0);
   if (eClass0 != aValue0->eClass())
     return false;
   
@@ -217,11 +217,11 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1)
   if (nValues() < 2)
     return false;
   
-  Value* aValue0 = aPeekValue(0);
+  ForthValue* aValue0 = aPeekValue(0);
   if (eClass0 != aValue0->eClass())
     return false;
   
-  Value* aValue1 = aPeekValue(1);
+  ForthValue* aValue1 = aPeekValue(1);
   if (eClass1 != aValue1->eClass())
     return false;
   
@@ -238,15 +238,15 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
   if (nValues() < 3)
     return false;
   
-  Value* aValue0 = aPeekValue(0);
+  ForthValue* aValue0 = aPeekValue(0);
   if (eClass0 != aValue0->eClass())
     return false;
   
-  Value* aValue1 = aPeekValue(1);
+  ForthValue* aValue1 = aPeekValue(1);
   if (eClass1 != aValue1->eClass())
     return false;
   
-  Value* aValue2 = aPeekValue(2);
+  ForthValue* aValue2 = aPeekValue(2);
   if (eClass2 != aValue2->eClass())
     return false;
   
@@ -256,11 +256,11 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
 /*----------------------------------------------------------------------------*/
 /* peek at value on top of value stack                                        */
 /*----------------------------------------------------------------------------*/
-Value* Stack::aPeekValue(void)
+ForthValue* Stack::aPeekValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Value* aValue = reinterpret_cast<Value*>(m_aTop);
+  ForthValue* aValue = reinterpret_cast<ForthValue*>(m_aTop);
   
   return aValue;
 }
@@ -268,16 +268,16 @@ Value* Stack::aPeekValue(void)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on value stack                                         */
 /*----------------------------------------------------------------------------*/
-Value* Stack::aPeekValue(i8 i_Value)
+ForthValue* Stack::aPeekValue(i8 i_Value)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Value* aValue = aPeekValue();
+  ForthValue* aValue = aPeekValue();
   while (i_Value--) {
     char* aAddress = reinterpret_cast<char*>(aValue);
     i8 iSize = aValue->nSize();
     aAddress += iSize;
-    aValue = reinterpret_cast<Value*>(aAddress);
+    aValue = reinterpret_cast<ForthValue*>(aAddress);
   }
   
   return aValue;
@@ -290,7 +290,7 @@ void Stack::vPeekValue(i8 i_Value, GenVar& xVariable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Value* aPeekedValue = aPeekValue(i_Value);
+  ForthValue* aPeekedValue = aPeekValue(i_Value);
   
   i8 iSize = aPeekedValue->nSize();
   
@@ -306,7 +306,7 @@ bool Stack::bPeekZero(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Value* aValue = aPeekValue();
+  ForthValue* aValue = aPeekValue();
   
   if (CN_INTVAL == aValue->eClass() && 0 == _aIntVal(aValue)->iInt())
     return true;
@@ -840,7 +840,7 @@ bool Stack::bPopAsInt_Quick(i8& iArg)
     return false;
   
   // get pointer to value on the top of the stack
-  Value* aTopValue = aPeekValue();
+  ForthValue* aTopValue = aPeekValue();
 
   // discard the value
   vDiscard();
@@ -890,7 +890,7 @@ void Stack::vPokeGenVar(i8 i_Value, GenVar& xGenVar)
   
   i8 iSize = xGenVar.aNestedValue()->nSize();
   
-  Value* aPokeAddress = aPeekValue(i_Value);
+  ForthValue* aPokeAddress = aPeekValue(i_Value);
   
   MemLib::vCopy(aPokeAddress,xGenVar.aNestedValue(),iSize,CN_STACK);
 }
@@ -980,7 +980,7 @@ void Stack::vPushLocal(Local* pLocal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Value* aValue = pLocal->aLocalValue();
+  ForthValue* aValue = pLocal->aLocalValue();
   
   vPushValue(aValue);
 
@@ -1055,7 +1055,7 @@ void Stack::vPushS16KB(s16KB& sArg)
 /*----------------------------------------------------------------------------*/
 /* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushValue(Value& xVal1)
+void Stack::vPushValue(ForthValue& xVal1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -1065,7 +1065,7 @@ void Stack::vPushValue(Value& xVal1)
 /*----------------------------------------------------------------------------*/
 /* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushValue(Value* aValue)
+void Stack::vPushValue(ForthValue* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -1132,7 +1132,7 @@ void Stack::vPopReg(Local* aLocal)
 /*----------------------------------------------------------------------------*/
 /* pop value from value stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPopVal(Value* aValue)
+void Stack::vPopVal(ForthValue* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   //m_xHazard.vAssertFooter();
@@ -1161,13 +1161,13 @@ void Stack::vPushBy(i8 nBytes)
   
   ASSERT(pTop >= (char*)aStackLimit());
   
-  m_aTop = reinterpret_cast<Value*>(pTop);
+  m_aTop = reinterpret_cast<ForthValue*>(pTop);
 }
 
 /*----------------------------------------------------------------------------*/
 /* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushVal(Value* aValue)
+void Stack::vPushVal(ForthValue* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
@@ -1187,25 +1187,25 @@ void Stack::vPushVal(Value* aValue)
 /*----------------------------------------------------------------------------*/
 /* base of this value stack                                                   */
 /*----------------------------------------------------------------------------*/
-Value* Stack::aStackBase(void)
+ForthValue* Stack::aStackBase(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   char* aBase = (char*)&m_xWsp.ayArea()[C_WSP_STACK - 1];
   
-  return pPoolCheck<Value*>(aBase);
+  return pPoolCheck<ForthValue*>(aBase);
 }
 
 /*----------------------------------------------------------------------------*/
 /* limit of this value stack                                                  */
 /*----------------------------------------------------------------------------*/
-Value* Stack::aStackLimit(void)
+ForthValue* Stack::aStackLimit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   char* aLimit = (char*)&m_xWsp.ayArea()[0];
   
-  return pPoolCheck<Value*>(aLimit);
+  return pPoolCheck<ForthValue*>(aLimit);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -5,7 +5,7 @@
 
 namespace Values
 {
-  class StrVal : public Value
+  class StrVal : public ForthValue
   {
   protected:
     i8   m_nBytesFollowing;

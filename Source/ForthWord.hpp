@@ -81,8 +81,8 @@ namespace Forth
     void  vAppend(i8 iInt);
     void* aAppend(StepFp* afpStep);
     void  vAppend(StepFp* afpStep);
-    void* aAppend(Value* aValue);
-    void  vAppend(Value* aValue);
+    void* aAppend(ForthValue* aValue);
+    void  vAppend(ForthValue* aValue);
     void  vContentDump(void);
     Dic*  pDic(void);
     i8    iEpoch(void);

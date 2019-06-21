@@ -68,7 +68,7 @@ namespace Base
   
   private:
     template <class T>
-    static void vPrintColor(Stz* pFmt, const T& Value, Stz* pColour);
+    static void vPrintColor(Stz* pFmt, const T& ForthValue, Stz* pColour);
   
   public:
     

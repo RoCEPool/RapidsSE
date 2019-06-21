@@ -11,7 +11,7 @@ namespace Forth
   {
   public:
     LocalSet* m_pNext;             // nest frame in chain
-    Value*    m_aDiscardPoint;     // discard point (when in call stack)
+    ForthValue*    m_aDiscardPoint;     // discard point (when in call stack)
     Local     m_xLocal[C_LOCALS];  // set of local values
     
     // must be last
@@ -29,8 +29,8 @@ namespace Forth
     LocalSet* pNext(void);
     void      vNext(LocalSet* pLocalSet);
     
-    Value*    aDiscardPoint(void);
-    void      vDiscardPoint(Value* aDiscardPoint);
+    ForthValue*    aDiscardPoint(void);
+    void      vDiscardPoint(ForthValue* aDiscardPoint);
     
     Local*    pLocal(i8 i_Local);
   

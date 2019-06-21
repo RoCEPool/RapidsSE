@@ -22,10 +22,10 @@ namespace Forth
   private:
   
   private:
-    Value* m_aTop;    // current top of stack
+    ForthValue* m_aTop;    // current top of stack
     i8     m_nValues; // number of values currently on stack
 
-    Value* m_aRetryTop;    // reset to this top of stack
+    ForthValue* m_aRetryTop;    // reset to this top of stack
     i8     m_nRetryValues; // reset with this many values on stack
     
     Footer m_xHazard;
@@ -54,8 +54,8 @@ namespace Forth
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
     
-    Value* aPeekValue(void);
-    Value* aPeekValue(i8 i_Value);
+    ForthValue* aPeekValue(void);
+    ForthValue* aPeekValue(i8 i_Value);
     void vPeekValue(i8 i_Value, GenVar& xGenVar);
     bool bPeekZero(void);
   
@@ -103,8 +103,8 @@ namespace Forth
     void vPushS4K(s4K& s4K);
     void vPushS16KB(s16KB& s16KB);
     void vPushS48K(s48K& s48K);
-    void vPushValue(Value* aValue);
-    void vPushValue(Value& xValue);
+    void vPushValue(ForthValue* aValue);
+    void vPushValue(ForthValue& xValue);
   
     void vRetry(void);
     void vRetryPoint(void);
@@ -115,11 +115,11 @@ namespace Forth
     void vPopBy(i8 nBytes);
   private:
     void vPopReg(Local* aLocal);
-    void vPopVal(Value* aValue);
+    void vPopVal(ForthValue* aValue);
     void vPushBy(i8 nBytes);
-    void vPushVal(Value* aValue);
-    Value* aStackBase(void);
-    Value* aStackLimit(void);
+    void vPushVal(ForthValue* aValue);
+    ForthValue* aStackBase(void);
+    ForthValue* aStackLimit(void);
     
     Footer* aFooter(void);
     Footer* aHazard(void);
@@ -136,7 +136,7 @@ namespace Forth
     
     aTop += nBytes;
     
-    m_aTop = reinterpret_cast<Value*>(aTop);
+    m_aTop = reinterpret_cast<ForthValue*>(aTop);
   }
   
   /*----------------------------------------------------------------------------*/

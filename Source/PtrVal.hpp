@@ -5,7 +5,7 @@
 
 namespace Values
 {
-  class PtrVal : public Value
+  class PtrVal : public ForthValue
   {
   private:
     Object* m_pObj;

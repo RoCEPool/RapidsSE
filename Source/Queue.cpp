@@ -110,7 +110,7 @@ void Queue::vAppend(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* append value to this queue                                                 */
 /*----------------------------------------------------------------------------*/
-//bool Queue::bAppend(Value* aValue)
+//bool Queue::bAppend(ForthValue* aValue)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
 //

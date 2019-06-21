@@ -54,7 +54,7 @@ void Step::vAddressFetch(MP_Task mpTask)
   
   eCN eClass = pObject->eClass();
   
-  Value* aValue = reinterpret_cast<Value*>(pObject);
+  ForthValue* aValue = reinterpret_cast<ForthValue*>(pObject);
   
   switch (eClass) {
     case CN_INTVAL:
@@ -97,7 +97,7 @@ void Step::vAddressStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xValStored) )
     THROW_INVALID_DSTACK("!"_Stz);
   
-  Value* aValue = reinterpret_cast<Value*>(pObject);
+  ForthValue* aValue = reinterpret_cast<ForthValue*>(pObject);
   
   eCN eClass = pObject->eClass();
   

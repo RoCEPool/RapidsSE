@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Value.cpp --Base Class for Self-Describing Values                          */
+/* ForthValue.cpp --Base Class for Self-Describing Values                          */
 /*============================================================================*/
 
 #include "Values.h"
@@ -8,9 +8,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Value::operator new(size_t)
+void* ForthValue::operator new(size_t)
 {
-  vFatal("fatal: Value class cannot be new'd\n"_Stz);
+  vFatal("fatal: ForthValue class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -18,12 +18,12 @@ void* Value::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Value::Value(eCN eClass)
+ForthValue::ForthValue(eCN eClass)
 //: Header(eClass)
 {
   m_xHeader.vSetClass(eClass);
   
-  _checkInitialisedSize_(sizeof(Value));
+  _checkInitialisedSize_(sizeof(ForthValue));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ Value::Value(eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* get size (in bytes) of value                                               */
 /*----------------------------------------------------------------------------*/
-eCN Value::eClass(void)
+eCN ForthValue::eClass(void)
 {
   eCN eClass = m_xHeader.eClass();
   
@@ -43,7 +43,7 @@ eCN Value::eClass(void)
 /*----------------------------------------------------------------------------*/
 /* get size (in bytes) of value                                               */
 /*----------------------------------------------------------------------------*/
-i8 Value::nSize(void)
+i8 ForthValue::nSize(void)
 {
   i8 nBytes = 0;
   
@@ -76,7 +76,7 @@ i8 Value::nSize(void)
     }
       
     default:
-      vTrace("Value::nSize -- invalid eClass %lld %s\n"_Stz,
+      vTrace("ForthValue::nSize -- invalid eClass %lld %s\n"_Stz,
              eClassNo,aCN[eClassNo]);
       NEVER_REACH;
       break;
@@ -88,7 +88,7 @@ i8 Value::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void Value::vToString(Stz* aString)
+void ForthValue::vToString(Stz* aString)
 {
   eCN eClass = this->eClass();
   
@@ -119,7 +119,7 @@ void Value::vToString(Stz* aString)
     }
             
     default:
-      vTrace("Value::vToString -- invalid eClass %lld"_Stz,eClass);
+      vTrace("ForthValue::vToString -- invalid eClass %lld"_Stz,eClass);
       NEVER_REACH;
       break;
   }

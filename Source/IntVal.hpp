@@ -5,7 +5,7 @@
 
 namespace Values
 {
-  class IntVal : public Value
+  class IntVal : public ForthValue
   {
   private:
     i8  m_iInt;

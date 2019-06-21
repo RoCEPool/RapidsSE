@@ -28,7 +28,7 @@ namespace Forth
       
       Cell*   m_aJumpTo;      // a pointer to another cell within same routine
       
-      Value   m_xEmbValue;    // or an embedded value (for PushValue)
+      ForthValue   m_xEmbValue;    // or an embedded value (for PushValue)
     };
   };
   

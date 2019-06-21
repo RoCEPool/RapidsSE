@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* FipVal.hpp - Forth Instruction Pointer Value                               */
+/* FipVal.hpp - Forth Instruction Pointer ForthValue                               */
 /*============================================================================*/
 #pragma once
 
@@ -10,7 +10,7 @@ namespace Forth
 
 namespace Values
 {
-  class FipVal : public Value
+  class FipVal : public ForthValue
   {
   private:
     Forth::Cell* m_aFip;

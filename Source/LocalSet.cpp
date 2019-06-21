@@ -98,7 +98,7 @@ void LocalSet::vNext(LocalSet* pNext)
 /*----------------------------------------------------------------------------*/
 /* get return point where this local set should be discarded                  */
 /*----------------------------------------------------------------------------*/
-Value* LocalSet::aDiscardPoint(void)
+ForthValue* LocalSet::aDiscardPoint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSET,_FOOTER_);
   
@@ -108,7 +108,7 @@ Value* LocalSet::aDiscardPoint(void)
 /*----------------------------------------------------------------------------*/
 /* set return point where this local set should be discarded                  */
 /*----------------------------------------------------------------------------*/
-void LocalSet::vDiscardPoint(Value* aDiscardPoint)
+void LocalSet::vDiscardPoint(ForthValue* aDiscardPoint)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSET,_FOOTER_);
   

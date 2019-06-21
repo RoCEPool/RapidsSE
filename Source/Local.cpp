@@ -48,11 +48,11 @@ Local::Local(void)
 /*----------------------------------------------------------------------------*/
 /* get address of value nested in the wsp                                     */
 /*----------------------------------------------------------------------------*/
-Value* Local::aLocalValue(void)
+ForthValue* Local::aLocalValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCAL,_FOOTER_);
   
-  Value* aValue = reinterpret_cast<Value*>(m_xWsp.ayArea());
+  ForthValue* aValue = reinterpret_cast<ForthValue*>(m_xWsp.ayArea());
   
   return aValue;
 }

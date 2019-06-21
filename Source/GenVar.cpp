@@ -129,11 +129,11 @@ i8 GenVar::iInt(void)
 /*----------------------------------------------------------------------------*/
 /* get address of the nested value                                            */
 /*----------------------------------------------------------------------------*/
-Value* GenVar::aNestedValue(void)
+ForthValue* GenVar::aNestedValue(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  Value* aValue = reinterpret_cast<Value*>(&xNestedValue);
+  ForthValue* aValue = reinterpret_cast<ForthValue*>(&xNestedValue);
   
   return aValue;
 }

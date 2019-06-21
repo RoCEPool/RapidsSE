@@ -24,7 +24,7 @@ void Step::vPushI(MP_Task mpTask)
 {
   ENTRY("vPushI"_Stz);
   
-  Value* aLoopIndex_I = mpTask->m_pReturnStack->aPeekValue();
+  ForthValue* aLoopIndex_I = mpTask->m_pReturnStack->aPeekValue();
   
   mpTask->m_pDataStack->vPushValue(aLoopIndex_I);
   
@@ -38,7 +38,7 @@ void Step::vPushJ(MP_Task mpTask)
 {
   ENTRY("vPushJ"_Stz);
   
-  Value* aLoopIndex_J = mpTask->m_pReturnStack->aPeekValue(3);
+  ForthValue* aLoopIndex_J = mpTask->m_pReturnStack->aPeekValue(3);
   
   mpTask->m_pDataStack->vPushValue(aLoopIndex_J);
   
@@ -71,7 +71,7 @@ void Step::vPushValue(MP_Task mpTask)
     ASSERT(mpTask->m_iTracing);
   }
   
-  Value* aValue = &mpTask->FIP.m_aCell->m_xEmbValue;
+  ForthValue* aValue = &mpTask->FIP.m_aCell->m_xEmbValue;
   
   mpTask->m_pDataStack->vPushValue(aValue);
   

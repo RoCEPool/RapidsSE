@@ -30,7 +30,7 @@ namespace Forth
 
     Cell*   aFipPtr(void);
     i8      iInt(void);
-    Value*  aNestedValue(void);
+    ForthValue*  aNestedValue(void);
     Object* pObject(void);
     i8      nSize(void);
     Stz*    szStz(void);

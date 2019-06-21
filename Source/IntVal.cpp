@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* IntVal.cpp - Integer Value                                                 */
+/* IntVal.cpp - Integer ForthValue                                                 */
 /*============================================================================*/
 
 #include "Values.h"
@@ -18,7 +18,7 @@ void* IntVal::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IntVal::IntVal(void)
-: Value(CN_INTVAL)
+: ForthValue(CN_INTVAL)
 {
   m_xHeader.vSetClass(CN_INTVAL);
   
