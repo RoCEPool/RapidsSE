@@ -414,9 +414,8 @@ void RowCompactor::vMetaCode(Column* pCol, eMC eMetaCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  vMetaCode(m_aIntoHead,pCol,eMetaCode);
+  RowCoder::vMetaCode(m_aIntoHead,pCol,eMetaCode);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* get address of given shoco column from head line                           */
@@ -1051,15 +1050,6 @@ i8 RowCompactor::nHeadBytes_(ColumnVec* pColVec)
   RASSERT(nBytesHead >= C_HEAD_MIN_BYTES);
   
   return nBytesHead;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set meta encoding for column value                                         */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vMetaCode(HeadLine* aHeadLine, Column* pCol, eMC eMetaCode)
-{
-  i8 i_Col = pCol->iColumnNo();
-  aHeadLine->vMetaCode(i_Col,eMetaCode);
 }
 
 /*----------------------------------------------------------------------------*/

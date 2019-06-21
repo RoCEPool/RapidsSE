@@ -30,6 +30,7 @@ namespace Data
 
     static bool bIsFit(eMC eMetaCode);
   
+    static void vMetaCode(HeadLine* aHeadLine, Column* pCol, eMC eMetaCode);
     static i8   nMetaData(ColumnVec* pColVec);
     static void vPutLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes, w8 wBytes);
   };

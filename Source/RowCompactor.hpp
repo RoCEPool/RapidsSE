@@ -138,8 +138,6 @@ namespace Data
     
     static i8 nHeadBytes_(ColumnVec* pColVec);
     
-    static void vMetaCode(HeadLine* aHeadLine, Column* pCol, eMC eMetaCode);
-
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);
     
   private:
