@@ -985,14 +985,6 @@ void RowCompactor::vDumpHead_IV(Stz* szTitle,
 
 
 /*----------------------------------------------------------------------------*/
-/* compute an Edt into a Dte                                                  */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vDteFromEdt(Datum* pDatum, i8 iEraBaseYear)
-{
-  RowCoder::vDteFromEdt((Word*)&pDatum->m_wWord,iEraBaseYear);
-}
-
-/*----------------------------------------------------------------------------*/
 /* search for duplicate tail line                                             */
 /*----------------------------------------------------------------------------*/
 i8 RowCompactor::iFindTail(RowNub* pNub, TailLine* aFindLine)
@@ -1024,88 +1016,6 @@ i8 RowCompactor::iFindTail(RowNub* pNub, TailLine* aFindLine)
   //  if (IntLib::bIsDecaCycle(nNotFound))
   //    vTrace("%lld dupe tail NOT found\n"_Stz,nNotFound);
   return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of a byte from logicalRow : head[+over]                        */
-/*----------------------------------------------------------------------------*/
-byte* RowCompactor::ayAdrLogical(HeadLine* aLogicalRow, i8 i_Offset)
-{
-  HeadLine* aHeadLine = aLogicalRow;
-  
-  // scenario 1: simple case (no overflow), getting address from head
-  if (! aHeadLine->bHasOverflow()) {
-    byte* ayAdr = (byte*)aHeadLine + i_Offset;
-    return ayAdr;
-  }
-
-  // scenario 2: there is an overflow, but getting address from head
-  i8 nHeadBytes = aLogicalRow->nBytes();
-  if (i_Offset < nHeadBytes - 2) {
-    byte* ayAdr = (byte*)aHeadLine + i_Offset;
-    return ayAdr;
-  }
-
-  // scenario 3: there is an overflow, and getting address from overflow
-  OverLine* aOverLine = aGetOver(aHeadLine);
-  i8 i_Offset_over = i_Offset - nHeadBytes;
-  byte* ayAdr = (byte*)aOverLine + i_Offset_over;
-  return ayAdr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get some bytes from logicalRow : head[+over]                               */
-/*----------------------------------------------------------------------------*/
-w8 RowCompactor::wGetLogical(HeadLine* aLogicalRow, i8 i_Offset, i8 nBytes)
-{
-  HeadLine* aHeadLine = aLogicalRow;
-  w8 wSomeBytes = 0;
-
-  // scenario 1: simple case (no overflow), getting bytes from head
-  if (! aHeadLine->bHasOverflow()) {
-    wSomeBytes = aHeadLine->wGet(i_Offset,nBytes);
-    return wSomeBytes;
-  }
-  
-  // scenario 2: there is an overflow, but getting bytes from head
-  i8 nHeadBytes = aLogicalRow->nBytes();
-  if (i_Offset < nHeadBytes - 2) {
-    wSomeBytes = aHeadLine->wGet(i_Offset,nBytes);
-    return wSomeBytes;
-  }
-  
-  // scenario 3: there is an overflow, and getting bytes from overflow
-  OverLine* aOverLine = aGetOver(aHeadLine);
-  i8 i_Offset_over = i_Offset - nHeadBytes;
-  wSomeBytes = aOverLine->wGet(i_Offset_over,nBytes);
-  return wSomeBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* put some bytes into logicalRow : head[+over]                               */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vPutLogical(HeadLine* aLogicalRow, i8 i_Offset, i8 nBytes, w8 wBytes)
-{
-  HeadLine* aHeadLine = aLogicalRow;
-  
-  // scenario 1: simple case (no overflow), putting bytes into head
-  if (! aHeadLine->bHasOverflow()) {
-    aHeadLine->vPut(i_Offset,wBytes,nBytes);
-    return;
-  }
-  
-  // scenario 2: there is an overflow, but putting bytes into head
-  i8 nHeadBytes = aHeadLine->nBytes();
-  if (i_Offset < nHeadBytes - 2) {
-    aHeadLine->vPut(i_Offset,wBytes,nBytes);
-    return;
-  }
-
-  // scenario 3: there is an overflow, and putting bytes into overflow
-  
-  OverLine* aOverLine = aGetOver(aHeadLine);
-  i8 i_Offset_over = i_Offset - nHeadBytes;
-  aOverLine->vPut(i_Offset_over,wBytes,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/

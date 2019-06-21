@@ -120,13 +120,12 @@ namespace Data
     void vUsageIncOops(Column* pCol, i8 nBytes, i8 nMiss, eMC eMetaCode = MC_NULL);
     void vUsageReset(void);
     
+    
   public:
     static void vAnalyse(RowNub* pNub);
   
     //! alka
     static HeadLine* aCompactRow(CrwBuffer* pCrwBuffer, i8 i_Row);
-    
-    static void vDteFromEdt(Datum* pDatum, i8 iEra);
     
     static void vDumpHead(Stz* szTitle,
                           HeadLine* aHeadLine,
@@ -136,14 +135,8 @@ namespace Data
                              ColumnVec* pColVec);
   
   private:
-  
-
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
     
-    static byte* ayAdrLogical(HeadLine* aHeadLine, i8 i_Offset);
-    static w8    wGetLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes);
-    static void  vPutLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes, w8 wBytes);
-
     static OverLine* aGetOver(HeadLine* aHeadLine);
     static OverLine* aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel);
  
@@ -154,11 +147,6 @@ namespace Data
     
   private:
     Footer* aFooter(void);
-
-
-    
-  public:
-  
   };
 
   RowCompactor* _pRowCoder(void* aAddr);
