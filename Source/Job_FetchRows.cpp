@@ -809,7 +809,7 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
 void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
                            FetchBuffer* pFetchBuffer)
 {
-  //Datum oDatum;
+  //DtmVal oDatum;
   CrwBuffer* pCrwBuffer = nullptr;
   
   ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();

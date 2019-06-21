@@ -33,7 +33,7 @@ void RowExtractor::vAddElement(EntWrk* pEntWrk, Stz* szSrc,
     return;
   }
 
-  Datum oDatum;
+  DtmVal oDatum;
   oDatum.m_pCol = pCol;
 
   bool b = RowExtractor::bExtractElement(&oDatum,&aSrc,pCol,pFormatters);
@@ -119,7 +119,7 @@ Column* RowExtractor::pExtractRow(Row* pRow, char** aacRecCrs,
     
     Column* pCol = pColVec->pGet(i_Col);
   
-    Datum oDatum;
+    DtmVal oDatum;
     oDatum.m_pCol = pCol;
     
     bool b = false;
@@ -204,30 +204,30 @@ Column* RowExtractor::pExtractRow(Row* pRow, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract key element                                                        */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractElement(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractElement(DtmVal* pDtmVal, char** aacRecCrs,
                                 Column* pCol, Formatters* pRecFmt)
 {
   bool b = false;
   eDM eDatum = pCol->eDatumType();
   
-  pDatum->m_pCol = pCol;
+  pDtmVal->m_pCol = pCol;
   
   i8 iYear, iMonth, iDay;
   i8 iHour, iMinute, iSecond, iMicro, iMilli;
   
   switch (eDatum) {
     case DM_BCD:
-      b = StrLib::bExtractDecimal(aacRecCrs,pDatum->m_wDtm.m_iBcd,
+      b = StrLib::bExtractDecimal(aacRecCrs,pDtmVal->m_wDtm.m_iBcd,
                                   pCol->iColumnLength(),
                                   pCol->iColumnScale());
       break;
       
     case DM_BOL:
-      b = StrLib::bExtractBoolean(aacRecCrs,pDatum->m_wDtm.m_iBol);
+      b = StrLib::bExtractBoolean(aacRecCrs,pDtmVal->m_wDtm.m_iBol);
       break;
       
     case DM_CHR:
-      b = bExtractVchDefault(pDatum,aacRecCrs,pRecFmt);
+      b = bExtractVchDefault(pDtmVal,aacRecCrs,pRecFmt);
       break;
       
     case DM_DTE:
@@ -237,18 +237,18 @@ bool RowExtractor::bExtractElement(Datum* pDatum, char** aacRecCrs,
       if (!b)
         break;
       
-      pDatum->m_wDtm.xDte.m_uYearDelta  = iYear - C_YEAR_BASE;
-      pDatum->m_wDtm.xDte.m_uMonth = iMonth;
-      pDatum->m_wDtm.xDte.m_uDay   = iDay;
-      pDatum->m_wDtm.xDte.m_uSpare = 0;
+      pDtmVal->m_wDtm.xDte.m_uYearDelta  = iYear - C_YEAR_BASE;
+      pDtmVal->m_wDtm.xDte.m_uMonth = iMonth;
+      pDtmVal->m_wDtm.xDte.m_uDay   = iDay;
+      pDtmVal->m_wDtm.xDte.m_uSpare = 0;
       break;
       
     case DM_FLT:
-      b = StrLib::bExtractFloat(aacRecCrs,pDatum->m_wDtm.m_dFlt);
+      b = StrLib::bExtractFloat(aacRecCrs,pDtmVal->m_wDtm.m_dFlt);
       break;
       
     case DM_INT:
-      b = StrLib::bExtractInteger(aacRecCrs,&pDatum->m_wDtm.m_iInt, true/*bWithSign*/);
+      b = StrLib::bExtractInteger(aacRecCrs,&pDtmVal->m_wDtm.m_iInt, true/*bWithSign*/);
       break;
       
     case DM_IVL:
@@ -261,11 +261,11 @@ bool RowExtractor::bExtractElement(Datum* pDatum, char** aacRecCrs,
       if (!b)
         break;
       
-      pDatum->m_wDtm.xTme.m_uHour   = iHour;
-      pDatum->m_wDtm.xTme.m_uMinute = iMinute;
-      pDatum->m_wDtm.xTme.m_uSecond = iSecond;
-      pDatum->m_wDtm.xTme.m_uMicro  = iMicro;
-      pDatum->m_wDtm.xTme.m_uSpare  = 0;
+      pDtmVal->m_wDtm.xTme.m_uHour   = iHour;
+      pDtmVal->m_wDtm.xTme.m_uMinute = iMinute;
+      pDtmVal->m_wDtm.xTme.m_uSecond = iSecond;
+      pDtmVal->m_wDtm.xTme.m_uMicro  = iMicro;
+      pDtmVal->m_wDtm.xTme.m_uSpare  = 0;
       
       break;
       
@@ -278,21 +278,21 @@ bool RowExtractor::bExtractElement(Datum* pDatum, char** aacRecCrs,
       if (!b)
         break;
       
-      pDatum->m_wDtm.xTsp.m_uYearDelta   = iYear - C_YEAR_BASE;
-      pDatum->m_wDtm.xTsp.m_uMonth  = iMonth;
-      pDatum->m_wDtm.xTsp.m_uDay    = iDay;
-      pDatum->m_wDtm.xTsp.m_uHour   = iHour;
-      pDatum->m_wDtm.xTsp.m_uMinute = iMinute;
-      pDatum->m_wDtm.xTsp.m_uSecond = iSecond;
-      pDatum->m_wDtm.xTsp.m_uMicro  = iMicro;
-      pDatum->m_wDtm.xTsp.m_uSpare  = 0;
+      pDtmVal->m_wDtm.xTsp.m_uYearDelta   = iYear - C_YEAR_BASE;
+      pDtmVal->m_wDtm.xTsp.m_uMonth  = iMonth;
+      pDtmVal->m_wDtm.xTsp.m_uDay    = iDay;
+      pDtmVal->m_wDtm.xTsp.m_uHour   = iHour;
+      pDtmVal->m_wDtm.xTsp.m_uMinute = iMinute;
+      pDtmVal->m_wDtm.xTsp.m_uSecond = iSecond;
+      pDtmVal->m_wDtm.xTsp.m_uMicro  = iMicro;
+      pDtmVal->m_wDtm.xTsp.m_uSpare  = 0;
       break;
       
     case DM_VCH:
       b = StrLib::bExtractVarcharDefault(aacRecCrs,
-                                         pDatum->m_sVch.aChar(),
+                                         pDtmVal->m_sVch.aChar(),
                                          pCol->iColumnLength(),
-                                         pDatum->m_nChars);
+                                         pDtmVal->m_nChars);
       break;
       
     default:
@@ -305,12 +305,12 @@ bool RowExtractor::bExtractElement(Datum* pDatum, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a decimal field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractBcdSupplied(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractBcdSupplied(DtmVal* pDtmVal, char** aacRecCrs,
                                     Formatters* pFormatters)
 {
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDtmVal->m_pCol;
   
-  pDatum->m_eDatum = DM_BCD;
+  pDtmVal->m_eDatum = DM_BCD;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -325,7 +325,7 @@ bool RowExtractor::bExtractBcdSupplied(Datum* pDatum, char** aacRecCrs,
   if (bTestForNull(pColumn,aacRecCrs,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    pDatum->vSetNull();
+    pDtmVal->vSetNull();
     return true;
   }
   
@@ -334,7 +334,7 @@ bool RowExtractor::bExtractBcdSupplied(Datum* pDatum, char** aacRecCrs,
   
   snBCD snBcd;
   try {
-    pDatum->m_wDtm.m_iBcd = snBcd.i(aacRecCrs,pColumn,pFormatters);
+    pDtmVal->m_wDtm.m_iBcd = snBcd.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -358,12 +358,12 @@ bool RowExtractor::bExtractBcdSupplied(Datum* pDatum, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a decimal field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractBcdDefault(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractBcdDefault(DtmVal* pDtmVal, char** aacRecCrs,
                                    Formatters* pFormatters)
 {
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDtmVal->m_pCol;
   
-  pDatum->m_eDatum = DM_BCD;
+  pDtmVal->m_eDatum = DM_BCD;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -377,7 +377,7 @@ bool RowExtractor::bExtractBcdDefault(Datum* pDatum, char** aacRecCrs,
   if (bTestForNullDefault(pColumn,aacRecCrs,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    pDatum->vSetNull();
+    pDtmVal->vSetNull();
     return true;
   }
   
@@ -386,7 +386,7 @@ bool RowExtractor::bExtractBcdDefault(Datum* pDatum, char** aacRecCrs,
   
   snBCD snBcd;
   try {
-    pDatum->m_wDtm.m_iBcd = snBcd.i(aacRecCrs,pColumn,pFormatters);
+    pDtmVal->m_wDtm.m_iBcd = snBcd.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -407,12 +407,12 @@ bool RowExtractor::bExtractBcdDefault(Datum* pDatum, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a boolean field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractBolSupplied(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractBolSupplied(DtmVal* pDtmVal, char** aacRecCrs,
                                     Formatters* pFormatters)
 {
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDtmVal->m_pCol;
   
-  pDatum->m_eDatum = DM_BOL;
+  pDtmVal->m_eDatum = DM_BOL;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -427,7 +427,7 @@ bool RowExtractor::bExtractBolSupplied(Datum* pDatum, char** aacRecCrs,
   if (bTestForNull(pColumn,aacRecCrs,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    pDatum->vSetNull();
+    pDtmVal->vSetNull();
     return true;
   }
   
@@ -436,7 +436,7 @@ bool RowExtractor::bExtractBolSupplied(Datum* pDatum, char** aacRecCrs,
   
   snBOL snBol;
   try {
-    pDatum->m_wDtm.m_iBol = snBol.i(aacRecCrs,pColumn,pFormatters);
+    pDtmVal->m_wDtm.m_iBol = snBol.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -460,12 +460,12 @@ bool RowExtractor::bExtractBolSupplied(Datum* pDatum, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a boolean field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractBolDefault(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractBolDefault(DtmVal* pDtmVal, char** aacRecCrs,
                                    Formatters* pFormatters)
 {
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDtmVal->m_pCol;
   
-  pDatum->m_eDatum = DM_BOL;
+  pDtmVal->m_eDatum = DM_BOL;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -479,7 +479,7 @@ bool RowExtractor::bExtractBolDefault(Datum* pDatum, char** aacRecCrs,
   if (bTestForNullDefault(pColumn,aacRecCrs,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    pDatum->vSetNull();
+    pDtmVal->vSetNull();
     return true;
   }
   
@@ -488,7 +488,7 @@ bool RowExtractor::bExtractBolDefault(Datum* pDatum, char** aacRecCrs,
   
   snBOL snBol;
   try {
-    pDatum->m_wDtm.m_iBol = snBol.i(aacRecCrs,pColumn,pFormatters);
+    pDtmVal->m_wDtm.m_iBol = snBol.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -509,14 +509,14 @@ bool RowExtractor::bExtractBolDefault(Datum* pDatum, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a date field from csv substr                           yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractDteSupplied(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractDteSupplied(DtmVal* pDtmVal, char** aacRecCrs,
                                     Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDtmVal->m_pCol;
   
-  pDatum->m_eDatum = DM_DTE;
+  pDtmVal->m_eDatum = DM_DTE;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -531,7 +531,7 @@ bool RowExtractor::bExtractDteSupplied(Datum* pDatum, char** aacRecCrs,
   if (bTestForNull(pColumn,aacRecCrs,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    pDatum->vSetNull();
+    pDtmVal->vSetNull();
     return true;
   }
   
@@ -540,7 +540,7 @@ bool RowExtractor::bExtractDteSupplied(Datum* pDatum, char** aacRecCrs,
   
   snDTE snDte;
   try {
-    pDatum->m_wDtm.m_iDte = snDte.i(aacRecCrs,pColumn,pFormatters);
+    pDtmVal->m_wDtm.m_iDte = snDte.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -564,14 +564,14 @@ bool RowExtractor::bExtractDteSupplied(Datum* pDatum, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a date field from csv substr                           yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractDteDefault(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractDteDefault(DtmVal* pDtmVal, char** aacRecCrs,
                                    Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDtmVal->m_pCol;
   
-  pDatum->m_eDatum = DM_DTE;
+  pDtmVal->m_eDatum = DM_DTE;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -585,7 +585,7 @@ bool RowExtractor::bExtractDteDefault(Datum* pDatum, char** aacRecCrs,
   if (bTestForNullDefault(pColumn,aacRecCrs,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    pDatum->vSetNull();
+    pDtmVal->vSetNull();
     return true;
   }
   
@@ -594,7 +594,7 @@ bool RowExtractor::bExtractDteDefault(Datum* pDatum, char** aacRecCrs,
   
   snDTE snDte;
   try {
-    pDatum->m_wDtm.m_iDte = snDte.i(aacRecCrs,pColumn,pFormatters);
+    pDtmVal->m_wDtm.m_iDte = snDte.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -615,12 +615,12 @@ bool RowExtractor::bExtractDteDefault(Datum* pDatum, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a float field from csv substr                                      */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractFltSupplied(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractFltSupplied(DtmVal* pDtmVal, char** aacRecCrs,
                                     Formatters* pFormatters)
 {
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDtmVal->m_pCol;
   
-  pDatum->m_eDatum = DM_FLT;
+  pDtmVal->m_eDatum = DM_FLT;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -635,7 +635,7 @@ bool RowExtractor::bExtractFltSupplied(Datum* pDatum, char** aacRecCrs,
   if (bTestForNull(pColumn,aacRecCrs,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    pDatum->vSetNull();
+    pDtmVal->vSetNull();
     return true;
   }
   
@@ -644,7 +644,7 @@ bool RowExtractor::bExtractFltSupplied(Datum* pDatum, char** aacRecCrs,
   
   snFLT snFlt;
   try {
-    pDatum->m_wDtm.m_dFlt = snFlt.d(aacRecCrs,pColumn,pFormatters);
+    pDtmVal->m_wDtm.m_dFlt = snFlt.d(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -668,12 +668,12 @@ bool RowExtractor::bExtractFltSupplied(Datum* pDatum, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a float field from csv substr                                      */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractFltDefault(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractFltDefault(DtmVal* pDtmVal, char** aacRecCrs,
                                    Formatters* pFormatters)
 {
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDtmVal->m_pCol;
   
-  pDatum->m_eDatum = DM_FLT;
+  pDtmVal->m_eDatum = DM_FLT;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -687,7 +687,7 @@ bool RowExtractor::bExtractFltDefault(Datum* pDatum, char** aacRecCrs,
   if (bTestForNullDefault(pColumn,aacRecCrs,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    pDatum->vSetNull();
+    pDtmVal->vSetNull();
     return true;
   }
   
@@ -696,7 +696,7 @@ bool RowExtractor::bExtractFltDefault(Datum* pDatum, char** aacRecCrs,
   
   snFLT snFlt;
   try {
-    pDatum->m_wDtm.m_dFlt = snFlt.d(aacRecCrs,pColumn,pFormatters);
+    pDtmVal->m_wDtm.m_dFlt = snFlt.d(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -717,12 +717,12 @@ bool RowExtractor::bExtractFltDefault(Datum* pDatum, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract an integer field from csv substr                                   */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractIntSupplied(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractIntSupplied(DtmVal* pDtmVal, char** aacRecCrs,
                                     Formatters* pFormatters)
 {
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDtmVal->m_pCol;
   
-  pDatum->m_eDatum = DM_INT;
+  pDtmVal->m_eDatum = DM_INT;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -737,7 +737,7 @@ bool RowExtractor::bExtractIntSupplied(Datum* pDatum, char** aacRecCrs,
   if (bTestForNull(pColumn,aacRecCrs,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    pDatum->vSetNull();
+    pDtmVal->vSetNull();
     return true;
   }
   
@@ -746,7 +746,7 @@ bool RowExtractor::bExtractIntSupplied(Datum* pDatum, char** aacRecCrs,
   
   snINT snInt;
   try {
-    pDatum->m_wDtm.m_iInt = snInt.i(aacRecCrs,pColumn,pFormatters);
+    pDtmVal->m_wDtm.m_iInt = snInt.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -778,12 +778,12 @@ bool RowExtractor::bExtractIntSupplied(Datum* pDatum, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract an integer field from csv substr                                   */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractIntDefault(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractIntDefault(DtmVal* pDtmVal, char** aacRecCrs,
                                    Formatters* pFormatters)
 {
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDtmVal->m_pCol;
   
-  pDatum->m_eDatum = DM_INT;
+  pDtmVal->m_eDatum = DM_INT;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -797,7 +797,7 @@ bool RowExtractor::bExtractIntDefault(Datum* pDatum, char** aacRecCrs,
   if (bTestForNullDefault(pColumn,aacRecCrs,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    pDatum->vSetNull();
+    pDtmVal->vSetNull();
     return true;
   }
   
@@ -806,7 +806,7 @@ bool RowExtractor::bExtractIntDefault(Datum* pDatum, char** aacRecCrs,
   
   snINT snInt;
   try {
-    pDatum->m_wDtm.m_iInt = snInt.i(aacRecCrs,pColumn,pFormatters);
+    pDtmVal->m_wDtm.m_iInt = snInt.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -835,12 +835,12 @@ bool RowExtractor::bExtractIntDefault(Datum* pDatum, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract an interval field from csv substr                                  */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractIvlSupplied(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractIvlSupplied(DtmVal* pDtmVal, char** aacRecCrs,
                                     Formatters* pFormatters)
 {
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDtmVal->m_pCol;
   
-  pDatum->m_eDatum = DM_IVL;
+  pDtmVal->m_eDatum = DM_IVL;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -855,7 +855,7 @@ bool RowExtractor::bExtractIvlSupplied(Datum* pDatum, char** aacRecCrs,
   if (bTestForNull(pColumn,aacRecCrs,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    pDatum->vSetNull();
+    pDtmVal->vSetNull();
     return true;
   }
   
@@ -864,7 +864,7 @@ bool RowExtractor::bExtractIvlSupplied(Datum* pDatum, char** aacRecCrs,
   
   snIVL snIvl;
   try {
-    pDatum->m_wDtm.m_iIvl = snIvl.i(aacRecCrs,pColumn,pFormatters);
+    pDtmVal->m_wDtm.m_iIvl = snIvl.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -888,12 +888,12 @@ bool RowExtractor::bExtractIvlSupplied(Datum* pDatum, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract an interval field from csv substr                                  */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractIvlDefault(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractIvlDefault(DtmVal* pDtmVal, char** aacRecCrs,
                                    Formatters* pFormatters)
 {
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDtmVal->m_pCol;
   
-  pDatum->m_eDatum = DM_IVL;
+  pDtmVal->m_eDatum = DM_IVL;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -907,7 +907,7 @@ bool RowExtractor::bExtractIvlDefault(Datum* pDatum, char** aacRecCrs,
   if (bTestForNullDefault(pColumn,aacRecCrs,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    pDatum->vSetNull();
+    pDtmVal->vSetNull();
     return true;
   }
   
@@ -916,7 +916,7 @@ bool RowExtractor::bExtractIvlDefault(Datum* pDatum, char** aacRecCrs,
   
   snIVL snIvl;
   try {
-    pDatum->m_wDtm.m_iIvl = snIvl.i(aacRecCrs,pColumn,pFormatters);
+    pDtmVal->m_wDtm.m_iIvl = snIvl.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -937,14 +937,14 @@ bool RowExtractor::bExtractIvlDefault(Datum* pDatum, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a time field from csv substr                         hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractTmeSupplied(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractTmeSupplied(DtmVal* pDtmVal, char** aacRecCrs,
                                     Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDtmVal->m_pCol;
   
-  pDatum->m_eDatum = DM_TME;
+  pDtmVal->m_eDatum = DM_TME;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -959,7 +959,7 @@ bool RowExtractor::bExtractTmeSupplied(Datum* pDatum, char** aacRecCrs,
   if (bTestForNull(pColumn,aacRecCrs,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    pDatum->vSetNull();
+    pDtmVal->vSetNull();
     return true;
   }
   
@@ -968,7 +968,7 @@ bool RowExtractor::bExtractTmeSupplied(Datum* pDatum, char** aacRecCrs,
   
   snTSP snTsp;
   try {
-    pDatum->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
+    pDtmVal->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -992,14 +992,14 @@ bool RowExtractor::bExtractTmeSupplied(Datum* pDatum, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a time field from csv substr                         hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractTmeDefault(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractTmeDefault(DtmVal* pDtmVal, char** aacRecCrs,
                                    Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDtmVal->m_pCol;
   
-  pDatum->m_eDatum = DM_TME;
+  pDtmVal->m_eDatum = DM_TME;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -1013,7 +1013,7 @@ bool RowExtractor::bExtractTmeDefault(Datum* pDatum, char** aacRecCrs,
   if (bTestForNullDefault(pColumn,aacRecCrs,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    pDatum->vSetNull();
+    pDtmVal->vSetNull();
     return true;
   }
   
@@ -1022,7 +1022,7 @@ bool RowExtractor::bExtractTmeDefault(Datum* pDatum, char** aacRecCrs,
   
   snTSP snTsp;
   try {
-    pDatum->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
+    pDtmVal->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -1043,14 +1043,14 @@ bool RowExtractor::bExtractTmeDefault(Datum* pDatum, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractTspSupplied(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractTspSupplied(DtmVal* pDtmVal, char** aacRecCrs,
                                     Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDtmVal->m_pCol;
   
-  pDatum->m_eDatum = DM_TSP;
+  pDtmVal->m_eDatum = DM_TSP;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -1065,7 +1065,7 @@ bool RowExtractor::bExtractTspSupplied(Datum* pDatum, char** aacRecCrs,
   if (bTestForNull(pColumn,aacRecCrs,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    pDatum->vSetNull();
+    pDtmVal->vSetNull();
     return true;
   }
   
@@ -1074,7 +1074,7 @@ bool RowExtractor::bExtractTspSupplied(Datum* pDatum, char** aacRecCrs,
   
   snTSP snTsp;
   try {
-    pDatum->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
+    pDtmVal->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -1098,14 +1098,14 @@ bool RowExtractor::bExtractTspSupplied(Datum* pDatum, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractTspDefault(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractTspDefault(DtmVal* pDtmVal, char** aacRecCrs,
                                    Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDtmVal->m_pCol;
   
-  pDatum->m_eDatum = DM_TSP;
+  pDtmVal->m_eDatum = DM_TSP;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
@@ -1119,7 +1119,7 @@ bool RowExtractor::bExtractTspDefault(Datum* pDatum, char** aacRecCrs,
   if (bTestForNullDefault(pColumn,aacRecCrs,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    pDatum->vSetNull();
+    pDtmVal->vSetNull();
     return true;
   }
   
@@ -1128,7 +1128,7 @@ bool RowExtractor::bExtractTspDefault(Datum* pDatum, char** aacRecCrs,
   
   snTSP snTsp;
   try {
-    pDatum->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
+    pDtmVal->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -1149,12 +1149,12 @@ bool RowExtractor::bExtractTspDefault(Datum* pDatum, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractVchSupplied(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractVchSupplied(DtmVal* pDtmVal, char** aacRecCrs,
                                     Formatters* pFormatters)
 {
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDtmVal->m_pCol;
   
-  pDatum->m_eDatum = DM_VCH;
+  pDtmVal->m_eDatum = DM_VCH;
   
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null
@@ -1163,7 +1163,7 @@ bool RowExtractor::bExtractVchSupplied(Datum* pDatum, char** aacRecCrs,
   if (bTestForNull(pColumn,aacRecCrs,pFormatters,bValidNull,false)) {
     if ( ! bValidNull )
       return false;
-    pDatum->vSetNull();
+    pDtmVal->vSetNull();
     return true;
   }
   
@@ -1176,8 +1176,8 @@ bool RowExtractor::bExtractVchSupplied(Datum* pDatum, char** aacRecCrs,
   
   snVCH snVch;
   try {
-    pDatum->m_sVch = snVch.sz(aacRecCrs,pColumn,pFormatters,
-                              bSawEnclosedLeading,pDatum->m_nChars);
+    pDtmVal->m_sVch = snVch.sz(aacRecCrs,pColumn,pFormatters,
+                              bSawEnclosedLeading,pDtmVal->m_nChars);
   }
   catch (i8 eThrow) {
     return false;
@@ -1202,12 +1202,12 @@ bool RowExtractor::bExtractVchSupplied(Datum* pDatum, char** aacRecCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractVchDefault(Datum* pDatum, char** aacRecCrs,
+bool RowExtractor::bExtractVchDefault(DtmVal* pDtmVal, char** aacRecCrs,
                                    Formatters* pFormatters)
 {
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDtmVal->m_pCol;
   
-  pDatum->m_eDatum = DM_VCH;
+  pDtmVal->m_eDatum = DM_VCH;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null
@@ -1216,7 +1216,7 @@ bool RowExtractor::bExtractVchDefault(Datum* pDatum, char** aacRecCrs,
   if (bTestForNullDefault(pColumn,aacRecCrs,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
-    pDatum->vSetNull();
+    pDtmVal->vSetNull();
     return true;
   }
   
@@ -1225,8 +1225,8 @@ bool RowExtractor::bExtractVchDefault(Datum* pDatum, char** aacRecCrs,
   
   snVCH snVch;
   try {
-    pDatum->m_sVch = snVch.sz(aacRecCrs,pColumn,pFormatters,
-                              false,pDatum->m_nChars);
+    pDtmVal->m_sVch = snVch.sz(aacRecCrs,pColumn,pFormatters,
+                              false,pDtmVal->m_nChars);
   }
   catch (i8 eThrow) {
     return false;

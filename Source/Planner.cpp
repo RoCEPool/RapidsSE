@@ -446,7 +446,7 @@ void Planner::vMatchPredicates(i8 i_Phrase, PredicateVec* mpPathPredVec, eAT eAc
   Token* pColNmTkn_Where;
   Token* mpLitTkn_Where;
   Token* mpOpTkn_Where;
-  s256 sOpDatum_Where;
+  s256 sOpDtmVal_Where;
   eRO eRelOp_Where;
   
   // step thru each predicate in path
@@ -479,8 +479,8 @@ void Planner::vMatchPredicates(i8 i_Phrase, PredicateVec* mpPathPredVec, eAT eAc
       
       // get the associated op token
       mpOpTkn_Where = pPhraseTknVec->pGet(i_ColumnTkn_Where+2);
-      sOpDatum_Where = mpOpTkn_Where->aText();
-      eRelOp_Where = Op::eDecode(sOpDatum_Where.aStz());
+      sOpDtmVal_Where = mpOpTkn_Where->aText();
+      eRelOp_Where = Op::eDecode(sOpDtmVal_Where.aStz());
       
       // have we found a bound where predicate?
       if (bIsMatchingOp(eAccess,eRelOp_Where))

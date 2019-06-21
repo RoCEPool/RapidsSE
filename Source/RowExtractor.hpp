@@ -20,44 +20,44 @@ namespace Data
                                ColumnVec* pColVec, Formatters* pRecFmt);
   
   private:
-    static bool bExtractElement(Datum* pDatum, char** acRecCrs,
+    static bool bExtractElement(DtmVal* pDtmVal, char** acRecCrs,
                                 Column* pCol, Formatters* pRecFmt);
   
-    static bool bExtractBcdDefault(Datum* pDatum, char** acRecCrs,
+    static bool bExtractBcdDefault(DtmVal* pDtmVal, char** acRecCrs,
                                    Formatters* pRecFmt);
-    static bool bExtractBcdSupplied(Datum* pDatum, char** acRecCrs,
+    static bool bExtractBcdSupplied(DtmVal* pDtmVal, char** acRecCrs,
                                     Formatters* pRecFmt);
-    static bool bExtractBolDefault(Datum* pDatum, char** acRecCrs,
+    static bool bExtractBolDefault(DtmVal* pDtmVal, char** acRecCrs,
                                    Formatters* pRecFmt);
-    static bool bExtractBolSupplied(Datum* pDatum, char** acRecCrs,
+    static bool bExtractBolSupplied(DtmVal* pDtmVal, char** acRecCrs,
                                     Formatters* pRecFmt);
-    static bool bExtractDteDefault(Datum* pDatum, char** acRecCrs,
+    static bool bExtractDteDefault(DtmVal* pDtmVal, char** acRecCrs,
                                    Formatters* pRecFmt);
-    static bool bExtractDteSupplied(Datum* pDatum, char** acRecCrs,
+    static bool bExtractDteSupplied(DtmVal* pDtmVal, char** acRecCrs,
                                     Formatters* pRecFmt);
-    static bool bExtractFltDefault(Datum* pDatum, char** acRecCrs,
+    static bool bExtractFltDefault(DtmVal* pDtmVal, char** acRecCrs,
                                    Formatters* pRecFmt);
-    static bool bExtractFltSupplied(Datum* pDatum, char** acRecCrs,
+    static bool bExtractFltSupplied(DtmVal* pDtmVal, char** acRecCrs,
                                     Formatters* pRecFmt);
-    static bool bExtractIntDefault(Datum* pDatum, char** acRecCrs,
+    static bool bExtractIntDefault(DtmVal* pDtmVal, char** acRecCrs,
                                    Formatters* pRecFmt);
-    static bool bExtractIntSupplied(Datum* pDatum, char** acRecCrs,
+    static bool bExtractIntSupplied(DtmVal* pDtmVal, char** acRecCrs,
                                     Formatters* pRecFmt);
-    static bool bExtractIvlDefault(Datum* pDatum, char** acRecCrs,
+    static bool bExtractIvlDefault(DtmVal* pDtmVal, char** acRecCrs,
                                    Formatters* pRecFmt);
-    static bool bExtractIvlSupplied(Datum* pDatum, char** acRecCrs,
+    static bool bExtractIvlSupplied(DtmVal* pDtmVal, char** acRecCrs,
                                     Formatters* pRecFmt);
-    static bool bExtractTmeDefault(Datum* pDatum, char** acRecCrs,
+    static bool bExtractTmeDefault(DtmVal* pDtmVal, char** acRecCrs,
                                    Formatters* pRecFmt);
-    static bool bExtractTmeSupplied(Datum* pDatum, char** acRecCrs,
+    static bool bExtractTmeSupplied(DtmVal* pDtmVal, char** acRecCrs,
                                     Formatters* pRecFmt);
-    static bool bExtractTspDefault(Datum* pDatum, char** acRecCrs,
+    static bool bExtractTspDefault(DtmVal* pDtmVal, char** acRecCrs,
                                    Formatters* pRecFmt);
-    static bool bExtractTspSupplied(Datum* pDatum, char** acRecCrs,
+    static bool bExtractTspSupplied(DtmVal* pDtmVal, char** acRecCrs,
                                     Formatters* pRecFmt);
-    static bool bExtractVchDefault(Datum* pDatum, char** acRecCrs,
+    static bool bExtractVchDefault(DtmVal* pDtmVal, char** acRecCrs,
                                    Formatters* pRecFmt);
-    static bool bExtractVchSupplied(Datum* pDatum, char** acRecCrs,
+    static bool bExtractVchSupplied(DtmVal* pDtmVal, char** acRecCrs,
                                     Formatters* pRecFmt);
   
     static bool bIsEnclosedString(char** acRecCrs, Formatters* pRecFmt);

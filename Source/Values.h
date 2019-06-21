@@ -10,7 +10,7 @@
 
 namespace Values
 {
-  enum eDM : u1 // Datum Type
+  enum eDM : u1 // DtmVal Type
   {
   /*  0 */ DM_NONE=0,
   

@@ -366,7 +366,7 @@ i8 giClassSize[]
   /* 34 */ sizeof(DicPath),            // CN_DICPATH
   /* 34 */ sizeof(DicStack),           // CN_DICSTACK
   /* 35 */ sizeof(Dir),                // CN_DIR
-  /*    */ sizeof(Datum),              // CN_DTMVAL
+  /*    */ sizeof(DtmVal),              // CN_DTMVAL
 
   /* 36 */ sizeof(Ent),                // CN_ENT
   /* 37 */ sizeof(EntBuffer),          // CN_ENTBUFFER

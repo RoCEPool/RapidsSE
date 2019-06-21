@@ -246,11 +246,11 @@ void HeadLine::vDumpHead(Stz* szTitle,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   HV_Rec hvRec(pColVec);
-  Datum oDatum;
+  DtmVal oDatum;
   
   i8 i_Offset = RowCoder::iBaseOffset(pColVec);
   
-  vTrace("Col ColNm         Datum MetaCode"
+  vTrace("Col ColNm         DtmVal MetaCode"
          "           Offset Address      DataBytes           Value\n"_Stz);
   
   
@@ -471,11 +471,11 @@ void HeadLine::vDumpHead_IV(Stz* szTitle,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   HV_Rec hvRec(pColVec);
-  Datum oDatum;
+  DtmVal oDatum;
   
   i8 i_Offset = RowCoder::iBaseOffset(pColVec);
   
-  vTrace("Col ColNm         Datum MetaCode"
+  vTrace("Col ColNm         DtmVal MetaCode"
          "           Offset Address      DataBytes           Value\n"_Stz);
   
   

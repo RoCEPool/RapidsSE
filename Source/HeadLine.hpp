@@ -5,7 +5,7 @@
 
 namespace Data
 {
-  class Datum;
+  class DtmVal;
   
   class HeadLine : public Line
   {

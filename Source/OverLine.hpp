@@ -5,7 +5,7 @@
 
 namespace Data
 {
-  class Datum;
+  class DtmVal;
   
   static const i8 C_OVER_PRE_BYTES = 1;
 

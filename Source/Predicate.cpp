@@ -199,9 +199,9 @@ s256& Predicate::sDatumStr(void)
 /*----------------------------------------------------------------------------*/
 void Predicate::vNewLitArg(s256& sDatumArg)
 {
-  Arg* pDatumArg = new Arg;
-  pDatumArg->vArgVal(sDatumArg);
-  vArg2(pDatumArg);
+  Arg* pDtmValArg = new Arg;
+  pDtmValArg->vArgVal(sDatumArg);
+  vArg2(pDtmValArg);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data { class Datum; } //! TEMP
+namespace Data { class DtmVal; } //! TEMP
 
 namespace Transform
 {
@@ -35,7 +35,7 @@ namespace Transform
     Row(ColumnVec* pColVec);
     ~Row(void) noexcept(false);
   
-    void vAppendValue(Data::Datum* pDatum, Column* pCol);
+    void vAppendValue(Data::DtmVal* pDtmVal, Column* pCol);
     void vDontDecodeVch(void);
     i8   iHashColumn(Column* pCol);
     void vResetValues(void);

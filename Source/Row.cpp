@@ -101,7 +101,7 @@ Row::~Row(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append column value to row                                                 */
 /*----------------------------------------------------------------------------*/
-void Row::vAppendValue(Data::Datum* pDatum, Column* pCol)
+void Row::vAppendValue(Data::DtmVal* pDtmVal, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 
@@ -112,13 +112,13 @@ void Row::vAppendValue(Data::Datum* pDatum, Column* pCol)
   
   if (DM_VCH == pCol->eDatumType()) {
     
-    if (pDatum->bIsNull()) {
+    if (pDtmVal->bIsNull()) {
       m_waColVal[i_Col].m_iInt = C_DATUM_NULL;
       return;
     }
     
     char* acDstString = (char*)m_xWsp.ayLatter();
-    char* acSrcString = (char*)pDatum->m_sVch.aChar();
+    char* acSrcString = (char*)pDtmVal->m_sVch.aChar();
 
     i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
 
@@ -135,7 +135,7 @@ void Row::vAppendValue(Data::Datum* pDatum, Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all others
   
-  m_waColVal[i_Col].m_iInt = pDatum->m_wDtm.m_iInt;
+  m_waColVal[i_Col].m_iInt = pDtmVal->m_wDtm.m_iInt;
 
   if (pCol->bIsPartitionKey())
     m_iHash += iHashColumn(pCol);

@@ -82,7 +82,7 @@ time fetch retrieve vchTbl vch_col15;
 
  
  Made tailline w8_1BFast
- And made shoco call the Fast versions for w8B_* passing pDatum
+ And made shoco call the Fast versions for w8B_* passing pDtmVal
  slight improvement.
  
  success: 1000000 rows affected

@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Datum.hpp -- Datum (column value outside of row)                           */
+/* DtmVal.hpp -- DtmVal (column value outside of row)                           */
 /*============================================================================*/
 #pragma once
 
 namespace Data
 {
-  class Datum : public Object
+  class DtmVal : public Object
   {
   public:
   
@@ -24,8 +24,8 @@ namespace Data
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Datum(void);
-    ~Datum(void) noexcept(false);
+    DtmVal(void);
+    ~DtmVal(void) noexcept(false);
 
     bool bIsNull(void);
     void vSetNull(void);
@@ -34,7 +34,7 @@ namespace Data
     Footer* aFooter(void);
   };
   
-  Datum* _pDatum(void* aAddr);
+  DtmVal* _pDtmVal(void* aAddr);
 }
 
 

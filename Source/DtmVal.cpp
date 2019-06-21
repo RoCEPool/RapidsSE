@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Datum.cpp -- Datum                                                         */
+/* DtmVal.cpp -- DtmVal                                                         */
 /*============================================================================*/
 
 #include "Data.h"
@@ -15,17 +15,17 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Datum* Data::_pDatum(void* aAddr)
+DtmVal* Data::_pDtmVal(void* aAddr)
 {
-  Datum* pDatum = reinterpret_cast<Datum*>(aAddr);
+  DtmVal* pDtmVal = reinterpret_cast<DtmVal*>(aAddr);
   
-  return pDatum;
+  return pDtmVal;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Datum::operator new(size_t)
+void* DtmVal::operator new(size_t)
 {
   void* pObject = HeapMem::pAllocate(CN_DTMVAL);
   
@@ -35,18 +35,18 @@ void* Datum::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Datum::operator delete(void* aAddr)
+void DtmVal::operator delete(void* aAddr)
 {
-  Datum* pDatum = reinterpret_cast<Datum*>(aAddr);
+  DtmVal* pDtmVal = reinterpret_cast<DtmVal*>(aAddr);
   
-  HeapMem::vFree(pDatum);
+  HeapMem::vFree(pDtmVal);
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Datum::Datum(void)
+DtmVal::DtmVal(void)
 : Object(CN_DTMVAL)
 {
   _precondition_(_MAGIC_,CN_DTMVAL,_FOOTER_);
@@ -66,7 +66,7 @@ Datum::Datum(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Datum::~Datum(void) noexcept(false)
+DtmVal::~DtmVal(void) noexcept(false)
 {
 }
 
@@ -77,7 +77,7 @@ Datum::~Datum(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* test null                                                                   */
 /*----------------------------------------------------------------------------*/
-bool Datum::bIsNull(void)
+bool DtmVal::bIsNull(void)
 {
   _precondition_(_MAGIC_,CN_DTMVAL,_FOOTER_);
 
@@ -90,7 +90,7 @@ bool Datum::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 /* set null                                                                   */
 /*----------------------------------------------------------------------------*/
-void Datum::vSetNull(void)
+void DtmVal::vSetNull(void)
 {
   _precondition_(_MAGIC_,CN_DTMVAL,_FOOTER_);
 
@@ -104,7 +104,7 @@ void Datum::vSetNull(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Datum::aFooter(void)
+Footer* DtmVal::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_DTMVAL);
   
