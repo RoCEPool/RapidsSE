@@ -50,7 +50,7 @@ namespace Base
   public:
     union {
       
-      char*   m_azString;
+      char*   m_azChar;
       i8      m_nSize;    // size of vch
       i8      m_iValue;
 

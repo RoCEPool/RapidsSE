@@ -98,7 +98,7 @@ void Line::vSetAll(byte yVal, i8 nBytes)
 //  xWord.m_iI8 = 0;
 //  xWord.m_yaByte[0] = *aByte;
 //
-//  return xWord.m_wWord;
+//  return xWord.m_wW8;
 //}
 
 /*----------------------------------------------------------------------------*/
@@ -112,7 +112,7 @@ w8 Line::w8_2B(i8 i_Byte)
   
   xWord.m_uI8 = *au2B;
 
-  return xWord.m_wWord;
+  return xWord.m_wW8;
 }
 /*----------------------------------------------------------------------------*/
 //w8 Line::w8_2B(i8 i_Byte)
@@ -125,7 +125,7 @@ w8 Line::w8_2B(i8 i_Byte)
 //  xWord.m_yaByte[0] = *aByte++;
 //  xWord.m_yaByte[1] = *aByte;
 //
-//  return xWord.m_wWord;
+//  return xWord.m_wW8;
 //}
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +142,7 @@ w8 Line::w8_3B(i8 i_Byte)
   xWord.m_yaByte[1] = *aByte++;
   xWord.m_yaByte[2] = *aByte;
   
-  return xWord.m_wWord;
+  return xWord.m_wW8;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -156,7 +156,7 @@ w8 Line::w8_4B(i8 i_Byte)
   
   xWord.m_uI8 = *au4B;
 
-  return xWord.m_wWord;
+  return xWord.m_wW8;
 }
 /*----------------------------------------------------------------------------*/
 //w8 Line::w8_4B(i8 i_Byte)
@@ -171,7 +171,7 @@ w8 Line::w8_4B(i8 i_Byte)
 //  xWord.m_yaByte[2] = *aByte++;
 //  xWord.m_yaByte[3] = *aByte;
 //
-//  return xWord.m_wWord;
+//  return xWord.m_wW8;
 //}
 
 /*----------------------------------------------------------------------------*/
@@ -190,7 +190,7 @@ w8 Line::w8_5B(i8 i_Byte)
   xWord.m_yaByte[3] = *aByte++;
   xWord.m_yaByte[4] = *aByte;
   
-  return xWord.m_wWord;
+  return xWord.m_wW8;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -210,7 +210,7 @@ w8 Line::w8_6B(i8 i_Byte)
   xWord.m_yaByte[4] = *aByte++;
   xWord.m_yaByte[5] = *aByte;
   
-  return xWord.m_wWord;
+  return xWord.m_wW8;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -231,7 +231,7 @@ w8 Line::w8_7B(i8 i_Byte)
   xWord.m_yaByte[5] = *aByte++;
   xWord.m_yaByte[6] = *aByte;
   
-  return xWord.m_wWord;
+  return xWord.m_wW8;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -245,7 +245,7 @@ w8 Line::w8_8B(i8 i_Byte)
   
   xWord.m_uI8 = *au8B;
 
-  return xWord.m_wWord;
+  return xWord.m_wW8;
 }
 /*----------------------------------------------------------------------------*/
 //w8 Line::w8_8B(i8 i_Byte)
@@ -264,7 +264,7 @@ w8 Line::w8_8B(i8 i_Byte)
 //  xWord.m_yaByte[6] = *aByte++;
 //  xWord.m_yaByte[7] = *aByte;
 //
-//  return xWord.m_wWord;
+//  return xWord.m_wW8;
 //}
 
 /*----------------------------------------------------------------------------*/
@@ -297,7 +297,7 @@ void Line::v1B(i8 i_Byte, w8 wArg)
 {
   Word xWord;
 
-  xWord.m_wWord = wArg;
+  xWord.m_wW8 = wArg;
   
   byte* aByte = ((byte*)this) + i_Byte;
   *aByte = xWord.m_yaByte[0];
@@ -310,7 +310,7 @@ void Line::v2B(i8 i_Byte, w8 wArg)
 {
   Word xWord;
   
-  xWord.m_wWord = wArg;
+  xWord.m_wW8 = wArg;
   
   byte* aByte = ((byte*)this) + i_Byte;
   *aByte++ = xWord.m_yaByte[0];
@@ -324,7 +324,7 @@ void Line::v3B(i8 i_Byte, w8 wArg)
 {
   Word xWord;
   
-  xWord.m_wWord = wArg;
+  xWord.m_wW8 = wArg;
   
   byte* aByte = ((byte*)this) + i_Byte;
   *aByte++ = xWord.m_yaByte[0];
@@ -339,7 +339,7 @@ void Line::v4B(i8 i_Byte, w8 wArg)
 {
   Word xWord;
   
-  xWord.m_wWord = wArg;
+  xWord.m_wW8 = wArg;
   
   byte* aByte = ((byte*)this) + i_Byte;
   *aByte++ = xWord.m_yaByte[0];
@@ -355,7 +355,7 @@ void Line::v5B(i8 i_Byte, w8 wArg)
 {
   Word xWord;
   
-  xWord.m_wWord = wArg;
+  xWord.m_wW8 = wArg;
   
   byte* aByte = ((byte*)this) + i_Byte;
   *aByte++ = xWord.m_yaByte[0];
@@ -372,7 +372,7 @@ void Line::v6B(i8 i_Byte, w8 wArg)
 {
   Word xWord;
   
-  xWord.m_wWord = wArg;
+  xWord.m_wW8 = wArg;
   
   byte* aByte = ((byte*)this) + i_Byte;
   *aByte++ = xWord.m_yaByte[0];
@@ -390,7 +390,7 @@ void Line::v7B(i8 i_Byte, w8 wArg)
 {
   Word xWord;
   
-  xWord.m_wWord = wArg;
+  xWord.m_wW8 = wArg;
   
   byte* aByte = ((byte*)this) + i_Byte;
   *aByte++ = xWord.m_yaByte[0];
@@ -409,7 +409,7 @@ void Line::v8B(i8 i_Byte, w8 wArg)
 {
   Word xWord;
   
-  xWord.m_wWord = wArg;
+  xWord.m_wW8 = wArg;
   
   byte* aByte = ((byte*)this) + i_Byte;
   *aByte++ = xWord.m_yaByte[0];
