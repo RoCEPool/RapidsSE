@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Values.h"
+#include "Commands.h"
 
 //-----------------------------------------------------------------------------
 
@@ -16,14 +16,13 @@ namespace Tasks
 namespace Forth
 {
   typedef void (*StepFp)(Tasks::MP_Task);
-}
-
-namespace Forth
-{
+  
   void vCheckAssumptions(void);
 }
 
 using namespace Forth;
+
+typedef String_t<C_MAX_VCH> sVCH;
 
 //-----------------------------------------------------------------------------
 
@@ -35,7 +34,6 @@ using namespace Forth;
 #include "StrVal.hpp"
 
 #include "Cell.hpp"
-#include "Compiler.hpp"
 #include "Dic.hpp"
 #include "DicPath.hpp"
 #include "DicStack.hpp"
@@ -47,6 +45,7 @@ using namespace Forth;
 
 #include "Stack.hpp"
 
+#include "Compiler.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

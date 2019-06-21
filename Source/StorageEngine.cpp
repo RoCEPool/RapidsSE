@@ -19,7 +19,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   // third party??
   Correctness::vCheckAssumptions();
   Transform::vCheckAssumptions();
-  Values::vCheckAssumptions();
   Assembler::vCheckAssumptions();
   Pool::vCheckAssumptions();
   Persistence::vCheckAssumptions();

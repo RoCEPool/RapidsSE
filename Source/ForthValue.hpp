@@ -3,12 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Forth {
-  class Cell;
-  class ForthWord;
-}
-
-namespace Values
+namespace Forth
 {
   class ForthValue
   {
