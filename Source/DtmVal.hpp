@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* DtmVal.hpp -- DtmVal (column value outside of row)                           */
+/* DtmVal.hpp -- DtmVal (column value outside of row)                         */
 /*============================================================================*/
 #pragma once
 
