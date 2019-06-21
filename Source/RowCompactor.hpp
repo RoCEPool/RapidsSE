@@ -137,10 +137,10 @@ namespace Data
   private:
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
     
-    static OverLine* aGetOver(HeadLine* aHeadLine);
     static OverLine* aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel);
  
     static i8 nHeadBytes_(ColumnVec* pColVec);
+    
     static void vMetaCode(HeadLine* aHeadLine, Column* pCol, eMC eMetaCode);
 
     static i8 nShocoTailSize(RowNub* pNub, HeadLine* aHeadLine);

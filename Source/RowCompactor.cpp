@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowCompactor.cpp -- Row Coder Mark IV                                          */
+/* RowCompactor.cpp -- Row Compactor Mark IV                                  */
 /*============================================================================*/
 
 #include "Data.h"
@@ -72,7 +72,7 @@ RowCompactor::RowCompactor(void)
   
   m_pRowEncoder    = nullptr;
   
-  //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+  //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     
@@ -155,7 +155,7 @@ void RowCompactor::vCompactEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_bEncoding    = false;
+  m_bEncoding     = false;
   //m_pColVec     = nullptr;
   m_nHeadBytes    = C_UNKNOWN;
   m_nMetaData     = C_UNKNOWN;
@@ -276,7 +276,7 @@ void RowCompactor::vAnalyseFree(void)
   i8 nFreeBytes = nFreeSpaceHead(m_aIntoHead,m_pColVec);
   m_nHeadFreeBytes  += nFreeBytes;
   
-  if (nFreeBytes <= 7 ) m_nHeadFreeBytes_0_7++;
+       if (nFreeBytes <= 7 ) m_nHeadFreeBytes_0_7++;
   else if (nFreeBytes <= 15) m_nHeadFreeBytes_8_15++;
   else if (nFreeBytes <= 23) m_nHeadFreeBytes_16_23++;
   else if (nFreeBytes <= 31) m_nHeadFreeBytes_24_31++;
@@ -1021,21 +1021,10 @@ i8 RowCompactor::iFindTail(RowNub* pNub, TailLine* aFindLine)
 /*----------------------------------------------------------------------------*/
 /* get overflow line using relative index [OT]                                */
 /*----------------------------------------------------------------------------*/
-OverLine* RowCompactor::aGetOver(HeadLine* aHeadLine)
-{
-  i8 i_Over_rel = aHeadLine->iOverflow2B();
-  OverLine* aOver = RowNub::aGetOver(aHeadLine,i_Over_rel);
-  
-  return aOver;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get overflow line using relative index [OT]                                */
-/*----------------------------------------------------------------------------*/
 OverLine* RowCompactor::aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel)
 {
   OverLine* aOver = RowNub::aGetOver(aHeadLine,i_Over_rel);
-  
+
   return aOver;
 }
 
