@@ -1027,41 +1027,6 @@ i8 RowCompactor::iFindTail(RowNub* pNub, TailLine* aFindLine)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calculate free space of a head line                                        */
-/*----------------------------------------------------------------------------*/
-i8 RowCompactor::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec)
-{
-  //MemLib::vWordDump(aHeadLine,m_nHeadBytes);
-  
-  Column* pLastCol = pColVec->pGet(pColVec->nItems() - 1);
-  ASSERT(pLastCol->bIsLastColumn());
-  
-  i8 i_Offset = iBaseOffset(pColVec);
-  i8 i_LastColumn = 0;
-  
-  eMC eEncoding = eGetEncoding(aHeadLine,pLastCol,pColVec,
-                               i_LastColumn,i_Offset);
-  
-  if (pLastCol->eDatumType() == DM_VCH && MC_SHOCO_SPLIT_2T1C == eEncoding)
-    return 0;
-  
-  if (pLastCol->eDatumType() == DM_VCH && MC_SHOCO_FIT_1C == eEncoding) {
-    i8 nCompressed = wGetLogical(aHeadLine,i_Offset,C_1B);
-    //RASSERT(nCompressed <= 56);
-    i_Offset += nCompressed;
-  }
-  
-  i8 nBytes = nDataBytes(eEncoding);
-  
-  i8 nFreeBytes = aHeadLine->nBytes() - i_Offset - nBytes;
-  
-  if (nFreeBytes < 0)
-    vDebugPoint();
-  
-  return nFreeBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get address of a byte from logicalRow : head[+over]                        */
 /*----------------------------------------------------------------------------*/
 byte* RowCompactor::ayAdrLogical(HeadLine* aLogicalRow, i8 i_Offset)

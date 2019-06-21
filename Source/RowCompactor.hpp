@@ -139,9 +139,7 @@ namespace Data
   
 
     static i8 iFindTail(RowNub* pNub, TailLine* aFindLine);
-  
-    static i8 nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec);
-  
+    
     static byte* ayAdrLogical(HeadLine* aHeadLine, i8 i_Offset);
     static w8    wGetLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes);
     static void  vPutLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes, w8 wBytes);
