@@ -39,7 +39,7 @@ namespace Data
 //    i8 m_nHeadFreeBytes_56_63;
 //    i8 m_nHeadFreeBytes_64_;
 
-//    Freq m_xFreq;
+    FreqDist m_oFreqDist;
 //
 //    //---
 //

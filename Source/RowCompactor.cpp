@@ -64,6 +64,9 @@ RowCompactor::RowCompactor(void)
   m_nTotalBuffers = 0;
   m_nTotalCrws    = 0;
   
+  //m_oFreqDist
+  m_oFreqDist.vInit(9,7,15,23,31,39,47,55,63,INT_MAX);
+  
   _checkInitialised_(CN_ROWCOMPACTOR);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
@@ -74,6 +77,25 @@ RowCompactor::RowCompactor(void)
 /*----------------------------------------------------------------------------*/
 RowCompactor::~RowCompactor(void) noexcept(false)
 {
+  
+#ifdef WITH_ANALYSE_FREE
+  vTrace(": HeadFree %lldB : "
+         "0..7B:%lld 8..15B:%lld 16..23B:%lld 24..31B:%lld "
+         "32..39B:%lld 40..47B:%lld 48..55B:%lld 56..63B:%lld 64..B:%lld\n"_Stz,
+         
+         m_oFreqDist.nSum(),
+         
+         m_oFreqDist.iDist(7),
+         m_oFreqDist.iDist(15),
+         m_oFreqDist.iDist(23),
+         m_oFreqDist.iDist(31),
+         m_oFreqDist.iDist(39),
+         m_oFreqDist.iDist(47),
+         m_oFreqDist.iDist(55),
+         m_oFreqDist.iDist(63),
+         m_oFreqDist.iDist(INT_MAX));
+#endif
+
 }
 
 
@@ -205,8 +227,8 @@ void RowCompactor::vAnalyseFree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
 
-  //i8 nFreeBytes = nFreeSpaceHead(m_aCrw,m_pColVec);
-  //m_oFreq.vAdd(nFreeBytes);
+  i8 nFreeBytes = nFreeSpaceHead(m_aCrw,m_pColVec);
+  m_oFreqDist.vAdd(nFreeBytes);
 }
 
 /*----------------------------------------------------------------------------*/

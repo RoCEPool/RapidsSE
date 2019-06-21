@@ -19,6 +19,7 @@ using namespace Measurement;
 
 #include "ByteRate.hpp"
 #include "EnumFlags.hpp"
+#include "FreqDist.hpp"
 #include "LockTracker.hpp"
 #include "Now.hpp"
 #include "Peruse.hpp"
