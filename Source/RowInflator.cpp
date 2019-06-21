@@ -600,28 +600,28 @@ void RowInflator::vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
   eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
   switch (eEncoding) {
       
-    case MC_NULL: pDatum->m_iInt = C_DATUM_NULL;               break;
-    case MC_1B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_1B); break;
-    case MC_2B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_2B); break;
-    case MC_3B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_3B); break;
-    case MC_4B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_4B); break;
-    case MC_5B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_5B); break;
-    case MC_6B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_6B); break;
-    case MC_7B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
-    case MC_8B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
+    case MC_NULL: pDatum->m_wDtm.m_iInt = C_DATUM_NULL;               break;
+    case MC_1B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_1B); break;
+    case MC_2B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_2B); break;
+    case MC_3B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_3B); break;
+    case MC_4B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_4B); break;
+    case MC_5B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_5B); break;
+    case MC_6B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_6B); break;
+    case MC_7B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
+    case MC_8B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
       
-    case MC_MINUS_ONE: pDatum->m_iInt = (i8)-1;                break;
-    case MC_ZERO:      pDatum->m_iInt = (i8)0;                 break;
-    case MC_ONE:       pDatum->m_iInt = (i8)1;                 break;
-    case MC_TWO:       pDatum->m_iInt = (i8)2;                 break;
-    case MC_THREE:     pDatum->m_iInt = (i8)3;                 break;
-    case MC_FOUR:      pDatum->m_iInt = (i8)4;                 break;
-    case MC_FIVE:      pDatum->m_iInt = (i8)5;                 break;
-    case MC_SIX:       pDatum->m_iInt = (i8)6;                 break;
-    case MC_SEVEN:     pDatum->m_iInt = (i8)7;                 break;
-    case MC_EIGHT:     pDatum->m_iInt = (i8)8;                 break;
-    case MC_NINE:      pDatum->m_iInt = (i8)9;                 break;
-    case MC_TEN:       pDatum->m_iInt = (i8)10;                break;
+    case MC_MINUS_ONE: pDatum->m_wDtm.m_iInt = (i8)-1;                break;
+    case MC_ZERO:      pDatum->m_wDtm.m_iInt = (i8)0;                 break;
+    case MC_ONE:       pDatum->m_wDtm.m_iInt = (i8)1;                 break;
+    case MC_TWO:       pDatum->m_wDtm.m_iInt = (i8)2;                 break;
+    case MC_THREE:     pDatum->m_wDtm.m_iInt = (i8)3;                 break;
+    case MC_FOUR:      pDatum->m_wDtm.m_iInt = (i8)4;                 break;
+    case MC_FIVE:      pDatum->m_wDtm.m_iInt = (i8)5;                 break;
+    case MC_SIX:       pDatum->m_wDtm.m_iInt = (i8)6;                 break;
+    case MC_SEVEN:     pDatum->m_wDtm.m_iInt = (i8)7;                 break;
+    case MC_EIGHT:     pDatum->m_wDtm.m_iInt = (i8)8;                 break;
+    case MC_NINE:      pDatum->m_wDtm.m_iInt = (i8)9;                 break;
+    case MC_TEN:       pDatum->m_wDtm.m_iInt = (i8)10;                break;
       
     default:
       NEVER_REACH;
@@ -641,11 +641,11 @@ void RowInflator::vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,Column* pCol)
   eMC eEncoding = aHeadLine->eMetaCode(i_Column);
   
   if (MC_FALSE == eEncoding)
-    pDatum->m_iInt = 0;
+    pDatum->m_wDtm.m_iInt = 0;
   else if (MC_TRUE == eEncoding)
-    pDatum->m_iInt = 1;
+    pDatum->m_wDtm.m_iInt = 1;
   else
-    pDatum->m_iInt = C_DATUM_NULL;
+    pDatum->m_wDtm.m_iInt = C_DATUM_NULL;
   
   /*
    switch (eEncoding) {
@@ -681,18 +681,18 @@ void RowInflator::vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
   switch (eThisEncoding) {
       
     case MC_NULL:
-      pDatum->m_iInt = C_DATUM_NULL;
+      pDatum->m_wDtm.m_iInt = C_DATUM_NULL;
       return;
     case MC_DATE_E0_2B:
-      pDatum->m_iDte = wGetLogical(aHeadLine,i_Offset,C_2B);
+      pDatum->m_wDtm.m_iDte = wGetLogical(aHeadLine,i_Offset,C_2B);
       iEra = C_ERA_0;
       break;
     case MC_DATE_E1_2B:
-      pDatum->m_iDte = wGetLogical(aHeadLine,i_Offset,C_2B);
+      pDatum->m_wDtm.m_iDte = wGetLogical(aHeadLine,i_Offset,C_2B);
       iEra = C_ERA_1;
       break;
     case MC_DATE_E2_2B:
-      pDatum->m_iDte = wGetLogical(aHeadLine,i_Offset,C_2B);
+      pDatum->m_wDtm.m_iDte = wGetLogical(aHeadLine,i_Offset,C_2B);
       iEra = C_ERA_2;
       break;
     default:
@@ -719,15 +719,15 @@ void RowInflator::vDecodeFlt(Datum* pDatum, HeadLine* aHeadLine,
   eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
   switch (eEncoding) {
       
-    case MC_NULL: pDatum->m_iInt = C_DATUM_NULL;               break;
-    case MC_1B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_1B); break;
-    case MC_2B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_2B); break;
-    case MC_3B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_3B); break;
-    case MC_4B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_4B); break;
-    case MC_5B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_5B); break;
-    case MC_6B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_6B); break;
-    case MC_7B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
-    case MC_8B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
+    case MC_NULL: pDatum->m_wDtm.m_iInt = C_DATUM_NULL;               break;
+    case MC_1B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_1B); break;
+    case MC_2B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_2B); break;
+    case MC_3B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_3B); break;
+    case MC_4B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_4B); break;
+    case MC_5B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_5B); break;
+    case MC_6B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_6B); break;
+    case MC_7B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
+    case MC_8B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
       
     default:
       NEVER_REACH;
@@ -748,28 +748,28 @@ void RowInflator::vDecodeInt(Datum* pDatum, HeadLine* aHeadLine,
   
   switch (eEncoding) {
       
-    case MC_NULL: pDatum->m_iInt = C_DATUM_NULL;               break;
-    case MC_1B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_1B); break;
-    case MC_2B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_2B); break;
-    case MC_3B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_3B); break;
-    case MC_4B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_4B); break;
-    case MC_5B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_5B); break;
-    case MC_6B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_6B); break;
-    case MC_7B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
-    case MC_8B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
+    case MC_NULL: pDatum->m_wDtm.m_iInt = C_DATUM_NULL;               break;
+    case MC_1B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_1B); break;
+    case MC_2B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_2B); break;
+    case MC_3B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_3B); break;
+    case MC_4B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_4B); break;
+    case MC_5B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_5B); break;
+    case MC_6B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_6B); break;
+    case MC_7B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
+    case MC_8B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
       
-    case MC_MINUS_ONE: pDatum->m_iInt = (i8)-1;                break;
-    case MC_ZERO:      pDatum->m_iInt = (i8)0;                 break;
-    case MC_ONE:       pDatum->m_iInt = (i8)1;                 break;
-    case MC_TWO:       pDatum->m_iInt = (i8)2;                 break;
-    case MC_THREE:     pDatum->m_iInt = (i8)3;                 break;
-    case MC_FOUR:      pDatum->m_iInt = (i8)4;                 break;
-    case MC_FIVE:      pDatum->m_iInt = (i8)5;                 break;
-    case MC_SIX:       pDatum->m_iInt = (i8)6;                 break;
-    case MC_SEVEN:     pDatum->m_iInt = (i8)7;                 break;
-    case MC_EIGHT:     pDatum->m_iInt = (i8)8;                 break;
-    case MC_NINE:      pDatum->m_iInt = (i8)9;                 break;
-    case MC_TEN:       pDatum->m_iInt = (i8)10;                break;
+    case MC_MINUS_ONE: pDatum->m_wDtm.m_iInt = (i8)-1;                break;
+    case MC_ZERO:      pDatum->m_wDtm.m_iInt = (i8)0;                 break;
+    case MC_ONE:       pDatum->m_wDtm.m_iInt = (i8)1;                 break;
+    case MC_TWO:       pDatum->m_wDtm.m_iInt = (i8)2;                 break;
+    case MC_THREE:     pDatum->m_wDtm.m_iInt = (i8)3;                 break;
+    case MC_FOUR:      pDatum->m_wDtm.m_iInt = (i8)4;                 break;
+    case MC_FIVE:      pDatum->m_wDtm.m_iInt = (i8)5;                 break;
+    case MC_SIX:       pDatum->m_wDtm.m_iInt = (i8)6;                 break;
+    case MC_SEVEN:     pDatum->m_wDtm.m_iInt = (i8)7;                 break;
+    case MC_EIGHT:     pDatum->m_wDtm.m_iInt = (i8)8;                 break;
+    case MC_NINE:      pDatum->m_wDtm.m_iInt = (i8)9;                 break;
+    case MC_TEN:       pDatum->m_wDtm.m_iInt = (i8)10;                break;
       
     default:
       NEVER_REACH;
@@ -788,15 +788,15 @@ void RowInflator::vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine,
   eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
   switch (eEncoding) {
       
-    case MC_NULL: pDatum->m_iInt = C_DATUM_NULL;               break;
-    case MC_1B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_1B); break;
-    case MC_2B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_2B); break;
-    case MC_3B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_3B); break;
-    case MC_4B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_4B); break;
-    case MC_5B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_5B); break;
-    case MC_6B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_6B); break;
-    case MC_7B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
-    case MC_8B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
+    case MC_NULL: pDatum->m_wDtm.m_iInt = C_DATUM_NULL;               break;
+    case MC_1B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_1B); break;
+    case MC_2B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_2B); break;
+    case MC_3B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_3B); break;
+    case MC_4B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_4B); break;
+    case MC_5B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_5B); break;
+    case MC_6B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_6B); break;
+    case MC_7B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
+    case MC_8B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
       
     default:
       NEVER_REACH;
@@ -815,22 +815,22 @@ void RowInflator::vDecodeTme(Datum* pDatum, HeadLine* aHeadLine,
   eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
   switch (eEncoding) {
       
-    case MC_NULL: pDatum->m_iInt = C_DATUM_NULL;               break;
-    case MC_1B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_1B); break;
-    case MC_2B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_2B); break;
-    case MC_3B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_3B); break;
-    case MC_4B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_4B); break;
-    case MC_5B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_5B); break;
-    case MC_6B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_6B); break;
-    case MC_7B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
-    case MC_8B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
+    case MC_NULL: pDatum->m_wDtm.m_iInt = C_DATUM_NULL;               break;
+    case MC_1B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_1B); break;
+    case MC_2B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_2B); break;
+    case MC_3B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_3B); break;
+    case MC_4B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_4B); break;
+    case MC_5B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_5B); break;
+    case MC_6B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_6B); break;
+    case MC_7B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
+    case MC_8B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
       
     default:
       NEVER_REACH;
   }
   
   //vRestoreTme(pDatum);
-  pDatum->m_iInt <<= 40;
+  pDatum->m_wDtm.m_iInt <<= 40;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -845,15 +845,15 @@ void RowInflator::vDecodeTsp(Datum* pDatum, HeadLine* aHeadLine,
   eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
   switch (eEncoding) {
       
-    case MC_NULL: pDatum->m_iInt = C_DATUM_NULL;                         break;
-    case MC_1B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_1B); break;
-    case MC_2B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_2B); break;
-    case MC_3B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_3B); break;
-    case MC_4B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_4B); break;
-    case MC_5B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_5B); break;
-    case MC_6B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_6B); break;
-    case MC_7B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
-    case MC_8B:   pDatum->m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
+    case MC_NULL: pDatum->m_wDtm.m_iInt = C_DATUM_NULL;                         break;
+    case MC_1B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_1B); break;
+    case MC_2B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_2B); break;
+    case MC_3B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_3B); break;
+    case MC_4B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_4B); break;
+    case MC_5B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_5B); break;
+    case MC_6B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_6B); break;
+    case MC_7B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
+    case MC_8B:   pDatum->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
       
     default:
       NEVER_REACH;
@@ -861,7 +861,7 @@ void RowInflator::vDecodeTsp(Datum* pDatum, HeadLine* aHeadLine,
   
   if (eEncoding == MC_5B)
     //vRestoreTsp(pDatum);
-    pDatum->m_iInt <<= 24;
+    pDatum->m_wDtm.m_iInt <<= 24;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -878,14 +878,14 @@ void RowInflator::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
   eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
   
   if (MC_NULL == eEncoding) {
-    pDatum->m_iInt = C_DATUM_NULL;
+    pDatum->m_wDtm.m_iInt = C_DATUM_NULL;
     return;
   }
   
   else if (MC_STR_EMPTY == eEncoding) {
     pDatum->m_nChars = 0;
     *pDatum->m_sVch.aChar() = '\0';
-    pDatum->m_iInt = 0;
+    pDatum->m_wDtm.m_iInt = 0;
   }
   
   else if (MC_STR_FIT_1L == eEncoding)

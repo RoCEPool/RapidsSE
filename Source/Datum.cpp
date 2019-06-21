@@ -53,7 +53,7 @@ Datum::Datum(void)
   
   m_pCol   = nullptr;
   m_eDatum = DM_NONE;
-  m_iInt   = C_UNKNOWN;
+  m_wDtm.m_iInt   = C_UNKNOWN;
   m_nChars = 0;
 
   //m_sVch
@@ -81,7 +81,7 @@ bool Datum::bIsNull(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
-  if (m_iInt == C_DATUM_NULL)
+  if (m_wDtm.m_iInt == C_DATUM_NULL)
     return true;
   else
     return false;
@@ -94,7 +94,7 @@ void Datum::vSetNull(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
-  m_iInt = C_DATUM_NULL;
+  m_wDtm.m_iInt = C_DATUM_NULL;
 }
 
 /*----------------------------------------------------------------------------*/

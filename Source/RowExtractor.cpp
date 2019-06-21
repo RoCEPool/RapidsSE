@@ -45,7 +45,7 @@ void RowExtractor::vAddElement(EntWrk* pEntWrk, Stz* szSrc,
     return;
   }
 
-  nBytes = Dtm::nCopy((byte*)aDst,oDatum.m_iInt);
+  nBytes = Dtm::nCopy((byte*)aDst,oDatum.m_wDtm.m_iInt);
   pEntWrk->vIncKeyBytes(nBytes);
 }
 
@@ -217,13 +217,13 @@ bool RowExtractor::bExtractElement(Datum* pDatum, char** aacRecCrs,
   
   switch (eDatum) {
     case DM_BCD:
-      b = StrLib::bExtractDecimal(aacRecCrs,pDatum->m_iBcd,
+      b = StrLib::bExtractDecimal(aacRecCrs,pDatum->m_wDtm.m_iBcd,
                                   pCol->iColumnLength(),
                                   pCol->iColumnScale());
       break;
       
     case DM_BOL:
-      b = StrLib::bExtractBoolean(aacRecCrs,pDatum->m_iBol);
+      b = StrLib::bExtractBoolean(aacRecCrs,pDatum->m_wDtm.m_iBol);
       break;
       
     case DM_CHR:
@@ -244,11 +244,11 @@ bool RowExtractor::bExtractElement(Datum* pDatum, char** aacRecCrs,
       break;
       
     case DM_FLT:
-      b = StrLib::bExtractFloat(aacRecCrs,pDatum->m_dFlt);
+      b = StrLib::bExtractFloat(aacRecCrs,pDatum->m_wDtm.m_dFlt);
       break;
       
     case DM_INT:
-      b = StrLib::bExtractInteger(aacRecCrs,&pDatum->m_iInt, true/*bWithSign*/);
+      b = StrLib::bExtractInteger(aacRecCrs,&pDatum->m_wDtm.m_iInt, true/*bWithSign*/);
       break;
       
     case DM_IVL:
@@ -334,7 +334,7 @@ bool RowExtractor::bExtractBcdSupplied(Datum* pDatum, char** aacRecCrs,
   
   snBCD snBcd;
   try {
-    pDatum->m_iBcd = snBcd.i(aacRecCrs,pColumn,pFormatters);
+    pDatum->m_wDtm.m_iBcd = snBcd.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -386,7 +386,7 @@ bool RowExtractor::bExtractBcdDefault(Datum* pDatum, char** aacRecCrs,
   
   snBCD snBcd;
   try {
-    pDatum->m_iBcd = snBcd.i(aacRecCrs,pColumn,pFormatters);
+    pDatum->m_wDtm.m_iBcd = snBcd.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -436,7 +436,7 @@ bool RowExtractor::bExtractBolSupplied(Datum* pDatum, char** aacRecCrs,
   
   snBOL snBol;
   try {
-    pDatum->m_iBol = snBol.i(aacRecCrs,pColumn,pFormatters);
+    pDatum->m_wDtm.m_iBol = snBol.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -488,7 +488,7 @@ bool RowExtractor::bExtractBolDefault(Datum* pDatum, char** aacRecCrs,
   
   snBOL snBol;
   try {
-    pDatum->m_iBol = snBol.i(aacRecCrs,pColumn,pFormatters);
+    pDatum->m_wDtm.m_iBol = snBol.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -540,7 +540,7 @@ bool RowExtractor::bExtractDteSupplied(Datum* pDatum, char** aacRecCrs,
   
   snDTE snDte;
   try {
-    pDatum->m_iDte = snDte.i(aacRecCrs,pColumn,pFormatters);
+    pDatum->m_wDtm.m_iDte = snDte.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -594,7 +594,7 @@ bool RowExtractor::bExtractDteDefault(Datum* pDatum, char** aacRecCrs,
   
   snDTE snDte;
   try {
-    pDatum->m_iDte = snDte.i(aacRecCrs,pColumn,pFormatters);
+    pDatum->m_wDtm.m_iDte = snDte.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -644,7 +644,7 @@ bool RowExtractor::bExtractFltSupplied(Datum* pDatum, char** aacRecCrs,
   
   snFLT snFlt;
   try {
-    pDatum->m_dFlt = snFlt.d(aacRecCrs,pColumn,pFormatters);
+    pDatum->m_wDtm.m_dFlt = snFlt.d(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -696,7 +696,7 @@ bool RowExtractor::bExtractFltDefault(Datum* pDatum, char** aacRecCrs,
   
   snFLT snFlt;
   try {
-    pDatum->m_dFlt = snFlt.d(aacRecCrs,pColumn,pFormatters);
+    pDatum->m_wDtm.m_dFlt = snFlt.d(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -746,7 +746,7 @@ bool RowExtractor::bExtractIntSupplied(Datum* pDatum, char** aacRecCrs,
   
   snINT snInt;
   try {
-    pDatum->m_iInt = snInt.i(aacRecCrs,pColumn,pFormatters);
+    pDatum->m_wDtm.m_iInt = snInt.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -806,7 +806,7 @@ bool RowExtractor::bExtractIntDefault(Datum* pDatum, char** aacRecCrs,
   
   snINT snInt;
   try {
-    pDatum->m_iInt = snInt.i(aacRecCrs,pColumn,pFormatters);
+    pDatum->m_wDtm.m_iInt = snInt.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -864,7 +864,7 @@ bool RowExtractor::bExtractIvlSupplied(Datum* pDatum, char** aacRecCrs,
   
   snIVL snIvl;
   try {
-    pDatum->m_iIvl = snIvl.i(aacRecCrs,pColumn,pFormatters);
+    pDatum->m_wDtm.m_iIvl = snIvl.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -916,7 +916,7 @@ bool RowExtractor::bExtractIvlDefault(Datum* pDatum, char** aacRecCrs,
   
   snIVL snIvl;
   try {
-    pDatum->m_iIvl = snIvl.i(aacRecCrs,pColumn,pFormatters);
+    pDatum->m_wDtm.m_iIvl = snIvl.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -968,7 +968,7 @@ bool RowExtractor::bExtractTmeSupplied(Datum* pDatum, char** aacRecCrs,
   
   snTSP snTsp;
   try {
-    pDatum->m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
+    pDatum->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -1022,7 +1022,7 @@ bool RowExtractor::bExtractTmeDefault(Datum* pDatum, char** aacRecCrs,
   
   snTSP snTsp;
   try {
-    pDatum->m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
+    pDatum->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -1074,7 +1074,7 @@ bool RowExtractor::bExtractTspSupplied(Datum* pDatum, char** aacRecCrs,
   
   snTSP snTsp;
   try {
-    pDatum->m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
+    pDatum->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;
@@ -1128,7 +1128,7 @@ bool RowExtractor::bExtractTspDefault(Datum* pDatum, char** aacRecCrs,
   
   snTSP snTsp;
   try {
-    pDatum->m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
+    pDatum->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
   }
   catch (i8 eThrow) {
     return false;

@@ -135,7 +135,7 @@ void Row::vAppendValue(Data::Datum* pDatum, Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all others
   
-  m_waColVal[i_Col].m_iInt = pDatum->m_iInt;
+  m_waColVal[i_Col].m_iInt = pDatum->m_wDtm.m_iInt;
 
   if (pCol->bIsPartitionKey())
     m_iHash += iHashColumn(pCol);
