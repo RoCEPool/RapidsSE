@@ -77,7 +77,7 @@ void hpRowEncoding::vRowEncoding(RowEncoding* pEncRow)
     
     StrLib::vAppendPad(&szCrs,caLine,50);
     StrLib::vAppendString(&szCrs,(char*)"C_"_Stz);
-    StrLib::vAppendDecimal(&szCrs,pEncRow->xEncode[i_Col].m_nDataBytes);
+    StrLib::vAppendDecimal(&szCrs,pEncRow->xEncode[i_Col].m_nDataSize);
     StrLib::vAppendString(&szCrs,(char*)"B"_Stz);
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -

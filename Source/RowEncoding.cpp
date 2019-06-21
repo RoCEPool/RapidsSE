@@ -67,7 +67,7 @@ RowEncoding::RowEncoding(ColumnVec* pColVec)
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     xEncode[i_Col].m_eMetaCode  = MC_NULL;
     xEncode[i_Col].m_wDataCode  = C_UNKNOWN;
-    xEncode[i_Col].m_nDataBytes = C_UNKNOWN;
+    xEncode[i_Col].m_nDataSize  = C_UNKNOWN;
     xEncode[i_Col].m_nOffset    = 0;
     xEncode[i_Col].m_bSplit     = false;
   }
@@ -125,56 +125,56 @@ void RowEncoding::vEncode(Row* pRow)
         vEncodeBcd(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
                    xEncode[i_Col].m_wDataCode,
-                   xEncode[i_Col].m_nDataBytes);
+                   xEncode[i_Col].m_nDataSize);
         break;
         
       case DM_BOL:
         vEncodeBol(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
                    xEncode[i_Col].m_wDataCode,
-                   xEncode[i_Col].m_nDataBytes);
+                   xEncode[i_Col].m_nDataSize);
         break;
         
       case DM_DTE:
         vEncodeDte(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
                    xEncode[i_Col].m_wDataCode,
-                   xEncode[i_Col].m_nDataBytes);
+                   xEncode[i_Col].m_nDataSize);
         break;
         
       case DM_FLT:
         vEncodeFlt(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
                    xEncode[i_Col].m_wDataCode,
-                   xEncode[i_Col].m_nDataBytes);
+                   xEncode[i_Col].m_nDataSize);
         break;
         
       case DM_INT:
         vEncodeInt(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
                    xEncode[i_Col].m_wDataCode,
-                   xEncode[i_Col].m_nDataBytes);
+                   xEncode[i_Col].m_nDataSize);
         break;
         
       case DM_IVL:
         vEncodeIvl(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
                    xEncode[i_Col].m_wDataCode,
-                   xEncode[i_Col].m_nDataBytes);
+                   xEncode[i_Col].m_nDataSize);
         break;
         
       case DM_TME:
         vEncodeTme(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
                    xEncode[i_Col].m_wDataCode,
-                   xEncode[i_Col].m_nDataBytes);
+                   xEncode[i_Col].m_nDataSize);
         break;
         
       case DM_TSP:
         vEncodeTsp(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
                    xEncode[i_Col].m_wDataCode,
-                   xEncode[i_Col].m_nDataBytes);
+                   xEncode[i_Col].m_nDataSize);
         break;
         
       case DM_VCH:
@@ -183,9 +183,9 @@ void RowEncoding::vEncode(Row* pRow)
         vEncodeVch(pRow->m_waColVal[i_Col],
                    xEncode[i_Col].m_eMetaCode,
                    xEncode[i_Col].m_wDataCode,
-                   xEncode[i_Col].m_nDataBytes);
+                   xEncode[i_Col].m_nDataSize);
         
-        m_xWsp.vTake(xEncode[i_Col].m_nDataBytes + 1);
+        m_xWsp.vTake(xEncode[i_Col].m_nDataSize + 1);
         break;
         
       default:
@@ -203,7 +203,7 @@ void RowEncoding::vEncode(Row* pRow)
         + nDataBytes(xEncode[i_Col - 1].m_eMetaCode);
 
     if ( bIsFit(xEncode[i_Col - 1].m_eMetaCode) )
-      xEncode[i_Col].m_nOffset += xEncode[i_Col - 1].m_nDataBytes;
+      xEncode[i_Col].m_nOffset += xEncode[i_Col - 1].m_nDataSize;
     
   } // for i_Col
 
@@ -223,13 +223,13 @@ void RowEncoding::vSplitOver(i8 nHeadSize, i8 nMetaBytes)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   for (i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    if (xEncode[i_Col].m_nOffset + xEncode[i_Col].m_nDataBytes >= nHeadSize)
+    if (xEncode[i_Col].m_nOffset + xEncode[i_Col].m_nDataSize >= nHeadSize)
       break;
   }
   
   if (i_Col >= m_nColumns) {
     m_nBytesNeeded = xEncode[m_nColumns - 1].m_nOffset
-                       + xEncode[m_nColumns - 1].m_nDataBytes;
+                       + xEncode[m_nColumns - 1].m_nDataSize;
     return;
   }
 
@@ -253,7 +253,7 @@ void RowEncoding::vSplitOver(i8 nHeadSize, i8 nMetaBytes)
     xEncode[i_Col].m_nOffset += nShiftBy;
   
   m_nBytesNeeded = xEncode[m_nColumns - 1].m_nOffset
-                     + xEncode[m_nColumns - 1].m_nDataBytes;
+                     + xEncode[m_nColumns - 1].m_nDataSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -474,7 +474,7 @@ void RowEncoding::vReset(void)
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     xEncode[i_Col].m_eMetaCode  = MC_NULL;
     xEncode[i_Col].m_wDataCode  = C_UNKNOWN;
-    xEncode[i_Col].m_nDataBytes = C_UNKNOWN;
+    xEncode[i_Col].m_nDataSize  = C_UNKNOWN;
     xEncode[i_Col].m_nOffset    = 0;
   }
   

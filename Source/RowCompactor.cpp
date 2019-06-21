@@ -82,44 +82,45 @@ RowCompactor::~RowCompactor(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* begin copying rows into given row nub                                      */
+/* begin compactine rows into given crw buffer                                */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_pCrwNub      = pCrwBuffer->m_oRowTray.pNub();
-
-  m_pColVec      = m_pCrwNub->pDesc()->pColumnVec();
-  m_nHeadSize    = nHeadBytes(m_pColVec);
-  m_nMetaSize    = nMetaData(m_pColVec);
-  m_i_BaseOffset = iBaseOffset(m_pColVec);
+  m_pCrwNub       = pCrwBuffer->m_oRowTray.pNub();
+  m_pColVec       = m_pCrwNub->pDesc()->pColumnVec();
+  m_nHeadSize     = nHeadBytes(m_pColVec);
+  m_nMetaSize     = nMetaData(m_pColVec);
+  m_i_BaseOffset  = iBaseOffset(m_pColVec);
   
+  m_i_Crw         = C_UNKNOWN;
+  m_aCrw          = nullptr;
+  m_i_DataOffset  = C_UNKNOWN;
+
   // + + +
-  m_pRowSamples  = new IrwBuffer;
+  m_pRowSamples   = new IrwBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
-/* end copying rows into row nub                                              */
+/* end copying rows into given crw buffer                                     */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vCompactEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  //m_pColVec     = nullptr;
+  m_pCrwNub       = nullptr;
+  m_pColVec       = nullptr;
   m_nHeadSize     = C_UNKNOWN;
   m_nMetaSize     = C_UNKNOWN;
   m_i_BaseOffset  = C_UNKNOWN;
 
-
-  m_pCrwNub       = nullptr;
   m_i_Crw         = C_UNKNOWN;
   m_aCrw          = nullptr;
   m_i_DataOffset  = C_UNKNOWN;
   
-  // + + +
   delete m_pRowSamples;
-  m_pRowSamples  = nullptr;;
+  m_pRowSamples   = nullptr;;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -156,14 +157,6 @@ bool RowCompactor::bCompactRow(Row* pRow)
     delete pErwRow;
     return false;
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // initialise copy
-  
-  m_i_Crw   = m_pCrwNub->iAllotHead(m_nHeadSize);
-  m_aCrw    = m_pCrwNub->aGetHead(m_i_Crw);
-  m_i_DataOffset = m_i_BaseOffset;
-  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Mark IV samples
@@ -223,19 +216,24 @@ void RowCompactor::vCompactEncoded(RowEncoding* pRowEncoding)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
+  m_i_Crw = m_pCrwNub->iAllotHead(m_nHeadSize);
+  m_aCrw  = m_pCrwNub->aGetHead(m_i_Crw);
+  m_i_DataOffset = m_i_BaseOffset;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 nCols = m_pColVec->nItems();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    Column* pCol = m_pColVec->pGet(i_Col);
+    Column* pCol  = m_pColVec->pGet(i_Col);
     
     eMC eMetaCode = pRowEncoding->xEncode[i_Col].m_eMetaCode;
     Dtm wDataCode = pRowEncoding->xEncode[i_Col].m_wDataCode;
-    i8  nDataByte = pRowEncoding->xEncode[i_Col].m_nDataBytes;
+    i8  nDataSize = pRowEncoding->xEncode[i_Col].m_nDataSize;
     
     //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);
     if (8 == i_Col)
       vDebugPoint();
-    vDtmCode(eMetaCode,wDataCode,nDataByte,pCol);
+    vDtmCode(eMetaCode,wDataCode,nDataSize,pCol);
     //vDumpHead("vHeadCode b"_Stz,m_aCrw,m_pColVec);
   }
 }
@@ -243,48 +241,52 @@ void RowCompactor::vCompactEncoded(RowEncoding* pRowEncoding)
 /*----------------------------------------------------------------------------*/
 /* add encoded datum onto the end of crw                                      */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vDtmCode(eMC eMetaCode, Dtm wDataCode, i8 nDataByte, Column* pCol)
+void RowCompactor::vDtmCode(eMC eMetaCode, Dtm wDataCode, i8 nDataSize, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // meta code
+  // put meta code into head
 
   vMetaCode(m_aCrw,pCol,eMetaCode);
   
-  if (! nDataByte)
+  if (! nDataSize)
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // data bytes
+  // append data bytes onto head
   
   // non-vch
+  
   if (DM_VCH != pCol->eDatumType()) {
     
     vPutLogical(m_aCrw,
                 m_i_DataOffset,
-                nDataByte,
+                nDataSize,
                 (w8)wDataCode.m_iInt);
     
-    m_i_DataOffset += nDataByte;
+    m_i_DataOffset += nDataSize;
     return;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // vch
-  m_aCrw->vPut(m_i_DataOffset,nDataByte,C_1B);
+  
+  // append <L>
+  m_aCrw->vPut(m_i_DataOffset,nDataSize,C_1B);
   m_i_DataOffset++;
   
+  // append <short>
   byte* ayDst = (byte*)m_aCrw + m_i_DataOffset;
   char* acSrc = (char*)wDataCode.m_szVch;
 
   MemLib::vCopy(ayDst,
                 acSrc,
-                nDataByte,
+                nDataSize,
                 CN_ROWCOMPACTOR);
   
-  m_i_DataOffset += nDataByte;
+  m_i_DataOffset += nDataSize;
 }
 
 

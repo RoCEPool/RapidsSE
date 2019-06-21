@@ -19,7 +19,7 @@ namespace Data
     struct {
       eMC  m_eMetaCode;
       Dtm  m_wDataCode;
-      i8   m_nDataBytes;
+      i8   m_nDataSize;
       i8   m_nOffset;
       bool m_bSplit;
     } xEncode[C_MAX_COLUMNS];
