@@ -106,7 +106,7 @@ namespace Data
   private:
     void vAnalyseFree(void);
     void vCompactEncoded(RowEncoding* pRowEncoding);
-    void vHeadCode(eMC eMetaCode, Dtm wBytes, i8 nBytes, Column* pCol);
+    void vDtmCode(eMC eMetaCode, Dtm wDataCode, i8 nDataByte, Column* pCol);
     
   private:
     Footer* aFooter(void);
