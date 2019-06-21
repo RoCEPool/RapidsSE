@@ -57,9 +57,6 @@ Datum::Datum(void)
   m_wWord  = C_UNKNOWN;
   //m_sVch
   m_nChars = 0;
-
-  m_eEncoding = MC_NULL;
-  m_nEncodedBytes = C_0B;
   
   _checkInitialised_(CN_DATUM);
   

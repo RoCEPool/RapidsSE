@@ -10,8 +10,9 @@ namespace Values
   public:
     union {
       
+      char*   m_azString;
       Object* m_pObject;
-      i8      m_nSize;    // size of stz
+      i8      m_nSize;    // size of vch
       i8      m_iValue;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
