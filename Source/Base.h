@@ -28,6 +28,7 @@ using namespace Base;
 #include "ClassNumbers.hpp"
 #include "IntLib.hpp"
 #include "i3.hpp"
+#include "Line.hpp"
 #include "Magnitudes.hpp"
 #include "MemLib.hpp"
 #include "Null.hpp"

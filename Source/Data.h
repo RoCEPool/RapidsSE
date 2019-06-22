@@ -264,7 +264,6 @@ using namespace Data;
 
 #include "DtmVal.hpp"
 
-#include "Line.hpp"
 #include "HeadLine.hpp"
 #include "OverLine.hpp"
 #include "TailLine.hpp"
