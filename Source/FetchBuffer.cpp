@@ -154,14 +154,14 @@ bool FetchBuffer::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 /* first item                                                                 */
 /*----------------------------------------------------------------------------*/
-HeadLine** FetchBuffer::aaFirstCrwPtr(void)
+Crw** FetchBuffer::aaFirstCrwPtr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
   if (nUsedBytes() == 0)
     return nullptr;
   
-  HeadLine** aaFirstRow = reinterpret_cast<HeadLine**>(m_xWsp.ayArea());
+  Crw** aaFirstRow = reinterpret_cast<Crw**>(m_xWsp.ayArea());
   
   return aaFirstRow;
 }
@@ -169,11 +169,11 @@ HeadLine** FetchBuffer::aaFirstCrwPtr(void)
 /*----------------------------------------------------------------------------*/
 /* get limit of crw's in this buffers                                         */
 /*----------------------------------------------------------------------------*/
-HeadLine* FetchBuffer::aCrwPtrLimit(void)
+Crw* FetchBuffer::aCrwPtrLimit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
-  HeadLine* aHeadLine = (HeadLine*)m_xWsp.ayLatter();
+  Crw* aHeadLine = (Crw*)m_xWsp.ayLatter();
   
   return aHeadLine;
 }
@@ -181,11 +181,11 @@ HeadLine* FetchBuffer::aCrwPtrLimit(void)
 /*----------------------------------------------------------------------------*/
 /* get next item                                                              */
 /*----------------------------------------------------------------------------*/
-HeadLine** FetchBuffer::aaNextCrwPtr(HeadLine** ppCurrentRow)
+Crw** FetchBuffer::aaNextCrwPtr(Crw** ppCurrentRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
-  HeadLine** aaNextRow = aAdd<HeadLine**>(ppCurrentRow,sizeof(CacheLine*));
+  Crw** aaNextRow = aAdd<Crw**>(ppCurrentRow,sizeof(CacheLine*));
   
   if ((char**)aaNextRow >= (char**)m_xWsp.ayLatter())
     return nullptr;

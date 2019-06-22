@@ -39,10 +39,10 @@ namespace Jobs
     void  vIsLast(bool bIsLast);
     bool  bIsLast(void);
     
-    HeadLine** aaFirstCrwPtr(void);
-    HeadLine** aaNextCrwPtr(HeadLine** ppRow);
+    Crw** aaFirstCrwPtr(void);
+    Crw** aaNextCrwPtr(Crw** ppRow);
   
-    HeadLine* aCrwPtrLimit(void);
+    Crw* aCrwPtrLimit(void);
 
     i8    nPartitionNo(void);
     void  vRestore(void);

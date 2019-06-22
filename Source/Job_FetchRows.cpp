@@ -763,7 +763,7 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
   ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
   HV_Rec hvRec(pColVec);
   
-  HeadLine** aaCompactRow_cursor = pFetchBuffer->aaFirstCrwPtr();
+  Crw** aaCompactRow_cursor = pFetchBuffer->aaFirstCrwPtr();
   
   //pJob_FetchRows->m_pRow->vDontDecodeVch();
   
@@ -815,9 +815,9 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
   ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
   Column* pCol = pJob_FetchRows->m_pColumn;
   
-  HeadLine** aaHeadLine = pFetchBuffer->aaFirstCrwPtr();
+  Crw** aaHeadLine = pFetchBuffer->aaFirstCrwPtr();
   
-  HeadLine** aaCrwPtrLimit = (HeadLine**)pFetchBuffer->aCrwPtrLimit();
+  Crw** aaCrwPtrLimit = (Crw**)pFetchBuffer->aCrwPtrLimit();
   
   pJob_FetchRows->m_pRow->m_bGetAll = false;
   pJob_FetchRows->m_pRow->m_abGetCol[pCol->iColumnNo()] = true;
@@ -844,7 +844,7 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
       vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
     }
     
-    aaHeadLine = aAdd<HeadLine**>(aaHeadLine,sizeof(HeadLine*));
+    aaHeadLine = aAdd<Crw**>(aaHeadLine,sizeof(HeadLine*));
   }
   
   return;
