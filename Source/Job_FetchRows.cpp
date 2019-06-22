@@ -763,7 +763,7 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
   ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
   HV_Rec hvRec(pColVec);
   
-  HeadLine** aaCompactRow_cursor = pFetchBuffer->aaFirstRowPtr();
+  HeadLine** aaCompactRow_cursor = pFetchBuffer->aaFirstCrwPtr();
   
   //pJob_FetchRows->m_pRow->vDontDecodeVch();
   
@@ -797,7 +797,7 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
         hvRec->vPrintRow();
     }
     
-    aaCompactRow_cursor = pFetchBuffer->aaNextRowPtr(aaCompactRow_cursor);
+    aaCompactRow_cursor = pFetchBuffer->aaNextCrwPtr(aaCompactRow_cursor);
   }
   
   return;
@@ -815,15 +815,15 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
   ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
   Column* pCol = pJob_FetchRows->m_pColumn;
   
-  HeadLine** aaHeadLine = pFetchBuffer->aaFirstRowPtr();
+  HeadLine** aaHeadLine = pFetchBuffer->aaFirstCrwPtr();
   
-  HeadLine** aaLatter = (HeadLine**)pFetchBuffer->aLatter();
+  HeadLine** aaCrwPtrLimit = (HeadLine**)pFetchBuffer->aCrwPtrLimit();
   
   pJob_FetchRows->m_pRow->m_bGetAll = false;
   pJob_FetchRows->m_pRow->m_abGetCol[pCol->iColumnNo()] = true;
   pJob_FetchRows->m_pRow->m_iLastCol = pCol->iColumnNo();
   
-  while (aaHeadLine < aaLatter) {
+  while (aaHeadLine < aaCrwPtrLimit) {
     
     if ( ! aaHeadLine )
       break;

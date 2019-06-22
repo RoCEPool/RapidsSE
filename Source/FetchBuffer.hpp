@@ -33,17 +33,16 @@ namespace Jobs
   public:
     
     bool  bAppendCrw(Crw* pCrw);
-    HeadLine** aaAllotRowPtr(i8 nBytes);
     char* aDataArea(void);
     i8    nFetchedRows(void);
     
     void  vIsLast(bool bIsLast);
     bool  bIsLast(void);
     
-    HeadLine** aaFirstRowPtr(void);
-    HeadLine** aaNextRowPtr(HeadLine** ppRow);
+    HeadLine** aaFirstCrwPtr(void);
+    HeadLine** aaNextCrwPtr(HeadLine** ppRow);
   
-    HeadLine* aLatter(void);
+    HeadLine* aCrwPtrLimit(void);
 
     i8    nPartitionNo(void);
     void  vRestore(void);
@@ -52,8 +51,9 @@ namespace Jobs
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   private:
-    i8    nFreeBytes(void);
-    void  vItemCountRestore(void);
+    HeadLine** aaAllotCrwPtr(i8 nBytes);
+    i8   nFreeBytes(void);
+    void vItemCountRestore(void);
   
     Footer* aFooter(void);
   };

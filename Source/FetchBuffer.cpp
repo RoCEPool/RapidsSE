@@ -94,10 +94,10 @@ bool FetchBuffer::bAppendCrw(Crw* pCrw)
     return false;
   
   // allocate row
-  HeadLine** ppFetchRow = aaAllotRowPtr(nBytes);
+  HeadLine** ppFetchCrw = aaAllotCrwPtr(nBytes);
   
   // copy the cacheLine pointer
-  *ppFetchRow = pCrw;                             //! dont use dereference and =
+  *ppFetchCrw = pCrw;                             //! dont use dereference and =
   
   //pRow->vShow(m_pTable->pColumnVec(), true);
   //vTrace(" %p \n"_Stz, pRow);
@@ -154,7 +154,7 @@ bool FetchBuffer::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 /* first item                                                                 */
 /*----------------------------------------------------------------------------*/
-HeadLine** FetchBuffer::aaFirstRowPtr(void)
+HeadLine** FetchBuffer::aaFirstCrwPtr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
@@ -167,9 +167,9 @@ HeadLine** FetchBuffer::aaFirstRowPtr(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next item                                                              */
+/* get limit of crw's in this buffers                                         */
 /*----------------------------------------------------------------------------*/
-HeadLine* FetchBuffer::aLatter(void)
+HeadLine* FetchBuffer::aCrwPtrLimit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
@@ -181,7 +181,7 @@ HeadLine* FetchBuffer::aLatter(void)
 /*----------------------------------------------------------------------------*/
 /* get next item                                                              */
 /*----------------------------------------------------------------------------*/
-HeadLine** FetchBuffer::aaNextRowPtr(HeadLine** ppCurrentRow)
+HeadLine** FetchBuffer::aaNextCrwPtr(HeadLine** ppCurrentRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
@@ -249,7 +249,7 @@ i8 FetchBuffer::nUsedBytes(void)
 /*----------------------------------------------------------------------------*/
 /* allot space for a row ptr in this buffer                                   */
 /*----------------------------------------------------------------------------*/
-HeadLine** FetchBuffer::aaAllotRowPtr(i8 nBytes)
+HeadLine** FetchBuffer::aaAllotCrwPtr(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
