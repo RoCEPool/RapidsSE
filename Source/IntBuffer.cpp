@@ -62,7 +62,7 @@ IntBuffer::IntBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTBUFFER,_FOOTER_);
   
   m_nInts = 0;
-  for (i8 i_Index = 0; i_Index < ARRAY_ELEMENTS; i_Index++)
+  for (i8 i_Index = 0; i_Index < ELEMENTS; i_Index++)
     m_iIntArray[i_Index] = C_UNKNOWN;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INTBUFFER,_FOOTER_);
@@ -170,7 +170,7 @@ bool IntBuffer::bHasSpace(void)
   }
   else {
     // has space calculation based on elements
-    if (m_nInts < ARRAY_ELEMENTS)
+    if (m_nInts < ELEMENTS)
       return true;
     else
       return false;
@@ -247,11 +247,13 @@ void IntBuffer::vShow(void)
   vTrace("Values:\n"_Stz);
   
   for (i8 iIndex = 0; iIndex < m_nInts; iIndex++)
-    vTrace("m_iIntArray[%lld]: %lld\n"_Stz, iIndex, m_iIntArray[iIndex]);
+    vTrace("0x%x m_iIntArray[%lld]: %lld\n"_Stz, &m_iIntArray[iIndex], iIndex, m_iIntArray[iIndex]);
   
   vTrace("\n"_Stz);
   vTrace("=================================================="
          "==================================================\n"_Stz);
+  if (pNextBuffer())
+    pNextBuffer()->vShow();
 }
 
 /*----------------------------------------------------------------------------*/

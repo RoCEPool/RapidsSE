@@ -12,6 +12,7 @@ namespace Data
   {
   public:
     IntBuffer*  m_pIntBuffer;
+    i8          m_iBufferNo;
     i8*         m_aElement;
 
   public:
@@ -19,7 +20,7 @@ namespace Data
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
     
-    BufferCursor(IntBuffer* pIntBuffer, i8* aElement);
+    BufferCursor(IntBuffer* pIntBuffer, i8 iBufferNo, i8* aElement);
     BufferCursor(BufferCursor* pBufferCursor);
     BufferCursor(BufferCursor* pLowCursor, BufferCursor* pHighCursor);
     
@@ -42,6 +43,12 @@ namespace Data
     // is after or same
     bool bIsAfterOrSame(BufferCursor* pBufferCursor)
     {
+      if (m_iBufferNo > pBufferCursor->m_iBufferNo)
+        return true;
+      
+      if (m_iBufferNo < pBufferCursor->m_iBufferNo)
+        return false;
+      
       if (m_aElement >= pBufferCursor->m_aElement)
         return true;
       else

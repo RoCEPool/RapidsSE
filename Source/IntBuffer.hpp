@@ -5,14 +5,14 @@
 
 namespace Data
 {
-  const i8 ARRAY_ELEMENTS = 10; //(C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(i8);
+  const i8 ELEMENTS = 100; //(C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(i8);
   
   class IntBuffer : public DataBuffer
   {
 
   public:
     i8 m_nInts;
-    i8 m_iIntArray[ARRAY_ELEMENTS];
+    i8 m_iIntArray[ELEMENTS];
   
     // must be last
     Footer m_xFooter;
