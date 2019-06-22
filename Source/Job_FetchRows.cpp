@@ -769,7 +769,7 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
   
   while (aaCompactRow_cursor) {
     
-    HeadLine* aCompact = *aaCompactRow_cursor;
+    Crw* aCompact = *aaCompactRow_cursor;
 
     // inflate compact row into row
     RowInflator::vInflate(pJob_FetchRows->m_pRow,aCompact);
@@ -828,7 +828,7 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
     if ( ! aaHeadLine )
       break;
     
-    HeadLine* aHeadLine = *aaHeadLine;
+    Crw* aHeadLine = *aaHeadLine;
     
     // check if aHeadLine is from the last rowBuffer
     if (! CrwBuffer::bCheckAddress(pCrwBuffer,aHeadLine)) {
@@ -844,7 +844,7 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
       vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
     }
     
-    aaHeadLine = aAdd<Crw**>(aaHeadLine,sizeof(HeadLine*));
+    aaHeadLine = aAdd<Crw**>(aaHeadLine,sizeof(Crw*));
   }
   
   return;
