@@ -342,8 +342,8 @@ void Jobs::vIterateBuffer(Job_IndexJoin* pJob_IndexJoin,
   while (nJoinRows-- > 0) {
     
     // get the left and right rows from the refSet
-    HeadLine* aLeftRow = (HeadLine*)pRefSet->iRowRef(0);
-    HeadLine* aRightRow = (HeadLine*)pRefSet->iRowRef(1);
+    Crw* aLeftRow = (Crw*)pRefSet->iRowRef(0);
+    Crw* aRightRow = (Crw*)pRefSet->iRowRef(1);
     
     // inflate left row
     if (aLeftRow) {
