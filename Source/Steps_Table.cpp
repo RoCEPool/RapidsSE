@@ -704,7 +704,7 @@ void Step::vTableScan(MP_Task mpTask)
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // insert row from entry in FetchBuffer
-      if ( ! pFetchBuffer->bAppendRow(aCrw)) {
+      if ( ! pFetchBuffer->bAppendCrw(aCrw)) {
         
         // Buffer is Full
         // put this FetchBuffer in session bufferQueue
@@ -714,7 +714,7 @@ void Step::vTableScan(MP_Task mpTask)
         pFetchBuffer = new FetchBuffer(pTable, iSlot);
         
         // insert row from entry in new fetchBuffer
-        bool bResult = pFetchBuffer->bAppendRow(aCrw);
+        bool bResult = pFetchBuffer->bAppendCrw(aCrw);
         RASSERT(bResult);
       }
       

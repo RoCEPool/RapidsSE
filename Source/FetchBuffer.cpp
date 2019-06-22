@@ -80,24 +80,24 @@ FetchBuffer::~FetchBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* append row                                                                 */
+/* append compact row                                                         */
 /*----------------------------------------------------------------------------*/
-bool FetchBuffer::bAppendRow(HeadLine* pRow)
+bool FetchBuffer::bAppendCrw(Crw* pCrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
-  i8 iCacheLineSize = sizeof(HeadLine*);
+  i8 nBytes = sizeof(Crw*);
   
   // do we have enough space for this row ?
   i8 nFreeSpace = nFreeBytes();
-  if (nFreeSpace < iCacheLineSize)
+  if (nFreeSpace < nBytes)
     return false;
   
   // allocate row
-  HeadLine** ppFetchRow = aaAllotRowPtr(iCacheLineSize);
+  HeadLine** ppFetchRow = aaAllotRowPtr(nBytes);
   
   // copy the cacheLine pointer
-  *ppFetchRow = pRow;
+  *ppFetchRow = pCrw;                             //! dont use dereference and =
   
   //pRow->vShow(m_pTable->pColumnVec(), true);
   //vTrace(" %p \n"_Stz, pRow);

@@ -32,7 +32,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public:
     
-    bool  bAppendRow(HeadLine* pRow);
+    bool  bAppendCrw(Crw* pCrw);
     HeadLine** aaAllotRowPtr(i8 nBytes);
     char* aDataArea(void);
     i8    nFetchedRows(void);
