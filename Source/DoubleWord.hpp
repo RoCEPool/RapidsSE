@@ -5,15 +5,14 @@
 
 namespace Base
 {
-  class DoubleWord : Word
+  class DoubleWord : public Word
   {
   public:
-    byte m_yaByte2[C_BYTES_PER_DOUBLE_WORD - sizeof(Word)];
+    byte m_yaByte1[C_BYTES_PER_WORD];
   
   public:
     DoubleWord(void);
-    ~DoubleWord(void) noexcept(false);
-  
+   ~DoubleWord(void) noexcept(false);
   };
   
   /*--------------------------------------------------------------------------*/
