@@ -51,7 +51,7 @@ namespace Jobs
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   private:
-    HeadLine** aaAllotCrwPtr(i8 nBytes);
+    Crw** aaAllotCrwPtr(i8 nBytes);
     i8   nFreeBytes(void);
     void vItemCountRestore(void);
   
