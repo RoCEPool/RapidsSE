@@ -224,9 +224,9 @@ bool Job_FetchRows::bAppendRow(FetchBuffer* pFetchBuffer, Ent* aItem,
   CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(xRef);
   
   // get the dataRow
-  HeadLine* aRowData = pCrwBuffer->pRow(xRef.iItem());
+  Crw* aCrw = pCrwBuffer->pCrw(xRef.iItem());
   
-  if (pFetchBuffer->bAppendRow(aRowData))
+  if (pFetchBuffer->bAppendRow(aCrw))
     return true;
   else
     return false;

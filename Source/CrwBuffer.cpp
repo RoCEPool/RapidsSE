@@ -274,7 +274,7 @@ void CrwBuffer::vDump(void)
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vGetRow(Row* pRow, i8 i_Row)
 {
-  HeadLine* aCompactRow = m_oRowTray.pNub()->aGetHead(i_Row);
+  Crw* aCompactRow = (Crw*)m_oRowTray.pNub()->aGetHead(i_Row);
   RowInflator::vInflate(pRow,aCompactRow);
 }
 
@@ -381,13 +381,13 @@ void CrwBuffer::vPrevBuffer(CrwBuffer* pPrevBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get row                                                                    */
+/* get compact row                                                            */
 /*----------------------------------------------------------------------------*/
-HeadLine* CrwBuffer::pRow(i8 iRowNo)
+Crw* CrwBuffer::pCrw(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  return m_oRowTray.pNub()->aGetHead(iRowNo);
+  return (Crw*)m_oRowTray.pNub()->aGetHead(i_Row);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -445,7 +445,7 @@ void CrwBuffer::vShowRow(i8 i_Row)
   HV_Row hRow(pColVec);
   
   // get compact row
-  HeadLine* aCompactRow = m_oRowTray.pNub()->aGetHead(i_Row);
+  Crw* aCompactRow = (Crw*)m_oRowTray.pNub()->aGetHead(i_Row);
 
   // inflate compact row into row
   RowInflator::vInflate(hRow,aCompactRow);
@@ -582,7 +582,7 @@ bool CrwBuffer::bVerifyRows(void)
   i8 nRows = nRowCount();
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    HeadLine* aRowCacheLine = m_oRowTray.pNub()->aGetHead(i_Row);
+    Crw* aRowCacheLine = (Crw*)m_oRowTray.pNub()->aGetHead(i_Row);
     RASSERT(aRowCacheLine);
   }
   

@@ -681,9 +681,9 @@ bool EntBuffer::bVerifyRowRefs(void)
     
     // get the row entry from referenced entry buffer
     i8 i_Item = aEnt->xRef().iItem();
-    HeadLine* aRowData = pCrwBuffer->pRow(i_Item);
+    Crw* aCrw = pCrwBuffer->pCrw(i_Item);
     
-    if (! aRowData ) {
+    if (! aCrw ) {
       vVerifyFault();
       return false;
     }

@@ -37,8 +37,8 @@ RefBuffer* JoinOp::pAddRowRefs(Queue* pQueue, RefBuffer* pRefBuffer, Ent* aLeftE
   CrwBuffer* pRightCrwBuffer = aRightEntry ? CrwBuffer::pRefdCrwBuffer(aRightEntry->xRef()) : nullptr;
   
   // set the rowRefs
-  HeadLine* aLeftRowData = aLeftEntry ? pLeftCrwBuffer->pRow(aLeftEntry->xRef().iItem()) : nullptr;
-  HeadLine* aRightRowData = aRightEntry ? pRightCrwBuffer->pRow(aRightEntry->xRef().iItem()) : nullptr;
+  Crw* aLeftRowData = aLeftEntry ? pLeftCrwBuffer->pCrw(aLeftEntry->xRef().iItem()) : nullptr;
+  Crw* aRightRowData = aRightEntry ? pRightCrwBuffer->pCrw(aRightEntry->xRef().iItem()) : nullptr;
   
   // set the rowData in the refSet
   pRefSet->vRowRef(0, (i8)aLeftRowData);

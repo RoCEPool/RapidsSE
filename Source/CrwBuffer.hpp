@@ -51,10 +51,10 @@ namespace Data
     
     ////////////////////////////////////////////////////////////////////////////
     // row functions
-    void      vGetRow(Row* pRow, i8 iRow);                              
+    void      vGetRow(Row* pRow, i8 i_Row);
     void      vShow(void);
-    void      vShowRow(i8 iRowNo);
-    HeadLine* pRow(i8 iRow);
+    void      vShowRow(i8 i_Row);
+    Crw*      pCrw(i8 i_Row);
 
     ////////////////////////////////////////////////////////////////////////////
     // row functions
