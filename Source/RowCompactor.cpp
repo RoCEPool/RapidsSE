@@ -54,7 +54,7 @@ RowCompactor::RowCompactor(void)
   m_nHeadSize     = C_UNKNOWN;
   m_nMetaSize     = C_UNKNOWN;
   m_i_BaseOffset  = C_UNKNOWN;
-
+  
   m_i_Crw         = C_UNKNOWN;
   m_aCrw          = nullptr;
   m_i_DataOffset  = C_UNKNOWN;
@@ -65,7 +65,9 @@ RowCompactor::RowCompactor(void)
   m_nTotalCrws    = 0;
   
   //m_oFreqDist
-  m_oFreqDist.vInit(9,7,15,23,31,39,47,55,63,INT_MAX);
+#ifdef WITH_ANALYSE_FREE
+  m_oFreqDist.vInit(7,15,23,31,39,47,55,63,-1);
+#endif
   
   _checkInitialised_(CN_ROWCOMPACTOR);
   
@@ -79,23 +81,37 @@ RowCompactor::~RowCompactor(void) noexcept(false)
 {
   
 #ifdef WITH_ANALYSE_FREE
-  vTrace(": HeadFree %lldB : "
-         "0..7B:%lld 8..15B:%lld 16..23B:%lld 24..31B:%lld "
-         "32..39B:%lld 40..47B:%lld 48..55B:%lld 56..63B:%lld 64..B:%lld\n"_Stz,
-         
-         m_oFreqDist.nSum(),
-         
-         m_oFreqDist.iDist(7),
-         m_oFreqDist.iDist(15),
-         m_oFreqDist.iDist(23),
-         m_oFreqDist.iDist(31),
-         m_oFreqDist.iDist(39),
-         m_oFreqDist.iDist(47),
-         m_oFreqDist.iDist(55),
-         m_oFreqDist.iDist(63),
-         m_oFreqDist.iDist(INT_MAX));
+  /*
+   vTrace(": HeadFree %lldB : "
+   "0..7B:%lld 8..15B:%lld 16..23B:%lld 24..31B:%lld "
+   "32..39B:%lld 40..47B:%lld 48..55B:%lld 56..63B:%lld 64..B:%lld\n"_Stz,
+   
+   m_oFreqDist.nSum(),
+   
+   m_oFreqDist.iDist(7),
+   m_oFreqDist.iDist(15),
+   m_oFreqDist.iDist(23),
+   m_oFreqDist.iDist(31),
+   m_oFreqDist.iDist(39),
+   m_oFreqDist.iDist(47),
+   m_oFreqDist.iDist(55),
+   m_oFreqDist.iDist(63),
+   m_oFreqDist.iDist(INT_MAX));
+   */
+  vTrace(": HeadFree %lldB : "_Stz, m_oFreqDist.nSum());
+  i8 iLastBucket = 0;
+  i8 iBucket;
+  for (i8 i_Index = 0; i_Index < m_oFreqDist.nBuckets() - 1; i_Index++) {
+    iBucket = m_oFreqDist.iBucket(i_Index);
+    vTrace("%lld..%lldB:%lld "_Stz, iLastBucket, iBucket, m_oFreqDist.iDist(i_Index));
+    iLastBucket = iBucket;
+  }
+  i8 i_Index = m_oFreqDist.nBuckets() - 1;
+  iBucket = m_oFreqDist.iBucket(i_Index);
+  vTrace("%lld..%lldB:%lld "_Stz, iLastBucket, iBucket, m_oFreqDist.iDist(i_Index));
+  vTrace("\n"_Stz);
 #endif
-
+  
 }
 
 
@@ -119,7 +135,7 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer)
   m_i_Crw         = C_UNKNOWN;
   m_aCrw          = nullptr;
   m_i_DataOffset  = C_UNKNOWN;
-
+  
   // + + +
   m_pRowSamples   = new IrwBuffer;
 }
@@ -136,7 +152,7 @@ void RowCompactor::vCompactEnd(void)
   m_nHeadSize     = C_UNKNOWN;
   m_nMetaSize     = C_UNKNOWN;
   m_i_BaseOffset  = C_UNKNOWN;
-
+  
   m_i_Crw         = C_UNKNOWN;
   m_aCrw          = nullptr;
   m_i_DataOffset  = C_UNKNOWN;
@@ -154,21 +170,21 @@ bool RowCompactor::bCompactRow(Row* pRow)
   
   //hpRow hp_Row;
   //vTrace("%s\n"_Stz,hp_Row.sz(pRow));
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // encode the row
   
   RowEncoding* pErwRow = new RowEncoding(m_pColVec);
-
+  
   pErwRow->vEncode(pRow);
   
   //hpRowEncoding hp_RowEnc;
   //vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
-
+  
   pErwRow->vSplitOver(256,m_pColVec->nItems());
-
+  
   //vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for space in target nub
   
@@ -189,15 +205,15 @@ bool RowCompactor::bCompactRow(Row* pRow)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact encoded row into a crw
-
+  
   vCompactEncoded(pErwRow);
   m_nTotalCrws++;
-
-//#ifdef WITH_TRACE_ENCODING
+  
+  //#ifdef WITH_TRACE_ENCODING
   if (m_nTotalCrws <= 10)
     HeadLine::vDumpHead("m_aCrw"_Stz,m_aCrw,m_pColVec);
-//#endif
-
+  //#endif
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyse free space in the into head
   
@@ -212,7 +228,7 @@ bool RowCompactor::bCompactRow(Row* pRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   delete pErwRow;
-
+  
   return true;
 }
 
@@ -226,7 +242,7 @@ bool RowCompactor::bCompactRow(Row* pRow)
 void RowCompactor::vAnalyseFree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-
+  
   i8 nFreeBytes = nFreeSpaceHead(m_aCrw,m_pColVec);
   m_oFreqDist.vAdd(nFreeBytes);
 }
@@ -272,7 +288,7 @@ void RowCompactor::vDtmCode(eMC eMetaCode, Dtm wDataCode, i8 nDataSize, Column* 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put meta code into head
-
+  
   vMetaCode(m_aCrw,pCol,eMetaCode);
   
   if (! nDataSize)
@@ -295,7 +311,7 @@ void RowCompactor::vDtmCode(eMC eMetaCode, Dtm wDataCode, i8 nDataSize, Column* 
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  
   // vch
   
   // append <L>
@@ -305,7 +321,7 @@ void RowCompactor::vDtmCode(eMC eMetaCode, Dtm wDataCode, i8 nDataSize, Column* 
   // append <short>
   byte* ayDst = (byte*)m_aCrw + m_i_DataOffset;
   char* acSrc = (char*)wDataCode.m_szVch;
-
+  
   MemLib::vCopy(ayDst,
                 acSrc,
                 nDataSize,

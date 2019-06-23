@@ -26,34 +26,7 @@ namespace Data
     // - - - - - - - - - - - -
     i8 m_nTotalBuffers;        // total number of crw buffers created
     i8 m_nTotalCrws;           // total number of rows compacted
-
-//  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-//    i8 m_nHeadFreeBytes;
-//    i8 m_nHeadFreeBytes_0_7;
-//    i8 m_nHeadFreeBytes_8_15;
-//    i8 m_nHeadFreeBytes_16_23;
-//    i8 m_nHeadFreeBytes_24_31;
-//    i8 m_nHeadFreeBytes_32_39;
-//    i8 m_nHeadFreeBytes_40_47;
-//    i8 m_nHeadFreeBytes_48_55;
-//    i8 m_nHeadFreeBytes_56_63;
-//    i8 m_nHeadFreeBytes_64_;
-
-    FreqDist m_oFreqDist;
-//
-//    //---
-//
-//    m_xFreq.vInit(7,15,23,31,39,47,55,63,-1);
-//
-//
-//    m_xFreq.vAdd(nBytes);
-//
-//    m_xFreq.nBuckets();
-//    m_xFreq.iBucket(i_Bucket);
-//    m_xFreq.iDist(i_Bucket)
-//    m_xFreq.nSamples();
-//    m_xFreq.nSum();
-
+    FreqDist m_oFreqDist;      // free space analysis
 
     // must be last
     Footer m_xFooter;
