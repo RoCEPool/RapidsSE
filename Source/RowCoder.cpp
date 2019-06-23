@@ -155,16 +155,6 @@ void RowCoder::vDteIntoEdt(Dtm wDte,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get overflow line using relative index [OT]                                */
-/*----------------------------------------------------------------------------*/
-OverLine* RowCoder::aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel)
-{
-  OverLine* aOver = RowNub::aGetOver(aHeadLine,i_Over_rel);
-  
-  return aOver;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get tail line using relative index [FT]                                    */
 /*----------------------------------------------------------------------------*/
 TailLine* RowCoder::aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel)

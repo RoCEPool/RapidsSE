@@ -335,7 +335,6 @@ void HeadLine::vDumpHead(Stz* szTitle,
   i8 nHeadWords = aHeadLine->nWords();
   
   OverLine* aOverLine = nullptr;
-  i8 i_Over_rel = aHeadLine->iOverflow2B();
   i8 nOverBytes = C_UNKNOWN;
   i8 nOverUnits = C_UNKNOWN;
   
@@ -344,7 +343,7 @@ void HeadLine::vDumpHead(Stz* szTitle,
     
     MemLib::vWordDump(aHeadLine,nHeadBytes);
     
-    aOverLine  = RowCoder::aGetOverRel(aHeadLine,i_Over_rel);
+    aOverLine  = aHeadLine->aGetOver();
     nOverBytes = aOverLine->nBytes();
     nOverUnits = aOverLine->nUnits();
     
@@ -560,7 +559,6 @@ void HeadLine::vDumpHead_IV(Stz* szTitle,
   i8 nHeadWords = aHeadLine->nWords();
   
   OverLine* aOverLine = nullptr;
-  i8 i_Over_rel = aHeadLine->iOverflow2B();
   i8 nOverBytes = C_UNKNOWN;
   i8 nOverUnits = C_UNKNOWN;
   
@@ -569,7 +567,7 @@ void HeadLine::vDumpHead_IV(Stz* szTitle,
     
     MemLib::vWordDump(aHeadLine,nHeadBytes);
     
-    aOverLine  = RowCoder::aGetOverRel(aHeadLine,i_Over_rel);
+    aOverLine  = aHeadLine->aGetOver();
     nOverBytes = aOverLine->nBytes();
     nOverUnits = aOverLine->nUnits();
     

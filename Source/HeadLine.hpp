@@ -31,7 +31,7 @@ namespace Data
                       i8& i_PriorColumn_, i8& i_Offset_);
     w8   wGetLogical(i8 i_Offset, i8 nDataSize);
     OverLine* aGetOver(void);
-    bool bHasOverflow(void);
+     bool bHasOverflow(void);
     void vHasOverflow(void);
     bool bIsLargeHead(void);
     i8   iOverflow2B(void);
