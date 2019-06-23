@@ -48,7 +48,6 @@ namespace Data
     static i8   nHeadSize(ColumnVec* pColVec);
     static bool bIsFit(eMC eMetaCode);
     static i8   nMetaSize(ColumnVec* pColVec);
-    static void vPutLogical(HeadLine* aHeadLine, i8 i_Offset, w8 wDataCode, i8 nDataSize);
     static byte* ayShoco(HeadLine* aHeadLine, i8 iBaseOffset,
                          ColumnVec* pColVec, Column* pCol);
   };

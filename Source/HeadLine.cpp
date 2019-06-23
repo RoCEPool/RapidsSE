@@ -132,6 +132,31 @@ void HeadLine::vOverflow2B(i8 iOver2B)
 }
 
 /*----------------------------------------------------------------------------*/
+/* put data code into logicalRow : head[+over]                                */
+/*----------------------------------------------------------------------------*/
+void HeadLine::vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize)
+{
+  // scenario 1: simple case (no overflow), putting bytes into head
+  if (! bHasOverflow()) {
+    vPut(i_Offset,wDataCode,nDataSize);
+    return;
+  }
+  
+  // scenario 2: there is an overflow, but putting bytes into head
+  i8 nHeadBytes = nBytes();
+  if (i_Offset < nHeadBytes - 2) {
+    vPut(i_Offset,wDataCode,nDataSize);
+    return;
+  }
+  
+  // scenario 3: there is an overflow, and putting bytes into overflow
+  
+  OverLine* aOverLine = RowCoder::aGetOver(this);
+  i8 i_Offset_over = i_Offset - nHeadBytes;
+  aOverLine->vPut(i_Offset_over,wDataCode,nDataSize);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the size <W> of this headline in words                                 */
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::iW(void)

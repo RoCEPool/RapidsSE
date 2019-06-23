@@ -385,33 +385,6 @@ i8 RowCoder::nMetaSize(ColumnVec* pColVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put data code into logicalRow : head[+over]                                */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vPutLogical(HeadLine* aLogicalRow, i8 i_Offset, w8 wDataCode, i8 nDataSize)
-{
-  HeadLine* aHeadLine = aLogicalRow;
-  
-  // scenario 1: simple case (no overflow), putting bytes into head
-  if (! aHeadLine->bHasOverflow()) {
-    aHeadLine->vPut(i_Offset,wDataCode,nDataSize);
-    return;
-  }
-  
-  // scenario 2: there is an overflow, but putting bytes into head
-  i8 nHeadBytes = aHeadLine->nBytes();
-  if (i_Offset < nHeadBytes - 2) {
-    aHeadLine->vPut(i_Offset,wDataCode,nDataSize);
-    return;
-  }
-  
-  // scenario 3: there is an overflow, and putting bytes into overflow
-  
-  OverLine* aOverLine = aGetOver(aHeadLine);
-  i8 i_Offset_over = i_Offset - nHeadBytes;
-  aOverLine->vPut(i_Offset_over,wDataCode,nDataSize);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get address of given shoco column from head line                           */
 /*----------------------------------------------------------------------------*/
 byte* RowCoder::ayShoco(HeadLine* aHeadLine, i8 i_BaseOffset,
