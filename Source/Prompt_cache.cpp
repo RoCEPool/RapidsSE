@@ -28,7 +28,7 @@ bool Prompt::bPrompt_cache(SePrompt* pPrompt)
   
   w8 wVal = 0;
   
-  xCacheLine.vSetAll(0xFF);
+  xCacheLine.vSet(0,0xFF,sizeof(CacheLine));
   vTrace("Ones\n"_Stz);
   wVal = 0x01;
   for (u8 u_Offset = 0; u_Offset < C_BYTES_PER_CACHE_LINE-0; u_Offset += 1) {
@@ -40,7 +40,7 @@ bool Prompt::bPrompt_cache(SePrompt* pPrompt)
     RASSERT(wVal == xCacheLine.w8_1B(u_Offset));
   }
   
-  xCacheLine.vSetAll(0xFF);
+  xCacheLine.vSet(0,0xFF,sizeof(CacheLine));
   vTrace("Twos\n"_Stz);
   wVal = 0x0201;
   for (u8 u_Offset = 0; u_Offset < C_BYTES_PER_CACHE_LINE-1; u_Offset += 2) {
@@ -52,7 +52,7 @@ bool Prompt::bPrompt_cache(SePrompt* pPrompt)
     RASSERT(wVal == xCacheLine.w8_2B(u_Offset));
   }
   
-  xCacheLine.vSetAll(0xFF);
+  xCacheLine.vSet(0,0xFF,sizeof(CacheLine));
   vTrace("Threes\n"_Stz);
   wVal = 0x030201;
   for (u8 u_Offset = 0; u_Offset < C_BYTES_PER_CACHE_LINE-2; u_Offset += 3) {
@@ -64,7 +64,7 @@ bool Prompt::bPrompt_cache(SePrompt* pPrompt)
     RASSERT(wVal == xCacheLine.w8_3B(u_Offset));
   }
   
-  xCacheLine.vSetAll(0xFF);
+  xCacheLine.vSet(0,0xFF,sizeof(CacheLine));
   vTrace("Fours\n"_Stz);
   wVal = 0x04030201;
   for (u8 u_Offset = 0; u_Offset < C_BYTES_PER_CACHE_LINE-3; u_Offset += 4) {
@@ -76,7 +76,7 @@ bool Prompt::bPrompt_cache(SePrompt* pPrompt)
     RASSERT(wVal == xCacheLine.w8_4B(u_Offset));
   }
   
-  xCacheLine.vSetAll(0xFF);
+  xCacheLine.vSet(0,0xFF,sizeof(CacheLine));
   vTrace("Fives\n"_Stz);
   wVal = 0x0504030201;
   for (u8 u_Offset = 0; u_Offset < C_BYTES_PER_CACHE_LINE-4; u_Offset += 5) {
@@ -88,7 +88,7 @@ bool Prompt::bPrompt_cache(SePrompt* pPrompt)
     RASSERT(wVal == xCacheLine.w8_5B(u_Offset));
   }
   
-  xCacheLine.vSetAll(0xFF);
+  xCacheLine.vSet(0,0xFF,sizeof(CacheLine));
   vTrace("Sixes\n"_Stz);
   wVal = 0x060504030201;
   for (u8 u_Offset = 0; u_Offset < C_BYTES_PER_CACHE_LINE-5; u_Offset += 6) {
@@ -100,7 +100,7 @@ bool Prompt::bPrompt_cache(SePrompt* pPrompt)
     RASSERT(wVal == xCacheLine.w8_6B(u_Offset));
   }
   
-  xCacheLine.vSetAll(0xFF);
+  xCacheLine.vSet(0,0xFF,sizeof(CacheLine));
   vTrace("Sevens\n"_Stz);
   wVal = 0x07060504030201;
   for (u8 u_Offset = 0; u_Offset < C_BYTES_PER_CACHE_LINE-6; u_Offset += 7) {
@@ -112,7 +112,7 @@ bool Prompt::bPrompt_cache(SePrompt* pPrompt)
     RASSERT(wVal == xCacheLine.w8_7B(u_Offset));
   }
   
-  xCacheLine.vSetAll(0xFF);
+  xCacheLine.vSet(0,0xFF,sizeof(CacheLine));
   vTrace("Eights\n"_Stz);
   wVal = 0x0807060504030201;
   for (u8 u_Offset = 0; u_Offset < C_BYTES_PER_CACHE_LINE-7; u_Offset += 8) {

@@ -29,18 +29,18 @@ Line::~Line(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get bytes from line                                                        */
 /*----------------------------------------------------------------------------*/
-w8 Line::wGet(i8 i_Offset, i8 nBytes)
+w8 Line::wGet(i8 i_Byte, i8 nBytes)
 {
   switch (nBytes) {
-    case 0: return 0;
-    case 1: return w8_1B(i_Offset);
-    case 2: return w8_2B(i_Offset);
-    case 3: return w8_3B(i_Offset);
-    case 4: return w8_4B(i_Offset);
-    case 5: return w8_5B(i_Offset);
-    case 6: return w8_6B(i_Offset);
-    case 7: return w8_7B(i_Offset);
-    case 8: return w8_8B(i_Offset);
+    case C_0B: return 0;
+    case C_1B: return w8_1B(i_Byte);
+    case C_2B: return w8_2B(i_Byte);
+    case C_3B: return w8_3B(i_Byte);
+    case C_4B: return w8_4B(i_Byte);
+    case C_5B: return w8_5B(i_Byte);
+    case C_6B: return w8_6B(i_Byte);
+    case C_7B: return w8_7B(i_Byte);
+    case C_8B: return w8_8B(i_Byte);
       
     default:
       NEVER_REACH;
@@ -50,18 +50,18 @@ w8 Line::wGet(i8 i_Offset, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* put bytes into line                                                        */
 /*----------------------------------------------------------------------------*/
-void Line::vPut(i8 i_Offset, w8 wWord, i8 nBytes)
+void Line::vPut(i8 i_Byte, w8 wArg, i8 nBytes)
 {
   switch (nBytes) {
-    case 0: return;
-    case 1: v1B(i_Offset,wWord); return;
-    case 2: v2B(i_Offset,wWord); return;
-    case 3: v3B(i_Offset,wWord); return;
-    case 4: v4B(i_Offset,wWord); return;
-    case 5: v5B(i_Offset,wWord); return;
-    case 6: v6B(i_Offset,wWord); return;
-    case 7: v7B(i_Offset,wWord); return;
-    case 8: v8B(i_Offset,wWord); return;
+    case C_0B: return;
+    case C_1B: v1B(i_Byte,wArg); return;
+    case C_2B: v2B(i_Byte,wArg); return;
+    case C_3B: v3B(i_Byte,wArg); return;
+    case C_4B: v4B(i_Byte,wArg); return;
+    case C_5B: v5B(i_Byte,wArg); return;
+    case C_6B: v6B(i_Byte,wArg); return;
+    case C_7B: v7B(i_Byte,wArg); return;
+    case C_8B: v8B(i_Byte,wArg); return;
       
     default:
       NEVER_REACH;
@@ -71,26 +71,10 @@ void Line::vPut(i8 i_Offset, w8 wWord, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* set nBytes bytes to yVal                                                   */
 /*----------------------------------------------------------------------------*/
-void Line::vSet(i8 i_Offset, i8 nBytes, byte yVal)
+void Line::vSet(i8 i_Byte, byte yVal, i8 nBytes)
 {
-  void* aAddr = aAdd<void*>(this, i_Offset);
+  void* aAddr = aAdd<void*>(this, i_Byte);
   MemLib::vSet(aAddr, yVal, nBytes, CN_NONE);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set all bytes to yVal                                                      */
-/*----------------------------------------------------------------------------*/
-void Line::vSetAll(byte yVal)
-{
-  MemLib::vSet(this, yVal, sizeof(Line), CN_NONE);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set all bytes to yVal                                                      */
-/*----------------------------------------------------------------------------*/
-void Line::vSetAll(byte yVal, i8 nBytes)
-{
-  MemLib::vSet(this, yVal, nBytes, CN_NONE);
 }
 
 
