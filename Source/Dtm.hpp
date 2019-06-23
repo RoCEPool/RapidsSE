@@ -76,6 +76,7 @@ namespace Base
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       
       byte  m_yaByte[C_BYTES_PER_WORD];
+      w8    m_w8;
 
     };
   

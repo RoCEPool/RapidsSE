@@ -246,14 +246,14 @@ void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol,
   if (! nDataSize)
     return;
 
-  // non-vch
+  // non-vch : {B}
   
   if (DM_VCH != eDatum) {
     
     vPutLogical(aHeadLine,
                 i_DataOffset_,
                 nDataSize,
-                (w8)wDataCode.m_iInt);
+                wDataCode.m_w8);
     
     i_DataOffset_ += nDataSize;
     return;
@@ -261,22 +261,25 @@ void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // vch
+  // vch : <L><short>
   
   // append <L>
-  aHeadLine->vPut(i_DataOffset_,nDataSize,C_1B);
-  i_DataOffset_++;
+  i8 iL = nDataSize;
+  RASSERT(iL == StrLib::iLength(wDataCode.m_szVch->aChar()));
   
-  // append <short>
+  aHeadLine->vPut(i_DataOffset_,iL,C_1B);
+  i_DataOffset_ += C_1B;
+  
+  // append <short> without null terminator
   byte* ayDst = (byte*)aHeadLine + i_DataOffset_;
-  char* acSrc = (char*)wDataCode.m_szVch;
+  byte* aySrc = (byte*)wDataCode.m_szVch;
   
   MemLib::vCopy(ayDst,
-                acSrc,
-                nDataSize,
+                aySrc,
+                iL,
                 CN_ROWCOMPACTOR);
   
-  i_DataOffset_ += nDataSize;
+  i_DataOffset_ += iL;
 }
 
 /*----------------------------------------------------------------------------*/
