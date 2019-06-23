@@ -215,15 +215,6 @@ bool RowCompactor::bCompactRow(Row* pRow)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* analyse the free bytes of the head                                         */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vAnalyseFree(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* add encoded datum onto the end of crw                                      */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol,
