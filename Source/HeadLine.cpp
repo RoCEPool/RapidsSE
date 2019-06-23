@@ -74,6 +74,41 @@ i8 HeadLine::nWords(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* calculate free space of a head line                                        */
+/*----------------------------------------------------------------------------*/
+i8 HeadLine::nFreeSpaceHead(ColumnVec* pColVec)
+{
+  //MemLib::vWordDump(aHeadLine,m_nHeadBytes);
+  
+  Column* pLastCol = pColVec->pGet(pColVec->nItems() - 1);
+  ASSERT(pLastCol->bIsLastColumn());
+  
+  i8 i_Offset = RowCoder::iBaseOffset(pColVec);
+  i8 i_LastColumn = 0;
+  
+  eMC eLastEncoding = RowCoder::eGetEncoding(this,pLastCol,pColVec,
+                                         i_LastColumn,i_Offset);
+  
+  if (pLastCol->eDatumType() == DM_VCH && MC_SHOCO_SPLIT_2T1C == eLastEncoding)
+    return 0;
+  
+  if (pLastCol->eDatumType() == DM_VCH && MC_SHOCO_FIT_1C == eLastEncoding) {
+    i8 nCompressed = wGetLogical(i_Offset,C_1B);
+    //RASSERT(nCompressed <= 56);
+    i_Offset += nCompressed;
+  }
+  
+  i8 nDataBytes = RowCoder::nDataBytes(eLastEncoding);
+  
+  i8 nFreeBytes = nBytes() - i_Offset - nDataBytes;
+  
+  if (nFreeBytes < 0)
+    vDebugPoint();
+  
+  return nFreeBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get data code from logical row : head[+over]                               */
 /*----------------------------------------------------------------------------*/
 w8 HeadLine::wGetLogical(i8 i_Offset, i8 nDataSize)
