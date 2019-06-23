@@ -370,15 +370,6 @@ bool RowCoder::bIsFit(eMC eMetaCode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set meta encoding for column value                                         */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vMetaCode(HeadLine* aHeadLine, Column* pCol, eMC eMetaCode)
-{
-  i8 i_Col = pCol->iColumnNo();
-  aHeadLine->vMetaCode(i_Col,eMetaCode);
-}
-
-/*----------------------------------------------------------------------------*/
 /* calc size of the meta tape needed for given column vector                  */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::nMetaData(ColumnVec* pColVec)

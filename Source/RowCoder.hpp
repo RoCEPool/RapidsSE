@@ -47,7 +47,6 @@ namespace Data
     static TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
     static i8   nHeadBytes(ColumnVec* pColVec);
     static bool bIsFit(eMC eMetaCode);
-    static void vMetaCode(HeadLine* aHeadLine, Column* pCol, eMC eMetaCode);
     static i8   nMetaData(ColumnVec* pColVec);
     static void vPutLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes, w8 wBytes);
     static byte* ayShoco(HeadLine* aHeadLine, i8 iBaseOffset,

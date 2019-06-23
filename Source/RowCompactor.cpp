@@ -231,21 +231,24 @@ void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol,
                             i8& i_DataOffset_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
+
+  i8 i_Col   = pCol->iColumnNo();
+  eDM eDatum = pCol->eDatumType();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put meta code into head
   
-  vMetaCode(aHeadLine,pCol,eMetaCode);
+  aHeadLine->vMetaCode(i_Col,eMetaCode);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append data code onto head
   
   if (! nDataSize)
     return;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append data bytes onto head
-  
+
   // non-vch
   
-  if (DM_VCH != pCol->eDatumType()) {
+  if (DM_VCH != eDatum) {
     
     vPutLogical(aHeadLine,
                 i_DataOffset_,
