@@ -11,6 +11,13 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
+//  vTrace("Word %lld DoubleWord %lld QuadWord %lld CacheLine %lld\n"_Stz,
+//         (i8)sizeof(Word),
+//         (i8)sizeof(DoubleWord),
+//         (i8)sizeof(QuadWord),
+//         (i8)sizeof(CacheLine)
+//         );
+
 //  Timer xTimer;
 //  
 //  xTimer.vStart();

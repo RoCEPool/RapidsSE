@@ -33,7 +33,7 @@ u8 IntLib::uByte(u8 uArg, i8 i_Byte)
 {
   Word wWord;
   
-  wWord.m_uI8 = uArg;
+  wWord.m_uU8 = uArg;
   
   return wWord.m_yaByte[i_Byte];
 }

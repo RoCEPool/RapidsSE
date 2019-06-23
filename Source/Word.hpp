@@ -5,25 +5,33 @@
 
 namespace Base
 {
-  class Word
+  class Word : public Line
   {
   public:
     union {
-      byte  m_yaByte[C_BYTES_PER_WORD];
-      
       char* m_aChar;
       
+      b8    m_bB8;
+
       Dtm   m_wDtm;
-      
-      d8    m_dF8;
+
+      d8    m_dD8;
       
       i1    m_iaI1[8];
       i2    m_iaI2[4];
       i4    m_iaI4[2];
+      i8    m_iaI8[1];
       i8    m_iI8;
-      u8    m_uI8;
+      
+      u1    m_uaU1[8];
+      u2    m_uaU2[4];
+      u4    m_uaU4[2];
+      u8    m_uaU8[1];
+      u8    m_uU8;
       
       w8    m_wW8;
+      
+      byte  m_yaByte[C_BYTES_PER_WORD];
     };
   
   public:

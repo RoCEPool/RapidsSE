@@ -5,11 +5,14 @@
 
 namespace Base
 {
-  class DoubleWord : public Word
+  class DoubleWord : public Line
   {
   public:
-    byte m_yaByte1[C_BYTES_PER_WORD];
-  
+    union {
+      byte m_yaByte[C_BYTES_PER_DOUBLE_WORD];
+      //Word m_waWord[1]; //! this doesnt work
+    };
+
   public:
     DoubleWord(void);
    ~DoubleWord(void) noexcept(false);
